@@ -28,7 +28,7 @@ import {
 import useRemoteObservation, {
   fetchRemoteObservationKey
 } from "sharedHooks/useRemoteObservation";
-import { ACTIVITY_TAB_ID, DETAILS_TAB_ID } from "stores/createLayoutSlice";
+import { ACTIVITY_TAB, DETAILS_TAB } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 
 import useMarkViewedMutation from "./hooks/useMarkViewedMutation";
@@ -52,7 +52,7 @@ const initialState = {
   addingActivityItem: false,
   comment: null,
   commentIsOptional: false,
-  currentTabId: ACTIVITY_TAB_ID,
+  obsDetailsTab: ACTIVITY_TAB,
   identBodySheetShown: false,
   newIdentification: null,
   observationShown: null,
@@ -174,8 +174,8 @@ const reducer = ( state, action ) => {
 
 const ObsDetailsContainer = ( ): Node => {
   const setObservations = useStore( state => state.setObservations );
-  const currentTabId = useStore( state => state.currentTabId );
-  const setCurrentTabId = useStore( state => state.setCurrentTabId );
+  const obsDetailsTab = useStore( state => state.obsDetailsTab );
+  const setObsDetailsTab = useStore( state => state.setObsDetailsTab );
   const currentUser = useCurrentUser( );
   const { params } = useRoute();
   const {
@@ -188,6 +188,8 @@ const ObsDetailsContainer = ( ): Node => {
   const realm = useRealm( );
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
+
+  console.log( obsDetailsTab, "obs details tab id" );
 
   const [state, dispatch] = useReducer( reducer, initialState );
   const [remoteObsWasDeleted, setRemoteObsWasDeleted] = useState( false );
@@ -320,15 +322,15 @@ const ObsDetailsContainer = ( ): Node => {
 
   const tabs = [
     {
-      id: ACTIVITY_TAB_ID,
+      id: ACTIVITY_TAB,
       testID: "ObsDetails.ActivityTab",
-      onPress: ( ) => setCurrentTabId( ACTIVITY_TAB_ID ),
+      onPress: ( ) => setObsDetailsTab( ACTIVITY_TAB ),
       text: t( "ACTIVITY" )
     },
     {
-      id: DETAILS_TAB_ID,
+      id: DETAILS_TAB,
       testID: "ObsDetails.DetailsTab",
-      onPress: () => setCurrentTabId( DETAILS_TAB_ID ),
+      onPress: () => setObsDetailsTab( DETAILS_TAB ),
       text: t( "DETAILS" )
     }
   ];
@@ -486,7 +488,7 @@ const ObsDetailsContainer = ( ): Node => {
     }
   };
 
-  const showActivityTab = currentTabId === ACTIVITY_TAB_ID;
+  const showActivityTab = obsDetailsTab === ACTIVITY_TAB;
 
   const invalidateQueryAndRefetch = ( ) => {
     invalidateRemoteObservationFetch( );
@@ -596,7 +598,7 @@ const ObsDetailsContainer = ( ): Node => {
       commentIsOptional={commentIsOptional}
       confirmCommentFromCommentSheet={confirmCommentFromCommentSheet}
       confirmRemoteObsWasDeleted={confirmRemoteObsWasDeleted}
-      currentTabId={currentTabId}
+      obsDetailsTab={obsDetailsTab}
       currentUser={currentUser}
       editIdentBody={( ) => dispatch( { type: SHOW_EDIT_IDENT_BODY_SHEET } )}
       onPotentialDisagreePressed={onPotentialDisagreePressed}

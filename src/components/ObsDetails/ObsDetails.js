@@ -46,7 +46,7 @@ type Props = {
   commentIsOptional: ?boolean,
   confirmCommentFromCommentSheet: Function,
   confirmRemoteObsWasDeleted?: Function,
-  currentTabId: string,
+  obsDetailsTab: string,
   currentUser: Object,
   editIdentBody: Function,
   hideAddCommentSheet: Function,
@@ -88,7 +88,7 @@ const ObsDetails = ( {
   commentIsOptional,
   confirmCommentFromCommentSheet,
   confirmRemoteObsWasDeleted,
-  currentTabId,
+  obsDetailsTab,
   currentUser,
   editIdentBody,
   hideAddCommentSheet,
@@ -177,7 +177,7 @@ const ObsDetails = ( {
             observation={observation}
           />
         </View>
-        <Tabs tabs={tabs} activeId={currentTabId} />
+        <Tabs tabs={tabs} activeId={obsDetailsTab} />
         <ScrollView
           testID={`ObsDetails.${uuid}`}
           stickyHeaderIndices={[0, 3]}
@@ -245,7 +245,7 @@ const ObsDetails = ( {
           observation={observation}
         />
         <View className="bg-white">
-          <Tabs tabs={tabs} activeId={currentTabId} />
+          <Tabs tabs={tabs} activeId={obsDetailsTab} />
         </View>
         <View className="bg-white h-full">
           {renderActivityTab( )}

@@ -155,8 +155,8 @@ describe( "ObsDetails", () => {
   } );
 
   beforeEach( ( ) => {
-    // Reset store value of currentTabId to ACTIVITY_TAB_ID
-    useStore.setState( { currentTabId: "ACTIVITY" } );
+    // Reset store value of obsDetailsTab to ACTIVITY_TAB
+    useStore.setState( { obsDetailsTab: "ACTIVITY" } );
   } );
 
   it.todo( "should not have accessibility errors" );
