@@ -804,6 +804,8 @@ Remove-favorite = Remove favorite
 # Label for button that removes an identification
 Remove-identification = Remove identification
 Remove-Photos = Remove Photos
+Remove-taxon-filter = Remove taxon filter
+Remove-user-filter = Remove user filter
 # Label for button that removes an observation's taxon
 Removes-this-observations-taxon = Removes this observation's taxon
 # Hint for a button that removes a vote of agreement

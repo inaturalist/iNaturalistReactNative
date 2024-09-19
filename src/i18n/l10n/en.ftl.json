@@ -1096,6 +1096,8 @@
     "val": "Remove identification"
   },
   "Remove-Photos": "Remove Photos",
+  "Remove-taxon-filter": "Remove taxon filter",
+  "Remove-user-filter": "Remove user filter",
   "Removes-this-observations-taxon": {
     "comment": "Label for button that removes an observation's taxon",
     "val": "Removes this observation's taxon"
