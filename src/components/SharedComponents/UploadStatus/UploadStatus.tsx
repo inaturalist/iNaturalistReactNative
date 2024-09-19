@@ -54,7 +54,6 @@ const UploadStatus = ( {
   const color = white
     ? colors.white
     : colors.darkGray;
-  console.log( color, completeColor, "color and complete color" );
   const animation = useSharedValue( 0 );
   const rotation = useDerivedValue( ( ) => interpolate(
     animation.value,
