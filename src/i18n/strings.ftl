@@ -236,7 +236,7 @@ Data-quality-assessment-title-needs-id = This observation Needs ID
 Data-quality-assessment-title-research = This observation is Research Grade!
 Data-quality-casual-description = This observation needs more information verified to be considered verifiable
 Data-quality-needs-id-description = This observation needs more identifications to reach research grade
-Data-quality-research-description = This observation has enough identifications to be considered resarch grade
+Data-quality-research-description = This observation has enough identifications to be considered research grade
 DATE = DATE
 # Used when displaying a relative time - in this case, X days ago (e.g. 3d = 3 days ago)
 Date-days = { $count }d
@@ -739,7 +739,7 @@ QUALITY-GRADE = QUALITY GRADE
 # Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Casual
 Quality-Grade-casual = Quality Grade Casual
 quality-grade-casual = Casual
-quality-grade-needs-id = Needs Id
+quality-grade-needs-id = Needs ID
 # Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Needs ID
 Quality-Grade-needs_id = Quality Grade Needs ID
 # Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Research Grade
@@ -1030,7 +1030,7 @@ USERNAME = USERNAME
 USERNAME-OR-EMAIL = USERNAME OR EMAIL
 Using-iNaturalist-requires-the-storage = Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US.
 VIEW-CHILDREN-TAXA = VIEW CHILDREN TAXA
-VIEW-DATA-QUALITY-ASSESSEMENT = VIEW DATA QUALITY ASSESSEMENT
+VIEW-DATA-QUALITY-ASSESSMENT = VIEW DATA QUALITY ASSESSMENT
 VIEW-EDUCATORS-GUIDE = VIEW EDUCATOR'S GUIDE
 View-in-browser = View in browser
 VIEW-IN-EXPLORE = VIEW IN EXPLORE
