@@ -94,7 +94,6 @@ const DisplayTaxonName = ( {
     rankLevel,
     rank
   } = generateTaxonPieces( taxonPojo );
-  console.log( commonName, "common name" );
   const isHorizontal = layout === "horizontal";
   const getSpaceChar = showSpace => ( showSpace && isHorizontal
     ? " "
