@@ -4,7 +4,6 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { ReactNode, useEffect } from "react";
 import CircularProgressBase from "react-native-circular-progress-indicator";
-import { useTheme } from "react-native-paper";
 import Reanimated, {
   cancelAnimation,
   Easing, FadeIn, interpolate,
@@ -13,6 +12,7 @@ import Reanimated, {
 } from "react-native-reanimated";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
+import colors from "styles/tailwindColors";
 
 const iconClasses = [
   "items-center",
@@ -37,25 +37,24 @@ const keyframe = new Keyframe( {
 } );
 
 const UploadStatus = ( {
-  white,
+  white = false,
   handleIndividualUploadPress,
   layout,
   children,
   uuid
 }: Props ): Node => {
-  const theme = useTheme( );
-
   const totalUploadProgress = useStore( state => state.totalUploadProgress );
   const currentObservation = totalUploadProgress.find( o => o.uuid === uuid );
   const progress = currentObservation?.totalProgress || 0;
 
   const { t } = useTranslation( );
   const completeColor = white
-    ? theme.colors.onSecondary
-    : theme.colors.secondary;
+    ? colors.white
+    : colors.inatGreen;
   const color = white
-    ? theme.colors.onPrimary
-    : theme.colors.primary;
+    ? colors.white
+    : colors.darkGray;
+  console.log( color, completeColor, "color and complete color" );
   const animation = useSharedValue( 0 );
   const rotation = useDerivedValue( ( ) => interpolate(
     animation.value,
@@ -139,18 +138,14 @@ const UploadStatus = ( {
     <View className={classnames( iconClasses )}>
       {showProgressArrow( )}
       <CircularProgressBase
+        activeStrokeColor={color}
+        activeStrokeWidth={2.5}
+        inActiveStrokeOpacity={0}
+        maxValue={1}
+        radius={18}
+        showProgressValue={false}
         testID="UploadStatus.CircularProgress"
         value={progress}
-        radius={18}
-        activeStrokeColor={
-          progress < 1
-            ? color
-            : completeColor
-        }
-        showProgressValue={false}
-        maxValue={1}
-        inActiveStrokeOpacity={0}
-        activeStrokeWidth={2.5}
       />
     </View>
   );
@@ -160,11 +155,7 @@ const UploadStatus = ( {
       <INatIcon
         size={28}
         name="upload-complete"
-        color={
-          layout === "vertical"
-            ? theme.colors.secondary
-            : theme.colors.onSecondary
-        }
+        color={completeColor}
       />
     </View>
   );
