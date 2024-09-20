@@ -12,9 +12,10 @@ import { fontMonoClass, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useCallback } from "react";
-import { Platform, Text } from "react-native";
+import { I18nManager, Platform, Text } from "react-native";
 import Config from "react-native-config";
 import RNFS from "react-native-fs";
+import RNRestart from "react-native-restart";
 import useLogs from "sharedHooks/useLogs";
 
 import useAppSize, {
@@ -86,6 +87,12 @@ const Developer = (): Node => {
     );
   } ), [fileSizes] );
 
+  const toggleRTLandLTR = async ( ) => {
+    const { isRTL, forceRTL } = I18nManager;
+    await forceRTL( !isRTL );
+    RNRestart.restart( );
+  };
+
   const navigation = useNavigation( );
   const { shareLogFile, emailLogFile } = useLogs();
   return (
@@ -129,6 +136,11 @@ const Developer = (): Node => {
               <Button
                 onPress={async () => { throw new Error( "Test error in promise" ); }}
                 text="TEST UNHANDLED PROMISE REJECTION"
+                className="mb-5"
+              />
+              <Button
+                onPress={toggleRTLandLTR}
+                text="TOGGLE RTL<>LTR"
                 className="mb-5"
               />
             </>
