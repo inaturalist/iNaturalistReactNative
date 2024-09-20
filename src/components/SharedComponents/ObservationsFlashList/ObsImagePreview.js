@@ -184,7 +184,11 @@ const ObsImagePreview = ( {
   }
 
   if ( isSmall && obsPhotosCount === 0 && hasSound ) {
-    imageClassNames.push( "border-2", "justify-center", "items-center" );
+    imageClassNames.push(
+      "border-2",
+      "justify-center",
+      "items-center"
+    );
     content = <INatIcon name="sound" color={theme.colors.primary} size={24} />;
   } else {
     content = (

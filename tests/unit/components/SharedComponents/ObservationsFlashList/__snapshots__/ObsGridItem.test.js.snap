@@ -108,24 +108,6 @@ exports[`ObsGridItem for an observation with a photo should render 1`] = `
               {
                 "alignItems": "center",
               },
-              {
-                "borderBottomLeftRadius": 12,
-                "borderBottomRightRadius": 12,
-                "borderTopLeftRadius": 12,
-                "borderTopRightRadius": 12,
-              },
-              {
-                "borderBottomWidth": 2,
-                "borderLeftWidth": 2,
-                "borderRightWidth": 2,
-                "borderTopWidth": 2,
-              },
-              {
-                "borderBottomColor": "#E8E8E8",
-                "borderLeftColor": "#E8E8E8",
-                "borderRightColor": "#E8E8E8",
-                "borderTopColor": "#E8E8E8",
-              },
             ],
           ]
         }
@@ -374,24 +356,6 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
               },
               {
                 "alignItems": "center",
-              },
-              {
-                "borderBottomLeftRadius": 12,
-                "borderBottomRightRadius": 12,
-                "borderTopLeftRadius": 12,
-                "borderTopRightRadius": 12,
-              },
-              {
-                "borderBottomWidth": 2,
-                "borderLeftWidth": 2,
-                "borderRightWidth": 2,
-                "borderTopWidth": 2,
-              },
-              {
-                "borderBottomColor": "#E8E8E8",
-                "borderLeftColor": "#E8E8E8",
-                "borderRightColor": "#E8E8E8",
-                "borderTopColor": "#E8E8E8",
               },
             ],
           ]
