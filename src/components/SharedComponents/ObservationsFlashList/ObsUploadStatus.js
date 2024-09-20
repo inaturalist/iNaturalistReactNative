@@ -3,28 +3,30 @@
 import { ObsStatus, UploadStatus } from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";
-import { useTheme } from "react-native-paper";
 
 type Props = {
   classNameMargin?: string,
-  handleIndividualUploadPress: Function,
+  explore?: boolean,
+  handleIndividualUploadPress: ( ) => void,
   layout?: "horizontal" | "vertical",
   observation: Object,
-  showUploadStatus: boolean,
-  white?: boolean,
+  showObsStatus?: boolean,
+  showUploadStatus?: boolean,
+  white?: boolean
 };
 
 const ObsUploadStatus = ( {
   classNameMargin,
+  explore = false,
   handleIndividualUploadPress,
   layout,
   observation,
-  showUploadStatus,
+  showObsStatus = false,
+  showUploadStatus = false,
   white = false
 }: Props ): Node => {
-  const theme = useTheme( );
-  const whiteColor = white && theme.colors.onPrimary;
-
+  const hideStatus = !showUploadStatus && !showObsStatus && !explore;
+  const showObsStatusOnly = ( !showUploadStatus && showObsStatus ) || explore;
   const obsStatus = (
     <ObsStatus
       observation={observation}
@@ -35,14 +37,17 @@ const ObsUploadStatus = ( {
     />
   );
 
-  if ( !showUploadStatus ) {
+  if ( hideStatus ) {
+    return null;
+  }
+
+  if ( showObsStatusOnly ) {
     return obsStatus;
   }
 
   return (
     <UploadStatus
-      color={whiteColor}
-      completeColor={whiteColor}
+      white={white}
       handleIndividualUploadPress={handleIndividualUploadPress}
       layout={layout}
       uuid={observation.uuid}

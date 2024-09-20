@@ -1,9 +1,9 @@
 // @flow
 
-import { Body2, DisplayTaxonName, ObsStatus } from "components/SharedComponents";
+import { Body2, DisplayTaxonName } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useMemo } from "react";
 import Photo from "realmModels/Photo";
 import { useCurrentUser } from "sharedHooks";
 
@@ -39,6 +39,27 @@ const ObsGridItem = ( {
     || observation?.observation_sounds?.length
   );
   const currentUser = useCurrentUser( );
+
+  const displayTaxonName = useMemo( ( ) => (
+    <DisplayTaxonName
+      bottomTextComponent={Body2}
+      color="text-white"
+      ellipsizeCommonName
+      keyBase={observation?.uuid}
+      layout="vertical"
+      prefersCommonNames={currentUser?.prefers_common_names}
+      scientificNameFirst={currentUser?.prefers_scientific_name_first}
+      showOneNameOnly={!explore}
+      taxon={observation?.taxon}
+    />
+  ), [
+    currentUser?.prefers_common_names,
+    currentUser?.prefers_scientific_name_first,
+    explore,
+    observation?.taxon,
+    observation?.uuid
+  ] );
+
   return (
     <ObsImagePreview
       source={{
@@ -55,37 +76,16 @@ const ObsGridItem = ( {
       white
     >
       <View className="absolute bottom-0 flex p-2 w-full">
-        {explore
-          ? (
-            <ObsStatus
-              observation={observation}
-              layout="horizontal"
-              testID={`ObsStatus.${observation.uuid}`}
-              white
-            />
-          )
-          : (
-            <ObsUploadStatus
-              classNameMargin="mb-1"
-              handleIndividualUploadPress={handleIndividualUploadPress}
-              layout="horizontal"
-              observation={observation}
-              showUploadStatus={showUploadStatus}
-              white
-            />
-          )}
-        <DisplayTaxonName
-          keyBase={observation?.uuid}
-          taxon={observation?.taxon}
-          scientificNameFirst={
-            currentUser?.prefers_scientific_name_first
-          }
-          prefersCommonNames={currentUser?.prefers_common_names}
-          layout="vertical"
-          color="text-white"
-          ellipsizeCommonName
-          bottomTextComponent={Body2}
+        <ObsUploadStatus
+          classNameMargin="mb-1"
+          explore={explore}
+          handleIndividualUploadPress={handleIndividualUploadPress}
+          layout="horizontal"
+          observation={observation}
+          showUploadStatus={showUploadStatus}
+          white
         />
+        {displayTaxonName}
       </View>
     </ObsImagePreview>
   );
