@@ -294,6 +294,7 @@ exports[`ObsGridItem for an observation with a photo should render 1`] = `
           
         </Text>
         <Text
+          maxFontSizeMultiplier={2}
           style={
             [
               {
@@ -361,6 +362,7 @@ exports[`ObsGridItem for an observation with a photo should render 1`] = `
           
         </Text>
         <Text
+          maxFontSizeMultiplier={2}
           style={
             [
               {
@@ -399,6 +401,7 @@ exports[`ObsGridItem for an observation with a photo should render 1`] = `
       </View>
     </View>
     <Text
+      maxFontSizeMultiplier={2}
       numberOfLines={1}
       style={
         [
@@ -699,6 +702,7 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
           
         </Text>
         <Text
+          maxFontSizeMultiplier={2}
           style={
             [
               {
@@ -766,6 +770,7 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
           
         </Text>
         <Text
+          maxFontSizeMultiplier={2}
           style={
             [
               {
@@ -804,6 +809,7 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
       </View>
     </View>
     <Text
+      maxFontSizeMultiplier={2}
       numberOfLines={1}
       style={
         [

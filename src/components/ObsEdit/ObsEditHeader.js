@@ -68,6 +68,7 @@ const ObsEditHeader = ( {
     }
     return (
       <Heading2
+        maxFontSizeMultiplier={1.5}
         testID="new-observation-text"
         accessible
         accessibilityRole="header"

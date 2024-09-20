@@ -2,6 +2,7 @@
 
 exports[`Heading5 renders correctly 1`] = `
 <Text
+  maxFontSizeMultiplier={3}
   style={
     [
       {

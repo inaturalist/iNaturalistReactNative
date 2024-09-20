@@ -196,7 +196,8 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
           : "ml-3",
         "mb-5",
         "flex-row",
-        "flex-nowrap"
+        "flex-nowrap",
+        "mr-3"
       )}
       onPress={( ) => {
         if ( !currentUser ) {

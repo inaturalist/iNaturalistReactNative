@@ -69,6 +69,7 @@ exports[`Tabs should render correctly 1`] = `
         testID="TAB_1-tab"
       >
         <Text
+          maxFontSizeMultiplier={2}
           style={
             [
               {
@@ -172,6 +173,7 @@ exports[`Tabs should render correctly 1`] = `
         testID="TAB_2-tab"
       >
         <Text
+          maxFontSizeMultiplier={2}
           style={
             [
               {
