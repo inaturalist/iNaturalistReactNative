@@ -1,28 +1,35 @@
-// @flow
-
 import {
   TaxonResult
 } from "components/SharedComponents";
-import type { Node } from "react";
 import React from "react";
 import {
   convertOfflineScoreToConfidence,
   convertOnlineScoreToConfidence
 } from "sharedHelpers/convertScores.ts";
 
-type Props = {
-  accessibilityLabel: string,
-  onTaxonChosen: Function,
-  suggestion: Object,
-  isTopSuggestion?: boolean
-};
+interface Props {
+  accessibilityLabel: string;
+  onTaxonChosen: ( ) => void;
+  suggestion: {
+    taxon: {
+      id: number;
+      name: string;
+      preferred_common_name: string;
+      rank: string;
+      iconic_taxon_name: string;
+    };
+    score: number;
+    combined_score: number;
+  };
+  isTopSuggestion?: boolean;
+}
 
 const Suggestion = ( {
   accessibilityLabel,
   suggestion,
   onTaxonChosen,
   isTopSuggestion = false
-}: Props ): Node => (
+}: Props ) => (
   <TaxonResult
     accessibilityLabel={accessibilityLabel}
     activeColor="bg-inatGreen"
