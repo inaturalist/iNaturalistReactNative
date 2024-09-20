@@ -36,7 +36,7 @@ const drawerScrollViewStyle = {
   backgroundColor: "white",
   borderTopRightRadius: 20,
   borderBottomRightRadius: 20,
-  height: "100%"
+  minHeight: "100%"
 } as const;
 
 interface Props {
