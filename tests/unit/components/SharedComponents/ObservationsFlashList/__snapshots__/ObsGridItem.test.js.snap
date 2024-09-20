@@ -162,20 +162,20 @@ exports[`ObsGridItem for an observation with a photo should render 1`] = `
     colors={
       [
         0,
-        2147483648,
+        2566914048,
       ]
     }
     endPoint={
       {
         "x": 0,
-        "y": 0.75,
+        "y": 1,
       }
     }
     locations={null}
     startPoint={
       {
         "x": 0,
-        "y": 0,
+        "y": 0.5,
       }
     }
     style={
@@ -390,20 +390,20 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
     colors={
       [
         0,
-        2147483648,
+        2566914048,
       ]
     }
     endPoint={
       {
         "x": 0,
-        "y": 0.75,
+        "y": 1,
       }
     }
     locations={null}
     startPoint={
       {
         "x": 0,
-        "y": 0,
+        "y": 0.5,
       }
     }
     style={

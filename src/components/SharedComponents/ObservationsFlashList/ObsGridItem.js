@@ -72,6 +72,7 @@ const ObsGridItem = ( {
       hasSound={hasSound}
       isMultiplePhotosTop
       testID={`MyObservations.gridItem.${observation.uuid}`}
+      useShortGradient={!explore}
       iconicTaxonName={observation.taxon?.iconic_taxon_name}
       white
     >
