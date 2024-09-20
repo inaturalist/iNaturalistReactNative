@@ -182,15 +182,13 @@ const ObsDetailsContainer = ( ): Node => {
     identAt,
     identTaxonId,
     identTaxonFromVision,
+    notificationId,
     uuid
   } = params;
   const navigation = useNavigation( );
   const realm = useRealm( );
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
-
-  console.log( obsDetailsTab, "obs details tab id" );
-
   const [state, dispatch] = useReducer( reducer, initialState );
   const [remoteObsWasDeleted, setRemoteObsWasDeleted] = useState( false );
 
@@ -606,6 +604,7 @@ const ObsDetailsContainer = ( ): Node => {
       isConnected={isConnected}
       isRefetching={isRefetching}
       navToSuggestions={navToSuggestions}
+      notificationId={notificationId}
       // saving observation in state (i.e. using observationShown)
       // limits the number of rerenders to entire obs details tree
       observation={observationShown}
@@ -633,6 +632,7 @@ const ObsDetailsContainer = ( ): Node => {
       onCloseIdentBodySheet={() => {
         dispatch( { type: HIDE_EDIT_IDENT_BODY_SHEET } );
       }}
+      uuid={uuid}
     />
   );
 };

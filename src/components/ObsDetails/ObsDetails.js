@@ -1,5 +1,4 @@
 // @flow
-import { useRoute } from "@react-navigation/native";
 import PotentialDisagreementSheet from
   "components/ObsDetails/Sheets/PotentialDisagreementSheet";
 import {
@@ -15,7 +14,9 @@ import {
   View
 } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useMemo } from "react";
+import React, {
+  useLayoutEffect, useMemo, useRef, useState
+} from "react";
 import { Platform } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import {
@@ -53,6 +54,7 @@ type Props = {
   isConnected: boolean,
   isRefetching: boolean,
   navToSuggestions: Function,
+  notificationId: number,
   observation: Object,
   openAddCommentSheet: Function,
   openAgreeWithIdSheet: Function,
@@ -76,7 +78,8 @@ type Props = {
     taxon: Object,
     vision?: boolean
   },
-  onChangeIdentBody?: Function
+  onChangeIdentBody?: Function,
+  uuid: string
 }
 
 const ObsDetails = ( {
@@ -95,6 +98,7 @@ const ObsDetails = ( {
   isConnected,
   isRefetching,
   navToSuggestions,
+  notificationId,
   observation,
   onAgree,
   openAgreeWithIdSheet,
@@ -114,13 +118,21 @@ const ObsDetails = ( {
   identBodySheetShown,
   onCloseIdentBodySheet,
   newIdentification,
-  onChangeIdentBody
-
+  onChangeIdentBody,
+  uuid
 }: Props ): Node => {
+  const scrollViewRef = useRef( );
   const insets = useSafeAreaInsets();
-  const { params } = useRoute( );
-  const { uuid } = params;
   const { t } = useTranslation( );
+  const [scrollToY, setScrollToY] = useState( 0 );
+
+  useLayoutEffect( ( ) => {
+    // we need useLayoutEffect here to make sure the ScrollView has already rendered
+    // before trying to scroll to the relevant activity item
+    if ( notificationId && scrollViewRef?.current ) {
+      scrollViewRef?.current?.scrollTo( { y: scrollToY } );
+    }
+  } );
 
   const dynamicInsets = useMemo( () => ( {
     backgroundColor: "#ffffff",
@@ -139,9 +151,11 @@ const ObsDetails = ( {
       <ActivityTab
         activityItems={activityItems}
         isConnected={isConnected}
+        notificationId={notificationId}
         observation={observation}
         openAgreeWithIdSheet={openAgreeWithIdSheet}
         refetchRemoteObservation={refetchRemoteObservation}
+        setScrollToY={setScrollToY}
       />
     </HideView>
   );
@@ -179,6 +193,7 @@ const ObsDetails = ( {
         </View>
         <Tabs tabs={tabs} activeId={obsDetailsTab} />
         <ScrollView
+          ref={scrollViewRef}
           testID={`ObsDetails.${uuid}`}
           stickyHeaderIndices={[0, 3]}
           scrollEventThrottle={16}
@@ -216,6 +231,7 @@ const ObsDetails = ( {
   const renderPhone = () => (
     <>
       <ScrollView
+        ref={scrollViewRef}
         testID={`ObsDetails.${uuid}`}
         stickyHeaderIndices={[0, 3]}
         scrollEventThrottle={16}
