@@ -2,6 +2,7 @@
 
 exports[`Subheading1 renders correctly 1`] = `
 <Text
+  maxFontSizeMultiplier={2}
   style={
     [
       {

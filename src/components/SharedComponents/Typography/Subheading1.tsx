@@ -7,6 +7,7 @@ import { Text } from "react-native";
 
 const Subheading1 = ( props: Object ) => (
   <Text
+    maxFontSizeMultiplier={2}
     className={classnames(
       "text-xl trailing-tight text-darkGray",
       tailwindFontRegular

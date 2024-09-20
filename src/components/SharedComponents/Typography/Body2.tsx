@@ -7,6 +7,7 @@ import { Text, TextProps } from "react-native";
 
 const Body2 = ( props: TextProps ) => (
   <Text
+    maxFontSizeMultiplier={2}
     className={classnames(
       "text-md trailing-tight text-darkGray",
       tailwindFontRegular

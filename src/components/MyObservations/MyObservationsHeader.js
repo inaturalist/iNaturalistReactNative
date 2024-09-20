@@ -73,17 +73,19 @@ const MyObservationsHeader = ( {
           ? (
             <View className="shrink">
               <Subheading1
+                maxFontSizeMultiplier={1.5}
                 testID="log-in-to-iNaturalist-text"
               >
                 {t( "Log-in-to-contribute-and-sync" )}
               </Subheading1>
-              <Heading1>
+              <Heading1 maxFontSizeMultiplier={1.5}>
                 { t( "X-observations", { count: numUnuploadedObservations } ) }
               </Heading1>
             </View>
           )
           : (
             <Subheading1
+              maxFontSizeMultiplier={1.5}
               className="shrink m-0"
               testID="log-in-to-iNaturalist-text-no-observations"
             >

@@ -142,6 +142,12 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
       };
     }
     if ( isDebug ) {
+      items.projects = {
+        label: t( "PROJECTS" ),
+        navigation: "Projects",
+        icon: "briefcase"
+      };
+
       items.debug = {
         label: "DEBUG",
         navigation: "Debug",
@@ -190,7 +196,8 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
           : "ml-3",
         "mb-5",
         "flex-row",
-        "flex-nowrap"
+        "flex-nowrap",
+        "mr-3"
       )}
       onPress={( ) => {
         if ( !currentUser ) {
