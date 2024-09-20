@@ -27,6 +27,7 @@ const useTaxonCommonNames = ( ) => {
     per_page: 500,
     fields: {
       taxon: {
+        iconic_taxon_name: true,
         id: true,
         preferred_common_name: true,
         name: true
@@ -44,11 +45,11 @@ const useTaxonCommonNames = ( ) => {
     ["fetchSpeciesCounts", userLocation],
     optsWithAuth => fetchSpeciesCounts(
       params,
-      optsWithAuth,
-      {
-        enabled: hasPermissions !== null
-      }
-    )
+      optsWithAuth
+    ),
+    {
+      enabled: hasPermissions !== null
+    }
   );
 
   useEffect( ( ) => {
