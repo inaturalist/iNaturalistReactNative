@@ -184,14 +184,6 @@ const SoundContainer = ( {
     }
   }, [autoPlay, isVisible, playSound] );
 
-  useEffect( ( ) => {
-    // when user seeks when audio reaches the end.
-    if ( !playing && playBackState.currentPosition < playBackState.duration ) {
-      setPlaying( true );
-      togglePlay();
-    }
-  }, [playBackState.currentPosition, playBackState.duration, playSound, playing, togglePlay] );
-
   if ( isConnected === false && needsInternet ) {
     return (
       <OfflineNotice
