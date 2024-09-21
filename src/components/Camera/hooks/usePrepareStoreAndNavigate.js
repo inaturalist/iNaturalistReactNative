@@ -65,6 +65,11 @@ export async function savePhotosToCameraGallery(
         // the EXIF metadata of these photos, once we retrieve a location.
         onEachSuccess( savedPhotoUri );
       } catch ( cameraRollSaveError ) {
+        if ( cameraRollSaveError.message.match( /No space left on device/ )
+          || cameraRollSaveError.message.match( /The operation couldn’t be completed/ ) ) {
+          console.log( "cameraRollSaveError: ", cameraRollSaveError );
+          return;
+        }
         // This means an iOS user denied access
         // (https://developer.apple.com/documentation/photokit/phphotoserror/code/accessuserdenied).
         // In theory we should not even have called this function when that

@@ -3,11 +3,13 @@
 import Geolocation from "@react-native-community/geolocation";
 import NetInfo from "@react-native-community/netinfo";
 import { onlineManager } from "@tanstack/react-query";
+import { t } from "i18next";
 import RootDrawerNavigator from "navigation/rootDrawerNavigator";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useEffect } from "react";
-import { LogBox } from "react-native";
+import { Alert, LogBox } from "react-native";
+import DeviceInfo from "react-native-device-info";
 import Realm from "realm";
 import { addARCameraFiles } from "sharedHelpers/cvModel.ts";
 import { log } from "sharedHelpers/logger";
@@ -77,6 +79,25 @@ const App = ( { children }: Props ): Node => {
   useShare( );
   useObservationUpdatesWhenFocused( );
   useTaxonCommonNames( );
+
+  const showStorageFullAlert = () => Alert.alert(
+    "Device Storage Full",
+    "iNaturalist may not be able to save your photos or may crash",
+    [{ text: t( "OK" ) }],
+    {
+      cancelable: true
+    }
+  );
+
+  useEffect( ( ) => {
+    DeviceInfo.getFreeDiskStorage().then( freeDiskStorage => {
+      // consider full at 8MB
+      // size in bytes
+      if ( freeDiskStorage <= 800000000 ) {
+        showStorageFullAlert( );
+      }
+    } );
+  }, [] );
 
   useEffect( ( ) => {
     addARCameraFiles( );

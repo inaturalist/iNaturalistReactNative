@@ -8,6 +8,7 @@ import useRotation from "components/Camera/hooks/useRotation.ts";
 import useTakePhoto from "components/Camera/hooks/useTakePhoto.ts";
 import useZoom from "components/Camera/hooks/useZoom.ts";
 import { View } from "components/styledComponents";
+import { t } from "i18next";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, {
@@ -16,12 +17,14 @@ import React, {
   useMemo,
   useState
 } from "react";
+import {
+  Alert
+} from "react-native";
 import DeviceInfo from "react-native-device-info";
 import { Snackbar } from "react-native-paper";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
-import useTranslation from "sharedHooks/useTranslation";
 import useStore from "stores/useStore";
 
 import {
@@ -81,7 +84,21 @@ const StandardCamera = ( {
     toggleFlash
   } = useTakePhoto( camera, !!addEvidence, device );
 
-  const { t } = useTranslation( );
+  const [deviceStorageFull, setDeviceStorageFull] = useState( false );
+
+  const showStorageFullAlert = () => Alert.alert(
+    "Device Storage Full",
+    "iNaturalist may not be able to save your photos or may crash",
+    [{ text: t( "OK" ) }]
+  );
+
+  DeviceInfo.getFreeDiskStorage().then( freeDiskStorage => {
+    // considered full at 8MB
+    // number in bytes
+    if ( freeDiskStorage <= 800000000 ) {
+      setDeviceStorageFull( true );
+    }
+  } );
 
   const cameraUris = useStore( state => state.cameraUris );
   const prepareCamera = useStore( state => state.prepareCamera );
@@ -145,6 +162,10 @@ const StandardCamera = ( {
   }, [discardedChanges, showDiscardSheet, navigation, newPhotoUris, deletePhotoByUri] );
 
   const handleTakePhoto = async ( ) => {
+    if ( deviceStorageFull ) {
+      showStorageFullAlert();
+    }
+
     if ( disallowAddingPhotos ) {
       setShowAlert( true );
       return;
