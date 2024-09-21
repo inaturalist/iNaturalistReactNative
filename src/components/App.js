@@ -29,6 +29,9 @@ import useTaxonCommonNames from "./hooks/useTaxonCommonNames";
 
 const { useRealm } = RealmContext;
 
+// 200MB - number in bytes
+const MIN_DEVICE_STORAGE = 200000000;
+
 const logger = log.extend( "App" );
 
 Realm.setLogLevel( "warn" );
@@ -91,9 +94,9 @@ const App = ( { children }: Props ): Node => {
 
   useEffect( ( ) => {
     DeviceInfo.getFreeDiskStorage().then( freeDiskStorage => {
-      // consider full at 8MB
+      // consider full when 2MB left
       // size in bytes
-      if ( freeDiskStorage <= 800000000 ) {
+      if ( freeDiskStorage <= MIN_DEVICE_STORAGE ) {
         showStorageFullAlert( );
       }
     } );

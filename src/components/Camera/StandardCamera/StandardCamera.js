@@ -45,6 +45,9 @@ const isTablet = DeviceInfo.isTablet( );
 
 export const MAX_PHOTOS_ALLOWED = 20;
 
+// 200MB - number in bytes
+const MIN_DEVICE_STORAGE = 200000000;
+
 type Props = {
   addEvidence: ?boolean,
   camera: Object,
@@ -93,9 +96,8 @@ const StandardCamera = ( {
   );
 
   DeviceInfo.getFreeDiskStorage().then( freeDiskStorage => {
-    // considered full at 8MB
-    // number in bytes
-    if ( freeDiskStorage <= 800000000 ) {
+    // considered full when 200MB left
+    if ( freeDiskStorage <= MIN_DEVICE_STORAGE ) {
       setDeviceStorageFull( true );
     }
   } );
