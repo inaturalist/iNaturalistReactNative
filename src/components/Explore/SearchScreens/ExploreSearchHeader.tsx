@@ -23,17 +23,20 @@ const ExploreSearchHeader = ( {
   const { t } = useTranslation( );
 
   return (
-    <View className="flex-row justify-between p-5 bg-white">
-      <BackButton
-        testID={testID}
-        onPress={closeModal}
-        accessibilityLabel={headerText}
-        className="w-[60px]"
-      />
+    <View className="flex-row items-center justify-between p-5 bg-white">
+      <View className="w-[50px]">
+        <BackButton
+          testID={testID}
+          onPress={closeModal}
+          accessibilityLabel={headerText}
+        />
+      </View>
       <Heading4>{headerText}</Heading4>
-      <Body3 onPress={resetFilters} className="w-[60px]">
-        {t( "Reset-verb" )}
-      </Body3>
+      <View className="w-[50px] items-end">
+        <Body3 onPress={resetFilters}>
+          {t( "Reset-verb" )}
+        </Body3>
+      </View>
     </View>
   );
 };
