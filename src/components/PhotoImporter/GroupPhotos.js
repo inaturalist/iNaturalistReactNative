@@ -1,10 +1,15 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { FlashList } from "@shopify/flash-list";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCamera";
 import {
-  Body2, Button, FloatingActionBar, INatIcon, INatIconButton, StickyToolbar
+  Body2,
+  Button,
+  CustomFlashList,
+  FloatingActionBar,
+  INatIcon,
+  INatIconButton,
+  StickyToolbar
 } from "components/SharedComponents";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { Pressable, View } from "components/styledComponents";
@@ -148,11 +153,10 @@ const GroupPhotos = ( {
 
   return (
     <ViewWrapper>
-      <FlashList
+      <CustomFlashList
         contentContainerStyle={flashListStyle}
         ListHeaderComponent={renderHeader}
         data={data}
-        initialNumToRender={4}
         keyExtractor={extractKey}
         numColumns={numColumns}
         key={numColumns}
