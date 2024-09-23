@@ -1,0 +1,5 @@
+UPDATED
+* Tapping obs in Notifications scrolls to item that triggered notification
+
+FIXED
+* AI Camera not proceeding to Suggestions sometimes
