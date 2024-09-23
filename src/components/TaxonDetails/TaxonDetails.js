@@ -367,29 +367,34 @@ const TaxonDetails = ( ): Node => {
         headerText={t( "UPLOAD-TO-INATURALIST" )}
       >
         <View className="p-4">
-          <List2>
-            {t( "By-uploading-your-observation-to-iNaturalist-you-can" )}
-          </List2>
-          {bulletedText.map( string => (
-            <List2 key={string}>
-              {`\u2022 ${string}`}
+          <View className="px-3">
+            <List2>
+              {t( "By-uploading-your-observation-to-iNaturalist-you-can" )}
             </List2>
-          ) )}
-          <List2>
-            {t( "Just-make-sure-the-organism-is-wild" )}
-          </List2>
-          <View className="flex-row">
-            <Button
-              onPress={() => saveForLater()}
-              text={t( "SAVE-FOR-LATER" )}
-            />
-            <Button
-              onPress={() => uploadNow()}
-              text={t( "UPLOAD-NOW" )}
-              level="focus"
-              className="grow ml-3"
-            />
+            <View className="mt-3">
+              {bulletedText.map( string => (
+                <View className="flex-row">
+                  <List2>{`\u2022 `}</List2><List2>{string}</List2>
+                </View>
+              ) )}
+            </View>
+            <List2
+              className="mt-3"
+            >
+              {t( "Just-make-sure-the-organism-is-wild" )}
+            </List2>
           </View>
+          <Button
+            onPress={() => uploadNow()}
+            text={t( "UPLOAD-NOW" )}
+            className="mt-5"
+            level="focus"
+          />
+          <Button
+            onPress={() => saveForLater()}
+            text={t( "SAVE-FOR-LATER" )}
+            className="mt-5"
+          />
         </View>
       </BottomSheet>
     </>
