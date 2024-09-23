@@ -282,6 +282,11 @@ const TaxonDetails = ( ): Node => {
     );
   };
 
+  const bulletedText = [
+    t( "Get-your-identification-verified-by-real-people" ),
+    t( "Share-your-observation-where-it-can-help-scientists" )
+  ];
+
   return (
     <>
       <ScrollViewWrapper
@@ -365,12 +370,11 @@ const TaxonDetails = ( ): Node => {
           <List2>
             {t( "By-uploading-your-observation-to-iNaturalist-you-can" )}
           </List2>
-          <List2>
-            {t( "Get-your-identification-verified-by-real-people" )}
-          </List2>
-          <List2>
-            {t( "Share-your-observation-where-it-can-help-scientists" )}
-          </List2>
+          {bulletedText.map( string => (
+            <List2 key={string}>
+              {`\u2022 ${string}`}
+            </List2>
+          ) )}
           <List2>
             {t( "Just-make-sure-the-organism-is-wild" )}
           </List2>
