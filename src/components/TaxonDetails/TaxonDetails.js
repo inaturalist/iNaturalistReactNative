@@ -12,6 +12,7 @@ import {
   Button,
   INatIcon,
   INatIconButton,
+  List2,
   OfflineNotice,
   ScrollViewWrapper,
   StickyToolbar
