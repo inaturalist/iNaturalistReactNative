@@ -133,6 +133,12 @@ const TaxonDetails = ( ): Node => {
       : [taxon?.defaultPhoto]
   );
 
+  const updateTaxon = ( ) => {
+    updateObservationKeys( {
+      taxon,
+      owners_identification_from_vision: usesVision
+    } );
+  };
   const renderHeader = useCallback( ( { onClose } ) => (
     <TaxonDetailsMediaViewerHeader
       showSpeciesSeenCheckmark={currentUserHasSeenTaxon}
@@ -313,10 +319,7 @@ const TaxonDetails = ( ): Node => {
               if ( fromSuggestions ) {
                 setSheetVisible( true );
               } else {
-                updateObservationKeys( {
-                  taxon,
-                  owners_identification_from_vision: usesVision
-                } );
+                updateTaxon( );
                 if ( fromObsDetails ) {
                   const obsDetailsParam = {
                     uuid: obsUuid,
