@@ -573,6 +573,7 @@
     "comment": "Title of screen asking for permission to access location",
     "val": "Get more accurate suggestions & create useful data for science using your location"
   },
+  "Get-your-identification-verified-by-real-people": "Get your identification verified by real people in the iNaturalist community",
   "Go-back": {
     "comment": "Label for button that returns to the previous screen",
     "val": "Go back"
@@ -1226,6 +1227,7 @@
   "SHARE-DEBUG-LOGS": "SHARE DEBUG LOGS",
   "Share-location": "Share Location",
   "Share-map": "Share map",
+  "Share-your-observation-where-it-can-help-scientists": "Share your observation, where it can help scientists across the world better understand biodiversity.",
   "SHOP-INATURALIST-MERCH": "SHOP INATURALIST MERCH",
   "Show-observation-options": "Show observation options.",
   "Shows-identification-suggestions": {
