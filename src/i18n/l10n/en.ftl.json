@@ -693,6 +693,7 @@
     "comment": "Month of June",
     "val": "June"
   },
+  "Just-make-sure-the-organism-is-wild": "Just make sure the organism is wild (not a pet, zoo animal, or garden plant)",
   "Last-Active-date": {
     "comment": "Shows date user last active on iNaturalist on user profile",
     "val": "Last Active: { $date }"

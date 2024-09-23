@@ -353,6 +353,9 @@ const TaxonDetails = ( ): Node => {
           <List2>
             {t( "By-uploading-your-observation-to-iNaturalist-you-can" )}
           </List2>
+          <List2>
+            {t( "Just-make-sure-the-organism-is-wild" )}
+          </List2>
           <View className="flex-row">
             <Button
               text={t( "SAVE-FOR-LATER" )}
