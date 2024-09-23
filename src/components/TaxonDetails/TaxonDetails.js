@@ -349,7 +349,10 @@ const TaxonDetails = ( ): Node => {
         onPressClose={() => setSheetVisible( false )}
         headerText={t( "UPLOAD-TO-INATURALIST" )}
       >
-        <View className="items-center p-5">
+        <View className="p-4">
+          <List2>
+            {t( "By-uploading-your-observation-to-iNaturalist-you-can" )}
+          </List2>
           <View className="flex-row">
             <Button
               text={t( "SAVE-FOR-LATER" )}
@@ -357,12 +360,11 @@ const TaxonDetails = ( ): Node => {
             <Button
               text={t( "UPLOAD-NOW" )}
               level="focus"
-              className="ml-3"
+              className="grow ml-3"
             />
           </View>
         </View>
       </BottomSheet>
-
     </>
   );
 };

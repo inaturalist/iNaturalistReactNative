@@ -115,6 +115,7 @@ By-exiting-observation-not-saved = By exiting, your observation will not be save
 By-exiting-your-observations-not-saved = By exiting, your observations will not be saved. You can save them to your device, or you can delete them.
 By-exiting-your-photos-will-not-be-saved = By exiting, your photos will not be saved.
 By-exiting-your-recorded-sound-will-not-be-saved = By exiting, your recorded sound will not be saved.
+By-uploading-your-observation-to-iNaturalist-you-can = By uploading your observation to iNaturalist, you can:
 Camera = Camera
 CANCEL = CANCEL
 Cancel = Cancel
