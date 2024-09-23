@@ -1,7 +1,8 @@
 // @flow
 import InfiniteScrollLoadingWheel from "components/MyObservations/InfiniteScrollLoadingWheel";
 import MyObservationsEmpty from "components/MyObservations/MyObservationsEmpty";
-import { ActivityIndicator, Body3, CustomFlashList } from "components/SharedComponents";
+import { ActivityIndicator, Body3 } from "components/SharedComponents";
+import CustomFlashList from "components/SharedComponents/CustomFlashList.tsx";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
@@ -152,7 +153,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
       data={data}
       estimatedItemSize={estimatedItemSize}
       extraData={extraData}
-      innerRef={ref}
+      ref={ref}
       key={numColumns}
       keyExtractor={keyExtractor}
       numColumns={numColumns}

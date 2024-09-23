@@ -2,10 +2,7 @@
 
 import fetchSearchResults from "api/search";
 import {
-  Body3,
   CustomFlashList,
-  Heading4,
-  INatIconButton,
   SearchBar,
   ViewWrapper
 } from "components/SharedComponents";
@@ -20,6 +17,7 @@ import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
 import EmptySearchResults from "./EmptySearchResults";
+import ExploreSearchHeader from "./ExploreSearchHeader";
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4
@@ -93,20 +91,12 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
 
   return (
     <ViewWrapper>
-      <View className="flex-row justify-center p-5 bg-white">
-        <INatIconButton
-          testID="ExploreUserSearch.close"
-          size={18}
-          icon="back"
-          className="absolute top-2 left-3 z-10"
-          onPress={( ) => closeModal()}
-          accessibilityLabel={t( "SEARCH-USERS" )}
-        />
-        <Heading4>{t( "SEARCH-USERS" )}</Heading4>
-        <Body3 onPress={resetUser} className="absolute top-4 right-4">
-          {t( "Reset-verb" )}
-        </Body3>
-      </View>
+      <ExploreSearchHeader
+        closeModal={closeModal}
+        headerText={t( "SEARCH-USERS" )}
+        resetFilters={resetUser}
+        testID="ExploreUserSearch.close"
+      />
       <View
         className="bg-white px-6 pt-2 pb-8"
         style={DROP_SHADOW}
