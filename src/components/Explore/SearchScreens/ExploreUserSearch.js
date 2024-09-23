@@ -1,9 +1,9 @@
 // @flow
 
-import { FlashList } from "@shopify/flash-list";
 import fetchSearchResults from "api/search";
 import {
   Body3,
+  CustomFlashList,
   Heading4,
   INatIconButton,
   SearchBar,
@@ -117,14 +117,12 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
           testID="SearchUser"
         />
       </View>
-      <FlashList
+      <CustomFlashList
         ItemSeparatorComponent={renderItemSeparator}
         ListEmptyComponent={renderEmptyList}
         ListHeaderComponent={renderItemSeparator}
-        accessible
         data={userList}
         estimatedItemSize={100}
-        initialNumToRender={5}
         keyExtractor={item => item.id}
         keyboardShouldPersistTaps="handled"
         renderItem={renderItem}

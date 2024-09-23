@@ -27,6 +27,16 @@ const TaxonGridItem = ( {
   const currentUser = useCurrentUser( );
   const accessibleName = accessibleTaxonName( taxon, currentUser, t );
 
+  const source = {
+    uri: Photo.displayLocalOrRemoteMediumPhoto(
+      taxon?.default_photo
+    )
+  };
+
+  const obsPhotosCount = taxon?.default_photo
+    ? 1
+    : 0;
+
   return (
     <Pressable
       accessibilityRole="button"
@@ -35,17 +45,10 @@ const TaxonGridItem = ( {
       accessibilityLabel={accessibleName}
     >
       <ObsImagePreview
-        source={{
-          uri: Photo.displayLocalOrRemoteMediumPhoto(
-            taxon?.default_photo
-          )
-        }}
-        width="w-full"
+        source={source}
         style={style}
         isMultiplePhotosTop
-        obsPhotosCount={taxon?.default_photo
-          ? 1
-          : 0}
+        obsPhotosCount={obsPhotosCount}
         testID={`TaxonGridItem.${taxon.id}`}
         iconicTaxonName={taxon.iconic_taxon_name}
       >

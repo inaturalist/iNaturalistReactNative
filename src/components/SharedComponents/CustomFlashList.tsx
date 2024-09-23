@@ -5,6 +5,7 @@ const CustomFlashList = props => (
   <FlashList
     // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}
+    ref={props.innerRef}
     accessible
     disableAutoLayout
     horizontal={false}

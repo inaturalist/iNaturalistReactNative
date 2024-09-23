@@ -1,8 +1,7 @@
 // @flow
-import { FlashList } from "@shopify/flash-list";
 import InfiniteScrollLoadingWheel from "components/MyObservations/InfiniteScrollLoadingWheel";
 import MyObservationsEmpty from "components/MyObservations/MyObservationsEmpty";
-import { ActivityIndicator, Body3 } from "components/SharedComponents";
+import { ActivityIndicator, Body3, CustomFlashList } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
@@ -11,12 +10,11 @@ import React, {
   useMemo
 } from "react";
 import { Animated } from "react-native";
-import { BREAKPOINTS } from "sharedHelpers/breakpoint";
-import { useDeviceOrientation, useTranslation } from "sharedHooks";
+import { useGridLayout, useTranslation } from "sharedHooks";
 
 import ObsItem from "./ObsItem";
 
-const AnimatedFlashList = Animated.createAnimatedComponent( FlashList );
+const AnimatedFlashList = Animated.createAnimatedComponent( CustomFlashList );
 
 type Props = {
   contentContainerStyle?: Object,
@@ -37,8 +35,6 @@ type Props = {
   testID: string
 };
 
-const GUTTER = 15;
-
 const ObservationsFlashList: Function = forwardRef( ( {
   contentContainerStyle: contentContainerStyleProp = {},
   data,
@@ -58,45 +54,23 @@ const ObservationsFlashList: Function = forwardRef( ( {
   testID
 }: Props, ref ): Node => {
   const {
-    isLandscapeMode,
-    isTablet,
-    screenHeight,
-    screenWidth
-  } = useDeviceOrientation( );
+    estimatedGridItemSize,
+    flashListStyle,
+    gridItemStyle,
+    gridItemWidth,
+    numColumns
+  } = useGridLayout( layout );
   const { t } = useTranslation( );
-
-  const calculateGridItemWidth = columns => {
-    const combinedGutter = ( columns + 1 ) * GUTTER;
-    const gridWidth = isTablet
-      ? screenWidth
-      : Math.min( screenWidth, screenHeight );
-    return Math.floor(
-      ( gridWidth - combinedGutter ) / columns
-    );
-  };
-
-  const calculateNumColumns = ( ) => {
-    if ( layout === "list" || screenWidth <= BREAKPOINTS.md ) {
-      return 1;
-    }
-    if ( !isTablet ) return 2;
-    if ( isLandscapeMode ) return 6;
-    if ( screenWidth <= BREAKPOINTS.xl ) return 2;
-    return 4;
-  };
-
-  const numColumns = calculateNumColumns( );
-  const gridItemWidth = calculateGridItemWidth( numColumns );
 
   const renderItem = useCallback( ( { item } ) => (
     <ObsItem
       explore={explore}
-      gridItemWidth={gridItemWidth}
+      gridItemStyle={gridItemStyle}
       handleIndividualUploadPress={handleIndividualUploadPress}
       layout={layout}
       observation={item}
     />
-  ), [gridItemWidth, explore, layout, handleIndividualUploadPress] );
+  ), [explore, layout, gridItemStyle, handleIndividualUploadPress] );
 
   const renderItemSeparator = useCallback( ( ) => {
     if ( layout === "grid" ) {
@@ -118,11 +92,11 @@ const ObservationsFlashList: Function = forwardRef( ( {
     if ( layout === "list" ) { return contentContainerStyleProp; }
     return {
       ...contentContainerStyleProp,
-      paddingLeft: GUTTER / 2,
-      paddingRight: GUTTER / 2
+      ...flashListStyle
     };
   }, [
     contentContainerStyleProp,
+    flashListStyle,
     layout
   ] );
 
@@ -150,14 +124,22 @@ const ObservationsFlashList: Function = forwardRef( ( {
   ] );
 
   const estimatedItemSize = layout === "grid"
-    ? gridItemWidth
+    ? estimatedGridItemSize
     : 98;
 
-  if ( numColumns === 0 ) { return null; }
+  const extraData = {
+    gridItemWidth,
+    numColumns
+  };
 
-  const headerComponentStyle = layout === "grid" && {
-    marginLeft: -7,
-    marginRight: -7
+  // only used id as a fallback key because after upload
+  // react thinks we've rendered a second item w/ a duplicate key
+  const keyExtractor = item => item.uuid || item.id;
+
+  const onMomentumScrollEnd = ( ) => {
+    if ( dataCanBeFetched ) {
+      onEndReached( );
+    }
   };
 
   return (
@@ -166,26 +148,16 @@ const ObservationsFlashList: Function = forwardRef( ( {
       ListEmptyComponent={renderEmptyComponent}
       ListFooterComponent={renderFooter}
       ListHeaderComponent={renderHeader}
-      ListHeaderComponentStyle={headerComponentStyle}
-      accessible
       contentContainerStyle={contentContainerStyle}
       data={data}
       estimatedItemSize={estimatedItemSize}
-      horizontal={false}
-      initialNumToRender={5}
-      key={layout}
-      // only used id as a fallback key because after upload
-      // react thinks we've rendered a second item w/ a duplicate key
-      keyExtractor={item => item.uuid || item.id}
+      extraData={extraData}
+      innerRef={ref}
+      key={numColumns}
+      keyExtractor={keyExtractor}
       numColumns={numColumns}
-      ref={ref}
-      onEndReachedThreshold={0.2}
       onLayout={onLayout}
-      onMomentumScrollEnd={( ) => {
-        if ( dataCanBeFetched ) {
-          onEndReached( );
-        }
-      }}
+      onMomentumScrollEnd={onMomentumScrollEnd}
       onScroll={onScroll}
       refreshing={isFetchingNextPage}
       renderItem={renderItem}

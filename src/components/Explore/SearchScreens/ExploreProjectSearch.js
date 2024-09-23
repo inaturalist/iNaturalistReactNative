@@ -1,9 +1,9 @@
 // @flow
 
-import { FlashList } from "@shopify/flash-list";
 import { searchProjects } from "api/projects";
 import {
   Body3,
+  CustomFlashList,
   Heading4,
   INatIconButton,
   ProjectListItem,
@@ -112,9 +112,8 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
           testID="SearchProject"
         />
       </View>
-      <FlashList
+      <CustomFlashList
         data={projects}
-        initialNumToRender={5}
         estimatedItemSize={100}
         testID="SearchProjectList"
         keyExtractor={item => item.id}
@@ -122,7 +121,6 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
         ListEmptyComponent={renderEmptyList}
         ListHeaderComponent={renderItemSeparator}
         ItemSeparatorComponent={renderItemSeparator}
-        accessible
       />
     </ViewWrapper>
   );
