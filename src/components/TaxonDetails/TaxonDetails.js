@@ -8,6 +8,7 @@ import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
   ActivityIndicator,
   Body1,
+  BottomSheet,
   Button,
   INatIcon,
   INatIconButton,
@@ -63,6 +64,7 @@ const TaxonDetails = ( ): Node => {
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
+  const [sheetVisible, setSheetVisible] = useState( false );
   const { remoteUser } = useUserMe( );
   const [mediaIndex, setMediaIndex] = useState( 0 );
   const navState = useNavigationState( nav => nav );
@@ -308,19 +310,23 @@ const TaxonDetails = ( ): Node => {
             level="focus"
             text={t( "SELECT-THIS-TAXON" )}
             onPress={( ) => {
-              updateObservationKeys( {
-                taxon,
-                owners_identification_from_vision: usesVision
-              } );
-              if ( fromObsDetails ) {
-                const obsDetailsParam = {
-                  uuid: obsUuid,
-                  identTaxonId: taxon?.id,
-                  identAt: Date.now()
-                };
-                navigation.navigate( "ObsDetails", obsDetailsParam );
+              if ( fromSuggestions ) {
+                setSheetVisible( true );
               } else {
-                navigation.navigate( "ObsEdit" );
+                updateObservationKeys( {
+                  taxon,
+                  owners_identification_from_vision: usesVision
+                } );
+                if ( fromObsDetails ) {
+                  const obsDetailsParam = {
+                    uuid: obsUuid,
+                    identTaxonId: taxon?.id,
+                    identAt: Date.now()
+                  };
+                  navigation.navigate( "ObsDetails", obsDetailsParam );
+                } else {
+                  navigation.navigate( "ObsEdit" );
+                }
               }
             }}
             icon={(
@@ -334,6 +340,26 @@ const TaxonDetails = ( ): Node => {
           />
         </StickyToolbar>
       )}
+      <BottomSheet
+        hidden={!sheetVisible}
+        handleClose={() => setSheetVisible( false )}
+        onPressClose={() => setSheetVisible( false )}
+        headerText={t( "UPLOAD-TO-INATURALIST" )}
+      >
+        <View className="items-center p-5">
+          <View className="flex-row">
+            <Button
+              text={t( "SAVE-FOR-LATER" )}
+            />
+            <Button
+              text={t( "UPLOAD-NOW" )}
+              level="focus"
+              className="ml-3"
+            />
+          </View>
+        </View>
+      </BottomSheet>
+
     </>
   );
 };
