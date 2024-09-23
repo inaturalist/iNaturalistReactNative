@@ -1004,6 +1004,7 @@ UPLOAD-NOW = UPLOAD NOW
 Upload-photos-from-your-gallery = Upload multiple photos from your gallery
 Upload-photos-from-your-gallery-and-create-observations = Upload photos from your gallery and create observations and get identifications of organisms you’ve already observed!
 Upload-Progress = Upload { $uploadProgress } percent complete
+UPLOAD-TO-INATURALIST = UPLOAD TO INATURALIST
 # Shows the number of observations a user can upload to iNat from my observations page
 Upload-x-observations =
     Upload { $count ->

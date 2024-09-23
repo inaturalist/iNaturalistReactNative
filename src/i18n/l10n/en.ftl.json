@@ -1366,6 +1366,7 @@
   "Upload-photos-from-your-gallery": "Upload multiple photos from your gallery",
   "Upload-photos-from-your-gallery-and-create-observations": "Upload photos from your gallery and create observations and get identifications of organisms you’ve already observed!",
   "Upload-Progress": "Upload { $uploadProgress } percent complete",
+  "UPLOAD-TO-INATURALIST": "UPLOAD TO INATURALIST",
   "Upload-x-observations": {
     "comment": "Shows the number of observations a user can upload to iNat from my observations page",
     "val": "Upload { $count ->\n  [one] 1 observation\n *[other] { $count } observations\n}"
