@@ -1,28 +1,27 @@
 // @flow
 
+import classnames from "classnames";
 import { Body3, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
+import { I18nManager } from "react-native";
 import { useTheme } from "react-native-paper";
 import Svg, { Path } from "react-native-svg";
 import { dropShadow } from "styles/global";
 
+const HEIGHT = 24;
+
 type Props = {
-  count: number,
-  size?: number,
-  shadow?: boolean
+  count: number
 };
 
-const PhotoCount = ( {
-  count,
-  size,
-  shadow
-}: Props ): Node => {
+const PhotoCount = ( { count }: Props ): Node => {
+  const { isRTL } = I18nManager;
   const theme = useTheme( );
 
   if ( count === 0 ) {
-    return <INatIcon name="noevidence" size={size} color={theme.colors.inverseOnSurface} />;
+    return <INatIcon name="noevidence" size={HEIGHT} color={theme.colors.inverseOnSurface} />;
   }
 
   let photoCount = count;
@@ -30,34 +29,26 @@ const PhotoCount = ( {
     photoCount = 99;
   }
 
-  let paddingHorizontal = size === 50
-    ? 12.5
-    : 5;
-
-  if ( photoCount > 9 ) {
-    paddingHorizontal = 2;
-  }
-
-  const textStyle = {
-    position: "absolute",
-    zIndex: 10,
-    paddingHorizontal,
-    top: size === 50
-      ? 22
-      : 6
-  };
-
   return (
     <View
-      style={[{ height: size, width: size }, shadow && dropShadow]}
+      style={dropShadow}
       testID="photo-count"
     >
-      <Body3 style={textStyle}>
+      <Body3 className={classnames(
+        "absolute z-10",
+        "left-1.5 top-1.5",
+        {
+          "left-0.5": photoCount > 9,
+          "right-1.5": isRTL && photoCount < 9,
+          "right-0.5": photoCount > 9 && isRTL
+        }
+      )}
+      >
         {photoCount}
       </Body3>
       <Svg
-        height={size}
-        width={size}
+        height={HEIGHT}
+        width={HEIGHT}
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -81,8 +72,3 @@ const PhotoCount = ( {
 };
 
 export default PhotoCount;
-
-PhotoCount.defaultProps = {
-  size: 24,
-  shadow: false
-};
