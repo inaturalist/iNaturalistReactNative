@@ -140,6 +140,17 @@ const TaxonDetails = ( ): Node => {
       owners_identification_from_vision: usesVision
     } );
   };
+
+  const saveForLater = ( ) => {
+    setSheetVisible( false );
+    updateTaxon( );
+  };
+
+  const uploadNow = ( ) => {
+    setSheetVisible( false );
+    updateTaxon( );
+  };
+
   const renderHeader = useCallback( ( { onClose } ) => (
     <TaxonDetailsMediaViewerHeader
       showSpeciesSeenCheckmark={currentUserHasSeenTaxon}
@@ -365,9 +376,11 @@ const TaxonDetails = ( ): Node => {
           </List2>
           <View className="flex-row">
             <Button
+              onPress={() => saveForLater()}
               text={t( "SAVE-FOR-LATER" )}
             />
             <Button
+              onPress={() => uploadNow()}
               text={t( "UPLOAD-NOW" )}
               level="focus"
               className="grow ml-3"
