@@ -13,6 +13,7 @@ export { default as RotatingINatIconButton } from "./Buttons/RotatingINatIconBut
 export { default as TransparentCircleButton } from "./Buttons/TransparentCircleButton";
 export { default as Checkbox } from "./Checkbox";
 export { default as ConfidenceInterval } from "./ConfidenceInterval";
+export { default as CustomFlashList } from "./CustomFlashList";
 export { default as DateDisplay } from "./DateDisplay";
 export { default as DateTimePicker } from "./DateTimePicker";
 export { default as DisplayTaxon } from "./DisplayTaxon";

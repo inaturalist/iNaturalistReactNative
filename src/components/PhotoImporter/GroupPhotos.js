@@ -1,10 +1,15 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { FlashList } from "@shopify/flash-list";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCamera";
 import {
-  Body2, Button, FloatingActionBar, INatIcon, INatIconButton, StickyToolbar
+  Body2,
+  Button,
+  CustomFlashList,
+  FloatingActionBar,
+  INatIcon,
+  INatIconButton,
+  StickyToolbar
 } from "components/SharedComponents";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { Pressable, View } from "components/styledComponents";
@@ -12,8 +17,7 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React, { useCallback, useMemo } from "react";
 import { useTheme } from "react-native-paper";
-import { BREAKPOINTS } from "sharedHelpers/breakpoint";
-import { useDeviceOrientation } from "sharedHooks";
+import { useGridLayout } from "sharedHooks";
 
 import GroupPhotoImage from "./GroupPhotoImage";
 
@@ -29,8 +33,6 @@ type Props = {
   totalPhotos: number
 }
 
-const GUTTER = 15;
-
 const GroupPhotos = ( {
   combinePhotos,
   groupedPhotos,
@@ -45,8 +47,12 @@ const GroupPhotos = ( {
   const navigation = useNavigation( );
   const theme = useTheme();
   const {
-    isLandscapeMode, isTablet, screenWidth, screenHeight
-  } = useDeviceOrientation();
+    estimatedGridItemSize,
+    flashListStyle,
+    gridItemStyle,
+    gridItemWidth,
+    numColumns
+  } = useGridLayout( );
   const extractKey = ( item, index ) => ( item.empty
     ? "empty"
     : `${item.photos[0].uri}${index}` );
@@ -56,39 +62,14 @@ const GroupPhotos = ( {
   const obsWithMultiplePhotosSelected
     = selectedObservations?.[0]?.photos?.length > 1;
 
-  const calculateNumColumns = () => {
-    if ( screenWidth <= BREAKPOINTS.sm ) {
-      return 1;
-    }
-    if ( !isTablet ) return 2;
-    if ( isLandscapeMode ) return 6;
-    if ( screenWidth <= BREAKPOINTS.xl ) return 2;
-    return 4;
-  };
-  const numColumns = calculateNumColumns();
-  const calculateGridItemWidth = () => {
-    const combinedGutter = ( numColumns + 1 ) * GUTTER;
-    const gridWidth = isTablet
-      ? screenWidth
-      : Math.min( screenWidth, screenHeight );
-    return Math.floor( ( gridWidth - combinedGutter ) / numColumns );
-  };
-  const itemWidth = calculateGridItemWidth();
-
-  const itemStyle = useMemo( ( ) => ( {
-    height: itemWidth,
-    width: itemWidth,
-    margin: GUTTER / 2
-  } ), [itemWidth] );
-
   const renderImage = useCallback( item => (
     <GroupPhotoImage
       item={item}
       selectedObservations={selectedObservations}
       selectObservationPhotos={selectObservationPhotos}
-      style={itemStyle}
+      style={gridItemStyle}
     />
-  ), [itemStyle, selectedObservations, selectObservationPhotos] );
+  ), [gridItemStyle, selectedObservations, selectObservationPhotos] );
 
   const addPhotos = useCallback( () => {
     navigation.navigate( "NoBottomTabStackNavigator", {
@@ -107,7 +88,7 @@ const GroupPhotos = ( {
           className="rounded-[15px] justify-center items-center"
           // Sorry, couldn't get this to work with tailwind
           // eslint-disable-next-line react-native/no-inline-styles
-          style={[itemStyle, {
+          style={[gridItemStyle, {
             borderWidth: 4,
             borderStyle: "dashed",
             borderColor: theme.colors.mediumGray
@@ -119,7 +100,7 @@ const GroupPhotos = ( {
     }
     // $FlowIgnore
     return renderImage( item );
-  }, [itemStyle, renderImage, theme, addPhotos] );
+  }, [gridItemStyle, renderImage, theme, addPhotos] );
 
   const renderHeader = ( ) => (
     <View className="m-5">
@@ -135,31 +116,24 @@ const GroupPhotos = ( {
     return newData;
   }, [groupedPhotos, totalPhotos] );
 
-  const flashListStyle = {
-    paddingLeft: GUTTER / 2,
-    paddingRight: GUTTER / 2,
-    paddingBottom: 80 + GUTTER / 2
-  };
-
   const extraData = {
     selectedObservations,
-    itemWidth
+    gridItemWidth
   };
 
   return (
     <ViewWrapper>
-      <FlashList
-        contentContainerStyle={flashListStyle}
+      <CustomFlashList
         ListHeaderComponent={renderHeader}
+        contentContainerStyle={flashListStyle}
         data={data}
-        initialNumToRender={4}
+        estimatedItemSize={estimatedGridItemSize}
+        extraData={extraData}
+        key={numColumns}
         keyExtractor={extractKey}
         numColumns={numColumns}
-        key={numColumns}
         renderItem={renderItem}
         testID="GroupPhotos.list"
-        extraData={extraData}
-        estimatedItemSize={itemWidth + GUTTER}
       />
       <FloatingActionBar
         show={selectedObservations.length > 0}
