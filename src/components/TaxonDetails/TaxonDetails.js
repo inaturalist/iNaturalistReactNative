@@ -373,7 +373,7 @@ const TaxonDetails = ( ): Node => {
             </List2>
             <View className="mt-3">
               {bulletedText.map( string => (
-                <View className="flex-row">
+                <View className="flex-row" key={string}>
                   <List2>{"\u2022 "}</List2>
                   <List2>{string}</List2>
                 </View>
