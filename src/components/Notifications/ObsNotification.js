@@ -46,7 +46,7 @@ const ObsNotification = ( { item }: Props ): Node => {
       className="shrink flex-row space-x-[10px]"
     >
       <ObservationIcon photoUri={photoUrl} soundUri={soundsUrl} />
-      <View className="flex-col shrink justify-between space-y-[8px]">
+      <View className="flex-col shrink justify-center space-y-[8px]">
         <ObsNotificationText type={type} userName={user.login} />
         <View className="flex-row space-x-[8px]">
           {
