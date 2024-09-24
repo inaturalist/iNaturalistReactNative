@@ -572,6 +572,7 @@ MONTHS = MONTHS
 More-info = More info
 MOST-FAVED = MOST FAVED
 Most-faved = Most faved
+MY-OBSERVATIONS = MY OBSERVATIONS
 Native = Native
 Native-to-place = Native to { $place }
 Navigates-to-AI-camera = Navigates to AI camera
