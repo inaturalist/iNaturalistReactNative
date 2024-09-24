@@ -30,6 +30,7 @@ import {
 import DeviceInfo from "react-native-device-info";
 import { useTheme } from "react-native-paper";
 import { log } from "sharedHelpers/logger";
+import saveObservation from "sharedHelpers/saveObservation.ts";
 import { fetchTaxonAndSave } from "sharedHelpers/taxon";
 import {
   useAuthenticatedQuery,
@@ -58,6 +59,10 @@ const isTablet = DeviceInfo.isTablet();
 const TaxonDetails = ( ): Node => {
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const setExploreView = useStore( state => state.setExploreView );
+  const cameraRollUris = useStore( state => state.cameraRollUris );
+  const currentObservation = useStore( state => state.currentObservation );
+  const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
+  const isNewObs = !currentObservation?._created_at;
   const theme = useTheme( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
@@ -141,9 +146,22 @@ const TaxonDetails = ( ): Node => {
     } );
   };
 
-  const saveForLater = ( ) => {
+  const saveAndNavigate = async ( ) => {
     setSheetVisible( false );
     updateTaxon( );
+    await saveObservation( currentObservation, cameraRollUris, realm );
+    // If we are saving a new observations, reset the stored my obs offset to
+    // restore b/c we want MyObs rendered in its default state with this new
+    // observation visible at the top
+    if ( isNewObs ) {
+      resetMyObsOffsetToRestore();
+    }
+    navigation.navigate( "TabNavigator", {
+      screen: "TabStackNavigator",
+      params: {
+        screen: "ObsList"
+      }
+    } );
   };
 
   const uploadNow = ( ) => {
@@ -392,7 +410,7 @@ const TaxonDetails = ( ): Node => {
             level="focus"
           />
           <Button
-            onPress={() => saveForLater()}
+            onPress={() => saveAndNavigate()}
             text={t( "SAVE-FOR-LATER" )}
             className="mt-5"
           />
