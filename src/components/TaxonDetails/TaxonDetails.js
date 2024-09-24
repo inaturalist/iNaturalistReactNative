@@ -58,11 +58,10 @@ const isTablet = DeviceInfo.isTablet();
 
 const TaxonDetails = ( ): Node => {
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
+  const getCurrentObservation = useStore( state => state.getCurrentObservation );
   const setExploreView = useStore( state => state.setExploreView );
   const cameraRollUris = useStore( state => state.cameraRollUris );
-  const currentObservation = useStore( state => state.currentObservation );
   const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
-  const isNewObs = !currentObservation?._created_at;
   const theme = useTheme( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
@@ -149,6 +148,9 @@ const TaxonDetails = ( ): Node => {
   const saveAndNavigate = async ( ) => {
     setSheetVisible( false );
     updateTaxon( );
+    // We need the updated currentObservation immediately to pass to saveObservation
+    const currentObservation = getCurrentObservation( );
+    const isNewObs = !currentObservation?._created_at;
     await saveObservation( currentObservation, cameraRollUris, realm );
     // If we are saving a new observations, reset the stored my obs offset to
     // restore b/c we want MyObs rendered in its default state with this new
