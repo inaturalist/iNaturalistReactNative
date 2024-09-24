@@ -3,12 +3,12 @@
 import { refresh, useNetInfo } from "@react-native-community/netinfo";
 import { useNavigation, useNavigationState, useRoute } from "@react-navigation/native";
 import { fetchSpeciesCounts } from "api/observations";
-import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
   ActivityIndicator,
   Body1,
   Button,
+  CarouselDots,
   INatIcon,
   INatIconButton,
   OfflineNotice,
@@ -173,22 +173,7 @@ const TaxonDetails = ( ): Node => {
   };
 
   const displayScrollDots = () => (
-    <View
-      className="flex flex-row w-full justify-center items-center mb-3"
-      pointerEvents="none"
-    >
-      { photos.map( ( item, idx ) => (
-        <View
-          key={`dot-${item.id}`}
-          className={classnames(
-            "rounded-full bg-white m-[2.5]",
-            idx === mediaIndex
-              ? "w-[4px] h-[4px]"
-              : "w-[2px] h-[2px]"
-          )}
-        />
-      ) )}
-    </View>
+    <CarouselDots length={photos.length} index={mediaIndex} />
   );
 
   const displayTaxonTitle = useCallback( ( ) => (
