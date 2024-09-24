@@ -11,11 +11,14 @@ type Props = {
   layout?: string,
   isConnected?: boolean,
   hideLoadingWheel: boolean,
-  explore: boolean
+  explore?: boolean
 }
 
 const InfiniteScrollLoadingWheel = ( {
-  hideLoadingWheel, layout, isConnected, explore
+  hideLoadingWheel,
+  isConnected = true,
+  layout,
+  explore = false
 }: Props ): Node => {
   const { t } = useTranslation( );
 
@@ -30,7 +33,7 @@ const InfiniteScrollLoadingWheel = ( {
       "border-t border-lightGray": layout === "list"
     } )}
     >
-      {!isConnected
+      {isConnected === false
         ? (
           <Body3 className="text-center">
             {t( "An-Internet-connection-is-required" )}

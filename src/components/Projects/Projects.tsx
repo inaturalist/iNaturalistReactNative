@@ -1,3 +1,6 @@
+import {
+  useNetInfo
+} from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import {
   ActivityIndicator,
@@ -7,6 +10,7 @@ import {
   CustomFlashList,
   Heading1,
   INatIcon,
+  InfiniteScrollLoadingWheel,
   ProjectListItem,
   SearchBar,
   Tabs,
@@ -14,17 +18,23 @@ import {
 } from "components/SharedComponents";
 import { Tab } from "components/SharedComponents/Tabs/Tabs.tsx";
 import { Pressable, View } from "components/styledComponents";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import {
   useTranslation
 } from "sharedHooks";
 
+import FlashListEmptyWrapper from "../SharedComponents/FlashList/FlashListEmptyWrapper";
 import { TAB_ID } from "./ProjectsContainer";
+
+// const HEADER_HEIGHT = 177;
+// const FOOTER_HEIGHT = 77;
+// const HALF_GRADIENT_AND_TEXT_HEIGHT = 216 / 2;
 
 interface Props {
   currentTabId: TAB_ID;
   fetchNextPage: ( ) => void;
   hasPermissions: boolean | undefined;
+  isFetchingNextPage: boolean;
   isLoading: boolean;
   memberId?: number;
   projects: Object[],
@@ -38,6 +48,7 @@ const Projects = ( {
   currentTabId,
   fetchNextPage,
   hasPermissions,
+  isFetchingNextPage,
   isLoading,
   memberId,
   projects,
@@ -48,6 +59,9 @@ const Projects = ( {
 }: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
+  const { isConnected } = useNetInfo( );
+
+  const hideLoadingWheel = !isFetchingNextPage || projects?.length === 0;
 
   useEffect( ( ) => {
     const headerLeft = ( ) => (
@@ -64,6 +78,13 @@ const Projects = ( {
       headerLeft
     } );
   }, [navigation, t] );
+
+  const renderFooter = useCallback( ( ) => (
+    <InfiniteScrollLoadingWheel
+      hideLoadingWheel={hideLoadingWheel}
+      isConnected={isConnected}
+    />
+  ), [hideLoadingWheel, isConnected] );
 
   const renderProject = ( { item: project } ) => (
     <Pressable
@@ -83,7 +104,10 @@ const Projects = ( {
       <ActivityIndicator size={50} />;
     } else {
       return (
-        <>
+        <FlashListEmptyWrapper
+          headerHeight={182}
+          emptyItemHeight={90}
+        >
           <Body1 className="self-center">{t( "No-projects-match-that-search" )}</Body1>
           <View className="w-full px-4 mt-5">
             <Button
@@ -92,7 +116,7 @@ const Projects = ( {
               onPress={( ) => setSearchInput( "" )}
             />
           </View>
-        </>
+        </FlashListEmptyWrapper>
       );
     }
 
@@ -109,12 +133,6 @@ const Projects = ( {
 
     return null;
   };
-
-  const emptyListStyles = {
-    flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center"
-  } as const;
 
   const renderList = ( ) => {
     // hasPermission undefined means we haven't checked for location permissions yet
@@ -137,13 +155,13 @@ const Projects = ( {
     }
     return (
       <CustomFlashList
-        contentContainerStyle={projects?.length === 0 && emptyListStyles}
+        ListEmptyComponent={renderEmptyList}
+        ListFooterComponent={renderFooter}
         data={projects}
+        estimatedItemSize={100}
+        onEndReached={fetchNextPage}
         renderItem={renderProject}
         testID="Project.list"
-        ListEmptyComponent={renderEmptyList}
-        onEndReached={fetchNextPage}
-        estimatedItemSize={100}
       />
     );
   };

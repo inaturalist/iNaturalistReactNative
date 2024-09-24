@@ -1,9 +1,9 @@
 // @flow
 
-import InfiniteScrollLoadingWheel from "components/MyObservations/InfiniteScrollLoadingWheel";
 import NotificationsListItem from "components/Notifications/NotificationsListItem";
 import {
   ActivityIndicator, Body2, CustomFlashList,
+  InfiniteScrollLoadingWheel,
   OfflineNotice, ViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -41,7 +41,6 @@ const NotificationsList = ( {
 
   const renderFooter = useCallback( ( ) => (
     <InfiniteScrollLoadingWheel
-      explore={false}
       hideLoadingWheel={!isFetching || data?.length === 0}
       isConnected={isConnected}
     />

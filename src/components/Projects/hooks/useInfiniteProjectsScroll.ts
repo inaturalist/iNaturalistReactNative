@@ -7,7 +7,6 @@ import {
 const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: Object ): Object => {
   const baseParams = {
     ...newInputParams,
-    fields: "all",
     per_page: 50,
     ttl: -1
   };
@@ -24,7 +23,6 @@ const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: Object 
   } = useAuthenticatedInfiniteQuery(
     queryKey,
     async ( { pageParam }, optsWithAuth ) => {
-      console.log( pageParam, "page params" );
       const params = {
         ...baseParams
       };

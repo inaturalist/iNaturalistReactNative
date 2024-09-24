@@ -58,13 +58,6 @@ const ProjectsContainer = ( ) => {
     enabled: !_.isEmpty( apiParams )
   } );
 
-  console.log( {
-    isFetchingNextPage,
-    fetchNextPage,
-    projects,
-    status
-  }, "projects" );
-
   const tabs = [
     {
       id: TAB_ID.JOINED,
@@ -99,6 +92,7 @@ const ProjectsContainer = ( ) => {
         currentTabId={currentTabId}
         fetchNextPage={fetchNextPage}
         hasPermissions={hasPermissions}
+        isFetchingNextPage={isFetchingNextPage}
         isLoading={status === "pending"}
         memberId={memberId}
         projects={projects}
