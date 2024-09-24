@@ -397,9 +397,7 @@ const TaxonDetails = ( ): Node => {
                 </View>
               ) )}
             </View>
-            <List2
-              className="mt-3"
-            >
+            <List2 className="mt-3">
               {t( "Just-make-sure-the-organism-is-wild" )}
             </List2>
           </View>
