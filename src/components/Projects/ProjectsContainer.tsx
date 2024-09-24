@@ -1,14 +1,13 @@
-import { searchProjects } from "api/projects";
 import _ from "lodash";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
-  useAuthenticatedQuery,
   useCurrentUser,
+  useLocationPermission,
   useTranslation,
   useWatchPosition
 } from "sharedHooks";
-import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 
+import useInfiniteProjectsScroll from "./hooks/useInfiniteProjectsScroll";
 import Projects from "./Projects";
 
 export enum TAB_ID {
@@ -25,7 +24,6 @@ const ProjectsContainer = ( ) => {
   const currentUser = useCurrentUser( );
   const memberId = currentUser?.id;
   const { t } = useTranslation( );
-  const [apiParams, setApiParams] = useState( { } );
   const [currentTabId, setCurrentTabId] = useState( currentUser
     ? TAB_ID.JOINED
     : TAB_ID.FEATURED );
@@ -34,41 +32,38 @@ const ProjectsContainer = ( ) => {
     shouldFetchLocation: hasPermissions
   } );
 
+  const apiParams = { };
+
+  if ( currentTabId === TAB_ID.JOINED ) {
+    apiParams.member_id = memberId;
+  } else if ( currentTabId === TAB_ID.FEATURED ) {
+    apiParams.featured = true;
+  } else if ( currentTabId === TAB_ID.NEARBY && userLocation ) {
+    apiParams.lat = userLocation.latitude;
+    apiParams.lng = userLocation.longitude;
+    apiParams.radius = 50;
+  }
+
+  if ( searchInput.length > 0 ) {
+    apiParams.q = searchInput;
+  }
+
   const {
-    data: projects,
-    isLoading
-  } = useAuthenticatedQuery(
-    ["searchProjects", apiParams],
-    optsWithAuth => searchProjects( apiParams, optsWithAuth ),
-    {
-      enabled: !_.isEmpty( apiParams )
-    }
-  );
+    isFetchingNextPage,
+    fetchNextPage,
+    projects,
+    status
+  } = useInfiniteProjectsScroll( {
+    params: apiParams,
+    enabled: !_.isEmpty( apiParams )
+  } );
 
-  useEffect( ( ) => {
-    if ( currentTabId === TAB_ID.JOINED ) {
-      setApiParams( { member_id: memberId } );
-    } else if ( currentTabId === TAB_ID.FEATURED ) {
-      setApiParams( { featured: true } );
-    } else if ( currentTabId === TAB_ID.NEARBY && userLocation ) {
-      setApiParams( {
-        lat: userLocation.latitude,
-        lng: userLocation.longitude,
-        radius: 50
-      } );
-    }
-  }, [
-    memberId,
-    currentTabId,
-    userLocation,
-    searchInput
-  ] );
-
-  useEffect( ( ) => {
-    if ( searchInput.length > 0 ) {
-      setApiParams( { q: searchInput } );
-    }
-  }, [searchInput] );
+  console.log( {
+    isFetchingNextPage,
+    fetchNextPage,
+    projects,
+    status
+  }, "projects" );
 
   const tabs = [
     {
@@ -101,15 +96,16 @@ const ProjectsContainer = ( ) => {
   return (
     <>
       <Projects
+        currentTabId={currentTabId}
+        fetchNextPage={fetchNextPage}
+        hasPermissions={hasPermissions}
+        isLoading={status === "pending"}
+        memberId={memberId}
+        projects={projects}
+        requestPermissions={requestPermissions}
         searchInput={searchInput}
         setSearchInput={setSearchInput}
         tabs={tabs}
-        currentTabId={currentTabId}
-        projects={projects}
-        isLoading={isLoading}
-        memberId={memberId}
-        hasPermissions={hasPermissions}
-        requestPermissions={requestPermissions}
       />
       {renderPermissionsGate( )}
     </>

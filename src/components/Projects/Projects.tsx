@@ -4,6 +4,7 @@ import {
   Body1,
   Body2,
   Button,
+  CustomFlashList,
   Heading1,
   INatIcon,
   ProjectListItem,
@@ -15,32 +16,35 @@ import { Tab } from "components/SharedComponents/Tabs/Tabs.tsx";
 import { Pressable, View } from "components/styledComponents";
 import React, { useEffect } from "react";
 import {
-  FlatList
-} from "react-native";
-import {
   useTranslation
 } from "sharedHooks";
 
 import { TAB_ID } from "./ProjectsContainer";
 
 interface Props {
+  currentTabId: TAB_ID;
+  fetchNextPage: ( ) => void;
+  hasPermissions: boolean | undefined;
+  isLoading: boolean;
+  memberId?: number;
+  projects: Object[],
+  requestPermissions: () => void;
   searchInput: string;
   setSearchInput: ( _text: string ) => void;
   tabs: Tab[],
-  currentTabId: TAB_ID;
-  projects: Object[],
-  isLoading: boolean;
-  memberId?: number;
-  hasPermissions: boolean | undefined;
-  requestPermissions: () => void;
 }
 
 const Projects = ( {
+  currentTabId,
+  fetchNextPage,
+  hasPermissions,
+  isLoading,
+  memberId,
+  projects,
+  requestPermissions,
   searchInput,
   setSearchInput,
-  tabs, currentTabId, projects, isLoading, memberId,
-  hasPermissions,
-  requestPermissions
+  tabs
 }: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -132,12 +136,14 @@ const Projects = ( {
       );
     }
     return (
-      <FlatList
+      <CustomFlashList
         contentContainerStyle={projects?.length === 0 && emptyListStyles}
         data={projects}
         renderItem={renderProject}
         testID="Project.list"
         ListEmptyComponent={renderEmptyList}
+        onEndReached={fetchNextPage}
+        estimatedItemSize={100}
       />
     );
   };
