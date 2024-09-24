@@ -148,7 +148,7 @@ const TaxonDetails = ( ): Node => {
 
   const uploadNow = ( ) => {
     setSheetVisible( false );
-    updateTaxon( );
+    navigation.navigate( "LoginStackNavigator" );
   };
 
   const renderHeader = useCallback( ( { onClose } ) => (
