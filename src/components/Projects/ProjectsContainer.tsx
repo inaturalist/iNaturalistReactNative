@@ -30,8 +30,6 @@ const ProjectsContainer = ( ) => {
   const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
   const [userLocation, setUserLocation] = useState( null );
 
-  console.log( userLocation, "user location" );
-
   const apiParams = { };
 
   if ( currentTabId === TAB_ID.JOINED ) {
@@ -50,8 +48,6 @@ const ProjectsContainer = ( ) => {
   if ( searchInput.length > 0 ) {
     apiParams.q = searchInput;
   }
-
-  console.log( apiParams, "api params" );
 
   const getCurrentUserLocation = async ( ) => {
     const currentUserLocation = await fetchUserLocation( );

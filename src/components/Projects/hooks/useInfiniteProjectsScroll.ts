@@ -45,7 +45,6 @@ const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: Object 
   const pages = data?.pages;
   const allResults = pages?.map( page => page?.results );
   const projects = flatten( allResults );
-  console.log( projects.length, "projects length" );
 
   return {
     isFetchingNextPage,
