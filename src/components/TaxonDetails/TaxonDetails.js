@@ -353,7 +353,7 @@ const TaxonDetails = ( ): Node => {
             level="focus"
             text={t( "SELECT-THIS-TAXON" )}
             onPress={( ) => {
-              if ( fromSuggestions ) {
+              if ( fromSuggestions && !currentUser ) {
                 setSheetVisible( true );
               } else {
                 updateTaxon( );
