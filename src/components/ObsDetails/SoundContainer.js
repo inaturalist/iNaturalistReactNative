@@ -75,13 +75,13 @@ const SoundContainer = ( {
       if ( position ) {
         try {
           await player.seekToPlayer( position );
-        } catch ( pausePlayerError ) {
-          if ( pausePlayerError.message.match( /Player has already stopped/ ) ) {
+        } catch ( seekPlayerError ) {
+          if ( seekPlayerError.message.match( /Player has already stopped/ ) ) {
             // Something else might be wrong, but it's not really something to
             // bother the user with
             return;
           }
-          throw pausePlayerError;
+          throw seekPlayerError;
         }
       }
       player.addPlayBackListener( playBackEvent => {
