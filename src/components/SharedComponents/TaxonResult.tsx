@@ -1,5 +1,3 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import {
@@ -8,7 +6,6 @@ import {
 } from "components/SharedComponents";
 import ObsImagePreview from "components/SharedComponents/ObservationsFlashList/ObsImagePreview";
 import { Pressable, View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
@@ -16,31 +13,32 @@ import { useCurrentUser, useTaxon, useTranslation } from "sharedHooks";
 
 import ConfidenceInterval from "./ConfidenceInterval";
 
-type Props = {
-  accessibilityLabel: string,
-  activeColor?: string,
-  asListItem?: boolean,
-  clearBackground?: boolean,
-  confidence?: number,
-  confidencePosition?: string,
-  fetchRemote?: boolean,
-  first?: boolean,
-  fromLocal?: boolean,
-  handleCheckmarkPress: Function,
-  handleTaxonOrEditPress: Function,
-  handleRemovePress?: Function,
-  hideInfoButton?: boolean,
-  lastScreen?: ?string,
-  onPressInfo?: Function,
-  showCheckmark?: boolean,
-  showEditButton?: boolean,
-  showRemoveButton?: boolean,
-  taxon: Object,
-  testID: string,
-  white?: boolean,
-  vision?: boolean,
-  isTopSuggestion?: boolean
-};
+interface TaxonResultProps {
+  accessibilityLabel: string;
+  activeColor?: string;
+  asListItem?: boolean;
+  clearBackground?: boolean;
+  confidence?: number;
+  confidencePosition?: string;
+  fetchRemote?: boolean;
+  first?: boolean;
+  fromLocal?: boolean;
+  handleCheckmarkPress: ( taxon: Object ) => void;
+  handleTaxonOrEditPress: () => void;
+  handleRemovePress?: () => void;
+  hideInfoButton?: boolean;
+  lastScreen?: string | null;
+  onPressInfo?: ( taxon: Object ) => void;
+  showCheckmark?: boolean;
+  showEditButton?: boolean;
+  showRemoveButton?: boolean;
+  taxon: Object;
+  testID: string;
+  white?: boolean;
+  vision?: boolean;
+  isTopSuggestion?: boolean;
+  hideNavButtons?: boolean;
+}
 
 const TaxonResult = ( {
   accessibilityLabel,
@@ -67,7 +65,7 @@ const TaxonResult = ( {
   white = false,
   vision = false,
   isTopSuggestion = false
-}: Props ): Node => {
+}: TaxonResultProps ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
 
@@ -221,7 +219,7 @@ const TaxonResult = ( {
                 accessibilityHint={t( "Edits-this-observations-taxon" )}
               />
             )}
-        { showRemoveButton
+        { showRemoveButton && handleRemovePress
           && (
             <INatIconButton
               icon="close"
