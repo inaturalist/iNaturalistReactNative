@@ -4,6 +4,7 @@ import {
   waitFor,
   within
 } from "@testing-library/react-native";
+import * as AuthService from "components/LoginSignUp/AuthenticationService.ts";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import ReactNativePermissions from "react-native-permissions";
@@ -94,6 +95,8 @@ async function navigateToRootExplore( ) {
   const exploreButton = await within( tabBar ).findByLabelText( "Explore" );
   await actor.press( exploreButton );
 }
+
+jest.spyOn( AuthService, "getJWT" ).mockImplementation( () => TEST_JWT );
 
 describe( "logged in", ( ) => {
   beforeEach( async ( ) => {
