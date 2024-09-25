@@ -148,7 +148,7 @@ const Projects = ( {
             text={t( "ALLOW-LOCATION-ACCESS" )}
             accessibilityHint={t( "Opens-location-permission-prompt" )}
             level="focus"
-            onPress={( ) => requestPermissions()}
+            onPress={requestPermissions}
           />
         </View>
       );

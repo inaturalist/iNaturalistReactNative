@@ -51,7 +51,6 @@ const ProjectsContainer = ( ) => {
 
   const getCurrentUserLocation = async ( ) => {
     const currentUserLocation = await fetchUserLocation( );
-    console.log( currentUserLocation, "current user location" );
     setUserLocation( currentUserLocation );
   };
 
