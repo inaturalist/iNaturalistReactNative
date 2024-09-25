@@ -95,7 +95,7 @@ const ProjectDetails = ( {
               className="mb-5"
               level="neutral"
               text={t( "VIEW-PROJECT-REQUIREMENTS" )}
-              onPress={( ) => navigation.navigate( "ProjectRequirements" )}
+              onPress={( ) => navigation.navigate( "ProjectRequirements", { id: project.id } )}
             />
           </>
         )}

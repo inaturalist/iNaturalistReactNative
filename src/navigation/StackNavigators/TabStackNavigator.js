@@ -21,7 +21,7 @@ import NotificationsContainer from "components/Notifications/NotificationsContai
 import DQAContainer from "components/ObsDetails/DQAContainer";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
-import ProjectRequirements from "components/Projects/ProjectRequirements.tsx";
+import ProjectRequirements from "components/ProjectDetails/ProjectRequirements.tsx";
 import ProjectsContainer from "components/Projects/ProjectsContainer.tsx";
 import Settings from "components/Settings/Settings";
 import { Heading4 } from "components/SharedComponents";
@@ -146,9 +146,6 @@ const TabStackNavigator = ( ): Node => (
           ...showHeader
         }}
       />
-    </Stack.Group>
-    {/* Modal Screens */}
-    <Stack.Group screenOptions={{ presentation: "fullScreenModal" }}>
       <Stack.Screen
         name="ProjectRequirements"
         component={ProjectRequirements}

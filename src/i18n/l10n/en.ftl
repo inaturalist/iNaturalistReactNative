@@ -239,6 +239,8 @@ Data-quality-casual-description = This observation needs more information verifi
 Data-quality-needs-id-description = This observation needs more identifications to reach research grade
 Data-quality-research-description = This observation has enough identifications to be considered research grade
 DATE = DATE
+# label in project requirements
+Date = Date
 # Used when displaying a relative time - in this case, X days ago (e.g. 3d = 3 days ago)
 Date-days = { $count }d
 # Date formatting using date-fns
@@ -360,6 +362,8 @@ ERROR-LOADING-DQA = ERROR LOADING IN DQA
 Error-title = Error
 ERROR-VOTING-IN-DQA = ERROR VOTING IN DQA
 Error-voting-in-DQA-description = Your vote may not have been cast in the DQA. Check your internet connection and try again.
+# label in project requirements
+Establishment = Establishment
 ESTABLISHMENT-MEANS = ESTABLISHMENT MEANS
 # Header for a section describing how a taxon arrived in a given place
 ESTABLISHMENT-MEANS-header = ESTABLISHMENT MEANS
@@ -560,6 +564,8 @@ maverick--identification = Maverick
 # Month of May
 May = May
 MEDIA = MEDIA
+# label in project requirements
+Media-Type = Media Type
 MEMBERS-WITHOUT-NUMBER =
     { $count ->
         [one] MEMBER
@@ -646,6 +652,7 @@ OBSERVATION-WAS-DELETED = OBSERVATION WAS DELETED
 Observation-with-no-evidence = Observation with no evidence
 Observations = Observations
 Observations-created-on-iNaturalist = Observations created on iNaturalist are used by scientists around the world.
+Observations-in-this-project-must-meet-the-following-criteria = Observations in this project must meet the following criteria:
 Observations-View = Observations View
 # Might be used when the number is represented using an image or other
 # element, not text
@@ -741,6 +748,8 @@ PROJECTS = PROJECTS
 # As in iNat projects, collections of observations or observation search filters
 Projects = Projects
 QUALITY-GRADE = QUALITY GRADE
+# label in project requirements
+Quality-Grade = Quality Grade
 # Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Casual
 Quality-Grade-casual = Quality Grade Casual
 quality-grade-casual = Casual
@@ -963,6 +972,8 @@ Sync-observations = Sync observations
 Syncing = Syncing...
 Take-photo = Take photo
 Take-photos-with-the-camera = Take photos of a single organism with the camera
+# label in project requirements
+Taxa = Taxa
 TAXON = TAXON
 # Settings screen
 TAXON-NAMES-DISPLAY = TAXON NAMES DISPLAY
@@ -1039,6 +1050,8 @@ User = User { $userHandle }
 USERNAME = USERNAME
 # Appears above the text fields
 USERNAME-OR-EMAIL = USERNAME OR EMAIL
+# label in project requirements
+Users = Users
 Using-iNaturalist-requires-the-storage = Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US.
 VIEW-CHILDREN-TAXA = VIEW CHILDREN TAXA
 VIEW-DATA-QUALITY-ASSESSMENT = VIEW DATA QUALITY ASSESSMENT
