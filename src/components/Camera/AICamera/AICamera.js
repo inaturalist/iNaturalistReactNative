@@ -10,6 +10,9 @@ import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
+import {
+  Alert
+} from "react-native";
 import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import { useTheme } from "react-native-paper";
@@ -29,6 +32,9 @@ import FrameProcessorCamera from "./FrameProcessorCamera";
 import usePredictions from "./hooks/usePredictions";
 
 const isTablet = DeviceInfo.isTablet();
+
+// 200MB - number in bytes
+const MIN_DEVICE_STORAGE = 200000000;
 
 // const exampleTaxonResult = {
 //   id: 12704,
@@ -87,12 +93,27 @@ const AICamera = ( {
     toggleFlash
   } = useTakePhoto( camera, false, device );
   const [inactive, setInactive] = React.useState( false );
+  const [deviceStorageFull, setDeviceStorageFull] = React.useState( false );
+
   const { t } = useTranslation();
   const theme = useTheme();
   const navigation = useNavigation();
 
   // only show predictions when rank is order or lower, like we do on Seek
   const showPrediction = ( result && result?.taxon?.rank_level <= 40 ) || false;
+
+  const showStorageFullAlert = () => Alert.alert(
+    "Device Storage Full",
+    "iNaturalist may not be able to save your photos or may crash",
+    [{ text: t( "OK" ) }]
+  );
+
+  DeviceInfo.getFreeDiskStorage().then( freeDiskStorage => {
+    // considered full when 200MB left
+    if ( freeDiskStorage <= MIN_DEVICE_STORAGE ) {
+      setDeviceStorageFull( true );
+    }
+  } );
 
   React.useEffect( () => {
     const unsubscribeBlur = navigation.addListener( "blur", () => {
@@ -113,6 +134,9 @@ const AICamera = ( {
   }, [navigation, setResult, resetZoom] );
 
   const handlePress = async ( ) => {
+    if ( deviceStorageFull ) {
+      showStorageFullAlert();
+    }
     await takePhoto( { replaceExisting: true, inactivateCallback: () => setInactive( true ) } );
     handleCheckmarkPress( showPrediction
       ? result

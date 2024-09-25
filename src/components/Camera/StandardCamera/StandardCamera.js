@@ -88,20 +88,6 @@ const StandardCamera = ( {
   } = useTakePhoto( camera, !!addEvidence, device );
 
   const [deviceStorageFull, setDeviceStorageFull] = useState( false );
-
-  const showStorageFullAlert = () => Alert.alert(
-    "Device Storage Full",
-    "iNaturalist may not be able to save your photos or may crash",
-    [{ text: t( "OK" ) }]
-  );
-
-  DeviceInfo.getFreeDiskStorage().then( freeDiskStorage => {
-    // considered full when 200MB left
-    if ( freeDiskStorage <= MIN_DEVICE_STORAGE ) {
-      setDeviceStorageFull( true );
-    }
-  } );
-
   const cameraUris = useStore( state => state.cameraUris );
   const prepareCamera = useStore( state => state.prepareCamera );
   const galleryUris = useStore( state => state.galleryUris );
@@ -118,6 +104,19 @@ const StandardCamera = ( {
   const [newPhotoUris, setNewPhotoUris] = useState( [] );
 
   const { screenWidth } = useDeviceOrientation( );
+
+  const showStorageFullAlert = () => Alert.alert(
+    "Device Storage Full",
+    "iNaturalist may not be able to save your photos or may crash",
+    [{ text: t( "OK" ) }]
+  );
+
+  DeviceInfo.getFreeDiskStorage().then( freeDiskStorage => {
+    // considered full when 200MB left
+    if ( freeDiskStorage <= MIN_DEVICE_STORAGE ) {
+      setDeviceStorageFull( true );
+    }
+  } );
 
   // newPhotoUris tracks photos taken in *this* instance of the camera. The
   // camera might be instantiated with several cameraUris or
@@ -167,7 +166,6 @@ const StandardCamera = ( {
     if ( deviceStorageFull ) {
       showStorageFullAlert();
     }
-
     if ( disallowAddingPhotos ) {
       setShowAlert( true );
       return;
