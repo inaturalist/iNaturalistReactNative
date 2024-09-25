@@ -1,10 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
+import ObsImagePreview from "components/ObservationsFlashList/ObsImagePreview";
 import {
   DisplayTaxonName,
   INatIconButton
 } from "components/SharedComponents";
-import ObsImagePreview from "components/SharedComponents/ObservationsFlashList/ObsImagePreview";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
 import { useTheme } from "react-native-paper";

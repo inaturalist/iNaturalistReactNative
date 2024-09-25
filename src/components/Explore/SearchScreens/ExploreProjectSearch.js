@@ -32,10 +32,12 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
   const [projectQuery, setProjectQuery] = useState( "" );
   const { t } = useTranslation();
 
-  const { data: projects, isLoading, refetch } = useAuthenticatedQuery(
+  const { data, isLoading, refetch } = useAuthenticatedQuery(
     ["searchProjects", projectQuery],
     optsWithAuth => searchProjects( { q: projectQuery }, optsWithAuth )
   );
+
+  const projects = data?.results;
 
   const onProjectSelected = useCallback( async project => {
     if ( !project.id ) {

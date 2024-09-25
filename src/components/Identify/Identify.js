@@ -3,7 +3,8 @@
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
-import { ActivityAnimation, ObservationsFlashList, ViewWrapper } from "components/SharedComponents";
+import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
+import { ActivityAnimation, ViewWrapper } from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";
 import {
