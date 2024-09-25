@@ -88,15 +88,17 @@ const ProjectDetails = ( {
         <Heading4 className="mt-7">{t( "ABOUT" )}</Heading4>
         {project?.description
           && <UserText text={project.description} htmlStyle={userTextStyle} />}
-        {/* {project.project_type === "collection" && (
+        {project.project_type === "collection" && (
           <>
             <Heading4 className="mb-3 mt-5">{t( "PROJECT-REQUIREMENTS" )}</Heading4>
             <Button
+              className="mb-5"
               level="neutral"
               text={t( "VIEW-PROJECT-REQUIREMENTS" )}
+              onPress={( ) => navigation.navigate( "ProjectRequirements" )}
             />
           </>
-        )} */}
+        )}
         <Heading4 className="mb-3">{t( "MAP" )}</Heading4>
         <Button
           level="neutral"
