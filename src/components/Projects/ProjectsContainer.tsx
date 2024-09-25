@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import {
   useCurrentUser,
   useLocationPermission,
-  useTranslation,
-  useWatchPosition
+  useTranslation
 } from "sharedHooks";
 
+import fetchUserLocation from "../../sharedHelpers/fetchUserLocation";
 import useInfiniteProjectsScroll from "./hooks/useInfiniteProjectsScroll";
 import Projects from "./Projects";
 
@@ -28,9 +28,9 @@ const ProjectsContainer = ( ) => {
     ? TAB_ID.JOINED
     : TAB_ID.FEATURED );
   const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
-  const { userLocation } = useWatchPosition( {
-    shouldFetchLocation: hasPermissions
-  } );
+  const [userLocation, setUserLocation] = useState( null );
+
+  console.log( userLocation, "user location" );
 
   const apiParams = { };
 
@@ -47,6 +47,8 @@ const ProjectsContainer = ( ) => {
   if ( searchInput.length > 0 ) {
     apiParams.q = searchInput;
   }
+
+  console.log( apiParams, "api params" );
 
   const {
     isFetchingNextPage,
@@ -82,6 +84,11 @@ const ProjectsContainer = ( ) => {
     }
   ];
 
+  const onPermissionGranted = async ( ) => {
+    const currentUserLocation = await fetchUserLocation( );
+    setUserLocation( currentUserLocation );
+  };
+
   if ( !currentUser ) {
     tabs.shift( );
   }
@@ -101,7 +108,7 @@ const ProjectsContainer = ( ) => {
         setSearchInput={setSearchInput}
         tabs={tabs}
       />
-      {renderPermissionsGate( )}
+      {renderPermissionsGate( { onPermissionGranted } )}
     </>
   );
 };

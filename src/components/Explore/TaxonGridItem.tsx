@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
+import ObsImagePreview from "components/ObservationsFlashList/ObsImagePreview";
 import { Body4, DisplayTaxonName } from "components/SharedComponents";
-import ObsImagePreview from "components/SharedComponents/ObservationsFlashList/ObsImagePreview";
 import SpeciesSeenCheckmark from "components/SharedComponents/SpeciesSeenCheckmark";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";

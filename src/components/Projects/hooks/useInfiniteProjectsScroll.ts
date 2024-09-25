@@ -16,7 +16,7 @@ const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: Object 
   const queryKey = ["useInfiniteProjectsScroll", "searchProjects", queryKeyParams];
 
   const {
-    data: projects,
+    data,
     status,
     isFetchingNextPage,
     fetchNextPage
@@ -42,10 +42,15 @@ const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: Object 
     }
   );
 
+  const pages = data?.pages;
+  const allResults = pages?.map( page => page?.results );
+  const projects = flatten( allResults );
+  console.log( projects.length, "projects length" );
+
   return {
     isFetchingNextPage,
     fetchNextPage,
-    projects: flatten( projects?.pages ),
+    projects,
     status
   };
 };

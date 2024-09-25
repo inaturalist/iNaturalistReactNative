@@ -1,11 +1,8 @@
 // @flow
 import MyObservationsEmpty from "components/MyObservations/MyObservationsEmpty";
 import {
-  ActivityIndicator, Body3, CustomFlashList
+  ActivityIndicator, Body3, CustomFlashList, InfiniteScrollLoadingWheel
 } from "components/SharedComponents";
-import InfiniteScrollLoadingWheel
-  from
-  "components/SharedComponents/FlashList/InfiniteScrollLoadingWheel";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
