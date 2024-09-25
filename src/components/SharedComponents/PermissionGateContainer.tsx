@@ -212,7 +212,7 @@ const PermissionGateContainer = ( {
   // So we check permissions when the app is transitioned from background to foreground
   // This check is performed only when the platform is Android and the permission result is BLOCKED
     if ( Platform.OS === "android"
-       && ( result === RESULTS.BLOCKED ) ) {
+       && result === RESULTS.BLOCKED ) {
       const onAppStateChange = async ( nextAppState: AppStateStatus ) => {
         if ( prevAppState.current.match( /inactive|background/ ) && nextAppState === "active" ) {
           await checkPermission();
@@ -229,8 +229,7 @@ const PermissionGateContainer = ( {
     }
 
     return () => undefined;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [result] );
+  }, [result, checkPermission] );
 
   const closeModal = useCallback( ( ) => {
     setModalShown( false );
