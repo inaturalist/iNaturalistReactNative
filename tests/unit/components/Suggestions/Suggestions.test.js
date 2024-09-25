@@ -44,9 +44,7 @@ const mockUser = factory( "LocalUser" );
 // Mock useCurrentUser hook
 jest.mock( "sharedHooks/useCurrentUser", () => ( {
   __esModule: true,
-  default: jest.fn( () => ( {
-    id: mockUser.id
-  } ) )
+  default: jest.fn( () => mockUser )
 } ) );
 
 beforeAll( async ( ) => {
