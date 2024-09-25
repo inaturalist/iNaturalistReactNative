@@ -18,10 +18,6 @@ import { Pressable } from "react-native";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
-// const HEADER_HEIGHT = 177;
-// const FOOTER_HEIGHT = 77;
-// const HALF_GRADIENT_AND_TEXT_HEIGHT = 216 / 2;
-
 type Props = {
   isFetchingNextPage: ?boolean
 }
