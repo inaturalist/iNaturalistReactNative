@@ -68,13 +68,13 @@ const ActivityTab = ( {
                 setScrollToY( layout.y );
               }
             }}
+            key={item.uuid}
           >
             <ActivityItem
               currentUserId={userId}
               isFirstDisplay={index === indexOfFirstTaxonDisplayed( item.taxon?.id )}
               isConnected={isConnected}
               item={item}
-              key={item.uuid}
               openAgreeWithIdSheet={openAgreeWithIdSheet}
               refetchRemoteObservation={refetchRemoteObservation}
               userAgreedId={userAgreedToId}
