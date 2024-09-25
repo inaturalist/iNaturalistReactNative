@@ -32,7 +32,9 @@ const ProjectsContainer = ( ) => {
 
   const apiParams = { };
 
-  if ( currentTabId === TAB_ID.JOINED ) {
+  if ( searchInput.length > 0 ) {
+    apiParams.q = searchInput;
+  } else if ( currentTabId === TAB_ID.JOINED ) {
     apiParams.member_id = memberId;
   } else if ( currentTabId === TAB_ID.FEATURED ) {
     apiParams.featured = true;
@@ -45,20 +47,16 @@ const ProjectsContainer = ( ) => {
     apiParams.spam = false;
   }
 
-  if ( searchInput.length > 0 ) {
-    apiParams.q = searchInput;
-  }
-
   const getCurrentUserLocation = async ( ) => {
     const currentUserLocation = await fetchUserLocation( );
     setUserLocation( currentUserLocation );
   };
 
   const {
+    isFetching,
     isFetchingNextPage,
     fetchNextPage,
-    projects,
-    status
+    projects
   } = useInfiniteProjectsScroll( {
     params: apiParams,
     enabled: !_.isEmpty( apiParams )
@@ -102,7 +100,7 @@ const ProjectsContainer = ( ) => {
         fetchNextPage={fetchNextPage}
         hasPermissions={hasPermissions}
         isFetchingNextPage={isFetchingNextPage}
-        isLoading={status === "pending"}
+        isLoading={isFetching}
         memberId={memberId}
         projects={projects}
         requestPermissions={requestPermissions}

@@ -26,9 +26,8 @@ import {
 import FlashListEmptyWrapper from "../SharedComponents/FlashList/FlashListEmptyWrapper";
 import { TAB_ID } from "./ProjectsContainer";
 
-// const HEADER_HEIGHT = 177;
-// const FOOTER_HEIGHT = 77;
-// const HALF_GRADIENT_AND_TEXT_HEIGHT = 216 / 2;
+const HEADER_HEIGHT_WITH_TABS = 121;
+const HEADER_HEIGHT_WITHOUT_TABS = 80;
 
 interface Props {
   currentTabId: TAB_ID;
@@ -105,7 +104,9 @@ const Projects = ( {
     } else {
       return (
         <FlashListEmptyWrapper
-          headerHeight={182}
+          headerHeight={searchInput.length === 0
+            ? HEADER_HEIGHT_WITH_TABS
+            : HEADER_HEIGHT_WITHOUT_TABS}
           emptyItemHeight={90}
         >
           <Body1 className="self-center">{t( "No-projects-match-that-search" )}</Body1>

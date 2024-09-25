@@ -17,7 +17,7 @@ const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: Object 
 
   const {
     data,
-    status,
+    isFetching,
     isFetchingNextPage,
     fetchNextPage
   } = useAuthenticatedInfiniteQuery(
@@ -47,10 +47,10 @@ const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: Object 
   const projects = flatten( allResults );
 
   return {
+    isFetching,
     isFetchingNextPage,
     fetchNextPage,
-    projects,
-    status
+    projects
   };
 };
 

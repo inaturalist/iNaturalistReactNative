@@ -37,7 +37,7 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
     optsWithAuth => searchProjects( { q: projectQuery }, optsWithAuth )
   );
 
-  const projects = data.results;
+  const projects = data?.results;
 
   const onProjectSelected = useCallback( async project => {
     if ( !project.id ) {
