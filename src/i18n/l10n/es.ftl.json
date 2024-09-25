@@ -5,15 +5,19 @@
     "comment": "Label for a view that shows observations as a grid of photos",
     "val": "Ver rejilla"
   },
+  "Lat-Lon-Acc": {
+    "comment": "Latitude, longitude, and accuracy on a single line",
+    "val": "Lat: { NUMBER($latitude, maximumFractionDigits: \"6\") }, Lon: { NUMBER($longitude, maximumFractionDigits: \"6\") }, Pre: { $accuracy }"
+  },
   "List-View": {
     "comment": "Label for a view that shows observations a list",
     "val": "Ver lista"
   },
   "Observation": "Observación",
   "Observations": "Observaciones",
-  "Your-Observations": "Sus observaciones",
   "TAXONOMY-header": "TAXONOMIE es bueno",
-  "X-Observations": "{ $count ->\n  [one] 1 Observación\n *[other] { $count } Observaciones\n}",
   "Welcome-to-iNaturalist": "¡Bienvenido a iNaturalist!",
-  "Welcome-user": "<0>Bienvenido de nuevo,</0><1>{ $userHandle }</1>"
+  "Welcome-user": "<0>Bienvenido de nuevo,</0><1>{ $userHandle }</1>",
+  "X-Observations": "{ $count ->\n  [one] 1 Observación\n *[other] { $count } Observaciones\n}",
+  "Your-Observations": "Sus observaciones"
 }

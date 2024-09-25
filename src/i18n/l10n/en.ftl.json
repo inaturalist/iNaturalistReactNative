@@ -701,11 +701,11 @@
     "val": "Last Active: { $date }"
   },
   "Lat-Lon": {
-    "comment": "Latitude, longitude on a single line on a single line",
+    "comment": "Latitude, longitude on a single line",
     "val": "{ NUMBER($latitude, maximumFractionDigits: \"6\") }, { NUMBER($longitude, maximumFractionDigits: \"6\") }"
   },
   "Lat-Lon-Acc": {
-    "comment": "Latitude, longitude, and accuracy on a single line on a single line",
+    "comment": "Latitude, longitude, and accuracy on a single line",
     "val": "Lat: { NUMBER($latitude, maximumFractionDigits: \"6\") }, Lon: { NUMBER($longitude, maximumFractionDigits: \"6\") }, Acc: { $accuracy }"
   },
   "leading--identification": {

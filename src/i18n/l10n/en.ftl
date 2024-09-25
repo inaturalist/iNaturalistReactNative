@@ -519,9 +519,9 @@ June = June
 Just-make-sure-the-organism-is-wild = Just make sure the organism is wild (not a pet, zoo animal, or garden plant)
 # Shows date user last active on iNaturalist on user profile
 Last-Active-date = Last Active: { $date }
-# Latitude, longitude on a single line on a single line
+# Latitude, longitude on a single line
 Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, maximumFractionDigits: 6) }
-# Latitude, longitude, and accuracy on a single line on a single line
+# Latitude, longitude, and accuracy on a single line
 Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBER($longitude, maximumFractionDigits: 6) }, Acc: { $accuracy }
 # Identification category
 leading--identification = Leading
