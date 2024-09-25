@@ -141,6 +141,13 @@ const mockLocalTaxon = {
 };
 
 const mockUser = factory( "LocalUser" );
+// Mock useCurrentUser hook
+jest.mock( "sharedHooks/useCurrentUser", () => ( {
+  __esModule: true,
+  default: jest.fn( () => ( {
+    id: mockUser.id
+  } ) )
+} ) );
 
 const makeMockObservations = ( ) => ( [
   factory( "RemoteObservation", {

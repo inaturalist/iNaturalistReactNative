@@ -40,6 +40,15 @@ const mockSuggestionsList = [{
   taxon: mockTaxon
 }];
 
+const mockUser = factory( "LocalUser" );
+// Mock useCurrentUser hook
+jest.mock( "sharedHooks/useCurrentUser", () => ( {
+  __esModule: true,
+  default: jest.fn( () => ( {
+    id: mockUser.id
+  } ) )
+} ) );
+
 beforeAll( async ( ) => {
   useStore.setState( initialStoreState, true );
   // userEvent recommends fake timers
