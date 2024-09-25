@@ -138,6 +138,7 @@
   "By-exiting-your-observations-not-saved": "By exiting, your observations will not be saved. You can save them to your device, or you can delete them.",
   "By-exiting-your-photos-will-not-be-saved": "By exiting, your photos will not be saved.",
   "By-exiting-your-recorded-sound-will-not-be-saved": "By exiting, your recorded sound will not be saved.",
+  "By-uploading-your-observation-to-iNaturalist-you-can": "By uploading your observation to iNaturalist, you can:",
   "Camera": "Camera",
   "CANCEL": "CANCEL",
   "Cancel": "Cancel",
@@ -573,6 +574,7 @@
     "comment": "Title of screen asking for permission to access location",
     "val": "Get more accurate suggestions & create useful data for science using your location"
   },
+  "Get-your-identification-verified-by-real-people": "Get your identification verified by real people in the iNaturalist community",
   "Go-back": {
     "comment": "Label for button that returns to the previous screen",
     "val": "Go back"
@@ -693,6 +695,7 @@
     "comment": "Month of June",
     "val": "June"
   },
+  "Just-make-sure-the-organism-is-wild": "Just make sure the organism is wild (not a pet, zoo animal, or garden plant)",
   "Last-Active-date": {
     "comment": "Shows date user last active on iNaturalist on user profile",
     "val": "Last Active: { $date }"
@@ -769,6 +772,7 @@
   "More-info": "More info",
   "MOST-FAVED": "MOST FAVED",
   "Most-faved": "Most faved",
+  "MY-OBSERVATIONS": "MY OBSERVATIONS",
   "Native": "Native",
   "Native-to-place": "Native to { $place }",
   "Navigates-to-AI-camera": "Navigates to AI camera",
@@ -1159,6 +1163,7 @@
   },
   "SAVE-ALL": "SAVE ALL",
   "SAVE-CHANGES": "SAVE CHANGES",
+  "SAVE-FOR-LATER": "SAVE FOR LATER",
   "SAVE-LOCATION": "SAVE LOCATION",
   "SAVE-PHOTOS": "SAVE PHOTOS",
   "Save-photos-to-your-gallery": "Save photos to your gallery",
@@ -1224,6 +1229,7 @@
   "SHARE-DEBUG-LOGS": "SHARE DEBUG LOGS",
   "Share-location": "Share Location",
   "Share-map": "Share map",
+  "Share-your-observation-where-it-can-help-scientists": "Share your observation, where it can help scientists across the world better understand biodiversity.",
   "SHOP-INATURALIST-MERCH": "SHOP INATURALIST MERCH",
   "Show-observation-options": "Show observation options.",
   "Shows-identification-suggestions": {
@@ -1367,6 +1373,7 @@
   "Upload-photos-from-your-gallery": "Upload multiple photos from your gallery",
   "Upload-photos-from-your-gallery-and-create-observations": "Upload photos from your gallery and create observations and get identifications of organisms you’ve already observed!",
   "Upload-Progress": "Upload { $uploadProgress } percent complete",
+  "UPLOAD-TO-INATURALIST": "UPLOAD TO INATURALIST",
   "Upload-x-observations": {
     "comment": "Shows the number of observations a user can upload to iNat from my observations page",
     "val": "Upload { $count ->\n  [one] 1 observation\n *[other] { $count } observations\n}"

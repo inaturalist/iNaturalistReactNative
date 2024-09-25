@@ -1,28 +1,37 @@
-// @flow
-
 import {
   TaxonResult
 } from "components/SharedComponents";
-import type { Node } from "react";
 import React from "react";
 import {
   convertOfflineScoreToConfidence,
   convertOnlineScoreToConfidence
 } from "sharedHelpers/convertScores.ts";
 
-type Props = {
-  accessibilityLabel: string,
-  onTaxonChosen: Function,
-  suggestion: Object,
-  isTopSuggestion?: boolean
-};
+interface Props {
+  accessibilityLabel: string;
+  onTaxonChosen: ( ) => void;
+  suggestion: {
+    taxon: {
+      id: number;
+      name: string;
+      preferred_common_name: string;
+      rank: string;
+      iconic_taxon_name: string;
+    };
+    score: number;
+    combined_score: number;
+  };
+  isTopSuggestion?: boolean;
+  hideCheckmark?: boolean;
+}
 
 const Suggestion = ( {
   accessibilityLabel,
   suggestion,
   onTaxonChosen,
-  isTopSuggestion = false
-}: Props ): Node => (
+  isTopSuggestion = false,
+  hideCheckmark = false
+}: Props ) => (
   <TaxonResult
     accessibilityLabel={accessibilityLabel}
     activeColor="bg-inatGreen"
@@ -33,6 +42,7 @@ const Suggestion = ( {
     fetchRemote={false}
     first
     isTopSuggestion={isTopSuggestion}
+    showCheckmark={!hideCheckmark}
     handleCheckmarkPress={onTaxonChosen}
     hideNavButtons
     lastScreen="Suggestions"

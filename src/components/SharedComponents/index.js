@@ -11,6 +11,7 @@ export { default as EvidenceButton } from "./Buttons/EvidenceButton";
 export { default as INatIconButton } from "./Buttons/INatIconButton";
 export { default as RotatingINatIconButton } from "./Buttons/RotatingINatIconButton";
 export { default as TransparentCircleButton } from "./Buttons/TransparentCircleButton";
+export { default as CarouselDots } from "./CarouselDots";
 export { default as Checkbox } from "./Checkbox";
 export { default as ConfidenceInterval } from "./ConfidenceInterval";
 export { default as DateDisplay } from "./DateDisplay";

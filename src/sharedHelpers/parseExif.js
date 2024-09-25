@@ -37,7 +37,9 @@ export const parseExif = async ( photoUri: ?string ): Promise<Object> => {
   }
 };
 
-interface ExifToWrite {
+// TODO: Johannes: I think this interface should be
+// exported from the react-native-exif-reader library
+export interface ExifToWrite {
   latitude?: number;
   longitude?: number;
   positional_accuracy?: number;

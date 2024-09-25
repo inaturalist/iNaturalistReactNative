@@ -77,6 +77,13 @@ const topSuggestion = {
   combined_score: 90
 };
 
+const mockUser = factory( "LocalUser" );
+// Mock useCurrentUser hook
+jest.mock( "sharedHooks/useCurrentUser", () => ( {
+  __esModule: true,
+  default: jest.fn( () => mockUser )
+} ) );
+
 beforeEach( ( ) => {
   useStore.setState( { isAdvancedUser: true } );
   inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
@@ -85,7 +92,6 @@ beforeEach( ( ) => {
 const actor = userEvent.setup( );
 
 const navToAICamera = async ( ) => {
-  expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
   const tabBar = await screen.findByTestId( "CustomTabBar" );
   const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
   await actor.press( addObsButton );
@@ -119,7 +125,7 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
       expect( await screen.findByText( /Loading iNaturalist's AI Camera/ ) ).toBeVisible( );
       const closeButton = await screen.findByLabelText( /Close/ );
       await actor.press( closeButton );
-      expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
+      expect( await screen.findByText( /Welcome to iNaturalist!/ ) ).toBeVisible( );
     } );
   } );
 

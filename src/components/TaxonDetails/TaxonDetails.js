@@ -3,14 +3,16 @@
 import { refresh, useNetInfo } from "@react-native-community/netinfo";
 import { useNavigation, useNavigationState, useRoute } from "@react-navigation/native";
 import { fetchSpeciesCounts } from "api/observations";
-import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
   ActivityIndicator,
   Body1,
+  BottomSheet,
   Button,
+  CarouselDots,
   INatIcon,
   INatIconButton,
+  List2,
   OfflineNotice,
   ScrollViewWrapper,
   StickyToolbar
@@ -28,6 +30,7 @@ import {
 import DeviceInfo from "react-native-device-info";
 import { useTheme } from "react-native-paper";
 import { log } from "sharedHelpers/logger";
+import saveObservation from "sharedHelpers/saveObservation.ts";
 import { fetchTaxonAndSave } from "sharedHelpers/taxon";
 import {
   useAuthenticatedQuery,
@@ -55,7 +58,10 @@ const isTablet = DeviceInfo.isTablet();
 
 const TaxonDetails = ( ): Node => {
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
+  const getCurrentObservation = useStore( state => state.getCurrentObservation );
   const setExploreView = useStore( state => state.setExploreView );
+  const cameraRollUris = useStore( state => state.cameraRollUris );
+  const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
   const theme = useTheme( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
@@ -63,6 +69,7 @@ const TaxonDetails = ( ): Node => {
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
+  const [sheetVisible, setSheetVisible] = useState( false );
   const { remoteUser } = useUserMe( );
   const [mediaIndex, setMediaIndex] = useState( 0 );
   const navState = useNavigationState( nav => nav );
@@ -131,6 +138,39 @@ const TaxonDetails = ( ): Node => {
       : [taxon?.defaultPhoto]
   );
 
+  const updateTaxon = ( ) => {
+    updateObservationKeys( {
+      taxon,
+      owners_identification_from_vision: usesVision
+    } );
+  };
+
+  const saveAndNavigate = async ( ) => {
+    setSheetVisible( false );
+    updateTaxon( );
+    // We need the updated currentObservation immediately to pass to saveObservation
+    const currentObservation = getCurrentObservation( );
+    const isNewObs = !currentObservation?._created_at;
+    await saveObservation( currentObservation, cameraRollUris, realm );
+    // If we are saving a new observations, reset the stored my obs offset to
+    // restore b/c we want MyObs rendered in its default state with this new
+    // observation visible at the top
+    if ( isNewObs ) {
+      resetMyObsOffsetToRestore();
+    }
+    navigation.navigate( "TabNavigator", {
+      screen: "TabStackNavigator",
+      params: {
+        screen: "ObsList"
+      }
+    } );
+  };
+
+  const uploadNow = ( ) => {
+    setSheetVisible( false );
+    navigation.navigate( "LoginStackNavigator" );
+  };
+
   const renderHeader = useCallback( ( { onClose } ) => (
     <TaxonDetailsMediaViewerHeader
       showSpeciesSeenCheckmark={currentUserHasSeenTaxon}
@@ -173,22 +213,7 @@ const TaxonDetails = ( ): Node => {
   };
 
   const displayScrollDots = () => (
-    <View
-      className="flex flex-row w-full justify-center items-center mb-3"
-      pointerEvents="none"
-    >
-      { photos.map( ( item, idx ) => (
-        <View
-          key={`dot-${item.id}`}
-          className={classnames(
-            "rounded-full bg-white m-[2.5]",
-            idx === mediaIndex
-              ? "w-[4px] h-[4px]"
-              : "w-[2px] h-[2px]"
-          )}
-        />
-      ) )}
-    </View>
+    <CarouselDots length={photos.length} index={mediaIndex} />
   );
 
   const displayTaxonTitle = useCallback( ( ) => (
@@ -262,6 +287,11 @@ const TaxonDetails = ( ): Node => {
     );
   };
 
+  const bulletedText = [
+    t( "Get-your-identification-verified-by-real-people" ),
+    t( "Share-your-observation-where-it-can-help-scientists" )
+  ];
+
   return (
     <>
       <ScrollViewWrapper
@@ -308,19 +338,20 @@ const TaxonDetails = ( ): Node => {
             level="focus"
             text={t( "SELECT-THIS-TAXON" )}
             onPress={( ) => {
-              updateObservationKeys( {
-                taxon,
-                owners_identification_from_vision: usesVision
-              } );
-              if ( fromObsDetails ) {
-                const obsDetailsParam = {
-                  uuid: obsUuid,
-                  identTaxonId: taxon?.id,
-                  identAt: Date.now()
-                };
-                navigation.navigate( "ObsDetails", obsDetailsParam );
+              if ( fromSuggestions && !currentUser ) {
+                setSheetVisible( true );
               } else {
-                navigation.navigate( "ObsEdit" );
+                updateTaxon( );
+                if ( fromObsDetails ) {
+                  const obsDetailsParam = {
+                    uuid: obsUuid,
+                    identTaxonId: taxon?.id,
+                    identAt: Date.now()
+                  };
+                  navigation.navigate( "ObsDetails", obsDetailsParam );
+                } else {
+                  navigation.navigate( "ObsEdit" );
+                }
               }
             }}
             icon={(
@@ -334,6 +365,42 @@ const TaxonDetails = ( ): Node => {
           />
         </StickyToolbar>
       )}
+      <BottomSheet
+        hidden={!sheetVisible}
+        handleClose={() => setSheetVisible( false )}
+        onPressClose={() => setSheetVisible( false )}
+        headerText={t( "UPLOAD-TO-INATURALIST" )}
+      >
+        <View className="p-4">
+          <View className="px-3">
+            <List2>
+              {t( "By-uploading-your-observation-to-iNaturalist-you-can" )}
+            </List2>
+            <View className="mt-3">
+              {bulletedText.map( string => (
+                <View className="flex-row" key={string}>
+                  <List2>{"\u2022 "}</List2>
+                  <List2>{string}</List2>
+                </View>
+              ) )}
+            </View>
+            <List2 className="mt-3">
+              {t( "Just-make-sure-the-organism-is-wild" )}
+            </List2>
+          </View>
+          <Button
+            onPress={() => uploadNow()}
+            text={t( "UPLOAD-NOW" )}
+            className="mt-5"
+            level="focus"
+          />
+          <Button
+            onPress={() => saveAndNavigate()}
+            text={t( "SAVE-FOR-LATER" )}
+            className="mt-5"
+          />
+        </View>
+      </BottomSheet>
     </>
   );
 };
