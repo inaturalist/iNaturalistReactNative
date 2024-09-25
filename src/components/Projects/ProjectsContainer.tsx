@@ -39,9 +39,12 @@ const ProjectsContainer = ( ) => {
   } else if ( currentTabId === TAB_ID.FEATURED ) {
     apiParams.featured = true;
   } else if ( currentTabId === TAB_ID.NEARBY && userLocation ) {
+    // lifted params for nearby from iOS Projects for app parity
+    // https://github.com/inaturalist/INaturalistIOS/blob/20aa47385471f3eb10622b022c51cabc602422ae/INaturalistIOS/API%20Endpoints/Node%20API/ProjectsAPI.m#L48
     apiParams.lat = userLocation.latitude;
     apiParams.lng = userLocation.longitude;
-    apiParams.radius = 50;
+    apiParams.order_by = "distance";
+    apiParams.spam = false;
   }
 
   if ( searchInput.length > 0 ) {
@@ -49,6 +52,12 @@ const ProjectsContainer = ( ) => {
   }
 
   console.log( apiParams, "api params" );
+
+  const getCurrentUserLocation = async ( ) => {
+    const currentUserLocation = await fetchUserLocation( );
+    console.log( currentUserLocation, "current user location" );
+    setUserLocation( currentUserLocation );
+  };
 
   const {
     isFetchingNextPage,
@@ -78,16 +87,14 @@ const ProjectsContainer = ( ) => {
     {
       id: TAB_ID.NEARBY,
       text: t( "NEARBY" ),
-      onPress: () => {
+      onPress: ( ) => {
+        if ( hasPermissions ) {
+          getCurrentUserLocation( );
+        }
         setCurrentTabId( TAB_ID.NEARBY );
       }
     }
   ];
-
-  const onPermissionGranted = async ( ) => {
-    const currentUserLocation = await fetchUserLocation( );
-    setUserLocation( currentUserLocation );
-  };
 
   if ( !currentUser ) {
     tabs.shift( );
@@ -108,7 +115,7 @@ const ProjectsContainer = ( ) => {
         setSearchInput={setSearchInput}
         tabs={tabs}
       />
-      {renderPermissionsGate( { onPermissionGranted } )}
+      {renderPermissionsGate( { onPermissionGranted: getCurrentUserLocation } )}
     </>
   );
 };
