@@ -301,7 +301,9 @@ Deleting-x-of-y-observations =
 DETAILS = DETAILS
 # Button that disables the camera's flash
 Disable-flash = Disable flash
-Disagreement = <0>*@{ $username } disagrees this is </0><1></1>
+# Disagreement notice with an identificaiton, <0/> will get replaced by a
+# taxon name
+Disagreement = *@{ $username } disagrees this is <0/>
 # Button that discards changes or an item, e.g. a photo
 DISCARD = DISCARD
 # Button that discards all items, e.g. imported photos
@@ -752,41 +754,77 @@ Quality-Grade-research = Quality Grade Research Grade
 # Quality grade options
 quality-grade-research = Research Grade
 Ranks-CLASS = CLASS
+Ranks-Class = Class
 Ranks-COMPLEX = COMPLEX
+Ranks-Complex = Complex
 Ranks-EPIFAMILY = EPIFAMILY
+Ranks-Epifamily = Epifamily
 Ranks-FAMILY = FAMILY
+Ranks-Family = Family
 Ranks-FORM = FORM
+Ranks-Form = Form
 Ranks-GENUS = GENUS
+Ranks-Genus = Genus
 Ranks-GENUSHYBRID = GENUSHYBRID
+Ranks-Genushybrid = Genushybrid
 Ranks-HYBRID = HYBRID
+Ranks-Hybrid = Hybrid
 Ranks-INFRACLASS = INFRACLASS
+Ranks-Infraclass = Infraclass
 Ranks-INFRAHYBRID = INFRAHYBRID
+Ranks-Infrahybrid = Infrahybrid
 Ranks-INFRAORDER = INFRAORDER
+Ranks-Infraorder = Infraorder
 Ranks-KINGDOM = KINGDOM
+Ranks-Kingdom = Kingdom
 Ranks-ORDER = ORDER
+Ranks-Order = Order
 Ranks-PARVORDER = PARVORDER
+Ranks-Parvorder = Parvorder
 Ranks-PHYLUM = PHYLUM
+Ranks-Phylum = Phylum
 Ranks-SECTION = SECTION
+Ranks-Section = Section
 Ranks-SPECIES = SPECIES
+Ranks-Species = Species
+Ranks-Statefmatter = State of matter
 Ranks-STATEOFMATTER = STATE OF MATTER
 Ranks-SUBCLASS = SUBCLASS
+Ranks-Subclass = Subclass
 Ranks-SUBFAMILY = SUBFAMILY
+Ranks-Subfamily = Subfamily
 Ranks-SUBGENUS = SUBGENUS
+Ranks-Subgenus = Subgenus
 Ranks-SUBKINGDOM = SUBKINGDOM
+Ranks-Subkingdom = Subkingdom
 Ranks-SUBORDER = SUBORDER
+Ranks-Suborder = Suborder
 Ranks-SUBPHYLUM = SUBPHYLUM
+Ranks-Subphylum = Subphylum
 Ranks-SUBSECTION = SUBSECTION
+Ranks-Subsection = Subsection
 Ranks-SUBSPECIES = SUBSPECIES
+Ranks-Subspecies = Subspecies
 Ranks-SUBTERCLASS = SUBTERCLASS
+Ranks-Subterclass = Subterclass
 Ranks-SUBTRIBE = SUBTRIBE
+Ranks-Subtribe = Subtribe
 Ranks-SUPERCLASS = SUPERCLASS
+Ranks-Superclass = Superclass
 Ranks-SUPERFAMILY = SUPERFAMILY
+Ranks-Superfamily = Superfamily
 Ranks-SUPERORDER = SUPERORDER
+Ranks-Superorder = Superorder
 Ranks-SUPERTRIBE = SUPERTRIBE
+Ranks-Supertribe = Supertribe
 Ranks-TRIBE = TRIBE
+Ranks-Tribe = Tribe
 Ranks-VARIETY = VARIETY
+Ranks-Variety = Variety
 Ranks-ZOOSECTION = ZOOSECTION
+Ranks-Zoosection = Zoosection
 Ranks-ZOOSUBSECTION = ZOOSUBSECTION
+Ranks-Zoosubsection = Zoosubsection
 Read-more-on-Wikipedia = Read more on Wikipedia
 # Heading for the sound recorder
 RECORD-NEW-SOUND = RECORD NEW SOUND
@@ -997,6 +1035,8 @@ Traditional-Project = Traditional Project
 Umbrella-Project = Umbrella Project
 UNFOLLOW = UNFOLLOW
 UNFOLLOW-USER = UNFOLLOW USER?
+# Text to show when a taoxn rank is unknown or missing
+Unknown--rank = Unknown
 # Text to show when a taxon or identification is unknown or missing
 Unknown--taxon = Unknown
 # Text to show when a user (or their name) is unknown or missing
@@ -1040,6 +1080,8 @@ USERNAME = USERNAME
 # Appears above the text fields
 USERNAME-OR-EMAIL = USERNAME OR EMAIL
 Using-iNaturalist-requires-the-storage = Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US.
+# Listing of app and build versions
+Version-app-build = Version { $appVersion } ({ $buildVersion })
 VIEW-CHILDREN-TAXA = VIEW CHILDREN TAXA
 VIEW-DATA-QUALITY-ASSESSMENT = VIEW DATA QUALITY ASSESSMENT
 VIEW-EDUCATORS-GUIDE = VIEW EDUCATOR'S GUIDE
@@ -1209,3 +1251,5 @@ Youve-previously-denied-location-permissions = You’ve previously denied locati
 Youve-previously-denied-microphone-permissions = You’ve previously denied microphone permissions, so please enable them in settings.
 Zoom-in-as-much-as-possible-to-improve = Zoom in as much as possible to improve location accuracy and get better identifications.
 Zoom-to-current-location = Zoom to current location
+# Label for button that shows zoom level, e.g. on a camera
+zoom-x = { $zoom }×

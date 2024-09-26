@@ -20,6 +20,38 @@ const {
   uniq
 } = require( "lodash" );
 
+function checkifyText( ftlTxt ) {
+  if ( ftlTxt.indexOf( "<0>" ) >= 0 ) {
+    return ftlTxt.replace( "<0>", "<0>✅" );
+  }
+  return `✅${ftlTxt}`;
+}
+
+// This will create a version of localizations that has a ✅ in
+// front of all text, as a way to see if there are untranslated strings
+function checkifyLocalizations( localizations ) {
+  // Mostly date format strings that will break with extra stuff in them
+  const keysToSkip = [
+    "date-month-year",
+    "Date-short-format",
+    "Date-this-year",
+    "date-format-short",
+    "datetime-format-short"
+  ];
+  return Object.keys( localizations ).reduce( ( memo, key ) => {
+    memo[key] = localizations[key];
+    if ( keysToSkip.indexOf( key ) >= 0 ) {
+      return memo;
+    }
+    if ( memo[key].val ) {
+      memo[key].val = checkifyText( memo[key].val );
+    } else {
+      memo[key] = checkifyText( memo[key] );
+    }
+    return memo;
+  }, {} );
+}
+
 // Convert a single FTL file to JSON
 const jsonifyPath = async ( inPath, outPath, options = { } ) => {
   let ftlTxt;
@@ -41,8 +73,11 @@ const jsonifyPath = async ( inPath, outPath, options = { } ) => {
   // comments, which are going to add a lot of bulk to these files
   const ftl2js = util.promisify( fluent.ftl2js );
   const localizations = await ftl2js( ftlTxt.toString( ) );
+  const massagedLocalizations = options.checkify
+    ? checkifyLocalizations( localizations )
+    : localizations;
   try {
-    await writeFile( outPath, `${JSON.stringify( localizations, null, 2 )}\n` );
+    await writeFile( outPath, `${JSON.stringify( massagedLocalizations, null, 2 )}\n` );
   } catch ( writeFileErr ) {
     console.error( `Failed to write ${outPath} with error:` );
     console.error( writeFileErr );
@@ -279,6 +314,16 @@ yargs
       await untranslatable( );
       await unused( );
       jsonifyLocalizations( argv );
+      writeLoadTranslations( );
+    }
+  )
+  .command(
+    "checkify",
+    "Prepend translations w/ ✅ to help see unglobalized text",
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    ( ) => {},
+    async argv => {
+      jsonifyLocalizations( { ...argv, checkify: true } );
       writeLoadTranslations( );
     }
   )

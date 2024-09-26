@@ -36,7 +36,7 @@ type Props = {
   removeStyling?: boolean,
   prefersCommonNames?: boolean,
   scientificNameFirst?: boolean,
-  showOneNameOnly: boolean,
+  showOneNameOnly?: boolean,
   selectable?: boolean,
   small?: boolean,
   taxon: Object,

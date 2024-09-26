@@ -1,27 +1,32 @@
-import classnames from "classnames";
 import { Body4, DisplayTaxonName } from "components/SharedComponents";
-import type { Node } from "react";
-import React from "react";
+import React, { FC, useCallback } from "react";
 import { Trans } from "react-i18next";
 import { useCurrentUser } from "sharedHooks";
 
 interface Props {
-    taxon:{
-        id: number;
-        name: string;
-        preferred_common_name?: string;
-        rank: string;
-        rank_level: number;
-      },
-    username: string,
-    withdrawn?: boolean
+  taxon:{
+    id: number;
+    name: string;
+    preferred_common_name?: string;
+    rank: string;
+    rank_level: number;
+  },
+  username: string,
+  withdrawn?: boolean
 }
 
-const DisagreementText = ( { taxon, username, withdrawn }: Props ): Node => {
-  const currentUser = useCurrentUser( );
+// TODO replace when we've properly typed Realm object
+interface User {
+  prefers_common_names?: boolean;
+  prefers_scientific_name_first?: boolean
+}
 
-  const showTaxonName = fontComponent => (
+const DisagreementText = ( { taxon, username, withdrawn }: Props ) => {
+  const currentUser = useCurrentUser( ) as User;
+
+  const showTaxonName = useCallback( ( fontComponent: FC ) => (
     <DisplayTaxonName
+      layout="horizontal"
       prefersCommonNames={currentUser?.prefers_common_names}
       removeStyling
       scientificNameFirst={currentUser?.prefers_scientific_name_first}
@@ -30,24 +35,29 @@ const DisagreementText = ( { taxon, username, withdrawn }: Props ): Node => {
       topTextComponent={fontComponent}
       withdrawn={withdrawn}
     />
-  );
+  ), [
+    currentUser?.prefers_common_names,
+    currentUser?.prefers_scientific_name_first,
+    taxon,
+    withdrawn
+  ] );
 
   return (
-    <Trans
-      i18nKey="Disagreement"
-      values={{ username }}
-      components={[
-        <Body4 className={
-          classnames(
-            {
-              "line-through": withdrawn
-            }
-          )
-        }
-        />,
-        showTaxonName( Body4 )
-      ]}
-    />
+    <Body4
+      className={
+        withdrawn
+          ? "line-through"
+          : undefined
+      }
+    >
+      <Trans
+        i18nKey="Disagreement"
+        values={{ username }}
+        components={[
+          showTaxonName( Body4 )
+        ]}
+      />
+    </Body4>
   );
 };
 
