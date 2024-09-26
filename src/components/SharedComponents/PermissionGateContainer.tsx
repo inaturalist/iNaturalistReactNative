@@ -204,6 +204,13 @@ const PermissionGateContainer = ( {
     }
   }, [result, children, setModalShown] );
 
+  useEffect( ( ) => {
+    // permission already denied
+    if ( result === RESULTS.BLOCKED ) {
+      setModalShown( false );
+    }
+  }, [result, setModalShown] );
+
   const closeModal = useCallback( ( ) => {
     setModalShown( false );
   }, [
@@ -240,9 +247,9 @@ const PermissionGateContainer = ( {
     result
   ] );
 
-  // If permission was granted, just render the children
+  // If permission results asked and answered, render children
   if (
-    ( result === RESULTS.GRANTED || result === RESULTS.LIMITED )
+    ( result === RESULTS.GRANTED || result === RESULTS.LIMITED || result === RESULTS.BLOCKED )
     && children
   ) return children;
 
