@@ -1,7 +1,7 @@
 // @flow
 import MyObservationsHeader from "components/MyObservations/MyObservationsHeader";
+import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
 import {
-  ObservationsFlashList,
   ScrollableWithStickyHeader,
   ViewWrapper
 } from "components/SharedComponents";

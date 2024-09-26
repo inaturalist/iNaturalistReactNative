@@ -4,7 +4,7 @@ import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import useInfiniteExploreScroll from "components/Explore/hooks/useInfiniteExploreScroll";
-import { ObservationsFlashList } from "components/SharedComponents";
+import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect } from "react";
