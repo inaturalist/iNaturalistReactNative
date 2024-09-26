@@ -1,5 +1,3 @@
-// TODO rename methods so they're reusable
-// TODO replace const functions w/ keyword functions
 // TODO redo in typescript
 // TODO rename all format translation keys to be date-format-* or datetime-format-*
 // Make sure all format strings have URL to formatting options
@@ -195,7 +193,7 @@ function dateFnsLocale( i18nextLanguage ) {
   }
 }
 
-const formatISONoTimezone = date => {
+function formatISONoTimezone( date ) {
   if ( !date ) {
     return "";
   }
@@ -206,33 +204,36 @@ const formatISONoTimezone = date => {
   // Always take the first part of the time/date string,
   // without any extra timezone, etc (just "2022-12-31T23:59:59")
   return formattedISODate.substring( 0, 19 );
-};
+}
 
 // two options for observed_on_string in uploader are:
 // 2020-03-01 00:00 or 2021-03-24T14:40:25
 // this is using the second format
 // https://github.com/inaturalist/inaturalist/blob/b12f16099fc8ad0c0961900d644507f6952bec66/spec/controllers/observation_controller_api_spec.rb#L161
-const formatDateStringFromTimestamp = timestamp => {
+function formatDateStringFromTimestamp( timestamp ) {
   if ( !timestamp ) {
     return "";
   }
   const date = fromUnixTime( timestamp );
   return formatISONoTimezone( date );
-};
+}
 
-const createObservedOnStringForUpload = date => formatDateStringFromTimestamp(
-  getUnixTime( date || new Date( ) )
-);
+function getNowISO( ) {
+  return formatDateStringFromTimestamp(
+    getUnixTime( new Date( ) )
+  );
+}
 
-const createObservedOnStringFromDatePicker = date => {
-  // DatePicker does not support seconds, so we're returning a date,
-  // without timezone and without seconds (just "2022-12-31T23:59")
+// Some components, like DatePicker, do not support seconds, so we're
+// returning a date, without timezone and without seconds
+// (just "2022-12-31T23:59")
+function formatISONoSeconds( date ) {
   const isoDate = formatISO( date );
   const isoDateNoSeconds = isoDate.substring( 0, 16 );
   return isoDateNoSeconds;
-};
+}
 
-const formatIdDate = ( date, i18n ) => {
+function formatDifferenceForHumans ( date, i18n ) {
   const d = typeof date === "string"
     ? parseISO( date )
     : new Date( date );
@@ -261,7 +262,7 @@ const formatIdDate = ( date, i18n ) => {
   }
   // Current year
   return format( d, i18n.t( "Date-this-year" ), formatOpts );
-};
+}
 
 function formatDateString( dateString, fmt, i18n, options = {} ) {
   if ( !dateString || dateString === "" ) {
@@ -297,13 +298,13 @@ function formatApiDatetime( dateString, i18n ) {
 }
 
 export {
-  createObservedOnStringForUpload,
-  createObservedOnStringFromDatePicker,
   displayDateTimeObsEdit,
   formatApiDatetime,
   formatDateStringFromTimestamp,
-  formatIdDate,
+  formatDifferenceForHumans,
+  formatISONoSeconds,
   formatISONoTimezone,
   formatLongDate,
-  formatMonthYearDate
+  formatMonthYearDate,
+  getNowISO
 };

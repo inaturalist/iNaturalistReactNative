@@ -1,7 +1,18 @@
+import {
+  parseISO,
+  subDays,
+  subHours,
+  subMinutes
+} from "date-fns";
 import factory from "factoria";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
-import { formatApiDatetime } from "sharedHelpers/dateAndTime";
+import {
+  formatApiDatetime,
+  formatDifferenceForHumans,
+  formatISONoSeconds,
+  getNowISO
+} from "sharedHelpers/dateAndTime";
 
 const remoteObservation = factory( "RemoteObservation", {
   created_at: "2015-02-12T20:41:10-08:00"
@@ -75,5 +86,54 @@ describe( "formatApiDatetime", ( ) => {
       const date = "2022-11-02";
       expect( formatApiDatetime( date, i18next ) ).toEqual( "2/11/22" );
     } );
+  } );
+} );
+
+describe( "getNowISO", ( ) => {
+  it( "should return a valid ISO8601 string", ( ) => {
+    const dateString = getNowISO( );
+    expect( parseISO( dateString ) ).not.toBeNull( );
+  } );
+  it( "should not have a time zone", ( ) => {
+    const dateString = getNowISO( );
+    expect( parseISO( dateString ) ).not.toContain( "Z" );
+  } );
+} );
+
+describe( "formatISONoSeconds", ( ) => {
+  it( "should not include seconds", ( ) => {
+    const dateString = formatISONoSeconds( new Date( ) );
+    expect( dateString.split( ":" ).length ).toEqual( 2 );
+  } );
+} );
+
+describe( "formatDifferenceForHumans", ( ) => {
+  it( "should show difference in minutes", ( ) => {
+    expect( formatDifferenceForHumans( subMinutes( new Date(), 3 ), i18next ) ).toMatch( /\d+m/ );
+  } );
+  it( "should show difference in hours", ( ) => {
+    expect( formatDifferenceForHumans( subHours( new Date(), 3 ), i18next ) ).toMatch( /\d+h/ );
+  } );
+  it( "should show difference in days", ( ) => {
+    expect( formatDifferenceForHumans( subDays( new Date(), 3 ), i18next ) ).toMatch( /\d+d/ );
+  } );
+  it( "should show difference in weeks", ( ) => {
+    expect( formatDifferenceForHumans( subDays( new Date(), 14 ), i18next ) ).toMatch( /\d+w/ );
+  } );
+  it( "should show day and month if over 30 days ago but still this year", ( ) => {
+    const date = subDays( new Date(), 40 );
+    const dateString = formatDifferenceForHumans( date, i18next );
+    const pattern = new RegExp( `\\w+ ${date.getDate()}` );
+    expect( dateString ).toMatch( pattern );
+  } );
+  it( "should show full date for prior years", ( ) => {
+    const date = subDays( new Date(), 400 );
+    const dateString = formatDifferenceForHumans( date, i18next );
+    const pattern = new RegExp( [
+      date.getMonth() + 1,
+      date.getDate(),
+      date.getFullYear() % 1000
+    ].join( "/" ) );
+    expect( dateString ).toMatch( pattern );
   } );
 } );

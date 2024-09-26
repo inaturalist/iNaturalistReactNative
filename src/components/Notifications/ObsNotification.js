@@ -10,7 +10,7 @@ import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
-import { formatIdDate } from "sharedHelpers/dateAndTime";
+import { formatDifferenceForHumans } from "sharedHelpers/dateAndTime";
 import { useTranslation } from "sharedHooks";
 
 const { useRealm } = RealmContext;
@@ -62,7 +62,7 @@ const ObsNotification = ( { item }: Props ): Node => {
           {item.created_at
             && (
               <Body4>
-                {formatIdDate( item.created_at, i18n )}
+                {formatDifferenceForHumans( item.created_at, i18n )}
               </Body4>
             )}
         </View>

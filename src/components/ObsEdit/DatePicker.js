@@ -5,8 +5,8 @@ import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
 import {
-  createObservedOnStringFromDatePicker,
-  displayDateTimeObsEdit
+  displayDateTimeObsEdit,
+  formatISONoSeconds
 } from "sharedHelpers/dateAndTime";
 import useTranslation from "sharedHooks/useTranslation";
 
@@ -23,7 +23,7 @@ const DatePicker = ( { currentObservation, updateObservationKeys }: Props ): Nod
   const closeModal = () => setShowModal( false );
 
   const handlePicked = value => {
-    const dateString = createObservedOnStringFromDatePicker( value );
+    const dateString = formatISONoSeconds( value );
     updateObservationKeys( {
       observed_on_string: dateString
     } );
