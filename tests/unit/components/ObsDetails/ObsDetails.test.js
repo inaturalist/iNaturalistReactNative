@@ -197,11 +197,11 @@ describe( "ObsDetails", () => {
   it( "renders observed date of observation in header", async ( ) => {
     renderObsDetails( );
     const observedDate = await screen.findByText(
-      formatApiDatetime( mockObservation.time_observed_at, i18next.t )
+      formatApiDatetime( mockObservation.time_observed_at, i18next )
     );
     expect( observedDate ).toBeVisible( );
     const createdDate = screen.queryByText(
-      formatApiDatetime( mockObservation.created_at, i18next.t )
+      formatApiDatetime( mockObservation.created_at, i18next )
     );
     expect( createdDate ).toBeFalsy( );
   } );

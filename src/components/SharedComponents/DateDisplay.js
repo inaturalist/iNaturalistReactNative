@@ -17,20 +17,30 @@ type Props = {
 };
 
 const DateDisplay = ( {
-  geoprivacy, taxonGeoprivacy, belongsToCurrentUser, dateString, label, classNameMargin
+  belongsToCurrentUser,
+  classNameMargin,
+  dateString,
+  geoprivacy,
+  label,
+  taxonGeoprivacy
 }: Props ): Node => {
-  const { t } = useTranslation( );
+  const { i18n } = useTranslation( );
   const obscuredDate = geoprivacy === "obscured"
-  || taxonGeoprivacy === "obscured"
-  || geoprivacy === "private"
-  || taxonGeoprivacy === "private";
+    || taxonGeoprivacy === "obscured"
+    || geoprivacy === "private"
+    || taxonGeoprivacy === "private";
 
   const formatDate = useMemo( () => {
     if ( !belongsToCurrentUser && obscuredDate ) {
-      return formatMonthYearDate( dateString, t );
+      return formatMonthYearDate( dateString, i18n );
     }
-    return formatApiDatetime( dateString, t );
-  }, [belongsToCurrentUser, obscuredDate, dateString, t] );
+    return formatApiDatetime( dateString, i18n );
+  }, [
+    belongsToCurrentUser,
+    obscuredDate,
+    dateString,
+    i18n
+  ] );
 
   const date = useMemo( ( ) => ( label
     ? `${label} `

@@ -20,7 +20,7 @@ const { useRealm } = RealmContext;
     };
 
 const ObsNotification = ( { item }: Props ): Node => {
-  const { t } = useTranslation( );
+  const { i18n } = useTranslation( );
   const { identification, comment } = item;
   const type = item?.notifier_type;
   const { user } = identification || comment;
@@ -62,7 +62,7 @@ const ObsNotification = ( { item }: Props ): Node => {
           {item.created_at
             && (
               <Body4>
-                {formatIdDate( item.created_at, t )}
+                {formatIdDate( item.created_at, i18n )}
               </Body4>
             )}
         </View>

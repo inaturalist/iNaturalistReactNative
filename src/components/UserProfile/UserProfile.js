@@ -19,7 +19,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import User from "realmModels/User.ts";
-import { formatUserProfileDate } from "sharedHelpers/dateAndTime";
+import { formatLongDate } from "sharedHelpers/dateAndTime";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
@@ -38,7 +38,7 @@ const UserProfile = ( ): Node => {
   const { userId, login } = params;
   const [showLoginSheet, setShowLoginSheet] = useState( false );
   const [showUnfollowSheet, setShowUnfollowSheet] = useState( false );
-  const { t } = useTranslation( );
+  const { t, i18n } = useTranslation( );
 
   const fetchId = userId || login;
   const { data: remoteUser, isError, error } = useAuthenticatedQuery(
@@ -159,10 +159,10 @@ const UserProfile = ( ): Node => {
           </View>
         ) }
         <Body2 className="mb-5">
-          {t( "Joined-date", { date: formatUserProfileDate( user.created_at, t ) } )}
+          {t( "Joined-date", { date: formatLongDate( user.created_at, i18n ) } )}
         </Body2>
         <Body2 className="mb-5">
-          {t( "Last-Active-date", { date: formatUserProfileDate( user.updated_at, t ) } )}
+          {t( "Last-Active-date", { date: formatLongDate( user.updated_at, i18n ) } )}
         </Body2>
         {user.site && (
           <Body2 className="mb-5">

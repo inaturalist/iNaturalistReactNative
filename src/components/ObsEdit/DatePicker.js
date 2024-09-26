@@ -16,7 +16,7 @@ type Props = {
 }
 
 const DatePicker = ( { currentObservation, updateObservationKeys }: Props ): Node => {
-  const { t } = useTranslation( );
+  const { t, i18n } = useTranslation( );
   const [showModal, setShowModal] = useState( false );
 
   const openModal = () => setShowModal( true );
@@ -31,7 +31,9 @@ const DatePicker = ( { currentObservation, updateObservationKeys }: Props ): Nod
   };
 
   const displayDate = ( ) => displayDateTimeObsEdit(
-    currentObservation?.observed_on_string || currentObservation?.time_observed_at
+    currentObservation?.observed_on_string || currentObservation?.time_observed_at,
+    i18n,
+    { missing: null }
   );
 
   return (
