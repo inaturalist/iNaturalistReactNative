@@ -1,0 +1,43 @@
+import React from "react";
+import { View } from "react-native";
+
+import useTakePhoto from "components/Camera/hooks/useTakePhoto.ts";
+import TakePhoto from "components/Camera/Buttons/TakePhoto";
+
+const CameraContainer = ( ) => {
+  const camera = {
+    current: {
+      takePhoto: (options) => ({
+        path: "mock-uri.jpeg",
+        width: 100,
+        height: 100,
+      }),
+    }
+  };
+  const {
+    takePhoto,
+    takePhotoOptions,
+    takingPhoto,
+    toggleFlash
+  } = useTakePhoto( camera, false, null );
+
+  return (
+    <View
+      style={{
+        alignItems: "center",
+        justifyContent: "center",
+        flex: 1,
+        backgroundColor: "black"
+      }}
+      testID="mock-camera"
+    >
+      <TakePhoto
+        disabled={false}
+        takePhoto={takePhoto}
+        showPrediction={false}
+      />
+    </View>
+  );
+};
+
+export default CameraContainer;
