@@ -37,6 +37,8 @@ describe( "AICamera", () => {
     await arCameraButton.tap();
 
     // Take a photo with the camera
+    const cameraContainer = element( by.id( "CameraWithDevice" ) );
+    await waitFor( cameraContainer ).toBeVisible().withTimeout( 10000 );
     const takePhotoButton = element( by.id( "take-photo-button" ) );
     await waitFor( takePhotoButton ).toBeVisible().withTimeout( 10000 );
     await takePhotoButton.tap();
