@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import RNFS, { writeFile } from "react-native-fs";
+import RNFS from "react-native-fs";
 
 const mockFrame = {
   isValid: true,
@@ -41,12 +41,42 @@ export class mockCamera extends React.PureComponent {
 
   // eslint-disable-next-line class-methods-use-this, react/no-unused-class-component-methods
   async takePhoto( ) {
-    const writePath = `${RNFS.DocumentDirectoryPath}/simulated_camera_photo.png`;
-
-    const imageDataBase64 = "some_large_base_64_encoded_simulated_camera_photo";
-    await writeFile( writePath, imageDataBase64, "base64" );
-
-    return { path: writePath };
+    return CameraRoll.getPhotos( {
+      first: 20,
+      assetType: "Photos"
+    } )
+      .then( async r => {
+        console.log( "r.edges", r.edges );
+        const testPhoto = r.edges[r.edges.length - 1].node.image;
+        console.log( "testPhoto", testPhoto );
+        let oldUri = testPhoto.uri;
+        if ( testPhoto.uri.includes( "ph://" ) ) {
+          let id = testPhoto.uri.replace( "ph://", "" );
+          id = id.substring( 0, id.indexOf( "/" ) );
+          oldUri = `assets-library://asset/asset.jpg?id=${id}&ext=jpg`;
+          console.log( `Converted file uri to ${oldUri}` );
+        }
+        const encodedUri = encodeURI( oldUri );
+        const destPath = `${RNFS.TemporaryDirectoryPath}temp.jpg`;
+        const newPath = await RNFS.copyAssetsFileIOS( encodedUri, destPath, 0, 0 );
+        console.log( "newPath", newPath );
+        const photo = { uri: newPath, predictions: [] };
+        if ( typeof photo !== "object" ) {
+          console.log( "photo is not an object", typeof photo );
+          return null;
+        }
+        return {
+          ...testPhoto,
+          path: newPath,
+          metadata: {
+            Orientation: testPhoto.orientation
+          }
+        };
+      } )
+      .catch( err => {
+        console.log( "Error getting photos", err );
+        return null;
+      } );
   }
 
   render() {
