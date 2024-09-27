@@ -334,6 +334,7 @@ const TaxonDetails = ( ): Node => {
       {showSelectButton && (
         <StickyToolbar containerClass="items-center z-50">
           <Button
+            testID="TaxonDetails.SelectButton"
             className="max-w-[500px] w-full"
             level="focus"
             text={t( "SELECT-THIS-TAXON" )}

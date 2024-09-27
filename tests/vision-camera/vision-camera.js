@@ -42,6 +42,7 @@ export class mockCamera extends React.PureComponent {
 
   // eslint-disable-next-line class-methods-use-this, react/no-unused-class-component-methods
   async takePhoto( ) {
+    // TODO: this only works on iOS
     return CameraRoll.getPhotos( {
       first: 20,
       assetType: "Photos"

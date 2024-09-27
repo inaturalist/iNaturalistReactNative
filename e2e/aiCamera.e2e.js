@@ -70,5 +70,15 @@ describe( "AICamera", () => {
     const takePhotoButton = element( by.id( "take-photo-button" ) );
     await waitFor( takePhotoButton ).toBeVisible().withTimeout( 10000 );
     await takePhotoButton.tap();
+
+    // On suggestions
+    const suggestion = element( by.id( "SuggestionsList.taxa.343817" ) );
+    await waitFor( suggestion ).toBeVisible().withTimeout( 10000 );
+    await suggestion.tap();
+
+    // On Taxon Detail
+    const selectTaxonButon = element( by.id( "TaxonDetails.SelectButton" ) );
+    await waitFor( selectTaxonButon ).toBeVisible().withTimeout( 10000 );
+    await selectTaxonButon.tap();
   } );
 } );
