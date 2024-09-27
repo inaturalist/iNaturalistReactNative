@@ -2,6 +2,28 @@ import React from "react";
 import { View } from "react-native";
 import RNFS, { writeFile } from "react-native-fs";
 
+const mockFrame = {
+  isValid: true,
+  width: 1920,
+  height: 1080,
+  bytesPerRow: 1920,
+  planesCount: 1,
+  isMirrored: false,
+  timestamp: 0,
+  orientation: "portrait",
+  pixelFormat: "yuv",
+  // Returns a fake ArrayBuffer
+  toArrayBuffer: () => new ArrayBuffer( 1920 * 1080 ),
+  toString: () => "Frame",
+  getNativeBuffer: () => ( {
+    // Returns a fake pointer
+    pointer: 0,
+    delete: () => null
+  } ),
+  incrementRefCount: () => null,
+  decrementRefCount: () => null
+};
+
 const style = { flex: 1, backgroundColor: "red" };
 export class mockCamera extends React.PureComponent {
   static async getAvailableCameraDevices() {
@@ -10,6 +32,11 @@ export class mockCamera extends React.PureComponent {
         position: "back"
       }
     ];
+  }
+
+  componentDidUpdate() {
+    const { frameProcessor } = this.props;
+    frameProcessor?.frameProcessor( mockFrame );
   }
 
   // eslint-disable-next-line class-methods-use-this, react/no-unused-class-component-methods
