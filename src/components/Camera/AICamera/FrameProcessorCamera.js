@@ -1,6 +1,7 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
 import CameraView from "components/Camera/CameraView.tsx";
+import InatVision from "components/Camera/helpers/vision-camera-plugin-inatvision-imports";
 import type { Node } from "react";
 import React, {
   useEffect,
@@ -17,7 +18,6 @@ import {
   usePatchedRunAsync
 } from "sharedHelpers/visionCameraPatches";
 import { useDeviceOrientation } from "sharedHooks";
-import * as InatVision from "vision-camera-plugin-inatvision";
 
 type Props = {
   // $FlowIgnore
