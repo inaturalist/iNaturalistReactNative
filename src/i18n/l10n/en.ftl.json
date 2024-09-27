@@ -86,6 +86,7 @@
     "comment": "As in intellectual property rights over a photo or other creative work",
     "val": "all rights reserved"
   },
+  "All-taxa": "All taxa",
   "ALLOW-LOCATION-ACCESS": "ALLOW LOCATION ACCESS",
   "Almost-done": {
     "comment": "As in automated identification suggestions",
@@ -337,6 +338,14 @@
   "Data-quality-needs-id-description": "This observation needs more identifications to reach research grade",
   "Data-quality-research-description": "This observation has enough identifications to be considered research grade",
   "DATE": "DATE",
+  "Date": {
+    "comment": "label in project requirements",
+    "val": "Date"
+  },
+  "Date-days": {
+    "comment": "Used when displaying a relative time - in this case, X days ago (e.g. 3d = 3 days ago)",
+    "val": "{ $count }d"
+  },
   "date-format-long": {
     "comment": "Used for things like User Profile join date\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
     "val": "PP"
@@ -515,6 +524,10 @@
   },
   "ERROR-VOTING-IN-DQA": "ERROR VOTING IN DQA",
   "Error-voting-in-DQA-description": "Your vote may not have been cast in the DQA. Check your internet connection and try again.",
+  "Establishment": {
+    "comment": "label in project requirements",
+    "val": "Establishment"
+  },
   "ESTABLISHMENT-MEANS": "ESTABLISHMENT MEANS",
   "ESTABLISHMENT-MEANS-header": {
     "comment": "Header for a section describing how a taxon arrived in a given place",
@@ -525,6 +538,7 @@
   "EVIDENCE": "EVIDENCE",
   "Exact-Date": "Exact Date",
   "EXACT-DATE": "EXACT DATE",
+  "except": "except",
   "EXPAND-MAP": "EXPAND MAP",
   "Explore": "Explore",
   "EXPLORE": "EXPLORE",
@@ -771,6 +785,10 @@
     "val": "May"
   },
   "MEDIA": "MEDIA",
+  "Media-Type": {
+    "comment": "label in project requirements",
+    "val": "Media Type"
+  },
   "MEMBERS-WITHOUT-NUMBER": "{ $count ->\n  [one] MEMBER\n *[other] MEMBERS\n}",
   "Menu": {
     "comment": "Accessibility label for a button that opens a menu of options",
@@ -1011,6 +1029,7 @@
     "comment": "As in an iNat project, a collection of observations or observation search filters",
     "val": "PROJECT"
   },
+  "Project-Members-Only": "Project Members Only",
   "PROJECT-REQUIREMENTS": "PROJECT REQUIREMENTS",
   "PROJECTS": {
     "comment": "As in iNat project, collections of observations or observation search filters",
@@ -1021,6 +1040,10 @@
     "val": "Projects"
   },
   "QUALITY-GRADE": "QUALITY GRADE",
+  "Quality-Grade": {
+    "comment": "label in project requirements",
+    "val": "Quality Grade"
+  },
   "Quality-Grade-casual": {
     "comment": "Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Casual",
     "val": "Quality Grade Casual"
@@ -1329,6 +1352,7 @@
     "val": "Standard"
   },
   "Start-must-be-before-end": "The start date must be before the end date.",
+  "Start-time": "Start time: { $date }",
   "Start-upload": "Start upload",
   "Starts-recording-sound": {
     "comment": "Accessibility hint for button that starts recording a sound",
@@ -1364,6 +1388,10 @@
   "Syncing": "Syncing...",
   "Take-photo": "Take photo",
   "Take-photos-with-the-camera": "Take photos of a single organism with the camera",
+  "Taxa": {
+    "comment": "label in project requirements",
+    "val": "Taxa"
+  },
   "TAXON": "TAXON",
   "TAXON-NAMES-DISPLAY": {
     "comment": "Settings screen",
@@ -1460,7 +1488,15 @@
     "comment": "Appears above the text fields",
     "val": "USERNAME OR EMAIL"
   },
+  "Users": {
+    "comment": "label in project requirements",
+    "val": "Users"
+  },
   "Using-iNaturalist-requires-the-storage": "Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US.",
+  "VIEW-ALL-X-PLACES": "VIEW ALL { $count } PLACES",
+  "VIEW-ALL-X-PROJECTS": "VIEW ALL { $count } PROJECTS",
+  "VIEW-ALL-X-TAXA": "VIEW ALL { $count } TAXA",
+  "VIEW-ALL-X-USERS": "VIEW ALL { $count } USERS",
   "Version-app-build": {
     "comment": "Listing of app and build versions",
     "val": "Version { $appVersion } ({ $buildVersion })"

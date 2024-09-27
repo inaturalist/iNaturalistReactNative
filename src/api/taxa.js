@@ -68,14 +68,21 @@ function mapToLocalSchema( taxon ) {
   return taxon;
 }
 
-async function fetchTaxon( id: number, params: Object = {}, opts: Object = {} ): Promise<?Object> {
+async function fetchTaxon(
+  id: number | Array<number>,
+  params: Object = {},
+  opts: Object = {}
+): Promise<?Object> {
   try {
     const fetchParams = { ...PARAMS, ...params };
     const response = await inatjs.taxa.fetch( id, fetchParams, opts );
-    const results = response?.results;
-    if ( !results || results.length === 0 ) return null;
+    if ( typeof id === "number" ) {
+      const results = response?.results;
+      if ( !results || results.length === 0 ) return null;
 
-    return mapToLocalSchema( results[0] );
+      return mapToLocalSchema( results[0] );
+    }
+    return response;
   } catch ( e ) {
     return handleError( e );
   }

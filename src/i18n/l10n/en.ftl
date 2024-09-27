@@ -76,6 +76,7 @@ All-observations = All observations
 All-organisms = All organisms
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = all rights reserved
+All-taxa = All taxa
 ALLOW-LOCATION-ACCESS = ALLOW LOCATION ACCESS
 # As in automated identification suggestions
 Almost-done = Almost done!
@@ -240,6 +241,11 @@ Data-quality-casual-description = This observation needs more information verifi
 Data-quality-needs-id-description = This observation needs more identifications to reach research grade
 Data-quality-research-description = This observation has enough identifications to be considered research grade
 DATE = DATE
+# label in project requirements
+Date = Date
+# Used when displaying a relative time - in this case, X days ago (e.g. 3d = 3 days ago)
+Date-days = { $count }d
+# Date formatting using date-fns
 # Used for things like User Profile join date
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 date-format-long = PP
@@ -367,6 +373,8 @@ ERROR-LOADING-DQA = ERROR LOADING IN DQA
 Error-title = Error
 ERROR-VOTING-IN-DQA = ERROR VOTING IN DQA
 Error-voting-in-DQA-description = Your vote may not have been cast in the DQA. Check your internet connection and try again.
+# label in project requirements
+Establishment = Establishment
 ESTABLISHMENT-MEANS = ESTABLISHMENT MEANS
 # Header for a section describing how a taxon arrived in a given place
 ESTABLISHMENT-MEANS-header = ESTABLISHMENT MEANS
@@ -375,6 +383,7 @@ Every-time-a-collection-project = Every time a collection project's page is load
 EVIDENCE = EVIDENCE
 Exact-Date = Exact Date
 EXACT-DATE = EXACT DATE
+except = except
 EXPAND-MAP = EXPAND MAP
 Explore = Explore
 EXPLORE = EXPLORE
@@ -568,6 +577,8 @@ maverick--identification = Maverick
 # Month of May
 May = May
 MEDIA = MEDIA
+# label in project requirements
+Media-Type = Media Type
 MEMBERS-WITHOUT-NUMBER =
     { $count ->
         [one] MEMBER
@@ -743,12 +754,15 @@ PRIVACY-POLICY = PRIVACY POLICY
 Private = Private
 # As in an iNat project, a collection of observations or observation search filters
 PROJECT = PROJECT
+Project-Members-Only = Project Members Only
 PROJECT-REQUIREMENTS = PROJECT REQUIREMENTS
 # As in iNat project, collections of observations or observation search filters
 PROJECTS = PROJECTS
 # As in iNat projects, collections of observations or observation search filters
 Projects = Projects
 QUALITY-GRADE = QUALITY GRADE
+# label in project requirements
+Quality-Grade = Quality Grade
 # Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Casual
 Quality-Grade-casual = Quality Grade Casual
 quality-grade-casual = Casual
@@ -985,6 +999,7 @@ SPECIES-WITHOUT-NUMBER =
 # Label for the standard map type
 Standard--map-type = Standard
 Start-must-be-before-end = The start date must be before the end date.
+Start-time = Start time: { $date }
 Start-upload = Start upload
 # Accessibility hint for button that starts recording a sound
 Starts-recording-sound = Starts recording sound
@@ -1008,6 +1023,8 @@ Sync-observations = Sync observations
 Syncing = Syncing...
 Take-photo = Take photo
 Take-photos-with-the-camera = Take photos of a single organism with the camera
+# label in project requirements
+Taxa = Taxa
 TAXON = TAXON
 # Settings screen
 TAXON-NAMES-DISPLAY = TAXON NAMES DISPLAY
@@ -1086,9 +1103,15 @@ User = User { $userHandle }
 USERNAME = USERNAME
 # Appears above the text fields
 USERNAME-OR-EMAIL = USERNAME OR EMAIL
+# label in project requirements
+Users = Users
 Using-iNaturalist-requires-the-storage = Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US.
 # Listing of app and build versions
 Version-app-build = Version { $appVersion } ({ $buildVersion })
+VIEW-ALL-X-PLACES = VIEW ALL { $count } PLACES
+VIEW-ALL-X-PROJECTS = VIEW ALL { $count } PROJECTS
+VIEW-ALL-X-TAXA = VIEW ALL { $count } TAXA
+VIEW-ALL-X-USERS = VIEW ALL { $count } USERS
 VIEW-CHILDREN-TAXA = VIEW CHILDREN TAXA
 VIEW-DATA-QUALITY-ASSESSMENT = VIEW DATA QUALITY ASSESSMENT
 VIEW-EDUCATORS-GUIDE = VIEW EDUCATOR'S GUIDE
