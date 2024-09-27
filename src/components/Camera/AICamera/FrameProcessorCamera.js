@@ -1,6 +1,9 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
 import CameraView from "components/Camera/CameraView.tsx";
+import {
+  useFrameProcessor
+} from "components/Camera/helpers/react-native-vision-camera-imports";
 import InatVision from "components/Camera/helpers/vision-camera-plugin-inatvision-imports";
 import type { Node } from "react";
 import React, {
@@ -8,9 +11,6 @@ import React, {
   useState
 } from "react";
 import { Platform } from "react-native";
-import {
-  useFrameProcessor
-} from "react-native-vision-camera";
 import { Worklets } from "react-native-worklets-core";
 import { modelPath, modelVersion, taxonomyPath } from "sharedHelpers/cvModel.ts";
 import {
