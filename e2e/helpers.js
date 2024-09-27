@@ -4,7 +4,12 @@ export async function iNatE2eBeforeAll( device ) {
   if ( device.getPlatform() === "android" ) {
     await device.launchApp( {
       newInstance: true,
-      permissions: { location: "always", camera: "YES" }
+      permissions: {
+        location: "always",
+        camera: "YES",
+        medialibrary: "YES",
+        photos: "YES"
+      }
     } );
   }
 }
@@ -17,7 +22,12 @@ export async function iNatE2eBeforeEach( device ) {
   } else {
     await device.launchApp( {
       newInstance: true,
-      permissions: { location: "always", camera: "YES" }
+      permissions: {
+        location: "always",
+        camera: "YES",
+        medialibrary: "YES",
+        photos: "YES"
+      }
     } );
     // disable password autofill
     execSync(
