@@ -96,10 +96,7 @@ const ProjectRequirements = ( ) => {
     }, optsWithAuth )
   );
 
-  // const rules = project?.project_observation_rules;
-
   console.log( project?.search_parameters, "search params" );
-  // console.log( project?.rule_preferences, "rule prefs" );
 
   // Taxa Requirements
   const includedTaxonIds = getFieldValue( project?.search_parameters
@@ -158,12 +155,13 @@ const ProjectRequirements = ( ) => {
   }
 
   // Location Requirement
-  const placeId = Number( project?.place_id );
+  const includedPlaceIds = getFieldValue( project?.search_parameters
+    ?.filter( pref => pref.field === "place_id" ) );
 
   const { data: places } = useAuthenticatedQuery(
-    ["fetchPlace", placeId],
+    ["fetchPlace", includedPlaceIds],
     optsWithAuth => fetchPlace(
-      placeId,
+      includedPlaceIds,
       {
         fields: {
           display_name: true
@@ -172,23 +170,23 @@ const ProjectRequirements = ( ) => {
       optsWithAuth
     ),
     {
-      enabled: !!( placeId )
+      enabled: !!( includedPlaceIds.length > 0 )
     }
   );
 
-  const placeResult = places?.results?.[0]?.display_name;
+  const placeResults = places?.results;
 
-  if ( placeResult ) {
+  if ( placeResults?.length > 0 ) {
     const locationRule = RULES.find( r => r.name === t( "Location" ) );
-    locationRule.inclusions = [( {
-      text: placeResult,
+    locationRule.inclusions = placeResults.map( result => ( {
+      text: result.display_name,
       onPress: ( ) => navigation.navigate( "Explore", {
         place: {
-          id: placeId,
-          display_name: placeResult
+          id: result.id,
+          display_name: result.display_name
         }
       } )
-    } )];
+    } ) );
   }
 
   // Users Requirements

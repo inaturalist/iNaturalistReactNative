@@ -25,7 +25,7 @@ const ProjectRuleItem = ( { rule }: Props ) => {
 
   const showRules = ruleType => ruleType.map( item => (
     <Body3
-      key={item?.text || item?.taxon?.name}
+      key={`${rule.name}-${item?.text}` || item?.taxon?.name}
       className={classnames(
         "pb-2 flex-row",
         {
