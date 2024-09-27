@@ -4,7 +4,7 @@ import { Body4, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useMemo } from "react";
-import { formatApiDatetime, formatMonthYearDate } from "sharedHelpers/dateAndTime";
+import { formatApiDatetime, formatMonthYearDate } from "sharedHelpers/dateAndTime.ts";
 import { useTranslation } from "sharedHooks";
 
 type Props = {

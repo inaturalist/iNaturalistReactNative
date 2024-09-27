@@ -239,19 +239,18 @@ Data-quality-casual-description = This observation needs more information verifi
 Data-quality-needs-id-description = This observation needs more identifications to reach research grade
 Data-quality-research-description = This observation has enough identifications to be considered research grade
 DATE = DATE
-# Used when displaying a relative time - in this case, X days ago (e.g. 3d = 3 days ago)
-Date-days = { $count }d
-# Date formatting using date-fns
+# Used for things like User Profile join date
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 date-format-long = PP
-# Date formatting using date-fns
+# Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3
+# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+date-format-month-day = MMM d
+# Use when only showing an observations month and year
+# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+date-format-month-year = MMM yyyy
+# Short date, e.g. on notifications from over a year ago
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 date-format-short = M/d/yy
-# Used when displaying a relative time - in this case, X hours ago (e.g. 3h = 3 hours ago)
-Date-hours = { $count }h
-# Used when displaying a relative time - in this case, X minutes ago (e.g. 3m = 3 minutes ago)
-Date-minutes = { $count }m
-date-month-year = MMM yyyy
 DATE-OBSERVED = DATE OBSERVED
 Date-observed = Date observed
 Date-observed-header-short = Observed
@@ -261,18 +260,23 @@ DATE-OBSERVED-OLDEST = DATE OBSERVED - OLDEST TO NEWEST
 Date-Range = Date Range
 # Label for controls over a range of dates
 DATE-RANGE = DATE RANGE
-# Used when displaying a relative time - in this case, shows an absolute date (e.g. 12/31/22)
-Date-short-format = MM/dd/yy
-# Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3
-Date-this-year = MMM d
 DATE-UPLOADED = DATE UPLOADED
 Date-uploaded = Date uploaded
 Date-uploaded-header-short = Uploaded
 DATE-UPLOADED-NEWEST = DATE UPLOADED - NEWEST TO OLDEST
 DATE-UPLOADED-OLDEST = DATE UPLOADED - OLDEST TO NEWEST
+# Used when displaying a relative time - in this case, X days ago (e.g. 3d = 3 days ago)
+datetime-difference-days = { $count }d
+# Used when displaying a relative time - in this case, X hours ago (e.g. 3h = 3 hours ago)
+datetime-difference-hours = { $count }h
+# Used when displaying a relative time - in this case, X minutes ago (e.g. 3m = 3 minutes ago)
+datetime-difference-minutes = { $count }m
 # Used when displaying a relative time - in this case, X weeks ago (e.g. 3w = 3 weeks ago)
-Date-weeks = { $count }w
-# Date formatting using date-fns
+datetime-difference-weeks = { $count }w
+# Longer datetime, e.g. on ObsEdit
+# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+datetime-format-long = Pp
+# Shorter datetime, e.g. on comments and IDs
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 datetime-format-short = M/d/yy h:mm a
 # Month of December

@@ -10,7 +10,7 @@ import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
-import { formatDifferenceForHumans } from "sharedHelpers/dateAndTime";
+import { formatDifferenceForHumans } from "sharedHelpers/dateAndTime.ts";
 import { useTranslation } from "sharedHooks";
 
 const { useRealm } = RealmContext;

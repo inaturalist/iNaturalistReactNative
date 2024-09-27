@@ -1,6 +1,9 @@
-// TODO redo in typescript
-// TODO rename all format translation keys to be date-format-* or datetime-format-*
-// Make sure all format strings have URL to formatting options
+// Helpers for working with dates
+
+// Note: this is a collection of reusable helpers. Please don't give them
+// names that are specific to particular views,
+// like "myObsDateFormat"
+
 import {
   differenceInDays,
   differenceInHours,
@@ -16,20 +19,23 @@ import {
   ar,
   be,
   bg,
-  br,
+  // br,
   ca,
   cs,
   da,
   de,
   el,
-  en,
+  // en,
   enGB,
+  enIN,
+  enNZ,
+  enUS,
   eo,
   es,
-  esAR,
-  esCO,
-  esCR,
-  esMX,
+  // esAR,
+  // esCO,
+  // esCR,
+  // esMX,
   et,
   eu,
   fi,
@@ -49,9 +55,9 @@ import {
   lb,
   lt,
   lv,
-  mi,
+  // mi,
   mk,
-  mr,
+  // mr,
   nb,
   nl,
   oc,
@@ -59,7 +65,7 @@ import {
   pt,
   ptBR,
   ru,
-  sat,
+  // sat,
   sk,
   sl,
   sq,
@@ -71,8 +77,14 @@ import {
   zhCN,
   zhTW
 } from "date-fns/locale";
+import { i18n as i18next } from "i18next";
 
-function dateFnsLocale( i18nextLanguage ) {
+// Convert iNat locale to date-fns locale. Note that coverage is *not*
+// complete, so some locales will see dates formatted in a nearby locale,
+// e.g. Breton users will see French dates, including French month
+// abbreviations. The only solution is to contribute new locales to date-fns:
+// https://date-fns.org/v4.1.0/docs/I18n-Contribution-Guide
+function dateFnsLocale( i18nextLanguage: string ) {
   switch ( i18nextLanguage ) {
     case "ar":
       return ar;
@@ -81,7 +93,8 @@ function dateFnsLocale( i18nextLanguage ) {
     case "bg":
       return bg;
     case "br":
-      return br;
+      // Assuming Breton uses the same date format as France
+      return fr;
     case "ca":
       return ca;
     case "cs":
@@ -93,7 +106,7 @@ function dateFnsLocale( i18nextLanguage ) {
     case "el":
       return el;
     case "en":
-      return en;
+      return enUS;
     case "en-GB":
       return enGB;
     case "eo":
@@ -101,13 +114,17 @@ function dateFnsLocale( i18nextLanguage ) {
     case "es":
       return es;
     case "es-AR":
-      return esAR;
+      // date-fns doesn't have New World Spanish date formats, so we'll see how this goes
+      return es;
     case "es-CO":
-      return esCO;
+      // date-fns doesn't have New World Spanish date formats, so we'll see how this goes
+      return es;
     case "es-CR":
-      return esCR;
+      // date-fns doesn't have New World Spanish date formats, so we'll see how this goes
+      return es;
     case "es-MX":
-      return esMX;
+      // date-fns doesn't have New World Spanish date formats, so we'll see how this goes
+      return es;
     case "et":
       return et;
     case "eu":
@@ -147,11 +164,13 @@ function dateFnsLocale( i18nextLanguage ) {
     case "lv":
       return lv;
     case "mi":
-      return mi;
+      // No support for Maori yet
+      return enNZ;
     case "mk":
       return mk;
     case "mr":
-      return mr;
+      // No support for Marathi yet
+      return enIN;
     case "nb":
       return nb;
     case "nl":
@@ -167,7 +186,8 @@ function dateFnsLocale( i18nextLanguage ) {
     case "ru":
       return ru;
     case "sat":
-      return sat;
+      // No support for Santali yet
+      return enIN;
     case "sk":
       return sk;
     case "sl":
@@ -189,11 +209,11 @@ function dateFnsLocale( i18nextLanguage ) {
     case "zh-TW":
       return zhTW;
     default:
-      return en;
+      return enUS;
   }
 }
 
-function formatISONoTimezone( date ) {
+function formatISONoTimezone( date: Date ) {
   if ( !date ) {
     return "";
   }
@@ -210,7 +230,7 @@ function formatISONoTimezone( date ) {
 // 2020-03-01 00:00 or 2021-03-24T14:40:25
 // this is using the second format
 // https://github.com/inaturalist/inaturalist/blob/b12f16099fc8ad0c0961900d644507f6952bec66/spec/controllers/observation_controller_api_spec.rb#L161
-function formatDateStringFromTimestamp( timestamp ) {
+function formatDateStringFromTimestamp( timestamp: number ) {
   if ( !timestamp ) {
     return "";
   }
@@ -227,13 +247,13 @@ function getNowISO( ) {
 // Some components, like DatePicker, do not support seconds, so we're
 // returning a date, without timezone and without seconds
 // (just "2022-12-31T23:59")
-function formatISONoSeconds( date ) {
+function formatISONoSeconds( date: Date ) {
   const isoDate = formatISO( date );
   const isoDateNoSeconds = isoDate.substring( 0, 16 );
   return isoDateNoSeconds;
 }
 
-function formatDifferenceForHumans ( date, i18n ) {
+function formatDifferenceForHumans( date: Date, i18n: i18next ) {
   const d = typeof date === "string"
     ? parseISO( date )
     : new Date( date );
@@ -247,24 +267,34 @@ function formatDifferenceForHumans ( date, i18n ) {
       const hours = differenceInHours( now, d );
       if ( hours < 1 ) {
         const minutes = differenceInMinutes( now, d );
-        return i18n.t( "Date-minutes", { count: minutes } );
+        return i18n.t( "datetime-difference-minutes", { count: minutes } );
       }
-      return i18n.t( "Date-hours", { count: hours } );
+      return i18n.t( "datetime-difference-hours", { count: hours } );
     } if ( days < 7 ) {
-      return i18n.t( "Date-days", { count: days } );
+      return i18n.t( "datetime-difference-days", { count: days } );
     }
-    return i18n.t( "Date-weeks", { count: parseInt( days / 7, 10 ) } );
+    return i18n.t( "datetime-difference-weeks", { count: days / 7 } );
   }
+  console.log( "[DEBUG dateAndTime.ts] i18n.language: ", i18n.language );
   const formatOpts = { locale: dateFnsLocale( i18n.language ) };
   if ( getYear( now ) !== getYear( d ) ) {
     // Previous year(s)
-    return format( d, i18n.t( "Date-short-format" ), formatOpts );
+    return format( d, i18n.t( "date-format-short" ), formatOpts );
   }
   // Current year
-  return format( d, i18n.t( "Date-this-year" ), formatOpts );
+  return format( d, i18n.t( "date-format-month-day" ), formatOpts );
 }
 
-function formatDateString( dateString, fmt, i18n, options = {} ) {
+type FormatDateStringOptions = {
+  missing?: string | null;
+}
+
+function formatDateString(
+  dateString: string,
+  fmt: string,
+  i18n: i18next,
+  options: FormatDateStringOptions = { }
+) {
   if ( !dateString || dateString === "" ) {
     return options.missing === undefined
       ? i18n.t( "Missing-Date" )
@@ -277,34 +307,50 @@ function formatDateString( dateString, fmt, i18n, options = {} ) {
   );
 }
 
-function formatMonthYearDate( dateString, i18n ) {
-  return formatDateString( dateString, i18n.t( "date-month-year" ), i18n );
+function formatMonthYearDate(
+  dateString: string,
+  i18n: i18next,
+  options: FormatDateStringOptions = {}
+) {
+  return formatDateString( dateString, i18n.t( "date-format-month-year" ), i18n, options );
 }
 
-function formatLongDate( dateString, i18n ) {
-  return formatDateString( dateString, i18n.t( "date-format-long" ), i18n );
+function formatLongDate(
+  dateString: string,
+  i18n: i18next,
+  options: FormatDateStringOptions = {}
+) {
+  return formatDateString( dateString, i18n.t( "date-format-long" ), i18n, options );
 }
 
-function displayDateTimeObsEdit( dateString, i18n, options = {} ) {
-  return formatDateString( dateString, "Pp", i18n, options );
+function formatLongDatetime(
+  dateString: string,
+  i18n: i18next,
+  options: FormatDateStringOptions = {}
+) {
+  return formatDateString( dateString, i18n.t( "datetime-format-long" ), i18n, options );
 }
 
-function formatApiDatetime( dateString, i18n ) {
+function formatApiDatetime(
+  dateString: string,
+  i18n: i18next,
+  options: FormatDateStringOptions = {}
+) {
   const hasTime = String( dateString ).includes( "T" );
   if ( hasTime ) {
-    return formatDateString( dateString, i18n.t( "datetime-format-short" ), i18n );
+    return formatDateString( dateString, i18n.t( "datetime-format-short" ), i18n, options );
   }
-  return formatDateString( dateString, i18n.t( "date-format-short" ), i18n );
+  return formatDateString( dateString, i18n.t( "date-format-short" ), i18n, options );
 }
 
 export {
-  displayDateTimeObsEdit,
   formatApiDatetime,
   formatDateStringFromTimestamp,
   formatDifferenceForHumans,
   formatISONoSeconds,
   formatISONoTimezone,
   formatLongDate,
+  formatLongDatetime,
   formatMonthYearDate,
   getNowISO
 };

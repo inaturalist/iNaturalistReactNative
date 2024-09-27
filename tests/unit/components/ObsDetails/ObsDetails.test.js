@@ -4,7 +4,7 @@ import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import i18next, { t } from "i18next";
 import React from "react";
 import { View } from "react-native";
-import { formatApiDatetime } from "sharedHelpers/dateAndTime";
+import { formatApiDatetime } from "sharedHelpers/dateAndTime.ts";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import * as useCurrentUser from "sharedHooks/useCurrentUser.ts";
 import * as useLocalObservation from "sharedHooks/useLocalObservation";

@@ -12,7 +12,7 @@ import {
   formatDifferenceForHumans,
   formatISONoSeconds,
   getNowISO
-} from "sharedHelpers/dateAndTime";
+} from "sharedHelpers/dateAndTime.ts";
 
 const remoteObservation = factory( "RemoteObservation", {
   created_at: "2015-02-12T20:41:10-08:00"
@@ -27,6 +27,9 @@ const remoteComment = factory( "RemoteComment", {
 
 describe( "formatApiDatetime", ( ) => {
   describe( "in default locale", ( ) => {
+    beforeAll( async ( ) => {
+      await initI18next( { lng: "en" } );
+    } );
     it( "should return missing date string if no date is present", async ( ) => {
       expect( formatApiDatetime( null, i18next ) ).toEqual( "Missing Date" );
     } );
@@ -108,6 +111,9 @@ describe( "formatISONoSeconds", ( ) => {
 } );
 
 describe( "formatDifferenceForHumans", ( ) => {
+  beforeAll( async ( ) => {
+    await initI18next( { lng: "en" } );
+  } );
   it( "should show difference in minutes", ( ) => {
     expect( formatDifferenceForHumans( subMinutes( new Date(), 3 ), i18next ) ).toMatch( /\d+m/ );
   } );

@@ -19,7 +19,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import User from "realmModels/User.ts";
-import { formatLongDate } from "sharedHelpers/dateAndTime";
+import { formatLongDate } from "sharedHelpers/dateAndTime.ts";
 import {
   useAuthenticatedQuery,
   useCurrentUser,

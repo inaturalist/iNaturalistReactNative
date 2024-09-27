@@ -5,9 +5,9 @@ import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
 import {
-  displayDateTimeObsEdit,
-  formatISONoSeconds
-} from "sharedHelpers/dateAndTime";
+  formatISONoSeconds,
+  formatLongDatetime
+} from "sharedHelpers/dateAndTime.ts";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
@@ -30,7 +30,7 @@ const DatePicker = ( { currentObservation, updateObservationKeys }: Props ): Nod
     closeModal();
   };
 
-  const displayDate = ( ) => displayDateTimeObsEdit(
+  const displayDate = ( ) => formatLongDatetime(
     currentObservation?.observed_on_string || currentObservation?.time_observed_at,
     i18n,
     { missing: null }
