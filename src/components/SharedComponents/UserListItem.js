@@ -72,7 +72,7 @@ const UserListItem = ( {
           />
         )}
       <View className="ml-3">
-        {user?.login && <Body1 className="mt-3">{user?.login}</Body1>}
+        {user?.login && <Body1>{user?.login}</Body1>}
         <List2 className="mt-1">
           {countText}
         </List2>
