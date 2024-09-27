@@ -243,7 +243,7 @@ const PhotoCarousel = ( {
       ref={containerRef}
       onLayout={
         // When the container gets rendered, we store its position on screen
-        // in state so we can layout content inside the modal in exactly the
+        // in state so we can lay out content inside the modal in exactly the
         // same position
         ( ) => containerRef?.current?.measure(
           ( _x, _y, w, h, pageX, pageY ) => setContainerPos( {

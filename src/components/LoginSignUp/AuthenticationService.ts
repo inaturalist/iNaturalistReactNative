@@ -66,7 +66,6 @@ async function deleteSensitiveItem( key: string, options = {} ) {
     return await RNSInfo.deleteItem( key, options );
   } catch ( e ) {
     const deleteItemError = e as Error;
-    console.log( "[DEBUG AuthenticationService.js] deleteItemError: ", deleteItemError );
     if ( deleteItemError.message.match( /Protected data not available yet/ ) ) {
       await sleep( 500 );
       return RNSInfo.deleteItem( key, options );

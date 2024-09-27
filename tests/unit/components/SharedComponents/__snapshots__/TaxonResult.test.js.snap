@@ -359,7 +359,8 @@ exports[`TaxonResult should render correctly 1`] = `
             ]
           }
         >
-          Family 
+          Family
+           
           <Text
             maxFontSizeMultiplier={2}
             style={

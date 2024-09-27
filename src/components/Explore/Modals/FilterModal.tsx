@@ -1136,7 +1136,7 @@ const FilterModal = ( {
                   value={establishmentValues[establishmentKey]}
                   checked={
                     establishmentValues[establishmentKey].value
-                === establishmentMean
+                    === establishmentMean
                   }
                   onPress={() => dispatch( {
                     type: EXPLORE_ACTION.SET_ESTABLISHMENT_MEAN,

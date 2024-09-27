@@ -116,6 +116,7 @@ By-exiting-observation-not-saved = By exiting, your observation will not be save
 By-exiting-your-observations-not-saved = By exiting, your observations will not be saved. You can save them to your device, or you can delete them.
 By-exiting-your-photos-will-not-be-saved = By exiting, your photos will not be saved.
 By-exiting-your-recorded-sound-will-not-be-saved = By exiting, your recorded sound will not be saved.
+# Lead in to a list including "Get your identifcation verified..." and "Share your observation..."
 By-uploading-your-observation-to-iNaturalist-you-can = By uploading your observation to iNaturalist, you can:
 Camera = Camera
 CANCEL = CANCEL
@@ -245,16 +246,18 @@ Date = Date
 # Used when displaying a relative time - in this case, X days ago (e.g. 3d = 3 days ago)
 Date-days = { $count }d
 # Date formatting using date-fns
+# Used for things like User Profile join date
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 date-format-long = PP
-# Date formatting using date-fns
+# Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3
+# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+date-format-month-day = MMM d
+# Use when only showing an observations month and year
+# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+date-format-month-year = MMM yyyy
+# Short date, e.g. on notifications from over a year ago
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 date-format-short = M/d/yy
-# Used when displaying a relative time - in this case, X hours ago (e.g. 3h = 3 hours ago)
-Date-hours = { $count }h
-# Used when displaying a relative time - in this case, X minutes ago (e.g. 3m = 3 minutes ago)
-Date-minutes = { $count }m
-date-month-year = MMM yyyy
 DATE-OBSERVED = DATE OBSERVED
 Date-observed = Date observed
 Date-observed-header-short = Observed
@@ -264,18 +267,23 @@ DATE-OBSERVED-OLDEST = DATE OBSERVED - OLDEST TO NEWEST
 Date-Range = Date Range
 # Label for controls over a range of dates
 DATE-RANGE = DATE RANGE
-# Used when displaying a relative time - in this case, shows an absolute date (e.g. 12/31/22)
-Date-short-format = MM/dd/yy
-# Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3
-Date-this-year = MMM d
 DATE-UPLOADED = DATE UPLOADED
 Date-uploaded = Date uploaded
 Date-uploaded-header-short = Uploaded
 DATE-UPLOADED-NEWEST = DATE UPLOADED - NEWEST TO OLDEST
 DATE-UPLOADED-OLDEST = DATE UPLOADED - OLDEST TO NEWEST
+# Used when displaying a relative time - in this case, X days ago (e.g. 3d = 3 days ago)
+datetime-difference-days = { $count }d
+# Used when displaying a relative time - in this case, X hours ago (e.g. 3h = 3 hours ago)
+datetime-difference-hours = { $count }h
+# Used when displaying a relative time - in this case, X minutes ago (e.g. 3m = 3 minutes ago)
+datetime-difference-minutes = { $count }m
 # Used when displaying a relative time - in this case, X weeks ago (e.g. 3w = 3 weeks ago)
-Date-weeks = { $count }w
-# Date formatting using date-fns
+datetime-difference-weeks = { $count }w
+# Longer datetime, e.g. on ObsEdit
+# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+datetime-format-long = Pp
+# Shorter datetime, e.g. on comments and IDs
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 datetime-format-short = M/d/yy h:mm a
 # Month of December
@@ -304,7 +312,9 @@ Deleting-x-of-y-observations =
 DETAILS = DETAILS
 # Button that disables the camera's flash
 Disable-flash = Disable flash
-Disagreement = <0>*@{ $username } disagrees this is </0><1></1>
+# Disagreement notice with an identificaiton, <0/> will get replaced by a
+# taxon name
+Disagreement = *@{ $username } disagrees this is <0/>
 # Button that discards changes or an item, e.g. a photo
 DISCARD = DISCARD
 # Button that discards all items, e.g. imported photos
@@ -418,6 +428,7 @@ GEOPRIVACY = GEOPRIVACY
 Geoprivacy-status = Geoprivacy: { $status }
 # Title of screen asking for permission to access location
 Get-more-accurate-suggestions-create-useful-data = Get more accurate suggestions & create useful data for science using your location
+# Preceded by the fragment, "By uploading your observation to iNaturalist, you can:"
 Get-your-identification-verified-by-real-people = Get your identification verified by real people in the iNaturalist community
 # Label for button that returns to the previous screen
 Go-back = Go back
@@ -525,9 +536,9 @@ June = June
 Just-make-sure-the-organism-is-wild = Just make sure the organism is wild (not a pet, zoo animal, or garden plant)
 # Shows date user last active on iNaturalist on user profile
 Last-Active-date = Last Active: { $date }
-# Latitude, longitude on a single line on a single line
+# Latitude, longitude on a single line
 Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, maximumFractionDigits: 6) }
-# Latitude, longitude, and accuracy on a single line on a single line
+# Latitude, longitude, and accuracy on a single line
 Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBER($longitude, maximumFractionDigits: 6) }, Acc: { $accuracy }
 # Identification category
 leading--identification = Leading
@@ -763,41 +774,77 @@ Quality-Grade-research = Quality Grade Research Grade
 # Quality grade options
 quality-grade-research = Research Grade
 Ranks-CLASS = CLASS
+Ranks-Class = Class
 Ranks-COMPLEX = COMPLEX
+Ranks-Complex = Complex
 Ranks-EPIFAMILY = EPIFAMILY
+Ranks-Epifamily = Epifamily
 Ranks-FAMILY = FAMILY
+Ranks-Family = Family
 Ranks-FORM = FORM
+Ranks-Form = Form
 Ranks-GENUS = GENUS
+Ranks-Genus = Genus
 Ranks-GENUSHYBRID = GENUSHYBRID
+Ranks-Genushybrid = Genushybrid
 Ranks-HYBRID = HYBRID
+Ranks-Hybrid = Hybrid
 Ranks-INFRACLASS = INFRACLASS
+Ranks-Infraclass = Infraclass
 Ranks-INFRAHYBRID = INFRAHYBRID
+Ranks-Infrahybrid = Infrahybrid
 Ranks-INFRAORDER = INFRAORDER
+Ranks-Infraorder = Infraorder
 Ranks-KINGDOM = KINGDOM
+Ranks-Kingdom = Kingdom
 Ranks-ORDER = ORDER
+Ranks-Order = Order
 Ranks-PARVORDER = PARVORDER
+Ranks-Parvorder = Parvorder
 Ranks-PHYLUM = PHYLUM
+Ranks-Phylum = Phylum
 Ranks-SECTION = SECTION
+Ranks-Section = Section
 Ranks-SPECIES = SPECIES
+Ranks-Species = Species
+Ranks-Statefmatter = State of matter
 Ranks-STATEOFMATTER = STATE OF MATTER
 Ranks-SUBCLASS = SUBCLASS
+Ranks-Subclass = Subclass
 Ranks-SUBFAMILY = SUBFAMILY
+Ranks-Subfamily = Subfamily
 Ranks-SUBGENUS = SUBGENUS
+Ranks-Subgenus = Subgenus
 Ranks-SUBKINGDOM = SUBKINGDOM
+Ranks-Subkingdom = Subkingdom
 Ranks-SUBORDER = SUBORDER
+Ranks-Suborder = Suborder
 Ranks-SUBPHYLUM = SUBPHYLUM
+Ranks-Subphylum = Subphylum
 Ranks-SUBSECTION = SUBSECTION
+Ranks-Subsection = Subsection
 Ranks-SUBSPECIES = SUBSPECIES
+Ranks-Subspecies = Subspecies
 Ranks-SUBTERCLASS = SUBTERCLASS
+Ranks-Subterclass = Subterclass
 Ranks-SUBTRIBE = SUBTRIBE
+Ranks-Subtribe = Subtribe
 Ranks-SUPERCLASS = SUPERCLASS
+Ranks-Superclass = Superclass
 Ranks-SUPERFAMILY = SUPERFAMILY
+Ranks-Superfamily = Superfamily
 Ranks-SUPERORDER = SUPERORDER
+Ranks-Superorder = Superorder
 Ranks-SUPERTRIBE = SUPERTRIBE
+Ranks-Supertribe = Supertribe
 Ranks-TRIBE = TRIBE
+Ranks-Tribe = Tribe
 Ranks-VARIETY = VARIETY
+Ranks-Variety = Variety
 Ranks-ZOOSECTION = ZOOSECTION
+Ranks-Zoosection = Zoosection
 Ranks-ZOOSUBSECTION = ZOOSUBSECTION
+Ranks-Zoosubsection = Zoosubsection
 Read-more-on-Wikipedia = Read more on Wikipedia
 # Heading for the sound recorder
 RECORD-NEW-SOUND = RECORD NEW SOUND
@@ -907,6 +954,7 @@ Share = Share
 SHARE-DEBUG-LOGS = SHARE DEBUG LOGS
 Share-location = Share Location
 Share-map = Share map
+# Preceded by the fragment # Preceded by the fragment, "By uploading your observation to iNaturalist, you can:"
 Share-your-observation-where-it-can-help-scientists = Share your observation, where it can help scientists across the world better understand biodiversity.
 SHOP-INATURALIST-MERCH = SHOP INATURALIST MERCH
 Show-observation-options = Show observation options.
@@ -1011,6 +1059,8 @@ Traditional-Project = Traditional Project
 Umbrella-Project = Umbrella Project
 UNFOLLOW = UNFOLLOW
 UNFOLLOW-USER = UNFOLLOW USER?
+# Text to show when a taoxn rank is unknown or missing
+Unknown--rank = Unknown
 # Text to show when a taxon or identification is unknown or missing
 Unknown--taxon = Unknown
 # Text to show when a user (or their name) is unknown or missing
@@ -1056,6 +1106,8 @@ USERNAME-OR-EMAIL = USERNAME OR EMAIL
 # label in project requirements
 Users = Users
 Using-iNaturalist-requires-the-storage = Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US.
+# Listing of app and build versions
+Version-app-build = Version { $appVersion } ({ $buildVersion })
 VIEW-ALL-X-PLACES = VIEW ALL { $count } PLACES
 VIEW-ALL-X-PROJECTS = VIEW ALL { $count } PROJECTS
 VIEW-ALL-X-TAXA = VIEW ALL { $count } TAXA
@@ -1229,3 +1281,5 @@ Youve-previously-denied-location-permissions = You’ve previously denied locati
 Youve-previously-denied-microphone-permissions = You’ve previously denied microphone permissions, so please enable them in settings.
 Zoom-in-as-much-as-possible-to-improve = Zoom in as much as possible to improve location accuracy and get better identifications.
 Zoom-to-current-location = Zoom to current location
+# Label for button that shows zoom level, e.g. on a camera
+zoom-x = { $zoom }×

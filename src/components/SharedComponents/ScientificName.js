@@ -5,6 +5,8 @@ import { random } from "lodash";
 import type { Node } from "react";
 import React from "react";
 import Taxon from "realmModels/Taxon";
+import { translatedRank } from "sharedHelpers/taxon";
+import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   fontComponent: Object,
@@ -33,6 +35,7 @@ const ScientificName = ( {
   taxonId,
   textClassName
 }: Props ): Node => {
+  const { t } = useTranslation( );
   const scientificNameArray = scientificNamePieces?.map( ( piece, index ) => {
     const isItalics = piece !== rankPiece && (
       rankLevel <= Taxon.SPECIES_LEVEL || rankLevel === Taxon.GENUS_LEVEL
@@ -63,7 +66,8 @@ const ScientificName = ( {
   } );
 
   if ( rank && rankLevel > Taxon.SPECIES_LEVEL ) {
-    scientificNameArray.unshift( `${rank} ` );
+    scientificNameArray.unshift( " " );
+    scientificNameArray.unshift( translatedRank( rank, t ) );
   }
 
   return (

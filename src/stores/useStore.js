@@ -12,6 +12,9 @@ import createUploadObservationsSlice from "./createUploadObservationsSlice";
 
 export const storage = new MMKV( );
 
+// TODO do *not* export this. This allows any consumer to overwrite *any* part
+// of state, circumventing any getter/setter logic we have in the stores. If
+// you need to modify state, you should be doing so through a store.
 export const zustandStorage = {
   setItem: ( name, value ) => storage.set( name, value ),
   getItem: name => {
