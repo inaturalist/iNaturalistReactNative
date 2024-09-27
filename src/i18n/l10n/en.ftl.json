@@ -1013,6 +1013,7 @@
     "comment": "As in an iNat project, a collection of observations or observation search filters",
     "val": "PROJECT"
   },
+  "Project-Members-Only": "Project Members Only",
   "PROJECT-REQUIREMENTS": "PROJECT REQUIREMENTS",
   "PROJECTS": {
     "comment": "As in iNat project, collections of observations or observation search filters",
