@@ -43,6 +43,10 @@ describe( "AICamera", () => {
       by.text( "Loading iNaturalist's AI Camera" )
     );
     await waitFor( loadingText ).toBeVisible().withTimeout( 10000 );
+    const scanText = element(
+      by.text( "Scan the area around you for organisms." )
+    );
+    await waitFor( scanText ).toBeVisible().withTimeout( 10000 );
     const takePhotoButton = element( by.id( "take-photo-button" ) );
     await waitFor( takePhotoButton ).toBeVisible().withTimeout( 10000 );
     await takePhotoButton.tap();
