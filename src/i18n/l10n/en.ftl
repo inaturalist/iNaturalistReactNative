@@ -115,6 +115,7 @@ By-exiting-observation-not-saved = By exiting, your observation will not be save
 By-exiting-your-observations-not-saved = By exiting, your observations will not be saved. You can save them to your device, or you can delete them.
 By-exiting-your-photos-will-not-be-saved = By exiting, your photos will not be saved.
 By-exiting-your-recorded-sound-will-not-be-saved = By exiting, your recorded sound will not be saved.
+# Lead in to a list including "Get your identifcation verified..." and "Share your observation..."
 By-uploading-your-observation-to-iNaturalist-you-can = By uploading your observation to iNaturalist, you can:
 Camera = Camera
 CANCEL = CANCEL
@@ -418,6 +419,7 @@ GEOPRIVACY = GEOPRIVACY
 Geoprivacy-status = Geoprivacy: { $status }
 # Title of screen asking for permission to access location
 Get-more-accurate-suggestions-create-useful-data = Get more accurate suggestions & create useful data for science using your location
+# Preceded by the fragment, "By uploading your observation to iNaturalist, you can:"
 Get-your-identification-verified-by-real-people = Get your identification verified by real people in the iNaturalist community
 # Label for button that returns to the previous screen
 Go-back = Go back
@@ -938,6 +940,7 @@ Share = Share
 SHARE-DEBUG-LOGS = SHARE DEBUG LOGS
 Share-location = Share Location
 Share-map = Share map
+# Preceded by the fragment # Preceded by the fragment, "By uploading your observation to iNaturalist, you can:"
 Share-your-observation-where-it-can-help-scientists = Share your observation, where it can help scientists across the world better understand biodiversity.
 SHOP-INATURALIST-MERCH = SHOP INATURALIST MERCH
 Show-observation-options = Show observation options.
