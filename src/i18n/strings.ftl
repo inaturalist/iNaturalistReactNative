@@ -298,6 +298,8 @@ Deleting-x-of-y-observations =
 # Tab label or section title for content that describes further details, e.g.
 # the details of an observation
 DETAILS = DETAILS
+Device-storage-full = Device storage full
+Device-storage-full-description = iNaturalist may not be able to save your photos or may crash.
 # Button that disables the camera's flash
 Disable-flash = Disable flash
 Disagreement = <0>*@{ $username } disagrees this is </0><1></1>

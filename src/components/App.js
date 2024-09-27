@@ -3,13 +3,12 @@
 import Geolocation from "@react-native-community/geolocation";
 import NetInfo from "@react-native-community/netinfo";
 import { onlineManager } from "@tanstack/react-query";
-import { t } from "i18next";
+import useDeviceStorageFull from "components/Camera/hooks/useDeviceStorageFull";
 import RootDrawerNavigator from "navigation/rootDrawerNavigator";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useEffect } from "react";
-import { Alert, LogBox } from "react-native";
-import DeviceInfo from "react-native-device-info";
+import { LogBox } from "react-native";
 import Realm from "realm";
 import { addARCameraFiles } from "sharedHelpers/cvModel.ts";
 import { log } from "sharedHelpers/logger";
@@ -28,9 +27,6 @@ import useReactQueryRefetch from "./hooks/useReactQueryRefetch";
 import useTaxonCommonNames from "./hooks/useTaxonCommonNames";
 
 const { useRealm } = RealmContext;
-
-// 200MB - number in bytes
-const MIN_DEVICE_STORAGE = 200000000;
 
 const logger = log.extend( "App" );
 
@@ -62,6 +58,7 @@ type Props = {
 const App = ( { children }: Props ): Node => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
+  const { deviceStorageFull, showStorageFullAlert } = useDeviceStorageFull();
 
   // this ensures that React Query has the most accurate depiction of whether the
   // app is online or offline. since queries only run when the app is online, this
@@ -83,24 +80,11 @@ const App = ( { children }: Props ): Node => {
   useObservationUpdatesWhenFocused( );
   useTaxonCommonNames( );
 
-  const showStorageFullAlert = () => Alert.alert(
-    "Device Storage Full",
-    "iNaturalist may not be able to save your photos or may crash",
-    [{ text: t( "OK" ) }],
-    {
-      cancelable: true
-    }
-  );
-
   useEffect( ( ) => {
-    DeviceInfo.getFreeDiskStorage().then( freeDiskStorage => {
-      // consider full when 2MB left
-      // size in bytes
-      if ( freeDiskStorage <= MIN_DEVICE_STORAGE ) {
-        showStorageFullAlert( );
-      }
-    } );
-  }, [] );
+    if ( deviceStorageFull ) {
+      showStorageFullAlert();
+    }
+  }, [deviceStorageFull, showStorageFullAlert] );
 
   useEffect( ( ) => {
     addARCameraFiles( );

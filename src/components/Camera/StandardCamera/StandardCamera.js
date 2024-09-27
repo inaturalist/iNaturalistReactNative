@@ -4,6 +4,7 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import CameraView from "components/Camera/CameraView.tsx";
 import FadeInOutView from "components/Camera/FadeInOutView";
+import useDeviceStorageFull from "components/Camera/hooks/useDeviceStorageFull";
 import useRotation from "components/Camera/hooks/useRotation.ts";
 import useTakePhoto from "components/Camera/hooks/useTakePhoto.ts";
 import useZoom from "components/Camera/hooks/useZoom.ts";
@@ -17,9 +18,6 @@ import React, {
   useMemo,
   useState
 } from "react";
-import {
-  Alert
-} from "react-native";
 import DeviceInfo from "react-native-device-info";
 import { Snackbar } from "react-native-paper";
 import ObservationPhoto from "realmModels/ObservationPhoto";
@@ -44,9 +42,6 @@ const { useRealm } = RealmContext;
 const isTablet = DeviceInfo.isTablet( );
 
 export const MAX_PHOTOS_ALLOWED = 20;
-
-// 200MB - number in bytes
-const MIN_DEVICE_STORAGE = 200000000;
 
 type Props = {
   addEvidence: ?boolean,
@@ -87,7 +82,8 @@ const StandardCamera = ( {
     toggleFlash
   } = useTakePhoto( camera, !!addEvidence, device );
 
-  const [deviceStorageFull, setDeviceStorageFull] = useState( false );
+  const { deviceStorageFull, showStorageFullAlert } = useDeviceStorageFull();
+
   const cameraUris = useStore( state => state.cameraUris );
   const prepareCamera = useStore( state => state.prepareCamera );
   const galleryUris = useStore( state => state.galleryUris );
@@ -104,19 +100,6 @@ const StandardCamera = ( {
   const [newPhotoUris, setNewPhotoUris] = useState( [] );
 
   const { screenWidth } = useDeviceOrientation( );
-
-  const showStorageFullAlert = () => Alert.alert(
-    "Device Storage Full",
-    "iNaturalist may not be able to save your photos or may crash",
-    [{ text: t( "OK" ) }]
-  );
-
-  DeviceInfo.getFreeDiskStorage().then( freeDiskStorage => {
-    // considered full when 200MB left
-    if ( freeDiskStorage <= MIN_DEVICE_STORAGE ) {
-      setDeviceStorageFull( true );
-    }
-  } );
 
   // newPhotoUris tracks photos taken in *this* instance of the camera. The
   // camera might be instantiated with several cameraUris or

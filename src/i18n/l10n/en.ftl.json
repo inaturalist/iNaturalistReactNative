@@ -419,6 +419,8 @@
     "comment": "Tab label or section title for content that describes further details, e.g.\nthe details of an observation",
     "val": "DETAILS"
   },
+  "Device-storage-full": "Device storage full",
+  "Device-storage-full-description": "iNaturalist may not be able to save your photos or may crash.",
   "Disable-flash": {
     "comment": "Button that disables the camera's flash",
     "val": "Disable flash"
