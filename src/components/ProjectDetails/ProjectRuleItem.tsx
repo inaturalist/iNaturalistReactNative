@@ -1,8 +1,8 @@
 import classnames from "classnames";
-import { Body3, DisplayTaxonName } from "components/SharedComponents";
+import { Body3, Button, DisplayTaxonName } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import _ from "lodash";
-import React from "react";
+import React, { useState } from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
 interface Props {
@@ -10,8 +10,21 @@ interface Props {
 }
 
 const ProjectRuleItem = ( { rule }: Props ) => {
+  const [hideFullList, setHideFullList] = useState(
+    rule.inclusions.length > 20
+    || rule.exclusions.length > 20
+  );
   const currentUser = useCurrentUser( );
   const { t } = useTranslation( );
+
+  const totalRuleCount = rule.inclusions.length + rule.exclusions.length;
+
+  const viewAllButtonText = {
+    Taxa: t( "VIEW-ALL-X-TAXA", { count: totalRuleCount } ),
+    Users: t( "VIEW-ALL-X-USERS", { count: totalRuleCount } ),
+    Projects: t( "VIEW-ALL-X-PROJECTS", { count: totalRuleCount } ),
+    Location: t( "VIEW-ALL-X-PLACES", { count: totalRuleCount } )
+  };
 
   const showTaxonName = taxon => (
     <DisplayTaxonName
@@ -25,7 +38,9 @@ const ProjectRuleItem = ( { rule }: Props ) => {
 
   const showRules = ruleType => ruleType.map( item => (
     <Body3
-      key={`${rule.name}-${item?.text}` || item?.taxon?.name}
+      key={rule.name === "Taxa"
+        ? `${rule.name}-${item?.taxon?.name}`
+        : `${rule.name}-${item?.text}`}
       className={classnames(
         "pb-2 flex-row",
         {
@@ -45,12 +60,21 @@ const ProjectRuleItem = ( { rule }: Props ) => {
     }
     return (
       <>
-        {!_.isEmpty( rule?.inclusions ) && showRules( rule?.inclusions )}
-        {!_.isEmpty( rule?.exclusions ) && (
+        {!_.isEmpty( rule?.inclusions ) && showRules( hideFullList
+          ? _.take( rule?.inclusions, 20 )
+          : rule?.inclusions )}
+        {( !_.isEmpty( rule?.exclusions ) && !hideFullList ) && (
           <>
             <Body3 className="flex-row pb-1">{t( "except" )}</Body3>
             {showRules( rule?.exclusions )}
           </>
+        )}
+        {hideFullList && (
+          <Button
+            text={viewAllButtonText[rule.name]}
+            onPress={( ) => setHideFullList( false )}
+            className="my-3"
+          />
         )}
       </>
     );

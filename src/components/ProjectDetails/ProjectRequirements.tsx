@@ -1,16 +1,11 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import fetchPlace from "api/places";
 import {
-  fetchProjectMembers,
   fetchProjects
 } from "api/projects";
-import { fetchTaxon } from "api/taxa";
-import { Body2, ScrollViewWrapper } from "components/SharedComponents";
+import { ActivityIndicator, ProjectListItem, ScrollViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import _ from "lodash";
 import React from "react";
-import Taxon from "realmModels/Taxon";
-import User from "realmModels/User.ts";
 import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
 
 import AboutProjectType from "./AboutProjectType";
@@ -18,6 +13,8 @@ import ProjectRuleItem from "./ProjectRuleItem";
 
 const getFieldValue = item => item?.[0]?.value;
 
+// web reference at:
+// https://github.com/inaturalist/inaturalist/blob/0994c85e2b87661042289ff080d3fc29ed8e70b3/app/webpack/projects/show/components/requirements.jsx
 const ProjectRequirements = ( ) => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
@@ -87,7 +84,7 @@ const ProjectRequirements = ( ) => {
   const projectQueryKey = ["projectRequirements", "fetchProjects", id];
 
   // Overall Project Requirements
-  const { data: project } = useAuthenticatedQuery(
+  const { data: project, isLoading } = useAuthenticatedQuery(
     projectQueryKey,
     optsWithAuth => fetchProjects( id, {
       rule_details: true,
@@ -96,44 +93,19 @@ const ProjectRequirements = ( ) => {
     }, optsWithAuth )
   );
 
-  console.log( project?.search_parameters, "search params" );
+  const filterRules = operator => project?.project_observation_rules
+    .filter( r => r.operator === operator );
 
-  // Taxa Requirements
-  const includedTaxonIds = getFieldValue( project?.search_parameters
-    ?.filter( pref => pref.field === "taxon_id" ) );
+  // console.log( project?.project_observation_rules, "project" );
 
-  const excludedTaxonIds = getFieldValue( project?.search_parameters
-    ?.filter( pref => pref.field === "without_taxon_id" ) );
-
-  // TODO: deal with exceptions
-  // TODO: deal with queries with too many taxon Ids
-  const includedTaxaQueryKey = ["includedProjectTaxa", "fetchTaxon", includedTaxonIds];
-
-  const {
-    data: taxaNames
-  } = useAuthenticatedQuery(
-    includedTaxaQueryKey,
-    optsWithAuth => fetchTaxon( includedTaxonIds, {
-      fields: Taxon.LIMITED_TAXON_FIELDS
-    }, optsWithAuth ),
-    {
-      enabled: includedTaxonIds?.length > 0
-    }
-  );
-
-  const excludedTaxaQueryKey = ["excludedProjectTaxa", "fetchTaxon", excludedTaxonIds];
-
-  const {
-    data: excludedTaxaNames
-  } = useAuthenticatedQuery(
-    excludedTaxaQueryKey,
-    optsWithAuth => fetchTaxon( excludedTaxonIds, {
-      fields: Taxon.LIMITED_TAXON_FIELDS
-    }, optsWithAuth ),
-    {
-      enabled: excludedTaxonIds?.length > 0
-    }
-  );
+  console.log( project?.project_observation_rules
+    .filter( r => (
+      r.operator !== "in_taxon?"
+      && r.operator !== "not_in_taxon?"
+      && r.operator !== "observed_in_place?"
+    && r.operator !== "not_observed_in_place?"
+    && r.operator !== "not_observed_by_user?" )
+    && r.operator !== "observed_by_user?" ), "proj rules" );
 
   const createTaxonObject = taxon => ( {
     taxon,
@@ -143,89 +115,86 @@ const ProjectRequirements = ( ) => {
     } )
   } );
 
-  const taxonRule = RULES.find( r => r.name === t( "Taxa" ) );
-  if ( taxaNames?.results?.length > 0 ) {
-    const sortedResults = _.sortBy( taxaNames?.results, taxon => taxon.name );
-    taxonRule.inclusions = sortedResults?.map( taxon => createTaxonObject( taxon ) );
-  }
+  const includedTaxonList = _.sortBy(
+    filterRules( "in_taxon?" ),
+    r => r.taxon.name
+  );
 
-  if ( excludedTaxaNames?.results?.length > 0 ) {
-    const sortedResults = _.sortBy( excludedTaxaNames?.results, taxon => taxon.name );
-    taxonRule.exclusions = sortedResults?.map( taxon => createTaxonObject( taxon ) );
+  const excludedTaxonList = _.sortBy(
+    filterRules( "not_in_taxon?" ),
+    r => r.taxon.name
+  );
+
+  const taxonRule = RULES.find( r => r.name === t( "Taxa" ) );
+  if ( includedTaxonList?.length > 0 ) {
+    taxonRule.inclusions = includedTaxonList?.map( r => createTaxonObject( r.taxon ) );
+  }
+  if ( excludedTaxonList?.length > 0 ) {
+    taxonRule.exclusions = excludedTaxonList?.map( r => createTaxonObject( r.taxon ) );
   }
 
   // Location Requirement
-  const includedPlaceIds = getFieldValue( project?.search_parameters
-    ?.filter( pref => pref.field === "place_id" ) );
+  const createPlaceObject = place => ( {
+    text: place.display_name,
+    onPress: ( ) => navigation.navigate( "Explore", {
+      place: {
+        id: place.id,
+        display_name: place.display_name
+      }
+    } )
+  } );
 
-  const { data: places } = useAuthenticatedQuery(
-    ["fetchPlace", includedPlaceIds],
-    optsWithAuth => fetchPlace(
-      includedPlaceIds,
-      {
-        fields: {
-          display_name: true
-        }
-      },
-      optsWithAuth
-    ),
-    {
-      enabled: !!( includedPlaceIds.length > 0 )
-    }
+  const includedPlaces = _.sortBy( filterRules( "observed_in_place?" ), r => r.place.display_name );
+  const excludedPlaces = _.sortBy(
+    filterRules( "not_observed_in_place?" ),
+    r => r.place.display_name
   );
 
-  const placeResults = places?.results;
-
-  if ( placeResults?.length > 0 ) {
-    const locationRule = RULES.find( r => r.name === t( "Location" ) );
-    locationRule.inclusions = placeResults.map( result => ( {
-      text: result.display_name,
-      onPress: ( ) => navigation.navigate( "Explore", {
-        place: {
-          id: result.id,
-          display_name: result.display_name
-        }
-      } )
-    } ) );
+  const locationRule = RULES.find( r => r.name === t( "Location" ) );
+  if ( includedPlaces?.length > 0 ) {
+    locationRule.inclusions = includedPlaces.map( ( { place } ) => createPlaceObject( place ) );
+  }
+  if ( excludedPlaces?.length > 0 ) {
+    locationRule.exclusions = excludedPlaces.map( ( { place } ) => createPlaceObject( place ) );
   }
 
   // Users Requirements
-  const userIds = getFieldValue( project?.search_parameters
-    ?.filter( pref => pref.field === "user_id" ) );
   const membersOnly = getFieldValue( project?.search_parameters
     ?.filter( pref => pref.field === "members_only" ) );
 
-  const projectUsersQueryKey = ["projectRequirements", "fetchProjectMembers", id];
-  const { data: projectMembers } = useAuthenticatedQuery(
-    projectUsersQueryKey,
-    optsWithAuth => fetchProjectMembers( {
-      id,
-      order_by: "login",
-      per_page: 100,
-      fields: {
-        user: User.LIMITED_FIELDS
-      }
-    }, optsWithAuth ),
-    {
-      enabled: !membersOnly && userIds?.length > 0
-    }
-  );
-
-  const users = projectMembers?.results?.map( members => members.user );
+  const includedUsers = _.sortBy( filterRules( "observed_by_user?" ), r => r.user.login );
+  const excludedUsers = _.sortBy( filterRules( "not_observed_by_user?" ), r => r.user.login );
   const userRule = RULES.find( r => r.name === t( "Users" ) );
 
-  if ( users?.length > 0 ) {
-    userRule.inclusions = users
-      .filter( user => userIds?.includes( user.id ) )
-      .map( u => ( {
-        text: u.login,
-        onPress: ( ) => navigation.navigate( "UserProfile", { userId: u.id } )
-      } ) );
-  } else if ( membersOnly ) {
-    userRule.defaults = [t( "Project-Members-Only" )];
+  const createUserObject = user => ( {
+    text: user.login,
+    onPress: ( ) => navigation.navigate( "UserProfile", { userId: user.id } )
+  } );
+
+  if ( includedUsers?.length > 0 ) {
+    userRule.inclusions = includedUsers.map( r => createUserObject( r.user ) );
+  }
+  if ( excludedUsers?.length > 0 ) {
+    userRule.exclusions = excludedUsers.map( r => createUserObject( r.user ) );
+  }
+  if ( membersOnly ) {
+    userRule.defaults = [{
+      text: t( "Project-Members-Only" )
+    }];
   }
 
   // Projects Requirements
+  const createProjectObject = includedProject => ( {
+    text: includedProject.title,
+    onPress: ( ) => navigation.navigate( "ProjectDetails", { id: includedProject.id } )
+  } );
+  const projectRule = RULES.find( r => r.name === t( "Projects" ) );
+  const includedProjects = project?.project_observation_rules
+    .filter( r => r.operand_type === "Project" );
+
+  if ( includedProjects?.length > 0 ) {
+    projectRule.inclusions = includedProjects.map( r => createProjectObject( r.project ) );
+  }
 
   // Quality Grade Requirements
   const qualityGrades = getFieldValue( project?.rule_preferences
@@ -257,19 +226,41 @@ const ProjectRequirements = ( ) => {
   }
 
   // Date Requirements
+
+  // TODO: deal with different types of dates (ranges, months)
   const projectStartDate = getFieldValue( project?.rule_preferences
     ?.filter( pref => pref.field === "d1" ) );
   const projectEndDate = getFieldValue( project?.rule_preferences
     ?.filter( pref => pref.field === "d2" ) );
+  const observedOnDate = getFieldValue( project?.rule_preferences
+    ?.filter( pref => pref.field === "observed_on" ) );
+  const month = getFieldValue( project?.rule_preferences
+    ?.filter( pref => pref.field === "month" ) );
 
-  if ( projectStartDate ) {
-    const dateRule = RULES.find( r => r.name === t( "Date" ) );
+  const createDateObject = ( ) => {
+    if ( projectStartDate && !projectEndDate ) {
+      return t( "Start-time", { date: projectStartDate } );
+    }
+    if ( projectStartDate && projectEndDate ) {
+      return `${projectStartDate} - ${projectEndDate}`;
+    }
+    if ( observedOnDate ) {
+      return observedOnDate;
+    }
+    if ( month ) {
+      return month;
+    }
+    return null;
+  };
+
+  const dateRule = RULES.find( r => r.name === t( "Date" ) );
+  if ( createDateObject( ) !== null ) {
     dateRule.inclusions = [
-      // TODO: dates need internationalized formatting
-      // from 2023-03-22 07:42 -06:00 to something readable
-      // https://github.com/inaturalist/inaturalist/blob/0994c85e2b87661042289ff080d3fc29ed8e70b3/app/webpack/projects/shared/util.js#L4
+    // TODO: dates need internationalized formatting
+    // from 2023-03-22 07:42 -06:00 to something readable
+    // https://github.com/inaturalist/inaturalist/blob/0994c85e2b87661042289ff080d3fc29ed8e70b3/app/webpack/projects/shared/util.js#L4
       {
-        text: `${projectStartDate} - ${projectEndDate}`
+        text: createDateObject( )
       }
     ];
   }
@@ -297,22 +288,30 @@ const ProjectRequirements = ( ) => {
     establishmentRule.inclusions = establishmentList;
   }
 
+  // TODO: add annotations requirements?
+
   const renderItemSeparator = () => (
     <View className="border-b border-lightGray" />
   );
 
   return (
     <ScrollViewWrapper>
-      <Body2 className="my-4 px-4">
-        {t( "Observations-in-this-project-must-meet-the-following-criteria" )}
-      </Body2>
-      {renderItemSeparator( )}
-      {RULES.map( rule => (
-        <View key={rule.name}>
-          <ProjectRuleItem rule={rule} />
-          {renderItemSeparator( )}
-        </View>
-      ) )}
+      {isLoading
+        ? <ActivityIndicator size={50} />
+        : (
+          <>
+            <View className="my-4 px-4">
+              <ProjectListItem item={project} />
+            </View>
+            {renderItemSeparator( )}
+            {RULES.map( rule => (
+              <View key={rule.name}>
+                <ProjectRuleItem rule={rule} />
+                {renderItemSeparator( )}
+              </View>
+            ) )}
+          </>
+        )}
       <View className="mt-6 px-4">
         <AboutProjectType projectType="collection" />
       </View>

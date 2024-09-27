@@ -654,7 +654,6 @@ OBSERVATION-WAS-DELETED = OBSERVATION WAS DELETED
 Observation-with-no-evidence = Observation with no evidence
 Observations = Observations
 Observations-created-on-iNaturalist = Observations created on iNaturalist are used by scientists around the world.
-Observations-in-this-project-must-meet-the-following-criteria = Observations in this project must meet the following criteria:
 Observations-View = Observations View
 # Might be used when the number is represented using an image or other
 # element, not text
@@ -952,6 +951,7 @@ SPECIES-WITHOUT-NUMBER =
 # Label for the standard map type
 Standard--map-type = Standard
 Start-must-be-before-end = The start date must be before the end date.
+Start-time = Start time: { $date }
 Start-upload = Start upload
 # Accessibility hint for button that starts recording a sound
 Starts-recording-sound = Starts recording sound
@@ -1056,6 +1056,10 @@ USERNAME-OR-EMAIL = USERNAME OR EMAIL
 # label in project requirements
 Users = Users
 Using-iNaturalist-requires-the-storage = Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US.
+VIEW-ALL-X-PLACES = VIEW ALL { $count } PLACES
+VIEW-ALL-X-PROJECTS = VIEW ALL { $count } PROJECTS
+VIEW-ALL-X-TAXA = VIEW ALL { $count } TAXA
+VIEW-ALL-X-USERS = VIEW ALL { $count } USERS
 VIEW-CHILDREN-TAXA = VIEW CHILDREN TAXA
 VIEW-DATA-QUALITY-ASSESSMENT = VIEW DATA QUALITY ASSESSMENT
 VIEW-EDUCATORS-GUIDE = VIEW EDUCATOR'S GUIDE
