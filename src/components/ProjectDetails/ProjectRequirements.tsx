@@ -62,8 +62,7 @@ const ProjectRequirements = ( ) => {
     },
     {
       ...ruleOperands,
-      name: t( "Quality-Grade" ),
-      defaults: [t( "Research-Grade" ), t( "Needs-ID" )]
+      name: t( "Quality-Grade" )
     },
     {
       ...ruleOperands,
@@ -93,44 +92,70 @@ const ProjectRequirements = ( ) => {
 
   // const rules = project?.project_observation_rules;
 
-  // console.log( project, "project" );
+  console.log( project?.search_parameters, "search params" );
   // console.log( project?.rule_preferences, "rule prefs" );
 
   // Taxa Requirements
-  const taxonIds = getFieldValue( project?.search_parameters
+  const includedTaxonIds = getFieldValue( project?.search_parameters
     ?.filter( pref => pref.field === "taxon_id" ) );
 
-  console.log( taxonIds, "taxon ids" );
-  // const taxonIds = rules?.filter( rule => rule.operand_type === "Taxon" )
-  //   // && rule.operator === "in_taxon?" )
-  //   .map( rule => rule.id );
+  const excludedTaxonIds = getFieldValue( project?.search_parameters
+    ?.filter( pref => pref.field === "without_taxon_id" ) );
 
   // console.log( taxonIds, "taxon ids" );
+  // const includedTaxonIds = rules?.filter( rule => rule.operand_type === "Taxon"
+  //   && rule.operator === "in_taxon?" ).map( rule => rule.operand_id );
 
-  const taxaQueryKey = ["projectTaxa", "fetchTaxon", taxonIds];
+  // console.log( taxonIds, "taxon ids" );
+  // console.log( includedTaxonIds, "included" );
+
+  // TODO: deal with exceptions
+  // TODO: deal with queries with too many taxon Ids
+  const includedTaxaQueryKey = ["includedProjectTaxa", "fetchTaxon", includedTaxonIds];
 
   const {
     data: taxaNames
   } = useAuthenticatedQuery(
-    taxaQueryKey,
-    optsWithAuth => fetchTaxon( taxonIds, {
+    includedTaxaQueryKey,
+    optsWithAuth => fetchTaxon( includedTaxonIds, {
       fields: Taxon.LIMITED_TAXON_FIELDS
     }, optsWithAuth ),
     {
-      enabled: taxonIds?.length > 0
+      enabled: includedTaxonIds?.length > 0
     }
   );
 
+  const excludedTaxaQueryKey = ["excludedProjectTaxa", "fetchTaxon", excludedTaxonIds];
+
+  const {
+    data: excludedTaxaNames
+  } = useAuthenticatedQuery(
+    excludedTaxaQueryKey,
+    optsWithAuth => fetchTaxon( excludedTaxonIds, {
+      fields: Taxon.LIMITED_TAXON_FIELDS
+    }, optsWithAuth ),
+    {
+      enabled: excludedTaxonIds?.length > 0
+    }
+  );
+
+  const createTaxonObject = taxon => ( {
+    taxon,
+    text: null,
+    onPress: ( ) => navigation.navigate( "TaxonDetails", {
+      id: taxon.id
+    } )
+  } );
+
+  const taxonRule = RULES.find( r => r.name === t( "Taxa" ) );
   if ( taxaNames?.results?.length > 0 ) {
-    const taxonRule = RULES.find( r => r.name === t( "Taxa" ) );
     const sortedResults = _.sortBy( taxaNames?.results, taxon => taxon.name );
-    taxonRule.inclusions = sortedResults?.map( taxon => ( {
-      taxon,
-      text: null,
-      onPress: ( ) => navigation.navigate( "TaxonDetails", {
-        id: taxon.id
-      } )
-    } ) );
+    taxonRule.inclusions = sortedResults?.map( taxon => createTaxonObject( taxon ) );
+  }
+
+  if ( excludedTaxaNames?.results?.length > 0 ) {
+    const sortedResults = _.sortBy( excludedTaxaNames?.results, taxon => taxon.name );
+    taxonRule.exclusions = sortedResults?.map( taxon => createTaxonObject( taxon ) );
   }
 
   // Location Requirement

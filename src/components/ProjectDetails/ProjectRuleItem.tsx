@@ -3,7 +3,7 @@ import { Body3, DisplayTaxonName } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import _ from "lodash";
 import React from "react";
-import { useCurrentUser } from "sharedHooks";
+import { useCurrentUser, useTranslation } from "sharedHooks";
 
 interface Props {
   rule: Object
@@ -11,6 +11,7 @@ interface Props {
 
 const ProjectRuleItem = ( { rule }: Props ) => {
   const currentUser = useCurrentUser( );
+  const { t } = useTranslation( );
 
   const showTaxonName = taxon => (
     <DisplayTaxonName
@@ -22,29 +23,19 @@ const ProjectRuleItem = ( { rule }: Props ) => {
     />
   );
 
-  const showInclusions = ( ) => rule?.inclusions.map( inclusion => (
+  const showRules = ruleType => ruleType.map( item => (
     <Body3
-      key={inclusion?.text || inclusion?.taxon?.name}
+      key={item?.text || item?.taxon?.name}
       className={classnames(
         "pb-2 flex-row",
         {
-          underline: inclusion?.onPress
+          underline: item?.onPress
         }
       )}
-      onPress={inclusion?.onPress}
+      onPress={item?.onPress}
     >
-      {inclusion?.text}
-      {inclusion?.taxon && showTaxonName( inclusion?.taxon )}
-    </Body3>
-  ) );
-
-  const showExclusions = ( ) => rule?.exclusions.map( exclusion => (
-    <Body3
-      key={exclusion?.text}
-      className="flex-row pb-1"
-      onPress={exclusion?.onPress}
-    >
-      {exclusion}
+      {item?.text}
+      {item?.taxon && showTaxonName( item?.taxon )}
     </Body3>
   ) );
 
@@ -53,13 +44,20 @@ const ProjectRuleItem = ( { rule }: Props ) => {
   ) );
 
   const showRuleDetails = ( ) => {
-    if ( !_.isEmpty( rule?.inclusions ) ) {
-      return showInclusions( );
+    if ( !_.isEmpty( rule?.inclusions ) && !_.isEmpty( rule?.exclusions ) ) {
+      return showDefaults( );
     }
-    if ( !_.isEmpty( rule?.exclusions ) ) {
-      return showExclusions( );
-    }
-    return showDefaults( );
+    return (
+      <>
+        {!_.isEmpty( rule?.inclusions ) && showRules( rule?.inclusions )}
+        {!_.isEmpty( rule?.exclusions ) && (
+          <>
+            <Body3 className="flex-row pb-1">{t( "except" )}</Body3>
+            {showRules( rule?.exclusions )}
+          </>
+        )}
+      </>
+    );
   };
 
   return (

@@ -373,6 +373,7 @@ Every-time-a-collection-project = Every time a collection project's page is load
 EVIDENCE = EVIDENCE
 Exact-Date = Exact Date
 EXACT-DATE = EXACT DATE
+except = except
 EXPAND-MAP = EXPAND MAP
 Explore = Explore
 EXPLORE = EXPLORE
