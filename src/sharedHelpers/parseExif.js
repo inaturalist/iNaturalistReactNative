@@ -2,8 +2,7 @@
 
 import { utcToZonedTime } from "date-fns-tz";
 import { readExif, writeLocation } from "react-native-exif-reader";
-import * as RNLocalize from "react-native-localize";
-import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
+import { formatISONoTimezone } from "sharedHelpers/dateAndTime.ts";
 
 class UsePhotoExifDateFormatError extends Error {}
 
@@ -16,11 +15,10 @@ Object.defineProperty( UsePhotoExifDateFormatError.prototype, "name", {
 export const parseExifDateToLocalTimezone = ( datetime: string ): ?Date => {
   if ( !datetime ) return null;
 
+  // react-native-exif-reader formats the date based on GMT time,
+  // so we create a date object here using GMT time, not the user's local timezone
   const isoDate = `${datetime}Z`;
-
-  // Use local timezone from device
-  const timeZone = RNLocalize.getTimeZone( );
-  const zonedDate = utcToZonedTime( isoDate, timeZone );
+  const zonedDate = utcToZonedTime( isoDate, "GMT" );
 
   if ( !zonedDate || zonedDate.toString( ).match( /invalid/i ) ) {
     throw new UsePhotoExifDateFormatError( "Date was not formatted correctly" );
@@ -39,7 +37,9 @@ export const parseExif = async ( photoUri: ?string ): Promise<Object> => {
   }
 };
 
-interface ExifToWrite {
+// TODO: Johannes: I think this interface should be
+// exported from the react-native-exif-reader library
+export interface ExifToWrite {
   latitude?: number;
   longitude?: number;
   positional_accuracy?: number;

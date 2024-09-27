@@ -24,7 +24,6 @@ import useParams from "./hooks/useParams";
 const ExploreContainerWithContext = ( ): Node => {
   const navigation = useNavigation( );
   const { isConnected } = useNetInfo( );
-  const setStoredParams = useStore( state => state.setStoredParams );
   const exploreView = useStore( state => state.exploreView );
   const setExploreView = useStore( state => state.setExploreView );
 
@@ -107,12 +106,6 @@ const ExploreContainerWithContext = ( ): Node => {
     setShowFiltersModal( true );
     makeSnapshot( );
   };
-
-  useEffect( ( ) => {
-    navigation.addListener( "blur", ( ) => {
-      setStoredParams( state );
-    } );
-  }, [navigation, setStoredParams, state] );
 
   // Subviews need the ability to imperatively start fetching, e.g. when the
   // user switches from species to obs view

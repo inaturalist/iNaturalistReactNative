@@ -52,10 +52,6 @@ export enum SORT_BY {
   MOST_FAVED = "MOST_FAVED",
 }
 
-// TODO: this should be imported from a central point, e.g. Taxon realm model
-// TODO: this is probably against conventioins to
-// make it in lower case but I (Johannes) don't want
-// to have to add another object somewhere else to map them to the values the API accepts
 export enum TAXONOMIC_RANK {
   none = null,
   kingdom = "kingdom",
@@ -349,14 +345,27 @@ async function defaultExploreLocation( ): Promise<DefaultLocation> {
   const location = await fetchCoarseUserLocation( );
   if ( !location || !location.latitude ) {
     return {
-      placeMode: PLACE_MODE.WORLDWIDE
+      placeMode: PLACE_MODE.WORLDWIDE,
+      lat: undefined,
+      lng: undefined,
+      radius: undefined,
+      place_id: undefined,
+      swlat: undefined,
+      swlng: undefined,
+      nelat: undefined,
+      nelng: undefined
     };
   }
   return {
     placeMode: PLACE_MODE.NEARBY,
     lat: location?.latitude,
     lng: location?.longitude,
-    radius: 50
+    radius: 50,
+    place_id: undefined,
+    swlat: undefined,
+    swlng: undefined,
+    nelat: undefined,
+    nelng: undefined
   };
 }
 

@@ -10,7 +10,7 @@ import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
-import { formatIdDate } from "sharedHelpers/dateAndTime";
+import { formatDifferenceForHumans } from "sharedHelpers/dateAndTime.ts";
 import { useTranslation } from "sharedHooks";
 
 const { useRealm } = RealmContext;
@@ -20,7 +20,7 @@ const { useRealm } = RealmContext;
     };
 
 const ObsNotification = ( { item }: Props ): Node => {
-  const { t } = useTranslation( );
+  const { i18n } = useTranslation( );
   const { identification, comment } = item;
   const type = item?.notifier_type;
   const { user } = identification || comment;
@@ -46,7 +46,7 @@ const ObsNotification = ( { item }: Props ): Node => {
       className="shrink flex-row space-x-[10px]"
     >
       <ObservationIcon photoUri={photoUrl} soundUri={soundsUrl} />
-      <View className="flex-col shrink justify-between space-y-[8px]">
+      <View className="flex-col shrink justify-center space-y-[8px]">
         <ObsNotificationText type={type} userName={user.login} />
         <View className="flex-row space-x-[8px]">
           {
@@ -62,7 +62,7 @@ const ObsNotification = ( { item }: Props ): Node => {
           {item.created_at
             && (
               <Body4>
-                {formatIdDate( item.created_at, t )}
+                {formatDifferenceForHumans( item.created_at, i18n )}
               </Body4>
             )}
         </View>

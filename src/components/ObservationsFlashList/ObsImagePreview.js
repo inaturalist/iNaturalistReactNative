@@ -33,6 +33,7 @@ type Props = {
   source: SOURCE,
   style?: Object,
   testID?: string,
+  useShortGradient?: boolean,
   white?: boolean,
   width?: string
 };
@@ -53,6 +54,7 @@ const ObsImagePreview = ( {
   source,
   style,
   testID,
+  useShortGradient,
   white = false,
   width = "w-[62px]"
 }: Props ): Node => {
@@ -138,18 +140,26 @@ const ObsImagePreview = ( {
   }, [selectable, selected, theme] );
 
   const renderGradient = useCallback( ( ) => {
-    if ( !isSmall ) {
+    if ( isSmall ) return null;
+    if ( useShortGradient ) {
       return (
         <LinearGradient
-          colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
+          colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.6) 100%)"]}
           className="absolute w-full h-full"
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 0.75 }}
+          start={{ x: 0, y: 0.5 }}
+          end={{ x: 0, y: 1 }}
         />
       );
     }
-    return null;
-  }, [isSmall] );
+    return (
+      <LinearGradient
+        colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
+        className="absolute w-full h-full"
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 0.75 }}
+      />
+    );
+  }, [isSmall, useShortGradient] );
 
   const renderSoundIcon = useCallback( ( ) => {
     if ( !hasSound ) return null;
@@ -184,7 +194,11 @@ const ObsImagePreview = ( {
   }
 
   if ( isSmall && obsPhotosCount === 0 && hasSound ) {
-    imageClassNames.push( "border-2", "justify-center", "items-center" );
+    imageClassNames.push(
+      "border-2",
+      "justify-center",
+      "items-center"
+    );
     content = <INatIcon name="sound" color={theme.colors.primary} size={24} />;
   } else {
     content = (

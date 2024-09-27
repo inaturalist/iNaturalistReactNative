@@ -25,21 +25,30 @@ const useTaxon = ( taxon: Object, fetchRemote = true ): Object => {
   const localTaxon = taxonId && realm.objectForPrimaryKey( "Taxon", taxonId );
 
   const canFetchTaxon = !!taxonId;
+  const outOfDate = localTaxon
+    ? ( localTaxon._synced_at && ( Date.now( ) - localTaxon._synced_at > ONE_WEEK_MS ) )
+    : false;
+  const missingRequiredAttributes = localTaxon
+    ? (
+      !localTaxon.preferred_common_name
+      || !localTaxon.default_photo?.url
+    )
+    : false;
   const localTaxonNeedsSync = (
     // Definitely sync if there's no local copy
     !localTaxon
-    || (
-      // Sync if the local copy hasn't been synced in a week
-      localTaxon._synced_at && ( Date.now( ) - localTaxon._synced_at > ONE_WEEK_MS )
-    )
+    // Sync if the local copy hasn't been synced in a week
+    || outOfDate
     // Sync if missing a common name or default photo from being saved in Realm while offline
-    || ( !localTaxon.preferred_common_name || !localTaxon.default_photo?.url )
+    || missingRequiredAttributes
   );
   const enabled = !!( canFetchTaxon && fetchRemote && localTaxonNeedsSync );
 
   const {
     data: remoteTaxon,
-    isLoading
+    error,
+    isLoading,
+    refetch
   } = useAuthenticatedQuery(
     ["fetchTaxon", taxonId],
     optsWithAuth => fetchTaxon( taxonId, { fields: Taxon.LIMITED_TAXON_FIELDS }, optsWithAuth ),
@@ -65,6 +74,8 @@ const useTaxon = ( taxon: Object, fetchRemote = true ): Object => {
   // Local is best, local-ish version of remote will be available sooner, use
   // whatever was passed in as a last resort
   return {
+    error,
+    refetch,
     taxon: localTaxon || mappedRemoteTaxon || taxon,
     // Apparently useQuery isLoading is true if the query is disabled
     isLoading: enabled && isLoading

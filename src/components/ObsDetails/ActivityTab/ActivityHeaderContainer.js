@@ -14,7 +14,10 @@ type Props = {
   idWithdrawn?: boolean,
   isConnected?: boolean,
   item: Object,
-  refetchRemoteObservation?: Function
+  refetchRemoteObservation?: Function,
+  geoprivacy: string,
+  taxonGeoprivacy: string,
+  belongsToCurrentUser: boolean
 }
 
 const ActivityHeaderContainer = ( {
@@ -22,7 +25,10 @@ const ActivityHeaderContainer = ( {
   idWithdrawn,
   isConnected,
   item,
-  refetchRemoteObservation
+  refetchRemoteObservation,
+  geoprivacy,
+  taxonGeoprivacy,
+  belongsToCurrentUser
 }:Props ): Node => {
   const [currentUser, setCurrentUser] = useState( false );
   const [flagged, setFlagged] = useState( false );
@@ -125,6 +131,9 @@ const ActivityHeaderContainer = ( {
       deleteComment={deleteUserComment}
       updateIdentification={updateIdentification}
       isConnected={isConnected}
+      geoprivacy={geoprivacy}
+      taxonGeoprivacy={taxonGeoprivacy}
+      belongsToCurrentUser={belongsToCurrentUser}
     />
   );
 };

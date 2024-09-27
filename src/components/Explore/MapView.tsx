@@ -53,7 +53,11 @@ const MapView = ( {
   useEffect( ( ) => {
     if (
       observationBounds
-      && [PLACE_MODE.WORLDWIDE, PLACE_MODE.PLACE].indexOf( exploreState.placeMode ) >= 0
+      && [
+        PLACE_MODE.WORLDWIDE,
+        PLACE_MODE.PLACE,
+        PLACE_MODE.NEARBY
+      ].indexOf( exploreState.placeMode ) >= 0
     ) {
       updateMapBoundaries( getMapRegion( observationBounds ) );
     }

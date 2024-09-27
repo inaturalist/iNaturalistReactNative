@@ -13,17 +13,15 @@ const { useRealm } = RealmContext;
 type Props = {
   explore: boolean,
   handleIndividualUploadPress: Function,
-  gridItemWidth: number,
+  gridItemStyle: Object,
   layout: "list" | "grid",
   observation: Object
 };
 
-const GUTTER = 15;
-
 const ObsItem = ( {
   explore,
   handleIndividualUploadPress,
-  gridItemWidth,
+  gridItemStyle,
   layout,
   observation
 }: Props ): Node => {
@@ -48,11 +46,7 @@ const ObsItem = ( {
               showUploadStatus={showUploadStatus}
               // 03022023 it seems like Flatlist is designed to work
               // better with RN styles than with Tailwind classes
-              style={{
-                height: gridItemWidth,
-                width: gridItemWidth,
-                margin: GUTTER / 2
-              }}
+              style={gridItemStyle}
 
             />
           )

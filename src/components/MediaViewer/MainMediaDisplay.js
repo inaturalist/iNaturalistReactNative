@@ -52,6 +52,7 @@ const MainMediaDisplay = ( {
   const { screenWidth } = useDeviceOrientation( );
   const [displayHeight, setDisplayHeight] = useState( 0 );
   const [zooming, setZooming] = useState( false );
+  const [scrolling, setScrolling] = useState( false );
   const atFirstItem = selectedMediaIndex === 0;
   const items = useMemo( ( ) => ( [
     ...photos.map( photo => ( { ...photo, type: "photo" } ) ),
@@ -59,14 +60,21 @@ const MainMediaDisplay = ( {
   ] ), [photos, sounds] );
   const atLastItem = selectedMediaIndex === items.length - 1;
 
+  // t changes a lot, but these strings don't, so using them as useCallback
+  // dependencies keeps that method from getting redefined a lot
+  const deletePhotoLabel = t( "Delete-photo" );
+  const deleteSoundLabel = t( "Delete-sound" );
+
   const renderPhoto = useCallback( photo => {
     const uri = Photo.displayLocalOrRemoteLargePhoto( photo );
+    const hasAttribution = photo?.attribution;
     return (
       <View>
         <CustomImageZoom
-          source={{ uri }}
+          imageUri={uri}
           height={displayHeight}
           setZooming={setZooming}
+          zoomDisabled={scrolling}
         />
         {
           editable
@@ -79,25 +87,29 @@ const MainMediaDisplay = ( {
                   )}
                   icon="trash-outline"
                   color={colors.white}
-                  accessibilityLabel={t( "Delete-photo" )}
+                  accessibilityLabel={deletePhotoLabel}
                 />
               </View>
             )
             : (
-              <AttributionButton
-                licenseCode={photo.licenseCode}
-                attribution={photo.attribution}
-                optionalClasses="absolute top-4 right-4"
-              />
+              hasAttribution
+              && (
+                <AttributionButton
+                  licenseCode={photo.licenseCode}
+                  attribution={photo.attribution}
+                  optionalClasses="absolute top-4 right-4"
+                />
+              )
             )
         }
       </View>
     );
   }, [
+    deletePhotoLabel,
     displayHeight,
     editable,
     onDeletePhoto,
-    t
+    scrolling
   ] );
 
   const renderSound = useCallback( sound => (
@@ -121,7 +133,7 @@ const MainMediaDisplay = ( {
               onPress={( ) => onDeleteSound( sound.file_url )}
               icon="trash-outline"
               color={colors.white}
-              accessibilityLabel={t( "Delete-sound" )}
+              accessibilityLabel={deleteSoundLabel}
             />
           </View>
         )
@@ -129,13 +141,13 @@ const MainMediaDisplay = ( {
     </View>
   ), [
     autoPlaySound,
+    deleteSoundLabel,
     displayHeight,
     editable,
     items,
     onDeleteSound,
     screenWidth,
-    selectedMediaIndex,
-    t
+    selectedMediaIndex
   ] );
 
   const renderItem = useCallback( ( { item } ) => (
@@ -180,6 +192,7 @@ const MainMediaDisplay = ( {
     } else if ( x < currentOffset ) {
       handleScrollLeft( index );
     }
+    setScrolling( false );
   }, [
     handleScrollLeft,
     handleScrollRight,
@@ -207,6 +220,7 @@ const MainMediaDisplay = ( {
         showsHorizontalScrollIndicator={false}
         ref={horizontalScroll}
         onMomentumScrollEnd={handleScrollEndDrag}
+        onScrollBeginDrag={() => setScrolling( true )}
       />
     </View>
   );

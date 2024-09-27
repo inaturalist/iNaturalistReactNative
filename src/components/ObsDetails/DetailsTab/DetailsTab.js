@@ -8,9 +8,10 @@ import {
   DateDisplay,
   Divider,
   Heading4,
+  LabelColonValue,
   QualityGradeStatus
 } from "components/SharedComponents";
-import UserText from "components/SharedComponents/UserText";
+import UserText from "components/SharedComponents/UserText.tsx";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
@@ -128,7 +129,7 @@ const DetailsTab = ( { currentUser, observation }: Props ): Node => {
           {currentUser && (
             <Button
               testID="DetailsTab.DQA"
-              text={t( "VIEW-DATA-QUALITY-ASSESSEMENT" )}
+              text={t( "VIEW-DATA-QUALITY-ASSESSMENT" )}
               onPress={() => navigation.navigate( "DataQualityAssessment", { observationUUID } )}
             />
           )}
@@ -148,8 +149,8 @@ const DetailsTab = ( { currentUser, observation }: Props ): Node => {
         {application && (
           <Body4>{t( "Uploaded-via-application", { application } )}</Body4>
         )}
-        <Body4>{t( "Label-colon-value", { label: "ID", value: observation.id } )}</Body4>
-        <Body4>{t( "Label-colon-value", { label: "UUID", value: observation.uuid } )}</Body4>
+        <View><LabelColonValue label="ID" value={String( observation.id )} valueSelectable /></View>
+        <View><LabelColonValue label="UUID" value={observation.uuid} valueSelectable /></View>
         <ViewInBrowserButton id={observation.id} />
       </View>
     </>

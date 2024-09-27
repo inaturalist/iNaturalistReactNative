@@ -57,7 +57,7 @@ const AICamera = ( {
   const { isDebug } = useDebugMode( );
   const {
     animatedProps,
-    changeZoom,
+    handleZoomButtonPress,
     pinchToZoom,
     showZoomButton,
     zoomTextValue,
@@ -86,6 +86,7 @@ const AICamera = ( {
     takingPhoto,
     toggleFlash
   } = useTakePhoto( camera, false, device );
+  const [inactive, setInactive] = React.useState( false );
   const { t } = useTranslation();
   const theme = useTheme();
   const navigation = useNavigation();
@@ -112,13 +113,18 @@ const AICamera = ( {
   }, [navigation, setResult, resetZoom] );
 
   const handlePress = async ( ) => {
-    await takePhoto( { replaceExisting: true } );
+    await takePhoto( { replaceExisting: true, inactivateCallback: () => setInactive( true ) } );
     handleCheckmarkPress( showPrediction
       ? result
       : null );
   };
 
   const insets = useSafeAreaInsets( );
+
+  const onFlipCamera = () => {
+    resetZoom( );
+    flipCamera( );
+  };
 
   return (
     <>
@@ -140,6 +146,7 @@ const AICamera = ( {
             animatedProps={animatedProps}
             pinchToZoom={pinchToZoom}
             takingPhoto={takingPhoto}
+            inactive={inactive}
           />
         </View>
       )}
@@ -201,10 +208,10 @@ const AICamera = ( {
       )}
       <FadeInOutView takingPhoto={takingPhoto} />
       <AICameraButtons
-        changeZoom={changeZoom}
+        handleZoomButtonPress={handleZoomButtonPress}
         confidenceThreshold={confidenceThreshold}
         cropRatio={cropRatio}
-        flipCamera={flipCamera}
+        flipCamera={onFlipCamera}
         fps={fps}
         hasFlash={hasFlash}
         modelLoaded={modelLoaded}

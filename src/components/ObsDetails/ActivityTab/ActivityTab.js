@@ -12,7 +12,9 @@ type Props = {
   refetchRemoteObservation: Function,
   activityItems: Array<Object>,
   openAgreeWithIdSheet: Function,
-  isConnected: boolean
+  isConnected: boolean,
+  notificationId: number,
+  setScrollToY: ( number ) => void
 }
 
 const ActivityTab = ( {
@@ -20,10 +22,15 @@ const ActivityTab = ( {
   refetchRemoteObservation,
   activityItems,
   openAgreeWithIdSheet,
-  isConnected
+  isConnected,
+  notificationId,
+  setScrollToY
 }: Props ): Node => {
   const currentUser = useCurrentUser( );
   const userId = currentUser?.id;
+  const geoprivacy = observation?.geoprivacy;
+  const taxonGeoprivacy = observation?.taxon_geoprivacy;
+  const belongsToCurrentUser = observation?.user?.login === currentUser?.login;
 
   // finds the user's most recent id
   const findRecentUserAgreedToID = ( ) => {
@@ -54,16 +61,28 @@ const ActivityTab = ( {
     <View testID="ActivityTab">
       {stableItems.length > 0
         && stableItems.map( ( item, index ) => (
-          <ActivityItem
-            currentUserId={userId}
-            isFirstDisplay={index === indexOfFirstTaxonDisplayed( item.taxon?.id )}
-            isConnected={isConnected}
-            item={item}
+          <View
+            onLayout={event => {
+              if ( notificationId === item?.id ) {
+                const { layout } = event.nativeEvent;
+                setScrollToY( layout.y );
+              }
+            }}
             key={item.uuid}
-            openAgreeWithIdSheet={openAgreeWithIdSheet}
-            refetchRemoteObservation={refetchRemoteObservation}
-            userAgreedId={userAgreedToId}
-          />
+          >
+            <ActivityItem
+              currentUserId={userId}
+              isFirstDisplay={index === indexOfFirstTaxonDisplayed( item.taxon?.id )}
+              isConnected={isConnected}
+              item={item}
+              openAgreeWithIdSheet={openAgreeWithIdSheet}
+              refetchRemoteObservation={refetchRemoteObservation}
+              userAgreedId={userAgreedToId}
+              geoprivacy={geoprivacy}
+              taxonGeoprivacy={taxonGeoprivacy}
+              belongsToCurrentUser={belongsToCurrentUser}
+            />
+          </View>
         ) )}
     </View>
   );

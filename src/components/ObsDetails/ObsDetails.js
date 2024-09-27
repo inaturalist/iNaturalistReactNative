@@ -1,5 +1,4 @@
 // @flow
-import { useRoute } from "@react-navigation/native";
 import PotentialDisagreementSheet from
   "components/ObsDetails/Sheets/PotentialDisagreementSheet";
 import {
@@ -15,7 +14,9 @@ import {
   View
 } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useMemo } from "react";
+import React, {
+  useLayoutEffect, useMemo, useRef, useState
+} from "react";
 import { Platform } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import {
@@ -24,7 +25,6 @@ import {
 import {
   useTranslation
 } from "sharedHooks";
-import useStore from "stores/useStore";
 
 import ActivityTab from "./ActivityTab/ActivityTab";
 import FloatingButtons from "./ActivityTab/FloatingButtons";
@@ -43,16 +43,18 @@ type Props = {
   addingActivityItem: Function,
   closeAgreeWithIdSheet: Function,
   belongsToCurrentUser: boolean,
-  comment: string,
+  comment?: string | null,
   commentIsOptional: ?boolean,
   confirmCommentFromCommentSheet: Function,
   confirmRemoteObsWasDeleted?: Function,
-  currentTabId: string,
+  obsDetailsTab: string,
   currentUser: Object,
+  editIdentBody: Function,
   hideAddCommentSheet: Function,
   isConnected: boolean,
   isRefetching: boolean,
   navToSuggestions: Function,
+  notificationId: number,
   observation: Object,
   openAddCommentSheet: Function,
   openAgreeWithIdSheet: Function,
@@ -69,7 +71,15 @@ type Props = {
   showSuggestIdSheet: boolean,
   suggestIdSheetDiscardChanges: Function,
   tabs: Array<Object>,
-  taxonForSuggestion: ?Object
+  identBodySheetShown?: boolean,
+  onCloseIdentBodySheet?: Function,
+  newIdentification?: null | {
+    body?: string,
+    taxon: Object,
+    vision?: boolean
+  },
+  onChangeIdentBody?: Function,
+  uuid: string
 }
 
 const ObsDetails = ( {
@@ -81,12 +91,14 @@ const ObsDetails = ( {
   commentIsOptional,
   confirmCommentFromCommentSheet,
   confirmRemoteObsWasDeleted,
-  currentTabId,
+  obsDetailsTab,
   currentUser,
+  editIdentBody,
   hideAddCommentSheet,
   isConnected,
   isRefetching,
   navToSuggestions,
+  notificationId,
   observation,
   onAgree,
   openAgreeWithIdSheet,
@@ -103,13 +115,24 @@ const ObsDetails = ( {
   showSuggestIdSheet,
   suggestIdSheetDiscardChanges,
   tabs,
-  taxonForSuggestion
+  identBodySheetShown,
+  onCloseIdentBodySheet,
+  newIdentification,
+  onChangeIdentBody,
+  uuid
 }: Props ): Node => {
+  const scrollViewRef = useRef( );
   const insets = useSafeAreaInsets();
-  const { params } = useRoute( );
-  const { uuid } = params;
   const { t } = useTranslation( );
-  const currentObservation = useStore( state => state.currentObservation );
+  const [scrollToY, setScrollToY] = useState( 0 );
+
+  useLayoutEffect( ( ) => {
+    // we need useLayoutEffect here to make sure the ScrollView has already rendered
+    // before trying to scroll to the relevant activity item
+    if ( notificationId && scrollViewRef?.current ) {
+      scrollViewRef?.current?.scrollTo( { y: scrollToY } );
+    }
+  } );
 
   const dynamicInsets = useMemo( () => ( {
     backgroundColor: "#ffffff",
@@ -128,9 +151,11 @@ const ObsDetails = ( {
       <ActivityTab
         activityItems={activityItems}
         isConnected={isConnected}
+        notificationId={notificationId}
         observation={observation}
         openAgreeWithIdSheet={openAgreeWithIdSheet}
         refetchRemoteObservation={refetchRemoteObservation}
+        setScrollToY={setScrollToY}
       />
     </HideView>
   );
@@ -166,8 +191,9 @@ const ObsDetails = ( {
             observation={observation}
           />
         </View>
-        <Tabs tabs={tabs} activeId={currentTabId} />
+        <Tabs tabs={tabs} activeId={obsDetailsTab} />
         <ScrollView
+          ref={scrollViewRef}
           testID={`ObsDetails.${uuid}`}
           stickyHeaderIndices={[0, 3]}
           scrollEventThrottle={16}
@@ -205,6 +231,7 @@ const ObsDetails = ( {
   const renderPhone = () => (
     <>
       <ScrollView
+        ref={scrollViewRef}
         testID={`ObsDetails.${uuid}`}
         stickyHeaderIndices={[0, 3]}
         scrollEventThrottle={16}
@@ -234,7 +261,7 @@ const ObsDetails = ( {
           observation={observation}
         />
         <View className="bg-white">
-          <Tabs tabs={tabs} activeId={currentTabId} />
+          <Tabs tabs={tabs} activeId={obsDetailsTab} />
         </View>
         <View className="bg-white h-full">
           {renderActivityTab( )}
@@ -256,7 +283,7 @@ const ObsDetails = ( {
     </>
   );
 
-  const hasComment = !!( comment || currentObservation?.description );
+  const hasComment = ( comment || newIdentification?.body || "" ).length > 0;
 
   const showAddCommentHeader = ( ) => {
     if ( hasComment ) {
@@ -275,13 +302,13 @@ const ObsDetails = ( {
       {!isTablet
         ? renderPhone()
         : renderTablet()}
-      {showAgreeWithIdSheet && (
+      {showAgreeWithIdSheet && newIdentification && (
         <AgreeWithIDSheet
-          comment={comment}
-          handleClose={closeAgreeWithIdSheet}
           onAgree={onAgree}
-          openAddCommentSheet={openAddCommentSheet}
-          taxon={taxonForSuggestion}
+          editIdentBody={editIdentBody}
+          hidden={identBodySheetShown}
+          onPressClose={closeAgreeWithIdSheet}
+          identification={newIdentification}
         />
       )}
       {/* AddCommentSheet */}
@@ -291,22 +318,35 @@ const ObsDetails = ( {
           handleClose={hideAddCommentSheet}
           headerText={showAddCommentHeader( )}
           textInputStyle={textInputStyle}
-          initialInput={comment || currentObservation?.description}
+          initialInput={comment}
           confirm={confirmCommentFromCommentSheet}
+        />
+      )}
+      {identBodySheetShown && (
+        <TextInputSheet
+          buttonText={t( "CONFIRM" )}
+          handleClose={onCloseIdentBodySheet}
+          headerText={showAddCommentHeader( )}
+          textInputStyle={textInputStyle}
+          initialInput={newIdentification?.body}
+          confirm={onChangeIdentBody}
         />
       )}
       {showSuggestIdSheet && (
         <SuggestIDSheet
-          openAddCommentSheet={openAddCommentSheet}
-          handleClose={suggestIdSheetDiscardChanges}
+          editIdentBody={editIdentBody}
+          hidden={identBodySheetShown}
+          onPressClose={suggestIdSheetDiscardChanges}
           onSuggestId={onSuggestId}
+          identification={newIdentification}
         />
       )}
-      {showPotentialDisagreementSheet && (
+      {showPotentialDisagreementSheet && newIdentification && (
         <PotentialDisagreementSheet
           onPotentialDisagreePressed={onPotentialDisagreePressed}
           handleClose={potentialDisagreeSheetDiscardChanges}
-          taxon={taxonForSuggestion}
+          newTaxon={newIdentification.taxon}
+          oldTaxon={observation.taxon}
         />
       )}
       {/*

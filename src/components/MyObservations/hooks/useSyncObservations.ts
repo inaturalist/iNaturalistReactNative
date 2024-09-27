@@ -36,6 +36,7 @@ const useSyncObservations = (
   const completeSync = useStore( state => state.completeSync );
   const resetSyncToolbar = useStore( state => state.resetSyncToolbar );
   const removeFromDeleteQueue = useStore( state => state.removeFromDeleteQueue );
+  const autoSyncAbortController = useStore( storeState => storeState.autoSyncAbortController );
 
   const canSync = loggedIn && isConnected;
 
@@ -135,24 +136,34 @@ const useSyncObservations = (
     deletionsCompletedAt
   ] );
 
+  const signalAborted = autoSyncAbortController && autoSyncAbortController.signal.aborted;
+
   const syncAutomatically = useCallback( async ( ) => {
-    if ( canSync ) {
+    if ( !signalAborted && canSync ) {
       await fetchRemoteDeletions( );
     }
-    await deleteLocalObservations( );
-    if ( canSync ) {
+    if ( !signalAborted ) {
+      await deleteLocalObservations( );
+    }
+    if ( !signalAborted && canSync ) {
       await fetchRemoteObservations( );
     }
-    completeSync( );
+    if ( !signalAborted ) {
+      completeSync( );
+    }
   }, [
     canSync,
+    completeSync,
     deleteLocalObservations,
     fetchRemoteDeletions,
     fetchRemoteObservations,
-    completeSync
+    signalAborted
   ] );
 
   const syncManually = useCallback( async ( ) => {
+    // we abort the automatic sync process when a user taps the manual sync button
+    // on the toolbar, per #1730
+    autoSyncAbortController?.abort();
     if ( canSync ) {
       await fetchRemoteDeletions( );
     }
@@ -175,6 +186,7 @@ const useSyncObservations = (
     }
     return Promise.resolve();
   }, [
+    autoSyncAbortController,
     canSync,
     completeSync,
     deleteLocalObservations,

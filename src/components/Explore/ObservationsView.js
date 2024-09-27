@@ -4,7 +4,7 @@ import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import useInfiniteExploreScroll from "components/Explore/hooks/useInfiniteExploreScroll";
-import { ObservationsFlashList } from "components/SharedComponents";
+import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect } from "react";
@@ -91,7 +91,7 @@ const ObservationsView = ( {
         isConnected={isConnected}
         layout={layout}
         onEndReached={fetchNextPage}
-        showNoResults={!canFetch}
+        showNoResults={!canFetch || totalResults === 0}
         testID="ExploreObservationsAnimatedList"
       />
       <MapView observationBounds={totalBounds} queryParams={queryParams} />

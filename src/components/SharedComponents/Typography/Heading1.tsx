@@ -7,6 +7,7 @@ import { Text, TextProps } from "react-native";
 
 const Heading1 = ( props: TextProps ) => (
   <Text
+    maxFontSizeMultiplier={2}
     className={classnames(
       "text-3xl tracking-tight text-darkGray",
       tailwindFontBold

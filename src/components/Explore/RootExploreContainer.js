@@ -14,6 +14,7 @@ import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
+  useRef,
   useState
 } from "react";
 import { useCurrentUser } from "sharedHooks";
@@ -36,8 +37,10 @@ const RootExploreContainerWithContext = ( ): Node => {
     hasPermissions: hasLocationPermissions,
     renderPermissionsGate,
     requestPermissions: requestLocationPermissions,
-    hasBlockedPermissions: hasBlockedLocationPermissions
+    hasBlockedPermissions: hasBlockedLocationPermissions,
+    checkPermissions
   } = useLocationPermission( );
+  const previousHasLocationPermissions = useRef();
 
   const {
     state, dispatch, makeSnapshot, defaultExploreLocation
@@ -47,7 +50,31 @@ const RootExploreContainerWithContext = ( ): Node => {
 
   const [canFetch, setCanFetch] = useState( false );
 
+  useEffect( () => {
+    async function locationPermissionsChanged() {
+      if ( hasLocationPermissions && !previousHasLocationPermissions.current
+        && state.placeMode === PLACE_MODE.NEARBY && !state.lat ) {
+        const exploreLocation = await defaultExploreLocation();
+        dispatch( {
+          type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
+          exploreLocation
+        } );
+      }
+
+      previousHasLocationPermissions.current = hasLocationPermissions;
+    }
+
+    locationPermissionsChanged();
+  }, [defaultExploreLocation, dispatch, hasLocationPermissions, state] );
+
+  useEffect( () => {
+    if ( state.placeMode === PLACE_MODE.NEARBY ) {
+      checkPermissions();
+    }
+  }, [checkPermissions, state] );
+
   const updateLocation = useCallback( async ( place: Object ) => {
+    checkPermissions();
     if ( place === "worldwide" ) {
       dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_WORLDWIDE } );
       dispatch( {
@@ -72,7 +99,7 @@ const RootExploreContainerWithContext = ( ): Node => {
         placeGuess: place?.display_name
       } );
     }
-  }, [defaultExploreLocation, dispatch, navigation] );
+  }, [checkPermissions, defaultExploreLocation, dispatch, navigation] );
 
   // Object | null
   const updateUser = ( user: Object ) => {
@@ -109,7 +136,10 @@ const RootExploreContainerWithContext = ( ): Node => {
     setIsFetching: setIsFetchingHeaderCount
   } = useExploreHeaderCount( );
 
-  const closeFiltersModal = ( ) => setShowFiltersModal( false );
+  const closeFiltersModal = ( ) => {
+    checkPermissions();
+    setShowFiltersModal( false );
+  };
 
   const openFiltersModal = ( ) => {
     setShowFiltersModal( true );
@@ -131,10 +161,22 @@ const RootExploreContainerWithContext = ( ): Node => {
   }, [navigation, setRootStoredParams, state, dispatch, rootStoredParams] );
 
   useEffect( () => {
-    if ( hasBlockedLocationPermissions ) {
+    if ( state.placeMode === PLACE_MODE.NEARBY
+        && hasLocationPermissions
+        && state.lat === undefined ) {
+      updateLocation( "nearby" );
+    }
+  }, [
+    updateLocation,
+    hasLocationPermissions,
+    state.placeMode,
+    state.lat] );
+
+  useEffect( () => {
+    if ( hasBlockedLocationPermissions && state.placeMode === PLACE_MODE.NEARBY ) {
       updateLocation( "worldwide" );
     }
-  }, [hasBlockedLocationPermissions, updateLocation] );
+  }, [hasBlockedLocationPermissions, state.placeMode, updateLocation] );
 
   // Subviews need the ability to imperatively start fetching, e.g. when the
   // user switches from species to obs view

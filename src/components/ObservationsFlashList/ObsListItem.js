@@ -1,11 +1,11 @@
 // @flow
 import classnames from "classnames";
 import {
-  DateDisplay, DisplayTaxonName, ObservationLocation, ObsStatus
+  DateDisplay, DisplayTaxonName, ObservationLocation
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useMemo } from "react";
 import Photo from "realmModels/Photo";
 import { useCurrentUser } from "sharedHooks";
 import { UPLOAD_IN_PROGRESS } from "stores/createUploadObservationsSlice.ts";
@@ -44,6 +44,22 @@ const ObsListItem = ( {
     || observation?.observation_sounds?.length
   );
   const isObscured = observation?.obscured && !belongsToCurrentUser;
+  const geoprivacy = observation?.geoprivacy;
+  const taxonGeoprivacy = observation?.taxon_geoprivacy;
+
+  const displayTaxonName = useMemo( ( ) => (
+    <DisplayTaxonName
+      taxon={observation?.taxon}
+      keyBase={observation?.uuid}
+      scientificNameFirst={currentUser?.prefers_scientific_name_first}
+      prefersCommonNames={currentUser?.prefers_common_names}
+    />
+  ), [
+    currentUser?.prefers_common_names,
+    currentUser?.prefers_scientific_name_first,
+    observation?.taxon,
+    observation?.uuid
+  ] );
 
   return (
     <View
@@ -59,12 +75,7 @@ const ObsListItem = ( {
         iconicTaxonName={observation.taxon?.iconic_taxon_name}
       />
       <View className="pr-[25px] flex-1 ml-[10px]">
-        <DisplayTaxonName
-          taxon={observation?.taxon}
-          keyBase={observation?.uuid}
-          scientificNameFirst={currentUser?.prefers_scientific_name_first}
-          prefersCommonNames={currentUser?.prefers_common_names}
-        />
+        {displayTaxonName}
         <ObservationLocation
           observation={observation}
           obscured={isObscured}
@@ -77,6 +88,9 @@ const ObsListItem = ( {
             || observation.observed_on
           }
           classNameMargin="mt-1"
+          geoprivacy={geoprivacy}
+          taxonGeoprivacy={taxonGeoprivacy}
+          belongsToCurrentUser={belongsToCurrentUser}
         />
       </View>
       <View
@@ -85,22 +99,14 @@ const ObsListItem = ( {
           { "justify-center": uploadStatus === UPLOAD_IN_PROGRESS }
         )}
       >
-        {explore
-          ? (
-            <ObsStatus
-              observation={observation}
-              layout="vertical"
-              testID={`ObsStatus.${observation.uuid}`}
-            />
-          )
-          : (
-            <ObsUploadStatus
-              handleIndividualUploadPress={handleIndividualUploadPress}
-              layout="vertical"
-              showUploadStatus={showUploadStatus}
-              observation={observation}
-            />
-          )}
+        <ObsUploadStatus
+          explore={explore}
+          handleIndividualUploadPress={handleIndividualUploadPress}
+          layout="vertical"
+          observation={observation}
+          showObsStatus
+          showUploadStatus={showUploadStatus}
+        />
       </View>
     </View>
   );

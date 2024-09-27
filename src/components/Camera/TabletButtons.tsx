@@ -37,7 +37,7 @@ const cameraOptionsClasses = [
 ].join( " " );
 
 interface Props {
-  changeZoom: ( _event: GestureResponderEvent ) => void;
+  handleZoomButtonPress: ( _event: GestureResponderEvent ) => void;
   disabled: boolean;
   flipCamera: ( _event: GestureResponderEvent ) => void;
   handleCheckmarkPress?: ( _event: GestureResponderEvent ) => void;
@@ -70,7 +70,7 @@ const CameraButtonPlaceholder = ( { extraClassName }: { extraClassName?: string 
 );
 
 const TabletButtons = ( {
-  changeZoom,
+  handleZoomButtonPress,
   disabled,
   flipCamera,
   handleCheckmarkPress,
@@ -100,7 +100,7 @@ const TabletButtons = ( {
     <View className={classnames( tabletCameraOptionsClasses )} pointerEvents="box-none">
       { photosTaken && <CameraButtonPlaceholder extraClassName="mb-[25px]" /> }
       <Zoom
-        changeZoom={changeZoom}
+        handleZoomButtonPress={handleZoomButtonPress}
         zoomTextValue={zoomTextValue}
         showZoomButton={showZoomButton}
         rotatableAnimatedStyle={rotatableAnimatedStyle}

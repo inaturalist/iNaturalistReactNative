@@ -1,0 +1,14 @@
+UPDATED
+* removed Projects from drawer
+* removed unknown iconic taxon from ObsEdit
+* obs count for species list in Explore not tappable
+
+FIXED
+* lost search area when viewing obs from Explore
+* Explore not showing nearby results by default or after granting
+  permission
+* ident bodies were getting populated with obs descriptions
+* denying photo library access after granting add-only access was impossible
+  to undo
+
+And more!

@@ -72,6 +72,7 @@ const IdentifiersView = ( {
       renderItem={renderItem}
       renderItemSeparator={renderItemSeparator}
       testID="ExploreIdentifiersAnimatedList"
+      totalResults={totalResults}
     />
   );
 };

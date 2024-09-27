@@ -1,0 +1,13 @@
+UPDATED
+* Tapping username in drawer shows profile
+* Removed map from TaxonDetails when no obs
+
+FIXED
+* Photo on Suggestions was flickering
+* Attribution in MediaViewer was inaccurate for new photos
+* Wrong obs date/times when importing photos from other time zones
+* Explore loading forever when there are 0 results
+* 3x zoom not matching Camera app
+* Tapping mentions not showing user profile
+* Full date shown for obscured obs
+* Camera not stopping when shutter tapped

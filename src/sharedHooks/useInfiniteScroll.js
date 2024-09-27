@@ -1,7 +1,7 @@
 // @flow
 
-import { useInfiniteQuery } from "@tanstack/react-query";
 import { flatten } from "lodash";
+import { useAuthenticatedInfiniteQuery } from "sharedHooks";
 
 const useInfiniteScroll = (
   queryKey: string,
@@ -19,39 +19,41 @@ const useInfiniteScroll = (
 
   const {
     data,
+    isFetching,
     isFetchingNextPage,
     fetchNextPage,
     status
-  } = useInfiniteQuery( {
-    // eslint-disable-next-line
-    queryKey: [queryKey, baseParams],
-    queryFn: async ( { pageParam = 0 } ) => {
+  } = useAuthenticatedInfiniteQuery(
+    [queryKey, baseParams],
+    async ( { pageParam = 0 }, optsWithAuth ) => {
       const params = {
         ...baseParams
       };
 
       params.page = pageParam;
 
-      return apiCall( params );
+      return apiCall( params, optsWithAuth );
     },
-    initialPageParam: 0,
-    getNextPageParam: lastPage => ( lastPage
-      ? lastPage.page + 1
-      : 1 ),
-    enabled: options.enabled
-  } );
+    {
+      getNextPageParam: lastPage => ( lastPage
+        ? lastPage.page + 1
+        : 1 ),
+      enabled: options.enabled
+    }
+  );
 
   const pages = data?.pages;
   const allResults = pages?.map( page => page?.results );
 
   return {
+    data: flatten( allResults ),
+    isFetching,
     isFetchingNextPage,
     fetchNextPage,
-    data: flatten( allResults ),
+    status,
     totalResults: pages?.[0]
       ? pages?.[0].total_results
-      : null,
-    status
+      : null
   };
 };
 

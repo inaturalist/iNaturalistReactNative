@@ -1,6 +1,3 @@
-import {
-  useNetInfo
-} from "@react-native-community/netinfo";
 import { searchTaxa } from "api/taxa";
 import { RealmContext } from "providers/contexts.ts";
 import { useEffect, useState } from "react";
@@ -13,9 +10,8 @@ const { useRealm } = RealmContext;
 const useIconicTaxa = ( options: { reload: boolean } = { reload: false } ) => {
   const { reload } = options;
   const realm = useRealm( );
-  const { isConnected } = useNetInfo( );
   const [isUpdatingRealm, setIsUpdatingRealm] = useState<boolean>( );
-  const enabled = !!isConnected && !!reload;
+  const enabled = !!( reload );
 
   const queryKey = ["searchTaxa", reload];
   const { data: iconicTaxa } = useAuthenticatedQuery(

@@ -4,7 +4,7 @@ import React from "react";
 
 describe( "PhotoCount", () => {
   it( "renders correctly", () => {
-    render( <PhotoCount count={7} size={50} shadow /> );
+    render( <PhotoCount count={7} /> );
 
     expect( screen ).toMatchSnapshot();
   } );

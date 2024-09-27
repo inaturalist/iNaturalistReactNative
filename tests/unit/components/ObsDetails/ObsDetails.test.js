@@ -4,7 +4,7 @@ import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import i18next, { t } from "i18next";
 import React from "react";
 import { View } from "react-native";
-import { formatApiDatetime } from "sharedHelpers/dateAndTime";
+import { formatApiDatetime } from "sharedHelpers/dateAndTime.ts";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import * as useCurrentUser from "sharedHooks/useCurrentUser.ts";
 import * as useLocalObservation from "sharedHooks/useLocalObservation";
@@ -155,8 +155,8 @@ describe( "ObsDetails", () => {
   } );
 
   beforeEach( ( ) => {
-    // Reset store value of currentTabId to ACTIVITY_TAB_ID
-    useStore.setState( { currentTabId: "ACTIVITY" } );
+    // Reset store value of obsDetailsTab to ACTIVITY_TAB
+    useStore.setState( { obsDetailsTab: "ACTIVITY" } );
   } );
 
   it.todo( "should not have accessibility errors" );
@@ -197,11 +197,11 @@ describe( "ObsDetails", () => {
   it( "renders observed date of observation in header", async ( ) => {
     renderObsDetails( );
     const observedDate = await screen.findByText(
-      formatApiDatetime( mockObservation.time_observed_at, i18next.t )
+      formatApiDatetime( mockObservation.time_observed_at, i18next )
     );
     expect( observedDate ).toBeVisible( );
     const createdDate = screen.queryByText(
-      formatApiDatetime( mockObservation.created_at, i18next.t )
+      formatApiDatetime( mockObservation.created_at, i18next )
     );
     expect( createdDate ).toBeFalsy( );
   } );
@@ -342,8 +342,7 @@ describe( "ObsDetails", () => {
       expect( mockMutate ).toHaveBeenCalledWith( {
         identification: {
           observation_id: otherUserObservation.uuid,
-          taxon_id: firstIdentification.taxon.id,
-          body: ""
+          taxon_id: firstIdentification.taxon.id
         }
       } );
     } );

@@ -68,7 +68,7 @@ const Announcements = ( {
     ["searchAnnouncements", apiParams],
     optsWithAuth => searchAnnouncements( apiParams, optsWithAuth ),
     {
-      enabled: !!isConnected && !!currentUser
+      enabled: !!( currentUser )
     }
   );
 

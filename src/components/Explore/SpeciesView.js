@@ -6,17 +6,14 @@ import _ from "lodash";
 import type { Node } from "react";
 import React, { useEffect, useMemo, useState } from "react";
 import Taxon from "realmModels/Taxon";
-import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import {
   useCurrentUser,
-  useDeviceOrientation,
+  useGridLayout,
   useInfiniteScroll,
   useQuery
 } from "sharedHooks";
 
 import ExploreFlashList from "./ExploreFlashList";
-
-const GUTTER = 15;
 
 type Props = {
   canFetch?: boolean,
@@ -39,31 +36,11 @@ const SpeciesView = ( {
   const [observedTaxonIds, setObservedTaxonIds] = useState( new Set( ) );
   const currentUser = useCurrentUser( );
   const {
-    isLandscapeMode,
-    isTablet,
-    screenHeight,
-    screenWidth
-  } = useDeviceOrientation( );
-
-  const calculateGridItemWidth = columns => {
-    const combinedGutter = ( columns + 1 ) * GUTTER;
-    const gridWidth = isTablet
-      ? screenWidth
-      : Math.min( screenWidth, screenHeight );
-    return Math.floor(
-      ( gridWidth - combinedGutter ) / columns
-    );
-  };
-
-  const calculateNumColumns = ( ) => {
-    if ( !isTablet ) return 2;
-    if ( isLandscapeMode ) return 6;
-    if ( screenWidth <= BREAKPOINTS.xl ) return 2;
-    return 4;
-  };
-
-  const numColumns = calculateNumColumns( );
-  const gridItemWidth = calculateGridItemWidth( numColumns );
+    estimatedGridItemSize,
+    flashListStyle,
+    gridItemStyle,
+    numColumns
+  } = useGridLayout( );
 
   const {
     data,
@@ -119,11 +96,7 @@ const SpeciesView = ( {
     <TaxonGridItem
       setCurrentExploreView={setCurrentExploreView}
       count={item?.count}
-      style={{
-        height: gridItemWidth,
-        width: gridItemWidth,
-        margin: GUTTER / 2
-      }}
+      style={gridItemStyle}
       taxon={item?.taxon}
       showSpeciesSeenCheckmark={observedTaxonIds.has( item?.taxon.id )}
     />
@@ -133,17 +106,16 @@ const SpeciesView = ( {
   }, [totalResults, handleUpdateCount] );
 
   const contentContainerStyle = useMemo( ( ) => ( {
-    paddingLeft: GUTTER / 2,
-    paddingRight: GUTTER / 2,
+    ...flashListStyle,
     paddingTop: 50
-  } ), [] );
+  } ), [flashListStyle] );
 
   return (
     <ExploreFlashList
       canFetch={canFetch}
       contentContainerStyle={contentContainerStyle}
       data={data}
-      estimatedItemSize={gridItemWidth}
+      estimatedItemSize={estimatedGridItemSize}
       fetchNextPage={fetchNextPage}
       hideLoadingWheel={!isFetchingNextPage}
       isFetchingNextPage={isFetchingNextPage}
@@ -152,6 +124,7 @@ const SpeciesView = ( {
       layout="grid"
       numColumns={numColumns}
       renderItem={renderItem}
+      totalResults={totalResults}
       testID="ExploreSpeciesAnimatedList"
     />
   );

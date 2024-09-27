@@ -1,9 +1,9 @@
+import ObsGridItem from "components/ObservationsFlashList/ObsGridItem";
 import {
   Heading1,
   Heading2,
   ScrollViewWrapper
 } from "components/SharedComponents";
-import ObsGridItem from "components/SharedComponents/ObservationsFlashList/ObsGridItem";
 import { View } from "components/styledComponents";
 import React from "react";
 

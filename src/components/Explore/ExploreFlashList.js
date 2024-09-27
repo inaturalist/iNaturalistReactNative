@@ -1,7 +1,7 @@
 // @flow
-import { FlashList } from "@shopify/flash-list";
-import InfiniteScrollLoadingWheel from "components/MyObservations/InfiniteScrollLoadingWheel";
-import { ActivityIndicator, Body3 } from "components/SharedComponents";
+import {
+  ActivityIndicator, Body3, CustomFlashList, InfiniteScrollLoadingWheel
+} from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";
@@ -21,7 +21,8 @@ type Props = {
   numColumns?: number,
   renderItem: Function,
   renderItemSeparator?: Function,
-  testID: string
+  testID: string,
+  totalResults: number
 };
 
 const ExploreFlashList = ( {
@@ -38,7 +39,8 @@ const ExploreFlashList = ( {
   numColumns,
   renderItem,
   renderItemSeparator,
-  testID
+  testID,
+  totalResults
 }: Props ): Node => {
   const { t } = useTranslation( );
 
@@ -51,37 +53,35 @@ const ExploreFlashList = ( {
     />
   ), [hideLoadingWheel, layout, isConnected] );
 
+  const renderLoading = useCallback( ( ) => {
+    if ( totalResults === 0 ) {
+      return (
+        <Body3 className="align-center">{t( "No-results-found-try-different-search" )}</Body3> );
+    }
+    return ( <ActivityIndicator size={50} testID="ExploreFlashList.loading" /> );
+  }, [totalResults, t] );
+
   const renderEmptyComponent = useCallback( ( ) => (
-    <View className="flex-1 justify-center items-center">
+    <View className="self-center mt-[150px] p-4">
       {canFetch
         ? (
-          <ActivityIndicator size={50} testID="ExploreFlashList.loading" />
+          renderLoading()
         )
-        : <Body3>{t( "No-results-found" )}</Body3>}
+        : <Body3 className="align-center">{t( "No-results-found-try-different-search" )}</Body3>}
     </View>
-  ), [canFetch, t] );
-
-  const headerComponentStyle = layout === "grid" && {
-    marginLeft: -7,
-    marginRight: -7
-  };
+  ), [canFetch, renderLoading, t] );
 
   return (
-    <FlashList
+    <CustomFlashList
       ItemSeparatorComponent={renderItemSeparator}
       ListEmptyComponent={renderEmptyComponent}
       ListFooterComponent={renderFooter}
-      ListHeaderComponentStyle={headerComponentStyle}
-      accessible
       contentContainerStyle={contentContainerStyle}
       data={data}
       estimatedItemSize={estimatedItemSize}
-      horizontal={false}
-      initialNumToRender={5}
       keyExtractor={keyExtractor}
       numColumns={numColumns}
       onEndReached={fetchNextPage}
-      onEndReachedThreshold={1}
       refreshing={isFetchingNextPage}
       renderItem={renderItem}
       testID={testID}

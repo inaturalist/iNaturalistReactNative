@@ -12,7 +12,7 @@ import { View } from "components/styledComponents";
 import type { Suggestions } from "components/Suggestions/SuggestionsContainer";
 import type { Node } from "react";
 import React from "react";
-import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
+import { formatISONoTimezone } from "sharedHelpers/dateAndTime.ts";
 import { useDebugMode, useTranslation } from "sharedHooks";
 
 import Attribution from "./Attribution";

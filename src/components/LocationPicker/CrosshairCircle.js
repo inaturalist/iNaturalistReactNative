@@ -9,11 +9,25 @@ import { useTheme } from "react-native-paper";
 
 import WarningText from "./WarningText";
 
-type Props = {
-  accuracyTest: string
+export const DESIRED_LOCATION_ACCURACY = 100;
+export const REQUIRED_LOCATION_ACCURACY = 500_000;
+
+const checkAccuracy = accuracy => {
+  if ( accuracy < DESIRED_LOCATION_ACCURACY ) {
+    return "pass";
+  }
+  if ( accuracy < REQUIRED_LOCATION_ACCURACY ) {
+    return "acceptable";
+  }
+  return "fail";
 };
 
-const CrosshairCircle = ( { accuracyTest }: Props ): Node => {
+type Props = {
+  accuracy: number
+};
+
+const CrosshairCircle = ( { accuracy }: Props ): Node => {
+  const accuracyTest = checkAccuracy( accuracy );
   const theme = useTheme( );
 
   return (

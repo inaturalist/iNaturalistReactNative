@@ -2,6 +2,7 @@
 
 import Geolocation from "@react-native-community/geolocation";
 import NetInfo from "@react-native-community/netinfo";
+import { onlineManager } from "@tanstack/react-query";
 import RootDrawerNavigator from "navigation/rootDrawerNavigator";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
@@ -17,11 +18,12 @@ import {
   useShare
 } from "sharedHooks";
 
-// import useChangeLocale from "./hooks/useChangeLocale";
+import useChangeLocale from "./hooks/useChangeLocale";
 import useFreshInstall from "./hooks/useFreshInstall";
 import useLinking from "./hooks/useLinking";
 import useLockOrientation from "./hooks/useLockOrientation";
 import useReactQueryRefetch from "./hooks/useReactQueryRefetch";
+import useTaxonCommonNames from "./hooks/useTaxonCommonNames";
 
 const { useRealm } = RealmContext;
 
@@ -56,15 +58,25 @@ const App = ( { children }: Props ): Node => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
 
+  // this ensures that React Query has the most accurate depiction of whether the
+  // app is online or offline. since queries only run when the app is online, this
+  // eventListener prevents both queries and retries (via reactQueryRetry)
+  // from running unnecessarily when the app is offline
+  // https://tanstack.com/query/latest/docs/framework/react/react-native#online-status-management
+  onlineManager.setEventListener( setOnline => NetInfo.addEventListener( state => {
+    setOnline( !!state.isConnected );
+  } ) );
+
   useIconicTaxa( { reload: true } );
   useReactQueryRefetch( );
   useFreshInstall( currentUser );
   useLinking( currentUser );
-  // useChangeLocale( currentUser );
+  useChangeLocale( currentUser );
 
   useLockOrientation( );
   useShare( );
   useObservationUpdatesWhenFocused( );
+  useTaxonCommonNames( );
 
   useEffect( ( ) => {
     addARCameraFiles( );

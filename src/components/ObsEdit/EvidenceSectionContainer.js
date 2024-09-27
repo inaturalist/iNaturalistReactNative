@@ -1,6 +1,6 @@
 // @flow
 
-import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/LocationPicker";
+import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/CrosshairCircle";
 import {
   differenceInCalendarYears,
   isFuture,

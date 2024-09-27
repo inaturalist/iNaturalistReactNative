@@ -20,6 +20,10 @@
     "comment": "Label for a taxon when a user prefers to see or hear the scientific name first",
     "val": "{ $scientificName } ({ $commonName })"
   },
+  "Account-Deleted": {
+    "comment": "Alert message shown after account deletion",
+    "val": "Account Deleted"
+  },
   "ACTIVITY": "ACTIVITY",
   "Add-agreement": {
     "comment": "Label for a button that adds a vote of agreement",
@@ -46,7 +50,6 @@
   },
   "ADD-OPTIONAL-COMMENT": "ADD OPTIONAL COMMENT",
   "Add-optional-notes": "Add optional notes",
-  "Add-suggestion-and-remarks-to-observation": "Add suggestion and remarks to observation",
   "Adds-your-vote-of-agreement": {
     "comment": "Hint for a button that adds a vote of agreement",
     "val": "Adds your vote of agreement"
@@ -135,6 +138,7 @@
   "By-exiting-your-observations-not-saved": "By exiting, your observations will not be saved. You can save them to your device, or you can delete them.",
   "By-exiting-your-photos-will-not-be-saved": "By exiting, your photos will not be saved.",
   "By-exiting-your-recorded-sound-will-not-be-saved": "By exiting, your recorded sound will not be saved.",
+  "By-uploading-your-observation-to-iNaturalist-you-can": "By uploading your observation to iNaturalist, you can:",
   "Camera": "Camera",
   "CANCEL": "CANCEL",
   "Cancel": "Cancel",
@@ -328,27 +332,23 @@
   },
   "Data-quality-casual-description": "This observation needs more information verified to be considered verifiable",
   "Data-quality-needs-id-description": "This observation needs more identifications to reach research grade",
-  "Data-quality-research-description": "This observation has enough identifications to be considered resarch grade",
+  "Data-quality-research-description": "This observation has enough identifications to be considered research grade",
   "DATE": "DATE",
-  "Date-days": {
-    "comment": "Used when displaying a relative time - in this case, X days ago (e.g. 3d = 3 days ago)",
-    "val": "{ $count }d"
-  },
   "date-format-long": {
-    "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "comment": "Used for things like User Profile join date\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
     "val": "PP"
   },
+  "date-format-month-day": {
+    "comment": "Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "MMM d"
+  },
+  "date-format-month-year": {
+    "comment": "Use when only showing an observations month and year\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "MMM yyyy"
+  },
   "date-format-short": {
-    "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "comment": "Short date, e.g. on notifications from over a year ago\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
     "val": "M/d/yy"
-  },
-  "Date-hours": {
-    "comment": "Used when displaying a relative time - in this case, X hours ago (e.g. 3h = 3 hours ago)",
-    "val": "{ $count }h"
-  },
-  "Date-minutes": {
-    "comment": "Used when displaying a relative time - in this case, X minutes ago (e.g. 3m = 3 minutes ago)",
-    "val": "{ $count }m"
   },
   "DATE-OBSERVED": "DATE OBSERVED",
   "Date-observed": "Date observed",
@@ -363,25 +363,33 @@
     "comment": "Label for controls over a range of dates",
     "val": "DATE RANGE"
   },
-  "Date-short-format": {
-    "comment": "Used when displaying a relative time - in this case, shows an absolute date (e.g. 12/31/22)",
-    "val": "MM/dd/yy"
-  },
-  "Date-this-year": {
-    "comment": "Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3",
-    "val": "MMM d"
-  },
   "DATE-UPLOADED": "DATE UPLOADED",
   "Date-uploaded": "Date uploaded",
   "Date-uploaded-header-short": "Uploaded",
   "DATE-UPLOADED-NEWEST": "DATE UPLOADED - NEWEST TO OLDEST",
   "DATE-UPLOADED-OLDEST": "DATE UPLOADED - OLDEST TO NEWEST",
-  "Date-weeks": {
+  "datetime-difference-days": {
+    "comment": "Used when displaying a relative time - in this case, X days ago (e.g. 3d = 3 days ago)",
+    "val": "{ $count }d"
+  },
+  "datetime-difference-hours": {
+    "comment": "Used when displaying a relative time - in this case, X hours ago (e.g. 3h = 3 hours ago)",
+    "val": "{ $count }h"
+  },
+  "datetime-difference-minutes": {
+    "comment": "Used when displaying a relative time - in this case, X minutes ago (e.g. 3m = 3 minutes ago)",
+    "val": "{ $count }m"
+  },
+  "datetime-difference-weeks": {
     "comment": "Used when displaying a relative time - in this case, X weeks ago (e.g. 3w = 3 weeks ago)",
     "val": "{ $count }w"
   },
+  "datetime-format-long": {
+    "comment": "Longer datetime, e.g. on ObsEdit\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "Pp"
+  },
   "datetime-format-short": {
-    "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "comment": "Shorter datetime, e.g. on comments and IDs\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
     "val": "M/d/yy h:mm a"
   },
   "December": {
@@ -419,7 +427,10 @@
     "comment": "Button that disables the camera's flash",
     "val": "Disable flash"
   },
-  "Disagreement": "<0>*@{ $username } disagrees this is </0><1></1>",
+  "Disagreement": {
+    "comment": "Disagreement notice with an identificaiton, <0/> will get replaced by a\ntaxon name",
+    "val": "*@{ $username } disagrees this is <0/>"
+  },
   "DISCARD": {
     "comment": "Button that discards changes or an item, e.g. a photo",
     "val": "DISCARD"
@@ -493,6 +504,7 @@
     "comment": "Title for a section describing an error",
     "val": "Error"
   },
+  "ERROR": "ERROR",
   "ERROR-LOADING-DQA": "ERROR LOADING IN DQA",
   "Error-title": {
     "comment": "Title of dialog or section describing an error",
@@ -510,6 +522,7 @@
   "EVIDENCE": "EVIDENCE",
   "Exact-Date": "Exact Date",
   "EXACT-DATE": "EXACT DATE",
+  "EXPAND-MAP": "EXPAND MAP",
   "Explore": "Explore",
   "EXPLORE": "EXPLORE",
   "Explore-Filters": "Explore Filters",
@@ -567,6 +580,7 @@
     "comment": "Title of screen asking for permission to access location",
     "val": "Get more accurate suggestions & create useful data for science using your location"
   },
+  "Get-your-identification-verified-by-real-people": "Get your identification verified by real people in the iNaturalist community",
   "Go-back": {
     "comment": "Label for button that returns to the previous screen",
     "val": "Go back"
@@ -589,6 +603,7 @@
     "val": "Group photos into observations– make sure there is only one species per observation"
   },
   "HELP": "HELP",
+  "Hide": "Hide",
   "Highest": "Highest",
   "HIGHEST-RANK": "HIGHEST RANK",
   "I-agree-to-the-Terms-of-Use": "I agree to the Terms of Use and Privacy Policy, and I have reviewed the Community Guidelines (required).",
@@ -661,6 +676,7 @@
   "Intl-number": "{ $val }",
   "Introduced": "Introduced",
   "Introduced-to-place": "Introduced to { $place }",
+  "It-may-take-up-to-an-hour-to-remove-content": "It may take up to an hour to completely delete all associated content",
   "January": {
     "comment": "Month of January",
     "val": "January"
@@ -685,17 +701,17 @@
     "comment": "Month of June",
     "val": "June"
   },
-  "Label-colon-value": "{ $label }: { $value }",
+  "Just-make-sure-the-organism-is-wild": "Just make sure the organism is wild (not a pet, zoo animal, or garden plant)",
   "Last-Active-date": {
     "comment": "Shows date user last active on iNaturalist on user profile",
     "val": "Last Active: { $date }"
   },
   "Lat-Lon": {
-    "comment": "Latitude, longitude on a single line on a single line",
+    "comment": "Latitude, longitude on a single line",
     "val": "{ NUMBER($latitude, maximumFractionDigits: \"6\") }, { NUMBER($longitude, maximumFractionDigits: \"6\") }"
   },
   "Lat-Lon-Acc": {
-    "comment": "Latitude, longitude, and accuracy on a single line on a single line",
+    "comment": "Latitude, longitude, and accuracy on a single line",
     "val": "Lat: { NUMBER($latitude, maximumFractionDigits: \"6\") }, Lon: { NUMBER($longitude, maximumFractionDigits: \"6\") }, Acc: { $accuracy }"
   },
   "leading--identification": {
@@ -762,6 +778,7 @@
   "More-info": "More info",
   "MOST-FAVED": "MOST FAVED",
   "Most-faved": "Most faved",
+  "MY-OBSERVATIONS": "MY OBSERVATIONS",
   "Native": "Native",
   "Native-to-place": "Native to { $place }",
   "Navigates-to-AI-camera": "Navigates to AI camera",
@@ -815,11 +832,11 @@
   },
   "No-Notifications-Found": "You have no notifications! Get started by creating your own observations.",
   "No-projects-match-that-search": "No projects match that search",
-  "No-results-found": {
+  "No-results-found-for-that-search": {
     "comment": "Used for explore screen when search params lead to a search with no data",
-    "val": "No results found"
+    "val": "No results found for that search."
   },
-  "No-results-found-for-that-search": "No results found for that search.",
+  "No-results-found-try-different-search": "No results found. Try a different search or adjust your filters.",
   "no-rights-reserved-cc0": {
     "comment": "license code",
     "val": "no rights reserved (CC0)"
@@ -1003,7 +1020,7 @@
     "val": "Quality Grade Casual"
   },
   "quality-grade-casual": "Casual",
-  "quality-grade-needs-id": "Needs Id",
+  "quality-grade-needs-id": "Needs ID",
   "Quality-Grade-needs_id": {
     "comment": "Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Needs ID",
     "val": "Quality Grade Needs ID"
@@ -1017,41 +1034,77 @@
     "val": "Research Grade"
   },
   "Ranks-CLASS": "CLASS",
+  "Ranks-Class": "Class",
   "Ranks-COMPLEX": "COMPLEX",
+  "Ranks-Complex": "Complex",
   "Ranks-EPIFAMILY": "EPIFAMILY",
+  "Ranks-Epifamily": "Epifamily",
   "Ranks-FAMILY": "FAMILY",
+  "Ranks-Family": "Family",
   "Ranks-FORM": "FORM",
+  "Ranks-Form": "Form",
   "Ranks-GENUS": "GENUS",
+  "Ranks-Genus": "Genus",
   "Ranks-GENUSHYBRID": "GENUSHYBRID",
+  "Ranks-Genushybrid": "Genushybrid",
   "Ranks-HYBRID": "HYBRID",
+  "Ranks-Hybrid": "Hybrid",
   "Ranks-INFRACLASS": "INFRACLASS",
+  "Ranks-Infraclass": "Infraclass",
   "Ranks-INFRAHYBRID": "INFRAHYBRID",
+  "Ranks-Infrahybrid": "Infrahybrid",
   "Ranks-INFRAORDER": "INFRAORDER",
+  "Ranks-Infraorder": "Infraorder",
   "Ranks-KINGDOM": "KINGDOM",
+  "Ranks-Kingdom": "Kingdom",
   "Ranks-ORDER": "ORDER",
+  "Ranks-Order": "Order",
   "Ranks-PARVORDER": "PARVORDER",
+  "Ranks-Parvorder": "Parvorder",
   "Ranks-PHYLUM": "PHYLUM",
+  "Ranks-Phylum": "Phylum",
   "Ranks-SECTION": "SECTION",
+  "Ranks-Section": "Section",
   "Ranks-SPECIES": "SPECIES",
+  "Ranks-Species": "Species",
+  "Ranks-Statefmatter": "State of matter",
   "Ranks-STATEOFMATTER": "STATE OF MATTER",
   "Ranks-SUBCLASS": "SUBCLASS",
+  "Ranks-Subclass": "Subclass",
   "Ranks-SUBFAMILY": "SUBFAMILY",
+  "Ranks-Subfamily": "Subfamily",
   "Ranks-SUBGENUS": "SUBGENUS",
+  "Ranks-Subgenus": "Subgenus",
   "Ranks-SUBKINGDOM": "SUBKINGDOM",
+  "Ranks-Subkingdom": "Subkingdom",
   "Ranks-SUBORDER": "SUBORDER",
+  "Ranks-Suborder": "Suborder",
   "Ranks-SUBPHYLUM": "SUBPHYLUM",
+  "Ranks-Subphylum": "Subphylum",
   "Ranks-SUBSECTION": "SUBSECTION",
+  "Ranks-Subsection": "Subsection",
   "Ranks-SUBSPECIES": "SUBSPECIES",
+  "Ranks-Subspecies": "Subspecies",
   "Ranks-SUBTERCLASS": "SUBTERCLASS",
+  "Ranks-Subterclass": "Subterclass",
   "Ranks-SUBTRIBE": "SUBTRIBE",
+  "Ranks-Subtribe": "Subtribe",
   "Ranks-SUPERCLASS": "SUPERCLASS",
+  "Ranks-Superclass": "Superclass",
   "Ranks-SUPERFAMILY": "SUPERFAMILY",
+  "Ranks-Superfamily": "Superfamily",
   "Ranks-SUPERORDER": "SUPERORDER",
+  "Ranks-Superorder": "Superorder",
   "Ranks-SUPERTRIBE": "SUPERTRIBE",
+  "Ranks-Supertribe": "Supertribe",
   "Ranks-TRIBE": "TRIBE",
+  "Ranks-Tribe": "Tribe",
   "Ranks-VARIETY": "VARIETY",
+  "Ranks-Variety": "Variety",
   "Ranks-ZOOSECTION": "ZOOSECTION",
+  "Ranks-Zoosection": "Zoosection",
   "Ranks-ZOOSUBSECTION": "ZOOSUBSECTION",
+  "Ranks-Zoosubsection": "Zoosubsection",
   "Read-more-on-Wikipedia": "Read more on Wikipedia",
   "RECORD-NEW-SOUND": {
     "comment": "Heading for the sound recorder",
@@ -1090,6 +1143,9 @@
     "val": "Remove identification"
   },
   "Remove-Photos": "Remove Photos",
+  "Remove-project-filter": "Remove project filter",
+  "Remove-taxon-filter": "Remove taxon filter",
+  "Remove-user-filter": "Remove user filter",
   "Removes-this-observations-taxon": {
     "comment": "Label for button that removes an observation's taxon",
     "val": "Removes this observation's taxon"
@@ -1128,6 +1184,7 @@
     "comment": "Label for button that restores a withdrawn identification",
     "val": "Restore"
   },
+  "Reveal": "Reveal",
   "REVIEW-INATURALIST": "REVIEW INATURALIST",
   "REVIEWED": {
     "comment": "Title for section of observation filters for controls over whether you have\nreviewed the observations or not",
@@ -1148,6 +1205,7 @@
   },
   "SAVE-ALL": "SAVE ALL",
   "SAVE-CHANGES": "SAVE CHANGES",
+  "SAVE-FOR-LATER": "SAVE FOR LATER",
   "SAVE-LOCATION": "SAVE LOCATION",
   "SAVE-PHOTOS": "SAVE PHOTOS",
   "Save-photos-to-your-gallery": "Save photos to your gallery",
@@ -1209,11 +1267,11 @@
     "val": "September"
   },
   "SETTINGS": "SETTINGS",
-  "Settings": "Settings",
   "Share": "Share",
   "SHARE-DEBUG-LOGS": "SHARE DEBUG LOGS",
   "Share-location": "Share Location",
   "Share-map": "Share map",
+  "Share-your-observation-where-it-can-help-scientists": "Share your observation, where it can help scientists across the world better understand biodiversity.",
   "SHOP-INATURALIST-MERCH": "SHOP INATURALIST MERCH",
   "Show-observation-options": "Show observation options.",
   "Shows-identification-suggestions": {
@@ -1284,6 +1342,10 @@
   "SUBMIT": "SUBMIT",
   "SUBMIT-ID-SUGGESTION": "SUBMIT ID SUGGESTION",
   "SUGGEST-ID": "SUGGEST ID",
+  "Suggest-ID": {
+    "comment": "Label for element that suggest an identification",
+    "val": "SUGGEST ID"
+  },
   "supporting--identification": {
     "comment": "Identification category",
     "val": "Supporting"
@@ -1309,6 +1371,7 @@
   "Text-Box-to-Describe-Reason-for-Flag": "Text box to describe reason for flag.",
   "Thank-you-for-sharing-your-feedback": "Thank you for sharing your feedback to help us improve!",
   "Thanks-for-using-any-suggestions": "Thanks for using this app! Do you have any suggestions for the people who make it?",
+  "That-user-profile-doesnt-exist": "That user profile doesn't exist",
   "The-exact-location-will-be-hidden": "The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).",
   "The-iNaturalist-Network": "The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.",
   "The-location-will-not-be-visible": "The location will not be visible to others, which means it may be difficult to identify.",
@@ -1332,6 +1395,10 @@
   "Umbrella-Project": "Umbrella Project",
   "UNFOLLOW": "UNFOLLOW",
   "UNFOLLOW-USER": "UNFOLLOW USER?",
+  "Unknown--rank": {
+    "comment": "Text to show when a taoxn rank is unknown or missing",
+    "val": "Unknown"
+  },
   "Unknown--taxon": {
     "comment": "Text to show when a taxon or identification is unknown or missing",
     "val": "Unknown"
@@ -1349,9 +1416,10 @@
   "Upload-Complete": "Upload Complete",
   "Upload-in-progress": "Upload in progress",
   "UPLOAD-NOW": "UPLOAD NOW",
-  "Upload-photos-from-your-gallery": "Upload photos of multiple organisms from your gallery",
+  "Upload-photos-from-your-gallery": "Upload multiple photos from your gallery",
   "Upload-photos-from-your-gallery-and-create-observations": "Upload photos from your gallery and create observations and get identifications of organisms you’ve already observed!",
   "Upload-Progress": "Upload { $uploadProgress } percent complete",
+  "UPLOAD-TO-INATURALIST": "UPLOAD TO INATURALIST",
   "Upload-x-observations": {
     "comment": "Shows the number of observations a user can upload to iNat from my observations page",
     "val": "Upload { $count ->\n  [one] 1 observation\n *[other] { $count } observations\n}"
@@ -1384,8 +1452,12 @@
     "val": "USERNAME OR EMAIL"
   },
   "Using-iNaturalist-requires-the-storage": "Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US.",
+  "Version-app-build": {
+    "comment": "Listing of app and build versions",
+    "val": "Version { $appVersion } ({ $buildVersion })"
+  },
   "VIEW-CHILDREN-TAXA": "VIEW CHILDREN TAXA",
-  "VIEW-DATA-QUALITY-ASSESSEMENT": "VIEW DATA QUALITY ASSESSEMENT",
+  "VIEW-DATA-QUALITY-ASSESSMENT": "VIEW DATA QUALITY ASSESSMENT",
   "VIEW-EDUCATORS-GUIDE": "VIEW EDUCATOR'S GUIDE",
   "View-in-browser": "View in browser",
   "VIEW-IN-EXPLORE": "VIEW IN EXPLORE",
@@ -1403,7 +1475,7 @@
   },
   "We-are-not-confident-enough-to-make-a-top-ID-suggestion": "We’re not confident enough to make a top ID suggestion, but here are some other suggestions:",
   "We-sent-a-confirmation-email": "We sent a confirmation email to the email you signed up with.",
-  "We-store-personal-information": "We store personal information like usernames and email addresses in order to manage accounts on this site, and to comply with privacy laws, we need you to check this box to indicate that you consent to this use of personal information. To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.",
+  "We-store-personal-information": "We store personal information like usernames and email addresses in order to manage accounts, and to comply with privacy laws, we need you to check this box to indicate that you consent to this use of personal information. To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.",
   "Welcome-to-iNaturalist": "Welcome to iNaturalist!",
   "Welcome-user": {
     "comment": "Welcome user back to app",
@@ -1502,5 +1574,9 @@
   "Youve-previously-denied-location-permissions": "You’ve previously denied location permissions, so please enable them in settings.",
   "Youve-previously-denied-microphone-permissions": "You’ve previously denied microphone permissions, so please enable them in settings.",
   "Zoom-in-as-much-as-possible-to-improve": "Zoom in as much as possible to improve location accuracy and get better identifications.",
-  "Zoom-to-current-location": "Zoom to current location"
+  "Zoom-to-current-location": "Zoom to current location",
+  "zoom-x": {
+    "comment": "Label for button that shows zoom level, e.g. on a camera",
+    "val": "{ $zoom }×"
+  }
 }

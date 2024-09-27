@@ -1,14 +1,12 @@
 // @flow
 
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
-import { ActivityIndicator } from "components/SharedComponents";
+import { ActivityIndicator, CarouselDots } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
 import { Dimensions } from "react-native";
-import AnimatedDotsCarousel from "react-native-animated-dots-carousel";
 import Carousel from "react-native-reanimated-carousel";
-import colors from "styles/tailwindColors";
 
 import MasonryLayout from "./MasonryLayout";
 import PhotoContainer from "./PhotoContainer";
@@ -38,7 +36,6 @@ const ObsMedia = ( {
   const { width } = Dimensions.get( "window" );
   const [index, setIndex] = useState( 0 );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
-  const paginationColor = colors.white;
 
   const items = useMemo( ( ) => ( [...photos, ...sounds] ), [photos, sounds] );
 
@@ -93,40 +90,7 @@ const ObsMedia = ( {
         <View
           className="flex absolute bottom-0 w-full justify-evenly items-center p-[15px]"
         >
-          <AnimatedDotsCarousel
-            length={items.length}
-            currentIndex={index}
-            maxIndicators={items.length}
-            interpolateOpacityAndColor={false}
-            activeIndicatorConfig={{
-              color: paginationColor,
-              margin: 2.5,
-              opacity: 1,
-              size: 4
-            }}
-            inactiveIndicatorConfig={{
-              color: paginationColor,
-              margin: 2.5,
-              opacity: 1,
-              size: 2
-            }}
-            // required by the component although we don't need it.
-            // Size of decreasing dots set to the same
-            decreasingDots={[
-              {
-                config: {
-                  color: paginationColor, margin: 3, opacity: 0.5, size: 4
-                },
-                quantity: 1
-              },
-              {
-                config: {
-                  color: paginationColor, margin: 3, opacity: 0.5, size: 2
-                },
-                quantity: 1
-              }
-            ]}
-          />
+          <CarouselDots length={items.length} index={index} />
         </View>
       )}
     </>

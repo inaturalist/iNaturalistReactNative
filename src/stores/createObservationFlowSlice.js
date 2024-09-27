@@ -154,6 +154,7 @@ const createObservationFlowSlice = ( set, get ) => ( {
       updateObservationKeysWithState( keysAndValues, state )[state.currentObservationIndex],
     unsavedChanges: true
   } ) ),
+  getCurrentObservation: ( ) => get( ).currentObservation,
   // Prepare state for showing ObsEdit for a single observation
   prepareObsEdit: observation => {
     get( ).resetObservationFlowSlice( );

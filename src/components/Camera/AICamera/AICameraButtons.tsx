@@ -16,7 +16,7 @@ import AIDebugButton from "./AIDebugButton";
 const isTablet = DeviceInfo.isTablet();
 
 interface Props {
-  changeZoom: ( _event: GestureResponderEvent ) => void;
+  handleZoomButtonPress: ( _event: GestureResponderEvent ) => void;
   confidenceThreshold?: number;
   cropRatio?: string;
   flipCamera: ( _event: GestureResponderEvent ) => void;
@@ -40,7 +40,7 @@ interface Props {
 }
 
 const AICameraButtons = ( {
-  changeZoom,
+  handleZoomButtonPress,
   confidenceThreshold,
   cropRatio,
   flipCamera,
@@ -64,7 +64,7 @@ const AICameraButtons = ( {
   if ( isTablet ) {
     return (
       <TabletButtons
-        changeZoom={changeZoom}
+        handleZoomButtonPress={handleZoomButtonPress}
         disabled={!modelLoaded || takingPhoto}
         flipCamera={flipCamera}
         hasFlash={hasFlash}
@@ -111,7 +111,7 @@ const AICameraButtons = ( {
         <View>
           <Zoom
             zoomTextValue={zoomTextValue}
-            changeZoom={changeZoom}
+            handleZoomButtonPress={handleZoomButtonPress}
             showZoomButton={showZoomButton}
             rotatableAnimatedStyle={rotatableAnimatedStyle}
           />

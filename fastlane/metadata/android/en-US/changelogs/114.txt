@@ -1,0 +1,12 @@
+UPDATED
+* per review: open Donate page in external browser
+* per review: delete account more noticeable in settings
+* removed automatic sync notice from MyObs toolbar
+
+FIXED
+* offline status appearing briefly on Explore and Taxon Details
+* map stutter in Location Picker
+* user signed out after account deletion
+* infinite attempts to fetch remote data while offline
+* unknown iconic taxon appearing before species photos load in Explore
+* submitting blank feedback after deleting text

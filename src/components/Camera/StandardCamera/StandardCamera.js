@@ -63,7 +63,7 @@ const StandardCamera = ( {
   const hasFlash = device?.hasFlash;
   const {
     animatedProps,
-    changeZoom,
+    handleZoomButtonPress,
     pinchToZoom,
     resetZoom,
     showZoomButton,
@@ -153,6 +153,11 @@ const StandardCamera = ( {
     setNewPhotoUris( [...newPhotoUris, uri] );
   };
 
+  const onFlipCamera = () => {
+    resetZoom( );
+    flipCamera( );
+  };
+
   const containerClasses = ["flex-1"];
   if ( isTablet && isLandscapeMode ) {
     containerClasses.push( "flex-row" );
@@ -184,9 +189,9 @@ const StandardCamera = ( {
         )}
         <FadeInOutView takingPhoto={takingPhoto} />
         <CameraOptionsButtons
-          changeZoom={changeZoom}
+          handleZoomButtonPress={handleZoomButtonPress}
           disabled={disallowAddingPhotos}
-          flipCamera={flipCamera}
+          flipCamera={onFlipCamera}
           handleCheckmarkPress={handleCheckmarkPress}
           handleClose={handleBackButtonPress}
           hasFlash={hasFlash}

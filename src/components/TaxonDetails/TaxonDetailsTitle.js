@@ -74,7 +74,7 @@ const TaxonDetailsTitle = ( {
   const currentUser = useCurrentUser( );
 
   return (
-    <View className="flex-1 flex-col" pointerEvents="none">
+    <View className="flex-1 flex-col items-start" pointerEvents="box-none">
       { taxon?.rank && (
         <View className="flex-row items-center mb-[8px]">
           <Heading4 className={optionalClasses}>
@@ -87,14 +87,17 @@ const TaxonDetailsTitle = ( {
           )}
         </View>
       ) }
-      <DisplayTaxonName
-        taxon={taxon}
-        color={optionalClasses}
-        topTextComponent={Heading1}
-        bottomTextComponent={Subheading1}
-        scientificNameFirst={currentUser?.prefers_scientific_name_first}
-        prefersCommonNames={currentUser?.prefers_common_names}
-      />
+      <View className="shrink">
+        <DisplayTaxonName
+          taxon={taxon}
+          color={optionalClasses}
+          topTextComponent={Heading1}
+          bottomTextComponent={Subheading1}
+          scientificNameFirst={currentUser?.prefers_scientific_name_first}
+          selectable
+          prefersCommonNames={currentUser?.prefers_common_names}
+        />
+      </View>
     </View>
   );
 };

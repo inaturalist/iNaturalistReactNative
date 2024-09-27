@@ -1,5 +1,5 @@
 import { getDefaultNormalizer, render, screen } from "@testing-library/react-native";
-import UserText from "components/SharedComponents/UserText";
+import UserText from "components/SharedComponents/UserText.tsx";
 import { trim } from "lodash";
 import React from "react";
 

@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+// import { useNavigation } from "@react-navigation/native";
 import {
   Body2, Button, Heading4, ScrollViewWrapper
 } from "components/SharedComponents";
@@ -9,15 +9,18 @@ import * as StoreReview from "react-native-store-review";
 import { openExternalWebBrowser } from "sharedHelpers/util.ts";
 
 const Donate = () => {
-  const navigation = useNavigation( );
+  // const navigation = useNavigation( );
   const onDonatePress = async ( ) => {
     const url = "https://donorbox.org/support-inaturalist?utm_campaign=default&utm_medium=mobile&utm_source=iNatRN";
-    navigation.navigate( "FullPageWebView", {
-      title: t( "DONATE-TO-INATURALIST" ),
-      initialUrl: url,
-      loggedIn: false,
-      skipSetSourceInShouldStartLoadWithRequest: true
-    } );
+    // Temporarily disable in-app donation until we can convince Apple that we
+    // really are a non-profit
+    // navigation.navigate( "FullPageWebView", {
+    //   title: t( "DONATE-TO-INATURALIST" ),
+    //   initialUrl: url,
+    //   loggedIn: false,
+    //   skipSetSourceInShouldStartLoadWithRequest: true
+    // } );
+    openExternalWebBrowser( url );
   };
 
   const onReviewPress = ( ) => {

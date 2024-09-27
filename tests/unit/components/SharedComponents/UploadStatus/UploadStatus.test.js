@@ -24,7 +24,7 @@ describe( "UploadStatus", () => {
         }
       ]
     } );
-    render( <UploadStatus uuid={mockUUID} color="#454545" completeColor="#77b300" /> );
+    render( <UploadStatus uuid={mockUUID} /> );
 
     expect( screen.queryByTestId( "UploadStatus.CircularProgress" ) ).toBeFalsy();
   } );
@@ -38,7 +38,7 @@ describe( "UploadStatus", () => {
         }
       ]
     } );
-    render( <UploadStatus uuid={mockUUID} color="#454545" completeColor="#77b300" /> );
+    render( <UploadStatus uuid={mockUUID} /> );
 
     expect( screen.getByTestId( "UploadStatus.CircularProgress" ) ).toBeTruthy();
   } );
@@ -52,7 +52,7 @@ describe( "UploadStatus", () => {
         }
       ]
     } );
-    render( <UploadStatus uuid={undefined} color="#454545" completeColor="#77b300" /> );
+    render( <UploadStatus uuid={undefined} /> );
     // Snapshot test
     expect( screen ).toMatchSnapshot();
   } );
@@ -66,7 +66,7 @@ describe( "UploadStatus", () => {
         }
       ]
     } );
-    render( <UploadStatus uuid={undefined} color="#454545" completeColor="#77b300" /> );
+    render( <UploadStatus uuid={undefined} /> );
     // Snapshot test
     expect( screen ).toMatchSnapshot();
   } );
@@ -81,7 +81,7 @@ describe( "UploadStatus", () => {
       ]
     } );
     const uploadStatus = (
-      <UploadStatus uuid={mockUUID} color="#454545" completeColor="#77b300" />
+      <UploadStatus uuid={mockUUID} />
     );
 
     expect( uploadStatus ).toBeAccessible();

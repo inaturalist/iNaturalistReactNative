@@ -8,13 +8,14 @@ import {
 } from "api/projects";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import { useAuthenticatedMutation, useAuthenticatedQuery } from "sharedHooks";
+import { useAuthenticatedMutation, useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 
 import ProjectDetails from "./ProjectDetails";
 
 const ProjectDetailsContainer = ( ): Node => {
   const { params } = useRoute( );
   const { id } = params;
+  const currentUser = useCurrentUser( );
   const [loading, setLoading] = useState( false );
 
   const { data: project } = useAuthenticatedQuery(
@@ -55,7 +56,10 @@ const ProjectDetailsContainer = ( ): Node => {
     ["fetchMembership", id],
     optsWithAuth => fetchMembership( {
       id
-    }, optsWithAuth )
+    }, optsWithAuth ),
+    {
+      enabled: !!( currentUser )
+    }
   );
 
   const createJoinProjectMutation = useAuthenticatedMutation(

@@ -1,7 +1,4 @@
 // @flow
-import {
-  useNetInfo
-} from "@react-native-community/netinfo";
 import { fetchUserMe } from "api/users";
 import { RealmContext } from "providers/contexts.ts";
 import { useCallback, useEffect } from "react";
@@ -17,8 +14,7 @@ const useUserMe = ( options: ?Object ): Object => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
   const updateRealm = options?.updateRealm;
-  const { isConnected } = useNetInfo( );
-  const enabled = !!isConnected && !!currentUser;
+  const enabled = !!( currentUser );
 
   const {
     data: remoteUser,

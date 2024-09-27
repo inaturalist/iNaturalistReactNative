@@ -1,8 +1,5 @@
 // @flow
 
-import {
-  useNetInfo
-} from "@react-native-community/netinfo";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fetchRelationships } from "api/relationships";
 import { fetchRemoteUser } from "api/users";
@@ -11,6 +8,7 @@ import {
   Body2,
   Heading1,
   Heading4,
+  List2,
   OverviewCounts,
   ScrollViewWrapper,
   Subheading1,
@@ -21,7 +19,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import User from "realmModels/User.ts";
-import { formatUserProfileDate } from "sharedHelpers/dateAndTime";
+import { formatLongDate } from "sharedHelpers/dateAndTime.ts";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
@@ -37,15 +35,18 @@ const UserProfile = ( ): Node => {
   const navigation = useNavigation( );
   const currentUser = useCurrentUser( );
   const { params } = useRoute( );
-  const { userId } = params;
+  const { userId, login } = params;
   const [showLoginSheet, setShowLoginSheet] = useState( false );
   const [showUnfollowSheet, setShowUnfollowSheet] = useState( false );
-  const { isConnected } = useNetInfo( );
-  const { t } = useTranslation( );
+  const { t, i18n } = useTranslation( );
 
-  const { data: remoteUser } = useAuthenticatedQuery(
-    ["fetchRemoteUser", userId],
-    optsWithAuth => fetchRemoteUser( userId, {}, optsWithAuth )
+  const fetchId = userId || login;
+  const { data: remoteUser, isError, error } = useAuthenticatedQuery(
+    ["fetchRemoteUser", fetchId],
+    optsWithAuth => fetchRemoteUser( fetchId, {}, optsWithAuth ),
+    {
+      enabled: !!fetchId
+    }
   );
 
   const user = remoteUser || null;
@@ -61,7 +62,7 @@ const UserProfile = ( ): Node => {
       ttl: -1
     }, optsWithAuth ),
     {
-      enabled: !!isConnected && !!currentUser
+      enabled: !!currentUser
     }
   );
   let relationshipResults = null;
@@ -88,8 +89,7 @@ const UserProfile = ( ): Node => {
       setExploreView( "observations" );
       navigation.navigate( "Explore", {
         user,
-        worldwide: true,
-        resetStoredParams: true
+        worldwide: true
       } );
     },
     [navigation, user, setExploreView]
@@ -100,12 +100,20 @@ const UserProfile = ( ): Node => {
       setExploreView( "species" );
       navigation.navigate( "Explore", {
         user,
-        worldwide: true,
-        resetStoredParams: true
+        worldwide: true
       } );
     },
     [navigation, user, setExploreView]
   );
+
+  if ( isError && error?.status === 404 ) {
+    return (
+      <View className="flex-1 items-center justify-center">
+        <Heading4>{t( "ERROR" )}</Heading4>
+        <List2>{t( "That-user-profile-doesnt-exist" )}</List2>
+      </View>
+    );
+  }
 
   if ( !user ) {
     return null;
@@ -151,10 +159,10 @@ const UserProfile = ( ): Node => {
           </View>
         ) }
         <Body2 className="mb-5">
-          {t( "Joined-date", { date: formatUserProfileDate( user.created_at, t ) } )}
+          {t( "Joined-date", { date: formatLongDate( user.created_at, i18n ) } )}
         </Body2>
         <Body2 className="mb-5">
-          {t( "Last-Active-date", { date: formatUserProfileDate( user.updated_at, t ) } )}
+          {t( "Last-Active-date", { date: formatLongDate( user.updated_at, i18n ) } )}
         </Body2>
         {user.site && (
           <Body2 className="mb-5">

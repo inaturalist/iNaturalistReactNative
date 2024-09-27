@@ -129,7 +129,10 @@ const SuggestionsContainer = ( ) => {
   useClearComputerVisionDirectory( );
   const currentObservation = useStore( state => state.currentObservation );
   const innerPhotos = ObservationPhoto.mapInnerPhotos( currentObservation );
-  const photoUris = ObservationPhoto.mapObsPhotoUris( currentObservation );
+  const photoUris = useMemo(
+    () => ObservationPhoto.mapObsPhotoUris( currentObservation ),
+    [currentObservation]
+  );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
 
   const evidenceHasLocation = !!currentObservation?.latitude;

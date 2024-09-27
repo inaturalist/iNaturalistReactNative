@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react-native";
-import ObsGridItem from "components/SharedComponents/ObservationsFlashList/ObsGridItem";
+import ObsGridItem from "components/ObservationsFlashList/ObsGridItem";
 import React from "react";
 import factory from "tests/factory";
 

@@ -7,6 +7,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { forwardRef } from "react";
 import { TextInput, useTheme } from "react-native-paper";
+import colors from "styles/tailwindColors";
 
 type Props = {
   accessibilityLabel: string,
@@ -19,6 +20,16 @@ type Props = {
   testID: string,
   textContentType?: string
 }
+
+const CONTENT_STYLE = {
+  position: "relative",
+  top: 2,
+  lineHeight: 18
+};
+
+const OUTLINE_STYLE = {
+  borderRadius: 8
+};
 
 const LoginSignUpInputField: Function = forwardRef( ( {
   accessibilityLabel,
@@ -44,9 +55,13 @@ const LoginSignUpInputField: Function = forwardRef( ( {
         accessibilityLabel={accessibilityLabel}
         autoCapitalize="none"
         autoComplete={autoComplete}
-        className="h-[45px] rounded-md"
+        className="h-[45px]"
+        contentStyle={CONTENT_STYLE}
+        outlineStyle={OUTLINE_STYLE}
+        activeOutlineColor={colors.inatGreen}
         inputMode={inputMode}
         keyboardType={keyboardType}
+        mode="outlined"
         onChangeText={onChangeText}
         secureTextEntry={secureTextEntry}
         selectionColor={theme.colors.tertiary}

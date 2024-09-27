@@ -67,8 +67,7 @@ const fetchProjectPosts = async (
 
 const searchProjects = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
   try {
-    const { results } = await inatjs.projects.search( { ...PARAMS, ...params }, opts );
-    return results;
+    return await inatjs.projects.search( { ...PARAMS, ...params }, opts );
   } catch ( e ) {
     return handleError( e );
   }

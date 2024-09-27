@@ -5,7 +5,7 @@ import {
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
-import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/LocationPicker";
+import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/CrosshairCircle";
 import {
   Button,
   StickyToolbar
@@ -14,8 +14,7 @@ import { View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
-import Observation from "realmModels/Observation";
-import { writeExifToFile } from "sharedHelpers/parseExif";
+import saveObservation from "sharedHelpers/saveObservation.ts";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -64,33 +63,8 @@ const BottomButtons = ( {
 
   const passesTests = passesEvidenceTest && hasIdentification;
 
-  const writeExifToCameraRollPhotos = useCallback( async exif => {
-    if ( !cameraRollUris || cameraRollUris.length === 0 || !currentObservation ) {
-      return;
-    }
-    // Update all photos taken via the app with the new fetched location.
-    cameraRollUris.forEach( uri => {
-      writeExifToFile( uri, exif );
-    } );
-  }, [
-    cameraRollUris,
-    currentObservation
-  ] );
-
-  const saveObservation = useCallback( async observation => {
-    await writeExifToCameraRollPhotos( {
-      latitude: observation.latitude,
-      longitude: observation.longitude,
-      positional_accuracy: observation.positional_accuracy
-    } );
-    return Observation.saveLocalObservationForUpload( observation, realm );
-  }, [
-    realm,
-    writeExifToCameraRollPhotos
-  ] );
-
   const setNextScreen = useCallback( async ( { type }: Object ) => {
-    const savedObservation = await saveObservation( currentObservation );
+    const savedObservation = await saveObservation( currentObservation, cameraRollUris, realm );
     // If we are saving a new observations, reset the stored my obs offset to
     // restore b/c we want MyObs rendered in its default state with this new
     // observation visible at the top
@@ -130,10 +104,11 @@ const BottomButtons = ( {
     isNewObs,
     navigation,
     resetMyObsOffsetToRestore,
-    saveObservation,
     observations,
     setCurrentObservationIndex,
-    setStartUploadObservations
+    setStartUploadObservations,
+    cameraRollUris,
+    realm
   ] );
 
   useEffect(

@@ -12,6 +12,7 @@ import type { Node } from "react";
 import React, { useEffect, useRef, useState } from "react";
 import { TouchableWithoutFeedback } from "react-native";
 import { useTheme } from "react-native-paper";
+import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 
 import {
   authenticateUser
@@ -38,7 +39,9 @@ const LoginForm = ( {
   const [password, setPassword] = useState( "" );
   const [error, setError] = useState( null );
   const [loading, setLoading] = useState( false );
+  const [isPasswordVisible, setIsPasswordVisible] = useState( false );
   const theme = useTheme();
+  const { keyboardShown } = useKeyboardInfo( );
 
   const blurFields = () => {
     if ( emailRef.current ) {
@@ -77,6 +80,10 @@ const LoginForm = ( {
     setLoading( false );
 
     navigation.getParent( )?.goBack( );
+  };
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible( prevState => !prevState );
   };
 
   const showEmailConfirmed = ( ) => (
@@ -119,20 +126,29 @@ const LoginForm = ( {
           headerText={t( "PASSWORD" )}
           inputMode="text"
           onChangeText={text => setPassword( text )}
-          secureTextEntry
+          secureTextEntry={!isPasswordVisible}
           testID="Login.password"
           textContentType="password"
         />
-        <View className="mx-4">
+        <View className="flex-row justify-between">
           <Body2
             accessibilityRole="button"
-            className="underline mt-[15px] self-end color-white"
+            className="underline p-4 color-white"
+            onPress={() => togglePasswordVisibility()}
+          >
+            {isPasswordVisible
+              ? t( "Hide" )
+              : t( "Reveal" )}
+          </Body2>
+          <Body2
+            accessibilityRole="button"
+            className="underline p-4 color-white"
             onPress={( ) => navigation.navigate( "ForgotPassword" )}
           >
             {t( "Forgot-Password" )}
           </Body2>
-          {error && <Error error={error} />}
         </View>
+        {error && <Error error={error} />}
         <Button
           className={classnames( "mt-[30px]", {
             "mt-5": error
@@ -147,7 +163,12 @@ const LoginForm = ( {
         />
         {!hideFooter && (
           <Body1
-            className="color-white self-center mt-[31px] mb-[35px] underline"
+            className={classnames(
+              "color-white self-center mt-[31px] underline",
+              // When the keyboard is up this pushes the form up enough to cut
+              // off the username label on some devices
+              !keyboardShown && "mb-[35px]"
+            )}
             onPress={( ) => navigation.navigate( "SignUp" )}
           >
             {t( "Dont-have-an-account" )}
