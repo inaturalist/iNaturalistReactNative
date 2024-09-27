@@ -241,6 +241,22 @@ const ProjectRequirements = ( ) => {
   }
 
   // Media Type Requirements
+  const sounds = getFieldValue( project?.rule_preferences
+    ?.filter( pref => pref.field === "sounds" ) );
+  const photos = getFieldValue( project?.rule_preferences
+    ?.filter( pref => pref.field === "photos" ) );
+
+  const mediaRule = RULES.find( r => r.name === t( "Media-Type" ) );
+  const mediaList = [];
+  if ( sounds ) {
+    mediaList.push( { text: t( "Sounds" ) } );
+  }
+  if ( photos ) {
+    mediaList.push( { text: t( "Photos" ) } );
+  }
+  if ( mediaList.length > 0 ) {
+    mediaRule.inclusions = mediaList;
+  }
 
   // Date Requirements
   const projectStartDate = getFieldValue( project?.rule_preferences
