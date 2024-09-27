@@ -39,13 +39,9 @@ const ProjectRuleItem = ( { rule }: Props ) => {
     </Body3>
   ) );
 
-  const showDefaults = ( ) => rule?.defaults.map( projectDefault => (
-    <Body3 className="flex-row pb-1" key={`${rule}-${projectDefault}`}>{projectDefault}</Body3>
-  ) );
-
   const showRuleDetails = ( ) => {
-    if ( !_.isEmpty( rule?.inclusions ) && !_.isEmpty( rule?.exclusions ) ) {
-      return showDefaults( );
+    if ( _.isEmpty( rule?.inclusions ) && _.isEmpty( rule?.exclusions ) ) {
+      return showRules( rule?.defaults );
     }
     return (
       <>

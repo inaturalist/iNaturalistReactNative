@@ -38,19 +38,25 @@ const ProjectRequirements = ( ) => {
   const ruleOperands = {
     inclusions: [],
     exclusions: [],
-    defaults: [t( "Any" )]
+    defaults: [{
+      text: t( "Any" )
+    }]
   };
 
   const RULES = [
     {
       ...ruleOperands,
       name: t( "Taxa" ),
-      defaults: [t( "All-taxa" )]
+      defaults: [{
+        text: t( "All-taxa" )
+      }]
     },
     {
       ...ruleOperands,
       name: t( "Location" ),
-      defaults: [t( "Worldwide" )]
+      defaults: [{
+        text: t( "Worldwide" )
+      }]
     },
     {
       ...ruleOperands,
@@ -101,13 +107,6 @@ const ProjectRequirements = ( ) => {
 
   const excludedTaxonIds = getFieldValue( project?.search_parameters
     ?.filter( pref => pref.field === "without_taxon_id" ) );
-
-  // console.log( taxonIds, "taxon ids" );
-  // const includedTaxonIds = rules?.filter( rule => rule.operand_type === "Taxon"
-  //   && rule.operator === "in_taxon?" ).map( rule => rule.operand_id );
-
-  // console.log( taxonIds, "taxon ids" );
-  // console.log( includedTaxonIds, "included" );
 
   // TODO: deal with exceptions
   // TODO: deal with queries with too many taxon Ids
@@ -262,6 +261,27 @@ const ProjectRequirements = ( ) => {
   }
 
   // Establishment Requirements
+  const introduced = getFieldValue( project?.rule_preferences
+    ?.filter( pref => pref.field === "introduced" ) );
+  const native = getFieldValue( project?.rule_preferences
+    ?.filter( pref => pref.field === "native" ) );
+  const endemic = getFieldValue( project?.rule_preferences
+    ?.filter( pref => pref.field === "endemic" ) );
+
+  const establishmentRule = RULES.find( r => r.name === t( "Establishment" ) );
+  const establishmentList = [];
+  if ( introduced ) {
+    establishmentList.push( { text: t( "Introduced" ) } );
+  }
+  if ( native ) {
+    establishmentList.push( { text: t( "Native" ) } );
+  }
+  if ( endemic ) {
+    establishmentList.push( { text: t( "Endemic" ) } );
+  }
+  if ( establishmentList.length > 0 ) {
+    establishmentRule.inclusions = establishmentList;
+  }
 
   const renderItemSeparator = () => (
     <View className="border-b border-lightGray" />
@@ -269,7 +289,7 @@ const ProjectRequirements = ( ) => {
 
   return (
     <ScrollViewWrapper>
-      <Body2 className="mb-4 px-4">
+      <Body2 className="my-4 px-4">
         {t( "Observations-in-this-project-must-meet-the-following-criteria" )}
       </Body2>
       {renderItemSeparator( )}
@@ -279,7 +299,7 @@ const ProjectRequirements = ( ) => {
           {renderItemSeparator( )}
         </View>
       ) )}
-      <View className="mt-6">
+      <View className="mt-6 px-4">
         <AboutProjectType projectType="collection" />
       </View>
     </ScrollViewWrapper>
