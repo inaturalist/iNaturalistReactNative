@@ -1,7 +1,10 @@
 import {
+  mockCamera,
   mockUseCameraDevice,
   mockUseFrameProcessor
+const Camera = mockCamera;
 const useCameraDevice = mockUseCameraDevice;
 export {
+  Camera,
   useCameraDevice,
 };

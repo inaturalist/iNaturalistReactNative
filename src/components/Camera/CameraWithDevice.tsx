@@ -1,4 +1,5 @@
 import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { Camera } from "components/Camera/helpers/react-native-vision-camera-imports";
 import PermissionGateContainer, {
   WRITE_MEDIA_PERMISSIONS
 } from "components/SharedComponents/PermissionGateContainer.tsx";
@@ -9,7 +10,7 @@ import React, {
 import { StatusBar } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
-import { Camera, CameraDevice } from "react-native-vision-camera";
+import type { CameraDevice } from "react-native-vision-camera";
 // import { log } from "sharedHelpers/logger";
 import { useTranslation } from "sharedHooks";
 import useDeviceOrientation, {
