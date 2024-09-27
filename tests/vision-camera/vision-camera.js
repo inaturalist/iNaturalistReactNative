@@ -1,3 +1,4 @@
+import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import React from "react";
 import { View } from "react-native";
 import RNFS from "react-native-fs";
