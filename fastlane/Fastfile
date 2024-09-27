@@ -438,8 +438,8 @@ lane :internal do
   )
 
   slack_message = <<~MESSAGE
-    🚀 NEW INTERNAL RELEASE
-    Should be available to staff in TestFlight and Play Store soon.
+    🧪 NEW INTERNAL RELEASE
+    Should be available to staff in TestFlight and Play Store soon. Please test and report any bugs, especially ones that should block release!
 
     #{changelog}
   MESSAGE
