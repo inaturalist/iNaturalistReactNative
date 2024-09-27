@@ -9,7 +9,7 @@ import { View } from "components/styledComponents";
 import React from "react";
 import { GestureResponderEvent, ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import { TakePhotoOptions } from "react-native-vision-camera";
+import type { TakePhotoOptions } from "react-native-vision-camera";
 
 import AIDebugButton from "./AIDebugButton";
 

@@ -1,9 +1,10 @@
+import { Camera } from "components/Camera/helpers/react-native-vision-camera-imports";
 import { RealmContext } from "providers/contexts.ts";
 import React, {
   useState
 } from "react";
-import {
-  Camera, CameraDevice, PhotoFile, TakePhotoOptions
+import type {
+  CameraDevice, PhotoFile, TakePhotoOptions
 } from "react-native-vision-camera";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import {
