@@ -1,15 +1,18 @@
 import {
   mockCamera,
   mockUseCameraDevice,
-  mockUseFrameProcessor
+  mockUseCameraFormat
 } from "tests/vision-camera/vision-camera";
 
 import { useFrameProcessor } from "react-native-vision-camera";
 
 const Camera = mockCamera;
 const useCameraDevice = mockUseCameraDevice;
+const useCameraFormat = mockUseCameraFormat;
+
 export {
   Camera,
   useCameraDevice,
+  useCameraFormat,
   useFrameProcessor
 };

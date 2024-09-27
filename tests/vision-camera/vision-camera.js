@@ -2,6 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import RNFS, { writeFile } from "react-native-fs";
 
+const style = { flex: 1, backgroundColor: "red" };
 export class mockCamera extends React.PureComponent {
   static async getAvailableCameraDevices() {
     return [
@@ -22,7 +23,7 @@ export class mockCamera extends React.PureComponent {
   }
 
   render() {
-    return <View />;
+    return <View style={style} />;
   }
 }
 
