@@ -2,6 +2,8 @@ import {
   mockCamera,
   mockUseCameraDevice,
   mockUseFrameProcessor
+} from "tests/vision-camera/vision-camera";
+
 const Camera = mockCamera;
 const useCameraDevice = mockUseCameraDevice;
 export {
