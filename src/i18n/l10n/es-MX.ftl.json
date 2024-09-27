@@ -1,7 +1,9 @@
 {
   "count-observations": "{ $count ->\n  [one] 1 observation\n *[other] { $count } observations\n}",
+  "date-format-short": "d/M/yy",
   "date-observed": "Date observed: { $date }",
   "date-uploaded": "Date uploaded: { $date }",
+  "datetime-format-short": "d/M/yy h:mm a",
   "Grid-View": {
     "comment": "Label for a view that shows observations as a grid of photos",
     "val": "Grid View"
@@ -11,7 +13,5 @@
     "val": "List View"
   },
   "Observations": "Observations",
-  "Your-Observations": "Tus observaciones",
-  "date-format-short": "d/M/yy",
-  "datetime-format-short": "d/M/yy h:mm a"
+  "Your-Observations": "Tus observaciones"
 }

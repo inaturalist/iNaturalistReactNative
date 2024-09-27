@@ -60,6 +60,8 @@ const MainMediaDisplay = ( {
   ] ), [photos, sounds] );
   const atLastItem = selectedMediaIndex === items.length - 1;
 
+  // t changes a lot, but these strings don't, so using them as useCallback
+  // dependencies keeps that method from getting redefined a lot
   const deletePhotoLabel = t( "Delete-photo" );
   const deleteSoundLabel = t( "Delete-sound" );
 

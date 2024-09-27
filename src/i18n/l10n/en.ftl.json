@@ -334,27 +334,22 @@
   "Data-quality-needs-id-description": "This observation needs more identifications to reach research grade",
   "Data-quality-research-description": "This observation has enough identifications to be considered research grade",
   "DATE": "DATE",
-  "Date-days": {
-    "comment": "Used when displaying a relative time - in this case, X days ago (e.g. 3d = 3 days ago)",
-    "val": "{ $count }d"
-  },
   "date-format-long": {
-    "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "comment": "Used for things like User Profile join date\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
     "val": "PP"
   },
+  "date-format-month-day": {
+    "comment": "Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "MMM d"
+  },
+  "date-format-month-year": {
+    "comment": "Use when only showing an observations month and year\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "MMM yyyy"
+  },
   "date-format-short": {
-    "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "comment": "Short date, e.g. on notifications from over a year ago\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
     "val": "M/d/yy"
   },
-  "Date-hours": {
-    "comment": "Used when displaying a relative time - in this case, X hours ago (e.g. 3h = 3 hours ago)",
-    "val": "{ $count }h"
-  },
-  "Date-minutes": {
-    "comment": "Used when displaying a relative time - in this case, X minutes ago (e.g. 3m = 3 minutes ago)",
-    "val": "{ $count }m"
-  },
-  "date-month-year": "MMM yyyy",
   "DATE-OBSERVED": "DATE OBSERVED",
   "Date-observed": "Date observed",
   "Date-observed-header-short": "Observed",
@@ -368,25 +363,33 @@
     "comment": "Label for controls over a range of dates",
     "val": "DATE RANGE"
   },
-  "Date-short-format": {
-    "comment": "Used when displaying a relative time - in this case, shows an absolute date (e.g. 12/31/22)",
-    "val": "MM/dd/yy"
-  },
-  "Date-this-year": {
-    "comment": "Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3",
-    "val": "MMM d"
-  },
   "DATE-UPLOADED": "DATE UPLOADED",
   "Date-uploaded": "Date uploaded",
   "Date-uploaded-header-short": "Uploaded",
   "DATE-UPLOADED-NEWEST": "DATE UPLOADED - NEWEST TO OLDEST",
   "DATE-UPLOADED-OLDEST": "DATE UPLOADED - OLDEST TO NEWEST",
-  "Date-weeks": {
+  "datetime-difference-days": {
+    "comment": "Used when displaying a relative time - in this case, X days ago (e.g. 3d = 3 days ago)",
+    "val": "{ $count }d"
+  },
+  "datetime-difference-hours": {
+    "comment": "Used when displaying a relative time - in this case, X hours ago (e.g. 3h = 3 hours ago)",
+    "val": "{ $count }h"
+  },
+  "datetime-difference-minutes": {
+    "comment": "Used when displaying a relative time - in this case, X minutes ago (e.g. 3m = 3 minutes ago)",
+    "val": "{ $count }m"
+  },
+  "datetime-difference-weeks": {
     "comment": "Used when displaying a relative time - in this case, X weeks ago (e.g. 3w = 3 weeks ago)",
     "val": "{ $count }w"
   },
+  "datetime-format-long": {
+    "comment": "Longer datetime, e.g. on ObsEdit\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "Pp"
+  },
   "datetime-format-short": {
-    "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "comment": "Shorter datetime, e.g. on comments and IDs\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
     "val": "M/d/yy h:mm a"
   },
   "December": {
@@ -424,7 +427,10 @@
     "comment": "Button that disables the camera's flash",
     "val": "Disable flash"
   },
-  "Disagreement": "<0>*@{ $username } disagrees this is </0><1></1>",
+  "Disagreement": {
+    "comment": "Disagreement notice with an identificaiton, <0/> will get replaced by a\ntaxon name",
+    "val": "*@{ $username } disagrees this is <0/>"
+  },
   "DISCARD": {
     "comment": "Button that discards changes or an item, e.g. a photo",
     "val": "DISCARD"
@@ -701,11 +707,11 @@
     "val": "Last Active: { $date }"
   },
   "Lat-Lon": {
-    "comment": "Latitude, longitude on a single line on a single line",
+    "comment": "Latitude, longitude on a single line",
     "val": "{ NUMBER($latitude, maximumFractionDigits: \"6\") }, { NUMBER($longitude, maximumFractionDigits: \"6\") }"
   },
   "Lat-Lon-Acc": {
-    "comment": "Latitude, longitude, and accuracy on a single line on a single line",
+    "comment": "Latitude, longitude, and accuracy on a single line",
     "val": "Lat: { NUMBER($latitude, maximumFractionDigits: \"6\") }, Lon: { NUMBER($longitude, maximumFractionDigits: \"6\") }, Acc: { $accuracy }"
   },
   "leading--identification": {
@@ -1028,41 +1034,77 @@
     "val": "Research Grade"
   },
   "Ranks-CLASS": "CLASS",
+  "Ranks-Class": "Class",
   "Ranks-COMPLEX": "COMPLEX",
+  "Ranks-Complex": "Complex",
   "Ranks-EPIFAMILY": "EPIFAMILY",
+  "Ranks-Epifamily": "Epifamily",
   "Ranks-FAMILY": "FAMILY",
+  "Ranks-Family": "Family",
   "Ranks-FORM": "FORM",
+  "Ranks-Form": "Form",
   "Ranks-GENUS": "GENUS",
+  "Ranks-Genus": "Genus",
   "Ranks-GENUSHYBRID": "GENUSHYBRID",
+  "Ranks-Genushybrid": "Genushybrid",
   "Ranks-HYBRID": "HYBRID",
+  "Ranks-Hybrid": "Hybrid",
   "Ranks-INFRACLASS": "INFRACLASS",
+  "Ranks-Infraclass": "Infraclass",
   "Ranks-INFRAHYBRID": "INFRAHYBRID",
+  "Ranks-Infrahybrid": "Infrahybrid",
   "Ranks-INFRAORDER": "INFRAORDER",
+  "Ranks-Infraorder": "Infraorder",
   "Ranks-KINGDOM": "KINGDOM",
+  "Ranks-Kingdom": "Kingdom",
   "Ranks-ORDER": "ORDER",
+  "Ranks-Order": "Order",
   "Ranks-PARVORDER": "PARVORDER",
+  "Ranks-Parvorder": "Parvorder",
   "Ranks-PHYLUM": "PHYLUM",
+  "Ranks-Phylum": "Phylum",
   "Ranks-SECTION": "SECTION",
+  "Ranks-Section": "Section",
   "Ranks-SPECIES": "SPECIES",
+  "Ranks-Species": "Species",
+  "Ranks-Statefmatter": "State of matter",
   "Ranks-STATEOFMATTER": "STATE OF MATTER",
   "Ranks-SUBCLASS": "SUBCLASS",
+  "Ranks-Subclass": "Subclass",
   "Ranks-SUBFAMILY": "SUBFAMILY",
+  "Ranks-Subfamily": "Subfamily",
   "Ranks-SUBGENUS": "SUBGENUS",
+  "Ranks-Subgenus": "Subgenus",
   "Ranks-SUBKINGDOM": "SUBKINGDOM",
+  "Ranks-Subkingdom": "Subkingdom",
   "Ranks-SUBORDER": "SUBORDER",
+  "Ranks-Suborder": "Suborder",
   "Ranks-SUBPHYLUM": "SUBPHYLUM",
+  "Ranks-Subphylum": "Subphylum",
   "Ranks-SUBSECTION": "SUBSECTION",
+  "Ranks-Subsection": "Subsection",
   "Ranks-SUBSPECIES": "SUBSPECIES",
+  "Ranks-Subspecies": "Subspecies",
   "Ranks-SUBTERCLASS": "SUBTERCLASS",
+  "Ranks-Subterclass": "Subterclass",
   "Ranks-SUBTRIBE": "SUBTRIBE",
+  "Ranks-Subtribe": "Subtribe",
   "Ranks-SUPERCLASS": "SUPERCLASS",
+  "Ranks-Superclass": "Superclass",
   "Ranks-SUPERFAMILY": "SUPERFAMILY",
+  "Ranks-Superfamily": "Superfamily",
   "Ranks-SUPERORDER": "SUPERORDER",
+  "Ranks-Superorder": "Superorder",
   "Ranks-SUPERTRIBE": "SUPERTRIBE",
+  "Ranks-Supertribe": "Supertribe",
   "Ranks-TRIBE": "TRIBE",
+  "Ranks-Tribe": "Tribe",
   "Ranks-VARIETY": "VARIETY",
+  "Ranks-Variety": "Variety",
   "Ranks-ZOOSECTION": "ZOOSECTION",
+  "Ranks-Zoosection": "Zoosection",
   "Ranks-ZOOSUBSECTION": "ZOOSUBSECTION",
+  "Ranks-Zoosubsection": "Zoosubsection",
   "Read-more-on-Wikipedia": "Read more on Wikipedia",
   "RECORD-NEW-SOUND": {
     "comment": "Heading for the sound recorder",
@@ -1353,6 +1395,10 @@
   "Umbrella-Project": "Umbrella Project",
   "UNFOLLOW": "UNFOLLOW",
   "UNFOLLOW-USER": "UNFOLLOW USER?",
+  "Unknown--rank": {
+    "comment": "Text to show when a taoxn rank is unknown or missing",
+    "val": "Unknown"
+  },
   "Unknown--taxon": {
     "comment": "Text to show when a taxon or identification is unknown or missing",
     "val": "Unknown"
@@ -1406,6 +1452,10 @@
     "val": "USERNAME OR EMAIL"
   },
   "Using-iNaturalist-requires-the-storage": "Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US.",
+  "Version-app-build": {
+    "comment": "Listing of app and build versions",
+    "val": "Version { $appVersion } ({ $buildVersion })"
+  },
   "VIEW-CHILDREN-TAXA": "VIEW CHILDREN TAXA",
   "VIEW-DATA-QUALITY-ASSESSMENT": "VIEW DATA QUALITY ASSESSMENT",
   "VIEW-EDUCATORS-GUIDE": "VIEW EDUCATOR'S GUIDE",
@@ -1524,5 +1574,9 @@
   "Youve-previously-denied-location-permissions": "You’ve previously denied location permissions, so please enable them in settings.",
   "Youve-previously-denied-microphone-permissions": "You’ve previously denied microphone permissions, so please enable them in settings.",
   "Zoom-in-as-much-as-possible-to-improve": "Zoom in as much as possible to improve location accuracy and get better identifications.",
-  "Zoom-to-current-location": "Zoom to current location"
+  "Zoom-to-current-location": "Zoom to current location",
+  "zoom-x": {
+    "comment": "Label for button that shows zoom level, e.g. on a camera",
+    "val": "{ $zoom }×"
+  }
 }

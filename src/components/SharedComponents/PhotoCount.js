@@ -8,6 +8,7 @@ import React from "react";
 import { I18nManager } from "react-native";
 import { useTheme } from "react-native-paper";
 import Svg, { Path } from "react-native-svg";
+import { useTranslation } from "sharedHooks";
 import { dropShadow } from "styles/global";
 
 const HEIGHT = 24;
@@ -17,6 +18,7 @@ type Props = {
 };
 
 const PhotoCount = ( { count }: Props ): Node => {
+  const { t } = useTranslation( );
   const { isRTL } = I18nManager;
   const theme = useTheme( );
 
@@ -44,7 +46,7 @@ const PhotoCount = ( { count }: Props ): Node => {
         }
       )}
       >
-        {photoCount}
+        {t( "Intl-number", { val: photoCount } )}
       </Body3>
       <Svg
         height={HEIGHT}

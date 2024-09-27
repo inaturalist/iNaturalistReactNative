@@ -16,6 +16,8 @@ import { log } from "sharedHelpers/logger";
 import { useWatchPosition } from "sharedHooks";
 import useStore from "stores/useStore";
 
+import { displayName as appName } from "../../../../app.json";
+
 const logger = log.extend( "usePrepareStoreAndNavigate" );
 
 type Options = {
@@ -52,7 +54,9 @@ export async function savePhotosToCameraGallery(
         // and skipping the album if we don't
         if ( readWritePermissionResult === RESULTS.GRANTED ) {
           saveOptions.type = "photo";
-          saveOptions.album = "iNaturalist Next";
+          // Note: we do not translate our brand name, so this should not be
+          // globalized
+          saveOptions.album = appName;
         }
         if ( location ) {
           saveOptions.latitude = location.latitude;
