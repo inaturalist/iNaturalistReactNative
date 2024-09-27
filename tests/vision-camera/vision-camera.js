@@ -60,6 +60,7 @@ export class mockCamera extends React.PureComponent {
         }
         const encodedUri = encodeURI( oldUri );
         const destPath = `${RNFS.TemporaryDirectoryPath}temp.jpg`;
+        // TODO: do I have to copy this actually?
         const newPath = await RNFS.copyAssetsFileIOS( encodedUri, destPath, 0, 0 );
         console.log( "newPath", newPath );
         const photo = { uri: newPath, predictions: [] };
