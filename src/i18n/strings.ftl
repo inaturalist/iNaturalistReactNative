@@ -1222,3 +1222,4 @@ Youve-previously-denied-location-permissions = You’ve previously denied locati
 Youve-previously-denied-microphone-permissions = You’ve previously denied microphone permissions, so please enable them in settings.
 Zoom-in-as-much-as-possible-to-improve = Zoom in as much as possible to improve location accuracy and get better identifications.
 Zoom-to-current-location = Zoom to current location
+All-taxa = All taxa

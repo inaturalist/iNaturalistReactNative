@@ -9,7 +9,12 @@ interface Props {
 
 const ProjectRuleItem = ( { rule }: Props ) => {
   const showInclusions = ( ) => rule?.inclusions.map( inclusion => (
-    <Body3 className="flex-row pb-1">{inclusion}</Body3>
+    <Body3
+      className="pb-1 flex-row"
+      onPress={inclusion?.onPress}
+    >
+      {inclusion?.text}
+    </Body3>
   ) );
 
   const showExclusions = ( ) => rule?.exclusions.map( exclusion => (
@@ -17,7 +22,7 @@ const ProjectRuleItem = ( { rule }: Props ) => {
   ) );
 
   const showDefaults = ( ) => rule?.defaults.map( projectDefault => (
-    <Body3 className="flex-row pb-1">{projectDefault}</Body3>
+    <Body3 className="flex-row pb-1" key={`${rule}-${projectDefault}`}>{projectDefault}</Body3>
   ) );
 
   const showRuleDetails = ( ) => {
@@ -33,7 +38,7 @@ const ProjectRuleItem = ( { rule }: Props ) => {
   return (
     <View className="flex-row">
       <Body3 className="w-1/3 pt-2">{rule.name}</Body3>
-      <View className="pt-2 pb-1">
+      <View className="pt-2 pb-1 w-2/3">
         {showRuleDetails( )}
       </View>
     </View>

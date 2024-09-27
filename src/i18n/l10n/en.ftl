@@ -76,6 +76,7 @@ All-observations = All observations
 All-organisms = All organisms
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = all rights reserved
+All-taxa = All taxa
 ALLOW-LOCATION-ACCESS = ALLOW LOCATION ACCESS
 # As in automated identification suggestions
 Almost-done = Almost done!
