@@ -39,6 +39,10 @@ describe( "AICamera", () => {
     // Take a photo with the camera
     const cameraContainer = element( by.id( "CameraWithDevice" ) );
     await waitFor( cameraContainer ).toBeVisible().withTimeout( 10000 );
+    const loadingText = element(
+      by.text( "Loading iNaturalist's AI Camera" )
+    );
+    await waitFor( loadingText ).toBeVisible().withTimeout( 10000 );
     const takePhotoButton = element( by.id( "take-photo-button" ) );
     await waitFor( takePhotoButton ).toBeVisible().withTimeout( 10000 );
     await takePhotoButton.tap();
