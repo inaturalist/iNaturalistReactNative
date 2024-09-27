@@ -96,17 +96,6 @@ const ProjectRequirements = ( ) => {
   const filterRules = operator => project?.project_observation_rules
     .filter( r => r.operator === operator );
 
-  // console.log( project?.project_observation_rules, "project" );
-
-  console.log( project?.project_observation_rules
-    .filter( r => (
-      r.operator !== "in_taxon?"
-      && r.operator !== "not_in_taxon?"
-      && r.operator !== "observed_in_place?"
-    && r.operator !== "not_observed_in_place?"
-    && r.operator !== "not_observed_by_user?" )
-    && r.operator !== "observed_by_user?" ), "proj rules" );
-
   const createTaxonObject = taxon => ( {
     taxon,
     text: null,
@@ -226,8 +215,6 @@ const ProjectRequirements = ( ) => {
   }
 
   // Date Requirements
-
-  // TODO: deal with different types of dates (ranges, months)
   const projectStartDate = getFieldValue( project?.rule_preferences
     ?.filter( pref => pref.field === "d1" ) );
   const projectEndDate = getFieldValue( project?.rule_preferences
@@ -237,6 +224,8 @@ const ProjectRequirements = ( ) => {
   const month = getFieldValue( project?.rule_preferences
     ?.filter( pref => pref.field === "month" ) );
 
+  // TODO: follow date formatting
+  // https://github.com/inaturalist/inaturalist/blob/0994c85e2b87661042289ff080d3fc29ed8e70b3/app/webpack/projects/show/components/requirements.jsx#L100C3-L114C4
   const createDateObject = ( ) => {
     if ( projectStartDate && !projectEndDate ) {
       return t( "Start-time", { date: projectStartDate } );
@@ -287,8 +276,6 @@ const ProjectRequirements = ( ) => {
   if ( establishmentList.length > 0 ) {
     establishmentRule.inclusions = establishmentList;
   }
-
-  // TODO: add annotations requirements?
 
   const renderItemSeparator = () => (
     <View className="border-b border-lightGray" />
