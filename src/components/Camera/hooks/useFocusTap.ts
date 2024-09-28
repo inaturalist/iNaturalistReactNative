@@ -1,4 +1,4 @@
-import { Camera } from "components/Camera/helpers/react-native-vision-camera-imports";
+import { Camera } from "components/Camera/helpers/visionCameraWrapper";
 import React, {
   useCallback, useMemo, useRef, useState
 } from "react";

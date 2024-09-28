@@ -1,7 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   useCameraDevice
-} from "components/Camera/helpers/react-native-vision-camera-imports";
+} from "components/Camera/helpers/visionCameraWrapper";
 import React, {
   useState
 } from "react";

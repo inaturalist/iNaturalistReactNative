@@ -1,5 +1,5 @@
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { Camera } from "components/Camera/helpers/react-native-vision-camera-imports";
+import { Camera } from "components/Camera/helpers/visionCameraWrapper";
 import PermissionGateContainer, {
   WRITE_MEDIA_PERMISSIONS
 } from "components/SharedComponents/PermissionGateContainer.tsx";

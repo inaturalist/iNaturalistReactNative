@@ -3,7 +3,7 @@ import { useIsFocused } from "@react-navigation/native";
 import {
   Camera,
   useCameraFormat
-} from "components/Camera/helpers/react-native-vision-camera-imports";
+} from "components/Camera/helpers/visionCameraWrapper";
 import useFocusTap from "components/Camera/hooks/useFocusTap.ts";
 import VeryBadIpadRotator from "components/SharedComponents/VeryBadIpadRotator";
 import React, {
