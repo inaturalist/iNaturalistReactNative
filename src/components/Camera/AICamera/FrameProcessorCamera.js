@@ -65,7 +65,7 @@ const FrameProcessorCamera = ( {
   inactive
 }: Props ): Node => {
   const { deviceOrientation } = useDeviceOrientation();
-  const [lastTimestamp, setLastTimestamp] = useState( Date.now() );
+  const [lastTimestamp, setLastTimestamp] = useState( undefined );
 
   const navigation = useNavigation();
 
@@ -125,9 +125,12 @@ const FrameProcessorCamera = ( {
         return;
       }
       const timestamp = Date.now();
-      const timeSinceLastFrame = timestamp - lastTimestamp;
-      if ( timeSinceLastFrame < ( 1000 / fps ) ) {
-        return;
+      // If there is no lastTimestamp, i.e. the first time this runs do not compare
+      if ( lastTimestamp ) {
+        const timeSinceLastFrame = timestamp - lastTimestamp;
+        if ( timeSinceLastFrame < 1000 / fps ) {
+          return;
+        }
       }
 
       patchedRunAsync( frame, () => {
