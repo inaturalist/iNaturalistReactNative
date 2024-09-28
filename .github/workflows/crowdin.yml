@@ -1,4 +1,4 @@
-name: Crowdin Action
+name: Crowdin Sync
 
 on:
   push:
@@ -17,7 +17,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: crowdin action
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        id: cache
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install node dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm install
+
+      # These will run `npm run translate`
+      - name: Set up commit hooks
+        run: npm run postinstall
+
+      - name: Sync with Crowdin
         uses: crowdin/github-action@v2
         with:
           # Debug
