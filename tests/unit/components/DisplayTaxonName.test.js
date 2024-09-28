@@ -261,7 +261,7 @@ describe( "DisplayTaxonName", ( ) => {
     it( "it displays common name followed by scientific name", async ( ) => {
       render( <DisplayTaxonName taxon={subspeciesTaxon} removeStyling layout="horizontal" /> );
       expect(
-        screen.getByTestId( `display-taxon-name-no-styling${subspeciesTaxon.id}` )
+        screen.getByTestId( `display-taxon-name-no-styling.${subspeciesTaxon.id}` )
       ).toHaveTextContent( "Silver Lupine (Lupinus albifrons var. collinus)" );
     } );
 
@@ -275,7 +275,7 @@ describe( "DisplayTaxonName", ( ) => {
         />
       );
       expect(
-        screen.getByTestId( `display-taxon-name-no-styling${subspeciesTaxon.id}` )
+        screen.getByTestId( `display-taxon-name-no-styling.${subspeciesTaxon.id}` )
       ).toHaveTextContent( "Lupinus albifrons var. collinus (Silver Lupine)" );
     } );
 
@@ -290,7 +290,7 @@ describe( "DisplayTaxonName", ( ) => {
         />
       );
       expect(
-        screen.getByTestId( `display-taxon-name-no-styling${subspeciesTaxon.id}` )
+        screen.getByTestId( `display-taxon-name-no-styling.${subspeciesTaxon.id}` )
       ).toHaveTextContent( "Lupinus albifrons var. collinus" );
     } );
   } );
