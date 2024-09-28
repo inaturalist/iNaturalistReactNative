@@ -12,6 +12,8 @@ concurrency:
 jobs:
   synchronize-with-crowdin:
     runs-on: ubuntu-latest
+    container:
+      options: --user root
 
     steps:
       - name: Checkout
