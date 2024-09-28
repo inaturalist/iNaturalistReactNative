@@ -70,7 +70,7 @@ jobs:
         run: npm run translate
 
       - name: Make pull request
-        uses: crowdin/github-action@v2
+        uses: inaturalist/crowdin-github-action@pr-without-download
         with:
           # Debug
           command_args: '--verbose'
