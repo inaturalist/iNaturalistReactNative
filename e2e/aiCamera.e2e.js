@@ -3,6 +3,7 @@ import {
 } from "detox";
 import Config from "react-native-config-node";
 
+import { CHUCKS_PAD } from "../src/appConstants/e2e";
 import { iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
 
 describe( "AICamera", () => {
@@ -52,7 +53,7 @@ describe( "AICamera", () => {
     await waitFor( powerUserRadioButton ).toBeVisible().withTimeout( 10000 );
     await powerUserRadioButton.tap();
 
-    // Open AICamera
+    // Tap to open AICamera
     const addObsButton = element( by.id( "add-obs-button" ) );
     await waitFor( addObsButton ).toBeVisible().withTimeout( 10000 );
     await addObsButton.tap();
@@ -60,13 +61,13 @@ describe( "AICamera", () => {
     await waitFor( arCameraButton ).toBeVisible().withTimeout( 10000 );
     await arCameraButton.tap();
 
-    // Take a photo with the camera
+    // Check that the camera screen is visible
     const cameraContainer = element( by.id( "CameraWithDevice" ) );
     await waitFor( cameraContainer ).toBeVisible().withTimeout( 10000 );
-
+    // Check that the mocked cv suggestion is visible
     const taxonResult = element( by.id( "AICamera.taxa.51779" ) );
     await waitFor( taxonResult ).toBeVisible().withTimeout( 10000 );
-
+    // Tap the take photo button
     const takePhotoButton = element( by.id( "take-photo-button" ) );
     await waitFor( takePhotoButton ).toBeVisible().withTimeout( 10000 );
     await takePhotoButton.tap();
@@ -80,5 +81,18 @@ describe( "AICamera", () => {
     const selectTaxonButon = element( by.id( "TaxonDetails.SelectButton" ) );
     await waitFor( selectTaxonButon ).toBeVisible().withTimeout( 10000 );
     await selectTaxonButon.tap();
+    // On ObsEdit
+    // Check that the new observation screen is visible
+    const newObservationText = element( by.id( "new-observation-text" ) );
+    await waitFor( newObservationText ).toBeVisible().withTimeout( 10000 );
+    // Ensure the location from the e2e-mock is being used so we don't end up
+    // with tests flaking out due to time zone issues
+    const pattern = new RegExp( `.*${CHUCKS_PAD.latitude.toFixed( 4 )}.*` );
+    const locationText = element( by.text( pattern ) );
+    await waitFor( locationText ).toBeVisible().withTimeout( 10000 );
+    // Press Upload now button
+    const uploadNowButton = element( by.id( "ObsEdit.uploadButton" ) );
+    await expect( uploadNowButton ).toBeVisible();
+    await uploadNowButton.tap();
   } );
 } );
