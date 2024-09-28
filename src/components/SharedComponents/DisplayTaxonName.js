@@ -185,7 +185,7 @@ const DisplayTaxonName = ( {
   // so in these cases we want to return text only
   if ( removeStyling ) {
     return (
-      <Text testID="display-taxon-name-no-styling">
+      <Text testID={`display-taxon-name-no-styling.${taxon.id}`}>
         {topTextComponent}
         {bottomTextComponent && (
           <>
@@ -201,7 +201,7 @@ const DisplayTaxonName = ( {
 
   return (
     <View
-      testID="display-taxon-name"
+      testID={`display-taxon-name.${taxon.id}`}
       className={classnames( "flex", {
         "flex-row items-end flex-wrap w-11/12": isHorizontal
       } )}
