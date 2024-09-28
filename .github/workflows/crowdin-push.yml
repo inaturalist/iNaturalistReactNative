@@ -3,6 +3,7 @@ name: Crowdin Push
 on:
   push:
     branches: [ main ]
+    paths: ["src/i18n/strings.ftl"]
   workflow_dispatch:
 
 concurrency:
