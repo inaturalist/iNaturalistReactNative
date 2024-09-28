@@ -33,10 +33,6 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm install
 
-      # These will run `npm run translate`
-      - name: Set up commit hooks
-        run: npm run postinstall
-
       - name: Sync with Crowdin
         uses: crowdin/github-action@v2
         with:
@@ -52,15 +48,46 @@ jobs:
           skip_untranslated_strings: true
           export_only_approved: true
           # Pull request options
-          localization_branch_name: l10n_2103_post_to_crowdin
+          create_pull_request: false
+          # localization_branch_name: l10n_2103_post_to_crowdin
+          # pull_request_title: 'New Crowdin Translations'
+          # pull_request_body: 'New Crowdin translations by [Crowdin GH Action](https://github.com/crowdin/github-action)'
+          # pull_request_base_branch_name: '2103-post-to-crowdin'
+        env:
+          # A classic GitHub Personal Access Token with the 'repo' scope selected (the user should have write access to the repository).
+          GITHUB_TOKEN: ${{ secrets.CROWDIN_GITHUB_TOKEN }}
+
+          # A numeric ID, found at https://crowdin.com/project/<projectName>/tools/api
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+
+          # Visit https://crowdin.com/settings#api-key to create this token
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+
+      - name: Normalize and validate
+        run: npm run translate
+
+      - name: Make pull request
+        uses: crowdin/github-action@v2
+        with:
+          # Debug
+          command_args: '--verbose'
+          # Note: a lot of the way this behaves is controlled in crowdin.yml,
+          # e.g. the path to the source files and paths to translations
+          # Upload options
+          upload_sources: false
+          upload_translations: false
+          # Download options
+          download_translations: false
+          # Pull request options
           create_pull_request: true
+          localization_branch_name: l10n_2103_post_to_crowdin
           pull_request_title: 'New Crowdin Translations'
           pull_request_body: 'New Crowdin translations by [Crowdin GH Action](https://github.com/crowdin/github-action)'
           pull_request_base_branch_name: '2103-post-to-crowdin'
         env:
           # A classic GitHub Personal Access Token with the 'repo' scope selected (the user should have write access to the repository).
           GITHUB_TOKEN: ${{ secrets.CROWDIN_GITHUB_TOKEN }}
-          
+
           # A numeric ID, found at https://crowdin.com/project/<projectName>/tools/api
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
 
