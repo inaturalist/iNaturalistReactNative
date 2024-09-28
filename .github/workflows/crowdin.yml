@@ -22,8 +22,6 @@ jobs:
         with:
           # Debug
           command_args: '--verbose'
-          upload_sources_args: '--verbose'
-          download_sources_args: '--verbose'
           # Note: a lot of the way this behaves is controlled in crowdin.yml,
           # e.g. the path to the source files and paths to translations
           # Upload options
