@@ -2,7 +2,7 @@ name: Crowdin Push
 
 on:
   push:
-    branches: [ 2103-post-to-crowdin ]
+    branches: [ main ]
   workflow_dispatch:
 
 concurrency:
@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  synchronize-with-crowdin:
+  push-to-crowdin:
     runs-on: ubuntu-latest
 
     steps:
