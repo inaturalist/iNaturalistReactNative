@@ -243,8 +243,6 @@ Data-quality-research-description = This observation has enough identifications 
 DATE = DATE
 # label in project requirements
 Date = Date
-# Used when displaying a relative time - in this case, X days ago (e.g. 3d = 3 days ago)
-Date-days = { $count }d
 # Date formatting using date-fns
 # Used for things like User Profile join date
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format

@@ -33,7 +33,6 @@ const Wikipedia = ( { taxon }: Props ): React.Node => {
     openExternalWebBrowser( taxon.wikipedia_url );
   };
 
-
   if ( !taxon.wikipedia_summary || taxon.wikipedia_summary.length === 0 ) {
     return null;
   }

@@ -5,5 +5,7 @@ export default locale => {
   if ( locale === "es" ) { return require( "./l10n/es.ftl.json" ); }
   if ( locale === "es-MX" ) { return require( "./l10n/es-MX.ftl.json" ); }
   if ( locale === "en" ) { return require( "./l10n/en.ftl.json" ); }
+  if ( locale === "ar" ) { return require( "./l10n/ar.ftl.json" ); }
+  if ( locale === "af" ) { return require( "./l10n/af.ftl.json" ); }
   return require( "./l10n/en.ftl.json" );
 };
