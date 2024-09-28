@@ -5,26 +5,7 @@ preserve_hierarchy: true
 files:
   - source: /src/i18n/strings.ftl
     dest: /ReactNative/strings.ftl
-    translation: /src/i18n/l10n/%two_letters_code%.ftl
+    # Note: this uses the Crowdin locale which always has a region. We need to
+    # mess with this later in i18ncli
+    translation: /src/i18n/l10n/%locale%.ftl
     type: ftl
-    languages_mapping:
-      two_letters_code:
-        en-AU: en-AU
-        en-GB: en-GB
-        en-NZ: en-NZ
-        en-US: en-US
-        es-AR: es-AR
-        es-CO: es-CO
-        es-CR: es-CR
-        es-ES: es
-        es-MX: es-MX
-        fr-CA: fr-CA
-        pa-IN: pa
-        pt-BR: pt-BR
-        pt-PT: pt
-        si-LK: si
-        sr-CS: sr
-        sv-SE: sv
-        zh-CN: zh-CN
-        zh-HK: zh-HK
-        zh-TW: zh-TW
