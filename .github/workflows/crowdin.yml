@@ -13,7 +13,7 @@ jobs:
   synchronize-with-crowdin:
     runs-on: ubuntu-latest
     container:
-      image: alpine:latest
+      image: node:18
       options: --user root
 
     steps:
