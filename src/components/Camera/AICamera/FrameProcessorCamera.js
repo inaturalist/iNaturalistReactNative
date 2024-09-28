@@ -1,10 +1,10 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
 import CameraView from "components/Camera/CameraView.tsx";
-import InatVision from "components/Camera/helpers/vision-camera-plugin-inatvision-imports";
 import {
   useFrameProcessor
 } from "components/Camera/helpers/visionCameraWrapper";
+import InatVision from "components/Camera/helpers/visionPluginWrapper";
 import type { Node } from "react";
 import React, {
   useEffect,
