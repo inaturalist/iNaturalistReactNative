@@ -9,20 +9,16 @@ files:
     type: ftl
     languages_mapping:
       two_letters_code:
-        bg-FR: bg
         en-AU: en-AU
         en-GB: en-GB
         en-NZ: en-NZ
-        en-US: en
+        en-US: en-US
         es-AR: es-AR
         es-CO: es-CO
         es-CR: es-CR
         es-ES: es
         es-MX: es-MX
         fr-CA: fr-CA
-        fr-FR: fr
-        gu-IN: gu
-        ml-IN: ml
         pa-IN: pa
         pt-BR: pt-BR
         pt-PT: pt
