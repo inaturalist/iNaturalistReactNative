@@ -13,6 +13,7 @@ jobs:
   synchronize-with-crowdin:
     runs-on: ubuntu-latest
     container:
+      image: ubuntu-latest
       options: --user root
 
     steps:
