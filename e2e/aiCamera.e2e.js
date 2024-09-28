@@ -71,12 +71,16 @@ describe( "AICamera", () => {
     const takePhotoButton = element( by.id( "take-photo-button" ) );
     await waitFor( takePhotoButton ).toBeVisible().withTimeout( 10000 );
     await takePhotoButton.tap();
-
-    // On suggestions
-    const suggestion = element( by.id( "SuggestionsList.taxa.343817" ) );
-    await waitFor( suggestion ).toBeVisible().withTimeout( 10000 );
-    await suggestion.tap();
-
+    // On suggestions find the first element in the suggestions list
+    const firstSuggestion = element( by.id( /SuggestionsList\.taxa\..*/ ) ).atIndex(
+      0
+    );
+    await waitFor( firstSuggestion ).toBeVisible().withTimeout( 10000 );
+    const suggestionAttributes = await firstSuggestion.getAttributes();
+    const taxonID = suggestionAttributes.elements
+      ? suggestionAttributes.elements[0].identifier.split( "." ).pop()
+      : suggestionAttributes.identifier.split( "." ).pop();
+    await firstSuggestion.tap();
     // On Taxon Detail
     const selectTaxonButon = element( by.id( "TaxonDetails.SelectButton" ) );
     await waitFor( selectTaxonButon ).toBeVisible().withTimeout( 10000 );
@@ -94,5 +98,10 @@ describe( "AICamera", () => {
     const uploadNowButton = element( by.id( "ObsEdit.uploadButton" ) );
     await expect( uploadNowButton ).toBeVisible();
     await uploadNowButton.tap();
+    // Check that the display taxon name is visible
+    const displayTaxonName = element(
+      by.id( `display-taxon-name.${taxonID}` )
+    );
+    await waitFor( displayTaxonName ).toBeVisible().withTimeout( 10000 );
   } );
 } );
