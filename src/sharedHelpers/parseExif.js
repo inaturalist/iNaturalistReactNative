@@ -2,7 +2,7 @@
 
 import { utcToZonedTime } from "date-fns-tz";
 import { readExif, writeLocation } from "react-native-exif-reader";
-import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
+import { formatISONoTimezone } from "sharedHelpers/dateAndTime.ts";
 
 class UsePhotoExifDateFormatError extends Error {}
 

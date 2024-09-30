@@ -1,8 +1,8 @@
 import classNames from "classnames";
 import { Body3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
+import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
 const DROP_SHADOW = getShadow( {
@@ -16,7 +16,8 @@ interface Props {
   light?: boolean;
 }
 
-const NumberBadge = ( { number, light }: Props ): Node => {
+const NumberBadge = ( { number, light }: Props ) => {
+  const { t } = useTranslation();
   const backgroundColor = light
     ? "bg-white"
     : "bg-inatGreen";
@@ -31,7 +32,7 @@ const NumberBadge = ( { number, light }: Props ): Node => {
       )}
       style={DROP_SHADOW}
     >
-      <Body3 className={textColor}>{number}</Body3>
+      <Body3 className={textColor}>{t( "Intl-number", { val: number } )}</Body3>
     </View>
   );
 };

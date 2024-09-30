@@ -33,7 +33,9 @@ const FaveButton = ( {
   const uuid = observation?.uuid;
 
   const observationFaved = useMemo( ( ) => {
-    const faves = ( observation?.faves && observation.faves() ) || [];
+    if ( !observation ) return null;
+    const faves = observation.votes?.filter( vote => vote?.vote_scope === null ) || [];
+
     if ( currentUser && faves.length > 0 ) {
       const viewerFaved = faves.find( fave => fave.user_id === currentUser.id );
       return !!viewerFaved;

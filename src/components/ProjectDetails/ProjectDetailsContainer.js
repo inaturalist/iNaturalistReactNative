@@ -8,9 +8,26 @@ import {
 } from "api/projects";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
+import User from "realmModels/User.ts";
 import { useAuthenticatedMutation, useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 
 import ProjectDetails from "./ProjectDetails";
+
+const DETAIL_FIELDS = {
+  title: true,
+  icon: true,
+  project_type: true,
+  icon_file_name: true,
+  header_image_url: true,
+  description: true,
+  place_id: true,
+  observation_count: true,
+  species_count: true
+};
+
+const DETAIL_PARAMS = {
+  fields: DETAIL_FIELDS
+};
 
 const ProjectDetailsContainer = ( ): Node => {
   const { params } = useRoute( );
@@ -18,16 +35,21 @@ const ProjectDetailsContainer = ( ): Node => {
   const currentUser = useCurrentUser( );
   const [loading, setLoading] = useState( false );
 
+  const fetchProjectsQueryKey = ["projectDetails", "fetchProjects", id];
+
   const { data: project } = useAuthenticatedQuery(
-    ["fetchProjects", id],
-    optsWithAuth => fetchProjects( id, {}, optsWithAuth )
+    fetchProjectsQueryKey,
+    optsWithAuth => fetchProjects( id, { ...DETAIL_PARAMS }, optsWithAuth )
   );
 
   const { data: projectMembers } = useAuthenticatedQuery(
     ["fetchProjectMembers", id],
     optsWithAuth => fetchProjectMembers( {
       id,
-      order_by: "login"
+      order_by: "login",
+      fields: {
+        user: User.LIMITED_FIELDS
+      }
     }, optsWithAuth )
   );
 
@@ -93,7 +115,7 @@ const ProjectDetailsContainer = ( ): Node => {
   }, [isRefetching] );
 
   if ( project ) {
-    project.members_count = projectMembers;
+    project.members_count = projectMembers?.total_results;
     project.journal_posts_count = projectPosts;
     project.observations_count = projectStats?.total_results;
     project.species_count = speciesCounts?.total_results;

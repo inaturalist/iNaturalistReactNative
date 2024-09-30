@@ -5,9 +5,10 @@ import React, {
   PropsWithChildren,
   useCallback,
   useEffect,
+  useRef,
   useState
 } from "react";
-import { Platform } from "react-native";
+import { AppState, AppStateStatus, Platform } from "react-native";
 import {
   AndroidPermission,
   checkMultiple,
@@ -149,6 +150,7 @@ const PermissionGateContainer = ( {
 }: Props ) => {
   const [result, setResult] = useState<PermissionStatus | null>( null );
   const [modalShown, setModalShown] = useState( false );
+  const prevAppState = useRef<AppStateStatus>( AppState.currentState );
 
   const navigation = useNavigation();
 
@@ -210,6 +212,31 @@ const PermissionGateContainer = ( {
       setModalShown( false );
     }
   }, [result, setModalShown] );
+
+  useEffect( () => {
+  // We need to handle permission changes manually on Android
+  // Permissions modified from the settings are not captured automatically
+  // So we check permissions when the app is transitioned from background to foreground
+  // This check is performed only when the platform is Android and the permission result is BLOCKED
+    if ( Platform.OS === "android"
+       && result === RESULTS.BLOCKED ) {
+      const onAppStateChange = async ( nextAppState: AppStateStatus ) => {
+        if ( prevAppState.current.match( /inactive|background/ ) && nextAppState === "active" ) {
+          await checkPermission();
+        }
+
+        prevAppState.current = nextAppState;
+      };
+
+      const subscription = AppState.addEventListener( "change", onAppStateChange );
+
+      return () => {
+        subscription?.remove();
+      };
+    }
+
+    return () => undefined;
+  }, [result, checkPermission] );
 
   const closeModal = useCallback( ( ) => {
     setModalShown( false );

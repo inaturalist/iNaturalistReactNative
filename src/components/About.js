@@ -129,7 +129,7 @@ const About = (): Node => {
               className="items-center justify-center"
               onPress={() => onVersionPressed()}
             >
-              <Body1>{`Version ${appVersion} (${buildVersion})`}</Body1>
+              <Body1>{ t( "Version-app-build", { appVersion, buildVersion } )}</Body1>
             </Pressable>
             {isDebug && (
               <Button

@@ -15,7 +15,7 @@ type Props = {
   confirm: Function,
   headerText: string,
   pickerValues: Object,
-  selectedValue: boolean,
+  selectedValue: boolean | string,
   insideModal?: boolean
 };
 
