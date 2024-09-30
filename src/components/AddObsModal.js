@@ -11,6 +11,7 @@ import { useTheme } from "react-native-paper";
 import Observation from "realmModels/Observation";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
+import colors from "styles/tailwindColors";
 
 type Props = {
   closeModal: ( ) => void,
@@ -49,9 +50,22 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ): React.Node => {
       <StatusBar barStyle="light-content" backgroundColor="black" />
       <View className="flex-row justify-center">
         <View className="bg-white rounded-xl p-[25px] mb-12 mx-7 max-w-sm">
-          <Heading2 testID="identify-text">
-            {t( "Identify-an-organism" )}
-          </Heading2>
+          <View className="flex-row items-center">
+            <Heading2 testID="identify-text">
+              {t( "Identify-an-organism" )}
+            </Heading2>
+
+            <View className="ml-auto">
+              <INatIconButton
+                icon="close"
+                color={colors.darkGrayDisabled}
+                size={20}
+                onPress={( ) => closeModal( )}
+                accessibilityLabel={t( "Close" )}
+                accessibilityHint={t( "Closes-new-observation-options" )}
+              />
+            </View>
+          </View>
           {bulletedText.map( ( { text, icon } ) => (
             <View key={text} className="flex-row items-center mt-4">
               <INatIcon
