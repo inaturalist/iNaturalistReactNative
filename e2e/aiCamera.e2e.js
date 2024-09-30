@@ -99,8 +99,8 @@ describe( "AICamera", () => {
     await expect( uploadNowButton ).toBeVisible();
     await uploadNowButton.tap();
     // Check that the display taxon name is visible
-    const displayTaxonName = element(
-      by.id( `display-taxon-name.${taxonID}` )
+    const displayTaxonName = element( by.id( `display-taxon-name.${taxonID}` ) ).atIndex(
+      0
     );
     await waitFor( displayTaxonName ).toBeVisible().withTimeout( 10000 );
   } );
