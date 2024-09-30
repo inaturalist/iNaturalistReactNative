@@ -270,6 +270,24 @@ const DataQualityAssessment = ( {
           />
         </View>
         <Divider />
+
+        <View className={voteClass}>
+          <View className={listTextClass}>
+            {renderMetricIndicator( "subject" )}
+            <Body3>{t( "Data-quality-assessment-single-subject" )}</Body3>
+          </View>
+          <DQAVoteButtons
+            metric="subject"
+            votes={qualityMetrics?.subject}
+            setVote={setMetricVote}
+            loadingAgree={loadingAgree}
+            loadingDisagree={loadingDisagree}
+            loadingMetric={loadingMetric}
+            removeVote={removeMetricVote}
+          />
+        </View>
+        <Divider />
+
       </View>
 
       <View className="flex-row items-center mt-5 py-2 pl-4 pr-[30px] bg-lightGray">
