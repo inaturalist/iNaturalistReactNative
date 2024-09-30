@@ -206,6 +206,13 @@ const PermissionGateContainer = ( {
     }
   }, [result, children, setModalShown] );
 
+  useEffect( ( ) => {
+    // permission already denied
+    if ( result === RESULTS.BLOCKED ) {
+      setModalShown( false );
+    }
+  }, [result, setModalShown] );
+
   useEffect( () => {
   // We need to handle permission changes manually on Android
   // Permissions modified from the settings are not captured automatically
@@ -267,9 +274,9 @@ const PermissionGateContainer = ( {
     result
   ] );
 
-  // If permission was granted, just render the children
+  // If permission results asked and answered, render children
   if (
-    ( result === RESULTS.GRANTED || result === RESULTS.LIMITED )
+    ( result === RESULTS.GRANTED || result === RESULTS.LIMITED || result === RESULTS.BLOCKED )
     && children
   ) return children;
 

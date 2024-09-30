@@ -342,12 +342,8 @@
     "comment": "label in project requirements",
     "val": "Date"
   },
-  "Date-days": {
-    "comment": "Used when displaying a relative time - in this case, X days ago (e.g. 3d = 3 days ago)",
-    "val": "{ $count }d"
-  },
   "date-format-long": {
-    "comment": "Used for things like User Profile join date\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "comment": "Date formatting using date-fns\nUsed for things like User Profile join date\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
     "val": "PP"
   },
   "date-format-month-day": {
@@ -1493,14 +1489,14 @@
     "val": "Users"
   },
   "Using-iNaturalist-requires-the-storage": "Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US.",
-  "VIEW-ALL-X-PLACES": "VIEW ALL { $count } PLACES",
-  "VIEW-ALL-X-PROJECTS": "VIEW ALL { $count } PROJECTS",
-  "VIEW-ALL-X-TAXA": "VIEW ALL { $count } TAXA",
-  "VIEW-ALL-X-USERS": "VIEW ALL { $count } USERS",
   "Version-app-build": {
     "comment": "Listing of app and build versions",
     "val": "Version { $appVersion } ({ $buildVersion })"
   },
+  "VIEW-ALL-X-PLACES": "VIEW ALL { $count } PLACES",
+  "VIEW-ALL-X-PROJECTS": "VIEW ALL { $count } PROJECTS",
+  "VIEW-ALL-X-TAXA": "VIEW ALL { $count } TAXA",
+  "VIEW-ALL-X-USERS": "VIEW ALL { $count } USERS",
   "VIEW-CHILDREN-TAXA": "VIEW CHILDREN TAXA",
   "VIEW-DATA-QUALITY-ASSESSMENT": "VIEW DATA QUALITY ASSESSMENT",
   "VIEW-EDUCATORS-GUIDE": "VIEW EDUCATOR'S GUIDE",
