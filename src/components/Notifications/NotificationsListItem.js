@@ -5,12 +5,15 @@ import ObsNotification from "components/Notifications/ObsNotification";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
+import { ACTIVITY_TAB } from "stores/createLayoutSlice";
+import useStore from "stores/useStore";
 
 type Props = {
 item: Object
 };
 
 const NotificationsListItem = ( { item }: Props ): Node => {
+  const setObsDetailsTab = useStore( state => state.setObsDetailsTab );
   const navigation = useNavigation( );
   const viewedStatus = item.viewed;
 
@@ -25,7 +28,13 @@ const NotificationsListItem = ( { item }: Props ): Node => {
 
         }
       )}
-      onPress={() => navigation.navigate( "ObsDetails", { uuid: item.resource_uuid } )}
+      onPress={( ) => {
+        setObsDetailsTab( ACTIVITY_TAB );
+        navigation.navigate( "ObsDetails", {
+          uuid: item.resource_uuid,
+          notificationId: item.identification_id || item.comment_id
+        } );
+      }}
 
     >
       <ObsNotification item={item} />

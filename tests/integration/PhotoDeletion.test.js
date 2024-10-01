@@ -39,6 +39,13 @@ getPredictionsForImage.mockImplementation(
   async ( ) => ( mockModelResult )
 );
 
+const mockUser = factory( "LocalUser" );
+// Mock useCurrentUser hook
+jest.mock( "sharedHooks/useCurrentUser", () => ( {
+  __esModule: true,
+  default: jest.fn( () => mockUser )
+} ) );
+
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
@@ -79,11 +86,6 @@ beforeEach( ( ) => {
 
 describe( "Photo Deletion", ( ) => {
   const actor = userEvent.setup( );
-
-  async function startApp() {
-    renderApp( );
-    expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
-  }
 
   async function takePhotoForNewObs() {
     const tabBar = await screen.findByTestId( "CustomTabBar" );
@@ -147,7 +149,7 @@ describe( "Photo Deletion", ( ) => {
   }
 
   it( "should delete from StandardCamera for new photo", async ( ) => {
-    await startApp();
+    renderApp( );
     await takePhotoForNewObs();
     // Tap the photo preview to enter the MediaViewer
     const carouselPhoto = await screen.findByTestId( /PhotoCarousel\.displayPhoto/ );
@@ -157,7 +159,7 @@ describe( "Photo Deletion", ( ) => {
   } );
 
   it( "should delete from StandardCamera for existing photo", async ( ) => {
-    await startApp();
+    renderApp( );
     await takePhotoForNewObs();
     await confirmPhotosAndAddTopId();
     await saveAndEditObs();
@@ -175,7 +177,7 @@ describe( "Photo Deletion", ( ) => {
   } );
 
   it( "should delete from ObsEdit for new camera photo", async ( ) => {
-    await startApp();
+    renderApp( );
     await takePhotoForNewObs();
     await confirmPhotosAndAddTopId();
     await viewPhotoFromObsEdit();
@@ -184,7 +186,7 @@ describe( "Photo Deletion", ( ) => {
   } );
 
   it( "should delete from ObsEdit for existing camera photo", async ( ) => {
-    await startApp();
+    renderApp( );
     await takePhotoForNewObs();
     await confirmPhotosAndAddTopId();
     await saveAndEditObs();

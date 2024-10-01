@@ -1,7 +1,7 @@
 // @flow
-import { FlashList } from "@shopify/flash-list";
-import InfiniteScrollLoadingWheel from "components/MyObservations/InfiniteScrollLoadingWheel";
-import { ActivityIndicator, Body3 } from "components/SharedComponents";
+import {
+  ActivityIndicator, Body3, CustomFlashList, InfiniteScrollLoadingWheel
+} from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";
@@ -71,27 +71,17 @@ const ExploreFlashList = ( {
     </View>
   ), [canFetch, renderLoading, t] );
 
-  const headerComponentStyle = layout === "grid" && {
-    marginLeft: -7,
-    marginRight: -7
-  };
-
   return (
-    <FlashList
+    <CustomFlashList
       ItemSeparatorComponent={renderItemSeparator}
       ListEmptyComponent={renderEmptyComponent}
       ListFooterComponent={renderFooter}
-      ListHeaderComponentStyle={headerComponentStyle}
-      accessible
       contentContainerStyle={contentContainerStyle}
       data={data}
       estimatedItemSize={estimatedItemSize}
-      horizontal={false}
-      initialNumToRender={5}
       keyExtractor={keyExtractor}
       numColumns={numColumns}
       onEndReached={fetchNextPage}
-      onEndReachedThreshold={1}
       refreshing={isFetchingNextPage}
       renderItem={renderItem}
       testID={testID}

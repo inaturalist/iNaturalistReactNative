@@ -40,7 +40,7 @@ const ObsMediaDisplay = ( {
           sounds={sounds}
           tablet={tablet}
         />
-        {!loading && (
+        {!loading && items.length > 1 && (
           <View className="absolute bottom-5 left-5">
             <PhotoCount count={items.length} />
           </View>

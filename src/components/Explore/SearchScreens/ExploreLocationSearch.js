@@ -4,8 +4,6 @@ import fetchSearchResults from "api/search";
 import {
   Body3,
   Button,
-  Heading4,
-  INatIconButton,
   SearchBar,
   ViewWrapper
 } from "components/SharedComponents";
@@ -26,6 +24,7 @@ import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import { getShadow } from "styles/global";
 
 import EmptySearchResults from "./EmptySearchResults";
+import ExploreSearchHeader from "./ExploreSearchHeader";
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4
@@ -125,20 +124,12 @@ const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node =>
 
   return (
     <ViewWrapper testID="explore-location-search">
-      <View className="flex-row justify-center p-5 bg-white">
-        <INatIconButton
-          testID="ExploreLocationSearch.close"
-          size={18}
-          icon="back"
-          className="absolute top-2 left-3 z-10"
-          onPress={( ) => closeModal()}
-          accessibilityLabel={t( "SEARCH-LOCATION" )}
-        />
-        <Heading4>{t( "SEARCH-LOCATION" )}</Heading4>
-        <Body3 onPress={resetPlace} className="absolute top-4 right-4">
-          {t( "Reset-verb" )}
-        </Body3>
-      </View>
+      <ExploreSearchHeader
+        closeModal={closeModal}
+        headerText={t( "SEARCH-LOCATION" )}
+        resetFilters={resetPlace}
+        testID="ExploreLocationSearch.close"
+      />
       <View
         className="bg-white pt-2 pb-5"
         style={DROP_SHADOW}

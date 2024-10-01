@@ -2,7 +2,6 @@ import { RealmContext } from "providers/contexts.ts";
 import React, {
   useState
 } from "react";
-import { Platform } from "react-native";
 import {
   Camera, CameraDevice, PhotoFile, TakePhotoOptions
 } from "react-native-vision-camera";
@@ -81,13 +80,13 @@ const useTakePhoto = (
   }
   const takePhoto = async ( options: Options = {} ) => {
     setTakingPhoto( true );
-    // On Android, setting the camera to inactive before taking a photo
-    // crashes the app. So we only set it to inactive on iOS here.
-    // We do set it to inactive on Android immediately after taking the photo,
+    // Set the camera to inactive immediately after taking the photo,
     // this does leave a short period of time where the camera preview is still active
-    // after taking the photo which we need to revisit on Android launch.
-    if ( Platform.OS === "ios" && options.inactivateCallback ) options.inactivateCallback();
-    const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
+    // after taking the photo which we might to revisit if it doesn't look good.
+    const cameraPhoto = await camera?.current?.takePhoto( takePhotoOptions );
+    if ( !cameraPhoto ) {
+      throw new Error( "Failed to take photo: missing camera" );
+    }
     if ( options.inactivateCallback ) options.inactivateCallback();
     const uri = await saveRotatedPhotoToDocumentsDirectory( cameraPhoto );
     await updateStore( uri, options );

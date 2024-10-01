@@ -1,10 +1,10 @@
 // @flow
 
-import { FlashList } from "@shopify/flash-list";
-import InfiniteScrollLoadingWheel from "components/MyObservations/InfiniteScrollLoadingWheel";
 import NotificationsListItem from "components/Notifications/NotificationsListItem";
 import {
-  ActivityIndicator, Body2, OfflineNotice, ViewWrapper
+  ActivityIndicator, Body2, CustomFlashList,
+  InfiniteScrollLoadingWheel,
+  OfflineNotice, ViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -41,7 +41,6 @@ const NotificationsList = ( {
 
   const renderFooter = useCallback( ( ) => (
     <InfiniteScrollLoadingWheel
-      explore={false}
       hideLoadingWheel={!isFetching || data?.length === 0}
       isConnected={isConnected}
     />
@@ -87,7 +86,7 @@ const NotificationsList = ( {
 
   return (
     <ViewWrapper>
-      <FlashList
+      <CustomFlashList
         ItemSeparatorComponent={renderItemSeparator}
         ListEmptyComponent={renderEmptyComponent}
         ListFooterComponent={renderFooter}

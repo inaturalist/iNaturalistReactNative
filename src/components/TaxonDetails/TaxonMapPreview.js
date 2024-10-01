@@ -2,6 +2,7 @@
 
 import { searchObservations } from "api/observations";
 import {
+  Button,
   DetailsMap,
   Heading4,
   Map,
@@ -67,6 +68,13 @@ const TaxonMapPreview = ( {
           withObsTiles
           zoomEnabled={false}
           zoomTapEnabled={false}
+        />
+        <Button
+          text={t( "EXPAND-MAP" )}
+          className="mt-4"
+          onPress={() => {
+            setShowMapModal( true );
+          }}
         />
         <Modal
           animationIn="fadeIn"

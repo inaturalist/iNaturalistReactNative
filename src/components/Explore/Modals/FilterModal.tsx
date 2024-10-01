@@ -694,8 +694,22 @@ const FilterModal = ( {
                     setShowTaxonSearchModal( true );
                   }}
                 >
-                  <DisplayTaxon taxon={taxon || "unknown"} />
-                  <INatIcon name="edit" size={22} />
+                  <DisplayTaxon
+                    handlePress={() => {
+                      setShowTaxonSearchModal( true );
+                    }}
+                    taxon={taxon || "unknown"}
+                  />
+                  <View className="flex-row items-center">
+                    <INatIcon name="edit" size={22} />
+                    <INatIconButton
+                      className="ml-3"
+                      icon="close"
+                      size={20}
+                      onPress={() => updateTaxon( null )}
+                      accessibilityLabel={t( "Remove-taxon-filter" )}
+                    />
+                  </View>
                 </Pressable>
               )
               : (
@@ -816,7 +830,16 @@ const FilterModal = ( {
                       countText={t( "X-Observations", { count: user.observations_count } )}
                       pressable={false}
                     />
-                    <INatIcon name="edit" size={22} />
+                    <View className="flex-row items-center">
+                      <INatIcon name="edit" size={22} />
+                      <INatIconButton
+                        className="ml-3"
+                        icon="close"
+                        size={20}
+                        onPress={() => updateUser( null )}
+                        accessibilityLabel={t( "Remove-user-filter" )}
+                      />
+                    </View>
                   </Pressable>
                 )
                 : (
@@ -846,7 +869,16 @@ const FilterModal = ( {
                     }}
                   >
                     <ProjectListItem item={project} />
-                    <INatIcon name="edit" size={22} />
+                    <View className="flex-row items-center">
+                      <INatIcon name="edit" size={22} />
+                      <INatIconButton
+                        className="ml-3"
+                        icon="close"
+                        size={20}
+                        onPress={() => updateProject( null )}
+                        accessibilityLabel={t( "Remove-project-filter" )}
+                      />
+                    </View>
                   </Pressable>
                 )
                 : (
@@ -1104,7 +1136,7 @@ const FilterModal = ( {
                   value={establishmentValues[establishmentKey]}
                   checked={
                     establishmentValues[establishmentKey].value
-                === establishmentMean
+                    === establishmentMean
                   }
                   onPress={() => dispatch( {
                     type: EXPLORE_ACTION.SET_ESTABLISHMENT_MEAN,

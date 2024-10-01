@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Image } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { Platform } from "react-native";
+import { I18nManager, Platform } from "react-native";
 import {
   useTranslation
 } from "sharedHooks";
@@ -47,6 +47,7 @@ const BackButton = ( {
   customStyles,
   testID = "BackButton"
 }: Props ): Node => {
+  const { isRTL } = I18nManager;
   const navigation = useNavigation();
   const tintColor = color || colors.black;
   const { t } = useTranslation( );
@@ -54,7 +55,8 @@ const BackButton = ( {
   const imageStyles = [
     !inCustomHeader && REACT_NAVIGATION_BACK_BUTTON_STYLES.icon,
     Boolean( tintColor ) && { tintColor },
-    customStyles
+    customStyles,
+    isRTL && { transform: [{ rotateY: "180deg" }] }
   ];
 
   const backImage = ( ) => (

@@ -18,11 +18,12 @@ import {
   useShare
 } from "sharedHooks";
 
-// import useChangeLocale from "./hooks/useChangeLocale";
+import useChangeLocale from "./hooks/useChangeLocale";
 import useFreshInstall from "./hooks/useFreshInstall";
 import useLinking from "./hooks/useLinking";
 import useLockOrientation from "./hooks/useLockOrientation";
 import useReactQueryRefetch from "./hooks/useReactQueryRefetch";
+import useTaxonCommonNames from "./hooks/useTaxonCommonNames";
 
 const { useRealm } = RealmContext;
 
@@ -70,11 +71,12 @@ const App = ( { children }: Props ): Node => {
   useReactQueryRefetch( );
   useFreshInstall( currentUser );
   useLinking( currentUser );
-  // useChangeLocale( currentUser );
+  useChangeLocale( currentUser );
 
   useLockOrientation( );
   useShare( );
   useObservationUpdatesWhenFocused( );
+  useTaxonCommonNames( );
 
   useEffect( ( ) => {
     addARCameraFiles( );

@@ -1,9 +1,6 @@
 // @flow
 
 import {
-  Body3,
-  Heading4,
-  INatIconButton,
   SearchBar,
   TaxaList,
   TaxonResult,
@@ -18,6 +15,8 @@ import React, {
 import { useTranslation } from "sharedHooks";
 import useTaxonSearch from "sharedHooks/useTaxonSearch";
 import { getShadow } from "styles/global";
+
+import ExploreSearchHeader from "./ExploreSearchHeader";
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4
@@ -72,20 +71,12 @@ const ExploreTaxonSearch = ( {
 
   return (
     <ViewWrapper>
-      <View className="flex-row justify-center p-5 bg-white">
-        <INatIconButton
-          testID="ExploreTaxonSearch.close"
-          size={18}
-          icon="back"
-          className="absolute top-2 left-3 z-10"
-          onPress={( ) => closeModal()}
-          accessibilityLabel={t( "SEARCH-TAXA" )}
-        />
-        <Heading4>{t( "SEARCH-TAXA" )}</Heading4>
-        <Body3 onPress={resetTaxon} className="absolute top-4 right-4">
-          {t( "Reset-verb" )}
-        </Body3>
-      </View>
+      <ExploreSearchHeader
+        closeModal={closeModal}
+        headerText={t( "SEARCH-TAXA" )}
+        resetFilters={resetTaxon}
+        testID="ExploreTaxonSearch.close"
+      />
       <View
         className="bg-white px-6 pt-2 pb-8"
         style={DROP_SHADOW}

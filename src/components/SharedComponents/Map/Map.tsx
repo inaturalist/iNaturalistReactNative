@@ -41,6 +41,7 @@ interface Props {
   mapType?: MapType;
   mapViewClassName?: string;
   minZoomLevel?: number;
+  minCenterCoordinateDistance?: number;
   obscured?: boolean;
   obsLatitude?: number;
   obsLongitude?: number;
@@ -84,6 +85,7 @@ const Map = ( {
   mapType,
   mapViewClassName,
   minZoomLevel = 0, // default in react-native-maps
+  minCenterCoordinateDistance = 5,
   obscured,
   obsLatitude,
   obsLongitude,
@@ -328,6 +330,9 @@ const Map = ( {
         style={style}
         onPanDrag={onPanDrag}
         minZoomLevel={minZoomLevel}
+        cameraZoomRange={{
+          minCenterCoordinateDistance
+        }}
         rotateEnabled={false}
         pitchEnabled={false}
         scrollEnabled={scrollEnabled}

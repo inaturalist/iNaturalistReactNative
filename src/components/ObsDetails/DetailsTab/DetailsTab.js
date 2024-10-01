@@ -129,7 +129,7 @@ const DetailsTab = ( { currentUser, observation }: Props ): Node => {
           {currentUser && (
             <Button
               testID="DetailsTab.DQA"
-              text={t( "VIEW-DATA-QUALITY-ASSESSEMENT" )}
+              text={t( "VIEW-DATA-QUALITY-ASSESSMENT" )}
               onPress={() => navigation.navigate( "DataQualityAssessment", { observationUUID } )}
             />
           )}

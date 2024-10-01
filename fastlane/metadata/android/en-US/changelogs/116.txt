@@ -1,0 +1,13 @@
+UPDATED
+* Reveal button for password
+* Add obs modal help now tappable
+* Removable taxon, user, and project, Explore filters
+* Hide photo count on ObsDetails if only 1 photo
+* Remove content from My Obs grid view to focus on photos
+
+FIXED
+* AI Camera was not always stopping on shutter press
+* Zoom was sticking when switching between front and back cameras
+* Control font scaling to allow navigation at large text sizes
+
+Thanks for the open-source contributions, @israr002!
