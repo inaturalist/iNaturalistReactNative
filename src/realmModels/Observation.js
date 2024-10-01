@@ -1,6 +1,8 @@
 import { Realm } from "@realm/react";
+import { Alert } from "react-native";
 import uuid from "react-native-uuid";
 import { createObservedOnStringForUpload } from "sharedHelpers/dateAndTime";
+import { log } from "sharedHelpers/logger";
 import { readExifFromMultiplePhotos } from "sharedHelpers/parseExif";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
@@ -17,6 +19,8 @@ import Vote from "./Vote";
 export const GEOPRIVACY_OPEN = "open";
 export const GEOPRIVACY_OBSCURED = "obscured";
 export const GEOPRIVACY_PRIVATE = "private";
+
+const logger = log.extend( "index.js" );
 
 // noting that methods like .toJSON( ) are only accessible when the model
 // class is extended with Realm.Object per this issue:
@@ -365,9 +369,17 @@ class Observation extends Realm.Object {
 
   static createObservationFromGalleryPhotos = async photos => {
     const photoUris = photos.map( photo => photo?.image?.uri );
-    const newObservation = await readExifFromMultiplePhotos( photoUris );
-
-    return Observation.new( newObservation );
+    try {
+      const newObservation = await readExifFromMultiplePhotos( photoUris );
+      return Observation.new( newObservation );
+    } catch ( createObservationFromGalleryError ) {
+      logger.error(
+        "Error reading EXIF from multiple gallery photos",
+        createObservationFromGalleryError
+      );
+      Alert.alert( "Creating Observation from Gallery Error", createObservationFromGalleryError );
+      return null;
+    }
   };
 
   static createObservationWithPhotos = async photos => {
