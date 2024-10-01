@@ -86,6 +86,8 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
     />
   );
 
+  const renderFooter = ( ) => <View className="h-[336px]" />;
+
   return (
     <ViewWrapper>
       <ExploreSearchHeader
@@ -113,6 +115,7 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
         ListEmptyComponent={renderEmptyList}
         ListHeaderComponent={renderItemSeparator}
         ItemSeparatorComponent={renderItemSeparator}
+        ListFooterComponent={renderFooter}
       />
     </ViewWrapper>
   );

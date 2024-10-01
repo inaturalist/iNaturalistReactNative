@@ -122,6 +122,8 @@ const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node =>
     />
   );
 
+  const renderFooter = ( ) => <View className="h-[336px]" />;
+
   return (
     <ViewWrapper testID="explore-location-search">
       <ExploreSearchHeader
@@ -161,6 +163,7 @@ const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node =>
         renderItem={renderItem}
         keyExtractor={item => item.id}
         ListEmptyComponent={renderEmptyList}
+        ListFooterComponent={renderFooter}
       />
       {renderPermissionsGate( { onPermissionGranted: setNearbyLocation } )}
     </ViewWrapper>

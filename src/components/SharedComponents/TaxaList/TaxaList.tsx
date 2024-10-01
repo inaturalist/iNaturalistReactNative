@@ -1,4 +1,5 @@
 import EmptySearchResults from "components/Explore/SearchScreens/EmptySearchResults.tsx";
+import { View } from "components/styledComponents";
 import React from "react";
 import { FlatList } from "react-native";
 import { useIconicTaxa } from "sharedHooks";
@@ -38,6 +39,8 @@ const TaxaList = ( {
     />
   );
 
+  const renderFooter = ( ) => <View className="h-[336px]" />;
+
   return (
     <FlatList
       keyboardShouldPersistTaps="always"
@@ -45,6 +48,7 @@ const TaxaList = ( {
       renderItem={renderItem}
       keyExtractor={item => item.id}
       ListEmptyComponent={renderEmptyList}
+      ListFooterComponent={renderFooter}
     />
   );
 };
