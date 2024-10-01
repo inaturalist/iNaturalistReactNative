@@ -288,6 +288,11 @@
     "comment": "Right to control copies of a creative work; this string may be used as a\nheading to describe general information about rights, attribution, and\nlicensing",
     "val": "Copyright"
   },
+  "Could-not-complete-at-this-time": {
+    "comment": "Error message potentially realating to not enough space on device",
+    "val": "Could not complete action this time."
+  },
+  "Could-not-complete-at-this-time-description": "Please try freeing up memory on device or restarting the app and try again.",
   "Could-not-find-a-camera-on-this-device": {
     "comment": "Error message when no camera can be found",
     "val": "Could not find a camera on this device"
@@ -832,6 +837,11 @@
     "comment": "license code",
     "val": "no rights reserved (CC0)"
   },
+  "No-space-left-on-device": {
+    "comment": "Error message when not enough memory on device",
+    "val": "No space left on device."
+  },
+  "No-space-left-on-device-try-again": "Not enough memory left on device. Please clear some memory and try again.",
   "NONE": "NONE",
   "none": "none",
   "NOTES": {

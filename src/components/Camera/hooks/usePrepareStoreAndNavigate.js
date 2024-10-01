@@ -71,10 +71,21 @@ export async function savePhotosToCameraGallery(
         onEachSuccess( savedPhotoUri );
       } catch ( cameraRollSaveError ) {
         // should never get here since in usePrepareStoreAndNavigate we check for device full
-        // and skipp saving to gallery
-        if ( cameraRollSaveError.message.match( /No space left on device/ )
-          || cameraRollSaveError.message.match( /The operation couldn’t be completed/ ) ) {
-          Alert.alert( t( "Error" ), cameraRollSaveError, [{ text: t( "OK" ) }] );
+        // and skip saving to gallery
+        if ( cameraRollSaveError.message.match( /No space left on device/ ) ) {
+          Alert.alert(
+            t( "No-space-left-on-device" ),
+            t( "No-space-left-on-device-try-again" ),
+            [{ text: t( "OK" ) }]
+          );
+          return;
+        }
+        if ( cameraRollSaveError.message.match( /The operation couldn’t be completed/ ) ) {
+          Alert.alert(
+            t( "Could-not-complete-at-this-time" ),
+            t( "Could-not-complete-at-this-time-description" ),
+            [{ text: t( "OK" ) }]
+          );
           return;
         }
         // This means an iOS user denied access

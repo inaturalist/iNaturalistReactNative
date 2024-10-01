@@ -203,6 +203,9 @@ Copy-coordinates = Copy Coordinates
 # heading to describe general information about rights, attribution, and
 # licensing
 Copyright = Copyright
+# Error message potentially realating to not enough space on device
+Could-not-complete-at-this-time = Could not complete action this time.
+Could-not-complete-at-this-time-description = Please try freeing up memory on device or restarting the app and try again.
 # Error message when no camera can be found
 Could-not-find-a-camera-on-this-device = Could not find a camera on this device
 Couldnt-create-comment = Couldn't create comment
@@ -617,6 +620,9 @@ No-results-found-for-that-search = No results found for that search.
 No-results-found-try-different-search = No results found. Try a different search or adjust your filters.
 # license code
 no-rights-reserved-cc0 = no rights reserved (CC0)
+# Error message when not enough memory on device
+No-space-left-on-device = No space left on device.
+No-space-left-on-device-try-again = Not enough memory left on device. Please clear some memory and try again.
 NONE = NONE
 none = none
 # Header for observation description on observation detail
