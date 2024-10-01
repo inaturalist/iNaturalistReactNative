@@ -1271,6 +1271,10 @@
     "comment": "Accessibility label for Explore button on TaxonDetails screen",
     "val": "See observations of this taxon in explore"
   },
+  "See-project-members": {
+    "comment": "Accessibility label for navigating to project members screen",
+    "val": "See project members"
+  },
   "See-species-observed-by-this-user-in-Explore": {
     "comment": "Accessibility label for Species button on UserProfile screen",
     "val": "See species observed by this user in Explore"
@@ -1546,6 +1550,10 @@
   "X-Identifications": "{ $count ->\n  [one] { $count } Identification\n *[other] { $count } Identifications\n}",
   "x-identifications": "{ $count ->\n  [one] { $count } identification\n *[other] { $count } identifications\n}",
   "X-Identifiers": "{ $count ->\n  [one] { $count } Identifier\n *[other] { $count } Identifiers\n}",
+  "X-MEMBERS": {
+    "comment": "Subheader for number of project members screen",
+    "val": "{ $count } MEMBERS"
+  },
   "X-Observations": {
     "comment": "Banner above Explore Map showing total number of results",
     "val": "{ $count ->\n  [one] 1 Observation\n *[other] { $count } Observations\n}"
