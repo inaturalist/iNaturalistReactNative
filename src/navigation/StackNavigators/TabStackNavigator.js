@@ -21,12 +21,14 @@ import NotificationsContainer from "components/Notifications/NotificationsContai
 import DQAContainer from "components/ObsDetails/DQAContainer";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
+import ProjectMembers from "components/ProjectDetails/ProjectMembers.tsx";
 import ProjectRequirements from "components/ProjectDetails/ProjectRequirements.tsx";
 import ProjectsContainer from "components/Projects/ProjectsContainer.tsx";
 import Settings from "components/Settings/Settings";
 import { Heading4 } from "components/SharedComponents";
 import UserProfile from "components/UserProfile/UserProfile";
 import { t } from "i18next";
+import ContextHeader from "navigation/ContextHeader";
 import {
   blankHeaderTitle,
   hideHeader,
@@ -77,6 +79,12 @@ const NOTIFICATIONS_OPTIONS = {
   ...hideHeaderLeft,
   headerTitle: notificationsTitle,
   headerTitleAlign: "center"
+};
+
+const PROJECT_MEMBERS_OPTIONS = {
+  header: ContextHeader,
+  alignStart: true,
+  lazy: true
 };
 
 const Stack = createNativeStackNavigator( );
@@ -153,6 +161,11 @@ const TabStackNavigator = ( ): Node => (
           ...showHeader,
           headerTitle: projectRequirementsTitle
         }}
+      />
+      <Stack.Screen
+        name="ProjectMembers"
+        component={ProjectMembers}
+        options={PROJECT_MEMBERS_OPTIONS}
       />
     </Stack.Group>
     {/* Developer Stack Group */}

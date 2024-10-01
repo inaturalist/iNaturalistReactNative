@@ -51,6 +51,16 @@ const ProjectDetails = ( {
     [navigation, project, setExploreView]
   );
 
+  const onMembersPressed = useCallback(
+    ( ) => {
+      navigation.navigate( "ProjectMembers", {
+        id: project?.id,
+        title: project?.title
+      } );
+    },
+    [navigation, project]
+  );
+
   if ( !project ) {
     return null;
   }
@@ -84,6 +94,7 @@ const ProjectDetails = ( {
           }}
           onObservationPressed={onObservationPressed}
           onSpeciesPressed={onSpeciesPressed}
+          onMembersPressed={onMembersPressed}
         />
         <Heading4 className="mt-7">{t( "ABOUT" )}</Heading4>
         {project?.description

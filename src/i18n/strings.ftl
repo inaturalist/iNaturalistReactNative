@@ -243,8 +243,6 @@ Data-quality-research-description = This observation has enough identifications 
 DATE = DATE
 # label in project requirements
 Date = Date
-# Used when displaying a relative time - in this case, X days ago (e.g. 3d = 3 days ago)
-Date-days = { $count }d
 # Date formatting using date-fns
 # Used for things like User Profile join date
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
@@ -935,6 +933,8 @@ See-observations-by-this-user-in-Explore = See observations by this user in Expl
 See-observations-in-explore = See observations in explore
 # Accessibility label for Explore button on TaxonDetails screen
 See-observations-of-this-taxon-in-explore = See observations of this taxon in explore
+# Accessibility label for navigating to project members screen
+See-project-members = See project members
 # Accessibility label for Species button on UserProfile screen
 See-species-observed-by-this-user-in-Explore = See species observed by this user in Explore
 Select-a-date-and-time-for-observation = Select a date and time for observation
@@ -1169,6 +1169,8 @@ X-Identifiers =
         [one] { $count } Identifier
        *[other] { $count } Identifiers
     }
+# Subheader for number of project members screen
+X-MEMBERS = { $count } MEMBERS
 # Banner above Explore Map showing total number of results
 X-Observations =
     { $count ->
