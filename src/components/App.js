@@ -7,7 +7,7 @@ import useDeviceStorageFull from "components/Camera/hooks/useDeviceStorageFull";
 import RootDrawerNavigator from "navigation/rootDrawerNavigator";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { LogBox } from "react-native";
 import Realm from "realm";
 import { addARCameraFiles } from "sharedHelpers/cvModel.ts";
@@ -59,6 +59,7 @@ const App = ( { children }: Props ): Node => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
   const { deviceStorageFull, showStorageFullAlert } = useDeviceStorageFull();
+  const [deviceStorageFullShown, setDeviceStorageFullShown] = useState( false );
 
   // this ensures that React Query has the most accurate depiction of whether the
   // app is online or offline. since queries only run when the app is online, this
@@ -81,10 +82,11 @@ const App = ( { children }: Props ): Node => {
   useTaxonCommonNames( );
 
   useEffect( ( ) => {
-    if ( deviceStorageFull ) {
+    if ( deviceStorageFull && !deviceStorageFullShown ) {
       showStorageFullAlert();
+      setDeviceStorageFullShown( true );
     }
-  }, [deviceStorageFull, showStorageFullAlert] );
+  }, [deviceStorageFull, deviceStorageFullShown, showStorageFullAlert] );
 
   useEffect( ( ) => {
     addARCameraFiles( );
