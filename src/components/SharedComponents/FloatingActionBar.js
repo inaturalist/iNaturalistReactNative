@@ -12,12 +12,18 @@ const DROP_SHADOW = getShadow( {
   shadowRadius: 8
 } );
 
+const BOTTOM_ANIMATION_START = 100;
+const TOP_ANIMATION_START = -100;
+
+const FOOTER_PADDING = 17;
+
 type Props = {
   position: "topStart" | "topEnd" | "bottomStart" | "bottomEnd",
   containerClass?: string,
   endY?: number | null,
   children: React.Node,
   show: boolean,
+  footerHeight: number
 };
 
 // Ensure this component is placed outside of scroll views
@@ -27,14 +33,16 @@ const FloatingActionBar = ( {
   endY = null,
   containerClass,
   children,
-  show
+  show,
+  footerHeight: FOOTER_HEIGHT
 }: Props ): React.Node => {
+  const bottomPosition = FOOTER_HEIGHT + FOOTER_PADDING;
   const [keyboardHeight, setKeyboardHeight] = useState( 0 );
   const [keyboardOpen, setKeyboardOpen] = useState( false );
   const isBottom = position === "bottomEnd" || position === "bottomStart";
   const start = isBottom
-    ? 100
-    : -100;
+    ? BOTTOM_ANIMATION_START + bottomPosition
+    : TOP_ANIMATION_START;
   const animate = useMemo(
     () => new Animated.Value( show
       ? start
@@ -85,7 +93,7 @@ const FloatingActionBar = ( {
   const positionStyle = {};
 
   if ( position.includes( "bottom" ) ) {
-    positionStyle.bottom = ( endY ?? 0 ) + effectiveKeyboardHeight;
+    positionStyle.bottom = ( endY ?? bottomPosition ) + effectiveKeyboardHeight;
   }
 
   if ( position.includes( "End" ) ) {
