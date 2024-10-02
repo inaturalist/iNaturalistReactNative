@@ -44,8 +44,8 @@ const MultipleObservationsArrows = ( {
       </View>
       <Heading2>
         {t( "X-of-Y", {
-          count: currentObservationIndex + 1,
-          totalObservationCount: observations.length
+          x: currentObservationIndex + 1,
+          y: observations.length
         } )}
       </Heading2>
       <View className="w-16 flex items-end">

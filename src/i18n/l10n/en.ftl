@@ -227,17 +227,27 @@ Data-quality-assessment-description-casual = This observation has not met the co
 Data-quality-assessment-description-needs-id = This observation has not yet met the conditions for Research Grade status:
 # Data Quality Assessment explanation when quality is Research Grade
 Data-quality-assessment-description-research = It can now be used for research and featured on other websites.
+# Data Quality Assessment metric
 Data-quality-assessment-evidence-of-organism = Evidence of organism
+# Data Quality Assessment metric
 Data-quality-assessment-has-photos-or-sounds = Has Photos or Sounds
+# Data Quality Assessment metric
 Data-quality-assessment-id-supported-by-two-or-more = Has ID supported by two or more
+# Data Quality Assessment metric
 Data-quality-assessment-location-is-accurate = Location is accurate
+# Data Quality Assessment metric
 Data-quality-assessment-location-specified = Location specified
+# Data Quality Assessment metric
 Data-quality-assessment-organism-is-wild = Organism is wild
+# Data Quality Assessment metric
 Data-quality-assessment-recent-evidence-of-organism = Recent evidence of an organism
+# Data Quality Assessment metric
 Data-quality-assessment-single-subject = Evidence related to a single subject
+# Data Quality Assessment description of the final quality grade when Casual
 Data-quality-assessment-title-casual = This observation is Casual Grade
+# Data Quality Assessment description of the final quality grade when Needs ID
 Data-quality-assessment-title-needs-id = This observation Needs ID
-# declares the current data quality status of the observation when quality is Research Grade
+# Data Quality Assessment description of the final quality grade when Research Grade
 Data-quality-assessment-title-research = This observation is Research Grade!
 Data-quality-casual-description = This observation needs more information verified to be considered verifiable
 Data-quality-needs-id-description = This observation needs more identifications to reach research grade
@@ -613,8 +623,9 @@ Navigates-to-taxon-details = Navigates to taxon details
 Navigates-to-user-profile = Navigates to user profile
 # Label for button that takes you to your observations
 Navigates-to-your-observations = Navigates to your observations
-# Header for nearby projects
+# Header or button label for content that is near the user's current location
 NEARBY = NEARBY
+# Header or button label for content that is near the user's current location
 Nearby = Nearby
 # Quality grade indicating observation still needs more identifications
 Needs-ID--quality-grade = Needs ID
@@ -715,7 +726,6 @@ Opens-the-AI-camera = Opens the AI camera
 Opens-the-side-drawer-menu = Opens the side drawer menu.
 # Picker prompt on observation edit
 Organism-is-captive = Organism is captive
-Organism-is-wild = Organism is wild
 Organisms-that-are-identified-to-species = Organisms that are identified to species rank or below
 # Generic option in a list for unanticipated cases, e.g. a choice to manually
 # enter an explanation for why you are flagging something instead of choosing
@@ -1171,12 +1181,13 @@ X-Identifiers =
     }
 # Subheader for number of project members screen
 X-MEMBERS = { $count } MEMBERS
-# Banner above Explore Map showing total number of results
+# Shows number of observations in a variety of contexts
 X-Observations =
     { $count ->
         [one] 1 Observation
        *[other] { $count } Observations
     }
+# Shows number of observations in a variety of contexts
 X-observations =
     { $count ->
         [one] 1 observation
@@ -1198,12 +1209,12 @@ X-Observers =
        *[other] { $count } Observers
     }
 X-of-Y =
-    { $count ->
+    { $x ->
         [one] 1
-       *[other] { $count }
-    } { $totalObservationCount ->
-        [one] of { $totalObservationCount }
-       *[other] of { $totalObservationCount }
+       *[other] { $x }
+    } { $y ->
+        [one] of { $y }
+       *[other] of { $y }
     }
 # Displays number of photos attached to an observation in the Media Viewer
 X-PHOTOS =

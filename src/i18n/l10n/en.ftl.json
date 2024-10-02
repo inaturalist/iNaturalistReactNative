@@ -321,18 +321,48 @@
     "comment": "Data Quality Assessment explanation when quality is Research Grade",
     "val": "It can now be used for research and featured on other websites."
   },
-  "Data-quality-assessment-evidence-of-organism": "Evidence of organism",
-  "Data-quality-assessment-has-photos-or-sounds": "Has Photos or Sounds",
-  "Data-quality-assessment-id-supported-by-two-or-more": "Has ID supported by two or more",
-  "Data-quality-assessment-location-is-accurate": "Location is accurate",
-  "Data-quality-assessment-location-specified": "Location specified",
-  "Data-quality-assessment-organism-is-wild": "Organism is wild",
-  "Data-quality-assessment-recent-evidence-of-organism": "Recent evidence of an organism",
-  "Data-quality-assessment-single-subject": "Evidence related to a single subject",
-  "Data-quality-assessment-title-casual": "This observation is Casual Grade",
-  "Data-quality-assessment-title-needs-id": "This observation Needs ID",
+  "Data-quality-assessment-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Evidence of organism"
+  },
+  "Data-quality-assessment-has-photos-or-sounds": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Has Photos or Sounds"
+  },
+  "Data-quality-assessment-id-supported-by-two-or-more": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Has ID supported by two or more"
+  },
+  "Data-quality-assessment-location-is-accurate": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Location is accurate"
+  },
+  "Data-quality-assessment-location-specified": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Location specified"
+  },
+  "Data-quality-assessment-organism-is-wild": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Organism is wild"
+  },
+  "Data-quality-assessment-recent-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Recent evidence of an organism"
+  },
+  "Data-quality-assessment-single-subject": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Evidence related to a single subject"
+  },
+  "Data-quality-assessment-title-casual": {
+    "comment": "Data Quality Assessment description of the final quality grade when Casual",
+    "val": "This observation is Casual Grade"
+  },
+  "Data-quality-assessment-title-needs-id": {
+    "comment": "Data Quality Assessment description of the final quality grade when Needs ID",
+    "val": "This observation Needs ID"
+  },
   "Data-quality-assessment-title-research": {
-    "comment": "declares the current data quality status of the observation when quality is Research Grade",
+    "comment": "Data Quality Assessment description of the final quality grade when Research Grade",
     "val": "This observation is Research Grade!"
   },
   "Data-quality-casual-description": "This observation needs more information verified to be considered verifiable",
@@ -821,10 +851,13 @@
     "val": "Navigates to your observations"
   },
   "NEARBY": {
-    "comment": "Header for nearby projects",
+    "comment": "Header or button label for content that is near the user's current location",
     "val": "NEARBY"
   },
-  "Nearby": "Nearby",
+  "Nearby": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "Nearby"
+  },
   "Needs-ID--quality-grade": {
     "comment": "Quality grade indicating observation still needs more identifications",
     "val": "Needs ID"
@@ -975,7 +1008,6 @@
     "comment": "Picker prompt on observation edit",
     "val": "Organism is captive"
   },
-  "Organism-is-wild": "Organism is wild",
   "Organisms-that-are-identified-to-species": "Organisms that are identified to species rank or below",
   "Other": {
     "comment": "Generic option in a list for unanticipated cases, e.g. a choice to manually\nenter an explanation for why you are flagging something instead of choosing\none of the existing options",
@@ -1553,14 +1585,17 @@
     "val": "{ $count } MEMBERS"
   },
   "X-Observations": {
-    "comment": "Banner above Explore Map showing total number of results",
+    "comment": "Shows number of observations in a variety of contexts",
     "val": "{ $count ->\n  [one] 1 Observation\n *[other] { $count } Observations\n}"
   },
-  "X-observations": "{ $count ->\n  [one] 1 observation\n *[other] { $count } observations\n}",
+  "X-observations": {
+    "comment": "Shows number of observations in a variety of contexts",
+    "val": "{ $count ->\n  [one] 1 observation\n *[other] { $count } observations\n}"
+  },
   "X-observations-deleted": "{ $count ->\n  [one] 1 observation deleted\n *[other] { $count } observations deleted\n}",
   "X-observations-uploaded": "{ $count ->\n  [one] 1 observation uploaded\n *[other] { $count } observations uploaded\n}",
   "X-Observers": "{ $count ->\n  [one] { $count } Observer\n *[other] { $count } Observers\n}",
-  "X-of-Y": "{ $count ->\n  [one] 1\n *[other] { $count }\n} { $totalObservationCount ->\n  [one] of { $totalObservationCount }\n *[other] of { $totalObservationCount }\n}",
+  "X-of-Y": "{ $x ->\n  [one] 1\n *[other] { $x }\n} { $y ->\n  [one] of { $y }\n *[other] of { $y }\n}",
   "X-PHOTOS": {
     "comment": "Displays number of photos attached to an observation in the Media Viewer",
     "val": "{ $photoCount ->\n  [one] 1 PHOTO\n *[other] { $photoCount } PHOTOS\n}"

@@ -42,7 +42,7 @@ const OtherDataSection = ( {
   // opposite of Seek (asking if wild, not if captive)
   const captiveOptions = [
     {
-      label: t( "Organism-is-wild" ),
+      label: t( "Data-quality-assessment-organism-is-wild" ),
       value: false
     },
     {
