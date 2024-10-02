@@ -44,28 +44,30 @@ const exploreViewIcon = {
 };
 
 type Props = {
+  // TODO: change to PLACE_MODE in Typescript
   canFetch?: boolean,
   closeFiltersModal: Function,
   count: Object,
   currentExploreView: string,
-  setCurrentExploreView: Function,
-  startFetching: Function,
   filterByIconicTaxonUnknown: Function,
   handleUpdateCount: Function,
+  hasLocationPermissions: ?boolean,
   hideBackButton: boolean,
   isConnected: boolean,
   isFetchingHeaderCount: boolean,
+  currentMapRegion: Object,
   openFiltersModal: Function,
-  queryParams: Object,
-  showFiltersModal: boolean,
-  updateTaxon: Function,
-  updateLocation: Function,
-  updateUser: Function,
-  updateProject: Function,
-  // TODO: change to PLACE_MODE in Typescript
   placeMode: string,
-  hasLocationPermissions: ?boolean,
-  requestLocationPermissions: Function
+  queryParams: Object,
+  requestLocationPermissions: Function,
+  setCurrentExploreView: Function,
+  setCurrentMapRegion: Function,
+  showFiltersModal: boolean,
+  startFetching: Function,
+  updateLocation: Function,
+  updateProject: Function,
+  updateTaxon: Function,
+  updateUser: Function,
 }
 
 const Explore = ( {
@@ -73,23 +75,25 @@ const Explore = ( {
   closeFiltersModal,
   count,
   currentExploreView,
-  setCurrentExploreView,
-  startFetching,
   filterByIconicTaxonUnknown,
   handleUpdateCount,
+  hasLocationPermissions,
   hideBackButton,
   isConnected,
   isFetchingHeaderCount,
+  currentMapRegion,
   openFiltersModal,
-  queryParams,
-  showFiltersModal,
-  updateTaxon,
-  updateLocation,
-  updateUser,
-  updateProject,
   placeMode,
-  hasLocationPermissions,
-  requestLocationPermissions
+  queryParams,
+  requestLocationPermissions,
+  setCurrentExploreView,
+  setCurrentMapRegion,
+  showFiltersModal,
+  startFetching,
+  updateLocation,
+  updateProject,
+  updateTaxon,
+  updateUser
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
@@ -155,6 +159,8 @@ const Explore = ( {
             layout={layout}
             queryParams={queryParams}
             handleUpdateCount={handleUpdateCount}
+            currentMapRegion={currentMapRegion}
+            setCurrentMapRegion={setCurrentMapRegion}
           />
         )}
         {currentExploreView === "species" && (
