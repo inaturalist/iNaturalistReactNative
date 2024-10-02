@@ -1,15 +1,13 @@
-import classnames from "classnames";
 import {
-  Body1,
   Button,
   Map
 } from "components/SharedComponents";
 import { getMapRegion } from "components/SharedComponents/Map/helpers/mapHelpers.ts";
 import { View } from "components/styledComponents";
 import { MapBoundaries, PLACE_MODE, useExplore } from "providers/ExploreContext.tsx";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Platform } from "react-native";
-import { useDebugMode, useTranslation } from "sharedHooks";
+import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
 import useMapLocation from "./hooks/useMapLocation";
@@ -35,17 +33,13 @@ const MapView = ( {
   queryParams
 }: Props ) => {
   const { t } = useTranslation( );
-  const { isDebug } = useDebugMode( );
-  const [zoom, setZoom] = useState( -1 );
   const { state: exploreState } = useExplore( );
 
   const {
     onPanDrag,
-    onZoomToNearby,
     redoSearchInMapArea,
     region,
     showMapBoundaryButton,
-    startAtNearby,
     updateMapBoundaries
   } = useMapLocation( );
 
@@ -88,22 +82,6 @@ const MapView = ( {
           </View>
         )}
       </View>
-      { isDebug && (
-        <View
-          className={classnames(
-            "absolute",
-            "left-5",
-            "bottom-[140px]",
-            "bg-deeppink",
-            "p-1",
-            "z-10"
-          )}
-        >
-          <Body1 className="text-white">
-            {`Zoom: ${zoom}`}
-          </Body1>
-        </View>
-      ) }
       <Map
         currentLocationButtonClassName="left-5 bottom-20"
         onPanDrag={onPanDrag}
@@ -116,21 +94,14 @@ const MapView = ( {
             return;
           }
           await updateMapBoundaries( newRegion, boundaries );
-          if ( startAtNearby ) {
-            onZoomToNearby( newRegion, boundaries );
-          }
         }}
-        onZoomToNearby={onZoomToNearby}
-        onZoomChange={newZoom => setZoom( newZoom )}
         region={region}
         showCurrentLocationButton
         showSwitchMapTypeButton
         showsCompass={false}
-        startAtNearby={startAtNearby}
         switchMapTypeButtonClassName="left-20 bottom-20"
         tileMapParams={tileMapParams}
         withPressableObsTiles={tileMapParams !== null}
-        currentLocationZoomLevel={15}
       />
     </View>
   );

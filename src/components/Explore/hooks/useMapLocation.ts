@@ -1,4 +1,4 @@
-import { useFocusEffect, useRoute } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 import {
   EXPLORE_ACTION,
   MapBoundaries,
@@ -14,17 +14,12 @@ import { initialMapRegion } from "stores/createExploreSlice.ts";
 import useCurrentMapRegion from "./useCurrentMapRegion";
 
 const useMapLocation = ( ) => {
-  const { params } = useRoute( );
-  const worldwide = params?.worldwide;
   const { dispatch, state } = useExplore( );
   const [mapBoundaries, setMapBoundaries] = useState<MapBoundaries>( );
   const [showMapBoundaryButton, setShowMapBoundaryButton] = useState( false );
   const { currentMapRegion, setCurrentMapRegion } = useCurrentMapRegion( );
 
   const place = state?.place;
-
-  const hasPlace = state.swlat || state.place_id || state.lat;
-  const [startAtNearby, setStartAtNearby] = useState( !hasPlace && !worldwide );
 
   const onPanDrag = ( ) => setShowMapBoundaryButton( true );
 
@@ -64,20 +59,6 @@ const useMapLocation = ( ) => {
     }, [] )
   );
 
-  // eslint-disable-next-line max-len
-  const onZoomToNearby = useCallback( async ( newRegion: Region, nearbyBoundaries: BoundingBox | undefined ) => {
-    const newMapBoundaries = await updateMapBoundaries( newRegion, nearbyBoundaries );
-    dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_NEARBY } );
-    dispatch( {
-      type: EXPLORE_ACTION.SET_MAP_BOUNDARIES,
-      mapBoundaries: newMapBoundaries
-    } );
-    setStartAtNearby( false );
-  }, [
-    dispatch,
-    updateMapBoundaries
-  ] );
-
   const previousPlaceGuess = useRef( state.placeMode );
   useEffect( ( ) => {
     // region gets set when a user is navigating from ExploreLocationSearch
@@ -111,11 +92,9 @@ const useMapLocation = ( ) => {
 
   return {
     onPanDrag,
-    onZoomToNearby,
     redoSearchInMapArea,
     region: currentMapRegion,
     showMapBoundaryButton,
-    startAtNearby,
     updateMapBoundaries
   };
 };

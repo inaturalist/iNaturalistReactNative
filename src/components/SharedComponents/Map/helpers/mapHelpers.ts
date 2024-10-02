@@ -14,9 +14,7 @@ export const TILE_URL = API_URL.match( /api\.inaturalist\.org/ )
 const POINT_TILES_ENDPOINT = `${TILE_URL}/points`;
 
 export function calculateZoom( width: number, delta: number ) {
-  return Math.round(
-    Math.log2( 360 * ( width / 256 / delta ) ) + 1
-  );
+  return Math.log2( 360 * ( width / 256 / delta ) ) + 1;
 }
 
 // Kind of the inverse of calculateZoom. Probably not actually accurate for
