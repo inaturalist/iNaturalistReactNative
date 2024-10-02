@@ -1,4 +1,3 @@
-import { useFocusEffect } from "@react-navigation/native";
 import {
   EXPLORE_ACTION,
   MapBoundaries,
@@ -11,13 +10,10 @@ import {
 import { BoundingBox, Region } from "react-native-maps";
 import { initialMapRegion } from "stores/createExploreSlice.ts";
 
-import useCurrentMapRegion from "./useCurrentMapRegion";
-
-const useMapLocation = ( ) => {
+const useMapLocation = ( currentMapRegion, setCurrentMapRegion ) => {
   const { dispatch, state } = useExplore( );
   const [mapBoundaries, setMapBoundaries] = useState<MapBoundaries>( );
   const [showMapBoundaryButton, setShowMapBoundaryButton] = useState( false );
-  const { currentMapRegion, setCurrentMapRegion } = useCurrentMapRegion( );
 
   const place = state?.place;
 
@@ -52,12 +48,6 @@ const useMapLocation = ( ) => {
     dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_MAP_AREA } );
     dispatch( { type: EXPLORE_ACTION.SET_MAP_BOUNDARIES, mapBoundaries } );
   };
-
-  useFocusEffect(
-    useCallback( ( ) => {
-      setShowMapBoundaryButton( false );
-    }, [] )
-  );
 
   const previousPlaceGuess = useRef( state.placeMode );
   useEffect( ( ) => {

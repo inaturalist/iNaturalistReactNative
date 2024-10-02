@@ -13,6 +13,7 @@ import { DimensionValue, ViewStyle } from "react-native";
 import MapView, {
   BoundingBox, LatLng, MapType, Region
 } from "react-native-maps";
+import fetchUserLocation from "sharedHelpers/fetchUserLocation.ts";
 import { useDebugMode, useDeviceOrientation } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 
@@ -30,6 +31,7 @@ import ObscuredLocationIndicator from "./ObscuredLocationIndicator";
 import ObsUrlTile from "./ObsUrlTile";
 import SwitchMapTypeButton from "./SwitchMapTypeButton";
 
+const NEARBY_DIM_M = 50_000;
 const CURRENT_LOCATION_ZOOM_LEVEL = 15; // target zoom level when user hits current location btn
 const MIN_ZOOM_LEVEL = 0; // default in react-native-maps, for Google Maps only
 const MIN_CENTER_COORDINATE_DISTANCE = 5;
@@ -167,7 +169,18 @@ const Map = ( {
     }
   }, [params, currentZoom, navigation] );
 
-  const onPermissionGranted = ( ) => console.log( "permission granted" );
+  const onPermissionGranted = async ( ) => {
+    const currentLocation = await fetchUserLocation( );
+    console.log( currentLocation, "user location in onPermissionGranted" );
+    if ( currentLocation && mapViewRef?.current ) {
+      mapViewRef.current?.animateToRegion( {
+        latitude: currentLocation.latitude,
+        longitude: currentLocation.longitude,
+        latitudeDelta: metersToLatitudeDelta( NEARBY_DIM_M, currentLocation.latitude ),
+        longitudeDelta: metersToLatitudeDelta( NEARBY_DIM_M, currentLocation.latitude )
+      } );
+    }
+  };
 
   const renderCurrentLocationPermissionsGate = () => renderPermissionsGate( {
     onPermissionGranted
