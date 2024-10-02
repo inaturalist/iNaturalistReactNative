@@ -34,6 +34,17 @@ const CURRENT_LOCATION_ZOOM_LEVEL = 15; // target zoom level when user hits curr
 const MIN_ZOOM_LEVEL = 0; // default in react-native-maps, for Google Maps only
 const MIN_CENTER_COORDINATE_DISTANCE = 5;
 
+const getDefaultRegion = ( initialLatitude, initialLongitude ) => ( {
+  latitude: initialLatitude || 25, // Default to something US centric
+  longitude: initialLongitude || -85, // Default to something US centric
+  latitudeDelta: initialLatitude
+    ? 0.2
+    : 100,
+  longitudeDelta: initialLatitude
+    ? 0.2
+    : 100
+} );
+
 interface Props {
   children?: React.ReactNode;
   className?: string;
@@ -116,21 +127,17 @@ const Map = ( {
   const mapViewRef = useRef<MapView>();
   const [currentMapType, setCurrentMapType] = useState( mapType || "standard" );
 
-  const initialLatitude = obsLatitude;
-  const initialLongitude = obsLongitude;
+  let defaultInitialRegion = getDefaultRegion( obsLatitude, obsLongitude );
 
-  let defaultInitialRegion: Region = {
-    latitude: initialLatitude || 25, // Default to something US centric
-    longitude: initialLongitude || -85, // Default to something US centric
-    latitudeDelta: initialLatitude
-      ? 0.2
-      : 100,
-    longitudeDelta: initialLatitude
-      ? 0.2
-      : 100
-  };
-
-  console.log( userLocation?.latitude, "userLocation" );
+  const obscurationCell = obscurationCellForLatLng( obsLatitude, obsLongitude );
+  if ( obscured ) {
+    defaultInitialRegion = {
+      latitude: obscurationCell.minLat + ( OBSCURATION_CELL_SIZE / 2 ),
+      longitude: obscurationCell.minLng + ( OBSCURATION_CELL_SIZE / 2 ),
+      latitudeDelta: 0.3,
+      longitudeDelta: 0.3
+    };
+  }
 
   useEffect( ( ) => {
     // in LocationPicker we're setting initialRegion to eliminate jitteriness
@@ -152,16 +159,6 @@ const Map = ( {
     delete newTileParams.per_page;
     return newTileParams;
   }, [tileMapParams] );
-
-  const obscurationCell = obscurationCellForLatLng( obsLatitude, obsLongitude );
-  if ( obscured ) {
-    defaultInitialRegion = {
-      latitude: obscurationCell.minLat + ( OBSCURATION_CELL_SIZE / 2 ),
-      longitude: obscurationCell.minLng + ( OBSCURATION_CELL_SIZE / 2 ),
-      latitudeDelta: 0.3,
-      longitudeDelta: 0.3
-    };
-  }
 
   const onMapPressForObsLyr = useCallback( async ( latLng: LatLng ) => {
     const uuid = await fetchObservationUUID( currentZoom, latLng, params );
@@ -250,7 +247,6 @@ const Map = ( {
   };
 
   const mapRegion = setRegion( );
-  console.log( mapRegion?.latitude, "latitude", mapRegion?.longitude );
 
   const renderDebugZoomLevel = ( ) => {
     if ( isDebug ) {
