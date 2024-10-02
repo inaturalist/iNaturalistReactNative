@@ -68,6 +68,13 @@ beforeAll( uniqueRealmBeforeAll );
 afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
+const mockUser = factory( "LocalUser" );
+// Mock useCurrentUser hook
+jest.mock( "sharedHooks/useCurrentUser", () => ( {
+  __esModule: true,
+  default: jest.fn( () => mockUser )
+} ) );
+
 // Mock the response from inatjs.computervision.score_image
 const topSuggestion = {
   taxon: factory.states( "genus" )( "RemoteTaxon", { name: "Primum" } ),
@@ -86,11 +93,6 @@ beforeEach( ( ) => {
 
 describe( "Photo Import", ( ) => {
   const actor = userEvent.setup( );
-
-  async function startApp() {
-    renderApp( );
-    expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
-  }
 
   async function importPhotoForNewObs() {
     const tabBar = await screen.findByTestId( "CustomTabBar" );
@@ -143,7 +145,7 @@ describe( "Photo Import", ( ) => {
   }
 
   it( "should create and save an observation with an imported photo", async ( ) => {
-    await startApp( );
+    renderApp( );
     await importPhotoForNewObs( );
     await viewSuggestionsAndAddId( );
     await saveObservationWithPhoto( );
@@ -153,7 +155,7 @@ describe( "Photo Import", ( ) => {
     jest.spyOn( ImagePicker, "launchImageLibrary" ).mockImplementation(
       ( ) => mockImageLibraryResponseMultiplePhotos
     );
-    await startApp( );
+    renderApp( );
     await importPhotoForNewObs( );
     await groupPhotosIntoObservation( );
     await viewSuggestionsAndAddId( );

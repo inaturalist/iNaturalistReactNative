@@ -28,7 +28,7 @@ type Props = {
   headerText: string,
   initialInput?: string,
   maxLength?: number,
-  placeholder: string,
+  placeholder?: string,
   textInputStyle?: Object
 }
 

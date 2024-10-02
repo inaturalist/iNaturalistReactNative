@@ -5,9 +5,9 @@ import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
 import {
-  createObservedOnStringFromDatePicker,
-  displayDateTimeObsEdit
-} from "sharedHelpers/dateAndTime";
+  formatISONoSeconds,
+  formatLongDatetime
+} from "sharedHelpers/dateAndTime.ts";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
@@ -16,22 +16,24 @@ type Props = {
 }
 
 const DatePicker = ( { currentObservation, updateObservationKeys }: Props ): Node => {
-  const { t } = useTranslation( );
+  const { t, i18n } = useTranslation( );
   const [showModal, setShowModal] = useState( false );
 
   const openModal = () => setShowModal( true );
   const closeModal = () => setShowModal( false );
 
   const handlePicked = value => {
-    const dateString = createObservedOnStringFromDatePicker( value );
+    const dateString = formatISONoSeconds( value );
     updateObservationKeys( {
       observed_on_string: dateString
     } );
     closeModal();
   };
 
-  const displayDate = ( ) => displayDateTimeObsEdit(
-    currentObservation?.observed_on_string || currentObservation?.time_observed_at
+  const displayDate = ( ) => formatLongDatetime(
+    currentObservation?.observed_on_string || currentObservation?.time_observed_at,
+    i18n,
+    { missing: null }
   );
 
   return (

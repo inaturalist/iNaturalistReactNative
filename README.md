@@ -213,9 +213,10 @@ fastlane beta
 fastlane prod
 ```
 
-### Example: Build & Release for People Outside the Dev Team
+### Release Script
 
 1. Ensure all tests are passing on the main branch
+1. Review and resolve [security alerts](https://github.com/inaturalist/iNaturalistReactNative/security)
 1. Manual testing
     1. Install a "Release" build on an iOS device
         1. Online
@@ -246,4 +247,7 @@ fastlane prod
 1. `bundle exec fastlane tag` to create a tag and bump the build number. You'll be prompted to enter those release notes you wrote. (:wq to save and exit)
 1. `bundle exec fastlane release` to build and push a release to Github
 1. `bundle exec fastlane internal` to distribute the builds to internal test groups in TestFlight and the Play Store
+1. If it's the end of the release cycle, prep an App Store release on App Store Connect using the latest build. Write custom release notes that summarize changes since the last App Store release (not since the last build). Submit for review with manual release control. Haven't figured out a good way to automate this, maybe impossible.
+1. Wait at least a day for internal testers to report any blocking problems
 1. `bundle exec fastlane beta` to distribute the builds to external test groups in TestFlight and the Play Store
+1. After receiving OK during iteration meeting, make App Store release available

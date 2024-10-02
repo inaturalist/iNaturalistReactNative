@@ -1,0 +1,13 @@
+NEW
+* Button to expand map on Taxon Details
+* Button to only show your obs from Explore user search
+* Signed out users can only accept a suggestion from Taxon Details
+
+UPDATED
+* debug mode: partial RTL support
+
+FIXED
+* Photo carousel dots on Obs Details were not aligned
+* debug mode: Projects Nearby was blinking
+* debug mode: Projects was not showing more than a page of results
+* Sound player would sometimes stop working after pausing or scrubbing a lot

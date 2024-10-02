@@ -1,10 +1,10 @@
 import { faker } from "@faker-js/faker";
+import ObsListItem from "components/ObservationsFlashList/ObsListItem";
 import {
   Heading1,
   Heading2,
   ScrollViewWrapper
 } from "components/SharedComponents";
-import ObsListItem from "components/SharedComponents/ObservationsFlashList/ObsListItem";
 import { View } from "components/styledComponents";
 import React from "react";
 

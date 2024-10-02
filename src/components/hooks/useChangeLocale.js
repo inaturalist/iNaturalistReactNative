@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect } from "react";
 import {
+  useDebugMode,
   useTranslation,
   useUserMe
 } from "sharedHooks";
@@ -12,9 +13,12 @@ const useChangeLocale = ( currentUser: ?Object ) => {
   // fetch current user from server and save to realm in useEffect
   // this is used for changing locale and also for showing UserCard
   const { remoteUser } = useUserMe( { updateRealm: true } );
+  const { isDebug } = useDebugMode( );
   const changeLanguageToLocale = useCallback(
-    locale => i18n.changeLanguage( locale ),
-    [i18n]
+    locale => {
+      if ( isDebug ) i18n.changeLanguage( locale );
+    },
+    [i18n, isDebug]
   );
 
   // When we get the updated current user, update the record in the database

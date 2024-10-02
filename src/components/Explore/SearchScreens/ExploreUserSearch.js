@@ -2,6 +2,7 @@
 
 import fetchSearchResults from "api/search";
 import {
+  Button,
   CustomFlashList,
   SearchBar,
   ViewWrapper
@@ -13,7 +14,7 @@ import React, {
   useCallback,
   useState
 } from "react";
-import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
+import { useAuthenticatedQuery, useCurrentUser, useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
 import EmptySearchResults from "./EmptySearchResults";
@@ -31,6 +32,7 @@ type Props = {
 const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
   const [userQuery, setUserQuery] = useState( "" );
   const { t } = useTranslation();
+  const currentUser = useCurrentUser();
 
   // TODO: replace this with infinite scroll like ExploreFlashList
   const { data: userList, isLoading, refetch } = useAuthenticatedQuery(
@@ -98,13 +100,22 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
         testID="ExploreUserSearch.close"
       />
       <View
-        className="bg-white px-6 pt-2 pb-8"
+        className="bg-white px-6 pt-2 pb-5"
         style={DROP_SHADOW}
       >
         <SearchBar
           handleTextChange={setUserQuery}
           value={userQuery}
           testID="SearchUser"
+        />
+        <Button
+          text={t( "MY-OBSERVATIONS" )}
+          className="mt-5"
+          onPress={() => {
+            if ( currentUser ) {
+              onUserSelected( currentUser );
+            }
+          }}
         />
       </View>
       <CustomFlashList

@@ -1,7 +1,7 @@
 import { Realm } from "@realm/react";
 import { Alert } from "react-native";
 import uuid from "react-native-uuid";
-import { createObservedOnStringForUpload } from "sharedHelpers/dateAndTime";
+import { getNowISO } from "sharedHelpers/dateAndTime.ts";
 import { log } from "sharedHelpers/logger";
 import { readExifFromMultiplePhotos } from "sharedHelpers/parseExif";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
@@ -120,7 +120,7 @@ class Observation extends Realm.Object {
       observed_on: obs?.observed_on,
       observed_on_string: obs
         ? obs?.observed_on_string
-        : createObservedOnStringForUpload( ),
+        : getNowISO( ),
       quality_grade: "needs_id",
       needs_sync: true,
       uuid: uuid.v4( )
