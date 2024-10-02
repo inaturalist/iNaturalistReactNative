@@ -15,7 +15,7 @@ import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useTheme } from "react-native-paper";
 import { useGridLayout } from "sharedHooks";
 
@@ -53,6 +53,7 @@ const GroupPhotos = ( {
     gridItemWidth,
     numColumns
   } = useGridLayout( );
+  const [stickyToolbarHeight, setStickyToolbarHeight] = useState( null );
   const extractKey = ( item, index ) => ( item.empty
     ? "empty"
     : `${item.photos[0].uri}${index}` );
@@ -108,6 +109,13 @@ const GroupPhotos = ( {
     </View>
   );
 
+  const onLayout = event => {
+    const {
+      height
+    } = event.nativeEvent.layout;
+    setStickyToolbarHeight( height );
+  };
+
   const data = useMemo( ( ) => {
     const newData = [].concat( groupedPhotos );
     if ( totalPhotos < MAX_PHOTOS_ALLOWED ) {
@@ -136,9 +144,10 @@ const GroupPhotos = ( {
         testID="GroupPhotos.list"
       />
       <FloatingActionBar
-        show={selectedObservations.length > 0}
+        show={selectedObservations.length > 0 && typeof stickyToolbarHeight === "number"}
         position="bottomStart"
-        containerClass="bottom-[90px] ml-[15px] rounded-md"
+        containerClass="ml-[15px] rounded-md"
+        footerHeight={stickyToolbarHeight}
       >
         <View className="rounded-md overflow-hidden flex-row">
           <INatIconButton
@@ -176,7 +185,10 @@ const GroupPhotos = ( {
           />
         </View>
       </FloatingActionBar>
-      <StickyToolbar containerClass="items-center z-50">
+      <StickyToolbar
+        containerClass="items-center z-50"
+        onLayout={onLayout}
+      >
         <Button
           className="max-w-[500px] w-full"
           level="focus"
