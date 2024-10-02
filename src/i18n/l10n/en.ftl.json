@@ -147,8 +147,8 @@
   "CANCEL": "CANCEL",
   "Cancel": "Cancel",
   "Captive-Cultivated": "Captive/Cultivated",
-  "Casual": {
-    "comment": "\"Casual\" Data quality grade",
+  "Casual--quality-grade": {
+    "comment": "Quality grade indicating observation does not quality for Needs ID or\nResearch Grade, e.g. missing media, voted out, etc.",
     "val": "Casual"
   },
   "CC-BY": {
@@ -825,7 +825,10 @@
     "val": "NEARBY"
   },
   "Nearby": "Nearby",
-  "Needs-ID": "Needs ID",
+  "Needs-ID--quality-grade": {
+    "comment": "Quality grade indicating observation still needs more identifications",
+    "val": "Needs ID"
+  },
   "New-Observation": {
     "comment": "Heading when creating a new observation",
     "val": "New Observation"
@@ -1041,23 +1044,17 @@
     "comment": "label in project requirements",
     "val": "Quality Grade"
   },
-  "Quality-Grade-casual": {
-    "comment": "Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Casual",
-    "val": "Quality Grade Casual"
+  "Quality-Grade-Casual--label": {
+    "comment": "Screen reader label for the Casual quality grade label",
+    "val": "Quality Grade: Casual"
   },
-  "quality-grade-casual": "Casual",
-  "quality-grade-needs-id": "Needs ID",
-  "Quality-Grade-needs_id": {
-    "comment": "Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Needs ID",
-    "val": "Quality Grade Needs ID"
+  "Quality-Grade-Needs-ID--label": {
+    "comment": "Screen reader label for the Needs ID quality grade label",
+    "val": "Quality Grade: Needs ID"
   },
-  "Quality-Grade-research": {
-    "comment": "Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Research Grade",
-    "val": "Quality Grade Research Grade"
-  },
-  "quality-grade-research": {
-    "comment": "Quality grade options",
-    "val": "Research Grade"
+  "Quality-Grade-Research--label": {
+    "comment": "Screen reader label for the Research quality grade label",
+    "val": "Quality Grade: Research"
   },
   "Ranks-CLASS": "CLASS",
   "Ranks-Class": "Class",
@@ -1184,8 +1181,8 @@
     "comment": "Hint for a button that removes a vote of disagreement",
     "val": "Removes your vote of disagreement"
   },
-  "Research-Grade": {
-    "comment": "Quality grade option",
+  "Research-Grade--quality-grade": {
+    "comment": "Quality grade indicating observation is accurate and complete enough to\nshare outside of iNat",
     "val": "Research Grade"
   },
   "RESET-PASSWORD": {

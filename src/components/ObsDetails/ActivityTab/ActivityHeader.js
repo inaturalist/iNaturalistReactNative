@@ -49,8 +49,7 @@ const ActivityHeader = ( {
   const [showEditCommentSheet, setShowEditCommentSheet] = useState( false );
   const [showDeleteCommentSheet, setShowDeleteCommentSheet] = useState( false );
   const [showWithdrawIDSheet, setShowWithdrawIDSheet] = useState( false );
-  const { user, vision } = item;
-  const { category } = user || {};
+  const { category, user, vision } = item;
 
   const itemType = item.category
     ? "Identification"
@@ -125,18 +124,21 @@ const ActivityHeader = ( {
       <View className="flex-row items-center space-x-[15px] -mr-[15px]">
         {renderIcon()}
         {renderStatus()}
-        {item.created_at
-            && (
-              <DateDisplay
-                dateString={
-                  item.updated_at || item.created_at
-                }
-                classNameMargin="mt-1"
-                geoprivacy={geoprivacy}
-                taxonGeoprivacy={taxonGeoprivacy}
-                belongsToCurrentUser={belongsToCurrentUser}
-              />
-            )}
+        {/*
+          Note that even though the date is conditionally rendered, we need to
+          wrap it in a View that's always there so the space-x-[] can be
+          calculated
+        */}
+        <View>
+          {item.created_at && (
+            <DateDisplay
+              dateString={item.updated_at || item.created_at}
+              geoprivacy={geoprivacy}
+              taxonGeoprivacy={taxonGeoprivacy}
+              belongsToCurrentUser={belongsToCurrentUser}
+            />
+          )}
+        </View>
         {
           loading
             ? (

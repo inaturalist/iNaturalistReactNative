@@ -19,7 +19,7 @@ const qualityGradeSVG = ( qualityGrade, color, opacity ) => {
     // $FlowIgnore[not-a-component]
       <ResearchGrade
         accessible
-        accessibilityLabel={t( "Quality-Grade-research" )}
+        accessibilityLabel={t( "Quality-Grade-Research--label" )}
         testID="QualityGrade.research"
         color={color}
         opacity={opacity}
@@ -31,7 +31,7 @@ const qualityGradeSVG = ( qualityGrade, color, opacity ) => {
     // $FlowIgnore[not-a-component]
       <NeedsIdGrade
         accessible
-        accessibilityLabel={t( "Quality-Grade-needs_id" )}
+        accessibilityLabel={t( "Quality-Grade-Needs-ID--label" )}
         testID="QualityGrade.needs_id"
         color={color}
         opacity={opacity}
@@ -42,7 +42,7 @@ const qualityGradeSVG = ( qualityGrade, color, opacity ) => {
     // $FlowIgnore[not-a-component]
     <CasualGrade
       accessible
-      accessibilityLabel={t( "Quality-Grade-casual" )}
+      accessibilityLabel={t( "Quality-Grade-Casual--label" )}
       testID="QualityGrade.casual"
       color={color}
       opacity={opacity}

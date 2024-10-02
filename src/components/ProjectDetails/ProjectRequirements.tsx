@@ -24,11 +24,11 @@ const ProjectRequirements = ( ) => {
   const qualityGradeOption = option => {
     switch ( option ) {
       case "research":
-        return t( "quality-grade-research" );
+        return t( "Research-Grade--quality-grade" );
       case "needs_id":
-        return t( "quality-grade-needs-id" );
+        return t( "Needs-ID--quality-grade" );
       default:
-        return t( "quality-grade-casual" );
+        return t( "Casual--quality-grade" );
     }
   };
 

@@ -122,8 +122,9 @@ Camera = Camera
 CANCEL = CANCEL
 Cancel = Cancel
 Captive-Cultivated = Captive/Cultivated
-# "Casual" Data quality grade
-Casual = Casual
+# Quality grade indicating observation does not quality for Needs ID or
+# Research Grade, e.g. missing media, voted out, etc.
+Casual--quality-grade = Casual
 # Short label for the Creative Commons Attribution license
 CC-BY = CC BY
 # Short label for the Creative Commons Attribution-NonCommercial license
@@ -615,7 +616,8 @@ Navigates-to-your-observations = Navigates to your observations
 # Header for nearby projects
 NEARBY = NEARBY
 Nearby = Nearby
-Needs-ID = Needs ID
+# Quality grade indicating observation still needs more identifications
+Needs-ID--quality-grade = Needs ID
 # Heading when creating a new observation
 New-Observation = New Observation
 # Sort order, refers to newest or oldest date
@@ -762,16 +764,12 @@ Projects = Projects
 QUALITY-GRADE = QUALITY GRADE
 # label in project requirements
 Quality-Grade = Quality Grade
-# Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Casual
-Quality-Grade-casual = Quality Grade Casual
-quality-grade-casual = Casual
-quality-grade-needs-id = Needs ID
-# Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Needs ID
-Quality-Grade-needs_id = Quality Grade Needs ID
-# Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Research Grade
-Quality-Grade-research = Quality Grade Research Grade
-# Quality grade options
-quality-grade-research = Research Grade
+# Screen reader label for the Casual quality grade label
+Quality-Grade-Casual--label = Quality Grade: Casual
+# Screen reader label for the Needs ID quality grade label
+Quality-Grade-Needs-ID--label = Quality Grade: Needs ID
+# Screen reader label for the Research quality grade label
+Quality-Grade-Research--label = Quality Grade: Research
 Ranks-CLASS = CLASS
 Ranks-Class = Class
 Ranks-COMPLEX = COMPLEX
@@ -875,8 +873,9 @@ Removes-this-observations-taxon = Removes this observation's taxon
 Removes-your-vote-of-agreement = Removes your vote of agreement
 # Hint for a button that removes a vote of disagreement
 Removes-your-vote-of-disagreement = Removes your vote of disagreement
-# Quality grade option
-Research-Grade = Research Grade
+# Quality grade indicating observation is accurate and complete enough to
+# share outside of iNat
+Research-Grade--quality-grade = Research Grade
 # Reset password button
 RESET-PASSWORD = RESET PASSWORD
 # Label for a button that resets a sound recording

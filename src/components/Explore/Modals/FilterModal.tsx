@@ -792,19 +792,19 @@ const FilterModal = ( {
             <Heading4 className="mb-5">{t( "QUALITY-GRADE" )}</Heading4>
             <View className="mb-5">
               <Checkbox
-                text={t( "Research-Grade" )}
+                text={t( "Research-Grade--quality-grade" )}
                 isChecked={researchGrade}
                 onPress={() => dispatch( { type: EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE } )}
               />
               <View className="mb-4" />
               <Checkbox
-                text={t( "Needs-ID" )}
+                text={t( "Needs-ID--quality-grade" )}
                 isChecked={needsID}
                 onPress={() => dispatch( { type: EXPLORE_ACTION.TOGGLE_NEEDS_ID } )}
               />
               <View className="mb-4" />
               <Checkbox
-                text={t( "Casual" )}
+                text={t( "Casual--quality-grade" )}
                 isChecked={casual}
                 onPress={() => dispatch( { type: EXPLORE_ACTION.TOGGLE_CASUAL } )}
               />
