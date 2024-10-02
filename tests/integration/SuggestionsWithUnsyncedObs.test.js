@@ -184,7 +184,7 @@ const navigateToSuggestionsForObservationViaObsEdit = async observation => {
     `MyObservations.obsListItem.${observation.uuid}`
   );
   await actor.press( observationRow );
-  const addIdButton = await screen.findByText( "ADD AN ID" );
+  const addIdButton = await waitFor( () => screen.findByText( "ADD AN ID" ) );
   await actor.press( addIdButton );
 };
 

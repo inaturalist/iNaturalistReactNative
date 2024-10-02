@@ -2,6 +2,7 @@ import {
   act,
   screen,
   userEvent,
+  waitFor,
   within
 } from "@testing-library/react-native";
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions.ts";
@@ -106,8 +107,8 @@ describe( "Suggestions", ( ) => {
     );
     await actor.press( observationRow );
     const addIdButton = observation.taxon
-      ? await screen.findByLabelText( "Edit identification" )
-      : await screen.findByText( "ADD AN ID" );
+      ? await waitFor( () => screen.findByLabelText( "Edit identification" ) )
+      : await waitFor( () => screen.findByText( "ADD AN ID" ) );
     await actor.press( addIdButton );
   }
 
