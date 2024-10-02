@@ -377,7 +377,10 @@ class Observation extends Realm.Object {
         "Error reading EXIF from multiple gallery photos",
         createObservationFromGalleryError
       );
-      Alert.alert( "Creating Observation from Gallery Error", createObservationFromGalleryError );
+      Alert.alert(
+        "Creating Observation from Gallery Error",
+        createObservationFromGalleryError.message
+      );
       return null;
     }
   };
