@@ -328,6 +328,7 @@
   "Data-quality-assessment-location-specified": "Location specified",
   "Data-quality-assessment-organism-is-wild": "Organism is wild",
   "Data-quality-assessment-recent-evidence-of-organism": "Recent evidence of an organism",
+  "Data-quality-assessment-single-subject": "Evidence related to a single subject",
   "Data-quality-assessment-title-casual": "This observation is Casual Grade",
   "Data-quality-assessment-title-needs-id": "This observation Needs ID",
   "Data-quality-assessment-title-research": {

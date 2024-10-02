@@ -9,6 +9,7 @@ import { useTheme } from "react-native-paper";
 import Observation from "realmModels/Observation";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
+import colors from "styles/tailwindColors";
 
 interface Props {
   closeModal: ( ) => void;
@@ -131,34 +132,54 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor="black" />
-      <View className="bg-white rounded-3xl p-[23px] mb-20">
-        <Heading2 maxFontSizeMultiplier={1.5} testID="identify-text" className="mb-4 ml-1">
-          {t( "Identify-an-organism" )}
-        </Heading2>
-        {Object.keys( obsCreateItems )
-          .filter( k => k !== "closeButton" )
-          .map( k => {
-            const item = obsCreateItems[k];
-            return (
-              <Pressable
-                accessibilityRole="button"
-                className={classnames( "flex-row items-center p-2 my-1" )}
-                key={k}
-                onPress={item.onPress}
-              >
-                <INatIcon
-                  name={item.icon}
-                  size={30}
-                  color={
-                    item.icon === "arcamera"
-                      ? theme.colors.secondary
-                      : theme.colors.primary
-                  }
-                />
-                <Body3 maxFontSizeMultiplier={1.5} className="ml-[20px] shrink">{item.text}</Body3>
-              </Pressable>
-            );
-          } )}
+      <View className="bg-white rounded-3xl py-[23px] mb-20">
+        <View className="flex-row items-center mb-2">
+          <Heading2
+            maxFontSizeMultiplier={1.5}
+            testID="identify-text"
+            className="pl-[25px]"
+          >
+            {t( "Identify-an-organism" )}
+          </Heading2>
+          <View className="ml-auto pr-[12px]">
+            <INatIconButton
+              icon="close"
+              color={colors.darkGray}
+              size={19}
+              onPress={closeModal}
+              accessibilityLabel={t( "Close" )}
+              accessibilityHint={t( "Closes-new-observation-options" )}
+            />
+          </View>
+        </View>
+        <View className="px-[23px]">
+          {Object.keys( obsCreateItems )
+            .filter( k => k !== "closeButton" )
+            .map( k => {
+              const item = obsCreateItems[k];
+              return (
+                <Pressable
+                  accessibilityRole="button"
+                  className={classnames( "flex-row items-center p-2 my-1" )}
+                  key={k}
+                  onPress={item.onPress}
+                >
+                  <INatIcon
+                    name={item.icon}
+                    size={30}
+                    color={
+                      item.icon === "arcamera"
+                        ? theme.colors.secondary
+                        : theme.colors.primary
+                    }
+                  />
+                  <Body3 maxFontSizeMultiplier={1.5} className="ml-[20px] shrink">
+                    {item.text}
+                  </Body3>
+                </Pressable>
+              );
+            } )}
+        </View>
       </View>
       <View className={classnames( rowClass, {
         "bottom-[20px]": !showAICamera

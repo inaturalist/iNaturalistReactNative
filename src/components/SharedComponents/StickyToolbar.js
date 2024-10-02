@@ -10,14 +10,16 @@ const DROP_SHADOW = getShadow( {
 
 type Props = {
   containerClass?: string,
-  children: React.Node
+  children: React.Node,
+  onLayout: Function
 }
 
 // Ensure this component is placed outside of scroll views
 
 const StickyToolbar = ( {
   containerClass,
-  children
+  children,
+  onLayout
 }: Props ): React.Node => (
   <View
     className={classNames(
@@ -25,6 +27,7 @@ const StickyToolbar = ( {
       containerClass
     )}
     style={DROP_SHADOW}
+    onLayout={onLayout}
   >
     {children}
   </View>

@@ -16,6 +16,7 @@ import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
+import { Alert, Platform, Share } from "react-native";
 import { useTheme } from "react-native-paper";
 import { openExternalWebBrowser } from "sharedHelpers/util.ts";
 
@@ -27,12 +28,41 @@ type Props = {
   observation: Object
 }
 
+const OBSERVATION_URL = "https://www.inaturalist.org/observations";
+
+const handleShare = async url => {
+  const sharingOptions = {
+    url: "",
+    message: ""
+  };
+  if ( Platform.OS === "ios" ) {
+    sharingOptions.url = url;
+  } else {
+    sharingOptions.message = url;
+  }
+  try {
+    return await Share.share( sharingOptions );
+  } catch ( err ) {
+    Alert.alert( err.message );
+    return null;
+  }
+};
+
 const ViewInBrowserButton = ( { id } ) => (
   <Body4
     className="underline mt-[11px]"
-    onPress={async () => openExternalWebBrowser( `https://www.inaturalist.org/observations/${id}` )}
+    onPress={async () => openExternalWebBrowser( `${OBSERVATION_URL}/${id}` )}
   >
     {t( "View-in-browser" )}
+  </Body4>
+);
+
+const ShareButton = ( { id } ) => (
+  <Body4
+    className="underline mt-[11px]"
+    onPress={() => handleShare( `${OBSERVATION_URL}/${id}` )}
+  >
+    {t( "Share" )}
   </Body4>
 );
 
@@ -152,6 +182,7 @@ const DetailsTab = ( { currentUser, observation }: Props ): Node => {
         <View><LabelColonValue label="ID" value={String( observation.id )} valueSelectable /></View>
         <View><LabelColonValue label="UUID" value={observation.uuid} valueSelectable /></View>
         <ViewInBrowserButton id={observation.id} />
+        <ShareButton id={observation.id} />
       </View>
     </>
   );
