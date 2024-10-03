@@ -79,7 +79,19 @@ const LoginForm = ( {
     }
     setLoading( false );
 
-    navigation.getParent( )?.goBack( );
+    if ( params?.prevScreen && params?.projectId ) {
+      navigation.navigate( "TabNavigator", {
+        screen: "TabStackNavigator",
+        params: {
+          screen: "ProjectDetails",
+          params: {
+            id: params?.projectId
+          }
+        }
+      } );
+    } else {
+      navigation.getParent( )?.goBack( );
+    }
   };
 
   const togglePasswordVisibility = () => {
