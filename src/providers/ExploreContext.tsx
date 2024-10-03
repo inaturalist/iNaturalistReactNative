@@ -636,7 +636,8 @@ const ExploreProvider = ( { children }: ExploreProviderProps ) => {
     if ( !snapshot ) {
       return false;
     }
-    return Object.keys( snapshot ).some( key => !isEqual( snapshot[key], state[key] ) );
+    return Object.keys( snapshot ).some( key => !isEqual( snapshot[key], state[key] ) )
+    || Object.keys( snapshot ).length !== Object.keys( state ).length;
   };
   const differsFromSnapshot: boolean = React.useMemo(
     checkSnapshot,
