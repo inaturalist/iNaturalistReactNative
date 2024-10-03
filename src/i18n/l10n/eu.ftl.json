@@ -1,0 +1,375 @@
+{
+  "ABOUT": {
+    "comment": "Header for a general description, e.g. of a user, or of iNaturalist itself",
+    "val": "HONI BURUZ"
+  },
+  "Agree": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "Ados"
+  },
+  "AGREE": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "ADOS"
+  },
+  "ALL": "GUZTIAK",
+  "All": "Guztiak",
+  "All-observations": "Ohar guztiak",
+  "all-rights-reserved": {
+    "comment": "As in intellectual property rights over a photo or other creative work",
+    "val": "eskubide guztiak erreserbatuta"
+  },
+  "All-taxa": "Taxoi guztiak",
+  "Any": {
+    "comment": "Generic option in a menu of choices that indicates that any of the choices\nwould be acceptable",
+    "val": "Edozein"
+  },
+  "April": {
+    "comment": "Month of April",
+    "val": "apirila"
+  },
+  "August": {
+    "comment": "Month of August",
+    "val": "abuztua"
+  },
+  "Camera": "Kamera",
+  "Cancel": "Utzi",
+  "Casual--quality-grade": {
+    "comment": "Quality grade indicating observation does not quality for Needs ID or\nResearch Grade, e.g. missing media, voted out, etc.",
+    "val": "Kasuala"
+  },
+  "Close": {
+    "comment": "Label for a button that closes a window or popup",
+    "val": "Itxi"
+  },
+  "Collection-Project": "Bilduma Proiektua",
+  "Community-Guidelines": "Komunitatearen jarraibideak",
+  "Coordinates-copied-to-clipboard": {
+    "comment": "Notification when coordinates have been copied",
+    "val": "Koordenatuak arbelean kopiatu dira"
+  },
+  "Data-quality-assessment-date-is-accurate": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date is accurate",
+    "val": "Data zehatza da"
+  },
+  "Data-quality-assessment-date-specified": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date was specified",
+    "val": "Zehaztutako data"
+  },
+  "Data-quality-assessment-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Organismoa egotearen susmoa"
+  },
+  "Data-quality-assessment-has-photos-or-sounds": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Argazkiak edo soinuak ditu"
+  },
+  "Data-quality-assessment-id-supported-by-two-or-more": {
+    "comment": "Data Quality Assessment metric",
+    "val": "IDa bi pertsonak edo gehiagok berretsi dute"
+  },
+  "Data-quality-assessment-location-is-accurate": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Kokapena zehatza da"
+  },
+  "Data-quality-assessment-location-specified": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Kokapena zehaztuta dago"
+  },
+  "Data-quality-assessment-organism-is-wild": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Organismoa basatia da"
+  },
+  "Data-quality-assessment-recent-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Organismo bat dagoenaren duela gutxiko susmoa"
+  },
+  "Data-quality-assessment-single-subject": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Gai bakarrari lotutako frogak"
+  },
+  "Date": {
+    "comment": "label in project requirements",
+    "val": "Data"
+  },
+  "date-format-month-day": {
+    "comment": "Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "d MMM"
+  },
+  "Date-observed": "Ikusitako data",
+  "Date-observed-header-short": "Hau behatuta:",
+  "Date-Range": {
+    "comment": "Label for controls over a range of dates",
+    "val": "Data tartea"
+  },
+  "December": {
+    "comment": "Month of December",
+    "val": "abendua"
+  },
+  "Delete-observation": "Behaketa ezabatu",
+  "Delete-photo": {
+    "comment": "Button label or accessibility label for an element that deletes a photo",
+    "val": "Argazkia ezabatu"
+  },
+  "Edit": {
+    "comment": "Button for editing something",
+    "val": "Aldatu"
+  },
+  "Edit-Observation": "Oharra Aldatu",
+  "Endemic": {
+    "comment": "Indicates a species only occurs in a specific place",
+    "val": "Endemikoa"
+  },
+  "Error": {
+    "comment": "Title for a section describing an error",
+    "val": "Akatsa"
+  },
+  "Error-title": {
+    "comment": "Title of dialog or section describing an error",
+    "val": "Akatsa"
+  },
+  "Establishment": {
+    "comment": "label in project requirements",
+    "val": "Sailkapena"
+  },
+  "Exact-Date": "Data zehatza",
+  "except": "salbu",
+  "Explore": "Esploratu",
+  "FEATURED": {
+    "comment": "Header for featured projects",
+    "val": "Nabarmenduak"
+  },
+  "February": {
+    "comment": "Month of February",
+    "val": "otsaila"
+  },
+  "Filter": "Iragazkia",
+  "Filters": "Iragazkiak",
+  "Flag-An-Item": "Eduki bat markatu",
+  "Flag-Item-Other-Description": "Ondoren azal dezakezun beste arrazoi bat.",
+  "Flagged": {
+    "comment": "Status when an item has been flagged",
+    "val": "Markatuta"
+  },
+  "Go-back": {
+    "comment": "Label for button that returns to the previous screen",
+    "val": "Atzera jo"
+  },
+  "Identifiers": "Identifikatzaileak",
+  "improving--identification": {
+    "comment": "Identification category",
+    "val": "Hobetzen"
+  },
+  "Introduced": "sartu zuen",
+  "January": {
+    "comment": "Month of January",
+    "val": "urtarrila"
+  },
+  "JOIN": "BATU",
+  "JOINED": {
+    "comment": "Header for joined projects",
+    "val": "BATUTA"
+  },
+  "July": {
+    "comment": "Month of July",
+    "val": "uztaila"
+  },
+  "June": {
+    "comment": "Month of June",
+    "val": "ekaina"
+  },
+  "leading--identification": {
+    "comment": "Identification category",
+    "val": "Buruan"
+  },
+  "Learn-More": "Ikasi gehiago",
+  "Location": "Herria",
+  "Map-Area": "Maparen eremua",
+  "March": {
+    "comment": "Month of March",
+    "val": "martxoa"
+  },
+  "maverick--identification": {
+    "comment": "Identification category",
+    "val": "Maverick"
+  },
+  "May": {
+    "comment": "Month of May",
+    "val": "mai."
+  },
+  "Menu": {
+    "comment": "Accessibility label for a button that opens a menu of options",
+    "val": "Menua"
+  },
+  "Missing-Date": "Data falta da",
+  "Months": "Hilabeteak",
+  "Native": "Bertakoa",
+  "NEARBY": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "INGURUAN"
+  },
+  "Nearby": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "Hurbil"
+  },
+  "Needs-ID--quality-grade": {
+    "comment": "Quality grade indicating observation still needs more identifications",
+    "val": "IDa behar du"
+  },
+  "New-Observation": {
+    "comment": "Heading when creating a new observation",
+    "val": "Behaketa berria"
+  },
+  "No-Location": "Kokapenik ez",
+  "No-Media": "Fitxategirik ez",
+  "none": "Bat ere ez",
+  "November": {
+    "comment": "Month of November",
+    "val": "azaroa"
+  },
+  "Obscured": "Lausotua",
+  "Observations": "Behaketak",
+  "Observe": {
+    "comment": "Button that starts a new observation",
+    "val": "Behatu"
+  },
+  "Observers": "Begiraleak",
+  "October": {
+    "comment": "Month of October",
+    "val": "urria"
+  },
+  "Offensive-Inappropriate": "Iraingarria/ Desegokia",
+  "OK": {
+    "comment": "Generic confirmation, e.g. button on a warning alert",
+    "val": "ADOS"
+  },
+  "Open": {
+    "comment": "Adjective, as in geoprivacy",
+    "val": "Open"
+  },
+  "Other": {
+    "comment": "Generic option in a list for unanticipated cases, e.g. a choice to manually\nenter an explanation for why you are flagging something instead of choosing\none of the existing options",
+    "val": "Beste"
+  },
+  "Privacy-Policy": "Pribatutasun-politika",
+  "Private": "Private",
+  "Projects": {
+    "comment": "As in iNat projects, collections of observations or observation search filters",
+    "val": "Proiektuak"
+  },
+  "Quality-Grade": {
+    "comment": "label in project requirements",
+    "val": "Kalitate-maila"
+  },
+  "Ranks-Class": "Klasea",
+  "Ranks-Complex": "Espezie-konpexua",
+  "Ranks-Epifamily": "Epifamilia",
+  "Ranks-Family": "Familia",
+  "Ranks-Form": "Forma",
+  "Ranks-Genus": "Generoa",
+  "Ranks-Genushybrid": "Genero hibridoa",
+  "Ranks-Hybrid": "Hibridoa",
+  "Ranks-Infraclass": "Infraklasea",
+  "Ranks-Infrahybrid": "Infrahibridoa",
+  "Ranks-Infraorder": "Infraordena",
+  "Ranks-Kingdom": "Erreinua",
+  "Ranks-Order": "Ordena",
+  "Ranks-Parvorder": "Parvordena",
+  "Ranks-Phylum": "Filuma",
+  "Ranks-SPECIES": "ESPEZIEAK",
+  "Ranks-Species": "Espezieak",
+  "Ranks-Subclass": "Azpiklasea",
+  "Ranks-Subfamily": "Azpifamilia",
+  "Ranks-Subgenus": "Azpigeneroa",
+  "Ranks-Subkingdom": "Suberreinua",
+  "Ranks-Suborder": "Azpiordena",
+  "Ranks-Subphylum": "Azpifiluma",
+  "Ranks-Subspecies": "Azpiespezieak",
+  "Ranks-Subtribe": "Azpitribua",
+  "Ranks-Superclass": "Superklasea",
+  "Ranks-Superfamily": "Superfamilia",
+  "Ranks-Superorder": "Superordena",
+  "Ranks-Supertribe": "Supertribua",
+  "Ranks-Tribe": "Tribua",
+  "Ranks-Variety": "Aldaera",
+  "Remove-identification": {
+    "comment": "Label for button that removes an identification",
+    "val": "Behaketa ezabatu"
+  },
+  "Remove-project-filter": "Kendu proiektu iragazkia",
+  "Research-Grade--quality-grade": {
+    "comment": "Quality grade indicating observation is accurate and complete enough to\nshare outside of iNat",
+    "val": "Ikerketa maila"
+  },
+  "Reset-verb": {
+    "comment": "Label for a button that resets the state of an interface, e.g. a button that\nresets the sound recorder to its original state",
+    "val": "Berrezarri"
+  },
+  "Restore": {
+    "comment": "Label for button that restores a withdrawn identification",
+    "val": "Berrezarri"
+  },
+  "Satellite--map-type": {
+    "comment": "Label for the satellite map type",
+    "val": "Satelitea"
+  },
+  "Save": {
+    "comment": "Label for a button that persists something",
+    "val": "Gorde"
+  },
+  "Scientific-Name": "Izen zientifikoa",
+  "Search": {
+    "comment": "Title for a search interface",
+    "val": "Bilatu"
+  },
+  "September": {
+    "comment": "Month of September",
+    "val": "iraila"
+  },
+  "Share": "Partekatu",
+  "Share-location": "Kokapena partekatu",
+  "Sounds": "Soinuak",
+  "Spam": "Spama",
+  "Spam-Examples": "Iragarri zerbait, estekak ez dira baliagarriak eta abar.",
+  "Species": "Espezieak",
+  "Standard--map-type": {
+    "comment": "Label for the standard map type",
+    "val": "Arrunta"
+  },
+  "Stop-verb": {
+    "comment": "Imperative verb for stopping the recording of a sound",
+    "val": "Gelditu"
+  },
+  "supporting--identification": {
+    "comment": "Identification category",
+    "val": "Babestuena"
+  },
+  "Syncing": "Sinkronizatzen...",
+  "Taxa": {
+    "comment": "label in project requirements",
+    "val": "Taxonak"
+  },
+  "Terms-of-Use": "Erabiltzeko baldintzak",
+  "Traditional-Project": "Proiektu Tradizionala",
+  "Umbrella-Project": "Euritako Proiektua",
+  "Unknown--rank": {
+    "comment": "Text to show when a taoxn rank is unknown or missing",
+    "val": "Ezezaguna"
+  },
+  "Unknown--taxon": {
+    "comment": "Text to show when a taxon or identification is unknown or missing",
+    "val": "Ezezaguna"
+  },
+  "Unknown--user": {
+    "comment": "Text to show when a user (or their name) is unknown or missing",
+    "val": "Ezezaguna"
+  },
+  "Users": {
+    "comment": "label in project requirements",
+    "val": "Erabiltzaileak"
+  },
+  "View-in-browser": "Nabigatzailean ikusi",
+  "Withdraw": {
+    "comment": "Label for a button that withdraws an identification",
+    "val": "Baztertu"
+  }
+}

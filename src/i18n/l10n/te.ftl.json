@@ -1,0 +1,166 @@
+{
+  "ABOUT": {
+    "comment": "Header for a general description, e.g. of a user, or of iNaturalist itself",
+    "val": "గురించి"
+  },
+  "All": "అన్ని",
+  "Any": {
+    "comment": "Generic option in a menu of choices that indicates that any of the choices\nwould be acceptable",
+    "val": "ఏదైనా"
+  },
+  "April": {
+    "comment": "Month of April",
+    "val": "ఏప్రిల్"
+  },
+  "August": {
+    "comment": "Month of August",
+    "val": "ఆగస్ట్"
+  },
+  "Cancel": "రద్దుచేయండి",
+  "Casual--quality-grade": {
+    "comment": "Quality grade indicating observation does not quality for Needs ID or\nResearch Grade, e.g. missing media, voted out, etc.",
+    "val": "అప్పుడప్పుడు"
+  },
+  "Collection-Project": "సేకరణ ప్రొజెక్షన్",
+  "Data-quality-assessment-location-is-accurate": {
+    "comment": "Data Quality Assessment metric",
+    "val": "స్థానం ఖచ్చితమైనది"
+  },
+  "Date": {
+    "comment": "label in project requirements",
+    "val": "తేదీ"
+  },
+  "December": {
+    "comment": "Month of December",
+    "val": "డిసెంబర్"
+  },
+  "Delete-observation": "వీక్షణను తీసివేయండి",
+  "Delete-photo": {
+    "comment": "Button label or accessibility label for an element that deletes a photo",
+    "val": "చిత్రాన్ని తీసివేయండి"
+  },
+  "Edit": {
+    "comment": "Button for editing something",
+    "val": "సవరించు"
+  },
+  "Edit-Observation": "వీక్షణను సవరించండి",
+  "Explore": "అన్వేషించు",
+  "FEATURED": {
+    "comment": "Header for featured projects",
+    "val": "ప్రత్యేకంగాఉంటాయి"
+  },
+  "February": {
+    "comment": "Month of February",
+    "val": "ఫిబ్రవరి"
+  },
+  "improving--identification": {
+    "comment": "Identification category",
+    "val": "మెరుగుపరుస్తోంది"
+  },
+  "January": {
+    "comment": "Month of January",
+    "val": "జనవరి"
+  },
+  "JOIN": "చేరండి",
+  "JOINED": {
+    "comment": "Header for joined projects",
+    "val": "చెందిన"
+  },
+  "July": {
+    "comment": "Month of July",
+    "val": "జూలై"
+  },
+  "June": {
+    "comment": "Month of June",
+    "val": "జూన్"
+  },
+  "leading--identification": {
+    "comment": "Identification category",
+    "val": "ముందంజలో ఉంది"
+  },
+  "Location": "స్థాన",
+  "Map-Area": "భూపట ప్రాంత",
+  "March": {
+    "comment": "Month of March",
+    "val": "మార్చ్"
+  },
+  "maverick--identification": {
+    "comment": "Identification category",
+    "val": "గ్రూప్ సెపరేటర్"
+  },
+  "May": {
+    "comment": "Month of May",
+    "val": "మే"
+  },
+  "Months": "నెలల",
+  "Nearby": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "సమీపంలో"
+  },
+  "No-Location": "స్థాన లేదు",
+  "November": {
+    "comment": "Month of November",
+    "val": "నవంబర్"
+  },
+  "Obscured": "అస్పష్టంగా",
+  "October": {
+    "comment": "Month of October",
+    "val": "అక్టోబర్"
+  },
+  "OK": {
+    "comment": "Generic confirmation, e.g. button on a warning alert",
+    "val": "ఓకే"
+  },
+  "Projects": {
+    "comment": "As in iNat projects, collections of observations or observation search filters",
+    "val": "ప్రొజెక్షన్లు"
+  },
+  "Ranks-Hybrid": "సంకరతళి",
+  "Ranks-SPECIES": "జాతులు",
+  "Ranks-Species": "జాతులు",
+  "Ranks-Subspecies": "ఉపజాతులు",
+  "Research-Grade--quality-grade": {
+    "comment": "Quality grade indicating observation is accurate and complete enough to\nshare outside of iNat",
+    "val": "పరిశోధన గ్రేడ్"
+  },
+  "Satellite--map-type": {
+    "comment": "Label for the satellite map type",
+    "val": "ఉపగ్రహ"
+  },
+  "Save": {
+    "comment": "Label for a button that persists something",
+    "val": "సేవ్"
+  },
+  "Search": {
+    "comment": "Title for a search interface",
+    "val": "వెతకండి"
+  },
+  "September": {
+    "comment": "Month of September",
+    "val": "సెప్టెంబర్"
+  },
+  "Species": "జాతులు",
+  "supporting--identification": {
+    "comment": "Identification category",
+    "val": "మద్దతునిస్తోంది"
+  },
+  "Taxa": {
+    "comment": "label in project requirements",
+    "val": "జీవుల"
+  },
+  "Traditional-Project": "సంప్రదాయ ప్రొజెక్షన్",
+  "Umbrella-Project": "యంబ్రేల్ల ప్రొజెక్షన్",
+  "Unknown--rank": {
+    "comment": "Text to show when a taoxn rank is unknown or missing",
+    "val": "అపరిచిత"
+  },
+  "Unknown--taxon": {
+    "comment": "Text to show when a taxon or identification is unknown or missing",
+    "val": "అపరిచిత"
+  },
+  "Unknown--user": {
+    "comment": "Text to show when a user (or their name) is unknown or missing",
+    "val": "అపరిచిత"
+  },
+  "View-in-browser": "బ్రౌజర్‌లో వీక్షించండి"
+}

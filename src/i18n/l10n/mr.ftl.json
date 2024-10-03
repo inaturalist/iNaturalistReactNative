@@ -1,0 +1,150 @@
+{
+  "ABOUT": {
+    "comment": "Header for a general description, e.g. of a user, or of iNaturalist itself",
+    "val": "माहिती"
+  },
+  "Agree": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "सहमत"
+  },
+  "All": "सर्व",
+  "All-observations": "सर्व निरीक्षणे",
+  "all-rights-reserved": {
+    "comment": "As in intellectual property rights over a photo or other creative work",
+    "val": "सर्व हक्क राखीव"
+  },
+  "All-taxa": "सर्व वर्गीकरणे",
+  "Any": {
+    "comment": "Generic option in a menu of choices that indicates that any of the choices\nwould be acceptable",
+    "val": "कोणतेही"
+  },
+  "Camera": "कॅमेरा",
+  "Cancel": "रद्द करा",
+  "Casual--quality-grade": {
+    "comment": "Quality grade indicating observation does not quality for Needs ID or\nResearch Grade, e.g. missing media, voted out, etc.",
+    "val": "अनौपचारिक"
+  },
+  "Close": {
+    "comment": "Label for a button that closes a window or popup",
+    "val": "बंद करा"
+  },
+  "Collection-Project": "संग्रह प्रकल्प",
+  "Community-Guidelines": "समुदाय मार्गदर्शक तत्वे",
+  "Date": {
+    "comment": "label in project requirements",
+    "val": "दिनांक"
+  },
+  "Delete-observation": "निरीक्षण खोडा",
+  "Delete-photo": {
+    "comment": "Button label or accessibility label for an element that deletes a photo",
+    "val": "छायाचित्र काढून टाका"
+  },
+  "Edit": {
+    "comment": "Button for editing something",
+    "val": "दुरुस्ती किंवा बदल"
+  },
+  "Edit-Observation": "निरीक्षण सुधारणा",
+  "Explore": "आणखी पहा",
+  "improving--identification": {
+    "comment": "Identification category",
+    "val": "सुधारणाशील"
+  },
+  "leading--identification": {
+    "comment": "Identification category",
+    "val": "अग्रस्थानी"
+  },
+  "Learn-More": "अधिक जाणून घ्या",
+  "Location": "स्थान",
+  "maverick--identification": {
+    "comment": "Identification category",
+    "val": "समूहविभक्त"
+  },
+  "Menu": {
+    "comment": "Accessibility label for a button that opens a menu of options",
+    "val": "मेनू"
+  },
+  "Nearby": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "जवळपास"
+  },
+  "Needs-ID--quality-grade": {
+    "comment": "Quality grade indicating observation still needs more identifications",
+    "val": "ओळख पटवा"
+  },
+  "No-Media": "माध्यम नसलेली",
+  "Obscured": "अस्पष्ट",
+  "Observe": {
+    "comment": "Button that starts a new observation",
+    "val": "निरीक्षण करा"
+  },
+  "Offensive-Inappropriate": "आक्षेपार्ह / अनुचित",
+  "OK": {
+    "comment": "Generic confirmation, e.g. button on a warning alert",
+    "val": "ठीक आहे"
+  },
+  "Open": {
+    "comment": "Adjective, as in geoprivacy",
+    "val": "खुली"
+  },
+  "Other": {
+    "comment": "Generic option in a list for unanticipated cases, e.g. a choice to manually\nenter an explanation for why you are flagging something instead of choosing\none of the existing options",
+    "val": "इतर"
+  },
+  "Private": "खासगी",
+  "Projects": {
+    "comment": "As in iNat projects, collections of observations or observation search filters",
+    "val": "प्रकल्प"
+  },
+  "Record-verb": {
+    "comment": "Imperative verb for recording a sound",
+    "val": "नोंद"
+  },
+  "Research-Grade--quality-grade": {
+    "comment": "Quality grade indicating observation is accurate and complete enough to\nshare outside of iNat",
+    "val": "संशोधन दर्जा"
+  },
+  "Reset-verb": {
+    "comment": "Label for a button that resets the state of an interface, e.g. a button that\nresets the sound recorder to its original state",
+    "val": "पुन्हा पहिल्यासारखे करा"
+  },
+  "Satellite--map-type": {
+    "comment": "Label for the satellite map type",
+    "val": "उपग्रह"
+  },
+  "Save": {
+    "comment": "Label for a button that persists something",
+    "val": "नोंदवा"
+  },
+  "Search": {
+    "comment": "Title for a search interface",
+    "val": "शोधा"
+  },
+  "Share": "शेअर करा",
+  "Stop-verb": {
+    "comment": "Imperative verb for stopping the recording of a sound",
+    "val": "थांबवा"
+  },
+  "supporting--identification": {
+    "comment": "Identification category",
+    "val": "संमतीदर्शक"
+  },
+  "Taxa": {
+    "comment": "label in project requirements",
+    "val": "प्रजाती"
+  },
+  "Traditional-Project": "पारंपारिक प्रकल्प",
+  "Umbrella-Project": "छत्र प्रकल्प",
+  "Unknown--rank": {
+    "comment": "Text to show when a taoxn rank is unknown or missing",
+    "val": "अज्ञात"
+  },
+  "Unknown--taxon": {
+    "comment": "Text to show when a taxon or identification is unknown or missing",
+    "val": "अज्ञात"
+  },
+  "Unknown--user": {
+    "comment": "Text to show when a user (or their name) is unknown or missing",
+    "val": "अज्ञात"
+  },
+  "View-in-browser": "ब्राउझरमध्ये पहा"
+}

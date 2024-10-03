@@ -1,0 +1,121 @@
+{
+  "All": "An holl",
+  "All-observations": "An holl evezhiadennoù",
+  "all-rights-reserved": {
+    "comment": "As in intellectual property rights over a photo or other creative work",
+    "val": "Pep gwir miret strizh"
+  },
+  "April": {
+    "comment": "Month of April",
+    "val": "Ebrel"
+  },
+  "August": {
+    "comment": "Month of August",
+    "val": "Eost"
+  },
+  "Cancel": "Nullañ",
+  "Close": {
+    "comment": "Label for a button that closes a window or popup",
+    "val": "Serriñ"
+  },
+  "Date": {
+    "comment": "label in project requirements",
+    "val": "Deiziad"
+  },
+  "Date-observed": "Deiziad evezhiet",
+  "December": {
+    "comment": "Month of December",
+    "val": "Kerzu"
+  },
+  "Delete-photo": {
+    "comment": "Button label or accessibility label for an element that deletes a photo",
+    "val": "Lemel al luc'hskeudenn"
+  },
+  "Edit": {
+    "comment": "Button for editing something",
+    "val": "Kemmañ"
+  },
+  "Endemic": {
+    "comment": "Indicates a species only occurs in a specific place",
+    "val": "endemek"
+  },
+  "February": {
+    "comment": "Month of February",
+    "val": "C'hwevrer"
+  },
+  "Filter": "Silañ",
+  "Filters": "Siloù",
+  "Flag-An-Item": "Merkañ un elfenn",
+  "Go-back": {
+    "comment": "Label for button that returns to the previous screen",
+    "val": "Distreiñ"
+  },
+  "ID-Withdrawn": {
+    "comment": "Identification Status",
+    "val": "ID lammet"
+  },
+  "January": {
+    "comment": "Month of January",
+    "val": "Genver"
+  },
+  "July": {
+    "comment": "Month of July",
+    "val": "Gouere"
+  },
+  "June": {
+    "comment": "Month of June",
+    "val": "Mezheven"
+  },
+  "Learn-More": "Gouzout hiroc'h",
+  "Location": "Lec'hiadur",
+  "March": {
+    "comment": "Month of March",
+    "val": "Meurzh"
+  },
+  "May": {
+    "comment": "Month of May",
+    "val": "Mae"
+  },
+  "Native": "henvroad",
+  "Nearby": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "Tostik"
+  },
+  "none": "hini ebet",
+  "November": {
+    "comment": "Month of November",
+    "val": "Du"
+  },
+  "Obscured": "Kuzhet",
+  "Observations": "Evezhiadennoù",
+  "October": {
+    "comment": "Month of October",
+    "val": "Here"
+  },
+  "OK": {
+    "comment": "Generic confirmation, e.g. button on a warning alert",
+    "val": "Mat eo"
+  },
+  "Other": {
+    "comment": "Generic option in a list for unanticipated cases, e.g. a choice to manually\nenter an explanation for why you are flagging something instead of choosing\none of the existing options",
+    "val": "re all"
+  },
+  "Privacy-Policy": "Reolennoù prevezded",
+  "Ranks-Class": "Rummad",
+  "Ranks-Family": "Kerentiad",
+  "Ranks-Genus": "Genad",
+  "Ranks-Kingdom": "Rouantelezh",
+  "Ranks-Order": "Urzh",
+  "Ranks-Phylum": "Skourrad",
+  "Ranks-Species": "Spesadoù",
+  "September": {
+    "comment": "Month of September",
+    "val": "Gwengolo"
+  },
+  "Share": "Rannañ",
+  "Species": "Spesadoù",
+  "supporting--identification": {
+    "comment": "Identification category",
+    "val": "Harpañ"
+  }
+}

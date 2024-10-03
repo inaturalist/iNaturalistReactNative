@@ -1,0 +1,97 @@
+{
+  "All": "All",
+  "Cancel": "Cancel",
+  "Casual--quality-grade": {
+    "comment": "Quality grade indicating observation does not quality for Needs ID or\nResearch Grade, e.g. missing media, voted out, etc.",
+    "val": "Casual"
+  },
+  "Collection-Project": "Collection Project",
+  "Date": {
+    "comment": "label in project requirements",
+    "val": "Date"
+  },
+  "Delete-observation": "Delete observation",
+  "Delete-photo": {
+    "comment": "Button label or accessibility label for an element that deletes a photo",
+    "val": "Delete photo"
+  },
+  "Edit": {
+    "comment": "Button for editing something",
+    "val": "Edit"
+  },
+  "Explore": "Explore",
+  "improving--identification": {
+    "comment": "Identification category",
+    "val": "Improving"
+  },
+  "leading--identification": {
+    "comment": "Identification category",
+    "val": "Leading"
+  },
+  "maverick--identification": {
+    "comment": "Identification category",
+    "val": "Maverick"
+  },
+  "Nearby": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "Nearby"
+  },
+  "Obscured": "Obscured",
+  "Observe": {
+    "comment": "Button that starts a new observation",
+    "val": "Observe"
+  },
+  "OK": {
+    "comment": "Generic confirmation, e.g. button on a warning alert",
+    "val": "OK"
+  },
+  "Open": {
+    "comment": "Adjective, as in geoprivacy",
+    "val": "Open"
+  },
+  "Private": "Private",
+  "Projects": {
+    "comment": "As in iNat projects, collections of observations or observation search filters",
+    "val": "Projects"
+  },
+  "Research-Grade--quality-grade": {
+    "comment": "Quality grade indicating observation is accurate and complete enough to\nshare outside of iNat",
+    "val": "Research Grade"
+  },
+  "Satellite--map-type": {
+    "comment": "Label for the satellite map type",
+    "val": "Satellite"
+  },
+  "Save": {
+    "comment": "Label for a button that persists something",
+    "val": "Save"
+  },
+  "Search": {
+    "comment": "Title for a search interface",
+    "val": "Search"
+  },
+  "Share": "Share",
+  "supporting--identification": {
+    "comment": "Identification category",
+    "val": "Supporting"
+  },
+  "Taxa": {
+    "comment": "label in project requirements",
+    "val": "Taxa"
+  },
+  "Traditional-Project": "Traditional Project",
+  "Umbrella-Project": "Umbrella Project",
+  "Unknown--rank": {
+    "comment": "Text to show when a taoxn rank is unknown or missing",
+    "val": "Unknown"
+  },
+  "Unknown--taxon": {
+    "comment": "Text to show when a taxon or identification is unknown or missing",
+    "val": "Unknown"
+  },
+  "Unknown--user": {
+    "comment": "Text to show when a user (or their name) is unknown or missing",
+    "val": "Unknown"
+  },
+  "View-in-browser": "View in browser"
+}

@@ -1,0 +1,413 @@
+{
+  "ABOUT": {
+    "comment": "Header for a general description, e.g. of a user, or of iNaturalist itself",
+    "val": "VAIRĀK INFORMĀCIJAS"
+  },
+  "Agree": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "Piekrist"
+  },
+  "AGREE": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "PIEKRIST"
+  },
+  "ALL": "VISI",
+  "All": "Viss",
+  "All-observations": "Visi novērojumi",
+  "all-rights-reserved": {
+    "comment": "As in intellectual property rights over a photo or other creative work",
+    "val": "visas tiesības paturētas"
+  },
+  "All-taxa": "Visi taksoni",
+  "Any": {
+    "comment": "Generic option in a menu of choices that indicates that any of the choices\nwould be acceptable",
+    "val": "Nenorādīt"
+  },
+  "April": {
+    "comment": "Month of April",
+    "val": "Aprīlis"
+  },
+  "August": {
+    "comment": "Month of August",
+    "val": "Augusts"
+  },
+  "Camera": "Kamera",
+  "Cancel": "Atcelt",
+  "Casual--quality-grade": {
+    "comment": "Quality grade indicating observation does not quality for Needs ID or\nResearch Grade, e.g. missing media, voted out, etc.",
+    "val": "Hobija līm."
+  },
+  "Close": {
+    "comment": "Label for a button that closes a window or popup",
+    "val": "Aizvērt"
+  },
+  "Collection-Project": "Kolekciju projekts",
+  "Community-Guidelines": "Kopienas vadlīnijas",
+  "Coordinates-copied-to-clipboard": {
+    "comment": "Notification when coordinates have been copied",
+    "val": "Koordinātas nokopētas starpliktuvē"
+  },
+  "Data-quality-assessment-date-is-accurate": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date is accurate",
+    "val": "Datums ir precīzs"
+  },
+  "Data-quality-assessment-date-specified": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date was specified",
+    "val": "Norādītais datums"
+  },
+  "Data-quality-assessment-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Ar organisma novērojumu pierādījumiem"
+  },
+  "Data-quality-assessment-has-photos-or-sounds": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Ar fotogrāfijām un audiofailiem"
+  },
+  "Data-quality-assessment-id-supported-by-two-or-more": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Vismaz divi lietotāji ir pievienojuši ID"
+  },
+  "Data-quality-assessment-location-is-accurate": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Atrašanās vieta ir precīza"
+  },
+  "Data-quality-assessment-location-specified": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Norādīta atrašanās vieta"
+  },
+  "Data-quality-assessment-organism-is-wild": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Organisms novērots savvaļā"
+  },
+  "Data-quality-assessment-recent-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Organisms novērots nesen"
+  },
+  "Data-quality-assessment-title-research": {
+    "comment": "Data Quality Assessment description of the final quality grade when Research Grade",
+    "val": "Novērojums ir pētniecības līmenī."
+  },
+  "Date": {
+    "comment": "label in project requirements",
+    "val": "Datums"
+  },
+  "date-format-month-day": {
+    "comment": "Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "d MMM"
+  },
+  "Date-observed": "Novērojuma datums",
+  "Date-observed-header-short": "Novērots",
+  "Date-Range": {
+    "comment": "Label for controls over a range of dates",
+    "val": "Datuma periods"
+  },
+  "December": {
+    "comment": "Month of December",
+    "val": "Decembris"
+  },
+  "Delete-observation": "Dzēst novērojumu",
+  "Delete-photo": {
+    "comment": "Button label or accessibility label for an element that deletes a photo",
+    "val": "Dzēst fotogrāfiju"
+  },
+  "DONATE": "ZIEDOT",
+  "Edit": {
+    "comment": "Button for editing something",
+    "val": "Rediģēt"
+  },
+  "Edit-Observation": "Labot novērojumu",
+  "Endemic": {
+    "comment": "Indicates a species only occurs in a specific place",
+    "val": "Endēmisks"
+  },
+  "Error": {
+    "comment": "Title for a section describing an error",
+    "val": "Kļūda"
+  },
+  "Error-title": {
+    "comment": "Title of dialog or section describing an error",
+    "val": "Kļūda"
+  },
+  "Establishment": {
+    "comment": "label in project requirements",
+    "val": "Izplatība"
+  },
+  "Exact-Date": "Konkrēts datums",
+  "except": "izņemot",
+  "Explore": "Izzināt",
+  "FEATURED": {
+    "comment": "Header for featured projects",
+    "val": "PIEDĀVĀTIE"
+  },
+  "February": {
+    "comment": "Month of February",
+    "val": "Februāris"
+  },
+  "Filter": "Filtrs",
+  "Filters": "Filtri",
+  "Flag-An-Item": "Pievienot karodziņu",
+  "Flag-Item-Other-Description": "Kāds cits iemesls, ko vari paskaidrot apakšējā laukā.",
+  "Flag-Item-Other-Input-Hint": "Norādi karodziņa pievienošanas iemeslu",
+  "Flagged": {
+    "comment": "Status when an item has been flagged",
+    "val": "Karodziņš pievienots"
+  },
+  "Go-back": {
+    "comment": "Label for button that returns to the previous screen",
+    "val": "Atpakaļ"
+  },
+  "Hide": "Slēpt",
+  "ID-Withdrawn": {
+    "comment": "Identification Status",
+    "val": "ID atsaukta"
+  },
+  "Identifiers": "Identificētāji",
+  "improving--identification": {
+    "comment": "Identification category",
+    "val": "Tiek precizēta"
+  },
+  "Introduced": "Introducēts",
+  "January": {
+    "comment": "Month of January",
+    "val": "Janvāris"
+  },
+  "JOIN": "PIEVIENOTIES",
+  "JOINED": {
+    "comment": "Header for joined projects",
+    "val": "PIEVIENOTIE"
+  },
+  "July": {
+    "comment": "Month of July",
+    "val": "Jūlijs"
+  },
+  "June": {
+    "comment": "Month of June",
+    "val": "Jūnijs"
+  },
+  "leading--identification": {
+    "comment": "Identification category",
+    "val": "Vadošā"
+  },
+  "Learn-More": "Uzzini vairāk",
+  "Location": "Atrašanās vieta",
+  "LOG-OUT": "IZIET",
+  "Map-Area": "Kartes nogabals",
+  "March": {
+    "comment": "Month of March",
+    "val": "Marts"
+  },
+  "maverick--identification": {
+    "comment": "Identification category",
+    "val": "Atšķirīga"
+  },
+  "May": {
+    "comment": "Month of May",
+    "val": "Mai"
+  },
+  "Media-Type": {
+    "comment": "label in project requirements",
+    "val": "Mediju veids"
+  },
+  "Menu": {
+    "comment": "Accessibility label for a button that opens a menu of options",
+    "val": "Izvēlne"
+  },
+  "Missing-Date": "Trūkst datuma",
+  "Months": "Mēneši",
+  "Native": "Vietējs",
+  "NEARBY": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "TUVUMĀ"
+  },
+  "Nearby": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "Tuvumā"
+  },
+  "Needs-ID--quality-grade": {
+    "comment": "Quality grade indicating observation still needs more identifications",
+    "val": "Nepieciešama ID"
+  },
+  "New-Observation": {
+    "comment": "Heading when creating a new observation",
+    "val": "Jauns novērojums"
+  },
+  "No-Location": "Nav atrašanās vietas",
+  "No-Media": "Nav fotogrāfiju",
+  "none": "bez",
+  "Notifications": "Paziņojumi",
+  "November": {
+    "comment": "Month of November",
+    "val": "Novembris"
+  },
+  "Obscured": "Noslēpta",
+  "Observations": "Novērojumi",
+  "Observe": {
+    "comment": "Button that starts a new observation",
+    "val": "Pievienot nov."
+  },
+  "Observers": "Novērotāji",
+  "October": {
+    "comment": "Month of October",
+    "val": "Oktobris"
+  },
+  "Offensive-Inappropriate": "Aizskarošs vai nepieņemams",
+  "OK": {
+    "comment": "Generic confirmation, e.g. button on a warning alert",
+    "val": "Aizvērt"
+  },
+  "Open": {
+    "comment": "Adjective, as in geoprivacy",
+    "val": "Publisks"
+  },
+  "Other": {
+    "comment": "Generic option in a list for unanticipated cases, e.g. a choice to manually\nenter an explanation for why you are flagging something instead of choosing\none of the existing options",
+    "val": "Citi"
+  },
+  "Privacy-Policy": "Privātuma politika",
+  "Private": "Privāta",
+  "Project-Members-Only": "Tikai no projekta dalībniekiem",
+  "Projects": {
+    "comment": "As in iNat projects, collections of observations or observation search filters",
+    "val": "Projekti"
+  },
+  "Quality-Grade": {
+    "comment": "label in project requirements",
+    "val": "Novērojuma kvalitātes līm."
+  },
+  "Ranks-Class": "Klase",
+  "Ranks-Complex": "Sīksugas",
+  "Ranks-Epifamily": "\"Epifamily\" dzimta",
+  "Ranks-Family": "Dzimta",
+  "Ranks-Form": "Kultūrforma",
+  "Ranks-Genus": "Ģints",
+  "Ranks-Genushybrid": "Ģints hibrīds",
+  "Ranks-Hybrid": "Hibrīds",
+  "Ranks-Infraclass": "Infraklase",
+  "Ranks-Infrahybrid": "Infrahibrīds",
+  "Ranks-Infraorder": "Infrakārta",
+  "Ranks-Kingdom": "Valsts",
+  "Ranks-Order": "Secība",
+  "Ranks-Parvorder": "Sīkkārta",
+  "Ranks-Phylum": "Tips",
+  "Ranks-Section": "Sekcija",
+  "Ranks-SPECIES": "SUGAS",
+  "Ranks-Species": "Suga",
+  "Ranks-Statefmatter": "Agregātstāvoklis",
+  "Ranks-Subclass": "Apakšklase",
+  "Ranks-Subfamily": "Apakšdzimta",
+  "Ranks-Subgenus": "Apakšģints",
+  "Ranks-Subkingdom": "Apakšvalsts",
+  "Ranks-Suborder": "Apakškārta",
+  "Ranks-Subphylum": "Apakštips",
+  "Ranks-Subsection": "Apakšsekcija",
+  "Ranks-Subspecies": "Apakšsuga",
+  "Ranks-Subterclass": "Sīkkārta",
+  "Ranks-Subtribe": "Apakšcilts",
+  "Ranks-Superclass": "Virsklase",
+  "Ranks-Superfamily": "Virsdzimta",
+  "Ranks-Superorder": "Augstākā kārta",
+  "Ranks-Supertribe": "Virscilts",
+  "Ranks-Tribe": "Cilts",
+  "Ranks-Variety": "Šķirne",
+  "Ranks-Zoosection": "Sekcija",
+  "Ranks-Zoosubsection": "Apakšsekcija",
+  "Record-verb": {
+    "comment": "Imperative verb for recording a sound",
+    "val": "Ieraksts"
+  },
+  "Remove-project-filter": "Noņemt projekta filtru",
+  "Research-Grade--quality-grade": {
+    "comment": "Quality grade indicating observation is accurate and complete enough to\nshare outside of iNat",
+    "val": "Pētniecības līmenis"
+  },
+  "Reset-verb": {
+    "comment": "Label for a button that resets the state of an interface, e.g. a button that\nresets the sound recorder to its original state",
+    "val": "Nodzēst"
+  },
+  "Restore": {
+    "comment": "Label for button that restores a withdrawn identification",
+    "val": "Atjaunot"
+  },
+  "Satellite--map-type": {
+    "comment": "Label for the satellite map type",
+    "val": "Satelīts"
+  },
+  "SAVE": {
+    "comment": "Label for a button that persists something",
+    "val": "SAGLABĀT"
+  },
+  "Save": {
+    "comment": "Label for a button that persists something",
+    "val": "Saglabāt"
+  },
+  "Scientific-Name": "Zinātniskais nosaukums",
+  "Search": {
+    "comment": "Title for a search interface",
+    "val": "Meklēt"
+  },
+  "September": {
+    "comment": "Month of September",
+    "val": "Septembris"
+  },
+  "Share": "Dalīties",
+  "Share-location": "Dalīties ar atrašanās vietu",
+  "Sounds": "Audiofaili",
+  "Spam": "Mēstules",
+  "Spam-Examples": "Komerciālā aģitācija vai saites bez galamērķa u.t.m.l.",
+  "Species": "Suga",
+  "Standard--map-type": {
+    "comment": "Label for the standard map type",
+    "val": "Standarta"
+  },
+  "Stop-verb": {
+    "comment": "Imperative verb for stopping the recording of a sound",
+    "val": "Apturēt"
+  },
+  "supporting--identification": {
+    "comment": "Identification category",
+    "val": "Atbalstīta"
+  },
+  "Syncing": "Sinhronizējas…",
+  "Taxa": {
+    "comment": "label in project requirements",
+    "val": "Taksoni"
+  },
+  "Terms-of-Use": "Lietošanas noteikumi",
+  "Traditional-Project": "Standarta projekts",
+  "Umbrella-Project": "Projektu grupa",
+  "Unknown--rank": {
+    "comment": "Text to show when a taoxn rank is unknown or missing",
+    "val": "Nezināms"
+  },
+  "Unknown--taxon": {
+    "comment": "Text to show when a taxon or identification is unknown or missing",
+    "val": "Nezināms"
+  },
+  "Unknown--user": {
+    "comment": "Text to show when a user (or their name) is unknown or missing",
+    "val": "Nezināms"
+  },
+  "Unknown-error": {
+    "comment": "Generic error message",
+    "val": "Nezināma kļūda"
+  },
+  "Users": {
+    "comment": "label in project requirements",
+    "val": "Lietotāji"
+  },
+  "View-in-browser": "Atvērt pārlūkprogrammā",
+  "View-suggestions": {
+    "comment": "Label for a button that shows identification suggestions for an observation\nor photo",
+    "val": "Skatīt minējumus"
+  },
+  "Wild": "Savvaļā",
+  "Withdraw": {
+    "comment": "Label for a button that withdraws an identification",
+    "val": "Atsaukt"
+  },
+  "Worldwide": "Visā pasaulē",
+  "You-need-log-in-to-do-that": {
+    "comment": "Error message when you try to do something that requires log in",
+    "val": "Pieslēdzies, lai veiktu šo darbību."
+  }
+}

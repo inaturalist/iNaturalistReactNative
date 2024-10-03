@@ -1,0 +1,410 @@
+{
+  "ABOUT": {
+    "comment": "Header for a general description, e.g. of a user, or of iNaturalist itself",
+    "val": "ಬಗ್ಗೆ"
+  },
+  "Agree": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "ಸಮ್ಮತಿಸಿ"
+  },
+  "AGREE": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "ಸಮ್ಮತಿಸಿ"
+  },
+  "ALL": "ಎಲ್ಲಾ",
+  "All": "ಎಲ್ಲಾ",
+  "All-observations": "ಎಲ್ಲಾ ವೀಕ್ಷಣೆಗಳು",
+  "all-rights-reserved": {
+    "comment": "As in intellectual property rights over a photo or other creative work",
+    "val": "ಎಲ್ಲಾ ಹಕ್ಕುಗಳನ್ನು ಕಾಯ್ದಿರಿಸಿದೆ"
+  },
+  "All-taxa": "ಎಲ್ಲಾ ಜೀವಿವರ್ಗಗಳು",
+  "Any": {
+    "comment": "Generic option in a menu of choices that indicates that any of the choices\nwould be acceptable",
+    "val": "ಯಾವುದಾದರೂ"
+  },
+  "April": {
+    "comment": "Month of April",
+    "val": "ಏಪ್ರಿಲ್"
+  },
+  "August": {
+    "comment": "Month of August",
+    "val": "ಆಗಸ್ಟ್"
+  },
+  "Camera": "ಕ್ಯಾಮೆರಾ",
+  "Cancel": "ರದ್ದುಗೊಳಿಸಿ",
+  "Casual--quality-grade": {
+    "comment": "Quality grade indicating observation does not quality for Needs ID or\nResearch Grade, e.g. missing media, voted out, etc.",
+    "val": "ಸಾಂದರ್ಭಿಕ"
+  },
+  "Close": {
+    "comment": "Label for a button that closes a window or popup",
+    "val": "ಮುಚ್ಚಿರಿ"
+  },
+  "Collection-Project": "ಸಂಗ್ರಹ ಪ್ರಾಯೋಜನೆ",
+  "Community-Guidelines": "ಸಮುದಾಯ ಮಾರ್ಗಸೂಚಿಗಳು",
+  "Coordinates-copied-to-clipboard": {
+    "comment": "Notification when coordinates have been copied",
+    "val": "ನಿರ್ದೇಶಾಂಕಗಳನ್ನು ಕ್ಲಿಪ್‍ಬೋರ್ಡ್‍ಗೆ ನಕಲಿಸಲಾಗಿದೆ"
+  },
+  "Data-quality-assessment-date-is-accurate": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date is accurate",
+    "val": "ದಿನಾಂಕ ನಿಖರವಾಗಿದೆ"
+  },
+  "Data-quality-assessment-date-specified": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date was specified",
+    "val": "ದಿನಾಂಕ ಸೂಚಿಸಲಾಗಿದೆ"
+  },
+  "Data-quality-assessment-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "ಜೀವಿಯ ಕುರುಹು"
+  },
+  "Data-quality-assessment-has-photos-or-sounds": {
+    "comment": "Data Quality Assessment metric",
+    "val": "ಚಿತ್ರಗಳನ್ನು ಅಥವಾ ಧ್ವನಿಯನ್ನು ಹೊಂದಿದೆ"
+  },
+  "Data-quality-assessment-id-supported-by-two-or-more": {
+    "comment": "Data Quality Assessment metric",
+    "val": "ಇಬ್ಬರು ಅಥವಾ ಹೆಚ್ಚಿನವರಿಂದ ID ಬೆಂಬಲಿತವಾಗಿದೆ"
+  },
+  "Data-quality-assessment-location-is-accurate": {
+    "comment": "Data Quality Assessment metric",
+    "val": "ಸ್ಥಳ ನಿಖರವಾಗಿದೆ"
+  },
+  "Data-quality-assessment-location-specified": {
+    "comment": "Data Quality Assessment metric",
+    "val": "ಸ್ಥಳ ಸೂಚಿಸಿದೆ"
+  },
+  "Data-quality-assessment-organism-is-wild": {
+    "comment": "Data Quality Assessment metric",
+    "val": "ಜೀವಿಯು ವನ್ಯಜೀವಿಯಾಗಿದೆ"
+  },
+  "Data-quality-assessment-recent-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "ಜೀವಿಯ ಇತ್ತೀಚಿನ ಕುರುಹು"
+  },
+  "Data-quality-assessment-title-research": {
+    "comment": "Data Quality Assessment description of the final quality grade when Research Grade",
+    "val": "ಈ ವೀಕ್ಷಣೆಯು ಸಂಶೋಧನಾ ದರ್ಜೆಯದ್ದಾಗಿದೆ!"
+  },
+  "Date": {
+    "comment": "label in project requirements",
+    "val": "ದಿನಾಂಕ"
+  },
+  "date-format-month-day": {
+    "comment": "Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "MMM d"
+  },
+  "Date-observed": "ವೀಕ್ಷಣಾ ದಿನಾಂಕ",
+  "Date-observed-header-short": "ವೀಕ್ಷಿಸಿರುವುದು",
+  "Date-Range": {
+    "comment": "Label for controls over a range of dates",
+    "val": "ದಿನಾಂಕ ಶ್ರೇಣಿ"
+  },
+  "December": {
+    "comment": "Month of December",
+    "val": "ಡಿಸೆಂಬರ್"
+  },
+  "Delete-observation": "ವೀಕ್ಷಣೆಯನ್ನು ತೆಗೆದುಹಾಕಿ",
+  "Delete-photo": {
+    "comment": "Button label or accessibility label for an element that deletes a photo",
+    "val": "ಚಿತ್ರವನ್ನು ಅಳಿಸಿ"
+  },
+  "DONATE": "ದೇಣಿಗೆ ನೀಡಿ",
+  "Edit": {
+    "comment": "Button for editing something",
+    "val": "ಸಂಪಾದಿಸಿ"
+  },
+  "Edit-Observation": "ವೀಕ್ಷಣೆಯನ್ನು ಸಂಪಾದಿಸಿ",
+  "Endemic": {
+    "comment": "Indicates a species only occurs in a specific place",
+    "val": "ಸ್ಥಳೀಯ"
+  },
+  "Error": {
+    "comment": "Title for a section describing an error",
+    "val": "ದೋಷ"
+  },
+  "Error-title": {
+    "comment": "Title of dialog or section describing an error",
+    "val": "ದೋಷ"
+  },
+  "Establishment": {
+    "comment": "label in project requirements",
+    "val": "ನೆಲೆ"
+  },
+  "Exact-Date": "ನಿಖರವಾದ ದಿನಾಂಕ",
+  "except": "ಹೊರತು",
+  "Explore": "ಅನ್ವೇಷಿಸಿ",
+  "FEATURED": {
+    "comment": "Header for featured projects",
+    "val": "ವಿಶೇಷವಾದವು"
+  },
+  "February": {
+    "comment": "Month of February",
+    "val": "ಫೆಬ್ರವರಿ"
+  },
+  "Filter": "ಶೋಧಕ",
+  "Filters": "ಶೋಧಕಗಳು",
+  "Flag-Item-Other-Description": "ಇತರೆ ಯಾವುದೇ ಕಾರಣವನ್ನು ನೀವು ಈ ಕೆಳಗೆ ವಿವರಿಸಬಹುದು.",
+  "Go-back": {
+    "comment": "Label for button that returns to the previous screen",
+    "val": "ಹಿಂದಿರುಗಿ"
+  },
+  "Hide": "ಮರೆಮಾಡಿ",
+  "ID-Withdrawn": {
+    "comment": "Identification Status",
+    "val": "ID ಹಿಂಪಡೆಯಲಾಗಿದೆ"
+  },
+  "Identifiers": "ಪತ್ತೆದಾರರು",
+  "improving--identification": {
+    "comment": "Identification category",
+    "val": "ಸುಧಾರಿಸುತ್ತಿದೆ"
+  },
+  "Introduced": "ಪರಿಚಯಿಸಲಾಗಿದೆ",
+  "January": {
+    "comment": "Month of January",
+    "val": "ಜನವರಿ"
+  },
+  "JOIN": "ಸೇರಿರಿ",
+  "JOINED": {
+    "comment": "Header for joined projects",
+    "val": "ಸೇರಿರುವುದು"
+  },
+  "July": {
+    "comment": "Month of July",
+    "val": "ಜುಲೈ"
+  },
+  "June": {
+    "comment": "Month of June",
+    "val": "ಜೂನ್"
+  },
+  "leading--identification": {
+    "comment": "Identification category",
+    "val": "ಮುನ್ನಡೆಯಲ್ಲಿದೆ"
+  },
+  "Learn-More": "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ",
+  "Location": "ಸ್ಥಳ",
+  "LOG-OUT": "ಲಾಗೌಟ್",
+  "Map-Area": "ಭೂಪಟ ಪ್ರದೇಶ",
+  "March": {
+    "comment": "Month of March",
+    "val": "ಮಾರ್ಚ್"
+  },
+  "maverick--identification": {
+    "comment": "Identification category",
+    "val": "ಗುಂಪು ವಿಭಜಕ"
+  },
+  "May": {
+    "comment": "Month of May",
+    "val": "ಮೇ"
+  },
+  "Media-Type": {
+    "comment": "label in project requirements",
+    "val": "ಮಾಧ್ಯಮದ ವಿಧ"
+  },
+  "Menu": {
+    "comment": "Accessibility label for a button that opens a menu of options",
+    "val": "ಮೆನು"
+  },
+  "Missing-Date": "ಕಾಣೆಯಾದ ದಿನಾಂಕ",
+  "Months": "ತಿಂಗಳುಗಳು",
+  "MY-OBSERVATIONS": "ನನ್ನ ವೀಕ್ಷಣೆಗಳು",
+  "Native": "ಸ್ಥಳೀಯ",
+  "NEARBY": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "ಸಮೀಪದವುಗಳು"
+  },
+  "Nearby": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "ಸಮೀಪದ"
+  },
+  "Needs-ID--quality-grade": {
+    "comment": "Quality grade indicating observation still needs more identifications",
+    "val": "ID ಅಗತ್ಯವಿದೆ"
+  },
+  "New-Observation": {
+    "comment": "Heading when creating a new observation",
+    "val": "ಹೊಸ ವೀಕ್ಷಣೆ"
+  },
+  "No-Location": "ಸ್ಥಳ ಇಲ್ಲ",
+  "No-Media": "ಯಾವುದೇ ಮಾಧ್ಯಮವಿಲ್ಲ",
+  "none": "ಯಾವುದೂ ಇಲ್ಲ",
+  "Notifications": "ಅಧಿಸೂಚನೆ",
+  "November": {
+    "comment": "Month of November",
+    "val": "ನವೆಂಬರ್"
+  },
+  "Obscured": "ಮಸುಕಾಗಿಸಲಾಗಿದೆ",
+  "Observations": "ವೀಕ್ಷಣೆಗಳು",
+  "Observe": {
+    "comment": "Button that starts a new observation",
+    "val": "ವೀಕ್ಷಿಸಿ"
+  },
+  "Observers": "ವೀಕ್ಷಕರುಗಳು",
+  "October": {
+    "comment": "Month of October",
+    "val": "ಅಕ್ಟೋಬರ್"
+  },
+  "Offensive-Inappropriate": "ಅವಹೇಳನಕಾರಿ/ಅನುಚಿತ",
+  "OK": {
+    "comment": "Generic confirmation, e.g. button on a warning alert",
+    "val": "ಓಕೆ"
+  },
+  "Open": {
+    "comment": "Adjective, as in geoprivacy",
+    "val": "ತೆರೆಯಿರಿ"
+  },
+  "Other": {
+    "comment": "Generic option in a list for unanticipated cases, e.g. a choice to manually\nenter an explanation for why you are flagging something instead of choosing\none of the existing options",
+    "val": "ಇತರೆ"
+  },
+  "Privacy-Policy": "ಗೌಪ್ಯತಾ ನೀತಿ",
+  "Private": "ಖಾಸಗಿ",
+  "Project-Members-Only": "ಪ್ರಾಯೋಜನೆ ಸದಸ್ಯರಿಗೆ ಮಾತ್ರ",
+  "Projects": {
+    "comment": "As in iNat projects, collections of observations or observation search filters",
+    "val": "ಪ್ರಾಯೋಜನೆಗಳು"
+  },
+  "Quality-Grade": {
+    "comment": "label in project requirements",
+    "val": "ಗುಣಮಟ್ಟದ ದರ್ಜೆ"
+  },
+  "Ranks-Class": "ವರ್ಗ",
+  "Ranks-Complex": "ಸಂಕೀರ್ಣ",
+  "Ranks-Epifamily": "ಮಧ್ಯಮಕುಟುಂಬ",
+  "Ranks-Family": "ಕುಟುಂಬ",
+  "Ranks-Form": "ರೂಪ",
+  "Ranks-Genus": "ಕುಲ",
+  "Ranks-Genushybrid": "ಕುಲಸಂಕರ",
+  "Ranks-Hybrid": "ಸಂಕರತಳಿ",
+  "Ranks-Infraclass": "ನಿಮ್ನವರ್ಗ",
+  "Ranks-Infrahybrid": "ನಿಮ್ನಸಂಕರ",
+  "Ranks-Infraorder": "ನಿಮ್ನಗಣ",
+  "Ranks-Kingdom": "ಸಾಮ್ರಾಜ್ಯ",
+  "Ranks-Order": "ಗಣ",
+  "Ranks-Parvorder": "ಪಾರ್ವರ್ಡರ್",
+  "Ranks-Phylum": "ವಂಶ",
+  "Ranks-Section": "ವಿಭಾಗ",
+  "Ranks-SPECIES": "ಪ್ರಭೇಧಗಳು",
+  "Ranks-Species": "ಪ್ರಭೇದಗಳು",
+  "Ranks-Statefmatter": "ದ್ರವ್ಯ ಸ್ಥಿತಿ",
+  "Ranks-Subclass": "ಉಪವರ್ಗ",
+  "Ranks-Subfamily": "ಉಪಕುಟುಂಬ",
+  "Ranks-Subgenus": "ಉಪಕುಲ",
+  "Ranks-Subkingdom": "ಉಪಸಾಮ್ರಾಜ್ಯ",
+  "Ranks-Suborder": "ಉಪಗಣ",
+  "Ranks-Subphylum": "ಉಪವಂಶ",
+  "Ranks-Subsection": "ಉಪವಿಭಾಗ",
+  "Ranks-Subspecies": "ಉಪಪ್ರಭೇದ",
+  "Ranks-Subterclass": "ಕೆಳವರ್ಗ",
+  "Ranks-Subtribe": "ಉಪಬುಡಕಟ್ಟು",
+  "Ranks-Superclass": "ಮೇಲ್ವರ್ಗ",
+  "Ranks-Superfamily": "ಮೇಲ್‍ಕುಟುಂಬ",
+  "Ranks-Superorder": "ಉನ್ನತಗಣ",
+  "Ranks-Supertribe": "ಉನ್ನತಬುಡಕಟ್ಟು",
+  "Ranks-Tribe": "ಬುಡಕಟ್ಟು",
+  "Ranks-Variety": "ವಿಧ",
+  "Ranks-Zoosection": "ಝೂವಿಭಾಗ",
+  "Ranks-Zoosubsection": "ಝೂಉಪವಿಭಾಗ",
+  "Record-verb": {
+    "comment": "Imperative verb for recording a sound",
+    "val": "ದಾಖಲೆ"
+  },
+  "Remove-identification": {
+    "comment": "Label for button that removes an identification",
+    "val": "ಗುತುತಿಸುವಿಕೆಯನ್ನು ತೆಗೆದುಹಾಕಿರಿ"
+  },
+  "Remove-project-filter": "ಪ್ರಾಯೋಜನೆ ಶೋಧಕವನ್ನು ತೆಗೆದುಹಾಕಿ",
+  "Research-Grade--quality-grade": {
+    "comment": "Quality grade indicating observation is accurate and complete enough to\nshare outside of iNat",
+    "val": "ಸಂಶೋಧನಾ ದರ್ಜೆ"
+  },
+  "Reset-verb": {
+    "comment": "Label for a button that resets the state of an interface, e.g. a button that\nresets the sound recorder to its original state",
+    "val": "ಮರುಹೊಂದಿಸಿ"
+  },
+  "Restore": {
+    "comment": "Label for button that restores a withdrawn identification",
+    "val": "ಮರುಸ್ಥಾಪಿಸಿ"
+  },
+  "Satellite--map-type": {
+    "comment": "Label for the satellite map type",
+    "val": "ಉಪಗ್ರಹ"
+  },
+  "SAVE": {
+    "comment": "Label for a button that persists something",
+    "val": "ಉಳಿಸಿ"
+  },
+  "Save": {
+    "comment": "Label for a button that persists something",
+    "val": "ಉಳಿಸಿ"
+  },
+  "Scientific-Name": "ವೈಜ್ಞಾನಿಕ ಹೆಸರು",
+  "Search": {
+    "comment": "Title for a search interface",
+    "val": "ಹುಡುಕಿ"
+  },
+  "September": {
+    "comment": "Month of September",
+    "val": "ಸೆಪ್ಟೆಂಬರ್"
+  },
+  "Share": "ಹಂಚಿಕೊಳ್ಳಿ",
+  "Share-location": "ಸ್ಥಳ ಹಂಚಿಕೊಳ್ಳಿ",
+  "Sounds": "ಧ್ವನಿಗಳು",
+  "Spam": "ಸ್ಪ್ಯಾಮ್",
+  "Species": "ಪ್ರಭೇದಗಳು",
+  "Standard--map-type": {
+    "comment": "Label for the standard map type",
+    "val": "ಪ್ರಮಾಣಿತ"
+  },
+  "Stop-verb": {
+    "comment": "Imperative verb for stopping the recording of a sound",
+    "val": "ನಿಲ್ಲಿಸಿ"
+  },
+  "supporting--identification": {
+    "comment": "Identification category",
+    "val": "ಬೆಂಬಲಿಸುತ್ತಿದೆ"
+  },
+  "Syncing": "ಸಿಂಕ್ ಆಗುತ್ತಿದೆ...",
+  "Taxa": {
+    "comment": "label in project requirements",
+    "val": "ಜೀವಿವರ್ಗಗಳು"
+  },
+  "Traditional-Project": "ಸಾಂಪ್ರದಾಯಿಕ ಪ್ರಾಯೋಜನೆ",
+  "Umbrella-Project": "ಅಂಬ್ರೆಲಾ ಪ್ರಾಯೋಜನೆ",
+  "Unknown--rank": {
+    "comment": "Text to show when a taoxn rank is unknown or missing",
+    "val": "ಅಪರಿಚಿತ"
+  },
+  "Unknown--taxon": {
+    "comment": "Text to show when a taxon or identification is unknown or missing",
+    "val": "ಅಪರಿಚಿತ"
+  },
+  "Unknown--user": {
+    "comment": "Text to show when a user (or their name) is unknown or missing",
+    "val": "ಅಪರಿಚಿತ"
+  },
+  "Unknown-error": {
+    "comment": "Generic error message",
+    "val": "ಅಪರಿಚಿತ ದೋಷ"
+  },
+  "Users": {
+    "comment": "label in project requirements",
+    "val": "ಬಳಕೆದಾರರು"
+  },
+  "View-in-browser": "ಬ್ರೌಸರ್‌‌ನಲ್ಲಿ ವೀಕ್ಷಿಸಿ",
+  "View-suggestions": {
+    "comment": "Label for a button that shows identification suggestions for an observation\nor photo",
+    "val": "ಸಲಹೆಗಳನ್ನು ವೀಕ್ಷಿಸಿ"
+  },
+  "Wild": "ವನ್ಯಜೀವಿ",
+  "Withdraw": {
+    "comment": "Label for a button that withdraws an identification",
+    "val": "ಹಿಂಪಡೆಯಿರಿ"
+  },
+  "Worldwide": "ಪ್ರಪಂಚದಾದ್ಯಂತ",
+  "You-need-log-in-to-do-that": {
+    "comment": "Error message when you try to do something that requires log in",
+    "val": "ಇದನ್ನು ಮಾಡಲು ನೀವು ಲಾಗಿನ್ನಾಗಿರಬೇಕು."
+  }
+}

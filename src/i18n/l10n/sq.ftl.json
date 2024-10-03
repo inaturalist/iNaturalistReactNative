@@ -1,0 +1,293 @@
+{
+  "Agree": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "Pajtohem"
+  },
+  "All": "Të gjitha",
+  "All-observations": "Të gjitha vëzhgimet",
+  "all-rights-reserved": {
+    "comment": "As in intellectual property rights over a photo or other creative work",
+    "val": "të gjitha të drejtat e rezervuara"
+  },
+  "All-taxa": "Të gjitha taxat",
+  "Any": {
+    "comment": "Generic option in a menu of choices that indicates that any of the choices\nwould be acceptable",
+    "val": "Cilido"
+  },
+  "April": {
+    "comment": "Month of April",
+    "val": "Prill"
+  },
+  "August": {
+    "comment": "Month of August",
+    "val": "Gusht"
+  },
+  "Cancel": "Anulo",
+  "Casual--quality-grade": {
+    "comment": "Quality grade indicating observation does not quality for Needs ID or\nResearch Grade, e.g. missing media, voted out, etc.",
+    "val": "Rastësor"
+  },
+  "Close": {
+    "comment": "Label for a button that closes a window or popup",
+    "val": "Mbyll"
+  },
+  "Community-Guidelines": "Udhëzimet e komunitetit",
+  "Data-quality-assessment-date-is-accurate": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date is accurate",
+    "val": "Data është e saktë"
+  },
+  "Data-quality-assessment-date-specified": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date was specified",
+    "val": "Data e specifikuar"
+  },
+  "Data-quality-assessment-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Dëshmia e organizmit"
+  },
+  "Data-quality-assessment-has-photos-or-sounds": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Ka foto ose tinguj"
+  },
+  "Data-quality-assessment-id-supported-by-two-or-more": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Ka ID të mbështetur nga dy ose më shumë"
+  },
+  "Data-quality-assessment-location-is-accurate": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Lokacioni është i saktë"
+  },
+  "Data-quality-assessment-location-specified": {
+    "comment": "Data Quality Assessment metric",
+    "val": "lokacioni është i specifikuar"
+  },
+  "Data-quality-assessment-organism-is-wild": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Organizmi është i egër"
+  },
+  "Data-quality-assessment-recent-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Dëshmitë e fundit të një organizmi"
+  },
+  "Date": {
+    "comment": "label in project requirements",
+    "val": "Data"
+  },
+  "Date-observed": "Vëzhguar në datë",
+  "Date-observed-header-short": "Vëzhguar",
+  "Date-Range": {
+    "comment": "Label for controls over a range of dates",
+    "val": "Shtrirja në mes të datave"
+  },
+  "December": {
+    "comment": "Month of December",
+    "val": "Dhjetor"
+  },
+  "Delete-observation": "Fshi vëzhgimin",
+  "Delete-photo": {
+    "comment": "Button label or accessibility label for an element that deletes a photo",
+    "val": "Fshi foto"
+  },
+  "Edit": {
+    "comment": "Button for editing something",
+    "val": "Redakto"
+  },
+  "Edit-Observation": "Ndrysho Vëzhgimin",
+  "Endemic": {
+    "comment": "Indicates a species only occurs in a specific place",
+    "val": "endemik"
+  },
+  "Establishment": {
+    "comment": "label in project requirements",
+    "val": "Vendosje"
+  },
+  "Exact-Date": "Data e saktë",
+  "Explore": "Eksploro",
+  "February": {
+    "comment": "Month of February",
+    "val": "Shkurt"
+  },
+  "Filter": "Filtër",
+  "Filters": "Filtrat",
+  "Flag-An-Item": "Etiketo një njësi",
+  "Flag-Item-Other-Description": "Disa arsye tjera mund ti sqaroni më poshtë",
+  "Flag-Item-Other-Input-Hint": "Specifiko arsyen pse po e shenjoni këtë gjë",
+  "Flagged": {
+    "comment": "Status when an item has been flagged",
+    "val": "E shenjuar"
+  },
+  "Go-back": {
+    "comment": "Label for button that returns to the previous screen",
+    "val": "Kthehu"
+  },
+  "ID-Withdrawn": {
+    "comment": "Identification Status",
+    "val": "Identifikimi është tërhequr"
+  },
+  "Identifiers": "Identifikuesit",
+  "improving--identification": {
+    "comment": "Identification category",
+    "val": "Duke përmirësuar"
+  },
+  "Introduced": "E sjellë",
+  "January": {
+    "comment": "Month of January",
+    "val": "Janar"
+  },
+  "July": {
+    "comment": "Month of July",
+    "val": "Korrik"
+  },
+  "June": {
+    "comment": "Month of June",
+    "val": "Qershor"
+  },
+  "leading--identification": {
+    "comment": "Identification category",
+    "val": "Duke udhëhequr"
+  },
+  "Learn-More": "Mëso më shumë",
+  "Location": "Lokacioni",
+  "March": {
+    "comment": "Month of March",
+    "val": "Mars"
+  },
+  "maverick--identification": {
+    "comment": "Identification category",
+    "val": "Rebel"
+  },
+  "May": {
+    "comment": "Month of May",
+    "val": "Maj"
+  },
+  "Media-Type": {
+    "comment": "label in project requirements",
+    "val": "Tipi i medias"
+  },
+  "Menu": {
+    "comment": "Accessibility label for a button that opens a menu of options",
+    "val": "Menuja"
+  },
+  "Months": "Muaj",
+  "Native": "autokton",
+  "Nearby": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "Pranë"
+  },
+  "Needs-ID--quality-grade": {
+    "comment": "Quality grade indicating observation still needs more identifications",
+    "val": "Ka nevojë për ID"
+  },
+  "none": "askush",
+  "November": {
+    "comment": "Month of November",
+    "val": "Nëntor"
+  },
+  "Obscured": "E fshehur",
+  "Observations": "Vëzhgime",
+  "Observe": {
+    "comment": "Button that starts a new observation",
+    "val": "Vrojtim"
+  },
+  "Observers": "Vëzhguesit",
+  "October": {
+    "comment": "Month of October",
+    "val": "Tetor"
+  },
+  "OK": {
+    "comment": "Generic confirmation, e.g. button on a warning alert",
+    "val": "Në rregull"
+  },
+  "Open": {
+    "comment": "Adjective, as in geoprivacy",
+    "val": "Hape"
+  },
+  "Other": {
+    "comment": "Generic option in a list for unanticipated cases, e.g. a choice to manually\nenter an explanation for why you are flagging something instead of choosing\none of the existing options",
+    "val": "Tjetër"
+  },
+  "Privacy-Policy": "Politika e privatësisë",
+  "Private": "Privat",
+  "Projects": {
+    "comment": "As in iNat projects, collections of observations or observation search filters",
+    "val": "Projektet"
+  },
+  "Quality-Grade": {
+    "comment": "label in project requirements",
+    "val": "Shkalla e kualitetit"
+  },
+  "Ranks-Class": "klasa",
+  "Ranks-Family": "familja",
+  "Ranks-Form": "forma",
+  "Ranks-Genus": "gjinia",
+  "Ranks-Genushybrid": "hibrid gjinor",
+  "Ranks-Hybrid": "hibrid",
+  "Ranks-Infraclass": "infraklasa",
+  "Ranks-Infrahybrid": "infra-hibride",
+  "Ranks-Infraorder": "infra-renditja",
+  "Ranks-Kingdom": "mbretëri",
+  "Ranks-Order": "renditja",
+  "Ranks-Phylum": "Tipi",
+  "Ranks-Section": "seksioni",
+  "Ranks-Species": "specjet",
+  "Ranks-Subclass": "nënklasa",
+  "Ranks-Subfamily": "nënfamilja",
+  "Ranks-Subgenus": "nën-gjinia",
+  "Ranks-Subkingdom": "nën-mbretëria",
+  "Ranks-Suborder": "nën-renditja",
+  "Ranks-Subsection": "nën-seksioni",
+  "Ranks-Subspecies": "nën-speciet",
+  "Ranks-Subtribe": "nënfisi",
+  "Ranks-Superclass": "superklasa",
+  "Ranks-Superfamily": "Superfamilja",
+  "Ranks-Superorder": "super-renditja",
+  "Ranks-Supertribe": "superfisi",
+  "Ranks-Tribe": "fisi",
+  "Ranks-Variety": "llojllojshmëria",
+  "Research-Grade--quality-grade": {
+    "comment": "Quality grade indicating observation is accurate and complete enough to\nshare outside of iNat",
+    "val": "Shkalla e Hulumtimit"
+  },
+  "Restore": {
+    "comment": "Label for button that restores a withdrawn identification",
+    "val": "Restauro"
+  },
+  "Satellite--map-type": {
+    "comment": "Label for the satellite map type",
+    "val": "Sateliti"
+  },
+  "Save": {
+    "comment": "Label for a button that persists something",
+    "val": "Ruaj"
+  },
+  "Search": {
+    "comment": "Title for a search interface",
+    "val": "Kërko"
+  },
+  "September": {
+    "comment": "Month of September",
+    "val": "Shtator"
+  },
+  "Share": "Shpërndaje",
+  "Sounds": "Tingujt",
+  "Spam-Examples": "Kërkesa komerciale, lidhje askund, etj.",
+  "Species": "specjet",
+  "supporting--identification": {
+    "comment": "Identification category",
+    "val": "Mbështje"
+  },
+  "Unknown--rank": {
+    "comment": "Text to show when a taoxn rank is unknown or missing",
+    "val": "E panjohur"
+  },
+  "Unknown--taxon": {
+    "comment": "Text to show when a taxon or identification is unknown or missing",
+    "val": "E panjohur"
+  },
+  "Unknown--user": {
+    "comment": "Text to show when a user (or their name) is unknown or missing",
+    "val": "E panjohur"
+  },
+  "View-in-browser": "Shiko në shfletues",
+  "Wild": "i egër",
+  "Worldwide": "Në mbarë botën"
+}

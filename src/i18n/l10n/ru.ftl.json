@@ -1,15 +1,435 @@
 {
-  "count-observations": "{ $count ->\n  [one] { $count } наблюдение\n  [few] { $count } наблюдения\n  [many] { $count } наблюдений\n *[other] { $count } наблюдений\n}",
-  "date-observed": "Дата наблюдения: { $date }",
-  "date-uploaded": "Дата загрузки: { $date }",
-  "Grid-View": {
-    "comment": "Label for a view that shows observations as a grid of photos",
-    "val": "Вид сетки"
+  "ABOUT": {
+    "comment": "Header for a general description, e.g. of a user, or of iNaturalist itself",
+    "val": "О"
   },
-  "List-View": {
-    "comment": "Label for a view that shows observations a list",
-    "val": "Вид списка"
+  "Agree": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "Согласен"
   },
-  "Observations": "Замечания",
-  "Your-Observations": "Your Observations"
+  "AGREE": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "СОГЛАСЕН"
+  },
+  "ALL": "ВСЕ",
+  "All": "Все",
+  "All-observations": "Все наблюдения",
+  "all-rights-reserved": {
+    "comment": "As in intellectual property rights over a photo or other creative work",
+    "val": "Все права защищены"
+  },
+  "All-taxa": "Все таксоны",
+  "Any": {
+    "comment": "Generic option in a menu of choices that indicates that any of the choices\nwould be acceptable",
+    "val": "Неважно"
+  },
+  "April": {
+    "comment": "Month of April",
+    "val": "Апрель"
+  },
+  "August": {
+    "comment": "Month of August",
+    "val": "Август"
+  },
+  "Camera": "Камера",
+  "Cancel": "Отмена",
+  "Casual--quality-grade": {
+    "comment": "Quality grade indicating observation does not quality for Needs ID or\nResearch Grade, e.g. missing media, voted out, etc.",
+    "val": "Случайный"
+  },
+  "Clear": {
+    "comment": "Label for a button that clears content, like the text entered in a text\nfield",
+    "val": "Очистить"
+  },
+  "Close": {
+    "comment": "Label for a button that closes a window or popup",
+    "val": "Закрыть"
+  },
+  "Collection-Project": "Коллекционный проект",
+  "Community-Guidelines": "Правила сообщества",
+  "Coordinates-copied-to-clipboard": {
+    "comment": "Notification when coordinates have been copied",
+    "val": "Координаты скопированы в буфер обмена"
+  },
+  "Data-quality-assessment-date-is-accurate": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date is accurate",
+    "val": "Дата является точной"
+  },
+  "Data-quality-assessment-date-specified": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date was specified",
+    "val": "Указана дата"
+  },
+  "Data-quality-assessment-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Свидетельство существования организма"
+  },
+  "Data-quality-assessment-has-photos-or-sounds": {
+    "comment": "Data Quality Assessment metric",
+    "val": "С фото или со звуком"
+  },
+  "Data-quality-assessment-id-supported-by-two-or-more": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Поддержка идентификации двумя или более участниками"
+  },
+  "Data-quality-assessment-location-is-accurate": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Местоположение является точным"
+  },
+  "Data-quality-assessment-location-specified": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Указано местоположение"
+  },
+  "Data-quality-assessment-organism-is-wild": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Организм является диким"
+  },
+  "Data-quality-assessment-recent-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Свежие свидетельства существования организма"
+  },
+  "Data-quality-assessment-single-subject": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Свидетельство, связанное с отдельным объектом"
+  },
+  "Data-quality-assessment-title-research": {
+    "comment": "Data Quality Assessment description of the final quality grade when Research Grade",
+    "val": "Это наблюдение достигло исследовательского уровня!"
+  },
+  "Date": {
+    "comment": "label in project requirements",
+    "val": "Дата"
+  },
+  "date-format-month-day": {
+    "comment": "Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "d MMM"
+  },
+  "Date-observed": "Дата наблюдения",
+  "Date-observed-header-short": "Дата, время наблюдения",
+  "Date-Range": {
+    "comment": "Label for controls over a range of dates",
+    "val": "Диапазон дат"
+  },
+  "December": {
+    "comment": "Month of December",
+    "val": "Декабрь"
+  },
+  "Delete-observation": "Удалить наблюдения",
+  "Delete-photo": {
+    "comment": "Button label or accessibility label for an element that deletes a photo",
+    "val": "Удалить фото"
+  },
+  "DONATE": "Поддержать",
+  "Edit": {
+    "comment": "Button for editing something",
+    "val": "Редактировать"
+  },
+  "Edit-location": {
+    "comment": "Label for interactive element that takes you to a location choosing screen",
+    "val": "Изменить местоположение"
+  },
+  "Edit-Observation": "Редактировать наблюдение",
+  "Endemic": {
+    "comment": "Indicates a species only occurs in a specific place",
+    "val": "Эндемичный"
+  },
+  "Error": {
+    "comment": "Title for a section describing an error",
+    "val": "Ошибка"
+  },
+  "Error-title": {
+    "comment": "Title of dialog or section describing an error",
+    "val": "Ошибка"
+  },
+  "Establishment": {
+    "comment": "label in project requirements",
+    "val": "Возникновение"
+  },
+  "Exact-Date": "Точная дата",
+  "except": "за исключением",
+  "Explore": "Поиск",
+  "FEATURED": {
+    "comment": "Header for featured projects",
+    "val": "РЕКОМЕНДУЕМЫЕ"
+  },
+  "February": {
+    "comment": "Month of February",
+    "val": "Февраль"
+  },
+  "Filter": "Фильтр",
+  "Filters": "Фильтры",
+  "Flag-An-Item": "Отметить пункт",
+  "Flag-Item-Other-Description": "Некоторые другие причины вы можете изложить ниже.",
+  "Flag-Item-Other-Input-Hint": "Укажите причину, по которой вы помечаете этот элемент",
+  "Flagged": {
+    "comment": "Status when an item has been flagged",
+    "val": "Помечено"
+  },
+  "Go-back": {
+    "comment": "Label for button that returns to the previous screen",
+    "val": "Назад"
+  },
+  "Hide": "Скрыть",
+  "ID-Withdrawn": {
+    "comment": "Identification Status",
+    "val": "Отзыв идентификации"
+  },
+  "Identifiers": "Эксперты",
+  "improving--identification": {
+    "comment": "Identification category",
+    "val": "Улучшающая"
+  },
+  "Introduced": "Интродуцент",
+  "January": {
+    "comment": "Month of January",
+    "val": "Январь"
+  },
+  "JOIN": "ПРИСОЕДИНИТЬСЯ",
+  "JOINED": {
+    "comment": "Header for joined projects",
+    "val": "ПРИСОЕДИНИЛИСЬ К"
+  },
+  "July": {
+    "comment": "Month of July",
+    "val": "Июль"
+  },
+  "June": {
+    "comment": "Month of June",
+    "val": "Июнь"
+  },
+  "leading--identification": {
+    "comment": "Identification category",
+    "val": "Ведущая"
+  },
+  "Learn-More": "Узнать больше",
+  "Location": "Местоположение",
+  "Log-in": {
+    "comment": "Second person imperative label to go to log in screen",
+    "val": "Вход"
+  },
+  "LOG-OUT": "ВЫЙТИ",
+  "Map-Area": "Карта области",
+  "March": {
+    "comment": "Month of March",
+    "val": "Март"
+  },
+  "maverick--identification": {
+    "comment": "Identification category",
+    "val": "Независимое мнение"
+  },
+  "May": {
+    "comment": "Month of May",
+    "val": "Май"
+  },
+  "Media-Type": {
+    "comment": "label in project requirements",
+    "val": "Тип медиафайла"
+  },
+  "Menu": {
+    "comment": "Accessibility label for a button that opens a menu of options",
+    "val": "Меню"
+  },
+  "Missing-Date": "Отсутствует дата",
+  "Months": "Месяцы",
+  "MY-OBSERVATIONS": "МОИ НАБЛЮДЕНИЯ",
+  "Native": "Естественный",
+  "NEARBY": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "ПОБЛИЗОСТИ"
+  },
+  "Nearby": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "Около"
+  },
+  "Needs-ID--quality-grade": {
+    "comment": "Quality grade indicating observation still needs more identifications",
+    "val": "Требуется идентификация"
+  },
+  "New-Observation": {
+    "comment": "Heading when creating a new observation",
+    "val": "Новые наблюдения"
+  },
+  "No-Location": "Местоположение не указано",
+  "No-Media": "Нет медиа",
+  "none": "нет",
+  "Notifications": "Уведомления",
+  "November": {
+    "comment": "Month of November",
+    "val": "Ноябрь"
+  },
+  "Obscured": "Скрытое",
+  "Observations": "Наблюдения",
+  "Observe": {
+    "comment": "Button that starts a new observation",
+    "val": "Наблюдать"
+  },
+  "Observers": "Наблюдатели",
+  "October": {
+    "comment": "Month of October",
+    "val": "Октябрь"
+  },
+  "Offensive-Inappropriate": "Оскорбительное / Неприемлемое",
+  "OK": {
+    "comment": "Generic confirmation, e.g. button on a warning alert",
+    "val": "ОК"
+  },
+  "Open": {
+    "comment": "Adjective, as in geoprivacy",
+    "val": "Открытое"
+  },
+  "Other": {
+    "comment": "Generic option in a list for unanticipated cases, e.g. a choice to manually\nenter an explanation for why you are flagging something instead of choosing\none of the existing options",
+    "val": "Другое"
+  },
+  "Privacy-Policy": "Политика конфиденциальности",
+  "Private": "Частный",
+  "Project-Members-Only": "Только участники проекта",
+  "Projects": {
+    "comment": "As in iNat projects, collections of observations or observation search filters",
+    "val": "Проекты"
+  },
+  "Quality-Grade": {
+    "comment": "label in project requirements",
+    "val": "Уровень наблюдения"
+  },
+  "Ranks-Class": "Класс",
+  "Ranks-Complex": "Комплекс",
+  "Ranks-Epifamily": "Эписемейство",
+  "Ranks-Family": "Семейство",
+  "Ranks-Form": "Форма",
+  "Ranks-Genus": "Род",
+  "Ranks-Genushybrid": "Genus hybrid (GeoPlanet)",
+  "Ranks-Hybrid": "Гибрид",
+  "Ranks-Infraclass": "Инфракласс",
+  "Ranks-Infrahybrid": "Инфрагибрид",
+  "Ranks-Infraorder": "Инфраотряд",
+  "Ranks-Kingdom": "Царство",
+  "Ranks-Order": "Отряд / порядок",
+  "Ranks-Parvorder": "Парвотряд",
+  "Ranks-Phylum": "Тип / отдел",
+  "Ranks-Section": "Секция",
+  "Ranks-SPECIES": "ВИДЫ",
+  "Ranks-Species": "Видов",
+  "Ranks-Statefmatter": "Форма",
+  "Ranks-Subclass": "Подкласс",
+  "Ranks-Subfamily": "Подсемейство",
+  "Ranks-Subgenus": "Подрод",
+  "Ranks-Subkingdom": "Подцарство",
+  "Ranks-Suborder": "Подотряд",
+  "Ranks-Subphylum": "Подтип / подотдел",
+  "Ranks-Subsection": "Подсекция",
+  "Ranks-Subspecies": "Подвид",
+  "Ranks-Subterclass": "Надкласс",
+  "Ranks-Subtribe": "Подтриба",
+  "Ranks-Superclass": "Надкласс",
+  "Ranks-Superfamily": "Надсемейство",
+  "Ranks-Superorder": "Надотряд",
+  "Ranks-Supertribe": "Надтриба",
+  "Ranks-Tribe": "Триба",
+  "Ranks-Variety": "Разновидность",
+  "Ranks-Zoosection": "Зоосекция",
+  "Ranks-Zoosubsection": "Зооподсекция",
+  "Record-verb": {
+    "comment": "Imperative verb for recording a sound",
+    "val": "Запись"
+  },
+  "Remove-identification": {
+    "comment": "Label for button that removes an identification",
+    "val": "Удалить идентификацию"
+  },
+  "Remove-project-filter": "Удалить фильтр по проекту",
+  "Research-Grade--quality-grade": {
+    "comment": "Quality grade indicating observation is accurate and complete enough to\nshare outside of iNat",
+    "val": "Исследовательский статус"
+  },
+  "Reset-verb": {
+    "comment": "Label for a button that resets the state of an interface, e.g. a button that\nresets the sound recorder to its original state",
+    "val": "Сброс"
+  },
+  "Restore": {
+    "comment": "Label for button that restores a withdrawn identification",
+    "val": "Восстановить"
+  },
+  "Satellite--map-type": {
+    "comment": "Label for the satellite map type",
+    "val": "Спутник"
+  },
+  "SAVE": {
+    "comment": "Label for a button that persists something",
+    "val": "СОХРАНИТЬ"
+  },
+  "Save": {
+    "comment": "Label for a button that persists something",
+    "val": "Сохранить"
+  },
+  "Scientific-Name": "Научное название",
+  "Search": {
+    "comment": "Title for a search interface",
+    "val": "Поиск"
+  },
+  "September": {
+    "comment": "Month of September",
+    "val": "Сентябрь"
+  },
+  "Share": "Поделиться",
+  "Share-location": "Поделиться местоположением",
+  "Sounds": "Звуки",
+  "Spam": "Спам",
+  "Spam-Examples": "Коммерческие предложения, ссылки в никуда и т. д.",
+  "Species": "Видов",
+  "Standard--map-type": {
+    "comment": "Label for the standard map type",
+    "val": "Стандартный"
+  },
+  "Stop-verb": {
+    "comment": "Imperative verb for stopping the recording of a sound",
+    "val": "Остановить"
+  },
+  "supporting--identification": {
+    "comment": "Identification category",
+    "val": "Поддерживающая"
+  },
+  "Syncing": "Синхронизация...",
+  "Taxa": {
+    "comment": "label in project requirements",
+    "val": "Таксоны"
+  },
+  "Terms-of-Use": "Условия использования",
+  "Traditional-Project": "Традиционный проект",
+  "Umbrella-Project": "Зонтичный проект",
+  "Unknown--rank": {
+    "comment": "Text to show when a taoxn rank is unknown or missing",
+    "val": "Неизвестно"
+  },
+  "Unknown--taxon": {
+    "comment": "Text to show when a taxon or identification is unknown or missing",
+    "val": "Неизвестно"
+  },
+  "Unknown--user": {
+    "comment": "Text to show when a user (or their name) is unknown or missing",
+    "val": "Неизвестно"
+  },
+  "Unknown-error": {
+    "comment": "Generic error message",
+    "val": "Неизвестная ошибка"
+  },
+  "Users": {
+    "comment": "label in project requirements",
+    "val": "Пользователи"
+  },
+  "View-in-browser": "Просмотр в браузере",
+  "View-suggestions": {
+    "comment": "Label for a button that shows identification suggestions for an observation\nor photo",
+    "val": "Посмотреть предложения"
+  },
+  "Welcome-to-iNaturalist": "Добро пожаловать на iNaturalist!",
+  "Wild": "Дикий",
+  "Withdraw": {
+    "comment": "Label for a button that withdraws an identification",
+    "val": "Отозвать"
+  },
+  "Worldwide": "По всему миру",
+  "You-need-log-in-to-do-that": {
+    "comment": "Error message when you try to do something that requires log in",
+    "val": "Чтобы сделать это, авторизуйтесь"
+  }
 }

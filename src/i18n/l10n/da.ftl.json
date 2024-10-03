@@ -1,0 +1,636 @@
+{
+  "ABOUT": {
+    "comment": "Header for a general description, e.g. of a user, or of iNaturalist itself",
+    "val": "OM"
+  },
+  "ABOUT-COLLECTION-PROJECTS": "OM SAMLINGSPROJEKTER",
+  "ABOUT-INATURALIST": "OM INATURALIST",
+  "ABOUT-THE-DQA": {
+    "comment": "About the Data Quality Assement",
+    "val": "OM DQA"
+  },
+  "About-the-DQA-description": "Kvalitetskarakteren opsummerer nøjagtigheden, præcisionen, fuldstændigheden, relevansen og passendeheden af ​​en iNaturalistisk-observation som biodiversitetsdata. Nogle attributter bestemmes automatisk, mens andre afgøres af iNat-brugere i en afstemning. iNaturalist deler licenserede \"Forskningskvalitet\"-observationer med en række datapartnere til brug i videnskab og bevaring.",
+  "ABOUT-TRADITIONAL-PROJECTS": "OM TRADITIONELLE PROJEKTER",
+  "ABOUT-UMBRELLA-PROJECTS": "OM PARAPLYPROJEKTER",
+  "accessible-comname-sciname": {
+    "comment": "Label for a taxon when a user prefers to see or hear the common name first",
+    "val": "{ $commonName } ({ $scientificName })"
+  },
+  "accessible-sciname-comname": {
+    "comment": "Label for a taxon when a user prefers to see or hear the scientific name first",
+    "val": "{ $scientificName } ({ $commonName })"
+  },
+  "Account-Deleted": {
+    "comment": "Alert message shown after account deletion",
+    "val": "Konto slettet"
+  },
+  "ACTIVITY": "AKTIVITET",
+  "Add-agreement": {
+    "comment": "Label for a button that adds a vote of agreement",
+    "val": "Tilføj enighed"
+  },
+  "ADD-AN-ID": "TILFØJ EN ID",
+  "Add-an-ID-Later": "Tilføj en ID senere",
+  "ADD-COMMENT": "TILFØJ KOMMENTAR",
+  "Add-Date-Time": "Tilføj dato/tidspunkt",
+  "Add-disagreement": {
+    "comment": "Label for a button that adds a vote of disagreement",
+    "val": "Tilføj uenighed"
+  },
+  "ADD-EVIDENCE": "TILFØJ BEVIS",
+  "Add-evidence": {
+    "comment": "Label for a button that shows options for adding evidence, e.g. camera,\ngallery, sound, etc",
+    "val": "Tilføj bevis"
+  },
+  "Add-favorite": "Tilføj favorit",
+  "Add-Location": "Tilføj placering",
+  "Add-observations": {
+    "comment": "Accessibility label for a button that starts the process of adding an\nobservation, e.g. the button in the tab bar",
+    "val": "Tilføj observationer"
+  },
+  "ADD-OPTIONAL-COMMENT": "TILFØJ VALGFRI KOMMENTAR",
+  "Add-optional-notes": "Tilføj valgfrie notater",
+  "Adds-your-vote-of-agreement": {
+    "comment": "Hint for a button that adds a vote of agreement",
+    "val": "Tilføjer egen stemme for enighed"
+  },
+  "Adds-your-vote-of-disagreement": {
+    "comment": "Hint for a button that adds a vote of disagreement",
+    "val": "Tilføjer egen stemme for uenighed"
+  },
+  "Affiliation": "Affiliation: { $site }",
+  "Agree": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "Enig"
+  },
+  "AGREE": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "ENIG"
+  },
+  "Agree-to-all-of-the-above": {
+    "comment": "Checkbox label that checks all of the consent agreements a user must make\nbefore signing up",
+    "val": "Acceptér alle ovenstående"
+  },
+  "AGREE-WITH-ID": "VÆR ENIG I ID?",
+  "Agree-with-ID-description": "Vær enig i ID'en og foreslå flg. identifikation?",
+  "AI-Camera": {
+    "comment": "This is what we call the camera that\noverlays identification suggestions in real time",
+    "val": "AI-kamera"
+  },
+  "ALL": "ALLE",
+  "All": "Alle",
+  "All-observation-option": "Alle observationsvalgmuligheder (inkl. iNaturalist AI-kamera, Standardkamera, Upload fra Galleri og Lydoptager)",
+  "All-observations": "Alle observationer",
+  "All-organisms": "Alle organismer",
+  "all-rights-reserved": {
+    "comment": "As in intellectual property rights over a photo or other creative work",
+    "val": "alle rettigheder forbeholdes"
+  },
+  "All-taxa": "Alle taksa",
+  "ALLOW-LOCATION-ACCESS": "TILLAD PLACERINGSADGANG",
+  "Almost-done": {
+    "comment": "As in automated identification suggestions",
+    "val": "Næsten færdig!"
+  },
+  "Already-have-an-account": "Har allerede en konto? Log ind",
+  "An-Internet-connection-is-required": "Indlæsning af flere observationer kræver internetadgang.",
+  "Any": {
+    "comment": "Generic option in a menu of choices that indicates that any of the choices\nwould be acceptable",
+    "val": "Erhvert"
+  },
+  "Anyone-using-iNaturalist-can-see": {
+    "comment": " Geoprivacy sheet descriptions",
+    "val": "Alle brugere af iNaturalist, kan se, hvor denne art blev observeret, og videnskabsfolk kan lettere bruge den til forskning."
+  },
+  "APP-LANGUAGE": "APP-SPROG",
+  "APPLY-FILTERS": "ANVEND FILTRE",
+  "Apply-filters": "Anvend filtre",
+  "April": {
+    "comment": "Month of April",
+    "val": "April"
+  },
+  "Are-you-an-educator": "Er du en lærer, der ønsker at bruge iNaturalist sammen med eleverne?",
+  "Are-you-sure-you-want-to-log-out": "Sikker på, at der skal logges ud af iNaturalist-kontoen? Alle observationer, som endnu ikke er uploadet til iNaturalist, slettes.",
+  "As-you-upload-more-observations": {
+    "comment": "Onboarding text on MyObservations: 0-10 observations",
+    "val": "Efterhånden som man uploader flere observationer, kan andre i vores fællesskab hjælpe med at identificere dem!"
+  },
+  "attribution-cc-by": "visse rettigheder forbeholdes (CC BY)",
+  "attribution-cc-by-nc": "visse rettigheder forbeholdes (CC BY-NC)",
+  "attribution-cc-by-nc-nd": "visse rettigheder forbeholdes (CC BY-NC-ND)",
+  "attribution-cc-by-nc-sa": "visse rettigheder forbeholdes (CC BY-NC-SA)",
+  "attribution-cc-by-nd": "visse rettigheder forbeholdes (CC BY-ND)",
+  "attribution-cc-by-sa": "visse rettigheder forbeholdes (CC BY-SA)",
+  "August": {
+    "comment": "Month of August",
+    "val": "August"
+  },
+  "BACK-TO-LOGIN": {
+    "comment": "Returns user to login screen",
+    "val": "TILBAGE TIL LOGIN"
+  },
+  "BLOG": "BLOG",
+  "Bulk-importer": {
+    "comment": "Accessibility label for bulk import / photo import button\nThese are used by screen readers to label actionable elements iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619577-accessibilitylabel\niOS Guidelines \"A string that succinctly identifies the accessibility element.\" Starts with capital letter, no ending punctuation.",
+    "val": "Masseimport"
+  },
+  "By-exiting-changes-not-saved": "Ved at afslutte, vil ændringer til observationen ikke blive gemt.",
+  "By-exiting-observation-not-saved": "Ved at afslutte, vil observationen ikke blive gemt.",
+  "By-exiting-your-observations-not-saved": "Ved at afslutte, vil observationerne ikke blive gemt. Man kan gemme dem på sin enhed, eller de kan slettes.",
+  "By-exiting-your-photos-will-not-be-saved": "Ved at afslutte, vil fotos ikke blive gemt.",
+  "By-exiting-your-recorded-sound-will-not-be-saved": "Ved at afslutte, vil optaget lyd ikke blive gemt.",
+  "By-uploading-your-observation-to-iNaturalist-you-can": {
+    "comment": "Lead in to a list including \"Get your identifcation verified...\" and \"Share your observation...\"",
+    "val": "Ved at uploade sin observation til iNaturalist, kan man:"
+  },
+  "Camera": "Kamera",
+  "CANCEL": "AFBRYD",
+  "Cancel": "Afbryd",
+  "Captive-Cultivated": "Fangenskab/Dyrket",
+  "Casual--quality-grade": {
+    "comment": "Quality grade indicating observation does not quality for Needs ID or\nResearch Grade, e.g. missing media, voted out, etc.",
+    "val": "Uformel"
+  },
+  "CC-BY": {
+    "comment": "Short label for the Creative Commons Attribution license",
+    "val": "CC BY"
+  },
+  "CC-BY-NC": {
+    "comment": "Short label for the Creative Commons Attribution-NonCommercial license",
+    "val": "CC BY-NC"
+  },
+  "CC-BY-NC-ND": {
+    "comment": "Short label for the Creative Commons Attribution-NonCommercial-NoDerivatives license",
+    "val": "CC BY-NC-ND"
+  },
+  "CC-BY-NC-SA": {
+    "comment": "Short label for the Creative Commons Attribution-NonCommercial-ShareAlike license",
+    "val": "CC BY-NC-SA"
+  },
+  "CC-BY-ND": {
+    "comment": "Short label for the Creative Commons Attribution-NoDerivatives license",
+    "val": "CC BY-ND"
+  },
+  "CC-BY-SA": {
+    "comment": "Short label for the Creative Commons Attribution-ShareAlike license",
+    "val": "CC BY-SA"
+  },
+  "CC0": {
+    "comment": "Short label for the Creative Commons Zero declaration",
+    "val": "CC0"
+  },
+  "CHANGE-APP-LANGUAGE": "SKIFT APP-SPROG",
+  "CHANGE-DATE": {
+    "comment": "Label for a button that changes a selected date",
+    "val": "SKIFT DATO"
+  },
+  "Change-date": {
+    "comment": "Label for a button that changes a selected date",
+    "val": "Skift dato"
+  },
+  "CHANGE-END-DATE": {
+    "comment": "Label for a button that changes a selected end date",
+    "val": "SKIFT SLUTDATO"
+  },
+  "Change-end-date": {
+    "comment": "Label for a button that changes a selected end date",
+    "val": "Skift slutdato"
+  },
+  "Change-project": "Skift projekt",
+  "CHANGE-START-DATE": {
+    "comment": "Label for a button that changes a selected start date",
+    "val": "SKIFT STARTDATO"
+  },
+  "Change-start-date": {
+    "comment": "Label for a button that changes a selected start date",
+    "val": "Skift startdato"
+  },
+  "Change-taxon": "Skift takson",
+  "Change-taxon-filter": {
+    "comment": "Button that changes the taxon filter on Explore",
+    "val": "Skift taksonfilter"
+  },
+  "Change-user": "Skift bruger",
+  "Change-zoom": {
+    "comment": "Label for a button that cycles through zoom levels for the camera",
+    "val": "Skift zoom"
+  },
+  "Check-this-box-if-you-want-to-apply-a-Creative-Commons": "Markér dette felt, hvis man vil anvende en Creative Commons Attribution-NonCommercial-licens på uploadet indhold. Det betyder, at alle kan kopiere og genbruge ens fotos og/eller observationer uden at bede om tilladelse, så længe man krediteres, og indholdet ikke bruges kommercielt. Man kan vælge en anden licens eller fjerne licensen senere, men dette er den bedste licens til deling med forskere.",
+  "CHECK-YOUR-EMAIL": {
+    "comment": "Notification that appears after pressing the reset password button",
+    "val": "TJEK INDBAKKEN!"
+  },
+  "CHOOSE-PHOTOS": {
+    "comment": "Text for a button prompting the user to grant access to the gallery",
+    "val": "VÆLG FOTOS"
+  },
+  "Choose-taxon": {
+    "comment": "Label for button that chooses a taxon",
+    "val": "Vælg takson"
+  },
+  "Choose-top-taxon": {
+    "comment": "Label for button that chooses top taxon",
+    "val": "Vælg øverste takson"
+  },
+  "Clear": {
+    "comment": "Label for a button that clears content, like the text entered in a text\nfield",
+    "val": "Ryd"
+  },
+  "Close": {
+    "comment": "Label for a button that closes a window or popup",
+    "val": "Luk"
+  },
+  "Collection-Project": "Samlingsprojekt",
+  "Community-Guidelines": "Fællesskabets retningslinjer",
+  "Coordinates-copied-to-clipboard": {
+    "comment": "Notification when coordinates have been copied",
+    "val": "Koordinater kopieret til udklipsholder"
+  },
+  "Could-not-complete-at-this-time": {
+    "comment": "Error message potentially realating to not enough space on device",
+    "val": "Handlingen kunne ikke fuldføres denne gang."
+  },
+  "Could-not-complete-at-this-time-description": "Prøv at frigøre lagerplads på enheden eller genstart appen og forsøg igen.",
+  "Data-quality-assessment-date-is-accurate": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date is accurate",
+    "val": "Dato er korrekt"
+  },
+  "Data-quality-assessment-date-specified": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date was specified",
+    "val": "Dato angivet"
+  },
+  "Data-quality-assessment-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Bevis for organisme"
+  },
+  "Data-quality-assessment-has-photos-or-sounds": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Har fotos eller lyde"
+  },
+  "Data-quality-assessment-id-supported-by-two-or-more": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Er ID understøttet af to eller flere"
+  },
+  "Data-quality-assessment-location-is-accurate": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Stedet er nøjagtig"
+  },
+  "Data-quality-assessment-location-specified": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Stedet er specificeret"
+  },
+  "Data-quality-assessment-organism-is-wild": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Organisme er vild"
+  },
+  "Data-quality-assessment-recent-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Nylige beviser på en organisme"
+  },
+  "Data-quality-assessment-single-subject": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Bevis relateret til ét enkelt emne"
+  },
+  "Data-quality-assessment-title-research": {
+    "comment": "Data Quality Assessment description of the final quality grade when Research Grade",
+    "val": "Denne observation har forskningskvalitet!"
+  },
+  "Date": {
+    "comment": "label in project requirements",
+    "val": "Dato"
+  },
+  "date-format-month-day": {
+    "comment": "Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "d MMM"
+  },
+  "Date-observed": "Observationsdato",
+  "Date-observed-header-short": "Observeret",
+  "Date-Range": {
+    "comment": "Label for controls over a range of dates",
+    "val": "Datointerval"
+  },
+  "December": {
+    "comment": "Month of December",
+    "val": "December"
+  },
+  "Delete-observation": "Slet observation",
+  "Delete-photo": {
+    "comment": "Button label or accessibility label for an element that deletes a photo",
+    "val": "Slet foto"
+  },
+  "Device-storage-full": "Enhedslagerplads opbrugt",
+  "Device-storage-full-description": "iNaturalist kan muligvis ikke til at gemme fotoene, eller den kan gå ned.",
+  "DONATE": "DONÉR",
+  "Edit": {
+    "comment": "Button for editing something",
+    "val": "Redigér"
+  },
+  "Edit-Observation": "Redigér observation",
+  "Endemic": {
+    "comment": "Indicates a species only occurs in a specific place",
+    "val": "Endemisk"
+  },
+  "Error": {
+    "comment": "Title for a section describing an error",
+    "val": "Fejl"
+  },
+  "Error-title": {
+    "comment": "Title of dialog or section describing an error",
+    "val": "Fejl"
+  },
+  "Establishment": {
+    "comment": "label in project requirements",
+    "val": "Oprindelse"
+  },
+  "Exact-Date": "Eksakt dato",
+  "except": "bort set fra",
+  "Explore": "Udforsk",
+  "FEATURED": {
+    "comment": "Header for featured projects",
+    "val": "FREMHÆVEDE"
+  },
+  "February": {
+    "comment": "Month of February",
+    "val": "Februar"
+  },
+  "Filter": "Filtrér",
+  "Filters": "Filtre",
+  "Flag-An-Item": "Markér et objekt",
+  "Flag-Item-Other-Description": "Andre grunde kan du forklare nedenfor.",
+  "Flag-Item-Other-Input-Hint": "Angiv årsagen til, at du markerer dette emne",
+  "Flagged": {
+    "comment": "Status when an item has been flagged",
+    "val": "Markeret"
+  },
+  "Go-back": {
+    "comment": "Label for button that returns to the previous screen",
+    "val": "Gå tilbage"
+  },
+  "Hide": "Skjul",
+  "ID-Withdrawn": {
+    "comment": "Identification Status",
+    "val": "ID trukket tilbage"
+  },
+  "Identifiers": "identifikatorer",
+  "improving--identification": {
+    "comment": "Identification category",
+    "val": "Forbedrende"
+  },
+  "Introduced": "indført",
+  "January": {
+    "comment": "Month of January",
+    "val": "Januar"
+  },
+  "JOIN": "TILMELD",
+  "JOINED": {
+    "comment": "Header for joined projects",
+    "val": "DELTAGER"
+  },
+  "July": {
+    "comment": "Month of July",
+    "val": "Juli"
+  },
+  "June": {
+    "comment": "Month of June",
+    "val": "Juni"
+  },
+  "leading--identification": {
+    "comment": "Identification category",
+    "val": "Ledende"
+  },
+  "Learn-More": "Lær mere",
+  "Location": "Sted",
+  "Log-in": {
+    "comment": "Second person imperative label to go to log in screen",
+    "val": "Log ind"
+  },
+  "LOG-OUT": "LOG UD",
+  "Map-Area": "Kortområde",
+  "March": {
+    "comment": "Month of March",
+    "val": "Marts"
+  },
+  "maverick--identification": {
+    "comment": "Identification category",
+    "val": "Enkeltstående"
+  },
+  "May": {
+    "comment": "Month of May",
+    "val": "Maj"
+  },
+  "Media-Type": {
+    "comment": "label in project requirements",
+    "val": "Medietype"
+  },
+  "Menu": {
+    "comment": "Accessibility label for a button that opens a menu of options",
+    "val": "Menu"
+  },
+  "Missing-Date": "Dato mangler",
+  "Months": "Måneder",
+  "MY-OBSERVATIONS": "MINE OBSERVATIONER",
+  "Native": "Hjemmehørende",
+  "NEARBY": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "I NÆRHEDEN"
+  },
+  "Nearby": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "I nærheden af"
+  },
+  "Needs-ID--quality-grade": {
+    "comment": "Quality grade indicating observation still needs more identifications",
+    "val": "Behøver ID"
+  },
+  "New-Observation": {
+    "comment": "Heading when creating a new observation",
+    "val": "Ny observation"
+  },
+  "No-Location": "Ingen placering",
+  "No-Media": "Intet medie",
+  "No-space-left-on-device": {
+    "comment": "Error message when not enough memory on device",
+    "val": "Ingen enhedslagerplads tilbage"
+  },
+  "none": "ingen",
+  "Notifications": "Notifikationer",
+  "November": {
+    "comment": "Month of November",
+    "val": "November"
+  },
+  "Obscured": "Sløret",
+  "Observations": "Observationer",
+  "Observe": {
+    "comment": "Button that starts a new observation",
+    "val": "Observere"
+  },
+  "Observers": "Observatører",
+  "October": {
+    "comment": "Month of October",
+    "val": "Oktober"
+  },
+  "Offensive-Inappropriate": "Stødende/upassende",
+  "OK": {
+    "comment": "Generic confirmation, e.g. button on a warning alert",
+    "val": "OK"
+  },
+  "Open": {
+    "comment": "Adjective, as in geoprivacy",
+    "val": "Åben"
+  },
+  "Other": {
+    "comment": "Generic option in a list for unanticipated cases, e.g. a choice to manually\nenter an explanation for why you are flagging something instead of choosing\none of the existing options",
+    "val": "andet"
+  },
+  "Privacy-Policy": "Fortrolighedspolitik",
+  "Private": "Fortrolig",
+  "Project-Members-Only": "Kun Projektmedlemmer",
+  "Projects": {
+    "comment": "As in iNat projects, collections of observations or observation search filters",
+    "val": "Projekter"
+  },
+  "Quality-Grade": {
+    "comment": "label in project requirements",
+    "val": "Kvalitetsklasse"
+  },
+  "Ranks-Class": "Klasse",
+  "Ranks-Complex": "Kompleks",
+  "Ranks-Epifamily": "Epifamilie",
+  "Ranks-Family": "Familie",
+  "Ranks-Form": "form",
+  "Ranks-Genus": "Slægt",
+  "Ranks-Genushybrid": "Slægtshybrid",
+  "Ranks-Hybrid": "Hybrid",
+  "Ranks-Infraclass": "Infraklasse",
+  "Ranks-Infrahybrid": "Infrahybrid",
+  "Ranks-Infraorder": "Infraorden",
+  "Ranks-Kingdom": "Rige",
+  "Ranks-Order": "Indordning",
+  "Ranks-Parvorder": "Parvorden",
+  "Ranks-Phylum": "Stamme",
+  "Ranks-Section": "Sektion",
+  "Ranks-SPECIES": "ARTER",
+  "Ranks-Species": "Art",
+  "Ranks-Statefmatter": "Sagens kerne",
+  "Ranks-Subclass": "Underklasse",
+  "Ranks-Subfamily": "Underfamilie",
+  "Ranks-Subgenus": "Underslægt",
+  "Ranks-Subkingdom": "Underrige",
+  "Ranks-Suborder": "Underorden",
+  "Ranks-Subphylum": "Underrække",
+  "Ranks-Subsection": "Undersektion",
+  "Ranks-Subspecies": "Underarter",
+  "Ranks-Subterclass": "Subterklasse",
+  "Ranks-Subtribe": "Understamme",
+  "Ranks-Superclass": "Superklasse",
+  "Ranks-Superfamily": "Superfamilie",
+  "Ranks-Superorder": "Superorden",
+  "Ranks-Supertribe": "Superstamme",
+  "Ranks-Tribe": "Stamme",
+  "Ranks-Variety": "Varietet",
+  "Ranks-Zoosection": "Zoosektion",
+  "Ranks-Zoosubsection": "Zooundersektion",
+  "Record-verb": {
+    "comment": "Imperative verb for recording a sound",
+    "val": "Optegnelse"
+  },
+  "Remove-identification": {
+    "comment": "Label for button that removes an identification",
+    "val": "Fjern identifikation"
+  },
+  "Remove-project-filter": "Fjern projektfilter",
+  "Research-Grade--quality-grade": {
+    "comment": "Quality grade indicating observation is accurate and complete enough to\nshare outside of iNat",
+    "val": "Forskningskvalitet"
+  },
+  "Reset-verb": {
+    "comment": "Label for a button that resets the state of an interface, e.g. a button that\nresets the sound recorder to its original state",
+    "val": "Nulstil"
+  },
+  "Restore": {
+    "comment": "Label for button that restores a withdrawn identification",
+    "val": "Gendan"
+  },
+  "Satellite--map-type": {
+    "comment": "Label for the satellite map type",
+    "val": "Satellit"
+  },
+  "SAVE": {
+    "comment": "Label for a button that persists something",
+    "val": "GEM"
+  },
+  "Save": {
+    "comment": "Label for a button that persists something",
+    "val": "Gem"
+  },
+  "Scientific-Name": "Videnskabeligt navn",
+  "Search": {
+    "comment": "Title for a search interface",
+    "val": "Søg"
+  },
+  "September": {
+    "comment": "Month of September",
+    "val": "September"
+  },
+  "Share": "Del",
+  "Share-location": "Del placering",
+  "Sounds": "Lyde",
+  "Spam": "spam",
+  "Spam-Examples": "Kommerciel opfordring, fører ingen steder hen etc.",
+  "Species": "Art",
+  "Standard--map-type": {
+    "comment": "Label for the standard map type",
+    "val": "Standard"
+  },
+  "Stop-verb": {
+    "comment": "Imperative verb for stopping the recording of a sound",
+    "val": "Stop"
+  },
+  "supporting--identification": {
+    "comment": "Identification category",
+    "val": "Understøttende"
+  },
+  "Syncing": "Synkroniserer...",
+  "Taxa": {
+    "comment": "label in project requirements",
+    "val": "Taksa"
+  },
+  "Terms-of-Use": "Vilkår for brug",
+  "Traditional-Project": "Traditionelt projekt",
+  "Umbrella-Project": "Paraplyprojekt",
+  "Unknown--rank": {
+    "comment": "Text to show when a taoxn rank is unknown or missing",
+    "val": "Ukendt"
+  },
+  "Unknown--taxon": {
+    "comment": "Text to show when a taxon or identification is unknown or missing",
+    "val": "Ukendt"
+  },
+  "Unknown--user": {
+    "comment": "Text to show when a user (or their name) is unknown or missing",
+    "val": "Ukendt"
+  },
+  "Unknown-error": {
+    "comment": "Generic error message",
+    "val": "Ukendt fejl"
+  },
+  "Users": {
+    "comment": "label in project requirements",
+    "val": "Brugere"
+  },
+  "View-in-browser": "Vis i browser",
+  "View-suggestions": {
+    "comment": "Label for a button that shows identification suggestions for an observation\nor photo",
+    "val": "Vis forslag"
+  },
+  "Wild": "vild",
+  "Withdraw": {
+    "comment": "Label for a button that withdraws an identification",
+    "val": "Træk tilbage"
+  },
+  "Worldwide": "I hele verden",
+  "You-need-log-in-to-do-that": {
+    "comment": "Error message when you try to do something that requires log in",
+    "val": "Dette kræver, at du først logger ind."
+  }
+}

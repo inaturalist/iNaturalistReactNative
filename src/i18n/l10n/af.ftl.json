@@ -1,4 +1,68 @@
 {
+  "ABOUT": {
+    "comment": "Header for a general description, e.g. of a user, or of iNaturalist itself",
+    "val": "OOR"
+  },
+  "accessible-comname-sciname": {
+    "comment": "Label for a taxon when a user prefers to see or hear the common name first",
+    "val": "{ $commonName } ({ $scientificName })"
+  },
+  "All-observations": "Alle waarnemings",
+  "all-rights-reserved": {
+    "comment": "As in intellectual property rights over a photo or other creative work",
+    "val": "alle regte voorbehou"
+  },
+  "Any": {
+    "comment": "Generic option in a menu of choices that indicates that any of the choices\nwould be acceptable",
+    "val": "Enige"
+  },
+  "Cancel": "Kanselleer",
+  "Casual--quality-grade": {
+    "comment": "Quality grade indicating observation does not quality for Needs ID or\nResearch Grade, e.g. missing media, voted out, etc.",
+    "val": "Informeel"
+  },
+  "Community-Guidelines": "Gemeenskapsriglyne",
+  "Data-quality-assessment-date-is-accurate": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date is accurate",
+    "val": "Datum is akkuraat"
+  },
+  "Date-observed": "Datum waargeneem",
+  "December": {
+    "comment": "Month of December",
+    "val": "Desember"
+  },
+  "Deleting-x-of-y-observations": {
+    "comment": "Shows the number of observations a user is currently deleting out of total on my observations page",
+    "val": "Vee { $total ->\n  [one] tans 1 van 1 waarnemings uit\n  [two] 1 van 2 waarnemings uit\n *[other] tans { $currentDeleteCount }  van { $total } waarnemings uit\n}"
+  },
+  "Explore": "Verken",
+  "improving--identification": {
+    "comment": "Identification category",
+    "val": "Verbeterend"
+  },
+  "leading--identification": {
+    "comment": "Identification category",
+    "val": "Leidend"
+  },
+  "November": {
+    "comment": "Month of November",
+    "val": "November"
+  },
+  "Obscured": "Weggesteek",
+  "October": {
+    "comment": "Month of October",
+    "val": "Oktober"
+  },
+  "September": {
+    "comment": "Month of September",
+    "val": "September"
+  },
+  "supporting--identification": {
+    "comment": "Identification category",
+    "val": "Ondersteunend"
+  },
+  "Traditional-Project": "Tradisionele projek",
+  "Umbrella-Project": "Sambreelprojek",
   "Welcome-to-iNaturalist": "Welkom by iNaturalist!",
   "Welcome-user": {
     "comment": "Welcome user back to app",

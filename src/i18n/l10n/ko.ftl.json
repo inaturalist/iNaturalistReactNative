@@ -1,0 +1,358 @@
+{
+  "ABOUT": {
+    "comment": "Header for a general description, e.g. of a user, or of iNaturalist itself",
+    "val": "소개"
+  },
+  "Agree": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "동의"
+  },
+  "AGREE": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "동의"
+  },
+  "ALL": "모두",
+  "All": "모두",
+  "All-observations": "모든 관찰",
+  "all-rights-reserved": {
+    "comment": "As in intellectual property rights over a photo or other creative work",
+    "val": "모든 권리는 저작권자에게 있습니다."
+  },
+  "All-taxa": "모든 분류군",
+  "Any": {
+    "comment": "Generic option in a menu of choices that indicates that any of the choices\nwould be acceptable",
+    "val": "모두"
+  },
+  "April": {
+    "comment": "Month of April",
+    "val": "4월"
+  },
+  "August": {
+    "comment": "Month of August",
+    "val": "8월"
+  },
+  "Camera": "카메라",
+  "Cancel": "취소",
+  "Casual--quality-grade": {
+    "comment": "Quality grade indicating observation does not quality for Needs ID or\nResearch Grade, e.g. missing media, voted out, etc.",
+    "val": "비공식적 등급"
+  },
+  "Clear": {
+    "comment": "Label for a button that clears content, like the text entered in a text\nfield",
+    "val": "지우기"
+  },
+  "Close": {
+    "comment": "Label for a button that closes a window or popup",
+    "val": "닫기"
+  },
+  "Collection-Project": "수집형 프로젝트",
+  "Community-Guidelines": "공동체 지침",
+  "Data-quality-assessment-date-is-accurate": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date is accurate",
+    "val": "날짜가 정확함"
+  },
+  "Data-quality-assessment-date-specified": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date was specified",
+    "val": "날짜가 특정됨"
+  },
+  "Data-quality-assessment-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "생물의 증거임"
+  },
+  "Data-quality-assessment-has-photos-or-sounds": {
+    "comment": "Data Quality Assessment metric",
+    "val": "사진이나 음원이 있음"
+  },
+  "Data-quality-assessment-id-supported-by-two-or-more": {
+    "comment": "Data Quality Assessment metric",
+    "val": "2명 이상이 이름에 동의함"
+  },
+  "Data-quality-assessment-location-is-accurate": {
+    "comment": "Data Quality Assessment metric",
+    "val": "위치가 정확함"
+  },
+  "Data-quality-assessment-location-specified": {
+    "comment": "Data Quality Assessment metric",
+    "val": "위치가 특정됨"
+  },
+  "Data-quality-assessment-organism-is-wild": {
+    "comment": "Data Quality Assessment metric",
+    "val": "야생에서 관찰된 생물임"
+  },
+  "Data-quality-assessment-recent-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "최근 생물의 증거임"
+  },
+  "Data-quality-assessment-title-research": {
+    "comment": "Data Quality Assessment description of the final quality grade when Research Grade",
+    "val": "본 관찰은 연구 자료 등급 관찰입니다!"
+  },
+  "Date": {
+    "comment": "label in project requirements",
+    "val": "날짜"
+  },
+  "Date-observed": "관찰된 날짜",
+  "Date-observed-header-short": "관찰됨",
+  "Date-Range": {
+    "comment": "Label for controls over a range of dates",
+    "val": "날짜 범위"
+  },
+  "December": {
+    "comment": "Month of December",
+    "val": "12월"
+  },
+  "Delete-observation": "관찰 기록 삭제",
+  "Delete-photo": {
+    "comment": "Button label or accessibility label for an element that deletes a photo",
+    "val": "사진을 삭제하시겠습니까?"
+  },
+  "DONATE": "기부하기",
+  "Edit": {
+    "comment": "Button for editing something",
+    "val": "수정"
+  },
+  "Edit-location": {
+    "comment": "Label for interactive element that takes you to a location choosing screen",
+    "val": "위치 수정"
+  },
+  "Edit-Observation": "관찰 수정",
+  "Endemic": {
+    "comment": "Indicates a species only occurs in a specific place",
+    "val": "고유종"
+  },
+  "Error": {
+    "comment": "Title for a section describing an error",
+    "val": "오류"
+  },
+  "Error-title": {
+    "comment": "Title of dialog or section describing an error",
+    "val": "오류"
+  },
+  "Establishment": {
+    "comment": "label in project requirements",
+    "val": "상태"
+  },
+  "Exact-Date": "정확한 날짜",
+  "Explore": "둘러보기",
+  "February": {
+    "comment": "Month of February",
+    "val": "2월"
+  },
+  "Filter": "필터",
+  "Filters": "필터",
+  "Flag-An-Item": "항목을 플래그",
+  "Flag-Item-Other-Input-Hint": "이 항목을 플래그하는 이유를 기입하세요",
+  "Go-back": {
+    "comment": "Label for button that returns to the previous screen",
+    "val": "돌아가기"
+  },
+  "Identifiers": "동정한 사용자들",
+  "improving--identification": {
+    "comment": "Identification category",
+    "val": "개선 중"
+  },
+  "Introduced": "도입종",
+  "January": {
+    "comment": "Month of January",
+    "val": "1월"
+  },
+  "July": {
+    "comment": "Month of July",
+    "val": "7월"
+  },
+  "June": {
+    "comment": "Month of June",
+    "val": "6월"
+  },
+  "Learn-More": "더 알아보기",
+  "Location": "위치",
+  "Log-in": {
+    "comment": "Second person imperative label to go to log in screen",
+    "val": "로그인"
+  },
+  "Map-Area": "지도 영역",
+  "March": {
+    "comment": "Month of March",
+    "val": "3월"
+  },
+  "maverick--identification": {
+    "comment": "Identification category",
+    "val": "비협조적"
+  },
+  "May": {
+    "comment": "Month of May",
+    "val": "5월"
+  },
+  "Media-Type": {
+    "comment": "label in project requirements",
+    "val": "미디어 유형"
+  },
+  "Menu": {
+    "comment": "Accessibility label for a button that opens a menu of options",
+    "val": "메뉴"
+  },
+  "Missing-Date": "날짜가 없음",
+  "Months": "월별",
+  "Native": "토착종",
+  "Nearby": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "근처"
+  },
+  "Needs-ID--quality-grade": {
+    "comment": "Quality grade indicating observation still needs more identifications",
+    "val": "동정 필요 등급"
+  },
+  "New-Observation": {
+    "comment": "Heading when creating a new observation",
+    "val": "새로운 관찰"
+  },
+  "No-Location": "위치 없음",
+  "none": "없음",
+  "November": {
+    "comment": "Month of November",
+    "val": "11월"
+  },
+  "Obscured": "위치 숨김",
+  "Observations": "관찰",
+  "Observe": {
+    "comment": "Button that starts a new observation",
+    "val": "관찰"
+  },
+  "Observers": "관찰자",
+  "October": {
+    "comment": "Month of October",
+    "val": "10월"
+  },
+  "OK": {
+    "comment": "Generic confirmation, e.g. button on a warning alert",
+    "val": "확인"
+  },
+  "Open": {
+    "comment": "Adjective, as in geoprivacy",
+    "val": "공개"
+  },
+  "Other": {
+    "comment": "Generic option in a list for unanticipated cases, e.g. a choice to manually\nenter an explanation for why you are flagging something instead of choosing\none of the existing options",
+    "val": "기타"
+  },
+  "Privacy-Policy": "개인정보 정책",
+  "Private": "비공개",
+  "Projects": {
+    "comment": "As in iNat projects, collections of observations or observation search filters",
+    "val": "프로젝트"
+  },
+  "Quality-Grade": {
+    "comment": "label in project requirements",
+    "val": "품질 등급"
+  },
+  "Ranks-Class": "Class",
+  "Ranks-Epifamily": "Epifamily",
+  "Ranks-Family": "Family",
+  "Ranks-Genus": "Genus",
+  "Ranks-Hybrid": "교잡종",
+  "Ranks-Infraclass": "Infraclass",
+  "Ranks-Infraorder": "Infraorder",
+  "Ranks-Kingdom": "Kingdom",
+  "Ranks-Order": "Order",
+  "Ranks-Parvorder": "Parvorder",
+  "Ranks-Phylum": "Phylum",
+  "Ranks-SPECIES": "종",
+  "Ranks-Species": "Species",
+  "Ranks-Subclass": "Subclass",
+  "Ranks-Subfamily": "Subfamily",
+  "Ranks-Subgenus": "Subgenus",
+  "Ranks-Subkingdom": "Subkingdom",
+  "Ranks-Suborder": "Suborder",
+  "Ranks-Subphylum": "Subphylum",
+  "Ranks-Subspecies": "Subspecies",
+  "Ranks-Subterclass": "Subterclass",
+  "Ranks-Superclass": "Superclass",
+  "Ranks-Superfamily": "Superfamily",
+  "Ranks-Superorder": "Superorder",
+  "Research-Grade--quality-grade": {
+    "comment": "Quality grade indicating observation is accurate and complete enough to\nshare outside of iNat",
+    "val": "연구 자료 등급"
+  },
+  "Reset-verb": {
+    "comment": "Label for a button that resets the state of an interface, e.g. a button that\nresets the sound recorder to its original state",
+    "val": "재설정"
+  },
+  "Restore": {
+    "comment": "Label for button that restores a withdrawn identification",
+    "val": "복구"
+  },
+  "Satellite--map-type": {
+    "comment": "Label for the satellite map type",
+    "val": "위성"
+  },
+  "SAVE": {
+    "comment": "Label for a button that persists something",
+    "val": "저장"
+  },
+  "Save": {
+    "comment": "Label for a button that persists something",
+    "val": "저장"
+  },
+  "Scientific-Name": "학명",
+  "Search": {
+    "comment": "Title for a search interface",
+    "val": "검색"
+  },
+  "September": {
+    "comment": "Month of September",
+    "val": "9월"
+  },
+  "Share": "공유",
+  "Spam": "스팸",
+  "Species": "Species",
+  "Standard--map-type": {
+    "comment": "Label for the standard map type",
+    "val": "기본값"
+  },
+  "Stop-verb": {
+    "comment": "Imperative verb for stopping the recording of a sound",
+    "val": "중지"
+  },
+  "supporting--identification": {
+    "comment": "Identification category",
+    "val": "지지 중"
+  },
+  "Syncing": "동기화 중...",
+  "Taxa": {
+    "comment": "label in project requirements",
+    "val": "분류군"
+  },
+  "Traditional-Project": "일반 프로젝트",
+  "Umbrella-Project": "우산형 프로젝트",
+  "Unknown--rank": {
+    "comment": "Text to show when a taoxn rank is unknown or missing",
+    "val": "알 수 없음"
+  },
+  "Unknown--taxon": {
+    "comment": "Text to show when a taxon or identification is unknown or missing",
+    "val": "알 수 없음"
+  },
+  "Unknown--user": {
+    "comment": "Text to show when a user (or their name) is unknown or missing",
+    "val": "알 수 없음"
+  },
+  "Unknown-error": {
+    "comment": "Generic error message",
+    "val": "알 수 없는 오류"
+  },
+  "Users": {
+    "comment": "label in project requirements",
+    "val": "사용자"
+  },
+  "View-in-browser": "브라우저에서 보기",
+  "View-suggestions": {
+    "comment": "Label for a button that shows identification suggestions for an observation\nor photo",
+    "val": "제안 보기"
+  },
+  "Wild": "야생",
+  "Withdraw": {
+    "comment": "Label for a button that withdraws an identification",
+    "val": "취소하기"
+  },
+  "Worldwide": "전 세계"
+}

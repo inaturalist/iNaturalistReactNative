@@ -1,0 +1,430 @@
+{
+  "ABOUT": {
+    "comment": "Header for a general description, e.g. of a user, or of iNaturalist itself",
+    "val": "O aplikaci"
+  },
+  "Agree": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "Souhlasím"
+  },
+  "AGREE": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "SOUHLASÍM"
+  },
+  "ALL": "Vše",
+  "All": "Vše",
+  "All-observations": "Všechna pozorování",
+  "all-rights-reserved": {
+    "comment": "As in intellectual property rights over a photo or other creative work",
+    "val": "Všechna práva vyhrazena"
+  },
+  "All-taxa": "Všechny taxony",
+  "Any": {
+    "comment": "Generic option in a menu of choices that indicates that any of the choices\nwould be acceptable",
+    "val": "Jakékoliv"
+  },
+  "April": {
+    "comment": "Month of April",
+    "val": "Duben"
+  },
+  "August": {
+    "comment": "Month of August",
+    "val": "Srpen"
+  },
+  "Camera": "Fotoaparát",
+  "Cancel": "Storno",
+  "Casual--quality-grade": {
+    "comment": "Quality grade indicating observation does not quality for Needs ID or\nResearch Grade, e.g. missing media, voted out, etc.",
+    "val": "Neformální"
+  },
+  "Close": {
+    "comment": "Label for a button that closes a window or popup",
+    "val": "Zavřít"
+  },
+  "Collection-Project": "Sbírka projektu",
+  "Community-Guidelines": "Pravidla komunity",
+  "Coordinates-copied-to-clipboard": {
+    "comment": "Notification when coordinates have been copied",
+    "val": "Souřadnice zkopírovány do schránky"
+  },
+  "Data-quality-assessment-date-is-accurate": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date is accurate",
+    "val": "Datum je přesné"
+  },
+  "Data-quality-assessment-date-specified": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date was specified",
+    "val": "Datum specifikováno"
+  },
+  "Data-quality-assessment-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Důkaz o organismu"
+  },
+  "Data-quality-assessment-has-photos-or-sounds": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Má fotky nebo zvuky"
+  },
+  "Data-quality-assessment-id-supported-by-two-or-more": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Má ID podporované dvěma nebo více"
+  },
+  "Data-quality-assessment-location-is-accurate": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Umístění je přesné"
+  },
+  "Data-quality-assessment-location-specified": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Umístění určeno"
+  },
+  "Data-quality-assessment-organism-is-wild": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Organismus žije ve volné přírodě"
+  },
+  "Data-quality-assessment-recent-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Nedávné důkazy o organismu"
+  },
+  "Data-quality-assessment-single-subject": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Důkazy týkající se jediného subjektu"
+  },
+  "Data-quality-assessment-title-research": {
+    "comment": "Data Quality Assessment description of the final quality grade when Research Grade",
+    "val": "Toto pozorování je pozorování výzkumného stupně!"
+  },
+  "Date": {
+    "comment": "label in project requirements",
+    "val": "Datum"
+  },
+  "date-format-month-day": {
+    "comment": "Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "d. MMM"
+  },
+  "Date-observed": "Datum pozorování",
+  "Date-observed-header-short": "Pozorováno",
+  "Date-Range": {
+    "comment": "Label for controls over a range of dates",
+    "val": "Časové období"
+  },
+  "December": {
+    "comment": "Month of December",
+    "val": "Prosinec"
+  },
+  "Delete-observation": "Odstranit pozorování",
+  "Delete-photo": {
+    "comment": "Button label or accessibility label for an element that deletes a photo",
+    "val": "Smazat fotografii"
+  },
+  "DONATE": "DAROVAT",
+  "Edit": {
+    "comment": "Button for editing something",
+    "val": "Editovat"
+  },
+  "Edit-location": {
+    "comment": "Label for interactive element that takes you to a location choosing screen",
+    "val": "Upravit umístění"
+  },
+  "Edit-Observation": "Editovat pozorování",
+  "Endemic": {
+    "comment": "Indicates a species only occurs in a specific place",
+    "val": "endemický"
+  },
+  "Error": {
+    "comment": "Title for a section describing an error",
+    "val": "Chyba"
+  },
+  "Error-title": {
+    "comment": "Title of dialog or section describing an error",
+    "val": "Chyba"
+  },
+  "Establishment": {
+    "comment": "label in project requirements",
+    "val": "Vznik"
+  },
+  "Exact-Date": "Přesné datum",
+  "except": "mimo",
+  "Explore": "Procházet",
+  "FEATURED": {
+    "comment": "Header for featured projects",
+    "val": "VYBRANÉ"
+  },
+  "February": {
+    "comment": "Month of February",
+    "val": "Únor"
+  },
+  "Filter": "Filtrovat",
+  "Filters": "Filtry",
+  "Flag-An-Item": "Označit položku",
+  "Flag-Item-Other-Description": "Jiný důvod můžete vysvětlit níže.",
+  "Flag-Item-Other-Input-Hint": "Uveďte důvod, proč označujete tuto položku",
+  "Flagged": {
+    "comment": "Status when an item has been flagged",
+    "val": "Označený"
+  },
+  "Go-back": {
+    "comment": "Label for button that returns to the previous screen",
+    "val": "Jít zpět"
+  },
+  "Hide": "Skrýt",
+  "ID-Withdrawn": {
+    "comment": "Identification Status",
+    "val": "ID odebráno"
+  },
+  "Identifiers": "Identifikátoři",
+  "improving--identification": {
+    "comment": "Identification category",
+    "val": "Zlepšování"
+  },
+  "Introduced": "zavlečený",
+  "January": {
+    "comment": "Month of January",
+    "val": "Leden"
+  },
+  "JOIN": "PŘIPOJIT SE",
+  "JOINED": {
+    "comment": "Header for joined projects",
+    "val": "ČLENEM"
+  },
+  "July": {
+    "comment": "Month of July",
+    "val": "Červenec"
+  },
+  "June": {
+    "comment": "Month of June",
+    "val": "Červen"
+  },
+  "leading--identification": {
+    "comment": "Identification category",
+    "val": "Vedoucí"
+  },
+  "Learn-More": "Více informací",
+  "Location": "Místo",
+  "Log-in": {
+    "comment": "Second person imperative label to go to log in screen",
+    "val": "Přihlásit se"
+  },
+  "LOG-OUT": "ODHLÁSIT SE",
+  "Map-Area": "Mapová oblast",
+  "March": {
+    "comment": "Month of March",
+    "val": "Březen"
+  },
+  "maverick--identification": {
+    "comment": "Identification category",
+    "val": "Samorost"
+  },
+  "May": {
+    "comment": "Month of May",
+    "val": "Květen"
+  },
+  "Media-Type": {
+    "comment": "label in project requirements",
+    "val": "Typ média"
+  },
+  "Menu": {
+    "comment": "Accessibility label for a button that opens a menu of options",
+    "val": "Nabídka"
+  },
+  "Missing-Date": "Chybějící datum",
+  "Months": "Měsíce",
+  "MY-OBSERVATIONS": "MOJE POZOROVÁNÍ",
+  "Native": "místní",
+  "NEARBY": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "NEDALEKÉ"
+  },
+  "Nearby": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "Poblíž"
+  },
+  "Needs-ID--quality-grade": {
+    "comment": "Quality grade indicating observation still needs more identifications",
+    "val": "Potřebuje identifikaci"
+  },
+  "New-Observation": {
+    "comment": "Heading when creating a new observation",
+    "val": "Nové pozorování"
+  },
+  "No-Location": "Neznámá poloha",
+  "No-Media": "Žádná média",
+  "none": "nic",
+  "Notifications": "Oznámení",
+  "November": {
+    "comment": "Month of November",
+    "val": "Listopad"
+  },
+  "Obscured": "Přibližné",
+  "Observations": "Pozorování",
+  "Observe": {
+    "comment": "Button that starts a new observation",
+    "val": "Pozorovat"
+  },
+  "Observers": "Pozorovatelé",
+  "October": {
+    "comment": "Month of October",
+    "val": "Říjen"
+  },
+  "Offensive-Inappropriate": "Útočný / nevhodný",
+  "OK": {
+    "comment": "Generic confirmation, e.g. button on a warning alert",
+    "val": "Dobře"
+  },
+  "Open": {
+    "comment": "Adjective, as in geoprivacy",
+    "val": "Otevřený"
+  },
+  "Other": {
+    "comment": "Generic option in a list for unanticipated cases, e.g. a choice to manually\nenter an explanation for why you are flagging something instead of choosing\none of the existing options",
+    "val": "Ostatní"
+  },
+  "Privacy-Policy": "Zásady ochrany osobních údajů",
+  "Private": "Soukromý",
+  "Project-Members-Only": "Pouze členové projektu",
+  "Projects": {
+    "comment": "As in iNat projects, collections of observations or observation search filters",
+    "val": "Projekty"
+  },
+  "Quality-Grade": {
+    "comment": "label in project requirements",
+    "val": "Úroveň kvality"
+  },
+  "Ranks-Class": "Třída",
+  "Ranks-Complex": "Komplex",
+  "Ranks-Epifamily": "epičeleď",
+  "Ranks-Family": "Čeleď",
+  "Ranks-Form": "forma",
+  "Ranks-Genus": "rod",
+  "Ranks-Genushybrid": "hybridní rod",
+  "Ranks-Hybrid": "kříženec",
+  "Ranks-Infraclass": "Infratřída",
+  "Ranks-Infrahybrid": "infrahybrid",
+  "Ranks-Infraorder": "Infrařád",
+  "Ranks-Kingdom": "Říše",
+  "Ranks-Order": "Řadit",
+  "Ranks-Parvorder": "parvorder",
+  "Ranks-Phylum": "kmen",
+  "Ranks-Section": "sekce",
+  "Ranks-SPECIES": "DRUH",
+  "Ranks-Species": "druhů",
+  "Ranks-Statefmatter": "Stav věci",
+  "Ranks-Subclass": "Podtřída",
+  "Ranks-Subfamily": "podčeleď",
+  "Ranks-Subgenus": "podrod",
+  "Ranks-Subkingdom": "Podříše",
+  "Ranks-Suborder": "Podřád",
+  "Ranks-Subphylum": "Podkmen",
+  "Ranks-Subsection": "pododdíl",
+  "Ranks-Subspecies": "poddruh",
+  "Ranks-Subterclass": "Nadtřída",
+  "Ranks-Subtribe": "Podtribus",
+  "Ranks-Superclass": "Nadtřída",
+  "Ranks-Superfamily": "nadčeleď",
+  "Ranks-Superorder": "Nadřád",
+  "Ranks-Supertribe": "Nadtribus",
+  "Ranks-Tribe": "Tribus",
+  "Ranks-Variety": "odrůda",
+  "Ranks-Zoosection": "zoosekce",
+  "Ranks-Zoosubsection": "Zoopodsekce",
+  "Record-verb": {
+    "comment": "Imperative verb for recording a sound",
+    "val": "Záznam"
+  },
+  "Remove-identification": {
+    "comment": "Label for button that removes an identification",
+    "val": "Odebrat identifikaci"
+  },
+  "Remove-project-filter": "Odstranit filtr projektu",
+  "Research-Grade--quality-grade": {
+    "comment": "Quality grade indicating observation is accurate and complete enough to\nshare outside of iNat",
+    "val": "Výzkumný stupeň"
+  },
+  "Reset-verb": {
+    "comment": "Label for a button that resets the state of an interface, e.g. a button that\nresets the sound recorder to its original state",
+    "val": "Resetovat"
+  },
+  "Restore": {
+    "comment": "Label for button that restores a withdrawn identification",
+    "val": "Obnovit"
+  },
+  "Satellite--map-type": {
+    "comment": "Label for the satellite map type",
+    "val": "Satelit"
+  },
+  "SAVE": {
+    "comment": "Label for a button that persists something",
+    "val": "ULOŽIT"
+  },
+  "Save": {
+    "comment": "Label for a button that persists something",
+    "val": "Uložit"
+  },
+  "Scientific-Name": "Vědecký název",
+  "Search": {
+    "comment": "Title for a search interface",
+    "val": "Hledat"
+  },
+  "September": {
+    "comment": "Month of September",
+    "val": "září"
+  },
+  "Share": "Sdílet",
+  "Share-location": "Sdílet polohu",
+  "Sounds": "Zvuky",
+  "Spam": "Spam",
+  "Spam-Examples": "Komerční žádost, neplatné odkazy atd.",
+  "Species": "druhů",
+  "Standard--map-type": {
+    "comment": "Label for the standard map type",
+    "val": "Standardní"
+  },
+  "Stop-verb": {
+    "comment": "Imperative verb for stopping the recording of a sound",
+    "val": "Zastavit"
+  },
+  "supporting--identification": {
+    "comment": "Identification category",
+    "val": "Podpora"
+  },
+  "Syncing": "Synchronizuji...",
+  "Taxa": {
+    "comment": "label in project requirements",
+    "val": "Taxony"
+  },
+  "Terms-of-Use": "Podmínky použití",
+  "Traditional-Project": "Tradiční projekt",
+  "Umbrella-Project": "Zastřešující projekt",
+  "Unknown--rank": {
+    "comment": "Text to show when a taoxn rank is unknown or missing",
+    "val": "Neznámý"
+  },
+  "Unknown--taxon": {
+    "comment": "Text to show when a taxon or identification is unknown or missing",
+    "val": "Neznámý"
+  },
+  "Unknown--user": {
+    "comment": "Text to show when a user (or their name) is unknown or missing",
+    "val": "Neznámý"
+  },
+  "Unknown-error": {
+    "comment": "Generic error message",
+    "val": "Neznámá chyba"
+  },
+  "Users": {
+    "comment": "label in project requirements",
+    "val": "Uživatelé"
+  },
+  "View-in-browser": "Zobrazit v prohlížeči",
+  "View-suggestions": {
+    "comment": "Label for a button that shows identification suggestions for an observation\nor photo",
+    "val": "Zobrazit návrhy"
+  },
+  "Wild": "divoký",
+  "Withdraw": {
+    "comment": "Label for a button that withdraws an identification",
+    "val": "Odstranit"
+  },
+  "Worldwide": "Celosvětové",
+  "You-need-log-in-to-do-that": {
+    "comment": "Error message when you try to do something that requires log in",
+    "val": "Pro tuto akci je nutné se přihlásit."
+  }
+}

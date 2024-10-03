@@ -1,0 +1,1099 @@
+{
+  "ABOUT": {
+    "comment": "Header for a general description, e.g. of a user, or of iNaturalist itself",
+    "val": "TENTANG"
+  },
+  "ABOUT-COLLECTION-PROJECTS": "TENTANG PROYEK KOLEKSI",
+  "ABOUT-INATURALIST": "TENTANG INATURALIST",
+  "ABOUT-THE-DQA": {
+    "comment": "About the Data Quality Assement",
+    "val": "TENTANG AKD"
+  },
+  "About-the-DQA-description": "Tingkat Kualitas merangkum akurasi, presisi, kelengkapan, relevansi, serta kelayakan dari suatu pengamatan iNaturalist sebagai data keanekaragaman hayati. Beberapa atribut ditentukan secara otomatis, sementara beberapa atribut lain bergantung kepada suara pengguna iNat. iNaturalist membagikan pengamatan-pengamatan \"Tingkat Riset\" yang berlisensi dengan beberapa mitra data untuk keperluan sains dan konservasi.",
+  "ABOUT-TRADITIONAL-PROJECTS": "TENTANG PROYEK TRADISIONAL",
+  "ABOUT-UMBRELLA-PROJECTS": "TENTANG PROYEK PAYUNG",
+  "accessible-comname-sciname": {
+    "comment": "Label for a taxon when a user prefers to see or hear the common name first",
+    "val": "{ $commonName } ({ $scientificName })"
+  },
+  "accessible-sciname-comname": {
+    "comment": "Label for a taxon when a user prefers to see or hear the scientific name first",
+    "val": "{ $scientificName } ({ $commonName })"
+  },
+  "Account-Deleted": {
+    "comment": "Alert message shown after account deletion",
+    "val": "Akun Dihapus"
+  },
+  "ACTIVITY": "AKTIVITAS",
+  "Add-agreement": {
+    "comment": "Label for a button that adds a vote of agreement",
+    "val": "Tambah suara setuju"
+  },
+  "ADD-AN-ID": "TAMBAH ID",
+  "Add-an-ID-Later": "Tambah ID Nanti",
+  "ADD-COMMENT": "TAMBAH KOMENTAR",
+  "Add-Date-Time": "Tambah Tanggal/Waktu",
+  "Add-disagreement": {
+    "comment": "Label for a button that adds a vote of disagreement",
+    "val": "Tambah suara tidak setuju"
+  },
+  "ADD-EVIDENCE": "TAMBAH BUKTI",
+  "Add-evidence": {
+    "comment": "Label for a button that shows options for adding evidence, e.g. camera,\ngallery, sound, etc",
+    "val": "Tambah bukti"
+  },
+  "Add-favorite": "Tambah favorit",
+  "Add-Location": "Tambah Lokasi",
+  "Add-observations": {
+    "comment": "Accessibility label for a button that starts the process of adding an\nobservation, e.g. the button in the tab bar",
+    "val": "Tambah pengamatan"
+  },
+  "ADD-OPTIONAL-COMMENT": "TAMBAH KOMENTAR OPSIONAL",
+  "Add-optional-notes": "Tambahkan catatan opsional",
+  "Adds-your-vote-of-agreement": {
+    "comment": "Hint for a button that adds a vote of agreement",
+    "val": "Menambahkan suara setuju dari Anda"
+  },
+  "Adds-your-vote-of-disagreement": {
+    "comment": "Hint for a button that adds a vote of disagreement",
+    "val": "Menambahkan suara tidak setuju dari Anda"
+  },
+  "Affiliation": "Afiliasi: { $site }",
+  "Agree": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "Setuju"
+  },
+  "AGREE": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "SETUJU"
+  },
+  "Agree-to-all-of-the-above": {
+    "comment": "Checkbox label that checks all of the consent agreements a user must make\nbefore signing up",
+    "val": "Setuju dengan semua pilihan di atas"
+  },
+  "AGREE-WITH-ID": "SETUJU DENGAN ID-NYA?",
+  "Agree-with-ID-description": "Apakah kamu ingin menyetujui ID-nya dan menyarankan identifikasi berikut?",
+  "AI-Camera": {
+    "comment": "This is what we call the camera that\noverlays identification suggestions in real time",
+    "val": "Kamera AI"
+  },
+  "ALL": "SEMUA",
+  "All": "Semua",
+  "All-observation-option": "Semua pilihan pengamatan (termasuk Kamera AI iNaturalist, Kamera Standar, Mengunggah dari Galeri, dan Perekam Suara)",
+  "All-observations": "Semua pengamatan",
+  "All-organisms": "Semua organisme",
+  "all-rights-reserved": {
+    "comment": "As in intellectual property rights over a photo or other creative work",
+    "val": "hak cipta dilindungi undang-undang"
+  },
+  "All-taxa": "Semua taksa",
+  "ALLOW-LOCATION-ACCESS": "IZINKAN AKSES LOKASI",
+  "Almost-done": {
+    "comment": "As in automated identification suggestions",
+    "val": "Hampir selesai!"
+  },
+  "Already-have-an-account": "Sudah memiliki akun? Masuk",
+  "An-Internet-connection-is-required": "Koneksi Internet diperlukan untuk memuat lebih banyak pengamatan.",
+  "Any": {
+    "comment": "Generic option in a menu of choices that indicates that any of the choices\nwould be acceptable",
+    "val": "Bebas"
+  },
+  "APP-LANGUAGE": "BAHASA APLIKASI",
+  "APPLY-FILTERS": "TERAPKAN FILTER",
+  "Apply-filters": "Terapkan filter",
+  "April": {
+    "comment": "Month of April",
+    "val": "April"
+  },
+  "attribution-cc-by": "beberapa hak dilindungi (CC BY)",
+  "attribution-cc-by-nc": "beberapa hak dilindungi (CC BY-NC)",
+  "attribution-cc-by-nc-nd": "beberapa hak dilindungi (CC BY-NC-ND)",
+  "attribution-cc-by-nc-sa": "beberapa hak dilindungi (CC BY-NC-SA)",
+  "attribution-cc-by-nd": "beberapa hak dilindungi (CC BY-ND)",
+  "attribution-cc-by-sa": "beberapa hak dilindungi (CC BY-SA)",
+  "August": {
+    "comment": "Month of August",
+    "val": "Agustus"
+  },
+  "BACK-TO-LOGIN": {
+    "comment": "Returns user to login screen",
+    "val": "KEMBALI KE HALAMAN MASUK"
+  },
+  "BLOG": "BLOG",
+  "Bulk-importer": {
+    "comment": "Accessibility label for bulk import / photo import button\nThese are used by screen readers to label actionable elements iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619577-accessibilitylabel\niOS Guidelines \"A string that succinctly identifies the accessibility element.\" Starts with capital letter, no ending punctuation.",
+    "val": "Pengimpor dalam jumlah besar"
+  },
+  "Camera": "Kamera",
+  "CANCEL": "BATAL",
+  "Cancel": "Batalkan",
+  "Captive-Cultivated": "Dipelihara/Dibudidayakan",
+  "Casual--quality-grade": {
+    "comment": "Quality grade indicating observation does not quality for Needs ID or\nResearch Grade, e.g. missing media, voted out, etc.",
+    "val": "Kasual"
+  },
+  "CC-BY": {
+    "comment": "Short label for the Creative Commons Attribution license",
+    "val": "CC BY"
+  },
+  "CC-BY-NC": {
+    "comment": "Short label for the Creative Commons Attribution-NonCommercial license",
+    "val": "CC BY-NC"
+  },
+  "CC-BY-NC-ND": {
+    "comment": "Short label for the Creative Commons Attribution-NonCommercial-NoDerivatives license",
+    "val": "CC BY-NC-ND"
+  },
+  "CC-BY-NC-SA": {
+    "comment": "Short label for the Creative Commons Attribution-NonCommercial-ShareAlike license",
+    "val": "CC BY-NC-SA"
+  },
+  "CC-BY-ND": {
+    "comment": "Short label for the Creative Commons Attribution-NoDerivatives license",
+    "val": "CC BY-ND"
+  },
+  "CC-BY-SA": {
+    "comment": "Short label for the Creative Commons Attribution-ShareAlike license",
+    "val": "CC BY-SA"
+  },
+  "CC0": {
+    "comment": "Short label for the Creative Commons Zero declaration",
+    "val": "CC0"
+  },
+  "CHANGE-APP-LANGUAGE": "UBAH BAHASA APLIKASI",
+  "CHANGE-DATE": {
+    "comment": "Label for a button that changes a selected date",
+    "val": "UBAH TANGGAL"
+  },
+  "Change-date": {
+    "comment": "Label for a button that changes a selected date",
+    "val": "Ganti tanggal"
+  },
+  "CHANGE-END-DATE": {
+    "comment": "Label for a button that changes a selected end date",
+    "val": "UBAH TANGGAL AKHIR"
+  },
+  "Change-end-date": {
+    "comment": "Label for a button that changes a selected end date",
+    "val": "Ganti tanggal akhir"
+  },
+  "Change-project": "Ganti proyek",
+  "CHANGE-START-DATE": {
+    "comment": "Label for a button that changes a selected start date",
+    "val": "UBAH TANGGAL AWAL"
+  },
+  "Change-start-date": {
+    "comment": "Label for a button that changes a selected start date",
+    "val": "Ganti tanggal awal"
+  },
+  "Change-taxon": "Ubah takson",
+  "Change-taxon-filter": {
+    "comment": "Button that changes the taxon filter on Explore",
+    "val": "Ubah penyaring takson"
+  },
+  "Change-user": "Ganti pengguna",
+  "Change-zoom": {
+    "comment": "Label for a button that cycles through zoom levels for the camera",
+    "val": "Ubah zoom"
+  },
+  "CHECK-YOUR-EMAIL": {
+    "comment": "Notification that appears after pressing the reset password button",
+    "val": "PERIKSA EMAIL ANDA!"
+  },
+  "CHOOSE-PHOTOS": {
+    "comment": "Text for a button prompting the user to grant access to the gallery",
+    "val": "PILIH GAMBAR"
+  },
+  "Choose-taxon": {
+    "comment": "Label for button that chooses a taxon",
+    "val": "Pilih takson"
+  },
+  "Choose-top-taxon": {
+    "comment": "Label for button that chooses top taxon",
+    "val": "Pilih takson terbaik"
+  },
+  "Clear": {
+    "comment": "Label for a button that clears content, like the text entered in a text\nfield",
+    "val": "Bersihkan"
+  },
+  "Close": {
+    "comment": "Label for a button that closes a window or popup",
+    "val": "Tutup"
+  },
+  "Close-search": {
+    "comment": "Label for a button that closes a search interface",
+    "val": "Tutup pencarian"
+  },
+  "COLLABORATORS": {
+    "comment": "Heading for a section that describes people and organizations that\ncollaborate with iNaturalist",
+    "val": "KOLABORATOR"
+  },
+  "Collection-Project": "Proyek Koleksi",
+  "Combine-Photos": {
+    "comment": "Button that combines multiple photos into a single observation",
+    "val": "Gabungkan Gambar"
+  },
+  "COMMENT": {
+    "comment": "Title for a form that let's you enter a comment",
+    "val": "KOMENTAR"
+  },
+  "Comment-options": {
+    "comment": "Label for a button that shows options for a comment",
+    "val": "Pilihan komentar"
+  },
+  "Community-Guidelines": "Pedoman Komunitas",
+  "COMMUNITY-GUIDELINES": "PEDOMAN KOMUNITAS",
+  "CONFIRM": {
+    "comment": "Button that confirms a choice the user has made",
+    "val": "KONFIRMASI"
+  },
+  "CONTACT-SUPPORT": "HUBUNGI BANTUAN",
+  "Coordinates-copied-to-clipboard": {
+    "comment": "Notification when coordinates have been copied",
+    "val": "Koordinat tersalin ke papan klip"
+  },
+  "Copy-coordinates": {
+    "comment": "Button that copies coordinates to the clipboard",
+    "val": "Salin Koordinat"
+  },
+  "Copyright": {
+    "comment": "Right to control copies of a creative work; this string may be used as a\nheading to describe general information about rights, attribution, and\nlicensing",
+    "val": "Hak cipta"
+  },
+  "CREATE-AN-ACCOUNT": "BUAT AKUN",
+  "CREATE-YOUR-FIRST-OBSERVATION": "BUAT PENGAMATAN PERTAMA",
+  "DATA-QUALITY": "KUALITAS DATA",
+  "DATA-QUALITY-ASSESSMENT": "ASESMEN KUALITAS DATA",
+  "Data-quality-assessment-date-is-accurate": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date is accurate",
+    "val": "Tanggal akurat"
+  },
+  "Data-quality-assessment-date-specified": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date was specified",
+    "val": "Tanggal diberikan"
+  },
+  "Data-quality-assessment-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Bukti organisme"
+  },
+  "Data-quality-assessment-has-photos-or-sounds": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Memiliki Foto atau Suara"
+  },
+  "Data-quality-assessment-id-supported-by-two-or-more": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Memiliki ID yang didukung oleh dua atau lebih"
+  },
+  "Data-quality-assessment-location-is-accurate": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Lokasi akurat"
+  },
+  "Data-quality-assessment-location-specified": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Lokasi ditetapkan"
+  },
+  "Data-quality-assessment-organism-is-wild": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Organisme ini liar"
+  },
+  "Data-quality-assessment-recent-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Bukti terbaru dari suatu organisme"
+  },
+  "Data-quality-assessment-single-subject": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Bukti terkait suatu subjek"
+  },
+  "Data-quality-assessment-title-research": {
+    "comment": "Data Quality Assessment description of the final quality grade when Research Grade",
+    "val": "Pengamatan ini Kelas Riset!"
+  },
+  "DATE": "TANGGAL",
+  "Date": {
+    "comment": "label in project requirements",
+    "val": "Tanggal"
+  },
+  "date-format-long": {
+    "comment": "Date formatting using date-fns\nUsed for things like User Profile join date\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "PP"
+  },
+  "date-format-month-day": {
+    "comment": "Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "d MMM"
+  },
+  "date-format-month-year": {
+    "comment": "Use when only showing an observations month and year\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "MMM yyyy"
+  },
+  "date-format-short": {
+    "comment": "Short date, e.g. on notifications from over a year ago\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "d/M/yy"
+  },
+  "DATE-OBSERVED": "TANGGAL DIAMATI",
+  "Date-observed": "Tanggal pengamatan",
+  "Date-observed-header-short": "Diamati",
+  "Date-Range": {
+    "comment": "Label for controls over a range of dates",
+    "val": "Rentang Waktu"
+  },
+  "DATE-RANGE": {
+    "comment": "Label for controls over a range of dates",
+    "val": "RENTANG TANGGAL"
+  },
+  "DATE-UPLOADED": "TANGGAL DIUNGGAH",
+  "Date-uploaded": "Tanggal diunggah",
+  "Date-uploaded-header-short": "Diunggah",
+  "datetime-difference-days": {
+    "comment": "Used when displaying a relative time - in this case, X days ago (e.g. 3d = 3 days ago)",
+    "val": "{ $count }h"
+  },
+  "datetime-difference-hours": {
+    "comment": "Used when displaying a relative time - in this case, X hours ago (e.g. 3h = 3 hours ago)",
+    "val": "{ $count }j"
+  },
+  "datetime-difference-minutes": {
+    "comment": "Used when displaying a relative time - in this case, X minutes ago (e.g. 3m = 3 minutes ago)",
+    "val": "{ $count }men"
+  },
+  "datetime-difference-weeks": {
+    "comment": "Used when displaying a relative time - in this case, X weeks ago (e.g. 3w = 3 weeks ago)",
+    "val": "{ $count }mg"
+  },
+  "datetime-format-long": {
+    "comment": "Longer datetime, e.g. on ObsEdit\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "Pp"
+  },
+  "datetime-format-short": {
+    "comment": "Shorter datetime, e.g. on comments and IDs\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "d/M/yy k:mm"
+  },
+  "December": {
+    "comment": "Month of December",
+    "val": "Desember"
+  },
+  "DELETE": "HAPUS",
+  "Delete-comment": "Hapus komentar",
+  "DELETE-COMMENT--question": "HAPUS KOMENTAR?",
+  "Delete-observation": "Menghapus pengamatan",
+  "DELETE-OBSERVATION--question": "HAPUS PENGAMATAN?",
+  "Delete-photo": {
+    "comment": "Button label or accessibility label for an element that deletes a photo",
+    "val": "Hapus foto"
+  },
+  "Delete-sound": "Hapus suara",
+  "Deletes-entered-text": {
+    "comment": "Hint for a button that clears text you entered",
+    "val": "Hapus tulisan yang dimasukkan"
+  },
+  "DETAILS": {
+    "comment": "Tab label or section title for content that describes further details, e.g.\nthe details of an observation",
+    "val": "INFORMASI"
+  },
+  "Device-storage-full": "Penyimpanan perangkat penuh",
+  "Disable-flash": {
+    "comment": "Button that disables the camera's flash",
+    "val": "Matikan kilat"
+  },
+  "DISCARD": {
+    "comment": "Button that discards changes or an item, e.g. a photo",
+    "val": "HAPUS"
+  },
+  "DISCARD-ALL": {
+    "comment": "Button that discards all items, e.g. imported photos",
+    "val": "HAPUS SEMUA"
+  },
+  "DISCARD-CHANGES": {
+    "comment": "Button that discards changes",
+    "val": "BUANG PERUBAHAN"
+  },
+  "DISCARD-FILTER-CHANGES": "BUANG PERUBAHAN PENYARING",
+  "DISCARD-MEDIA--question": "HAPUS MEDIA?",
+  "DISCARD-OBSERVATION": "HAPUS PENGAMATAN",
+  "DISCARD-PHOTOS--question": "HAPUS GAMBAR?",
+  "DISCARD-RECORDING": {
+    "comment": "Label for a button that discards a sound recording",
+    "val": "HAPUS REKAMAN"
+  },
+  "DISCARD-SOUND--question": {
+    "comment": "Header of a popup confirming that the user wants to discard a sound\nrecording",
+    "val": "HAPUS SUARA?"
+  },
+  "DISMISS": "TUTUP",
+  "DONATE": "DONASI",
+  "DONE": {
+    "comment": "Label for a button the user taps when a task is complete",
+    "val": "SELESAI"
+  },
+  "Edit": {
+    "comment": "Button for editing something",
+    "val": "Ubah"
+  },
+  "EDIT-COMMENT": "EDIT KOMENTAR",
+  "Edit-comment": "Edit komentar",
+  "Edit-identification": {
+    "comment": "Label for button that edits an identification",
+    "val": "Edit identifikasi"
+  },
+  "EDIT-LOCATION": "EDIT LOKASI",
+  "Edit-location": {
+    "comment": "Label for interactive element that takes you to a location choosing screen",
+    "val": "Mengedit lokasi"
+  },
+  "Edit-Observation": "Ubah Pengamatan",
+  "EDUCATORS": "TENAGA PENDIDIK",
+  "EMAIL": "EMAIL",
+  "EMAIL-DEBUG-LOGS": "EMAIL LOG DEBUG",
+  "Enable-flash": {
+    "comment": "Button that enables the camera's flash",
+    "val": "Aktifkan kilat"
+  },
+  "Endemic": {
+    "comment": "Indicates a species only occurs in a specific place",
+    "val": "Endemik"
+  },
+  "Error": {
+    "comment": "Title for a section describing an error",
+    "val": "Kesalahan"
+  },
+  "ERROR": "EROR",
+  "Error-title": {
+    "comment": "Title of dialog or section describing an error",
+    "val": "Kesalahan"
+  },
+  "ERROR-VOTING-IN-DQA": "EROR PEMUNGUTAN SUARA DI AKD",
+  "Establishment": {
+    "comment": "label in project requirements",
+    "val": "Asal Muasal"
+  },
+  "ESTABLISHMENT-MEANS": "CARA PENGENALAN",
+  "ESTABLISHMENT-MEANS-header": {
+    "comment": "Header for a section describing how a taxon arrived in a given place",
+    "val": "CARA PENGENALAN"
+  },
+  "EVIDENCE": "BUKTI",
+  "Exact-Date": "Tanggal Pasti",
+  "EXACT-DATE": "TANGGAL PASTI",
+  "except": "kecuali",
+  "EXPAND-MAP": "PERBESAR PETA",
+  "Explore": "Jelajah",
+  "EXPLORE": "JELAJAH",
+  "Explore-Filters": "Jelajah Penyaring",
+  "EXPLORE-IDENTIFIERS": "JELAJAH PENGIDENTIFIKASI",
+  "EXPLORE-OBSERVERS": "JELAJAH PENGAMAT",
+  "EXPLORE-SPECIES": "JELAJAH SPESIES",
+  "Failed-to-log-in": {
+    "comment": "Error message with log in fails",
+    "val": "Gagal masuk"
+  },
+  "FEATURED": {
+    "comment": "Header for featured projects",
+    "val": "UNGGULAN"
+  },
+  "February": {
+    "comment": "Month of February",
+    "val": "Februari"
+  },
+  "FEEDBACK": "UMPAN BALIK",
+  "Feedback-Submitted": "Umpan Balik Terkirim",
+  "Filter": "Saringan",
+  "FILTER-BY-A-PROJECT": "SARING BERDASARKAN PROYEK",
+  "FILTER-BY-A-USER": "SARING BERDASARKAN PENGGUNA",
+  "Filters": "Saringan",
+  "Flag-An-Item": "Tandai Barang",
+  "Flag-Item-Other-Description": "Beberapa alasan lain yang dapat Anda jelaskan di bawah.",
+  "Flag-Item-Other-Input-Hint": "Berikan alasan mengapa Anda menandai hal ini",
+  "Flagged": {
+    "comment": "Status when an item has been flagged",
+    "val": "Telah Ditandai"
+  },
+  "Flash": "kilat",
+  "Flip-camera": {
+    "comment": "Label for a button that toggles between the front and back cameras",
+    "val": "Balikkan kamera"
+  },
+  "FOLLOW": "IKUTI",
+  "Forgot-Password": {
+    "comment": "Forgot password link",
+    "val": "Lupa Kata Sandi"
+  },
+  "GEOPRIVACY": "GEOPRIVASI",
+  "Go-back": {
+    "comment": "Label for button that returns to the previous screen",
+    "val": "Kembali"
+  },
+  "GRANT-PERMISSION": {
+    "comment": "Text for a button that asks the user to grant permission",
+    "val": "BERI IZIN"
+  },
+  "Grant-Permission-title": {
+    "comment": "Title of a screen asking for permission",
+    "val": "Berikan Izin"
+  },
+  "Grid-layout": {
+    "comment": "Label for button to switch to a grid layout of observations",
+    "val": "Tampilan kotak-kotak"
+  },
+  "HELP": "BANTUAN",
+  "Hide": "Sembunyikan",
+  "Highest": "Tertinggi",
+  "HIGHEST-RANK": "TINGKAT TERTINGGI",
+  "ID-Withdrawn": {
+    "comment": "Identification Status",
+    "val": "ID ditarik kembali"
+  },
+  "IDENTIFICATION": "IDENTIFIKASI",
+  "Identifiers": "yang mengidentifikasi",
+  "Identifiers-View": "Tampilan Pengidentifikasi",
+  "IGNORE-LOCATION": "ABAIKAN LOKASI",
+  "Import-Photos-From": "Impor Gambar Dari",
+  "improving--identification": {
+    "comment": "Identification category",
+    "val": "Pengembang"
+  },
+  "INATURALIST-FORUM": "FORUM INATURALIST",
+  "INATURALIST-NETWORK": "JARINGAN INATURALIST",
+  "INATURALIST-STORE": "TOKO INATURALIST",
+  "INATURALIST-TEAM": "TIM INATURALIST",
+  "INFO-TRANSFER": "PEMINDAHAN INFORMASI",
+  "Intl-number": "{ $val }",
+  "Introduced": "Diperkenalkan",
+  "January": {
+    "comment": "Month of January",
+    "val": "Januari"
+  },
+  "JOIN": "GABUNG",
+  "JOIN-PROJECT": "BERGABUNG DENGAN PROYEK",
+  "JOINED": {
+    "comment": "Header for joined projects",
+    "val": "TERGABUNG"
+  },
+  "Joined-date": {
+    "comment": "Shows date user joined iNaturalist on user profile",
+    "val": "Bergabung: { $date }"
+  },
+  "July": {
+    "comment": "Month of July",
+    "val": "Juli"
+  },
+  "June": {
+    "comment": "Month of June",
+    "val": "Juni"
+  },
+  "leading--identification": {
+    "comment": "Identification category",
+    "val": "Memimpin"
+  },
+  "Learn-More": "Pelajari lebih lanjut",
+  "LEAVE": "KELUAR",
+  "LEAVE-PROJECT": "KELUAR DARI PROYEK",
+  "LEAVE-US-A-REVIEW": "TINGGALKAN ULASAN!",
+  "LICENSES": "LISENSI",
+  "List-layout": {
+    "comment": "Label for button to switch to a list layout of observations",
+    "val": "Tampilan baris"
+  },
+  "LOCATION": "LOKASI",
+  "Location": "Lokasi",
+  "LOG-IN": "MASUK",
+  "Log-in": {
+    "comment": "Second person imperative label to go to log in screen",
+    "val": "Masuk"
+  },
+  "LOG-OUT": "KELUAR",
+  "LOG-OUT--question": "KELUAR?",
+  "Lowest": "Terendah",
+  "LOWEST-RANK": "TINGKAT TERENDAH",
+  "MAP": "PETA",
+  "Map-Area": "Area Peta",
+  "March": {
+    "comment": "Month of March",
+    "val": "Maret"
+  },
+  "maverick--identification": {
+    "comment": "Identification category",
+    "val": "Melawan"
+  },
+  "May": {
+    "comment": "Month of May",
+    "val": "Mei"
+  },
+  "MEDIA": "MEDIA",
+  "Media-Type": {
+    "comment": "label in project requirements",
+    "val": "Jenis Media"
+  },
+  "Menu": {
+    "comment": "Accessibility label for a button that opens a menu of options",
+    "val": "Menu"
+  },
+  "Missing-Date": "Tanggal Tidak Ada",
+  "Monthly-Donor": "Penyumbang Bulanan",
+  "Months": "Bulan",
+  "MONTHS": "BULAN",
+  "More-info": "Info lebih lanjut",
+  "MOST-FAVED": "PALING FAVORIT",
+  "Most-faved": "Paling favorit",
+  "MY-OBSERVATIONS": "PENGAMATAN SAYA",
+  "Native": "Asli",
+  "NEARBY": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "TERDEKAT"
+  },
+  "Nearby": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "Sekitaran"
+  },
+  "Needs-ID--quality-grade": {
+    "comment": "Quality grade indicating observation still needs more identifications",
+    "val": "Perlu ID"
+  },
+  "New-Observation": {
+    "comment": "Heading when creating a new observation",
+    "val": "Pengamatan Baru"
+  },
+  "Newest-to-oldest": {
+    "comment": "Sort order, refers to newest or oldest date",
+    "val": "Terbaru ke terlama"
+  },
+  "Next-observation": "Pengamatan berikutnya",
+  "No-Camera-Available": {
+    "comment": "Error message when no camera can be found",
+    "val": "Tidak Ada Kamera Tersedia"
+  },
+  "No-Location": "Tidak Ada Lokasi",
+  "No-Media": "Tanpa Media",
+  "No-model-found": {
+    "comment": "As in a machine learning model that powers automated suggestions",
+    "val": "Model tidak ditemukan"
+  },
+  "NONE": "TIDAK ADA",
+  "none": "tidak ada",
+  "NOTES": {
+    "comment": "Header for observation description on observation detail",
+    "val": "CATATAN"
+  },
+  "NOTIFICATIONS": "NOTIFIKASI",
+  "Notifications": "Notifikasi",
+  "November": {
+    "comment": "Month of November",
+    "val": "November"
+  },
+  "Obscured": "Dikaburkan",
+  "OBSERVATION-BUTTON": "TOMBOL PENGAMATAN",
+  "Observation-options": {
+    "comment": "Label for a menu that shows various actions you can take for an observation",
+    "val": "Pilihan pengamatan"
+  },
+  "Observations": "Pengamatan",
+  "Observations-View": "Tampilan Pengamatan",
+  "Observe": {
+    "comment": "Button that starts a new observation",
+    "val": "Mengamati"
+  },
+  "OBSERVE-ORGANISMS": {
+    "comment": "Text for a button prompting the user to grant access to the camera",
+    "val": "AMATI ORGANISME"
+  },
+  "Observers": "Pengamat",
+  "Observers-View": {
+    "comment": "Section in Explore that shows people who added observations given a set of search filters",
+    "val": "Tampilan Pengamat"
+  },
+  "October": {
+    "comment": "Month of October",
+    "val": "Oktober"
+  },
+  "Offensive-Inappropriate": "Ofensif/Tidak pantas",
+  "OK": {
+    "comment": "Generic confirmation, e.g. button on a warning alert",
+    "val": "OK"
+  },
+  "Oldest-to-newest": {
+    "comment": "Sort order, refers to newest or oldest date",
+    "val": "Terlama ke terbaru"
+  },
+  "One-last-step": "Satu langkah lagi!",
+  "Open": {
+    "comment": "Adjective, as in geoprivacy",
+    "val": "Buka"
+  },
+  "Open-drawer": "Buka laci",
+  "OPEN-EMAIL": "BUKA EMAIL",
+  "Open-menu": "Buka menu.",
+  "OPEN-SETTINGS": {
+    "comment": "Text for a button that opens the operating system Settings app",
+    "val": "BUKA PENGATURAN"
+  },
+  "Opens-AI-camera": "Buka kamera AI.",
+  "Opens-the-AI-camera": {
+    "comment": "Accessibility hint for button that opens the AI camera",
+    "val": "Membuka kamera AI"
+  },
+  "Organism-is-captive": {
+    "comment": "Picker prompt on observation edit",
+    "val": "Organisme ini dipelihara"
+  },
+  "Other": {
+    "comment": "Generic option in a list for unanticipated cases, e.g. a choice to manually\nenter an explanation for why you are flagging something instead of choosing\none of the existing options",
+    "val": "Lainnya"
+  },
+  "OTHER-DATA": "DATA LAIN",
+  "OTHER-SUGGESTIONS": "REKOMENDASI LAIN",
+  "PASSWORD": "KATA SANDI",
+  "PERSONAL-INFO": "INFORMASI PRIBADI",
+  "Photo-importer": "Pengimpor foto",
+  "PHOTO-LICENSING": "LISENSI GAMBAR",
+  "Photos": "Gambar",
+  "PLEASE-LOG-IN": "HARAP MASUK",
+  "Privacy-Policy": "Kebijakan Privasi",
+  "PRIVACY-POLICY": "KEBIJAKAN PRIVASI",
+  "Private": "Pribadi",
+  "PROJECT": {
+    "comment": "As in an iNat project, a collection of observations or observation search filters",
+    "val": "PROYEK"
+  },
+  "Project-Members-Only": "Anggota Proyek Saja",
+  "PROJECTS": {
+    "comment": "As in iNat project, collections of observations or observation search filters",
+    "val": "PROYEK"
+  },
+  "Projects": {
+    "comment": "As in iNat projects, collections of observations or observation search filters",
+    "val": "Proyek"
+  },
+  "QUALITY-GRADE": "TINGKAT KUALITAS",
+  "Quality-Grade": {
+    "comment": "label in project requirements",
+    "val": "Tingkat Kualitas"
+  },
+  "Ranks-CLASS": "KELAS",
+  "Ranks-Class": "Kelas",
+  "Ranks-COMPLEX": "KOMPLEKS",
+  "Ranks-Complex": "Kompleks",
+  "Ranks-EPIFAMILY": "EPIFAMILI",
+  "Ranks-Epifamily": "Epifamili",
+  "Ranks-FAMILY": "FAMILI",
+  "Ranks-Family": "Famili",
+  "Ranks-FORM": "BENTUK",
+  "Ranks-Form": "Bentuk",
+  "Ranks-GENUS": "GENUS",
+  "Ranks-Genus": "Genus",
+  "Ranks-GENUSHYBRID": "GENUSHIBRIDA",
+  "Ranks-Genushybrid": "Genushibrida",
+  "Ranks-HYBRID": "HIBRIDA",
+  "Ranks-Hybrid": "Hibrida",
+  "Ranks-INFRACLASS": "INFRAKELAS",
+  "Ranks-Infraclass": "Infrakelas",
+  "Ranks-INFRAHYBRID": "INFRAHIBRIDA",
+  "Ranks-Infrahybrid": "Infrahibrida",
+  "Ranks-INFRAORDER": "INFRAORDO",
+  "Ranks-Infraorder": "Infraordo",
+  "Ranks-KINGDOM": "KERAJAAN",
+  "Ranks-Kingdom": "kingdom",
+  "Ranks-ORDER": "ORDO",
+  "Ranks-Order": "Urut",
+  "Ranks-PARVORDER": "PARVORDO",
+  "Ranks-Parvorder": "Parvordo",
+  "Ranks-PHYLUM": "FILUM",
+  "Ranks-Phylum": "Filum",
+  "Ranks-SECTION": "SEKSI",
+  "Ranks-Section": "Seksi",
+  "Ranks-SPECIES": "SPESIES",
+  "Ranks-Species": "spesies",
+  "Ranks-Statefmatter": "Wujud materi",
+  "Ranks-STATEOFMATTER": "WUJUD MATERI",
+  "Ranks-SUBCLASS": "SUBKELAS",
+  "Ranks-Subclass": "Subkelas",
+  "Ranks-SUBFAMILY": "SUBFAMILI",
+  "Ranks-Subfamily": "Subfamily",
+  "Ranks-SUBGENUS": "SUBGENUS",
+  "Ranks-Subgenus": "Subgenus",
+  "Ranks-SUBKINGDOM": "SUBKERAJAAN",
+  "Ranks-Subkingdom": "Subkerajaan",
+  "Ranks-SUBORDER": "SUBORDO",
+  "Ranks-Suborder": "Subordo",
+  "Ranks-SUBPHYLUM": "SUBFILUM",
+  "Ranks-Subphylum": "Subfilum",
+  "Ranks-SUBSECTION": "SUBSEKSI",
+  "Ranks-Subsection": "Subseksi",
+  "Ranks-SUBSPECIES": "SUBSPESIES",
+  "Ranks-Subspecies": "Subspesies",
+  "Ranks-SUBTERCLASS": "SUBTERKELAS",
+  "Ranks-Subterclass": "Subterkelas",
+  "Ranks-SUBTRIBE": "SUBSUKU",
+  "Ranks-Subtribe": "Subsuku",
+  "Ranks-SUPERCLASS": "SUPERKELAS",
+  "Ranks-Superclass": "Superclass",
+  "Ranks-SUPERFAMILY": "SUPERFAMILI",
+  "Ranks-Superfamily": "Superfamili",
+  "Ranks-SUPERORDER": "SUPERORDO",
+  "Ranks-Superorder": "Superordo",
+  "Ranks-SUPERTRIBE": "SUPERSUKU",
+  "Ranks-Supertribe": "Supersuku",
+  "Ranks-TRIBE": "SUKU",
+  "Ranks-Tribe": "Suku",
+  "Ranks-VARIETY": "VARIETAS",
+  "Ranks-Variety": "Varietas",
+  "Ranks-ZOOSECTION": "ZOOSEKSI",
+  "Ranks-Zoosection": "Zooseksi",
+  "Ranks-ZOOSUBSECTION": "ZOOSUBSEKSI",
+  "Ranks-Zoosubsection": "Zoosubseksi",
+  "RECORD-NEW-SOUND": {
+    "comment": "Heading for the sound recorder",
+    "val": "REKAM SUARA BARU"
+  },
+  "RECORD-SOUND": {
+    "comment": "Text for a button prompting the user to grant access to the microphone",
+    "val": "REKAM SUARA"
+  },
+  "Record-verb": {
+    "comment": "Imperative verb for recording a sound",
+    "val": "Catatan"
+  },
+  "Recording-sound": {
+    "comment": "Status while recording a sound",
+    "val": "Suara rekaman"
+  },
+  "Remove-agreement": {
+    "comment": "Label for a button that removes a vote of agreement",
+    "val": "Hapus suara setuju"
+  },
+  "Remove-disagreement": {
+    "comment": "Label for a button that removes a vote of disagreement",
+    "val": "Hapus suara tidak setuju"
+  },
+  "Remove-favorite": "Hapus favorit",
+  "Remove-identification": {
+    "comment": "Label for button that removes an identification",
+    "val": "Hapus identifikasi"
+  },
+  "Remove-Photos": "Hapus Gambar",
+  "Remove-project-filter": "Hapus saringan proyek",
+  "Remove-taxon-filter": "Hapus penyaring takson",
+  "Remove-user-filter": "Hapus saringan pengguna",
+  "Research-Grade--quality-grade": {
+    "comment": "Quality grade indicating observation is accurate and complete enough to\nshare outside of iNat",
+    "val": "Kelas Riset"
+  },
+  "RESET-PASSWORD": {
+    "comment": "Reset password button",
+    "val": "SETEL ULANG KATA SANDI"
+  },
+  "RESET-RECORDING": {
+    "comment": "Label for a button that resets a sound recording",
+    "val": "ATUR ULANG REKAMAN"
+  },
+  "RESET-SEARCH": "ATUR ULANG PENCARIAN",
+  "RESET-SOUND-header": {
+    "comment": "Header of a popup confirming that the user wants to reset a sound\nrecording",
+    "val": "ATUR ULANG SUARA?"
+  },
+  "Reset-verb": {
+    "comment": "Label for a button that resets the state of an interface, e.g. a button that\nresets the sound recorder to its original state",
+    "val": "Atur Ulang"
+  },
+  "RESTART-APP": "MULAI ULANG APLIKASI",
+  "Restore": {
+    "comment": "Label for button that restores a withdrawn identification",
+    "val": "Pulihkan"
+  },
+  "Reveal": "Tampilkan",
+  "REVIEW-INATURALIST": "ULAS INATURALIST",
+  "REVIEWED": {
+    "comment": "Title for section of observation filters for controls over whether you have\nreviewed the observations or not",
+    "val": "TELAH DILIHAT"
+  },
+  "Satellite--map-type": {
+    "comment": "Label for the satellite map type",
+    "val": "Satelit"
+  },
+  "SAVE": {
+    "comment": "Label for a button that persists something",
+    "val": "SIMPAN"
+  },
+  "Save": {
+    "comment": "Label for a button that persists something",
+    "val": "Simpan"
+  },
+  "SAVE-ALL": "SIMPAN SEMUA",
+  "SAVE-CHANGES": "SIMPAN PERUBAHAN",
+  "SAVE-FOR-LATER": "SIMPAN UNTUK NANTI",
+  "SAVE-LOCATION": "SIMPAN LOKASI",
+  "SAVE-PHOTOS": "SIMPAN FOTO",
+  "Scientific-Name": "Nama Ilmiah",
+  "SEARCH": {
+    "comment": "Title for a search interface",
+    "val": "CARI"
+  },
+  "Search": {
+    "comment": "Title for a search interface",
+    "val": "Cari"
+  },
+  "SEARCH-FOR-A-TAXON": "CARI TAKSON",
+  "Search-for-a-taxon": "Cari takson",
+  "SEARCH-LOCATION": "CARI LOKASI",
+  "SEARCH-PROJECTS": "CARI PROYEK",
+  "SEARCH-TAXA": "CARI TAKSON",
+  "SEARCH-USERS": "CARI PENGGUNA",
+  "See-project-members": {
+    "comment": "Accessibility label for navigating to project members screen",
+    "val": "Lihat anggota proyek"
+  },
+  "Select-photo": "Pilih gambar",
+  "SELECT-THIS-TAXON": "PILIH TAKSON INI",
+  "Select-user": {
+    "comment": "Label for an element that let's you select a user",
+    "val": "Pilih pengguna"
+  },
+  "Separate-Photos": "Pisahkan Gambar",
+  "September": {
+    "comment": "Month of September",
+    "val": "September"
+  },
+  "SETTINGS": "PENGATURAN",
+  "Share": "Bagikan",
+  "SHARE-DEBUG-LOGS": "BAGIKAN LOG DEBUG",
+  "Share-location": "Bagi Lokasi",
+  "Share-map": "Bagikan peta",
+  "SORT-BY": "URUTKAN BERDASARKAN",
+  "Sort-by": "Urutkan berdasarkan",
+  "sound-playback-separator": {
+    "comment": "Character separating current position and total duration when playing a\nsound, e.g. 00:12 / 03:00 uses \"/\" as the separator. This can be anything,\nbut it should be very short.",
+    "val": "/"
+  },
+  "Sound-recorder": "Perekam suara",
+  "sound-recorder-help-Get-closer": "Dekatkan suara",
+  "sound-recorder-help-Keep-it-short": "Jangan terlalu lama",
+  "sound-recorder-help-One-organism": "Satu organisme",
+  "sound-recorder-help-Stop-moving": "Berhenti bergerak",
+  "Sounds": "Suara",
+  "Spam": "Spam",
+  "Spam-Examples": "iklan, tautan ke mana-mana, dll.",
+  "Species": "spesies",
+  "Species-View": "Tampilan Spesies",
+  "Standard--map-type": {
+    "comment": "Label for the standard map type",
+    "val": "Standar"
+  },
+  "Start-upload": "Mulai pengunggahan",
+  "Stop-upload": {
+    "comment": "Button or accessibility label for an interactive element that stops an upload",
+    "val": "Berhenti mengunggah"
+  },
+  "Stop-verb": {
+    "comment": "Imperative verb for stopping the recording of a sound",
+    "val": "Hentikan"
+  },
+  "SUBMIT": "KIRIM",
+  "SUGGEST-ID": "SARANKAN ID",
+  "Suggest-ID": {
+    "comment": "Label for element that suggest an identification",
+    "val": "SARANKAN ID"
+  },
+  "supporting--identification": {
+    "comment": "Identification category",
+    "val": "Mendukung"
+  },
+  "Sync-observations": "Sinkronisasi pengamatan",
+  "Syncing": "Sinkronisasi...",
+  "Take-photo": "Ambil gambar",
+  "Taxa": {
+    "comment": "label in project requirements",
+    "val": "Taksa"
+  },
+  "TAXON": "TAKSON",
+  "TAXON-NAMES-DISPLAY": {
+    "comment": "Settings screen",
+    "val": "TAMPILAN NAMA TAKSON"
+  },
+  "TAXONOMIC-RANKS": "KATEGORI TAKSONOMI",
+  "TAXONOMY-header": {
+    "comment": "Header for a block of text describing a taxon's taxonomy",
+    "val": "TAKSONOMI"
+  },
+  "TEAM": "TIM",
+  "Terms-of-Use": "Syarat dan Ketentuan Penggunaan",
+  "TERMS-OF-USE": "SYARAT PENGGUNAAN",
+  "Toggle-map-type": "Ubah jenis peta",
+  "TOP-ID-SUGGESTION": "REKOMENDASI ID TERBAIK",
+  "Traditional-Project": "Proyek Tradisional",
+  "Umbrella-Project": "Proyek Payung",
+  "UNFOLLOW": "BERHENTI MENGIKUTI",
+  "UNFOLLOW-USER": "BERHENTI MENGIKUTI PENGGUNA?",
+  "Unknown--rank": {
+    "comment": "Text to show when a taoxn rank is unknown or missing",
+    "val": "Tidak Diketahui"
+  },
+  "Unknown--taxon": {
+    "comment": "Text to show when a taxon or identification is unknown or missing",
+    "val": "Tidak Diketahui"
+  },
+  "Unknown--user": {
+    "comment": "Text to show when a user (or their name) is unknown or missing",
+    "val": "Tidak Diketahui"
+  },
+  "Unknown-error": {
+    "comment": "Generic error message",
+    "val": "Eror tidak diketahui"
+  },
+  "Unknown-organism": "Organisme tidak diketahui",
+  "Upload-Complete": "Unggahan Selesai",
+  "Upload-in-progress": "Pengunggahan sedang berlangsung",
+  "UPLOAD-NOW": "UNGGAH SEKARANG",
+  "USE-LOCATION": {
+    "comment": "Text for a button prompting the user to grant access to location",
+    "val": "GUNAKAN LOKASI"
+  },
+  "USER": "PENGGUNA",
+  "USERNAME": "NAMA PENGGUNA",
+  "USERNAME-OR-EMAIL": {
+    "comment": "Appears above the text fields",
+    "val": "NAMA PENGGUNA ATAU EMAIL"
+  },
+  "Users": {
+    "comment": "label in project requirements",
+    "val": "Pengguna"
+  },
+  "VIEW-CHILDREN-TAXA": "LIHAT TAKSON ANAK",
+  "View-in-browser": "Lihat di browser",
+  "VIEW-IN-EXPLORE": "LIHAT DI JELAJAH",
+  "View-photo": {
+    "comment": "Button or accessibility label for an element that lets the user view a\nphoto",
+    "val": "Lihat foto"
+  },
+  "VIEW-PROJECTS": "LIHAT PROYEK",
+  "View-suggestions": {
+    "comment": "Label for a button that shows identification suggestions for an observation\nor photo",
+    "val": "Lihat saran"
+  },
+  "Welcome-to-iNaturalist": "Selamat datang di iNaturalist!",
+  "WIKIPEDIA": "WIKIPEDIA",
+  "Wild": "Liar",
+  "WILD-STATUS": "STATUS KELIARAN",
+  "Withdraw": {
+    "comment": "Label for a button that withdraws an identification",
+    "val": "Mundur"
+  },
+  "WITHDRAW-ID": {
+    "comment": "Button to Withdraw identification made by user",
+    "val": "TARIK ID"
+  },
+  "WITHDRAW-ID-QUESTION": "TARIK ID?",
+  "Worldwide": "Seluruh Dunia",
+  "WORLDWIDE": "GLOBAL",
+  "Would-you-like-to-discard-your-current-recording-and-start-over": "Apakah Anda ingin membuang rekaman Anda dan merekam ulang?",
+  "X-MEMBERS": {
+    "comment": "Subheader for number of project members screen",
+    "val": "{ $count } ANGGOTA"
+  },
+  "You-are-offline": "Anda sedang tidak terkoneksi",
+  "You-changed-filters-will-be-discarded": "Anda telah mengubah penyaring, tetapi mereka belum diterapkan ke hasil pencarian jelajah Anda.",
+  "You-need-log-in-to-do-that": {
+    "comment": "Error message when you try to do something that requires log in",
+    "val": "Anda harus masuk untuk melakukannya."
+  },
+  "zoom-x": {
+    "comment": "Label for button that shows zoom level, e.g. on a camera",
+    "val": "{ $zoom }×"
+  }
+}

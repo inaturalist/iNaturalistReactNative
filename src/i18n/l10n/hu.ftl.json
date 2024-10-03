@@ -1,0 +1,425 @@
+{
+  "ABOUT": {
+    "comment": "Header for a general description, e.g. of a user, or of iNaturalist itself",
+    "val": "RÓLA"
+  },
+  "Agree": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "Egyetért"
+  },
+  "AGREE": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "EGYETÉRTEK"
+  },
+  "ALL": "MIND",
+  "All": "Mind",
+  "All-observations": "Minden megfigyelés",
+  "all-rights-reserved": {
+    "comment": "As in intellectual property rights over a photo or other creative work",
+    "val": "minden jog fenntartva"
+  },
+  "All-taxa": "Minden taxon",
+  "Any": {
+    "comment": "Generic option in a menu of choices that indicates that any of the choices\nwould be acceptable",
+    "val": "Bármely"
+  },
+  "April": {
+    "comment": "Month of April",
+    "val": "Április"
+  },
+  "August": {
+    "comment": "Month of August",
+    "val": "Augusztus"
+  },
+  "Camera": "Kamera",
+  "Cancel": "Mégse",
+  "Casual--quality-grade": {
+    "comment": "Quality grade indicating observation does not quality for Needs ID or\nResearch Grade, e.g. missing media, voted out, etc.",
+    "val": "Hobbiszintű"
+  },
+  "Close": {
+    "comment": "Label for a button that closes a window or popup",
+    "val": "Bezárás"
+  },
+  "Collection-Project": "Gyűjtőprojekt",
+  "Community-Guidelines": "Közösségi irányelvek",
+  "Coordinates-copied-to-clipboard": {
+    "comment": "Notification when coordinates have been copied",
+    "val": "A koordináták a vágólapra másolva"
+  },
+  "Data-quality-assessment-date-is-accurate": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date is accurate",
+    "val": "A dátum pontos"
+  },
+  "Data-quality-assessment-date-specified": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date was specified",
+    "val": "Dátum megadva"
+  },
+  "Data-quality-assessment-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Bizonyíték az organizmusra"
+  },
+  "Data-quality-assessment-has-photos-or-sounds": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Hanggal"
+  },
+  "Data-quality-assessment-id-supported-by-two-or-more": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Két vagy több meghatározás egyezik"
+  },
+  "Data-quality-assessment-location-is-accurate": {
+    "comment": "Data Quality Assessment metric",
+    "val": "A hely pontos"
+  },
+  "Data-quality-assessment-location-specified": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Hely megadva"
+  },
+  "Data-quality-assessment-organism-is-wild": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Vadon élő"
+  },
+  "Data-quality-assessment-recent-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Friss bizonyíték az organizmusra"
+  },
+  "Data-quality-assessment-single-subject": {
+    "comment": "Data Quality Assessment metric",
+    "val": "A bizonyíték egyetlen organizmusra utal"
+  },
+  "Data-quality-assessment-title-research": {
+    "comment": "Data Quality Assessment description of the final quality grade when Research Grade",
+    "val": "Ez a megfigyelés tudományos szintű!"
+  },
+  "Date": {
+    "comment": "label in project requirements",
+    "val": "Dátum"
+  },
+  "date-format-month-day": {
+    "comment": "Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "MMM. d"
+  },
+  "Date-observed": "Megfigyelés dátuma",
+  "Date-observed-header-short": "Megfigyelve",
+  "Date-Range": {
+    "comment": "Label for controls over a range of dates",
+    "val": "Dátumtartomány"
+  },
+  "December": {
+    "comment": "Month of December",
+    "val": "December"
+  },
+  "Delete-observation": "Megfigyelés törlése",
+  "Delete-photo": {
+    "comment": "Button label or accessibility label for an element that deletes a photo",
+    "val": "Fotó törlése"
+  },
+  "DONATE": "TÁMOGATÁS",
+  "Edit": {
+    "comment": "Button for editing something",
+    "val": "Módosítás"
+  },
+  "Edit-Observation": "Megfigyelés szerkesztése",
+  "Endemic": {
+    "comment": "Indicates a species only occurs in a specific place",
+    "val": "Endemikus"
+  },
+  "Error": {
+    "comment": "Title for a section describing an error",
+    "val": "Hiba"
+  },
+  "Error-title": {
+    "comment": "Title of dialog or section describing an error",
+    "val": "Hiba"
+  },
+  "Establishment": {
+    "comment": "label in project requirements",
+    "val": "Honosság"
+  },
+  "Exact-Date": "Pontos dátum",
+  "except": "kivéve",
+  "Explore": "Felfedezés",
+  "FEATURED": {
+    "comment": "Header for featured projects",
+    "val": "KIEMELT"
+  },
+  "February": {
+    "comment": "Month of February",
+    "val": "Február"
+  },
+  "Filter": "Szűrő",
+  "Filters": "Szűrők",
+  "Flag-An-Item": "Bejelentés",
+  "Flag-Item-Other-Description": "Egyéb ok, alább meghatározva.",
+  "Flag-Item-Other-Input-Hint": "A bejelentés okának leírása",
+  "Flagged": {
+    "comment": "Status when an item has been flagged",
+    "val": "Bejelentett"
+  },
+  "Go-back": {
+    "comment": "Label for button that returns to the previous screen",
+    "val": "Vissza"
+  },
+  "Hide": "Elrejtés",
+  "ID-Withdrawn": {
+    "comment": "Identification Status",
+    "val": "Azonosítás visszavonva"
+  },
+  "Identifiers": "Meghatározók",
+  "improving--identification": {
+    "comment": "Identification category",
+    "val": "Javító"
+  },
+  "Introduced": "Jövevény",
+  "January": {
+    "comment": "Month of January",
+    "val": "Január"
+  },
+  "JOIN": "CSATLAKOZÁS",
+  "JOINED": {
+    "comment": "Header for joined projects",
+    "val": "CSATLAKOZVA"
+  },
+  "July": {
+    "comment": "Month of July",
+    "val": "Július"
+  },
+  "June": {
+    "comment": "Month of June",
+    "val": "Június"
+  },
+  "leading--identification": {
+    "comment": "Identification category",
+    "val": "Vezető"
+  },
+  "Learn-More": "További információ",
+  "Location": "Hely",
+  "Log-in": {
+    "comment": "Second person imperative label to go to log in screen",
+    "val": "Bejelentkezés"
+  },
+  "LOG-OUT": "KIJELENTKEZÉS",
+  "Map-Area": "Térképtartomány",
+  "March": {
+    "comment": "Month of March",
+    "val": "Március"
+  },
+  "maverick--identification": {
+    "comment": "Identification category",
+    "val": "Különvélemény"
+  },
+  "May": {
+    "comment": "Month of May",
+    "val": "máj"
+  },
+  "Media-Type": {
+    "comment": "label in project requirements",
+    "val": "Médiatípus"
+  },
+  "Menu": {
+    "comment": "Accessibility label for a button that opens a menu of options",
+    "val": "Menü"
+  },
+  "Missing-Date": "Hiányzó dátum",
+  "Months": "Hónapok",
+  "Native": "Őshonos",
+  "NEARBY": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "KÖZELI"
+  },
+  "Nearby": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "Közeli"
+  },
+  "Needs-ID--quality-grade": {
+    "comment": "Quality grade indicating observation still needs more identifications",
+    "val": "Meghatározásra vár"
+  },
+  "New-Observation": {
+    "comment": "Heading when creating a new observation",
+    "val": "Új megfigyelés"
+  },
+  "No-Location": "Nincs helyadat",
+  "No-Media": "Nincs média",
+  "none": "egyik sem",
+  "Notifications": "Értesítések",
+  "November": {
+    "comment": "Month of November",
+    "val": "November"
+  },
+  "Obscured": "Kitakart",
+  "Observations": "Megfigyelések",
+  "Observe": {
+    "comment": "Button that starts a new observation",
+    "val": "Észlelés"
+  },
+  "Observers": "Megfigyelők",
+  "October": {
+    "comment": "Month of October",
+    "val": "Október"
+  },
+  "Offensive-Inappropriate": "Erőszakos / Helytelen",
+  "OK": {
+    "comment": "Generic confirmation, e.g. button on a warning alert",
+    "val": "OK"
+  },
+  "Open": {
+    "comment": "Adjective, as in geoprivacy",
+    "val": "Nyilvános"
+  },
+  "Other": {
+    "comment": "Generic option in a list for unanticipated cases, e.g. a choice to manually\nenter an explanation for why you are flagging something instead of choosing\none of the existing options",
+    "val": "Egyéb"
+  },
+  "Privacy-Policy": "Adatvédelmi nyilatkozat",
+  "Private": "Privát",
+  "Project-Members-Only": "Csak projekttagok",
+  "Projects": {
+    "comment": "As in iNat projects, collections of observations or observation search filters",
+    "val": "Projektek"
+  },
+  "Quality-Grade": {
+    "comment": "label in project requirements",
+    "val": "Minőségi szint"
+  },
+  "Ranks-Class": "Osztály",
+  "Ranks-Complex": "Fajkomplexum",
+  "Ranks-Epifamily": "Klád",
+  "Ranks-Family": "Család",
+  "Ranks-Form": "Forma",
+  "Ranks-Genus": "Nemzetség",
+  "Ranks-Genushybrid": "Nemzetséghibrid",
+  "Ranks-Hybrid": "Hibrid",
+  "Ranks-Infraclass": "Alosztályág",
+  "Ranks-Infrahybrid": "Infrahibrid",
+  "Ranks-Infraorder": "Alrendág",
+  "Ranks-Kingdom": "Ország",
+  "Ranks-Order": "Rend",
+  "Ranks-Parvorder": "Részalrend",
+  "Ranks-Phylum": "Törzs",
+  "Ranks-Section": "Osztag",
+  "Ranks-SPECIES": "FAJ",
+  "Ranks-Species": "Fajok",
+  "Ranks-Statefmatter": "Valami",
+  "Ranks-Subclass": "Alosztály",
+  "Ranks-Subfamily": "Alcsalád",
+  "Ranks-Subgenus": "Alnemzetség",
+  "Ranks-Subkingdom": "Alország",
+  "Ranks-Suborder": "Alrend",
+  "Ranks-Subphylum": "Altörzs",
+  "Ranks-Subsection": "Alfajcsoport",
+  "Ranks-Subspecies": "Alfaj",
+  "Ranks-Subterclass": "Subterosztály",
+  "Ranks-Subtribe": "Alnemzetségcsoport",
+  "Ranks-Superclass": "Főosztály",
+  "Ranks-Superfamily": "Főcsalád",
+  "Ranks-Superorder": "Főrend",
+  "Ranks-Supertribe": "Öregnemzetség",
+  "Ranks-Tribe": "Nemzetségcsoport",
+  "Ranks-Variety": "Változat",
+  "Ranks-Zoosection": "Osztag",
+  "Ranks-Zoosubsection": "Alosztag",
+  "Record-verb": {
+    "comment": "Imperative verb for recording a sound",
+    "val": "Rögzítés"
+  },
+  "Remove-identification": {
+    "comment": "Label for button that removes an identification",
+    "val": "Meghatározás eltávolítása"
+  },
+  "Remove-project-filter": "Projektszűrő eltávolítása",
+  "Research-Grade--quality-grade": {
+    "comment": "Quality grade indicating observation is accurate and complete enough to\nshare outside of iNat",
+    "val": "Tudományos szintű"
+  },
+  "Reset-verb": {
+    "comment": "Label for a button that resets the state of an interface, e.g. a button that\nresets the sound recorder to its original state",
+    "val": "Visszaállítás"
+  },
+  "Restore": {
+    "comment": "Label for button that restores a withdrawn identification",
+    "val": "Visszaállítás"
+  },
+  "Satellite--map-type": {
+    "comment": "Label for the satellite map type",
+    "val": "Műhold"
+  },
+  "SAVE": {
+    "comment": "Label for a button that persists something",
+    "val": "MENTÉS"
+  },
+  "Save": {
+    "comment": "Label for a button that persists something",
+    "val": "Mentés"
+  },
+  "Scientific-Name": "Tudományos név",
+  "Search": {
+    "comment": "Title for a search interface",
+    "val": "Keresés"
+  },
+  "September": {
+    "comment": "Month of September",
+    "val": "Szeptember"
+  },
+  "Share": "Megosztás",
+  "Share-location": "Hely megosztása",
+  "Sounds": "Hangok",
+  "Spam": "Spam",
+  "Spam-Examples": "Üzleti ajánlat, nemműködő linkek, stb.",
+  "Species": "Fajok",
+  "Standard--map-type": {
+    "comment": "Label for the standard map type",
+    "val": "Standard"
+  },
+  "Stop-verb": {
+    "comment": "Imperative verb for stopping the recording of a sound",
+    "val": "Leállítás"
+  },
+  "supporting--identification": {
+    "comment": "Identification category",
+    "val": "Megerősítő"
+  },
+  "Syncing": "Szinkronizálás...",
+  "Taxa": {
+    "comment": "label in project requirements",
+    "val": "Taxon"
+  },
+  "Terms-of-Use": "Felhasználási feltételek",
+  "Traditional-Project": "Hagyományos projekt",
+  "Umbrella-Project": "Ernyőprojekt",
+  "Unknown--rank": {
+    "comment": "Text to show when a taoxn rank is unknown or missing",
+    "val": "Ismeretlen"
+  },
+  "Unknown--taxon": {
+    "comment": "Text to show when a taxon or identification is unknown or missing",
+    "val": "Ismeretlen"
+  },
+  "Unknown--user": {
+    "comment": "Text to show when a user (or their name) is unknown or missing",
+    "val": "Ismeretlen"
+  },
+  "Unknown-error": {
+    "comment": "Generic error message",
+    "val": "Ismeretlen hiba"
+  },
+  "Users": {
+    "comment": "label in project requirements",
+    "val": "Felhasználók"
+  },
+  "View-in-browser": "Megnyitás böngészőben",
+  "View-suggestions": {
+    "comment": "Label for a button that shows identification suggestions for an observation\nor photo",
+    "val": "Javaslatok megtekintése"
+  },
+  "Wild": "Vad",
+  "Withdraw": {
+    "comment": "Label for a button that withdraws an identification",
+    "val": "Visszavonás"
+  },
+  "Worldwide": "globális",
+  "You-need-log-in-to-do-that": {
+    "comment": "Error message when you try to do something that requires log in",
+    "val": "Ehhez be kell jelentkezned."
+  }
+}

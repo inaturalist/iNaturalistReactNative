@@ -1,0 +1,439 @@
+{
+  "ABOUT": {
+    "comment": "Header for a general description, e.g. of a user, or of iNaturalist itself",
+    "val": "INFO"
+  },
+  "Agree": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "D'accordo"
+  },
+  "AGREE": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "ACCETTA"
+  },
+  "ALL": "TUTTE",
+  "All": "Tutto",
+  "All-observations": "Tutte le osservazioni",
+  "all-rights-reserved": {
+    "comment": "As in intellectual property rights over a photo or other creative work",
+    "val": "Tutti i diritti riservati"
+  },
+  "All-taxa": "Tutti i taxa",
+  "Any": {
+    "comment": "Generic option in a menu of choices that indicates that any of the choices\nwould be acceptable",
+    "val": "Qualsiasi"
+  },
+  "April": {
+    "comment": "Month of April",
+    "val": "Aprile"
+  },
+  "August": {
+    "comment": "Month of August",
+    "val": "Agosto"
+  },
+  "Camera": "Fotocamera",
+  "Cancel": "Annulla",
+  "Casual--quality-grade": {
+    "comment": "Quality grade indicating observation does not quality for Needs ID or\nResearch Grade, e.g. missing media, voted out, etc.",
+    "val": "Informale"
+  },
+  "Clear": {
+    "comment": "Label for a button that clears content, like the text entered in a text\nfield",
+    "val": "Cancella"
+  },
+  "Close": {
+    "comment": "Label for a button that closes a window or popup",
+    "val": "Chiudi"
+  },
+  "Collection-Project": "Progetto Collezione",
+  "Community-Guidelines": "Linee guida della comunità",
+  "Coordinates-copied-to-clipboard": {
+    "comment": "Notification when coordinates have been copied",
+    "val": "Coordinate copiate negli appunti"
+  },
+  "Data-quality-assessment-date-is-accurate": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date is accurate",
+    "val": "La data è accurata"
+  },
+  "Data-quality-assessment-date-specified": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date was specified",
+    "val": "Data specificata"
+  },
+  "Data-quality-assessment-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Evidenza della presenza dell'organismo"
+  },
+  "Data-quality-assessment-has-photos-or-sounds": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Ha foto o suoni"
+  },
+  "Data-quality-assessment-id-supported-by-two-or-more": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Ha un'ID supportata da due o più"
+  },
+  "Data-quality-assessment-location-is-accurate": {
+    "comment": "Data Quality Assessment metric",
+    "val": "La posizione è accurata"
+  },
+  "Data-quality-assessment-location-specified": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Posizione specificata"
+  },
+  "Data-quality-assessment-organism-is-wild": {
+    "comment": "Data Quality Assessment metric",
+    "val": "L'organismo è selvatico"
+  },
+  "Data-quality-assessment-recent-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Evidenze recenti della presenza dell'organismo"
+  },
+  "Data-quality-assessment-single-subject": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Evidenze relative ad un soggetto singolo"
+  },
+  "Data-quality-assessment-title-research": {
+    "comment": "Data Quality Assessment description of the final quality grade when Research Grade",
+    "val": "Questa osservazione è di Livello ricerca!"
+  },
+  "Date": {
+    "comment": "label in project requirements",
+    "val": "Data"
+  },
+  "date-format-month-day": {
+    "comment": "Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "d MMM"
+  },
+  "Date-observed": "Data osservazione",
+  "Date-observed-header-short": "Osservata",
+  "Date-Range": {
+    "comment": "Label for controls over a range of dates",
+    "val": "Intervallo di date"
+  },
+  "December": {
+    "comment": "Month of December",
+    "val": "Dicembre"
+  },
+  "Delete-observation": "Cancella osservazione",
+  "Delete-photo": {
+    "comment": "Button label or accessibility label for an element that deletes a photo",
+    "val": "Elimina foto"
+  },
+  "DONATE": "DONA",
+  "Edit": {
+    "comment": "Button for editing something",
+    "val": "Modifica"
+  },
+  "Edit-location": {
+    "comment": "Label for interactive element that takes you to a location choosing screen",
+    "val": "Modifica posizione"
+  },
+  "Edit-Observation": "Modifica l'osservazione",
+  "Endemic": {
+    "comment": "Indicates a species only occurs in a specific place",
+    "val": "Endemiche"
+  },
+  "Error": {
+    "comment": "Title for a section describing an error",
+    "val": "Errore"
+  },
+  "Error-title": {
+    "comment": "Title of dialog or section describing an error",
+    "val": "Errore"
+  },
+  "Establishment": {
+    "comment": "label in project requirements",
+    "val": "Origine"
+  },
+  "Exact-Date": "Data esatta",
+  "except": "eccetto",
+  "Explore": "Esplora",
+  "FEATURED": {
+    "comment": "Header for featured projects",
+    "val": "IN PRIMO PIANO"
+  },
+  "February": {
+    "comment": "Month of February",
+    "val": "Febbraio"
+  },
+  "Filter": "Filtra",
+  "Filters": "Filtri",
+  "Flag-An-Item": "Contrassegna un elemento",
+  "Flag-Item-Other-Description": "Qualche altro motivo che puoi spiegare qui sotto.",
+  "Flag-Item-Other-Input-Hint": "Specifica il motivo per cui stai segnalando quest’oggetto",
+  "Flagged": {
+    "comment": "Status when an item has been flagged",
+    "val": "Contrassegnato"
+  },
+  "Go-back": {
+    "comment": "Label for button that returns to the previous screen",
+    "val": "Indietro"
+  },
+  "Hide": "Nascondi",
+  "ID-Withdrawn": {
+    "comment": "Identification Status",
+    "val": "ID ritirata"
+  },
+  "Identifiers": "Identificatori",
+  "improving--identification": {
+    "comment": "Identification category",
+    "val": "Affinamento"
+  },
+  "Introduced": "Introdotta",
+  "January": {
+    "comment": "Month of January",
+    "val": "Gennaio"
+  },
+  "JOIN": "ADERIRE",
+  "JOINED": {
+    "comment": "Header for joined projects",
+    "val": "ISCRITTO"
+  },
+  "July": {
+    "comment": "Month of July",
+    "val": "Luglio"
+  },
+  "June": {
+    "comment": "Month of June",
+    "val": "Giugno"
+  },
+  "leading--identification": {
+    "comment": "Identification category",
+    "val": "Da guida"
+  },
+  "Learn-More": "Scopri di più",
+  "Location": "Localizzazione",
+  "Log-in": {
+    "comment": "Second person imperative label to go to log in screen",
+    "val": "Accedi"
+  },
+  "LOG-OUT": "ESCI",
+  "Map-Area": "Area Mappa",
+  "March": {
+    "comment": "Month of March",
+    "val": "Marzo"
+  },
+  "maverick--identification": {
+    "comment": "Identification category",
+    "val": "In disaccordo"
+  },
+  "May": {
+    "comment": "Month of May",
+    "val": "Mag"
+  },
+  "Media-Type": {
+    "comment": "label in project requirements",
+    "val": "Tipo di supporto"
+  },
+  "Menu": {
+    "comment": "Accessibility label for a button that opens a menu of options",
+    "val": "Menu"
+  },
+  "Missing-Date": "Data Mancante",
+  "Months": "Mesi",
+  "MY-OBSERVATIONS": "LE MIE OSSERVAZIONI",
+  "Native": "Nativa",
+  "NEARBY": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "NELLE VICINANZE"
+  },
+  "Nearby": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "Nelle vicinanze"
+  },
+  "Needs-ID--quality-grade": {
+    "comment": "Quality grade indicating observation still needs more identifications",
+    "val": "Serve ID"
+  },
+  "New-Observation": {
+    "comment": "Heading when creating a new observation",
+    "val": "Nuova Osservazione"
+  },
+  "No-Location": "Nessuna posizione",
+  "No-Media": "Nessun File",
+  "none": "nessuno",
+  "Notifications": "Notifiche",
+  "November": {
+    "comment": "Month of November",
+    "val": "Novembre"
+  },
+  "Obscured": "Oscurata",
+  "Observations": "Osservazioni",
+  "Observe": {
+    "comment": "Button that starts a new observation",
+    "val": "Osserva"
+  },
+  "Observers": "Osservatori",
+  "October": {
+    "comment": "Month of October",
+    "val": "Ottobre"
+  },
+  "Offensive-Inappropriate": "Offensivo/inappropriato",
+  "OK": {
+    "comment": "Generic confirmation, e.g. button on a warning alert",
+    "val": "OK"
+  },
+  "Open": {
+    "comment": "Adjective, as in geoprivacy",
+    "val": "Aperta"
+  },
+  "Other": {
+    "comment": "Generic option in a list for unanticipated cases, e.g. a choice to manually\nenter an explanation for why you are flagging something instead of choosing\none of the existing options",
+    "val": "Altro"
+  },
+  "Privacy-Policy": "Informativa sulla privacy",
+  "Private": "Privato",
+  "Project-Members-Only": "Solo Membri del Progetto",
+  "Projects": {
+    "comment": "As in iNat projects, collections of observations or observation search filters",
+    "val": "Progetti"
+  },
+  "Quality-Grade": {
+    "comment": "label in project requirements",
+    "val": "Grado di Qualità"
+  },
+  "Ranks-Class": "Classe",
+  "Ranks-Complex": "Complesso",
+  "Ranks-Epifamily": "Epifamilia",
+  "Ranks-Family": "Famiglia",
+  "Ranks-Form": "Forma",
+  "Ranks-Genus": "Genere",
+  "Ranks-Genushybrid": "Genereibrido",
+  "Ranks-Hybrid": "Ibrido",
+  "Ranks-Infraclass": "Infraclasse",
+  "Ranks-Infrahybrid": "Infraibrido",
+  "Ranks-Infraorder": "Infraordine",
+  "Ranks-Kingdom": "Regno",
+  "Ranks-Order": "Ordina",
+  "Ranks-Parvorder": "Parvordine",
+  "Ranks-Phylum": "Phylum",
+  "Ranks-Section": "Sezione",
+  "Ranks-SPECIES": "SPECIE",
+  "Ranks-Species": "Specie",
+  "Ranks-Statefmatter": "Stato della materia",
+  "Ranks-Subclass": "Sottoclasse",
+  "Ranks-Subfamily": "Sottofamiglia",
+  "Ranks-Subgenus": "Sottogenere",
+  "Ranks-Subkingdom": "Sottoregno",
+  "Ranks-Suborder": "Sottordine",
+  "Ranks-Subphylum": "Subphylum",
+  "Ranks-Subsection": "Sottosezione",
+  "Ranks-Subspecies": "Sottospecie",
+  "Ranks-Subterclass": "Superclasse",
+  "Ranks-Subtribe": "Sottotribù",
+  "Ranks-Superclass": "Superclasse",
+  "Ranks-Superfamily": "Superfamiglia",
+  "Ranks-Superorder": "Superordine",
+  "Ranks-Supertribe": "Supertribù",
+  "Ranks-Tribe": "Tribù",
+  "Ranks-Variety": "Varietà",
+  "Ranks-Zoosection": "Zoosezione",
+  "Ranks-Zoosubsection": "Zoosottosezione",
+  "Record-verb": {
+    "comment": "Imperative verb for recording a sound",
+    "val": "Registro"
+  },
+  "Remove-identification": {
+    "comment": "Label for button that removes an identification",
+    "val": "Rimuovi l'identificazione"
+  },
+  "Remove-project-filter": "Rimuovi filtro progetto",
+  "Research-Grade--quality-grade": {
+    "comment": "Quality grade indicating observation is accurate and complete enough to\nshare outside of iNat",
+    "val": "Livello Ricerca"
+  },
+  "Reset-verb": {
+    "comment": "Label for a button that resets the state of an interface, e.g. a button that\nresets the sound recorder to its original state",
+    "val": "Ripristina"
+  },
+  "Restore": {
+    "comment": "Label for button that restores a withdrawn identification",
+    "val": "Ripristina"
+  },
+  "Satellite--map-type": {
+    "comment": "Label for the satellite map type",
+    "val": "Satellite"
+  },
+  "SAVE": {
+    "comment": "Label for a button that persists something",
+    "val": "SALVA"
+  },
+  "Save": {
+    "comment": "Label for a button that persists something",
+    "val": "Salva"
+  },
+  "Scientific-Name": "Nome Scientifico",
+  "Search": {
+    "comment": "Title for a search interface",
+    "val": "Cerca"
+  },
+  "September": {
+    "comment": "Month of September",
+    "val": "Settembre"
+  },
+  "Share": "Condividi",
+  "Share-location": "Condividi Posizione",
+  "Sounds": "Suoni",
+  "Spam": "Spam",
+  "Spam-Examples": "Promozioni commerciali, link a nulla, etc.",
+  "Species": "Specie",
+  "Standard--map-type": {
+    "comment": "Label for the standard map type",
+    "val": "Standard"
+  },
+  "Stop-upload": {
+    "comment": "Button or accessibility label for an interactive element that stops an upload",
+    "val": "Termina caricamento"
+  },
+  "Stop-verb": {
+    "comment": "Imperative verb for stopping the recording of a sound",
+    "val": "Interrompi"
+  },
+  "supporting--identification": {
+    "comment": "Identification category",
+    "val": "Di conferma"
+  },
+  "Syncing": "Sincronizzando...",
+  "Taxa": {
+    "comment": "label in project requirements",
+    "val": "Taxa"
+  },
+  "Terms-of-Use": "Termini d'Uso",
+  "Traditional-Project": "Progetto Tradizionale",
+  "Umbrella-Project": "Progetto Ombrello",
+  "Unknown--rank": {
+    "comment": "Text to show when a taoxn rank is unknown or missing",
+    "val": "Sconosciuto"
+  },
+  "Unknown--taxon": {
+    "comment": "Text to show when a taxon or identification is unknown or missing",
+    "val": "Sconosciuto"
+  },
+  "Unknown--user": {
+    "comment": "Text to show when a user (or their name) is unknown or missing",
+    "val": "Sconosciuto"
+  },
+  "Unknown-error": {
+    "comment": "Generic error message",
+    "val": "Errore sconosciuto"
+  },
+  "Users": {
+    "comment": "label in project requirements",
+    "val": "Utenti"
+  },
+  "View-in-browser": "Visualizza nel browser",
+  "View-suggestions": {
+    "comment": "Label for a button that shows identification suggestions for an observation\nor photo",
+    "val": "Visualizza suggerimenti"
+  },
+  "Welcome-to-iNaturalist": "Benvenuto su iNaturalist!",
+  "Wild": "Selvatico",
+  "Withdraw": {
+    "comment": "Label for a button that withdraws an identification",
+    "val": "Ritira"
+  },
+  "Worldwide": "Tutto il mondo",
+  "You-need-log-in-to-do-that": {
+    "comment": "Error message when you try to do something that requires log in",
+    "val": "Devi accedere per farlo."
+  }
+}

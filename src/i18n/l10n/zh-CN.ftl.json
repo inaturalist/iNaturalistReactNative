@@ -1,0 +1,425 @@
+{
+  "ABOUT": {
+    "comment": "Header for a general description, e.g. of a user, or of iNaturalist itself",
+    "val": "关于"
+  },
+  "Agree": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "同意"
+  },
+  "AGREE": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "同意"
+  },
+  "ALL": "所有",
+  "All": "全部",
+  "All-observations": "所有观察",
+  "all-rights-reserved": {
+    "comment": "As in intellectual property rights over a photo or other creative work",
+    "val": "保留所有权利"
+  },
+  "All-taxa": "所有分类群",
+  "Any": {
+    "comment": "Generic option in a menu of choices that indicates that any of the choices\nwould be acceptable",
+    "val": "任意"
+  },
+  "April": {
+    "comment": "Month of April",
+    "val": "四月"
+  },
+  "August": {
+    "comment": "Month of August",
+    "val": "八月"
+  },
+  "Camera": "相机",
+  "Cancel": "取消",
+  "Casual--quality-grade": {
+    "comment": "Quality grade indicating observation does not quality for Needs ID or\nResearch Grade, e.g. missing media, voted out, etc.",
+    "val": "非正式"
+  },
+  "Close": {
+    "comment": "Label for a button that closes a window or popup",
+    "val": "关闭"
+  },
+  "Collection-Project": "搜集型项目",
+  "Community-Guidelines": "社群指引",
+  "Coordinates-copied-to-clipboard": {
+    "comment": "Notification when coordinates have been copied",
+    "val": "坐标已复制到剪贴板"
+  },
+  "Data-quality-assessment-date-is-accurate": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date is accurate",
+    "val": "日期是精确的"
+  },
+  "Data-quality-assessment-date-specified": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date was specified",
+    "val": "已指定日期"
+  },
+  "Data-quality-assessment-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "生物证据"
+  },
+  "Data-quality-assessment-has-photos-or-sounds": {
+    "comment": "Data Quality Assessment metric",
+    "val": "有照片或音频"
+  },
+  "Data-quality-assessment-id-supported-by-two-or-more": {
+    "comment": "Data Quality Assessment metric",
+    "val": "由不少于两个鉴定结果所支持"
+  },
+  "Data-quality-assessment-location-is-accurate": {
+    "comment": "Data Quality Assessment metric",
+    "val": "位置准确"
+  },
+  "Data-quality-assessment-location-specified": {
+    "comment": "Data Quality Assessment metric",
+    "val": "位置被指定"
+  },
+  "Data-quality-assessment-organism-is-wild": {
+    "comment": "Data Quality Assessment metric",
+    "val": "生物是野生的"
+  },
+  "Data-quality-assessment-recent-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "近期的生物证据"
+  },
+  "Data-quality-assessment-single-subject": {
+    "comment": "Data Quality Assessment metric",
+    "val": "与单一主体有关的证据"
+  },
+  "Data-quality-assessment-title-research": {
+    "comment": "Data Quality Assessment description of the final quality grade when Research Grade",
+    "val": "此观察达到了研究级！"
+  },
+  "Date": {
+    "comment": "label in project requirements",
+    "val": "日期"
+  },
+  "date-format-month-day": {
+    "comment": "Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "MMM d"
+  },
+  "Date-observed": "观察日期",
+  "Date-observed-header-short": "观察日期",
+  "Date-Range": {
+    "comment": "Label for controls over a range of dates",
+    "val": "数据范围"
+  },
+  "December": {
+    "comment": "Month of December",
+    "val": "十二月"
+  },
+  "Delete-observation": "删除观测",
+  "Delete-photo": {
+    "comment": "Button label or accessibility label for an element that deletes a photo",
+    "val": "删除照片"
+  },
+  "DONATE": "捐款",
+  "Edit": {
+    "comment": "Button for editing something",
+    "val": "编辑"
+  },
+  "Edit-Observation": "编辑观察",
+  "Endemic": {
+    "comment": "Indicates a species only occurs in a specific place",
+    "val": "特有"
+  },
+  "Error": {
+    "comment": "Title for a section describing an error",
+    "val": "错误"
+  },
+  "Error-title": {
+    "comment": "Title of dialog or section describing an error",
+    "val": "错误"
+  },
+  "Establishment": {
+    "comment": "label in project requirements",
+    "val": "定殖"
+  },
+  "Exact-Date": "具体日期",
+  "except": "除外",
+  "Explore": "探索",
+  "FEATURED": {
+    "comment": "Header for featured projects",
+    "val": "精选"
+  },
+  "February": {
+    "comment": "Month of February",
+    "val": "二月"
+  },
+  "Filter": "过滤器",
+  "Filters": "过滤器",
+  "Flag-An-Item": "标记一个项目",
+  "Flag-Item-Other-Description": "您可以在下方说明其他一些原因。",
+  "Flag-Item-Other-Input-Hint": "指定标记此项目的原因",
+  "Flagged": {
+    "comment": "Status when an item has been flagged",
+    "val": "已标记"
+  },
+  "Go-back": {
+    "comment": "Label for button that returns to the previous screen",
+    "val": "返回"
+  },
+  "Hide": "隐藏",
+  "ID-Withdrawn": {
+    "comment": "Identification Status",
+    "val": "鉴定撤回"
+  },
+  "Identifiers": "鉴定者",
+  "improving--identification": {
+    "comment": "Identification category",
+    "val": "改进中"
+  },
+  "Introduced": "外来",
+  "January": {
+    "comment": "Month of January",
+    "val": "一月"
+  },
+  "JOIN": "加入",
+  "JOINED": {
+    "comment": "Header for joined projects",
+    "val": "已加入"
+  },
+  "July": {
+    "comment": "Month of July",
+    "val": "七月"
+  },
+  "June": {
+    "comment": "Month of June",
+    "val": "六月"
+  },
+  "leading--identification": {
+    "comment": "Identification category",
+    "val": "领先的意见"
+  },
+  "Learn-More": "了解更多",
+  "Location": "位置",
+  "Log-in": {
+    "comment": "Second person imperative label to go to log in screen",
+    "val": "登入"
+  },
+  "LOG-OUT": "登出",
+  "Map-Area": "地图区域",
+  "March": {
+    "comment": "Month of March",
+    "val": "三月"
+  },
+  "maverick--identification": {
+    "comment": "Identification category",
+    "val": "小众的意见"
+  },
+  "May": {
+    "comment": "Month of May",
+    "val": "5月"
+  },
+  "Media-Type": {
+    "comment": "label in project requirements",
+    "val": "媒体类型"
+  },
+  "Menu": {
+    "comment": "Accessibility label for a button that opens a menu of options",
+    "val": "选单"
+  },
+  "Missing-Date": "缺少日期",
+  "Months": "月",
+  "Native": "本地",
+  "NEARBY": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "周边"
+  },
+  "Nearby": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "附近"
+  },
+  "Needs-ID--quality-grade": {
+    "comment": "Quality grade indicating observation still needs more identifications",
+    "val": "待鉴定"
+  },
+  "New-Observation": {
+    "comment": "Heading when creating a new observation",
+    "val": "新的观察记录"
+  },
+  "No-Location": "无位置资讯",
+  "No-Media": "没有媒体",
+  "none": "无",
+  "Notifications": "通知",
+  "November": {
+    "comment": "Month of November",
+    "val": "十一月"
+  },
+  "Obscured": "被模糊处理",
+  "Observations": "观察",
+  "Observe": {
+    "comment": "Button that starts a new observation",
+    "val": "观察"
+  },
+  "Observers": "观察者",
+  "October": {
+    "comment": "Month of October",
+    "val": "十月"
+  },
+  "Offensive-Inappropriate": "冒犯性的/不恰当的",
+  "OK": {
+    "comment": "Generic confirmation, e.g. button on a warning alert",
+    "val": "确定"
+  },
+  "Open": {
+    "comment": "Adjective, as in geoprivacy",
+    "val": "公开"
+  },
+  "Other": {
+    "comment": "Generic option in a list for unanticipated cases, e.g. a choice to manually\nenter an explanation for why you are flagging something instead of choosing\none of the existing options",
+    "val": "其他"
+  },
+  "Privacy-Policy": "隐私政策",
+  "Private": "私有",
+  "Project-Members-Only": "仅限项目成员",
+  "Projects": {
+    "comment": "As in iNat projects, collections of observations or observation search filters",
+    "val": "项目"
+  },
+  "Quality-Grade": {
+    "comment": "label in project requirements",
+    "val": "质量等级"
+  },
+  "Ranks-Class": "纲",
+  "Ranks-Complex": "复合群",
+  "Ranks-Epifamily": "领科",
+  "Ranks-Family": "科",
+  "Ranks-Form": "型",
+  "Ranks-Genus": "属",
+  "Ranks-Genushybrid": "属间杂种",
+  "Ranks-Hybrid": "杂种",
+  "Ranks-Infraclass": "附纲",
+  "Ranks-Infrahybrid": "种内杂种",
+  "Ranks-Infraorder": "下目",
+  "Ranks-Kingdom": "界",
+  "Ranks-Order": "排序",
+  "Ranks-Parvorder": "小目",
+  "Ranks-Phylum": "门",
+  "Ranks-Section": "组",
+  "Ranks-SPECIES": "物种",
+  "Ranks-Species": "物种",
+  "Ranks-Statefmatter": "物态",
+  "Ranks-Subclass": "亚纲",
+  "Ranks-Subfamily": "亚科",
+  "Ranks-Subgenus": "亚属",
+  "Ranks-Subkingdom": "亚界",
+  "Ranks-Suborder": "亚目",
+  "Ranks-Subphylum": "亚门",
+  "Ranks-Subsection": "亚组",
+  "Ranks-Subspecies": "亚种",
+  "Ranks-Subterclass": "子类",
+  "Ranks-Subtribe": "亚族",
+  "Ranks-Superclass": "总纲",
+  "Ranks-Superfamily": "总科",
+  "Ranks-Superorder": "总目",
+  "Ranks-Supertribe": "总族",
+  "Ranks-Tribe": "族",
+  "Ranks-Variety": "变种",
+  "Ranks-Zoosection": "派",
+  "Ranks-Zoosubsection": "亚派",
+  "Record-verb": {
+    "comment": "Imperative verb for recording a sound",
+    "val": "记录"
+  },
+  "Remove-identification": {
+    "comment": "Label for button that removes an identification",
+    "val": "删除身份证明"
+  },
+  "Remove-project-filter": "删除项目过滤器",
+  "Research-Grade--quality-grade": {
+    "comment": "Quality grade indicating observation is accurate and complete enough to\nshare outside of iNat",
+    "val": "研究级别"
+  },
+  "Reset-verb": {
+    "comment": "Label for a button that resets the state of an interface, e.g. a button that\nresets the sound recorder to its original state",
+    "val": "重设"
+  },
+  "Restore": {
+    "comment": "Label for button that restores a withdrawn identification",
+    "val": "恢复"
+  },
+  "Satellite--map-type": {
+    "comment": "Label for the satellite map type",
+    "val": "卫星"
+  },
+  "SAVE": {
+    "comment": "Label for a button that persists something",
+    "val": "储存"
+  },
+  "Save": {
+    "comment": "Label for a button that persists something",
+    "val": "保存"
+  },
+  "Scientific-Name": "学名",
+  "Search": {
+    "comment": "Title for a search interface",
+    "val": "搜索"
+  },
+  "September": {
+    "comment": "Month of September",
+    "val": "九月"
+  },
+  "Share": "分享",
+  "Share-location": "分享位置",
+  "Sounds": "声音",
+  "Spam": "垃圾邮件",
+  "Spam-Examples": "商业征集，链接至任何地方等",
+  "Species": "物种",
+  "Standard--map-type": {
+    "comment": "Label for the standard map type",
+    "val": "标准"
+  },
+  "Stop-verb": {
+    "comment": "Imperative verb for stopping the recording of a sound",
+    "val": "停止"
+  },
+  "supporting--identification": {
+    "comment": "Identification category",
+    "val": "支持的"
+  },
+  "Syncing": "上传中",
+  "Taxa": {
+    "comment": "label in project requirements",
+    "val": "分类群"
+  },
+  "Terms-of-Use": "使用条款",
+  "Traditional-Project": "传统项目",
+  "Umbrella-Project": "旗舰型项目",
+  "Unknown--rank": {
+    "comment": "Text to show when a taoxn rank is unknown or missing",
+    "val": "未知"
+  },
+  "Unknown--taxon": {
+    "comment": "Text to show when a taxon or identification is unknown or missing",
+    "val": "未知"
+  },
+  "Unknown--user": {
+    "comment": "Text to show when a user (or their name) is unknown or missing",
+    "val": "未知"
+  },
+  "Unknown-error": {
+    "comment": "Generic error message",
+    "val": "未知错误"
+  },
+  "Users": {
+    "comment": "label in project requirements",
+    "val": "用户"
+  },
+  "View-in-browser": "在浏览器中阅览",
+  "View-suggestions": {
+    "comment": "Label for a button that shows identification suggestions for an observation\nor photo",
+    "val": "查看建议"
+  },
+  "Wild": "野生",
+  "Withdraw": {
+    "comment": "Label for a button that withdraws an identification",
+    "val": "撤回"
+  },
+  "Worldwide": "世界各地",
+  "You-need-log-in-to-do-that": {
+    "comment": "Error message when you try to do something that requires log in",
+    "val": "您必须先登录。"
+  }
+}

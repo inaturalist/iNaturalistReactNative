@@ -1,0 +1,430 @@
+{
+  "ABOUT": {
+    "comment": "Header for a general description, e.g. of a user, or of iNaturalist itself",
+    "val": "HAKKINDA"
+  },
+  "Agree": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "Onayla"
+  },
+  "AGREE": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "ONAYLA"
+  },
+  "ALL": "TÜMÜ",
+  "All": "Tümü",
+  "All-observations": "Tüm gözlemler",
+  "all-rights-reserved": {
+    "comment": "As in intellectual property rights over a photo or other creative work",
+    "val": "tüm hakları saklıdır"
+  },
+  "All-taxa": "Tüm sınıflar",
+  "Any": {
+    "comment": "Generic option in a menu of choices that indicates that any of the choices\nwould be acceptable",
+    "val": "Tümü"
+  },
+  "April": {
+    "comment": "Month of April",
+    "val": "Nisan"
+  },
+  "August": {
+    "comment": "Month of August",
+    "val": "Ağustos"
+  },
+  "Camera": "Kamera",
+  "Cancel": "İptal",
+  "Casual--quality-grade": {
+    "comment": "Quality grade indicating observation does not quality for Needs ID or\nResearch Grade, e.g. missing media, voted out, etc.",
+    "val": "Sıradan"
+  },
+  "Close": {
+    "comment": "Label for a button that closes a window or popup",
+    "val": "Kapat"
+  },
+  "Collection-Project": "Koleksiyon Projesi",
+  "Community-Guidelines": "Topluluk İlkeleri",
+  "Coordinates-copied-to-clipboard": {
+    "comment": "Notification when coordinates have been copied",
+    "val": "Koordinatlar panoya kopyalandı"
+  },
+  "Data-quality-assessment-date-is-accurate": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date is accurate",
+    "val": "Tarihi doğru"
+  },
+  "Data-quality-assessment-date-specified": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date was specified",
+    "val": "Tarih belirtilmiş"
+  },
+  "Data-quality-assessment-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Organizmanın kanıtı"
+  },
+  "Data-quality-assessment-has-photos-or-sounds": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Fotoğraflar ya da Sesler Var"
+  },
+  "Data-quality-assessment-id-supported-by-two-or-more": {
+    "comment": "Data Quality Assessment metric",
+    "val": "İki ya da daha çok kişi tarafından desteklenen tanım var"
+  },
+  "Data-quality-assessment-location-is-accurate": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Konum doğru"
+  },
+  "Data-quality-assessment-location-specified": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Konum belirtilmiş"
+  },
+  "Data-quality-assessment-organism-is-wild": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Yabani organizma"
+  },
+  "Data-quality-assessment-recent-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Bir organizmanın son kanıtı"
+  },
+  "Data-quality-assessment-single-subject": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Tek bir süjeyle ilgili kanıt"
+  },
+  "Data-quality-assessment-title-research": {
+    "comment": "Data Quality Assessment description of the final quality grade when Research Grade",
+    "val": "Bu gözlem Araştırma Sınıfı!"
+  },
+  "Date": {
+    "comment": "label in project requirements",
+    "val": "Tarih"
+  },
+  "date-format-month-day": {
+    "comment": "Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "d MMM"
+  },
+  "Date-observed": "Gözlem Tarihi",
+  "Date-observed-header-short": "Gözlem Tarihi",
+  "Date-Range": {
+    "comment": "Label for controls over a range of dates",
+    "val": "Tarih Aralığı"
+  },
+  "December": {
+    "comment": "Month of December",
+    "val": "Aralık"
+  },
+  "Delete-observation": "Gözlemi sil",
+  "Delete-photo": {
+    "comment": "Button label or accessibility label for an element that deletes a photo",
+    "val": "Fotoğrafı sil"
+  },
+  "DONATE": "BAĞIŞ YAP",
+  "Edit": {
+    "comment": "Button for editing something",
+    "val": "Düzenle"
+  },
+  "Edit-location": {
+    "comment": "Label for interactive element that takes you to a location choosing screen",
+    "val": "Konumu  düzenle"
+  },
+  "Edit-Observation": "Gözlemi Düzenle",
+  "Endemic": {
+    "comment": "Indicates a species only occurs in a specific place",
+    "val": "Yöreye özgü"
+  },
+  "Error": {
+    "comment": "Title for a section describing an error",
+    "val": "Hata"
+  },
+  "Error-title": {
+    "comment": "Title of dialog or section describing an error",
+    "val": "Hata"
+  },
+  "Establishment": {
+    "comment": "label in project requirements",
+    "val": "Yerleşim Tipi"
+  },
+  "Exact-Date": "Tam Tarih",
+  "except": "dışında",
+  "Explore": "Keşfet",
+  "FEATURED": {
+    "comment": "Header for featured projects",
+    "val": "ÖNE ÇIKAN"
+  },
+  "February": {
+    "comment": "Month of February",
+    "val": "Şubat"
+  },
+  "Filter": "Filtre",
+  "Filters": "Filtreler",
+  "Flag-An-Item": "Bir İçeriği İşaretle",
+  "Flag-Item-Other-Description": "Aşağıda açıklayabileceğin başka bir neden.",
+  "Flag-Item-Other-Input-Hint": "Bu öğeyi işaretleme nedeninizi belirtin",
+  "Flagged": {
+    "comment": "Status when an item has been flagged",
+    "val": "İşaretli"
+  },
+  "Go-back": {
+    "comment": "Label for button that returns to the previous screen",
+    "val": "Geri git"
+  },
+  "Hide": "Gizle",
+  "ID-Withdrawn": {
+    "comment": "Identification Status",
+    "val": "Tanımlama Geri Alındı"
+  },
+  "Identifiers": "Tanımlayıcılar",
+  "improving--identification": {
+    "comment": "Identification category",
+    "val": "Geliştirici"
+  },
+  "Introduced": "Yabancı",
+  "January": {
+    "comment": "Month of January",
+    "val": "Ocak"
+  },
+  "JOIN": "KATIL",
+  "JOINED": {
+    "comment": "Header for joined projects",
+    "val": "KATILDIĞIN"
+  },
+  "July": {
+    "comment": "Month of July",
+    "val": "Temmuz"
+  },
+  "June": {
+    "comment": "Month of June",
+    "val": "Haziran"
+  },
+  "leading--identification": {
+    "comment": "Identification category",
+    "val": "Öncü"
+  },
+  "Learn-More": "Daha Çok Bilgi",
+  "Location": "Konum",
+  "Log-in": {
+    "comment": "Second person imperative label to go to log in screen",
+    "val": "Giriş"
+  },
+  "LOG-OUT": "ÇIKIŞ YAP",
+  "Map-Area": "Harita Alanı",
+  "March": {
+    "comment": "Month of March",
+    "val": "Mart"
+  },
+  "maverick--identification": {
+    "comment": "Identification category",
+    "val": "Farklı Öneri"
+  },
+  "May": {
+    "comment": "Month of May",
+    "val": "May"
+  },
+  "Media-Type": {
+    "comment": "label in project requirements",
+    "val": "Medya Türü"
+  },
+  "Menu": {
+    "comment": "Accessibility label for a button that opens a menu of options",
+    "val": "Menü"
+  },
+  "Missing-Date": "Eksik Tarih",
+  "Months": "Aylar",
+  "MY-OBSERVATIONS": "BENİM GÖZLEMLERİM",
+  "Native": "Yerli",
+  "NEARBY": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "YAKINDAKİ"
+  },
+  "Nearby": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "Yakında"
+  },
+  "Needs-ID--quality-grade": {
+    "comment": "Quality grade indicating observation still needs more identifications",
+    "val": "Tanımlama Gerekli"
+  },
+  "New-Observation": {
+    "comment": "Heading when creating a new observation",
+    "val": "Yeni Gözlem"
+  },
+  "No-Location": "Konum Yok",
+  "No-Media": "Ortam Yok",
+  "none": "hiçbiri",
+  "Notifications": "Bildirimler",
+  "November": {
+    "comment": "Month of November",
+    "val": "Kasım"
+  },
+  "Obscured": "Gizlenmiş",
+  "Observations": "Gözlemler",
+  "Observe": {
+    "comment": "Button that starts a new observation",
+    "val": "Gözlemle"
+  },
+  "Observers": "Gözlemciler",
+  "October": {
+    "comment": "Month of October",
+    "val": "Ekim"
+  },
+  "Offensive-Inappropriate": "Saldırgan/Uygunsuz",
+  "OK": {
+    "comment": "Generic confirmation, e.g. button on a warning alert",
+    "val": "TAMAM"
+  },
+  "Open": {
+    "comment": "Adjective, as in geoprivacy",
+    "val": "Açık"
+  },
+  "Other": {
+    "comment": "Generic option in a list for unanticipated cases, e.g. a choice to manually\nenter an explanation for why you are flagging something instead of choosing\none of the existing options",
+    "val": "Diğer"
+  },
+  "Privacy-Policy": "Gizlilik Politikası",
+  "Private": "Özel",
+  "Project-Members-Only": "Yalnızca Proje Üyeleri",
+  "Projects": {
+    "comment": "As in iNat projects, collections of observations or observation search filters",
+    "val": "Projeler"
+  },
+  "Quality-Grade": {
+    "comment": "label in project requirements",
+    "val": "Kalite Derecesi"
+  },
+  "Ranks-Class": "Sınıf",
+  "Ranks-Complex": "Kompleks",
+  "Ranks-Epifamily": "Epi Familya",
+  "Ranks-Family": "Familya",
+  "Ranks-Form": "Form",
+  "Ranks-Genus": "Cins",
+  "Ranks-Genushybrid": "Melez Cins",
+  "Ranks-Hybrid": "Melez",
+  "Ranks-Infraclass": "İnfra Sınıf",
+  "Ranks-Infrahybrid": "İnfra Melez",
+  "Ranks-Infraorder": "İnfra Takım",
+  "Ranks-Kingdom": "Alem",
+  "Ranks-Order": "Sıralama",
+  "Ranks-Parvorder": "Geçiş Takımı",
+  "Ranks-Phylum": "Şube",
+  "Ranks-Section": "Seksiyon",
+  "Ranks-SPECIES": "TÜR",
+  "Ranks-Species": "Türler",
+  "Ranks-Statefmatter": "İçeriğin durumu",
+  "Ranks-Subclass": "Alt Sınıf",
+  "Ranks-Subfamily": "Alt Familya",
+  "Ranks-Subgenus": "Alt Cins",
+  "Ranks-Subkingdom": "Alt Alem",
+  "Ranks-Suborder": "Alt Takım",
+  "Ranks-Subphylum": "Alt Şube",
+  "Ranks-Subsection": "Alt Seksiyon",
+  "Ranks-Subspecies": "Alt Tür",
+  "Ranks-Subterclass": "Enaltsınıf",
+  "Ranks-Subtribe": "Alt Oymak",
+  "Ranks-Superclass": "Üst Sınıf",
+  "Ranks-Superfamily": "Üst Familya",
+  "Ranks-Superorder": "Üst Takım",
+  "Ranks-Supertribe": "Üst Oymak",
+  "Ranks-Tribe": "Oymak",
+  "Ranks-Variety": "Varyasyon",
+  "Ranks-Zoosection": "Zoobölüm",
+  "Ranks-Zoosubsection": "Zooaltbölüm",
+  "Record-verb": {
+    "comment": "Imperative verb for recording a sound",
+    "val": "Kayıt"
+  },
+  "Remove-identification": {
+    "comment": "Label for button that removes an identification",
+    "val": "Tanımlamayı kaldır"
+  },
+  "Remove-project-filter": "Proje filtresini kaldır",
+  "Research-Grade--quality-grade": {
+    "comment": "Quality grade indicating observation is accurate and complete enough to\nshare outside of iNat",
+    "val": "Araştırma Sınıfı"
+  },
+  "Reset-verb": {
+    "comment": "Label for a button that resets the state of an interface, e.g. a button that\nresets the sound recorder to its original state",
+    "val": "Sıfırla"
+  },
+  "Restore": {
+    "comment": "Label for button that restores a withdrawn identification",
+    "val": "Geri yükle"
+  },
+  "Satellite--map-type": {
+    "comment": "Label for the satellite map type",
+    "val": "Uydu"
+  },
+  "SAVE": {
+    "comment": "Label for a button that persists something",
+    "val": "KAYDET"
+  },
+  "Save": {
+    "comment": "Label for a button that persists something",
+    "val": "Kaydet"
+  },
+  "Scientific-Name": "Bilimsel Ad",
+  "Search": {
+    "comment": "Title for a search interface",
+    "val": "Arama Yap"
+  },
+  "September": {
+    "comment": "Month of September",
+    "val": "Eylül"
+  },
+  "Share": "Paylaş",
+  "Share-location": "Konum Paylaş",
+  "Sounds": "Sesler",
+  "Spam": "Gereksiz",
+  "Spam-Examples": "Ticari istek, hiçbir yerle bağlı olmayanlar vb.",
+  "Species": "Türler",
+  "Standard--map-type": {
+    "comment": "Label for the standard map type",
+    "val": "Standart"
+  },
+  "Stop-verb": {
+    "comment": "Imperative verb for stopping the recording of a sound",
+    "val": "Dur"
+  },
+  "supporting--identification": {
+    "comment": "Identification category",
+    "val": "Destekleyici"
+  },
+  "Syncing": "Senkronize Ediliyor...",
+  "Taxa": {
+    "comment": "label in project requirements",
+    "val": "Sınıflar"
+  },
+  "Terms-of-Use": "Kullanım Koşulları",
+  "Traditional-Project": "Geleneksel Proje",
+  "Umbrella-Project": "Şemsiye Projesi",
+  "Unknown--rank": {
+    "comment": "Text to show when a taoxn rank is unknown or missing",
+    "val": "Bilinmeyen"
+  },
+  "Unknown--taxon": {
+    "comment": "Text to show when a taxon or identification is unknown or missing",
+    "val": "Bilinmeyen"
+  },
+  "Unknown--user": {
+    "comment": "Text to show when a user (or their name) is unknown or missing",
+    "val": "Bilinmeyen"
+  },
+  "Unknown-error": {
+    "comment": "Generic error message",
+    "val": "Bilinmeyen hata"
+  },
+  "Users": {
+    "comment": "label in project requirements",
+    "val": "Kullanıcılar"
+  },
+  "View-in-browser": "Tarayıcıda görüntüle",
+  "View-suggestions": {
+    "comment": "Label for a button that shows identification suggestions for an observation\nor photo",
+    "val": "Önerileri görüntüle"
+  },
+  "Wild": "Yabani",
+  "Withdraw": {
+    "comment": "Label for a button that withdraws an identification",
+    "val": "Geri Al"
+  },
+  "Worldwide": "Dünya çapında",
+  "You-need-log-in-to-do-that": {
+    "comment": "Error message when you try to do something that requires log in",
+    "val": "Bunu yapabilmek için oturum açmanız gerekir."
+  }
+}

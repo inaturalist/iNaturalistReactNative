@@ -1,0 +1,139 @@
+{
+  "ABOUT": {
+    "comment": "Header for a general description, e.g. of a user, or of iNaturalist itself",
+    "val": "PATUNGKOL"
+  },
+  "All": "Lahat",
+  "Any": {
+    "comment": "Generic option in a menu of choices that indicates that any of the choices\nwould be acceptable",
+    "val": "Kahit ano"
+  },
+  "Cancel": "Ikansela",
+  "Date": {
+    "comment": "label in project requirements",
+    "val": "Petsa"
+  },
+  "Delete-observation": "Burahin ang obserbasyon",
+  "Delete-photo": {
+    "comment": "Button label or accessibility label for an element that deletes a photo",
+    "val": "Burahin ang larawan"
+  },
+  "Edit": {
+    "comment": "Button for editing something",
+    "val": "I-edit"
+  },
+  "Edit-Observation": "I-edit ang obserbasyon",
+  "Error": {
+    "comment": "Title for a section describing an error",
+    "val": "Error"
+  },
+  "Error-title": {
+    "comment": "Title of dialog or section describing an error",
+    "val": "Error"
+  },
+  "Exact-Date": "Eksaktong petsa",
+  "Explore": "Maglakbay",
+  "Filters": "Mga filter",
+  "improving--identification": {
+    "comment": "Identification category",
+    "val": "Pinapahusay"
+  },
+  "leading--identification": {
+    "comment": "Identification category",
+    "val": "Nangunguna"
+  },
+  "Location": "Lokasyon",
+  "Map-Area": "Area sa mapa",
+  "maverick--identification": {
+    "comment": "Identification category",
+    "val": "Maverick"
+  },
+  "Months": "Buwan",
+  "Nearby": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "Kalapit"
+  },
+  "Needs-ID--quality-grade": {
+    "comment": "Quality grade indicating observation still needs more identifications",
+    "val": "Kailangan ng ID"
+  },
+  "New-Observation": {
+    "comment": "Heading when creating a new observation",
+    "val": "Bagong obserbasyon"
+  },
+  "No-Location": "Walang lokasyon",
+  "No-Media": "Walang media",
+  "Obscured": "hindi malinaw",
+  "Observe": {
+    "comment": "Button that starts a new observation",
+    "val": "Obserbahan"
+  },
+  "OK": {
+    "comment": "Generic confirmation, e.g. button on a warning alert",
+    "val": "Sige"
+  },
+  "Open": {
+    "comment": "Adjective, as in geoprivacy",
+    "val": "Bukas"
+  },
+  "Private": "Pribado",
+  "Projects": {
+    "comment": "As in iNat projects, collections of observations or observation search filters",
+    "val": "Mga proyekto"
+  },
+  "Quality-Grade": {
+    "comment": "label in project requirements",
+    "val": "Grado ng kalidad"
+  },
+  "Research-Grade--quality-grade": {
+    "comment": "Quality grade indicating observation is accurate and complete enough to\nshare outside of iNat",
+    "val": "kalidad ng pagsiyasat"
+  },
+  "Reset-verb": {
+    "comment": "Label for a button that resets the state of an interface, e.g. a button that\nresets the sound recorder to its original state",
+    "val": "I-reset"
+  },
+  "Restore": {
+    "comment": "Label for button that restores a withdrawn identification",
+    "val": "I-restore"
+  },
+  "Satellite--map-type": {
+    "comment": "Label for the satellite map type",
+    "val": "Satellite"
+  },
+  "Save": {
+    "comment": "Label for a button that persists something",
+    "val": "I-save"
+  },
+  "Search": {
+    "comment": "Title for a search interface",
+    "val": "Maghanap"
+  },
+  "Share": "Ibahagi",
+  "Stop-verb": {
+    "comment": "Imperative verb for stopping the recording of a sound",
+    "val": "Itigil"
+  },
+  "supporting--identification": {
+    "comment": "Identification category",
+    "val": "Suportado"
+  },
+  "Syncing": "Sini-sync...",
+  "Unknown--rank": {
+    "comment": "Text to show when a taoxn rank is unknown or missing",
+    "val": "Di alam"
+  },
+  "Unknown--taxon": {
+    "comment": "Text to show when a taxon or identification is unknown or missing",
+    "val": "Di alam"
+  },
+  "Unknown--user": {
+    "comment": "Text to show when a user (or their name) is unknown or missing",
+    "val": "Di alam"
+  },
+  "View-in-browser": "Tingnan sa browser",
+  "Withdraw": {
+    "comment": "Label for a button that withdraws an identification",
+    "val": "I-withdraw"
+  }
+}

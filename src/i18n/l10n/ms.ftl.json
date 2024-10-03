@@ -1,0 +1,19 @@
+{
+  "Cancel": "Batal",
+  "Date": {
+    "comment": "label in project requirements",
+    "val": "Tarikh"
+  },
+  "OK": {
+    "comment": "Generic confirmation, e.g. button on a warning alert",
+    "val": "OK"
+  },
+  "Projects": {
+    "comment": "As in iNat projects, collections of observations or observation search filters",
+    "val": "Projek"
+  },
+  "Satellite--map-type": {
+    "comment": "Label for the satellite map type",
+    "val": "Satelit"
+  }
+}

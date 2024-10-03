@@ -1,0 +1,515 @@
+{
+  "ABOUT": {
+    "comment": "Header for a general description, e.g. of a user, or of iNaturalist itself",
+    "val": "OM"
+  },
+  "ABOUT-COLLECTION-PROJECTS": "OM INSAMLINGSPROJEKT",
+  "ABOUT-INATURALIST": "OM INATURALIST",
+  "ABOUT-THE-DQA": {
+    "comment": "About the Data Quality Assement",
+    "val": "OM DQA"
+  },
+  "About-the-DQA-description": "Kvalitetsklassen är en sammanfattning av noggrannhet, precision, fullständighet,\nrelevans och lämplighet av ett iNaturalist-fynd i egenskapen av data om\nbiologisk mångfald. Vissa egenskaper avgörs automatiskt, medan\nandra bestäms genom röstning av iNat-användare. iNaturalist\ndelar fynd av \"Forskningsklass\" med ett antal datapartners\nför användning inom vetenskap och naturvård.",
+  "ABOUT-TRADITIONAL-PROJECTS": "OM TRADITIONELLA PROJEKT",
+  "ABOUT-UMBRELLA-PROJECTS": "OM PARAPLYPROJEKT",
+  "accessible-comname-sciname": {
+    "comment": "Label for a taxon when a user prefers to see or hear the common name first",
+    "val": "{ $commonName } ({ $scientificName })"
+  },
+  "accessible-sciname-comname": {
+    "comment": "Label for a taxon when a user prefers to see or hear the scientific name first",
+    "val": "{ $scientificName } ({ $commonName })"
+  },
+  "Account-Deleted": {
+    "comment": "Alert message shown after account deletion",
+    "val": "Kontot raderades"
+  },
+  "ACTIVITY": "AKTIVITET",
+  "Add-agreement": {
+    "comment": "Label for a button that adds a vote of agreement",
+    "val": "Håller med"
+  },
+  "ADD-AN-ID": "LÄGG TILL BESTÄMNING",
+  "Add-an-ID-Later": "Lägg till bestämning senare",
+  "ADD-COMMENT": "LÄGG TILL KOMMENTAR",
+  "Add-Date-Time": "Lägg till datum/tid",
+  "Add-disagreement": {
+    "comment": "Label for a button that adds a vote of disagreement",
+    "val": "Håller inte med"
+  },
+  "ADD-EVIDENCE": "LÄGG TILL STÖD",
+  "Add-evidence": {
+    "comment": "Label for a button that shows options for adding evidence, e.g. camera,\ngallery, sound, etc",
+    "val": "Lägg till stöd"
+  },
+  "Add-favorite": "Lägg till favorit",
+  "Add-Location": "Lägg till plats",
+  "Add-observations": {
+    "comment": "Accessibility label for a button that starts the process of adding an\nobservation, e.g. the button in the tab bar",
+    "val": "Lägg till fynd"
+  },
+  "ADD-OPTIONAL-COMMENT": "LÄGG TILL EV. KOMMENTAR",
+  "Add-optional-notes": "Lägg till valfria anteckningar",
+  "Adds-your-vote-of-agreement": {
+    "comment": "Hint for a button that adds a vote of agreement",
+    "val": "Rösta på att hålla med"
+  },
+  "Adds-your-vote-of-disagreement": {
+    "comment": "Hint for a button that adds a vote of disagreement",
+    "val": "Rösta på att inte hålla med"
+  },
+  "Affiliation": "Anknytning: { $site }",
+  "Agree": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "Håller med"
+  },
+  "AGREE": {
+    "comment": "Label for button that adds an identification of the same taxon as another identification",
+    "val": "GODKÄNN"
+  },
+  "ALL": "ALLA",
+  "All": "Alla",
+  "All-observations": "Alla fynd",
+  "all-rights-reserved": {
+    "comment": "As in intellectual property rights over a photo or other creative work",
+    "val": "alla rättigheter förbehållna"
+  },
+  "All-taxa": "Alla taxa",
+  "Any": {
+    "comment": "Generic option in a menu of choices that indicates that any of the choices\nwould be acceptable",
+    "val": "Vilken som"
+  },
+  "April": {
+    "comment": "Month of April",
+    "val": "april"
+  },
+  "August": {
+    "comment": "Month of August",
+    "val": "augusti"
+  },
+  "Camera": "Kamera",
+  "Cancel": "Avbryt",
+  "Casual--quality-grade": {
+    "comment": "Quality grade indicating observation does not quality for Needs ID or\nResearch Grade, e.g. missing media, voted out, etc.",
+    "val": "Grundklass"
+  },
+  "Clear": {
+    "comment": "Label for a button that clears content, like the text entered in a text\nfield",
+    "val": "Ta bort"
+  },
+  "Close": {
+    "comment": "Label for a button that closes a window or popup",
+    "val": "Stäng"
+  },
+  "Collection-Project": "Samlingsprojekt",
+  "Community-Guidelines": "Communityns riktlinjer",
+  "Coordinates-copied-to-clipboard": {
+    "comment": "Notification when coordinates have been copied",
+    "val": "Koordinater kopierade till urklipp"
+  },
+  "Data-quality-assessment-date-is-accurate": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date is accurate",
+    "val": "Datum är korrekt"
+  },
+  "Data-quality-assessment-date-specified": {
+    "comment": "Data Quality Assessment section label: whether or not the observation date was specified",
+    "val": "Angivet datum"
+  },
+  "Data-quality-assessment-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Belägg för organism"
+  },
+  "Data-quality-assessment-has-photos-or-sounds": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Har bilder eller ljud"
+  },
+  "Data-quality-assessment-id-supported-by-two-or-more": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Med bestämning stödd av två eller fler"
+  },
+  "Data-quality-assessment-location-is-accurate": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Rimlig fyndplats"
+  },
+  "Data-quality-assessment-location-specified": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Position angiven"
+  },
+  "Data-quality-assessment-organism-is-wild": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Vild organism"
+  },
+  "Data-quality-assessment-recent-evidence-of-organism": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Färska tecken på en organism"
+  },
+  "Data-quality-assessment-single-subject": {
+    "comment": "Data Quality Assessment metric",
+    "val": "Stöd kopplat till ett enstaka område"
+  },
+  "Data-quality-assessment-title-research": {
+    "comment": "Data Quality Assessment description of the final quality grade when Research Grade",
+    "val": "Detta fynd är av forskningsklass!"
+  },
+  "Date": {
+    "comment": "label in project requirements",
+    "val": "Datum"
+  },
+  "date-format-month-day": {
+    "comment": "Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "d MMM"
+  },
+  "Date-observed": "Datum observerad",
+  "Date-observed-header-short": "Observerad",
+  "Date-Range": {
+    "comment": "Label for controls over a range of dates",
+    "val": "Datumintervall"
+  },
+  "December": {
+    "comment": "Month of December",
+    "val": "december"
+  },
+  "Delete-observation": "Radera observation",
+  "Delete-photo": {
+    "comment": "Button label or accessibility label for an element that deletes a photo",
+    "val": "Radera bild"
+  },
+  "DONATE": "DONERA",
+  "Edit": {
+    "comment": "Button for editing something",
+    "val": "Redigera"
+  },
+  "Edit-location": {
+    "comment": "Label for interactive element that takes you to a location choosing screen",
+    "val": "Ändra plats"
+  },
+  "Edit-Observation": "Redigera observation",
+  "Endemic": {
+    "comment": "Indicates a species only occurs in a specific place",
+    "val": "Endemisk"
+  },
+  "Error": {
+    "comment": "Title for a section describing an error",
+    "val": "Fel"
+  },
+  "Error-title": {
+    "comment": "Title of dialog or section describing an error",
+    "val": "Fel"
+  },
+  "Establishment": {
+    "comment": "label in project requirements",
+    "val": "Invandringshistoria"
+  },
+  "Exact-Date": "Exakt datum",
+  "except": "förutom",
+  "Explore": "Utforska",
+  "FEATURED": {
+    "comment": "Header for featured projects",
+    "val": "UPPMÄRKSAMMADE"
+  },
+  "February": {
+    "comment": "Month of February",
+    "val": "februari"
+  },
+  "Filter": "Filter",
+  "Filters": "Filter",
+  "Flag-An-Item": "Flagga ett objekt",
+  "Flag-Item-Other-Description": "Någon annan anledning du kan ange nedan.",
+  "Flag-Item-Other-Input-Hint": "Ange orsaken till att du flaggar detta objekt",
+  "Flagged": {
+    "comment": "Status when an item has been flagged",
+    "val": "Flaggad"
+  },
+  "Go-back": {
+    "comment": "Label for button that returns to the previous screen",
+    "val": "Gå tillbaka"
+  },
+  "Hide": "Dölj",
+  "ID-Withdrawn": {
+    "comment": "Identification Status",
+    "val": "Bestämning ångrad"
+  },
+  "Identifiers": "Determinatörer",
+  "improving--identification": {
+    "comment": "Identification category",
+    "val": "Förbättrar"
+  },
+  "Introduced": "Införd",
+  "January": {
+    "comment": "Month of January",
+    "val": "Januari"
+  },
+  "JOIN": "GÅ MED",
+  "JOINED": {
+    "comment": "Header for joined projects",
+    "val": "PROJEKT"
+  },
+  "July": {
+    "comment": "Month of July",
+    "val": "juli"
+  },
+  "June": {
+    "comment": "Month of June",
+    "val": "juni"
+  },
+  "leading--identification": {
+    "comment": "Identification category",
+    "val": "Leder"
+  },
+  "Learn-More": "Läs mer",
+  "Location": "Position",
+  "Log-in": {
+    "comment": "Second person imperative label to go to log in screen",
+    "val": "Logga in"
+  },
+  "LOG-OUT": "LOGGA UT",
+  "Map-Area": "Områdeskarta",
+  "March": {
+    "comment": "Month of March",
+    "val": "mars"
+  },
+  "maverick--identification": {
+    "comment": "Identification category",
+    "val": "Motförslag"
+  },
+  "May": {
+    "comment": "Month of May",
+    "val": "maj"
+  },
+  "Media-Type": {
+    "comment": "label in project requirements",
+    "val": "Mediatyp"
+  },
+  "Menu": {
+    "comment": "Accessibility label for a button that opens a menu of options",
+    "val": "Meny"
+  },
+  "Missing-Date": "Saknar datum",
+  "Months": "Månader",
+  "MY-OBSERVATIONS": "MINA FYND",
+  "Native": "Inhemsk",
+  "NEARBY": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "NÄRHETEN"
+  },
+  "Nearby": {
+    "comment": "Header or button label for content that is near the user's current location",
+    "val": "Närliggande"
+  },
+  "Needs-ID--quality-grade": {
+    "comment": "Quality grade indicating observation still needs more identifications",
+    "val": "Behöver bestämmas"
+  },
+  "New-Observation": {
+    "comment": "Heading when creating a new observation",
+    "val": "Nytt fynd"
+  },
+  "No-Location": "Ingen plats",
+  "No-Media": "Ingen media",
+  "none": "ingen",
+  "Notifications": "Aviseringar",
+  "November": {
+    "comment": "Month of November",
+    "val": "november"
+  },
+  "Obscured": "Diffuserad",
+  "Observations": "Fynd",
+  "Observe": {
+    "comment": "Button that starts a new observation",
+    "val": "Observera"
+  },
+  "Observers": "Observatörer",
+  "October": {
+    "comment": "Month of October",
+    "val": "oktober"
+  },
+  "Offensive-Inappropriate": "Stötande/Olämpligt",
+  "OK": {
+    "comment": "Generic confirmation, e.g. button on a warning alert",
+    "val": "OK"
+  },
+  "Open": {
+    "comment": "Adjective, as in geoprivacy",
+    "val": "Öppen"
+  },
+  "Other": {
+    "comment": "Generic option in a list for unanticipated cases, e.g. a choice to manually\nenter an explanation for why you are flagging something instead of choosing\none of the existing options",
+    "val": "Annat"
+  },
+  "Privacy-Policy": "Integritetspolicy",
+  "Private": "Privat",
+  "Project-Members-Only": "Endast projektmedlemmar",
+  "Projects": {
+    "comment": "As in iNat projects, collections of observations or observation search filters",
+    "val": "Projekt"
+  },
+  "Quality-Grade": {
+    "comment": "label in project requirements",
+    "val": "Kvalitetsklass"
+  },
+  "Quality-Grade-Casual--label": {
+    "comment": "Screen reader label for the Casual quality grade label",
+    "val": "Kvalitetsklass: Grund"
+  },
+  "Quality-Grade-Needs-ID--label": {
+    "comment": "Screen reader label for the Needs ID quality grade label",
+    "val": "Kvalitetsklass: Behöver bestämmas"
+  },
+  "Quality-Grade-Research--label": {
+    "comment": "Screen reader label for the Research quality grade label",
+    "val": "Kvalitetsklass: Forskning"
+  },
+  "Ranks-Class": "Klass",
+  "Ranks-Complex": "Artkomplex",
+  "Ranks-Epifamily": "Epifamilj",
+  "Ranks-Family": "Familj",
+  "Ranks-Form": "Form",
+  "Ranks-Genus": "Släkte",
+  "Ranks-Genushybrid": "Släkteshybrid",
+  "Ranks-Hybrid": "Hybrid",
+  "Ranks-Infraclass": "Infraklass",
+  "Ranks-Infrahybrid": "Infrahybrid",
+  "Ranks-Infraorder": "Infraordning",
+  "Ranks-Kingdom": "Rike",
+  "Ranks-Order": "Ordning",
+  "Ranks-Parvorder": "Parvordning",
+  "Ranks-Phylum": "Fylum",
+  "Ranks-Section": "Avsnitt",
+  "Ranks-SPECIES": "ARTER",
+  "Ranks-Species": "Art",
+  "Ranks-Statefmatter": "Aggregationstillstånd",
+  "Ranks-Subclass": "Underklass",
+  "Ranks-Subfamily": "Underfamilj",
+  "Ranks-Subgenus": "Undersläkte",
+  "Ranks-Subkingdom": "Underrike",
+  "Ranks-Suborder": "Underordning",
+  "Ranks-Subphylum": "Underfylum",
+  "Ranks-Subsection": "Underavsnitt",
+  "Ranks-Subspecies": "Underart",
+  "Ranks-Subterclass": "Subterklass",
+  "Ranks-Subtribe": "Undertribus",
+  "Ranks-Superclass": "Överklass",
+  "Ranks-Superfamily": "Överfamilj",
+  "Ranks-Superorder": "Överordning",
+  "Ranks-Supertribe": "Övertribus",
+  "Ranks-Tribe": "Tribus",
+  "Ranks-Variety": "Varietet",
+  "Ranks-Zoosection": "Zoosektion",
+  "Ranks-Zoosubsection": "Zooundersektion",
+  "Record-verb": {
+    "comment": "Imperative verb for recording a sound",
+    "val": "Uppgift"
+  },
+  "Remove-identification": {
+    "comment": "Label for button that removes an identification",
+    "val": "Ta bort bestämning"
+  },
+  "Remove-project-filter": "Ta bort projektfilter",
+  "Research-Grade--quality-grade": {
+    "comment": "Quality grade indicating observation is accurate and complete enough to\nshare outside of iNat",
+    "val": "Forskningsklass"
+  },
+  "Reset-verb": {
+    "comment": "Label for a button that resets the state of an interface, e.g. a button that\nresets the sound recorder to its original state",
+    "val": "Återställ"
+  },
+  "Restore": {
+    "comment": "Label for button that restores a withdrawn identification",
+    "val": "Återställ"
+  },
+  "Satellite--map-type": {
+    "comment": "Label for the satellite map type",
+    "val": "Satellit"
+  },
+  "SAVE": {
+    "comment": "Label for a button that persists something",
+    "val": "SPARA"
+  },
+  "Save": {
+    "comment": "Label for a button that persists something",
+    "val": "Spara"
+  },
+  "Scientific-Name": "Vetenskapligt namn",
+  "Search": {
+    "comment": "Title for a search interface",
+    "val": "Sök"
+  },
+  "See-project-members": {
+    "comment": "Accessibility label for navigating to project members screen",
+    "val": "Se projektmedlemmar"
+  },
+  "September": {
+    "comment": "Month of September",
+    "val": "september"
+  },
+  "Share": "Dela",
+  "Share-location": "Dela fyndplats",
+  "Sounds": "Ljud",
+  "Spam": "Spam",
+  "Spam-Examples": "Kommersiella förfrågningar, länkar som inte leder någonstans, m.m.",
+  "Species": "Art",
+  "Standard--map-type": {
+    "comment": "Label for the standard map type",
+    "val": "Standard"
+  },
+  "Stop-upload": {
+    "comment": "Button or accessibility label for an interactive element that stops an upload",
+    "val": "Stoppa uppladdning"
+  },
+  "Stop-verb": {
+    "comment": "Imperative verb for stopping the recording of a sound",
+    "val": "Avsluta"
+  },
+  "supporting--identification": {
+    "comment": "Identification category",
+    "val": "Stöder"
+  },
+  "Syncing": "Synkroniserar...",
+  "Taxa": {
+    "comment": "label in project requirements",
+    "val": "Taxa"
+  },
+  "Terms-of-Use": "Användarvillkor",
+  "Traditional-Project": "Traditionellt projekt",
+  "Umbrella-Project": "Paraplyprojekt",
+  "Unknown--rank": {
+    "comment": "Text to show when a taoxn rank is unknown or missing",
+    "val": "Okänd"
+  },
+  "Unknown--taxon": {
+    "comment": "Text to show when a taxon or identification is unknown or missing",
+    "val": "Okänd"
+  },
+  "Unknown--user": {
+    "comment": "Text to show when a user (or their name) is unknown or missing",
+    "val": "Okänd"
+  },
+  "Unknown-error": {
+    "comment": "Generic error message",
+    "val": "Okänt fel"
+  },
+  "Users": {
+    "comment": "label in project requirements",
+    "val": "Användare"
+  },
+  "View-in-browser": "Visa i webbläsare",
+  "View-suggestions": {
+    "comment": "Label for a button that shows identification suggestions for an observation\nor photo",
+    "val": "Visa förslag"
+  },
+  "Welcome-to-iNaturalist": "Välkommen till iNaturalist!",
+  "Wild": "Vilda",
+  "Withdraw": {
+    "comment": "Label for a button that withdraws an identification",
+    "val": "Dra tillbaka"
+  },
+  "Worldwide": "Världsomfattande",
+  "X-MEMBERS": {
+    "comment": "Subheader for number of project members screen",
+    "val": "{ $count } MEDLEMMAR"
+  },
+  "You-need-log-in-to-do-that": {
+    "comment": "Error message when you try to do something that requires log in",
+    "val": "Du måste logga in för att göra det."
+  }
+}
