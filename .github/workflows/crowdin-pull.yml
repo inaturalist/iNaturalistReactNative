@@ -64,6 +64,7 @@ jobs:
       - name: Normalize and validate
         run: |
           npm run translate
+          git config --global --add safe.directory $GITHUB_WORKSPACE
           git status
 
       - name: Make pull request
