@@ -50,6 +50,7 @@ jobs:
           download_translations: true
           skip_untranslated_strings: true
           export_only_approved: true
+          push_translations: false
           # Pull request options
           create_pull_request: false
         env:
