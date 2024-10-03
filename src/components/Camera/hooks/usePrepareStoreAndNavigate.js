@@ -2,13 +2,18 @@
 
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import { useNavigation } from "@react-navigation/native";
+import useDeviceStorageFull from "components/Camera/hooks/useDeviceStorageFull";
 import {
   permissionResultFromMultiple,
   READ_WRITE_MEDIA_PERMISSIONS
 } from "components/SharedComponents/PermissionGateContainer.tsx";
+import { t } from "i18next";
 import {
   useCallback
 } from "react";
+import {
+  Alert
+} from "react-native";
 import { checkMultiple, RESULTS } from "react-native-permissions";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
@@ -69,6 +74,24 @@ export async function savePhotosToCameraGallery(
         // the EXIF metadata of these photos, once we retrieve a location.
         onEachSuccess( savedPhotoUri );
       } catch ( cameraRollSaveError ) {
+        // should never get here since in usePrepareStoreAndNavigate we check for device full
+        // and skip saving to gallery
+        if ( cameraRollSaveError.message.match( /No space left on device/ ) ) {
+          Alert.alert(
+            t( "No-space-left-on-device" ),
+            t( "No-space-left-on-device-try-again" ),
+            [{ text: t( "OK" ) }]
+          );
+          return;
+        }
+        if ( cameraRollSaveError.message.match( /The operation couldn’t be completed/ ) ) {
+          Alert.alert(
+            t( "Could-not-complete-at-this-time" ),
+            t( "Could-not-complete-at-this-time-description" ),
+            [{ text: t( "OK" ) }]
+          );
+          return;
+        }
         // This means an iOS user denied access
         // (https://developer.apple.com/documentation/photokit/phphotoserror/code/accessuserdenied).
         // In theory we should not even have called this function when that
@@ -108,6 +131,7 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
   const { userLocation } = useWatchPosition( {
     shouldFetchLocation
   } );
+  const { deviceStorageFull } = useDeviceStorageFull();
 
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
 
@@ -129,13 +153,15 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
       } );
     setObservations( [newObservation] );
     if ( addPhotoPermissionResult !== RESULTS.GRANTED ) return Promise.resolve( );
+    if ( deviceStorageFull ) return Promise.resolve( );
     return savePhotosToCameraGallery( cameraUris, addCameraRollUri, userLocation );
   }, [
     addCameraRollUri,
     addPhotoPermissionResult,
     cameraUris,
     setObservations,
-    userLocation
+    userLocation,
+    deviceStorageFull
   ] );
 
   const updateObsWithCameraPhotos = useCallback( async ( ) => {

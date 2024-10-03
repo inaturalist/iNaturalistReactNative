@@ -3,6 +3,7 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import FadeInOutView from "components/Camera/FadeInOutView";
+import useDeviceStorageFull from "components/Camera/hooks/useDeviceStorageFull";
 import useRotation from "components/Camera/hooks/useRotation.ts";
 import useTakePhoto from "components/Camera/hooks/useTakePhoto.ts";
 import useZoom from "components/Camera/hooks/useZoom.ts";
@@ -87,6 +88,8 @@ const AICamera = ( {
     toggleFlash
   } = useTakePhoto( camera, false, device );
   const [inactive, setInactive] = React.useState( false );
+  const { deviceStorageFull, showStorageFullAlert } = useDeviceStorageFull();
+
   const { t } = useTranslation();
   const theme = useTheme();
   const navigation = useNavigation();
@@ -113,6 +116,9 @@ const AICamera = ( {
   }, [navigation, setResult, resetZoom] );
 
   const handlePress = async ( ) => {
+    if ( deviceStorageFull ) {
+      showStorageFullAlert();
+    }
     await takePhoto( { replaceExisting: true, inactivateCallback: () => setInactive( true ) } );
     handleCheckmarkPress( showPrediction
       ? result
