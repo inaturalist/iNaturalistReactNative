@@ -1,6 +1,10 @@
 ### Source strings for iNaturalistReactNative
 ###
-### Notes
+### Notes for Translators
+### * See https://crowdin.com/project/inaturalistios/discussions/58 for notes
+###   on this file format
+###
+### Notes for Developers
 ### * GroupComments (comments beginning w/ ##) are not allowed because all
 ###   strings in this file will be alphabetized and it's impossible to
 ###   determine where group comments should fit in.
@@ -8,7 +12,9 @@
 ### * Try to annotate all strings with comments to provide context for
 ###   translators, especially for fragments and any situation where the
 ###   meaning is open to interpretation without context
-### * Use different strings for synonyms, e.g. stop-noun and stop-verb, as
+### * Use different strings for synonyms, e.g. stop--noun and stop--verb, as
+### * Use double dashes to make keys with the same values in English unique or
+###   to otherwise annotate them, e.g. stop--noun or casual--quality-grade
 ###   these might have different translations in different languages
 ### * Accessibility hints are used by screen readers to describe what happens
 ###   when the user interacts with an element
@@ -207,9 +213,6 @@ Copy-coordinates = Copy Coordinates
 # heading to describe general information about rights, attribution, and
 # licensing
 Copyright = Copyright
-# Error message potentially realating to not enough space on device
-Could-not-complete-at-this-time = Could not complete action this time.
-Could-not-complete-at-this-time-description = Please try freeing up memory on device or restarting the app and try again.
 # Error message when no camera can be found
 Could-not-find-a-camera-on-this-device = Could not find a camera on this device
 Couldnt-create-comment = Couldn't create comment
@@ -312,7 +315,8 @@ Delete-photo = Delete photo
 Delete-sound = Delete sound
 # Hint for a button that clears text you entered
 Deletes-entered-text = Deletes entered text
-# Shows the progress of deletions for X of Y
+# Shows the progress of deletions for X of Y observations, but omits the
+# word "observations" so the message won't get cut off on small screens
 Deleting-x-of-y = Deleting { $currentDeleteCount } of { $total }
 # Shows the number of observations a user is currently deleting out of total on my observations page
 Deleting-x-of-y-observations =
@@ -656,11 +660,14 @@ No-results-found-for-that-search = No results found for that search.
 No-results-found-try-different-search = No results found. Try a different search or adjust your filters.
 # license code
 no-rights-reserved-cc0 = no rights reserved (CC0)
-# Error message when not enough memory on device
-No-space-left-on-device = No space left on device.
-No-space-left-on-device-try-again = Not enough memory left on device. Please clear some memory and try again.
 NONE = NONE
 none = none
+# Error message title when not enough storage space on device, e.g. when the
+# disk is full and you try to save a photo
+Not-enough-space-left-on-device = Not enough space left on device
+# Error message description when not enough storage space on device, e.g. when
+# the disk is full and you try to save a photo
+Not-enough-space-left-on-device-try-again = There is not enough storage space left on your device to do that. Please free up some space and try again.
 # Header for observation description on observation detail
 NOTES = NOTES
 NOTIFICATIONS = NOTIFICATIONS
@@ -1102,7 +1109,8 @@ Upload-x-observations =
     }
 # Describes whether a user made this observation from web, iOS, or Android
 Uploaded-via-application = Uploaded via: { $application }
-# Shows the progress of uploads for X of Y
+# Shows the progress of uploads for X of Y observations, but omits the
+# word "observations" so the message won't get cut off on small screens
 Uploading-x-of-y = Uploading { $currentUploadCount } of { $total }
 # Shows the number of observations a user is currently uploading out of total on my observations page
 Uploading-x-of-y-observations =
@@ -1216,6 +1224,8 @@ X-Observers =
         [one] { $count } Observer
        *[other] { $count } Observers
     }
+# Progress or position indicator, e.g. when viewing 2 of 3 observations, or 3
+# of 10 photos
 X-of-Y =
     { $x ->
         [one] 1
