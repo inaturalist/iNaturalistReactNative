@@ -2,14 +2,8 @@
   "count-observations": "{ $count ->\n  [one] { $count } наблюдение\n  [few] { $count } наблюдения\n  [many] { $count } наблюдений\n *[other] { $count } наблюдений\n}",
   "date-observed": "Дата наблюдения: { $date }",
   "date-uploaded": "Дата загрузки: { $date }",
-  "Grid-View": {
-    "comment": "Label for a view that shows observations as a grid of photos",
-    "val": "Вид сетки"
-  },
-  "List-View": {
-    "comment": "Label for a view that shows observations a list",
-    "val": "Вид списка"
-  },
+  "Grid-View": "Вид сетки",
+  "List-View": "Вид списка",
   "Observations": "Замечания",
   "Your-Observations": "Your Observations"
 }
