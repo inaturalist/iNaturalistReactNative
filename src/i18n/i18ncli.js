@@ -305,16 +305,22 @@ async function untranslatable( ) {
 async function normalizeFileNames( ) {
   const paths = await l10nFtlPaths();
   return Promise.all( paths.map( async l10nPath => {
+    console.log( "[DEBUG i18ncli.js] normalizing ", l10nPath );
     const locale = path.basename( l10nPath, ".ftl" );
     const [lng, region] = locale.split( "-" );
     // No need to move anything if there's no region
-    if ( !region ) return;
+    if ( !region ) {
+      console.log( "[DEBUG i18ncli.js]   no region, skipping" );
+      return;
+    }
     // We need to keep some regions
     if ( SUPPORTED_REGIONAL_LOCALES.indexOf( locale ) >= 0 ) {
+      console.log( "[DEBUG i18ncli.js]   region supported, skipping" );
       return;
     }
     // Everything else needs to be regionless
     const newPath = path.join( path.dirname( l10nPath ), `${lng}.ftl` );
+    console.log( "[DEBUG i18ncli.js]   moving to ", newPath );
     await fsp.rename( l10nPath, newPath );
   } ) );
 }

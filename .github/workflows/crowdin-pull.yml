@@ -63,8 +63,11 @@ jobs:
       # validation failures in the PR
       - name: Normalize and validate
         run: |
-          npm run translate
           git config --global --add safe.directory $GITHUB_WORKSPACE
+          echo "debug: git status before normalizing"
+          git status
+          npm run translate
+          echo "debug: git status after normalizing"
           git status
 
       - name: Make pull request
