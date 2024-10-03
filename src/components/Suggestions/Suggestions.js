@@ -7,7 +7,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { SectionList } from "react-native";
 import { useTranslation } from "sharedHooks";
 
@@ -82,7 +82,7 @@ const Suggestions = ( {
     />
   ), [isLoading, topSuggestion, onTaxonChosen] );
 
-  const renderFooter = useCallback( ( ) => (
+  const renderFooter = useMemo( ( ) => (
     <SuggestionsFooter
       debugData={debugData}
       handleSkip={handleSkip}

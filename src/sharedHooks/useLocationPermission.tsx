@@ -3,7 +3,7 @@ import {
   LOCATION_PERMISSIONS,
   permissionResultFromMultiple
 } from "components/SharedComponents/PermissionGateContainer.tsx";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { AppState } from "react-native";
 import {
   checkMultiple,
@@ -67,9 +67,9 @@ const useLocationPermission = ( ) => {
     );
   };
 
-  function requestPermissions() {
-    setShowPermissionGate( true );
-  }
+  // This gets exported and used as a dependency, so it needs to have
+  // referential stability
+  const requestPermissions = useCallback( () => setShowPermissionGate( true ), [] );
 
   async function checkPermissions() {
     const permissionsResult = permissionResultFromMultiple(

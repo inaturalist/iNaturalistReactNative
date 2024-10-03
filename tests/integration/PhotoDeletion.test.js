@@ -106,8 +106,7 @@ describe( "Photo Deletion", ( ) => {
   async function confirmPhotosAndSkipId() {
     const checkmarkButton = await screen.findByLabelText( "View suggestions" );
     await actor.press( checkmarkButton );
-    const skipIdButton = screen.queryByText( /Add an ID Later/ );
-    expect( skipIdButton ).toBeVisible( );
+    const skipIdButton = await screen.findByText( /Add an ID Later/ );
     await actor.press( skipIdButton );
   }
 

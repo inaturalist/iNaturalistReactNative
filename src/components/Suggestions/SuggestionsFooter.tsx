@@ -1,6 +1,3 @@
-/* eslint-disable i18next/no-literal-string */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable max-len */
 import {
   Body1,
   Body3,
@@ -10,7 +7,6 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Suggestions } from "components/Suggestions/SuggestionsContainer";
-import type { Node } from "react";
 import React from "react";
 import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
 import { useDebugMode, useTranslation } from "sharedHooks";
@@ -47,7 +43,7 @@ const SuggestionsFooter = ( {
   shouldUseEvidenceLocation,
   suggestions,
   toggleLocation
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const { isDebug } = useDebugMode( );
 
@@ -86,6 +82,9 @@ const SuggestionsFooter = ( {
           {t( "Add-an-ID-Later" )}
         </Body1>
       ) }
+      {/* eslint-disable i18next/no-literal-string */}
+      {/* eslint-disable react/jsx-one-expression-per-line */}
+      {/* eslint-disable max-len */}
       { isDebug && (
         <View className="bg-deeppink text-white p-3">
           <Heading4 className="text-white">Diagnostics</Heading4>
@@ -118,6 +117,9 @@ const SuggestionsFooter = ( {
           ) ) }
         </View>
       )}
+      {/* eslint-enable i18next/no-literal-string */}
+      {/* eslint-enable react/jsx-one-expression-per-line */}
+      {/* eslint-enable max-len */}
     </View>
   );
 };
