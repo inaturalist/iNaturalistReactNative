@@ -90,10 +90,24 @@ const jsonifyPath = async ( inPath, outPath, options = { } ) => {
 
   // Allow us to await a result to this callback-based method so we can return
   // true when we know it succeeded
-  // TODO un-promisify this and use { respectComments: false } to exclude
-  // comments, which are going to add a lot of bulk to these files
+  fluent.ftl2js[util.promisify.custom] = (
+    str,
+    params = {}
+  ) => new Promise( ( resolve, reject ) => {
+    fluent.ftl2js(
+      str,
+      ( err, res ) => {
+        if ( err ) {
+          reject( err );
+        } else {
+          resolve( res );
+        }
+      },
+      params
+    );
+  } );
   const ftl2js = util.promisify( fluent.ftl2js );
-  const localizations = await ftl2js( ftlTxt.toString( ) );
+  const localizations = await ftl2js( ftlTxt.toString( ), { respectComments: false } );
   const massagedLocalizations = options.checkify
     ? checkifyLocalizations( localizations )
     : localizations;
@@ -309,10 +323,10 @@ async function normalizeFileNames( ) {
     const [lng, region] = locale.split( "-" );
     // No need to move anything if there's no region
     if ( !region ) return;
+
     // We need to keep some regions
-    if ( SUPPORTED_REGIONAL_LOCALES.indexOf( locale ) >= 0 ) {
-      return;
-    }
+    if ( SUPPORTED_REGIONAL_LOCALES.indexOf( locale ) >= 0 ) return;
+
     // Everything else needs to be regionless
     const newPath = path.join( path.dirname( l10nPath ), `${lng}.ftl` );
     await fsp.rename( l10nPath, newPath );

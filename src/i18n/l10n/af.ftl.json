@@ -1,7 +1,4 @@
 {
   "Welcome-to-iNaturalist": "Welkom by iNaturalist!",
-  "Welcome-user": {
-    "comment": "Welcome user back to app",
-    "val": "<0>Welkom terug,</0><1>{ $userHandle }</1>"
-  }
+  "Welcome-user": "<0>Welkom terug,</0><1>{ $userHandle }</1>"
 }

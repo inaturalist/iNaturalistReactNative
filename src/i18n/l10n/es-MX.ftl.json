@@ -4,14 +4,8 @@
   "date-observed": "Date observed: { $date }",
   "date-uploaded": "Date uploaded: { $date }",
   "datetime-format-short": "d/M/yy h:mm a",
-  "Grid-View": {
-    "comment": "Label for a view that shows observations as a grid of photos",
-    "val": "Grid View"
-  },
-  "List-View": {
-    "comment": "Label for a view that shows observations a list",
-    "val": "List View"
-  },
+  "Grid-View": "Grid View",
+  "List-View": "List View",
   "Observations": "Observations",
   "Your-Observations": "Tus observaciones"
 }

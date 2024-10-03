@@ -1,18 +1,9 @@
 {
   "date-observed": "Fecha de observación: { $date }",
   "date-uploaded": "Fecha de subido: { $date }",
-  "Grid-View": {
-    "comment": "Label for a view that shows observations as a grid of photos",
-    "val": "Ver rejilla"
-  },
-  "Lat-Lon-Acc": {
-    "comment": "Latitude, longitude, and accuracy on a single line",
-    "val": "Lat: { NUMBER($latitude, maximumFractionDigits: \"6\") }, Lon: { NUMBER($longitude, maximumFractionDigits: \"6\") }, Pre: { $accuracy }"
-  },
-  "List-View": {
-    "comment": "Label for a view that shows observations a list",
-    "val": "Ver lista"
-  },
+  "Grid-View": "Ver rejilla",
+  "Lat-Lon-Acc": "Lat: { NUMBER($latitude, maximumFractionDigits: \"6\") }, Lon: { NUMBER($longitude, maximumFractionDigits: \"6\") }, Pre: { $accuracy }",
+  "List-View": "Ver lista",
   "Observation": "Observación",
   "Observations": "Observaciones",
   "TAXONOMY-header": "TAXONOMIE es bueno",

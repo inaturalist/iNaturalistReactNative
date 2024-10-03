@@ -50,6 +50,10 @@ jobs:
           download_translations: true
           skip_untranslated_strings: true
           export_only_approved: true
+          # Without this, the action will force push changes to the branch
+          # before we get a chance to normalize and validate in the next
+          # step
+          push_translations: false
           # Pull request options
           create_pull_request: false
         env:
@@ -83,7 +87,7 @@ jobs:
           localization_branch_name: l10n_main
           pull_request_title: 'New Crowdin Translations'
           pull_request_body: 'New Crowdin translations by [Crowdin GH Action](https://github.com/crowdin/github-action)'
-          pull_request_base_branch_name: 'main'
+          pull_request_base_branch_name: main
         env:
           GITHUB_TOKEN: ${{ secrets.CROWDIN_GITHUB_TOKEN }}
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
