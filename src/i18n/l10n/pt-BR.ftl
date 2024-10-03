@@ -18,284 +18,276 @@
 ###   them in third person singular ending with a period.
 
 # Header for a general description, e.g. of a user, or of iNaturalist itself
-ABOUT = Acerca de
-# Accessibility label for a button that starts the process of adding an
-# observation, e.g. the button in the tab bar
-Add-observations = Añade observaciones
+ABOUT = SOBRE
 # Label for button that adds an identification of the same taxon as another identification
-Agree = De acuerdo
+Agree = Concordar
 # Label for button that adds an identification of the same taxon as another identification
-AGREE = DE ACUERDO
+AGREE = CONCORDO
 ALL = TODOS
-All = Todo
-All-observations = Todas las observaciones
+All = Todas
+All-observations = Todas as observações
 # As in intellectual property rights over a photo or other creative work
-all-rights-reserved = Todos los derechos reservados
-All-taxa = Todos los taxa
+all-rights-reserved = todos os direitos reservados
+All-taxa = Todos os táxons
 # Generic option in a menu of choices that indicates that any of the choices
 # would be acceptable
-Any = Cualquiera
+Any = Qualquer
 # Month of April
-April = abril
+April = Abril
 # Month of August
-August = agosto
-Camera = Cámara
+August = Agosto
+Camera = Câmera
 Cancel = Cancelar
 # Quality grade indicating observation does not quality for Needs ID or
 # Research Grade, e.g. missing media, voted out, etc.
 Casual--quality-grade = Casual
 # Label for a button that clears content, like the text entered in a text
 # field
-Clear = Borrar
+Clear = Limpar	
 # Label for a button that closes a window or popup
-Close = Cerrar
-Collection-Project = Proyecto de colección
-Community-Guidelines = Directrices de la comunidad
+Close = Fechar
+Collection-Project = Projeto de Coleção
+Community-Guidelines = Diretrizes da Comunidade
 # Notification when coordinates have been copied
-Coordinates-copied-to-clipboard = Coordenadas copiadas en el portapapeles
+Coordinates-copied-to-clipboard = Coordenadas copiada para a área de transferência
 # Data Quality Assessment section label: whether or not the observation date is accurate
-Data-quality-assessment-date-is-accurate = La fecha es correcta
+Data-quality-assessment-date-is-accurate = Data correta
 # Data Quality Assessment section label: whether or not the observation date was specified
-Data-quality-assessment-date-specified = Fecha especificada
+Data-quality-assessment-date-specified = Data especificada
 # Data Quality Assessment metric
-Data-quality-assessment-evidence-of-organism = Evidencia de organismo
+Data-quality-assessment-evidence-of-organism = Evidência de organismo
 # Data Quality Assessment metric
-Data-quality-assessment-has-photos-or-sounds = Tiene fotos o sonidos
+Data-quality-assessment-has-photos-or-sounds = Possui fotos ou sons
 # Data Quality Assessment metric
-Data-quality-assessment-id-supported-by-two-or-more = Tiene ID apoyado por dos o más
+Data-quality-assessment-id-supported-by-two-or-more = Possui ID suportado por dois ou mais
 # Data Quality Assessment metric
-Data-quality-assessment-location-is-accurate = Ubicación es correcta
+Data-quality-assessment-location-is-accurate = Localização correta
 # Data Quality Assessment metric
-Data-quality-assessment-location-specified = Ubicación especificada
+Data-quality-assessment-location-specified = Localização especificada
 # Data Quality Assessment metric
-Data-quality-assessment-organism-is-wild = El organismo es silvestre
+Data-quality-assessment-organism-is-wild = Organismo selvagem
 # Data Quality Assessment metric
-Data-quality-assessment-recent-evidence-of-organism = Evidencia reciente de un organismo
+Data-quality-assessment-recent-evidence-of-organism = Evidência recente de um organismo
 # Data Quality Assessment metric
-Data-quality-assessment-single-subject = Evidencia relativa a un solo organismo.
+Data-quality-assessment-single-subject = Evidencia relacionada a um único assunto
 # Data Quality Assessment description of the final quality grade when Research Grade
-Data-quality-assessment-title-research = Esta observación es de Grado de Investigación!
+Data-quality-assessment-title-research = Esta observação é Nível de Pesquisa!
 # label in project requirements
-Date = Fecha
+Date = Data
 # Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 date-format-month-day = d MMM
-Date-observed = Fecha de la obs.
+Date-observed = Data de observação
 Date-observed-header-short = Observado
 # Label for controls over a range of dates
-Date-Range = Intervalo de fechas
+Date-Range = Intervalo de datas
 # Month of December
-December = diciembre
-Delete-observation = Borra observación
+December = Dezembro
+Delete-observation = Excluir observação
 # Button label or accessibility label for an element that deletes a photo
-Delete-photo = Elimina foto
-DONATE = Haz una donación
+Delete-photo = Excluir foto
+DONATE = Doar
 # Button for editing something
-Edit = Modificar
+Edit = Editar
 # Label for interactive element that takes you to a location choosing screen
-Edit-location = Edita la ubicación
-Edit-Observation = Editar observación
+Edit-location = Editar localização
+Edit-Observation = Editar Observação
 # Indicates a species only occurs in a specific place
-Endemic = endémica
+Endemic = Endêmica
 # Title for a section describing an error
-Error = Error
+Error = Erro
 # Title of dialog or section describing an error
-Error-title = Error
+Error-title = Erro
 # label in project requirements
-Establishment = Distribución
-Exact-Date = Fecha exacta
-except = excepto
-Explore = Explora
+Establishment = Estabelecimento
+Exact-Date = Data exata
+except = exceto
+Explore = Explorar
 # Header for featured projects
-FEATURED = DESTACADO
+FEATURED = EM DESTAQUE
 # Month of February
-February = febrero
-Filter = Filtro
+February = Fevereiro
+Filter = Filtrar
 Filters = Filtros
-Flag-An-Item = Advierte un contenido
-Flag-Item-Other-Description = Otra razón que puedes explicar.
-Flag-Item-Other-Input-Hint = Especificar la razón por la que has marcado este elemento
+Flag-An-Item = Sinalizar um item
+Flag-Item-Other-Description = Alguma outra razão que você pode explicar depois.
+Flag-Item-Other-Input-Hint = Especifique o motivo pelo qual você está sinalizando este item
 # Status when an item has been flagged
-Flagged = Marcado
+Flagged = Sinalizado
 # Label for button that returns to the previous screen
-Go-back = Regresar
+Go-back = Voltar
 Hide = Ocultar
 # Identification Status
-ID-Withdrawn = Identificación retirada
+ID-Withdrawn = ID retirada
 Identifiers = Identificadores
 # Identification category
-improving--identification = Mejorando
-Introduced = introducida
+improving--identification = Melhorando
+Introduced = Introduzido
 # Month of January
-January = Enero
-JOIN = ÚNETE
+January = Janeiro
+JOIN = JUNTE-SE
 # Header for joined projects
-JOINED = UNIDO
+JOINED = A QUE ADERIU
 # Month of July
-July = julio
+July = Julho
 # Month of June
-June = junio
+June = Junho
 # Identification category
-leading--identification = Principal
-Learn-More = Aprende más
-Location = Ubicación
+leading--identification = Liderando
+Learn-More = Saiba mais
+Location = Localização
 # Second person imperative label to go to log in screen
-Log-in = Iniciar sesión
-LOG-OUT = CERRAR SESIÓN
-Map-Area = Mapa del área
+Log-in = Entrar
+LOG-OUT = SAIR
+Map-Area = Área do mapa
 # Month of March
-March = marzo
+March = Março
 # Identification category
-maverick--identification = Disidente
+maverick--identification = Em desacordo
 # Month of May
-May = may
+May = Mai
 # label in project requirements
-Media-Type = Tipo de medios
+Media-Type = Tipo de media
 # Accessibility label for a button that opens a menu of options
-Menu = Menú
-Missing-Date = Falta la fecha
+Menu = Menu
+Missing-Date = Data faltando
 Months = Meses
-More-info = Más información
-MY-OBSERVATIONS = MIS OBSERVACIONES
-Native = nativa
+MY-OBSERVATIONS = MINHAS OBSERVAÇÕES
+Native = Nativa
 # Header or button label for content that is near the user's current location
-NEARBY = CERCANO
+NEARBY = NAS PROXIMIDADES
 # Header or button label for content that is near the user's current location
-Nearby = Cercanos
+Nearby = Nas redondezas
 # Quality grade indicating observation still needs more identifications
-Needs-ID--quality-grade = Necesita identificación
+Needs-ID--quality-grade = Precisa de Identificação
 # Heading when creating a new observation
-New-Observation = Nueva observación
-No-Location = Sin ubicación
-No-Media = Sin archivos multimedia
-none = Ninguno
-Notifications = Notificaciones
+New-Observation = Nova observação
+No-Location = Sem localização
+No-Media = Nenhuma mídia
+none = nenhum
+Notifications = Notificações
 # Month of November
-November = noviembre
-Obscured = Oscurecida
-Observations = Observaciones
+November = Novembro
+Obscured = Oculta
+Observations = Observações
 # Button that starts a new observation
-Observe = Observa
+Observe = Observar
 Observers = Observadores
 # Month of October
-October = octubre
-Offensive-Inappropriate = Ofensivo/inapropiado
+October = Outubro
+Offensive-Inappropriate = Ofensivo/inapropriado
 # Generic confirmation, e.g. button on a warning alert
-OK = Aceptar
+OK = Ok
 # Adjective, as in geoprivacy
-Open = Abierto
+Open = Aberta
 # Generic option in a list for unanticipated cases, e.g. a choice to manually
 # enter an explanation for why you are flagging something instead of choosing
 # one of the existing options
-Other = otro
-Photos = Fotos
-Privacy-Policy = Normativa de privacidad
+Other = Outro
+Privacy-Policy = Política de Privacidade
 Private = Privado
-Project-Members-Only = Solo miembros del proyecto
+Project-Members-Only = Apenas membros do projeto
 # As in iNat projects, collections of observations or observation search filters
-Projects = Proyectos
+Projects = Projetos
 # label in project requirements
-Quality-Grade = Grado de calidad
-Ranks-Class = clase
-Ranks-Complex = Complejo
-Ranks-Epifamily = Epifamilia
-Ranks-Family = Familia
+Quality-Grade = Grau de Qualidade
+Ranks-Class = Classe
+Ranks-Complex = Complexo
+Ranks-Epifamily = Epifamília
+Ranks-Family = Família
 Ranks-Form = Forma
-Ranks-Genus = Género
-Ranks-Genushybrid = Género híbrido
+Ranks-Genus = Gênero
+Ranks-Genushybrid = Gênero híbrido
 Ranks-Hybrid = Híbrido
-Ranks-Infraclass = Infraclase
-Ranks-Infrahybrid = Infrahíbrido
-Ranks-Infraorder = Infraorden
+Ranks-Infraclass = Infraclasse
+Ranks-Infrahybrid = Infra-híbrido
+Ranks-Infraorder = Infraordem
 Ranks-Kingdom = Reino
-Ranks-Order = Orden
-Ranks-Parvorder = Parvorden
+Ranks-Order = Ordem
+Ranks-Parvorder = Parvordem
 Ranks-Phylum = Filo
-Ranks-Section = Sección
-Ranks-SPECIES = ESPECIE
-Ranks-Species = Especies
-Ranks-Statefmatter = Estado de la materia
-Ranks-Subclass = Subclase
-Ranks-Subfamily = Subfamilia
-Ranks-Subgenus = Subgénero
+Ranks-Section = Seção
+Ranks-SPECIES = ESPÉCIES
+Ranks-Species = Espécie
+Ranks-Statefmatter = Estado da matéria
+Ranks-Subclass = Subclasse
+Ranks-Subfamily = Subfamília
+Ranks-Subgenus = Subgênero
 Ranks-Subkingdom = Subreino
-Ranks-Suborder = Suborden
+Ranks-Suborder = Subordem
 Ranks-Subphylum = Subfilo
-Ranks-Subsection = Subsección
-Ranks-Subspecies = Subespecies
-Ranks-Subterclass = Subclase
-Ranks-Subtribe = Subtribu
-Ranks-Superclass = Superclase
-Ranks-Superfamily = Superfamilia
-Ranks-Superorder = Superorden
-Ranks-Supertribe = Supertribu
-Ranks-Tribe = Tribu
-Ranks-Variety = Variedad
-Ranks-Zoosection = Zoosección
-Ranks-Zoosubsection = Zoosubsección
+Ranks-Subsection = Subseção
+Ranks-Subspecies = Subespécie
+Ranks-Subterclass = Subterclasse
+Ranks-Subtribe = Subtribo
+Ranks-Superclass = Superclasse
+Ranks-Superfamily = Superfamília
+Ranks-Superorder = Superordem
+Ranks-Supertribe = Supertribo
+Ranks-Tribe = Tribo
+Ranks-Variety = Variedade
+Ranks-Zoosection = Seção
+Ranks-Zoosubsection = Subseção
 # Imperative verb for recording a sound
-Record-verb = Grabar
+Record-verb = Registro
 # Label for button that removes an identification
-Remove-identification = Eliminar identificación
-Remove-project-filter = Elimina filtro de proyecto
+Remove-identification = Remover identificação
+Remove-project-filter = Remover filtro de projeto
 # Quality grade indicating observation is accurate and complete enough to
 # share outside of iNat
-Research-Grade--quality-grade = Grado de investigación
+Research-Grade--quality-grade = Nível de Pesquisa
 # Label for a button that resets the state of an interface, e.g. a button that
 # resets the sound recorder to its original state
-Reset-verb = Restablece
+Reset-verb = Reset
 # Label for button that restores a withdrawn identification
 Restore = Restaurar
 # Label for the satellite map type
 Satellite--map-type = Satélite
 # Label for a button that persists something
-SAVE = Guarda
+SAVE = SALVAR
 # Label for a button that persists something
-Save = Guardar
-Scientific-Name = Nombre científico
+Save = Salvar
+Scientific-Name = Nome Científico
 # Title for a search interface
-Search = Búsqueda
+Search = Pesquisar
 # Month of September
-September = Septiembre
-Share = Comparte
-Share-location = Compartir ubicación
-Sort-by = Ordenar por
-Sounds = Sonidos
-Spam = spam
-Spam-Examples = Anuncian algo, los enlaces no son validos, etc.
-Species = Especies
+September = Setembro
+Share = Compartilhar
+Share-location = Compartilhar localização
+Sounds = Sons
+Spam = Spam
+Spam-Examples = Solicitação comercial, links sem vínculo, etc.
+Species = Espécie
 # Label for the standard map type
-Standard--map-type = Predeterminadas
-# Button or accessibility label for an interactive element that stops an upload
-Stop-upload = Deja de subir
+Standard--map-type = Padrão
 # Imperative verb for stopping the recording of a sound
-Stop-verb = Detener
+Stop-verb = Cancelar
 # Identification category
-supporting--identification = Soporte
+supporting--identification = Concordante
 Syncing = Sincronizando...
 # label in project requirements
-Taxa = Taxones
-Terms-of-Use = Términos de Uso
-Traditional-Project = Proyecto tradicional
-Umbrella-Project = Proyecto contenedor
+Taxa = Táxons
+Terms-of-Use = Termos de Utilização
+Traditional-Project = Projeto Tradicional
+Umbrella-Project = Projeto Guarda-chuva
 # Text to show when a taoxn rank is unknown or missing
-Unknown--rank = Desconocido
+Unknown--rank = Desconhecido
 # Text to show when a taxon or identification is unknown or missing
-Unknown--taxon = Desconocido
+Unknown--taxon = Desconhecido
 # Text to show when a user (or their name) is unknown or missing
-Unknown--user = Desconocido
+Unknown--user = Desconhecido
 # Generic error message
-Unknown-error = Error desconocido
+Unknown-error = Erro desconhecido
 # label in project requirements
-Users = Usuarios
-View-in-browser = Ver en el navegador
+Users = Usuários
+View-in-browser = Ver no navegador
 # Label for a button that shows identification suggestions for an observation
 # or photo
-View-suggestions = Ve sugerencias
-Welcome-to-iNaturalist = ¡Bienvenido a iNaturalist!
-Wild = Silvestre
+View-suggestions = Ver sugestões
+Welcome-to-iNaturalist = Bem-vindo ao iNaturalist!
+Wild = Selvagem
 # Label for a button that withdraws an identification
 Withdraw = Retirar
-Worldwide = Mundial
+Worldwide = Global
 # Error message when you try to do something that requires log in
-You-need-log-in-to-do-that = Debes iniciar sesión para hacer esto.
+You-need-log-in-to-do-that = Você precisa fazer login para fazer isso.
