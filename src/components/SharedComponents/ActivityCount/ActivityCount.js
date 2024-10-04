@@ -8,6 +8,7 @@ import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
+import colors from "styles/tailwindColors";
 
 type Props = {
   accessibilityLabel?: string,
@@ -40,7 +41,7 @@ const ActivityCount = ( {
       <INatIcon
         name={icon || "comments"}
         color={white
-          ? theme.colors.onPrimary
+          ? colors.white
           : theme.colors.primary}
         size={14}
       />

@@ -16,13 +16,13 @@ import { PLACE_MODE } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Alert } from "react-native";
-import { useTheme } from "react-native-paper";
 import {
   useDebugMode,
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
 import { getShadow } from "styles/global";
+import colors from "styles/tailwindColors";
 
 import ExploreHeader from "./Header/ExploreHeader";
 import IdentifiersView from "./IdentifiersView";
@@ -95,7 +95,6 @@ const Explore = ( {
   updateTaxon,
   updateUser
 }: Props ): Node => {
-  const theme = useTheme( );
   const { t } = useTranslation( );
   const [showExploreBottomSheet, setShowExploreBottomSheet] = useState( false );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
@@ -288,7 +287,7 @@ const Explore = ( {
           )}
           <INatIconButton
             icon={icon}
-            color={theme.colors.onPrimary}
+            color={colors.white}
             size={27}
             className={classnames(
               grayCircleClass,

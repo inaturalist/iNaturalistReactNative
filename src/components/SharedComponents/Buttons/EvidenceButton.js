@@ -31,7 +31,7 @@ const EvidenceButton = ( {
       backgroundColor={disabled
         ? colors.lightGray
         : theme.colors.secondary}
-      color={theme.colors.onSecondary}
+      color={colors.white}
       size={33}
       icon={icon}
       accessibilityLabel={accessibilityLabel}

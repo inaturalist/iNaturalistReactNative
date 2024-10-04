@@ -12,6 +12,7 @@ import type { Node } from "react";
 import React, { useCallback } from "react";
 import { useTheme } from "react-native-paper";
 import Observation from "realmModels/Observation";
+import colors from "styles/tailwindColors";
 
 type Props = {
   observation: typeof Observation,
@@ -73,7 +74,7 @@ const ObsStatus = ( {
       ? theme.colors.secondary
       : theme.colors.primary;
     const iconColor = white
-      ? theme.colors.onPrimary
+      ? colors.white
       : iconColorResearchCheck;
     return <QualityGradeStatus qualityGrade={qualityGrade} color={iconColor} />;
   }, [observation, theme, white] );

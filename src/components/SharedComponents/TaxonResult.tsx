@@ -10,6 +10,7 @@ import React from "react";
 import { useTheme } from "react-native-paper";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useCurrentUser, useTaxon, useTranslation } from "sharedHooks";
+import colors from "styles/tailwindColors";
 
 import ConfidenceInterval from "./ConfidenceInterval";
 
@@ -104,7 +105,7 @@ const TaxonResult = ( {
           } )}
           icon="checkmark"
           size={21}
-          color={theme.colors.onSecondary}
+          color={colors.white}
           onPress={() => handleCheckmarkPress( usableTaxon )}
           accessibilityLabel={accessibilityLabel}
           testID={`${testID}.checkmark`}
@@ -118,7 +119,7 @@ const TaxonResult = ( {
         size={40}
         color={
           clearBackground
-            ? theme.colors.onSecondary
+            ? colors.white
             : theme.colors.primary
         }
         onPress={() => handleCheckmarkPress( usableTaxon )}
@@ -202,7 +203,7 @@ const TaxonResult = ( {
               }
               navToTaxonDetails( );
             }}
-            color={clearBackground && theme.colors.onSecondary}
+            color={clearBackground && colors.white}
             accessibilityLabel={t( "More-info" )}
             accessibilityHint={t( "Navigates-to-taxon-details" )}
           />

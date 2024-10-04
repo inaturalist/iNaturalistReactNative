@@ -19,6 +19,7 @@ import {
   UPLOAD_PENDING
 } from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
+import colors from "styles/tailwindColors";
 
 import Toolbar from "./Toolbar";
 
@@ -182,7 +183,7 @@ const ToolbarContainer = ( {
 
   const getSyncIconColor = useCallback( ( ) => {
     if ( showFinalUploadError ) {
-      return theme.colors.error;
+      return colors.warningRed;
     }
     if ( pendingUpload || uploadInProgress ) {
       return theme.colors.secondary;

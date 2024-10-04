@@ -18,6 +18,7 @@ import type { Node } from "react";
 import React, {
 } from "react";
 import { useTheme } from "react-native-paper";
+import colors from "styles/tailwindColors";
 
 const titleOption = option => {
   switch ( option ) {
@@ -93,7 +94,7 @@ const DataQualityAssessment = ( {
       <INatIcon
         name="triangle-exclamation"
         size={19}
-        color={theme.colors.error}
+        color={colors.warningRed}
       />
     );
   };
@@ -108,7 +109,7 @@ const DataQualityAssessment = ( {
       <INatIcon
         name="triangle-exclamation"
         size={19}
-        color={theme.colors.error}
+        color={colors.warningRed}
       />
     );
   };

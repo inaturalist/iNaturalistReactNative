@@ -9,6 +9,7 @@ import { View } from "components/styledComponents";
 import * as React from "react";
 import { useTheme } from "react-native-paper";
 import { useCurrentUser, useTranslation } from "sharedHooks";
+import colors from "styles/tailwindColors";
 
 type Props = {
   metric: string,
@@ -104,7 +105,7 @@ const DQAVoteButtons = ( {
           testID="DQAVoteButton.UserDisagree"
           icon="arrow-down-bold-circle"
           size={33}
-          color={theme.colors.error}
+          color={colors.warningRed}
           onPress={() => removeVote( { metric, vote: false } )}
           accessibilityLabel={t( "Remove-disagreement" )}
           accessibilityHint={t( "Removes-your-vote-of-disagreement" )}

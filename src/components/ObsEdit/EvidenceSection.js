@@ -12,6 +12,7 @@ import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
+import colors from "styles/tailwindColors";
 
 import DatePicker from "./DatePicker";
 import EvidenceList from "./EvidenceList";
@@ -103,7 +104,7 @@ const EvidenceSection = ( {
             <INatIcon name="checkmark-circle" size={19} color={theme.colors.secondary} />
           )}
           {passesEvidenceTest( ) === false && (
-            <INatIcon name="triangle-exclamation" size={19} color={theme.colors.error} />
+            <INatIcon name="triangle-exclamation" size={19} color={colors.warningRed} />
           )}
         </View>
       </View>

@@ -15,6 +15,7 @@ import { View } from "components/styledComponents";
 import React, { useState } from "react";
 import { Alert } from "react-native";
 import { useTheme } from "react-native-paper";
+import colors from "styles/tailwindColors";
 
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
@@ -141,7 +142,7 @@ const Buttons = ( ) => {
               onPress={() => Alert.alert( "", "You tapped!" )}
               mode="contained"
               backgroundColor={theme.colors.secondary}
-              color={theme.colors.onSecondary}
+              color={colors.white}
               accessibilityLabel="Add Observation"
             />
           </View>
@@ -151,7 +152,7 @@ const Buttons = ( ) => {
               icon="notifications-bell"
               className="my-2"
               onPress={() => Alert.alert( "", "You tapped!" )}
-              color={theme.colors.error}
+              color={colors.warningRed}
               size={25}
               accessibilityLabel="Notifications"
             />
@@ -164,8 +165,8 @@ const Buttons = ( ) => {
               icon="compass-rose-outline"
               accessibilityLabel="Notifications"
               mode="contained"
-              backgroundColor={theme.colors.error}
-              color={theme.colors.onError}
+              backgroundColor={colors.warningRed}
+              color={colors.white}
               disabled
             />
           </View>
@@ -176,7 +177,7 @@ const Buttons = ( ) => {
               accessibilityLabel="Notifications"
               mode="contained"
               backgroundColor={theme.colors.primary}
-              color={theme.colors.onPrimary}
+              color={colors.white}
             />
           </View>
           <View>
@@ -186,7 +187,7 @@ const Buttons = ( ) => {
               accessibilityLabel="Notifications"
               mode="contained"
               backgroundColor={theme.colors.primary}
-              color={theme.colors.onPrimary}
+              color={colors.white}
               disabled
             />
           </View>

@@ -28,7 +28,6 @@ import {
   StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import { useTheme } from "react-native-paper";
 import { log } from "sharedHelpers/logger";
 import saveObservation from "sharedHelpers/saveObservation.ts";
 import { fetchTaxonAndSave } from "sharedHelpers/taxon";
@@ -63,7 +62,6 @@ const TaxonDetails = ( ): Node => {
   const setExploreView = useStore( state => state.setExploreView );
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
-  const theme = useTheme( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { id, hideNavButtons } = params;
@@ -261,7 +259,7 @@ const TaxonDetails = ( ): Node => {
             accessibilityLabel={t( "See-observations-of-this-taxon-in-explore" )}
             accessibilityHint={t( "Navigates-to-explore" )}
             size={30}
-            color={theme.colors.onPrimary}
+            color={colors.white}
             className="bg-inatGreen rounded-full"
             mode="contained"
             preventTransparency
@@ -276,8 +274,7 @@ const TaxonDetails = ( ): Node => {
     navigation,
     setExploreView,
     t,
-    taxon,
-    theme.colors.onPrimary
+    taxon
   ] );
 
   const displayTaxonMedia = () => {
@@ -373,7 +370,7 @@ const TaxonDetails = ( ): Node => {
               <INatIcon
                 name="checkmark"
                 size={19}
-                color={theme.colors.onPrimary}
+                color={colors.white}
               />
             )}
             iconPosition="right"

@@ -5,6 +5,7 @@ import {
 } from "components/SharedComponents";
 import React from "react";
 import { useTheme } from "react-native-paper";
+import colors from "styles/tailwindColors";
 
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
@@ -22,7 +23,7 @@ const FloatingActionBarDemo = ( ) => {
         className="mx-auto"
         icon="star-bold-outline"
         mode="contained"
-        color={theme.colors.onSecondary}
+        color={colors.white}
         backgroundColor={theme.colors.secondary}
         accessibilityLabel="Star"
       />

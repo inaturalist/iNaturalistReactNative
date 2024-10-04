@@ -5,6 +5,7 @@ import { Pressable, View } from "components/styledComponents";
 import * as React from "react";
 import { AccessibilityRole, GestureResponderEvent, ViewStyle } from "react-native";
 import { MD3Theme, useTheme } from "react-native-paper";
+import colors from "styles/tailwindColors";
 
 interface ButtonProps {
   accessibilityHint?: string;
@@ -134,13 +135,13 @@ const activityIndicatorColor = ( {
   theme: MD3Theme;
 } ) => {
   if ( isPrimary ) {
-    return theme.colors.onPrimary;
+    return colors.white;
   }
   if ( isFocus ) {
-    return theme.colors.onSecondary;
+    return colors.white;
   }
   if ( isWarning ) {
-    return theme.colors.onError;
+    return colors.white;
   }
   // Default color of ActivityIndicator is primary anyways, but we need to return something
   return theme.colors.primary;

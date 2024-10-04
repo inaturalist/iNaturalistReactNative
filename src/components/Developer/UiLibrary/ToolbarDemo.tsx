@@ -101,7 +101,7 @@ const ToolbarDemo = ( ) => {
         showsCheckmark
         statusText="3 observations uploaded"
         stopAllUploads={noop}
-        syncIconColor={theme.colors.error}
+        syncIconColor={colors.warningRed}
         toggleLayout={noop}
       />
       <Heading1>Error w/o status</Heading1>
@@ -116,7 +116,7 @@ const ToolbarDemo = ( ) => {
         showsCheckmark
         statusText=""
         stopAllUploads={noop}
-        syncIconColor={theme.colors.error}
+        syncIconColor={colors.warningRed}
         toggleLayout={noop}
       />
     </ScrollView>

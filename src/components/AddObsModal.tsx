@@ -121,7 +121,7 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
       accessibilityHint={accessibilityHint}
       accessibilityLabel={accessibilityLabel}
       className={className}
-      color={theme.colors.onSecondary}
+      color={colors.white}
       icon={icon}
       onPress={onPress}
       size={30}

@@ -14,6 +14,7 @@ import { Trans } from "react-i18next";
 import { useTheme } from "react-native-paper";
 import User from "realmModels/User.ts";
 import { useTranslation } from "sharedHooks";
+import colors from "styles/tailwindColors";
 
 import Onboarding from "./Onboarding";
 
@@ -62,7 +63,7 @@ const MyObservationsHeader = ( {
           className="mr-5"
           icon="inaturalist"
           size={41}
-          color={theme.colors.onSecondary}
+          color={colors.white}
           backgroundColor={theme.colors.secondary}
           accessibilityLabel="iNaturalist"
           mode="contained"

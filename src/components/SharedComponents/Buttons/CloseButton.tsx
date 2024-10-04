@@ -2,7 +2,6 @@ import { useNavigation } from "@react-navigation/native";
 import { INatIconButton } from "components/SharedComponents";
 import { t } from "i18next";
 import React from "react";
-import { useTheme } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
 interface Props {
@@ -25,7 +24,6 @@ const CloseButton = ( {
   width
 }: Props ) => {
   const navigation = useNavigation( );
-  const theme = useTheme( );
 
   return (
     <INatIconButton
@@ -34,7 +32,7 @@ const CloseButton = ( {
       size={size}
       color={darkGray
         ? colors.darkGray
-        : theme.colors.background}
+        : colors.white}
       onPress={( ) => {
         if ( handleClose ) {
           handleClose( navigation );

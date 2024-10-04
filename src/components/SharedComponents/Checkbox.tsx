@@ -2,6 +2,7 @@ import { Body2, INatIcon } from "components/SharedComponents";
 import React, { useMemo } from "react";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { useTheme } from "react-native-paper";
+import colors from "styles/tailwindColors";
 
 interface Props {
   transparent?: boolean;
@@ -29,15 +30,15 @@ const Checkbox = ( {
     ? (
       <INatIcon
         name="checkmark"
-        color={theme.colors.onPrimary}
+        color={colors.white}
         size={19}
       />
     )
-    : null ), [theme, isChecked] );
+    : null ), [isChecked] );
 
   const checkedBorderColor = theme.colors.secondary;
   const uncheckedBorderColor = transparent
-    ? theme.colors.onPrimary
+    ? colors.white
     : theme.colors.primary;
 
   const innerIconStyle = {
@@ -56,7 +57,7 @@ const Checkbox = ( {
       fillColor={theme.colors.secondary}
       unfillColor={transparent
         ? undefined
-        : theme.colors.onPrimary}
+        : colors.white}
       iconComponent={renderIcon}
       onPress={onPress}
       isChecked={isChecked}

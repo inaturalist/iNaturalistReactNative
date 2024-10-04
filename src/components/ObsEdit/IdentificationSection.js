@@ -16,6 +16,7 @@ import type { Node } from "react";
 import React, { useCallback, useEffect } from "react";
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
+import colors from "styles/tailwindColors";
 
 const { useRealm } = RealmContext;
 
@@ -97,7 +98,7 @@ const IdentificationSection = ( {
                 size={24}
                 color={identTaxon
                   ? theme.colors.primary
-                  : theme.colors.onPrimary}
+                  : colors.white}
               />
             )}
             accessibilityLabel={t( "View-suggestions" )}

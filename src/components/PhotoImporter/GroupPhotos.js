@@ -18,6 +18,7 @@ import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
 import { useTheme } from "react-native-paper";
 import { useGridLayout } from "sharedHooks";
+import colors from "styles/tailwindColors";
 
 import GroupPhotoImage from "./GroupPhotoImage";
 
@@ -92,16 +93,16 @@ const GroupPhotos = ( {
           style={[gridItemStyle, {
             borderWidth: 4,
             borderStyle: "dashed",
-            borderColor: theme.colors.mediumGray
+            borderColor: colors.mediumGray
           }]}
         >
-          <INatIcon name="plus" size={50} color={theme.colors.mediumGray} />
+          <INatIcon name="plus" size={50} color={colors.mediumGray} />
         </Pressable>
       );
     }
     // $FlowIgnore
     return renderImage( item );
-  }, [gridItemStyle, renderImage, theme, addPhotos] );
+  }, [gridItemStyle, renderImage, addPhotos] );
 
   const renderHeader = ( ) => (
     <View className="m-5">
@@ -154,7 +155,7 @@ const GroupPhotos = ( {
             icon="combine"
             mode="contained"
             size={20}
-            color={theme.colors.onPrimary}
+            color={colors.white}
             backgroundColor={theme.colors.primary}
             className="m-4"
             accessibilityLabel={t( "Combine-Photos" )}
@@ -165,7 +166,7 @@ const GroupPhotos = ( {
             icon="separate"
             mode="contained"
             size={20}
-            color={theme.colors.onPrimary}
+            color={colors.white}
             backgroundColor={theme.colors.primary}
             className="m-4"
             accessibilityLabel={t( "Separate-Photos" )}
@@ -176,8 +177,8 @@ const GroupPhotos = ( {
             icon="trash-outline"
             mode="contained"
             size={20}
-            color={theme.colors.onError}
-            backgroundColor={theme.colors.error}
+            color={colors.white}
+            backgroundColor={colors.warningRed}
             className="m-4"
             accessibilityLabel={t( "Remove-Photos" )}
             disabled={noObsSelected}

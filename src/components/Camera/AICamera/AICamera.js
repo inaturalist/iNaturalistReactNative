@@ -13,7 +13,6 @@ import type { Node } from "react";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
-import { useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { convertOfflineScoreToConfidence } from "sharedHelpers/convertScores.ts";
 import { useDebugMode, useTranslation } from "sharedHooks";
@@ -92,7 +91,6 @@ const AICamera = ( {
   const { deviceStorageFull, showStorageFullAlert } = useDeviceStorageFull();
 
   const { t } = useTranslation();
-  const theme = useTheme();
   const navigation = useNavigation();
 
   // only show predictions when rank is order or lower, like we do on Seek
@@ -208,7 +206,7 @@ const AICamera = ( {
             <INatIcon
               name="inaturalist"
               size={114}
-              color={theme.colors.onPrimary}
+              color={colors.white}
             />
           </View>
         </View>
