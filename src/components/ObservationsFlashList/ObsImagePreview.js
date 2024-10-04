@@ -4,7 +4,6 @@ import { INatIcon, PhotoCount } from "components/SharedComponents";
 import { LinearGradient, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";
-import { useTheme } from "react-native-paper";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
@@ -59,7 +58,6 @@ const ObsImagePreview = ( {
   white = false,
   width = "w-[62px]"
 }: Props ): Node => {
-  const theme = useTheme();
   const borderRadius = isSmall
     ? "rounded-lg"
     : "rounded-2xl";
@@ -131,13 +129,13 @@ const ObsImagePreview = ( {
           style={ICON_DROP_SHADOW}
         >
           {selected && (
-            <INatIcon name="checkmark" color={theme.colors.primary} size={12} />
+            <INatIcon name="checkmark" color={colors.darkGray} size={12} />
           )}
         </View>
       );
     }
     return null;
-  }, [selectable, selected, theme] );
+  }, [selectable, selected] );
 
   const renderGradient = useCallback( ( ) => {
     if ( isSmall ) return null;
@@ -199,7 +197,7 @@ const ObsImagePreview = ( {
       "justify-center",
       "items-center"
     );
-    content = <INatIcon name="sound" color={theme.colors.primary} size={24} />;
+    content = <INatIcon name="sound" color={colors.darkGray} size={24} />;
   } else {
     content = (
       <>

@@ -141,7 +141,7 @@ const Buttons = ( ) => {
               className="my-2"
               onPress={() => Alert.alert( "", "You tapped!" )}
               mode="contained"
-              backgroundColor={theme.colors.secondary}
+              backgroundColor={colors.inatGreen}
               color={colors.white}
               accessibilityLabel="Add Observation"
             />
@@ -176,7 +176,7 @@ const Buttons = ( ) => {
               icon="compass-rose-outline"
               accessibilityLabel="Notifications"
               mode="contained"
-              backgroundColor={theme.colors.primary}
+              backgroundColor={colors.darkGray}
               color={colors.white}
             />
           </View>
@@ -186,7 +186,7 @@ const Buttons = ( ) => {
               icon="compass-rose-outline"
               accessibilityLabel="Notifications"
               mode="contained"
-              backgroundColor={theme.colors.primary}
+              backgroundColor={colors.darkGray}
               color={colors.white}
               disabled
             />

@@ -7,7 +7,8 @@ import {
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
 import { GestureResponderEvent } from "react-native";
-import { RadioButton, useTheme } from "react-native-paper";
+import { RadioButton } from "react-native-paper";
+import colors from "styles/tailwindColors";
 
 interface Props {
   checked: boolean;
@@ -34,8 +35,6 @@ const RadioButtonRow = ( {
   testID,
   value
 }: Props ) => {
-  const theme = useTheme( );
-
   const status = checked
     ? "checked"
     : "unchecked";
@@ -55,7 +54,7 @@ const RadioButtonRow = ( {
         />
         <View className="ml-3 flex-row w-5/6">
           {labelComponent || <Label className="mr-2">{label}</Label>}
-          {icon && <INatIcon name={icon} size={19} color={theme.colors.secondary} />}
+          {icon && <INatIcon name={icon} size={19} color={colors.inatGreen} />}
         </View>
       </View>
       {description && (

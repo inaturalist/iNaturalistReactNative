@@ -11,7 +11,6 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { Trans } from "react-i18next";
-import { useTheme } from "react-native-paper";
 import User from "realmModels/User.ts";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
@@ -39,7 +38,6 @@ const MyObservationsHeader = ( {
   setHeightAboveToolbar,
   toggleLayout
 }: Props ): Node => {
-  const theme = useTheme( );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
 
@@ -64,7 +62,7 @@ const MyObservationsHeader = ( {
           icon="inaturalist"
           size={41}
           color={colors.white}
-          backgroundColor={theme.colors.secondary}
+          backgroundColor={colors.inatGreen}
           accessibilityLabel="iNaturalist"
           mode="contained"
           width={67}

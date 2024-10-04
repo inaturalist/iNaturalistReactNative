@@ -4,7 +4,6 @@ import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 import React, { useCallback, useMemo } from "react";
 import { Dimensions, PixelRatio } from "react-native";
-import { useTheme } from "react-native-paper";
 import {
   useCurrentUser,
   useTranslation
@@ -78,7 +77,6 @@ const ToolbarContainer = ( {
   );
 
   const { t } = useTranslation( );
-  const theme = useTheme( );
 
   const deletionsComplete = initialNumDeletionsInQueue === currentDeleteCount;
   const deletionsInProgress = initialNumDeletionsInQueue > 0 && !deletionsComplete;
@@ -186,11 +184,10 @@ const ToolbarContainer = ( {
       return colors.warningRed;
     }
     if ( pendingUpload || uploadInProgress ) {
-      return theme.colors.secondary;
+      return colors.inatGreen;
     }
-    return theme.colors.primary;
+    return colors.darkGray;
   }, [
-    theme,
     showFinalUploadError,
     pendingUpload,
     uploadInProgress

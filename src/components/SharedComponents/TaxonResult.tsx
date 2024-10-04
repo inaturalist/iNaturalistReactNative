@@ -7,7 +7,6 @@ import {
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
-import { useTheme } from "react-native-paper";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useCurrentUser, useTaxon, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
@@ -70,7 +69,6 @@ const TaxonResult = ( {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
 
-  const theme = useTheme( );
   const currentUser = useCurrentUser( );
 
   // thinking about future performance, it might make more sense to batch
@@ -120,7 +118,7 @@ const TaxonResult = ( {
         color={
           clearBackground
             ? colors.white
-            : theme.colors.primary
+            : colors.darkGray
         }
         onPress={() => handleCheckmarkPress( usableTaxon )}
         accessibilityLabel={accessibilityLabel}

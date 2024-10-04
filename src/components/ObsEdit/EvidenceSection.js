@@ -10,7 +10,6 @@ import { MAX_SOUNDS_ALLOWED } from "components/SoundRecorder/SoundRecorder";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
@@ -49,7 +48,6 @@ const EvidenceSection = ( {
   updateObservationKeys
 }: Props ): Node => {
   const { t } = useTranslation( );
-  const theme = useTheme( );
   // TODO fix this hack, and not with a workaround like
   // checkCamelAndSnakeCase. This component should only ever receive a local
   // Realm Observation or something that quacks like it, *not* a POJO from
@@ -101,7 +99,7 @@ const EvidenceSection = ( {
         <Heading4>{t( "EVIDENCE" )}</Heading4>
         <View className="ml-3">
           {passesEvidenceTest( ) && (
-            <INatIcon name="checkmark-circle" size={19} color={theme.colors.secondary} />
+            <INatIcon name="checkmark-circle" size={19} color={colors.inatGreen} />
           )}
           {passesEvidenceTest( ) === false && (
             <INatIcon name="triangle-exclamation" size={19} color={colors.warningRed} />

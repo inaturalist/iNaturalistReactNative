@@ -15,9 +15,7 @@ import QualityGradeStatus from "components/SharedComponents/QualityGradeStatus/Q
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, {
-} from "react";
-import { useTheme } from "react-native-paper";
+import React from "react";
 import colors from "styles/tailwindColors";
 
 const titleOption = option => {
@@ -73,7 +71,6 @@ const DataQualityAssessment = ( {
   setNeedsIDVote
 }: Props ): Node => {
   const isResearchGrade = qualityGrade === "research";
-  const theme = useTheme( );
   const sectionClass = "flex-row my-[14px] space-x-[11px]";
   const voteClass = "flex-row mr-[15px] my-[7px] justify-between items-center";
   const listTextClass = "flex-row shrink space-x-[11px]";
@@ -86,7 +83,7 @@ const DataQualityAssessment = ( {
           testID="DQA.pass"
           name="checkmark-circle"
           size={19}
-          color={theme.colors.secondary}
+          color={colors.inatGreen}
         />
       );
     }
@@ -103,7 +100,7 @@ const DataQualityAssessment = ( {
     const ifAgree = checkTest( metric );
     if ( ifAgree || ifAgree === null ) {
       return (
-        <INatIcon name="checkmark-circle" size={19} color={theme.colors.secondary} /> );
+        <INatIcon name="checkmark-circle" size={19} color={colors.inatGreen} /> );
     }
     return (
       <INatIcon
@@ -131,8 +128,8 @@ const DataQualityAssessment = ( {
           qualityGrade={qualityGrade}
           color={
             qualityGrade === "research"
-              ? theme.colors.secondary
-              : theme.colors.primary
+              ? colors.inatGreen
+              : colors.darkGray
           }
         />
         <View className="flex-row space-x-[7px]">
@@ -140,7 +137,7 @@ const DataQualityAssessment = ( {
             <INatIcon
               name="checkmark-circle"
               size={19}
-              color={theme.colors.secondary}
+              color={colors.inatGreen}
             />
           )}
           <Body1 className="text-darkGray">{titleOption( qualityGrade )}</Body1>

@@ -6,7 +6,6 @@ import Body3 from "components/SharedComponents/Typography/Body3.tsx";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
@@ -27,7 +26,6 @@ const ActivityCount = ( {
   testID,
   classNameMargin
 }: Props ): Node => {
-  const theme = useTheme( );
   const { t } = useTranslation( );
 
   return (
@@ -42,7 +40,7 @@ const ActivityCount = ( {
         name={icon || "comments"}
         color={white
           ? colors.white
-          : theme.colors.primary}
+          : colors.darkGray}
         size={14}
       />
       <Body3

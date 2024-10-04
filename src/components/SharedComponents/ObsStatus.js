@@ -10,7 +10,6 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";
-import { useTheme } from "react-native-paper";
 import Observation from "realmModels/Observation";
 import colors from "styles/tailwindColors";
 
@@ -29,7 +28,6 @@ const ObsStatus = ( {
   classNameMargin,
   testID
 }: Props ): Node => {
-  const theme = useTheme();
   const margin = layout === "vertical"
     ? "mb-1 ml-1"
     : "mr-2";
@@ -71,13 +69,13 @@ const ObsStatus = ( {
   const showQualityGrade = useCallback( ( ) => {
     const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
     const iconColorResearchCheck = qualityGrade === "research"
-      ? theme.colors.secondary
-      : theme.colors.primary;
+      ? colors.inatGreen
+      : colors.darkGray;
     const iconColor = white
       ? colors.white
       : iconColorResearchCheck;
     return <QualityGradeStatus qualityGrade={qualityGrade} color={iconColor} />;
-  }, [observation, theme, white] );
+  }, [observation, white] );
 
   return (
     <View

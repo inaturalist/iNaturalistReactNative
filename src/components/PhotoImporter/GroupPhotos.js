@@ -16,7 +16,6 @@ import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
-import { useTheme } from "react-native-paper";
 import { useGridLayout } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
@@ -46,7 +45,6 @@ const GroupPhotos = ( {
   totalPhotos
 }: Props ): Node => {
   const navigation = useNavigation( );
-  const theme = useTheme();
   const {
     estimatedGridItemSize,
     flashListStyle,
@@ -156,7 +154,7 @@ const GroupPhotos = ( {
             mode="contained"
             size={20}
             color={colors.white}
-            backgroundColor={theme.colors.primary}
+            backgroundColor={colors.darkGray}
             className="m-4"
             accessibilityLabel={t( "Combine-Photos" )}
             disabled={noObsSelected || oneObsSelected}
@@ -167,7 +165,7 @@ const GroupPhotos = ( {
             mode="contained"
             size={20}
             color={colors.white}
-            backgroundColor={theme.colors.primary}
+            backgroundColor={colors.darkGray}
             className="m-4"
             accessibilityLabel={t( "Separate-Photos" )}
             disabled={!obsWithMultiplePhotosSelected}

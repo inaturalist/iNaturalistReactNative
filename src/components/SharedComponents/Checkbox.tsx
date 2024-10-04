@@ -1,7 +1,6 @@
 import { Body2, INatIcon } from "components/SharedComponents";
 import React, { useMemo } from "react";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { useTheme } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
 interface Props {
@@ -19,8 +18,6 @@ const Checkbox = ( {
   onPress,
   text
 }: Props ) => {
-  const theme = useTheme( );
-
   const renderCheckboxText = useMemo( ( ) => {
     if ( !text ) { return null; }
     return <Body2 className="ml-3 flex-shrink">{text}</Body2>;
@@ -36,10 +33,10 @@ const Checkbox = ( {
     )
     : null ), [isChecked] );
 
-  const checkedBorderColor = theme.colors.secondary;
+  const checkedBorderColor = colors.inatGreen;
   const uncheckedBorderColor = transparent
     ? colors.white
-    : theme.colors.primary;
+    : colors.darkGray;
 
   const innerIconStyle = {
     borderRadius: 6,
@@ -54,7 +51,7 @@ const Checkbox = ( {
   return (
     <BouncyCheckbox
       size={25}
-      fillColor={theme.colors.secondary}
+      fillColor={colors.inatGreen}
       unfillColor={transparent
         ? undefined
         : colors.white}

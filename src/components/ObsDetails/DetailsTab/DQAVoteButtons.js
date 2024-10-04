@@ -7,7 +7,6 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import * as React from "react";
-import { useTheme } from "react-native-paper";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
@@ -60,7 +59,6 @@ const DQAVoteButtons = ( {
   removeVote
 }: Props ): React.Node => {
   const { t } = useTranslation( );
-  const theme = useTheme( );
   const currentUser = useCurrentUser( );
   const userAgrees = getUserVote( currentUser, metric, votes );
   const activityIndicatorOffset = "mx-[7px]";
@@ -75,7 +73,7 @@ const DQAVoteButtons = ( {
           testID="DQAVoteButton.UserAgree"
           icon="arrow-up-bold-circle"
           size={33}
-          color={theme.colors.secondary}
+          color={colors.inatGreen}
           onPress={() => removeVote( { metric, vote: true } )}
           accessibilityLabel={t( "Add-agreement" )}
           accessibilityHint={t( "Adds-your-vote-of-agreement" )}
