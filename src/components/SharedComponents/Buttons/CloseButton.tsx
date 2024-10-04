@@ -3,20 +3,21 @@ import { INatIconButton } from "components/SharedComponents";
 import { t } from "i18next";
 import React from "react";
 import { useTheme } from "react-native-paper";
+import colors from "styles/tailwindColors";
 
 interface Props {
-  handleClose?: ( ) => void;
-  black?: boolean;
   buttonClassName?: string;
-  size?: number;
-  icon?: string;
-  width?: number;
+  darkGray?: boolean;
+  handleClose?: ( ) => void;
   height?: number;
+  icon?: string;
+  size?: number;
+  width?: number;
 }
 
 const CloseButton = ( {
-  black,
   buttonClassName,
+  darkGray,
   handleClose,
   height,
   icon,
@@ -31,8 +32,8 @@ const CloseButton = ( {
       className={buttonClassName}
       icon={icon || "close"}
       size={size}
-      color={black
-        ? theme.colors.tertiary
+      color={darkGray
+        ? colors.darkGray
         : theme.colors.background}
       onPress={( ) => {
         if ( handleClose ) {

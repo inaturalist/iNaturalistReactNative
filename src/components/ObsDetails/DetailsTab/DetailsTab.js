@@ -88,7 +88,7 @@ const qualityGradeDescription = option => {
   }
 };
 
-const headingClass = "mt-[20px] mb-[11px] text-black";
+const headingClass = "mt-[20px] mb-[11px] text-darkGray";
 const sectionClass = "mx-[15px] mb-[20px]";
 
 const DetailsTab = ( { currentUser, observation }: Props ): Node => {

@@ -17,6 +17,7 @@ import { useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { convertOfflineScoreToConfidence } from "sharedHelpers/convertScores.ts";
 import { useDebugMode, useTranslation } from "sharedHooks";
+import colors from "styles/tailwindColors";
 
 import {
   handleCameraError,
@@ -157,7 +158,7 @@ const AICamera = ( {
         </View>
       )}
       <LinearGradient
-        colors={["#000000", "rgba(0, 0, 0, 0)"]}
+        colors={[colors.black, "rgba(0, 0, 0, 0)"]}
         locations={[
           0.001,
           isTablet && isLandscapeMode

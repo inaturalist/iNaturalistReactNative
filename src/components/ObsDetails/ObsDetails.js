@@ -222,7 +222,7 @@ const ObsDetails = ( {
       <ObsDetailsHeader
         belongsToCurrentUser={belongsToCurrentUser}
         observationId={observation?.id}
-        rightIconBlack
+        rightIconDarkGray
         uuid={observation?.uuid}
       />
     </View>

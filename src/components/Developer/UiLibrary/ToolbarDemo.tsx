@@ -7,6 +7,7 @@ import {
 } from "components/styledComponents";
 import React from "react";
 import { useTheme } from "react-native-paper";
+import colors from "styles/tailwindColors";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {};
@@ -26,7 +27,7 @@ const ToolbarDemo = ( ) => {
         progress={0}
         statusText=""
         stopAllUploads={noop}
-        syncIconColor="black"
+        syncIconColor={colors.darkGray}
         toggleLayout={noop}
       />
       <Heading1>Needs Upload</Heading1>

@@ -142,9 +142,9 @@ const DataQualityAssessment = ( {
               color={theme.colors.secondary}
             />
           )}
-          <Body1 className="text-black">{titleOption( qualityGrade )}</Body1>
+          <Body1 className="text-darkGray">{titleOption( qualityGrade )}</Body1>
         </View>
-        <List2 className="text-black">{titleDescription( qualityGrade )}</List2>
+        <List2 className="text-darkGray">{titleDescription( qualityGrade )}</List2>
       </View>
       <Divider />
       <View className="mx-[15px]">

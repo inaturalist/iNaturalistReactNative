@@ -40,6 +40,7 @@ import {
   useUserMe
 } from "sharedHooks";
 import useStore from "stores/useStore";
+import colors from "styles/tailwindColors";
 
 import EstablishmentMeans from "./EstablishmentMeans";
 import TaxonDetailsHeader from "./TaxonDetailsHeader";
@@ -207,7 +208,6 @@ const TaxonDetails = ( ): Node => {
               refresh();
               refetch();
             }}
-            color="black"
           />
         </View>
       );
@@ -323,7 +323,7 @@ const TaxonDetails = ( ): Node => {
           black, which reveals a dark area at the bottom of the screen on
           overscroll in iOS ~~~kueda20240228
         */}
-        <StatusBar barStyle="light-content" backgroundColor="#000000" />
+        <StatusBar barStyle="light-content" backgroundColor={colors.black} />
         <View className="flex-1 h-full bg-black">
           <View className="w-full h-[420px] shrink-1">
             {displayTaxonMedia()}
