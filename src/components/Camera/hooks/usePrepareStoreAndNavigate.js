@@ -76,18 +76,13 @@ export async function savePhotosToCameraGallery(
       } catch ( cameraRollSaveError ) {
         // should never get here since in usePrepareStoreAndNavigate we check for device full
         // and skip saving to gallery
-        if ( cameraRollSaveError.message.match( /No space left on device/ ) ) {
+        if (
+          cameraRollSaveError.message.match( /No space left on device/ )
+          || cameraRollSaveError.message.match( /PHPhotosErrorDomain error 3305/ )
+        ) {
           Alert.alert(
-            t( "No-space-left-on-device" ),
-            t( "No-space-left-on-device-try-again" ),
-            [{ text: t( "OK" ) }]
-          );
-          return;
-        }
-        if ( cameraRollSaveError.message.match( /The operation couldn’t be completed/ ) ) {
-          Alert.alert(
-            t( "Could-not-complete-at-this-time" ),
-            t( "Could-not-complete-at-this-time-description" ),
+            t( "Not-enough-space-left-on-device" ),
+            t( "Not-enough-space-left-on-device-try-again" ),
             [{ text: t( "OK" ) }]
           );
           return;
@@ -100,7 +95,9 @@ export async function savePhotosToCameraGallery(
         // probably safe to ignore.
         if ( !cameraRollSaveError.message.match( /error 3311/ ) ) {
           logger.error( cameraRollSaveError );
+          return;
         }
+        throw cameraRollSaveError;
       }
     },
     // We need the initial value even if we're not using it, otherwise reduce
