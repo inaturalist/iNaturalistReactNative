@@ -46,7 +46,7 @@ const InputField = ( {
       keyboardType={keyboardType}
       onChangeText={handleTextChange}
       placeholder={placeholder}
-      placeholderTextColor={colors.black}
+      placeholderTextColor={colors.darkGray}
       secureTextEntry={type === "password"}
       selectTextOnFocus={Platform.OS === "android"}
       className="border border-lightGray h-8 mx-5 rounded-xl pl-3"

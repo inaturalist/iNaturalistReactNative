@@ -5,7 +5,7 @@ exports[`Quality Grade casual should render correctly 1`] = `
   <SvgMock
     accessibilityLabel="Quality Grade: Casual"
     accessible={true}
-    color="rgba(103, 80, 164, 1)"
+    color="#454545"
     opacity={1}
     testID="QualityGrade.casual"
   />
@@ -17,7 +17,7 @@ exports[`Quality Grade needs_id should render correctly 1`] = `
   <SvgMock
     accessibilityLabel="Quality Grade: Needs ID"
     accessible={true}
-    color="rgba(103, 80, 164, 1)"
+    color="#454545"
     opacity={1}
     testID="QualityGrade.needs_id"
   />
@@ -29,7 +29,7 @@ exports[`Quality Grade research should render correctly 1`] = `
   <SvgMock
     accessibilityLabel="Quality Grade: Research"
     accessible={true}
-    color="rgba(103, 80, 164, 1)"
+    color="#454545"
     opacity={1}
     testID="QualityGrade.research"
   />

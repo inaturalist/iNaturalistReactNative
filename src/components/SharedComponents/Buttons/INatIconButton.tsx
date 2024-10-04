@@ -8,7 +8,7 @@ import {
   Pressable,
   ViewStyle
 } from "react-native";
-import { useTheme } from "react-native-paper";
+import colors from "styles/tailwindColors";
 
 interface Props {
   accessibilityHint?: string;
@@ -52,7 +52,6 @@ const INatIconButton = ( {
   backgroundColor,
   mode
 }: Props ) => {
-  const theme = useTheme( );
   // width || 0 is to placate flow. width should never be undefined because of
   // the defaultProps, but I guess flow can't figure that out.
   if ( ( width || 0 ) < MIN_ACCESSIBLE_DIM ) {
@@ -148,7 +147,7 @@ const INatIconButton = ( {
             <INatIcon
               name={icon}
               size={size}
-              color={color || theme.colors.primary}
+              color={color || colors.darkGray}
             />
           )
         }

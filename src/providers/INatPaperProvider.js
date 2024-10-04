@@ -9,23 +9,17 @@ import {
 } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
+// it's still possible to access colors using theme,
+// but it's more consistent to access them directly using
+// import colors from "styles/tailwindColors";
 const theme = {
   ...DefaultTheme,
   version: 3,
   colors: {
     ...DefaultTheme.colors,
     ...colors,
-    primary: colors.darkGray,
-    onPrimary: colors.white,
-    secondary: colors.inatGreen, // TODO: change to accessibleGreen for accessibility
-    onSecondary: colors.white,
-    tertiary: colors.black,
-    background: colors.white,
-    onBackground: colors.darkGray,
-    outline: colors.lightGray,
-    error: colors.warningRed,
-    onError: colors.white,
-    mediumGray: colors.mediumGray
+    // keeping background here for react-native-paper TextInput
+    background: colors.white
   }
 };
 

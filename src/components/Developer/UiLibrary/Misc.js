@@ -34,8 +34,8 @@ import { ScrollView, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useState } from "react";
-import { useTheme } from "react-native-paper";
 import { useCurrentUser, useTranslation } from "sharedHooks";
+import colors from "styles/tailwindColors";
 
 const { useRealm } = RealmContext;
 
@@ -43,7 +43,6 @@ const { useRealm } = RealmContext;
 /* eslint-disable react/no-unescaped-entities */
 const Misc = (): Node => {
   const { t } = useTranslation();
-  const theme = useTheme();
   const currentUser = useCurrentUser();
   const userId = currentUser?.id;
   const [isChecked, setIsChecked] = useState( false );
@@ -196,19 +195,19 @@ const Misc = (): Node => {
           <View>
             <QualityGradeStatus
               qualityGrade="research"
-              color={theme.colors.secondary}
+              color={colors.inatGreen}
             />
           </View>
           <View>
             <QualityGradeStatus
               qualityGrade="needs_id"
-              color={theme.colors.secondary}
+              color={colors.inatGreen}
             />
           </View>
           <View>
             <QualityGradeStatus
               qualityGrade="casual"
-              color={theme.colors.secondary}
+              color={colors.inatGreen}
             />
           </View>
         </View>
@@ -218,33 +217,33 @@ const Misc = (): Node => {
           <View>
             <Body2 className="text-center">Progress &lt; 5%</Body2>
             <UploadStatus
-              color={theme.colors.primary}
+              color={colors.darkGray}
               progress={0.04}
-              completeColor={theme.colors.secondary}
+              completeColor={colors.inatGreen}
             />
           </View>
           <View>
             <Body2 className="text-center">10%</Body2>
             <UploadStatus
-              color={theme.colors.primary}
+              color={colors.darkGray}
               progress={0.1}
-              completeColor={theme.colors.secondary}
+              completeColor={colors.inatGreen}
             />
           </View>
           <View>
             <Body2 className="text-center">60%</Body2>
             <UploadStatus
-              color={theme.colors.primary}
+              color={colors.darkGray}
               progress={0.6}
-              completeColor={theme.colors.secondary}
+              completeColor={colors.inatGreen}
             />
           </View>
           <View>
             <Body2 className="text-center">100%</Body2>
             <UploadStatus
-              color={theme.colors.primary}
+              color={colors.darkGray}
               progress={1}
-              completeColor={theme.colors.secondary}
+              completeColor={colors.inatGreen}
             />
           </View>
         </View>

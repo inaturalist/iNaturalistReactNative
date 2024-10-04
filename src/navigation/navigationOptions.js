@@ -17,7 +17,7 @@ const baseHeaderOptions: Object = {
 
 const showHeader: Object = {
   ...baseHeaderOptions,
-  headerTintColor: colors.black,
+  headerTintColor: colors.darkGray,
   // Note: left header is not supported on iOS
   // so we would need to build a custom header for this:
   // https://reactnavigation.org/docs/native-stack-navigator#headertitlealign
@@ -29,7 +29,7 @@ const showHeader: Object = {
 
 const showLongHeader: Object = {
   ...baseHeaderOptions,
-  headerTintColor: colors.black,
+  headerTintColor: colors.darkGray,
   // Note: left header is not supported on iOS
   // so we would need to build a custom header for this:
   // https://reactnavigation.org/docs/native-stack-navigator#headertitlealign

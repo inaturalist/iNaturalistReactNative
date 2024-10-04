@@ -10,6 +10,7 @@ import { useTheme } from "react-native-paper";
 import Svg, { Path } from "react-native-svg";
 import { useTranslation } from "sharedHooks";
 import { dropShadow } from "styles/global";
+import colors from "styles/tailwindColors";
 
 const HEIGHT = 24;
 
@@ -59,12 +60,12 @@ const PhotoCount = ( { count }: Props ): Node => {
           fillRule="nonzero"
           clipRule="evenodd"
           d="M4 5.818a4 4 0 00-4 4V20a4 4 0 004 4h10.182a4 4 0 004-4V9.818a4 4 0 00-4-4z"
-          fill={theme.colors.background}
+          fill={colors.white}
         />
         <Path
         // eslint-disable-next-line max-len
           d="M15.364 3.636h-9.53A4 4 0 019.818 0H20a4 4 0 014 4v10.182a4 4 0 01-3.636 3.984v-9.53a5 5 0 00-5-5z"
-          fill={theme.colors.background}
+          fill={colors.white}
           clipRule="evenodd"
           fillRule="nonzero"
         />

@@ -8,8 +8,8 @@ import {
 import { Pressable } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
+import colors from "styles/tailwindColors";
 
 type Props = {
   count: ?number,
@@ -27,7 +27,6 @@ const ExploreHeaderCount = ( {
   onPress
 }: Props ): Node => {
   const { t } = useTranslation( );
-  const theme = useTheme( );
 
   const renderText = ( ) => {
     if ( exploreView === "observations" ) {
@@ -51,7 +50,7 @@ const ExploreHeaderCount = ( {
           <INatIcon
             name={exploreViewIcon}
             size={18}
-            color={theme.colors.onPrimary}
+            color={colors.white}
           />
           <Body2 className="text-white ml-3">{renderText( )}</Body2>
         </>

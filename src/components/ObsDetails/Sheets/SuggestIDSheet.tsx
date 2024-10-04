@@ -42,7 +42,7 @@ const SuggestIDSheet = ( {
           className=" flex-row items-center bg-lightGray p-[15px] rounded"
         >
           <INatIcon name="add-comment-outline" size={22} />
-          <List2 className="ml-[7px] text-black flex-1">
+          <List2 className="ml-[7px] text-darkGray flex-1">
             {identification.body}
           </List2>
         </View>
