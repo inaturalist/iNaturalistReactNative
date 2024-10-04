@@ -190,15 +190,10 @@ const ObsImagePreview = ( {
   let content;
 
   if ( isSmall && ( obsPhotosCount === 0 && !source?.uri ) ) {
-    imageClassNames.push( "justify-center", "items-center" );
+    imageClassNames.push( "justify-center", "items-center", "border-2" );
   }
 
   if ( isSmall && obsPhotosCount === 0 && hasSound ) {
-    imageClassNames.push(
-      "border-2",
-      "justify-center",
-      "items-center"
-    );
     content = <INatIcon name="sound" color={theme.colors.primary} size={24} />;
   } else {
     content = (
@@ -206,7 +201,6 @@ const ObsImagePreview = ( {
         <ObsImage
           uri={source}
           opaque={opaque}
-          imageClassName={classNames( imageClassNames )}
           iconicTaxonName={iconicTaxonName}
           white={white}
           isBackground={isBackground}

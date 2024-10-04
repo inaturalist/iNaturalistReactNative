@@ -135,6 +135,12 @@ exports[`TaxonResult should render correctly 1`] = `
               {
                 "alignItems": "center",
               },
+              {
+                "borderBottomWidth": 2,
+                "borderLeftWidth": 2,
+                "borderRightWidth": 2,
+                "borderTopWidth": 2,
+              },
               [
                 {
                   "borderBottomLeftRadius": 12,
@@ -187,39 +193,6 @@ exports[`TaxonResult should render correctly 1`] = `
                 [
                   [
                     {
-                      "flexGrow": 1,
-                    },
-                    {
-                      "aspectRatio": 1,
-                    },
-                    {
-                      "maxHeight": 210,
-                    },
-                    {
-                      "overflow": "hidden",
-                    },
-                    {
-                      "position": "relative",
-                    },
-                    {
-                      "borderBottomLeftRadius": 8,
-                      "borderBottomRightRadius": 8,
-                      "borderTopLeftRadius": 8,
-                      "borderTopRightRadius": 8,
-                    },
-                    {
-                      "height": 62,
-                    },
-                    {
-                      "width": 62,
-                    },
-                    {
-                      "justifyContent": "center",
-                    },
-                    {
-                      "alignItems": "center",
-                    },
-                    {
                       "flexShrink": 1,
                     },
                     {
@@ -245,6 +218,18 @@ exports[`TaxonResult should render correctly 1`] = `
                       "borderLeftColor": "#E8E8E8",
                       "borderRightColor": "#E8E8E8",
                       "borderTopColor": "#E8E8E8",
+                    },
+                    {
+                      "flexGrow": 1,
+                    },
+                    {
+                      "aspectRatio": 1,
+                    },
+                    {
+                      "borderBottomWidth": 0,
+                      "borderLeftWidth": 0,
+                      "borderRightWidth": 0,
+                      "borderTopWidth": 0,
                     },
                   ],
                 ]
