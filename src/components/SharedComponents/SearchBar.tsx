@@ -79,6 +79,7 @@ const SearchBar = ( {
         onChangeText={handleTextChange}
         outlineStyle={outlineStyle}
         placeholder={placeholder}
+        selectionColor={colors.darkGray}
         style={style}
         testID={testID}
         theme={fontTheme}

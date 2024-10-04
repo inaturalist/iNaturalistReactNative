@@ -51,6 +51,7 @@ const RadioButtonRow = ( {
           value={value}
           status={status}
           accessibilityLabel={label}
+          color={colors.darkGray}
         />
         <View className="ml-3 flex-row w-5/6">
           {labelComponent || <Label className="mr-2">{label}</Label>}

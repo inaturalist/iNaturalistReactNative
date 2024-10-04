@@ -17,7 +17,9 @@ const theme = {
   version: 3,
   colors: {
     ...DefaultTheme.colors,
-    ...colors
+    ...colors,
+    // keeping background here for react-native-paper TextInput
+    background: colors.white
   }
 };
 
