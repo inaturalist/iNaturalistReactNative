@@ -1232,7 +1232,7 @@ const FilterModal = ( {
             } );
             setOpenSheet( NONE );
           }}
-          handleClose={() => setOpenSheet( NONE )}
+          onPressClose={() => setOpenSheet( NONE )}
           radioValues={sortByValues}
           selectedValue={sortBy}
           insideModal
@@ -1248,7 +1248,7 @@ const FilterModal = ( {
             } );
             setOpenSheet( NONE );
           }}
-          handleClose={() => setOpenSheet( NONE )}
+          onPressClose={() => setOpenSheet( NONE )}
           pickerValues={taxonomicRankValues}
           selectedValue={hrank}
           insideModal
@@ -1264,7 +1264,7 @@ const FilterModal = ( {
             } );
             setOpenSheet( NONE );
           }}
-          handleClose={() => setOpenSheet( NONE )}
+          onPressClose={() => setOpenSheet( NONE )}
           pickerValues={taxonomicRankValues}
           selectedValue={lrank}
           insideModal
@@ -1277,7 +1277,7 @@ const FilterModal = ( {
             updateDateUploaded( { newDateUploaded } );
             setOpenSheet( NONE );
           }}
-          handleClose={() => setOpenSheet( NONE )}
+          onPressClose={() => setOpenSheet( NONE )}
           radioValues={dateUploadedValues}
           selectedValue={dateUploaded}
           insideModal
@@ -1290,7 +1290,7 @@ const FilterModal = ( {
             updateDateObserved( { newDateObserved } );
             setOpenSheet( NONE );
           }}
-          handleClose={() => setOpenSheet( NONE )}
+          onPressClose={() => setOpenSheet( NONE )}
           radioValues={dateObservedValues}
           selectedValue={dateObserved}
           insideModal
@@ -1306,7 +1306,7 @@ const FilterModal = ( {
             } );
             setOpenSheet( NONE );
           }}
-          handleClose={() => setOpenSheet( NONE )}
+          onPressClose={() => setOpenSheet( NONE )}
           radioValues={photoLicenseValues}
           selectedValue={photoLicense}
           insideModal
@@ -1314,7 +1314,7 @@ const FilterModal = ( {
       )}
       {openSheet === CONFIRMATION && (
         <WarningSheet
-          handleClose={() => setOpenSheet( NONE )}
+          onPressClose={() => setOpenSheet( NONE )}
           confirm={() => {
             discardChanges();
             closeModal();

@@ -8,16 +8,16 @@ import type { Node } from "react";
 import React from "react";
 
 type Props = {
-  handleClose: Function,
+  onPressClose: Function,
   discardChanges: Function
 }
 
 const DiscardChangesSheet = ( {
-  handleClose,
+  onPressClose,
   discardChanges
 }: Props ): Node => (
   <WarningSheet
-    handleClose={handleClose}
+    onPressClose={onPressClose}
     confirm={discardChanges}
     headerText={t( "DISCARD-CHANGES" )}
     text={t( "By-exiting-changes-not-saved" )}

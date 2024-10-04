@@ -284,6 +284,7 @@ const DQAContainer = ( ): React.Node => {
         headerText={t( "ERROR-VOTING-IN-DQA" )}
         hidden={hideErrorSheet}
         hideCloseButton
+        onPressClose={( ) => resetButtonsOnError( )}
       >
         <View className="px-[26px] py-[20px] flex-col space-y-[20px]">
           <List2 className="text-black">{t( "Error-voting-in-DQA-description" )}</List2>
@@ -297,6 +298,7 @@ const DQAContainer = ( ): React.Node => {
         headerText={t( "ERROR-LOADING-DQA" )}
         hidden={hideOfflineSheet}
         hideCloseButton
+        onPressClose={( ) => setHideOfflineSheet( true )}
       >
         <View className="px-[26px] py-[20px] flex-col space-y-[20px]">
           <List2 className="text-black">{t( "Offline-DQA-description" )}</List2>

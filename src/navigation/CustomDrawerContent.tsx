@@ -292,7 +292,7 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
       </View>
       {showConfirm && (
         <WarningSheet
-          handleClose={() => setShowConfirm( false )}
+          onPressClose={() => setShowConfirm( false )}
           headerText={t( "LOG-OUT--question" )}
           text={t( "Are-you-sure-you-want-to-log-out" )}
           handleSecondButtonPress={() => setShowConfirm( false )}
@@ -303,8 +303,9 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
       )}
       {showFeedback && (
         <TextInputSheet
+          hidden={!showFeedback}
           buttonText={t( "SUBMIT" )}
-          handleClose={() => setShowFeedback( false )}
+          onPressClose={() => setShowFeedback( false )}
           headerText={t( "FEEDBACK" )}
           confirm={submitFeedback}
           description={t( "Thanks-for-using-any-suggestions" )}

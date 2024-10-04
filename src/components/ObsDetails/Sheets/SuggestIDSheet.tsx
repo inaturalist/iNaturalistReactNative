@@ -18,7 +18,6 @@ interface Props {
   }
   onSuggestId:Function,
   editIdentBody: Function,
-  handleClose: Function,
   onPressClose: Function
 }
 
@@ -27,11 +26,9 @@ const SuggestIDSheet = ( {
   identification,
   onSuggestId,
   editIdentBody,
-  handleClose,
   onPressClose
 }: Props ): Node => (
   <BottomSheet
-    handleClose={handleClose}
     onPressClose={onPressClose}
     headerText={t( "SUGGEST-ID" )}
     hidden={hidden}

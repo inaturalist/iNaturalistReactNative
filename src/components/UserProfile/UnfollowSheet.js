@@ -40,7 +40,7 @@ const UnfollowSheet = ( {
 
   return (
     <WarningSheet
-      handleClose={( ) => setShowUnfollowSheet( false )}
+      onPressClose={( ) => setShowUnfollowSheet( false )}
       secondButtonText={t( "CANCEL" )}
       buttonType="warning"
       headerText={t( "UNFOLLOW-USER" )}

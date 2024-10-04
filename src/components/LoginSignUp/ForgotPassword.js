@@ -34,7 +34,7 @@ const ForgotPassword = ( ): Node => {
       <LoginSignUpWrapper backgroundSource={require( "images/background/butterfly.jpg" )}>
         {showSheet && (
           <WarningSheet
-            handleClose={( ) => setShowSheet( false )}
+            onPressClose={( ) => setShowSheet( false )}
             confirm={openInbox}
             headerText={t( "CHECK-YOUR-EMAIL" )}
             text={t( "If-an-account-with-that-email-exists" )}

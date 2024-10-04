@@ -160,7 +160,7 @@ const ActivityHeader = ( {
         }
         {( currentUser && showWithdrawIDSheet ) && (
           <WithdrawIDSheet
-            handleClose={() => setShowWithdrawIDSheet( false )}
+            onPressClose={() => setShowWithdrawIDSheet( false )}
             taxon={item.taxon}
             updateIdentification={updateIdentification}
           />
@@ -168,7 +168,7 @@ const ActivityHeader = ( {
 
         {( currentUser && showEditCommentSheet ) && (
           <TextInputSheet
-            handleClose={() => setShowEditCommentSheet( false )}
+            onPressClose={() => setShowEditCommentSheet( false )}
             headerText={t( "EDIT-COMMENT" )}
             initialInput={item.body}
             confirm={textInput => updateCommentBody( textInput )}
@@ -176,7 +176,7 @@ const ActivityHeader = ( {
         )}
         {( currentUser && showDeleteCommentSheet ) && (
           <WarningSheet
-            handleClose={( ) => setShowDeleteCommentSheet( false )}
+            onPressClose={( ) => setShowDeleteCommentSheet( false )}
             headerText={t( "DELETE-COMMENT--question" )}
             confirm={deleteComment}
             buttonText={t( "DELETE" )}
