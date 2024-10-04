@@ -81,6 +81,10 @@ Data-quality-assessment-single-subject = Er is een taxon dat aanwezig is in al h
 Data-quality-assessment-title-research = Deze waarneming is van onderzoekskwaliteit!
 # label in project requirements
 Date = Datum
+# Date formatting using date-fns
+# Used for things like User Profile join date
+# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+date-format-long = d LLL yyyy
 # Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 date-format-month-day = d MMM

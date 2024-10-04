@@ -32,6 +32,7 @@
   "Data-quality-assessment-single-subject": "Er is een taxon dat aanwezig is in al het bewijs",
   "Data-quality-assessment-title-research": "Deze waarneming is van onderzoekskwaliteit!",
   "Date": "Datum",
+  "date-format-long": "d LLL yyyy",
   "date-format-month-day": "d MMM",
   "Date-observed": "Datum waarneming",
   "Date-observed-header-short": "Waargenomen",
