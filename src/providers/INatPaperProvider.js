@@ -9,6 +9,9 @@ import {
 } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
+// it's still possible to access colors using theme,
+// but it's more consistent to access them directly using
+// import colors from "styles/tailwindColors";
 const theme = {
   ...DefaultTheme,
   version: 3,

@@ -14,14 +14,12 @@ import {
 import { View } from "components/styledComponents";
 import React, { useState } from "react";
 import { Alert } from "react-native";
-import { useTheme } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
 const Buttons = ( ) => {
   const [loading, setLoading] = useState( false );
-  const theme = useTheme();
   return (
     <ScrollViewWrapper>
       <View className="p-4">
@@ -200,8 +198,8 @@ const Buttons = ( ) => {
               accessibilityLabel="Notifications"
               mode="contained"
               preventTransparency
-              color={theme.colors.deepPink}
-              backgroundColor={theme.colors.yellow}
+              color={colors.deepPink}
+              backgroundColor={colors.yellow}
               size={44}
             />
             <INatIconButton
@@ -209,8 +207,8 @@ const Buttons = ( ) => {
               accessibilityLabel="Notifications"
               mode="contained"
               preventTransparency
-              color={theme.colors.deepPink}
-              backgroundColor={theme.colors.yellow}
+              color={colors.deepPink}
+              backgroundColor={colors.yellow}
               size={44}
             />
           </View>
