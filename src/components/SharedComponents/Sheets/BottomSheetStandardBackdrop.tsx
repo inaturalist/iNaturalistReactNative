@@ -5,13 +5,15 @@ import {
 import React from "react";
 
 type Props = {
-  props: BottomSheetBackdropProps
+  props: BottomSheetBackdropProps,
+  onPress: ( ) => void
 }
 
-const BottomSheetStandardBackdrop = ( { props }: Props ) => (
+const BottomSheetStandardBackdrop = ( { props, onPress }: Props ) => (
   <BottomSheetBackdrop
     // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}
+    onPress={onPress}
     pressBehavior="close"
     appearsOnIndex={0}
     disappearsOnIndex={-1}

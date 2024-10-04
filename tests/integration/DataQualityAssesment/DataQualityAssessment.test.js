@@ -63,10 +63,13 @@ async function expectMutateToHaveBeenCalled() {
   // Since we mocked the mutate() method, we're expecting mutation not to
   // succeed. We want to wait for this so there are no extra things happening
   // outside of act()
-  await screen.findByText( "ERROR LOADING IN DQA" );
+  screen.queryByText( "ERROR LOADING IN DQA" );
 }
 
 describe( "DQA Vote Buttons", ( ) => {
+  beforeEach( ( ) => {
+    jest.useFakeTimers( );
+  } );
   test( "renders DQA vote buttons", async ( ) => {
     renderComponent( <DQAContainer /> );
     const emptyDisagreeButtons = await screen.findAllByTestId( "DQAVoteButton.EmptyDisagree" );

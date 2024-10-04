@@ -14,7 +14,6 @@ import { Text } from "react-native";
 
 type Props = {
   editIdentBody: Function,
-  handleClose?: Function,
   hidden?: boolean,
   identification: {
     body?: string,
@@ -38,14 +37,12 @@ const showTaxon = taxon => {
 
 const AgreeWithIDSheet = ( {
   editIdentBody,
-  handleClose,
   hidden,
   identification,
   onAgree,
   onPressClose
 }: Props ): Node => (
   <BottomSheet
-    handleClose={handleClose}
     headerText={t( "AGREE-WITH-ID" )}
     hidden={hidden}
     onPressClose={onPressClose}

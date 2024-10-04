@@ -172,7 +172,7 @@ const ObsEditHeader = ( {
       </View>
       {deleteSheetVisible && (
         <DeleteObservationSheet
-          handleClose={( ) => setDeleteSheetVisible( false )}
+          onPressClose={( ) => setDeleteSheetVisible( false )}
           navToObsList={navToObsList}
           observations={observations}
           currentObservation={currentObservation}
@@ -182,7 +182,7 @@ const ObsEditHeader = ( {
       {discardObservationSheetVisible && (
         <DiscardObservationSheet
           discardObservation={discardObservation}
-          handleClose={( ) => setDiscardObservationSheetVisible( false )}
+          onPressClose={( ) => setDiscardObservationSheetVisible( false )}
           navToObsList={navToObsList}
           observations={observations}
         />
@@ -190,7 +190,7 @@ const ObsEditHeader = ( {
       {discardChangesSheetVisible && (
         <DiscardChangesSheet
           discardChanges={discardChanges}
-          handleClose={( ) => setDiscardChangesSheetVisible( false )}
+          onPressClose={( ) => setDiscardChangesSheetVisible( false )}
         />
       )}
     </View>

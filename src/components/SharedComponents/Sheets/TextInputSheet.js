@@ -24,7 +24,7 @@ type Props = {
   buttonText: string,
   confirm: Function,
   description?: string,
-  handleClose: Function,
+  onPressClose: Function,
   headerText: string,
   initialInput?: string,
   maxLength?: number,
@@ -56,7 +56,7 @@ const TextInputSheet = ( {
   buttonText,
   confirm,
   description,
-  handleClose,
+  onPressClose,
   headerText,
   initialInput,
   maxLength,
@@ -93,12 +93,12 @@ const TextInputSheet = ( {
 
   const dismissKeyboardAndClose = ( ) => {
     Keyboard.dismiss( );
-    handleClose( );
+    onPressClose( );
   };
 
   return (
     <BottomSheet
-      handleClose={dismissKeyboardAndClose}
+      onPressClose={dismissKeyboardAndClose}
       headerText={headerText}
       keyboardShouldPersistTaps="always"
       onLayout={event => {

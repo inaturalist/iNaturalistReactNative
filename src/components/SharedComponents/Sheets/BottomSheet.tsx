@@ -1,5 +1,3 @@
-// @flow
-
 import BottomSheet, {
   BottomSheetModal, BottomSheetScrollView
 } from "@gorhom/bottom-sheet";
@@ -16,30 +14,33 @@ import { Dimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "sharedHooks";
 
-type Props = {
-  children: Node,
-  hidden?: boolean,
-  onChange?: Function,
-  // Callback when the sheet closes
-  handleClose?: Function,
-  hideCloseButton?: boolean,
-  headerText?: string,
-  onLayout?: Function,
-  // Callback when the user presses the close button, not whenever the sheet
-  // closes
-  onPressClose?: Function,
-  snapPoints?: Array<string>,
-  insideModal?: boolean,
-  keyboardShouldPersistTaps: string
-}
+const { width } = Dimensions.get( "window" );
+const marginOnWide = {
+  marginHorizontal: width > 500
+    ? ( width - 500 ) / 2
+    : 0
+};
 
-const renderBackdrop = props => <BottomSheetStandardBackdrop props={props} />;
+// eslint-disable-next-line
+const noHandle = ( ) => <></>;
+
+interface Props {
+  children: React.JSX.Element;
+  hidden?: boolean;
+  hideCloseButton?: boolean;
+  headerText?: string;
+  onLayout?: Function;
+  // Callback when the user presses the close button or backdrop, not whenever the sheet
+  // closes
+  onPressClose?: Function;
+  snapPoints?: Array<string>;
+  insideModal?: boolean;
+  keyboardShouldPersistTaps: string;
+}
 
 const StandardBottomSheet = ( {
   children,
   hidden,
-  onChange = null,
-  handleClose,
   hideCloseButton = false,
   headerText,
   onLayout,
@@ -53,28 +54,25 @@ const StandardBottomSheet = ( {
   }
 
   const { t } = useTranslation( );
-  const sheetRef = useRef( null );
+  const sheetRef = useRef<BottomSheet>( null );
   const insets = useSafeAreaInsets( );
 
-  // eslint-disable-next-line
-  const noHandle = ( ) => <></>;
+  const handleClose = useCallback( ( ) => {
+    onPressClose( );
 
-  const handleBackdropPress = useCallback( position => {
-    if ( handleClose && position === -1 ) {
-      handleClose( );
-    }
-  }, [handleClose] );
-
-  const hide = useCallback( ( ) => {
-    if ( handleClose ) {
-      handleClose( );
-    }
     if ( insideModal ) {
       sheetRef.current?.collapse( );
     } else {
       sheetRef.current?.dismiss( );
     }
-  }, [handleClose, insideModal] );
+  }, [insideModal, onPressClose] );
+
+  const renderBackdrop = props => (
+    <BottomSheetStandardBackdrop
+      props={props}
+      onPress={onPressClose}
+    />
+  );
 
   const handleSnapPress = useCallback( ( ) => {
     if ( insideModal ) {
@@ -85,23 +83,17 @@ const StandardBottomSheet = ( {
   }, [insideModal] );
 
   useEffect( ( ) => {
-    if ( hidden ) {
-      hide( );
-    } else {
-      handleSnapPress( );
-    }
-  }, [hidden, hide, handleSnapPress] );
+    if ( hidden ) { return; }
+    handleSnapPress( );
+  }, [hidden, handleSnapPress] );
 
   const BottomSheetComponent = insideModal
     ? BottomSheet
     : BottomSheetModal;
 
-  const { width } = Dimensions.get( "window" );
-  const marginOnWide = {
-    marginHorizontal: width > 500
-      ? ( width - 500 ) / 2
-      : 0
-  };
+  if ( hidden ) {
+    return null;
+  }
 
   return (
     <BottomSheetComponent
@@ -109,7 +101,6 @@ const StandardBottomSheet = ( {
       enableDynamicSizing
       handleComponent={noHandle}
       index={0}
-      onChange={onChange || handleBackdropPress}
       ref={sheetRef}
       style={marginOnWide}
     >
@@ -132,7 +123,7 @@ const StandardBottomSheet = ( {
           {!hideCloseButton && (
             <INatIconButton
               icon="close"
-              onPress={onPressClose || handleClose}
+              onPress={handleClose}
               size={19}
               className="absolute top-3.5 right-3"
               accessibilityState={{ disabled: hidden }}

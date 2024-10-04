@@ -382,7 +382,6 @@ const TaxonDetails = ( ): Node => {
       )}
       <BottomSheet
         hidden={!sheetVisible}
-        handleClose={() => setSheetVisible( false )}
         onPressClose={() => setSheetVisible( false )}
         headerText={t( "UPLOAD-TO-INATURALIST" )}
       >
