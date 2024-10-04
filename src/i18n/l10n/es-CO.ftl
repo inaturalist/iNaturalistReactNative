@@ -86,10 +86,16 @@ Date = Fecha
 # Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 date-format-month-day = d MMM
+# Short date, e.g. on notifications from over a year ago
+# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+date-format-short = d/M/yy
 Date-observed = Fecha de observación
 Date-observed-header-short = Observado el
 # Label for controls over a range of dates
 Date-Range = Intervalo de fechas
+# Shorter datetime, e.g. on comments and IDs
+# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+datetime-format-short = d/M/yy hh:mm
 # Month of December
 December = Diciembre
 Delete-observation = Borrar observación
@@ -125,6 +131,7 @@ Flag-Item-Other-Input-Hint = Especificar la razón por la que has marcado este e
 Flagged = Marcado
 # Label for button that returns to the previous screen
 Go-back = Volver
+HELP = AYUDA
 Hide = Ocultar
 # Identification Status
 ID-Withdrawn = Id. retirada
@@ -297,6 +304,8 @@ View-in-browser = Ver en el navegador
 # or photo
 View-suggestions = Ver sugerencias
 Welcome-to-iNaturalist = ¡Bienvenido a iNaturalist!
+# Welcome user back to app
+Welcome-user = <0>Bienvenido de nuevo,</0><1>{ $userHandle }</1>
 Wild = Silveste
 # Label for a button that withdraws an identification
 Withdraw = Retirar

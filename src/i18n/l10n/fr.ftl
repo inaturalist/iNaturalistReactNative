@@ -291,6 +291,8 @@ View-in-browser = Afficher dans le navigateur
 # or photo
 View-suggestions = Voir les suggestions
 Welcome-to-iNaturalist = Bienvenue sur iNaturalist !
+# Welcome user back to app
+Welcome-user = <0>Bienvenue à nouveau,</0><1>{ $userHandle }</1>
 Wild = Sauvage
 # Label for a button that withdraws an identification
 Withdraw = Retirer

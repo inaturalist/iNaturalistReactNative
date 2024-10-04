@@ -176,6 +176,7 @@
   "View-in-browser": "Afficher dans le navigateur",
   "View-suggestions": "Voir les propositions",
   "Welcome-to-iNaturalist": "Bienvenue sur iNaturalist !",
+  "Welcome-user": "<0>Bienvenue à nouveau,</0><1>{ $userHandle }</1>",
   "Wild": "Sauvage",
   "Withdraw": "Retirer",
   "Worldwide": "Dans le monde entier",
