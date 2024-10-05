@@ -33,6 +33,7 @@ const getKeyForPixel = ( row, col, json ) => {
 };
 
 const getKeyForPixelExpansive = ( x, y, json ) => {
+  if ( !json?.grid ) return null;
   const factor = TILE_SIZE / json.grid.length;
 
   // Convert x/y to row/column, while making sure it's within the bounds of the grid
@@ -73,6 +74,8 @@ const getKeyForPixelExpansive = ( x, y, json ) => {
    * @return data object corresponding to the tile position (null if no data for that position)
    */
 const getDataForPixel = ( x, y, json ) => {
+  if ( !json || !json?.data || !json?.grid ) return null;
+
   const key = getKeyForPixelExpansive( x, y, json );
 
   // Non existent key

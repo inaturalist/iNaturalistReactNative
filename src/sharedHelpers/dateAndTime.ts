@@ -275,7 +275,6 @@ function formatDifferenceForHumans( date: Date, i18n: i18next ) {
     }
     return i18n.t( "datetime-difference-weeks", { count: Math.floor( days / 7 ) } );
   }
-  console.log( "[DEBUG dateAndTime.ts] i18n.language: ", i18n.language );
   const formatOpts = { locale: dateFnsLocale( i18n.language ) };
   if ( getYear( now ) !== getYear( d ) ) {
     // Previous year(s)
