@@ -31,7 +31,6 @@ const soundRecorderTitle = ( ) => (
 
 const CAMERA_SCREEN_OPTIONS = {
   ...hideHeader,
-  orientation: "all",
   contentStyle: {
     backgroundColor: "black"
   }
