@@ -12,7 +12,7 @@ type URI = {
 type Props = {
   iconicTaxonIconSize?: number,
   iconicTaxonName?: string,
-  imageClassName: string,
+  imageClassName?: string,
   isBackground?: boolean,
   opaque?: boolean,
   uri?: URI,
@@ -42,7 +42,8 @@ const ObsImage = ( {
           {
             "bg-darkGray": white && isBackground,
             "bg-transparent": white && !isBackground
-          }
+          },
+          "border-0"
         ]}
         iconicTaxonName={iconicTaxonName}
         white={white}

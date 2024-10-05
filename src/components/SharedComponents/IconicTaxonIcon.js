@@ -31,7 +31,6 @@ const IconicTaxonIcon = ( {
   return (
     <View
       className={classnames(
-        imageClassName,
         "shrink",
         "justify-center",
         "items-center",
@@ -40,7 +39,8 @@ const IconicTaxonIcon = ( {
         { "border-lightGray": !isBackground },
         {
           "border-white": white && !isBackground
-        }
+        },
+        imageClassName
       )}
       testID="IconicTaxonName.iconicTaxonIcon"
     >
