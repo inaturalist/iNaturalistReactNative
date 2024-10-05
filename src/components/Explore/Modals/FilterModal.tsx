@@ -39,9 +39,9 @@ import {
   WILD_STATUS
 } from "providers/ExploreContext.tsx";
 import React, { useState } from "react";
-import { useTheme } from "react-native-paper";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
+import colors from "styles/tailwindColors";
 
 import placeGuessText from "../helpers/placeGuessText";
 import ExploreLocationSearchModal from "./ExploreLocationSearchModal";
@@ -627,8 +627,6 @@ const FilterModal = ( {
     } );
   };
 
-  const theme = useTheme();
-
   const observedEndBeforeStart = d1 > d2;
   const uploadedEndBeforeStart = createdD1 > createdD2;
   const hasError = observedEndBeforeStart || uploadedEndBeforeStart;
@@ -987,7 +985,7 @@ const FilterModal = ( {
                     <INatIcon
                       name="triangle-exclamation"
                       size={19}
-                      color={theme.colors.error}
+                      color={colors.warningRed}
                     />
                     <List2 className="ml-3">
                       {t( "Start-must-be-before-end" )}
@@ -1086,7 +1084,7 @@ const FilterModal = ( {
                     <INatIcon
                       name="triangle-exclamation"
                       size={19}
-                      color={theme.colors.error}
+                      color={colors.warningRed}
                     />
                     <List2 className="ml-3">
                       {t( "Start-must-be-before-end" )}

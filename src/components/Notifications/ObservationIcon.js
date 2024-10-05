@@ -5,7 +5,7 @@ import {
 } from "components/SharedComponents";
 import { Image, View } from "components/styledComponents";
 import * as React from "react";
-import { useTheme } from "react-native-paper";
+import colors from "styles/tailwindColors";
 
 type Props = {
   photoUri: string,
@@ -15,8 +15,6 @@ type Props = {
 const ObservationIcon = ( {
   photoUri, soundUri
 }: Props ): React.Node => {
-  const theme = useTheme();
-
   if ( !photoUri && !soundUri ) {
     return (
       <View
@@ -33,7 +31,7 @@ const ObservationIcon = ( {
         <INatIcon
           name="noevidence"
           size={24}
-          color={theme.colors.primary}
+          color={colors.darkGray}
         />
       </View>
     );
@@ -55,7 +53,7 @@ const ObservationIcon = ( {
         <INatIcon
           name="sound"
           size={24}
-          color={theme.colors.primary}
+          color={colors.darkGray}
         />
       </View>
     );

@@ -135,12 +135,6 @@ exports[`TaxonResult should render correctly 1`] = `
               {
                 "alignItems": "center",
               },
-              {
-                "borderBottomWidth": 2,
-                "borderLeftWidth": 2,
-                "borderRightWidth": 2,
-                "borderTopWidth": 2,
-              },
               [
                 {
                   "borderBottomLeftRadius": 12,
@@ -242,7 +236,7 @@ exports[`TaxonResult should render correctly 1`] = `
                 style={
                   [
                     {
-                      "color": "rgba(103, 80, 164, 1)",
+                      "color": "#454545",
                       "fontSize": 22,
                     },
                     undefined,
@@ -464,7 +458,7 @@ exports[`TaxonResult should render correctly 1`] = `
           style={
             [
               {
-                "color": "rgba(103, 80, 164, 1)",
+                "color": "#454545",
                 "fontSize": 22,
               },
               undefined,
@@ -555,7 +549,7 @@ exports[`TaxonResult should render correctly 1`] = `
           style={
             [
               {
-                "color": "rgba(103, 80, 164, 1)",
+                "color": "#454545",
                 "fontSize": 40,
               },
               undefined,

@@ -10,10 +10,10 @@ import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useMemo, useRef, useState } from "react";
 import { Keyboard } from "react-native";
-import { useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 import useTranslation from "sharedHooks/useTranslation";
+import colors from "styles/tailwindColors";
 
 // Optimized to maximize input size while minimizing post-render height
 // adjustments for for iPhone 13 and taller screens. Shorter screens
@@ -64,7 +64,6 @@ const TextInputSheet = ( {
   textInputStyle
 }: Props ): Node => {
   const textInputRef = useRef( );
-  const theme = useTheme( );
   const [input, setInput] = useState( initialInput );
   const { t } = useTranslation( );
   const { nonKeyboardHeight } = useKeyboardInfo( TARGET_INPUT_HEIGHT );
@@ -82,12 +81,11 @@ const TextInputSheet = ( {
     fontFamily: fontRegular,
     fontSize: 14,
     lineHeight: 17,
-    color: theme.colors.primary,
+    color: colors.darkGray,
     textAlignVertical: "top"
   } ), [
     nonKeyboardHeight,
     sheetHeight,
-    theme,
     topInset
   ] );
 

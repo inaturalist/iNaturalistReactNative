@@ -5,7 +5,6 @@ import {
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
 import { Platform, StatusBar } from "react-native";
-import { useTheme } from "react-native-paper";
 import Observation from "realmModels/Observation";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
@@ -20,7 +19,6 @@ interface Props {
 
 const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
   const { t } = useTranslation( );
-  const theme = useTheme( );
 
   const majorVersionIOS = parseInt( Platform.Version, 10 );
 
@@ -121,7 +119,7 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
       accessibilityHint={accessibilityHint}
       accessibilityLabel={accessibilityLabel}
       className={className}
-      color={theme.colors.onSecondary}
+      color={colors.white}
       icon={icon}
       onPress={onPress}
       size={30}
@@ -169,8 +167,8 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
                     size={30}
                     color={
                       item.icon === "arcamera"
-                        ? theme.colors.secondary
-                        : theme.colors.primary
+                        ? colors.inatGreen
+                        : colors.darkGray
                     }
                   />
                   <Body3 maxFontSizeMultiplier={1.5} className="ml-[20px] shrink">

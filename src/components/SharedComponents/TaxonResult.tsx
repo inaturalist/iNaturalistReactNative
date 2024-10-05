@@ -7,9 +7,9 @@ import {
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
-import { useTheme } from "react-native-paper";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useCurrentUser, useTaxon, useTranslation } from "sharedHooks";
+import colors from "styles/tailwindColors";
 
 import ConfidenceInterval from "./ConfidenceInterval";
 
@@ -69,7 +69,6 @@ const TaxonResult = ( {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
 
-  const theme = useTheme( );
   const currentUser = useCurrentUser( );
 
   // thinking about future performance, it might make more sense to batch
@@ -104,7 +103,7 @@ const TaxonResult = ( {
           } )}
           icon="checkmark"
           size={21}
-          color={theme.colors.onSecondary}
+          color={colors.white}
           onPress={() => handleCheckmarkPress( usableTaxon )}
           accessibilityLabel={accessibilityLabel}
           testID={`${testID}.checkmark`}
@@ -118,8 +117,8 @@ const TaxonResult = ( {
         size={40}
         color={
           clearBackground
-            ? theme.colors.onSecondary
-            : theme.colors.primary
+            ? colors.white
+            : colors.darkGray
         }
         onPress={() => handleCheckmarkPress( usableTaxon )}
         accessibilityLabel={accessibilityLabel}
@@ -202,7 +201,7 @@ const TaxonResult = ( {
               }
               navToTaxonDetails( );
             }}
-            color={clearBackground && theme.colors.onSecondary}
+            color={clearBackground && colors.white}
             accessibilityLabel={t( "More-info" )}
             accessibilityHint={t( "Navigates-to-taxon-details" )}
           />

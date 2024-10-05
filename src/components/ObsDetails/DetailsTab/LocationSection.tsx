@@ -24,7 +24,7 @@ interface Props {
 
 const DETAILS_MAP_MODAL_STYLE = { margin: 0 };
 
-const headingClass = "mt-[20px] mb-[11px] text-black";
+const headingClass = "mt-[20px] mb-[11px] text-darkGray";
 const sectionClass = "mx-[15px] mb-[20px]";
 
 const LocationSection = ( { observation }: Props ): Node => {

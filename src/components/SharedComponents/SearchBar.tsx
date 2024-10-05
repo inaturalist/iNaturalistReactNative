@@ -7,6 +7,7 @@ import { TextInput as RNTextInput } from "react-native";
 import { TextInput, useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
+import colors from "styles/tailwindColors";
 
 const DROP_SHADOW = getShadow( );
 
@@ -70,7 +71,7 @@ const SearchBar = ( {
       <TextInput
         ref={input}
         accessibilityLabel={t( "Search-for-a-taxon" )}
-        activeUnderlineColor={theme.colors.primary}
+        activeUnderlineColor={colors.darkGray}
         autoFocus={autoFocus}
         dense
         keyboardType="default"
@@ -78,10 +79,11 @@ const SearchBar = ( {
         onChangeText={handleTextChange}
         outlineStyle={outlineStyle}
         placeholder={placeholder}
+        selectionColor={colors.darkGray}
         style={style}
         testID={testID}
         theme={fontTheme}
-        underlineColor={theme.colors.primary}
+        underlineColor={colors.darkGray}
         value={value}
       />
       {value?.length > 0 && clearSearch

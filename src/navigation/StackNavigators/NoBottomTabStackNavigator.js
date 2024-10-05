@@ -116,7 +116,6 @@ const NoBottomTabStackNavigator = ( ): Node => (
   <Stack.Navigator
     screenOptions={{
       headerBackTitleVisible: false,
-      headerTintColor: "black",
       contentStyle: {
         backgroundColor: "white"
       }

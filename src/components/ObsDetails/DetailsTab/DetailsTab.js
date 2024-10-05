@@ -17,8 +17,8 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import { Alert, Platform, Share } from "react-native";
-import { useTheme } from "react-native-paper";
 import { openExternalWebBrowser } from "sharedHelpers/util.ts";
+import colors from "styles/tailwindColors";
 
 import Attribution from "./Attribution";
 import LocationSection from "./LocationSection";
@@ -88,12 +88,11 @@ const qualityGradeDescription = option => {
   }
 };
 
-const headingClass = "mt-[20px] mb-[11px] text-black";
+const headingClass = "mt-[20px] mb-[11px] text-darkGray";
 const sectionClass = "mx-[15px] mb-[20px]";
 
 const DetailsTab = ( { currentUser, observation }: Props ): Node => {
   const navigation = useNavigation( );
-  const theme = useTheme( );
   const application = observation?.application?.name;
   const qualityGrade = observation?.quality_grade;
   const observationUUID = observation?.uuid;
@@ -107,8 +106,8 @@ const DetailsTab = ( { currentUser, observation }: Props ): Node => {
       ? "1"
       : "0.5";
     const color = ( isResearchGrade )
-      ? theme.colors.secondary
-      : theme.colors.primary;
+      ? colors.inatGreen
+      : colors.darkGray;
     return (
       <View className="flex-1 flex-col space-y-[8px] items-center">
         <QualityGradeStatus qualityGrade={option} opacity={opacity} color={color} />

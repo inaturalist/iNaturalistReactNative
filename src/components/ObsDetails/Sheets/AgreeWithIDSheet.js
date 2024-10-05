@@ -50,7 +50,7 @@ const AgreeWithIDSheet = ( {
     <View
       className="mx-[26px] space-y-[11px] my-[15px]"
     >
-      <List2 className="text-black">
+      <List2 className="text-darkGray">
         {t( "Agree-with-ID-description" )}
       </List2>
       { identification.body && (
@@ -58,7 +58,7 @@ const AgreeWithIDSheet = ( {
           className=" flex-row items-center bg-lightGray p-[15px] rounded"
         >
           <INatIcon name="add-comment-outline" size={22} />
-          <List2 className="ml-[7px] text-black">
+          <List2 className="ml-[7px] text-darkGray">
             {identification.body}
           </List2>
         </View>

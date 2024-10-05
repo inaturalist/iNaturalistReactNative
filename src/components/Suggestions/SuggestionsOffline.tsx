@@ -5,8 +5,8 @@ import {
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
-import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
+import colors from "styles/tailwindColors";
 
 interface Props {
   reloadSuggestions: ( ) => void;
@@ -16,7 +16,6 @@ const SuggestionsOffline = ( {
   reloadSuggestions
 }: Props ) => {
   const { t } = useTranslation( );
-  const theme = useTheme( );
   return (
     <Pressable
       accessibilityRole="button"
@@ -28,7 +27,7 @@ const SuggestionsOffline = ( {
           <INatIcon
             name="offline"
             size={22}
-            color={theme.colors.warningYellow}
+            color={colors.warningYellow}
           />
           <Body2 className="mx-2">{t( "You-are-offline-Tap-to-reload" )}</Body2>
         </View>
