@@ -2,6 +2,7 @@ import Geolocation from "@react-native-community/geolocation";
 import {
   screen,
   userEvent,
+  waitFor,
   within
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
@@ -164,10 +165,11 @@ describe( "Photo Deletion", ( ) => {
     await confirmPhotosAndAddTopId();
     await saveAndEditObs();
     // Enter camera to add new photo
-    const addEvidenceButton = await screen.findByLabelText( "Add evidence" );
-    await actor.press( addEvidenceButton );
-    const addEvidenceSheet = await screen.findByTestId( "AddEvidenceSheet" );
-    const cameraButton = await within( addEvidenceSheet ).findByLabelText( "Camera" );
+    const addEvidenceButton = await waitFor( () => screen.findByLabelText( "Add evidence" ) );
+    await waitFor( () => actor.press( addEvidenceButton ) );
+    const addEvidenceSheet = await waitFor( () => screen.findByTestId( "AddEvidenceSheet" ) );
+    const cameraButton = await waitFor( () => within( addEvidenceSheet )
+      .findByLabelText( "Camera" ) );
     await actor.press( cameraButton );
     // Tap the photo preview to enter the MediaViewer
     const carouselPhoto = await screen.findByTestId( /PhotoCarousel\.displayPhoto/ );
