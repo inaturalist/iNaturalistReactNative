@@ -380,6 +380,12 @@ New-Observation = Ny observation
 No-Location = Ingen placering
 No-Media = Intet medie
 none = ingen
+# Error message title when not enough storage space on device, e.g. when the
+# disk is full and you try to save a photo
+Not-enough-space-left-on-device = Ikke nok ledig lagerplads på enhed
+# Error message description when not enough storage space on device, e.g. when
+# the disk is full and you try to save a photo
+Not-enough-space-left-on-device-try-again = Ikke nok ledig lagerplads på enheden til at gøre dette. Frigør noget plads, og forsøg igen.
 Notifications = Notifikationer
 # Month of November
 November = November

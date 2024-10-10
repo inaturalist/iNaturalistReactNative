@@ -166,6 +166,12 @@ New-Observation = Uusi havainto
 No-Location = Ei sijaintia
 No-Media = Ei mediaa
 none = ei mitään
+# Error message title when not enough storage space on device, e.g. when the
+# disk is full and you try to save a photo
+Not-enough-space-left-on-device = Laitteessa ei ole riittävästi tilaa
+# Error message description when not enough storage space on device, e.g. when
+# the disk is full and you try to save a photo
+Not-enough-space-left-on-device-try-again = Laitteellasi ei ole tarpeeksi tallennustilaa. Vapauta tilaa ja yritä uudelleen.
 Notifications = Ilmoitukset
 # Month of November
 November = marraskuu

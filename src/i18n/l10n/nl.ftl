@@ -25,6 +25,7 @@
 
 # Header for a general description, e.g. of a user, or of iNaturalist itself
 ABOUT = OVER
+ABOUT-UMBRELLA-PROJECTS = OVER OVERKOEPELENDE PROJECTEN
 # Label for a taxon when a user prefers to see or hear the scientific name first
 accessible-sciname-comname = { $scientificName } ({ $commonName })
 Add-Location = Locatie toevoegen
@@ -51,6 +52,9 @@ Cancel = Annuleren
 # Quality grade indicating observation does not quality for Needs ID or
 # Research Grade, e.g. missing media, voted out, etc.
 Casual--quality-grade = Onvolledig
+# Label for a button that clears content, like the text entered in a text
+# field
+Clear = Wissen
 # Label for a button that closes a window or popup
 Close = Sluiten
 Collection-Project = Verzamelproject
@@ -77,6 +81,8 @@ Data-quality-assessment-organism-is-wild = Organisme is wild
 Data-quality-assessment-recent-evidence-of-organism = Recent bewijs van een organisme
 # Data Quality Assessment metric
 Data-quality-assessment-single-subject = Er is een taxon dat aanwezig is in al het bewijs
+# Data Quality Assessment description of the final quality grade when Needs ID
+Data-quality-assessment-title-needs-id = Deze waarneming is 'ID nodig'
 # Data Quality Assessment description of the final quality grade when Research Grade
 Data-quality-assessment-title-research = Deze waarneming is van onderzoekskwaliteit!
 # label in project requirements
@@ -90,8 +96,13 @@ date-format-long = d LLL yyyy
 date-format-month-day = d MMM
 Date-observed = Datum waarneming
 Date-observed-header-short = Waargenomen
+DATE-OBSERVED-NEWEST = DATUM WAARNEMING - NIEUWSTE EERST
+DATE-OBSERVED-OLDEST = DATUM WAARNEMING - OUDSTE EERST
 # Label for controls over a range of dates
 Date-Range = Tijdspanne
+# Shorter datetime, e.g. on comments and IDs
+# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+datetime-format-short = d-M-yyyy HH:mm
 # Month of December
 December = December
 Delete-observation = Verwijder observatie
@@ -180,8 +191,13 @@ No-Location = Geen locatie
 No-Media = Geen media
 none = geen
 Notifications = Notificaties
+# notification when someone adds a comment to your observation
+notifications-user-added-comment-to-observation-by-you = <0>{ $userName }</0> heeft een opmerking toegevoegd aan een waarneming van jou
+# notification when someone adds an identification to your observation
+notifications-user-added-identification-to-observation-by-you = <0>{ $userName }</0> heeft een determinatie toegevoegd aan een waarneming van jou
 # Month of November
 November = November
+Obervations-must-be-manually-added = Waarnemingen moeten handmatig worden toegevoegd aan een traditioneel project, tijdens de uploadfase of nadat de waarneming is gedeeld met iNaturalist. Een gebruiker moet zich ook aansluiten bij een traditioneel project om er zijn waarnemingen aan toe te kunnen te voegen.
 Obscured = Vervaagd
 Observations = Waarnemingen
 # Button that starts a new observation
@@ -302,5 +318,11 @@ Wild = Wild
 # Label for a button that withdraws an identification
 Withdraw = Intrekken
 Worldwide = Wereldwijd
+# Displays number of photos attached to an observation in the Media Viewer
+X-PHOTOS =
+    { $photoCount ->
+        [one] 1 FOTO
+       *[other] { $photoCount } FOTO'S
+    }
 # Error message when you try to do something that requires log in
-You-need-log-in-to-do-that = Je moet inloggen om dat te kunnen doen.
+You-need-log-in-to-do-that = Je moet inloggen om dat te doen.
