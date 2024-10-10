@@ -73,12 +73,26 @@ Affiliation = Anknytning: { $site }
 Agree = Håller med
 # Label for button that adds an identification of the same taxon as another identification
 AGREE = GODKÄNN
+# Checkbox label that checks all of the consent agreements a user must make
+# before signing up
+Agree-to-all-of-the-above = Godkänn allt ovanstående
+AGREE-WITH-ID = HÅLLER MED OM BESTÄMNING?
+Agree-with-ID-description = Vill du godkänna bestämningen och föreslå den följande?
+# This is what we call the camera that
+# overlays identification suggestions in real time
+AI-Camera = AI-kamera
 ALL = ALLA
 All = Alla
+All-observation-option = Alla fyndalternativ (inklusive iNaturalist AI-kamera, standardkamera, uppladdning från galleri och ljudinspelning)
 All-observations = Alla fynd
+All-organisms = Alla organismer
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = alla rättigheter förbehållna
 All-taxa = Alla taxa
+ALLOW-LOCATION-ACCESS = TILLÅT ÅTKOMST TILL PLATS
+# As in automated identification suggestions
+Almost-done = Nästan klar!
+Already-have-an-account = Har du redan ett konto? Logga in
 # Generic option in a menu of choices that indicates that any of the choices
 # would be acceptable
 Any = Vilken som
@@ -215,6 +229,12 @@ New-Observation = Nytt fynd
 No-Location = Ingen plats
 No-Media = Ingen media
 none = ingen
+# Error message title when not enough storage space on device, e.g. when the
+# disk is full and you try to save a photo
+Not-enough-space-left-on-device = Inte tillräckligt med utrymme kvar på enheten
+# Error message description when not enough storage space on device, e.g. when
+# the disk is full and you try to save a photo
+Not-enough-space-left-on-device-try-again = Det inte finns inte tillräckligt med lagringsutrymme kvar på din enhet för att göra det. Rensa upp lite och försök igen.
 Notifications = Aviseringar
 # Month of November
 November = november
