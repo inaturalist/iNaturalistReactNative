@@ -6,11 +6,12 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import * as React from "react";
+import { useState } from "react";
 import { Platform, StatusBar } from "react-native";
 import { useTheme } from "react-native-paper";
 import Observation from "realmModels/Observation";
 import { useTranslation } from "sharedHooks";
-import useStore from "stores/useStore";
+import useStore, { storage } from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -21,6 +22,7 @@ type Props = {
 const AddObsModal = ( { closeModal, navAndCloseModal }: Props ): React.Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
+  const [hideHelpText, setHideHelpText] = useState( storage.getBoolean( "hideAddObsHelpText" ) );
 
   const majorVersionIOS = parseInt( Platform.Version, 10 );
 
@@ -45,43 +47,50 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ): React.Node => {
 
   const greenCircleClass = "bg-inatGreen rounded-full h-[46px] w-[46px]";
 
+  const hideHelpTextForever = async ( ) => {
+    setHideHelpText( true );
+    storage.set( "hideAddObsHelpText", true );
+  };
+
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor="black" />
-      <View className="flex-row justify-center">
-        <View className="bg-white rounded-xl p-[25px] mb-12 mx-7 max-w-sm">
-          <View className="flex-row items-center">
-            <Heading2 testID="identify-text">
-              {t( "Identify-an-organism" )}
-            </Heading2>
+      { !hideHelpText && (
+        <View className="flex-row justify-center">
+          <View className="bg-white rounded-xl p-[25px] mb-12 mx-7 max-w-sm">
+            <View className="flex-row items-center">
+              <Heading2 testID="identify-text">
+                {t( "Identify-an-organism" )}
+              </Heading2>
 
-            <View className="ml-auto">
-              <INatIconButton
-                icon="close"
-                color={colors.darkGrayDisabled}
-                size={20}
-                onPress={( ) => closeModal( )}
-                accessibilityLabel={t( "Close" )}
-                accessibilityHint={t( "Closes-new-observation-options" )}
-              />
+              <View className="ml-auto">
+                <INatIconButton
+                  icon="close"
+                  color={colors.darkGrayDisabled}
+                  size={20}
+                  onPress={hideHelpTextForever}
+                  accessibilityLabel={t( "Close" )}
+                  accessibilityHint={t( "Closes-new-observation-options" )}
+                />
+              </View>
             </View>
+            {bulletedText.map( ( { text, icon } ) => (
+              <View key={text} className="flex-row items-center mt-4">
+                <INatIcon
+                  name={icon}
+                  size={30}
+                  color={
+                    icon === "arcamera"
+                      ? theme.colors.secondary
+                      : theme.colors.primary
+                  }
+                />
+                <Body3 className="ml-[20px] shrink">{text}</Body3>
+              </View>
+            ) )}
           </View>
-          {bulletedText.map( ( { text, icon } ) => (
-            <View key={text} className="flex-row items-center mt-4">
-              <INatIcon
-                name={icon}
-                size={30}
-                color={
-                  icon === "arcamera"
-                    ? theme.colors.secondary
-                    : theme.colors.primary
-                }
-              />
-              <Body3 className="ml-[20px] shrink">{text}</Body3>
-            </View>
-          ) )}
         </View>
-      </View>
+      )}
       <View className={classnames( "flex-row justify-center", {
         "bottom-[20px]": !showARCamera
       } )}
