@@ -21,6 +21,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Without this, the default GITHUB_TOKEN gets saved in the local git
+          # settings, and it might be overriding the GITHUB_TOKEN we set
+          # below for the crowdin action, and apparently the default
+          # GITHUB_TOKEN does not trigger actions because... reasons.
+          # https://github.com/orgs/community/discussions/25702#discussioncomment-6313966
+          persist-credentials: false
 
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v4
