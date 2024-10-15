@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { INatIcon, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
-import { TextInput as RNTextInput } from "react-native";
+import { Keyboard, TextInput as RNTextInput } from "react-native";
 import { TextInput, useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
@@ -93,7 +93,10 @@ const SearchBar = ( {
               icon="close"
               accessibilityLabel={t( "Close-search" )}
               size={18}
-              onPress={clearSearch}
+              onPress={() => {
+                Keyboard.dismiss();
+                clearSearch();
+              }}
             />
           </View>
         )
