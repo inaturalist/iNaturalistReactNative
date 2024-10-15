@@ -164,7 +164,7 @@ const ObsEditHeader = ( {
   ] );
 
   return (
-    <View className="flex-row justify-between items-center">
+    <View className="flex-row justify-between items-center bg-white">
       {renderBackButton( )}
       {observations.length > 0 && renderHeaderTitle( )}
       <View className="mr-4">
