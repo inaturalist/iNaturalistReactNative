@@ -80,11 +80,13 @@ const ObsEdit = ( ): Node => {
   return (
     <>
       <ViewWrapper testID="obs-edit">
-        <ObsEditHeader
-          currentObservation={currentObservation}
-          observations={observations}
-        />
-        <KeyboardAwareScrollView>
+        <KeyboardAwareScrollView
+          stickyHeaderIndices={[0]}
+        >
+          <ObsEditHeader
+            currentObservation={currentObservation}
+            observations={observations}
+          />
           {currentObservation && (
             <View
               className="bg-white rounded-t-3xl mt-1"
@@ -92,36 +94,35 @@ const ObsEdit = ( ): Node => {
                 ? DROP_SHADOW
                 : undefined}
             >
-              <View className="h-screen">
-                {observations.length > 1 && (
-                  <MultipleObservationsArrows
-                    currentObservationIndex={currentObservationIndex}
-                    observations={observations}
-                    setCurrentObservationIndex={setCurrentObservationIndex}
-                    setResetScreen={setResetScreen}
-                  />
-                )}
-                <EvidenceSectionContainer
-                  currentObservation={currentObservation}
-                  isFetchingLocation={isFetchingLocation}
-                  onLocationPress={onLocationPress}
-                  passesEvidenceTest={passesEvidenceTest}
-                  setPassesEvidenceTest={setPassesEvidenceTest}
-                  updateObservationKeys={updateObservationKeys}
-                />
-                <IdentificationSection
-                  currentObservation={currentObservation}
-                  resetScreen={resetScreen}
+              {observations.length > 1 && (
+                <MultipleObservationsArrows
+                  currentObservationIndex={currentObservationIndex}
+                  observations={observations}
+                  setCurrentObservationIndex={setCurrentObservationIndex}
                   setResetScreen={setResetScreen}
-                  updateObservationKeys={updateObservationKeys}
                 />
-                <OtherDataSection
-                  currentObservation={currentObservation}
-                  updateObservationKeys={updateObservationKeys}
-                />
-              </View>
+              )}
+              <EvidenceSectionContainer
+                currentObservation={currentObservation}
+                isFetchingLocation={isFetchingLocation}
+                onLocationPress={onLocationPress}
+                passesEvidenceTest={passesEvidenceTest}
+                setPassesEvidenceTest={setPassesEvidenceTest}
+                updateObservationKeys={updateObservationKeys}
+              />
+              <IdentificationSection
+                currentObservation={currentObservation}
+                resetScreen={resetScreen}
+                setResetScreen={setResetScreen}
+                updateObservationKeys={updateObservationKeys}
+              />
+              <OtherDataSection
+                currentObservation={currentObservation}
+                updateObservationKeys={updateObservationKeys}
+              />
             </View>
           )}
+          <View className="p-[100px]" />
         </KeyboardAwareScrollView>
       </ViewWrapper>
       <BottomButtons
