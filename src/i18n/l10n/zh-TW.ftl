@@ -23,8 +23,6 @@
 ###   result of performing an action on the accessibility element." We write
 ###   them in third person singular ending with a period.
 
-# Header for a general description, e.g. of a user, or of iNaturalist itself
-ABOUT = 關於
 # Label for button that adds an identification of the same taxon as another identification
 Agree = 同意
 # Label for button that adds an identification of the same taxon as another identification

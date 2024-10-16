@@ -228,9 +228,6 @@ Ranks-Variety = 変種
 # Imperative verb for recording a sound
 Record-verb = 記録
 Remove-project-filter = プロジェクトフィルターを削除
-# Quality grade indicating observation is accurate and complete enough to
-# share outside of iNat
-Research-Grade--quality-grade = 研究用
 # Label for a button that resets the state of an interface, e.g. a button that
 # resets the sound recorder to its original state
 Reset-verb = リセット

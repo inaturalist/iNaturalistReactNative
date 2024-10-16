@@ -299,7 +299,6 @@ Missing-Date = Fehlendes Datum
 Months = Monate
 MY-OBSERVATIONS = MEINE BEOBACHTUNGEN
 Native = einheimisch
-Navigates-to-taxon-details = Navigiert zu den Taxon-Details
 # Header or button label for content that is near the user's current location
 NEARBY = In der Nähe
 # Header or button label for content that is near the user's current location
