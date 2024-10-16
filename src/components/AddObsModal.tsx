@@ -6,7 +6,7 @@ import { Pressable, View } from "components/styledComponents";
 import React from "react";
 import { Platform, StatusBar } from "react-native";
 import Observation from "realmModels/Observation";
-import { useTranslation } from "sharedHooks";
+import { useDeviceOrientation, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
@@ -19,6 +19,7 @@ interface Props {
 
 const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
   const { t } = useTranslation( );
+  const { screenHeight } = useDeviceOrientation( );
 
   const majorVersionIOS = parseInt( Platform.Version, 10 );
 
@@ -127,19 +128,30 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
     />
   );
 
+  // targeting iPhone SE, which has height of 667
+  const isSmallScreen = screenHeight < 670;
+
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor="black" />
-      <View className="bg-white rounded-3xl py-[23px] mb-20">
-        <View className="flex-row items-center mb-2">
+      <View className={classnames( "bg-white rounded-3xl py-[23px] mb-20", {
+        "py-[5px] mb-10": isSmallScreen
+      } )}
+      >
+        <View className={classnames( "flex-row items-center mb-2" )}>
           <Heading2
             maxFontSizeMultiplier={1.5}
             testID="identify-text"
-            className="pl-[25px]"
+            className={classnames( "pl-[25px]", {
+              "px-8 -mb-2 mt-2": isSmallScreen
+            } )}
           >
             {t( "Identify-an-organism" )}
           </Heading2>
-          <View className="ml-auto pr-[12px]">
+          <View className={classnames( "ml-auto pr-[12px]", {
+            "pb-6": isSmallScreen
+          } )}
+          >
             <INatIconButton
               icon="close"
               color={colors.darkGray}
@@ -150,7 +162,10 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
             />
           </View>
         </View>
-        <View className="px-[23px]">
+        <View className={classnames( "px-[23px]", {
+          "px-[10px]": isSmallScreen
+        } )}
+        >
           {Object.keys( obsCreateItems )
             .filter( k => k !== "closeButton" )
             .map( k => {
@@ -158,7 +173,9 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
               return (
                 <Pressable
                   accessibilityRole="button"
-                  className={classnames( "flex-row items-center p-2 my-1" )}
+                  className={classnames( "flex-row items-center p-2 my-1", {
+                    "p-1": isSmallScreen
+                  } )}
                   key={k}
                   onPress={item.onPress}
                 >
