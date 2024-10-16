@@ -92,7 +92,7 @@ December = décembre
 Delete-observation = Supprimer l'observation
 # Button label or accessibility label for an element that deletes a photo
 Delete-photo = Supprimer la photo
-DONATE = Faire un don
+DONATE = FAIRE UN DON
 # Button for editing something
 Edit = Modifier
 # Label for interactive element that takes you to a location choosing screen

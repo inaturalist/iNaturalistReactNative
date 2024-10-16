@@ -88,6 +88,8 @@
   "No-Location": "Ei sijaintia",
   "No-Media": "Ei mediaa",
   "none": "ei mitään",
+  "Not-enough-space-left-on-device": "Laitteessa ei ole riittävästi tilaa",
+  "Not-enough-space-left-on-device-try-again": "Laitteellasi ei ole tarpeeksi tallennustilaa. Vapauta tilaa ja yritä uudelleen.",
   "Notifications": "Ilmoitukset",
   "November": "marraskuu",
   "Obscured": "Karkeistettu",
