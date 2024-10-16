@@ -4,8 +4,8 @@ import { INatIcon, PhotoCount } from "components/SharedComponents";
 import { LinearGradient, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";
-import { useTheme } from "react-native-paper";
 import { getShadow } from "styles/global";
+import colors from "styles/tailwindColors";
 
 import ObsImage from "./ObsImage";
 
@@ -58,7 +58,6 @@ const ObsImagePreview = ( {
   white = false,
   width = "w-[62px]"
 }: Props ): Node => {
-  const theme = useTheme();
   const borderRadius = isSmall
     ? "rounded-lg"
     : "rounded-2xl";
@@ -87,7 +86,7 @@ const ObsImagePreview = ( {
               : "bottom-1"
           )}
         >
-          <INatIcon name="photos-outline" color={theme.colors.onSecondary} size={16} />
+          <INatIcon name="photos-outline" color={colors.white} size={16} />
         </View>
       );
     }
@@ -110,8 +109,7 @@ const ObsImagePreview = ( {
   }, [
     isMultiplePhotosTop,
     isSmall,
-    obsPhotosCount,
-    theme
+    obsPhotosCount
   ] );
 
   const renderSelectable = useCallback( ( ) => {
@@ -131,13 +129,13 @@ const ObsImagePreview = ( {
           style={ICON_DROP_SHADOW}
         >
           {selected && (
-            <INatIcon name="checkmark" color={theme.colors.primary} size={12} />
+            <INatIcon name="checkmark" color={colors.darkGray} size={12} />
           )}
         </View>
       );
     }
     return null;
-  }, [selectable, selected, theme] );
+  }, [selectable, selected] );
 
   const renderGradient = useCallback( ( ) => {
     if ( isSmall ) return null;
@@ -170,7 +168,7 @@ const ObsImagePreview = ( {
           className="absolute left-1 bottom-1"
           style={ICON_DROP_SHADOW}
         >
-          <INatIcon name="sound" color={theme.colors.onSecondary} size={16} />
+          <INatIcon name="sound" color={colors.white} size={16} />
         </View>
       );
     }
@@ -182,10 +180,10 @@ const ObsImagePreview = ( {
         } )}
         style={ICON_DROP_SHADOW}
       >
-        <INatIcon name="sound" color={theme.colors.onSecondary} size={18} />
+        <INatIcon name="sound" color={colors.white} size={18} />
       </View>
     );
-  }, [hasSound, isSmall, theme] );
+  }, [hasSound, isSmall] );
 
   let content;
 
@@ -199,7 +197,7 @@ const ObsImagePreview = ( {
       "justify-center",
       "items-center"
     );
-    content = <INatIcon name="sound" color={theme.colors.primary} size={24} />;
+    content = <INatIcon name="sound" color={colors.darkGray} size={24} />;
   } else {
     content = (
       <>

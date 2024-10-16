@@ -9,9 +9,9 @@ import { View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React from "react";
-import { useTheme } from "react-native-paper";
 import { formatDifferenceForHumans } from "sharedHelpers/dateAndTime.ts";
 import { useTranslation } from "sharedHooks";
+import colors from "styles/tailwindColors";
 
 const { useRealm } = RealmContext;
 
@@ -25,7 +25,6 @@ const ObsNotification = ( { item }: Props ): Node => {
   const type = item?.notifier_type;
   const { user } = identification || comment;
   const realm = useRealm( );
-  const theme = useTheme();
 
   const observation = realm.objectForPrimaryKey( "Observation", item.resource_uuid );
   const photoUrl = observation?.observationPhotos[0]?.photo?.url;
@@ -55,7 +54,7 @@ const ObsNotification = ( { item }: Props ): Node => {
                 <INatIcon
                   name={renderIcon( )}
                   size={14}
-                  color={theme.colors.primary}
+                  color={colors.darkGray}
                 />
               )
           }

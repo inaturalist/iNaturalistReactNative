@@ -8,13 +8,13 @@ import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  handleClose: Function,
+  onPressClose: Function,
   selectedValue: boolean,
   updateCaptiveStatus: Function
 }
 
 const WildStatusSheet = ( {
-  handleClose,
+  onPressClose,
   selectedValue,
   updateCaptiveStatus
 }: Props ): Node => {
@@ -38,9 +38,9 @@ const WildStatusSheet = ( {
       headerText={t( "WILD-STATUS" )}
       confirm={checkBoxValue => {
         updateCaptiveStatus( checkBoxValue );
-        handleClose( );
+        onPressClose( );
       }}
-      handleClose={handleClose}
+      onPressClose={onPressClose}
       radioValues={radioValues}
       selectedValue={selectedValue}
     />

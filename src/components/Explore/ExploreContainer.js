@@ -26,6 +26,8 @@ const ExploreContainerWithContext = ( ): Node => {
   const { isConnected } = useNetInfo( );
   const exploreView = useStore( state => state.exploreView );
   const setExploreView = useStore( state => state.setExploreView );
+  const mapRegion = useStore( s => s.mapRegion );
+  const setMapRegion = useStore( s => s.setMapRegion );
 
   const {
     hasPermissions: hasLocationPermissions,
@@ -150,6 +152,8 @@ const ExploreContainerWithContext = ( ): Node => {
         hasLocationPermissions={hasLocationPermissions}
         requestLocationPermissions={requestLocationPermissions}
         startFetching={startFetching}
+        currentMapRegion={mapRegion}
+        setCurrentMapRegion={setMapRegion}
       />
       {renderPermissionsGate( {
         onPermissionGranted: startFetching

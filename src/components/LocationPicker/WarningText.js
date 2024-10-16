@@ -44,7 +44,7 @@ const WarningText = ( { accuracyTest }: Props ): Node => {
     >
       <Body3
         className={classnames(
-          "text-black",
+          "text-darkGray",
           "text-center",
           {
             "text-white": accuracyTest === "fail"

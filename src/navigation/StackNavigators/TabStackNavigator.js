@@ -39,6 +39,7 @@ import {
 } from "navigation/navigationOptions";
 import type { Node } from "react";
 import React from "react";
+import colors from "styles/tailwindColors";
 
 import SharedStackScreens from "./SharedStackScreens";
 
@@ -93,7 +94,7 @@ const TabStackNavigator = ( ): Node => (
   <Stack.Navigator
     screenOptions={{
       headerBackTitleVisible: false,
-      headerTintColor: "black"
+      headerTintColor: colors.darkGray
     }}
   >
     {/* Screens with no header */}

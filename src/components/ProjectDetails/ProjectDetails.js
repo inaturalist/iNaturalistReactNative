@@ -33,11 +33,14 @@ const ProjectDetails = ( {
   const navigation = useNavigation( );
 
   const onObservationPressed = useCallback(
-    ( ) => navigation.navigate( "Explore", {
-      project,
-      worldwide: true
-    } ),
-    [navigation, project]
+    ( ) => {
+      setExploreView( "observations" );
+      navigation.navigate( "Explore", {
+        project,
+        worldwide: true
+      } );
+    },
+    [navigation, project, setExploreView]
   );
 
   const onSpeciesPressed = useCallback(
@@ -82,7 +85,7 @@ const ProjectDetails = ( {
           accessibilityIgnoresInvertColors
         />
       </ImageBackground>
-      <View className="mx-4">
+      <View className="mx-4 pb-8">
         <Heading1 className="shrink mt-4">{project.title}</Heading1>
         <Heading3>{displayProjectType( project.project_type, t )}</Heading3>
         <OverviewCounts

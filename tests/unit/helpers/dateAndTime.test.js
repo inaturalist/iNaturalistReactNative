@@ -115,16 +115,22 @@ describe( "formatDifferenceForHumans", ( ) => {
     await initI18next( { lng: "en" } );
   } );
   it( "should show difference in minutes", ( ) => {
-    expect( formatDifferenceForHumans( subMinutes( new Date(), 3 ), i18next ) ).toMatch( /\d+m/ );
+    expect( formatDifferenceForHumans( subMinutes( new Date(), 3 ), i18next ) ).toMatch( /3m/ );
   } );
   it( "should show difference in hours", ( ) => {
-    expect( formatDifferenceForHumans( subHours( new Date(), 3 ), i18next ) ).toMatch( /\d+h/ );
+    expect( formatDifferenceForHumans( subHours( new Date(), 3 ), i18next ) ).toMatch( /3h/ );
   } );
   it( "should show difference in days", ( ) => {
-    expect( formatDifferenceForHumans( subDays( new Date(), 3 ), i18next ) ).toMatch( /\d+d/ );
+    expect( formatDifferenceForHumans( subDays( new Date(), 3 ), i18next ) ).toMatch( /3d/ );
+  } );
+  it( "should show not show fractional days", ( ) => {
+    expect( formatDifferenceForHumans( subHours( new Date(), 26 ), i18next ) ).toMatch( /1d/ );
   } );
   it( "should show difference in weeks", ( ) => {
-    expect( formatDifferenceForHumans( subDays( new Date(), 14 ), i18next ) ).toMatch( /\d+w/ );
+    expect( formatDifferenceForHumans( subDays( new Date(), 14 ), i18next ) ).toMatch( /2w/ );
+  } );
+  it( "should show not show fractional weeks", ( ) => {
+    expect( formatDifferenceForHumans( subDays( new Date(), 16 ), i18next ) ).toMatch( /2w/ );
   } );
   it( "should show day and month if over 30 days ago but still this year", ( ) => {
     const date = subDays( new Date(), 40 );

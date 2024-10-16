@@ -24,14 +24,14 @@ const isTablet = DeviceInfo.isTablet( );
 interface Props {
   belongsToCurrentUser?: boolean,
   observationId: number,
-  rightIconBlack?: boolean,
+  rightIconDarkGray?: boolean,
   uuid: string
 }
 
 const ObsDetailsHeader = ( {
   belongsToCurrentUser,
   observationId,
-  rightIconBlack = false,
+  rightIconDarkGray = false,
   uuid
 }: Props ) => {
   const navigation = useNavigation( );
@@ -69,13 +69,13 @@ const ObsDetailsHeader = ( {
                   navigateToObsEdit( navigation, setMyObsOffsetToRestore );
                 }}
                 icon="pencil"
-                color={!rightIconBlack
+                color={!rightIconDarkGray
                   ? colors.white
-                  : colors.black}
+                  : colors.darkGray}
                 accessibilityLabel={t( "Edit" )}
               />
             )
-            : <HeaderKebabMenu observationId={observationId} white={!rightIconBlack} />
+            : <HeaderKebabMenu observationId={observationId} white={!rightIconDarkGray} />
         }
       />
     </LinearGradient>

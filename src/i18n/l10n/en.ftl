@@ -1,6 +1,10 @@
 ### Source strings for iNaturalistReactNative
 ###
-### Notes
+### Notes for Translators
+### * See https://crowdin.com/project/inaturalistios/discussions/58 for notes
+###   on this file format
+###
+### Notes for Developers
 ### * GroupComments (comments beginning w/ ##) are not allowed because all
 ###   strings in this file will be alphabetized and it's impossible to
 ###   determine where group comments should fit in.
@@ -8,7 +12,9 @@
 ### * Try to annotate all strings with comments to provide context for
 ###   translators, especially for fragments and any situation where the
 ###   meaning is open to interpretation without context
-### * Use different strings for synonyms, e.g. stop-noun and stop-verb, as
+### * Use different strings for synonyms, e.g. stop--noun and stop--verb, as
+### * Use double dashes to make keys with the same values in English unique or
+###   to otherwise annotate them, e.g. stop--noun or casual--quality-grade
 ###   these might have different translations in different languages
 ### * Accessibility hints are used by screen readers to describe what happens
 ###   when the user interacts with an element
@@ -122,8 +128,9 @@ Camera = Camera
 CANCEL = CANCEL
 Cancel = Cancel
 Captive-Cultivated = Captive/Cultivated
-# "Casual" Data quality grade
-Casual = Casual
+# Quality grade indicating observation does not quality for Needs ID or
+# Research Grade, e.g. missing media, voted out, etc.
+Casual--quality-grade = Casual
 # Short label for the Creative Commons Attribution license
 CC-BY = CC BY
 # Short label for the Creative Commons Attribution-NonCommercial license
@@ -226,17 +233,27 @@ Data-quality-assessment-description-casual = This observation has not met the co
 Data-quality-assessment-description-needs-id = This observation has not yet met the conditions for Research Grade status:
 # Data Quality Assessment explanation when quality is Research Grade
 Data-quality-assessment-description-research = It can now be used for research and featured on other websites.
+# Data Quality Assessment metric
 Data-quality-assessment-evidence-of-organism = Evidence of organism
+# Data Quality Assessment metric
 Data-quality-assessment-has-photos-or-sounds = Has Photos or Sounds
+# Data Quality Assessment metric
 Data-quality-assessment-id-supported-by-two-or-more = Has ID supported by two or more
+# Data Quality Assessment metric
 Data-quality-assessment-location-is-accurate = Location is accurate
+# Data Quality Assessment metric
 Data-quality-assessment-location-specified = Location specified
+# Data Quality Assessment metric
 Data-quality-assessment-organism-is-wild = Organism is wild
+# Data Quality Assessment metric
 Data-quality-assessment-recent-evidence-of-organism = Recent evidence of an organism
+# Data Quality Assessment metric
 Data-quality-assessment-single-subject = Evidence related to a single subject
+# Data Quality Assessment description of the final quality grade when Casual
 Data-quality-assessment-title-casual = This observation is Casual Grade
+# Data Quality Assessment description of the final quality grade when Needs ID
 Data-quality-assessment-title-needs-id = This observation Needs ID
-# declares the current data quality status of the observation when quality is Research Grade
+# Data Quality Assessment description of the final quality grade when Research Grade
 Data-quality-assessment-title-research = This observation is Research Grade!
 Data-quality-casual-description = This observation needs more information verified to be considered verifiable
 Data-quality-needs-id-description = This observation needs more identifications to reach research grade
@@ -298,7 +315,8 @@ Delete-photo = Delete photo
 Delete-sound = Delete sound
 # Hint for a button that clears text you entered
 Deletes-entered-text = Deletes entered text
-# Shows the progress of deletions for X of Y
+# Shows the progress of deletions for X of Y observations, but omits the
+# word "observations" so the message won't get cut off on small screens
 Deleting-x-of-y = Deleting { $currentDeleteCount } of { $total }
 # Shows the number of observations a user is currently deleting out of total on my observations page
 Deleting-x-of-y-observations =
@@ -309,6 +327,8 @@ Deleting-x-of-y-observations =
 # Tab label or section title for content that describes further details, e.g.
 # the details of an observation
 DETAILS = DETAILS
+Device-storage-full = Device storage full
+Device-storage-full-description = iNaturalist may not be able to save your photos or may crash.
 # Button that disables the camera's flash
 Disable-flash = Disable flash
 # Disagreement notice with an identificaiton, <0/> will get replaced by a
@@ -612,10 +632,12 @@ Navigates-to-taxon-details = Navigates to taxon details
 Navigates-to-user-profile = Navigates to user profile
 # Label for button that takes you to your observations
 Navigates-to-your-observations = Navigates to your observations
-# Header for nearby projects
+# Header or button label for content that is near the user's current location
 NEARBY = NEARBY
+# Header or button label for content that is near the user's current location
 Nearby = Nearby
-Needs-ID = Needs ID
+# Quality grade indicating observation still needs more identifications
+Needs-ID--quality-grade = Needs ID
 # Heading when creating a new observation
 New-Observation = New Observation
 # Sort order, refers to newest or oldest date
@@ -640,6 +662,12 @@ No-results-found-try-different-search = No results found. Try a different search
 no-rights-reserved-cc0 = no rights reserved (CC0)
 NONE = NONE
 none = none
+# Error message title when not enough storage space on device, e.g. when the
+# disk is full and you try to save a photo
+Not-enough-space-left-on-device = Not enough space left on device
+# Error message description when not enough storage space on device, e.g. when
+# the disk is full and you try to save a photo
+Not-enough-space-left-on-device-try-again = There is not enough storage space left on your device to do that. Please free up some space and try again.
 # Header for observation description on observation detail
 NOTES = NOTES
 NOTIFICATIONS = NOTIFICATIONS
@@ -713,7 +741,6 @@ Opens-the-AI-camera = Opens the AI camera
 Opens-the-side-drawer-menu = Opens the side drawer menu.
 # Picker prompt on observation edit
 Organism-is-captive = Organism is captive
-Organism-is-wild = Organism is wild
 Organisms-that-are-identified-to-species = Organisms that are identified to species rank or below
 # Generic option in a list for unanticipated cases, e.g. a choice to manually
 # enter an explanation for why you are flagging something instead of choosing
@@ -762,16 +789,12 @@ Projects = Projects
 QUALITY-GRADE = QUALITY GRADE
 # label in project requirements
 Quality-Grade = Quality Grade
-# Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Casual
-Quality-Grade-casual = Quality Grade Casual
-quality-grade-casual = Casual
-quality-grade-needs-id = Needs ID
-# Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Needs ID
-Quality-Grade-needs_id = Quality Grade Needs ID
-# Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Research Grade
-Quality-Grade-research = Quality Grade Research Grade
-# Quality grade options
-quality-grade-research = Research Grade
+# Screen reader label for the Casual quality grade label
+Quality-Grade-Casual--label = Quality Grade: Casual
+# Screen reader label for the Needs ID quality grade label
+Quality-Grade-Needs-ID--label = Quality Grade: Needs ID
+# Screen reader label for the Research quality grade label
+Quality-Grade-Research--label = Quality Grade: Research
 Ranks-CLASS = CLASS
 Ranks-Class = Class
 Ranks-COMPLEX = COMPLEX
@@ -875,8 +898,9 @@ Removes-this-observations-taxon = Removes this observation's taxon
 Removes-your-vote-of-agreement = Removes your vote of agreement
 # Hint for a button that removes a vote of disagreement
 Removes-your-vote-of-disagreement = Removes your vote of disagreement
-# Quality grade option
-Research-Grade = Research Grade
+# Quality grade indicating observation is accurate and complete enough to
+# share outside of iNat
+Research-Grade--quality-grade = Research Grade
 # Reset password button
 RESET-PASSWORD = RESET PASSWORD
 # Label for a button that resets a sound recording
@@ -1085,7 +1109,8 @@ Upload-x-observations =
     }
 # Describes whether a user made this observation from web, iOS, or Android
 Uploaded-via-application = Uploaded via: { $application }
-# Shows the progress of uploads for X of Y
+# Shows the progress of uploads for X of Y observations, but omits the
+# word "observations" so the message won't get cut off on small screens
 Uploading-x-of-y = Uploading { $currentUploadCount } of { $total }
 # Shows the number of observations a user is currently uploading out of total on my observations page
 Uploading-x-of-y-observations =
@@ -1172,12 +1197,13 @@ X-Identifiers =
     }
 # Subheader for number of project members screen
 X-MEMBERS = { $count } MEMBERS
-# Banner above Explore Map showing total number of results
+# Shows number of observations in a variety of contexts
 X-Observations =
     { $count ->
         [one] 1 Observation
        *[other] { $count } Observations
     }
+# Shows number of observations in a variety of contexts
 X-observations =
     { $count ->
         [one] 1 observation
@@ -1198,13 +1224,15 @@ X-Observers =
         [one] { $count } Observer
        *[other] { $count } Observers
     }
+# Progress or position indicator, e.g. when viewing 2 of 3 observations, or 3
+# of 10 photos
 X-of-Y =
-    { $count ->
+    { $x ->
         [one] 1
-       *[other] { $count }
-    } { $totalObservationCount ->
-        [one] of { $totalObservationCount }
-       *[other] of { $totalObservationCount }
+       *[other] { $x }
+    } { $y ->
+        [one] of { $y }
+       *[other] of { $y }
     }
 # Displays number of photos attached to an observation in the Media Viewer
 X-PHOTOS =

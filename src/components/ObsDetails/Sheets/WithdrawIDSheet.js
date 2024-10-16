@@ -11,7 +11,7 @@ import React from "react";
 import { Text } from "react-native";
 
 type Props = {
-  handleClose: Function,
+  onPressClose: Function,
   updateIdentification: Function,
   taxon: Object
 }
@@ -28,12 +28,12 @@ const showTaxon = taxon => {
 };
 
 const WithdrawIDSheet = ( {
-  handleClose,
+  onPressClose,
   updateIdentification,
   taxon
 }: Props ): Node => (
   <BottomSheet
-    handleClose={handleClose}
+    onPressClose={onPressClose}
     headerText={t( "WITHDRAW-ID-QUESTION" )}
   >
     <View
@@ -45,7 +45,7 @@ const WithdrawIDSheet = ( {
       <Button
         text={t( "CANCEL" )}
         onPress={( ) => {
-          handleClose();
+          onPressClose();
         }}
         className="mx-2"
         testID="ObsDetail.WithdrawId.cancel"
@@ -57,7 +57,7 @@ const WithdrawIDSheet = ( {
         text={t( "WITHDRAW-ID" )}
         onPress={( ) => {
           updateIdentification( { current: false } );
-          handleClose();
+          onPressClose();
         }}
         className="mx-2 grow"
         testID="ObsDetail.WithdrawId.withdraw"

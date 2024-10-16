@@ -17,10 +17,10 @@ const mockValues = [
 ];
 
 describe( "RadioButtonSheet", () => {
-  it( "should not have accessibility erros", () => {
+  it( "should not have accessibility errors", () => {
     const sheet = (
       <RadioButtonSheet
-        handleClose={mockHandleClose}
+        onPressClose={mockHandleClose}
         confirm={mockConfirm}
         headerText="header text"
         radioValues={mockValues}

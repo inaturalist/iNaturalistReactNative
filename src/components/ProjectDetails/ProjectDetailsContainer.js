@@ -1,17 +1,21 @@
 // @flow
 
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useQueryClient } from "@tanstack/react-query";
 import { fetchSpeciesCounts, searchObservations } from "api/observations";
 import {
   fetchMembership,
   fetchProjectMembers, fetchProjectPosts, fetchProjects, joinProject, leaveProject
 } from "api/projects";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import User from "realmModels/User.ts";
+import { log } from "sharedHelpers/logger";
 import { useAuthenticatedMutation, useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 
 import ProjectDetails from "./ProjectDetails";
+
+const logger = log.extend( "ProjectDetailsContainer" );
 
 const DETAIL_FIELDS = {
   title: true,
@@ -30,6 +34,7 @@ const DETAIL_PARAMS = {
 };
 
 const ProjectDetailsContainer = ( ): Node => {
+  const navigation = useNavigation( );
   const { params } = useRoute( );
   const { id } = params;
   const currentUser = useCurrentUser( );
@@ -74,8 +79,10 @@ const ProjectDetailsContainer = ( ): Node => {
     } )
   );
 
-  const { data: currentMembership, refetch, isRefetching } = useAuthenticatedQuery(
-    ["fetchMembership", id],
+  const membershipQueryKey = ["fetchMembership", id];
+
+  const { data: currentMembership } = useAuthenticatedQuery(
+    membershipQueryKey,
     optsWithAuth => fetchMembership( {
       id
     }, optsWithAuth ),
@@ -84,15 +91,18 @@ const ProjectDetailsContainer = ( ): Node => {
     }
   );
 
+  const queryClient = useQueryClient( );
+
   const createJoinProjectMutation = useAuthenticatedMutation(
     ( joinParams, optsWithAuth ) => joinProject( joinParams, optsWithAuth ),
     {
       onSuccess: ( ) => {
-        refetch( );
+        queryClient.invalidateQueries( membershipQueryKey );
       },
       onError: error => {
-        console.log( error, "couldn't join project" );
-      }
+        logger.error( "could not join project: ", project.id, error );
+      },
+      onSettled: ( ) => setLoading( false )
     }
   );
 
@@ -100,19 +110,29 @@ const ProjectDetailsContainer = ( ): Node => {
     ( leaveParams, optsWithAuth ) => leaveProject( leaveParams, optsWithAuth ),
     {
       onSuccess: ( ) => {
-        refetch( );
+        queryClient.invalidateQueries( membershipQueryKey );
       },
       onError: error => {
-        console.log( error, "couldn't leave project" );
-      }
+        logger.error( "could not leave project: ", project.id, error );
+      },
+      onSettled: ( ) => setLoading( false )
     }
   );
 
-  useEffect( ( ) => {
-    if ( isRefetching === false ) {
-      setLoading( false );
+  const handleJoinProjectPress = ( ) => {
+    if ( currentUser ) {
+      setLoading( true );
+      createJoinProjectMutation.mutate( { id } );
+    } else {
+      navigation.navigate( "LoginStackNavigator", {
+        screen: "Login",
+        params: {
+          prevScreen: "ProjectDetails",
+          projectId: project.id
+        }
+      } );
     }
-  }, [isRefetching] );
+  };
 
   if ( project ) {
     project.members_count = projectMembers?.total_results;
@@ -125,10 +145,7 @@ const ProjectDetailsContainer = ( ): Node => {
   return (
     <ProjectDetails
       project={project}
-      joinProject={( ) => {
-        setLoading( true );
-        createJoinProjectMutation.mutate( { id } );
-      }}
+      joinProject={handleJoinProjectPress}
       leaveProject={( ) => {
         setLoading( true );
         createLeaveProjectMutation.mutate( { id } );

@@ -11,8 +11,8 @@ import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useEffect, useRef, useState } from "react";
 import { TouchableWithoutFeedback } from "react-native";
-import { useTheme } from "react-native-paper";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
+import colors from "styles/tailwindColors";
 
 import {
   authenticateUser
@@ -40,7 +40,6 @@ const LoginForm = ( {
   const [error, setError] = useState( null );
   const [loading, setLoading] = useState( false );
   const [isPasswordVisible, setIsPasswordVisible] = useState( false );
-  const theme = useTheme();
   const { keyboardShown } = useKeyboardInfo( );
 
   const blurFields = () => {
@@ -79,7 +78,19 @@ const LoginForm = ( {
     }
     setLoading( false );
 
-    navigation.getParent( )?.goBack( );
+    if ( params?.prevScreen && params?.projectId ) {
+      navigation.navigate( "TabNavigator", {
+        screen: "TabStackNavigator",
+        params: {
+          screen: "ProjectDetails",
+          params: {
+            id: params?.projectId
+          }
+        }
+      } );
+    } else {
+      navigation.getParent( )?.goBack( );
+    }
   };
 
   const togglePasswordVisibility = () => {
@@ -91,7 +102,7 @@ const LoginForm = ( {
       <View className="bg-white rounded-full">
         <INatIcon
           name="checkmark-circle"
-          color={theme.colors.secondary}
+          color={colors.inatGreen}
           size={19}
         />
       </View>

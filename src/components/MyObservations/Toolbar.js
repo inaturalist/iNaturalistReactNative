@@ -11,8 +11,9 @@ import {
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { ProgressBar, useTheme } from "react-native-paper";
+import { ProgressBar } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
+import colors from "styles/tailwindColors";
 
 type Props = {
   error: ?string,
@@ -47,7 +48,6 @@ const Toolbar = ( {
   syncIconColor,
   toggleLayout
 }: Props ): Node => {
-  const theme = useTheme( );
   const { t } = useTranslation( );
   // The exclamation mark should *never* appear while rotating, no matter what
   // the props say
@@ -120,7 +120,7 @@ const Toolbar = ( {
                     </Body2>
                     {showsCheckmark && (
                       <View className="ml-2">
-                        <INatIcon name="checkmark" size={11} color={theme.colors.secondary} />
+                        <INatIcon name="checkmark" size={11} color={colors.inatGreen} />
                       </View>
                     )}
                   </Pressable>
@@ -167,7 +167,7 @@ const Toolbar = ( {
       </View>
       <ProgressBar
         progress={progress}
-        color={theme.colors.secondary}
+        color={colors.inatGreen}
         // eslint-disable-next-line react-native/no-inline-styles
         style={{ backgroundColor: "transparent" }}
         visible={progress > 0}

@@ -1,0 +1,101 @@
+name: Crowdin Pull
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pull-from-crowdin:
+    runs-on: ubuntu-latest
+
+    # Apparently needed to rename files, though maybe there's a better way
+    container:
+      image: node:18
+      options: --user root
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Without this, the default GITHUB_TOKEN gets saved in the local git
+          # settings, and it might be overriding the GITHUB_TOKEN we set
+          # below for the crowdin action, and apparently the default
+          # GITHUB_TOKEN does not trigger actions because... reasons.
+          # https://github.com/orgs/community/discussions/25702#discussioncomment-6313966
+          persist-credentials: false
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        id: cache
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install node dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm install
+
+      - name: Sync with Crowdin
+        uses: crowdin/github-action@v2
+        with:
+          # Note: a lot of the way this behaves is controlled in crowdin.yml,
+          # e.g. the path to the source files and paths to translations
+          # Upload options
+          upload_sources: false
+          upload_translations: false
+          # Download options
+          download_translations: true
+          skip_untranslated_strings: true
+          export_only_approved: true
+          # Without this, the action will force push changes to the branch
+          # before we get a chance to normalize and validate in the next
+          # step
+          push_translations: false
+          # Pull request options
+          create_pull_request: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.CROWDIN_GITHUB_TOKEN }}
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+
+      # Move files named with crowdin locales to files named with iNat
+      # locales. This will also fail if there's invalid FTL. We might want to
+      # separate those things in the future if it's easier to notice
+      # validation failures in the PR
+      - name: Normalize and validate
+        run: npm run translate
+
+      - name: Make pull request
+        # The original doesn't support making a pull request without
+        # downloading, which we don't want to do b/c that would recreate the
+        # Crowdin-named files that we just removed in the previous step, so
+        # we're using a fork.
+        uses: inaturalist/crowdin-github-action@pr-without-download
+        with:
+          # Note: a lot of the way this behaves is controlled in crowdin.yml,
+          # e.g. the path to the source files and paths to translations
+          # Upload options
+          upload_sources: false
+          upload_translations: false
+          # Download options
+          download_translations: false
+          # Pull request options
+          create_pull_request: true
+          localization_branch_name: l10n_main
+          pull_request_title: 'New Crowdin Translations'
+          pull_request_body: 'New Crowdin translations by [Crowdin GH Action](https://github.com/crowdin/github-action)'
+          pull_request_base_branch_name: main
+        env:
+          GITHUB_TOKEN: ${{ secrets.CROWDIN_GITHUB_TOKEN }}
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}

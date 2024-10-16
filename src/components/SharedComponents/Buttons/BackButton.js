@@ -41,7 +41,7 @@ const REACT_NAVIGATION_BACK_BUTTON_STYLES = {
 };
 
 const BackButton = ( {
-  color = colors.black,
+  color = colors.darkGray,
   onPress,
   inCustomHeader,
   customStyles,
@@ -49,7 +49,7 @@ const BackButton = ( {
 }: Props ): Node => {
   const { isRTL } = I18nManager;
   const navigation = useNavigation();
-  const tintColor = color || colors.black;
+  const tintColor = color || colors.darkGray;
   const { t } = useTranslation( );
 
   const imageStyles = [
