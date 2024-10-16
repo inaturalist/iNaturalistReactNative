@@ -631,15 +631,8 @@ const ExploreProvider = ( { children }: ExploreProviderProps ) => {
   const [snapshot, setSnapshot] = React.useState<State | undefined>( undefined );
   const makeSnapshot = () => setSnapshot( state );
 
-  // Check if the current state is different from the snapshot
-  const checkSnapshot = () => {
-    if ( !snapshot ) {
-      return false;
-    }
-    return Object.keys( snapshot ).some( key => !isEqual( snapshot[key], state[key] ) );
-  };
   const differsFromSnapshot: boolean = React.useMemo(
-    checkSnapshot,
+    () => !isEqual( snapshot, state ),
     [state, snapshot]
   );
 
