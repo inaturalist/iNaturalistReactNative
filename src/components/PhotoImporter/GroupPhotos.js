@@ -5,11 +5,11 @@ import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCam
 import {
   Body2,
   Button,
+  ButtonBar,
   CustomFlashList,
   FloatingActionBar,
   INatIcon,
-  INatIconButton,
-  StickyToolbar
+  INatIconButton
 } from "components/SharedComponents";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { Pressable, View } from "components/styledComponents";
@@ -52,7 +52,7 @@ const GroupPhotos = ( {
     gridItemWidth,
     numColumns
   } = useGridLayout( );
-  const [stickyToolbarHeight, setStickyToolbarHeight] = useState( null );
+  const [buttonBarHeight, setButtonBarHeight] = useState( null );
   const extractKey = ( item, index ) => ( item.empty
     ? "empty"
     : `${item.photos[0].uri}${index}` );
@@ -112,7 +112,7 @@ const GroupPhotos = ( {
     const {
       height
     } = event.nativeEvent.layout;
-    setStickyToolbarHeight( height );
+    setButtonBarHeight( height );
   };
 
   const data = useMemo( ( ) => {
@@ -143,10 +143,10 @@ const GroupPhotos = ( {
         testID="GroupPhotos.list"
       />
       <FloatingActionBar
-        show={selectedObservations.length > 0 && typeof stickyToolbarHeight === "number"}
+        show={selectedObservations.length > 0 && typeof buttonBarHeight === "number"}
         position="bottomStart"
         containerClass="ml-[15px] rounded-md"
-        footerHeight={stickyToolbarHeight}
+        footerHeight={buttonBarHeight}
       >
         <View className="rounded-md overflow-hidden flex-row">
           <INatIconButton
@@ -184,7 +184,8 @@ const GroupPhotos = ( {
           />
         </View>
       </FloatingActionBar>
-      <StickyToolbar
+      <ButtonBar
+        sticky
         containerClass="items-center z-50"
         onLayout={onLayout}
       >
@@ -196,7 +197,7 @@ const GroupPhotos = ( {
           testID="GroupPhotos.next"
           loading={isCreatingObservations}
         />
-      </StickyToolbar>
+      </ButtonBar>
     </ViewWrapper>
   );
 };

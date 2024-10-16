@@ -4,6 +4,7 @@ import {
   Body1,
   Body2,
   Button,
+  ButtonBar,
   Checkbox,
   CommentsCount,
   ConfidenceInterval,
@@ -24,7 +25,6 @@ import {
   QualityGradeStatus,
   RadioButtonRow,
   SearchBar,
-  StickyToolbar,
   Tabs,
   UploadStatus,
   UserIcon,
@@ -397,9 +397,9 @@ const Misc = (): Node => {
           Useless spacer at the end because height in NativeWind is confusing.
         </Body1>
       </ScrollView>
-      <StickyToolbar>
-        <Heading2>StickyToolbar</Heading2>
-      </StickyToolbar>
+      <ButtonBar sticky>
+        <Heading2>ButtonBar</Heading2>
+      </ButtonBar>
     </ViewWrapper>
   );
 };

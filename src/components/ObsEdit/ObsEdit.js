@@ -89,7 +89,7 @@ const ObsEdit = ( ): Node => {
           />
           {currentObservation && (
             <View
-              className="bg-white rounded-t-3xl mt-1"
+              className="bg-white rounded-t-3xl mt-1 mb-5"
               style={( observations.length > 1 )
                 ? DROP_SHADOW
                 : undefined}
@@ -122,7 +122,6 @@ const ObsEdit = ( ): Node => {
               />
             </View>
           )}
-          <View className="p-[100px]" />
         </KeyboardAwareScrollView>
       </ViewWrapper>
       <BottomButtons

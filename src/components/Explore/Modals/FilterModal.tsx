@@ -5,6 +5,7 @@ import {
   Body2,
   Body3,
   Button,
+  ButtonBar,
   Checkbox,
   DateTimePicker,
   DisplayTaxon,
@@ -18,7 +19,6 @@ import {
   ProjectListItem,
   RadioButtonRow,
   RadioButtonSheet,
-  StickyToolbar,
   ViewWrapper,
   WarningSheet
 } from "components/SharedComponents";
@@ -1203,9 +1203,9 @@ const FilterModal = ( {
           </View>
         </View>
       </ScrollView>
-      {/* This view is to offset the absolute StickyToolbar below */}
+      {/* This view is to offset the absolute ButtonBar below */}
       <View className="mb-10" />
-      <StickyToolbar containerClass="z-9">
+      <ButtonBar sticky containerClass="z-9">
         <View className="flex-1 flex-row items-center">
           <Button
             disabled={!differsFromSnapshot || hasError}
@@ -1217,7 +1217,7 @@ const FilterModal = ( {
             accessibilityState={{ disabled: !differsFromSnapshot || hasError }}
           />
         </View>
-      </StickyToolbar>
+      </ButtonBar>
 
       {/* BottomSheets */}
       {openSheet === SORT_BY_M && (

@@ -9,13 +9,13 @@ import {
   Body1,
   BottomSheet,
   Button,
+  ButtonBar,
   CarouselDots,
   INatIcon,
   INatIconButton,
   List2,
   OfflineNotice,
-  ScrollViewWrapper,
-  StickyToolbar
+  ScrollViewWrapper
 } from "components/SharedComponents";
 import {
   View
@@ -344,7 +344,7 @@ const TaxonDetails = ( ): Node => {
         />
       </ScrollViewWrapper>
       {showSelectButton && (
-        <StickyToolbar containerClass="items-center z-50">
+        <ButtonBar sticky containerClass="items-center z-50">
           <Button
             className="max-w-[500px] w-full"
             level="focus"
@@ -375,7 +375,7 @@ const TaxonDetails = ( ): Node => {
             )}
             iconPosition="right"
           />
-        </StickyToolbar>
+        </ButtonBar>
       )}
       <BottomSheet
         hidden={!sheetVisible}
