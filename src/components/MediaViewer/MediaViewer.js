@@ -23,6 +23,7 @@ import MediaViewerHeader from "./MediaViewerHeader";
 type Props = {
   autoPlaySound?: boolean, // automatically start playing a sound when it is visible
   editable?: boolean,
+  deleting?: boolean,
   // Optional component to use as the header
   header?: Function,
   onClose?: Function,
@@ -44,6 +45,7 @@ type Props = {
 const MediaViewer = ( {
   autoPlaySound,
   editable,
+  deleting,
   header,
   onClose = ( ) => undefined,
   onDeletePhoto,
@@ -135,9 +137,10 @@ const MediaViewer = ( {
         isLargeScreen={isLargeScreen}
         selectedMediaIndex={selectedMediaIndex}
       />
-      {mediaToDelete && (
+      {( mediaToDelete || deleting ) && (
         <WarningSheet
           onPressClose={( ) => setMediaToDelete( null )}
+          loading={deleting}
           confirm={confirmDelete}
           headerText={t( "DISCARD-MEDIA--question" )}
           buttonText={t( "DISCARD" )}

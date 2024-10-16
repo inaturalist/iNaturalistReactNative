@@ -14,6 +14,7 @@ interface Props {
   headerText: string;
   hidden?: boolean;
   insideModal?: boolean;
+  loading: boolean;
   onPressClose: () => void;
   secondButtonText?: string;
   testID?: string;
@@ -28,6 +29,7 @@ const WarningSheet = ( {
   headerText,
   hidden,
   insideModal,
+  loading,
   onPressClose,
   secondButtonText,
   testID,
@@ -50,6 +52,8 @@ const WarningSheet = ( {
         ) }
         <Button
           onPress={confirm}
+          loading={loading}
+          disabled={loading}
           text={buttonText}
           level={buttonType || "warning"}
           className="grow ml-3"
