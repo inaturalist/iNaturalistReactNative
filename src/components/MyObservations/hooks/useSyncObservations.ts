@@ -68,14 +68,9 @@ const useSyncObservations = (
 
       if ( !hasBeenSyncedRemotely ) {
         Observation.deleteLocalObservation( realm, uuid );
+      } else {
+        handleRemoteDeletion.mutate( { uuid } );
       }
-      if ( !canSync ) {
-        // TODO: do we want to let user know their deletions can't happen
-        // when they're offline or logged out?
-        return null;
-      }
-
-      handleRemoteDeletion.mutate( { uuid } );
 
       if ( i > 0 ) {
         // this loop isn't really being used, since a user can only delete one
@@ -88,7 +83,6 @@ const useSyncObservations = (
       return null;
     } );
   }, [
-    canSync,
     completeLocalDeletions,
     deleteQueue,
     handleRemoteDeletion,
