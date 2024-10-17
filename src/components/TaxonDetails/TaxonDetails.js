@@ -344,7 +344,7 @@ const TaxonDetails = ( ): Node => {
         />
       </ScrollViewWrapper>
       {showSelectButton && (
-        <ButtonBar sticky containerClass="items-center z-50">
+        <ButtonBar containerClass="items-center z-50">
           <Button
             className="max-w-[500px] w-full"
             level="focus"

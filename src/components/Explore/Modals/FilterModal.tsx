@@ -748,7 +748,7 @@ const FilterModal = ( {
         {/*
           The iconic taxon chooser above should fill all width so we add padding here
         */}
-        <View className="px-4">
+        <View className="px-4 pb-4">
           {/* Location Section */}
           <View className="mb-7">
             <Heading4 className="mb-5">{t( "LOCATION" )}</Heading4>
@@ -1189,7 +1189,7 @@ const FilterModal = ( {
           )}
 
           {/* Photo licensing section */}
-          <View className="mb-7">
+          <View>
             <Heading4 className="mb-5">{t( "PHOTO-LICENSING" )}</Heading4>
             <Button
               text={photoLicenseValues[photoLicense]?.label}
@@ -1203,20 +1203,15 @@ const FilterModal = ( {
           </View>
         </View>
       </ScrollView>
-      {/* This view is to offset the absolute ButtonBar below */}
-      <View className="mb-10" />
-      <ButtonBar sticky containerClass="z-9">
-        <View className="flex-1 flex-row items-center">
-          <Button
-            disabled={!differsFromSnapshot || hasError}
-            className="flex-1"
-            level="focus"
-            text={t( "APPLY-FILTERS" )}
-            onPress={closeModal}
-            accessibilityLabel={t( "Apply-filters" )}
-            accessibilityState={{ disabled: !differsFromSnapshot || hasError }}
-          />
-        </View>
+      <ButtonBar>
+        <Button
+          disabled={!differsFromSnapshot || hasError}
+          level="focus"
+          text={t( "APPLY-FILTERS" )}
+          onPress={closeModal}
+          accessibilityLabel={t( "Apply-filters" )}
+          accessibilityState={{ disabled: !differsFromSnapshot || hasError }}
+        />
       </ButtonBar>
 
       {/* BottomSheets */}

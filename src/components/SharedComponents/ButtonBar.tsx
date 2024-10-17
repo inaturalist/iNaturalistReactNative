@@ -9,7 +9,7 @@ const DROP_SHADOW = getShadow( {
 
 interface Props extends PropsWithChildren {
   containerClass?: string,
-  onLayout: () => void,
+  onLayout?: () => void,
   sticky?: boolean
 }
 
