@@ -38,7 +38,9 @@ const OfflineNotice = ( {
       <Body2
         className={classnames(
           "mt-[30px]",
-          color && `text-${color}`
+          color
+            ? `text-${color}`
+            : "text-darkGray"
         )}
       >
         { t( "You-are-offline-Tap-to-try-again" ) }

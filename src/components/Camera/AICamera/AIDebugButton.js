@@ -40,7 +40,7 @@ const SliderControl = ( {
         minimumValue={min}
         maximumValue={max}
         minimumTrackTintColor="#FFFFFF"
-        maximumTrackTintColor="#000000"
+        maximumTrackTintColor={colors.black}
         renderStepNumber
         tapToSeek
         step={step}

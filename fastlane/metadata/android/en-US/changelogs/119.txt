@@ -1,0 +1,13 @@
+NEW
+* Single subject row in the DQA
+* Share button when viewing your own obs
+* Alert when you save a photo but your phone is out of space
+
+FIXED
+* Always asking for permission to save photos after permission denied
+* Explore map zooming back out after viewing an observation
+* Obs not appearing faved after returning to obs
+* Wikipedia button on Taxon Details broken due to lack of URL
+* Not all iconic taxa reachable in taxon search
+
+Thank you for your volunteer contributions, @israr002!

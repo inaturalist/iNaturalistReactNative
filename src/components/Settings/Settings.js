@@ -4,6 +4,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { updateUsers } from "api/users";
+import Debug from "components/Developer/Debug.tsx";
 import {
   signOut
 } from "components/LoginSignUp/AuthenticationService.ts";
@@ -33,6 +34,8 @@ import {
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
+import LanguageSetting from "./LanguageSetting";
+
 const { useRealm } = RealmContext;
 
 const SETTINGS_URL = `${Config.OAUTH_API_URL}/users/edit?noh1=true`;
@@ -42,26 +45,15 @@ const Settings = ( ) => {
   const realm = useRealm( );
   const { isConnected } = useNetInfo( );
   const navigation = useNavigation( );
-  const { t } = useTranslation( );
-  // const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const currentUser = useCurrentUser( );
   const {
     remoteUser, isLoading, refetchUserMe
   } = useUserMe();
   const isAdvancedUser = useStore( state => state.isAdvancedUser );
   const setIsAdvancedUser = useStore( state => state.setIsAdvancedUser );
-
   const [settings, setSettings] = useState( {} );
-  // const [currentLocale, setCurrentLocale] = useState( i18n.language );
   const [isSaving, setIsSaving] = useState( false );
-  // const [availableLocales, setAvailableLocales] = useState( [] );
-  // const availableLocalesOptions = Object.fromEntries(
-  //   availableLocales.map( locale => [locale.locale, {
-  //     label: locale.language_in_locale,
-  //     value: locale.locale
-  //   }] )
-  // );
-  // const [localeSheetOpen, setLocaleSheetOpen] = useState( false );
 
   const confirmInternetConnection = useCallback( ( ) => {
     if ( !isConnected ) {
@@ -79,7 +71,6 @@ const Settings = ( ) => {
     ( params, optsWithAuth ) => updateUsers( params, optsWithAuth ),
     {
       onSuccess: () => {
-        console.log( "[DEBUG Settings.js] updated user, refetching userMe" );
         queryClient.invalidateQueries( { queryKey: ["fetchUserMe"] } );
         refetchUserMe();
       },
@@ -96,7 +87,6 @@ const Settings = ( ) => {
         realm.create( "User", remoteUser, "modified" );
       }, "modifying current user via remote fetch in Settings" );
       setSettings( remoteUser );
-      // setCurrentLocale( remoteUser.locale );
       setIsSaving( false );
     }
   }, [remoteUser, realm] );
@@ -112,27 +102,6 @@ const Settings = ( ) => {
       EventRegister?.removeEventListener( listener );
     };
   }, [refetchUserMe] );
-
-  // useEffect( () => {
-  //   async function fetchLocales() {
-  //     const savedLocale = zustandStorage.getItem( "currentLocale" );
-  //     if ( savedLocale ) {
-  //       setCurrentLocale( savedLocale );
-  //     }
-
-  //     // Whenever possible, save latest available locales from server
-  //     const currentLocales = zustandStorage.getItem( "availableLocales" );
-
-  //     setAvailableLocales( currentLocales
-  //       ? JSON.parse( currentLocales )
-  //       : [] );
-
-  //     const locales = await fetchAvailableLocales();
-  //     zustandStorage.setItem( "availableLocales", JSON.stringify( locales ) );
-  //     setAvailableLocales( locales );
-  //   }
-  //   fetchLocales();
-  // }, [] );
 
   const changeTaxonNameDisplay = v => {
     setIsSaving( true );
@@ -154,17 +123,6 @@ const Settings = ( ) => {
 
     updateUserMutation.mutate( payload );
   };
-
-  // const changeUserLocale = locale => {
-  //   setIsSaving( true );
-
-  //   const payload = {
-  //     id: settings?.id
-  //   };
-
-  //   payload["user[locale]"] = locale;
-  //   updateUserMutation.mutate( payload );
-  // };
 
   const renderLoggedOut = ( ) => (
     <>
@@ -218,38 +176,16 @@ const Settings = ( ) => {
           label={t( "Scientific-Name" )}
         />
       </View>
-      {/* 20240730 amanda - hiding this since we're not including in soft launch */}
-      {/* {availableLocales.length > 0 && (
-        <>
-          <Heading4 className="mt-7">{t( "APP-LANGUAGE" )}</Heading4>
-          <Button
-            className="mt-4"
-            text={t( "CHANGE-APP-LANGUAGE" )}
-            onPress={() => {
-              setLocaleSheetOpen( true );
-            }}
-            accessibilityLabel={t( "CHANGE-APP-LANGUAGE" )}
-          />
-        </>
-      )}
-      {localeSheetOpen
-        && (
-          <PickerSheet
-            headerText={t( "APP-LANGUAGE" )}
-            confirm={newLocale => {
-              setLocaleSheetOpen( false );
-              // Remember the new locale locally
-              zustandStorage.setItem( "currentLocale", newLocale );
-              i18n.changeLanguage( newLocale );
-
-              // Also try and set the locale remotely
-              changeUserLocale( newLocale );
-            }}
-            handleClose={() => setLocaleSheetOpen( false )}
-            selectedValue={currentLocale || i18n.language}
-            pickerValues={availableLocalesOptions}
-          />
-        )} */}
+      <Debug>
+        <LanguageSetting
+          onChange={newLocale => {
+            updateUserMutation.mutate( {
+              id: settings?.id,
+              "user[locale]": newLocale
+            } );
+          }}
+        />
+      </Debug>
       <Heading4 className="mt-7">{t( "INATURALIST-ACCOUNT-SETTINGS" )}</Heading4>
       <Body2 className="mt-2">{t( "To-access-all-other-settings" )}</Body2>
       <Button

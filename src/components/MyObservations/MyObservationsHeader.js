@@ -11,9 +11,9 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { Trans } from "react-i18next";
-import { useTheme } from "react-native-paper";
 import User from "realmModels/User.ts";
 import { useTranslation } from "sharedHooks";
+import colors from "styles/tailwindColors";
 
 import Onboarding from "./Onboarding";
 
@@ -38,7 +38,6 @@ const MyObservationsHeader = ( {
   setHeightAboveToolbar,
   toggleLayout
 }: Props ): Node => {
-  const theme = useTheme( );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
 
@@ -62,8 +61,8 @@ const MyObservationsHeader = ( {
           className="mr-5"
           icon="inaturalist"
           size={41}
-          color={theme.colors.onSecondary}
-          backgroundColor={theme.colors.secondary}
+          color={colors.white}
+          backgroundColor={colors.inatGreen}
           accessibilityLabel="iNaturalist"
           mode="contained"
           width={67}
@@ -73,17 +72,19 @@ const MyObservationsHeader = ( {
           ? (
             <View className="shrink">
               <Subheading1
+                maxFontSizeMultiplier={1.5}
                 testID="log-in-to-iNaturalist-text"
               >
                 {t( "Log-in-to-contribute-and-sync" )}
               </Subheading1>
-              <Heading1>
+              <Heading1 maxFontSizeMultiplier={1.5}>
                 { t( "X-observations", { count: numUnuploadedObservations } ) }
               </Heading1>
             </View>
           )
           : (
             <Subheading1
+              maxFontSizeMultiplier={1.5}
               className="shrink m-0"
               testID="log-in-to-iNaturalist-text-no-observations"
             >

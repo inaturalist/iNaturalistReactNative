@@ -7,6 +7,7 @@ import { Text, TextProps } from "react-native";
 
 const UnderlinedLink = ( props: TextProps ) => (
   <Text
+    maxFontSizeMultiplier={2}
     className={classnames(
       "text-md text-darkGray underline",
       tailwindFontBold

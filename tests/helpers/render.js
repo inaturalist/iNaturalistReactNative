@@ -128,6 +128,14 @@ function wrapInNavigationContainer( component ) {
   );
 }
 
+function wrapInQueryClientContainer( component ) {
+  return (
+    <QueryClientProvider client={queryClient}>
+      {component}
+    </QueryClientProvider>
+  );
+}
+
 export {
   queryClient,
   renderApp,
@@ -135,5 +143,6 @@ export {
   renderAppWithObservations,
   renderComponent,
   renderHook,
-  wrapInNavigationContainer
+  wrapInNavigationContainer,
+  wrapInQueryClientContainer
 };

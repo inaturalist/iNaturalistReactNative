@@ -1,6 +1,5 @@
 import { screen } from "@testing-library/react-native";
-import ObservationsFlashList
-  from "components/SharedComponents/ObservationsFlashList/ObservationsFlashList";
+import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
 import React from "react";
 import { renderComponent } from "tests/helpers/render";
 

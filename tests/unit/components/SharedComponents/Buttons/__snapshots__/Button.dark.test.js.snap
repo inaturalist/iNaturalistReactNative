@@ -69,6 +69,7 @@ exports[`Button focus in dark mode should render correctly 1`] = `
   }
 >
   <Text
+    maxFontSizeMultiplier={2}
     style={
       [
         {
@@ -170,6 +171,7 @@ exports[`Button focus in dark mode when disabled should render correctly 1`] = `
   }
 >
   <Text
+    maxFontSizeMultiplier={2}
     style={
       [
         {
@@ -289,6 +291,7 @@ exports[`Button neutral in dark mode should render correctly 1`] = `
   }
 >
   <Text
+    maxFontSizeMultiplier={2}
     style={
       [
         {
@@ -408,6 +411,7 @@ exports[`Button neutral in dark mode when disabled should render correctly 1`] =
   }
 >
   <Text
+    maxFontSizeMultiplier={2}
     style={
       [
         {
@@ -512,6 +516,7 @@ exports[`Button primary in dark mode should render correctly 1`] = `
   }
 >
   <Text
+    maxFontSizeMultiplier={2}
     style={
       [
         {
@@ -616,6 +621,7 @@ exports[`Button primary in dark mode when disabled should render correctly 1`] =
   }
 >
   <Text
+    maxFontSizeMultiplier={2}
     style={
       [
         {
@@ -720,6 +726,7 @@ exports[`Button warning in dark mode should render correctly 1`] = `
   }
 >
   <Text
+    maxFontSizeMultiplier={2}
     style={
       [
         {
@@ -821,6 +828,7 @@ exports[`Button warning in dark mode when disabled should render correctly 1`] =
   }
 >
   <Text
+    maxFontSizeMultiplier={2}
     style={
       [
         {

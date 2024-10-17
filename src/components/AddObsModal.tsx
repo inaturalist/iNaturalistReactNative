@@ -1,176 +1,230 @@
-// @flow
-
 import classnames from "classnames";
 import {
   Body3, Heading2, INatIcon, INatIconButton
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
-import * as React from "react";
-import { useState } from "react";
+import { Pressable, View } from "components/styledComponents";
+import React, { useState } from "react";
 import { Platform, StatusBar } from "react-native";
-import { useTheme } from "react-native-paper";
 import Observation from "realmModels/Observation";
-import { useTranslation } from "sharedHooks";
+import { useDeviceOrientation, useTranslation } from "sharedHooks";
 import useStore, { storage } from "stores/useStore";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  closeModal: ( ) => void,
-  navAndCloseModal: Function
+interface Props {
+  closeModal: ( ) => void;
+  navAndCloseModal: ( screen: string, params?: {
+    camera?: string
+  } ) => void;
 }
 
-const AddObsModal = ( { closeModal, navAndCloseModal }: Props ): React.Node => {
-  const { t } = useTranslation( );
-  const theme = useTheme( );
+const AddObsModalHelp = ( {
+  obsCreateItems,
+  t
+} ) => {
+  const { screenHeight } = useDeviceOrientation( );
   const [hideHelpText, setHideHelpText] = useState( storage.getBoolean( "hideAddObsHelpText" ) );
+
+  // targeting iPhone SE, which has height of 667
+  const isSmallScreen = screenHeight < 670;
+
+  if ( hideHelpText ) return null;
+
+  return (
+    <View
+      className={classnames( "bg-white rounded-3xl py-[23px] mb-20", {
+        "py-[5px] mb-10": isSmallScreen
+      } )}
+    >
+      <View className={classnames( "flex-row items-center mb-2" )}>
+        <Heading2
+          maxFontSizeMultiplier={1.5}
+          testID="identify-text"
+          className={classnames( "pl-[25px]", {
+            "px-8 -mb-2 mt-2": isSmallScreen
+          } )}
+        >
+          {t( "Identify-an-organism" )}
+        </Heading2>
+        <View className={classnames( "ml-auto pr-[12px]", {
+          "pb-6": isSmallScreen
+        } )}
+        >
+          <INatIconButton
+            icon="close"
+            color={colors?.darkGray}
+            size={19}
+            onPress={async ( ) => {
+              setHideHelpText( true );
+              storage.set( "hideAddObsHelpText", true );
+            }}
+            accessibilityLabel={t( "Close" )}
+            accessibilityHint={t( "Closes-new-observation-options" )}
+          />
+        </View>
+      </View>
+      <View className={classnames( "px-[23px]", {
+        "px-[10px]": isSmallScreen
+      } )}
+      >
+        {Object.keys( obsCreateItems )
+          .filter( k => k !== "closeButton" )
+          .map( k => {
+            const item = obsCreateItems[k];
+            return (
+              <Pressable
+                accessibilityRole="button"
+                className={classnames( "flex-row items-center p-2 my-1", {
+                  "p-1": isSmallScreen
+                } )}
+                key={k}
+                onPress={item.onPress}
+              >
+                <INatIcon
+                  name={item.icon}
+                  size={30}
+                  color={
+                    item.icon === "arcamera"
+                      ? colors.inatGreen
+                      : colors.darkGray
+                  }
+                />
+                <Body3 maxFontSizeMultiplier={1.5} className="ml-[20px] shrink">
+                  {item.text}
+                </Body3>
+              </Pressable>
+            );
+          } )}
+      </View>
+    </View>
+  );
+};
+
+const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
+  const { t } = useTranslation( );
 
   const majorVersionIOS = parseInt( Platform.Version, 10 );
 
-  const showARCamera = ( Platform.OS === "ios" && majorVersionIOS >= 11 )
+  const showAICamera = ( Platform.OS === "ios" && majorVersionIOS >= 11 )
     || ( Platform.OS === "android" && Platform.Version > 21 );
 
   const prepareObsEdit = useStore( state => state.prepareObsEdit );
 
-  const navToObsEdit = async ( ) => {
-    const newObservation = await Observation.new( );
-    prepareObsEdit( newObservation );
-    navAndCloseModal( "ObsEdit" );
-  };
-
-  const bulletedText = [
-    { text: t( "Use-iNaturalists-AI-Camera" ), icon: "arcamera" },
-    { text: t( "Take-photos-with-the-camera" ), icon: "camera" },
-    { text: t( "Upload-photos-from-your-gallery" ), icon: "gallery" },
-    { text: t( "Record-sounds" ), icon: "microphone" },
-    { text: t( "Create-an-observation-evidence" ), icon: "noevidence" }
-  ];
-
   const greenCircleClass = "bg-inatGreen rounded-full h-[46px] w-[46px]";
+  const rowClass = "flex-row justify-center";
 
-  const hideHelpTextForever = async ( ) => {
-    setHideHelpText( true );
-    storage.set( "hideAddObsHelpText", true );
+  const getMargins = ( hasAICamera: boolean ) => ( {
+    standardCamera: hasAICamera
+      ? "mr-[37px] bottom-[1px]"
+      : "mr-[9px]",
+    photoLibrary: hasAICamera
+      ? "ml-[37px] bottom-[1px]"
+      : "ml-[9px]",
+    noEvidence: hasAICamera
+      ? "mr-[26px]"
+      : "mr-[20px] bottom-[33px]",
+    soundRecorder: hasAICamera
+      ? "ml-[26px]"
+      : "ml-[20px] bottom-[33px]"
+  } );
+
+  const margins = getMargins( showAICamera );
+
+  const obsCreateItems = {
+    arCamera: {
+      text: t( "Use-iNaturalists-AI-Camera" ),
+      icon: "arcamera",
+      onPress: ( ) => navAndCloseModal( "Camera", { camera: "AI" } ),
+      testID: "arcamera-button",
+      className: classnames( greenCircleClass, "absolute bottom-[26px]" ),
+      accessibilityLabel: t( "AI-Camera" ),
+      accessibilityHint: t( "Navigates-to-AI-camera" )
+    },
+    standardCamera: {
+      text: t( "Take-photos-with-the-camera" ),
+      icon: "camera",
+      onPress: ( ) => navAndCloseModal( "Camera", { camera: "Standard" } ),
+      testID: "camera-button",
+      accessibilityLabel: t( "Camera" ),
+      accessibilityHint: t( "Navigates-to-camera" ),
+      className: classnames( greenCircleClass, margins.standardCamera )
+    },
+    photoLibrary: {
+      text: t( "Upload-photos-from-your-gallery" ),
+      icon: "gallery",
+      onPress: ( ) => navAndCloseModal( "PhotoGallery" ),
+      testID: "import-media-button",
+      className: classnames( greenCircleClass, margins.photoLibrary ),
+      accessibilityLabel: t( "Photo-importer" ),
+      accessibilityHint: t( "Navigates-to-photo-importer" )
+    },
+    soundRecorder: {
+      text: t( "Record-sounds" ),
+      icon: "microphone",
+      onPress: ( ) => navAndCloseModal( "SoundRecorder" ),
+      testID: "record-sound-button",
+      className: classnames( greenCircleClass, margins.soundRecorder ),
+      accessibilityLabel: t( "Sound-recorder" ),
+      accessibilityHint: t( "Navigates-to-sound-recorder" )
+    },
+    noEvidence: {
+      text: t( "Create-an-observation-evidence" ),
+      icon: "noevidence",
+      onPress: async ( ) => {
+        const newObservation = await Observation.new( );
+        prepareObsEdit( newObservation );
+        navAndCloseModal( "ObsEdit" );
+      },
+      testID: "observe-without-evidence-button",
+      className: classnames( greenCircleClass, margins.noEvidence ),
+      accessibilityLabel: t( "Observation-with-no-evidence" ),
+      accessibilityHint: t( "Navigates-to-observation-edit-screen" )
+    },
+    closeButton: {
+      testID: "close-camera-options-button",
+      icon: "close",
+      className: classnames( greenCircleClass, "h-[69px] w-[69px]" ),
+      onPress: closeModal,
+      accessibilityLabel: t( "Close" ),
+      accessibilityHint: t( "Closes-new-observation-options" )
+    }
   };
+
+  const renderAddObsIcon = ( {
+    accessibilityHint,
+    accessibilityLabel,
+    className,
+    icon,
+    onPress,
+    testID
+  } ) => (
+    <INatIconButton
+      accessibilityHint={accessibilityHint}
+      accessibilityLabel={accessibilityLabel}
+      className={className}
+      color={colors.white}
+      icon={icon}
+      onPress={onPress}
+      size={30}
+      testID={testID}
+    />
+  );
 
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor="black" />
-      { !hideHelpText && (
-        <View className="flex-row justify-center">
-          <View className="bg-white rounded-xl p-[25px] mb-12 mx-7 max-w-sm">
-            <View className="flex-row items-center">
-              <Heading2 testID="identify-text">
-                {t( "Identify-an-organism" )}
-              </Heading2>
-
-              <View className="ml-auto">
-                <INatIconButton
-                  icon="close"
-                  color={colors.darkGrayDisabled}
-                  size={20}
-                  onPress={hideHelpTextForever}
-                  accessibilityLabel={t( "Close" )}
-                  accessibilityHint={t( "Closes-new-observation-options" )}
-                />
-              </View>
-            </View>
-            {bulletedText.map( ( { text, icon } ) => (
-              <View key={text} className="flex-row items-center mt-4">
-                <INatIcon
-                  name={icon}
-                  size={30}
-                  color={
-                    icon === "arcamera"
-                      ? theme.colors.secondary
-                      : theme.colors.primary
-                  }
-                />
-                <Body3 className="ml-[20px] shrink">{text}</Body3>
-              </View>
-            ) )}
-          </View>
-        </View>
-      )}
-      <View className={classnames( "flex-row justify-center", {
-        "bottom-[20px]": !showARCamera
+      <AddObsModalHelp obsCreateItems={obsCreateItems} t={t} />
+      <View className={classnames( rowClass, {
+        "bottom-[20px]": !showAICamera
       } )}
       >
-        <INatIconButton
-          testID="camera-button"
-          size={30}
-          icon="camera"
-          color={theme.colors.onSecondary}
-          className={classnames( greenCircleClass, {
-            "mr-[37px] bottom-[1px]": showARCamera,
-            "mr-[9px]": !showARCamera
-          } )}
-          onPress={( ) => navAndCloseModal( "Camera", { camera: "Standard" } )}
-          accessibilityLabel={t( "Camera" )}
-          accessibilityHint={t( "Navigates-to-camera" )}
-        />
-        {showARCamera && (
-          <INatIconButton
-            testID="arcamera-button"
-            size={30}
-            icon="arcamera"
-            color={theme.colors.onSecondary}
-            className={classnames( greenCircleClass, "absolute bottom-[26px]" )}
-            onPress={( ) => navAndCloseModal( "Camera", { camera: "AI" } )}
-            accessibilityLabel={t( "AI-Camera" )}
-            accessibilityHint={t( "Navigates-to-AI-camera" )}
-          />
-        )}
-        <INatIconButton
-          testID="import-media-button"
-          size={30}
-          icon="gallery"
-          color={theme.colors.onSecondary}
-          className={classnames( greenCircleClass, {
-            "ml-[37px] bottom-[1px]": showARCamera,
-            "ml-[9px]": !showARCamera
-          } )}
-          onPress={( ) => navAndCloseModal( "PhotoGallery" )}
-          accessibilityLabel={t( "Photo-importer" )}
-          accessibilityHint={t( "Navigates-to-photo-importer" )}
-        />
+        {renderAddObsIcon( obsCreateItems.standardCamera )}
+        {showAICamera && renderAddObsIcon( obsCreateItems.arCamera )}
+        {renderAddObsIcon( obsCreateItems.photoLibrary )}
       </View>
-      <View className="flex-row justify-center items-center">
-        <INatIconButton
-          testID="observe-without-evidence-button"
-          size={30}
-          icon="noevidence"
-          color={theme.colors.onSecondary}
-          className={classnames( greenCircleClass, {
-            "mr-[26px]": showARCamera,
-            "mr-[20px] bottom-[33px]": !showARCamera
-          } )}
-          onPress={navToObsEdit}
-          accessibilityLabel={t( "Observation-with-no-evidence" )}
-          accessibilityHint={t( "Navigates-to-observation-edit-screen" )}
-        />
-        <INatIconButton
-          testID="close-camera-options-button"
-          icon="close"
-          color={theme.colors.onSecondary}
-          size={31}
-          className="h-[69px] w-[69px] bg-inatGreen rounded-full"
-          onPress={( ) => closeModal( )}
-          accessibilityLabel={t( "Close" )}
-          accessibilityHint={t( "Closes-new-observation-options" )}
-        />
-        <INatIconButton
-          testID="record-sound-button"
-          size={30}
-          icon="microphone"
-          color={theme.colors.onSecondary}
-          className={classnames( greenCircleClass, {
-            "ml-[26px]": showARCamera,
-            "ml-[20px] bottom-[33px]": !showARCamera
-          } )}
-          onPress={( ) => navAndCloseModal( "SoundRecorder" )}
-          accessibilityLabel={t( "Sound-recorder" )}
-          accessibilityHint={t( "Navigates-to-sound-recorder" )}
-        />
+      <View className={classnames( rowClass, "items-center" )}>
+        {renderAddObsIcon( obsCreateItems.noEvidence )}
+        {renderAddObsIcon( obsCreateItems.closeButton )}
+        {renderAddObsIcon( obsCreateItems.soundRecorder )}
       </View>
     </>
   );

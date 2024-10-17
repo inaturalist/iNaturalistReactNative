@@ -21,11 +21,14 @@ import NotificationsContainer from "components/Notifications/NotificationsContai
 import DQAContainer from "components/ObsDetails/DQAContainer";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
+import ProjectMembers from "components/ProjectDetails/ProjectMembers.tsx";
+import ProjectRequirements from "components/ProjectDetails/ProjectRequirements.tsx";
 import ProjectsContainer from "components/Projects/ProjectsContainer.tsx";
 import Settings from "components/Settings/Settings";
 import { Heading4 } from "components/SharedComponents";
 import UserProfile from "components/UserProfile/UserProfile";
 import { t } from "i18next";
+import ContextHeader from "navigation/ContextHeader";
 import {
   blankHeaderTitle,
   hideHeader,
@@ -36,6 +39,7 @@ import {
 } from "navigation/navigationOptions";
 import type { Node } from "react";
 import React from "react";
+import colors from "styles/tailwindColors";
 
 import SharedStackScreens from "./SharedStackScreens";
 
@@ -45,6 +49,7 @@ const helpTitle = () => <Heading4>{t( "HELP" )}</Heading4>;
 const locationSearchTitle = () => <Heading4>{t( "SEARCH-LOCATION" )}</Heading4>;
 const notificationsTitle = ( ) => <Heading4>{t( "NOTIFICATIONS" )}</Heading4>;
 const dqaTitle = ( ) => <Heading4>{t( "DATA-QUALITY-ASSESSMENT" )}</Heading4>;
+const projectRequirementsTitle = () => <Heading4>{t( "PROJECT-REQUIREMENTS" )}</Heading4>;
 const projectSearchTitle = () => <Heading4>{t( "SEARCH-PROJECTS" )}</Heading4>;
 const taxonSearchTitle = () => <Heading4>{t( "SEARCH-TAXA" )}</Heading4>;
 const userSearchTitle = () => <Heading4>{t( "SEARCH-USERS" )}</Heading4>;
@@ -77,13 +82,19 @@ const NOTIFICATIONS_OPTIONS = {
   headerTitleAlign: "center"
 };
 
+const PROJECT_MEMBERS_OPTIONS = {
+  header: ContextHeader,
+  alignStart: true,
+  lazy: true
+};
+
 const Stack = createNativeStackNavigator( );
 
 const TabStackNavigator = ( ): Node => (
   <Stack.Navigator
     screenOptions={{
       headerBackTitleVisible: false,
-      headerTintColor: "black"
+      headerTintColor: colors.darkGray
     }}
   >
     {/* Screens with no header */}
@@ -143,6 +154,19 @@ const TabStackNavigator = ( ): Node => (
         options={{
           ...showHeader
         }}
+      />
+      <Stack.Screen
+        name="ProjectRequirements"
+        component={ProjectRequirements}
+        options={{
+          ...showHeader,
+          headerTitle: projectRequirementsTitle
+        }}
+      />
+      <Stack.Screen
+        name="ProjectMembers"
+        component={ProjectMembers}
+        options={PROJECT_MEMBERS_OPTIONS}
       />
     </Stack.Group>
     {/* Developer Stack Group */}

@@ -31,7 +31,6 @@ const soundRecorderTitle = ( ) => (
 
 const CAMERA_SCREEN_OPTIONS = {
   ...hideHeader,
-  orientation: "all",
   contentStyle: {
     backgroundColor: "black"
   }
@@ -116,7 +115,6 @@ const NoBottomTabStackNavigator = ( ): Node => (
   <Stack.Navigator
     screenOptions={{
       headerBackTitleVisible: false,
-      headerTintColor: "black",
       contentStyle: {
         backgroundColor: "white"
       }

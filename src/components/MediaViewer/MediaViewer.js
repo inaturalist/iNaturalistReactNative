@@ -137,7 +137,7 @@ const MediaViewer = ( {
       />
       {mediaToDelete && (
         <WarningSheet
-          handleClose={( ) => setMediaToDelete( null )}
+          onPressClose={( ) => setMediaToDelete( null )}
           confirm={confirmDelete}
           headerText={t( "DISCARD-MEDIA--question" )}
           buttonText={t( "DISCARD" )}

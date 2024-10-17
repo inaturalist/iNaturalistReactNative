@@ -22,10 +22,25 @@ Object.defineProperty( INatApiError.prototype, "name", {
   value: "INatApiError"
 } );
 
-export class INatApiTooManyRequestsError extends INatApiError { }
+export class INatApiTooManyRequestsError extends INatApiError {
+  constructor() {
+    super( { error: "Too Many Requests", status: 429 } );
+  }
+}
+Object.defineProperty( INatApiTooManyRequestsError, "name", {
+  value: "INatApiTooManyRequestsError"
+} );
 
 async function handleError( e: Object, options: Object = {} ): Object {
   if ( !e.response ) { throw e; }
+
+  // 429 responses don't return JSON so the parsing that we do below will
+  // fail. Also, info about the request that triggered the 429 response is
+  // kind of irrelevant. It's the behaviors that led up to being blocked that
+  // matter.
+  if ( e.response.status === 429 ) {
+    throw new INatApiTooManyRequestsError( );
+  }
 
   // Try to parse JSON in the response if this was an HTTP error. If we can't
   // parse the JSON, throw that error (presumably we should not be making
@@ -36,8 +51,8 @@ async function handleError( e: Object, options: Object = {} ): Object {
   } catch ( jsonError ) {
     if ( jsonError.message.match( /JSON Parse error/ ) ) {
       // This happens a lot and I want to know where it's coming from ~~~~kueda 20240520
-      jsonError.message = `Error parsing JSON from ${e.response?.url} `
-        + `(status: ${e.response?.status})`;
+      jsonError.message = `Error parsing JSON from ${e.response.url} `
+        + `(status: ${e.response.status})`;
       logger.error( jsonError );
     }
     if ( options.throw === false ) {
@@ -55,9 +70,6 @@ async function handleError( e: Object, options: Object = {} ): Object {
     } );
   }
 
-  if ( e.response.status === 429 ) {
-    throw new INatApiTooManyRequestsError( errorJson, e.response.status );
-  }
   const error = new INatApiError( errorJson, e.response.status );
 
   // In theory code higher up in the stack will handle this error when thrown,

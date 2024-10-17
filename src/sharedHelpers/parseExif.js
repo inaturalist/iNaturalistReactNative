@@ -2,7 +2,7 @@
 
 import { utcToZonedTime } from "date-fns-tz";
 import { readExif, writeLocation } from "react-native-exif-reader";
-import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
+import { formatISONoTimezone } from "sharedHelpers/dateAndTime.ts";
 
 class UsePhotoExifDateFormatError extends Error {}
 
@@ -37,7 +37,9 @@ export const parseExif = async ( photoUri: ?string ): Promise<Object> => {
   }
 };
 
-interface ExifToWrite {
+// TODO: Johannes: I think this interface should be
+// exported from the react-native-exif-reader library
+export interface ExifToWrite {
   latitude?: number;
   longitude?: number;
   positional_accuracy?: number;

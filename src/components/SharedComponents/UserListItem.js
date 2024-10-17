@@ -56,7 +56,7 @@ const UserListItem = ( {
       </Pressable>
     )
     : ( { children } ) => (
-      <View className="flex-row items-center mx-3 my-2" testID={`UserProfile.${user?.id}`}>
+      <View className="flex-row items-center" testID={`UserProfile.${user?.id}`}>
         { children }
       </View>
     );
@@ -72,7 +72,7 @@ const UserListItem = ( {
           />
         )}
       <View className="ml-3">
-        {user?.login && <Body1 className="mt-3">{user?.login}</Body1>}
+        {user?.login && <Body1>{user?.login}</Body1>}
         <List2 className="mt-1">
           {countText}
         </List2>

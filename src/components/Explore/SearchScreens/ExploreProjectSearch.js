@@ -1,11 +1,8 @@
 // @flow
 
-import { FlashList } from "@shopify/flash-list";
 import { searchProjects } from "api/projects";
 import {
-  Body3,
-  Heading4,
-  INatIconButton,
+  CustomFlashList,
   ProjectListItem,
   SearchBar,
   ViewWrapper
@@ -20,6 +17,7 @@ import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
 import EmptySearchResults from "./EmptySearchResults";
+import ExploreSearchHeader from "./ExploreSearchHeader";
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4
@@ -34,10 +32,12 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
   const [projectQuery, setProjectQuery] = useState( "" );
   const { t } = useTranslation();
 
-  const { data: projects, isLoading, refetch } = useAuthenticatedQuery(
+  const { data, isLoading, refetch } = useAuthenticatedQuery(
     ["searchProjects", projectQuery],
     optsWithAuth => searchProjects( { q: projectQuery }, optsWithAuth )
   );
+
+  const projects = data?.results;
 
   const onProjectSelected = useCallback( async project => {
     if ( !project.id ) {
@@ -86,22 +86,16 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
     />
   );
 
+  const renderFooter = ( ) => <View className="h-[336px]" />;
+
   return (
     <ViewWrapper>
-      <View className="flex-row justify-center p-5 bg-white">
-        <INatIconButton
-          testID="ExploreProjectSearch.close"
-          size={18}
-          icon="back"
-          className="absolute top-2 left-3 z-10"
-          onPress={( ) => closeModal()}
-          accessibilityLabel={t( "SEARCH-PROJECTS" )}
-        />
-        <Heading4>{t( "SEARCH-PROJECTS" )}</Heading4>
-        <Body3 onPress={resetProject} className="absolute top-4 right-4">
-          {t( "Reset-verb" )}
-        </Body3>
-      </View>
+      <ExploreSearchHeader
+        closeModal={closeModal}
+        headerText={t( "SEARCH-PROJECTS" )}
+        resetFilters={resetProject}
+        testID="ExploreProjectSearch.close"
+      />
       <View
         className="bg-white px-6 pt-2 pb-8"
         style={DROP_SHADOW}
@@ -112,9 +106,8 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
           testID="SearchProject"
         />
       </View>
-      <FlashList
+      <CustomFlashList
         data={projects}
-        initialNumToRender={5}
         estimatedItemSize={100}
         testID="SearchProjectList"
         keyExtractor={item => item.id}
@@ -122,7 +115,7 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
         ListEmptyComponent={renderEmptyList}
         ListHeaderComponent={renderItemSeparator}
         ItemSeparatorComponent={renderItemSeparator}
-        accessible
+        ListFooterComponent={renderFooter}
       />
     </ViewWrapper>
   );

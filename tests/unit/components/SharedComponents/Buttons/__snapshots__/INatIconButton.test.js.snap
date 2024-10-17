@@ -70,7 +70,7 @@ exports[`INatIconButton renders correctly 1`] = `
       style={
         [
           {
-            "color": "rgba(103, 80, 164, 1)",
+            "color": "#454545",
             "fontSize": 18,
           },
           undefined,

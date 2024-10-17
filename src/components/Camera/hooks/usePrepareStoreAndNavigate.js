@@ -2,19 +2,26 @@
 
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import { useNavigation } from "@react-navigation/native";
+import useDeviceStorageFull from "components/Camera/hooks/useDeviceStorageFull";
 import {
   permissionResultFromMultiple,
   READ_WRITE_MEDIA_PERMISSIONS
 } from "components/SharedComponents/PermissionGateContainer.tsx";
+import { t } from "i18next";
 import {
   useCallback
 } from "react";
+import {
+  Alert
+} from "react-native";
 import { checkMultiple, RESULTS } from "react-native-permissions";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import { log } from "sharedHelpers/logger";
 import { useWatchPosition } from "sharedHooks";
 import useStore from "stores/useStore";
+
+import { displayName as appName } from "../../../../app.json";
 
 const logger = log.extend( "usePrepareStoreAndNavigate" );
 
@@ -52,7 +59,9 @@ export async function savePhotosToCameraGallery(
         // and skipping the album if we don't
         if ( readWritePermissionResult === RESULTS.GRANTED ) {
           saveOptions.type = "photo";
-          saveOptions.album = "iNaturalist Next";
+          // Note: we do not translate our brand name, so this should not be
+          // globalized
+          saveOptions.album = appName;
         }
         if ( location ) {
           saveOptions.latitude = location.latitude;
@@ -65,6 +74,19 @@ export async function savePhotosToCameraGallery(
         // the EXIF metadata of these photos, once we retrieve a location.
         onEachSuccess( savedPhotoUri );
       } catch ( cameraRollSaveError ) {
+        // should never get here since in usePrepareStoreAndNavigate we check for device full
+        // and skip saving to gallery
+        if (
+          cameraRollSaveError.message.match( /No space left on device/ )
+          || cameraRollSaveError.message.match( /PHPhotosErrorDomain error 3305/ )
+        ) {
+          Alert.alert(
+            t( "Not-enough-space-left-on-device" ),
+            t( "Not-enough-space-left-on-device-try-again" ),
+            [{ text: t( "OK" ) }]
+          );
+          return;
+        }
         // This means an iOS user denied access
         // (https://developer.apple.com/documentation/photokit/phphotoserror/code/accessuserdenied).
         // In theory we should not even have called this function when that
@@ -73,7 +95,9 @@ export async function savePhotosToCameraGallery(
         // probably safe to ignore.
         if ( !cameraRollSaveError.message.match( /error 3311/ ) ) {
           logger.error( cameraRollSaveError );
+          return;
         }
+        throw cameraRollSaveError;
       }
     },
     // We need the initial value even if we're not using it, otherwise reduce
@@ -104,6 +128,7 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
   const { userLocation } = useWatchPosition( {
     shouldFetchLocation
   } );
+  const { deviceStorageFull } = useDeviceStorageFull();
 
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
 
@@ -125,13 +150,15 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
       } );
     setObservations( [newObservation] );
     if ( addPhotoPermissionResult !== RESULTS.GRANTED ) return Promise.resolve( );
+    if ( deviceStorageFull ) return Promise.resolve( );
     return savePhotosToCameraGallery( cameraUris, addCameraRollUri, userLocation );
   }, [
     addCameraRollUri,
     addPhotoPermissionResult,
     cameraUris,
     setObservations,
-    userLocation
+    userLocation,
+    deviceStorageFull
   ] );
 
   const updateObsWithCameraPhotos = useCallback( async ( ) => {

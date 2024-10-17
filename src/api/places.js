@@ -4,18 +4,13 @@ import inatjs from "inaturalistjs";
 
 import handleError from "./error";
 
-const PARAMS = {
-  fields: "display_name"
-};
-
 const fetchPlace = async (
-  id: number,
+  id: number | Array<number>,
   params: Object = {},
   opts: Object = {}
 ): Promise<?Object> => {
   try {
-    const { results } = await inatjs.places.fetch( id, { ...PARAMS, ...params, ...opts } );
-    return results[0];
+    return await inatjs.places.fetch( id, params, opts );
   } catch ( e ) {
     return handleError( e );
   }
