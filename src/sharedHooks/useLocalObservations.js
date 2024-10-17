@@ -60,10 +60,6 @@ const useLocalObservations = ( ): Object => {
       const unsynced = Observation.filterUnsyncedObservations( realm );
       setNumUnuploadedObservations( unsynced.length );
 
-      if ( _changes?.deletions?.length > 0 ) {
-        setObservationList( stagedObservationList?.current || [] );
-      }
-
       if ( isFocused ) {
         setObservationList( stagedObservationList.current );
       }
