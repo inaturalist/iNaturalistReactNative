@@ -135,6 +135,12 @@ exports[`TaxonResult should render correctly 1`] = `
               {
                 "alignItems": "center",
               },
+              {
+                "borderBottomWidth": 2,
+                "borderLeftWidth": 2,
+                "borderRightWidth": 2,
+                "borderTopWidth": 2,
+              },
               [
                 {
                   "borderBottomLeftRadius": 12,
