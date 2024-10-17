@@ -26,7 +26,7 @@ type Props = {
   onScroll?: Function,
   setShowLoginSheet: Function,
   showLoginSheet: boolean,
-  status: string,
+  showNoResults: boolean,
   toggleLayout: Function
 };
 
@@ -45,7 +45,7 @@ const MyObservations = ( {
   onScroll,
   setShowLoginSheet,
   showLoginSheet,
-  status,
+  showNoResults,
   toggleLayout
 }: Props ): Node => (
   <>
@@ -78,7 +78,7 @@ const MyObservations = ( {
             onLayout={onListLayout}
             ref={listRef}
             showObservationsEmptyScreen
-            showNoResults={( status === "success" && !!( currentUser ) ) || !currentUser}
+            showNoResults={showNoResults}
             testID="MyObservationsAnimatedList"
             renderHeader={(
               <Announcements isConnected={isConnected} />
