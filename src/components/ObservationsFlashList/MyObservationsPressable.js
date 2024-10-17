@@ -2,7 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import navigateToObsEdit from "components/ObsEdit/helpers/navigateToObsEdit.ts";
-import debounce from "lodash/debounce";
+import { getCurrentRoute } from "navigation/navigationUtils.ts";
 import type { Node } from "react";
 import React from "react";
 import { Pressable } from "react-native";
@@ -24,15 +24,20 @@ const MyObservationsPressable = ( { observation, testID, children }: Props ): No
 
   const unsynced = typeof observation.wasSynced !== "undefined" && !observation.wasSynced( );
 
-  const navigateToObservation = debounce( ( ) => {
+  const navigateToObservation = ( ) => {
     const { uuid } = observation;
     if ( unsynced ) {
       prepareObsEdit( observation );
       navigateToObsEdit( navigation, setMyObsOffsetToRestore );
     } else {
-      navigation.push( "ObsDetails", { uuid } );
+      const currentRoute = getCurrentRoute();
+      navigation.navigate( {
+        key: `Obs-${currentRoute.key}-${uuid}`,
+        name: "ObsDetails",
+        params: { uuid }
+      } );
     }
-  }, 200 );
+  };
 
   return (
     <Pressable
