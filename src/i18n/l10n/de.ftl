@@ -310,6 +310,12 @@ New-Observation = Neue Beobachtung
 No-Location = Kein Standort
 No-Media = Keine Medieninhalte
 none = Nichts
+# Error message title when not enough storage space on device, e.g. when the
+# disk is full and you try to save a photo
+Not-enough-space-left-on-device = Nicht genug Speicherplatz auf dem Gerät vorhanden
+# Error message description when not enough storage space on device, e.g. when
+# the disk is full and you try to save a photo
+Not-enough-space-left-on-device-try-again = Es ist nicht genügend Speicherplatz auf dem Gerät vorhanden. Bitte gib etwas Speicherplatz frei und versuche es erneut.
 Notifications = Benachrichtigungen
 # Month of November
 November = November
@@ -407,6 +413,8 @@ Scientific-Name = Wissenschaftl. Name
 Search = Suchen
 SEARCH-FOR-A-TAXON = NACH EINEM TAXON SUCHEN
 Search-for-a-taxon = Nach einem Taxon suchen
+# Accessibility label for navigating to project members screen
+See-project-members = Projektmitglieder ansehen
 SELECT-THIS-TAXON = DIESES TAXON AUSWÄHLEN
 Selects-iconic-taxon-X-for-identification = Wählt das ikonische Taxon { $iconicTaxon } zur Identifizierung aus.
 # Month of September
