@@ -41,6 +41,7 @@ import type { Node } from "react";
 import React from "react";
 import colors from "styles/tailwindColors";
 
+import FadeInView from "../FadeInView";
 import SharedStackScreens from "./SharedStackScreens";
 
 const aboutTitle = () => <Heading4>{t( "ABOUT-INATURALIST" )}</Heading4>;
@@ -69,8 +70,27 @@ const NOTIFICATIONS_OPTIONS = {
   ...hideHeaderLeft,
   headerTitle: notificationsTitle,
   headerTitleAlign: "center",
-  animation: "none"
+  animation: "none",
+  unmountOnBlur: false
 };
+
+const FadeInNotifications = ( ) => (
+  <FadeInView>
+    <NotificationsContainer />
+  </FadeInView>
+);
+
+const FadeInRootExplore = ( ) => (
+  <FadeInView>
+    <RootExploreContainer />
+  </FadeInView>
+);
+
+const FadeInMyObservations = ( ) => (
+  <FadeInView>
+    <MyObservationsContainer />
+  </FadeInView>
+);
 
 const DQA_OPTIONS = {
   ...showLongHeader,
@@ -92,24 +112,11 @@ const PROJECT_MEMBERS_OPTIONS = {
 
 const Stack = createNativeStackNavigator( );
 
-const config = {
-  animation: "spring",
-  config: {
-    stiffness: 1000,
-    damping: 500,
-    mass: 3,
-    overshootClamping: true,
-    restDisplacementThreshold: 0.01,
-    restSpeedThreshold: 0.01
-  }
-};
-
 const TabStackNavigator = ( ): Node => (
   <Stack.Navigator
     screenOptions={{
       headerBackTitleVisible: false,
       headerTintColor: colors.darkGray
-      // animation: "none"
     }}
   >
     {/* Screens with no header */}
@@ -118,16 +125,18 @@ const TabStackNavigator = ( ): Node => (
     >
       <Stack.Screen
         name="ObsList"
-        component={MyObservationsContainer}
+        component={FadeInMyObservations}
         options={{
-          animation: "none"
+          animation: "none",
+          unmountOnBlur: false
         }}
       />
       <Stack.Screen
         name="RootExplore"
-        component={RootExploreContainer}
+        component={FadeInRootExplore}
         options={{
-          animation: "none"
+          animation: "none",
+          unmountOnBlur: false
         }}
       />
       <Stack.Screen
@@ -138,17 +147,13 @@ const TabStackNavigator = ( ): Node => (
         name="ObsDetails"
         component={ObsDetailsContainer}
         options={{
-          unmountOnBlur: true,
-          transitionSpec: {
-            open: config,
-            close: config
-          }
+          unmountOnBlur: true
         }}
       />
     </Stack.Group>
     <Stack.Screen
       name="Notifications"
-      component={NotificationsContainer}
+      component={FadeInNotifications}
       options={NOTIFICATIONS_OPTIONS}
     />
     <Stack.Screen
