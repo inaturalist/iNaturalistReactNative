@@ -8,6 +8,15 @@ import React from "react";
 import { View } from "react-native";
 import colors from "styles/tailwindColors";
 
+import FadeInView from "./FadeInView";
+
+// $FlowIgnore
+const fadeInComponent = ( component: React.JSX.Element ): React.JSX.Element => (
+  <FadeInView>
+    {component}
+  </FadeInView>
+);
+
 const baseHeaderOptions: Object = {
   headerShown: true,
   headerBackTitleVisible: false,
@@ -74,6 +83,7 @@ const hideDrawerHeaderLeft = {
 
 export {
   blankHeaderTitle,
+  fadeInComponent,
   hideDrawerHeaderLeft,
   hideHeader,
   removeBottomBorder,
