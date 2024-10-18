@@ -47,7 +47,6 @@ const aboutTitle = () => <Heading4>{t( "ABOUT-INATURALIST" )}</Heading4>;
 const donateTitle = () => <Heading4>{t( "DONATE" )}</Heading4>;
 const helpTitle = () => <Heading4>{t( "HELP" )}</Heading4>;
 const locationSearchTitle = () => <Heading4>{t( "SEARCH-LOCATION" )}</Heading4>;
-const notificationsTitle = ( ) => <Heading4>{t( "NOTIFICATIONS" )}</Heading4>;
 const dqaTitle = ( ) => <Heading4>{t( "DATA-QUALITY-ASSESSMENT" )}</Heading4>;
 const projectRequirementsTitle = () => <Heading4>{t( "PROJECT-REQUIREMENTS" )}</Heading4>;
 const projectSearchTitle = () => <Heading4>{t( "SEARCH-PROJECTS" )}</Heading4>;
@@ -64,6 +63,15 @@ const uiLibItemTitle = () => <Heading4 className="text-white">UI LIBRARY ITEM</H
 // eslint-disable-next-line i18next/no-literal-string
 const logTitle = () => <Heading4 className="text-white">LOG</Heading4>;
 
+const notificationsTitle = ( ) => <Heading4>{t( "NOTIFICATIONS" )}</Heading4>;
+
+const NOTIFICATIONS_OPTIONS = {
+  ...hideHeaderLeft,
+  headerTitle: notificationsTitle,
+  headerTitleAlign: "center",
+  animation: "none"
+};
+
 const DQA_OPTIONS = {
   ...showLongHeader,
   headerTitle: dqaTitle,
@@ -76,12 +84,6 @@ const USER_PROFILE_OPTIONS = {
   ...removeBottomBorder
 };
 
-const NOTIFICATIONS_OPTIONS = {
-  ...hideHeaderLeft,
-  headerTitle: notificationsTitle,
-  headerTitleAlign: "center"
-};
-
 const PROJECT_MEMBERS_OPTIONS = {
   header: ContextHeader,
   alignStart: true,
@@ -90,11 +92,24 @@ const PROJECT_MEMBERS_OPTIONS = {
 
 const Stack = createNativeStackNavigator( );
 
+const config = {
+  animation: "spring",
+  config: {
+    stiffness: 1000,
+    damping: 500,
+    mass: 3,
+    overshootClamping: true,
+    restDisplacementThreshold: 0.01,
+    restSpeedThreshold: 0.01
+  }
+};
+
 const TabStackNavigator = ( ): Node => (
   <Stack.Navigator
     screenOptions={{
       headerBackTitleVisible: false,
       headerTintColor: colors.darkGray
+      // animation: "none"
     }}
   >
     {/* Screens with no header */}
@@ -104,21 +119,31 @@ const TabStackNavigator = ( ): Node => (
       <Stack.Screen
         name="ObsList"
         component={MyObservationsContainer}
-      />
-      <Stack.Screen
-        name="ObsDetails"
-        component={ObsDetailsContainer}
         options={{
-          unmountOnBlur: true
+          animation: "none"
         }}
       />
       <Stack.Screen
         name="RootExplore"
         component={RootExploreContainer}
+        options={{
+          animation: "none"
+        }}
       />
       <Stack.Screen
         name="Explore"
         component={ExploreContainer}
+      />
+      <Stack.Screen
+        name="ObsDetails"
+        component={ObsDetailsContainer}
+        options={{
+          unmountOnBlur: true,
+          transitionSpec: {
+            open: config,
+            close: config
+          }
+        }}
       />
     </Stack.Group>
     <Stack.Screen

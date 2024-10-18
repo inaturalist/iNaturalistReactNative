@@ -1,4 +1,5 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import Mortal from "components/SharedComponents/Mortal";
 import {
   hideHeader,
@@ -9,7 +10,7 @@ import React from "react";
 
 import CustomTabBarContainer from "./CustomTabBarContainer";
 
-const Tab = createBottomTabNavigator( );
+const Tab = createMaterialTopTabNavigator( );
 
 const OBS_LIST_SCREEN_ID = "TabStackNavigator";
 
@@ -26,8 +27,13 @@ const BottomTabs = ( ) => {
       <Tab.Navigator
         initialRouteName={OBS_LIST_SCREEN_ID}
         tabBar={renderTabBar}
-        backBehavior="history"
-        screenOptions={showHeader}
+        backBehavior="order"
+        screenOptions={{
+          ...showHeader,
+          swipeEnabled: false,
+          animationEnabled: false
+        }}
+        tabBarPosition="bottom"
       >
         <Tab.Screen
           name="TabStackNavigator"
