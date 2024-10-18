@@ -49,6 +49,7 @@ const EvidenceList = ( {
   const realm = useRealm( );
   const { t } = useTranslation( );
   const [selectedMediaUri, setSelectedMediaUri]: [string | null, Function] = useState( null );
+  const [deleting, setDeleting] = useState( false );
   const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
 
   const observationPhotos = useMemo(
@@ -165,6 +166,7 @@ const EvidenceList = ( {
     } else {
       setSelectedMediaUri( mediaUris[mediaUris.length - 1] );
     }
+    setDeleting( false );
   }, [mediaUris, setSelectedMediaUri] );
 
   const deleteObservationSoundMutation = useAuthenticatedMutation(
@@ -188,12 +190,14 @@ const EvidenceList = ( {
       );
       afterMediaDeleted( );
     }
+    setDeleting( true );
     // If sound was synced, delete the remote copy immediately and then remove
     // the local
     if ( obsSound?.id ) {
       deleteObservationSoundMutation.mutate( { uuid: obsSound.uuid }, {
         onSuccess: removeLocalSound,
         onError: deleteRemoteObservationSoundError => {
+          setDeleting( false );
           logger.error(
             "[EvidenceList.js] failed to delete remote observation sound: ",
             deleteRemoteObservationSoundError
@@ -243,11 +247,12 @@ const EvidenceList = ( {
       {evidenceList}
       <MediaViewerModal
         editable
+        deleting={deleting}
         onClose={( ) => setSelectedMediaUri( null )}
         onDeletePhoto={onDeletePhoto}
         onDeleteSound={onDeleteSound}
         photos={observationPhotos.map( obsPhoto => obsPhoto.photo )}
-        showModal={!!selectedMediaUri}
+        showModal={!!selectedMediaUri || deleting}
         sounds={observationSounds.map( obsSound => obsSound.sound )}
         uri={selectedMediaUri}
       />
