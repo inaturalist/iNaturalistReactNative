@@ -22,7 +22,7 @@ const DiscardChangesSheet = ( {
 
   return (
     <WarningSheet
-      handleClose={( ) => setShowDiscardSheet( false )}
+      onPressClose={( ) => setShowDiscardSheet( false )}
       headerText={t( "DISCARD-PHOTOS--question" )}
       text={t( "By-exiting-your-photos-will-not-be-saved" )}
       secondButtonText={t( "CANCEL" )}

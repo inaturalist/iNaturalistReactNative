@@ -11,7 +11,7 @@ import React, { useState } from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  handleClose: Function,
+  onPressClose: Function,
   confirm: Function,
   headerText: string,
   pickerValues: Object,
@@ -20,7 +20,7 @@ type Props = {
 };
 
 const PickerSheet = ( {
-  handleClose,
+  onPressClose,
   confirm,
   headerText,
   pickerValues,
@@ -32,7 +32,7 @@ const PickerSheet = ( {
 
   return (
     <BottomSheet
-      handleClose={handleClose}
+      onPressClose={onPressClose}
       headerText={headerText}
       insideModal={insideModal}
     >

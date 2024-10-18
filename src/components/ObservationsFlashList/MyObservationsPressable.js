@@ -31,8 +31,9 @@ const MyObservationsPressable = ( { observation, testID, children }: Props ): No
       navigateToObsEdit( navigation, setMyObsOffsetToRestore );
     } else {
       const currentRoute = getCurrentRoute();
+      const uniqueKey = currentRoute?.key || "key-default";
       navigation.navigate( {
-        key: `Obs-${currentRoute.key}-${uuid}`,
+        key: `Obs-${uniqueKey}-${uuid}`,
         name: "ObsDetails",
         params: { uuid }
       } );

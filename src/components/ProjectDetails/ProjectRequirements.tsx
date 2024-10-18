@@ -24,11 +24,11 @@ const ProjectRequirements = ( ) => {
   const qualityGradeOption = option => {
     switch ( option ) {
       case "research":
-        return t( "quality-grade-research" );
+        return t( "Research-Grade--quality-grade" );
       case "needs_id":
-        return t( "quality-grade-needs-id" );
+        return t( "Needs-ID--quality-grade" );
       default:
-        return t( "quality-grade-casual" );
+        return t( "Casual--quality-grade" );
     }
   };
 
@@ -299,7 +299,7 @@ const ProjectRequirements = ( ) => {
             ) )}
           </>
         )}
-      <View className="mt-6 px-4">
+      <View className="pt-2 pb-8 px-4">
         <AboutProjectType projectType="collection" />
       </View>
     </ScrollViewWrapper>

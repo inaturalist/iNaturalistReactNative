@@ -10,11 +10,11 @@ interface Props {
   buttonText: string;
   buttonType?: string;
   confirm: () => void;
-  handleClose: () => void;
   handleSecondButtonPress?: () => void;
   headerText: string;
   hidden?: boolean;
   insideModal?: boolean;
+  onPressClose: () => void;
   secondButtonText?: string;
   testID?: string;
   text?: string;
@@ -24,17 +24,17 @@ const WarningSheet = ( {
   buttonText,
   buttonType,
   confirm,
-  handleClose,
   handleSecondButtonPress,
   headerText,
   hidden,
   insideModal,
+  onPressClose,
   secondButtonText,
   testID,
   text
 }: Props ) => (
   <BottomSheet
-    handleClose={handleClose}
+    onPressClose={onPressClose}
     headerText={headerText}
     hidden={hidden}
     insideModal={insideModal}

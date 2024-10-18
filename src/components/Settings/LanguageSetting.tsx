@@ -67,7 +67,7 @@ const LanguageSetting = ( { onChange }: Props ) => {
             i18n.changeLanguage( newLocale );
             onChange( newLocale );
           }}
-          handleClose={() => setLocaleSheetOpen( false )}
+          onPressClose={() => setLocaleSheetOpen( false )}
           selectedValue={i18n.language}
           pickerValues={availableLocalesOptions}
         />

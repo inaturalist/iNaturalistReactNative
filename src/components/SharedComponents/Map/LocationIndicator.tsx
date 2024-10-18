@@ -4,7 +4,7 @@ import {
   Circle,
   Marker
 } from "react-native-maps";
-import { useTheme } from "react-native-paper";
+import colors from "styles/tailwindColors";
 
 interface Props {
   obsLatitude: number,
@@ -19,8 +19,6 @@ const LocationIndicator = ( {
   positionalAccuracy,
   showLocationIndicator
 }: Props ) => {
-  const theme = useTheme( );
-
   const locationIndicator = ( ) => (
     <LocationIndicatorIcon
       testID="Map.LocationIndicator"
@@ -38,7 +36,7 @@ const LocationIndicator = ( {
         }}
         radius={positionalAccuracy}
         strokeWidth={2}
-        strokeColor={theme.colors.inatGreen}
+        strokeColor={colors.inatGreen}
         fillColor="rgba( 116, 172, 0, 0.2 )"
       />
       <Marker

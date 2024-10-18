@@ -2,8 +2,9 @@
 
 import fetchSearchResults from "api/search";
 import {
-  Body3,
+  Body1,
   Button,
+  List2,
   SearchBar,
   ViewWrapper
 } from "components/SharedComponents";
@@ -81,12 +82,12 @@ const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node =>
       <Pressable
         accessibilityRole="button"
         key={place.id}
-        className="p-2 border-[0.5px] border-lightGray"
+        className="p-3 border-[0.5px] border-lightGray"
         onPress={() => onPlaceSelected( place )}
       >
-        <Body3>{place.display_name}</Body3>
+        <Body1>{place.display_name}</Body1>
         {!!place.place_type && (
-          <Body3>{inatPlaceTypes[place.place_type]}</Body3>
+          <List2>{inatPlaceTypes[place.place_type]}</List2>
         )}
       </Pressable>
     ),
@@ -133,7 +134,7 @@ const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node =>
         testID="ExploreLocationSearch.close"
       />
       <View
-        className="bg-white pt-2 pb-5"
+        className="bg-white pt-2 pb-4"
         style={DROP_SHADOW}
       >
         <View className="px-6">
@@ -143,13 +144,13 @@ const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node =>
             testID="ExploreLocationSearch.locationSearch"
           />
         </View>
-        <View className="flex-row px-3 mt-5 justify-evenly">
+        <View className="flex-row px-6 mt-5 justify-around">
           <Button
             className="w-1/2"
             onPress={onNearbyPressed}
             text={t( "NEARBY" )}
           />
-          <View className="px-2" />
+          <View className="px-5" />
           <Button
             className="w-1/2"
             onPress={resetPlace}

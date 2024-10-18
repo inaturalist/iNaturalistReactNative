@@ -70,36 +70,6 @@ exports[`ObsGridItem for an observation with a photo should render 1`] = `
           [
             [
               {
-                "flexGrow": 1,
-              },
-              {
-                "aspectRatio": 1,
-              },
-              {
-                "maxHeight": 210,
-              },
-              {
-                "overflow": "hidden",
-              },
-              {
-                "position": "relative",
-              },
-              {
-                "borderBottomLeftRadius": 15,
-                "borderBottomRightRadius": 15,
-                "borderTopLeftRadius": 15,
-                "borderTopRightRadius": 15,
-              },
-              {
-                "width": 200,
-              },
-              {
-                "width": 200,
-              },
-              {
-                "backgroundColor": "#454545",
-              },
-              {
                 "flexShrink": 1,
               },
               {
@@ -107,6 +77,21 @@ exports[`ObsGridItem for an observation with a photo should render 1`] = `
               },
               {
                 "alignItems": "center",
+              },
+              {
+                "flexGrow": 1,
+              },
+              {
+                "aspectRatio": 1,
+              },
+              {
+                "backgroundColor": "#454545",
+              },
+              {
+                "borderBottomWidth": 0,
+                "borderLeftWidth": 0,
+                "borderRightWidth": 0,
+                "borderTopWidth": 0,
               },
             ],
           ]
@@ -319,36 +304,6 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
           [
             [
               {
-                "flexGrow": 1,
-              },
-              {
-                "aspectRatio": 1,
-              },
-              {
-                "maxHeight": 210,
-              },
-              {
-                "overflow": "hidden",
-              },
-              {
-                "position": "relative",
-              },
-              {
-                "borderBottomLeftRadius": 15,
-                "borderBottomRightRadius": 15,
-                "borderTopLeftRadius": 15,
-                "borderTopRightRadius": 15,
-              },
-              {
-                "width": 200,
-              },
-              {
-                "width": 200,
-              },
-              {
-                "backgroundColor": "#454545",
-              },
-              {
                 "flexShrink": 1,
               },
               {
@@ -356,6 +311,21 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
               },
               {
                 "alignItems": "center",
+              },
+              {
+                "flexGrow": 1,
+              },
+              {
+                "aspectRatio": 1,
+              },
+              {
+                "backgroundColor": "#454545",
+              },
+              {
+                "borderBottomWidth": 0,
+                "borderLeftWidth": 0,
+                "borderRightWidth": 0,
+                "borderTopWidth": 0,
               },
             ],
           ]

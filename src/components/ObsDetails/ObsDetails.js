@@ -222,7 +222,7 @@ const ObsDetails = ( {
       <ObsDetailsHeader
         belongsToCurrentUser={belongsToCurrentUser}
         observationId={observation?.id}
-        rightIconBlack
+        rightIconDarkGray
         uuid={observation?.uuid}
       />
     </View>
@@ -315,7 +315,7 @@ const ObsDetails = ( {
       {showAddCommentSheet && (
         <TextInputSheet
           buttonText={t( "CONFIRM" )}
-          handleClose={hideAddCommentSheet}
+          onPressClose={hideAddCommentSheet}
           headerText={showAddCommentHeader( )}
           textInputStyle={textInputStyle}
           initialInput={comment}
@@ -325,7 +325,7 @@ const ObsDetails = ( {
       {identBodySheetShown && (
         <TextInputSheet
           buttonText={t( "CONFIRM" )}
-          handleClose={onCloseIdentBodySheet}
+          onPressClose={onCloseIdentBodySheet}
           headerText={showAddCommentHeader( )}
           textInputStyle={textInputStyle}
           initialInput={newIdentification?.body}
@@ -344,7 +344,7 @@ const ObsDetails = ( {
       {showPotentialDisagreementSheet && newIdentification && (
         <PotentialDisagreementSheet
           onPotentialDisagreePressed={onPotentialDisagreePressed}
-          handleClose={potentialDisagreeSheetDiscardChanges}
+          onPressClose={potentialDisagreeSheetDiscardChanges}
           newTaxon={newIdentification.taxon}
           oldTaxon={observation.taxon}
         />
@@ -359,7 +359,7 @@ const ObsDetails = ( {
       */}
       { remoteObsWasDeleted && confirmRemoteObsWasDeleted && (
         <WarningSheet
-          handleClose={confirmRemoteObsWasDeleted}
+          onPressClose={confirmRemoteObsWasDeleted}
           headerText={t( "OBSERVATION-WAS-DELETED" )}
           text={t( "Sorry-this-observation-was-deleted" )}
           buttonText={t( "OK" )}

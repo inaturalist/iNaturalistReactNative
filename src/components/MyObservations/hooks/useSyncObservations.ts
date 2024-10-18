@@ -4,7 +4,7 @@ import {
 import { INatApiError } from "api/error";
 import { deleteRemoteObservation } from "api/observations";
 import { RealmContext } from "providers/contexts.ts";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Observation from "realmModels/Observation";
 import { useAuthenticatedMutation } from "sharedHooks";
 import {
@@ -25,7 +25,7 @@ const useSyncObservations = (
   startUploadObservations: ( ) => void
 ): void => {
   const { isConnected } = useNetInfo( );
-  const loggedIn = !!currentUserId;
+  const loggedIn = !!( currentUserId );
   const deleteQueue = useStore( state => state.deleteQueue );
   const deletionsCompletedAt = useStore( state => state.deletionsCompletedAt );
   const completeLocalDeletions = useStore( state => state.completeLocalDeletions );
@@ -37,19 +37,20 @@ const useSyncObservations = (
   const resetSyncToolbar = useStore( state => state.resetSyncToolbar );
   const removeFromDeleteQueue = useStore( state => state.removeFromDeleteQueue );
   const autoSyncAbortController = useStore( storeState => storeState.autoSyncAbortController );
+  const [currentDeletionUuid, setCurrentDeletionUuid] = useState( null );
 
-  const canSync = loggedIn && isConnected;
+  const canSync = loggedIn && isConnected === true;
 
   const realm = useRealm( );
-
-  const deleteRealmObservation = useCallback( async ( uuid: string ) => {
-    await Observation.deleteLocalObservation( realm, uuid );
-  }, [realm] );
 
   const handleRemoteDeletion = useAuthenticatedMutation(
     ( params: Object, optsWithAuth: Object ) => deleteRemoteObservation( params, optsWithAuth ),
     {
-      onSuccess: ( ) => undefined,
+      onSuccess: ( ) => {
+        Observation
+          .deleteLocalObservation( realm, currentDeletionUuid );
+        removeFromDeleteQueue( );
+      },
       onError: ( deleteObservationError: Error ) => {
         setDeletionError( deleteObservationError?.message );
         throw deleteObservationError;
@@ -61,20 +62,15 @@ const useSyncObservations = (
     if ( deleteQueue.length === 0 ) { return; }
 
     deleteQueue.forEach( async ( uuid: string, i: number ) => {
+      setCurrentDeletionUuid( uuid );
       const observation = realm.objectForPrimaryKey( "Observation", uuid );
       const hasBeenSyncedRemotely = observation?._synced_at;
 
       if ( !hasBeenSyncedRemotely ) {
-        return deleteRealmObservation( uuid );
+        Observation.deleteLocalObservation( realm, uuid );
+      } else {
+        handleRemoteDeletion.mutate( { uuid } );
       }
-      if ( !canSync ) {
-        // TODO: do we want to let user know their deletions can't happen
-        // when they're offline or logged out?
-        return null;
-      }
-
-      await handleRemoteDeletion.mutate( { uuid } );
-      removeFromDeleteQueue( );
 
       if ( i > 0 ) {
         // this loop isn't really being used, since a user can only delete one
@@ -82,18 +78,15 @@ const useSyncObservations = (
         startNextDeletion( );
       }
       if ( i === deleteQueue.length - 1 ) {
-        completeLocalDeletions( );
+        await completeLocalDeletions( );
       }
       return null;
     } );
   }, [
-    canSync,
     completeLocalDeletions,
     deleteQueue,
-    deleteRealmObservation,
     handleRemoteDeletion,
     realm,
-    removeFromDeleteQueue,
     startNextDeletion
   ] );
 

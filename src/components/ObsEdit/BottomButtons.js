@@ -8,7 +8,7 @@ import classnames from "classnames";
 import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/CrosshairCircle";
 import {
   Button,
-  StickyToolbar
+  ButtonBar
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts.ts";
@@ -222,7 +222,7 @@ const BottomButtons = ( {
   ] );
 
   return (
-    <StickyToolbar>
+    <ButtonBar>
       {showMissingEvidenceSheet && (
         <MissingEvidenceSheet
           setShowMissingEvidenceSheet={setShowMissingEvidenceSheet}
@@ -234,7 +234,7 @@ const BottomButtons = ( {
         />
       )}
       {renderButtons( )}
-    </StickyToolbar>
+    </ButtonBar>
   );
 };
 

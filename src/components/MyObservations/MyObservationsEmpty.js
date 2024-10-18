@@ -52,7 +52,7 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
       >
         <GradientButton
           accessibilityLabel={t( "Add-observations" )}
-          sizeClassName="w-[141px] h-[141px]"
+          sizeClassName="w-[141px] h-[141px] self-center"
           onPress={navToARCamera}
           iconSize={76}
         />

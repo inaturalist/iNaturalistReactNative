@@ -48,6 +48,19 @@ export const I18NEXT_CONFIG = {
         )
       }
     }
+  },
+  // All languages should fallback to English, some regional variants should
+  // fall back to another region
+  fallbackLng: code => {
+    const fallbacks = [];
+    if ( code.match( /^es-/ ) ) {
+      fallbacks.push( "es" );
+    } else if ( code.match( /^fr-/ ) ) {
+      fallbacks.push( "fr" );
+    } else if ( code.match( /^pt-/ ) ) {
+      fallbacks.push( "pt" );
+    }
+    return [...fallbacks, "en"];
   }
 };
 

@@ -13,11 +13,10 @@ import React, {
   useState
 } from "react";
 import AudioRecorderPlayer from "react-native-audio-recorder-player";
-import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
+import colors from "styles/tailwindColors";
 
 const SoundSlider = ( { playBackState, onSlidingComplete } ) => {
-  const theme = useTheme( );
   const sliderStyle = {
     width: "100%"
   };
@@ -30,7 +29,7 @@ const SoundSlider = ( { playBackState, onSlidingComplete } ) => {
       upperLimit={playBackState.duration}
       minimumTrackTintColor="#FFFFFF"
       maximumTrackTintColor="#FFFFFF"
-      thumbTintColor={theme.colors.inatGreen}
+      thumbTintColor={colors.inatGreen}
       tapToSeek
       value={playBackState.currentPosition}
       onSlidingComplete={onSlidingComplete}

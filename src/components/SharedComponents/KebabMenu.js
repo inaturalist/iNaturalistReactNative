@@ -50,7 +50,7 @@ const KebabMenu = ( {
       accessibilityHint={accessibilityHint || t( "Open-menu" )}
       color={white
         ? colors.white
-        : colors.black}
+        : colors.darkGray}
     />
   );
 
@@ -85,7 +85,7 @@ const KebabMenuItem = ( {
     onPress={onPress}
   >
     <Body3
-      className="m-[14px] text-black"
+      className="m-[14px] text-darkGray"
     >
       {title}
     </Body3>

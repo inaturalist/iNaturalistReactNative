@@ -14,8 +14,8 @@ import { capitalize } from "lodash";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useCallback, useEffect } from "react";
-import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
+import colors from "styles/tailwindColors";
 
 const { useRealm } = RealmContext;
 
@@ -33,7 +33,6 @@ const IdentificationSection = ( {
   updateObservationKeys
 }: Props ): Node => {
   const { t } = useTranslation( );
-  const theme = useTheme( );
   const navigation = useNavigation( );
   const realm = useRealm( );
 
@@ -96,8 +95,8 @@ const IdentificationSection = ( {
                 name="sparkly-label"
                 size={24}
                 color={identTaxon
-                  ? theme.colors.primary
-                  : theme.colors.onPrimary}
+                  ? colors.darkGray
+                  : colors.white}
               />
             )}
             accessibilityLabel={t( "View-suggestions" )}
@@ -134,7 +133,7 @@ const IdentificationSection = ( {
         <Heading4>{t( "IDENTIFICATION" )}</Heading4>
         {hasIdentification && (
           <View className="ml-3">
-            <INatIcon name="checkmark-circle" size={19} color={theme.colors.secondary} />
+            <INatIcon name="checkmark-circle" size={19} color={colors.inatGreen} />
           </View>
         )}
       </View>

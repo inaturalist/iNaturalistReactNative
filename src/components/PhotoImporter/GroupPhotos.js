@@ -5,19 +5,19 @@ import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCam
 import {
   Body2,
   Button,
+  ButtonBar,
   CustomFlashList,
   FloatingActionBar,
   INatIcon,
-  INatIconButton,
-  StickyToolbar
+  INatIconButton
 } from "components/SharedComponents";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
-import { useTheme } from "react-native-paper";
 import { useGridLayout } from "sharedHooks";
+import colors from "styles/tailwindColors";
 
 import GroupPhotoImage from "./GroupPhotoImage";
 
@@ -45,7 +45,6 @@ const GroupPhotos = ( {
   totalPhotos
 }: Props ): Node => {
   const navigation = useNavigation( );
-  const theme = useTheme();
   const {
     estimatedGridItemSize,
     flashListStyle,
@@ -53,7 +52,7 @@ const GroupPhotos = ( {
     gridItemWidth,
     numColumns
   } = useGridLayout( );
-  const [stickyToolbarHeight, setStickyToolbarHeight] = useState( null );
+  const [buttonBarHeight, setButtonBarHeight] = useState( null );
   const extractKey = ( item, index ) => ( item.empty
     ? "empty"
     : `${item.photos[0].uri}${index}` );
@@ -92,16 +91,16 @@ const GroupPhotos = ( {
           style={[gridItemStyle, {
             borderWidth: 4,
             borderStyle: "dashed",
-            borderColor: theme.colors.mediumGray
+            borderColor: colors.mediumGray
           }]}
         >
-          <INatIcon name="plus" size={50} color={theme.colors.mediumGray} />
+          <INatIcon name="plus" size={50} color={colors.mediumGray} />
         </Pressable>
       );
     }
     // $FlowIgnore
     return renderImage( item );
-  }, [gridItemStyle, renderImage, theme, addPhotos] );
+  }, [gridItemStyle, renderImage, addPhotos] );
 
   const renderHeader = ( ) => (
     <View className="m-5">
@@ -113,7 +112,7 @@ const GroupPhotos = ( {
     const {
       height
     } = event.nativeEvent.layout;
-    setStickyToolbarHeight( height );
+    setButtonBarHeight( height );
   };
 
   const data = useMemo( ( ) => {
@@ -144,18 +143,18 @@ const GroupPhotos = ( {
         testID="GroupPhotos.list"
       />
       <FloatingActionBar
-        show={selectedObservations.length > 0 && typeof stickyToolbarHeight === "number"}
+        show={selectedObservations.length > 0 && typeof buttonBarHeight === "number"}
         position="bottomStart"
         containerClass="ml-[15px] rounded-md"
-        footerHeight={stickyToolbarHeight}
+        footerHeight={buttonBarHeight}
       >
         <View className="rounded-md overflow-hidden flex-row">
           <INatIconButton
             icon="combine"
             mode="contained"
             size={20}
-            color={theme.colors.onPrimary}
-            backgroundColor={theme.colors.primary}
+            color={colors.white}
+            backgroundColor={colors.darkGray}
             className="m-4"
             accessibilityLabel={t( "Combine-Photos" )}
             disabled={noObsSelected || oneObsSelected}
@@ -165,8 +164,8 @@ const GroupPhotos = ( {
             icon="separate"
             mode="contained"
             size={20}
-            color={theme.colors.onPrimary}
-            backgroundColor={theme.colors.primary}
+            color={colors.white}
+            backgroundColor={colors.darkGray}
             className="m-4"
             accessibilityLabel={t( "Separate-Photos" )}
             disabled={!obsWithMultiplePhotosSelected}
@@ -176,8 +175,8 @@ const GroupPhotos = ( {
             icon="trash-outline"
             mode="contained"
             size={20}
-            color={theme.colors.onError}
-            backgroundColor={theme.colors.error}
+            color={colors.white}
+            backgroundColor={colors.warningRed}
             className="m-4"
             accessibilityLabel={t( "Remove-Photos" )}
             disabled={noObsSelected}
@@ -185,7 +184,8 @@ const GroupPhotos = ( {
           />
         </View>
       </FloatingActionBar>
-      <StickyToolbar
+      <ButtonBar
+        sticky
         containerClass="items-center z-50"
         onLayout={onLayout}
       >
@@ -197,7 +197,7 @@ const GroupPhotos = ( {
           testID="GroupPhotos.next"
           loading={isCreatingObservations}
         />
-      </StickyToolbar>
+      </ButtonBar>
     </ViewWrapper>
   );
 };

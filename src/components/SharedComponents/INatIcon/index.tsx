@@ -1,5 +1,5 @@
 import React from "react";
-import { useTheme } from "react-native-paper";
+import colors from "styles/tailwindColors";
 
 import Icon from "./INatIcon";
 
@@ -79,19 +79,15 @@ const ALIASES: Aliases = {
   "upvote-inactive": "arrow-up-bold-circle-outline"
 } as const;
 
+// Use default color if none is specified
 const INatIcon = ( {
   testID, name, color, size
-}: Props ) => {
-  const theme = useTheme();
-  // Use default color if none is specified
-  return (
-    <Icon
-      testID={testID}
-      name={ALIASES[name] || name}
-      color={color || theme.colors.primary}
-      size={size}
-    />
-  );
-};
-
+}: Props ) => (
+  <Icon
+    testID={testID}
+    name={ALIASES[name] || name}
+    color={color || colors.darkGray}
+    size={size}
+  />
+);
 export default INatIcon;

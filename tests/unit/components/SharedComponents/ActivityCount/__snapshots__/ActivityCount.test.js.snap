@@ -23,7 +23,7 @@ exports[`ActivityCount renders reliably 1`] = `
     style={
       [
         {
-          "color": "rgba(103, 80, 164, 1)",
+          "color": "#454545",
           "fontSize": 14,
         },
         undefined,

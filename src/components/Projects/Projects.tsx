@@ -108,9 +108,10 @@ const Projects = ( {
             ? HEADER_HEIGHT_WITH_TABS
             : HEADER_HEIGHT_WITHOUT_TABS}
           emptyItemHeight={90}
+          containerClassName="self-center w-full"
         >
           <Body1 className="self-center">{t( "No-projects-match-that-search" )}</Body1>
-          <View className="w-full px-4 mt-5">
+          <View className="p-4 mt-2">
             <Button
               level="neutral"
               text={t( "RESET-SEARCH" )}

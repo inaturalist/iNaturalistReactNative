@@ -53,7 +53,7 @@ const ContextHeader = ( {
 
     return (
       <BackButton
-        color={colors.black}
+        color={colors.darkGray}
         onPress={handleBackNavigation}
         inCustomHeader
         customStyles={extraPadding}

@@ -3,6 +3,7 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import FadeInOutView from "components/Camera/FadeInOutView";
+import useDeviceStorageFull from "components/Camera/hooks/useDeviceStorageFull";
 import useRotation from "components/Camera/hooks/useRotation.ts";
 import useTakePhoto from "components/Camera/hooks/useTakePhoto.ts";
 import useZoom from "components/Camera/hooks/useZoom.ts";
@@ -12,10 +13,10 @@ import type { Node } from "react";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
-import { useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { convertOfflineScoreToConfidence } from "sharedHelpers/convertScores.ts";
 import { useDebugMode, useTranslation } from "sharedHooks";
+import colors from "styles/tailwindColors";
 
 import {
   handleCameraError,
@@ -87,8 +88,9 @@ const AICamera = ( {
     toggleFlash
   } = useTakePhoto( camera, false, device );
   const [inactive, setInactive] = React.useState( false );
+  const { deviceStorageFull, showStorageFullAlert } = useDeviceStorageFull();
+
   const { t } = useTranslation();
-  const theme = useTheme();
   const navigation = useNavigation();
 
   // only show predictions when rank is order or lower, like we do on Seek
@@ -113,6 +115,9 @@ const AICamera = ( {
   }, [navigation, setResult, resetZoom] );
 
   const handlePress = async ( ) => {
+    if ( deviceStorageFull ) {
+      showStorageFullAlert();
+    }
     await takePhoto( { replaceExisting: true, inactivateCallback: () => setInactive( true ) } );
     handleCheckmarkPress( showPrediction
       ? result
@@ -151,7 +156,7 @@ const AICamera = ( {
         </View>
       )}
       <LinearGradient
-        colors={["#000000", "rgba(0, 0, 0, 0)"]}
+        colors={[colors.black, "rgba(0, 0, 0, 0)"]}
         locations={[
           0.001,
           isTablet && isLandscapeMode
@@ -201,7 +206,7 @@ const AICamera = ( {
             <INatIcon
               name="inaturalist"
               size={114}
-              color={theme.colors.onPrimary}
+              color={colors.white}
             />
           </View>
         </View>

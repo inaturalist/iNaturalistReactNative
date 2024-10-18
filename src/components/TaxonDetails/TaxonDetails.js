@@ -9,13 +9,13 @@ import {
   Body1,
   BottomSheet,
   Button,
+  ButtonBar,
   CarouselDots,
   INatIcon,
   INatIconButton,
   List2,
   OfflineNotice,
-  ScrollViewWrapper,
-  StickyToolbar
+  ScrollViewWrapper
 } from "components/SharedComponents";
 import {
   View
@@ -28,7 +28,6 @@ import {
   StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import { useTheme } from "react-native-paper";
 import { log } from "sharedHelpers/logger";
 import saveObservation from "sharedHelpers/saveObservation.ts";
 import { fetchTaxonAndSave } from "sharedHelpers/taxon";
@@ -40,6 +39,7 @@ import {
   useUserMe
 } from "sharedHooks";
 import useStore from "stores/useStore";
+import colors from "styles/tailwindColors";
 
 import EstablishmentMeans from "./EstablishmentMeans";
 import TaxonDetailsHeader from "./TaxonDetailsHeader";
@@ -62,7 +62,6 @@ const TaxonDetails = ( ): Node => {
   const setExploreView = useStore( state => state.setExploreView );
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
-  const theme = useTheme( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { id, hideNavButtons } = params;
@@ -207,7 +206,6 @@ const TaxonDetails = ( ): Node => {
               refresh();
               refetch();
             }}
-            color="black"
           />
         </View>
       );
@@ -261,7 +259,7 @@ const TaxonDetails = ( ): Node => {
             accessibilityLabel={t( "See-observations-of-this-taxon-in-explore" )}
             accessibilityHint={t( "Navigates-to-explore" )}
             size={30}
-            color={theme.colors.onPrimary}
+            color={colors.white}
             className="bg-inatGreen rounded-full"
             mode="contained"
             preventTransparency
@@ -276,8 +274,7 @@ const TaxonDetails = ( ): Node => {
     navigation,
     setExploreView,
     t,
-    taxon,
-    theme.colors.onPrimary
+    taxon
   ] );
 
   const displayTaxonMedia = () => {
@@ -323,7 +320,7 @@ const TaxonDetails = ( ): Node => {
           black, which reveals a dark area at the bottom of the screen on
           overscroll in iOS ~~~kueda20240228
         */}
-        <StatusBar barStyle="light-content" backgroundColor="#000000" />
+        <StatusBar barStyle="light-content" backgroundColor={colors.black} />
         <View className="flex-1 h-full bg-black">
           <View className="w-full h-[420px] shrink-1">
             {displayTaxonMedia()}
@@ -347,7 +344,7 @@ const TaxonDetails = ( ): Node => {
         />
       </ScrollViewWrapper>
       {showSelectButton && (
-        <StickyToolbar containerClass="items-center z-50">
+        <ButtonBar containerClass="items-center z-50">
           <Button
             className="max-w-[500px] w-full"
             level="focus"
@@ -373,16 +370,15 @@ const TaxonDetails = ( ): Node => {
               <INatIcon
                 name="checkmark"
                 size={19}
-                color={theme.colors.onPrimary}
+                color={colors.white}
               />
             )}
             iconPosition="right"
           />
-        </StickyToolbar>
+        </ButtonBar>
       )}
       <BottomSheet
         hidden={!sheetVisible}
-        handleClose={() => setSheetVisible( false )}
         onPressClose={() => setSheetVisible( false )}
         headerText={t( "UPLOAD-TO-INATURALIST" )}
       >

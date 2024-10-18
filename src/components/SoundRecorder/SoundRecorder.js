@@ -290,7 +290,7 @@ const SoundRecorder = (): Node => {
       <BottomSheet
         headerText="RECORDING SOUNDS"
         hidden={!helpShown}
-        handleClose={( ) => setHelpShown( false )}
+        onPressClose={( ) => setHelpShown( false )}
       >
         <View className="m-[43px] mt-[20px]">
           <P>
@@ -316,7 +316,7 @@ const SoundRecorder = (): Node => {
         headerText={t( "DISCARD-SOUND--question" )}
         text={t( "By-exiting-your-recorded-sound-will-not-be-saved" )}
         confirm={onBack}
-        handleClose={( ) => setExitWarningShown( false )}
+        onPressClose={( ) => setExitWarningShown( false )}
         buttonText={t( "DISCARD-RECORDING" )}
       />
       <WarningSheet
@@ -327,7 +327,7 @@ const SoundRecorder = (): Node => {
           resetRecording( );
           setResetWarningShown( false );
         }}
-        handleClose={( ) => setResetWarningShown( false )}
+        onPressClose={( ) => setResetWarningShown( false )}
         buttonText={t( "RESET-RECORDING" )}
       />
     </ViewWrapper>

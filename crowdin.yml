@@ -1,13 +1,11 @@
-base_path" : "."
-base_url : "https://api.crowdin.com"
+project_id_env: CROWDIN_PROJECT_ID
+api_token_env: CROWDIN_PERSONAL_TOKEN
 preserve_hierarchy: true
 
 files:
-  - source: "/src/i18n/strings.ftl"
-    dest: "/iNaturalistReactNative/%original_file_name%"
-    translation: "/src/i18n/l10n/%locale%.ftl"
-    export_only_approved: true
-    languages_mapping:
-      locale:
-        es-ES: es
-        ru: ru
+  - source: /src/i18n/strings.ftl
+    dest: /ReactNative/strings.ftl
+    # Note: this uses the Crowdin locale which always has a region. We need to
+    # mess with this later in i18ncli
+    translation: /src/i18n/l10n/%locale%.ftl
+    type: ftl
