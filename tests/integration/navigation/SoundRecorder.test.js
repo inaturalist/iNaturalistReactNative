@@ -40,12 +40,38 @@ beforeAll( async () => {
   useStore.setState( { isAdvancedUser: true } );
 } );
 
+const withAnimatedTimeTravelEnabled = () => {
+  beforeEach( () => {
+    jest.useFakeTimers();
+    jest.setSystemTime( new Date( 0 ) );
+  } );
+  afterEach( () => {
+    jest.useRealTimers();
+  } );
+};
+
+const frameTime = 10;
+const timeTravel = ( time = frameTime ) => {
+  const tickTravel = () => {
+    const now = Date.now();
+    jest.setSystemTime( new Date( now + frameTime ) );
+    jest.advanceTimersByTime( frameTime );
+  };
+  // Step through each of the frames
+  const frames = time / frameTime;
+  for ( let i = 0; i < frames; i += 1 ) {
+    tickTravel();
+  }
+};
+
 describe( "SoundRecorder navigation", ( ) => {
+  withAnimatedTimeTravelEnabled( );
   const actor = userEvent.setup( );
 
   describe( "from MyObs with advanced user layout", ( ) => {
     it( "should return to MyObs when close button tapped", async ( ) => {
       renderApp( );
+      timeTravel( );
       expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
       const tabBar = await screen.findByTestId( "CustomTabBar" );
       const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
