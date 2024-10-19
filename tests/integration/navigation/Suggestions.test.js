@@ -96,6 +96,7 @@ const otherSuggestion = {
 };
 
 describe( "Suggestions", ( ) => {
+  global.withAnimatedTimeTravelEnabled( );
   const actor = userEvent.setup( );
 
   // We need to navigate from MyObs to ObsEdit to Suggestions for all of these
@@ -130,6 +131,7 @@ describe( "Suggestions", ( ) => {
     await actor.press( takePhotoButton );
     const addIDButton = await screen.findByText( /ADD AN ID/ );
     expect( addIDButton ).toBeVisible( );
+    global.timeTravel( );
   }
 
   beforeAll( async () => {
