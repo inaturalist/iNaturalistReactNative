@@ -12,11 +12,17 @@ export default function navigateToObsDetails( navigation, uuid ) {
           state: {
             routes: [
               {
-                name: "ObsList"
-              },
-              {
-                name: "ObsDetails",
-                params: { uuid }
+                name: "TabStackNavigator",
+                state: {
+                  index: 0,
+                  routes: [
+                    { name: "ObsList" },
+                    {
+                      name: "ObsDetails",
+                      params: { uuid }
+                    }
+                  ]
+                }
               }
             ]
           }
