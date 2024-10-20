@@ -294,6 +294,7 @@ describe( "from ObsEdit with human observation", ( ) => {
 } );
 
 describe( "from AICamera", ( ) => {
+  global.withAnimatedTimeTravelEnabled( );
   beforeEach( async ( ) => {
     inatjs.computervision.score_image
       .mockResolvedValue( makeResponse( [topSuggestion] ) );
@@ -371,6 +372,7 @@ describe( "from AICamera", ( ) => {
       } ) );
       const { observations } = await setupAppWithSignedInUser( );
       await navigateToSuggestionsViaAICamera( observations[0] );
+      global.timeTravel( );
       const usePermissionsButton = await screen.findByText( /IMPROVE THESE SUGGESTIONS/ );
       expect( usePermissionsButton ).toBeVisible( );
       const ignoreLocationButton = screen.queryByText( /IGNORE LOCATION/ );

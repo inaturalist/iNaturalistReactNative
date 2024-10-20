@@ -36,16 +36,17 @@ afterAll( uniqueRealmAfterAll );
 
 beforeAll( async () => {
   await initI18next();
-  jest.useFakeTimers( );
   useStore.setState( { isAdvancedUser: true } );
 } );
 
 describe( "SoundRecorder navigation", ( ) => {
+  global.withAnimatedTimeTravelEnabled( );
   const actor = userEvent.setup( );
 
   describe( "from MyObs with advanced user layout", ( ) => {
     it( "should return to MyObs when close button tapped", async ( ) => {
       renderApp( );
+      global.timeTravel( );
       expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
       const tabBar = await screen.findByTestId( "CustomTabBar" );
       const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );

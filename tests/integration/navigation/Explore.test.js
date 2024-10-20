@@ -71,7 +71,6 @@ afterAll( uniqueRealmAfterAll );
 
 beforeAll( async () => {
   await initI18next();
-  jest.useFakeTimers( );
   inatjs.observations.speciesCounts.mockResolvedValue( makeResponse( [{
     count: 1,
     taxon: mockTaxon
@@ -83,6 +82,7 @@ beforeAll( async () => {
 const actor = userEvent.setup( );
 
 async function navigateToObsDetails( ) {
+  global.timeTravel( );
   expect( await screen.findByText( /Welcome back/ ) ).toBeVisible( );
   const firstObservation = await screen.findByTestId( `MyObservationsPressable.${obs.uuid}` );
   await actor.press( firstObservation );
@@ -110,9 +110,11 @@ describe( "logged in", ( ) => {
   } );
 
   describe( "from MyObs", ( ) => {
+    global.withAnimatedTimeTravelEnabled( );
     describe( "from MyObs toolbar", ( ) => {
       it( "should show observations view and navigate back to MyObs", async ( ) => {
         renderApp( );
+        global.timeTravel( );
         expect( await screen.findByText( /Welcome back/ ) ).toBeVisible( );
         const exploreButton = await screen.findByLabelText( /See all your observations in explore/ );
         await actor.press( exploreButton );
