@@ -291,7 +291,7 @@ exports[`TaxonResult should render correctly 1`] = `
             ],
           ]
         }
-        testID="display-taxon-name"
+        testID="display-taxon-name.1"
       >
         <Text
           ellipsizeMode="tail"

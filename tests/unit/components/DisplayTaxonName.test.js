@@ -47,7 +47,9 @@ describe( "DisplayTaxonName", ( ) => {
     test( "renders correct taxon for species", ( ) => {
       render( <DisplayTaxonName taxon={speciesTaxon} /> );
 
-      expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+      expect(
+        screen.getByTestId( `display-taxon-name.${speciesTaxon.id}` )
+      ).toHaveTextContent(
         `${speciesTaxon.preferred_common_name}${speciesTaxon.name}`
       );
     } );
@@ -55,15 +57,17 @@ describe( "DisplayTaxonName", ( ) => {
     test( "renders correct taxon w/o common name", ( ) => {
       render( <DisplayTaxonName taxon={noCommonNameTaxon} /> );
 
-      expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
-        noCommonNameTaxon.name
-      );
+      expect(
+        screen.getByTestId( `display-taxon-name.${noCommonNameTaxon.id}` )
+      ).toHaveTextContent( noCommonNameTaxon.name );
     } );
 
     test( "renders correct taxon w/o common name and no species", ( ) => {
       render( <DisplayTaxonName taxon={highRankTaxon} /> );
 
-      expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+      expect(
+        screen.getByTestId( `display-taxon-name.${highRankTaxon.id}` )
+      ).toHaveTextContent(
         `${capitalizeFirstLetter( highRankTaxon.rank )} ${highRankTaxon.name}`
       );
     } );
@@ -71,7 +75,9 @@ describe( "DisplayTaxonName", ( ) => {
     test( "renders correct taxon for a subfamily", ( ) => {
       render( <DisplayTaxonName taxon={highRankTaxon} /> );
 
-      expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+      expect(
+        screen.getByTestId( `display-taxon-name.${highRankTaxon.id}` )
+      ).toHaveTextContent(
         `${capitalizeFirstLetter( highRankTaxon.rank )} ${highRankTaxon.name}`
       );
     } );
@@ -79,24 +85,24 @@ describe( "DisplayTaxonName", ( ) => {
     test( "renders correct taxon for subspecies", ( ) => {
       render( <DisplayTaxonName taxon={subspeciesTaxon} layout="horizontal" /> );
 
-      expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
-        "Silver Lupine Lupinus albifrons var. collinus"
-      );
+      expect(
+        screen.getByTestId( `display-taxon-name.${subspeciesTaxon.id}` )
+      ).toHaveTextContent( "Silver Lupine Lupinus albifrons var. collinus" );
     } );
 
     test( "renders correct taxon for improperly capitalized common name", ( ) => {
       render( <DisplayTaxonName taxon={uncapitalizedTaxon} layout="horizontal" /> );
-      expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
-        "Crown-of-thorns Blue Sea-Stars Acanthaster planci"
-      );
+      expect(
+        screen.getByTestId( `display-taxon-name.${uncapitalizedTaxon.id}` )
+      ).toHaveTextContent( "Crown-of-thorns Blue Sea-Stars Acanthaster planci" );
     } );
 
     test( "renders correct taxon for species in grid view", ( ) => {
       render( <DisplayTaxonName layout="vertical" taxon={subspeciesTaxon} /> );
       // Grid view should not have a space between text
-      expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
-        "Silver LupineLupinus albifrons var. collinus"
-      );
+      expect(
+        screen.getByTestId( `display-taxon-name.${subspeciesTaxon.id}` )
+      ).toHaveTextContent( "Silver LupineLupinus albifrons var. collinus" );
     } );
   } );
 
@@ -104,7 +110,9 @@ describe( "DisplayTaxonName", ( ) => {
     test( "renders correct taxon for species", ( ) => {
       render( <DisplayTaxonName taxon={speciesTaxon} scientificNameFirst layout="horizontal" /> );
 
-      expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+      expect(
+        screen.getByTestId( `display-taxon-name.${speciesTaxon.id}` )
+      ).toHaveTextContent(
         `${speciesTaxon.name} ${speciesTaxon.preferred_common_name}`
       );
     } );
@@ -112,15 +120,17 @@ describe( "DisplayTaxonName", ( ) => {
     test( "renders correct taxon w/o common name", ( ) => {
       render( <DisplayTaxonName taxon={noCommonNameTaxon} scientificNameFirst /> );
 
-      expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
-        noCommonNameTaxon.name
-      );
+      expect(
+        screen.getByTestId( `display-taxon-name.${noCommonNameTaxon.id}` )
+      ).toHaveTextContent( noCommonNameTaxon.name );
     } );
 
     test( "renders correct taxon w/o common name and no species", ( ) => {
       render( <DisplayTaxonName taxon={highRankTaxon} scientificNameFirst /> );
 
-      expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+      expect(
+        screen.getByTestId( `display-taxon-name.${highRankTaxon.id}` )
+      ).toHaveTextContent(
         `${capitalizeFirstLetter( highRankTaxon.rank )} ${highRankTaxon.name}`
       );
     } );
@@ -130,9 +140,9 @@ describe( "DisplayTaxonName", ( ) => {
         <DisplayTaxonName taxon={subspeciesTaxon} scientificNameFirst layout="horizontal" />
       );
 
-      expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
-        "Lupinus albifrons var. collinus Silver Lupine"
-      );
+      expect(
+        screen.getByTestId( `display-taxon-name.${subspeciesTaxon.id}` )
+      ).toHaveTextContent( "Lupinus albifrons var. collinus Silver Lupine" );
     } );
 
     test( "renders correct taxon for species in grid view", ( ) => {
@@ -145,9 +155,9 @@ describe( "DisplayTaxonName", ( ) => {
       );
 
       // Grid view should not have a space between text
-      expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
-        "Lupinus albifrons var. collinusSilver Lupine"
-      );
+      expect(
+        screen.getByTestId( `display-taxon-name.${subspeciesTaxon.id}` )
+      ).toHaveTextContent( "Lupinus albifrons var. collinusSilver Lupine" );
     } );
   } );
 
@@ -162,9 +172,9 @@ describe( "DisplayTaxonName", ( ) => {
         />
       );
 
-      expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
-        speciesTaxon.name
-      );
+      expect(
+        screen.getByTestId( `display-taxon-name.${speciesTaxon.id}` )
+      ).toHaveTextContent( speciesTaxon.name );
     } );
 
     test( "renders correct taxon w/o common name", ( ) => {
@@ -176,9 +186,9 @@ describe( "DisplayTaxonName", ( ) => {
         />
       );
 
-      expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
-        noCommonNameTaxon.name
-      );
+      expect(
+        screen.getByTestId( `display-taxon-name.${noCommonNameTaxon.id}` )
+      ).toHaveTextContent( noCommonNameTaxon.name );
     } );
 
     test( "renders correct taxon w/o common name and no species", ( ) => {
@@ -190,7 +200,9 @@ describe( "DisplayTaxonName", ( ) => {
         />
       );
 
-      expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+      expect(
+        screen.getByTestId( `display-taxon-name.${highRankTaxon.id}` )
+      ).toHaveTextContent(
         `${capitalizeFirstLetter( highRankTaxon.rank )} ${highRankTaxon.name}`
       );
     } );
@@ -205,9 +217,9 @@ describe( "DisplayTaxonName", ( ) => {
         />
       );
 
-      expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
-        "Lupinus albifrons var. collinus"
-      );
+      expect(
+        screen.getByTestId( `display-taxon-name.${subspeciesTaxon.id}` )
+      ).toHaveTextContent( "Lupinus albifrons var. collinus" );
     } );
 
     test( "renders correct taxon for species in grid view", ( ) => {
@@ -220,9 +232,9 @@ describe( "DisplayTaxonName", ( ) => {
         />
       );
 
-      expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
-        "Lupinus albifrons var. collinus"
-      );
+      expect(
+        screen.getByTestId( `display-taxon-name.${subspeciesTaxon.id}` )
+      ).toHaveTextContent( "Lupinus albifrons var. collinus" );
     } );
   } );
 
@@ -248,9 +260,9 @@ describe( "DisplayTaxonName", ( ) => {
   describe( "when displayed as plain text within a Trans component", ( ) => {
     it( "it displays common name followed by scientific name", async ( ) => {
       render( <DisplayTaxonName taxon={subspeciesTaxon} removeStyling layout="horizontal" /> );
-      expect( screen.getByTestId( "display-taxon-name-no-styling" ) ).toHaveTextContent(
-        "Silver Lupine (Lupinus albifrons var. collinus)"
-      );
+      expect(
+        screen.getByTestId( `display-taxon-name-no-styling.${subspeciesTaxon.id}` )
+      ).toHaveTextContent( "Silver Lupine (Lupinus albifrons var. collinus)" );
     } );
 
     it( "it displays scientific name followed by common name", async ( ) => {
@@ -262,9 +274,9 @@ describe( "DisplayTaxonName", ( ) => {
           scientificNameFirst
         />
       );
-      expect( screen.getByTestId( "display-taxon-name-no-styling" ) ).toHaveTextContent(
-        "Lupinus albifrons var. collinus (Silver Lupine)"
-      );
+      expect(
+        screen.getByTestId( `display-taxon-name-no-styling.${subspeciesTaxon.id}` )
+      ).toHaveTextContent( "Lupinus albifrons var. collinus (Silver Lupine)" );
     } );
 
     it( "it displays scientific name only", async ( ) => {
@@ -277,9 +289,9 @@ describe( "DisplayTaxonName", ( ) => {
           prefersCommonNames={false}
         />
       );
-      expect( screen.getByTestId( "display-taxon-name-no-styling" ) ).toHaveTextContent(
-        "Lupinus albifrons var. collinus"
-      );
+      expect(
+        screen.getByTestId( `display-taxon-name-no-styling.${subspeciesTaxon.id}` )
+      ).toHaveTextContent( "Lupinus albifrons var. collinus" );
     } );
   } );
 } );

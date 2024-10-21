@@ -1,11 +1,11 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useCameraDevice
+} from "components/Camera/helpers/visionCameraWrapper";
 import React, {
   useState
 } from "react";
 import { Alert } from "react-native";
-import {
-  useCameraDevice
-} from "react-native-vision-camera";
 import { useTranslation } from "sharedHooks";
 
 import CameraWithDevice from "./CameraWithDevice";
