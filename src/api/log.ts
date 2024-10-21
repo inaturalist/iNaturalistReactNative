@@ -28,11 +28,18 @@ const iNatLogstashTransport: transportFunctionType = async props => {
   // Don't bother to log from dev builds
   // eslint-disable-next-line no-undef
   if ( __DEV__ ) return;
-  console.log( "[DEBUG log.ts iNatLogstashTransport] calling getJWT" );
-  const userToken = await getJWT();
+  let userToken;
+  try {
+    userToken = await getJWT();
+  } catch ( getJWTError ) {
+    // We use logging to report errors, so this is one of the few cases where
+    // we really do want to squelch all errors to avoid recursion
+    console.error( "[ERROR log.ts] failed to retrieve user JWT while logging" );
+  }
   const anonymousToken = getAnonymousJWT();
   // Can't log w/o auth token
   if ( !userToken && !anonymousToken ) {
+    console.error( "[ERROR log.ts] failed to retrieve user or anonymous JWT while logging" );
     return;
   }
   // if message is an Error or is an array ending in an error, extract
@@ -66,14 +73,23 @@ const iNatLogstashTransport: transportFunctionType = async props => {
     error_type: errorType,
     backtrace
   };
-  await api.post( "/log", formData, {
-    headers: {
-      Authorization: [
-        userToken,
-        anonymousToken
-      ].flat( ).join( ", " )
+  try {
+    await api.post( "/log", formData, {
+      headers: {
+        Authorization: [
+          userToken,
+          anonymousToken
+        ].flat( ).join( ", " )
+      }
+    } );
+  } catch ( e ) {
+    const postLogError = e as Error;
+    if ( postLogError.message.match( /Network request failed/ ) ) {
+      // If we're offline, we can't post logs to the server
+      return;
     }
-  } );
+    throw postLogError;
+  }
 };
 
 export default iNatLogstashTransport;
