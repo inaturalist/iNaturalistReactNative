@@ -4,10 +4,12 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import CameraView from "components/Camera/CameraView.tsx";
 import FadeInOutView from "components/Camera/FadeInOutView";
+import useDeviceStorageFull from "components/Camera/hooks/useDeviceStorageFull";
 import useRotation from "components/Camera/hooks/useRotation.ts";
 import useTakePhoto from "components/Camera/hooks/useTakePhoto.ts";
 import useZoom from "components/Camera/hooks/useZoom.ts";
 import { View } from "components/styledComponents";
+import { t } from "i18next";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, {
@@ -21,7 +23,6 @@ import { Snackbar } from "react-native-paper";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
-import useTranslation from "sharedHooks/useTranslation";
 import useStore from "stores/useStore";
 
 import {
@@ -63,7 +64,7 @@ const StandardCamera = ( {
   const hasFlash = device?.hasFlash;
   const {
     animatedProps,
-    changeZoom,
+    handleZoomButtonPress,
     pinchToZoom,
     resetZoom,
     showZoomButton,
@@ -81,7 +82,7 @@ const StandardCamera = ( {
     toggleFlash
   } = useTakePhoto( camera, !!addEvidence, device );
 
-  const { t } = useTranslation( );
+  const { deviceStorageFull, showStorageFullAlert } = useDeviceStorageFull();
 
   const cameraUris = useStore( state => state.cameraUris );
   const prepareCamera = useStore( state => state.prepareCamera );
@@ -145,12 +146,20 @@ const StandardCamera = ( {
   }, [discardedChanges, showDiscardSheet, navigation, newPhotoUris, deletePhotoByUri] );
 
   const handleTakePhoto = async ( ) => {
+    if ( deviceStorageFull ) {
+      showStorageFullAlert();
+    }
     if ( disallowAddingPhotos ) {
       setShowAlert( true );
       return;
     }
     const uri = await takePhoto( );
     setNewPhotoUris( [...newPhotoUris, uri] );
+  };
+
+  const onFlipCamera = () => {
+    resetZoom( );
+    flipCamera( );
   };
 
   const containerClasses = ["flex-1"];
@@ -184,9 +193,9 @@ const StandardCamera = ( {
         )}
         <FadeInOutView takingPhoto={takingPhoto} />
         <CameraOptionsButtons
-          changeZoom={changeZoom}
+          handleZoomButtonPress={handleZoomButtonPress}
           disabled={disallowAddingPhotos}
-          flipCamera={flipCamera}
+          flipCamera={onFlipCamera}
           handleCheckmarkPress={handleCheckmarkPress}
           handleClose={handleBackButtonPress}
           hasFlash={hasFlash}

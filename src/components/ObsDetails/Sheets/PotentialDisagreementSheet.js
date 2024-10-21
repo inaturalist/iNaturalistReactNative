@@ -13,20 +13,22 @@ import { Trans } from "react-i18next";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
 interface Props {
-  handleClose: Function,
+  onPressClose: Function,
   onPotentialDisagreePressed: Function,
-  taxon: Object
+  newTaxon: Object,
+  oldTaxon: Object
 }
 
 const PotentialDisagreementSheet = ( {
-  handleClose,
+  onPressClose,
   onPotentialDisagreePressed,
-  taxon
+  newTaxon,
+  oldTaxon
 }: Props ): Node => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
 
-  const showTaxonName = fontComponent => (
+  const showTaxonName = ( taxon, fontComponent ) => (
     <DisplayTaxonName
       bottomTextComponent={fontComponent}
       layout="horizontal"
@@ -45,7 +47,7 @@ const PotentialDisagreementSheet = ( {
       labelComponent: (
         <Trans
           i18nKey="Potential-disagreement-unsure"
-          components={[<Body1 />, showTaxonName( Body1 )]}
+          components={[<Body1 />, showTaxonName( newTaxon, Body1 )]}
         />
       )
     },
@@ -54,7 +56,7 @@ const PotentialDisagreementSheet = ( {
       labelComponent: (
         <Trans
           i18nKey="Potential-disagreement-disagree"
-          components={[<Body1 />, showTaxonName( Body1 )]}
+          components={[<Body1 />, showTaxonName( newTaxon, Body1 )]}
         />
       )
     }
@@ -63,13 +65,13 @@ const PotentialDisagreementSheet = ( {
   const topDescriptionText = (
     <Trans
       i18nKey="Potential-disagreement-description"
-      components={[<List2 />, showTaxonName( List2 )]}
+      components={[<List2 />, showTaxonName( oldTaxon, List2 )]}
     />
   );
 
   const bottomComponent = (
     <View className="mx-6 mb-6">
-      <DisplayTaxon taxon={taxon} />
+      <DisplayTaxon taxon={newTaxon} />
     </View>
   );
 
@@ -79,14 +81,13 @@ const PotentialDisagreementSheet = ( {
       headerText={t( "POTENTIAL-DISAGREEMENT" )}
       confirm={checkBoxValue => {
         onPotentialDisagreePressed( checkBoxValue );
-        handleClose( );
+        onPressClose( );
       }}
       confirmText={t( "SUBMIT-ID-SUGGESTION" )}
-      handleClose={handleClose}
+      onPressClose={onPressClose}
       radioValues={radioValues}
       selectedValue={radioValues.unsure.value}
       topDescriptionText={topDescriptionText}
-      taxon={taxon}
       bottomComponent={bottomComponent}
     />
   );

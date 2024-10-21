@@ -6,7 +6,7 @@ import handleError from "./error";
 const PARAMS = {
   fields: {
     combined_score: true,
-    taxon: Taxon.SCORE_IMAGE_FIELDS
+    taxon: Taxon.LIMITED_TAXON_FIELDS
   }
 };
 

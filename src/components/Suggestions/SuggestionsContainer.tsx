@@ -15,12 +15,11 @@ import {
   useLastScreen,
   useLocationPermission
 } from "sharedHooks";
-// import { log } from "sharedHelpers/logger";
 import useStore from "stores/useStore";
 
-import fetchUserLocation from "../../sharedHelpers/fetchUserLocation";
+import fetchCoarseUserLocation from "../../sharedHelpers/fetchUserLocation";
 import flattenUploadParams from "./helpers/flattenUploadParams";
-import isolateHumans from "./helpers/isolateHumans";
+import isolateHumans, { humanFilter } from "./helpers/isolateHumans";
 import sortSuggestions from "./helpers/sortSuggestions";
 import useClearComputerVisionDirectory from "./hooks/useClearComputerVisionDirectory";
 import useNavigateWithTaxonSelected from "./hooks/useNavigateWithTaxonSelected";
@@ -28,7 +27,10 @@ import useOfflineSuggestions from "./hooks/useOfflineSuggestions";
 import useOnlineSuggestions from "./hooks/useOnlineSuggestions";
 import Suggestions from "./Suggestions";
 import TaxonSearchButton from "./TaxonSearchButton";
-// const logger = log.extend( "SuggestionsContainer" );
+
+const ONLINE_THRESHOLD = 78;
+// note: offline threshold may need to change based on input from the CV team
+const OFFLINE_THRESHOLD = 0.78;
 
 const setQueryKey = ( selectedPhotoUri, shouldUseEvidenceLocation ) => [
   "scoreImage",
@@ -49,8 +51,9 @@ export type Suggestions = {
   otherSuggestions: Suggestion[];
   topSuggestion: Suggestion | null;
   topSuggestionType: "none"
-    | "first-sorted"
-    | "above-threshold"
+    | "human"
+    | "above-online-threshold"
+    | "above-offline-threshold"
     | "common-ancestor"
     | "not-confident";
 };
@@ -69,8 +72,7 @@ const initialState = {
   queryKey: [],
   selectedPhotoUri: null,
   selectedTaxon: null,
-  shouldUseEvidenceLocation: false,
-  showPermissionGate: false
+  shouldUseEvidenceLocation: false
 };
 
 const reducer = ( state, action ) => {
@@ -98,11 +100,6 @@ const reducer = ( state, action ) => {
       return {
         ...state,
         fetchStatus: action.fetchStatus
-      };
-    case "SHOW_PERMISSION_GATE":
-      return {
-        ...state,
-        showPermissionGate: action.showPermissionGate
       };
     case "TOGGLE_LOCATION":
       return {
@@ -162,7 +159,6 @@ const SuggestionsContainer = ( ) => {
     lastScreen
   ] );
   const improveWithLocationButtonOnPress = useCallback( ( ) => {
-    dispatch( { type: "SHOW_PERMISSION_GATE", showPermissionGate: true } );
     requestPermissions( );
   }, [requestPermissions] );
 
@@ -173,8 +169,7 @@ const SuggestionsContainer = ( ) => {
     queryKey,
     selectedPhotoUri,
     selectedTaxon,
-    shouldUseEvidenceLocation,
-    showPermissionGate
+    shouldUseEvidenceLocation
   } = state;
 
   const shouldFetchOnlineSuggestions = ( hasPermissions !== undefined )
@@ -204,10 +199,17 @@ const SuggestionsContainer = ( ) => {
     currentObservation
   ] );
 
+  // 20240815 amanda - it's conceivable that we would want to use a cached image here eventually,
+  // since the user can see the small square version of this image in MyObs/ObsDetails already
+  // but for now, passing in an https photo to predictImage while offline crashes the app
+  const urlWillCrashOffline = selectedPhotoUri.includes( "https://" ) && !isConnected;
+
   // skip to offline suggestions if internet connection is spotty
-  const tryOfflineSuggestions = timedOut || (
-    ( !onlineSuggestions || onlineSuggestions?.results?.length === 0 )
-      && ( fetchStatus === "online-fetched" || fetchStatus === "online-error" )
+  const tryOfflineSuggestions = !urlWillCrashOffline && (
+    timedOut
+    || (
+      ( !onlineSuggestions || onlineSuggestions?.results?.length === 0 )
+      && ( fetchStatus === "online-fetched" || fetchStatus === "online-error" ) )
   );
 
   const {
@@ -273,6 +275,7 @@ const SuggestionsContainer = ( ) => {
       ...initialSuggestions,
       otherSuggestions: sortedSuggestions
     };
+    // no suggestions
     if ( sortedSuggestions.length === 0 ) {
       return {
         ...newSuggestions,
@@ -280,21 +283,27 @@ const SuggestionsContainer = ( ) => {
         topSuggestionType: "none"
       };
     }
-    // return first sorted result if there's a human suggestion, if we're
-    // using offline suggestions, or if there's only one suggestion
-    if ( usingOfflineSuggestions || sortedSuggestions.length === 1 ) {
-      const firstSuggestion = sortedSuggestions.shift( );
+    // human top suggestion
+    if ( sortedSuggestions.find( humanFilter ) ) {
       return {
         ...newSuggestions,
-        topSuggestion: firstSuggestion,
-        topSuggestionType: "first-sorted"
+        topSuggestion: sortedSuggestions[0],
+        topSuggestionType: "human",
+        otherSuggestions: []
       };
     }
 
     // Note: score_vision responses have combined_score values between 0 and
     // 100, compared with offline model results that have scores between 0
     // and 1
-    const suggestionAboveThreshold = _.find( sortedSuggestions, s => s.combined_score > 78 );
+    const filterCriteria = usingOfflineSuggestions
+      ? s => s.score > OFFLINE_THRESHOLD
+      : s => s.combined_score > ONLINE_THRESHOLD;
+
+    const suggestionAboveThreshold = _.find(
+      sortedSuggestions,
+      filterCriteria
+    );
 
     if ( suggestionAboveThreshold ) {
       // make sure we're not returning the top suggestion in Other Suggestions
@@ -305,10 +314,21 @@ const SuggestionsContainer = ( ) => {
       return {
         ...newSuggestions,
         topSuggestion: firstSuggestion,
-        topSuggestionType: "above-threshold"
+        topSuggestionType: usingOfflineSuggestions
+          ? "above-offline-threshold"
+          : "above-online-threshold"
+      };
+    }
+    if ( !suggestionAboveThreshold && usingOfflineSuggestions ) {
+      // no top suggestion for offline
+      return {
+        ...newSuggestions,
+        topSuggestion: null,
+        topSuggestionType: "not-confident"
       };
     }
 
+    // online common ancestor
     if ( onlineSuggestions?.common_ancestor ) {
       return {
         ...newSuggestions,
@@ -317,6 +337,7 @@ const SuggestionsContainer = ( ) => {
       };
     }
 
+    // no top suggestion
     return {
       ...newSuggestions,
       topSuggestionType: "not-confident"
@@ -360,10 +381,14 @@ const SuggestionsContainer = ( ) => {
     || !isConnected;
 
   const setImageParams = useCallback( async ( ) => {
+    if ( isConnected === false ) {
+      return;
+    }
     const newImageParams = await createUploadParams( selectedPhotoUri, shouldUseEvidenceLocation );
     dispatch( { type: "FLATTEN_UPLOAD_PARAMS", flattenedUploadParams: newImageParams } );
   }, [
     createUploadParams,
+    isConnected,
     selectedPhotoUri,
     shouldUseEvidenceLocation
   ] );
@@ -372,6 +397,9 @@ const SuggestionsContainer = ( ) => {
 
   useEffect( ( ) => {
     const onFocus = navigation.addListener( "focus", ( ) => {
+      // resizeImage crashes if trying to resize an https:// photo while there is no internet
+      // in this situation, we can skip creating upload parameters since we're loading
+      // offline suggestions anyway
       if ( _.isEqual( initialSuggestions, suggestions ) ) {
         setImageParams( );
       }
@@ -386,8 +414,7 @@ const SuggestionsContainer = ( ) => {
   ] );
 
   const onPermissionGranted = useCallback( async ( ) => {
-    dispatch( { type: "SHOW_PERMISSION_GATE", showPermissionGate: false } );
-    const userLocation = await fetchUserLocation( );
+    const userLocation = await fetchCoarseUserLocation( );
     updateObservationKeys( userLocation );
     const newImageParams = await flattenUploadParams( selectedPhotoUri );
     newImageParams.lat = userLocation?.latitude;
@@ -429,6 +456,7 @@ const SuggestionsContainer = ( ) => {
         showImproveWithLocationButton={showImproveWithLocationButton}
         suggestions={suggestions}
         toggleLocation={toggleLocation}
+        urlWillCrashOffline={urlWillCrashOffline}
         usingOfflineSuggestions={usingOfflineSuggestions}
       />
       <MediaViewerModal
@@ -440,10 +468,7 @@ const SuggestionsContainer = ( ) => {
         uri={selectedPhotoUri}
         photos={innerPhotos}
       />
-      {/* 20240723 amanda - this feels a bit hacky, but without this extra
-      showPermissionGate boolean, renderPermissionsGate creates a maximum update
-      exceeded error and keeps returning onPermissionsGranted infinitely */}
-      {showPermissionGate && renderPermissionsGate( { onPermissionGranted } )}
+      {renderPermissionsGate( { onPermissionGranted } )}
     </>
   );
 };

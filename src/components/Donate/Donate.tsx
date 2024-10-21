@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+// import { useNavigation } from "@react-navigation/native";
 import {
   Body2, Button, Heading4, ScrollViewWrapper
 } from "components/SharedComponents";
@@ -6,28 +6,21 @@ import { View } from "components/styledComponents";
 import { t } from "i18next";
 import React from "react";
 import * as StoreReview from "react-native-store-review";
+import { openExternalWebBrowser } from "sharedHelpers/util.ts";
 
 const Donate = () => {
-  const navigation = useNavigation( );
+  // const navigation = useNavigation( );
   const onDonatePress = async ( ) => {
     const url = "https://donorbox.org/support-inaturalist?utm_campaign=default&utm_medium=mobile&utm_source=iNatRN";
-    navigation.navigate( "FullPageWebView", {
-      title: t( "DONATE-TO-INATURALIST" ),
-      initialUrl: url,
-      loggedIn: false,
-      openLinksInBrowser: false,
-      skipSetSourceInShouldStartLoadWithRequest: true
-    } );
-  };
-
-  const onShopPress = async ( ) => {
-    const url = "https://inaturalist.threadless.com";
-    navigation.navigate( "FullPageWebView", {
-      title: t( "SHOP-INATURALIST-MERCH" ),
-      initialUrl: url,
-      loggedIn: false,
-      openLinksInBrowser: true
-    } );
+    // Temporarily disable in-app donation until we can convince Apple that we
+    // really are a non-profit
+    // navigation.navigate( "FullPageWebView", {
+    //   title: t( "DONATE-TO-INATURALIST" ),
+    //   initialUrl: url,
+    //   loggedIn: false,
+    //   skipSetSourceInShouldStartLoadWithRequest: true
+    // } );
+    openExternalWebBrowser( url );
   };
 
   const onReviewPress = ( ) => {
@@ -54,7 +47,7 @@ const Donate = () => {
           className="mb-8"
           level="neutral"
           text={t( "SHOP-INATURALIST-MERCH" )}
-          onPress={() => onShopPress( )}
+          onPress={() => openExternalWebBrowser( "https://inaturalist.threadless.com" )}
         />
         <Heading4 className="mb-3">{t( "LEAVE-US-A-REVIEW" )}</Heading4>
         <Button

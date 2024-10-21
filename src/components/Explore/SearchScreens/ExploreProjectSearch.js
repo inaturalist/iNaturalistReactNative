@@ -1,12 +1,8 @@
 // @flow
 
-import { FlashList } from "@shopify/flash-list";
 import { searchProjects } from "api/projects";
 import {
-  ActivityIndicator,
-  Body3,
-  Heading4,
-  INatIconButton,
+  CustomFlashList,
   ProjectListItem,
   SearchBar,
   ViewWrapper
@@ -20,6 +16,9 @@ import React, {
 import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
+import EmptySearchResults from "./EmptySearchResults";
+import ExploreSearchHeader from "./ExploreSearchHeader";
+
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4
 } );
@@ -30,13 +29,15 @@ type Props = {
 };
 
 const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
-  const [userQuery, setUserQuery] = useState( "" );
+  const [projectQuery, setProjectQuery] = useState( "" );
   const { t } = useTranslation();
 
-  const { data: projects, isLoading } = useAuthenticatedQuery(
-    ["searchProjects", userQuery],
-    optsWithAuth => searchProjects( { q: userQuery }, optsWithAuth )
+  const { data, isLoading, refetch } = useAuthenticatedQuery(
+    ["searchProjects", projectQuery],
+    optsWithAuth => searchProjects( { q: projectQuery }, optsWithAuth )
   );
+
+  const projects = data?.results;
 
   const onProjectSelected = useCallback( async project => {
     if ( !project.id ) {
@@ -77,51 +78,45 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
     <View className="border-b border-lightGray" />
   );
 
+  const renderEmptyList = ( ) => (
+    <EmptySearchResults
+      isLoading={isLoading}
+      searchQuery={projectQuery}
+      refetch={refetch}
+    />
+  );
+
+  const renderFooter = ( ) => <View className="h-[336px]" />;
+
   return (
     <ViewWrapper>
-      <View className="flex-row justify-center p-5 bg-white">
-        <INatIconButton
-          testID="ExploreTaxonSearch.close"
-          size={18}
-          icon="back"
-          className="absolute top-2 left-3 z-10"
-          onPress={( ) => closeModal()}
-          accessibilityLabel={t( "SEARCH-PROJECTS" )}
-        />
-        <Heading4>{t( "SEARCH-PROJECTS" )}</Heading4>
-        <Body3 onPress={resetProject} className="absolute top-4 right-4">
-          {t( "Reset-verb" )}
-        </Body3>
-      </View>
+      <ExploreSearchHeader
+        closeModal={closeModal}
+        headerText={t( "SEARCH-PROJECTS" )}
+        resetFilters={resetProject}
+        testID="ExploreProjectSearch.close"
+      />
       <View
         className="bg-white px-6 pt-2 pb-8"
         style={DROP_SHADOW}
       >
         <SearchBar
-          handleTextChange={setUserQuery}
-          value={userQuery}
-          testID="SearchUser"
+          handleTextChange={setProjectQuery}
+          value={projectQuery}
+          testID="SearchProject"
         />
       </View>
-      {isLoading
-        ? (
-          <View className="p-4">
-            <ActivityIndicator size={40} />
-          </View>
-        )
-        : (
-          <FlashList
-            data={projects}
-            initialNumToRender={5}
-            estimatedItemSize={100}
-            testID="SearchUserList"
-            keyExtractor={item => item.id}
-            renderItem={renderItem}
-            ListHeaderComponent={renderItemSeparator}
-            ItemSeparatorComponent={renderItemSeparator}
-            accessible
-          />
-        )}
+      <CustomFlashList
+        data={projects}
+        estimatedItemSize={100}
+        testID="SearchProjectList"
+        keyExtractor={item => item.id}
+        renderItem={renderItem}
+        ListEmptyComponent={renderEmptyList}
+        ListHeaderComponent={renderItemSeparator}
+        ItemSeparatorComponent={renderItemSeparator}
+        ListFooterComponent={renderFooter}
+      />
     </ViewWrapper>
   );
 };

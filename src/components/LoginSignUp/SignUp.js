@@ -11,6 +11,7 @@ import SignUpForm from "./SignUpForm";
 
 const TARGET_NON_KEYBOARD_HEIGHT = 440;
 const HIDE_HEADER_HEIGHT = 580;
+const IMAGE_STYLE = { opacity: 0.5 };
 
 const SignUp = ( ): Node => {
   const {
@@ -26,6 +27,7 @@ const SignUp = ( ): Node => {
     <LoginSignUpWrapper
       backgroundSource={require( "images/background/birger-strahl-ksiGE4hMiso-unsplash.jpg" )}
       keyboardVerticalOffset={keyboardVerticalOffset}
+      imageStyle={IMAGE_STYLE}
     >
       <Header
         headerText={t( "Join-the-largest-community-of-naturalists" )}

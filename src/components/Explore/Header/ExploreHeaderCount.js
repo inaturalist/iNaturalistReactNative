@@ -8,14 +8,14 @@ import {
 import { Pressable } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
+import colors from "styles/tailwindColors";
 
 type Props = {
   count: ?number,
   exploreView: string,
   exploreViewIcon: string,
-  loadingStatus: boolean,
+  isFetching: boolean,
   onPress: Function,
 }
 
@@ -23,11 +23,10 @@ const ExploreHeaderCount = ( {
   count,
   exploreView,
   exploreViewIcon,
-  loadingStatus,
+  isFetching,
   onPress
 }: Props ): Node => {
   const { t } = useTranslation( );
-  const theme = useTheme( );
 
   const renderText = ( ) => {
     if ( exploreView === "observations" ) {
@@ -42,23 +41,31 @@ const ExploreHeaderCount = ( {
     return t( "X-Observers", { count } );
   };
 
+  const renderHeader = ( ) => {
+    if ( isFetching ) {
+      return <ActivityIndicator size={25} />;
+    } if ( count !== null ) {
+      return (
+        <>
+          <INatIcon
+            name={exploreViewIcon}
+            size={18}
+            color={colors.white}
+          />
+          <Body2 className="text-white ml-3">{renderText( )}</Body2>
+        </>
+      );
+    }
+    return null;
+  };
+
   return (
     <Pressable
       className="h-[40px] flex-row items-center justify-center"
       onPress={onPress}
       accessibilityRole="summary"
     >
-      {( loadingStatus && count === null ) && <ActivityIndicator size={25} />}
-      {count !== null && (
-        <>
-          <INatIcon
-            name={exploreViewIcon}
-            size={18}
-            color={theme.colors.onPrimary}
-          />
-          <Body2 className="text-white ml-3">{renderText( )}</Body2>
-        </>
-      )}
+      {renderHeader( )}
     </Pressable>
   );
 };

@@ -16,13 +16,13 @@ import { PLACE_MODE } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Alert } from "react-native";
-import { useTheme } from "react-native-paper";
 import {
   useDebugMode,
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
 import { getShadow } from "styles/global";
+import colors from "styles/tailwindColors";
 
 import ExploreHeader from "./Header/ExploreHeader";
 import IdentifiersView from "./IdentifiersView";
@@ -44,50 +44,57 @@ const exploreViewIcon = {
 };
 
 type Props = {
+  // TODO: change to PLACE_MODE in Typescript
+  canFetch?: boolean,
   closeFiltersModal: Function,
   count: Object,
   currentExploreView: string,
-  setCurrentExploreView: Function,
   filterByIconicTaxonUnknown: Function,
+  handleUpdateCount: Function,
+  hasLocationPermissions: ?boolean,
   hideBackButton: boolean,
   isConnected: boolean,
-  loadingStatus: boolean,
+  isFetchingHeaderCount: boolean,
+  currentMapRegion: Object,
   openFiltersModal: Function,
-  queryParams: Object,
-  showFiltersModal: boolean,
-  updateCount: Function,
-  updateTaxon: Function,
-  updateLocation: Function,
-  updateUser: Function,
-  updateProject: Function,
-  // TODO: change to PLACE_MODE in Typescript
   placeMode: string,
-  hasLocationPermissions: ?boolean,
-  requestLocationPermissions: Function
+  queryParams: Object,
+  requestLocationPermissions: Function,
+  setCurrentExploreView: Function,
+  setCurrentMapRegion: Function,
+  showFiltersModal: boolean,
+  startFetching: Function,
+  updateLocation: Function,
+  updateProject: Function,
+  updateTaxon: Function,
+  updateUser: Function,
 }
 
 const Explore = ( {
+  canFetch,
   closeFiltersModal,
   count,
   currentExploreView,
-  setCurrentExploreView,
   filterByIconicTaxonUnknown,
+  handleUpdateCount,
+  hasLocationPermissions,
   hideBackButton,
   isConnected,
-  loadingStatus,
+  isFetchingHeaderCount,
+  currentMapRegion,
   openFiltersModal,
-  queryParams,
-  showFiltersModal,
-  updateCount,
-  updateTaxon,
-  updateLocation,
-  updateUser,
-  updateProject,
   placeMode,
-  hasLocationPermissions,
-  requestLocationPermissions
+  queryParams,
+  requestLocationPermissions,
+  setCurrentExploreView,
+  setCurrentMapRegion,
+  showFiltersModal,
+  startFetching,
+  updateLocation,
+  updateProject,
+  updateTaxon,
+  updateUser
 }: Props ): Node => {
-  const theme = useTheme( );
   const { t } = useTranslation( );
   const [showExploreBottomSheet, setShowExploreBottomSheet] = useState( false );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
@@ -110,7 +117,7 @@ const Explore = ( {
       exploreView={currentExploreView}
       exploreViewIcon={icon}
       hideBackButton={hideBackButton}
-      loadingStatus={loadingStatus}
+      isFetchingHeaderCount={isFetchingHeaderCount}
       openFiltersModal={openFiltersModal}
       updateTaxon={updateTaxon}
       updateLocation={updateLocation}
@@ -119,7 +126,7 @@ const Explore = ( {
   );
 
   const renderMainContent = ( ) => {
-    if ( !isConnected ) {
+    if ( isConnected === false ) {
       return (
         <OfflineNotice
           onPress={() => refresh()}
@@ -147,35 +154,37 @@ const Explore = ( {
       <View className="flex-1">
         {currentExploreView === "observations" && (
           <ObservationsView
-            count={count}
+            canFetch={canFetch}
             layout={layout}
             queryParams={queryParams}
-            updateCount={updateCount}
+            handleUpdateCount={handleUpdateCount}
+            currentMapRegion={currentMapRegion}
+            setCurrentMapRegion={setCurrentMapRegion}
           />
         )}
         {currentExploreView === "species" && (
           <SpeciesView
-            count={count}
+            canFetch={canFetch}
             setCurrentExploreView={setCurrentExploreView}
             isConnected={isConnected}
             queryParams={queryParams}
-            updateCount={updateCount}
+            handleUpdateCount={handleUpdateCount}
           />
         )}
         {currentExploreView === "observers" && (
           <ObserversView
-            count={count}
+            canFetch={canFetch}
             isConnected={isConnected}
             queryParams={queryParams}
-            updateCount={updateCount}
+            handleUpdateCount={handleUpdateCount}
           />
         )}
         {currentExploreView === "identifiers" && (
           <IdentifiersView
-            count={count}
+            canFetch={canFetch}
             isConnected={isConnected}
             queryParams={queryParams}
-            updateCount={updateCount}
+            handleUpdateCount={handleUpdateCount}
           />
         )}
       </View>
@@ -219,10 +228,11 @@ const Explore = ( {
 
     return (
       <RadioButtonSheet
-        handleClose={() => setShowExploreBottomSheet( false )}
+        onPressClose={() => setShowExploreBottomSheet( false )}
         headerText={t( "EXPLORE" )}
         hidden={!showExploreBottomSheet}
         confirm={newView => {
+          startFetching( );
           setCurrentExploreView( newView );
           setShowExploreBottomSheet( false );
         }}
@@ -277,7 +287,7 @@ const Explore = ( {
           )}
           <INatIconButton
             icon={icon}
-            color={theme.colors.onPrimary}
+            color={colors.white}
             size={27}
             className={classnames(
               grayCircleClass,

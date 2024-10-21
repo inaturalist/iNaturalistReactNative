@@ -10,7 +10,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "sharedHooks";
 
 import CrosshairCircle from "./CrosshairCircle";
@@ -19,48 +19,40 @@ import Footer from "./Footer";
 import LoadingIndicator from "./LoadingIndicator";
 import LocationSearch from "./LocationSearch";
 
-export const DESIRED_LOCATION_ACCURACY = 100;
-export const REQUIRED_LOCATION_ACCURACY = 500_000;
-
 type Props = {
   accuracy: number,
-  accuracyTest: string,
-  goBackOnSave: Function,
+  handleSave: Function,
   hidePlaceResults: boolean,
-  keysToUpdate: Object,
   loading: boolean,
   locationName: string,
+  initialRegion: Object,
   mapType: string,
+  onCurrentLocationPress: Function,
+  onMapReady: Function,
+  onRegionChangeComplete: Function,
   region: Object,
+  regionToAnimate: Object,
   selectPlaceResult: Function,
-  setMapReady: Function,
-  showCrosshairs: boolean,
-  updateLocationName: Function,
-  updateRegion: Function,
-  updateObservationKeys: Function
+  updateLocationName: Function
 };
 
 const LocationPicker = ( {
   accuracy,
-  accuracyTest,
-  goBackOnSave,
+  handleSave,
   hidePlaceResults,
-  keysToUpdate,
   loading,
   locationName,
+  regionToAnimate,
+  initialRegion,
   mapType,
+  onCurrentLocationPress,
+  onMapReady,
+  onRegionChangeComplete,
   region,
   selectPlaceResult,
-  setMapReady = ( ) => undefined,
-  showCrosshairs,
-  updateLocationName,
-  updateRegion,
-  updateObservationKeys
+  updateLocationName
 }: Props ): Node => {
   const { t } = useTranslation( );
-
-  // prevent initial map render from resetting the coordinates and locationName
-  const [initialMapRender, setInitialMapRender] = useState( true );
 
   return (
     <KeyboardDismissableView>
@@ -68,7 +60,7 @@ const LocationPicker = ( {
         <View className="justify-center">
           <Heading4 className="self-center my-4">{t( "EDIT-LOCATION" )}</Heading4>
           <View className="absolute right-2">
-            <CloseButton black size={19} />
+            <CloseButton darkGray size={19} />
           </View>
         </View>
         <View className="flex-grow">
@@ -98,41 +90,28 @@ const LocationPicker = ( {
             )}
             pointerEvents="none"
           >
-            {showCrosshairs && (
-              <CrosshairCircle
-                accuracyTest={accuracyTest}
-              />
-            )}
+            {!loading && <CrosshairCircle accuracy={accuracy} />}
           </View>
           <View className="top-1/2 left-1/2 absolute z-10">
             {loading && <LoadingIndicator />}
           </View>
           <Map
             className="h-full"
-            showsCompass={false}
-            region={region}
+            initialRegion={initialRegion}
             mapType={mapType}
-            onCurrentLocationPress={( ) => setInitialMapRender( false )}
-            onRegionChangeComplete={async newRegion => {
-              if ( !initialMapRender ) {
-                updateRegion( newRegion );
-              } else {
-                setInitialMapRender( false );
-              }
-            }}
-            onMapReady={setMapReady}
-            showCurrentLocationButton
-            showSwitchMapTypeButton
             obsLatitude={region.latitude}
             obsLongitude={region.longitude}
+            onCurrentLocationPress={onCurrentLocationPress}
+            onMapReady={onMapReady}
+            onRegionChangeComplete={onRegionChangeComplete}
+            regionToAnimate={regionToAnimate}
+            showCurrentLocationButton
+            showSwitchMapTypeButton
+            showsCompass={false}
             testID="LocationPicker.Map"
           />
         </View>
-        <Footer
-          keysToUpdate={keysToUpdate}
-          goBackOnSave={goBackOnSave}
-          updateObservationKeys={updateObservationKeys}
-        />
+        <Footer handleSave={handleSave} />
       </ViewWrapper>
     </KeyboardDismissableView>
   );

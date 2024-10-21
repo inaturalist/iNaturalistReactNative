@@ -2,20 +2,20 @@
 
 import { refresh, useNetInfo } from "@react-native-community/netinfo";
 import { useNavigation, useNavigationState, useRoute } from "@react-navigation/native";
-import { fetchTaxon } from "api/taxa";
-import classnames from "classnames";
+import { fetchSpeciesCounts } from "api/observations";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
   ActivityIndicator,
-  BackButton,
   Body1,
+  BottomSheet,
   Button,
+  ButtonBar,
+  CarouselDots,
   INatIcon,
   INatIconButton,
-  KebabMenu,
+  List2,
   OfflineNotice,
-  ScrollViewWrapper,
-  StickyToolbar
+  ScrollViewWrapper
 } from "components/SharedComponents";
 import {
   View
@@ -23,25 +23,26 @@ import {
 import _, { compact } from "lodash";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
-  Alert,
-  Linking,
-  Platform,
-  Share,
   StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import { useTheme } from "react-native-paper";
 import { log } from "sharedHelpers/logger";
+import saveObservation from "sharedHelpers/saveObservation.ts";
+import { fetchTaxonAndSave } from "sharedHelpers/taxon";
 import {
   useAuthenticatedQuery,
+  useCurrentUser,
+  useQuery,
   useTranslation,
   useUserMe
 } from "sharedHooks";
 import useStore from "stores/useStore";
+import colors from "styles/tailwindColors";
 
 import EstablishmentMeans from "./EstablishmentMeans";
+import TaxonDetailsHeader from "./TaxonDetailsHeader";
 import TaxonDetailsMediaViewerHeader from "./TaxonDetailsMediaViewerHeader";
 import TaxonDetailsTitle from "./TaxonDetailsTitle";
 import TaxonMapPreview from "./TaxonMapPreview";
@@ -53,22 +54,22 @@ const logger = log.extend( "TaxonDetails" );
 
 const { useRealm } = RealmContext;
 
-const TAXON_URL = "https://www.inaturalist.org/taxa";
-
 const isTablet = DeviceInfo.isTablet();
 
 const TaxonDetails = ( ): Node => {
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
+  const getCurrentObservation = useStore( state => state.getCurrentObservation );
   const setExploreView = useStore( state => state.setExploreView );
-  const theme = useTheme( );
+  const cameraRollUris = useStore( state => state.cameraRollUris );
+  const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { id, hideNavButtons } = params;
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
+  const [sheetVisible, setSheetVisible] = useState( false );
   const { remoteUser } = useUserMe( );
-  const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
   const [mediaIndex, setMediaIndex] = useState( 0 );
   const navState = useNavigationState( nav => nav );
   const history = navState?.routes.map( r => r.name ) || [];
@@ -78,7 +79,7 @@ const TaxonDetails = ( ): Node => {
 
   // previous ObsDetails observation uuid
   const obsUuid = fromObsDetails
-    ? _.find( navState?.routes, r => r.name === "ObsDetails" ).params.uuid
+    ? _.find( navState?.routes?.slice().reverse(), r => r.name === "ObsDetails" ).params.uuid
     : null;
 
   const showSelectButton = fromSuggestions || fromObsEdit;
@@ -99,13 +100,36 @@ const TaxonDetails = ( ): Node => {
     error
   } = useAuthenticatedQuery(
     ["fetchTaxon", id],
-    optsWithAuth => fetchTaxon( id, taxonFetchParams, optsWithAuth )
+    optsWithAuth => fetchTaxonAndSave( id, realm, taxonFetchParams, optsWithAuth )
   );
-  if ( error ) {
-    logger.error( `Failed to retrieve taxon ${id}: ${error}` );
-  }
+
   const taxon = remoteTaxon || localTaxon;
-  const taxonUrl = `${TAXON_URL}/${taxon?.id}`;
+
+  const currentUser = useCurrentUser( );
+
+  const { data: seenByCurrentUser } = useQuery(
+    ["fetchSpeciesCounts", taxon?.id],
+    ( ) => fetchSpeciesCounts( {
+      user_id: currentUser?.id,
+      taxon_id: taxon?.id,
+      fields: {
+        taxon: {
+          id: true
+        }
+      }
+    } ),
+    {
+      enabled: !!( taxon && taxon?.id !== 0 && taxon?.rank_level <= 10 && currentUser )
+    }
+  );
+
+  useEffect( ( ) => {
+    if ( error ) {
+      logger.error( "Failed to retrieve taxon", error );
+    }
+  }, [error] );
+
+  const currentUserHasSeenTaxon = seenByCurrentUser?.total_results === 1;
 
   const photos = compact(
     taxon?.taxonPhotos
@@ -113,26 +137,61 @@ const TaxonDetails = ( ): Node => {
       : [taxon?.defaultPhoto]
   );
 
+  const updateTaxon = useCallback( ( ) => {
+    updateObservationKeys( {
+      taxon,
+      owners_identification_from_vision: usesVision
+    } );
+  }, [
+    taxon,
+    updateObservationKeys,
+    usesVision
+  ] );
+
+  // Close the sheet, save, the obs, any additional UI futzing required
+  const saveObservationFromSheet = useCallback( async ( ) => {
+    setSheetVisible( false );
+    updateTaxon( );
+    // We need the updated currentObservation immediately to pass to saveObservation
+    const currentObservation = getCurrentObservation( );
+    const isNewObs = !currentObservation?._created_at;
+    await saveObservation( currentObservation, cameraRollUris, realm );
+    // If we are saving a new observations, reset the stored my obs offset to
+    // restore b/c we want MyObs rendered in its default state with this new
+    // observation visible at the top
+    if ( isNewObs ) {
+      resetMyObsOffsetToRestore();
+    }
+  }, [
+    cameraRollUris,
+    getCurrentObservation,
+    realm,
+    resetMyObsOffsetToRestore,
+    updateTaxon
+  ] );
+
+  const saveForLater = useCallback( async ( ) => {
+    await saveObservationFromSheet( );
+    navigation.navigate( "TabNavigator", {
+      screen: "TabStackNavigator",
+      params: {
+        screen: "ObsList"
+      }
+    } );
+  }, [navigation, saveObservationFromSheet] );
+
+  const uploadNow = useCallback( async ( ) => {
+    await saveObservationFromSheet( );
+    navigation.navigate( "LoginStackNavigator" );
+  }, [navigation, saveObservationFromSheet] );
+
   const renderHeader = useCallback( ( { onClose } ) => (
     <TaxonDetailsMediaViewerHeader
+      showSpeciesSeenCheckmark={currentUserHasSeenTaxon}
       taxon={taxon}
       onClose={onClose}
     />
-  ), [taxon] );
-
-  const openURLInBrowser = async url => {
-    try {
-      const canOpen = await Linking.canOpenURL( url );
-
-      if ( canOpen ) {
-        await Linking.openURL( url );
-      } else {
-        console.error( "Cannot open URL" );
-      }
-    } catch ( exc ) {
-      console.error( "An error occurred", exc );
-    }
-  };
+  ), [taxon, currentUserHasSeenTaxon] );
 
   const displayTaxonDetails = ( ) => {
     if ( isLoading ) {
@@ -147,7 +206,6 @@ const TaxonDetails = ( ): Node => {
               refresh();
               refetch();
             }}
-            color="black"
           />
         </View>
       );
@@ -162,28 +220,13 @@ const TaxonDetails = ( ): Node => {
         <EstablishmentMeans taxon={taxon} />
         <Wikipedia taxon={taxon} />
         <Taxonomy taxon={taxon} hideNavButtons={hideNavButtons} />
-        <TaxonMapPreview taxon={taxon} />
+        <TaxonMapPreview taxon={taxon} showSpeciesSeenCheckmark={currentUserHasSeenTaxon} />
       </View>
     );
   };
 
   const displayScrollDots = () => (
-    <View
-      className="flex flex-row w-full justify-center items-center mb-3"
-      pointerEvents="none"
-    >
-      { photos.map( ( item, idx ) => (
-        <View
-          key={`dot-${item.id}`}
-          className={classnames(
-            "rounded-full bg-white m-[2.5]",
-            idx === mediaIndex
-              ? "w-[4px] h-[4px]"
-              : "w-[2px] h-[2px]"
-          )}
-        />
-      ) )}
-    </View>
+    <CarouselDots length={photos.length} index={mediaIndex} />
   );
 
   const displayTaxonTitle = useCallback( ( ) => (
@@ -191,7 +234,11 @@ const TaxonDetails = ( ): Node => {
       className="w-full flex-row items-center pl-5 pr-5 pb-5"
       pointerEvents="box-none"
     >
-      <TaxonDetailsTitle taxon={taxon} optionalClasses="text-white" />
+      <TaxonDetailsTitle
+        optionalClasses="text-white"
+        showSpeciesSeenCheckmark={currentUserHasSeenTaxon}
+        taxon={taxon}
+      />
       {!hideNavButtons && isConnected && (
         <View className="ml-2">
           <INatIconButton
@@ -204,8 +251,7 @@ const TaxonDetails = ( ): Node => {
                   screen: "Explore",
                   params: {
                     taxon,
-                    worldwide: true,
-                    resetStoredParams: true
+                    worldwide: true
                   }
                 }
               } );
@@ -213,7 +259,7 @@ const TaxonDetails = ( ): Node => {
             accessibilityLabel={t( "See-observations-of-this-taxon-in-explore" )}
             accessibilityHint={t( "Navigates-to-explore" )}
             size={30}
-            color={theme.colors.onPrimary}
+            color={colors.white}
             className="bg-inatGreen rounded-full"
             mode="contained"
             preventTransparency
@@ -221,10 +267,18 @@ const TaxonDetails = ( ): Node => {
         </View>
       )}
     </View>
-  ), [hideNavButtons, isConnected, navigation, setExploreView, t, taxon, theme.colors.onPrimary] );
+  ), [
+    currentUserHasSeenTaxon,
+    hideNavButtons,
+    isConnected,
+    navigation,
+    setExploreView,
+    t,
+    taxon
+  ] );
 
   const displayTaxonMedia = () => {
-    if ( !isConnected ) {
+    if ( isConnected === false ) {
       return (
         <OfflineNotice
           onPress={( ) => {
@@ -245,69 +299,31 @@ const TaxonDetails = ( ): Node => {
     );
   };
 
+  const bulletedText = [
+    t( "Get-your-identification-verified-by-real-people" ),
+    t( "Share-your-observation-where-it-can-help-scientists" )
+  ];
+
   return (
     <>
       <ScrollViewWrapper
         testID={`TaxonDetails.${taxon?.id}`}
         className="bg-black"
       >
+        <TaxonDetailsHeader
+          hideNavButtons={hideNavButtons}
+          taxonId={taxon?.id}
+        />
         {/*
-        Making the bar dark here seems like the right thing, but I haven't
-        figured a way to do that *and* not making the bg of the scrollview
-        black, which reveals a dark area at the bottom of the screen on
-        overscroll in iOS ~~~kueda20240228
-      */}
-        <StatusBar barStyle="light-content" backgroundColor="#000000" />
+          Making the bar dark here seems like the right thing, but I haven't
+          figured a way to do that *and* not making the bg of the scrollview
+          black, which reveals a dark area at the bottom of the screen on
+          overscroll in iOS ~~~kueda20240228
+        */}
+        <StatusBar barStyle="light-content" backgroundColor={colors.black} />
         <View className="flex-1 h-full bg-black">
           <View className="w-full h-[420px] shrink-1">
-            <View className="absolute left-4 top-4 z-10">
-              <BackButton color="white" />
-            </View>
             {displayTaxonMedia()}
-            {!hideNavButtons && (
-              <View className="absolute right-4 top-1">
-                <KebabMenu
-                  visible={kebabMenuVisible}
-                  setVisible={setKebabMenuVisible}
-                  large
-                  white
-                >
-                  <KebabMenu.Item
-                    testID="MenuItem.OpenInBrowser"
-                    onPress={( ) => {
-                      openURLInBrowser( taxonUrl );
-                      setKebabMenuVisible( false );
-                    }}
-                    title={t( "View-in-browser" )}
-                  />
-                  <KebabMenu.Item
-                    testID="MenuItem.Share"
-                    onPress={async ( ) => {
-                      const sharingOptions = {
-                        url: "",
-                        message: ""
-                      };
-
-                      if ( Platform.OS === "ios" ) {
-                        sharingOptions.url = taxonUrl;
-                      } else {
-                        sharingOptions.message = taxonUrl;
-                      }
-
-                      setKebabMenuVisible( false );
-
-                      try {
-                        return await Share.share( sharingOptions );
-                      } catch ( err ) {
-                        Alert.alert( err.message );
-                        return null;
-                      }
-                    }}
-                    title={t( "Share" )}
-                  />
-                </KebabMenu>
-              </View>
-            )}
             <View
               className="absolute bottom-0 p-0 w-full"
               pointerEvents="box-none"
@@ -328,36 +344,74 @@ const TaxonDetails = ( ): Node => {
         />
       </ScrollViewWrapper>
       {showSelectButton && (
-        <StickyToolbar containerClass="items-center z-50">
+        <ButtonBar containerClass="items-center z-50">
           <Button
             className="max-w-[500px] w-full"
             level="focus"
             text={t( "SELECT-THIS-TAXON" )}
             onPress={( ) => {
-              updateObservationKeys( {
-                taxon,
-                owners_identification_from_vision: usesVision
-              } );
-              if ( fromObsDetails ) {
-                navigation.navigate( "ObsDetails", {
-                  uuid: obsUuid,
-                  suggestedTaxon: taxon
-                } );
+              if ( fromSuggestions && !currentUser ) {
+                setSheetVisible( true );
               } else {
-                navigation.navigate( "ObsEdit" );
+                updateTaxon( );
+                if ( fromObsDetails ) {
+                  const obsDetailsParam = {
+                    uuid: obsUuid,
+                    identTaxonId: taxon?.id,
+                    identAt: Date.now()
+                  };
+                  navigation.navigate( "ObsDetails", obsDetailsParam );
+                } else {
+                  navigation.navigate( "ObsEdit" );
+                }
               }
             }}
             icon={(
               <INatIcon
                 name="checkmark"
                 size={19}
-                color={theme.colors.onPrimary}
+                color={colors.white}
               />
             )}
             iconPosition="right"
           />
-        </StickyToolbar>
+        </ButtonBar>
       )}
+      <BottomSheet
+        hidden={!sheetVisible}
+        onPressClose={() => setSheetVisible( false )}
+        headerText={t( "UPLOAD-TO-INATURALIST" )}
+      >
+        <View className="p-4">
+          <View className="px-3">
+            <List2>
+              {t( "By-uploading-your-observation-to-iNaturalist-you-can" )}
+            </List2>
+            <View className="mt-3">
+              {bulletedText.map( string => (
+                <View className="flex-row" key={string}>
+                  <List2>{"\u2022 "}</List2>
+                  <List2>{string}</List2>
+                </View>
+              ) )}
+            </View>
+            <List2 className="mt-3">
+              {t( "Just-make-sure-the-organism-is-wild" )}
+            </List2>
+          </View>
+          <Button
+            onPress={() => uploadNow()}
+            text={t( "UPLOAD-NOW" )}
+            className="mt-5"
+            level="focus"
+          />
+          <Button
+            onPress={() => saveForLater()}
+            text={t( "SAVE-FOR-LATER" )}
+            className="mt-5"
+          />
+        </View>
+      </BottomSheet>
     </>
   );
 };

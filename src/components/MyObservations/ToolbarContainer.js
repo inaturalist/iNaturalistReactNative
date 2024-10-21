@@ -4,13 +4,13 @@ import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 import React, { useCallback, useMemo } from "react";
 import { Dimensions, PixelRatio } from "react-native";
-import { useTheme } from "react-native-paper";
 import {
   useCurrentUser,
   useTranslation
 } from "sharedHooks";
 import {
-  SYNC_PENDING
+  AUTOMATIC_SYNC_IN_PROGRESS,
+  MANUAL_SYNC_IN_PROGRESS
 } from "stores/createSyncObservationsSlice.ts";
 import {
   UPLOAD_COMPLETE,
@@ -18,6 +18,7 @@ import {
   UPLOAD_PENDING
 } from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
+import colors from "styles/tailwindColors";
 
 import Toolbar from "./Toolbar";
 
@@ -69,20 +70,19 @@ const ToolbarContainer = ( {
       setExploreView( "observations" );
       navigation.navigate( "Explore", {
         user: currentUser,
-        worldwide: true,
-        resetStoredParams: true
+        worldwide: true
       } );
     },
     [navigation, currentUser, setExploreView]
   );
 
   const { t } = useTranslation( );
-  const theme = useTheme( );
 
   const deletionsComplete = initialNumDeletionsInQueue === currentDeleteCount;
   const deletionsInProgress = initialNumDeletionsInQueue > 0 && !deletionsComplete;
 
-  const syncInProgress = syncingStatus !== SYNC_PENDING;
+  const automaticSyncInProgress = syncingStatus === AUTOMATIC_SYNC_IN_PROGRESS;
+  const manualSyncInProgress = syncingStatus === MANUAL_SYNC_IN_PROGRESS;
   const pendingUpload = uploadStatus === UPLOAD_PENDING && numUnuploadedObservations > 0;
   const uploadInProgress = uploadStatus === UPLOAD_IN_PROGRESS && numUploadsAttempted > 0;
   const uploadsComplete = uploadStatus === UPLOAD_COMPLETE && initialNumObservationsInQueue > 0;
@@ -105,20 +105,19 @@ const ToolbarContainer = ( {
   const showFinalUploadError = ( totalUploadErrors > 0 && uploadsComplete )
   || ( totalUploadErrors > 0 && ( numUploadsAttempted === initialNumObservationsInQueue ) );
 
-  const rotating = syncInProgress || uploadInProgress || deletionsInProgress;
+  const rotating = manualSyncInProgress || uploadInProgress || deletionsInProgress;
   const showsCheckmark = ( uploadsComplete && !uploadMultiError )
     || ( deletionsComplete && !deleteError && initialNumDeletionsInQueue > 0 );
 
   const showsExclamation = pendingUpload || showFinalUploadError;
 
   const getStatusText = useCallback( ( ) => {
-    if ( syncInProgress ) { return t( "Syncing" ); }
+    if ( manualSyncInProgress ) { return t( "Syncing" ); }
 
     const deletionParams = {
       total: initialNumDeletionsInQueue,
       currentDeleteCount
     };
-
     if ( initialNumDeletionsInQueue > 0 ) {
       if ( deletionsComplete ) {
         return t( "X-observations-deleted", { count: initialNumDeletionsInQueue } );
@@ -152,7 +151,7 @@ const ToolbarContainer = ( {
     numUploadsAttempted,
     numUnuploadedObservations,
     pendingUpload,
-    syncInProgress,
+    manualSyncInProgress,
     t,
     translationParams,
     uploadInProgress,
@@ -160,6 +159,9 @@ const ToolbarContainer = ( {
   ] );
 
   const errorText = useMemo( ( ) => {
+    if ( automaticSyncInProgress ) {
+      return null;
+    }
     let error;
     if ( deleteError ) {
       error = deleteError;
@@ -171,6 +173,7 @@ const ToolbarContainer = ( {
     return error;
   }, [
     deleteError,
+    automaticSyncInProgress,
     t,
     totalUploadErrors,
     uploadMultiError
@@ -178,14 +181,13 @@ const ToolbarContainer = ( {
 
   const getSyncIconColor = useCallback( ( ) => {
     if ( showFinalUploadError ) {
-      return theme.colors.error;
+      return colors.warningRed;
     }
     if ( pendingUpload || uploadInProgress ) {
-      return theme.colors.secondary;
+      return colors.inatGreen;
     }
-    return theme.colors.primary;
+    return colors.darkGray;
   }, [
-    theme,
     showFinalUploadError,
     pendingUpload,
     uploadInProgress

@@ -23,7 +23,7 @@ exports[`Checkbox renders reliably 1`] = `
   accessible={true}
   collapsable={false}
   disableBuiltInState={true}
-  fillColor="rgba(98, 91, 113, 1)"
+  fillColor="#74AC00"
   focusable={true}
   iconComponent={null}
   iconStyle={
@@ -33,7 +33,7 @@ exports[`Checkbox renders reliably 1`] = `
   }
   innerIconStyle={
     {
-      "borderColor": "rgba(103, 80, 164, 1)",
+      "borderColor": "#454545",
       "borderRadius": 6,
       "borderWidth": 2,
     }
@@ -66,14 +66,14 @@ exports[`Checkbox renders reliably 1`] = `
       Checkmark text
     </ForwardRef>
   }
-  unfillColor="rgba(255, 255, 255, 1)"
+  unfillColor="#ffffff"
 >
   <View
     collapsable={false}
     style={
       {
         "alignItems": "center",
-        "backgroundColor": "rgba(255, 255, 255, 1)",
+        "backgroundColor": "#ffffff",
         "borderRadius": 6,
         "height": 25,
         "justifyContent": "center",
@@ -91,7 +91,7 @@ exports[`Checkbox renders reliably 1`] = `
         [
           {
             "alignItems": "center",
-            "borderColor": "rgba(98, 91, 113, 1)",
+            "borderColor": "#74AC00",
             "borderRadius": 12.5,
             "borderWidth": 1,
             "height": 25,
@@ -99,7 +99,7 @@ exports[`Checkbox renders reliably 1`] = `
             "width": 25,
           },
           {
-            "borderColor": "rgba(103, 80, 164, 1)",
+            "borderColor": "#454545",
             "borderRadius": 6,
             "borderWidth": 2,
           },
@@ -108,6 +108,7 @@ exports[`Checkbox renders reliably 1`] = `
     />
   </View>
   <Text
+    maxFontSizeMultiplier={2}
     style={
       [
         {
@@ -159,11 +160,11 @@ exports[`Checkbox renders reliably being checked 1`] = `
   accessible={true}
   collapsable={false}
   disableBuiltInState={true}
-  fillColor="rgba(98, 91, 113, 1)"
+  fillColor="#74AC00"
   focusable={true}
   iconComponent={
     <INatIcon
-      color="rgba(255, 255, 255, 1)"
+      color="#ffffff"
       name="checkmark"
       size={19}
     />
@@ -175,7 +176,7 @@ exports[`Checkbox renders reliably being checked 1`] = `
   }
   innerIconStyle={
     {
-      "borderColor": "rgba(98, 91, 113, 1)",
+      "borderColor": "#74AC00",
       "borderRadius": 6,
       "borderWidth": 2,
     }
@@ -208,14 +209,14 @@ exports[`Checkbox renders reliably being checked 1`] = `
       Checkmark text
     </ForwardRef>
   }
-  unfillColor="rgba(255, 255, 255, 1)"
+  unfillColor="#ffffff"
 >
   <View
     collapsable={false}
     style={
       {
         "alignItems": "center",
-        "backgroundColor": "rgba(98, 91, 113, 1)",
+        "backgroundColor": "#74AC00",
         "borderRadius": 6,
         "height": 25,
         "justifyContent": "center",
@@ -233,7 +234,7 @@ exports[`Checkbox renders reliably being checked 1`] = `
         [
           {
             "alignItems": "center",
-            "borderColor": "rgba(98, 91, 113, 1)",
+            "borderColor": "#74AC00",
             "borderRadius": 12.5,
             "borderWidth": 1,
             "height": 25,
@@ -241,7 +242,7 @@ exports[`Checkbox renders reliably being checked 1`] = `
             "width": 25,
           },
           {
-            "borderColor": "rgba(98, 91, 113, 1)",
+            "borderColor": "#74AC00",
             "borderRadius": 6,
             "borderWidth": 2,
           },
@@ -254,7 +255,7 @@ exports[`Checkbox renders reliably being checked 1`] = `
         style={
           [
             {
-              "color": "rgba(255, 255, 255, 1)",
+              "color": "#ffffff",
               "fontSize": 19,
             },
             undefined,
@@ -267,11 +268,12 @@ exports[`Checkbox renders reliably being checked 1`] = `
           ]
         }
       >
-        
+        
       </Text>
     </View>
   </View>
   <Text
+    maxFontSizeMultiplier={2}
     style={
       [
         {

@@ -1,6 +1,7 @@
 import {
   screen,
   userEvent,
+  waitFor,
   within
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
@@ -70,7 +71,6 @@ afterAll( uniqueRealmAfterAll );
 
 beforeAll( async () => {
   await initI18next();
-  jest.useFakeTimers( );
   inatjs.observations.speciesCounts.mockResolvedValue( makeResponse( [{
     count: 1,
     taxon: mockTaxon
@@ -82,6 +82,7 @@ beforeAll( async () => {
 const actor = userEvent.setup( );
 
 async function navigateToObsDetails( ) {
+  global.timeTravel( );
   expect( await screen.findByText( /Welcome back/ ) ).toBeVisible( );
   const firstObservation = await screen.findByTestId( `MyObservationsPressable.${obs.uuid}` );
   await actor.press( firstObservation );
@@ -109,9 +110,11 @@ describe( "logged in", ( ) => {
   } );
 
   describe( "from MyObs", ( ) => {
+    global.withAnimatedTimeTravelEnabled( );
     describe( "from MyObs toolbar", ( ) => {
       it( "should show observations view and navigate back to MyObs", async ( ) => {
         renderApp( );
+        global.timeTravel( );
         expect( await screen.findByText( /Welcome back/ ) ).toBeVisible( );
         const exploreButton = await screen.findByLabelText( /See all your observations in explore/ );
         await actor.press( exploreButton );
@@ -245,19 +248,22 @@ describe( "logged in", ( ) => {
         inatjs.relationships.search.mockResolvedValue( makeResponse( {
           results: []
         } ) );
-        inatjs.observations.fetch.mockResolvedValue( makeResponse( mockObservations[0] ) );
         renderApp( );
         await navigateToRootExplore( );
         const speciesViewIcon = await screen.findByLabelText( /Species View/ );
-        expect( speciesViewIcon ).toBeVisible( );
         await actor.press( speciesViewIcon );
         const observationsRadioButton = await screen.findByText( "Observations" );
         await actor.press( observationsRadioButton );
         const confirmButton = await screen.findByText( /EXPLORE OBSERVATIONS/ );
         await actor.press( confirmButton );
+        const headerCount = await screen.findByText( /1 Observation/ );
+        expect( headerCount ).toBeVisible( );
         const gridView = await screen.findByTestId( "SegmentedButton.grid" );
         await actor.press( gridView );
-        const firstObservation = await screen.findByTestId( `MyObservationsPressable.${obs.uuid}` );
+        const firstObservation = screen.queryByTestId( `MyObservationsPressable.${obs.uuid}` );
+        await waitFor( ( ) => {
+          expect( firstObservation ).toBeVisible( );
+        }, { timeout: 10000 } );
         await actor.press( firstObservation );
         const userProfileButton = await screen.findByLabelText( `User @${mockUser.login}` );
         await actor.press( userProfileButton );

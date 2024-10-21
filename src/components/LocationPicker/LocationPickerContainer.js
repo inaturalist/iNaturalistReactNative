@@ -12,93 +12,109 @@ import { Dimensions } from "react-native";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import useStore from "stores/useStore";
 
-import LocationPicker, {
-  DESIRED_LOCATION_ACCURACY,
-  REQUIRED_LOCATION_ACCURACY
-} from "./LocationPicker";
+import LocationPicker from "./LocationPicker";
 
 const { width } = Dimensions.get( "screen" );
 
 const DELTA = 0.02;
 const CROSSHAIRLENGTH = 254;
 
+const setInitialRegion = currentObservation => ( {
+  // This was causing a crash when getting to the location picker before
+  // current location was fetched in the observation viewer
+  latitude:
+      currentObservation?.privateLatitude
+      || currentObservation?.latitude
+      || 0.0,
+  longitude:
+      currentObservation?.privateLongitude
+      || currentObservation?.longitude
+      || 0.0,
+  latitudeDelta: DELTA,
+  longitudeDelta: DELTA
+} );
+
+const initializeMap = ( state, action ) => {
+  const newMap = {
+    ...state,
+    accuracy: action.currentObservation?.positional_accuracy,
+    locationName: action.currentObservation?.place_guess,
+    region: {
+      ...state.region,
+      ...setInitialRegion( action.currentObservation )
+    }
+  };
+
+  if ( newMap.region.latitude !== 0.0 ) {
+    newMap.region.latitudeDelta = metersToLatitudeDelta(
+      newMap.accuracy,
+      newMap.region.latitude
+    );
+    newMap.region.longitudeDelta = newMap.region.latitudeDelta;
+  }
+  return newMap;
+};
+
 const estimatedAccuracy = longitudeDelta => longitudeDelta * 1000 * (
   ( CROSSHAIRLENGTH / width ) * 100 );
 
+const DEFAULT_REGION = {
+  latitude: 0.0,
+  longitude: 0.0,
+  latitudeDelta: DELTA,
+  longitudeDelta: DELTA
+};
+
 const initialState = {
   accuracy: 0,
-  accuracyTest: "pass",
+  hidePlaceResults: true,
+  isFirstMapRender: true,
+  loading: true,
   locationName: "",
   mapType: "standard",
-  region: {
-    latitude: 0.0,
-    longitude: 0.0,
-    latitudeDelta: DELTA,
-    longitudeDelta: DELTA
-  },
-  loading: true,
-  hidePlaceResults: true
+  region: DEFAULT_REGION,
+  regionToAnimate: null
 };
 
 const reducer = ( state, action ) => {
   switch ( action.type ) {
-    case "ESTIMATE_ACCURACY":
+    case "HANDLE_CURRENT_LOCATION_PRESS":
       return {
         ...state,
-        positional_accuracy: estimatedAccuracy( state.region.longitudeDelta )
+        loading: true,
+        isFirstMapRender: false
+      };
+    case "HANDLE_FIRST_MAP_RENDER":
+      return {
+        ...state,
+        isFirstMapRender: false,
+        loading: false
+      };
+    case "HANDLE_MAP_READY":
+      return {
+        ...state,
+        loading: false
+      };
+    case "HANDLE_REGION_CHANGE":
+      return {
+        ...state,
+        locationName: action.locationName,
+        region: action.region,
+        accuracy: action.accuracy,
+        loading: false
       };
     case "INITIALIZE_MAP": {
-      const newMap = {
-        ...state,
-        accuracy: action.currentObservation?.positional_accuracy,
-        locationName: action.currentObservation?.place_guess,
-        region: {
-          ...state.region,
-          // This was causing a crash when getting to the location picker before
-          // current location was fetched in the observation viewer
-          latitude:
-            action.currentObservation?.privateLatitude
-            || action.currentObservation?.latitude
-            || 0.0,
-          longitude:
-            action.currentObservation?.privateLongitude
-            || action.currentObservation?.longitude
-            || 0.0,
-          latitudeDelta: DELTA,
-          longitudeDelta: DELTA
-        }
-      };
-
-      if ( newMap.region.latitude !== 0.0 ) {
-        newMap.region.latitudeDelta = metersToLatitudeDelta(
-          newMap.accuracy,
-          newMap.region.latitude
-        );
-        newMap.region.longitudeDelta = newMap.region.latitudeDelta;
-      }
-
+      const newMap = initializeMap( state, action );
       return newMap;
     }
-    case "RESET_LOCATION_PICKER":
-      return {
-        ...action.initialState
-      };
     case "SELECT_PLACE_RESULT":
       return {
         ...state,
         locationName: action.locationName,
         region: action.region,
-        hidePlaceResults: true
-      };
-    case "SET_ACCURACY_TEST":
-      return {
-        ...state,
-        accuracyTest: action.accuracyTest
-      };
-    case "SET_LOADING":
-      return {
-        ...state,
-        loading: action.loading
+        hidePlaceResults: true,
+        regionToAnimate: action.region,
+        loading: true
       };
     case "SET_MAP_TYPE":
       return {
@@ -111,79 +127,42 @@ const reducer = ( state, action ) => {
         locationName: action.locationName,
         hidePlaceResults: false
       };
-    case "UPDATE_REGION":
-      return {
-        ...state,
-        locationName: action.locationName,
-        region: action.region,
-        accuracy: action.accuracy
-      };
     default:
       throw new Error( );
   }
 };
 
-type Props = {
-  route: {
-    params: {
-      goBackOnSave: boolean
-    },
-  },
-};
-
-const LocationPickerContainer = ( { route }: Props ): Node => {
+const LocationPickerContainer = ( ): Node => {
   const currentObservation = useStore( state => state.currentObservation );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const navigation = useNavigation( );
-  const { goBackOnSave } = route.params;
 
   const [state, dispatch] = useReducer( reducer, initialState );
 
   const {
     accuracy,
-    accuracyTest,
     hidePlaceResults,
+    isFirstMapRender,
     loading,
     locationName,
     mapType,
-    region
+    region,
+    regionToAnimate
   } = state;
 
-  const showCrosshairs = region.latitude !== 0.0;
+  const initialRegion = setInitialRegion( currentObservation );
 
-  const keysToUpdate = {
-    latitude: region.latitude,
-    longitude: region.longitude,
-    positional_accuracy: accuracy,
-    place_guess: locationName
-  };
-
-  useEffect( ( ) => {
-    if ( accuracy < DESIRED_LOCATION_ACCURACY ) {
-      dispatch( { type: "SET_ACCURACY_TEST", accuracyTest: "pass" } );
-    } else if ( accuracy < REQUIRED_LOCATION_ACCURACY ) {
-      dispatch( { type: "SET_ACCURACY_TEST", accuracyTest: "acceptable" } );
-    } else {
-      dispatch( { type: "SET_ACCURACY_TEST", accuracyTest: "fail" } );
-    }
-  }, [accuracy] );
-
-  const updateRegion = async newRegion => {
-    const newAccuracy = estimatedAccuracy( newRegion.longitudeDelta );
-
-    // don't update region if map hasn't actually moved
-    // otherwise, it's jittery on Android
-    if (
-      newRegion.latitude.toFixed( 6 ) === region.latitude?.toFixed( 6 )
-      && newRegion.longitude.toFixed( 6 ) === region.longitude?.toFixed( 6 )
-      && newRegion.latitudeDelta.toFixed( 6 ) === region.latitudeDelta?.toFixed( 6 )
-    ) {
+  const onRegionChangeComplete = async newRegion => {
+    // prevent initial map render from resetting the coordinates and locationName
+    if ( isFirstMapRender ) {
+      dispatch( { type: "HANDLE_FIRST_MAP_RENDER" } );
       return;
     }
+    const newAccuracy = estimatedAccuracy( newRegion.longitudeDelta );
 
     const placeName = await fetchPlaceName( newRegion.latitude, newRegion.longitude );
     dispatch( {
-      type: "UPDATE_REGION",
+      type: "HANDLE_REGION_CHANGE",
       locationName: placeName || "",
       region: newRegion,
       accuracy: newAccuracy
@@ -194,25 +173,15 @@ const LocationPickerContainer = ( { route }: Props ): Node => {
     dispatch( { type: "UPDATE_LOCATION_NAME", locationName: name } );
   }, [] );
 
-  // reset to initialState when exiting screen without saving
+  // make sure map always reflects the current observation lat/lng
   useEffect(
     ( ) => {
       navigation.addListener( "focus", ( ) => {
-        if ( !currentObservation ) { return; }
         dispatch( { type: "INITIALIZE_MAP", currentObservation } );
-      } );
-      navigation.addListener( "blur", ( ) => {
-        dispatch( { type: "RESET_LOCATION_PICKER", initialState } );
       } );
     },
     [navigation, currentObservation]
   );
-
-  useEffect( ( ) => {
-    if ( !showCrosshairs ) dispatch( { type: "SET_LOADING", loading: false } );
-  }, [showCrosshairs] );
-
-  const setMapReady = ( ) => dispatch( { type: "SET_LOADING", loading: false } );
 
   const selectPlaceResult = place => {
     const { coordinates } = place.point_geojson;
@@ -223,27 +192,46 @@ const LocationPickerContainer = ( { route }: Props ): Node => {
         ...region,
         latitude: coordinates[1],
         longitude: coordinates[0]
+      },
+      regionToAnimate: {
+        ...region,
+        latitude: coordinates[1],
+        longitude: coordinates[0]
       }
     } );
+  };
+
+  const onCurrentLocationPress = ( ) => dispatch( { type: "HANDLE_CURRENT_LOCATION_PRESS" } );
+  const onMapReady = ( ) => dispatch( { type: "HANDLE_MAP_READY" } );
+
+  const handleSave = ( ) => {
+    const keysToUpdate = {
+      latitude: region.latitude,
+      longitude: region.longitude,
+      positional_accuracy: accuracy,
+      place_guess: locationName
+    };
+
+    updateObservationKeys( keysToUpdate );
+    navigation.goBack( );
   };
 
   return (
     <LocationPicker
       accuracy={accuracy}
-      accuracyTest={accuracyTest}
-      goBackOnSave={goBackOnSave}
+      handleSave={handleSave}
       hidePlaceResults={hidePlaceResults}
-      keysToUpdate={keysToUpdate}
       loading={loading}
       locationName={locationName}
+      initialRegion={initialRegion}
       mapType={mapType}
+      onCurrentLocationPress={onCurrentLocationPress}
+      onMapReady={onMapReady}
+      onRegionChangeComplete={onRegionChangeComplete}
       region={region}
+      regionToAnimate={regionToAnimate}
       selectPlaceResult={selectPlaceResult}
-      setMapReady={setMapReady}
-      showCrosshairs={showCrosshairs}
       updateLocationName={updateLocationName}
-      updateRegion={updateRegion}
-      updateObservationKeys={updateObservationKeys}
     />
   );
 };

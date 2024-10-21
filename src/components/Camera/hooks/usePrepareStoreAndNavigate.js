@@ -2,19 +2,26 @@
 
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import { useNavigation } from "@react-navigation/native";
+import useDeviceStorageFull from "components/Camera/hooks/useDeviceStorageFull";
 import {
   permissionResultFromMultiple,
   READ_WRITE_MEDIA_PERMISSIONS
 } from "components/SharedComponents/PermissionGateContainer.tsx";
+import { t } from "i18next";
 import {
   useCallback
 } from "react";
+import {
+  Alert
+} from "react-native";
 import { checkMultiple, RESULTS } from "react-native-permissions";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import { log } from "sharedHelpers/logger";
 import { useWatchPosition } from "sharedHooks";
 import useStore from "stores/useStore";
+
+import { displayName as appName } from "../../../../app.json";
 
 const logger = log.extend( "usePrepareStoreAndNavigate" );
 
@@ -35,35 +42,51 @@ type Options = {
 // $FlowIgnore
 export async function savePhotosToCameraGallery(
   uris: [string],
-  onEachSuccess: Function
+  onEachSuccess: Function,
+  location: Object
 ) {
   const readWritePermissionResult = permissionResultFromMultiple(
     await checkMultiple( READ_WRITE_MEDIA_PERMISSIONS )
   );
   uris.reduce(
     async ( memo, uri ) => {
-      // logger.info( "saving rotated original camera photo: ", uri );
       try {
-        let savedPhotoUri;
-        // One quirk of CameraRoll is that if you want to write ton album, you
+        const saveOptions = {};
+        // One quirk of CameraRoll is that if you want to write to an album, you
         // need readwrite permission, but we don't want to ask for that here
         // b/c it might come immediately after asking for *add only*
         // permission, so we're checking to see if we have that permission
         // and skipping the album if we don't
         if ( readWritePermissionResult === RESULTS.GRANTED ) {
-          savedPhotoUri = await CameraRoll.save( uri, {
-            type: "photo",
-            album: "iNaturalist Next"
-          } );
-        } else {
-          savedPhotoUri = await CameraRoll.save( uri );
+          saveOptions.type = "photo";
+          // Note: we do not translate our brand name, so this should not be
+          // globalized
+          saveOptions.album = appName;
         }
+        if ( location ) {
+          saveOptions.latitude = location.latitude;
+          saveOptions.longitude = location.longitude;
+          saveOptions.horizontalAccuracy = location.positional_accuracy;
+        }
+        const savedPhotoUri = await CameraRoll.save( uri, saveOptions );
 
-        // logger.info( "saved to camera roll: ", savedPhotoUri );
         // Save these camera roll URIs, so later on observation editor can update
         // the EXIF metadata of these photos, once we retrieve a location.
         onEachSuccess( savedPhotoUri );
       } catch ( cameraRollSaveError ) {
+        // should never get here since in usePrepareStoreAndNavigate we check for device full
+        // and skip saving to gallery
+        if (
+          cameraRollSaveError.message.match( /No space left on device/ )
+          || cameraRollSaveError.message.match( /PHPhotosErrorDomain error 3305/ )
+        ) {
+          Alert.alert(
+            t( "Not-enough-space-left-on-device" ),
+            t( "Not-enough-space-left-on-device-try-again" ),
+            [{ text: t( "OK" ) }]
+          );
+          return;
+        }
         // This means an iOS user denied access
         // (https://developer.apple.com/documentation/photokit/phphotoserror/code/accessuserdenied).
         // In theory we should not even have called this function when that
@@ -72,7 +95,9 @@ export async function savePhotosToCameraGallery(
         // probably safe to ignore.
         if ( !cameraRollSaveError.message.match( /error 3311/ ) ) {
           logger.error( cameraRollSaveError );
+          return;
         }
+        throw cameraRollSaveError;
       }
     },
     // We need the initial value even if we're not using it, otherwise reduce
@@ -103,6 +128,7 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
   const { userLocation } = useWatchPosition( {
     shouldFetchLocation
   } );
+  const { deviceStorageFull } = useDeviceStorageFull();
 
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
 
@@ -124,13 +150,15 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
       } );
     setObservations( [newObservation] );
     if ( addPhotoPermissionResult !== RESULTS.GRANTED ) return Promise.resolve( );
-    return savePhotosToCameraGallery( cameraUris, addCameraRollUri );
+    if ( deviceStorageFull ) return Promise.resolve( );
+    return savePhotosToCameraGallery( cameraUris, addCameraRollUri, userLocation );
   }, [
     addCameraRollUri,
     addPhotoPermissionResult,
     cameraUris,
     setObservations,
-    userLocation
+    userLocation,
+    deviceStorageFull
   ] );
 
   const updateObsWithCameraPhotos = useCallback( async ( ) => {
@@ -161,8 +189,10 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
   const prepareStoreAndNavigate = useCallback( async visionResult => {
     if ( !checkmarkTapped ) { return null; }
 
-    setSavingPhoto( true );
-    // save all to camera roll
+    // save all to camera roll if save photo permission is given
+    if ( addPhotoPermissionResult === "granted" ) {
+      setSavingPhoto( true );
+    }
 
     if ( addEvidence ) {
       await updateObsWithCameraPhotos( );
@@ -184,6 +214,7 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
     } );
   }, [
     addEvidence,
+    addPhotoPermissionResult,
     cameraUris,
     checkmarkTapped,
     createObsWithCameraPhotos,

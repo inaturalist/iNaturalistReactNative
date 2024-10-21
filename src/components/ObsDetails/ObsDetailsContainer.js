@@ -17,6 +17,7 @@ import React, {
 import { Alert, LogBox } from "react-native";
 import Observation from "realmModels/Observation";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import { fetchTaxonAndSave } from "sharedHelpers/taxon";
 import {
   useAuthenticatedMutation,
   useCurrentUser,
@@ -27,7 +28,7 @@ import {
 import useRemoteObservation, {
   fetchRemoteObservationKey
 } from "sharedHooks/useRemoteObservation";
-import { ACTIVITY_TAB_ID, DETAILS_TAB_ID } from "stores/createLayoutSlice";
+import { ACTIVITY_TAB, DETAILS_TAB } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 
 import useMarkViewedMutation from "./hooks/useMarkViewedMutation";
@@ -49,16 +50,30 @@ const sortItems = ( ids, comments ) => ids.concat( [...comments] ).sort(
 const initialState = {
   activityItems: [],
   addingActivityItem: false,
-  comment: "",
+  comment: null,
   commentIsOptional: false,
-  currentTabId: ACTIVITY_TAB_ID,
+  obsDetailsTab: ACTIVITY_TAB,
+  identBodySheetShown: false,
+  newIdentification: null,
   observationShown: null,
   showAgreeWithIdSheet: false,
   showAddCommentSheet: false,
   showPotentialDisagreementSheet: false,
   showSuggestIdSheet: false,
-  taxonForSuggestion: null // taxon for agree and disagree
+  identTaxon: null
 };
+
+const CLEAR_SUGGESTED_TAXON = "CLEAR_SUGGESTED_TAXON";
+const CONFIRM_ID = "CONFIRM_ID";
+const DISCARD_ID = "DISCARD_ID";
+const HIDE_AGREE_SHEET = "HIDE_AGREE_SHEET";
+const HIDE_EDIT_IDENT_BODY_SHEET = "HIDE_EDIT_IDENT_BODY_SHEET";
+const HIDE_POTENTIAL_DISAGREEMENT_SHEET = "HIDE_POTENTIAL_DISAGREEMENT_SHEET";
+const SET_ADD_COMMENT_SHEET = "SET_ADD_COMMENT_SHEET";
+const SET_IDENT_TAXON = "SET_IDENT_TAXON";
+const SET_NEW_IDENTIFICATION = "SET_NEW_IDENTIFICATION";
+const SHOW_AGREE_SHEET = "SHOW_AGREE_SHEET";
+const SHOW_EDIT_IDENT_BODY_SHEET = "SHOW_EDIT_IDENT_BODY_SHEET";
 
 const reducer = ( state, action ) => {
   switch ( action.type ) {
@@ -86,39 +101,71 @@ const reducer = ( state, action ) => {
         ...state,
         addingActivityItem: true
       };
-    case "SHOW_AGREE_SHEET":
+    case SHOW_AGREE_SHEET:
       return {
         ...state,
-        showAgreeWithIdSheet: action.showAgreeWithIdSheet,
-        taxonForSuggestion: action.taxonForSuggestion || state.taxonForSuggestion,
-        comment: action.comment || state.comment
+        showAgreeWithIdSheet: true,
+        newIdentification: action.newIdentification
       };
-    case "SHOW_ADD_COMMENT_SHEET":
+    case HIDE_AGREE_SHEET:
+      return {
+        ...state,
+        showAgreeWithIdSheet: false
+      };
+    case SET_ADD_COMMENT_SHEET:
       return {
         ...state,
         commentIsOptional: action.commentIsOptional,
         showAddCommentSheet: action.showAddCommentSheet
       };
+    case SHOW_EDIT_IDENT_BODY_SHEET:
+      return {
+        ...state,
+        identBodySheetShown: true
+      };
+    case HIDE_EDIT_IDENT_BODY_SHEET:
+      return {
+        ...state,
+        identBodySheetShown: false
+      };
     case "SHOW_SUGGEST_ID_SHEET":
       return {
         ...state,
-        showSuggestIdSheet: action.showSuggestIdSheet
-      };
-    case "SET_COMMENT":
-      return {
-        ...state,
-        comment: action.comment
+        showSuggestIdSheet: true
       };
     case "SHOW_POTENTIAL_DISAGREEMENT_SHEET":
       return {
         ...state,
-        showPotentialDisagreementSheet: action.showPotentialDisagreementSheet,
-        taxonForSuggestion: action.taxonForSuggestion
+        showPotentialDisagreementSheet: true
       };
-    case "CLEAR_TAXON":
+    case SET_NEW_IDENTIFICATION:
       return {
         ...state,
-        taxonForSuggestion: action.taxonForSuggestion
+        newIdentification: {
+          taxon: action.taxon,
+          body: action.body,
+          vision: action.vision
+        }
+      };
+    case SET_IDENT_TAXON:
+      return { ...state, identTaxon: action.taxon };
+    case CLEAR_SUGGESTED_TAXON:
+      return { ...state, identTaxon: null };
+    case CONFIRM_ID:
+      return { ...state, showSuggestIdSheet: true };
+    case DISCARD_ID:
+      return {
+        ...state,
+        showSuggestIdSheet: false,
+        identTaxon: null,
+        newIdentification: null
+      };
+    case HIDE_POTENTIAL_DISAGREEMENT_SHEET:
+      return {
+        ...state,
+        showPotentialDisagreementSheet: false,
+        identTaxon: null,
+        newIdentification: null
       };
     default:
       throw new Error( );
@@ -127,22 +174,21 @@ const reducer = ( state, action ) => {
 
 const ObsDetailsContainer = ( ): Node => {
   const setObservations = useStore( state => state.setObservations );
-  const currentTabId = useStore( state => state.currentTabId );
-  const setCurrentTabId = useStore( state => state.setCurrentTabId );
-  const currentObservation = useStore( state => state.currentObservation );
-  const updateObservationKeys = useStore( state => state.updateObservationKeys );
+  const obsDetailsTab = useStore( state => state.obsDetailsTab );
+  const setObsDetailsTab = useStore( state => state.setObsDetailsTab );
   const currentUser = useCurrentUser( );
   const { params } = useRoute();
   const {
-    suggestedTaxon,
+    identAt,
+    identTaxonId,
+    identTaxonFromVision,
+    notificationId,
     uuid
   } = params;
   const navigation = useNavigation( );
   const realm = useRealm( );
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
-  const vision = currentObservation?.owners_identification_from_vision;
-
   const [state, dispatch] = useReducer( reducer, initialState );
   const [remoteObsWasDeleted, setRemoteObsWasDeleted] = useState( false );
 
@@ -151,12 +197,14 @@ const ObsDetailsContainer = ( ): Node => {
     addingActivityItem,
     comment,
     commentIsOptional,
+    identBodySheetShown,
+    newIdentification,
     observationShown,
-    showAgreeWithIdSheet,
     showAddCommentSheet,
+    showAgreeWithIdSheet,
+    showPotentialDisagreementSheet,
     showSuggestIdSheet,
-    taxonForSuggestion,
-    showPotentialDisagreementSheet
+    identTaxon
   } = state;
   const queryClient = useQueryClient( );
 
@@ -176,6 +224,32 @@ const ObsDetailsContainer = ( ): Node => {
   } = useRemoteObservation( uuid, fetchRemoteObservationEnabled );
 
   useMarkViewedMutation( localObservation, remoteObservation );
+
+  // Translates identification-related params to local state
+  useEffect( ( ) => {
+    async function fetchAndSet() {
+      let taxon = realm.objectForPrimaryKey( "Taxon", identTaxonId );
+      if ( !taxon ) {
+        taxon = await fetchTaxonAndSave( identTaxonId, realm );
+      }
+      dispatch( {
+        type: SET_IDENT_TAXON,
+        taxon
+      } );
+    }
+    if ( identTaxonId ) {
+      fetchAndSet();
+    } else {
+      dispatch( { type: CLEAR_SUGGESTED_TAXON } );
+    }
+  }, [
+    // This should change with every new navigation event back to ObsDetails,
+    // so even if identTaxonId doesn't change, e.g. you add an ID of taxon X,
+    // cancel, then add another ID of taxon X, we still update the identTaxon
+    identAt,
+    identTaxonId,
+    realm
+  ] );
 
   // If we tried to get a remote observation but it no longer exists, the user
   // can't do anything so we need to send them back and remove the local
@@ -246,15 +320,15 @@ const ObsDetailsContainer = ( ): Node => {
 
   const tabs = [
     {
-      id: ACTIVITY_TAB_ID,
+      id: ACTIVITY_TAB,
       testID: "ObsDetails.ActivityTab",
-      onPress: ( ) => setCurrentTabId( ACTIVITY_TAB_ID ),
+      onPress: ( ) => setObsDetailsTab( ACTIVITY_TAB ),
       text: t( "ACTIVITY" )
     },
     {
-      id: DETAILS_TAB_ID,
+      id: DETAILS_TAB,
       testID: "ObsDetails.DetailsTab",
-      onPress: () => setCurrentTabId( DETAILS_TAB_ID ),
+      onPress: () => setObsDetailsTab( DETAILS_TAB ),
       text: t( "DETAILS" )
     }
   ];
@@ -269,14 +343,14 @@ const ObsDetailsContainer = ( ): Node => {
 
   const openAddCommentSheet = ( { isOptional = false } ) => {
     dispatch( {
-      type: "SHOW_ADD_COMMENT_SHEET",
+      type: SET_ADD_COMMENT_SHEET,
       showAddCommentSheet: true,
       commentIsOptional: isOptional || false
     } );
   };
 
   const hideAddCommentSheet = ( ) => dispatch( {
-    type: "SHOW_ADD_COMMENT_SHEET",
+    type: SET_ADD_COMMENT_SHEET,
     showAddCommentSheet: false,
     comment: null
   } );
@@ -309,11 +383,11 @@ const ObsDetailsContainer = ( ): Node => {
     }
   );
 
-  const onCommentAdded = commentBody => {
+  const onCommentAdded = body => {
     dispatch( { type: "LOADING_ACTIVITY_ITEM" } );
     createCommentMutation.mutate( {
       comment: {
-        body: commentBody,
+        body,
         parent_id: uuid,
         parent_type: "Observation"
       }
@@ -326,22 +400,23 @@ const ObsDetailsContainer = ( ): Node => {
       onSuccess: data => {
         refetchRemoteObservation( );
         if ( belongsToCurrentUser ) {
-          const newIdentification = data[0];
-          let newIdentTaxon;
-          if ( newIdentification.taxon?.id ) {
-            newIdentTaxon = realm?.objectForPrimaryKey( "Taxon", newIdentification.taxon.id );
+          const createdIdent = data[0];
+          // Try to find an existing taxon b/c otherwise realm will try to
+          // create the taxon when updating the observation and error out
+          let taxon;
+          if ( createdIdent.taxon?.id ) {
+            taxon = realm?.objectForPrimaryKey( "Taxon", createdIdent.taxon.id );
           }
-          newIdentTaxon = newIdentTaxon || newIdentification.taxon;
+          taxon = taxon || createdIdent.taxon;
           safeRealmWrite( realm, ( ) => {
-            newIdentification.user = currentUser;
-            if ( newIdentTaxon ) newIdentification.taxon = newIdentTaxon;
-            if ( vision ) newIdentification.vision = true;
-            localObservation?.identifications?.push( newIdentification );
+            createdIdent.user = currentUser;
+            if ( taxon ) createdIdent.taxon = taxon;
+            localObservation?.identifications?.push( createdIdent );
           }, "setting local identification in ObsDetailsContainer" );
           if ( uuid ) {
             const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
             dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
-            dispatch( { type: "CLEAR_TAXON", taxonForSuggestion: null } );
+            dispatch( { type: CLEAR_SUGGESTED_TAXON } );
           }
         }
       },
@@ -357,39 +432,45 @@ const ObsDetailsContainer = ( ): Node => {
     }
   );
 
-  const openSuggestIdSheet = useCallback( () => {
-    dispatch( { type: "SHOW_SUGGEST_ID_SHEET", showSuggestIdSheet: true } );
-  }, [] );
-
-  const onIDAdded = useCallback( ( ) => {
+  useEffect( () => {
+    if ( !identTaxon ) return;
+    if ( showPotentialDisagreementSheet ) return;
+    if ( showSuggestIdSheet ) return;
+    if ( identBodySheetShown ) return;
     let observationTaxon = observation.taxon;
     if (
       observation.prefers_community_taxon === false
-      || ( observation.user.prefers_community_taxa === false
+      || ( observation.user?.prefers_community_taxa === false
       && observation.prefers_community_taxon === null )
     ) {
       observationTaxon = observation.community_taxon || observation.taxon;
     }
+    dispatch( {
+      type: SET_NEW_IDENTIFICATION,
+      taxon: identTaxon,
+      vision: identTaxonFromVision
+    } );
     if (
       observationTaxon
-      && suggestedTaxon.id !== observationTaxon.id
-      && observationTaxon.ancestor_ids.includes( suggestedTaxon.id )
+      && identTaxon.id !== observationTaxon.id
+      && observationTaxon.ancestor_ids.includes( identTaxon.id )
     ) {
-      dispatch( {
-        type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET",
-        showPotentialDisagreementSheet: true,
-        taxonForSuggestion: suggestedTaxon
-      } );
+      dispatch( { type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET" } );
     } else {
-      openSuggestIdSheet();
+      dispatch( { type: CONFIRM_ID } );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [suggestedTaxon] );
-
-  useEffect( () => {
-    if ( !suggestedTaxon ) return;
-    onIDAdded( );
-  }, [onIDAdded, openSuggestIdSheet, suggestedTaxon] );
+  }, [
+    identAt,
+    identBodySheetShown,
+    showSuggestIdSheet,
+    showPotentialDisagreementSheet,
+    identTaxon,
+    identTaxonFromVision,
+    observation?.community_taxon,
+    observation?.taxon,
+    observation?.prefers_community_taxon,
+    observation?.user?.prefers_community_taxa
+  ] );
 
   const navToSuggestions = ( ) => {
     setObservations( [observation] );
@@ -405,7 +486,7 @@ const ObsDetailsContainer = ( ): Node => {
     }
   };
 
-  const showActivityTab = currentTabId === ACTIVITY_TAB_ID;
+  const showActivityTab = obsDetailsTab === ACTIVITY_TAB;
 
   const invalidateQueryAndRefetch = ( ) => {
     invalidateRemoteObservationFetch( );
@@ -415,17 +496,15 @@ const ObsDetailsContainer = ( ): Node => {
 
   const closeAgreeWithIdSheet = ( ) => {
     dispatch( {
-      type: "SHOW_AGREE_SHEET",
-      showAgreeWithIdSheet: false,
-      comment: null
+      type: HIDE_AGREE_SHEET
     } );
   };
 
-  const onAgree = newComment => {
+  const onAgree = ident => {
     const agreeParams = {
       observation_id: observation?.uuid,
-      taxon_id: taxonForSuggestion?.id,
-      body: newComment
+      taxon_id: ident.taxon?.id,
+      body: ident.body
     };
 
     dispatch( { type: "LOADING_ACTIVITY_ITEM" } );
@@ -433,66 +512,63 @@ const ObsDetailsContainer = ( ): Node => {
     closeAgreeWithIdSheet( );
   };
 
-  const openAgreeWithIdSheet = agreeTaxon => {
+  const openAgreeWithIdSheet = taxon => {
     dispatch( {
-      type: "SHOW_AGREE_SHEET",
-      showAgreeWithIdSheet: true,
-      taxonForSuggestion: agreeTaxon
+      type: SHOW_AGREE_SHEET,
+      newIdentification: { taxon }
     } );
   };
   const potentialDisagreeSheetDiscardChanges = ( ) => {
-    dispatch( {
-      type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET",
-      showPotentialDisagreementSheet: false,
-      taxonForSuggestion: null
-    } );
+    dispatch( { type: HIDE_POTENTIAL_DISAGREEMENT_SHEET } );
   };
 
-  const doSuggestId = potentialDisagree => {
-    const remark = currentObservation?.description;
+  const doSuggestId = useCallback( potentialDisagree => {
+    if ( !newIdentification?.taxon ) {
+      throw new Error( "Cannot create an identification without a taxon" );
+    }
     // New taxon identification added by user
     const idParams = {
       observation_id: uuid,
-      taxon_id: suggestedTaxon.id,
-      vision,
-      disagreement: potentialDisagree
+      taxon_id: newIdentification.taxon.id,
+      vision: newIdentification.vision,
+      disagreement: potentialDisagree,
+      body: newIdentification?.body
     };
-
-    if ( remark ) {
-      // $FlowIgnore
-      idParams.body = remark;
-    }
 
     dispatch( { type: "LOADING_ACTIVITY_ITEM" } );
     createIdentificationMutation.mutate( { identification: idParams } );
-  };
+  }, [createIdentificationMutation, newIdentification, uuid] );
 
   const onSuggestId = useCallback( ( ) => {
     // based on disagreement code in iNat web
     // https://github.com/inaturalist/inaturalist/blob/30a27d0eb79dd17af38292785b0137e6024bbdb7/app/webpack/observations/show/ducks/observation.js#L827-L838
-    let observationTaxon = observation.taxon;
+    let observationTaxon = observation?.taxon;
     if (
-      observation.prefers_community_taxon === false
-      || ( observation.user.prefers_community_taxa === false
-      && observation.prefers_community_taxon === null )
+      observation?.prefers_community_taxon === false
+      || (
+        observation?.user?.prefers_community_taxa === false
+        && observation?.prefers_community_taxon === null
+      )
     ) {
-      observationTaxon = observation.community_taxon || observation.taxon;
+      observationTaxon = observation?.community_taxon || observation.taxon;
     }
     if (
       observationTaxon
-      && suggestedTaxon.id !== observationTaxon.id
-      && observationTaxon.ancestor_ids.includes( suggestedTaxon.id )
+      && identTaxon?.id !== observationTaxon.id
+      && observationTaxon.ancestor_ids.includes( identTaxon?.id )
     ) {
-      dispatch( {
-        type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET",
-        showPotentialDisagreementSheet: true,
-        taxonForSuggestion: suggestedTaxon
-      } );
+      dispatch( { type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET" } );
     } else {
       doSuggestId();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [suggestedTaxon] );
+  }, [
+    doSuggestId,
+    observation?.community_taxon,
+    observation?.prefers_community_taxon,
+    observation?.taxon,
+    observation?.user?.prefers_community_taxa,
+    identTaxon
+  ] );
 
   const onPotentialDisagreePressed = potentialDisagree => {
     dispatch( {
@@ -502,31 +578,17 @@ const ObsDetailsContainer = ( ): Node => {
     doSuggestId( potentialDisagree );
   };
 
-  const suggestIdSheetDiscardChanges = ( ) => {
-    dispatch( {
-      type: "SHOW_SUGGEST_ID_SHEET",
-      showSuggestIdSheet: false,
-      taxonForSuggestion: null
-    } );
-  };
+  const suggestIdSheetDiscardChanges = ( ) => dispatch( { type: DISCARD_ID } );
 
   const confirmCommentFromCommentSheet = newComment => {
     if ( !commentIsOptional ) {
       onCommentAdded( newComment );
-    } else if ( taxonForSuggestion ) {
-      dispatch( { type: "SET_COMMENT", comment: newComment } );
-      openAgreeWithIdSheet( taxonForSuggestion );
-    } else {
-      updateObservationKeys( {
-        description: newComment
-      } );
-      openSuggestIdSheet( );
     }
   };
 
   return observationShown && (
     <ObsDetails
-      activityItems={activityItems}
+      activityItems={activityItems || []}
       addingActivityItem={addingActivityItem}
       closeAgreeWithIdSheet={closeAgreeWithIdSheet}
       belongsToCurrentUser={belongsToCurrentUser}
@@ -534,13 +596,15 @@ const ObsDetailsContainer = ( ): Node => {
       commentIsOptional={commentIsOptional}
       confirmCommentFromCommentSheet={confirmCommentFromCommentSheet}
       confirmRemoteObsWasDeleted={confirmRemoteObsWasDeleted}
-      currentTabId={currentTabId}
+      obsDetailsTab={obsDetailsTab}
       currentUser={currentUser}
+      editIdentBody={( ) => dispatch( { type: SHOW_EDIT_IDENT_BODY_SHEET } )}
       onPotentialDisagreePressed={onPotentialDisagreePressed}
       hideAddCommentSheet={hideAddCommentSheet}
       isConnected={isConnected}
       isRefetching={isRefetching}
       navToSuggestions={navToSuggestions}
+      notificationId={notificationId}
       // saving observation in state (i.e. using observationShown)
       // limits the number of rerenders to entire obs details tree
       observation={observationShown}
@@ -552,13 +616,23 @@ const ObsDetailsContainer = ( ): Node => {
       refetchRemoteObservation={invalidateQueryAndRefetch}
       remoteObsWasDeleted={remoteObsWasDeleted}
       showActivityTab={showActivityTab}
-      showAgreeWithIdSheet={showAgreeWithIdSheet}
+      showAgreeWithIdSheet={!!showAgreeWithIdSheet}
       showAddCommentSheet={showAddCommentSheet}
-      showSuggestIdSheet={showSuggestIdSheet}
+      showSuggestIdSheet={!!showSuggestIdSheet}
       suggestIdSheetDiscardChanges={suggestIdSheetDiscardChanges}
       showPotentialDisagreementSheet={showPotentialDisagreementSheet}
       tabs={tabs}
-      taxonForSuggestion={taxonForSuggestion}
+      identBodySheetShown={identBodySheetShown}
+      newIdentification={newIdentification}
+      onChangeIdentBody={body => dispatch( {
+        type: SET_NEW_IDENTIFICATION,
+        taxon: newIdentification?.taxon,
+        body
+      } )}
+      onCloseIdentBodySheet={() => {
+        dispatch( { type: HIDE_EDIT_IDENT_BODY_SHEET } );
+      }}
+      uuid={uuid}
     />
   );
 };

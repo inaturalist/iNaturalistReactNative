@@ -10,7 +10,6 @@ export const initialMapRegion = {
 };
 
 const DEFAULT_STATE = {
-  storedParams: {},
   exploreView: "species",
   mapRegion: initialMapRegion
 };
@@ -23,8 +22,6 @@ interface MapRegion {
 }
 
 interface ExploreSlice {
-  storedParams: Object,
-  setStoredParams: ( _params: Object ) => void,
   exploreView: string,
   setExploreView: ( _view: string ) => void,
   mapRegion: MapRegion,
@@ -33,7 +30,6 @@ interface ExploreSlice {
 
 const createExploreSlice: StateCreator<ExploreSlice> = set => ( {
   ...DEFAULT_STATE,
-  setStoredParams: storedParams => set( ( ) => ( { storedParams } ) ),
   setExploreView: exploreView => set( ( ) => ( { exploreView } ) ),
   setMapRegion: mapRegion => set( ( ) => ( { mapRegion } ) )
 } );

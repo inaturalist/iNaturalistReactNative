@@ -1,7 +1,7 @@
 // @flow
 import MyObservationsHeader from "components/MyObservations/MyObservationsHeader";
+import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
 import {
-  ObservationsFlashList,
   ScrollableWithStickyHeader,
   ViewWrapper
 } from "components/SharedComponents";
@@ -15,15 +15,18 @@ type Props = {
   currentUser: Object,
   handleIndividualUploadPress: Function,
   handleSyncButtonPress: Function,
-  isFetchingNextPage: boolean,
   isConnected: boolean,
+  isFetchingNextPage: boolean,
   layout: "list" | "grid",
+  listRef?: Object,
   numUnuploadedObservations: number,
   observations: Array<Object>,
   onEndReached: Function,
+  onListLayout?: Function,
+  onScroll?: Function,
   setShowLoginSheet: Function,
   showLoginSheet: boolean,
-  status: string,
+  showNoResults: boolean,
   toggleLayout: Function
 };
 
@@ -31,20 +34,24 @@ const MyObservations = ( {
   currentUser,
   handleIndividualUploadPress,
   handleSyncButtonPress,
-  isFetchingNextPage,
   isConnected,
+  isFetchingNextPage,
   layout,
+  listRef,
   numUnuploadedObservations,
   observations,
   onEndReached,
+  onListLayout,
+  onScroll,
   setShowLoginSheet,
   showLoginSheet,
-  status,
+  showNoResults,
   toggleLayout
 }: Props ): Node => (
   <>
     <ViewWrapper>
       <ScrollableWithStickyHeader
+        onScroll={onScroll}
         renderHeader={setStickyAt => (
           <MyObservationsHeader
             currentUser={currentUser}
@@ -57,19 +64,21 @@ const MyObservations = ( {
             toggleLayout={toggleLayout}
           />
         )}
-        renderScrollable={onScroll => (
+        renderScrollable={animatedScrollEvent => (
           <ObservationsFlashList
             dataCanBeFetched={!!currentUser}
             data={observations.filter( o => o.isValid() )}
             handleIndividualUploadPress={handleIndividualUploadPress}
-            handleScroll={onScroll}
+            onScroll={animatedScrollEvent}
             hideLoadingWheel={!isFetchingNextPage || !currentUser}
             isFetchingNextPage={isFetchingNextPage}
             isConnected={isConnected}
             layout={layout}
             onEndReached={onEndReached}
+            onLayout={onListLayout}
+            ref={listRef}
             showObservationsEmptyScreen
-            status={status}
+            showNoResults={showNoResults}
             testID="MyObservationsAnimatedList"
             renderHeader={(
               <Announcements isConnected={isConnected} />

@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { INatApiError } from "api/error";
+import { INatApiError, INatApiTooManyRequestsError } from "api/error";
 import { getUserAgent } from "api/userAgent";
 import classnames from "classnames";
 import {
@@ -12,9 +12,10 @@ import { fontMonoClass, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useCallback } from "react";
-import { Platform, Text } from "react-native";
+import { I18nManager, Platform, Text } from "react-native";
 import Config from "react-native-config";
 import RNFS from "react-native-fs";
+import RNRestart from "react-native-restart";
 import useLogs from "sharedHooks/useLogs";
 
 import useAppSize, {
@@ -86,45 +87,65 @@ const Developer = (): Node => {
     );
   } ), [fileSizes] );
 
+  const toggleRTLandLTR = async ( ) => {
+    const { isRTL, forceRTL } = I18nManager;
+    await forceRTL( !isRTL );
+    RNRestart.restart( );
+  };
+
   const navigation = useNavigation( );
   const { shareLogFile, emailLogFile } = useLogs();
   return (
     <ScrollViewWrapper>
       <View className="p-5">
         <Button
-          onPress={() => navigation.navigate( "UILibrary" )}
-          text="UI LIBRARY"
-          className="mb-5"
-        />
-        { // eslint-disable-next-line no-undef
-          __DEV__ && (
-            <Button
-              onPress={() => navigation.navigate( "network" )}
-              text="NETWORK"
-              className="mb-5"
-            />
-          )
-        }
-        <Button
           onPress={() => navigation.navigate( "log" )}
           text="LOG"
           className="mb-5"
         />
-        <Button
-          onPress={() => { throw new Error( "Test error" ); }}
-          text="TEST ERROR"
-          className="mb-5"
-        />
-        <Button
-          onPress={() => { throw new INatApiError( { error: "Test error", status: 422 } ); }}
-          text="TEST INATAPIERROR"
-          className="mb-5"
-        />
-        <Button
-          onPress={async () => { throw new Error( "Test error in promise" ); }}
-          text="TEST UNHANDLED PROMISE REJECTION"
-          className="mb-5"
-        />
+        { // eslint-disable-next-line no-undef
+          __DEV__ && (
+            <>
+              <Button
+                onPress={() => navigation.navigate( "UILibrary" )}
+                text="UI LIBRARY"
+                className="mb-5"
+              />
+              <Button
+                onPress={() => navigation.navigate( "network" )}
+                text="NETWORK"
+                className="mb-5"
+              />
+              <Button
+                onPress={() => { throw new Error( "Test error" ); }}
+                text="TEST ERROR"
+                className="mb-5"
+              />
+              <Button
+                onPress={() => { throw new INatApiError( { error: "Test error", status: 422 } ); }}
+                text="TEST INATAPIERROR"
+                className="mb-5"
+              />
+              <Button
+                onPress={() => {
+                  throw new INatApiTooManyRequestsError( );
+                }}
+                text="TEST API TOO MANY REQUESTS ERROR"
+                className="mb-5"
+              />
+              <Button
+                onPress={async () => { throw new Error( "Test error in promise" ); }}
+                text="TEST UNHANDLED PROMISE REJECTION"
+                className="mb-5"
+              />
+              <Button
+                onPress={toggleRTLandLTR}
+                text="TOGGLE RTL<>LTR"
+                className="mb-5"
+              />
+            </>
+          )
+        }
         <H1>Computer Vision</H1>
         <View className="flex-row">
           <Text className="font-bold">Model: </Text>

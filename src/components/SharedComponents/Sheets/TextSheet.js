@@ -21,14 +21,14 @@ const TextSheet = ( {
 }: Props ): Node => {
   const { t } = useTranslation( );
 
-  const handleClose = useCallback(
+  const onPressClose = useCallback(
     ( ) => setShowSheet( false ),
     [setShowSheet]
   );
 
   return (
     <BottomSheet
-      handleClose={handleClose}
+      onPressClose={onPressClose}
       headerText={headerText}
     >
       <View className="p-5">
@@ -39,7 +39,7 @@ const TextSheet = ( {
         ) )}
         <Button
           text={t( "OK" )}
-          onPress={handleClose}
+          onPress={onPressClose}
         />
       </View>
     </BottomSheet>

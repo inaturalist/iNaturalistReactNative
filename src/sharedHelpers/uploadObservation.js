@@ -12,10 +12,7 @@ import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import ObservationSound from "realmModels/ObservationSound";
 import emitUploadProgress from "sharedHelpers/emitUploadProgress.ts";
-import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-
-const logger = log.extend( "uploadObservation.js" );
 
 const UPLOAD_PROGRESS_INCREMENT = 1;
 
@@ -71,6 +68,10 @@ const markRecordUploaded = (
       record.id = id;
       // $FlowIgnore
       record._synced_at = new Date( );
+      if ( type === "Observation" ) {
+        // $FlowIgnore
+        record.needs_sync = false;
+      }
     }, `marking record uploaded in uploadObservation.js, type: ${type}` );
   } catch ( realmWriteError ) {
     // Try it one more time in case it was invalidated but it's still in the
@@ -84,6 +85,10 @@ const markRecordUploaded = (
         record.id = id;
         // $FlowIgnore
         record._synced_at = new Date( );
+        if ( type === "Observation" ) {
+          // $FlowIgnore
+          record.needs_sync = false;
+        }
       }, `marking record uploaded in uploadObservation.js, type: ${type}` );
     }
   }
@@ -187,7 +192,6 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
       if ( !accessError.message.match( /No object with key/ ) ) {
         throw accessError;
       }
-      logger.error( "Failed to access photo to obsPhoto", accessError );
       return null;
     }
   } ).flat( );
@@ -241,11 +245,10 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
       id: newObs.uuid,
       ignore_photos: true
     }, options );
-    emitUploadProgress( obs.uuid, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
   } else {
     response = await createObservation( uploadParams, options );
-    emitUploadProgress( obs.uuid, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
   }
+  emitUploadProgress( obs.uuid, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
 
   if ( !response ) {
     return response;

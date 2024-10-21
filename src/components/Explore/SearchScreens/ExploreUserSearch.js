@@ -1,12 +1,9 @@
 // @flow
 
-import { FlashList } from "@shopify/flash-list";
 import fetchSearchResults from "api/search";
 import {
-  ActivityIndicator,
-  Body3,
-  Heading4,
-  INatIconButton,
+  Button,
+  CustomFlashList,
   SearchBar,
   ViewWrapper
 } from "components/SharedComponents";
@@ -17,8 +14,11 @@ import React, {
   useCallback,
   useState
 } from "react";
-import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
+import { useAuthenticatedQuery, useCurrentUser, useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
+
+import EmptySearchResults from "./EmptySearchResults";
+import ExploreSearchHeader from "./ExploreSearchHeader";
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4
@@ -32,9 +32,10 @@ type Props = {
 const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
   const [userQuery, setUserQuery] = useState( "" );
   const { t } = useTranslation();
+  const currentUser = useCurrentUser();
 
   // TODO: replace this with infinite scroll like ExploreFlashList
-  const { data: userList, isLoading } = useAuthenticatedQuery(
+  const { data: userList, isLoading, refetch } = useAuthenticatedQuery(
     ["fetchSearchResults", userQuery],
     optsWithAuth => fetchSearchResults(
       {
@@ -82,24 +83,24 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
     <View className="border-b border-lightGray" />
   );
 
+  const renderEmptyList = ( ) => (
+    <EmptySearchResults
+      isLoading={isLoading}
+      searchQuery={userQuery}
+      refetch={refetch}
+    />
+  );
+
   return (
     <ViewWrapper>
-      <View className="flex-row justify-center p-5 bg-white">
-        <INatIconButton
-          testID="ExploreTaxonSearch.close"
-          size={18}
-          icon="back"
-          className="absolute top-2 left-3 z-10"
-          onPress={( ) => closeModal()}
-          accessibilityLabel={t( "SEARCH-USERS" )}
-        />
-        <Heading4>{t( "SEARCH-USERS" )}</Heading4>
-        <Body3 onPress={resetUser} className="absolute top-4 right-4">
-          {t( "Reset-verb" )}
-        </Body3>
-      </View>
+      <ExploreSearchHeader
+        closeModal={closeModal}
+        headerText={t( "SEARCH-USERS" )}
+        resetFilters={resetUser}
+        testID="ExploreUserSearch.close"
+      />
       <View
-        className="bg-white px-6 pt-2 pb-8"
+        className="bg-white px-6 pt-2 pb-5"
         style={DROP_SHADOW}
       >
         <SearchBar
@@ -107,27 +108,27 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
           value={userQuery}
           testID="SearchUser"
         />
+        <Button
+          text={t( "MY-OBSERVATIONS" )}
+          className="mt-5"
+          onPress={() => {
+            if ( currentUser ) {
+              onUserSelected( currentUser );
+            }
+          }}
+        />
       </View>
-      {isLoading
-        ? (
-          <View className="p-4">
-            <ActivityIndicator size={40} />
-          </View>
-        )
-        : (
-          <FlashList
-            ItemSeparatorComponent={renderItemSeparator}
-            ListHeaderComponent={renderItemSeparator}
-            accessible
-            data={userList}
-            estimatedItemSize={100}
-            initialNumToRender={5}
-            keyExtractor={item => item.id}
-            keyboardShouldPersistTaps="handled"
-            renderItem={renderItem}
-            testID="SearchUserList"
-          />
-        )}
+      <CustomFlashList
+        ItemSeparatorComponent={renderItemSeparator}
+        ListEmptyComponent={renderEmptyList}
+        ListHeaderComponent={renderItemSeparator}
+        data={userList}
+        estimatedItemSize={100}
+        keyExtractor={item => item.id}
+        keyboardShouldPersistTaps="handled"
+        renderItem={renderItem}
+        testID="SearchUserList"
+      />
     </ViewWrapper>
   );
 };

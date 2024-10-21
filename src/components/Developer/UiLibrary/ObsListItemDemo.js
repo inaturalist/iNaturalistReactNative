@@ -1,10 +1,10 @@
 import { faker } from "@faker-js/faker";
+import ObsListItem from "components/ObservationsFlashList/ObsListItem";
 import {
   Heading1,
   Heading2,
   ScrollViewWrapper
 } from "components/SharedComponents";
-import ObsListItem from "components/SharedComponents/ObservationsFlashList/ObsListItem";
 import { View } from "components/styledComponents";
 import React from "react";
 
@@ -88,6 +88,17 @@ const ObsListItemDemo = ( ) => (
       <Heading2 className="my-2">No Media</Heading2>
       <ObsListItem
         observation={makeObservation()}
+      />
+      <ObsListItem
+        observation={makeObservation( {
+          taxon: {
+            id: 123,
+            iconic_taxon_name: "Insecta",
+            preferred_common_name: "Some weird insect",
+            name: "Foo bar",
+            rank_level: 10
+          }
+        } )}
       />
       <Heading1 className="my-2">Upload statuses</Heading1>
       <Heading2 className="my-2">Synced</Heading2>

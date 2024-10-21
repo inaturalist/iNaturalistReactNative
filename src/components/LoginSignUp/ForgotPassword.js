@@ -6,7 +6,7 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
-import { openInbox } from "react-native-email-link";
+import { openInbox } from "sharedHelpers/mail.ts";
 
 import {
   resetPassword
@@ -34,8 +34,8 @@ const ForgotPassword = ( ): Node => {
       <LoginSignUpWrapper backgroundSource={require( "images/background/butterfly.jpg" )}>
         {showSheet && (
           <WarningSheet
-            handleClose={( ) => setShowSheet( false )}
-            confirm={( ) => openInbox( )}
+            onPressClose={( ) => setShowSheet( false )}
+            confirm={openInbox}
             headerText={t( "CHECK-YOUR-EMAIL" )}
             text={t( "If-an-account-with-that-email-exists" )}
             buttonText={t( "OPEN-EMAIL" )}

@@ -135,6 +135,22 @@ def get_ipa_path( build_number = nil )
   ) )
 end
 
+def get_changelog
+  changelog_path = get_changelog_path
+  unless File.exist?( changelog_path )
+    UI.abort_with_message! <<~MSG
+      No change log file exists at #{changelog_path}. That should have been
+      created when you ran `fastlane tag`.
+    MSG
+  end
+
+  begin
+    File.read( changelog_path )
+  rescue StandardError
+    nil
+  end
+end
+
 lane :tag do | options |
   desc "Add a new tag with an incremented version"
   ensure_git_status_clean( ignore_files: ["fastlane/Fastfile"] )
@@ -355,13 +371,7 @@ lane :release do
       tag or check out the tag before releasing.
     MSG
   end
-  changelog_path = get_changelog_path( build_number )
-  unless File.exist?( changelog_path )
-    UI.abort_with_message! <<~MSG
-      No change log file exists at #{changelog_path}. That should have been
-      created when you ran `fastlane tag`.
-    MSG
-  end
+  changelog = get_changelog
 
   build
 
@@ -385,11 +395,7 @@ lane :release do
       api_token: ENV["GITHUB_TOKEN"],
       name: last_tag,
       tag_name: last_tag,
-      description: begin
-        File.read( changelog_path )
-      rescue StandardError
-        nil
-      end,
+      description: changelog,
       # This is really just a fallback in case last_tag isn't really a tag
       commitish: "main",
       upload_assets: [apk_path]
@@ -411,13 +417,8 @@ lane :internal do
   if last_tag.nil? || last_tag.empty?
     UI.abort_with_message! "No tags have been added yet. Try starting with `fastlane tag`"
   end
-  changelog_path = get_changelog_path
-  unless File.exist?( changelog_path )
-    UI.abort_with_message! <<~MSG
-      No change log file exists at #{changelog_path}. That should have been
-      created when you ran `fastlane tag`.
-    MSG
-  end
+  changelog = get_changelog
+
   upload_to_play_store(
     aab: aab_path,
     track: "internal",
@@ -426,7 +427,7 @@ lane :internal do
 
   upload_to_testflight(
     ipa: get_ipa_path,
-    changelog: File.read( changelog_path ),
+    changelog: changelog,
     # https://github.com/fastlane/fastlane/issues/20756
     itc_provider: CredentialsManager::AppfileConfig.try_fetch_value( :itc_provider ),
     # The following distributes the build to our invite-only external test group
@@ -434,6 +435,21 @@ lane :internal do
     groups: [
       "iNat Friends"
     ]
+  )
+
+  slack_message = <<~MESSAGE
+    🧪 NEW INTERNAL RELEASE
+    Should be available to staff in TestFlight and Play Store soon. Please test and report any bugs, especially ones that should block release!
+
+    #{changelog}
+  MESSAGE
+  slack(
+    message: slack_message,
+    default_payloads: [],
+    payload: {
+      version: last_tag,
+      apk: "https://github.com/inaturalist/iNaturalistReactNative/releases/download/#{last_tag}/org.inaturalist.iNaturalistMobile-#{last_tag}-release.apk"
+    }
   )
 end
 
@@ -453,6 +469,23 @@ lane :beta do
   add_build_to_testflight_beta_group(
     version_code: build_number,
     beta_group: "Open Beta"
+  )
+
+  last_tag = last_git_tag
+  changelog = get_changelog
+  slack_message = <<~MESSAGE
+    🚀 NEW BETA RELEASE
+    Should be available to beta testers in TestFlight and Play Store soon.
+
+    #{changelog}
+  MESSAGE
+  slack(
+    message: slack_message,
+    default_payloads: [],
+    payload: {
+      version: last_tag,
+      apk: "https://github.com/inaturalist/iNaturalistReactNative/releases/download/#{last_tag}/org.inaturalist.iNaturalistMobile-#{last_tag}-release.apk"
+    }
   )
 end
 

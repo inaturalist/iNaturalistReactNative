@@ -19,12 +19,12 @@ class Taxon extends Realm.Object {
     rank_level: true
   };
 
-  static SCORE_IMAGE_FIELDS = {
-    ancestor_ids: true,
+  static LIMITED_TAXON_FIELDS = {
     default_photo: {
       id: true,
       url: true
     },
+    iconic_taxon_name: true,
     name: true,
     preferred_common_name: true,
     rank: true,

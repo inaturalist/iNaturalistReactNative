@@ -100,13 +100,13 @@ describe( "DetailsTab", ( ) => {
 
   test( "should display DQA button if current user is logged in", ( ) => {
     renderComponent( <DetailsTab observation={mockObservation} currentUser={mockUser} /> );
-    const DQAButton = screen.getByText( /VIEW DATA QUALITY ASSESSEMENT/ );
+    const DQAButton = screen.getByText( /VIEW DATA QUALITY ASSESSMENT/ );
     expect( DQAButton ).toBeVisible( );
   } );
 
   test( "should not display DQA button if current user is logged out", ( ) => {
     renderComponent( <DetailsTab observation={mockObservation} currentUser={null} /> );
-    const DQAButton = screen.queryByText( /VIEW DATA QUALITY ASSESSEMENT/ );
+    const DQAButton = screen.queryByText( /VIEW DATA QUALITY ASSESSMENT/ );
     expect( DQAButton ).toBeFalsy( );
   } );
 } );

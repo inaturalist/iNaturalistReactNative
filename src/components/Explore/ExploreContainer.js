@@ -7,10 +7,11 @@ import { useNavigation } from "@react-navigation/native";
 import {
   EXPLORE_ACTION,
   ExploreProvider,
+  PLACE_MODE,
   useExplore
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useCurrentUser } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useStore from "stores/useStore";
@@ -23,9 +24,10 @@ import useParams from "./hooks/useParams";
 const ExploreContainerWithContext = ( ): Node => {
   const navigation = useNavigation( );
   const { isConnected } = useNetInfo( );
-  const setStoredParams = useStore( state => state.setStoredParams );
   const exploreView = useStore( state => state.exploreView );
   const setExploreView = useStore( state => state.setExploreView );
+  const mapRegion = useStore( s => s.mapRegion );
+  const setMapRegion = useStore( s => s.setMapRegion );
 
   const {
     hasPermissions: hasLocationPermissions,
@@ -38,6 +40,12 @@ const ExploreContainerWithContext = ( ): Node => {
   const { state, dispatch, makeSnapshot } = useExplore();
 
   const [showFiltersModal, setShowFiltersModal] = useState( false );
+
+  // Whether or not we can fetch results, *not* whether or not we *are*
+  // fetching results. This will be set when we know what data the user wants
+  // to view and whether we have the permissions we need to show it, e.g.
+  // location permissions to show nearby obs
+  const [canFetch, setCanFetch] = useState( false );
 
   useParams( );
 
@@ -87,7 +95,12 @@ const ExploreContainerWithContext = ( ): Node => {
   };
 
   // need this hook to be top-level enough that ExploreHeaderCount rerenders
-  const { count, loadingStatus, updateCount } = useExploreHeaderCount( );
+  const {
+    count,
+    isFetching: isFetchingHeaderCount,
+    handleUpdateCount,
+    setIsFetching: setIsFetchingHeaderCount
+  } = useExploreHeaderCount( );
 
   const closeFiltersModal = ( ) => setShowFiltersModal( false );
 
@@ -96,29 +109,41 @@ const ExploreContainerWithContext = ( ): Node => {
     makeSnapshot( );
   };
 
+  // Subviews need the ability to imperatively start fetching, e.g. when the
+  // user switches from species to obs view
+  const startFetching = useCallback( ( ) => {
+    if ( hasLocationPermissions || state?.placeMode !== PLACE_MODE.NEARBY ) {
+      setIsFetchingHeaderCount( true );
+      setCanFetch( true );
+    }
+  }, [
+    hasLocationPermissions,
+    setIsFetchingHeaderCount,
+    state?.placeMode
+  ] );
+
   useEffect( ( ) => {
-    navigation.addListener( "blur", ( ) => {
-      setStoredParams( state );
-    } );
-  }, [navigation, setStoredParams, state] );
+    startFetching( );
+  }, [startFetching] );
 
   return (
     <>
       <Explore
+        canFetch={canFetch}
         closeFiltersModal={closeFiltersModal}
         count={count}
         currentExploreView={exploreView}
         setCurrentExploreView={setExploreView}
+        handleUpdateCount={handleUpdateCount}
         hideBackButton={false}
         filterByIconicTaxonUnknown={
           () => dispatch( { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN } )
         }
         isConnected={isConnected}
-        loadingStatus={loadingStatus}
+        isFetchingHeaderCount={isFetchingHeaderCount}
         openFiltersModal={openFiltersModal}
         queryParams={queryParams}
         showFiltersModal={showFiltersModal}
-        updateCount={updateCount}
         updateTaxon={taxon => dispatch( { type: EXPLORE_ACTION.CHANGE_TAXON, taxon } )}
         updateLocation={updateLocation}
         updateUser={updateUser}
@@ -126,8 +151,13 @@ const ExploreContainerWithContext = ( ): Node => {
         placeMode={state.placeMode}
         hasLocationPermissions={hasLocationPermissions}
         requestLocationPermissions={requestLocationPermissions}
+        startFetching={startFetching}
+        currentMapRegion={mapRegion}
+        setCurrentMapRegion={setMapRegion}
       />
-      {renderPermissionsGate( )}
+      {renderPermissionsGate( {
+        onPermissionGranted: startFetching
+      } ) }
     </>
   );
 };

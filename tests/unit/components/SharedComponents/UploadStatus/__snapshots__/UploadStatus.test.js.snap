@@ -67,7 +67,7 @@ exports[`UploadStatus displays progress bar when progress is greater than 5% cor
             ]
           }
         >
-          
+          
         </Text>
       </View>
       <CircularProgress
@@ -152,7 +152,7 @@ exports[`UploadStatus displays progress bar when progress is less than 5% correc
             ]
           }
         >
-          
+          
         </Text>
       </View>
       <View
@@ -199,7 +199,7 @@ exports[`UploadStatus displays progress bar when progress is less than 5% correc
             ]
           }
         >
-          
+          
         </Text>
       </View>
     </View>

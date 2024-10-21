@@ -21,7 +21,7 @@ type Props = {
   handleCheckmarkPress: Function,
   toggleFlash: Function,
   flipCamera: Function,
-  changeZoom: Function,
+  handleZoomButtonPress: Function,
   hasFlash: boolean,
   takePhotoOptions: Object,
   zoomTextValue: string,
@@ -39,7 +39,7 @@ const CameraOptionsButtons = ( {
   flipCamera,
   hasFlash,
   takePhotoOptions,
-  changeZoom,
+  handleZoomButtonPress,
   zoomTextValue,
   showZoomButton
 }: Props ): Node => {
@@ -54,7 +54,7 @@ const CameraOptionsButtons = ( {
       />
       <Zoom
         showZoomButton={showZoomButton}
-        changeZoom={changeZoom}
+        handleZoomButtonPress={handleZoomButtonPress}
         zoomTextValue={zoomTextValue}
         rotatableAnimatedStyle={rotatableAnimatedStyle}
         zoomClassName="absolute bottom-[18px] self-center"
@@ -80,7 +80,7 @@ const CameraOptionsButtons = ( {
       flipCamera={flipCamera}
       hasFlash={hasFlash}
       takePhotoOptions={takePhotoOptions}
-      changeZoom={changeZoom}
+      handleZoomButtonPress={handleZoomButtonPress}
       zoomTextValue={zoomTextValue}
       showZoomButton={showZoomButton}
     />

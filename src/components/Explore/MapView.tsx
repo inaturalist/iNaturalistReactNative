@@ -1,15 +1,14 @@
-import classnames from "classnames";
 import {
-  Body1,
   Button,
   Map
 } from "components/SharedComponents";
 import { getMapRegion } from "components/SharedComponents/Map/helpers/mapHelpers.ts";
 import { View } from "components/styledComponents";
 import { MapBoundaries, PLACE_MODE, useExplore } from "providers/ExploreContext.tsx";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Platform } from "react-native";
-import { useDebugMode, useTranslation } from "sharedHooks";
+import { Region } from "react-native-maps";
+import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
 import useMapLocation from "./hooks/useMapLocation";
@@ -28,32 +27,36 @@ interface Props {
     order?: string;
     orderBy?: string;
   };
+  currentMapRegion: Region;
+  setCurrentMapRegion: ( Region ) => void;
 }
 
 const MapView = ( {
   observationBounds,
-  queryParams
+  queryParams,
+  currentMapRegion,
+  setCurrentMapRegion
 }: Props ) => {
   const { t } = useTranslation( );
-  const { isDebug } = useDebugMode( );
-  const [zoom, setZoom] = useState( -1 );
   const { state: exploreState } = useExplore( );
 
   const {
     onPanDrag,
-    onZoomToNearby,
     redoSearchInMapArea,
     region,
     showMapBoundaryButton,
-    startAtNearby,
     updateMapBoundaries
-  } = useMapLocation( );
+  } = useMapLocation( currentMapRegion, setCurrentMapRegion );
 
   // TODO this should really be a part of the explore reducer
   useEffect( ( ) => {
     if (
       observationBounds
-      && [PLACE_MODE.WORLDWIDE, PLACE_MODE.PLACE].indexOf( exploreState.placeMode ) >= 0
+      && [
+        PLACE_MODE.WORLDWIDE,
+        PLACE_MODE.PLACE,
+        PLACE_MODE.NEARBY
+      ].indexOf( exploreState.placeMode ) >= 0
     ) {
       updateMapBoundaries( getMapRegion( observationBounds ) );
     }
@@ -66,6 +69,17 @@ const MapView = ( {
   delete tileMapParams.return_bounds;
   delete tileMapParams.order;
   delete tileMapParams.orderBy;
+
+  const handleRegionChangeComplete = async ( newRegion, boundaries ) => {
+    // Seems to be a bug in react-native-maps where
+    // onRegionChangeComplete fires once on initial load before the
+    // region actually changes, so we're just ignoring that update
+    // here
+    if ( Platform.OS === "android" && Math.round( newRegion.latitude ) === 0 ) {
+      return;
+    }
+    await updateMapBoundaries( newRegion, boundaries );
+  };
 
   return (
     <View className="flex-1 overflow-hidden h-full">
@@ -84,49 +98,17 @@ const MapView = ( {
           </View>
         )}
       </View>
-      { isDebug && (
-        <View
-          className={classnames(
-            "absolute",
-            "left-5",
-            "bottom-[140px]",
-            "bg-deeppink",
-            "p-1",
-            "z-10"
-          )}
-        >
-          <Body1 className="text-white">
-            {`Zoom: ${zoom}`}
-          </Body1>
-        </View>
-      ) }
       <Map
         currentLocationButtonClassName="left-5 bottom-20"
         onPanDrag={onPanDrag}
-        onRegionChangeComplete={async ( newRegion, boundaries ) => {
-          // Seems to be a bug in react-native-maps where
-          // onRegionChangeComplete fires once on initial load before the
-          // region actually changes, so we're just ignoring that update
-          // here
-          if ( Platform.OS === "android" && Math.round( newRegion.latitude ) === 0 ) {
-            return;
-          }
-          await updateMapBoundaries( newRegion, boundaries );
-          if ( startAtNearby ) {
-            onZoomToNearby( newRegion, boundaries );
-          }
-        }}
-        onZoomToNearby={onZoomToNearby}
-        onZoomChange={newZoom => setZoom( newZoom )}
+        onRegionChangeComplete={handleRegionChangeComplete}
         region={region}
         showCurrentLocationButton
         showSwitchMapTypeButton
         showsCompass={false}
-        startAtNearby={startAtNearby}
         switchMapTypeButtonClassName="left-20 bottom-20"
         tileMapParams={tileMapParams}
         withPressableObsTiles={tileMapParams !== null}
-        currentLocationZoomLevel={15}
       />
     </View>
   );

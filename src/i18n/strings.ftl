@@ -1,6 +1,10 @@
 ### Source strings for iNaturalistReactNative
 ###
-### Notes
+### Notes for Translators
+### * See https://crowdin.com/project/inaturalistios/discussions/58 for notes
+###   on this file format
+###
+### Notes for Developers
 ### * GroupComments (comments beginning w/ ##) are not allowed because all
 ###   strings in this file will be alphabetized and it's impossible to
 ###   determine where group comments should fit in.
@@ -8,7 +12,9 @@
 ### * Try to annotate all strings with comments to provide context for
 ###   translators, especially for fragments and any situation where the
 ###   meaning is open to interpretation without context
-### * Use different strings for synonyms, e.g. stop-noun and stop-verb, as
+### * Use different strings for synonyms, e.g. stop--noun and stop--verb, as
+### * Use double dashes to make keys with the same values in English unique or
+###   to otherwise annotate them, e.g. stop--noun or casual--quality-grade
 ###   these might have different translations in different languages
 ### * Accessibility hints are used by screen readers to describe what happens
 ###   when the user interacts with an element
@@ -30,6 +36,8 @@ ABOUT-UMBRELLA-PROJECTS = ABOUT UMBRELLA PROJECTS
 accessible-comname-sciname = { $commonName } ({ $scientificName })
 # Label for a taxon when a user prefers to see or hear the scientific name first
 accessible-sciname-comname = { $scientificName } ({ $commonName })
+# Alert message shown after account deletion
+Account-Deleted = Account Deleted
 ACTIVITY = ACTIVITY
 # Label for a button that adds a vote of agreement
 Add-agreement = Add agreement
@@ -50,7 +58,6 @@ Add-Location = Add Location
 Add-observations = Add observations
 ADD-OPTIONAL-COMMENT = ADD OPTIONAL COMMENT
 Add-optional-notes = Add optional notes
-Add-suggestion-and-remarks-to-observation = Add suggestion and remarks to observation
 # Hint for a button that adds a vote of agreement
 Adds-your-vote-of-agreement = Adds your vote of agreement
 # Hint for a button that adds a vote of disagreement
@@ -75,6 +82,7 @@ All-observations = All observations
 All-organisms = All organisms
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = all rights reserved
+All-taxa = All taxa
 ALLOW-LOCATION-ACCESS = ALLOW LOCATION ACCESS
 # As in automated identification suggestions
 Almost-done = Almost done!
@@ -90,7 +98,7 @@ APPLY-FILTERS = APPLY FILTERS
 Apply-filters = Apply filters
 # Month of April
 April = April
-Are-you-a-teacher = Are you a teacher wanting to use iNaturalist with your students?
+Are-you-an-educator = Are you an educator wanting to use iNaturalist with your students?
 Are-you-sure-you-want-to-log-out = Are you sure you want to log out of your iNaturalist account? All observations that haven’t been uploaded to iNaturalist will be deleted.
 # Onboarding text on MyObservations: 0-10 observations
 As-you-upload-more-observations = As you upload more observations, others in our community may be able to help you identify them!
@@ -114,12 +122,15 @@ By-exiting-observation-not-saved = By exiting, your observation will not be save
 By-exiting-your-observations-not-saved = By exiting, your observations will not be saved. You can save them to your device, or you can delete them.
 By-exiting-your-photos-will-not-be-saved = By exiting, your photos will not be saved.
 By-exiting-your-recorded-sound-will-not-be-saved = By exiting, your recorded sound will not be saved.
+# Lead in to a list including "Get your identifcation verified..." and "Share your observation..."
+By-uploading-your-observation-to-iNaturalist-you-can = By uploading your observation to iNaturalist, you can:
 Camera = Camera
 CANCEL = CANCEL
 Cancel = Cancel
 Captive-Cultivated = Captive/Cultivated
-# "Casual" Data quality grade
-Casual = Casual
+# Quality grade indicating observation does not quality for Needs ID or
+# Research Grade, e.g. missing media, voted out, etc.
+Casual--quality-grade = Casual
 # Short label for the Creative Commons Attribution license
 CC-BY = CC BY
 # Short label for the Creative Commons Attribution-NonCommercial license
@@ -154,13 +165,15 @@ Change-taxon-filter = Change taxon filter
 Change-user = Change user
 # Label for a button that cycles through zoom levels for the camera
 Change-zoom = Change zoom
-Check-this-box-if-you-want-to-apply-a-Creative-Commons = Check this box if you want to apply a Creative Commons
+Check-this-box-if-you-want-to-apply-a-Creative-Commons = Check this box if you want to apply a Creative Commons Attribution-NonCommercial license to uploaded content. This means anyone can copy and reuse your photos and/or observations without asking for permission as long as they give you credit and don't use the works commercially. You can choose a different license or remove the license later, but this is the best license for sharing with researchers.
 # Notification that appears after pressing the reset password button
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
 # Text for a button prompting the user to grant access to the gallery
 CHOOSE-PHOTOS = CHOOSE PHOTOS
 # Label for button that chooses a taxon
 Choose-taxon = Choose taxon
+# Label for button that chooses top taxon
+Choose-top-taxon = Choose top taxon
 # Label for a button that clears content, like the text entered in a text
 # field
 Clear = Clear
@@ -220,33 +233,47 @@ Data-quality-assessment-description-casual = This observation has not met the co
 Data-quality-assessment-description-needs-id = This observation has not yet met the conditions for Research Grade status:
 # Data Quality Assessment explanation when quality is Research Grade
 Data-quality-assessment-description-research = It can now be used for research and featured on other websites.
+# Data Quality Assessment metric
 Data-quality-assessment-evidence-of-organism = Evidence of organism
+# Data Quality Assessment metric
 Data-quality-assessment-has-photos-or-sounds = Has Photos or Sounds
+# Data Quality Assessment metric
 Data-quality-assessment-id-supported-by-two-or-more = Has ID supported by two or more
+# Data Quality Assessment metric
 Data-quality-assessment-location-is-accurate = Location is accurate
+# Data Quality Assessment metric
 Data-quality-assessment-location-specified = Location specified
+# Data Quality Assessment metric
 Data-quality-assessment-organism-is-wild = Organism is wild
+# Data Quality Assessment metric
 Data-quality-assessment-recent-evidence-of-organism = Recent evidence of an organism
+# Data Quality Assessment metric
+Data-quality-assessment-single-subject = Evidence related to a single subject
+# Data Quality Assessment description of the final quality grade when Casual
 Data-quality-assessment-title-casual = This observation is Casual Grade
+# Data Quality Assessment description of the final quality grade when Needs ID
 Data-quality-assessment-title-needs-id = This observation Needs ID
-# declares the current data quality status of the observation when quality is Research Grade
+# Data Quality Assessment description of the final quality grade when Research Grade
 Data-quality-assessment-title-research = This observation is Research Grade!
 Data-quality-casual-description = This observation needs more information verified to be considered verifiable
 Data-quality-needs-id-description = This observation needs more identifications to reach research grade
-Data-quality-research-description = This observation has enough identifications to be considered resarch grade
+Data-quality-research-description = This observation has enough identifications to be considered research grade
 DATE = DATE
-# Used when displaying a relative time - in this case, X days ago (e.g. 3d = 3 days ago)
-Date-days = { $count }d
+# label in project requirements
+Date = Date
 # Date formatting using date-fns
+# Used for things like User Profile join date
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 date-format-long = PP
-# Date formatting using date-fns
+# Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3
+# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+date-format-month-day = MMM d
+# Use when only showing an observations month and year
+# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+date-format-month-year = MMM yyyy
+# Short date, e.g. on notifications from over a year ago
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 date-format-short = M/d/yy
-# Used when displaying a relative time - in this case, X hours ago (e.g. 3h = 3 hours ago)
-Date-hours = { $count }h
-# Used when displaying a relative time - in this case, X minutes ago (e.g. 3m = 3 minutes ago)
-Date-minutes = { $count }m
 DATE-OBSERVED = DATE OBSERVED
 Date-observed = Date observed
 Date-observed-header-short = Observed
@@ -256,18 +283,23 @@ DATE-OBSERVED-OLDEST = DATE OBSERVED - OLDEST TO NEWEST
 Date-Range = Date Range
 # Label for controls over a range of dates
 DATE-RANGE = DATE RANGE
-# Used when displaying a relative time - in this case, shows an absolute date (e.g. 12/31/22)
-Date-short-format = MM/dd/yy
-# Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3
-Date-this-year = MMM d
 DATE-UPLOADED = DATE UPLOADED
 Date-uploaded = Date uploaded
 Date-uploaded-header-short = Uploaded
 DATE-UPLOADED-NEWEST = DATE UPLOADED - NEWEST TO OLDEST
 DATE-UPLOADED-OLDEST = DATE UPLOADED - OLDEST TO NEWEST
+# Used when displaying a relative time - in this case, X days ago (e.g. 3d = 3 days ago)
+datetime-difference-days = { $count }d
+# Used when displaying a relative time - in this case, X hours ago (e.g. 3h = 3 hours ago)
+datetime-difference-hours = { $count }h
+# Used when displaying a relative time - in this case, X minutes ago (e.g. 3m = 3 minutes ago)
+datetime-difference-minutes = { $count }m
 # Used when displaying a relative time - in this case, X weeks ago (e.g. 3w = 3 weeks ago)
-Date-weeks = { $count }w
-# Date formatting using date-fns
+datetime-difference-weeks = { $count }w
+# Longer datetime, e.g. on ObsEdit
+# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+datetime-format-long = Pp
+# Shorter datetime, e.g. on comments and IDs
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 datetime-format-short = M/d/yy h:mm a
 # Month of December
@@ -281,7 +313,10 @@ DELETE-OBSERVATION--question = DELETE OBSERVATION?
 # Button label or accessibility label for an element that deletes a photo
 Delete-photo = Delete photo
 Delete-sound = Delete sound
-# Shows the progress of deletions for X of Y
+# Hint for a button that clears text you entered
+Deletes-entered-text = Deletes entered text
+# Shows the progress of deletions for X of Y observations, but omits the
+# word "observations" so the message won't get cut off on small screens
 Deleting-x-of-y = Deleting { $currentDeleteCount } of { $total }
 # Shows the number of observations a user is currently deleting out of total on my observations page
 Deleting-x-of-y-observations =
@@ -292,9 +327,13 @@ Deleting-x-of-y-observations =
 # Tab label or section title for content that describes further details, e.g.
 # the details of an observation
 DETAILS = DETAILS
+Device-storage-full = Device storage full
+Device-storage-full-description = iNaturalist may not be able to save your photos or may crash.
 # Button that disables the camera's flash
 Disable-flash = Disable flash
-Disagreement = <0>*@{ $username } disagrees this is </0><1></1>
+# Disagreement notice with an identificaiton, <0/> will get replaced by a
+# taxon name
+Disagreement = *@{ $username } disagrees this is <0/>
 # Button that discards changes or an item, e.g. a photo
 DISCARD = DISCARD
 # Button that discards all items, e.g. imported photos
@@ -334,6 +373,7 @@ Edit-location = Edit location
 Edit-Observation = Edit Observation
 # Label for button that edits an observation's taxon
 Edits-this-observations-taxon = Edits this observation's taxon
+EDUCATORS = EDUCATORS
 EMAIL = EMAIL
 EMAIL-DEBUG-LOGS = EMAIL DEBUG LOGS
 # Button that enables the camera's flash
@@ -346,11 +386,14 @@ Endemic = Endemic
 Endemic-to-place = Endemic to { $place }
 # Title for a section describing an error
 Error = Error
+ERROR = ERROR
 ERROR-LOADING-DQA = ERROR LOADING IN DQA
 # Title of dialog or section describing an error
 Error-title = Error
 ERROR-VOTING-IN-DQA = ERROR VOTING IN DQA
 Error-voting-in-DQA-description = Your vote may not have been cast in the DQA. Check your internet connection and try again.
+# label in project requirements
+Establishment = Establishment
 ESTABLISHMENT-MEANS = ESTABLISHMENT MEANS
 # Header for a section describing how a taxon arrived in a given place
 ESTABLISHMENT-MEANS-header = ESTABLISHMENT MEANS
@@ -359,6 +402,8 @@ Every-time-a-collection-project = Every time a collection project's page is load
 EVIDENCE = EVIDENCE
 Exact-Date = Exact Date
 EXACT-DATE = EXACT DATE
+except = except
+EXPAND-MAP = EXPAND MAP
 Explore = Explore
 EXPLORE = EXPLORE
 Explore-Filters = Explore Filters
@@ -373,6 +418,8 @@ Failed-to-log-in = Failed to log in
 FEATURED = FEATURED
 # Month of February
 February = February
+FEEDBACK = FEEDBACK
+Feedback-Submitted = Feedback Submitted
 Fetching-location = Fetching location...
 Filter = Filter
 FILTER-BY-A-PROJECT = FILTER BY A PROJECT
@@ -400,6 +447,8 @@ GEOPRIVACY = GEOPRIVACY
 Geoprivacy-status = Geoprivacy: { $status }
 # Title of screen asking for permission to access location
 Get-more-accurate-suggestions-create-useful-data = Get more accurate suggestions & create useful data for science using your location
+# Preceded by the fragment, "By uploading your observation to iNaturalist, you can:"
+Get-your-identification-verified-by-real-people = Get your identification verified by real people in the iNaturalist community
 # Label for button that returns to the previous screen
 Go-back = Go back
 # Text for a button that asks the user to grant permission
@@ -412,6 +461,7 @@ Group-Photos = Group Photos
 # Onboarding for users learning to group photos in the camera roll
 Group-photos-onboarding = Group photos into observations– make sure there is only one species per observation
 HELP = HELP
+Hide = Hide
 Highest = Highest
 HIGHEST-RANK = HIGHEST RANK
 I-agree-to-the-Terms-of-Use = I agree to the Terms of Use and Privacy Policy, and I have reviewed the Community Guidelines (required).
@@ -452,7 +502,6 @@ iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNatur
 INATURALIST-COMMUNITY = INATURALIST COMMUNITY
 INATURALIST-FORUM = INATURALIST FORUM
 iNaturalist-has-no-ID-suggestions-for-this-photo = iNaturalist has no ID suggestions for this photo.
-INATURALIST-HELP = INATURALIST HELP
 INATURALIST-HELP-PAGE = INATURALIST HELP PAGE
 iNaturalist-helps-you-identify = iNaturalist helps you identify the plants and animals around you while generating data for science and conservation. Get connected with a community of millions scientists and naturalists who can help you learn more about nature!
 iNaturalist-identification-suggestions-are-based-on = iNaturalist's identification suggestions are based on observations and identifications made by the iNaturalist community, including { $user1 }, { $user2 }, { $user3 }, and many others.
@@ -484,6 +533,7 @@ Internet-Connection-Required = Internet Connection Required
 Intl-number = { $val }
 Introduced = Introduced
 Introduced-to-place = Introduced to { $place }
+It-may-take-up-to-an-hour-to-remove-content = It may take up to an hour to completely delete all associated content
 # Month of January
 January = January
 JOIN = JOIN
@@ -502,12 +552,12 @@ JOURNAL-POSTS-WITHOUT-NUMBER =
 July = July
 # Month of June
 June = June
-Label-colon-value = { $label }: { $value }
+Just-make-sure-the-organism-is-wild = Just make sure the organism is wild (not a pet, zoo animal, or garden plant)
 # Shows date user last active on iNaturalist on user profile
 Last-Active-date = Last Active: { $date }
-# Latitude, longitude on a single line on a single line
+# Latitude, longitude on a single line
 Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, maximumFractionDigits: 6) }
-# Latitude, longitude, and accuracy on a single line on a single line
+# Latitude, longitude, and accuracy on a single line
 Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBER($longitude, maximumFractionDigits: 6) }, Acc: { $accuracy }
 # Identification category
 leading--identification = Leading
@@ -535,8 +585,6 @@ LOG-OUT = LOG OUT
 LOG-OUT--question = LOG OUT?
 # Appears in the login screen
 Login-sub-title = Document living things, identify organisms & contribute to science
-# Alert dialog title when attempting to send email on an iOS device but Apple Mail is not installed
-Looks-like-youre-not-using-Apple-Mail = Looks like you're not using Apple Mail
 Lowest = Lowest
 LOWEST-RANK = LOWEST RANK
 MAP = MAP
@@ -548,6 +596,8 @@ maverick--identification = Maverick
 # Month of May
 May = May
 MEDIA = MEDIA
+# label in project requirements
+Media-Type = Media Type
 MEMBERS-WITHOUT-NUMBER =
     { $count ->
         [one] MEMBER
@@ -563,6 +613,7 @@ MONTHS = MONTHS
 More-info = More info
 MOST-FAVED = MOST FAVED
 Most-faved = Most faved
+MY-OBSERVATIONS = MY OBSERVATIONS
 Native = Native
 Native-to-place = Native to { $place }
 Navigates-to-AI-camera = Navigates to AI camera
@@ -581,10 +632,12 @@ Navigates-to-taxon-details = Navigates to taxon details
 Navigates-to-user-profile = Navigates to user profile
 # Label for button that takes you to your observations
 Navigates-to-your-observations = Navigates to your observations
-# Header for nearby projects
+# Header or button label for content that is near the user's current location
 NEARBY = NEARBY
+# Header or button label for content that is near the user's current location
 Nearby = Nearby
-Needs-ID = Needs ID
+# Quality grade indicating observation still needs more identifications
+Needs-ID--quality-grade = Needs ID
 # Heading when creating a new observation
 New-Observation = New Observation
 # Sort order, refers to newest or oldest date
@@ -592,6 +645,10 @@ Newest-to-oldest = Newest to oldest
 Next-observation = Next observation
 # Error message when no camera can be found
 No-Camera-Available = No Camera Available
+# Alert dialog title when attempting to send email but no email is installed
+No-email-app-installed = No email app installed
+No-email-app-installed-body = If you have another way of sending email, the address is { $address }
+No-email-app-installed-body-check-other = Try checking your email in a web browser or on another device.
 No-Location = No Location
 No-Media = No Media
 # As in a machine learning model that powers automated suggestions
@@ -599,11 +656,18 @@ No-model-found = No model found
 No-Notifications-Found = You have no notifications! Get started by creating your own observations.
 No-projects-match-that-search = No projects match that search
 # Used for explore screen when search params lead to a search with no data
-No-results-found = No results found
+No-results-found-for-that-search = No results found for that search.
+No-results-found-try-different-search = No results found. Try a different search or adjust your filters.
 # license code
 no-rights-reserved-cc0 = no rights reserved (CC0)
 NONE = NONE
 none = none
+# Error message title when not enough storage space on device, e.g. when the
+# disk is full and you try to save a photo
+Not-enough-space-left-on-device = Not enough space left on device
+# Error message description when not enough storage space on device, e.g. when
+# the disk is full and you try to save a photo
+Not-enough-space-left-on-device-try-again = There is not enough storage space left on your device to do that. Please free up some space and try again.
 # Header for observation description on observation detail
 NOTES = NOTES
 NOTIFICATIONS = NOTIFICATIONS
@@ -677,7 +741,6 @@ Opens-the-AI-camera = Opens the AI camera
 Opens-the-side-drawer-menu = Opens the side drawer menu.
 # Picker prompt on observation edit
 Organism-is-captive = Organism is captive
-Organism-is-wild = Organism is wild
 Organisms-that-are-identified-to-species = Organisms that are identified to species rank or below
 # Generic option in a list for unanticipated cases, e.g. a choice to manually
 # enter an explanation for why you are flagging something instead of choosing
@@ -704,6 +767,7 @@ Please-click-the-link = Please click the link in the email within 60 minutes  to
 Please-Grant-Permission = Please Grant Permission
 PLEASE-LOG-IN = PLEASE LOG IN
 Please-try-again-when-you-are-connected-to-the-internet = Please try again when you are connected to the Internet.
+Please-try-again-when-you-are-online = Please try again when you are online!
 POTENTIAL-DISAGREEMENT = POTENTIAL DISAGREEMENT
 Potential-disagreement-description = <0>Is the evidence enough to confirm this is </0><1></1><0>?<0>
 Potential-disagreement-disagree = <0>No, but this is a member of </0><1></1>
@@ -716,58 +780,93 @@ PRIVACY-POLICY = PRIVACY POLICY
 Private = Private
 # As in an iNat project, a collection of observations or observation search filters
 PROJECT = PROJECT
+Project-Members-Only = Project Members Only
 PROJECT-REQUIREMENTS = PROJECT REQUIREMENTS
 # As in iNat project, collections of observations or observation search filters
 PROJECTS = PROJECTS
 # As in iNat projects, collections of observations or observation search filters
 Projects = Projects
 QUALITY-GRADE = QUALITY GRADE
-# Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Casual
-Quality-Grade-casual = Quality Grade Casual
-quality-grade-casual = Casual
-quality-grade-needs-id = Needs Id
-# Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Needs ID
-Quality-Grade-needs_id = Quality Grade Needs ID
-# Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Research Grade
-Quality-Grade-research = Quality Grade Research Grade
-# Quality grade options
-quality-grade-research = Research Grade
+# label in project requirements
+Quality-Grade = Quality Grade
+# Screen reader label for the Casual quality grade label
+Quality-Grade-Casual--label = Quality Grade: Casual
+# Screen reader label for the Needs ID quality grade label
+Quality-Grade-Needs-ID--label = Quality Grade: Needs ID
+# Screen reader label for the Research quality grade label
+Quality-Grade-Research--label = Quality Grade: Research
 Ranks-CLASS = CLASS
+Ranks-Class = Class
 Ranks-COMPLEX = COMPLEX
+Ranks-Complex = Complex
 Ranks-EPIFAMILY = EPIFAMILY
+Ranks-Epifamily = Epifamily
 Ranks-FAMILY = FAMILY
+Ranks-Family = Family
 Ranks-FORM = FORM
+Ranks-Form = Form
 Ranks-GENUS = GENUS
+Ranks-Genus = Genus
 Ranks-GENUSHYBRID = GENUSHYBRID
+Ranks-Genushybrid = Genushybrid
 Ranks-HYBRID = HYBRID
+Ranks-Hybrid = Hybrid
 Ranks-INFRACLASS = INFRACLASS
+Ranks-Infraclass = Infraclass
 Ranks-INFRAHYBRID = INFRAHYBRID
+Ranks-Infrahybrid = Infrahybrid
 Ranks-INFRAORDER = INFRAORDER
+Ranks-Infraorder = Infraorder
 Ranks-KINGDOM = KINGDOM
+Ranks-Kingdom = Kingdom
 Ranks-ORDER = ORDER
+Ranks-Order = Order
 Ranks-PARVORDER = PARVORDER
+Ranks-Parvorder = Parvorder
 Ranks-PHYLUM = PHYLUM
+Ranks-Phylum = Phylum
 Ranks-SECTION = SECTION
+Ranks-Section = Section
 Ranks-SPECIES = SPECIES
+Ranks-Species = Species
+Ranks-Statefmatter = State of matter
 Ranks-STATEOFMATTER = STATE OF MATTER
 Ranks-SUBCLASS = SUBCLASS
+Ranks-Subclass = Subclass
 Ranks-SUBFAMILY = SUBFAMILY
+Ranks-Subfamily = Subfamily
 Ranks-SUBGENUS = SUBGENUS
+Ranks-Subgenus = Subgenus
 Ranks-SUBKINGDOM = SUBKINGDOM
+Ranks-Subkingdom = Subkingdom
 Ranks-SUBORDER = SUBORDER
+Ranks-Suborder = Suborder
 Ranks-SUBPHYLUM = SUBPHYLUM
+Ranks-Subphylum = Subphylum
 Ranks-SUBSECTION = SUBSECTION
+Ranks-Subsection = Subsection
 Ranks-SUBSPECIES = SUBSPECIES
+Ranks-Subspecies = Subspecies
 Ranks-SUBTERCLASS = SUBTERCLASS
+Ranks-Subterclass = Subterclass
 Ranks-SUBTRIBE = SUBTRIBE
+Ranks-Subtribe = Subtribe
 Ranks-SUPERCLASS = SUPERCLASS
+Ranks-Superclass = Superclass
 Ranks-SUPERFAMILY = SUPERFAMILY
+Ranks-Superfamily = Superfamily
 Ranks-SUPERORDER = SUPERORDER
+Ranks-Superorder = Superorder
 Ranks-SUPERTRIBE = SUPERTRIBE
+Ranks-Supertribe = Supertribe
 Ranks-TRIBE = TRIBE
+Ranks-Tribe = Tribe
 Ranks-VARIETY = VARIETY
+Ranks-Variety = Variety
 Ranks-ZOOSECTION = ZOOSECTION
+Ranks-Zoosection = Zoosection
 Ranks-ZOOSUBSECTION = ZOOSUBSECTION
+Ranks-Zoosubsection = Zoosubsection
 Read-more-on-Wikipedia = Read more on Wikipedia
 # Heading for the sound recorder
 RECORD-NEW-SOUND = RECORD NEW SOUND
@@ -790,14 +889,18 @@ Remove-favorite = Remove favorite
 # Label for button that removes an identification
 Remove-identification = Remove identification
 Remove-Photos = Remove Photos
+Remove-project-filter = Remove project filter
+Remove-taxon-filter = Remove taxon filter
+Remove-user-filter = Remove user filter
 # Label for button that removes an observation's taxon
 Removes-this-observations-taxon = Removes this observation's taxon
 # Hint for a button that removes a vote of agreement
 Removes-your-vote-of-agreement = Removes your vote of agreement
 # Hint for a button that removes a vote of disagreement
 Removes-your-vote-of-disagreement = Removes your vote of disagreement
-# Quality grade option
-Research-Grade = Research Grade
+# Quality grade indicating observation is accurate and complete enough to
+# share outside of iNat
+Research-Grade--quality-grade = Research Grade
 # Reset password button
 RESET-PASSWORD = RESET PASSWORD
 # Label for a button that resets a sound recording
@@ -812,6 +915,7 @@ Reset-verb = Reset
 RESTART-APP = RESTART APP
 # Label for button that restores a withdrawn identification
 Restore = Restore
+Reveal = Reveal
 REVIEW-INATURALIST = REVIEW INATURALIST
 # Title for section of observation filters for controls over whether you have
 # reviewed the observations or not
@@ -825,6 +929,7 @@ SAVE = SAVE
 Save = Save
 SAVE-ALL = SAVE ALL
 SAVE-CHANGES = SAVE CHANGES
+SAVE-FOR-LATER = SAVE FOR LATER
 SAVE-LOCATION = SAVE LOCATION
 SAVE-PHOTOS = SAVE PHOTOS
 Save-photos-to-your-gallery = Save photos to your gallery
@@ -853,6 +958,8 @@ See-observations-by-this-user-in-Explore = See observations by this user in Expl
 See-observations-in-explore = See observations in explore
 # Accessibility label for Explore button on TaxonDetails screen
 See-observations-of-this-taxon-in-explore = See observations of this taxon in explore
+# Accessibility label for navigating to project members screen
+See-project-members = See project members
 # Accessibility label for Species button on UserProfile screen
 See-species-observed-by-this-user-in-Explore = See species observed by this user in Explore
 Select-a-date-and-time-for-observation = Select a date and time for observation
@@ -868,11 +975,12 @@ Separate-Photos = Separate Photos
 # Month of September
 September = September
 SETTINGS = SETTINGS
-Settings = Settings
 Share = Share
 SHARE-DEBUG-LOGS = SHARE DEBUG LOGS
 Share-location = Share Location
 Share-map = Share map
+# Preceded by the fragment # Preceded by the fragment, "By uploading your observation to iNaturalist, you can:"
+Share-your-observation-where-it-can-help-scientists = Share your observation, where it can help scientists across the world better understand biodiversity.
 SHOP-INATURALIST-MERCH = SHOP INATURALIST MERCH
 Show-observation-options = Show observation options.
 # Label for button that shows identification suggestions
@@ -884,6 +992,9 @@ Some-data-privacy-laws = Some data privacy laws, like the European Union's Gener
 # Generic error message
 Something-went-wrong = Something went wrong.
 Sorry-this-observation-was-deleted = Sorry, this observation was deleted
+# Error message if the app tries to open a URL the operating system can't
+# handle
+Sorry-we-dont-know-how-to-open-that-URL = Sorry, we don't know how to open that URL: { $url }
 SORT-BY = SORT BY
 Sort-by = Sort by
 # Character separating current position and total duration when playing a
@@ -913,6 +1024,7 @@ SPECIES-WITHOUT-NUMBER =
 # Label for the standard map type
 Standard--map-type = Standard
 Start-must-be-before-end = The start date must be before the end date.
+Start-time = Start time: { $date }
 Start-upload = Start upload
 # Accessibility hint for button that starts recording a sound
 Starts-recording-sound = Starts recording sound
@@ -924,8 +1036,11 @@ Stop-upload = Stop upload
 Stop-verb = Stop
 # Accessibility hint for a button that stops the recording of a sound
 Stops-recording-sound = Stops recording sound
+SUBMIT = SUBMIT
 SUBMIT-ID-SUGGESTION = SUBMIT ID SUGGESTION
 SUGGEST-ID = SUGGEST ID
+# Label for element that suggest an identification
+Suggest-ID = SUGGEST ID
 # Identification category
 supporting--identification = Supporting
 Switches-to-tab = Switches to { $tab } tab.
@@ -933,18 +1048,21 @@ Sync-observations = Sync observations
 Syncing = Syncing...
 Take-photo = Take photo
 Take-photos-with-the-camera = Take photos of a single organism with the camera
+# label in project requirements
+Taxa = Taxa
 TAXON = TAXON
 # Settings screen
 TAXON-NAMES-DISPLAY = TAXON NAMES DISPLAY
 TAXONOMIC-RANKS = TAXONOMIC RANKS
 # Header for a block of text describing a taxon's taxonomy
 TAXONOMY-header = TAXONOMY
-TEACHERS = TEACHERS
-TEACHERS-GUIDE = TEACHERS' GUIDE
 TEAM = TEAM
 Terms-of-Use = Terms of Use
 TERMS-OF-USE = TERMS OF USE
 Text-Box-to-Describe-Reason-for-Flag = Text box to describe reason for flag.
+Thank-you-for-sharing-your-feedback = Thank you for sharing your feedback to help us improve!
+Thanks-for-using-any-suggestions = Thanks for using this app! Do you have any suggestions for the people who make it?
+That-user-profile-doesnt-exist = That user profile doesn't exist
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
 The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
 The-location-will-not-be-visible = The location will not be visible to others, which means it may be difficult to identify.
@@ -966,6 +1084,8 @@ Traditional-Project = Traditional Project
 Umbrella-Project = Umbrella Project
 UNFOLLOW = UNFOLLOW
 UNFOLLOW-USER = UNFOLLOW USER?
+# Text to show when a taoxn rank is unknown or missing
+Unknown--rank = Unknown
 # Text to show when a taxon or identification is unknown or missing
 Unknown--taxon = Unknown
 # Text to show when a user (or their name) is unknown or missing
@@ -977,9 +1097,10 @@ Unreviewed-observations-only = Unreviewed observations only
 Upload-Complete = Upload Complete
 Upload-in-progress = Upload in progress
 UPLOAD-NOW = UPLOAD NOW
-Upload-photos-from-your-gallery = Upload photos of multiple organisms from your gallery
+Upload-photos-from-your-gallery = Upload multiple photos from your gallery
 Upload-photos-from-your-gallery-and-create-observations = Upload photos from your gallery and create observations and get identifications of organisms you’ve already observed!
 Upload-Progress = Upload { $uploadProgress } percent complete
+UPLOAD-TO-INATURALIST = UPLOAD TO INATURALIST
 # Shows the number of observations a user can upload to iNat from my observations page
 Upload-x-observations =
     Upload { $count ->
@@ -988,7 +1109,8 @@ Upload-x-observations =
     }
 # Describes whether a user made this observation from web, iOS, or Android
 Uploaded-via-application = Uploaded via: { $application }
-# Shows the progress of uploads for X of Y
+# Shows the progress of uploads for X of Y observations, but omits the
+# word "observations" so the message won't get cut off on small screens
 Uploading-x-of-y = Uploading { $currentUploadCount } of { $total }
 # Shows the number of observations a user is currently uploading out of total on my observations page
 Uploading-x-of-y-observations =
@@ -1007,9 +1129,18 @@ User = User { $userHandle }
 USERNAME = USERNAME
 # Appears above the text fields
 USERNAME-OR-EMAIL = USERNAME OR EMAIL
+# label in project requirements
+Users = Users
 Using-iNaturalist-requires-the-storage = Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US.
+# Listing of app and build versions
+Version-app-build = Version { $appVersion } ({ $buildVersion })
+VIEW-ALL-X-PLACES = VIEW ALL { $count } PLACES
+VIEW-ALL-X-PROJECTS = VIEW ALL { $count } PROJECTS
+VIEW-ALL-X-TAXA = VIEW ALL { $count } TAXA
+VIEW-ALL-X-USERS = VIEW ALL { $count } USERS
 VIEW-CHILDREN-TAXA = VIEW CHILDREN TAXA
-VIEW-DATA-QUALITY-ASSESSEMENT = VIEW DATA QUALITY ASSESSEMENT
+VIEW-DATA-QUALITY-ASSESSMENT = VIEW DATA QUALITY ASSESSMENT
+VIEW-EDUCATORS-GUIDE = VIEW EDUCATOR'S GUIDE
 View-in-browser = View in browser
 VIEW-IN-EXPLORE = VIEW IN EXPLORE
 VIEW-INATURALIST-HELP = VIEW INATURALIST HELP
@@ -1022,10 +1153,9 @@ VIEW-PROJECTS = VIEW PROJECTS
 # Label for a button that shows identification suggestions for an observation
 # or photo
 View-suggestions = View suggestions
-VIEW-TEACHERS-GUIDE = VIEW TEACHERS' GUIDE
 We-are-not-confident-enough-to-make-a-top-ID-suggestion = We’re not confident enough to make a top ID suggestion, but here are some other suggestions:
 We-sent-a-confirmation-email = We sent a confirmation email to the email you signed up with.
-We-store-personal-information = We store personal information like usernames and email addresses in order to manage accounts on this site, and to comply with privacy laws, we need you to check this box to indicate that you consent to this use of personal information. To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.
+We-store-personal-information = We store personal information like usernames and email addresses in order to manage accounts, and to comply with privacy laws, we need you to check this box to indicate that you consent to this use of personal information. To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.
 Welcome-to-iNaturalist = Welcome to iNaturalist!
 # Welcome user back to app
 Welcome-user = <0>Welcome back,</0><1>{ $userHandle }</1>
@@ -1065,12 +1195,15 @@ X-Identifiers =
         [one] { $count } Identifier
        *[other] { $count } Identifiers
     }
-# Banner above Explore Map showing total number of results
+# Subheader for number of project members screen
+X-MEMBERS = { $count } MEMBERS
+# Shows number of observations in a variety of contexts
 X-Observations =
     { $count ->
         [one] 1 Observation
        *[other] { $count } Observations
     }
+# Shows number of observations in a variety of contexts
 X-observations =
     { $count ->
         [one] 1 observation
@@ -1091,13 +1224,15 @@ X-Observers =
         [one] { $count } Observer
        *[other] { $count } Observers
     }
+# Progress or position indicator, e.g. when viewing 2 of 3 observations, or 3
+# of 10 photos
 X-of-Y =
-    { $count ->
+    { $x ->
         [one] 1
-       *[other] { $count }
-    } { $totalObservationCount ->
-        [one] of { $totalObservationCount }
-       *[other] of { $totalObservationCount }
+       *[other] { $x }
+    } { $y ->
+        [one] of { $y }
+       *[other] of { $y }
     }
 # Displays number of photos attached to an observation in the Media Viewer
 X-PHOTOS =
@@ -1141,6 +1276,7 @@ x-uploads-failed =
        *[other] { $count } uploads failed
     }
 Yes-license-my-photos = Yes, license my photos, sounds, and observations so scientists can use my data (recommended)
+You-are-offline = You are offline
 You-are-offline-Tap-to-reload = You are offline. Tap to reload.
 You-are-offline-Tap-to-try-again = You are offline. Tap to try again.
 You-can-add-up-to-20-media = You can add up to 20 photos and 20 sounds per observation.
@@ -1176,3 +1312,5 @@ Youve-previously-denied-location-permissions = You’ve previously denied locati
 Youve-previously-denied-microphone-permissions = You’ve previously denied microphone permissions, so please enable them in settings.
 Zoom-in-as-much-as-possible-to-improve = Zoom in as much as possible to improve location accuracy and get better identifications.
 Zoom-to-current-location = Zoom to current location
+# Label for button that shows zoom level, e.g. on a camera
+zoom-x = { $zoom }×

@@ -7,6 +7,7 @@ import { Text, TextProps } from "react-native";
 
 const Body4 = ( props: TextProps ) => (
   <Text
+    maxFontSizeMultiplier={2}
     className={classnames(
       "text-2xs text-darkGray",
       tailwindFontRegular

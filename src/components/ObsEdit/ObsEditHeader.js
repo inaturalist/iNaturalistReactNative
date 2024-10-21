@@ -68,6 +68,7 @@ const ObsEditHeader = ( {
     }
     return (
       <Heading2
+        maxFontSizeMultiplier={1.5}
         testID="new-observation-text"
         accessible
         accessibilityRole="header"
@@ -163,7 +164,7 @@ const ObsEditHeader = ( {
   ] );
 
   return (
-    <View className="flex-row justify-between items-center">
+    <View className="flex-row justify-between items-center bg-white">
       {renderBackButton( )}
       {observations.length > 0 && renderHeaderTitle( )}
       <View className="mr-4">
@@ -171,7 +172,7 @@ const ObsEditHeader = ( {
       </View>
       {deleteSheetVisible && (
         <DeleteObservationSheet
-          handleClose={( ) => setDeleteSheetVisible( false )}
+          onPressClose={( ) => setDeleteSheetVisible( false )}
           navToObsList={navToObsList}
           observations={observations}
           currentObservation={currentObservation}
@@ -181,7 +182,7 @@ const ObsEditHeader = ( {
       {discardObservationSheetVisible && (
         <DiscardObservationSheet
           discardObservation={discardObservation}
-          handleClose={( ) => setDiscardObservationSheetVisible( false )}
+          onPressClose={( ) => setDiscardObservationSheetVisible( false )}
           navToObsList={navToObsList}
           observations={observations}
         />
@@ -189,7 +190,7 @@ const ObsEditHeader = ( {
       {discardChangesSheetVisible && (
         <DiscardChangesSheet
           discardChanges={discardChanges}
-          handleClose={( ) => setDiscardChangesSheetVisible( false )}
+          onPressClose={( ) => setDiscardChangesSheetVisible( false )}
         />
       )}
     </View>

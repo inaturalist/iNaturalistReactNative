@@ -10,25 +10,24 @@ import { useInfiniteScroll, useTranslation } from "sharedHooks";
 import ExploreFlashList from "./ExploreFlashList";
 
 type Props = {
-  count: Object,
+  canFetch?: boolean,
   isConnected: boolean,
   queryParams: Object,
-  updateCount: Function
+  handleUpdateCount: Function
 };
 
 const LIST_STYLE = { paddingTop: 44 };
 
 const IdentifiersView = ( {
-  count,
+  canFetch,
   isConnected,
   queryParams,
-  updateCount
+  handleUpdateCount
 }: Props ): Node => {
   const {
     data,
     fetchNextPage,
     isFetchingNextPage,
-    status,
     totalResults
   } = useInfiniteScroll(
     "fetchIdentifiers",
@@ -37,8 +36,11 @@ const IdentifiersView = ( {
       ...queryParams,
       fields: {
         identifications_count: true,
-        user: User.FIELDS
+        user: User.LIMITED_FIELDS
       }
+    },
+    {
+      enabled: canFetch
     }
   );
   const { t } = useTranslation( );
@@ -53,13 +55,12 @@ const IdentifiersView = ( {
   const renderItemSeparator = ( ) => <View className="border-b border-lightGray" />;
 
   useEffect( ( ) => {
-    if ( totalResults && count.identifiers !== totalResults ) {
-      updateCount( { identifiers: totalResults } );
-    }
-  }, [totalResults, updateCount, count] );
+    handleUpdateCount( "identifiers", totalResults );
+  }, [totalResults, handleUpdateCount] );
 
   return (
     <ExploreFlashList
+      canFetch={canFetch}
       contentContainerStyle={LIST_STYLE}
       data={data}
       estimatedItemSize={98}
@@ -70,8 +71,8 @@ const IdentifiersView = ( {
       keyExtractor={item => item.user.id}
       renderItem={renderItem}
       renderItemSeparator={renderItemSeparator}
-      status={status}
       testID="ExploreIdentifiersAnimatedList"
+      totalResults={totalResults}
     />
   );
 };

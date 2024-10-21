@@ -2,11 +2,11 @@ import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import navigateToObsEdit from "components/ObsEdit/helpers/navigateToObsEdit.ts";
 import {
-  BackButton,
-  INatIconButton
+  INatIconButton,
+  OverlayHeader
 } from "components/SharedComponents";
 import {
-  LinearGradient, View
+  LinearGradient
 } from "components/styledComponents";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
@@ -24,20 +24,21 @@ const isTablet = DeviceInfo.isTablet( );
 interface Props {
   belongsToCurrentUser?: boolean,
   observationId: number,
-  rightIconBlack?: boolean,
+  rightIconDarkGray?: boolean,
   uuid: string
 }
 
 const ObsDetailsHeader = ( {
   belongsToCurrentUser,
   observationId,
-  rightIconBlack = false,
+  rightIconDarkGray = false,
   uuid
 }: Props ) => {
   const navigation = useNavigation( );
   const localObservation = useLocalObservation( uuid );
   const { t } = useTranslation( );
   const prepareObsEdit = useStore( state => state.prepareObsEdit );
+  const setMyObsOffsetToRestore = useStore( state => state.setMyObsOffsetToRestore );
 
   return (
     <LinearGradient
@@ -47,7 +48,7 @@ const ObsDetailsHeader = ( {
         "w-full",
         "flex-row",
         "justify-between",
-        "h-10"
+        "h-12"
       )}
       colors={[
         isTablet
@@ -56,29 +57,27 @@ const ObsDetailsHeader = ( {
         "transparent"
       ]}
     >
-      <View className="left-4 top-4">
-        <BackButton color="white" inCustomHeader testID="ObsDetails.BackButton" />
-      </View>
-      <View className="right-4">
-        {
+      <OverlayHeader
+        testID="ObsDetails.BackButton"
+        rightHeaderButton={
           belongsToCurrentUser
             ? (
               <INatIconButton
                 testID="ObsDetail.editButton"
                 onPress={() => {
                   prepareObsEdit( localObservation );
-                  navigateToObsEdit( navigation );
+                  navigateToObsEdit( navigation, setMyObsOffsetToRestore );
                 }}
                 icon="pencil"
-                color={!rightIconBlack
+                color={!rightIconDarkGray
                   ? colors.white
-                  : colors.black}
+                  : colors.darkGray}
                 accessibilityLabel={t( "Edit" )}
               />
             )
-            : <HeaderKebabMenu observationId={observationId} white={!rightIconBlack} />
+            : <HeaderKebabMenu observationId={observationId} white={!rightIconDarkGray} />
         }
-      </View>
+      />
     </LinearGradient>
   );
 };

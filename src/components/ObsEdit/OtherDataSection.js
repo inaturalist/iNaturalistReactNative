@@ -42,7 +42,7 @@ const OtherDataSection = ( {
   // opposite of Seek (asking if wild, not if captive)
   const captiveOptions = [
     {
-      label: t( "Organism-is-wild" ),
+      label: t( "Data-quality-assessment-organism-is-wild" ),
       value: false
     },
     {
@@ -59,7 +59,7 @@ const OtherDataSection = ( {
       {showGeoprivacySheet && (
         <GeoprivacySheet
           selectedValue={currentObservation?.geoprivacy}
-          handleClose={( ) => setShowGeoprivacySheet( false )}
+          onPressClose={( ) => setShowGeoprivacySheet( false )}
           updateGeoprivacyStatus={value => updateObservationKeys( {
             geoprivacy: value
           } )}
@@ -68,7 +68,7 @@ const OtherDataSection = ( {
       {showWildStatusSheet && (
         <WildStatusSheet
           selectedValue={currentObservation?.captive_flag}
-          handleClose={( ) => setShowWildStatusSheet( false )}
+          onPressClose={( ) => setShowWildStatusSheet( false )}
           updateCaptiveStatus={value => updateObservationKeys( {
             captive_flag: value
           } )}
@@ -76,7 +76,7 @@ const OtherDataSection = ( {
       )}
       {showNotesSheet && (
         <TextInputSheet
-          handleClose={( ) => setShowNotesSheet( false )}
+          onPressClose={( ) => setShowNotesSheet( false )}
           headerText={t( "NOTES" )}
           placeholder={t( "Add-optional-notes" )}
           initialInput={currentObservation?.description}

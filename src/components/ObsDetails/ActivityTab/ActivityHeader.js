@@ -4,7 +4,8 @@ import ActivityHeaderKebabMenu from "components/ObsDetails/ActivityTab/ActivityH
 import WithdrawIDSheet from "components/ObsDetails/Sheets/WithdrawIDSheet";
 import {
   ActivityIndicator,
-  Body4, INatIcon, InlineUser, TextInputSheet, WarningSheet
+  Body4, DateDisplay,
+  INatIcon, InlineUser, TextInputSheet, WarningSheet
 } from "components/SharedComponents";
 import {
   View
@@ -12,7 +13,6 @@ import {
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
-import { formatIdDate } from "sharedHelpers/dateAndTime";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -25,7 +25,10 @@ type Props = {
   item: Object,
   loading: boolean,
   updateCommentBody: Function,
-  updateIdentification: Function
+  updateIdentification: Function,
+  geoprivacy: string,
+  taxonGeoprivacy: string,
+  belongsToCurrentUser: boolean
 }
 
 const ActivityHeader = ( {
@@ -38,13 +41,15 @@ const ActivityHeader = ( {
   item,
   loading,
   updateCommentBody,
-  updateIdentification
+  updateIdentification,
+  geoprivacy,
+  taxonGeoprivacy,
+  belongsToCurrentUser
 }:Props ): Node => {
   const [showEditCommentSheet, setShowEditCommentSheet] = useState( false );
   const [showDeleteCommentSheet, setShowDeleteCommentSheet] = useState( false );
   const [showWithdrawIDSheet, setShowWithdrawIDSheet] = useState( false );
-  const { user, vision } = item;
-  const { category } = user || {};
+  const { category, user, vision } = item;
 
   const itemType = item.category
     ? "Identification"
@@ -119,12 +124,21 @@ const ActivityHeader = ( {
       <View className="flex-row items-center space-x-[15px] -mr-[15px]">
         {renderIcon()}
         {renderStatus()}
-        {item.created_at
-            && (
-              <Body4>
-                {formatIdDate( item.updated_at || item.created_at, t )}
-              </Body4>
-            )}
+        {/*
+          Note that even though the date is conditionally rendered, we need to
+          wrap it in a View that's always there so the space-x-[] can be
+          calculated
+        */}
+        <View>
+          {item.created_at && (
+            <DateDisplay
+              dateString={item.updated_at || item.created_at}
+              geoprivacy={geoprivacy}
+              taxonGeoprivacy={taxonGeoprivacy}
+              belongsToCurrentUser={belongsToCurrentUser}
+            />
+          )}
+        </View>
         {
           loading
             ? (
@@ -146,7 +160,7 @@ const ActivityHeader = ( {
         }
         {( currentUser && showWithdrawIDSheet ) && (
           <WithdrawIDSheet
-            handleClose={() => setShowWithdrawIDSheet( false )}
+            onPressClose={() => setShowWithdrawIDSheet( false )}
             taxon={item.taxon}
             updateIdentification={updateIdentification}
           />
@@ -154,7 +168,7 @@ const ActivityHeader = ( {
 
         {( currentUser && showEditCommentSheet ) && (
           <TextInputSheet
-            handleClose={() => setShowEditCommentSheet( false )}
+            onPressClose={() => setShowEditCommentSheet( false )}
             headerText={t( "EDIT-COMMENT" )}
             initialInput={item.body}
             confirm={textInput => updateCommentBody( textInput )}
@@ -162,7 +176,7 @@ const ActivityHeader = ( {
         )}
         {( currentUser && showDeleteCommentSheet ) && (
           <WarningSheet
-            handleClose={( ) => setShowDeleteCommentSheet( false )}
+            onPressClose={( ) => setShowDeleteCommentSheet( false )}
             headerText={t( "DELETE-COMMENT--question" )}
             confirm={deleteComment}
             buttonText={t( "DELETE" )}

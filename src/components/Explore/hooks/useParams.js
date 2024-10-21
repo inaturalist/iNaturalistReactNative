@@ -6,19 +6,16 @@ import {
   useExplore
 } from "providers/ExploreContext.tsx";
 import { useCallback, useEffect } from "react";
-import useStore from "stores/useStore";
 
 const useParams = ( ): Object => {
   const { params } = useRoute( );
   const { dispatch, defaultExploreLocation } = useExplore( );
-  const storedParams = useStore( state => state.storedParams );
 
-  const updateContextWithParams = useCallback( async ( storedState = { } ) => {
+  const updateContextWithParams = useCallback( async ( ) => {
     const setWorldwide = ( ) => {
       dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_WORLDWIDE } );
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
-        storedState,
         place: null,
         placeId: null
       } );
@@ -39,7 +36,6 @@ const useParams = ( ): Object => {
     if ( params?.taxon ) {
       dispatch( {
         type: EXPLORE_ACTION.CHANGE_TAXON,
-        storedState,
         taxon: params.taxon,
         taxonId: params.taxon?.id,
         taxonName: params.taxon?.preferred_common_name || params.taxon?.name
@@ -49,7 +45,6 @@ const useParams = ( ): Object => {
       dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_PLACE } );
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
-        storedState,
         place: params.place,
         placeId: params.place?.id,
         placeGuess: params.place?.display_name
@@ -58,7 +53,6 @@ const useParams = ( ): Object => {
     if ( params?.user && params?.user.id ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_USER,
-        storedState,
         user: params.user,
         userId: params.user.id
       } );
@@ -66,7 +60,6 @@ const useParams = ( ): Object => {
     if ( params?.project && params?.project.id ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_PROJECT,
-        storedState,
         project: params.project,
         projectId: params.project.id
       } );
@@ -78,21 +71,8 @@ const useParams = ( ): Object => {
   ] );
 
   useEffect( ( ) => {
-    if ( params?.resetStoredParams ) {
-      updateContextWithParams( );
-    } else {
-      const storedState = Object.keys( storedParams ).length > 0 || false;
-
-      if ( !storedState ) {
-        updateContextWithParams( );
-      } else {
-        updateContextWithParams( storedParams );
-      }
-    }
+    updateContextWithParams( );
   }, [
-    dispatch,
-    params,
-    storedParams,
     updateContextWithParams
   ] );
 

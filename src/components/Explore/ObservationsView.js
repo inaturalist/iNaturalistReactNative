@@ -4,7 +4,7 @@ import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import useInfiniteExploreScroll from "components/Explore/hooks/useInfiniteExploreScroll";
-import { ObservationsFlashList } from "components/SharedComponents";
+import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect } from "react";
@@ -16,10 +16,12 @@ import {
 import MapView from "./MapView";
 
 type Props = {
-  count: Object,
+  canFetch?: boolean,
   layout: string,
   queryParams: Object,
-  updateCount: Function
+  handleUpdateCount: Function,
+  currentMapRegion: Object,
+  setCurrentMapRegion: Function
 }
 
 const OBS_LIST_CONTAINER_STYLE = { paddingTop: 50 };
@@ -27,19 +29,20 @@ const OBS_LIST_CONTAINER_STYLE = { paddingTop: 50 };
 const { width: defaultScreenWidth } = Dimensions.get( "screen" );
 
 const ObservationsView = ( {
-  count,
+  canFetch,
   layout,
   queryParams,
-  updateCount
+  handleUpdateCount,
+  currentMapRegion,
+  setCurrentMapRegion
 }: Props ): Node => {
   const {
     observations,
     isFetchingNextPage,
     fetchNextPage,
-    status,
     totalBounds,
     totalResults
-  } = useInfiniteExploreScroll( { params: queryParams } );
+  } = useInfiniteExploreScroll( { params: queryParams, enabled: canFetch } );
   const {
     isLandscapeMode,
     isTablet,
@@ -48,10 +51,8 @@ const ObservationsView = ( {
   } = useDeviceOrientation( );
 
   useEffect( ( ) => {
-    if ( count.observations !== totalResults ) {
-      updateCount( { observations: totalResults }, isFetchingNextPage );
-    }
-  }, [totalResults, updateCount, count, isFetchingNextPage] );
+    handleUpdateCount( "observations", totalResults );
+  }, [totalResults, handleUpdateCount] );
 
   const { isConnected } = useNetInfo( );
 
@@ -87,17 +88,22 @@ const ObservationsView = ( {
       <ObservationsFlashList
         contentContainerStyle={OBS_LIST_CONTAINER_STYLE}
         data={observations}
-        dataCanBeFetched
+        dataCanBeFetched={canFetch}
         explore
         hideLoadingWheel={!isFetchingNextPage}
         isFetchingNextPage={isFetchingNextPage}
         isConnected={isConnected}
         layout={layout}
         onEndReached={fetchNextPage}
-        status={status}
+        showNoResults={!canFetch || totalResults === 0}
         testID="ExploreObservationsAnimatedList"
       />
-      <MapView observationBounds={totalBounds} queryParams={queryParams} />
+      <MapView
+        observationBounds={totalBounds}
+        queryParams={queryParams}
+        currentMapRegion={currentMapRegion}
+        setCurrentMapRegion={setCurrentMapRegion}
+      />
     </View>
   );
 };

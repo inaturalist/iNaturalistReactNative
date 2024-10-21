@@ -13,7 +13,7 @@ import React, {
   useMemo,
   useState
 } from "react";
-import { Dimensions, StatusBar } from "react-native";
+import { Dimensions } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Carousel from "react-native-reanimated-carousel";
 import Photo from "realmModels/Photo";
@@ -59,7 +59,10 @@ const TaxonMedia = ( {
           testID={`TaxonDetails.photo.${item.id}`}
           className="w-full h-full"
           source={{
-            uri: Photo.displayMediumPhoto( item.url )
+            // TODO replace this entire image component to one that supports
+            // progressive sizes and fallbacks if the large photo isn't
+            // available
+            uri: Photo.displayLargePhoto( item.url )
           }}
           accessibilityIgnoresInvertColors
         />
@@ -121,11 +124,6 @@ const TaxonMedia = ( {
 
   return (
     <View className="relative">
-      <StatusBar hidden={mediaViewerVisible} />
-      {/* <LinearGradient
-        colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
-        className="absolute w-full h-[420px] z-10"
-      /> */}
       {!tablet
         ? renderPhone( )
         : renderTablet( )}

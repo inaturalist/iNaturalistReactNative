@@ -2,13 +2,13 @@ import { useNavigation } from "@react-navigation/native";
 import Modal from "components/SharedComponents/Modal.tsx";
 import _ from "lodash";
 import React, {
-  JSX,
   PropsWithChildren,
   useCallback,
   useEffect,
+  useRef,
   useState
 } from "react";
-import { Platform } from "react-native";
+import { AppState, AppStateStatus, Platform } from "react-native";
 import {
   AndroidPermission,
   checkMultiple,
@@ -88,6 +88,7 @@ interface Props extends PropsWithChildren {
   onPermissionBlocked?: () => void;
   onPermissionDenied?: () => void;
   onPermissionGranted?: () => void;
+  onPermissionLimited?: () => void;
   permissionNeeded?: boolean;
   permissions: Permission[];
   testID?: string;
@@ -115,7 +116,9 @@ export function permissionResultFromMultiple( multiResults: MultiResult ) {
   if ( _.find( multiResults, ( permResult, _perm ) => permResult === RESULTS.UNAVAILABLE ) ) {
     return RESULTS.UNAVAILABLE;
   }
-  // Note: we're not checking for RESULTS.LIMITED here and treat it as GRANTED
+  if ( _.find( multiResults, ( permResult, _perm ) => permResult === RESULTS.LIMITED ) ) {
+    return RESULTS.LIMITED;
+  }
   return RESULTS.GRANTED;
 }
 
@@ -137,15 +140,17 @@ const PermissionGateContainer = ( {
   onPermissionBlocked,
   onPermissionDenied,
   onPermissionGranted,
+  onPermissionLimited,
   permissionNeeded = true,
   permissions,
   testID,
   title,
   titleDenied,
   withoutNavigation
-}: Props ): JSX.Element | null => {
+}: Props ) => {
   const [result, setResult] = useState<PermissionStatus | null>( null );
   const [modalShown, setModalShown] = useState( false );
+  const prevAppState = useRef<AppStateStatus>( AppState.currentState );
 
   const navigation = useNavigation();
 
@@ -169,6 +174,7 @@ const PermissionGateContainer = ( {
     if (
       permissionNeeded
       && result !== RESULTS.GRANTED
+      && result !== RESULTS.LIMITED
       && result !== null
     ) {
       setModalShown( true );
@@ -192,10 +198,45 @@ const PermissionGateContainer = ( {
   ] );
 
   useEffect( ( ) => {
-    if ( result === RESULTS.GRANTED && !children ) {
+    if (
+      ( result === RESULTS.GRANTED || result === RESULTS.LIMITED )
+      && !children
+    ) {
       setModalShown( false );
     }
   }, [result, children, setModalShown] );
+
+  useEffect( ( ) => {
+    // permission already denied
+    if ( result === RESULTS.BLOCKED ) {
+      setModalShown( false );
+    }
+  }, [result, setModalShown] );
+
+  useEffect( () => {
+  // We need to handle permission changes manually on Android
+  // Permissions modified from the settings are not captured automatically
+  // So we check permissions when the app is transitioned from background to foreground
+  // This check is performed only when the platform is Android and the permission result is BLOCKED
+    if ( Platform.OS === "android"
+       && result === RESULTS.BLOCKED ) {
+      const onAppStateChange = async ( nextAppState: AppStateStatus ) => {
+        if ( prevAppState.current.match( /inactive|background/ ) && nextAppState === "active" ) {
+          await checkPermission();
+        }
+
+        prevAppState.current = nextAppState;
+      };
+
+      const subscription = AppState.addEventListener( "change", onAppStateChange );
+
+      return () => {
+        subscription?.remove();
+      };
+    }
+
+    return () => undefined;
+  }, [result, checkPermission] );
 
   const closeModal = useCallback( ( ) => {
     setModalShown( false );
@@ -220,6 +261,8 @@ const PermissionGateContainer = ( {
       onPermissionDenied( );
     } else if ( onPermissionGranted && result === RESULTS.GRANTED ) {
       onPermissionGranted( );
+    } else if ( onPermissionLimited && result === RESULTS.LIMITED ) {
+      onPermissionLimited( );
     } else if ( onPermissionBlocked && result === RESULTS.BLOCKED ) {
       onPermissionBlocked( );
     }
@@ -227,11 +270,15 @@ const PermissionGateContainer = ( {
     onPermissionBlocked,
     onPermissionDenied,
     onPermissionGranted,
+    onPermissionLimited,
     result
   ] );
 
-  // If permission was granted, just render the children
-  if ( result === RESULTS.GRANTED && children ) return children;
+  // If permission results asked and answered, render children
+  if (
+    ( result === RESULTS.GRANTED || result === RESULTS.LIMITED || result === RESULTS.BLOCKED )
+    && children
+  ) return children;
 
   if ( !result ) return null;
 

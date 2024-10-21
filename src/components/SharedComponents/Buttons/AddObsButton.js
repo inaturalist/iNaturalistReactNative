@@ -1,7 +1,7 @@
 // @flow
 
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import AddObsModal from "components/AddObsModal";
+import AddObsModal from "components/AddObsModal.tsx";
 import { Modal } from "components/SharedComponents";
 import GradientButton from "components/SharedComponents/Buttons/GradientButton.tsx";
 import { t } from "i18next";
@@ -22,6 +22,7 @@ const AddObsButton = (): React.Node => {
   const isAdvancedUser = useStore( state => state.isAdvancedUser );
   const navigation = useNavigation( );
   React.useEffect( ( ) => {
+    // don't remove this logger.info statement: it's used for internal metrics
     logger.info( `isAdvancedUser: ${isAdvancedUser}` );
   }, [isAdvancedUser] );
 

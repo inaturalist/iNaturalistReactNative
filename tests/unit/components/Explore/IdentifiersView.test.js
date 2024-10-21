@@ -57,7 +57,7 @@ describe( "IdentifiersView", () => {
         hideLoadingWheel
         isConnected
         data={[]}
-        status="loading"
+        canFetch
       />
     );
 

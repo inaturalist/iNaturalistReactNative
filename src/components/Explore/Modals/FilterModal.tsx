@@ -5,6 +5,7 @@ import {
   Body2,
   Body3,
   Button,
+  ButtonBar,
   Checkbox,
   DateTimePicker,
   DisplayTaxon,
@@ -18,7 +19,6 @@ import {
   ProjectListItem,
   RadioButtonRow,
   RadioButtonSheet,
-  StickyToolbar,
   ViewWrapper,
   WarningSheet
 } from "components/SharedComponents";
@@ -39,9 +39,9 @@ import {
   WILD_STATUS
 } from "providers/ExploreContext.tsx";
 import React, { useState } from "react";
-import { useTheme } from "react-native-paper";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
+import colors from "styles/tailwindColors";
 
 import placeGuessText from "../helpers/placeGuessText";
 import ExploreLocationSearchModal from "./ExploreLocationSearchModal";
@@ -627,8 +627,6 @@ const FilterModal = ( {
     } );
   };
 
-  const theme = useTheme();
-
   const observedEndBeforeStart = d1 > d2;
   const uploadedEndBeforeStart = createdD1 > createdD2;
   const hasError = observedEndBeforeStart || uploadedEndBeforeStart;
@@ -694,8 +692,22 @@ const FilterModal = ( {
                     setShowTaxonSearchModal( true );
                   }}
                 >
-                  <DisplayTaxon taxon={taxon || "unknown"} />
-                  <INatIcon name="edit" size={22} />
+                  <DisplayTaxon
+                    handlePress={() => {
+                      setShowTaxonSearchModal( true );
+                    }}
+                    taxon={taxon || "unknown"}
+                  />
+                  <View className="flex-row items-center">
+                    <INatIcon name="edit" size={22} />
+                    <INatIconButton
+                      className="ml-3"
+                      icon="close"
+                      size={20}
+                      onPress={() => updateTaxon( null )}
+                      accessibilityLabel={t( "Remove-taxon-filter" )}
+                    />
+                  </View>
                 </Pressable>
               )
               : (
@@ -736,7 +748,7 @@ const FilterModal = ( {
         {/*
           The iconic taxon chooser above should fill all width so we add padding here
         */}
-        <View className="px-4">
+        <View className="px-4 pb-4">
           {/* Location Section */}
           <View className="mb-7">
             <Heading4 className="mb-5">{t( "LOCATION" )}</Heading4>
@@ -778,19 +790,19 @@ const FilterModal = ( {
             <Heading4 className="mb-5">{t( "QUALITY-GRADE" )}</Heading4>
             <View className="mb-5">
               <Checkbox
-                text={t( "Research-Grade" )}
+                text={t( "Research-Grade--quality-grade" )}
                 isChecked={researchGrade}
                 onPress={() => dispatch( { type: EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE } )}
               />
               <View className="mb-4" />
               <Checkbox
-                text={t( "Needs-ID" )}
+                text={t( "Needs-ID--quality-grade" )}
                 isChecked={needsID}
                 onPress={() => dispatch( { type: EXPLORE_ACTION.TOGGLE_NEEDS_ID } )}
               />
               <View className="mb-4" />
               <Checkbox
-                text={t( "Casual" )}
+                text={t( "Casual--quality-grade" )}
                 isChecked={casual}
                 onPress={() => dispatch( { type: EXPLORE_ACTION.TOGGLE_CASUAL } )}
               />
@@ -816,7 +828,16 @@ const FilterModal = ( {
                       countText={t( "X-Observations", { count: user.observations_count } )}
                       pressable={false}
                     />
-                    <INatIcon name="edit" size={22} />
+                    <View className="flex-row items-center">
+                      <INatIcon name="edit" size={22} />
+                      <INatIconButton
+                        className="ml-3"
+                        icon="close"
+                        size={20}
+                        onPress={() => updateUser( null )}
+                        accessibilityLabel={t( "Remove-user-filter" )}
+                      />
+                    </View>
                   </Pressable>
                 )
                 : (
@@ -846,7 +867,16 @@ const FilterModal = ( {
                     }}
                   >
                     <ProjectListItem item={project} />
-                    <INatIcon name="edit" size={22} />
+                    <View className="flex-row items-center">
+                      <INatIcon name="edit" size={22} />
+                      <INatIconButton
+                        className="ml-3"
+                        icon="close"
+                        size={20}
+                        onPress={() => updateProject( null )}
+                        accessibilityLabel={t( "Remove-project-filter" )}
+                      />
+                    </View>
                   </Pressable>
                 )
                 : (
@@ -955,7 +985,7 @@ const FilterModal = ( {
                     <INatIcon
                       name="triangle-exclamation"
                       size={19}
-                      color={theme.colors.error}
+                      color={colors.warningRed}
                     />
                     <List2 className="ml-3">
                       {t( "Start-must-be-before-end" )}
@@ -1054,7 +1084,7 @@ const FilterModal = ( {
                     <INatIcon
                       name="triangle-exclamation"
                       size={19}
-                      color={theme.colors.error}
+                      color={colors.warningRed}
                     />
                     <List2 className="ml-3">
                       {t( "Start-must-be-before-end" )}
@@ -1104,7 +1134,7 @@ const FilterModal = ( {
                   value={establishmentValues[establishmentKey]}
                   checked={
                     establishmentValues[establishmentKey].value
-                === establishmentMean
+                    === establishmentMean
                   }
                   onPress={() => dispatch( {
                     type: EXPLORE_ACTION.SET_ESTABLISHMENT_MEAN,
@@ -1159,7 +1189,7 @@ const FilterModal = ( {
           )}
 
           {/* Photo licensing section */}
-          <View className="mb-7">
+          <View>
             <Heading4 className="mb-5">{t( "PHOTO-LICENSING" )}</Heading4>
             <Button
               text={photoLicenseValues[photoLicense]?.label}
@@ -1173,21 +1203,16 @@ const FilterModal = ( {
           </View>
         </View>
       </ScrollView>
-      {/* This view is to offset the absolute StickyToolbar below */}
-      <View className="mb-10" />
-      <StickyToolbar containerClass="z-9">
-        <View className="flex-1 flex-row items-center">
-          <Button
-            disabled={!differsFromSnapshot || hasError}
-            className="flex-1"
-            level="focus"
-            text={t( "APPLY-FILTERS" )}
-            onPress={closeModal}
-            accessibilityLabel={t( "Apply-filters" )}
-            accessibilityState={{ disabled: !differsFromSnapshot || hasError }}
-          />
-        </View>
-      </StickyToolbar>
+      <ButtonBar>
+        <Button
+          disabled={!differsFromSnapshot || hasError}
+          level="focus"
+          text={t( "APPLY-FILTERS" )}
+          onPress={closeModal}
+          accessibilityLabel={t( "Apply-filters" )}
+          accessibilityState={{ disabled: !differsFromSnapshot || hasError }}
+        />
+      </ButtonBar>
 
       {/* BottomSheets */}
       {openSheet === SORT_BY_M && (
@@ -1200,7 +1225,7 @@ const FilterModal = ( {
             } );
             setOpenSheet( NONE );
           }}
-          handleClose={() => setOpenSheet( NONE )}
+          onPressClose={() => setOpenSheet( NONE )}
           radioValues={sortByValues}
           selectedValue={sortBy}
           insideModal
@@ -1216,7 +1241,7 @@ const FilterModal = ( {
             } );
             setOpenSheet( NONE );
           }}
-          handleClose={() => setOpenSheet( NONE )}
+          onPressClose={() => setOpenSheet( NONE )}
           pickerValues={taxonomicRankValues}
           selectedValue={hrank}
           insideModal
@@ -1232,7 +1257,7 @@ const FilterModal = ( {
             } );
             setOpenSheet( NONE );
           }}
-          handleClose={() => setOpenSheet( NONE )}
+          onPressClose={() => setOpenSheet( NONE )}
           pickerValues={taxonomicRankValues}
           selectedValue={lrank}
           insideModal
@@ -1245,7 +1270,7 @@ const FilterModal = ( {
             updateDateUploaded( { newDateUploaded } );
             setOpenSheet( NONE );
           }}
-          handleClose={() => setOpenSheet( NONE )}
+          onPressClose={() => setOpenSheet( NONE )}
           radioValues={dateUploadedValues}
           selectedValue={dateUploaded}
           insideModal
@@ -1258,7 +1283,7 @@ const FilterModal = ( {
             updateDateObserved( { newDateObserved } );
             setOpenSheet( NONE );
           }}
-          handleClose={() => setOpenSheet( NONE )}
+          onPressClose={() => setOpenSheet( NONE )}
           radioValues={dateObservedValues}
           selectedValue={dateObserved}
           insideModal
@@ -1274,7 +1299,7 @@ const FilterModal = ( {
             } );
             setOpenSheet( NONE );
           }}
-          handleClose={() => setOpenSheet( NONE )}
+          onPressClose={() => setOpenSheet( NONE )}
           radioValues={photoLicenseValues}
           selectedValue={photoLicense}
           insideModal
@@ -1282,7 +1307,7 @@ const FilterModal = ( {
       )}
       {openSheet === CONFIRMATION && (
         <WarningSheet
-          handleClose={() => setOpenSheet( NONE )}
+          onPressClose={() => setOpenSheet( NONE )}
           confirm={() => {
             discardChanges();
             closeModal();

@@ -34,8 +34,7 @@ const About = (): Node => {
     navigation.navigate( "FullPageWebView", {
       title: t( "TERMS-OF-USE" ),
       initialUrl: url,
-      loggedIn: false,
-      openLinksInBrowser: true
+      loggedIn: false
     } );
   };
 
@@ -44,8 +43,7 @@ const About = (): Node => {
     navigation.navigate( "FullPageWebView", {
       title: t( "PRIVACY-POLICY" ),
       initialUrl: url,
-      loggedIn: false,
-      openLinksInBrowser: true
+      loggedIn: false
     } );
   };
 
@@ -54,8 +52,7 @@ const About = (): Node => {
     navigation.navigate( "FullPageWebView", {
       title: t( "COMMUNITY-GUIDELINES" ),
       initialUrl: url,
-      loggedIn: false,
-      openLinksInBrowser: true
+      loggedIn: false
     } );
   };
 
@@ -132,7 +129,7 @@ const About = (): Node => {
               className="items-center justify-center"
               onPress={() => onVersionPressed()}
             >
-              <Body1>{`Version ${appVersion} (${buildVersion})`}</Body1>
+              <Body1>{ t( "Version-app-build", { appVersion, buildVersion } )}</Body1>
             </Pressable>
             {isDebug && (
               <Button

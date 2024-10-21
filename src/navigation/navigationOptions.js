@@ -1,12 +1,21 @@
 // @flow
 import { HeaderBackground } from "@react-navigation/elements";
 import { fontMedium } from "appConstants/fontFamilies.ts";
-import FullPageWebViewHeader from "components/FullPageWebView/FullPageWebViewHeader";
+import FullPageWebViewHeader from "components/FullPageWebView/FullPageWebViewHeader.tsx";
 import BackButton from "components/SharedComponents/Buttons/BackButton";
 import type { Node } from "react";
 import React from "react";
 import { View } from "react-native";
 import colors from "styles/tailwindColors";
+
+import FadeInView from "./FadeInView";
+
+// $FlowIgnore
+const fadeInComponent = ( component: React.JSX.Element ): React.JSX.Element => (
+  <FadeInView>
+    {component}
+  </FadeInView>
+);
 
 const baseHeaderOptions: Object = {
   headerShown: true,
@@ -17,7 +26,7 @@ const baseHeaderOptions: Object = {
 
 const showHeader: Object = {
   ...baseHeaderOptions,
-  headerTintColor: colors.black,
+  headerTintColor: colors.darkGray,
   // Note: left header is not supported on iOS
   // so we would need to build a custom header for this:
   // https://reactnavigation.org/docs/native-stack-navigator#headertitlealign
@@ -29,7 +38,7 @@ const showHeader: Object = {
 
 const showLongHeader: Object = {
   ...baseHeaderOptions,
-  headerTintColor: colors.black,
+  headerTintColor: colors.darkGray,
   // Note: left header is not supported on iOS
   // so we would need to build a custom header for this:
   // https://reactnavigation.org/docs/native-stack-navigator#headertitlealign
@@ -74,6 +83,7 @@ const hideDrawerHeaderLeft = {
 
 export {
   blankHeaderTitle,
+  fadeInComponent,
   hideDrawerHeaderLeft,
   hideHeader,
   removeBottomBorder,

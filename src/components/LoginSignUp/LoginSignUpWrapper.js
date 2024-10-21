@@ -10,12 +10,14 @@ import {
   Platform,
   StatusBar
 } from "react-native";
+import colors from "styles/tailwindColors";
 
 type Props = {
   // $FlowIgnore
   backgroundSource: unknown,
   // $FlowIgnore
   children: unknown,
+  imageStyle?: Object,
   keyboardVerticalOffset?: number,
   scrollEnabled?: boolean
 }
@@ -33,6 +35,7 @@ const SCROLL_VIEW_STYLE = {
 const LoginSignupWrapper = ( {
   backgroundSource,
   children,
+  imageStyle,
   keyboardVerticalOffset,
   scrollEnabled = true
 }: Props ): Node => {
@@ -63,6 +66,7 @@ const LoginSignupWrapper = ( {
     <ImageBackground
       source={backgroundSource}
       className="h-full"
+      imageStyle={imageStyle}
     >
       <SafeAreaView
         className={classnames(
@@ -77,7 +81,7 @@ const LoginSignupWrapper = ( {
       >
         <StatusBar
           barStyle="light-content"
-          backgroundColor="#0000"
+          backgroundColor={colors.black}
         />
         <KeyboardAvoidingView
           keyboardVerticalOffset={keyboardVerticalOffset}

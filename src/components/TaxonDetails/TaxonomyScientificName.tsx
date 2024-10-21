@@ -2,6 +2,8 @@ import classnames from "classnames";
 import { Body2 } from "components/SharedComponents";
 import React from "react";
 import Taxon from "realmModels/Taxon";
+import { translatedRank } from "sharedHelpers/taxon";
+import useTranslation from "sharedHooks/useTranslation";
 
 interface Props {
   rank: string;
@@ -22,6 +24,7 @@ const TaxonomyScientificName = ( {
   hasCommonName,
   scientificNameFirst
 }: Props ) => {
+  const { t } = useTranslation( );
   const underline = ( !hasCommonName || scientificNameFirst ) && !isCurrentTaxon;
   // italics part ported over from DisplayTaxonName
   const scientificNameComponent = scientificNamePieces?.map( ( piece, index ) => {
@@ -79,9 +82,10 @@ const TaxonomyScientificName = ( {
             } )
           }
         >
-          {`${rank} `}
+          { translatedRank( rank, t ) }
         </Body2>
       )}
+      { " " }
       {scientificNameComponent}
       {hasCommonName && !scientificNameFirst && (
         <Body2 className={

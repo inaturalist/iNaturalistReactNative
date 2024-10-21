@@ -14,7 +14,7 @@ const { useRealm } = RealmContext;
 
 type Props = {
   currentObservation: Object,
-  handleClose: Function,
+  onPressClose: Function,
   navToObsList: Function,
   observations: Array<Object>,
   updateObservations: Function
@@ -22,7 +22,7 @@ type Props = {
 
 const DeleteObservationSheet = ( {
   currentObservation,
-  handleClose,
+  onPressClose,
   navToObsList,
   observations,
   updateObservations
@@ -44,12 +44,12 @@ const DeleteObservationSheet = ( {
     }
     if ( multipleObservations ) {
       updateObservations( observations.filter( o => o.uuid !== uuid ) );
-      handleClose( );
+      onPressClose( );
       return;
     }
     navToObsList( );
   }, [
-    handleClose,
+    onPressClose,
     multipleObservations,
     navToObsList,
     observations,
@@ -61,9 +61,9 @@ const DeleteObservationSheet = ( {
 
   return (
     <WarningSheet
-      handleClose={handleClose}
+      onPressClose={onPressClose}
       headerText={t( "DELETE-OBSERVATION--question" )}
-      handleSecondButtonPress={handleClose}
+      handleSecondButtonPress={onPressClose}
       secondButtonText={t( "CANCEL" )}
       confirm={addObservationToDeletionQueue}
       buttonText={t( "DELETE" )}

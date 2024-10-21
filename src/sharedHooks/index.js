@@ -1,8 +1,10 @@
+export { default as useAuthenticatedInfiniteQuery } from "./useAuthenticatedInfiniteQuery";
 export { default as useAuthenticatedMutation } from "./useAuthenticatedMutation";
 export { default as useAuthenticatedQuery } from "./useAuthenticatedQuery";
 export { default as useCurrentUser } from "./useCurrentUser";
 export { default as useDebugMode } from "./useDebugMode";
 export { default as useDeviceOrientation } from "./useDeviceOrientation";
+export { default as useGridLayout } from "./useGridLayout";
 export { default as useIconicTaxa } from "./useIconicTaxa";
 export { default as useInfiniteNotificationsScroll } from "./useInfiniteNotificationsScroll";
 export { default as useInfiniteObservationsScroll } from "./useInfiniteObservationsScroll";
@@ -14,6 +16,7 @@ export { default as useLocalObservations } from "./useLocalObservations";
 export { default as useLocationPermission } from "./useLocationPermission";
 export { default as useObservationsUpdates } from "./useObservationsUpdates";
 export { default as useObservationUpdatesWhenFocused } from "./useObservationUpdatesWhenFocused";
+export { default as useQuery } from "./useQuery";
 export { default as useRemoteObservation } from "./useRemoteObservation";
 export { default as useShare } from "./useShare";
 export { default as useStoredLayout } from "./useStoredLayout";

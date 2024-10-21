@@ -4,7 +4,7 @@ import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsCon
 import React from "react";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
-import { renderComponent } from "tests/helpers/render";
+import { renderComponent, wrapInQueryClientContainer } from "tests/helpers/render";
 
 const mockProject = factory( "RemoteProject", {
   title: faker.lorem.sentence( ),
@@ -47,8 +47,10 @@ beforeAll( async () => {
 
 describe( "ProjectDetails", ( ) => {
   test( "should not have accessibility errors", async ( ) => {
-    const projectDetails = <ProjectDetailsContainer />;
-    expect( projectDetails ).toBeAccessible();
+    const view = wrapInQueryClientContainer(
+      <ProjectDetailsContainer />
+    );
+    expect( view ).toBeAccessible();
   } );
 
   test( "displays project details", ( ) => {

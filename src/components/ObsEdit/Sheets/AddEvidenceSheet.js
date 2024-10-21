@@ -25,18 +25,9 @@ const AddEvidenceSheet = ( {
 
   return (
     <BottomSheet
-      handleClose={onClose}
+      onPressClose={onClose}
       headerText={t( "ADD-EVIDENCE" )}
       hidden={hidden}
-      onChange={position => {
-        // -1 means the sheet is fully hidden... and in theory it's safe to navigate away
-        if ( position > -1 ) return;
-
-        if ( position === -1 ) {
-          // make sure backdrop press is handled
-          onClose( );
-        }
-      }}
     >
       <View testID="AddEvidenceSheet" className="items-center p-5">
         {disableAddingMoreEvidence && (

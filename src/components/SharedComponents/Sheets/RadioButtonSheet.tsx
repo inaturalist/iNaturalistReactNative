@@ -12,9 +12,9 @@ interface Props {
   buttonRowClassName?: boolean
   confirm: ( _checkedValue: string ) => void;
   confirmText?: string;
-  handleClose: Function,
   headerText: string,
   insideModal?: boolean,
+  onPressClose?: ( ) => void;
   radioValues: {
     [key: string]: {
       value: string,
@@ -33,9 +33,9 @@ const RadioButtonSheet = ( {
   buttonRowClassName,
   confirm,
   confirmText,
-  handleClose,
   headerText,
   insideModal,
+  onPressClose,
   radioValues,
   selectedValue = "none",
   topDescriptionText
@@ -62,9 +62,9 @@ const RadioButtonSheet = ( {
 
   return (
     <BottomSheet
-      handleClose={handleClose}
       headerText={headerText}
       insideModal={insideModal}
+      onPressClose={onPressClose}
     >
       <View className="p-4 pt-2">
         {topDescriptionText}
@@ -74,7 +74,9 @@ const RadioButtonSheet = ( {
         {bottomComponent}
         <Button
           level="primary"
-          onPress={( ) => confirm( checkedValue )}
+          onPress={( ) => {
+            confirm( checkedValue );
+          }}
           text={radioValues[checkedValue]?.buttonText ?? confirmLabel}
           accessibilityLabel={radioValues[checkedValue]?.buttonText ?? confirmLabel}
         />

@@ -13,19 +13,16 @@ import i18next from "i18next";
 import rs from "jsrsasign";
 import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
-import RNFS from "react-native-fs";
 import * as RNLocalize from "react-native-localize";
 import RNSInfo from "react-native-sensitive-info";
 import Realm, { UpdateMode } from "realm";
 import realmConfig from "realmModels/index";
-import User from "realmModels/User.ts";
+import { log, logFilePath } from "sharedHelpers/logger";
 import { installID } from "sharedHelpers/persistedInstallationId.ts";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory.ts";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { sleep, unlink } from "sharedHelpers/util";
+import { sleep, unlink } from "sharedHelpers/util.ts";
 import { storage } from "stores/useStore";
-
-import { log, logFilePath } from "../../../react-native-logs.config";
 
 const logger = log.extend( "AuthenticationService" );
 
@@ -69,7 +66,6 @@ async function deleteSensitiveItem( key: string, options = {} ) {
     return await RNSInfo.deleteItem( key, options );
   } catch ( e ) {
     const deleteItemError = e as Error;
-    console.log( "[DEBUG AuthenticationService.js] deleteItemError: ", deleteItemError );
     if ( deleteItemError.message.match( /Protected data not available yet/ ) ) {
       await sleep( 500 );
       return RNSInfo.deleteItem( key, options );
@@ -149,8 +145,6 @@ const signOut = async (
   // to the React Query context (maybe it could...)
   options.queryClient?.getQueryCache( ).clear( );
 
-  const username = await getUsername( );
-  logger.debug( "signed out user with username:", username );
   await deleteSensitiveItem( "jwtToken" );
   await deleteSensitiveItem( "jwtGeneratedAt" );
   await deleteSensitiveItem( "username" );
@@ -237,6 +231,7 @@ const getJWT = async ( allowAnonymousJWT = false ): Promise<string | null> => {
       response = await api.get<{api_token: string}>( "/users/api_token.json" );
     } catch ( getUsersApiTokenError ) {
       logger.error( "Failed to fetch JWT: ", getUsersApiTokenError );
+      if ( !getUsersApiTokenError ) { return null; }
       throw getUsersApiTokenError;
     }
 
@@ -455,15 +450,9 @@ const authenticateUser = async (
     }
     : currentUser;
 
-  logger.debug( "writing current user to realm: ", localUser );
   safeRealmWrite( realm, ( ) => {
     realm.create( "User", localUser, UpdateMode.Modified );
   }, "saving current user in AuthenticationService" );
-  const currentRealmUser = User.currentUser( realm );
-  logger.debug( "Signed in", currentRealmUser.login, currentRealmUser.id, currentRealmUser );
-  const realmPathExists = await RNFS.exists( realm.path );
-  logger.debug( `realm.path exists after sign in: ${realmPathExists}` );
-
   return true;
 };
 

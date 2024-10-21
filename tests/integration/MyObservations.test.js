@@ -9,7 +9,7 @@ import inatjs from "inaturalistjs";
 import { flatten } from "lodash";
 import React from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { sleep } from "sharedHelpers/util";
+import { sleep } from "sharedHelpers/util.ts";
 import { zustandStorage } from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -298,6 +298,20 @@ describe( "MyObservations", ( ) => {
         } );
       } );
 
+      it( "displays observation status", async () => {
+        const realm = global.mockRealms[__filename];
+        expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+        renderAppWithComponent( <MyObservationsContainer /> );
+        const syncIcon = await screen.findByTestId( "SyncButton" );
+        await waitFor( ( ) => {
+          expect( syncIcon ).toBeVisible( );
+        } );
+        mockSyncedObservations.forEach( obs => {
+          const obsStatus = screen.getByTestId( `ObsStatus.${obs.uuid}` );
+          expect( obsStatus ).toBeVisible( );
+        } );
+      } );
+
       it( "renders grid view on button press", async () => {
         const realm = global.mockRealms[__filename];
         expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
@@ -312,7 +326,7 @@ describe( "MyObservations", ( ) => {
         } );
       } );
 
-      it( "displays observation status", async () => {
+      it( "hides observation status in grid view", async () => {
         const realm = global.mockRealms[__filename];
         expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
         renderAppWithComponent( <MyObservationsContainer /> );
@@ -321,8 +335,8 @@ describe( "MyObservations", ( ) => {
           expect( syncIcon ).toBeVisible( );
         } );
         mockSyncedObservations.forEach( obs => {
-          const obsStatus = screen.getByTestId( `ObsStatus.${obs.uuid}` );
-          expect( obsStatus ).toBeVisible( );
+          const obsStatus = screen.queryByTestId( `ObsStatus.${obs.uuid}` );
+          expect( obsStatus ).toBeFalsy( );
         } );
       } );
 

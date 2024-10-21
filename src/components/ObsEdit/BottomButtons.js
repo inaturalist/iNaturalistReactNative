@@ -5,21 +5,19 @@ import {
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
-import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/LocationPicker";
+import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/CrosshairCircle";
 import {
   Button,
-  StickyToolbar
+  ButtonBar
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
-import Observation from "realmModels/Observation";
-import { writeExifToFile } from "sharedHelpers/parseExif";
+import saveObservation from "sharedHelpers/saveObservation.ts";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
-import { log } from "../../../react-native-logs.config";
 import ImpreciseLocationSheet from "./Sheets/ImpreciseLocationSheet";
 import MissingEvidenceSheet from "./Sheets/MissingEvidenceSheet";
 
@@ -33,8 +31,6 @@ type Props = {
   setCurrentObservationIndex: Function
 }
 
-const logger = log.extend( "ObsEditBottomButtons" );
-
 const BottomButtons = ( {
   passesEvidenceTest,
   currentObservation,
@@ -47,7 +43,9 @@ const BottomButtons = ( {
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const unsavedChanges = useStore( state => state.unsavedChanges );
   const addToUploadQueue = useStore( state => state.addToUploadQueue );
+  const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
+  const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
   const navigation = useNavigation( );
   const isNewObs = !currentObservation?._created_at;
   const hasPhotos = currentObservation?.observationPhotos?.length > 0;
@@ -65,38 +63,19 @@ const BottomButtons = ( {
 
   const passesTests = passesEvidenceTest && hasIdentification;
 
-  const writeExifToCameraRollPhotos = useCallback( async exif => {
-    if ( !cameraRollUris || cameraRollUris.length === 0 || !currentObservation ) {
-      return;
-    }
-    // Update all photos taken via the app with the new fetched location.
-    cameraRollUris.forEach( uri => {
-      logger.info( "writeExifToCameraRollPhotos, writing exif for uri: ", uri );
-      writeExifToFile( uri, exif );
-    } );
-  }, [
-    cameraRollUris,
-    currentObservation
-  ] );
-
-  const saveObservation = useCallback( async observation => {
-    await writeExifToCameraRollPhotos( {
-      latitude: observation.latitude,
-      longitude: observation.longitude,
-      positional_accuracy: observation.positional_accuracy
-    } );
-    return Observation.saveLocalObservationForUpload( observation, realm );
-  }, [
-    realm,
-    writeExifToCameraRollPhotos
-  ] );
-
   const setNextScreen = useCallback( async ( { type }: Object ) => {
-    const savedObservation = await saveObservation( currentObservation );
+    const savedObservation = await saveObservation( currentObservation, cameraRollUris, realm );
+    // If we are saving a new observations, reset the stored my obs offset to
+    // restore b/c we want MyObs rendered in its default state with this new
+    // observation visible at the top
+    if ( isNewObs ) {
+      resetMyObsOffsetToRestore( );
+    }
     if ( type === "upload" ) {
       const { uuid } = savedObservation;
       addTotalToolbarIncrements( savedObservation );
       addToUploadQueue( uuid );
+      setStartUploadObservations( );
     }
 
     if ( observations.length === 1 ) {
@@ -122,10 +101,14 @@ const BottomButtons = ( {
     addToUploadQueue,
     currentObservation,
     currentObservationIndex,
+    isNewObs,
     navigation,
-    saveObservation,
+    resetMyObsOffsetToRestore,
     observations,
-    setCurrentObservationIndex
+    setCurrentObservationIndex,
+    setStartUploadObservations,
+    cameraRollUris,
+    realm
   ] );
 
   useEffect(
@@ -239,7 +222,7 @@ const BottomButtons = ( {
   ] );
 
   return (
-    <StickyToolbar>
+    <ButtonBar>
       {showMissingEvidenceSheet && (
         <MissingEvidenceSheet
           setShowMissingEvidenceSheet={setShowMissingEvidenceSheet}
@@ -251,7 +234,7 @@ const BottomButtons = ( {
         />
       )}
       {renderButtons( )}
-    </StickyToolbar>
+    </ButtonBar>
   );
 };
 

@@ -64,7 +64,7 @@ const fetchMemberProjects = async ( params: Object = {}, opts: Object = {} ): Pr
 };
 
 const fetchRemoteUser = async (
-  id: number,
+  id: number | string,
   params: Object = {},
   opts: Object = {}
 ): Promise<?Object> => {

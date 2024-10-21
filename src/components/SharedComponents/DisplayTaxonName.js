@@ -36,6 +36,8 @@ type Props = {
   removeStyling?: boolean,
   prefersCommonNames?: boolean,
   scientificNameFirst?: boolean,
+  showOneNameOnly?: boolean,
+  selectable?: boolean,
   small?: boolean,
   taxon: Object,
   topTextComponent?: Function,
@@ -51,6 +53,8 @@ const DisplayTaxonName = ( {
   removeStyling = false,
   prefersCommonNames = true,
   scientificNameFirst = false,
+  showOneNameOnly = false,
+  selectable,
   small = false,
   taxon,
   topTextComponent: TopTextComponentProp,
@@ -112,7 +116,7 @@ const DisplayTaxonName = ( {
     if ( scientificNameFirst ) {
       return 1;
     }
-    if ( ellipsizeCommonName ) {
+    if ( ellipsizeCommonName || showOneNameOnly ) {
       return 2;
     }
     return 3;
@@ -123,6 +127,7 @@ const DisplayTaxonName = ( {
       className={textClassName}
       numberOfLines={setNumberOfLines( )}
       ellipsizeMode="tail"
+      selectable={selectable}
     >
       {
         ( scientificNameFirst || !commonName || !prefersCommonNames )
@@ -150,8 +155,13 @@ const DisplayTaxonName = ( {
     </TopTextComponent>
   );
 
-  const bottomTextComponent = ( commonName && prefersCommonNames ) && (
-    <BottomTextComponent className={classnames( textClassName, "mt-[3px]" )}>
+  const showBottomTextComponent = commonName && prefersCommonNames && !showOneNameOnly;
+
+  const bottomTextComponent = showBottomTextComponent && (
+    <BottomTextComponent
+      className={classnames( textClassName, "mt-[3px]" )}
+      selectable={selectable}
+    >
       {scientificNameFirst
         ? commonName
         : (

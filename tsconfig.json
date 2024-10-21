@@ -18,6 +18,7 @@
       "stores": ["src/stores"],
       "styles": ["src/styles"],
       "tests": ["tests"],
-    }
+    },
+    "types": ["nativewind/types"]
   }
 }

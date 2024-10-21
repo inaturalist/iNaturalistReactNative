@@ -9,7 +9,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useMemo } from "react";
 import { SectionList } from "react-native";
-import { useTranslation } from "sharedHooks";
+import { useCurrentUser, useTranslation } from "sharedHooks";
 
 import useObservers from "./hooks/useObservers";
 import Suggestion from "./Suggestion";
@@ -33,6 +33,7 @@ type Props = {
   showImproveWithLocationButton: boolean,
   suggestions: Object,
   toggleLocation: Function,
+  urlWillCrashOffline: boolean,
   usingOfflineSuggestions: boolean
 };
 
@@ -52,9 +53,11 @@ const Suggestions = ( {
   showImproveWithLocationButton,
   suggestions,
   toggleLocation,
+  urlWillCrashOffline,
   usingOfflineSuggestions
 }: Props ): Node => {
   const { t } = useTranslation( );
+  const currentUser = useCurrentUser( );
   const {
     otherSuggestions,
     topSuggestion
@@ -71,16 +74,19 @@ const Suggestions = ( {
       accessibilityLabel={t( "Choose-taxon" )}
       suggestion={suggestion}
       onTaxonChosen={onTaxonChosen}
+      hideCheckmark={!currentUser && !showOfflineText}
     />
-  ), [onTaxonChosen, t] );
+  ), [onTaxonChosen, t, currentUser, showOfflineText] );
 
   const renderEmptyList = useCallback( ( ) => (
     <SuggestionsEmpty
       hasTopSuggestion={!!topSuggestion}
       isLoading={isLoading}
       onTaxonChosen={onTaxonChosen}
+      reloadSuggestions={reloadSuggestions}
+      urlWillCrashOffline={urlWillCrashOffline}
     />
-  ), [isLoading, topSuggestion, onTaxonChosen] );
+  ), [isLoading, topSuggestion, onTaxonChosen, urlWillCrashOffline, reloadSuggestions] );
 
   const renderFooter = useMemo( ( ) => (
     <SuggestionsFooter
@@ -135,23 +141,21 @@ const Suggestions = ( {
 
   const renderTopSuggestion = ( { item } ) => {
     if ( isLoading ) { return null; }
-    if ( !item && !usingOfflineSuggestions ) {
+    if ( !item ) {
       return (
         <Body1 className="mx-2 p-4 text-center text-xl">
           {t( "We-are-not-confident-enough-to-make-a-top-ID-suggestion" )}
         </Body1>
       );
     }
-    if ( !item ) {
-      return null;
-    }
     return (
       <View className="bg-inatGreen/[.13]">
         <Suggestion
-          accessibilityLabel={t( "Choose-taxon" )}
+          accessibilityLabel={t( "Choose-top-taxon" )}
           suggestion={item}
           isTopSuggestion
           onTaxonChosen={onTaxonChosen}
+          hideCheckmark={!currentUser && !showOfflineText}
         />
       </View>
     );

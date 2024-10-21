@@ -15,7 +15,7 @@ import { Pressable, View } from "components/styledComponents";
 import { useExplore } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useState } from "react";
-import { Surface, useTheme } from "react-native-paper";
+import { Surface } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
@@ -27,7 +27,7 @@ type Props = {
   exploreView: string,
   exploreViewIcon: string,
   hideBackButton: boolean,
-  loadingStatus: boolean,
+  isFetchingHeaderCount: boolean,
   onPressCount?: Function,
   openFiltersModal: Function,
   updateTaxon: Function,
@@ -39,14 +39,13 @@ const Header = ( {
   exploreView,
   exploreViewIcon,
   hideBackButton,
-  loadingStatus,
+  isFetchingHeaderCount,
   onPressCount,
   openFiltersModal,
   updateTaxon,
   updateLocation
 }: Props ): Node => {
   const { t } = useTranslation( );
-  const theme = useTheme( );
   const { state, numberOfFilters } = useExplore( );
   const { taxon } = state;
   const iconicTaxonNames = state.iconic_taxa || [];
@@ -56,7 +55,7 @@ const Header = ( {
   const placeGuess = placeGuessText( state.placeMode, t, state.place_guess );
 
   const surfaceStyle = {
-    backgroundColor: theme.colors.primary,
+    backgroundColor: colors.darkGray,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     marginBottom: -40
@@ -129,7 +128,7 @@ const Header = ( {
           count={count}
           exploreView={exploreView}
           exploreViewIcon={exploreViewIcon}
-          loadingStatus={loadingStatus}
+          isFetching={isFetchingHeaderCount}
           onPress={onPressCount}
         />
       </Surface>

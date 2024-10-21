@@ -10,27 +10,26 @@ import { useInfiniteScroll, useTranslation } from "sharedHooks";
 import ExploreFlashList from "./ExploreFlashList";
 
 type Props = {
-  count: Object,
+  canFetch?: boolean,
   isConnected: boolean,
   queryParams: Object,
-  updateCount: Function
+  handleUpdateCount: Function
 };
 
 const LIST_STYLE = { paddingTop: 44 };
 
 const ObserversView = ( {
-  count,
+  canFetch,
   isConnected,
   queryParams,
-  updateCount
+  handleUpdateCount
 }: Props ): Node => {
   const { t } = useTranslation( );
   const {
     data,
     isFetchingNextPage,
     fetchNextPage,
-    totalResults,
-    status
+    totalResults
   } = useInfiniteScroll(
     "fetchObservers",
     fetchObservers,
@@ -38,8 +37,11 @@ const ObserversView = ( {
       ...queryParams,
       order_by: "observation_count",
       fields: {
-        user: User.FIELDS
+        user: User.LIMITED_FIELDS
       }
+    },
+    {
+      enabled: canFetch
     }
   );
 
@@ -53,13 +55,12 @@ const ObserversView = ( {
   const renderItemSeparator = ( ) => <View className="border-b border-lightGray" />;
 
   useEffect( ( ) => {
-    if ( count.observers !== totalResults ) {
-      updateCount( { observers: totalResults } );
-    }
-  }, [totalResults, updateCount, count] );
+    handleUpdateCount( "observers", totalResults );
+  }, [totalResults, handleUpdateCount] );
 
   return (
     <ExploreFlashList
+      canFetch={canFetch}
       contentContainerStyle={LIST_STYLE}
       data={data}
       estimatedItemSize={98}
@@ -70,8 +71,8 @@ const ObserversView = ( {
       keyExtractor={item => item.user.id}
       renderItem={renderItem}
       renderItemSeparator={renderItemSeparator}
-      status={status}
       testID="ExploreObserversAnimatedList"
+      totalResults={totalResults}
     />
   );
 };

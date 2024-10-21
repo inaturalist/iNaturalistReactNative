@@ -73,7 +73,6 @@ const CameraWithDevice = ( {
   // bit off and we'll fetch the obs coordinates on ObsEdit)
   const { hasPermissions } = useLocationPermission( );
 
-  // logger.debug( `isFocused: ${isFocused}` );
   const prepareStoreAndNavigate = usePrepareStoreAndNavigate( {
     addPhotoPermissionResult,
     addEvidence,
@@ -113,7 +112,7 @@ const CameraWithDevice = ( {
     setAddPhotoPermissionResult( "granted" );
   };
 
-  const onPhotoPermissionDenied = ( ) => {
+  const onPhotoPermissionBlocked = ( ) => {
     setAddPhotoPermissionResult( "denied" );
   };
 
@@ -123,7 +122,7 @@ const CameraWithDevice = ( {
       && !isNavigating
       && (
         addPhotoPermissionGateWasClosed
-        || addPhotoPermissionResult === "granted"
+        || addPhotoPermissionResult
       )
     ) {
       setIsNavigating( true );
@@ -175,7 +174,7 @@ const CameraWithDevice = ( {
         image={require( "images/background/birger-strahl-ksiGE4hMiso-unsplash.jpg" )}
         onModalHide={( ) => setAddPhotoPermissionGateWasClosed( true )}
         onPermissionGranted={onPhotoPermissionGranted}
-        onPermissionDenied={onPhotoPermissionDenied}
+        onPermissionBlocked={onPhotoPermissionBlocked}
         withoutNavigation
         permissionNeeded={checkmarkTapped}
       />

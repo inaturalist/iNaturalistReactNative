@@ -1,0 +1,36 @@
+name: Crowdin Push
+
+on:
+  push:
+    branches: [ main ]
+    paths: ["src/i18n/strings.ftl"]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  push-to-crowdin:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Sync with Crowdin
+        uses: crowdin/github-action@v2
+        with:
+          # Note: a lot of the way this behaves is controlled in crowdin.yml,
+          # e.g. the path to the source files and paths to translations
+          # Upload options
+          upload_sources: true
+          upload_translations: false
+          # Download options
+          download_translations: false
+          # Pull request options
+          create_pull_request: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.CROWDIN_GITHUB_TOKEN }}
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}

@@ -7,11 +7,14 @@ import { useNavigation } from "@react-navigation/native";
 import {
   EXPLORE_ACTION,
   ExploreProvider,
+  PLACE_MODE,
   useExplore
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, {
+  useCallback,
   useEffect,
+  useRef,
   useState
 } from "react";
 import { useCurrentUser } from "sharedHooks";
@@ -30,11 +33,17 @@ const RootExploreContainerWithContext = ( ): Node => {
   const setRootExploreView = useStore( state => state.setRootExploreView );
   const rootStoredParams = useStore( state => state.rootStoredParams );
   const setRootStoredParams = useStore( state => state.setRootStoredParams );
+  const rootMapRegion = useStore( s => s.rootMapRegion );
+  const setRootMapRegion = useStore( s => s.setRootMapRegion );
+
   const {
     hasPermissions: hasLocationPermissions,
     renderPermissionsGate,
-    requestPermissions: requestLocationPermissions
+    requestPermissions: requestLocationPermissions,
+    hasBlockedPermissions: hasBlockedLocationPermissions,
+    checkPermissions
   } = useLocationPermission( );
+  const previousHasLocationPermissions = useRef();
 
   const {
     state, dispatch, makeSnapshot, defaultExploreLocation
@@ -42,7 +51,33 @@ const RootExploreContainerWithContext = ( ): Node => {
 
   const [showFiltersModal, setShowFiltersModal] = useState( false );
 
-  const updateLocation = async ( place: Object ) => {
+  const [canFetch, setCanFetch] = useState( false );
+
+  useEffect( () => {
+    async function locationPermissionsChanged() {
+      if ( hasLocationPermissions && !previousHasLocationPermissions.current
+        && state.placeMode === PLACE_MODE.NEARBY && !state.lat ) {
+        const exploreLocation = await defaultExploreLocation();
+        dispatch( {
+          type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
+          exploreLocation
+        } );
+      }
+
+      previousHasLocationPermissions.current = hasLocationPermissions;
+    }
+
+    locationPermissionsChanged();
+  }, [defaultExploreLocation, dispatch, hasLocationPermissions, state] );
+
+  useEffect( () => {
+    if ( state.placeMode === PLACE_MODE.NEARBY ) {
+      checkPermissions();
+    }
+  }, [checkPermissions, state] );
+
+  const updateLocation = useCallback( async ( place: Object ) => {
+    checkPermissions();
     if ( place === "worldwide" ) {
       dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_WORLDWIDE } );
       dispatch( {
@@ -67,7 +102,7 @@ const RootExploreContainerWithContext = ( ): Node => {
         placeGuess: place?.display_name
       } );
     }
-  };
+  }, [checkPermissions, defaultExploreLocation, dispatch, navigation] );
 
   // Object | null
   const updateUser = ( user: Object ) => {
@@ -97,9 +132,17 @@ const RootExploreContainerWithContext = ( ): Node => {
   };
 
   // need this hook to be top-level enough that ExploreHeaderCount rerenders
-  const { count, loadingStatus, updateCount } = useExploreHeaderCount( );
+  const {
+    count,
+    isFetching: isFetchingHeaderCount,
+    handleUpdateCount,
+    setIsFetching: setIsFetchingHeaderCount
+  } = useExploreHeaderCount( );
 
-  const closeFiltersModal = ( ) => setShowFiltersModal( false );
+  const closeFiltersModal = ( ) => {
+    checkPermissions();
+    setShowFiltersModal( false );
+  };
 
   const openFiltersModal = ( ) => {
     setShowFiltersModal( true );
@@ -120,9 +163,45 @@ const RootExploreContainerWithContext = ( ): Node => {
     } );
   }, [navigation, setRootStoredParams, state, dispatch, rootStoredParams] );
 
+  useEffect( () => {
+    if ( state.placeMode === PLACE_MODE.NEARBY
+        && hasLocationPermissions
+        && state.lat === undefined ) {
+      updateLocation( "nearby" );
+    }
+  }, [
+    updateLocation,
+    hasLocationPermissions,
+    state.placeMode,
+    state.lat] );
+
+  useEffect( () => {
+    if ( hasBlockedLocationPermissions && state.placeMode === PLACE_MODE.NEARBY ) {
+      updateLocation( "worldwide" );
+    }
+  }, [hasBlockedLocationPermissions, state.placeMode, updateLocation] );
+
+  // Subviews need the ability to imperatively start fetching, e.g. when the
+  // user switches from species to obs view
+  const startFetching = useCallback( ( ) => {
+    if ( hasLocationPermissions || state?.placeMode !== PLACE_MODE.NEARBY ) {
+      setIsFetchingHeaderCount( true );
+      setCanFetch( true );
+    }
+  }, [
+    hasLocationPermissions,
+    setIsFetchingHeaderCount,
+    state?.placeMode
+  ] );
+
+  useEffect( ( ) => {
+    startFetching( );
+  }, [startFetching] );
+
   return (
     <>
       <Explore
+        canFetch={canFetch}
         closeFiltersModal={closeFiltersModal}
         count={count}
         hideBackButton
@@ -132,11 +211,11 @@ const RootExploreContainerWithContext = ( ): Node => {
         currentExploreView={rootExploreView}
         setCurrentExploreView={setRootExploreView}
         isConnected={isConnected}
-        loadingStatus={loadingStatus}
+        isFetchingHeaderCount={isFetchingHeaderCount}
+        handleUpdateCount={handleUpdateCount}
         openFiltersModal={openFiltersModal}
         queryParams={queryParams}
         showFiltersModal={showFiltersModal}
-        updateCount={updateCount}
         updateTaxon={taxon => dispatch( { type: EXPLORE_ACTION.CHANGE_TAXON, taxon } )}
         updateLocation={updateLocation}
         updateUser={updateUser}
@@ -144,8 +223,16 @@ const RootExploreContainerWithContext = ( ): Node => {
         placeMode={state.placeMode}
         hasLocationPermissions={hasLocationPermissions}
         requestLocationPermissions={requestLocationPermissions}
+        startFetching={startFetching}
+        currentMapRegion={rootMapRegion}
+        setCurrentMapRegion={setRootMapRegion}
       />
-      {renderPermissionsGate( { onPermissionGranted: () => updateLocation( "nearby" ) } )}
+      {renderPermissionsGate( {
+        onPermissionGranted: async ( ) => {
+          await updateLocation( "nearby" );
+          startFetching( );
+        }
+      } )}
     </>
   );
 };

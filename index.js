@@ -12,6 +12,7 @@ import {
 import App from "components/App";
 import ErrorBoundary from "components/ErrorBoundary";
 import initI18next from "i18n/initI18next";
+import { t } from "i18next";
 import inatjs from "inaturalistjs";
 import INatPaperProvider from "providers/INatPaperProvider";
 import RealmProvider from "providers/RealmProvider";
@@ -55,7 +56,14 @@ if (
 
 // I'm not convinced this ever catches anything... ~~~kueda 20240110
 const jsErrorHandler = ( e, isFatal ) => {
-  // logger.info( "[DEBUG index.js] jsErrorHandler called with error: ", e );
+  if ( e.match( /No space left on device/ ) ) {
+    Alert.alert(
+      "Device-storage-full",
+      "iNaturalist may not be able to save your photos or may crash.",
+      [{ text: t( "OK" ) }]
+    );
+  }
+
   // not 100% sure why jsErrorHandler logs e.name and e.message as undefined sometimes,
   // but I believe it relates to this issue, which reports an unnecessary console.error
   // under the hood: https://github.com/a7ul/react-native-exception-handler/issues/143
@@ -67,7 +75,6 @@ const jsErrorHandler = ( e, isFatal ) => {
     logger.error( "Fatal JS Error: ", e );
     Alert.alert( "D'OH", `${e.message}\n\n${e.stack}` );
   } else {
-    // logger.error( "JS Error: ", e );
     // This should get logged by ErrorBoundary. For some reason this handler
     // gets called too, so we don't want to double-report errors
   }

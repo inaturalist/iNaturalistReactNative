@@ -1,7 +1,7 @@
 import { searchObservations } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import Observation from "realmModels/Observation";
-import { sleep } from "sharedHelpers/util";
+import { sleep } from "sharedHelpers/util.ts";
 
 // eslint-disable-next-line no-undef
 export default syncRemoteObservations = async ( realm, currentUserId, deletionsCompletedAt ) => {

@@ -5,16 +5,29 @@ import { INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useTheme } from "react-native-paper";
+import colors from "styles/tailwindColors";
 
 import WarningText from "./WarningText";
 
-type Props = {
-  accuracyTest: string
+export const DESIRED_LOCATION_ACCURACY = 100;
+export const REQUIRED_LOCATION_ACCURACY = 500_000;
+
+const checkAccuracy = accuracy => {
+  if ( accuracy < DESIRED_LOCATION_ACCURACY ) {
+    return "pass";
+  }
+  if ( accuracy < REQUIRED_LOCATION_ACCURACY ) {
+    return "acceptable";
+  }
+  return "fail";
 };
 
-const CrosshairCircle = ( { accuracyTest }: Props ): Node => {
-  const theme = useTheme( );
+type Props = {
+  accuracy: number
+};
+
+const CrosshairCircle = ( { accuracy }: Props ): Node => {
+  const accuracyTest = checkAccuracy( accuracy );
 
   return (
     <View pointerEvents="none">
@@ -40,14 +53,14 @@ const CrosshairCircle = ( { accuracyTest }: Props ): Node => {
           <INatIcon
             name="checkmark-circle"
             size={19}
-            color={theme.colors.secondary}
+            color={colors.inatGreen}
           />
         )}
         {accuracyTest === "fail" && (
           <INatIcon
             name="triangle-exclamation"
             size={19}
-            color={theme.colors.error}
+            color={colors.warningRed}
           />
         )}
       </View>

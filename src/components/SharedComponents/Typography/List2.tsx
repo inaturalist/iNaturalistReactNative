@@ -5,6 +5,7 @@ import { Text, TextProps } from "react-native";
 
 const List2 = ( props: TextProps ) => (
   <Text
+    maxFontSizeMultiplier={2}
     className={classnames(
       "text-sm trailing-tight text-darkGray",
       tailwindFontRegular

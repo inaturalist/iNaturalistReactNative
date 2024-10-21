@@ -48,9 +48,13 @@ const useLocalObservations = ( ): Object => {
     if ( realm === null || realm.isClosed ) {
       return;
     }
-    const localObservations = realm.objects( "Observation" ).sorted( "_created_at", true );
+    const localObservations = realm.objects( "Observation" );
     localObservations.addListener( ( collection, _changes ) => {
-      const obsNotFlaggedForDeletion = collection.filtered( "_deleted_at == nil" );
+      const sortedCollection = collection.sorted(
+        [["needs_sync", true], ["_created_at", true]]
+      );
+
+      const obsNotFlaggedForDeletion = sortedCollection.filtered( "_deleted_at == nil" );
       stagedObservationList.current = [...obsNotFlaggedForDeletion];
 
       const unsynced = Observation.filterUnsyncedObservations( realm );

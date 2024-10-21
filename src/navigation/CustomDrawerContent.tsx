@@ -1,3 +1,4 @@
+import { useNetInfo } from "@react-native-community/netinfo";
 import {
   DrawerContentScrollView,
   DrawerItem
@@ -12,23 +13,20 @@ import {
   Heading4,
   INatIcon,
   INatIconButton,
-  List2,
+  List2, TextInputSheet,
   UserIcon,
   WarningSheet
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts.ts";
 import React, { useCallback, useMemo, useState } from "react";
-import { Dimensions, ViewStyle } from "react-native";
+import { Alert, Dimensions, ViewStyle } from "react-native";
 import User from "realmModels/User.ts";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
+import { log } from "sharedHelpers/logger";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import { zustandStorage } from "stores/useStore";
 import colors from "styles/tailwindColors";
-
-import { log } from "../../react-native-logs.config";
-
-const logger = log.extend( "CustomDrawerContent" );
 
 const { useRealm } = RealmContext;
 
@@ -38,7 +36,7 @@ const drawerScrollViewStyle = {
   backgroundColor: "white",
   borderTopRightRadius: 20,
   borderBottomRightRadius: 20,
-  height: "100%"
+  minHeight: "100%"
 } as const;
 
 interface Props {
@@ -47,14 +45,22 @@ interface Props {
   descriptors: Object;
 }
 
+const feedbackLogger = log.extend( "feedback" );
+
+function showOfflineAlert( t ) {
+  Alert.alert( t( "You-are-offline" ), t( "Please-try-again-when-you-are-online" ) );
+}
+
 const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
   const realm = useRealm( );
   const queryClient = useQueryClient( );
   const currentUser = useCurrentUser( );
   const { t } = useTranslation( );
   const isDebug = zustandStorage.getItem( "debugMode" ) === "true";
+  const { isConnected } = useNetInfo( );
 
   const [showConfirm, setShowConfirm] = useState( false );
+  const [showFeedback, setShowFeedback] = useState( false );
 
   const drawerItemStyle = useMemo( ( ) => ( {
     marginBottom: width <= BREAKPOINTS.lg
@@ -80,11 +86,11 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
       //   navigation: "search",
       //   icon: "magnifying-glass"
       // },
-      projects: {
-        label: t( "PROJECTS" ),
-        navigation: "Projects",
-        icon: "briefcase"
-      },
+      // projects: {
+      //   label: t( "PROJECTS" ),
+      //   navigation: "Projects",
+      //   icon: "briefcase"
+      // },
       // blog: {
       //   label: t( "BLOG" ),
       //   navigation: "Blog",
@@ -112,6 +118,18 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
         icon: "gear"
       }
     };
+    items.feedback = {
+      label: t( "FEEDBACK" ),
+      icon: "feedback",
+      onPress: ( ) => {
+        if ( isConnected ) {
+          setShowFeedback( true );
+        } else {
+          showOfflineAlert( t );
+        }
+      }
+    };
+
     if ( currentUser ) {
       items.logout = {
         label: t( "LOG-OUT" ),
@@ -124,6 +142,12 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
       };
     }
     if ( isDebug ) {
+      items.projects = {
+        label: t( "PROJECTS" ),
+        navigation: "Projects",
+        icon: "briefcase"
+      };
+
       items.debug = {
         label: "DEBUG",
         navigation: "Debug",
@@ -134,12 +158,12 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
     return items;
   }, [
     currentUser,
+    isConnected,
     isDebug,
     t
   ] );
 
   const onSignOut = async ( ) => {
-    logger.info( `Signing out ${User.userHandle( currentUser ) || ""} at the request of the user` );
     await signOut( { realm, clearRealm: true, queryClient } );
     setShowConfirm( false );
 
@@ -172,13 +196,14 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
           : "ml-3",
         "mb-5",
         "flex-row",
-        "flex-nowrap"
+        "flex-nowrap",
+        "mr-3"
       )}
       onPress={( ) => {
         if ( !currentUser ) {
           navigation.navigate( "LoginStackNavigator" );
         } else {
-          navigation.navigate( "ObsList" );
+          navigation.navigate( "UserProfile", { userId: currentUser.id } );
         }
       }}
     >
@@ -241,6 +266,17 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
     navigation
   ] );
 
+  const submitFeedback = useCallback( ( text: string ) => {
+    if ( !isConnected ) {
+      showOfflineAlert( t );
+      return false;
+    }
+    feedbackLogger.info( text );
+    Alert.alert( t( "Feedback-Submitted" ), t( "Thank-you-for-sharing-your-feedback" ) );
+    setShowFeedback( false );
+    return true;
+  }, [isConnected, t] );
+
   return (
     <DrawerContentScrollView
       state={state}
@@ -256,13 +292,24 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
       </View>
       {showConfirm && (
         <WarningSheet
-          handleClose={() => setShowConfirm( false )}
+          onPressClose={() => setShowConfirm( false )}
           headerText={t( "LOG-OUT--question" )}
           text={t( "Are-you-sure-you-want-to-log-out" )}
           handleSecondButtonPress={() => setShowConfirm( false )}
           secondButtonText={t( "CANCEL" )}
           confirm={onSignOut}
           buttonText={t( "LOG-OUT" )}
+        />
+      )}
+      {showFeedback && (
+        <TextInputSheet
+          hidden={!showFeedback}
+          buttonText={t( "SUBMIT" )}
+          onPressClose={() => setShowFeedback( false )}
+          headerText={t( "FEEDBACK" )}
+          confirm={submitFeedback}
+          description={t( "Thanks-for-using-any-suggestions" )}
+          maxLength={1000}
         />
       )}
     </DrawerContentScrollView>

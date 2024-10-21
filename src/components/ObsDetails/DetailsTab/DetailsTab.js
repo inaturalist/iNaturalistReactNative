@@ -8,15 +8,17 @@ import {
   DateDisplay,
   Divider,
   Heading4,
+  LabelColonValue,
   QualityGradeStatus
 } from "components/SharedComponents";
-import UserText from "components/SharedComponents/UserText";
+import UserText from "components/SharedComponents/UserText.tsx";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useCallback } from "react";
-import { Alert, Linking } from "react-native";
-import { useTheme } from "react-native-paper";
+import React from "react";
+import { Alert, Platform, Share } from "react-native";
+import { openExternalWebBrowser } from "sharedHelpers/util.ts";
+import colors from "styles/tailwindColors";
 
 import Attribution from "./Attribution";
 import LocationSection from "./LocationSection";
@@ -26,37 +28,52 @@ type Props = {
   observation: Object
 }
 
-const ViewInBrowserButton = ( { id } ) => {
-  const url = `https://inaturalist.org/observations/${id}`;
-  const handlePress = useCallback( async () => {
-    // Checking if the link is supported for links with custom URL scheme.
-    const supported = await Linking.canOpenURL( url );
+const OBSERVATION_URL = "https://www.inaturalist.org/observations";
 
-    if ( supported ) {
-      await Linking.openURL( url );
-    } else {
-      Alert.alert( `Don't know how to open this URL: ${url}` );
-    }
-  }, [url] );
-
-  return (
-    <Body4
-      className="underline mt-[11px]"
-      onPress={handlePress}
-    >
-      {t( "View-in-browser" )}
-    </Body4>
-  );
+const handleShare = async url => {
+  const sharingOptions = {
+    url: "",
+    message: ""
+  };
+  if ( Platform.OS === "ios" ) {
+    sharingOptions.url = url;
+  } else {
+    sharingOptions.message = url;
+  }
+  try {
+    return await Share.share( sharingOptions );
+  } catch ( err ) {
+    Alert.alert( err.message );
+    return null;
+  }
 };
+
+const ViewInBrowserButton = ( { id } ) => (
+  <Body4
+    className="underline mt-[11px]"
+    onPress={async () => openExternalWebBrowser( `${OBSERVATION_URL}/${id}` )}
+  >
+    {t( "View-in-browser" )}
+  </Body4>
+);
+
+const ShareButton = ( { id } ) => (
+  <Body4
+    className="underline mt-[11px]"
+    onPress={() => handleShare( `${OBSERVATION_URL}/${id}` )}
+  >
+    {t( "Share" )}
+  </Body4>
+);
 
 const qualityGradeOption = option => {
   switch ( option ) {
     case "research":
-      return t( "quality-grade-research" );
+      return t( "Research-Grade--quality-grade" );
     case "needs_id":
-      return t( "quality-grade-needs-id" );
+      return t( "Needs-ID--quality-grade" );
     default:
-      return t( "quality-grade-casual" );
+      return t( "Casual--quality-grade" );
   }
 };
 
@@ -71,12 +88,11 @@ const qualityGradeDescription = option => {
   }
 };
 
-const headingClass = "mt-[20px] mb-[11px] text-black";
+const headingClass = "mt-[20px] mb-[11px] text-darkGray";
 const sectionClass = "mx-[15px] mb-[20px]";
 
 const DetailsTab = ( { currentUser, observation }: Props ): Node => {
   const navigation = useNavigation( );
-  const theme = useTheme( );
   const application = observation?.application?.name;
   const qualityGrade = observation?.quality_grade;
   const observationUUID = observation?.uuid;
@@ -90,8 +106,8 @@ const DetailsTab = ( { currentUser, observation }: Props ): Node => {
       ? "1"
       : "0.5";
     const color = ( isResearchGrade )
-      ? theme.colors.secondary
-      : theme.colors.primary;
+      ? colors.inatGreen
+      : colors.darkGray;
     return (
       <View className="flex-1 flex-col space-y-[8px] items-center">
         <QualityGradeStatus qualityGrade={option} opacity={opacity} color={color} />
@@ -142,7 +158,7 @@ const DetailsTab = ( { currentUser, observation }: Props ): Node => {
           {currentUser && (
             <Button
               testID="DetailsTab.DQA"
-              text={t( "VIEW-DATA-QUALITY-ASSESSEMENT" )}
+              text={t( "VIEW-DATA-QUALITY-ASSESSMENT" )}
               onPress={() => navigation.navigate( "DataQualityAssessment", { observationUUID } )}
             />
           )}
@@ -162,9 +178,10 @@ const DetailsTab = ( { currentUser, observation }: Props ): Node => {
         {application && (
           <Body4>{t( "Uploaded-via-application", { application } )}</Body4>
         )}
-        <Body4>{t( "Label-colon-value", { label: "ID", value: observation.id } )}</Body4>
-        <Body4>{t( "Label-colon-value", { label: "UUID", value: observation.uuid } )}</Body4>
+        <View><LabelColonValue label="ID" value={String( observation.id )} valueSelectable /></View>
+        <View><LabelColonValue label="UUID" value={observation.uuid} valueSelectable /></View>
         <ViewInBrowserButton id={observation.id} />
+        <ShareButton id={observation.id} />
       </View>
     </>
   );

@@ -6,11 +6,9 @@ import {
   Heading4
 } from "components/SharedComponents";
 import * as React from "react";
-import {
-  Linking,
-  useWindowDimensions
-} from "react-native";
+import { useWindowDimensions } from "react-native";
 import HTML, { defaultSystemFonts } from "react-native-render-html";
+import { openExternalWebBrowser } from "sharedHelpers/util.ts";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
@@ -29,25 +27,11 @@ const FONTS = [fontRegular, ...defaultSystemFonts];
 
 const Wikipedia = ( { taxon }: Props ): React.Node => {
   const { width } = useWindowDimensions();
-  const { t, i18n } = useTranslation();
-  const { language } = i18n;
+  const { t } = useTranslation();
 
   const openWikipedia = ( ) => {
-    if ( taxon?.wikipedia_url ) {
-      Linking.openURL( taxon.wikipedia_url );
-    }
+    openExternalWebBrowser( taxon.wikipedia_url );
   };
-
-  let wikipediaUrl = taxon.wikipedia_url;
-
-  // Trivial fallback that will suffer from all the same problems we've had
-  // doing the same thing on the web. Instead we should use the
-  // taxa/:id/describe endpoint to retrieve a description and a URL like we
-  // do on the web
-  if ( !wikipediaUrl ) {
-    const lang = language?.split( "-" )?.[0] || "en";
-    wikipediaUrl = `https://${lang}.wikipedia.org/wiki/${taxon.name}`;
-  }
 
   if ( !taxon.wikipedia_summary || taxon.wikipedia_summary.length === 0 ) {
     return null;
@@ -62,7 +46,7 @@ const Wikipedia = ( { taxon }: Props ): React.Node => {
         systemFonts={FONTS}
         baseStyle={BASE_STYLE}
       />
-      { wikipediaUrl && (
+      { taxon.wikipedia_url && taxon.wikipedia_url.length > 0 && (
         <Body2
           onPress={openWikipedia}
           accessibilityRole="link"

@@ -89,6 +89,21 @@ describe( "MediaViewer", ( ) => {
         renderComponent( <MediaViewer photos={[photo]} /> );
         expect( await screen.findByLabelText( /some rights reserved/ ) ).toBeVisible( );
       } );
+      it(
+        "should not render the AttributionButton if attribution is not present",
+        async () => {
+          const photosWithoutAttribution = [
+            factory( "LocalPhoto", { attribution: undefined } )
+          ];
+          renderComponent( <MediaViewer photos={photosWithoutAttribution} /> );
+          expect( screen.queryByLabelText( photos[0].attribution ) ).not.toBeTruthy();
+        }
+      );
+
+      it( "should render the AttributionButton if attribution is present", async () => {
+        renderComponent( <MediaViewer photos={photos} /> );
+        expect( await screen.findByLabelText( photos[0].attribution ) ).toBeTruthy();
+      } );
     } );
   } );
 } );

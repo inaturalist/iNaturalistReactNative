@@ -9,13 +9,13 @@ import { Heading4 } from "components/SharedComponents";
 import Mortal from "components/SharedComponents/Mortal";
 import PermissionGateContainer, {
   AUDIO_PERMISSIONS,
-  CAMERA_PERMISSIONS,
-  READ_WRITE_MEDIA_PERMISSIONS
+  CAMERA_PERMISSIONS
 } from "components/SharedComponents/PermissionGateContainer.tsx";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import { t } from "i18next";
 import ContextHeader from "navigation/ContextHeader";
 import {
+  fadeInComponent,
   hideHeader,
   hideHeaderLeft
 } from "navigation/navigationOptions";
@@ -32,7 +32,6 @@ const soundRecorderTitle = ( ) => (
 
 const CAMERA_SCREEN_OPTIONS = {
   ...hideHeader,
-  orientation: "all",
   contentStyle: {
     backgroundColor: "black"
   }
@@ -54,7 +53,7 @@ const SOUND_RECORDER_OPTIONS = {
   headerTitleAlign: "center"
 };
 
-const CameraContainerWithPermission = ( ) => (
+const CameraContainerWithPermission = ( ) => fadeInComponent(
   <Mortal>
     <PermissionGateContainer
       permissions={CAMERA_PERMISSIONS}
@@ -70,22 +69,33 @@ const CameraContainerWithPermission = ( ) => (
   </Mortal>
 );
 
+// const GalleryContainerWithPermission = ( ) => (
+//   <PermissionGateContainer
+//     permissions={READ_WRITE_MEDIA_PERMISSIONS}
+//     title={t( "Observe-and-identify-organisms-from-your-gallery" )}
+//     titleDenied={t( "Please-Allow-Gallery-Access" )}
+//     body={t( "Upload-photos-from-your-gallery-and-create-observations" )}
+//     blockedPrompt={t( "Youve-previously-denied-gallery-permissions" )}
+//     buttonText={t( "CHOOSE-PHOTOS" )}
+//     icon="gallery"
+//     image={require( "images/background/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
+//   >
+//     <PhotoGallery />
+//   </PermissionGateContainer>
+// );
+
+// On iOS we don't actually need PHOTO LIBRARY permission to import photos,
+// and in fact, if we ask for it and the user denies it after already
+// granting add-only permission, the user can never grant it again until they
+// uninstall the app. We *may* want to bring this back to handle writing to
+// albums, but for now this works. ~~~~kueda20240829
+
+// TODO verify this is true for Android
 const GalleryContainerWithPermission = ( ) => (
-  <PermissionGateContainer
-    permissions={READ_WRITE_MEDIA_PERMISSIONS}
-    title={t( "Observe-and-identify-organisms-from-your-gallery" )}
-    titleDenied={t( "Please-Allow-Gallery-Access" )}
-    body={t( "Upload-photos-from-your-gallery-and-create-observations" )}
-    blockedPrompt={t( "Youve-previously-denied-gallery-permissions" )}
-    buttonText={t( "CHOOSE-PHOTOS" )}
-    icon="gallery"
-    image={require( "images/background/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
-  >
-    <PhotoGallery />
-  </PermissionGateContainer>
+  <PhotoGallery />
 );
 
-const SoundRecorderWithPermission = ( ) => (
+const SoundRecorderWithPermission = ( ) => fadeInComponent(
   <Mortal>
     <PermissionGateContainer
       permissions={AUDIO_PERMISSIONS}
@@ -106,7 +116,6 @@ const NoBottomTabStackNavigator = ( ): Node => (
   <Stack.Navigator
     screenOptions={{
       headerBackTitleVisible: false,
-      headerTintColor: "black",
       contentStyle: {
         backgroundColor: "white"
       }

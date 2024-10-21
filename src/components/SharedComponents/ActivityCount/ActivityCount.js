@@ -6,8 +6,8 @@ import Body3 from "components/SharedComponents/Typography/Body3.tsx";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
+import colors from "styles/tailwindColors";
 
 type Props = {
   accessibilityLabel?: string,
@@ -26,7 +26,6 @@ const ActivityCount = ( {
   testID,
   classNameMargin
 }: Props ): Node => {
-  const theme = useTheme( );
   const { t } = useTranslation( );
 
   return (
@@ -40,8 +39,8 @@ const ActivityCount = ( {
       <INatIcon
         name={icon || "comments"}
         color={white
-          ? theme.colors.onPrimary
-          : theme.colors.primary}
+          ? colors.white
+          : colors.darkGray}
         size={14}
       />
       <Body3

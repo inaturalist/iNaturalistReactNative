@@ -20,7 +20,7 @@ const Onboarding = ( ): Node => {
   };
 
   return numObservations <= 100 && numObservations > 0
-    ? <Body3 className="pt-5">{getOnboardingText( ) }</Body3>
+    ? <Body3 className="pb-5">{getOnboardingText( ) }</Body3>
     : null;
 };
 

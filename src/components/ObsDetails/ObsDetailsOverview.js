@@ -19,7 +19,7 @@ import {
 } from "sharedHooks";
 
 type Props = {
-  belongsToCurrentUser?: boolean,
+  belongsToCurrentUser: boolean,
   isConnected: boolean,
   isRefetching: boolean,
   observation: Object,
@@ -33,6 +33,8 @@ const ObsDetailsOverview = ( {
 }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
+  const geoprivacy = observation?.geoprivacy;
+  const taxonGeoprivacy = observation?.taxon_geoprivacy;
 
   const communityTaxon = observation?.taxon;
 
@@ -75,6 +77,9 @@ const ObsDetailsOverview = ( {
               || observation.observed_on_string
               || observation.observed_on
             }
+            geoprivacy={geoprivacy}
+            taxonGeoprivacy={taxonGeoprivacy}
+            belongsToCurrentUser={belongsToCurrentUser}
           />
         )}
       </View>
@@ -100,7 +105,11 @@ const ObsDetailsOverview = ( {
           </Body4>
         )
       }
-      <ObservationLocation observation={observation} classNameMargin="mx-3 mb-2" />
+      <ObservationLocation
+        observation={observation}
+        obscured={observation?.obscured}
+        classNameMargin="mx-3 mb-2"
+      />
     </View>
   );
 };

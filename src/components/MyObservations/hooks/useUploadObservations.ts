@@ -50,12 +50,7 @@ export default ( canUpload: boolean ) => {
 
   const unsyncedList = Observation.filterUnsyncedObservations( realm );
   const unsyncedUuids = useMemo( ( ) => unsyncedList.map( o => o.uuid ), [unsyncedList] );
-
-  // The existing abortController lets you abort...
   const abortController = useStore( storeState => storeState.abortController );
-  // ...but whenever you start a new abortable upload process, you need to
-  //    mint a new abort controller
-  const newAbortController = useStore( storeState => storeState.newAbortController );
 
   const { t } = useTranslation( );
 
@@ -106,7 +101,9 @@ export default ( canUpload: boolean ) => {
     const { uuid } = observation;
     setCurrentUpload( observation );
     try {
-      const timeoutID = setTimeout( ( ) => abortController.abort( ), MS_BEFORE_UPLOAD_TIMES_OUT );
+      const timeoutID = setTimeout( ( ) => {
+        abortController.abort( );
+      }, MS_BEFORE_UPLOAD_TIMES_OUT );
       await uploadObservation( observation, realm, { signal: abortController.signal } );
       clearTimeout( timeoutID );
     } catch ( uploadErr ) {
@@ -149,7 +146,7 @@ export default ( canUpload: boolean ) => {
   ] );
 
   useEffect( ( ) => {
-    const startUpload = async ( ) => {
+    const uploadNextObservation = async ( ) => {
       const lastQueuedUuid = uploadQueue[uploadQueue.length - 1];
       const localObservation = realm.objectForPrimaryKey<RealmObservation>(
         "Observation",
@@ -164,30 +161,19 @@ export default ( canUpload: boolean ) => {
       && uploadQueue.length > 0
       && !currentUpload
     ) {
-      const startingNewUploadQueue = initialNumObservationsInQueue === uploadQueue.length;
-      if ( startingNewUploadQueue ) {
-        // We want the same abort controller for the entire upload queue so
-        // cancelling cancels every request
-        newAbortController( );
+      if ( abortController && !abortController.signal.aborted ) {
+        uploadNextObservation( );
       }
-      startUpload( );
     }
   }, [
+    abortController,
     currentUpload,
     initialNumObservationsInQueue,
-    newAbortController,
     realm,
     uploadObservationAndCatchError,
     uploadQueue,
     uploadStatus
   ] );
-
-  useEffect( ( ) => {
-    // fully stop uploads when cancel upload button is tapped
-    if ( uploadStatus === UPLOAD_CANCELLED ) {
-      abortController.abort( );
-    }
-  }, [abortController, uploadStatus] );
 
   const createUploadQueue = useCallback( ( ) => {
     const uuidsQuery = unsyncedUuids

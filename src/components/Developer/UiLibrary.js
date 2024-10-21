@@ -13,6 +13,7 @@ import {
   FlatList
 } from "react-native";
 
+// Note: you need to add here and in UiLibraryItem
 const ITEMS = sortBy( [
   { title: "Activity Indicator", component: "ActivityIndicatorDemo" },
   { title: "Buttons", component: "Buttons" },
@@ -22,6 +23,7 @@ const ITEMS = sortBy( [
   { title: "ObsListItem", component: "ObsListItemDemo" },
   { title: "TaxonResult", component: "TaxonResultDemo" },
   { title: "ObsGridItem", component: "ObsGridItemDemo" },
+  { title: "TaxonGridItem", component: "TaxonGridItemDemo" },
   { title: "Toolbar", component: "ToolbarDemo" }
 ], item => item.title );
 ITEMS.push( { title: "Everything Else", component: "Misc" } );

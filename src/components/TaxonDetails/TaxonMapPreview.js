@@ -2,6 +2,7 @@
 
 import { searchObservations } from "api/observations";
 import {
+  Button,
   DetailsMap,
   Heading4,
   Map,
@@ -19,10 +20,12 @@ import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import TaxonDetailsTitle from "./TaxonDetailsTitle";
 
 type Props = {
-  taxon: Object
+  showSpeciesSeenCheckmark: boolean,
+  taxon: Object,
 }
 
 const TaxonMapPreview = ( {
+  showSpeciesSeenCheckmark,
   taxon
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -45,7 +48,10 @@ const TaxonMapPreview = ( {
     }, optsWithAuth )
   );
 
-  if ( obsSearchResponse?.total_bounds ) {
+  const hasObservationResults = obsSearchResponse?.total_results > 0;
+  const hasBounds = obsSearchResponse?.total_bounds;
+
+  if ( hasBounds && hasObservationResults ) {
     const region = getMapRegion( obsSearchResponse?.total_bounds );
 
     return (
@@ -63,6 +69,13 @@ const TaxonMapPreview = ( {
           zoomEnabled={false}
           zoomTapEnabled={false}
         />
+        <Button
+          text={t( "EXPAND-MAP" )}
+          className="mt-4"
+          onPress={() => {
+            setShowMapModal( true );
+          }}
+        />
         <Modal
           animationIn="fadeIn"
           animationOut="fadeOut"
@@ -79,7 +92,12 @@ const TaxonMapPreview = ( {
               closeModal={( ) => setShowMapModal( false )}
               tileMapParams={obsParams}
               showLocationIndicator={false}
-              headerTitle={<TaxonDetailsTitle taxon={taxon} />}
+              headerTitle={(
+                <TaxonDetailsTitle
+                  taxon={taxon}
+                  showSpeciesSeenCheckmark={showSpeciesSeenCheckmark}
+                />
+              )}
             />
           )}
         />
@@ -88,10 +106,7 @@ const TaxonMapPreview = ( {
     );
   }
 
-  return (
-    <View className="relative h-[390px]" />
-
-  );
+  return null;
 };
 
 export default TaxonMapPreview;
