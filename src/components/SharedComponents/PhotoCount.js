@@ -5,14 +5,12 @@ import { Body3, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { I18nManager } from "react-native";
+import { I18nManager, PixelRatio } from "react-native";
 import { useTheme } from "react-native-paper";
 import Svg, { Path } from "react-native-svg";
 import { useTranslation } from "sharedHooks";
 import { dropShadow } from "styles/global";
 import colors from "styles/tailwindColors";
-
-const HEIGHT = 24;
 
 type Props = {
   count: number
@@ -22,6 +20,7 @@ const PhotoCount = ( { count }: Props ): Node => {
   const { t } = useTranslation( );
   const { isRTL } = I18nManager;
   const theme = useTheme( );
+  const HEIGHT = PixelRatio.getFontScale() * 24;
 
   if ( count === 0 ) {
     return <INatIcon name="noevidence" size={HEIGHT} color={theme.colors.inverseOnSurface} />;
