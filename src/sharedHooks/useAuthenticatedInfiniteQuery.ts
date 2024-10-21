@@ -18,6 +18,7 @@ const useAuthenticatedInfiniteQuery = (
     // Note, getJWT() takes care of fetching a new token if the existing
     // one is expired. We *could* store the token in state with useState if
     // fetching from RNSInfo becomes a performance issue
+    console.log( "[DEBUG useAuthenticatedInfiniteQuery.ts] calling getJWT" );
     const apiToken = await getJWT( queryOptions.allowAnonymousJWT );
     const options = {
       api_token: apiToken

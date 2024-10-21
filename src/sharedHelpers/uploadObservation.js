@@ -159,6 +159,7 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
   // half one when obsPhoto/obsSound is successfully uploaded
   // half one when the obsPhoto/obsSound is attached to the obs
   emitUploadProgress( obs.uuid, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
+  console.log( "[DEBUG uploadObservation.js] calling getJWT" );
   const apiToken = await getJWT( );
   // don't bother trying to upload unless there's a logged in user
   if ( !apiToken ) {

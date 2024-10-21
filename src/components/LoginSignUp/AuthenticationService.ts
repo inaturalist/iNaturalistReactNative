@@ -270,32 +270,6 @@ const getJWT = async ( allowAnonymousJWT = false ): Promise<string | null> => {
   return jwtToken;
 };
 
-/**
- * Returns the API access token to be used with all iNaturalist API calls
- *
- * @param useJWT if true, we'll use JSON Web Token instead of the "regular" access token
- * @param allowAnonymousJWT (optional=false) if true and user is not
- *  logged-in, use anonymous JWT
- * @returns {Promise<string|*>} access token, null if not logged in
- */
-const getAPIToken = async (
-  // $FlowIgnore
-  useJWT = false,
-  // $FlowIgnore
-  allowAnonymousJWT = false
-): Promise<string | null> => {
-  const loggedIn = await isLoggedIn();
-  if ( !loggedIn ) {
-    return null;
-  }
-
-  if ( useJWT ) {
-    return getJWT( allowAnonymousJWT );
-  }
-  const accessToken = await getSensitiveItem( "accessToken" );
-  return `Bearer ${accessToken}`;
-};
-
 const showErrorAlert = ( errorText: string ) => {
   Alert.alert(
     "",
@@ -535,7 +509,6 @@ export {
   API_HOST,
   authenticateUser,
   getAnonymousJWT,
-  getAPIToken,
   getJWT,
   getUsername,
   isCurrentUser,

@@ -28,6 +28,7 @@ const iNatLogstashTransport: transportFunctionType = async props => {
   // Don't bother to log from dev builds
   // eslint-disable-next-line no-undef
   if ( __DEV__ ) return;
+  console.log( "[DEBUG log.ts iNatLogstashTransport] calling getJWT" );
   const userToken = await getJWT();
   const anonymousToken = getAnonymousJWT();
   // Can't log w/o auth token

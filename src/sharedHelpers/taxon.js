@@ -153,6 +153,7 @@ export function accessibleTaxonName( taxon, user, t ) {
 export async function fetchTaxonAndSave( id, realm, params = {}, opts = {} ) {
   const options = { ...opts };
   if ( !options.api_token ) {
+    console.log( "[DEBUG taxon.js fetchTaxonAndSave] calling getJWT" );
     options.api_token = await getJWT( );
   }
   const remoteTaxon = await fetchTaxon( id, params, options );

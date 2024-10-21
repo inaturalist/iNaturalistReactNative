@@ -38,6 +38,7 @@ const deleteRemotelyDeletedObservations = ( deletedObservations, realm ) => {
 
 // eslint-disable-next-line no-undef
 export default syncRemoteDeletedObservations = async realm => {
+  console.log( "[DEBUG syncRemoteDeletedObservations.ts] calling getJWT" );
   const apiToken = await getJWT( );
   const deletedParams = setParamsWithLastSyncTime( realm );
   const response = await checkForDeletedObservations( deletedParams, { api_token: apiToken } );

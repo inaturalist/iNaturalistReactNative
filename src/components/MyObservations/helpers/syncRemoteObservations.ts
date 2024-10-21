@@ -5,6 +5,7 @@ import { sleep } from "sharedHelpers/util.ts";
 
 // eslint-disable-next-line no-undef
 export default syncRemoteObservations = async ( realm, currentUserId, deletionsCompletedAt ) => {
+  console.log( "[DEBUG syncRemoteObservations.ts] calling getJWT" );
   const apiToken = await getJWT( );
   const searchParams = {
     user_id: currentUserId,

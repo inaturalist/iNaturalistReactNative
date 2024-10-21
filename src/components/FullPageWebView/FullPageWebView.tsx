@@ -179,6 +179,7 @@ const FullPageWebView = ( ) => {
 
       // Make the WebView logged in for the current user
       if ( params.loggedIn ) {
+        console.log( "[DEBUG FullPageWebView.tsx focus effect] calling getJWT" );
         getJWT().then( jwt => {
           setSource( {
             ...source,
