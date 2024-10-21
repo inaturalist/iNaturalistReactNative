@@ -1,7 +1,8 @@
 // @flow
 import { useDrawerStatus } from "@react-navigation/drawer";
+import { getCurrentRoute } from "navigation/navigationUtils.ts";
 import type { Node } from "react";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import User from "realmModels/User.ts";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
@@ -21,6 +22,22 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
   const currentUser = useCurrentUser( );
   const [activeTab, setActiveTab] = useState( OBS_LIST_SCREEN_ID );
   const isDrawerOpen = useDrawerStatus() === "open";
+  const { name: currentRoute } = getCurrentRoute();
+  useEffect( () => {
+    switch ( currentRoute ) {
+      case "Notifications":
+        setActiveTab( NOTIFICATIONS_SCREEN_ID );
+        break;
+      case "ObsList":
+        setActiveTab( OBS_LIST_SCREEN_ID );
+        break;
+      case "RootExplore":
+        setActiveTab( EXPLORE_SCREEN_ID );
+        break;
+      default:
+        break;
+    }
+  }, [currentRoute] );
 
   const tabs = useMemo( ( ) => ( [
     {
@@ -31,7 +48,6 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
       size: 32,
       onPress: ( ) => {
         navigation.openDrawer( );
-        setActiveTab( null );
       },
       active: isDrawerOpen
     },
@@ -43,7 +59,6 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
       size: 40,
       onPress: ( ) => {
         navigation.navigate( "RootExplore" );
-        setActiveTab( EXPLORE_SCREEN_ID );
       },
       active: EXPLORE_SCREEN_ID === activeTab
     },
@@ -56,7 +71,6 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
       size: 40,
       onPress: ( ) => {
         navigation.navigate( "ObsList" );
-        setActiveTab( OBS_LIST_SCREEN_ID );
       },
       active: OBS_LIST_SCREEN_ID === activeTab
     },
@@ -68,7 +82,6 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
       size: 32,
       onPress: ( ) => {
         navigation.navigate( "Notifications" );
-        setActiveTab( NOTIFICATIONS_SCREEN_ID );
       },
       active: NOTIFICATIONS_SCREEN_ID === activeTab
     }
