@@ -164,7 +164,7 @@ describe( "Photo Deletion", ( ) => {
     await confirmPhotosAndAddTopId();
     await saveAndEditObs();
     // Enter camera to add new photo
-    const addEvidenceButton = await screen.findByLabelText( "Add evidence" );
+    const addEvidenceButton = await await screen.findByLabelText( "Add evidence" );
     await actor.press( addEvidenceButton );
     const addEvidenceSheet = await screen.findByTestId( "AddEvidenceSheet" );
     const cameraButton = await within( addEvidenceSheet ).findByLabelText( "Camera" );
