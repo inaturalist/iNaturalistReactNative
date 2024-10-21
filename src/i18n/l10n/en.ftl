@@ -187,14 +187,22 @@ COMMENT = COMMENT
 Comment-options = Comment options
 # Label for a setting that shows the common name first
 Common-Name-Scientific-Name = Common Name (Scientific Name)
+Community-based = Community-based
 Community-Guidelines = Community Guidelines
 COMMUNITY-GUIDELINES = COMMUNITY GUIDELINES
 # Button that confirms a choice the user has made
 CONFIRM = CONFIRM
+# Onboarding header (underneath the logo)
+CONNECT-TO-NATURE = CONNECT TO NATURE
+# Onboarding slides
+Connect-to-Nature = Connect to Nature
 Connect-with-other-naturalists = Connect with other naturalists and engage in conversations.
 Connection-problem-Please-try-again-later = Connection problem. Please try again later.
 CONTACT-SUPPORT = CONTACT SUPPORT
+# Continue button in onboarding screen
+CONTINUE = CONTINUE
 Continue-to-iNaturalist = Continue to iNaturalist
+Contribute-to-Science = Contribute to Science
 # Notification when coordinates have been copied
 Coordinates-copied-to-clipboard = Coordinates copied to clipboard
 # Button that copies coordinates to the clipboard
@@ -443,6 +451,7 @@ Identifiers = Identifiers
 Identifiers-View = Identifiers View
 Identify-an-organism = Identify an organism
 Identify-an-organism-with-the-iNaturalist-AI-Camera = Identify an organism with the iNaturalist AI Camera
+Identify-record-learn = Identify, record, and learn about every living species on earth using iNaturalist
 If-an-account-with-that-email-exists = If an account with that email exists, we've sent password reset instructions to your email.
 If-you-want-to-collate-compare-promote = If you want to collate, compare, or promote a set of existing projects, then an Umbrella project is what you should use. For example the 2018 City Nature Challenge, which collated over 60 projects, made for a great landing page where anyone could compare and contrast each city's observations. Both Collection and Traditional projects can be used in an Umbrella project, and up to 500 projects can be collated by an Umbrella project.
 If-youre-seeing-this-error = If you're seeing this and you're online, iNat staff have already been notified. Thanks for finding a bug! If you're offline, please take a screenshot and send us an email when you're back on the Internet.
@@ -457,6 +466,7 @@ IMPORT-X-OBSERVATIONS =
 IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = IMPROVE THESE SUGGESTIONS BY USING YOUR LOCATION
 # Identification category
 improving--identification = Improving
+iNat-is-global-community = iNaturalist is a global community of naturalists creating open data for science by collectively observing & identifying organisms
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT SETTINGS
 iNaturalist-AI-Camera = iNaturalist AI Camera
 iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNaturalist can save photos you take in the app to your device’s gallery.
@@ -641,6 +651,7 @@ OBSERVATION-WAS-DELETED = OBSERVATION WAS DELETED
 Observation-with-no-evidence = Observation with no evidence
 Observations = Observations
 Observations-created-on-iNaturalist = Observations created on iNaturalist are used by scientists around the world.
+Observations-on-iNat-are-cited = Observations on iNaturalist are cited in scientific papers, have led to rediscoveries, and help scientists understand life on our planet.
 Observations-View = Observations View
 # Might be used when the number is represented using an image or other
 # element, not text

@@ -94,6 +94,7 @@ const TabStackNavigator = ( ): Node => (
         name="ObsList"
         component={MyObservationsContainer}
       />
+
       <Stack.Screen
         name="ObsDetails"
         component={ObsDetailsContainer}
