@@ -2,6 +2,7 @@ import Geolocation from "@react-native-community/geolocation";
 import {
   screen,
   userEvent,
+  waitFor,
   within
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
@@ -115,7 +116,9 @@ describe( "Photo Deletion", ( ) => {
   async function saveAndEditObs() {
     // Make sure we're on ObsEdit
     const evidenceTitle = await screen.findByText( "EVIDENCE" );
-    expect( evidenceTitle ).toBeVisible( );
+    await waitFor( ( ) => {
+      expect( evidenceTitle ).toBeVisible( );
+    } );
     const saveButton = await screen.findByText( "SAVE" );
     await actor.press( saveButton );
     // Wait until header shows that there's an obs to upload
@@ -132,8 +135,9 @@ describe( "Photo Deletion", ( ) => {
 
   async function viewPhotoFromObsEdit() {
     const evidenceItem = await screen.findByLabelText( "Select or drag media" );
-    expect( evidenceItem ).toBeTruthy( );
-    expect( evidenceItem ).toBeVisible( );
+    await waitFor( ( ) => {
+      expect( evidenceItem ).toBeVisible( );
+    } );
     await actor.press( evidenceItem );
   }
 
