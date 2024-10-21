@@ -635,46 +635,54 @@ const FilterModal = ( {
     <ViewWrapper className="flex-1 bg-white" testID="filter-modal">
       {/* Header */}
       <View
-        className="flex-row items-center p-5 justify-between bg-white"
+        className="flex-row items-center p-5 bg-white"
         style={DROP_SHADOW}
       >
-        <View className="flex-row items-center">
-          <INatIconButton
-            icon="close"
-            onPress={
-              !differsFromSnapshot
-                ? () => {
-                  discardChanges();
-                  closeModal();
-                }
-                : () => {
-                  setOpenSheet( CONFIRMATION );
-                }
-            }
-            size={22}
-            accessibilityLabel={t( "Go-back" )}
-          />
-          <Heading1 className="ml-3">{t( "Explore-Filters" )}</Heading1>
+        <INatIconButton
+          icon="close"
+          onPress={
+            !differsFromSnapshot
+              ? () => {
+                discardChanges();
+                closeModal();
+              }
+              : () => {
+                setOpenSheet( CONFIRMATION );
+              }
+          }
+          size={22}
+          accessibilityLabel={t( "Go-back" )}
+        />
+        <View className="flex-1 items-center flex-row">
+          <Heading1 className="ml-3 wrap">{t( "Explore-Filters" )}</Heading1>
           {numberOfFilters !== 0 && (
-            <View className="ml-3">
+            <View className="w-[50px] ml-3">
               <NumberBadge number={numberOfFilters} />
             </View>
           )}
         </View>
-        {isNotInitialState
-          ? (
-            <Body3
-              accessibilityRole="button"
-              onPress={async ( ) => {
-                dispatch( { type: EXPLORE_ACTION.RESET } );
-              }}
-            >
-              {t( "Reset-verb" )}
-            </Body3>
-          )
-          : (
-            <Body3 className="opacity-50">{t( "Reset-verb" )}</Body3>
-          )}
+        <View className="w-[50px]">
+          {isNotInitialState
+            ? (
+              <Body3
+                accessibilityRole="button"
+                onPress={async ( ) => {
+                  dispatch( { type: EXPLORE_ACTION.RESET } );
+                }}
+                maxFontSizeMultiplier={1.5}
+              >
+                {t( "Reset-verb" )}
+              </Body3>
+            )
+            : (
+              <Body3
+                className="opacity-50"
+                maxFontSizeMultiplier={1.5}
+              >
+                {t( "Reset-verb" )}
+              </Body3>
+            )}
+        </View>
       </View>
 
       <ScrollView className="py-4">
