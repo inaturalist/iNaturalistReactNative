@@ -72,6 +72,8 @@ const useLocationPermission = ( ) => {
     );
   }, [showPermissionGate] );
 
+  // This gets exported and used as a dependency, so it needs to have
+  // referential stability
   const requestPermissions = useCallback(
     ( ) => setShowPermissionGate( true ),
     []

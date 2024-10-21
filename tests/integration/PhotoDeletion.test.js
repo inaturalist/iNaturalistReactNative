@@ -2,6 +2,7 @@ import Geolocation from "@react-native-community/geolocation";
 import {
   screen,
   userEvent,
+  waitFor,
   within
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
@@ -105,19 +106,19 @@ describe( "Photo Deletion", ( ) => {
     await actor.press( discardButton );
   }
 
-  async function confirmPhotosAndAddTopId() {
+  async function confirmPhotosAndSkipId() {
     const checkmarkButton = await screen.findByLabelText( "View suggestions" );
     await actor.press( checkmarkButton );
-    const topTaxonResultButton = await screen.findByTestId(
-      `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
-    );
-    await actor.press( topTaxonResultButton );
+    const skipIdButton = await screen.findByText( /Add an ID Later/ );
+    await actor.press( skipIdButton );
   }
 
   async function saveAndEditObs() {
     // Make sure we're on ObsEdit
     const evidenceTitle = await screen.findByText( "EVIDENCE" );
-    expect( evidenceTitle ).toBeVisible( );
+    await waitFor( ( ) => {
+      expect( evidenceTitle ).toBeVisible( );
+    } );
     const saveButton = await screen.findByText( "SAVE" );
     await actor.press( saveButton );
     // Wait until header shows that there's an obs to upload
@@ -134,8 +135,9 @@ describe( "Photo Deletion", ( ) => {
 
   async function viewPhotoFromObsEdit() {
     const evidenceItem = await screen.findByLabelText( "Select or drag media" );
-    expect( evidenceItem ).toBeTruthy( );
-    expect( evidenceItem ).toBeVisible( );
+    await waitFor( ( ) => {
+      expect( evidenceItem ).toBeVisible( );
+    } );
     await actor.press( evidenceItem );
   }
 
@@ -161,7 +163,7 @@ describe( "Photo Deletion", ( ) => {
   it( "should delete from StandardCamera for existing photo", async ( ) => {
     renderApp( );
     await takePhotoForNewObs();
-    await confirmPhotosAndAddTopId();
+    await confirmPhotosAndSkipId();
     await saveAndEditObs();
     // Enter camera to add new photo
     const addEvidenceButton = await screen.findByLabelText( "Add evidence" );
@@ -179,7 +181,7 @@ describe( "Photo Deletion", ( ) => {
   it( "should delete from ObsEdit for new camera photo", async ( ) => {
     renderApp( );
     await takePhotoForNewObs();
-    await confirmPhotosAndAddTopId();
+    await confirmPhotosAndSkipId();
     await viewPhotoFromObsEdit();
     await deletePhotoInMediaViewer( );
     await expectObsEditToHaveNoPhotos();
@@ -188,7 +190,7 @@ describe( "Photo Deletion", ( ) => {
   it( "should delete from ObsEdit for existing camera photo", async ( ) => {
     renderApp( );
     await takePhotoForNewObs();
-    await confirmPhotosAndAddTopId();
+    await confirmPhotosAndSkipId();
     await saveAndEditObs();
     await viewPhotoFromObsEdit();
     await deletePhotoInMediaViewer( );
