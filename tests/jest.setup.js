@@ -35,7 +35,8 @@ jest.mock( "../react-native-logs.config", () => {
   };
   return {
     log,
-    logFilePath: "inaturalist-rn-log.txt"
+    logFilePath: "inaturalist-rn-log.txt",
+    logWithoutRemote: log
   };
 } );
 

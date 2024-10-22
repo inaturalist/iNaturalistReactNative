@@ -3,12 +3,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { zustandStorage } from "stores/useStore";
 
+const DEBUG_MODE = "debugMode";
+
 const useDebugMode = ( ): { isDebug: boolean, toggleDebug: Function } => {
   const [isDebug, setDebug] = useState( false );
 
   useEffect( ( ) => {
     const readDebugModeFromStorage = ( ) => {
-      const storedDebugMode = zustandStorage.getItem( "debugMode" );
+      const storedDebugMode = zustandStorage.getItem( DEBUG_MODE );
       setDebug( storedDebugMode === "true" );
     };
 
@@ -16,7 +18,7 @@ const useDebugMode = ( ): { isDebug: boolean, toggleDebug: Function } => {
   }, [] );
 
   const toggleDebug = useCallback( ( ) => {
-    zustandStorage.setItem( "debugMode", ( !isDebug ).toString( ) );
+    zustandStorage.setItem( DEBUG_MODE, ( !isDebug ).toString( ) );
     setDebug( !isDebug );
   }, [isDebug] );
 
@@ -25,5 +27,9 @@ const useDebugMode = ( ): { isDebug: boolean, toggleDebug: Function } => {
     toggleDebug
   };
 };
+
+export function isDebugMode( ): boolean {
+  return zustandStorage.getItem( DEBUG_MODE ) === "true";
+}
 
 export default useDebugMode;
