@@ -22,7 +22,8 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
   const currentUser = useCurrentUser( );
   const [activeTab, setActiveTab] = useState( OBS_LIST_SCREEN_ID );
   const isDrawerOpen = useDrawerStatus() === "open";
-  const { name: currentRoute } = getCurrentRoute();
+  const route = getCurrentRoute();
+  const currentRoute = route?.name || "";
   useEffect( () => {
     switch ( currentRoute ) {
       case "Notifications":
