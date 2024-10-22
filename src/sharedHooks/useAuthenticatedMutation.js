@@ -18,7 +18,6 @@ const useAuthenticatedMutation = (
     // Note, getJWTToken() takes care of fetching a new token if the existing
     // one is expired. We *could* store the token in state with useState if
     // fetching from RNSInfo becomes a performance issue
-    console.log( "[DEBUG useAuthenticatedMutation.js] calling getJWT" );
     if ( isDebugMode( ) ) {
       logger.info( "calling getJWT" );
     }

@@ -157,7 +157,6 @@ export function accessibleTaxonName( taxon, user, t ) {
 export async function fetchTaxonAndSave( id, realm, params = {}, opts = {} ) {
   const options = { ...opts };
   if ( !options.api_token ) {
-    console.log( "[DEBUG taxon.js fetchTaxonAndSave] calling getJWT" );
     if ( isDebugMode( ) ) {
       logger.info( "fetchTaxonAndSave, calling getJWT" );
     }
