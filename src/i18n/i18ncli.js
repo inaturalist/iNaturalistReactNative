@@ -172,6 +172,10 @@ const writeLoadTranslations = async ( ) => {
   );
   out.write( "  return require( \"./l10n/en.ftl.json\" );\n" );
   out.write( "};\n" );
+  out.write( "\n" );
+  out.write( "export const SUPPORTED_LOCALES = [\n" );
+  out.write( locales.sort( ).map( l => `  "${l}"` ).join( ",\n" ) );
+  out.write( "\n];\n" );
 };
 
 async function validateFtlFile( ftlPath, options = {} ) {
