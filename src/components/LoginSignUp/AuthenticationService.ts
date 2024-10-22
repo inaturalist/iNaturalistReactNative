@@ -45,7 +45,7 @@ async function getSensitiveItem( key: string, options = {} ) {
     return await RNSInfo.getItem( key, options );
   } catch ( e ) {
     if ( isDebugMode() ) {
-      localLogger.debug( `RNSInfo.getItem not available for ${key}, sleeping` );
+      localLogger.info( `RNSInfo.getItem not available for ${key}, sleeping` );
     }
     const getItemError = e as Error;
     if ( getItemError.message.match( /Protected data not available yet/ ) ) {
@@ -53,7 +53,7 @@ async function getSensitiveItem( key: string, options = {} ) {
       return RNSInfo.getItem( key, options );
     }
     if ( isDebugMode() ) {
-      localLogger.debug( `RNSInfo.getItem not available for ${key} after sleeping, throwing` );
+      localLogger.info( `RNSInfo.getItem not available for ${key} after sleeping, throwing` );
     }
     throw getItemError;
   }
@@ -64,7 +64,7 @@ async function setSensitiveItem( key: string, value: string, options = {} ) {
     return await RNSInfo.setItem( key, value, options );
   } catch ( e ) {
     if ( isDebugMode( ) ) {
-      logger.debug( `RNSInfo.setItem not available for ${key}, sleeping` );
+      localLogger.info( `RNSInfo.setItem not available for ${key}, sleeping` );
     }
     const setItemError = e as Error;
     if ( setItemError.message.match( /Protected data not available yet/ ) ) {
@@ -72,7 +72,7 @@ async function setSensitiveItem( key: string, value: string, options = {} ) {
       return RNSInfo.setItem( key, value, options );
     }
     if ( isDebugMode( ) ) {
-      logger.debug( `RNSInfo.setItem not available for ${key} after sleeping, throwing` );
+      localLogger.info( `RNSInfo.setItem not available for ${key} after sleeping, throwing` );
     }
     throw setItemError;
   }
@@ -83,7 +83,7 @@ async function deleteSensitiveItem( key: string, options = {} ) {
     return await RNSInfo.deleteItem( key, options );
   } catch ( e ) {
     if ( isDebugMode( ) ) {
-      logger.debug( `RNSInfo.deleteItem not available for ${key}, sleeping` );
+      localLogger.info( `RNSInfo.deleteItem not available for ${key}, sleeping` );
     }
     const deleteItemError = e as Error;
     if ( deleteItemError.message.match( /Protected data not available yet/ ) ) {
@@ -91,7 +91,7 @@ async function deleteSensitiveItem( key: string, options = {} ) {
       return RNSInfo.deleteItem( key, options );
     }
     if ( isDebugMode( ) ) {
-      logger.debug( `RNSInfo.deleteItem not available after sleeping for ${key}, throwing` );
+      localLogger.info( `RNSInfo.deleteItem not available after sleeping for ${key}, throwing` );
     }
     throw deleteItemError;
   }

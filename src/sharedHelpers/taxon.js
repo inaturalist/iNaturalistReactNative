@@ -2,7 +2,11 @@ import { fetchTaxon } from "api/taxa";
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import _ from "lodash";
 import Taxon from "realmModels/Taxon";
+import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import { isDebugMode } from "sharedHooks/useDebugMode";
+
+const logger = log.extend( "Taxon" );
 
 const uncapitalized = new Set( [
   "à",
@@ -154,6 +158,9 @@ export async function fetchTaxonAndSave( id, realm, params = {}, opts = {} ) {
   const options = { ...opts };
   if ( !options.api_token ) {
     console.log( "[DEBUG taxon.js fetchTaxonAndSave] calling getJWT" );
+    if ( isDebugMode( ) ) {
+      logger.info( "fetchTaxonAndSave, calling getJWT" );
+    }
     options.api_token = await getJWT( );
   }
   const remoteTaxon = await fetchTaxon( id, params, options );
