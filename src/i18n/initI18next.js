@@ -15,18 +15,33 @@ import Fluent from "i18next-fluent";
 import resourcesToBackend from "i18next-resources-to-backend";
 // React tooling for i18next
 import { initReactI18next } from "react-i18next";
-import { Text } from "react-native";
+import { NativeModules, Text } from "react-native";
 
 // Function to load translations given a locale code. Given that we cannot
 // dynamically import/require files in a React Native JS environment
 // (https://stackoverflow.com/questions/58858782/using-the-dynamic-import-function-on-node-js),
 // we need to do this statically, which means a big control structure that we
 // generate before building the app
-import loadTranslations from "./loadTranslations";
+import loadTranslations, { SUPPORTED_LOCALES } from "./loadTranslations";
+
+const SYSTEM_LOCALE = (
+  NativeModules.SettingsManager?.settings?.AppleLocale
+  || NativeModules.SettingsManager?.settings?.AppleLanguages?.[0]
+  || NativeModules.I18nManager?.localeIdentifier
+  || "en"
+);
+const candidateLocale = SYSTEM_LOCALE.replace( "_", "-" ).replace( /@.*/, "" );
+let LOCALE = candidateLocale;
+if ( !SUPPORTED_LOCALES.includes( candidateLocale ) ) {
+  const lang = candidateLocale.split( "-" )[0];
+  LOCALE = SUPPORTED_LOCALES.includes( lang )
+    ? lang
+    : "en";
+}
 
 export const I18NEXT_CONFIG = {
   // Added since otherwise Android would crash - see here: https://stackoverflow.com/a/70521614 and https://www.i18next.com/misc/migration-guide
-  lng: "en",
+  lng: LOCALE,
   interpolation: {
     escapeValue: false // react already safes from xss
   },
