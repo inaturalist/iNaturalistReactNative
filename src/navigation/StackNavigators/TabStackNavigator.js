@@ -20,6 +20,7 @@ import MyObservationsContainer from "components/MyObservations/MyObservationsCon
 import NotificationsContainer from "components/Notifications/NotificationsContainer";
 import DQAContainer from "components/ObsDetails/DQAContainer";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
+import ObsDetailsProjects from "components/ObsDetails/ObsDetailsProjects.tsx";
 import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
 import ProjectMembers from "components/ProjectDetails/ProjectMembers.tsx";
 import ProjectRequirements from "components/ProjectDetails/ProjectRequirements.tsx";
@@ -83,6 +84,7 @@ const FadeInSettings = ( ) => fadeInComponent( <Settings /> );
 const FadeInHelp = ( ) => fadeInComponent( <Help /> );
 const FadeInAbout = ( ) => fadeInComponent( <About /> );
 const FadeInDonate = ( ) => fadeInComponent( <Donate /> );
+const FadeInObsDetailsProjects = ( ) => fadeInComponent( <ObsDetailsProjects /> );
 
 const NOTIFICATIONS_OPTIONS = {
   ...hideHeaderLeft,
@@ -104,6 +106,12 @@ const USER_PROFILE_OPTIONS = {
 };
 
 const PROJECT_MEMBERS_OPTIONS = {
+  header: ContextHeader,
+  alignStart: true,
+  lazy: true
+};
+
+const OBS_DETAILS_PROJECTS_OPTIONS = {
   header: ContextHeader,
   alignStart: true,
   lazy: true
@@ -194,6 +202,11 @@ const TabStackNavigator = ( ): Node => (
         name="ProjectMembers"
         component={FadeInProjectMembers}
         options={PROJECT_MEMBERS_OPTIONS}
+      />
+      <Stack.Screen
+        name="ObsDetailsProjects"
+        component={FadeInObsDetailsProjects}
+        options={OBS_DETAILS_PROJECTS_OPTIONS}
       />
     </Stack.Group>
     {/* Developer Stack Group */}

@@ -61,6 +61,23 @@ class Observation extends Realm.Object {
     private_geojson: true,
     private_location: true,
     private_place_guess: true,
+    project_ids: true,
+    project_observations: {
+      project: {
+        id: true,
+        icon: true,
+        title: true,
+        project_type: true
+      }
+    },
+    non_traditional_projects: {
+      project: {
+        id: true,
+        icon: true,
+        title: true,
+        project_type: true
+      }
+    },
     positional_accuracy: true,
     preferences: {
       prefers_community_taxon: true
