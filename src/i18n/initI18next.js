@@ -15,7 +15,8 @@ import Fluent from "i18next-fluent";
 import resourcesToBackend from "i18next-resources-to-backend";
 // React tooling for i18next
 import { initReactI18next } from "react-i18next";
-import { NativeModules, Text } from "react-native";
+import { Text } from "react-native";
+import * as RNLocalize from "react-native-localize";
 
 // Function to load translations given a locale code. Given that we cannot
 // dynamically import/require files in a React Native JS environment
@@ -24,20 +25,20 @@ import { NativeModules, Text } from "react-native";
 // generate before building the app
 import loadTranslations, { SUPPORTED_LOCALES } from "./loadTranslations";
 
-const SYSTEM_LOCALE = (
-  NativeModules.SettingsManager?.settings?.AppleLocale
-  || NativeModules.SettingsManager?.settings?.AppleLanguages?.[0]
-  || NativeModules.I18nManager?.localeIdentifier
-  || "en"
-);
-const candidateLocale = SYSTEM_LOCALE.replace( "_", "-" ).replace( /@.*/, "" );
-let LOCALE = candidateLocale;
-if ( !SUPPORTED_LOCALES.includes( candidateLocale ) ) {
-  const lang = candidateLocale.split( "-" )[0];
-  LOCALE = SUPPORTED_LOCALES.includes( lang )
-    ? lang
-    : "en";
+export function getInatLocaleFromSystemLocale() {
+  const systemLocale = RNLocalize.getLocales( )?.[0]?.languageTag || "en";
+  const candidateLocale = systemLocale.replace( "_", "-" ).replace( /@.*/, "" );
+  let inatLocale = candidateLocale;
+  if ( !SUPPORTED_LOCALES.includes( candidateLocale ) ) {
+    const lang = candidateLocale.split( "-" )[0];
+    inatLocale = SUPPORTED_LOCALES.includes( lang )
+      ? lang
+      : "en";
+  }
+  return inatLocale;
 }
+
+const LOCALE = getInatLocaleFromSystemLocale( );
 
 export const I18NEXT_CONFIG = {
   // Added since otherwise Android would crash - see here: https://stackoverflow.com/a/70521614 and https://www.i18next.com/misc/migration-guide
