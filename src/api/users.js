@@ -4,14 +4,14 @@ import inatjs from "inaturalistjs";
 
 import handleError from "./error";
 
-const MEMBER_PROJECT_FIELDS = {
+const USER_PROJECTS_FIELDS = {
   title: true,
   icon: true
 };
 
-const MEMBER_PROJECT_PARAMS = {
-  per_page: 10,
-  fields: MEMBER_PROJECT_FIELDS
+const USER_PROJECTS_PARAMS = {
+  per_page: 200,
+  fields: USER_PROJECTS_FIELDS
 };
 
 const REMOTE_USER_FIELDS = {
@@ -53,7 +53,7 @@ const fetchUserMe = async ( params: Object = {}, opts: Object = {} ): Promise<?O
 const fetchUserProjects = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
   try {
     const { results } = await inatjs.users.projects( {
-      ...MEMBER_PROJECT_PARAMS,
+      ...USER_PROJECTS_PARAMS,
       ...params,
       ...opts
     } );

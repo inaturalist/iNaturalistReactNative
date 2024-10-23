@@ -23,9 +23,10 @@ import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
 import ProjectMembers from "components/ProjectDetails/ProjectMembers.tsx";
 import ProjectRequirements from "components/ProjectDetails/ProjectRequirements.tsx";
+import ProjectListContainer from "components/ProjectList/ProjectListContainer.tsx";
 import ProjectsContainer from "components/Projects/ProjectsContainer.tsx";
 import Settings from "components/Settings/Settings";
-import { Heading4, ProjectList } from "components/SharedComponents";
+import { Heading4 } from "components/SharedComponents";
 import UserProfile from "components/UserProfile/UserProfile";
 import { t } from "i18next";
 import ContextHeader from "navigation/ContextHeader";
@@ -83,7 +84,7 @@ const FadeInSettings = ( ) => fadeInComponent( <Settings /> );
 const FadeInHelp = ( ) => fadeInComponent( <Help /> );
 const FadeInAbout = ( ) => fadeInComponent( <About /> );
 const FadeInDonate = ( ) => fadeInComponent( <Donate /> );
-const FadeInProjectList = ( ) => fadeInComponent( <ProjectList /> );
+const FadeInProjectList = ( ) => fadeInComponent( <ProjectListContainer /> );
 
 const NOTIFICATIONS_OPTIONS = {
   ...hideHeaderLeft,

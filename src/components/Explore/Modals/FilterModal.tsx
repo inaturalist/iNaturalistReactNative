@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import NumberBadge from "components/Explore/NumberBadge.tsx";
+import ProjectListItem from "components/ProjectList/ProjectListItem.tsx";
 import {
   Body1,
   Body2,
@@ -16,7 +17,6 @@ import {
   INatIconButton,
   List2,
   PickerSheet,
-  ProjectListItem,
   RadioButtonRow,
   RadioButtonSheet,
   ViewWrapper,

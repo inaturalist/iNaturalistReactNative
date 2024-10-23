@@ -2,7 +2,8 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   fetchProjects
 } from "api/projects";
-import { ActivityIndicator, ProjectListItem, ScrollViewWrapper } from "components/SharedComponents";
+import ProjectListItem from "components/ProjectList/ProjectListItem.tsx";
+import { ActivityIndicator, ScrollViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import _ from "lodash";
 import React from "react";

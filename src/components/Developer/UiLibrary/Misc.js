@@ -1,4 +1,5 @@
 import ActivityItem from "components/ObsDetails/ActivityTab/ActivityItem";
+import ProjectListItem from "components/ProjectList/ProjectListItem.tsx";
 import {
   ActivityCount,
   Body1,
@@ -21,7 +22,6 @@ import {
   ObservationLocation,
   ObsStatus,
   PhotoCount,
-  ProjectListItem,
   QualityGradeStatus,
   RadioButtonRow,
   SearchBar,
