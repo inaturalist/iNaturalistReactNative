@@ -2,7 +2,7 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fetchRelationships } from "api/relationships";
-import { fetchRemoteUser } from "api/users";
+import { fetchRemoteUser, fetchUserProjects } from "api/users";
 import LoginSheet from "components/MyObservations/LoginSheet";
 import {
   Body2,
@@ -18,7 +18,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import User from "realmModels/User.ts";
 import { formatLongDate } from "sharedHelpers/dateAndTime.ts";
 import {
@@ -51,6 +51,24 @@ const UserProfile = ( ): Node => {
   );
 
   const user = remoteUser || null;
+
+  const userProjectsQueryKey = ["fetchUserProjects", user?.id];
+
+  const {
+    data: projects
+  } = useAuthenticatedQuery(
+    userProjectsQueryKey,
+    optsWithAuth => fetchUserProjects( { id: user?.id }, optsWithAuth )
+  );
+
+  const totalProjectCount = projects?.length;
+
+  const headerOptions = useMemo( ( ) => ( {
+    headerTitle: User.userHandle( user ),
+    headerSubtitle: t( "JOINED-X-PROJECTS", {
+      count: totalProjectCount
+    } )
+  } ), [totalProjectCount, t, user] );
 
   const {
     data: relationships,
@@ -165,9 +183,10 @@ const UserProfile = ( ): Node => {
           </Heading4>
           <Button
             text={t( "VIEW-PROJECTS" )}
-            // onPress={( ) => navigation.navigate( "ObsDetailsProjects", {
-            //   projects: allProjects
-            // } )}
+            onPress={( ) => navigation.navigate( "ProjectList", {
+              projects,
+              headerOptions
+            } )}
           />
         </View>
         <View className="mb-8">
@@ -176,14 +195,14 @@ const UserProfile = ( ): Node => {
           </Heading4>
           <Button
             text={t( "VIEW-FOLLOWERS" )}
-            // onPress={( ) => navigation.navigate( "ObsDetailsProjects", {
+            // onPress={( ) => navigation.navigate( "ProjectList", {
             //   projects: allProjects
             // } )}
           />
           <Button
             className="mt-6"
             text={t( "VIEW-FOLLOWING" )}
-            // onPress={( ) => navigation.navigate( "ObsDetailsProjects", {
+            // onPress={( ) => navigation.navigate( "ProjectList", {
             //   projects: allProjects
             // } )}
           />

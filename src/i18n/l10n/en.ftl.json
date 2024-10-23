@@ -342,6 +342,7 @@
   "Join-the-largest-community-of-naturalists": "Join the largest community of naturalists in the world!",
   "JOINED": "JOINED",
   "Joined-date": "Joined: { $date }",
+  "JOINED-X-PROJECTS": "{ $count ->\n  [one] JOINED { $count } PROJECT\n *[other] JOINED { $count } PROJECTS\n}",
   "JOURNAL-POSTS-WITHOUT-NUMBER": "{ $count ->\n  [one] JOURNAL POST\n *[other] JOURNAL POSTS\n}",
   "July": "July",
   "June": "June",

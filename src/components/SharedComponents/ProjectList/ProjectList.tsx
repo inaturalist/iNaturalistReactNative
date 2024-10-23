@@ -5,23 +5,16 @@ import {
   ViewWrapper
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import {
   useTranslation
 } from "sharedHooks";
 
-const ObsDetailsProjects = ( ) => {
+const ProjectList = ( ) => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
-  const { projects } = params;
+  const { projects, headerOptions } = params;
   const { t } = useTranslation( );
-
-  const headerOptions = useMemo( ( ) => ( {
-    headerTitle: t( "Observation" ),
-    headerSubtitle: t( "X-PROJECTS", {
-      projectCount: projects.length
-    } )
-  } ), [projects.length, t] );
 
   useEffect( ( ) => {
     navigation.setOptions( headerOptions );
@@ -52,10 +45,10 @@ const ObsDetailsProjects = ( ) => {
         data={projects}
         estimatedItemSize={100}
         renderItem={renderProject}
-        testID="ObsDetailsProjects.list"
+        testID="ProjectList"
       />
     </ViewWrapper>
   );
 };
 
-export default ObsDetailsProjects;
+export default ProjectList;

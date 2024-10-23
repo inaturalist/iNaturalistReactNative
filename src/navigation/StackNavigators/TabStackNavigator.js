@@ -20,13 +20,12 @@ import MyObservationsContainer from "components/MyObservations/MyObservationsCon
 import NotificationsContainer from "components/Notifications/NotificationsContainer";
 import DQAContainer from "components/ObsDetails/DQAContainer";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
-import ObsDetailsProjects from "components/ObsDetails/ObsDetailsProjects.tsx";
 import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
 import ProjectMembers from "components/ProjectDetails/ProjectMembers.tsx";
 import ProjectRequirements from "components/ProjectDetails/ProjectRequirements.tsx";
 import ProjectsContainer from "components/Projects/ProjectsContainer.tsx";
 import Settings from "components/Settings/Settings";
-import { Heading4 } from "components/SharedComponents";
+import { Heading4, ProjectList } from "components/SharedComponents";
 import UserProfile from "components/UserProfile/UserProfile";
 import { t } from "i18next";
 import ContextHeader from "navigation/ContextHeader";
@@ -84,7 +83,7 @@ const FadeInSettings = ( ) => fadeInComponent( <Settings /> );
 const FadeInHelp = ( ) => fadeInComponent( <Help /> );
 const FadeInAbout = ( ) => fadeInComponent( <About /> );
 const FadeInDonate = ( ) => fadeInComponent( <Donate /> );
-const FadeInObsDetailsProjects = ( ) => fadeInComponent( <ObsDetailsProjects /> );
+const FadeInProjectList = ( ) => fadeInComponent( <ProjectList /> );
 
 const NOTIFICATIONS_OPTIONS = {
   ...hideHeaderLeft,
@@ -111,7 +110,7 @@ const PROJECT_MEMBERS_OPTIONS = {
   lazy: true
 };
 
-const OBS_DETAILS_PROJECTS_OPTIONS = {
+const PROJECT_LIST_OPTIONS = {
   header: ContextHeader,
   alignStart: true,
   lazy: true
@@ -204,9 +203,9 @@ const TabStackNavigator = ( ): Node => (
         options={PROJECT_MEMBERS_OPTIONS}
       />
       <Stack.Screen
-        name="ObsDetailsProjects"
-        component={FadeInObsDetailsProjects}
-        options={OBS_DETAILS_PROJECTS_OPTIONS}
+        name="ProjectList"
+        component={FadeInProjectList}
+        options={PROJECT_LIST_OPTIONS}
       />
     </Stack.Group>
     {/* Developer Stack Group */}

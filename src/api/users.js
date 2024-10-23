@@ -50,7 +50,7 @@ const fetchUserMe = async ( params: Object = {}, opts: Object = {} ): Promise<?O
   }
 };
 
-const fetchMemberProjects = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
+const fetchUserProjects = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
   try {
     const { results } = await inatjs.users.projects( {
       ...MEMBER_PROJECT_PARAMS,
@@ -174,10 +174,10 @@ const updateUsers = async ( params: Object = {}, opts: Object = {} ): Promise<?O
 
 export {
   blockUser,
-  fetchMemberProjects,
   fetchRemoteUser,
   fetchRemoteUsers,
   fetchUserMe,
+  fetchUserProjects,
   muteUser,
   unblockUser,
   unmuteUser,

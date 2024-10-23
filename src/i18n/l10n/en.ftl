@@ -543,6 +543,12 @@ Join-the-largest-community-of-naturalists = Join the largest community of natura
 JOINED = JOINED
 # Shows date user joined iNaturalist on user profile
 Joined-date = Joined: { $date }
+# Subtitle for a screen showing projects a user has joined
+JOINED-X-PROJECTS =
+    { $count ->
+        [one] JOINED { $count } PROJECT
+       *[other] JOINED { $count } PROJECTS
+    }
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] JOURNAL POST
