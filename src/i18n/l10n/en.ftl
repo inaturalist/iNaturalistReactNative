@@ -750,6 +750,8 @@ Other = Other
 OTHER-DATA = OTHER DATA
 OTHER-SUGGESTIONS = OTHER SUGGESTIONS
 PASSWORD = PASSWORD
+# Title showing user profile details about who a user follows and is following
+PEOPLE--title = PEOPLE
 PERSONAL-INFO = PERSONAL INFO
 Photo-importer = Photo importer
 PHOTO-LICENSING = PHOTO LICENSING
@@ -1143,6 +1145,10 @@ VIEW-ALL-X-USERS = VIEW ALL { $count } USERS
 VIEW-CHILDREN-TAXA = VIEW CHILDREN TAXA
 VIEW-DATA-QUALITY-ASSESSMENT = VIEW DATA QUALITY ASSESSMENT
 VIEW-EDUCATORS-GUIDE = VIEW EDUCATOR'S GUIDE
+# Button on user profile that displays a list of users that follow that user
+VIEW-FOLLOWERS = VIEW FOLLOWERS
+# Button on user profile that displays a list of users that the user is following
+VIEW-FOLLOWING = VIEW FOLLOWING
 View-in-browser = View in browser
 VIEW-IN-EXPLORE = VIEW IN EXPLORE
 VIEW-INATURALIST-HELP = VIEW INATURALIST HELP
@@ -1151,6 +1157,7 @@ VIEW-INATURALIST-HELP = VIEW INATURALIST HELP
 View-photo = View photo
 View-photo-licensing-info = View photo licensing info
 VIEW-PROJECT-REQUIREMENTS = VIEW PROJECT REQUIREMENTS
+# Button that lets user view a list of projects related to the observation or user profile they're viewing
 VIEW-PROJECTS = VIEW PROJECTS
 # Label for a button that shows identification suggestions for an observation
 # or photo

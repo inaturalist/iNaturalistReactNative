@@ -6,6 +6,7 @@ import { fetchRemoteUser } from "api/users";
 import LoginSheet from "components/MyObservations/LoginSheet";
 import {
   Body2,
+  Button,
   Heading1,
   Heading4,
   List2,
@@ -153,11 +154,40 @@ const UserProfile = ( ): Node => {
           )}
         </View>
         { user?.description && (
-          <View className="mb-3">
+          <View>
             <Heading4 className="mb-2 mt-5">{t( "ABOUT" )}</Heading4>
             <UserText text={user?.description} />
           </View>
         ) }
+        <View className="my-8">
+          <Heading4 className="mb-[11px]">
+            {t( "PROJECTS" )}
+          </Heading4>
+          <Button
+            text={t( "VIEW-PROJECTS" )}
+            // onPress={( ) => navigation.navigate( "ObsDetailsProjects", {
+            //   projects: allProjects
+            // } )}
+          />
+        </View>
+        <View className="mb-8">
+          <Heading4 className="mb-[11px]">
+            {t( "PEOPLE--title" )}
+          </Heading4>
+          <Button
+            text={t( "VIEW-FOLLOWERS" )}
+            // onPress={( ) => navigation.navigate( "ObsDetailsProjects", {
+            //   projects: allProjects
+            // } )}
+          />
+          <Button
+            className="mt-6"
+            text={t( "VIEW-FOLLOWING" )}
+            // onPress={( ) => navigation.navigate( "ObsDetailsProjects", {
+            //   projects: allProjects
+            // } )}
+          />
+        </View>
         <Body2 className="mb-5">
           {t( "Joined-date", { date: formatLongDate( user.created_at, i18n ) } )}
         </Body2>
