@@ -682,6 +682,7 @@ Obervations-must-be-manually-added = Observations must be manually added to a tr
 Obscured = Obscured
 # Displayed when user views an obscured location on the ObsDetail map screen
 Obscured-observation-location-map-description = This observation’s location is obscured. You are seeing a randomized point within the obscuration polygon.
+Observation = Observation
 Observation-Attribution = Observation: © { $userName } · { $restrictions }
 OBSERVATION-BUTTON = OBSERVATION BUTTON
 Observation-has-no-photos-and-no-sounds = This observation has no photos and no sounds.
@@ -786,6 +787,7 @@ PROJECT-REQUIREMENTS = PROJECT REQUIREMENTS
 PROJECTS = PROJECTS
 # As in iNat projects, collections of observations or observation search filters
 Projects = Projects
+PROJECTS-X = PROJECTS ({ $projectCount })
 QUALITY-GRADE = QUALITY GRADE
 # label in project requirements
 Quality-Grade = Quality Grade
@@ -1259,6 +1261,7 @@ X-PHOTOS-Y-SOUNDS =
         [one] 1 SOUND
        *[other] { $soundCount } SOUNDS
     }
+X-PROJECTS = { $projectCount } PROJECTS
 # Displays number of sounds attached to an observation in the Media Viewer
 X-SOUNDS =
     { $count ->
