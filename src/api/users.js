@@ -52,12 +52,12 @@ const fetchUserMe = async ( params: Object = {}, opts: Object = {} ): Promise<?O
 
 const fetchUserProjects = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
   try {
-    const { results } = await inatjs.users.projects( {
+    const response = await inatjs.users.projects( {
       ...USER_PROJECTS_PARAMS,
       ...params,
       ...opts
     } );
-    return results;
+    return response?.results;
   } catch ( e ) {
     return handleError( e );
   }
