@@ -19,16 +19,16 @@ interface Props {
 const ProjectSection = ( { observation }: Props ): Node => {
   const navigation = useNavigation( );
 
-  const traditionalProjects = observation?.project_observations?.map( p => p.project );
-  const nonTraditionalProjects = observation?.non_traditional_projects?.map( p => p.project );
+  const traditionalProjects = observation?.project_observations?.map( p => p.project ) || [];
+  const nonTraditionalProjects = observation?.non_traditional_projects?.map( p => p.project ) || [];
 
-  const traditionalProjectCount = observation?.project_observations?.length;
-  const nonTraditionalProjectCount = observation?.non_traditional_projects?.length;
+  const traditionalProjectCount = traditionalProjects.length;
+  const nonTraditionalProjectCount = nonTraditionalProjects.length;
 
   const totalProjectCount = traditionalProjectCount + nonTraditionalProjectCount;
   const allProjects = traditionalProjects.concat( nonTraditionalProjects );
 
-  if ( totalProjectCount === 0 ) {
+  if ( totalProjectCount === 0 || typeof totalProjectCount !== "number" ) {
     return null;
   }
 

@@ -30,6 +30,22 @@ const mockObservationWithTaxon = {
   taxon: factory( "LocalTaxon" )
 };
 
+const mockObservationWithProjects = {
+  ...mockObservation,
+  non_traditional_projects: [
+    {
+      project: factory( "RemoteProject" )
+    }, {
+      project: factory( "RemoteProject" )
+    }
+  ],
+  project_observations: [
+    {
+      project: factory( "RemoteProject" )
+    }
+  ]
+};
+
 const mockAttribution = <View testID="mock-attribution" />;
 jest.mock( "components/ObsDetails/DetailsTab/Attribution", () => ( {
   __esModule: true,
@@ -108,5 +124,22 @@ describe( "DetailsTab", ( ) => {
     renderComponent( <DetailsTab observation={mockObservation} currentUser={null} /> );
     const DQAButton = screen.queryByText( /VIEW DATA QUALITY ASSESSMENT/ );
     expect( DQAButton ).toBeFalsy( );
+  } );
+
+  test( "should not display projects section if observation belongs to zero projects", ( ) => {
+    renderComponent( <DetailsTab observation={mockObservation} currentUser={mockUser} /> );
+    const viewProjectsButton = screen.queryByText( /VIEW PROJECTS/ );
+    expect( viewProjectsButton ).toBeFalsy( );
+  } );
+
+  test( "should display project count from both collection & traditional projects", ( ) => {
+    renderComponent(
+      <DetailsTab
+        observation={mockObservationWithProjects}
+        currentUser={mockUser}
+      />
+    );
+    const projectCountText = screen.queryByText( "PROJECTS (3)" );
+    expect( projectCountText ).toBeVisible( );
   } );
 } );
