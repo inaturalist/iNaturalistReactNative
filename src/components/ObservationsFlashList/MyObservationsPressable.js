@@ -2,6 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import navigateToObsEdit from "components/ObsEdit/helpers/navigateToObsEdit.ts";
+import { getCurrentRoute } from "navigation/navigationUtils.ts";
 import type { Node } from "react";
 import React from "react";
 import { Pressable } from "react-native";
@@ -29,7 +30,13 @@ const MyObservationsPressable = ( { observation, testID, children }: Props ): No
       prepareObsEdit( observation );
       navigateToObsEdit( navigation, setMyObsOffsetToRestore );
     } else {
-      navigation.push( "ObsDetails", { uuid } );
+      const currentRoute = getCurrentRoute();
+      const uniqueKey = currentRoute?.key || "key-default";
+      navigation.navigate( {
+        key: `Obs-${uniqueKey}-${uuid}`,
+        name: "ObsDetails",
+        params: { uuid }
+      } );
     }
   };
 
