@@ -678,6 +678,7 @@ Obervations-must-be-manually-added = Pengamatan harus ditambahkan secara manual 
 Obscured = Dikaburkan
 # Displayed when user views an obscured location on the ObsDetail map screen
 Obscured-observation-location-map-description = Lokasi pengamatan ini dikaburkan. Anda sedang melihat titik acak di dalam poligon pengaburan.
+Observation = Pengamatan
 Observation-Attribution = Pengamatan: © { $userName } · { $restrictions }
 OBSERVATION-BUTTON = TOMBOL PENGAMATAN
 Observation-has-no-photos-and-no-sounds = Pengamatan ini tidak memiliki gambar maupun suara.
@@ -782,6 +783,7 @@ PROJECT-REQUIREMENTS = PERSYARATAN PROYEK
 PROJECTS = PROYEK
 # As in iNat projects, collections of observations or observation search filters
 Projects = Proyek
+PROJECTS-X = PROYEK ({ $projectCount })
 QUALITY-GRADE = TINGKAT KUALITAS
 # label in project requirements
 Quality-Grade = Tingkat Kualitas
@@ -1257,6 +1259,7 @@ X-PHOTOS-Y-SOUNDS =
         [one] 1 SUARA
        *[other] { $soundCount } SUARA
     }
+X-PROJECTS = { $projectCount } PROYEK
 # Displays number of sounds attached to an observation in the Media Viewer
 X-SOUNDS =
     { $count ->

@@ -89,6 +89,7 @@
   "Notifications": "Értesítések",
   "November": "November",
   "Obscured": "Kitakart",
+  "Observation": "Megfigyelés",
   "Observations": "Megfigyelések",
   "Observe": "Észlelés",
   "Observers": "Megfigyelők",
@@ -101,6 +102,7 @@
   "Private": "Privát",
   "Project-Members-Only": "Csak projekttagok",
   "Projects": "Projektek",
+  "PROJECTS-X": "PROJEKTEK ({ $projectCount })",
   "Quality-Grade": "Minőségi szint",
   "Ranks-Class": "Osztály",
   "Ranks-Complex": "Fajkomplexum",
@@ -175,5 +177,6 @@
   "Wild": "Vad",
   "Withdraw": "Visszavonás",
   "Worldwide": "globális",
+  "X-PROJECTS": "{ $projectCount } PROJEKT",
   "You-need-log-in-to-do-that": "Ehhez be kell jelentkezned."
 }

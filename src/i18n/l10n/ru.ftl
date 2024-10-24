@@ -295,5 +295,10 @@ Wild = Дикий
 # Label for a button that withdraws an identification
 Withdraw = Отозвать
 Worldwide = По всему миру
-# Error message when you try to do something that requires log in
-You-need-log-in-to-do-that = Чтобы сделать это, авторизуйтесь
+X-PROJECTS =
+    { $projectCount ->
+        [one] { $projectCount } ПРОЕКТ
+        [two] { $projectCount } ПРОЕКТА
+        [few] { $projectCount } ПРОЕКТОВ
+       *[other] { $projectCount } ПРОЕКТОВ
+    }
