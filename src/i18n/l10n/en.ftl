@@ -441,6 +441,12 @@ Flash = flash
 # Label for a button that toggles between the front and back cameras
 Flip-camera = Flip camera
 FOLLOW = FOLLOW
+# Subtitle for a screen showing the list of people a user is following
+FOLLOWING-X-PEOPLE =
+    { $count ->
+        [one] FOLLOWING { $count } PERSON
+       *[other] FOLLOWING { $count } PEOPLE
+    }
 # Forgot password link
 Forgot-Password = Forgot Password
 GEOPRIVACY = GEOPRIVACY
@@ -1194,6 +1200,12 @@ x-comments =
     { $count ->
         [one] { $count } comment
        *[other] { $count } comments
+    }
+# Subtitle for a screen showing the list of followers a user has
+X-FOLLOWERS =
+    { $count ->
+        [one] { $count } FOLLOWER
+       *[other] { $count } FOLLOWERS
     }
 X-Identifications =
     { $count ->
