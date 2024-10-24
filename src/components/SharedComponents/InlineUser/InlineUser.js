@@ -55,7 +55,7 @@ const InlineUser = ( { user, isConnected }: Props ): Node => {
       }}
     >
       <View className="mr-[7px]">{renderUserIcon()}</View>
-      <Body3>{userHandle}</Body3>
+      <Body3 selectable>{userHandle}</Body3>
     </Pressable>
   );
 };
