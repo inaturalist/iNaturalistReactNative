@@ -2,7 +2,10 @@
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import CameraContainer from "components/Camera/CameraContainer.tsx";
+// Please don't change this to an aliased path or the e2e mock will not get
+// used in our e2e tests on Github Actions
+// eslint-disable-next-line import/no-unresolved
+import CameraContainer from "components/Camera/CameraContainer";
 import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
 import { Heading4 } from "components/SharedComponents";
