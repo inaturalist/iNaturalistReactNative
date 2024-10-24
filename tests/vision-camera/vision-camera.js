@@ -48,9 +48,7 @@ export class mockCamera extends React.PureComponent {
       assetType: "Photos"
     } )
       .then( async r => {
-        console.log( "r.edges", r.edges );
         const testPhoto = r.edges[r.edges.length - 1].node.image;
-        console.log( "testPhoto", testPhoto );
         let oldUri = testPhoto.uri;
         if ( testPhoto.uri.includes( "ph://" ) ) {
           let id = testPhoto.uri.replace( "ph://", "" );
@@ -61,7 +59,6 @@ export class mockCamera extends React.PureComponent {
         const encodedUri = encodeURI( oldUri );
         const destPath = `${RNFS.TemporaryDirectoryPath}temp.jpg`;
         const newPath = await RNFS.copyAssetsFileIOS( encodedUri, destPath, 0, 0 );
-        console.log( "newPath", newPath );
         const photo = { uri: newPath, predictions: [] };
         if ( typeof photo !== "object" ) {
           console.log( "photo is not an object", typeof photo );
