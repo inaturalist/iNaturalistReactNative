@@ -14,6 +14,7 @@ import rs from "jsrsasign";
 import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
 import * as RNLocalize from "react-native-localize";
+import RNRestart from "react-native-restart";
 import RNSInfo from "react-native-sensitive-info";
 import Realm, { UpdateMode } from "realm";
 import realmConfig from "realmModels/index";
@@ -148,12 +149,9 @@ const signOut = async (
       // through the copy of realm provided by RealmProvider
       options.realm.beginTransaction();
       try {
-        // $FlowFixMe
         options.realm.deleteAll( );
-        // $FlowFixMe
         options.realm.commitTransaction( );
       } catch ( realmError ) {
-        // $FlowFixMe
         options.realm.cancelTransaction( );
         // If we failed to wipe all the data in realm, delete the realm file.
         // Note that deleting the realm file *all* the time seems to cause
@@ -181,6 +179,7 @@ const signOut = async (
   await removeAllFilesFromDirectory( soundUploadPath );
   // delete all keys from mmkv
   storage.clearAll( );
+  RNRestart.restart( );
 };
 
 /**

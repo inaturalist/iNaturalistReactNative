@@ -1,8 +1,9 @@
 // @flow
 
+import { getInatLocaleFromSystemLocale } from "i18n/initI18next";
 import { useCallback, useEffect } from "react";
+import { AppState } from "react-native";
 import {
-  useDebugMode,
   useTranslation,
   useUserMe
 } from "sharedHooks";
@@ -13,12 +14,9 @@ const useChangeLocale = ( currentUser: ?Object ) => {
   // fetch current user from server and save to realm in useEffect
   // this is used for changing locale and also for showing UserCard
   const { remoteUser } = useUserMe( { updateRealm: true } );
-  const { isDebug } = useDebugMode( );
   const changeLanguageToLocale = useCallback(
-    locale => {
-      if ( isDebug ) i18n.changeLanguage( locale );
-    },
-    [i18n, isDebug]
+    locale => i18n.changeLanguage( locale ),
+    [i18n]
   );
 
   // When we get the updated current user, update the record in the database
@@ -32,12 +30,30 @@ const useChangeLocale = ( currentUser: ?Object ) => {
     }
   }, [changeLanguageToLocale, i18n, remoteUser] );
 
-  // If the current user's locale is not set, change the language
-  useEffect( ( ) => {
-    if ( currentUser?.locale && currentUser?.locale !== i18n.language ) {
-      changeLanguageToLocale( currentUser.locale );
+  const changeToUserOrSystemLocale = useCallback( ( ) => {
+    const systemLocale = getInatLocaleFromSystemLocale();
+    const targetLocale = currentUser?.locale || systemLocale;
+    if ( targetLocale !== i18n.language ) {
+      changeLanguageToLocale( targetLocale );
     }
-  }, [changeLanguageToLocale, currentUser?.locale, i18n] );
+  }, [
+    changeLanguageToLocale,
+    currentUser,
+    i18n.language
+  ] );
+
+  // If the user changes or the app comes back to the foreground, change the
+  // app locale to the user's preferred locale or the system locale
+  useEffect( ( ) => {
+    changeToUserOrSystemLocale( );
+    const subscription = AppState.addEventListener( "change", nextAppState => {
+      if ( nextAppState !== "active" ) return;
+      changeToUserOrSystemLocale( );
+    } );
+    return ( ) => {
+      subscription.remove( );
+    };
+  }, [changeToUserOrSystemLocale] );
 };
 
 export default useChangeLocale;

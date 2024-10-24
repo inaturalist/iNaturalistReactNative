@@ -1,25 +1,46 @@
 import { RealmContext } from "providers/contexts.ts";
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
+import Realm from "realm";
 import User from "realmModels/User.ts";
 
 const { useRealm } = RealmContext;
 
 const useCurrentUser = ( ): User | null => {
   const realm = useRealm( );
-  // TODO there has to be a better way. useMemo isn't doing anything here
-  // because currentUser changes every time User.currentUser() gets called,
-  // resulting in a lot of unnecessary renders and effects getting
-  // triggered... but if you actually memoize the value, you end up
-  // with "Accessing object which has been invalidated or deleted" errors
-  const currentUser = User.currentUser( realm );
-  return useMemo( ( ) => {
-    if ( currentUser?.isValid( ) ) {
-      return currentUser;
-    }
-    return null;
-  }, [
-    currentUser
-  ] );
+  const [currentUser, setCurrentUser] = useState<User | null>( null );
+  useEffect( ( ) => {
+    const realmResults = realm.objects( "User" ).filtered( "signedIn == true" );
+
+    // Sets the current user if one is detected, unsets it if not
+    const listener = (
+      collection: [Realm.Object<User>],
+      changes: Realm.CollectionChangeSet
+    ) => {
+      if (
+        ( changes.deletions && changes.deletions.length > 0 )
+        || !collection[0]?.isValid( )
+      ) {
+        setCurrentUser( null );
+      } else {
+        setCurrentUser( collection[0] );
+      }
+    };
+
+    // Run the listener on the results for the first time
+    listener( realmResults, {} );
+
+    // Add the listener
+    realmResults?.addListener( listener );
+
+    // Remove the listener when this dismounts
+    return ( ) => {
+      realmResults?.removeListener( listener );
+    };
+  }, [realm] );
+
+  return currentUser?.isValid( )
+    ? currentUser
+    : null;
 };
 
 export default useCurrentUser;

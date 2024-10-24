@@ -1,3 +1,10 @@
+// In this case we *do* want manual cleanup because we want to make sure the
+// component tree has been taken down before we delete all the content in
+// Realm. Otherwise we get after effects from listeners on Realm, Realm
+// queries, and Realm objects that are hard/impossible to wait for before
+// tests finish
+// eslint-disable-next-line testing-library/no-manual-cleanup
+import { cleanup } from "@testing-library/react-native";
 import { API_HOST } from "components/LoginSignUp/AuthenticationService.ts";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
@@ -12,6 +19,11 @@ const TEST_ACCESS_TOKEN = "test-access-token";
 async function signOut( options = {} ) {
   const realm = options.realm || global.realm;
   i18next.language = undefined;
+  // As mentioned above, clean up the component tree so we don't have after
+  // effects related to deleting all realm objects.
+  // Note: if we ever write tests explicitly testing UI sign out, we might
+  // want to write an optional exception to this step
+  cleanup( );
   // This is the nuclear option, maybe revisit if it's a source of bugs
   safeRealmWrite( realm, ( ) => {
     realm.deleteAll( );
