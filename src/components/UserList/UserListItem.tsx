@@ -1,48 +1,36 @@
-// @flow
-import { useNavigation } from "@react-navigation/native";
 import {
   Body1, INatIcon,
   List2, UserIcon
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback } from "react";
+import React from "react";
 import User from "realmModels/User.ts";
 import { useTranslation } from "sharedHooks";
 
-type Props = {
-  item: Object,
-  countText: string,
-  onPress?: Function,
-  accessibilityLabel?: string,
+interface Props {
+  item: Object
+  countText: string
+  onPress?: Function
+  accessibilityLabel?: string
   pressable?: boolean
-};
+}
 
 const UserListItem = ( {
   item,
   countText,
-  onPress: onPressProp,
+  onPress,
   accessibilityLabel: accessibilityLabelProp,
   pressable = true
 }: Props ): Node => {
   const { t } = useTranslation( );
   const user = item?.user;
-  const navigation = useNavigation( );
-
-  const onPress = useCallback( ( ) => {
-    if ( onPressProp ) return onPressProp( );
-    return navigation.navigate( "UserProfile", { userId: user?.id } );
-  }, [
-    navigation,
-    onPressProp,
-    user?.id
-  ] );
 
   const UserListItemContainer = pressable
     ? ( { children } ) => (
       <Pressable
         accessibilityRole={
-          onPressProp
+          onPress
             ? "button"
             : "link"
         }

@@ -75,6 +75,5 @@ export { default as Subheading1 } from "./Typography/Subheading1";
 export { default as UnderlinedLink } from "./Typography/UnderlinedLink";
 export { default as UploadStatus } from "./UploadStatus/UploadStatus";
 export { default as UserIcon } from "./UserIcon/UserIcon";
-export { default as UserListItem } from "./UserListItem";
 export { default as UserText } from "./UserText";
 export { default as ViewWrapper } from "./ViewWrapper";

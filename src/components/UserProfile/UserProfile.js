@@ -19,6 +19,7 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
+import Observation from "realmModels/Observation";
 import User from "realmModels/User.ts";
 import { formatLongDate } from "sharedHelpers/dateAndTime.ts";
 import {
@@ -52,13 +53,23 @@ const UserProfile = ( ): Node => {
 
   const user = remoteUser || null;
 
-  const userProjectsQueryKey = ["fetchUserProjects", user?.id];
+  const userProjectsQueryKey = ["fetchUserProjects", userId];
 
   const {
     data: projects
   } = useAuthenticatedQuery(
     userProjectsQueryKey,
-    optsWithAuth => fetchUserProjects( { id: user?.id }, optsWithAuth )
+    optsWithAuth => fetchUserProjects(
+      {
+        id: userId,
+        per_page: 200,
+        fields: Observation.PROJECT_FIELDS
+      },
+      optsWithAuth
+    ),
+    {
+      enabled: !!( userId )
+    }
   );
 
   const totalProjectCount = projects?.length;

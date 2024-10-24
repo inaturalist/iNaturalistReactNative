@@ -22,8 +22,8 @@ import {
   ViewWrapper,
   WarningSheet
 } from "components/SharedComponents";
-import UserListItem from "components/SharedComponents/UserListItem";
 import { Pressable, ScrollView, View } from "components/styledComponents";
+import UserListItem from "components/UserList/UserListItem.tsx";
 import { RealmContext } from "providers/contexts.ts";
 import {
   DATE_OBSERVED,

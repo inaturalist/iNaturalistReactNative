@@ -1,6 +1,6 @@
 import { useRoute } from "@react-navigation/native";
 import { render, screen } from "@testing-library/react-native";
-import { ProjectList } from "components/SharedComponents";
+import ProjectListContainer from "components/ProjectList/ProjectListContainer.tsx";
 import React from "react";
 import factory from "tests/factory";
 
@@ -23,7 +23,7 @@ describe( "ProjectList", () => {
   } );
 
   it( "should display a list with all project titles", async () => {
-    render( <ProjectList /> );
+    render( <ProjectListContainer /> );
     const firstProjectTitle = await screen.findByText( mockProjects[0].title );
     expect( firstProjectTitle ).toBeVisible( );
     const secondProjectTitle = await screen.findByText( mockProjects[1].title );
