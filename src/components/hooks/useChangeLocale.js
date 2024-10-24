@@ -4,7 +4,6 @@ import { getInatLocaleFromSystemLocale } from "i18n/initI18next";
 import { useCallback, useEffect } from "react";
 import { AppState } from "react-native";
 import {
-  useDebugMode,
   useTranslation,
   useUserMe
 } from "sharedHooks";
@@ -15,12 +14,9 @@ const useChangeLocale = ( currentUser: ?Object ) => {
   // fetch current user from server and save to realm in useEffect
   // this is used for changing locale and also for showing UserCard
   const { remoteUser } = useUserMe( { updateRealm: true } );
-  const { isDebug } = useDebugMode( );
   const changeLanguageToLocale = useCallback(
-    locale => {
-      if ( isDebug ) i18n.changeLanguage( locale );
-    },
-    [i18n, isDebug]
+    locale => i18n.changeLanguage( locale ),
+    [i18n]
   );
 
   // When we get the updated current user, update the record in the database
@@ -35,7 +31,8 @@ const useChangeLocale = ( currentUser: ?Object ) => {
   }, [changeLanguageToLocale, i18n, remoteUser] );
 
   const changeToUserOrSystemLocale = useCallback( ( ) => {
-    const targetLocale = currentUser?.locale || getInatLocaleFromSystemLocale();
+    const systemLocale = getInatLocaleFromSystemLocale();
+    const targetLocale = currentUser?.locale || systemLocale;
     if ( targetLocale !== i18n.language ) {
       changeLanguageToLocale( targetLocale );
     }
