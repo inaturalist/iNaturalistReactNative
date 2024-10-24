@@ -128,6 +128,7 @@ const TextInputSheet = ( {
             style={[inputStyle, textInputStyle]}
             autoFocus
             defaultValue={input}
+            maxFontSizeMultiplier={2}
           />
           <View
             className={classnames(
