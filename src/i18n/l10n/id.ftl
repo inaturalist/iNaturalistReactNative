@@ -1062,7 +1062,7 @@ That-user-profile-doesnt-exist = Profil pengguna tersebut tidak ada.
 The-exact-location-will-be-hidden = Lokasi pastinya akan disembunyikan dari publik dan digeneralisasikan ke area yang lebih luas. (Spesies terancam punah dan berstatus genting secara otomatis dikaburkan).
 The-iNaturalist-Network = Jaringan iNaturalist merupakan kumpulan situs web terlokalisasi yang seluruhnya terhubung dengan komunitas iNaturalist di seluruh dunia. Situs-situs jaringan didukung oleh institusi-institusi lokal yang mempromosikan penggunaan lokal dan memfasilitasi penggunaan data dari iNaturalist untuk memberikan manfaat bagi keanekaragaman hayati lokal.
 The-location-will-not-be-visible = Lokasinya tidak akan bisa dilihat oleh orang lain, sehingga akan menyulitkan orang untuk mengidentifikasinya.
-The-models-that-suggest-species = Model yang menyarankan spesies berdasarkan kemiripan visual dan lokasinya dapat dibuat berkat kerja sama dengan Sarah Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona, dan Grant Van Horn.
+The-models-that-suggest-species = Model yang menyarankan spesies berdasarkan kemiripan visual dan lokasinya dapat dibuat berkat kerja sama dengan Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona, dan Grant Van Horn.
 There-is-no-way =
     Anda tidak akan bisa membuka akun iNaturalist tanpa menyimpan informasi pribadi, jadi satu-satunya cara untuk mencabut izin ini adalah dengan 
     menghapus akun Anda.
