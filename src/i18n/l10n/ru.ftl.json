@@ -179,5 +179,5 @@
   "Wild": "Дикий",
   "Withdraw": "Отозвать",
   "Worldwide": "По всему миру",
-  "You-need-log-in-to-do-that": "Чтобы сделать это, авторизуйтесь"
+  "X-PROJECTS": "{ $projectCount ->\n  [one] { $projectCount } ПРОЕКТ\n  [two] { $projectCount } ПРОЕКТА\n  [few] { $projectCount } ПРОЕКТОВ\n *[other] { $projectCount } ПРОЕКТОВ\n}"
 }

@@ -390,6 +390,7 @@ Notifications = Notifikationer
 # Month of November
 November = November
 Obscured = Sløret
+Observation = Observation
 Observations = Observationer
 # Button that starts a new observation
 Observe = Observere
@@ -410,6 +411,7 @@ Private = Fortrolig
 Project-Members-Only = Kun Projektmedlemmer
 # As in iNat projects, collections of observations or observation search filters
 Projects = Projekter
+PROJECTS-X = PROJEKTER ({ $projectCount })
 # label in project requirements
 Quality-Grade = Kvalitetsklasse
 Ranks-Class = Klasse
@@ -509,5 +511,6 @@ Wild = vild
 # Label for a button that withdraws an identification
 Withdraw = Træk tilbage
 Worldwide = I hele verden
+X-PROJECTS = { $projectCount } PROJEKTER
 # Error message when you try to do something that requires log in
 You-need-log-in-to-do-that = Dette kræver, at du først logger ind.

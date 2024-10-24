@@ -232,6 +232,7 @@
   "Notifications": "Notifikationer",
   "November": "November",
   "Obscured": "Sløret",
+  "Observation": "Observation",
   "Observations": "Observationer",
   "Observe": "Observere",
   "Observers": "Observatører",
@@ -244,6 +245,7 @@
   "Private": "Fortrolig",
   "Project-Members-Only": "Kun Projektmedlemmer",
   "Projects": "Projekter",
+  "PROJECTS-X": "PROJEKTER ({ $projectCount })",
   "Quality-Grade": "Kvalitetsklasse",
   "Ranks-Class": "Klasse",
   "Ranks-Complex": "Kompleks",
@@ -318,5 +320,6 @@
   "Wild": "vild",
   "Withdraw": "Træk tilbage",
   "Worldwide": "I hele verden",
+  "X-PROJECTS": "{ $projectCount } PROJEKTER",
   "You-need-log-in-to-do-that": "Dette kræver, at du først logger ind."
 }
