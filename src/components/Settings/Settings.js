@@ -4,7 +4,6 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { updateUsers } from "api/users";
-import Debug from "components/Developer/Debug.tsx";
 import {
   signOut
 } from "components/LoginSignUp/AuthenticationService.ts";
@@ -176,16 +175,14 @@ const Settings = ( ) => {
           label={t( "Scientific-Name" )}
         />
       </View>
-      <Debug>
-        <LanguageSetting
-          onChange={newLocale => {
-            updateUserMutation.mutate( {
-              id: settings?.id,
-              "user[locale]": newLocale
-            } );
-          }}
-        />
-      </Debug>
+      <LanguageSetting
+        onChange={newLocale => {
+          updateUserMutation.mutate( {
+            id: settings?.id,
+            "user[locale]": newLocale
+          } );
+        }}
+      />
       <Heading4 className="mt-7">{t( "INATURALIST-ACCOUNT-SETTINGS" )}</Heading4>
       <Body2 className="mt-2">{t( "To-access-all-other-settings" )}</Body2>
       <Button
