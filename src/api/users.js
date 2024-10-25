@@ -4,16 +4,6 @@ import inatjs from "inaturalistjs";
 
 import handleError from "./error";
 
-const MEMBER_PROJECT_FIELDS = {
-  title: true,
-  icon: true
-};
-
-const MEMBER_PROJECT_PARAMS = {
-  per_page: 10,
-  fields: MEMBER_PROJECT_FIELDS
-};
-
 const REMOTE_USER_FIELDS = {
   created_at: true,
   description: true,
@@ -50,14 +40,13 @@ const fetchUserMe = async ( params: Object = {}, opts: Object = {} ): Promise<?O
   }
 };
 
-const fetchMemberProjects = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
+const fetchUserProjects = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
   try {
-    const { results } = await inatjs.users.projects( {
-      ...MEMBER_PROJECT_PARAMS,
-      ...params,
-      ...opts
-    } );
-    return results;
+    const response = await inatjs.users.projects(
+      params,
+      opts
+    );
+    return response?.results;
   } catch ( e ) {
     return handleError( e );
   }
@@ -81,20 +70,13 @@ const fetchRemoteUser = async (
   }
 };
 
-const fetchRemoteUsers = async (
+const fetchUsers = async (
   ids: Array<number>,
   params: Object = {},
   opts: Object = {}
 ): Promise<?Object> => {
   try {
-    const responses = await Promise.all( ids.map(
-      userId => inatjs.users.fetch( userId, {
-        ...REMOTE_USER_PARAMS,
-        ...params,
-        ...opts
-      } )
-    ) );
-    return responses.map( r => r.results[0] );
+    return await inatjs.users.fetch( ids, params, opts );
   } catch ( e ) {
     return handleError( e );
   }
@@ -174,10 +156,10 @@ const updateUsers = async ( params: Object = {}, opts: Object = {} ): Promise<?O
 
 export {
   blockUser,
-  fetchMemberProjects,
   fetchRemoteUser,
-  fetchRemoteUsers,
   fetchUserMe,
+  fetchUserProjects,
+  fetchUsers,
   muteUser,
   unblockUser,
   unmuteUser,

@@ -2,10 +2,11 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fetchRelationships } from "api/relationships";
-import { fetchRemoteUser } from "api/users";
+import { fetchRemoteUser, fetchUserProjects } from "api/users";
 import LoginSheet from "components/MyObservations/LoginSheet";
 import {
   Body2,
+  Button,
   Heading1,
   Heading4,
   List2,
@@ -17,7 +18,8 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
+import Observation from "realmModels/Observation";
 import User from "realmModels/User.ts";
 import { formatLongDate } from "sharedHelpers/dateAndTime.ts";
 import {
@@ -51,23 +53,54 @@ const UserProfile = ( ): Node => {
 
   const user = remoteUser || null;
 
+  const userProjectsQueryKey = ["fetchUserProjects", userId];
+  const relationshipsQueryKey = ["fetchRelationships", user?.login];
+
+  const {
+    data: projects
+  } = useAuthenticatedQuery(
+    userProjectsQueryKey,
+    optsWithAuth => fetchUserProjects(
+      {
+        id: userId,
+        per_page: 200,
+        fields: Observation.PROJECT_FIELDS
+      },
+      optsWithAuth
+    ),
+    {
+      enabled: !!( userId )
+    }
+  );
+
+  const totalProjectCount = projects?.length;
+
+  const projectsHeaderOptions = useMemo( ( ) => ( {
+    headerTitle: User.userHandle( user ),
+    headerSubtitle: t( "JOINED-X-PROJECTS", {
+      count: totalProjectCount
+    } )
+  } ), [totalProjectCount, t, user] );
+
   const {
     data: relationships,
     refetch
   } = useAuthenticatedQuery(
-    ["fetchRelationships"],
+    relationshipsQueryKey,
     optsWithAuth => fetchRelationships( {
       q: user?.login,
       fields: "following,friend_user,id",
-      ttl: -1
+      ttl: -1,
+      per_page: 500
     }, optsWithAuth ),
     {
       enabled: !!currentUser
     }
   );
-  let relationshipResults = null;
-  if ( relationships?.results && relationships.results.length > 0 ) {
-    relationshipResults = relationships?.results
+  const results = relationships?.results;
+  let hasRelationshipWithCurrentUser = null;
+  if ( results?.length > 0 ) {
+    hasRelationshipWithCurrentUser = results
       .find( relationship => relationship.friendUser.id === userId );
   }
 
@@ -144,7 +177,7 @@ const UserProfile = ( ): Node => {
           {currentUser?.login !== user?.login && (
             <FollowButtonContainer
               refetchRelationship={refetch}
-              relationship={relationshipResults}
+              relationship={hasRelationshipWithCurrentUser}
               userId={userId}
               setShowLoginSheet={setShowLoginSheet}
               currentUser={currentUser}
@@ -153,11 +186,37 @@ const UserProfile = ( ): Node => {
           )}
         </View>
         { user?.description && (
-          <View className="mb-3">
+          <View>
             <Heading4 className="mb-2 mt-5">{t( "ABOUT" )}</Heading4>
             <UserText text={user?.description} />
           </View>
         ) }
+        <View className="my-8">
+          <Heading4 className="mb-[11px]">
+            {t( "PROJECTS" )}
+          </Heading4>
+          <Button
+            text={t( "VIEW-PROJECTS" )}
+            onPress={( ) => navigation.navigate( "ProjectList", {
+              projects,
+              headerOptions: projectsHeaderOptions
+            } )}
+          />
+        </View>
+        <View className="mb-8">
+          <Heading4 className="mb-[11px]">
+            {t( "PEOPLE--title" )}
+          </Heading4>
+          <Button
+            text={t( "VIEW-FOLLOWERS" )}
+            onPress={( ) => navigation.navigate( "FollowersList", { user } )}
+          />
+          <Button
+            className="mt-6"
+            text={t( "VIEW-FOLLOWING" )}
+            onPress={( ) => navigation.navigate( "FollowingList", { user } )}
+          />
+        </View>
         <Body2 className="mb-5">
           {t( "Joined-date", { date: formatLongDate( user.created_at, i18n ) } )}
         </Body2>
@@ -178,7 +237,7 @@ const UserProfile = ( ): Node => {
       {showLoginSheet && <LoginSheet setShowLoginSheet={setShowLoginSheet} />}
       {showUnfollowSheet && (
         <UnfollowSheet
-          relationship={relationshipResults}
+          relationship={hasRelationshipWithCurrentUser}
           setShowUnfollowSheet={setShowUnfollowSheet}
           refetchRelationship={refetch}
         />

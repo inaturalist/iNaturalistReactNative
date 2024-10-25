@@ -1,11 +1,9 @@
 // @flow
 import { fetchObservers } from "api/observations";
-import { UserListItem } from "components/SharedComponents";
-import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect } from "react";
 import User from "realmModels/User.ts";
-import { useInfiniteScroll, useTranslation } from "sharedHooks";
+import { useInfiniteScroll } from "sharedHooks";
 
 import ExploreFlashList from "./ExploreFlashList";
 
@@ -24,7 +22,6 @@ const ObserversView = ( {
   queryParams,
   handleUpdateCount
 }: Props ): Node => {
-  const { t } = useTranslation( );
   const {
     data,
     isFetchingNextPage,
@@ -45,15 +42,6 @@ const ObserversView = ( {
     }
   );
 
-  const renderItem = ( { item } ) => (
-    <UserListItem
-      item={item}
-      countText={t( "X-Observations", { count: item.observation_count } )}
-    />
-  );
-
-  const renderItemSeparator = ( ) => <View className="border-b border-lightGray" />;
-
   useEffect( ( ) => {
     handleUpdateCount( "observers", totalResults );
   }, [totalResults, handleUpdateCount] );
@@ -63,15 +51,11 @@ const ObserversView = ( {
       canFetch={canFetch}
       contentContainerStyle={LIST_STYLE}
       data={data}
-      estimatedItemSize={98}
       fetchNextPage={fetchNextPage}
       hideLoadingWheel={!isFetchingNextPage}
       isFetchingNextPage={isFetchingNextPage}
       isConnected={isConnected}
-      keyExtractor={item => item.user.id}
-      renderItem={renderItem}
-      renderItemSeparator={renderItemSeparator}
-      testID="ExploreObserversAnimatedList"
+      layout="user"
       totalResults={totalResults}
     />
   );

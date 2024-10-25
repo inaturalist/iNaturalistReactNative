@@ -1,4 +1,4 @@
-import { ProjectListItem } from "components/SharedComponents";
+import ProjectListItem from "components/ProjectList/ProjectListItem.tsx";
 import React from "react";
 
 const mockProject = {
