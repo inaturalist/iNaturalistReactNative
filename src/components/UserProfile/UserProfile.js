@@ -54,6 +54,7 @@ const UserProfile = ( ): Node => {
   const user = remoteUser || null;
 
   const userProjectsQueryKey = ["fetchUserProjects", userId];
+  const relationshipsQueryKey = ["fetchRelationships", user?.login];
 
   const {
     data: projects
@@ -73,8 +74,6 @@ const UserProfile = ( ): Node => {
   );
 
   const totalProjectCount = projects?.length;
-  const totalFollowingCount = 0;
-  const totalFollowersCount = 0;
 
   const projectsHeaderOptions = useMemo( ( ) => ( {
     headerTitle: User.userHandle( user ),
@@ -83,37 +82,25 @@ const UserProfile = ( ): Node => {
     } )
   } ), [totalProjectCount, t, user] );
 
-  const followersHeaderOptions = useMemo( ( ) => ( {
-    headerTitle: User.userHandle( user ),
-    headerSubtitle: t( "X-FOLLOWERS", {
-      count: totalFollowersCount
-    } )
-  } ), [totalFollowersCount, t, user] );
-
-  const followingHeaderOptions = useMemo( ( ) => ( {
-    headerTitle: User.userHandle( user ),
-    headerSubtitle: t( "FOLLOWING-X-PEOPLE", {
-      count: totalFollowingCount
-    } )
-  } ), [totalFollowingCount, t, user] );
-
   const {
     data: relationships,
     refetch
   } = useAuthenticatedQuery(
-    ["fetchRelationships"],
+    relationshipsQueryKey,
     optsWithAuth => fetchRelationships( {
       q: user?.login,
       fields: "following,friend_user,id",
-      ttl: -1
+      ttl: -1,
+      per_page: 500
     }, optsWithAuth ),
     {
       enabled: !!currentUser
     }
   );
-  let relationshipResults = null;
-  if ( relationships?.results && relationships.results.length > 0 ) {
-    relationshipResults = relationships?.results
+  const results = relationships?.results;
+  let hasRelationshipWithCurrentUser = null;
+  if ( results?.length > 0 ) {
+    hasRelationshipWithCurrentUser = results
       .find( relationship => relationship.friendUser.id === userId );
   }
 
@@ -190,7 +177,7 @@ const UserProfile = ( ): Node => {
           {currentUser?.login !== user?.login && (
             <FollowButtonContainer
               refetchRelationship={refetch}
-              relationship={relationshipResults}
+              relationship={hasRelationshipWithCurrentUser}
               userId={userId}
               setShowLoginSheet={setShowLoginSheet}
               currentUser={currentUser}
@@ -222,18 +209,12 @@ const UserProfile = ( ): Node => {
           </Heading4>
           <Button
             text={t( "VIEW-FOLLOWERS" )}
-            onPress={( ) => navigation.navigate( "UserList", {
-              users: [],
-              headerOptions: followersHeaderOptions
-            } )}
+            onPress={( ) => navigation.navigate( "FollowersList", { user } )}
           />
           <Button
             className="mt-6"
             text={t( "VIEW-FOLLOWING" )}
-            onPress={( ) => navigation.navigate( "UserList", {
-              users: [],
-              headerOptions: followingHeaderOptions
-            } )}
+            onPress={( ) => navigation.navigate( "FollowingList", { user } )}
           />
         </View>
         <Body2 className="mb-5">
@@ -256,7 +237,7 @@ const UserProfile = ( ): Node => {
       {showLoginSheet && <LoginSheet setShowLoginSheet={setShowLoginSheet} />}
       {showUnfollowSheet && (
         <UnfollowSheet
-          relationship={relationshipResults}
+          relationship={hasRelationshipWithCurrentUser}
           setShowUnfollowSheet={setShowUnfollowSheet}
           refetchRelationship={refetch}
         />

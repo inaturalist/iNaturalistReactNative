@@ -27,7 +27,8 @@ import ProjectListContainer from "components/ProjectList/ProjectListContainer.ts
 import ProjectsContainer from "components/Projects/ProjectsContainer.tsx";
 import Settings from "components/Settings/Settings";
 import { Heading4 } from "components/SharedComponents";
-import UserListContainer from "components/UserList/UserListContainer.tsx";
+import FollowersList from "components/UserProfile/FollowersList.tsx";
+import FollowingList from "components/UserProfile/FollowingList.tsx";
 import UserProfile from "components/UserProfile/UserProfile";
 import { t } from "i18next";
 import ContextHeader from "navigation/ContextHeader";
@@ -86,7 +87,8 @@ const FadeInHelp = ( ) => fadeInComponent( <Help /> );
 const FadeInAbout = ( ) => fadeInComponent( <About /> );
 const FadeInDonate = ( ) => fadeInComponent( <Donate /> );
 const FadeInProjectList = ( ) => fadeInComponent( <ProjectListContainer /> );
-const FadeInUserList = ( ) => fadeInComponent( <UserListContainer /> );
+const FadeInFollowersList = ( ) => fadeInComponent( <FollowersList /> );
+const FadeInFollowingList = ( ) => fadeInComponent( <FollowingList /> );
 
 const NOTIFICATIONS_OPTIONS = {
   ...hideHeaderLeft,
@@ -205,8 +207,13 @@ const TabStackNavigator = ( ): Node => (
         options={LIST_OPTIONS}
       />
       <Stack.Screen
-        name="UserList"
-        component={FadeInUserList}
+        name="FollowersList"
+        component={FadeInFollowersList}
+        options={LIST_OPTIONS}
+      />
+      <Stack.Screen
+        name="FollowingList"
+        component={FadeInFollowingList}
         options={LIST_OPTIONS}
       />
     </Stack.Group>

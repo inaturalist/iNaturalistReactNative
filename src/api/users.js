@@ -70,20 +70,13 @@ const fetchRemoteUser = async (
   }
 };
 
-const fetchRemoteUsers = async (
+const fetchUsers = async (
   ids: Array<number>,
   params: Object = {},
   opts: Object = {}
 ): Promise<?Object> => {
   try {
-    const responses = await Promise.all( ids.map(
-      userId => inatjs.users.fetch( userId, {
-        ...REMOTE_USER_PARAMS,
-        ...params,
-        ...opts
-      } )
-    ) );
-    return responses.map( r => r.results[0] );
+    return await inatjs.users.fetch( ids, params, opts );
   } catch ( e ) {
     return handleError( e );
   }
@@ -164,9 +157,9 @@ const updateUsers = async ( params: Object = {}, opts: Object = {} ): Promise<?O
 export {
   blockUser,
   fetchRemoteUser,
-  fetchRemoteUsers,
   fetchUserMe,
   fetchUserProjects,
+  fetchUsers,
   muteUser,
   unblockUser,
   unmuteUser,
