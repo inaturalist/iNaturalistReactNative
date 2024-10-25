@@ -176,6 +176,7 @@ Notifications = Ilmoitukset
 # Month of November
 November = marraskuu
 Obscured = Karkeistettu
+Observation = Havainto
 Observations = Havainnot
 # Button that starts a new observation
 Observe = Havaitse
@@ -196,6 +197,7 @@ Private = Yksityinen
 Project-Members-Only = Vain projektin jäsenille
 # As in iNat projects, collections of observations or observation search filters
 Projects = Projektit
+PROJECTS-X = PROJEKTIT ({ $projectCount })
 # label in project requirements
 Quality-Grade = Laatutaso
 # Screen reader label for the Casual quality grade label
@@ -302,5 +304,6 @@ Withdraw = Peruuta
 Worldwide = Maailmanlaajuinen
 # Subheader for number of project members screen
 X-MEMBERS = { $count } JÄSENET
+X-PROJECTS = { $projectCount } PROJEKTIA
 # Error message when you try to do something that requires log in
 You-need-log-in-to-do-that = Sinun täytyy kirjautua ensin.

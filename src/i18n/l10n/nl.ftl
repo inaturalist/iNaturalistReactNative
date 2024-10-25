@@ -148,6 +148,8 @@ ID-Withdrawn = ID ingetrokken
 Identifiers = Determineerders
 # Identification category
 improving--identification = Verbeterend
+iNaturalist-identification-suggestions-are-based-on = iNaturalist's determinatiesuggesties zijn gebaseerd op waarnemingen en determinaties gemaakt door de iNaturalist gemeenschap, waaronder { $user1 }, { $user2 }, { $user3 } en vele anderen.
+iNaturalist-is-supported-by-community = iNaturalist wordt ondersteund door onze geweldige community. Van alledaagse naturalisten die waarnemingen en determinaties toevoegen,  curatoren die helpen bij de curatie van taxonomie en het modereren, de vrijwillige vertalers die iNaturalist toegankelijk maken voor wereldwijd publiek, tot onze op de gemeenschap gebaseerde donoren zijn we buitengewoon dankbaar voor alle mensen van onze gemeenschap die iNaturalist tot het platform maken dat het is.
 Introduced = Geïntroduceerd
 # Month of January
 January = Januari
@@ -262,7 +264,10 @@ Ranks-Variety = Variëteit
 Ranks-Zoosection = Zoösectie
 Ranks-Zoosubsection = Zoö-ondersectie
 # Imperative verb for recording a sound
-Record-verb = Item
+Record-verb = Neem op
+Recording-stopped-Tap-play-the-current-recording = Opname gestopt. Tik op de huidige opname om het geluid af te spelen.
+# Label for a button that removes a vote of disagreement
+Remove-disagreement = Verwijder meningsverschil
 # Label for button that removes an identification
 Remove-identification = Determinatie verwijderen
 Remove-project-filter = Verwijder projectfilter
@@ -302,6 +307,7 @@ Syncing = Synchroniseren...
 # label in project requirements
 Taxa = Taxa
 Terms-of-Use = Gebruiksvoorwaarden
+The-location-will-not-be-visible = De vestigingsplaats zal niet zichtbaar zijn voor anderen, waardoor het wellicht moeilijk zal zijn om het te determineren.
 Traditional-Project = Traditioneel project
 Umbrella-Project = Overkoepelend project
 # Text to show when a taoxn rank is unknown or missing

@@ -310,10 +310,17 @@ New-Observation = Neue Beobachtung
 No-Location = Kein Standort
 No-Media = Keine Medieninhalte
 none = Nichts
+# Error message title when not enough storage space on device, e.g. when the
+# disk is full and you try to save a photo
+Not-enough-space-left-on-device = Nicht genug Speicherplatz auf dem Gerät vorhanden
+# Error message description when not enough storage space on device, e.g. when
+# the disk is full and you try to save a photo
+Not-enough-space-left-on-device-try-again = Es ist nicht genügend Speicherplatz auf dem Gerät vorhanden. Bitte gib etwas Speicherplatz frei und versuche es erneut.
 Notifications = Benachrichtigungen
 # Month of November
 November = November
 Obscured = verdeckt
+Observation = Beobachtung
 Observations = Beobachtungen
 # Button that starts a new observation
 Observe = Beobachte
@@ -335,6 +342,7 @@ Private = Privat
 Project-Members-Only = Nur Projektmitglieder
 # As in iNat projects, collections of observations or observation search filters
 Projects = Projekte
+PROJECTS-X = PROJEKTE ({ $projectCount })
 # label in project requirements
 Quality-Grade = Qualitätsstufe
 # Screen reader label for the Casual quality grade label
@@ -407,6 +415,8 @@ Scientific-Name = Wissenschaftl. Name
 Search = Suchen
 SEARCH-FOR-A-TAXON = NACH EINEM TAXON SUCHEN
 Search-for-a-taxon = Nach einem Taxon suchen
+# Accessibility label for navigating to project members screen
+See-project-members = Projektmitglieder ansehen
 SELECT-THIS-TAXON = DIESES TAXON AUSWÄHLEN
 Selects-iconic-taxon-X-for-identification = Wählt das ikonische Taxon { $iconicTaxon } zur Identifizierung aus.
 # Month of September
@@ -457,6 +467,7 @@ Withdraw = Zurücknehmen
 Worldwide = Weltweit
 # Subheader for number of project members screen
 X-MEMBERS = { $count } MITGLIEDER
+X-PROJECTS = { $projectCount } PROJEKTE
 You-have-opted-out-of-the-Community-Taxon = Sie haben sich aus dem Gemeinschaftstaxon ausgetragen
 # Error message when you try to do something that requires log in
 You-need-log-in-to-do-that = Dazu musst du dich zuerst anmelden.
