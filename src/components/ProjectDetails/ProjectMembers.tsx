@@ -4,16 +4,13 @@ import {
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fetchProjectMembers } from "api/projects";
 import {
-  ActivityIndicator, CustomFlashList, InfiniteScrollLoadingWheel, UserListItem
+  ActivityIndicator, InfiniteScrollLoadingWheel
 } from "components/SharedComponents";
-import { SafeAreaView, View } from "components/styledComponents";
+import { SafeAreaView } from "components/styledComponents";
+import UserList from "components/UserList/UserList.tsx";
 import React, { useCallback, useEffect, useMemo } from "react";
 import User from "realmModels/User.ts";
 import { useInfiniteScroll, useTranslation } from "sharedHooks";
-
-const CONTAINER_STYLE = {
-  backgroundColor: "white"
-};
 
 const ProjectMembers = ( ) => {
   const { isConnected } = useNetInfo( );
@@ -64,35 +61,18 @@ const ProjectMembers = ( ) => {
     navigation.setOptions( headerOptions );
   }, [navigation, headerOptions] );
 
-  const renderItem = ( { item } ) => (
-    <UserListItem
-      item={item}
-      countText={t( "X-Observations", {
-        count: item.observations_count
-      } )}
-    />
-  );
-
-  const renderItemSeparator = ( ) => <View className="border-b border-lightGray" />;
-
   const renderEmptyComponent = useCallback( ( ) => (
     <ActivityIndicator size={50} />
   ), [] );
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <CustomFlashList
-        ItemSeparatorComponent={renderItemSeparator}
-        ListEmptyComponent={renderEmptyComponent}
-        ListFooterComponent={renderFooter}
-        contentContainerStyle={CONTAINER_STYLE}
-        data={projectMembers}
-        estimatedItemSize={98}
-        keyExtractor={item => item.user.id}
+      <UserList
+        users={projectMembers}
         onEndReached={fetchNextPage}
         refreshing={isFetchingNextPage}
-        renderItem={renderItem}
-        testID="ProjectMembers.CustomFlashList"
+        ListEmptyComponent={renderEmptyComponent}
+        ListFooterComponent={renderFooter}
       />
     </SafeAreaView>
   );

@@ -4,7 +4,13 @@ import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
-const mockIdentifiers = [factory( "RemoteUser" ), factory( "RemoteUser" )];
+const mockIdentifiers = [{
+  ...factory( "RemoteUser" ),
+  count: 3
+}, {
+  ...factory( "RemoteUser" ),
+  count: 1
+}];
 
 jest.mock( "sharedHooks/useInfiniteScroll", () => ( {
   __esModule: true,
@@ -76,5 +82,19 @@ describe( "IdentifiersView", () => {
 
     const noResultsText = screen.getByText( /No results found/ );
     expect( noResultsText ).toBeVisible( );
+  } );
+
+  it( "should show number of identifications a user has", async ( ) => {
+    renderComponent(
+      <ExploreFlashList
+        hideLoadingWheel
+        isConnected
+        data={mockIdentifiers}
+        layout="user"
+      />
+    );
+
+    const identificationCount = await screen.findByText( "3 Identifications" );
+    expect( identificationCount ).toBeVisible( );
   } );
 } );

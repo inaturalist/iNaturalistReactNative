@@ -7,7 +7,7 @@ import {
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React from "react";
+import React, { useMemo } from "react";
 
 const headingClass = "mt-[20px] mb-[11px] text-darkGray";
 const sectionClass = "mx-[15px] mb-[20px]";
@@ -28,6 +28,13 @@ const ProjectSection = ( { observation }: Props ): Node => {
   const totalProjectCount = traditionalProjectCount + nonTraditionalProjectCount;
   const allProjects = traditionalProjects.concat( nonTraditionalProjects );
 
+  const headerOptions = useMemo( ( ) => ( {
+    headerTitle: t( "Observation" ),
+    headerSubtitle: t( "X-PROJECTS", {
+      projectCount: totalProjectCount
+    } )
+  } ), [totalProjectCount] );
+
   if ( totalProjectCount === 0 || typeof totalProjectCount !== "number" ) {
     return null;
   }
@@ -42,8 +49,9 @@ const ProjectSection = ( { observation }: Props ): Node => {
         </Heading4>
         <Button
           text={t( "VIEW-PROJECTS" )}
-          onPress={( ) => navigation.navigate( "ObsDetailsProjects", {
-            projects: allProjects
+          onPress={( ) => navigation.navigate( "ProjectList", {
+            projects: allProjects,
+            headerOptions
           } )}
         />
       </View>

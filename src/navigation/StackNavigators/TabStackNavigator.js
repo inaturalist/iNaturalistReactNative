@@ -20,13 +20,15 @@ import MyObservationsContainer from "components/MyObservations/MyObservationsCon
 import NotificationsContainer from "components/Notifications/NotificationsContainer";
 import DQAContainer from "components/ObsDetails/DQAContainer";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
-import ObsDetailsProjects from "components/ObsDetails/ObsDetailsProjects.tsx";
 import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
 import ProjectMembers from "components/ProjectDetails/ProjectMembers.tsx";
 import ProjectRequirements from "components/ProjectDetails/ProjectRequirements.tsx";
+import ProjectListContainer from "components/ProjectList/ProjectListContainer.tsx";
 import ProjectsContainer from "components/Projects/ProjectsContainer.tsx";
 import Settings from "components/Settings/Settings";
 import { Heading4 } from "components/SharedComponents";
+import FollowersList from "components/UserProfile/FollowersList.tsx";
+import FollowingList from "components/UserProfile/FollowingList.tsx";
 import UserProfile from "components/UserProfile/UserProfile";
 import { t } from "i18next";
 import ContextHeader from "navigation/ContextHeader";
@@ -84,7 +86,9 @@ const FadeInSettings = ( ) => fadeInComponent( <Settings /> );
 const FadeInHelp = ( ) => fadeInComponent( <Help /> );
 const FadeInAbout = ( ) => fadeInComponent( <About /> );
 const FadeInDonate = ( ) => fadeInComponent( <Donate /> );
-const FadeInObsDetailsProjects = ( ) => fadeInComponent( <ObsDetailsProjects /> );
+const FadeInProjectList = ( ) => fadeInComponent( <ProjectListContainer /> );
+const FadeInFollowersList = ( ) => fadeInComponent( <FollowersList /> );
+const FadeInFollowingList = ( ) => fadeInComponent( <FollowingList /> );
 
 const NOTIFICATIONS_OPTIONS = {
   ...hideHeaderLeft,
@@ -105,13 +109,7 @@ const USER_PROFILE_OPTIONS = {
   ...removeBottomBorder
 };
 
-const PROJECT_MEMBERS_OPTIONS = {
-  header: ContextHeader,
-  alignStart: true,
-  lazy: true
-};
-
-const OBS_DETAILS_PROJECTS_OPTIONS = {
+const LIST_OPTIONS = {
   header: ContextHeader,
   alignStart: true,
   lazy: true
@@ -201,12 +199,22 @@ const TabStackNavigator = ( ): Node => (
       <Stack.Screen
         name="ProjectMembers"
         component={FadeInProjectMembers}
-        options={PROJECT_MEMBERS_OPTIONS}
+        options={LIST_OPTIONS}
       />
       <Stack.Screen
-        name="ObsDetailsProjects"
-        component={FadeInObsDetailsProjects}
-        options={OBS_DETAILS_PROJECTS_OPTIONS}
+        name="ProjectList"
+        component={FadeInProjectList}
+        options={LIST_OPTIONS}
+      />
+      <Stack.Screen
+        name="FollowersList"
+        component={FadeInFollowersList}
+        options={LIST_OPTIONS}
+      />
+      <Stack.Screen
+        name="FollowingList"
+        component={FadeInFollowingList}
+        options={LIST_OPTIONS}
       />
     </Stack.Group>
     {/* Developer Stack Group */}

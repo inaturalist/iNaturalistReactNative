@@ -71,4 +71,14 @@ describe( "UserProfile", () => {
     expect( userIcon ).toBeTruthy( );
     expect( userIcon.props.source ).toHaveProperty( "url", mockUser.icon_url );
   } );
+
+  test( "renders projects, followers, and following buttons", async () => {
+    renderComponent( <UserProfile /> );
+    const projectsButton = await screen.findByText( /VIEW PROJECTS/ );
+    const followersButton = await screen.findByText( /VIEW FOLLOWERS/ );
+    const followingButton = await screen.findByText( /VIEW FOLLOWING/ );
+    expect( projectsButton ).toBeVisible( );
+    expect( followersButton ).toBeVisible( );
+    expect( followingButton ).toBeVisible( );
+  } );
 } );

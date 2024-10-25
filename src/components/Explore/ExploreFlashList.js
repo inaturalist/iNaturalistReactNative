@@ -3,6 +3,7 @@ import {
   ActivityIndicator, Body3, CustomFlashList, InfiniteScrollLoadingWheel
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import UserList from "components/UserList/UserList.tsx";
 import type { Node } from "react";
 import React, { useCallback } from "react";
 import { useTranslation } from "sharedHooks";
@@ -11,17 +12,17 @@ type Props = {
   canFetch?: boolean,
   contentContainerStyle?: Object,
   data: Array<Object>,
-  estimatedItemSize: number,
+  estimatedItemSize?: number,
   fetchNextPage: boolean,
   hideLoadingWheel: boolean,
   isFetchingNextPage: boolean,
   isConnected: boolean,
-  keyExtractor: Function,
+  keyExtractor?: Function,
   layout?: string,
   numColumns?: number,
-  renderItem: Function,
+  renderItem?: Function,
   renderItemSeparator?: Function,
-  testID: string,
+  testID?: string,
   totalResults: number
 };
 
@@ -71,22 +72,33 @@ const ExploreFlashList = ( {
     </View>
   ), [canFetch, renderLoading, t] );
 
-  return (
-    <CustomFlashList
-      ItemSeparatorComponent={renderItemSeparator}
-      ListEmptyComponent={renderEmptyComponent}
-      ListFooterComponent={renderFooter}
-      contentContainerStyle={contentContainerStyle}
-      data={data}
-      estimatedItemSize={estimatedItemSize}
-      keyExtractor={keyExtractor}
-      numColumns={numColumns}
-      onEndReached={fetchNextPage}
-      refreshing={isFetchingNextPage}
-      renderItem={renderItem}
-      testID={testID}
-    />
-  );
+  return layout === "user"
+    ? (
+      <UserList
+        ListEmptyComponent={renderEmptyComponent}
+        ListFooterComponent={renderFooter}
+        contentContainerStyle={contentContainerStyle}
+        users={data}
+        onEndReached={fetchNextPage}
+        refreshing={isFetchingNextPage}
+      />
+    )
+    : (
+      <CustomFlashList
+        ItemSeparatorComponent={renderItemSeparator}
+        ListEmptyComponent={renderEmptyComponent}
+        ListFooterComponent={renderFooter}
+        contentContainerStyle={contentContainerStyle}
+        data={data}
+        estimatedItemSize={estimatedItemSize}
+        keyExtractor={keyExtractor}
+        numColumns={numColumns}
+        onEndReached={fetchNextPage}
+        refreshing={isFetchingNextPage}
+        renderItem={renderItem}
+        testID={testID}
+      />
+    );
 };
 
 export default ExploreFlashList;

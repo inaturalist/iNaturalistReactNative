@@ -26,6 +26,13 @@ const logger = log.extend( "index.js" );
 // class is extended with Realm.Object per this issue:
 // https://github.com/realm/realm-js/issues/3600#issuecomment-785828614
 class Observation extends Realm.Object {
+  static PROJECT_FIELDS = {
+    id: true,
+    icon: true,
+    title: true,
+    project_type: true
+  };
+
   static FIELDS = {
     application: Application.APPLICATION_FIELDS,
     captive: true,
@@ -63,20 +70,10 @@ class Observation extends Realm.Object {
     private_place_guess: true,
     project_ids: true,
     project_observations: {
-      project: {
-        id: true,
-        icon: true,
-        title: true,
-        project_type: true
-      }
+      project: Observation.PROJECT_FIELDS
     },
     non_traditional_projects: {
-      project: {
-        id: true,
-        icon: true,
-        title: true,
-        project_type: true
-      }
+      project: Observation.PROJECT_FIELDS
     },
     positional_accuracy: true,
     preferences: {

@@ -1,11 +1,9 @@
 // @flow
 import { fetchIdentifiers } from "api/observations";
-import UserListItem from "components/SharedComponents/UserListItem";
-import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect } from "react";
 import User from "realmModels/User.ts";
-import { useInfiniteScroll, useTranslation } from "sharedHooks";
+import { useInfiniteScroll } from "sharedHooks";
 
 import ExploreFlashList from "./ExploreFlashList";
 
@@ -43,16 +41,6 @@ const IdentifiersView = ( {
       enabled: canFetch
     }
   );
-  const { t } = useTranslation( );
-
-  const renderItem = ( { item } ) => (
-    <UserListItem
-      item={item}
-      countText={t( "X-Identifications", { count: item.count } )}
-    />
-  );
-
-  const renderItemSeparator = ( ) => <View className="border-b border-lightGray" />;
 
   useEffect( ( ) => {
     handleUpdateCount( "identifiers", totalResults );
@@ -63,15 +51,11 @@ const IdentifiersView = ( {
       canFetch={canFetch}
       contentContainerStyle={LIST_STYLE}
       data={data}
-      estimatedItemSize={98}
       fetchNextPage={fetchNextPage}
       hideLoadingWheel={!isFetchingNextPage}
-      isFetchingNextPage={isFetchingNextPage}
       isConnected={isConnected}
-      keyExtractor={item => item.user.id}
-      renderItem={renderItem}
-      renderItemSeparator={renderItemSeparator}
-      testID="ExploreIdentifiersAnimatedList"
+      isFetchingNextPage={isFetchingNextPage}
+      layout="user"
       totalResults={totalResults}
     />
   );
