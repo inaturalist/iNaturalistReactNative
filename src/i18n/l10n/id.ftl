@@ -441,6 +441,12 @@ Flash = kilat
 # Label for a button that toggles between the front and back cameras
 Flip-camera = Balikkan kamera
 FOLLOW = IKUTI
+# Subtitle for a screen showing the list of people a user is following
+FOLLOWING-X-PEOPLE =
+    { $count ->
+        [one] MENGIKUTI { $count } ORANG
+       *[other] MENGIKUTI { $count } ORANG
+    }
 # Forgot password link
 Forgot-Password = Lupa Kata Sandi
 GEOPRIVACY = GEOPRIVASI
@@ -540,6 +546,12 @@ Join-the-largest-community-of-naturalists = Bergabunglah dengan grup naturalis t
 JOINED = TERGABUNG
 # Shows date user joined iNaturalist on user profile
 Joined-date = Bergabung: { $date }
+# Subtitle for a screen showing projects a user has joined
+JOINED-X-PROJECTS =
+    { $count ->
+        [one] BERGABUNG DALAM { $count } PROYEK
+       *[other] BERGABUNG DALAM { $count } PROYEK
+    }
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] POSTINGAN JURNAL
@@ -678,6 +690,7 @@ Obervations-must-be-manually-added = Pengamatan harus ditambahkan secara manual 
 Obscured = Dikaburkan
 # Displayed when user views an obscured location on the ObsDetail map screen
 Obscured-observation-location-map-description = Lokasi pengamatan ini dikaburkan. Anda sedang melihat titik acak di dalam poligon pengaburan.
+Observation = Pengamatan
 Observation-Attribution = Pengamatan: © { $userName } · { $restrictions }
 OBSERVATION-BUTTON = TOMBOL PENGAMATAN
 Observation-has-no-photos-and-no-sounds = Pengamatan ini tidak memiliki gambar maupun suara.
@@ -745,6 +758,8 @@ Other = Lainnya
 OTHER-DATA = DATA LAIN
 OTHER-SUGGESTIONS = REKOMENDASI LAIN
 PASSWORD = KATA SANDI
+# Title showing user profile details about who a user follows and is following
+PEOPLE--title = ORANG
 PERSONAL-INFO = INFORMASI PRIBADI
 Photo-importer = Pengimpor foto
 PHOTO-LICENSING = LISENSI GAMBAR
@@ -782,6 +797,7 @@ PROJECT-REQUIREMENTS = PERSYARATAN PROYEK
 PROJECTS = PROYEK
 # As in iNat projects, collections of observations or observation search filters
 Projects = Proyek
+PROJECTS-X = PROYEK ({ $projectCount })
 QUALITY-GRADE = TINGKAT KUALITAS
 # label in project requirements
 Quality-Grade = Tingkat Kualitas
@@ -1139,6 +1155,10 @@ VIEW-ALL-X-USERS = LIHAT { $count } PENGGUNA
 VIEW-CHILDREN-TAXA = LIHAT TAKSON ANAK
 VIEW-DATA-QUALITY-ASSESSMENT = LIHAT ASESMEN KUALITAS DATA
 VIEW-EDUCATORS-GUIDE = LIHAT PANDUAN TENAGA PENDIDIK
+# Button on user profile that displays a list of users that follow that user
+VIEW-FOLLOWERS = LIHAT PENGIKUT
+# Button on user profile that displays a list of users that the user is following
+VIEW-FOLLOWING = LIHAT MENGIKUTI
 View-in-browser = Lihat di browser
 VIEW-IN-EXPLORE = LIHAT DI JELAJAH
 VIEW-INATURALIST-HELP = LIHAT BANTUAN INATURALIST
@@ -1147,6 +1167,7 @@ VIEW-INATURALIST-HELP = LIHAT BANTUAN INATURALIST
 View-photo = Lihat foto
 View-photo-licensing-info = Lihat informasi lisensi gambar
 VIEW-PROJECT-REQUIREMENTS = LIHAT PERSYARATAN PROYEK
+# Button that lets user view a list of projects related to the observation or user profile they're viewing
 VIEW-PROJECTS = LIHAT PROYEK
 # Label for a button that shows identification suggestions for an observation
 # or photo
@@ -1177,6 +1198,12 @@ x-comments =
     { $count ->
         [one] { $count } komentar
        *[other] { $count } komentar
+    }
+# Subtitle for a screen showing the list of followers a user has
+X-FOLLOWERS =
+    { $count ->
+        [one] { $count } PENGIKUT
+       *[other] { $count } PENGIKUT
     }
 X-Identifications =
     { $count ->
@@ -1257,6 +1284,7 @@ X-PHOTOS-Y-SOUNDS =
         [one] 1 SUARA
        *[other] { $soundCount } SUARA
     }
+X-PROJECTS = { $projectCount } PROYEK
 # Displays number of sounds attached to an observation in the Media Viewer
 X-SOUNDS =
     { $count ->

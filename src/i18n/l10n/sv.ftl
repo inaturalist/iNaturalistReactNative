@@ -551,6 +551,11 @@ Join-the-largest-community-of-naturalists = Gå med i den största communityn av
 JOINED = GICK MED
 # Shows date user joined iNaturalist on user profile
 Joined-date = Gick med: { $date }
+JOURNAL-POSTS-WITHOUT-NUMBER =
+    { $count ->
+        [one] DAGBOKSINLÄGG
+       *[other] DAGBOKSINLÄGG
+    }
 # Month of July
 July = juli
 # Month of June
@@ -585,6 +590,12 @@ Log-in-to-contribute-your-observations = Logga in för att bidra med dina fynd t
 LOG-IN-TO-INATURALIST = LOGGA IN PÅ INATURALIST
 Log-in-to-iNaturalist = Logga in på iNaturalist
 LOG-OUT = LOGGA UT
+LOG-OUT--question = LOGGA UT?
+# Appears in the login screen
+Login-sub-title = Dokumentera levande ting, bestäm organismer & bidra till vetenskapen
+Lowest = Lägsta
+LOWEST-RANK = LÄGSTA RANG
+MAP = KARTA
 Map-Area = Kartområde
 # Month of March
 March = mars
@@ -592,14 +603,43 @@ March = mars
 maverick--identification = Motförslag
 # Month of May
 May = maj
+MEDIA = MEDIA
 # label in project requirements
 Media-Type = Mediatyp
+MEMBERS-WITHOUT-NUMBER =
+    { $count ->
+        [one] MEDLEM
+       *[other] MEDLEMMAR
+    }
 # Accessibility label for a button that opens a menu of options
 Menu = Meny
 Missing-Date = Datum saknas
+MISSING-EVIDENCE = BELÄGG SAKNAS
+Monthly-Donor = Månatlig bidragsgivare
 Months = Månader
+MONTHS = MÅNADER
+More-info = Mer info
+MOST-FAVED = MEST POPULÄRA
+Most-faved = Mest populära
 MY-OBSERVATIONS = MINA FYND
 Native = Inhemsk
+Native-to-place = Inhemsk i { $place }
+Navigates-to-AI-camera = Går till AI-kamera
+Navigates-to-bulk-importer = Går till bulkimport
+Navigates-to-camera = Går till kamera
+Navigates-to-explore = Går till utforska
+Navigates-to-notifications = Går till aviseringar
+Navigates-to-observation-details = Går till fyndinformationsfönster
+Navigates-to-observation-edit-screen = Går till fyndredigeringsfönster
+Navigates-to-photo-importer = Går till bildimport
+Navigates-to-previous-screen = Går till föregående fönster
+Navigates-to-project-details = Går till projektinformation
+Navigates-to-sound-recorder = Går till ljudinspelare
+Navigates-to-suggest-identification = Går till föreslå bestämning
+Navigates-to-taxon-details = Går till taxoninformation
+Navigates-to-user-profile = Går till användarprofil
+# Label for button that takes you to your observations
+Navigates-to-your-observations = Går till dina fynd
 # Header or button label for content that is near the user's current location
 NEARBY = I NÄRHETEN
 # Header or button label for content that is near the user's current location
@@ -608,39 +648,155 @@ Nearby = I närheten
 Needs-ID--quality-grade = Behöver bestämmas
 # Heading when creating a new observation
 New-Observation = Nytt fynd
+# Sort order, refers to newest or oldest date
+Newest-to-oldest = Nyast till äldst
+Next-observation = Nästa fynd
+# Error message when no camera can be found
+No-Camera-Available = Ingen kamera tillgänglig
+# Alert dialog title when attempting to send email but no email is installed
+No-email-app-installed = Ingen e-post-app installerad
+No-email-app-installed-body = Om du kan skicka e-post på något annat sätt, är adressen { $address }
+No-email-app-installed-body-check-other = Kolla din e-post i en webbläsare eller på en annan enhet.
 No-Location = Ingen plats
 No-Media = Ingen media
-none = ingen
+# As in a machine learning model that powers automated suggestions
+No-model-found = Ingen modell hittades
+No-Notifications-Found = Du har inga aviseringar! Kom igång genom att skapa dina egna fynd.
+No-projects-match-that-search = Inga projekt matchar den sökningen
+# Used for explore screen when search params lead to a search with no data
+No-results-found-for-that-search = Inga resultat hittades för den sökningen.
+No-results-found-try-different-search = Inga resultat hittades. Prova en annan sökning eller justera dina filter.
+# license code
+no-rights-reserved-cc0 = inga rättigheter förbehållna (CC0)
+NONE = INGA
+none = inga
 # Error message title when not enough storage space on device, e.g. when the
 # disk is full and you try to save a photo
 Not-enough-space-left-on-device = Inte tillräckligt med utrymme kvar på enheten
 # Error message description when not enough storage space on device, e.g. when
 # the disk is full and you try to save a photo
 Not-enough-space-left-on-device-try-again = Det inte finns inte tillräckligt med lagringsutrymme kvar på din enhet för att göra det. Rensa upp lite och försök igen.
+# Header for observation description on observation detail
+NOTES = ANTECKNINGAR
+NOTIFICATIONS = AVISERINGAR
 Notifications = Aviseringar
+# notification when someone adds a comment to your observation
+notifications-user-added-comment-to-observation-by-you = <0>{ $userName }</0> lade till en kommentar till ett av dina fynd
+# notification when someone adds an identification to your observation
+notifications-user-added-identification-to-observation-by-you = <0>{ $userName }</0> lade till en bestämning till ett av dina fynd
 # Month of November
 November = november
+Obervations-must-be-manually-added = Fynd måste läggas till manuellt i ett traditionellt projekt, antingen i uppladdningsmomentet eller efter att fyndet har delats till iNaturalist. En användare måste även gå med i ett traditionellt projekt för att kunna lägga till sina fynd till det.
 Obscured = Diffuserad
+# Displayed when user views an obscured location on the ObsDetail map screen
+Obscured-observation-location-map-description = Detta fynd plats är diffuserad. Du ser en slumpartad punkt inom diffuseringspolygonen.
+Observation = Fynd
+Observation-Attribution = Fynd: ©️ { $userName } · { $restrictions }
+OBSERVATION-BUTTON = FYNDKNAPPEN
+Observation-has-no-photos-and-no-sounds = Detta fynd har inga bilder och inga ljud.
+Observation-Name = Fynd { $scientificName }
+# Label for a menu that shows various actions you can take for an observation
+Observation-options = Fyndalternativ
+OBSERVATION-WAS-DELETED = FYNDET RADERADES
+Observation-with-no-evidence = Fynd utan belägg
 Observations = Fynd
+Observations-created-on-iNaturalist = Fynd som skapats på iNaturalist används av forskare runt om i världen.
+Observations-View = Fyndvy
+# Might be used when the number is represented using an image or other
+# element, not text
+OBSERVATIONS-WITHOUT-NUMBER =
+    { $count ->
+        [one] FYND
+       *[other] FYND
+    }
+# Onboarding text on MyObservations: Onboarding text on MyObservations: 11-50 observations
+Observations-you-upload-to-iNaturalist = Fynd som du laddar upp till iNaturalist kan användas av vetenskapsmän och forskare över hela världen.
 # Button that starts a new observation
 Observe = Observera
+# Title of screen asking for permission to access the gallery
+Observe-and-identify-organisms-from-your-gallery = Observera och bestäm organismer från ditt galleri
+# Title of screen asking for permission to access the camera
+Observe-and-identify-organisms-in-real-time-with-your-camera = Observera och bestäm organismer i realtid med din kamera
+# Text for a button prompting the user to grant access to the camera
+OBSERVE-ORGANISMS = OBSERVERA ORGANISMER
 Observers = Observatörer
+# Section in Explore that shows people who added observations given a set of search filters
+Observers-View = Observatörsvy
 # Month of October
 October = oktober
 Offensive-Inappropriate = Stötande/Olämpligt
+Offensive-Inappropriate-Examples = Vilseledande eller olagligt innehåll, rasistiska eller etniska glåpord, etc. För mer om vår definition av "lämpligt", se Vanliga frågor och svar.
+Offline-DQA-description = DQA kanske inte fungerar korrekt. Kontrollera din internetanslutning och försök igen.
+Offline-suggestions-do-not-use-your-location = Offline-förslag använder inte din plats och kan skilja sig från online-förslag. Taxon-bilder och vanliga namn kanske inte laddas.
 # Generic confirmation, e.g. button on a warning alert
 OK = OK
+# Sort order, refers to newest or oldest date
+Oldest-to-newest = Äldst till nyast
+Once-you-create-and-upload-observations = När du börjat skapa och ladda upp fynd kan andra medlemmar i vår community lägga till bestämningar för att hjälpa dina fynd att nå forskningsklass.
+One-last-step = Ett sista steg!
 # Adjective, as in geoprivacy
 Open = Öppen
+Open-drawer = Öppna låda
+OPEN-EMAIL = ÖPPNA E-POST
+Open-menu = Öppna menyn.
+# Text for a button that opens the operating system Settings app
+OPEN-SETTINGS = ÖPPNA INSTÄLLNINGAR
+Opens-add-comment-modal = Öppnar dialogfönstret "Lägg till kommentar".
+Opens-add-observation-modal = Öppna dialogfönstret "Lägg till fynd".
+Opens-AI-camera = Öppnar AI-kamera.
+Opens-location-permission-prompt = Öppnar behörighetsprompten för plats
+# Accessibility hint for button that opens the AI camera
+Opens-the-AI-camera = Öppnar AI-kameran
+Opens-the-side-drawer-menu = Öppnar sidomenyn.
+# Picker prompt on observation edit
+Organism-is-captive = Organismen är i fångenskap
+Organisms-that-are-identified-to-species = Organismer som bestäms till artnivå eller lägre
 # Generic option in a list for unanticipated cases, e.g. a choice to manually
 # enter an explanation for why you are flagging something instead of choosing
 # one of the existing options
 Other = Annat
+OTHER-DATA = MER DATA
+OTHER-SUGGESTIONS = ANDRA FÖRSLAG
+PASSWORD = LÖSENORD
+PERSONAL-INFO = PERSONLIG INFO
+Photo-importer = Bildimport
+PHOTO-LICENSING = BILDLICENSIERING
+Photos = Bilder
+Photos-you-take-will-appear-here = Bilder du tar visas här
+# Title of screen asking for permission to access the camera when access was denied
+Please-allow-Camera-Access = Vänligen tillåt kameraåtkomst
+# Title of screen asking for permission to access the gallery when access was denied
+Please-Allow-Gallery-Access = Vänligen tillåt åtkomst till galleriet
+# Title of screen asking for permission to access location when access was denied
+Please-allow-Location-Access = Vänligen tillåt platsåtkomst
+# Title of screen asking for permission to access the microphone when access was denied
+Please-allow-Microphone-Access = Vänligen tillåt åtkomst till mikrofon
+Please-click-the-link = Klicka på länken i mejlet inom 60 minuter för att bekräfta ditt konto
+# Title of a screen asking for permission when permission has been denied
+Please-Grant-Permission = Vänligen tillåt åtkomst
+PLEASE-LOG-IN = VÄNLIGEN LOGGA IN
+Please-try-again-when-you-are-connected-to-the-internet = Försök igen när du är ansluten till internet.
+Please-try-again-when-you-are-online = Försök igen när du är online!
+POTENTIAL-DISAGREEMENT = MÖJLIG OENIGHET
+Potential-disagreement-description = <0>Är stödet tillräckligt för att bekräfta att detta är </0><1></1><0>?<0>
+Potential-disagreement-disagree = <0>Nej, men detta är en medlem av </0><1></1>
+Potential-disagreement-unsure = <0>Jag vet inte men jag är säker på att detta är </0><1></1>
+# Help text for beginning a sound recording
+Press-record-to-start = Tryck på spela in för att starta
+Previous-observation = Föregående fynd
 Privacy-Policy = Integritetspolicy
+PRIVACY-POLICY = INTEGRITETSPOLICY
 Private = Privat
+# As in an iNat project, a collection of observations or observation search filters
+PROJECT = PROJEKT
 Project-Members-Only = Endast projektmedlemmar
+PROJECT-REQUIREMENTS = PROJEKTKRAV
+# As in iNat project, collections of observations or observation search filters
+PROJECTS = PROJEKT
 # As in iNat projects, collections of observations or observation search filters
 Projects = Projekt
+PROJECTS-X = PROJEKT ({ $projectCount })
+QUALITY-GRADE = KVALITETSKLASS
 # label in project requirements
 Quality-Grade = Kvalitetsklass
 # Screen reader label for the Casual quality grade label
@@ -649,89 +805,295 @@ Quality-Grade-Casual--label = Kvalitetsklass: Grund
 Quality-Grade-Needs-ID--label = Kvalitetsklass: Behöver bestämmas
 # Screen reader label for the Research quality grade label
 Quality-Grade-Research--label = Kvalitetsklass: Forskning
+Ranks-CLASS = KLASS
 Ranks-Class = Klass
+Ranks-COMPLEX = ARTKOMPLEX
 Ranks-Complex = Artkomplex
+Ranks-EPIFAMILY = EPIFAMILJ
 Ranks-Epifamily = Epifamilj
+Ranks-FAMILY = FAMILJ
 Ranks-Family = Familj
+Ranks-FORM = FORM
 Ranks-Form = Form
+Ranks-GENUS = SLÄKTE
 Ranks-Genus = Släkte
+Ranks-GENUSHYBRID = SLÄKTESHYBRID
 Ranks-Genushybrid = Släkteshybrid
+Ranks-HYBRID = HYBRID
 Ranks-Hybrid = Hybrid
+Ranks-INFRACLASS = INFRAKLASS
 Ranks-Infraclass = Infraklass
+Ranks-INFRAHYBRID = INFRAHYBRID
 Ranks-Infrahybrid = Infrahybrid
+Ranks-INFRAORDER = INFRAORDNING
 Ranks-Infraorder = Infraordning
+Ranks-KINGDOM = RIKE
 Ranks-Kingdom = Rike
+Ranks-ORDER = ORDNING
 Ranks-Order = Ordning
+Ranks-PARVORDER = PARVORDNING
 Ranks-Parvorder = Parvordning
+Ranks-PHYLUM = FYLUM
 Ranks-Phylum = Fylum
-Ranks-Section = Avsnitt
-Ranks-SPECIES = ARTER
+Ranks-SECTION = SEKTION
+Ranks-Section = Sektion
+Ranks-SPECIES = ART
 Ranks-Species = Art
-Ranks-Statefmatter = Aggregationstillstånd
+Ranks-Statefmatter = Materia
+Ranks-STATEOFMATTER = MATERIA
+Ranks-SUBCLASS = UNDERKLASS
 Ranks-Subclass = Underklass
+Ranks-SUBFAMILY = UNDERFAMILJ
 Ranks-Subfamily = Underfamilj
+Ranks-SUBGENUS = UNDERSLÄKTE
 Ranks-Subgenus = Undersläkte
+Ranks-SUBKINGDOM = UNDERRIKE
 Ranks-Subkingdom = Underrike
+Ranks-SUBORDER = UNDERORDNING
 Ranks-Suborder = Underordning
+Ranks-SUBPHYLUM = UNDERFYLYUM
 Ranks-Subphylum = Underfylum
-Ranks-Subsection = Underavsnitt
+Ranks-SUBSECTION = UNDERSEKTION
+Ranks-Subsection = Undersektion
+Ranks-SUBSPECIES = UNDERART
 Ranks-Subspecies = Underart
+Ranks-SUBTERCLASS = SUBTERKLASS
 Ranks-Subterclass = Subterklass
+Ranks-SUBTRIBE = UNDERTRIBUS
 Ranks-Subtribe = Undertribus
+Ranks-SUPERCLASS = ÖVERKLASS
 Ranks-Superclass = Överklass
+Ranks-SUPERFAMILY = ÖVERFAMILJ
 Ranks-Superfamily = Överfamilj
+Ranks-SUPERORDER = ÖVERORDNING
 Ranks-Superorder = Överordning
+Ranks-SUPERTRIBE = ÖVERTRIBUS
 Ranks-Supertribe = Övertribus
+Ranks-TRIBE = TRIBUS
 Ranks-Tribe = Tribus
+Ranks-VARIETY = VARIETET
 Ranks-Variety = Varietet
+Ranks-ZOOSECTION = ZOOSEKTION
 Ranks-Zoosection = Zoosektion
+Ranks-ZOOSUBSECTION = ZOOUNDERSEKTION
 Ranks-Zoosubsection = Zooundersektion
+Read-more-on-Wikipedia = Läs mer på Wikipedia
+# Heading for the sound recorder
+RECORD-NEW-SOUND = SPELA IN NYTT LJUD
+# Title of screen asking for permission to access the microphone
+Record-organism-sounds-with-the-microphone = Spela in organismljud med mikrofonen
+# Text for a button prompting the user to grant access to the microphone
+RECORD-SOUND = SPELA IN LJUD
+Record-sounds = Spela in ljud med din mikrofon
 # Imperative verb for recording a sound
-Record-verb = Uppgift
+Record-verb = Spela in
+# Status while recording a sound
+Recording-sound = Spelar in ljud
+Recording-stopped-Tap-play-the-current-recording = Inspelning stoppad. Tryck på spela upp den aktuella inspelningen.
+REDO-SEARCH-IN-MAP-AREA = GÖR OM SÖKNING I KARTOMRÅDE
+# Label for a button that removes a vote of agreement
+Remove-agreement = Ta bort medhåll
+# Label for a button that removes a vote of disagreement
+Remove-disagreement = Ta bort oenighet
+Remove-favorite = Ta bort favorit
 # Label for button that removes an identification
 Remove-identification = Ta bort bestämning
+Remove-Photos = Ta bort bilder
 Remove-project-filter = Ta bort projektfilter
+Remove-taxon-filter = Ta bort taxonfilter
+Remove-user-filter = Ta bort användarfilter
+# Label for button that removes an observation's taxon
+Removes-this-observations-taxon = Tar bort detta fynds taxon
+# Hint for a button that removes a vote of agreement
+Removes-your-vote-of-agreement = Tar bort din röst för medhåll
+# Hint for a button that removes a vote of disagreement
+Removes-your-vote-of-disagreement = Tar bort din röst för oenighet
 # Quality grade indicating observation is accurate and complete enough to
 # share outside of iNat
 Research-Grade--quality-grade = Forskningsklass
+# Reset password button
+RESET-PASSWORD = ÅTERSTÄLL LÖSENORD
+# Label for a button that resets a sound recording
+RESET-RECORDING = ÅTERSTÄLL INSPELNING
+RESET-SEARCH = ÅTERSTÄLL SÖK
+# Header of a popup confirming that the user wants to reset a sound
+# recording
+RESET-SOUND-header = ÅTERSTÄLL LJUD?
 # Label for a button that resets the state of an interface, e.g. a button that
 # resets the sound recorder to its original state
 Reset-verb = Återställ
+RESTART-APP = STARTA OM APPEN
 # Label for button that restores a withdrawn identification
 Restore = Återställ
+Reveal = Visa
+REVIEW-INATURALIST = RECENSERA INATURALIST
+# Title for section of observation filters for controls over whether you have
+# reviewed the observations or not
+REVIEWED = GRANSKADE
+Reviewed-observations-only = Endast granskade fynd
 # Label for the satellite map type
 Satellite--map-type = Satellit
 # Label for a button that persists something
 SAVE = SPARA
 # Label for a button that persists something
 Save = Spara
+SAVE-ALL = SPARA ALLA
+SAVE-CHANGES = SPARA ÄNDRINGAR
+SAVE-FOR-LATER = SPARA TILL SENARE
+SAVE-LOCATION = SPARA PLATS
+SAVE-PHOTOS = SPARA BILDER
+Save-photos-to-your-gallery = Spara bilder till ditt galleri
+Saved-Observation = Sparat fynd, köat för uppladdning
+Scan-the-area-around-you-for-organisms = Skanna området omkring dig efter organismer.
 Scientific-Name = Vetenskapligt namn
+Scientific-Name-Common-Name = Vetenskapligt namn (vardagligt namn)
+# Title for a search interface
+SEARCH = SÖK
 # Title for a search interface
 Search = Sök
+Search-for-a-project = Sök efter ett projekt
+SEARCH-FOR-A-TAXON = SÖK EFTER ETT TAXON
+Search-for-a-taxon = Sök efter ett taxon
+SEARCH-LOCATION = SÖK PLATS
+SEARCH-PROJECTS = SÖK PROJEKT
+Search-suggestions-with-location = Sök förslag med plats
+Search-suggestions-without-location = Sök förslag utan plats
+SEARCH-TAXA = SÖK TAXA
+SEARCH-USERS = SÖK ANVÄNDARE
+# Accessibility label for Explore button on MyObservations toolbar
+See-all-your-observations-in-explore = Se alla dina fynd i utforska
+# Accessibility label for Observations button on UserProfile screen
+See-observations-by-this-user-in-Explore = Se fynd av den här användaren i Utforska
+# Accessibility label for Explore button in MyObservationsEmpty for logged out user
+See-observations-in-explore = Se fynd i utforska
+# Accessibility label for Explore button on TaxonDetails screen
+See-observations-of-this-taxon-in-explore = Se fynd  av detta taxon i utforska
 # Accessibility label for navigating to project members screen
 See-project-members = Se projektmedlemmar
+# Accessibility label for Species button on UserProfile screen
+See-species-observed-by-this-user-in-Explore = Se arter som observerats av den här användaren i Utforska
+Select-a-date-and-time-for-observation = Välj ett datum och tid för fynd
+Select-captive-or-cultivated-status = Välj status för i fångenskap eller odlad
+Select-geoprivacy-status = Välj status för geosekretess
+Select-or-drag-media = Välj eller dra media
+Select-photo = Välj bild
+SELECT-THIS-TAXON = VÄLJ DETTA TAXON
+# Label for an element that let's you select a user
+Select-user = Välj användare
+Selects-iconic-taxon-X-for-identification = Väljer organismgrupp { $iconicTaxon } för bestämning.
+Separate-Photos = Separera bilder
 # Month of September
 September = september
+SETTINGS = INSTÄLLNINGAR
 Share = Dela
+SHARE-DEBUG-LOGS = DELA FELSÖKNINGSLOGG
 Share-location = Dela fyndplats
+Share-map = Dela karta
+# Preceded by the fragment # Preceded by the fragment, "By uploading your observation to iNaturalist, you can:"
+Share-your-observation-where-it-can-help-scientists = Dela ditt fynd där det kan hjälpa forskare runtom i världen att bättre förstå den biologiska mångfalden.
+SHOP-INATURALIST-MERCH = KÖP INATURALIST-PRYLAR
+Show-observation-options = Visa fyndalternativ.
+# Label for button that shows identification suggestions
+Shows-identification-suggestions = Visar bestämningsförslag
+Shows-iNaturalist-bird-logo = Visar iNaturalists fågellogotyp.
+# Accessibility hint for button that shows observation creation options
+Shows-observation-creation-options = Visar alternativ för att skapa fynd
+Some-data-privacy-laws = Vissa dataintegritetslagar, som Europeiska unionens allmänna dataskyddsförordning (GDPR), kräver uttryckligt samtycke för att överföra personuppgifter från deras jurisdiktioner till andra jurisdiktioner där det rättsliga skyddet för denna information inte anses vara tillräckligt. Från och med 2020 anser EU inte längre att USA är en jurisdiktion som ger ett adekvat rättsligt skydd för personuppgifter, särskilt på grund av möjligheten för den amerikanska regeringen att övervaka uppgifter som kommer in i USA. Det är möjligt att andra jurisdiktioner kan ha samma åsikt.
+# Generic error message
+Something-went-wrong = Något gick fel.
+Sorry-this-observation-was-deleted = Tyvärr, detta fynd har raderats
+# Error message if the app tries to open a URL the operating system can't
+# handle
+Sorry-we-dont-know-how-to-open-that-URL = Tyvärr, vi vet inte hur man öppnar denna URL: { $url }
+SORT-BY = SORTERA EFTER
+Sort-by = Sortera efter
+# Character separating current position and total duration when playing a
+# sound, e.g. 00:12 / 03:00 uses "/" as the separator. This can be anything,
+# but it should be very short.
+sound-playback-separator = /
+Sound-recorder = Ljudinspelare
+sound-recorder-help-A-recording-of = En inspelning på 5–15 sekunder är bästa hjälpen för artbestämmare.
+sound-recorder-help-Get-as-close-as-you-can = Ta dig så nära du säkert kan för att spela in organismen.
+sound-recorder-help-Get-closer = Ta dig närmare
+sound-recorder-help-Keep-it-short = Håll det kort
+sound-recorder-help-Make-sure = Se till att ljudet av dina egna rörelser inte dränker organismens ljud.
+sound-recorder-help-One-organism = En organism
+sound-recorder-help-Stop-moving = Var stilla
+sound-recorder-help-Try-to-isolate = Försök att isolera ljudet av endast en organism. Om det inte går, se till att anteckna vilken organism det är du spelar in.
 Sounds = Ljud
+Source-List = <0>(Källor: </0><1>{ $source }</1><0>)</0>
 Spam = Spam
-Spam-Examples = Kommersiella förfrågningar, länkar som inte leder någonstans, m.m.
+Spam-Examples = Kommersiella ärenden, länkar som inte leder någonstans, m.m.
 Species = Art
+Species-View = Artvy
+SPECIES-WITHOUT-NUMBER =
+    { $count ->
+        [one] ART
+       *[other] ARTER
+    }
 # Label for the standard map type
 Standard--map-type = Standard
+Start-must-be-before-end = Startdatum måste vara före slutdatumet.
+Start-time = Starttid: { $date }
+Start-upload = Starta uppladdning
+# Accessibility hint for button that starts recording a sound
+Starts-recording-sound = Startar ljudinspelning
+Stay-on-this-screen = Var kvar på den här sidan medan din plats laddas.
+Still-need-help = Behöver du fortfarande hjälp? Du kan skicka in en supportförfrågan här.
 # Button or accessibility label for an interactive element that stops an upload
 Stop-upload = Stoppa uppladdning
 # Imperative verb for stopping the recording of a sound
-Stop-verb = Avsluta
+Stop-verb = Stoppa
+# Accessibility hint for a button that stops the recording of a sound
+Stops-recording-sound = Stoppar ljudinspelning
+SUBMIT = SKICKA IN
+SUBMIT-ID-SUGGESTION = SKICKA IN FÖRSLAG
+SUGGEST-ID = FÖRESLÅ BESTÄMNING
+# Label for element that suggest an identification
+Suggest-ID = FÖRESLÅ ID
 # Identification category
-supporting--identification = Stöder
-Syncing = Synkroniserar...
+supporting--identification = Håller med
+Switches-to-tab = Byter till { $tab }-flik.
+Sync-observations = Synka fynd
+Syncing = Synkar...
+Take-photo = Ta bild
+Take-photos-with-the-camera = Ta bilder på en enda organism med kameran
 # label in project requirements
 Taxa = Taxa
+TAXON = TAXON
+# Settings screen
+TAXON-NAMES-DISPLAY = VISNING AV TAXONNAMN
+TAXONOMIC-RANKS = TAXONOMISKA RANGER
+# Header for a block of text describing a taxon's taxonomy
+TAXONOMY-header = TAXONOMI
+TEAM = TEAM
 Terms-of-Use = Användarvillkor
+TERMS-OF-USE = ANVÄNDARVILLKOR
+Text-Box-to-Describe-Reason-for-Flag = Textruta för att beskriva anledning till flagga.
+Thank-you-for-sharing-your-feedback = Tack för att du återkopplar och hjälper oss att bli bättre!
+Thanks-for-using-any-suggestions = Tack för att du använder den här appen! Har du några förslag till de personer som gör den?
+That-user-profile-doesnt-exist = Den användarprofilen finns inte
+The-exact-location-will-be-hidden = Den exakta positionen kommer att döljas publikt, och i stället generaliseras till ett större område. (Hotade och känsliga arter diffuseras automatiskt).
+The-iNaturalist-Network = iNaturalist-nätverket är en samling lokaliserade webbplatser som är fullt anslutna till den globala iNaturalist-communityn. Nätverksplatser stöds av lokala institutioner som främjar lokal användning och underlättar användningen av data från iNaturalist för att gynna lokal biologisk mångfald.
+The-location-will-not-be-visible = Positionen kommer inte att synas för andra, vilket innebär att det kan bli svårt att bestämma.
+The-models-that-suggest-species = Modellerna som föreslår arter baserat på visuell likhet och plats existerar bland annat tack vare samarbeten med Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona och Grant Van Horn.
+There-is-no-way = Det är inte möjligt att ha ett iNaturalist-konto utan att spara personlig information, så det enda sättet att återkalla detta samtycke är genom att radera ditt konto.
+#  Wild status sheet descriptions
+This-is-a-wild-organism = Detta är en vild organism och placerades inte på denna plats av människor.
+This-is-how-taxon-names-will-be-displayed = Så här kommer alla taxonnamn att visas för dig på iNaturalist:
+This-observer-has-opted-out-of-the-Community-Taxon = Den här observatören har valt bort communityns taxon
+This-organism-was-placed-by-humans = Denna organism placerades på denna plats av människor. Detta gäller för sådant som trädgårdsväxter, husdjur och djurparksdjur.
+To-access-all-other-settings = För att komma åt alla andra kontoinställningar, klicka här:
+To-learn-more-about-what-information = För att läsa mer om vilken information vi samlar in och hur vi använder den, vänligen se vår integritetspolicy och våra användarvillkor.
+To-sync-your-observations-to-iNaturalist = För att synka dina fynd med iNaturalist, vänligen logga in.
+To-view-nearby-organisms-please-enable-location = Aktivera plats för att se organismer i närheten.
+To-view-nearby-projects-please-enable-location = Aktivera plats för att se projekt i närheten.
+Toggle-map-type = Växla karttyp
+TOP-ID-SUGGESTION = BÄSTA BESTÄMNINGSFÖRSLAG
 Traditional-Project = Traditionellt projekt
 Umbrella-Project = Paraplyprojekt
+UNFOLLOW = SLUTA FÖLJA
+UNFOLLOW-USER = SLUTA FÖLJA ANVÄNDAREN?
 # Text to show when a taoxn rank is unknown or missing
 Unknown--rank = Okänd
 # Text to show when a taxon or identification is unknown or missing
@@ -740,18 +1102,227 @@ Unknown--taxon = Okänd
 Unknown--user = Okänd
 # Generic error message
 Unknown-error = Okänt fel
+Unknown-organism = Okänd organism
+Unreviewed-observations-only = Endast ej granskade fynd
+Upload-Complete = Uppladdning klar
+Upload-in-progress = Uppladdning pågår
+UPLOAD-NOW = LADDA UPP NU
+Upload-photos-from-your-gallery = Ladda upp flera bilder från ditt galleri
+Upload-photos-from-your-gallery-and-create-observations = Ladda upp bilder från ditt galleri och skapa fynd och få bestämningar av organismer som du redan har observerat!
+Upload-Progress = Uppladdning { $uploadProgress } procent klar
+UPLOAD-TO-INATURALIST = LADDA UPP TILL INATURALIST
+# Shows the number of observations a user can upload to iNat from my observations page
+Upload-x-observations =
+    Ladda upp { $count ->
+        [one] 1 fynd
+       *[other] { $count } fynd
+    }
+# Describes whether a user made this observation from web, iOS, or Android
+Uploaded-via-application = Uppladdad via: { $application }
+# Shows the progress of uploads for X of Y observations, but omits the
+# word "observations" so the message won't get cut off on small screens
+Uploading-x-of-y = Laddar upp { $currentUploadCount } av { $total }
+# Shows the number of observations a user is currently uploading out of total on my observations page
+Uploading-x-of-y-observations =
+    { $total ->
+        [one] laddar upp { $currentUploadCount } fynd
+       *[other] laddar upp { $currentUploadCount } av { $total } fynd
+    }
+Use-iNaturalists-AI-Camera = Använd iNaturalists AI-kamera för att bestämma organismer i realtid
+# Text for a button prompting the user to grant access to location
+USE-LOCATION = ANVÄND PLATS
+Use-the-devices-other-camera = Använd enhetens andra kamera.
+Use-the-iNaturalist-camera-to-observe = Använd iNaturalist-kameran för att observera och bestämma organismer på skärmen i realtid, och dela dem med vår communtiy för att få bestämningar och bidra till vetenskapen!
+Use-your-devices-microphone-to-record = Använd din enhets mikrofon för att spela in ljud gjorda av organismer och dela dem med vår community för att få bestämningar och bidra till vetenskapen!
+USER = ANVÄNDARE
+User = Användare { $userHandle }
+USERNAME = ANVÄNDARNAMN
+# Appears above the text fields
+USERNAME-OR-EMAIL = ANVÄNDARNAMN ELLER E-POST
 # label in project requirements
 Users = Användare
-View-in-browser = Visa i webbläsare
+Using-iNaturalist-requires-the-storage = Att använda iNaturalist kräver lagring av personuppgifter som din e-postadress, all iNaturalist-data lagras i USA, och vi kan inte vara säkra på vilken jurisdiktion du är i när du använder iNaturalist, så för att följa integritetslagar som GDPR, måste du bekräfta att du förstår och accepterar denna risk och samtycker till att dina personuppgifter överförs till iNaturalists servrar i USA.
+# Listing of app and build versions
+Version-app-build = Version { $appVersion } ({ $buildVersion })
+VIEW-ALL-X-PLACES = SE ALLA { $count } PLATSER
+VIEW-ALL-X-PROJECTS = SE ALLA { $count } PROJEKT
+VIEW-ALL-X-TAXA = SE ALLA { $count } TAXA
+VIEW-ALL-X-USERS = SE ALLA { $count } ANVÄNDARE
+VIEW-CHILDREN-TAXA = VISA UNDERLIGGANDE TAXA
+VIEW-DATA-QUALITY-ASSESSMENT = SE DATAKVALITETSBEDÖMNING
+VIEW-EDUCATORS-GUIDE = SE UNDERVISNINGSGUIDE
+View-in-browser = Se i webbläsaren
+VIEW-IN-EXPLORE = SE I UTFORSKA
+VIEW-INATURALIST-HELP = SE INATURALIST-HJÄLP
+# Button or accessibility label for an element that lets the user view a
+# photo
+View-photo = Se bild
+View-photo-licensing-info = Se bildlicensinformation
+VIEW-PROJECT-REQUIREMENTS = SE PROJEKTKRAV
+# Button that lets user view a list of projects related to the observation or user profile they're viewing
+VIEW-PROJECTS = SE PROJEKT
 # Label for a button that shows identification suggestions for an observation
 # or photo
-View-suggestions = Visa förslag
+View-suggestions = Se förslag
+We-are-not-confident-enough-to-make-a-top-ID-suggestion = Vi är inte tillräckligt säkra för att göra ett enda bästa bestämningsförslag, men här är våra %1$d bästa förslag:
+We-sent-a-confirmation-email = Vi skickade ett bekräftelsemejl till e-posten du registrerade dig med.
+We-store-personal-information = Vi sparar personlig information som användarnamn och e-postadresser för att hantera konton på denna webbplats, och för att vi ska kunna följa integritetsslagar behöver du markera denna ruta för att ange att du samtycker till denna användning av personuppgifter. För att läsa mer om vilken information vi samlar in och hur vi använder den, vänligen se vår integritetspolicy och våra användarvillkor.
 Welcome-to-iNaturalist = Välkommen till iNaturalist!
-Wild = Vilda
+# Welcome user back to app
+Welcome-user = <0>Välkommen tillbaka,</0><1>{ $userHandle }</1>
+WHAT-IS-INATURALIST = VAD ÄR INATURALIST?
+Whats-more-by-recording = Genom att registrera och dela dina observationer skapar du dessutom data av forskningskvalitet för forskare som arbetar för att bättre förstå och skydda naturen. Så om du gillar att dokumentera det du hittar utomhus, eller om du bara gillar att lära dig om livet, gå med i iNaturalist!
+When-tapping-the-green-observation-button = När du trycker på den gröna observationsknappen, öppna:
+WIKIPEDIA = WIKIPEDIA
+Wild = Vild
+WILD-STATUS = STATUS SOM VILD
 # Label for a button that withdraws an identification
 Withdraw = Dra tillbaka
+# Button to Withdraw identification made by user
+WITHDRAW-ID = DRA TILLBAKA BESTÄMNING
+WITHDRAW-ID-QUESTION = DRA TILLBAKA BESTÄMNING?
+Withdraws-identification = Drar tillbaka bestämning
 Worldwide = Världsomfattande
+WORLDWIDE = VÄRLDSOMFATTANDE
+Would-you-like-to-discard-your-current-recording-and-start-over = Vill du slänga din nuvarande inspelning och börja om?
+Would-you-like-to-suggest-the-following-identification = Vill du föreslå följande bestämning?
+x-comments =
+    { $count ->
+        [one] { $count } kommentar
+       *[other] { $count } kommentarer
+    }
+X-Identifications =
+    { $count ->
+        [one] { $count } bestämning
+       *[other] { $count } bestämningar
+    }
+x-identifications =
+    { $count ->
+        [one] { $count } bestämning
+       *[other] { $count } bestämningar
+    }
+X-Identifiers =
+    { $count ->
+        [one] { $count } bestämmare
+       *[other] { $count } bestämmare
+    }
 # Subheader for number of project members screen
 X-MEMBERS = { $count } MEDLEMMAR
+# Shows number of observations in a variety of contexts
+X-Observations =
+    { $count ->
+        [one] 1 Fynd
+       *[other] { $count } Fynd
+    }
+# Shows number of observations in a variety of contexts
+X-observations =
+    { $count ->
+        [one] 1 fynd
+       *[other] { $count } fynd
+    }
+X-observations-deleted =
+    { $count ->
+        [one] 1 fynd raderad
+       *[other] { $count } fynd raderade
+    }
+X-observations-uploaded =
+    { $count ->
+        [one] 1 fynd uppladdat
+       *[other] { $count } fynd uppladdade
+    }
+X-Observers =
+    { $count ->
+        [one] { $count } Observatör
+       *[other] { $count } Observatörer
+    }
+# Progress or position indicator, e.g. when viewing 2 of 3 observations, or 3
+# of 10 photos
+X-of-Y =
+    { $x ->
+        [one] 1
+       *[other] { $x }
+    } { $y ->
+        [one] av { $y }
+       *[other] av { $y }
+    }
+# Displays number of photos attached to an observation in the Media Viewer
+X-PHOTOS =
+    { $photoCount ->
+        [one] 1 BILD
+       *[other] { $photoCount } BILDER
+    }
+# Displays number of photos and observations a user has selected from the camera roll
+X-PHOTOS-X-OBSERVATIONS =
+    { $photoCount ->
+        [one] 1 BILD
+       *[other] { $photoCount } BILDER
+    }, { $observationCount ->
+        [one] 1 FYND
+       *[other] { $observationCount } FYND
+    }
+# Displays number of photos and sounds attached to an observation in the Media
+# Viewer
+X-PHOTOS-Y-SOUNDS =
+    { $photoCount ->
+        [one] 1 BILD
+       *[other] { $photoCount } BILDER
+    }, { $soundCount ->
+        [one] 1 LJUD
+       *[other] { $soundCount } LJUD
+    }
+X-PROJECTS = { $projectCount } PROJEKT
+# Displays number of sounds attached to an observation in the Media Viewer
+X-SOUNDS =
+    { $count ->
+        [one] 1 LJUD
+       *[other] { $count } LJUD
+    }
+X-Species =
+    { $count ->
+        [one] { $count } Art
+       *[other] { $count } Arter
+    }
+x-uploads-failed =
+    { $count ->
+        [one] { $count } uppladdning misslyckades
+       *[other] { $count } uppladdningar misslyckades
+    }
+Yes-license-my-photos = Ja, licensiera mina bilder, ljud och fynd så att forskare kan använda mina data (rekommenderas)
+You-are-offline = Du är offline
+You-are-offline-Tap-to-reload = Du är offline. Tryck för att ladda om.
+You-are-offline-Tap-to-try-again = Du är offline. Tryck för att försöka igen.
+You-can-add-up-to-20-media = Du kan lägga till upp till 20 bilder och 20 ljud per fynd.
+You-can-also-check-out-merchandise = Du kan också kolla in varor för iNaturalist och Seek i vår butik nedan!
+You-can-also-explore-existing-observations = Du kan också utforska befintliga fynd på iNaturalist för att upptäcka vad som finns omkring dig.
+You-can-click-join-on-the-project-page = Du kan klicka på ”gå med” på projektsidan.
+You-can-find-answers-on-our-help-page = Du kan hitta svar på vår hjälpsida.
+You-can-only-add-20-photos-per-observation = Du kan bara lägga till 20 bilder per fynd
+# Onboarding text on MyObservations: Onboarding text on MyObservations: 51-100 observations
+You-can-search-observations-of-any-plant-or-animal = Du kan söka fynd av vilka växter eller djur som helst, var som helst i världen, med Utforska!
+You-can-still-share-the-file = Du kan fortfarande dela filen med en annan app. Om du kan mejla den, skicka den till { $email }
+You-can-upload-this-observation-to-our-community = Du kan ladda upp detta fynd till vår community för att få en bestämning av en riktig person, och hjälpa vår AI att förbättra sina bestämningar i framtiden
+You-changed-filters-will-be-discarded = Du ändrade filter, men de tillämpades inte på dina sökresultat i utforska.
+You-have-opted-out-of-the-Community-Taxon = Du har valt bort Communityns taxon
+You-havent-joined-any-projects-yet = Du har inte gått med i några projekt ännu!
+You-must-be-logged-in-to-view-messages = Du måste vara inloggad för att se meddelanden
+# Error message when you try to do something that requires an Internet
+# connection but such a connection is, tragically, missing
+You-need-an-Internet-connection-to-do-that = Du behöver en internetanslutning för att göra det.
 # Error message when you try to do something that requires log in
 You-need-log-in-to-do-that = Du måste logga in för att göra det.
+You-will-see-notifications = Du kommer se aviseringar här när du väl loggat in och laddat upp fynd.
+Your-donation-to-iNaturalist = Din donation till iNaturalist stödjer förbättringar och stabilitet i mobilapparna och webbplatsen som knyter miljontals människor till naturen och möjliggör skydd av biologisk mångfald över hela världen!
+Your-email-is-confirmed = Din e-postadress är bekräftad! Logga in för att fortsätta.
+Your-location-uncertainty-is-over-x-km = Din platsosäkerhet är över { $x } km, vilket är för mycket för att vara till hjälp för bestämmare. Redigera positionen och zooma in tills noggrannhetscirkeln blir grön och är centrerad på platsen där du observerat organismen.
+Youre-always-in-control-of-the-location-privacy = Du har alltid kontroll över positionssekretessen för varje fynd du skapar.
+# Text prompting the user to open Settings to grant permission after
+# permission has been denied
+Youve-denied-permission-prompt = Du har nekat tillstånd. Vänligen ge tillstånd i inställningsappen.
+Youve-previously-denied-camera-permissions = Du har tidigare nekat kamerabehörigheter - vänligen aktivera dem i inställningarna.
+Youve-previously-denied-gallery-permissions = Du har tidigare nekat galleribehörigheter - vänligen aktivera dem i inställningarna.
+Youve-previously-denied-location-permissions = Du har tidigare nekat platsbehörigheter - vänligen aktivera dem i inställningarna.
+Youve-previously-denied-microphone-permissions = Du har tidigare nekat mikrofonbehörigheter - vänligen aktivera dem i inställningarna.
+Zoom-in-as-much-as-possible-to-improve = Zooma in så mycket som möjligt för att förbättra positionens noggrannhet och få bättre bestämningar.
+Zoom-to-current-location = Zooma till aktuell position
+# Label for button that shows zoom level, e.g. on a camera
+zoom-x = { $zoom }×

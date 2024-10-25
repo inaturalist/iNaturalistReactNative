@@ -169,6 +169,7 @@ Notifications = Értesítések
 # Month of November
 November = November
 Obscured = Kitakart
+Observation = Megfigyelés
 Observations = Megfigyelések
 # Button that starts a new observation
 Observe = Észlelés
@@ -189,6 +190,7 @@ Private = Privát
 Project-Members-Only = Csak projekttagok
 # As in iNat projects, collections of observations or observation search filters
 Projects = Projektek
+PROJECTS-X = PROJEKTEK ({ $projectCount })
 # label in project requirements
 Quality-Grade = Minőségi szint
 Ranks-Class = Osztály
@@ -288,5 +290,6 @@ Wild = Vad
 # Label for a button that withdraws an identification
 Withdraw = Visszavonás
 Worldwide = globális
+X-PROJECTS = { $projectCount } PROJEKT
 # Error message when you try to do something that requires log in
 You-need-log-in-to-do-that = Ehhez be kell jelentkezned.

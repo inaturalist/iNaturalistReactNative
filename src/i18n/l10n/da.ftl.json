@@ -232,6 +232,7 @@
   "Notifications": "Notifikationer",
   "November": "November",
   "Obscured": "Sløret",
+  "Observation": "Observation",
   "Observations": "Observationer",
   "Observe": "Observere",
   "Observers": "Observatører",
@@ -244,6 +245,7 @@
   "Private": "Fortrolig",
   "Project-Members-Only": "Kun Projektmedlemmer",
   "Projects": "Projekter",
+  "PROJECTS-X": "PROJEKTER ({ $projectCount })",
   "Quality-Grade": "Kvalitetsklasse",
   "Ranks-Class": "Klasse",
   "Ranks-Complex": "Kompleks",
@@ -306,6 +308,7 @@
   "Syncing": "Synkroniserer...",
   "Taxa": "Taksa",
   "Terms-of-Use": "Vilkår for brug",
+  "The-models-that-suggest-species": "De modeller, som foreslår arter baseret på visuel lighed og placering, kan til dels tilskrives et samarbejder med Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona og Grant Van Horn.",
   "Traditional-Project": "Traditionelt projekt",
   "Umbrella-Project": "Paraplyprojekt",
   "Unknown--rank": "Ukendt",
@@ -318,5 +321,6 @@
   "Wild": "vild",
   "Withdraw": "Træk tilbage",
   "Worldwide": "I hele verden",
+  "X-PROJECTS": "{ $projectCount } PROJEKTER",
   "You-need-log-in-to-do-that": "Dette kræver, at du først logger ind."
 }

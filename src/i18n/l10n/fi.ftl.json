@@ -93,6 +93,7 @@
   "Notifications": "Ilmoitukset",
   "November": "marraskuu",
   "Obscured": "Karkeistettu",
+  "Observation": "Havainto",
   "Observations": "Havainnot",
   "Observe": "Havaitse",
   "Observers": "Havainnoijaa",
@@ -105,6 +106,7 @@
   "Private": "Yksityinen",
   "Project-Members-Only": "Vain projektin jäsenille",
   "Projects": "Projektit",
+  "PROJECTS-X": "PROJEKTIT ({ $projectCount })",
   "Quality-Grade": "Laatutaso",
   "Quality-Grade-Casual--label": "Laatutaso: Epämuodollinen",
   "Quality-Grade-Needs-ID--label": "Laatutaso: Tarvitsee tunnistuksen",
@@ -181,5 +183,6 @@
   "Withdraw": "Peruuta",
   "Worldwide": "Maailmanlaajuinen",
   "X-MEMBERS": "{ $count } JÄSENET",
+  "X-PROJECTS": "{ $projectCount } PROJEKTIA",
   "You-need-log-in-to-do-that": "Sinun täytyy kirjautua ensin."
 }
