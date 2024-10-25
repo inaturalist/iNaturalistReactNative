@@ -194,7 +194,7 @@ const UserProfile = ( ): Node => {
           </View>
         ) }
         {isDebug && (
-          <View>
+          <View className="mb-8">
             <Heading4 className="mb-[11px]">
               {t( "PROJECTS" )}
             </Heading4>
