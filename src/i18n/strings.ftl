@@ -283,6 +283,8 @@ DATE-OBSERVED-OLDEST = DATE OBSERVED - OLDEST TO NEWEST
 Date-Range = Date Range
 # Label for controls over a range of dates
 DATE-RANGE = DATE RANGE
+# Express a date range. d1 and d2 can be any expression of dates
+date-to-date = { $d1 } - { $d2 }
 DATE-UPLOADED = DATE UPLOADED
 Date-uploaded = Date uploaded
 Date-uploaded-header-short = Uploaded
@@ -797,6 +799,7 @@ Private = Private
 PROJECT = PROJECT
 Project-Members-Only = Project Members Only
 PROJECT-REQUIREMENTS = PROJECT REQUIREMENTS
+project_start_time_datetime = Start time: { $datetime }
 # As in iNat project, collections of observations or observation search filters
 PROJECTS = PROJECTS
 # As in iNat projects, collections of observations or observation search filters
@@ -1040,7 +1043,6 @@ SPECIES-WITHOUT-NUMBER =
 # Label for the standard map type
 Standard--map-type = Standard
 Start-must-be-before-end = The start date must be before the end date.
-Start-time = Start time: { $date }
 Start-upload = Start upload
 # Accessibility hint for button that starts recording a sound
 Starts-recording-sound = Starts recording sound
