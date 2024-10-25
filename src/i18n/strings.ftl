@@ -799,7 +799,7 @@ Private = Private
 PROJECT = PROJECT
 Project-Members-Only = Project Members Only
 PROJECT-REQUIREMENTS = PROJECT REQUIREMENTS
-project_start_time_datetime = Start time: { $datetime }
+project-start-time-datetime = Start time: { $datetime }
 # As in iNat project, collections of observations or observation search filters
 PROJECTS = PROJECTS
 # As in iNat projects, collections of observations or observation search filters

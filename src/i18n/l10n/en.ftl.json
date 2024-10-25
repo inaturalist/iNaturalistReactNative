@@ -514,7 +514,7 @@
   "PROJECT": "PROJECT",
   "Project-Members-Only": "Project Members Only",
   "PROJECT-REQUIREMENTS": "PROJECT REQUIREMENTS",
-  "project_start_time_datetime": "Start time: { $datetime }",
+  "project-start-time-datetime": "Start time: { $datetime }",
   "PROJECTS": "PROJECTS",
   "Projects": "Projects",
   "PROJECTS-X": "PROJECTS ({ $projectCount })",

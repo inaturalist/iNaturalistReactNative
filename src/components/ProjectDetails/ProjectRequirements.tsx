@@ -281,7 +281,7 @@ const ProjectRequirements = ( ) => {
       ?.filter( pref => pref.field === "month" ) );
 
     if ( projectStartDate && !projectEndDate ) {
-      return t( "project_start_time_datetime", {
+      return t( "project-start-time-datetime", {
         datetime: formatProjectsApiDatetimeLong( projectStartDate, i18n )
       } );
     }
