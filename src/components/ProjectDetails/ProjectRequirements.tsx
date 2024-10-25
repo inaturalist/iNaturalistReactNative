@@ -7,6 +7,7 @@ import { ActivityIndicator, ScrollViewWrapper } from "components/SharedComponent
 import { View } from "components/styledComponents";
 import _ from "lodash";
 import React from "react";
+import { formatProjectsApiDatetimeLong } from "sharedHelpers/dateAndTime.ts";
 import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
 
 import AboutProjectType from "./AboutProjectType";
@@ -20,7 +21,7 @@ const ProjectRequirements = ( ) => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { id } = params;
-  const { t } = useTranslation( );
+  const { t, i18n } = useTranslation( );
 
   const monthValues = {
     1: {
@@ -281,17 +282,17 @@ const ProjectRequirements = ( ) => {
 
     if ( projectStartDate && !projectEndDate ) {
       return t( "project_start_time_datetime", {
-        datetime: projectStartDate
+        datetime: formatProjectsApiDatetimeLong( projectStartDate, i18n )
       } );
     }
     if ( projectStartDate && projectEndDate ) {
       return t( "date-to-date", {
-        d1: projectStartDate,
-        d2: projectEndDate
+        d1: formatProjectsApiDatetimeLong( projectStartDate, i18n ),
+        d2: formatProjectsApiDatetimeLong( projectEndDate, i18n )
       } );
     }
     if ( observedOnDate ) {
-      return observedOnDate;
+      return formatProjectsApiDatetimeLong( observedOnDate, i18n );
     }
     if ( months ) {
       const monthList = months.split( "," );
