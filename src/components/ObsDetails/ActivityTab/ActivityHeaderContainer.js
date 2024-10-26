@@ -31,11 +31,10 @@ const ActivityHeaderContainer = ( {
   belongsToCurrentUser
 }:Props ): Node => {
   const [currentUser, setCurrentUser] = useState( false );
-  const [flagged, setFlagged] = useState( false );
   const [loading, setLoading] = useState( false );
   const { user } = item;
 
-  const numFlags = item.flags?.length || 0;
+  const flagged = item.flags?.some( flag => !flag.resolved );
 
   useEffect( ( ) => {
     const isActiveUserTheCurrentUser = async ( ) => {
@@ -43,11 +42,7 @@ const ActivityHeaderContainer = ( {
       setCurrentUser( current );
     };
     isActiveUserTheCurrentUser( );
-
-    if ( numFlags > 0 ) {
-      setFlagged( true );
-    }
-  }, [user, numFlags] );
+  }, [user] );
 
   const deleteCommentMutation = useAuthenticatedMutation(
     ( uuid, optsWithAuth ) => deleteComments( uuid, optsWithAuth ),
