@@ -1,22 +1,24 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import navigateToObsEdit from "components/ObsEdit/helpers/navigateToObsEdit.ts";
 import { getCurrentRoute } from "navigation/navigationUtils.ts";
-import type { Node } from "react";
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { Pressable } from "react-native";
+import RealmObservation from "realmModels/Observation";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
-type Props = {
-  observation: Object,
-  testID?: string,
-  // $FlowIgnore
-  children: unknown
+// TODO remove when we figure out how to type the Realm models
+interface Observation extends RealmObservation {
+  species_guess?: string;
+  uuid: string;
 }
 
-const MyObservationsPressable = ( { observation, testID, children }: Props ): Node => {
+interface Props extends PropsWithChildren {
+  observation: Observation;
+  testID?: string;
+}
+
+const ObsPressable = ( { observation, testID, children }: Props ) => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const prepareObsEdit = useStore( state => state.prepareObsEdit );
@@ -58,4 +60,4 @@ const MyObservationsPressable = ( { observation, testID, children }: Props ): No
   );
 };
 
-export default MyObservationsPressable;
+export default ObsPressable;

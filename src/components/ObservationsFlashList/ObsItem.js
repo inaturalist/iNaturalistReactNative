@@ -4,9 +4,9 @@ import type { Node } from "react";
 import React from "react";
 import Observation from "realmModels/Observation";
 
-import MyObservationsPressable from "./MyObservationsPressable";
 import ObsGridItem from "./ObsGridItem";
 import ObsListItem from "./ObsListItem";
+import ObsPressable from "./ObsPressable";
 
 const { useRealm } = RealmContext;
 
@@ -32,9 +32,9 @@ const ObsItem = ( {
   const showUploadStatus = needsSync.length > 0;
 
   return (
-    <MyObservationsPressable
+    <ObsPressable
       observation={observation}
-      testID={`MyObservationsPressable.${observation.uuid}`}
+      testID={`ObsPressable.${observation.uuid}`}
     >
       {
         layout === "grid"
@@ -59,7 +59,7 @@ const ObsItem = ( {
             />
           )
       }
-    </MyObservationsPressable>
+    </ObsPressable>
   );
 };
 
