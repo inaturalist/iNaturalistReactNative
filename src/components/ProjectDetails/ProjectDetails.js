@@ -15,6 +15,7 @@ import React, { useCallback } from "react";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
+import formatProjectDate from "../Projects/helpers/displayDates";
 import AboutProjectType from "./AboutProjectType";
 
 type Props = {
@@ -29,7 +30,7 @@ const ProjectDetails = ( {
 }: Props ): Node => {
   const setExploreView = useStore( state => state.setExploreView );
 
-  const { t } = useTranslation( );
+  const { t, i18n } = useTranslation( );
   const navigation = useNavigation( );
 
   const onObservationPressed = useCallback(
@@ -70,6 +71,8 @@ const ProjectDetails = ( {
 
   const userTextStyle = { lineHeight: 26 };
 
+  const { projectDate, shouldDisplayDateRange } = formatProjectDate( project, t, i18n );
+
   return (
     <ScrollViewWrapper testID="project-details">
       <View className="h-[24px]" />
@@ -87,7 +90,11 @@ const ProjectDetails = ( {
       </ImageBackground>
       <View className="mx-4 pb-8">
         <Heading1 className="shrink mt-4">{project.title}</Heading1>
-        <Heading3>{displayProjectType( project.project_type, t )}</Heading3>
+        <Heading3>
+          {shouldDisplayDateRange
+            ? projectDate
+            : displayProjectType( project.project_type, t )}
+        </Heading3>
         <OverviewCounts
           counts={{
             observations_count: project.observations_count,
