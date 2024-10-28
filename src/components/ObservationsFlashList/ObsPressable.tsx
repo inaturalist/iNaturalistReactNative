@@ -1,6 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
 import navigateToObsEdit from "components/ObsEdit/helpers/navigateToObsEdit.ts";
-import { getCurrentRoute } from "navigation/navigationUtils.ts";
 import React, { PropsWithChildren } from "react";
 import { Pressable } from "react-native";
 import RealmObservation from "realmModels/Observation";
@@ -15,10 +14,18 @@ interface Observation extends RealmObservation {
 
 interface Props extends PropsWithChildren {
   observation: Observation;
+  // Uniquely identify the list this observation appears in so we can ensure
+  // ObsDetails doesn't get pushed onto the stack twice after multiple taps
+  obsListKey: string;
   testID?: string;
 }
 
-const ObsPressable = ( { observation, testID, children }: Props ) => {
+const ObsPressable = ( {
+  children,
+  observation,
+  obsListKey = "unknown",
+  testID
+}: Props ) => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const prepareObsEdit = useStore( state => state.prepareObsEdit );
@@ -32,10 +39,8 @@ const ObsPressable = ( { observation, testID, children }: Props ) => {
       prepareObsEdit( observation );
       navigateToObsEdit( navigation, setMyObsOffsetToRestore );
     } else {
-      const currentRoute = getCurrentRoute();
-      const uniqueKey = currentRoute?.key || "key-default";
       navigation.navigate( {
-        key: `Obs-${uniqueKey}-${uuid}`,
+        key: `Obs-${obsListKey}-${uuid}`,
         name: "ObsDetails",
         params: { uuid }
       } );

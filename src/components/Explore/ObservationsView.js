@@ -94,6 +94,7 @@ const ObservationsView = ( {
         isFetchingNextPage={isFetchingNextPage}
         isConnected={isConnected}
         layout={layout}
+        obsListKey="ExploreObservations"
         onEndReached={fetchNextPage}
         showNoResults={!canFetch || totalResults === 0}
         testID="ExploreObservationsAnimatedList"

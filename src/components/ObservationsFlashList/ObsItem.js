@@ -15,7 +15,8 @@ type Props = {
   handleIndividualUploadPress: Function,
   gridItemStyle: Object,
   layout: "list" | "grid",
-  observation: Object
+  observation: Object,
+  obsListKey: String
 };
 
 const ObsItem = ( {
@@ -23,7 +24,8 @@ const ObsItem = ( {
   handleIndividualUploadPress,
   gridItemStyle,
   layout,
-  observation
+  observation,
+  obsListKey
 }: Props ): Node => {
   const realm = useRealm( );
   const allUnsyncedObservations = Observation.filterUnsyncedObservations( realm );
@@ -34,6 +36,7 @@ const ObsItem = ( {
   return (
     <ObsPressable
       observation={observation}
+      obsListKey={obsListKey}
       testID={`ObsPressable.${observation.uuid}`}
     >
       {
