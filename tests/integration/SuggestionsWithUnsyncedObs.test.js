@@ -64,7 +64,8 @@ jest.mock( "sharedHooks/useDebugMode", ( ) => ( {
   __esModule: true,
   default: ( ) => ( {
     isDebug: false
-  } )
+  } ),
+  isDebugMode: ( ) => false
 } ) );
 
 jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
@@ -141,6 +142,11 @@ const mockLocalTaxon = {
 };
 
 const mockUser = factory( "LocalUser" );
+// Mock useCurrentUser hook
+jest.mock( "sharedHooks/useCurrentUser", () => ( {
+  __esModule: true,
+  default: jest.fn( () => mockUser )
+} ) );
 
 const makeMockObservations = ( ) => ( [
   factory( "RemoteObservation", {
@@ -289,6 +295,7 @@ describe( "from ObsEdit with human observation", ( ) => {
 } );
 
 describe( "from AICamera", ( ) => {
+  global.withAnimatedTimeTravelEnabled( );
   beforeEach( async ( ) => {
     inatjs.computervision.score_image
       .mockResolvedValue( makeResponse( [topSuggestion] ) );
@@ -366,6 +373,7 @@ describe( "from AICamera", ( ) => {
       } ) );
       const { observations } = await setupAppWithSignedInUser( );
       await navigateToSuggestionsViaAICamera( observations[0] );
+      global.timeTravel( );
       const usePermissionsButton = await screen.findByText( /IMPROVE THESE SUGGESTIONS/ );
       expect( usePermissionsButton ).toBeVisible( );
       const ignoreLocationButton = screen.queryByText( /IGNORE LOCATION/ );

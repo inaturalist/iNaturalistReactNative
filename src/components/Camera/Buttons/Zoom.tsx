@@ -20,7 +20,7 @@ interface Props {
   showZoomButton: boolean;
 }
 
-const CameraZoom = ( {
+const Zoom = ( {
   rotatableAnimatedStyle,
   handleZoomButtonPress,
   zoomClassName,
@@ -32,8 +32,6 @@ const CameraZoom = ( {
   if ( !showZoomButton ) {
     return null;
   }
-
-  const zoomButtonText = `${zoomTextValue}×`;
 
   return (
     <Animated.View
@@ -48,11 +46,11 @@ const CameraZoom = ( {
         accessibilityState={{ disabled: false }}
       >
         <Body3 className="text-s text-white">
-          {zoomButtonText}
+          {t( "zoom-x", { zoom: Number( zoomTextValue ) } )}
         </Body3>
       </Pressable>
     </Animated.View>
   );
 };
 
-export default CameraZoom;
+export default Zoom;

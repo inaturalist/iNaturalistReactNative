@@ -1,14 +1,13 @@
-import { searchProjects } from "api/projects";
 import _ from "lodash";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
-  useAuthenticatedQuery,
   useCurrentUser,
-  useTranslation,
-  useWatchPosition
+  useLocationPermission,
+  useTranslation
 } from "sharedHooks";
-import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 
+import fetchUserLocation from "../../sharedHelpers/fetchUserLocation";
+import useInfiniteProjectsScroll from "./hooks/useInfiniteProjectsScroll";
 import Projects from "./Projects";
 
 export enum TAB_ID {
@@ -25,50 +24,43 @@ const ProjectsContainer = ( ) => {
   const currentUser = useCurrentUser( );
   const memberId = currentUser?.id;
   const { t } = useTranslation( );
-  const [apiParams, setApiParams] = useState( { } );
   const [currentTabId, setCurrentTabId] = useState( currentUser
     ? TAB_ID.JOINED
     : TAB_ID.FEATURED );
   const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
-  const { userLocation } = useWatchPosition( {
-    shouldFetchLocation: hasPermissions
-  } );
+  const [userLocation, setUserLocation] = useState( null );
+
+  const apiParams = { };
+
+  if ( searchInput.length > 0 ) {
+    apiParams.q = searchInput;
+  } else if ( currentTabId === TAB_ID.JOINED ) {
+    apiParams.member_id = memberId;
+  } else if ( currentTabId === TAB_ID.FEATURED ) {
+    apiParams.featured = true;
+  } else if ( currentTabId === TAB_ID.NEARBY && userLocation ) {
+    // lifted params for nearby from iOS Projects for app parity
+    // https://github.com/inaturalist/INaturalistIOS/blob/20aa47385471f3eb10622b022c51cabc602422ae/INaturalistIOS/API%20Endpoints/Node%20API/ProjectsAPI.m#L48
+    apiParams.lat = userLocation.latitude;
+    apiParams.lng = userLocation.longitude;
+    apiParams.order_by = "distance";
+    apiParams.spam = false;
+  }
+
+  const getCurrentUserLocation = async ( ) => {
+    const currentUserLocation = await fetchUserLocation( );
+    setUserLocation( currentUserLocation );
+  };
 
   const {
-    data: projects,
-    isLoading
-  } = useAuthenticatedQuery(
-    ["searchProjects", apiParams],
-    optsWithAuth => searchProjects( apiParams, optsWithAuth ),
-    {
-      enabled: !_.isEmpty( apiParams )
-    }
-  );
-
-  useEffect( ( ) => {
-    if ( currentTabId === TAB_ID.JOINED ) {
-      setApiParams( { member_id: memberId } );
-    } else if ( currentTabId === TAB_ID.FEATURED ) {
-      setApiParams( { featured: true } );
-    } else if ( currentTabId === TAB_ID.NEARBY && userLocation ) {
-      setApiParams( {
-        lat: userLocation.latitude,
-        lng: userLocation.longitude,
-        radius: 50
-      } );
-    }
-  }, [
-    memberId,
-    currentTabId,
-    userLocation,
-    searchInput
-  ] );
-
-  useEffect( ( ) => {
-    if ( searchInput.length > 0 ) {
-      setApiParams( { q: searchInput } );
-    }
-  }, [searchInput] );
+    isFetching,
+    isFetchingNextPage,
+    fetchNextPage,
+    projects
+  } = useInfiniteProjectsScroll( {
+    params: apiParams,
+    enabled: !_.isEmpty( apiParams )
+  } );
 
   const tabs = [
     {
@@ -88,7 +80,10 @@ const ProjectsContainer = ( ) => {
     {
       id: TAB_ID.NEARBY,
       text: t( "NEARBY" ),
-      onPress: () => {
+      onPress: ( ) => {
+        if ( hasPermissions ) {
+          getCurrentUserLocation( );
+        }
         setCurrentTabId( TAB_ID.NEARBY );
       }
     }
@@ -101,17 +96,19 @@ const ProjectsContainer = ( ) => {
   return (
     <>
       <Projects
+        currentTabId={currentTabId}
+        fetchNextPage={fetchNextPage}
+        hasPermissions={hasPermissions}
+        isFetchingNextPage={isFetchingNextPage}
+        isLoading={isFetching}
+        memberId={memberId}
+        projects={projects}
+        requestPermissions={requestPermissions}
         searchInput={searchInput}
         setSearchInput={setSearchInput}
         tabs={tabs}
-        currentTabId={currentTabId}
-        projects={projects}
-        isLoading={isLoading}
-        memberId={memberId}
-        hasPermissions={hasPermissions}
-        requestPermissions={requestPermissions}
       />
-      {renderPermissionsGate( )}
+      {renderPermissionsGate( { onPermissionGranted: getCurrentUserLocation } )}
     </>
   );
 };

@@ -80,6 +80,12 @@ const mockUser = factory( "LocalUser", {
   locale: "en"
 } );
 
+// Mock useCurrentUser hook
+jest.mock( "sharedHooks/useCurrentUser", () => ( {
+  __esModule: true,
+  default: jest.fn( () => mockUser )
+} ) );
+
 const topSuggestion = {
   taxon: factory( "RemoteTaxon", { name: "Primum suggestion" } ),
   combined_score: 90
@@ -90,6 +96,7 @@ const otherSuggestion = {
 };
 
 describe( "Suggestions", ( ) => {
+  global.withAnimatedTimeTravelEnabled( );
   const actor = userEvent.setup( );
 
   // We need to navigate from MyObs to ObsEdit to Suggestions for all of these
@@ -124,6 +131,7 @@ describe( "Suggestions", ( ) => {
     await actor.press( takePhotoButton );
     const addIDButton = await screen.findByText( /ADD AN ID/ );
     expect( addIDButton ).toBeVisible( );
+    global.timeTravel( );
   }
 
   beforeAll( async () => {

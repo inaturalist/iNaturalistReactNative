@@ -19,8 +19,8 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
 import openMap from "react-native-open-maps";
-import { useTheme } from "react-native-paper";
 import { getShadow } from "styles/global";
+import colors from "styles/tailwindColors";
 
 type Props = {
   latitude: number,
@@ -72,7 +72,6 @@ const DetailsMap = ( {
   region,
   coordinateString
 }: Props ): Node => {
-  const theme = useTheme( );
   const [showNotificationModal, setShowNotificationModal] = useState( false );
 
   const closeShowNotificationModal = () => {
@@ -97,7 +96,7 @@ const DetailsMap = ( {
       <SafeAreaView>
         <View className="bg-white w-fit flex-row py-[22px] pl-[21px] pr-[24px] items-start">
           <HeaderBackButton
-            tintColor={theme.colors.primary}
+            tintColor={colors.darkGray}
             onPress={( ) => closeModal()}
             labelVisible={false}
           />

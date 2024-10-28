@@ -1,8 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Mortal from "components/SharedComponents/Mortal";
 import {
-  hideHeader,
-  showHeader
+  hideHeader
 } from "navigation/navigationOptions";
 import TabStackNavigator from "navigation/StackNavigators/TabStackNavigator";
 import React from "react";
@@ -27,7 +26,6 @@ const BottomTabs = ( ) => {
         initialRouteName={OBS_LIST_SCREEN_ID}
         tabBar={renderTabBar}
         backBehavior="history"
-        screenOptions={showHeader}
       >
         <Tab.Screen
           name="TabStackNavigator"

@@ -1,5 +1,4 @@
 // @flow
-import { useRoute } from "@react-navigation/native";
 import PotentialDisagreementSheet from
   "components/ObsDetails/Sheets/PotentialDisagreementSheet";
 import {
@@ -15,7 +14,9 @@ import {
   View
 } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useMemo } from "react";
+import React, {
+  useLayoutEffect, useMemo, useRef, useState
+} from "react";
 import { Platform } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import {
@@ -46,13 +47,14 @@ type Props = {
   commentIsOptional: ?boolean,
   confirmCommentFromCommentSheet: Function,
   confirmRemoteObsWasDeleted?: Function,
-  currentTabId: string,
+  obsDetailsTab: string,
   currentUser: Object,
   editIdentBody: Function,
   hideAddCommentSheet: Function,
   isConnected: boolean,
   isRefetching: boolean,
   navToSuggestions: Function,
+  notificationId: number,
   observation: Object,
   openAddCommentSheet: Function,
   openAgreeWithIdSheet: Function,
@@ -76,7 +78,8 @@ type Props = {
     taxon: Object,
     vision?: boolean
   },
-  onChangeIdentBody?: Function
+  onChangeIdentBody?: Function,
+  uuid: string
 }
 
 const ObsDetails = ( {
@@ -88,13 +91,14 @@ const ObsDetails = ( {
   commentIsOptional,
   confirmCommentFromCommentSheet,
   confirmRemoteObsWasDeleted,
-  currentTabId,
+  obsDetailsTab,
   currentUser,
   editIdentBody,
   hideAddCommentSheet,
   isConnected,
   isRefetching,
   navToSuggestions,
+  notificationId,
   observation,
   onAgree,
   openAgreeWithIdSheet,
@@ -114,13 +118,21 @@ const ObsDetails = ( {
   identBodySheetShown,
   onCloseIdentBodySheet,
   newIdentification,
-  onChangeIdentBody
-
+  onChangeIdentBody,
+  uuid
 }: Props ): Node => {
+  const scrollViewRef = useRef( );
   const insets = useSafeAreaInsets();
-  const { params } = useRoute( );
-  const { uuid } = params;
   const { t } = useTranslation( );
+  const [scrollToY, setScrollToY] = useState( 0 );
+
+  useLayoutEffect( ( ) => {
+    // we need useLayoutEffect here to make sure the ScrollView has already rendered
+    // before trying to scroll to the relevant activity item
+    if ( notificationId && scrollViewRef?.current ) {
+      scrollViewRef?.current?.scrollTo( { y: scrollToY } );
+    }
+  } );
 
   const dynamicInsets = useMemo( () => ( {
     backgroundColor: "#ffffff",
@@ -139,9 +151,11 @@ const ObsDetails = ( {
       <ActivityTab
         activityItems={activityItems}
         isConnected={isConnected}
+        notificationId={notificationId}
         observation={observation}
         openAgreeWithIdSheet={openAgreeWithIdSheet}
         refetchRemoteObservation={refetchRemoteObservation}
+        setScrollToY={setScrollToY}
       />
     </HideView>
   );
@@ -177,8 +191,9 @@ const ObsDetails = ( {
             observation={observation}
           />
         </View>
-        <Tabs tabs={tabs} activeId={currentTabId} />
+        <Tabs tabs={tabs} activeId={obsDetailsTab} />
         <ScrollView
+          ref={scrollViewRef}
           testID={`ObsDetails.${uuid}`}
           stickyHeaderIndices={[0, 3]}
           scrollEventThrottle={16}
@@ -207,7 +222,7 @@ const ObsDetails = ( {
       <ObsDetailsHeader
         belongsToCurrentUser={belongsToCurrentUser}
         observationId={observation?.id}
-        rightIconBlack
+        rightIconDarkGray
         uuid={observation?.uuid}
       />
     </View>
@@ -216,6 +231,7 @@ const ObsDetails = ( {
   const renderPhone = () => (
     <>
       <ScrollView
+        ref={scrollViewRef}
         testID={`ObsDetails.${uuid}`}
         stickyHeaderIndices={[0, 3]}
         scrollEventThrottle={16}
@@ -245,7 +261,7 @@ const ObsDetails = ( {
           observation={observation}
         />
         <View className="bg-white">
-          <Tabs tabs={tabs} activeId={currentTabId} />
+          <Tabs tabs={tabs} activeId={obsDetailsTab} />
         </View>
         <View className="bg-white h-full">
           {renderActivityTab( )}
@@ -299,7 +315,7 @@ const ObsDetails = ( {
       {showAddCommentSheet && (
         <TextInputSheet
           buttonText={t( "CONFIRM" )}
-          handleClose={hideAddCommentSheet}
+          onPressClose={hideAddCommentSheet}
           headerText={showAddCommentHeader( )}
           textInputStyle={textInputStyle}
           initialInput={comment}
@@ -309,7 +325,7 @@ const ObsDetails = ( {
       {identBodySheetShown && (
         <TextInputSheet
           buttonText={t( "CONFIRM" )}
-          handleClose={onCloseIdentBodySheet}
+          onPressClose={onCloseIdentBodySheet}
           headerText={showAddCommentHeader( )}
           textInputStyle={textInputStyle}
           initialInput={newIdentification?.body}
@@ -328,7 +344,7 @@ const ObsDetails = ( {
       {showPotentialDisagreementSheet && newIdentification && (
         <PotentialDisagreementSheet
           onPotentialDisagreePressed={onPotentialDisagreePressed}
-          handleClose={potentialDisagreeSheetDiscardChanges}
+          onPressClose={potentialDisagreeSheetDiscardChanges}
           newTaxon={newIdentification.taxon}
           oldTaxon={observation.taxon}
         />
@@ -343,7 +359,7 @@ const ObsDetails = ( {
       */}
       { remoteObsWasDeleted && confirmRemoteObsWasDeleted && (
         <WarningSheet
-          handleClose={confirmRemoteObsWasDeleted}
+          onPressClose={confirmRemoteObsWasDeleted}
           headerText={t( "OBSERVATION-WAS-DELETED" )}
           text={t( "Sorry-this-observation-was-deleted" )}
           buttonText={t( "OK" )}

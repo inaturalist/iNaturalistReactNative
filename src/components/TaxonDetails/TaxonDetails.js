@@ -3,17 +3,19 @@
 import { refresh, useNetInfo } from "@react-native-community/netinfo";
 import { useNavigation, useNavigationState, useRoute } from "@react-navigation/native";
 import { fetchSpeciesCounts } from "api/observations";
-import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
   ActivityIndicator,
   Body1,
+  BottomSheet,
   Button,
+  ButtonBar,
+  CarouselDots,
   INatIcon,
   INatIconButton,
+  List2,
   OfflineNotice,
-  ScrollViewWrapper,
-  StickyToolbar
+  ScrollViewWrapper
 } from "components/SharedComponents";
 import {
   View
@@ -26,8 +28,8 @@ import {
   StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import { useTheme } from "react-native-paper";
 import { log } from "sharedHelpers/logger";
+import saveObservation from "sharedHelpers/saveObservation.ts";
 import { fetchTaxonAndSave } from "sharedHelpers/taxon";
 import {
   useAuthenticatedQuery,
@@ -37,6 +39,7 @@ import {
   useUserMe
 } from "sharedHooks";
 import useStore from "stores/useStore";
+import colors from "styles/tailwindColors";
 
 import EstablishmentMeans from "./EstablishmentMeans";
 import TaxonDetailsHeader from "./TaxonDetailsHeader";
@@ -55,14 +58,17 @@ const isTablet = DeviceInfo.isTablet();
 
 const TaxonDetails = ( ): Node => {
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
+  const getCurrentObservation = useStore( state => state.getCurrentObservation );
   const setExploreView = useStore( state => state.setExploreView );
-  const theme = useTheme( );
+  const cameraRollUris = useStore( state => state.cameraRollUris );
+  const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { id, hideNavButtons } = params;
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
+  const [sheetVisible, setSheetVisible] = useState( false );
   const { remoteUser } = useUserMe( );
   const [mediaIndex, setMediaIndex] = useState( 0 );
   const navState = useNavigationState( nav => nav );
@@ -131,6 +137,54 @@ const TaxonDetails = ( ): Node => {
       : [taxon?.defaultPhoto]
   );
 
+  const updateTaxon = useCallback( ( ) => {
+    updateObservationKeys( {
+      taxon,
+      owners_identification_from_vision: usesVision
+    } );
+  }, [
+    taxon,
+    updateObservationKeys,
+    usesVision
+  ] );
+
+  // Close the sheet, save, the obs, any additional UI futzing required
+  const saveObservationFromSheet = useCallback( async ( ) => {
+    setSheetVisible( false );
+    updateTaxon( );
+    // We need the updated currentObservation immediately to pass to saveObservation
+    const currentObservation = getCurrentObservation( );
+    const isNewObs = !currentObservation?._created_at;
+    await saveObservation( currentObservation, cameraRollUris, realm );
+    // If we are saving a new observations, reset the stored my obs offset to
+    // restore b/c we want MyObs rendered in its default state with this new
+    // observation visible at the top
+    if ( isNewObs ) {
+      resetMyObsOffsetToRestore();
+    }
+  }, [
+    cameraRollUris,
+    getCurrentObservation,
+    realm,
+    resetMyObsOffsetToRestore,
+    updateTaxon
+  ] );
+
+  const saveForLater = useCallback( async ( ) => {
+    await saveObservationFromSheet( );
+    navigation.navigate( "TabNavigator", {
+      screen: "TabStackNavigator",
+      params: {
+        screen: "ObsList"
+      }
+    } );
+  }, [navigation, saveObservationFromSheet] );
+
+  const uploadNow = useCallback( async ( ) => {
+    await saveObservationFromSheet( );
+    navigation.navigate( "LoginStackNavigator" );
+  }, [navigation, saveObservationFromSheet] );
+
   const renderHeader = useCallback( ( { onClose } ) => (
     <TaxonDetailsMediaViewerHeader
       showSpeciesSeenCheckmark={currentUserHasSeenTaxon}
@@ -152,7 +206,6 @@ const TaxonDetails = ( ): Node => {
               refresh();
               refetch();
             }}
-            color="black"
           />
         </View>
       );
@@ -173,22 +226,7 @@ const TaxonDetails = ( ): Node => {
   };
 
   const displayScrollDots = () => (
-    <View
-      className="flex flex-row w-full justify-center items-center mb-3"
-      pointerEvents="none"
-    >
-      { photos.map( ( item, idx ) => (
-        <View
-          key={`dot-${item.id}`}
-          className={classnames(
-            "rounded-full bg-white m-[2.5]",
-            idx === mediaIndex
-              ? "w-[4px] h-[4px]"
-              : "w-[2px] h-[2px]"
-          )}
-        />
-      ) )}
-    </View>
+    <CarouselDots length={photos.length} index={mediaIndex} />
   );
 
   const displayTaxonTitle = useCallback( ( ) => (
@@ -221,7 +259,7 @@ const TaxonDetails = ( ): Node => {
             accessibilityLabel={t( "See-observations-of-this-taxon-in-explore" )}
             accessibilityHint={t( "Navigates-to-explore" )}
             size={30}
-            color={theme.colors.onPrimary}
+            color={colors.white}
             className="bg-inatGreen rounded-full"
             mode="contained"
             preventTransparency
@@ -236,8 +274,7 @@ const TaxonDetails = ( ): Node => {
     navigation,
     setExploreView,
     t,
-    taxon,
-    theme.colors.onPrimary
+    taxon
   ] );
 
   const displayTaxonMedia = () => {
@@ -262,23 +299,28 @@ const TaxonDetails = ( ): Node => {
     );
   };
 
+  const bulletedText = [
+    t( "Get-your-identification-verified-by-real-people" ),
+    t( "Share-your-observation-where-it-can-help-scientists" )
+  ];
+
   return (
     <>
       <ScrollViewWrapper
         testID={`TaxonDetails.${taxon?.id}`}
         className="bg-black"
       >
-        {/*
-        Making the bar dark here seems like the right thing, but I haven't
-        figured a way to do that *and* not making the bg of the scrollview
-        black, which reveals a dark area at the bottom of the screen on
-        overscroll in iOS ~~~kueda20240228
-      */}
         <TaxonDetailsHeader
           hideNavButtons={hideNavButtons}
           taxonId={taxon?.id}
         />
-        <StatusBar barStyle="light-content" backgroundColor="#000000" />
+        {/*
+          Making the bar dark here seems like the right thing, but I haven't
+          figured a way to do that *and* not making the bg of the scrollview
+          black, which reveals a dark area at the bottom of the screen on
+          overscroll in iOS ~~~kueda20240228
+        */}
+        <StatusBar barStyle="light-content" backgroundColor={colors.black} />
         <View className="flex-1 h-full bg-black">
           <View className="w-full h-[420px] shrink-1">
             {displayTaxonMedia()}
@@ -302,38 +344,74 @@ const TaxonDetails = ( ): Node => {
         />
       </ScrollViewWrapper>
       {showSelectButton && (
-        <StickyToolbar containerClass="items-center z-50">
+        <ButtonBar containerClass="items-center z-50">
           <Button
             className="max-w-[500px] w-full"
             level="focus"
             text={t( "SELECT-THIS-TAXON" )}
             onPress={( ) => {
-              updateObservationKeys( {
-                taxon,
-                owners_identification_from_vision: usesVision
-              } );
-              if ( fromObsDetails ) {
-                const obsDetailsParam = {
-                  uuid: obsUuid,
-                  identTaxonId: taxon?.id,
-                  identAt: Date.now()
-                };
-                navigation.navigate( "ObsDetails", obsDetailsParam );
+              if ( fromSuggestions && !currentUser ) {
+                setSheetVisible( true );
               } else {
-                navigation.navigate( "ObsEdit" );
+                updateTaxon( );
+                if ( fromObsDetails ) {
+                  const obsDetailsParam = {
+                    uuid: obsUuid,
+                    identTaxonId: taxon?.id,
+                    identAt: Date.now()
+                  };
+                  navigation.navigate( "ObsDetails", obsDetailsParam );
+                } else {
+                  navigation.navigate( "ObsEdit" );
+                }
               }
             }}
             icon={(
               <INatIcon
                 name="checkmark"
                 size={19}
-                color={theme.colors.onPrimary}
+                color={colors.white}
               />
             )}
             iconPosition="right"
           />
-        </StickyToolbar>
+        </ButtonBar>
       )}
+      <BottomSheet
+        hidden={!sheetVisible}
+        onPressClose={() => setSheetVisible( false )}
+        headerText={t( "UPLOAD-TO-INATURALIST" )}
+      >
+        <View className="p-4">
+          <View className="px-3">
+            <List2>
+              {t( "By-uploading-your-observation-to-iNaturalist-you-can" )}
+            </List2>
+            <View className="mt-3">
+              {bulletedText.map( string => (
+                <View className="flex-row" key={string}>
+                  <List2>{"\u2022 "}</List2>
+                  <List2>{string}</List2>
+                </View>
+              ) )}
+            </View>
+            <List2 className="mt-3">
+              {t( "Just-make-sure-the-organism-is-wild" )}
+            </List2>
+          </View>
+          <Button
+            onPress={() => uploadNow()}
+            text={t( "UPLOAD-NOW" )}
+            className="mt-5"
+            level="focus"
+          />
+          <Button
+            onPress={() => saveForLater()}
+            text={t( "SAVE-FOR-LATER" )}
+            className="mt-5"
+          />
+        </View>
+      </BottomSheet>
     </>
   );
 };

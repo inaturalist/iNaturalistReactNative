@@ -1,4 +1,8 @@
+import {
+  useNetInfo
+} from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
+import ProjectList from "components/ProjectList/ProjectList.tsx";
 import {
   ActivityIndicator,
   Body1,
@@ -6,44 +10,56 @@ import {
   Button,
   Heading1,
   INatIcon,
-  ProjectListItem,
+  InfiniteScrollLoadingWheel,
   SearchBar,
   Tabs,
   ViewWrapper
 } from "components/SharedComponents";
 import { Tab } from "components/SharedComponents/Tabs/Tabs.tsx";
-import { Pressable, View } from "components/styledComponents";
-import React, { useEffect } from "react";
-import {
-  FlatList
-} from "react-native";
+import { View } from "components/styledComponents";
+import React, { useCallback, useEffect } from "react";
 import {
   useTranslation
 } from "sharedHooks";
 
+import FlashListEmptyWrapper from "../SharedComponents/FlashList/FlashListEmptyWrapper";
 import { TAB_ID } from "./ProjectsContainer";
 
+const HEADER_HEIGHT_WITH_TABS = 121;
+const HEADER_HEIGHT_WITHOUT_TABS = 80;
+
 interface Props {
+  currentTabId: TAB_ID;
+  fetchNextPage: ( ) => void;
+  hasPermissions: boolean | undefined;
+  isFetchingNextPage: boolean;
+  isLoading: boolean;
+  memberId?: number;
+  projects: Object[],
+  requestPermissions: () => void;
   searchInput: string;
   setSearchInput: ( _text: string ) => void;
   tabs: Tab[],
-  currentTabId: TAB_ID;
-  projects: Object[],
-  isLoading: boolean;
-  memberId?: number;
-  hasPermissions: boolean | undefined;
-  requestPermissions: () => void;
 }
 
 const Projects = ( {
+  currentTabId,
+  fetchNextPage,
+  hasPermissions,
+  isFetchingNextPage,
+  isLoading,
+  memberId,
+  projects,
+  requestPermissions,
   searchInput,
   setSearchInput,
-  tabs, currentTabId, projects, isLoading, memberId,
-  hasPermissions,
-  requestPermissions
+  tabs
 }: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
+  const { isConnected } = useNetInfo( );
+
+  const hideLoadingWheel = !isFetchingNextPage || projects?.length === 0;
 
   useEffect( ( ) => {
     const headerLeft = ( ) => (
@@ -61,34 +77,34 @@ const Projects = ( {
     } );
   }, [navigation, t] );
 
-  const renderProject = ( { item: project } ) => (
-    <Pressable
-      className="px-4 py-1.5"
-      onPress={( ) => navigation.navigate( "ProjectDetails", { id: project.id } )}
-      testID={`Project.${project.id}`}
-      accessible
-      accessibilityRole="button"
-      accessibilityLabel={t( "Navigates-to-project-details" )}
-    >
-      <ProjectListItem item={project} />
-    </Pressable>
-  );
+  const renderFooter = useCallback( ( ) => (
+    <InfiniteScrollLoadingWheel
+      hideLoadingWheel={hideLoadingWheel}
+      isConnected={isConnected}
+    />
+  ), [hideLoadingWheel, isConnected] );
 
   const renderEmptyList = ( ) => {
     if ( isLoading ) {
       <ActivityIndicator size={50} />;
     } else {
       return (
-        <>
+        <FlashListEmptyWrapper
+          headerHeight={searchInput.length === 0
+            ? HEADER_HEIGHT_WITH_TABS
+            : HEADER_HEIGHT_WITHOUT_TABS}
+          emptyItemHeight={90}
+          containerClassName="self-center w-full"
+        >
           <Body1 className="self-center">{t( "No-projects-match-that-search" )}</Body1>
-          <View className="w-full px-4 mt-5">
+          <View className="p-4 mt-2">
             <Button
               level="neutral"
               text={t( "RESET-SEARCH" )}
               onPress={( ) => setSearchInput( "" )}
             />
           </View>
-        </>
+        </FlashListEmptyWrapper>
       );
     }
 
@@ -106,12 +122,6 @@ const Projects = ( {
     return null;
   };
 
-  const emptyListStyles = {
-    flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center"
-  } as const;
-
   const renderList = ( ) => {
     // hasPermission undefined means we haven't checked for location permissions yet
     // false means the user has denied or not yet given location permissions
@@ -126,18 +136,17 @@ const Projects = ( {
             text={t( "ALLOW-LOCATION-ACCESS" )}
             accessibilityHint={t( "Opens-location-permission-prompt" )}
             level="focus"
-            onPress={( ) => requestPermissions()}
+            onPress={requestPermissions}
           />
         </View>
       );
     }
     return (
-      <FlatList
-        contentContainerStyle={projects?.length === 0 && emptyListStyles}
-        data={projects}
-        renderItem={renderProject}
-        testID="Project.list"
+      <ProjectList
+        projects={projects}
         ListEmptyComponent={renderEmptyList}
+        ListFooterComponent={renderFooter}
+        onEndReached={fetchNextPage}
       />
     );
   };

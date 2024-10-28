@@ -8,6 +8,7 @@ import React from "react";
 type Props = {
   autoPlaySound?: boolean, // automatically start playing a sound when it is visible
   editable?: boolean,
+  deleting?: boolean,
   // Optional component to use as the header
   header?: Function,
   onClose?: Function,
@@ -30,6 +31,7 @@ type Props = {
 const MediaViewerModal = ( {
   autoPlaySound,
   editable,
+  deleting,
   header,
   onClose = ( ) => undefined,
   onDeletePhoto,
@@ -48,6 +50,7 @@ const MediaViewerModal = ( {
       <MediaViewer
         autoPlaySound={autoPlaySound}
         editable={editable}
+        deleting={deleting}
         header={header}
         onClose={onClose}
         onDeletePhoto={onDeletePhoto}

@@ -7,9 +7,9 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { SectionList } from "react-native";
-import { useTranslation } from "sharedHooks";
+import { useCurrentUser, useTranslation } from "sharedHooks";
 
 import useObservers from "./hooks/useObservers";
 import Suggestion from "./Suggestion";
@@ -57,6 +57,7 @@ const Suggestions = ( {
   usingOfflineSuggestions
 }: Props ): Node => {
   const { t } = useTranslation( );
+  const currentUser = useCurrentUser( );
   const {
     otherSuggestions,
     topSuggestion
@@ -73,8 +74,9 @@ const Suggestions = ( {
       accessibilityLabel={t( "Choose-taxon" )}
       suggestion={suggestion}
       onTaxonChosen={onTaxonChosen}
+      hideCheckmark={!currentUser && !showOfflineText}
     />
-  ), [onTaxonChosen, t] );
+  ), [onTaxonChosen, t, currentUser, showOfflineText] );
 
   const renderEmptyList = useCallback( ( ) => (
     <SuggestionsEmpty
@@ -86,7 +88,7 @@ const Suggestions = ( {
     />
   ), [isLoading, topSuggestion, onTaxonChosen, urlWillCrashOffline, reloadSuggestions] );
 
-  const renderFooter = useCallback( ( ) => (
+  const renderFooter = useMemo( ( ) => (
     <SuggestionsFooter
       debugData={debugData}
       handleSkip={handleSkip}
@@ -153,6 +155,7 @@ const Suggestions = ( {
           suggestion={item}
           isTopSuggestion
           onTaxonChosen={onTaxonChosen}
+          hideCheckmark={!currentUser && !showOfflineText}
         />
       </View>
     );

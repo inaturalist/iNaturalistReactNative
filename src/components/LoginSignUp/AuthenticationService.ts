@@ -14,17 +14,23 @@ import rs from "jsrsasign";
 import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
 import * as RNLocalize from "react-native-localize";
+import RNRestart from "react-native-restart";
 import RNSInfo from "react-native-sensitive-info";
 import Realm, { UpdateMode } from "realm";
 import realmConfig from "realmModels/index";
-import { log, logFilePath } from "sharedHelpers/logger";
+import { log, logFilePath, logWithoutRemote } from "sharedHelpers/logger";
 import { installID } from "sharedHelpers/persistedInstallationId.ts";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory.ts";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { sleep, unlink } from "sharedHelpers/util.ts";
+import { isDebugMode } from "sharedHooks/useDebugMode";
 import { storage } from "stores/useStore";
 
 const logger = log.extend( "AuthenticationService" );
+// The remote transport in the default logger uses many of the methods in this
+// module. Using a separate logger that only writes to disk avoids some
+// potential for infinite loops.
+const localLogger = logWithoutRemote.extend( "AuthenticationService" );
 
 // Base API domain can be overridden (in case we want to use staging URL) -
 // either by placing it in .env file, or in an environment variable.
@@ -39,10 +45,16 @@ async function getSensitiveItem( key: string, options = {} ) {
   try {
     return await RNSInfo.getItem( key, options );
   } catch ( e ) {
+    if ( isDebugMode() ) {
+      localLogger.info( `RNSInfo.getItem not available for ${key}, sleeping` );
+    }
     const getItemError = e as Error;
     if ( getItemError.message.match( /Protected data not available yet/ ) ) {
       await sleep( 1_000 );
       return RNSInfo.getItem( key, options );
+    }
+    if ( isDebugMode() ) {
+      localLogger.info( `RNSInfo.getItem not available for ${key} after sleeping, throwing` );
     }
     throw getItemError;
   }
@@ -52,10 +64,16 @@ async function setSensitiveItem( key: string, value: string, options = {} ) {
   try {
     return await RNSInfo.setItem( key, value, options );
   } catch ( e ) {
+    if ( isDebugMode( ) ) {
+      localLogger.info( `RNSInfo.setItem not available for ${key}, sleeping` );
+    }
     const setItemError = e as Error;
     if ( setItemError.message.match( /Protected data not available yet/ ) ) {
       await sleep( 1_000 );
       return RNSInfo.setItem( key, value, options );
+    }
+    if ( isDebugMode( ) ) {
+      localLogger.info( `RNSInfo.setItem not available for ${key} after sleeping, throwing` );
     }
     throw setItemError;
   }
@@ -65,11 +83,16 @@ async function deleteSensitiveItem( key: string, options = {} ) {
   try {
     return await RNSInfo.deleteItem( key, options );
   } catch ( e ) {
+    if ( isDebugMode( ) ) {
+      localLogger.info( `RNSInfo.deleteItem not available for ${key}, sleeping` );
+    }
     const deleteItemError = e as Error;
-    console.log( "[DEBUG AuthenticationService.js] deleteItemError: ", deleteItemError );
     if ( deleteItemError.message.match( /Protected data not available yet/ ) ) {
       await sleep( 500 );
       return RNSInfo.deleteItem( key, options );
+    }
+    if ( isDebugMode( ) ) {
+      localLogger.info( `RNSInfo.deleteItem not available after sleeping for ${key}, throwing` );
     }
     throw deleteItemError;
   }
@@ -126,12 +149,9 @@ const signOut = async (
       // through the copy of realm provided by RealmProvider
       options.realm.beginTransaction();
       try {
-        // $FlowFixMe
         options.realm.deleteAll( );
-        // $FlowFixMe
         options.realm.commitTransaction( );
       } catch ( realmError ) {
-        // $FlowFixMe
         options.realm.cancelTransaction( );
         // If we failed to wipe all the data in realm, delete the realm file.
         // Note that deleting the realm file *all* the time seems to cause
@@ -159,6 +179,7 @@ const signOut = async (
   await removeAllFilesFromDirectory( soundUploadPath );
   // delete all keys from mmkv
   storage.clearAll( );
+  RNRestart.restart( );
 };
 
 /**
@@ -269,32 +290,6 @@ const getJWT = async ( allowAnonymousJWT = false ): Promise<string | null> => {
   }
   // Current JWT token is still fresh/valid - return it as-is
   return jwtToken;
-};
-
-/**
- * Returns the API access token to be used with all iNaturalist API calls
- *
- * @param useJWT if true, we'll use JSON Web Token instead of the "regular" access token
- * @param allowAnonymousJWT (optional=false) if true and user is not
- *  logged-in, use anonymous JWT
- * @returns {Promise<string|*>} access token, null if not logged in
- */
-const getAPIToken = async (
-  // $FlowIgnore
-  useJWT = false,
-  // $FlowIgnore
-  allowAnonymousJWT = false
-): Promise<string | null> => {
-  const loggedIn = await isLoggedIn();
-  if ( !loggedIn ) {
-    return null;
-  }
-
-  if ( useJWT ) {
-    return getJWT( allowAnonymousJWT );
-  }
-  const accessToken = await getSensitiveItem( "accessToken" );
-  return `Bearer ${accessToken}`;
 };
 
 const showErrorAlert = ( errorText: string ) => {
@@ -536,7 +531,6 @@ export {
   API_HOST,
   authenticateUser,
   getAnonymousJWT,
-  getAPIToken,
   getJWT,
   getUsername,
   isCurrentUser,

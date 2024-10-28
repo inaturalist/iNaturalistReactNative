@@ -33,11 +33,14 @@ const ProjectDetails = ( {
   const navigation = useNavigation( );
 
   const onObservationPressed = useCallback(
-    ( ) => navigation.navigate( "Explore", {
-      project,
-      worldwide: true
-    } ),
-    [navigation, project]
+    ( ) => {
+      setExploreView( "observations" );
+      navigation.navigate( "Explore", {
+        project,
+        worldwide: true
+      } );
+    },
+    [navigation, project, setExploreView]
   );
 
   const onSpeciesPressed = useCallback(
@@ -49,6 +52,16 @@ const ProjectDetails = ( {
       } );
     },
     [navigation, project, setExploreView]
+  );
+
+  const onMembersPressed = useCallback(
+    ( ) => {
+      navigation.navigate( "ProjectMembers", {
+        id: project?.id,
+        title: project?.title
+      } );
+    },
+    [navigation, project]
   );
 
   if ( !project ) {
@@ -72,7 +85,7 @@ const ProjectDetails = ( {
           accessibilityIgnoresInvertColors
         />
       </ImageBackground>
-      <View className="mx-4">
+      <View className="mx-4 pb-8">
         <Heading1 className="shrink mt-4">{project.title}</Heading1>
         <Heading3>{displayProjectType( project.project_type, t )}</Heading3>
         <OverviewCounts
@@ -84,19 +97,22 @@ const ProjectDetails = ( {
           }}
           onObservationPressed={onObservationPressed}
           onSpeciesPressed={onSpeciesPressed}
+          onMembersPressed={onMembersPressed}
         />
         <Heading4 className="mt-7">{t( "ABOUT" )}</Heading4>
         {project?.description
           && <UserText text={project.description} htmlStyle={userTextStyle} />}
-        {/* {project.project_type === "collection" && (
+        {project.project_type === "collection" && (
           <>
             <Heading4 className="mb-3 mt-5">{t( "PROJECT-REQUIREMENTS" )}</Heading4>
             <Button
+              className="mb-5"
               level="neutral"
               text={t( "VIEW-PROJECT-REQUIREMENTS" )}
+              onPress={( ) => navigation.navigate( "ProjectRequirements", { id: project.id } )}
             />
           </>
-        )} */}
+        )}
         <Heading4 className="mb-3">{t( "MAP" )}</Heading4>
         <Button
           level="neutral"

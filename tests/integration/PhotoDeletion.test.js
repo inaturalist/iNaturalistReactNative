@@ -2,6 +2,7 @@ import Geolocation from "@react-native-community/geolocation";
 import {
   screen,
   userEvent,
+  waitFor,
   within
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
@@ -38,6 +39,13 @@ const mockModelResult = {
 getPredictionsForImage.mockImplementation(
   async ( ) => ( mockModelResult )
 );
+
+const mockUser = factory( "LocalUser" );
+// Mock useCurrentUser hook
+jest.mock( "sharedHooks/useCurrentUser", () => ( {
+  __esModule: true,
+  default: jest.fn( () => mockUser )
+} ) );
 
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
@@ -80,11 +88,6 @@ beforeEach( ( ) => {
 describe( "Photo Deletion", ( ) => {
   const actor = userEvent.setup( );
 
-  async function startApp() {
-    renderApp( );
-    expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
-  }
-
   async function takePhotoForNewObs() {
     const tabBar = await screen.findByTestId( "CustomTabBar" );
     const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
@@ -103,19 +106,19 @@ describe( "Photo Deletion", ( ) => {
     await actor.press( discardButton );
   }
 
-  async function confirmPhotosAndAddTopId() {
+  async function confirmPhotosAndSkipId() {
     const checkmarkButton = await screen.findByLabelText( "View suggestions" );
     await actor.press( checkmarkButton );
-    const topTaxonResultButton = await screen.findByTestId(
-      `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
-    );
-    await actor.press( topTaxonResultButton );
+    const skipIdButton = await screen.findByText( /Add an ID Later/ );
+    await actor.press( skipIdButton );
   }
 
   async function saveAndEditObs() {
     // Make sure we're on ObsEdit
     const evidenceTitle = await screen.findByText( "EVIDENCE" );
-    expect( evidenceTitle ).toBeVisible( );
+    await waitFor( ( ) => {
+      expect( evidenceTitle ).toBeVisible( );
+    } );
     const saveButton = await screen.findByText( "SAVE" );
     await actor.press( saveButton );
     // Wait until header shows that there's an obs to upload
@@ -132,8 +135,9 @@ describe( "Photo Deletion", ( ) => {
 
   async function viewPhotoFromObsEdit() {
     const evidenceItem = await screen.findByLabelText( "Select or drag media" );
-    expect( evidenceItem ).toBeTruthy( );
-    expect( evidenceItem ).toBeVisible( );
+    await waitFor( ( ) => {
+      expect( evidenceItem ).toBeVisible( );
+    } );
     await actor.press( evidenceItem );
   }
 
@@ -147,7 +151,7 @@ describe( "Photo Deletion", ( ) => {
   }
 
   it( "should delete from StandardCamera for new photo", async ( ) => {
-    await startApp();
+    renderApp( );
     await takePhotoForNewObs();
     // Tap the photo preview to enter the MediaViewer
     const carouselPhoto = await screen.findByTestId( /PhotoCarousel\.displayPhoto/ );
@@ -157,9 +161,9 @@ describe( "Photo Deletion", ( ) => {
   } );
 
   it( "should delete from StandardCamera for existing photo", async ( ) => {
-    await startApp();
+    renderApp( );
     await takePhotoForNewObs();
-    await confirmPhotosAndAddTopId();
+    await confirmPhotosAndSkipId();
     await saveAndEditObs();
     // Enter camera to add new photo
     const addEvidenceButton = await screen.findByLabelText( "Add evidence" );
@@ -175,18 +179,18 @@ describe( "Photo Deletion", ( ) => {
   } );
 
   it( "should delete from ObsEdit for new camera photo", async ( ) => {
-    await startApp();
+    renderApp( );
     await takePhotoForNewObs();
-    await confirmPhotosAndAddTopId();
+    await confirmPhotosAndSkipId();
     await viewPhotoFromObsEdit();
     await deletePhotoInMediaViewer( );
     await expectObsEditToHaveNoPhotos();
   } );
 
   it( "should delete from ObsEdit for existing camera photo", async ( ) => {
-    await startApp();
+    renderApp( );
     await takePhotoForNewObs();
-    await confirmPhotosAndAddTopId();
+    await confirmPhotosAndSkipId();
     await saveAndEditObs();
     await viewPhotoFromObsEdit();
     await deletePhotoInMediaViewer( );

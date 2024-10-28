@@ -18,7 +18,7 @@ describe( "WithdrawIDSheet", () => {
   it( "renders sheet correctly", async ( ) => {
     renderComponent(
       <WithdrawIDSheet
-        handleClose={mockHandleClose}
+        onPressClose={mockHandleClose}
         withdrawOrRestoreIdentification={mockMutate}
         taxon={mockTaxon}
       />

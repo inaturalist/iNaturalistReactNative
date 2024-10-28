@@ -10,6 +10,7 @@ import {
   Platform,
   StatusBar
 } from "react-native";
+import colors from "styles/tailwindColors";
 
 type Props = {
   // $FlowIgnore
@@ -80,7 +81,7 @@ const LoginSignupWrapper = ( {
       >
         <StatusBar
           barStyle="light-content"
-          backgroundColor="#0000"
+          backgroundColor={colors.black}
         />
         <KeyboardAvoidingView
           keyboardVerticalOffset={keyboardVerticalOffset}

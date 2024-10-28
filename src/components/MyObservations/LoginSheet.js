@@ -16,7 +16,7 @@ const LoginSheet = ( { setShowLoginSheet }: Props ): Node => {
 
   return (
     <WarningSheet
-      handleClose={( ) => setShowLoginSheet( false )}
+      onPressClose={( ) => setShowLoginSheet( false )}
       buttonType="focus"
       headerText={t( "PLEASE-LOG-IN" )}
       text={t( "To-sync-your-observations-to-iNaturalist" )}

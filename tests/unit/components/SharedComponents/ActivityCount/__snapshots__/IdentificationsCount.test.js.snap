@@ -23,7 +23,7 @@ exports[`IdentificationsCount renders default reliably 1`] = `
     style={
       [
         {
-          "color": "rgba(103, 80, 164, 1)",
+          "color": "#454545",
           "fontSize": 14,
         },
         undefined,
@@ -39,6 +39,7 @@ exports[`IdentificationsCount renders default reliably 1`] = `
     
   </Text>
   <Text
+    maxFontSizeMultiplier={2}
     style={
       [
         {
@@ -87,7 +88,7 @@ exports[`IdentificationsCount renders filled reliably 1`] = `
     style={
       [
         {
-          "color": "rgba(103, 80, 164, 1)",
+          "color": "#454545",
           "fontSize": 14,
         },
         undefined,
@@ -103,6 +104,7 @@ exports[`IdentificationsCount renders filled reliably 1`] = `
     
   </Text>
   <Text
+    maxFontSizeMultiplier={2}
     style={
       [
         {
@@ -151,7 +153,7 @@ exports[`IdentificationsCount renders white reliably 1`] = `
     style={
       [
         {
-          "color": "rgba(255, 255, 255, 1)",
+          "color": "#ffffff",
           "fontSize": 14,
         },
         undefined,
@@ -167,6 +169,7 @@ exports[`IdentificationsCount renders white reliably 1`] = `
     
   </Text>
   <Text
+    maxFontSizeMultiplier={2}
     style={
       [
         {

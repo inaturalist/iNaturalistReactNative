@@ -14,6 +14,7 @@ import { EventRegister } from "react-native-event-listeners";
 import WebView from "react-native-webview";
 import { log } from "sharedHelpers/logger";
 import { composeEmail } from "sharedHelpers/mail.ts";
+import { isDebugMode } from "sharedHooks/useDebugMode";
 
 const logger = log.extend( "FullPageWebView" );
 
@@ -179,6 +180,9 @@ const FullPageWebView = ( ) => {
 
       // Make the WebView logged in for the current user
       if ( params.loggedIn ) {
+        if ( isDebugMode( ) ) {
+          logger.info( "focus effect, calling getJWT" );
+        }
         getJWT().then( jwt => {
           setSource( {
             ...source,

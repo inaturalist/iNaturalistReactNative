@@ -3,13 +3,10 @@
 import classnames from "classnames";
 import { DisplayTaxonName, IconicTaxonIcon } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
-import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React from "react";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useCurrentUser, useTranslation } from "sharedHooks";
-
-const { useRealm } = RealmContext;
 
 type Props = {
   accessibilityHint?: string,
@@ -28,7 +25,6 @@ const DisplayTaxon = ( {
   testID,
   withdrawn
 }: Props ): Node => {
-  const realm = useRealm( );
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
 
@@ -38,10 +34,7 @@ const DisplayTaxon = ( {
     ? taxon.name
     : taxon?.iconic_taxon_name;
 
-  const iconicTaxon = iconicTaxonName && realm?.objects( "Taxon" )
-    .filtered( "name CONTAINS[c] $0", iconicTaxonName )?.[0];
-
-  const taxonPhoto = taxon?.default_photo?.url || iconicTaxon?.default_photo?.url;
+  const taxonPhoto = taxon?.default_photo?.url;
   const accessibleName = accessibleTaxonName( taxon, currentUser, t );
 
   return (

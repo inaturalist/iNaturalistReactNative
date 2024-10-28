@@ -16,17 +16,33 @@ import resourcesToBackend from "i18next-resources-to-backend";
 // React tooling for i18next
 import { initReactI18next } from "react-i18next";
 import { Text } from "react-native";
+import * as RNLocalize from "react-native-localize";
 
 // Function to load translations given a locale code. Given that we cannot
 // dynamically import/require files in a React Native JS environment
 // (https://stackoverflow.com/questions/58858782/using-the-dynamic-import-function-on-node-js),
 // we need to do this statically, which means a big control structure that we
 // generate before building the app
-import loadTranslations from "./loadTranslations";
+import loadTranslations, { SUPPORTED_LOCALES } from "./loadTranslations";
+
+export function getInatLocaleFromSystemLocale() {
+  const systemLocale = RNLocalize.getLocales( )?.[0]?.languageTag || "en";
+  const candidateLocale = systemLocale.replace( "_", "-" ).replace( /@.*/, "" );
+  let inatLocale = candidateLocale;
+  if ( !SUPPORTED_LOCALES.includes( candidateLocale ) ) {
+    const lang = candidateLocale.split( "-" )[0];
+    inatLocale = SUPPORTED_LOCALES.includes( lang )
+      ? lang
+      : "en";
+  }
+  return inatLocale;
+}
+
+const LOCALE = getInatLocaleFromSystemLocale( );
 
 export const I18NEXT_CONFIG = {
   // Added since otherwise Android would crash - see here: https://stackoverflow.com/a/70521614 and https://www.i18next.com/misc/migration-guide
-  lng: "en",
+  lng: LOCALE,
   interpolation: {
     escapeValue: false // react already safes from xss
   },
@@ -48,6 +64,19 @@ export const I18NEXT_CONFIG = {
         )
       }
     }
+  },
+  // All languages should fallback to English, some regional variants should
+  // fall back to another region
+  fallbackLng: code => {
+    const fallbacks = [];
+    if ( code.match( /^es-/ ) ) {
+      fallbacks.push( "es" );
+    } else if ( code.match( /^fr-/ ) ) {
+      fallbacks.push( "fr" );
+    } else if ( code.match( /^pt-/ ) ) {
+      fallbacks.push( "pt" );
+    }
+    return [...fallbacks, "en"];
   }
 };
 

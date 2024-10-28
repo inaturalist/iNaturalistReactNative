@@ -10,10 +10,10 @@ import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useMemo, useRef, useState } from "react";
 import { Keyboard } from "react-native";
-import { useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 import useTranslation from "sharedHooks/useTranslation";
+import colors from "styles/tailwindColors";
 
 // Optimized to maximize input size while minimizing post-render height
 // adjustments for for iPhone 13 and taller screens. Shorter screens
@@ -24,11 +24,11 @@ type Props = {
   buttonText: string,
   confirm: Function,
   description?: string,
-  handleClose: Function,
+  onPressClose: Function,
   headerText: string,
   initialInput?: string,
   maxLength?: number,
-  placeholder: string,
+  placeholder?: string,
   textInputStyle?: Object
 }
 
@@ -56,7 +56,7 @@ const TextInputSheet = ( {
   buttonText,
   confirm,
   description,
-  handleClose,
+  onPressClose,
   headerText,
   initialInput,
   maxLength,
@@ -64,7 +64,6 @@ const TextInputSheet = ( {
   textInputStyle
 }: Props ): Node => {
   const textInputRef = useRef( );
-  const theme = useTheme( );
   const [input, setInput] = useState( initialInput );
   const { t } = useTranslation( );
   const { nonKeyboardHeight } = useKeyboardInfo( TARGET_INPUT_HEIGHT );
@@ -82,23 +81,22 @@ const TextInputSheet = ( {
     fontFamily: fontRegular,
     fontSize: 14,
     lineHeight: 17,
-    color: theme.colors.primary,
+    color: colors.darkGray,
     textAlignVertical: "top"
   } ), [
     nonKeyboardHeight,
     sheetHeight,
-    theme,
     topInset
   ] );
 
   const dismissKeyboardAndClose = ( ) => {
     Keyboard.dismiss( );
-    handleClose( );
+    onPressClose( );
   };
 
   return (
     <BottomSheet
-      handleClose={dismissKeyboardAndClose}
+      onPressClose={dismissKeyboardAndClose}
       headerText={headerText}
       keyboardShouldPersistTaps="always"
       onLayout={event => {
@@ -130,6 +128,7 @@ const TextInputSheet = ( {
             style={[inputStyle, textInputStyle]}
             autoFocus
             defaultValue={input}
+            maxFontSizeMultiplier={2}
           />
           <View
             className={classnames(

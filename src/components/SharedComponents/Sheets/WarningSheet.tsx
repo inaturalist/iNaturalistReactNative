@@ -10,11 +10,12 @@ interface Props {
   buttonText: string;
   buttonType?: string;
   confirm: () => void;
-  handleClose: () => void;
   handleSecondButtonPress?: () => void;
   headerText: string;
   hidden?: boolean;
   insideModal?: boolean;
+  loading: boolean;
+  onPressClose: () => void;
   secondButtonText?: string;
   testID?: string;
   text?: string;
@@ -24,17 +25,18 @@ const WarningSheet = ( {
   buttonText,
   buttonType,
   confirm,
-  handleClose,
   handleSecondButtonPress,
   headerText,
   hidden,
   insideModal,
+  loading,
+  onPressClose,
   secondButtonText,
   testID,
   text
 }: Props ) => (
   <BottomSheet
-    handleClose={handleClose}
+    onPressClose={onPressClose}
     headerText={headerText}
     hidden={hidden}
     insideModal={insideModal}
@@ -50,6 +52,8 @@ const WarningSheet = ( {
         ) }
         <Button
           onPress={confirm}
+          loading={loading}
+          disabled={loading}
           text={buttonText}
           level={buttonType || "warning"}
           className="grow ml-3"

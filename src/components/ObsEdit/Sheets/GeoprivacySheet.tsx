@@ -12,13 +12,13 @@ import useTranslation from "sharedHooks/useTranslation";
 type Geoprivacy = null | GEOPRIVACY_OPEN | GEOPRIVACY_OBSCURED | GEOPRIVACY_PRIVATE;
 
 type Props = {
-  handleClose: ( ) => void,
+  onPressClose: ( ) => void,
   selectedValue?: Geoprivacy,
   updateGeoprivacyStatus: ( Geoprivacy ) => void
 }
 
 const GeoprivacySheet = ( {
-  handleClose,
+  onPressClose,
   selectedValue,
   updateGeoprivacyStatus
 }: Props ) => {
@@ -51,9 +51,9 @@ const GeoprivacySheet = ( {
         if ( checkBoxValue !== GEOPRIVACY_OPEN || selectedValue !== null ) {
           updateGeoprivacyStatus( checkBoxValue );
         }
-        handleClose( );
+        onPressClose( );
       }}
-      handleClose={handleClose}
+      onPressClose={onPressClose}
       radioValues={radioValues}
       selectedValue={selectedValue || GEOPRIVACY_OPEN}
     />

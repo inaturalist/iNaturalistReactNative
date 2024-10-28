@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
+import { Body1 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, {
   useCallback,
@@ -12,7 +13,8 @@ import { DimensionValue, ViewStyle } from "react-native";
 import MapView, {
   BoundingBox, LatLng, MapType, Region
 } from "react-native-maps";
-import { useDeviceOrientation } from "sharedHooks";
+import fetchUserLocation from "sharedHelpers/fetchUserLocation.ts";
+import { useDebugMode, useDeviceOrientation } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 
 import CurrentLocationButton from "./CurrentLocationButton";
@@ -30,17 +32,29 @@ import ObsUrlTile from "./ObsUrlTile";
 import SwitchMapTypeButton from "./SwitchMapTypeButton";
 
 const NEARBY_DIM_M = 50_000;
+const CURRENT_LOCATION_ZOOM_LEVEL = 15; // target zoom level when user hits current location btn
+const MIN_ZOOM_LEVEL = 0; // default in react-native-maps, for Google Maps only
+const MIN_CENTER_COORDINATE_DISTANCE = 5;
+
+const getDefaultRegion = ( initialLatitude, initialLongitude ) => ( {
+  latitude: initialLatitude || 25, // Default to something US centric
+  longitude: initialLongitude || -85, // Default to something US centric
+  latitudeDelta: initialLatitude
+    ? 0.2
+    : 100,
+  longitudeDelta: initialLatitude
+    ? 0.2
+    : 100
+} );
 
 interface Props {
   children?: React.ReactNode;
   className?: string;
   currentLocationButtonClassName?: string;
-  currentLocationZoomLevel?: number;
   initialRegion?: boolean;
   mapHeight?: DimensionValue; // allows for height to be defined as px or percentage
   mapType?: MapType;
   mapViewClassName?: string;
-  minZoomLevel?: number;
   obscured?: boolean;
   obsLatitude?: number;
   obsLongitude?: number;
@@ -48,8 +62,6 @@ interface Props {
   onMapReady?: () => void;
   onPanDrag?: () => void;
   onRegionChangeComplete?: ( _r: Region, _b: BoundingBox | undefined ) => void;
-  onZoomChange?: ( _z: number ) => void;
-  onZoomToNearby?: Function;
   openMapScreen?: () => void;
   positionalAccuracy?: number;
   region?: Region;
@@ -58,10 +70,7 @@ interface Props {
   showCurrentLocationButton?: boolean;
   showLocationIndicator?: boolean;
   showsCompass?: boolean;
-  showsUserLocation?: boolean;
   showSwitchMapTypeButton?: boolean;
-  startAtNearby?: boolean;
-  startAtUserLocation?: boolean;
   style?: ViewStyle;
   switchMapTypeButtonClassName?: string;
   testID?: string;
@@ -78,12 +87,10 @@ const Map = ( {
   children,
   className = "flex-1",
   currentLocationButtonClassName,
-  currentLocationZoomLevel, // target zoom level when user hits current location btn
   initialRegion,
   mapHeight,
   mapType,
   mapViewClassName,
-  minZoomLevel = 0, // default in react-native-maps
   obscured,
   obsLatitude,
   obsLongitude,
@@ -91,8 +98,6 @@ const Map = ( {
   onMapReady = ( ) => undefined,
   onPanDrag = ( ) => undefined,
   onRegionChangeComplete,
-  onZoomChange,
-  onZoomToNearby,
   openMapScreen,
   positionalAccuracy,
   region,
@@ -101,10 +106,7 @@ const Map = ( {
   showCurrentLocationButton,
   showLocationIndicator,
   showsCompass,
-  showsUserLocation: showsUserLocationProp,
   showSwitchMapTypeButton,
-  startAtNearby = false,
-  startAtUserLocation = false,
   style,
   switchMapTypeButtonClassName,
   testID,
@@ -114,13 +116,9 @@ const Map = ( {
   zoomEnabled = true,
   zoomTapEnabled = true
 }: Props ) => {
-  const [showsUserLocation, setShowsUserLocation] = useState( showsUserLocationProp );
+  const { isDebug } = useDebugMode( );
   const { screenWidth, screenHeight } = useDeviceOrientation( );
-  const [currentZoom, setCurrentZoom] = useState(
-    region
-      ? calculateZoom( screenWidth, region.longitudeDelta )
-      : 5
-  );
+  const [currentZoom, setCurrentZoom] = useState( 0 );
   const navigation = useNavigation( );
   const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
   const [userLocation, setUserLocation] = useState<{
@@ -131,71 +129,17 @@ const Map = ( {
   const mapViewRef = useRef<MapView>();
   const [currentMapType, setCurrentMapType] = useState( mapType || "standard" );
 
-  const initialLatitude = obsLatitude;
-  const initialLongitude = obsLongitude;
+  let defaultInitialRegion = getDefaultRegion( obsLatitude, obsLongitude );
 
-  let defaultInitialRegion: Region = {
-    latitude: initialLatitude || 25, // Default to something US centric
-    longitude: initialLongitude || -85, // Default to something US centric
-    latitudeDelta: initialLatitude
-      ? 0.2
-      : 100,
-    longitudeDelta: initialLatitude
-      ? 0.2
-      : 100
-  };
-
-  // Kind of obtuse, but the more obvious approach of making a function that
-  // pans the map results in a function that gets recreated every time the
-  // userLocation changes
-  const [zoomToUserLocationRequested, setZoomToUserLocationRequested] = useState(
-    startAtUserLocation
-  );
-
-  const [zoomToNearbyRequested, setZoomToNearbyRequested] = useState(
-    startAtNearby
-  );
-
-  useEffect( ( ) => {
-    if ( startAtNearby && zoomToNearbyRequested === null ) {
-      setZoomToNearbyRequested( true );
-    }
-  }, [startAtNearby, zoomToNearbyRequested] );
-
-  useEffect( ( ) => {
-    if ( userLocation && zoomToUserLocationRequested && mapViewRef?.current ) {
-      // Zoom level based on location accuracy.
-      let latitudeDelta = metersToLatitudeDelta( userLocation.accuracy, userLocation.latitude );
-      // Intentional use of latitudeDelta here because longitudeDelta is harder to calculate
-      let longitudeDelta = metersToLatitudeDelta( userLocation.accuracy, userLocation.latitude );
-      // If this map redefines the level we want to zoom into when the user
-      // wants to see their current location, choose which ever is more
-      // zoomed out, the configured zoom level or the zoom level based on the
-      // coordinate accuracy
-      if ( currentLocationZoomLevel ) {
-        const [configuredLatitudeDelta, configuredLongitudeDelta] = zoomToDeltas(
-          currentLocationZoomLevel,
-          screenWidth,
-          screenHeight
-        );
-        latitudeDelta = Math.max( latitudeDelta, configuredLatitudeDelta );
-        longitudeDelta = Math.max( longitudeDelta, configuredLongitudeDelta );
-      }
-      mapViewRef.current?.animateToRegion( {
-        latitude: userLocation.latitude,
-        longitude: userLocation.longitude,
-        latitudeDelta,
-        longitudeDelta
-      } );
-      setZoomToUserLocationRequested( false );
-    }
-  }, [
-    currentLocationZoomLevel,
-    screenHeight,
-    screenWidth,
-    userLocation,
-    zoomToUserLocationRequested
-  ] );
+  const obscurationCell = obscurationCellForLatLng( obsLatitude, obsLongitude );
+  if ( obscured ) {
+    defaultInitialRegion = {
+      latitude: obscurationCell.minLat + ( OBSCURATION_CELL_SIZE / 2 ),
+      longitude: obscurationCell.minLng + ( OBSCURATION_CELL_SIZE / 2 ),
+      latitudeDelta: 0.3,
+      longitudeDelta: 0.3
+    };
+  }
 
   useEffect( ( ) => {
     // in LocationPicker we're setting initialRegion to eliminate jitteriness
@@ -210,34 +154,6 @@ const Map = ( {
     regionToAnimate
   ] );
 
-  // Zoom to nearby region if requested. Note that if you want to do something
-  // after the map zooms, you need to use onRegionChangeComplete
-  useEffect( ( ) => {
-    if ( userLocation && zoomToNearbyRequested && mapViewRef?.current ) {
-      mapViewRef.current?.animateToRegion( {
-        latitude: userLocation.latitude,
-        longitude: userLocation.longitude,
-        latitudeDelta: metersToLatitudeDelta( NEARBY_DIM_M, userLocation.latitude ),
-        longitudeDelta: metersToLatitudeDelta( NEARBY_DIM_M, userLocation.latitude )
-      } );
-      setZoomToNearbyRequested( false );
-    }
-  }, [
-    onZoomToNearby,
-    userLocation,
-    zoomToNearbyRequested
-  ] );
-
-  // TODO: Johannes: I don't know if this is necessary anymore
-  const onPermissionGranted = useCallback( ( ) => {
-    if ( startAtNearby ) {
-      setZoomToNearbyRequested( true );
-    }
-  }, [
-    setZoomToNearbyRequested,
-    startAtNearby
-  ] );
-
   const params = useMemo( ( ) => {
     const newTileParams = { ...tileMapParams };
     delete newTileParams.order;
@@ -246,28 +162,25 @@ const Map = ( {
     return newTileParams;
   }, [tileMapParams] );
 
-  const obscurationCell = obscurationCellForLatLng( obsLatitude, obsLongitude );
-  if ( obscured ) {
-    defaultInitialRegion = {
-      latitude: obscurationCell.minLat + ( OBSCURATION_CELL_SIZE / 2 ),
-      longitude: obscurationCell.minLng + ( OBSCURATION_CELL_SIZE / 2 ),
-      latitudeDelta: 0.3,
-      longitudeDelta: 0.3
-    };
-  }
-
   const onMapPressForObsLyr = useCallback( async ( latLng: LatLng ) => {
     const uuid = await fetchObservationUUID( currentZoom, latLng, params );
     if ( uuid ) {
-      navigation.navigate( "ObsDetails", { uuid } );
+      navigation.push( "ObsDetails", { uuid } );
     }
   }, [params, currentZoom, navigation] );
 
-  useEffect( ( ) => {
-    if ( typeof ( onZoomChange ) === "function" ) {
-      onZoomChange( currentZoom );
+  const onPermissionGranted = async ( ) => {
+    const currentLocation = await fetchUserLocation( );
+    console.log( currentLocation, "user location in onPermissionGranted" );
+    if ( currentLocation && mapViewRef?.current ) {
+      mapViewRef.current?.animateToRegion( {
+        latitude: currentLocation.latitude,
+        longitude: currentLocation.longitude,
+        latitudeDelta: metersToLatitudeDelta( NEARBY_DIM_M, currentLocation.latitude ),
+        longitudeDelta: metersToLatitudeDelta( NEARBY_DIM_M, currentLocation.latitude )
+      } );
     }
-  }, [currentZoom, onZoomChange] );
+  };
 
   const renderCurrentLocationPermissionsGate = () => renderPermissionsGate( {
     onPermissionGranted
@@ -283,54 +196,122 @@ const Map = ( {
     return defaultInitialRegion;
   };
 
+  const handleCurrentLocationPress = ( ) => {
+    if ( onCurrentLocationPress ) { onCurrentLocationPress( ); }
+    if ( userLocation && mapViewRef?.current ) {
+      // Zoom level based on location accuracy.
+      let latitudeDelta = metersToLatitudeDelta( userLocation.accuracy, userLocation.latitude );
+      // Intentional use of latitudeDelta here because longitudeDelta is harder to calculate
+      let longitudeDelta = metersToLatitudeDelta( userLocation.accuracy, userLocation.latitude );
+      // If this map redefines the level we want to zoom into when the user
+      // wants to see their current location, choose which ever is more
+      // zoomed out, the configured zoom level or the zoom level based on the
+      // coordinate accuracy
+      const [configuredLatitudeDelta, configuredLongitudeDelta] = zoomToDeltas(
+        CURRENT_LOCATION_ZOOM_LEVEL,
+        screenWidth,
+        screenHeight
+      );
+      latitudeDelta = Math.max( latitudeDelta, configuredLatitudeDelta );
+      longitudeDelta = Math.max( longitudeDelta, configuredLongitudeDelta );
+
+      mapViewRef.current?.animateToRegion( {
+        latitude: userLocation.latitude,
+        longitude: userLocation.longitude,
+        latitudeDelta,
+        longitudeDelta
+      } );
+    }
+  };
+
+  const mapContainerStyle = [
+    mapHeight
+      ? { height: mapHeight }
+      : null
+  ];
+
+  const mapContainerClass = classnames(
+    "flex-1 h-full",
+    mapViewClassName
+  );
+
+  const cameraZoomRange = {
+    minCenterCoordinateDistance: MIN_CENTER_COORDINATE_DISTANCE
+  };
+
+  const handleUserLocationChange = async locationChangeEvent => {
+    const coordinate = locationChangeEvent?.nativeEvent?.coordinate;
+    setUserLocation( coordinate );
+  };
+
+  const handleRegionChangeComplete = async newRegion => {
+    if ( onRegionChangeComplete ) {
+      const boundaries = await mapViewRef?.current?.getMapBoundaries( );
+      onRegionChangeComplete( newRegion, boundaries );
+    }
+    setCurrentZoom( calculateZoom( screenWidth, newRegion.longitudeDelta ) );
+  };
+
+  const handleMapPress = e => {
+    if ( withPressableObsTiles ) onMapPressForObsLyr( e.nativeEvent.coordinate );
+    else if ( openMapScreen ) {
+      openMapScreen( );
+    }
+  };
+
+  const mapRegion = setRegion( );
+
+  const renderDebugZoomLevel = ( ) => {
+    if ( isDebug ) {
+      return (
+        <View
+          className={classnames(
+            "absolute",
+            "left-5",
+            "bottom-[140px]",
+            "bg-deeppink",
+            "p-1",
+            "z-10"
+          )}
+        >
+          <Body1 className="text-white">
+            {`Zoom: ${currentZoom}`}
+          </Body1>
+        </View>
+      );
+    }
+    return null;
+  };
+
   return (
     <View
-      style={[
-        mapHeight
-          ? { height: mapHeight }
-          : null
-      ]}
+      style={mapContainerStyle}
       testID="MapView"
-      className={classnames(
-        "flex-1 h-full",
-        mapViewClassName
-      )}
+      className={mapContainerClass}
     >
+      {renderDebugZoomLevel( )}
       <MapView
-        ref={mapViewRef}
-        testID={testID || "Map.MapView"}
+        cameraZoomRange={cameraZoomRange}
         className={className}
         initialRegion={initialRegion}
-        region={setRegion( )}
-        onUserLocationChange={async locationChangeEvent => {
-          const coordinate = locationChangeEvent?.nativeEvent?.coordinate;
-          setUserLocation( coordinate );
-        }}
-        showsUserLocation={hasPermissions && showsUserLocation}
-        showsMyLocationButton={false}
         loadingEnabled
-        onRegionChangeComplete={async newRegion => {
-          if ( onRegionChangeComplete ) {
-            const boundaries = await mapViewRef?.current?.getMapBoundaries( );
-            onRegionChangeComplete( newRegion, boundaries );
-          }
-          setCurrentZoom( calculateZoom( screenWidth, newRegion.longitudeDelta ) );
-        }}
-        onPress={e => {
-          if ( withPressableObsTiles ) onMapPressForObsLyr( e.nativeEvent.coordinate );
-          else if ( openMapScreen ) {
-            openMapScreen( );
-          }
-        }}
-        showsCompass={showsCompass}
         mapType={currentMapType}
+        minZoomLevel={MIN_ZOOM_LEVEL}
         onMapReady={onMapReady}
-        style={style}
         onPanDrag={onPanDrag}
-        minZoomLevel={minZoomLevel}
-        rotateEnabled={false}
+        onPress={handleMapPress}
+        onRegionChangeComplete={handleRegionChangeComplete}
+        onUserLocationChange={handleUserLocationChange}
         pitchEnabled={false}
+        ref={mapViewRef}
+        region={mapRegion}
+        rotateEnabled={false}
         scrollEnabled={scrollEnabled}
+        showsCompass={showsCompass}
+        showsMyLocationButton={false}
+        showsUserLocation={hasPermissions}
+        style={style}
+        testID={testID || "Map.MapView"}
         zoomEnabled={zoomEnabled}
         zoomTapEnabled={zoomTapEnabled}
       >
@@ -358,11 +339,7 @@ const Map = ( {
         renderPermissionsGate={renderCurrentLocationPermissionsGate}
         requestPermissions={requestPermissions}
         onPermissionGranted={onPermissionGranted}
-        handlePress={( ) => {
-          if ( onCurrentLocationPress ) { onCurrentLocationPress( ); }
-          setShowsUserLocation( true );
-          setZoomToUserLocationRequested( true );
-        }}
+        handlePress={handleCurrentLocationPress}
       />
       <SwitchMapTypeButton
         currentMapType={currentMapType}

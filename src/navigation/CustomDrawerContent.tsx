@@ -36,7 +36,7 @@ const drawerScrollViewStyle = {
   backgroundColor: "white",
   borderTopRightRadius: 20,
   borderBottomRightRadius: 20,
-  height: "100%"
+  minHeight: "100%"
 } as const;
 
 interface Props {
@@ -142,6 +142,12 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
       };
     }
     if ( isDebug ) {
+      items.projects = {
+        label: t( "PROJECTS" ),
+        navigation: "Projects",
+        icon: "briefcase"
+      };
+
       items.debug = {
         label: "DEBUG",
         navigation: "Debug",
@@ -190,7 +196,8 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
           : "ml-3",
         "mb-5",
         "flex-row",
-        "flex-nowrap"
+        "flex-nowrap",
+        "mr-3"
       )}
       onPress={( ) => {
         if ( !currentUser ) {
@@ -285,7 +292,7 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
       </View>
       {showConfirm && (
         <WarningSheet
-          handleClose={() => setShowConfirm( false )}
+          onPressClose={() => setShowConfirm( false )}
           headerText={t( "LOG-OUT--question" )}
           text={t( "Are-you-sure-you-want-to-log-out" )}
           handleSecondButtonPress={() => setShowConfirm( false )}
@@ -296,8 +303,9 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
       )}
       {showFeedback && (
         <TextInputSheet
+          hidden={!showFeedback}
           buttonText={t( "SUBMIT" )}
-          handleClose={() => setShowFeedback( false )}
+          onPressClose={() => setShowFeedback( false )}
           headerText={t( "FEEDBACK" )}
           confirm={submitFeedback}
           description={t( "Thanks-for-using-any-suggestions" )}

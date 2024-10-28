@@ -1,19 +1,23 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { FlashList } from "@shopify/flash-list";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCamera";
 import {
-  Body2, Button, FloatingActionBar, INatIcon, INatIconButton, StickyToolbar
+  Body2,
+  Button,
+  ButtonBar,
+  CustomFlashList,
+  FloatingActionBar,
+  INatIcon,
+  INatIconButton
 } from "components/SharedComponents";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useCallback, useMemo } from "react";
-import { useTheme } from "react-native-paper";
-import { BREAKPOINTS } from "sharedHelpers/breakpoint";
-import { useDeviceOrientation } from "sharedHooks";
+import React, { useCallback, useMemo, useState } from "react";
+import { useGridLayout } from "sharedHooks";
+import colors from "styles/tailwindColors";
 
 import GroupPhotoImage from "./GroupPhotoImage";
 
@@ -29,8 +33,6 @@ type Props = {
   totalPhotos: number
 }
 
-const GUTTER = 15;
-
 const GroupPhotos = ( {
   combinePhotos,
   groupedPhotos,
@@ -43,10 +45,14 @@ const GroupPhotos = ( {
   totalPhotos
 }: Props ): Node => {
   const navigation = useNavigation( );
-  const theme = useTheme();
   const {
-    isLandscapeMode, isTablet, screenWidth, screenHeight
-  } = useDeviceOrientation();
+    estimatedGridItemSize,
+    flashListStyle,
+    gridItemStyle,
+    gridItemWidth,
+    numColumns
+  } = useGridLayout( );
+  const [buttonBarHeight, setButtonBarHeight] = useState( null );
   const extractKey = ( item, index ) => ( item.empty
     ? "empty"
     : `${item.photos[0].uri}${index}` );
@@ -56,39 +62,14 @@ const GroupPhotos = ( {
   const obsWithMultiplePhotosSelected
     = selectedObservations?.[0]?.photos?.length > 1;
 
-  const calculateNumColumns = () => {
-    if ( screenWidth <= BREAKPOINTS.sm ) {
-      return 1;
-    }
-    if ( !isTablet ) return 2;
-    if ( isLandscapeMode ) return 6;
-    if ( screenWidth <= BREAKPOINTS.xl ) return 2;
-    return 4;
-  };
-  const numColumns = calculateNumColumns();
-  const calculateGridItemWidth = () => {
-    const combinedGutter = ( numColumns + 1 ) * GUTTER;
-    const gridWidth = isTablet
-      ? screenWidth
-      : Math.min( screenWidth, screenHeight );
-    return Math.floor( ( gridWidth - combinedGutter ) / numColumns );
-  };
-  const itemWidth = calculateGridItemWidth();
-
-  const itemStyle = useMemo( ( ) => ( {
-    height: itemWidth,
-    width: itemWidth,
-    margin: GUTTER / 2
-  } ), [itemWidth] );
-
   const renderImage = useCallback( item => (
     <GroupPhotoImage
       item={item}
       selectedObservations={selectedObservations}
       selectObservationPhotos={selectObservationPhotos}
-      style={itemStyle}
+      style={gridItemStyle}
     />
-  ), [itemStyle, selectedObservations, selectObservationPhotos] );
+  ), [gridItemStyle, selectedObservations, selectObservationPhotos] );
 
   const addPhotos = useCallback( () => {
     navigation.navigate( "NoBottomTabStackNavigator", {
@@ -107,25 +88,32 @@ const GroupPhotos = ( {
           className="rounded-[15px] justify-center items-center"
           // Sorry, couldn't get this to work with tailwind
           // eslint-disable-next-line react-native/no-inline-styles
-          style={[itemStyle, {
+          style={[gridItemStyle, {
             borderWidth: 4,
             borderStyle: "dashed",
-            borderColor: theme.colors.mediumGray
+            borderColor: colors.mediumGray
           }]}
         >
-          <INatIcon name="plus" size={50} color={theme.colors.mediumGray} />
+          <INatIcon name="plus" size={50} color={colors.mediumGray} />
         </Pressable>
       );
     }
     // $FlowIgnore
     return renderImage( item );
-  }, [itemStyle, renderImage, theme, addPhotos] );
+  }, [gridItemStyle, renderImage, addPhotos] );
 
   const renderHeader = ( ) => (
     <View className="m-5">
       <Body2>{t( "Group-photos-onboarding" )}</Body2>
     </View>
   );
+
+  const onLayout = event => {
+    const {
+      height
+    } = event.nativeEvent.layout;
+    setButtonBarHeight( height );
+  };
 
   const data = useMemo( ( ) => {
     const newData = [].concat( groupedPhotos );
@@ -135,44 +123,38 @@ const GroupPhotos = ( {
     return newData;
   }, [groupedPhotos, totalPhotos] );
 
-  const flashListStyle = {
-    paddingLeft: GUTTER / 2,
-    paddingRight: GUTTER / 2,
-    paddingBottom: 80 + GUTTER / 2
-  };
-
   const extraData = {
     selectedObservations,
-    itemWidth
+    gridItemWidth
   };
 
   return (
     <ViewWrapper>
-      <FlashList
-        contentContainerStyle={flashListStyle}
+      <CustomFlashList
         ListHeaderComponent={renderHeader}
+        contentContainerStyle={flashListStyle}
         data={data}
-        initialNumToRender={4}
+        estimatedItemSize={estimatedGridItemSize}
+        extraData={extraData}
+        key={numColumns}
         keyExtractor={extractKey}
         numColumns={numColumns}
-        key={numColumns}
         renderItem={renderItem}
         testID="GroupPhotos.list"
-        extraData={extraData}
-        estimatedItemSize={itemWidth + GUTTER}
       />
       <FloatingActionBar
-        show={selectedObservations.length > 0}
+        show={selectedObservations.length > 0 && typeof buttonBarHeight === "number"}
         position="bottomStart"
-        containerClass="bottom-[90px] ml-[15px] rounded-md"
+        containerClass="ml-[15px] rounded-md"
+        footerHeight={buttonBarHeight}
       >
         <View className="rounded-md overflow-hidden flex-row">
           <INatIconButton
             icon="combine"
             mode="contained"
             size={20}
-            color={theme.colors.onPrimary}
-            backgroundColor={theme.colors.primary}
+            color={colors.white}
+            backgroundColor={colors.darkGray}
             className="m-4"
             accessibilityLabel={t( "Combine-Photos" )}
             disabled={noObsSelected || oneObsSelected}
@@ -182,8 +164,8 @@ const GroupPhotos = ( {
             icon="separate"
             mode="contained"
             size={20}
-            color={theme.colors.onPrimary}
-            backgroundColor={theme.colors.primary}
+            color={colors.white}
+            backgroundColor={colors.darkGray}
             className="m-4"
             accessibilityLabel={t( "Separate-Photos" )}
             disabled={!obsWithMultiplePhotosSelected}
@@ -193,8 +175,8 @@ const GroupPhotos = ( {
             icon="trash-outline"
             mode="contained"
             size={20}
-            color={theme.colors.onError}
-            backgroundColor={theme.colors.error}
+            color={colors.white}
+            backgroundColor={colors.warningRed}
             className="m-4"
             accessibilityLabel={t( "Remove-Photos" )}
             disabled={noObsSelected}
@@ -202,7 +184,11 @@ const GroupPhotos = ( {
           />
         </View>
       </FloatingActionBar>
-      <StickyToolbar containerClass="items-center z-50">
+      <ButtonBar
+        sticky
+        containerClass="items-center z-50"
+        onLayout={onLayout}
+      >
         <Button
           className="max-w-[500px] w-full"
           level="focus"
@@ -211,7 +197,7 @@ const GroupPhotos = ( {
           testID="GroupPhotos.next"
           loading={isCreatingObservations}
         />
-      </StickyToolbar>
+      </ButtonBar>
     </ViewWrapper>
   );
 };

@@ -29,7 +29,13 @@ const config = {
 
 const log = logger.createLogger( config );
 
+const logWithoutRemote = logger.createLogger( {
+  ...config,
+  transport: [consoleTransport, fileAsyncTransport]
+} );
+
 export {
   log,
-  logFilePath
+  logFilePath,
+  logWithoutRemote
 };
