@@ -7,9 +7,9 @@ import { ActivityIndicator, ScrollViewWrapper } from "components/SharedComponent
 import { View } from "components/styledComponents";
 import _ from "lodash";
 import React from "react";
-import { formatProjectsApiDatetimeLong } from "sharedHelpers/dateAndTime.ts";
 import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
 
+import formatProjectDate from "../Projects/helpers/displayDates";
 import AboutProjectType from "./AboutProjectType";
 import ProjectRuleItem from "./ProjectRuleItem";
 
@@ -22,57 +22,6 @@ const ProjectRequirements = ( ) => {
   const { params } = useRoute( );
   const { id } = params;
   const { t, i18n } = useTranslation( );
-
-  const monthValues = {
-    1: {
-      label: t( "January" ),
-      value: 1
-    },
-    2: {
-      label: t( "February" ),
-      value: 2
-    },
-    3: {
-      label: t( "March" ),
-      value: 3
-    },
-    4: {
-      label: t( "April" ),
-      value: 4
-    },
-    5: {
-      label: t( "May" ),
-      value: 5
-    },
-    6: {
-      label: t( "June" ),
-      value: 6
-    },
-    7: {
-      label: t( "July" ),
-      value: 7
-    },
-    8: {
-      label: t( "August" ),
-      value: 8
-    },
-    9: {
-      label: t( "September" ),
-      value: 9
-    },
-    10: {
-      label: t( "October" ),
-      value: 10
-    },
-    11: {
-      label: t( "November" ),
-      value: 11
-    },
-    12: {
-      label: t( "December" ),
-      value: 12
-    }
-  };
 
   const qualityGradeOption = option => {
     switch ( option ) {
@@ -267,48 +216,15 @@ const ProjectRequirements = ( ) => {
     mediaRule.inclusions = mediaList;
   }
 
-  // TODO: follow date formatting
-  // https://github.com/inaturalist/inaturalist/blob/0994c85e2b87661042289ff080d3fc29ed8e70b3/app/webpack/projects/show/components/requirements.jsx#L100C3-L114C4
-  const createDateObject = ( ) => {
-    // Date Requirements
-    const projectStartDate = getFieldValue( project?.rule_preferences
-      ?.filter( pref => pref.field === "d1" ) );
-    const projectEndDate = getFieldValue( project?.rule_preferences
-      ?.filter( pref => pref.field === "d2" ) );
-    const observedOnDate = getFieldValue( project?.rule_preferences
-      ?.filter( pref => pref.field === "observed_on" ) );
-    const months = getFieldValue( project?.rule_preferences
-      ?.filter( pref => pref.field === "month" ) );
-
-    if ( projectStartDate && !projectEndDate ) {
-      return t( "project-start-time-datetime", {
-        datetime: formatProjectsApiDatetimeLong( projectStartDate, i18n )
-      } );
-    }
-    if ( projectStartDate && projectEndDate ) {
-      return t( "date-to-date", {
-        d1: formatProjectsApiDatetimeLong( projectStartDate, i18n ),
-        d2: formatProjectsApiDatetimeLong( projectEndDate, i18n )
-      } );
-    }
-    if ( observedOnDate ) {
-      return formatProjectsApiDatetimeLong( observedOnDate, i18n );
-    }
-    if ( months ) {
-      const monthList = months.split( "," );
-      return monthList.map( numberOfMonth => monthValues[numberOfMonth].label ).join( ", " );
-    }
-    return null;
-  };
-
   const dateRule = RULES.find( r => r.name === t( "Date" ) );
-  if ( createDateObject( ) !== null ) {
+  const { projectDate } = formatProjectDate( project, t, i18n );
+  if ( projectDate !== null ) {
     dateRule.inclusions = [
     // TODO: dates need internationalized formatting
     // from 2023-03-22 07:42 -06:00 to something readable
     // https://github.com/inaturalist/inaturalist/blob/0994c85e2b87661042289ff080d3fc29ed8e70b3/app/webpack/projects/shared/util.js#L4
       {
-        text: createDateObject( )
+        text: projectDate
       }
     ];
   }
@@ -347,7 +263,7 @@ const ProjectRequirements = ( ) => {
         : (
           <>
             <View className="my-4 px-4">
-              <ProjectListItem item={project} />
+              <ProjectListItem item={project} isHeader />
             </View>
             {renderItemSeparator( )}
             {RULES.map( rule => (
