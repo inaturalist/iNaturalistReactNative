@@ -4,9 +4,9 @@ import type { Node } from "react";
 import React from "react";
 import Observation from "realmModels/Observation";
 
-import MyObservationsPressable from "./MyObservationsPressable";
 import ObsGridItem from "./ObsGridItem";
 import ObsListItem from "./ObsListItem";
+import ObsPressable from "./ObsPressable";
 
 const { useRealm } = RealmContext;
 
@@ -15,7 +15,8 @@ type Props = {
   handleIndividualUploadPress: Function,
   gridItemStyle: Object,
   layout: "list" | "grid",
-  observation: Object
+  observation: Object,
+  obsListKey: String
 };
 
 const ObsItem = ( {
@@ -23,7 +24,8 @@ const ObsItem = ( {
   handleIndividualUploadPress,
   gridItemStyle,
   layout,
-  observation
+  observation,
+  obsListKey
 }: Props ): Node => {
   const realm = useRealm( );
   const allUnsyncedObservations = Observation.filterUnsyncedObservations( realm );
@@ -32,9 +34,10 @@ const ObsItem = ( {
   const showUploadStatus = needsSync.length > 0;
 
   return (
-    <MyObservationsPressable
+    <ObsPressable
       observation={observation}
-      testID={`MyObservationsPressable.${observation.uuid}`}
+      obsListKey={obsListKey}
+      testID={`ObsPressable.${observation.uuid}`}
     >
       {
         layout === "grid"
@@ -59,7 +62,7 @@ const ObsItem = ( {
             />
           )
       }
-    </MyObservationsPressable>
+    </ObsPressable>
   );
 };
 

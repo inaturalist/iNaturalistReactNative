@@ -73,6 +73,7 @@ const MyObservations = ( {
             hideLoadingWheel={!isFetchingNextPage || !currentUser}
             isFetchingNextPage={isFetchingNextPage}
             isConnected={isConnected}
+            obsListKey="MyObservations"
             layout={layout}
             onEndReached={onEndReached}
             onLayout={onListLayout}
