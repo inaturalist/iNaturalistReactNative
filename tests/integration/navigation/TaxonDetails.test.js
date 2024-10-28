@@ -5,7 +5,7 @@ import {
   waitFor
 } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
-import useStore from "stores/useStore";
+import useStore, { storage } from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import { renderAppWithObservations } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
@@ -15,6 +15,11 @@ const initialStoreState = useStore.getState( );
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
 jest.unmock( "@react-navigation/native" );
+
+beforeAll( ( ) => {
+  // Hide the onboarding modal
+  storage.set( "onBoardingShown", true );
+} );
 
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;

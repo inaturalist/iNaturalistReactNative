@@ -8,6 +8,7 @@ import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import ReactNativePermissions from "react-native-permissions";
 import Observation from "realmModels/Observation";
+import { storage } from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
@@ -44,6 +45,11 @@ jest.mock( "sharedHelpers/fetchUserLocation", () => ( {
   __esModule: true,
   default: () => mockFetchUserLocation()
 } ) );
+
+beforeAll( ( ) => {
+  // Hide the onboarding modal
+  storage.set( "onBoardingShown", true );
+} );
 
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;

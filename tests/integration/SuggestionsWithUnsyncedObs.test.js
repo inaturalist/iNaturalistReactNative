@@ -11,7 +11,7 @@ import {
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions.ts";
 import inatjs from "inaturalistjs";
 import * as useLocationPermission from "sharedHooks/useLocationPermission.tsx";
-import useStore from "stores/useStore";
+import useStore, { storage } from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import { renderAppWithObservations } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
@@ -119,6 +119,11 @@ beforeAll( async ( ) => {
   useStore.setState( initialStoreState, true );
   // userEvent recommends fake timers
   jest.useFakeTimers( );
+} );
+
+beforeAll( ( ) => {
+  // Hide the onboarding modal
+  storage.set( "onBoardingShown", true );
 } );
 
 // Mock the response from inatjs.computervision.score_image
