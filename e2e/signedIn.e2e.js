@@ -140,7 +140,7 @@ describe( "Signed in user", () => {
     await powerUserRadioButton.tap();
 
     /*
-    / 3. Create two observations
+    / 3. Create two observations without evidence
     */
     const uuid = await createAndUploadObservation( { upload: true } );
     // Create a second b/c later we want to test that the deleted status text
@@ -176,7 +176,7 @@ describe( "Signed in user", () => {
     await waitFor( username ).toBeVisible( ).withTimeout( 10000 );
 
     /*
-    / 5. Delete the observations
+    / 5. Delete the two observations without evidence
     */
     await deleteObservationByUUID( uuid, username, { uploaded: true } );
     // It would be nice to test for the "1 observation deleted" status text in
