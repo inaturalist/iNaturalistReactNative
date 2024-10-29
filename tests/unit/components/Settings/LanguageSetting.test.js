@@ -16,17 +16,43 @@ beforeAll( async ( ) => {
 } );
 
 beforeEach( ( ) => {
-  inatjs.translations.locales.mockResolvedValue( makeResponse( [{
-    language_in_locale: "Slovenský",
-    locale: "sk"
-  }, {
-    language_in_locale: "Español (Colombia)",
-    locale: "es-CO"
-  }] ) );
+  // reset the picker for each test
+  i18n.changeLanguage( "en" );
 } );
 
 describe( "LanguageSetting", ( ) => {
+  it( "should fallback to offline locales if web locales are unavailable", async ( ) => {
+    inatjs.translations.locales.mockResolvedValue( makeResponse( [] ) );
+    renderComponent( <LanguageSetting onChange={jest.fn( )} /> );
+
+    expect( i18n.language ).toEqual( "en" );
+    const changeLanguageButton = await screen.findByText( /CHANGE APP LANGUAGE/ );
+    expect( changeLanguageButton ).toBeVisible( );
+    fireEvent.press( changeLanguageButton );
+
+    const picker = await screen.findByTestId( "ReactNativePicker" );
+    expect( picker ).toBeVisible( );
+
+    // English is number 11 in the list of offline locales
+    expect( picker.props.selectedIndex ).toStrictEqual( 11 );
+    // trigger a change to the UI, selecting the second element
+    fireEvent( picker, "onValueChange", "ar" );
+    expect( picker.props.selectedIndex ).toStrictEqual( 1 );
+    const confirmText = await screen.findByText( "CONFIRM" );
+    expect( confirmText ).toBeVisible( );
+    fireEvent.press( confirmText );
+    expect( i18n.language ).toEqual( "ar" );
+  } );
+
   it( "should display and allow user to change locales from web list", async ( ) => {
+    inatjs.translations.locales.mockResolvedValue( makeResponse( [{
+      language_in_locale: "Slovenský",
+      locale: "sk"
+    }, {
+      language_in_locale: "Español (Colombia)",
+      locale: "es-CO"
+    }] ) );
+
     renderComponent( <LanguageSetting onChange={jest.fn( )} /> );
 
     expect( i18n.language ).toEqual( "en" );
