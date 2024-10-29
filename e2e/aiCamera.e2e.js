@@ -4,6 +4,7 @@ import {
 
 import { CHUCKS_PAD } from "../src/appConstants/e2e";
 import { iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
+import deleteObservation from "./sharedFlows/deleteObservation";
 import signIn from "./sharedFlows/signIn";
 import switchPowerMode from "./sharedFlows/switchPowerMode";
 
@@ -82,23 +83,9 @@ describe( "AICamera", () => {
       const editButton = element( by.id( "ObsDetail.editButton" ) );
       await waitFor( editButton ).toBeVisible().withTimeout( 10000 );
       await editButton.tap();
-      // Check that the edit screen is visible
-      await waitFor( element( by.text( "EVIDENCE" ) ) )
-        .toBeVisible()
-        .withTimeout( 10000 );
-      // Press header kebab menu
-      const headerKebabMenu = element( by.id( "KebabMenu.Button" ) );
-      await expect( headerKebabMenu ).toBeVisible();
-      await headerKebabMenu.tap();
-      // Press delete observation
-      const deleteObservation = element( by.id( "Header.delete-observation" ) );
-      await waitFor( deleteObservation ).toBeVisible().withTimeout( 10000 );
-      await deleteObservation.tap();
-      // Check that the delete button is visible
-      const deleteObservationButton = element( by.text( "DELETE" ) );
-      await waitFor( deleteObservationButton ).toBeVisible().withTimeout( 10000 );
-      // Press delete observation
-      await deleteObservationButton.tap();
+
+      await deleteObservation();
+
       // Make sure we're back on MyObservations
       await waitFor( username ).toBeVisible().withTimeout( 10000 );
     }
