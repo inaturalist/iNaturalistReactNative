@@ -1,8 +1,9 @@
 // @flow
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
-import React from "react";
+import React, { useCallback } from "react";
 import Observation from "realmModels/Observation";
+import useStore from "stores/useStore";
 
 import ObsGridItem from "./ObsGridItem";
 import ObsListItem from "./ObsListItem";
@@ -28,10 +29,21 @@ const ObsItem = ( {
   obsListKey
 }: Props ): Node => {
   const realm = useRealm( );
-  const allUnsyncedObservations = Observation.filterUnsyncedObservations( realm );
   // 20240529 amanda - filtering in realm is a fast way to look up sync status
-  const needsSync = allUnsyncedObservations.filtered( `uuid == '${observation.uuid}'` );
-  const showUploadStatus = needsSync.length > 0;
+  const obsNeedsSync = Observation.filterUnsyncedObservations( realm )
+    .filtered( `uuid == '${observation.uuid}'` )
+    .length > 0;
+
+  const totalUploadProgress = useStore( state => state.totalUploadProgress );
+  const obsUploadState = totalUploadProgress.find( o => o.uuid === observation.uuid );
+  const uploadProgress = obsNeedsSync
+    ? obsUploadState?.totalProgress || 0
+    : obsUploadState?.totalProgress;
+
+  const onPress = useCallback(
+    ( ) => handleIndividualUploadPress( observation.uuid ),
+    [handleIndividualUploadPress, observation.uuid]
+  );
 
   return (
     <ObsPressable
@@ -44,21 +56,20 @@ const ObsItem = ( {
           ? (
             <ObsGridItem
               explore={explore}
-              handleIndividualUploadPress={handleIndividualUploadPress}
+              onPress={onPress}
               observation={observation}
-              showUploadStatus={showUploadStatus}
               // 03022023 it seems like Flatlist is designed to work
               // better with RN styles than with Tailwind classes
               style={gridItemStyle}
-
+              uploadProgress={uploadProgress}
             />
           )
           : (
             <ObsListItem
               explore={explore}
-              handleIndividualUploadPress={handleIndividualUploadPress}
-              showUploadStatus={showUploadStatus}
+              onPress={onPress}
               observation={observation}
+              uploadProgress={uploadProgress}
             />
           )
       }
