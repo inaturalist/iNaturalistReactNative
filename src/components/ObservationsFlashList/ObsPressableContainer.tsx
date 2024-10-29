@@ -1,8 +1,6 @@
-// @flow
 import { RealmContext } from "providers/contexts.ts";
-import type { Node } from "react";
 import React, { useCallback } from "react";
-import Observation from "realmModels/Observation";
+import RealmObservation from "realmModels/Observation";
 import useStore from "stores/useStore";
 
 import ObsGridItem from "./ObsGridItem";
@@ -11,13 +9,18 @@ import ObsPressable from "./ObsPressable";
 
 const { useRealm } = RealmContext;
 
+// TODO remove when we figure out how to type the Realm models
+interface Observation extends RealmObservation {
+  uuid: string;
+}
+
 type Props = {
   explore: boolean,
   handleIndividualUploadPress: Function,
   gridItemStyle: Object,
   layout: "list" | "grid",
-  observation: Object,
-  obsListKey: String
+  observation: Observation,
+  obsListKey: string
 };
 
 const ObsItem = ( {
@@ -27,10 +30,10 @@ const ObsItem = ( {
   layout,
   observation,
   obsListKey
-}: Props ): Node => {
+}: Props ) => {
   const realm = useRealm( );
   // 20240529 amanda - filtering in realm is a fast way to look up sync status
-  const obsNeedsSync = Observation.filterUnsyncedObservations( realm )
+  const obsNeedsSync = RealmObservation.filterUnsyncedObservations( realm )
     .filtered( `uuid == '${observation.uuid}'` )
     .length > 0;
 
