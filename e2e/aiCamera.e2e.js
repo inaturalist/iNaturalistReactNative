@@ -17,7 +17,7 @@ describe( "AICamera", () => {
       /*
       / 1. Sign in
       */
-      const username = signIn();
+      const username = await signIn();
 
       /*
       / 2. Switch UI to power user mode
