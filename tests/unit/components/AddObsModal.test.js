@@ -18,18 +18,18 @@ describe( "AddObsModal", ( ) => {
 
   it( "hides AI camera button on older devices", async ( ) => {
     render( <AddObsModal closeModal={jest.fn( )} /> );
-    const arCameraButton = screen.getByLabelText(
+    const aiCameraButton = screen.getByLabelText(
       i18next.t( "AI-Camera" )
     );
-    expect( arCameraButton ).toBeOnTheScreen();
+    expect( aiCameraButton ).toBeOnTheScreen();
   } );
 
   it( "hides AI camera button on older devices", async ( ) => {
     mockPlatform.Version = 9;
     render( <AddObsModal closeModal={jest.fn( )} /> );
-    const arCameraButton = screen.queryByLabelText(
+    const aiCameraButton = screen.queryByLabelText(
       i18next.t( "AI-Camera" )
     );
-    expect( arCameraButton ).toBeFalsy( );
+    expect( aiCameraButton ).toBeFalsy( );
   } );
 } );

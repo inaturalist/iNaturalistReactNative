@@ -59,9 +59,9 @@ describe( "AICamera", () => {
       const addObsButton = element( by.id( "add-obs-button" ) );
       await waitFor( addObsButton ).toBeVisible().withTimeout( 10000 );
       await addObsButton.tap();
-      const arCameraButton = element( by.id( "aicamera-button" ) );
-      await waitFor( arCameraButton ).toBeVisible().withTimeout( 10000 );
-      await arCameraButton.tap();
+      const aiCameraButton = element( by.id( "aicamera-button" ) );
+      await waitFor( aiCameraButton ).toBeVisible().withTimeout( 10000 );
+      await aiCameraButton.tap();
 
       // Check that the camera screen is visible
       const cameraContainer = element( by.id( "CameraWithDevice" ) );
