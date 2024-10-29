@@ -10,6 +10,10 @@ function watchPosition(
 ) {
   console.log( "[DEBUG geolocationWrapper.e2e-mock] watchPosition" );
   const watchID = Date.now();
+  /*
+    We have to limit this here to not run forever otherwise the e2e
+    test never idles and times out.
+  */
   if ( counter < 5 ) {
     setTimeout( ( ) => {
       console.log( "[DEBUG geolocationWrapper.e2e-mock] watchPosition success" );

@@ -35,19 +35,33 @@ export class mockCamera extends React.PureComponent {
     ];
   }
 
+  /*
+    Every time the component updates we are running the frame processor that is a prop
+    to the camera component. We are running the frame processor with a mocked frame that
+    does not include any kind of image data at all.
+    Running it only on component update means it only is called a few times and not
+    every second (or so - depending on fps). This is enough to satisfy the e2e test
+    though because the mocked prediction needs to appear only once to be found by the
+    test matcher. I tried running it with a timer every second but since it never idles
+    the test never finishes.
+  */
   componentDidUpdate() {
     const { frameProcessor } = this.props;
     frameProcessor?.frameProcessor( mockFrame );
   }
 
   // eslint-disable-next-line class-methods-use-this, react/no-unused-class-component-methods
-  async takePhoto( ) {
+  async takePhoto() {
     // TODO: this only works on iOS
     return CameraRoll.getPhotos( {
       first: 20,
       assetType: "Photos"
     } )
       .then( async r => {
+        /*
+          Basically, here, we are reading the newest twenty photos from the simulators gallery
+          and return the oldest one of those. Copy it to a new path and treat it as a new photo.
+        */
         const testPhoto = r.edges[r.edges.length - 1].node.image;
         let oldUri = testPhoto.uri;
         if ( testPhoto.uri.includes( "ph://" ) ) {
@@ -58,7 +72,12 @@ export class mockCamera extends React.PureComponent {
         }
         const encodedUri = encodeURI( oldUri );
         const destPath = `${RNFS.TemporaryDirectoryPath}temp.jpg`;
-        const newPath = await RNFS.copyAssetsFileIOS( encodedUri, destPath, 0, 0 );
+        const newPath = await RNFS.copyAssetsFileIOS(
+          encodedUri,
+          destPath,
+          0,
+          0
+        );
         const photo = { uri: newPath, predictions: [] };
         if ( typeof photo !== "object" ) {
           console.log( "photo is not an object", typeof photo );
