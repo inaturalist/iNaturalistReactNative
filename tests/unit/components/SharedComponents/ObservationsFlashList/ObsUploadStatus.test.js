@@ -25,18 +25,10 @@ beforeAll( ( ) => {
 
 describe( "ObsUploadStatus", () => {
   it( "displays a pending upload for an unsynced observation", () => {
-    useStore.setState( {
-      totalUploadProgress: [
-        {
-          uuid: mockUnsyncedObservation.uuid,
-          totalProgress: 0
-        }
-      ]
-    } );
     renderComponent(
       <ObsUploadStatus
         observation={mockUnsyncedObservation}
-        showUploadStatus
+        progress={0}
       />
     );
 
@@ -45,18 +37,10 @@ describe( "ObsUploadStatus", () => {
   } );
 
   it( "displays a pending upload for a locally edited observation", () => {
-    useStore.setState( {
-      totalUploadProgress: [
-        {
-          uuid: mockEditedObservation.uuid,
-          totalProgress: 0
-        }
-      ]
-    } );
     renderComponent(
       <ObsUploadStatus
         observation={mockEditedObservation}
-        showUploadStatus
+        progress={0}
       />
     );
 
@@ -65,18 +49,10 @@ describe( "ObsUploadStatus", () => {
   } );
 
   it( "displays an upload in progress", async ( ) => {
-    useStore.setState( {
-      totalUploadProgress: [
-        {
-          uuid: mockUnsyncedObservation.uuid,
-          totalProgress: 0.05
-        }
-      ]
-    } );
     renderComponent(
       <ObsUploadStatus
         observation={mockUnsyncedObservation}
-        showUploadStatus
+        progress={0.05}
       />
     );
 
@@ -85,18 +61,10 @@ describe( "ObsUploadStatus", () => {
   } );
 
   it( "displays a completed upload", async () => {
-    useStore.setState( {
-      totalUploadProgress: [
-        {
-          uuid: mockUnsyncedObservation.uuid,
-          totalProgress: 1
-        }
-      ]
-    } );
     renderComponent(
       <ObsUploadStatus
         observation={mockUnsyncedObservation}
-        showUploadStatus
+        progress={1}
       />
     );
 

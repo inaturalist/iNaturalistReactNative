@@ -342,6 +342,27 @@ function formatApiDatetime(
   return formatDateString( dateString, i18n.t( "date-format-short" ), i18n, options );
 }
 
+function formatProjectsApiDatetimeLong(
+  dateString: string,
+  i18n: i18next,
+  options: FormatDateStringOptions = {}
+) {
+  const hasTime = String( dateString ).includes( "T" );
+  if ( hasTime ) {
+    return formatDateString( dateString, i18n.t( "datetime-format-long" ), i18n, options );
+  }
+  const hasSpaces = String( dateString ).includes( " " );
+  if ( hasSpaces ) {
+    return formatDateString(
+      dateString.split( " " )[0],
+      i18n.t( "date-format-long" ),
+      i18n,
+      options
+    );
+  }
+  return formatDateString( dateString, i18n.t( "date-format-long" ), i18n, options );
+}
+
 export {
   formatApiDatetime,
   formatDateStringFromTimestamp,
@@ -351,5 +372,6 @@ export {
   formatLongDate,
   formatLongDatetime,
   formatMonthYearDate,
+  formatProjectsApiDatetimeLong,
   getNowISO
 };

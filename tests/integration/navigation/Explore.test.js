@@ -91,7 +91,7 @@ async function navigateToObsDetails( ) {
   global.timeTravel( );
   expect( await screen.findByText( /Welcome back/ ) ).toBeVisible( );
   const firstObservation = await screen.findByTestId(
-    `MyObservationsPressable.${mockObservations[0].uuid}`
+    `ObsPressable.${mockObservations[0].uuid}`
   );
   await actor.press( firstObservation );
 }
@@ -283,7 +283,7 @@ describe( "logged in", ( ) => {
         const gridView = await screen.findByTestId( "SegmentedButton.grid" );
         await actor.press( gridView );
         const firstObservation = screen.queryByTestId(
-          `MyObservationsPressable.${mockObservations[0].uuid}`
+          `ObsPressable.${mockObservations[0].uuid}`
         );
         await waitFor( ( ) => {
           expect( firstObservation ).toBeVisible( );

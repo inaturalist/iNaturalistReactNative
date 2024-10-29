@@ -10,4 +10,6 @@ gem "cocoapods", ">= 1.13", "< 1.15"
 gem "activesupport", ">= 6.1.7.5", "< 7.1.0"
 
 gem "fastlane"
+# Temporary workaround for https://github.com/fastlane/fastlane/issues/26682
+gem "fastlane-sirp", git: "https://github.com/appbot/fastlane-sirp.git", ref: "sysrandom_fix"
 gem "nokogiri"

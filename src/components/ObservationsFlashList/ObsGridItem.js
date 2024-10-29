@@ -12,21 +12,21 @@ import ObsUploadStatus from "./ObsUploadStatus";
 
 type Props = {
   explore: boolean,
-  handleIndividualUploadPress: Function,
   height?: string,
   observation: Object,
-  showUploadStatus: boolean,
+  onPress: Function,
   style?: Object,
+  uploadProgress?: number,
   width?: string
 };
 
 const ObsGridItem = ( {
   explore,
-  handleIndividualUploadPress,
   height = "w-[200px]",
   observation,
-  showUploadStatus,
+  onPress,
   style,
+  uploadProgress,
   width = "w-[200px]"
 }: Props ): Node => {
   const photo = observation?.observationPhotos?.[0]?.photo
@@ -80,10 +80,10 @@ const ObsGridItem = ( {
         <ObsUploadStatus
           classNameMargin="mb-1"
           explore={explore}
-          handleIndividualUploadPress={handleIndividualUploadPress}
           layout="horizontal"
           observation={observation}
-          showUploadStatus={showUploadStatus}
+          onPress={onPress}
+          progress={uploadProgress}
           white
         />
         {displayTaxonName}

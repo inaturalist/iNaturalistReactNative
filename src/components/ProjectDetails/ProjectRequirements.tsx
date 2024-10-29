@@ -9,6 +9,7 @@ import _ from "lodash";
 import React from "react";
 import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
 
+import formatProjectDate from "../Projects/helpers/displayDates";
 import AboutProjectType from "./AboutProjectType";
 import ProjectRuleItem from "./ProjectRuleItem";
 
@@ -20,7 +21,7 @@ const ProjectRequirements = ( ) => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { id } = params;
-  const { t } = useTranslation( );
+  const { t, i18n } = useTranslation( );
 
   const qualityGradeOption = option => {
     switch ( option ) {
@@ -215,42 +216,15 @@ const ProjectRequirements = ( ) => {
     mediaRule.inclusions = mediaList;
   }
 
-  // Date Requirements
-  const projectStartDate = getFieldValue( project?.rule_preferences
-    ?.filter( pref => pref.field === "d1" ) );
-  const projectEndDate = getFieldValue( project?.rule_preferences
-    ?.filter( pref => pref.field === "d2" ) );
-  const observedOnDate = getFieldValue( project?.rule_preferences
-    ?.filter( pref => pref.field === "observed_on" ) );
-  const month = getFieldValue( project?.rule_preferences
-    ?.filter( pref => pref.field === "month" ) );
-
-  // TODO: follow date formatting
-  // https://github.com/inaturalist/inaturalist/blob/0994c85e2b87661042289ff080d3fc29ed8e70b3/app/webpack/projects/show/components/requirements.jsx#L100C3-L114C4
-  const createDateObject = ( ) => {
-    if ( projectStartDate && !projectEndDate ) {
-      return t( "Start-time", { date: projectStartDate } );
-    }
-    if ( projectStartDate && projectEndDate ) {
-      return `${projectStartDate} - ${projectEndDate}`;
-    }
-    if ( observedOnDate ) {
-      return observedOnDate;
-    }
-    if ( month ) {
-      return month;
-    }
-    return null;
-  };
-
   const dateRule = RULES.find( r => r.name === t( "Date" ) );
-  if ( createDateObject( ) !== null ) {
+  const { projectDate } = formatProjectDate( project, t, i18n );
+  if ( projectDate !== null ) {
     dateRule.inclusions = [
     // TODO: dates need internationalized formatting
     // from 2023-03-22 07:42 -06:00 to something readable
     // https://github.com/inaturalist/inaturalist/blob/0994c85e2b87661042289ff080d3fc29ed8e70b3/app/webpack/projects/shared/util.js#L4
       {
-        text: createDateObject( )
+        text: projectDate
       }
     ];
   }
@@ -289,7 +263,7 @@ const ProjectRequirements = ( ) => {
         : (
           <>
             <View className="my-4 px-4">
-              <ProjectListItem item={project} />
+              <ProjectListItem item={project} isHeader />
             </View>
             {renderItemSeparator( )}
             {RULES.map( rule => (

@@ -17,22 +17,6 @@ import ProjectDetails from "./ProjectDetails";
 
 const logger = log.extend( "ProjectDetailsContainer" );
 
-const DETAIL_FIELDS = {
-  title: true,
-  icon: true,
-  project_type: true,
-  icon_file_name: true,
-  header_image_url: true,
-  description: true,
-  place_id: true,
-  observation_count: true,
-  species_count: true
-};
-
-const DETAIL_PARAMS = {
-  fields: DETAIL_FIELDS
-};
-
 const ProjectDetailsContainer = ( ): Node => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
@@ -44,7 +28,9 @@ const ProjectDetailsContainer = ( ): Node => {
 
   const { data: project } = useAuthenticatedQuery(
     fetchProjectsQueryKey,
-    optsWithAuth => fetchProjects( id, { ...DETAIL_PARAMS }, optsWithAuth )
+    optsWithAuth => fetchProjects( id, {
+      fields: "all"
+    }, optsWithAuth )
   );
 
   const { data: projectMembers } = useAuthenticatedQuery(
