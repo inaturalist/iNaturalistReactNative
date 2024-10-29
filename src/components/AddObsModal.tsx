@@ -53,7 +53,7 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
       text: t( "Use-iNaturalists-AI-Camera" ),
       icon: "arcamera",
       onPress: ( ) => navAndCloseModal( "Camera", { camera: "AI" } ),
-      testID: "arcamera-button",
+      testID: "aicamera-button",
       className: classnames( greenCircleClass, "absolute bottom-[26px]" ),
       accessibilityLabel: t( "AI-Camera" ),
       accessibilityHint: t( "Navigates-to-AI-camera" )
