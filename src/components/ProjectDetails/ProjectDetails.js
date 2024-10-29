@@ -3,8 +3,12 @@
 import { useNavigation } from "@react-navigation/native";
 import displayProjectType from "components/Projects/helpers/displayProjectType.ts";
 import {
-  Button, Heading1, Heading3, Heading4, OverviewCounts,
+  Button,
+  Heading1,
+  Heading4,
+  OverviewCounts,
   ScrollViewWrapper,
+  Subheading1,
   UserText
 } from "components/SharedComponents";
 import {
@@ -90,11 +94,11 @@ const ProjectDetails = ( {
       </ImageBackground>
       <View className="mx-4 pb-8">
         <Heading1 className="shrink mt-4">{project.title}</Heading1>
-        <Heading3>
+        <Subheading1>
           {shouldDisplayDateRange
             ? projectDate
             : displayProjectType( project.project_type, t )}
-        </Heading3>
+        </Subheading1>
         <OverviewCounts
           counts={{
             observations_count: project.observations_count,
