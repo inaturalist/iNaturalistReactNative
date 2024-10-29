@@ -6,6 +6,7 @@ import {
 import { CHUCKS_PAD } from "../src/appConstants/e2e";
 import { iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
 import signIn from "./sharedFlows/signIn";
+import switchPowerMode from "./sharedFlows/switchPowerMode";
 
 describe( "Signed in user", () => {
   beforeAll( async ( ) => iNatE2eBeforeAll( device ) );
@@ -105,17 +106,7 @@ describe( "Signed in user", () => {
     /*
     / 2. Switch UI to power user mode
     */
-    const drawerButton = element( by.id( "OPEN_DRAWER" ) );
-    await waitFor( drawerButton ).toBeVisible().withTimeout( 10000 );
-    await drawerButton.tap();
-    // Tap the settings drawer menu item
-    const settingsDrawerMenuItem = element( by.id( "settings" ) );
-    await waitFor( settingsDrawerMenuItem ).toBeVisible().withTimeout( 10000 );
-    await settingsDrawerMenuItem.tap();
-    // Tap the settings radio button for power user mode
-    const powerUserRadioButton = element( by.id( "all-observation-option" ) );
-    await waitFor( powerUserRadioButton ).toBeVisible().withTimeout( 10000 );
-    await powerUserRadioButton.tap();
+    await switchPowerMode( );
 
     /*
     / 3. Create two observations without evidence
