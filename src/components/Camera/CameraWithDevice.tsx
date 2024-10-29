@@ -113,7 +113,7 @@ const CameraWithDevice = ( {
     setAddPhotoPermissionResult( "granted" );
   };
 
-  const onPhotoPermissionDenied = ( ) => {
+  const onPhotoPermissionBlocked = ( ) => {
     setAddPhotoPermissionResult( "denied" );
   };
 
@@ -123,7 +123,7 @@ const CameraWithDevice = ( {
       && !isNavigating
       && (
         addPhotoPermissionGateWasClosed
-        || addPhotoPermissionResult === "granted"
+        || addPhotoPermissionResult
       )
     ) {
       setIsNavigating( true );
@@ -175,7 +175,7 @@ const CameraWithDevice = ( {
         image={require( "images/background/birger-strahl-ksiGE4hMiso-unsplash.jpg" )}
         onModalHide={( ) => setAddPhotoPermissionGateWasClosed( true )}
         onPermissionGranted={onPhotoPermissionGranted}
-        onPermissionDenied={onPhotoPermissionDenied}
+        onPermissionBlocked={onPhotoPermissionBlocked}
         withoutNavigation
         permissionNeeded={checkmarkTapped}
       />

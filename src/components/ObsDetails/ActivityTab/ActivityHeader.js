@@ -49,8 +49,7 @@ const ActivityHeader = ( {
   const [showEditCommentSheet, setShowEditCommentSheet] = useState( false );
   const [showDeleteCommentSheet, setShowDeleteCommentSheet] = useState( false );
   const [showWithdrawIDSheet, setShowWithdrawIDSheet] = useState( false );
-  const { user, vision } = item;
-  const { category } = user || {};
+  const { category, user, vision } = item;
 
   const itemType = item.category
     ? "Identification"
@@ -120,23 +119,26 @@ const ActivityHeader = ( {
   ] );
 
   return (
-    <View className={classnames( "flex-row justify-between h-[26px] my-[11px]", classNameMargin )}>
+    <View className={classnames( "flex-row justify-between", classNameMargin )}>
       <InlineUser user={user} isConnected={isConnected} />
       <View className="flex-row items-center space-x-[15px] -mr-[15px]">
         {renderIcon()}
         {renderStatus()}
-        {item.created_at
-            && (
-              <DateDisplay
-                dateString={
-                  item.updated_at || item.created_at
-                }
-                classNameMargin="mt-1"
-                geoprivacy={geoprivacy}
-                taxonGeoprivacy={taxonGeoprivacy}
-                belongsToCurrentUser={belongsToCurrentUser}
-              />
-            )}
+        {/*
+          Note that even though the date is conditionally rendered, we need to
+          wrap it in a View that's always there so the space-x-[] can be
+          calculated
+        */}
+        <View>
+          {item.created_at && (
+            <DateDisplay
+              dateString={item.updated_at || item.created_at}
+              geoprivacy={geoprivacy}
+              taxonGeoprivacy={taxonGeoprivacy}
+              belongsToCurrentUser={belongsToCurrentUser}
+            />
+          )}
+        </View>
         {
           loading
             ? (
@@ -158,7 +160,7 @@ const ActivityHeader = ( {
         }
         {( currentUser && showWithdrawIDSheet ) && (
           <WithdrawIDSheet
-            handleClose={() => setShowWithdrawIDSheet( false )}
+            onPressClose={() => setShowWithdrawIDSheet( false )}
             taxon={item.taxon}
             updateIdentification={updateIdentification}
           />
@@ -166,7 +168,7 @@ const ActivityHeader = ( {
 
         {( currentUser && showEditCommentSheet ) && (
           <TextInputSheet
-            handleClose={() => setShowEditCommentSheet( false )}
+            onPressClose={() => setShowEditCommentSheet( false )}
             headerText={t( "EDIT-COMMENT" )}
             initialInput={item.body}
             confirm={textInput => updateCommentBody( textInput )}
@@ -174,7 +176,7 @@ const ActivityHeader = ( {
         )}
         {( currentUser && showDeleteCommentSheet ) && (
           <WarningSheet
-            handleClose={( ) => setShowDeleteCommentSheet( false )}
+            onPressClose={( ) => setShowDeleteCommentSheet( false )}
             headerText={t( "DELETE-COMMENT--question" )}
             confirm={deleteComment}
             buttonText={t( "DELETE" )}

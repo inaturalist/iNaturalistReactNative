@@ -11,7 +11,8 @@ import colors from "styles/tailwindColors";
 type Props = {
   counts: Object,
   onObservationPressed: Function,
-  onSpeciesPressed: Function
+  onSpeciesPressed: Function,
+  onMembersPressed: Function
 }
 
 type CountProps = {
@@ -70,13 +71,13 @@ const CountPressable = ( {
     </View>
     {typeof count === "number"
       ? <Body2 className="mt-2">{t( "Intl-number", { val: count } )}</Body2>
-      : <ActivityIndicator size={25} />}
+      : <ActivityIndicator className="mt-2" size={20} />}
     <Heading5 className="mt-2 text-center">{label}</Heading5>
   </Pressable>
 );
 
 const OverviewCounts = ( {
-  counts, onObservationPressed, onSpeciesPressed
+  counts, onObservationPressed, onSpeciesPressed, onMembersPressed
 }: Props ): React.Node => (
   <View className="flex-row mt-6">
     <CountPressable
@@ -100,11 +101,13 @@ const OverviewCounts = ( {
         icon="label"
       />
     )}
-    {typeof ( counts.members_count ) === "number" && (
-      <Count
+    {( typeof ( counts.members_count ) === "number" || onMembersPressed !== undefined ) && (
+      <CountPressable
+        accessibilityLabel={t( "See-project-members" )}
         count={counts.members_count}
         label={t( "MEMBERS-WITHOUT-NUMBER", { count: counts.members_count } )}
         icon="person"
+        onPress={onMembersPressed}
       />
     )}
     <Count

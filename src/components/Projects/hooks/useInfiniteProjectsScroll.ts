@@ -8,10 +8,12 @@ const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: Object 
   const baseParams = {
     ...newInputParams,
     per_page: 50,
-    ttl: -1
+    ttl: -1,
+    rule_details: true,
+    fields: "all"
   };
 
-  const { fields, ...queryKeyParams } = baseParams;
+  const { ...queryKeyParams } = baseParams;
 
   const queryKey = ["useInfiniteProjectsScroll", "searchProjects", queryKeyParams];
 
@@ -44,7 +46,15 @@ const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: Object 
 
   const pages = data?.pages;
   const allResults = pages?.map( page => page?.results );
-  const projects = flatten( allResults );
+  const projects = flatten( allResults ).sort( ( a, b ) => {
+    if ( a.title < b.title ) {
+      return -1;
+    }
+    if ( a.title > b.title ) {
+      return 1;
+    }
+    return 0;
+  } );
 
   return {
     isFetching,

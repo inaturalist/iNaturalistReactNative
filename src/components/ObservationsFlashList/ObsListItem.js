@@ -16,16 +16,16 @@ import ObsUploadStatus from "./ObsUploadStatus";
 
 type Props = {
   explore: boolean,
-  handleIndividualUploadPress: Function,
-  showUploadStatus: boolean,
-  observation: Object
+  onPress: Function,
+  observation: Object,
+  uploadProgress?: number
 };
 
 const ObsListItem = ( {
   explore = false,
-  handleIndividualUploadPress,
-  showUploadStatus,
-  observation
+  observation,
+  onPress,
+  uploadProgress
 }: Props ): Node => {
   const uploadStatus = useStore( state => state.uploadStatus );
   const currentUser = useCurrentUser( );
@@ -101,11 +101,11 @@ const ObsListItem = ( {
       >
         <ObsUploadStatus
           explore={explore}
-          handleIndividualUploadPress={handleIndividualUploadPress}
+          onPress={onPress}
           layout="vertical"
           observation={observation}
+          progress={uploadProgress}
           showObsStatus
-          showUploadStatus={showUploadStatus}
         />
       </View>
     </View>

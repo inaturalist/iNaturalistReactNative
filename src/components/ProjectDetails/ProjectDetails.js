@@ -15,6 +15,7 @@ import React, { useCallback } from "react";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
+import formatProjectDate from "../Projects/helpers/displayDates";
 import AboutProjectType from "./AboutProjectType";
 
 type Props = {
@@ -29,15 +30,18 @@ const ProjectDetails = ( {
 }: Props ): Node => {
   const setExploreView = useStore( state => state.setExploreView );
 
-  const { t } = useTranslation( );
+  const { t, i18n } = useTranslation( );
   const navigation = useNavigation( );
 
   const onObservationPressed = useCallback(
-    ( ) => navigation.navigate( "Explore", {
-      project,
-      worldwide: true
-    } ),
-    [navigation, project]
+    ( ) => {
+      setExploreView( "observations" );
+      navigation.navigate( "Explore", {
+        project,
+        worldwide: true
+      } );
+    },
+    [navigation, project, setExploreView]
   );
 
   const onSpeciesPressed = useCallback(
@@ -51,11 +55,23 @@ const ProjectDetails = ( {
     [navigation, project, setExploreView]
   );
 
+  const onMembersPressed = useCallback(
+    ( ) => {
+      navigation.navigate( "ProjectMembers", {
+        id: project?.id,
+        title: project?.title
+      } );
+    },
+    [navigation, project]
+  );
+
   if ( !project ) {
     return null;
   }
 
   const userTextStyle = { lineHeight: 26 };
+
+  const { projectDate, shouldDisplayDateRange } = formatProjectDate( project, t, i18n );
 
   return (
     <ScrollViewWrapper testID="project-details">
@@ -72,9 +88,13 @@ const ProjectDetails = ( {
           accessibilityIgnoresInvertColors
         />
       </ImageBackground>
-      <View className="mx-4">
+      <View className="mx-4 pb-8">
         <Heading1 className="shrink mt-4">{project.title}</Heading1>
-        <Heading3>{displayProjectType( project.project_type, t )}</Heading3>
+        <Heading3>
+          {shouldDisplayDateRange
+            ? projectDate
+            : displayProjectType( project.project_type, t )}
+        </Heading3>
         <OverviewCounts
           counts={{
             observations_count: project.observations_count,
@@ -84,19 +104,22 @@ const ProjectDetails = ( {
           }}
           onObservationPressed={onObservationPressed}
           onSpeciesPressed={onSpeciesPressed}
+          onMembersPressed={onMembersPressed}
         />
         <Heading4 className="mt-7">{t( "ABOUT" )}</Heading4>
         {project?.description
           && <UserText text={project.description} htmlStyle={userTextStyle} />}
-        {/* {project.project_type === "collection" && (
+        {project.project_type === "collection" && (
           <>
             <Heading4 className="mb-3 mt-5">{t( "PROJECT-REQUIREMENTS" )}</Heading4>
             <Button
+              className="mb-5"
               level="neutral"
               text={t( "VIEW-PROJECT-REQUIREMENTS" )}
+              onPress={( ) => navigation.navigate( "ProjectRequirements", { id: project.id } )}
             />
           </>
-        )} */}
+        )}
         <Heading4 className="mb-3">{t( "MAP" )}</Heading4>
         <Button
           level="neutral"

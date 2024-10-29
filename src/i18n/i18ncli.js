@@ -8,8 +8,7 @@ const {
   serialize: serializeFtl,
   Resource
 } = require( "@fluent/syntax" );
-
-const { readFile, writeFile } = fs.promises;
+const fsp = require( "fs/promises" );
 const path = require( "path" );
 const util = require( "util" );
 const { glob } = require( "glob" );
@@ -20,11 +19,65 @@ const {
   uniq
 } = require( "lodash" );
 
+// Exceptions to the rule that all locales should be specified as two-letter
+// language code only
+const SUPPORTED_REGIONAL_LOCALES = [
+  "en-GB",
+  "en-NZ",
+  "es-AR",
+  "es-CO",
+  "es-CR",
+  "es-MX",
+  "fr-CA",
+  "pt-BR",
+  "zh-CN",
+  "zh-HK",
+  "zh-TW"
+];
+
+// Prepends an FTL translation with a checkmark for testing
+function checkifyText( ftlTxt ) {
+  if ( ftlTxt.indexOf( "<0>" ) >= 0 ) {
+    return ftlTxt.replace( "<0>", "<0>✅" );
+  }
+  return `✅${ftlTxt}`;
+}
+
+// This will create a version of localizations that has a ✅ in
+// front of all text, as a way to see if there are untranslated strings
+function checkifyLocalizations( localizations ) {
+  // Mostly date format strings that will break with extra stuff in them
+  const keysToSkip = [
+    "date-month-year",
+    "Date-short-format",
+    "Date-this-year",
+    "date-format-short",
+    "datetime-format-short"
+  ];
+  return Object.keys( localizations ).reduce( ( memo, key ) => {
+    memo[key] = localizations[key];
+    if ( keysToSkip.indexOf( key ) >= 0 ) {
+      return memo;
+    }
+    if ( memo[key].val ) {
+      memo[key].val = checkifyText( memo[key].val );
+    } else {
+      memo[key] = checkifyText( memo[key] );
+    }
+    return memo;
+  }, {} );
+}
+
+// Paths to all existing localizations
+async function l10nFtlPaths() {
+  return glob( path.join( __dirname, "l10n", "*.ftl" ) );
+}
+
 // Convert a single FTL file to JSON
 const jsonifyPath = async ( inPath, outPath, options = { } ) => {
   let ftlTxt;
   try {
-    ftlTxt = await readFile( inPath );
+    ftlTxt = await fsp.readFile( inPath );
   } catch ( readFileErr ) {
     console.error( `Could not read ${inPath}, skipping...` );
     if ( options.debug ) {
@@ -37,12 +90,29 @@ const jsonifyPath = async ( inPath, outPath, options = { } ) => {
 
   // Allow us to await a result to this callback-based method so we can return
   // true when we know it succeeded
-  // TODO un-promisify this and use { respectComments: false } to exclude
-  // comments, which are going to add a lot of bulk to these files
+  fluent.ftl2js[util.promisify.custom] = (
+    str,
+    params = {}
+  ) => new Promise( ( resolve, reject ) => {
+    fluent.ftl2js(
+      str,
+      ( err, res ) => {
+        if ( err ) {
+          reject( err );
+        } else {
+          resolve( res );
+        }
+      },
+      params
+    );
+  } );
   const ftl2js = util.promisify( fluent.ftl2js );
-  const localizations = await ftl2js( ftlTxt.toString( ) );
+  const localizations = await ftl2js( ftlTxt.toString( ), { respectComments: false } );
+  const massagedLocalizations = options.checkify
+    ? checkifyLocalizations( localizations )
+    : localizations;
   try {
-    await writeFile( outPath, `${JSON.stringify( localizations, null, 2 )}\n` );
+    await fsp.writeFile( outPath, `${JSON.stringify( massagedLocalizations, null, 2 )}\n` );
   } catch ( writeFileErr ) {
     console.error( `Failed to write ${outPath} with error:` );
     console.error( writeFileErr );
@@ -54,7 +124,7 @@ const jsonifyPath = async ( inPath, outPath, options = { } ) => {
 
 // Assume all existing localized locales are supported
 const supportedLocales = async ( ) => {
-  const paths = await glob( path.join( __dirname, "l10n", "*.ftl" ) );
+  const paths = await l10nFtlPaths( );
   return paths.map( f => path.basename( f, ".ftl" ) );
 };
 
@@ -102,11 +172,14 @@ const writeLoadTranslations = async ( ) => {
   );
   out.write( "  return require( \"./l10n/en.ftl.json\" );\n" );
   out.write( "};\n" );
+  out.write( "\n" );
+  out.write( "export const SUPPORTED_LOCALES = [\n" );
+  out.write( locales.sort( ).map( l => `  "${l}"` ).join( ",\n" ) );
+  out.write( "\n];\n" );
 };
 
-async function validate( ) {
-  const stringsPath = path.join( __dirname, "strings.ftl" );
-  const ftlTxt = await readFile( stringsPath );
+async function validateFtlFile( ftlPath, options = {} ) {
+  const ftlTxt = await fsp.readFile( ftlPath );
   const ftl = parseFtl( ftlTxt.toString( ) );
   const errors = [];
   // Chalk does not expose a CommonJS module, so we have to do this
@@ -134,18 +207,38 @@ async function validate( ) {
     }
   } );
   if ( errors.length > 0 ) {
-    console.error( `❌ ${errors.length} errors found in ${stringsPath}:` );
+    console.error( `❌ ${errors.length} errors found in ${ftlPath}:` );
     errors.forEach( error => {
       console.error( chalk.red( "[Error]" ), error );
     } );
+    if ( options.noExit ) {
+      return false;
+    }
     process.exit( 1 );
   }
-  console.log( `✅ ${stringsPath} validated` );
+  if ( !options.quiet ) {
+    console.log( `✅ ${ftlPath} validated` );
+  }
+  return true;
 }
 
-async function normalize( ) {
-  const stringsPath = path.join( __dirname, "strings.ftl" );
-  const ftlTxt = await readFile( stringsPath );
+async function validate() {
+  // Validate source strings
+  await validateFtlFile( path.join( __dirname, "strings.ftl" ) );
+  // Validate translations
+  const l10nPaths = await l10nFtlPaths( );
+  const results = await Promise.allSettled( l10nPaths.map(
+    ftlPath => validateFtlFile( ftlPath, { quiet: true, noExit: true } )
+  ) );
+  if ( results.find( r => r.value === false ) ) {
+    process.exit( 1 );
+  } else {
+    console.log( "✅ l10n FTL validated" );
+  }
+}
+
+async function normalizeFtlFile( ftlPath, options = {} ) {
+  const ftlTxt = await fsp.readFile( ftlPath );
   const ftl = parseFtl( ftlTxt.toString( ) );
   const resourceComments = [];
   const messages = [];
@@ -167,13 +260,22 @@ async function normalize( ) {
     ...sortedMessages
   ] );
   const newFtlTxt = serializeFtl( newResource );
-  await writeFile( stringsPath, newFtlTxt );
-  console.log( `✅ ${stringsPath} normalized` );
+  await fsp.writeFile( ftlPath, newFtlTxt );
+  if ( !options.quiet ) {
+    console.log( `✅ ${ftlPath} normalized` );
+  }
+}
+
+async function normalize( ) {
+  await normalizeFtlFile( path.join( __dirname, "strings.ftl" ) );
+  const l10nPaths = await l10nFtlPaths( );
+  await Promise.all( l10nPaths.map( ftlPath => normalizeFtlFile( ftlPath, { quiet: true } ) ) );
+  console.log( "✅ l10n FTL normalized" );
 }
 
 async function getKeys( ) {
   const stringsPath = path.join( __dirname, "strings.ftl" );
-  const ftlTxt = await readFile( stringsPath );
+  const ftlTxt = await fsp.readFile( stringsPath );
   const ftl = parseFtl( ftlTxt.toString( ) );
   return ftl.body.filter( item => item.type === "Message" ).map( msg => msg.id.name );
 }
@@ -181,7 +283,7 @@ async function getKeys( ) {
 async function getKeysInUse( ) {
   const paths = await glob( path.join( __dirname, "..", "**", "*.{js,ts,jsx,tsx}" ) );
   const allKeys = await Promise.all( paths.map( async srcPath => {
-    const src = await readFile( srcPath );
+    const src = await fsp.readFile( srcPath );
     const tMatches = [...src.toString( ).matchAll( /[^a-z]t\(\s*["']([\w-_\s]+?)["']/g )];
     const i18nkeyMatches = [...src.toString( ).matchAll( /i18nKey=["']([\w-_\s]+?)["']/g )];
     return [...tMatches, ...i18nkeyMatches].map( match => match[1] );
@@ -201,6 +303,7 @@ async function unused( ) {
   }
 }
 
+// Look for keys in the code that aren't in the source strings
 async function untranslatable( ) {
   const keys = await getKeys( );
   const keysInUse = await getKeysInUse( );
@@ -213,6 +316,25 @@ async function untranslatable( ) {
     );
     process.exit( 1 );
   }
+}
+
+// Ensure localization file names match iNat convention and not Crowdin, e.g.
+// we use "fr" instead of "fr-FR"
+async function normalizeFileNames( ) {
+  const paths = await l10nFtlPaths();
+  return Promise.all( paths.map( async l10nPath => {
+    const locale = path.basename( l10nPath, ".ftl" );
+    const [lng, region] = locale.split( "-" );
+    // No need to move anything if there's no region
+    if ( !region ) return;
+
+    // We need to keep some regions
+    if ( SUPPORTED_REGIONAL_LOCALES.indexOf( locale ) >= 0 ) return;
+
+    // Everything else needs to be regionless
+    const newPath = path.join( path.dirname( l10nPath ), `${lng}.ftl` );
+    await fsp.rename( l10nPath, newPath );
+  } ) );
 }
 
 // eslint-disable-next-line no-unused-expressions
@@ -242,11 +364,24 @@ yargs
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     ( ) => {},
     async argv => {
+      // Make sure all files are iNat locales before validating and
+      // normalizing FT
+      await normalizeFileNames( );
       await validate( );
       await normalize( );
       await untranslatable( );
       await unused( );
       jsonifyLocalizations( argv );
+      writeLoadTranslations( );
+    }
+  )
+  .command(
+    "checkify",
+    "Prepend translations w/ ✅ to help see unglobalized text",
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    ( ) => {},
+    async argv => {
+      jsonifyLocalizations( { ...argv, checkify: true } );
       writeLoadTranslations( );
     }
   )

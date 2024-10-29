@@ -1,0 +1,11 @@
+UPDATED
+* Help for advanced obs addition can now be dismissed forever
+
+FIXED
+* Sharing photos into the app was not working in iOS 18
+* Permission prompts were allowing rotation on Android
+* Notes field was not reachable on Obs Edit on small screens
+* Explore was not searching for nearby records after granting location
+  permission
+* Obs addition options should all be visible at large text sizes
+* EXPAND MAP and SELECT THIS TAXON buttons on Taxon Details were overlapping

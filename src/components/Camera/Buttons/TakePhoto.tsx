@@ -6,9 +6,9 @@ import {
   Pressable, View
 } from "components/styledComponents";
 import React from "react";
-import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
+import colors from "styles/tailwindColors";
 
 const DROP_SHADOW = getShadow( { offsetHeight: 4 } );
 
@@ -24,7 +24,6 @@ const TakePhoto = ( {
   showPrediction
 }: Props ) => {
   const { t } = useTranslation( );
-  const theme = useTheme( );
 
   const borderClass = "border-[2px] rounded-full h-[64px] w-[64px]";
 
@@ -60,7 +59,7 @@ const TakePhoto = ( {
             <INatIcon
               name="sparkly-label"
               size={32}
-              color={theme.colors.onPrimary}
+              color={colors.white}
             />
           </View>
         )

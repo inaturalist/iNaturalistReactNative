@@ -53,7 +53,7 @@ const ContextHeader = ( {
 
     return (
       <BackButton
-        color={colors.black}
+        color={colors.darkGray}
         onPress={handleBackNavigation}
         inCustomHeader
         customStyles={extraPadding}
@@ -101,8 +101,8 @@ const ContextHeader = ( {
               options.headerTitle()
             )
             : (
-              <View>
-                <Heading1 maxFontSizeMultiplier={1.5}>{getTitle()}</Heading1>
+              <View className="w-3/4">
+                <Heading1 maxFontSizeMultiplier={1.5} className="mb-3">{getTitle()}</Heading1>
                 {subtitle && <Heading4>{subtitle}</Heading4>}
               </View>
             )}

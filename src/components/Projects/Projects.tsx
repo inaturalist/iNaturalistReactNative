@@ -2,22 +2,21 @@ import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
+import ProjectList from "components/ProjectList/ProjectList.tsx";
 import {
   ActivityIndicator,
   Body1,
   Body2,
   Button,
-  CustomFlashList,
   Heading1,
   INatIcon,
   InfiniteScrollLoadingWheel,
-  ProjectListItem,
   SearchBar,
   Tabs,
   ViewWrapper
 } from "components/SharedComponents";
 import { Tab } from "components/SharedComponents/Tabs/Tabs.tsx";
-import { Pressable, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import React, { useCallback, useEffect } from "react";
 import {
   useTranslation
@@ -85,19 +84,6 @@ const Projects = ( {
     />
   ), [hideLoadingWheel, isConnected] );
 
-  const renderProject = ( { item: project } ) => (
-    <Pressable
-      className="px-4 py-1.5"
-      onPress={( ) => navigation.navigate( "ProjectDetails", { id: project.id } )}
-      testID={`Project.${project.id}`}
-      accessible
-      accessibilityRole="button"
-      accessibilityLabel={t( "Navigates-to-project-details" )}
-    >
-      <ProjectListItem item={project} />
-    </Pressable>
-  );
-
   const renderEmptyList = ( ) => {
     if ( isLoading ) {
       <ActivityIndicator size={50} />;
@@ -108,9 +94,10 @@ const Projects = ( {
             ? HEADER_HEIGHT_WITH_TABS
             : HEADER_HEIGHT_WITHOUT_TABS}
           emptyItemHeight={90}
+          containerClassName="self-center w-full"
         >
           <Body1 className="self-center">{t( "No-projects-match-that-search" )}</Body1>
-          <View className="w-full px-4 mt-5">
+          <View className="p-4 mt-2">
             <Button
               level="neutral"
               text={t( "RESET-SEARCH" )}
@@ -155,14 +142,11 @@ const Projects = ( {
       );
     }
     return (
-      <CustomFlashList
+      <ProjectList
+        projects={projects}
         ListEmptyComponent={renderEmptyList}
         ListFooterComponent={renderFooter}
-        data={projects}
-        estimatedItemSize={100}
         onEndReached={fetchNextPage}
-        renderItem={renderProject}
-        testID="Project.list"
       />
     );
   };

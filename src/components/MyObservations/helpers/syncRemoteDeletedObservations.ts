@@ -3,8 +3,12 @@ import {
 } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import { format } from "date-fns";
+import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import { isDebugMode } from "sharedHooks/useDebugMode";
 import { zustandStorage } from "stores/useStore";
+
+const logger = log.extend( "syncRemoteDeletedObservations" );
 
 const setParamsWithLastSyncTime = ( ) => {
   const lastDeletedSyncTime = zustandStorage.getItem( "lastDeletedSyncTime" );
@@ -38,6 +42,9 @@ const deleteRemotelyDeletedObservations = ( deletedObservations, realm ) => {
 
 // eslint-disable-next-line no-undef
 export default syncRemoteDeletedObservations = async realm => {
+  if ( isDebugMode( ) ) {
+    logger.info( "syncRemoteDeletedObservations, calling getJWT" );
+  }
   const apiToken = await getJWT( );
   const deletedParams = setParamsWithLastSyncTime( realm );
   const response = await checkForDeletedObservations( deletedParams, { api_token: apiToken } );

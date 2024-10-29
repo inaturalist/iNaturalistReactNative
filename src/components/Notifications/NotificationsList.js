@@ -91,7 +91,7 @@ const NotificationsList = ( {
         ListEmptyComponent={renderEmptyComponent}
         ListFooterComponent={renderFooter}
         data={data}
-        estimatedItemSize={20}
+        estimatedItemSize={85}
         keyExtractor={item => item.id}
         onEndReached={onEndReached}
         refreshing={isFetching}

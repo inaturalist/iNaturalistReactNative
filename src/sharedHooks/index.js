@@ -9,6 +9,7 @@ export { default as useIconicTaxa } from "./useIconicTaxa";
 export { default as useInfiniteNotificationsScroll } from "./useInfiniteNotificationsScroll";
 export { default as useInfiniteObservationsScroll } from "./useInfiniteObservationsScroll";
 export { default as useInfiniteScroll } from "./useInfiniteScroll";
+export { default as useInfiniteUserScroll } from "./useInfiniteUserScroll";
 export { default as useInterval } from "./useInterval";
 export { default as useLastScreen } from "./useLastScreen";
 export { default as useLocalObservation } from "./useLocalObservation";

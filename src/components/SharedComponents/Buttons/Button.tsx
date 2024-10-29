@@ -4,7 +4,7 @@ import { ActivityIndicator, Heading4, INatIcon } from "components/SharedComponen
 import { Pressable, View } from "components/styledComponents";
 import * as React from "react";
 import { AccessibilityRole, GestureResponderEvent, ViewStyle } from "react-native";
-import { MD3Theme, useTheme } from "react-native-paper";
+import colors from "styles/tailwindColors";
 
 interface ButtonProps {
   accessibilityHint?: string;
@@ -126,24 +126,23 @@ const setStyles = ( {
 // };
 
 const activityIndicatorColor = ( {
-  isPrimary, isWarning, isFocus, theme
+  isPrimary, isWarning, isFocus
 }: {
   isPrimary: boolean;
   isWarning: boolean;
   isFocus: boolean;
-  theme: MD3Theme;
 } ) => {
   if ( isPrimary ) {
-    return theme.colors.onPrimary;
+    return colors.white;
   }
   if ( isFocus ) {
-    return theme.colors.onSecondary;
+    return colors.white;
   }
   if ( isWarning ) {
-    return theme.colors.onError;
+    return colors.white;
   }
   // Default color of ActivityIndicator is primary anyways, but we need to return something
-  return theme.colors.primary;
+  return colors.darkGray;
 };
 
 const Button = ( {
@@ -186,8 +185,6 @@ const Button = ( {
   //   forceDark
   // } );
 
-  const theme = useTheme();
-
   return (
     <Pressable
       style={style}
@@ -204,10 +201,10 @@ const Button = ( {
       {loading && (
         <ActivityIndicator
           size={18}
-          className="mr-2"
+          className="mr-3 absolute right-0"
           color={!isNeutral
             ? activityIndicatorColor( {
-              isPrimary, isWarning, isFocus, theme
+              isPrimary, isWarning, isFocus
             } )
             : undefined}
         />

@@ -33,6 +33,9 @@ const RootExploreContainerWithContext = ( ): Node => {
   const setRootExploreView = useStore( state => state.setRootExploreView );
   const rootStoredParams = useStore( state => state.rootStoredParams );
   const setRootStoredParams = useStore( state => state.setRootStoredParams );
+  const rootMapRegion = useStore( s => s.rootMapRegion );
+  const setRootMapRegion = useStore( s => s.setRootMapRegion );
+
   const {
     hasPermissions: hasLocationPermissions,
     renderPermissionsGate,
@@ -221,6 +224,8 @@ const RootExploreContainerWithContext = ( ): Node => {
         hasLocationPermissions={hasLocationPermissions}
         requestLocationPermissions={requestLocationPermissions}
         startFetching={startFetching}
+        currentMapRegion={rootMapRegion}
+        setCurrentMapRegion={setRootMapRegion}
       />
       {renderPermissionsGate( {
         onPermissionGranted: async ( ) => {

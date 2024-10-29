@@ -19,7 +19,9 @@ type Props = {
   canFetch?: boolean,
   layout: string,
   queryParams: Object,
-  handleUpdateCount: Function
+  handleUpdateCount: Function,
+  currentMapRegion: Object,
+  setCurrentMapRegion: Function
 }
 
 const OBS_LIST_CONTAINER_STYLE = { paddingTop: 50 };
@@ -30,7 +32,9 @@ const ObservationsView = ( {
   canFetch,
   layout,
   queryParams,
-  handleUpdateCount
+  handleUpdateCount,
+  currentMapRegion,
+  setCurrentMapRegion
 }: Props ): Node => {
   const {
     observations,
@@ -90,11 +94,17 @@ const ObservationsView = ( {
         isFetchingNextPage={isFetchingNextPage}
         isConnected={isConnected}
         layout={layout}
+        obsListKey="ExploreObservations"
         onEndReached={fetchNextPage}
         showNoResults={!canFetch || totalResults === 0}
         testID="ExploreObservationsAnimatedList"
       />
-      <MapView observationBounds={totalBounds} queryParams={queryParams} />
+      <MapView
+        observationBounds={totalBounds}
+        queryParams={queryParams}
+        currentMapRegion={currentMapRegion}
+        setCurrentMapRegion={setCurrentMapRegion}
+      />
     </View>
   );
 };

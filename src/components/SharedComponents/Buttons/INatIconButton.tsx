@@ -8,12 +8,16 @@ import {
   Pressable,
   ViewStyle
 } from "react-native";
-import { useTheme } from "react-native-paper";
+import colors from "styles/tailwindColors";
 
 interface Props {
   accessibilityHint?: string;
   accessibilityLabel: string;
   children?: React.ReactNode;
+  // There is probably a better way to indicate that this tailwind prop is
+  // supported everywhere, but I haven't found it yet. ~~~kueda 20241016
+  // eslint-disable-next-line react/no-unused-prop-types
+  className?: string,
   color?: string;
   disabled?: boolean;
   height?: number;
@@ -52,7 +56,6 @@ const INatIconButton = ( {
   backgroundColor,
   mode
 }: Props ) => {
-  const theme = useTheme( );
   // width || 0 is to placate flow. width should never be undefined because of
   // the defaultProps, but I guess flow can't figure that out.
   if ( ( width || 0 ) < MIN_ACCESSIBLE_DIM ) {
@@ -148,7 +151,7 @@ const INatIconButton = ( {
             <INatIcon
               name={icon}
               size={size}
-              color={color || theme.colors.primary}
+              color={color || colors.darkGray}
             />
           )
         }

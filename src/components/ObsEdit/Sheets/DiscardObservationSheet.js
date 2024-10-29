@@ -13,14 +13,14 @@ import useStore from "stores/useStore";
 const { useRealm } = RealmContext;
 
 type Props = {
-  handleClose: Function,
+  onPressClose: Function,
   discardObservation: Function,
   navToObsList: Function,
   observations: Array<Object>
 }
 
 const DiscardObservationSheet = ( {
-  handleClose,
+  onPressClose,
   discardObservation,
   navToObsList,
   observations
@@ -46,7 +46,7 @@ const DiscardObservationSheet = ( {
 
   return (
     <WarningSheet
-      handleClose={handleClose}
+      onPressClose={onPressClose}
       confirm={discardObservationandReset}
       headerText={multipleObservations
         ? t( "DISCARD-X-OBSERVATIONS", { count: observations.length } )

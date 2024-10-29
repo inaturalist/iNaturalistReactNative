@@ -5,7 +5,7 @@ import { INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useTheme } from "react-native-paper";
+import colors from "styles/tailwindColors";
 
 import WarningText from "./WarningText";
 
@@ -28,7 +28,6 @@ type Props = {
 
 const CrosshairCircle = ( { accuracy }: Props ): Node => {
   const accuracyTest = checkAccuracy( accuracy );
-  const theme = useTheme( );
 
   return (
     <View pointerEvents="none">
@@ -54,14 +53,14 @@ const CrosshairCircle = ( { accuracy }: Props ): Node => {
           <INatIcon
             name="checkmark-circle"
             size={19}
-            color={theme.colors.secondary}
+            color={colors.inatGreen}
           />
         )}
         {accuracyTest === "fail" && (
           <INatIcon
             name="triangle-exclamation"
             size={19}
-            color={theme.colors.error}
+            color={colors.warningRed}
           />
         )}
       </View>

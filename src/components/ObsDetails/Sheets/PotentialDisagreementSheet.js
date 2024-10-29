@@ -13,14 +13,14 @@ import { Trans } from "react-i18next";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
 interface Props {
-  handleClose: Function,
+  onPressClose: Function,
   onPotentialDisagreePressed: Function,
   newTaxon: Object,
   oldTaxon: Object
 }
 
 const PotentialDisagreementSheet = ( {
-  handleClose,
+  onPressClose,
   onPotentialDisagreePressed,
   newTaxon,
   oldTaxon
@@ -81,10 +81,10 @@ const PotentialDisagreementSheet = ( {
       headerText={t( "POTENTIAL-DISAGREEMENT" )}
       confirm={checkBoxValue => {
         onPotentialDisagreePressed( checkBoxValue );
-        handleClose( );
+        onPressClose( );
       }}
       confirmText={t( "SUBMIT-ID-SUGGESTION" )}
-      onPressClose={handleClose}
+      onPressClose={onPressClose}
       radioValues={radioValues}
       selectedValue={radioValues.unsure.value}
       topDescriptionText={topDescriptionText}

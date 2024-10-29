@@ -9,13 +9,13 @@ import {
   FlatList
 } from "react-native";
 import Modal from "react-native-modal";
-import { useTheme } from "react-native-paper";
 import Animated, {
   useAnimatedStyle,
   withTiming
 } from "react-native-reanimated";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
+import colors from "styles/tailwindColors";
 
 interface Props {
   takingPhoto?: boolean;
@@ -58,7 +58,6 @@ const PhotoCarousel = ( {
 }: Props ) => {
   const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
   const { t } = useTranslation( );
-  const theme = useTheme( );
   const [deletePhotoMode, setDeletePhotoMode] = useState( false );
   const [tappedPhotoIndex, setTappedPhotoIndex] = useState( -1 );
   const photoClasses = isLargeScreen
@@ -166,7 +165,7 @@ const PhotoCarousel = ( {
                       <INatIconButton
                         icon="trash-outline"
                         mode="contained"
-                        color={theme.colors.onPrimary}
+                        color={colors.white}
                         backgroundColor="rgba(0, 0, 0, 0.5)"
                         testID={`PhotoCarousel.deletePhoto.${photoUri}`}
                         accessibilityLabel={t( "Delete-photo" )}
@@ -199,7 +198,6 @@ const PhotoCarousel = ( {
     renderSkeleton,
     showDeletePhotoMode,
     t,
-    theme,
     viewPhotoAtIndex
   ] );
 
@@ -243,7 +241,7 @@ const PhotoCarousel = ( {
       ref={containerRef}
       onLayout={
         // When the container gets rendered, we store its position on screen
-        // in state so we can layout content inside the modal in exactly the
+        // in state so we can lay out content inside the modal in exactly the
         // same position
         ( ) => containerRef?.current?.measure(
           ( _x, _y, w, h, pageX, pageY ) => setContainerPos( {

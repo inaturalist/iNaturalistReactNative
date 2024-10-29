@@ -6,7 +6,7 @@ import { LatLng } from "react-native-maps";
 
 // Please don't change this to an aliased path or the e2e mock will not get
 // used in our e2e tests on Github Actions
-import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
+import fetchCoarseUserLocation from "../sharedHelpers/fetchUserLocation";
 
 export enum EXPLORE_ACTION {
   CHANGE_SORT_BY = "CHANGE_SORT_BY",
@@ -342,7 +342,7 @@ function isValidDateFormat( date: string ): boolean {
 }
 
 async function defaultExploreLocation( ): Promise<DefaultLocation> {
-  const location = await fetchUserLocation( );
+  const location = await fetchCoarseUserLocation( );
   if ( !location || !location.latitude ) {
     return {
       placeMode: PLACE_MODE.WORLDWIDE,
@@ -631,15 +631,8 @@ const ExploreProvider = ( { children }: ExploreProviderProps ) => {
   const [snapshot, setSnapshot] = React.useState<State | undefined>( undefined );
   const makeSnapshot = () => setSnapshot( state );
 
-  // Check if the current state is different from the snapshot
-  const checkSnapshot = () => {
-    if ( !snapshot ) {
-      return false;
-    }
-    return Object.keys( snapshot ).some( key => !isEqual( snapshot[key], state[key] ) );
-  };
   const differsFromSnapshot: boolean = React.useMemo(
-    checkSnapshot,
+    () => !isEqual( snapshot, state ),
     [state, snapshot]
   );
 

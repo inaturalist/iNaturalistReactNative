@@ -3,7 +3,7 @@
 import { searchObservations } from "api/observations";
 import { flatten, last, noop } from "lodash";
 import { RealmContext } from "providers/contexts.ts";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Observation from "realmModels/Observation";
 import { useAuthenticatedInfiniteQuery, useCurrentUser } from "sharedHooks";
 
@@ -12,6 +12,7 @@ const { useRealm } = RealmContext;
 const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Object ): Object => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
+  const [firstObservationsInRealm, setFirstObservationsInRealm] = useState( false );
 
   const baseParams = {
     ...newInputParams,
@@ -58,6 +59,7 @@ const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Obje
         flatten( last( observations.pages ) ),
         realm
       );
+      setFirstObservationsInRealm( true );
     }
   }, [realm, observations, upsert] );
 
@@ -66,13 +68,15 @@ const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Obje
       isFetchingNextPage,
       fetchNextPage,
       observations: flatten( observations?.pages ),
-      status
+      status,
+      firstObservationsInRealm
     }
     : {
       isFetchingNextPage: false,
       fetchNextPage: noop,
       observations: flatten( observations?.pages ),
-      status
+      status,
+      firstObservationsInRealm
     };
 };
 

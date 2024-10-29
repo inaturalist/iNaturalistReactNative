@@ -84,7 +84,10 @@ const useTakePhoto = (
     // Set the camera to inactive immediately after taking the photo,
     // this does leave a short period of time where the camera preview is still active
     // after taking the photo which we might to revisit if it doesn't look good.
-    const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
+    const cameraPhoto = await camera?.current?.takePhoto( takePhotoOptions );
+    if ( !cameraPhoto ) {
+      throw new Error( "Failed to take photo: missing camera" );
+    }
     if ( options.inactivateCallback ) options.inactivateCallback();
     const uri = await saveRotatedPhotoToDocumentsDirectory( cameraPhoto );
     await updateStore( uri, options );

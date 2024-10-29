@@ -72,8 +72,8 @@ const MyObservationsContainer = ( ): Node => {
   const {
     fetchNextPage,
     isFetchingNextPage,
-    observations: data,
-    status
+    status,
+    firstObservationsInRealm
   } = useInfiniteObservationsScroll( {
     upsert: syncingStatus === "sync-pending",
     params: {
@@ -164,11 +164,9 @@ const MyObservationsContainer = ( ): Node => {
 
   if ( !layout ) { return null; }
 
-  // remote data is available before data is synced locally; this check
-  // prevents the empty list from rendering briefly when a user first logs in
-  const observationListStatus = data?.length > observations?.length
-    ? "loading"
-    : status;
+  // show empty screen instead of loading wheel
+  const showNoResults = !currentUser
+    || ( status === "success" && !!( currentUser ) && firstObservationsInRealm );
 
   return (
     <MyObservations
@@ -188,7 +186,7 @@ const MyObservationsContainer = ( ): Node => {
       onScroll={scrollEvent => setMyObsOffset( scrollEvent.nativeEvent.contentOffset.y )}
       setShowLoginSheet={setShowLoginSheet}
       showLoginSheet={showLoginSheet}
-      status={observationListStatus}
+      showNoResults={showNoResults}
       toggleLayout={toggleLayout}
     />
   );

@@ -1,13 +1,12 @@
 // @flow
 
 import { searchProjects } from "api/projects";
+import ProjectList from "components/ProjectList/ProjectList.tsx";
 import {
-  CustomFlashList,
-  ProjectListItem,
   SearchBar,
   ViewWrapper
 } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -57,27 +56,6 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
     [updateProject, closeModal]
   );
 
-  const renderItem = useCallback(
-    ( { item } ) => (
-      <Pressable
-        onPress={() => onProjectSelected( item )}
-        accessibilityRole="button"
-        accessibilityLabel={t( "Change-project" )}
-        accessibilityState={{ disabled: false }}
-        className="mx-4 my-3"
-      >
-        <ProjectListItem
-          item={item}
-        />
-      </Pressable>
-    ),
-    [onProjectSelected, t]
-  );
-
-  const renderItemSeparator = () => (
-    <View className="border-b border-lightGray" />
-  );
-
   const renderEmptyList = ( ) => (
     <EmptySearchResults
       isLoading={isLoading}
@@ -85,6 +63,8 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
       refetch={refetch}
     />
   );
+
+  const renderFooter = ( ) => <View className="h-[336px]" />;
 
   return (
     <ViewWrapper>
@@ -104,15 +84,12 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
           testID="SearchProject"
         />
       </View>
-      <CustomFlashList
-        data={projects}
-        estimatedItemSize={100}
-        testID="SearchProjectList"
-        keyExtractor={item => item.id}
-        renderItem={renderItem}
-        ListEmptyComponent={renderEmptyList}
-        ListHeaderComponent={renderItemSeparator}
-        ItemSeparatorComponent={renderItemSeparator}
+      <ProjectList
+        projects={projects}
+        ListFooterComponent={renderFooter}
+        ListEmptyCompoent={renderEmptyList}
+        onPress={onProjectSelected}
+        accessibilityLabel={t( "Change-project" )}
       />
     </ViewWrapper>
   );

@@ -4,13 +4,29 @@ import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsCon
 import React from "react";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
-import { renderComponent } from "tests/helpers/render";
+import { renderComponent, wrapInQueryClientContainer } from "tests/helpers/render";
 
 const mockProject = factory( "RemoteProject", {
   title: faker.lorem.sentence( ),
   icon: faker.image.url( ),
   header_image_url: faker.image.url( ),
-  description: faker.lorem.paragraph( )
+  description: faker.lorem.paragraph( ),
+  project_type: "collection"
+} );
+
+const mockProjectWithDateRange = factory( "RemoteProject", {
+  ...mockProject,
+
+  rule_preferences: [
+    {
+      field: "d1",
+      value: "2024-03-07 07:42 -06:00"
+    },
+    {
+      field: "d2",
+      value: "2024-03-14 08:41 -07:00"
+    }
+  ]
 } );
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
@@ -47,8 +63,10 @@ beforeAll( async () => {
 
 describe( "ProjectDetails", ( ) => {
   test( "should not have accessibility errors", async ( ) => {
-    const projectDetails = <ProjectDetailsContainer />;
-    expect( projectDetails ).toBeAccessible();
+    const view = wrapInQueryClientContainer(
+      <ProjectDetailsContainer />
+    );
+    expect( view ).toBeAccessible();
   } );
 
   test( "displays project details", ( ) => {
@@ -74,5 +92,43 @@ describe( "ProjectDetails", ( ) => {
       />
     );
     expect( screen.getByText( mockProject.title ) ).toBeTruthy( );
+  } );
+
+  test( "should display date range if collection project has date range", async ( ) => {
+    renderComponent( <ProjectDetails
+      project={mockProjectWithDateRange}
+    /> );
+    const dateRange = await screen.findByText( "Mar 7, 2024 - Mar 14, 2024" );
+    expect( dateRange ).toBeTruthy( );
+  } );
+
+  test( "should display date range if collection project has no date range", async ( ) => {
+    renderComponent( <ProjectDetails
+      project={mockProject}
+    /> );
+    const projectTypeText = await screen.findByText( /Collection Project/ );
+    expect( projectTypeText ).toBeTruthy( );
+  } );
+
+  test( "should display project type if project is traditional project", async ( ) => {
+    renderComponent( <ProjectDetails
+      project={{
+        ...mockProjectWithDateRange,
+        project_type: "traditional"
+      }}
+    /> );
+    const projectTypeText = await screen.findByText( /Traditional Project/ );
+    expect( projectTypeText ).toBeTruthy( );
+  } );
+
+  test( "should display date range if umbrella project has date range", async ( ) => {
+    renderComponent( <ProjectDetails
+      project={{
+        ...mockProjectWithDateRange,
+        project_type: "umbrella"
+      }}
+    /> );
+    const dateRange = await screen.findByText( "Mar 7, 2024 - Mar 14, 2024" );
+    expect( dateRange ).toBeTruthy( );
   } );
 } );

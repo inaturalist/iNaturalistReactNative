@@ -18,6 +18,7 @@ import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import { t } from "i18next";
 import ContextHeader from "navigation/ContextHeader";
 import {
+  fadeInComponent,
   hideHeader,
   hideHeaderLeft
 } from "navigation/navigationOptions";
@@ -34,7 +35,6 @@ const soundRecorderTitle = ( ) => (
 
 const CAMERA_SCREEN_OPTIONS = {
   ...hideHeader,
-  orientation: "all",
   contentStyle: {
     backgroundColor: "black"
   }
@@ -56,7 +56,7 @@ const SOUND_RECORDER_OPTIONS = {
   headerTitleAlign: "center"
 };
 
-const CameraContainerWithPermission = ( ) => (
+const CameraContainerWithPermission = ( ) => fadeInComponent(
   <Mortal>
     <PermissionGateContainer
       permissions={CAMERA_PERMISSIONS}
@@ -98,7 +98,7 @@ const GalleryContainerWithPermission = ( ) => (
   <PhotoGallery />
 );
 
-const SoundRecorderWithPermission = ( ) => (
+const SoundRecorderWithPermission = ( ) => fadeInComponent(
   <Mortal>
     <PermissionGateContainer
       permissions={AUDIO_PERMISSIONS}
@@ -119,7 +119,6 @@ const NoBottomTabStackNavigator = ( ): Node => (
   <Stack.Navigator
     screenOptions={{
       headerBackTitleVisible: false,
-      headerTintColor: "black",
       contentStyle: {
         backgroundColor: "white"
       }

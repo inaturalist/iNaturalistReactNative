@@ -1,6 +1,8 @@
 import { Realm } from "@realm/react";
+import { Alert } from "react-native";
 import uuid from "react-native-uuid";
-import { createObservedOnStringForUpload } from "sharedHelpers/dateAndTime";
+import { getNowISO } from "sharedHelpers/dateAndTime.ts";
+import { log } from "sharedHelpers/logger";
 import { readExifFromMultiplePhotos } from "sharedHelpers/parseExif";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
@@ -18,10 +20,19 @@ export const GEOPRIVACY_OPEN = "open";
 export const GEOPRIVACY_OBSCURED = "obscured";
 export const GEOPRIVACY_PRIVATE = "private";
 
+const logger = log.extend( "index.js" );
+
 // noting that methods like .toJSON( ) are only accessible when the model
 // class is extended with Realm.Object per this issue:
 // https://github.com/realm/realm-js/issues/3600#issuecomment-785828614
 class Observation extends Realm.Object {
+  static PROJECT_FIELDS = {
+    id: true,
+    icon: true,
+    title: true,
+    project_type: true
+  };
+
   static FIELDS = {
     application: Application.APPLICATION_FIELDS,
     captive: true,
@@ -57,6 +68,13 @@ class Observation extends Realm.Object {
     private_geojson: true,
     private_location: true,
     private_place_guess: true,
+    project_ids: true,
+    project_observations: {
+      project: Observation.PROJECT_FIELDS
+    },
+    non_traditional_projects: {
+      project: Observation.PROJECT_FIELDS
+    },
     positional_accuracy: true,
     preferences: {
       prefers_community_taxon: true
@@ -116,7 +134,7 @@ class Observation extends Realm.Object {
       observed_on: obs?.observed_on,
       observed_on_string: obs
         ? obs?.observed_on_string
-        : createObservedOnStringForUpload( ),
+        : getNowISO( ),
       quality_grade: "needs_id",
       needs_sync: true,
       uuid: uuid.v4( )
@@ -365,9 +383,20 @@ class Observation extends Realm.Object {
 
   static createObservationFromGalleryPhotos = async photos => {
     const photoUris = photos.map( photo => photo?.image?.uri );
-    const newObservation = await readExifFromMultiplePhotos( photoUris );
-
-    return Observation.new( newObservation );
+    try {
+      const newObservation = await readExifFromMultiplePhotos( photoUris );
+      return Observation.new( newObservation );
+    } catch ( createObservationFromGalleryError ) {
+      logger.error(
+        "Error reading EXIF from multiple gallery photos",
+        createObservationFromGalleryError
+      );
+      Alert.alert(
+        "Creating Observation from Gallery Error",
+        createObservationFromGalleryError.message
+      );
+      return null;
+    }
   };
 
   static createObservationWithPhotos = async photos => {
@@ -420,15 +449,13 @@ class Observation extends Realm.Object {
     return updatedObs;
   };
 
-  static deleteLocalObservation = async ( realm, uuidToDelete ) => {
+  static deleteLocalObservation = ( realm, uuidToDelete ) => {
     const observation = realm?.objectForPrimaryKey( "Observation", uuidToDelete );
     if ( observation ) {
-      await safeRealmWrite( realm, ( ) => {
+      safeRealmWrite( realm, ( ) => {
         realm?.delete( observation );
       }, `deleting local observation ${uuidToDelete} in deleteLocalObservation` );
-      return true;
     }
-    return false;
   };
 
   static schema = {

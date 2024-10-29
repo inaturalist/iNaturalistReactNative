@@ -23,7 +23,7 @@ const mockNavigate = jest.fn( );
 
 const renderDeleteSheet = ( ) => renderComponent(
   <DeleteObservationSheet
-    handleClose={jest.fn( )}
+    onPressClose={jest.fn( )}
     navToObsList={mockNavigate}
     currentObservation={currentObservation}
     observations={observations}
@@ -87,7 +87,7 @@ describe( "delete observation", ( ) => {
     function renderDeleteSheetWithMultiple( ) {
       renderComponent(
         <DeleteObservationSheet
-          handleClose={jest.fn( )}
+          onPressClose={jest.fn( )}
           navToObsList={mockNavigate}
           currentObservation={unsavedObservations[0]}
           observations={unsavedObservations}

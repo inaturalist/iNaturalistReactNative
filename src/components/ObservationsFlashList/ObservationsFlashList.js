@@ -13,7 +13,7 @@ import React, {
 import { Animated } from "react-native";
 import { useGridLayout, useTranslation } from "sharedHooks";
 
-import ObsItem from "./ObsItem";
+import ObsPressableContainer from "./ObsPressableContainer";
 
 const AnimatedFlashList = Animated.createAnimatedComponent( CustomFlashList );
 
@@ -23,13 +23,14 @@ type Props = {
   dataCanBeFetched?: boolean,
   explore: boolean,
   handleIndividualUploadPress: Function,
-  onScroll?: Function,
   hideLoadingWheel: boolean,
   isConnected: boolean,
   isFetchingNextPage?: boolean,
   layout: "list" | "grid",
+  obsListKey: String,
   onEndReached: Function,
   onLayout?: Function,
+  onScroll?: Function,
   renderHeader?: Function,
   showNoResults?: boolean,
   showObservationsEmptyScreen?: boolean,
@@ -42,13 +43,14 @@ const ObservationsFlashList: Function = forwardRef( ( {
   dataCanBeFetched,
   explore,
   handleIndividualUploadPress,
-  onScroll,
   hideLoadingWheel,
   isConnected,
   isFetchingNextPage,
   layout,
+  obsListKey,
   onEndReached,
   onLayout,
+  onScroll,
   renderHeader,
   showNoResults,
   showObservationsEmptyScreen,
@@ -64,14 +66,21 @@ const ObservationsFlashList: Function = forwardRef( ( {
   const { t } = useTranslation( );
 
   const renderItem = useCallback( ( { item } ) => (
-    <ObsItem
+    <ObsPressableContainer
       explore={explore}
       gridItemStyle={gridItemStyle}
       handleIndividualUploadPress={handleIndividualUploadPress}
       layout={layout}
       observation={item}
+      obsListKey={obsListKey}
     />
-  ), [explore, layout, gridItemStyle, handleIndividualUploadPress] );
+  ), [
+    explore,
+    gridItemStyle,
+    handleIndividualUploadPress,
+    obsListKey,
+    layout
+  ] );
 
   const renderItemSeparator = useCallback( ( ) => {
     if ( layout === "grid" ) {

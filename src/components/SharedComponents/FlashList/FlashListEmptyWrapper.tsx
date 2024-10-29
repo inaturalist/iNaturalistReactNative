@@ -8,12 +8,14 @@ const FOOTER_HEIGHT = 77;
 
 interface Props {
   children: React.Node;
+  containerClassName?: string;
   headerHeight: number;
   emptyItemHeight: number;
 }
 
 const FlashListEmptyWrapper = ( {
   children,
+  containerClassName,
   headerHeight: HEADER_HEIGHT,
   emptyItemHeight: EMPTY_ITEM_HEIGHT
 }: Props ) => {
@@ -30,13 +32,15 @@ const FlashListEmptyWrapper = ( {
   // The following workaround is to roughly center the content.
   // https://github.com/Shopify/flash-list/discussions/517
     <View
-      className="px-[67px] items-center"
+      className={classnames(
+        containerClassName,
+        {
+          "px-[67px] items-center": !containerClassName
+        }
+      )}
       style={{ height: outerViewHeight }}
     >
-      <View className={classnames(
-        "items-center absolute top-[50%]"
-      )}
-      >
+      <View className={classnames( "top-[50%]" )}>
         {children}
       </View>
     </View>

@@ -9,7 +9,7 @@ const safeRealmWrite = (
   description: string
 ): Object => {
   if ( realm.isInTransaction ) {
-    realm.cancelTransaction( );
+    return action( );
   }
   // https://www.mongodb.com/docs/realm-sdks/react/latest/classes/Realm-1.html#beginTransaction.beginTransaction-1
   realm.beginTransaction( );
@@ -18,6 +18,7 @@ const safeRealmWrite = (
     realm.commitTransaction( );
     return response;
   } catch ( e ) {
+    realm.cancelTransaction( );
     e.message = `${description}: ${e.message}`;
     throw e;
   }

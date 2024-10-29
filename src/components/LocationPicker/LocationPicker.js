@@ -60,7 +60,7 @@ const LocationPicker = ( {
         <View className="justify-center">
           <Heading4 className="self-center my-4">{t( "EDIT-LOCATION" )}</Heading4>
           <View className="absolute right-2">
-            <CloseButton black size={19} />
+            <CloseButton darkGray size={19} />
           </View>
         </View>
         <View className="flex-grow">

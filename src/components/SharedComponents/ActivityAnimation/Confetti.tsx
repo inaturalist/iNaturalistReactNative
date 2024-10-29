@@ -6,7 +6,6 @@ import React, {
   memo, PropsWithChildren, useEffect, useState
 } from "react";
 import { StyleSheet, useWindowDimensions } from "react-native";
-import { useTheme } from "react-native-paper";
 import Animated, {
   Easing,
   interpolate,
@@ -15,6 +14,7 @@ import Animated, {
   useSharedValue,
   withTiming
 } from "react-native-reanimated";
+import colors from "styles/tailwindColors";
 
 type ConfettiProps = PropsWithChildren<{
   count: number
@@ -71,7 +71,6 @@ const AnimatedElement = memo(
 );
 
 const Confetti = ( { count, duration = 5000 }: ConfettiProps ) => {
-  const theme = useTheme();
   const animation = useSharedValue( 0 );
   const [autoDestroy, setAutoDestroy] = useState( false );
 
@@ -143,7 +142,7 @@ const Confetti = ( { count, duration = 5000 }: ConfettiProps ) => {
               <INatIcon
                 name={`iconic-${randomIconicTaxon}`}
                 size={22}
-                color={theme.colors.secondary}
+                color={colors.inatGreen}
               />
             </View>
           </AnimatedElement>
