@@ -1,3 +1,4 @@
+import { MMKV } from "react-native-mmkv";
 import {
   by, device, element, expect, waitFor
 } from "detox";
@@ -6,12 +7,12 @@ import Config from "react-native-config-node";
 // This needs to be a relative path for the e2e-mock version to be used
 import { CHUCKS_PAD } from "../src/appConstants/e2e";
 import { iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
-import { storage } from "stores/useStore";
 
 describe( "Signed in user", () => {
   beforeAll( async ( ) => iNatE2eBeforeAll( device ) );
   beforeAll( ( ) => {
     // Hide the onboarding modal
+    const storage = new MMKV( );
     storage.set( "onBoardingShown", true );
   } );
   beforeEach( async ( ) => iNatE2eBeforeEach( device ) );
