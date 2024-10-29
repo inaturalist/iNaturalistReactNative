@@ -49,7 +49,7 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
   const margins = getMargins( showAICamera );
 
   const obsCreateItems = {
-    arCamera: {
+    aiCamera: {
       text: t( "Use-iNaturalists-AI-Camera" ),
       icon: "arcamera",
       onPress: ( ) => navAndCloseModal( "Camera", { camera: "AI" } ),
@@ -165,7 +165,7 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
       } )}
       >
         {renderAddObsIcon( obsCreateItems.standardCamera )}
-        {showAICamera && renderAddObsIcon( obsCreateItems.arCamera )}
+        {showAICamera && renderAddObsIcon( obsCreateItems.aiCamera )}
         {renderAddObsIcon( obsCreateItems.photoLibrary )}
       </View>
       <View className={classnames( rowClass, "items-center" )}>
