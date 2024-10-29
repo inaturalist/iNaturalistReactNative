@@ -3,6 +3,7 @@
 import { useNavigation } from "@react-navigation/native";
 import displayProjectType from "components/Projects/helpers/displayProjectType.ts";
 import {
+  Body4,
   Button,
   Heading1,
   Heading4,
@@ -16,11 +17,14 @@ import {
 } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";
+import { openExternalWebBrowser } from "sharedHelpers/util.ts";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
 import formatProjectDate from "../Projects/helpers/displayDates";
 import AboutProjectType from "./AboutProjectType";
+
+const PROJECT_URL = "https://www.inaturalist.org/projects";
 
 type Props = {
   project: Object,
@@ -159,6 +163,12 @@ const ProjectDetails = ( {
           </>
         )}
         <AboutProjectType projectType={project.project_type} />
+        <Body4
+          className="underline mt-[11px]"
+          onPress={async () => openExternalWebBrowser( `${PROJECT_URL}/${project.id}` )}
+        >
+          {t( "View-in-browser" )}
+        </Body4>
       </View>
     </ScrollViewWrapper>
   );
