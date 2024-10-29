@@ -13,7 +13,7 @@ import React, {
 import { Animated } from "react-native";
 import { useGridLayout, useTranslation } from "sharedHooks";
 
-import ObsItem from "./ObsItem";
+import ObsPressableContainer from "./ObsPressableContainer";
 
 const AnimatedFlashList = Animated.createAnimatedComponent( CustomFlashList );
 
@@ -66,7 +66,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
   const { t } = useTranslation( );
 
   const renderItem = useCallback( ( { item } ) => (
-    <ObsItem
+    <ObsPressableContainer
       explore={explore}
       gridItemStyle={gridItemStyle}
       handleIndividualUploadPress={handleIndividualUploadPress}

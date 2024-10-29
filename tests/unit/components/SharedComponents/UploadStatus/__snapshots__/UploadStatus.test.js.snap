@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`UploadStatus displays progress bar when progress is greater than 5% correctly 1`] = `
+exports[`UploadStatus displays progress bar when progress is greater than 5% 1`] = `
 <View
   accessibilityLabel="Upload 50 percent complete"
   accessible={true}
@@ -85,7 +85,7 @@ exports[`UploadStatus displays progress bar when progress is greater than 5% cor
 </View>
 `;
 
-exports[`UploadStatus displays progress bar when progress is less than 5% correctly 1`] = `
+exports[`UploadStatus does not show progress bar when progress is less than 5% 1`] = `
 <View
   accessibilityLabel="Saved observation, in queue to upload"
   accessible={true}
