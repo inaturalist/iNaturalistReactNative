@@ -1,12 +1,12 @@
 import {
-  by, device, element, expect, waitFor
+  by, device, element, waitFor
 } from "detox";
 
-import { CHUCKS_PAD } from "../src/appConstants/e2e";
 import { iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
 import deleteObservation from "./sharedFlows/deleteObservation";
 import signIn from "./sharedFlows/signIn";
 import switchPowerMode from "./sharedFlows/switchPowerMode";
+import uploadObservation from "./sharedFlows/uploadObservation";
 
 describe( "AICamera", () => {
   beforeAll( async () => iNatE2eBeforeAll( device ) );
@@ -25,6 +25,9 @@ describe( "AICamera", () => {
       */
       await switchPowerMode();
 
+      /*
+      / 3. Take photo with AI Camera, select a suggestion, upload and delete observation
+      */
       // Tap to open AICamera
       const addObsButton = element( by.id( "add-obs-button" ) );
       await waitFor( addObsButton ).toBeVisible().withTimeout( 10000 );
@@ -58,19 +61,7 @@ describe( "AICamera", () => {
       await waitFor( selectTaxonButon ).toBeVisible().withTimeout( 10000 );
       await selectTaxonButon.tap();
 
-      // On ObsEdit
-      // Check that the new observation screen is visible
-      const newObservationText = element( by.id( "new-observation-text" ) );
-      await waitFor( newObservationText ).toBeVisible().withTimeout( 10000 );
-      // Ensure the location from the e2e-mock is being used so we don't end up
-      // with tests flaking out due to time zone issues
-      const pattern = new RegExp( `.*${CHUCKS_PAD.latitude.toFixed( 4 )}.*` );
-      const locationText = element( by.text( pattern ) );
-      await waitFor( locationText ).toBeVisible().withTimeout( 10000 );
-      // Press Upload now button
-      const uploadNowButton = element( by.id( "ObsEdit.uploadButton" ) );
-      await expect( uploadNowButton ).toBeVisible();
-      await uploadNowButton.tap();
+      await uploadObservation( { upload: true } );
 
       // Check that the display taxon name is visible
       const displayTaxonName = element( by.id( `display-taxon-name.${taxonID}` ) ).atIndex(

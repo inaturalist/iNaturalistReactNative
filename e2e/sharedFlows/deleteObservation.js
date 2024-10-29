@@ -2,6 +2,7 @@ import {
   by, element, expect, waitFor
 } from "detox";
 
+// Start this on ObsEdit or ObsDetails via uploaded = false / true
 export default async function deleteObservation( options = { uploaded: false } ) {
   if ( options.uploaded ) {
     const editButton = element( by.id( "ObsDetail.editButton" ) );
