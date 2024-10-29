@@ -1,11 +1,11 @@
 import {
   by, device, element, expect, waitFor
 } from "detox";
-import Config from "react-native-config-node";
 
 // This needs to be a relative path for the e2e-mock version to be used
 import { CHUCKS_PAD } from "../src/appConstants/e2e";
 import { iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
+import signIn from "./sharedFlows/signIn";
 
 describe( "Signed in user", () => {
   beforeAll( async ( ) => iNatE2eBeforeAll( device ) );
@@ -100,29 +100,7 @@ describe( "Signed in user", () => {
     /*
     / 1. Sign in
     */
-    const loginText = element( by.id( "log-in-to-iNaturalist-button.text" ) );
-    // 10000 timeout is for github actions, which was failing with a
-    // shorter timeout period
-    await waitFor( loginText ).toBeVisible().withTimeout( 10000 );
-    await expect( loginText ).toBeVisible();
-    await element( by.id( "log-in-to-iNaturalist-button.text" ) ).tap();
-    const usernameInput = element( by.id( "Login.email" ) );
-    await waitFor( usernameInput ).toBeVisible().withTimeout( 10000 );
-    await expect( usernameInput ).toBeVisible();
-    await element( by.id( "Login.email" ) ).tap();
-    await element( by.id( "Login.email" ) ).typeText( Config.E2E_TEST_USERNAME );
-    const passwordInput = element( by.id( "Login.password" ) );
-    await expect( passwordInput ).toBeVisible();
-    await element( by.id( "Login.password" ) ).tap();
-    await element( by.id( "Login.password" ) ).typeText( Config.E2E_TEST_PASSWORD );
-    const loginButton = element( by.id( "Login.loginButton" ) );
-    await expect( loginButton ).toBeVisible();
-    await element( by.id( "Login.loginButton" ) ).tap();
-    const username = element( by.text( `@${Config.E2E_TEST_USERNAME}` ) ).atIndex(
-      1
-    );
-    await waitFor( username ).toBeVisible().withTimeout( 10000 );
-    await expect( username ).toBeVisible();
+    const username = await signIn( );
 
     /*
     / 2. Switch UI to power user mode
