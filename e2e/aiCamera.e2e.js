@@ -79,12 +79,8 @@ describe( "AICamera", () => {
       await waitFor( displayTaxonName ).toBeVisible().withTimeout( 10000 );
       await displayTaxonName.tap();
 
-      // Navigate to the edit screen
-      const editButton = element( by.id( "ObsDetail.editButton" ) );
-      await waitFor( editButton ).toBeVisible().withTimeout( 10000 );
-      await editButton.tap();
-
-      await deleteObservation();
+      // Delete the observation
+      await deleteObservation( { uploaded: true } );
 
       // Make sure we're back on MyObservations
       await waitFor( username ).toBeVisible().withTimeout( 10000 );

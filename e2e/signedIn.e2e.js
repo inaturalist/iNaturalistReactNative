@@ -71,13 +71,7 @@ describe( "Signed in user", () => {
   async function deleteObservationByUUID( uuid, username, options = { uploaded: false } ) {
     const obsListItem = element( by.id( `MyObservations.obsListItem.${uuid}` ) );
     await obsListItem.tap();
-    if ( options.uploaded ) {
-      const editButton = element( by.id( "ObsDetail.editButton" ) );
-      await waitFor( editButton ).toBeVisible().withTimeout( 10000 );
-      // Navigate to the edit screen
-      await editButton.tap();
-    }
-    await deleteObservation( );
+    await deleteObservation( options );
     // Make sure we're back on MyObservations
     await waitFor( username ).toBeVisible().withTimeout( 10000 );
   }

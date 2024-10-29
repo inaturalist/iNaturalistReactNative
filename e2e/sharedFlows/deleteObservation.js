@@ -2,7 +2,13 @@ import {
   by, element, expect, waitFor
 } from "detox";
 
-export default async function deleteObservation() {
+export default async function deleteObservation( options = { uploaded: false } ) {
+  if ( options.uploaded ) {
+    const editButton = element( by.id( "ObsDetail.editButton" ) );
+    await waitFor( editButton ).toBeVisible().withTimeout( 10000 );
+    // Navigate to the edit screen
+    await editButton.tap();
+  }
   // Check that the edit screen is visible
   await waitFor( element( by.text( "EVIDENCE" ) ) )
     .toBeVisible()
