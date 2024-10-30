@@ -84,11 +84,11 @@ const AIDebugButton = ( {
             <SliderControl
               name="Taxonomy Rollup Cutoff"
               min={0}
-              max={0.1}
+              max={0.0001}
               value={taxonomyRollupCutoff}
               setValue={setTaxonomyRollupCutoff}
-              precision={3}
-              step={0.001}
+              precision={5}
+              step={0.00001}
             />
             <SliderControl
               name="Center Crop Ratio (Android only)"
