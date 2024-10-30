@@ -134,34 +134,30 @@ const ProjectDetails = ( {
           text={t( "VIEW-IN-EXPLORE" )}
           onPress={onObservationPressed}
         />
-        {!project.project_type && (
-          <>
-            <Heading4 className="mb-3 mt-5">
-              {
-                !project.current_user_is_member
-                  ? t( "JOIN-PROJECT" )
-                  : t( "LEAVE-PROJECT" )
-              }
-            </Heading4>
-            {!project.current_user_is_member
-              ? (
-                <Button
-                  level="neutral"
-                  text={t( "JOIN" )}
-                  onPress={joinProject}
-                  loading={loadingProjectMembership}
-                />
-              )
-              : (
-                <Button
-                  level="neutral"
-                  text={t( "LEAVE" )}
-                  onPress={leaveProject}
-                  loading={loadingProjectMembership}
-                />
-              )}
-          </>
-        )}
+        <Heading4 className="mb-3 mt-5">
+          {
+            !project.current_user_is_member
+              ? t( "JOIN-PROJECT" )
+              : t( "LEAVE-PROJECT" )
+          }
+        </Heading4>
+        {!project.current_user_is_member
+          ? (
+            <Button
+              level="neutral"
+              text={t( "JOIN" )}
+              onPress={joinProject}
+              loading={loadingProjectMembership}
+            />
+          )
+          : (
+            <Button
+              level="neutral"
+              text={t( "LEAVE" )}
+              onPress={leaveProject}
+              loading={loadingProjectMembership}
+            />
+          )}
         <AboutProjectType projectType={project.project_type} />
         <Body4
           className="underline mt-[11px]"
