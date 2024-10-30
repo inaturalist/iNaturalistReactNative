@@ -167,6 +167,7 @@ const ProjectDetails = ( {
         <AboutProjectType projectType={project.project_type} />
         <Body4
           className="underline mt-[11px]"
+          accessibilityRole="link"
           onPress={async () => openExternalWebBrowser( `${PROJECT_URL}/${project.id}` )}
         >
           {t( "View-in-browser" )}
