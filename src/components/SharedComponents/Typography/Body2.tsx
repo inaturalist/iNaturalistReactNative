@@ -1,31 +1,12 @@
-import {
-  tailwindFontRegular
-} from "appConstants/fontFamilies.ts";
-import classnames from "classnames";
+import { tailwindFontRegular } from "appConstants/fontFamilies.ts";
 import React from "react";
-import { Text, TextProps } from "react-native";
+import { TextProps } from "react-native";
 
-interface OwnProps {
-  maxFontSizeMultiplier?: number;
-}
+import InatText from "./InatText";
 
-type CustomTextProps = TextProps & OwnProps;
-
-const Body2 = ( props:CustomTextProps ) => {
-  const {
-    maxFontSizeMultiplier = 2
-  } = props;
-  return (
-    <Text
-      maxFontSizeMultiplier={maxFontSizeMultiplier}
-      className={classnames(
-        "text-md trailing-tight text-darkGray",
-        tailwindFontRegular
-      )}
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...props}
-    />
-  );
-};
+const Body2 = ( props: TextProps ) => (
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  <InatText className={`text-md ${tailwindFontRegular}`} {...props} />
+);
 
 export default Body2;

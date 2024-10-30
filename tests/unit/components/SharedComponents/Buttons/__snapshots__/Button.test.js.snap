@@ -73,25 +73,35 @@ exports[`Button focus should render correctly 1`] = `
     style={
       [
         {
-          "fontSize": 15,
-          "lineHeight": 18,
-        },
-        {
-          "letterSpacing": 2,
-        },
-        {
           "color": "#454545",
         },
         {
-          "fontFamily": "Lato-Bold",
+          "fontFamily": "Lato-Regular",
         },
         [
           {
-            "textAlign": "center",
+            "textAlign": "left",
           },
-          {
-            "color": "#ffffff",
-          },
+          [
+            {
+              "fontSize": 15,
+              "lineHeight": 18,
+            },
+            {
+              "letterSpacing": 2,
+            },
+            {
+              "fontFamily": "Lato-Bold",
+            },
+            [
+              {
+                "textAlign": "center",
+              },
+              {
+                "color": "#ffffff",
+              },
+            ],
+          ],
         ],
       ]
     }
@@ -175,25 +185,35 @@ exports[`Button focus when disabled should render correctly 1`] = `
     style={
       [
         {
-          "fontSize": 15,
-          "lineHeight": 18,
-        },
-        {
-          "letterSpacing": 2,
-        },
-        {
           "color": "#454545",
         },
         {
-          "fontFamily": "Lato-Bold",
+          "fontFamily": "Lato-Regular",
         },
         [
           {
-            "textAlign": "center",
+            "textAlign": "left",
           },
-          {
-            "color": "rgba(255, 255, 255, 0.5)",
-          },
+          [
+            {
+              "fontSize": 15,
+              "lineHeight": 18,
+            },
+            {
+              "letterSpacing": 2,
+            },
+            {
+              "fontFamily": "Lato-Bold",
+            },
+            [
+              {
+                "textAlign": "center",
+              },
+              {
+                "color": "rgba(255, 255, 255, 0.5)",
+              },
+            ],
+          ],
         ],
       ]
     }
@@ -295,28 +315,38 @@ exports[`Button neutral should render correctly 1`] = `
     style={
       [
         {
-          "fontSize": 15,
-          "lineHeight": 18,
-        },
-        {
-          "letterSpacing": 2,
-        },
-        {
           "color": "#454545",
         },
         {
-          "fontFamily": "Lato-Bold",
+          "fontFamily": "Lato-Regular",
         },
         [
           {
-            "textAlign": "center",
+            "textAlign": "left",
           },
-          {
-            "color": "#ffffff",
-          },
-          {
-            "color": "#454545",
-          },
+          [
+            {
+              "fontSize": 15,
+              "lineHeight": 18,
+            },
+            {
+              "letterSpacing": 2,
+            },
+            {
+              "fontFamily": "Lato-Bold",
+            },
+            [
+              {
+                "textAlign": "center",
+              },
+              {
+                "color": "#ffffff",
+              },
+              {
+                "color": "#454545",
+              },
+            ],
+          ],
         ],
       ]
     }
@@ -415,28 +445,38 @@ exports[`Button neutral when disabled should render correctly 1`] = `
     style={
       [
         {
-          "fontSize": 15,
-          "lineHeight": 18,
-        },
-        {
-          "letterSpacing": 2,
-        },
-        {
           "color": "#454545",
         },
         {
-          "fontFamily": "Lato-Bold",
+          "fontFamily": "Lato-Regular",
         },
         [
           {
-            "textAlign": "center",
+            "textAlign": "left",
           },
-          {
-            "color": "rgba(255, 255, 255, 0.5)",
-          },
-          {
-            "color": "#828181",
-          },
+          [
+            {
+              "fontSize": 15,
+              "lineHeight": 18,
+            },
+            {
+              "letterSpacing": 2,
+            },
+            {
+              "fontFamily": "Lato-Bold",
+            },
+            [
+              {
+                "textAlign": "center",
+              },
+              {
+                "color": "rgba(255, 255, 255, 0.5)",
+              },
+              {
+                "color": "#828181",
+              },
+            ],
+          ],
         ],
       ]
     }
@@ -520,28 +560,38 @@ exports[`Button primary should render correctly 1`] = `
     style={
       [
         {
-          "fontSize": 15,
-          "lineHeight": 18,
-        },
-        {
-          "letterSpacing": 2,
-        },
-        {
           "color": "#454545",
         },
         {
-          "fontFamily": "Lato-Bold",
+          "fontFamily": "Lato-Regular",
         },
         [
           {
-            "textAlign": "center",
+            "textAlign": "left",
           },
-          {
-            "color": "#ffffff",
-          },
-          {
-            "color": "#ffffff",
-          },
+          [
+            {
+              "fontSize": 15,
+              "lineHeight": 18,
+            },
+            {
+              "letterSpacing": 2,
+            },
+            {
+              "fontFamily": "Lato-Bold",
+            },
+            [
+              {
+                "textAlign": "center",
+              },
+              {
+                "color": "#ffffff",
+              },
+              {
+                "color": "#ffffff",
+              },
+            ],
+          ],
         ],
       ]
     }
@@ -625,28 +675,38 @@ exports[`Button primary when disabled should render correctly 1`] = `
     style={
       [
         {
-          "fontSize": 15,
-          "lineHeight": 18,
-        },
-        {
-          "letterSpacing": 2,
-        },
-        {
           "color": "#454545",
         },
         {
-          "fontFamily": "Lato-Bold",
+          "fontFamily": "Lato-Regular",
         },
         [
           {
-            "textAlign": "center",
+            "textAlign": "left",
           },
-          {
-            "color": "rgba(255, 255, 255, 0.5)",
-          },
-          {
-            "color": "rgba(255, 255, 255, 0.5)",
-          },
+          [
+            {
+              "fontSize": 15,
+              "lineHeight": 18,
+            },
+            {
+              "letterSpacing": 2,
+            },
+            {
+              "fontFamily": "Lato-Bold",
+            },
+            [
+              {
+                "textAlign": "center",
+              },
+              {
+                "color": "rgba(255, 255, 255, 0.5)",
+              },
+              {
+                "color": "rgba(255, 255, 255, 0.5)",
+              },
+            ],
+          ],
         ],
       ]
     }
@@ -730,25 +790,35 @@ exports[`Button warning should render correctly 1`] = `
     style={
       [
         {
-          "fontSize": 15,
-          "lineHeight": 18,
-        },
-        {
-          "letterSpacing": 2,
-        },
-        {
           "color": "#454545",
         },
         {
-          "fontFamily": "Lato-Bold",
+          "fontFamily": "Lato-Regular",
         },
         [
           {
-            "textAlign": "center",
+            "textAlign": "left",
           },
-          {
-            "color": "#ffffff",
-          },
+          [
+            {
+              "fontSize": 15,
+              "lineHeight": 18,
+            },
+            {
+              "letterSpacing": 2,
+            },
+            {
+              "fontFamily": "Lato-Bold",
+            },
+            [
+              {
+                "textAlign": "center",
+              },
+              {
+                "color": "#ffffff",
+              },
+            ],
+          ],
         ],
       ]
     }
@@ -832,25 +902,35 @@ exports[`Button warning when disabled should render correctly 1`] = `
     style={
       [
         {
-          "fontSize": 15,
-          "lineHeight": 18,
-        },
-        {
-          "letterSpacing": 2,
-        },
-        {
           "color": "#454545",
         },
         {
-          "fontFamily": "Lato-Bold",
+          "fontFamily": "Lato-Regular",
         },
         [
           {
-            "textAlign": "center",
+            "textAlign": "left",
           },
-          {
-            "color": "rgba(255, 255, 255, 0.5)",
-          },
+          [
+            {
+              "fontSize": 15,
+              "lineHeight": 18,
+            },
+            {
+              "letterSpacing": 2,
+            },
+            {
+              "fontFamily": "Lato-Bold",
+            },
+            [
+              {
+                "textAlign": "center",
+              },
+              {
+                "color": "rgba(255, 255, 255, 0.5)",
+              },
+            ],
+          ],
         ],
       ]
     }

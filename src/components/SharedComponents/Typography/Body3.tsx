@@ -1,20 +1,12 @@
-import {
-  tailwindFontMedium
-} from "appConstants/fontFamilies.ts";
-import classnames from "classnames";
+import { tailwindFontMedium } from "appConstants/fontFamilies.ts";
 import React from "react";
-import { Text, TextProps } from "react-native";
+import { TextProps } from "react-native";
+
+import InatText from "./InatText";
 
 const Body3 = ( props: TextProps ) => (
-  <Text
-    maxFontSizeMultiplier={2}
-    className={classnames(
-      "text-xs trailing-tight text-darkGray",
-      tailwindFontMedium
-    )}
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    {...props}
-  />
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  <InatText className={`text-xs ${tailwindFontMedium}`} {...props} />
 );
 
 export default Body3;

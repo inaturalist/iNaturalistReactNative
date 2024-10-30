@@ -1,20 +1,12 @@
-import {
-  tailwindFontRegular
-} from "appConstants/fontFamilies.ts";
-import classnames from "classnames";
+import { tailwindFontRegular } from "appConstants/fontFamilies.ts";
 import React from "react";
-import { Text, TextProps } from "react-native";
+import { TextProps } from "react-native";
+
+import InatText from "./InatText";
 
 const Body4 = ( props: TextProps ) => (
-  <Text
-    maxFontSizeMultiplier={2}
-    className={classnames(
-      "text-2xs text-darkGray",
-      tailwindFontRegular
-    )}
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    {...props}
-  />
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  <InatText className={`text-2xs ${tailwindFontRegular}`} {...props} />
 );
 
 export default Body4;
