@@ -3,8 +3,13 @@
 import { useNavigation } from "@react-navigation/native";
 import displayProjectType from "components/Projects/helpers/displayProjectType.ts";
 import {
-  Button, Heading1, Heading3, Heading4, OverviewCounts,
+  Body4,
+  Button,
+  Heading1,
+  Heading4,
+  OverviewCounts,
   ScrollViewWrapper,
+  Subheading1,
   UserText
 } from "components/SharedComponents";
 import {
@@ -12,11 +17,14 @@ import {
 } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";
-import { useTranslation } from "sharedHooks";
+import { openExternalWebBrowser } from "sharedHelpers/util.ts";
+import { useStoredLayout, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
 import formatProjectDate from "../Projects/helpers/displayDates";
 import AboutProjectType from "./AboutProjectType";
+
+const PROJECT_URL = "https://www.inaturalist.org/projects";
 
 type Props = {
   project: Object,
@@ -33,15 +41,20 @@ const ProjectDetails = ( {
   const { t, i18n } = useTranslation( );
   const navigation = useNavigation( );
 
+  const { writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
+
   const onObservationPressed = useCallback(
-    ( ) => {
+    ( toMap: boolean ) => {
       setExploreView( "observations" );
+      if ( toMap ) {
+        writeLayoutToStorage( "map" );
+      }
       navigation.navigate( "Explore", {
         project,
         worldwide: true
       } );
     },
-    [navigation, project, setExploreView]
+    [navigation, project, setExploreView, writeLayoutToStorage]
   );
 
   const onSpeciesPressed = useCallback(
@@ -90,11 +103,11 @@ const ProjectDetails = ( {
       </ImageBackground>
       <View className="mx-4 pb-8">
         <Heading1 className="shrink mt-4">{project.title}</Heading1>
-        <Heading3>
+        <Subheading1>
           {shouldDisplayDateRange
             ? projectDate
             : displayProjectType( project.project_type, t )}
-        </Heading3>
+        </Subheading1>
         <OverviewCounts
           counts={{
             observations_count: project.observations_count,
@@ -102,16 +115,19 @@ const ProjectDetails = ( {
             members_count: project.members_count,
             journal_posts_count: project.journal_posts_count
           }}
-          onObservationPressed={onObservationPressed}
+          onObservationPressed={() => onObservationPressed( false )}
           onSpeciesPressed={onSpeciesPressed}
           onMembersPressed={onMembersPressed}
         />
         <Heading4 className="mt-7">{t( "ABOUT" )}</Heading4>
-        {project?.description
-          && <UserText text={project.description} htmlStyle={userTextStyle} />}
+        {project?.description && (
+          <UserText text={project.description} htmlStyle={userTextStyle} />
+        )}
         {project.project_type === "collection" && (
           <>
-            <Heading4 className="mb-3 mt-5">{t( "PROJECT-REQUIREMENTS" )}</Heading4>
+            <Heading4 className="mb-3 mt-5">
+              {t( "PROJECT-REQUIREMENTS" )}
+            </Heading4>
             <Button
               className="mb-5"
               level="neutral"
@@ -124,37 +140,38 @@ const ProjectDetails = ( {
         <Button
           level="neutral"
           text={t( "VIEW-IN-EXPLORE" )}
-          onPress={onObservationPressed}
+          onPress={() => onObservationPressed( true )}
         />
-        {!project.project_type && (
-          <>
-            <Heading4 className="mb-3 mt-5">
-              {
-                !project.current_user_is_member
-                  ? t( "JOIN-PROJECT" )
-                  : t( "LEAVE-PROJECT" )
-              }
-            </Heading4>
-            {!project.current_user_is_member
-              ? (
-                <Button
-                  level="neutral"
-                  text={t( "JOIN" )}
-                  onPress={joinProject}
-                  loading={loadingProjectMembership}
-                />
-              )
-              : (
-                <Button
-                  level="neutral"
-                  text={t( "LEAVE" )}
-                  onPress={leaveProject}
-                  loading={loadingProjectMembership}
-                />
-              )}
-          </>
-        )}
+        <Heading4 className="mb-3 mt-5">
+          {!project.current_user_is_member
+            ? t( "JOIN-PROJECT" )
+            : t( "LEAVE-PROJECT" )}
+        </Heading4>
+        {!project.current_user_is_member
+          ? (
+            <Button
+              level="neutral"
+              text={t( "JOIN" )}
+              onPress={joinProject}
+              loading={loadingProjectMembership}
+            />
+          )
+          : (
+            <Button
+              level="neutral"
+              text={t( "LEAVE" )}
+              onPress={leaveProject}
+              loading={loadingProjectMembership}
+            />
+          )}
         <AboutProjectType projectType={project.project_type} />
+        <Body4
+          className="underline mt-[11px]"
+          accessibilityRole="link"
+          onPress={async () => openExternalWebBrowser( `${PROJECT_URL}/${project.id}` )}
+        >
+          {t( "View-in-browser" )}
+        </Body4>
       </View>
     </ScrollViewWrapper>
   );
