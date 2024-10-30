@@ -9,3 +9,7 @@ files:
     # mess with this later in i18ncli
     translation: /src/i18n/l10n/%locale%.ftl
     type: ftl
+  - source: /ios/InfoPlist.xcstrings
+    dest: /ReactNative/InfoPlist.xcstrings
+    translation: /ios/InfoPlist.xcstrings
+    multilingual: true
