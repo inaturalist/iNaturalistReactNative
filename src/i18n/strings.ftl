@@ -494,6 +494,12 @@ Identifiers-View = Identifiers View
 Identify-an-organism = Identify an organism
 Identify-an-organism-with-the-iNaturalist-AI-Camera = Identify an organism with the iNaturalist AI Camera
 If-an-account-with-that-email-exists = If an account with that email exists, we've sent password reset instructions to your email.
+# Explanation that observations are removed from a collection project
+If-you-leave-x-of-your-observations-removed =
+    If you leave this traditional project, { $count ->
+        [one] 1 of your observations
+       *[other] { $count } of your observations
+    }  will also be removed from this project.
 If-you-want-to-collate-compare-promote = If you want to collate, compare, or promote a set of existing projects, then an Umbrella project is what you should use. For example the 2018 City Nature Challenge, which collated over 60 projects, made for a great landing page where anyone could compare and contrast each city's observations. Both Collection and Traditional projects can be used in an Umbrella project, and up to 500 projects can be collated by an Umbrella project.
 If-youre-seeing-this-error = If you're seeing this and you're online, iNat staff have already been notified. Thanks for finding a bug! If you're offline, please take a screenshot and send us an email when you're back on the Internet.
 IGNORE-LOCATION = IGNORE LOCATION
