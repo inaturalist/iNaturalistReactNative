@@ -46,6 +46,9 @@ async function signIn( user, options = {} ) {
   safeRealmWrite( realm, ( ) => {
     realm.create( "User", user, "modified" );
   }, "signing user in, user.js" );
+  if ( user?.locale ) {
+    i18next.changeLanguage( user.locale );
+  }
   nock( API_HOST )
     .post( "/oauth/token" )
     .reply( 200, { access_token: TEST_ACCESS_TOKEN } )

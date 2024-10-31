@@ -26,7 +26,6 @@ const useFreshInstall = ( currentUser: ?Object ) => {
   // fallback to the web locale
   const changeToSystemLocale = useCallback( ( ) => {
     const systemLocale = getInatLocaleFromSystemLocale();
-    console.log( systemLocale, "system locale" );
     i18n.changeLanguage( systemLocale );
   }, [
     i18n
