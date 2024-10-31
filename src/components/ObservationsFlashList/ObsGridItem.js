@@ -5,7 +5,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useMemo } from "react";
 import Photo from "realmModels/Photo";
-import { useCurrentUser } from "sharedHooks";
+import { useCurrentUser, useFontScale } from "sharedHooks";
 
 import ObsImagePreview from "./ObsImagePreview";
 import ObsUploadStatus from "./ObsUploadStatus";
@@ -29,6 +29,9 @@ const ObsGridItem = ( {
   uploadProgress,
   width = "w-[200px]"
 }: Props ): Node => {
+  const { isLargeFontScale } = useFontScale();
+  const currentUser = useCurrentUser( );
+
   const photo = observation?.observationPhotos?.[0]?.photo
     || observation?.observation_photos?.[0]?.photo
     || null;
@@ -38,7 +41,6 @@ const ObsGridItem = ( {
     observation?.observationSounds?.length
     || observation?.observation_sounds?.length
   );
-  const currentUser = useCurrentUser( );
 
   const displayTaxonName = useMemo( ( ) => (
     <DisplayTaxonName
@@ -49,13 +51,14 @@ const ObsGridItem = ( {
       layout="vertical"
       prefersCommonNames={currentUser?.prefers_common_names}
       scientificNameFirst={currentUser?.prefers_scientific_name_first}
-      showOneNameOnly={!explore}
+      showOneNameOnly={!explore || isLargeFontScale}
       taxon={observation?.taxon}
     />
   ), [
     currentUser?.prefers_common_names,
     currentUser?.prefers_scientific_name_first,
     explore,
+    isLargeFontScale,
     observation?.taxon,
     observation?.uuid
   ] );

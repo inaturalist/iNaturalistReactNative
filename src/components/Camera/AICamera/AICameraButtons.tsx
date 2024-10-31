@@ -18,6 +18,7 @@ const isTablet = DeviceInfo.isTablet();
 interface Props {
   handleZoomButtonPress: ( _event: GestureResponderEvent ) => void;
   confidenceThreshold?: number;
+  taxonomyRollupCutoff?: number;
   cropRatio?: string;
   flipCamera: ( _event: GestureResponderEvent ) => void;
   fps?: number;
@@ -27,6 +28,7 @@ interface Props {
   rotatableAnimatedStyle: ViewStyle;
   // Those four are debug only so I don't bother with types
   setConfidenceThreshold?: Function;
+  setTaxonomyRollupCutoff?: Function;
   setCropRatio?: Function,
   setFPS?: Function,
   setNumStoredResults?: Function,
@@ -42,6 +44,7 @@ interface Props {
 const AICameraButtons = ( {
   handleZoomButtonPress,
   confidenceThreshold,
+  taxonomyRollupCutoff,
   cropRatio,
   flipCamera,
   fps,
@@ -50,6 +53,7 @@ const AICameraButtons = ( {
   numStoredResults,
   rotatableAnimatedStyle,
   setConfidenceThreshold,
+  setTaxonomyRollupCutoff,
   setCropRatio,
   setFPS,
   setNumStoredResults,
@@ -94,6 +98,8 @@ const AICameraButtons = ( {
         <AIDebugButton
           confidenceThreshold={confidenceThreshold}
           setConfidenceThreshold={setConfidenceThreshold}
+          taxonomyRollupCutoff={taxonomyRollupCutoff}
+          setTaxonomyRollupCutoff={setTaxonomyRollupCutoff}
           fps={fps}
           setFPS={setFPS}
           numStoredResults={numStoredResults}

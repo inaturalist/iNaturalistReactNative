@@ -55,7 +55,7 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
       accessibilityHint: t( "Navigates-to-AI-camera" )
     },
     standardCamera: {
-      text: t( "Take-photos-with-the-camera" ),
+      text: t( "Take-multiple-photos-of-a-single-organism" ),
       icon: "camera",
       onPress: ( ) => navAndCloseModal( "Camera", { camera: "Standard" } ),
       testID: "camera-button",
@@ -73,7 +73,7 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
       accessibilityHint: t( "Navigates-to-photo-importer" )
     },
     soundRecorder: {
-      text: t( "Record-sounds" ),
+      text: t( "Record-a-sound" ),
       icon: "microphone",
       onPress: ( ) => navAndCloseModal( "SoundRecorder" ),
       testID: "record-sound-button",

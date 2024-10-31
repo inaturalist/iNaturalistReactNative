@@ -93,7 +93,7 @@ describe( "Settings", ( ) => {
 
     it( "should navigate user to iNaturalist settings", async ( ) => {
       renderComponent( <Settings /> );
-      const iNatSettingsButton = await screen.findByText( /INATURALIST SETTINGS/ );
+      const iNatSettingsButton = await screen.findByText( "ACCOUNT SETTINGS" );
       fireEvent.press( iNatSettingsButton );
       expect( mockNavigate ).toHaveBeenCalledWith(
         "FullPageWebView",
@@ -126,7 +126,7 @@ describe( "Settings", ( ) => {
 
       it( "should not navigate to iNaturalist settings if no internet", async ( ) => {
         renderComponent( <Settings /> );
-        const iNatSettingsButton = await screen.findByText( /INATURALIST SETTINGS/ );
+        const iNatSettingsButton = await screen.findByText( "ACCOUNT SETTINGS" );
         fireEvent.press( iNatSettingsButton );
         expect( mockNavigate ).not.toHaveBeenCalled( );
       } );
