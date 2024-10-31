@@ -1,17 +1,14 @@
-// @flow
-
 import {
   Body2, Heading4
 } from "components/SharedComponents";
-import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 
-type Props = {
-  projectType: string
+interface Props {
+  projectType: "collection" | "traditional" | "umbrella";
 }
 
-const AboutProjectType = ( { projectType }: Props ): Node => {
+const AboutProjectType = ( { projectType }: Props ) => {
   const { t } = useTranslation( );
 
   const projectTypes = {
