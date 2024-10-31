@@ -36,11 +36,13 @@ type Props = {
   onTaxaDetected: Function,
   pinchToZoom?: Function,
   takingPhoto: boolean,
+  taxonomyRollupCutoff?: number,
   inactive?: boolean
 };
 
 const DEFAULT_FPS = 1;
 const DEFAULT_CONFIDENCE_THRESHOLD = 0.5;
+const DEFAULT_TAXONOMY_CUTOFF_THRESHOLD = 0.0;
 const DEFAULT_NUM_STORED_RESULTS = 4;
 const DEFAULT_CROP_RATIO = 1.0;
 
@@ -62,6 +64,7 @@ const FrameProcessorCamera = ( {
   onTaxaDetected,
   pinchToZoom,
   takingPhoto,
+  taxonomyRollupCutoff = DEFAULT_TAXONOMY_CUTOFF_THRESHOLD,
   inactive
 }: Props ): Node => {
   const { deviceOrientation } = useDeviceOrientation();
@@ -142,6 +145,7 @@ const FrameProcessorCamera = ( {
             modelPath,
             taxonomyPath,
             confidenceThreshold,
+            taxonomyRollupCutoff,
             numStoredResults,
             cropRatio,
             patchedOrientationAndroid
@@ -160,6 +164,7 @@ const FrameProcessorCamera = ( {
       modelVersion,
       confidenceThreshold,
       takingPhoto,
+      taxonomyRollupCutoff,
       patchedOrientationAndroid,
       numStoredResults,
       cropRatio,
