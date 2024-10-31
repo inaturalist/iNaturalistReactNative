@@ -5,7 +5,7 @@ import React from "react";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
-  projectType: "collection" | "traditional" | "umbrella";
+  projectType: "collection" | "" | "umbrella";
 }
 
 const AboutProjectType = ( { projectType }: Props ) => {
