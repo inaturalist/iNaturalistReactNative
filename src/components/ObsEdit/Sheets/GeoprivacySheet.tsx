@@ -37,7 +37,7 @@ const GeoprivacySheet = ( {
     },
     private: {
       label: t( "Private" ),
-      text: t( "The-location-will-not-be-visible" ),
+      text: t( "The-location-will-not-be-visible-to-others" ),
       value: GEOPRIVACY_PRIVATE
     }
   } ), [t] );
