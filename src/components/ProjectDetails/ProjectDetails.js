@@ -10,13 +10,14 @@ import {
   OverviewCounts,
   ScrollViewWrapper,
   Subheading1,
-  UserText
+  UserText,
+  WarningSheet
 } from "components/SharedComponents";
 import {
   Image, ImageBackground, View
 } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { openExternalWebBrowser } from "sharedHelpers/util.ts";
 import { useStoredLayout, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
@@ -42,6 +43,10 @@ const ProjectDetails = ( {
   const navigation = useNavigation( );
 
   const { writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
+
+  const NONE = "NONE";
+  const JOIN = "JOIN";
+  const [openSheet, setOpenSheet] = useState( NONE );
 
   const onObservationPressed = useCallback(
     ( toMap: boolean ) => {
@@ -152,7 +157,7 @@ const ProjectDetails = ( {
             <Button
               level="neutral"
               text={t( "JOIN" )}
-              onPress={joinProject}
+              onPress={() => setOpenSheet( JOIN )}
               loading={loadingProjectMembership}
             />
           )
@@ -173,6 +178,21 @@ const ProjectDetails = ( {
           {t( "View-in-browser" )}
         </Body4>
       </View>
+      {openSheet === JOIN && (
+        <WarningSheet
+          onPressClose={() => setOpenSheet( NONE )}
+          confirm={() => {
+            joinProject();
+            setOpenSheet( NONE );
+          }}
+          headerText={t( "JOIN-PROJECT--question" )}
+          buttonText={t( "JOIN" )}
+          handleSecondButtonPress={() => setOpenSheet( NONE )}
+          secondButtonText={t( "CANCEL" )}
+          loading={loadingProjectMembership}
+          buttonType="primary"
+        />
+      )}
     </ScrollViewWrapper>
   );
 };
