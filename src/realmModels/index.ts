@@ -8,7 +8,7 @@ import Observation from "./Observation";
 import ObservationPhoto from "./ObservationPhoto";
 import ObservationSound from "./ObservationSound";
 import Photo from "./Photo";
-import Queue from "./Queue";
+import QueueItem from "./QueueItem";
 import Sound from "./Sound";
 import Taxon from "./Taxon";
 import User from "./User";
@@ -24,13 +24,13 @@ export default {
     ObservationPhoto,
     ObservationSound,
     Photo,
-    Queue,
+    QueueItem,
     Sound,
     Taxon,
     User,
     Vote
   ],
-  schemaVersion: 56,
+  schemaVersion: 57,
   path: `${RNFS.DocumentDirectoryPath}/db.realm`,
   // https://github.com/realm/realm-js/pull/6076 embedded constraints
   migrationOptions: {

@@ -6,6 +6,7 @@ import {
 } from "components/SharedComponents";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
+import changeLanguage from "sharedHelpers/changeLanguage.ts";
 import { useTranslation } from "sharedHooks";
 import { zustandStorage } from "stores/useStore";
 
@@ -66,7 +67,7 @@ const LanguageSetting = ( { onChange }: Props ) => {
           confirm={( newLocale: string ) => {
             setLocaleSheetOpen( false );
             // Remember the new locale locally
-            i18n.changeLanguage( newLocale );
+            changeLanguage( newLocale );
             onChange( newLocale );
           }}
           onPressClose={() => setLocaleSheetOpen( false )}

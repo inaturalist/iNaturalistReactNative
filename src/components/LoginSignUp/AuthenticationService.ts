@@ -19,6 +19,7 @@ import RNRestart from "react-native-restart";
 import RNSInfo from "react-native-sensitive-info";
 import Realm, { UpdateMode } from "realm";
 import realmConfig from "realmModels/index";
+import changeLanguage from "sharedHelpers/changeLanguage.ts";
 import { log, logFilePath, logWithoutRemote } from "sharedHelpers/logger";
 import { installID } from "sharedHelpers/persistedInstallationId.ts";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory.ts";
@@ -169,7 +170,7 @@ const signOut = async (
 
   // switch the app back to the system locale when a user signs out
   const systemLocale = getInatLocaleFromSystemLocale( );
-  i18next.changeLanguage( systemLocale );
+  changeLanguage( systemLocale );
 
   await deleteSensitiveItem( "jwtToken" );
   await deleteSensitiveItem( "jwtGeneratedAt" );
@@ -454,7 +455,7 @@ const authenticateUser = async (
   if ( remoteUser?.locale ) {
     // user locale preference from web should be saved to realm on sign in
     // and we can also update the app language from web
-    i18next.changeLanguage( remoteUser?.locale );
+    changeLanguage( remoteUser?.locale );
   }
 
   safeRealmWrite( realm, ( ) => {

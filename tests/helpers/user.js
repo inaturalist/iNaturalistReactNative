@@ -11,6 +11,7 @@ import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import nock from "nock";
 import RNSInfo from "react-native-sensitive-info";
+import changeLanguage from "sharedHelpers/changeLanguage.ts";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { makeResponse } from "tests/factory";
 
@@ -30,7 +31,7 @@ async function signOut( options = {} ) {
     realm.deleteAll( );
   }, "deleting entire realm in signOut function, user.js" );
   const systemLocale = getInatLocaleFromSystemLocale( );
-  i18next.changeLanguage( systemLocale );
+  changeLanguage( systemLocale );
   await RNSInfo.deleteItem( "username" );
   await RNSInfo.deleteItem( "jwtToken" );
   await RNSInfo.deleteItem( "jwtGeneratedAt" );
@@ -50,7 +51,7 @@ async function signIn( user, options = {} ) {
     realm.create( "User", user, "modified" );
   }, "signing user in, user.js" );
   if ( user?.locale ) {
-    i18next.changeLanguage( user.locale );
+    changeLanguage( user.locale );
   }
   nock( API_HOST )
     .post( "/oauth/token" )

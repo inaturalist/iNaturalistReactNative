@@ -19,12 +19,12 @@ import {
   useShare
 } from "sharedHooks";
 
-import useChangeServerLocale from "./hooks/useChangeServerLocale";
 import useFreshInstall from "./hooks/useFreshInstall";
 import useLinking from "./hooks/useLinking";
 import useLockOrientation from "./hooks/useLockOrientation";
 import useReactQueryRefetch from "./hooks/useReactQueryRefetch";
 import useTaxonCommonNames from "./hooks/useTaxonCommonNames";
+import useWorkQueue from "./hooks/useWorkQueue";
 
 const { useRealm } = RealmContext;
 
@@ -74,7 +74,7 @@ const App = ( { children }: Props ): Node => {
   useReactQueryRefetch( );
   useFreshInstall( currentUser );
   useLinking( currentUser );
-  useChangeServerLocale( );
+  useWorkQueue( );
 
   useLockOrientation( );
   useShare( );

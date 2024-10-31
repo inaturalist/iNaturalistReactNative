@@ -24,7 +24,7 @@ import {
 } from "react-native";
 import Config from "react-native-config";
 import { EventRegister } from "react-native-event-listeners";
-import Queue from "realmModels/Queue.ts";
+import QueueItem from "realmModels/QueueItem.ts";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedMutation,
@@ -186,7 +186,7 @@ const Settings = ( ) => {
       </View>
       <LanguageSetting
         onChange={newLocale => {
-          Queue.enqueue(
+          QueueItem.enqueue(
             realm,
             JSON.stringify( {
               id: settings?.id,
