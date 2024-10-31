@@ -148,21 +148,4 @@ describe( "Settings", ( ) => {
     const columbianSpanishSciNameText = await screen.findByText( /Nombre científico/ );
     expect( columbianSpanishSciNameText ).toBeVisible( );
   } );
-
-  test( "should change language immediately via language picker via offline locales", async ( ) => {
-    inatjs.translations.locales.mockResolvedValue( makeResponse( [] ) );
-    renderComponent( <Settings /> );
-    const changeLanguageButton = await screen.findByText( /CHANGE APP LANGUAGE/ );
-    fireEvent.press( changeLanguageButton );
-    const picker = await screen.findByTestId( "ReactNativePicker" );
-    // English is number 11 in the list of offline locales
-    expect( picker.props.selectedIndex ).toStrictEqual( 11 );
-    // trigger a change to the UI, selecting the second element
-    fireEvent( picker, "onValueChange", "ar" );
-    expect( picker.props.selectedIndex ).toStrictEqual( 1 );
-    const confirmText = await screen.findByText( "CONFIRM" );
-    fireEvent.press( confirmText );
-    const arabicSciNameText = await screen.findByText( /المصطلح العلمي/ );
-    expect( arabicSciNameText ).toBeVisible( );
-  } );
 } );

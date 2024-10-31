@@ -48,7 +48,13 @@ describe( "LanguageSettings", ( ) => {
       await signIn( mockUserWithRussianWebLocale, { realm: global.mockRealms[__filename] } );
       jest.useFakeTimers( );
       inatjs.users.me.mockResolvedValue( makeResponse( [mockUserWithRussianWebLocale] ) );
-      inatjs.translations.locales.mockResolvedValue( makeResponse( [] ) );
+      inatjs.translations.locales.mockResolvedValue( makeResponse( [{
+        language_in_locale: "Русский",
+        locale: "ru"
+      }, {
+        language_in_locale: "Svenska",
+        locale: "sv"
+      }] ) );
     } );
 
     afterEach( async ( ) => {
@@ -67,7 +73,7 @@ describe( "LanguageSettings", ( ) => {
       fireEvent.press( changeLocaleButton );
       const picker = await screen.findByTestId( "ReactNativePicker" );
       fireEvent( picker, "onValueChange", "sv" );
-      expect( picker.props.selectedIndex ).toStrictEqual( 63 );
+      expect( picker.props.selectedIndex ).toStrictEqual( 1 );
       const confirmText = await screen.findByText( /CONFIRM/ );
       fireEvent.press( confirmText );
       const sciNameText = await screen.findByText( "Vetenskapligt namn" );
