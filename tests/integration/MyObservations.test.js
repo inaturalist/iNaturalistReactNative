@@ -53,6 +53,11 @@ const mockDeletedIds = [
   faker.number.int( )
 ];
 
+jest.mock( "sharedHooks/useFontScale", () => ( {
+  __esModule: true,
+  default: ( ) => ( { isLargeFontScale: false } )
+} ) );
+
 const mockSyncedObservations = [
   factory( "LocalObservation", {
     _synced_at: faker.date.past( ),

@@ -295,7 +295,7 @@ exports[`TaxonResult should render correctly 1`] = `
       >
         <Text
           ellipsizeMode="tail"
-          maxFontSizeMultiplier={2}
+          maxFontSizeMultiplier={1.5}
           numberOfLines={3}
           style={
             [
@@ -347,7 +347,7 @@ exports[`TaxonResult should render correctly 1`] = `
           Family
            
           <Text
-            maxFontSizeMultiplier={2}
+            maxFontSizeMultiplier={1.5}
             style={
               [
                 {

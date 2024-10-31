@@ -29,6 +29,9 @@ const ObsGridItem = ( {
   uploadProgress,
   width = "w-[200px]"
 }: Props ): Node => {
+  const { isLargeFontScale } = useFontScale();
+  const currentUser = useCurrentUser( );
+
   const photo = observation?.observationPhotos?.[0]?.photo
     || observation?.observation_photos?.[0]?.photo
     || null;
@@ -38,8 +41,6 @@ const ObsGridItem = ( {
     observation?.observationSounds?.length
     || observation?.observation_sounds?.length
   );
-  const currentUser = useCurrentUser( );
-  const { isLargeFontScale } = useFontScale();
 
   const displayTaxonName = useMemo( ( ) => (
     <DisplayTaxonName
