@@ -549,6 +549,8 @@ It-may-take-up-to-an-hour-to-remove-content = It may take up to an hour to compl
 January = January
 JOIN = JOIN
 JOIN-PROJECT = JOIN PROJECT
+# Asking for confirmation if the user wants to join this project
+JOIN-PROJECT--question = JOIN PROJECT?
 Join-the-largest-community-of-naturalists = Join the largest community of naturalists in the world!
 # Header for joined projects
 JOINED = JOINED
@@ -581,6 +583,8 @@ leading--identification = Leading
 Learn-More = Learn More
 LEAVE = LEAVE
 LEAVE-PROJECT = LEAVE PROJECT
+# Asking for confirmation if the user wants to leave this project
+LEAVE-PROJECT--question = LEAVE PROJECT?
 LEAVE-US-A-REVIEW = LEAVE US A REVIEW!
 LICENSES = LICENSES
 # Label for button to switch to a list layout of observations
