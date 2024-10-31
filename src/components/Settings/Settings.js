@@ -48,7 +48,7 @@ const Settings = ( ) => {
   const { t } = useTranslation();
   const currentUser = useCurrentUser( );
   const {
-    remoteUser, isLoading
+    remoteUser, isLoading, refetchUserMe
   } = useUserMe();
   const isAdvancedUser = useStore( state => state.isAdvancedUser );
   const setIsAdvancedUser = useStore( state => state.setIsAdvancedUser );
@@ -67,20 +67,12 @@ const Settings = ( ) => {
 
   const queryClient = useQueryClient();
 
-  const invalidateQuery = useCallback( ( ) => {
-    // 20241031 amanda - note that anywhere we invalidate queries where we're using
-    // useQuery, this automatically refetches the query in the background, per the
-    // query invalidation documentation: https://tanstack.com/query/latest/docs/framework/react/guides/query-invalidation
-    // so we don't need to specifically call the refetch function here, since
-    // invalidateQueries handles that for us
-    queryClient.invalidateQueries( { queryKey: ["fetchUserMe"] } );
-  }, [queryClient] );
-
   const updateUserMutation = useAuthenticatedMutation(
     ( params, optsWithAuth ) => updateUsers( params, optsWithAuth ),
     {
       onSuccess: () => {
-        invalidateQuery( );
+        queryClient.invalidateQueries( { queryKey: ["fetchUserMe"] } );
+        refetchUserMe();
       },
       onError: () => {
         confirmInternetConnection( );
@@ -104,12 +96,12 @@ const Settings = ( ) => {
   useEffect( ( ) => {
     const listener = EventRegister.addEventListener(
       FINISHED_WEB_SETTINGS,
-      invalidateQuery
+      refetchUserMe
     );
     return ( ) => {
       EventRegister?.removeEventListener( listener );
     };
-  }, [invalidateQuery] );
+  }, [refetchUserMe] );
 
   const changeTaxonNameDisplay = v => {
     setIsSaving( true );

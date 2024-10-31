@@ -19,7 +19,8 @@ const useUserMe = ( options: ?Object ): Object => {
   const {
     data: remoteUser,
     isLoading,
-    dataUpdatedAt
+    dataUpdatedAt,
+    refetch: refetchUserMe
   } = useAuthenticatedQuery(
     ["fetchUserMe"],
     optsWithAuth => fetchUserMe( { }, optsWithAuth ),
@@ -48,7 +49,8 @@ const useUserMe = ( options: ?Object ): Object => {
 
   return {
     remoteUser,
-    isLoading
+    isLoading,
+    refetchUserMe
   };
 };
 
