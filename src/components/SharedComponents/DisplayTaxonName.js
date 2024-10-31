@@ -128,6 +128,7 @@ const DisplayTaxonName = ( {
       numberOfLines={setNumberOfLines( )}
       ellipsizeMode="tail"
       selectable={selectable}
+      maxFontSizeMultiplier={1.5}
     >
       {
         ( scientificNameFirst || !commonName || !prefersCommonNames )
@@ -144,6 +145,7 @@ const DisplayTaxonName = ( {
               keyBase={`${keyBase}-top`}
               isTitle
               isFirst={scientificNameFirst && prefersCommonNames}
+              maxFontSizeMultiplier={1.5}
             />
           )
           : `${commonName}${
@@ -175,6 +177,7 @@ const DisplayTaxonName = ( {
             textClassName={textClassName}
             taxonId={taxon.id}
             keyBase={`${keyBase}-bot`}
+            maxFontSizeMultiplier={1.5}
           />
         )}
     </BottomTextComponent>

@@ -19,7 +19,8 @@ type Props = {
   rankPiece: string,
   scientificNamePieces: Object,
   taxonId: string,
-  textClassName?: string
+  textClassName?: string,
+  maxFontSizeMultiplier?: number
 };
 
 const ScientificName = ( {
@@ -33,7 +34,8 @@ const ScientificName = ( {
   rankPiece,
   scientificNamePieces,
   taxonId,
-  textClassName
+  textClassName,
+  maxFontSizeMultiplier
 }: Props ): Node => {
   const { t } = useTranslation( );
   const scientificNameArray = scientificNamePieces?.map( ( piece, index ) => {
@@ -50,6 +52,7 @@ const ScientificName = ( {
 
     return (
       <FontComponent
+        maxFontSizeMultiplier={maxFontSizeMultiplier}
         key={`DisplayTaxonName-${keyBase}-${taxonId}-${rankLevel}-${piece}-${random( 0, 10000 )}`}
         className={classNames(
           "font-normal",
