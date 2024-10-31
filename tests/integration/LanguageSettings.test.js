@@ -85,5 +85,11 @@ describe( "LanguageSettings", ( ) => {
         api_token: "test-json-web-token"
       } );
     } );
+
+    test( "revert to system locale on sign out", async ( ) => {
+      renderAppWithComponent( <Settings /> );
+      await signOut( { realm: global.mockRealms[__filename] } );
+      expect( i18next.language ).toEqual( "en" );
+    } );
   } );
 } );

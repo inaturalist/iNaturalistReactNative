@@ -6,6 +6,7 @@
 // eslint-disable-next-line testing-library/no-manual-cleanup
 import { cleanup } from "@testing-library/react-native";
 import { API_HOST } from "components/LoginSignUp/AuthenticationService.ts";
+import { getInatLocaleFromSystemLocale } from "i18n/initI18next";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import nock from "nock";
@@ -28,6 +29,8 @@ async function signOut( options = {} ) {
   safeRealmWrite( realm, ( ) => {
     realm.deleteAll( );
   }, "deleting entire realm in signOut function, user.js" );
+  const systemLocale = getInatLocaleFromSystemLocale( );
+  i18next.changeLanguage( systemLocale );
   await RNSInfo.deleteItem( "username" );
   await RNSInfo.deleteItem( "jwtToken" );
   await RNSInfo.deleteItem( "jwtGeneratedAt" );

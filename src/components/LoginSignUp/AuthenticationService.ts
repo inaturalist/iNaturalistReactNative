@@ -9,6 +9,7 @@ import {
   rotatedOriginalPhotosPath,
   soundUploadPath
 } from "appConstants/paths.ts";
+import { getInatLocaleFromSystemLocale } from "i18n/initI18next";
 import i18next from "i18next";
 import rs from "jsrsasign";
 import { Alert, Platform } from "react-native";
@@ -165,6 +166,10 @@ const signOut = async (
   // the checkForSignedInUser needs to call this and that doesn't have access
   // to the React Query context (maybe it could...)
   options.queryClient?.getQueryCache( ).clear( );
+
+  // switch the app back to the system locale when a user signs out
+  const systemLocale = getInatLocaleFromSystemLocale( );
+  i18next.changeLanguage( systemLocale );
 
   await deleteSensitiveItem( "jwtToken" );
   await deleteSensitiveItem( "jwtGeneratedAt" );

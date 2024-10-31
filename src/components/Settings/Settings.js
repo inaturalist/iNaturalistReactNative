@@ -68,6 +68,11 @@ const Settings = ( ) => {
   const queryClient = useQueryClient();
 
   const invalidateQuery = useCallback( ( ) => {
+    // 20241031 amanda - note that anywhere we invalidate queries where we're using
+    // useQuery, this automatically refetches the query in the background, per the
+    // query invalidation documentation: https://tanstack.com/query/latest/docs/framework/react/guides/query-invalidation
+    // so we don't need to specifically call the refetch function here, since
+    // invalidateQueries handles that for us
     queryClient.invalidateQueries( { queryKey: ["fetchUserMe"] } );
   }, [queryClient] );
 
