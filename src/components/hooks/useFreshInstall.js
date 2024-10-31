@@ -1,8 +1,12 @@
 // @flow
 
 import { signOut } from "components/LoginSignUp/AuthenticationService.ts";
-import { useEffect } from "react";
+import { getInatLocaleFromSystemLocale } from "i18n/initI18next";
+import { useCallback, useEffect } from "react";
 import { MMKV } from "react-native-mmkv";
+import {
+  useTranslation
+} from "sharedHooks";
 
 // it's not recommended to have multiple instances of MMKV in an app, but
 // we can't use the zustand one here since it hasn't been initialized yet,
@@ -15,6 +19,19 @@ const installStatus = new MMKV( {
 const INSTALL_STATUS = "alreadyLaunched";
 
 const useFreshInstall = ( currentUser: ?Object ) => {
+  const { i18n } = useTranslation( );
+
+  // only use system locale if this is a fresh install of the app;
+  // otherwise, locale should be set by LanguageSettings with a
+  // fallback to the web locale
+  const changeToSystemLocale = useCallback( ( ) => {
+    const systemLocale = getInatLocaleFromSystemLocale();
+    console.log( systemLocale, "system locale" );
+    i18n.changeLanguage( systemLocale );
+  }, [
+    i18n
+  ] );
+
   useEffect( ( ) => {
     const checkForSignedInUser = async ( ) => {
       // check to see if this is a fresh install of the app
@@ -24,6 +41,7 @@ const useFreshInstall = ( currentUser: ?Object ) => {
       const alreadyLaunched = installStatus.getBoolean( INSTALL_STATUS );
       if ( !alreadyLaunched ) {
         installStatus.set( INSTALL_STATUS, true );
+        changeToSystemLocale( );
         if ( !currentUser ) {
           await signOut( { clearRealm: true } );
         }
@@ -31,7 +49,7 @@ const useFreshInstall = ( currentUser: ?Object ) => {
     };
 
     checkForSignedInUser( );
-  }, [currentUser] );
+  }, [currentUser, changeToSystemLocale] );
 };
 
 export default useFreshInstall;

@@ -446,6 +446,12 @@ const authenticateUser = async (
     }
     : currentUser;
 
+  if ( remoteUser?.locale ) {
+    // user locale preference from web should be saved to realm on sign in
+    // and we can also update the app language from web
+    i18next.changeLanguage( remoteUser?.locale );
+  }
+
   safeRealmWrite( realm, ( ) => {
     realm.create( "User", localUser, UpdateMode.Modified );
   }, "saving current user in AuthenticationService" );

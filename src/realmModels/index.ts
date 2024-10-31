@@ -8,6 +8,7 @@ import Observation from "./Observation";
 import ObservationPhoto from "./ObservationPhoto";
 import ObservationSound from "./ObservationSound";
 import Photo from "./Photo";
+import Queue from "./Queue";
 import Sound from "./Sound";
 import Taxon from "./Taxon";
 import User from "./User";
@@ -23,6 +24,7 @@ export default {
     ObservationPhoto,
     ObservationSound,
     Photo,
+    Queue,
     Sound,
     Taxon,
     User,

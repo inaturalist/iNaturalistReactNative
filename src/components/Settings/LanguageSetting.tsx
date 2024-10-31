@@ -74,7 +74,6 @@ const LanguageSetting = ( { onChange }: Props ) => {
           confirm={( newLocale: string ) => {
             setLocaleSheetOpen( false );
             // Remember the new locale locally
-            zustandStorage.setItem( "currentLocale", newLocale );
             i18n.changeLanguage( newLocale );
             onChange( newLocale );
           }}

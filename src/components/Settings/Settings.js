@@ -24,6 +24,7 @@ import {
 } from "react-native";
 import Config from "react-native-config";
 import { EventRegister } from "react-native-event-listeners";
+import Queue from "realmModels/Queue.ts";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedMutation,
@@ -47,7 +48,7 @@ const Settings = ( ) => {
   const { t } = useTranslation();
   const currentUser = useCurrentUser( );
   const {
-    remoteUser, isLoading, refetchUserMe
+    remoteUser, isLoading
   } = useUserMe();
   const isAdvancedUser = useStore( state => state.isAdvancedUser );
   const setIsAdvancedUser = useStore( state => state.setIsAdvancedUser );
@@ -66,12 +67,15 @@ const Settings = ( ) => {
 
   const queryClient = useQueryClient();
 
+  const invalidateQuery = useCallback( ( ) => {
+    queryClient.invalidateQueries( { queryKey: ["fetchUserMe"] } );
+  }, [queryClient] );
+
   const updateUserMutation = useAuthenticatedMutation(
     ( params, optsWithAuth ) => updateUsers( params, optsWithAuth ),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries( { queryKey: ["fetchUserMe"] } );
-        refetchUserMe();
+        invalidateQuery( );
       },
       onError: () => {
         confirmInternetConnection( );
@@ -95,12 +99,12 @@ const Settings = ( ) => {
   useEffect( ( ) => {
     const listener = EventRegister.addEventListener(
       FINISHED_WEB_SETTINGS,
-      refetchUserMe
+      invalidateQuery
     );
     return ( ) => {
       EventRegister?.removeEventListener( listener );
     };
-  }, [refetchUserMe] );
+  }, [invalidateQuery] );
 
   const changeTaxonNameDisplay = v => {
     setIsSaving( true );
@@ -177,11 +181,21 @@ const Settings = ( ) => {
       </View>
       <LanguageSetting
         onChange={newLocale => {
-          updateUserMutation.mutate( {
-            id: settings?.id,
-            "user[locale]": newLocale
-          } );
+          Queue.enqueue(
+            realm,
+            JSON.stringify( {
+              id: settings?.id,
+              "user[locale]": newLocale
+            } ),
+            "locale-change"
+          );
         }}
+        // onChange={newLocale => {
+        //   updateUserMutation.mutate( {
+        //     id: settings?.id,
+        //     "user[locale]": newLocale
+        //   } );
+        // }}
       />
       <Heading4 className="mt-7">{t( "INATURALIST-ACCOUNT-SETTINGS" )}</Heading4>
       <Body2 className="mt-2">{t( "To-access-all-other-settings" )}</Body2>
