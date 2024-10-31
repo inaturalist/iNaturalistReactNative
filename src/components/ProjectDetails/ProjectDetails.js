@@ -46,6 +46,7 @@ const ProjectDetails = ( {
 
   const NONE = "NONE";
   const JOIN = "JOIN";
+  const LEAVE = "LEAVE";
   const [openSheet, setOpenSheet] = useState( NONE );
 
   const onObservationPressed = useCallback(
@@ -165,7 +166,7 @@ const ProjectDetails = ( {
             <Button
               level="neutral"
               text={t( "LEAVE" )}
-              onPress={leaveProject}
+              onPress={() => setOpenSheet( LEAVE )}
               loading={loadingProjectMembership}
             />
           )}
@@ -191,6 +192,20 @@ const ProjectDetails = ( {
           secondButtonText={t( "CANCEL" )}
           loading={loadingProjectMembership}
           buttonType="primary"
+        />
+      )}
+      {openSheet === LEAVE && (
+        <WarningSheet
+          onPressClose={() => setOpenSheet( NONE )}
+          confirm={() => {
+            leaveProject();
+            setOpenSheet( NONE );
+          }}
+          headerText={t( "LEAVE-PROJECT--question" )}
+          buttonText={t( "LEAVE" )}
+          handleSecondButtonPress={() => setOpenSheet( NONE )}
+          secondButtonText={t( "CANCEL" )}
+          loading={loadingProjectMembership}
         />
       )}
     </ScrollViewWrapper>
