@@ -3,11 +3,14 @@ import classnames from "classnames";
 import React from "react";
 import { Text, TextProps } from "react-native";
 
+import { TYPOGRAPHY_CLASSES } from "./InatText";
+
 const List2 = ( props: TextProps ) => (
   <Text
     maxFontSizeMultiplier={2}
     className={classnames(
-      "text-sm trailing-tight text-darkGray",
+      TYPOGRAPHY_CLASSES,
+      "text-sm",
       tailwindFontRegular
     )}
     // eslint-disable-next-line react/jsx-props-no-spreading

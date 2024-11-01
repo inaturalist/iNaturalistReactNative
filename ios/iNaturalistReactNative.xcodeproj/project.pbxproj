@@ -13,6 +13,9 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		191A91132CD1916800ECC774 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 191A91122CD1916800ECC774 /* InfoPlist.xcstrings */; };
+		191A91142CD1916800ECC774 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 191A91122CD1916800ECC774 /* InfoPlist.xcstrings */; };
+		191A91152CD1916800ECC774 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 191A91122CD1916800ECC774 /* InfoPlist.xcstrings */; };
 		1956B4912A7C3C1E00BBBDE4 /* link-inat-model-files.sh in Resources */ = {isa = PBXBuildFile; fileRef = 1956B4902A7C3C1E00BBBDE4 /* link-inat-model-files.sh */; };
 		197A169D2A7C2567001A03DC /* cvmodel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 197A169B2A7C2567001A03DC /* cvmodel.mlmodel */; };
 		197A169E2A7C2567001A03DC /* taxonomy.json in Resources */ = {isa = PBXBuildFile; fileRef = 197A169C2A7C2567001A03DC /* taxonomy.json */; };
@@ -76,6 +79,7 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = iNaturalistReactNative/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = iNaturalistReactNative/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = iNaturalistReactNative/main.m; sourceTree = "<group>"; };
+		191A91122CD1916800ECC774 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		1956B4902A7C3C1E00BBBDE4 /* link-inat-model-files.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "link-inat-model-files.sh"; sourceTree = "<group>"; };
 		197A169B2A7C2567001A03DC /* cvmodel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = cvmodel.mlmodel; sourceTree = "<group>"; };
 		197A169C2A7C2567001A03DC /* taxonomy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = taxonomy.json; sourceTree = "<group>"; };
@@ -205,6 +209,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				191A91122CD1916800ECC774 /* InfoPlist.xcstrings */,
 				8F1AC6762BC1B610002F994B /* PrivacyInfo.xcprivacy */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FAE1A68108700A75B9A /* iNaturalistReactNative */,
@@ -350,6 +355,7 @@
 			knownRegions = (
 				en,
 				Base,
+				es,
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
@@ -368,6 +374,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				191A91142CD1916800ECC774 /* InfoPlist.xcstrings in Resources */,
 				8F1AC6782BC1B610002F994B /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -382,6 +389,7 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				8F1AC6772BC1B610002F994B /* PrivacyInfo.xcprivacy in Resources */,
 				725BA058C5384A9185E8036A /* Lato-Bold.ttf in Resources */,
+				191A91152CD1916800ECC774 /* InfoPlist.xcstrings in Resources */,
 				54EB1EFEC1F74152902EED02 /* Lato-BoldItalic.ttf in Resources */,
 				3DE2C0F71E184822B561A1ED /* Lato-Italic.ttf in Resources */,
 				085DD3205807404CAFC32228 /* Lato-Medium.ttf in Resources */,
@@ -397,6 +405,7 @@
 			files = (
 				8F1AC6792BC1B610002F994B /* PrivacyInfo.xcprivacy in Resources */,
 				8B65ED3129F575C10054CCEF /* MainInterface.storyboard in Resources */,
+				191A91132CD1916800ECC774 /* InfoPlist.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -948,6 +957,7 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				USE_HERMES = true;
 			};
 			name = Debug;
@@ -1020,6 +1030,7 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				USE_HERMES = true;
 				VALIDATE_PRODUCT = YES;
 			};

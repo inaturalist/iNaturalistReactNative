@@ -32,7 +32,7 @@ type Props = {
   textInputStyle?: Object
 }
 
-const CharLimit = ( { current = 0, limit = 1 } ) => {
+const CharLimit = ( { current = 0, limit = 1, t } ) => {
   let currentColor = "text-darkGrayDisabled";
   if ( current / limit >= 1 ) {
     currentColor = "text-warningRed";
@@ -40,13 +40,15 @@ const CharLimit = ( { current = 0, limit = 1 } ) => {
     currentColor = "text-warningRedDisabled";
   }
   return (
-    <View className="flex-row">
-      <Body3 className={currentColor}>
-        { current }
+    <View className="flex-row space-x-1">
+      <Body3 className={`${currentColor}`}>
+        { t( "Intl-number", { val: current } ) }
       </Body3>
       <Body3 className="text-darkGrayDisabled">
-        { " / " }
-        { limit }
+        /
+      </Body3>
+      <Body3 className="text-darkGrayDisabled">
+        { t( "Intl-number", { val: limit } ) }
       </Body3>
     </View>
   );
@@ -139,7 +141,7 @@ const TextInputSheet = ( {
             )}
           >
             { maxLength && (
-              <CharLimit current={input?.length} limit={maxLength} />
+              <CharLimit current={input?.length} limit={maxLength} t={t} />
             ) }
             <Pressable
               onPress={() => {
