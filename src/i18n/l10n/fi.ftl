@@ -82,6 +82,8 @@ Date-observed = Havaintopäivämäärä
 Date-observed-header-short = Havaittu
 # Label for controls over a range of dates
 Date-Range = Ajanjakso
+# Express a date range. d1 and d2 can be any expression of dates
+date-to-date = { $d1 } - { $d2 }
 # Month of December
 December = joulukuu
 Delete-observation = Poista havainto
@@ -195,6 +197,7 @@ Other = Muu
 Privacy-Policy = Yksityisyyskäytäntö
 Private = Yksityinen
 Project-Members-Only = Vain projektin jäsenille
+project-start-time-datetime = Alkamisaika: { $datetime }
 # As in iNat projects, collections of observations or observation search filters
 Projects = Projektit
 PROJECTS-X = PROJEKTIT ({ $projectCount })

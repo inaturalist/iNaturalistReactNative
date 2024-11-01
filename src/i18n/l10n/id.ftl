@@ -38,6 +38,8 @@ accessible-comname-sciname = { $commonName } ({ $scientificName })
 accessible-sciname-comname = { $scientificName } ({ $commonName })
 # Alert message shown after account deletion
 Account-Deleted = Akun Dihapus
+# Label for button that shows all account settings
+ACCOUNT-SETTINGS = PENGATURAN AKUN
 ACTIVITY = AKTIVITAS
 # Label for a button that adds a vote of agreement
 Add-agreement = Tambah suara setuju
@@ -371,6 +373,7 @@ EDIT-LOCATION = EDIT LOKASI
 # Label for interactive element that takes you to a location choosing screen
 Edit-location = Mengedit lokasi
 Edit-Observation = Ubah Pengamatan
+Edit-your-profile-change-your-settings = Edit profil Anda, ubah pengaturan notifikasi Anda, dan kelola bagian-bagian lain dari akun Anda.
 # Label for button that edits an observation's taxon
 Edits-this-observations-taxon = Mengedit takson pengamatan ini
 EDUCATORS = TENAGA PENDIDIK
@@ -783,8 +786,6 @@ POTENTIAL-DISAGREEMENT = POTENSI KETIDAKSETUJUAN
 Potential-disagreement-description = <0>Apakah buktinya cukup untuk mengonfirmasi bahwa ini </0><1></1><0>?<0>
 Potential-disagreement-disagree = <0>Tidak, tapi itu adalah anggota dari </0><1></1>
 Potential-disagreement-unsure = <0>Saya kurang yakin tapi saya yakin ini </0><1></1>
-# Help text for beginning a sound recording
-Press-record-to-start = Tekan rekam untuk memulai
 Previous-observation = Pengamatan sebelumnya
 Privacy-Policy = Kebijakan Privasi
 PRIVACY-POLICY = KEBIJAKAN PRIVASI
@@ -880,13 +881,14 @@ Ranks-Zoosection = Zooseksi
 Ranks-ZOOSUBSECTION = ZOOSUBSEKSI
 Ranks-Zoosubsection = Zoosubseksi
 Read-more-on-Wikipedia = Baca lebih lanjut di Wikipedia
+# Help text for the button that opens the sound recorder
+Record-a-sound = Rekam suara
 # Heading for the sound recorder
 RECORD-NEW-SOUND = REKAM SUARA BARU
 # Title of screen asking for permission to access the microphone
 Record-organism-sounds-with-the-microphone = Rekam suara organisme menggunakan mikrofon
 # Text for a button prompting the user to grant access to the microphone
 RECORD-SOUND = REKAM SUARA
-Record-sounds = Merekam suara dengan mikrofon Anda
 # Imperative verb for recording a sound
 Record-verb = Catatan
 # Status while recording a sound
@@ -1036,7 +1038,6 @@ SPECIES-WITHOUT-NUMBER =
 # Label for the standard map type
 Standard--map-type = Standar
 Start-must-be-before-end = Tanggal awal harus sebelum tanggal akhir.
-Start-time = Waktu mulai: { $date }
 Start-upload = Mulai pengunggahan
 # Accessibility hint for button that starts recording a sound
 Starts-recording-sound = Mulai merekam suara
@@ -1058,8 +1059,9 @@ supporting--identification = Mendukung
 Switches-to-tab = Berpindah ke tab { $tab }.
 Sync-observations = Sinkronisasi pengamatan
 Syncing = Sinkronisasi...
+# Help text for the button that opens the multi-capture camera
+Take-multiple-photos-of-a-single-organism = Ambil beberapa gambar untuk suatu organisme
 Take-photo = Ambil gambar
-Take-photos-with-the-camera = Ambil gambar suatu organisme dengan kamera
 # label in project requirements
 Taxa = Taksa
 TAXON = TAKSON
@@ -1077,7 +1079,8 @@ Thanks-for-using-any-suggestions = Terima kasih telah menggunakan aplikasi ini! 
 That-user-profile-doesnt-exist = Profil pengguna tersebut tidak ada.
 The-exact-location-will-be-hidden = Lokasi pastinya akan disembunyikan dari publik dan digeneralisasikan ke area yang lebih luas. (Spesies terancam punah dan berstatus genting secara otomatis dikaburkan).
 The-iNaturalist-Network = Jaringan iNaturalist merupakan kumpulan situs web terlokalisasi yang seluruhnya terhubung dengan komunitas iNaturalist di seluruh dunia. Situs-situs jaringan didukung oleh institusi-institusi lokal yang mempromosikan penggunaan lokal dan memfasilitasi penggunaan data dari iNaturalist untuk memberikan manfaat bagi keanekaragaman hayati lokal.
-The-location-will-not-be-visible = Lokasinya tidak akan bisa dilihat oleh orang lain, sehingga akan menyulitkan orang untuk mengidentifikasinya.
+# Describes what happens when geoprivacy is set to private
+The-location-will-not-be-visible-to-others = Lokasinya tidak akan bisa dilihat oleh orang lain, sehingga orang tidak mungkin bisa mengidentifikasinya.
 The-models-that-suggest-species = Model yang menyarankan spesies berdasarkan kemiripan visual dan lokasinya dapat dibuat berkat kerja sama dengan Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona, dan Grant Van Horn.
 There-is-no-way =
     Anda tidak akan bisa membuka akun iNaturalist tanpa menyimpan informasi pribadi, jadi satu-satunya cara untuk mencabut izin ini adalah dengan 
@@ -1087,7 +1090,6 @@ This-is-a-wild-organism = Ini adalah organisme liar dan tidak ditaruh di lokasi 
 This-is-how-taxon-names-will-be-displayed = Ini adalah pengaturan bagaimana semua nama takson akan ditampilkan kepada Anda di iNaturalist:
 This-observer-has-opted-out-of-the-Community-Taxon = Pengamat ini telah memilih untuk keluar dari Takson Komunitas
 This-organism-was-placed-by-humans = Organisme ini diperkenalkan ke tempat ini oleh manusia. Ini berlaku untuk makhluk-makhluk seperti tumbuhan di taman, hewan peliharaan, dan hewan-hewan di kebun binatang.
-To-access-all-other-settings = Untuk mengakses semua pengaturan akun lainnya, klik di sini:
 To-learn-more-about-what-information = Untuk belajar lebih lanjut mengenai informasi yang kami kumpulkan serta cara kami menggunakannya, silakan membaca Kebijakan Privasi serta Syarat Penggunaan kami.
 To-sync-your-observations-to-iNaturalist = Untuk menyinkronkan pengamatan-pengamatan Anda ke iNaturalist, harap masuk terlebih dahulu.
 To-view-nearby-organisms-please-enable-location = Untuk melihat organisme-organisme di sekitar Anda, harap aktifkan lokasi.

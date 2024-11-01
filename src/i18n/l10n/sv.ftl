@@ -44,6 +44,8 @@ accessible-comname-sciname = { $commonName } ({ $scientificName })
 accessible-sciname-comname = { $scientificName } ({ $commonName })
 # Alert message shown after account deletion
 Account-Deleted = Kontot raderades
+# Label for button that shows all account settings
+ACCOUNT-SETTINGS = KONTOINSTÄLLNINGAR
 ACTIVITY = AKTIVITET
 # Label for a button that adds a vote of agreement
 Add-agreement = Håller med
@@ -289,6 +291,8 @@ DATE-OBSERVED-OLDEST = OBSERVATIONSDATUM - ÄLDST TILL NYAST
 Date-Range = Datumintervall
 # Label for controls over a range of dates
 DATE-RANGE = DATUMINTERVALL
+# Express a date range. d1 and d2 can be any expression of dates
+date-to-date = { $d1 }–{ $d2 }
 DATE-UPLOADED = UPPLADDNINGSDATUM
 Date-uploaded = Uppladdningsdatum
 Date-uploaded-header-short = Uppladdat
@@ -377,6 +381,7 @@ EDIT-LOCATION = REDIGERA PLATS
 # Label for interactive element that takes you to a location choosing screen
 Edit-location = Redigera plats
 Edit-Observation = Redigera fynd
+Edit-your-profile-change-your-settings = Redigera din profil, ändra dina aviseringsinställningar och hantera allt annat som rör ditt konto.
 # Label for button that edits an observation's taxon
 Edits-this-observations-taxon = Redigerar detta fynds taxon
 EDUCATORS = LÄRARE
@@ -449,6 +454,12 @@ Flash = blixt
 # Label for a button that toggles between the front and back cameras
 Flip-camera = Växla kamera
 FOLLOW = FÖLJ
+# Subtitle for a screen showing the list of people a user is following
+FOLLOWING-X-PEOPLE =
+    { $count ->
+        [one] FÖLJER { $count } PERSON
+       *[other] FÖLJER { $count } PERSONER
+    }
 # Forgot password link
 Forgot-Password = Glömt lösenord
 GEOPRIVACY = GEOSEKRETESS
@@ -551,6 +562,12 @@ Join-the-largest-community-of-naturalists = Gå med i den största communityn av
 JOINED = GICK MED
 # Shows date user joined iNaturalist on user profile
 Joined-date = Gick med: { $date }
+# Subtitle for a screen showing projects a user has joined
+JOINED-X-PROJECTS =
+    { $count ->
+        [one] GICK MED I { $count } PROJEKT
+       *[other] GICK MED I { $count } PROJEKT
+    }
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] DAGBOKSINLÄGG
@@ -758,6 +775,8 @@ Other = Annat
 OTHER-DATA = MER DATA
 OTHER-SUGGESTIONS = ANDRA FÖRSLAG
 PASSWORD = LÖSENORD
+# Title showing user profile details about who a user follows and is following
+PEOPLE--title = PERSONER
 PERSONAL-INFO = PERSONLIG INFO
 Photo-importer = Bildimport
 PHOTO-LICENSING = BILDLICENSIERING
@@ -781,8 +800,6 @@ POTENTIAL-DISAGREEMENT = MÖJLIG OENIGHET
 Potential-disagreement-description = <0>Är stödet tillräckligt för att bekräfta att detta är </0><1></1><0>?<0>
 Potential-disagreement-disagree = <0>Nej, men detta är en medlem av </0><1></1>
 Potential-disagreement-unsure = <0>Jag vet inte men jag är säker på att detta är </0><1></1>
-# Help text for beginning a sound recording
-Press-record-to-start = Tryck på spela in för att starta
 Previous-observation = Föregående fynd
 Privacy-Policy = Integritetspolicy
 PRIVACY-POLICY = INTEGRITETSPOLICY
@@ -791,6 +808,7 @@ Private = Privat
 PROJECT = PROJEKT
 Project-Members-Only = Endast projektmedlemmar
 PROJECT-REQUIREMENTS = PROJEKTKRAV
+project-start-time-datetime = Starttid: { $datetime }
 # As in iNat project, collections of observations or observation search filters
 PROJECTS = PROJEKT
 # As in iNat projects, collections of observations or observation search filters
@@ -878,13 +896,14 @@ Ranks-Zoosection = Zoosektion
 Ranks-ZOOSUBSECTION = ZOOUNDERSEKTION
 Ranks-Zoosubsection = Zooundersektion
 Read-more-on-Wikipedia = Läs mer på Wikipedia
+# Help text for the button that opens the sound recorder
+Record-a-sound = Spela in ett ljud
 # Heading for the sound recorder
 RECORD-NEW-SOUND = SPELA IN NYTT LJUD
 # Title of screen asking for permission to access the microphone
 Record-organism-sounds-with-the-microphone = Spela in organismljud med mikrofonen
 # Text for a button prompting the user to grant access to the microphone
 RECORD-SOUND = SPELA IN LJUD
-Record-sounds = Spela in ljud med din mikrofon
 # Imperative verb for recording a sound
 Record-verb = Spela in
 # Status while recording a sound
@@ -1034,7 +1053,6 @@ SPECIES-WITHOUT-NUMBER =
 # Label for the standard map type
 Standard--map-type = Standard
 Start-must-be-before-end = Startdatum måste vara före slutdatumet.
-Start-time = Starttid: { $date }
 Start-upload = Starta uppladdning
 # Accessibility hint for button that starts recording a sound
 Starts-recording-sound = Startar ljudinspelning
@@ -1056,8 +1074,9 @@ supporting--identification = Håller med
 Switches-to-tab = Byter till { $tab }-flik.
 Sync-observations = Synka fynd
 Syncing = Synkar...
+# Help text for the button that opens the multi-capture camera
+Take-multiple-photos-of-a-single-organism = Ta flera bilder av en organism
 Take-photo = Ta bild
-Take-photos-with-the-camera = Ta bilder på en enda organism med kameran
 # label in project requirements
 Taxa = Taxa
 TAXON = TAXON
@@ -1075,7 +1094,8 @@ Thanks-for-using-any-suggestions = Tack för att du använder den här appen! Ha
 That-user-profile-doesnt-exist = Den användarprofilen finns inte
 The-exact-location-will-be-hidden = Den exakta positionen kommer att döljas publikt, och i stället generaliseras till ett större område. (Hotade och känsliga arter diffuseras automatiskt).
 The-iNaturalist-Network = iNaturalist-nätverket är en samling lokaliserade webbplatser som är fullt anslutna till den globala iNaturalist-communityn. Nätverksplatser stöds av lokala institutioner som främjar lokal användning och underlättar användningen av data från iNaturalist för att gynna lokal biologisk mångfald.
-The-location-will-not-be-visible = Positionen kommer inte att synas för andra, vilket innebär att det kan bli svårt att bestämma.
+# Describes what happens when geoprivacy is set to private
+The-location-will-not-be-visible-to-others = Platsen kommer inte att vara synlig för andra, vilket kan göra fyndet omöjligt att bestämma
 The-models-that-suggest-species = Modellerna som föreslår arter baserat på visuell likhet och plats existerar bland annat tack vare samarbeten med Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona och Grant Van Horn.
 There-is-no-way = Det är inte möjligt att ha ett iNaturalist-konto utan att spara personlig information, så det enda sättet att återkalla detta samtycke är genom att radera ditt konto.
 #  Wild status sheet descriptions
@@ -1083,7 +1103,6 @@ This-is-a-wild-organism = Detta är en vild organism och placerades inte på den
 This-is-how-taxon-names-will-be-displayed = Så här kommer alla taxonnamn att visas för dig på iNaturalist:
 This-observer-has-opted-out-of-the-Community-Taxon = Den här observatören har valt bort communityns taxon
 This-organism-was-placed-by-humans = Denna organism placerades på denna plats av människor. Detta gäller för sådant som trädgårdsväxter, husdjur och djurparksdjur.
-To-access-all-other-settings = För att komma åt alla andra kontoinställningar, klicka här:
 To-learn-more-about-what-information = För att läsa mer om vilken information vi samlar in och hur vi använder den, vänligen se vår integritetspolicy och våra användarvillkor.
 To-sync-your-observations-to-iNaturalist = För att synka dina fynd med iNaturalist, vänligen logga in.
 To-view-nearby-organisms-please-enable-location = Aktivera plats för att se organismer i närheten.
@@ -1151,6 +1170,10 @@ VIEW-ALL-X-USERS = SE ALLA { $count } ANVÄNDARE
 VIEW-CHILDREN-TAXA = VISA UNDERLIGGANDE TAXA
 VIEW-DATA-QUALITY-ASSESSMENT = SE DATAKVALITETSBEDÖMNING
 VIEW-EDUCATORS-GUIDE = SE UNDERVISNINGSGUIDE
+# Button on user profile that displays a list of users that follow that user
+VIEW-FOLLOWERS = VISA FÖLJARE
+# Button on user profile that displays a list of users that the user is following
+VIEW-FOLLOWING = VISA FÖLJER
 View-in-browser = Se i webbläsaren
 VIEW-IN-EXPLORE = SE I UTFORSKA
 VIEW-INATURALIST-HELP = SE INATURALIST-HJÄLP
@@ -1190,6 +1213,12 @@ x-comments =
     { $count ->
         [one] { $count } kommentar
        *[other] { $count } kommentarer
+    }
+# Subtitle for a screen showing the list of followers a user has
+X-FOLLOWERS =
+    { $count ->
+        [one] { $count } FÖLJARE
+       *[other] { $count } FÖLJARE
     }
 X-Identifications =
     { $count ->
