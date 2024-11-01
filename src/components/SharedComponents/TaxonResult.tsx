@@ -103,7 +103,7 @@ const TaxonResult = ( {
           } )}
           icon="checkmark"
           size={21}
-          color={colors.white}
+          color={String( colors.white )}
           onPress={() => handleCheckmarkPress( usableTaxon )}
           accessibilityLabel={accessibilityLabel}
           testID={`${testID}.checkmark`}
@@ -115,11 +115,11 @@ const TaxonResult = ( {
         className="ml-2"
         icon="checkmark-circle-outline"
         size={40}
-        color={
+        color={String(
           clearBackground
             ? colors.white
             : colors.darkGray
-        }
+        )}
         onPress={() => handleCheckmarkPress( usableTaxon )}
         accessibilityLabel={accessibilityLabel}
         testID={`${testID}.checkmark`}
@@ -175,7 +175,11 @@ const TaxonResult = ( {
         <View className="shrink ml-3 flex-1">
           <DisplayTaxonName
             taxon={usableTaxon}
-            color={clearBackground && "text-white"}
+            color={String(
+              clearBackground
+                ? "text-white"
+                : "text-darkGray"
+            )}
             scientificNameFirst={currentUser?.prefers_scientific_name_first}
             prefersCommonNames={currentUser?.prefers_common_names}
           />
@@ -201,7 +205,11 @@ const TaxonResult = ( {
               }
               navToTaxonDetails( );
             }}
-            color={clearBackground && colors.white}
+            color={String(
+              clearBackground
+                ? colors.white
+                : colors.darkGray
+            )}
             accessibilityLabel={t( "More-info" )}
             accessibilityHint={t( "Navigates-to-taxon-details" )}
           />
