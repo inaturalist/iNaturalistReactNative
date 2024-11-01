@@ -45,17 +45,17 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
   const prepareObsEdit = useStore( state => state.prepareObsEdit );
 
   const obsCreateItems = useMemo( ( ) => ( {
-    arCamera: {
+    aiCamera: {
       text: t( "Use-iNaturalists-AI-Camera" ),
       icon: "arcamera",
       onPress: ( ) => navAndCloseModal( "Camera", { camera: "AI" } ),
-      testID: "arcamera-button",
+      testID: "aicamera-button",
       className: classnames( GREEN_CIRCLE_CLASS, "absolute bottom-[26px]" ),
       accessibilityLabel: t( "AI-Camera" ),
       accessibilityHint: t( "Navigates-to-AI-camera" )
     },
     standardCamera: {
-      text: t( "Take-photos-with-the-camera" ),
+      text: t( "Take-multiple-photos-of-a-single-organism" ),
       icon: "camera",
       onPress: ( ) => navAndCloseModal( "Camera", { camera: "Standard" } ),
       testID: "camera-button",
@@ -73,7 +73,7 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
       accessibilityHint: t( "Navigates-to-photo-importer" )
     },
     soundRecorder: {
-      text: t( "Record-sounds" ),
+      text: t( "Record-a-sound" ),
       icon: "microphone",
       onPress: ( ) => navAndCloseModal( "SoundRecorder" ),
       testID: "record-sound-button",
@@ -138,7 +138,7 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
       } )}
       >
         {renderAddObsIcon( obsCreateItems.standardCamera )}
-        {AI_CAMERA_SUPPORTED && renderAddObsIcon( obsCreateItems.arCamera )}
+        {AI_CAMERA_SUPPORTED && renderAddObsIcon( obsCreateItems.aiCamera )}
         {renderAddObsIcon( obsCreateItems.photoLibrary )}
       </View>
       <View className={classnames( ROW_CLASS, "items-center" )}>

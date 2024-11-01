@@ -52,7 +52,12 @@ const ExploreHeaderCount = ( {
             size={18}
             color={colors.white}
           />
-          <Body2 className="text-white ml-3">{renderText( )}</Body2>
+          <Body2
+            maxFontSizeMultiplier={1.5}
+            className="text-white ml-3"
+          >
+            {renderText( )}
+          </Body2>
         </>
       );
     }

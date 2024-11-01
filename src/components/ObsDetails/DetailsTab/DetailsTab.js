@@ -52,6 +52,7 @@ const handleShare = async url => {
 const ViewInBrowserButton = ( { id } ) => (
   <Body4
     className="underline mt-[11px]"
+    accessibilityRole="link"
     onPress={async () => openExternalWebBrowser( `${OBSERVATION_URL}/${id}` )}
   >
     {t( "View-in-browser" )}

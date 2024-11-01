@@ -40,6 +40,7 @@ const setStyles = ( {
   isWarning: boolean;
 } ) => {
   const buttonClasses = [
+    "max-w-[500px]",
     "active:opacity-75",
     "flex-row",
     "items-center",

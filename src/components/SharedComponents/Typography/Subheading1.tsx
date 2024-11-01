@@ -1,20 +1,12 @@
-import {
-  tailwindFontRegular
-} from "appConstants/fontFamilies.ts";
-import classnames from "classnames";
-import React, { ComponentPropsWithoutRef } from "react";
-import { Text } from "react-native";
+import { tailwindFontRegular } from "appConstants/fontFamilies.ts";
+import React from "react";
+import { TextProps } from "react-native";
 
-const Subheading1 = ( props: ComponentPropsWithoutRef<typeof Text> ) => (
-  <Text
-    maxFontSizeMultiplier={2}
-    className={classnames(
-      "text-xl trailing-tight text-darkGray",
-      tailwindFontRegular
-    )}
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    {...props}
-  />
+import InatText from "./InatText";
+
+const Subheading1 = ( props: TextProps ) => (
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  <InatText className={`text-xl ${tailwindFontRegular}`} {...props} />
 );
 
 export default Subheading1;

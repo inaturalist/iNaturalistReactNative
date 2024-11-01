@@ -8,10 +8,12 @@ const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: Object 
   const baseParams = {
     ...newInputParams,
     per_page: 50,
-    ttl: -1
+    ttl: -1,
+    rule_details: true,
+    fields: "all"
   };
 
-  const { fields, ...queryKeyParams } = baseParams;
+  const { ...queryKeyParams } = baseParams;
 
   const queryKey = ["useInfiniteProjectsScroll", "searchProjects", queryKeyParams];
 

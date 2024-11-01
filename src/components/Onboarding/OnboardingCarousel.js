@@ -1,6 +1,10 @@
 import {
   Body1,
-  Button, Heading1, Heading4, INatIconButton, ViewWrapper
+  Button,
+  Heading1,
+  Heading4,
+  INatIconButton,
+  ViewWrapper
 } from "components/SharedComponents";
 import INatLogo from "images/svg/inat_logo_onboarding.svg";
 import OnBoardingIcon1 from "images/svg/onboarding_icon_1.svg";

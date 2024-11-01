@@ -128,6 +128,7 @@ const DisplayTaxonName = ( {
       numberOfLines={setNumberOfLines( )}
       ellipsizeMode="tail"
       selectable={selectable}
+      maxFontSizeMultiplier={1.5}
     >
       {
         ( scientificNameFirst || !commonName || !prefersCommonNames )
@@ -144,6 +145,7 @@ const DisplayTaxonName = ( {
               keyBase={`${keyBase}-top`}
               isTitle
               isFirst={scientificNameFirst && prefersCommonNames}
+              maxFontSizeMultiplier={1.5}
             />
           )
           : `${commonName}${
@@ -175,6 +177,7 @@ const DisplayTaxonName = ( {
             textClassName={textClassName}
             taxonId={taxon.id}
             keyBase={`${keyBase}-bot`}
+            maxFontSizeMultiplier={1.5}
           />
         )}
     </BottomTextComponent>
@@ -185,7 +188,7 @@ const DisplayTaxonName = ( {
   // so in these cases we want to return text only
   if ( removeStyling ) {
     return (
-      <Text testID="display-taxon-name-no-styling">
+      <Text testID={`display-taxon-name-no-styling.${taxon.id}`}>
         {topTextComponent}
         {bottomTextComponent && (
           <>
@@ -201,7 +204,7 @@ const DisplayTaxonName = ( {
 
   return (
     <View
-      testID="display-taxon-name"
+      testID={`display-taxon-name.${taxon.id}`}
       className={classnames( "flex", {
         "flex-row items-end flex-wrap w-11/12": isHorizontal
       } )}

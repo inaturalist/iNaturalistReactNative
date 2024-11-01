@@ -54,12 +54,24 @@ const RadioButtonRow = ( {
           color={colors.darkGray}
         />
         <View className="ml-3 flex-row w-5/6">
-          {labelComponent || <Label className="mr-2">{label}</Label>}
+          {labelComponent || (
+            <Label
+              maxFontSizeMultiplier={1.5}
+              className="mr-2"
+            >
+              {label}
+            </Label>
+          )}
           {icon && <INatIcon name={icon} size={19} color={colors.inatGreen} />}
         </View>
       </View>
       {description && (
-        <List2 className="ml-[32px] mt-[3px]">{description}</List2>
+        <List2
+          maxFontSizeMultiplier={1.5}
+          className="ml-[32px] mt-[3px]"
+        >
+          {description}
+        </List2>
       )}
     </Pressable>
   );

@@ -90,7 +90,12 @@ const Header = ( {
                     onPress={() => setShowTaxonSearch( true )}
                   >
                     <INatIcon name="label-outline" size={15} />
-                    <Body3 className="ml-3">{t( "All-organisms" )}</Body3>
+                    <Body3
+                      maxFontSizeMultiplier={1.5}
+                      className="ml-3"
+                    >
+                      {t( "All-organisms" )}
+                    </Body3>
                   </Pressable>
                 )}
               <Pressable
@@ -99,7 +104,7 @@ const Header = ( {
                 className="flex-row items-center pt-3"
               >
                 <INatIcon name="location" size={15} />
-                <Body3 className="ml-3">{placeGuess}</Body3>
+                <Body3 maxFontSizeMultiplier={1.5} className="ml-3">{placeGuess}</Body3>
               </Pressable>
             </View>
           </View>

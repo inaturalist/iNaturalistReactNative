@@ -1,12 +1,10 @@
 // @flow
 
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
-import { ActivityIndicator, CarouselDots } from "components/SharedComponents";
+import { ActivityIndicator, Carousel, CarouselDots } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
-import { Dimensions } from "react-native";
-import Carousel from "react-native-reanimated-carousel";
 
 import MasonryLayout from "./MasonryLayout";
 import PhotoContainer from "./PhotoContainer";
@@ -33,7 +31,6 @@ const ObsMedia = ( {
   sounds = [],
   tablet
 }: Props ): Node => {
-  const { width } = Dimensions.get( "window" );
   const [index, setIndex] = useState( 0 );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
 
@@ -73,17 +70,9 @@ const ObsMedia = ( {
         : (
           <Carousel
             testID="photo-scroll"
-            loop={false}
-            horizontal
-            width={width}
-            height={288}
-            scrollAnimationDuration={100}
             data={items}
             renderItem={CarouselSlide}
-            pagingEnabled
-            onProgressChange={( _, absoluteProgress ) => {
-              setIndex( Math.round( absoluteProgress ) );
-            }}
+            onSlideScroll={setIndex}
           />
         )}
       {items.length > 1 && (

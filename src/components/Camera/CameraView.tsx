@@ -1,5 +1,9 @@
 import { useAppState } from "@react-native-community/hooks";
 import { useIsFocused } from "@react-navigation/native";
+import {
+  Camera,
+  useCameraFormat
+} from "components/Camera/helpers/visionCameraWrapper";
 import useFocusTap from "components/Camera/hooks/useFocusTap.ts";
 import VeryBadIpadRotator from "components/SharedComponents/VeryBadIpadRotator";
 import React, {
@@ -11,7 +15,6 @@ import {
 } from "react-native-gesture-handler";
 import Reanimated from "react-native-reanimated";
 import type { CameraDevice, CameraProps, CameraRuntimeError } from "react-native-vision-camera";
-import { Camera, useCameraFormat } from "react-native-vision-camera";
 import { orientationPatch } from "sharedHelpers/visionCameraPatches";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
 

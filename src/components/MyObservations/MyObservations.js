@@ -64,7 +64,6 @@ const MyObservations = ( {
             storage.set( ONBOARDING_SHOWN, true );
           }}
         />
-
         <ScrollableWithStickyHeader
           onScroll={onScroll}
           renderHeader={setStickyAt => (
@@ -88,6 +87,7 @@ const MyObservations = ( {
               hideLoadingWheel={!isFetchingNextPage || !currentUser}
               isFetchingNextPage={isFetchingNextPage}
               isConnected={isConnected}
+              obsListKey="MyObservations"
               layout={layout}
               onEndReached={onEndReached}
               onLayout={onListLayout}

@@ -44,6 +44,7 @@ const Identify = (): Node => {
         isFetchingNextPage={isFetchingNextPage}
         isConnected={isConnected}
         layout="list"
+        obsListKey="IdentifyObservations"
         onEndReached={fetchNextPage}
         showObservationsEmptyScreen
         status={status}

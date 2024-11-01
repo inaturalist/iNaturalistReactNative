@@ -1,4 +1,3 @@
-import { MMKV } from "react-native-mmkv";
 import {
   by,
   device,
@@ -6,6 +5,8 @@ import {
   expect,
   waitFor
 } from "detox";
+import { MMKV } from "react-native-mmkv";
+
 import { iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
 
 describe( "Signed out user", () => {

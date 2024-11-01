@@ -9,6 +9,8 @@ import React from "react";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
+import formatProjectDate from "../Projects/helpers/displayDates";
+
 type Props = {
   item: {
     id: string;
@@ -16,10 +18,14 @@ type Props = {
     title: string;
     project_type: string;
   } | undefined | null;
+  isHeader?: boolean;
 };
 
-const ProjectListItem = ( { item }: Props ) => {
-  const { t } = useTranslation( );
+const ProjectListItem = ( { item, isHeader = false }: Props ) => {
+  const { t, i18n } = useTranslation( );
+
+  const { projectDate, shouldDisplayDateRange } = formatProjectDate( item, t, i18n );
+  const displayDateRange = shouldDisplayDateRange && !isHeader;
 
   if ( !item ) { return null; }
   return (
@@ -49,7 +55,9 @@ const ProjectListItem = ( { item }: Props ) => {
       <View className="shrink ml-3">
         <Body1>{item.title}</Body1>
         <List2 className="mt-2">
-          {displayProjectType( item.project_type, t )}
+          {displayDateRange
+            ? projectDate
+            : displayProjectType( item.project_type, t )}
         </List2>
       </View>
     </View>

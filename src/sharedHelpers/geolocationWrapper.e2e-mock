@@ -1,31 +1,29 @@
-import Geolocation, {
-  GeolocationError,
+import {
   GeolocationResponse
 } from "@react-native-community/geolocation";
 import { CHUCKS_PAD } from "appConstants/e2e.ts";
 
+let counter = 0;
+
 function watchPosition(
-  success: ( position: GeolocationResponse ) => void,
-  error?: ( error: GeolocationError ) => void,
-  options?: {
-    interval?: number;
-    fastestInterval?: number;
-    timeout?: number;
-    maximumAge?: number;
-    enableHighAccuracy?: boolean;
-    distanceFilter?: number;
-    useSignificantChanges?: boolean;
-  }
+  success: ( position: GeolocationResponse ) => void
 ) {
   console.log( "[DEBUG geolocationWrapper.e2e-mock] watchPosition" );
   const watchID = Date.now();
-  setTimeout( ( ) => {
-    console.log( "[DEBUG geolocationWrapper.e2e-mock] watchPosition success" );
-    success( {
-      coords: CHUCKS_PAD,
-      timestamp: Date.now()
-    } );
-  }, 1000 );
+  /*
+    We have to limit this here to not run forever otherwise the e2e
+    test never idles and times out.
+  */
+  if ( counter < 5 ) {
+    setTimeout( ( ) => {
+      console.log( "[DEBUG geolocationWrapper.e2e-mock] watchPosition success" );
+      counter += 1;
+      success( {
+        coords: CHUCKS_PAD,
+        timestamp: Date.now()
+      } );
+    }, 1000 );
+  }
   return watchID;
 }
 

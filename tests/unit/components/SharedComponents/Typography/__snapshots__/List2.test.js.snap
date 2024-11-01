@@ -6,11 +6,11 @@ exports[`List2 renders correctly 1`] = `
   style={
     [
       {
-        "fontSize": 14,
-        "lineHeight": 16.8,
+        "color": "#454545",
       },
       {
-        "color": "#454545",
+        "fontSize": 14,
+        "lineHeight": 16.8,
       },
       {
         "fontFamily": "Lato-Regular",

@@ -6,7 +6,6 @@ import { RealmContext } from "providers/contexts.ts";
 import { useCallback } from "react";
 import Observation from "realmModels/Observation";
 import { useAuthenticatedInfiniteQuery, useCurrentUser } from "sharedHooks";
-import useStore from "stores/useStore";
 
 const { useRealm } = RealmContext;
 
@@ -21,9 +20,8 @@ const BASE_PARAMS = {
 const useInfiniteNotificationsScroll = ( ): Object => {
   const currentUser = useCurrentUser( );
   const realm = useRealm( );
-  const observationMarkedAsViewedAt = useStore( state => state.observationMarkedAsViewedAt );
 
-  const queryKey = ["useInfiniteNotificationsScroll", observationMarkedAsViewedAt];
+  const queryKey = ["useInfiniteNotificationsScroll"];
 
   const fetchObsByUUIDs = useCallback( async ( uuids, authOptions ) => {
     const observations = await fetchRemoteObservations(

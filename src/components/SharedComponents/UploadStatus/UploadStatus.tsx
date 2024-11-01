@@ -1,7 +1,6 @@
 import classnames from "classnames";
 import { INatIcon, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { ReactNode, useEffect } from "react";
 import CircularProgressBase from "react-native-circular-progress-indicator";
 import Reanimated, {
@@ -11,7 +10,6 @@ import Reanimated, {
   withTiming
 } from "react-native-reanimated";
 import { useTranslation } from "sharedHooks";
-import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 const iconClasses = [
@@ -23,10 +21,11 @@ const iconClasses = [
 
 type Props = {
   white: boolean,
-  handleIndividualUploadPress: ( uuid: string ) => void,
-  layout: "horizontal" | "vertical",
-  children: ReactNode,
-  uuid: string
+  layout: "horizontal" | "vertical";
+  children: ReactNode;
+  onPress: ( ) => void;
+  progress: number;
+  uniqueKey: string;
 }
 const AnimatedView = Reanimated.createAnimatedComponent( View );
 
@@ -38,22 +37,19 @@ const keyframe = new Keyframe( {
 
 const UploadStatus = ( {
   white = false,
-  handleIndividualUploadPress,
   layout,
   children,
-  uuid
-}: Props ): Node => {
-  const totalUploadProgress = useStore( state => state.totalUploadProgress );
-  const currentObservation = totalUploadProgress.find( o => o.uuid === uuid );
-  const progress = currentObservation?.totalProgress || 0;
-
+  onPress,
+  progress,
+  uniqueKey
+}: Props ) => {
   const { t } = useTranslation( );
-  const completeColor = white
+  const completeColor = ( white
     ? colors.white
-    : colors.inatGreen;
-  const color = white
+    : colors.inatGreen ) as string;
+  const color = ( white
     ? colors.white
-    : colors.darkGray;
+    : colors.darkGray ) as string;
   const animation = useSharedValue( 0 );
   const rotation = useDerivedValue( ( ) => interpolate(
     animation.value,
@@ -90,7 +86,8 @@ const UploadStatus = ( {
 
   const uploadSingleObservation = ( ) => {
     startAnimation( );
-    handleIndividualUploadPress( uuid );
+    // handleIndividualUploadPress( uuid );
+    onPress( );
   };
 
   useEffect( ( ) => ( ) => cancelAnimation( rotation ), [rotation] );
@@ -102,7 +99,7 @@ const UploadStatus = ( {
         "mt-2.5": layout === "horizontal" && progress > 0.05 && progress < 1
       } )}
       accessibilityLabel={t( "Upload-in-progress" )}
-      testID={`UploadIcon.progress.${uuid}`}
+      testID={`UploadIcon.progress.${uniqueKey}`}
     >
       <INatIcon
         name="upload-arrow"
@@ -120,7 +117,7 @@ const UploadStatus = ( {
       onPress={uploadSingleObservation}
       disabled={false}
       accessibilityLabel={t( "Start-upload" )}
-      testID={`UploadIcon.start.${uuid}`}
+      testID={`UploadIcon.start.${uniqueKey}`}
     />
   );
 
@@ -162,7 +159,7 @@ const UploadStatus = ( {
   const fadeOutUploadCompleteIcon = (
     <AnimatedView
       entering={keyframe.duration( 2000 )}
-      testID={`UploadIcon.complete.${uuid}`}
+      testID={`UploadIcon.complete.${uniqueKey}`}
     >
       { uploadCompleteIcon }
     </AnimatedView>

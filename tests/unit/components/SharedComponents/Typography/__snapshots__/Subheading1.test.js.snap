@@ -6,15 +6,25 @@ exports[`Subheading1 renders correctly 1`] = `
   style={
     [
       {
-        "fontSize": 20,
-        "lineHeight": 24,
-      },
-      {
         "color": "#454545",
       },
       {
         "fontFamily": "Lato-Regular",
       },
+      [
+        {
+          "textAlign": "left",
+        },
+        [
+          {
+            "fontSize": 20,
+            "lineHeight": 24,
+          },
+          {
+            "fontFamily": "Lato-Regular",
+          },
+        ],
+      ],
     ]
   }
 >
