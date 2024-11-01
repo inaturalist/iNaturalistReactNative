@@ -38,6 +38,8 @@ accessible-comname-sciname = { $commonName } ({ $scientificName })
 accessible-sciname-comname = { $scientificName } ({ $commonName })
 # Alert message shown after account deletion
 Account-Deleted = Konto gelöscht
+# Label for button that shows all account settings
+ACCOUNT-SETTINGS = KONTO-EINSTELLUNGEN
 ACTIVITY = AKTIVITÄT
 # Label for a button that adds a vote of agreement
 Add-agreement = Vereinbarung hinzufügen
@@ -220,6 +222,8 @@ Date-observed = Beobachtet am
 Date-observed-header-short = Beobachtet
 # Label for controls over a range of dates
 Date-Range = Zeitraum
+# Express a date range. d1 and d2 can be any expression of dates
+date-to-date = { $d1 } - { $d2 }
 # Month of December
 December = Dezember
 Delete-observation = Beobachtung löschen
@@ -231,6 +235,7 @@ DONATE = SPENDEN
 # Button for editing something
 Edit = Bearbeiten
 Edit-Observation = Beobachtung bearbeiten
+Edit-your-profile-change-your-settings = Bearbeite dein Profil, ändere deine Benachrichtigungseinstellungen und verwalte alle anderen Teile deines Kontos.
 # Label for button that edits an observation's taxon
 Edits-this-observations-taxon = Ändert das Taxon dieser Beobachtung
 # Indicates a species only occurs in a specific place
@@ -255,6 +260,12 @@ Flag-Item-Other-Description = Ein anderer Grund, den du unten erläutern kannst.
 Flag-Item-Other-Input-Hint = Gib den Grund an, warum du diesen Eintrag meldest
 # Status when an item has been flagged
 Flagged = Gekennzeichnet
+# Subtitle for a screen showing the list of people a user is following
+FOLLOWING-X-PEOPLE =
+    { $count ->
+        [one] FOLGT { $count } PERSON
+       *[other] FOLGT { $count } PERSONEN
+    }
 # Label for button that returns to the previous screen
 Go-back = Zurück gehen
 Hide = Verbergen
@@ -273,6 +284,12 @@ January = Januar
 JOIN = Teilnehmen
 # Header for joined projects
 JOINED = VERBUNDEN
+# Subtitle for a screen showing projects a user has joined
+JOINED-X-PROJECTS =
+    { $count ->
+        [one] IST { $count } PROJEKT BEIGETRETEN
+       *[other] IST { $count } PROJEKTEN BEIGETRETEN
+    }
 # Month of July
 July = Juli
 # Month of June
@@ -337,9 +354,12 @@ Open = öffentlich
 # enter an explanation for why you are flagging something instead of choosing
 # one of the existing options
 Other = Sonstiges
+# Title showing user profile details about who a user follows and is following
+PEOPLE--title = PERSONEN
 Privacy-Policy = Datenschutzerklärung
 Private = Privat
 Project-Members-Only = Nur Projektmitglieder
+project-start-time-datetime = Startzeit: { $datetime }
 # As in iNat projects, collections of observations or observation search filters
 Projects = Projekte
 PROJECTS-X = PROJEKTE ({ $projectCount })
@@ -388,6 +408,8 @@ Ranks-Tribe = Tribus
 Ranks-Variety = Varietät
 Ranks-Zoosection = Zoosektion
 Ranks-Zoosubsection = Zoountersektion
+# Help text for the button that opens the sound recorder
+Record-a-sound = Ton aufzeichnen
 # Imperative verb for recording a sound
 Record-verb = Aufnahmen
 # Label for button that removes an identification
@@ -434,6 +456,8 @@ Stop-verb = Stop
 # Identification category
 supporting--identification = bestätigend
 Syncing = Synchronisierung läuft...
+# Help text for the button that opens the multi-capture camera
+Take-multiple-photos-of-a-single-organism = Mache mehrere Fotos von einem einzelnen Lebewesen
 # label in project requirements
 Taxa = Taxa
 TAXON = TAXON
@@ -443,6 +467,9 @@ TAXONOMIC-RANKS = TAXONOMISCHE ABSTUFUNGEN
 # Header for a block of text describing a taxon's taxonomy
 TAXONOMY-header = TAXONOMIE
 Terms-of-Use = Nutzungsbedingungen
+# Describes what happens when geoprivacy is set to private
+The-location-will-not-be-visible-to-others = Der Standort wird für andere nicht sichtbar sein, was die genaue Bestimmung der Beobachtung unmöglich machen könnte
+The-models-that-suggest-species = Die Modelle, die anhand der visuellen Ähnlichkeit und des Standorts Arten vorschlagen, sind zum Teil das Ergebnis der Zusammenarbeit mit Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona und Grant Van Horn.
 This-is-how-taxon-names-will-be-displayed = So werden Ihnen alle Taxonnamen in iNaturalist angezeigt:
 This-observer-has-opted-out-of-the-Community-Taxon = Dieser Beobachter hat sich aus dem Gemeinschaftstaxon zurückgezogen
 Traditional-Project = Klassisches Projekt
@@ -457,6 +484,10 @@ Unknown--user = Unbekannt
 Unknown-error = Unbekannter Fehler
 # label in project requirements
 Users = Benutzer
+# Button on user profile that displays a list of users that follow that user
+VIEW-FOLLOWERS = FOLLOWER ANZEIGEN
+# Button on user profile that displays a list of users that the user is following
+VIEW-FOLLOWING = PERSONEN, DENEN DU FOLGST
 View-in-browser = Im Browser anzeigen
 # Label for a button that shows identification suggestions for an observation
 # or photo
@@ -465,6 +496,12 @@ Wild = wild
 # Label for a button that withdraws an identification
 Withdraw = Zurücknehmen
 Worldwide = Weltweit
+# Subtitle for a screen showing the list of followers a user has
+X-FOLLOWERS =
+    { $count ->
+        [one] { $count } FOLLOWER
+       *[other] { $count } FOLLOWERS
+    }
 # Subheader for number of project members screen
 X-MEMBERS = { $count } MITGLIEDER
 X-PROJECTS = { $projectCount } PROJEKTE

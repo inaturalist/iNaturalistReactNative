@@ -101,6 +101,8 @@ DATE-OBSERVED-NEWEST = DATUM WAARNEMING - NIEUWSTE EERST
 DATE-OBSERVED-OLDEST = DATUM WAARNEMING - OUDSTE EERST
 # Label for controls over a range of dates
 Date-Range = Tijdspanne
+# Express a date range. d1 and d2 can be any expression of dates
+date-to-date = { $d1 } - { $d2 }
 # Shorter datetime, e.g. on comments and IDs
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 datetime-format-short = d-M-yyyy HH:mm
@@ -126,6 +128,7 @@ Error = Fout
 Error-title = Fout
 # label in project requirements
 Establishment = Vestiging
+Every-observation-needs = Elke waarneming heeft een locatie, datum en tijd die van pas komen bij het op naam brengen. Je kunt geoprivacy bewerken als je je zorgen maakt over locatie privacy.
 Exact-Date = Exacte datum
 except = met uitzondering van
 Explore = Verkennen
@@ -140,6 +143,12 @@ Flag-Item-Other-Description = Een andere reden die je hieronder kunt uitleggen.
 Flag-Item-Other-Input-Hint = Geef de reden waarom je dit item meldt
 # Status when an item has been flagged
 Flagged = Gemeld
+# Subtitle for a screen showing the list of people a user is following
+FOLLOWING-X-PEOPLE =
+    { $count ->
+        [one] VOLGT { $count } PERSOON
+       *[other] VOLGEN { $count } MENSEN
+    }
 # Label for button that returns to the previous screen
 Go-back = Ga terug
 Hide = Verbergen
@@ -156,6 +165,12 @@ January = Januari
 JOIN = DOE MEE
 # Header for joined projects
 JOINED = SLOOT ZICH AAN BIJ
+# Subtitle for a screen showing projects a user has joined
+JOINED-X-PROJECTS =
+    { $count ->
+        [one] NEEMT DEEL AAN { $count } PROJECT
+       *[other] NEEMT DEEL AAN { $count } PROJECTEN
+    }
 # Month of July
 July = Juli
 # Month of June
@@ -204,6 +219,7 @@ notifications-user-added-identification-to-observation-by-you = <0>{ $userName }
 November = November
 Obervations-must-be-manually-added = Waarnemingen moeten handmatig worden toegevoegd aan een traditioneel project, tijdens de uploadfase of nadat de waarneming is gedeeld met iNaturalist. Een gebruiker moet zich ook aansluiten bij een traditioneel project om er zijn waarnemingen aan toe te kunnen te voegen.
 Obscured = Vervaagd
+Observation = Waarneming
 Observations = Waarnemingen
 # Button that starts a new observation
 Observe = Waarnemen
@@ -219,11 +235,15 @@ Open = Open
 # enter an explanation for why you are flagging something instead of choosing
 # one of the existing options
 Other = Anders
+# Title showing user profile details about who a user follows and is following
+PEOPLE--title = MENSEN
 Privacy-Policy = Privacybeleid
 Private = Privé
 Project-Members-Only = Alleen projectdeelnemers
+project-start-time-datetime = Starttijd: { $datetime }
 # As in iNat projects, collections of observations or observation search filters
 Projects = Projecten
+PROJECTS-X = PROJECTEN ({ $projectCount })
 # label in project requirements
 Quality-Grade = Kwaliteitsklasse
 Ranks-Class = Klasse
@@ -307,7 +327,7 @@ Syncing = Synchroniseren...
 # label in project requirements
 Taxa = Taxa
 Terms-of-Use = Gebruiksvoorwaarden
-The-location-will-not-be-visible = De vestigingsplaats zal niet zichtbaar zijn voor anderen, waardoor het wellicht moeilijk zal zijn om het te determineren.
+The-models-that-suggest-species = De modellen die soorten suggereren op basis van visuele gelijkenis en locatie zijn deels te danken aan samenwerking met Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona en Grant Van Horn.
 Traditional-Project = Traditioneel project
 Umbrella-Project = Overkoepelend project
 # Text to show when a taoxn rank is unknown or missing
@@ -320,6 +340,10 @@ Unknown--user = Onbekend
 Unknown-error = Onbekende fout
 # label in project requirements
 Users = Gebruikers
+# Button on user profile that displays a list of users that follow that user
+VIEW-FOLLOWERS = TOON VOLGERS
+# Button on user profile that displays a list of users that the user is following
+VIEW-FOLLOWING = TOON GEVOLGDEN
 View-in-browser = Bekijk in browser
 # Label for a button that shows identification suggestions for an observation
 # or photo
@@ -328,11 +352,18 @@ Wild = Wild
 # Label for a button that withdraws an identification
 Withdraw = Intrekken
 Worldwide = Wereldwijd
+# Subtitle for a screen showing the list of followers a user has
+X-FOLLOWERS =
+    { $count ->
+        [one] { $count } VOLGER
+       *[other] { $count } VOLGERS
+    }
 # Displays number of photos attached to an observation in the Media Viewer
 X-PHOTOS =
     { $photoCount ->
         [one] 1 FOTO
        *[other] { $photoCount } FOTO'S
     }
+X-PROJECTS = { $projectCount } PROJECTEN
 # Error message when you try to do something that requires log in
 You-need-log-in-to-do-that = Je moet inloggen om dat te doen.

@@ -84,6 +84,8 @@ Date-observed = Megfigyelés dátuma
 Date-observed-header-short = Megfigyelve
 # Label for controls over a range of dates
 Date-Range = Dátumtartomány
+# Express a date range. d1 and d2 can be any expression of dates
+date-to-date = { $d1 } - { $d2 }
 # Month of December
 December = December
 Delete-observation = Megfigyelés törlése
@@ -188,6 +190,7 @@ Other = Egyéb
 Privacy-Policy = Adatvédelmi nyilatkozat
 Private = Privát
 Project-Members-Only = Csak projekttagok
+project-start-time-datetime = Kezdő időpont: { $datetime }
 # As in iNat projects, collections of observations or observation search filters
 Projects = Projektek
 PROJECTS-X = PROJEKTEK ({ $projectCount })
