@@ -36,6 +36,9 @@ exports[`Button focus in dark mode should render correctly 1`] = `
     [
       [
         {
+          "maxWidth": 500,
+        },
+        {
           "flexDirection": "row",
         },
         {
@@ -138,6 +141,9 @@ exports[`Button focus in dark mode when disabled should render correctly 1`] = `
     [
       [
         {
+          "maxWidth": 500,
+        },
+        {
           "flexDirection": "row",
         },
         {
@@ -239,6 +245,9 @@ exports[`Button neutral in dark mode should render correctly 1`] = `
   style={
     [
       [
+        {
+          "maxWidth": 500,
+        },
         {
           "flexDirection": "row",
         },
@@ -363,6 +372,9 @@ exports[`Button neutral in dark mode when disabled should render correctly 1`] =
     [
       [
         {
+          "maxWidth": 500,
+        },
+        {
           "flexDirection": "row",
         },
         {
@@ -483,6 +495,9 @@ exports[`Button primary in dark mode should render correctly 1`] = `
     [
       [
         {
+          "maxWidth": 500,
+        },
+        {
           "flexDirection": "row",
         },
         {
@@ -587,6 +602,9 @@ exports[`Button primary in dark mode when disabled should render correctly 1`] =
   style={
     [
       [
+        {
+          "maxWidth": 500,
+        },
         {
           "flexDirection": "row",
         },
@@ -693,6 +711,9 @@ exports[`Button warning in dark mode should render correctly 1`] = `
     [
       [
         {
+          "maxWidth": 500,
+        },
+        {
           "flexDirection": "row",
         },
         {
@@ -794,6 +815,9 @@ exports[`Button warning in dark mode when disabled should render correctly 1`] =
   style={
     [
       [
+        {
+          "maxWidth": 500,
+        },
         {
           "flexDirection": "row",
         },
