@@ -19,7 +19,7 @@ exports[`PhotoCount renders correctly 1`] = `
   testID="photo-count"
 >
   <Text
-    maxFontSizeMultiplier={2}
+    maxFontSizeMultiplier={1}
     style={
       [
         {

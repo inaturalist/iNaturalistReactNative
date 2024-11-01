@@ -38,6 +38,8 @@ accessible-comname-sciname = { $commonName } ({ $scientificName })
 accessible-sciname-comname = { $scientificName } ({ $commonName })
 # Alert message shown after account deletion
 Account-Deleted = Account Deleted
+# Label for button that shows all account settings
+ACCOUNT-SETTINGS = ACCOUNT SETTINGS
 ACTIVITY = ACTIVITY
 # Label for a button that adds a vote of agreement
 Add-agreement = Add agreement
@@ -373,6 +375,7 @@ EDIT-LOCATION = EDIT LOCATION
 # Label for interactive element that takes you to a location choosing screen
 Edit-location = Edit location
 Edit-Observation = Edit Observation
+Edit-your-profile-change-your-settings = Edit your profile, change your notifications settings, and manage all other parts of your account.
 # Label for button that edits an observation's taxon
 Edits-this-observations-taxon = Edits this observation's taxon
 EDUCATORS = EDUCATORS
@@ -789,8 +792,6 @@ POTENTIAL-DISAGREEMENT = POTENTIAL DISAGREEMENT
 Potential-disagreement-description = <0>Is the evidence enough to confirm this is </0><1></1><0>?<0>
 Potential-disagreement-disagree = <0>No, but this is a member of </0><1></1>
 Potential-disagreement-unsure = <0>I don't know but I am sure this is </0><1></1>
-# Help text for beginning a sound recording
-Press-record-to-start = Press record to start
 Previous-observation = Previous observation
 Privacy-Policy = Privacy Policy
 PRIVACY-POLICY = PRIVACY POLICY
@@ -887,13 +888,14 @@ Ranks-Zoosection = Zoosection
 Ranks-ZOOSUBSECTION = ZOOSUBSECTION
 Ranks-Zoosubsection = Zoosubsection
 Read-more-on-Wikipedia = Read more on Wikipedia
+# Help text for the button that opens the sound recorder
+Record-a-sound = Record a sound
 # Heading for the sound recorder
 RECORD-NEW-SOUND = RECORD NEW SOUND
 # Title of screen asking for permission to access the microphone
 Record-organism-sounds-with-the-microphone = Record organism sounds with the microphone
 # Text for a button prompting the user to grant access to the microphone
 RECORD-SOUND = RECORD SOUND
-Record-sounds = Record sounds with your microphone
 # Imperative verb for recording a sound
 Record-verb = Record
 # Status while recording a sound
@@ -1064,8 +1066,9 @@ supporting--identification = Supporting
 Switches-to-tab = Switches to { $tab } tab.
 Sync-observations = Sync observations
 Syncing = Syncing...
+# Help text for the button that opens the multi-capture camera
+Take-multiple-photos-of-a-single-organism = Take multiple photos of a single organism
 Take-photo = Take photo
-Take-photos-with-the-camera = Take photos of a single organism with the camera
 # label in project requirements
 Taxa = Taxa
 TAXON = TAXON
@@ -1083,7 +1086,8 @@ Thanks-for-using-any-suggestions = Thanks for using this app! Do you have any su
 That-user-profile-doesnt-exist = That user profile doesn't exist
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
 The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
-The-location-will-not-be-visible = The location will not be visible to others, which means it may be difficult to identify.
+# Describes what happens when geoprivacy is set to private
+The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify
 The-models-that-suggest-species = The models that suggest species based on visual similarity and location are thanks in part to collaborations with Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona, and Grant Van Horn.
 There-is-no-way = There is no way to have an iNaturalist account without storing personal information, so the only way to revoke this consent is to delete your account.
 #  Wild status sheet descriptions
@@ -1091,7 +1095,6 @@ This-is-a-wild-organism = This is a wild organism and wasn't placed in this loca
 This-is-how-taxon-names-will-be-displayed = This is how all taxon names will be displayed to you across iNaturalist:
 This-observer-has-opted-out-of-the-Community-Taxon = This observer has opted out of the Community Taxon
 This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
-To-access-all-other-settings = To access all other account settings, click here:
 To-learn-more-about-what-information = To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.
 To-sync-your-observations-to-iNaturalist = To sync your observations to iNaturalist, please log in.
 To-view-nearby-organisms-please-enable-location = To view nearby organisms, please enable location.

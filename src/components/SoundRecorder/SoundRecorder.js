@@ -189,17 +189,11 @@ const SoundRecorder = (): Node => {
     ? [{ file_url: uri }]
     : [];
 
-  let helpText = t( "Press-record-to-start" );
-  switch ( status ) {
-    case RECORDING:
-      helpText = t( "Recording-sound" );
-      break;
-    case STOPPED:
-      helpText = t( "Recording-stopped-Tap-play-the-current-recording" );
-      break;
-    default:
-      helpText = t( "Press-record-to-start" );
-  }
+  const helpText = useMemo( ( ) => {
+    if ( status === RECORDING ) return t( "Recording-sound" );
+    if ( status === STOPPED ) return t( "Recording-stopped-Tap-play-the-current-recording" );
+    return null;
+  }, [status, t] );
 
   const onBack = () => {
     if ( !params.addEvidence ) {
@@ -264,9 +258,11 @@ const SoundRecorder = (): Node => {
           </View>
         ) }
       </View>
-      <View className="justify-center h-[60px]">
-        <Body1 className="text-white text-center p-2">{helpText}</Body1>
-      </View>
+      { helpText && (
+        <View className="justify-center h-[60px]">
+          <Body1 className="text-white text-center p-2">{helpText}</Body1>
+        </View>
+      ) }
       <MediaNavButtons
         captureButton={captureButton}
         onConfirm={navToObsEdit}

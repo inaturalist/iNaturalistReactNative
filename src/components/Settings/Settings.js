@@ -187,15 +187,15 @@ const Settings = ( ) => {
         />
       </Debug>
       <Heading4 className="mt-7">{t( "INATURALIST-ACCOUNT-SETTINGS" )}</Heading4>
-      <Body2 className="mt-2">{t( "To-access-all-other-settings" )}</Body2>
+      <Body2 className="mt-2">{t( "Edit-your-profile-change-your-settings" )}</Body2>
       <Button
         className="mt-4"
-        text={t( "INATURALIST-SETTINGS" )}
+        text={t( "ACCOUNT-SETTINGS" )}
         onPress={() => {
           confirmInternetConnection( );
           if ( !isConnected ) { return; }
           navigation.navigate( "FullPageWebView", {
-            title: t( "SETTINGS" ),
+            title: t( "ACCOUNT-SETTINGS" ),
             loggedIn: true,
             initialUrl: SETTINGS_URL,
             blurEvent: FINISHED_WEB_SETTINGS,
@@ -203,15 +203,17 @@ const Settings = ( ) => {
             skipSetSourceInShouldStartLoadWithRequest: true,
             shouldLoadUrl: url => {
               async function signOutGoHome() {
-                // sign out
-                await signOut( { realm, clearRealm: true, queryClient } );
-                // navigate to My Obs
-                navigation.navigate( "ObsList" );
                 Alert.alert(
                   t( "Account-Deleted" ),
                   t( "It-may-take-up-to-an-hour-to-remove-content" )
                 );
+                // sign out
+                await signOut( { realm, clearRealm: true, queryClient } );
+                // navigate to My Obs
+                navigation.navigate( "ObsList" );
               }
+              // If the webview navigates to a URL that indicates the account
+              // was deleted, sign the current user out of the app
               if ( url === `${Config.OAUTH_API_URL}/?account_deleted=true` ) {
                 signOutGoHome( );
                 return false;
