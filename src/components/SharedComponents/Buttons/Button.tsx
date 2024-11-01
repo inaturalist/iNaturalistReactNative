@@ -65,12 +65,21 @@ const setStyles = ( {
       ? "bg-warningRedDisabled"
       : "bg-warningRed" );
   } else if ( isPrimary ) {
-    buttonClasses.push( disabled
-      ? "bg-darkGrayDisabled"
-      : "bg-darkGray" );
-    textClasses.push( disabled
-      ? "text-white/50"
-      : "text-white" );
+    if ( forceDark ) {
+      buttonClasses.push( disabled
+        ? "bg-mediumGray"
+        : "bg-white" );
+      textClasses.push( disabled
+        ? "text-black/50"
+        : "text-black" );
+    } else {
+      buttonClasses.push( disabled
+        ? "bg-darkGrayDisabled"
+        : "bg-darkGray" );
+      textClasses.push( disabled
+        ? "text-white/50"
+        : "text-white" );
+    }
   } else if ( isFocus ) {
     if ( forceDark ) {
       buttonClasses.push( disabled

@@ -459,7 +459,7 @@
   "Observation-with-no-evidence": "Observation with no evidence",
   "Observations": "Observations",
   "Observations-created-on-iNaturalist": "Observations created on iNaturalist are used by scientists around the world.",
-  "Observations-on-iNat-are-cited": "Observations on iNaturalist are cited in scientific papers, have led to rediscoveries, and help scientists understand life on our planet.",
+  "Observations-on-iNat-are-cited": "Observations on iNaturalist are cited in scientific papers, have led to rediscoveries, and help scientists understand life on our planet",
   "Observations-View": "Observations View",
   "OBSERVATIONS-WITHOUT-NUMBER": "{ $count ->\n  [one] OBSERVATION\n *[other] OBSERVATIONS\n}",
   "Observations-you-upload-to-iNaturalist": "Observations you upload to iNaturalist can be used by scientists and researchers worldwide.",

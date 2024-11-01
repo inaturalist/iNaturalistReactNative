@@ -110,8 +110,8 @@ const OnboardingCarousel = ( { closeModal } ) => {
   );
 
   return (
-    <ViewWrapper>
-      <StatusBar hidden />
+    <ViewWrapper wrapperClassName="bg-black">
+      <StatusBar barStyle="light-content" backgroundColor="black" />
       <View
         className="w-full h-full relative"
       >
@@ -122,7 +122,11 @@ const OnboardingCarousel = ( { closeModal } ) => {
               className="absolute w-full h-full"
               style={item.backgroundAnimation}
             >
-              <Image source={item.background} className="h-full w-full" />
+              <Image
+                source={item.background}
+                className="h-full w-full"
+                accessibilityIgnoresInvertColors
+              />
             </Animated.View>
           ) )}
         </View>
@@ -138,22 +142,23 @@ const OnboardingCarousel = ( { closeModal } ) => {
             icon="close"
             color={colors.white}
             size={19}
-            className="ml-auto mr-[15px] mt-[10px]"
+            className="absolute z-10 top-[15px] right-[10px]"
             onPress={( ) => closeModal( )}
             accessibilityLabel={t( "Close" )}
             accessibilityHint={t( "Closes-new-observation-options" )}
           />
-          <INatLogo
-            className="mt-[38px]"
-            width={270}
-            height={49}
-          />
-          <Heading4 className="text-white mt-[15px]">{t( "CONNECT-TO-NATURE" )}</Heading4>
+          <View pointerEvents="none" className="items-center absolute top-[82px]">
+            <INatLogo
+              width={270}
+              height={49}
+            />
+            <Heading4 className="text-white mt-[15px]">{t( "CONNECT-TO-NATURE" )}</Heading4>
+          </View>
 
           <View className="w-full flex-1">
             <Carousel
               ref={carouselRef}
-              className="w-full h-full"
+              className="w-full h-full pb-[120px]"
               data={ONBOARDING_SLIDES}
               width={width}
               loop={false}
@@ -169,58 +174,61 @@ const OnboardingCarousel = ( { closeModal } ) => {
             />
           </View>
 
-          <View className="mt-auto pt-8">
+          <View className="absolute bottom-0 w-full" pointerEvents="box-none">
+            <View className="pt-8">
+              <View
+                className="flex w-full justify-evenly items-center"
+              >
+                <AnimatedDotsCarousel
+                  length={ONBOARDING_SLIDES.length}
+                  currentIndex={currentIndex}
+                  maxIndicators={ONBOARDING_SLIDES.length}
+                  interpolateOpacityAndColor={false}
+                  activeIndicatorConfig={{
+                    color: paginationColor,
+                    margin: 2.5,
+                    opacity: 1,
+                    size: 6
+                  }}
+                  inactiveIndicatorConfig={{
+                    color: paginationColor,
+                    margin: 2.5,
+                    opacity: 1,
+                    size: 3
+                  }}
+                  // required by the component although we don't need it.
+                  // Size of decreasing dots set to the same
+                  decreasingDots={[
+                    {
+                      config: {
+                        color: paginationColor, margin: 3, opacity: 0.5, size: 6
+                      },
+                      quantity: 1
+                    },
+                    {
+                      config: {
+                        color: paginationColor, margin: 3, opacity: 0.5, size: 3
+                      },
+                      quantity: 1
+                    }
+                  ]}
+                />
+              </View>
+            </View>
             <View
-              className="flex w-full justify-evenly items-center"
+              className="mt-[25px] mb-[23px] pl-[15px] pr-[15px] flex flex-col items-center w-full"
             >
-              <AnimatedDotsCarousel
-                length={ONBOARDING_SLIDES.length}
-                currentIndex={currentIndex}
-                maxIndicators={ONBOARDING_SLIDES.length}
-                interpolateOpacityAndColor={false}
-                activeIndicatorConfig={{
-                  color: paginationColor,
-                  margin: 2.5,
-                  opacity: 1,
-                  size: 6
-                }}
-                inactiveIndicatorConfig={{
-                  color: paginationColor,
-                  margin: 2.5,
-                  opacity: 1,
-                  size: 3
-                }}
-                // required by the component although we don't need it.
-                // Size of decreasing dots set to the same
-                decreasingDots={[
-                  {
-                    config: {
-                      color: paginationColor, margin: 3, opacity: 0.5, size: 6
-                    },
-                    quantity: 1
-                  },
-                  {
-                    config: {
-                      color: paginationColor, margin: 3, opacity: 0.5, size: 3
-                    },
-                    quantity: 1
-                  }
-                ]}
+              <Button
+                className="w-full"
+                level="primary"
+                forceDark
+                text={t( "CONTINUE" )}
+                onPress={() => (
+                  carouselRef.current?.getCurrentIndex() >= ONBOARDING_SLIDES.length - 1
+                    ? closeModal()
+                    : carouselRef.current?.scrollTo( { count: 1, animated: true } ) )}
               />
             </View>
-          </View>
-          <View
-            className="mt-[25px] mb-[23px] pl-[15px] pr-[15px] flex flex-col items-center w-full"
-          >
-            <Button
-              className="w-full"
-              level="neutral"
-              text={t( "CONTINUE" )}
-              onPress={() => (
-                carouselRef.current?.getCurrentIndex() >= ONBOARDING_SLIDES.length - 1
-                  ? closeModal()
-                  : carouselRef.current?.scrollTo( { count: 1, animated: true } ) )}
-            />
           </View>
         </View>
       </View>
