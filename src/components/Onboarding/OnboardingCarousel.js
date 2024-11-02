@@ -118,6 +118,7 @@ const OnboardingCarousel = ( { closeModal } ) => {
       <StatusBar barStyle="light-content" backgroundColor="black" />
       <View
         className="w-full h-full relative"
+        testID="OnboardingCarousel"
       >
         <View className="absolute w-full h-full ">
           {ONBOARDING_SLIDES.map( item => (

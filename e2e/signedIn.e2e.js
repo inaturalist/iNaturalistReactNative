@@ -1,9 +1,9 @@
 import {
   by, device, element, expect, waitFor
 } from "detox";
-import { MMKV } from "react-native-mmkv";
 
 import { iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
+import closeOnboarding from "./sharedFlows/closeOnboarding";
 import deleteObservation from "./sharedFlows/deleteObservation";
 import signIn from "./sharedFlows/signIn";
 import switchPowerMode from "./sharedFlows/switchPowerMode";
@@ -11,11 +11,6 @@ import uploadObservation from "./sharedFlows/uploadObservation";
 
 describe( "Signed in user", () => {
   beforeAll( async ( ) => iNatE2eBeforeAll( device ) );
-  beforeAll( ( ) => {
-    // Hide the onboarding modal
-    const storage = new MMKV( );
-    storage.set( "onBoardingShown", true );
-  } );
   beforeEach( async ( ) => iNatE2eBeforeEach( device ) );
 
   async function createAndUploadObservation( options = { upload: false } ) {
@@ -63,6 +58,7 @@ describe( "Signed in user", () => {
   }
 
   it( "should create an observation, add a comment, and delete the observation", async () => {
+    await closeOnboarding( );
     /*
     / 1. Sign in
     */
