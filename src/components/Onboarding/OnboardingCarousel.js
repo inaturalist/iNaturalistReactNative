@@ -106,7 +106,7 @@ const OnboardingCarousel = ( { closeModal } ) => {
 
   const renderItem = ( { style, index, item } ) => (
     <SlideItem
-      key={index}
+      key={`OnboardingCarouselSlide-${item.title}`}
       index={index}
       style={style}
       item={item}
@@ -122,7 +122,7 @@ const OnboardingCarousel = ( { closeModal } ) => {
         <View className="absolute w-full h-full ">
           {ONBOARDING_SLIDES.map( item => (
             <Animated.View
-              key={item.background}
+              key={`OnboardingCarouselBackground-${item.title}`}
               className="absolute w-full h-full"
               style={item.backgroundAnimation}
             >

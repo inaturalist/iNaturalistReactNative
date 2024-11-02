@@ -2,6 +2,7 @@ import Geolocation from "@react-native-community/geolocation";
 import {
   screen,
   userEvent,
+  waitFor,
   within
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
@@ -44,8 +45,10 @@ beforeEach( ( ) => useStore.setState( { isAdvancedUser: true } ) );
 const actor = userEvent.setup( );
 
 const navigateToCamera = async ( ) => {
-  global.timeTravel( );
-  expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
+  await waitFor( ( ) => {
+    global.timeTravel( );
+    expect( screen.getByText( /Log in to contribute/ ) ).toBeVisible( );
+  } );
   const tabBar = await screen.findByTestId( "CustomTabBar" );
   const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
   await actor.press( addObsButton );
@@ -63,8 +66,10 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
       const cameraNavButtons = await screen.findByTestId( "CameraNavButtons" );
       const closeButton = await within( cameraNavButtons ).findByLabelText( "Close" );
       await actor.press( closeButton );
-      global.timeTravel( );
-      expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
+      await waitFor( ( ) => {
+        global.timeTravel( );
+        expect( screen.getByText( /Log in to contribute/ ) ).toBeVisible( );
+      } );
     } );
   } );
 

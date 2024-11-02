@@ -1,6 +1,7 @@
 import {
   screen,
   userEvent,
+  waitFor,
   within
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
@@ -46,8 +47,10 @@ describe( "SoundRecorder navigation", ( ) => {
   describe( "from MyObs with advanced user layout", ( ) => {
     it( "should return to MyObs when close button tapped", async ( ) => {
       renderApp( );
-      global.timeTravel( );
-      expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
+      await waitFor( ( ) => {
+        global.timeTravel( );
+        expect( screen.getByText( /Log in to contribute/ ) ).toBeVisible( );
+      } );
       const tabBar = await screen.findByTestId( "CustomTabBar" );
       const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
       await actor.press( addObsButton );

@@ -94,8 +94,10 @@ beforeAll( async () => {
 const actor = userEvent.setup( );
 
 async function navigateToObsDetails( ) {
-  global.timeTravel( );
-  expect( await screen.findByText( /Welcome back/ ) ).toBeVisible( );
+  await waitFor( ( ) => {
+    global.timeTravel( );
+    expect( screen.getByText( /Welcome back/ ) ).toBeVisible( );
+  } );
   const firstObservation = await screen.findByTestId(
     `ObsPressable.${mockObservations[0].uuid}`
   );
@@ -125,13 +127,15 @@ describe( "logged in", ( ) => {
       Observation.upsertRemoteObservations( mockObservations, global.mockRealms[__filename] );
     } );
 
-    global.withAnimatedTimeTravelEnabled( );
+    global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
 
     describe( "from MyObs toolbar", ( ) => {
       it( "should show observations view and navigate back to MyObs", async ( ) => {
         renderApp( );
-        global.timeTravel( );
-        expect( await screen.findByText( /Welcome back/ ) ).toBeVisible( );
+        await waitFor( ( ) => {
+          global.timeTravel( );
+          expect( screen.getByText( /Welcome back/ ) ).toBeVisible( );
+        } );
         const exploreButton = await screen.findByLabelText( /See all your observations in explore/ );
         await actor.press( exploreButton );
         expect( inatjs.observations.search ).toHaveBeenCalledWith( expect.objectContaining( {
