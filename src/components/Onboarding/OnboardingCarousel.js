@@ -122,7 +122,12 @@ const OnboardingCarousel = ( { closeModal } ) => {
         className="w-full h-full relative"
         testID="OnboardingCarousel"
       >
-        <View className="absolute w-full h-full">
+        <View
+          className="absolute w-full h-full"
+          aria-hidden
+          accessibilityElementsHidden
+          importantForAccessibility="no"
+        >
           {ONBOARDING_SLIDES.map( item => (
             <Animated.View
               key={`OnboardingCarouselBackground-${item.title}`}
@@ -152,12 +157,15 @@ const OnboardingCarousel = ( { closeModal } ) => {
             className="absolute z-10 top-[15px] right-[10px]"
             onPress={( ) => closeModal( )}
             accessibilityLabel={t( "Close" )}
-            accessibilityHint={t( "Closes-new-observation-options" )}
+            accessibilityHint={t( "Closes-introduction" )}
           />
           <View pointerEvents="none" className="items-center absolute top-[82px]">
             <INatLogo
               width={270}
               height={49}
+              aria-hidden
+              accessibilityElementsHidden
+              importantForAccessibility="no"
             />
             <Heading4 className="text-white mt-[15px]">{t( "CONNECT-TO-NATURE" )}</Heading4>
           </View>
@@ -182,7 +190,12 @@ const OnboardingCarousel = ( { closeModal } ) => {
           </View>
 
           <View className="absolute bottom-0 w-full" pointerEvents="box-none">
-            <View className="pt-8">
+            <View
+              className="pt-8"
+              aria-hidden
+              accessibilityElementsHidden
+              importantForAccessibility="no"
+            >
               <View
                 className="flex w-full justify-evenly items-center"
               >

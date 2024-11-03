@@ -185,6 +185,9 @@ Close = Close
 Close-permission-request-screen = Close permission request screen
 # Label for a button that closes a search interface
 Close-search = Close search
+# Accessibility hint for button that closes the introductory slides that
+# appear when you first install the app
+Closes-introduction = Closes introduction
 Closes-new-observation-options = Closes new observation options.
 Closes-withdraw-id-sheet = Closes "Withdraw ID" sheet
 # Heading for a section that describes people and organizations that
