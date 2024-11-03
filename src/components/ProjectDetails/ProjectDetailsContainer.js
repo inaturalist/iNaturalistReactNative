@@ -58,6 +58,21 @@ const ProjectDetailsContainer = ( ): Node => {
     } )
   );
 
+  const { data: usersObservations } = useAuthenticatedQuery(
+    ["searchObservationsByUserInProject", id],
+    optsWithAuth => searchObservations(
+      {
+        project_id: id,
+        user_id: currentUser?.id,
+        per_page: 0
+      },
+      optsWithAuth
+    ),
+    {
+      enabled: !!currentUser
+    }
+  );
+
   const { data: speciesCounts } = useAuthenticatedQuery(
     ["fetchSpeciesCounts", id],
     ( ) => fetchSpeciesCounts( {
@@ -66,7 +81,6 @@ const ProjectDetailsContainer = ( ): Node => {
   );
 
   const membershipQueryKey = ["fetchMembership", id];
-
   const { data: currentMembership } = useAuthenticatedQuery(
     membershipQueryKey,
     optsWithAuth => fetchMembership( {
@@ -126,6 +140,7 @@ const ProjectDetailsContainer = ( ): Node => {
     project.observations_count = projectStats?.total_results;
     project.species_count = speciesCounts?.total_results;
     project.current_user_is_member = currentMembership === 1;
+    project.current_user_observations_count = usersObservations?.total_results;
   }
 
   return (

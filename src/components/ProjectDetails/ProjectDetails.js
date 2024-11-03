@@ -10,13 +10,15 @@ import {
   OverviewCounts,
   ScrollViewWrapper,
   Subheading1,
-  UserText
+  UserText,
+  WarningSheet
 } from "components/SharedComponents";
 import {
   Image, ImageBackground, View
 } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
+import Config from "react-native-config";
 import { openExternalWebBrowser } from "sharedHelpers/util.ts";
 import { useStoredLayout, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
@@ -24,7 +26,11 @@ import useStore from "stores/useStore";
 import formatProjectDate from "../Projects/helpers/displayDates";
 import AboutProjectType from "./AboutProjectType";
 
-const PROJECT_URL = "https://www.inaturalist.org/projects";
+const NONE = "NONE";
+const JOIN = "JOIN";
+const LEAVE = "LEAVE";
+
+const PROJECT_URL = `${Config.OAUTH_API_URL}/projects`;
 
 type Props = {
   project: Object,
@@ -42,6 +48,8 @@ const ProjectDetails = ( {
   const navigation = useNavigation( );
 
   const { writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
+
+  const [openSheet, setOpenSheet] = useState( NONE );
 
   const onObservationPressed = useCallback(
     ( toMap: boolean ) => {
@@ -152,16 +160,18 @@ const ProjectDetails = ( {
             <Button
               level="neutral"
               text={t( "JOIN" )}
-              onPress={joinProject}
+              onPress={() => setOpenSheet( JOIN )}
               loading={loadingProjectMembership}
+              disabled={loadingProjectMembership}
             />
           )
           : (
             <Button
               level="neutral"
               text={t( "LEAVE" )}
-              onPress={leaveProject}
+              onPress={() => setOpenSheet( LEAVE )}
               loading={loadingProjectMembership}
+              disabled={loadingProjectMembership}
             />
           )}
         <AboutProjectType projectType={project.project_type} />
@@ -173,6 +183,42 @@ const ProjectDetails = ( {
           {t( "View-in-browser" )}
         </Body4>
       </View>
+      {openSheet === JOIN && (
+        <WarningSheet
+          onPressClose={() => setOpenSheet( NONE )}
+          confirm={() => {
+            joinProject();
+            setOpenSheet( NONE );
+          }}
+          headerText={t( "JOIN-PROJECT--question" )}
+          buttonText={t( "JOIN" )}
+          handleSecondButtonPress={() => setOpenSheet( NONE )}
+          secondButtonText={t( "CANCEL" )}
+          loading={loadingProjectMembership}
+          buttonType="primary"
+        />
+      )}
+      {openSheet === LEAVE && (
+        <WarningSheet
+          onPressClose={() => setOpenSheet( NONE )}
+          confirm={() => {
+            leaveProject();
+            setOpenSheet( NONE );
+          }}
+          headerText={t( "LEAVE-PROJECT--question" )}
+          text={
+            project.project_type === ""
+            && project?.current_user_observations_count > 0
+            && t( "If-you-leave-x-of-your-observations-removed", {
+              count: project?.current_user_observations_count
+            } )
+          }
+          buttonText={t( "LEAVE" )}
+          handleSecondButtonPress={() => setOpenSheet( NONE )}
+          secondButtonText={t( "CANCEL" )}
+          loading={loadingProjectMembership}
+        />
+      )}
     </ScrollViewWrapper>
   );
 };
