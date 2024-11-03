@@ -59,7 +59,7 @@ const ProjectDetailsContainer = ( ): Node => {
   );
 
   const { data: usersObservations } = useAuthenticatedQuery(
-    [( "searchObservations_2", id )],
+    ["searchObservationsByUserInProject", id],
     optsWithAuth => searchObservations(
       {
         project_id: id,
