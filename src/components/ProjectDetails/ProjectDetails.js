@@ -161,6 +161,7 @@ const ProjectDetails = ( {
               text={t( "JOIN" )}
               onPress={() => setOpenSheet( JOIN )}
               loading={loadingProjectMembership}
+              disabled={loadingProjectMembership}
             />
           )
           : (
@@ -169,6 +170,7 @@ const ProjectDetails = ( {
               text={t( "LEAVE" )}
               onPress={() => setOpenSheet( LEAVE )}
               loading={loadingProjectMembership}
+              disabled={loadingProjectMembership}
             />
           )}
         <AboutProjectType projectType={project.project_type} />
