@@ -17,7 +17,9 @@ import React, {
 import { useTranslation } from "react-i18next";
 import {
   Image,
-  StatusBar, useWindowDimensions, View
+  StatusBar,
+  useWindowDimensions,
+  View
 } from "react-native";
 import AnimatedDotsCarousel from "react-native-animated-dots-carousel";
 import Animated, { interpolate, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
@@ -62,7 +64,7 @@ const OnboardingCarousel = ( { closeModal } ) => {
       iconProps: { width: 70, height: 70 },
       title: t( "Connect-to-Nature" ),
       text: t( "Identify-record-learn" ),
-      background: require( "images/background/onboarding_bg1.jpeg" ),
+      background: require( "images/background/karsten-winegeart-RAgWH6ldps0-unsplash-cropped.jpg" ),
       backgroundAnimation: useAnimatedStyle( () => {
         const opacity = interpolate(
           progress.value,
@@ -77,7 +79,7 @@ const OnboardingCarousel = ( { closeModal } ) => {
       iconProps: { width: 100, height: 100 },
       title: t( "Community-based" ),
       text: t( "iNat-is-global-community" ),
-      background: require( "images/background/onboarding_bg2.jpeg" ),
+      background: require( "images/background/shane-rounce-DNkoNXQti3c-unsplash.jpg" ),
       backgroundAnimation: useAnimatedStyle( () => {
         const opacity = interpolate(
           progress.value,
@@ -92,7 +94,7 @@ const OnboardingCarousel = ( { closeModal } ) => {
       iconProps: { width: 70, height: 70 },
       title: t( "Contribute-to-Science" ),
       text: t( "Observations-on-iNat-are-cited" ),
-      background: require( "images/background/onboarding_bg3.jpeg" ),
+      background: require( "images/background/sk-yeong-cXpdNdqp7eY-unsplash.jpg" ),
       backgroundAnimation: useAnimatedStyle( () => {
         const opacity = interpolate(
           progress.value,
@@ -120,7 +122,7 @@ const OnboardingCarousel = ( { closeModal } ) => {
         className="w-full h-full relative"
         testID="OnboardingCarousel"
       >
-        <View className="absolute w-full h-full ">
+        <View className="absolute w-full h-full">
           {ONBOARDING_SLIDES.map( item => (
             <Animated.View
               key={`OnboardingCarouselBackground-${item.title}`}
