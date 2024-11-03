@@ -25,6 +25,10 @@ import useStore from "stores/useStore";
 import formatProjectDate from "../Projects/helpers/displayDates";
 import AboutProjectType from "./AboutProjectType";
 
+const NONE = "NONE";
+const JOIN = "JOIN";
+const LEAVE = "LEAVE";
+
 const PROJECT_URL = "https://www.inaturalist.org/projects";
 
 type Props = {
@@ -44,9 +48,6 @@ const ProjectDetails = ( {
 
   const { writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
 
-  const NONE = "NONE";
-  const JOIN = "JOIN";
-  const LEAVE = "LEAVE";
   const [openSheet, setOpenSheet] = useState( NONE );
 
   const onObservationPressed = useCallback(
