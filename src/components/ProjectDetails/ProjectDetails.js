@@ -18,6 +18,7 @@ import {
 } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
+import Config from "react-native-config";
 import { openExternalWebBrowser } from "sharedHelpers/util.ts";
 import { useStoredLayout, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
@@ -29,7 +30,7 @@ const NONE = "NONE";
 const JOIN = "JOIN";
 const LEAVE = "LEAVE";
 
-const PROJECT_URL = "https://www.inaturalist.org/projects";
+const PROJECT_URL = `${Config.OAUTH_API_URL}/projects`;
 
 type Props = {
   project: Object,
