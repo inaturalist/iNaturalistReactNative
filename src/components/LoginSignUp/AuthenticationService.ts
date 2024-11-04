@@ -9,6 +9,7 @@ import {
   rotatedOriginalPhotosPath,
   soundUploadPath
 } from "appConstants/paths.ts";
+import { getInatLocaleFromSystemLocale } from "i18n/initI18next";
 import i18next from "i18next";
 import rs from "jsrsasign";
 import { Alert, Platform } from "react-native";
@@ -18,6 +19,7 @@ import RNRestart from "react-native-restart";
 import RNSInfo from "react-native-sensitive-info";
 import Realm, { UpdateMode } from "realm";
 import realmConfig from "realmModels/index";
+import changeLanguage from "sharedHelpers/changeLanguage.ts";
 import { log, logFilePath, logWithoutRemote } from "sharedHelpers/logger";
 import { installID } from "sharedHelpers/persistedInstallationId.ts";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory.ts";
@@ -165,6 +167,10 @@ const signOut = async (
   // the checkForSignedInUser needs to call this and that doesn't have access
   // to the React Query context (maybe it could...)
   options.queryClient?.getQueryCache( ).clear( );
+
+  // switch the app back to the system locale when a user signs out
+  const systemLocale = getInatLocaleFromSystemLocale( );
+  changeLanguage( systemLocale );
 
   await deleteSensitiveItem( "jwtToken" );
   await deleteSensitiveItem( "jwtGeneratedAt" );
@@ -445,6 +451,12 @@ const authenticateUser = async (
       signedIn: true
     }
     : currentUser;
+
+  if ( remoteUser?.locale ) {
+    // user locale preference from web should be saved to realm on sign in
+    // and we can also update the app language from web
+    changeLanguage( remoteUser?.locale );
+  }
 
   safeRealmWrite( realm, ( ) => {
     realm.create( "User", localUser, UpdateMode.Modified );

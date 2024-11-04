@@ -4,7 +4,6 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { updateUsers } from "api/users";
-import Debug from "components/Developer/Debug.tsx";
 import {
   signOut
 } from "components/LoginSignUp/AuthenticationService.ts";
@@ -25,6 +24,7 @@ import {
 } from "react-native";
 import Config from "react-native-config";
 import { EventRegister } from "react-native-event-listeners";
+import QueueItem from "realmModels/QueueItem.ts";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedMutation,
@@ -176,16 +176,18 @@ const Settings = ( ) => {
           label={t( "Scientific-Name" )}
         />
       </View>
-      <Debug>
-        <LanguageSetting
-          onChange={newLocale => {
-            updateUserMutation.mutate( {
+      <LanguageSetting
+        onChange={newLocale => {
+          QueueItem.enqueue(
+            realm,
+            JSON.stringify( {
               id: settings?.id,
               "user[locale]": newLocale
-            } );
-          }}
-        />
-      </Debug>
+            } ),
+            "locale-change"
+          );
+        }}
+      />
       <Heading4 className="mt-7">{t( "INATURALIST-ACCOUNT-SETTINGS" )}</Heading4>
       <Body2 className="mt-2">{t( "Edit-your-profile-change-your-settings" )}</Body2>
       <Button

@@ -3,9 +3,11 @@ import {
 } from "@react-native-community/netinfo";
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import Settings from "components/Settings/Settings";
+import i18n from "i18next";
 import inatjs from "inaturalistjs";
 import React from "react";
 import * as useCurrentUser from "sharedHooks/useCurrentUser.ts";
+import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
@@ -22,8 +24,25 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
+const initialStoreState = useStore.getState( );
+
+beforeAll( async ( ) => {
+  useStore.setState( initialStoreState, true );
+  // userEvent recommends fake timers
+  jest.useFakeTimers( );
+} );
+
 beforeEach( ( ) => {
+  // reset the picker for each test
+  i18n.changeLanguage( "en" );
   inatjs.users.me.mockResolvedValue( makeResponse( [mockUser] ) );
+  inatjs.translations.locales.mockResolvedValue( makeResponse( [{
+    language_in_locale: "Slovenský",
+    locale: "sk"
+  }, {
+    language_in_locale: "Español (Colombia)",
+    locale: "es-CO"
+  }] ) );
 } );
 
 describe( "Settings", ( ) => {
@@ -112,5 +131,21 @@ describe( "Settings", ( ) => {
         expect( mockNavigate ).not.toHaveBeenCalled( );
       } );
     } );
+  } );
+
+  test( "should change language immediately via language picker via online results", async ( ) => {
+    renderComponent( <Settings /> );
+    const changeLanguageButton = await screen.findByText( /CHANGE APP LANGUAGE/ );
+    fireEvent.press( changeLanguageButton );
+    const picker = await screen.findByTestId( "ReactNativePicker" );
+    // English is number 11 in the list of offline locales
+    expect( picker.props.selectedIndex ).toStrictEqual( 0 );
+    // trigger a change to the UI, selecting the second element
+    fireEvent( picker, "onValueChange", "es-CO" );
+    expect( picker.props.selectedIndex ).toStrictEqual( 1 );
+    const confirmText = await screen.findByText( "CONFIRM" );
+    fireEvent.press( confirmText );
+    const columbianSpanishSciNameText = await screen.findByText( /Nombre científico/ );
+    expect( columbianSpanishSciNameText ).toBeVisible( );
   } );
 } );
