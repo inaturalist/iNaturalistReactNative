@@ -58,8 +58,10 @@ jest.mock( "react-native-image-picker", ( ) => ( {
 const actor = userEvent.setup( );
 
 const navigateToPhotoImporter = async ( ) => {
-  global.timeTravel( );
-  expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
+  await waitFor( ( ) => {
+    global.timeTravel( );
+    expect( screen.getByText( /Log in to contribute/ ) ).toBeVisible( );
+  } );
   const tabBar = await screen.findByTestId( "CustomTabBar" );
   const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
   await actor.press( addObsButton );

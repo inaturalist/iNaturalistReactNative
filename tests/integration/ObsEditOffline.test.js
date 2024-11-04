@@ -50,6 +50,8 @@ beforeEach( async ( ) => {
 
   jest.spyOn( ReactNativePermissions, "checkMultiple" )
     .mockResolvedValueOnce( mockedPermissions );
+
+  jest.useFakeTimers( );
 } );
 
 afterEach( ( ) => {
