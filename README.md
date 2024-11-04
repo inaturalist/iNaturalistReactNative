@@ -221,7 +221,6 @@ when the user interacts with an element. The [iOS Guidelines](https://developer.
     ```
 
 ### Pushing / Pulling Translations
-
 We manage translations through Crowdin. Actually updating the translation files should be largely automated, but this is what it looks like to do it manually (you must have the [Crowdin CLI](https://github.com/crowdin/crowdin-cli) installed and have an [access token](https://crowdin.com/settings#api-key) associated with a Crowdin user that can post files to the specified project):
 
 ```bash
