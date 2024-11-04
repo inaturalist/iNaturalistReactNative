@@ -496,6 +496,12 @@ Identifiers-View = Identifikatorvisning
 Identify-an-organism = Identificér en organisme
 Identify-an-organism-with-the-iNaturalist-AI-Camera = Identificér en organisme med iNaturalist AI-kamera
 If-an-account-with-that-email-exists = Findes en konto med denne e-mail, har vi sendt en vejledning til nulstilling af adgangskode til denne e-mail.
+# Explanation that observations are removed from a collection project
+If-you-leave-x-of-your-observations-removed =
+    Forlader man dette traditionelle projekt, fjernes { $count ->
+        [one] 1 af ens observationer
+       *[other] { $count } af ens observationer
+    } ligeledes fra projektet.
 If-you-want-to-collate-compare-promote = Ønsker man at samle, sammenligne eller promovere et sæt af eksisterende projekter, så er et Umbrella-projekt, hvad man skal bruge. F.eks. skabte 2018 City Nature Challenge, der samlede over 60 projekter, en fantastisk indgangsside, hvor enhver kunne sammenligne og kontrastere hver bys observationer. Både Samling og Traditionelle projekter kan bruges i et Umbrella-projekt, og op til 500 projekter kan samles af et Umbrella-projekt.
 If-youre-seeing-this-error = Ser man dette, og man er online, er iNat-personale allerede blevet underrettet. Tak for at opdage fejlen! Er man offline, bedes man tage et skærmfoto og sende os en e-mail, når man igen er internetforbundet.
 IGNORE-LOCATION = IGNORÉR PLACERING
@@ -551,6 +557,8 @@ It-may-take-up-to-an-hour-to-remove-content = En fuldstændig sletning af alt ti
 January = Januar
 JOIN = TILMELD
 JOIN-PROJECT = DELTAG I PROJEKT
+# Asking for confirmation if the user wants to join this project
+JOIN-PROJECT--question = DELTAG I PROJEKT?
 Join-the-largest-community-of-naturalists = Bliv en del af verdens største gruppe af naturelskere
 # Header for joined projects
 JOINED = DELTAGER
@@ -583,6 +591,8 @@ leading--identification = Ledende
 Learn-More = Lær mere
 LEAVE = FORLAD
 LEAVE-PROJECT = FORLAD PROJEKT
+# Asking for confirmation if the user wants to leave this project
+LEAVE-PROJECT--question = FORLAD PROJEKT?
 LEAVE-US-A-REVIEW = SKRIV EN ANMELDELSE
 LICENSES = LICENSER
 # Label for button to switch to a list layout of observations
