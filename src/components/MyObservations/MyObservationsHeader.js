@@ -11,7 +11,6 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { Trans } from "react-i18next";
-import User from "realmModels/User.ts";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
@@ -46,7 +45,7 @@ const MyObservationsHeader = ( {
       className="my-5"
       i18nKey="Welcome-user"
       parent={View}
-      values={{ userHandle: User.userHandle( currentUser ) }}
+      values={{ userHandle: currentUser?.login }}
       components={[
         <Subheading1 />,
         <Heading1 />

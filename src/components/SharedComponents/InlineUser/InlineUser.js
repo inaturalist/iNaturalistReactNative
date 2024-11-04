@@ -18,7 +18,8 @@ import User from "realmModels/User.ts";
 type Props = {
   user: {
     id: number,
-    icon_url?: string
+    icon_url?: string,
+    login: string
   },
   isConnected: boolean
 };
@@ -26,7 +27,7 @@ type Props = {
 const InlineUser = ( { user, isConnected }: Props ): Node => {
   const navigation = useNavigation();
   const userImgUri = User.uri( user );
-  const userHandle = User.userHandle( user );
+  const userHandle = user?.login;
 
   const { t } = useTranslation( );
 
