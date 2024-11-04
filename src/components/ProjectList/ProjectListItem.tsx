@@ -41,7 +41,7 @@ const ProjectListItem = ( { item, isHeader = false }: Props ) => {
   );
 
   const displayProjectIcon = icon => {
-    const productionIcon = icon.replace( "staticdev", "static" );
+    const productionIcon = icon?.replace( "staticdev", "static" );
 
     if ( productionIcon === defaultProjectIcon ) {
       return (

@@ -110,7 +110,7 @@ const ProjectDetails = ( {
   const iconClassName = "h-[134px] w-[134px] rounded-full bg-white -top-6";
 
   const displayProjectIcon = icon => {
-    const productionIcon = icon.replace( "staticdev", "static" );
+    const productionIcon = icon?.replace( "staticdev", "static" );
 
     if ( productionIcon === defaultProjectIcon ) {
       return (
