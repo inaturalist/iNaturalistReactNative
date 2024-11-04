@@ -198,16 +198,17 @@ const FullPageWebView = ( ) => {
     }, [navigation, params.loggedIn, params.title] )
   );
 
-  const fontScalingJS
-  = `
+  const fontScalingJS = `
     if( ${isLargeFontScale} ){
-      document.body.style.fontSize = '40px';
+      document.getElementById("wrapper").style.fontSize = '2rem';
       let paragraphs = document.querySelectorAll('p');
       paragraphs.forEach(p => {
-        p.style.fontSize = '50px';
+        p.style.fontSize = '3rem';
       })
     }
-    true; // note: this is required, or you'll sometimes get silent failures
+    true; 
+    // note: string should evaluate to vaild type, can throw exception otherwise
+    // https://github.com/react-native-webview/react-native-webview/blob/master/docs/Reference.md#injectedjavascript
   `;
 
   return (
