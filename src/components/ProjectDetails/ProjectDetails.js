@@ -1,12 +1,14 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import classnames from "classnames";
 import displayProjectType from "components/Projects/helpers/displayProjectType.ts";
 import {
   Body4,
   Button,
   Heading1,
   Heading4,
+  INatIcon,
   OverviewCounts,
   ScrollViewWrapper,
   Subheading1,
@@ -22,9 +24,12 @@ import Config from "react-native-config";
 import { openExternalWebBrowser } from "sharedHelpers/util.ts";
 import { useStoredLayout, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
+import colors from "styles/tailwindColors";
 
 import formatProjectDate from "../Projects/helpers/displayDates";
 import AboutProjectType from "./AboutProjectType";
+
+const defaultProjectIcon = "https://www.inaturalist.org/attachment_defaults/general/span2.png";
 
 const NONE = "NONE";
 const JOIN = "JOIN";
@@ -94,21 +99,68 @@ const ProjectDetails = ( {
 
   const { projectDate, shouldDisplayDateRange } = formatProjectDate( project, t, i18n );
 
+  const displayBriefcase = ( ) => (
+    <INatIcon
+      name="briefcase"
+      size={66}
+      color={colors.darkGray}
+    />
+  );
+
+  const iconClassName = "h-[134px] w-[134px] rounded-full bg-white -top-6";
+
+  const displayProjectIcon = icon => {
+    const productionIcon = icon.replace( "staticdev", "static" );
+
+    if ( productionIcon === defaultProjectIcon ) {
+      return (
+        <View className={
+          classnames(
+            iconClassName,
+            "justify-center items-center"
+          )
+        }
+        >
+          {displayBriefcase( )}
+        </View>
+      );
+    }
+    return (
+      <Image
+        source={{ uri: productionIcon }}
+        className={iconClassName}
+        testID="ProjectDetails.projectIcon"
+        accessibilityIgnoresInvertColors
+      />
+    );
+  };
+
+  console.log( project?.header_image_url, "header" );
+
+  const backgroundImageSource = project?.header_image_url
+    ? { uri: project.header_image_url }
+    : require( "images/background/project_banner.jpg" );
+
   return (
     <ScrollViewWrapper testID="project-details">
-      <View className="h-[24px]" />
-      <ImageBackground
-        className="h-[164px] w-full items-center bg-darkGray"
-        source={{ uri: project.header_image_url }}
-        testID="ProjectDetails.headerImage"
-      >
-        <Image
+      <View className="pt-[24px]">
+        <ImageBackground
+          className="h-[164px] w-full items-center bg-darkGray"
+          source={backgroundImageSource}
+          testID="ProjectDetails.headerImage"
+          accessibilityIgnoresInvertColors
+        >
+          {displayProjectIcon( project?.icon )}
+        </ImageBackground>
+      </View>
+
+      {/* <Image
           source={{ uri: project.icon }}
-          className="h-[70px] w-[70px] rounded-full bottom-6 z-100"
+          className="h-[70px] w-[70px] rounded-full bottom-6 z-100 bg-white"
           testID="ProjectDetails.projectIcon"
           accessibilityIgnoresInvertColors
-        />
-      </ImageBackground>
+        /> */}
+      {/* </ImageBackground> */}
       <View className="mx-4 pb-8">
         <Heading1 className="shrink mt-4">{project.title}</Heading1>
         <Subheading1>

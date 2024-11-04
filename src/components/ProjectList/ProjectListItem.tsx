@@ -1,15 +1,18 @@
+import classnames from "classnames";
 import displayProjectType from "components/Projects/helpers/displayProjectType.ts";
 import {
   Body1,
   INatIcon,
   List2
 } from "components/SharedComponents";
-import { Image, LinearGradient, View } from "components/styledComponents";
+import { Image, View } from "components/styledComponents";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import formatProjectDate from "../Projects/helpers/displayDates";
+
+const defaultProjectIcon = "https://www.inaturalist.org/attachment_defaults/general/span2.png";
 
 type Props = {
   item: {
@@ -27,31 +30,52 @@ const ProjectListItem = ( { item, isHeader = false }: Props ) => {
   const { projectDate, shouldDisplayDateRange } = formatProjectDate( item, t, i18n );
   const displayDateRange = shouldDisplayDateRange && !isHeader;
 
+  const iconClassName = "w-[62px] h-[62px] rounded-lg bg-white";
+
+  const displayBriefcase = ( ) => (
+    <INatIcon
+      name="briefcase"
+      size={26}
+      color={colors.darkGray}
+    />
+  );
+
+  const displayProjectIcon = icon => {
+    const productionIcon = icon.replace( "staticdev", "static" );
+
+    if ( productionIcon === defaultProjectIcon ) {
+      return (
+        <View className={
+          classnames(
+            iconClassName,
+            "border-[2px]",
+            "justify-center",
+            "items-center"
+          )
+        }
+        >
+          {displayBriefcase( )}
+        </View>
+      );
+    }
+    return (
+      <Image
+        className={
+          classnames( iconClassName, "mr-3" )
+        }
+        source={{ uri: productionIcon }}
+        testID={`Project.${item.id}.photo`}
+        accessibilityIgnoresInvertColors
+      />
+    );
+  };
+
   if ( !item ) { return null; }
   return (
     <View
       className="flex-row items-center shrink py-1"
     >
-      <View className="w-[62px] h-[62px]">
-        <LinearGradient
-          colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.6) 100%)"]}
-          className="absolute w-full h-full rounded-xl items-center justify-center"
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 0.75 }}
-        >
-          <INatIcon
-            name="briefcase"
-            size={25}
-            color={colors.white}
-          />
-        </LinearGradient>
-        <Image
-          className="w-[62px] h-[62px] rounded-xl mr-3"
-          source={{ uri: item.icon }}
-          testID={`Project.${item.id}.photo`}
-          accessibilityIgnoresInvertColors
-        />
-      </View>
+      {displayProjectIcon( item?.icon )}
       <View className="shrink ml-3">
         <Body1>{item.title}</Body1>
         <List2 className="mt-2">
