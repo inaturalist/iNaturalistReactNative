@@ -185,6 +185,9 @@ Close = Luk
 Close-permission-request-screen = Luk tilladelsesanmodningsskærmen
 # Label for a button that closes a search interface
 Close-search = Luk søgning
+# Accessibility hint for button that closes the introductory slides that
+# appear when you first install the app
+Closes-introduction = Lukker introduktionen
 Closes-new-observation-options = Lukker nye observationsvalgmuligheder.
 Closes-withdraw-id-sheet = Lukker "Tilbagetræk ID"-arket
 # Heading for a section that describes people and organizations that
@@ -199,14 +202,23 @@ COMMENT = KOMMENTAR
 Comment-options = Kommentarvalgmuligheder
 # Label for a setting that shows the common name first
 Common-Name-Scientific-Name = Almindeligt navn (Videnskabeligt navn)
+Community-based = Fællesskabsbaseret
 Community-Guidelines = Fællesskabsretningslinjer
 COMMUNITY-GUIDELINES = FÆLLESSKABSRETNINGSLINJER
 # Button that confirms a choice the user has made
 CONFIRM = BEKRÆFT
+# Onboarding header (underneath the logo)
+CONNECT-TO-NATURE = FORBIND MED NATUREN
+# Onboarding slides
+Connect-to-Nature = Forbind med naturen
 Connect-with-other-naturalists = Kom i kontakt med andre naturkyndige og deltag i samtaler.
 Connection-problem-Please-try-again-later = Forbindelsesproblem. Forsøg igen senere.
 CONTACT-SUPPORT = KONTAKT SUPPORTEN
+# Continue button in onboarding screen
+CONTINUE = FORTSÆT
 Continue-to-iNaturalist = Fortsæt til iNaturalist
+# Onboarding message describing one of the reasons to use iNat
+Contribute-to-Science = Bidrag til videnskaben
 # Notification when coordinates have been copied
 Coordinates-copied-to-clipboard = Koordinater kopieret til udklipsholder
 # Button that copies coordinates to the clipboard
@@ -495,7 +507,15 @@ Identifiers = identifikatorer
 Identifiers-View = Identifikatorvisning
 Identify-an-organism = Identificér en organisme
 Identify-an-organism-with-the-iNaturalist-AI-Camera = Identificér en organisme med iNaturalist AI-kamera
+# Onboarding message describing one of the reasons to use iNat
+Identify-record-learn = Identificér, registrér og få viden om alle levende arter på jorden med iNaturalist
 If-an-account-with-that-email-exists = Findes en konto med denne e-mail, har vi sendt en vejledning til nulstilling af adgangskode til denne e-mail.
+# Explanation that observations are removed from a collection project
+If-you-leave-x-of-your-observations-removed =
+    Forlader man dette traditionelle projekt, fjernes { $count ->
+        [one] 1 af ens observationer
+       *[other] { $count } af ens observationer
+    } ligeledes fra projektet.
 If-you-want-to-collate-compare-promote = Ønsker man at samle, sammenligne eller promovere et sæt af eksisterende projekter, så er et Umbrella-projekt, hvad man skal bruge. F.eks. skabte 2018 City Nature Challenge, der samlede over 60 projekter, en fantastisk indgangsside, hvor enhver kunne sammenligne og kontrastere hver bys observationer. Både Samling og Traditionelle projekter kan bruges i et Umbrella-projekt, og op til 500 projekter kan samles af et Umbrella-projekt.
 If-youre-seeing-this-error = Ser man dette, og man er online, er iNat-personale allerede blevet underrettet. Tak for at opdage fejlen! Er man offline, bedes man tage et skærmfoto og sende os en e-mail, når man igen er internetforbundet.
 IGNORE-LOCATION = IGNORÉR PLACERING
@@ -509,6 +529,7 @@ IMPORT-X-OBSERVATIONS =
 IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = FORBEDR DISSE FORSLAG VED BRUG AF AKTUEL PLACERING
 # Identification category
 improving--identification = Forbedrende
+iNat-is-global-community = iNaturalist er et globalt fællesskab af naturelskere, der skaber åbne data til videnskaben ved kollektivt at observere og identificere organismer
 INATURALIST-ACCOUNT-SETTINGS = INDSTILLINGER FOR INATURALIST-KONTO
 iNaturalist-AI-Camera = iNaturalist AI-kamera
 iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNaturalist kan gemme fotos taget i appen i enhedens Galleri.
@@ -551,6 +572,8 @@ It-may-take-up-to-an-hour-to-remove-content = En fuldstændig sletning af alt ti
 January = Januar
 JOIN = TILMELD
 JOIN-PROJECT = DELTAG I PROJEKT
+# Asking for confirmation if the user wants to join this project
+JOIN-PROJECT--question = DELTAG I PROJEKT?
 Join-the-largest-community-of-naturalists = Bliv en del af verdens største gruppe af naturelskere
 # Header for joined projects
 JOINED = DELTAGER
@@ -583,6 +606,8 @@ leading--identification = Ledende
 Learn-More = Lær mere
 LEAVE = FORLAD
 LEAVE-PROJECT = FORLAD PROJEKT
+# Asking for confirmation if the user wants to leave this project
+LEAVE-PROJECT--question = FORLAD PROJEKT?
 LEAVE-US-A-REVIEW = SKRIV EN ANMELDELSE
 LICENSES = LICENSER
 # Label for button to switch to a list layout of observations
@@ -712,6 +737,7 @@ OBSERVATION-WAS-DELETED = OBSERVATION ER SLETTET
 Observation-with-no-evidence = Observation uden bevis
 Observations = Observationer
 Observations-created-on-iNaturalist = Observationer oprettet på iNaturalist anvendes af videnskabsfolk verden over.
+Observations-on-iNat-are-cited = Observationer på iNaturalist citeres i videnskabelige papirer, har ført til opdagelser og hjælpe videnskabsfolk med at forstå livet på vores planet
 Observations-View = Observationsvisning
 # Might be used when the number is represented using an image or other
 # element, not text
