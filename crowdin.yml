@@ -30,5 +30,3 @@ files:
   - source: /fastlane/metadata/ios/default/subtitle.txt
     dest: /ReactNative/metadata/ios/subtitle.txt
     translation: /fastlane/metadata/%osx_locale%/subtitle.txt
-
-
