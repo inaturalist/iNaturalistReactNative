@@ -282,8 +282,10 @@ Introduced = eingeführt
 # Month of January
 January = Januar
 JOIN = Teilnehmen
+# Asking for confirmation if the user wants to join this project
+JOIN-PROJECT--question = PROJEKT BEITRETEN?
 # Header for joined projects
-JOINED = VERBUNDEN
+JOINED = BEIGETRETEN
 # Subtitle for a screen showing projects a user has joined
 JOINED-X-PROJECTS =
     { $count ->
@@ -297,6 +299,8 @@ June = Juni
 # Identification category
 leading--identification = initiativ
 Learn-More = Mehr erfahren
+# Asking for confirmation if the user wants to leave this project
+LEAVE-PROJECT--question = PROJEKT VERLASSEN?
 Location = Standort
 # Second person imperative label to go to log in screen
 Log-in = Anmelden
@@ -340,7 +344,7 @@ Obscured = verdeckt
 Observation = Beobachtung
 Observations = Beobachtungen
 # Button that starts a new observation
-Observe = Beobachte
+Observe = Beobachten
 Observers = Beobachter
 # Month of October
 October = Oktober
@@ -452,10 +456,10 @@ Species = Arten
 # Label for the standard map type
 Standard--map-type = Standard
 # Imperative verb for stopping the recording of a sound
-Stop-verb = Stop
+Stop-verb = Stopp
 # Identification category
 supporting--identification = bestätigend
-Syncing = Synchronisierung läuft...
+Syncing = Synchronisation wird ausgeführt ...
 # Help text for the button that opens the multi-capture camera
 Take-multiple-photos-of-a-single-organism = Mache mehrere Fotos von einem einzelnen Lebewesen
 # label in project requirements
