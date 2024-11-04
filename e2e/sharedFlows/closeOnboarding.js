@@ -1,7 +1,6 @@
 import {
   by,
   element,
-  // expect,
   waitFor
 } from "detox";
 

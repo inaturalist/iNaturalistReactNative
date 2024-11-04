@@ -125,7 +125,6 @@ describe( "TaxonDetails", ( ) => {
     );
     await actor.press( observationRow );
     const suggestIdButton = await screen.findByText( /SUGGEST ID/ );
-    // await act( async ( ) => actor.press( suggestIdButton ) );
     expect( suggestIdButton ).toBeVisible( );
     await actor.press( suggestIdButton );
     return navigateToTaxonDetailsFromSuggestions( );
@@ -133,7 +132,6 @@ describe( "TaxonDetails", ( ) => {
 
   // navigate to ObsEdit -> Suggestions -> TaxonDetails
   async function navigateToTaxonDetailsViaObsEdit( observation ) {
-    // const { taxon } = topSuggestion;
     const observationRow = await screen.findByTestId(
       `MyObservations.obsListItem.${observation.uuid}`
     );
