@@ -58,7 +58,7 @@ const MyObservations = ( {
     <>
       <ViewWrapper>
         <OnboardingCarouselModal
-          showModal={true || showOnboarding}
+          showModal={showOnboarding}
           closeModal={() => {
             setShowOnboarding( false );
             storage.set( ONBOARDING_SHOWN, true );
