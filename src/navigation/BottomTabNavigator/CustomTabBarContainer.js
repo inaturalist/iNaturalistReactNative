@@ -2,7 +2,7 @@
 import { useDrawerStatus } from "@react-navigation/drawer";
 import { getCurrentRoute } from "navigation/navigationUtils.ts";
 import type { Node } from "react";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import User from "realmModels/User.ts";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
@@ -17,6 +17,12 @@ type Props = {
   navigation: Object
 };
 
+const tabIDByRoute = {
+  Notifications: NOTIFICATIONS_SCREEN_ID,
+  ObsList: OBS_LIST_SCREEN_ID,
+  RootExplore: EXPLORE_SCREEN_ID
+};
+
 const CustomTabBarContainer = ( { navigation }: Props ): Node => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
@@ -24,21 +30,12 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
   const isDrawerOpen = useDrawerStatus() === "open";
   const route = getCurrentRoute();
   const currentRoute = route?.name || "";
-  useEffect( () => {
-    switch ( currentRoute ) {
-      case "Notifications":
-        setActiveTab( NOTIFICATIONS_SCREEN_ID );
-        break;
-      case "ObsList":
-        setActiveTab( OBS_LIST_SCREEN_ID );
-        break;
-      case "RootExplore":
-        setActiveTab( EXPLORE_SCREEN_ID );
-        break;
-      default:
-        break;
-    }
-  }, [currentRoute] );
+  const currentActiveTab = tabIDByRoute[currentRoute] || activeTab;
+
+  // Update activeTab only if it has changed to a different tab
+  if ( currentActiveTab !== activeTab ) {
+    setActiveTab( currentActiveTab );
+  }
 
   const tabs = useMemo( ( ) => ( [
     {
