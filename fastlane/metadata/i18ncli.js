@@ -78,14 +78,15 @@ async function renameDirectories( ) {
   await Promise.all( directories.map( async directory => {
     const locale = mapLanguageCodeToSupportedDirectoryName( directory );
     if ( !locale ) return;
+    const directoryPath = path.join( __dirname, "ios", directory );
+    const newDirectoryPath = path.join( __dirname, "ios", locale );
     // Remove a potentially existing directory with the same name
     try {
-      await fsp.rmdir( path.join( __dirname, "ios", locale ), { recursive: true } );
+      await fsp.rmdir( newDirectoryPath, { recursive: true } );
+      console.log( "Removed existing directory", newDirectoryPath );
     } catch ( e ) {
       // Directory did not exist
     }
-    const directoryPath = path.join( __dirname, "ios", directory );
-    const newDirectoryPath = path.join( __dirname, "ios", locale );
     console.log( "Renaming directory", directoryPath, "to", newDirectoryPath );
     await fsp.rename( directoryPath, newDirectoryPath );
   } ) );
