@@ -225,6 +225,29 @@ lane :tag do | options |
 end
 
 platform :android do
+  desc "Upload description to Google Play"
+  lane :upload_metadata do
+    # Upload for all tracks
+    tracks = [
+      "internal",
+      "alpha",
+      "beta",
+      # TODO: 20241105-we currently have no production track opened, so uploading will error out
+      # "production"
+    ]
+    tracks.each do | track |
+      upload_to_play_store(
+        track: track,
+        skip_upload_apk: true,
+        skip_upload_aab: true,
+        skip_upload_metadata:	false,
+        skip_upload_changelogs:	true,
+        skip_upload_images:	true,
+        skip_upload_screenshots: true
+      )
+    end
+  end
+
   lane :build do
     desc "Build release files for Android"
     Dir.children( "../android/app/src/main/assets/camera" ).each do | file |
