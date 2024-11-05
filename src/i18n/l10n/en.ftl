@@ -348,12 +348,17 @@ Delete-sound = Delete sound
 Deletes-entered-text = Deletes entered text
 # Shows the progress of deletions for X of Y observations, but omits the
 # word "observations" so the message won't get cut off on small screens
-Deleting-x-of-y = Deleting { $currentDeleteCount } of { $total }
+# Deleting-x-of-y = Deleting { $currentDeleteCount } of { $total }
+Deleting-x-of-y--observations =
+    Deleting { $currentDeleteCount } { $total ->
+        [one] of { $total }
+       *[other] of { $total } observations
+    }
 # Shows the number of observations a user is currently deleting out of total on my observations page
-Deleting-x-of-y-observations =
-    Deleting { $currentDeleteCount } of { $total ->
-        [one] 1 observation
-       *[other] { $total } observations
+Deleting-x-of-y-observations-2 =
+    Deleting { $currentDeleteCount } { $total ->
+        [one] observation
+       *[other] of { $total } observations
     }
 # Tab label or section title for content that describes further details, e.g.
 # the details of an observation
