@@ -773,7 +773,7 @@ Observe = Observe
 # Title of screen asking for permission to access the gallery
 Observe-and-identify-organisms-from-your-gallery = Observe and identify organisms from your gallery
 # Title of screen asking for permission to access the camera
-Observe-and-identify-organisms-in-real-time-with-your-camera = Observe and identify organisms in real-time with your camera
+Observe-and-identify-organisms-in-real-time-with-your-camera = Observe and identify organisms in real time with your camera
 # Text for a button prompting the user to grant access to the camera
 OBSERVE-ORGANISMS = OBSERVE ORGANISMS
 Observers = Observers
@@ -1188,11 +1188,11 @@ Uploading-x-of-y-observations =
         [one] Uploading { $currentUploadCount } observation
        *[other] Uploading { $currentUploadCount } of { $total } observations
     }
-Use-iNaturalists-AI-Camera = Use iNaturalist's AI Camera to identify organisms in real-time
+Use-iNaturalists-AI-Camera = Use iNaturalist's AI Camera to identify organisms in real time
 # Text for a button prompting the user to grant access to location
 USE-LOCATION = USE LOCATION
 Use-the-devices-other-camera = Use the device's other camera.
-Use-the-iNaturalist-camera-to-observe = Use the iNaturalist camera to observe and identify organisms on-screen in real-time, and share them with our community to get identifications and contribute to science!
+Use-the-iNaturalist-camera-to-observe-2 = Use iNaturalist to observe and identify organisms in real time. Share them with our community to get identifications and contribute to science!
 Use-your-devices-microphone-to-record = Use your device’s microphone to record sounds made by organisms and share them with our community to get identifications and contribute to science!
 USER = USER
 User = User { $userHandle }
