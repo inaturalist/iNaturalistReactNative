@@ -49,6 +49,42 @@ const SUPPORTED_IOS_METADATA_LOCALES = [
   "default"
 ];
 
+const MAPPINGS = {
+  ar: "ar-SA",
+  de: "de-DE",
+  fr: "fr-FR",
+  en_AU: "en-AU",
+  en_CA: "en-CA",
+  en_GB: "en-GB",
+  en_US: "en-US",
+  es: "es-ES",
+  es_MX: "es-MX",
+  fr_CA: "fr-CA",
+  nl: "nl-NL",
+  pt: "pt-PT",
+  pt_BR: "pt-BR"
+};
+
+function mapLanguageCodeToSupportedDirectoryName( languageCode ) {
+  return MAPPINGS[languageCode];
+}
+
+async function renameDirectories( ) {
+  // Get all directories in fastlane/metadata/ios
+  const directories = await fsp.readdir( path.join( __dirname, "ios" ), {
+    withFileTypes: true
+  } ).then( files => files.filter( file => file.isDirectory( ) ).map( file => file.name ) );
+  console.log( "directories", directories );
+  await Promise.all( directories.map( async directory => {
+    const locale = mapLanguageCodeToSupportedDirectoryName( directory );
+    if ( !locale ) return;
+    const directoryPath = path.join( __dirname, "ios", directory );
+    const newDirectoryPath = path.join( __dirname, "ios", locale );
+    console.log( "Renaming directory", directoryPath, "to", newDirectoryPath );
+    await fsp.rename( directoryPath, newDirectoryPath );
+  } ) );
+}
+
 async function removeUnsupportedDirectories( ) {
   // Get all directories in fastlane/metadata/ios
   const directories = await fsp.readdir( path.join( __dirname, "ios" ), {
@@ -72,6 +108,7 @@ yargs
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     ( ) => {},
     async ( ) => {
+      await renameDirectories();
       await removeUnsupportedDirectories();
     }
   )
@@ -81,6 +118,14 @@ yargs
     ( ) => undefined,
     _argv => {
       removeUnsupportedDirectories( );
+    }
+  )
+  .command(
+    "renameDirectories",
+    "renameDirectories",
+    ( ) => undefined,
+    _argv => {
+      renameDirectories( );
     }
   )
   .help( )
