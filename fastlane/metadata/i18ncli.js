@@ -74,7 +74,7 @@ async function renameDirectories( ) {
   const directories = await fsp.readdir( path.join( __dirname, "ios" ), {
     withFileTypes: true
   } ).then( files => files.filter( file => file.isDirectory( ) ).map( file => file.name ) );
-  console.log( "directories", directories );
+  console.log( "Current list of the directories in fastlane/metadata/ios", directories );
   await Promise.all( directories.map( async directory => {
     const locale = mapLanguageCodeToSupportedDirectoryName( directory );
     if ( !locale ) return;
@@ -90,7 +90,7 @@ async function removeUnsupportedDirectories( ) {
   const directories = await fsp.readdir( path.join( __dirname, "ios" ), {
     withFileTypes: true
   } ).then( files => files.filter( file => file.isDirectory( ) ).map( file => file.name ) );
-  console.log( "directories", directories );
+  console.log( "Current list of the directories in fastlane/metadata/ios", directories );
   return Promise.all( directories.map( async directory => {
     if ( SUPPORTED_IOS_METADATA_LOCALES.indexOf( directory ) >= 0 ) return;
     const directoryPath = path.join( __dirname, "ios", directory );
@@ -114,7 +114,7 @@ yargs
   )
   .command(
     "removeUnsupportedDirectories",
-    "removeUnsupportedDirectories",
+    "Remove directories that are not supported by the App Store.",
     ( ) => undefined,
     _argv => {
       removeUnsupportedDirectories( );
@@ -122,7 +122,7 @@ yargs
   )
   .command(
     "renameDirectories",
-    "renameDirectories",
+    "Rename current list of directories to names supported by the App Store.",
     ( ) => undefined,
     _argv => {
       renameDirectories( );
