@@ -37,9 +37,6 @@ All-observations = Minden megfigyelés
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = minden jog fenntartva
 All-taxa = Minden taxon
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Bármely
 # Month of April
 April = Április
 # Month of August
@@ -116,7 +113,8 @@ Endemic = Endemikus
 Error = Hiba
 # Title of dialog or section describing an error
 Error-title = Hiba
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = Honosság
 Exact-Date = Pontos dátum
 except = kivéve
@@ -184,7 +182,6 @@ Needs-ID--quality-grade = Meghatározásra vár
 New-Observation = Új megfigyelés
 No-Location = Nincs helyadat
 No-Media = Nincs média
-none = egyik sem
 Notifications = Értesítések
 # Month of November
 November = November

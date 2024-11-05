@@ -25,6 +25,7 @@
 
 # Header for a general description, e.g. of a user, or of iNaturalist itself
 ABOUT = Acerca de
+ABOUT-INATURALIST = ACERCA DE INATURALIST
 # Accessibility label for a button that starts the process of adding an
 # observation, e.g. the button in the tab bar
 Add-observations = Añade observaciones
@@ -38,9 +39,6 @@ All-observations = Todas las observaciones
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = todos los derechos reservados
 All-taxa = Todos los taxones
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Cualquiera
 # Month of April
 April = abril
 # Month of August
@@ -113,7 +111,8 @@ Endemic = Endémica
 Error = Error
 # Title of dialog or section describing an error
 Error-title = Error
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = Clasificación
 Exact-Date = Fecha exacta
 except = excepto
@@ -181,11 +180,11 @@ Needs-ID--quality-grade = ¡Necesita identificación!
 New-Observation = Nuevas observaciones
 No-Location = No hay ubicaciones
 No-Media = Sin archivos multimedia
-none = Ninguno
 Notifications = Notificaciones
 # Month of November
 November = noviembre
 Obscured = Difusa
+Observation = Observación
 Observations = Observaciones
 # Button that starts a new observation
 Observe = Observar
@@ -207,6 +206,7 @@ Private = Privado
 Project-Members-Only = Solo miembros del proyecto
 # As in iNat projects, collections of observations or observation search filters
 Projects = Proyectos
+PROJECTS-X = PROYECTOS ({ $projectCount })
 # label in project requirements
 Quality-Grade = Grado de calidad
 Ranks-Class = Clase
@@ -310,5 +310,10 @@ Wild = Silveste
 # Label for a button that withdraws an identification
 Withdraw = Retirar
 Worldwide = Mundial
+X-PROJECTS =
+    { $projectCount ->
+        [one] { $projectCount } PROYECTO
+       *[other] { $projectCount } PROYECTOS
+    }
 # Error message when you try to do something that requires log in
 You-need-log-in-to-do-that = Debes iniciar sesión para hacer eso.

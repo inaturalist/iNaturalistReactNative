@@ -35,9 +35,6 @@ All-observations = ಎಲ್ಲಾ ವೀಕ್ಷಣೆಗಳು
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = ಎಲ್ಲಾ ಹಕ್ಕುಗಳನ್ನು ಕಾಯ್ದಿರಿಸಿದೆ
 All-taxa = ಎಲ್ಲಾ ಜೀವಿವರ್ಗಗಳು
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = ಯಾವುದಾದರೂ
 # Month of April
 April = ಏಪ್ರಿಲ್
 # Month of August
@@ -97,7 +94,8 @@ Endemic = ಸ್ಥಳೀಯ
 Error = ದೋಷ
 # Title of dialog or section describing an error
 Error-title = ದೋಷ
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = ನೆಲೆ
 Exact-Date = ನಿಖರವಾದ ದಿನಾಂಕ
 except = ಹೊರತು
@@ -157,7 +155,6 @@ Needs-ID--quality-grade = ID ಅಗತ್ಯವಿದೆ
 New-Observation = ಹೊಸ ವೀಕ್ಷಣೆ
 No-Location = ಸ್ಥಳ ಇಲ್ಲ
 No-Media = ಯಾವುದೇ ಮಾಧ್ಯಮವಿಲ್ಲ
-none = ಯಾವುದೂ ಇಲ್ಲ
 Notifications = ಅಧಿಸೂಚನೆ
 # Month of November
 November = ನವೆಂಬರ್

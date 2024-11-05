@@ -35,9 +35,6 @@ All-observations = Všetky pozorovania
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = všetky práva vyhradené
 All-taxa = Všetky taxóny
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Ľubovoľný
 # Month of April
 April = Apríl
 # Month of August
@@ -96,7 +93,8 @@ Endemic = Endemický
 Error = Chyba
 # Title of dialog or section describing an error
 Error-title = Chyba
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = Vznik
 Exact-Date = Presný dátum
 except = okrem
@@ -159,7 +157,6 @@ Needs-ID--quality-grade = Nutné ID
 New-Observation = Nové pozorovanie
 No-Location = Žiadne poloha
 No-Media = Žiadne médiá
-none = nič
 # Month of November
 November = November
 Obscured = Skrytý

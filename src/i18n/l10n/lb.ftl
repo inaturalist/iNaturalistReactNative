@@ -33,9 +33,6 @@ ALL = ALL
 All = All
 All-observations = All Observatiounen
 All-taxa = All Taxa
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Belibeg
 # Month of April
 April = Abrëll
 # Month of August
@@ -71,6 +68,8 @@ Date = Datum
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 date-format-month-day = MMM d
 Date-observed-header-short = Observéiert
+# Express a date range. d1 and d2 can be any expression of dates
+date-to-date = { $d1 } - { $d2 }
 # Month of December
 December = Dezember
 Delete-observation = Observatioun läschen
@@ -140,11 +139,11 @@ Needs-ID--quality-grade = Brauch eng ID
 New-Observation = Nei Observatiounen
 No-Location = Keen Site
 No-Media = Keng Medien
-none = keen
 Notifications = Notifikatioun
 # Month of November
 November = November
 Obscured = Verschleiert
+Observation = Observatioun
 Observations = Observatiounen
 # Button that starts a new observation
 Observe = Observéieren
@@ -160,10 +159,14 @@ Open = Opmaachen
 # enter an explanation for why you are flagging something instead of choosing
 # one of the existing options
 Other = Anerer
+# Title showing user profile details about who a user follows and is following
+PEOPLE--title = PERSOUNEN
 Privacy-Policy = Dateschutz
 Private = Privat
+project-start-time-datetime = Startzäit: { $datetime }
 # As in iNat projects, collections of observations or observation search filters
 Projects = Projeten
+PROJECTS-X = PROJETEN ({ $projectCount })
 # label in project requirements
 Quality-Grade = Qualitéitsgrad
 Ranks-Class = Klass
@@ -256,5 +259,6 @@ Wild = Wëll
 # Label for a button that withdraws an identification
 Withdraw = Zréckzéien
 Worldwide = Weltwäit
+X-PROJECTS = { $projectCount } PROJETEN
 # Error message when you try to do something that requires log in
 You-need-log-in-to-do-that = Dir musst agelogged si fir dëst ze maachen.

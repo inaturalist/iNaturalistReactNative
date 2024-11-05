@@ -35,9 +35,6 @@ All-observations = Усе назіранні
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = усе правы абаронены
 All-taxa = Усе таксоны
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Усе
 # Month of April
 April = Красавік
 # Month of August
@@ -97,7 +94,8 @@ Endemic = Эндэмічны
 Error = Памылка
 # Title of dialog or section describing an error
 Error-title = Памылка
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = Шляхі ўзнікнення
 Exact-Date = Дакладная дата
 except = акрамя
@@ -160,7 +158,6 @@ Needs-ID--quality-grade = Патрабуе вызначэння
 New-Observation = Новае назіранне
 No-Location = Без месцазнаходжання
 No-Media = Няма медыя
-none = няма
 Notifications = Апавяшчэнні
 # Month of November
 November = Лістапад

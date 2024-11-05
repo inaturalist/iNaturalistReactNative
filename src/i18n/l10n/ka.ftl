@@ -31,9 +31,6 @@ Agree = ვეთანხმები
 AGREE = ვეთანხმები
 ALL = ყველა
 All = ყველა
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = რაიმე
 Camera = კამერა
 Cancel = გაუქმება
 # Label for a button that closes a window or popup

@@ -29,15 +29,15 @@ ABOUT = 关于
 Agree = 同意
 # Label for button that adds an identification of the same taxon as another identification
 AGREE = 同意
+AGREE-WITH-ID = 同意这个ID？
 ALL = 所有
 All = 全部
 All-observations = 所有观察
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = 保留所有权利
 All-taxa = 所有分类群
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = 任意
+#  Geoprivacy sheet descriptions
+Anyone-using-iNaturalist-can-see = 任何使用iNaturalist 的用户都可以看到这种物种被观察到的地方，科学家都可以很容易地将它用于研究。
 # Month of April
 April = 四月
 # Month of August
@@ -99,7 +99,8 @@ Endemic = 特有
 Error = 错误
 # Title of dialog or section describing an error
 Error-title = 错误
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = 定殖
 Exact-Date = 具体日期
 except = 除外
@@ -164,7 +165,6 @@ Needs-ID--quality-grade = 待鉴定
 New-Observation = 新的观察记录
 No-Location = 无位置资讯
 No-Media = 没有媒体
-none = 无
 Notifications = 通知
 # Month of November
 November = 十一月

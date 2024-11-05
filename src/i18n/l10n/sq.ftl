@@ -30,9 +30,6 @@ All-observations = Të gjitha vëzhgimet
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = të gjitha të drejtat e rezervuara
 All-taxa = Të gjitha taxat
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Cilido
 # Month of April
 April = Prill
 # Month of August
@@ -78,7 +75,8 @@ Edit = Redakto
 Edit-Observation = Ndrysho Vëzhgimin
 # Indicates a species only occurs in a specific place
 Endemic = endemik
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = Vendosje
 Exact-Date = Data e saktë
 Explore = Eksploro
@@ -125,7 +123,6 @@ Native = autokton
 Nearby = Pranë
 # Quality grade indicating observation still needs more identifications
 Needs-ID--quality-grade = Ka nevojë për ID
-none = askush
 # Month of November
 November = Nëntor
 Obscured = E fshehur
