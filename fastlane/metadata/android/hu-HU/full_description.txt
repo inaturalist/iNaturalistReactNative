@@ -1,10 +1,10 @@
-One of the world&#39;s most popular nature apps, iNaturalist helps you identify the plants and animals around you. Get connected with a community of over 400,000 scientists and naturalists who can help you learn more about nature! What&#39;s more, by recording and sharing your observations, you&#39;ll create research quality data for scientists working to better understand and protect nature.
+A világ egyik legnépszerűbb természetjáró alkalmazása, az iNaturalist segít azonosítani a környezeted növényeit és állatait. Kapcsolódj a több mint 400 ezer természetjáróból és természettudósból álló közösséghez, akik segítenek többet megtudni a természetről! Sőt, azáltal, hogy rögzíted és megosztod a megfigyeléseidet, kutatási minőségű adatokat hozol létre a természet jobb megértésén és védelmén dolgozó tudósok számára.
 
-KEY FEATURES
-• Discover species new to you both near and far
-• Record your own observations and share them with the community
-• Receive suggestions and crowdsourced identifications of what you&#39;ve seen 
-• Discuss and help others identify what they&#39;ve seen
-• Follow projects comprised of smaller communities and fellow citizen scientists passionate about a particular place and/or species
+FŐBB JELLEMZŐK
+• Ismerj meg új fajokat a közeledben és távolabb
+• Rögzítsd a saját megfigyeléseidet, és oszd meg őket a közösséggel
+• Kapj meghatározási javaslatokat és közösségi azonosításokat 
+• Beszélgess és segíts másoknak azonosítani, amit láttak
+• Kövess kisebb közösségi tudományos projekteket, amelyek egy adott hely és/vagy fajra szakosodtak
 
-For more info, check out https://www.inaturalist.org
+További információ: https://www.inaturalist.org
