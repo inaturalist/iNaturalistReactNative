@@ -28,6 +28,8 @@ ABOUT = OVER
 ABOUT-UMBRELLA-PROJECTS = OVER OVERKOEPELENDE PROJECTEN
 # Label for a taxon when a user prefers to see or hear the scientific name first
 accessible-sciname-comname = { $scientificName } ({ $commonName })
+# Label for button that shows all account settings
+ACCOUNT-SETTINGS = ACCOUNT INSTELLINGEN
 Add-Location = Locatie toevoegen
 # Label for button that adds an identification of the same taxon as another identification
 Agree = Akkoord
@@ -120,6 +122,7 @@ DONATE = DONEREN
 # Button for editing something
 Edit = Bewerken
 Edit-Observation = Bewerk Waarneming
+Edit-your-profile-change-your-settings = Bewerk je profiel, wijzig je meldingsinstellingen en beheer alle andere delen van je account.
 # Indicates a species only occurs in a specific place
 Endemic = Endemisch
 # Title for a section describing an error
@@ -249,6 +252,7 @@ Quality-Grade = Kwaliteitsklasse
 Ranks-Class = Klasse
 Ranks-Complex = Complex
 Ranks-Epifamily = Epifamilie
+Ranks-FAMILY = FAMILIE
 Ranks-Family = Familie
 Ranks-Form = Vorm
 Ranks-Genus = Geslacht
@@ -283,6 +287,8 @@ Ranks-Tribe = Geslachtengroep
 Ranks-Variety = Variëteit
 Ranks-Zoosection = Zoösectie
 Ranks-Zoosubsection = Zoö-ondersectie
+# Help text for the button that opens the sound recorder
+Record-a-sound = Een geluid opnemen
 # Imperative verb for recording a sound
 Record-verb = Neem op
 Recording-stopped-Tap-play-the-current-recording = Opname gestopt. Tik op de huidige opname om het geluid af te spelen.
@@ -324,9 +330,13 @@ Stop-verb = Stop
 # Identification category
 supporting--identification = Ondersteunend
 Syncing = Synchroniseren...
+# Help text for the button that opens the multi-capture camera
+Take-multiple-photos-of-a-single-organism = Maak meerdere foto's van een enkel organisme
 # label in project requirements
 Taxa = Taxa
 Terms-of-Use = Gebruiksvoorwaarden
+# Describes what happens when geoprivacy is set to private
+The-location-will-not-be-visible-to-others = De locatie zal niet zichtbaar zijn voor anderen, waardoor de waarneming mogelijk niet te determineren is
 The-models-that-suggest-species = De modellen die soorten suggereren op basis van visuele gelijkenis en locatie zijn deels te danken aan samenwerking met Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona en Grant Van Horn.
 Traditional-Project = Traditioneel project
 Umbrella-Project = Overkoepelend project
