@@ -152,7 +152,7 @@ const About = (): Node => {
             </Body2>
             <Heading4 className="mb-3">{t( "INATURALIST-COMMUNITY" )}</Heading4>
             <Body2 className="mb-8">
-              {t( "iNaturalist-is-supported-by-community" )}
+              {t( "iNaturalist-is-supported-by-our-community" )}
             </Body2>
             <Heading4 className="mb-3">{t( "INATURALIST-NETWORK" )}</Heading4>
             <Body2 className="mb-8">{t( "The-iNaturalist-Network" )}</Body2>

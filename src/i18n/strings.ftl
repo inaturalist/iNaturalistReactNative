@@ -90,9 +90,24 @@ ALLOW-LOCATION-ACCESS = ALLOW LOCATION ACCESS
 Almost-done = Almost done!
 Already-have-an-account = Already have an account? Log in
 An-Internet-connection-is-required = An Internet connection is required to load more observations.
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Any
+# Option when choosing a value for an date filter that indicates any value is
+# acceptable
+Any--date = Any
+# Option when choosing a value for an Establishment Means filter that
+# indicates any value is acceptable
+Any--establishment-means = Any
+# Option when choosing a value for an media type filter that indicates any
+# value is acceptable
+Any--media-type = Any
+# Option when choosing a value for an project filter that indicates any value
+# is acceptable
+Any--project = Any
+# Option when choosing a value for an quality grade filter that indicates any
+# value is acceptable
+Any--quality-grade = Any
+# Option when choosing a value for an user filter that indicates any value is
+# acceptable
+Any--user = Any
 #  Geoprivacy sheet descriptions
 Anyone-using-iNaturalist-can-see = Anyone using iNaturalist can see where this species was observed, and scientists can most easily use it for research.
 APP-LANGUAGE = APP LANGUAGE
@@ -409,11 +424,11 @@ ERROR-LOADING-DQA = ERROR LOADING IN DQA
 Error-title = Error
 ERROR-VOTING-IN-DQA = ERROR VOTING IN DQA
 Error-voting-in-DQA-description = Your vote may not have been cast in the DQA. Check your internet connection and try again.
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = Establishment
-ESTABLISHMENT-MEANS = ESTABLISHMENT MEANS
 # Header for a section describing how a taxon arrived in a given place
-ESTABLISHMENT-MEANS-header = ESTABLISHMENT MEANS
+ESTABLISHMENT-MEANS = ESTABLISHMENT MEANS
 Every-observation-needs = Every observation needs a location, date, and time to be helpful to identifiers. You can edit geoprivacy if you’re concerned about location privacy.
 Every-time-a-collection-project = Every time a collection project's page is loaded, iNaturalist will perform a quick search and display all observations that match the project's requirements. It is an easy way to display a set of observations, such as for a class project, a park, or a bioblitz without making participants take the extra step of manually adding their observations to a project.
 EVIDENCE = EVIDENCE
@@ -541,7 +556,7 @@ iNaturalist-is-a-501 = iNaturalist is a 501(c)(3) non-profit in the United State
 iNaturalist-is-a-community-of-naturalists = iNaturalist is a community of naturalists that works together to create and identify wild biodiversity observations.
 iNaturalist-is-loading-ID-suggestions = iNaturalist is loading ID suggestions...
 iNaturalist-is-supported-by = iNaturalist is supported by an independent, 501(c)(3) nonprofit organization based in the United States of America. The iNaturalist platform includes this app, Seek by iNaturalist, the iNaturalist website, and more.
-iNaturalist-is-supported-by-community = iNaturalist is supported by our amazing community. From everyday naturalists who add observations and identifications, to curators who assist in the curation of taxonomy and moderation, to the volunteer translators at who make iNaturalist more accessible to worldwide audiences, to our community-based donors, we are extraordinarily grateful for all the people of our community who make iNaturalist the platform it is.
+iNaturalist-is-supported-by-our-community = iNaturalist is supported by our amazing community. From everyday naturalists who add observations and identifications, to curators who manage our taxonomy and help with moderation, to the volunteer translators who make iNaturalist more accessible to worldwide audiences, to our community-based donors, we are extraordinarily grateful to all the people in our community who make iNaturalist the platform it is.
 iNaturalist-mission-is-to-connect = iNaturalist's mission is to connect people to nature and advance biodiversity science and conservation.
 INATURALIST-MISSION-VISION = INATURALIST'S MISSION & VISION
 INATURALIST-NETWORK = INATURALIST NETWORK
@@ -702,8 +717,10 @@ No-results-found-for-that-search = No results found for that search.
 No-results-found-try-different-search = No results found. Try a different search or adjust your filters.
 # license code
 no-rights-reserved-cc0 = no rights reserved (CC0)
-NONE = NONE
-none = none
+# Displayed in place of positional accuracy when that value is missing
+none--accuracy = none
+# Option when selecting taxonomic ranks that indicates no rank was selected
+NONE--ranks = NONE
 # Error message title when not enough storage space on device, e.g. when the
 # disk is full and you try to save a photo
 Not-enough-space-left-on-device = Not enough space left on device
