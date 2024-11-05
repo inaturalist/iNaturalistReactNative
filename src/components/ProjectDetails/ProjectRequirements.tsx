@@ -37,9 +37,7 @@ const ProjectRequirements = ( ) => {
   const ruleOperands = {
     inclusions: [],
     exclusions: [],
-    defaults: [{
-      text: t( "Any" )
-    }]
+    defaults: []
   };
 
   const RULES = [
@@ -59,27 +57,45 @@ const ProjectRequirements = ( ) => {
     },
     {
       ...ruleOperands,
-      name: t( "Users" )
+      name: t( "Users" ),
+      defaults: [{
+        text: t( "Any--user" )
+      }]
     },
     {
       ...ruleOperands,
-      name: t( "Projects" )
+      name: t( "Projects" ),
+      defaults: [{
+        text: t( "Any--project" )
+      }]
     },
     {
       ...ruleOperands,
-      name: t( "Quality-Grade" )
+      name: t( "Quality-Grade" ),
+      defaults: [{
+        text: t( "Any--quality-grade" )
+      }]
     },
     {
       ...ruleOperands,
-      name: t( "Media-Type" )
+      name: t( "Media-Type" ),
+      defaults: [{
+        text: t( "Any--media-type" )
+      }]
     },
     {
       ...ruleOperands,
-      name: t( "Date" )
+      name: t( "Date" ),
+      defaults: [{
+        text: t( "Any--date" )
+      }]
     },
     {
       ...ruleOperands,
-      name: t( "Establishment" )
+      name: t( "Establishment" ),
+      defaults: [{
+        text: t( "Any--establishment-means" )
+      }]
     }
   ];
 

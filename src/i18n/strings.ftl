@@ -90,9 +90,24 @@ ALLOW-LOCATION-ACCESS = ALLOW LOCATION ACCESS
 Almost-done = Almost done!
 Already-have-an-account = Already have an account? Log in
 An-Internet-connection-is-required = An Internet connection is required to load more observations.
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Any
+# Option when choosing a value for an date filter that indicates any value is
+# acceptable
+Any--date = Any
+# Option when choosing a value for an Establishment Means filter that
+# indicates any value is acceptable
+Any--establishment-means = Any
+# Option when choosing a value for an media type filter that indicates any
+# value is acceptable
+Any--media-type = Any
+# Option when choosing a value for an project filter that indicates any value
+# is acceptable
+Any--project = Any
+# Option when choosing a value for an quality grade filter that indicates any
+# value is acceptable
+Any--quality-grade = Any
+# Option when choosing a value for an user filter that indicates any value is
+# acceptable
+Any--user = Any
 #  Geoprivacy sheet descriptions
 Anyone-using-iNaturalist-can-see = Anyone using iNaturalist can see where this species was observed, and scientists can most easily use it for research.
 APP-LANGUAGE = APP LANGUAGE
@@ -333,12 +348,17 @@ Delete-sound = Delete sound
 Deletes-entered-text = Deletes entered text
 # Shows the progress of deletions for X of Y observations, but omits the
 # word "observations" so the message won't get cut off on small screens
-Deleting-x-of-y = Deleting { $currentDeleteCount } of { $total }
+# Deleting-x-of-y = Deleting { $currentDeleteCount } of { $total }
+Deleting-x-of-y--observations =
+    Deleting { $currentDeleteCount } { $total ->
+        [one] of { $total }
+       *[other] of { $total } observations
+    }
 # Shows the number of observations a user is currently deleting out of total on my observations page
-Deleting-x-of-y-observations =
-    Deleting { $currentDeleteCount } of { $total ->
-        [one] 1 observation
-       *[other] { $total } observations
+Deleting-x-of-y-observations-2 =
+    Deleting { $currentDeleteCount } { $total ->
+        [one] observation
+       *[other] of { $total } observations
     }
 # Tab label or section title for content that describes further details, e.g.
 # the details of an observation
@@ -409,11 +429,11 @@ ERROR-LOADING-DQA = ERROR LOADING IN DQA
 Error-title = Error
 ERROR-VOTING-IN-DQA = ERROR VOTING IN DQA
 Error-voting-in-DQA-description = Your vote may not have been cast in the DQA. Check your internet connection and try again.
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = Establishment
-ESTABLISHMENT-MEANS = ESTABLISHMENT MEANS
 # Header for a section describing how a taxon arrived in a given place
-ESTABLISHMENT-MEANS-header = ESTABLISHMENT MEANS
+ESTABLISHMENT-MEANS = ESTABLISHMENT MEANS
 Every-observation-needs = Every observation needs a location, date, and time to be helpful to identifiers. You can edit geoprivacy if you’re concerned about location privacy.
 Every-time-a-collection-project = Every time a collection project's page is loaded, iNaturalist will perform a quick search and display all observations that match the project's requirements. It is an easy way to display a set of observations, such as for a class project, a park, or a bioblitz without making participants take the extra step of manually adding their observations to a project.
 EVIDENCE = EVIDENCE
@@ -541,7 +561,7 @@ iNaturalist-is-a-501 = iNaturalist is a 501(c)(3) non-profit in the United State
 iNaturalist-is-a-community-of-naturalists = iNaturalist is a community of naturalists that works together to create and identify wild biodiversity observations.
 iNaturalist-is-loading-ID-suggestions = iNaturalist is loading ID suggestions...
 iNaturalist-is-supported-by = iNaturalist is supported by an independent, 501(c)(3) nonprofit organization based in the United States of America. The iNaturalist platform includes this app, Seek by iNaturalist, the iNaturalist website, and more.
-iNaturalist-is-supported-by-community = iNaturalist is supported by our amazing community. From everyday naturalists who add observations and identifications, to curators who assist in the curation of taxonomy and moderation, to the volunteer translators at who make iNaturalist more accessible to worldwide audiences, to our community-based donors, we are extraordinarily grateful for all the people of our community who make iNaturalist the platform it is.
+iNaturalist-is-supported-by-our-community = iNaturalist is supported by our amazing community. From everyday naturalists who add observations and identifications, to curators who manage our taxonomy and help with moderation, to the volunteer translators who make iNaturalist more accessible to worldwide audiences, to our community-based donors, we are extraordinarily grateful to all the people in our community who make iNaturalist the platform it is.
 iNaturalist-mission-is-to-connect = iNaturalist's mission is to connect people to nature and advance biodiversity science and conservation.
 INATURALIST-MISSION-VISION = INATURALIST'S MISSION & VISION
 INATURALIST-NETWORK = INATURALIST NETWORK
@@ -556,7 +576,7 @@ INATURALIST-TEAM = INATURALIST TEAM
 iNaturalist-users-who-have-left-an-identification = iNaturalist users who have left an identification on another user's observation
 iNaturalist-users-who-have-observed = iNaturalist users who have observed a particular taxon at a particular time and place
 iNaturalist-uses-your-location-to-give-you = iNaturalist uses your location to give you better identification suggestions and we can automatically add a location to your observations, which helps scientists. We also use it to help you find organisms observed near your location.
-iNaturalists-apps-are-designed-and-developed = iNaturalist's apps are designed, developed, and supported by the iNaturalist team: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Thea Skaff, Angie Ta, Ken-ichi Ueda, Michelle Vryn, Jason Walthall, & Jane Weeden.
+iNaturalists-apps-are-designed-and-developed-2 = iNaturalist's apps are designed, developed, and supported by the iNaturalist team: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Thea Skaff, Angie Ta, Ken-ichi Ueda, Kirk van Gorkom, Jason Walthall, & Jane Weeden.
 iNaturalists-vision-is-a-world = iNaturalist's vision is a world where everyone can understand and sustain biodiversity through the practice of observing wild organisms and sharing information about them.
 Individual-encounters-with-organisms = Individual encounters with organisms at a particular time and location, usually with evidence
 INFO-TRANSFER = INFO TRANSFER
@@ -702,8 +722,10 @@ No-results-found-for-that-search = No results found for that search.
 No-results-found-try-different-search = No results found. Try a different search or adjust your filters.
 # license code
 no-rights-reserved-cc0 = no rights reserved (CC0)
-NONE = NONE
-none = none
+# Displayed in place of positional accuracy when that value is missing
+none--accuracy = none
+# Option when selecting taxonomic ranks that indicates no rank was selected
+NONE--ranks = NONE
 # Error message title when not enough storage space on device, e.g. when the
 # disk is full and you try to save a photo
 Not-enough-space-left-on-device = Not enough space left on device
@@ -751,7 +773,7 @@ Observe = Observe
 # Title of screen asking for permission to access the gallery
 Observe-and-identify-organisms-from-your-gallery = Observe and identify organisms from your gallery
 # Title of screen asking for permission to access the camera
-Observe-and-identify-organisms-in-real-time-with-your-camera = Observe and identify organisms in real-time with your camera
+Observe-and-identify-organisms-in-real-time-with-your-camera = Observe and identify organisms in real time with your camera
 # Text for a button prompting the user to grant access to the camera
 OBSERVE-ORGANISMS = OBSERVE ORGANISMS
 Observers = Observers
@@ -776,12 +798,13 @@ OPEN-EMAIL = OPEN EMAIL
 Open-menu = Open menu.
 # Text for a button that opens the operating system Settings app
 OPEN-SETTINGS = OPEN SETTINGS
-Opens-add-comment-modal = Opens add comment modal.
-Opens-add-observation-modal = Opens add observation modal.
-Opens-AI-camera = Opens AI camera.
-Opens-location-permission-prompt = Opens location permission prompt
+# Accessibility hint for a button that opens a form for adding a comment
+Opens-add-comment-form = Opens add comment form.
 # Accessibility hint for button that opens the AI camera
-Opens-the-AI-camera = Opens the AI camera
+Opens-AI-camera = Opens AI camera.
+# Accessibility hint for a button that opens a form for editing a comment
+Opens-edit-comment-form = Opens edit comment form.
+Opens-location-permission-prompt = Opens location permission prompt
 Opens-the-side-drawer-menu = Opens the side drawer menu.
 # Picker prompt on observation edit
 Organism-is-captive = Organism is captive
@@ -1165,11 +1188,11 @@ Uploading-x-of-y-observations =
         [one] Uploading { $currentUploadCount } observation
        *[other] Uploading { $currentUploadCount } of { $total } observations
     }
-Use-iNaturalists-AI-Camera = Use iNaturalist's AI Camera to identify organisms in real-time
+Use-iNaturalists-AI-Camera = Use iNaturalist's AI Camera to identify organisms in real time
 # Text for a button prompting the user to grant access to location
 USE-LOCATION = USE LOCATION
 Use-the-devices-other-camera = Use the device's other camera.
-Use-the-iNaturalist-camera-to-observe = Use the iNaturalist camera to observe and identify organisms on-screen in real-time, and share them with our community to get identifications and contribute to science!
+Use-the-iNaturalist-camera-to-observe-2 = Use iNaturalist to observe and identify organisms in real time. Share them with our community to get identifications and contribute to science!
 Use-your-devices-microphone-to-record = Use your device’s microphone to record sounds made by organisms and share them with our community to get identifications and contribute to science!
 USER = USER
 User = User { $userHandle }

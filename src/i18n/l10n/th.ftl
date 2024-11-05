@@ -35,9 +35,6 @@ All-observations = การสังเกตทั้งหมด
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = สงวนลิขสิทธิ์ทั้งหมด
 All-taxa = ทั้งหมด
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = ระบุไม่ได้
 # Month of April
 April = เมษายน
 # Month of August
@@ -99,7 +96,8 @@ Endemic = เฉพาะถิ่น
 Error = ผิดพลาด
 # Title of dialog or section describing an error
 Error-title = ผิดพลาด
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = การตั้งถิ่นฐาน
 Exact-Date = เฉพาะวันที่
 except = ยกเว้น
@@ -157,7 +155,6 @@ Needs-ID--quality-grade = รอจำแนกชนิด
 New-Observation = การสังเกตใหม่
 No-Location = ไม่​มี​ตำแหน่ง
 No-Media = ไม่มีสื่อ
-none = ไม่ระบุ
 Notifications = การแจ้งเตือน
 # Month of November
 November = พฤศจิกายน

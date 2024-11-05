@@ -93,7 +93,7 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
           level="focus"
           onPress={navToARCamera}
           accessibilityLabel={t( "Observe" )}
-          accessibilityHint={t( "Opens-add-observation-modal" )}
+          accessibilityHint={t( "Opens-AI-camera" )}
         />
         <Body2 className="my-5">
           {t( "You-can-also-explore-existing-observations" )}

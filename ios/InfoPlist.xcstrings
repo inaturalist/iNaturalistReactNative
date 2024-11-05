@@ -1,6 +1,30 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "CFBundleDisplayName" : {
+      "comment" : "Bundle display name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "iNat Next"
+          }
+        }
+      }
+    },
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "iNaturalistReactNative"
+          }
+        }
+      }
+    },
     "NSAppleMusicUsageDescription" : {
       "comment" : "Description of why we ask for permission to access the music library.",
       "extractionState" : "extracted_with_value",
@@ -414,12 +438,6 @@
           }
         },
         "th" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "tl" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Add existing sounds to your observations."
@@ -881,12 +899,6 @@
             "value" : "We use the camera so you can get identifications of your nature photos."
           }
         },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We use the camera so you can get identifications of your nature photos."
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "new",
@@ -931,457 +943,451 @@
       "localizations" : {
         "af" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "ar" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "be" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "bg" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "br" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "bs" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "ca" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "cs" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "da" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "© iNaturalist"
+            "value" : ""
           }
         },
         "en-AU" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "en-GB" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "en-NZ" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "eo" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "es-AR" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "es-CO" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "es-CR" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "es-MX" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "et" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "eu" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "fa" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "fil" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "fr-CA" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "gd" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "gl" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "gu" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "he" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "hi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "hr" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "hu" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "id" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "kk" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "kn" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "lb" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "lt" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "lv" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "mi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "mk" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "ml" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "mr" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "ms" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "nb-NO" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "pa" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "sat" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "si" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "sq" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "sr" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "©️ iNaturalist"
           }
         },
         "sw" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "ta" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "te" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "th" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "© iNaturalist"
-          }
-        },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "© iNaturalist"
           }
         }
@@ -1800,12 +1806,6 @@
           }
         },
         "th" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "tl" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
@@ -2267,12 +2267,6 @@
             "value" : "เพิ่มพิกัด GPS ให้กับการสังเกต แสดงตำแหน่งของคุณบนแผนที่ และอื่น ๆ"
           }
         },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2724,12 +2718,6 @@
           }
         },
         "th" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "tl" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Record sound observations of nature."
@@ -3191,12 +3179,6 @@
             "value" : "Export iNaturalist Next photos to your library."
           }
         },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "new",
@@ -3648,12 +3630,6 @@
           }
         },
         "th" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
-          }
-        },
-        "tl" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Export and import iNaturalist Next photos to and from your library."

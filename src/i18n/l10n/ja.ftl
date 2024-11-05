@@ -25,6 +25,8 @@
 
 # Header for a general description, e.g. of a user, or of iNaturalist itself
 ABOUT = このアプリについて
+# Label for button that shows all account settings
+ACCOUNT-SETTINGS = アカウント設定
 # Label for button that adds an identification of the same taxon as another identification
 Agree = 同意
 # Label for button that adds an identification of the same taxon as another identification
@@ -35,9 +37,6 @@ All-observations = すべての観察記録
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = 著作権を全て留保する
 All-taxa = すべての分類群
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = 全てのメディア
 # Month of April
 April = 4月
 # Month of August
@@ -83,24 +82,30 @@ Date-observed = 観測された日付
 Date-observed-header-short = 観察
 # Label for controls over a range of dates
 Date-Range = 期間
+# Express a date range. d1 and d2 can be any expression of dates
+date-to-date = { $d1 } - { $d2 }
 # Month of December
 December = 12月
 Delete-observation = 観察記録を削除
 # Button label or accessibility label for an element that deletes a photo
 Delete-photo = 写真を削除
+Device-storage-full = デバイスのストレージがいっぱいです
+Device-storage-full-description = iNaturalistは写真を保存できなかったり、クラッシュすることがあります。
 DONATE = 寄付
 # Button for editing something
 Edit = 編集
 # Label for interactive element that takes you to a location choosing screen
 Edit-location = 位置情報を編集
 Edit-Observation = 観察記録を編集
+Edit-your-profile-change-your-settings = プロフィールを編集したり、通知設定を変更したり、アカウントのその他の部分を管理したりできます。
 # Indicates a species only occurs in a specific place
 Endemic = 固有種
 # Title for a section describing an error
 Error = エラー
 # Title of dialog or section describing an error
 Error-title = エラー
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = 定着
 Exact-Date = 正確な日付
 except = を除いて
@@ -165,11 +170,17 @@ Needs-ID--quality-grade = 要同定
 New-Observation = 新しい観察
 No-Location = 位置情報がありません
 No-Media = 写真・音声なし
-none = なし
+# Error message title when not enough storage space on device, e.g. when the
+# disk is full and you try to save a photo
+Not-enough-space-left-on-device = デバイスに十分な空き容量がありません
+# Error message description when not enough storage space on device, e.g. when
+# the disk is full and you try to save a photo
+Not-enough-space-left-on-device-try-again = デバイスに十分な空き容量がありません。空き容量を確保して、もう一度お試しください。
 Notifications = 通知
 # Month of November
 November = 11月
 Obscured = 不明瞭
+Observation = 観察記録
 Observations = 観察記録
 # Button that starts a new observation
 Observe = 観察
@@ -187,10 +198,18 @@ Other = その他
 Privacy-Policy = プライバシー・ポリシー
 Private = 非公開
 Project-Members-Only = プロジェクトメンバー限定
+project-start-time-datetime = 開始時刻：{ $datetime }
 # As in iNat projects, collections of observations or observation search filters
 Projects = プロジェクト
+PROJECTS-X = プロジェクト（{ $projectCount }）
 # label in project requirements
 Quality-Grade = データ品質
+# Screen reader label for the Casual quality grade label
+Quality-Grade-Casual--label = 品質グレード：カジュアル
+# Screen reader label for the Needs ID quality grade label
+Quality-Grade-Needs-ID--label = 品質グレード：要ID
+# Screen reader label for the Research quality grade label
+Quality-Grade-Research--label = 品質グレード：研究用
 Ranks-Class = 綱
 Ranks-Complex = 種群
 Ranks-Epifamily = 上科
@@ -225,9 +244,14 @@ Ranks-Superorder = 上目
 Ranks-Supertribe = 上族/上連
 Ranks-Tribe = 族/連
 Ranks-Variety = 変種
+# Help text for the button that opens the sound recorder
+Record-a-sound = 音声を録音する
 # Imperative verb for recording a sound
 Record-verb = 記録
 Remove-project-filter = プロジェクトフィルターを削除
+# Quality grade indicating observation is accurate and complete enough to
+# share outside of iNat
+Research-Grade--quality-grade = 研究用
 # Label for a button that resets the state of an interface, e.g. a button that
 # resets the sound recorder to its original state
 Reset-verb = リセット
@@ -242,6 +266,8 @@ Save = 保存
 Scientific-Name = 学名
 # Title for a search interface
 Search = 検索
+# Accessibility label for navigating to project members screen
+See-project-members = プロジェクトメンバーを表示
 # Month of September
 September = 9月
 Share = 共有
@@ -258,9 +284,14 @@ Stop-verb = 停止
 # Identification category
 supporting--identification = サポート
 Syncing = 同期中...
+# Help text for the button that opens the multi-capture camera
+Take-multiple-photos-of-a-single-organism = 1つの生物の写真を複数撮ってください
 # label in project requirements
 Taxa = 分類群
 Terms-of-Use = 利用規約
+# Describes what happens when geoprivacy is set to private
+The-location-will-not-be-visible-to-others = 観察場所が他の人に表示されないため、観察記録の同定ができない可能性があります。
+The-models-that-suggest-species = 視覚的な類似性と位置に基づいて種を推定するモデルは、サラ・ビーリー、トム・ブルックス、イライジャ・コール、クリスチャン・ランゲ、オイシン・マック・アオダ、ピエトロ・ペローナ、グラント・ヴァン・ホーンとの共同研究のおかげです。
 Traditional-Project = 手動プロジェクト
 Umbrella-Project = 親プロジェクト
 # Text to show when a taoxn rank is unknown or missing
@@ -273,6 +304,10 @@ Unknown--user = 不明
 Unknown-error = 不明なエラー
 # label in project requirements
 Users = ユーザー
+# Button on user profile that displays a list of users that follow that user
+VIEW-FOLLOWERS = フォロワーを表示
+# Button on user profile that displays a list of users that the user is following
+VIEW-FOLLOWING = フォローしている人を表示
 View-in-browser = ブラウザで表示する
 # Label for a button that shows identification suggestions for an observation
 # or photo
@@ -282,3 +317,6 @@ Wild = 野生
 # Label for a button that withdraws an identification
 Withdraw = 撤回
 Worldwide = 世界中
+# Subheader for number of project members screen
+X-MEMBERS = { $count } メンバー
+X-PROJECTS = { $projectCount } 件のプロジェクト

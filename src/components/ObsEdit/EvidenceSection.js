@@ -80,7 +80,7 @@ const EvidenceSection = ( {
     return t( "Lat-Lon-Acc", {
       latitude,
       longitude,
-      accuracy: currentObservation?.positional_accuracy?.toFixed( 0 ) || t( "none" )
+      accuracy: currentObservation?.positional_accuracy?.toFixed( 0 ) || t( "none--accuracy" )
     } );
   };
 
