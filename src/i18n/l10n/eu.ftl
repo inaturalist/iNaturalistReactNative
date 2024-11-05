@@ -35,9 +35,6 @@ All-observations = Ohar guztiak
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = eskubide guztiak erreserbatuta
 All-taxa = Taxoi guztiak
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Edozein
 # Month of April
 April = apirila
 # Month of August
@@ -96,7 +93,8 @@ Endemic = Endemikoa
 Error = Akatsa
 # Title of dialog or section describing an error
 Error-title = Akatsa
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = Sailkapena
 Exact-Date = Data zehatza
 except = salbu
@@ -152,7 +150,6 @@ Needs-ID--quality-grade = IDa behar du
 New-Observation = Behaketa berria
 No-Location = Kokapenik ez
 No-Media = Fitxategirik ez
-none = Bat ere ez
 # Month of November
 November = azaroa
 Obscured = Lausotua

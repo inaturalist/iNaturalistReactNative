@@ -35,9 +35,6 @@ All-observations = כל התצפיות
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = כל הזכויות שמורות
 All-taxa = כל הטקסונים
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = הכל
 # Month of April
 April = אפריל
 # Month of August
@@ -104,7 +101,8 @@ Endemic = אנדמי
 Error = שגיאה
 # Title of dialog or section describing an error
 Error-title = שגיאה
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = התבססות
 Exact-Date = תאריך מדויק
 except = למעט
@@ -169,7 +167,6 @@ Needs-ID--quality-grade = צריך זיהוי
 New-Observation = תצפית חדשה
 No-Location = ללא מיקום
 No-Media = ללא מדיה
-none = אין
 Notifications = התראות
 # Month of November
 November = נובמבר

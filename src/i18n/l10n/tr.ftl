@@ -35,9 +35,6 @@ All-observations = Tüm gözlemler
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = tüm hakları saklıdır
 All-taxa = Tüm sınıflar
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Tümü
 # Month of April
 April = Nisan
 # Month of August
@@ -101,7 +98,8 @@ Endemic = Yöreye özgü
 Error = Hata
 # Title of dialog or section describing an error
 Error-title = Hata
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = Yerleşim Tipi
 Exact-Date = Tam Tarih
 except = dışında
@@ -167,7 +165,6 @@ Needs-ID--quality-grade = Tanımlama Gerekli
 New-Observation = Yeni Gözlem
 No-Location = Konum Yok
 No-Media = Ortam Yok
-none = hiçbiri
 Notifications = Bildirimler
 # Month of November
 November = Kasım

@@ -35,9 +35,6 @@ All-observations = Sva opažanja
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = sva prava pridržana
 All-taxa = Sva taksa
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Sva
 # Month of April
 April = Travanj
 # Month of August
@@ -99,7 +96,8 @@ Endemic = Endem
 Error = Greška
 # Title of dialog or section describing an error
 Error-title = Greška
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = Način ustanovljenja
 Exact-Date = Točan datum
 except = osim
@@ -162,7 +160,6 @@ Needs-ID--quality-grade = Potreban ID
 New-Observation = Novo opažanje
 No-Location = Bez lokacije
 No-Media = Bez medija
-none = nema
 Notifications = Obavijesti
 # Month of November
 November = Studeni

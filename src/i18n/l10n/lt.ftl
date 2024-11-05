@@ -35,9 +35,6 @@ All-observations = Visi stebėjimai
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = Visos teisės saugomos
 All-taxa = Visi taksonai
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Bet kokia
 # Month of April
 April = Balandis
 # Month of August
@@ -71,6 +68,8 @@ Data-quality-assessment-location-specified = Vieta nurodyta
 Data-quality-assessment-organism-is-wild = Organizmas yra laukinis
 # Data Quality Assessment metric
 Data-quality-assessment-recent-evidence-of-organism = Pateikti neseni organizmo buvimo įrodymai
+# Data Quality Assessment metric
+Data-quality-assessment-single-subject = Įrodymai, susiję su viena tema
 # Data Quality Assessment description of the final quality grade when Research Grade
 Data-quality-assessment-title-research = Šis stebėjimas yra identifikuotas!
 # label in project requirements
@@ -94,7 +93,8 @@ Endemic = Endeminis
 Error = Klaida
 # Title of dialog or section describing an error
 Error-title = Klaida
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = Įsikūrimas
 Exact-Date = Tiksli data
 except = išskyrus
@@ -158,11 +158,17 @@ Needs-ID--quality-grade = Trūksta ID
 New-Observation = Naujas stebėjimas
 No-Location = Nėra vietos
 No-Media = Be medijos
-none = nėra
+# Error message title when not enough storage space on device, e.g. when the
+# disk is full and you try to save a photo
+Not-enough-space-left-on-device = Įrenginyje nėra pakankamai vietos
+# Error message description when not enough storage space on device, e.g. when
+# the disk is full and you try to save a photo
+Not-enough-space-left-on-device-try-again = Tam atlikti įrenginyje nebėra pakankamai vietos. Atlaisvinkite vietos ir bandykite dar kartą.
 Notifications = Pranešimai
 # Month of November
 November = Lapkritis
 Obscured = Paslėptas
+Observation = Stebėjimas
 Observations = Stebėjimai
 # Button that starts a new observation
 Observe = Stebėkite
@@ -183,6 +189,7 @@ Private = Privatus
 Project-Members-Only = Tik projekto nariams
 # As in iNat projects, collections of observations or observation search filters
 Projects = Projektai
+PROJECTS-X = PROJEKTAI ({ $projectCount })
 # label in project requirements
 Quality-Grade = Kokybės įvertinimas
 Ranks-Class = Klasė
@@ -272,3 +279,4 @@ Wild = Laukinis
 # Label for a button that withdraws an identification
 Withdraw = Atsiimti
 Worldwide = Visame pasaulyje
+X-PROJECTS = { $projectCount } PROJEKTAI (-Ų)

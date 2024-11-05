@@ -35,9 +35,6 @@ All-observations = كل الملاحظات
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = جميع الحقوق محفوظة
 All-taxa = كل الأصناف
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = أي
 # Month of April
 April = أبريل
 # Month of August
@@ -94,7 +91,8 @@ Endemic = متوطنة
 Error = خطأ
 # Title of dialog or section describing an error
 Error-title = خطأ
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = مؤسسة
 Exact-Date = التاريخ المحدد
 except = إلا
@@ -156,7 +154,6 @@ Needs-ID--quality-grade = يحتاج معرفا
 # Heading when creating a new observation
 New-Observation = ملحوظة جديدة
 No-Location = لا يوجد موقع
-none = لا شيء
 # Month of November
 November = نوفمبر
 Obscured = مشوش

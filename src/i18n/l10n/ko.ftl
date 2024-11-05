@@ -35,9 +35,6 @@ All-observations = 모든 관찰
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = 모든 권리는 저작권자에게 있습니다.
 All-taxa = 모든 분류군
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = 모두
 # Month of April
 April = 4월
 # Month of August
@@ -97,7 +94,8 @@ Endemic = 고유종
 Error = 오류
 # Title of dialog or section describing an error
 Error-title = 오류
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = 상태
 Exact-Date = 정확한 날짜
 Explore = 둘러보기
@@ -144,7 +142,6 @@ Needs-ID--quality-grade = 동정 필요 등급
 # Heading when creating a new observation
 New-Observation = 새로운 관찰
 No-Location = 위치 없음
-none = 없음
 # Month of November
 November = 11월
 Obscured = 위치 숨김

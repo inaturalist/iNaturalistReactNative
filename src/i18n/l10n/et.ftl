@@ -25,34 +25,85 @@
 
 # Header for a general description, e.g. of a user, or of iNaturalist itself
 ABOUT = INFO
+ABOUT-INATURALIST = INATURALISTIST
+ADD-AN-ID = LISA MÄÄRATLUS
+Add-an-ID-Later = Lisa määratlus hiljem
+ADD-COMMENT = LISA KOMMENTAAR
+Add-Date-Time = Lisa kuupäev/kellaaeg
+Affiliation = Kuuluvus: { $site }
 # Label for button that adds an identification of the same taxon as another identification
 Agree = Nõustun
 # Label for button that adds an identification of the same taxon as another identification
 AGREE = NÕUSTUN
+AGREE-WITH-ID = NÕUSTUS MÄÄRATLUSEGA?
+# This is what we call the camera that
+# overlays identification suggestions in real time
+AI-Camera = AI-kaamera
 ALL = KÕIK
 All = Kõik
 All-observations = Kõik vaatlused
+All-organisms = Kõik organismid
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = kõig õigused kaitstud
 All-taxa = Kõik taksonid
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Kõik
+ALLOW-LOCATION-ACCESS = LUBA LIGIPÄÄSU ASUKOHALE
+# As in automated identification suggestions
+Almost-done = Peaaegu valmis!
+Already-have-an-account = Konto olemas? Logi sisse
+APP-LANGUAGE = RAKENDUSE KEEL
+APPLY-FILTERS = LISA FILTRID
+Apply-filters = Lisa filtrid
 # Month of April
 April = aprill
 # Month of August
 August = august
+BLOG = BLOGI
 Camera = Kaamera
+CANCEL = KATKESTA
 Cancel = Loobu
 # Quality grade indicating observation does not quality for Needs ID or
 # Research Grade, e.g. missing media, voted out, etc.
 Casual--quality-grade = Juhuvaatlus
+Change-taxon = Muuda taksonit
+# Button that changes the taxon filter on Explore
+Change-taxon-filter = Muuda taksonifiltrit
+Change-user = Muuda kasutajat
+# Label for a button that cycles through zoom levels for the camera
+Change-zoom = Muuda suurendusastet
+# Text for a button prompting the user to grant access to the gallery
+CHOOSE-PHOTOS = VALI FOTOD
+# Label for button that chooses a taxon
+Choose-taxon = Vali takson
+# Label for button that chooses top taxon
+Choose-top-taxon = Vali kõrgeima taseme takson
+# Label for a button that clears content, like the text entered in a text
+# field
+Clear = Tühjenda
 # Label for a button that closes a window or popup
 Close = Sulge
+# Label for a button that closes a search interface
+Close-search = Sulge otsing
 Collection-Project = Kogumisprojekt
+# Title for a form that let's you enter a comment
+COMMENT = KOMMENTEERI
 Community-Guidelines = Kogukonna reeglid
+# Button that confirms a choice the user has made
+CONFIRM = KINNITA
+# Onboarding header (underneath the logo)
+CONNECT-TO-NATURE = LEIA SEOS LOODUSEGA
+# Onboarding slides
+Connect-to-Nature = Leia seos loodusega
+# Continue button in onboarding screen
+CONTINUE = JÄTKA
 # Notification when coordinates have been copied
 Coordinates-copied-to-clipboard = Kooridnaadid kopeeritud
+# Right to control copies of a creative work; this string may be used as a
+# heading to describe general information about rights, attribution, and
+# licensing
+Copyright = Autoriõigused
+CREATE-AN-ACCOUNT = LOO KONTO
+Create-an-observation-evidence = Loo ilma tõendusmaterjalita vaatlus
+CREATE-YOUR-FIRST-OBSERVATION = LOO OMA ESIMENE VAATLUS
 # Data Quality Assessment section label: whether or not the observation date is accurate
 Data-quality-assessment-date-is-accurate = Kuupäev on täpne
 # Data Quality Assessment section label: whether or not the observation date was specified
@@ -73,6 +124,8 @@ Data-quality-assessment-organism-is-wild = Organism on metsik
 Data-quality-assessment-recent-evidence-of-organism = Hiljutised tõendid organismi kohta
 # Data Quality Assessment metric
 Data-quality-assessment-single-subject = Ühe isendiga seotud tõendusmaterjal
+# Data Quality Assessment description of the final quality grade when Needs ID
+Data-quality-assessment-title-needs-id = See vaatlus vajab määratlust
 # Data Quality Assessment description of the final quality grade when Research Grade
 Data-quality-assessment-title-research = See vaatlus on teaduskõlbulik!
 # label in project requirements
@@ -84,11 +137,19 @@ Date-observed = Vaatluskuupäev
 Date-observed-header-short = Vaadeldud
 # Label for controls over a range of dates
 Date-Range = Kuupäevavahemik
+# Express a date range. d1 and d2 can be any expression of dates
+date-to-date = { $d1 }–{ $d2 }
 # Month of December
 December = detsember
+DELETE = KUSTUTA
+Delete-all-observations = Kustuta kõik vaatlused
+Delete-comment = Kustuta kommentaar
+DELETE-COMMENT--question = KUSTUTA KOMMENTAAR?
 Delete-observation = Kustuta vaatlus
+DELETE-OBSERVATION--question = KUSTUTA VAATLUS?
 # Button label or accessibility label for an element that deletes a photo
 Delete-photo = Kustuta foto
+Delete-sound = Kustuta heli
 DONATE = ANNETA
 # Button for editing something
 Edit = Muuda
@@ -99,7 +160,8 @@ Endemic = Endeemiline
 Error = Viga
 # Title of dialog or section describing an error
 Error-title = Viga
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = Asutus
 Exact-Date = Täpne kuupäev
 except = väljaarvatud
@@ -162,7 +224,6 @@ Needs-ID--quality-grade = Vajab määramist
 New-Observation = Uued vaatlused
 No-Location = Asukoht puudub
 No-Media = Meedia puudub
-none = puudub
 Notifications = Teavitused
 # Month of November
 November = november
@@ -184,6 +245,7 @@ Open = Avalik
 Other = Muu
 Privacy-Policy = Privaatsusreeglid
 Private = Isiklik
+project-start-time-datetime = Algus: { $datetime }
 # As in iNat projects, collections of observations or observation search filters
 Projects = Projektid
 # label in project requirements

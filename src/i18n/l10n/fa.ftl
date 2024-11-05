@@ -31,9 +31,6 @@ Agree = موافق
 AGREE = موافق
 ALL = همه
 All = همه
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = هر
 Camera = دوربین
 Cancel = لغو کنید
 # Quality grade indicating observation does not quality for Needs ID or
