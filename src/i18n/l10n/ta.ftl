@@ -28,9 +28,6 @@ ABOUT = பற்றி
 # Label for button that adds an identification of the same taxon as another identification
 Agree = ஒருமனப்படு
 All = அனைத்தும்
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = ஏதாவது
 Camera = கேமிரா
 Cancel = ரத்து செய்
 # Quality grade indicating observation does not quality for Needs ID or

@@ -32,9 +32,6 @@ All-observations = सर्व निरीक्षणे
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = सर्व हक्क राखीव
 All-taxa = सर्व वर्गीकरणे
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = कोणतेही
 Camera = कॅमेरा
 Cancel = रद्द करा
 # Quality grade indicating observation does not quality for Needs ID or

@@ -26,9 +26,6 @@
 # Header for a general description, e.g. of a user, or of iNaturalist itself
 ABOUT = గురించి
 All = అన్ని
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = ఏదైనా
 # Month of April
 April = ఏప్రిల్
 # Month of August

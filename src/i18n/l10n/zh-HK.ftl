@@ -31,9 +31,6 @@ Agree = 同意
 AGREE = 同意
 ALL = 全部
 All = 全部
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = 任一
 Camera = 影相
 Cancel = 取消
 # Label for a button that closes a window or popup

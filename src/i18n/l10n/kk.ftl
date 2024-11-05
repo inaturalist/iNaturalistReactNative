@@ -35,9 +35,6 @@ All-observations = Барлық бақылаулар
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = барлық құқықтар сақталған
 All-taxa = Барлық таксондар
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Кез-келген
 # Month of April
 April = Сәуір
 # Month of August
@@ -150,7 +147,6 @@ Needs-ID--quality-grade = ID керек
 New-Observation = Жаңа бақылау
 No-Location = Орналасқан жері көрсетілмеген
 No-Media = Медиа жоқ
-none = жоқ
 # Month of November
 November = Қараша
 Obscured = Жасырын

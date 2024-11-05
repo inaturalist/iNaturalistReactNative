@@ -35,9 +35,6 @@ All-observations = Alle observasjoner
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = alle rettigheter forbeholdt
 All-taxa = Alle taksa
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Alle
 # Month of April
 April = April
 # Month of August
@@ -97,7 +94,8 @@ Endemic = Endemisk
 Error = Feil
 # Title of dialog or section describing an error
 Error-title = Feil
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = Etablering
 Exact-Date = Nøyaktig dato
 except = unntatt
@@ -161,7 +159,6 @@ Needs-ID--quality-grade = Trenger ID
 New-Observation = Ny observasjon
 No-Location = Ingen posisjon
 No-Media = Ingen media
-none = ingen
 Notifications = Varsler
 # Month of November
 November = November

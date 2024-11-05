@@ -96,9 +96,6 @@ ALLOW-LOCATION-ACCESS = TILLÅT ÅTKOMST TILL PLATS
 Almost-done = Nästan klar!
 Already-have-an-account = Har du redan ett konto? Logga in
 An-Internet-connection-is-required = En internetanslutning krävs för att läsa in fler observationer.
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Vilken som
 #  Geoprivacy sheet descriptions
 Anyone-using-iNaturalist-can-see = Alla som använder iNaturalist kan se var denna art observerades, och forskare kan enklast använda den för forskning.
 APP-LANGUAGE = APP-SPRÅK
@@ -325,15 +322,6 @@ Delete-photo = Radera bild
 Delete-sound = Radera ljud
 # Hint for a button that clears text you entered
 Deletes-entered-text = Raderar inmatad text
-# Shows the progress of deletions for X of Y observations, but omits the
-# word "observations" so the message won't get cut off on small screens
-Deleting-x-of-y = Raderar { $currentDeleteCount } av { $total }
-# Shows the number of observations a user is currently deleting out of total on my observations page
-Deleting-x-of-y-observations =
-    Raderar { $currentDeleteCount } av { $total ->
-        [one] 1 fynd
-       *[other] { $total } fynd
-    }
 # Tab label or section title for content that describes further details, e.g.
 # the details of an observation
 DETAILS = DETALJER
@@ -403,11 +391,11 @@ ERROR-LOADING-DQA = FEL VID LADDNING AV DQA
 Error-title = Fel
 ERROR-VOTING-IN-DQA = FEL VID RÖSTNING I DQA
 Error-voting-in-DQA-description = Din röst kanske inte har räknats med i DQA. Kontrollera din internetanslutning och försök igen.
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = Invandringshistoria
-ESTABLISHMENT-MEANS = INVANDRINGSHISTORIA
 # Header for a section describing how a taxon arrived in a given place
-ESTABLISHMENT-MEANS-header = INVANDRINGSHISTORIA
+ESTABLISHMENT-MEANS = INVANDRINGSHISTORIA
 Every-observation-needs = Varje fynd behöver en plats, ett datum och en tid för att vara bestämmare behjälpligt. Du kan redigera geosekretessen om du är orolig för platsens integritet.
 Every-time-a-collection-project = Varje gång sidan för ett samlingprojekt laddas, kommer iNaturalist att göra en snabb sökning och visa alla fynd som motsvarar projektets krav. Det är ett enkelt sätt att visa en uppsättning fynd, som för ett klassprojekt, en park eller en bioblitz, utan att deltagarna manuellt måste lägga till sina fynd i ett projekt i ett extra steg.
 EVIDENCE = BELÄGG
@@ -534,7 +522,6 @@ iNaturalist-is-a-501 = iNaturalist är en 501(c)(3) icke-vinstdrivande förening
 iNaturalist-is-a-community-of-naturalists = iNaturalist är en community av naturforskare som tillsammans verkar för att skapa och bestämma fynd av vild biologisk mångfald.
 iNaturalist-is-loading-ID-suggestions = iNaturalist laddar bestämningsförslag...
 iNaturalist-is-supported-by = iNaturalist stöds av en oberoende, 501(c)(3) icke-vinstdrivande organisation baserad i USA. Plattformen iNaturalist innehåller bland annat denna app, Seek av iNaturalist och iNaturalists webbplats.
-iNaturalist-is-supported-by-community = iNaturalist stöds av vår fantastiska community. Från vanliga naturforskare som lägger till fynd och bestämningar, till förvaltare som hjälper till med taxonomi och moderering, till de frivilliga översättare som gör iNaturalist mer tillgängligt för en världsomspännande publik, till våra community-baserade donatorer är vi utomordentligt tacksamma för alla människor i vår community som gör iNaturalist till den plattform den är.
 iNaturalist-mission-is-to-connect = iNaturalists mission är att få människor av knyta an till naturen och främja vetenskap om biologisk mångfald samt naturvård.
 INATURALIST-MISSION-VISION = INATURALISTS MISSION & VISION
 INATURALIST-NETWORK = INATURALIST-NÄTVERKET
@@ -549,7 +536,6 @@ INATURALIST-TEAM = INATURALIST-TEAMET
 iNaturalist-users-who-have-left-an-identification = iNaturalist-användare som har lämnat en bestämning på en annan användares fynd
 iNaturalist-users-who-have-observed = iNaturalist-användare som har observerat ett visst taxon vid en viss tidpunkt och plats
 iNaturalist-uses-your-location-to-give-you = iNaturalist använder din plats för att ge dig bättre bestämningsförslag och vi kan automatiskt lägga till en plats till dina fynd, vilket hjälper forskare. Vi använder den också för att hjälpa dig att hitta organismer som observerats nära din plats.
-iNaturalists-apps-are-designed-and-developed = iNaturalists appar designas, utvecklas och stöds av iNaturalist-teamet: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Thea Skaff, Angie Ta, Ken-ichi Ueda, Michelle Vryn, Jason Walthall & Jane Weeden.
 iNaturalists-vision-is-a-world = iNaturalists vision är en värld där alla kan förstå och upprätthålla den biologiska mångfalden genom att observera vilda organismer och dela information om dem.
 Individual-encounters-with-organisms = Individuella möten med organismer vid en viss tidpunkt och plats, vanligtvis med belägg
 INFO-TRANSFER = INFO-ÖVERFÖRING
@@ -695,8 +681,6 @@ No-results-found-for-that-search = Inga resultat hittades för den sökningen.
 No-results-found-try-different-search = Inga resultat hittades. Prova en annan sökning eller justera dina filter.
 # license code
 no-rights-reserved-cc0 = inga rättigheter förbehållna (CC0)
-NONE = INGA
-none = inga
 # Error message title when not enough storage space on device, e.g. when the
 # disk is full and you try to save a photo
 Not-enough-space-left-on-device = Inte tillräckligt med utrymme kvar på enheten
@@ -742,8 +726,6 @@ Observations-you-upload-to-iNaturalist = Fynd som du laddar upp till iNaturalist
 Observe = Observera
 # Title of screen asking for permission to access the gallery
 Observe-and-identify-organisms-from-your-gallery = Observera och bestäm organismer från ditt galleri
-# Title of screen asking for permission to access the camera
-Observe-and-identify-organisms-in-real-time-with-your-camera = Observera och bestäm organismer i realtid med din kamera
 # Text for a button prompting the user to grant access to the camera
 OBSERVE-ORGANISMS = OBSERVERA ORGANISMER
 Observers = Observatörer
@@ -768,12 +750,9 @@ OPEN-EMAIL = ÖPPNA E-POST
 Open-menu = Öppna menyn.
 # Text for a button that opens the operating system Settings app
 OPEN-SETTINGS = ÖPPNA INSTÄLLNINGAR
-Opens-add-comment-modal = Öppnar dialogfönstret "Lägg till kommentar".
-Opens-add-observation-modal = Öppna dialogfönstret "Lägg till fynd".
+# Accessibility hint for button that opens the AI camera
 Opens-AI-camera = Öppnar AI-kamera.
 Opens-location-permission-prompt = Öppnar behörighetsprompten för plats
-# Accessibility hint for button that opens the AI camera
-Opens-the-AI-camera = Öppnar AI-kameran
 Opens-the-side-drawer-menu = Öppnar sidomenyn.
 # Picker prompt on observation edit
 Organism-is-captive = Organismen är i fångenskap
@@ -1157,11 +1136,9 @@ Uploading-x-of-y-observations =
         [one] laddar upp { $currentUploadCount } fynd
        *[other] laddar upp { $currentUploadCount } av { $total } fynd
     }
-Use-iNaturalists-AI-Camera = Använd iNaturalists AI-kamera för att bestämma organismer i realtid
 # Text for a button prompting the user to grant access to location
 USE-LOCATION = ANVÄND PLATS
 Use-the-devices-other-camera = Använd enhetens andra kamera.
-Use-the-iNaturalist-camera-to-observe = Använd iNaturalist-kameran för att observera och bestämma organismer på skärmen i realtid, och dela dem med vår communtiy för att få bestämningar och bidra till vetenskapen!
 Use-your-devices-microphone-to-record = Använd din enhets mikrofon för att spela in ljud gjorda av organismer och dela dem med vår community för att få bestämningar och bidra till vetenskapen!
 USER = ANVÄNDARE
 User = Användare { $userHandle }

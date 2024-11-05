@@ -28,9 +28,6 @@ ABOUT = o
 # Label for button that adds an identification of the same taxon as another identification
 Agree = Slažem se
 All = Svi
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Bilo koji
 Cancel = Otkaži
 # Data Quality Assessment section label: whether or not the observation date is accurate
 Data-quality-assessment-date-is-accurate = Datum je tačan
