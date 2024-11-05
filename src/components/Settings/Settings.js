@@ -1,7 +1,7 @@
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { updateUsers } from "api/users";
 import {
@@ -54,6 +54,18 @@ const Settings = ( ) => {
   const setIsAdvancedUser = useStore( state => state.setIsAdvancedUser );
   const [settings, setSettings] = useState( {} );
   const [isSaving, setIsSaving] = useState( false );
+  const [showingWebViewSettings, setShowingWebViewSettings] = useState( false );
+
+  useFocusEffect(
+    useCallback( () => {
+      if ( showingWebViewSettings ) {
+        // When we get back from the webview of settings - in case the user updated their profile
+        // photo or other details
+        refetchUserMe();
+        setShowingWebViewSettings( false );
+      }
+    }, [showingWebViewSettings, refetchUserMe] )
+  );
 
   const confirmInternetConnection = useCallback( ( ) => {
     if ( !isConnected ) {
@@ -196,6 +208,8 @@ const Settings = ( ) => {
         onPress={() => {
           confirmInternetConnection( );
           if ( !isConnected ) { return; }
+          setShowingWebViewSettings( true );
+
           navigation.navigate( "FullPageWebView", {
             title: t( "ACCOUNT-SETTINGS" ),
             loggedIn: true,
