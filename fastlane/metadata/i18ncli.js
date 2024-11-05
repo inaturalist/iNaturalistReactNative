@@ -65,6 +65,96 @@ const MAPPINGS = {
   pt_BR: "pt-BR"
 };
 
+const SUPPORTED_ANDROID_METADATA_LOCALES = [
+  "af",
+  "sq",
+  "am",
+  "ar",
+  "hy-AM",
+  "az-AZ",
+  "bn-BD",
+  "eu-ES",
+  "be",
+  "bg",
+  "my-MM",
+  "ca",
+  "zh-HK",
+  "zh-CN",
+  "zh-TW",
+  "hr",
+  "cs-CZ",
+  "da-DK",
+  "nl-NL",
+  "en-AU",
+  "en-CA",
+  "en-GB",
+  "en-IN",
+  "en-SG",
+  "en-US",
+  "en-ZA",
+  "et",
+  "fil",
+  "fi-FI",
+  "fr-CA",
+  "fr-FR",
+  "gl-ES",
+  "ka-GE",
+  "de-DE",
+  "el-GR",
+  "gu",
+  "iw-IL",
+  "hi-IN",
+  "hu-HU",
+  "is-IS",
+  "id",
+  "it-IT",
+  "ja-JP",
+  "kn-IN",
+  "kk",
+  "km-KH",
+  "ko-KR",
+  "ky-KG",
+  "lo-LA",
+  "lv",
+  "lt",
+  "mk-MK",
+  "ms-MY",
+  "ms",
+  "ml-IN",
+  "mr-IN",
+  "mn-MN",
+  "ne-NP",
+  "no-NO",
+  "fa",
+  "fa-AE",
+  "fa-AF",
+  "fa-IR",
+  "pl-PL",
+  "pt-BR",
+  "pt-PT",
+  "pa",
+  "ro",
+  "rm",
+  "ru-RU",
+  "sr",
+  "si-LK",
+  "sk",
+  "sl",
+  "es-41",
+  "es-ES",
+  "es-US",
+  "sw",
+  "sv-SE",
+  "ta-IN",
+  "te-IN",
+  "th",
+  "tr-TR",
+  "uk",
+  "ur",
+  "vi",
+  "zu"
+];
+
 const ANDROID_MAPPINGS = {
   "af-ZA": "af",
   "sq-AL": "sq",
@@ -72,6 +162,7 @@ const ANDROID_MAPPINGS = {
   "be-BY": "be",
   "bg-BG": "bg",
   "ca-ES": "ca",
+  "he-IL": "iw-IL",
   "hr-HR": "hr",
   "et-EE": "et",
   "fil-PH": "fil",
@@ -80,10 +171,12 @@ const ANDROID_MAPPINGS = {
   "kk-KZ": "kk",
   "lv-LV": "lv",
   "lt-LT": "lt",
+  // TODO: change in crowdin?
+  "nb-NO": "no-NO",
   "pa-IN": "pa",
   "ro-RO": "ro",
   "rm-CH": "rm",
-  "sr-RS": "sr",
+  "sr-CS": "sr",
   "sk-SK": "sk",
   "sl-SI": "sl",
   "sw-KE": "sw",
@@ -123,7 +216,7 @@ async function renameDirectories( ) {
     withFileTypes: true
   } ).then( files => files.filter( file => file.isDirectory( ) ).map( file => file.name ) );
   console.log( "Current list of the directories in fastlane/metadata/android", androidDirectories );
-  await Promise.all( androidDirectories.map( async directory => {
+  return Promise.all( androidDirectories.map( async directory => {
     const locale = ANDROID_MAPPINGS[directory];
     if ( !locale ) return;
     const directoryPath = path.join( __dirname, "android", directory );
@@ -142,13 +235,26 @@ async function renameDirectories( ) {
 
 async function removeUnsupportedDirectories( ) {
   // Get all directories in fastlane/metadata/ios
-  const directories = await fsp.readdir( path.join( __dirname, "ios" ), {
+  const iosDirectories = await fsp.readdir( path.join( __dirname, "ios" ), {
     withFileTypes: true
   } ).then( files => files.filter( file => file.isDirectory( ) ).map( file => file.name ) );
-  console.log( "Current list of the directories in fastlane/metadata/ios", directories );
-  return Promise.all( directories.map( async directory => {
+  console.log( "Current list of the directories in fastlane/metadata/ios", iosDirectories );
+  await Promise.all( iosDirectories.map( async directory => {
     if ( SUPPORTED_IOS_METADATA_LOCALES.indexOf( directory ) >= 0 ) return;
     const directoryPath = path.join( __dirname, "ios", directory );
+    console.log( "Removing unsupported directory", directoryPath );
+    await fsp.rmdir( directoryPath, { recursive: true } );
+  } ) );
+  const androidDirectories = await fsp.readdir( path.join( __dirname, "android" ), {
+    withFileTypes: true
+  } ).then( files => files.filter( file => file.isDirectory( ) ).map( file => file.name ) );
+  console.log( "Current list of the directories in fastlane/metadata/android", androidDirectories );
+  return Promise.all( androidDirectories.map( async directory => {
+    if ( SUPPORTED_ANDROID_METADATA_LOCALES.indexOf( directory ) >= 0 ) {
+      console.log( "Supported directory", directory );
+      return;
+    }
+    const directoryPath = path.join( __dirname, "android", directory );
     console.log( "Removing unsupported directory", directoryPath );
     await fsp.rmdir( directoryPath, { recursive: true } );
   } ) );
