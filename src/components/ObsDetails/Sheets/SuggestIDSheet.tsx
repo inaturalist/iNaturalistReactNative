@@ -77,7 +77,7 @@ const SuggestIDSheet = ( {
             }}
             className="mx-2 flex-1"
             testID="SuggestID.commentButton"
-            accessibilityHint={t( "Opens-add-comment-modal" )}
+            accessibilityHint={t( "Opens-add-comment-form" )}
           />
         )}
       <Button

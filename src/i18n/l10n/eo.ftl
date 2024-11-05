@@ -30,9 +30,6 @@ Agree = Konsenti
 All = Ĉiuj
 All-observations = Ĉiuj observoj
 All-taxa = Ĉiuj taksonoj
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Ajna
 # Month of April
 April = aprilo
 # Month of August
@@ -92,7 +89,6 @@ Native = Indiĝena
 Nearby = Apude
 # Quality grade indicating observation still needs more identifications
 Needs-ID--quality-grade = Bezonas ID
-none = nenio
 # Month of November
 November = novembro
 Obscured = Obskurita

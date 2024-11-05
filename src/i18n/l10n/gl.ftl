@@ -35,9 +35,6 @@ All-observations = Tódalas observacións
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = Todos os dereitos reservados
 All-taxa = Tódolos taxons
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Calquera
 # Month of April
 April = abril
 # Month of August
@@ -99,7 +96,8 @@ Endemic = Endémica
 Error = Erro
 # Title of dialog or section describing an error
 Error-title = Erro
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = Clasificación
 Exact-Date = Data Exacta
 except = Agás
@@ -163,7 +161,6 @@ Needs-ID--quality-grade = Precisa identificación
 New-Observation = Nova Observación
 No-Location = Sen Ubicación
 No-Media = Sen Medios
-none = Ningún
 Notifications = Notificacións
 # Month of November
 November = novembro

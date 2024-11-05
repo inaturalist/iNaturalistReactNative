@@ -25,6 +25,8 @@
 
 # Header for a general description, e.g. of a user, or of iNaturalist itself
 ABOUT = RÓLA
+# Label for button that shows all account settings
+ACCOUNT-SETTINGS = FIÓKBEÁLLÍTÁSOK
 # Label for button that adds an identification of the same taxon as another identification
 Agree = Egyetért
 # Label for button that adds an identification of the same taxon as another identification
@@ -35,9 +37,6 @@ All-observations = Minden megfigyelés
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = minden jog fenntartva
 All-taxa = Minden taxon
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Bármely
 # Month of April
 April = Április
 # Month of August
@@ -49,8 +48,20 @@ Cancel = Mégse
 Casual--quality-grade = Hobbiszintű
 # Label for a button that closes a window or popup
 Close = Bezárás
+# Accessibility hint for button that closes the introductory slides that
+# appear when you first install the app
+Closes-introduction = A Bemutatkozás bezárása
 Collection-Project = Gyűjtőprojekt
+Community-based = Közösségtől származó
 Community-Guidelines = Közösségi irányelvek
+# Onboarding header (underneath the logo)
+CONNECT-TO-NATURE = KAPCSOLÓDJ A TERMÉSZETHEZ
+# Onboarding slides
+Connect-to-Nature = Kapcsolódj a természethez
+# Continue button in onboarding screen
+CONTINUE = FOLYTATÁS
+# Onboarding message describing one of the reasons to use iNat
+Contribute-to-Science = Hozzájárulás a közösségi tudományhoz
 # Notification when coordinates have been copied
 Coordinates-copied-to-clipboard = A koordináták a vágólapra másolva
 # Data Quality Assessment section label: whether or not the observation date is accurate
@@ -95,13 +106,15 @@ DONATE = TÁMOGATÁS
 # Button for editing something
 Edit = Módosítás
 Edit-Observation = Megfigyelés szerkesztése
+Edit-your-profile-change-your-settings = Profil szerkesztése, értesítési beállítások, fiókbeállítások kezelése.
 # Indicates a species only occurs in a specific place
 Endemic = Endemikus
 # Title for a section describing an error
 Error = Hiba
 # Title of dialog or section describing an error
 Error-title = Hiba
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = Honosság
 Exact-Date = Pontos dátum
 except = kivéve
@@ -123,8 +136,11 @@ Hide = Elrejtés
 # Identification Status
 ID-Withdrawn = Azonosítás visszavonva
 Identifiers = Meghatározók
+# Onboarding message describing one of the reasons to use iNat
+Identify-record-learn = Az iNaturalist használatával rögzíts megfigyeléseket, határozz meg bármilyen élőlényet és tanulj róluk.
 # Identification category
 improving--identification = Javító
+iNat-is-global-community = Az iNaturalist természetbarátok globális közössége, amely az élőlények kollektív megfigyelése és azonosítása révén tudományos szempontból értékes adatokat szolgáltat a természetről.
 Introduced = Jövevény
 # Month of January
 January = Január
@@ -166,13 +182,13 @@ Needs-ID--quality-grade = Meghatározásra vár
 New-Observation = Új megfigyelés
 No-Location = Nincs helyadat
 No-Media = Nincs média
-none = egyik sem
 Notifications = Értesítések
 # Month of November
 November = November
 Obscured = Kitakart
 Observation = Megfigyelés
 Observations = Megfigyelések
+Observations-on-iNat-are-cited = Az iNaturalistra feltöltött megfigyelésekre tudományos kutatások hivatkoznak, azok újbóli felfedezésekhez vezetnek és segítenek a tudománynak a természet alaposabb megismerésében.
 # Button that starts a new observation
 Observe = Észlelés
 Observers = Megfigyelők
@@ -233,6 +249,8 @@ Ranks-Tribe = Nemzetségcsoport
 Ranks-Variety = Változat
 Ranks-Zoosection = Osztag
 Ranks-Zoosubsection = Alosztag
+# Help text for the button that opens the sound recorder
+Record-a-sound = Hangfelvétel
 # Imperative verb for recording a sound
 Record-verb = Rögzítés
 # Label for button that removes an identification
@@ -270,9 +288,13 @@ Stop-verb = Leállítás
 # Identification category
 supporting--identification = Megerősítő
 Syncing = Szinkronizálás...
+# Help text for the button that opens the multi-capture camera
+Take-multiple-photos-of-a-single-organism = Több fénykép készítése ugyanarról az élőlényről
 # label in project requirements
 Taxa = Taxon
 Terms-of-Use = Felhasználási feltételek
+# Describes what happens when geoprivacy is set to private
+The-location-will-not-be-visible-to-others = A hely mások számára nem látható, ami lehetetlenné teheti az azonosítást
 Traditional-Project = Hagyományos projekt
 Umbrella-Project = Ernyőprojekt
 # Text to show when a taoxn rank is unknown or missing

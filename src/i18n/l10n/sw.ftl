@@ -29,9 +29,6 @@ ABOUT = KUHUSU
 AGREE = KUBALI
 ALL = YOTE
 All = Yote
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Yoyote
 Cancel = Futa
 # Data Quality Assessment section label: whether or not the observation date is accurate
 Data-quality-assessment-date-is-accurate = Tarehe ni sahihi

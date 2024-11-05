@@ -90,9 +90,6 @@ ALLOW-LOCATION-ACCESS = TILLAD PLACERINGSADGANG
 Almost-done = Næsten færdig!
 Already-have-an-account = Har allerede en konto? Log ind
 An-Internet-connection-is-required = Indlæsning af flere observationer kræver internetadgang.
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Erhvert
 #  Geoprivacy sheet descriptions
 Anyone-using-iNaturalist-can-see = Alle brugere af iNaturalist, kan se, hvor denne art blev observeret, og videnskabsfolk kan lettere bruge den til forskning.
 APP-LANGUAGE = APP-SPROG
@@ -185,6 +182,9 @@ Close = Luk
 Close-permission-request-screen = Luk tilladelsesanmodningsskærmen
 # Label for a button that closes a search interface
 Close-search = Luk søgning
+# Accessibility hint for button that closes the introductory slides that
+# appear when you first install the app
+Closes-introduction = Lukker introduktionen
 Closes-new-observation-options = Lukker nye observationsvalgmuligheder.
 Closes-withdraw-id-sheet = Lukker "Tilbagetræk ID"-arket
 # Heading for a section that describes people and organizations that
@@ -199,14 +199,23 @@ COMMENT = KOMMENTAR
 Comment-options = Kommentarvalgmuligheder
 # Label for a setting that shows the common name first
 Common-Name-Scientific-Name = Almindeligt navn (Videnskabeligt navn)
+Community-based = Fællesskabsbaseret
 Community-Guidelines = Fællesskabsretningslinjer
 COMMUNITY-GUIDELINES = FÆLLESSKABSRETNINGSLINJER
 # Button that confirms a choice the user has made
 CONFIRM = BEKRÆFT
+# Onboarding header (underneath the logo)
+CONNECT-TO-NATURE = FORBIND MED NATUREN
+# Onboarding slides
+Connect-to-Nature = Forbind med naturen
 Connect-with-other-naturalists = Kom i kontakt med andre naturkyndige og deltag i samtaler.
 Connection-problem-Please-try-again-later = Forbindelsesproblem. Forsøg igen senere.
 CONTACT-SUPPORT = KONTAKT SUPPORTEN
+# Continue button in onboarding screen
+CONTINUE = FORTSÆT
 Continue-to-iNaturalist = Fortsæt til iNaturalist
+# Onboarding message describing one of the reasons to use iNat
+Contribute-to-Science = Bidrag til videnskaben
 # Notification when coordinates have been copied
 Coordinates-copied-to-clipboard = Koordinater kopieret til udklipsholder
 # Button that copies coordinates to the clipboard
@@ -319,15 +328,6 @@ Delete-photo = Slet foto
 Delete-sound = Slet lyd
 # Hint for a button that clears text you entered
 Deletes-entered-text = Sletter angivet tekst
-# Shows the progress of deletions for X of Y observations, but omits the
-# word "observations" so the message won't get cut off on small screens
-Deleting-x-of-y = Sletter { $currentDeleteCount } af { $total }
-# Shows the number of observations a user is currently deleting out of total on my observations page
-Deleting-x-of-y-observations =
-    Sletter { $currentDeleteCount } af { $total ->
-        [one] 1 observation
-       *[other] { $total } observationer
-    }
 # Tab label or section title for content that describes further details, e.g.
 # the details of an observation
 DETAILS = DETALJER
@@ -397,11 +397,11 @@ ERROR-LOADING-DQA = FEJL UNDER INDLÆSNING I DQA
 Error-title = Fejl
 ERROR-VOTING-IN-DQA = FEJL UNDER STEMMEAFGIVELSE I DQA
 Error-voting-in-DQA-description = Stemmeafgivelsen er muligvis ikke registreret i DQA. Tjek internetforbindelsen, og forsøg igen.
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = Oprindelse
-ESTABLISHMENT-MEANS = ETABLERINGSMIDLER
 # Header for a section describing how a taxon arrived in a given place
-ESTABLISHMENT-MEANS-header = ETABLERINGSMIDLER
+ESTABLISHMENT-MEANS = ETABLERINGSMIDLER
 Every-observation-needs = Hver observation behøver en placering, dato og tid for at være nyttige for identifikatorer. Man kan redigere geofortrolighed, hvis man er bekymret for placeringsfortroligheden.
 Every-time-a-collection-project = Hver gang et indsamlingsprojekts side indlæses, vil iNaturalist udføre en hurtig søgning og vise alle observationer matchende projektets krav. Det er en nem måde at vise et sæt observationer på, såsom for et klasseprojekt, en park eller en bioblitz, uden at få deltagerne til at tage det ekstra skridt manuelt at føje deres observationer til et projekt.
 EVIDENCE = BEVIS
@@ -495,7 +495,15 @@ Identifiers = identifikatorer
 Identifiers-View = Identifikatorvisning
 Identify-an-organism = Identificér en organisme
 Identify-an-organism-with-the-iNaturalist-AI-Camera = Identificér en organisme med iNaturalist AI-kamera
+# Onboarding message describing one of the reasons to use iNat
+Identify-record-learn = Identificér, registrér og få viden om alle levende arter på jorden med iNaturalist
 If-an-account-with-that-email-exists = Findes en konto med denne e-mail, har vi sendt en vejledning til nulstilling af adgangskode til denne e-mail.
+# Explanation that observations are removed from a collection project
+If-you-leave-x-of-your-observations-removed =
+    Forlader man dette traditionelle projekt, fjernes { $count ->
+        [one] 1 af ens observationer
+       *[other] { $count } af ens observationer
+    } ligeledes fra projektet.
 If-you-want-to-collate-compare-promote = Ønsker man at samle, sammenligne eller promovere et sæt af eksisterende projekter, så er et Umbrella-projekt, hvad man skal bruge. F.eks. skabte 2018 City Nature Challenge, der samlede over 60 projekter, en fantastisk indgangsside, hvor enhver kunne sammenligne og kontrastere hver bys observationer. Både Samling og Traditionelle projekter kan bruges i et Umbrella-projekt, og op til 500 projekter kan samles af et Umbrella-projekt.
 If-youre-seeing-this-error = Ser man dette, og man er online, er iNat-personale allerede blevet underrettet. Tak for at opdage fejlen! Er man offline, bedes man tage et skærmfoto og sende os en e-mail, når man igen er internetforbundet.
 IGNORE-LOCATION = IGNORÉR PLACERING
@@ -509,6 +517,7 @@ IMPORT-X-OBSERVATIONS =
 IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = FORBEDR DISSE FORSLAG VED BRUG AF AKTUEL PLACERING
 # Identification category
 improving--identification = Forbedrende
+iNat-is-global-community = iNaturalist er et globalt fællesskab af naturelskere, der skaber åbne data til videnskaben ved kollektivt at observere og identificere organismer
 INATURALIST-ACCOUNT-SETTINGS = INDSTILLINGER FOR INATURALIST-KONTO
 iNaturalist-AI-Camera = iNaturalist AI-kamera
 iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNaturalist kan gemme fotos taget i appen i enhedens Galleri.
@@ -522,7 +531,6 @@ iNaturalist-is-a-501 = iNaturalist er en 501(c)(3) non-profit organisation i USA
 iNaturalist-is-a-community-of-naturalists = iNaturalist er et fællesskab af naturalister, som samarbejder om at oprette og identificere vilde biodiversitetsobservationer.
 iNaturalist-is-loading-ID-suggestions = iNaturalist indlæser ID-forslag...
 iNaturalist-is-supported-by = iNaturalist er støttet af en uafhængig, 501(c)(3) non-profit organisation baseret i USA. INaturalist-platformen omfatter denne app, Seek fra iNaturalist, iNaturalist-webstedet og meget mere.
-iNaturalist-is-supported-by-community = iNaturalist understøttes af vores fantastiske fællesskab. Fra hverdagsnaturalister, som tilføjer observationer og identifikationer, til kuratorer, som hjælper med kuration af taksonomi og moderering, til de frivillige oversættere, som gør iNaturalist mere tilgængelig for et verdensomspændende publikum, til vores fællesskabsbaserede donorer. Vi er overordentlig taknemmelige for alle de personer i vores fællesskab, som gør iNaturalist til den platform, den er.
 iNaturalist-mission-is-to-connect = iNaturalists mission er at forbinde folk med naturen og fremme biodiversitetsvidenskab og -bevaring.
 INATURALIST-MISSION-VISION = INATURALISTS MISSION OG VISION
 INATURALIST-NETWORK = INATURALIST NETWORK
@@ -537,7 +545,6 @@ INATURALIST-TEAM = INATURALIST-TEAM
 iNaturalist-users-who-have-left-an-identification = iNaturalist-brugere, som har foretaget en identifikation på en anden brugers observation
 iNaturalist-users-who-have-observed = iNaturalist-brugere, som har observeret en bestemt takson på et bestemt tidspunkt og sted
 iNaturalist-uses-your-location-to-give-you = iNaturalist anvender den aktuelle placering til at give bedre identifikationsforslag, og vi kan automatisk føje en placering til en brugers observationer, hvilket hjælper forskerne. Vi bruger den også til at hjælpe brugeren med at finde organismer, som er observeret i nærheden af den aktuelle placering.
-iNaturalists-apps-are-designed-and-developed = Naturalists-apps er designet, udviklet og støttet af iNaturalist-teamet: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Thea Skaff, Angie Ta, Ken-ichi Ueda, Michelle Vryn, Jason Walthall og Jane Weeden.
 iNaturalists-vision-is-a-world = iNaturalists vision er en verden, hvor alle kan forstå og opretholde biodiversiteten ved at observere vilde organismer og dele oplysninger herom.
 Individual-encounters-with-organisms = Individuelle møder med organismer på et bestemt tidspunkt og sted, sædvanligvis med bevis
 INFO-TRANSFER = INFO OVERFØRSEL
@@ -551,6 +558,8 @@ It-may-take-up-to-an-hour-to-remove-content = En fuldstændig sletning af alt ti
 January = Januar
 JOIN = TILMELD
 JOIN-PROJECT = DELTAG I PROJEKT
+# Asking for confirmation if the user wants to join this project
+JOIN-PROJECT--question = DELTAG I PROJEKT?
 Join-the-largest-community-of-naturalists = Bliv en del af verdens største gruppe af naturelskere
 # Header for joined projects
 JOINED = DELTAGER
@@ -583,6 +592,8 @@ leading--identification = Ledende
 Learn-More = Lær mere
 LEAVE = FORLAD
 LEAVE-PROJECT = FORLAD PROJEKT
+# Asking for confirmation if the user wants to leave this project
+LEAVE-PROJECT--question = FORLAD PROJEKT?
 LEAVE-US-A-REVIEW = SKRIV EN ANMELDELSE
 LICENSES = LICENSER
 # Label for button to switch to a list layout of observations
@@ -679,8 +690,6 @@ No-results-found-for-that-search = Ingen resultater fundet for denne søgning.
 No-results-found-try-different-search = Ingen resultater fundet. Prøv med en anden søgning eller justér filtrene.
 # license code
 no-rights-reserved-cc0 = ingen rettigheder forbeholdes (CC0)
-NONE = INTET
-none = ingen
 # Error message title when not enough storage space on device, e.g. when the
 # disk is full and you try to save a photo
 Not-enough-space-left-on-device = Ikke nok ledig lagerplads på enhed
@@ -712,6 +721,7 @@ OBSERVATION-WAS-DELETED = OBSERVATION ER SLETTET
 Observation-with-no-evidence = Observation uden bevis
 Observations = Observationer
 Observations-created-on-iNaturalist = Observationer oprettet på iNaturalist anvendes af videnskabsfolk verden over.
+Observations-on-iNat-are-cited = Observationer på iNaturalist citeres i videnskabelige papirer, har ført til opdagelser og hjælpe videnskabsfolk med at forstå livet på vores planet
 Observations-View = Observationsvisning
 # Might be used when the number is represented using an image or other
 # element, not text
@@ -726,8 +736,6 @@ Observations-you-upload-to-iNaturalist = Observationer uploadet til iNaturalist 
 Observe = Observere
 # Title of screen asking for permission to access the gallery
 Observe-and-identify-organisms-from-your-gallery = Observere og identificere organismer fra eget Galleri
-# Title of screen asking for permission to access the camera
-Observe-and-identify-organisms-in-real-time-with-your-camera = Observere og identificere organismer i realtid med enhedens kamera
 # Text for a button prompting the user to grant access to the camera
 OBSERVE-ORGANISMS = OBSERVÉR ORGANISMER
 Observers = Observatører
@@ -752,12 +760,9 @@ OPEN-EMAIL = ÅBN E-MAIL
 Open-menu = Åbn menu
 # Text for a button that opens the operating system Settings app
 OPEN-SETTINGS = ÅBN INDSTILLINGER
-Opens-add-comment-modal = Åbner skærmen Tilføj kommentar.
-Opens-add-observation-modal = Åbner skærmen Tilføj observation.
+# Accessibility hint for button that opens the AI camera
 Opens-AI-camera = Åbner AI-kamera.
 Opens-location-permission-prompt = Åbner placeringstilladelsesprompt
-# Accessibility hint for button that opens the AI camera
-Opens-the-AI-camera = Åbner AI-kameraet
 Opens-the-side-drawer-menu = Åbner sidepanelmenuen.
 # Picker prompt on observation edit
 Organism-is-captive = Organisme er i fangenskab
@@ -1141,11 +1146,9 @@ Uploading-x-of-y-observations =
         [one] Uploader { $currentUploadCount } observation
        *[other] Uploader { $currentUploadCount } af { $total } observationer
     }
-Use-iNaturalists-AI-Camera = Brug iNaturalists AI-kamera til at identificere organismer i realtid
 # Text for a button prompting the user to grant access to location
 USE-LOCATION = ANVEND PLACERING
 Use-the-devices-other-camera = Brug enhedens andet kamera.
-Use-the-iNaturalist-camera-to-observe = Brug iNaturalist-kameraet til at observere og identificere organismer på skærmen i realtid, og del dem med vores fællesskab for at få identifikation og bidrage til videnskaben!
 Use-your-devices-microphone-to-record = Brug enhedens mikrofon til at optage lyde fra organismer, og del dem med vores fællesskab for at få identifikation og bidrage til videnskaben!
 USER = BRUGER
 User = Bruger { $userHandle }

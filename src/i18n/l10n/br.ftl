@@ -69,7 +69,6 @@ May = Mae
 Native = henvroad
 # Header or button label for content that is near the user's current location
 Nearby = Tostik
-none = hini ebet
 # Month of November
 November = Du
 Obscured = Kuzhet

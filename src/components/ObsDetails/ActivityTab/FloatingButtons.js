@@ -39,7 +39,7 @@ const FloatingButtons = ( {
         className="w-1/2 mx-6"
         testID="ObsDetail.commentButton"
         disabled={showAddCommentSheet}
-        accessibilityHint={t( "Opens-add-comment-modal" )}
+        accessibilityHint={t( "Opens-add-comment-form" )}
       />
       <Button
         text={t( "SUGGEST-ID" )}

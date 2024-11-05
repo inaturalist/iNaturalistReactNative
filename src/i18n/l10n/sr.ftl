@@ -35,9 +35,6 @@ All-observations = Sve opservacije
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = sva prava zadržana
 All-taxa = Svi taksoni
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Sve
 # Month of April
 April = April
 # Month of August
@@ -156,7 +153,6 @@ Needs-ID--quality-grade = Potreban ID
 New-Observation = Nova opservacija
 No-Location = Nema lokacije
 No-Media = Nema medija
-none = nema
 Notifications = Obaveštenja
 # Month of November
 November = Novembar
