@@ -260,6 +260,24 @@ async function removeUnsupportedDirectories( ) {
   } ) );
 }
 
+async function copyAndroidTitle() {
+  // Get all directories in fastlane/metadata/android
+  const androidDirectories = await fsp
+    .readdir( path.join( __dirname, "android" ), {
+      withFileTypes: true
+    } )
+    .then( files => files.filter( file => file.isDirectory() ).map( file => file.name ) );
+  // Copy title.txt from en-US directory into all the other directories
+  const titlePath = path.join( __dirname, "android", "en-US", "title.txt" );
+  await Promise.all(
+    androidDirectories.map( async directory => {
+      const directoryPath = path.join( __dirname, "android", directory );
+      console.log( "Copying title.tx into: ", directoryPath );
+      await fsp.copyFile( titlePath, path.join( directoryPath, "title.txt" ) );
+    } )
+  );
+}
+
 // eslint-disable-next-line no-unused-expressions
 yargs
   .usage( "Usage: $0 <cmd> [args]" )
@@ -271,6 +289,7 @@ yargs
     async ( ) => {
       await renameDirectories();
       await removeUnsupportedDirectories();
+      await copyAndroidTitle();
     }
   )
   .command(
@@ -287,6 +306,14 @@ yargs
     ( ) => undefined,
     _argv => {
       renameDirectories( );
+    }
+  )
+  .command(
+    "copyAndroidTitle",
+    "copyAndroidTitle",
+    ( ) => undefined,
+    _argv => {
+      copyAndroidTitle( );
     }
   )
   .help( )
