@@ -3,6 +3,7 @@ import {
 } from "detox";
 
 import { iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
+import closeOnboarding from "./sharedFlows/closeOnboarding";
 import deleteObservation from "./sharedFlows/deleteObservation";
 import signIn from "./sharedFlows/signIn";
 import switchPowerMode from "./sharedFlows/switchPowerMode";
@@ -57,6 +58,7 @@ describe( "Signed in user", () => {
   }
 
   it( "should create an observation, add a comment, and delete the observation", async () => {
+    await closeOnboarding( );
     /*
     / 1. Sign in
     */

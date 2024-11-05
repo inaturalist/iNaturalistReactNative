@@ -3,6 +3,7 @@ import {
 } from "detox";
 
 import { iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
+import closeOnboarding from "./sharedFlows/closeOnboarding";
 import deleteObservation from "./sharedFlows/deleteObservation";
 import signIn from "./sharedFlows/signIn";
 import switchPowerMode from "./sharedFlows/switchPowerMode";
@@ -15,6 +16,7 @@ describe( "AICamera", () => {
   it(
     "should open the ai camera, take photo, select a suggestion, upload and delete observation",
     async () => {
+      await closeOnboarding( );
       /*
       / 1. Sign in
       */

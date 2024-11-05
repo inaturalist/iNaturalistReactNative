@@ -185,6 +185,9 @@ Close = Close
 Close-permission-request-screen = Close permission request screen
 # Label for a button that closes a search interface
 Close-search = Close search
+# Accessibility hint for button that closes the introductory slides that
+# appear when you first install the app
+Closes-introduction = Closes introduction
 Closes-new-observation-options = Closes new observation options.
 Closes-withdraw-id-sheet = Closes "Withdraw ID" sheet
 # Heading for a section that describes people and organizations that
@@ -199,14 +202,23 @@ COMMENT = COMMENT
 Comment-options = Comment options
 # Label for a setting that shows the common name first
 Common-Name-Scientific-Name = Common Name (Scientific Name)
+Community-based = Community-based
 Community-Guidelines = Community Guidelines
 COMMUNITY-GUIDELINES = COMMUNITY GUIDELINES
 # Button that confirms a choice the user has made
 CONFIRM = CONFIRM
+# Onboarding header (underneath the logo)
+CONNECT-TO-NATURE = CONNECT TO NATURE
+# Onboarding slides
+Connect-to-Nature = Connect to Nature
 Connect-with-other-naturalists = Connect with other naturalists and engage in conversations.
 Connection-problem-Please-try-again-later = Connection problem. Please try again later.
 CONTACT-SUPPORT = CONTACT SUPPORT
+# Continue button in onboarding screen
+CONTINUE = CONTINUE
 Continue-to-iNaturalist = Continue to iNaturalist
+# Onboarding message describing one of the reasons to use iNat
+Contribute-to-Science = Contribute to Science
 # Notification when coordinates have been copied
 Coordinates-copied-to-clipboard = Coordinates copied to clipboard
 # Button that copies coordinates to the clipboard
@@ -493,6 +505,8 @@ Identifiers = Identifiers
 Identifiers-View = Identifiers View
 Identify-an-organism = Identify an organism
 Identify-an-organism-with-the-iNaturalist-AI-Camera = Identify an organism with the iNaturalist AI Camera
+# Onboarding message describing one of the reasons to use iNat
+Identify-record-learn = Identify, record, and learn about every living species on earth using iNaturalist
 If-an-account-with-that-email-exists = If an account with that email exists, we've sent password reset instructions to your email.
 # Explanation that observations are removed from a collection project
 If-you-leave-x-of-your-observations-removed =
@@ -513,6 +527,7 @@ IMPORT-X-OBSERVATIONS =
 IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = IMPROVE THESE SUGGESTIONS BY USING YOUR LOCATION
 # Identification category
 improving--identification = Improving
+iNat-is-global-community = iNaturalist is a global community of naturalists creating open data for science by collectively observing & identifying organisms
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT SETTINGS
 iNaturalist-AI-Camera = iNaturalist AI Camera
 iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNaturalist can save photos you take in the app to your device’s gallery.
@@ -720,6 +735,7 @@ OBSERVATION-WAS-DELETED = OBSERVATION WAS DELETED
 Observation-with-no-evidence = Observation with no evidence
 Observations = Observations
 Observations-created-on-iNaturalist = Observations created on iNaturalist are used by scientists around the world.
+Observations-on-iNat-are-cited = Observations on iNaturalist are cited in scientific papers, have led to rediscoveries, and help scientists understand life on our planet
 Observations-View = Observations View
 # Might be used when the number is represented using an image or other
 # element, not text

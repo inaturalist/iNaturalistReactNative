@@ -8,6 +8,7 @@ import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import ReactNativePermissions from "react-native-permissions";
 import Observation from "realmModels/Observation";
+import { storage } from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
@@ -44,6 +45,11 @@ jest.mock( "sharedHelpers/fetchUserLocation", () => ( {
   __esModule: true,
   default: () => mockFetchUserLocation()
 } ) );
+
+beforeAll( ( ) => {
+  // Hide the onboarding modal
+  storage.set( "onBoardingShown", true );
+} );
 
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
@@ -88,8 +94,10 @@ beforeAll( async () => {
 const actor = userEvent.setup( );
 
 async function navigateToObsDetails( ) {
-  global.timeTravel( );
-  expect( await screen.findByText( /Welcome back/ ) ).toBeVisible( );
+  await waitFor( ( ) => {
+    global.timeTravel( );
+    expect( screen.getByText( /Welcome back/ ) ).toBeVisible( );
+  } );
   const firstObservation = await screen.findByTestId(
     `ObsPressable.${mockObservations[0].uuid}`
   );
@@ -119,13 +127,15 @@ describe( "logged in", ( ) => {
       Observation.upsertRemoteObservations( mockObservations, global.mockRealms[__filename] );
     } );
 
-    global.withAnimatedTimeTravelEnabled( );
+    global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
 
     describe( "from MyObs toolbar", ( ) => {
       it( "should show observations view and navigate back to MyObs", async ( ) => {
         renderApp( );
-        global.timeTravel( );
-        expect( await screen.findByText( /Welcome back/ ) ).toBeVisible( );
+        await waitFor( ( ) => {
+          global.timeTravel( );
+          expect( screen.getByText( /Welcome back/ ) ).toBeVisible( );
+        } );
         const exploreButton = await screen.findByLabelText( /See all your observations in explore/ );
         await actor.press( exploreButton );
         expect( inatjs.observations.search ).toHaveBeenCalledWith( expect.objectContaining( {

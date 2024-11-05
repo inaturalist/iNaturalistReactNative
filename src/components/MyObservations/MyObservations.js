@@ -1,12 +1,14 @@
 // @flow
 import MyObservationsHeader from "components/MyObservations/MyObservationsHeader";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
+import OnboardingCarouselModal from "components/Onboarding/OnboardingCarouselModal";
 import {
   ScrollableWithStickyHeader,
   ViewWrapper
 } from "components/SharedComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useState } from "react";
+import { storage } from "stores/useStore";
 
 import Announcements from "./Announcements";
 import LoginSheet from "./LoginSheet";
@@ -30,6 +32,8 @@ type Props = {
   toggleLayout: Function
 };
 
+const ONBOARDING_SHOWN = "onBoardingShown";
+
 const MyObservations = ( {
   currentUser,
   handleIndividualUploadPress,
@@ -47,49 +51,60 @@ const MyObservations = ( {
   showLoginSheet,
   showNoResults,
   toggleLayout
-}: Props ): Node => (
-  <>
-    <ViewWrapper>
-      <ScrollableWithStickyHeader
-        onScroll={onScroll}
-        renderHeader={setStickyAt => (
-          <MyObservationsHeader
-            currentUser={currentUser}
-            handleSyncButtonPress={handleSyncButtonPress}
-            hideToolbar={observations.length === 0}
-            layout={layout}
-            logInButtonNeutral={observations.length === 0}
-            numUnuploadedObservations={numUnuploadedObservations}
-            setHeightAboveToolbar={setStickyAt}
-            toggleLayout={toggleLayout}
-          />
-        )}
-        renderScrollable={animatedScrollEvent => (
-          <ObservationsFlashList
-            dataCanBeFetched={!!currentUser}
-            data={observations.filter( o => o.isValid() )}
-            handleIndividualUploadPress={handleIndividualUploadPress}
-            onScroll={animatedScrollEvent}
-            hideLoadingWheel={!isFetchingNextPage || !currentUser}
-            isFetchingNextPage={isFetchingNextPage}
-            isConnected={isConnected}
-            obsListKey="MyObservations"
-            layout={layout}
-            onEndReached={onEndReached}
-            onLayout={onListLayout}
-            ref={listRef}
-            showObservationsEmptyScreen
-            showNoResults={showNoResults}
-            testID="MyObservationsAnimatedList"
-            renderHeader={(
-              <Announcements isConnected={isConnected} />
-            )}
-          />
-        )}
-      />
-    </ViewWrapper>
-    {showLoginSheet && <LoginSheet setShowLoginSheet={setShowLoginSheet} />}
-  </>
-);
+}: Props ): Node => {
+  const [showOnboarding, setShowOnboarding] = useState( !storage.getBoolean( ONBOARDING_SHOWN ) );
+
+  return (
+    <>
+      <ViewWrapper>
+        <OnboardingCarouselModal
+          showModal={showOnboarding}
+          closeModal={() => {
+            setShowOnboarding( false );
+            storage.set( ONBOARDING_SHOWN, true );
+          }}
+        />
+        <ScrollableWithStickyHeader
+          onScroll={onScroll}
+          renderHeader={setStickyAt => (
+            <MyObservationsHeader
+              currentUser={currentUser}
+              handleSyncButtonPress={handleSyncButtonPress}
+              hideToolbar={observations.length === 0}
+              layout={layout}
+              logInButtonNeutral={observations.length === 0}
+              numUnuploadedObservations={numUnuploadedObservations}
+              setHeightAboveToolbar={setStickyAt}
+              toggleLayout={toggleLayout}
+            />
+          )}
+          renderScrollable={animatedScrollEvent => (
+            <ObservationsFlashList
+              dataCanBeFetched={!!currentUser}
+              data={observations.filter( o => o.isValid() )}
+              handleIndividualUploadPress={handleIndividualUploadPress}
+              onScroll={animatedScrollEvent}
+              hideLoadingWheel={!isFetchingNextPage || !currentUser}
+              isFetchingNextPage={isFetchingNextPage}
+              isConnected={isConnected}
+              obsListKey="MyObservations"
+              layout={layout}
+              onEndReached={onEndReached}
+              onLayout={onListLayout}
+              ref={listRef}
+              showObservationsEmptyScreen
+              showNoResults={showNoResults}
+              testID="MyObservationsAnimatedList"
+              renderHeader={(
+                <Announcements isConnected={isConnected} />
+              )}
+            />
+          )}
+        />
+      </ViewWrapper>
+      {showLoginSheet && <LoginSheet setShowLoginSheet={setShowLoginSheet} />}
+    </>
+  );
+};
 
 export default MyObservations;
