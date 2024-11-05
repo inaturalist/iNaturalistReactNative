@@ -19,6 +19,7 @@ import {
   useShare
 } from "sharedHooks";
 
+import useChangeLocale from "./hooks/useChangeLocale";
 import useFreshInstall from "./hooks/useFreshInstall";
 import useLinking from "./hooks/useLinking";
 import useLockOrientation from "./hooks/useLockOrientation";
@@ -75,6 +76,7 @@ const App = ( { children }: Props ): Node => {
   useFreshInstall( currentUser );
   useLinking( currentUser );
   useWorkQueue( );
+  useChangeLocale( );
 
   useLockOrientation( );
   useShare( );

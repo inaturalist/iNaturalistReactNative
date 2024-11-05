@@ -17,7 +17,6 @@ import resourcesToBackend from "i18next-resources-to-backend";
 import { initReactI18next } from "react-i18next";
 import { Text } from "react-native";
 import * as RNLocalize from "react-native-localize";
-import { zustandStorage } from "stores/useStore";
 
 // Function to load translations given a locale code. Given that we cannot
 // dynamically import/require files in a React Native JS environment
@@ -39,12 +38,7 @@ export function getInatLocaleFromSystemLocale() {
   return inatLocale;
 }
 
-export function getInatNextLocale() {
-  const currentLocale = zustandStorage.getItem( "currentLocale" );
-  return currentLocale || getInatLocaleFromSystemLocale( );
-}
-
-const LOCALE = getInatNextLocale( );
+const LOCALE = getInatLocaleFromSystemLocale( );
 
 export const I18NEXT_CONFIG = {
   // Added since otherwise Android would crash - see here: https://stackoverflow.com/a/70521614 and https://www.i18next.com/misc/migration-guide
