@@ -31,9 +31,6 @@ Agree = Acceptă
 AGREE = CONSIMT
 ALL = TOATE
 All = Toate
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Oricare
 Camera = Cameră
 Cancel = Anulare
 # Quality grade indicating observation does not quality for Needs ID or
