@@ -793,12 +793,13 @@ OPEN-EMAIL = OPEN EMAIL
 Open-menu = Open menu.
 # Text for a button that opens the operating system Settings app
 OPEN-SETTINGS = OPEN SETTINGS
-Opens-add-comment-modal = Opens add comment modal.
-Opens-add-observation-modal = Opens add observation modal.
-Opens-AI-camera = Opens AI camera.
-Opens-location-permission-prompt = Opens location permission prompt
+# Accessibility hint for a button that opens a form for adding a comment
+Opens-add-comment-form = Opens add comment form.
 # Accessibility hint for button that opens the AI camera
-Opens-the-AI-camera = Opens the AI camera
+Opens-AI-camera = Opens AI camera.
+# Accessibility hint for a button that opens a form for editing a comment
+Opens-edit-comment-form = Opens edit comment form.
+Opens-location-permission-prompt = Opens location permission prompt
 Opens-the-side-drawer-menu = Opens the side drawer menu.
 # Picker prompt on observation edit
 Organism-is-captive = Organism is captive

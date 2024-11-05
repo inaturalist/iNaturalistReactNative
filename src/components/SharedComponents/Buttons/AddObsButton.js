@@ -75,7 +75,7 @@ const AddObsButton = (): React.Node => {
         accessibilityLabel={t( "Add-observations" )}
         accessibilityHint={isAdvancedUser
           ? t( "Shows-observation-creation-options" )
-          : t( "Opens-the-AI-camera" )}
+          : t( "Opens-AI-camera" )}
         iconName={isAdvancedUser && "plus"}
         iconSize={isAdvancedUser && 31}
       />
