@@ -65,21 +65,69 @@ const MAPPINGS = {
   pt_BR: "pt-BR"
 };
 
+const ANDROID_MAPPINGS = {
+  "af-ZA": "af",
+  "sq-AL": "sq",
+  "ar-SA": "ar",
+  "be-BY": "be",
+  "bg-BG": "bg",
+  "ca-ES": "ca",
+  "hr-HR": "hr",
+  "et-EE": "et",
+  "fil-PH": "fil",
+  "gu-IN": "gu",
+  "id-ID": "id",
+  "kk-KZ": "kk",
+  "lv-LV": "lv",
+  "lt-LT": "lt",
+  "pa-IN": "pa",
+  "ro-RO": "ro",
+  "rm-CH": "rm",
+  "sr-RS": "sr",
+  "sk-SK": "sk",
+  "sl-SI": "sl",
+  "sw-KE": "sw",
+  "th-TH": "th",
+  "uk-UA": "uk",
+  "ur-PK": "ur",
+  "vi-VN": "vi",
+  "zu-ZA": "zu"
+};
+
 function mapLanguageCodeToSupportedDirectoryName( languageCode ) {
   return MAPPINGS[languageCode];
 }
 
 async function renameDirectories( ) {
   // Get all directories in fastlane/metadata/ios
-  const directories = await fsp.readdir( path.join( __dirname, "ios" ), {
+  const iosDirectories = await fsp.readdir( path.join( __dirname, "ios" ), {
     withFileTypes: true
   } ).then( files => files.filter( file => file.isDirectory( ) ).map( file => file.name ) );
-  console.log( "Current list of the directories in fastlane/metadata/ios", directories );
-  await Promise.all( directories.map( async directory => {
+  console.log( "Current list of the directories in fastlane/metadata/ios", iosDirectories );
+  await Promise.all( iosDirectories.map( async directory => {
     const locale = mapLanguageCodeToSupportedDirectoryName( directory );
     if ( !locale ) return;
     const directoryPath = path.join( __dirname, "ios", directory );
     const newDirectoryPath = path.join( __dirname, "ios", locale );
+    // Remove a potentially existing directory with the same name
+    try {
+      await fsp.rmdir( newDirectoryPath, { recursive: true } );
+      console.log( "Removed existing directory", newDirectoryPath );
+    } catch ( e ) {
+      // Directory did not exist
+    }
+    console.log( "Renaming directory", directoryPath, "to", newDirectoryPath );
+    await fsp.rename( directoryPath, newDirectoryPath );
+  } ) );
+  const androidDirectories = await fsp.readdir( path.join( __dirname, "android" ), {
+    withFileTypes: true
+  } ).then( files => files.filter( file => file.isDirectory( ) ).map( file => file.name ) );
+  console.log( "Current list of the directories in fastlane/metadata/android", androidDirectories );
+  await Promise.all( androidDirectories.map( async directory => {
+    const locale = ANDROID_MAPPINGS[directory];
+    if ( !locale ) return;
+    const directoryPath = path.join( __dirname, "android", directory );
+    const newDirectoryPath = path.join( __dirname, "android", locale );
     // Remove a potentially existing directory with the same name
     try {
       await fsp.rmdir( newDirectoryPath, { recursive: true } );
