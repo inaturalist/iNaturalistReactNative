@@ -206,6 +206,9 @@ Close = Sluiten
 Close-permission-request-screen = Sluit machtigingsverzoek scherm
 # Label for a button that closes a search interface
 Close-search = Sluit zoekopdracht
+# Accessibility hint for button that closes the introductory slides that
+# appear when you first install the app
+Closes-introduction = Sluiten introductie
 Closes-new-observation-options = Sluit nieuwe waarnemingsopties af.
 Closes-withdraw-id-sheet = Sluit "Terugtrekken ID" pagina
 # Heading for a section that describes people and organizations that
@@ -224,10 +227,18 @@ Community-Guidelines = Gemeenschapsrichtlijnen
 COMMUNITY-GUIDELINES = GEMEENSCHAPSRICHTLIJNEN
 # Button that confirms a choice the user has made
 CONFIRM = BEVESTIG
+# Onboarding header (underneath the logo)
+CONNECT-TO-NATURE = VERBINDING MAKEN MET DE NATUUR
+# Onboarding slides
+Connect-to-Nature = Trek de natuur in
 Connect-with-other-naturalists = Neem contact op met andere naturalisten en neem deel aan gesprekken.
 Connection-problem-Please-try-again-later = Verbindingsprobleem. Probeer het later opnieuw.
 CONTACT-SUPPORT = CONTACT ONDERSTEUNING
+# Continue button in onboarding screen
+CONTINUE = DOORGAAN
 Continue-to-iNaturalist = Doorgaan naar iNaturalist
+# Onboarding message describing one of the reasons to use iNat
+Contribute-to-Science = Draag bij aan de Wetenschap
 # Notification when coordinates have been copied
 Coordinates-copied-to-clipboard = Coördinaten naar klembord gekopieerd
 # Button that copies coordinates to the clipboard
@@ -452,6 +463,14 @@ Hide = Verbergen
 # Identification Status
 ID-Withdrawn = ID ingetrokken
 Identifiers = Determineerders
+# Onboarding message describing one of the reasons to use iNat
+Identify-record-learn = Determineren, opnemen, vastleggen, opslaan en leren over elke levende soort op aarde met behulp van iNaturalist
+# Explanation that observations are removed from a collection project
+If-you-leave-x-of-your-observations-removed =
+    Als je dit traditionele project verlaat, { $count ->
+        [one] zal 1 van je waarnemingen
+       *[other] zullen  { $count } van je waarnemingen
+    } ook van dit project worden verwijderd.
 # Identification category
 improving--identification = Verbeterend
 iNaturalist-helps-you-identify = iNaturalist helpt je de planten en dieren om je heen te determineren terwijl je tegelijkertijd gegevens voor wetenschap en natuurbescherming genereert. Maak verbinding met een gemeenschap van miljoenen wetenschappers en naturalisten die je kunnen helpen meer te leren over de natuur!
@@ -489,6 +508,8 @@ It-may-take-up-to-an-hour-to-remove-content = Het kan tot een uur duren om alle 
 January = Januari
 JOIN = DOE MEE
 JOIN-PROJECT = NEEM DEEL AAN PROJECT
+# Asking for confirmation if the user wants to join this project
+JOIN-PROJECT--question = DEELNEMEN AAN EEN PROJECT?
 Join-the-largest-community-of-naturalists = Sluit je aan bij de grootste groep naturalisten ter wereld!
 # Header for joined projects
 JOINED = SLOOT ZICH AAN BIJ
@@ -505,6 +526,8 @@ June = Juni
 # Identification category
 leading--identification = Leidend
 Learn-More = Meer informatie
+# Asking for confirmation if the user wants to leave this project
+LEAVE-PROJECT--question = PROJECT VERLATEN ?
 Location = Locatie
 # Second person imperative label to go to log in screen
 Log-in = Inloggen
@@ -615,6 +638,7 @@ OBSERVATION-WAS-DELETED = WAARNEMING WERD VERWIJDERD
 Observation-with-no-evidence = Waarneming zonder bewijs
 Observations = Waarnemingen
 Observations-created-on-iNaturalist = Waarnemingen gemaakt op iNaturalist worden gebruikt door wetenschappers over de hele wereld.
+Observations-on-iNat-are-cited = Waarnemingen op iNaturalist worden aangehaald in wetenschappelijke artikelen, hebben geleid tot herontdekkingen en helpen  wetenschappers leven op onze planeet te begrijpen
 Observations-View = Weergave waarnemingen
 # Might be used when the number is represented using an image or other
 # element, not text
