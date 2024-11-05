@@ -165,6 +165,7 @@ const ANDROID_MAPPINGS = {
   "he-IL": "iw-IL",
   "hr-HR": "hr",
   "et-EE": "et",
+  "es-419": "es-41",
   "fil-PH": "fil",
   "gu-IN": "gu",
   "id-ID": "id",
