@@ -75,6 +75,8 @@ jobs:
       # validation failures in the PR
       - name: Normalize and validate
         run: npm run translate
+      - name: Prepare metadata directories
+        run: npm run prepare-metadata
 
       - name: Make pull request
         # The original doesn't support making a pull request without
