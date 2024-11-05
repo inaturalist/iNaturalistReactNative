@@ -191,6 +191,9 @@ Close = Stäng
 Close-permission-request-screen = Stäng skärmen för behörighetsbegäran
 # Label for a button that closes a search interface
 Close-search = Stäng söket
+# Accessibility hint for button that closes the introductory slides that
+# appear when you first install the app
+Closes-introduction = Closes introduction
 Closes-new-observation-options = Stänger nya fyndalternativ.
 Closes-withdraw-id-sheet = Stänger "Dra tillbaka bestämning"-blad
 # Heading for a section that describes people and organizations that
@@ -205,14 +208,23 @@ COMMENT = KOMMENTAR
 Comment-options = Alternativ för kommentar
 # Label for a setting that shows the common name first
 Common-Name-Scientific-Name = Vardagligt namn (Vetenskapligt namn)
+Community-based = Community-based
 Community-Guidelines = Communityns riktlinjer
 COMMUNITY-GUIDELINES = COMMUNITYNS RIKTLINJER
 # Button that confirms a choice the user has made
 CONFIRM = BEKRÄFTA
+# Onboarding header (underneath the logo)
+CONNECT-TO-NATURE = CONNECT TO NATURE
+# Onboarding slides
+Connect-to-Nature = Connect to Nature
 Connect-with-other-naturalists = Kom i kontakt med andra naturforskare och diskussioner.
 Connection-problem-Please-try-again-later = Anslutningsproblem. Försök igen senare.
 CONTACT-SUPPORT = KONTAKTA SUPPORT
+# Continue button in onboarding screen
+CONTINUE = CONTINUE
 Continue-to-iNaturalist = Fortsätt till iNaturalist
+# Onboarding message describing one of the reasons to use iNat
+Contribute-to-Science = Contribute to Science
 # Notification when coordinates have been copied
 Coordinates-copied-to-clipboard = Koordinater kopierade till urklipp
 # Button that copies coordinates to the clipboard
@@ -501,6 +513,8 @@ Identifiers = Determinatörer
 Identifiers-View = Determinatörsvy
 Identify-an-organism = Betäm en organism
 Identify-an-organism-with-the-iNaturalist-AI-Camera = Bestäm en organism med iNaturalists AI-kamera
+# Onboarding message describing one of the reasons to use iNat
+Identify-record-learn = Identify, record, and learn about every living species on earth using iNaturalist
 If-an-account-with-that-email-exists = Om ett konto med den e-posten finns, har vi skickat instruktioner för att återställa lösenordet till din e-post.
 # Explanation that observations are removed from a collection project
 If-you-leave-x-of-your-observations-removed =
@@ -521,6 +535,7 @@ IMPORT-X-OBSERVATIONS =
 IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = FÖRBÄTTREA DESSA FÖRSLAG GENOM ATT ANVÄNDA DIN PLATS
 # Identification category
 improving--identification = Förbättrar
+iNat-is-global-community = iNaturalist is a global community of naturalists creating open data for science by collectively observing & identifying organisms
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST KONTOINSTÄLLNINGAR
 iNaturalist-AI-Camera = iNaturalists AI-kamera
 iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNaturalist kan spara bilder som du tar i appen till enhetens galleri.
@@ -728,6 +743,7 @@ OBSERVATION-WAS-DELETED = FYNDET RADERADES
 Observation-with-no-evidence = Fynd utan belägg
 Observations = Fynd
 Observations-created-on-iNaturalist = Fynd som skapats på iNaturalist används av forskare runt om i världen.
+Observations-on-iNat-are-cited = Observations on iNaturalist are cited in scientific papers, have led to rediscoveries, and help scientists understand life on our planet
 Observations-View = Fyndvy
 # Might be used when the number is represented using an image or other
 # element, not text

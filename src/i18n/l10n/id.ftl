@@ -185,6 +185,9 @@ Close = Tutup
 Close-permission-request-screen = Tutup layar permintaan izin
 # Label for a button that closes a search interface
 Close-search = Tutup pencarian
+# Accessibility hint for button that closes the introductory slides that
+# appear when you first install the app
+Closes-introduction = Closes introduction
 Closes-new-observation-options = Menutup pilihan pengamatan baru.
 Closes-withdraw-id-sheet = Tutup lembar "Tarik ID"
 # Heading for a section that describes people and organizations that
@@ -199,14 +202,23 @@ COMMENT = KOMENTAR
 Comment-options = Pilihan komentar
 # Label for a setting that shows the common name first
 Common-Name-Scientific-Name = Nama Umum (Nama Ilmiah)
+Community-based = Community-based
 Community-Guidelines = Pedoman Komunitas
 COMMUNITY-GUIDELINES = PEDOMAN KOMUNITAS
 # Button that confirms a choice the user has made
 CONFIRM = KONFIRMASI
+# Onboarding header (underneath the logo)
+CONNECT-TO-NATURE = CONNECT TO NATURE
+# Onboarding slides
+Connect-to-Nature = Connect to Nature
 Connect-with-other-naturalists = Kontak naturalis lain dan ikut serta dalam pembicaraan.
 Connection-problem-Please-try-again-later = Ada masalah koneksi. Silakan coba lagi nanti.
 CONTACT-SUPPORT = HUBUNGI BANTUAN
+# Continue button in onboarding screen
+CONTINUE = CONTINUE
 Continue-to-iNaturalist = Lanjut ke iNaturalist
+# Onboarding message describing one of the reasons to use iNat
+Contribute-to-Science = Contribute to Science
 # Notification when coordinates have been copied
 Coordinates-copied-to-clipboard = Koordinat tersalin ke papan klip
 # Button that copies coordinates to the clipboard
@@ -285,6 +297,8 @@ DATE-OBSERVED-OLDEST = TANGGAL PENGAMATAN - TERLAMA SAMPAI TERBARU
 Date-Range = Rentang Waktu
 # Label for controls over a range of dates
 DATE-RANGE = RENTANG TANGGAL
+# Express a date range. d1 and d2 can be any expression of dates
+date-to-date = { $d1 } - { $d2 }
 DATE-UPLOADED = TANGGAL DIUNGGAH
 Date-uploaded = Tanggal diunggah
 Date-uploaded-header-short = Diunggah
@@ -466,6 +480,9 @@ GRANT-PERMISSION = BERI IZIN
 Grant-Permission-title = Berikan Izin
 # Label for button to switch to a grid layout of observations
 Grid-layout = Tampilan kotak-kotak
+Group-Photos = Group Photos
+# Onboarding for users learning to group photos in the camera roll
+Group-photos-onboarding = Group photos into observations– make sure there is only one species per observation
 HELP = BANTUAN
 Hide = Sembunyikan
 Highest = Tertinggi
@@ -488,7 +505,15 @@ Identifiers = yang mengidentifikasi
 Identifiers-View = Tampilan Pengidentifikasi
 Identify-an-organism = Identifikasi suatu organisme
 Identify-an-organism-with-the-iNaturalist-AI-Camera = Identifikasi suatu organisme dengan Kamera AI iNaturalist
+# Onboarding message describing one of the reasons to use iNat
+Identify-record-learn = Identify, record, and learn about every living species on earth using iNaturalist
 If-an-account-with-that-email-exists = Jika suatu akun dengan email tersebut ditemukan, kami sudah mengirimkan perintah untuk mengatur ulang kata sandi ke email Anda.
+# Explanation that observations are removed from a collection project
+If-you-leave-x-of-your-observations-removed =
+    If you leave this traditional project, { $count ->
+        [one] 1 of your observations
+       *[other] { $count } of your observations
+    } will also be removed from this project.
 If-you-want-to-collate-compare-promote = Jika Anda ingin mengumpulkan, membandingkan, atau mempromosikan sekelompok proyek yang sudah ada, maka proyek Payung adalah jenis proyek yang harus Anda gunakan. Contohnya, Tantangan Alam Kota 2018, yang menggabungkan lebih dari 60 proyek, adalah salah satu halaman yang bagus untuk membandingkan pengamatan-pengamatan di satu kota dengan kota lain. Baik proyek Koleksi maupun Tradisional dapat digunakan di dalam proyek Payung. Suatu proyek Payung dapat menghimpun hingga 500 proyek.
 If-youre-seeing-this-error = Jika Anda melihat pesan ini dan Anda sedang aktif, staf iNat telah diberitahu. Terima kasih telah menemukan bug! Jika Anda sedang tidak aktif, silakan mengambil tangkapan layar Anda dan kirimkan email kepada kami saat Anda sudah kembali aktif.
 IGNORE-LOCATION = ABAIKAN LOKASI
@@ -502,6 +527,7 @@ IMPORT-X-OBSERVATIONS =
 IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = TINGKATKAN KUALITAS REKOMENDASI INI DENGAN MENGGUNAKAN LOKASI ANDA
 # Identification category
 improving--identification = Pengembang
+iNat-is-global-community = iNaturalist is a global community of naturalists creating open data for science by collectively observing & identifying organisms
 INATURALIST-ACCOUNT-SETTINGS = PENGATURAN AKUN INATURALIST
 iNaturalist-AI-Camera = Kamera AI iNaturalist
 iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNaturalist dapat menyimpan gambar yang Anda ambil di aplikasi ke galeri perangkat Anda.
@@ -544,6 +570,8 @@ It-may-take-up-to-an-hour-to-remove-content = Penghapusan seluruh konten yang te
 January = Januari
 JOIN = GABUNG
 JOIN-PROJECT = BERGABUNG DENGAN PROYEK
+# Asking for confirmation if the user wants to join this project
+JOIN-PROJECT--question = JOIN PROJECT?
 Join-the-largest-community-of-naturalists = Bergabunglah dengan grup naturalis terbesar di dunia!
 # Header for joined projects
 JOINED = TERGABUNG
@@ -576,6 +604,8 @@ leading--identification = Memimpin
 Learn-More = Pelajari lebih lanjut
 LEAVE = KELUAR
 LEAVE-PROJECT = KELUAR DARI PROYEK
+# Asking for confirmation if the user wants to leave this project
+LEAVE-PROJECT--question = LEAVE PROJECT?
 LEAVE-US-A-REVIEW = TINGGALKAN ULASAN!
 LICENSES = LISENSI
 # Label for button to switch to a list layout of observations
@@ -589,6 +619,7 @@ LOCATION-TOO-IMPRECISE = LOKASI SANGAT TIDAK AKURAT
 LOG-IN = MASUK
 # Second person imperative label to go to log in screen
 Log-in = Masuk
+Log-in-to-contribute-and-sync = Log in to contribute & sync
 Log-in-to-contribute-your-observations = Masuk supaya pengamatanmu ikut berkontribusi untuk sains!
 LOG-IN-TO-INATURALIST = MASUK KE INATURALIST
 Log-in-to-iNaturalist = Masuk ke iNaturalist
@@ -704,6 +735,7 @@ OBSERVATION-WAS-DELETED = PENGAMATAN DIHAPUS
 Observation-with-no-evidence = Pengamatan tanpa bukti
 Observations = Pengamatan
 Observations-created-on-iNaturalist = Pengamatan yang dibuat di iNaturalist digunakan oleh ilmuwan di seluruh dunia.
+Observations-on-iNat-are-cited = Observations on iNaturalist are cited in scientific papers, have led to rediscoveries, and help scientists understand life on our planet
 Observations-View = Tampilan Pengamatan
 # Might be used when the number is represented using an image or other
 # element, not text
@@ -794,6 +826,7 @@ Private = Pribadi
 PROJECT = PROYEK
 Project-Members-Only = Anggota Proyek Saja
 PROJECT-REQUIREMENTS = PERSYARATAN PROYEK
+project-start-time-datetime = Start time: { $datetime }
 # As in iNat project, collections of observations or observation search filters
 PROJECTS = PROYEK
 # As in iNat projects, collections of observations or observation search filters
