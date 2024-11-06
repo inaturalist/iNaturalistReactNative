@@ -96,6 +96,24 @@ ALLOW-LOCATION-ACCESS = LOCATIE TOESTAAN
 Almost-done = Bijna klaar!
 Already-have-an-account = Heb je al een account? Log in
 An-Internet-connection-is-required = Een internetverbinding is vereist om meer waarnemingen te laden.
+# Option when choosing a value for an date filter that indicates any value is
+# acceptable
+Any--date = Elke
+# Option when choosing a value for an Establishment Means filter that
+# indicates any value is acceptable
+Any--establishment-means = Elke
+# Option when choosing a value for an media type filter that indicates any
+# value is acceptable
+Any--media-type = Elke
+# Option when choosing a value for an project filter that indicates any value
+# is acceptable
+Any--project = Elke
+# Option when choosing a value for an quality grade filter that indicates any
+# value is acceptable
+Any--quality-grade = Elke
+# Option when choosing a value for an user filter that indicates any value is
+# acceptable
+Any--user = Elke
 #  Geoprivacy sheet descriptions
 Anyone-using-iNaturalist-can-see = Iedereen die iNaturalist gebruikt kan zien waar deze soort is waargenomen en wetenschappers kunnen het het gemakkelijkst gebruiken voor onderzoek.
 APP-LANGUAGE = APP TAAL
@@ -188,6 +206,9 @@ Close = Sluiten
 Close-permission-request-screen = Sluit machtigingsverzoek scherm
 # Label for a button that closes a search interface
 Close-search = Sluit zoekopdracht
+# Accessibility hint for button that closes the introductory slides that
+# appear when you first install the app
+Closes-introduction = Sluiten introductie
 Closes-new-observation-options = Sluit nieuwe waarnemingsopties af.
 Closes-withdraw-id-sheet = Sluit "Terugtrekken ID" pagina
 # Heading for a section that describes people and organizations that
@@ -206,10 +227,18 @@ Community-Guidelines = Gemeenschapsrichtlijnen
 COMMUNITY-GUIDELINES = GEMEENSCHAPSRICHTLIJNEN
 # Button that confirms a choice the user has made
 CONFIRM = BEVESTIG
+# Onboarding header (underneath the logo)
+CONNECT-TO-NATURE = VERBINDING MAKEN MET DE NATUUR
+# Onboarding slides
+Connect-to-Nature = Trek de natuur in
 Connect-with-other-naturalists = Neem contact op met andere naturalisten en neem deel aan gesprekken.
 Connection-problem-Please-try-again-later = Verbindingsprobleem. Probeer het later opnieuw.
 CONTACT-SUPPORT = CONTACT ONDERSTEUNING
+# Continue button in onboarding screen
+CONTINUE = DOORGAAN
 Continue-to-iNaturalist = Doorgaan naar iNaturalist
+# Onboarding message describing one of the reasons to use iNat
+Contribute-to-Science = Draag bij aan de Wetenschap
 # Notification when coordinates have been copied
 Coordinates-copied-to-clipboard = Coördinaten naar klembord gekopieerd
 # Button that copies coordinates to the clipboard
@@ -322,6 +351,20 @@ Delete-photo = Foto verwijderen
 Delete-sound = Geluid verwijderen
 # Hint for a button that clears text you entered
 Deletes-entered-text = Verwijder ingevoerde tekst
+# Shows the progress of deletions for X of Y observations, but omits the
+# word "observations" so the message won't get cut off on small screens
+# Deleting-x-of-y = Deleting { $currentDeleteCount } of { $total }
+Deleting-x-of-y--observations =
+    Verwijderen { $currentDeleteCount } { $total ->
+        [one] van { $total }
+       *[other] van { $total } waarnemingen
+    }
+# Shows the number of observations a user is currently deleting out of total on my observations page
+Deleting-x-of-y-observations-2 =
+    Verwijderen { $currentDeleteCount } { $total ->
+        [one] waarneming
+       *[other] van { $total } waarnemingen
+    }
 # Tab label or section title for content that describes further details, e.g.
 # the details of an observation
 DETAILS = DETAILS
@@ -420,6 +463,14 @@ Hide = Verbergen
 # Identification Status
 ID-Withdrawn = ID ingetrokken
 Identifiers = Determineerders
+# Onboarding message describing one of the reasons to use iNat
+Identify-record-learn = Determineren, opnemen, vastleggen, opslaan en leren over elke levende soort op aarde met behulp van iNaturalist
+# Explanation that observations are removed from a collection project
+If-you-leave-x-of-your-observations-removed =
+    Als je dit traditionele project verlaat, { $count ->
+        [one] zal 1 van je waarnemingen
+       *[other] zullen  { $count } van je waarnemingen
+    } ook van dit project worden verwijderd.
 # Identification category
 improving--identification = Verbeterend
 iNaturalist-helps-you-identify = iNaturalist helpt je de planten en dieren om je heen te determineren terwijl je tegelijkertijd gegevens voor wetenschap en natuurbescherming genereert. Maak verbinding met een gemeenschap van miljoenen wetenschappers en naturalisten die je kunnen helpen meer te leren over de natuur!
@@ -428,6 +479,7 @@ iNaturalist-is-a-501 = iNaturalist is een 501(c)(3) non-profit organisatie in de
 iNaturalist-is-a-community-of-naturalists = iNaturalist is een gemeenschap van naturalisten die samenwerken om wilde biodiversiteitswaarnemingen te creëren en te determineren.
 iNaturalist-is-loading-ID-suggestions = iNaturalist laadt ID-suggesties...
 iNaturalist-is-supported-by = iNaturalist wordt ondersteund door een onafhankelijke, 501(c)(3) non-profit organisatie gevestigd in de Verenigde Staten van Amerika. Het iNaturalist platform omvat deze app, Seek door iNaturalist, de iNaturalist website en meer.
+iNaturalist-is-supported-by-our-community = iNaturalist wordt ondersteund door onze geweldige community. Van alledaagse naturalisten die waarnemingen en determinaties toevoegen,  curatoren die de taxonomie managen en helpen bij het modereren, de vrijwillige vertalers die iNaturalist toegankelijk maken voor wereldwijd publiek, tot onze op de gemeenschap gebaseerde donoren zijn we buitengewoon dankbaar voor alle mensen in onze gemeenschap die iNaturalist tot het platform maken dat het is.
 iNaturalist-mission-is-to-connect = iNaturalist's missie is om mensen te verbinden met de natuur en om biodiversiteit wetenschap en behoud te bevorderen.
 INATURALIST-MISSION-VISION = INATURALIST'S MISSIE en VISIE
 INATURALIST-NETWORK = INATURALIST NETWERK
@@ -442,6 +494,7 @@ INATURALIST-TEAM = INATURALIST TEAM
 iNaturalist-users-who-have-left-an-identification = iNaturalist gebruikers die een determinatie hebben achtergelaten bij een waarneming van een andere gebruiker
 iNaturalist-users-who-have-observed = iNaturalist gebruikers die op een bepaald moment en plaats een bepaald taxon hebben waargenomen
 iNaturalist-uses-your-location-to-give-you = iNaturalist gebruikt je locatie om je betere determinatiesuggesties te geven en we kunnen automatisch een locatie toevoegen aan je waarnemingen, dat wetenschappers helpt. We gebruiken het ook om organismen te vinden die dichtbij je locatie zijn waargenomen.
+iNaturalists-apps-are-designed-and-developed-2 = iNaturalist's apps zijn ontworpen, ontwikkeld en ondersteund door het iNaturalist team: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Thea Skaff, Angie Ta, Ken-ichi Ueda, Kirk van Gorkom, Jason Walthall & Jane Weeden.
 iNaturalists-vision-is-a-world = iNaturalist's visie is een wereld waar iedereen biodiversiteit kan begrijpen en in stand houden door toezicht te houden op wilde organismen en informatie over hen te delen.
 Individual-encounters-with-organisms = Individuele ontmoetingen met organismen op een bepaald tijdstip en locatie, meestal met bewijsmateriaal
 INFO-TRANSFER = INFO TRANSFER
@@ -455,6 +508,8 @@ It-may-take-up-to-an-hour-to-remove-content = Het kan tot een uur duren om alle 
 January = Januari
 JOIN = DOE MEE
 JOIN-PROJECT = NEEM DEEL AAN PROJECT
+# Asking for confirmation if the user wants to join this project
+JOIN-PROJECT--question = DEELNEMEN AAN EEN PROJECT?
 Join-the-largest-community-of-naturalists = Sluit je aan bij de grootste groep naturalisten ter wereld!
 # Header for joined projects
 JOINED = SLOOT ZICH AAN BIJ
@@ -471,6 +526,8 @@ June = Juni
 # Identification category
 leading--identification = Leidend
 Learn-More = Meer informatie
+# Asking for confirmation if the user wants to leave this project
+LEAVE-PROJECT--question = PROJECT VERLATEN ?
 Location = Locatie
 # Second person imperative label to go to log in screen
 Log-in = Inloggen
@@ -581,6 +638,7 @@ OBSERVATION-WAS-DELETED = WAARNEMING WERD VERWIJDERD
 Observation-with-no-evidence = Waarneming zonder bewijs
 Observations = Waarnemingen
 Observations-created-on-iNaturalist = Waarnemingen gemaakt op iNaturalist worden gebruikt door wetenschappers over de hele wereld.
+Observations-on-iNat-are-cited = Waarnemingen op iNaturalist worden aangehaald in wetenschappelijke artikelen, hebben geleid tot herontdekkingen en helpen  wetenschappers leven op onze planeet te begrijpen
 Observations-View = Weergave waarnemingen
 # Might be used when the number is represented using an image or other
 # element, not text
@@ -595,6 +653,8 @@ Observations-you-upload-to-iNaturalist = Waarnemingen die je uploadt naar iNatur
 Observe = Waarnemen
 # Title of screen asking for permission to access the gallery
 Observe-and-identify-organisms-from-your-gallery = Observeer en determineer organismen uit je galerij
+# Title of screen asking for permission to access the camera
+Observe-and-identify-organisms-in-real-time-with-your-camera = Observeer en determineer organismen in realtime met je camera
 # Text for a button prompting the user to grant access to the camera
 OBSERVE-ORGANISMS = NEEM ORGANISMEN WAAR
 Observers = Waarnemers
@@ -617,6 +677,10 @@ Open = Open
 Open-drawer = Open de lade
 OPEN-EMAIL = E-MAIL OPEN
 Open-menu = Menu openen.
+# Accessibility hint for a button that opens a form for adding a comment
+Opens-add-comment-form = Opent een commentaarformulier
+# Accessibility hint for a button that opens a form for editing a comment
+Opens-edit-comment-form = Opent het bewerkingscommentaar formulier.
 # Generic option in a list for unanticipated cases, e.g. a choice to manually
 # enter an explanation for why you are flagging something instead of choosing
 # one of the existing options
@@ -865,9 +929,11 @@ Uploading-x-of-y-observations =
         [one] Uploaden { $currentUploadCount } waarneming
        *[other] Uploaden { $currentUploadCount } { $total } waarnemingen
     }
+Use-iNaturalists-AI-Camera = Gebruik de AI Camera van iNaturalist om organismen real-time te determineren
 # Text for a button prompting the user to grant access to location
 USE-LOCATION = GEBRUIK LOCATIE
 Use-the-devices-other-camera = Gebruik de andere camera van het apparaat.
+Use-the-iNaturalist-camera-to-observe-2 = Gebruik de iNaturalist camera om organismen realtime vast te leggen en te determineren. Deel ze met onze gemeenschap om determinaties te krijgen en bij te dragen aan wetenschap!
 Use-your-devices-microphone-to-record = Gebruik de microfoon van je apparaat om geluiden van organismen op te nemen en deel ze met onze gemeenschap om determinaties te krijgen en bij te dragen aan wetenschap!
 USER = GEBRUIKER
 User = Gebruiker { $userHandle }
