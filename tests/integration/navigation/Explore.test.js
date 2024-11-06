@@ -194,7 +194,7 @@ describe( "logged in", ( ) => {
         renderApp( );
         await navigateToObsDetails( );
         const userProfileButton = await screen.findByLabelText(
-          `User @${mockObservations[0].user.login}`
+          `User ${mockObservations[0].user.login}`
         );
         await actor.press( userProfileButton );
         expect( inatjs.users.fetch ).toHaveBeenCalled( );
@@ -232,7 +232,7 @@ describe( "logged in", ( ) => {
         renderApp( );
         await navigateToObsDetails( );
         const userProfileButton = await screen.findByLabelText(
-          `User @${mockObservations[0].user.login}`
+          `User ${mockObservations[0].user.login}`
         );
         await actor.press( userProfileButton );
         expect( inatjs.users.fetch ).toHaveBeenCalled( );
@@ -302,7 +302,7 @@ describe( "logged in", ( ) => {
         await waitFor( ( ) => {
           expect( screen.getByTestId( `ObsDetails.${mockObservations[0].uuid}` ) ).toBeVisible( );
         }, { timeout: 10_000 } );
-        const userProfileButton = await screen.findByLabelText( `User @${mockUser.login}` );
+        const userProfileButton = await screen.findByLabelText( `User ${mockUser.login}` );
         await actor.press( userProfileButton );
         const observationsButton = await screen.findByLabelText( /See observations by this user in Explore/ );
         await actor.press( observationsButton );

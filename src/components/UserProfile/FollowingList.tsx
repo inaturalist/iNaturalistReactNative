@@ -51,7 +51,7 @@ const FollowingList = ( ) => {
   );
 
   const followingHeaderOptions = useMemo( ( ) => ( {
-    headerTitle: User.userHandle( user ),
+    headerTitle: user?.login,
     headerSubtitle: t( "FOLLOWING-X-PEOPLE", {
       count: totalResults
     } )
