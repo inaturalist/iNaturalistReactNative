@@ -30,6 +30,13 @@ type Props = {
   tablet: boolean
 }
 
+const GradientBackdrop = ( ) => (
+  <LinearGradient
+    colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
+    className="absolute w-full h-full z-10"
+  />
+);
+
 const TaxonMedia = ( {
   loading,
   onChangeIndex,
@@ -55,10 +62,7 @@ const TaxonMedia = ( {
         accessibilityState={{ disabled: false }}
         style={slideStyle}
       >
-        <LinearGradient
-          colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
-          className="absolute w-full h-full z-10"
-        />
+        <GradientBackdrop />
         <Image
           testID={`TaxonDetails.photo.${item.id}`}
           className="w-full h-full"
@@ -108,6 +112,7 @@ const TaxonMedia = ( {
 
   const renderTablet = () => (
     <View className="w-full h-full">
+      <GradientBackdrop />
       <MasonryLayout
         items={items}
         onImagePress={newIndex => {
