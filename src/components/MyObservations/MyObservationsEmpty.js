@@ -1,7 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import AddObsModal from "components/AddObsModal.tsx";
+import AddObsModal from "components/AddObsModal/AddObsModal.tsx";
 import {
   Body1,
   Body2,

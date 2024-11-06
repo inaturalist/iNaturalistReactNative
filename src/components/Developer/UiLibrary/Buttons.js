@@ -1,5 +1,5 @@
+import AddObsButton from "components/AddObsModal/AddObsButton";
 import {
-  AddObsButton,
   Body1,
   Body2,
   Body3,
