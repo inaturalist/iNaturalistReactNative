@@ -90,7 +90,7 @@ describe( "ObsDetails", () => {
       expect( observation.comments_viewed ).not.toBeTruthy();
       renderAppWithComponent( <ObsDetailsContainer /> );
       expect(
-        await screen.findByText( `@${observation.user.login}` )
+        await screen.findByText( observation.user.login )
       ).toBeTruthy();
       await waitFor( ( ) => {
         expect( inatjs.observations.viewedUpdates ).toHaveBeenCalledTimes( 1 );

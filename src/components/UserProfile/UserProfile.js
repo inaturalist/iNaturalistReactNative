@@ -78,7 +78,7 @@ const UserProfile = ( ): Node => {
   const totalProjectCount = projects?.length;
 
   const projectsHeaderOptions = useMemo( ( ) => ( {
-    headerTitle: User.userHandle( user ),
+    headerTitle: user?.login,
     headerSubtitle: t( "JOINED-X-PROJECTS", {
       count: totalProjectCount
     } )
@@ -161,7 +161,7 @@ const UserProfile = ( ): Node => {
         testID={`UserProfile.${userId}`}
       >
         <UserIcon uri={User.uri( user )} large />
-        <Heading1 className="mt-3" selectable>{User.userHandle( user )}</Heading1>
+        <Heading1 className="mt-3" selectable>{user?.login}</Heading1>
         <Subheading1 className="mt-1">{user.name}</Subheading1>
         {( user?.roles || [] ).indexOf( "admin" ) >= 0 && (
           <Heading4 className="mt-1">
