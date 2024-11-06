@@ -15,7 +15,10 @@ import {
 } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
-  useLayoutEffect, useMemo, useRef, useState
+  useEffect,
+  useMemo,
+  useRef,
+  useState
 } from "react";
 import { Platform } from "react-native";
 import DeviceInfo from "react-native-device-info";
@@ -124,15 +127,16 @@ const ObsDetails = ( {
   const scrollViewRef = useRef( );
   const insets = useSafeAreaInsets();
   const { t } = useTranslation( );
-  const [scrollToY, setScrollToY] = useState( 0 );
 
-  useLayoutEffect( ( ) => {
-    // we need useLayoutEffect here to make sure the ScrollView has already rendered
-    // before trying to scroll to the relevant activity item
-    if ( notificationId && scrollViewRef?.current ) {
-      scrollViewRef?.current?.scrollTo( { y: scrollToY } );
+  // Scroll the scrollview to this y position once if set, then unset it.
+  // Could be refactored into a hook if we need this logic elsewher
+  const [oneTimeScrollOffsetY, setOneTimeScrollOffsetY] = useState( 0 );
+  useEffect( ( ) => {
+    if ( oneTimeScrollOffsetY && scrollViewRef?.current ) {
+      scrollViewRef?.current?.scrollTo( { y: oneTimeScrollOffsetY } );
+      setOneTimeScrollOffsetY( 0 );
     }
-  } );
+  }, [oneTimeScrollOffsetY] );
 
   const dynamicInsets = useMemo( () => ( {
     backgroundColor: "#ffffff",
@@ -157,7 +161,7 @@ const ObsDetails = ( {
         refetchRemoteObservation={refetchRemoteObservation}
         onLayoutActivityItem={event => {
           const { layout } = event.nativeEvent;
-          setScrollToY( layout.y );
+          setOneTimeScrollOffsetY( layout.y + layout.height );
         }}
       />
     </HideView>
