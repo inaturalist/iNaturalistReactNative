@@ -327,6 +327,18 @@ platform :android do
 end
 
 platform :ios do
+  desc "Upload app metadata to App Store"
+  # This only works while the new app version is in the "Prepare for Submission" state
+  lane :upload_metadata do
+    upload_to_app_store(
+      metadata_path: "./fastlane/metadata/ios",
+      force: true,
+      skip_binary_upload: true,
+      skip_metadata: false,
+      skip_screenshots: true,
+    )
+  end
+
   lane :build do
     desc "Build release files for iOS"
     # Build iOS app
