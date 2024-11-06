@@ -1,1 +1,1 @@
-alam,hewan,ID tumbuhan,hewan,identifikasi,keanekaragaman hayati,sains khalayak,konservasi,panduan lapangan
+nature,wildlife,plant ID,animal,identify,biodiversity,citizen science,conservation,field guide
