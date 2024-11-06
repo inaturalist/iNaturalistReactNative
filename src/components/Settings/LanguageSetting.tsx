@@ -1,6 +1,6 @@
 import fetchAvailableLocales from "api/translations";
 import {
-  Button,
+  FullWidthButton,
   Heading4,
   PickerSheet
 } from "components/SharedComponents";
@@ -53,8 +53,8 @@ const LanguageSetting = ( { onChange }: Props ) => {
   return (
     <>
       <Heading4 className="mt-7">{t( "APP-LANGUAGE" )}</Heading4>
-      <Button
-        className="mt-4"
+      <FullWidthButton
+        className="mt-4 w-full"
         text={t( "CHANGE-APP-LANGUAGE" )}
         onPress={() => {
           setLocaleSheetOpen( true );

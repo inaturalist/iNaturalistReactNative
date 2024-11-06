@@ -10,7 +10,7 @@ import {
 import {
   ActivityIndicator,
   Body2,
-  Button,
+  FullWidthButton,
   Heading4,
   RadioButtonRow,
   ScrollViewWrapper
@@ -190,8 +190,8 @@ const Settings = ( ) => {
       />
       <Heading4 className="mt-7">{t( "INATURALIST-ACCOUNT-SETTINGS" )}</Heading4>
       <Body2 className="mt-2">{t( "Edit-your-profile-change-your-settings" )}</Body2>
-      <Button
-        className="mt-4"
+      <FullWidthButton
+        className="mt-4 w-full"
         text={t( "ACCOUNT-SETTINGS" )}
         onPress={() => {
           confirmInternetConnection( );

@@ -136,12 +136,10 @@ const Explore = ( {
     // hasLocationPermissions === undefined means we haven't checked for location permissions yet
     if ( placeMode === PLACE_MODE.NEARBY && hasLocationPermissions === false ) {
       return (
-        <View className="flex-1 justify-center p-4">
-          <View className="items-center">
-            <Body2>{t( "To-view-nearby-organisms-please-enable-location" )}</Body2>
-          </View>
+        <View className="flex-1 justify-center items-center p-4">
+          <Body2>{t( "To-view-nearby-organisms-please-enable-location" )}</Body2>
           <Button
-            className="mt-5"
+            className="mt-5 w-full"
             text={t( "ALLOW-LOCATION-ACCESS" )}
             accessibilityHint={t( "Opens-location-permission-prompt" )}
             level="focus"

@@ -6,7 +6,7 @@ import * as React from "react";
 import { AccessibilityRole, GestureResponderEvent, ViewStyle } from "react-native";
 import colors from "styles/tailwindColors";
 
-interface ButtonProps {
+export interface ButtonProps {
   accessibilityHint?: string;
   accessibilityLabel?: string;
   accessibilityRole?: AccessibilityRole;
