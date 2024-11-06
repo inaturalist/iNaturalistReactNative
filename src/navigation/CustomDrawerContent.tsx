@@ -225,7 +225,7 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
       <View className="ml-3 justify-center">
         <Body1>
           {currentUser
-            ? User.userHandle( currentUser )
+            ? currentUser?.login
             : t( "Log-in-to-iNaturalist" )}
         </Body1>
         {currentUser && (

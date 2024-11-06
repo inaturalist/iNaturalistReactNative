@@ -25,10 +25,6 @@ class User extends Realm.Object {
       && { uri: user?.icon_url.replace( "staticdev", "static" ) };
   }
 
-  static userHandle( user: { login: string } ) {
-    return user && `@${user.login}`;
-  }
-
   static currentUser( realm: Realm ) {
     return realm.objects( "User" ).filtered( "signedIn == true" )[0];
   }

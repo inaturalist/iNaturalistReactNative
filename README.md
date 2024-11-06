@@ -212,7 +212,7 @@ when the user interacts with an element. The [iOS Guidelines](https://developer.
     <Trans
       i18nKey="Welcome-user"
       parent={View}
-      values={{ userHandle: User.userHandle( currentUser ) }}
+      values={{ userHandle: currentUser?.login }}
       components={[
         <Subheading1 className="mt-5" />,
         <Heading1 />
