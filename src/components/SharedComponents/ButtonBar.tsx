@@ -27,7 +27,7 @@ const ButtonBar = ( {
     <View
       className={classNames(
         layoutClassNames,
-        "bg-white p-[15px] w-full",
+        "bg-white p-[15px] w-full items-center",
         containerClass
       )}
       style={DROP_SHADOW}

@@ -2,7 +2,7 @@
 import { useNavigation } from "@react-navigation/native";
 import ToolbarContainer from "components/MyObservations/ToolbarContainer";
 import {
-  Button,
+  FullWidthButton,
   Heading1,
   INatIconButton,
   Subheading1
@@ -100,7 +100,8 @@ const MyObservationsHeader = ( {
             </Subheading1>
           )}
       </View>
-      <Button
+      <FullWidthButton
+        className="w-full"
         onPress={( ) => navigation.navigate( "LoginStackNavigator" )}
         accessibilityRole="link"
         accessibilityLabel={t( "Log-in" )}

@@ -1,6 +1,6 @@
 // import { useNavigation } from "@react-navigation/native";
 import {
-  Body2, Button, Heading4, ScrollViewWrapper
+  Body2, FullWidthButton, Heading4, ScrollViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -33,7 +33,7 @@ const Donate = () => {
         <Heading4 className="mb-3">{t( "DONATE-TO-INATURALIST" )}</Heading4>
         <Body2 className="mb-5">{t( "Your-donation-to-iNaturalist" )}</Body2>
         <Body2 className="mb-5">{t( "iNaturalist-is-a-501" )}</Body2>
-        <Button
+        <FullWidthButton
           className="mb-8"
           level="focus"
           text={t( "DONATE-TO-INATURALIST" )}
@@ -43,14 +43,14 @@ const Donate = () => {
         <Body2 className="mb-5">
           {t( "You-can-also-check-out-merchandise" )}
         </Body2>
-        <Button
+        <FullWidthButton
           className="mb-8"
           level="neutral"
           text={t( "SHOP-INATURALIST-MERCH" )}
           onPress={() => openExternalWebBrowser( "https://inaturalist.threadless.com" )}
         />
         <Heading4 className="mb-3">{t( "LEAVE-US-A-REVIEW" )}</Heading4>
-        <Button
+        <FullWidthButton
           className="mb-8"
           level="neutral"
           text={t( "REVIEW-INATURALIST" )}

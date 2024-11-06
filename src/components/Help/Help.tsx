@@ -1,6 +1,6 @@
 import {
   Body2,
-  Button,
+  FullWidthButton,
   Heading4,
   ScrollViewWrapper
 } from "components/SharedComponents";
@@ -16,7 +16,7 @@ const Help = ( ) => (
       <Body2 className="mb-5">
         {t( "You-can-find-answers-on-our-help-page" )}
       </Body2>
-      <Button
+      <FullWidthButton
         className="mb-8"
         level="neutral"
         text={t( "VIEW-INATURALIST-HELP" )}
@@ -26,7 +26,7 @@ const Help = ( ) => (
       <Body2 className="mb-5">
         {t( "Still-need-help" )}
       </Body2>
-      <Button
+      <FullWidthButton
         className="mb-8"
         level="neutral"
         text={t( "CONTACT-SUPPORT" )}
@@ -36,7 +36,7 @@ const Help = ( ) => (
       <Body2 className="mb-5">
         {t( "Are-you-an-educator" )}
       </Body2>
-      <Button
+      <FullWidthButton
         className="mb-8"
         level="neutral"
         text={t( "VIEW-EDUCATORS-GUIDE" )}
@@ -50,7 +50,7 @@ const Help = ( ) => (
       <Body2 className="mb-5">
         {t( "Connect-with-other-naturalists" )}
       </Body2>
-      <Button
+      <FullWidthButton
         className="mb-8"
         level="neutral"
         text={t( "INATURALIST-FORUM" )}

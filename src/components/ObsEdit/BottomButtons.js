@@ -159,9 +159,12 @@ const BottomButtons = ( {
     setNextScreen( { type } );
   }, [setNextScreen, showMissingEvidence] );
 
-  const renderSaveButton = useCallback( ( ) => (
+  const renderSaveButton = useCallback( className => (
     <Button
-      className="px-[25px]"
+      className={classnames(
+        "px-[25px]",
+        className
+      )}
       onPress={( ) => handlePress( "save" )}
       testID="ObsEdit.saveButton"
       text={t( "SAVE" )}
@@ -173,6 +176,7 @@ const BottomButtons = ( {
 
   const renderSaveChangesButton = useCallback( ( ) => (
     <Button
+      className="w-full"
       onPress={( ) => handlePress( "save" )}
       testID="ObsEdit.saveChangesButton"
       text={t( "SAVE-CHANGES" )}
@@ -200,7 +204,7 @@ const BottomButtons = ( {
 
   const renderButtons = useCallback( ( ) => {
     if ( !currentUser || !isConnected ) {
-      return renderSaveButton( );
+      return renderSaveButton( "w-full" );
     }
     if ( currentObservation?._synced_at ) {
       return renderSaveChangesButton( );

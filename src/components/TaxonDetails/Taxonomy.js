@@ -2,7 +2,7 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
-  Button,
+  FullWidthButton,
   Heading4
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -73,8 +73,8 @@ const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ): Node => {
         />
       ) )}
       {!viewChildren && currentTaxon?.children && (
-        <Button
-          className="mt-3"
+        <FullWidthButton
+          className="mt-3 w-full"
           onPress={( ) => setViewChildren( true )}
           text={t( "VIEW-CHILDREN-TAXA" )}
         />

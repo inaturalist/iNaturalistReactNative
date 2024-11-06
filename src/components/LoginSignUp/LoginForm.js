@@ -3,7 +3,11 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
 import {
-  Body1, Body2, Button, INatIcon, List2
+  Body1,
+  Body2,
+  FullWidthButton,
+  INatIcon,
+  List2
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -160,8 +164,8 @@ const LoginForm = ( {
           </Body2>
         </View>
         {error && <Error error={error} />}
-        <Button
-          className={classnames( "mt-[30px]", {
+        <FullWidthButton
+          className={classnames( "mt-[30px] w-full", {
             "mt-5": error
           } )}
           disabled={!email || !password}

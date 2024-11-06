@@ -51,10 +51,11 @@ const SuggestionsFooter = ( {
     <View className="mb-6">
       {!hideLocationToggleButton && (
         <>
-          <View className="px-4 py-6">
+          <View className="px-4 py-6 items-center">
             {shouldUseEvidenceLocation
               ? (
                 <Button
+                  className="w-full"
                   text={t( "IGNORE-LOCATION" )}
                   onPress={( ) => toggleLocation( { showLocation: false } )}
                   accessibilityLabel={t( "Search-suggestions-without-location" )}
@@ -62,6 +63,7 @@ const SuggestionsFooter = ( {
               )
               : (
                 <Button
+                  className="w-full"
                   text={t( "USE-LOCATION" )}
                   onPress={( ) => toggleLocation( { showLocation: true } )}
                   accessibilityLabel={t( "Search-suggestions-with-location" )}

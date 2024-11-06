@@ -2,8 +2,8 @@
 
 import { searchObservations } from "api/observations";
 import {
-  Button,
   DetailsMap,
+  FullWidthButton,
   Heading4,
   Map,
   Modal
@@ -79,9 +79,9 @@ const TaxonMapPreview = ( {
           zoomEnabled={false}
           zoomTapEnabled={false}
         />
-        <Button
+        <FullWidthButton
           text={t( "EXPAND-MAP" )}
-          className="mt-4"
+          className="mt-4 w-full"
           onPress={() => {
             setShowMapModal( true );
           }}
