@@ -52,9 +52,8 @@ describe( "AICamera", () => {
       await takePhotoButton.tap();
 
       // On suggestions find the first element in the suggestions list
-      await waitFor( element( by.text( /OTHER SUGGESTIONS/ ) ) )
-        .toBeVisible( )
-        .withTimeout( TIMEOUT );
+      const otherSuggestionsTitle = element( by.text( "OTHER SUGGESTIONS" ) );
+      await waitFor( otherSuggestionsTitle ).toBeVisible( ).withTimeout( 20_000 );
       const firstSuggestion = element( by.id( /SuggestionsList\.taxa\..*/ ) ).atIndex(
         0
       );
