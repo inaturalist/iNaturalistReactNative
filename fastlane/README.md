@@ -103,6 +103,14 @@ Upload description to Google Play
 
 ## iOS
 
+### ios upload_metadata
+
+```sh
+[bundle exec] fastlane ios upload_metadata
+```
+
+Upload app metadata to App Store
+
 ### ios build
 
 ```sh
