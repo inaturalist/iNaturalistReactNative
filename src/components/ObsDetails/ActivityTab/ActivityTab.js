@@ -14,7 +14,7 @@ type Props = {
   openAgreeWithIdSheet: Function,
   isConnected: boolean,
   notificationId: number,
-  setScrollToY: ( number ) => void
+  onLayoutActivityItem: ( event: any ) => void
 }
 
 const ActivityTab = ( {
@@ -24,7 +24,7 @@ const ActivityTab = ( {
   openAgreeWithIdSheet,
   isConnected,
   notificationId,
-  setScrollToY
+  onLayoutActivityItem
 }: Props ): Node => {
   const currentUser = useCurrentUser( );
   const userId = currentUser?.id;
@@ -59,31 +59,30 @@ const ActivityTab = ( {
 
   return (
     <View testID="ActivityTab">
-      {stableItems.length > 0
-        && stableItems.map( ( item, index ) => (
-          <View
-            onLayout={event => {
-              if ( notificationId === item?.id ) {
-                const { layout } = event.nativeEvent;
-                setScrollToY( layout.y );
-              }
-            }}
-            key={item.uuid}
-          >
-            <ActivityItem
-              currentUserId={userId}
-              isFirstDisplay={index === indexOfFirstTaxonDisplayed( item.taxon?.id )}
-              isConnected={isConnected}
-              item={item}
-              openAgreeWithIdSheet={openAgreeWithIdSheet}
-              refetchRemoteObservation={refetchRemoteObservation}
-              userAgreedId={userAgreedToId}
-              geoprivacy={geoprivacy}
-              taxonGeoprivacy={taxonGeoprivacy}
-              belongsToCurrentUser={belongsToCurrentUser}
-            />
-          </View>
-        ) )}
+      {stableItems.length > 0 && stableItems.map( ( item, index ) => (
+        <View
+          onLayout={event => {
+            if ( notificationId === item?.id ) {
+              // const { layout } = event.nativeEvent;
+              onLayoutActivityItem( event );
+            }
+          }}
+          key={item.uuid}
+        >
+          <ActivityItem
+            currentUserId={userId}
+            isFirstDisplay={index === indexOfFirstTaxonDisplayed( item.taxon?.id )}
+            isConnected={isConnected}
+            item={item}
+            openAgreeWithIdSheet={openAgreeWithIdSheet}
+            refetchRemoteObservation={refetchRemoteObservation}
+            userAgreedId={userAgreedToId}
+            geoprivacy={geoprivacy}
+            taxonGeoprivacy={taxonGeoprivacy}
+            belongsToCurrentUser={belongsToCurrentUser}
+          />
+        </View>
+      ) )}
     </View>
   );
 };

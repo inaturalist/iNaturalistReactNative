@@ -155,7 +155,10 @@ const ObsDetails = ( {
         observation={observation}
         openAgreeWithIdSheet={openAgreeWithIdSheet}
         refetchRemoteObservation={refetchRemoteObservation}
-        setScrollToY={setScrollToY}
+        onLayoutActivityItem={event => {
+          const { layout } = event.nativeEvent;
+          setScrollToY( layout.y );
+        }}
       />
     </HideView>
   );
