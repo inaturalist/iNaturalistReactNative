@@ -71,6 +71,7 @@ interface Props {
   showLocationIndicator?: boolean;
   showsCompass?: boolean;
   showSwitchMapTypeButton?: boolean;
+  showsUserLocation?: boolean;
   style?: ViewStyle;
   switchMapTypeButtonClassName?: string;
   testID?: string;
@@ -107,6 +108,7 @@ const Map = ( {
   showLocationIndicator,
   showsCompass,
   showSwitchMapTypeButton,
+  showsUserLocation: showsUserLocationProp,
   style,
   switchMapTypeButtonClassName,
   testID,
@@ -128,6 +130,8 @@ const Map = ( {
   } | undefined | null>( null );
   const mapViewRef = useRef<MapView>();
   const [currentMapType, setCurrentMapType] = useState( mapType || "standard" );
+  const [showsUserLocation, setShowsUserLocation] = useState( showsUserLocationProp );
+  const [currentLocationPressQueued, setCurrentLocationPressQueued] = useState( false );
 
   let defaultInitialRegion = getDefaultRegion( obsLatitude, obsLongitude );
 
@@ -171,7 +175,6 @@ const Map = ( {
 
   const onPermissionGranted = async ( ) => {
     const currentLocation = await fetchUserLocation( );
-    console.log( currentLocation, "user location in onPermissionGranted" );
     if ( currentLocation && mapViewRef?.current ) {
       mapViewRef.current?.animateToRegion( {
         latitude: currentLocation.latitude,
@@ -196,7 +199,15 @@ const Map = ( {
     return defaultInitialRegion;
   };
 
-  const handleCurrentLocationPress = ( ) => {
+  const handleCurrentLocationPress = useCallback( ( ) => {
+    // If we aren't showing the user's location, we won't have a location to
+    // zoom to yet, so first we need to turn that on, and we'll re-call this
+    // function in an effect when we have a location
+    if ( !showsUserLocation ) {
+      setShowsUserLocation( true );
+      setCurrentLocationPressQueued( true );
+      return;
+    }
     if ( onCurrentLocationPress ) { onCurrentLocationPress( ); }
     if ( userLocation && mapViewRef?.current ) {
       // Zoom level based on location accuracy.
@@ -222,7 +233,22 @@ const Map = ( {
         longitudeDelta
       } );
     }
-  };
+  }, [
+    onCurrentLocationPress,
+    screenHeight,
+    screenWidth,
+    showsUserLocation,
+    userLocation
+  ] );
+
+  // If we have the user's location *and* they asked us to show it, we zoom to
+  // it
+  useEffect( ( ) => {
+    if ( userLocation && currentLocationPressQueued ) {
+      setCurrentLocationPressQueued( false );
+      handleCurrentLocationPress();
+    }
+  }, [userLocation, currentLocationPressQueued, handleCurrentLocationPress] );
 
   const mapContainerStyle = [
     mapHeight
@@ -309,7 +335,7 @@ const Map = ( {
         scrollEnabled={scrollEnabled}
         showsCompass={showsCompass}
         showsMyLocationButton={false}
-        showsUserLocation={hasPermissions}
+        showsUserLocation={showsUserLocation && hasPermissions}
         style={style}
         testID={testID || "Map.MapView"}
         zoomEnabled={zoomEnabled}
