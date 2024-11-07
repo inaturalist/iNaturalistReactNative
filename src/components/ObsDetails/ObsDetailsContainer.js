@@ -182,7 +182,7 @@ const ObsDetailsContainer = ( ): Node => {
     identAt,
     identTaxonId,
     identTaxonFromVision,
-    notificationId,
+    targetActivityItemID,
     uuid
   } = params;
   const navigation = useNavigation( );
@@ -604,7 +604,7 @@ const ObsDetailsContainer = ( ): Node => {
       isConnected={isConnected}
       isRefetching={isRefetching}
       navToSuggestions={navToSuggestions}
-      notificationId={notificationId}
+      targetActivityItemID={targetActivityItemID}
       // saving observation in state (i.e. using observationShown)
       // limits the number of rerenders to entire obs details tree
       observation={observationShown}

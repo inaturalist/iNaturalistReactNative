@@ -9,7 +9,7 @@ import { ACTIVITY_TAB } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 
 type Props = {
-item: Object
+  item: Object
 };
 
 const NotificationsListItem = ( { item }: Props ): Node => {
@@ -34,7 +34,7 @@ const NotificationsListItem = ( { item }: Props ): Node => {
           screen: "ObsDetails",
           params: {
             uuid: item.resource_uuid,
-            notificationId: item.identification_id || item.comment_id
+            targetActivityItemID: item.identification_id || item.comment_id
           }
         } );
       }}
