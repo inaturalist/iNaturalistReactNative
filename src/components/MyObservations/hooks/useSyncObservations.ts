@@ -201,6 +201,10 @@ const useSyncObservations = (
     setSyncingStatus( MANUAL_SYNC_IN_PROGRESS );
     syncManually( );
   }, [syncingStatus, syncManually, setSyncingStatus] );
+
+  return {
+    syncAutomatically
+  };
 };
 
 export default useSyncObservations;
