@@ -31,9 +31,6 @@ Agree = Đồng ý
 AGREE = ĐỒNG Ý
 ALL = TẤT CẢ
 All = Toàn bộ
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Bất kỳ
 Camera = Máy ảnh
 Cancel = Huỷ
 # Quality grade indicating observation does not quality for Needs ID or

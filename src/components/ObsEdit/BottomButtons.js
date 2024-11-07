@@ -46,6 +46,7 @@ const BottomButtons = ( {
   const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
   const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
+  const setSavedOrUploadedMultiObsFlow = useStore( state => state.setSavedOrUploadedMultiObsFlow );
   const navigation = useNavigation( );
   const isNewObs = !currentObservation?._created_at;
   const hasPhotos = currentObservation?.observationPhotos?.length > 0;
@@ -65,6 +66,9 @@ const BottomButtons = ( {
 
   const setNextScreen = useCallback( async ( { type }: Object ) => {
     const savedObservation = await saveObservation( currentObservation, cameraRollUris, realm );
+    if ( savedObservation && observations?.length > 1 ) {
+      setSavedOrUploadedMultiObsFlow( );
+    }
     // If we are saving a new observations, reset the stored my obs offset to
     // restore b/c we want MyObs rendered in its default state with this new
     // observation visible at the top
@@ -106,6 +110,7 @@ const BottomButtons = ( {
     resetMyObsOffsetToRestore,
     observations,
     setCurrentObservationIndex,
+    setSavedOrUploadedMultiObsFlow,
     setStartUploadObservations,
     cameraRollUris,
     realm

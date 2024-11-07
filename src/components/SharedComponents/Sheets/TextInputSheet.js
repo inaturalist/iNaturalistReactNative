@@ -73,7 +73,7 @@ const TextInputSheet = ( {
   const [sheetHeight, setSheetHeight] = useState( 0 );
 
   // disable if user hasn't changed existing text
-  const confirmButtonDisabled = initialInput === input || !input;
+  const confirmButtonDisabled = initialInput === input || ( !input && !initialInput );
 
   const inputStyle = useMemo( ( ) => ( {
     height: Math.min(

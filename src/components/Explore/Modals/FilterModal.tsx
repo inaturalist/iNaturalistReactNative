@@ -183,7 +183,7 @@ const FilterModal = ( {
 
   const taxonomicRankValues = {
     [TAXONOMIC_RANK.none]: {
-      label: t( "NONE" ),
+      label: t( "NONE--ranks" ),
       value: TAXONOMIC_RANK.none
     },
     [TAXONOMIC_RANK.kingdom]: {
@@ -446,7 +446,7 @@ const FilterModal = ( {
 
   const establishmentValues = {
     [ESTABLISHMENT_MEAN.ANY]: {
-      label: t( "Any" ),
+      label: t( "Any--establishment-means" ),
       value: ESTABLISHMENT_MEAN.ANY
     },
     [ESTABLISHMENT_MEAN.INTRODUCED]: {

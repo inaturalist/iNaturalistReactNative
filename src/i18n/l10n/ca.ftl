@@ -25,6 +25,7 @@
 
 # Header for a general description, e.g. of a user, or of iNaturalist itself
 ABOUT = SOBRE
+ADD-COMMENT = AFEGIR COMENTARI
 # Label for button that adds an identification of the same taxon as another identification
 Agree = D'acord
 # Label for button that adds an identification of the same taxon as another identification
@@ -35,9 +36,6 @@ All-observations = Totes les observacions
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = tots els drets reservats
 All-taxa = Tots els tàxons
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Qualsevol
 # Month of April
 April = abril
 # Month of August
@@ -104,7 +102,8 @@ Endemic = Endèmica
 Error = Error
 # Title of dialog or section describing an error
 Error-title = Error
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = Establiment
 Exact-Date = Data exacta
 except = excepte
@@ -170,7 +169,6 @@ Needs-ID--quality-grade = Necessita ID
 New-Observation = Nova observació
 No-Location = Sense ubicació
 No-Media = Sense fitxers audiovisuals
-none = cap
 Notifications = Notificacions
 # Month of November
 November = novembre

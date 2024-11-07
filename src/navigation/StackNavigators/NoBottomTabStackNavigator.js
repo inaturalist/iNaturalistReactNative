@@ -62,7 +62,7 @@ const CameraContainerWithPermission = ( ) => fadeInComponent(
       permissions={CAMERA_PERMISSIONS}
       title={t( "Observe-and-identify-organisms-in-real-time-with-your-camera" )}
       titleDenied={t( "Please-allow-Camera-Access" )}
-      body={t( "Use-the-iNaturalist-camera-to-observe" )}
+      body={t( "Use-the-iNaturalist-camera-to-observe-2" )}
       blockedPrompt={t( "Youve-previously-denied-camera-permissions" )}
       buttonText={t( "OBSERVE-ORGANISMS" )}
       icon="camera"

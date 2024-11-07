@@ -14,6 +14,7 @@ import { EventRegister } from "react-native-event-listeners";
 import WebView from "react-native-webview";
 import { log } from "sharedHelpers/logger";
 import { composeEmail } from "sharedHelpers/mail.ts";
+import { useFontScale } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 
 const logger = log.extend( "FullPageWebView" );
@@ -153,6 +154,7 @@ const FullPageWebView = ( ) => {
   const navigation = useNavigation( );
   const { params } = useRoute<RouteProp<ParamList, "FullPageWebView">>( );
   const [source, setSource] = useState<WebViewSource>( { uri: params.initialUrl } );
+  const { isLargeFontScale } = useFontScale();
 
   // If the previous screen wanted to know when this one blurs, fire off an
   // event when that happens
@@ -196,11 +198,27 @@ const FullPageWebView = ( ) => {
     }, [navigation, params.loggedIn, params.title] )
   );
 
+  const fontScalingJS = `
+    if( ${isLargeFontScale} ){
+      document.getElementById("wrapper").style.fontSize = '2rem';
+      let paragraphs = document.querySelectorAll('p');
+      paragraphs.forEach(p => {
+        p.style.fontSize = '3rem';
+      })
+    }
+    true; 
+    // note: string should evaluate to vaild type, can throw exception otherwise
+    // https://github.com/react-native-webview/react-native-webview/blob/master/docs/Reference.md#injectedjavascript
+  `;
+
   return (
     <Mortal>
       <ViewWrapper>
         {( !params.loggedIn || source.headers ) && (
           <WebView
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            onMessage={() => { }} // onMessage prop required to inject JS into webview
+            injectedJavaScript={fontScalingJS}
             className="h-full w-full flex-1"
             source={source}
             onShouldStartLoadWithRequest={

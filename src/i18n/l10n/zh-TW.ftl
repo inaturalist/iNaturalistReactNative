@@ -23,6 +23,46 @@
 ###   result of performing an action on the accessibility element." We write
 ###   them in third person singular ending with a period.
 
+# Header for a general description, e.g. of a user, or of iNaturalist itself
+ABOUT = 關於
+ABOUT-COLLECTION-PROJECTS = 關於收藏專案
+ABOUT-INATURALIST = 關於《愛自然》
+# About the Data Quality Assement
+ABOUT-THE-DQA = 關於資料品質評估
+About-the-DQA-description = 資料品質等級
+ABOUT-TRADITIONAL-PROJECTS = 關於傳統專案
+ABOUT-UMBRELLA-PROJECTS = 關於綜合專案
+# Label for a taxon when a user prefers to see or hear the common name first
+accessible-comname-sciname = { $commonName }{ $scientificName }
+# Label for a taxon when a user prefers to see or hear the scientific name first
+accessible-sciname-comname = { $scientificName }{ $commonName }
+# Alert message shown after account deletion
+Account-Deleted = 帳號已刪除
+ACTIVITY = 動態
+# Label for a button that adds a vote of agreement
+Add-agreement = 同意該鑑定
+ADD-AN-ID = 新增一筆鑑定
+Add-an-ID-Later = 稍後新增一筆鑑定
+ADD-COMMENT = 新增評論
+Add-Date-Time = 新增日期/時間
+# Label for a button that adds a vote of disagreement
+Add-disagreement = 新增一筆不同意鑑定
+ADD-EVIDENCE = 新增證據
+# Label for a button that shows options for adding evidence, e.g. camera,
+# gallery, sound, etc
+Add-evidence = 新增證據
+Add-favorite = 新增至最愛
+Add-Location = 新增地點
+# Accessibility label for a button that starts the process of adding an
+# observation, e.g. the button in the tab bar
+Add-observations = 新增觀察紀錄
+ADD-OPTIONAL-COMMENT = 新增選填的評論
+Add-optional-notes = 新增選填的註記
+# Hint for a button that adds a vote of agreement
+Adds-your-vote-of-agreement = 新增您的同意票
+# Hint for a button that adds a vote of disagreement
+Adds-your-vote-of-disagreement = 新增您的不同意票
+Affiliation = 所屬機構：{ $site }
 # Label for button that adds an identification of the same taxon as another identification
 Agree = 同意
 # Label for button that adds an identification of the same taxon as another identification
@@ -33,18 +73,19 @@ All-observations = 所有觀察
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = 保留所有權利
 All-taxa = 所有物種分類群
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = 任一出現的證據
 # Month of April
 April = 4月
 # Month of August
 August = 8月
+# Returns user to login screen
+BACK-TO-LOGIN = 回到登入螢幕
 Camera = 相機
 Cancel = 取消
 # Quality grade indicating observation does not quality for Needs ID or
 # Research Grade, e.g. missing media, voted out, etc.
 Casual--quality-grade = 粗略
+# Label for a button that changes a selected start date
+Change-start-date = 更改觀察的開始日期
 # Label for a button that closes a window or popup
 Close = 關閉
 Collection-Project = 收藏專案
@@ -97,7 +138,8 @@ Endemic = 特有
 Error = 錯誤
 # Title of dialog or section describing an error
 Error-title = 錯誤
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = 確立
 Exact-Date = 精確日期
 except = 除外
@@ -163,7 +205,6 @@ Needs-ID--quality-grade = 需要鑑定
 New-Observation = 新觀察記錄
 No-Location = 無位置資訊
 No-Media = 沒有媒體
-none = 無
 Notifications = 通知
 # Month of November
 November = 11月

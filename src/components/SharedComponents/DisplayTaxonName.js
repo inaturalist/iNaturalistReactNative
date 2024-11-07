@@ -113,10 +113,7 @@ const DisplayTaxonName = ( {
   }
 
   const setNumberOfLines = ( ) => {
-    if ( scientificNameFirst ) {
-      return 1;
-    }
-    if ( ellipsizeCommonName || showOneNameOnly ) {
+    if ( scientificNameFirst || ellipsizeCommonName || showOneNameOnly ) {
       return 2;
     }
     return 3;
