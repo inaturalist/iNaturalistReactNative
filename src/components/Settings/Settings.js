@@ -41,6 +41,10 @@ const { useRealm } = RealmContext;
 const SETTINGS_URL = `${Config.OAUTH_API_URL}/users/edit?noh1=true`;
 const FINISHED_WEB_SETTINGS = "finished-web-settings";
 
+const NAME_DISPLAY_COM_SCI = "com-sci";
+const NAME_DISPLAY_SCI_COM = "sci-com";
+const NAME_DISPLAY_SCI = "sci";
+
 const Settings = ( ) => {
   const realm = useRealm( );
   const { isConnected } = useNetInfo( );
@@ -71,12 +75,13 @@ const Settings = ( ) => {
     ( params, optsWithAuth ) => updateUsers( params, optsWithAuth ),
     {
       onSuccess: () => {
+        setIsSaving( false );
         queryClient.invalidateQueries( { queryKey: ["fetchUserMe"] } );
         refetchUserMe();
       },
       onError: () => {
-        confirmInternetConnection( );
         setIsSaving( false );
+        confirmInternetConnection( );
       }
     }
   );
@@ -103,26 +108,26 @@ const Settings = ( ) => {
     };
   }, [refetchUserMe] );
 
-  const changeTaxonNameDisplay = v => {
+  const changeTaxonNameDisplay = useCallback( nameDisplayPref => {
     setIsSaving( true );
 
     const payload = {
       id: settings?.id
     };
 
-    if ( v === 1 ) {
+    if ( nameDisplayPref === NAME_DISPLAY_COM_SCI ) {
       payload["user[prefers_common_names]"] = true;
       payload["user[prefers_scientific_name_first]"] = false;
-    } else if ( v === 2 ) {
+    } else if ( nameDisplayPref === NAME_DISPLAY_SCI_COM ) {
       payload["user[prefers_common_names]"] = true;
       payload["user[prefers_scientific_name_first]"] = true;
-    } else if ( v === 3 ) {
+    } else if ( nameDisplayPref === NAME_DISPLAY_SCI ) {
       payload["user[prefers_common_names]"] = false;
       payload["user[prefers_scientific_name_first]"] = false;
     }
 
     updateUserMutation.mutate( payload );
-  };
+  }, [settings?.id, updateUserMutation] );
 
   const renderLoggedOut = ( ) => (
     <>
@@ -149,14 +154,21 @@ const Settings = ( ) => {
   );
 
   const renderLoggedIn = ( ) => (
-    <>
+    <View>
+      {( isSaving || isLoading ) && (
+        <View className="absolute z-10 bg-white/80
+         w-full h-full flex items-center justify-center"
+        >
+          <ActivityIndicator size={50} />
+        </View>
+      )}
       <Heading4 className="mt-7">{t( "TAXON-NAMES-DISPLAY" )}</Heading4>
       <Body2 className="mt-3">{t( "This-is-how-taxon-names-will-be-displayed" )}</Body2>
       <View className="mt-[22px]">
         <RadioButtonRow
           smallLabel
           checked={settings.prefers_common_names && !settings.prefers_scientific_name_first}
-          onPress={() => changeTaxonNameDisplay( 1 )}
+          onPress={() => changeTaxonNameDisplay( NAME_DISPLAY_COM_SCI )}
           label={t( "Common-Name-Scientific-Name" )}
         />
       </View>
@@ -164,7 +176,7 @@ const Settings = ( ) => {
         <RadioButtonRow
           smallLabel
           checked={settings.prefers_common_names && settings.prefers_scientific_name_first}
-          onPress={() => changeTaxonNameDisplay( 2 )}
+          onPress={() => changeTaxonNameDisplay( NAME_DISPLAY_SCI_COM )}
           label={t( "Scientific-Name-Common-Name" )}
         />
       </View>
@@ -172,7 +184,7 @@ const Settings = ( ) => {
         <RadioButtonRow
           smallLabel
           checked={!settings.prefers_common_names && !settings.prefers_scientific_name_first}
-          onPress={() => changeTaxonNameDisplay( 3 )}
+          onPress={() => changeTaxonNameDisplay( NAME_DISPLAY_SCI )}
           label={t( "Scientific-Name" )}
         />
       </View>
@@ -226,7 +238,7 @@ const Settings = ( ) => {
         }}
         accessibilityLabel={t( "INATURALIST-SETTINGS" )}
       />
-    </>
+    </View>
   );
 
   return (
@@ -236,13 +248,6 @@ const Settings = ( ) => {
         {renderLoggedOut( )}
         {currentUser && renderLoggedIn( )}
       </View>
-      {( isSaving || isLoading ) && (
-        <View className="absolute z-10 bg-lightGray/70
-         w-full h-full flex items-center justify-center"
-        >
-          <ActivityIndicator size={50} />
-        </View>
-      )}
     </ScrollViewWrapper>
   );
 };
