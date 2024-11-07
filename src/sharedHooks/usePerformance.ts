@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
 type PerformanceType = {
-  screenName: string; // name of the screen we're doing performace profiling
-  isLoading: boolean | undefined; // indicating if data loading is finished
+  screenName?: string; // name of the screen to profile; helpful if not using logger
+  isLoading: boolean | undefined; // indicate whether data finished loading
 };
 
 const usePerformance = ( {
@@ -16,11 +16,12 @@ const usePerformance = ( {
     const getPerformanceReport = ( ) => {
       const endTime = global.performance.now( );
       const timeToRender = endTime - startTime;
-      const logMessage = `${screenName} Load Time: ${timeToRender.toFixed( 0 )} milliseconds`;
+      const loadTimeMessage = `Load Time: ${timeToRender.toFixed( 0 )} milliseconds`;
+      const logMessage = screenName
+        ? `${screenName} ${loadTimeMessage}`
+        : loadTimeMessage;
 
       setLoadTime( logMessage );
-      console.log( logMessage );
-      // Send data to any logging tool such as Amplitude
     };
     if ( startTime === 0 ) {
       setStartTime( global.performance.now() );
