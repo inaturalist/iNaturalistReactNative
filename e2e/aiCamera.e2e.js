@@ -54,9 +54,8 @@ describe( "AICamera", () => {
       // On suggestions find the first element in the suggestions list
       const otherSuggestionsTitle = element( by.text( "OTHER SUGGESTIONS" ) );
       await waitFor( otherSuggestionsTitle ).toBeVisible( ).withTimeout( 20_000 );
-      const firstSuggestion = element( by.id( /SuggestionsList\.taxa\..*/ ) ).atIndex(
-        0
-      );
+      const suggestions = element( by.id( /SuggestionsList\.taxa\..*/ ) );
+      const firstSuggestion = suggestions.atIndex( 0 );
       await waitFor( firstSuggestion ).toBeVisible().withTimeout( TIMEOUT );
       const suggestionAttributes = await firstSuggestion.getAttributes();
       const taxonID = suggestionAttributes.elements
