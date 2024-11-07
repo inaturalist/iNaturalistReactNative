@@ -3,7 +3,7 @@
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
-import { useFocusEffect, useIsFocused } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, {
@@ -23,9 +23,6 @@ import {
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
-import useClearGalleryPhotos from "./hooks/useClearGalleryPhotos";
-import useClearRotatedOriginalPhotos from "./hooks/useClearRotatedOriginalPhotos";
-import useClearSyncedMediaForUpload from "./hooks/useClearSyncedMediaForUpload";
 import useSyncObservations from "./hooks/useSyncObservations";
 import useUploadObservations from "./hooks/useUploadObservations";
 import MyObservations from "./MyObservations";
@@ -33,11 +30,6 @@ import MyObservations from "./MyObservations";
 const { useRealm } = RealmContext;
 
 const MyObservationsContainer = ( ): Node => {
-  const isFocused = useIsFocused( );
-  // clear original, large-sized photos before a user returns to any of the Camera or AICamera flows
-  useClearRotatedOriginalPhotos( );
-  useClearGalleryPhotos( );
-  useClearSyncedMediaForUpload( isFocused );
   const { t } = useTranslation( );
   const realm = useRealm( );
   const listRef = useRef( );
@@ -136,13 +128,22 @@ const MyObservationsContainer = ( ): Node => {
     setStartUploadObservations
   ] );
 
+  // 20241107 amanda - this seems to be a culprit for the tab bar being less
+  // tappable sometimes, because automatic sync is still in progress and gets restarted
+  // if a user toggles between tabs too quickly. using the isActive boolean should help
   useFocusEffect(
     // need to reset the state on a FocusEffect, not a blur listener, because
     // tab bar screens don't seem to blur
     useCallback( ( ) => {
+      let isActive = true;
       const unsynced = Observation.filterUnsyncedObservations( realm );
       setNumUnuploadedObservations( unsynced.length );
-      startAutomaticSync( );
+      if ( isActive ) {
+        startAutomaticSync( );
+      }
+      return () => {
+        isActive = false;
+      };
     }, [
       startAutomaticSync,
       setNumUnuploadedObservations,
