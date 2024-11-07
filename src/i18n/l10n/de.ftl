@@ -271,7 +271,7 @@ Date = Datum
 # Date formatting using date-fns
 # Used for things like User Profile join date
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
-date-format-long = dd.MMM.YYYY
+date-format-long = dd.MMM.yyyy
 # Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 date-format-month-day = d. MMM
@@ -307,10 +307,10 @@ datetime-difference-minutes = { $count } Min.
 datetime-difference-weeks = { $count } Wo.
 # Longer datetime, e.g. on ObsEdit
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
-datetime-format-long = dd. MMMM YYYY HH:mm
+datetime-format-long = dd. MMMM yyyy HH:mm
 # Shorter datetime, e.g. on comments and IDs
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
-datetime-format-short = DD. MM.YY,  HH:mm
+datetime-format-short = dd. MM.yy,  HH:mm
 # Month of December
 December = Dezember
 DELETE = LÖSCHEN
