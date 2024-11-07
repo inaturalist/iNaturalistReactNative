@@ -3,6 +3,7 @@ import DetailsTab from "components/ObsDetails/DetailsTab/DetailsTab";
 import { TILE_URL } from "components/SharedComponents/Map/helpers/mapHelpers.ts";
 import React from "react";
 import { View } from "react-native";
+import * as useDebugMode from "sharedHooks/useDebugMode";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
@@ -28,6 +29,22 @@ const mockObservation = factory( "LocalObservation", {
 const mockObservationWithTaxon = {
   ...mockObservation,
   taxon: factory( "LocalTaxon" )
+};
+
+const mockObservationWithProjects = {
+  ...mockObservation,
+  non_traditional_projects: [
+    {
+      project: factory( "RemoteProject" )
+    }, {
+      project: factory( "RemoteProject" )
+    }
+  ],
+  project_observations: [
+    {
+      project: factory( "RemoteProject" )
+    }
+  ]
 };
 
 const mockAttribution = <View testID="mock-attribution" />;
@@ -108,5 +125,26 @@ describe( "DetailsTab", ( ) => {
     renderComponent( <DetailsTab observation={mockObservation} currentUser={null} /> );
     const DQAButton = screen.queryByText( /VIEW DATA QUALITY ASSESSMENT/ );
     expect( DQAButton ).toBeFalsy( );
+  } );
+
+  test( "should not display projects section if observation belongs to zero projects", ( ) => {
+    renderComponent( <DetailsTab observation={mockObservation} currentUser={mockUser} /> );
+    const viewProjectsButton = screen.queryByText( /VIEW PROJECTS/ );
+    expect( viewProjectsButton ).toBeFalsy( );
+  } );
+
+  test( "should display project count from both collection & traditional projects "
+    + "in debug mode", ( ) => {
+    jest.spyOn( useDebugMode, "default" ).mockImplementation( ( ) => ( {
+      isDebug: true
+    } ) );
+    renderComponent(
+      <DetailsTab
+        observation={mockObservationWithProjects}
+        currentUser={mockUser}
+      />
+    );
+    const projectCountText = screen.queryByText( "PROJECTS (3)" );
+    expect( projectCountText ).toBeVisible( );
   } );
 } );

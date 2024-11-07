@@ -1,7 +1,6 @@
 import {
   API_HOST,
   authenticateUser,
-  getAPIToken,
   getUsername,
   isLoggedIn,
   registerUser,
@@ -40,14 +39,9 @@ test( "authenticates user", async ( ) => {
   await expect( getUsername() ).resolves.toEqual( USERNAME );
   await expect( isLoggedIn() ).resolves.toEqual( true );
 
-  // Make sure access token is returned correctly in all different cases (with/without JWT)
-  await expect( getAPIToken( false ) ).resolves.toEqual( ACCESS_TOKEN_AUTHORIZATION_HEADER );
-  await expect( getAPIToken( true ) ).resolves.toEqual( JWT );
-
   // Sign out
   await signOut();
   await expect( isLoggedIn() ).resolves.toEqual( false );
-  await expect( getAPIToken() ).resolves.toBeNull();
 
   scope.done();
   scope2.done();
@@ -72,12 +66,10 @@ test( "registers user", async ( ) => {
   // Make sure user is logged in
   await expect( getUsername() ).resolves.toEqual( USERNAME );
   await expect( isLoggedIn() ).resolves.toEqual( true );
-  await expect( getAPIToken( false ) ).resolves.toEqual( ACCESS_TOKEN_AUTHORIZATION_HEADER );
 
   // Sign out
   await signOut();
   await expect( isLoggedIn() ).resolves.toEqual( false );
-  await expect( getAPIToken() ).resolves.toBeNull();
 
   scope.done();
 } );

@@ -35,9 +35,6 @@ All-observations = Visi novērojumi
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = visas tiesības paturētas
 All-taxa = Visi taksoni
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Nenorādīt
 # Month of April
 April = Aprīlis
 # Month of August
@@ -97,7 +94,8 @@ Endemic = Endēmisks
 Error = Kļūda
 # Title of dialog or section describing an error
 Error-title = Kļūda
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = Izplatība
 Exact-Date = Konkrēts datums
 except = izņemot
@@ -160,7 +158,6 @@ Needs-ID--quality-grade = Nepieciešama ID
 New-Observation = Jauns novērojums
 No-Location = Nav atrašanās vietas
 No-Media = Nav fotogrāfiju
-none = bez
 Notifications = Paziņojumi
 # Month of November
 November = Novembris

@@ -112,10 +112,6 @@ exports[`Checkbox renders reliably 1`] = `
     style={
       [
         {
-          "fontSize": 15,
-          "lineHeight": 18,
-        },
-        {
           "color": "#454545",
         },
         {
@@ -123,11 +119,25 @@ exports[`Checkbox renders reliably 1`] = `
         },
         [
           {
-            "marginLeft": 12,
+            "textAlign": "left",
           },
-          {
-            "flexShrink": 1,
-          },
+          [
+            {
+              "fontSize": 15,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Lato-Regular",
+            },
+            [
+              {
+                "marginLeft": 12,
+              },
+              {
+                "flexShrink": 1,
+              },
+            ],
+          ],
         ],
       ]
     }
@@ -277,10 +287,6 @@ exports[`Checkbox renders reliably being checked 1`] = `
     style={
       [
         {
-          "fontSize": 15,
-          "lineHeight": 18,
-        },
-        {
           "color": "#454545",
         },
         {
@@ -288,11 +294,25 @@ exports[`Checkbox renders reliably being checked 1`] = `
         },
         [
           {
-            "marginLeft": 12,
+            "textAlign": "left",
           },
-          {
-            "flexShrink": 1,
-          },
+          [
+            {
+              "fontSize": 15,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Lato-Regular",
+            },
+            [
+              {
+                "marginLeft": 12,
+              },
+              {
+                "flexShrink": 1,
+              },
+            ],
+          ],
         ],
       ]
     }

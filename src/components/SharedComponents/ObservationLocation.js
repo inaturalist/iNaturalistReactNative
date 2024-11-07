@@ -56,7 +56,7 @@ const ObservationLocation = ( {
       return t( "Lat-Lon-Acc", {
         latitude: observation.latitude,
         longitude: observation.longitude,
-        accuracy: observation?.positional_accuracy?.toFixed( 0 ) || t( "none" )
+        accuracy: observation?.positional_accuracy?.toFixed( 0 ) || t( "none--accuracy" )
       } );
     }
     if ( ( observation?.privateLatitude !== null && observation?.privateLatitude !== undefined )
@@ -66,7 +66,7 @@ const ObservationLocation = ( {
       return t( "Lat-Lon-Acc", {
         latitude: observation.privateLatitude,
         longitude: observation.privateLongitude,
-        accuracy: observation?.positional_accuracy?.toFixed( 0 ) || t( "none" )
+        accuracy: observation?.positional_accuracy?.toFixed( 0 ) || t( "none--accuracy" )
       } );
     }
     return null;

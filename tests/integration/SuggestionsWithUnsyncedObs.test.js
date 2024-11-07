@@ -11,10 +11,11 @@ import {
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions.ts";
 import inatjs from "inaturalistjs";
 import * as useLocationPermission from "sharedHooks/useLocationPermission.tsx";
-import useStore from "stores/useStore";
+import useStore, { storage } from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import { renderAppWithObservations } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
+import { signIn, signOut } from "tests/helpers/user";
 import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
 
 const mockModelResult = {
@@ -64,7 +65,8 @@ jest.mock( "sharedHooks/useDebugMode", ( ) => ( {
   __esModule: true,
   default: ( ) => ( {
     isDebug: false
-  } )
+  } ),
+  isDebugMode: ( ) => false
 } ) );
 
 jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
@@ -120,6 +122,11 @@ beforeAll( async ( ) => {
   jest.useFakeTimers( );
 } );
 
+beforeAll( ( ) => {
+  // Hide the onboarding modal
+  storage.set( "onBoardingShown", true );
+} );
+
 // Mock the response from inatjs.computervision.score_image
 const topSuggestion = {
   taxon: factory.states( "genus" )( "RemoteTaxon", { name: "Primum" } ),
@@ -141,11 +148,6 @@ const mockLocalTaxon = {
 };
 
 const mockUser = factory( "LocalUser" );
-// Mock useCurrentUser hook
-jest.mock( "sharedHooks/useCurrentUser", () => ( {
-  __esModule: true,
-  default: jest.fn( () => mockUser )
-} ) );
 
 const makeMockObservations = ( ) => ( [
   factory( "RemoteObservation", {
@@ -246,12 +248,14 @@ const setupAppWithSignedInUser = async hasLocation => {
 // );
 
 describe( "from ObsEdit with human observation", ( ) => {
-  beforeEach( ( ) => {
+  beforeEach( async ( ) => {
+    await signIn( mockUser, { realm: global.mockRealms[__filename] } );
     inatjs.computervision.score_image
       .mockResolvedValue( makeResponse( [humanSuggestion, topSuggestion] ) );
   } );
 
   afterEach( ( ) => {
+    signOut( { realm: global.mockRealms[__filename] } );
     inatjs.computervision.score_image.mockReset( );
   } );
 
@@ -294,7 +298,7 @@ describe( "from ObsEdit with human observation", ( ) => {
 } );
 
 describe( "from AICamera", ( ) => {
-  global.withAnimatedTimeTravelEnabled( );
+  global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
   beforeEach( async ( ) => {
     inatjs.computervision.score_image
       .mockResolvedValue( makeResponse( [topSuggestion] ) );
@@ -372,9 +376,10 @@ describe( "from AICamera", ( ) => {
       } ) );
       const { observations } = await setupAppWithSignedInUser( );
       await navigateToSuggestionsViaAICamera( observations[0] );
-      global.timeTravel( );
-      const usePermissionsButton = await screen.findByText( /IMPROVE THESE SUGGESTIONS/ );
-      expect( usePermissionsButton ).toBeVisible( );
+      await waitFor( ( ) => {
+        global.timeTravel( );
+        expect( screen.getByText( /IMPROVE THESE SUGGESTIONS/ ) ).toBeVisible( );
+      } );
       const ignoreLocationButton = screen.queryByText( /IGNORE LOCATION/ );
       expect( ignoreLocationButton ).toBeFalsy( );
       const useLocationButton = screen.queryByText( /USE LOCATION/ );

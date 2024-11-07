@@ -2,7 +2,10 @@
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import CameraContainer from "components/Camera/CameraContainer.tsx";
+// Please don't change this to an aliased path or the e2e mock will not get
+// used in our e2e tests on Github Actions
+// eslint-disable-next-line import/no-unresolved
+import CameraContainer from "components/Camera/CameraContainer";
 import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
 import { Heading4 } from "components/SharedComponents";
@@ -59,7 +62,7 @@ const CameraContainerWithPermission = ( ) => fadeInComponent(
       permissions={CAMERA_PERMISSIONS}
       title={t( "Observe-and-identify-organisms-in-real-time-with-your-camera" )}
       titleDenied={t( "Please-allow-Camera-Access" )}
-      body={t( "Use-the-iNaturalist-camera-to-observe" )}
+      body={t( "Use-the-iNaturalist-camera-to-observe-2" )}
       blockedPrompt={t( "Youve-previously-denied-camera-permissions" )}
       buttonText={t( "OBSERVE-ORGANISMS" )}
       icon="camera"

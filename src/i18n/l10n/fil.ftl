@@ -26,9 +26,6 @@
 # Header for a general description, e.g. of a user, or of iNaturalist itself
 ABOUT = PATUNGKOL
 All = Lahat
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Kahit ano
 Cancel = Ikansela
 # label in project requirements
 Date = Petsa

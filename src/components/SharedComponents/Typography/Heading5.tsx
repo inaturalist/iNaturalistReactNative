@@ -1,20 +1,12 @@
-import {
-  tailwindFontBold
-} from "appConstants/fontFamilies.ts";
-import classnames from "classnames";
+import { tailwindFontBold } from "appConstants/fontFamilies.ts";
 import React from "react";
-import { Text, TextProps } from "react-native";
+import { TextProps } from "react-native";
+
+import InatText from "./InatText";
 
 const Heading5 = ( props: TextProps ) => (
-  <Text
-    maxFontSizeMultiplier={3}
-    className={classnames(
-      "text-3xs tracking-wide text-darkGray",
-      tailwindFontBold
-    )}
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    {...props}
-  />
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  <InatText className={`text-3xs tracking-wide ${tailwindFontBold}`} {...props} />
 );
 
 export default Heading5;

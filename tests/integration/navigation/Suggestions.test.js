@@ -2,13 +2,14 @@ import {
   act,
   screen,
   userEvent,
+  waitFor,
   within
 } from "@testing-library/react-native";
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions.ts";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import * as useLocationPermission from "sharedHooks/useLocationPermission.tsx";
-import useStore from "stores/useStore";
+import useStore, { storage } from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderAppWithObservations } from "tests/helpers/render";
@@ -24,6 +25,11 @@ jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
 jest.unmock( "@react-navigation/native" );
+
+beforeAll( ( ) => {
+  // Hide the onboarding modal
+  storage.set( "onBoardingShown", true );
+} );
 
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
@@ -80,12 +86,6 @@ const mockUser = factory( "LocalUser", {
   locale: "en"
 } );
 
-// Mock useCurrentUser hook
-jest.mock( "sharedHooks/useCurrentUser", () => ( {
-  __esModule: true,
-  default: jest.fn( () => mockUser )
-} ) );
-
 const topSuggestion = {
   taxon: factory( "RemoteTaxon", { name: "Primum suggestion" } ),
   combined_score: 90
@@ -95,8 +95,14 @@ const otherSuggestion = {
   combined_score: 50
 };
 
+beforeAll( async () => {
+  await initI18next();
+  // userEvent recommends fake timers
+  jest.useFakeTimers( );
+} );
+
 describe( "Suggestions", ( ) => {
-  global.withAnimatedTimeTravelEnabled( );
+  global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
   const actor = userEvent.setup( );
 
   // We need to navigate from MyObs to ObsEdit to Suggestions for all of these
@@ -130,19 +136,16 @@ describe( "Suggestions", ( ) => {
     const takePhotoButton = await screen.findByLabelText( /Take photo/ );
     await actor.press( takePhotoButton );
     const addIDButton = await screen.findByText( /ADD AN ID/ );
-    expect( addIDButton ).toBeVisible( );
-    global.timeTravel( );
+    await waitFor( ( ) => {
+      global.timeTravel( );
+      expect( addIDButton ).toBeVisible( );
+    } );
   }
-
-  beforeAll( async () => {
-    await initI18next();
-    // userEvent recommends fake timers
-    jest.useFakeTimers( );
-  } );
 
   describe( "when reached from ObsEdit", ( ) => {
     // Mock the response from inatjs.computervision.score_image
-    beforeEach( ( ) => {
+    beforeEach( async ( ) => {
+      await signIn( mockUser, { realm: global.mockRealms[__filename] } );
       const mockScoreImageResponse = makeResponse( [topSuggestion, otherSuggestion] );
       inatjs.computervision.score_image.mockResolvedValue( mockScoreImageResponse );
       inatjs.observations.observers.mockResolvedValue( makeResponse( ) );
@@ -150,6 +153,7 @@ describe( "Suggestions", ( ) => {
     } );
 
     afterEach( ( ) => {
+      signOut( { realm: global.mockRealms[__filename] } );
       inatjs.computervision.score_image.mockClear( );
       inatjs.observations.observers.mockClear( );
       inatjs.taxa.fetch.mockClear( );

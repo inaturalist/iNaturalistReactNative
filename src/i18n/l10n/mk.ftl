@@ -35,9 +35,6 @@ All-observations = Сите набљудувања
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = сите права задржани
 All-taxa = Сите таксони
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Било кој
 # Month of April
 April = април
 # Month of August
@@ -139,7 +136,6 @@ Needs-ID--quality-grade = Потребно е препознавање
 New-Observation = Ново набљудување
 No-Location = Нема локација
 No-Media = Без запис
-none = без лого
 # Month of November
 November = ноември
 Obscured = Прикриени

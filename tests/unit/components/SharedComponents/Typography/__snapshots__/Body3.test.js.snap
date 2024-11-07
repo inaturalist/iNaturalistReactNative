@@ -6,15 +6,25 @@ exports[`Body3 renders correctly 1`] = `
   style={
     [
       {
-        "fontSize": 13,
-        "lineHeight": 18,
-      },
-      {
         "color": "#454545",
       },
       {
-        "fontFamily": "Lato-Medium",
+        "fontFamily": "Lato-Regular",
       },
+      [
+        {
+          "textAlign": "left",
+        },
+        [
+          {
+            "fontSize": 13,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Lato-Medium",
+          },
+        ],
+      ],
     ]
   }
 >

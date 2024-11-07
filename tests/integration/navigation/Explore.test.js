@@ -7,7 +7,8 @@ import {
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import ReactNativePermissions from "react-native-permissions";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import Observation from "realmModels/Observation";
+import { storage } from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
@@ -39,13 +40,16 @@ const mockObservations = [
   } )
 ];
 
-const obs = mockObservations[0];
-
 const mockFetchUserLocation = jest.fn( () => ( { latitude: 37, longitude: 34 } ) );
 jest.mock( "sharedHelpers/fetchUserLocation", () => ( {
   __esModule: true,
   default: () => mockFetchUserLocation()
 } ) );
+
+beforeAll( ( ) => {
+  // Hide the onboarding modal
+  storage.set( "onBoardingShown", true );
+} );
 
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
@@ -71,25 +75,38 @@ afterAll( uniqueRealmAfterAll );
 
 beforeAll( async () => {
   await initI18next();
+  jest.useFakeTimers( );
   inatjs.observations.speciesCounts.mockResolvedValue( makeResponse( [{
     count: 1,
     taxon: mockTaxon
   }] ) );
-  inatjs.observations.search.mockResolvedValue( makeResponse( mockObservations ) );
+  inatjs.observations.search.mockImplementation( ( params, _opts ) => {
+    // If this is from MyObs trying to get the signed in user's obs, return nothing
+    if ( params.user_id && !params.verifiable ) {
+      return makeResponse( [] );
+    }
+    // But if it's from Explore, we want to show observations
+    return makeResponse( mockObservations );
+  } );
   inatjs.taxa.fetch.mockResolvedValue( makeResponse( [mockTaxon] ) );
 } );
 
 const actor = userEvent.setup( );
 
 async function navigateToObsDetails( ) {
-  global.timeTravel( );
-  expect( await screen.findByText( /Welcome back/ ) ).toBeVisible( );
-  const firstObservation = await screen.findByTestId( `MyObservationsPressable.${obs.uuid}` );
+  await waitFor( ( ) => {
+    global.timeTravel( );
+    expect( screen.getByText( /Welcome back/ ) ).toBeVisible( );
+  } );
+  const firstObservation = await screen.findByTestId(
+    `ObsPressable.${mockObservations[0].uuid}`
+  );
   await actor.press( firstObservation );
 }
 
 async function navigateToRootExplore( ) {
-  expect( await screen.findByText( /Welcome back/ ) ).toBeVisible( );
+  const welcomeBack = await screen.findByText( /Welcome back/ );
+  await waitFor( ( ) => expect( welcomeBack ).toBeVisible( ) );
   const tabBar = await screen.findByTestId( "CustomTabBar" );
   const exploreButton = await within( tabBar ).findByLabelText( "Explore" );
   await actor.press( exploreButton );
@@ -97,25 +114,28 @@ async function navigateToRootExplore( ) {
 
 describe( "logged in", ( ) => {
   beforeEach( async ( ) => {
-    // Write mock observation to realm
-    safeRealmWrite( global.mockRealms[__filename], ( ) => {
-      global.mockRealms[__filename].create( "Observation", mockObservations[0] );
-    }, "write mock observation, navigation/Explore test" );
-
     await signIn( mockUser, { realm: global.mockRealms[__filename] } );
   } );
 
-  afterEach( ( ) => {
-    signOut( { realm: global.mockRealms[__filename] } );
+  afterEach( async ( ) => {
+    await signOut( { realm: global.mockRealms[__filename] } );
   } );
 
   describe( "from MyObs", ( ) => {
-    global.withAnimatedTimeTravelEnabled( );
+    beforeEach( ( ) => {
+      // Write mock observation to realm
+      Observation.upsertRemoteObservations( mockObservations, global.mockRealms[__filename] );
+    } );
+
+    global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
+
     describe( "from MyObs toolbar", ( ) => {
       it( "should show observations view and navigate back to MyObs", async ( ) => {
         renderApp( );
-        global.timeTravel( );
-        expect( await screen.findByText( /Welcome back/ ) ).toBeVisible( );
+        await waitFor( ( ) => {
+          global.timeTravel( );
+          expect( screen.getByText( /Welcome back/ ) ).toBeVisible( );
+        } );
         const exploreButton = await screen.findByLabelText( /See all your observations in explore/ );
         await actor.press( exploreButton );
         expect( inatjs.observations.search ).toHaveBeenCalledWith( expect.objectContaining( {
@@ -138,7 +158,9 @@ describe( "logged in", ( ) => {
       it( "should show observations view and navigate back to TaxonDetails", async ( ) => {
         renderApp( );
         await navigateToObsDetails( );
-        const taxonPressable = await screen.findByTestId( `ObsDetails.taxon.${obs.taxon.id}` );
+        const taxonPressable = await screen.findByTestId(
+          `ObsDetails.taxon.${mockObservations[0].taxon.id}`
+        );
         await actor.press( taxonPressable );
         const exploreButton = await screen.findByLabelText( /See observations of this taxon in explore/ );
         await actor.press( exploreButton );
@@ -160,6 +182,8 @@ describe( "logged in", ( ) => {
 
     describe( "from UserProfile observations button", ( ) => {
       beforeEach( async ( ) => {
+        // Write mock observation to realm
+        Observation.upsertRemoteObservations( mockObservations, global.mockRealms[__filename] );
         inatjs.users.fetch.mockResolvedValue( makeResponse( [mockUser] ) );
         inatjs.relationships.search.mockResolvedValue( makeResponse( {
           results: []
@@ -169,7 +193,9 @@ describe( "logged in", ( ) => {
       it( "should show observations view and navigate back to UserProfile", async ( ) => {
         renderApp( );
         await navigateToObsDetails( );
-        const userProfileButton = await screen.findByLabelText( `User @${obs.user.login}` );
+        const userProfileButton = await screen.findByLabelText(
+          `User ${mockObservations[0].user.login}`
+        );
         await actor.press( userProfileButton );
         expect( inatjs.users.fetch ).toHaveBeenCalled( );
         const observationsButton = await screen.findByLabelText( /See observations by this user in Explore/ );
@@ -193,6 +219,9 @@ describe( "logged in", ( ) => {
 
     describe( "from UserProfile species button", ( ) => {
       beforeEach( async ( ) => {
+        // Write mock observation to realm
+        Observation.upsertRemoteObservations( mockObservations, global.mockRealms[__filename] );
+
         inatjs.users.fetch.mockResolvedValue( makeResponse( [mockUser] ) );
         inatjs.relationships.search.mockResolvedValue( makeResponse( {
           results: []
@@ -202,7 +231,9 @@ describe( "logged in", ( ) => {
       it( "should show species view and navigate back to UserProfile", async ( ) => {
         renderApp( );
         await navigateToObsDetails( );
-        const userProfileButton = await screen.findByLabelText( `User @${obs.user.login}` );
+        const userProfileButton = await screen.findByLabelText(
+          `User ${mockObservations[0].user.login}`
+        );
         await actor.press( userProfileButton );
         expect( inatjs.users.fetch ).toHaveBeenCalled( );
         const speciesButton = await screen.findByLabelText( /See species observed by this user in Explore/ );
@@ -248,6 +279,7 @@ describe( "logged in", ( ) => {
         inatjs.relationships.search.mockResolvedValue( makeResponse( {
           results: []
         } ) );
+        inatjs.observations.fetch.mockResolvedValue( makeResponse( mockObservations ) );
         renderApp( );
         await navigateToRootExplore( );
         const speciesViewIcon = await screen.findByLabelText( /Species View/ );
@@ -260,12 +292,17 @@ describe( "logged in", ( ) => {
         expect( headerCount ).toBeVisible( );
         const gridView = await screen.findByTestId( "SegmentedButton.grid" );
         await actor.press( gridView );
-        const firstObservation = screen.queryByTestId( `MyObservationsPressable.${obs.uuid}` );
+        const firstObservation = screen.queryByTestId(
+          `ObsPressable.${mockObservations[0].uuid}`
+        );
         await waitFor( ( ) => {
           expect( firstObservation ).toBeVisible( );
-        }, { timeout: 10000 } );
+        }, { timeout: 10_000 } );
         await actor.press( firstObservation );
-        const userProfileButton = await screen.findByLabelText( `User @${mockUser.login}` );
+        await waitFor( ( ) => {
+          expect( screen.getByTestId( `ObsDetails.${mockObservations[0].uuid}` ) ).toBeVisible( );
+        }, { timeout: 10_000 } );
+        const userProfileButton = await screen.findByLabelText( `User ${mockUser.login}` );
         await actor.press( userProfileButton );
         const observationsButton = await screen.findByLabelText( /See observations by this user in Explore/ );
         await actor.press( observationsButton );

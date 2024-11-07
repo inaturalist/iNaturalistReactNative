@@ -35,9 +35,6 @@ All-observations = Wszystkie obserwacje
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = wszelkie prawa zastrzeżone
 All-taxa = Wszystkie taksony
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Dowolny
 # Month of April
 April = Kwiecień
 # Month of August
@@ -159,7 +156,6 @@ Needs-ID--quality-grade = Potrzebuje oznaczenia
 New-Observation = Nowa obserwacja
 No-Location = Brak lokalizacji
 No-Media = Bez mediów
-none = brak
 Notifications = Powiadomienia
 # Month of November
 November = Listopad

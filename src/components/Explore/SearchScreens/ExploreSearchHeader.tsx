@@ -31,9 +31,9 @@ const ExploreSearchHeader = ( {
           accessibilityLabel={headerText}
         />
       </View>
-      <Heading4>{headerText}</Heading4>
+      <Heading4 className="flex-1 wrap text-center">{headerText}</Heading4>
       <View className="w-[50px] items-end">
-        <Body3 onPress={resetFilters}>
+        <Body3 onPress={resetFilters} maxFontSizeMultiplier={1.5}>
           {t( "Reset-verb" )}
         </Body3>
       </View>

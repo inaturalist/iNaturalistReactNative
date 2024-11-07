@@ -28,6 +28,7 @@ const ObsEditHeader = ( {
 }: Props ): Node => {
   const unsavedChanges = useStore( state => state.unsavedChanges );
   const updateObservations = useStore( state => state.updateObservations );
+  const savedOrUploadedMultiObsFlow = useStore( state => state.savedOrUploadedMultiObsFlow );
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
@@ -78,16 +79,17 @@ const ObsEditHeader = ( {
     );
   }, [observations, t, savedLocally] );
 
-  const shouldNavigateBack = params?.lastScreen === "GroupPhotos"
+  const shouldNavigateBack = !savedOrUploadedMultiObsFlow
+    && ( params?.lastScreen === "GroupPhotos"
     || ( unsynced && savedLocally )
-    || ( unsynced && !unsavedChanges );
+    || ( unsynced && !unsavedChanges ) );
 
   const handleBackButtonPress = useCallback( ( ) => {
     if ( params?.lastScreen === "Suggestions" ) {
       navigation.navigate( "Suggestions", { lastScreen: "ObsEdit" } );
     } else if ( shouldNavigateBack ) {
       navigation.goBack( );
-    } else if ( !savedLocally ) {
+    } else if ( !savedLocally || savedOrUploadedMultiObsFlow === true ) {
       setDiscardObservationSheetVisible( true );
     } else if ( unsavedChanges ) {
       setDiscardChangesSheetVisible( true );
@@ -96,10 +98,11 @@ const ObsEditHeader = ( {
     }
   }, [
     currentObservation?.uuid,
-    shouldNavigateBack,
     navigation,
     params?.lastScreen,
     savedLocally,
+    savedOrUploadedMultiObsFlow,
+    shouldNavigateBack,
     unsavedChanges
   ] );
 

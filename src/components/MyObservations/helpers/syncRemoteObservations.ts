@@ -1,10 +1,16 @@
 import { searchObservations } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import Observation from "realmModels/Observation";
+import { log } from "sharedHelpers/logger";
 import { sleep } from "sharedHelpers/util.ts";
+import { isDebugMode } from "sharedHooks/useDebugMode";
 
-// eslint-disable-next-line no-undef
-export default syncRemoteObservations = async ( realm, currentUserId, deletionsCompletedAt ) => {
+const logger = log.extend( "syncRemoteObservations" );
+
+async function syncRemoteObservations( realm, currentUserId: number, deletionsCompletedAt: Date ) {
+  if ( isDebugMode( ) ) {
+    logger.info( "calling getJWT" );
+  }
   const apiToken = await getJWT( );
   const searchParams = {
     user_id: currentUserId,
@@ -18,7 +24,7 @@ export default syncRemoteObservations = async ( realm, currentUserId, deletionsC
   // they did, make sure 10s have elapsed since deletions complated before
   // fetching new obs
   if ( deletionsCompletedAt ) {
-    const msSinceDeletionsCompleted = ( new Date( ) - deletionsCompletedAt );
+    const msSinceDeletionsCompleted = ( Date.now( ) - deletionsCompletedAt.getTime( ) );
     if ( msSinceDeletionsCompleted < 5_000 ) {
       const naptime = 10_000 - msSinceDeletionsCompleted;
       await sleep( naptime );
@@ -26,4 +32,6 @@ export default syncRemoteObservations = async ( realm, currentUserId, deletionsC
   }
   const { results } = await searchObservations( searchParams, { api_token: apiToken } );
   await Observation.upsertRemoteObservations( results, realm );
-};
+}
+
+export default syncRemoteObservations;

@@ -28,6 +28,7 @@ const useRemoteObservation = ( uuid: string, enabled: boolean ): Object => {
     optsWithAuth => fetchRemoteObservation(
       uuid,
       {
+        include_new_projects: true,
         fields: Observation.FIELDS
       },
       optsWithAuth

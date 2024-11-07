@@ -1,6 +1,6 @@
 {
   "name": "inaturalistreactnative",
-  "version": "0.51.0",
+  "version": "0.53.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -10,7 +10,7 @@
     "start": "react-native start",
     "clean": "./scripts/clean.sh",
     "clean-start": "npx react-native clean-project-auto && npx pod-install && npm start -- --reset-cache",
-    "test": "jest",
+    "test": "jest tests/integration && jest tests/unit tests/helpers",
     "test:clear": "jest --clearCache",
     "test:memory": "jest --runInBand --logHeapUsage",
     "lint": "npm run lint:eslint && npm run lint:flow",
@@ -80,6 +80,7 @@
     "react-dom": "18.2.0",
     "react-i18next": "^14.1.0",
     "react-native": "0.73.7",
+    "react-native-animated-dots-carousel": "^2.0.0",
     "react-native-audio-recorder-player": "^3.6.7",
     "react-native-bouncy-checkbox": "^3.0.7",
     "react-native-circular-progress-indicator": "^4.4.2",
@@ -128,7 +129,7 @@
     "realm": "^12.6.2",
     "sanitize-html": "^2.13.0",
     "ts-jest": "^29.1.2",
-    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision",
+    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision#taxonomy-rollup-cutoff-2",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
@@ -158,7 +159,7 @@
     "babel-plugin-transform-remove-console": "^6.9.4",
     "chalk": "^5.3.0",
     "decompress": "^4.2.1",
-    "detox": "^20.19.4",
+    "detox": "^20.27.2",
     "dotenv": "^16.4.5",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",

@@ -28,9 +28,6 @@ ABOUT = കുറിച്ച്
 # Label for button that adds an identification of the same taxon as another identification
 Agree = സമ്മതിക്കുന്നു
 All = എല്ലാം
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = ഏതെങ്കിലും
 Cancel = റദ്ദാക്കുക
 # Quality grade indicating observation does not quality for Needs ID or
 # Research Grade, e.g. missing media, voted out, etc.

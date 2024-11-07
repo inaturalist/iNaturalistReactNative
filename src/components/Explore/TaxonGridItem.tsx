@@ -7,7 +7,7 @@ import type { Node } from "react";
 import React from "react";
 import Photo from "realmModels/Photo";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
-import { useCurrentUser, useTranslation } from "sharedHooks";
+import { useCurrentUser, useFontScale, useTranslation } from "sharedHooks";
 
 interface Props {
   count: number,
@@ -26,6 +26,7 @@ const TaxonGridItem = ( {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
   const accessibleName = accessibleTaxonName( taxon, currentUser, t );
+  const { isLargeFontScale } = useFontScale();
 
   const source = {
     uri: Photo.displayLocalOrRemoteMediumPhoto(
@@ -61,6 +62,7 @@ const TaxonGridItem = ( {
         <View className="absolute bottom-0 flex p-2 w-full">
           {count && (
             <Body4
+              maxFontSizeMultiplier={1.5}
               className="text-white py-1"
             >
               {t( "X-Observations", { count } )}
@@ -73,6 +75,7 @@ const TaxonGridItem = ( {
             prefersCommonNames={currentUser?.prefers_common_names}
             layout="vertical"
             color="text-white"
+            showOneNameOnly={isLargeFontScale}
           />
         </View>
       </ObsImagePreview>

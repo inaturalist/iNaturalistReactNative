@@ -30,9 +30,6 @@ accessible-comname-sciname = { $commonName } ({ $scientificName })
 All-observations = Alle waarnemings
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = alle regte voorbehou
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Enige
 Cancel = Kanselleer
 # Quality grade indicating observation does not quality for Needs ID or
 # Research Grade, e.g. missing media, voted out, etc.
@@ -43,13 +40,6 @@ Data-quality-assessment-date-is-accurate = Datum is akkuraat
 Date-observed = Datum waargeneem
 # Month of December
 December = Desember
-# Shows the number of observations a user is currently deleting out of total on my observations page
-Deleting-x-of-y-observations =
-    Vee { $total ->
-        [one] tans 1 van 1 waarnemings uit
-        [two] 1 van 2 waarnemings uit
-       *[other] tans { $currentDeleteCount }  van { $total } waarnemings uit
-    }
 Explore = Verken
 # Identification category
 improving--identification = Verbeterend

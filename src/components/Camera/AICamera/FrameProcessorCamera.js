@@ -1,15 +1,16 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
 import CameraView from "components/Camera/CameraView.tsx";
+import {
+  useFrameProcessor
+} from "components/Camera/helpers/visionCameraWrapper";
+import InatVision from "components/Camera/helpers/visionPluginWrapper";
 import type { Node } from "react";
 import React, {
   useEffect,
   useState
 } from "react";
 import { Platform } from "react-native";
-import {
-  useFrameProcessor
-} from "react-native-vision-camera";
 import { Worklets } from "react-native-worklets-core";
 import { modelPath, modelVersion, taxonomyPath } from "sharedHelpers/cvModel.ts";
 import {
@@ -17,7 +18,6 @@ import {
   usePatchedRunAsync
 } from "sharedHelpers/visionCameraPatches";
 import { useDeviceOrientation } from "sharedHooks";
-import * as InatVision from "vision-camera-plugin-inatvision";
 
 type Props = {
   // $FlowIgnore
@@ -36,11 +36,13 @@ type Props = {
   onTaxaDetected: Function,
   pinchToZoom?: Function,
   takingPhoto: boolean,
+  taxonomyRollupCutoff?: number,
   inactive?: boolean
 };
 
 const DEFAULT_FPS = 1;
 const DEFAULT_CONFIDENCE_THRESHOLD = 0.5;
+const DEFAULT_TAXONOMY_CUTOFF_THRESHOLD = 0.0;
 const DEFAULT_NUM_STORED_RESULTS = 4;
 const DEFAULT_CROP_RATIO = 1.0;
 
@@ -62,10 +64,11 @@ const FrameProcessorCamera = ( {
   onTaxaDetected,
   pinchToZoom,
   takingPhoto,
+  taxonomyRollupCutoff = DEFAULT_TAXONOMY_CUTOFF_THRESHOLD,
   inactive
 }: Props ): Node => {
   const { deviceOrientation } = useDeviceOrientation();
-  const [lastTimestamp, setLastTimestamp] = useState( Date.now() );
+  const [lastTimestamp, setLastTimestamp] = useState( undefined );
 
   const navigation = useNavigation();
 
@@ -125,9 +128,12 @@ const FrameProcessorCamera = ( {
         return;
       }
       const timestamp = Date.now();
-      const timeSinceLastFrame = timestamp - lastTimestamp;
-      if ( timeSinceLastFrame < ( 1000 / fps ) ) {
-        return;
+      // If there is no lastTimestamp, i.e. the first time this runs do not compare
+      if ( lastTimestamp ) {
+        const timeSinceLastFrame = timestamp - lastTimestamp;
+        if ( timeSinceLastFrame < 1000 / fps ) {
+          return;
+        }
       }
 
       patchedRunAsync( frame, () => {
@@ -142,6 +148,7 @@ const FrameProcessorCamera = ( {
             modelPath,
             taxonomyPath,
             confidenceThreshold,
+            taxonomyRollupCutoff,
             numStoredResults,
             cropRatio,
             patchedOrientationAndroid
@@ -160,6 +167,7 @@ const FrameProcessorCamera = ( {
       modelVersion,
       confidenceThreshold,
       takingPhoto,
+      taxonomyRollupCutoff,
       patchedOrientationAndroid,
       numStoredResults,
       cropRatio,

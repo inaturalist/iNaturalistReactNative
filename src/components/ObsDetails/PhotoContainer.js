@@ -71,14 +71,15 @@ const PhotoContainer = ( { photo, onPress, style }: Props ): Node => {
       }}
     />
   );
-  const loadingIndicator = (
-    <ActivityIndicator
-      className={classnames(
-        "absolute",
-        loadSuccess !== null && "hidden"
-      )}
-    />
-  );
+
+  const renderLoadingIndicator = ( ) => {
+    if ( loadSuccess === null ) {
+      return (
+        <ActivityIndicator className="absolute" />
+      );
+    }
+    return null;
+  };
 
   return (
     <Pressable
@@ -88,7 +89,7 @@ const PhotoContainer = ( { photo, onPress, style }: Props ): Node => {
       className="justify-center items-center"
       accessibilityLabel={photo.attribution}
     >
-      {loadingIndicator}
+      {renderLoadingIndicator( )}
       {image}
       {loadSuccess === false && (
         <OfflineNotice

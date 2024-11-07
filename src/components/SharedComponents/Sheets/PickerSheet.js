@@ -40,6 +40,7 @@ const PickerSheet = ( {
         <Picker
           selectedValue={selection}
           onValueChange={itemValue => setSelection( itemValue )}
+          testID="ReactNativePicker"
         >
           {Object.keys( pickerValues ).map( k => (
             <Picker.Item

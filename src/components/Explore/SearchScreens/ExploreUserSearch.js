@@ -3,12 +3,11 @@
 import fetchSearchResults from "api/search";
 import {
   Button,
-  CustomFlashList,
   SearchBar,
   ViewWrapper
 } from "components/SharedComponents";
-import UserListItem from "components/SharedComponents/UserListItem";
 import { View } from "components/styledComponents";
+import UserList from "components/UserList/UserList.tsx";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -65,23 +64,7 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
     [updateUser, closeModal]
   );
 
-  const renderItem = useCallback(
-    ( { item } ) => (
-      <UserListItem
-        item={{ user: item }}
-        countText={t( "X-Observations", { count: item.observations_count } )}
-        accessibilityLabel={t( "Select-user" )}
-        onPress={( ) => onUserSelected( item )}
-      />
-    ),
-    [onUserSelected, t]
-  );
-
   // TODO: pagination like in ExploreFlashList ?
-
-  const renderItemSeparator = () => (
-    <View className="border-b border-lightGray" />
-  );
 
   const renderEmptyList = ( ) => (
     <EmptySearchResults
@@ -118,16 +101,12 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
           }}
         />
       </View>
-      <CustomFlashList
-        ItemSeparatorComponent={renderItemSeparator}
+      <UserList
         ListEmptyComponent={renderEmptyList}
-        ListHeaderComponent={renderItemSeparator}
-        data={userList}
-        estimatedItemSize={100}
-        keyExtractor={item => item.id}
+        users={userList}
         keyboardShouldPersistTaps="handled"
-        renderItem={renderItem}
-        testID="SearchUserList"
+        accessibilityLabel={t( "Select-user" )}
+        onPress={onUserSelected}
       />
     </ViewWrapper>
   );

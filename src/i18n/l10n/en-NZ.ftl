@@ -31,9 +31,6 @@ Agree = Agree
 AGREE = AGREE
 ALL = ALL
 All = All
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Any
 Cancel = Cancel
 Collection-Project = Collection Project
 # Data Quality Assessment section label: whether or not the observation date is accurate

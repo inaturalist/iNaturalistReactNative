@@ -1,21 +1,13 @@
-import {
-  tailwindFontMedium
-} from "appConstants/fontFamilies.ts";
-import classnames from "classnames";
+import { tailwindFontMedium } from "appConstants/fontFamilies.ts";
 import React from "react";
-import { Text, TextProps } from "react-native";
+import { TextProps } from "react-native";
+
+import InatText from "./InatText";
 
 // This is the same as List1 Typography in Figma
 const Body1 = ( props: TextProps ) => (
-  <Text
-    maxFontSizeMultiplier={2}
-    className={classnames(
-      "text-base trailing-tight text-darkGray",
-      tailwindFontMedium
-    )}
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    {...props}
-  />
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  <InatText className={`text-base ${tailwindFontMedium}`} {...props} />
 );
 
 export default Body1;

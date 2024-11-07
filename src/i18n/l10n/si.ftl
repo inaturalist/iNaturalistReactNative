@@ -31,9 +31,6 @@ Agree = එකඟ වන්න
 AGREE = එකඟ වන්න
 ALL = සියල්ල
 All = සියල්ල
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = ඕනෑම
 Camera = කැමරාව
 Cancel = අවලංගු කරන්න
 # Quality grade indicating observation does not quality for Needs ID or

@@ -13,8 +13,9 @@ type Props = {
   activityItems: Array<Object>,
   openAgreeWithIdSheet: Function,
   isConnected: boolean,
-  notificationId: number,
-  setScrollToY: ( number ) => void
+  targetItemID: number,
+  // TODO change to LayoutEvent from react-native if/when switching to TS
+  onLayoutTargetItem: ( event: Object ) => void
 }
 
 const ActivityTab = ( {
@@ -23,8 +24,8 @@ const ActivityTab = ( {
   activityItems,
   openAgreeWithIdSheet,
   isConnected,
-  notificationId,
-  setScrollToY
+  targetItemID,
+  onLayoutTargetItem
 }: Props ): Node => {
   const currentUser = useCurrentUser( );
   const userId = currentUser?.id;
@@ -59,31 +60,30 @@ const ActivityTab = ( {
 
   return (
     <View testID="ActivityTab">
-      {stableItems.length > 0
-        && stableItems.map( ( item, index ) => (
-          <View
-            onLayout={event => {
-              if ( notificationId === item?.id ) {
-                const { layout } = event.nativeEvent;
-                setScrollToY( layout.y );
-              }
-            }}
-            key={item.uuid}
-          >
-            <ActivityItem
-              currentUserId={userId}
-              isFirstDisplay={index === indexOfFirstTaxonDisplayed( item.taxon?.id )}
-              isConnected={isConnected}
-              item={item}
-              openAgreeWithIdSheet={openAgreeWithIdSheet}
-              refetchRemoteObservation={refetchRemoteObservation}
-              userAgreedId={userAgreedToId}
-              geoprivacy={geoprivacy}
-              taxonGeoprivacy={taxonGeoprivacy}
-              belongsToCurrentUser={belongsToCurrentUser}
-            />
-          </View>
-        ) )}
+      {stableItems.length > 0 && stableItems.map( ( item, index ) => (
+        <View
+          onLayout={event => {
+            if ( targetItemID === item?.id ) {
+              // const { layout } = event.nativeEvent;
+              onLayoutTargetItem( event );
+            }
+          }}
+          key={item.uuid}
+        >
+          <ActivityItem
+            currentUserId={userId}
+            isFirstDisplay={index === indexOfFirstTaxonDisplayed( item.taxon?.id )}
+            isConnected={isConnected}
+            item={item}
+            openAgreeWithIdSheet={openAgreeWithIdSheet}
+            refetchRemoteObservation={refetchRemoteObservation}
+            userAgreedId={userAgreedToId}
+            geoprivacy={geoprivacy}
+            taxonGeoprivacy={taxonGeoprivacy}
+            belongsToCurrentUser={belongsToCurrentUser}
+          />
+        </View>
+      ) )}
     </View>
   );
 };

@@ -1,0 +1,12 @@
+UPDATED
+* Fade-in transitions between screens
+* Use system language or user preferred language
+* debug mode: projects on obs detail and user profile screens
+
+FIXED
+* Deleting last observation showing spinner forever
+* No indication when sound being deleted
+* Explore search header elements overlapping at large font sizes
+* Comment form text larger than other text at large font sizes
+* Permission gate text flowing off screen at large font sizes
+* Comment/ID header text cut off at large font sizes

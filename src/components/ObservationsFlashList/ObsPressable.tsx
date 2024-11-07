@@ -1,21 +1,31 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import navigateToObsEdit from "components/ObsEdit/helpers/navigateToObsEdit.ts";
-import type { Node } from "react";
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { Pressable } from "react-native";
+import RealmObservation from "realmModels/Observation";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
-type Props = {
-  observation: Object,
-  testID?: string,
-  // $FlowIgnore
-  children: unknown
+// TODO remove when we figure out how to type the Realm models
+interface Observation extends RealmObservation {
+  species_guess?: string;
+  uuid: string;
 }
 
-const MyObservationsPressable = ( { observation, testID, children }: Props ): Node => {
+interface Props extends PropsWithChildren {
+  observation: Observation;
+  // Uniquely identify the list this observation appears in so we can ensure
+  // ObsDetails doesn't get pushed onto the stack twice after multiple taps
+  obsListKey: string;
+  testID?: string;
+}
+
+const ObsPressable = ( {
+  children,
+  observation,
+  obsListKey = "unknown",
+  testID
+}: Props ) => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const prepareObsEdit = useStore( state => state.prepareObsEdit );
@@ -29,7 +39,11 @@ const MyObservationsPressable = ( { observation, testID, children }: Props ): No
       prepareObsEdit( observation );
       navigateToObsEdit( navigation, setMyObsOffsetToRestore );
     } else {
-      navigation.push( "ObsDetails", { uuid } );
+      navigation.navigate( {
+        key: `Obs-${obsListKey}-${uuid}`,
+        name: "ObsDetails",
+        params: { uuid }
+      } );
     }
   };
 
@@ -51,4 +65,4 @@ const MyObservationsPressable = ( { observation, testID, children }: Props ): No
   );
 };
 
-export default MyObservationsPressable;
+export default ObsPressable;

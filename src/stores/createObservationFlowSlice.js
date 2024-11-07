@@ -21,6 +21,7 @@ const DEFAULT_STATE = {
   // the camera
   cameraUris: [],
   savingPhoto: false,
+  savedOrUploadedMultiObsFlow: false,
   unsavedChanges: false
 };
 
@@ -144,6 +145,9 @@ const createObservationFlowSlice = ( set, get ) => ( {
     ),
     firstObservationDefaults: options?.firstObservationDefaults
   } ) ),
+  setSavedOrUploadedMultiObsFlow: ( ) => set( {
+    savedOrUploadedMultiObsFlow: true
+  } ),
   updateObservations: updatedObservations => set( state => ( {
     observations: updatedObservations.map( observationToJSON ),
     currentObservation: observationToJSON( updatedObservations[state.currentObservationIndex] )

@@ -30,9 +30,6 @@ All-observations = Ngā mauhanga katoa
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = kua rāhuitia ngā mōtika katoa
 All-taxa = Ngā rōpū katoa
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Katoa
 # Month of April
 April = Paenga-whāwhā
 # Month of August

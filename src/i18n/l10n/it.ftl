@@ -35,9 +35,6 @@ All-observations = Tutte le osservazioni
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = Tutti i diritti riservati
 All-taxa = Tutti i taxa
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Qualsiasi
 # Month of April
 April = Aprile
 # Month of August
@@ -104,7 +101,8 @@ Endemic = Endemiche
 Error = Errore
 # Title of dialog or section describing an error
 Error-title = Errore
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = Origine
 Exact-Date = Data esatta
 except = eccetto
@@ -170,7 +168,6 @@ Needs-ID--quality-grade = Serve ID
 New-Observation = Nuova Osservazione
 No-Location = Nessuna posizione
 No-Media = Nessun File
-none = nessuno
 Notifications = Notifiche
 # Month of November
 November = Novembre

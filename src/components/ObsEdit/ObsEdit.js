@@ -29,6 +29,7 @@ const ObsEdit = ( ): Node => {
   const observations = useStore( state => state.observations );
   const setCurrentObservationIndex = useStore( state => state.setCurrentObservationIndex );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
+  const resetUploadObservationsSlice = useStore( state => state.resetUploadObservationsSlice );
   const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
   const [resetScreen, setResetScreen] = useState( false );
   const isFocused = useIsFocused( );
@@ -54,6 +55,10 @@ const ObsEdit = ( ): Node => {
       updateObservationKeys( userLocation );
     }
   }, [userLocation, updateObservationKeys] );
+
+  useEffect( ( ) => {
+    resetUploadObservationsSlice( );
+  }, [resetUploadObservationsSlice] );
 
   const navToLocationPicker = useCallback( ( ) => {
     stopWatch( subscriptionId );

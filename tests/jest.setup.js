@@ -35,7 +35,8 @@ jest.mock( "../react-native-logs.config", () => {
   };
   return {
     log,
-    logFilePath: "inaturalist-rn-log.txt"
+    logFilePath: "inaturalist-rn-log.txt",
+    logWithoutRemote: log
   };
 } );
 
@@ -58,8 +59,12 @@ jest.setTimeout( 50000 );
 
 // Mock inaturalistjs so we can make some fake responses
 jest.mock( "inaturalistjs" );
+inatjs.observations.observers.mockResolvedValue( makeResponse( ) );
 inatjs.observations.search.mockResolvedValue( makeResponse( ) );
+inatjs.observations.speciesCounts.mockResolvedValue( makeResponse( ) );
 inatjs.observations.updates.mockResolvedValue( makeResponse( ) );
+inatjs.users.projects.mockResolvedValue( makeResponse( ) );
+inatjs.computervision.score_image.mockResolvedValue( makeResponse( ) );
 
 // Set up mocked fetch for testing (or disabling) fetch requests
 fetchMock.enableMocks( );
@@ -92,18 +97,28 @@ jest.mock( "react-native/Libraries/TurboModule/TurboModuleRegistry", () => {
   };
 } );
 
+jest.mock( "react-native-restart", ( ) => ( {
+  restart: jest.fn( )
+} ) );
+
+// Mock useFreshInstall b/c it signs the user out after we have set up a
+// signed in user
+jest.mock( "components/hooks/useFreshInstall", ( ) => jest.fn( ) );
+
 // see https://stackoverflow.com/questions/42268673/jest-test-animated-view-for-react-native-app
 // for more details about this withAnimatedTimeTravelEnabled approach. basically, this
 // allows us to step through animation frames when a screen is first loading when we're using the
 // FadeInView animation for navigation screen transitions
-global.withAnimatedTimeTravelEnabled = () => {
+global.withAnimatedTimeTravelEnabled = ( options = {} ) => {
   beforeEach( () => {
-    jest.useFakeTimers();
+    if ( !options.skipFakeTimers ) jest.useFakeTimers();
     jest.setSystemTime( new Date( 0 ) );
   } );
-  afterEach( () => {
-    jest.useRealTimers();
-  } );
+  if ( !options.skipFakeTimers ) {
+    afterEach( () => {
+      jest.useRealTimers();
+    } );
+  }
 };
 
 const frameTime = 10;

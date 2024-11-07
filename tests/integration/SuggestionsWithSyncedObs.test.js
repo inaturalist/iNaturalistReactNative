@@ -6,7 +6,7 @@ import {
 } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
 import Identification from "realmModels/Identification";
-import useStore from "stores/useStore";
+import useStore, { storage } from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderAppWithObservations } from "tests/helpers/render";
@@ -16,6 +16,11 @@ import { signIn, signOut, TEST_JWT } from "tests/helpers/user";
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
 jest.unmock( "@react-navigation/native" );
+
+beforeAll( ( ) => {
+  // Hide the onboarding modal
+  storage.set( "onBoardingShown", true );
+} );
 
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;

@@ -38,6 +38,8 @@ accessible-comname-sciname = { $commonName } ({ $scientificName })
 accessible-sciname-comname = { $scientificName } ({ $commonName })
 # Alert message shown after account deletion
 Account-Deleted = Akun Dihapus
+# Label for button that shows all account settings
+ACCOUNT-SETTINGS = PENGATURAN AKUN
 ACTIVITY = AKTIVITAS
 # Label for a button that adds a vote of agreement
 Add-agreement = Tambah suara setuju
@@ -88,9 +90,24 @@ ALLOW-LOCATION-ACCESS = IZINKAN AKSES LOKASI
 Almost-done = Hampir selesai!
 Already-have-an-account = Sudah memiliki akun? Masuk
 An-Internet-connection-is-required = Koneksi Internet diperlukan untuk memuat lebih banyak pengamatan.
-# Generic option in a menu of choices that indicates that any of the choices
-# would be acceptable
-Any = Bebas
+# Option when choosing a value for an date filter that indicates any value is
+# acceptable
+Any--date = Semua
+# Option when choosing a value for an Establishment Means filter that
+# indicates any value is acceptable
+Any--establishment-means = Semua
+# Option when choosing a value for an media type filter that indicates any
+# value is acceptable
+Any--media-type = Semua
+# Option when choosing a value for an project filter that indicates any value
+# is acceptable
+Any--project = Semua
+# Option when choosing a value for an quality grade filter that indicates any
+# value is acceptable
+Any--quality-grade = Semua
+# Option when choosing a value for an user filter that indicates any value is
+# acceptable
+Any--user = Semua
 #  Geoprivacy sheet descriptions
 Anyone-using-iNaturalist-can-see = Semua orang yang menggunakan iNaturalist dapat melihat tempat spesies ini diamati, dan para ilmuwan dapat menggunakannya untuk penelitian dengan mudah.
 APP-LANGUAGE = BAHASA APLIKASI
@@ -183,6 +200,9 @@ Close = Tutup
 Close-permission-request-screen = Tutup layar permintaan izin
 # Label for a button that closes a search interface
 Close-search = Tutup pencarian
+# Accessibility hint for button that closes the introductory slides that
+# appear when you first install the app
+Closes-introduction = Menutup pengenalan
 Closes-new-observation-options = Menutup pilihan pengamatan baru.
 Closes-withdraw-id-sheet = Tutup lembar "Tarik ID"
 # Heading for a section that describes people and organizations that
@@ -197,14 +217,23 @@ COMMENT = KOMENTAR
 Comment-options = Pilihan komentar
 # Label for a setting that shows the common name first
 Common-Name-Scientific-Name = Nama Umum (Nama Ilmiah)
+Community-based = Berbasis komunitas
 Community-Guidelines = Pedoman Komunitas
 COMMUNITY-GUIDELINES = PEDOMAN KOMUNITAS
 # Button that confirms a choice the user has made
 CONFIRM = KONFIRMASI
+# Onboarding header (underneath the logo)
+CONNECT-TO-NATURE = TERHUBUNG DENGAN ALAM
+# Onboarding slides
+Connect-to-Nature = Terhubung dengan Alam
 Connect-with-other-naturalists = Kontak naturalis lain dan ikut serta dalam pembicaraan.
 Connection-problem-Please-try-again-later = Ada masalah koneksi. Silakan coba lagi nanti.
 CONTACT-SUPPORT = HUBUNGI BANTUAN
+# Continue button in onboarding screen
+CONTINUE = LANJUT
 Continue-to-iNaturalist = Lanjut ke iNaturalist
+# Onboarding message describing one of the reasons to use iNat
+Contribute-to-Science = Berkontribusi untuk Ilmu Pengetahuan
 # Notification when coordinates have been copied
 Coordinates-copied-to-clipboard = Koordinat tersalin ke papan klip
 # Button that copies coordinates to the clipboard
@@ -283,6 +312,8 @@ DATE-OBSERVED-OLDEST = TANGGAL PENGAMATAN - TERLAMA SAMPAI TERBARU
 Date-Range = Rentang Waktu
 # Label for controls over a range of dates
 DATE-RANGE = RENTANG TANGGAL
+# Express a date range. d1 and d2 can be any expression of dates
+date-to-date = { $d1 } - { $d2 }
 DATE-UPLOADED = TANGGAL DIUNGGAH
 Date-uploaded = Tanggal diunggah
 Date-uploaded-header-short = Diunggah
@@ -317,12 +348,17 @@ Delete-sound = Hapus suara
 Deletes-entered-text = Hapus tulisan yang dimasukkan
 # Shows the progress of deletions for X of Y observations, but omits the
 # word "observations" so the message won't get cut off on small screens
-Deleting-x-of-y = Menghapus { $currentDeleteCount } dari { $total }
+# Deleting-x-of-y = Deleting { $currentDeleteCount } of { $total }
+Deleting-x-of-y--observations =
+    Menghapus { $currentDeleteCount } { $total ->
+        [one] dari { $total }
+       *[other] dari { $total } pengamatan
+    }
 # Shows the number of observations a user is currently deleting out of total on my observations page
-Deleting-x-of-y-observations =
-    Menghapus { $currentDeleteCount } dari { $total ->
-        [one] 1 pengamatan
-       *[other] { $total } pengamatan
+Deleting-x-of-y-observations-2 =
+    Menghapus { $currentDeleteCount } { $total ->
+        [one] pengamatan
+       *[other] dari { $total } pengamatan
     }
 # Tab label or section title for content that describes further details, e.g.
 # the details of an observation
@@ -371,6 +407,7 @@ EDIT-LOCATION = EDIT LOKASI
 # Label for interactive element that takes you to a location choosing screen
 Edit-location = Mengedit lokasi
 Edit-Observation = Ubah Pengamatan
+Edit-your-profile-change-your-settings = Edit profil Anda, ubah pengaturan notifikasi Anda, dan kelola bagian-bagian lain dari akun Anda.
 # Label for button that edits an observation's taxon
 Edits-this-observations-taxon = Mengedit takson pengamatan ini
 EDUCATORS = TENAGA PENDIDIK
@@ -392,11 +429,11 @@ ERROR-LOADING-DQA = EROR MEMUAT DI AKD
 Error-title = Kesalahan
 ERROR-VOTING-IN-DQA = EROR PEMUNGUTAN SUARA DI AKD
 Error-voting-in-DQA-description = Suara Anda mungkin belum terhitung di AKD. Periksa koneksi internet Anda dan coba lagi.
-# label in project requirements
+# Label in project requirements for a requirement related to Establishment
+# Means, e.g. if a project only allowed observations of invasive species
 Establishment = Asal Muasal
-ESTABLISHMENT-MEANS = CARA PENGENALAN
 # Header for a section describing how a taxon arrived in a given place
-ESTABLISHMENT-MEANS-header = CARA PENGENALAN
+ESTABLISHMENT-MEANS = CARA PENGENALAN
 Every-observation-needs = Setiap pengamatan memerlukan lokasi, tanggal, dan waktu supaya mereka memiliki petunjuk yang berguna untuk para pengidentifikasi. Anda dapat mengedit geoprivasi jika Anda khawatir akan privasi lokasi Anda.
 Every-time-a-collection-project = Setiap kali halaman proyek koleksi dimuat, iNaturalist akan melakukan pencarian kilat dan menampilkan semua pengamatan yang sesuai dengan persyaratan proyeknya. Hal ini merupakan cara yang mudah untuk menampilkan sekumpulan pengamatan, seperti untuk proyek kelas, taman, atau bioblitz, tanpa membuat peserta melakukan langkah tambahan berupa menambahkan pengamatan mereka ke suatu proyek.
 EVIDENCE = BUKTI
@@ -441,6 +478,12 @@ Flash = kilat
 # Label for a button that toggles between the front and back cameras
 Flip-camera = Balikkan kamera
 FOLLOW = IKUTI
+# Subtitle for a screen showing the list of people a user is following
+FOLLOWING-X-PEOPLE =
+    { $count ->
+        [one] MENGIKUTI { $count } ORANG
+       *[other] MENGIKUTI { $count } ORANG
+    }
 # Forgot password link
 Forgot-Password = Lupa Kata Sandi
 GEOPRIVACY = GEOPRIVASI
@@ -479,7 +522,15 @@ Identifiers = yang mengidentifikasi
 Identifiers-View = Tampilan Pengidentifikasi
 Identify-an-organism = Identifikasi suatu organisme
 Identify-an-organism-with-the-iNaturalist-AI-Camera = Identifikasi suatu organisme dengan Kamera AI iNaturalist
+# Onboarding message describing one of the reasons to use iNat
+Identify-record-learn = Identifikasi, catat, dan pelajari semua makhluk hidup di dunia menggunakan iNaturalist
 If-an-account-with-that-email-exists = Jika suatu akun dengan email tersebut ditemukan, kami sudah mengirimkan perintah untuk mengatur ulang kata sandi ke email Anda.
+# Explanation that observations are removed from a collection project
+If-you-leave-x-of-your-observations-removed =
+    Kalau Anda keluar dari proyek tradisional ini, { $count ->
+        [one] 1 pengamatan Anda
+       *[other] { $count } pengamatan Anda
+    } akan dihapus dari proyek ini.
 If-you-want-to-collate-compare-promote = Jika Anda ingin mengumpulkan, membandingkan, atau mempromosikan sekelompok proyek yang sudah ada, maka proyek Payung adalah jenis proyek yang harus Anda gunakan. Contohnya, Tantangan Alam Kota 2018, yang menggabungkan lebih dari 60 proyek, adalah salah satu halaman yang bagus untuk membandingkan pengamatan-pengamatan di satu kota dengan kota lain. Baik proyek Koleksi maupun Tradisional dapat digunakan di dalam proyek Payung. Suatu proyek Payung dapat menghimpun hingga 500 proyek.
 If-youre-seeing-this-error = Jika Anda melihat pesan ini dan Anda sedang aktif, staf iNat telah diberitahu. Terima kasih telah menemukan bug! Jika Anda sedang tidak aktif, silakan mengambil tangkapan layar Anda dan kirimkan email kepada kami saat Anda sudah kembali aktif.
 IGNORE-LOCATION = ABAIKAN LOKASI
@@ -493,6 +544,7 @@ IMPORT-X-OBSERVATIONS =
 IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = TINGKATKAN KUALITAS REKOMENDASI INI DENGAN MENGGUNAKAN LOKASI ANDA
 # Identification category
 improving--identification = Pengembang
+iNat-is-global-community = iNaturalist adalah komunitas naturalis global yang membuat data publik untuk ilmu pengetahuan dengan mengamati & mengidentifikasi organisme secara kolektif.
 INATURALIST-ACCOUNT-SETTINGS = PENGATURAN AKUN INATURALIST
 iNaturalist-AI-Camera = Kamera AI iNaturalist
 iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNaturalist dapat menyimpan gambar yang Anda ambil di aplikasi ke galeri perangkat Anda.
@@ -506,7 +558,7 @@ iNaturalist-is-a-501 = iNaturalist merupakan organisasi nirlaba 501(c)(3) di Ame
 iNaturalist-is-a-community-of-naturalists = iNaturalist merupakan komunitas naturalis yang bekerja sama untuk membuat pengamatan keanekaragaman hayati liar dan mengidentifikasinya.
 iNaturalist-is-loading-ID-suggestions = iNaturalist sedang memuat rekomendasi ID...
 iNaturalist-is-supported-by = iNaturalist didukung oleh organisasi nirlaba 501(c)(3) independen yang berbasis di Amerika Serikat. Platform iNaturalist termasuk aplikasi ini, Seek oleh iNaturalist, situs web iNaturalist, dan masih banyak lagi.
-iNaturalist-is-supported-by-community = iNaturalist didukung oleh komunitas kami yang keren. Dari para pecinta alam biasa yang suka membuat pengamatan dan identifikasi, kemudian para kurator yang memoderasi dan membantu mengkurasi taksonomi, juga para sukarelawan penerjemah yang membuat iNaturalist semakin bisa digunakan oleh orang-orang di seluruh dunia, hingga para donor di komunitas-komunitas. Kami sangat bersyukur untuk semua orang di komunitas kami yang membuat iNaturalist menjadi platform yang kita ketahui sekarang.
+iNaturalist-is-supported-by-our-community = iNaturalist didukung oleh komunitas kami yang keren. Dari para pecinta alam biasa yang suka membuat pengamatan dan identifikasi, kemudian para kurator yang mengelola dan membantu memoderasi, juga para sukarelawan penerjemah yang membuat iNaturalist semakin bisa digunakan oleh orang-orang di seluruh dunia, hingga para donor di komunitas-komunitas. Kami sangat bersyukur untuk semua orang di komunitas kami yang membuat iNaturalist menjadi platform yang kita ketahui sekarang.
 iNaturalist-mission-is-to-connect = Misi iNaturalist adalah untuk menghubungkan orang-orang dengan alam dan memajukan ilmu pengetahuan mengenai keanekaragaman hayati dan konservasi.
 INATURALIST-MISSION-VISION = VISI & MISI INATURALIST
 INATURALIST-NETWORK = JARINGAN INATURALIST
@@ -521,7 +573,7 @@ INATURALIST-TEAM = TIM INATURALIST
 iNaturalist-users-who-have-left-an-identification = Pengguna iNaturalist yang memberikan identifikasi untuk pengamatan milik pengguna lain
 iNaturalist-users-who-have-observed = Pengguna iNaturalist yang telah mengamati takson tertentu di suatu tempat dan waktu
 iNaturalist-uses-your-location-to-give-you = iNaturalist menggunakan lokasi Anda untuk memberikan Anda rekomendasi identifikasi yang lebih baik. Kami bisa secara otomatis menambahkan lokasi ke pengamatan-pengamatan Anda sehingga dapat membantu para ilmuwan. Kami juga menggunakannya untuk membantu Anda menemukan organisme-organisme yang diamati di sekitar lokasi Anda.
-iNaturalists-apps-are-designed-and-developed = Aplikasi iNaturalist didesain, dikembangkan, dan didukung oleh tim iNaturalist: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Thea Skaff, Angie Ta, Ken-ichi Ueda, Michelle Vryn, Jason Walthall, & Jane Weeden.
+iNaturalists-apps-are-designed-and-developed-2 = Aplikasi iNaturalist didesain, dikembangkan, dan didukung oleh tim iNaturalist: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Thea Skaff, Angie Ta, Ken-ichi Ueda, Kirk van Gorkom, Jason Walthall, & Jane Weeden.
 iNaturalists-vision-is-a-world = Visi iNaturalist adalah suatu dunia di mana semua orang bisa memahami dan mempertahankan keanekaragaman hayati melalui tindakan pengamatan organisme liar serta penyebaran informasi mengenai mereka.
 Individual-encounters-with-organisms = Pertemuan individu dengan organisme di suatu tempat dan waktu, biasanya disertai bukti
 INFO-TRANSFER = PEMINDAHAN INFORMASI
@@ -535,11 +587,19 @@ It-may-take-up-to-an-hour-to-remove-content = Penghapusan seluruh konten yang te
 January = Januari
 JOIN = GABUNG
 JOIN-PROJECT = BERGABUNG DENGAN PROYEK
+# Asking for confirmation if the user wants to join this project
+JOIN-PROJECT--question = BERGABUNG DENGAN PROYEK?
 Join-the-largest-community-of-naturalists = Bergabunglah dengan grup naturalis terbesar di dunia!
 # Header for joined projects
 JOINED = TERGABUNG
 # Shows date user joined iNaturalist on user profile
 Joined-date = Bergabung: { $date }
+# Subtitle for a screen showing projects a user has joined
+JOINED-X-PROJECTS =
+    { $count ->
+        [one] BERGABUNG DALAM { $count } PROYEK
+       *[other] BERGABUNG DALAM { $count } PROYEK
+    }
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] POSTINGAN JURNAL
@@ -561,6 +621,8 @@ leading--identification = Memimpin
 Learn-More = Pelajari lebih lanjut
 LEAVE = KELUAR
 LEAVE-PROJECT = KELUAR DARI PROYEK
+# Asking for confirmation if the user wants to leave this project
+LEAVE-PROJECT--question = TINGGALKAN PROYEK?
 LEAVE-US-A-REVIEW = TINGGALKAN ULASAN!
 LICENSES = LISENSI
 # Label for button to switch to a list layout of observations
@@ -656,8 +718,10 @@ No-results-found-for-that-search = Tidak ada hasil yang ditemukan untuk pencaria
 No-results-found-try-different-search = Tidak ada hasil yang ditemukan. Coba pencarian lain atau ubah penyaring Anda.
 # license code
 no-rights-reserved-cc0 = tanpa perlindungan hak (CC0)
-NONE = TIDAK ADA
-none = tidak ada
+# Displayed in place of positional accuracy when that value is missing
+none--accuracy = tidak ada
+# Option when selecting taxonomic ranks that indicates no rank was selected
+NONE--ranks = TIDAK ADA
 # Error message title when not enough storage space on device, e.g. when the
 # disk is full and you try to save a photo
 Not-enough-space-left-on-device = Ruang penyimpanan di perangkat tidak cukup
@@ -678,6 +742,7 @@ Obervations-must-be-manually-added = Pengamatan harus ditambahkan secara manual 
 Obscured = Dikaburkan
 # Displayed when user views an obscured location on the ObsDetail map screen
 Obscured-observation-location-map-description = Lokasi pengamatan ini dikaburkan. Anda sedang melihat titik acak di dalam poligon pengaburan.
+Observation = Pengamatan
 Observation-Attribution = Pengamatan: © { $userName } · { $restrictions }
 OBSERVATION-BUTTON = TOMBOL PENGAMATAN
 Observation-has-no-photos-and-no-sounds = Pengamatan ini tidak memiliki gambar maupun suara.
@@ -688,6 +753,7 @@ OBSERVATION-WAS-DELETED = PENGAMATAN DIHAPUS
 Observation-with-no-evidence = Pengamatan tanpa bukti
 Observations = Pengamatan
 Observations-created-on-iNaturalist = Pengamatan yang dibuat di iNaturalist digunakan oleh ilmuwan di seluruh dunia.
+Observations-on-iNat-are-cited = Pengamatan-pengamtan di iNaturalist dikutip oleh jurnal-jurnal saintifik, telah menghasilkan penemuan-penemuan kembali, serta membantu para ilmuwan dalam memahami kehidupan di planet kita
 Observations-View = Tampilan Pengamatan
 # Might be used when the number is represented using an image or other
 # element, not text
@@ -728,12 +794,13 @@ OPEN-EMAIL = BUKA EMAIL
 Open-menu = Buka menu.
 # Text for a button that opens the operating system Settings app
 OPEN-SETTINGS = BUKA PENGATURAN
-Opens-add-comment-modal = Membuka jendela tambah komentar.
-Opens-add-observation-modal = Membuka jendela tambah pengamatan.
-Opens-AI-camera = Buka kamera AI.
-Opens-location-permission-prompt = Membuka pertanyaan izin lokasi
+# Accessibility hint for a button that opens a form for adding a comment
+Opens-add-comment-form = Membuka formulir tambah komentar.
 # Accessibility hint for button that opens the AI camera
-Opens-the-AI-camera = Membuka kamera AI
+Opens-AI-camera = Buka kamera AI.
+# Accessibility hint for a button that opens a form for editing a comment
+Opens-edit-comment-form = Membuka formulir edit komentar.
+Opens-location-permission-prompt = Membuka pertanyaan izin lokasi
 Opens-the-side-drawer-menu = Membuka menu laci di samping.
 # Picker prompt on observation edit
 Organism-is-captive = Organisme ini dipelihara
@@ -745,6 +812,8 @@ Other = Lainnya
 OTHER-DATA = DATA LAIN
 OTHER-SUGGESTIONS = REKOMENDASI LAIN
 PASSWORD = KATA SANDI
+# Title showing user profile details about who a user follows and is following
+PEOPLE--title = ORANG
 PERSONAL-INFO = INFORMASI PRIBADI
 Photo-importer = Pengimpor foto
 PHOTO-LICENSING = LISENSI GAMBAR
@@ -768,8 +837,6 @@ POTENTIAL-DISAGREEMENT = POTENSI KETIDAKSETUJUAN
 Potential-disagreement-description = <0>Apakah buktinya cukup untuk mengonfirmasi bahwa ini </0><1></1><0>?<0>
 Potential-disagreement-disagree = <0>Tidak, tapi itu adalah anggota dari </0><1></1>
 Potential-disagreement-unsure = <0>Saya kurang yakin tapi saya yakin ini </0><1></1>
-# Help text for beginning a sound recording
-Press-record-to-start = Tekan rekam untuk memulai
 Previous-observation = Pengamatan sebelumnya
 Privacy-Policy = Kebijakan Privasi
 PRIVACY-POLICY = KEBIJAKAN PRIVASI
@@ -778,10 +845,12 @@ Private = Pribadi
 PROJECT = PROYEK
 Project-Members-Only = Anggota Proyek Saja
 PROJECT-REQUIREMENTS = PERSYARATAN PROYEK
+project-start-time-datetime = Waktu mulai: { $datetime }
 # As in iNat project, collections of observations or observation search filters
 PROJECTS = PROYEK
 # As in iNat projects, collections of observations or observation search filters
 Projects = Proyek
+PROJECTS-X = PROYEK ({ $projectCount })
 QUALITY-GRADE = TINGKAT KUALITAS
 # label in project requirements
 Quality-Grade = Tingkat Kualitas
@@ -864,13 +933,14 @@ Ranks-Zoosection = Zooseksi
 Ranks-ZOOSUBSECTION = ZOOSUBSEKSI
 Ranks-Zoosubsection = Zoosubseksi
 Read-more-on-Wikipedia = Baca lebih lanjut di Wikipedia
+# Help text for the button that opens the sound recorder
+Record-a-sound = Rekam suara
 # Heading for the sound recorder
 RECORD-NEW-SOUND = REKAM SUARA BARU
 # Title of screen asking for permission to access the microphone
 Record-organism-sounds-with-the-microphone = Rekam suara organisme menggunakan mikrofon
 # Text for a button prompting the user to grant access to the microphone
 RECORD-SOUND = REKAM SUARA
-Record-sounds = Merekam suara dengan mikrofon Anda
 # Imperative verb for recording a sound
 Record-verb = Catatan
 # Status while recording a sound
@@ -1020,7 +1090,6 @@ SPECIES-WITHOUT-NUMBER =
 # Label for the standard map type
 Standard--map-type = Standar
 Start-must-be-before-end = Tanggal awal harus sebelum tanggal akhir.
-Start-time = Waktu mulai: { $date }
 Start-upload = Mulai pengunggahan
 # Accessibility hint for button that starts recording a sound
 Starts-recording-sound = Mulai merekam suara
@@ -1042,8 +1111,9 @@ supporting--identification = Mendukung
 Switches-to-tab = Berpindah ke tab { $tab }.
 Sync-observations = Sinkronisasi pengamatan
 Syncing = Sinkronisasi...
+# Help text for the button that opens the multi-capture camera
+Take-multiple-photos-of-a-single-organism = Ambil beberapa gambar untuk suatu organisme
 Take-photo = Ambil gambar
-Take-photos-with-the-camera = Ambil gambar suatu organisme dengan kamera
 # label in project requirements
 Taxa = Taksa
 TAXON = TAKSON
@@ -1061,8 +1131,9 @@ Thanks-for-using-any-suggestions = Terima kasih telah menggunakan aplikasi ini! 
 That-user-profile-doesnt-exist = Profil pengguna tersebut tidak ada.
 The-exact-location-will-be-hidden = Lokasi pastinya akan disembunyikan dari publik dan digeneralisasikan ke area yang lebih luas. (Spesies terancam punah dan berstatus genting secara otomatis dikaburkan).
 The-iNaturalist-Network = Jaringan iNaturalist merupakan kumpulan situs web terlokalisasi yang seluruhnya terhubung dengan komunitas iNaturalist di seluruh dunia. Situs-situs jaringan didukung oleh institusi-institusi lokal yang mempromosikan penggunaan lokal dan memfasilitasi penggunaan data dari iNaturalist untuk memberikan manfaat bagi keanekaragaman hayati lokal.
-The-location-will-not-be-visible = Lokasinya tidak akan bisa dilihat oleh orang lain, sehingga akan menyulitkan orang untuk mengidentifikasinya.
-The-models-that-suggest-species = Model yang menyarankan spesies berdasarkan kemiripan visual dan lokasinya dapat dibuat berkat kerja sama dengan Sarah Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona, dan Grant Van Horn.
+# Describes what happens when geoprivacy is set to private
+The-location-will-not-be-visible-to-others = Lokasinya tidak akan bisa dilihat oleh orang lain, sehingga orang tidak mungkin bisa mengidentifikasinya.
+The-models-that-suggest-species = Model yang menyarankan spesies berdasarkan kemiripan visual dan lokasinya dapat dibuat berkat kerja sama dengan Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona, dan Grant Van Horn.
 There-is-no-way =
     Anda tidak akan bisa membuka akun iNaturalist tanpa menyimpan informasi pribadi, jadi satu-satunya cara untuk mencabut izin ini adalah dengan 
     menghapus akun Anda.
@@ -1071,7 +1142,6 @@ This-is-a-wild-organism = Ini adalah organisme liar dan tidak ditaruh di lokasi 
 This-is-how-taxon-names-will-be-displayed = Ini adalah pengaturan bagaimana semua nama takson akan ditampilkan kepada Anda di iNaturalist:
 This-observer-has-opted-out-of-the-Community-Taxon = Pengamat ini telah memilih untuk keluar dari Takson Komunitas
 This-organism-was-placed-by-humans = Organisme ini diperkenalkan ke tempat ini oleh manusia. Ini berlaku untuk makhluk-makhluk seperti tumbuhan di taman, hewan peliharaan, dan hewan-hewan di kebun binatang.
-To-access-all-other-settings = Untuk mengakses semua pengaturan akun lainnya, klik di sini:
 To-learn-more-about-what-information = Untuk belajar lebih lanjut mengenai informasi yang kami kumpulkan serta cara kami menggunakannya, silakan membaca Kebijakan Privasi serta Syarat Penggunaan kami.
 To-sync-your-observations-to-iNaturalist = Untuk menyinkronkan pengamatan-pengamatan Anda ke iNaturalist, harap masuk terlebih dahulu.
 To-view-nearby-organisms-please-enable-location = Untuk melihat organisme-organisme di sekitar Anda, harap aktifkan lokasi.
@@ -1120,7 +1190,7 @@ Use-iNaturalists-AI-Camera = Gunakan Kamera AI iNaturalist untuk mengidentifikas
 # Text for a button prompting the user to grant access to location
 USE-LOCATION = GUNAKAN LOKASI
 Use-the-devices-other-camera = Gunakan kamera lain perangkatnya.
-Use-the-iNaturalist-camera-to-observe = Gunakan kamera iNaturalist untuk mengamati dan mengidentifikasi organisme di layar secara langsung dan bagikan dengan komunitas kami untuk mengidentifikasinya dan ikut berkontribusi bagi ilmu pengetahuan!
+Use-the-iNaturalist-camera-to-observe-2 = Gunakan kamera iNaturalist untuk mengamati dan mengidentifikasi organisme secara langsung. Bagikan dengan komunitas kami untuk mendapatkan identifikasinya dan ikut berkontribusi untuk ilmu pengetahuan!
 Use-your-devices-microphone-to-record = Gunakan mikrofon perangkat Anda untuk merekam suara yang dibuat oleh organisme dan bagikan suara mereka dengan komunitas kami untuk mendapatkan identifikasi serta ikut berkontribusi untuk sains!
 USER = PENGGUNA
 User = Pengguna { $userHandle }
@@ -1139,6 +1209,10 @@ VIEW-ALL-X-USERS = LIHAT { $count } PENGGUNA
 VIEW-CHILDREN-TAXA = LIHAT TAKSON ANAK
 VIEW-DATA-QUALITY-ASSESSMENT = LIHAT ASESMEN KUALITAS DATA
 VIEW-EDUCATORS-GUIDE = LIHAT PANDUAN TENAGA PENDIDIK
+# Button on user profile that displays a list of users that follow that user
+VIEW-FOLLOWERS = LIHAT PENGIKUT
+# Button on user profile that displays a list of users that the user is following
+VIEW-FOLLOWING = LIHAT MENGIKUTI
 View-in-browser = Lihat di browser
 VIEW-IN-EXPLORE = LIHAT DI JELAJAH
 VIEW-INATURALIST-HELP = LIHAT BANTUAN INATURALIST
@@ -1147,6 +1221,7 @@ VIEW-INATURALIST-HELP = LIHAT BANTUAN INATURALIST
 View-photo = Lihat foto
 View-photo-licensing-info = Lihat informasi lisensi gambar
 VIEW-PROJECT-REQUIREMENTS = LIHAT PERSYARATAN PROYEK
+# Button that lets user view a list of projects related to the observation or user profile they're viewing
 VIEW-PROJECTS = LIHAT PROYEK
 # Label for a button that shows identification suggestions for an observation
 # or photo
@@ -1177,6 +1252,12 @@ x-comments =
     { $count ->
         [one] { $count } komentar
        *[other] { $count } komentar
+    }
+# Subtitle for a screen showing the list of followers a user has
+X-FOLLOWERS =
+    { $count ->
+        [one] { $count } PENGIKUT
+       *[other] { $count } PENGIKUT
     }
 X-Identifications =
     { $count ->
@@ -1257,6 +1338,7 @@ X-PHOTOS-Y-SOUNDS =
         [one] 1 SUARA
        *[other] { $soundCount } SUARA
     }
+X-PROJECTS = { $projectCount } PROYEK
 # Displays number of sounds attached to an observation in the Media Viewer
 X-SOUNDS =
     { $count ->
