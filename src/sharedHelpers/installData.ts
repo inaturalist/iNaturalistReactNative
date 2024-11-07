@@ -1,9 +1,10 @@
 import RNFS from "react-native-fs";
-import { MMKV } from "react-native-mmkv";
+import { MMKV, useMMKVBoolean } from "react-native-mmkv";
 import uuid from "react-native-uuid";
 
 const MMKV_ID = "install-data";
 const INSTALL_ID = "installID";
+const ONBOARDING_SHOWN = "onboardingShown";
 
 // This store is separate from the zustand store b/c it needs to survive sign
 // out, i.e these values should remain untill the app is uninstalled
@@ -28,11 +29,17 @@ if ( legacyStore.getAllKeys().length > 0 ) {
   } );
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export function getInstallID( ) {
   const id = store.getString( INSTALL_ID );
   if ( id ) return id;
   const newID: string = uuid.v4( ).toString( );
   store.set( INSTALL_ID, newID );
   return newID;
+}
+
+// Hook to see if this *installation* has seen the onboarding. If the user
+// signs out, we don't want them to see the onboarding again. This only gets
+// used in a component, so no need to expose any other getters/setters
+export function useOnboardingShown() {
+  return useMMKVBoolean( ONBOARDING_SHOWN, store );
 }
