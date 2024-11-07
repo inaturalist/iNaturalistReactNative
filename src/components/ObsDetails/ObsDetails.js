@@ -57,7 +57,7 @@ type Props = {
   isConnected: boolean,
   isRefetching: boolean,
   navToSuggestions: Function,
-  notificationId: number,
+  targetActivityItemID: number,
   observation: Object,
   openAddCommentSheet: Function,
   openAgreeWithIdSheet: Function,
@@ -101,7 +101,7 @@ const ObsDetails = ( {
   isConnected,
   isRefetching,
   navToSuggestions,
-  notificationId,
+  targetActivityItemID,
   observation,
   onAgree,
   openAgreeWithIdSheet,
@@ -138,6 +138,15 @@ const ObsDetails = ( {
     }
   }, [oneTimeScrollOffsetY] );
 
+  // If the user just added an activity item and we're waiting for it to load,
+  // scroll to the bottom where it will be visible. Also provides immediate
+  // feedback that the user's action had an effect
+  useEffect( ( ) => {
+    if ( addingActivityItem ) {
+      scrollViewRef?.current?.scrollToEnd( );
+    }
+  }, [addingActivityItem] );
+
   const dynamicInsets = useMemo( () => ( {
     backgroundColor: "#ffffff",
     paddingTop: insets.top,
@@ -155,11 +164,11 @@ const ObsDetails = ( {
       <ActivityTab
         activityItems={activityItems}
         isConnected={isConnected}
-        notificationId={notificationId}
+        targetItemID={targetActivityItemID}
         observation={observation}
         openAgreeWithIdSheet={openAgreeWithIdSheet}
         refetchRemoteObservation={refetchRemoteObservation}
-        onLayoutActivityItem={event => {
+        onLayoutTargetItem={event => {
           const { layout } = event.nativeEvent;
           setOneTimeScrollOffsetY( layout.y + layout.height );
         }}

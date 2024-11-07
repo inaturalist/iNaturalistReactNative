@@ -13,8 +13,9 @@ type Props = {
   activityItems: Array<Object>,
   openAgreeWithIdSheet: Function,
   isConnected: boolean,
-  notificationId: number,
-  onLayoutActivityItem: ( event: any ) => void
+  targetItemID: number,
+  // TODO change to LayoutEvent from react-native if/when switching to TS
+  onLayoutTargetItem: ( event: Object ) => void
 }
 
 const ActivityTab = ( {
@@ -23,8 +24,8 @@ const ActivityTab = ( {
   activityItems,
   openAgreeWithIdSheet,
   isConnected,
-  notificationId,
-  onLayoutActivityItem
+  targetItemID,
+  onLayoutTargetItem
 }: Props ): Node => {
   const currentUser = useCurrentUser( );
   const userId = currentUser?.id;
@@ -62,9 +63,9 @@ const ActivityTab = ( {
       {stableItems.length > 0 && stableItems.map( ( item, index ) => (
         <View
           onLayout={event => {
-            if ( notificationId === item?.id ) {
+            if ( targetItemID === item?.id ) {
               // const { layout } = event.nativeEvent;
-              onLayoutActivityItem( event );
+              onLayoutTargetItem( event );
             }
           }}
           key={item.uuid}
