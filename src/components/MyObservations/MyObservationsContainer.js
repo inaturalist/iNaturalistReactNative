@@ -128,13 +128,22 @@ const MyObservationsContainer = ( ): Node => {
     setStartUploadObservations
   ] );
 
+  // 20241107 amanda - this seems to be a culprit for the tab bar being less
+  // tappable sometimes, because automatic sync is still in progress and gets restarted
+  // if a user toggles between tabs too quickly. using the isActive boolean should help
   useFocusEffect(
     // need to reset the state on a FocusEffect, not a blur listener, because
     // tab bar screens don't seem to blur
     useCallback( ( ) => {
+      let isActive = true;
       const unsynced = Observation.filterUnsyncedObservations( realm );
       setNumUnuploadedObservations( unsynced.length );
-      startAutomaticSync( );
+      if ( isActive ) {
+        startAutomaticSync( );
+      }
+      return () => {
+        isActive = false;
+      };
     }, [
       startAutomaticSync,
       setNumUnuploadedObservations,
