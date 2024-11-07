@@ -3,7 +3,6 @@ import { MMKV } from "react-native-mmkv";
 import uuid from "react-native-uuid";
 
 const MMKV_ID = "install-data";
-
 const INSTALL_ID = "installID";
 
 // This store is separate from the zustand store b/c it needs to survive sign
@@ -30,7 +29,7 @@ if ( legacyStore.getAllKeys().length > 0 ) {
 }
 
 // eslint-disable-next-line import/prefer-default-export
-export function installID( ) {
+export function getInstallID( ) {
   const id = store.getString( INSTALL_ID );
   if ( id ) return id;
   const newID: string = uuid.v4( ).toString( );
