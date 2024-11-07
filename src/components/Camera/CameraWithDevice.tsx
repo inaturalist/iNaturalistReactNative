@@ -9,14 +9,10 @@ import React, {
 } from "react";
 import { StatusBar } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import Orientation from "react-native-orientation-locker";
 import type { CameraDevice } from "react-native-vision-camera";
 // import { log } from "sharedHelpers/logger";
 import { useTranslation } from "sharedHooks";
-import useDeviceOrientation, {
-  LANDSCAPE_LEFT,
-  LANDSCAPE_RIGHT
-} from "sharedHooks/useDeviceOrientation.ts";
+import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 
 import AICamera from "./AICamera/AICamera";
@@ -42,14 +38,10 @@ const CameraWithDevice = ( {
   device,
   setCameraPosition
 }: Props ) => {
-  // screen orientation locked to portrait on small devices
-  if ( !isTablet ) {
-    Orientation.lockToPortrait( );
-  }
   const navigation = useNavigation();
   const { t } = useTranslation( );
   const camera = useRef<Camera>( null );
-  const { deviceOrientation } = useDeviceOrientation( );
+  const { isLandscapeMode } = useDeviceOrientation( );
   const [
     addPhotoPermissionResult,
     setAddPhotoPermissionResult
@@ -84,8 +76,6 @@ const CameraWithDevice = ( {
     // have permission
     shouldFetchLocation: isFocused && !!hasPermissions
   } );
-
-  const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes( deviceOrientation );
 
   const flipCamera = ( ) => {
     const newPosition = cameraPosition === "back"
