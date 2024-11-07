@@ -45,6 +45,7 @@ const Wikipedia = ( { taxon }: Props ): React.Node => {
         source={{ html: taxon.wikipedia_summary }}
         systemFonts={FONTS}
         baseStyle={BASE_STYLE}
+        defaultTextProps={{ allowFontScaling: true, maxFontSizeMultiplier: 2 }}
       />
       { taxon.wikipedia_url && taxon.wikipedia_url.length > 0 && (
         <Body2
