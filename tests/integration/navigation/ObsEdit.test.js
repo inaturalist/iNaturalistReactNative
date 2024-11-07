@@ -86,6 +86,18 @@ const saveObsEditObservation = async ( ) => {
   await actor.press( saveButton );
 };
 
+const uploadObsEditObservation = async options => {
+  const uploadButton = await screen.findByText( /UPLOAD/ );
+  await actor.press( uploadButton );
+  if ( options?.skipMissingEvidence ) {
+    return;
+  }
+  // missing evidence sheet pops up here, so need to press UPLOAD twice
+  const okButton = await screen.findByText( /OK/ );
+  await actor.press( okButton );
+  await actor.press( uploadButton );
+};
+
 describe( "ObsEdit", ( ) => {
   async function findAndPressById( labelText ) {
     const pressable = await screen.findByTestId( labelText );
@@ -110,7 +122,11 @@ describe( "ObsEdit", ( ) => {
 
   beforeAll( async () => {
     jest.useFakeTimers( );
-    useStore.setState( { isAdvancedUser: true } );
+    useStore.setState( {
+      isAdvancedUser: true,
+      initialNumObservationsInQueue: 3,
+      numUploadsAttempted: 2
+    } );
   } );
 
   describe( "from MyObservations", ( ) => {
@@ -156,7 +172,7 @@ describe( "ObsEdit", ( ) => {
       it.todo( "should show photos when reached from ObsDetails" );
 
       it( "should go back to GroupPhotos if no observations are saved/uploaded"
-        + "in the multi-observation flow", async ( ) => {
+        + " in the multi-observation flow", async ( ) => {
         jest.spyOn( rnImagePicker, "launchImageLibrary" ).mockImplementation(
           ( ) => ( {
             assets: mockMultipleAssets
@@ -171,7 +187,7 @@ describe( "ObsEdit", ( ) => {
       } );
 
       it( "should show discard observations sheet if at least one observation is saved/uploaded"
-        + "in the multi-observation flow", async ( ) => {
+        + " in the multi-observation flow", async ( ) => {
         jest.spyOn( rnImagePicker, "launchImageLibrary" ).mockImplementation(
           ( ) => ( {
             assets: mockMultipleAssets
@@ -186,6 +202,26 @@ describe( "ObsEdit", ( ) => {
         await actor.press( backButtonId );
         const warningText = await screen.findByText( /By exiting, your observation will not be saved./ );
         expect( warningText ).toBeTruthy( );
+      } );
+
+      it( "should clear upload queue when user lands on ObsEdit", async ( ) => {
+        await renderAppWithObservations( mockObservations, __filename );
+        await navigateToObsEditViaGroupPhotos( );
+        const { initialNumObservationsInQueue, numUploadsAttempted } = useStore.getState( );
+        expect( initialNumObservationsInQueue ).toEqual( 0 );
+        expect( numUploadsAttempted ).toEqual( 0 );
+      } );
+
+      it( "should show correct upload number after user uploads two observations"
+        + " in the multi-observation flow", async ( ) => {
+        await renderAppWithObservations( mockObservations, __filename );
+        await navigateToObsEditViaGroupPhotos( );
+        await uploadObsEditObservation( );
+        const newTitle = await screen.findByText( /New Observation/ );
+        expect( newTitle ).toBeTruthy( );
+        await uploadObsEditObservation( { skipMissingEvidence: true } );
+        const toolbarProgressText = await screen.findByText( /Uploading [1-2] of 2 observations/ );
+        expect( toolbarProgressText ).toBeVisible( );
       } );
     } );
   } );
