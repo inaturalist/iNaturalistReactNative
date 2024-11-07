@@ -1,6 +1,11 @@
 // @flow
 import { useDrawerStatus } from "@react-navigation/drawer";
 import { getCurrentRoute } from "navigation/navigationUtils.ts";
+import {
+  SCREEN_NAME_NOTIFICATIONS,
+  SCREEN_NAME_OBS_LIST,
+  SCREEN_NAME_ROOT_EXPLORE
+} from "navigation/StackNavigators/TabStackNavigator";
 import type { Node } from "react";
 import React, { useMemo, useState } from "react";
 import User from "realmModels/User.ts";
@@ -9,24 +14,21 @@ import { useCurrentUser, useTranslation } from "sharedHooks";
 import CustomTabBar from "./CustomTabBar";
 
 const DRAWER_ID = "OPEN_DRAWER";
-const EXPLORE_SCREEN_ID = "RootExplore";
-const OBS_LIST_SCREEN_ID = "TabStackNavigator";
-const NOTIFICATIONS_SCREEN_ID = "Notifications";
 
 type Props = {
   navigation: Object
 };
 
 const tabIDByRoute = {
-  Notifications: NOTIFICATIONS_SCREEN_ID,
-  ObsList: OBS_LIST_SCREEN_ID,
-  RootExplore: EXPLORE_SCREEN_ID
+  [SCREEN_NAME_NOTIFICATIONS]: SCREEN_NAME_NOTIFICATIONS,
+  [SCREEN_NAME_OBS_LIST]: SCREEN_NAME_OBS_LIST,
+  [SCREEN_NAME_ROOT_EXPLORE]: SCREEN_NAME_ROOT_EXPLORE
 };
 
 const CustomTabBarContainer = ( { navigation }: Props ): Node => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
-  const [activeTab, setActiveTab] = useState( OBS_LIST_SCREEN_ID );
+  const [activeTab, setActiveTab] = useState( SCREEN_NAME_OBS_LIST );
   const isDrawerOpen = useDrawerStatus() === "open";
   const route = getCurrentRoute();
   const currentRoute = route?.name || "";
@@ -51,14 +53,14 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
     },
     {
       icon: "compass-rose-outline",
-      testID: EXPLORE_SCREEN_ID,
+      testID: SCREEN_NAME_ROOT_EXPLORE,
       accessibilityLabel: t( "Explore" ),
       accessibilityHint: t( "Navigates-to-explore" ),
       size: 40,
       onPress: ( ) => {
         navigation.navigate( "RootExplore" );
       },
-      active: EXPLORE_SCREEN_ID === activeTab
+      active: SCREEN_NAME_ROOT_EXPLORE === activeTab
     },
     {
       icon: "person",
@@ -70,18 +72,18 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
       onPress: ( ) => {
         navigation.navigate( "ObsList" );
       },
-      active: OBS_LIST_SCREEN_ID === activeTab
+      active: SCREEN_NAME_OBS_LIST === activeTab
     },
     {
       icon: "notifications-bell",
-      testID: NOTIFICATIONS_SCREEN_ID,
+      testID: SCREEN_NAME_NOTIFICATIONS,
       accessibilityLabel: t( "Notifications" ),
       accessibilityHint: t( "Navigates-to-notifications" ),
       size: 32,
       onPress: ( ) => {
         navigation.navigate( "Notifications" );
       },
-      active: NOTIFICATIONS_SCREEN_ID === activeTab
+      active: SCREEN_NAME_NOTIFICATIONS === activeTab
     }
   ] ), [
     activeTab,
