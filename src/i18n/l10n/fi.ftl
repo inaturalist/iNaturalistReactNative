@@ -19,8 +19,14 @@ Camera = Kamera
 Cancel = Peruuta
 Casual--quality-grade = Epämuodollinen
 Close = Sulje
+Closes-introduction = Sulje intro
 Collection-Project = Koontiprojektit
+Community-based = Yhteisöpohjainen
 Community-Guidelines = Yhteisön pelisäännöt
+CONNECT-TO-NATURE = VIETÄ AIKAA LUONNOSSA
+Connect-to-Nature = Vietä aikaa luonnossa
+CONTINUE = JATKA
+Contribute-to-Science = Tue tieteellistä tutkimustyötä
 Data-quality-assessment-date-is-accurate = Päivämäärä on oikea
 Data-quality-assessment-date-specified = Päivämäärä määritetty
 Data-quality-assessment-evidence-of-organism = Näyttö eliöstä
@@ -41,6 +47,16 @@ date-to-date = { $d1 } - { $d2 }
 December = joulukuu
 Delete-observation = Poista havainto
 Delete-photo = Poista kuva
+Deleting-x-of-y--observations =
+    Poistetaan { $currentDeleteCount } { $total ->
+        [one] havainto { $total }
+       *[other] havaintoa { $total } havainnosta
+    }
+Deleting-x-of-y-observations-2 =
+    Poistetaan { $currentDeleteCount } { $total ->
+        [one] havainto { $total }
+       *[other] havaintoa { $total } havainnosta
+    }
 Device-storage-full = Laitteen tallennustila täynnä
 Device-storage-full-description = iNaturalist ei ehkä pysty tallentamaan valokuviasi tai voi kaatua.
 DONATE = LAHJOITA
@@ -65,15 +81,26 @@ Go-back = Mene takaisin
 Hide = Piilota
 ID-Withdrawn = Tunnistus peruutettu
 Identifiers = Tunnistajaa
+Identify-record-learn = Tunnista, tallenna ja opi jokaisesta elävästä lajista maapallolla iNaturalistin avulla.
+If-you-leave-x-of-your-observations-removed =
+    Jos poistut tästä projektista, { $count ->
+        [one] yksi havaintosi
+       *[other] { $count } havaintoasi
+    } poistetaan tästä projektista.
 improving--identification = Parannus
+iNat-is-global-community = iNaturalist on luonnontieteilijöiden maailmanlaajuinen yhteisö, joka luo avointa dataa tieteelle havaitsemalla ja tunnistamalla eliöitä yhdessä.
+iNaturalist-is-supported-by-our-community = iNaturalistia tukee upea yhteisömme. Arvostamme suuresti kaikkia jäseniämme: arkipäivän luonnontieteilijöitä, jotka lisäävät havaintoja ja tunnistuksia, kuraattoreita, jotka hallinnoivat taksonomiaamme ja auttavat moderoinnissa, vapaaehtoisia kääntäjiä, jotka tekevät iNaturalistista saavutettavamman maailmanlaajuiselle yleisölle, sekä yhteisömme lahjoittajia. Olemme äärimmäisen kiitollisia kaikille yhteisömme jäsenille, jotka tekevät iNaturalistista sellaisen alustan kuin se on.
+iNaturalists-apps-are-designed-and-developed-2 = iNaturalistin sovelluksia suunnittelevat, kehittävät ja tukevat iNaturalist-tiimi: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Thea Skaff, Angie Ta, Ken-ichi Ueda, Kirk van Gorkom, Jason Walthall ja Jane Weeden.
 Introduced = Vieraslaji
 January = Tammikuu
 JOIN = LIITY
+JOIN-PROJECT--question = LIITY PROJEKTIIN?
 JOINED = LIITYTTY
 July = heinäkuu
 June = kesäkuu
 leading--identification = Johtava
 Learn-More = Lue lisää
+LEAVE-PROJECT--question = POISTU PROJEKTISTA?
 Location = Sijainti
 Log-in = Kirjaudu sisään
 LOG-OUT = Kirjaudu ulos
@@ -93,6 +120,8 @@ Needs-ID--quality-grade = Tarvitsee tunnistuksen
 New-Observation = Uusi havainto
 No-Location = Ei sijaintia
 No-Media = Ei mediaa
+none--accuracy = ei mikään
+NONE--ranks = EI MIKÄÄN
 Not-enough-space-left-on-device = Laitteessa ei ole riittävästi tilaa
 Not-enough-space-left-on-device-try-again = Laitteellasi ei ole tarpeeksi tallennustilaa. Vapauta tilaa ja yritä uudelleen.
 Notifications = Ilmoitukset
@@ -100,12 +129,16 @@ November = marraskuu
 Obscured = Karkeistettu
 Observation = Havainto
 Observations = Havainnot
+Observations-on-iNat-are-cited = iNaturalistin havaintoihin on viitattu tieteellisissä julkaisuissa, ne ovat johtaneet lajien uudelleenlöytöihin ja auttavat tutkijoita ymmärtämään elämää planeetallamme.
 Observe = Havaitse
+Observe-and-identify-organisms-in-real-time-with-your-camera = Tarkkaile ja tunnista eliöitä reaaliajassa kamerallasi
 Observers = Havainnoijaa
 October = lokakuu
 Offensive-Inappropriate = Loukkaava/epäasiallinen
 OK = OK
 Open = Avoin
+Opens-add-comment-form = Avaa kommentointilomakkeen.
+Opens-edit-comment-form = Avaa Muokkaa kommenttia -lomakkeen.
 Other = Muu
 Privacy-Policy = Yksityisyyskäytäntö
 Private = Yksityinen
@@ -182,6 +215,8 @@ Unknown--rank = Tuntematon
 Unknown--taxon = Tuntematon
 Unknown--user = Tuntematon
 Unknown-error = Tuntematon virhe
+Use-iNaturalists-AI-Camera = Käytä iNaturalistin tekokameraa tunnistaaksesi eliöt reaaliajassa
+Use-the-iNaturalist-camera-to-observe-2 = Käytä iNaturalistia tarkkaillaksesi ja tunnistaaksesi eliöitä reaaliajassa. Jaa ne yhteisömme kanssa saadaksesi niille tunnistuksen ja edistääksesi tiedettä!
 Users = Käyttäjät
 View-in-browser = Näytä selaimessa
 View-suggestions = Paina tästä niin näet ehdotuksia
