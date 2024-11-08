@@ -12,7 +12,7 @@ interface Observation extends RealmObservation {
 interface Props extends PropsWithChildren {
   observation: Observation;
   testID?: string;
-  disabled: boolean;
+  queued: boolean;
   onItemPress: ( ) => void;
   unsynced: boolean;
 }
@@ -21,7 +21,7 @@ const ObsPressable = ( {
   children,
   observation,
   testID,
-  disabled = false,
+  queued = false,
   onItemPress,
   unsynced
 }: Props ) => {
@@ -39,7 +39,7 @@ const ObsPressable = ( {
         // TODO: use the name that the user prefers (common or scientific)
         scientificName: observation.species_guess
       } )}
-      disabled={disabled}
+      disabled={queued}
     >
       {children}
     </Pressable>

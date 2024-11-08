@@ -16,6 +16,7 @@ type Props = {
   observation: Object,
   onUploadButtonPress: Function,
   style?: Object,
+  queued: boolean,
   uploadProgress?: number,
   width?: string
 };
@@ -25,6 +26,7 @@ const ObsGridItem = ( {
   height = "w-[200px]",
   observation,
   onUploadButtonPress,
+  queued,
   style,
   uploadProgress,
   width = "w-[200px]"
@@ -86,6 +88,7 @@ const ObsGridItem = ( {
           layout="horizontal"
           observation={observation}
           onPress={onUploadButtonPress}
+          queued={queued}
           progress={uploadProgress}
           white
         />

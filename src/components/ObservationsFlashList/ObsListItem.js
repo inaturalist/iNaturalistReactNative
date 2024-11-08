@@ -18,6 +18,7 @@ type Props = {
   explore: boolean,
   onUploadButtonPress: Function,
   observation: Object,
+  queued: boolean,
   uploadProgress?: number,
   unsynced: boolean
 };
@@ -26,6 +27,7 @@ const ObsListItem = ( {
   explore = false,
   observation,
   onUploadButtonPress,
+  queued,
   uploadProgress,
   unsynced
 }: Props ): Node => {
@@ -106,6 +108,7 @@ const ObsListItem = ( {
           layout="vertical"
           observation={observation}
           progress={uploadProgress}
+          queued={queued}
           showObsStatus
         />
       </View>

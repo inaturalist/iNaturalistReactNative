@@ -89,7 +89,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
       ? obsUploadState?.totalProgress || 0
       : obsUploadState?.totalProgress;
 
-    const disabled = uploadQueue.includes( uuid );
+    const queued = uploadQueue.includes( uuid );
 
     const onItemPress = ( ) => {
       if ( obsNeedsSync ) {
@@ -108,7 +108,6 @@ const ObservationsFlashList: Function = forwardRef( ( {
 
     return (
       <ObsPressableContainer
-        disabled={disabled}
         explore={explore}
         gridItemStyle={gridItemStyle}
         layout={layout}
@@ -116,6 +115,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
         observation={observation}
         onItemPress={onItemPress}
         onUploadButtonPress={onUploadButtonPress}
+        queued={queued}
         unsynced={obsNeedsSync}
         uploadProgress={uploadProgress}
       />
