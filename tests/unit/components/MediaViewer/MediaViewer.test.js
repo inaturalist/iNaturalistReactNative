@@ -13,7 +13,7 @@ describe( "MediaViewer", ( ) => {
 
     it( "should not have any CustomImageZoom components", ( ) => {
       renderComponent( <MediaViewer /> );
-      expect( screen.queryByTestId( "CustomImageZoom" ) ).toBeFalsy( );
+      expect( screen.queryByTestId( /CustomImageZoom/ ) ).toBeFalsy( );
     } );
   } );
 
@@ -29,7 +29,7 @@ describe( "MediaViewer", ( ) => {
 
       it( "should have a CustomImageZoom component", async ( ) => {
         renderComponent( <MediaViewer photos={photos} /> );
-        expect( await screen.findByTestId( "CustomImageZoom" ) ).toBeTruthy( );
+        expect( await screen.findByTestId( /CustomImageZoom/ ) ).toBeTruthy( );
       } );
     } );
 
@@ -69,7 +69,7 @@ describe( "MediaViewer", ( ) => {
 
       it( "should not show the delete button", async ( ) => {
         renderComponent( <MediaViewer photos={photos} /> );
-        expect( await screen.findByTestId( "CustomImageZoom" ) ).toBeTruthy( );
+        expect( await screen.findByTestId( /CustomImageZoom/ ) ).toBeTruthy( );
         expect( screen.queryByLabelText( "Delete photo" ) ).toBeFalsy( );
       } );
 
