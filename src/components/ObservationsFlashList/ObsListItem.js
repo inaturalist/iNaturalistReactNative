@@ -7,7 +7,6 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useMemo } from "react";
 import Photo from "realmModels/Photo";
-import { useCurrentUser } from "sharedHooks";
 import { UPLOAD_IN_PROGRESS } from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
 
@@ -15,37 +14,34 @@ import ObsImagePreview from "./ObsImagePreview";
 import ObsUploadStatus from "./ObsUploadStatus";
 
 type Props = {
+  currentUser: Object,
   explore: boolean,
   onUploadButtonPress: Function,
   observation: Object,
   queued: boolean,
   uploadProgress?: number,
-  unsynced: boolean
+  unsynced: boolean,
+  photo: Object,
+  obsPhotosCount: number,
+  hasSound: boolean
 };
 
 const ObsListItem = ( {
+  currentUser,
   explore = false,
   observation,
   onUploadButtonPress,
   queued,
   uploadProgress,
-  unsynced
+  unsynced,
+  photo,
+  obsPhotosCount,
+  hasSound
 }: Props ): Node => {
   const uploadStatus = useStore( state => state.uploadStatus );
-  const currentUser = useCurrentUser( );
 
-  const photo = observation?.observationPhotos?.[0]?.photo
-    || observation?.observation_photos?.[0]?.photo
-    || null;
   const belongsToCurrentUser = observation?.user?.login === currentUser?.login;
 
-  const obsPhotosCount = observation?.observationPhotos?.length
-    || observation?.observation_photos?.length
-    || 0;
-  const hasSound = !!(
-    observation?.observationSounds?.length
-    || observation?.observation_sounds?.length
-  );
   const isObscured = observation?.obscured && !belongsToCurrentUser;
   const geoprivacy = observation?.geoprivacy;
   const taxonGeoprivacy = observation?.taxon_geoprivacy;

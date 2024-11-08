@@ -15,10 +15,12 @@ import React, {
 } from "react";
 import { Animated } from "react-native";
 import RealmObservation from "realmModels/Observation";
-import { useGridLayout, useTranslation } from "sharedHooks";
+import {
+  useCurrentUser, useFontScale, useGridLayout, useTranslation
+} from "sharedHooks";
 import useStore from "stores/useStore";
 
-import ObsPressableContainer from "./ObsPressableContainer";
+import ObsPressable from "./ObsPressable";
 
 const { useRealm } = RealmContext;
 
@@ -64,6 +66,8 @@ const ObservationsFlashList: Function = forwardRef( ( {
   testID
 }: Props, ref ): Node => {
   const realm = useRealm( );
+  const { isLargeFontScale } = useFontScale( );
+  const currentUser = useCurrentUser( );
   const navigation = useNavigation( );
   const uploadQueue = useStore( state => state.uploadQueue );
   const totalUploadProgress = useStore( state => state.totalUploadProgress );
@@ -107,11 +111,12 @@ const ObservationsFlashList: Function = forwardRef( ( {
     };
 
     return (
-      <ObsPressableContainer
+      <ObsPressable
+        currentUser={currentUser}
         explore={explore}
         gridItemStyle={gridItemStyle}
+        isLargeFontScale={isLargeFontScale}
         layout={layout}
-        obsListKey={obsListKey}
         observation={observation}
         onItemPress={onItemPress}
         onUploadButtonPress={onUploadButtonPress}
@@ -121,8 +126,10 @@ const ObservationsFlashList: Function = forwardRef( ( {
       />
     );
   }, [
+    currentUser,
     explore,
     gridItemStyle,
+    isLargeFontScale,
     handleIndividualUploadPress,
     obsListKey,
     layout,
