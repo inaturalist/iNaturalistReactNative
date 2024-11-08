@@ -1,9 +1,12 @@
 // @flow
+import { useNavigation } from "@react-navigation/native";
 import MyObservationsEmpty from "components/MyObservations/MyObservationsEmpty";
+import navigateToObsEdit from "components/ObsEdit/helpers/navigateToObsEdit.ts";
 import {
   ActivityIndicator, Body3, CustomFlashList, InfiniteScrollLoadingWheel
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, {
   forwardRef,
@@ -11,9 +14,13 @@ import React, {
   useMemo
 } from "react";
 import { Animated } from "react-native";
+import RealmObservation from "realmModels/Observation";
 import { useGridLayout, useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 
 import ObsPressableContainer from "./ObsPressableContainer";
+
+const { useRealm } = RealmContext;
 
 const AnimatedFlashList = Animated.createAnimatedComponent( CustomFlashList );
 
@@ -27,7 +34,7 @@ type Props = {
   isConnected: boolean,
   isFetchingNextPage?: boolean,
   layout: "list" | "grid",
-  obsListKey: String,
+  obsListKey: string,
   onEndReached: Function,
   onLayout?: Function,
   onScroll?: Function,
@@ -47,7 +54,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
   isConnected,
   isFetchingNextPage,
   layout,
-  obsListKey,
+  obsListKey = "unknown",
   onEndReached,
   onLayout,
   onScroll,
@@ -56,6 +63,13 @@ const ObservationsFlashList: Function = forwardRef( ( {
   showObservationsEmptyScreen,
   testID
 }: Props, ref ): Node => {
+  const realm = useRealm( );
+  const navigation = useNavigation( );
+  const uploadQueue = useStore( state => state.uploadQueue );
+  const totalUploadProgress = useStore( state => state.totalUploadProgress );
+  const prepareObsEdit = useStore( state => state.prepareObsEdit );
+  const setMyObsOffsetToRestore = useStore( state => state.setMyObsOffsetToRestore );
+
   const {
     estimatedGridItemSize,
     flashListStyle,
@@ -65,21 +79,59 @@ const ObservationsFlashList: Function = forwardRef( ( {
   } = useGridLayout( layout );
   const { t } = useTranslation( );
 
-  const renderItem = useCallback( ( { item } ) => (
-    <ObsPressableContainer
-      explore={explore}
-      gridItemStyle={gridItemStyle}
-      handleIndividualUploadPress={handleIndividualUploadPress}
-      layout={layout}
-      observation={item}
-      obsListKey={obsListKey}
-    />
-  ), [
+  const renderItem = useCallback( ( { item: observation } ) => {
+    const { uuid } = observation;
+    const onUploadButtonPress = ( ) => handleIndividualUploadPress( uuid );
+    // 20240529 amanda - filtering in realm is a fast way to look up sync status
+    const obsNeedsSync = RealmObservation.isUnsyncedObservation( realm, observation );
+    const obsUploadState = totalUploadProgress.find( o => o.uuid === uuid );
+    const uploadProgress = obsNeedsSync
+      ? obsUploadState?.totalProgress || 0
+      : obsUploadState?.totalProgress;
+
+    const disabled = uploadQueue.includes( uuid );
+
+    const onItemPress = ( ) => {
+      if ( obsNeedsSync ) {
+        prepareObsEdit( observation );
+        navigateToObsEdit( navigation, setMyObsOffsetToRestore );
+      } else {
+        // Uniquely identify the list this observation appears in so we can ensure
+        // ObsDetails doesn't get pushed onto the stack twice after multiple taps
+        navigation.navigate( {
+          key: `Obs-${obsListKey}-${uuid}`,
+          name: "ObsDetails",
+          params: { uuid }
+        } );
+      }
+    };
+
+    return (
+      <ObsPressableContainer
+        disabled={disabled}
+        explore={explore}
+        gridItemStyle={gridItemStyle}
+        layout={layout}
+        obsListKey={obsListKey}
+        observation={observation}
+        onItemPress={onItemPress}
+        onUploadButtonPress={onUploadButtonPress}
+        unsynced={obsNeedsSync}
+        uploadProgress={uploadProgress}
+      />
+    );
+  }, [
     explore,
     gridItemStyle,
     handleIndividualUploadPress,
     obsListKey,
-    layout
+    layout,
+    realm,
+    totalUploadProgress,
+    uploadQueue,
+    prepareObsEdit,
+    setMyObsOffsetToRestore,
+    navigation
   ] );
 
   const renderItemSeparator = useCallback( ( ) => {

@@ -16,16 +16,18 @@ import ObsUploadStatus from "./ObsUploadStatus";
 
 type Props = {
   explore: boolean,
-  onPress: Function,
+  onUploadButtonPress: Function,
   observation: Object,
-  uploadProgress?: number
+  uploadProgress?: number,
+  unsynced: boolean
 };
 
 const ObsListItem = ( {
   explore = false,
   observation,
-  onPress,
-  uploadProgress
+  onUploadButtonPress,
+  uploadProgress,
+  unsynced
 }: Props ): Node => {
   const uploadStatus = useStore( state => state.uploadStatus );
   const currentUser = useCurrentUser( );
@@ -33,7 +35,6 @@ const ObsListItem = ( {
   const photo = observation?.observationPhotos?.[0]?.photo
     || observation?.observation_photos?.[0]?.photo
     || null;
-  const needsSync = typeof observation.needsSync !== "undefined" && observation.needsSync( );
   const belongsToCurrentUser = observation?.user?.login === currentUser?.login;
 
   const obsPhotosCount = observation?.observationPhotos?.length
@@ -70,7 +71,7 @@ const ObsListItem = ( {
         source={{ uri: Photo.displayLocalOrRemoteSquarePhoto( photo ) }}
         obsPhotosCount={obsPhotosCount}
         hasSound={hasSound}
-        opaque={needsSync}
+        opaque={unsynced}
         isSmall
         iconicTaxonName={observation.taxon?.iconic_taxon_name}
       />
@@ -101,7 +102,7 @@ const ObsListItem = ( {
       >
         <ObsUploadStatus
           explore={explore}
-          onPress={onPress}
+          onPress={onUploadButtonPress}
           layout="vertical"
           observation={observation}
           progress={uploadProgress}

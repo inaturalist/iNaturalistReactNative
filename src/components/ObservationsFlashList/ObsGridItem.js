@@ -14,7 +14,7 @@ type Props = {
   explore: boolean,
   height?: string,
   observation: Object,
-  onPress: Function,
+  onUploadButtonPress: Function,
   style?: Object,
   uploadProgress?: number,
   width?: string
@@ -24,7 +24,7 @@ const ObsGridItem = ( {
   explore,
   height = "w-[200px]",
   observation,
-  onPress,
+  onUploadButtonPress,
   style,
   uploadProgress,
   width = "w-[200px]"
@@ -85,7 +85,7 @@ const ObsGridItem = ( {
           explore={explore}
           layout="horizontal"
           observation={observation}
-          onPress={onPress}
+          onPress={onUploadButtonPress}
           progress={uploadProgress}
           white
         />
