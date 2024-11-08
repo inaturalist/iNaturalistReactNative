@@ -313,7 +313,7 @@ const ObsDetailsContainer = ( ): Node => {
     if ( remoteObservation && !isRefetching ) {
       dispatch( {
         type: "ADD_ACTIVITY_ITEM",
-        observationShown: remoteObservation
+        observationShown: Observation.mapApiToRealm( remoteObservation )
       } );
     }
   }, [remoteObservation, isRefetching] );

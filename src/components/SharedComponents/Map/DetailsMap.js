@@ -23,23 +23,26 @@ import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  latitude: number,
-  longitude: number,
-  obscured?: boolean,
-  positionalAccuracy?: number,
-  region?: Object,
   closeModal: Function,
-  tileMapParams: Object,
+  coordinateString?: string,
   headerTitle?: Object,
+  observation?: {
+    latitude?: number,
+    privateLatitude?: number,
+    longitude?: number,
+    privateLongitude?: number,
+    obscured?: boolean
+  },
+  region?: Object,
   showLocationIndicator: boolean,
-  coordinateString?: string
+  tileMapParams: Object,
 }
 
 const FloatingActionButton = ( {
-  buttonClassName,
-  onPress,
   accessibilityLabel,
-  icon
+  buttonClassName,
+  icon,
+  onPress
 } ) => {
   const fabClassNames = classnames(
     "absolute",
@@ -62,15 +65,12 @@ const FloatingActionButton = ( {
 
 const DetailsMap = ( {
   closeModal,
-  latitude,
-  longitude,
-  obscured,
-  positionalAccuracy,
-  tileMapParams,
+  coordinateString,
   headerTitle,
-  showLocationIndicator,
+  observation,
   region,
-  coordinateString
+  showLocationIndicator,
+  tileMapParams,
 }: Props ): Node => {
   const [showNotificationModal, setShowNotificationModal] = useState( false );
 
@@ -86,7 +86,12 @@ const DetailsMap = ( {
     }
   };
 
+  const latitude = observation?.privateLatitude || observation?.latitude;
+  const longitude = observation?.privateLongitude || observation?.longitude;
+  const canViewCoordinates = !observation?.obscured || observation?.privateLatitude;
+
   const shareMap = () => {
+    if ( !latitude || !longitude ) return;
     // takes in a provider prop but opens in browser instead of in app(google maps on iOS)
     openMap( { query: `${latitude}, ${longitude}` } );
   };
@@ -106,10 +111,7 @@ const DetailsMap = ( {
       <View className="flex-1">
         <Map
           mapHeight="100%"
-          obsLatitude={latitude}
-          obsLongitude={longitude}
-          obscured={obscured}
-          positionalAccuracy={positionalAccuracy}
+          observation={observation}
           region={region}
           showCurrentLocationButton
           showLocationIndicator={showLocationIndicator}
@@ -117,7 +119,7 @@ const DetailsMap = ( {
           tileMapParams={tileMapParams}
           withObsTiles={tileMapParams !== null}
         >
-          { ( !obscured && showLocationIndicator ) && (
+          { ( observation && canViewCoordinates ) && (
             <>
               <FloatingActionButton
                 icon="copy"

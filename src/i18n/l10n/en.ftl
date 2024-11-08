@@ -744,12 +744,17 @@ notifications-user-added-identification-to-observation-by-you = <0>{ $userName }
 November = November
 Obervations-must-be-manually-added = Observations must be manually added to a traditional project, either during the upload stage or after the observation has been shared to iNaturalist. A user must also join a traditional project in order to add their observations to it.
 Obscured = Obscured
-# Displayed when user views an obscured location on the ObsDetail map screen
-Obscured-observation-location-map-description = This observation’s location is obscured. You are seeing a randomized point within the obscuration polygon.
 Observation = Observation
 Observation-Attribution = Observation: © { $userName } · { $restrictions }
 OBSERVATION-BUTTON = OBSERVATION BUTTON
 Observation-has-no-photos-and-no-sounds = This observation has no photos and no sounds.
+# Displayed when user views an obscured location on the ObsDetail map screen
+Observation-location-obscured-randomized-point = This observation’s location is obscured. You are seeing a randomized point within the obscuration polygon.
+# Displayed when user views an obscured location of their own observation
+Observation-location-obscured-you-can-see-your-own = This observation’s location is obscured. You can always see the location of your own observations.
+# Displayed when user views an obscured location of someone else's observation
+# when they have permission to view the coordinates
+Observation-location-obscured-you-have-permission = This observation’s location is obscured. You have permission to see this location.
 Observation-Name = Observation { $scientificName }
 # Label for a menu that shows various actions you can take for an observation
 Observation-options = Observation options
