@@ -28,6 +28,7 @@ import {
   StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
+import Observation from "realmModels/Observation";
 import { log } from "sharedHelpers/logger";
 import saveObservation from "sharedHelpers/saveObservation.ts";
 import { fetchTaxonAndSave } from "sharedHelpers/taxon";
@@ -35,6 +36,7 @@ import {
   useAuthenticatedQuery,
   useCurrentUser,
   useQuery,
+  useRemoteObservation,
   useTranslation,
   useUserMe
 } from "sharedHooks";
@@ -58,6 +60,7 @@ const isTablet = DeviceInfo.isTablet();
 
 const TaxonDetails = ( ): Node => {
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
+  const currentEditingObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
   const setExploreView = useStore( state => state.setExploreView );
   const cameraRollUris = useStore( state => state.cameraRollUris );
@@ -81,6 +84,12 @@ const TaxonDetails = ( ): Node => {
   const obsUuid = fromObsDetails
     ? _.find( navState?.routes?.slice().reverse(), r => r.name === "ObsDetails" ).params.uuid
     : null;
+  const { remoteObservation: obsDetailObservation } = useRemoteObservation( obsUuid );
+  const mappableObservation = obsDetailObservation
+    ? Observation.mapApiToRealm( obsDetailObservation )
+    : currentEditingObservation;
+  console.log( "[DEBUG TaxonDetails.js] obsDetailObservation: ", obsDetailObservation );
+  console.log( "[DEBUG TaxonDetails.js] currentEditingObservation: ", currentEditingObservation );
 
   const showSelectButton = fromSuggestions || fromObsEdit;
   const usesVision = history[history.length - 2] === "Suggestions";
@@ -220,7 +229,11 @@ const TaxonDetails = ( ): Node => {
         <EstablishmentMeans taxon={taxon} />
         <Wikipedia taxon={taxon} />
         <Taxonomy taxon={taxon} hideNavButtons={hideNavButtons} />
-        <TaxonMapPreview taxon={taxon} showSpeciesSeenCheckmark={currentUserHasSeenTaxon} />
+        <TaxonMapPreview
+          observation={mappableObservation}
+          taxon={taxon}
+          showSpeciesSeenCheckmark={currentUserHasSeenTaxon}
+        />
       </View>
     );
   };

@@ -70,7 +70,7 @@ const DetailsMap = ( {
   observation,
   region,
   showLocationIndicator,
-  tileMapParams,
+  tileMapParams
 }: Props ): Node => {
   const [showNotificationModal, setShowNotificationModal] = useState( false );
 
