@@ -5,6 +5,7 @@ import {
 } from "api/observations";
 import classNames from "classnames";
 import {
+  ActivityIndicator,
   INatIconButton
 } from "components/SharedComponents";
 import type { Node } from "react";
@@ -31,6 +32,7 @@ const FaveButton = ( {
 }: Props ): Node => {
   const { t } = useTranslation( );
   const uuid = observation?.uuid;
+  const [loading, setLoading] = useState( false );
 
   const observationFaved = useMemo( ( ) => {
     if ( !observation ) return null;
@@ -64,10 +66,14 @@ const FaveButton = ( {
   const createUnfaveMutation = useAuthenticatedMutation(
     ( faveOrUnfaveParams, optsWithAuth ) => unfaveObservation( faveOrUnfaveParams, optsWithAuth ),
     {
-      onSuccess: ( ) => afterToggleFave( false ),
+      onSuccess: ( ) => {
+        afterToggleFave( false );
+        setLoading( false );
+      },
       onError: error => {
         showErrorAlert( error );
         setIsFaved( true );
+        setLoading( false );
       }
     }
   );
@@ -75,17 +81,21 @@ const FaveButton = ( {
   const createFaveMutation = useAuthenticatedMutation(
     ( faveOrUnfaveParams, optsWithAuth ) => faveObservation( faveOrUnfaveParams, optsWithAuth ),
     {
-      onSuccess: ( ) => afterToggleFave( true ),
+      onSuccess: ( ) => {
+        afterToggleFave( true );
+        setLoading( false );
+      },
       onError: error => {
         showErrorAlert( error );
         setIsFaved( false );
+        setLoading( false );
       }
     }
   );
 
   const toggleFave = useCallback( ( ) => {
     if ( !currentUser ) return;
-
+    setLoading( true );
     if ( isFaved ) {
       setIsFaved( false );
       createUnfaveMutation.mutate( { uuid } );
@@ -103,6 +113,17 @@ const FaveButton = ( {
 
   if ( !observation ) {
     return null;
+  }
+
+  if ( loading ) {
+    return (
+      <ActivityIndicator
+        className={classNames( "absolute bottom-5 right-5", {
+          "top-0": top
+        } )}
+        size={25}
+      />
+    );
   }
 
   return (
