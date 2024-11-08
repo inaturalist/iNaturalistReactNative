@@ -86,6 +86,7 @@ const MediaViewer = ( {
   // that no longer exists, so change it to the previous one
   useEffect( ( ) => {
     if ( selectedMediaIndex >= uris.length ) {
+      console.log( "changing media index" );
       setSelectedMediaIndex( Math.max( 0, selectedMediaIndex - 1 ) );
     }
   }, [selectedMediaIndex, setSelectedMediaIndex, uris.length] );
