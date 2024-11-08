@@ -81,6 +81,9 @@ const TaxonDetails = ( ): Node => {
   const fromObsEdit = history.includes( "ObsEdit" );
 
   // previous ObsDetails observation uuid
+  // 
+  // TODO this doesn't work if there's some other obsdetails in the stack,
+  // e.g. MyObs -> ObsDetails -> RootExplore -> ObsDetails -> TaxonDetails
   const obsUuid = fromObsDetails
     ? _.find( navState?.routes?.slice().reverse(), r => r.name === "ObsDetails" ).params.uuid
     : null;
@@ -88,8 +91,6 @@ const TaxonDetails = ( ): Node => {
   const mappableObservation = obsDetailObservation
     ? Observation.mapApiToRealm( obsDetailObservation )
     : currentEditingObservation;
-  console.log( "[DEBUG TaxonDetails.js] obsDetailObservation: ", obsDetailObservation );
-  console.log( "[DEBUG TaxonDetails.js] currentEditingObservation: ", currentEditingObservation );
 
   const showSelectButton = fromSuggestions || fromObsEdit;
   const usesVision = history[history.length - 2] === "Suggestions";
