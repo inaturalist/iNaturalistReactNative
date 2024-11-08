@@ -2,8 +2,7 @@
 import { ImageZoom } from "@likashefqet/react-native-image-zoom";
 import type { Node } from "react";
 import React, {
-  useMemo,
-  useRef
+  useMemo
 } from "react";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
 
@@ -16,7 +15,6 @@ interface Props {
 }
 
 const CustomImageZoom = ( { uri, setZooming }: Props ): Node => {
-  const imageZoomRef = useRef( );
   const { screenWidth, screenHeight } = useDeviceOrientation( );
 
   const style = useMemo( ( ) => ( {
@@ -26,7 +24,7 @@ const CustomImageZoom = ( { uri, setZooming }: Props ): Node => {
 
   return (
     <ImageZoom
-      ref={imageZoomRef}
+      testID={`CustomImageZoom.${uri}`}
       uri={uri}
       style={style}
       minScale={MIN_SCALE}
