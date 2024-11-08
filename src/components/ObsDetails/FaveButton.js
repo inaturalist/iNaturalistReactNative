@@ -73,6 +73,7 @@ const FaveButton = ( {
       onError: error => {
         showErrorAlert( error );
         setIsFaved( true );
+        setLoading( false );
       }
     }
   );
@@ -87,6 +88,7 @@ const FaveButton = ( {
       onError: error => {
         showErrorAlert( error );
         setIsFaved( false );
+        setLoading( false );
       }
     }
   );
