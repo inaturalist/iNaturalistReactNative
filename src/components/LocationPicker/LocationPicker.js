@@ -108,6 +108,7 @@ const LocationPicker = ( {
             showCurrentLocationButton
             showSwitchMapTypeButton
             showsCompass={false}
+            showsUserLocation
             testID="LocationPicker.Map"
           />
         </View>

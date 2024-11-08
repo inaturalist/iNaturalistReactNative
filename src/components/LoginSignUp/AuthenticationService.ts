@@ -20,8 +20,8 @@ import RNSInfo from "react-native-sensitive-info";
 import Realm, { UpdateMode } from "realm";
 import realmConfig from "realmModels/index";
 import changeLanguage from "sharedHelpers/changeLanguage.ts";
+import { getInstallID } from "sharedHelpers/installData.ts";
 import { log, logFilePath, logWithoutRemote } from "sharedHelpers/logger";
-import { installID } from "sharedHelpers/persistedInstallationId.ts";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory.ts";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { sleep, unlink } from "sharedHelpers/util.ts";
@@ -108,7 +108,7 @@ const createAPI = ( additionalHeaders?: { [header: string]: string } ) => create
   baseURL: API_HOST,
   headers: {
     "User-Agent": getUserAgent(),
-    "X-Installation-ID": installID( ),
+    "X-Installation-ID": getInstallID( ),
     ...additionalHeaders
   }
 } );
