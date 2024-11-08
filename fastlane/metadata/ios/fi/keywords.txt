@@ -1,1 +1,1 @@
-nature,wildlife,plant ID,animal,identify,biodiversity,citizen science,conservation,field guide
+luonto, kasvit, eläin, tunnistaminen, luonnon monimuotoisuus, kansalaistiede, suojelu, kenttäopas

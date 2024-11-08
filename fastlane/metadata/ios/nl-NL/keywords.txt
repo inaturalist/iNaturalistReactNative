@@ -1,1 +1,1 @@
-nature,wildlife,plant ID,animal,identify,biodiversity,citizen science,conservation,field guide
+natuur,flora,fauna,planten,dieren, burgerwetenschap,biodiversiteit,waarneming, observation,veldgids
