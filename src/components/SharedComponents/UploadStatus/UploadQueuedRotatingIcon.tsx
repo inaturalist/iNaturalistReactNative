@@ -51,7 +51,7 @@ const UploadQueuedRotatingIcon = ( {
   return (
     <View className={classnames( iconClasses )}>
       {showProgressArrow( )}
-      <AnimatedView style={rotate}>
+      <AnimatedView style={rotate} testID="UploadStatus.QueuedRotatingIcon">
         <INatIcon name="circle-dots" color={color} size={33} />
       </AnimatedView>
     </View>

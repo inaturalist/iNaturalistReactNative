@@ -12,7 +12,7 @@ const UploadCompleteIcon = ( {
   iconClasses,
   completeColor
 }: Props ) => (
-  <View className={classnames( iconClasses )}>
+  <View className={classnames( iconClasses )} testID="UploadStatus.Complete">
     <INatIcon
       size={28}
       name="upload-complete"
