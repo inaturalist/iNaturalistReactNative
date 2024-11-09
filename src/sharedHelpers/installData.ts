@@ -41,5 +41,5 @@ export function getInstallID( ) {
 // signs out, we don't want them to see the onboarding again. This only gets
 // used in a component, so no need to expose any other getters/setters
 export function useOnboardingShown() {
-  return useMMKVBoolean( ONBOARDING_SHOWN, store );
+  return !!useMMKVBoolean( ONBOARDING_SHOWN, store );
 }
