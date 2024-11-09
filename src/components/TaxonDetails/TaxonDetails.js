@@ -35,6 +35,8 @@ import { fetchTaxonAndSave } from "sharedHelpers/taxon";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
+  useExitObservationFlow,
+  useLocalObservation,
   useQuery,
   useRemoteObservation,
   useTranslation,
@@ -76,24 +78,39 @@ const TaxonDetails = ( ): Node => {
   const [mediaIndex, setMediaIndex] = useState( 0 );
   const navState = useNavigationState( nav => nav );
   const history = navState?.routes.map( r => r.name ) || [];
-  const fromObsDetails = history.includes( "ObsDetails" );
-  const fromSuggestions = history.includes( "Suggestions" );
-  const fromObsEdit = history.includes( "ObsEdit" );
+  // Assume the stack was reset by the last instance of Explore, even though
+  // we still support backing out beyond that
+  const usableStackIndex = Math.max(
+    0,
+    history.lastIndexOf( "Explore" ),
+    history.lastIndexOf( "RootExplore" )
+  );
+  const usableHistory = history.slice( usableStackIndex, history.length );
+  const usableRoutes = navState?.routes.slice( usableStackIndex, history.length ) || [];
+  const exitObservationFlow = useExitObservationFlow( );
+
+  const fromObsDetails = usableHistory.includes( "ObsDetails" );
+  const fromSuggestions = usableHistory.includes( "Suggestions" );
+  const fromObsEdit = usableHistory.includes( "ObsEdit" );
 
   // previous ObsDetails observation uuid
-  // 
-  // TODO this doesn't work if there's some other obsdetails in the stack,
-  // e.g. MyObs -> ObsDetails -> RootExplore -> ObsDetails -> TaxonDetails
   const obsUuid = fromObsDetails
-    ? _.find( navState?.routes?.slice().reverse(), r => r.name === "ObsDetails" ).params.uuid
+    ? _.find( usableRoutes.slice().reverse(), r => r.name === "ObsDetails" ).params.uuid
     : null;
-  const { remoteObservation: obsDetailObservation } = useRemoteObservation( obsUuid );
-  const mappableObservation = obsDetailObservation
-    ? Observation.mapApiToRealm( obsDetailObservation )
-    : currentEditingObservation;
+  const localObservation = useLocalObservation( obsUuid );
+  const { remoteObservation } = useRemoteObservation(
+    obsUuid,
+    !localObservation && !currentEditingObservation
+  );
+  let mappableObservation = currentEditingObservation;
+  if ( localObservation ) {
+    mappableObservation = localObservation;
+  } else if ( remoteObservation ) {
+    mappableObservation = Observation.mapApiToRealm( remoteObservation );
+  }
 
   const showSelectButton = fromSuggestions || fromObsEdit;
-  const usesVision = history[history.length - 2] === "Suggestions";
+  const usesVision = usableHistory[usableHistory.length - 2] === "Suggestions";
 
   const realm = useRealm( );
   const localTaxon = realm.objectForPrimaryKey( "Taxon", id );
@@ -182,18 +199,18 @@ const TaxonDetails = ( ): Node => {
 
   const saveForLater = useCallback( async ( ) => {
     await saveObservationFromSheet( );
-    navigation.navigate( "TabNavigator", {
-      screen: "TabStackNavigator",
-      params: {
-        screen: "ObsList"
-      }
-    } );
-  }, [navigation, saveObservationFromSheet] );
+    exitObservationFlow( );
+  }, [
+    exitObservationFlow,
+    saveObservationFromSheet
+  ] );
 
   const uploadNow = useCallback( async ( ) => {
     await saveObservationFromSheet( );
-    navigation.navigate( "LoginStackNavigator" );
-  }, [navigation, saveObservationFromSheet] );
+    exitObservationFlow( {
+      navigate: ( ) => navigation.navigate( "LoginStackNavigator" )
+    } );
+  }, [exitObservationFlow, navigation, saveObservationFromSheet] );
 
   const renderHeader = useCallback( ( { onClose } ) => (
     <TaxonDetailsMediaViewerHeader

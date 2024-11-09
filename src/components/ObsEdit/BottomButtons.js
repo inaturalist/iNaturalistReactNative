@@ -3,7 +3,6 @@
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
-import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/CrosshairCircle";
 import {
@@ -15,7 +14,11 @@ import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import saveObservation from "sharedHelpers/saveObservation.ts";
-import { useCurrentUser, useTranslation } from "sharedHooks";
+import {
+  useCurrentUser,
+  useExitObservationFlow,
+  useTranslation
+} from "sharedHooks";
 import useStore from "stores/useStore";
 
 import ImpreciseLocationSheet from "./Sheets/ImpreciseLocationSheet";
@@ -47,7 +50,6 @@ const BottomButtons = ( {
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
   const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
   const setSavedOrUploadedMultiObsFlow = useStore( state => state.setSavedOrUploadedMultiObsFlow );
-  const navigation = useNavigation( );
   const isNewObs = !currentObservation?._created_at;
   const hasPhotos = currentObservation?.observationPhotos?.length > 0;
   const hasImportedPhotos = hasPhotos && cameraRollUris.length === 0;
@@ -58,6 +60,7 @@ const BottomButtons = ( {
   const [allowUserToUpload, setAllowUserToUpload] = useState( false );
   const [buttonPressed, setButtonPressed] = useState( null );
   const [loading, setLoading] = useState( false );
+  const exitObservationFlow = useExitObservationFlow( );
 
   const hasIdentification = currentObservation?.taxon
     && currentObservation?.taxon.rank_level !== 100;
@@ -83,13 +86,8 @@ const BottomButtons = ( {
     }
 
     if ( observations.length === 1 ) {
-      // navigate to ObsList and start upload with uuid
-      navigation.navigate( "TabNavigator", {
-        screen: "TabStackNavigator",
-        params: {
-          screen: "ObsList"
-        }
-      } );
+      // If this is the last observation, we're done
+      exitObservationFlow( );
     } else if ( currentObservationIndex === observations.length - 1 ) {
       observations.pop( );
       setCurrentObservationIndex( currentObservationIndex - 1, observations );
@@ -105,8 +103,8 @@ const BottomButtons = ( {
     addToUploadQueue,
     currentObservation,
     currentObservationIndex,
+    exitObservationFlow,
     isNewObs,
-    navigation,
     resetMyObsOffsetToRestore,
     observations,
     setCurrentObservationIndex,
