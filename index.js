@@ -23,8 +23,8 @@ import { setJSExceptionHandler, setNativeExceptionHandler } from "react-native-e
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { startNetworkLogging } from "react-native-network-logger";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { getInstallID } from "sharedHelpers/installData.ts";
 import { reactQueryRetry } from "sharedHelpers/logging";
-import { installID } from "sharedHelpers/persistedInstallationId.ts";
 
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
@@ -106,7 +106,7 @@ inatjs.setConfig( {
   writeApiURL: Config.API_URL,
   userAgent: getUserAgent(),
   headers: {
-    "X-Installation-ID": installID( )
+    "X-Installation-ID": getInstallID( )
   }
 } );
 

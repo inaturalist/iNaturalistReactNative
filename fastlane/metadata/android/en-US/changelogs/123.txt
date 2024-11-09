@@ -1,0 +1,20 @@
+NEW
+* Onboarding slides
+
+UPDATED
+* Remove @ symbol from usernames
+* Obs wheel animation
+* Confirmation for for multi-obs and join/leave project
+* Fav button
+
+FIXED
+* Unable to clear note once written
+* Wrap scientific name if first
+* Scroll to activity item only once
+* Update profile pic immediately after changing it
+* Wrong number of uploading observations
+* Active tab not highlighted
+* Settings spinner
+* Location fetch on maps
+* Several updates to support bigger font sizes
+* Lagginess in tabs

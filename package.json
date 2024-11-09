@@ -1,6 +1,6 @@
 {
   "name": "inaturalistreactnative",
-  "version": "0.53.0",
+  "version": "0.53.1",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -42,6 +42,7 @@
     "@candlefinance/faster-image": "^1.4.3",
     "@formidable-webview/webshell": "^2.6.0",
     "@gorhom/bottom-sheet": "^4.6.1",
+    "@likashefqet/react-native-image-zoom": "^4.2.0",
     "@react-native-camera-roll/camera-roll": "github:inaturalist/react-native-cameraroll",
     "@react-native-clipboard/clipboard": "^1.13.2",
     "@react-native-community/datetimepicker": "^7.6.3",
@@ -93,7 +94,6 @@
     "react-native-fs": "^2.20.0",
     "react-native-geocoder-reborn": "^0.9.0",
     "react-native-gesture-handler": "^2.16.0",
-    "react-native-image-pan-zoom": "^2.1.12",
     "react-native-image-picker": "github:inaturalist/react-native-image-picker",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-linear-gradient": "^2.8.3",
