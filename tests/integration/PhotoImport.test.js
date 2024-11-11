@@ -1,6 +1,7 @@
 import {
   screen,
   userEvent,
+  waitFor,
   within
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
@@ -141,7 +142,9 @@ describe( "Photo Import", ( ) => {
     // Wait until header shows that there's an obs to upload
     await screen.findByText( /Upload \d observation/ );
     const obsListItems = await screen.findAllByTestId( /MyObservations\.obsListItem\..*/ );
-    expect( obsListItems[0] ).toBeVisible( );
+    await waitFor( () => {
+      expect( obsListItems[0] ).toBeVisible( );
+    }, { timeout: 3_000, interval: 500 } );
   }
 
   it( "should create and save an observation with an imported photo", async ( ) => {

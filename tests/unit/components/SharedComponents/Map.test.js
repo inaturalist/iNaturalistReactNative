@@ -7,6 +7,15 @@ import { renderComponent } from "tests/helpers/render";
 
 const baseUrl = `${TILE_URL}/grid/{z}/{x}/{y}.png`;
 
+jest.mock( "sharedHooks/useLocationPermission.tsx", () => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    hasPermissions: true,
+    renderPermissionsGate: jest.fn(),
+    requestPermissions: jest.fn()
+  } )
+} ) );
+
 describe( "Map", ( ) => {
   it( "should be accessible", ( ) => {
     expect( <Map /> ).toBeAccessible( );
@@ -26,12 +35,14 @@ describe( "Map", ( ) => {
       .toMatch( new RegExp( `^${baseUrl}.*taxon_id=${taxonId}` ) );
   } );
 
-  it( "displays location indicator when given an observation lat/lng", async ( ) => {
+  it( "displays location indicator when given an observation w/ lat/lng", async ( ) => {
     renderComponent(
       <Map
         showLocationIndicator
-        obsLatitude={Number( faker.location.latitude( ) )}
-        obsLongitude={Number( faker.location.longitude( ) )}
+        observation={{
+          latitude: Number( faker.location.latitude( ) ),
+          longitude: Number( faker.location.longitude( ) )
+        }}
       />
     );
     const testId = "Map.LocationIndicator";
