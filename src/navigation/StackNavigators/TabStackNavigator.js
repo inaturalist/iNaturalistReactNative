@@ -23,14 +23,18 @@ import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
 import ProjectMembers from "components/ProjectDetails/ProjectMembers.tsx";
 import ProjectRequirements from "components/ProjectDetails/ProjectRequirements.tsx";
+import ProjectListContainer from "components/ProjectList/ProjectListContainer.tsx";
 import ProjectsContainer from "components/Projects/ProjectsContainer.tsx";
 import Settings from "components/Settings/Settings";
 import { Heading4 } from "components/SharedComponents";
+import FollowersList from "components/UserProfile/FollowersList.tsx";
+import FollowingList from "components/UserProfile/FollowingList.tsx";
 import UserProfile from "components/UserProfile/UserProfile";
 import { t } from "i18next";
 import ContextHeader from "navigation/ContextHeader";
 import {
   blankHeaderTitle,
+  fadeInComponent,
   hideHeader,
   hideHeaderLeft,
   removeBottomBorder,
@@ -47,7 +51,6 @@ const aboutTitle = () => <Heading4>{t( "ABOUT-INATURALIST" )}</Heading4>;
 const donateTitle = () => <Heading4>{t( "DONATE" )}</Heading4>;
 const helpTitle = () => <Heading4>{t( "HELP" )}</Heading4>;
 const locationSearchTitle = () => <Heading4>{t( "SEARCH-LOCATION" )}</Heading4>;
-const notificationsTitle = ( ) => <Heading4>{t( "NOTIFICATIONS" )}</Heading4>;
 const dqaTitle = ( ) => <Heading4>{t( "DATA-QUALITY-ASSESSMENT" )}</Heading4>;
 const projectRequirementsTitle = () => <Heading4>{t( "PROJECT-REQUIREMENTS" )}</Heading4>;
 const projectSearchTitle = () => <Heading4>{t( "SEARCH-PROJECTS" )}</Heading4>;
@@ -64,6 +67,36 @@ const uiLibItemTitle = () => <Heading4 className="text-white">UI LIBRARY ITEM</H
 // eslint-disable-next-line i18next/no-literal-string
 const logTitle = () => <Heading4 className="text-white">LOG</Heading4>;
 
+const notificationsTitle = ( ) => <Heading4>{t( "NOTIFICATIONS" )}</Heading4>;
+
+// note: react navigation 7 will have a layout prop
+// which should replace all of these individual wrappers
+const FadeInNotifications = ( ) => fadeInComponent( <NotificationsContainer /> );
+const FadeInRootExplore = ( ) => fadeInComponent( <RootExploreContainer /> );
+const FadeInMyObservations = ( ) => fadeInComponent( <MyObservationsContainer /> );
+const FadeInUserProfile = ( ) => fadeInComponent( <UserProfile /> );
+const FadeInExploreContainer = ( ) => fadeInComponent( <ExploreContainer /> );
+const FadeInObsDetailsContainer = ( ) => fadeInComponent( <ObsDetailsContainer /> );
+const FadeInDQAContainer = ( ) => fadeInComponent( <DQAContainer /> );
+const FadeInProjectsContainer = ( ) => fadeInComponent( <ProjectsContainer /> );
+const FadeInProjectDetailsContainer = ( ) => fadeInComponent( <ProjectDetailsContainer /> );
+const FadeInProjectRequirements = ( ) => fadeInComponent( <ProjectRequirements /> );
+const FadeInProjectMembers = ( ) => fadeInComponent( <ProjectMembers /> );
+const FadeInSettings = ( ) => fadeInComponent( <Settings /> );
+const FadeInHelp = ( ) => fadeInComponent( <Help /> );
+const FadeInAbout = ( ) => fadeInComponent( <About /> );
+const FadeInDonate = ( ) => fadeInComponent( <Donate /> );
+const FadeInProjectList = ( ) => fadeInComponent( <ProjectListContainer /> );
+const FadeInFollowersList = ( ) => fadeInComponent( <FollowersList /> );
+const FadeInFollowingList = ( ) => fadeInComponent( <FollowingList /> );
+
+const NOTIFICATIONS_OPTIONS = {
+  ...hideHeaderLeft,
+  headerTitle: notificationsTitle,
+  headerTitleAlign: "center",
+  animation: "none"
+};
+
 const DQA_OPTIONS = {
   ...showLongHeader,
   headerTitle: dqaTitle,
@@ -76,19 +109,17 @@ const USER_PROFILE_OPTIONS = {
   ...removeBottomBorder
 };
 
-const NOTIFICATIONS_OPTIONS = {
-  ...hideHeaderLeft,
-  headerTitle: notificationsTitle,
-  headerTitleAlign: "center"
-};
-
-const PROJECT_MEMBERS_OPTIONS = {
+const LIST_OPTIONS = {
   header: ContextHeader,
   alignStart: true,
   lazy: true
 };
 
 const Stack = createNativeStackNavigator( );
+
+export const SCREEN_NAME_OBS_LIST = "ObsList";
+export const SCREEN_NAME_ROOT_EXPLORE = "RootExplore";
+export const SCREEN_NAME_NOTIFICATIONS = "Notifications";
 
 const TabStackNavigator = ( ): Node => (
   <Stack.Navigator
@@ -102,38 +133,44 @@ const TabStackNavigator = ( ): Node => (
       screenOptions={{ ...hideHeader }}
     >
       <Stack.Screen
-        name="ObsList"
-        component={MyObservationsContainer}
+        name={SCREEN_NAME_OBS_LIST}
+        component={FadeInMyObservations}
+        options={{
+          animation: "none"
+        }}
+      />
+      <Stack.Screen
+        name={SCREEN_NAME_ROOT_EXPLORE}
+        component={FadeInRootExplore}
+        options={{
+          animation: "none"
+        }}
+      />
+      <Stack.Screen
+        name="Explore"
+        component={FadeInExploreContainer}
       />
       <Stack.Screen
         name="ObsDetails"
-        component={ObsDetailsContainer}
+        component={FadeInObsDetailsContainer}
         options={{
           unmountOnBlur: true
         }}
       />
-      <Stack.Screen
-        name="RootExplore"
-        component={RootExploreContainer}
-      />
-      <Stack.Screen
-        name="Explore"
-        component={ExploreContainer}
-      />
     </Stack.Group>
     <Stack.Screen
-      name="Notifications"
-      component={NotificationsContainer}
+      name={SCREEN_NAME_NOTIFICATIONS}
+      component={FadeInNotifications}
       options={NOTIFICATIONS_OPTIONS}
     />
     <Stack.Screen
       name="UserProfile"
-      component={UserProfile}
+      component={FadeInUserProfile}
       options={USER_PROFILE_OPTIONS}
     />
     <Stack.Screen
       name="DataQualityAssessment"
-      component={DQAContainer}
+      component={FadeInDQAContainer}
       options={DQA_OPTIONS}
     />
     {SharedStackScreens( )}
@@ -145,19 +182,19 @@ const TabStackNavigator = ( ): Node => (
     >
       <Stack.Screen
         name="Projects"
-        component={ProjectsContainer}
+        component={FadeInProjectsContainer}
         options={{ ...removeBottomBorder }}
       />
       <Stack.Screen
         name="ProjectDetails"
-        component={ProjectDetailsContainer}
+        component={FadeInProjectDetailsContainer}
         options={{
           ...showHeader
         }}
       />
       <Stack.Screen
         name="ProjectRequirements"
-        component={ProjectRequirements}
+        component={FadeInProjectRequirements}
         options={{
           ...showHeader,
           headerTitle: projectRequirementsTitle
@@ -165,8 +202,23 @@ const TabStackNavigator = ( ): Node => (
       />
       <Stack.Screen
         name="ProjectMembers"
-        component={ProjectMembers}
-        options={PROJECT_MEMBERS_OPTIONS}
+        component={FadeInProjectMembers}
+        options={LIST_OPTIONS}
+      />
+      <Stack.Screen
+        name="ProjectList"
+        component={FadeInProjectList}
+        options={LIST_OPTIONS}
+      />
+      <Stack.Screen
+        name="FollowersList"
+        component={FadeInFollowersList}
+        options={LIST_OPTIONS}
+      />
+      <Stack.Screen
+        name="FollowingList"
+        component={FadeInFollowingList}
+        options={LIST_OPTIONS}
       />
     </Stack.Group>
     {/* Developer Stack Group */}
@@ -244,26 +296,26 @@ const TabStackNavigator = ( ): Node => (
       />
       <Stack.Screen
         name="Settings"
-        component={Settings}
+        component={FadeInSettings}
         options={{ headerTitle: settingsTitle }}
       />
       <Stack.Screen
         name="About"
-        component={About}
+        component={FadeInAbout}
         options={{
           headerTitle: aboutTitle
         }}
       />
       <Stack.Screen
         name="Donate"
-        component={Donate}
+        component={FadeInDonate}
         options={{
           headerTitle: donateTitle
         }}
       />
       <Stack.Screen
         name="Help"
-        component={Help}
+        component={FadeInHelp}
         options={{
           headerTitle: helpTitle
         }}

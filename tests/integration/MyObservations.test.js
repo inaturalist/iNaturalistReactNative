@@ -53,6 +53,11 @@ const mockDeletedIds = [
   faker.number.int( )
 ];
 
+jest.mock( "sharedHooks/useFontScale", () => ( {
+  __esModule: true,
+  default: ( ) => ( { isLargeFontScale: false } )
+} ) );
+
 const mockSyncedObservations = [
   factory( "LocalObservation", {
     _synced_at: faker.date.past( ),
@@ -104,6 +109,25 @@ jest.mock( "providers/contexts", ( ) => {
 beforeAll( uniqueRealmBeforeAll );
 afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
+
+const firstObservation = mockUnsyncedObservations[0];
+const secondObservation = mockUnsyncedObservations[1];
+
+const displayItemByTestId = testId => {
+  const item = screen.getByTestId( testId );
+  expect( item ).toBeVisible( );
+};
+
+const pressItemByTestId = testId => {
+  const item = screen.getByTestId( testId );
+  expect( item ).toBeVisible( );
+  fireEvent.press( item );
+};
+
+const displayItemByText = text => {
+  const item = screen.getByText( text );
+  expect( item ).toBeVisible( );
+};
 
 describe( "MyObservations", ( ) => {
   // For some reason this interferes with the "should not make a request to
@@ -196,63 +220,59 @@ describe( "MyObservations", ( ) => {
         renderAppWithComponent( <MyObservationsContainer /> );
         await checkToolbarResetWithUnsyncedObs( );
         mockUnsyncedObservations.forEach( obs => {
-          const uploadIcon = screen.getByTestId( `UploadIcon.start.${obs.uuid}` );
-          expect( uploadIcon ).toBeVisible( );
+          displayItemByTestId( `UploadIcon.start.${obs.uuid}` );
         } );
       } );
 
       it( "displays upload in progress status when toolbar tapped", async () => {
         renderAppWithComponent( <MyObservationsContainer /> );
         await checkToolbarResetWithUnsyncedObs( );
-        const syncIcon = screen.getByTestId( "SyncButton" );
-        expect( syncIcon ).toBeVisible( );
-        fireEvent.press( syncIcon );
+        pressItemByTestId( "SyncButton" );
         await waitFor( ( ) => {
-          const uploadInProgressText = screen.getByText( /Uploading [1-2] of 2 observations/ );
-          expect( uploadInProgressText ).toBeVisible( );
+          displayItemByText( /Uploading [1-2] of 2 observations/ );
         } );
-        const uploadInProgressIcon = screen.getByTestId(
-          `UploadIcon.progress.${mockUnsyncedObservations[1].uuid}`
+        displayItemByTestId( `UploadIcon.progress.${secondObservation.uuid}` );
+        const secondQueuedObsItem = screen.getByTestId(
+          `ObsPressable.${secondObservation.uuid}`
         );
-        expect( uploadInProgressIcon ).toBeVisible( );
+        expect( secondQueuedObsItem ).toBeDisabled( );
         await waitFor( ( ) => {
-          const secondUploadInProgressIcon = screen.getByTestId(
-            `UploadIcon.progress.${mockUnsyncedObservations[0].uuid}`
-          );
-          expect( secondUploadInProgressIcon ).toBeVisible( );
+          displayItemByTestId( `UploadIcon.progress.${firstObservation.uuid}` );
         } );
+        const firstQueuedObsItem = screen.getByTestId(
+          `ObsPressable.${firstObservation.uuid}`
+        );
+        expect( firstQueuedObsItem ).toBeDisabled( );
         await waitFor( ( ) => {
-          const toolbarText = screen.getByText( /2 observations uploaded/ );
-          expect( toolbarText ).toBeVisible( );
+          displayItemByText( /2 observations uploaded/ );
         } );
+        expect( firstQueuedObsItem ).not.toBeDisabled( );
       } );
 
       it( "displays upload in progress status when individual upload tapped", async () => {
         renderAppWithComponent( <MyObservationsContainer /> );
         // There are two unuploaded observations, and we are about to upload one of them
         await checkToolbarResetWithUnsyncedObs( );
-        const uploadIcon = screen.getByTestId(
-          `UploadIcon.start.${mockUnsyncedObservations[0].uuid}`
-        );
-        expect( uploadIcon ).toBeVisible( );
-        fireEvent.press( uploadIcon );
+        pressItemByTestId( `UploadIcon.start.${firstObservation.uuid}` );
         await waitFor( ( ) => {
           // Status reflects that we are only uploading one individual observation
-          const uploadInProgressText = screen.getByText( /Uploading 1 observation/ );
-          expect( uploadInProgressText ).toBeVisible( );
+          displayItemByText( /Uploading 1 observation/ );
         } );
-        const uploadInProgressIcon = screen.getByTestId(
-          `UploadIcon.progress.${mockUnsyncedObservations[0].uuid}`
+        displayItemByTestId( `UploadIcon.progress.${firstObservation.uuid}` );
+        const queuedObsItem = screen.getByTestId(
+          `ObsPressable.${firstObservation.uuid}`
         );
-        expect( uploadInProgressIcon ).toBeVisible( );
-        const secondUploadIcon = screen.getByTestId(
-          `UploadIcon.start.${mockUnsyncedObservations[1].uuid}`
+        expect( queuedObsItem ).toBeDisabled( );
+        displayItemByTestId( `UploadIcon.start.${secondObservation.uuid}` );
+        const obsItem = screen.getByTestId(
+          `ObsPressable.${secondObservation.uuid}`
         );
-        expect( secondUploadIcon ).toBeVisible( );
+        expect( obsItem ).not.toBeDisabled( );
+
         await waitFor( ( ) => {
-          const toolbarText = screen.getByText( /1 observation uploaded/ );
-          expect( toolbarText ).toBeVisible( );
+          displayItemByText( /1 observation uploaded/ );
         } );
+        expect( queuedObsItem ).not.toBeDisabled( );
       } );
 
       it( "shows error when upload network connection fails", async ( ) => {
@@ -261,16 +281,13 @@ describe( "MyObservations", ( ) => {
         inatjs.observations.create.mockRejectedValueOnce(
           new TypeError( "Network request failed" )
         );
-        const syncIcon = screen.getByTestId( "SyncButton" );
-        expect( syncIcon ).toBeVisible( );
-        fireEvent.press( syncIcon );
+        pressItemByTestId( "SyncButton" );
         const toolbarText = await screen.findByText( /1 upload failed/ );
         expect( toolbarText ).toBeVisible( );
         // Wait for the toolbar to reset to its default state so there aren't
         // any pending async processes that will interfere with other tests
         await waitFor( ( ) => {
-          const resetToolbarText = screen.getByText( /Upload 1 observation/ );
-          expect( resetToolbarText ).toBeVisible( );
+          displayItemByText( /Upload 1 observation/ );
         }, { timeout: MS_BEFORE_TOOLBAR_RESET + 1000, interval: 500 } );
       } );
     } );
@@ -307,8 +324,7 @@ describe( "MyObservations", ( ) => {
           expect( syncIcon ).toBeVisible( );
         } );
         mockSyncedObservations.forEach( obs => {
-          const obsStatus = screen.getByTestId( `ObsStatus.${obs.uuid}` );
-          expect( obsStatus ).toBeVisible( );
+          displayItemByTestId( `ObsStatus.${obs.uuid}` );
         } );
       } );
 
@@ -322,7 +338,7 @@ describe( "MyObservations", ( ) => {
         const firstObs = mockSyncedObservations[0];
         await screen.findByTestId( `MyObservations.gridItem.${firstObs.uuid}` );
         mockSyncedObservations.forEach( obs => {
-          expect( screen.getByTestId( `MyObservations.gridItem.${obs.uuid}` ) ).toBeTruthy();
+          displayItemByTestId( `MyObservations.gridItem.${obs.uuid}` );
         } );
       } );
 
@@ -330,10 +346,7 @@ describe( "MyObservations", ( ) => {
         const realm = global.mockRealms[__filename];
         expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
         renderAppWithComponent( <MyObservationsContainer /> );
-        const syncIcon = await screen.findByTestId( "SyncButton" );
-        await waitFor( ( ) => {
-          expect( syncIcon ).toBeVisible( );
-        } );
+        displayItemByTestId( "SyncButton" );
         mockSyncedObservations.forEach( obs => {
           const obsStatus = screen.queryByTestId( `ObsStatus.${obs.uuid}` );
           expect( obsStatus ).toBeFalsy( );

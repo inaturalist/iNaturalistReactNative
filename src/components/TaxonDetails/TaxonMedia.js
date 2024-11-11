@@ -2,7 +2,7 @@
 
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import MasonryLayout from "components/ObsDetails/MasonryLayout";
-import { ActivityIndicator } from "components/SharedComponents";
+import { ActivityIndicator, Carousel } from "components/SharedComponents";
 import {
   Image, Pressable, View
 } from "components/styledComponents";
@@ -15,7 +15,6 @@ import React, {
 } from "react";
 import { Dimensions } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import Carousel from "react-native-reanimated-carousel";
 import Photo from "realmModels/Photo";
 
 type Props = {
@@ -43,6 +42,10 @@ const TaxonMedia = ( {
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
 
   const items = useMemo( ( ) => ( [...photos, ...sounds] ), [photos, sounds] );
+  const slideStyle = useMemo( ( ) => ( {
+    width,
+    height: 420
+  } ), [width] );
 
   const CarouselSlide = useCallback(
     ( { item } ) => (
@@ -50,6 +53,7 @@ const TaxonMedia = ( {
         accessibilityRole="button"
         onPress={() => { setMediaViewerVisible( true ); }}
         accessibilityState={{ disabled: false }}
+        style={slideStyle}
       >
         <LinearGradient
           colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
@@ -68,7 +72,7 @@ const TaxonMedia = ( {
         />
       </Pressable>
     ),
-    [setMediaViewerVisible]
+    [setMediaViewerVisible, slideStyle]
   );
 
   useEffect( ( ) => {
@@ -95,17 +99,9 @@ const TaxonMedia = ( {
       : (
         <Carousel
           testID="photo-scroll"
-          loop={false}
-          horizontal
-          width={width}
-          height={420}
-          scrollAnimationDuration={100}
           data={items}
           renderItem={CarouselSlide}
-          pagingEnabled
-          onProgressChange={( _, absoluteProgress ) => {
-            setIndex( Math.round( absoluteProgress ) );
-          }}
+          onSlideScroll={setIndex}
         />
       )
   );

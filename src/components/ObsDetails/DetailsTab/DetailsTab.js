@@ -22,6 +22,7 @@ import colors from "styles/tailwindColors";
 
 import Attribution from "./Attribution";
 import LocationSection from "./LocationSection";
+import ProjectSection from "./ProjectSection";
 
 type Props = {
   currentUser: Object,
@@ -51,6 +52,7 @@ const handleShare = async url => {
 const ViewInBrowserButton = ( { id } ) => (
   <Body4
     className="underline mt-[11px]"
+    accessibilityRole="link"
     onPress={async () => openExternalWebBrowser( `${OBSERVATION_URL}/${id}` )}
   >
     {t( "View-in-browser" )}
@@ -165,13 +167,7 @@ const DetailsTab = ( { currentUser, observation }: Props ): Node => {
         </View>
       </View>
       <Divider />
-      {/*
-        <View className={sectionClass}>
-          <Heading4 className={headingClass}>{t( "PROJECTS" )}</Heading4>
-          <Button text={t( "VIEW-PROJECTS" )} />
-        </View>
-        <Divider />
-      */}
+      <ProjectSection observation={observation} />
       <View className={`${sectionClass} space-y-[11px]`}>
         <Heading4 className={headingClass}>{t( "OTHER-DATA" )}</Heading4>
         <Attribution observation={observation} />

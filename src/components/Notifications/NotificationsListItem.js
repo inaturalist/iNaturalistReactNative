@@ -9,7 +9,7 @@ import { ACTIVITY_TAB } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 
 type Props = {
-item: Object
+  item: Object
 };
 
 const NotificationsListItem = ( { item }: Props ): Node => {
@@ -30,9 +30,12 @@ const NotificationsListItem = ( { item }: Props ): Node => {
       )}
       onPress={( ) => {
         setObsDetailsTab( ACTIVITY_TAB );
-        navigation.navigate( "ObsDetails", {
-          uuid: item.resource_uuid,
-          notificationId: item.identification_id || item.comment_id
+        navigation.navigate( "TabStackNavigator", {
+          screen: "ObsDetails",
+          params: {
+            uuid: item.resource_uuid,
+            targetActivityItemID: item.identification_id || item.comment_id
+          }
         } );
       }}
 

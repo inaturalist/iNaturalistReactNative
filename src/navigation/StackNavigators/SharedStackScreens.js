@@ -12,6 +12,7 @@ import TaxonSearch from "components/Suggestions/TaxonSearch";
 import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import { t } from "i18next";
 import {
+  fadeInComponent,
   hideHeader,
   removeBottomBorder,
   showSimpleCustomHeader
@@ -23,6 +24,16 @@ const suggestionsTitle = ( ) => <Heading4>{t( "ADD-AN-ID" )}</Heading4>;
 const taxonSearchTitle = ( ) => <Heading4>{t( "SEARCH" )}</Heading4>;
 
 const Stack = createNativeStackNavigator( );
+
+// note: react navigation 7 will have a layout prop
+// which should replace all of these individual wrappers
+const FadeInObsEdit = ( ) => fadeInComponent( <ObsEdit /> );
+const FadeInLocationPickerContainer = ( ) => fadeInComponent( <LocationPickerContainer /> );
+const FadeInPhotoSharing = ( ) => fadeInComponent( <PhotoSharing /> );
+const FadeInTaxonDetails = ( ) => fadeInComponent( <TaxonDetails /> );
+const FadeInSuggestionsContainer = ( ) => fadeInComponent( <SuggestionsContainer /> );
+const FadeInTaxonSearch = ( ) => fadeInComponent( <TaxonSearch /> );
+const FadeInFullPageWebView = ( ) => fadeInComponent( <FullPageWebView /> );
 
 // These screens need to be within the NoBottomTabStackNavigator
 // as well as the TabStackNavigator to retain navigation history
@@ -44,19 +55,19 @@ const SharedStackScreens = ( ): Node => (
     >
       <Stack.Screen
         name="ObsEdit"
-        component={ObsEdit}
+        component={FadeInObsEdit}
       />
       <Stack.Screen
         name="LocationPicker"
-        component={LocationPickerContainer}
+        component={FadeInLocationPickerContainer}
       />
       <Stack.Screen
         name="TaxonDetails"
-        component={TaxonDetails}
+        component={FadeInTaxonDetails}
       />
       <Stack.Screen
         name="PhotoSharing"
-        component={PhotoSharing}
+        component={FadeInPhotoSharing}
       />
     </Stack.Group>
     {/* Screens with centered header */}
@@ -69,14 +80,14 @@ const SharedStackScreens = ( ): Node => (
     >
       <Stack.Screen
         name="Suggestions"
-        component={SuggestionsContainer}
+        component={FadeInSuggestionsContainer}
         options={{
           headerTitle: suggestionsTitle
         }}
       />
       <Stack.Screen
         name="TaxonSearch"
-        component={TaxonSearch}
+        component={FadeInTaxonSearch}
         options={{
           headerTitle: taxonSearchTitle
         }}
@@ -84,7 +95,7 @@ const SharedStackScreens = ( ): Node => (
     </Stack.Group>
     <Stack.Screen
       name="FullPageWebView"
-      component={FullPageWebView}
+      component={FadeInFullPageWebView}
       options={showSimpleCustomHeader}
     />
   </Stack.Group>

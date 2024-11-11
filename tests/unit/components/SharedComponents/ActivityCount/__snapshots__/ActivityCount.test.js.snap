@@ -43,19 +43,29 @@ exports[`ActivityCount renders reliably 1`] = `
     style={
       [
         {
-          "fontSize": 13,
-          "lineHeight": 18,
-        },
-        {
           "color": "#454545",
         },
         {
-          "fontFamily": "Lato-Medium",
+          "fontFamily": "Lato-Regular",
         },
         [
           {
-            "marginLeft": 6,
+            "textAlign": "left",
           },
+          [
+            {
+              "fontSize": 13,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Lato-Medium",
+            },
+            [
+              {
+                "marginLeft": 6,
+              },
+            ],
+          ],
         ],
       ]
     }

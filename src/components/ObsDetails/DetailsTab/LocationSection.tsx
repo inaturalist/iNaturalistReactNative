@@ -1,6 +1,7 @@
 import Clipboard from "@react-native-clipboard/clipboard";
 import {
   Body4,
+  Button,
   DetailsMap,
   Heading4,
   KebabMenu,
@@ -134,7 +135,15 @@ const LocationSection = ( { observation }: Props ): Node => {
         )}
       </View>
       {displayMap( )}
-      <View className={`mt-[11px] space-y-[11px] ${sectionClass}`}>
+
+      <View className={`mt-4 space-y-[11px] ${sectionClass}`}>
+        <Button
+          text={t( "EXPAND-MAP" )}
+          className="mb-4"
+          onPress={() => {
+            setShowMapModal( true );
+          }}
+        />
         <ObservationLocation observation={observation} obscured={isObscured} details />
         {isObscured && (
           <Body4 className="italic ml-[20px]">

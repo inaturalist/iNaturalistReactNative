@@ -119,7 +119,7 @@ const ActivityHeader = ( {
   ] );
 
   return (
-    <View className={classnames( "flex-row justify-between h-[26px] my-[11px]", classNameMargin )}>
+    <View className={classnames( "flex-row justify-between", classNameMargin )}>
       <InlineUser user={user} isConnected={isConnected} />
       <View className="flex-row items-center space-x-[15px] -mr-[15px]">
         {renderIcon()}

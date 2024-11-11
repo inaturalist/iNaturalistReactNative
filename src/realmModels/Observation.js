@@ -26,6 +26,13 @@ const logger = log.extend( "index.js" );
 // class is extended with Realm.Object per this issue:
 // https://github.com/realm/realm-js/issues/3600#issuecomment-785828614
 class Observation extends Realm.Object {
+  static PROJECT_FIELDS = {
+    id: true,
+    icon: true,
+    title: true,
+    project_type: true
+  };
+
   static FIELDS = {
     application: Application.APPLICATION_FIELDS,
     captive: true,
@@ -61,6 +68,13 @@ class Observation extends Realm.Object {
     private_geojson: true,
     private_location: true,
     private_place_guess: true,
+    project_ids: true,
+    project_observations: {
+      project: Observation.PROJECT_FIELDS
+    },
+    non_traditional_projects: {
+      project: Observation.PROJECT_FIELDS
+    },
     positional_accuracy: true,
     preferences: {
       prefers_community_taxon: true
@@ -435,15 +449,13 @@ class Observation extends Realm.Object {
     return updatedObs;
   };
 
-  static deleteLocalObservation = async ( realm, uuidToDelete ) => {
+  static deleteLocalObservation = ( realm, uuidToDelete ) => {
     const observation = realm?.objectForPrimaryKey( "Observation", uuidToDelete );
     if ( observation ) {
-      await safeRealmWrite( realm, ( ) => {
+      safeRealmWrite( realm, ( ) => {
         realm?.delete( observation );
       }, `deleting local observation ${uuidToDelete} in deleteLocalObservation` );
-      return true;
     }
-    return false;
   };
 
   static schema = {

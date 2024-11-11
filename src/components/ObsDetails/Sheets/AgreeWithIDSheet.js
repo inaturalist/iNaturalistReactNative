@@ -75,7 +75,7 @@ const AgreeWithIDSheet = ( {
             }}
             className="mx-2 flex-1"
             testID="ObsDetail.AgreeId.EditCommentButton"
-            accessibilityHint={t( "Opens-add-comment-modal" )}
+            accessibilityHint={t( "Opens-edit-comment-form" )}
           />
         )
         : (
@@ -86,7 +86,7 @@ const AgreeWithIDSheet = ( {
             }}
             className="mx-2 flex-1"
             testID="ObsDetail.AgreeId.commentButton"
-            accessibilityHint={t( "Opens-add-comment-modal" )}
+            accessibilityHint={t( "Opens-add-comment-form" )}
           />
         )}
 

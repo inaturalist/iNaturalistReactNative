@@ -43,19 +43,29 @@ exports[`IdentificationsCount renders default reliably 1`] = `
     style={
       [
         {
-          "fontSize": 13,
-          "lineHeight": 18,
-        },
-        {
           "color": "#454545",
         },
         {
-          "fontFamily": "Lato-Medium",
+          "fontFamily": "Lato-Regular",
         },
         [
           {
-            "marginLeft": 6,
+            "textAlign": "left",
           },
+          [
+            {
+              "fontSize": 13,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Lato-Medium",
+            },
+            [
+              {
+                "marginLeft": 6,
+              },
+            ],
+          ],
         ],
       ]
     }
@@ -108,19 +118,29 @@ exports[`IdentificationsCount renders filled reliably 1`] = `
     style={
       [
         {
-          "fontSize": 13,
-          "lineHeight": 18,
-        },
-        {
           "color": "#454545",
         },
         {
-          "fontFamily": "Lato-Medium",
+          "fontFamily": "Lato-Regular",
         },
         [
           {
-            "marginLeft": 6,
+            "textAlign": "left",
           },
+          [
+            {
+              "fontSize": 13,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Lato-Medium",
+            },
+            [
+              {
+                "marginLeft": 6,
+              },
+            ],
+          ],
         ],
       ]
     }
@@ -173,22 +193,32 @@ exports[`IdentificationsCount renders white reliably 1`] = `
     style={
       [
         {
-          "fontSize": 13,
-          "lineHeight": 18,
-        },
-        {
           "color": "#454545",
         },
         {
-          "fontFamily": "Lato-Medium",
+          "fontFamily": "Lato-Regular",
         },
         [
           {
-            "marginLeft": 6,
+            "textAlign": "left",
           },
-          {
-            "color": "#ffffff",
-          },
+          [
+            {
+              "fontSize": 13,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Lato-Medium",
+            },
+            [
+              {
+                "marginLeft": 6,
+              },
+              {
+                "color": "#ffffff",
+              },
+            ],
+          ],
         ],
       ]
     }

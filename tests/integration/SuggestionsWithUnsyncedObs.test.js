@@ -15,6 +15,7 @@ import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import { renderAppWithObservations } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
+import { signIn, signOut } from "tests/helpers/user";
 import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
 
 const mockModelResult = {
@@ -142,11 +143,6 @@ const mockLocalTaxon = {
 };
 
 const mockUser = factory( "LocalUser" );
-// Mock useCurrentUser hook
-jest.mock( "sharedHooks/useCurrentUser", () => ( {
-  __esModule: true,
-  default: jest.fn( () => mockUser )
-} ) );
 
 const makeMockObservations = ( ) => ( [
   factory( "RemoteObservation", {
@@ -247,12 +243,14 @@ const setupAppWithSignedInUser = async hasLocation => {
 // );
 
 describe( "from ObsEdit with human observation", ( ) => {
-  beforeEach( ( ) => {
+  beforeEach( async ( ) => {
+    await signIn( mockUser, { realm: global.mockRealms[__filename] } );
     inatjs.computervision.score_image
       .mockResolvedValue( makeResponse( [humanSuggestion, topSuggestion] ) );
   } );
 
   afterEach( ( ) => {
+    signOut( { realm: global.mockRealms[__filename] } );
     inatjs.computervision.score_image.mockReset( );
   } );
 
@@ -295,6 +293,7 @@ describe( "from ObsEdit with human observation", ( ) => {
 } );
 
 describe( "from AICamera", ( ) => {
+  global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
   beforeEach( async ( ) => {
     inatjs.computervision.score_image
       .mockResolvedValue( makeResponse( [topSuggestion] ) );
@@ -372,8 +371,10 @@ describe( "from AICamera", ( ) => {
       } ) );
       const { observations } = await setupAppWithSignedInUser( );
       await navigateToSuggestionsViaAICamera( observations[0] );
-      const usePermissionsButton = await screen.findByText( /IMPROVE THESE SUGGESTIONS/ );
-      expect( usePermissionsButton ).toBeVisible( );
+      await waitFor( ( ) => {
+        global.timeTravel( );
+        expect( screen.getByText( /IMPROVE THESE SUGGESTIONS/ ) ).toBeVisible( );
+      } );
       const ignoreLocationButton = screen.queryByText( /IGNORE LOCATION/ );
       expect( ignoreLocationButton ).toBeFalsy( );
       const useLocationButton = screen.queryByText( /USE LOCATION/ );

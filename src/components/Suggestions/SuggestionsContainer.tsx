@@ -129,8 +129,10 @@ const SuggestionsContainer = ( ) => {
   useClearComputerVisionDirectory( );
   const currentObservation = useStore( state => state.currentObservation );
   const innerPhotos = ObservationPhoto.mapInnerPhotos( currentObservation );
+  // ObservationPhoto.mapObsPhotoUris returns *new* strings with every call,
+  // so these values need to be stabilized
   const photoUris = useMemo(
-    () => ObservationPhoto.mapObsPhotoUris( currentObservation ),
+    ( ) => ObservationPhoto.mapObsPhotoUris( currentObservation ),
     [currentObservation]
   );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );

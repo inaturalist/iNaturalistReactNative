@@ -2,6 +2,7 @@ import Geolocation from "@react-native-community/geolocation";
 import {
   screen,
   userEvent,
+  waitFor,
   within
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
@@ -37,27 +38,38 @@ afterAll( uniqueRealmAfterAll );
 
 beforeAll( async () => {
   await initI18next();
-  jest.useFakeTimers( );
 } );
 
 beforeEach( ( ) => useStore.setState( { isAdvancedUser: true } ) );
 
+const actor = userEvent.setup( );
+
+const navigateToCamera = async ( ) => {
+  await waitFor( ( ) => {
+    global.timeTravel( );
+    expect( screen.getByText( /Log in to contribute/ ) ).toBeVisible( );
+  } );
+  const tabBar = await screen.findByTestId( "CustomTabBar" );
+  const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
+  await actor.press( addObsButton );
+  const cameraButton = await screen.findByLabelText( "Camera" );
+  await actor.press( cameraButton );
+};
+
 describe( "StandardCamera navigation with advanced user layout", ( ) => {
-  const actor = userEvent.setup( );
+  global.withAnimatedTimeTravelEnabled( );
 
   describe( "from MyObs", ( ) => {
     it( "should return to MyObs when close button tapped", async ( ) => {
       renderApp( );
-      expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
-      const tabBar = await screen.findByTestId( "CustomTabBar" );
-      const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
-      await actor.press( addObsButton );
-      const cameraButton = await screen.findByLabelText( "Camera" );
-      await actor.press( cameraButton );
+      await navigateToCamera( );
       const cameraNavButtons = await screen.findByTestId( "CameraNavButtons" );
       const closeButton = await within( cameraNavButtons ).findByLabelText( "Close" );
       await actor.press( closeButton );
-      expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
+      await waitFor( ( ) => {
+        global.timeTravel( );
+        expect( screen.getByText( /Log in to contribute/ ) ).toBeVisible( );
+      } );
     } );
   } );
 
@@ -71,12 +83,7 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
     } ) );
     Geolocation.watchPosition.mockImplementation( mockWatchPosition );
     renderApp( );
-    expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
-    const tabBar = await screen.findByTestId( "CustomTabBar" );
-    const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
-    await actor.press( addObsButton );
-    const cameraButton = await screen.findByLabelText( "Camera" );
-    await actor.press( cameraButton );
+    await navigateToCamera( );
     const takePhotoButton = await screen.findByLabelText( /Take photo/ );
     await actor.press( takePhotoButton );
     const checkmarkButton = await screen.findByLabelText( "View suggestions" );

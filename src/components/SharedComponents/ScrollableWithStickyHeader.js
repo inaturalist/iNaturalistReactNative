@@ -81,23 +81,21 @@ const ScrollableWithStickyHeader = ( {
 
   useEffect( () => {
     const currentScrollY = scrollY.current;
-
-    if ( scrollY.current ) {
-      // #560 - We use a state variable to force rendering of the component - since on iOS,
-      // you can over scroll a list when scrolling it to the top (creating a bounce effect),
-      // and sometimes, even though offsetForHeader gets updated correctly, it doesn't cause
-      // a re-render of the component, and then the Animated.View's translateY property doesn't
-      // get updated with the latest value of offsetForHeader (this causes a weird view, where the
-      // top header if semi cut off, even though the user scrolled the list all the way to the top).
-      // So by changing a state variable of the component, every time the user scroll the list -> we
-      // make sure the component always gets re-rendered.
-      currentScrollY.addListener( ( { value } ) => {
-        if ( value <= 0 ) {
-          // Only force refresh of the state in case of an over-scroll (bounce effect)
-          setScrollPosition( value );
-        }
-      } );
-    }
+    // #560 - We use a state variable to force rendering of the component - since on iOS,
+    // you can over scroll a list when scrolling it to the top (creating a bounce effect),
+    // and sometimes, even though offsetForHeader gets updated correctly, it doesn't cause
+    // a re-render of the component, and then the Animated.View's translateY property doesn't
+    // get updated with the latest value of offsetForHeader (this causes a weird view, where the
+    // top header if semi cut off, even though the user scrolled the list all the way to the top).
+    // So by changing a state variable of the component, every time the user scroll the list -> we
+    // make sure the component always gets re-rendered.
+    currentScrollY.addListener( ( { value } ) => {
+      if ( value <= 0 ) {
+        // Only force refresh of the state in case of an over-scroll (bounce effect)
+        // don't let this value go negative, or else bottom tabs will be unresponsive to taps
+        setScrollPosition( Math.max( value, 0 ) );
+      }
+    } );
 
     return () => {
       currentScrollY.removeAllListeners();
@@ -113,43 +111,43 @@ const ScrollableWithStickyHeader = ( {
     [isTablet, screenHeight, screenWidth]
   );
 
+  const animatedStyle = useMemo( ( ) => ( {
+    transform: [{
+      // Translate the view up (negative value) relative to scroll
+      // position *until* the user scrolls to stickyAt, at which point
+      // we stop translating because the sticky part needs to stick. So
+      // roughly any scroll positions between 0 and stickyAt get mapped
+      // to values between 0 and -stickyAt
+      //
+      // The input range is doubled because on Android, the scroll view
+      // offset is a double (not an integer), and interpolation
+      // shouldn't be one-to-one, which causes a jittery header while
+      // slow scrolling(see issue #634). See here as well:
+      // https://stackoverflow.com/a/60898411/1233767
+      //
+      // The third value in the interpolation ranges ensures that any
+      // scroll values beyond stickyAt always get mapped to -stickyAt,
+      // which has the effect of only unsticking the header when you're
+      // scrolled to the top of the screen
+      //
+      // And finally, that +1 seems to solve an error in iOS
+      translateY: scrollY.current.interpolate( {
+        inputRange: [0, stickyAt * 2, stickyAt * 2 + 1],
+        outputRange: [0, -stickyAt, -stickyAt]
+      } )
+    }],
+    // Set the height to flow off screen so that when we translate the
+    // view up, there's no gap at the bottom
+    height: contentHeight + stickyAt
+  } ), [contentHeight, stickyAt] );
+
   return (
     // Note that we want to occupy full height but hide the overflow because
     // we are intentionally setting the height of the Animated.View to exceed
     // the height of this parent view. We want the parent view to be laid out
     // nicely with its peers, not flow off the screen.
     <View className="overflow-hidden h-full">
-      <Animated.View
-        style={{
-          transform: [{
-            // Translate the view up (negative value) relative to scroll
-            // position *until* the user scrolls to stickyAt, at which point
-            // we stop translating because the sticky part needs to stick. So
-            // roughly any scroll positions between 0 and stickyAt get mapped
-            // to values between 0 and -stickyAt
-            //
-            // The input range is doubled because on Android, the scroll view
-            // offset is a double (not an integer), and interpolation
-            // shouldn't be one-to-one, which causes a jittery header while
-            // slow scrolling(see issue #634). See here as well:
-            // https://stackoverflow.com/a/60898411/1233767
-            //
-            // The third value in the interpolation ranges ensures that any
-            // scroll values beyond stickyAt always get mapped to -stickyAt,
-            // which has the effect of only unsticking the header when you're
-            // scrolled to the top of the screen
-            //
-            // And finally, that +1 seems to solve an error in iOS
-            translateY: scrollY.current.interpolate( {
-              inputRange: [0, stickyAt * 2, stickyAt * 2 + 1],
-              outputRange: [0, -stickyAt, -stickyAt]
-            } )
-          }],
-          // Set the height to flow off screen so that when we translate the
-          // view up, there's no gap at the bottom
-          height: contentHeight + stickyAt
-        }}
-      >
+      <Animated.View style={animatedStyle}>
         {renderHeader( setStickyAt )}
         {renderScrollable( animatedScrollEvent )}
       </Animated.View>

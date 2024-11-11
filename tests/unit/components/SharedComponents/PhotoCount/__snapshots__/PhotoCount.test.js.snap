@@ -19,32 +19,42 @@ exports[`PhotoCount renders correctly 1`] = `
   testID="photo-count"
 >
   <Text
-    maxFontSizeMultiplier={2}
+    maxFontSizeMultiplier={1}
     style={
       [
-        {
-          "fontSize": 13,
-          "lineHeight": 18,
-        },
         {
           "color": "#454545",
         },
         {
-          "fontFamily": "Lato-Medium",
+          "fontFamily": "Lato-Regular",
         },
         [
           {
-            "position": "absolute",
+            "textAlign": "left",
           },
-          {
-            "zIndex": 10,
-          },
-          {
-            "left": 6,
-          },
-          {
-            "top": 6,
-          },
+          [
+            {
+              "fontSize": 13,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Lato-Medium",
+            },
+            [
+              {
+                "position": "absolute",
+              },
+              {
+                "zIndex": 10,
+              },
+              {
+                "left": 6,
+              },
+              {
+                "top": 6,
+              },
+            ],
+          ],
         ],
       ]
     }

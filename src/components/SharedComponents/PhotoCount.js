@@ -37,15 +37,17 @@ const PhotoCount = ( { count }: Props ): Node => {
       style={dropShadow}
       testID="photo-count"
     >
-      <Body3 className={classnames(
-        "absolute z-10",
-        "left-1.5 top-1.5",
-        {
-          "left-0.5": photoCount > 9,
-          "right-1.5": isRTL && photoCount < 9,
-          "right-0.5": photoCount > 9 && isRTL
-        }
-      )}
+      <Body3
+        maxFontSizeMultiplier={1}
+        className={classnames(
+          "absolute z-10",
+          "left-1.5 top-1.5",
+          {
+            "left-0.5": photoCount > 9,
+            "right-1.5": isRTL && photoCount < 9,
+            "right-0.5": photoCount > 9 && isRTL
+          }
+        )}
       >
         {t( "Intl-number", { val: photoCount } )}
       </Body3>

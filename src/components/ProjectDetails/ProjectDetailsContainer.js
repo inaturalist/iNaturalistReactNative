@@ -17,22 +17,6 @@ import ProjectDetails from "./ProjectDetails";
 
 const logger = log.extend( "ProjectDetailsContainer" );
 
-const DETAIL_FIELDS = {
-  title: true,
-  icon: true,
-  project_type: true,
-  icon_file_name: true,
-  header_image_url: true,
-  description: true,
-  place_id: true,
-  observation_count: true,
-  species_count: true
-};
-
-const DETAIL_PARAMS = {
-  fields: DETAIL_FIELDS
-};
-
 const ProjectDetailsContainer = ( ): Node => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
@@ -44,7 +28,9 @@ const ProjectDetailsContainer = ( ): Node => {
 
   const { data: project } = useAuthenticatedQuery(
     fetchProjectsQueryKey,
-    optsWithAuth => fetchProjects( id, { ...DETAIL_PARAMS }, optsWithAuth )
+    optsWithAuth => fetchProjects( id, {
+      fields: "all"
+    }, optsWithAuth )
   );
 
   const { data: projectMembers } = useAuthenticatedQuery(
@@ -72,6 +58,21 @@ const ProjectDetailsContainer = ( ): Node => {
     } )
   );
 
+  const { data: usersObservations } = useAuthenticatedQuery(
+    ["searchObservationsByUserInProject", id],
+    optsWithAuth => searchObservations(
+      {
+        project_id: id,
+        user_id: currentUser?.id,
+        per_page: 0
+      },
+      optsWithAuth
+    ),
+    {
+      enabled: !!currentUser
+    }
+  );
+
   const { data: speciesCounts } = useAuthenticatedQuery(
     ["fetchSpeciesCounts", id],
     ( ) => fetchSpeciesCounts( {
@@ -80,7 +81,6 @@ const ProjectDetailsContainer = ( ): Node => {
   );
 
   const membershipQueryKey = ["fetchMembership", id];
-
   const { data: currentMembership } = useAuthenticatedQuery(
     membershipQueryKey,
     optsWithAuth => fetchMembership( {
@@ -140,6 +140,7 @@ const ProjectDetailsContainer = ( ): Node => {
     project.observations_count = projectStats?.total_results;
     project.species_count = speciesCounts?.total_results;
     project.current_user_is_member = currentMembership === 1;
+    project.current_user_observations_count = usersObservations?.total_results;
   }
 
   return (

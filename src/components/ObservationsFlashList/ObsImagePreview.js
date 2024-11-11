@@ -189,6 +189,7 @@ const ObsImagePreview = ( {
 
   if ( isSmall && ( obsPhotosCount === 0 && !source?.uri ) ) {
     imageClassNames.push( "justify-center", "items-center", "border-2" );
+    if ( white ) imageClassNames.push( "border-white" );
   }
 
   if ( isSmall && obsPhotosCount === 0 && hasSound ) {

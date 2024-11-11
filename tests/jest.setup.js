@@ -59,8 +59,12 @@ jest.setTimeout( 50000 );
 
 // Mock inaturalistjs so we can make some fake responses
 jest.mock( "inaturalistjs" );
+inatjs.observations.observers.mockResolvedValue( makeResponse( ) );
 inatjs.observations.search.mockResolvedValue( makeResponse( ) );
+inatjs.observations.speciesCounts.mockResolvedValue( makeResponse( ) );
 inatjs.observations.updates.mockResolvedValue( makeResponse( ) );
+inatjs.users.projects.mockResolvedValue( makeResponse( ) );
+inatjs.computervision.score_image.mockResolvedValue( makeResponse( ) );
 
 // Set up mocked fetch for testing (or disabling) fetch requests
 fetchMock.enableMocks( );
@@ -92,3 +96,49 @@ jest.mock( "react-native/Libraries/TurboModule/TurboModuleRegistry", () => {
     }
   };
 } );
+
+jest.mock( "react-native-restart", ( ) => ( {
+  restart: jest.fn( )
+} ) );
+
+// Mock useFreshInstall b/c it signs the user out after we have set up a
+// signed in user
+jest.mock( "components/hooks/useFreshInstall", ( ) => jest.fn( ) );
+
+// see https://stackoverflow.com/questions/42268673/jest-test-animated-view-for-react-native-app
+// for more details about this withAnimatedTimeTravelEnabled approach. basically, this
+// allows us to step through animation frames when a screen is first loading when we're using the
+// FadeInView animation for navigation screen transitions
+global.withAnimatedTimeTravelEnabled = ( options = {} ) => {
+  beforeEach( () => {
+    if ( !options.skipFakeTimers ) jest.useFakeTimers();
+    jest.setSystemTime( new Date( 0 ) );
+  } );
+  if ( !options.skipFakeTimers ) {
+    afterEach( () => {
+      jest.useRealTimers();
+    } );
+  }
+};
+
+const frameTime = 10;
+global.timeTravel = ( time = frameTime ) => {
+  const tickTravel = () => {
+    const now = Date.now();
+    jest.setSystemTime( new Date( now + frameTime ) );
+    jest.advanceTimersByTime( frameTime );
+  };
+  // Step through each of the frames
+  const frames = time / frameTime;
+  for ( let i = 0; i < frames; i += 1 ) {
+    tickTravel();
+  }
+};
+
+jest.mock( "sharedHelpers/installData", ( ) => ( {
+  // For most tests it's just going to be burden to dismiss this thing that
+  // most users only ever see once. If we do want to test it, we can redefine
+  // this mock
+  useOnboardingShown: jest.fn( ( ) => [true, jest.fn()] ),
+  getInstallID: jest.fn( ( ) => "fake-installation-id" )
+} ) );

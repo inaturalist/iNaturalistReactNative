@@ -6,18 +6,28 @@ exports[`Heading1 renders correctly 1`] = `
   style={
     [
       {
-        "fontSize": 25,
-        "lineHeight": 30,
-      },
-      {
-        "letterSpacing": -0.25,
-      },
-      {
         "color": "#454545",
       },
       {
-        "fontFamily": "Lato-Bold",
+        "fontFamily": "Lato-Regular",
       },
+      [
+        {
+          "textAlign": "left",
+        },
+        [
+          {
+            "fontSize": 25,
+            "lineHeight": 30,
+          },
+          {
+            "letterSpacing": -0.25,
+          },
+          {
+            "fontFamily": "Lato-Bold",
+          },
+        ],
+      ],
     ]
   }
 >

@@ -7,24 +7,27 @@ import React from "react";
 type Props = {
   classNameMargin?: string,
   explore?: boolean,
-  handleIndividualUploadPress: ( ) => void,
   layout?: "horizontal" | "vertical",
   observation: Object,
+  onPress: Function,
+  progress?: number,
+  queued: boolean,
   showObsStatus?: boolean,
-  showUploadStatus?: boolean,
   white?: boolean
 };
 
 const ObsUploadStatus = ( {
   classNameMargin,
   explore = false,
-  handleIndividualUploadPress,
+  onPress,
   layout,
   observation,
+  progress,
+  queued,
   showObsStatus = false,
-  showUploadStatus = false,
   white = false
 }: Props ): Node => {
+  const showUploadStatus = typeof ( progress ) === "number";
   const hideStatus = !showUploadStatus && !showObsStatus && !explore;
   const showObsStatusOnly = ( !showUploadStatus && showObsStatus ) || explore;
   const obsStatus = (
@@ -48,9 +51,11 @@ const ObsUploadStatus = ( {
   return (
     <UploadStatus
       white={white}
-      handleIndividualUploadPress={handleIndividualUploadPress}
       layout={layout}
-      uuid={observation.uuid}
+      onPress={onPress}
+      progress={progress}
+      uniqueKey={observation.uuid}
+      queued={queued}
     >
       {obsStatus}
     </UploadStatus>

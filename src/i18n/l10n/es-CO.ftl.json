@@ -1,5 +1,6 @@
 {
   "ABOUT": "ACERCA DE",
+  "ABOUT-INATURALIST": "ACERCA DE INATURALIST",
   "Add-observations": "Agregar observaciones",
   "Agree": "Aceptar",
   "AGREE": "DE ACUERDO",
@@ -8,7 +9,6 @@
   "All-observations": "Todas las observaciones",
   "all-rights-reserved": "todos los derechos reservados",
   "All-taxa": "Todos los taxones",
-  "Any": "Cualquier",
   "April": "Abril",
   "August": "Agosto",
   "Camera": "Cámara",
@@ -93,10 +93,10 @@
   "New-Observation": "Nuevas observaciones",
   "No-Location": "No hay ubicaciones",
   "No-Media": "Sin archivos multimedia",
-  "none": "Ninguno",
   "Notifications": "Notificaciones",
   "November": "Noviembre",
   "Obscured": "Oscurecida",
+  "Observation": "Observación",
   "Observations": "Observaciones",
   "Observe": "Observa",
   "Observers": "Observadores",
@@ -110,6 +110,7 @@
   "Private": "Privado",
   "Project-Members-Only": "Solo miembros del proyecto",
   "Projects": "Proyectos",
+  "PROJECTS-X": "PROYECTOS ({ $projectCount })",
   "Quality-Grade": "Grado de calidad",
   "Ranks-Class": "Clase",
   "Ranks-Complex": "Complejo",
@@ -187,5 +188,6 @@
   "Wild": "Silveste",
   "Withdraw": "Retirar",
   "Worldwide": "Mundial",
+  "X-PROJECTS": "{ $projectCount ->\n  [one] { $projectCount } PROYECTO\n *[other] { $projectCount } PROYECTOS\n}",
   "You-need-log-in-to-do-that": "Debes iniciar sesión para hacer eso."
 }

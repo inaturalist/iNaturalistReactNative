@@ -44,7 +44,7 @@ describe( "InlineUser", ( ) => {
   it( "displays user handle and image correctly", async ( ) => {
     render( <InlineUser user={mockUser} isConnected /> );
     // Check for user name text
-    expect( screen.getByText( `@${mockUser.login}` ) ).toBeTruthy( );
+    expect( screen.getByText( `${mockUser.login}` ) ).toBeTruthy( );
     // This image appears after useNetInfo returns true
     // so we have to use await and findByTestId
     const profilePicture = await screen.findByTestId( "mockUserIcon" );
@@ -66,7 +66,7 @@ describe( "InlineUser", ( ) => {
     it( "displays user handle and fallback image correctly", async () => {
       render( <InlineUser user={mockUserWithoutImage} isConnected /> );
 
-      expect( screen.getByText( `@${mockUserWithoutImage.login}` ) ).toBeTruthy();
+      expect( screen.getByText( `${mockUserWithoutImage.login}` ) ).toBeTruthy();
       // This icon appears after useNetInfo returns true
       // so we have to use await and findByTestId
       expect(
@@ -86,7 +86,7 @@ describe( "InlineUser", ( ) => {
     it( "displays no internet fallback image correctly", async () => {
       render( <InlineUser user={mockUser} isConnected={false} /> );
 
-      expect( screen.getByText( `@${mockUser.login}` ) ).toBeTruthy();
+      expect( screen.getByText( `${mockUser.login}` ) ).toBeTruthy();
       // This icon appears after useNetInfo returns false
       // so we have to use await and findByTestId
       expect( await screen.findByTestId( "InlineUser.FallbackPicture" ) ).toBeTruthy();

@@ -39,7 +39,6 @@ afterAll( uniqueRealmAfterAll );
 
 beforeAll( async () => {
   await initI18next();
-  jest.useFakeTimers( );
 } );
 
 const mockAsset = [{
@@ -59,7 +58,10 @@ jest.mock( "react-native-image-picker", ( ) => ( {
 const actor = userEvent.setup( );
 
 const navigateToPhotoImporter = async ( ) => {
-  expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
+  await waitFor( ( ) => {
+    global.timeTravel( );
+    expect( screen.getByText( /Log in to contribute/ ) ).toBeVisible( );
+  } );
   const tabBar = await screen.findByTestId( "CustomTabBar" );
   const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
   await actor.press( addObsButton );
@@ -68,23 +70,9 @@ const navigateToPhotoImporter = async ( ) => {
 };
 
 describe( "PhotoGallery navigation", ( ) => {
+  global.withAnimatedTimeTravelEnabled( );
   beforeEach( ( ) => {
     useStore.setState( { isAdvancedUser: true } );
-  } );
-
-  it( "advances to Suggestions when one photo is selected", async ( ) => {
-    jest.spyOn( rnImagePicker, "launchImageLibrary" ).mockImplementation(
-      ( ) => ( {
-        assets: mockAsset
-      } )
-    );
-    renderApp( );
-    await navigateToPhotoImporter( );
-    const suggestionsText = await screen.findByText( /Add an ID Later/ );
-    await waitFor( ( ) => {
-      // user should land on Suggestions
-      expect( suggestionsText ).toBeTruthy( );
-    } );
   } );
 
   it( "advances to GroupPhotos when multiple photos are selected", async ( ) => {
@@ -99,6 +87,21 @@ describe( "PhotoGallery navigation", ( ) => {
     await waitFor( ( ) => {
       // user should land on GroupPhotos
       expect( groupPhotosText ).toBeTruthy( );
+    } );
+  } );
+
+  it( "advances to Suggestions when one photo is selected", async ( ) => {
+    jest.spyOn( rnImagePicker, "launchImageLibrary" ).mockImplementation(
+      ( ) => ( {
+        assets: mockAsset
+      } )
+    );
+    renderApp( );
+    await navigateToPhotoImporter( );
+    const suggestionsText = await screen.findByText( /Add an ID Later/ );
+    await waitFor( ( ) => {
+      // user should land on Suggestions
+      expect( suggestionsText ).toBeTruthy( );
     } );
   } );
 } );

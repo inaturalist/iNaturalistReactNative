@@ -164,6 +164,7 @@ const UserText = ( {
       WebView={WebView}
       systemFonts={fonts}
       renderersProps={renderersProps}
+      defaultTextProps={{ allowFontScaling: true, maxFontSizeMultiplier: 2 }}
     />
   );
 };
