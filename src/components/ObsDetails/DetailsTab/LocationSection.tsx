@@ -1,5 +1,6 @@
 import Clipboard from "@react-native-clipboard/clipboard";
 import {
+  Button,
   DetailsMap,
   Heading4,
   KebabMenu,
@@ -117,6 +118,13 @@ const LocationSection = ( { observation }: Props ): Node => {
       {( observation.latitude || observation.private_latitude ) && (
         <>
           { displayMap( ) }
+          <Button
+            text={t( "EXPAND-MAP" )}
+            className="mb-4 mt-[20px] mx-[15px]"
+            onPress={() => {
+              setShowMapModal( true );
+            }}
+          />
           <Modal
             animationIn="fadeIn"
             animationOut="fadeOut"
