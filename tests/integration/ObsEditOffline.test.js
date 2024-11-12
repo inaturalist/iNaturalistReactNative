@@ -109,7 +109,7 @@ describe( "ObsEdit offline", ( ) => {
       expect( coords ).toBeTruthy( );
       expect( screen.queryByText( "Finding location..." ) ).toBeFalsy( );
       await waitFor( ( ) => {
-        const indicator = screen.queryByTestId( "EvidenceSection.fetchingLocationIndicator" )
+        const indicator = screen.queryByTestId( "EvidenceSection.fetchingLocationIndicator" );
         expect( indicator ).toBeFalsy( );
       }, { timeout: 5_000, interval: 500 } );
     } );
