@@ -108,10 +108,10 @@ const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node =>
   }, [dispatch, defaultExploreLocation, closeModal] );
 
   const onNearbyPressed = () => {
-    if ( !hasPermissions ) {
-      requestPermissions( );
-    } else {
+    if ( hasPermissions ) {
       setNearbyLocation( );
+    } else {
+      requestPermissions( );
     }
   };
 
