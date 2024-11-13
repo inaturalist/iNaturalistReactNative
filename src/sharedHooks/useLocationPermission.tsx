@@ -11,7 +11,7 @@ import {
 
 // PermissionGate callbacks need to use useCallback, otherwise they'll
 // trigger re-renders if/when they change
-interface LocationPermissionCallbacks {
+export interface LocationPermissionCallbacks {
   onPermissionGranted?: ( ) => void;
   onPermissionDenied?: ( ) => void;
   onPermissionBlocked?: ( ) => void;
@@ -57,6 +57,7 @@ const useLocationPermission = ( ) => {
         onPermissionGranted={( ) => {
           setShowPermissionGate( false );
           setHasPermissions( true );
+          setHasBlockedPermissions( false );
           if ( onPermissionGranted ) onPermissionGranted( );
         }}
         onPermissionDenied={( ) => {

@@ -226,6 +226,7 @@ const RootExploreContainerWithContext = ( ): Node => {
         startFetching={startFetching}
         currentMapRegion={rootMapRegion}
         setCurrentMapRegion={setRootMapRegion}
+        renderLocationPermissionsGate={renderPermissionsGate}
       />
       {renderPermissionsGate( {
         onPermissionGranted: async ( ) => {
