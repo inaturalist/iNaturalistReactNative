@@ -37,7 +37,6 @@ const MyObservationsContainer = ( ): Node => {
   const uploadQueue = useStore( state => state.uploadQueue );
   const addToUploadQueue = useStore( state => state.addToUploadQueue );
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
-  const syncingStatus = useStore( state => state.syncingStatus );
   const startManualSync = useStore( state => state.startManualSync );
   const startAutomaticSync = useStore( state => state.startAutomaticSync );
   const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
@@ -67,7 +66,6 @@ const MyObservationsContainer = ( ): Node => {
     status,
     firstObservationsInRealm
   } = useInfiniteObservationsScroll( {
-    upsert: syncingStatus === "sync-pending",
     params: {
       user_id: currentUserId
     }
@@ -169,6 +167,10 @@ const MyObservationsContainer = ( ): Node => {
   const showNoResults = !currentUser
     || ( status === "success" && !!( currentUser ) && firstObservationsInRealm );
 
+  // Keep track of the scroll offset so we can restore it when we mount
+  // this component again after returning from ObsEdit
+  const onScroll = scrollEvent => setMyObsOffset( scrollEvent.nativeEvent.contentOffset.y );
+
   return (
     <MyObservations
       currentUser={currentUser}
@@ -181,10 +183,8 @@ const MyObservationsContainer = ( ): Node => {
       numUnuploadedObservations={numUnuploadedObservations}
       observations={observations}
       onEndReached={fetchNextPage}
-      onListLayout={() => restoreScrollOffset()}
-      // Keep track of the scroll offset so we can restore it when we mount
-      // this component again after returning from ObsEdit
-      onScroll={scrollEvent => setMyObsOffset( scrollEvent.nativeEvent.contentOffset.y )}
+      onListLayout={restoreScrollOffset}
+      onScroll={onScroll}
       setShowLoginSheet={setShowLoginSheet}
       showLoginSheet={showLoginSheet}
       showNoResults={showNoResults}

@@ -301,7 +301,11 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
   // media successfully uploads
   markRecordUploaded( obs.uuid, null, "Observation", response, realm );
   // fetch observation and upsert it
-  const remoteObs = await fetchRemoteObservation( obsUUID, { fields: Observation.FIELDS } );
+  const remoteObs = await fetchRemoteObservation(
+    obsUUID,
+    { fields: Observation.LIST_FIELDS },
+    options
+  );
   Observation.upsertRemoteObservations( [remoteObs], realm, { force: true } );
   return response;
 }
