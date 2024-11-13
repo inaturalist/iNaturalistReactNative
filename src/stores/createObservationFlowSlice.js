@@ -158,6 +158,8 @@ const createObservationFlowSlice = ( set, get ) => ( {
       updateObservationKeysWithState( keysAndValues, state )[state.currentObservationIndex],
     unsavedChanges: true
   } ) ),
+  // For situations where a consumer needs access to this part of state
+  // immediately, not after a couple render cycles
   getCurrentObservation: ( ) => get( ).currentObservation,
   // Prepare state for showing ObsEdit for a single observation
   prepareObsEdit: observation => {

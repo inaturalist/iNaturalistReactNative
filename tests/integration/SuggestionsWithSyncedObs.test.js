@@ -2,6 +2,7 @@ import {
   act,
   screen,
   userEvent,
+  waitFor,
   within
 } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
@@ -301,7 +302,9 @@ describe( "Suggestions", ( ) => {
     const observationRow = await screen.findByTestId(
       `MyObservations.obsListItem.${observations[0].uuid}`
     );
-    expect( observationRow ).toBeVisible( );
+    await waitFor( ( ) => {
+      expect( observationRow ).toBeVisible( );
+    }, { timeout: 3000, interval: 500 } );
     const savedObservation = global.mockRealms[__filename]
       .objectForPrimaryKey( "Observation", observations[0].uuid );
     expect( savedObservation ).toHaveProperty( "owners_identification_from_vision", true );

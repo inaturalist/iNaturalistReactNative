@@ -20,6 +20,7 @@ import * as ImagePicker from "react-native-image-picker";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import { sleep } from "sharedHelpers/util.ts";
+import useExitObservationsFlow from "sharedHooks/useExitObservationFlow.ts";
 import useStore from "stores/useStore";
 
 const MAX_PHOTOS_ALLOWED = 20;
@@ -37,6 +38,7 @@ const PhotoGallery = ( ): Node => {
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const observations = useStore( state => state.observations );
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
+  const exitObservationsFlow = useExitObservationsFlow( );
 
   const { params } = useRoute( );
   const skipGroupPhotos = params
@@ -45,15 +47,6 @@ const PhotoGallery = ( ): Node => {
   const fromGroupPhotos = params
     ? params.fromGroupPhotos
     : false;
-
-  const navToObsList = useCallback( ( ) => {
-    navigation.navigate( "TabNavigator", {
-      screen: "TabStackNavigator",
-      params: {
-        screen: "ObsList"
-      }
-    } );
-  }, [navigation] );
 
   const navToObsEdit = useCallback( ( ) => navigation.navigate( "ObsEdit", {
     lastScreen: "PhotoGallery"
@@ -125,7 +118,7 @@ const PhotoGallery = ( ): Node => {
       } else if ( params?.cmonBack && navigation.canGoBack() ) {
         navigation.goBack();
       } else {
-        navToObsList();
+        exitObservationsFlow();
       }
       setPhotoGalleryShown( false );
       return;
@@ -194,12 +187,12 @@ const PhotoGallery = ( ): Node => {
     currentObservation,
     currentObservationIndex,
     evidenceToAdd,
+    exitObservationsFlow,
     fromGroupPhotos,
     galleryUris,
     groupedPhotos,
     navigation,
     navToObsEdit,
-    navToObsList,
     navToSuggestions,
     numOfObsPhotos,
     observations,

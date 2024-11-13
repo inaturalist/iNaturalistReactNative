@@ -13,6 +13,7 @@ import { DimensionValue, ViewStyle } from "react-native";
 import MapView, {
   BoundingBox, LatLng, MapType, Region
 } from "react-native-maps";
+import Observation from "realmModels/Observation";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation.ts";
 import { useDebugMode, useDeviceOrientation } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
@@ -55,20 +56,16 @@ interface Props {
   mapHeight?: DimensionValue; // allows for height to be defined as px or percentage
   mapType?: MapType;
   mapViewClassName?: string;
-  obscured?: boolean;
-  obsLatitude?: number;
-  obsLongitude?: number;
+  observation?: Observation;
   onCurrentLocationPress?: () => void;
   onMapReady?: () => void;
   onPanDrag?: () => void;
   onRegionChangeComplete?: ( _r: Region, _b: BoundingBox | undefined ) => void;
   openMapScreen?: () => void;
-  positionalAccuracy?: number;
   region?: Region;
   regionToAnimate?: Object;
   scrollEnabled?: boolean;
   showCurrentLocationButton?: boolean;
-  showLocationIndicator?: boolean;
   showsCompass?: boolean;
   showSwitchMapTypeButton?: boolean;
   showsUserLocation?: boolean;
@@ -92,20 +89,16 @@ const Map = ( {
   mapHeight,
   mapType,
   mapViewClassName,
-  obscured,
-  obsLatitude,
-  obsLongitude,
+  observation,
   onCurrentLocationPress,
   onMapReady = ( ) => undefined,
   onPanDrag = ( ) => undefined,
   onRegionChangeComplete,
   openMapScreen,
-  positionalAccuracy,
   region,
   regionToAnimate,
   scrollEnabled = true,
   showCurrentLocationButton,
-  showLocationIndicator,
   showsCompass,
   showSwitchMapTypeButton,
   showsUserLocation: showsUserLocationProp,
@@ -133,16 +126,26 @@ const Map = ( {
   const [showsUserLocation, setShowsUserLocation] = useState( showsUserLocationProp );
   const [currentLocationPressQueued, setCurrentLocationPressQueued] = useState( false );
 
-  let defaultInitialRegion = getDefaultRegion( obsLatitude, obsLongitude );
+  let defaultInitialRegion = null;
 
-  const obscurationCell = obscurationCellForLatLng( obsLatitude, obsLongitude );
-  if ( obscured ) {
-    defaultInitialRegion = {
-      latitude: obscurationCell.minLat + ( OBSCURATION_CELL_SIZE / 2 ),
-      longitude: obscurationCell.minLng + ( OBSCURATION_CELL_SIZE / 2 ),
-      latitudeDelta: 0.3,
-      longitudeDelta: 0.3
-    };
+  if ( observation ) {
+    if ( observation.obscured && !observation.privateLatitude ) {
+      const obscurationCell = obscurationCellForLatLng(
+        observation.latitude,
+        observation.longitude
+      );
+      defaultInitialRegion = {
+        latitude: obscurationCell.minLat + ( OBSCURATION_CELL_SIZE / 2 ),
+        longitude: obscurationCell.minLng + ( OBSCURATION_CELL_SIZE / 2 ),
+        latitudeDelta: 0.3,
+        longitudeDelta: 0.3
+      };
+    } else {
+      defaultInitialRegion = getDefaultRegion(
+        observation.privateLatitude || observation.latitude,
+        observation.privateLongitude || observation.longitude
+      );
+    }
   }
 
   useEffect( ( ) => {
@@ -309,6 +312,10 @@ const Map = ( {
     return null;
   };
 
+  const currentUserCanViewCoords = observation && !!(
+    !observation.obscured || observation.privateLatitude
+  );
+
   return (
     <View
       style={mapContainerStyle}
@@ -347,16 +354,21 @@ const Map = ( {
           withObsTiles={withObsTiles}
           withPressableObsTiles={withPressableObsTiles}
         />
-        <LocationIndicator
-          obsLatitude={obsLatitude}
-          obsLongitude={obsLongitude}
-          positionalAccuracy={positionalAccuracy}
-          showLocationIndicator={showLocationIndicator && !obscured}
-        />
-        <ObscuredLocationIndicator
-          obscurationCell={obscurationCell}
-          showLocationIndicator={showLocationIndicator && obscured}
-        />
+        { observation && ( currentUserCanViewCoords
+          ? (
+            <LocationIndicator
+              latitude={observation.privateLatitude || observation.latitude}
+              longitude={observation.privateLongitude || observation.longitude}
+              positionalAccuracy={observation.positionalAccuracy}
+            />
+          )
+          : (
+            <ObscuredLocationIndicator
+              latitude={observation.privateLatitude || observation.latitude}
+              longitude={observation.privateLongitude || observation.longitude}
+            />
+          )
+        ) }
       </MapView>
       <CurrentLocationButton
         showCurrentLocationButton={showCurrentLocationButton}

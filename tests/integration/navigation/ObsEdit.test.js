@@ -57,6 +57,11 @@ jest.mock( "react-native-image-picker", ( ) => ( {
 const actor = userEvent.setup( );
 
 const navigateToObsEditViaGroupPhotos = async ( ) => {
+  jest.spyOn( rnImagePicker, "launchImageLibrary" ).mockImplementation(
+    ( ) => ( {
+      assets: mockMultipleAssets
+    } )
+  );
   await waitFor( ( ) => {
     global.timeTravel( );
     expect( screen.getByText( /Welcome back/ ) ).toBeVisible( );
@@ -73,8 +78,10 @@ const navigateToObsEditViaGroupPhotos = async ( ) => {
   } );
   const importObservationsText = await screen.findByText( /IMPORT 2 OBSERVATIONS/ );
   await actor.press( importObservationsText );
-  const obsEditTitleText = await screen.findByText( /2 Observations/ );
-  expect( obsEditTitleText ).toBeTruthy( );
+  await waitFor( ( ) => {
+    const obsEditTitleText = screen.getByText( /2 Observations/ );
+    expect( obsEditTitleText ).toBeVisible( );
+  }, { timeout: 3_000, interval: 500 } );
 };
 
 const saveObsEditObservation = async ( ) => {
@@ -173,11 +180,6 @@ describe( "ObsEdit", ( ) => {
 
       it( "should go back to GroupPhotos if no observations are saved/uploaded"
         + " in the multi-observation flow", async ( ) => {
-        jest.spyOn( rnImagePicker, "launchImageLibrary" ).mockImplementation(
-          ( ) => ( {
-            assets: mockMultipleAssets
-          } )
-        );
         await renderAppWithObservations( mockObservations, __filename );
         await navigateToObsEditViaGroupPhotos( );
         const backButtonId = screen.getByTestId( "ObsEdit.BackButton" );
@@ -188,11 +190,6 @@ describe( "ObsEdit", ( ) => {
 
       it( "should show discard observations sheet if at least one observation is saved/uploaded"
         + " in the multi-observation flow", async ( ) => {
-        jest.spyOn( rnImagePicker, "launchImageLibrary" ).mockImplementation(
-          ( ) => ( {
-            assets: mockMultipleAssets
-          } )
-        );
         await renderAppWithObservations( mockObservations, __filename );
         await navigateToObsEditViaGroupPhotos( );
         await saveObsEditObservation( );
