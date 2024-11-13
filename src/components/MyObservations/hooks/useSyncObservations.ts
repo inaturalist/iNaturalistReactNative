@@ -138,9 +138,9 @@ const useSyncObservations = (
     if ( !signalAborted ) {
       await deleteLocalObservations( );
     }
-    if ( !signalAborted && canSync ) {
-      await fetchRemoteObservations( );
-    }
+    // 20241112 amanda - removed fetchRemoteObservations from the
+    // automatic sync since this is repetitive with the first fetch
+    // we're doing in useInfiniteObservationsScroll
     if ( !signalAborted ) {
       completeSync( );
     }
@@ -149,7 +149,6 @@ const useSyncObservations = (
     completeSync,
     deleteLocalObservations,
     fetchRemoteDeletions,
-    fetchRemoteObservations,
     signalAborted
   ] );
 
