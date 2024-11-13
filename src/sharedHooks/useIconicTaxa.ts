@@ -16,7 +16,9 @@ const useIconicTaxa = ( options: { reload: boolean } = { reload: false } ) => {
   const queryKey = ["searchTaxa", reload];
   const { data: iconicTaxa } = useAuthenticatedQuery(
     queryKey,
-    ( ) => searchTaxa( { iconic: true } ),
+    optsWithAuth => searchTaxa( {
+      iconic: true
+    }, optsWithAuth ),
     { enabled }
   );
 

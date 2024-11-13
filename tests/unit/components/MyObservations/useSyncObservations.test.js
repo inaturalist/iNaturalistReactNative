@@ -202,15 +202,15 @@ describe( "automatic sync while user is logged in", ( ) => {
     } );
   } );
 
-  describe( "fetch remote observations", ( ) => {
+  describe( "don't fetch remote observations", ( ) => {
     inatjs.observations.search.mockResolvedValue( makeResponse( [mockRemoteObservation] ) );
-    it( "should fetch remote observations from server when user is logged in", async ( ) => {
+    it( "should not fetch remote observations from server in automatic sync", async ( ) => {
       useStore.setState( {
         ...syncingStore
       } );
       renderHook( ( ) => useSyncObservations( currentUserId ) );
       await waitFor( ( ) => {
-        expect( inatjs.observations.search ).toHaveBeenCalled( );
+        expect( inatjs.observations.search ).not.toHaveBeenCalled( );
       } );
     } );
   } );

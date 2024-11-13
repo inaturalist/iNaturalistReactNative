@@ -117,6 +117,10 @@ const LIST_OPTIONS = {
 
 const Stack = createNativeStackNavigator( );
 
+export const SCREEN_NAME_OBS_LIST = "ObsList";
+export const SCREEN_NAME_ROOT_EXPLORE = "RootExplore";
+export const SCREEN_NAME_NOTIFICATIONS = "Notifications";
+
 const TabStackNavigator = ( ): Node => (
   <Stack.Navigator
     screenOptions={{
@@ -129,14 +133,14 @@ const TabStackNavigator = ( ): Node => (
       screenOptions={{ ...hideHeader }}
     >
       <Stack.Screen
-        name="ObsList"
+        name={SCREEN_NAME_OBS_LIST}
         component={FadeInMyObservations}
         options={{
           animation: "none"
         }}
       />
       <Stack.Screen
-        name="RootExplore"
+        name={SCREEN_NAME_ROOT_EXPLORE}
         component={FadeInRootExplore}
         options={{
           animation: "none"
@@ -155,7 +159,7 @@ const TabStackNavigator = ( ): Node => (
       />
     </Stack.Group>
     <Stack.Screen
-      name="Notifications"
+      name={SCREEN_NAME_NOTIFICATIONS}
       component={FadeInNotifications}
       options={NOTIFICATIONS_OPTIONS}
     />

@@ -86,7 +86,7 @@ const TaxonResult = ( {
   const accessibleName = accessibleTaxonName( usableTaxon, currentUser, t );
 
   const navToTaxonDetails = ( ) => {
-    navigation.navigate( "TaxonDetails", {
+    navigation.push( "TaxonDetails", {
       id: usableTaxon?.id,
       hideNavButtons,
       lastScreen,

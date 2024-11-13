@@ -47,7 +47,7 @@ const SoundRecorder = (): Node => {
   const audioRecorderPlayer = audioRecorderPlayerRef.current;
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const setObservations = useStore( state => state.setObservations );
-  const navigation = useNavigation();
+  const navigation = useNavigation( );
   const { params } = useRoute();
   const { t } = useTranslation();
   const [sound, setSound] = useState( INITIAL_SOUND );
@@ -196,15 +196,15 @@ const SoundRecorder = (): Node => {
   }, [status, t] );
 
   const onBack = () => {
-    if ( !params.addEvidence ) {
+    if ( params.addEvidence ) {
+      navigation.navigate( "ObsEdit" );
+    } else {
       navigation.navigate( "TabNavigator", {
         screen: "TabStackNavigator",
         params: {
           screen: "ObsList"
         }
       } );
-    } else {
-      navigation.navigate( "ObsEdit" );
     }
   };
 

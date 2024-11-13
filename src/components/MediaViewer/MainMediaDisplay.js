@@ -52,7 +52,6 @@ const MainMediaDisplay = ( {
   const { screenWidth } = useDeviceOrientation( );
   const [displayHeight, setDisplayHeight] = useState( 0 );
   const [zooming, setZooming] = useState( false );
-  const [scrolling, setScrolling] = useState( false );
   const atFirstItem = selectedMediaIndex === 0;
   const items = useMemo( ( ) => ( [
     ...photos.map( photo => ( { ...photo, type: "photo" } ) ),
@@ -71,10 +70,8 @@ const MainMediaDisplay = ( {
     return (
       <View>
         <CustomImageZoom
-          imageUri={uri}
-          height={displayHeight}
+          uri={uri}
           setZooming={setZooming}
-          zoomDisabled={scrolling}
         />
         {
           editable
@@ -106,10 +103,8 @@ const MainMediaDisplay = ( {
     );
   }, [
     deletePhotoLabel,
-    displayHeight,
     editable,
-    onDeletePhoto,
-    scrolling
+    onDeletePhoto
   ] );
 
   const renderSound = useCallback( sound => (
@@ -192,7 +187,6 @@ const MainMediaDisplay = ( {
     } else if ( x < currentOffset ) {
       handleScrollLeft( index );
     }
-    setScrolling( false );
   }, [
     handleScrollLeft,
     handleScrollRight,
@@ -220,7 +214,6 @@ const MainMediaDisplay = ( {
         showsHorizontalScrollIndicator={false}
         ref={horizontalScroll}
         onMomentumScrollEnd={handleScrollEndDrag}
-        onScrollBeginDrag={() => setScrolling( true )}
       />
     </View>
   );

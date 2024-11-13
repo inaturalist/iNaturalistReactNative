@@ -34,7 +34,7 @@ const useRemoteObservation = ( uuid: string, enabled: boolean ): Object => {
       optsWithAuth
     ),
     {
-      enabled
+      enabled: !!( enabled && !!uuid && uuid.length > 0 )
     }
   );
 

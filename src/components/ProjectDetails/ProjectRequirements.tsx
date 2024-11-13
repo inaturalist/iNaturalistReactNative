@@ -19,7 +19,8 @@ const getFieldValue = item => item?.[0]?.value;
 // https://github.com/inaturalist/inaturalist/blob/0994c85e2b87661042289ff080d3fc29ed8e70b3/app/webpack/projects/show/components/requirements.jsx
 const ProjectRequirements = ( ) => {
   const navigation = useNavigation( );
-  const { params } = useRoute( );
+  const route = useRoute( );
+  const { params } = route;
   const { id } = params;
   const { t, i18n } = useTranslation( );
 
@@ -117,9 +118,17 @@ const ProjectRequirements = ( ) => {
   const createTaxonObject = taxon => ( {
     taxon,
     text: null,
-    onPress: ( ) => navigation.navigate( "TaxonDetails", {
-      id: taxon.id
-    } )
+    // onPress: ( ) => navigation.navigate( "TaxonDetails", {
+    //   id: taxon.id
+    // } )
+    onPress: ( ) => (
+      navigation.navigate( {
+        // Ensure button mashing doesn't open multiple TaxonDetails instances
+        key: `${route.key}-ProjectRequirements-TaxonDetails-${taxon.id}`,
+        name: "TaxonDetails",
+        params: { id: taxon.id }
+      } )
+    )
   } );
 
   const includedTaxonList = _.sortBy(

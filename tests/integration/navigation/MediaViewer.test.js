@@ -154,7 +154,7 @@ describe( "MediaViewer navigation", ( ) => {
       const photo = await findAndPressByLabelText( "View photo" );
       await actor.press( photo );
 
-      expect( await screen.findByTestId( "CustomImageZoom" ) ).toBeTruthy( );
+      expect( await screen.findByTestId( /CustomImageZoom/ ) ).toBeTruthy( );
     } );
 
     // Haven't figured these out b/c I would need the URL of newly-created

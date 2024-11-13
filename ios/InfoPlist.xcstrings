@@ -11,7 +11,8 @@
             "value" : "iNat Next"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "CFBundleName" : {
       "comment" : "Bundle name",
@@ -23,7 +24,8 @@
             "value" : "iNaturalistReactNative"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "NSAppleMusicUsageDescription" : {
       "comment" : "Description of why we ask for permission to access the music library.",
@@ -947,7 +949,8 @@
             "value" : ""
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "NSLocationAlwaysAndWhenInUseUsageDescription" : {
       "comment" : "Privacy - Location Always and When In Use Usage Description",

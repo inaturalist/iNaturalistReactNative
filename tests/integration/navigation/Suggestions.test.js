@@ -9,7 +9,7 @@ import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import * as useLocationPermission from "sharedHooks/useLocationPermission.tsx";
-import useStore, { storage } from "stores/useStore";
+import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderAppWithObservations } from "tests/helpers/render";
@@ -25,11 +25,6 @@ jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
 jest.unmock( "@react-navigation/native" );
-
-beforeAll( ( ) => {
-  // Hide the onboarding modal
-  storage.set( "onBoardingShown", true );
-} );
 
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;

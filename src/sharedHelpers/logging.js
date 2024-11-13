@@ -1,6 +1,5 @@
 import handleError from "api/error";
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
-import { isDebugMode } from "sharedHooks/useDebugMode";
 
 import { log } from "../../react-native-logs.config";
 
@@ -54,9 +53,6 @@ function reactQueryRetry( failureCount, error, options = {} ) {
       if ( apiError.status === 401 || apiError.status === 403 ) {
         // If we get a 401 or 403, call getJWT
         // which has a timestamp check if we need to refresh the token
-        if ( isDebugMode( ) ) {
-          logger.info( "reactQueryRetry, handling auth error, calling getJWT" );
-        }
         getJWT( );
       }
       // Consider handling 500+ errors differently. if you can detect them

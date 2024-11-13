@@ -5,43 +5,41 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useMemo } from "react";
 import Photo from "realmModels/Photo";
-import { useCurrentUser, useFontScale } from "sharedHooks";
 
 import ObsImagePreview from "./ObsImagePreview";
 import ObsUploadStatus from "./ObsUploadStatus";
 
 type Props = {
+  currentUser: Object,
   explore: boolean,
   height?: string,
+  isLargeFontScale: boolean,
   observation: Object,
-  onPress: Function,
+  onUploadButtonPress: Function,
   style?: Object,
+  queued: boolean,
   uploadProgress?: number,
-  width?: string
+  width?: string,
+  photo: Object,
+  obsPhotosCount: number,
+  hasSound: boolean
 };
 
 const ObsGridItem = ( {
+  currentUser,
   explore,
   height = "w-[200px]",
+  isLargeFontScale,
   observation,
-  onPress,
+  onUploadButtonPress,
+  queued,
   style,
   uploadProgress,
-  width = "w-[200px]"
+  width = "w-[200px]",
+  photo,
+  obsPhotosCount,
+  hasSound
 }: Props ): Node => {
-  const { isLargeFontScale } = useFontScale();
-  const currentUser = useCurrentUser( );
-
-  const photo = observation?.observationPhotos?.[0]?.photo
-    || observation?.observation_photos?.[0]?.photo
-    || null;
-  const photoCount = observation?.observationPhotos?.length
-    || observation?.observation_photos?.length;
-  const hasSound = !!(
-    observation?.observationSounds?.length
-    || observation?.observation_sounds?.length
-  );
-
   const displayTaxonName = useMemo( ( ) => (
     <DisplayTaxonName
       bottomTextComponent={Body2}
@@ -71,7 +69,7 @@ const ObsGridItem = ( {
       width={width}
       height={height}
       style={style}
-      obsPhotosCount={photoCount ?? 0}
+      obsPhotosCount={obsPhotosCount}
       hasSound={hasSound}
       isMultiplePhotosTop
       testID={`MyObservations.gridItem.${observation.uuid}`}
@@ -85,7 +83,8 @@ const ObsGridItem = ( {
           explore={explore}
           layout="horizontal"
           observation={observation}
-          onPress={onPress}
+          onPress={onUploadButtonPress}
+          queued={queued}
           progress={uploadProgress}
           white
         />

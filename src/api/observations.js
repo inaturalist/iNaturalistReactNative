@@ -198,9 +198,12 @@ const fetchIdentifiers = async ( params: Object = {} ) : Promise<?Object> => {
   }
 };
 
-const fetchSpeciesCounts = async ( params: Object = {} ) : Promise<?Object> => {
+const fetchSpeciesCounts = async (
+  params: Object = {},
+  opts: Object = {}
+) : Promise<?Object> => {
   try {
-    return inatjs.observations.speciesCounts( params );
+    return inatjs.observations.speciesCounts( params, opts );
   } catch ( e ) {
     return handleError( e );
   }

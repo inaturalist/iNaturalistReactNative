@@ -10,7 +10,7 @@ import React, {
 } from "react";
 import { BackHandler } from "react-native";
 import { Menu } from "react-native-paper";
-import { useTranslation } from "sharedHooks";
+import { useExitObservationFlow, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
 import DeleteObservationSheet from "./Sheets/DeleteObservationSheet";
@@ -38,25 +38,19 @@ const ObsEditHeader = ( {
   const [discardChangesSheetVisible, setDiscardChangesSheetVisible] = useState( false );
   const unsynced = !currentObservation?._synced_at;
   const savedLocally = currentObservation?._created_at;
-
-  const navToObsList = useCallback( ( ) => {
-    navigation.navigate( "TabNavigator", {
-      screen: "TabStackNavigator",
-      params: {
-        screen: "ObsList"
-      }
-    } );
-  }, [navigation] );
+  const exitObservationFlow = useExitObservationFlow( );
 
   const discardChanges = useCallback( ( ) => {
     setDiscardChangesSheetVisible( false );
-    navigateToObsDetails( navigation, currentObservation?.uuid );
-  }, [currentObservation?.uuid, navigation] );
+    exitObservationFlow( {
+      navigate: ( ) => navigateToObsDetails( navigation, currentObservation?.uuid )
+    } );
+  }, [currentObservation?.uuid, exitObservationFlow, navigation] );
 
   const discardObservation = useCallback( ( ) => {
     setDiscardObservationSheetVisible( false );
-    navToObsList( );
-  }, [navToObsList] );
+    exitObservationFlow( );
+  }, [exitObservationFlow] );
 
   const renderHeaderTitle = useCallback( ( ) => {
     let headingText = "";
@@ -94,10 +88,13 @@ const ObsEditHeader = ( {
     } else if ( unsavedChanges ) {
       setDiscardChangesSheetVisible( true );
     } else {
-      navigateToObsDetails( navigation, currentObservation?.uuid );
+      exitObservationFlow( {
+        navigate: ( ) => navigateToObsDetails( navigation, currentObservation?.uuid )
+      } );
     }
   }, [
     currentObservation?.uuid,
+    exitObservationFlow,
     navigation,
     params?.lastScreen,
     savedLocally,
@@ -176,8 +173,8 @@ const ObsEditHeader = ( {
       {deleteSheetVisible && (
         <DeleteObservationSheet
           onPressClose={( ) => setDeleteSheetVisible( false )}
-          navToObsList={navToObsList}
           observations={observations}
+          onDelete={( ) => exitObservationFlow( )}
           currentObservation={currentObservation}
           updateObservations={updateObservations}
         />
@@ -186,8 +183,8 @@ const ObsEditHeader = ( {
         <DiscardObservationSheet
           discardObservation={discardObservation}
           onPressClose={( ) => setDiscardObservationSheetVisible( false )}
-          navToObsList={navToObsList}
           observations={observations}
+          onSave={( ) => exitObservationFlow( )}
         />
       )}
       {discardChangesSheetVisible && (

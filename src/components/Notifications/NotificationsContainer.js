@@ -6,7 +6,11 @@ import { useNavigation } from "@react-navigation/native";
 import NotificationsList from "components/Notifications/NotificationsList";
 import type { Node } from "react";
 import React, { useEffect } from "react";
-import useInfiniteNotificationsScroll from "sharedHooks/useInfiniteNotificationsScroll";
+import { log } from "sharedHelpers/logger";
+import { useInfiniteNotificationsScroll, usePerformance } from "sharedHooks";
+import { isDebugMode } from "sharedHooks/useDebugMode";
+
+const logger = log.extend( "NotificationsContainer" );
 
 const NotificationsContainer = (): Node => {
   const navigation = useNavigation( );
@@ -20,6 +24,13 @@ const NotificationsContainer = (): Node => {
     isFetching,
     isError
   } = useInfiniteNotificationsScroll( );
+
+  const { loadTime } = usePerformance( {
+    isLoading: isInitialLoading
+  } );
+  if ( isDebugMode( ) ) {
+    logger.info( loadTime );
+  }
 
   useEffect( ( ) => {
     navigation.addListener( "focus", ( ) => {
