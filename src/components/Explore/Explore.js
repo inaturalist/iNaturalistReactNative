@@ -242,7 +242,7 @@ const Explore = ( {
     );
   };
 
-  const grayCircleClass = "bg-darkGray rounded-full h-[55px] w-[55px]";
+  const whiteCircleClass = "bg-white rounded-full h-[55px] w-[55px] border-[1px] border-lightGray";
 
   return (
     <>
@@ -287,10 +287,10 @@ const Explore = ( {
           )}
           <INatIconButton
             icon={icon}
-            color={colors.white}
+            color={colors.inatGreen}
             size={27}
             className={classnames(
-              grayCircleClass,
+              whiteCircleClass,
               "absolute bottom-5 z-10 right-5"
             )}
             accessibilityLabel={a11yLabel}
