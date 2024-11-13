@@ -48,7 +48,7 @@ const useLocationPermission = ( ) => {
 
     return (
       <LocationPermissionGate
-        permissionNeeded={showPermissionGate}
+        permissionNeeded
         withoutNavigation
         onModalHide={( ) => {
           setShowPermissionGate( false );

@@ -124,7 +124,6 @@ const Map = ( {
   const mapViewRef = useRef<MapView>();
   const [currentMapType, setCurrentMapType] = useState( mapType || "standard" );
   const [showsUserLocation, setShowsUserLocation] = useState( showsUserLocationProp );
-  const [currentLocationPressQueued, setCurrentLocationPressQueued] = useState( false );
 
   let defaultInitialRegion = null;
 
@@ -208,10 +207,19 @@ const Map = ( {
     // function in an effect when we have a location
     if ( !showsUserLocation ) {
       setShowsUserLocation( true );
-      setCurrentLocationPressQueued( true );
+      requestPermissions( );
       return;
     }
-    if ( onCurrentLocationPress ) { onCurrentLocationPress( ); }
+    // If we're supposed to be showing user location but we don't have it, ask
+    // for permission again, which should result in fetching the location if
+    // we can
+    if ( !userLocation ) {
+      requestPermissions( );
+      return;
+    }
+    if ( onCurrentLocationPress ) {
+      onCurrentLocationPress( );
+    }
     if ( userLocation && mapViewRef?.current ) {
       // Zoom level based on location accuracy.
       let latitudeDelta = metersToLatitudeDelta( userLocation.accuracy, userLocation.latitude );
@@ -238,20 +246,12 @@ const Map = ( {
     }
   }, [
     onCurrentLocationPress,
+    requestPermissions,
     screenHeight,
     screenWidth,
     showsUserLocation,
     userLocation
   ] );
-
-  // If we have the user's location *and* they asked us to show it, we zoom to
-  // it
-  useEffect( ( ) => {
-    if ( userLocation && currentLocationPressQueued ) {
-      setCurrentLocationPressQueued( false );
-      handleCurrentLocationPress();
-    }
-  }, [userLocation, currentLocationPressQueued, handleCurrentLocationPress] );
 
   const mapContainerStyle = [
     mapHeight
@@ -377,7 +377,7 @@ const Map = ( {
         renderPermissionsGate={renderCurrentLocationPermissionsGate}
         requestPermissions={requestPermissions}
         onPermissionGranted={onPermissionGranted}
-        handlePress={handleCurrentLocationPress}
+        onPress={handleCurrentLocationPress}
       />
       <SwitchMapTypeButton
         currentMapType={currentMapType}
