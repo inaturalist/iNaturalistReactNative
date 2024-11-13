@@ -53,13 +53,13 @@ const clearSyncedMediaForUpload = async realm => {
     unsyncedPhotoFileNames
   );
 
-  // Clean out photos
+  // Clean out sounds
   const unsyncedObservationsWithSounds: RealmObservation[] = realm
     .objects( "Observation" )
     .filtered( "observationSounds._synced_at == nil" );
   const unsyncedSoundFileNames = unsyncedObservationsWithSounds
     .map( observation => observation.observationSounds.map(
-      os => os.sound.fileUrl?.split( "soundUploads/" )?.at( 1 )
+      os => os.sound.file_url?.split( "soundUploads/" )?.at( 1 )
     ) )
     .flat( )
     .filter( Boolean );
