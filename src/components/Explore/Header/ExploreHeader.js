@@ -26,24 +26,30 @@ type Props = {
   count: ?number,
   exploreView: string,
   exploreViewIcon: string,
+  hasLocationPermissions?: boolean,
   hideBackButton: boolean,
   isFetchingHeaderCount: boolean,
   onPressCount?: Function,
   openFiltersModal: Function,
-  updateTaxon: Function,
-  updateLocation: Function
+  renderLocationPermissionsGate: Function,
+  requestLocationPermissions: Function,
+  updateLocation: Function,
+  updateTaxon: Function
 }
 
 const Header = ( {
   count,
   exploreView,
   exploreViewIcon,
+  hasLocationPermissions,
   hideBackButton,
   isFetchingHeaderCount,
   onPressCount,
   openFiltersModal,
-  updateTaxon,
-  updateLocation
+  renderLocationPermissionsGate,
+  requestLocationPermissions,
+  updateLocation,
+  updateTaxon
 }: Props ): Node => {
   const { t } = useTranslation( );
   const { state, numberOfFilters } = useExplore( );
@@ -143,8 +149,11 @@ const Header = ( {
         updateTaxon={updateTaxon}
       />
       <ExploreLocationSearchModal
-        showModal={showLocationSearch}
         closeModal={() => { setShowLocationSearch( false ); }}
+        hasPermissions={hasLocationPermissions}
+        renderPermissionsGate={renderLocationPermissionsGate}
+        requestPermissions={requestLocationPermissions}
+        showModal={showLocationSearch}
         updateLocation={updateLocation}
       />
     </View>
