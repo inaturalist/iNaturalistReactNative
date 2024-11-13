@@ -15,15 +15,15 @@ const { useRealm } = RealmContext;
 type Props = {
   onPressClose: Function,
   discardObservation: Function,
-  navToObsList: Function,
-  observations: Array<Object>
+  observations: Array<Object>,
+  onSave?: Function
 }
 
 const DiscardObservationSheet = ( {
   onPressClose,
   discardObservation,
-  navToObsList,
-  observations
+  observations,
+  onSave
 }: Props ): Node => {
   const realm = useRealm( );
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
@@ -56,7 +56,7 @@ const DiscardObservationSheet = ( {
         : t( "By-exiting-observation-not-saved" )}
       handleSecondButtonPress={( ) => {
         saveAllObservations( );
-        navToObsList( );
+        if ( typeof ( onSave ) === "function" ) onSave( );
       }}
       secondButtonText={multipleObservations && t( "SAVE-ALL" )}
       buttonText={multipleObservations

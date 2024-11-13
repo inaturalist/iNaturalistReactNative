@@ -4,6 +4,7 @@ export { default as useAuthenticatedQuery } from "./useAuthenticatedQuery";
 export { default as useCurrentUser } from "./useCurrentUser";
 export { default as useDebugMode } from "./useDebugMode";
 export { default as useDeviceOrientation } from "./useDeviceOrientation";
+export { default as useExitObservationFlow } from "./useExitObservationFlow";
 export { default as useFontScale } from "./useFontScale";
 export { default as useGridLayout } from "./useGridLayout";
 export { default as useIconicTaxa } from "./useIconicTaxa";

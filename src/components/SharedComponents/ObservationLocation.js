@@ -12,7 +12,6 @@ type Props = {
   classNameMargin?: string,
   details?: boolean, // Same as withCoordinates && withGeoprivacy
   observation: Object,
-  obscured?: boolean,
   withCoordinates?: boolean,
   withGeoprivacy?: boolean
 };
@@ -22,8 +21,7 @@ const ObservationLocation = ( {
   details,
   observation,
   withCoordinates,
-  withGeoprivacy,
-  obscured
+  withGeoprivacy
 }: Props ): Node => {
   const { t } = useTranslation( );
   const geoprivacy = observation?.geoprivacy;
@@ -49,28 +47,24 @@ const ObservationLocation = ( {
   }, [geoprivacy, t] );
 
   const displayCoords = useMemo( ( ) => {
-    if ( ( observation?.latitude !== null && observation?.latitude !== undefined )
-        && ( observation?.longitude != null && observation?.longitude !== undefined )
-        && !obscured
-    ) {
-      return t( "Lat-Lon-Acc", {
-        latitude: observation.latitude,
-        longitude: observation.longitude,
-        accuracy: observation?.positional_accuracy?.toFixed( 0 ) || t( "none--accuracy" )
-      } );
-    }
-    if ( ( observation?.privateLatitude !== null && observation?.privateLatitude !== undefined )
-      && ( observation?.privateLongitude != null && observation?.privateLongitude !== undefined )
-      && !obscured
-    ) {
+    if (
+      typeof ( observation?.latitude ) !== "number"
+      && typeof ( observation.privateLatitude ) !== "number"
+    ) return null;
+    const accuracy = observation?.positional_accuracy?.toFixed( 0 ) || t( "none--accuracy" );
+    if ( typeof ( observation.privateLatitude ) === "number" ) {
       return t( "Lat-Lon-Acc", {
         latitude: observation.privateLatitude,
         longitude: observation.privateLongitude,
-        accuracy: observation?.positional_accuracy?.toFixed( 0 ) || t( "none--accuracy" )
+        accuracy
       } );
     }
-    return null;
-  }, [obscured, observation, t] );
+    return t( "Lat-Lon-Acc", {
+      latitude: observation.latitude,
+      longitude: observation.longitude,
+      accuracy
+    } );
+  }, [observation, t] );
 
   if ( !displayLocation ) {
     if ( displayCoords && !details ) {
