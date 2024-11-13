@@ -180,6 +180,17 @@ const PermissionGateContainer = ( {
       setModalShown( true );
       return () => undefined;
     }
+    if (
+      ( result === RESULTS.GRANTED || result === RESULTS.LIMITED )
+      && !children
+    ) {
+      setModalShown( false );
+      return ( ) => undefined;
+    }
+    if ( result === RESULTS.BLOCKED ) {
+      setModalShown( false );
+      return ( ) => undefined;
+    }
     if ( !withoutNavigation ) {
       const unsubscribe = navigation.addListener( "focus", async () => {
         await checkPermission( );
@@ -197,6 +208,8 @@ const PermissionGateContainer = ( {
     withoutNavigation
   ] );
 
+  // If permission was granted and there are no children to render, we can
+  // just hide the modal and do nothing
   useEffect( ( ) => {
     if (
       ( result === RESULTS.GRANTED || result === RESULTS.LIMITED )
@@ -279,7 +292,9 @@ const PermissionGateContainer = ( {
       || result === RESULTS.LIMITED
     )
     && children
-  ) return children;
+  ) {
+    return children;
+  }
 
   if ( !result ) return null;
 
