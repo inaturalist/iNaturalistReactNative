@@ -204,14 +204,14 @@ const PermissionGateContainer = ( {
     ) {
       setModalShown( false );
     }
-  }, [result, children, setModalShown] );
+  }, [result, children] );
 
   useEffect( ( ) => {
     // permission already denied
     if ( result === RESULTS.BLOCKED ) {
-      setModalShown( false );
+      setModalShown( true );
     }
-  }, [result, setModalShown] );
+  }, [result] );
 
   useEffect( () => {
   // We need to handle permission changes manually on Android
@@ -240,9 +240,7 @@ const PermissionGateContainer = ( {
 
   const closeModal = useCallback( ( ) => {
     setModalShown( false );
-  }, [
-    setModalShown
-  ] );
+  }, [] );
 
   const onModalHide = useCallback( ( ) => {
     if ( onModalHideProp ) {
@@ -274,9 +272,12 @@ const PermissionGateContainer = ( {
     result
   ] );
 
-  // If permission results asked and answered, render children
+  // If permission granted and children are gated, let the children out
   if (
-    ( result === RESULTS.GRANTED || result === RESULTS.LIMITED || result === RESULTS.BLOCKED )
+    (
+      result === RESULTS.GRANTED
+      || result === RESULTS.LIMITED
+    )
     && children
   ) return children;
 
