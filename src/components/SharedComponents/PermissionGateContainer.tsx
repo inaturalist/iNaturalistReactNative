@@ -226,29 +226,27 @@ const PermissionGateContainer = ( {
     }
   }, [result] );
 
+  // If the app just returned to the foreground, check permission again,
+  // e.g. when the user leaves to change permission in system settings,
+  // then comes back, if permissions were previously blocked, we want to check again
   useEffect( () => {
-  // We need to handle permission changes manually on Android
-  // Permissions modified from the settings are not captured automatically
-  // So we check permissions when the app is transitioned from background to foreground
-  // This check is performed only when the platform is Android and the permission result is BLOCKED
-    if ( Platform.OS === "android"
-       && result === RESULTS.BLOCKED ) {
-      const onAppStateChange = async ( nextAppState: AppStateStatus ) => {
-        if ( prevAppState.current.match( /inactive|background/ ) && nextAppState === "active" ) {
+    if ( result !== RESULTS.BLOCKED ) return () => undefined;
+    const subscription = AppState.addEventListener(
+      "change",
+      async ( nextAppState: AppStateStatus ) => {
+        if (
+          prevAppState.current.match( /inactive|background/ )
+          && nextAppState === "active"
+        ) {
           await checkPermission();
         }
-
         prevAppState.current = nextAppState;
-      };
+      }
+    );
 
-      const subscription = AppState.addEventListener( "change", onAppStateChange );
-
-      return () => {
-        subscription?.remove();
-      };
-    }
-
-    return () => undefined;
+    return () => {
+      subscription?.remove();
+    };
   }, [result, checkPermission] );
 
   const closeModal = useCallback( ( ) => {
