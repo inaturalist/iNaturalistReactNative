@@ -110,7 +110,15 @@ export const generateTaxonPieces = taxon => {
   // Logic follows the SplitTaxon component from web
   // https://github.com/inaturalist/inaturalist/blob/main/app/webpack/shared/components/split_taxon.jsx
   if ( taxon.preferred_common_name ) {
-    taxonData.commonName = capitalizeCommonName( taxon.preferred_common_name );
+    // 20241111 amanda - this multiple lexicon code isn't part of the original web code for this,
+    // found here, but is needed in iNat Next:
+    // https://github.com/inaturalist/inaturalist/blob/c578c11d00ed97940f0b6d8aa0793b6afd765824/app/assets/javascripts/ang/models/taxon.js.erb#L155
+    const multipleLexicons = taxon.preferred_common_name.split( "·" );
+    taxonData.commonName = _.map(
+      multipleLexicons,
+      ( lexicon => capitalizeCommonName( lexicon )
+      )
+    ).join( " · " );
   }
 
   let { name: scientificName } = taxon;

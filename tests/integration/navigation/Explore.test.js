@@ -235,7 +235,9 @@ describe( "logged in", ( ) => {
         expect( inatjs.observations.speciesCounts ).toHaveBeenCalledWith( expect.objectContaining( {
           user_id: mockUser.id,
           verifiable: true
-        } ) );
+        } ), {
+          api_token: TEST_JWT
+        } );
         const defaultGlobalLocation = await screen.findByText( /Worldwide/ );
         expect( defaultGlobalLocation ).toBeVisible( );
         const speciesViewIcon = await screen.findByLabelText( /Species View/ );
