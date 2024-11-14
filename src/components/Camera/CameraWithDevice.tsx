@@ -1,4 +1,4 @@
-import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 import { Camera } from "components/Camera/helpers/visionCameraWrapper";
 import PermissionGateContainer, {
   WRITE_MEDIA_PERMISSIONS
@@ -7,7 +7,6 @@ import { View } from "components/styledComponents";
 import React, {
   useCallback, useEffect, useRef, useState
 } from "react";
-import { StatusBar } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import type { CameraDevice } from "react-native-vision-camera";
 // import { log } from "sharedHelpers/logger";
@@ -38,7 +37,6 @@ const CameraWithDevice = ( {
   device,
   setCameraPosition
 }: Props ) => {
-  const navigation = useNavigation();
   const { t } = useTranslation( );
   const camera = useRef<Camera>( null );
   const { isLandscapeMode } = useDeviceOrientation( );
@@ -129,26 +127,6 @@ const CameraWithDevice = ( {
     addPhotoPermissionResult,
     isNavigating
   ] );
-
-  // Hide the StatusBar. Using a component doesn't guarantee that it will get
-  // hidden here if another component renders the status bar later when this
-  // screen his blurred but still mounted
-  useEffect( ( ) => {
-    // Hide on first render
-    StatusBar.setHidden( true );
-    const unsubscribe = navigation.addListener( "focus", ( ) => {
-      // Hide when focused
-      StatusBar.setHidden( true );
-    } );
-    return unsubscribe;
-  }, [navigation] );
-
-  useEffect( ( ) => {
-    const unsubscribe = navigation.addListener( "blur", ( ) => {
-      StatusBar.setHidden( false );
-    } );
-    return unsubscribe;
-  }, [navigation] );
 
   return (
     <View

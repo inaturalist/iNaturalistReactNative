@@ -5,7 +5,7 @@ import {
 import React, {
   useState
 } from "react";
-import { Alert } from "react-native";
+import { Alert, StatusBar } from "react-native";
 import { useTranslation } from "sharedHooks";
 
 import CameraWithDevice from "./CameraWithDevice";
@@ -36,13 +36,16 @@ const CameraContainer = ( ) => {
   }
 
   return (
-    <CameraWithDevice
-      addEvidence={addEvidence}
-      cameraType={cameraType}
-      cameraPosition={cameraPosition}
-      setCameraPosition={setCameraPosition}
-      device={device}
-    />
+    <>
+      <StatusBar hidden />
+      <CameraWithDevice
+        addEvidence={addEvidence}
+        cameraType={cameraType}
+        cameraPosition={cameraPosition}
+        setCameraPosition={setCameraPosition}
+        device={device}
+      />
+    </>
   );
 };
 
