@@ -16,7 +16,7 @@ interface RealmObservation {
   }[],
   observationSounds: {
     sound: {
-      fileUrl: string
+      file_url: string
     }
   }[]
 }
