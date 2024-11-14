@@ -78,7 +78,7 @@ const Suggestions = ( {
     />
   ), [onTaxonChosen, t, currentUser, showOfflineText] );
 
-  const renderEmptyList = useCallback( ( ) => (
+  const renderEmptyList = useMemo( ( ) => (
     <SuggestionsEmpty
       hasTopSuggestion={!!topSuggestion}
       isLoading={isLoading}
@@ -110,7 +110,7 @@ const Suggestions = ( {
     toggleLocation
   ] );
 
-  const renderHeader = useCallback( ( ) => (
+  const renderHeader = useMemo( ( ) => (
     <SuggestionsHeader
       onPressPhoto={onPressPhoto}
       photoUris={photoUris}
