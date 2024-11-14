@@ -134,3 +134,11 @@ global.timeTravel = ( time = frameTime ) => {
     tickTravel();
   }
 };
+
+jest.mock( "sharedHelpers/installData", ( ) => ( {
+  // For most tests it's just going to be burden to dismiss this thing that
+  // most users only ever see once. If we do want to test it, we can redefine
+  // this mock
+  useOnboardingShown: jest.fn( ( ) => [true, jest.fn()] ),
+  getInstallID: jest.fn( ( ) => "fake-installation-id" )
+} ) );

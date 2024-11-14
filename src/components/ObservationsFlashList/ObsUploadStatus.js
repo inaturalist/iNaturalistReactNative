@@ -11,6 +11,7 @@ type Props = {
   observation: Object,
   onPress: Function,
   progress?: number,
+  queued: boolean,
   showObsStatus?: boolean,
   white?: boolean
 };
@@ -22,6 +23,7 @@ const ObsUploadStatus = ( {
   layout,
   observation,
   progress,
+  queued,
   showObsStatus = false,
   white = false
 }: Props ): Node => {
@@ -53,6 +55,7 @@ const ObsUploadStatus = ( {
       onPress={onPress}
       progress={progress}
       uniqueKey={observation.uuid}
+      queued={queued}
     >
       {obsStatus}
     </UploadStatus>

@@ -12,11 +12,7 @@ import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import ObservationSound from "realmModels/ObservationSound";
 import emitUploadProgress from "sharedHelpers/emitUploadProgress.ts";
-import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { isDebugMode } from "sharedHooks/useDebugMode";
-
-const logger = log.extend( "uploadObservation" );
 
 const UPLOAD_PROGRESS_INCREMENT = 1;
 
@@ -163,9 +159,6 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
   // half one when obsPhoto/obsSound is successfully uploaded
   // half one when the obsPhoto/obsSound is attached to the obs
   emitUploadProgress( obs.uuid, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
-  if ( isDebugMode( ) ) {
-    logger.info( "calling getJWT" );
-  }
   const apiToken = await getJWT( );
   // don't bother trying to upload unless there's a logged in user
   if ( !apiToken ) {
@@ -308,7 +301,11 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
   // media successfully uploads
   markRecordUploaded( obs.uuid, null, "Observation", response, realm );
   // fetch observation and upsert it
-  const remoteObs = await fetchRemoteObservation( obsUUID, { fields: Observation.FIELDS } );
+  const remoteObs = await fetchRemoteObservation(
+    obsUUID,
+    { fields: Observation.LIST_FIELDS },
+    options
+  );
   Observation.upsertRemoteObservations( [remoteObs], realm, { force: true } );
   return response;
 }

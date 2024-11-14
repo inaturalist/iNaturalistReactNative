@@ -7,8 +7,8 @@ import {
   ViewWrapper
 } from "components/SharedComponents";
 import type { Node } from "react";
-import React, { useState } from "react";
-import { storage } from "stores/useStore";
+import React from "react";
+import { useOnboardingShown } from "sharedHelpers/installData.ts";
 
 import Announcements from "./Announcements";
 import LoginSheet from "./LoginSheet";
@@ -32,8 +32,6 @@ type Props = {
   toggleLayout: Function
 };
 
-const ONBOARDING_SHOWN = "onBoardingShown";
-
 const MyObservations = ( {
   currentUser,
   handleIndividualUploadPress,
@@ -52,17 +50,14 @@ const MyObservations = ( {
   showNoResults,
   toggleLayout
 }: Props ): Node => {
-  const [showOnboarding, setShowOnboarding] = useState( !storage.getBoolean( ONBOARDING_SHOWN ) );
+  const [onboardingShown, setOnboardingShown] = useOnboardingShown( );
 
   return (
     <>
       <ViewWrapper>
         <OnboardingCarouselModal
-          showModal={showOnboarding}
-          closeModal={() => {
-            setShowOnboarding( false );
-            storage.set( ONBOARDING_SHOWN, true );
-          }}
+          showModal={!onboardingShown}
+          closeModal={() => setOnboardingShown( true )}
         />
         <ScrollableWithStickyHeader
           onScroll={onScroll}
@@ -81,7 +76,7 @@ const MyObservations = ( {
           renderScrollable={animatedScrollEvent => (
             <ObservationsFlashList
               dataCanBeFetched={!!currentUser}
-              data={observations.filter( o => o.isValid() )}
+              data={observations}
               handleIndividualUploadPress={handleIndividualUploadPress}
               onScroll={animatedScrollEvent}
               hideLoadingWheel={!isFetchingNextPage || !currentUser}

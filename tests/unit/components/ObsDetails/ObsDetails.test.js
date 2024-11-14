@@ -236,9 +236,10 @@ describe( "ObsDetails", () => {
           `ObsDetails.taxon.${mockObservation.taxon.id}`
         )
       );
-      expect( mockNavigate ).toHaveBeenCalledWith( "TaxonDetails", {
-        id: mockObservation.taxon.id
-      } );
+      expect( mockNavigate ).toHaveBeenCalledWith( expect.objectContaining( {
+        name: "TaxonDetails",
+        params: { id: mockObservation.taxon.id }
+      } ) );
     } );
 
     it.todo( "shows network error image instead of observation photos if user is offline" );

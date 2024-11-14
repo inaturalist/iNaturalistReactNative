@@ -3,20 +3,21 @@
 import { searchObservations } from "api/observations";
 import { flatten, last, noop } from "lodash";
 import { RealmContext } from "providers/contexts.ts";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo } from "react";
 import Observation from "realmModels/Observation";
 import { useAuthenticatedInfiniteQuery, useCurrentUser } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
-const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Object ): Object => {
+const useInfiniteObservationsScroll = ( {
+  params: newInputParams
+}: Object ): Object => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
-  const [firstObservationsInRealm, setFirstObservationsInRealm] = useState( false );
 
   const baseParams = {
     ...newInputParams,
-    per_page: 50,
+    per_page: 20,
     fields: Observation.LIST_FIELDS,
     ttl: -1
   };
@@ -45,7 +46,7 @@ const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Obje
         params.page = 1;
       }
       const { results } = await searchObservations( params, optsWithAuth );
-      return results.map( observation => Observation.mapApiToRealm( observation ) ) || [];
+      return results || [];
     },
     {
       getNextPageParam: lastPage => last( lastPage )?.id,
@@ -53,30 +54,40 @@ const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Obje
     }
   );
 
+  const newlyFetchedObservations = useMemo( ( ) => {
+    if ( observations?.pages ) {
+      return flatten( last( observations.pages ) );
+    }
+    return null;
+  }, [observations?.pages] );
+
   useEffect( ( ) => {
-    if ( observations?.pages && upsert ) {
+    if ( newlyFetchedObservations ) {
       Observation.upsertRemoteObservations(
-        flatten( last( observations.pages ) ),
+        newlyFetchedObservations,
         realm
       );
-      setFirstObservationsInRealm( true );
     }
-  }, [realm, observations, upsert] );
+  }, [realm, newlyFetchedObservations] );
+
+  const hasLocalObservations = realm?.objects( "Observation" )?.length > 0;
+
+  const infiniteScrollObject = {
+    observations: flatten( observations?.pages ),
+    status,
+    firstObservationsInRealm: hasLocalObservations
+  };
 
   return currentUser
     ? {
+      ...infiniteScrollObject,
       isFetchingNextPage,
-      fetchNextPage,
-      observations: flatten( observations?.pages ),
-      status,
-      firstObservationsInRealm
+      fetchNextPage
     }
     : {
+      ...infiniteScrollObject,
       isFetchingNextPage: false,
-      fetchNextPage: noop,
-      observations: flatten( observations?.pages ),
-      status,
-      firstObservationsInRealm
+      fetchNextPage: noop
     };
 };
 

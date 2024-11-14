@@ -10,7 +10,7 @@ import React, {
 } from "react";
 import { BackHandler } from "react-native";
 import { Menu } from "react-native-paper";
-import { useTranslation } from "sharedHooks";
+import { useExitObservationFlow, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
 import DeleteObservationSheet from "./Sheets/DeleteObservationSheet";
@@ -28,6 +28,7 @@ const ObsEditHeader = ( {
 }: Props ): Node => {
   const unsavedChanges = useStore( state => state.unsavedChanges );
   const updateObservations = useStore( state => state.updateObservations );
+  const savedOrUploadedMultiObsFlow = useStore( state => state.savedOrUploadedMultiObsFlow );
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
@@ -37,25 +38,19 @@ const ObsEditHeader = ( {
   const [discardChangesSheetVisible, setDiscardChangesSheetVisible] = useState( false );
   const unsynced = !currentObservation?._synced_at;
   const savedLocally = currentObservation?._created_at;
-
-  const navToObsList = useCallback( ( ) => {
-    navigation.navigate( "TabNavigator", {
-      screen: "TabStackNavigator",
-      params: {
-        screen: "ObsList"
-      }
-    } );
-  }, [navigation] );
+  const exitObservationFlow = useExitObservationFlow( );
 
   const discardChanges = useCallback( ( ) => {
     setDiscardChangesSheetVisible( false );
-    navigateToObsDetails( navigation, currentObservation?.uuid );
-  }, [currentObservation?.uuid, navigation] );
+    exitObservationFlow( {
+      navigate: ( ) => navigateToObsDetails( navigation, currentObservation?.uuid )
+    } );
+  }, [currentObservation?.uuid, exitObservationFlow, navigation] );
 
   const discardObservation = useCallback( ( ) => {
     setDiscardObservationSheetVisible( false );
-    navToObsList( );
-  }, [navToObsList] );
+    exitObservationFlow( );
+  }, [exitObservationFlow] );
 
   const renderHeaderTitle = useCallback( ( ) => {
     let headingText = "";
@@ -78,28 +73,33 @@ const ObsEditHeader = ( {
     );
   }, [observations, t, savedLocally] );
 
-  const shouldNavigateBack = params?.lastScreen === "GroupPhotos"
+  const shouldNavigateBack = !savedOrUploadedMultiObsFlow
+    && ( params?.lastScreen === "GroupPhotos"
     || ( unsynced && savedLocally )
-    || ( unsynced && !unsavedChanges );
+    || ( unsynced && !unsavedChanges ) );
 
   const handleBackButtonPress = useCallback( ( ) => {
     if ( params?.lastScreen === "Suggestions" ) {
       navigation.navigate( "Suggestions", { lastScreen: "ObsEdit" } );
     } else if ( shouldNavigateBack ) {
       navigation.goBack( );
-    } else if ( !savedLocally ) {
+    } else if ( !savedLocally || savedOrUploadedMultiObsFlow === true ) {
       setDiscardObservationSheetVisible( true );
     } else if ( unsavedChanges ) {
       setDiscardChangesSheetVisible( true );
     } else {
-      navigateToObsDetails( navigation, currentObservation?.uuid );
+      exitObservationFlow( {
+        navigate: ( ) => navigateToObsDetails( navigation, currentObservation?.uuid )
+      } );
     }
   }, [
     currentObservation?.uuid,
-    shouldNavigateBack,
+    exitObservationFlow,
     navigation,
     params?.lastScreen,
     savedLocally,
+    savedOrUploadedMultiObsFlow,
+    shouldNavigateBack,
     unsavedChanges
   ] );
 
@@ -173,8 +173,8 @@ const ObsEditHeader = ( {
       {deleteSheetVisible && (
         <DeleteObservationSheet
           onPressClose={( ) => setDeleteSheetVisible( false )}
-          navToObsList={navToObsList}
           observations={observations}
+          onDelete={( ) => exitObservationFlow( )}
           currentObservation={currentObservation}
           updateObservations={updateObservations}
         />
@@ -183,8 +183,8 @@ const ObsEditHeader = ( {
         <DiscardObservationSheet
           discardObservation={discardObservation}
           onPressClose={( ) => setDiscardObservationSheetVisible( false )}
-          navToObsList={navToObsList}
           observations={observations}
+          onSave={( ) => exitObservationFlow( )}
         />
       )}
       {discardChangesSheetVisible && (

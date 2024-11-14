@@ -24,7 +24,7 @@ const mockNavigate = jest.fn( );
 const renderDeleteSheet = ( ) => renderComponent(
   <DeleteObservationSheet
     onPressClose={jest.fn( )}
-    navToObsList={mockNavigate}
+    onDelete={() => mockNavigate( )}
     currentObservation={currentObservation}
     observations={observations}
     updateObservations={mockUpdateObservations}

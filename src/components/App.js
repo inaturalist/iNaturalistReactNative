@@ -10,6 +10,7 @@ import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { LogBox } from "react-native";
 import Realm from "realm";
+import clearCaches from "sharedHelpers/clearCaches.ts";
 import { addARCameraFiles } from "sharedHelpers/cvModel.ts";
 import { log } from "sharedHelpers/logger";
 import {
@@ -18,6 +19,7 @@ import {
   useObservationUpdatesWhenFocused,
   useShare
 } from "sharedHooks";
+import { isDebugMode } from "sharedHooks/useDebugMode";
 
 import useFreshInstall from "./hooks/useFreshInstall";
 import useLinking from "./hooks/useLinking";
@@ -94,10 +96,11 @@ const App = ( { children }: Props ): Node => {
 
   useEffect( ( ) => {
     if ( realm?.path ) {
+      clearCaches( isDebugMode( ), realm );
       console.debug( "Need to open Realm in another app?" );
       console.debug( "realm.path: ", realm.path );
     }
-  }, [realm?.path] );
+  }, [realm] );
 
   useEffect( ( ) => {
     // don't remove this logger.info statement: it's used for internal metrics

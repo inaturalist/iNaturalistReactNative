@@ -99,3 +99,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.CROWDIN_GITHUB_TOKEN }}
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+  notify:
+    name: Notify Slack
+    needs: pull-from-crowdin
+    if: ${{ failure() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: iRoachie/slack-github-actions@v2.3.2
+        if: env.SLACK_WEBHOOK_URL != null
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -19,6 +19,9 @@ jest.mock( "@react-navigation/native", () => {
     useNavigation: () => ( {
       navigate: mockedNavigate
     } ),
+    useRoute: ( ) => ( {
+
+    } ),
     useNavigationState: jest.fn( )
   };
 } );
@@ -56,6 +59,9 @@ describe( "TaxonGridItem", ( ) => {
   it( "should navigate to user profile on tap", ( ) => {
     renderTaxonGridItem( );
     fireEvent.press( screen.getByTestId( `TaxonGridItem.Pressable.${mockTaxon.id}` ) );
-    expect( mockedNavigate ).toHaveBeenCalledWith( "TaxonDetails", { id: mockTaxon.id } );
+    expect( mockedNavigate ).toHaveBeenCalledWith( expect.objectContaining( {
+      name: "TaxonDetails",
+      params: { id: mockTaxon.id }
+    } ) );
   } );
 } );

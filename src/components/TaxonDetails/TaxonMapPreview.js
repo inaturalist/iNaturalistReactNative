@@ -20,11 +20,13 @@ import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import TaxonDetailsTitle from "./TaxonDetailsTitle";
 
 type Props = {
+  observation: Object,
   showSpeciesSeenCheckmark: boolean,
   taxon: Object,
 }
 
 const TaxonMapPreview = ( {
+  observation,
   showSpeciesSeenCheckmark,
   taxon
 }: Props ): Node => {
@@ -53,14 +55,22 @@ const TaxonMapPreview = ( {
 
   if ( hasBounds && hasObservationResults ) {
     const region = getMapRegion( obsSearchResponse?.total_bounds );
+    if ( observation ) {
+      const lat = observation.privateLatitude || observation.latitude;
+      const lng = observation.privateLongitude || observation.longitude;
+      if ( typeof ( lat ) === "number" && typeof ( lng ) === "number" ) {
+        region.latitude = lat;
+        region.longitude = lng;
+      }
+    }
 
     return (
       <View className="relative h-[390px]">
         <Heading4 className="mb-3">{t( "MAP" )}</Heading4>
         <Map
-          // Disable interaction
           mapHeight={230}
           mapViewClassName="-mx-3"
+          observation={observation}
           openMapScreen={() => setShowMapModal( true )}
           region={region}
           scrollEnabled={false}
@@ -87,8 +97,7 @@ const TaxonMapPreview = ( {
           modal={(
             <DetailsMap
               region={region}
-              latitude={region.latitude}
-              longitude={region.longitude}
+              observation={observation}
               closeModal={( ) => setShowMapModal( false )}
               tileMapParams={obsParams}
               showLocationIndicator={false}

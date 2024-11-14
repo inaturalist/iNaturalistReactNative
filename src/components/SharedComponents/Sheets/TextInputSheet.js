@@ -9,7 +9,7 @@ import {
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useMemo, useRef, useState } from "react";
-import { Keyboard } from "react-native";
+import { Keyboard, Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 import useTranslation from "sharedHooks/useTranslation";
@@ -146,6 +146,9 @@ const TextInputSheet = ( {
             <Pressable
               onPress={() => {
                 textInputRef?.current?.clear();
+                if ( Platform.OS === "android" ) {
+                  setInput( "" );
+                }
               }}
               accessibilityHint={t( "Deletes-entered-text" )}
               accessibilityRole="button"

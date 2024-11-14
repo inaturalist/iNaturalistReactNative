@@ -15,16 +15,16 @@ const { useRealm } = RealmContext;
 type Props = {
   currentObservation: Object,
   onPressClose: Function,
-  navToObsList: Function,
   observations: Array<Object>,
+  onDelete?: Function,
   updateObservations: Function
 }
 
 const DeleteObservationSheet = ( {
   currentObservation,
   onPressClose,
-  navToObsList,
   observations,
+  onDelete,
   updateObservations
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -47,12 +47,14 @@ const DeleteObservationSheet = ( {
       onPressClose( );
       return;
     }
-    navToObsList( );
+    if ( typeof ( onDelete ) === "function" ) {
+      onDelete( );
+    }
   }, [
     onPressClose,
     multipleObservations,
-    navToObsList,
     observations,
+    onDelete,
     realm,
     addToDeleteQueue,
     updateObservations,

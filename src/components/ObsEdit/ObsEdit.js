@@ -6,7 +6,12 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservationLocation.ts";
+import shouldFetchObservationLocation, {
+  isFromCamera,
+  isFromNoEvidence,
+  isFromSoundRecorder,
+  isNew
+} from "sharedHelpers/shouldFetchObservationLocation.ts";
 import { useCurrentUser, useLocationPermission, useWatchPosition } from "sharedHooks";
 import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
@@ -29,12 +34,14 @@ const ObsEdit = ( ): Node => {
   const observations = useStore( state => state.observations );
   const setCurrentObservationIndex = useStore( state => state.setCurrentObservationIndex );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
+  const resetUploadObservationsSlice = useStore( state => state.resetUploadObservationsSlice );
   const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
   const [resetScreen, setResetScreen] = useState( false );
   const isFocused = useIsFocused( );
   const currentUser = useCurrentUser( );
   const {
     hasPermissions: hasLocationPermission,
+    hasBlockedPermissions: hasBlockedLocationPermission,
     renderPermissionsGate: renderLocationPermissionGate,
     requestPermissions: requestLocationPermission
   } = useLocationPermission( );
@@ -55,18 +62,29 @@ const ObsEdit = ( ): Node => {
     }
   }, [userLocation, updateObservationKeys] );
 
+  useEffect( ( ) => {
+    resetUploadObservationsSlice( );
+  }, [resetUploadObservationsSlice] );
+
   const navToLocationPicker = useCallback( ( ) => {
     stopWatch( subscriptionId );
     navigation.navigate( "LocationPicker" );
   }, [stopWatch, subscriptionId, navigation] );
 
   const onLocationPress = ( ) => {
-    // If we have location permissions, navigate to the location picker
-    if ( hasLocationPermission ) {
-      navToLocationPicker( );
-    } else {
-      // If we don't have location permissions, request them
+    if (
+      !hasLocationPermission
+      && !hasBlockedLocationPermission
+      && isNew( currentObservation )
+      && (
+        isFromCamera( currentObservation )
+        || isFromSoundRecorder( currentObservation )
+        || isFromNoEvidence( currentObservation )
+      )
+    ) {
       requestLocationPermission( );
+    } else {
+      navToLocationPicker( );
     }
   };
 

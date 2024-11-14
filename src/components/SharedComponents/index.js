@@ -4,7 +4,6 @@ export { default as CommentsCount } from "./ActivityCount/CommentsCount";
 export { default as IdentificationsCount } from "./ActivityCount/IdentificationsCount";
 export { default as ActivityIndicator } from "./ActivityIndicator";
 export { default as ButtonBar } from "./ButtonBar";
-export { default as AddObsButton } from "./Buttons/AddObsButton";
 export { default as BackButton } from "./Buttons/BackButton";
 export { default as Button } from "./Buttons/Button";
 export { default as CloseButton } from "./Buttons/CloseButton";

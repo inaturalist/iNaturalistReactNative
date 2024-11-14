@@ -3,7 +3,6 @@
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
-import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/CrosshairCircle";
 import {
@@ -15,7 +14,11 @@ import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import saveObservation from "sharedHelpers/saveObservation.ts";
-import { useCurrentUser, useTranslation } from "sharedHooks";
+import {
+  useCurrentUser,
+  useExitObservationFlow,
+  useTranslation
+} from "sharedHooks";
 import useStore from "stores/useStore";
 
 import ImpreciseLocationSheet from "./Sheets/ImpreciseLocationSheet";
@@ -46,7 +49,7 @@ const BottomButtons = ( {
   const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
   const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
-  const navigation = useNavigation( );
+  const setSavedOrUploadedMultiObsFlow = useStore( state => state.setSavedOrUploadedMultiObsFlow );
   const isNewObs = !currentObservation?._created_at;
   const hasPhotos = currentObservation?.observationPhotos?.length > 0;
   const hasImportedPhotos = hasPhotos && cameraRollUris.length === 0;
@@ -57,6 +60,7 @@ const BottomButtons = ( {
   const [allowUserToUpload, setAllowUserToUpload] = useState( false );
   const [buttonPressed, setButtonPressed] = useState( null );
   const [loading, setLoading] = useState( false );
+  const exitObservationFlow = useExitObservationFlow( );
 
   const hasIdentification = currentObservation?.taxon
     && currentObservation?.taxon.rank_level !== 100;
@@ -65,6 +69,9 @@ const BottomButtons = ( {
 
   const setNextScreen = useCallback( async ( { type }: Object ) => {
     const savedObservation = await saveObservation( currentObservation, cameraRollUris, realm );
+    if ( savedObservation && observations?.length > 1 ) {
+      setSavedOrUploadedMultiObsFlow( );
+    }
     // If we are saving a new observations, reset the stored my obs offset to
     // restore b/c we want MyObs rendered in its default state with this new
     // observation visible at the top
@@ -79,13 +86,8 @@ const BottomButtons = ( {
     }
 
     if ( observations.length === 1 ) {
-      // navigate to ObsList and start upload with uuid
-      navigation.navigate( "TabNavigator", {
-        screen: "TabStackNavigator",
-        params: {
-          screen: "ObsList"
-        }
-      } );
+      // If this is the last observation, we're done
+      exitObservationFlow( );
     } else if ( currentObservationIndex === observations.length - 1 ) {
       observations.pop( );
       setCurrentObservationIndex( currentObservationIndex - 1, observations );
@@ -101,11 +103,12 @@ const BottomButtons = ( {
     addToUploadQueue,
     currentObservation,
     currentObservationIndex,
+    exitObservationFlow,
     isNewObs,
-    navigation,
     resetMyObsOffsetToRestore,
     observations,
     setCurrentObservationIndex,
+    setSavedOrUploadedMultiObsFlow,
     setStartUploadObservations,
     cameraRollUris,
     realm

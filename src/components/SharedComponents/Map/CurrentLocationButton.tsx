@@ -8,28 +8,18 @@ const DROP_SHADOW = getShadow( );
 
 interface Props {
   currentLocationButtonClassName?: string;
-  handlePress: () => void;
+  onPress: () => void;
   showCurrentLocationButton?: boolean;
-  hasPermissions: boolean | undefined;
   renderPermissionsGate: () => React.JSX.Element;
-  requestPermissions: () => void;
 }
 
 const CurrentLocationButton = ( {
   currentLocationButtonClassName,
-  handlePress,
+  onPress,
   showCurrentLocationButton,
-  hasPermissions,
-  renderPermissionsGate,
-  requestPermissions
+  renderPermissionsGate
 }: Props ) => {
   const { t } = useTranslation( );
-  const onPress = ( ) => {
-    if ( !hasPermissions ) {
-      requestPermissions( );
-    }
-    handlePress( );
-  };
   return showCurrentLocationButton && (
     <>
       <INatIconButton

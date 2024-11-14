@@ -1,6 +1,6 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   FullWidthButton,
   Heading4
@@ -20,12 +20,21 @@ type Props = {
 const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ): Node => {
   const [viewChildren, setViewChildren] = useState( false );
   const navigation = useNavigation( );
+  const route = useRoute( );
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
   const scientificNameFirst = currentUser?.prefers_scientific_name_first;
 
   const navigateToTaxonDetails = taxonId => (
-    navigation.push( "TaxonDetails", { id: taxonId, hideNavButtons } )
+    navigation.navigate( {
+      // Ensure button mashing doesn't open multiple TaxonDetails instances
+      key: `${route.key}-Taxonomy-TaxonDetails-${taxonId}`,
+      name: "TaxonDetails",
+      params: {
+        id: taxonId,
+        hideNavButtons
+      }
+    } )
   );
 
   return (

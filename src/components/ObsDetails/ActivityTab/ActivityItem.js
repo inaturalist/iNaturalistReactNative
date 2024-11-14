@@ -1,6 +1,6 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   Divider, INatIconButton, UserText
 } from "components/SharedComponents";
@@ -42,6 +42,7 @@ const ActivityItem = ( {
   belongsToCurrentUser
 }: Props ): Node => {
   const navigation = useNavigation( );
+  const route = useRoute( );
   const { taxon, user, disagreement } = item;
   const isCurrent = item.current !== undefined
     ? item.current
@@ -54,7 +55,14 @@ const ActivityItem = ( {
     && isFirstDisplay
     && currentUserId;
 
-  const navToTaxonDetails = ( ) => navigation.push( "TaxonDetails", { id: taxon.id } );
+  const navToTaxonDetails = ( ) => (
+    navigation.navigate( {
+      // Ensure button mashing doesn't open multiple TaxonDetails instances
+      key: `${route.key}-ActivityItem-TaxonDetails-${taxon.id}`,
+      name: "TaxonDetails",
+      params: { id: taxon.id }
+    } )
+  );
 
   return (
     <View className="flex-column">
