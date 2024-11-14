@@ -8,6 +8,9 @@ import {
   ActivityIndicator,
   INatIconButton
 } from "components/SharedComponents";
+import {
+  View
+} from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
 import { Alert } from "react-native";
@@ -115,32 +118,31 @@ const FaveButton = ( {
     return null;
   }
 
-  if ( loading ) {
-    return (
-      <ActivityIndicator
-        className={classNames( "absolute bottom-5 right-5", {
-          "top-0": top
-        } )}
-        size={25}
-      />
-    );
-  }
-
   return (
-    <INatIconButton
-      icon={isFaved
-        ? "star"
-        : "star-bold-outline"}
-      size={25}
-      onPress={toggleFave}
-      color={colors.white}
-      className={classNames( "absolute bottom-3 right-3", {
-        "top-0": top
+    <View
+      className={classNames( "absolute right-3 w-[44px] h-[44px] justify-center", {
+        "top-0": top,
+        "bottom-3": !top
       } )}
-      accessibilityLabel={isFaved
-        ? t( "Remove-favorite" )
-        : t( "Add-favorite" )}
-    />
+    >
+      {
+        loading
+          ? <ActivityIndicator size={25} />
+          : (
+            <INatIconButton
+              icon={isFaved
+                ? "star"
+                : "star-bold-outline"}
+              size={25}
+              onPress={toggleFave}
+              color={colors.white}
+              accessibilityLabel={isFaved
+                ? t( "Remove-favorite" )
+                : t( "Add-favorite" )}
+            />
+          )
+      }
+    </View>
   );
 };
 
