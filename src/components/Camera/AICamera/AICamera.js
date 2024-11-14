@@ -15,7 +15,11 @@ import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { convertOfflineScoreToConfidence } from "sharedHelpers/convertScores.ts";
-import { useDebugMode, useTranslation } from "sharedHooks";
+import { log } from "sharedHelpers/logger";
+import {
+  useDebugMode, usePerformance, useTranslation
+} from "sharedHooks";
+import { isDebugMode } from "sharedHooks/useDebugMode";
 import colors from "styles/tailwindColors";
 
 import {
@@ -30,6 +34,8 @@ import FrameProcessorCamera from "./FrameProcessorCamera";
 import usePredictions from "./hooks/usePredictions";
 
 const isTablet = DeviceInfo.isTablet();
+
+const logger = log.extend( "AICamera" );
 
 // const exampleTaxonResult = {
 //   id: 12704,
@@ -94,6 +100,13 @@ const AICamera = ( {
 
   const { t } = useTranslation();
   const navigation = useNavigation();
+
+  const { loadTime } = usePerformance( {
+    isLoading: camera.current !== null
+  } );
+  if ( isDebugMode( ) && loadTime ) {
+    logger.info( loadTime );
+  }
 
   // only show predictions when rank is order or lower, like we do on Seek
   const showPrediction = ( result && result?.taxon?.rank_level <= 40 ) || false;

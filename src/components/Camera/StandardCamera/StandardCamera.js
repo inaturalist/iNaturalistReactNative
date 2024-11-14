@@ -22,7 +22,9 @@ import DeviceInfo from "react-native-device-info";
 import { Snackbar } from "react-native-paper";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
-import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
+import { log } from "sharedHelpers/logger";
+import { useDeviceOrientation, usePerformance } from "sharedHooks";
+import { isDebugMode } from "sharedHooks/useDebugMode";
 import useStore from "stores/useStore";
 
 import {
@@ -38,6 +40,8 @@ import useBackPress from "./hooks/useBackPress";
 import PhotoPreview from "./PhotoPreview";
 
 const { useRealm } = RealmContext;
+
+const logger = log.extend( "StandardCamera" );
 
 const isTablet = DeviceInfo.isTablet( );
 
@@ -81,6 +85,13 @@ const StandardCamera = ( {
     takingPhoto,
     toggleFlash
   } = useTakePhoto( camera, !!addEvidence, device );
+
+  const { loadTime } = usePerformance( {
+    isLoading: camera.current !== null
+  } );
+  if ( isDebugMode( ) && loadTime ) {
+    logger.info( loadTime );
+  }
 
   const { deviceStorageFull, showStorageFullAlert } = useDeviceStorageFull();
 
