@@ -109,9 +109,6 @@ exports[`TaxonResult should render correctly 1`] = `
           [
             [
               {
-                "maxHeight": 210,
-              },
-              {
                 "overflow": "hidden",
               },
               {

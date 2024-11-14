@@ -23,7 +23,6 @@ const useGridLayout = layout => {
     }
     if ( !isTablet ) return 2;
     if ( isLandscapeMode ) return 6;
-    if ( screenWidth <= BREAKPOINTS.xl ) return 2;
     return 4;
   };
   const numColumns = calculateNumColumns();
