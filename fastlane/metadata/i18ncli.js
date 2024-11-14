@@ -49,7 +49,7 @@ const SUPPORTED_IOS_METADATA_LOCALES = [
   "default"
 ];
 
-const MAPPINGS = {
+const IOS_MAPPINGS = {
   ar: "ar-SA",
   de: "de-DE",
   fr: "fr-FR",
@@ -188,7 +188,7 @@ const ANDROID_MAPPINGS = {
 };
 
 function mapLanguageCodeToSupportedDirectoryName( languageCode ) {
-  return MAPPINGS[languageCode];
+  return IOS_MAPPINGS[languageCode];
 }
 
 async function renameDirectories( ) {
