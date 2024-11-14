@@ -6,9 +6,6 @@ exports[`ObsGridItem for an observation with a photo should render 1`] = `
     [
       [
         {
-          "maxHeight": 210,
-        },
-        {
           "overflow": "hidden",
         },
         {
@@ -249,9 +246,6 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
   style={
     [
       [
-        {
-          "maxHeight": 210,
-        },
         {
           "overflow": "hidden",
         },

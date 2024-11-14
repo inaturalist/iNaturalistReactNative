@@ -63,7 +63,6 @@ const ObsImagePreview = ( {
     : "rounded-2xl";
 
   const imageClassNames = [
-    "max-h-[210px]",
     "overflow-hidden",
     "relative",
     borderRadius,
