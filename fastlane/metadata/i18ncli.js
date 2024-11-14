@@ -56,7 +56,7 @@ const IOS_MAPPINGS = {
   en_AU: "en-AU",
   en_CA: "en-CA",
   en_GB: "en-GB",
-  en_US: "en-US",
+  en: "en-US",
   es: "es-ES",
   es_MX: "es-MX",
   fr_CA: "fr-CA",
