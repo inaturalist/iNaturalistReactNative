@@ -381,7 +381,6 @@
   "November": "Listopad",
   "Obervations-must-be-manually-added": "Pozorování musí být ručně přidána do tradičního projektu, a to buď během fáze nahrávání, nebo poté, co bylo pozorování sdíleno s iNaturalist. Uživatel se také musí připojit k tradičnímu projektu, aby k němu přidal svá pozorování.",
   "Obscured": "Přibližné",
-  "Obscured-observation-location-map-description": "Poloha tohoto pozorování je zastřená. Vidíte náhodně vybraný bod v polygonu zastínění.",
   "Observation": "Pozorování",
   "Observation-Attribution": "Pozorování: © { $userName } · { $restrictions }",
   "OBSERVATION-BUTTON": "TLAČÍTKO POZOROVÁNÍ",
