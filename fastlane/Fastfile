@@ -557,6 +557,8 @@ end
 lane :prod do
   desc "Set up App Store version and upload new metadata"
 
+  version = get_version_number( xcodeproj: XCODEPROJ, target: "iNaturalistReactNative" )
+
   # Get all build numbers between the last released version and the current build number
   build_number = get_build_number( xcodeproj: XCODEPROJ )
   published_build_number = app_store_build_number()
@@ -589,10 +591,14 @@ lane :prod do
 
   upload_to_app_store(
     build_number: build_number,
+    app_version: version,
     automatic_release: false,
     submit_for_review: false,
     force: false,
-    skip_binary_upload: false,
+    # We don't want to upload the current binary but promote it from TestFlight to AppStore
+    # TODO: this does not work in conjunction with submit_for_review: false, so for now the new build
+    # needs to be manually attached
+    skip_binary_upload: true,
     skip_metadata: false,
     skip_screenshots: true,
     metadata_path: "./fastlane/metadata/ios",
@@ -601,6 +607,6 @@ lane :prod do
     precheck_include_in_app_purchases: false
   )
 
-  # UI.important "This just sets up the version in the App Store. You need to go there " \
-  #   "to attach a build and submit for review."
+  UI.important "This just sets up the version in the App Store. You need to go there " \
+    "to attach a build and submit for review."
 end
