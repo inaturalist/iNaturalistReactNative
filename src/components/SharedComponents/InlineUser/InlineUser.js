@@ -47,7 +47,7 @@ const InlineUser = ( { user, isConnected }: Props ): Node => {
   return (
     <Pressable
       testID="InlineUser"
-      className="flex flex-row items-center"
+      className="flex flex-row items-center shrink"
       accessibilityRole="link"
       accessibilityLabel={t( "User", { userHandle } )}
       accessibilityHint={t( "Navigates-to-user-profile" )}
@@ -56,7 +56,15 @@ const InlineUser = ( { user, isConnected }: Props ): Node => {
       }}
     >
       <View className="mr-[7px]">{renderUserIcon()}</View>
-      <Body3 selectable>{userHandle}</Body3>
+      <Body3
+        className="w-3/4"
+        numberOfLines={1}
+        ellipsizeMode="tail"
+        selectable
+        maxFontSizeMultiplier={1}
+      >
+        {userHandle}
+      </Body3>
     </Pressable>
   );
 };

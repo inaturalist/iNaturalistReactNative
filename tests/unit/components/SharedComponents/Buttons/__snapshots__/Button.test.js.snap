@@ -72,7 +72,7 @@ exports[`Button focus should render correctly 1`] = `
   }
 >
   <Text
-    maxFontSizeMultiplier={2}
+    maxFontSizeMultiplier={1.5}
     style={
       [
         {
@@ -187,7 +187,7 @@ exports[`Button focus when disabled should render correctly 1`] = `
   }
 >
   <Text
-    maxFontSizeMultiplier={2}
+    maxFontSizeMultiplier={1.5}
     style={
       [
         {
@@ -320,7 +320,7 @@ exports[`Button neutral should render correctly 1`] = `
   }
 >
   <Text
-    maxFontSizeMultiplier={2}
+    maxFontSizeMultiplier={1.5}
     style={
       [
         {
@@ -453,7 +453,7 @@ exports[`Button neutral when disabled should render correctly 1`] = `
   }
 >
   <Text
-    maxFontSizeMultiplier={2}
+    maxFontSizeMultiplier={1.5}
     style={
       [
         {
@@ -571,7 +571,7 @@ exports[`Button primary should render correctly 1`] = `
   }
 >
   <Text
-    maxFontSizeMultiplier={2}
+    maxFontSizeMultiplier={1.5}
     style={
       [
         {
@@ -689,7 +689,7 @@ exports[`Button primary when disabled should render correctly 1`] = `
   }
 >
   <Text
-    maxFontSizeMultiplier={2}
+    maxFontSizeMultiplier={1.5}
     style={
       [
         {
@@ -807,7 +807,7 @@ exports[`Button warning should render correctly 1`] = `
   }
 >
   <Text
-    maxFontSizeMultiplier={2}
+    maxFontSizeMultiplier={1.5}
     style={
       [
         {
@@ -922,7 +922,7 @@ exports[`Button warning when disabled should render correctly 1`] = `
   }
 >
   <Text
-    maxFontSizeMultiplier={2}
+    maxFontSizeMultiplier={1.5}
     style={
       [
         {

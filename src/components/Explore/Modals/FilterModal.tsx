@@ -654,7 +654,12 @@ const FilterModal = ( {
           accessibilityLabel={t( "Go-back" )}
         />
         <View className="flex-1 items-center flex-row">
-          <Heading1 className="ml-3 wrap">{t( "Explore-Filters" )}</Heading1>
+          <Heading1
+            className="ml-3 wrap"
+            maxFontSizeMultiplier={1}
+          >
+            {t( "Explore-Filters" )}
+          </Heading1>
           {numberOfFilters !== 0 && (
             <View className="w-[50px] ml-3">
               <NumberBadge number={numberOfFilters} />
@@ -824,7 +829,7 @@ const FilterModal = ( {
               {user
                 ? (
                   <Pressable
-                    className="flex-row justify-between items-center"
+                    className="flex-row justify-around items-center"
                     accessibilityRole="button"
                     accessibilityLabel={t( "Change-user" )}
                     onPress={() => {
