@@ -8,18 +8,12 @@ import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
+  useMemo,
   useRef
 } from "react";
 import { Dimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "sharedHooks";
-
-const { width } = Dimensions.get( "window" );
-const marginOnWide = {
-  marginHorizontal: width > 500
-    ? ( width - 500 ) / 2
-    : 0
-};
 
 // eslint-disable-next-line
 const noHandle = ( ) => <></>;
@@ -52,6 +46,14 @@ const StandardBottomSheet = ( {
   if ( snapPoints ) {
     throw new Error( "BottomSheet does not accept snapPoints as a prop." );
   }
+
+  // Needs to be in the component b/c width changes on rotation in tablets
+  const { width } = Dimensions.get( "window" );
+  const style = useMemo( ( ) => ( {
+    marginHorizontal: width > 500
+      ? ( width - 500 ) / 2
+      : 0
+  } ), [width] );
 
   const { t } = useTranslation( );
   const sheetRef = useRef<BottomSheet>( null );
@@ -102,7 +104,7 @@ const StandardBottomSheet = ( {
       handleComponent={noHandle}
       index={0}
       ref={sheetRef}
-      style={marginOnWide}
+      style={style}
     >
       <BottomSheetScrollView
         keyboardShouldPersistTaps={keyboardShouldPersistTaps}
