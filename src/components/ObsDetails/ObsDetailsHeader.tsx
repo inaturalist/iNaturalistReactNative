@@ -56,6 +56,7 @@ const ObsDetailsHeader = ( {
           : "rgba(0,0,0,0.6)",
         "transparent"
       ]}
+      pointerEvents="box-none"
     >
       <OverlayHeader
         testID="ObsDetails.BackButton"

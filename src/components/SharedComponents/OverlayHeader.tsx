@@ -15,7 +15,10 @@ const OverlayHeader = ( {
   rightHeaderButton,
   testID
 }: Props ) => (
-  <View className="w-full justify-between flex-row px-[13px] h-100">
+  <View
+    className="w-full justify-between flex-row px-[13px] h-100"
+    pointerEvents="box-none"
+  >
     <View className="pt-[21px]">
       <BackButton color="white" inCustomHeader testID={testID} />
     </View>
