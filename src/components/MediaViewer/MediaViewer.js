@@ -84,7 +84,12 @@ const MediaViewer = ( {
   // that no longer exists, so change it to the previous one
   useEffect( ( ) => {
     if ( selectedMediaIndex >= uris.length ) {
-      setSelectedMediaIndex( Math.max( 0, selectedMediaIndex - 1 ) );
+      const newIndex = Math.max( 0, selectedMediaIndex - 1 );
+      setSelectedMediaIndex( newIndex );
+      horizontalScroll?.current?.scrollToIndex( {
+        index: newIndex,
+        animated: true
+      } );
     }
   }, [selectedMediaIndex, setSelectedMediaIndex, uris.length] );
 
