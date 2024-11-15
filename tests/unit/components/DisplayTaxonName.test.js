@@ -42,6 +42,13 @@ const uncapitalizedTaxon = factory( "LocalTaxon", {
   rank_level: 10
 } );
 
+const multipleLexiconTaxon = factory( "LocalTaxon", {
+  name: "Haematopus bachmani",
+  preferred_common_name: "Klippen-Austernfischer · Black Oystercatcher",
+  rank: "species",
+  rank_level: 10
+} );
+
 describe( "DisplayTaxonName", ( ) => {
   describe( "when common name is first", ( ) => {
     test( "renders correct taxon for species", ( ) => {
@@ -103,6 +110,16 @@ describe( "DisplayTaxonName", ( ) => {
       expect(
         screen.getByTestId( `display-taxon-name.${subspeciesTaxon.id}` )
       ).toHaveTextContent( "Silver LupineLupinus albifrons var. collinus" );
+    } );
+
+    test( "displays correct capitalization for multiple lexicons", ( ) => {
+      render( <DisplayTaxonName taxon={multipleLexiconTaxon} /> );
+
+      expect(
+        screen.getByTestId( `display-taxon-name.${multipleLexiconTaxon.id}` )
+      ).toHaveTextContent(
+        "Klippen-Austernfischer · Black Oystercatcher"
+      );
     } );
   } );
 

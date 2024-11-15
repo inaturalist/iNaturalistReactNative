@@ -150,6 +150,7 @@ const ExploreContainerWithContext = ( ): Node => {
         updateProject={updateProject}
         placeMode={state.placeMode}
         hasLocationPermissions={hasLocationPermissions}
+        renderLocationPermissionsGate={renderPermissionsGate}
         requestLocationPermissions={requestLocationPermissions}
         startFetching={startFetching}
         currentMapRegion={mapRegion}

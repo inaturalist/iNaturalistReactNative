@@ -8,8 +8,7 @@ import type {
 } from "react-native-vision-camera";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import {
-  rotatePhotoPatch,
-  rotationTempPhotoPatch
+  rotatePhotoPatch
 } from "sharedHelpers/visionCameraPatches";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
 import useStore from "stores/useStore";
@@ -40,11 +39,10 @@ const useTakePhoto = (
   const [takePhotoOptions, setTakePhotoOptions] = useState<TakePhotoOptions>( initialPhotoOptions );
   const [takingPhoto, setTakingPhoto] = useState( false );
 
-  const saveRotatedPhotoToDocumentsDirectory = async ( cameraPhoto: PhotoFile ) => {
-    // Rotate the original photo depending on device orientation
-    const photoRotation = rotationTempPhotoPatch( cameraPhoto, deviceOrientation );
-    return rotatePhotoPatch( cameraPhoto, photoRotation );
-  };
+  // Rotate the original photo depending on device orientation
+  const saveRotatedPhotoToDocumentsDirectory = async (
+    cameraPhoto: PhotoFile
+  ) => rotatePhotoPatch( cameraPhoto, deviceOrientation );
 
   const updateStore = async ( uri, options ) => {
     const { replaceExisting = false } = options;

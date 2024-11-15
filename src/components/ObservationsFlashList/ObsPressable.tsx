@@ -1,66 +1,104 @@
-import { useNavigation } from "@react-navigation/native";
-import navigateToObsEdit from "components/ObsEdit/helpers/navigateToObsEdit.ts";
-import React, { PropsWithChildren } from "react";
-import { Pressable } from "react-native";
+import { Pressable } from "components/styledComponents";
+import React from "react";
 import RealmObservation from "realmModels/Observation";
 import { useTranslation } from "sharedHooks";
-import useStore from "stores/useStore";
+
+import ObsGridItem from "./ObsGridItem";
+import ObsListItem from "./ObsListItem";
 
 // TODO remove when we figure out how to type the Realm models
 interface Observation extends RealmObservation {
-  species_guess?: string;
   uuid: string;
 }
 
-interface Props extends PropsWithChildren {
-  observation: Observation;
-  // Uniquely identify the list this observation appears in so we can ensure
-  // ObsDetails doesn't get pushed onto the stack twice after multiple taps
-  obsListKey: string;
-  testID?: string;
-}
+type Props = {
+  currentUser: Object,
+  queued: boolean,
+  explore: boolean,
+  onUploadButtonPress: ( ) => void,
+  onItemPress: ( ) => void,
+  gridItemStyle: Object,
+  isLargeFontScale: boolean,
+  layout: "list" | "grid",
+  observation: Observation,
+  uploadProgress: number,
+  unsynced: boolean
+};
 
 const ObsPressable = ( {
-  children,
+  currentUser,
+  queued,
+  explore,
+  isLargeFontScale,
+  onUploadButtonPress,
+  onItemPress,
+  gridItemStyle,
+  layout,
   observation,
-  obsListKey = "unknown",
-  testID
+  uploadProgress,
+  unsynced
 }: Props ) => {
-  const navigation = useNavigation( );
   const { t } = useTranslation( );
-  const prepareObsEdit = useStore( state => state.prepareObsEdit );
-  const setMyObsOffsetToRestore = useStore( state => state.setMyObsOffsetToRestore );
+  const photo = observation?.observationPhotos?.[0]?.photo
+    || observation?.observation_photos?.[0]?.photo
+    || null;
 
-  const unsynced = typeof observation.wasSynced !== "undefined" && !observation.wasSynced( );
-
-  const navigateToObservation = ( ) => {
-    const { uuid } = observation;
-    if ( unsynced ) {
-      prepareObsEdit( observation );
-      navigateToObsEdit( navigation, setMyObsOffsetToRestore );
-    } else {
-      navigation.navigate( {
-        key: `Obs-${obsListKey}-${uuid}`,
-        name: "ObsDetails",
-        params: { uuid }
-      } );
-    }
-  };
+  const obsPhotosCount = observation?.observationPhotos?.length
+    || observation?.observation_photos?.length
+    || 0;
+  const hasSound = !!(
+    observation?.observationSounds?.length
+    || observation?.observation_sounds?.length
+  );
 
   return (
     <Pressable
-      testID={testID}
-      onPress={navigateToObservation}
+      testID={`ObsPressable.${observation.uuid}`}
+      onPress={onItemPress}
       accessibilityRole="link"
       accessibilityHint={unsynced
         ? t( "Navigates-to-observation-edit-screen" )
         : t( "Navigates-to-observation-details" )}
       accessibilityLabel={t( "Observation-Name", {
-        // TODO: use the name that the user prefers (common or scientific)
+      // TODO: use the name that the user prefers (common or scientific)
         scientificName: observation.species_guess
       } )}
+      disabled={queued}
     >
-      {children}
+      {
+        layout === "grid"
+          ? (
+            <ObsGridItem
+              currentUser={currentUser}
+              explore={explore}
+              isLargeFontScale={isLargeFontScale}
+              onUploadButtonPress={onUploadButtonPress}
+              observation={observation}
+              queued={queued}
+              // 03022023 it seems like Flatlist is designed to work
+              // better with RN styles than with Tailwind classes
+              style={gridItemStyle}
+              uploadProgress={uploadProgress}
+              photo={photo}
+              obsPhotosCount={obsPhotosCount}
+              hasSound={hasSound}
+            />
+          )
+          : (
+            <ObsListItem
+              currentUser={currentUser}
+              explore={explore}
+              onUploadButtonPress={onUploadButtonPress}
+              observation={observation}
+              queued={queued}
+              uploadProgress={uploadProgress}
+              unsynced={unsynced}
+              photo={photo}
+              obsPhotosCount={obsPhotosCount}
+              hasSound={hasSound}
+            />
+          )
+      }
     </Pressable>
   );
 };

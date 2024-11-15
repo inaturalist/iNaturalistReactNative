@@ -21,7 +21,6 @@ import React, {
 } from "react";
 import { FlatList } from "react-native";
 import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
-import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import { getShadow } from "styles/global";
 
 import EmptySearchResults from "./EmptySearchResults";
@@ -33,16 +32,23 @@ const DROP_SHADOW = getShadow( {
 
 type Props = {
   closeModal: Function,
+  hasPermissions?: boolean,
+  renderPermissionsGate: Function,
+  requestPermissions: Function,
   updateLocation: Function
 };
 
-const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node => {
+const ExploreLocationSearch = ( {
+  closeModal,
+  hasPermissions,
+  renderPermissionsGate,
+  requestPermissions,
+  updateLocation
+}: Props ): Node => {
   const { t } = useTranslation( );
   const { dispatch, defaultExploreLocation } = useExplore( );
 
   const [locationName, setLocationName] = useState( "" );
-
-  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
 
   const resetPlace = useCallback(
     ( ) => {
@@ -69,13 +75,10 @@ const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node =>
     }
   );
 
-  const onPlaceSelected = useCallback(
-    place => {
-      updateLocation( place );
-      closeModal();
-    },
-    [updateLocation, closeModal]
-  );
+  const onPlaceSelected = useCallback( place => {
+    updateLocation( place );
+    closeModal();
+  }, [updateLocation, closeModal] );
 
   const renderItem = useCallback(
     ( { item: place } ) => (
@@ -108,10 +111,10 @@ const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node =>
   }, [dispatch, defaultExploreLocation, closeModal] );
 
   const onNearbyPressed = () => {
-    if ( !hasPermissions ) {
-      requestPermissions( );
-    } else {
+    if ( hasPermissions ) {
       setNearbyLocation( );
+    } else {
+      requestPermissions( );
     }
   };
 

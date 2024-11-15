@@ -85,7 +85,8 @@ export const rotationTempPhotoPatch = ( photo, deviceOrientation ) => {
 // This patch is used to rotate the photo taken with the vision camera.
 // Because the photos coming from the vision camera are not oriented correctly, we
 // rotate them with image-resizer as a first step, replacing the original photo.
-export const rotatePhotoPatch = async ( photo, rotation ) => {
+export const rotatePhotoPatch = async ( photo, deviceOrientation ) => {
+  const rotation = rotationTempPhotoPatch( photo, deviceOrientation );
   const path = rotatedOriginalPhotosPath;
   await RNFS.mkdir( path );
   // Rotate the image with ImageResizer
@@ -112,6 +113,19 @@ export const rotatePhotoPatch = async ( photo, rotation ) => {
 // in the future, we keep this patch here to remind us to put the rotation back to resizing
 // the smaller photo.
 export const rotationLocalPhotoPatch = () => 0;
+
+export const rotationValue = deviceOrientation => {
+  switch ( deviceOrientation ) {
+    case LANDSCAPE_LEFT:
+      return -90;
+    case LANDSCAPE_RIGHT:
+      return 90;
+    case PORTRAIT_UPSIDE_DOWN:
+      return 180;
+    default:
+      return 0;
+  }
+};
 
 // Needed for react-native-vision-camera v3.3.1
 // This patch is used to rotate the camera view on iPads.

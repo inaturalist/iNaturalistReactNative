@@ -180,6 +180,17 @@ const PermissionGateContainer = ( {
       setModalShown( true );
       return () => undefined;
     }
+    if (
+      ( result === RESULTS.GRANTED || result === RESULTS.LIMITED )
+      && !children
+    ) {
+      setModalShown( false );
+      return ( ) => undefined;
+    }
+    if ( result === RESULTS.BLOCKED ) {
+      setModalShown( false );
+      return ( ) => undefined;
+    }
     if ( !withoutNavigation ) {
       const unsubscribe = navigation.addListener( "focus", async () => {
         await checkPermission( );
@@ -197,6 +208,8 @@ const PermissionGateContainer = ( {
     withoutNavigation
   ] );
 
+  // If permission was granted and there are no children to render, we can
+  // just hide the modal and do nothing
   useEffect( ( ) => {
     if (
       ( result === RESULTS.GRANTED || result === RESULTS.LIMITED )
@@ -204,45 +217,41 @@ const PermissionGateContainer = ( {
     ) {
       setModalShown( false );
     }
-  }, [result, children, setModalShown] );
+  }, [result, children] );
 
   useEffect( ( ) => {
     // permission already denied
     if ( result === RESULTS.BLOCKED ) {
-      setModalShown( false );
+      setModalShown( true );
     }
-  }, [result, setModalShown] );
+  }, [result] );
 
+  // If the app just returned to the foreground, check permission again,
+  // e.g. when the user leaves to change permission in system settings,
+  // then comes back, if permissions were previously blocked, we want to check again
   useEffect( () => {
-  // We need to handle permission changes manually on Android
-  // Permissions modified from the settings are not captured automatically
-  // So we check permissions when the app is transitioned from background to foreground
-  // This check is performed only when the platform is Android and the permission result is BLOCKED
-    if ( Platform.OS === "android"
-       && result === RESULTS.BLOCKED ) {
-      const onAppStateChange = async ( nextAppState: AppStateStatus ) => {
-        if ( prevAppState.current.match( /inactive|background/ ) && nextAppState === "active" ) {
+    if ( result !== RESULTS.BLOCKED ) return () => undefined;
+    const subscription = AppState.addEventListener(
+      "change",
+      async ( nextAppState: AppStateStatus ) => {
+        if (
+          prevAppState.current.match( /inactive|background/ )
+          && nextAppState === "active"
+        ) {
           await checkPermission();
         }
-
         prevAppState.current = nextAppState;
-      };
+      }
+    );
 
-      const subscription = AppState.addEventListener( "change", onAppStateChange );
-
-      return () => {
-        subscription?.remove();
-      };
-    }
-
-    return () => undefined;
+    return () => {
+      subscription?.remove();
+    };
   }, [result, checkPermission] );
 
   const closeModal = useCallback( ( ) => {
     setModalShown( false );
-  }, [
-    setModalShown
-  ] );
+  }, [] );
 
   const onModalHide = useCallback( ( ) => {
     if ( onModalHideProp ) {
@@ -274,11 +283,16 @@ const PermissionGateContainer = ( {
     result
   ] );
 
-  // If permission results asked and answered, render children
+  // If permission granted and children are gated, let the children out
   if (
-    ( result === RESULTS.GRANTED || result === RESULTS.LIMITED || result === RESULTS.BLOCKED )
+    (
+      result === RESULTS.GRANTED
+      || result === RESULTS.LIMITED
+    )
     && children
-  ) return children;
+  ) {
+    return children;
+  }
 
   if ( !result ) return null;
 

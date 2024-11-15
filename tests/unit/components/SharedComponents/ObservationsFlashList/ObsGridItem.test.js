@@ -10,13 +10,14 @@ describe( "ObsGridItem", () => {
     } );
 
     it( "should render", () => {
+      const photo = factory( "LocalPhoto", {
+        url: "https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg"
+      } );
       const observationWithStablePhotoUrl = factory( "LocalObservation", {
         uuid: "00000000-0000-0000-0000-000000000000",
         observationPhotos: [
           factory( "LocalObservationPhoto", {
-            photo: factory( "LocalPhoto", {
-              url: "https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg"
-            } )
+            photo
           } )
         ]
       } );
@@ -24,16 +25,21 @@ describe( "ObsGridItem", () => {
         <ObsGridItem
           observation={observationWithStablePhotoUrl}
           uploadState={{ uploadProgress: false }}
+          photo={photo}
         />
       );
       expect( screen ).toMatchSnapshot();
     } );
 
     it( "should have photo", async ( ) => {
+      const photo = observationWithPhoto?.observationPhotos?.[0]?.photo
+        || observationWithPhoto?.observation_photos?.[0]?.photo
+        || null;
       render(
         <ObsGridItem
           observation={observationWithPhoto}
           uploadState={{ uploadProgress: false }}
+          photo={photo}
         />
       );
       expect( await screen.findByTestId( "ObsList.photo" ) ).toBeTruthy( );

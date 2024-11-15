@@ -44,21 +44,21 @@ const exploreViewIcon = {
 };
 
 type Props = {
-  // TODO: change to PLACE_MODE in Typescript
-  canFetch?: boolean,
+  canFetch?: boolean, // TODO: change to PLACE_MODE in Typescript
   closeFiltersModal: Function,
   count: Object,
   currentExploreView: string,
+  currentMapRegion: Object,
   filterByIconicTaxonUnknown: Function,
   handleUpdateCount: Function,
-  hasLocationPermissions: ?boolean,
+  hasLocationPermissions?: boolean,
   hideBackButton: boolean,
   isConnected: boolean,
   isFetchingHeaderCount: boolean,
-  currentMapRegion: Object,
   openFiltersModal: Function,
   placeMode: string,
   queryParams: Object,
+  renderLocationPermissionsGate: Function,
   requestLocationPermissions: Function,
   setCurrentExploreView: Function,
   setCurrentMapRegion: Function,
@@ -67,7 +67,7 @@ type Props = {
   updateLocation: Function,
   updateProject: Function,
   updateTaxon: Function,
-  updateUser: Function,
+  updateUser: Function
 }
 
 const Explore = ( {
@@ -75,16 +75,17 @@ const Explore = ( {
   closeFiltersModal,
   count,
   currentExploreView,
+  currentMapRegion,
   filterByIconicTaxonUnknown,
   handleUpdateCount,
   hasLocationPermissions,
   hideBackButton,
   isConnected,
   isFetchingHeaderCount,
-  currentMapRegion,
   openFiltersModal,
   placeMode,
   queryParams,
+  renderLocationPermissionsGate,
   requestLocationPermissions,
   setCurrentExploreView,
   setCurrentMapRegion,
@@ -116,12 +117,15 @@ const Explore = ( {
       count={headerCount}
       exploreView={currentExploreView}
       exploreViewIcon={icon}
+      hasLocationPermissions={hasLocationPermissions}
       hideBackButton={hideBackButton}
       isFetchingHeaderCount={isFetchingHeaderCount}
-      openFiltersModal={openFiltersModal}
-      updateTaxon={updateTaxon}
-      updateLocation={updateLocation}
       onPressCount={( ) => setShowExploreBottomSheet( true )}
+      openFiltersModal={openFiltersModal}
+      renderLocationPermissionsGate={renderLocationPermissionsGate}
+      requestLocationPermissions={requestLocationPermissions}
+      updateLocation={updateLocation}
+      updateTaxon={updateTaxon}
     />
   );
 

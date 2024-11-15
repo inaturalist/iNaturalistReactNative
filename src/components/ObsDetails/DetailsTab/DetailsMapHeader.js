@@ -1,38 +1,36 @@
 // @flow
 
 import {
-  Body4,
   ObservationLocation
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useTranslation } from "sharedHooks";
+
+import ObscurationExplanation from "./ObscurationExplanation";
 
 type Props = {
-  observation: Object,
-  obscured?: boolean
+  currentUser: { id: number },
+  observation: Object
 }
 
 const DetailsMapHeader = ( {
-  observation,
-  obscured
-}: Props ): Node => {
-  const { t } = useTranslation( );
-  return (
-    <View className="flex-1 flex-col">
-      <ObservationLocation
+  currentUser,
+  observation
+}: Props ): Node => (
+  <View className="flex-1 flex-col">
+    <ObservationLocation
+      observation={observation}
+      withCoordinates
+    />
+    {observation.obscured && (
+      <ObscurationExplanation
+        textClassName="mt-3"
         observation={observation}
-        obscured={obscured}
-        withCoordinates
+        currentUser={currentUser}
       />
-      {obscured && (
-        <Body4 className="mt-3 italic">
-          {t( "Obscured-observation-location-map-description" )}
-        </Body4>
-      ) }
-    </View>
-  );
-};
+    ) }
+  </View>
+);
 
 export default DetailsMapHeader;
