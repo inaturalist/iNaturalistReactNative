@@ -242,6 +242,8 @@ const TaxonDetails = ( ): Node => {
       return <Body1 className="mx-3">{ t( "Something-went-wrong" ) }</Body1>;
     }
 
+    if ( !taxon ) return null;
+
     return (
       <View className="mx-3">
         <EstablishmentMeans taxon={taxon} />
