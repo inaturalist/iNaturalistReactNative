@@ -200,11 +200,8 @@ lane :tag do | options |
   set_android_version_name( VERSION )
   tag = "v#{VERSION}+#{build_number}"
 
-  # Get release notes
-  # Bit silly but takes advantage of existing syntax highlighting
-  fname = "COMMIT_EDITMSG"
-  File.open( fname, "w" ) do | f |
-    f << <<~INSTRUCTIONS
+  # Prompt for release notes
+  instructions = <<~INSTRUCTIONS
 
 
       # Enter notes about what's new in #{tag}. Lines beginning with # will be ignored.
@@ -213,22 +210,8 @@ lane :tag do | options |
       # Here's what changed since the last tag:
       #{changes}
     INSTRUCTIONS
-  end
-  system "#{EDITOR} #{fname}", exception: true
-  release_notes = ""
-  File.readlines( fname ).each do | line |
-    release_notes += line unless line[0] == "#"
-  end
-  release_notes.strip!
-  FileUtils.rm( fname )
-  if release_notes.strip.size.zero?
-    reset_git_repo skip_clean: true
-    UI.abort_with_message! "You gotta enter release notes!"
-  end
-  if release_notes.strip.length > 500
-    reset_git_repo skip_clean: true
-    UI.abort_with_message! "Release notes must be 500 characters or less"
-  end
+  # At the moment we are not bothered about translating those into other languages
+  release_notes = prompt_for_release_notes(instructions, true)
 
   # Write release notes to a place where they can be translated and add that file to git
   changelog_path = get_changelog_path( build_number )
@@ -576,6 +559,8 @@ lane :prod do
     end
   end
   instructions = <<~INSTRUCTIONS
+
+
       # Write custom release notes that summarize changes since the last production release (not since the last build).
       # Enter the release notes here.
       # Lines beginning with # will be ignored.
