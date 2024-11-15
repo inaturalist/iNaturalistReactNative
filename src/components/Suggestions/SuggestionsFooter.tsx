@@ -6,7 +6,6 @@ import {
   Heading4
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Suggestions } from "components/Suggestions/SuggestionsContainer";
 import React from "react";
 import { formatISONoTimezone } from "sharedHelpers/dateAndTime.ts";
 import { useDebugMode, useTranslation } from "sharedHooks";
@@ -30,7 +29,6 @@ type Props = {
   hideSkip?: boolean,
   observers: Array<string>,
   shouldUseEvidenceLocation: boolean,
-  suggestions: Suggestions,
   toggleLocation: Function
 };
 
@@ -41,7 +39,6 @@ const SuggestionsFooter = ( {
   hideSkip,
   observers,
   shouldUseEvidenceLocation,
-  suggestions,
   toggleLocation
 }: Props ) => {
   const { t } = useTranslation( );
@@ -97,24 +94,38 @@ const SuggestionsFooter = ( {
           <Body3 className="text-white">Num offline suggestions: {JSON.stringify( debugData?.offlineSuggestions?.length )}</Body3>
           <Body3 className="text-white">Using offline suggestions: {JSON.stringify( debugData?.usingOfflineSuggestions )}</Body3>
           <Body3 className="text-white">Error loading online: {JSON.stringify( debugData?.onlineSuggestionsError )}</Body3>
-          <Body3 className="text-white">Scores:</Body3>
-          <Body4>
-            {suggestions?.topSuggestion?.taxon.name}: {suggestions?.topSuggestion?.score}
-          </Body4>
-          { suggestions?.otherSuggestions?.map( suggestion => (
-            <Body4 key={`sugg-debug-${suggestion.taxon.id}`}>
-              {suggestion.taxon.name}: {suggestion.score}
-            </Body4>
-          ) ) }
-          <Body3 className="text-white">Combined Scores:</Body3>
-          <Body4>
-            {suggestions?.topSuggestion?.taxon.name}: {suggestions?.topSuggestion?.combined_score}
-          </Body4>
-          { suggestions?.otherSuggestions?.map( suggestion => (
-            <Body4 key={`sugg-debug-${suggestion.taxon.id}`}>
-              {suggestion.taxon.name}: {suggestion.combined_score}
-            </Body4>
-          ) ) }
+          { debugData.offlineSuggestions && (
+            <View className="mb-3">
+              <Body3 className="text-white">Offline Scores</Body3>
+              <View className="flex-row border-b border-white">
+                <Body4 className="text-white grow">Taxon</Body4>
+                <Body4 className="text-white w-[20%]">Score</Body4>
+              </View>
+              { debugData.offlineSuggestions?.filter( Boolean ).map( suggestion => (
+                <View key={`sugg-debug-${suggestion.taxon.id}`} className="flex-row">
+                  <Body4 className="text-white grow">{suggestion.taxon.name}</Body4>
+                  <Body4 className="text-white w-[20%]">{Number( suggestion.score ).toFixed( 4 )}</Body4>
+                </View>
+              ) )}
+            </View>
+          )}
+          { debugData.onlineSuggestions?.results && (
+            <>
+              <Body3 className="text-white">Online Scores:</Body3>
+              <View className="flex-row border-b border-white">
+                <Body4 className="text-white grow">Taxon</Body4>
+                <Body4 className="text-white w-[20%]">Combined</Body4>
+                <Body4 className="text-white w-[20%]">Vision</Body4>
+              </View>
+              { debugData.onlineSuggestions?.results?.filter( Boolean ).map( suggestion => (
+                <View key={`sugg-debug-${suggestion.taxon.id}`} className="flex-row">
+                  <Body4 className="text-white grow">{suggestion.taxon.name}</Body4>
+                  <Body4 className="text-white w-[20%]">{Number( suggestion.combined_score ).toFixed( 4 )}</Body4>
+                  <Body4 className="text-white w-[20%]">{Number( suggestion.vision_score ).toFixed( 4 )}</Body4>
+                </View>
+              ) )}
+            </>
+          )}
         </View>
       )}
       {/* eslint-enable i18next/no-literal-string */}

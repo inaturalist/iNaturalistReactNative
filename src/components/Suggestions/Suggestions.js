@@ -95,7 +95,6 @@ const Suggestions = ( {
       hideLocationToggleButton={hideLocationToggleButton}
       hideSkip={hideSkip}
       shouldUseEvidenceLocation={shouldUseEvidenceLocation}
-      suggestions={suggestions}
       observers={observers}
       toggleLocation={toggleLocation}
     />
@@ -105,7 +104,6 @@ const Suggestions = ( {
     hideLocationToggleButton,
     hideSkip,
     shouldUseEvidenceLocation,
-    suggestions,
     observers,
     toggleLocation
   ] );

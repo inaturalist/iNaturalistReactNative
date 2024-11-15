@@ -6,6 +6,7 @@ import handleError from "./error";
 const PARAMS = {
   fields: {
     combined_score: true,
+    vision_score: true,
     taxon: Taxon.LIMITED_TAXON_FIELDS
   }
 };
