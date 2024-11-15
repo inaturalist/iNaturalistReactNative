@@ -14,7 +14,6 @@ import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, {
   useCallback,
-  useEffect,
   useMemo,
   useState
 } from "react";
@@ -107,7 +106,6 @@ const StandardCamera = ( {
 
   const disallowAddingPhotos = totalObsPhotoUris >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
-  const [discardedChanges, setDiscardedChanges] = useState( false );
   const [newPhotoUris, setNewPhotoUris] = useState( [] );
 
   const { screenWidth } = useDeviceOrientation( );
@@ -139,23 +137,6 @@ const StandardCamera = ( {
     setNewPhotoUris( newPhotoUris.filter( uri => uri !== photoUri ) );
   }, [deletePhotoFromObservation, realm, newPhotoUris] );
 
-  useEffect( ( ) => {
-    // We do this navigation indirectly (vs doing it directly in DiscardChangesSheet),
-    // since we need for the bottom sheet of discard-changes to first finish dismissing,
-    // only then we can do the navigation - otherwise, this causes the bottom sheet
-    // to sometimes pop back up on the next screen - see GH issue #629
-    if ( !showDiscardSheet ) {
-      if ( discardedChanges ) {
-        newPhotoUris.forEach( uri => {
-          deletePhotoByUri( uri );
-        } );
-        navigation.goBack();
-        // We don't want any navigation effect to run again
-        setDiscardedChanges( false );
-      }
-    }
-  }, [discardedChanges, showDiscardSheet, navigation, newPhotoUris, deletePhotoByUri] );
-
   const handleTakePhoto = async ( ) => {
     if ( deviceStorageFull ) {
       showStorageFullAlert();
@@ -177,6 +158,13 @@ const StandardCamera = ( {
   if ( isTablet && isLandscapeMode ) {
     containerClasses.push( "flex-row" );
   }
+
+  const handleDiscard = useCallback( ( ) => {
+    newPhotoUris.forEach( uri => {
+      deletePhotoByUri( uri );
+    } );
+    navigation.goBack( );
+  }, [deletePhotoByUri, navigation, newPhotoUris] );
 
   return (
     <View className={classnames( containerClasses )}>
@@ -233,9 +221,7 @@ const StandardCamera = ( {
       <DiscardChangesSheet
         setShowDiscardSheet={setShowDiscardSheet}
         hidden={!showDiscardSheet}
-        onDiscard={() => {
-          setDiscardedChanges( true );
-        }}
+        onDiscard={handleDiscard}
       />
     </View>
   );
