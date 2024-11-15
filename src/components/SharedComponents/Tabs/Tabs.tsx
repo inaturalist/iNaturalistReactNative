@@ -43,7 +43,12 @@ const Tabs = ( { tabs = [], activeId }: Props ) => {
                   expanded: active
                 }}
               >
-                <Heading4 className="self-center pt-4 pb-3">{text}</Heading4>
+                <Heading4
+                  className="self-center pt-4 pb-3"
+                  maxFontSizeMultiplier={1.5}
+                >
+                  {text}
+                </Heading4>
                 { active && <View className="h-[4px] rounded-t bg-darkGray" /> }
               </TouchableOpacity>
             </View>

@@ -51,19 +51,28 @@ const UserListItem = ( {
 
   return (
     <UserListItemContainer>
-      {user?.icon_url
-        ? <UserIcon uri={User.uri( user )} medium />
-        : (
-          <INatIcon
-            name="person"
-            size={62}
-          />
-        )}
-      <View className="ml-3">
-        {user?.login && <Body1>{user?.login}</Body1>}
-        <List2 className="mt-1">
-          {countText}
-        </List2>
+      <View className="flex-row items-center w-5/6">
+        {user?.icon_url
+          ? <UserIcon uri={User.uri( user )} medium />
+          : (
+            <INatIcon
+              name="person"
+              size={62}
+            />
+          )}
+        <View className="ml-3 shrink">
+          {user?.login && (
+            <Body1
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              {user?.login}
+            </Body1>
+          )}
+          <List2 className="mt-1" maxFontSizeMultiplier={1.5}>
+            {countText}
+          </List2>
+        </View>
       </View>
     </UserListItemContainer>
   );

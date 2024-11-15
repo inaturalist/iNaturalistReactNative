@@ -88,6 +88,7 @@ const ObsDetailsOverview = ( {
             geoprivacy={geoprivacy}
             taxonGeoprivacy={taxonGeoprivacy}
             belongsToCurrentUser={belongsToCurrentUser}
+            maxFontSizeMultiplier={1}
           />
         )}
       </View>

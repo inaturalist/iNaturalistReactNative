@@ -46,6 +46,9 @@ exports[`InlineUser renders reliably 1`] = `
         {
           "alignItems": "center",
         },
+        {
+          "flexShrink": 1,
+        },
       ],
     ]
   }
@@ -67,7 +70,9 @@ exports[`InlineUser renders reliably 1`] = `
     />
   </View>
   <Text
-    maxFontSizeMultiplier={2}
+    ellipsizeMode="tail"
+    maxFontSizeMultiplier={1}
+    numberOfLines={1}
     selectable={true}
     style={
       [
@@ -89,6 +94,11 @@ exports[`InlineUser renders reliably 1`] = `
             {
               "fontFamily": "Lato-Medium",
             },
+            [
+              {
+                "width": "75%",
+              },
+            ],
           ],
         ],
       ]
@@ -145,6 +155,9 @@ exports[`InlineUser when offline renders reliably 1`] = `
         {
           "alignItems": "center",
         },
+        {
+          "flexShrink": 1,
+        },
       ],
     ]
   }
@@ -185,7 +198,9 @@ exports[`InlineUser when offline renders reliably 1`] = `
     </Text>
   </View>
   <Text
-    maxFontSizeMultiplier={2}
+    ellipsizeMode="tail"
+    maxFontSizeMultiplier={1}
+    numberOfLines={1}
     selectable={true}
     style={
       [
@@ -207,6 +222,11 @@ exports[`InlineUser when offline renders reliably 1`] = `
             {
               "fontFamily": "Lato-Medium",
             },
+            [
+              {
+                "width": "75%",
+              },
+            ],
           ],
         ],
       ]
@@ -263,6 +283,9 @@ exports[`InlineUser when user has no icon set renders reliably 1`] = `
         {
           "alignItems": "center",
         },
+        {
+          "flexShrink": 1,
+        },
       ],
     ]
   }
@@ -303,7 +326,9 @@ exports[`InlineUser when user has no icon set renders reliably 1`] = `
     </Text>
   </View>
   <Text
-    maxFontSizeMultiplier={2}
+    ellipsizeMode="tail"
+    maxFontSizeMultiplier={1}
+    numberOfLines={1}
     selectable={true}
     style={
       [
@@ -325,6 +350,11 @@ exports[`InlineUser when user has no icon set renders reliably 1`] = `
             {
               "fontFamily": "Lato-Medium",
             },
+            [
+              {
+                "width": "75%",
+              },
+            ],
           ],
         ],
       ]

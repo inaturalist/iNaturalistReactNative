@@ -227,6 +227,7 @@ const Button = ( {
       <Heading4
         className={classnames( textClasses )}
         testID={`${testID || "RNButton"}.text`}
+        maxFontSizeMultiplier={1.5}
       >
         {text}
       </Heading4>
