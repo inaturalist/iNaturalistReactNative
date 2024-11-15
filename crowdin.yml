@@ -21,9 +21,6 @@ files:
   - source: /fastlane/metadata/ios/default/keywords.txt
     dest: /ReactNative/metadata/ios/keywords.txt
     translation: /fastlane/metadata/ios/%osx_locale%/keywords.txt
-  # - source: /fastlane/metadata/ios/default/name.txt
-  #   dest: /ReactNative/metadata/ios/name.txt
-  #   translation: /fastlane/metadata/ios/%osx_locale%/name.txt
   - source: /fastlane/metadata/ios/default/promotional_text.txt
     dest: /ReactNative/metadata/ios/promotional_text.txt
     translation: /fastlane/metadata/ios/%osx_locale%/promotional_text.txt
@@ -38,6 +35,3 @@ files:
   - source: /fastlane/metadata/android/en-US/short_description.txt
     dest: /ReactNative/metadata/android/short_description.txt
     translation: /fastlane/metadata/android/%locale%/short_description.txt
-  # - source: /fastlane/metadata/android/en-US/title.txt
-  #   dest: /ReactNative/metadata/android/title.txt
-  #   translation: /fastlane/metadata/android/%locale%/title.txt
