@@ -37,8 +37,6 @@ const usePrepareStoreAndNavigate = ( ): Function => {
   ) => {
     const newObservation = await Observation.new( );
 
-    console.log( localFilePaths, "local file paths", cameraUris );
-
     // 20240709 amanda - this is temporary since we'll want to move this code to
     // Suggestions after the changes to permissions github issue is complete, and
     // we'll be able to updateObservationKeys on the observation there
