@@ -185,7 +185,7 @@ const CROWDIN_TO_GOOGLE_PLAY_MAPPINGS = {
   "zu-ZA": "zu"
 };
 
-async function renameDirectories( ) {
+async function renameDirectories( options ) {
   // Get all directories in fastlane/metadata/ios
   const iosDirectories = await fsp.readdir( path.join( __dirname, "ios" ), {
     withFileTypes: true
@@ -198,11 +198,15 @@ async function renameDirectories( ) {
     // Remove a potentially existing directory with the same name
     try {
       await fsp.rmdir( newDirectoryPath, { recursive: true } );
-      console.log( "Removed existing directory", newDirectoryPath );
+      if ( options.verbose ) {
+        console.log( "Removed existing directory", newDirectoryPath );
+      }
     } catch ( e ) {
       // Directory did not exist
     }
-    console.log( "Renaming directory", directoryPath, "to", newDirectoryPath );
+    if ( options.verbose ) {
+      console.log( "Renaming directory", directoryPath, "to", newDirectoryPath );
+    }
     await fsp.rename( directoryPath, newDirectoryPath );
   } ) );
   const androidDirectories = await fsp.readdir( path.join( __dirname, "android" ), {
@@ -216,16 +220,20 @@ async function renameDirectories( ) {
     // Remove a potentially existing directory with the same name
     try {
       await fsp.rmdir( newDirectoryPath, { recursive: true } );
-      console.log( "Removed existing directory", newDirectoryPath );
+      if ( options.verbose ) {
+        console.log( "Removed existing directory", newDirectoryPath );
+      }
     } catch ( e ) {
       // Directory did not exist
     }
-    console.log( "Renaming directory", directoryPath, "to", newDirectoryPath );
+    if ( options.verbose ) {
+      console.log( "Renaming directory", directoryPath, "to", newDirectoryPath );
+    }
     await fsp.rename( directoryPath, newDirectoryPath );
   } ) );
 }
 
-async function removeUnsupportedDirectories( ) {
+async function removeUnsupportedDirectories( options ) {
   // Get all directories in fastlane/metadata/ios
   const iosDirectories = await fsp.readdir( path.join( __dirname, "ios" ), {
     withFileTypes: true
@@ -233,7 +241,9 @@ async function removeUnsupportedDirectories( ) {
   await Promise.all( iosDirectories.map( async directory => {
     if ( SUPPORTED_APP_STORE_LOCALES.indexOf( directory ) >= 0 ) return;
     const directoryPath = path.join( __dirname, "ios", directory );
-    console.log( "Removing unsupported directory", directoryPath );
+    if ( options.verbose ) {
+      console.log( "Removing unsupported directory", directoryPath );
+    }
     await fsp.rmdir( directoryPath, { recursive: true } );
   } ) );
   const androidDirectories = await fsp.readdir( path.join( __dirname, "android" ), {
@@ -241,16 +251,20 @@ async function removeUnsupportedDirectories( ) {
   } ).then( files => files.filter( file => file.isDirectory( ) ).map( file => file.name ) );
   return Promise.all( androidDirectories.map( async directory => {
     if ( SUPPORTED_GOOGLE_PLAY_LOCALES.indexOf( directory ) >= 0 ) {
-      console.log( "Supported directory", directory );
+      if ( options.verbose ) {
+        console.log( "Supported directory", directory );
+      }
       return;
     }
     const directoryPath = path.join( __dirname, "android", directory );
-    console.log( "Removing unsupported directory", directoryPath );
+    if ( options.verbose ) {
+      console.log( "Removing unsupported directory", directoryPath );
+    }
     await fsp.rmdir( directoryPath, { recursive: true } );
   } ) );
 }
 
-async function copyAndroidTitle() {
+async function copyAndroidTitle( options ) {
   // Get all directories in fastlane/metadata/android
   const androidDirectories = await fsp
     .readdir( path.join( __dirname, "android" ), {
@@ -262,7 +276,9 @@ async function copyAndroidTitle() {
   await Promise.all(
     androidDirectories.map( async directory => {
       const directoryPath = path.join( __dirname, "android", directory );
-      console.log( "Copying title.tx into: ", directoryPath );
+      if ( options.verbose ) {
+        console.log( "Copying title.tx into: ", directoryPath );
+      }
       await fsp.copyFile( titlePath, path.join( directoryPath, "title.txt" ) );
     } )
   );
@@ -271,6 +287,11 @@ async function copyAndroidTitle() {
 // eslint-disable-next-line no-unused-expressions
 yargs
   .usage( "Usage: $0 <cmd> [args]" )
+  .option( "verbose", {
+    alias: "v",
+    type: "boolean",
+    description: "Run with verbose logging"
+  } )
   .command(
     "build",
     "Prepare existing localizations for uploading metadata",
