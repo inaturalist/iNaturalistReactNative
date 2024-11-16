@@ -264,6 +264,9 @@ async function removeUnsupportedDirectories( options ) {
   } ) );
 }
 
+// Copy title.txt from en-US directory into all the other directories.
+// This is necessary because Google Play requires a title.txt file in every locale directory
+// and we have not added title file to crowdin for translations.
 async function copyAndroidTitle( options ) {
   // Get all directories in fastlane/metadata/android
   const androidDirectories = await fsp
