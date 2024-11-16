@@ -1,6 +1,5 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import FadeInOutView from "components/Camera/FadeInOutView";
 import useRotation from "components/Camera/hooks/useRotation.ts";
@@ -8,7 +7,7 @@ import useZoom from "components/Camera/hooks/useZoom.ts";
 import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useCallback } from "react";
 import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -100,7 +99,6 @@ const AICamera = ( {
   const [inactive, setInactive] = React.useState( false );
 
   const { t } = useTranslation();
-  const navigation = useNavigation();
 
   const { loadTime } = usePerformance( {
     isLoading: camera.current !== null
@@ -109,26 +107,13 @@ const AICamera = ( {
     logger.info( loadTime );
   }
 
+  const resetCameraOnFocus = useCallback( ( ) => {
+    setResult( null );
+    resetZoom( );
+  }, [resetZoom, setResult] );
+
   // only show predictions when rank is order or lower, like we do on Seek
   const showPrediction = ( result && result?.taxon?.rank_level <= 40 ) || false;
-
-  React.useEffect( () => {
-    const unsubscribeBlur = navigation.addListener( "blur", () => {
-      setResult( null );
-      resetZoom( );
-    } );
-
-    return unsubscribeBlur;
-  }, [navigation, setResult, resetZoom] );
-
-  React.useEffect( () => {
-    const unsubscribeFocus = navigation.addListener( "focus", () => {
-      setResult( null );
-      resetZoom( );
-    } );
-
-    return unsubscribeFocus;
-  }, [navigation, setResult, resetZoom] );
 
   const insets = useSafeAreaInsets( );
 
@@ -168,6 +153,7 @@ const AICamera = ( {
             pinchToZoom={pinchToZoom}
             takingPhoto={takingPhoto}
             inactive={inactive}
+            resetCameraOnFocus={resetCameraOnFocus}
           />
         </View>
       )}

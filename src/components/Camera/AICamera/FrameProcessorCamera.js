@@ -37,7 +37,8 @@ type Props = {
   pinchToZoom?: Function,
   takingPhoto: boolean,
   taxonomyRollupCutoff?: number,
-  inactive?: boolean
+  inactive?: boolean,
+  resetCameraOnFocus: Function
 };
 
 const DEFAULT_FPS = 1;
@@ -65,7 +66,8 @@ const FrameProcessorCamera = ( {
   pinchToZoom,
   takingPhoto,
   taxonomyRollupCutoff = DEFAULT_TAXONOMY_CUTOFF_THRESHOLD,
-  inactive
+  inactive,
+  resetCameraOnFocus
 }: Props ): Node => {
   const { deviceOrientation } = useDeviceOrientation();
   const [lastTimestamp, setLastTimestamp] = useState( undefined );
@@ -89,19 +91,21 @@ const FrameProcessorCamera = ( {
 
   useEffect( () => {
     const unsubscribeFocus = navigation.addListener( "focus", () => {
-      InatVision.resetStoredResults();
+      InatVision.resetStoredResults( );
+      resetCameraOnFocus( );
     } );
 
     return unsubscribeFocus;
-  }, [navigation] );
+  }, [navigation, resetCameraOnFocus] );
 
   useEffect( () => {
     const unsubscribeBlur = navigation.addListener( "blur", () => {
       InatVision.resetStoredResults();
+      resetCameraOnFocus( );
     } );
 
     return unsubscribeBlur;
-  }, [navigation] );
+  }, [navigation, resetCameraOnFocus] );
 
   const handleResults = Worklets.createRunOnJS( ( result, timeTaken ) => {
     setLastTimestamp( result.timestamp );
