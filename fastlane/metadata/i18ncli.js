@@ -4,7 +4,7 @@ const yargs = require( "yargs" );
 const fsp = require( "fs/promises" );
 const path = require( "path" );
 
-const SUPPORTED_IOS_METADATA_LOCALES = [
+const SUPPORTED_APP_STORE_LOCALES = [
   "ar-SA",
   "ca",
   "cs",
@@ -44,8 +44,6 @@ const SUPPORTED_IOS_METADATA_LOCALES = [
   "vi",
   "zh-Hans",
   "zh-Hant",
-  "appleTV",
-  "iMessage",
   "default"
 ];
 
@@ -240,7 +238,7 @@ async function removeUnsupportedDirectories( ) {
   } ).then( files => files.filter( file => file.isDirectory( ) ).map( file => file.name ) );
   console.log( "Current list of the directories in fastlane/metadata/ios", iosDirectories );
   await Promise.all( iosDirectories.map( async directory => {
-    if ( SUPPORTED_IOS_METADATA_LOCALES.indexOf( directory ) >= 0 ) return;
+    if ( SUPPORTED_APP_STORE_LOCALES.indexOf( directory ) >= 0 ) return;
     const directoryPath = path.join( __dirname, "ios", directory );
     console.log( "Removing unsupported directory", directoryPath );
     await fsp.rmdir( directoryPath, { recursive: true } );
