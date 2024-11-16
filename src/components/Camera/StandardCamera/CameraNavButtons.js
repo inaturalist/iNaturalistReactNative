@@ -15,7 +15,7 @@ type Props = {
   handleClose: Function,
   photosTaken: boolean,
   rotatableAnimatedStyle: Object,
-  takePhoto: () => Promise<void>,
+  takePhoto: ( ) => void,
 }
 
 const CameraNavButtons = ( {

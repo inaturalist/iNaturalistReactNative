@@ -4,9 +4,7 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import CameraView from "components/Camera/CameraView.tsx";
 import FadeInOutView from "components/Camera/FadeInOutView";
-import useDeviceStorageFull from "components/Camera/hooks/useDeviceStorageFull";
 import useRotation from "components/Camera/hooks/useRotation.ts";
-import useTakePhoto from "components/Camera/hooks/useTakePhoto.ts";
 import useZoom from "components/Camera/hooks/useZoom.ts";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -47,21 +45,31 @@ const isTablet = DeviceInfo.isTablet( );
 export const MAX_PHOTOS_ALLOWED = 20;
 
 type Props = {
-  addEvidence: ?boolean,
   camera: Object,
   device: Object,
   flipCamera: Function,
   handleCheckmarkPress: Function,
-  isLandscapeMode: boolean
+  isLandscapeMode: boolean,
+  toggleFlash: Function,
+  takingPhoto: boolean,
+  takePhotoAndStoreUri: Function,
+  takePhotoOptions: Object,
+  newPhotoUris: Array<Object>,
+  setNewPhotoUris: Function
 };
 
 const StandardCamera = ( {
-  addEvidence,
   camera,
   device,
   flipCamera,
   handleCheckmarkPress,
-  isLandscapeMode
+  isLandscapeMode,
+  toggleFlash,
+  takingPhoto,
+  takePhotoAndStoreUri,
+  takePhotoOptions,
+  newPhotoUris,
+  setNewPhotoUris
 }: Props ): Node => {
   const realm = useRealm( );
   const hasFlash = device?.hasFlash;
@@ -78,12 +86,6 @@ const StandardCamera = ( {
     rotation
   } = useRotation( );
   const navigation = useNavigation( );
-  const {
-    takePhoto,
-    takePhotoOptions,
-    takingPhoto,
-    toggleFlash
-  } = useTakePhoto( camera, !!addEvidence, device );
 
   const { loadTime } = usePerformance( {
     isLoading: camera.current !== null
@@ -91,8 +93,6 @@ const StandardCamera = ( {
   if ( isDebugMode( ) && loadTime ) {
     logger.info( loadTime );
   }
-
-  const { deviceStorageFull, showStorageFullAlert } = useDeviceStorageFull();
 
   const cameraUris = useStore( state => state.cameraUris );
   const prepareCamera = useStore( state => state.prepareCamera );
@@ -106,7 +106,6 @@ const StandardCamera = ( {
 
   const disallowAddingPhotos = totalObsPhotoUris >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
-  const [newPhotoUris, setNewPhotoUris] = useState( [] );
 
   const { screenWidth } = useDeviceOrientation( );
 
@@ -135,19 +134,7 @@ const StandardCamera = ( {
     deletePhotoFromObservation( photoUri );
     await ObservationPhoto.deletePhoto( realm, photoUri );
     setNewPhotoUris( newPhotoUris.filter( uri => uri !== photoUri ) );
-  }, [deletePhotoFromObservation, realm, newPhotoUris] );
-
-  const handleTakePhoto = async ( ) => {
-    if ( deviceStorageFull ) {
-      showStorageFullAlert();
-    }
-    if ( disallowAddingPhotos ) {
-      setShowAlert( true );
-      return;
-    }
-    const uri = await takePhoto( );
-    setNewPhotoUris( [...newPhotoUris, uri] );
-  };
+  }, [deletePhotoFromObservation, realm, newPhotoUris, setNewPhotoUris] );
 
   const onFlipCamera = () => {
     resetZoom( );
@@ -165,6 +152,14 @@ const StandardCamera = ( {
     } );
     navigation.goBack( );
   }, [deletePhotoByUri, navigation, newPhotoUris] );
+
+  const handleTakePhoto = ( ) => {
+    if ( disallowAddingPhotos ) {
+      setShowAlert( true );
+      return;
+    }
+    takePhotoAndStoreUri( );
+  };
 
   return (
     <View className={classnames( containerClasses )}>
@@ -201,7 +196,7 @@ const StandardCamera = ( {
           photosTaken={photosTaken}
           rotatableAnimatedStyle={rotatableAnimatedStyle}
           showZoomButton={showZoomButton}
-          takePhoto={handleTakePhoto}
+          takePhoto={takePhotoAndStoreUri}
           takePhotoOptions={takePhotoOptions}
           toggleFlash={toggleFlash}
           zoomTextValue={zoomTextValue}

@@ -3,9 +3,7 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import FadeInOutView from "components/Camera/FadeInOutView";
-import useDeviceStorageFull from "components/Camera/hooks/useDeviceStorageFull";
 import useRotation from "components/Camera/hooks/useRotation.ts";
-import useTakePhoto from "components/Camera/hooks/useTakePhoto.ts";
 import useZoom from "components/Camera/hooks/useZoom.ts";
 import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -50,7 +48,12 @@ type Props = {
   device: Object,
   flipCamera: Function,
   handleCheckmarkPress: Function,
-  isLandscapeMode: boolean
+  isLandscapeMode: boolean,
+  toggleFlash: Function,
+  takingPhoto: boolean,
+  takePhotoAndStoreUri: Function,
+  takePhotoOptions: Object,
+  setAiSuggestion: Function
 };
 
 const AICamera = ( {
@@ -58,7 +61,12 @@ const AICamera = ( {
   device,
   flipCamera,
   handleCheckmarkPress,
-  isLandscapeMode
+  isLandscapeMode,
+  toggleFlash,
+  takingPhoto,
+  takePhotoAndStoreUri,
+  takePhotoOptions,
+  setAiSuggestion
 }: Props ): Node => {
   const hasFlash = device?.hasFlash;
   const { isDebug } = useDebugMode( );
@@ -89,14 +97,7 @@ const AICamera = ( {
     setNumStoredResults,
     setCropRatio
   } = usePredictions( );
-  const {
-    takePhoto,
-    takePhotoOptions,
-    takingPhoto,
-    toggleFlash
-  } = useTakePhoto( camera, false, device );
   const [inactive, setInactive] = React.useState( false );
-  const { deviceStorageFull, showStorageFullAlert } = useDeviceStorageFull();
 
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -129,21 +130,20 @@ const AICamera = ( {
     return unsubscribeFocus;
   }, [navigation, setResult, resetZoom] );
 
-  const handlePress = async ( ) => {
-    if ( deviceStorageFull ) {
-      showStorageFullAlert();
-    }
-    await takePhoto( { replaceExisting: true, inactivateCallback: () => setInactive( true ) } );
-    handleCheckmarkPress( showPrediction
-      ? result
-      : null );
-  };
-
   const insets = useSafeAreaInsets( );
 
   const onFlipCamera = () => {
     resetZoom( );
     flipCamera( );
+  };
+
+  const handleTakePhoto = async ( ) => {
+    setAiSuggestion( showPrediction && result );
+    await takePhotoAndStoreUri( {
+      replaceExisting: true,
+      inactivateCallback: () => setInactive( true ),
+      navigateImmediately: true
+    } );
   };
 
   return (
@@ -195,7 +195,7 @@ const AICamera = ( {
                 asListItem={false}
                 clearBackground
                 confidence={convertOfflineScoreToConfidence( result?.score )}
-                handleCheckmarkPress={handlePress}
+                handleCheckmarkPress={handleCheckmarkPress}
                 hideNavButtons
                 taxon={result?.taxon}
                 testID={`AICamera.taxa.${result?.taxon?.id}`}
@@ -246,7 +246,7 @@ const AICamera = ( {
         setNumStoredResults={setNumStoredResults}
         showPrediction={showPrediction}
         showZoomButton={showZoomButton}
-        takePhoto={handlePress}
+        takePhoto={handleTakePhoto}
         takePhotoOptions={takePhotoOptions}
         takingPhoto={takingPhoto}
         toggleFlash={toggleFlash}
