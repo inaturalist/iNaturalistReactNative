@@ -16,7 +16,7 @@
     "lint": "npm run lint:eslint && npm run lint:flow && npm run lint:rubocop",
     "lint:eslint": "eslint . --fix",
     "lint:flow": "flow check",
-    "lint:rubocop": "rubocop -A",
+    "lint:rubocop": "bundle exec rubocop -A",
     "lint:tsc": "tsc --allowJs false --noEmit",
     "postinstall": "husky && patch-package",
     "translate": "node src/i18n/i18ncli.js build",
