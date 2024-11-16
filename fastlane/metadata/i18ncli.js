@@ -190,7 +190,6 @@ async function renameDirectories( ) {
   const iosDirectories = await fsp.readdir( path.join( __dirname, "ios" ), {
     withFileTypes: true
   } ).then( files => files.filter( file => file.isDirectory( ) ).map( file => file.name ) );
-  console.log( "Current list of the directories in fastlane/metadata/ios", iosDirectories );
   await Promise.all( iosDirectories.map( async directory => {
     const locale = CROWDIN_TO_APP_STORE_MAPPINGS[directory];
     if ( !locale ) return;
@@ -209,7 +208,6 @@ async function renameDirectories( ) {
   const androidDirectories = await fsp.readdir( path.join( __dirname, "android" ), {
     withFileTypes: true
   } ).then( files => files.filter( file => file.isDirectory( ) ).map( file => file.name ) );
-  console.log( "Current list of the directories in fastlane/metadata/android", androidDirectories );
   return Promise.all( androidDirectories.map( async directory => {
     const locale = CROWDIN_TO_GOOGLE_PLAY_MAPPINGS[directory];
     if ( !locale ) return;
@@ -232,7 +230,6 @@ async function removeUnsupportedDirectories( ) {
   const iosDirectories = await fsp.readdir( path.join( __dirname, "ios" ), {
     withFileTypes: true
   } ).then( files => files.filter( file => file.isDirectory( ) ).map( file => file.name ) );
-  console.log( "Current list of the directories in fastlane/metadata/ios", iosDirectories );
   await Promise.all( iosDirectories.map( async directory => {
     if ( SUPPORTED_APP_STORE_LOCALES.indexOf( directory ) >= 0 ) return;
     const directoryPath = path.join( __dirname, "ios", directory );
@@ -242,7 +239,6 @@ async function removeUnsupportedDirectories( ) {
   const androidDirectories = await fsp.readdir( path.join( __dirname, "android" ), {
     withFileTypes: true
   } ).then( files => files.filter( file => file.isDirectory( ) ).map( file => file.name ) );
-  console.log( "Current list of the directories in fastlane/metadata/android", androidDirectories );
   return Promise.all( androidDirectories.map( async directory => {
     if ( SUPPORTED_GOOGLE_PLAY_LOCALES.indexOf( directory ) >= 0 ) {
       console.log( "Supported directory", directory );
