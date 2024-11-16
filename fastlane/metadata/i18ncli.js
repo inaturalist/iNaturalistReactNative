@@ -276,10 +276,13 @@ yargs
     "Prepare existing localizations for uploading metadata",
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     ( ) => {},
-    async ( ) => {
-      await renameDirectories();
-      await removeUnsupportedDirectories();
-      await copyAndroidTitle();
+    async argv => {
+      console.log( "Renaming directories..." );
+      await renameDirectories( argv );
+      console.log( "Removing unsupported directories..." );
+      await removeUnsupportedDirectories( argv );
+      console.log( "Copying Android title..." );
+      await copyAndroidTitle( argv );
     }
   )
   .command(
