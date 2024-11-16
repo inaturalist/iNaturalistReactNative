@@ -185,10 +185,6 @@ const CROWDIN_TO_GOOGLE_PLAY_MAPPINGS = {
   "zu-ZA": "zu"
 };
 
-function mapLanguageCodeToSupportedDirectoryName( languageCode ) {
-  return CROWDIN_TO_APP_STORE_MAPPINGS[languageCode];
-}
-
 async function renameDirectories( ) {
   // Get all directories in fastlane/metadata/ios
   const iosDirectories = await fsp.readdir( path.join( __dirname, "ios" ), {
@@ -196,7 +192,7 @@ async function renameDirectories( ) {
   } ).then( files => files.filter( file => file.isDirectory( ) ).map( file => file.name ) );
   console.log( "Current list of the directories in fastlane/metadata/ios", iosDirectories );
   await Promise.all( iosDirectories.map( async directory => {
-    const locale = mapLanguageCodeToSupportedDirectoryName( directory );
+    const locale = CROWDIN_TO_APP_STORE_MAPPINGS[directory];
     if ( !locale ) return;
     const directoryPath = path.join( __dirname, "ios", directory );
     const newDirectoryPath = path.join( __dirname, "ios", locale );
