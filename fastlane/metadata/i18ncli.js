@@ -47,7 +47,7 @@ const SUPPORTED_APP_STORE_LOCALES = [
   "default"
 ];
 
-const IOS_MAPPINGS = {
+const CROWDIN_TO_APP_STORE_MAPPINGS = {
   ar: "ar-SA",
   de: "de-DE",
   fr: "fr-FR",
@@ -63,7 +63,7 @@ const IOS_MAPPINGS = {
   pt_BR: "pt-BR"
 };
 
-const SUPPORTED_ANDROID_METADATA_LOCALES = [
+const SUPPORTED_GOOGLE_PLAY_LOCALES = [
   "af",
   "sq",
   "am",
@@ -153,7 +153,7 @@ const SUPPORTED_ANDROID_METADATA_LOCALES = [
   "zu"
 ];
 
-const ANDROID_MAPPINGS = {
+const CROWDIN_TO_GOOGLE_PLAY_MAPPINGS = {
   "af-ZA": "af",
   "sq-AL": "sq",
   "ar-SA": "ar",
@@ -186,7 +186,7 @@ const ANDROID_MAPPINGS = {
 };
 
 function mapLanguageCodeToSupportedDirectoryName( languageCode ) {
-  return IOS_MAPPINGS[languageCode];
+  return CROWDIN_TO_APP_STORE_MAPPINGS[languageCode];
 }
 
 async function renameDirectories( ) {
@@ -215,7 +215,7 @@ async function renameDirectories( ) {
   } ).then( files => files.filter( file => file.isDirectory( ) ).map( file => file.name ) );
   console.log( "Current list of the directories in fastlane/metadata/android", androidDirectories );
   return Promise.all( androidDirectories.map( async directory => {
-    const locale = ANDROID_MAPPINGS[directory];
+    const locale = CROWDIN_TO_GOOGLE_PLAY_MAPPINGS[directory];
     if ( !locale ) return;
     const directoryPath = path.join( __dirname, "android", directory );
     const newDirectoryPath = path.join( __dirname, "android", locale );
@@ -248,7 +248,7 @@ async function removeUnsupportedDirectories( ) {
   } ).then( files => files.filter( file => file.isDirectory( ) ).map( file => file.name ) );
   console.log( "Current list of the directories in fastlane/metadata/android", androidDirectories );
   return Promise.all( androidDirectories.map( async directory => {
-    if ( SUPPORTED_ANDROID_METADATA_LOCALES.indexOf( directory ) >= 0 ) {
+    if ( SUPPORTED_GOOGLE_PLAY_LOCALES.indexOf( directory ) >= 0 ) {
       console.log( "Supported directory", directory );
       return;
     }
