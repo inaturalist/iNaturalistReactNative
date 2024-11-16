@@ -28,7 +28,7 @@ required_env_vars = [
   "IOS_SHARE_PROVISIONING_PROFILE_NAME"
 ]
 required_env_vars.each do | env_var |
-  next unless ENV[env_var].to_s.size.zero?
+  next unless ENV[env_var].to_s.empty?
 
   UI.abort_with_message! <<~NO_ENV_ERROR.gsub( /\s+/, " " ).strip
     ENV is missing #{env_var}. Add the value to .env or populate your ENV in
@@ -38,7 +38,7 @@ end
 
 VERSION = File.open( "../package.json" ) {| f | JSON.parse( f.read )["version"] }
 editor_cmd = [
-  ENV["EDITOR"],
+  ENV.fetch( "EDITOR", nil ),
   `git config core.editor`,
   `which vi`
 ].map {| e | e.to_s.strip }.detect {| e | !e.empty? }
@@ -61,13 +61,13 @@ IOS_ITC_TEAM_ID = CredentialsManager::AppfileConfig.try_fetch_value( :itc_team_i
 def set_android_version_code( new_version_code )
   build_gradle_path = "../android/app/build.gradle"
   new_gradle = File.read( build_gradle_path ).sub( /versionCode\s+\d+/, "versionCode #{new_version_code}" )
-  File.open( build_gradle_path, "w" ) {| f | f.write( new_gradle ) }
+  File.write( build_gradle_path, new_gradle )
 end
 
 def set_android_version_name( _new_version_name )
   build_gradle_path = "../android/app/build.gradle"
   new_gradle = File.read( build_gradle_path ).sub( /versionName\s+".+"/, "versionName \"#{VERSION}\"" )
-  File.open( build_gradle_path, "w" ) {| f | f.write( new_gradle ) }
+  File.write( build_gradle_path, new_gradle )
 end
 
 def get_changelog_path( build_number = nil )
@@ -191,7 +191,7 @@ lane :tag do | options |
   end
   release_notes.strip!
   FileUtils.rm( fname )
-  if release_notes.strip.size.zero?
+  if release_notes.strip.empty?
     reset_git_repo skip_clean: true
     UI.abort_with_message! "You gotta enter release notes!"
   end
@@ -237,9 +237,8 @@ platform :android do
       EXTRA_ANDROID_ASSETS_ERROR
     end
     assets = File.open( "../android/link-assets-manifest.json" ) {| f | JSON.parse( f.read )["data"] }
-    linked_assets = []
-    assets.each do | asset |
-      linked_assets.push( asset["path"].split( "assets/fonts/" )[1] )
+    linked_assets = assets.map do | asset |
+      asset["path"].split( "assets/fonts/" )[1]
     end
     Dir.children( "../assets/fonts" ).each do | file |
       next unless !linked_assets.include?( file ) && ( file != ".DS_Store" )
@@ -324,8 +323,8 @@ platform :ios do
         export_options: {
           signingStyle: "manual",
           provisioningProfiles: {
-            IOS_BUNDLE_ID => ENV["IOS_PROVISIONING_PROFILE_NAME"],
-            ENV["IOS_SHARE_BUNDLE_ID"] => ENV["IOS_SHARE_PROVISIONING_PROFILE_NAME"]
+            IOS_BUNDLE_ID => ENV.fetch( "IOS_PROVISIONING_PROFILE_NAME", nil ),
+            ENV.fetch( "IOS_SHARE_BUNDLE_ID", nil ) => ENV.fetch( "IOS_SHARE_PROVISIONING_PROFILE_NAME", nil )
           }
         }
       )
@@ -385,14 +384,14 @@ lane :release do
   github_release = get_github_release(
     url: "inaturalist/iNaturalistReactNative",
     version: last_tag,
-    api_token: ENV["GITHUB_TOKEN"]
+    api_token: ENV.fetch( "GITHUB_TOKEN", nil )
   )
   if github_release
     UI.important "Release already exists at #{github_release['url']}. You need to manually upload any missing assets."
   else
     set_github_release(
       repository_name: "inaturalist/iNaturalistReactNative",
-      api_token: ENV["GITHUB_TOKEN"],
+      api_token: ENV.fetch( "GITHUB_TOKEN", nil ),
       name: last_tag,
       tag_name: last_tag,
       description: changelog,
