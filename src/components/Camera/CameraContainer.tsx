@@ -76,7 +76,7 @@ const CameraContainer = ( ) => {
     requestPermissions: requestSavePhotoPermission
   } = useSavePhotoPermission( );
 
-  const showPhotoPermissionsGate = !hasSavePhotoPermission && !hasBlockedSavePhotoPermission;
+  const showPhotoPermissionsGate = !( hasSavePhotoPermission || hasBlockedSavePhotoPermission );
 
   const prepareStoreAndNavigate = usePrepareStoreAndNavigate( );
   const addPhotoPermissionResult = hasSavePhotoPermission
