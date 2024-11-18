@@ -1,8 +1,5 @@
-// @flow
-
 import { Body2, DateTimePicker, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useState } from "react";
 import {
   formatISONoSeconds,
@@ -10,19 +7,22 @@ import {
 } from "sharedHelpers/dateAndTime.ts";
 import useTranslation from "sharedHooks/useTranslation";
 
-type Props = {
-  currentObservation: Object,
-  updateObservationKeys: Function
+interface Props {
+  currentObservation: {
+    observed_on_string: string;
+    time_observed_at: string;
+  };
+  updateObservationKeys: ( { observed_on_string }: { observed_on_string: string } ) => void;
 }
 
-const DatePicker = ( { currentObservation, updateObservationKeys }: Props ): Node => {
+const DatePicker = ( { currentObservation, updateObservationKeys }: Props ) => {
   const { t, i18n } = useTranslation( );
   const [showModal, setShowModal] = useState( false );
 
   const openModal = () => setShowModal( true );
   const closeModal = () => setShowModal( false );
 
-  const handlePicked = value => {
+  const handlePicked = ( value: Date ) => {
     const dateString = formatISONoSeconds( value );
     updateObservationKeys( {
       observed_on_string: dateString
