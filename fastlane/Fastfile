@@ -70,8 +70,8 @@ def set_android_version_name( _new_version_name )
   File.open( build_gradle_path, "w" ) {| f | f.write( new_gradle ) }
 end
 
-def get_changelog_path( build_number = nil )
-  build_number ||= get_build_number( xcodeproj: XCODEPROJ )
+def get_changelog_path( options )
+  build_number = options[:build_number] || get_build_number( xcodeproj: XCODEPROJ )
   changelog_dir_path = File.join( "metadata", "android", "en-US", "changelogs" )
   FileUtils.mkpath( changelog_dir_path )
   File.join( changelog_dir_path, "#{build_number}.txt" )
@@ -135,8 +135,9 @@ def get_ipa_path( build_number = nil )
   ) )
 end
 
-def get_changelog( build_number = nil )
-  changelog_path = get_changelog_path( build_number )
+def get_changelog( options )
+  build_number = options[:build_number] || nil
+  changelog_path = get_changelog_path( build_number: build_number )
   unless File.exist?( changelog_path )
     UI.abort_with_message! <<~MSG
       No change log file exists at #{changelog_path}. That should have been
@@ -214,7 +215,7 @@ lane :tag do | options |
   release_notes = prompt_for_release_notes(instructions, true)
 
   # Write release notes to a place where they can be translated and add that file to git
-  changelog_path = get_changelog_path( build_number )
+  changelog_path = get_changelog_path( build_number: build_number )
   File.open( changelog_path, "w" ) do | f |
     f << "#{release_notes}\n"
   end
@@ -550,7 +551,7 @@ lane :prod do
   # Get all previous changelogs to show them as an instruction for new release notes
   previous_changelogs = ""
   new_build_numbers.each do | new_build_number |
-    changelog = get_changelog( new_build_number )
+    changelog = get_changelog( build_number: new_build_number )
     previous_changelogs += "#\n#\n"
     previous_changelogs += "# Version #{VERSION}+#{new_build_number}\n"
     # Add a # to the start of each line
