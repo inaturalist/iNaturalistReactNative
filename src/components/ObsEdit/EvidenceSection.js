@@ -112,7 +112,7 @@ const EvidenceSection = ( {
       />
       <Pressable
         accessibilityRole="link"
-        className="flex-row flex-nowrap pb-3"
+        className="flex-row flex-nowrap pt-1"
         onPress={onLocationPress}
         accessibilityLabel={t( "Edit-location" )}
       >
