@@ -28,7 +28,7 @@ required_env_vars = [
   "IOS_SHARE_PROVISIONING_PROFILE_NAME"
 ]
 required_env_vars.each do | env_var |
-  next unless ENV[env_var].to_s.size.zero?
+  next unless ENV[env_var].to_s.empty?
 
   UI.abort_with_message! <<~NO_ENV_ERROR.gsub( /\s+/, " " ).strip
     ENV is missing #{env_var}. Add the value to .env or populate your ENV in
@@ -38,7 +38,7 @@ end
 
 VERSION = File.open( "../package.json" ) {| f | JSON.parse( f.read )["version"] }
 editor_cmd = [
-  ENV["EDITOR"],
+  ENV.fetch( "EDITOR", nil ),
   `git config core.editor`,
   `which vi`
 ].map {| e | e.to_s.strip }.detect {| e | !e.empty? }
@@ -61,13 +61,13 @@ IOS_ITC_TEAM_ID = CredentialsManager::AppfileConfig.try_fetch_value( :itc_team_i
 def set_android_version_code( new_version_code )
   build_gradle_path = "../android/app/build.gradle"
   new_gradle = File.read( build_gradle_path ).sub( /versionCode\s+\d+/, "versionCode #{new_version_code}" )
-  File.open( build_gradle_path, "w" ) {| f | f.write( new_gradle ) }
+  File.write( build_gradle_path, new_gradle )
 end
 
 def set_android_version_name( _new_version_name )
   build_gradle_path = "../android/app/build.gradle"
   new_gradle = File.read( build_gradle_path ).sub( /versionName\s+".+"/, "versionName \"#{VERSION}\"" )
-  File.open( build_gradle_path, "w" ) {| f | f.write( new_gradle ) }
+  File.write( build_gradle_path, new_gradle )
 end
 
 def get_changelog_path( options )
@@ -152,7 +152,7 @@ def get_changelog( options )
   end
 end
 
-def prompt_for_release_notes ( options = {} )
+def prompt_for_release_notes( options = {} )
   instructions = options[:instructions] || ""
   # Get release notes
   # Bit silly but takes advantage of existing syntax highlighting
@@ -167,7 +167,7 @@ def prompt_for_release_notes ( options = {} )
   end
   release_notes.strip!
   FileUtils.rm( fname )
-  if release_notes.strip.size.zero?
+  if release_notes.strip.empty?
     if options[:reset_git_repo_on_fail]
       reset_git_repo skip_clean: true
     end
@@ -206,14 +206,14 @@ lane :tag do | options |
   instructions = <<~INSTRUCTIONS
 
 
-      # Enter notes about what's new in #{tag}. Lines beginning with # will be ignored.
-      # Keep notes within the 500 character limit required by Google Play.
-      #
-      # Here's what changed since the last tag:
-      #{changes}
-    INSTRUCTIONS
+    # Enter notes about what's new in #{tag}. Lines beginning with # will be ignored.
+    # Keep notes within the 500 character limit required by Google Play.
+    #
+    # Here's what changed since the last tag:
+    #{changes}
+  INSTRUCTIONS
   # At the moment we are not bothered about translating those into other languages
-  release_notes = prompt_for_release_notes( instructions: instructions, reset_git_repo_on_fail: true)
+  release_notes = prompt_for_release_notes( instructions: instructions, reset_git_repo_on_fail: true )
 
   # Write release notes to a place where they can be translated and add that file to git
   changelog_path = get_changelog_path( build_number: build_number )
@@ -246,7 +246,7 @@ platform :android do
     tracks = [
       "internal",
       "alpha",
-      "beta",
+      "beta"
       # TODO: 20241105-we currently have no production track opened, so uploading will error out
       # "production"
     ]
@@ -275,9 +275,8 @@ platform :android do
       EXTRA_ANDROID_ASSETS_ERROR
     end
     assets = File.open( "../android/link-assets-manifest.json" ) {| f | JSON.parse( f.read )["data"] }
-    linked_assets = []
-    assets.each do | asset |
-      linked_assets.push( asset["path"].split( "assets/fonts/" )[1] )
+    linked_assets = assets.map do | asset |
+      asset["path"].split( "assets/fonts/" )[1]
     end
     Dir.children( "../assets/fonts" ).each do | file |
       next unless !linked_assets.include?( file ) && ( file != ".DS_Store" )
@@ -350,7 +349,7 @@ platform :ios do
       force: true,
       skip_binary_upload: true,
       skip_metadata: false,
-      skip_screenshots: true,
+      skip_screenshots: true
     )
   end
 
@@ -374,8 +373,8 @@ platform :ios do
         export_options: {
           signingStyle: "manual",
           provisioningProfiles: {
-            IOS_BUNDLE_ID => ENV["IOS_PROVISIONING_PROFILE_NAME"],
-            ENV["IOS_SHARE_BUNDLE_ID"] => ENV["IOS_SHARE_PROVISIONING_PROFILE_NAME"]
+            IOS_BUNDLE_ID => ENV.fetch( "IOS_PROVISIONING_PROFILE_NAME", nil ),
+            ENV.fetch( "IOS_SHARE_BUNDLE_ID", nil ) => ENV.fetch( "IOS_SHARE_PROVISIONING_PROFILE_NAME", nil )
           }
         }
       )
@@ -435,14 +434,14 @@ lane :release do
   github_release = get_github_release(
     url: "inaturalist/iNaturalistReactNative",
     version: last_tag,
-    api_token: ENV["GITHUB_TOKEN"]
+    api_token: ENV.fetch( "GITHUB_TOKEN", nil )
   )
   if github_release
     UI.important "Release already exists at #{github_release['url']}. You need to manually upload any missing assets."
   else
     set_github_release(
       repository_name: "inaturalist/iNaturalistReactNative",
-      api_token: ENV["GITHUB_TOKEN"],
+      api_token: ENV.fetch( "GITHUB_TOKEN", nil ),
       name: last_tag,
       tag_name: last_tag,
       description: changelog,
@@ -546,9 +545,9 @@ lane :prod do
 
   # Get all build numbers between the last released version and the current build number
   build_number = get_build_number( xcodeproj: XCODEPROJ )
-  published_build_number = app_store_build_number()
+  published_build_number = app_store_build_number
   new_build_numbers = ( published_build_number.to_i + 1..build_number.to_i ).to_a
-  
+
   # Get all previous changelogs to show them as an instruction for new release notes
   previous_changelogs = ""
   new_build_numbers.each do | new_build_number |
@@ -556,25 +555,25 @@ lane :prod do
     previous_changelogs += "#\n#\n"
     previous_changelogs += "# Version #{VERSION}+#{new_build_number}\n"
     # Add a # to the start of each line
-    changelog.each_line do |line|
+    changelog.each_line do | line |
       previous_changelogs += "# #{line}"
     end
   end
   instructions = <<~INSTRUCTIONS
 
 
-      # Write custom release notes that summarize changes since the last production release (not since the last build).
-      # Enter the release notes here.
-      # Lines beginning with # will be ignored.
-      # Keep notes within the 500 character limit required by Google Play.
-      #
-      # Here's all builds' changes since the last release:
-      \n
-      #{previous_changelogs}
-    INSTRUCTIONS
+    # Write custom release notes that summarize changes since the last production release (not since the last build).
+    # Enter the release notes here.
+    # Lines beginning with # will be ignored.
+    # Keep notes within the 500 character limit required by Google Play.
+    #
+    # Here's all builds' changes since the last release:
+    \n
+    #{previous_changelogs}
+  INSTRUCTIONS
   release_notes = {}
   # At the moment we are not bothered about translating those into other languages
-  release_notes["default"] = prompt_for_release_notes( instructions: instructions)
+  release_notes["default"] = prompt_for_release_notes( instructions: instructions )
 
   upload_to_app_store(
     build_number: build_number,
