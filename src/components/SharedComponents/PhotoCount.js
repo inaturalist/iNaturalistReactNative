@@ -16,12 +16,15 @@ type Props = {
   count: number
 };
 
+const BASE_HEIGHT = 24;
+
 const PhotoCount = ( { count }: Props ): Node => {
   const { t } = useTranslation( );
   const { isRTL } = I18nManager;
   const theme = useTheme( );
-  const HEIGHT = PixelRatio.getFontScale() * 24;
-
+  const fontScale = PixelRatio.getFontScale();
+  const HEIGHT = fontScale * BASE_HEIGHT;
+  const MAX_FONT_SCALE = Math.ceil( fontScale );
   if ( count === 0 ) {
     return <INatIcon name="noevidence" size={HEIGHT} color={theme.colors.inverseOnSurface} />;
   }
@@ -37,16 +40,16 @@ const PhotoCount = ( { count }: Props ): Node => {
       testID="photo-count"
     >
       <Body3
-        maxFontSizeMultiplier={1}
         className={classnames(
           "absolute z-10",
-          "left-1.5 top-1.5",
+          "left-[16%] top-[16%]",
           {
             "left-0.5": photoCount > 9,
             "right-1.5": isRTL && photoCount < 9,
             "right-0.5": photoCount > 9 && isRTL
           }
         )}
+        maxFontSizeMultiplier={MAX_FONT_SCALE}
       >
         {t( "Intl-number", { val: photoCount } )}
       </Body3>
