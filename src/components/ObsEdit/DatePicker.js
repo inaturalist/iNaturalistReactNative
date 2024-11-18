@@ -1,6 +1,6 @@
 // @flow
 
-import { Body3, DateTimePicker, INatIcon } from "components/SharedComponents";
+import { Body2, DateTimePicker, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
@@ -54,9 +54,9 @@ const DatePicker = ( { currentObservation, updateObservationKeys }: Props ): Nod
           <INatIcon size={14} name="clock-outline" />
         </View>
         {/* $FlowIgnore */}
-        <Body3 testID="ObsEdit.time" className={!displayDate( ) && "color-warningRed"}>
+        <Body2 testID="ObsEdit.time" className={!displayDate( ) && "color-warningRed"}>
           {displayDate( ) || t( "Add-Date-Time" )}
-        </Body3>
+        </Body2>
       </Pressable>
     </>
   );
