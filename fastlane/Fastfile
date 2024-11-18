@@ -152,7 +152,8 @@ def get_changelog( options )
   end
 end
 
-def prompt_for_release_notes ( instructions = "", reset_git_repo_on_fail = false)
+def prompt_for_release_notes ( options = {})
+  instructions = options[:instructions] || ""
   # Get release notes
   # Bit silly but takes advantage of existing syntax highlighting
   fname = "COMMIT_EDITMSG"
@@ -167,13 +168,13 @@ def prompt_for_release_notes ( instructions = "", reset_git_repo_on_fail = false
   release_notes.strip!
   FileUtils.rm( fname )
   if release_notes.strip.size.zero?
-    if reset_git_repo_on_fail
+    if options[:reset_git_repo_on_fail]
       reset_git_repo skip_clean: true
     end
     UI.abort_with_message! "You gotta enter release notes!"
   end
   if release_notes.strip.length > 500
-    if reset_git_repo_on_fail
+    if options[:reset_git_repo_on_fail]
       reset_git_repo skip_clean: true
     end
     UI.abort_with_message! "Release notes must be 500 characters or less"
@@ -212,7 +213,7 @@ lane :tag do | options |
       #{changes}
     INSTRUCTIONS
   # At the moment we are not bothered about translating those into other languages
-  release_notes = prompt_for_release_notes(instructions, true)
+  release_notes = prompt_for_release_notes( instructions: instructions, reset_git_repo_on_fail: true)
 
   # Write release notes to a place where they can be translated and add that file to git
   changelog_path = get_changelog_path( build_number: build_number )
@@ -573,7 +574,7 @@ lane :prod do
     INSTRUCTIONS
   release_notes = {}
   # At the moment we are not bothered about translating those into other languages
-  release_notes["default"] = prompt_for_release_notes(instructions)
+  release_notes["default"] = prompt_for_release_notes( instructions: instructions)
 
   upload_to_app_store(
     build_number: build_number,
