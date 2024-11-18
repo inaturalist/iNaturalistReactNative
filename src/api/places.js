@@ -10,7 +10,10 @@ const fetchPlace = async (
   opts: Object = {}
 ): Promise<?Object> => {
   try {
-    return await inatjs.places.fetch( id, params, opts );
+    const { results } = await inatjs.places.fetch( id, params, opts );
+    return results && results.length > 0
+      ? results[0]
+      : null;
   } catch ( e ) {
     return handleError( e );
   }

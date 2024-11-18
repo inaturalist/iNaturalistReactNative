@@ -64,7 +64,9 @@ const ProjectDetails = ( {
       }
       navigation.navigate( "Explore", {
         project,
-        worldwide: true
+        // If selected project has no place_id, show map in worldwide mode
+        worldwide: !project?.place,
+        place: project?.place
       } );
     },
     [navigation, project, setExploreView, writeLayoutToStorage]
