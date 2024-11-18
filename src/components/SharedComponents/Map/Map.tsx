@@ -9,7 +9,7 @@ import React, {
   useRef,
   useState
 } from "react";
-import { DimensionValue, ViewStyle } from "react-native";
+import { DimensionValue, Platform, ViewStyle } from "react-native";
 import MapView, {
   BoundingBox, LatLng, MapType, Region
 } from "react-native-maps";
@@ -273,7 +273,13 @@ const Map = ( {
     setUserLocation( coordinate );
   };
 
-  const handleRegionChangeComplete = async newRegion => {
+  const handleRegionChangeComplete = async ( newRegion, gesture ) => {
+    // We are only interested in region changes due to user interaction.
+    // In Android, onRegionChangeComplete also fires for other map region
+    // changes and gesture.isGesture is available to test for user interaction.
+    if ( Platform.OS === "android" && !gesture.isGesture ) {
+      return;
+    }
     if ( onRegionChangeComplete ) {
       const boundaries = await mapViewRef?.current?.getMapBoundaries( );
       onRegionChangeComplete( newRegion, boundaries );
