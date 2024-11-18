@@ -75,7 +75,7 @@ jobs:
       - name: Normalize and validate
         run: npm run translate
       - name: Prepare metadata directories
-        run: npm run prepare-metadata
+        run: npm run prepare-fastlane-metadata
 
       - name: Make pull request
         # The original doesn't support making a pull request without
