@@ -4,7 +4,7 @@ import classnames from "classnames";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCamera";
 import {
   ActivityIndicator,
-  Body3, Body4, Heading4, INatIcon
+  Body2, Body3, Body4, Heading4, INatIcon
 } from "components/SharedComponents";
 import { MAX_SOUNDS_ALLOWED } from "components/SoundRecorder/SoundRecorder";
 import { Pressable, View } from "components/styledComponents";
@@ -139,9 +139,9 @@ const EvidenceSection = ( {
             displayPlaceName( )
               ? (
                 <>
-                  <Body3 className={classnames( locationTextClassNames )}>
+                  <Body2 className={classnames( locationTextClassNames )}>
                     {displayPlaceName( )}
-                  </Body3>
+                  </Body2>
                   <Body4 className={classnames( locationTextClassNames )}>
                     {displayLocation( )}
                   </Body4>
