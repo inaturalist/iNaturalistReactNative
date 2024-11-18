@@ -47,7 +47,7 @@ const DatePicker = ( { currentObservation, updateObservationKeys }: Props ): Nod
       <Pressable
         accessibilityRole="button"
         onPress={openModal}
-        className="flex-row flex-nowrap items-center"
+        className="flex-row flex-nowrap items-center py-4"
         accessibilityLabel={t( "Select-a-date-and-time-for-observation" )}
       >
         <View className="w-[30px] items-center mr-1">
