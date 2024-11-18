@@ -1,7 +1,7 @@
 // @flow
 
 import {
-  Body3, INatIcon
+  Body2, INatIcon
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
@@ -41,9 +41,9 @@ const DropdownItem = ( {
 
         />
       </View>
-      <Body3 className="mx-3">
+      <Body2 className="mx-3">
         {text}
-      </Body3>
+      </Body2>
       <View className="mt-[4px]">
         {caret}
       </View>
