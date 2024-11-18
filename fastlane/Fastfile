@@ -152,7 +152,7 @@ def get_changelog( options )
   end
 end
 
-def prompt_for_release_notes ( options = {})
+def prompt_for_release_notes ( options = {} )
   instructions = options[:instructions] || ""
   # Get release notes
   # Bit silly but takes advantage of existing syntax highlighting
