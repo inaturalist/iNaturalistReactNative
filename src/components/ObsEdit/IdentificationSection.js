@@ -128,8 +128,8 @@ const IdentificationSection = ( {
   );
 
   return (
-    <View className="mt-6">
-      <View className="ml-5 flex-row">
+    <View className="mt-2">
+      <View className="ml-6 flex-row">
         <Heading4>{t( "IDENTIFICATION" )}</Heading4>
         {hasIdentification && (
           <View className="ml-3">
@@ -138,7 +138,7 @@ const IdentificationSection = ( {
         )}
       </View>
       {identTaxon && (
-        <View className="mt-5 mx-5">
+        <View className="mt-5 mx-6">
           <TaxonResult
             accessibilityLabel={t( "Edits-this-observations-taxon" )}
             asListItem={false}

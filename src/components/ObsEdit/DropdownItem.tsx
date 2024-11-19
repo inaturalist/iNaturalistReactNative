@@ -31,13 +31,13 @@ const DropdownItem = ( {
       onPress={handlePress}
       accessibilityLabel={accessibilityLabel}
     >
-      <View className="mt-[1px]">
+      <View className="w-[30px] items-center mt-[1px] mr-1">
         <INatIcon
           size={14}
           name={iconName}
         />
       </View>
-      <Body2 className="mx-3">
+      <Body2 className="mr-3">
         {text}
       </Body2>
       <View className="mt-[3px]">
