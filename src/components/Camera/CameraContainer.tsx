@@ -4,7 +4,9 @@ import {
 } from "components/Camera/helpers/visionCameraWrapper";
 import React, {
   useCallback,
-  useRef, useState
+  useMemo,
+  useRef,
+  useState
 } from "react";
 import { Alert, StatusBar } from "react-native";
 import type {
@@ -78,7 +80,6 @@ const CameraContainer = ( ) => {
 
   const showPhotoPermissionsGate = !( hasSavePhotoPermission || hasBlockedSavePhotoPermission );
 
-  const prepareStoreAndNavigate = usePrepareStoreAndNavigate( );
   const addPhotoPermissionResult = hasSavePhotoPermission
     ? "granted"
     : "denied";
@@ -90,21 +91,25 @@ const CameraContainer = ( ) => {
     setCameraPosition( newPosition );
   };
 
+  const navigationOptions = useMemo( ( ) => ( {
+    visionResult: aiSuggestion,
+    addPhotoPermissionResult,
+    userLocation
+  } ), [addPhotoPermissionResult, aiSuggestion, userLocation] );
+
+  const prepareStoreAndNavigate = usePrepareStoreAndNavigate( );
+
   // passing newPhotoState because navigation to SuggestionsContainer for AICamera
   // happens before cameraUris state is ever set in useStore
   // and we want to make sure Suggestions has the correct observationPhotos
   const handleNavigation = useCallback( async ( newPhotoState = {} ) => {
     await prepareStoreAndNavigate( {
-      visionResult: aiSuggestion,
-      addPhotoPermissionResult,
-      userLocation,
+      ...navigationOptions,
       newPhotoState
     } );
   }, [
-    addPhotoPermissionResult,
     prepareStoreAndNavigate,
-    userLocation,
-    aiSuggestion
+    navigationOptions
   ] );
 
   const handleCheckmarkPress = useCallback( async newPhotoState => {
@@ -116,7 +121,8 @@ const CameraContainer = ( ) => {
   }, [
     handleNavigation,
     requestSavePhotoPermission,
-    showPhotoPermissionsGate] );
+    showPhotoPermissionsGate
+  ] );
 
   const toggleFlash = ( ) => {
     setTakePhotoOptions( {
@@ -204,13 +210,12 @@ const CameraContainer = ( ) => {
       {showPhotoPermissionsGate && renderSavePhotoPermissionGate( {
         // If the user does not give location permissions in any form,
         // navigate to the location picker (if granted we just continue fetching the location)
-        onRequestGranted: ( ) => console.log( "granted in permission gate" ),
-        onRequestBlocked: ( ) => console.log( "blocked in permission gate" ),
+        onRequestGranted: ( ) => console.log( "granted in save photo permission gate" ),
+        onRequestBlocked: ( ) => console.log( "blocked in save photo permission gate" ),
         onModalHide: async ( ) => {
           await handleNavigation( {
-            visionResult: aiSuggestion,
-            addPhotoPermissionResult,
-            userLocation
+            cameraUris,
+            evidenceToAdd
           } );
         }
       } )}
