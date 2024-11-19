@@ -40,6 +40,7 @@ import {
 } from "providers/ExploreContext.tsx";
 import React, { useState } from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";
+import type { LocationPermissionCallbacks } from "sharedHooks/useLocationPermission.tsx";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
@@ -59,6 +60,8 @@ const { useRealm } = RealmContext;
 interface Props {
   closeModal: () => void;
   filterByIconicTaxonUnknown: () => void;
+  renderLocationPermissionsGate: ( options: LocationPermissionCallbacks ) => React.FC;
+  requestLocationPermissions: ( ) => void;
   // TODO: type this properly when taxon has a type
   updateTaxon: ( taxon: null | { name: string } ) => void;
   // TODO: Param not typed yet, because ExploreLocationSearch is not typed yet
@@ -72,6 +75,8 @@ interface Props {
 const FilterModal = ( {
   closeModal,
   filterByIconicTaxonUnknown,
+  renderLocationPermissionsGate,
+  requestLocationPermissions,
   updateTaxon,
   updateLocation,
   updateUser,
@@ -1340,8 +1345,10 @@ const FilterModal = ( {
         updateTaxon={updateTaxon}
       />
       <ExploreLocationSearchModal
-        showModal={showLocationSearchModal}
         closeModal={() => { setShowLocationSearchModal( false ); }}
+        renderPermissionsGate={renderLocationPermissionsGate}
+        requestPermissions={requestLocationPermissions}
+        showModal={showLocationSearchModal}
         updateLocation={updateLocation}
       />
       <ExploreUserSearchModal
