@@ -85,7 +85,7 @@ const EvidenceSection = ( {
   };
 
   return (
-    <View className="mx-6 mt-4">
+    <View className="mt-4">
       {showAddEvidenceSheet && (
         <AddEvidenceSheet
           disableAddingMoreEvidence={
@@ -95,7 +95,7 @@ const EvidenceSection = ( {
           onClose={( ) => setShowAddEvidenceSheet( false )}
         />
       )}
-      <View className="flex-row">
+      <View className="ml-6 flex-row">
         <Heading4>{t( "EVIDENCE" )}</Heading4>
         <View className="ml-3">
           {passesEvidenceTest( ) && (
@@ -112,7 +112,7 @@ const EvidenceSection = ( {
       />
       <Pressable
         accessibilityRole="link"
-        className="flex-row flex-nowrap pt-1"
+        className="ml-6 flex-row flex-nowrap pt-1"
         onPress={onLocationPress}
         accessibilityLabel={t( "Edit-location" )}
       >
@@ -155,10 +155,12 @@ const EvidenceSection = ( {
           }
         </View>
       </Pressable>
-      <DatePicker
-        currentObservation={currentObservation}
-        updateObservationKeys={updateObservationKeys}
-      />
+      <View className="ml-6">
+        <DatePicker
+          currentObservation={currentObservation}
+          updateObservationKeys={updateObservationKeys}
+        />
+      </View>
     </View>
   );
 };
