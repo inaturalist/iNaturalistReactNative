@@ -13,10 +13,10 @@ jobs:
   pull-from-crowdin:
     runs-on: ubuntu-latest
 
-    # Apparently needed to rename files, though maybe there's a better way
-    container:
-      image: ubuntu-latest
-      options: --user root
+    # # Apparently needed to rename files, though maybe there's a better way
+    # container:
+    #   image: ubuntu-latest
+    #   options: --user root
 
     steps:
       - name: Checkout
