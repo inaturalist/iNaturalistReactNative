@@ -30,15 +30,6 @@ const useLinking = ( currentUser: ?Object ) => {
 
     if ( uuid ) {
       navigateToObsDetails( navigation, uuid );
-      // navigation.navigate( "TabNavigator", {
-      //   screen: "TabStackNavigator",
-      //   params: {
-      //     screen: "ObsDetails",
-      //     params: {
-      //       uuid
-      //     }
-      //   }
-      // } );
     }
   }, [navigation, observationId] );
 
