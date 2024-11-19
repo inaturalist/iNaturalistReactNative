@@ -70,8 +70,8 @@ def set_android_version_name( _new_version_name )
   File.write( build_gradle_path, new_gradle )
 end
 
-def get_changelog_path( build_number = nil )
-  build_number ||= get_build_number( xcodeproj: XCODEPROJ )
+def get_changelog_path( options )
+  build_number = options[:build_number] || get_build_number( xcodeproj: XCODEPROJ )
   changelog_dir_path = File.join( "metadata", "android", "en-US", "changelogs" )
   FileUtils.mkpath( changelog_dir_path )
   File.join( changelog_dir_path, "#{build_number}.txt" )
@@ -135,8 +135,9 @@ def get_ipa_path( build_number = nil )
   ) )
 end
 
-def get_changelog
-  changelog_path = get_changelog_path
+def get_changelog( options )
+  build_number = options[:build_number] || nil
+  changelog_path = get_changelog_path( build_number: build_number )
   unless File.exist?( changelog_path )
     UI.abort_with_message! <<~MSG
       No change log file exists at #{changelog_path}. That should have been
@@ -149,6 +150,37 @@ def get_changelog
   rescue StandardError
     nil
   end
+end
+
+def prompt_for_release_notes( options = {} )
+  instructions = options[:instructions] || ""
+  # Get release notes
+  # Bit silly but takes advantage of existing syntax highlighting
+  fname = "COMMIT_EDITMSG"
+  File.open( fname, "w" ) do | f |
+    f << instructions
+  end
+  system "#{EDITOR} #{fname}", exception: true
+  release_notes = ""
+  File.readlines( fname ).each do | line |
+    release_notes += line unless line[0] == "#"
+  end
+  release_notes.strip!
+  FileUtils.rm( fname )
+  if release_notes.strip.empty?
+    if options[:reset_git_repo_on_fail]
+      reset_git_repo skip_clean: true
+    end
+    UI.abort_with_message! "You gotta enter release notes!"
+  end
+  if release_notes.strip.length > 500
+    if options[:reset_git_repo_on_fail]
+      reset_git_repo skip_clean: true
+    end
+    UI.abort_with_message! "Release notes must be 500 characters or less"
+  end
+  # Return the release notes
+  release_notes
 end
 
 lane :tag do | options |
@@ -170,38 +202,21 @@ lane :tag do | options |
   set_android_version_name( VERSION )
   tag = "v#{VERSION}+#{build_number}"
 
-  # Get release notes
-  # Bit silly but takes advantage of existing syntax highlighting
-  fname = "COMMIT_EDITMSG"
-  File.open( fname, "w" ) do | f |
-    f << <<~INSTRUCTIONS
+  # Prompt for release notes
+  instructions = <<~INSTRUCTIONS
 
 
-      # Enter notes about what's new in #{tag}. Lines beginning with # will be ignored.
-      # Keep notes within the 500 character limit required by Google Play.
-      #
-      # Here's what changed since the last tag:
-      #{changes}
-    INSTRUCTIONS
-  end
-  system "#{EDITOR} #{fname}", exception: true
-  release_notes = ""
-  File.readlines( fname ).each do | line |
-    release_notes += line unless line[0] == "#"
-  end
-  release_notes.strip!
-  FileUtils.rm( fname )
-  if release_notes.strip.empty?
-    reset_git_repo skip_clean: true
-    UI.abort_with_message! "You gotta enter release notes!"
-  end
-  if release_notes.strip.length > 500
-    reset_git_repo skip_clean: true
-    UI.abort_with_message! "Release notes must be 500 characters or less"
-  end
+    # Enter notes about what's new in #{tag}. Lines beginning with # will be ignored.
+    # Keep notes within the 500 character limit required by Google Play.
+    #
+    # Here's what changed since the last tag:
+    #{changes}
+  INSTRUCTIONS
+  # At the moment we are not bothered about translating those into other languages
+  release_notes = prompt_for_release_notes( instructions: instructions, reset_git_repo_on_fail: true )
 
   # Write release notes to a place where they can be translated and add that file to git
-  changelog_path = get_changelog_path( build_number )
+  changelog_path = get_changelog_path( build_number: build_number )
   File.open( changelog_path, "w" ) do | f |
     f << "#{release_notes}\n"
   end
@@ -225,6 +240,29 @@ lane :tag do | options |
 end
 
 platform :android do
+  desc "Upload description to Google Play"
+  lane :upload_metadata do
+    # Upload for all tracks
+    tracks = [
+      "internal",
+      "alpha",
+      "beta"
+      # TODO: 20241105-we currently have no production track opened, so uploading will error out
+      # "production"
+    ]
+    tracks.each do | track |
+      upload_to_play_store(
+        track: track,
+        skip_upload_apk: true,
+        skip_upload_aab: true,
+        skip_upload_metadata:	false,
+        skip_upload_changelogs:	true,
+        skip_upload_images:	true,
+        skip_upload_screenshots: true
+      )
+    end
+  end
+
   lane :build do
     desc "Build release files for Android"
     Dir.children( "../android/app/src/main/assets/camera" ).each do | file |
@@ -303,6 +341,18 @@ platform :android do
 end
 
 platform :ios do
+  desc "Upload app metadata to App Store"
+  # This only works while the new app version is in the "Prepare for Submission" state
+  lane :upload_metadata do
+    upload_to_app_store(
+      metadata_path: "./fastlane/metadata/ios",
+      force: true,
+      skip_binary_upload: true,
+      skip_metadata: false,
+      skip_screenshots: true
+    )
+  end
+
   lane :build do
     desc "Build release files for iOS"
     # Build iOS app
@@ -490,19 +540,56 @@ end
 
 lane :prod do
   desc "Set up App Store version and upload new metadata"
+
+  version = get_version_number( xcodeproj: XCODEPROJ, target: "iNaturalistReactNative" )
+
+  # Get all build numbers between the last released version and the current build number
+  build_number = get_build_number( xcodeproj: XCODEPROJ )
+  published_build_number = app_store_build_number
+  new_build_numbers = ( published_build_number.to_i + 1..build_number.to_i ).to_a
+
+  # Get all previous changelogs to show them as an instruction for new release notes
+  previous_changelogs = ""
+  new_build_numbers.each do | new_build_number |
+    changelog = get_changelog( build_number: new_build_number )
+    previous_changelogs += "#\n#\n"
+    previous_changelogs += "# Version #{VERSION}+#{new_build_number}\n"
+    # Add a # to the start of each line
+    changelog.each_line do | line |
+      previous_changelogs += "# #{line}"
+    end
+  end
+  instructions = <<~INSTRUCTIONS
+
+
+    # Write custom release notes that summarize changes since the last production release (not since the last build).
+    # Enter the release notes here.
+    # Lines beginning with # will be ignored.
+    # Keep notes within the 500 character limit required by Google Play.
+    #
+    # Here's all builds' changes since the last release:
+    \n
+    #{previous_changelogs}
+  INSTRUCTIONS
+  release_notes = {}
+  # At the moment we are not bothered about translating those into other languages
+  release_notes["default"] = prompt_for_release_notes( instructions: instructions )
+
   upload_to_app_store(
+    build_number: build_number,
+    app_version: version,
     automatic_release: false,
-    force: true,
     submit_for_review: false,
-    # As of 20240805, this does not actually upload the values from these
-    # files. I'm leaving them there in the hopes that it will work for some
-    # reason after we have our first release up. If that doesn't work we
-    # should probably just remove them, though we could also manually load
-    # there values and submit them with args here like we're doing for the
-    # release notes. ~~~kueda
-    metadata_path: "./metadata/ios",
+    force: false,
+    # We don't want to upload the current binary but promote it from TestFlight to AppStore
+    # TODO: this does not work in conjunction with submit_for_review: false, so for now the new build
+    # needs to be manually attached
+    skip_binary_upload: true,
+    skip_metadata: false,
+    skip_screenshots: true,
+    metadata_path: "./fastlane/metadata/ios",
     copyright: "#{Date.today.year} iNaturalist",
-    release_notes: app_store_release_notes,
+    release_notes: release_notes,
     precheck_include_in_app_purchases: false
   )
 

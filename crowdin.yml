@@ -13,3 +13,25 @@ files:
     dest: /ReactNative/InfoPlist.xcstrings
     translation: /ios/InfoPlist.xcstrings
     multilingual: true
+    # Strings for AppStore description etc
+    # Note: this uses the Crowdin osx-locale with some custom mapping in metadata/i18ncli.js
+  - source: /fastlane/metadata/ios/default/description.txt
+    dest: /ReactNative/metadata/ios/description.txt
+    translation: /fastlane/metadata/ios/%osx_locale%/description.txt
+  - source: /fastlane/metadata/ios/default/keywords.txt
+    dest: /ReactNative/metadata/ios/keywords.txt
+    translation: /fastlane/metadata/ios/%osx_locale%/keywords.txt
+  - source: /fastlane/metadata/ios/default/promotional_text.txt
+    dest: /ReactNative/metadata/ios/promotional_text.txt
+    translation: /fastlane/metadata/ios/%osx_locale%/promotional_text.txt
+  - source: /fastlane/metadata/ios/default/subtitle.txt
+    dest: /ReactNative/metadata/ios/subtitle.txt
+    translation: /fastlane/metadata/ios/%osx_locale%/subtitle.txt
+    # Strings for PlayStore description etc
+    # Note: this uses the Crowdin locale with some custom mapping in metadata/i18ncli.js
+  - source: /fastlane/metadata/android/en-US/full_description.txt
+    dest: /ReactNative/metadata/android/full_description.txt
+    translation: /fastlane/metadata/android/%locale%/full_description.txt
+  - source: /fastlane/metadata/android/en-US/short_description.txt
+    dest: /ReactNative/metadata/android/short_description.txt
+    translation: /fastlane/metadata/android/%locale%/short_description.txt
