@@ -70,7 +70,7 @@ def set_android_version_name( _new_version_name )
   File.write( build_gradle_path, new_gradle )
 end
 
-def get_changelog_path( options )
+def get_changelog_path( options = {} )
   build_number = options[:build_number] || get_build_number( xcodeproj: XCODEPROJ )
   changelog_dir_path = File.join( "metadata", "android", "en-US", "changelogs" )
   FileUtils.mkpath( changelog_dir_path )
@@ -135,10 +135,12 @@ def get_ipa_path( build_number = nil )
   ) )
 end
 
-def get_changelog( options )
+def get_changelog( options = {} )
   build_number = options[:build_number] || nil
   changelog_path = get_changelog_path( build_number: build_number )
   unless File.exist?( changelog_path )
+    return nil if options[:allow_blank]
+
     UI.abort_with_message! <<~MSG
       No change log file exists at #{changelog_path}. That should have been
       created when you ran `fastlane tag`.
@@ -523,7 +525,7 @@ lane :beta do
   last_tag = last_git_tag
   changelog = get_changelog
   slack_message = <<~MESSAGE
-    🚀 NEW BETA RELEASE
+    🚧 NEW BETA RELEASE
     Should be available to beta testers in TestFlight and Play Store soon.
 
     #{changelog}
@@ -551,7 +553,9 @@ lane :prod do
   # Get all previous changelogs to show them as an instruction for new release notes
   previous_changelogs = ""
   new_build_numbers.each do | new_build_number |
-    changelog = get_changelog( build_number: new_build_number )
+    changelog = get_changelog( build_number: new_build_number, allow_blank: true )
+    next unless changelog
+
     previous_changelogs += "#\n#\n"
     previous_changelogs += "# Version #{VERSION}+#{new_build_number}\n"
     # Add a # to the start of each line
@@ -562,12 +566,13 @@ lane :prod do
   instructions = <<~INSTRUCTIONS
 
 
-    # Write custom release notes that summarize changes since the last production release (not since the last build).
-    # Enter the release notes here.
+    # Write custom release notes that summarize changes since the last production
+    # release (not since the last build).
+    #
     # Lines beginning with # will be ignored.
     # Keep notes within the 500 character limit required by Google Play.
     #
-    # Here's all builds' changes since the last release:
+    # Here are all the changelogs since the last release:
     \n
     #{previous_changelogs}
   INSTRUCTIONS
@@ -591,6 +596,20 @@ lane :prod do
     copyright: "#{Date.today.year} iNaturalist",
     release_notes: release_notes,
     precheck_include_in_app_purchases: false
+  )
+
+  slack_message = <<~MESSAGE
+    🚀 NEW PROD RELEASE
+    Staged on app stores with localized metadata, ready to submit for review.
+
+    #{release_notes['default']}
+  MESSAGE
+  slack(
+    message: slack_message,
+    default_payloads: [],
+    payload: {
+      version: last_git_tag
+    }
   )
 
   UI.important "This just sets up the version in the App Store. You need to go there " \
