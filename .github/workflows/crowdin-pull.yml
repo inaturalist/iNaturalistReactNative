@@ -15,7 +15,7 @@ jobs:
 
     # Apparently needed to rename files, though maybe there's a better way
     container:
-      image: node:18
+      image: ubuntu-latest
       options: --user root
 
     steps:
