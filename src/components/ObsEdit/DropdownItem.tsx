@@ -31,7 +31,7 @@ const DropdownItem = ( {
       onPress={handlePress}
       accessibilityLabel={accessibilityLabel}
     >
-      <View className="mt-[2px]">
+      <View className="mt-[1px]">
         <INatIcon
           size={14}
           name={iconName}
@@ -40,7 +40,7 @@ const DropdownItem = ( {
       <Body2 className="mx-3">
         {text}
       </Body2>
-      <View className="mt-[4px]">
+      <View className="mt-[3px]">
         {caret}
       </View>
     </Pressable>
