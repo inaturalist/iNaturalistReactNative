@@ -101,7 +101,7 @@ const AICamera = ( {
   const { t } = useTranslation();
 
   const { loadTime } = usePerformance( {
-    isLoading: camera.current !== null
+    isLoading: camera?.current !== null
   } );
   if ( isDebugMode( ) && loadTime ) {
     logger.info( loadTime );

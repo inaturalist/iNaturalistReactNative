@@ -88,7 +88,7 @@ const StandardCamera = ( {
   const navigation = useNavigation( );
 
   const { loadTime } = usePerformance( {
-    isLoading: camera.current !== null
+    isLoading: camera?.current !== null
   } );
   if ( isDebugMode( ) && loadTime ) {
     logger.info( loadTime );
