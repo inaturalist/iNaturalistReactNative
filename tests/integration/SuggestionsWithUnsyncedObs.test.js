@@ -61,14 +61,6 @@ const mockModelResultWithHuman = {
   ]
 };
 
-jest.mock( "sharedHooks/useDebugMode", ( ) => ( {
-  __esModule: true,
-  default: ( ) => ( {
-    isDebug: false
-  } ),
-  isDebugMode: ( ) => false
-} ) );
-
 jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
   OS: "ios",
   select: jest.fn( ),
