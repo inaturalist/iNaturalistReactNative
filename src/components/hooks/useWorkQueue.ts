@@ -12,6 +12,7 @@ const useWorkQueue = ( ) => {
   const realm = useRealm( );
   const [isMutating, setIsMutating] = useState( false );
 
+  // TODO this needs to not run infinitely if the request fails
   const dequeuedItem = QueueItem.dequeue( realm );
   const id = dequeuedItem?.id || null;
   const payload = dequeuedItem?.payload || null;
@@ -21,15 +22,10 @@ const useWorkQueue = ( ) => {
     ( params, optsWithAuth ) => updateUsers( params, optsWithAuth ),
     {
       onSuccess: ( ) => {
-        console.log(
-          "updated user locale on server to: ",
-          payload["user[locale]"]
-        );
         QueueItem.deleteDequeuedItem( realm, id );
         setIsMutating( false );
       },
       onError: ( ) => {
-        console.log( "error updating user locale in useChangeLocale" );
         setIsMutating( false );
       }
     }
