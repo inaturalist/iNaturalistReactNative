@@ -45,11 +45,6 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm install
 
-      - name: test permissions
-        run: |
-          ls -lh src/i18n/l10n/
-          echo "current user: $USER"
-          more src/i18n/l10n/tl.ftl
       # Need this for pre-commit linting of Ruby
       - name: Install Ruby and gems
         uses: ruby/setup-ruby@v1
@@ -84,7 +79,12 @@ jobs:
       # separate those things in the future if it's easier to notice
       # validation failures in the PR
       - name: Normalize and validate
-        run: npm run translate
+        run: |
+          ls -lh src/i18n/l10n/
+          echo "current user: $USER"
+          more src/i18n/l10n/tl.ftl
+          npm run translate
+
       - name: Prepare Fastlane metadata directories
         run: npm run prepare-fastlane-metadata
 
