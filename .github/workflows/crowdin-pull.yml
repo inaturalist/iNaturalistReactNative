@@ -13,10 +13,10 @@ jobs:
   pull-from-crowdin:
     runs-on: ubuntu-latest
 
-    # Apparently needed to rename files, though maybe there's a better way
-    container:
-      image: ghcr.io/actions/actions-runner:latest
-      options: --user root
+    # # Apparently needed to rename files, though maybe there's a better way
+    # container:
+    #   image: ghcr.io/actions/actions-runner:latest
+    #   options: --user root
 
     steps:
       - name: Checkout
@@ -45,6 +45,11 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm install
 
+      - name: test permissions
+        run: |
+          ls -lh src/i18n/l10n/
+          echo "current user: $USER"
+          more src/i18n/l10n/tl.ftl
       # Need this for pre-commit linting of Ruby
       - name: Install Ruby and gems
         uses: ruby/setup-ruby@v1
