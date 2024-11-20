@@ -31,7 +31,7 @@ const usePrepareStoreAndNavigate = ( ): Function => {
   const handleSavingToPhotoLibrary = useCallback( async (
     uris,
     addPhotoPermissionResult,
-    userLocation = null
+    userLocation
   ) => {
     if ( addPhotoPermissionResult !== "granted" ) return Promise.resolve( );
     if ( deviceStorageFull ) {
@@ -85,7 +85,10 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     );
   }, [setObservations, handleSavingToPhotoLibrary] );
 
-  const updateObsWithCameraPhotos = useCallback( async addPhotoPermissionResult => {
+  const updateObsWithCameraPhotos = useCallback( async (
+    addPhotoPermissionResult,
+    userLocation
+  ) => {
     const obsPhotos = await ObservationPhoto.createObsPhotosWithPosition(
       evidenceToAdd,
       {
@@ -97,7 +100,11 @@ const usePrepareStoreAndNavigate = ( ): Function => {
       .appendObsPhotos( obsPhotos, currentObservation );
     observations[currentObservationIndex] = updatedCurrentObservation;
     updateObservations( observations );
-    await handleSavingToPhotoLibrary( evidenceToAdd, addPhotoPermissionResult );
+    await handleSavingToPhotoLibrary(
+      evidenceToAdd,
+      addPhotoPermissionResult,
+      userLocation
+    );
   }, [
     evidenceToAdd,
     numOfObsPhotos,
@@ -118,7 +125,7 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     // new observation
     const uris = newPhotoState?.cameraUris || cameraUris;
     if ( addEvidence ) {
-      await updateObsWithCameraPhotos( addPhotoPermissionResult );
+      await updateObsWithCameraPhotos( addPhotoPermissionResult, userLocation );
       return navigation.goBack( );
     }
 
