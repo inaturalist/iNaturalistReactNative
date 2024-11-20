@@ -56,7 +56,7 @@ if (
 
 // I'm not convinced this ever catches anything... ~~~kueda 20240110
 const jsErrorHandler = ( e, isFatal ) => {
-  if ( e.match( /No space left on device/ ) ) {
+  if ( e?.message?.match( /No space left on device/ ) ) {
     Alert.alert(
       "Device-storage-full",
       "iNaturalist may not be able to save your photos or may crash.",

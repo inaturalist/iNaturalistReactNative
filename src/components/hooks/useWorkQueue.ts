@@ -2,9 +2,12 @@ import { updateUsers } from "api/users";
 import { RealmContext } from "providers/contexts.ts";
 import { useEffect, useState } from "react";
 import QueueItem from "realmModels/QueueItem.ts";
+import { log } from "sharedHelpers/logger";
 import {
   useAuthenticatedMutation
 } from "sharedHooks";
+
+const logger = log.extend( "useWorkQueue" );
 
 const { useRealm } = RealmContext;
 
@@ -12,7 +15,6 @@ const useWorkQueue = ( ) => {
   const realm = useRealm( );
   const [isMutating, setIsMutating] = useState( false );
 
-  // TODO this needs to not run infinitely if the request fails
   const dequeuedItem = QueueItem.dequeue( realm );
   const id = dequeuedItem?.id || null;
   const payload = dequeuedItem?.payload || null;
@@ -25,7 +27,9 @@ const useWorkQueue = ( ) => {
         QueueItem.deleteDequeuedItem( realm, id );
         setIsMutating( false );
       },
-      onError: ( ) => {
+      onError: userUpdateError => {
+        logger.error( "user update failed: ", userUpdateError );
+        QueueItem.markAsFailed( realm, id );
         setIsMutating( false );
       }
     }
