@@ -13,11 +13,6 @@ jobs:
   pull-from-crowdin:
     runs-on: ubuntu-latest
 
-    # # Apparently needed to rename files, though maybe there's a better way
-    # container:
-    #   image: ghcr.io/actions/actions-runner:latest
-    #   options: --user root
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -74,14 +69,17 @@ jobs:
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
+      # The crowdin action adds new files owned by root. We need the default
+      # user to own them so we can move them around
+      - name: Change ownership
+        run: sudo chown -R $USER *
+
       # Move files named with crowdin locales to files named with iNat
       # locales. This will also fail if there's invalid FTL. We might want to
       # separate those things in the future if it's easier to notice
       # validation failures in the PR
       - name: Normalize and validate
-        run: |
-          sudo chown -R $USER *
-          npm run translate
+        run: npm run translate
 
       - name: Prepare Fastlane metadata directories
         run: npm run prepare-fastlane-metadata
