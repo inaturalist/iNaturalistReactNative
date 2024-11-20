@@ -83,6 +83,7 @@ jobs:
           ls -lh src/i18n/l10n/
           echo "current user: $USER"
           more src/i18n/l10n/tl.ftl
+          chown -R $USER src/i18n/l10n/
           npm run translate
 
       - name: Prepare Fastlane metadata directories
