@@ -25,7 +25,11 @@ const writeLoadTranslations = async ( ) => {
   const locales = await supportedLocales( );
   const outPath = path.join( __dirname, "loadTranslations.js" );
   const out = fs.createWriteStream( outPath );
-  out.write( `// AUTO-GENERATED. See ${__filename}\n` );
+  const commentPathPieces = __filename.split( path.sep );
+  const commentPath = path.join(
+    ...commentPathPieces.slice( commentPathPieces.indexOf( "src" ), commentPathPieces.length )
+  );
+  out.write( `// AUTO-GENERATED. See ${commentPath}\n` );
   out.write( "export default locale => {\n" );
   locales.forEach(
     locale => out.write(
