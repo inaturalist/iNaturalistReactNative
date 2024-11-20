@@ -64,7 +64,7 @@ const BottomButtonsContainer = ( {
   const passesTests = passesEvidenceTest && hasIdentification;
 
   const canUpload = currentUser && isConnected;
-  const { startUploadObservations } = useUploadObservations( canUpload );
+  const { startUploadsFromMultiObsEdit } = useUploadObservations( canUpload );
 
   const setNextScreen = useCallback( async ( { type }: Object ) => {
     const savedObservation = await saveObservation( currentObservation, cameraRollUris, realm );
@@ -82,7 +82,7 @@ const BottomButtonsContainer = ( {
       addTotalToolbarIncrements( savedObservation );
       addToUploadQueue( uuid );
       setStartUploadObservations( );
-      startUploadObservations( );
+      startUploadsFromMultiObsEdit( );
     } else {
       incrementTotalSavedObservations( );
     }
@@ -117,7 +117,7 @@ const BottomButtonsContainer = ( {
     setCurrentObservationIndex,
     setSavedOrUploadedMultiObsFlow,
     setStartUploadObservations,
-    startUploadObservations
+    startUploadsFromMultiObsEdit
   ] );
 
   const showMissingEvidence = useCallback( ( ) => {

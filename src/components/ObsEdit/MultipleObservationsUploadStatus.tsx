@@ -15,15 +15,16 @@ const MultipleObservationsUploadStatus = ( ): Node => {
   const uploadErrorsByUuid = useStore( state => state.errorsByUuid );
   const totalUploadErrors = Object.keys( uploadErrorsByUuid ).length;
   const numUploadsAttempted = useStore( state => state.numUploadsAttempted );
-  const initialNumObservationsInQueue = useStore( state => state.initialNumObservationsInQueue );
   const totalSavedObservations = useStore( state => state.totalSavedObservations );
+  const uploadQueue = useStore( state => state.uploadQueue );
 
-  const totalUploading = Math.min( numUploadsAttempted, initialNumObservationsInQueue );
+  const totalUploading = uploadQueue.length;
+  const totalUploaded = numUploadsAttempted - totalUploading;
 
   const statusOptions = [
     {
-      text: t( "x-uploaded", { count: numUploadsAttempted } ),
-      count: numUploadsAttempted
+      text: t( "x-uploaded", { count: totalUploaded } ),
+      count: totalUploaded
     },
     {
       text: t( "x-failed", { count: totalUploadErrors } ),

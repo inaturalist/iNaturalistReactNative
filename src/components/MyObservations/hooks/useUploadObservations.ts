@@ -175,7 +175,7 @@ export default ( canUpload: boolean ) => {
     uploadStatus
   ] );
 
-  const createUploadQueue = useCallback( ( ) => {
+  const createUploadQueueAllUnsynced = useCallback( ( ) => {
     const uuidsQuery = unsyncedUuids
       .map( ( uploadUuid: string ) => `'${uploadUuid}'` ).join( ", " );
     const uploads = realm.objects( "Observation" )
@@ -198,12 +198,25 @@ export default ( canUpload: boolean ) => {
   ] );
 
   const startUploadObservations = useCallback( async ( ) => {
-    createUploadQueue( );
+    createUploadQueueAllUnsynced( );
   }, [
-    createUploadQueue
+    createUploadQueueAllUnsynced
+  ] );
+
+  const startUploadsFromMultiObsEdit = useCallback( async ( ) => {
+    if ( canUpload ) {
+      setStartUploadObservations( );
+    } else {
+      setCannotUploadObservations( );
+    }
+  }, [
+    canUpload,
+    setCannotUploadObservations,
+    setStartUploadObservations
   ] );
 
   return {
-    startUploadObservations
+    startUploadObservations,
+    startUploadsFromMultiObsEdit
   };
 };
