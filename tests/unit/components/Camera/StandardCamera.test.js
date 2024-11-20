@@ -42,6 +42,8 @@ const renderCamera = ( ) => render(
     <StandardCamera
       camera={{}}
       device={{}}
+      setNewPhotoUris={jest.fn( )}
+      newPhotoUris={[]}
     />
   )
 );

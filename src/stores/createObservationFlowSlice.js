@@ -100,14 +100,17 @@ const createObservationFlowSlice = ( set, get ) => ( {
     };
   } ),
   resetObservationFlowSlice: ( ) => set( DEFAULT_STATE ),
-  addCameraRollUri: uri => set( state => {
+  addCameraRollUris: uris => set( state => {
     const savedUris = state.cameraRollUris;
     // A placeholder uri means we don't know the real URI, probably b/c we
     // only had write permission so we were able to write the photo to the
     // camera roll but not read anything about it. Keep in mind this is just
     // a hack around a bug in CameraRoll. See
     // patches/@react-native-camera-roll+camera-roll+7.5.2.patch
-    if ( uri && !uri.match( /placeholder/ ) ) savedUris.push( uri );
+    uris.forEach( uri => {
+      if ( uri && !uri.match( /placeholder/ ) ) savedUris.push( uri );
+    } );
+
     return ( {
       cameraRollUris: savedUris,
       savingPhoto: false
