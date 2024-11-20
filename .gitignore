@@ -43,6 +43,7 @@ npm-debug.log
 yarn-error.log
 
 # Bundle artifact
+.bundle*
 *.jsbundle
 
 # Ruby / CocoaPods
