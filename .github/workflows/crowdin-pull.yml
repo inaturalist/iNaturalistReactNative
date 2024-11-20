@@ -80,10 +80,7 @@ jobs:
       # validation failures in the PR
       - name: Normalize and validate
         run: |
-          ls -lh src/i18n/l10n/
-          echo "current user: $USER"
-          more src/i18n/l10n/tl.ftl
-          sudo chown -R $USER src/i18n/l10n/
+          sudo chown -R $USER *
           npm run translate
 
       - name: Prepare Fastlane metadata directories
