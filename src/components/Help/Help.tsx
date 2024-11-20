@@ -20,7 +20,7 @@ const Help = ( ) => (
         className="mb-8"
         level="neutral"
         text={t( "VIEW-INATURALIST-HELP" )}
-        onPress={( ) => openExternalWebBrowser( "https://help.inaturalist.org" )}
+        onPress={( ) => openExternalWebBrowser( "https://help.inaturalist.org/en/support/solutions/folders/151000552453" )}
       />
       <Heading4 className="mb-3">{t( "CONTACT-SUPPORT" )}</Heading4>
       <Body2 className="mb-5">
