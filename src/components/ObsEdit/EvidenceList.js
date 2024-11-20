@@ -149,7 +149,7 @@ const EvidenceList = ( {
       accessibilityRole="button"
       onPress={handleAddEvidence}
       className={
-        `${imageClass} border border-[2px] border-darkGray items-center justify-center`
+        `${imageClass} border border-[2px] border-darkGray items-center justify-center ml-6`
       }
       testID="EvidenceList.add"
     >

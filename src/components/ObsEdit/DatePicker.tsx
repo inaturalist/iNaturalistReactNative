@@ -1,8 +1,5 @@
-// @flow
-
-import { Body3, DateTimePicker, INatIcon } from "components/SharedComponents";
+import { Body2, DateTimePicker, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useState } from "react";
 import {
   formatISONoSeconds,
@@ -10,19 +7,22 @@ import {
 } from "sharedHelpers/dateAndTime.ts";
 import useTranslation from "sharedHooks/useTranslation";
 
-type Props = {
-  currentObservation: Object,
-  updateObservationKeys: Function
+interface Props {
+  currentObservation: {
+    observed_on_string: string;
+    time_observed_at: string;
+  };
+  updateObservationKeys: ( { observed_on_string }: { observed_on_string: string } ) => void;
 }
 
-const DatePicker = ( { currentObservation, updateObservationKeys }: Props ): Node => {
+const DatePicker = ( { currentObservation, updateObservationKeys }: Props ) => {
   const { t, i18n } = useTranslation( );
   const [showModal, setShowModal] = useState( false );
 
   const openModal = () => setShowModal( true );
   const closeModal = () => setShowModal( false );
 
-  const handlePicked = value => {
+  const handlePicked = ( value: Date ) => {
     const dateString = formatISONoSeconds( value );
     updateObservationKeys( {
       observed_on_string: dateString
@@ -47,16 +47,16 @@ const DatePicker = ( { currentObservation, updateObservationKeys }: Props ): Nod
       <Pressable
         accessibilityRole="button"
         onPress={openModal}
-        className="flex-row flex-nowrap items-center"
+        className="flex-row flex-nowrap items-center py-4"
         accessibilityLabel={t( "Select-a-date-and-time-for-observation" )}
       >
         <View className="w-[30px] items-center mr-1">
           <INatIcon size={14} name="clock-outline" />
         </View>
         {/* $FlowIgnore */}
-        <Body3 testID="ObsEdit.time" className={!displayDate( ) && "color-warningRed"}>
+        <Body2 testID="ObsEdit.time" className={!displayDate( ) && "color-warningRed"}>
           {displayDate( ) || t( "Add-Date-Time" )}
-        </Body3>
+        </Body2>
       </Pressable>
     </>
   );
