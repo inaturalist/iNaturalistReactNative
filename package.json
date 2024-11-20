@@ -134,7 +134,7 @@
     "realm": "^12.6.2",
     "sanitize-html": "^2.13.0",
     "ts-jest": "^29.1.2",
-    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision#taxonomy-rollup-cutoff-2",
+    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision#4.0.5-stable",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
