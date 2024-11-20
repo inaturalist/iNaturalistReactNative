@@ -1,5 +1,3 @@
-// @flow
-
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import {
   permissionResultFromMultiple,
@@ -26,14 +24,14 @@ const logger = log.extend( "savePhotosToCameraGallery" );
 // $FlowIgnore
 export async function savePhotosToCameraGallery(
   uris: [string],
-  onEachSuccess: Function,
   location: Object
 ) {
   const readWritePermissionResult = permissionResultFromMultiple(
     await checkMultiple( READ_WRITE_MEDIA_PERMISSIONS )
   );
-  uris.reduce(
+  const savedPhotoUris = await uris.reduce(
     async ( memo, uri ) => {
+      const savedUris = await memo;
       try {
         const saveOptions = {};
         // One quirk of CameraRoll is that if you want to write to an album, you
@@ -53,10 +51,8 @@ export async function savePhotosToCameraGallery(
           saveOptions.horizontalAccuracy = location.positional_accuracy;
         }
         const savedPhotoUri = await CameraRoll.save( uri, saveOptions );
-
-        // Save these camera roll URIs, so later on observation editor can update
-        // the EXIF metadata of these photos, once we retrieve a location.
-        onEachSuccess( savedPhotoUri );
+        savedUris.push( savedPhotoUri );
+        return savedUris;
       } catch ( cameraRollSaveError ) {
         // should never get here since in usePrepareStoreAndNavigate we check for device full
         // and skip saving to gallery
@@ -69,7 +65,7 @@ export async function savePhotosToCameraGallery(
             t( "Not-enough-space-left-on-device-try-again" ),
             [{ text: t( "OK" ) }]
           );
-          return;
+          return savedUris;
         }
         // This means an iOS user denied access
         // (https://developer.apple.com/documentation/photokit/phphotoserror/code/accessuserdenied).
@@ -79,7 +75,7 @@ export async function savePhotosToCameraGallery(
         // probably safe to ignore.
         if ( !cameraRollSaveError.message.match( /error 3311/ ) ) {
           logger.error( cameraRollSaveError );
-          return;
+          return savedUris;
         }
         throw cameraRollSaveError;
       }
@@ -87,8 +83,9 @@ export async function savePhotosToCameraGallery(
     // We need the initial value even if we're not using it, otherwise reduce
     // will treat the first item in the array as the initial value and not
     // call the reducer function on it
-    true
+    Promise.resolve( [] )
   );
+  return savedPhotoUris;
 }
 
 export default savePhotosToCameraGallery;

@@ -1,5 +1,3 @@
-// @flow
-
 import { useNavigation, useRoute } from "@react-navigation/native";
 import useDeviceStorageFull from "components/Camera/hooks/useDeviceStorageFull";
 import {
@@ -20,7 +18,7 @@ const usePrepareStoreAndNavigate = ( ): Function => {
   const evidenceToAdd = useStore( state => state.evidenceToAdd );
   const cameraUris = useStore( state => state.cameraUris );
   const currentObservation = useStore( state => state.currentObservation );
-  const addCameraRollUri = useStore( state => state.addCameraRollUri );
+  const addCameraRollUris = useStore( state => state.addCameraRollUris );
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const observations = useStore( state => state.observations );
   const setSavingPhoto = useStore( state => state.setSavingPhoto );
@@ -30,8 +28,37 @@ const usePrepareStoreAndNavigate = ( ): Function => {
 
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
 
+  const handleSavingToPhotoLibrary = useCallback( async (
+    uris,
+    addPhotoPermissionResult,
+    userLocation = null
+  ) => {
+    if ( addPhotoPermissionResult !== "granted" ) return Promise.resolve( );
+    if ( deviceStorageFull ) {
+      showStorageFullAlert( );
+      return Promise.resolve( );
+    }
+    setSavingPhoto( true );
+    const savedPhotoUris = await savePhotosToCameraGallery( uris, userLocation );
+    if ( savedPhotoUris.length > 0 ) {
+      // Save these camera roll URIs, so later on observation editor can update
+      // the EXIF metadata of these photos, once we retrieve a location.
+      addCameraRollUris( savedPhotoUris );
+    }
+    // When we've persisted photos to the observation, we don't need them in
+    // state anymore
+    setCameraState( { evidenceToAdd: [], cameraUris: [], savingPhoto: false } );
+    return null;
+  }, [
+    addCameraRollUris,
+    deviceStorageFull,
+    setCameraState,
+    setSavingPhoto,
+    showStorageFullAlert
+  ] );
+
   const createObsWithCameraPhotos = useCallback( async (
-    localFilePaths,
+    uris,
     addPhotoPermissionResult,
     userLocation
   ) => {
@@ -46,24 +73,17 @@ const usePrepareStoreAndNavigate = ( ): Function => {
       newObservation.positional_accuracy = userLocation?.positional_accuracy;
     }
     newObservation.observationPhotos = await ObservationPhoto
-      .createObsPhotosWithPosition( localFilePaths, {
+      .createObsPhotosWithPosition( uris, {
         position: 0,
         local: true
       } );
     setObservations( [newObservation] );
-    if ( addPhotoPermissionResult !== "granted" ) return Promise.resolve( );
-    if ( deviceStorageFull ) {
-      showStorageFullAlert( );
-      return Promise.resolve( );
-    }
-    return savePhotosToCameraGallery( cameraUris, addCameraRollUri, userLocation );
-  }, [
-    addCameraRollUri,
-    cameraUris,
-    setObservations,
-    deviceStorageFull,
-    showStorageFullAlert
-  ] );
+    await handleSavingToPhotoLibrary(
+      uris,
+      addPhotoPermissionResult,
+      userLocation
+    );
+  }, [setObservations, handleSavingToPhotoLibrary] );
 
   const updateObsWithCameraPhotos = useCallback( async addPhotoPermissionResult => {
     const obsPhotos = await ObservationPhoto.createObsPhotosWithPosition(
@@ -77,22 +97,15 @@ const usePrepareStoreAndNavigate = ( ): Function => {
       .appendObsPhotos( obsPhotos, currentObservation );
     observations[currentObservationIndex] = updatedCurrentObservation;
     updateObservations( observations );
-    if ( addPhotoPermissionResult !== "granted" ) return Promise.resolve( );
-    if ( deviceStorageFull ) {
-      showStorageFullAlert( );
-      return Promise.resolve( );
-    }
-    return savePhotosToCameraGallery( evidenceToAdd, addCameraRollUri );
+    await handleSavingToPhotoLibrary( evidenceToAdd, addPhotoPermissionResult );
   }, [
-    addCameraRollUri,
-    currentObservation,
-    currentObservationIndex,
-    deviceStorageFull,
     evidenceToAdd,
     numOfObsPhotos,
-    showStorageFullAlert,
+    currentObservation,
     observations,
-    updateObservations
+    currentObservationIndex,
+    updateObservations,
+    handleSavingToPhotoLibrary
   ] );
 
   const prepareStoreAndNavigate = useCallback( async ( {
@@ -101,25 +114,15 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     userLocation,
     newPhotoState
   } ) => {
-    // save all to camera roll if save photo permission is given
-    if ( addPhotoPermissionResult === "granted" ) {
-      setSavingPhoto( true );
-    }
-
-    if ( addEvidence ) {
-      await updateObsWithCameraPhotos( addPhotoPermissionResult );
-      // When we've persisted photos to the observation, we don't need them in
-      // state anymore
-      setCameraState( { evidenceToAdd: [], cameraUris: [] } );
-      return navigation.goBack( );
-    }
     // when backing out from ObsEdit -> Suggestions -> Camera, create a
     // new observation
     const uris = newPhotoState?.cameraUris || cameraUris;
+    if ( addEvidence ) {
+      await updateObsWithCameraPhotos( addPhotoPermissionResult );
+      return navigation.goBack( );
+    }
+
     await createObsWithCameraPhotos( uris, addPhotoPermissionResult, userLocation );
-    // When we've persisted photos to the observation, we don't need them in
-    // state anymore
-    setCameraState( { evidenceToAdd: [], cameraUris: [] } );
     return navigation.push( "Suggestions", {
       entryScreen: "CameraWithDevice",
       lastScreen: "CameraWithDevice",
@@ -130,9 +133,7 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     cameraUris,
     createObsWithCameraPhotos,
     navigation,
-    updateObsWithCameraPhotos,
-    setCameraState,
-    setSavingPhoto
+    updateObsWithCameraPhotos
   ] );
 
   return prepareStoreAndNavigate;
