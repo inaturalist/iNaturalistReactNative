@@ -8,8 +8,8 @@ import * as React from "react";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  photoUri: string,
-  soundUri: string
+  photoUri?: string,
+  soundUri?: string
 }
 
 const ObservationIcon = ( {

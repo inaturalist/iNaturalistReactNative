@@ -1,4 +1,3 @@
-// @flow
 import ObservationIcon from "components/Notifications/ObservationIcon";
 import ObsNotificationText from "components/Notifications/ObsNotificationText";
 import {
@@ -7,26 +6,48 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts.ts";
-import type { Node } from "react";
 import React from "react";
+import type { RealmObservation } from "realmModels/types";
 import { formatDifferenceForHumans } from "sharedHelpers/dateAndTime.ts";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 const { useRealm } = RealmContext;
 
-    type Props = {
-      item: Object
-    };
+// TODO improve / replace these types when api/types.d.ts available
+interface ApiUser {
+  id: number;
+  login: string;
+}
+interface ApiComment {
+  user: ApiUser
+}
 
-const ObsNotification = ( { item }: Props ): Node => {
+interface ApiIdentification {
+  user: ApiUser
+}
+
+interface Props {
+  item: {
+    comment: ApiComment;
+    identification: ApiIdentification;
+    notifier_type: string;
+    resource_uuid: string;
+    created_at: string;
+  }
+}
+
+const ObsNotification = ( { item }: Props ) => {
   const { i18n } = useTranslation( );
   const { identification, comment } = item;
-  const type = item?.notifier_type;
+  const type = item.notifier_type;
   const { user } = identification || comment;
   const realm = useRealm( );
 
-  const observation = realm.objectForPrimaryKey( "Observation", item.resource_uuid );
+  const observation: RealmObservation | null = realm.objectForPrimaryKey(
+    "Observation",
+    item.resource_uuid
+  );
   const photoUrl = observation?.observationPhotos[0]?.photo?.url;
   const soundsUrl = observation?.observationSounds[0]?.sound?.file_url;
 
@@ -54,7 +75,7 @@ const ObsNotification = ( { item }: Props ): Node => {
                 <INatIcon
                   name={renderIcon( )}
                   size={14}
-                  color={colors.darkGray}
+                  color={String( colors?.darkGray )}
                 />
               )
           }

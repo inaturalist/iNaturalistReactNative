@@ -1,5 +1,18 @@
+export interface RealmPhoto {
+  url: string;
+}
+
+export interface RealmSound {
+  file_url: string;
+}
+
 export interface RealmObservationPhoto {
   originalPhotoUri?: string;
+  photo: RealmPhoto;
+}
+
+export interface RealmObservationSound {
+  sound: RealmSound;
 }
 
 export interface RealmObservation {
@@ -11,7 +24,7 @@ export interface RealmObservation {
   latitude: number | null;
   longitude: number | null;
   observationPhotos: Array<RealmObservationPhoto>;
-  observationSounds: Array<Object>;
+  observationSounds: Array<RealmObservationSound>;
   observed_on_string: string | null;
   owners_identification_from_vision: boolean | null;
   place_guess: string | null;

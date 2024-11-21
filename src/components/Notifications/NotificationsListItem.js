@@ -1,7 +1,7 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
-import ObsNotification from "components/Notifications/ObsNotification";
+import ObsNotification from "components/Notifications/ObsNotification.tsx";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
