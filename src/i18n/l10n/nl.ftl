@@ -278,6 +278,7 @@ Flag-Item-Description =
 Flag-Item-Other-Description = Een andere reden die je hieronder kunt uitleggen.
 Flag-Item-Other-Input-Hint = Geef de reden waarom je dit item meldt
 Flagged = Gemeld
+Flip-camera = Verwissel camera's
 FOLLOWING-X-PEOPLE =
     { $count ->
         [one] VOLGT { $count } PERSOON
