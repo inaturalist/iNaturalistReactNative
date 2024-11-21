@@ -2,7 +2,7 @@ import { fireEvent, screen } from "@testing-library/react-native";
 import TaxonSearch from "components/Suggestions/TaxonSearch";
 import i18next from "i18next";
 import React from "react";
-import * as useTaxonSearch from "sharedHooks/useTaxonSearch";
+import * as useTaxonSearch from "sharedHooks/useTaxonSearch.ts";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 

@@ -1,9 +1,8 @@
-// @flow
-
 import fetchSearchResults from "api/search.ts";
 import { RealmContext } from "providers/contexts.ts";
 import {
-  useCallback, useEffect
+  useCallback,
+  useEffect
 } from "react";
 import Taxon from "realmModels/Taxon";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";

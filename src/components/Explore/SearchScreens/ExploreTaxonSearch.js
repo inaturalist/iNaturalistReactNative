@@ -13,7 +13,7 @@ import React, {
   useState
 } from "react";
 import { useTranslation } from "sharedHooks";
-import useTaxonSearch from "sharedHooks/useTaxonSearch";
+import useTaxonSearch from "sharedHooks/useTaxonSearch.ts";
 import { getShadow } from "styles/global";
 
 import ExploreSearchHeader from "./ExploreSearchHeader";
