@@ -424,6 +424,7 @@ Location-accuracy-is-too-imprecise = Akurasi lokasi terlalu tidak akurat untuk m
 LOCATION-TOO-IMPRECISE = LOKASI SANGAT TIDAK AKURAT
 LOG-IN = MASUK
 Log-in = Masuk
+Log-in-to-contribute-and-sync = Masuk untuk berkontribusi & menyinkronkan
 Log-in-to-contribute-your-observations = Masuk supaya pengamatanmu ikut berkontribusi untuk sains!
 LOG-IN-TO-INATURALIST = MASUK KE INATURALIST
 Log-in-to-iNaturalist = Masuk ke iNaturalist
