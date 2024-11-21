@@ -1,6 +1,7 @@
 import fetchSearchResults from "api/search.ts";
 import { RealmContext } from "providers/contexts.ts";
 import { useEffect } from "react";
+import Realm, { UpdateMode } from "realm";
 import Taxon from "realmModels/Taxon";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useAuthenticatedQuery, useIconicTaxa } from "sharedHooks";
@@ -10,19 +11,19 @@ const { useRealm } = RealmContext;
 // we're already getting all this taxon information anytime we make this API
 // call, so we might as well store it in realm. we can remove this if we're
 // worried about the cache getting too large
-function saveTaxaToRealm( taxa, realm ) {
+function saveTaxaToRealm( taxa: Taxon[], realm: Realm ) {
   safeRealmWrite( realm, ( ) => {
     taxa.forEach( remoteTaxon => {
       realm.create(
         "Taxon",
         { ...remoteTaxon, _synced_at: new Date( ) },
-        "modified"
+        UpdateMode.Modified
       );
     } );
   }, "saving remote taxon from useTaxonSearch" );
 }
 
-const useTaxonSearch = ( taxonQuery: string ): Object => {
+const useTaxonSearch = ( taxonQuery = "" ) => {
   const realm = useRealm( );
   const iconicTaxa = useIconicTaxa( { reload: false } );
 
