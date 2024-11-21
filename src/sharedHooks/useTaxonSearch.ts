@@ -3,7 +3,7 @@ import { RealmContext } from "providers/contexts.ts";
 import { useEffect } from "react";
 import Taxon from "realmModels/Taxon";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { useAuthenticatedQuery } from "sharedHooks";
+import { useAuthenticatedQuery, useIconicTaxa } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
@@ -24,6 +24,8 @@ function saveTaxaToRealm( taxa, realm ) {
 
 const useTaxonSearch = ( taxonQuery: string ): Object => {
   const realm = useRealm( );
+  const iconicTaxa = useIconicTaxa( { reload: false } );
+
   const { data: remoteTaxa, refetch, isLoading } = useAuthenticatedQuery(
     ["fetchTaxonSuggestions", taxonQuery],
     async optsWithAuth => {
@@ -50,6 +52,16 @@ const useTaxonSearch = ( taxonQuery: string ): Object => {
       saveTaxaToRealm( remoteTaxa, realm );
     }
   }, [realm, remoteTaxa] );
+
+  // Show iconic taxa by default
+  if ( taxonQuery.length === 0 ) {
+    return {
+      taxa: iconicTaxa,
+      refetch: ( ) => undefined,
+      isLoading: false,
+      isLocal: false
+    };
+  }
 
   if (
     taxonQuery.length > 0

@@ -13,6 +13,7 @@ export { default as useInfiniteObservationsScroll } from "./useInfiniteObservati
 export { default as useInfiniteScroll } from "./useInfiniteScroll";
 export { default as useInfiniteUserScroll } from "./useInfiniteUserScroll";
 export { default as useInterval } from "./useInterval";
+export { default as useKeyboardInfo } from "./useKeyboardInfo";
 export { default as useLastScreen } from "./useLastScreen";
 export { default as useLocalObservation } from "./useLocalObservation";
 export { default as useLocalObservations } from "./useLocalObservations";

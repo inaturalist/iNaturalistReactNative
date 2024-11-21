@@ -1,14 +1,15 @@
+import EmptySearchResults from "components/Explore/SearchScreens/EmptySearchResults.tsx";
 import {
   Body2,
   INatIcon,
   SearchBar,
-  TaxaList,
   ViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import React from "react";
+import React, { useCallback } from "react";
+import { FlatList } from "react-native";
 import Taxon from "realmModels/Taxon";
-import { useTranslation } from "sharedHooks";
+import { useKeyboardInfo, useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
 const DROP_SHADOW = getShadow( {
@@ -35,6 +36,28 @@ const TaxonSearch = ( {
   taxa = []
 }: Props ) => {
   const { t } = useTranslation( );
+  const { keyboardHeight, keyboardShown } = useKeyboardInfo( );
+
+  const renderEmptyList = useCallback( ( ) => (
+    query.length > 0
+      ? (
+        <EmptySearchResults
+          isLoading={isLoading}
+          searchQuery="does it matter?"
+          skipOfflineNotice
+        />
+      )
+      : null
+  ), [query.length, isLoading] );
+
+  // Make sure all of the results can be scrolled to even with the keyboard
+  // up
+  const renderFooter = useCallback( ( ) => (
+    keyboardShown
+      ? <View className={`h-[${keyboardHeight}px]`} />
+      : null
+  ), [keyboardHeight, keyboardShown] );
+
   return (
     <ViewWrapper>
       {header}
@@ -63,12 +86,13 @@ const TaxonSearch = ( {
           </View>
         ) }
       </View>
-      {/* TODO move TaxaList logic here. This is the only place we call it */}
-      <TaxaList
-        taxa={taxa}
-        isLoading={isLoading}
+      <FlatList
+        keyboardShouldPersistTaps="always"
+        data={taxa}
         renderItem={renderItem}
-        taxonQuery={query}
+        keyExtractor={item => item.id}
+        ListEmptyComponent={renderEmptyList}
+        ListFooterComponent={renderFooter}
       />
     </ViewWrapper>
   );

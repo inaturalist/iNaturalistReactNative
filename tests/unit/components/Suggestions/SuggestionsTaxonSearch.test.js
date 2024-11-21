@@ -79,14 +79,6 @@ describe( "TaxonSearch", ( ) => {
     expect( screen.getByTestId( "mock-view-no-footer" ) ).toBeTruthy();
   } );
 
-  it( "should fallback to iconic taxa ", async ( ) => {
-    jest.spyOn( useTaxonSearch, "default" ).mockImplementation( () => (
-      { taxonList: undefined, isLoading: false } ) );
-    renderComponent( <SuggestionsTaxonSearch /> );
-    const taxon = mockIconicTaxaList[0];
-    expect( await screen.findByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy();
-  } );
-
   it( "show taxon search results", async ( ) => {
     jest.spyOn( useTaxonSearch, "default" ).mockImplementation( () => (
       { taxa: mockTaxaList, isLoading: false } ) );

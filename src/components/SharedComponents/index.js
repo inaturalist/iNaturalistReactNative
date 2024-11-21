@@ -58,7 +58,6 @@ export { default as TextInputSheet } from "./Sheets/TextInputSheet";
 export { default as TextSheet } from "./Sheets/TextSheet";
 export { default as WarningSheet } from "./Sheets/WarningSheet";
 export { default as Tabs } from "./Tabs/Tabs";
-export { default as TaxaList } from "./TaxaList/TaxaList";
 export { default as TaxonResult } from "./TaxonResult";
 export { default as TaxonSearch } from "./TaxonSearch";
 export { default as Body1 } from "./Typography/Body1";
