@@ -1,18 +1,17 @@
-// @flow
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
+import type { ApiNotification } from "components/Notifications/ObsNotification.tsx";
 import ObsNotification from "components/Notifications/ObsNotification.tsx";
 import { Pressable, View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import { ACTIVITY_TAB } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 
 type Props = {
-  item: Object
+  item: ApiNotification
 };
 
-const NotificationsListItem = ( { item }: Props ): Node => {
+const NotificationsListItem = ( { item }: Props ) => {
   const setObsDetailsTab = useStore( state => state.setObsDetailsTab );
   const navigation = useNavigation( );
   const viewedStatus = item.viewed;

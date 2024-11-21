@@ -1,5 +1,5 @@
-import ObservationIcon from "components/Notifications/ObservationIcon";
-import ObsNotificationText from "components/Notifications/ObsNotificationText";
+import ObservationIcon from "components/Notifications/ObservationIcon.tsx";
+import ObsNotificationText from "components/Notifications/ObsNotificationText.tsx";
 import {
   Body4,
   INatIcon
@@ -19,6 +19,7 @@ interface ApiUser {
   id: number;
   login: string;
 }
+
 interface ApiComment {
   user: ApiUser
 }
@@ -27,21 +28,30 @@ interface ApiIdentification {
   user: ApiUser
 }
 
+export interface ApiNotification {
+  comment?: ApiComment;
+  comment_id?: number;
+  created_at: string;
+  id: number;
+  identification?: ApiIdentification;
+  identification_id?: number;
+  notifier_type: string;
+  resource_uuid: string;
+  viewed?: boolean;
+}
+
 interface Props {
-  item: {
-    comment: ApiComment;
-    identification: ApiIdentification;
-    notifier_type: string;
-    resource_uuid: string;
-    created_at: string;
-  }
+  item: ApiNotification
 }
 
 const ObsNotification = ( { item }: Props ) => {
   const { i18n } = useTranslation( );
   const { identification, comment } = item;
   const type = item.notifier_type;
-  const { user } = identification || comment;
+  if ( !( identification || comment ) ) {
+    throw new Error( "Notification must have identification or comment" );
+  }
+  const { user } = identification || comment || {};
   const realm = useRealm( );
 
   const observation: RealmObservation | null = realm.objectForPrimaryKey(

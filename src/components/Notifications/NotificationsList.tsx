@@ -1,25 +1,29 @@
-// @flow
-
-import NotificationsListItem from "components/Notifications/NotificationsListItem";
+import NotificationsListItem from "components/Notifications/NotificationsListItem.tsx";
+import type { ApiNotification } from "components/Notifications/ObsNotification.tsx";
 import {
   ActivityIndicator, Body2, CustomFlashList,
   InfiniteScrollLoadingWheel,
   OfflineNotice, ViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useCallback } from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
 type Props = {
-  data: Object,
+  data: ApiNotification[],
   isError?: boolean,
   isFetching?: boolean,
   isInitialLoading?: boolean,
-  isConnected: boolean,
-  onEndReached: Function,
-  reload: Function
+  isConnected: boolean | null,
+  onEndReached: ( ) => void,
+  reload: ( ) => void
 };
+
+interface RenderItemProps {
+  // It is used, not sure what the problem is
+  // eslint-disable-next-line react/no-unused-prop-types
+  item: ApiNotification;
+}
 
 const NotificationsList = ( {
   data,
@@ -29,11 +33,11 @@ const NotificationsList = ( {
   isConnected,
   onEndReached,
   reload
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const user = useCurrentUser( );
 
-  const renderItem = useCallback( ( { item } ) => (
+  const renderItem = useCallback( ( { item }: RenderItemProps ) => (
     <NotificationsListItem item={item} />
   ), [] );
 
@@ -92,7 +96,7 @@ const NotificationsList = ( {
         ListFooterComponent={renderFooter}
         data={data}
         estimatedItemSize={85}
-        keyExtractor={item => item.id}
+        keyExtractor={( item: ApiNotification ) => item.id}
         onEndReached={onEndReached}
         refreshing={isFetching}
         renderItem={renderItem}

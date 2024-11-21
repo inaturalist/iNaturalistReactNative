@@ -1,4 +1,3 @@
-// @flow
 import classnames from "classnames";
 import {
   INatIcon
@@ -13,8 +12,9 @@ type Props = {
 }
 
 const ObservationIcon = ( {
-  photoUri, soundUri
-}: Props ): React.Node => {
+  photoUri,
+  soundUri
+}: Props ) => {
   if ( !photoUri && !soundUri ) {
     return (
       <View
@@ -31,7 +31,7 @@ const ObservationIcon = ( {
         <INatIcon
           name="noevidence"
           size={24}
-          color={colors.darkGray}
+          color={String( colors?.darkGray )}
         />
       </View>
     );
@@ -53,7 +53,7 @@ const ObservationIcon = ( {
         <INatIcon
           name="sound"
           size={24}
-          color={colors.darkGray}
+          color={String( colors?.darkGray )}
         />
       </View>
     );

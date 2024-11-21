@@ -1,19 +1,17 @@
-// @flow
 import {
   List2
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import { Trans } from "react-i18next";
 
 type Props = {
-    type: string,
-    userName: string
+  type: string,
+  userName: string
 };
 
-const ObsNotificationText = ( { type, userName }: Props ): Node => {
-  let content = `unknown notification type: ${type}`;
+const ObsNotificationText = ( { type, userName }: Props ) => {
+  let content: string | React.ReactElement = `unknown notification type: ${type}`;
 
   if ( type === "Comment" ) {
     content = (

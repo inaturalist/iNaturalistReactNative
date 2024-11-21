@@ -1,11 +1,14 @@
-// @flow
-
 import { fetchObservationUpdates, fetchRemoteObservations } from "api/observations";
+import type { ApiNotification } from "components/Notifications/ObsNotification";
 import { flatten } from "lodash";
 import { RealmContext } from "providers/contexts.ts";
 import { useCallback } from "react";
 import Observation from "realmModels/Observation";
 import { useAuthenticatedInfiniteQuery, useCurrentUser } from "sharedHooks";
+
+interface ApiOpts {
+  api_token: string;
+}
 
 const { useRealm } = RealmContext;
 
@@ -23,7 +26,7 @@ const useInfiniteNotificationsScroll = ( ): Object => {
 
   const queryKey = ["useInfiniteNotificationsScroll"];
 
-  const fetchObsByUUIDs = useCallback( async ( uuids, authOptions ) => {
+  const fetchObsByUUIDs = useCallback( async ( uuids: string[], authOptions: ApiOpts ) => {
     const observations = await fetchRemoteObservations(
       uuids,
       { fields: Observation.FIELDS },
@@ -34,7 +37,7 @@ const useInfiniteNotificationsScroll = ( ): Object => {
 
   const infQueryResult = useAuthenticatedInfiniteQuery(
     queryKey,
-    async ( { pageParam }, optsWithAuth ) => {
+    async ( { pageParam }: { pageParam: number }, optsWithAuth: ApiOpts ) => {
       const params = { ...BASE_PARAMS };
 
       if ( pageParam ) {
@@ -43,7 +46,10 @@ const useInfiniteNotificationsScroll = ( ): Object => {
         params.page = 1;
       }
 
-      const response = await fetchObservationUpdates( params, optsWithAuth );
+      const response: null | ApiNotification[] = await fetchObservationUpdates(
+        params,
+        optsWithAuth
+      );
       // Sometimes updates linger after notifiers that generated them have been deleted
       const updatesWithContent = response?.filter(
         update => update.comment || update.identification

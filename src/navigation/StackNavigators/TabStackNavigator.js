@@ -17,7 +17,7 @@ import ExploreTaxonSearch from "components/Explore/SearchScreens/ExploreTaxonSea
 import ExploreUserSearch from "components/Explore/SearchScreens/ExploreUserSearch";
 import Help from "components/Help/Help.tsx";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
-import NotificationsContainer from "components/Notifications/NotificationsContainer";
+import NotificationsContainer from "components/Notifications/NotificationsContainer.tsx";
 import DQAContainer from "components/ObsDetails/DQAContainer";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
