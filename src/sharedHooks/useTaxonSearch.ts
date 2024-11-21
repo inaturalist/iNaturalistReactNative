@@ -70,7 +70,11 @@ const useTaxonSearch = ( taxonQuery = "" ) => {
     && ( !remoteTaxa || remoteTaxa.length === 0 )
   ) {
     const localTaxa = realm.objects( "Taxon" ).filtered(
-      "name TEXT $0 || preferredCommonName TEXT $0 LIMIT(50)",
+      "name TEXT $0"
+      + " || preferredCommonName TEXT $0"
+      + " || name CONTAINS[c] $0"
+      + " || preferredCommonName CONTAINS[c] $0"
+      + " LIMIT(50)",
       taxonQuery
     );
     return {
