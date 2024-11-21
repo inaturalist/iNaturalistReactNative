@@ -14,7 +14,7 @@ const FadeInView = ( { children }: Props ) => {
   useFocusEffect( () => {
     Animated.timing( fadeAnim, {
       toValue: 1,
-      duration: 500,
+      duration: 250,
       useNativeDriver: true
     } ).start();
     return () => {
