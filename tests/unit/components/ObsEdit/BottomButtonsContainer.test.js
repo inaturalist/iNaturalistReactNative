@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/react-native";
-import BottomButtons from "components/ObsEdit/BottomButtons";
+import BottomButtonsContainer from "components/ObsEdit/BottomButtonsContainer.tsx";
 import React from "react";
 import * as useCurrentUser from "sharedHooks/useCurrentUser.ts";
 import factory from "tests/factory";
@@ -17,17 +17,13 @@ jest.mock( "sharedHooks/useCurrentUser", () => ( {
   default: ( ) => null
 } ) );
 
-describe( "BottomButtons", () => {
+describe( "BottomButtonsContainer", () => {
   it( "has no accessibility errors", () => {
-    const bottomButtons = (
-      <BottomButtons />
-    );
-
-    expect( bottomButtons ).toBeAccessible();
+    expect( <BottomButtonsContainer /> ).toBeAccessible();
   } );
 
   it( "shows save button when user is logged out", () => {
-    renderComponent( <BottomButtons /> );
+    renderComponent( <BottomButtonsContainer /> );
 
     const save = screen.getByText( /SAVE/ );
 
@@ -36,7 +32,7 @@ describe( "BottomButtons", () => {
 
   it( "shows save changes button when user logged in and observation was previously synced", () => {
     jest.spyOn( useCurrentUser, "default" ).mockImplementation( ( ) => mockUser );
-    renderComponent( <BottomButtons
+    renderComponent( <BottomButtonsContainer
       currentObservation={mockObservation}
     /> );
 
@@ -47,7 +43,7 @@ describe( "BottomButtons", () => {
 
   it( "shows save and upload button when user logged in with new observation", () => {
     jest.spyOn( useCurrentUser, "default" ).mockImplementation( ( ) => mockUser );
-    renderComponent( <BottomButtons /> );
+    renderComponent( <BottomButtonsContainer /> );
 
     const save = screen.getByText( /SAVE/ );
     expect( save ).toBeVisible( );
