@@ -54,30 +54,33 @@ export default ( canUpload: boolean ) => {
 
   const { t } = useTranslation( );
 
+  const resetNumUnsyncedObs = useCallback( ( ) => {
+    if ( !realm || realm.isClosed ) return;
+    const unsynced = Observation.filterUnsyncedObservations( realm );
+    setNumUnuploadedObservations( unsynced.length );
+  }, [realm, setNumUnuploadedObservations] );
+
   useEffect( () => {
     // eslint-disable-next-line no-undef
     let timer: number | NodeJS.Timeout;
     if ( [UPLOAD_COMPLETE, UPLOAD_CANCELLED].indexOf( uploadStatus ) >= 0 ) {
       timer = setTimeout( () => {
         resetUploadObservationsSlice( );
-        const unsynced = Observation.filterUnsyncedObservations( realm );
-        setNumUnuploadedObservations( unsynced.length );
+        resetNumUnsyncedObs( );
       }, MS_BEFORE_TOOLBAR_RESET );
     } else {
       timer = setTimeout( () => {
         resetSyncToolbar( );
-        const unsynced = Observation.filterUnsyncedObservations( realm );
-        setNumUnuploadedObservations( unsynced.length );
+        resetNumUnsyncedObs( );
       }, MS_BEFORE_TOOLBAR_RESET );
     }
     return () => {
       clearTimeout( timer );
     };
   }, [
-    realm,
+    resetNumUnsyncedObs,
     resetSyncToolbar,
     resetUploadObservationsSlice,
-    setNumUnuploadedObservations,
     uploadStatus
   ] );
 

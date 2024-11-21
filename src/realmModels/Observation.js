@@ -366,7 +366,7 @@ class Observation extends Realm.Object {
     const photosUnsyncedFilter = "ANY observationPhotos._synced_at == null";
     const soundsUnsyncedFilter = "ANY observationSounds._synced_at == null";
 
-    const obs = realm?.objects( "Observation" );
+    const obs = realm.objects( "Observation" );
     // we sort unsynced observations here to make sure observations
     // with an older _created_at date get uploaded first
     const unsyncedObs = obs.filtered(

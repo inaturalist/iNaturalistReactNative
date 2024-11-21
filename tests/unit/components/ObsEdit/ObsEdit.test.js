@@ -5,14 +5,6 @@ import useStore from "stores/useStore";
 import factory from "tests/factory";
 import { renderComponent, wrapInNavigationContainer } from "tests/helpers/render";
 
-const mockUpload = jest.fn( );
-jest.mock( "components/MyObservations/hooks/useUploadObservations", ( ) => ( {
-  __esModule: true,
-  default: ( ) => ( {
-    startUploadsFromMultiObsEdit: mockUpload
-  } )
-} ) );
-
 jest.mock( "sharedHooks/useWatchPosition", () => ( {
   __esModule: true,
   default: ( ) => ( {
@@ -22,15 +14,6 @@ jest.mock( "sharedHooks/useWatchPosition", () => ( {
 } ) );
 
 const mockUser = factory( "LocalUser" );
-
-jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
-  __esModule: true,
-  default: ( ) => mockUser
-} ) );
-
-jest.mock( "components/ObsEdit/BottomButtons" );
-jest.mock( "components/SharedComponents/IconicTaxonChooser" );
-jest.mock( "components/ObsEdit/Sheets/AddEvidenceSheet" );
 
 const mockMutate = jest.fn();
 jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
@@ -48,7 +31,8 @@ const observationPhotos = [
 
 const mockObservation = factory( "LocalObservation", {
   observationPhotos,
-  time_observed_at: null
+  time_observed_at: null,
+  user: mockUser
 } );
 
 describe( "ObsEdit", () => {
@@ -60,9 +44,7 @@ describe( "ObsEdit", () => {
   } );
 
   it( "should not have accessibility errors", async ( ) => {
-    const view = wrapInNavigationContainer(
-      <ObsEdit />
-    );
+    const view = wrapInNavigationContainer( <ObsEdit /> );
     expect( view ).toBeAccessible();
   } );
 
