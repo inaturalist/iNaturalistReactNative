@@ -28,9 +28,33 @@ export interface ApiProject {
 export interface ApiTaxon {
   id?: number;
   name?: string;
+  preferred_common_name?: string;
 }
 
 export interface ApiUser {
   id?: number;
   login?: string;
+}
+
+export interface ApiComment {
+  body?: string;
+  user?: ApiUser;
+}
+
+export interface ApiIdentification {
+  body?: string;
+  taxon?: ApiTaxon;
+  user?: ApiUser;
+}
+
+export export interface ApiNotification {
+  comment?: ApiComment;
+  comment_id?: number;
+  created_at: string;
+  id: number;
+  identification?: ApiIdentification;
+  identification_id?: number;
+  notifier_type: string;
+  resource_uuid: string;
+  viewed?: boolean;
 }

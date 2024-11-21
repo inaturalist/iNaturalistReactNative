@@ -1,3 +1,4 @@
+import type { ApiNotification } from "api/types";
 import ObservationIcon from "components/Notifications/ObservationIcon.tsx";
 import ObsNotificationText from "components/Notifications/ObsNotificationText.tsx";
 import {
@@ -14,49 +15,23 @@ import colors from "styles/tailwindColors";
 
 const { useRealm } = RealmContext;
 
-// TODO improve / replace these types when api/types.d.ts available
-interface ApiUser {
-  id: number;
-  login: string;
-}
-
-interface ApiComment {
-  user: ApiUser
-}
-
-interface ApiIdentification {
-  user: ApiUser
-}
-
-export interface ApiNotification {
-  comment?: ApiComment;
-  comment_id?: number;
-  created_at: string;
-  id: number;
-  identification?: ApiIdentification;
-  identification_id?: number;
-  notifier_type: string;
-  resource_uuid: string;
-  viewed?: boolean;
-}
-
 interface Props {
-  item: ApiNotification
+  notification: ApiNotification
 }
 
-const ObsNotification = ( { item }: Props ) => {
+const ObsNotification = ( { notification }: Props ) => {
   const { i18n } = useTranslation( );
-  const { identification, comment } = item;
-  const type = item.notifier_type;
-  if ( !( identification || comment ) ) {
-    throw new Error( "Notification must have identification or comment" );
-  }
+  const { identification, comment } = notification;
+  const type = notification.notifier_type;
   const { user } = identification || comment || {};
+  if ( !user ) {
+    throw new Error( "Notification must have a user" );
+  }
   const realm = useRealm( );
 
   const observation: RealmObservation | null = realm.objectForPrimaryKey(
     "Observation",
-    item.resource_uuid
+    notification.resource_uuid
   );
   const photoUrl = observation?.observationPhotos[0]?.photo?.url;
   const soundsUrl = observation?.observationSounds[0]?.sound?.file_url;
@@ -77,7 +52,7 @@ const ObsNotification = ( { item }: Props ) => {
     >
       <ObservationIcon photoUri={photoUrl} soundUri={soundsUrl} />
       <View className="flex-col shrink justify-center space-y-[8px]">
-        <ObsNotificationText type={type} userName={user.login} />
+        <ObsNotificationText type={type} userName={String( user.login )} />
         <View className="flex-row space-x-[8px]">
           {
             type
@@ -89,10 +64,10 @@ const ObsNotification = ( { item }: Props ) => {
                 />
               )
           }
-          {item.created_at
+          {notification.created_at
             && (
               <Body4>
-                {formatDifferenceForHumans( item.created_at, i18n )}
+                {formatDifferenceForHumans( notification.created_at, i18n )}
               </Body4>
             )}
         </View>

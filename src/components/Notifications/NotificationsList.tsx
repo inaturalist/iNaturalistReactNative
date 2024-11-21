@@ -1,5 +1,5 @@
+import type { ApiNotification } from "api/types";
 import NotificationsListItem from "components/Notifications/NotificationsListItem.tsx";
-import type { ApiNotification } from "components/Notifications/ObsNotification.tsx";
 import {
   ActivityIndicator, Body2, CustomFlashList,
   InfiniteScrollLoadingWheel,
@@ -38,7 +38,7 @@ const NotificationsList = ( {
   const user = useCurrentUser( );
 
   const renderItem = useCallback( ( { item }: RenderItemProps ) => (
-    <NotificationsListItem item={item} />
+    <NotificationsListItem notification={item} />
   ), [] );
 
   const renderItemSeparator = ( ) => <View className="border-b border-lightGray" />;

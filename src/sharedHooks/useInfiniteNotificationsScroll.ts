@@ -1,14 +1,10 @@
 import { fetchObservationUpdates, fetchRemoteObservations } from "api/observations";
-import type { ApiNotification } from "components/Notifications/ObsNotification";
+import type { ApiNotification, ApiOpts } from "api/types";
 import { flatten } from "lodash";
 import { RealmContext } from "providers/contexts.ts";
 import { useCallback } from "react";
 import Observation from "realmModels/Observation";
 import { useAuthenticatedInfiniteQuery, useCurrentUser } from "sharedHooks";
-
-interface ApiOpts {
-  api_token: string;
-}
 
 const { useRealm } = RealmContext;
 
@@ -20,7 +16,16 @@ const BASE_PARAMS = {
   page: 1
 };
 
-const useInfiniteNotificationsScroll = ( ): Object => {
+interface InfiniteNotificationsScrollResponse {
+  fetchNextPage: ( ) => void;
+  isError?: boolean;
+  isFetching?: boolean;
+  isInitialLoading?: boolean;
+  notifications: ApiNotification[];
+  refetch: ( ) => void;
+}
+
+const useInfiniteNotificationsScroll = ( ): InfiniteNotificationsScrollResponse => {
   const currentUser = useCurrentUser( );
   const realm = useRealm( );
 

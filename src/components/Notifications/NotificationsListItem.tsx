@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
+import type { ApiNotification } from "api/types";
 import classnames from "classnames";
-import type { ApiNotification } from "components/Notifications/ObsNotification.tsx";
 import ObsNotification from "components/Notifications/ObsNotification.tsx";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
@@ -8,13 +8,13 @@ import { ACTIVITY_TAB } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 
 type Props = {
-  item: ApiNotification
+  notification: ApiNotification
 };
 
-const NotificationsListItem = ( { item }: Props ) => {
+const NotificationsListItem = ( { notification }: Props ) => {
   const setObsDetailsTab = useStore( state => state.setObsDetailsTab );
   const navigation = useNavigation( );
-  const viewedStatus = item.viewed;
+  const viewedStatus = notification.viewed;
 
   return (
     <Pressable
@@ -32,14 +32,14 @@ const NotificationsListItem = ( { item }: Props ) => {
         navigation.navigate( "TabStackNavigator", {
           screen: "ObsDetails",
           params: {
-            uuid: item.resource_uuid,
-            targetActivityItemID: item.identification_id || item.comment_id
+            uuid: notification.resource_uuid,
+            targetActivityItemID: notification.identification_id || notification.comment_id
           }
         } );
       }}
 
     >
-      <ObsNotification item={item} />
+      <ObsNotification notification={notification} />
       <View className="pr-[20px] pl-2">
         <View
           className={classnames(

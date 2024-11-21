@@ -1,8 +1,21 @@
 export interface RealmPhoto {
-  url: string;
+  _created_at?: Date;
+  _synced_at?: Date;
+  _updated_at?: Date;
+  id: number;
+  attribution?: string;
+  licenseCode?: string; // TODO type this with actual codes
+  url?: string;
+  localFilePath?: string;
 }
 
 export interface RealmSound {
+  _created_at?: Date;
+  _synced_at?: Date;
+  _updated_at?: Date;
+  id: number;
+  attribution?: string;
+  licenseCode?: string; // TODO type this with actual codes
   file_url: string;
 }
 
@@ -32,17 +45,6 @@ export interface RealmObservation {
   species_guess: string | null;
   taxon_id: number | null;
   uuid: string;
-}
-
-export interface RealmPhoto {
-  _created_at?: Date;
-  _synced_at?: Date;
-  _updated_at?: Date;
-  id: number;
-  attribution?: string;
-  licenseCode?: string; // TODO type this with actual codes
-  url?: string;
-  localFilePath?: string;
 }
 
 export interface RealmTaxon {
