@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import fetchSearchResults from "api/search";
+import fetchSearchResults from "api/search.ts";
 import {
   Body3,
   SearchBar

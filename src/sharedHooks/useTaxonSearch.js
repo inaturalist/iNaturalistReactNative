@@ -1,6 +1,6 @@
 // @flow
 
-import fetchSearchResults from "api/search";
+import fetchSearchResults from "api/search.ts";
 import { RealmContext } from "providers/contexts.ts";
 import {
   useCallback, useEffect
