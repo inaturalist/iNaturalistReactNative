@@ -5,6 +5,14 @@ import useStore from "stores/useStore";
 import factory from "tests/factory";
 import { renderComponent, wrapInNavigationContainer } from "tests/helpers/render";
 
+const mockUpload = jest.fn( );
+jest.mock( "components/MyObservations/hooks/useUploadObservations", ( ) => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    startUploadsFromMultiObsEdit: mockUpload
+  } )
+} ) );
+
 jest.mock( "sharedHooks/useWatchPosition", () => ( {
   __esModule: true,
   default: ( ) => ( {
