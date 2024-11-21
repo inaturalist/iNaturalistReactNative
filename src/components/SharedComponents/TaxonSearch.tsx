@@ -8,7 +8,7 @@ import {
 import { View } from "components/styledComponents";
 import React, { useCallback } from "react";
 import { FlatList } from "react-native";
-import Taxon from "realmModels/Taxon";
+import type { RealmTaxon } from "realmModels/types";
 import { useKeyboardInfo, useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
@@ -17,13 +17,15 @@ const DROP_SHADOW = getShadow( {
 } );
 
 interface Props {
-  header: React.FC;
+  header?: React.FC;
   query?: string;
   setQuery: ( newQuery: string ) => void;
   isLoading?: boolean;
   isLocal?: boolean;
-  renderItem: ( { item: Taxon, index: number } ) => React.FC;
-  taxa: Taxon[]
+  renderItem: (
+    { item, index }: { item: RealmTaxon, index: number }
+  ) => React.ReactElement;
+  taxa: RealmTaxon[]
 }
 
 const TaxonSearch = ( {
@@ -73,13 +75,9 @@ const TaxonSearch = ( {
         />
         { isLocal && (
           <View className="flex-row items-center space-x-[19px] mt-[21px]">
-            <INatIcon
-              name="offline"
-              size={34}
-              aria-hidden
-              accessibilityElementsHidden
-              importantForAccessibility="no"
-            />
+            <View accessibilityElementsHidden importantForAccessibility="no" aria-hidden>
+              <INatIcon name="offline" size={34} />
+            </View>
             <Body2 className="flex-1">
               { t( "Showing-offline-search-results--taxa" )}
             </Body2>
@@ -90,7 +88,7 @@ const TaxonSearch = ( {
         keyboardShouldPersistTaps="always"
         data={taxa}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={taxon => String( taxon.id )}
         ListEmptyComponent={renderEmptyList}
         ListFooterComponent={renderFooter}
       />

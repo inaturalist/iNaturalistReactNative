@@ -1,4 +1,5 @@
 import fetchSearchResults from "api/search.ts";
+import type { ApiOpts } from "api/types";
 import { RealmContext } from "providers/contexts.ts";
 import { useEffect } from "react";
 import Realm, { UpdateMode } from "realm";
@@ -29,8 +30,7 @@ const useTaxonSearch = ( taxonQuery = "" ) => {
 
   const { data: remoteTaxa, refetch, isLoading } = useAuthenticatedQuery(
     ["fetchTaxonSuggestions", taxonQuery],
-    async optsWithAuth => {
-      console.log( "[DEBUG useTaxonSearch.ts] fetching taxon search results for: ", taxonQuery );
+    async ( optsWithAuth: ApiOpts ) => {
       const apiTaxa = await fetchSearchResults(
         {
           q: taxonQuery,
@@ -41,7 +41,7 @@ const useTaxonSearch = ( taxonQuery = "" ) => {
         },
         optsWithAuth
       );
-      return apiTaxa.map( Taxon.mapApiToRealm );
+      return apiTaxa?.map( taxon => Taxon.mapApiToRealm( taxon ) ) || [];
     },
     {
       enabled: !!( taxonQuery.length > 0 )

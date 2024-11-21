@@ -29,7 +29,7 @@ const EmptySearchResults = ( {
   if ( searchQuery === "" ) {
     return null;
   }
-  if ( isConnected === false && !skipOfflineNotice ) {
+  if ( isConnected === false && !skipOfflineNotice && refetch ) {
     return (
       <View className="pt-[50px]">
         <OfflineNotice onPress={refetch} />

@@ -2,7 +2,6 @@ import {
   TaxonResult,
   TaxonSearch
 } from "components/SharedComponents";
-import type { Node } from "react";
 import React, {
   useCallback,
   useState
@@ -11,7 +10,7 @@ import { useTaxonSearch, useTranslation } from "sharedHooks";
 
 import useNavigateWithTaxonSelected from "./hooks/useNavigateWithTaxonSelected";
 
-const SuggestionsTaxonSearch = ( ): Node => {
+const SuggestionsTaxonSearch = ( ) => {
   const [taxonQuery, setTaxonQuery] = useState( "" );
   const [selectedTaxon, setSelectedTaxon] = useState( null );
   const { taxa, isLoading, isLocal } = useTaxonSearch( taxonQuery );
