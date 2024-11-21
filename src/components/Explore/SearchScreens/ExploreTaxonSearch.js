@@ -38,7 +38,7 @@ const ExploreTaxonSearch = ( {
   const { t } = useTranslation( );
   const [taxonQuery, setTaxonQuery] = useState( "" );
 
-  const { taxaSearchResults, refetch, isLoading } = useTaxonSearch( taxonQuery );
+  const { taxa, refetch, isLoading } = useTaxonSearch( taxonQuery );
 
   const onTaxonSelected = useCallback( async newTaxon => {
     updateTaxon( newTaxon );
@@ -88,7 +88,7 @@ const ExploreTaxonSearch = ( {
         />
       </View>
       <TaxaList
-        taxa={taxaSearchResults}
+        taxa={taxa}
         isLoading={isLoading}
         renderItem={renderItem}
         taxonQuery={taxonQuery}

@@ -39,7 +39,7 @@ jest.mock( "sharedHooks/useIconicTaxa", () => ( {
 
 jest.mock( "sharedHooks/useTaxonSearch", () => ( {
   __esModule: true,
-  default: ( ) => ( { taxaSearchResults: mockTaxaList, isLoading: false } )
+  default: ( ) => ( { taxa: mockTaxaList, isLoading: false } )
 } ) );
 
 jest.mock( "sharedHooks/useTaxon", () => ( {
@@ -89,7 +89,7 @@ describe( "TaxonSearch", ( ) => {
 
   it( "show taxon search results", async ( ) => {
     jest.spyOn( useTaxonSearch, "default" ).mockImplementation( () => (
-      { taxaSearchResults: mockTaxaList, isLoading: false } ) );
+      { taxa: mockTaxaList, isLoading: false } ) );
     renderComponent( <TaxonSearch /> );
     const input = screen.getByTestId( "SearchTaxon" );
     const taxon = mockTaxaList[0];
