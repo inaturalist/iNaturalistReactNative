@@ -39,7 +39,6 @@ const BottomButtonsContainer = ( {
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const unsavedChanges = useStore( state => state.unsavedChanges );
   const addToUploadQueue = useStore( state => state.addToUploadQueue );
-  const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
   const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
   const setSavedOrUploadedMultiObsFlow = useStore( state => state.setSavedOrUploadedMultiObsFlow );
@@ -81,13 +80,13 @@ const BottomButtonsContainer = ( {
       const { uuid } = savedObservation;
       addTotalToolbarIncrements( savedObservation );
       addToUploadQueue( uuid );
-      setStartUploadObservations( );
       startUploadsFromMultiObsEdit( );
     } else {
       incrementTotalSavedObservations( );
     }
 
     if ( observations.length === 1 ) {
+      setButtonPressed( null );
       // If this is the last observation, we're done
       exitObservationFlow( );
     } else if ( currentObservationIndex === observations.length - 1 ) {
@@ -116,7 +115,6 @@ const BottomButtonsContainer = ( {
     resetMyObsOffsetToRestore,
     setCurrentObservationIndex,
     setSavedOrUploadedMultiObsFlow,
-    setStartUploadObservations,
     startUploadsFromMultiObsEdit
   ] );
 

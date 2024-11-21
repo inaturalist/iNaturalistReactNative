@@ -1,9 +1,10 @@
 import Geolocation from "@react-native-community/geolocation";
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
+import inatjs from "inaturalistjs";
 import React from "react";
 import useStore from "stores/useStore";
-import factory from "tests/factory";
+import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
@@ -71,7 +72,14 @@ const mockObservation = factory( "RemoteObservation", {
 
 const mockObservations = [mockObservation];
 
-const mockMultipleObservations = [mockObservation, mockObservation];
+const mockMultipleObservations = [
+  mockObservation,
+  mockObservation,
+  mockObservation,
+  mockObservation,
+  mockObservation,
+  mockObservation
+];
 
 describe( "basic rendering", ( ) => {
   beforeAll( async () => {
@@ -179,24 +187,77 @@ describe( "location fetching", () => {
 
     expect( Geolocation.watchPosition ).not.toHaveBeenCalled();
   } );
+} );
 
-  describe( "multiple observation upload/save progress", ( ) => {
-    beforeEach( async ( ) => {
-      await signIn( mockCurrentUser, { realm: global.mockRealms[__filename] } );
+describe( "multiple observation upload/save progress", ( ) => {
+  beforeEach( async ( ) => {
+    await signIn( mockCurrentUser, { realm: global.mockRealms[__filename] } );
+    useStore.setState( {
+      observations: mockMultipleObservations,
+      currentObservation: mockMultipleObservations[0]
     } );
+  } );
 
-    test( "should show upload progress bar when upload button pressed", async ( ) => {
-      renderObsEdit( );
-      useStore.setState( {
-        observations: mockMultipleObservations,
-        currentObservation: mockMultipleObservations[0]
-      } );
-      const uploadButton = await screen.findByText( /UPLOAD/ );
-      fireEvent.press( uploadButton );
-      const uploadingText = await screen.findByText( /1 uploading/ );
-      await waitFor( ( ) => {
-        expect( uploadingText ).toBeVisible( );
-      } );
+  afterEach( async ( ) => {
+    useStore.setState( { } );
+  } );
+
+  test( "should show upload status when upload button pressed", async ( ) => {
+    renderObsEdit( );
+    const uploadButton = await screen.findByText( /UPLOAD/ );
+    fireEvent.press( uploadButton );
+    const uploadingText = await screen.findByText( /1 uploading/ );
+    await waitFor( ( ) => {
+      expect( uploadingText ).toBeVisible( );
+    } );
+  } );
+
+  test( "should show saved status when saved button pressed", async ( ) => {
+    renderObsEdit( );
+    const saveButton = await screen.findByText( /SAVE/ );
+    fireEvent.press( saveButton );
+    const savingText = await screen.findByText( /1 saved/ );
+    await waitFor( ( ) => {
+      expect( savingText ).toBeVisible( );
+    } );
+  } );
+
+  test( "should show both saved and uploading status when saved and upload"
+    + " button pressed", async ( ) => {
+    renderObsEdit( );
+    const saveButton = await screen.findByText( /SAVE/ );
+    fireEvent.press( saveButton );
+    const savingText = await screen.findByText( /1 saved/ );
+    await waitFor( ( ) => {
+      expect( savingText ).toBeVisible( );
+    } );
+    const uploadButton = await screen.findByText( /UPLOAD/ );
+    fireEvent.press( uploadButton );
+    const uploadingText = await screen.findByText( /1 uploading/ );
+    await waitFor( ( ) => {
+      expect( uploadingText ).toBeVisible( );
+    } );
+  } );
+
+  test( "should show uploaded status when 1 observation is uploaded"
+    + " in multi-observation upload flow", async ( ) => {
+    // Mock inatjs endpoints so they return the right responses for the right test data
+    inatjs.observations.create.mockImplementation( ( params, _opts ) => {
+      const mockObs = mockObservations.find( o => o.uuid === params.observation.uuid );
+      return Promise.resolve( makeResponse( [{ id: faker.number.int( ), uuid: mockObs.uuid }] ) );
+    } );
+    inatjs.observations.fetch.mockImplementation( ( uuid, _params, _opts ) => {
+      const mockObs = mockObservations.find( o => o.uuid === uuid );
+      // It would be a lot better if this returned something that looks like
+      // a remote obs, but this works
+      return Promise.resolve( makeResponse( [mockObs] ) );
+    } );
+    renderObsEdit( );
+    const uploadButton = await screen.findByText( /UPLOAD/ );
+    fireEvent.press( uploadButton );
+    const uploadedText = await screen.findByText( /1 uploaded/ );
+    await waitFor( ( ) => {
+      expect( uploadedText ).toBeVisible( );
     } );
   } );
 } );
