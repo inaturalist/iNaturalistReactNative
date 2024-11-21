@@ -27,6 +27,7 @@ const useTaxonSearch = ( taxonQuery: string ): Object => {
   const { data: remoteTaxa, refetch, isLoading } = useAuthenticatedQuery(
     ["fetchTaxonSuggestions", taxonQuery],
     async optsWithAuth => {
+      console.log( "[DEBUG useTaxonSearch.ts] fetching taxon search results for: ", taxonQuery );
       const apiTaxa = await fetchSearchResults(
         {
           q: taxonQuery,
@@ -50,7 +51,11 @@ const useTaxonSearch = ( taxonQuery: string ): Object => {
     }
   }, [realm, remoteTaxa] );
 
-  if ( !isLoading && ( !remoteTaxa || remoteTaxa.length === 0 ) ) {
+  if (
+    taxonQuery.length > 0
+    && !isLoading
+    && ( !remoteTaxa || remoteTaxa.length === 0 )
+  ) {
     const localTaxa = realm.objects( "Taxon" ).filtered(
       "name TEXT $0 || preferredCommonName TEXT $0 LIMIT(50)",
       taxonQuery
@@ -58,11 +63,17 @@ const useTaxonSearch = ( taxonQuery: string ): Object => {
     return {
       taxa: localTaxa,
       refetch: ( ) => undefined,
-      isLoading: false
+      isLoading: false,
+      isLocal: true
     };
   }
 
-  return { taxa: remoteTaxa, refetch, isLoading };
+  return {
+    taxa: remoteTaxa,
+    refetch,
+    isLoading,
+    isLocal: false
+  };
 };
 
 export default useTaxonSearch;

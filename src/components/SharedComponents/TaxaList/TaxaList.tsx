@@ -36,6 +36,7 @@ const TaxaList = ( {
       isLoading={isLoading}
       searchQuery={taxonQuery}
       refetch={refetch}
+      skipOfflineNotice
     />
   );
 
