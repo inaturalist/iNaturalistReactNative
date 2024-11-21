@@ -1,6 +1,8 @@
 import { Realm } from "@realm/react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
+const MAX_TRIES = 3;
+
 class QueueItem extends Realm.Object {
   static enqueue( realm, payload, type ) {
     safeRealmWrite( realm, ( ) => {
@@ -14,7 +16,12 @@ class QueueItem extends Realm.Object {
   }
 
   static dequeue( realm ) {
-    const queue = realm.objects( "QueueItem" )?.sorted( "id" );
+    // Don't bother dequeuing items that failed in the last minute
+    const oneMinuteAgo = new Date( Date.now() - ( 1_000 * 60 ) );
+    const queue = realm
+      .objects( "QueueItem" )
+      ?.filtered( "failedAt == $0 || failedAt < $1", null, oneMinuteAgo )
+      .sorted( "id" );
     if ( queue.length === 0 ) {
       return null;
     }
@@ -24,6 +31,19 @@ class QueueItem extends Realm.Object {
       ...firstQueueItem,
       payload: JSON.parse( firstQueueItem.payload )
     };
+  }
+
+  // Mark an item as failed. If it's failed too many times, delete it.
+  static markAsFailed( realm, id ) {
+    const queuedItem = realm.objectForPrimaryKey( "QueueItem", id );
+    if ( queuedItem.tries >= MAX_TRIES - 1 ) {
+      QueueItem.deleteDequeuedItem( realm, queuedItem.id );
+      return;
+    }
+    safeRealmWrite( realm, ( ) => {
+      queuedItem.tries += 1;
+      queuedItem.failedAt = new Date();
+    }, "marking QueueItem as failed" );
   }
 
   static deleteDequeuedItem( realm, id ) {
@@ -39,7 +59,9 @@ class QueueItem extends Realm.Object {
     properties: {
       id: "int",
       payload: "string?",
-      type: "string?"
+      type: "string?",
+      tries: { type: "int", default: 0 },
+      failedAt: "date?"
     }
   };
 }
