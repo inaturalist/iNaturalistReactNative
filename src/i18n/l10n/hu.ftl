@@ -207,5 +207,25 @@ View-suggestions = Javaslatok megtekintése
 Wild = Vad
 Withdraw = Visszavonás
 Worldwide = globális
+x-failed =
+    { $count ->
+        [one] { $count } hibába ütközött
+       *[other] { $count } hibába ütközött
+    }
 X-PROJECTS = { $projectCount } PROJEKT
+x-saved =
+    { $count ->
+        [one] { $count } elmentve
+       *[other] { $count } elmentve
+    }
+x-uploaded =
+    { $count ->
+        [one] { $count } feltöltve
+       *[other] { $count } feltöltve
+    }
+x-uploading =
+    { $count ->
+        [one] { $count } feltöltés alatt
+       *[other] { $count } feltöltés alatt
+    }
 You-need-log-in-to-do-that = Ehhez be kell jelentkezned.

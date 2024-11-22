@@ -745,6 +745,7 @@ Share-map = Del kort
 Share-your-observation-where-it-can-help-scientists = Del egen observation, hvor den kan bistå forskere verden over med bedre at forstå biodiversitet.
 SHOP-INATURALIST-MERCH = KØB INATURALIST-VARER
 Show-observation-options = Vis observationsvalgmuligheder.
+Showing-offline-search-results--taxa = Viser offline-søgeresultater. For at søge efter flere arter, forsøg igen, når der er internetforbindelse.
 Shows-identification-suggestions = Viser identifikationsforslag
 Shows-iNaturalist-bird-logo = Viser iNaturalist-fuglelogo.
 Shows-observation-creation-options = Viser valgmuligheder for observationsoprettelse
@@ -903,6 +904,11 @@ x-comments =
         [one] { $count } kommentar
        *[other] { $count } kommentarer
     }
+x-failed =
+    { $count ->
+        [one] { $count } mislykkedes
+       *[other] { $count } mislykkedes
+    }
 X-FOLLOWERS =
     { $count ->
         [one] { $count } FØLGER
@@ -979,6 +985,11 @@ X-PHOTOS-Y-SOUNDS =
        *[other] { $soundCount } LYDE
     }
 X-PROJECTS = { $projectCount } PROJEKTER
+x-saved =
+    { $count ->
+        [one] { $count } gemt
+       *[other] { $count } gemt
+    }
 X-SOUNDS =
     { $count ->
         [one] 1 LYD
@@ -988,6 +999,16 @@ X-Species =
     { $count ->
         [one] { $count } art
        *[other] { $count } arter
+    }
+x-uploaded =
+    { $count ->
+        [one] { $count } uploadet
+       *[other] { $count } uploadet
+    }
+x-uploading =
+    { $count ->
+        [one] { $count } uploades
+       *[other] { $count } uploades
     }
 x-uploads-failed =
     { $count ->

@@ -875,6 +875,11 @@ x-comments =
         [one] { $count } Kommentar
        *[other] { $count } Kommentare
     }
+x-failed =
+    { $count ->
+        [one] { $count } fehlgeschlagen
+       *[other] { $count } fehlgeschlagen
+    }
 X-FOLLOWERS =
     { $count ->
         [one] { $count } FOLLOWER
@@ -951,6 +956,11 @@ X-PHOTOS-Y-SOUNDS =
        *[other] { $soundCount } TONAUFNAHMEN
     }
 X-PROJECTS = { $projectCount } PROJEKTE
+x-saved =
+    { $count ->
+        [one] { $count } gespeichert
+       *[other] { $count } gespeichert
+    }
 X-SOUNDS =
     { $count ->
         [one] 1 TONAUFNAHME
@@ -960,6 +970,16 @@ X-Species =
     { $count ->
         [one] { $count } Art
        *[other] { $count } Arten
+    }
+x-uploaded =
+    { $count ->
+        [one] { $count } hochgeladen
+       *[other] { $count } hochgeladen
+    }
+x-uploading =
+    { $count ->
+        [one] { $count } wird hochgeladen
+       *[other] { $count } werden hochgeladen
     }
 x-uploads-failed =
     { $count ->

@@ -186,117 +186,517 @@ Date-uploaded = 上传日期
 Date-uploaded-header-short = 上传于
 DATE-UPLOADED-NEWEST = 上传日期 - 从新到旧
 DATE-UPLOADED-OLDEST = 上传日期 - 从旧到新
+datetime-difference-days = { $count }天
+datetime-difference-hours = { $count }小时
+datetime-difference-minutes = { $count }分
+datetime-difference-weeks = { $count }周
+datetime-format-long = Pp
+datetime-format-short = M/d/yy h:mm a
 December = 十二月
+DELETE = 删除
+Delete-all-observations = 删除全部观察
+Delete-comment = 删除评论
+DELETE-COMMENT--question = 删除评论？
 Delete-observation = 删除观察
+DELETE-OBSERVATION--question = 删除观察？
 Delete-photo = 删除照片
+Delete-sound = 删除声音
+Deletes-entered-text = 删除输入的文本
+Deleting-x-of-y--observations =
+    删除{ $total ->
+        [one] { $total }个
+       *[other] { $total }个
+    }中的{ $currentDeleteCount }个观察
+Deleting-x-of-y-observations-2 =
+    { $total ->
+        [one] 删除
+       *[other] 删除{ $total }个中的
+    }{ $currentDeleteCount }个观察
+DETAILS = 详情
+Device-storage-full = 设备存储空间已满
+Device-storage-full-description = iNaturalist 可能无法保存您的照片或可能崩溃。
+Disable-flash = 禁用闪光灯
+Disagreement = *@{ $username } 不同意这是 <0/>
+DISCARD = 放弃
+DISCARD-ALL = 全部放弃
+DISCARD-CHANGES = 放弃更改
+DISCARD-FILTER-CHANGES = 放弃筛选器更改
+DISCARD-MEDIA--question = 放弃媒体？
+DISCARD-OBSERVATION = 放弃观察
+DISCARD-PHOTOS--question = 放弃照片？
+DISCARD-RECORDING = 放弃录音
+DISCARD-SOUND--question = 放弃声音？
+DISCARD-X-OBSERVATIONS =
+    { $count ->
+        [one] 放弃观察
+       *[other] 放弃{ $count }个观察
+    }
+DISMISS = 不再显示
 DONATE = 捐款
+DONATE-TO-INATURALIST = 捐助INATURALIST
+DONE = 完成
+Dont-have-an-account = 还没有账户？请注册
+During-app-start-no-model-found = 在应用程序启动过程中没有找到计算机图像模型。将没有 AI 相机。
 Edit = 编辑
+EDIT-COMMENT = 编辑评论
+Edit-comment = 编辑评论
+Edit-identification = 编辑鉴定
+EDIT-LOCATION = 编辑位置
+Edit-location = 编辑位置
 Edit-Observation = 编辑观察
+Edit-your-profile-change-your-settings = 编辑您的个人资料，更改您的通知设置，并管理您帐户的所有其他部分。
+Edits-this-observations-taxon = 编辑此观察记录的分类单元
+EDUCATORS = 教育者
+EMAIL = 电子邮件
+EMAIL-DEBUG-LOGS = 通过电子邮件发送报错日志
+Enable-flash = 启用闪光灯
 Endemic = 特有
+Endemic-to-place = 特产于{ $place }
 Error = 错误
+ERROR = 错误
+ERROR-LOADING-DQA = DQA加载错误
 Error-title = 错误
+ERROR-VOTING-IN-DQA = DQA投票错误
+Error-voting-in-DQA-description = 您的投票可能没有在DQA中被投出，请检查您的互联网连接，然后重试。
 Establishment = 定殖
+ESTABLISHMENT-MEANS = 定殖途径
+Every-observation-needs = 每个观察都需要一个位置、日期和时间来帮助鉴定。如果你关心位置隐私，你可以编辑地理隐私。
+Every-time-a-collection-project = 每次加载收藏页面时，iNaturalist 将进行快速搜索并显示符合项目要求的所有观察。 这是一种简单的方式来让参与者在不采取额外步骤手动添加观察结果的前提下显示一整套观察结果，例如一个班级项目、一个公园、或者一次生物快闪。
+EVIDENCE = 证据
 Exact-Date = 具体日期
+EXACT-DATE = 确切日期
 except = 除外
+EXPAND-MAP = 扩展地图
 Explore = 探索
+EXPLORE = 探索
+Explore-Filters = 探索筛选器
+EXPLORE-IDENTIFIERS = 探索鉴定者
+EXPLORE-OBSERVATIONS = 探索观察
+EXPLORE-OBSERVERS = 探索观察者
+EXPLORE-SPECIES = 探索物种
+Failed-to-delete-sound = 删除声音失败
+Failed-to-log-in = 登录失败
 FEATURED = 精选
 February = 二月
+FEEDBACK = 反馈
+Feedback-Submitted = 反馈已提交
+Fetching-location = 正在获取位置...
 Filter = 筛选器
+FILTER-BY-A-PROJECT = 根据项目筛选
+FILTER-BY-A-USER = 根据用户筛选
+Filter-by-observed-between-dates = 按照两个具体日期之间的日期的观察进行筛选
+Filter-by-observed-during-months = 按照特定月份期间的观察进行筛选
+Filter-by-observed-on-date = 按照特定日期的观察进行筛选
+Filter-by-uploaded-between-dates = 按照两个具体日期之间的日期上传的观察进行筛选
+Filter-by-uploaded-on-date = 按照特定日期上传的观察进行筛选
 Filters = 筛选器
 Flag-An-Item = 标记一个项目
+Flag-Item-Description =
+    标记是用来引起网站馆长志愿者的注意的。
+    请不要标记一些您可以通过鉴定、资料品质估计、或是与内容建立人互相讨论来解决的问题。
+Flag-Item-Other = 标记为其他描述框
 Flag-Item-Other-Description = 您可以在下方说明其他一些原因。
 Flag-Item-Other-Input-Hint = 指定标记此项目的原因
 Flagged = 已标记
+Flash = 闪光灯
+Flip-camera = 翻转摄像头
+FOLLOW = 关注
+FOLLOWING-X-PEOPLE =
+    { $count ->
+        [one] 正在关注{ $count }个人
+       *[other] 正在关注{ $count } 个人
+    }
+Forgot-Password = 忘记密码
+GEOPRIVACY = 地理隐私
+Geoprivacy-status = 地理隐私：{ $status }
+Get-more-accurate-suggestions-create-useful-data = 获取更准确的建议，并使用您的位置为科学创建有用的数据
+Get-your-identification-verified-by-real-people = 由iNaturalist 社区中的真人鉴定您的身份
 Go-back = 返回
+GRANT-PERMISSION = 授予权限
+Grant-Permission-title = 授予权限
+Grid-layout = 坐标布局
+Group-Photos = 编组照片
+Group-photos-onboarding = 把多张照片编组到观察中-要确保每个观察里只有一个物种
+HELP = 帮助
 Hide = 隐藏
+Highest = 最高
+HIGHEST-RANK = 最高排名
+I-agree-to-the-Terms-of-Use = 我同意使用条款和隐私政策，而且我已经审查了社群规范(必需)。
+I-consent-to-allow-iNaturalist-to-store = 我同意允许 iNaturalist 存储和处理关于我的有限种类的个人信息，以管理我的帐户（必需）。
+I-consent-to-allow-my-personal-information = 我同意将我的个人信息移交给美国（必需）
+Iconic-taxon-name = 图标分类群名称： { $iconicTaxon }
 ID-Withdrawn = 鉴定撤回
+IDENTIFICATION = 鉴定
+Identification-options = 鉴定选项
+IDENTIFICATIONS-WITHOUT-NUMBER =
+    { $count ->
+        [one] 鉴定
+       *[other] 鉴定
+    }
 Identifiers = 鉴定者
+Identifiers-View = 鉴定者视图
+Identify-an-organism = 鉴定一个生物体
+Identify-an-organism-with-the-iNaturalist-AI-Camera = 用iNaturalist AI相机鉴定一个生物体
+Identify-record-learn = 使用 iNaturalist 鉴别、记录和学习地球上每个生物物种。
+If-an-account-with-that-email-exists = 如果存在该电子邮箱绑定的帐户的话，我们已经给您的电子邮箱发送了密码重置说明。
+If-you-leave-x-of-your-observations-removed =
+    如果你离开这一传统项目，你的{ $count ->
+        [one] 1个观察
+       *[other] { $count }个观察
+    }会被从项目中移除
+If-you-want-to-collate-compare-promote = 如果你想要核对、比较或推广一组现有的项目，那么你应该使用一个伞形项目。 例如，2018年城市自然挑战，该挑战共整理了60多个项目， 制作了一个伟大的主页页面，任何人都可以比较和对比每个城市的观察。 收集和传统项目都可用于伞形项目，每个伞形项目下最多可包容500个项目。
+If-youre-seeing-this-error = 如果你看到这个并且你在线, iNat员工已经被通知。 感谢您找到一个错误！如果您离线，请截图并在您返回互联网时发送一封电子邮件。
+IGNORE-LOCATION = 忽略位置
+Import-Photos-From = 导入照片自
+IMPORT-X-OBSERVATIONS =
+    导入{ $count ->
+        [one] 1个观察
+       *[other] { $count }个观察
+    }
+IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = 通过使用您的位置来改善鉴定建议
 improving--identification = 改进中
+iNat-is-global-community = iNaturalist 是一个由自然观察家组成的全球社区，通过集体观察和鉴定生物体来创造开放的科学数据
+INATURALIST-ACCOUNT-SETTINGS = INATURALIST账户设置
+iNaturalist-AI-Camera = iNaturalist AI相机
+iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNaturalist 可以将您在应用程序中拍摄的照片保存到您设备的相册。
+INATURALIST-COMMUNITY = INATURALIST社群
+INATURALIST-FORUM = INATURALIST论坛
+iNaturalist-has-no-ID-suggestions-for-this-photo = iNaturalist对这张照片无建议鉴定结果
+INATURALIST-HELP-PAGE = INATURALIST帮助页面
+iNaturalist-helps-you-identify = iNaturalist 帮助您识别周围的植物和动物，同时生成用于科学和保护的数据。 与数以百万计的科学家和自然观察者建立联系，帮助您了解更多关于大自然的知识！
+iNaturalist-identification-suggestions-are-based-on = iNaturalist的鉴定建议基于iNaturalist社群的观察和鉴定结果，这些社群包括 { $user1 }、 { $user2 }、 { $user3 }和其他许多社群。
+iNaturalist-is-a-501 = iNaturalist是一个位于美国的、基于501(c)(3)的非专业性机构（税号/EIN 92-1296468）。
+iNaturalist-is-a-community-of-naturalists = iNaturalist 是一个自然观察者社群，它共同努力创建和鉴定野生生物多样性观测。
+iNaturalist-is-loading-ID-suggestions = iNaturalist 正在加载鉴定建议...
+iNaturalist-is-supported-by = iNaturalist得到设在美利坚合众国的一个独立的501(c)(3)非营利组织的支持。 iNaturalist 平台包括此应用程序、Seek by iNaturalist、iNaturalist网页版，等等。
+iNaturalist-is-supported-by-our-community = iNaturalist 是我们伟大的社区支持的。 从每天添加观察和鉴定的自然观察者到管理我们分类学和帮助规范社区的馆长， 使世界各地的受众更容易访问iNaturalist的志愿翻译者，对于我们社区的捐助者，我们特别感谢我们社群中使iNaturalist成为如今这个平台的所有人。
+iNaturalist-mission-is-to-connect = iNaturalist的使命是把人们与大自然联系起来，促进生物多样性科学和保护。
+INATURALIST-MISSION-VISION = INATURALIST任务和愿景
+INATURALIST-NETWORK = INATURALIST网络
+INATURALIST-SETTINGS = INATURALIST设置
+INATURALIST-STAFF = { $inaturalist }员工
+INATURALIST-STORE = INATURALIST商店
+INATURALIST-TEAM = INATURALIST团队
+iNaturalist-users-who-have-left-an-identification = 在其他用户的观察中留下了鉴定的iNaturalist用户
+iNaturalist-users-who-have-observed = 在特定时间和地点观察了某个分类单元的iNaturalist用户
+iNaturalist-uses-your-location-to-give-you = iNaturalist 使用您的位置给您提供更好的鉴定建议，我们可以自动为您的观察添加一个位置，这有助于科学家们。 我们还使用它来帮助你在你的位置附近找到观察到的生物。
+iNaturalists-apps-are-designed-and-developed-2 = iNaturalist的应用是由iNaturalist 团队设计、开发和支持的：Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Sheard, Thea Skaff, Angie Ta, Ken-ichi Ueda, Kirk van Gorkom, Jason Walthall, & Jane Weeden。
+iNaturalists-vision-is-a-world = iNaturalist的愿景是一个人人都能够通过观察野生生物和分享有关这些生物的信息来理解和维持生物多样性的世界。
+Individual-encounters-with-organisms = 在特定时间和地点与生物体的个别接触，通常有证据
+INFO-TRANSFER = 信息传输
+Internet-Connection-Required = 需要网络连接
+Intl-number = { $val }
 Introduced = 外来
+Introduced-to-place = 在{ $place }系外来种
+It-may-take-up-to-an-hour-to-remove-content = 完全删除所有相关内容可能需要一小时的时间
 January = 一月
 JOIN = 加入
+JOIN-PROJECT = 加入项目
+JOIN-PROJECT--question = 加入项目？
+Join-the-largest-community-of-naturalists = 加入世界上最大的自然爱好者社群！
 JOINED = 已加入
+Joined-date = 加入于：{ $date }
+JOINED-X-PROJECTS =
+    { $count ->
+        [one] 加入了{ $count }个项目
+       *[other] 加入了{ $count }个项目
+    }
+JOURNAL-POSTS-WITHOUT-NUMBER =
+    { $count ->
+        [one] 条帖子
+       *[other] 条帖子
+    }
 July = 七月
 June = 六月
+Just-make-sure-the-organism-is-wild = 只是请确认生物是野生的(而不是宠物、动物园动物或花园植物)
+Last-Active-date = 上次活跃：{ $date }
+Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, maximumFractionDigits: 6) }
+Lat-Lon-Acc = 经度: { NUMBER($latitude, maximumFractionDigits: 6) }, 纬度: { NUMBER($longitude, maximumFractionDigits: 6) }, 精度: { $accuracy }
 leading--identification = 领先的意见
 Learn-More = 了解更多
+LEAVE = 离开
+LEAVE-PROJECT = 离开项目
+LEAVE-PROJECT--question = 离开项目？
+LEAVE-US-A-REVIEW = 为我们留下一则评论！
+LICENSES = 许可证
+List-layout = 列表布局
+Loading-iNaturalists-AI-Camera = 正在加载 iNaturalist AI相机
+Loads-content-that-requires-an-Internet-connection = 载入的内容需要互联网连接
+LOCATION = 位置
 Location = 位置
+Location-accuracy-is-too-imprecise = 位置精确度太不精确，无法帮助鉴定者。请放大。
+LOCATION-TOO-IMPRECISE = 位置太不精确
+LOG-IN = 登录
 Log-in = 登入
+Log-in-to-contribute-and-sync = 登录以做出贡献并同步
+Log-in-to-contribute-your-observations = 登录以将您的观察贡献给科学界！
+LOG-IN-TO-INATURALIST = 登入到INATURALIST
+Log-in-to-iNaturalist = 登录到iNaturalist
 LOG-OUT = 登出
+LOG-OUT--question = 登出？
+Login-sub-title = 记录生物、鉴定生物，对科学做出贡献
+Lowest = 最低
+LOWEST-RANK = 排名最低
+MAP = 地图
 Map-Area = 地图区域
 March = 三月
 maverick--identification = 小众的意见
 May = 5月
+MEDIA = 媒体
 Media-Type = 媒体类型
+MEMBERS-WITHOUT-NUMBER =
+    { $count ->
+        [one] 成员
+       *[other] 成员
+    }
 Menu = 选单
 Missing-Date = 缺少日期
+MISSING-EVIDENCE = 缺少证据
+Monthly-Donor = 每月捐助
 Months = 月
+MONTHS = 月
+More-info = 更多信息
+MOST-FAVED = 最多收藏
+Most-faved = 最多收藏
+MY-OBSERVATIONS = 我的观察
 Native = 本地
+Native-to-place = 原产于{ $place }
+Navigates-to-AI-camera = 导航到 AI 相机
+Navigates-to-bulk-importer = 导航到批量导入器
+Navigates-to-camera = 导航到相机
+Navigates-to-explore = 导航到探索
+Navigates-to-notifications = 导航到通知
+Navigates-to-observation-details = 导航到观察细节屏幕
+Navigates-to-observation-edit-screen = 导航到观察编辑屏幕
+Navigates-to-photo-importer = 导航到图片导入器
+Navigates-to-previous-screen = 导航到上一个屏幕
+Navigates-to-project-details = 导航到项目详细信息
+Navigates-to-sound-recorder = 导航到录音机
+Navigates-to-suggest-identification = 导航到建议鉴定
+Navigates-to-taxon-details = 导航到分类单元详细信息
+Navigates-to-user-profile = 导航到用户资料
+Navigates-to-your-observations = 导航到您的观察
 NEARBY = 周边
 Nearby = 附近
 Needs-ID--quality-grade = 待鉴定
 New-Observation = 新的观察记录
+Newest-to-oldest = 导航到最旧的
+Next-observation = 下一个观察
+No-Camera-Available = 无可用相机
+No-email-app-installed = 未安装邮箱应用
+No-email-app-installed-body = 如果您有其他方式发送电子邮件，地址是 { $address }
+No-email-app-installed-body-check-other = 尝试在 web 浏览器或其他设备上检查您的电子邮件。
 No-Location = 无位置资讯
 No-Media = 没有媒体
+No-model-found = 未找到模型
+No-Notifications-Found = 您没有收到通知！开始创建自己的观察。
+No-projects-match-that-search = 没有匹配搜索的项目
+No-results-found-for-that-search = 没有找到搜索结果。
+No-results-found-try-different-search = 未找到任何结果。请尝试不同的搜索或调整您的筛选器。
+no-rights-reserved-cc0 = 不保留权利（CC0）
+none--accuracy = 无
+NONE--ranks = 无
+Not-enough-space-left-on-device = 设备存储空间不足
+Not-enough-space-left-on-device-try-again = 您的设备上没有足够的存储空间来做这件事。请释放一些空间然后重试。
+NOTES = 备注
+NOTIFICATIONS = 通知
 Notifications = 通知
+notifications-user-added-comment-to-observation-by-you = <0>{ $userName }</0>向您的观察添加了一条评论
+notifications-user-added-identification-to-observation-by-you = <0>{ $userName }</0>向您的观察添加了一个鉴定
 November = 十一月
+Obervations-must-be-manually-added = 观测结果必须手动添加到传统项目中，要么在上传阶段，要么在观测结果共享到 iNaturalist之后。 用户还必须加入一个传统的项目，以便将他们的观察结果添加到该项目。
 Obscured = 被模糊处理
+Observation = 观察
+Observation-Attribution = 观察：©{ $userName }·{ $restrictions }
+OBSERVATION-BUTTON = 观察按钮
+Observation-has-no-photos-and-no-sounds = 此观察记录没有照片，也没有声音.
+Observation-location-obscured-randomized-point = 这个观察记录的位置是模糊的。你看到了模糊多边形中的一个随机的点。
+Observation-location-obscured-you-can-see-your-own = 此观察记录的位置是模糊的。您总是可以看到您自己观察的位置。
+Observation-location-obscured-you-have-permission = 此观察记录的位置是模糊的。您有权查看此位置。
+Observation-Name = 观察{ $scientificName }
+Observation-options = 观察选项
+OBSERVATION-WAS-DELETED = 观察被删除
+Observation-with-no-evidence = 创建一个没有证据的观察
 Observations = 观察
+Observations-created-on-iNaturalist = 世界各地的科学家都在使用iNaturalist上生成的观测数据。
+Observations-on-iNat-are-cited = 科学论文引述了iNaturalist 的意见，导致了物种的重新发现，有助于科学家了解我们星球上的生物
+Observations-View = 浏览观察
+OBSERVATIONS-WITHOUT-NUMBER =
+    { $count ->
+        [one] 个观察
+       *[other] 个观察
+    }
+Observations-you-upload-to-iNaturalist = 您上传到 iNaturalist 的观测资料可以被世界各地的科学家和研究人员使用。
 Observe = 观察
+Observe-and-identify-organisms-from-your-gallery = 从您的图库中观察和识别生物。
+Observe-and-identify-organisms-in-real-time-with-your-camera = 用摄像头实时观察和鉴定生物。
+OBSERVE-ORGANISMS = 观察生物体
 Observers = 观察者
+Observers-View = 观察者浏览
 October = 十月
 Offensive-Inappropriate = 冒犯性的/不恰当的
+Offensive-Inappropriate-Examples = 误导性或非法内容，种族歧视或民族蔑称等。有关我们对“适当”的更多定义，详见FAQ常见问题解答。
+Offline-DQA-description = DQA可能不准确。请检查您的互联网连接，然后重试。
+Offline-suggestions-do-not-use-your-location = 离线建议不使用您的位置，可能不同于在线建议。分类单元图像和常用名称可能无法加载。
 OK = 确定
+Oldest-to-newest = 从旧到新
+Once-you-create-and-upload-observations = 一旦您创建并上传观察，我们社区的其他成员可以添加鉴定来帮助您的观察达到研究等级。
+One-last-step = 最后一步！
 Open = 公开
+Open-drawer = 打开侧栏
+OPEN-EMAIL = 打开邮件
+Open-menu = 打开菜单。
+OPEN-SETTINGS = 打开设置
+Opens-add-comment-form = 打开添加评论表单。
+Opens-AI-camera = 打开 AI 相机。
+Opens-edit-comment-form = 打开编辑评论表单。
+Opens-location-permission-prompt = 打开位置权限提示
+Opens-the-side-drawer-menu = 打开侧边栏菜单。
+Organism-is-captive = 生物体是被圈养的
+Organisms-that-are-identified-to-species = 生物体被鉴定到“种”一级或更低层级
 Other = 其他
+OTHER-DATA = 其他数据
+OTHER-SUGGESTIONS = 其它建议
+PASSWORD = 密码
+PEOPLE--title = 用户
+PERSONAL-INFO = 个人信息
+Photo-importer = 照片导入器
+PHOTO-LICENSING = 图片授权
+Photos = 图片
+Photos-you-take-will-appear-here = 您拍摄的照片将显示在这里
+Please-allow-Camera-Access = 请允许相机访问
+Please-Allow-Gallery-Access = 请允许相册访问
+Please-allow-Location-Access = 请允许位置访问
+Please-allow-Microphone-Access = 请允许麦克风
+Please-click-the-link = 请在60分钟内点击电子邮件中的链接以确认您的帐户
+Please-Grant-Permission = 请授予权限
+PLEASE-LOG-IN = 请登录
+Please-try-again-when-you-are-connected-to-the-internet = 请在您连接到互联网时再试一次。
+Please-try-again-when-you-are-online = 请在您上线时重试！
+POTENTIAL-DISAGREEMENT = 潜在的不同意
+Potential-disagreement-description = <0>这一证据足够证明这是</0><1></1><0>吗？<0>
+Potential-disagreement-disagree = <0>不，但这属于</0><1></1>
+Potential-disagreement-unsure = <0>我不知道，但我确信这是</0><1></1>
+Previous-observation = 上一个观察
 Privacy-Policy = 隐私政策
+PRIVACY-POLICY = 隐私政策
 Private = 私有
+PROJECT = 项目
 Project-Members-Only = 仅限项目成员
+PROJECT-REQUIREMENTS = 项目需求
+project-start-time-datetime = 开始时间：{ $datetime }
+PROJECTS = 项目
 Projects = 项目
+PROJECTS-X = 项目（{ $projectCount }）
+QUALITY-GRADE = 质量级别
 Quality-Grade = 质量等级
+Quality-Grade-Casual--label = 质量级别：非正式
+Quality-Grade-Needs-ID--label = 质量级别：需鉴定
+Quality-Grade-Research--label = 质量级别：研究级
+Ranks-CLASS = 纲
 Ranks-Class = 纲
+Ranks-COMPLEX = 复合群
 Ranks-Complex = 复合群
+Ranks-EPIFAMILY = 领科
 Ranks-Epifamily = 领科
+Ranks-FAMILY = 科
 Ranks-Family = 科
+Ranks-FORM = 型
 Ranks-Form = 型
+Ranks-GENUS = 属
 Ranks-Genus = 属
+Ranks-GENUSHYBRID = 杂交属
 Ranks-Genushybrid = 属间杂种
+Ranks-HYBRID = 杂交种
 Ranks-Hybrid = 杂种
+Ranks-INFRACLASS = 下纲
 Ranks-Infraclass = 附纲
+Ranks-INFRAHYBRID = 杂交下种
 Ranks-Infrahybrid = 种内杂种
+Ranks-INFRAORDER = 下目
 Ranks-Infraorder = 下目
+Ranks-KINGDOM = 界
 Ranks-Kingdom = 界
+Ranks-ORDER = 目
 Ranks-Order = 排序
+Ranks-PARVORDER = 小目
 Ranks-Parvorder = 小目
+Ranks-PHYLUM = 门
 Ranks-Phylum = 门
+Ranks-SECTION = 组
 Ranks-Section = 组
 Ranks-SPECIES = 物种
 Ranks-Species = 物种
 Ranks-Statefmatter = 物态
+Ranks-STATEOFMATTER = 物态
+Ranks-SUBCLASS = 亚纲
 Ranks-Subclass = 亚纲
+Ranks-SUBFAMILY = 亚科
 Ranks-Subfamily = 亚科
+Ranks-SUBGENUS = 亚属
 Ranks-Subgenus = 亚属
+Ranks-SUBKINGDOM = 亚界
 Ranks-Subkingdom = 亚界
+Ranks-SUBORDER = 亚目
 Ranks-Suborder = 亚目
+Ranks-SUBPHYLUM = 亚门
 Ranks-Subphylum = 亚门
+Ranks-SUBSECTION = 亚组
 Ranks-Subsection = 亚组
+Ranks-SUBSPECIES = 亚种
 Ranks-Subspecies = 亚种
+Ranks-SUBTERCLASS = 亚下纲
 Ranks-Subterclass = 子类
+Ranks-SUBTRIBE = 亚族
 Ranks-Subtribe = 亚族
+Ranks-SUPERCLASS = 总纲
 Ranks-Superclass = 总纲
+Ranks-SUPERFAMILY = 总科
 Ranks-Superfamily = 总科
+Ranks-SUPERORDER = 总目
 Ranks-Superorder = 总目
+Ranks-SUPERTRIBE = 总族
 Ranks-Supertribe = 总族
+Ranks-TRIBE = 族
 Ranks-Tribe = 族
+Ranks-VARIETY = 变种
 Ranks-Variety = 变种
+Ranks-ZOOSECTION = 派
 Ranks-Zoosection = 派
+Ranks-ZOOSUBSECTION = 亚派
 Ranks-Zoosubsection = 亚派
+Read-more-on-Wikipedia = 在 Wikipedia 上阅读更多
+Record-a-sound = 录制声音
+RECORD-NEW-SOUND = 录制新声音
+Record-organism-sounds-with-the-microphone = 使用麦克风录制生物体的声音
+RECORD-SOUND = 记录声音
 Record-verb = 记录
+Recording-sound = 记录声音
+Recording-stopped-Tap-play-the-current-recording = 录制已停止。点击播放当前录制。
+REDO-SEARCH-IN-MAP-AREA = 在地图中重新搜索
+Remove-agreement = 删除同意
+Remove-disagreement = 删除不同意
+Remove-favorite = 取消收藏
 Remove-identification = 删除身份证明
+Remove-Photos = 删除照片
 Remove-project-filter = 删除项目筛选器
+Remove-taxon-filter = 删除分类单元筛选器
+Remove-user-filter = 删除用户筛选器
+Removes-this-observations-taxon = 移除此观察记录的分类单元
+Removes-your-vote-of-agreement = 移除您的同意意见投票
+Removes-your-vote-of-disagreement = 移除您的不同意意见投票
 Research-Grade--quality-grade = 研究级别
+RESET-PASSWORD = 重置密码
+RESET-RECORDING = 重置录音
+RESET-SEARCH = 重置搜索
+RESET-SOUND-header = 重置声音？
 Reset-verb = 重设
+RESTART-APP = 重启应用程序
 Restore = 恢复
+Reveal = 显示密码
+REVIEW-INATURALIST = 评论INATURALIST
+REVIEWED = 已复核
+Reviewed-observations-only = 仅查看已审查的观察
 Satellite--map-type = 卫星
 SAVE = 储存
 Save = 保存
@@ -312,24 +712,115 @@ Scientific-Name = 学名
 Scientific-Name-Common-Name = 学名（通用名）
 SEARCH = 搜索
 Search = 搜索
+Search-for-a-project = 搜索项目
+SEARCH-FOR-A-TAXON = 搜索分类单元
+Search-for-a-taxon = 搜索分类单元
+SEARCH-LOCATION = 搜索位置
+SEARCH-PROJECTS = 搜索项目
+Search-suggestions-with-location = 搜索基于位置的建议
+Search-suggestions-without-location = 搜索不基于位置的建议
+SEARCH-TAXA = 搜索分类群
+SEARCH-USERS = 搜索用户
+See-all-your-observations-in-explore = 在探索中查看您的所有观察
+See-observations-by-this-user-in-Explore = 在探索中查看此用户的观察
+See-observations-in-explore = 在探索中查看观察
+See-observations-of-this-taxon-in-explore = 在探索中查看此分类单元的观察
+See-project-members = 查看项目成员
+See-species-observed-by-this-user-in-Explore = 在探索中查看该用户观察到的该物种
+Select-a-date-and-time-for-observation = 选择观察日期和时间
+Select-captive-or-cultivated-status = 选择饲育或栽培状态
+Select-geoprivacy-status = 选择地理隐私状态
+Select-or-drag-media = 选择或拖动媒体
+Select-photo = 选择图片
+SELECT-THIS-TAXON = 选择此分类单元
+Select-user = 选择用户
+Selects-iconic-taxon-X-for-identification = 选择用于鉴定的 { $iconicTaxon } 图标分类。
+Separate-Photos = 分离照片
 September = 九月
+SETTINGS = 设置
 Share = 分享
+SHARE-DEBUG-LOGS = 分享报错日志
 Share-location = 分享位置
+Share-map = 分享地图
+Share-your-observation-where-it-can-help-scientists = 分享您的观察，可以帮助世界各地的科学家更好地了解生物多样性。
+SHOP-INATURALIST-MERCH = 购买INATURALIST周边产品
+Show-observation-options = 显示观察选项。
+Shows-identification-suggestions = 显示鉴定建议
+Shows-iNaturalist-bird-logo = 显示 iNaturalist 鸟徽标。
+Shows-observation-creation-options = 显示观察创建选项
+Some-data-privacy-laws = 有些数据隐私法，如欧洲联盟的《一般数据保护条例》（GPD）， 如果认为对个人信息的法律保护不充分，则要求明确同意将个人信息从其管辖区转移到其他管辖区。 截止2020年，欧洲联盟不再认为美国是为个人信息提供适当法律保护的管辖区。 特别是因为美国政府有可能对进入美国的数据进行监测。 其他法域可能也有同样的意见。
+Something-went-wrong = 发生了一些错误。
+Sorry-this-observation-was-deleted = 抱歉，此观察记录已被删除
+Sorry-we-dont-know-how-to-open-that-URL = 抱歉，我们不知道如何打开该URL： { $url }
+SORT-BY = 排序方式
+Sort-by = 排序方式
+sound-playback-separator = /
+Sound-recorder = 录音机
+sound-recorder-help-A-recording-of = 时长5-15秒的录音是帮助鉴定者的最佳方式。
+sound-recorder-help-Get-as-close-as-you-can = 在保证自己安全的前提下你应该尽可能靠近地记录生物。
+sound-recorder-help-Get-closer = 靠近一点
+sound-recorder-help-Keep-it-short = 尽量简短
+sound-recorder-help-Make-sure = 请确保你自己运动的声音不掩盖生物的声音。
+sound-recorder-help-One-organism = 一个生物
+sound-recorder-help-Stop-moving = 停止移动
+sound-recorder-help-Try-to-isolate = 尝试隔离单一生物的声音。如果你可以，请确保留下你要录制的生物的笔记。
 Sounds = 声音
+Source-List = <0>（来源列表：</0><1>{ $source }</1><0>）</0>
 Spam = 垃圾邮件
 Spam-Examples = 商业征集，链接至任何地方等
 Species = 物种
+Species-View = 物种浏览
+SPECIES-WITHOUT-NUMBER =
+    { $count ->
+        [one] 个物种
+       *[other] 个物种
+    }
 Standard--map-type = 标准
+Start-must-be-before-end = 开始日期必须早于结束日期。
+Start-upload = 开始上传
+Starts-recording-sound = 开始录制声音
+Stay-on-this-screen = 当您在加载位置时请留在这个屏幕上。
+Still-need-help = 仍然需要帮助？您可以在这里提交支持请求。
+Stop-upload = 停止上传
 Stop-verb = 停止
+Stops-recording-sound = 停止录制声音
 SUBMIT = 提交
+SUBMIT-ID-SUGGESTION = 提交鉴定建议
 SUGGEST-ID = 建议鉴定
 Suggest-ID = 建议鉴定
 supporting--identification = 支持的
+Switches-to-tab = 切换到 { $tab } 选项卡。
+Sync-observations = 同步观察记录
 Syncing = 上传中
+Take-multiple-photos-of-a-single-organism = 拍摄单一生物的多张照片
 Take-photo = 拍照
 Taxa = 分类群
 TAXON = 分类单元
+TAXON-NAMES-DISPLAY = 分类学名称的展示方式
+TAXONOMIC-RANKS = 分类阶元
+TAXONOMY-header = 分类学
+TEAM = 团队
 Terms-of-Use = 使用条款
+TERMS-OF-USE = 使用条款
+Text-Box-to-Describe-Reason-for-Flag = 描述标记原因的文本框。
+Thank-you-for-sharing-your-feedback = 感谢您分享您的反馈意见以帮助我们改进！
+Thanks-for-using-any-suggestions = 感谢您使用这个应用！您是否有任何建议来帮助制作它的人？
+That-user-profile-doesnt-exist = 该用户信息不存在
+The-exact-location-will-be-hidden = 确切的位置将公开隐藏，然后概括到更大的区域(受威胁和濒危物种自动被掩盖)。
+The-iNaturalist-Network = iNaturalist 网络是与全球iNaturalist 社区完全连接的本地化网站集合。 网络站点得到了地方机构的支持，它们促进地方使用，并促进使用iNaturalist 提供的数据来造福地方生物多样性。
+The-location-will-not-be-visible-to-others = 其他人看不到该位置，这可能使观察无法被鉴定
+The-models-that-suggest-species = 基于视觉相似性和位置的物种模型部分归功于与Sara Beery、Tom Brooks、Elijah Cole、Christian Lange、Oisin Mac Aodha、Pietro Perona和Grant Van Horn的合作。
+There-is-no-way = 如果不存储个人信息，就无法开设iNaturalist 账户。 所以撤销此同意的唯一方法是删除您的帐户。
+This-is-a-wild-organism = 这是一个野生生物，不是被人类放置在这个位置的。
+This-is-how-taxon-names-will-be-displayed = 这是在整个iNaturalist站点上分类单元名称的显示方式：
+This-observer-has-opted-out-of-the-Community-Taxon = 该观察者已选择退出社区分类单元
+This-organism-was-placed-by-humans = 这种生物是被人类放置在这里的。这适用于花园植物、宠物和动物园动物。
+To-learn-more-about-what-information = 要更多地了解我们收集的信息以及我们如何使用这些信息，请参阅我们的隐私政策和我们的使用条款。
+To-sync-your-observations-to-iNaturalist = 要将您的观察记录同步到 iNaturalist，请登录。
+To-view-nearby-organisms-please-enable-location = 要查看附近的生物，请启用位置。
+To-view-nearby-projects-please-enable-location = 要查看附近的项目，请启用位置。
+Toggle-map-type = 切换地图类型
+TOP-ID-SUGGESTION = 最佳鉴定建议
 Traditional-Project = 传统项目
 Umbrella-Project = 旗舰型项目
 UNFOLLOW = 取消关注
@@ -338,10 +829,200 @@ Unknown--rank = 未知
 Unknown--taxon = 未知
 Unknown--user = 未知
 Unknown-error = 未知错误
+Unknown-organism = 未知生物体
+Unreviewed-observations-only = 仅查看未审查的观察
+Upload-Complete = 上传完毕
+Upload-in-progress = 正在上传
+UPLOAD-NOW = 现在上传
+Upload-photos-from-your-gallery = 从您的照片库上传多张照片
+Upload-photos-from-your-gallery-and-create-observations = 从您的照片库上传照片并创建观察记录并获取您已经观察到的生物的鉴定结果！
+Upload-Progress = 上传已完成{ $uploadProgress }%
+UPLOAD-TO-INATURALIST = 上传到INATURALIST
+Upload-x-observations =
+    Upload { $count ->
+        [one] 1个观察
+       *[other] { $count }个观察
+    }
+Uploaded-via-application = 通过{ $application }上传
+Uploading-x-of-y = 正在上传{ $total }个中的第{ $currentUploadCount }个
+Uploading-x-of-y-observations =
+    { $total ->
+        [one] 正在上传{ $currentUploadCount }个观察
+       *[other] 正在上传{ $total }个观察中的第{ $currentUploadCount }个
+    }
+Use-iNaturalists-AI-Camera = 使用 iNaturalist 的 AI相机实时鉴定生物体。
+USE-LOCATION = 使用位置
+Use-the-devices-other-camera = 使用设备的其他相机。
+Use-the-iNaturalist-camera-to-observe-2 = 使用 iNaturalist 实时观察和鉴定生物。与我们的社群分享它们以获得鉴定并为科学做出贡献！
+Use-your-devices-microphone-to-record = 使用您的设备的麦克风来录制由生物产生的声音并与我们的社群分享以获得鉴别并为科学做出贡献！
+USER = 用户
+User = 用户 { $userHandle }
+USERNAME = 用户名
+USERNAME-OR-EMAIL = 用户名或电子邮件
 Users = 用户
+Using-iNaturalist-requires-the-storage = 使用 iNaturalist 需要存储您的电子邮件地址等个人信息，所有iNaturalist 数据都存储在美国， 我们无法确定你在使用iNaturalist时所属的法律管辖区，因此 为了遵守诸如GDPR的隐私法， 您必须承认您理解并接受这种风险，并同意将您的个人信息传输到 iNaturalist 在美国的服务器。
+Version-app-build = 查看{ $appVersion }（{ $buildVersion }）
+VIEW-ALL-X-PLACES = 查看所有 { $count } 个地点
+VIEW-ALL-X-PROJECTS = 查看所有 { $count } 个项目
+VIEW-ALL-X-TAXA = 查看所有 { $count } 个分类单元
+VIEW-ALL-X-USERS = 查看所有 { $count } 个用户
+VIEW-CHILDREN-TAXA = 查看子分类群
+VIEW-DATA-QUALITY-ASSESSMENT = 查看数据质量评估
+VIEW-EDUCATORS-GUIDE = 查看教育者指南
+VIEW-FOLLOWERS = 查看关注者
+VIEW-FOLLOWING = 查看关注列表
 View-in-browser = 在浏览器中阅览
+VIEW-IN-EXPLORE = 在探索中查看
+VIEW-INATURALIST-HELP = 查看INATURALIST帮助
+View-photo = 查看照片
+View-photo-licensing-info = 查看照片许可信息
+VIEW-PROJECT-REQUIREMENTS = 查看项目需求
+VIEW-PROJECTS = 查看项目
 View-suggestions = 查看建议
+We-are-not-confident-enough-to-make-a-top-ID-suggestion = 我们信心不足以致于无法做出最佳建议，但这是我们其他建议：
+We-sent-a-confirmation-email = 我们向您注册的电子邮件发送了一封确认邮件。
+We-store-personal-information = 我们需要储存用户名称以及电子邮箱地址之类的个人信息来管理在网站上的账号，因要符合隐私法规的要求，需要您勾选此方框來表明您同意上述的个人信息使用。要了解更多关于我们如何收集以及使用信息，请查看我们的隐私政策和服务条款。
+Welcome-to-iNaturalist = 欢迎使用 iNaturalist ！
+Welcome-user = <0>欢迎回来，</0><1>{ $userHandle }</1>
+WHAT-IS-INATURALIST = INATURALIST是什么？
+Whats-more-by-recording = 更重要的是，通过记录和分享您的观察，您将为努力更好地理解和保护自然的科学家创建高质量的研究数据。 所以，如果你喜欢从户外记录你的调查结果，或者如果你喜欢学习生命，请加入我们！
+When-tapping-the-green-observation-button = 当点击绿色观察按钮时，打开：
+WIKIPEDIA = 维基百科
 Wild = 野生
+WILD-STATUS = 野生状态
 Withdraw = 撤回
+WITHDRAW-ID = 撤回鉴定
+WITHDRAW-ID-QUESTION = 撤回鉴定？
+Withdraws-identification = 撤回鉴定
 Worldwide = 世界各地
+WORLDWIDE = 世界范围
+Would-you-like-to-discard-your-current-recording-and-start-over = 您想要放弃您当前的录制并重新开始吗？
+Would-you-like-to-suggest-the-following-identification = 您想要同意以下鉴定结果吗？
+x-comments =
+    { $count ->
+        [one] { $count }条评论
+       *[other] { $count }条评论
+    }
+X-FOLLOWERS =
+    { $count ->
+        [one] { $count }个关注者
+       *[other] { $count }个关注者
+    }
+X-Identifications =
+    { $count ->
+        [one] { $count }个鉴定
+       *[other] { $count }个鉴定
+    }
+x-identifications =
+    { $count ->
+        [one] { $count }个鉴定
+       *[other] { $count }个鉴定
+    }
+X-Identifiers =
+    { $count ->
+        [one] { $count }个鉴定者
+       *[other] { $count }个鉴定者
+    }
+X-MEMBERS = { $count }名成员
+X-Observations =
+    { $count ->
+        [one] 1个观察
+       *[other] { $count }个观察
+    }
+X-observations =
+    { $count ->
+        [one] 1个观察
+       *[other] { $count }个观察
+    }
+X-observations-deleted =
+    { $count ->
+        [one] 删除了1个观察
+       *[other] 删除了{ $count }个观察
+    }
+X-observations-uploaded =
+    { $count ->
+        [one] 上传了1个观察
+       *[other] 上传了{ $count }个观察
+    }
+X-Observers =
+    { $count ->
+        [one] 1个观察者
+       *[other] { $count }个观察者
+    }
+X-of-Y =
+    { $y ->
+        [one] { $y }个
+       *[other] { $y }个
+    }中的{ $x ->
+        [one] 1个
+       *[other] { $x }个
+    }
+X-PHOTOS =
+    { $photoCount ->
+        [one] 1张照片
+       *[other] { $photoCount }张照片
+    }
+X-PHOTOS-X-OBSERVATIONS =
+    { $photoCount ->
+        [one] 1张照片
+       *[other] { $photoCount } 张照片
+    }, { $observationCount ->
+        [one] 1个观察
+       *[other] { $observationCount }个观察
+    }
+X-PHOTOS-Y-SOUNDS =
+    { $photoCount ->
+        [one] 1张照片
+       *[other] { $photoCount }张照片
+    }, { $soundCount ->
+        [one] 1条声音
+       *[other] { $soundCount }条声音
+    }
+X-PROJECTS = { $projectCount }个项目
+X-SOUNDS =
+    { $count ->
+        [one] 1条声音
+       *[other] { $count }条声音
+    }
+X-Species =
+    { $count ->
+        [one] { $count }个物种
+       *[other] { $count }个物种
+    }
+x-uploads-failed =
+    { $count ->
+        [one] { $count }条上传失败
+       *[other] { $count }条上传失败
+    }
+Yes-license-my-photos = 是的，授权我的照片、声音和观察，以便科学家可以使用我的数据(推荐)。
+You-are-offline = 您已离线
+You-are-offline-Tap-to-reload = 您处于离线状态。点击重新加载。
+You-are-offline-Tap-to-try-again = 您处于离线状态。点击重试。
+You-can-add-up-to-20-media = 每个观察记录最多可以添加20张照片和20个声音。
+You-can-also-check-out-merchandise = 您也可以在下面的商店中购买iNaturalist 和Seek的周边商品！
+You-can-also-explore-existing-observations = 您还可以探索在 iNaturalist 上的现有观察来发现您周围的情况。
+You-can-click-join-on-the-project-page = 您可以在项目页面点击“加入”。
+You-can-find-answers-on-our-help-page = 您可以在我们的帮助页面找到答案。
+You-can-only-add-20-photos-per-observation = 每次观察只能添加20张照片
+You-can-search-observations-of-any-plant-or-animal = 你可以通过探索在世界任何地方搜索任何动植物观察！
+You-can-still-share-the-file = 您仍然可以与另一个应用程序共享文件。如果您可以通过电子邮件发送，请发送至 { $email }
+You-can-upload-this-observation-to-our-community = 您可以将此观察记录上传到我们的社区，获取来自真人的鉴定结果，并帮助我们的 AI 改进其鉴定能力。
+You-changed-filters-will-be-discarded = 您更改了筛选器，但它们没有应用到您的探索搜索结果。
+You-have-opted-out-of-the-Community-Taxon = 您已选择退出社区分类单元
+You-havent-joined-any-projects-yet = 您尚未加入任何项目！
+You-must-be-logged-in-to-view-messages = 您必须登录才能查看您的消息。
+You-need-an-Internet-connection-to-do-that = 您需要互联网连接才能做到这一点。
 You-need-log-in-to-do-that = 您必须先登录。
+You-will-see-notifications = 一旦您登录并上传观察，您将在这里看到通知。
+Your-donation-to-iNaturalist = 您对 iNaturalist 的捐赠有助于改善和稳定移动应用和网站，这些应用和网站将千百万人连接到大自然，并能保护世界各地的生物多样性！
+Your-email-is-confirmed = 您的电子邮件已确认！请登录以继续。
+Your-location-uncertainty-is-over-x-km = 您的位置不确定性超过 { $x } 千米，这太高，不能对鉴定者有所帮助。 编辑位置并缩放，直到精度圆转向绿色，并以观察有机物的地点为中心。
+Youre-always-in-control-of-the-location-privacy = 您总是控制您创建的每个观察记录的位置隐私。
+Youve-denied-permission-prompt = 您已拒绝了权限请求。请在设置应用程序中授予权限。
+Youve-previously-denied-camera-permissions = 您以前拒绝了相机权限，所以请在设置中启用相机权限。
+Youve-previously-denied-gallery-permissions = 您以前拒绝了相册权限，所以请在设置中启用权限。
+Youve-previously-denied-location-permissions = 您以前拒绝了位置权限，所以请在设置中启用权限。
+Youve-previously-denied-microphone-permissions = 您以前拒绝了麦克风权限，所以请在设置中启用权限。
+Zoom-in-as-much-as-possible-to-improve = 尽量缩放以提高位置精确度并获得更好的鉴定结果。
+Zoom-to-current-location = 转到我的当前位置
+zoom-x = { $zoom }x
