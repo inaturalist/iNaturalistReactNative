@@ -4,30 +4,41 @@ import { Heading2, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
+import { Animated } from "react-native";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
   currentObservationIndex: number,
   setCurrentObservationIndex: Function,
   observations: Array<Object>,
-  setResetScreen: Function
+  setResetScreen: Function,
+  transitionAnimation: Function,
+  transitionAnimationRef: Object
 }
 
 const MultipleObservationsArrows = ( {
   currentObservationIndex,
   setCurrentObservationIndex,
   observations,
-  setResetScreen
+  setResetScreen,
+  transitionAnimation,
+  transitionAnimationRef
 }: Props ): Node => {
   const { t } = useTranslation( );
+
+  const animatedStyle = {
+    opacity: transitionAnimationRef // Bind opacity to animated value
+  };
 
   const showNextObservation = ( ) => {
     setCurrentObservationIndex( currentObservationIndex + 1 );
     setResetScreen( true );
+    transitionAnimation();
   };
   const showPrevObservation = ( ) => {
     setCurrentObservationIndex( currentObservationIndex - 1 );
     setResetScreen( true );
+    transitionAnimation();
   };
 
   return (
@@ -42,12 +53,14 @@ const MultipleObservationsArrows = ( {
           />
         )}
       </View>
-      <Heading2>
-        {t( "X-of-Y", {
-          x: currentObservationIndex + 1,
-          y: observations.length
-        } )}
-      </Heading2>
+      <Animated.View style={animatedStyle}>
+        <Heading2>
+          {t( "X-of-Y", {
+            x: currentObservationIndex + 1,
+            y: observations.length
+          } )}
+        </Heading2>
+      </Animated.View>
       <View className="w-16 flex items-end">
         {( currentObservationIndex !== observations.length - 1 )
           && (
