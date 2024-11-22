@@ -27,7 +27,6 @@ type Props = {
   onEndReached: Function,
   onListLayout?: Function,
   onScroll?: Function,
-  refreshing: boolean,
   setShowLoginSheet: Function,
   showLoginSheet: boolean,
   showNoResults: boolean,
@@ -48,7 +47,6 @@ const MyObservations = ( {
   onEndReached,
   onListLayout,
   onScroll,
-  refreshing,
   setShowLoginSheet,
   showLoginSheet,
   showNoResults,
@@ -92,7 +90,6 @@ const MyObservations = ( {
               onEndReached={onEndReached}
               onLayout={onListLayout}
               ref={listRef}
-              refreshing={refreshing}
               showObservationsEmptyScreen
               showNoResults={showNoResults}
               testID="MyObservationsAnimatedList"
