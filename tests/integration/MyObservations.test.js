@@ -366,6 +366,22 @@ describe( "MyObservations", ( ) => {
         } ).not.toThrow( );
       } );
 
+      it( "should trigger manual observation sync on pull-to-refresh", async ( ) => {
+        renderAppWithComponent( <MyObservationsContainer /> );
+
+        const myObsList = await screen.findByTestId( "MyObservationsAnimatedList" );
+
+        fireEvent.scroll( myObsList, {
+          nativeEvent: {
+            contentOffset: { y: -100 },
+            contentSize: { height: 1000, width: 100 },
+            layoutMeasurement: { height: 500, width: 100 }
+          }
+        } );
+
+        expect( inatjs.observations.deleted ).toHaveBeenCalled( );
+      } );
+
       describe( "on screen focus", ( ) => {
         beforeEach( ( ) => {
           zustandStorage.setItem( "lastDeletedSyncTime", "2024-05-01" );

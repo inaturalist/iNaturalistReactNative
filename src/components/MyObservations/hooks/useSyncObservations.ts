@@ -11,7 +11,8 @@ import {
   AUTOMATIC_SYNC_IN_PROGRESS,
   BEGIN_AUTOMATIC_SYNC,
   BEGIN_MANUAL_SYNC,
-  MANUAL_SYNC_IN_PROGRESS
+  MANUAL_SYNC_IN_PROGRESS,
+  SYNC_PENDING
 } from "stores/createSyncObservationsSlice.ts";
 import useStore from "stores/useStore";
 
@@ -38,6 +39,8 @@ const useSyncObservations = (
   const removeFromDeleteQueue = useStore( state => state.removeFromDeleteQueue );
   const autoSyncAbortController = useStore( storeState => storeState.autoSyncAbortController );
   const [currentDeletionUuid, setCurrentDeletionUuid] = useState( null );
+
+  const refreshing = syncingStatus !== SYNC_PENDING;
 
   const canSync = loggedIn && isConnected === true;
 
@@ -152,7 +155,8 @@ const useSyncObservations = (
     signalAborted
   ] );
 
-  const syncManually = useCallback( async ( ) => {
+  const syncManually = useCallback( async options => {
+    const skipUploads = options?.skipUploads || false;
     // we abort the automatic sync process when a user taps the manual sync button
     // on the toolbar, per #1730
     autoSyncAbortController?.abort();
@@ -172,7 +176,7 @@ const useSyncObservations = (
     completeSync( );
     // we want to show user error messages if upload fails from user
     // being offline, so we're not checking internet connectivity here
-    if ( loggedIn ) {
+    if ( loggedIn && !skipUploads ) {
       // In theory completeSync will get called when the upload process finishes
       return startUploadObservations( );
     }
@@ -200,6 +204,11 @@ const useSyncObservations = (
     setSyncingStatus( MANUAL_SYNC_IN_PROGRESS );
     syncManually( );
   }, [syncingStatus, syncManually, setSyncingStatus] );
+
+  return {
+    syncManually,
+    refreshing
+  };
 };
 
 export default useSyncObservations;

@@ -3,7 +3,10 @@ import { useNavigation } from "@react-navigation/native";
 import MyObservationsEmpty from "components/MyObservations/MyObservationsEmpty";
 import navigateToObsEdit from "components/ObsEdit/helpers/navigateToObsEdit.ts";
 import {
-  ActivityIndicator, Body3, CustomFlashList, InfiniteScrollLoadingWheel
+  ActivityIndicator,
+  Body3,
+  CustomFlashList,
+  InfiniteScrollLoadingWheel
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts.ts";
@@ -20,6 +23,7 @@ import {
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
+import CustomRefreshControl from "./CustomRefreshControl";
 import ObsPressable from "./ObsPressable";
 
 const { useRealm } = RealmContext;
@@ -31,6 +35,7 @@ type Props = {
   data: Array<Object>,
   dataCanBeFetched?: boolean,
   explore: boolean,
+  handlePullToRefresh: Function,
   handleIndividualUploadPress: Function,
   hideLoadingWheel: boolean,
   isConnected: boolean,
@@ -40,6 +45,7 @@ type Props = {
   onEndReached: Function,
   onLayout?: Function,
   onScroll?: Function,
+  refreshing: boolean,
   renderHeader?: Function,
   showNoResults?: boolean,
   showObservationsEmptyScreen?: boolean,
@@ -51,6 +57,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
   data,
   dataCanBeFetched,
   explore,
+  handlePullToRefresh,
   handleIndividualUploadPress,
   hideLoadingWheel,
   isConnected,
@@ -60,6 +67,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
   onEndReached,
   onLayout,
   onScroll,
+  refreshing,
   renderHeader,
   showNoResults,
   showObservationsEmptyScreen,
@@ -211,6 +219,14 @@ const ObservationsFlashList: Function = forwardRef( ( {
     }
   };
 
+  const refreshControl = (
+    <CustomRefreshControl
+      accessibilityLabel={t( "Pull-to-refresh-and-sync-observations" )}
+      refreshing={refreshing}
+      onRefresh={handlePullToRefresh}
+    />
+  );
+
   return (
     <AnimatedFlashList
       ItemSeparatorComponent={renderItemSeparator}
@@ -228,8 +244,8 @@ const ObservationsFlashList: Function = forwardRef( ( {
       onLayout={onLayout}
       onMomentumScrollEnd={onMomentumScrollEnd}
       onScroll={onScroll}
-      refreshing={isFetchingNextPage}
       renderItem={renderItem}
+      refreshControl={refreshControl}
       testID={testID}
     />
   );
