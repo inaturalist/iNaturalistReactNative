@@ -5,6 +5,7 @@ import { ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
+import { Animated } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import shouldFetchObservationLocation, {
   isFromCamera,
@@ -45,6 +46,22 @@ const ObsEdit = ( ): Node => {
     renderPermissionsGate: renderLocationPermissionGate,
     requestPermissions: requestLocationPermission
   } = useLocationPermission( );
+
+  const fadeAnim = React.useRef( new Animated.Value( 1 ) ).current;
+
+  const fade = () => {
+    Animated.timing( fadeAnim, {
+      toValue: 1,
+      duration: 250,
+      useNativeDriver: true
+    } ).start( fadeAnim.setValue( 0 ) );
+  };
+
+  const animatedStyle = {
+    flex: 1,
+    opacity: fadeAnim, // Bind opacity to animated value
+    ...DROP_SHADOW
+  };
 
   const shouldFetchLocation = hasLocationPermission
     && shouldFetchObservationLocation( currentObservation );
@@ -118,26 +135,30 @@ const ObsEdit = ( ): Node => {
                   observations={observations}
                   setCurrentObservationIndex={setCurrentObservationIndex}
                   setResetScreen={setResetScreen}
+                  transitionAnimation={fade}
+                  transitionAnimationRef={fadeAnim}
                 />
               )}
-              <EvidenceSectionContainer
-                currentObservation={currentObservation}
-                isFetchingLocation={isFetchingLocation}
-                onLocationPress={onLocationPress}
-                passesEvidenceTest={passesEvidenceTest}
-                setPassesEvidenceTest={setPassesEvidenceTest}
-                updateObservationKeys={updateObservationKeys}
-              />
-              <IdentificationSection
-                currentObservation={currentObservation}
-                resetScreen={resetScreen}
-                setResetScreen={setResetScreen}
-                updateObservationKeys={updateObservationKeys}
-              />
-              <OtherDataSection
-                currentObservation={currentObservation}
-                updateObservationKeys={updateObservationKeys}
-              />
+              <Animated.View style={animatedStyle}>
+                <EvidenceSectionContainer
+                  currentObservation={currentObservation}
+                  isFetchingLocation={isFetchingLocation}
+                  onLocationPress={onLocationPress}
+                  passesEvidenceTest={passesEvidenceTest}
+                  setPassesEvidenceTest={setPassesEvidenceTest}
+                  updateObservationKeys={updateObservationKeys}
+                />
+                <IdentificationSection
+                  currentObservation={currentObservation}
+                  resetScreen={resetScreen}
+                  setResetScreen={setResetScreen}
+                  updateObservationKeys={updateObservationKeys}
+                />
+                <OtherDataSection
+                  currentObservation={currentObservation}
+                  updateObservationKeys={updateObservationKeys}
+                />
+              </Animated.View>
             </View>
           )}
         </KeyboardAwareScrollView>
@@ -148,6 +169,7 @@ const ObsEdit = ( ): Node => {
         observations={observations}
         passesEvidenceTest={passesEvidenceTest}
         setCurrentObservationIndex={setCurrentObservationIndex}
+        transitionAnimation={fade}
       />
       {renderLocationPermissionGate( {
         // If the user does not give location permissions in any form,

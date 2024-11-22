@@ -31,7 +31,8 @@ type Props = {
   observations: Array<Object>,
   currentObservation: Object,
   currentObservationIndex: number,
-  setCurrentObservationIndex: Function
+  setCurrentObservationIndex: Function,
+  transitionAnimation: Function
 }
 
 const BottomButtons = ( {
@@ -39,7 +40,8 @@ const BottomButtons = ( {
   currentObservation,
   currentObservationIndex,
   observations,
-  setCurrentObservationIndex
+  setCurrentObservationIndex,
+  transitionAnimation
 }: Props ): Node => {
   const { isConnected } = useNetInfo( );
   const currentUser = useCurrentUser( );
@@ -70,6 +72,7 @@ const BottomButtons = ( {
   const setNextScreen = useCallback( async ( { type }: Object ) => {
     const savedObservation = await saveObservation( currentObservation, cameraRollUris, realm );
     if ( savedObservation && observations?.length > 1 ) {
+      transitionAnimation();
       setSavedOrUploadedMultiObsFlow( );
     }
     // If we are saving a new observations, reset the stored my obs offset to
@@ -83,6 +86,7 @@ const BottomButtons = ( {
       addTotalToolbarIncrements( savedObservation );
       addToUploadQueue( uuid );
       setStartUploadObservations( );
+      transitionAnimation();
     }
 
     if ( observations.length === 1 ) {
@@ -111,7 +115,8 @@ const BottomButtons = ( {
     setSavedOrUploadedMultiObsFlow,
     setStartUploadObservations,
     cameraRollUris,
-    realm
+    realm,
+    transitionAnimation
   ] );
 
   useEffect(
