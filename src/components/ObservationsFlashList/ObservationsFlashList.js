@@ -15,7 +15,8 @@ import type { Node } from "react";
 import React, {
   forwardRef,
   useCallback,
-  useMemo
+  useMemo,
+  useState
 } from "react";
 import { Animated } from "react-native";
 import RealmObservation from "realmModels/Observation";
@@ -45,7 +46,6 @@ type Props = {
   onEndReached: Function,
   onLayout?: Function,
   onScroll?: Function,
-  refreshing: boolean,
   renderHeader?: Function,
   showNoResults?: boolean,
   showObservationsEmptyScreen?: boolean,
@@ -67,7 +67,6 @@ const ObservationsFlashList: Function = forwardRef( ( {
   onEndReached,
   onLayout,
   onScroll,
-  refreshing,
   renderHeader,
   showNoResults,
   showObservationsEmptyScreen,
@@ -81,6 +80,13 @@ const ObservationsFlashList: Function = forwardRef( ( {
   const totalUploadProgress = useStore( state => state.totalUploadProgress );
   const prepareObsEdit = useStore( state => state.prepareObsEdit );
   const setMyObsOffsetToRestore = useStore( state => state.setMyObsOffsetToRestore );
+  const [refreshing, setRefreshing] = useState( false );
+
+  const onRefresh = async ( ) => {
+    setRefreshing( true );
+    await handlePullToRefresh( );
+    setRefreshing( false );
+  };
 
   const {
     estimatedGridItemSize,
@@ -223,7 +229,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
     <CustomRefreshControl
       accessibilityLabel={t( "Pull-to-refresh-and-sync-observations" )}
       refreshing={refreshing}
-      onRefresh={handlePullToRefresh}
+      onRefresh={onRefresh}
     />
   );
 

@@ -11,8 +11,7 @@ import {
   AUTOMATIC_SYNC_IN_PROGRESS,
   BEGIN_AUTOMATIC_SYNC,
   BEGIN_MANUAL_SYNC,
-  MANUAL_SYNC_IN_PROGRESS,
-  SYNC_PENDING
+  MANUAL_SYNC_IN_PROGRESS
 } from "stores/createSyncObservationsSlice.ts";
 import useStore from "stores/useStore";
 
@@ -39,8 +38,6 @@ const useSyncObservations = (
   const removeFromDeleteQueue = useStore( state => state.removeFromDeleteQueue );
   const autoSyncAbortController = useStore( storeState => storeState.autoSyncAbortController );
   const [currentDeletionUuid, setCurrentDeletionUuid] = useState( null );
-
-  const refreshing = syncingStatus !== SYNC_PENDING;
 
   const canSync = loggedIn && isConnected === true;
 
@@ -206,8 +203,7 @@ const useSyncObservations = (
   }, [syncingStatus, syncManually, setSyncingStatus] );
 
   return {
-    syncManually,
-    refreshing
+    syncManually
   };
 };
 
