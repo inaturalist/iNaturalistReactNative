@@ -1427,3 +1427,5 @@ Zoom-in-as-much-as-possible-to-improve = Zoom in as much as possible to improve 
 Zoom-to-current-location = Zoom to current location
 # Label for button that shows zoom level, e.g. on a camera
 zoom-x = { $zoom }×
+# Accessibility label for pull-to-refresh on MyObservations list and grid view
+Pull-to-refresh-and-sync-observations = Pull to refresh and sync observations

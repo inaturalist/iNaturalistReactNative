@@ -53,7 +53,7 @@ const MyObservationsContainer = ( ): Node => {
   const canUpload = currentUser && isConnected;
 
   const { startUploadObservations } = useUploadObservations( canUpload );
-  useSyncObservations(
+  const { syncManually, refreshing } = useSyncObservations(
     currentUserId,
     startUploadObservations
   );
@@ -149,6 +149,10 @@ const MyObservationsContainer = ( ): Node => {
     ] )
   );
 
+  const handlePullToRefresh = useCallback( ( ) => {
+    syncManually( { skipUploads: true } );
+  }, [syncManually] );
+
   // Scroll the list to the offset we need to restore, e.g. when you are
   // scrolled way down, edit an observation, and return. Entering ObsEdit
   // takes you into a parallel stack navigator, which will destroy MyObs, so
@@ -178,6 +182,7 @@ const MyObservationsContainer = ( ): Node => {
       isConnected={isConnected}
       handleIndividualUploadPress={handleIndividualUploadPress}
       handleSyncButtonPress={handleSyncButtonPress}
+      handlePullToRefresh={handlePullToRefresh}
       layout={layout}
       listRef={listRef}
       numUnuploadedObservations={numUnuploadedObservations}
@@ -185,6 +190,7 @@ const MyObservationsContainer = ( ): Node => {
       onEndReached={fetchNextPage}
       onListLayout={restoreScrollOffset}
       onScroll={onScroll}
+      refreshing={refreshing}
       setShowLoginSheet={setShowLoginSheet}
       showLoginSheet={showLoginSheet}
       showNoResults={showNoResults}

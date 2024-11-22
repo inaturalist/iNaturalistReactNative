@@ -17,6 +17,7 @@ type Props = {
   currentUser: Object,
   handleIndividualUploadPress: Function,
   handleSyncButtonPress: Function,
+  handlePullToRefresh: Function,
   isConnected: boolean,
   isFetchingNextPage: boolean,
   layout: "list" | "grid",
@@ -26,6 +27,7 @@ type Props = {
   onEndReached: Function,
   onListLayout?: Function,
   onScroll?: Function,
+  refreshing: boolean,
   setShowLoginSheet: Function,
   showLoginSheet: boolean,
   showNoResults: boolean,
@@ -36,6 +38,7 @@ const MyObservations = ( {
   currentUser,
   handleIndividualUploadPress,
   handleSyncButtonPress,
+  handlePullToRefresh,
   isConnected,
   isFetchingNextPage,
   layout,
@@ -45,6 +48,7 @@ const MyObservations = ( {
   onEndReached,
   onListLayout,
   onScroll,
+  refreshing,
   setShowLoginSheet,
   showLoginSheet,
   showNoResults,
@@ -77,6 +81,7 @@ const MyObservations = ( {
             <ObservationsFlashList
               dataCanBeFetched={!!currentUser}
               data={observations}
+              handlePullToRefresh={handlePullToRefresh}
               handleIndividualUploadPress={handleIndividualUploadPress}
               onScroll={animatedScrollEvent}
               hideLoadingWheel={!isFetchingNextPage || !currentUser}
@@ -87,6 +92,7 @@ const MyObservations = ( {
               onEndReached={onEndReached}
               onLayout={onListLayout}
               ref={listRef}
+              refreshing={refreshing}
               showObservationsEmptyScreen
               showNoResults={showNoResults}
               testID="MyObservationsAnimatedList"

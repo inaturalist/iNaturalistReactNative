@@ -536,6 +536,7 @@
   "PROJECTS": "PROJECTS",
   "Projects": "Projects",
   "PROJECTS-X": "PROJECTS ({ $projectCount })",
+  "Pull-to-refresh-and-sync-observations": "Pull to refresh and sync observations",
   "QUALITY-GRADE": "QUALITY GRADE",
   "Quality-Grade": "Quality Grade",
   "Quality-Grade-Casual--label": "Quality Grade: Casual",
