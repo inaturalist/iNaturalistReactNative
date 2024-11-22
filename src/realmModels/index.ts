@@ -50,8 +50,8 @@ export default {
       const newPrefs = newRealm.objects( "LocalPreferences" );
       //  TODO: type? here and below
       oldPrefs.keys( ).forEach( objectIndex => {
-        const newObsSound = newPrefs[objectIndex];
-        delete newObsSound.explore_location_permission_shown;
+        const newPreference = newPrefs[objectIndex];
+        delete newPreference.explore_location_permission_shown;
       } );
     }
     if ( oldRealm.schemaVersion < 51 ) {
