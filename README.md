@@ -325,6 +325,12 @@ fastlane prod
             1. Make an observation without a photo
             1. Turn off airplane mode
             1. Upload from the toolbar on MyObs
+        1. Update
+            1. Remove the app from the device
+            1. Go to TestFlight and install the latest build
+            1. Sign in and upload an observation with photo and keep one observation saved but not uploaded
+            1. Install a "Release" build on top of the TestFlight build
+            1. Check that the saved observation is still there
     1. Install a "release" build on an Android device and repeat iOS steps
 1. Write release notes based on commits since the last release. Try to keep them brief but emphasize what's new and what's fixed. Just keep them in a text editor; you'll save them at a later step.
 1. Edit `package.json` and update the `version` per semantic versioning rules: bump the patch version if the only changes were bug fixes, bump minor version if there were new features, and bump the major version if the app was completely re-written or can't import data from previous versions.
