@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   Body3,
   CustomFlashList,
+  CustomRefreshControl,
   InfiniteScrollLoadingWheel
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -24,7 +25,6 @@ import {
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
-import CustomRefreshControl from "./CustomRefreshControl";
 import ObsPressable from "./ObsPressable";
 
 const { useRealm } = RealmContext;
