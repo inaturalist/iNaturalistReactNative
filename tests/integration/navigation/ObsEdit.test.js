@@ -209,16 +209,15 @@ describe( "ObsEdit", ( ) => {
         expect( numUploadsAttempted ).toEqual( 0 );
       } );
 
-      it( "should show correct upload number after user uploads two observations"
+      it( "should show uploading status after user starts one upload"
         + " in the multi-observation flow", async ( ) => {
         await renderAppWithObservations( mockObservations, __filename );
         await navigateToObsEditViaGroupPhotos( );
         await uploadObsEditObservation( );
+        const uploadStatus = await screen.findByText( /1 uploading/ );
+        expect( uploadStatus ).toBeVisible( );
         const newTitle = await screen.findByText( /New Observation/ );
         expect( newTitle ).toBeTruthy( );
-        await uploadObsEditObservation( { skipMissingEvidence: true } );
-        const toolbarProgressText = await screen.findByText( /Uploading [1-2] of 2 observations/ );
-        expect( toolbarProgressText ).toBeVisible( );
       } );
     } );
   } );

@@ -11,10 +11,13 @@ import React, {
   useReducer
 } from "react";
 import ObservationPhoto from "realmModels/ObservationPhoto";
+import { log } from "sharedHelpers/logger";
 import {
   useLastScreen,
-  useLocationPermission
+  useLocationPermission,
+  usePerformance
 } from "sharedHooks";
+import { isDebugMode } from "sharedHooks/useDebugMode";
 import useStore from "stores/useStore";
 
 import fetchCoarseUserLocation from "../../sharedHelpers/fetchUserLocation";
@@ -27,6 +30,8 @@ import useOfflineSuggestions from "./hooks/useOfflineSuggestions";
 import useOnlineSuggestions from "./hooks/useOnlineSuggestions";
 import Suggestions from "./Suggestions";
 import TaxonSearchButton from "./TaxonSearchButton";
+
+const logger = log.extend( "SuggestionsContainer" );
 
 const ONLINE_THRESHOLD = 78;
 // note: offline threshold may need to change based on input from the CV team
@@ -265,6 +270,13 @@ const SuggestionsContainer = ( ) => {
     : offlineSuggestions;
 
   const isLoading = fetchStatus === "loading";
+
+  const { loadTime } = usePerformance( {
+    isLoading
+  } );
+  if ( isDebugMode( ) && loadTime ) {
+    logger.info( loadTime );
+  }
 
   const filterSuggestions = useCallback( ( suggestionsToFilter: Suggestion[] ) => {
     const sortedSuggestions = sortSuggestions(

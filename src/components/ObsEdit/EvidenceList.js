@@ -110,7 +110,7 @@ const EvidenceList = ( {
     [setSelectedMediaUri, t]
   );
 
-  const renderFooter = useCallback( ( ) => (
+  const renderFooter = useMemo( ( ) => (
     <View className="flex-1 flex-row">
       <View className="flex-row">
         { observationSounds.map( obsSound => (
@@ -143,13 +143,13 @@ const EvidenceList = ( {
     setSelectedMediaUri
   ] );
 
-  const renderHeader = useCallback( ( ) => (
+  const renderHeader = useMemo( ( ) => (
     <Pressable
       accessibilityLabel={t( "Add-evidence" )}
       accessibilityRole="button"
       onPress={handleAddEvidence}
       className={
-        `${imageClass} border border-[2px] border-darkGray items-center justify-center`
+        `${imageClass} border border-[2px] border-darkGray items-center justify-center ml-6`
       }
       testID="EvidenceList.add"
     >

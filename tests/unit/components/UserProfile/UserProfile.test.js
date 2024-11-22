@@ -2,7 +2,6 @@ import { screen } from "@testing-library/react-native";
 import UserProfile from "components/UserProfile/UserProfile";
 import { t } from "i18next";
 import React from "react";
-import * as useDebugMode from "sharedHooks/useDebugMode";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
@@ -48,14 +47,6 @@ jest.mock(
   }
 );
 
-jest.mock( "sharedHooks/useDebugMode", ( ) => ( {
-  __esModule: true,
-  default: ( ) => ( {
-    isDebug: false
-  } ),
-  isDebugMode: ( ) => false
-} ) );
-
 describe( "UserProfile", () => {
   it( "should render inside mocked container for testing", () => {
     renderComponent( <UserProfile /> );
@@ -89,10 +80,7 @@ describe( "UserProfile", () => {
     expect( followingButton ).toBeVisible( );
   } );
 
-  test( "renders projects button in debug mode", async () => {
-    jest.spyOn( useDebugMode, "default" ).mockImplementation( ( ) => ( {
-      isDebug: true
-    } ) );
+  test( "renders projects button", async () => {
     renderComponent( <UserProfile /> );
 
     const projectsButton = await screen.findByText( /VIEW PROJECTS/ );

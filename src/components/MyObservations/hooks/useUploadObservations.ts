@@ -54,30 +54,33 @@ export default ( canUpload: boolean ) => {
 
   const { t } = useTranslation( );
 
+  const resetNumUnsyncedObs = useCallback( ( ) => {
+    if ( !realm || realm.isClosed ) return;
+    const unsynced = Observation.filterUnsyncedObservations( realm );
+    setNumUnuploadedObservations( unsynced.length );
+  }, [realm, setNumUnuploadedObservations] );
+
   useEffect( () => {
     // eslint-disable-next-line no-undef
     let timer: number | NodeJS.Timeout;
     if ( [UPLOAD_COMPLETE, UPLOAD_CANCELLED].indexOf( uploadStatus ) >= 0 ) {
       timer = setTimeout( () => {
         resetUploadObservationsSlice( );
-        const unsynced = Observation.filterUnsyncedObservations( realm );
-        setNumUnuploadedObservations( unsynced.length );
+        resetNumUnsyncedObs( );
       }, MS_BEFORE_TOOLBAR_RESET );
     } else {
       timer = setTimeout( () => {
         resetSyncToolbar( );
-        const unsynced = Observation.filterUnsyncedObservations( realm );
-        setNumUnuploadedObservations( unsynced.length );
+        resetNumUnsyncedObs( );
       }, MS_BEFORE_TOOLBAR_RESET );
     }
     return () => {
       clearTimeout( timer );
     };
   }, [
-    realm,
+    resetNumUnsyncedObs,
     resetSyncToolbar,
     resetUploadObservationsSlice,
-    setNumUnuploadedObservations,
     uploadStatus
   ] );
 
@@ -175,7 +178,7 @@ export default ( canUpload: boolean ) => {
     uploadStatus
   ] );
 
-  const createUploadQueue = useCallback( ( ) => {
+  const createUploadQueueAllUnsynced = useCallback( ( ) => {
     const uuidsQuery = unsyncedUuids
       .map( ( uploadUuid: string ) => `'${uploadUuid}'` ).join( ", " );
     const uploads = realm.objects( "Observation" )
@@ -198,12 +201,25 @@ export default ( canUpload: boolean ) => {
   ] );
 
   const startUploadObservations = useCallback( async ( ) => {
-    createUploadQueue( );
+    createUploadQueueAllUnsynced( );
   }, [
-    createUploadQueue
+    createUploadQueueAllUnsynced
+  ] );
+
+  const startUploadsFromMultiObsEdit = useCallback( async ( ) => {
+    if ( canUpload ) {
+      setStartUploadObservations( );
+    } else {
+      setCannotUploadObservations( );
+    }
+  }, [
+    canUpload,
+    setCannotUploadObservations,
+    setStartUploadObservations
   ] );
 
   return {
-    startUploadObservations
+    startUploadObservations,
+    startUploadsFromMultiObsEdit
   };
 };

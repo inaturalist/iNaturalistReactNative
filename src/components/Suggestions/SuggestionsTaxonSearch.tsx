@@ -1,30 +1,19 @@
-// @flow
-
 import {
-  SearchBar,
-  TaxaList,
   TaxonResult,
-  ViewWrapper
+  TaxonSearch
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, {
   useCallback,
   useState
 } from "react";
 import { useTaxonSearch, useTranslation } from "sharedHooks";
-import { getShadow } from "styles/global";
 
 import useNavigateWithTaxonSelected from "./hooks/useNavigateWithTaxonSelected";
 
-const DROP_SHADOW = getShadow( {
-  offsetHeight: 4
-} );
-
-const TaxonSearch = ( ): Node => {
+const SuggestionsTaxonSearch = ( ) => {
   const [taxonQuery, setTaxonQuery] = useState( "" );
   const [selectedTaxon, setSelectedTaxon] = useState( null );
-  const { taxaSearchResults, refetch, isLoading } = useTaxonSearch( taxonQuery );
+  const { taxa, isLoading, isLocal } = useTaxonSearch( taxonQuery );
   const { t } = useTranslation( );
 
   useNavigateWithTaxonSelected(
@@ -46,27 +35,15 @@ const TaxonSearch = ( ): Node => {
   ), [setSelectedTaxon, t] );
 
   return (
-    <ViewWrapper>
-      <View
-        className="bg-white px-6 pt-2 pb-8"
-        style={DROP_SHADOW}
-      >
-        <SearchBar
-          handleTextChange={setTaxonQuery}
-          value={taxonQuery}
-          testID="SearchTaxon"
-          autoFocus={taxonQuery === ""}
-        />
-      </View>
-      <TaxaList
-        taxa={taxaSearchResults}
-        isLoading={isLoading}
-        renderItem={renderTaxonResult}
-        taxonQuery={taxonQuery}
-        refetch={refetch}
-      />
-    </ViewWrapper>
+    <TaxonSearch
+      isLoading={isLoading}
+      isLocal={isLocal}
+      query={taxonQuery}
+      renderItem={renderTaxonResult}
+      setQuery={setTaxonQuery}
+      taxa={taxa}
+    />
   );
 };
 
-export default TaxonSearch;
+export default SuggestionsTaxonSearch;

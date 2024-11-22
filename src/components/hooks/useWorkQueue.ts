@@ -2,9 +2,12 @@ import { updateUsers } from "api/users";
 import { RealmContext } from "providers/contexts.ts";
 import { useEffect, useState } from "react";
 import QueueItem from "realmModels/QueueItem.ts";
+import { log } from "sharedHelpers/logger";
 import {
   useAuthenticatedMutation
 } from "sharedHooks";
+
+const logger = log.extend( "useWorkQueue" );
 
 const { useRealm } = RealmContext;
 
@@ -21,15 +24,12 @@ const useWorkQueue = ( ) => {
     ( params, optsWithAuth ) => updateUsers( params, optsWithAuth ),
     {
       onSuccess: ( ) => {
-        console.log(
-          "updated user locale on server to: ",
-          payload["user[locale]"]
-        );
         QueueItem.deleteDequeuedItem( realm, id );
         setIsMutating( false );
       },
-      onError: ( ) => {
-        console.log( "error updating user locale in useChangeLocale" );
+      onError: userUpdateError => {
+        logger.error( "user update failed: ", userUpdateError );
+        QueueItem.markAsFailed( realm, id );
         setIsMutating( false );
       }
     }

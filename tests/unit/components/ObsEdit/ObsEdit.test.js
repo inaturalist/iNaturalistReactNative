@@ -15,15 +15,6 @@ jest.mock( "sharedHooks/useWatchPosition", () => ( {
 
 const mockUser = factory( "LocalUser" );
 
-jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
-  __esModule: true,
-  default: ( ) => mockUser
-} ) );
-
-jest.mock( "components/ObsEdit/BottomButtons" );
-jest.mock( "components/SharedComponents/IconicTaxonChooser" );
-jest.mock( "components/ObsEdit/Sheets/AddEvidenceSheet" );
-
 const mockMutate = jest.fn();
 jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
   __esModule: true,
@@ -40,7 +31,8 @@ const observationPhotos = [
 
 const mockObservation = factory( "LocalObservation", {
   observationPhotos,
-  time_observed_at: null
+  time_observed_at: null,
+  user: mockUser
 } );
 
 describe( "ObsEdit", () => {
@@ -52,9 +44,7 @@ describe( "ObsEdit", () => {
   } );
 
   it( "should not have accessibility errors", async ( ) => {
-    const view = wrapInNavigationContainer(
-      <ObsEdit />
-    );
+    const view = wrapInNavigationContainer( <ObsEdit /> );
     expect( view ).toBeAccessible();
   } );
 

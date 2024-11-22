@@ -1,17 +1,14 @@
-// @flow
-
 import {
-  Body3, INatIcon
+  Body2, INatIcon
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 
-type Props = {
-  accessibilityLabel: string,
-  handlePress: Function,
-  iconName: string,
-  text: string
+interface Props {
+  accessibilityLabel: string;
+  handlePress: () => void;
+  iconName: string;
+  text: string;
 }
 
 const DropdownItem = ( {
@@ -19,7 +16,7 @@ const DropdownItem = ( {
   handlePress,
   iconName,
   text
-}: Props ): Node => {
+}: Props ) => {
   const caret = (
     <INatIcon
       name="caret"
@@ -30,21 +27,20 @@ const DropdownItem = ( {
   return (
     <Pressable
       accessibilityRole="button"
-      className="flex-row flex-nowrap items-center ml-1 mt-5 items-start"
+      className="flex-row flex-nowrap ml-1 pt-5 pb-2 items-center"
       onPress={handlePress}
       accessibilityLabel={accessibilityLabel}
     >
-      <View className="mt-[2px]">
+      <View className="w-[30px] items-center mt-[1px] mr-1">
         <INatIcon
           size={14}
           name={iconName}
-
         />
       </View>
-      <Body3 className="mx-3">
+      <Body2 className="mr-3">
         {text}
-      </Body3>
-      <View className="mt-[4px]">
+      </Body2>
+      <View className="mt-[3px]">
         {caret}
       </View>
     </Pressable>

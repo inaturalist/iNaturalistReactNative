@@ -25,7 +25,6 @@ import { formatLongDate } from "sharedHelpers/dateAndTime.ts";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
-  useDebugMode,
   useTranslation
 } from "sharedHooks";
 import useStore from "stores/useStore";
@@ -42,7 +41,6 @@ const UserProfile = ( ): Node => {
   const [showLoginSheet, setShowLoginSheet] = useState( false );
   const [showUnfollowSheet, setShowUnfollowSheet] = useState( false );
   const { t, i18n } = useTranslation( );
-  const { isDebug } = useDebugMode( );
 
   const fetchId = userId || login;
   const { data: remoteUser, isError, error } = useAuthenticatedQuery(
@@ -193,20 +191,18 @@ const UserProfile = ( ): Node => {
             <UserText text={user?.description} />
           </View>
         ) }
-        {isDebug && (
-          <View className="mb-8">
-            <Heading4 className="mb-[11px]">
-              {t( "PROJECTS" )}
-            </Heading4>
-            <Button
-              text={t( "VIEW-PROJECTS" )}
-              onPress={( ) => navigation.navigate( "ProjectList", {
-                projects,
-                headerOptions: projectsHeaderOptions
-              } )}
-            />
-          </View>
-        )}
+        <View className="mb-8">
+          <Heading4 className="mb-[11px]">
+            {t( "PROJECTS" )}
+          </Heading4>
+          <Button
+            text={t( "VIEW-PROJECTS" )}
+            onPress={( ) => navigation.navigate( "ProjectList", {
+              projects,
+              headerOptions: projectsHeaderOptions
+            } )}
+          />
+        </View>
         <View className="mb-8">
           <Heading4 className="mb-[11px]">
             {t( "PEOPLE--title" )}

@@ -1,11 +1,36 @@
 import Geolocation from "@react-native-community/geolocation";
-import { screen, waitFor } from "@testing-library/react-native";
+import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
+import inatjs from "inaturalistjs";
 import React from "react";
 import useStore from "stores/useStore";
-import factory from "tests/factory";
+import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
+import setupUniqueRealm from "tests/helpers/uniqueRealm";
+import { signIn } from "tests/helpers/user";
+
+// UNIQUE REALM SETUP
+const mockRealmIdentifier = __filename;
+const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
+  mockRealmIdentifier
+);
+jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
+jest.mock( "providers/contexts", ( ) => {
+  const originalModule = jest.requireActual( "providers/contexts" );
+  return {
+    __esModule: true,
+    ...originalModule,
+    RealmContext: {
+      ...originalModule.RealmContext,
+      useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
+      useQuery: ( ) => []
+    }
+  };
+} );
+beforeAll( uniqueRealmBeforeAll );
+afterAll( uniqueRealmAfterAll );
+// /UNIQUE REALM SETUP
 
 const initialStoreState = useStore.getState( );
 
@@ -36,6 +61,26 @@ const mockTaxon = factory( "RemoteTaxon", {
   wikipedia_url: faker.internet.url( )
 } );
 
+const mockObservation = factory( "RemoteObservation", {
+  latitude: 37.99,
+  longitude: -142.88,
+  user: mockCurrentUser,
+  place_guess: mockLocationName,
+  taxon: mockTaxon,
+  observationPhotos: []
+} );
+
+const mockObservations = [mockObservation];
+
+const mockMultipleObservations = [
+  mockObservation,
+  mockObservation,
+  mockObservation,
+  mockObservation,
+  mockObservation,
+  mockObservation
+];
+
 describe( "basic rendering", ( ) => {
   beforeAll( async () => {
     useStore.setState( initialStoreState, true );
@@ -52,8 +97,8 @@ describe( "basic rendering", ( ) => {
     } )];
 
     useStore.setState( {
-      observations,
-      currentObservation: observations[0]
+      observations: mockObservations,
+      currentObservation: mockObservations[0]
     } );
     renderObsEdit( );
     const obs = observations[0];
@@ -141,5 +186,78 @@ describe( "location fetching", () => {
     await waitFor( () => undefined );
 
     expect( Geolocation.watchPosition ).not.toHaveBeenCalled();
+  } );
+} );
+
+describe( "multiple observation upload/save progress", ( ) => {
+  beforeEach( async ( ) => {
+    await signIn( mockCurrentUser, { realm: global.mockRealms[__filename] } );
+    useStore.setState( {
+      observations: mockMultipleObservations,
+      currentObservation: mockMultipleObservations[0]
+    } );
+  } );
+
+  afterEach( async ( ) => {
+    useStore.setState( { } );
+  } );
+
+  test( "should show upload status when upload button pressed", async ( ) => {
+    renderObsEdit( );
+    const uploadButton = await screen.findByText( /UPLOAD/ );
+    fireEvent.press( uploadButton );
+    const uploadingText = await screen.findByText( /1 uploading/ );
+    await waitFor( ( ) => {
+      expect( uploadingText ).toBeVisible( );
+    } );
+  } );
+
+  test( "should show saved status when saved button pressed", async ( ) => {
+    renderObsEdit( );
+    const saveButton = await screen.findByText( /SAVE/ );
+    fireEvent.press( saveButton );
+    const savingText = await screen.findByText( /1 saved/ );
+    await waitFor( ( ) => {
+      expect( savingText ).toBeVisible( );
+    } );
+  } );
+
+  test( "should show both saved and uploading status when saved and upload"
+    + " button pressed", async ( ) => {
+    renderObsEdit( );
+    const saveButton = await screen.findByText( /SAVE/ );
+    fireEvent.press( saveButton );
+    const savingText = await screen.findByText( /1 saved/ );
+    await waitFor( ( ) => {
+      expect( savingText ).toBeVisible( );
+    } );
+    const uploadButton = await screen.findByText( /UPLOAD/ );
+    fireEvent.press( uploadButton );
+    const uploadingText = await screen.findByText( /1 uploading/ );
+    await waitFor( ( ) => {
+      expect( uploadingText ).toBeVisible( );
+    } );
+  } );
+
+  test( "should show uploaded status when 1 observation is uploaded"
+    + " in multi-observation upload flow", async ( ) => {
+    // Mock inatjs endpoints so they return the right responses for the right test data
+    inatjs.observations.create.mockImplementation( ( params, _opts ) => {
+      const mockObs = mockObservations.find( o => o.uuid === params.observation.uuid );
+      return Promise.resolve( makeResponse( [{ id: faker.number.int( ), uuid: mockObs.uuid }] ) );
+    } );
+    inatjs.observations.fetch.mockImplementation( ( uuid, _params, _opts ) => {
+      const mockObs = mockObservations.find( o => o.uuid === uuid );
+      // It would be a lot better if this returned something that looks like
+      // a remote obs, but this works
+      return Promise.resolve( makeResponse( [mockObs] ) );
+    } );
+    renderObsEdit( );
+    const uploadButton = await screen.findByText( /UPLOAD/ );
+    fireEvent.press( uploadButton );
+    const uploadedText = await screen.findByText( /1 uploaded/ );
+    await waitFor( ( ) => {
+      expect( uploadedText ).toBeVisible( );
+    } );
   } );
 } );

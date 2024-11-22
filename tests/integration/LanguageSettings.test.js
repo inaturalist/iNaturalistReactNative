@@ -79,8 +79,10 @@ describe( "LanguageSettings", ( ) => {
       const sciNameText = await screen.findByText( "Vetenskapligt namn" );
       expect( sciNameText ).toBeVisible( );
       expect( inatjs.users.update ).toHaveBeenCalledWith( {
-        id: mockUserWithRussianWebLocale?.id,
-        "user[locale]": "sv"
+        id: mockUserWithRussianWebLocale.id,
+        user: {
+          locale: "sv"
+        }
       }, {
         api_token: "test-json-web-token"
       } );

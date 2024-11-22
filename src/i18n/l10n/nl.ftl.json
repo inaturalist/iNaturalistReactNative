@@ -252,6 +252,7 @@
   "Flag-Item-Other-Description": "Een andere reden die je hieronder kunt uitleggen.",
   "Flag-Item-Other-Input-Hint": "Geef de reden waarom je dit item meldt",
   "Flagged": "Gemeld",
+  "Flip-camera": "Verwissel camera's",
   "FOLLOWING-X-PEOPLE": "{ $count ->\n  [one] VOLGT { $count } PERSOON\n *[other] VOLGEN { $count } MENSEN\n}",
   "Get-more-accurate-suggestions-create-useful-data": "Krijg nauwkeuriger suggesties en maak handige gegevens voor wetenschap door je locatie te gebruiken",
   "Get-your-identification-verified-by-real-people": "Je determinatie wordt geverifieerd door echte mensen in de iNaturalist gemeenschap",

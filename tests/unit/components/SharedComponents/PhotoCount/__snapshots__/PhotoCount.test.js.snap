@@ -19,7 +19,7 @@ exports[`PhotoCount renders correctly 1`] = `
   testID="photo-count"
 >
   <Text
-    maxFontSizeMultiplier={1}
+    maxFontSizeMultiplier={2}
     style={
       [
         {
@@ -48,10 +48,10 @@ exports[`PhotoCount renders correctly 1`] = `
                 "zIndex": 10,
               },
               {
-                "left": 6,
+                "left": "16%",
               },
               {
-                "top": 6,
+                "top": "16%",
               },
             ],
           ],
@@ -63,11 +63,11 @@ exports[`PhotoCount renders correctly 1`] = `
   </Text>
   <RNSVGSvgView
     align="xMidYMid"
-    bbHeight={24}
-    bbWidth={24}
+    bbHeight={48}
+    bbWidth={48}
     fill="none"
     focusable={false}
-    height={24}
+    height={48}
     meetOrSlice={0}
     minX={0}
     minY={0}
@@ -79,14 +79,14 @@ exports[`PhotoCount renders correctly 1`] = `
         },
         {
           "flex": 0,
-          "height": 24,
-          "width": 24,
+          "height": 48,
+          "width": 48,
         },
       ]
     }
     vbHeight={24}
     vbWidth={24}
-    width={24}
+    width={48}
     xmlns="http://www.w3.org/2000/svg"
   >
     <RNSVGGroup
