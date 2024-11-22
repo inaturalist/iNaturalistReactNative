@@ -38,14 +38,6 @@ export default {
   },
   // TODO: type?
   migration: ( oldRealm, newRealm ) => {
-    if ( oldRealm.schemaVersion < 58 ) {
-      const newQueueItems = newRealm.objects( "QueueItem" );
-      newQueueItems.keys( ).forEach( objectIndex => {
-        const newQueueItem = newQueueItems[objectIndex];
-        newQueueItem.tries = 0;
-        newQueueItem.failedAt = undefined;
-      } );
-    }
     if ( oldRealm.schemaVersion < 55 ) {
       const newObservations = newRealm.objects( "Observation" );
       newObservations.keys( ).forEach( objectIndex => {
