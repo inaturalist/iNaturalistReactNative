@@ -584,6 +584,7 @@ project-start-time-datetime = Waktu mulai: { $datetime }
 PROJECTS = PROYEK
 Projects = Proyek
 PROJECTS-X = PROYEK ({ $projectCount })
+Pull-to-refresh-and-sync-observations = Tarik untuk menyegarkan dan menyinkronkan pengamatan
 QUALITY-GRADE = TINGKAT KUALITAS
 Quality-Grade = Tingkat Kualitas
 Quality-Grade-Casual--label = Tingkat Kualitas: Kasual
@@ -741,6 +742,7 @@ Share-map = Bagikan peta
 Share-your-observation-where-it-can-help-scientists = Membagikan pengamatan Anda, supaya ilmuwan di seluruh dunia dapat memahami keanekaragaman hayati dengan lebih baik.
 SHOP-INATURALIST-MERCH = BELANJA SUVENIR INATURALIST
 Show-observation-options = Tampilkan pilihan pengamatan.
+Showing-offline-search-results--taxa = Menampilkan hasil pencarian luring. Untuk mencari lebih banyak spesies, coba lagi saat Anda sudah terhubung ke Internet.
 Shows-identification-suggestions = Menampilkan rekomendasi identifikasi
 Shows-iNaturalist-bird-logo = Menampilkan logo burung iNaturalist.
 Shows-observation-creation-options = Menampilkan pilihan pembuatan pengamatan
@@ -901,6 +903,11 @@ x-comments =
         [one] { $count } komentar
        *[other] { $count } komentar
     }
+x-failed =
+    { $count ->
+        [one] { $count } gagal
+       *[other] { $count } gagal
+    }
 X-FOLLOWERS =
     { $count ->
         [one] { $count } PENGIKUT
@@ -977,6 +984,11 @@ X-PHOTOS-Y-SOUNDS =
        *[other] { $soundCount } SUARA
     }
 X-PROJECTS = { $projectCount } PROYEK
+x-saved =
+    { $count ->
+        [one] { $count } tersimpan
+       *[other] { $count } tersimpan
+    }
 X-SOUNDS =
     { $count ->
         [one] 1 SUARA
@@ -986,6 +998,16 @@ X-Species =
     { $count ->
         [one] { $count } Spesies
        *[other] { $count } Spesies
+    }
+x-uploaded =
+    { $count ->
+        [one] { $count } terunggah
+       *[other] { $count } terunggah
+    }
+x-uploading =
+    { $count ->
+        [one] { $count } diunggah
+       *[other] { $count } diunggah
     }
 x-uploads-failed =
     { $count ->

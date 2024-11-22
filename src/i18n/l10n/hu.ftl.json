@@ -197,6 +197,10 @@
   "Wild": "Vad",
   "Withdraw": "Visszavonás",
   "Worldwide": "globális",
+  "x-failed": "{ $count ->\n  [one] { $count } hibába ütközött\n *[other] { $count } hibába ütközött\n}",
   "X-PROJECTS": "{ $projectCount } PROJEKT",
+  "x-saved": "{ $count ->\n  [one] { $count } elmentve\n *[other] { $count } elmentve\n}",
+  "x-uploaded": "{ $count ->\n  [one] { $count } feltöltve\n *[other] { $count } feltöltve\n}",
+  "x-uploading": "{ $count ->\n  [one] { $count } feltöltés alatt\n *[other] { $count } feltöltés alatt\n}",
   "You-need-log-in-to-do-that": "Ehhez be kell jelentkezned."
 }
