@@ -478,6 +478,8 @@ Flash = flash
 # Label for a button that toggles between the front and back cameras
 Flip-camera = Flip camera
 FOLLOW = FOLLOW
+# Tab on notifications showing notifications about content created by others
+FOLLOWING--notifications = FOLLOWING
 # Subtitle for a screen showing the list of people a user is following
 FOLLOWING-X-PEOPLE =
     { $count ->
@@ -675,6 +677,8 @@ MONTHS = MONTHS
 More-info = More info
 MOST-FAVED = MOST FAVED
 Most-faved = Most faved
+# Tab on notifications showing notifications about content the viewer created
+MY-CONTENT--notifications = MY CONTENT
 MY-OBSERVATIONS = MY OBSERVATIONS
 Native = Native
 Native-to-place = Native to { $place }

@@ -1,14 +1,14 @@
 import { useNavigation } from "@react-navigation/native";
-import type { ApiNotification } from "api/types";
 import classnames from "classnames";
 import ObsNotification from "components/Notifications/ObsNotification.tsx";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
+import type { Notification } from "sharedHooks/useInfiniteNotificationsScroll";
 import { ACTIVITY_TAB } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 
 type Props = {
-  notification: ApiNotification
+  notification: Notification
 };
 
 const NotificationsListItem = ( { notification }: Props ) => {

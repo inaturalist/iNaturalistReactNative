@@ -1,4 +1,3 @@
-import type { ApiNotification } from "api/types";
 import ObservationIcon from "components/Notifications/ObservationIcon.tsx";
 import ObsNotificationText from "components/Notifications/ObsNotificationText.tsx";
 import {
@@ -11,22 +10,18 @@ import React from "react";
 import type { RealmObservation } from "realmModels/types";
 import { formatDifferenceForHumans } from "sharedHelpers/dateAndTime.ts";
 import { useTranslation } from "sharedHooks";
+import type { Notification } from "sharedHooks/useInfiniteNotificationsScroll";
 import colors from "styles/tailwindColors";
 
 const { useRealm } = RealmContext;
 
 interface Props {
-  notification: ApiNotification
+  notification: Notification
 }
 
 const ObsNotification = ( { notification }: Props ) => {
   const { i18n } = useTranslation( );
-  const { identification, comment } = notification;
-  const type = notification.notifier_type;
-  const { user } = identification || comment || {};
-  if ( !user ) {
-    throw new Error( "Notification must have a user" );
-  }
+  const { notifier_type: type } = notification;
   const realm = useRealm( );
 
   const observation: RealmObservation | null = realm.objectForPrimaryKey(
@@ -52,7 +47,7 @@ const ObsNotification = ( { notification }: Props ) => {
     >
       <ObservationIcon photoUri={photoUrl} soundUri={soundsUrl} />
       <View className="flex-col shrink justify-center space-y-[8px]">
-        <ObsNotificationText type={type} userName={String( user.login )} />
+        <ObsNotificationText notification={notification} />
         <View className="flex-row space-x-[8px]">
           {
             type

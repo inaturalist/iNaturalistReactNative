@@ -1,49 +1,70 @@
 import { fetchObservationUpdates, fetchRemoteObservations } from "api/observations";
-import type { ApiNotification, ApiOpts } from "api/types";
+import type {
+  ApiNotification,
+  ApiObservation,
+  ApiObservationsUpdatesParams,
+  ApiOpts
+} from "api/types";
 import { flatten } from "lodash";
 import { RealmContext } from "providers/contexts.ts";
-import { useCallback } from "react";
+import type Realm from "realm";
 import Observation from "realmModels/Observation";
 import { useAuthenticatedInfiniteQuery, useCurrentUser } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
-const BASE_PARAMS = {
-  observations_by: "owner",
-  fields: "all",
-  per_page: 30,
-  ttl: -1,
-  page: 1
-};
+export interface Notification extends ApiNotification {
+  resource?: ApiObservation;
+}
 
 interface InfiniteNotificationsScrollResponse {
   fetchNextPage: ( ) => void;
   isError?: boolean;
   isFetching?: boolean;
   isInitialLoading?: boolean;
-  notifications: ApiNotification[];
+  notifications: Notification[];
   refetch: ( ) => void;
 }
 
-const useInfiniteNotificationsScroll = ( ): InfiniteNotificationsScrollResponse => {
+const BASE_PARAMS: ApiObservationsUpdatesParams = {
+  // observations_by: "owner",
+  fields: "all", // TODO narrow this down. this has a massive response
+  per_page: 30,
+  ttl: -1,
+  page: 1
+};
+
+async function fetchObsByUUIDs(
+  uuids: string[],
+  authOptions: ApiOpts,
+  realm: Realm,
+  options: {
+    save?: boolean
+  } = {}
+) {
+  const observations = await fetchRemoteObservations(
+    uuids,
+    { fields: Observation.FIELDS },
+    authOptions
+  );
+  if ( options.save ) {
+    Observation.upsertRemoteObservations( observations, realm );
+  }
+  return observations;
+}
+
+const useInfiniteNotificationsScroll = (
+  notificationParams: ApiObservationsUpdatesParams = {}
+): InfiniteNotificationsScrollResponse => {
   const currentUser = useCurrentUser( );
   const realm = useRealm( );
 
-  const queryKey = ["useInfiniteNotificationsScroll"];
-
-  const fetchObsByUUIDs = useCallback( async ( uuids: string[], authOptions: ApiOpts ) => {
-    const observations = await fetchRemoteObservations(
-      uuids,
-      { fields: Observation.FIELDS },
-      authOptions
-    );
-    Observation.upsertRemoteObservations( observations, realm );
-  }, [realm] );
+  const queryKey = ["useInfiniteNotificationsScroll", JSON.stringify( notificationParams )];
 
   const infQueryResult = useAuthenticatedInfiniteQuery(
     queryKey,
     async ( { pageParam }: { pageParam: number }, optsWithAuth: ApiOpts ) => {
-      const params = { ...BASE_PARAMS };
+      const params = { ...BASE_PARAMS, ...notificationParams };
 
       if ( pageParam ) {
         params.page = pageParam;
@@ -61,7 +82,21 @@ const useInfiniteNotificationsScroll = ( ): InfiniteNotificationsScrollResponse 
       ) || [];
       const obsUUIDs = updatesWithContent.map( obsUpdate => obsUpdate.resource_uuid );
       if ( obsUUIDs.length > 0 ) {
-        await fetchObsByUUIDs( obsUUIDs, optsWithAuth );
+        const observations = await fetchObsByUUIDs(
+          obsUUIDs,
+          optsWithAuth,
+          realm,
+          { save: params.observations_by === "owner" }
+        );
+        if ( observations ) {
+          return updatesWithContent.map( ( update: Notification ) => {
+            const resource = observations.find(
+              ( o: ApiObservation ) => o.uuid === update.resource_uuid
+            );
+            update.resource = resource;
+            return update;
+          } );
+        }
       }
 
       return updatesWithContent;

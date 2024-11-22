@@ -1,18 +1,13 @@
-export interface ApiParams {
-  per_page?: number;
-  page?: number;
-  fields?: "all" | Object
-}
-
+// Generic types, please keep alphabetized
 export interface ApiOpts {
   api_token?: string;
 }
 
-export interface ApiResponse {
-  total_results: number;
-  page: number;
-  per_page: number;
-  results: Object[];
+export interface ApiParams {
+  per_page?: number;
+  page?: number;
+  fields?: "all" | Object;
+  ttl?: number;
 }
 
 export interface ApiPlace {
@@ -24,6 +19,19 @@ export interface ApiProject {
   id?: number;
   title?: string;
 }
+
+export interface ApiResponse {
+  total_results: number;
+  page: number;
+  per_page: number;
+  results: Object[];
+}
+
+export interface ApiObservationsUpdatesParams extends ApiParams {
+  observations_by?: "owner" | "following";
+}
+
+// Model types, need to be ordered by reference
 
 export interface ApiTaxon {
   id?: number;
@@ -47,7 +55,7 @@ export interface ApiIdentification {
   user?: ApiUser;
 }
 
-export export interface ApiNotification {
+export interface ApiNotification {
   comment?: ApiComment;
   comment_id?: number;
   created_at: string;
@@ -57,4 +65,8 @@ export export interface ApiNotification {
   notifier_type: string;
   resource_uuid: string;
   viewed?: boolean;
+}
+
+export interface ApiObservation {
+  user?: ApiUser;
 }
