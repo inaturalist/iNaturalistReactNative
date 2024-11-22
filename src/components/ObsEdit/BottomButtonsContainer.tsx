@@ -1,26 +1,19 @@
-// @flow
-
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
-import classnames from "classnames";
 import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/CrosshairCircle";
-import {
-  Button,
-  ButtonBar
-} from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import useUploadObservations from "components/MyObservations/hooks/useUploadObservations.ts";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import saveObservation from "sharedHelpers/saveObservation.ts";
 import {
   useCurrentUser,
-  useExitObservationFlow,
-  useTranslation
+  useExitObservationFlow
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
+import BottomButtons from "./BottomButtons";
 import ImpreciseLocationSheet from "./Sheets/ImpreciseLocationSheet";
 import MissingEvidenceSheet from "./Sheets/MissingEvidenceSheet";
 
@@ -35,7 +28,7 @@ type Props = {
   transitionAnimation: Function
 }
 
-const BottomButtons = ( {
+const BottomButtonsContainer = ( {
   passesEvidenceTest,
   currentObservation,
   currentObservationIndex,
@@ -48,14 +41,16 @@ const BottomButtons = ( {
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const unsavedChanges = useStore( state => state.unsavedChanges );
   const addToUploadQueue = useStore( state => state.addToUploadQueue );
-  const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
   const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
   const setSavedOrUploadedMultiObsFlow = useStore( state => state.setSavedOrUploadedMultiObsFlow );
+  const incrementTotalSavedObservations = useStore(
+    state => state.incrementTotalSavedObservations
+  );
   const isNewObs = !currentObservation?._created_at;
   const hasPhotos = currentObservation?.observationPhotos?.length > 0;
   const hasImportedPhotos = hasPhotos && cameraRollUris.length === 0;
-  const { t } = useTranslation( );
+
   const realm = useRealm( );
   const [showMissingEvidenceSheet, setShowMissingEvidenceSheet] = useState( false );
   const [showImpreciseLocationSheet, setShowImpreciseLocationSheet] = useState( false );
@@ -68,6 +63,9 @@ const BottomButtons = ( {
     && currentObservation?.taxon.rank_level !== 100;
 
   const passesTests = passesEvidenceTest && hasIdentification;
+
+  const canUpload = currentUser && isConnected;
+  const { startUploadsFromMultiObsEdit } = useUploadObservations( canUpload );
 
   const setNextScreen = useCallback( async ( { type }: Object ) => {
     const savedObservation = await saveObservation( currentObservation, cameraRollUris, realm );
@@ -85,49 +83,45 @@ const BottomButtons = ( {
       const { uuid } = savedObservation;
       addTotalToolbarIncrements( savedObservation );
       addToUploadQueue( uuid );
-      setStartUploadObservations( );
       transitionAnimation();
+      startUploadsFromMultiObsEdit( );
+    } else {
+      incrementTotalSavedObservations( );
     }
 
     if ( observations.length === 1 ) {
+      setButtonPressed( null );
       // If this is the last observation, we're done
       exitObservationFlow( );
     } else if ( currentObservationIndex === observations.length - 1 ) {
       observations.pop( );
       setCurrentObservationIndex( currentObservationIndex - 1, observations );
       setLoading( false );
+      setButtonPressed( null );
     } else {
       observations.splice( currentObservationIndex, 1 );
       // this seems necessary for rerendering the ObsEdit screen
       setCurrentObservationIndex( currentObservationIndex, observations );
       setLoading( false );
+      setButtonPressed( null );
     }
   }, [
-    addTotalToolbarIncrements,
     addToUploadQueue,
+    addTotalToolbarIncrements,
+    cameraRollUris,
     currentObservation,
     currentObservationIndex,
     exitObservationFlow,
+    incrementTotalSavedObservations,
     isNewObs,
-    resetMyObsOffsetToRestore,
     observations,
+    realm,
+    resetMyObsOffsetToRestore,
     setCurrentObservationIndex,
     setSavedOrUploadedMultiObsFlow,
-    setStartUploadObservations,
-    cameraRollUris,
-    realm,
+    startUploadsFromMultiObsEdit,
     transitionAnimation
   ] );
-
-  useEffect(
-    ( ) => {
-      // reset button disabled status when scrolling through multiple observations
-      if ( currentObservation ) {
-        setButtonPressed( null );
-      }
-    },
-    [currentObservation]
-  );
 
   const showMissingEvidence = useCallback( ( ) => {
     if ( allowUserToUpload ) { return false; }
@@ -164,73 +158,8 @@ const BottomButtons = ( {
     setNextScreen( { type } );
   }, [setNextScreen, showMissingEvidence] );
 
-  const renderSaveButton = useCallback( ( ) => (
-    <Button
-      className="px-[25px]"
-      onPress={( ) => handlePress( "save" )}
-      testID="ObsEdit.saveButton"
-      text={t( "SAVE" )}
-      level="neutral"
-      loading={buttonPressed === "save" && loading}
-      disabled={buttonPressed !== null}
-    />
-  ), [buttonPressed, loading, handlePress, t] );
-
-  const renderSaveChangesButton = useCallback( ( ) => (
-    <Button
-      onPress={( ) => handlePress( "save" )}
-      testID="ObsEdit.saveChangesButton"
-      text={t( "SAVE-CHANGES" )}
-      level={unsavedChanges
-        ? "focus"
-        : "neutral"}
-      loading={buttonPressed === "save" && loading}
-      disabled={buttonPressed !== null}
-    />
-  ), [buttonPressed, loading, handlePress, t, unsavedChanges] );
-
-  const renderUploadButton = useCallback( ( ) => (
-    <Button
-      className="ml-3 grow"
-      level={passesTests
-        ? "focus"
-        : "neutral"}
-      text={t( "UPLOAD-NOW" )}
-      testID="ObsEdit.uploadButton"
-      onPress={( ) => handlePress( "upload" )}
-      loading={buttonPressed === "upload" && loading}
-      disabled={buttonPressed !== null}
-    />
-  ), [buttonPressed, loading, handlePress, t, passesTests] );
-
-  const renderButtons = useCallback( ( ) => {
-    if ( !currentUser || !isConnected ) {
-      return renderSaveButton( );
-    }
-    if ( currentObservation?._synced_at ) {
-      return renderSaveChangesButton( );
-    }
-    return (
-      <View className={classnames( "flex-row justify-evenly", {
-        "opacity-50": !passesEvidenceTest
-      } )}
-      >
-        {renderSaveButton( )}
-        {renderUploadButton( )}
-      </View>
-    );
-  }, [
-    currentObservation,
-    currentUser,
-    isConnected,
-    passesEvidenceTest,
-    renderSaveButton,
-    renderSaveChangesButton,
-    renderUploadButton
-  ] );
-
   return (
-    <ButtonBar>
+    <>
       {showMissingEvidenceSheet && (
         <MissingEvidenceSheet
           setShowMissingEvidenceSheet={setShowMissingEvidenceSheet}
@@ -241,9 +170,18 @@ const BottomButtons = ( {
           setShowImpreciseLocationSheet={setShowImpreciseLocationSheet}
         />
       )}
-      {renderButtons( )}
-    </ButtonBar>
+      <BottomButtons
+        buttonPressed={buttonPressed}
+        canSaveOnly={!currentUser || !isConnected}
+        handlePress={handlePress}
+        loading={loading}
+        showFocusedChangesButton={unsavedChanges}
+        showFocusedUploadButton={passesTests}
+        showHalfOpacity={!passesEvidenceTest}
+        wasSynced={currentObservation?._synced_at}
+      />
+    </>
   );
 };
 
-export default BottomButtons;
+export default BottomButtonsContainer;

@@ -17,10 +17,11 @@ import { useCurrentUser, useLocationPermission, useWatchPosition } from "sharedH
 import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
 
-import BottomButtons from "./BottomButtons";
+import BottomButtonsContainer from "./BottomButtonsContainer";
 import EvidenceSectionContainer from "./EvidenceSectionContainer";
 import IdentificationSection from "./IdentificationSection";
 import MultipleObservationsArrows from "./MultipleObservationsArrows";
+import MultipleObservationsUploadStatus from "./MultipleObservationsUploadStatus";
 import ObsEditHeader from "./ObsEditHeader";
 import OtherDataSection from "./OtherDataSection";
 
@@ -36,6 +37,7 @@ const ObsEdit = ( ): Node => {
   const setCurrentObservationIndex = useStore( state => state.setCurrentObservationIndex );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const resetUploadObservationsSlice = useStore( state => state.resetUploadObservationsSlice );
+  const savedOrUploadedMultiObsFlow = useStore( state => state.savedOrUploadedMultiObsFlow );
   const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
   const [resetScreen, setResetScreen] = useState( false );
   const isFocused = useIsFocused( );
@@ -163,7 +165,8 @@ const ObsEdit = ( ): Node => {
           )}
         </KeyboardAwareScrollView>
       </ViewWrapper>
-      <BottomButtons
+      {savedOrUploadedMultiObsFlow && <MultipleObservationsUploadStatus />}
+      <BottomButtonsContainer
         currentObservation={currentObservation}
         currentObservationIndex={currentObservationIndex}
         observations={observations}

@@ -22,7 +22,8 @@ const DEFAULT_STATE = {
   cameraUris: [],
   savingPhoto: false,
   savedOrUploadedMultiObsFlow: false,
-  unsavedChanges: false
+  unsavedChanges: false,
+  totalSavedObservations: 0
 };
 
 const removeObsSoundFromObservation = ( currentObservation, uri ) => {
@@ -175,7 +176,16 @@ const createObservationFlowSlice = ( set, get ) => ( {
       ?.observationPhotos
       ?.map( op => ( op.photo.url || Photo.getLocalPhotoUri( op.photo.localFilePath ) ) ) || [];
     return set( { evidenceToAdd: [], cameraUris: existingPhotoUris } );
-  }
+  },
+  incrementTotalSavedObservations: ( ) => set( state => {
+    const {
+      totalSavedObservations: existingTotalSavedObservations
+    } = state;
+
+    return ( {
+      totalSavedObservations: existingTotalSavedObservations + 1
+    } );
+  } )
 } );
 
 export default createObservationFlowSlice;

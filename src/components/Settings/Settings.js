@@ -205,8 +205,10 @@ const Settings = ( ) => {
           QueueItem.enqueue(
             realm,
             JSON.stringify( {
-              id: settings?.id,
-              "user[locale]": newLocale
+              id: settings.id,
+              user: {
+                locale: newLocale
+              }
             } ),
             "locale-change"
           );

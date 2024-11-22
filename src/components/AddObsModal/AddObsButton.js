@@ -66,7 +66,7 @@ const AddObsButton = (): React.Node => {
       <Modal
         animationIn="fadeIn"
         animationOut="fadeOut"
-        animationInTiming={500}
+        animationInTiming={250}
         animationOutTiming={250}
         showModal={showModal}
         closeModal={closeModal}

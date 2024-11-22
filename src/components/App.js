@@ -76,6 +76,9 @@ const App = ( { children }: Props ): Node => {
   useReactQueryRefetch( );
   useFreshInstall( currentUser );
   useLinking( currentUser );
+
+  // This only runs when App updates... which is rarely. It works for Settings
+  // b/c it generally updates currentUser
   useWorkQueue( );
 
   useLockOrientation( );

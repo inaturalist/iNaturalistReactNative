@@ -1058,6 +1058,8 @@ Share-map = Share map
 Share-your-observation-where-it-can-help-scientists = Share your observation, where it can help scientists across the world better understand biodiversity.
 SHOP-INATURALIST-MERCH = SHOP INATURALIST MERCH
 Show-observation-options = Show observation options.
+# Message when offline search results are being displayed
+Showing-offline-search-results--taxa = Showing offline search results. To search for more species, try again when connected to the Internet.
 # Label for button that shows identification suggestions
 Shows-identification-suggestions = Shows identification suggestions
 Shows-iNaturalist-bird-logo = Shows iNaturalist bird logo.
@@ -1260,6 +1262,12 @@ x-comments =
         [one] { $count } comment
        *[other] { $count } comments
     }
+# Number of observations with an upload failure in ObsEdit multiple observation screen
+x-failed =
+    { $count ->
+        [one] { $count } failed
+       *[other] { $count } failed
+    }
 # Subtitle for a screen showing the list of followers a user has
 X-FOLLOWERS =
     { $count ->
@@ -1346,6 +1354,12 @@ X-PHOTOS-Y-SOUNDS =
        *[other] { $soundCount } SOUNDS
     }
 X-PROJECTS = { $projectCount } PROJECTS
+# Number of observations saved in ObsEdit multiple observation screen
+x-saved =
+    { $count ->
+        [one] { $count } saved
+       *[other] { $count } saved
+    }
 # Displays number of sounds attached to an observation in the Media Viewer
 X-SOUNDS =
     { $count ->
@@ -1356,6 +1370,18 @@ X-Species =
     { $count ->
         [one] { $count } Species
        *[other] { $count } Species
+    }
+# Number of observations uploaded in ObsEdit multiple observation screen
+x-uploaded =
+    { $count ->
+        [one] { $count } uploaded
+       *[other] { $count } uploaded
+    }
+# Number of observations with upload in progress in ObsEdit multiple observation screen
+x-uploading =
+    { $count ->
+        [one] { $count } uploading
+       *[other] { $count } uploading
     }
 x-uploads-failed =
     { $count ->
