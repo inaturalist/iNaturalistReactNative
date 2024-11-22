@@ -53,7 +53,7 @@ const MyObservationsContainer = ( ): Node => {
   const canUpload = currentUser && isConnected;
 
   const { startUploadObservations } = useUploadObservations( canUpload );
-  const { syncManually, refreshing } = useSyncObservations(
+  const { syncManually } = useSyncObservations(
     currentUserId,
     startUploadObservations
   );
@@ -149,8 +149,8 @@ const MyObservationsContainer = ( ): Node => {
     ] )
   );
 
-  const handlePullToRefresh = useCallback( ( ) => {
-    syncManually( { skipUploads: true } );
+  const handlePullToRefresh = useCallback( async ( ) => {
+    await syncManually( { skipUploads: true } );
   }, [syncManually] );
 
   // Scroll the list to the offset we need to restore, e.g. when you are
@@ -190,7 +190,6 @@ const MyObservationsContainer = ( ): Node => {
       onEndReached={fetchNextPage}
       onListLayout={restoreScrollOffset}
       onScroll={onScroll}
-      refreshing={refreshing}
       setShowLoginSheet={setShowLoginSheet}
       showLoginSheet={showLoginSheet}
       showNoResults={showNoResults}
