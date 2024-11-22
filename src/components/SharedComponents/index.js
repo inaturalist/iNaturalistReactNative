@@ -21,6 +21,7 @@ export { default as DisplayTaxon } from "./DisplayTaxon";
 export { default as DisplayTaxonName } from "./DisplayTaxonName";
 export { default as Divider } from "./Divider/Divider";
 export { default as CustomFlashList } from "./FlashList/CustomFlashList";
+export { default as CustomRefreshControl } from "./FlashList/CustomRefreshControl";
 export { default as FlashListEmptyWrapper } from "./FlashList/FlashListEmptyWrapper";
 export { default as InfiniteScrollLoadingWheel } from "./FlashList/InfiniteScrollLoadingWheel";
 export { default as FloatingActionBar } from "./FloatingActionBar";

@@ -98,6 +98,7 @@ const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object )
     isFetchingNextPage,
     fetchNextPage,
     observations: flatten( observations ),
+    queryKey,
     status,
     totalBounds: data?.pages?.[0].total_bounds,
     totalResults

@@ -3,6 +3,7 @@
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
+import { useQueryClient } from "@tanstack/react-query";
 import useInfiniteExploreScroll from "components/Explore/hooks/useInfiniteExploreScroll";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
 import { View } from "components/styledComponents";
@@ -36,10 +37,12 @@ const ObservationsView = ( {
   currentMapRegion,
   setCurrentMapRegion
 }: Props ): Node => {
+  const queryClient = useQueryClient( );
   const {
     observations,
     isFetchingNextPage,
     fetchNextPage,
+    queryKey,
     totalBounds,
     totalResults
   } = useInfiniteExploreScroll( { params: queryParams, enabled: canFetch } );
@@ -55,6 +58,11 @@ const ObservationsView = ( {
   }, [totalResults, handleUpdateCount] );
 
   const { isConnected } = useNetInfo( );
+
+  const handlePullToRefresh = ( ) => {
+    console.log( queryKey, "query key to invalidate" );
+    queryClient.invalidateQueries( { queryKey } );
+  };
 
   if ( !layout ) { return null; }
 
@@ -90,6 +98,7 @@ const ObservationsView = ( {
         data={observations}
         dataCanBeFetched={canFetch}
         explore
+        handlePullToRefresh={handlePullToRefresh}
         hideLoadingWheel={!isFetchingNextPage}
         isFetchingNextPage={isFetchingNextPage}
         isConnected={isConnected}
