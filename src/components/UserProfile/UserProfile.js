@@ -228,11 +228,12 @@ const UserProfile = ( ): Node => {
             {t( "Affiliation", { site: user.site.name } )}
           </Body2>
         )}
-        {user.monthly_supporter && (
+        {/* TODO fix this when we know whether the user is a donor and prefers to show it */}
+        {/* {user.monthly_supporter && (
           <Body2 className="mb-5">
             {t( "Monthly-Donor" )}
           </Body2>
-        )}
+        )} */}
       </View>
       {showLoginSheet && <LoginSheet setShowLoginSheet={setShowLoginSheet} />}
       {showUnfollowSheet && (
