@@ -132,12 +132,12 @@ class Taxon extends Realm.Object {
       },
       name: {
         type: "string",
-        indexed: "full-text",
+        // indexed: "full-text",
         optional: true
       },
       preferred_common_name: {
         type: "string",
-        indexed: "full-text",
+        // indexed: "full-text",
         mapTo: "preferredCommonName",
         optional: true
       },
