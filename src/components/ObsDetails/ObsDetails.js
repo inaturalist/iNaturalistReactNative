@@ -127,6 +127,7 @@ const ObsDetails = ( {
   const scrollViewRef = useRef( );
   const insets = useSafeAreaInsets();
   const { t } = useTranslation( );
+  const [invertToWhiteBackground, setInvertToWhiteBackground] = useState( false );
 
   // Scroll the scrollview to this y position once if set, then unset it.
   // Could be refactored into a hook if we need this logic elsewher
@@ -146,6 +147,14 @@ const ObsDetails = ( {
       scrollViewRef?.current?.scrollToEnd( );
     }
   }, [addingActivityItem] );
+
+  const handleScroll = e => {
+    const scrollY = e.nativeEvent.contentOffset.y;
+    const shouldInvert = !!( scrollY > 150 );
+    if ( shouldInvert !== invertToWhiteBackground ) {
+      setInvertToWhiteBackground( shouldInvert );
+    }
+  };
 
   const dynamicInsets = useMemo( () => ( {
     backgroundColor: "#ffffff",
@@ -216,6 +225,7 @@ const ObsDetails = ( {
           className="flex-1 flex-column"
           stickyHeaderHiddenOnScroll
           endFillColor="white"
+          onScroll={handleScroll}
         >
           <View className="bg-white h-full">
             {renderActivityTab( )}
@@ -237,6 +247,7 @@ const ObsDetails = ( {
       </View>
       <ObsDetailsHeader
         belongsToCurrentUser={belongsToCurrentUser}
+        invertToWhiteBackground={invertToWhiteBackground}
         observationId={observation?.id}
         rightIconDarkGray
         uuid={observation?.uuid}
@@ -254,9 +265,11 @@ const ObsDetails = ( {
         className="flex-1 flex-column"
         stickyHeaderHiddenOnScroll
         endFillColor="white"
+        onScroll={handleScroll}
       >
         <ObsDetailsHeader
           belongsToCurrentUser={belongsToCurrentUser}
+          invertToWhiteBackground={invertToWhiteBackground}
           observationId={observation?.id}
           uuid={observation?.uuid}
         />
