@@ -90,7 +90,7 @@ const useTaxonCommonNames = ( ) => {
           safeRealmWrite( realm, ( ) => {
             realm.create(
               "Taxon",
-              { ...mappedTaxon, _synced_at: new Date( ) },
+              Taxon.forUpdate( mappedTaxon ),
               "modified"
             );
           }, "saving taxon in useTaxonCommonNames" );
