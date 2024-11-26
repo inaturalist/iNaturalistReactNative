@@ -262,8 +262,6 @@ const ObsDetails = ( {
         testID={`ObsDetails.${uuid}`}
         stickyHeaderIndices={[0, 3]}
         scrollEventThrottle={16}
-        className="flex-1 flex-column"
-        stickyHeaderHiddenOnScroll
         endFillColor="white"
         onScroll={handleScroll}
       >
@@ -273,7 +271,7 @@ const ObsDetails = ( {
           observationId={observation?.id}
           uuid={observation?.uuid}
         />
-        <View>
+        <View className="-mt-[64px]">
           <ObsMediaDisplayContainer observation={observation} />
           { currentUser && (
             <FaveButton

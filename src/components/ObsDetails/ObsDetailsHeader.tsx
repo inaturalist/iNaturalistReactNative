@@ -47,12 +47,7 @@ const ObsDetailsHeader = ( {
   return (
     <LinearGradient
       className={classnames(
-        "absolute",
-        "top-0",
-        "w-full",
-        "flex-row",
-        "justify-between",
-        "h-16"
+        "h-16 transparent"
       )}
       colors={[
         isTablet
