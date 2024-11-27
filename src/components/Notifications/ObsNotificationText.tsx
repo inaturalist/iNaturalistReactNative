@@ -4,6 +4,7 @@ import {
 import { View } from "components/styledComponents";
 import React from "react";
 import { Trans } from "react-i18next";
+import { useTranslation } from "sharedHooks";
 import type { Notification } from "sharedHooks/useInfiniteNotificationsScroll";
 
 interface Props {
@@ -11,37 +12,57 @@ interface Props {
 }
 
 const ObsNotificationText = ( { notification }: Props ) => {
+  const { t } = useTranslation( );
   const { identification, comment, notifier_type: type } = notification;
-  const { user } = identification || comment || {};
-  if ( !user ) {
+  const { user: notifierUser } = identification || comment || {};
+  if ( !notifierUser ) {
     throw new Error( "Notification must have a user" );
   }
   let content: string | React.ReactElement = `unknown notification type: ${type}`;
-
   const resourceOwner = notification.resource?.user;
-  console.log( "[DEBUG ObsNotificationText.tsx] resourceOwner?.login: ", resourceOwner?.login );
-  // TODO use this to determine who the observation is "by"
 
-  if ( type === "Comment" ) {
-    content = (
-      <Trans
-        i18nKey="notifications-user-added-comment-to-observation-by-you"
-        values={{ userName: user.login }}
-        components={[
-          <List2 className="font-bold pr-[2px]" />
-        ]}
-      />
-    );
-  } else if ( type === "Identification" ) {
-    content = (
-      <Trans
-        i18nKey="notifications-user-added-identification-to-observation-by-you"
-        values={{ userName: user.login }}
-        components={[
-          <List2 className="font-bold pr-[2px]" />
-        ]}
-      />
-    );
+  const transComponents = [<List2 className="font-bold pr-[2px]" />];
+  if ( notification.viewerOwnsResource ) {
+    const transValues = { userName: notifierUser.login };
+    if ( type === "Comment" ) {
+      content = (
+        <Trans
+          i18nKey="notifications-user-added-comment-to-observation-by-you"
+          values={transValues}
+          components={transComponents}
+        />
+      );
+    } else if ( type === "Identification" ) {
+      content = (
+        <Trans
+          i18nKey="notifications-user-added-identification-to-observation-by-you"
+          values={transValues}
+          components={transComponents}
+        />
+      );
+    }
+  } else {
+    const transValues = {
+      user1: notifierUser.login,
+      user2: resourceOwner?.login || t( "Unknown--user" )
+    };
+    if ( type === "Comment" ) {
+      content = (
+        <Trans
+          i18nKey="notifications-user1-added-comment-to-observation-by-user2"
+          values={transValues}
+          components={transComponents}
+        />
+      );
+    } else if ( type === "Identification" ) {
+      content = (
+        <Trans
+          i18nKey="notifications-user1-added-identification-to-observation-by-user2"
+          values={transValues}
+          components={transComponents}
+        />
+      );
+    }
   }
 
   return (

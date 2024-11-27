@@ -15,6 +15,7 @@ const { useRealm } = RealmContext;
 
 export interface Notification extends ApiNotification {
   resource?: ApiObservation;
+  viewerOwnsResource?: boolean;
 }
 
 interface InfiniteNotificationsScrollResponse {
@@ -42,7 +43,7 @@ async function fetchObsByUUIDs(
     save?: boolean
   } = {}
 ) {
-  const observations = await fetchRemoteObservations(
+  const observations: ApiObservation[] | null = await fetchRemoteObservations(
     uuids,
     { fields: Observation.FIELDS },
     authOptions
@@ -94,6 +95,7 @@ const useInfiniteNotificationsScroll = (
               ( o: ApiObservation ) => o.uuid === update.resource_uuid
             );
             update.resource = resource;
+            update.viewerOwnsResource = resource?.user?.id === currentUser?.id;
             return update;
           } );
         }

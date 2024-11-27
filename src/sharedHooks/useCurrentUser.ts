@@ -1,19 +1,19 @@
 import { RealmContext } from "providers/contexts.ts";
 import { useEffect, useState } from "react";
 import Realm from "realm";
-import User from "realmModels/User.ts";
+import type { RealmUser } from "realmModels/types";
 
 const { useRealm } = RealmContext;
 
-const useCurrentUser = ( ): User | null => {
+const useCurrentUser = ( ): RealmUser | null => {
   const realm = useRealm( );
-  const [currentUser, setCurrentUser] = useState<User | null>( null );
+  const [currentUser, setCurrentUser] = useState<RealmUser | null>( null );
   useEffect( ( ) => {
     const realmResults = realm.objects( "User" ).filtered( "signedIn == true" );
 
     // Sets the current user if one is detected, unsets it if not
     const listener = (
-      collection: [Realm.Object<User>],
+      collection: [Realm.Object<RealmUser>],
       changes: Realm.CollectionChangeSet
     ) => {
       if (

@@ -1,4 +1,8 @@
-export interface RealmPhoto {
+interface RealmObject {
+  isValid: ( ) => boolean;
+}
+
+export interface RealmPhoto extends RealmObject {
   _created_at?: Date;
   _synced_at?: Date;
   _updated_at?: Date;
@@ -9,7 +13,7 @@ export interface RealmPhoto {
   localFilePath?: string;
 }
 
-export interface RealmSound {
+export interface RealmSound extends RealmObject {
   _created_at?: Date;
   _synced_at?: Date;
   _updated_at?: Date;
@@ -19,16 +23,16 @@ export interface RealmSound {
   file_url: string;
 }
 
-export interface RealmObservationPhoto {
+export interface RealmObservationPhoto extends RealmObject {
   originalPhotoUri?: string;
   photo: RealmPhoto;
 }
 
-export interface RealmObservationSound {
+export interface RealmObservationSound extends RealmObject {
   sound: RealmSound;
 }
 
-export interface RealmObservation {
+export interface RealmObservation extends RealmObject {
   _created_at?: Date;
   _synced_at?: Date;
   captive_flag: boolean | null;
@@ -47,7 +51,7 @@ export interface RealmObservation {
   uuid: string;
 }
 
-export interface RealmTaxon {
+export interface RealmTaxon extends RealmObject {
   id: number;
   defaultPhoto?: RealmPhoto,
   name?: string;
@@ -58,4 +62,17 @@ export interface RealmTaxon {
   iconic_taxon_name?: string;
   ancestor_ids?: number[];
   _synced_at?: Date;
+}
+
+export interface RealmUser extends RealmObject {
+  iconUrl?: string;
+  id: number;
+  locale?: string;
+  login?: string;
+  name?: string;
+  observations_count?: number;
+  prefers_common_names?: boolean;
+  prefers_community_taxa?: boolean;
+  prefers_scientific_name_first?: boolean;
+  signedIn?: boolean;
 }

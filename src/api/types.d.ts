@@ -69,4 +69,5 @@ export interface ApiNotification {
 
 export interface ApiObservation {
   user?: ApiUser;
+  uuid: string;
 }

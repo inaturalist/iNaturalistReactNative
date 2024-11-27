@@ -744,6 +744,11 @@ Notifications = Notifications
 notifications-user-added-comment-to-observation-by-you = <0>{ $userName }</0> added a comment to an observation by you
 # notification when someone adds an identification to your observation
 notifications-user-added-identification-to-observation-by-you = <0>{ $userName }</0> added an identification to an observation by you
+# notification when someone adds a comment to an observation by someone else
+notifications-user1-added-comment-to-observation-by-user2 = <0>{ $user1 }</0> added a comment to an observation by { $user2 }
+# notification when someone adds an identification to an observation by
+# someone else
+notifications-user1-added-identification-to-observation-by-user2 = <0>{ $user1 }</0> added an identification to an observation by { $user2 }
 # Month of November
 November = November
 Obervations-must-be-manually-added = Observations must be manually added to a traditional project, either during the upload stage or after the observation has been shared to iNaturalist. A user must also join a traditional project in order to add their observations to it.
