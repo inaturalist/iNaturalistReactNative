@@ -29,8 +29,6 @@ const useOfflineSuggestions = (
       let rawPredictions = [];
       try {
         const result = await predictImage( selectedPhotoUri );
-        // Android returns an object with a predictions key, while iOS returns an array because
-        // currently Seek codebase as well expects different return types for each platform
         rawPredictions = result.predictions;
       } catch ( predictImageError ) {
         dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "offline-error" } );
