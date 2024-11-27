@@ -13,6 +13,7 @@ import React, {
 import { Platform } from "react-native";
 import { Worklets } from "react-native-worklets-core";
 import {
+  geoModelPath,
   modelPath,
   modelVersion,
   taxonomyPath
@@ -162,7 +163,14 @@ const FrameProcessorCamera = ( {
             taxonomyRollupCutoff,
             numStoredResults,
             cropRatio,
-            patchedOrientationAndroid
+            patchedOrientationAndroid,
+            useGeoModel: !!userLocation,
+            geoModelPath,
+            location: {
+              latitude: userLocation?.latitude,
+              longitude: userLocation?.longitude,
+              elevation: userLocation?.altitude
+            }
           } );
           const timeAfter = Date.now();
           const timeTaken = timeAfter - timeBefore;
@@ -183,7 +191,8 @@ const FrameProcessorCamera = ( {
       numStoredResults,
       cropRatio,
       lastTimestamp,
-      fps
+      fps,
+      userLocation
     ]
   );
 
