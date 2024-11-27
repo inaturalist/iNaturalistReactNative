@@ -13,15 +13,22 @@ export interface Tab {
   onPress: ( _event: GestureResponderEvent ) => void;
 }
 
+export interface TabComponentProps {
+  id: string;
+  text: string;
+}
+
 interface Props {
   activeId: string;
   tabs: Tab[];
+  TabComponent?: React.FC<TabComponentProps>;
   TextComponent?: typeof Heading4 | typeof Heading5;
 }
 
 const Tabs = ( {
   activeId,
   tabs = [],
+  TabComponent,
   TextComponent = Heading4
 }: Props ) => {
   const { t } = useTranslation();
@@ -49,12 +56,18 @@ const Tabs = ( {
                   expanded: active
                 }}
               >
-                <TextComponent
-                  className="self-center pt-4 pb-3"
-                  maxFontSizeMultiplier={1.5}
-                >
-                  {text}
-                </TextComponent>
+                {
+                  TabComponent
+                    ? <TabComponent id={id} text={text} />
+                    : (
+                      <TextComponent
+                        className="self-center pt-4 pb-3"
+                        maxFontSizeMultiplier={1.5}
+                      >
+                        {text}
+                      </TextComponent>
+                    )
+                }
                 { active && <View className="h-[4px] rounded-t bg-darkGray" /> }
               </TouchableOpacity>
             </View>

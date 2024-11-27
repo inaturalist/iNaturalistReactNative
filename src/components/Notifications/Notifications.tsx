@@ -2,17 +2,14 @@ import {
   Tabs,
   ViewWrapper
 } from "components/SharedComponents";
-import Heading5 from "components/SharedComponents/Typography/Heading5.tsx";
 import React, { useState } from "react";
-import useTranslation from "sharedHooks/useTranslation";
+import { useTranslation } from "sharedHooks";
 
 import NotificationsContainer from "./NotificationsContainer";
-
-const OWNER = "owner";
-const OTHER = "other";
+import NotificationsTab, { OTHER_TAB, OWNER_TAB } from "./NotificationsTab";
 
 const Notifications = ( ) => {
-  const [activeTab, setActiveTab] = useState<typeof OWNER | typeof OTHER>( OWNER );
+  const [activeTab, setActiveTab] = useState<typeof OWNER_TAB | typeof OTHER_TAB>( OWNER_TAB );
   const { t } = useTranslation();
 
   return (
@@ -20,23 +17,23 @@ const Notifications = ( ) => {
       <Tabs
         tabs={[
           {
-            id: OWNER,
+            id: OWNER_TAB,
             text: t( "MY-OBSERVATIONS" ),
-            onPress: () => setActiveTab( OWNER )
+            onPress: () => setActiveTab( OWNER_TAB )
           },
           {
-            id: OTHER,
+            id: OTHER_TAB,
             text: t( "OTHER-OBSERVATIONS" ),
-            onPress: () => setActiveTab( OTHER )
+            onPress: () => setActiveTab( OTHER_TAB )
           }
         ]}
         activeId={activeTab}
-        TextComponent={Heading5}
+        TabComponent={NotificationsTab}
       />
-      {activeTab === OWNER && (
+      {activeTab === OWNER_TAB && (
         <NotificationsContainer notificationParams={{ observations_by: "owner" }} />
       )}
-      {activeTab === OTHER && (
+      {activeTab === OTHER_TAB && (
         <NotificationsContainer notificationParams={{ observations_by: "following" }} />
       )}
     </ViewWrapper>
