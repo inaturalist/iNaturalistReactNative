@@ -24,10 +24,10 @@ See [CONTRIBUTING](CONTRIBUTING.md) for guidelines on contributing to this proje
     1. On Android, these files are named `small_inception_tf1.tflite` and `small_export_tax.csv`. Create a camera folder within Android assets (i.e. `android/app/src/debug/assets/camera`) and place the files there.
     1. On iOS, these files are named `small_inception_tf1.mlmodel` and `small_export_tax.json` and should be added to the `ios` folder.
     1. On iOS, in the `ios` folder, copy the geo model placeholder file `geomodel.placeholder` to `geomodel.mlmodel`. The geo model placeholder file is a tiny neural network that only returns a single output, the input. This is used to test the model loading process without having to have the actual model file. The app will work without the actual geo model.
-1. Optional: Add geo model file. Currently, there is no example model available to the public. The app will work without it. If you have access to the model file, you can add it following these steps:
-    1. Uncomment the `ANDROID_GEO_MODEL_FILE_NAME` and `IOS_GEO_MODEL_FILE_NAME` variables in the `.env` and `.env.staging` files.
-    1. On Android, the file should be placed in the `android/app/src/debug/assets/camera` folder.
-    1. On iOS, the file should be placed in the `ios` folder.
+1. Optional: Add geo model file. Currently, there is no example model available to the public. The app will work without a geo model provided though. If you have access to the model file, you can add it following these steps:
+    1. Uncomment and set the `ANDROID_GEO_MODEL_FILE_NAME` and `IOS_GEO_MODEL_FILE_NAME` variables in the `.env` and `.env.staging` files.
+    1. On Android, the file geo model should be placed in the `android/app/src/debug/assets/camera` folder.
+    1. On iOS, the geo mdel file should be placed in the `ios` folder.
 
 
 ### Set up pre-commit hooks
