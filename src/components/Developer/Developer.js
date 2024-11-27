@@ -45,6 +45,10 @@ const taxonomyFileName = Platform.select( {
   ios: Config.IOS_TAXONOMY_FILE_NAME,
   android: Config.ANDROID_TAXONOMY_FILE_NAME
 } );
+const geoModelFileName = Platform.select( {
+  ios: Config.IOS_GEO_MODEL_FILE_NAME,
+  android: Config.ANDROID_GEO_MODEL_FILE_NAME
+} );
 
 /* eslint-disable i18next/no-literal-string */
 const Developer = (): Node => {
@@ -151,9 +155,13 @@ const Developer = (): Node => {
           <Text className="font-bold">Model: </Text>
           <Text selectable>{modelFileName}</Text>
         </View>
-        <View className="flex-row mb-5">
+        <View className="flex-row">
           <Text className="font-bold">Taxonomy: </Text>
           <Text selectable>{taxonomyFileName}</Text>
+        </View>
+        <View className="flex-row mb-5">
+          <Text className="font-bold">Geo model: </Text>
+          <Text selectable>{geoModelFileName}</Text>
         </View>
         <H1>Paths</H1>
         <H2>Documents</H2>
