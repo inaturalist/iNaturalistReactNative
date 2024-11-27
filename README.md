@@ -23,6 +23,10 @@ See [CONTRIBUTING](CONTRIBUTING.md) for guidelines on contributing to this proje
     1. If the download script fails: The sample model files are available in this [`small_model.zip`](https://github.com/inaturalist/SeekReactNative/releases/tag/v2.9.1-138) file.
     1. On Android, these files are named `small_inception_tf1.tflite` and `small_export_tax.csv`. Create a camera folder within Android assets (i.e. `android/app/src/debug/assets/camera`) and place the files there.
     1. On iOS, these files are named `small_inception_tf1.mlmodel` and `small_export_tax.json` and should be added to the `ios` folder.
+1. Optional: Add geo model file. The geo model file is not part of the code repo, and has to be installed. Like with the cv model the app itself will load the model file with the filename specified in a .env file. On Android, the current file name is specified in this env variable `ANDROID_GEO_MODEL_FILE_NAME`. On iOS, the current file name is specified in this env variable `IOS_GEO_MODEL_FILE_NAME`. Currently, there is no example model available to the public. The app will work without it. If you have access to the model file, you can add it following these steps:
+    1. On Android, the file should be placed in the `android/app/src/debug/assets/camera` folder.
+    1. On iOS, the file should be placed in the `ios` folder.
+
 
 ### Set up pre-commit hooks
 
