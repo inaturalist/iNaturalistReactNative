@@ -9,13 +9,13 @@ import { log } from "sharedHelpers/logger";
 import { useInfiniteNotificationsScroll, usePerformance } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 
-const logger = log.extend( "OwnerNotificationsContainer" );
+const logger = log.extend( "NotificationsContainer" );
 
 interface Props {
   notificationParams: ApiObservationsUpdatesParams
 }
 
-const OwnerNotificationsContainer = ( {
+const NotificationsContainer = ( {
   notificationParams
 }: Props ) => {
   const navigation = useNavigation( );
@@ -59,4 +59,4 @@ const OwnerNotificationsContainer = ( {
   );
 };
 
-export default OwnerNotificationsContainer;
+export default NotificationsContainer;
