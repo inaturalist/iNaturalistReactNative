@@ -1,5 +1,5 @@
 import { screen, waitFor } from "@testing-library/react-native";
-import NotificationsContainer from "components/Notifications/NotificationsContainer.tsx";
+import Notifications from "components/Notifications/Notifications.tsx";
 import inatjs from "inaturalistjs";
 import React from "react";
 import factory, { makeResponse } from "tests/factory";
@@ -70,7 +70,7 @@ describe( "Notifications", () => {
 
   it( "should show a notification", async ( ) => {
     makeMockObsUpdatesResponse( );
-    renderAppWithComponent( <NotificationsContainer /> );
+    renderAppWithComponent( <Notifications /> );
     await waitFor( ( ) => {
       expect( inatjs.observations.updates ).toHaveBeenCalled( );
     } );
@@ -95,7 +95,7 @@ describe( "Notifications", () => {
     const response = makeMockObsUpdatesResponse( mockObservation );
     const { comment } = response.results[0];
     expect( response.results[0].resource_uuid ).toEqual( mockObservation.uuid );
-    renderAppWithComponent( <NotificationsContainer /> );
+    renderAppWithComponent( <Notifications /> );
     expect( await screen.findByText( comment.user.login ) ).toBeVisible( );
     const localObservationAfter = global.mockRealms[__filename].objectForPrimaryKey(
       "Observation",

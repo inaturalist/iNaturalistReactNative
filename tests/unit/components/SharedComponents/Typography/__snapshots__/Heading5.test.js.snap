@@ -21,7 +21,7 @@ exports[`Heading5 renders correctly 1`] = `
             "lineHeight": 13.2,
           },
           {
-            "letterSpacing": 0.65,
+            "letterSpacing": 2,
           },
           {
             "fontFamily": "Lato-Bold",
