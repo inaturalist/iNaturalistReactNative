@@ -32,6 +32,8 @@ interface UserLocation {
   latitude: number;
   longitude: number;
   positional_accuracy: number;
+  altitude: number | null;
+  altitudinal_accuracy: number | null;
 }
 
 const fetchCoarseUserLocation = async ( ): Promise<UserLocation | null> => {
@@ -49,7 +51,9 @@ const fetchCoarseUserLocation = async ( ): Promise<UserLocation | null> => {
     const userLocation = {
       latitude: coords.latitude,
       longitude: coords.longitude,
-      positional_accuracy: coords.accuracy
+      positional_accuracy: coords.accuracy,
+      altitude: coords.altitude,
+      altitudinal_accuracy: coords.altitudeAccuracy
     };
     return userLocation;
   } catch ( e ) {
