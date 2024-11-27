@@ -13,6 +13,7 @@ import { useAuthenticatedInfiniteQuery, useCurrentUser } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
+// Extends API response with data we need in this app
 export interface Notification extends ApiNotification {
   resource?: ApiObservation;
   viewerOwnsResource?: boolean;
@@ -43,6 +44,7 @@ async function fetchObsByUUIDs(
     save?: boolean
   } = {}
 ) {
+  // TODO convert api/observations to TS
   const observations: ApiObservation[] | null = await fetchRemoteObservations(
     uuids,
     { fields: Observation.FIELDS },
@@ -77,6 +79,7 @@ const useInfiniteNotificationsScroll = (
         params,
         optsWithAuth
       );
+
       // Sometimes updates linger after notifiers that generated them have been deleted
       const updatesWithContent = response?.filter(
         update => update.comment || update.identification
