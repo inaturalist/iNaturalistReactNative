@@ -18,6 +18,7 @@ import {
   usePatchedRunAsync
 } from "sharedHelpers/visionCameraPatches";
 import { useDeviceOrientation } from "sharedHooks";
+// import type { UserLocation } from "sharedHooks/useWatchPosition";
 
 type Props = {
   // $FlowIgnore
@@ -38,7 +39,8 @@ type Props = {
   takingPhoto: boolean,
   taxonomyRollupCutoff?: number,
   inactive?: boolean,
-  resetCameraOnFocus: Function
+  resetCameraOnFocus: Function,
+  userLocation?: Object // UserLocation | null
 };
 
 const DEFAULT_FPS = 1;
@@ -67,7 +69,8 @@ const FrameProcessorCamera = ( {
   takingPhoto,
   taxonomyRollupCutoff = DEFAULT_TAXONOMY_CUTOFF_THRESHOLD,
   inactive,
-  resetCameraOnFocus
+  resetCameraOnFocus,
+  userLocation
 }: Props ): Node => {
   const { deviceOrientation } = useDeviceOrientation();
   const [lastTimestamp, setLastTimestamp] = useState( undefined );
