@@ -4,9 +4,9 @@ import { TextProps } from "react-native";
 
 import InatText from "./InatText";
 
-const Heading5 = ( props: TextProps ) => (
+const Heading6 = ( props: TextProps ) => (
   // eslint-disable-next-line react/jsx-props-no-spreading
-  <InatText className={`text-2xs tracking-wide ${tailwindFontBold}`} {...props} />
+  <InatText className={`text-3xs tracking-wide ${tailwindFontBold}`} {...props} />
 );
 
-export default Heading5;
+export default Heading6;
