@@ -22,12 +22,12 @@ const OwnerNotificationsContainer = ( {
   const { isConnected } = useNetInfo( );
 
   const {
-    notifications,
     fetchNextPage,
-    refetch,
-    isInitialLoading,
+    isError,
     isFetching,
-    isError
+    isInitialLoading,
+    notifications,
+    refetch
   } = useInfiniteNotificationsScroll( notificationParams );
 
   const { loadTime } = usePerformance( {

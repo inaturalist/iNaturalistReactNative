@@ -1,5 +1,4 @@
 import {
-  ScrollViewWrapper,
   Tabs,
   ViewWrapper
 } from "components/SharedComponents";
@@ -32,14 +31,12 @@ const Notifications = ( ) => {
         ]}
         activeId={activeTab}
       />
-      <ScrollViewWrapper>
-        {activeTab === OWNER && (
-          <NotificationsContainer notificationParams={{ observations_by: "owner" }} />
-        )}
-        {activeTab === OTHER && (
-          <NotificationsContainer notificationParams={{ observations_by: "following" }} />
-        )}
-      </ScrollViewWrapper>
+      {activeTab === OWNER && (
+        <NotificationsContainer notificationParams={{ observations_by: "owner" }} />
+      )}
+      {activeTab === OTHER && (
+        <NotificationsContainer notificationParams={{ observations_by: "following" }} />
+      )}
     </ViewWrapper>
   );
 };

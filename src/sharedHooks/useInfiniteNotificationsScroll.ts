@@ -110,7 +110,10 @@ const useInfiniteNotificationsScroll = (
   );
 
   return {
-    ...infQueryResult,
+    refetch: infQueryResult.refetch,
+    isError: infQueryResult.isError,
+    isFetching: infQueryResult.isFetching,
+    isInitialLoading: infQueryResult.isInitialLoading,
     // Disable fetchNextPage if signed out
     fetchNextPage: currentUser
       ? infQueryResult.fetchNextPage
