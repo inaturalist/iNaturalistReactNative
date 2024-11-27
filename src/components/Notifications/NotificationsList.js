@@ -3,6 +3,7 @@
 import NotificationsListItem from "components/Notifications/NotificationsListItem";
 import {
   ActivityIndicator, Body2, CustomFlashList,
+  CustomRefreshControl,
   InfiniteScrollLoadingWheel,
   OfflineNotice, ViewWrapper
 } from "components/SharedComponents";
@@ -18,7 +19,9 @@ type Props = {
   isInitialLoading?: boolean,
   isConnected: boolean,
   onEndReached: Function,
-  reload: Function
+  reload: Function,
+  refreshing: boolean,
+  onRefresh: Function
 };
 
 const NotificationsList = ( {
@@ -28,7 +31,9 @@ const NotificationsList = ( {
   isInitialLoading,
   isConnected,
   onEndReached,
-  reload
+  reload,
+  refreshing,
+  onRefresh
 }: Props ): Node => {
   const { t } = useTranslation( );
   const user = useCurrentUser( );
@@ -84,6 +89,14 @@ const NotificationsList = ( {
     t
   ] );
 
+  const refreshControl = (
+    <CustomRefreshControl
+      accessibilityLabel={t( "Pull-to-refresh-notifications" )}
+      refreshing={refreshing}
+      onRefresh={onRefresh}
+    />
+  );
+
   return (
     <ViewWrapper>
       <CustomFlashList
@@ -96,6 +109,7 @@ const NotificationsList = ( {
         onEndReached={onEndReached}
         refreshing={isFetching}
         renderItem={renderItem}
+        refreshControl={refreshControl}
       />
     </ViewWrapper>
   );

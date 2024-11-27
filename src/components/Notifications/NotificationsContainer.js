@@ -5,7 +5,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import NotificationsList from "components/Notifications/NotificationsList";
 import type { Node } from "react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { log } from "sharedHelpers/logger";
 import { useInfiniteNotificationsScroll, usePerformance } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
@@ -15,6 +15,7 @@ const logger = log.extend( "NotificationsContainer" );
 const NotificationsContainer = (): Node => {
   const navigation = useNavigation( );
   const { isConnected } = useNetInfo( );
+  const [refreshing, setRefreshing] = useState( false );
 
   const {
     notifications,
@@ -40,6 +41,12 @@ const NotificationsContainer = (): Node => {
     } );
   }, [isConnected, navigation, refetch] );
 
+  const onRefresh = async () => {
+    setRefreshing( true );
+    await refetch();
+    setRefreshing( false );
+  };
+
   return (
     <NotificationsList
       data={notifications}
@@ -49,6 +56,8 @@ const NotificationsContainer = (): Node => {
       isConnected={isConnected}
       onEndReached={fetchNextPage}
       reload={refetch}
+      refreshing={refreshing}
+      onRefresh={onRefresh}
     />
   );
 };
