@@ -63,6 +63,7 @@ const Tabs = ( {
                       <TextComponent
                         className="self-center pt-4 pb-3"
                         maxFontSizeMultiplier={1.5}
+                        numberOfLines={1}
                       >
                         {text}
                       </TextComponent>
