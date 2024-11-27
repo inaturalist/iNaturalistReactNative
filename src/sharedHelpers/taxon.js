@@ -168,10 +168,7 @@ export async function fetchTaxonAndSave( id, realm, params = {}, opts = {} ) {
   safeRealmWrite( realm, ( ) => {
     realm.create(
       "Taxon",
-      {
-        ...mappedRemoteTaxon,
-        _synced_at: new Date( )
-      },
+      Taxon.forUpdate( mappedRemoteTaxon ),
       "modified"
     );
   }, "saving remote taxon in ObsDetails" );
