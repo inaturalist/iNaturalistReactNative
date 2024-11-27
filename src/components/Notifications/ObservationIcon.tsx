@@ -1,3 +1,4 @@
+import type { ApiObservation } from "api/types";
 import classnames from "classnames";
 import {
   INatIcon
@@ -6,16 +7,16 @@ import { Image, View } from "components/styledComponents";
 import * as React from "react";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  photoUri?: string,
-  soundUri?: string
+interface Props {
+  observation?: ApiObservation;
 }
 
 const ObservationIcon = ( {
-  photoUri,
-  soundUri
+  observation
 }: Props ) => {
-  if ( !photoUri && !soundUri ) {
+  const photoUri = observation?.observation_photos?.[0]?.photo?.url;
+  const hasSound = ( observation?.observation_sounds?.length || 0 ) > 0;
+  if ( !photoUri && !hasSound ) {
     return (
       <View
         className={classnames(
@@ -37,7 +38,7 @@ const ObservationIcon = ( {
     );
   }
 
-  if ( !photoUri && soundUri ) {
+  if ( !photoUri && hasSound ) {
     return (
       <View
         className={classnames(

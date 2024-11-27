@@ -67,7 +67,55 @@ export interface ApiNotification {
   viewed?: boolean;
 }
 
+interface ApiFlag {
+  id?: number;
+}
+
+interface ApiModeratorAction {
+  id?: number;
+}
+
+interface ApiMedia {
+  attribution?: string;
+  flags?: ApiFlag[];
+  hidden?: boolean;
+  id?: number;
+  license_code?: string;
+  moderator_actions?: ApiModeratorAction[];
+  uuid?: string;
+}
+
+interface ApiPhoto extends ApiMedia {
+  original_dimensions?: {
+    height?: number;
+    width?: number;
+  };
+  url?: string;
+}
+
+interface ApiSound extends ApiMedia {
+  file_content_type?: string;
+  file_url?: string;
+  native_sound_id?: number;
+}
+
+export interface ApiObservationPhoto {
+  id?: number;
+  photo?: ApiPhoto;
+  position?: number;
+  uuid?: string;
+}
+
+export interface ApiObservationSound {
+  id?: number;
+  sound?: ApiSound;
+  position?: number;
+  uuid?: string;
+}
+
 export interface ApiObservation {
+  observation_photos?: ApiObservationPhoto[];
+  observation_sounds?: ApiObservationSound[];
   user?: ApiUser;
   uuid: string;
 }
