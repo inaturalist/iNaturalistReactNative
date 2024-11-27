@@ -5,8 +5,8 @@ import {
   useEffect,
   useState
 } from "react";
-import { predictImage } from "sharedHelpers/cvModel.ts";
 import { log } from "sharedHelpers/logger";
+import { predictImage } from "sharedHelpers/mlModel.ts";
 
 const logger = log.extend( "useOfflineSuggestions" );
 

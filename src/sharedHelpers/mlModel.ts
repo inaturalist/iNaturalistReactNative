@@ -2,7 +2,8 @@ import i18next from "i18next";
 import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
 import RNFS from "react-native-fs";
-import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
+import type { Location } from "vision-camera-plugin-inatvision";
+import { getPredictionsForImage, getPredictionsForLocation } from "vision-camera-plugin-inatvision";
 
 const modelFiles = {
   // The iOS model and taxonomy files always have to be referenced in the
@@ -12,8 +13,10 @@ const modelFiles = {
   // build phase script. See ios/link-inat-model-files.sh
   IOSMODEL: "cvmodel.mlmodelc",
   IOSTAXONOMY: "taxonomy.json",
+  IOSGEOMODEL: "geomodel.mlmodelc",
   ANDROIDMODEL: Config.ANDROID_MODEL_FILE_NAME,
-  ANDROIDTAXONOMY: Config.ANDROID_TAXONOMY_FILE_NAME
+  ANDROIDTAXONOMY: Config.ANDROID_TAXONOMY_FILE_NAME,
+  ANDROIDGEOMODEL: Config.ANDROID_GEO_MODEL_FILE_NAME
 };
 
 export const modelPath: string = Platform.select( {
@@ -24,6 +27,11 @@ export const modelPath: string = Platform.select( {
 export const taxonomyPath: string = Platform.select( {
   ios: `${RNFS.MainBundlePath}/${modelFiles.IOSTAXONOMY}`,
   android: `${RNFS.DocumentDirectoryPath}/${modelFiles.ANDROIDTAXONOMY}`
+} );
+
+export const geoModelPath: string = Platform.select( {
+  ios: `${RNFS.MainBundlePath}/${modelFiles.IOSMODEL}`,
+  android: `${RNFS.DocumentDirectoryPath}/${modelFiles.ANDROIDMODEL}`
 } );
 
 export const modelVersion = Config.CV_MODEL_VERSION;
@@ -53,6 +61,12 @@ export const predictImage = ( uri: string ) => {
   } );
 };
 
+export const predictLocation = ( location: Location ) => getPredictionsForLocation( {
+  geoModelPath,
+  taxonomyPath,
+  location
+} );
+
 const addCameraFilesAndroid = () => {
   const copyFilesAndroid = ( source, destination ) => {
     RNFS.copyFileAssets( source, destination )
@@ -70,6 +84,7 @@ const addCameraFilesAndroid = () => {
   RNFS.readDirAssets( "camera" ).then( results => {
     const model = modelFiles.ANDROIDMODEL;
     const taxonomy = modelFiles.ANDROIDTAXONOMY;
+    const geoModel = modelFiles.ANDROIDGEOMODEL;
 
     const hasModel = results.find( r => r.name === model );
 
@@ -77,6 +92,7 @@ const addCameraFilesAndroid = () => {
     if ( hasModel !== undefined ) {
       copyFilesAndroid( `camera/${model}`, modelPath );
       copyFilesAndroid( `camera/${taxonomy}`, taxonomyPath );
+      copyFilesAndroid( `camera/${geoModel}`, geoModelPath );
     } else {
       Alert.alert(
         i18next.t( "No-model-found" ),
