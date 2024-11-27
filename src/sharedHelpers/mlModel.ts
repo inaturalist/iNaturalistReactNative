@@ -30,8 +30,8 @@ export const taxonomyPath: string = Platform.select( {
 } );
 
 export const geoModelPath: string = Platform.select( {
-  ios: `${RNFS.MainBundlePath}/${modelFiles.IOSMODEL}`,
-  android: `${RNFS.DocumentDirectoryPath}/${modelFiles.ANDROIDMODEL}`
+  ios: `${RNFS.MainBundlePath}/${modelFiles.IOSGEOMODEL}`,
+  android: `${RNFS.DocumentDirectoryPath}/${modelFiles.ANDROIDGEOMODEL}`
 } );
 
 export const modelVersion = Config.CV_MODEL_VERSION;
