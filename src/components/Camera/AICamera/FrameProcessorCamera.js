@@ -12,7 +12,11 @@ import React, {
 } from "react";
 import { Platform } from "react-native";
 import { Worklets } from "react-native-worklets-core";
-import { modelPath, modelVersion, taxonomyPath } from "sharedHelpers/cvModel.ts";
+import {
+  modelPath,
+  modelVersion,
+  taxonomyPath
+} from "sharedHelpers/mlModel.ts";
 import {
   orientationPatchFrameProcessor,
   usePatchedRunAsync
