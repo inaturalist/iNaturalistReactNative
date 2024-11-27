@@ -17,7 +17,14 @@ if ! [ -f $SRCROOT/$IOS_TAXONOMY_FILE_NAME ]; then
   exit 1
 fi
 
+if ! [ -f $SRCROOT/$IOS_GEO_MODEL_FILE_NAME ]; then
+  echo "Geo model file does not exist at $SRCROOT/$IOS_GEO_MODEL_FILE_NAME"
+  exit 1
+fi
+
 echo "Linking $IOS_MODEL_FILE_NAME to cvmodel.mlmodel..."
 ln -f $SRCROOT/$IOS_MODEL_FILE_NAME $SRCROOT/cvmodel.mlmodel
 echo "Linking $IOS_TAXONOMY_FILE_NAME to taxonomy.json..."
 ln -f $SRCROOT/$IOS_TAXONOMY_FILE_NAME $SRCROOT/taxonomy.json
+echo "Linking $IOS_GEO_MODEL_FILE_NAME to geomodel.mlmodel..."
+ln -f $SRCROOT/$IOS_GEO_MODEL_FILE_NAME $SRCROOT/geomodel.mlmodel
