@@ -50,6 +50,9 @@ const iosDestinationPath = path.join( __dirname, "..", "ios" );
   const androidTaxonomyFile = process.env.ANDROID_TAXONOMY_FILE_NAME;
   const iosModelFile = process.env.IOS_MODEL_FILE_NAME;
   const iosTaxonomyFile = process.env.IOS_TAXONOMY_FILE_NAME;
+  // TODO: donwload an example geo model from the internet
+  // BLOCKED: not having a small example geo model
+  // const iosGeoModelFile = process.env.IOS_GEO_MODEL_FILE_NAME;
 
   console.log( "Copying model files to assets folder..." );
   await fs.mkdir( androidDestinationPath, { recursive: true } );
