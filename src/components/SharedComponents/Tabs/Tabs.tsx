@@ -1,5 +1,6 @@
 import Divider from "components/SharedComponents/Divider/Divider";
 import Heading4 from "components/SharedComponents/Typography/Heading4.tsx";
+import Heading5 from "components/SharedComponents/Typography/Heading5.tsx";
 import { View } from "components/styledComponents";
 import React from "react";
 import { GestureResponderEvent, TouchableOpacity } from "react-native";
@@ -9,15 +10,20 @@ export interface Tab {
   id: string;
   text: string;
   testID?: string;
-  onPress: ( _event: GestureResponderEvent ) => void
+  onPress: ( _event: GestureResponderEvent ) => void;
 }
 
 interface Props {
-  tabs: Tab[];
   activeId: string;
+  tabs: Tab[];
+  TextComponent?: typeof Heading4 | typeof Heading5;
 }
 
-const Tabs = ( { tabs = [], activeId }: Props ) => {
+const Tabs = ( {
+  activeId,
+  tabs = [],
+  TextComponent = Heading4
+}: Props ) => {
   const { t } = useTranslation();
   return (
     <>
@@ -43,12 +49,12 @@ const Tabs = ( { tabs = [], activeId }: Props ) => {
                   expanded: active
                 }}
               >
-                <Heading4
+                <TextComponent
                   className="self-center pt-4 pb-3"
                   maxFontSizeMultiplier={1.5}
                 >
                   {text}
-                </Heading4>
+                </TextComponent>
                 { active && <View className="h-[4px] rounded-t bg-darkGray" /> }
               </TouchableOpacity>
             </View>
