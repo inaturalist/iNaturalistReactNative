@@ -9,7 +9,7 @@ import { useTranslation } from "sharedHooks";
 
 type Props = {
   layout?: string,
-  isConnected?: boolean,
+  isConnected?: boolean | null,
   hideLoadingWheel: boolean,
   explore?: boolean
 }

@@ -70,6 +70,7 @@ exports[`Tabs should render correctly 1`] = `
       >
         <Text
           maxFontSizeMultiplier={1.5}
+          numberOfLines={1}
           style={
             [
               {
@@ -184,6 +185,7 @@ exports[`Tabs should render correctly 1`] = `
       >
         <Text
           maxFontSizeMultiplier={1.5}
+          numberOfLines={1}
           style={
             [
               {

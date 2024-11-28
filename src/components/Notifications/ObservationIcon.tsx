@@ -1,4 +1,4 @@
-// @flow
+import type { ApiObservation } from "api/types";
 import classnames from "classnames";
 import {
   INatIcon
@@ -7,15 +7,16 @@ import { Image, View } from "components/styledComponents";
 import * as React from "react";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  photoUri: string,
-  soundUri: string
+interface Props {
+  observation?: ApiObservation;
 }
 
 const ObservationIcon = ( {
-  photoUri, soundUri
-}: Props ): React.Node => {
-  if ( !photoUri && !soundUri ) {
+  observation
+}: Props ) => {
+  const photoUri = observation?.observation_photos?.[0]?.photo?.url;
+  const hasSound = ( observation?.observation_sounds?.length || 0 ) > 0;
+  if ( !photoUri && !hasSound ) {
     return (
       <View
         className={classnames(
@@ -31,13 +32,13 @@ const ObservationIcon = ( {
         <INatIcon
           name="noevidence"
           size={24}
-          color={colors.darkGray}
+          color={String( colors?.darkGray )}
         />
       </View>
     );
   }
 
-  if ( !photoUri && soundUri ) {
+  if ( !photoUri && hasSound ) {
     return (
       <View
         className={classnames(
@@ -53,7 +54,7 @@ const ObservationIcon = ( {
         <INatIcon
           name="sound"
           size={24}
-          color={colors.darkGray}
+          color={String( colors?.darkGray )}
         />
       </View>
     );

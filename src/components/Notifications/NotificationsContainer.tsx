@@ -1,10 +1,9 @@
-// @flow
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
-import NotificationsList from "components/Notifications/NotificationsList";
-import type { Node } from "react";
+import type { ApiObservationsUpdatesParams } from "api/types";
+import NotificationsList from "components/Notifications/NotificationsList.tsx";
 import React, { useEffect, useState } from "react";
 import { log } from "sharedHelpers/logger";
 import { useInfiniteNotificationsScroll, usePerformance } from "sharedHooks";
@@ -12,19 +11,27 @@ import { isDebugMode } from "sharedHooks/useDebugMode";
 
 const logger = log.extend( "NotificationsContainer" );
 
-const NotificationsContainer = (): Node => {
+interface Props {
+  notificationParams: ApiObservationsUpdatesParams;
+  onRefresh?: ( ) => void;
+}
+
+const NotificationsContainer = ( {
+  notificationParams,
+  onRefresh: onRefreshProp
+}: Props ) => {
   const navigation = useNavigation( );
   const { isConnected } = useNetInfo( );
   const [refreshing, setRefreshing] = useState( false );
 
   const {
-    notifications,
     fetchNextPage,
-    refetch,
-    isInitialLoading,
+    isError,
     isFetching,
-    isError
-  } = useInfiniteNotificationsScroll( );
+    isInitialLoading,
+    notifications,
+    refetch
+  } = useInfiniteNotificationsScroll( notificationParams );
 
   const { loadTime } = usePerformance( {
     isLoading: isInitialLoading
@@ -44,6 +51,7 @@ const NotificationsContainer = (): Node => {
   const onRefresh = async () => {
     setRefreshing( true );
     await refetch();
+    if ( typeof ( onRefreshProp ) === "function" ) onRefreshProp( );
     setRefreshing( false );
   };
 

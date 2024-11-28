@@ -50,7 +50,7 @@ const NotificationsIconContainer = ( {
       // observation, because that might make the indicator go away
       observationMarkedAsViewedAt
     ],
-    optsWithAuth => fetchUnviewedObservationUpdatesCount( optsWithAuth ),
+    optsWithAuth => fetchUnviewedObservationUpdatesCount( {}, optsWithAuth ),
     {
       enabled: !!( currentUser )
     }

@@ -1,28 +1,35 @@
-// @flow
-
-import NotificationsListItem from "components/Notifications/NotificationsListItem";
+import type { ApiNotification } from "api/types";
+import NotificationsListItem from "components/Notifications/NotificationsListItem.tsx";
 import {
-  ActivityIndicator, Body2, CustomFlashList,
+  ActivityIndicator,
+  Body2,
+  CustomFlashList,
   CustomRefreshControl,
   InfiniteScrollLoadingWheel,
-  OfflineNotice, ViewWrapper
+  OfflineNotice
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useCallback } from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";
+import type { Notification } from "sharedHooks/useInfiniteNotificationsScroll";
 
 type Props = {
-  data: Object,
+  data: ApiNotification[],
   isError?: boolean,
   isFetching?: boolean,
   isInitialLoading?: boolean,
-  isConnected: boolean,
-  onEndReached: Function,
-  reload: Function,
+  isConnected: boolean | null,
+  onEndReached: ( ) => void,
+  onRefresh: ( ) => void,
   refreshing: boolean,
-  onRefresh: Function
+  reload: ( ) => void
 };
+
+interface RenderItemProps {
+  // It is used, not sure what the problem is
+  // eslint-disable-next-line react/no-unused-prop-types
+  item: Notification;
+}
 
 const NotificationsList = ( {
   data,
@@ -31,15 +38,15 @@ const NotificationsList = ( {
   isInitialLoading,
   isConnected,
   onEndReached,
+  onRefresh,
   reload,
-  refreshing,
-  onRefresh
-}: Props ): Node => {
+  refreshing
+}: Props ) => {
   const { t } = useTranslation( );
   const user = useCurrentUser( );
 
-  const renderItem = useCallback( ( { item } ) => (
-    <NotificationsListItem item={item} />
+  const renderItem = useCallback( ( { item }: RenderItemProps ) => (
+    <NotificationsListItem notification={item} />
   ), [] );
 
   const renderItemSeparator = ( ) => <View className="border-b border-lightGray" />;
@@ -98,20 +105,18 @@ const NotificationsList = ( {
   );
 
   return (
-    <ViewWrapper>
-      <CustomFlashList
-        ItemSeparatorComponent={renderItemSeparator}
-        ListEmptyComponent={renderEmptyComponent}
-        ListFooterComponent={renderFooter}
-        data={data}
-        estimatedItemSize={85}
-        keyExtractor={item => item.id}
-        onEndReached={onEndReached}
-        refreshing={isFetching}
-        renderItem={renderItem}
-        refreshControl={refreshControl}
-      />
-    </ViewWrapper>
+    <CustomFlashList
+      ItemSeparatorComponent={renderItemSeparator}
+      ListEmptyComponent={renderEmptyComponent}
+      ListFooterComponent={renderFooter}
+      data={data}
+      estimatedItemSize={85}
+      keyExtractor={( item: ApiNotification ) => item.id}
+      onEndReached={onEndReached}
+      refreshing={isFetching}
+      refreshControl={refreshControl}
+      renderItem={renderItem}
+    />
   );
 };
 

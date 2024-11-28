@@ -1,34 +1,23 @@
-// @flow
-import ObservationIcon from "components/Notifications/ObservationIcon";
-import ObsNotificationText from "components/Notifications/ObsNotificationText";
+import ObservationIcon from "components/Notifications/ObservationIcon.tsx";
+import ObsNotificationText from "components/Notifications/ObsNotificationText.tsx";
 import {
   Body4,
   INatIcon
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { RealmContext } from "providers/contexts.ts";
-import type { Node } from "react";
 import React from "react";
 import { formatDifferenceForHumans } from "sharedHelpers/dateAndTime.ts";
 import { useTranslation } from "sharedHooks";
+import type { Notification } from "sharedHooks/useInfiniteNotificationsScroll";
 import colors from "styles/tailwindColors";
 
-const { useRealm } = RealmContext;
+interface Props {
+  notification: Notification
+}
 
-    type Props = {
-      item: Object
-    };
-
-const ObsNotification = ( { item }: Props ): Node => {
+const ObsNotification = ( { notification }: Props ) => {
   const { i18n } = useTranslation( );
-  const { identification, comment } = item;
-  const type = item?.notifier_type;
-  const { user } = identification || comment;
-  const realm = useRealm( );
-
-  const observation = realm.objectForPrimaryKey( "Observation", item.resource_uuid );
-  const photoUrl = observation?.observationPhotos[0]?.photo?.url;
-  const soundsUrl = observation?.observationSounds[0]?.sound?.file_url;
+  const { notifier_type: type } = notification;
 
   const renderIcon = () => {
     switch ( type ) {
@@ -44,9 +33,9 @@ const ObsNotification = ( { item }: Props ): Node => {
     <View
       className="shrink flex-row space-x-[10px]"
     >
-      <ObservationIcon photoUri={photoUrl} soundUri={soundsUrl} />
+      <ObservationIcon observation={notification.resource} />
       <View className="flex-col shrink justify-center space-y-[8px]">
-        <ObsNotificationText type={type} userName={user.login} />
+        <ObsNotificationText notification={notification} />
         <View className="flex-row space-x-[8px]">
           {
             type
@@ -54,14 +43,14 @@ const ObsNotification = ( { item }: Props ): Node => {
                 <INatIcon
                   name={renderIcon( )}
                   size={14}
-                  color={colors.darkGray}
+                  color={String( colors?.darkGray )}
                 />
               )
           }
-          {item.created_at
+          {notification.created_at
             && (
               <Body4>
-                {formatDifferenceForHumans( item.created_at, i18n )}
+                {formatDifferenceForHumans( notification.created_at, i18n )}
               </Body4>
             )}
         </View>

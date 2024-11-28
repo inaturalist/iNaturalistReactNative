@@ -253,7 +253,7 @@ function formatISONoSeconds( date: Date ) {
   return isoDateNoSeconds;
 }
 
-function formatDifferenceForHumans( date: Date, i18n: i18next ) {
+function formatDifferenceForHumans( date: Date | string, i18n: i18next ) {
   const d = typeof date === "string"
     ? parseISO( date )
     : new Date( date );
