@@ -1,14 +1,12 @@
 // @flow
 
+import { tailwindFontMedium } from "appConstants/fontFamilies.ts";
 import INatIconButton from "components/SharedComponents/Buttons/INatIconButton.tsx";
 import type { Node } from "react";
 import React from "react";
-import { Pressable } from "react-native";
 import { Menu } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
-
-import Body3 from "./Typography/Body3";
 
 type Props = {
   accessibilityHint?: string,
@@ -20,6 +18,36 @@ type Props = {
   visible: boolean,
   white?: boolean,
 }
+
+const FIRST_MENU_ITEM_STYLE = {
+  padding: 14
+};
+
+const MENU_ITEM_STYLE = {
+  ...FIRST_MENU_ITEM_STYLE,
+  borderTopColor: colors.lightGray,
+  borderTopWidth: 1
+};
+
+const MENU_CONTENT_STYLE = {
+  backgroundColor: colors.white,
+  borderRadius: 8,
+  // Negative padding gets rid of extra padding rn-paper seems to add
+  paddingTop: -10,
+  paddingBottom: -10,
+  // Not ideal, but seems to work in most situations to get the menu to appear
+  // below the button that opens it
+  top: 40
+};
+
+// Should be the same as Body3, we just can't use that component *and* get all
+// the advantages of Menu.Item, hence the custom style
+const MENU_ITEM_TITLE_STYLE = {
+  fontSize: 13,
+  fontFamily: tailwindFontMedium,
+  lineHeight: 18,
+  color: colors.darkGray
+};
 
 const KebabMenu = ( {
   accessibilityHint,
@@ -33,10 +61,6 @@ const KebabMenu = ( {
   const { t } = useTranslation( );
   const openMenu = ( ) => setVisible( true );
   const closeMenu = ( ) => setVisible( false );
-
-  const menuContentStyle = {
-    backgroundColor: colors.white
-  };
 
   const anchorButton = (
     <INatIconButton
@@ -58,7 +82,7 @@ const KebabMenu = ( {
     <Menu
       visible={visible}
       onDismiss={closeMenu}
-      contentStyle={menuContentStyle}
+      contentStyle={MENU_CONTENT_STYLE}
       anchor={anchorButton}
     >
       {children}
@@ -68,28 +92,30 @@ const KebabMenu = ( {
 
 type KebabMenuItemProps = {
   accessibilityLabel?: string,
+  isFirst?: boolean,
   onPress: Function,
-  testID: string,
+  testID?: string,
   title: string
 }
 const KebabMenuItem = ( {
   accessibilityLabel,
+  isFirst,
   onPress,
   testID,
   title
 }: KebabMenuItemProps ): Node => (
-  <Pressable
+  <Menu.Item
+    accessibilityLabel={accessibilityLabel}
     testID={testID}
-    accessibilityRole="button"
-    accessibilityLabel={accessibilityLabel || title}
     onPress={onPress}
-  >
-    <Body3
-      className="m-[14px] text-darkGray"
-    >
-      {title}
-    </Body3>
-  </Pressable>
+    style={
+      isFirst
+        ? FIRST_MENU_ITEM_STYLE
+        : MENU_ITEM_STYLE
+    }
+    titleStyle={MENU_ITEM_TITLE_STYLE}
+    title={title}
+  />
 );
 
 KebabMenu.Item = KebabMenuItem;

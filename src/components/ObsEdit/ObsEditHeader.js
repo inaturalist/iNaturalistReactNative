@@ -10,7 +10,6 @@ import React, {
   useCallback, useState
 } from "react";
 import { BackHandler } from "react-native";
-import { Menu } from "react-native-paper";
 import Observation from "realmModels/Observation";
 import { useExitObservationFlow, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
@@ -142,7 +141,8 @@ const ObsEditHeader = ( {
       setVisible={setKebabMenuVisible}
       large
     >
-      <Menu.Item
+      <KebabMenu.Item
+        isFirst
         testID="Header.delete-observation"
         onPress={( ) => {
           setDeleteSheetVisible( true );
@@ -156,7 +156,7 @@ const ObsEditHeader = ( {
       />
       { observations.length > 1 && (
         <>
-          <Menu.Item
+          <KebabMenu.Item
             testID="Header.save-all-observation"
             onPress={async ( ) => {
               await Promise.all(
@@ -167,7 +167,7 @@ const ObsEditHeader = ( {
             }}
             title={t( "Save-all-observations" )}
           />
-          <Menu.Item
+          <KebabMenu.Item
             testID="Header.delete-all-observation"
             onPress={( ) => {
               setDiscardObservationSheetVisible( true );
