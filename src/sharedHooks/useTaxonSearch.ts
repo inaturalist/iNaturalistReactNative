@@ -17,7 +17,7 @@ function saveTaxaToRealm( taxa: Taxon[], realm: Realm ) {
     taxa.forEach( remoteTaxon => {
       realm.create(
         "Taxon",
-        { ...remoteTaxon, _synced_at: new Date( ) },
+        Taxon.forUpdate( remoteTaxon ),
         UpdateMode.Modified
       );
     } );
@@ -73,8 +73,12 @@ const useTaxonSearch = ( taxonQuery = "" ) => {
       // "name TEXT $0"
       // + " || preferredCommonName TEXT $0"
       // + " || name CONTAINS[c] $0"
-      "name CONTAINS[c] $0"
-      + " || preferredCommonName CONTAINS[c] $0"
+
+      // "name CONTAINS[c] $0"
+      // + " || preferredCommonName CONTAINS[c] $0"
+
+      "_searchableName TEXT $0 || _searchableName CONTAINS[c] $0"
+
       + " LIMIT(50)",
       taxonQuery
     );

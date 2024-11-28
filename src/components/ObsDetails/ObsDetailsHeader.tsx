@@ -23,6 +23,7 @@ const isTablet = DeviceInfo.isTablet( );
 
 interface Props {
   belongsToCurrentUser?: boolean,
+  invertToWhiteBackground: boolean,
   observationId: number,
   rightIconDarkGray?: boolean,
   uuid: string
@@ -30,6 +31,7 @@ interface Props {
 
 const ObsDetailsHeader = ( {
   belongsToCurrentUser,
+  invertToWhiteBackground,
   observationId,
   rightIconDarkGray = false,
   uuid
@@ -40,15 +42,12 @@ const ObsDetailsHeader = ( {
   const prepareObsEdit = useStore( state => state.prepareObsEdit );
   const setMyObsOffsetToRestore = useStore( state => state.setMyObsOffsetToRestore );
 
+  const whiteIcon = !rightIconDarkGray && !invertToWhiteBackground;
+
   return (
     <LinearGradient
       className={classnames(
-        "absolute",
-        "top-0",
-        "w-full",
-        "flex-row",
-        "justify-between",
-        "h-12"
+        "h-16 transparent"
       )}
       colors={[
         isTablet
@@ -59,6 +58,7 @@ const ObsDetailsHeader = ( {
     >
       <OverlayHeader
         testID="ObsDetails.BackButton"
+        invertToWhiteBackground={invertToWhiteBackground}
         rightHeaderButton={
           belongsToCurrentUser
             ? (
@@ -69,13 +69,13 @@ const ObsDetailsHeader = ( {
                   navigateToObsEdit( navigation, setMyObsOffsetToRestore );
                 }}
                 icon="pencil"
-                color={!rightIconDarkGray
+                color={whiteIcon
                   ? colors.white
                   : colors.darkGray}
                 accessibilityLabel={t( "Edit" )}
               />
             )
-            : <HeaderKebabMenu observationId={observationId} white={!rightIconDarkGray} />
+            : <HeaderKebabMenu observationId={observationId} white={whiteIcon} />
         }
       />
     </LinearGradient>

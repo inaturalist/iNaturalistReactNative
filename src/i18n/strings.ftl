@@ -873,6 +873,8 @@ Projects = Projects
 PROJECTS-X = PROJECTS ({ $projectCount })
 # Accessibility label for pull-to-refresh on MyObservations list and grid view
 Pull-to-refresh-and-sync-observations = Pull to refresh and sync observations
+# Accessibility label for pull-to-refresh on Notifications list
+Pull-to-refresh-notifications = Pull to refresh notifications
 QUALITY-GRADE = QUALITY GRADE
 # label in project requirements
 Quality-Grade = Quality Grade

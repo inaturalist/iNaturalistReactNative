@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   Body2,
   CustomFlashList,
+  CustomRefreshControl,
   InfiniteScrollLoadingWheel,
   OfflineNotice
 } from "components/SharedComponents";
@@ -19,6 +20,8 @@ type Props = {
   isInitialLoading?: boolean,
   isConnected: boolean | null,
   onEndReached: ( ) => void,
+  onRefresh: ( ) => void,
+  refreshing: boolean,
   reload: ( ) => void
 };
 
@@ -35,7 +38,9 @@ const NotificationsList = ( {
   isInitialLoading,
   isConnected,
   onEndReached,
-  reload
+  onRefresh,
+  reload,
+  refreshing
 }: Props ) => {
   const { t } = useTranslation( );
   const user = useCurrentUser( );
@@ -91,6 +96,14 @@ const NotificationsList = ( {
     t
   ] );
 
+  const refreshControl = (
+    <CustomRefreshControl
+      accessibilityLabel={t( "Pull-to-refresh-notifications" )}
+      refreshing={refreshing}
+      onRefresh={onRefresh}
+    />
+  );
+
   return (
     <CustomFlashList
       ItemSeparatorComponent={renderItemSeparator}
@@ -101,6 +114,7 @@ const NotificationsList = ( {
       keyExtractor={( item: ApiNotification ) => item.id}
       onEndReached={onEndReached}
       refreshing={isFetching}
+      refreshControl={refreshControl}
       renderItem={renderItem}
     />
   );
