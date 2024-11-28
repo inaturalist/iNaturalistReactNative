@@ -3,10 +3,15 @@ import {
   ViewWrapper
 } from "components/SharedComponents";
 import React, { useState } from "react";
+import { EventRegister } from "react-native-event-listeners";
 import { useTranslation } from "sharedHooks";
 
 import NotificationsContainer from "./NotificationsContainer";
-import NotificationsTab, { OTHER_TAB, OWNER_TAB } from "./NotificationsTab";
+import NotificationsTab, {
+  NOTIFICATIONS_REFRESHED,
+  OTHER_TAB,
+  OWNER_TAB
+} from "./NotificationsTab";
 
 const Notifications = ( ) => {
   const [activeTab, setActiveTab] = useState<typeof OWNER_TAB | typeof OTHER_TAB>( OWNER_TAB );
@@ -31,10 +36,16 @@ const Notifications = ( ) => {
         TabComponent={NotificationsTab}
       />
       {activeTab === OWNER_TAB && (
-        <NotificationsContainer notificationParams={{ observations_by: "owner" }} />
+        <NotificationsContainer
+          notificationParams={{ observations_by: "owner" }}
+          onRefresh={( ) => EventRegister.emit( NOTIFICATIONS_REFRESHED, OWNER_TAB )}
+        />
       )}
       {activeTab === OTHER_TAB && (
-        <NotificationsContainer notificationParams={{ observations_by: "following" }} />
+        <NotificationsContainer
+          notificationParams={{ observations_by: "following" }}
+          onRefresh={( ) => EventRegister.emit( NOTIFICATIONS_REFRESHED, OTHER_TAB )}
+        />
       )}
     </ViewWrapper>
   );

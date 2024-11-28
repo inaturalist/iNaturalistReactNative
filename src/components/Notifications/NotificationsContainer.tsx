@@ -12,11 +12,13 @@ import { isDebugMode } from "sharedHooks/useDebugMode";
 const logger = log.extend( "NotificationsContainer" );
 
 interface Props {
-  notificationParams: ApiObservationsUpdatesParams
+  notificationParams: ApiObservationsUpdatesParams;
+  onRefresh?: ( ) => void;
 }
 
 const NotificationsContainer = ( {
-  notificationParams
+  notificationParams,
+  onRefresh: onRefreshProp
 }: Props ) => {
   const navigation = useNavigation( );
   const { isConnected } = useNetInfo( );
@@ -49,6 +51,7 @@ const NotificationsContainer = ( {
   const onRefresh = async () => {
     setRefreshing( true );
     await refetch();
+    if ( typeof ( onRefreshProp ) === "function" ) onRefreshProp( );
     setRefreshing( false );
   };
 
