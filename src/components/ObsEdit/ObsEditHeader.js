@@ -4,18 +4,21 @@ import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/nativ
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { BackButton, Heading2, KebabMenu } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, {
   useCallback, useState
 } from "react";
 import { BackHandler } from "react-native";
-import { Menu } from "react-native-paper";
+import Observation from "realmModels/Observation";
 import { useExitObservationFlow, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
 import DeleteObservationSheet from "./Sheets/DeleteObservationSheet";
 import DiscardChangesSheet from "./Sheets/DiscardChangesSheet";
 import DiscardObservationSheet from "./Sheets/DiscardObservationSheet";
+
+const { useRealm } = RealmContext;
 
 type Props = {
   observations: Array<Object>,
@@ -39,6 +42,7 @@ const ObsEditHeader = ( {
   const unsynced = !currentObservation?._synced_at;
   const savedLocally = currentObservation?._created_at;
   const exitObservationFlow = useExitObservationFlow( );
+  const realm = useRealm( );
 
   const discardChanges = useCallback( ( ) => {
     setDiscardChangesSheetVisible( false );
@@ -137,28 +141,48 @@ const ObsEditHeader = ( {
       setVisible={setKebabMenuVisible}
       large
     >
-      <Menu.Item
+      <KebabMenu.Item
+        isFirst
         testID="Header.delete-observation"
         onPress={( ) => {
           setDeleteSheetVisible( true );
           setKebabMenuVisible( false );
         }}
-        title={t( "Delete-observation" )}
+        title={
+          observations.length > 1
+            ? t( "Delete-current-observation" )
+            : t( "Delete-observation" )
+        }
       />
       { observations.length > 1 && (
-        <Menu.Item
-          testID="Header.delete-all-observation"
-          onPress={( ) => {
-            setDiscardObservationSheetVisible( true );
-            setKebabMenuVisible( false );
-          }}
-          title={t( "Delete-all-observations" )}
-        />
+        <>
+          <KebabMenu.Item
+            testID="Header.save-all-observation"
+            onPress={async ( ) => {
+              await Promise.all(
+                observations.map( o => Observation.saveLocalObservationForUpload( o, realm ) )
+              );
+              exitObservationFlow( );
+              setKebabMenuVisible( false );
+            }}
+            title={t( "Save-all-observations" )}
+          />
+          <KebabMenu.Item
+            testID="Header.delete-all-observation"
+            onPress={( ) => {
+              setDiscardObservationSheetVisible( true );
+              setKebabMenuVisible( false );
+            }}
+            title={t( "Delete-all-observations" )}
+          />
+        </>
       ) }
     </KebabMenu>
   ), [
+    exitObservationFlow,
     kebabMenuVisible,
     observations,
+    realm,
     setDeleteSheetVisible,
     t
   ] );

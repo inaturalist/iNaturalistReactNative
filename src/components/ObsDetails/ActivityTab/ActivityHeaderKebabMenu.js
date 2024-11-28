@@ -6,7 +6,6 @@ import {
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
-import { Menu } from "react-native-paper";
 
 type Props = {
   current: boolean,
@@ -44,7 +43,8 @@ const ActivityItemKebabMenu = ( {
       >
         {current === true
           ? (
-            <Menu.Item
+            <KebabMenu.Item
+              isFirst
               onPress={async ( ) => {
                 setShowWithdrawIDSheet( true );
                 setKebabMenuVisible( false );
@@ -54,7 +54,8 @@ const ActivityItemKebabMenu = ( {
             />
           )
           : (
-            <Menu.Item
+            <KebabMenu.Item
+              isFirst
               onPress={async ( ) => {
                 updateIdentification( { current: true } );
                 setKebabMenuVisible( false );
@@ -72,7 +73,7 @@ const ActivityItemKebabMenu = ( {
       setVisible={setKebabMenuVisible}
       accessibilityLabel={t( "Comment-options" )}
     >
-      <Menu.Item
+      <KebabMenu.Item
         onPress={async ( ) => {
           setShowEditCommentSheet( true );
           setKebabMenuVisible( false );
@@ -80,7 +81,7 @@ const ActivityItemKebabMenu = ( {
         title={t( "Edit-comment" )}
         testID="MenuItem.EditComment"
       />
-      <Menu.Item
+      <KebabMenu.Item
         onPress={async ( ) => {
           setShowDeleteCommentSheet( true );
           setKebabMenuVisible( false );

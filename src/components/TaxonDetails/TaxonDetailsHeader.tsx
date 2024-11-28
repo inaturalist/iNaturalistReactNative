@@ -52,6 +52,7 @@ const TaxonDetailsHeader = ( {
             white={!invertToWhiteBackground}
           >
             <KebabMenu.Item
+              isFirst
               testID="MenuItem.OpenInBrowser"
               onPress={( ) => {
                 openExternalWebBrowser( taxonUrl );

@@ -339,6 +339,9 @@ DELETE = DELETE
 Delete-all-observations = Delete all observations
 Delete-comment = Delete comment
 DELETE-COMMENT--question = DELETE COMMENT?
+# Button that deletes the current observation in a batch of several observations
+Delete-current-observation = Delete current observation
+# Button that deletes an observation
 Delete-observation = Delete observation
 DELETE-OBSERVATION--question = DELETE OBSERVATION?
 # Button label or accessibility label for an element that deletes a photo
@@ -1018,6 +1021,8 @@ SAVE = SAVE
 # Label for a button that persists something
 Save = Save
 SAVE-ALL = SAVE ALL
+# Button that saves all observations in a batch of multiple observations
+Save-all-observations = Save all observations
 SAVE-CHANGES = SAVE CHANGES
 SAVE-FOR-LATER = SAVE FOR LATER
 SAVE-LOCATION = SAVE LOCATION

@@ -10,10 +10,8 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
 import createOpenLink from "react-native-open-maps";
-import { Menu } from "react-native-paper";
 import Observation from "realmModels/Observation";
 import { useCurrentUser } from "sharedHooks";
 
@@ -29,7 +27,7 @@ const DETAILS_MAP_MODAL_STYLE = { margin: 0 };
 const headingClass = "mt-[20px] mb-[11px] text-darkGray";
 const sectionClass = "mx-[15px] mb-[20px]";
 
-const LocationSection = ( { observation }: Props ): Node => {
+const LocationSection = ( { observation }: Props ) => {
   const currentUser = useCurrentUser( );
   const [locationKebabMenuVisible, setLocationKebabMenuVisible] = useState( false );
   const [showMapModal, setShowMapModal] = useState( false );
@@ -102,13 +100,14 @@ const LocationSection = ( { observation }: Props ): Node => {
             visible={locationKebabMenuVisible}
             setVisible={setLocationKebabMenuVisible}
           >
-            <Menu.Item
+            <KebabMenu.Item
+              isFirst
               title={t( "Share-location" )}
               onPress={() => createOpenLink(
                 { query: `${latitude},${longitude}` }
               )}
             />
-            <Menu.Item
+            <KebabMenu.Item
               title={t( "Copy-coordinates" )}
               onPress={() => Clipboard.setString( coordinateString )}
             />

@@ -4,7 +4,6 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Alert, Platform, Share } from "react-native";
-import { Menu } from "react-native-paper";
 
 const observationsUrl = "https://www.inaturalist.org/observations";
 
@@ -50,7 +49,8 @@ const HeaderKebabMenu = ( {
       accessibilityHint={t( "Show-observation-options" )}
       large
     >
-      <Menu.Item
+      <KebabMenu.Item
+        isFirst
         onPress={handleShare}
         title={t( "Share" )}
         testID="MenuItem.Share"
