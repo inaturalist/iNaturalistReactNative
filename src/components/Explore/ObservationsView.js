@@ -41,7 +41,8 @@ const ObservationsView = ( {
     isFetchingNextPage,
     fetchNextPage,
     totalBounds,
-    totalResults
+    totalResults,
+    isLoading
   } = useInfiniteExploreScroll( { params: queryParams, enabled: canFetch } );
   const {
     isLandscapeMode,
@@ -74,6 +75,7 @@ const ObservationsView = ( {
       ? screenHeight
       : screenWidth;
   }
+
   return (
     <View
       className="flex-1 flex-row h-full overflow-hidden w-[200%]"
@@ -101,6 +103,7 @@ const ObservationsView = ( {
       />
       <MapView
         observationBounds={totalBounds}
+        isLoading={isLoading}
         queryParams={queryParams}
         currentMapRegion={currentMapRegion}
         setCurrentMapRegion={setCurrentMapRegion}

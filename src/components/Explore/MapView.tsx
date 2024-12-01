@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Button,
   Map
 } from "components/SharedComponents";
@@ -29,12 +30,14 @@ interface Props {
   };
   currentMapRegion: Region;
   setCurrentMapRegion: ( Region ) => void;
+  isLoading: boolean
 }
 
 const MapView = ( {
   observationBounds,
   queryParams,
   currentMapRegion,
+  isLoading,
   setCurrentMapRegion
 }: Props ) => {
   const { t } = useTranslation( );
@@ -98,19 +101,23 @@ const MapView = ( {
           </View>
         )}
       </View>
-      <Map
-        currentLocationButtonClassName="left-5 bottom-20"
-        onPanDrag={onPanDrag}
-        onRegionChangeComplete={handleRegionChangeComplete}
-        region={region}
-        showCurrentLocationButton
-        showSwitchMapTypeButton
-        showsCompass={false}
-        switchMapTypeButtonClassName="left-20 bottom-20"
-        showsUserLocation
-        tileMapParams={tileMapParams}
-        withPressableObsTiles={tileMapParams !== null}
-      />
+      {isLoading
+        ? <View className="h-full flex justify-center"><ActivityIndicator size={50} /></View>
+        : (
+          <Map
+            currentLocationButtonClassName="left-5 bottom-20"
+            onPanDrag={onPanDrag}
+            onRegionChangeComplete={handleRegionChangeComplete}
+            region={region}
+            showCurrentLocationButton
+            showSwitchMapTypeButton
+            showsCompass={false}
+            switchMapTypeButtonClassName="left-20 bottom-20"
+            showsUserLocation
+            tileMapParams={tileMapParams}
+            withPressableObsTiles={tileMapParams !== null}
+          />
+        )}
     </View>
   );
 };

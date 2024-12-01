@@ -17,6 +17,7 @@ import Observation from "realmModels/Observation";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation.ts";
 import { useDebugMode, useDeviceOrientation } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
+import colors from "styles/tailwindColors";
 
 import CurrentLocationButton from "./CurrentLocationButton";
 import {
@@ -328,6 +329,7 @@ const Map = ( {
         className={className}
         initialRegion={initialRegion}
         loadingEnabled
+        loadingIndicatorColor={colors.inatGreen}
         mapType={currentMapType}
         minZoomLevel={MIN_ZOOM_LEVEL}
         onMapReady={onMapReady}
