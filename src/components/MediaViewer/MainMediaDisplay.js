@@ -6,8 +6,15 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback, useMemo, useState } from "react";
+import React, {
+  useCallback, useMemo, useRef, useState
+} from "react";
 import { FlatList } from "react-native";
+import {
+  GestureHandlerRootView,
+  NativeViewGestureHandler,
+  PanGestureHandler
+} from "react-native-gesture-handler";
 import Photo from "realmModels/Photo";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
 import useTranslation from "sharedHooks/useTranslation";
@@ -22,6 +29,7 @@ type Props = {
   // $FlowIgnore
   horizontalScroll: unknown,
   onDeletePhoto?: Function,
+  onClose?: Function,
   onDeleteSound?: Function,
   photos: Array<{
     id?: number,
@@ -43,12 +51,15 @@ const MainMediaDisplay = ( {
   horizontalScroll,
   onDeletePhoto = ( ) => undefined,
   onDeleteSound = ( ) => undefined,
+  onClose = ( ) => undefined,
   photos,
   sounds = [],
   selectedMediaIndex,
   setSelectedMediaIndex
 }: Props ): Node => {
   const { t } = useTranslation( );
+  const panRef = useRef();
+  const listRef = useRef();
   const { screenWidth } = useDeviceOrientation( );
   const [displayHeight, setDisplayHeight] = useState( 0 );
   const [zooming, setZooming] = useState( false );
@@ -194,6 +205,15 @@ const MainMediaDisplay = ( {
     selectedMediaIndex
   ] );
 
+  const onGestureEvent = useCallback( event => {
+    const { translationY, velocityY } = event.nativeEvent;
+
+    if ( translationY > 50 && velocityY > 500 ) {
+      // Close media viewer on swipe up
+      onClose();
+    }
+  }, [onClose] );
+
   return (
     <View
       className="flex-1"
@@ -202,19 +222,29 @@ const MainMediaDisplay = ( {
         setDisplayHeight( height );
       }}
     >
-      <FlatList
-        data={items}
-        renderItem={renderItem}
-        initialScrollIndex={selectedMediaIndex}
-        getItemLayout={getItemLayout}
-        horizontal
-        pagingEnabled
-        // Disable scrolling when image is zooming
-        scrollEnabled={!zooming}
-        showsHorizontalScrollIndicator={false}
-        ref={horizontalScroll}
-        onMomentumScrollEnd={handleScrollEndDrag}
-      />
+      <GestureHandlerRootView>
+        <PanGestureHandler
+          ref={panRef}
+          simultaneousHandlers={listRef}
+          onGestureEvent={onGestureEvent}
+        >
+          <NativeViewGestureHandler ref={listRef} simultaneousHandlers={panRef}>
+            <FlatList
+              data={items}
+              renderItem={renderItem}
+              initialScrollIndex={selectedMediaIndex}
+              getItemLayout={getItemLayout}
+              horizontal
+              pagingEnabled
+              // Disable scrolling when image is zooming
+              scrollEnabled={!zooming}
+              showsHorizontalScrollIndicator={false}
+              ref={horizontalScroll}
+              onMomentumScrollEnd={handleScrollEndDrag}
+            />
+          </NativeViewGestureHandler>
+        </PanGestureHandler>
+      </GestureHandlerRootView>
     </View>
   );
 };
