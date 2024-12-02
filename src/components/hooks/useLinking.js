@@ -30,6 +30,8 @@ const useLinking = ( currentUser: ?Object ) => {
 
     if ( uuid ) {
       navigateToObsDetails( navigation, uuid );
+      // ObsId reset for the case the same link is pressed twice and the obsId is the same
+      setObservationId( null );
     }
   }, [navigation, observationId] );
 
