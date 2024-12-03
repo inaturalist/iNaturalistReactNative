@@ -1,4 +1,10 @@
-import { fireEvent, screen, userEvent } from "@testing-library/react-native";
+import {
+  fireEvent,
+  screen,
+  userEvent,
+  waitFor,
+  within
+} from "@testing-library/react-native";
 import ExploreContainer from "components/Explore/ExploreContainer";
 import inatjs from "inaturalistjs";
 import React from "react";
@@ -36,7 +42,9 @@ const switchToObservationsView = async ( ) => {
   await actor.press( speciesViewIcon );
   const observationsRadioButton = await screen.findByText( "Observations" );
   await actor.press( observationsRadioButton );
-  const confirmButton = await screen.findByText( /EXPLORE OBSERVATIONS/ );
+  const bottomSheet = await screen.findByTestId( "ExploreObsViewSheet" );
+  const confirmButton = await within( bottomSheet ).findByText( /EXPLORE OBSERVATIONS/ );
+  expect( confirmButton ).toBeVisible( );
   await actor.press( confirmButton );
   const obsTaxonNameElt = await screen.findByText( mockRemoteObservation.taxon.name );
   expect( obsTaxonNameElt ).toBeTruthy( );
@@ -75,13 +83,37 @@ describe( "Explore", ( ) => {
 
     const exploreObsList = await screen.findByTestId( "ExploreObservationsAnimatedList" );
 
-    fireEvent.scroll( exploreObsList, {
-      nativeEvent: {
-        contentOffset: { y: -100 },
-        contentSize: { height: 1000, width: 100 },
-        layoutMeasurement: { height: 500, width: 100 }
-      }
-    } );
+    // This should be called by default to load some content
     expect( inatjs.observations.search ).toHaveBeenCalled( );
+
+    // Now we want to make sure it gets called again, so we clear it
+    inatjs.observations.search.mockClear( );
+    expect( inatjs.observations.search ).not.toHaveBeenCalled( );
+    await waitFor( async ( ) => {
+      await exploreObsList.props.refreshControl.props.onRefresh( );
+      expect( inatjs.observations.search ).toHaveBeenCalled( );
+    } );
+  } );
+
+  it( "should trigger new observation fetch when filters change", async ( ) => {
+    renderAppWithComponent( <ExploreContainer /> );
+    await switchToObservationsView( );
+
+    // Clear the mock so we can make sure it gets called again
+    inatjs.observations.search.mockClear( );
+    expect( inatjs.observations.search ).not.toHaveBeenCalled( );
+    // Open filters, change one, and apply
+    const filtersButton = await screen.findByLabelText( "Filters" );
+    fireEvent.press( filtersButton );
+    const rgLabel = await screen.findByText( "Research Grade" );
+    fireEvent.press( rgLabel );
+    const applyButton = await screen.findByText( "APPLY FILTERS" );
+    expect( applyButton.disabled ).toBeFalsy( );
+    fireEvent.press( applyButton );
+
+    // Changing a filter should trigger a call to this endpoint
+    await waitFor( ( ) => {
+      expect( inatjs.observations.search ).toHaveBeenCalled( );
+    } );
   } );
 } );
