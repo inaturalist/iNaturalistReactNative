@@ -104,19 +104,18 @@ const ObsListItemDemo = ( ) => (
       <Heading2 className="my-2">Synced</Heading2>
       <ObsListItem
         observation={{ uuid: "the-uuid", _synced_at: new Date( ) }}
-        uploadState={false}
       />
       <Heading2 className="my-2">Upload needed</Heading2>
-      <ObsListItem observation={{ uuid: "the-uuid" }} />
+      <ObsListItem observation={{ uuid: "the-uuid" }} uploadProgress={0} />
       <Heading2 className="my-2">Upload in progress</Heading2>
       <ObsListItem
         observation={{ uuid: "the-uuid" }}
-        uploadState={{ uploadProgress: { "the-uuid": 0.4 } }}
+        uploadProgress={0.4}
       />
       <Heading2 className="my-2">Upload complete, w/ animation</Heading2>
       <ObsListItem
         observation={{ uuid: "the-uuid" }}
-        uploadState={{ uploadProgress: { "the-uuid": 1 } }}
+        uploadProgress={1}
       />
       <Heading2 className="my-2">Upload complete, w/ animation, w/ ID</Heading2>
       <ObsListItem
@@ -124,17 +123,18 @@ const ObsListItemDemo = ( ) => (
           uuid: "the-uuid",
           identifications: [{ uuid: "another-uuid", current: true }]
         }}
-        uploadState={{ uploadProgress: { "the-uuid": 1 } }}
+        uploadProgress={1}
       />
       <Heading2 className="my-2">Upload complete, before animation</Heading2>
       <ObsListItem
         observation={{ uuid: "the-uuid" }}
-        uploadState={{ uploadProgress: { "the-uuid": 10 } }}
+        uploadProgress={10}
       />
       <Heading2 className="my-2">Upload complete, overlay of animated elements</Heading2>
       <ObsListItem
         observation={{ uuid: "the-uuid" }}
-        uploadState={{ uploadProgress: { "the-uuid": 11 } }}
+        uploadProgress={11}
+        showUploadStatus
       />
     </View>
   </ScrollViewWrapper>

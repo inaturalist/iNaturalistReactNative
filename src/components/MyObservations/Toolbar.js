@@ -6,12 +6,12 @@ import {
   Body4,
   INatIcon,
   INatIconButton,
-  RotatingINatIconButton
+  RotatingINatIconButton,
+  UploadProgressBar
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { ProgressBar } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
@@ -165,13 +165,7 @@ const Toolbar = ( {
           className="-mr-[7px]"
         />
       </View>
-      <ProgressBar
-        progress={progress}
-        color={colors.inatGreen}
-        // eslint-disable-next-line react-native/no-inline-styles
-        style={{ backgroundColor: "transparent" }}
-        visible={progress > 0}
-      />
+      <UploadProgressBar progress={progress} />
     </View>
   );
 };

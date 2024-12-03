@@ -54,7 +54,7 @@ setup_permissions(
 # ```
 # flipper_config = ENV["NO_FLIPPER"] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
 
-linkage = ENV["USE_FRAMEWORKS"]
+linkage = ENV.fetch( "USE_FRAMEWORKS", nil )
 unless linkage.nil?
   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
   use_frameworks! linkage: linkage.to_sym
@@ -127,7 +127,7 @@ target "iNaturalistReactNative" do
       end
     end
 
-    installer.target_installation_results.pod_target_installation_results.each do | _pod_name, inst_result |
+    installer.target_installation_results.pod_target_installation_results.each_value do | inst_result |
       inst_result.native_target.build_configurations.each do | build_config |
         # For third party modules who have React-bridging dependency to search correct headers
         build_config.build_settings["HEADER_SEARCH_PATHS"] ||= "$(inherited) "

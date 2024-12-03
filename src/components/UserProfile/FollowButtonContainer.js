@@ -2,7 +2,7 @@
 
 import { createRelationships, updateRelationships } from "api/relationships";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Alert } from "react-native";
 import { log } from "sharedHelpers/logger";
 import { useAuthenticatedMutation, useTranslation } from "sharedHooks";
@@ -29,16 +29,9 @@ const FollowButtonContainer = ( {
   userId
 }: Props ): Node => {
   const [loading, setLoading] = useState( false );
-  const [following, setFollowing] = useState( false );
   const { t } = useTranslation( );
 
-  useEffect( ( ) => {
-    if ( relationship?.following === true ) {
-      setFollowing( true );
-      return;
-    }
-    setFollowing( false );
-  }, [relationship, refetchRelationship] );
+  const following = relationship?.following;
 
   const createRelationshipsMutation = useAuthenticatedMutation(
     ( params, optsWithAuth ) => createRelationships( params, optsWithAuth )

@@ -1,8 +1,9 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
-import AddObsModal from "components/AddObsModal.tsx";
+import AddObsModal from "components/AddObsModal/AddObsModal.tsx";
 import MyObservationsHeader from "components/MyObservations/MyObservationsHeader";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
+import OnboardingCarouselModal from "components/Onboarding/OnboardingCarouselModal";
 import {
   Heading2,
   ScrollableWithStickyHeader,
@@ -14,6 +15,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Pressable } from "react-native";
+import { useOnboardingShown } from "sharedHelpers/installData.ts";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -24,6 +26,7 @@ type Props = {
   currentUser: Object,
   handleIndividualUploadPress: Function,
   handleSyncButtonPress: Function,
+  handlePullToRefresh: Function,
   isConnected: boolean,
   isFetchingNextPage: boolean,
   layout: "list" | "grid",
@@ -43,6 +46,7 @@ const MyObservations = ( {
   currentUser,
   handleIndividualUploadPress,
   handleSyncButtonPress,
+  handlePullToRefresh,
   isConnected,
   isFetchingNextPage,
   layout,
@@ -59,6 +63,7 @@ const MyObservations = ( {
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
+  const [onboardingShown, setOnboardingShown] = useOnboardingShown( );
   const [showModal, setShowModal] = useState( false );
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const navAndCloseModal = ( screen, params ) => {
@@ -115,6 +120,10 @@ const MyObservations = ( {
   return (
     <>
       <ViewWrapper>
+        <OnboardingCarouselModal
+          showModal={!onboardingShown}
+          closeModal={() => setOnboardingShown( true )}
+        />
         <ScrollableWithStickyHeader
           onScroll={onScroll}
           renderHeader={setStickyAt => (
@@ -133,11 +142,13 @@ const MyObservations = ( {
             <ObservationsFlashList
               dataCanBeFetched={!!currentUser}
               data={observations.filter( o => o.isValid() )}
+              handlePullToRefresh={handlePullToRefresh}
               handleIndividualUploadPress={handleIndividualUploadPress}
               onScroll={animatedScrollEvent}
               hideLoadingWheel={!isFetchingNextPage || !currentUser}
               isFetchingNextPage={isFetchingNextPage}
               isConnected={isConnected}
+              obsListKey="MyObservations"
               layout={layout}
               onEndReached={onEndReached}
               onLayout={onListLayout}

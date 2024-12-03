@@ -46,6 +46,7 @@ const TakePhoto = ( {
       accessibilityState={{ disabled }}
       disabled={disabled}
       style={DROP_SHADOW}
+      testID="take-photo-button"
     >
       {showPrediction
         ? (

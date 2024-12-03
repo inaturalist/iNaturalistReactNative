@@ -76,14 +76,14 @@ const ActivityHeader = ( {
   const renderStatus = useCallback( () => {
     if ( flagged ) {
       return (
-        <Body4>
+        <Body4 maxFontSizeMultiplier={1}>
           {t( "Flagged" )}
         </Body4>
       );
     }
     if ( idWithdrawn ) {
       return (
-        <Body4>
+        <Body4 maxFontSizeMultiplier={1}>
           { t( "ID-Withdrawn" )}
         </Body4>
       );
@@ -104,7 +104,7 @@ const ActivityHeader = ( {
           categoryText = t( "supporting--identification" );
       }
       return (
-        <Body4>
+        <Body4 maxFontSizeMultiplier={1}>
           { categoryText }
         </Body4>
       );
@@ -119,7 +119,7 @@ const ActivityHeader = ( {
   ] );
 
   return (
-    <View className={classnames( "flex-row justify-between h-[26px] my-[11px]", classNameMargin )}>
+    <View className={classnames( "flex-row justify-between", classNameMargin )}>
       <InlineUser user={user} isConnected={isConnected} />
       <View className="flex-row items-center space-x-[15px] -mr-[15px]">
         {renderIcon()}
@@ -136,6 +136,7 @@ const ActivityHeader = ( {
               geoprivacy={geoprivacy}
               taxonGeoprivacy={taxonGeoprivacy}
               belongsToCurrentUser={belongsToCurrentUser}
+              maxFontSizeMultiplier={1}
             />
           )}
         </View>

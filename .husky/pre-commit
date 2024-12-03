@@ -14,7 +14,7 @@ else
 fi
 
 # Run lint and flow
-npm run lint
+npm run lint:fix
 
 # Generate translations from strings.ftl
 npm run translate

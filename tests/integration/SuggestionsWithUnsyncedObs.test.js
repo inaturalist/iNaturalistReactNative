@@ -15,6 +15,7 @@ import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import { renderAppWithObservations } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
+import { signIn, signOut } from "tests/helpers/user";
 import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
 
 const mockModelResult = {
@@ -59,14 +60,6 @@ const mockModelResultWithHuman = {
     } )
   ]
 };
-
-jest.mock( "sharedHooks/useDebugMode", ( ) => ( {
-  __esModule: true,
-  default: ( ) => ( {
-    isDebug: false
-  } ),
-  isDebugMode: ( ) => false
-} ) );
 
 jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
   OS: "ios",
@@ -142,11 +135,6 @@ const mockLocalTaxon = {
 };
 
 const mockUser = factory( "LocalUser" );
-// Mock useCurrentUser hook
-jest.mock( "sharedHooks/useCurrentUser", () => ( {
-  __esModule: true,
-  default: jest.fn( () => mockUser )
-} ) );
 
 const makeMockObservations = ( ) => ( [
   factory( "RemoteObservation", {
@@ -194,12 +182,16 @@ const navigateToSuggestionsViaAICamera = async ( options = {} ) => {
   const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
   await actor.press( addObsButton );
   const cameraButton = await screen.findByLabelText( /AI Camera/ );
+  await actor.press( cameraButton );
+
   if ( options.waitForLocation ) {
     await waitFor( ( ) => {
-      expect( watchPositionSuccess ).toHaveBeenCalled( );
+      expect( Geolocation.watchPosition ).toHaveReturnedWith( 0 );
     } );
+    await waitFor( ( ) => {
+      expect( watchPositionSuccess ).toHaveReturned( );
+    }, 100 );
   }
-  await actor.press( cameraButton );
   const takePhotoButton = await screen.findByLabelText( /Take photo/ );
   await actor.press( takePhotoButton );
   const addIDButton = await screen.findByText( /ADD AN ID/ );
@@ -247,12 +239,14 @@ const setupAppWithSignedInUser = async hasLocation => {
 // );
 
 describe( "from ObsEdit with human observation", ( ) => {
-  beforeEach( ( ) => {
+  beforeEach( async ( ) => {
+    await signIn( mockUser, { realm: global.mockRealms[__filename] } );
     inatjs.computervision.score_image
       .mockResolvedValue( makeResponse( [humanSuggestion, topSuggestion] ) );
   } );
 
   afterEach( ( ) => {
+    signOut( { realm: global.mockRealms[__filename] } );
     inatjs.computervision.score_image.mockReset( );
   } );
 
@@ -295,7 +289,7 @@ describe( "from ObsEdit with human observation", ( ) => {
 } );
 
 describe( "from AICamera", ( ) => {
-  global.withAnimatedTimeTravelEnabled( );
+  global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
   beforeEach( async ( ) => {
     inatjs.computervision.score_image
       .mockResolvedValue( makeResponse( [topSuggestion] ) );
@@ -322,7 +316,7 @@ describe( "from AICamera", ( ) => {
     // it( "should call score_image without location parameters if"
     //   + " ignore location pressed", async ( ) => {
     //   const { observations } = await setupAppWithSignedInUser( );
-    //   await navigateToSuggestionsViaAICamera( observations[0] );
+    //   await navigateToSuggestionsViaAICamera( );
     //   await waitFor( ( ) => {
     //     expect( inatjs.computervision.score_image ).toHaveBeenCalled( );
     //   } );
@@ -345,8 +339,8 @@ describe( "from AICamera", ( ) => {
 
   describe( "suggestions with location", ( ) => {
     it( "should call score_image with location parameters on first render", async ( ) => {
-      const { observations } = await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( observations[0], { waitForLocation: true } );
+      await setupAppWithSignedInUser( );
+      await navigateToSuggestionsViaAICamera( { waitForLocation: true } );
       const ignoreLocationButton = await screen.findByText( /IGNORE LOCATION/ );
       expect( ignoreLocationButton ).toBeVisible( );
       await waitFor( ( ) => {
@@ -371,11 +365,12 @@ describe( "from AICamera", ( ) => {
         hasPermissions: false,
         renderPermissionsGate: jest.fn( )
       } ) );
-      const { observations } = await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( observations[0] );
-      global.timeTravel( );
-      const usePermissionsButton = await screen.findByText( /IMPROVE THESE SUGGESTIONS/ );
-      expect( usePermissionsButton ).toBeVisible( );
+      await setupAppWithSignedInUser( );
+      await navigateToSuggestionsViaAICamera( );
+      await waitFor( ( ) => {
+        global.timeTravel( );
+        expect( screen.getByText( /IMPROVE THESE SUGGESTIONS/ ) ).toBeVisible( );
+      } );
       const ignoreLocationButton = screen.queryByText( /IGNORE LOCATION/ );
       expect( ignoreLocationButton ).toBeFalsy( );
       const useLocationButton = screen.queryByText( /USE LOCATION/ );
@@ -395,8 +390,8 @@ describe( "from AICamera", ( ) => {
   describe( "suggestions while offline", ( ) => {
     it( "should not call score_image and should not show any location buttons", async ( ) => {
       useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
-      const { observations } = await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( observations[0] );
+      await setupAppWithSignedInUser( );
+      await navigateToSuggestionsViaAICamera( );
       expect( inatjs.computervision.score_image ).not.toHaveBeenCalled( );
       const usePermissionsButton = screen.queryByText( /IMPROVE THESE SUGGESTIONS/ );
       expect( usePermissionsButton ).toBeFalsy( );
@@ -412,8 +407,8 @@ describe( "from AICamera", ( ) => {
         async ( ) => ( mockModelResult )
       );
       useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
-      const { observations } = await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( observations[0] );
+      await setupAppWithSignedInUser( );
+      await navigateToSuggestionsViaAICamera( );
       const topTaxonSuggestion = await screen.findByLabelText( /Choose top taxon/ );
       expect( topTaxonSuggestion ).toHaveProp(
         "testID",
@@ -427,11 +422,13 @@ describe( "from AICamera", ( ) => {
         async ( ) => ( mockModelResultNoConfidence )
       );
       useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
-      const { observations } = await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( observations[0] );
+      await setupAppWithSignedInUser( );
+      await navigateToSuggestionsViaAICamera( );
 
       const notConfidentText = await screen.findByText( /not confident enough to make a top ID suggestion/ );
-      expect( notConfidentText ).toBeVisible( );
+      await waitFor( ( ) => {
+        expect( notConfidentText ).toBeVisible( );
+      } );
       const otherSuggestion = await screen.findByTestId(
         `SuggestionsList.taxa.${mockModelResultNoConfidence.predictions[1].taxon_id}.checkmark`
       );
@@ -443,8 +440,8 @@ describe( "from AICamera", ( ) => {
         async ( ) => ( mockModelResultWithHuman )
       );
       useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
-      const { observations } = await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( observations[0] );
+      await setupAppWithSignedInUser( );
+      await navigateToSuggestionsViaAICamera( );
 
       const topTaxonSuggestion = await screen.findByLabelText( /Choose top taxon/ );
       const humanPrediction = mockModelResultWithHuman.predictions

@@ -4,7 +4,7 @@ import classnames from "classnames";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCamera";
 import {
   ActivityIndicator,
-  Body3, Body4, Heading4, INatIcon
+  Body2, Body3, Body4, Heading4, INatIcon
 } from "components/SharedComponents";
 import { MAX_SOUNDS_ALLOWED } from "components/SoundRecorder/SoundRecorder";
 import { Pressable, View } from "components/styledComponents";
@@ -80,12 +80,12 @@ const EvidenceSection = ( {
     return t( "Lat-Lon-Acc", {
       latitude,
       longitude,
-      accuracy: currentObservation?.positional_accuracy?.toFixed( 0 ) || t( "none" )
+      accuracy: currentObservation?.positional_accuracy?.toFixed( 0 ) || t( "none--accuracy" )
     } );
   };
 
   return (
-    <View className="mx-6 mt-4">
+    <View className="mt-4">
       {showAddEvidenceSheet && (
         <AddEvidenceSheet
           disableAddingMoreEvidence={
@@ -95,7 +95,7 @@ const EvidenceSection = ( {
           onClose={( ) => setShowAddEvidenceSheet( false )}
         />
       )}
-      <View className="flex-row">
+      <View className="ml-6 flex-row">
         <Heading4>{t( "EVIDENCE" )}</Heading4>
         <View className="ml-3">
           {passesEvidenceTest( ) && (
@@ -112,7 +112,7 @@ const EvidenceSection = ( {
       />
       <Pressable
         accessibilityRole="link"
-        className="flex-row flex-nowrap pb-3"
+        className="ml-6 flex-row flex-nowrap pt-1"
         onPress={onLocationPress}
         accessibilityLabel={t( "Edit-location" )}
       >
@@ -126,8 +126,8 @@ const EvidenceSection = ( {
           <View
             className={classnames(
               // This line makes sure the icon is centered in the height
-              // of the Body3 label next to it
-              "h-[18px] items-center justify-center",
+              // of the Body2 label next to it
+              "h-[19px] items-center justify-center",
               isFetchingLocation && "bottom-5"
             )}
           >
@@ -139,9 +139,9 @@ const EvidenceSection = ( {
             displayPlaceName( )
               ? (
                 <>
-                  <Body3 className={classnames( locationTextClassNames )}>
+                  <Body2 className={classnames( locationTextClassNames )}>
                     {displayPlaceName( )}
-                  </Body3>
+                  </Body2>
                   <Body4 className={classnames( locationTextClassNames )}>
                     {displayLocation( )}
                   </Body4>
@@ -155,10 +155,12 @@ const EvidenceSection = ( {
           }
         </View>
       </Pressable>
-      <DatePicker
-        currentObservation={currentObservation}
-        updateObservationKeys={updateObservationKeys}
-      />
+      <View className="ml-6">
+        <DatePicker
+          currentObservation={currentObservation}
+          updateObservationKeys={updateObservationKeys}
+        />
+      </View>
     </View>
   );
 };

@@ -19,20 +19,31 @@ const { width } = Dimensions.get( "screen" );
 const DELTA = 0.02;
 const CROSSHAIRLENGTH = 254;
 
-const setInitialRegion = currentObservation => ( {
-  // This was causing a crash when getting to the location picker before
-  // current location was fetched in the observation viewer
-  latitude:
-      currentObservation?.privateLatitude
-      || currentObservation?.latitude
-      || 0.0,
-  longitude:
-      currentObservation?.privateLongitude
-      || currentObservation?.longitude
-      || 0.0,
-  latitudeDelta: DELTA,
-  longitudeDelta: DELTA
-} );
+const setInitialRegion = currentObservation => {
+  const latitude = currentObservation?.privateLatitude
+    || currentObservation?.latitude;
+  const longitude = currentObservation?.privateLongitude
+    || currentObservation?.longitude;
+
+  const latitudeDelta = latitude && currentObservation?.positional_accuracy
+    ? metersToLatitudeDelta(
+      currentObservation?.positional_accuracy,
+      latitude
+    )
+    : 90;
+  const longitudeDelta = longitude && currentObservation?.positional_accuracy
+    ? latitudeDelta
+    : 180;
+
+  return {
+    // This was causing a crash when getting to the location picker before
+    // current location was fetched in the observation viewer
+    latitude: latitude || 0.0,
+    longitude: longitude || 0.0,
+    latitudeDelta,
+    longitudeDelta
+  };
+};
 
 const initializeMap = ( state, action ) => {
   const newMap = {

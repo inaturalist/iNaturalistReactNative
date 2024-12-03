@@ -9,7 +9,7 @@ import {
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useMemo, useRef, useState } from "react";
-import { Keyboard } from "react-native";
+import { Keyboard, Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 import useTranslation from "sharedHooks/useTranslation";
@@ -32,7 +32,7 @@ type Props = {
   textInputStyle?: Object
 }
 
-const CharLimit = ( { current = 0, limit = 1 } ) => {
+const CharLimit = ( { current = 0, limit = 1, t } ) => {
   let currentColor = "text-darkGrayDisabled";
   if ( current / limit >= 1 ) {
     currentColor = "text-warningRed";
@@ -40,13 +40,15 @@ const CharLimit = ( { current = 0, limit = 1 } ) => {
     currentColor = "text-warningRedDisabled";
   }
   return (
-    <View className="flex-row">
-      <Body3 className={currentColor}>
-        { current }
+    <View className="flex-row space-x-1">
+      <Body3 className={`${currentColor}`}>
+        { t( "Intl-number", { val: current } ) }
       </Body3>
       <Body3 className="text-darkGrayDisabled">
-        { " / " }
-        { limit }
+        /
+      </Body3>
+      <Body3 className="text-darkGrayDisabled">
+        { t( "Intl-number", { val: limit } ) }
       </Body3>
     </View>
   );
@@ -71,7 +73,7 @@ const TextInputSheet = ( {
   const [sheetHeight, setSheetHeight] = useState( 0 );
 
   // disable if user hasn't changed existing text
-  const confirmButtonDisabled = initialInput === input || !input;
+  const confirmButtonDisabled = initialInput === input || ( !input && !initialInput );
 
   const inputStyle = useMemo( ( ) => ( {
     height: Math.min(
@@ -128,6 +130,7 @@ const TextInputSheet = ( {
             style={[inputStyle, textInputStyle]}
             autoFocus
             defaultValue={input}
+            maxFontSizeMultiplier={2}
           />
           <View
             className={classnames(
@@ -138,11 +141,14 @@ const TextInputSheet = ( {
             )}
           >
             { maxLength && (
-              <CharLimit current={input?.length} limit={maxLength} />
+              <CharLimit current={input?.length} limit={maxLength} t={t} />
             ) }
             <Pressable
               onPress={() => {
                 textInputRef?.current?.clear();
+                if ( Platform.OS === "android" ) {
+                  setInput( "" );
+                }
               }}
               accessibilityHint={t( "Deletes-entered-text" )}
               accessibilityRole="button"

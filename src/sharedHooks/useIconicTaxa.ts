@@ -2,6 +2,7 @@ import { searchTaxa } from "api/taxa";
 import { RealmContext } from "providers/contexts.ts";
 import { useEffect, useState } from "react";
 import { UpdateMode } from "realm";
+import Taxon from "realmModels/Taxon";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useAuthenticatedQuery } from "sharedHooks";
 
@@ -16,7 +17,9 @@ const useIconicTaxa = ( options: { reload: boolean } = { reload: false } ) => {
   const queryKey = ["searchTaxa", reload];
   const { data: iconicTaxa } = useAuthenticatedQuery(
     queryKey,
-    ( ) => searchTaxa( { iconic: true } ),
+    optsWithAuth => searchTaxa( {
+      iconic: true
+    }, optsWithAuth ),
     { enabled }
   );
 
@@ -25,11 +28,11 @@ const useIconicTaxa = ( options: { reload: boolean } = { reload: false } ) => {
       setIsUpdatingRealm( true );
       safeRealmWrite( realm, ( ) => {
         iconicTaxa.forEach( taxon => {
-          realm.create( "Taxon", {
-            ...taxon,
-            isIconic: true,
-            _synced_at: new Date( )
-          }, UpdateMode.Modified );
+          realm.create(
+            "Taxon",
+            Taxon.forUpdate( taxon, { isIconic: true } ),
+            UpdateMode.Modified
+          );
         } );
       }, "modifying iconic taxa in useIconicTaxa" );
     }

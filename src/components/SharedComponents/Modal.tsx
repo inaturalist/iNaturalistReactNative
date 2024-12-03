@@ -15,6 +15,7 @@ interface Props {
   animationIn?: string;
   animationOut?: string;
   disableSwipeDirection?: boolean;
+  noAnimation?: boolean;
 }
 
 const modalStyle = {
@@ -37,6 +38,7 @@ const Modal = ( {
   closeModal,
   disableSwipeDirection,
   fullScreen = false,
+  noAnimation = false,
   modal,
   onModalHide,
   showModal,
@@ -66,6 +68,12 @@ const Modal = ( {
       onModalHide={onModalHide}
       animationIn={animationIn || "slideInUp"}
       animationOut={animationOut || "slideOutDown"}
+      animationInTiming={noAnimation
+        ? 1
+        : 300}
+      animationOutTiming={noAnimation
+        ? 1
+        : 300}
       // the following two lines prevent flickering
       // while modal is closing
       backdropTransitionOutTiming={0}

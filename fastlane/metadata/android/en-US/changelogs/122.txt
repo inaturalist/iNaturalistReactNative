@@ -1,0 +1,13 @@
+NEW
+* debug mode: customize taxonomy rollup threshold
+* preliminary RTL support
+
+UPDATED
+* debug mode: show date ranges on collection & umbrella projects
+
+FIXED
+* debug mode: date formats were not localized in Project Requirements
+* multiple taps on an observation opened it multiple times
+* debug mode: several minor layout problems on Project Details
+* scientific names were getting cut off in Explore at large font sizes
+* comments w/ resolved flags were appearing to be flagged (@israr002)

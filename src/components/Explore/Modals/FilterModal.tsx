@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import NumberBadge from "components/Explore/NumberBadge.tsx";
+import ProjectListItem from "components/ProjectList/ProjectListItem.tsx";
 import {
   Body1,
   Body2,
@@ -16,14 +17,13 @@ import {
   INatIconButton,
   List2,
   PickerSheet,
-  ProjectListItem,
   RadioButtonRow,
   RadioButtonSheet,
   ViewWrapper,
   WarningSheet
 } from "components/SharedComponents";
-import UserListItem from "components/SharedComponents/UserListItem";
 import { Pressable, ScrollView, View } from "components/styledComponents";
+import UserListItem from "components/UserList/UserListItem.tsx";
 import { RealmContext } from "providers/contexts.ts";
 import {
   DATE_OBSERVED,
@@ -40,6 +40,7 @@ import {
 } from "providers/ExploreContext.tsx";
 import React, { useState } from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";
+import type { LocationPermissionCallbacks } from "sharedHooks/useLocationPermission.tsx";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
@@ -59,6 +60,8 @@ const { useRealm } = RealmContext;
 interface Props {
   closeModal: () => void;
   filterByIconicTaxonUnknown: () => void;
+  renderLocationPermissionsGate: ( options: LocationPermissionCallbacks ) => React.FC;
+  requestLocationPermissions: ( ) => void;
   // TODO: type this properly when taxon has a type
   updateTaxon: ( taxon: null | { name: string } ) => void;
   // TODO: Param not typed yet, because ExploreLocationSearch is not typed yet
@@ -72,6 +75,8 @@ interface Props {
 const FilterModal = ( {
   closeModal,
   filterByIconicTaxonUnknown,
+  renderLocationPermissionsGate,
+  requestLocationPermissions,
   updateTaxon,
   updateLocation,
   updateUser,
@@ -183,7 +188,7 @@ const FilterModal = ( {
 
   const taxonomicRankValues = {
     [TAXONOMIC_RANK.none]: {
-      label: t( "NONE" ),
+      label: t( "NONE--ranks" ),
       value: TAXONOMIC_RANK.none
     },
     [TAXONOMIC_RANK.kingdom]: {
@@ -446,7 +451,7 @@ const FilterModal = ( {
 
   const establishmentValues = {
     [ESTABLISHMENT_MEAN.ANY]: {
-      label: t( "Any" ),
+      label: t( "Any--establishment-means" ),
       value: ESTABLISHMENT_MEAN.ANY
     },
     [ESTABLISHMENT_MEAN.INTRODUCED]: {
@@ -654,7 +659,12 @@ const FilterModal = ( {
           accessibilityLabel={t( "Go-back" )}
         />
         <View className="flex-1 items-center flex-row">
-          <Heading1 className="ml-3 wrap">{t( "Explore-Filters" )}</Heading1>
+          <Heading1
+            className="ml-3 wrap"
+            maxFontSizeMultiplier={1}
+          >
+            {t( "Explore-Filters" )}
+          </Heading1>
           {numberOfFilters !== 0 && (
             <View className="w-[50px] ml-3">
               <NumberBadge number={numberOfFilters} />
@@ -824,7 +834,7 @@ const FilterModal = ( {
               {user
                 ? (
                   <Pressable
-                    className="flex-row justify-between items-center"
+                    className="flex-row justify-around items-center"
                     accessibilityRole="button"
                     accessibilityLabel={t( "Change-user" )}
                     onPress={() => {
@@ -1335,8 +1345,10 @@ const FilterModal = ( {
         updateTaxon={updateTaxon}
       />
       <ExploreLocationSearchModal
-        showModal={showLocationSearchModal}
         closeModal={() => { setShowLocationSearchModal( false ); }}
+        renderPermissionsGate={renderLocationPermissionsGate}
+        requestPermissions={requestLocationPermissions}
+        showModal={showLocationSearchModal}
         updateLocation={updateLocation}
       />
       <ExploreUserSearchModal

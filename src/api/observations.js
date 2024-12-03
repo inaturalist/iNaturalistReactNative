@@ -69,7 +69,7 @@ const fetchRemoteObservations = async (
   uuids: Array<string>,
   params: Object = {},
   opts: Object = {}
-): Promise<?number> => {
+): Promise<?Array<Object>> => {
   try {
     const response = await inatjs.observations.fetch(
       uuids,
@@ -157,11 +157,12 @@ const fetchObservationUpdates = async (
 };
 
 const fetchUnviewedObservationUpdatesCount = async (
-  opts: Object
+  params: Object = {},
+  opts: Object = {}
 ): Promise<number> => {
   try {
     const { total_results: updatesCount } = await inatjs.observations.updates( {
-      observations_by: "owner",
+      ...params,
       viewed: false,
       per_page: 0
     }, opts );
@@ -184,7 +185,7 @@ const deleteRemoteObservation = async (
 
 const fetchObservers = async ( params: Object = {} ) : Promise<?Object> => {
   try {
-    return await inatjs.observations.observers( params );
+    return inatjs.observations.observers( params );
   } catch ( e ) {
     return handleError( e, { throw: true } );
   }
@@ -198,9 +199,12 @@ const fetchIdentifiers = async ( params: Object = {} ) : Promise<?Object> => {
   }
 };
 
-const fetchSpeciesCounts = async ( params: Object = {} ) : Promise<?Object> => {
+const fetchSpeciesCounts = async (
+  params: Object = {},
+  opts: Object = {}
+) : Promise<?Object> => {
   try {
-    return await inatjs.observations.speciesCounts( params );
+    return inatjs.observations.speciesCounts( params, opts );
   } catch ( e ) {
     return handleError( e );
   }

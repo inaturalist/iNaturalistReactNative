@@ -92,17 +92,100 @@ Run `npm run e2e:build:android && npm run e2e:test:android` to build the APK for
 
 ## Translations
 
-### Adding new text
+### Adding and changing new source strings
+
+Source strings are in `src/i18n/strings.ftl` and should be in US English. Don't edit the files in `src/i18n/l10n/` because they will get overwritten when we pull in translations. All translation is done by volunteers on [Crowdin](https://crowdin.com/editor/inaturalistios/724), so please follow these guidelines to make things easier for those generous people.
+
+1. **Labels should match content as closesly as possible** (without exceeding 100 characters)
+    * Bad
+        ```fluent
+        collection-project-screen-title = ABOUT COLLECTION PROJECTS
+        ```
+
+    * Good
+        ```fluent
+        ABOUT-COLLECTION-PROJECTS = ABOUT COLLECTION PROJECTS
+        ```
+
+1. **Labels should change when the content changes**
+    * Bad
+        * Old
+            ```fluent
+            ABOUT-COLLECTION-PROJECTS = ABOUT COLLECTION PROJECTS
+            ```
+
+        * New
+            ```fluent
+            ABOUT-COLLECTION-PROJECTS = ABOUT COLLECTION AND UMBRELLA PROJECTS
+            ```
+
+    * Good
+        * Old
+            ```fluent
+            ABOUT-COLLECTION-PROJECTS = ABOUT COLLECTION PROJECTS
+            ```
+
+        * New
+            ```fluent
+            ABOUT-COLLECTION-AND-UMBRELLA-PROJECTS = ABOUT COLLECTION AND UMBRELLA PROJECTS
+            ```
+
+1. **Annotate strings with comments** unless the string is very self-descriptive
+    * Bad
+        ```fluent
+        Change-date = Change date
+        ```
+
+        Is this a verb phrase or a noun phrase? Are we talking about spare change in your pocket?
+
+    * Good
+        ```fluent
+        # Label for a button that changes a selected date
+        Change-date = Change date
+        ```
+
+1. **Use double-dashes to append extra context to keys and to keep them unique and descriptive.** For example, translators might need to translate the word "Unknown" differently if it refers to a place or a taxon, so you might include both `Unknown--place = Unknown` and `Unknown--taxon = Unknown`
+1. **Accessibility hints** are used by screen readers to describe what happens
+when the user interacts with an element. The [iOS Guidelines](https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619585-accessibilityhint) define it as "A string that briefly describes the result of performing an action on the accessibility element." We write them in third person singular ending with a period
+1. **Pluralize text with a count** using [selectors](https://projectfluent.org/fluent/guide/selectors.html)
+    * Bad
+        ```fluent
+        x-observations = { $count } observations
+        ```
+
+    * Good
+        ```fluent
+        x-observations = { $count } { $count ->
+          [one] observation
+          *[other] observations
+        }
+        ```
+
+1. **Avoid variables when possible.** Variables make translation and static code checks harder
+    * Bad
+        ```fluent
+        quality-grade-with-label = Quality Grade: { $qualityGrade }
+        ```
+
+    * Good
+        ```fluent
+        quality-grade-with-label--research = Quality Grade: Research
+        quality-grade-with-label--needs-id = Quality Grade: Needs ID
+        quality-grade-with-label--casual = Quality Grade: Casual
+        ```
+
+        There are only 3 possible quality grades, so this can just be three separate strings. Translators don't have to worry about the possible values of `$qualityGrade` and it's much easier to check for unglobalized or unused keys.
+
+### Adding new text to code
 
 1. Add new strings in English to `src/i18n/strings.ftl` using [Fluent syntax](https://projectfluent.org/fluent/guide/), e.g.
-    ```Fluent
+    ```fluent
     # Header for a paragraph describing projects
     ABOUT-PROJECTS = ABOUT
     # Text describing what projects are
     projects-description =
       Projects are really great, probably iNat's best feature.
     ```
-    Try to match case and strike a balance between specificity and reusability when choosing a key. Please add context comments to help translators understand how the text is used, avoid variables whenever possible, and try to keep `strings.ftl` alphabetized by key.
 1. Run `npm run translate` to validate strings and build the JSON files i18next needs to access text in the app
 1. In a commponent, use the `useTranslation` hook to reference your new string, e.g.
     ```jsx
@@ -120,7 +203,7 @@ Run `npm run e2e:build:android && npm run e2e:test:android` to build the APK for
     When components need to be included around interpolated variables, use the `<Trans />` component:
 
     Fluent:
-    ```Fluent
+    ```fluent
     Welcome-user = <0>Welcome back,</0><1>{ $userHandle }</1>
     ```
 
@@ -129,7 +212,7 @@ Run `npm run e2e:build:android && npm run e2e:test:android` to build the APK for
     <Trans
       i18nKey="Welcome-user"
       parent={View}
-      values={{ userHandle: User.userHandle( currentUser ) }}
+      values={{ userHandle: currentUser?.login }}
       components={[
         <Subheading1 className="mt-5" />,
         <Heading1 />
@@ -137,7 +220,7 @@ Run `npm run e2e:build:android && npm run e2e:test:android` to build the APK for
     />
     ```
 
-### Translating text
+### Pushing / Pulling Translations
 
 We manage translations through Crowdin. Actually updating the translation files should be largely automated, but this is what it looks like to do it manually (you must have the [Crowdin CLI](https://github.com/crowdin/crowdin-cli) installed and have an [access token](https://crowdin.com/settings#api-key) associated with a Crowdin user that can post files to the specified project):
 
@@ -153,6 +236,7 @@ git commit -a -m "Updated translations"
 ```
 
 ## Styling
+
 We're using Nativewind, a styling system for React Native based on Tailwind CSS. Check the [Nativewind documentation](https://www.nativewind.dev/) to see what styles can be used in RN.
 
 ## Icons
@@ -225,6 +309,8 @@ fastlane prod
             1. Delete the observation you just made
             1. Go to Explore and view a taxon
             1. Change to observations view and view an observation
+            1. Go to the observers profile
+            1. Go to one project this user joined (if not available try another user)
             1. Sign in
             1. Make an observation by taking a new photo in the AI Camera; tap "Upload Now" to upload immediately; wait for upload to complete before moving on
             1. Make an observation by taking a new photo in the StandardCamera; save without upload
@@ -239,6 +325,13 @@ fastlane prod
             1. Make an observation without a photo
             1. Turn off airplane mode
             1. Upload from the toolbar on MyObs
+        1. Update
+            1. Remove the app from the device
+            1. Go to TestFlight and install the latest build
+            1. Sign in and make sure you have at least one uploaded observation with photo
+            1. Make one observation but keep it saved only, and not uploaded
+            1. Install a "Release" build on top of the TestFlight build
+            1. Upload the previously only saved observation
     1. Install a "release" build on an Android device and repeat iOS steps
 1. Write release notes based on commits since the last release. Try to keep them brief but emphasize what's new and what's fixed. Just keep them in a text editor; you'll save them at a later step.
 1. Edit `package.json` and update the `version` per semantic versioning rules: bump the patch version if the only changes were bug fixes, bump minor version if there were new features, and bump the major version if the app was completely re-written or can't import data from previous versions.
@@ -247,7 +340,8 @@ fastlane prod
 1. `bundle exec fastlane tag` to create a tag and bump the build number. You'll be prompted to enter those release notes you wrote. (:wq to save and exit)
 1. `bundle exec fastlane release` to build and push a release to Github
 1. `bundle exec fastlane internal` to distribute the builds to internal test groups in TestFlight and the Play Store
-1. If it's the end of the release cycle, prep an App Store release on App Store Connect using the latest build. Write custom release notes that summarize changes since the last App Store release (not since the last build). Submit for review with manual release control. Haven't figured out a good way to automate this, maybe impossible.
+1. If it's the end of the release cycle, `bundle exec fastlane prod` to prepare an App Store release on App Store Connect. You'll be prompted to write custom release notes that summarize changes since the last App Store release (not since the last build).
+After this command line call, attach the latest build to the new version in the App Store Connect UI on the web and submit for review with manual release control. Haven't figured out a good way to automate this without submitting to review at the same time, maybe impossible.
 1. Wait at least a day for internal testers to report any blocking problems
 1. `bundle exec fastlane beta` to distribute the builds to external test groups in TestFlight and the Play Store
 1. After receiving OK during iteration meeting, make App Store release available

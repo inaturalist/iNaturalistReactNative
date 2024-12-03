@@ -1,16 +1,9 @@
 import { searchObservations } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import Observation from "realmModels/Observation";
-import { log } from "sharedHelpers/logger";
 import { sleep } from "sharedHelpers/util.ts";
-import { isDebugMode } from "sharedHooks/useDebugMode";
-
-const logger = log.extend( "syncRemoteObservations" );
 
 async function syncRemoteObservations( realm, currentUserId: number, deletionsCompletedAt: Date ) {
-  if ( isDebugMode( ) ) {
-    logger.info( "calling getJWT" );
-  }
   const apiToken = await getJWT( );
   const searchParams = {
     user_id: currentUserId,

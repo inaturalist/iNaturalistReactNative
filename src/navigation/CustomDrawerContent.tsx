@@ -86,16 +86,16 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
       //   navigation: "search",
       //   icon: "magnifying-glass"
       // },
-      // projects: {
-      //   label: t( "PROJECTS" ),
-      //   navigation: "Projects",
-      //   icon: "briefcase"
-      // },
       // blog: {
       //   label: t( "BLOG" ),
       //   navigation: "Blog",
       //   icon: "laptop"
       // },
+      projects: {
+        label: t( "PROJECTS" ),
+        navigation: "Projects",
+        icon: "briefcase"
+      },
       about: {
         label: t( "ABOUT" ),
         navigation: "About",
@@ -142,12 +142,6 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
       };
     }
     if ( isDebug ) {
-      items.projects = {
-        label: t( "PROJECTS" ),
-        navigation: "Projects",
-        icon: "briefcase"
-      };
-
       items.debug = {
         label: "DEBUG",
         navigation: "Debug",
@@ -225,7 +219,7 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
       <View className="ml-3 justify-center">
         <Body1>
           {currentUser
-            ? User.userHandle( currentUser )
+            ? currentUser?.login
             : t( "Log-in-to-iNaturalist" )}
         </Body1>
         {currentUser && (

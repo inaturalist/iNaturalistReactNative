@@ -1,21 +1,22 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import FadeInOutView from "components/Camera/FadeInOutView";
-import useDeviceStorageFull from "components/Camera/hooks/useDeviceStorageFull";
 import useRotation from "components/Camera/hooks/useRotation.ts";
-import useTakePhoto from "components/Camera/hooks/useTakePhoto.ts";
 import useZoom from "components/Camera/hooks/useZoom.ts";
 import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useCallback } from "react";
 import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { convertOfflineScoreToConfidence } from "sharedHelpers/convertScores.ts";
-import { useDebugMode, useTranslation } from "sharedHooks";
+import { log } from "sharedHelpers/logger";
+import {
+  useDebugMode, usePerformance, useTranslation
+} from "sharedHooks";
+import { isDebugMode } from "sharedHooks/useDebugMode";
 import colors from "styles/tailwindColors";
 
 import {
@@ -31,6 +32,8 @@ import usePredictions from "./hooks/usePredictions";
 
 const isTablet = DeviceInfo.isTablet();
 
+const logger = log.extend( "AICamera" );
+
 // const exampleTaxonResult = {
 //   id: 12704,
 //   name: "Muscicapidae",
@@ -44,7 +47,12 @@ type Props = {
   device: Object,
   flipCamera: Function,
   handleCheckmarkPress: Function,
-  isLandscapeMode: boolean
+  isLandscapeMode: boolean,
+  toggleFlash: Function,
+  takingPhoto: boolean,
+  takePhotoAndStoreUri: Function,
+  takePhotoOptions: Object,
+  setAiSuggestion: Function
 };
 
 const AICamera = ( {
@@ -52,7 +60,12 @@ const AICamera = ( {
   device,
   flipCamera,
   handleCheckmarkPress,
-  isLandscapeMode
+  isLandscapeMode,
+  toggleFlash,
+  takingPhoto,
+  takePhotoAndStoreUri,
+  takePhotoOptions,
+  setAiSuggestion
 }: Props ): Node => {
   const hasFlash = device?.hasFlash;
   const { isDebug } = useDebugMode( );
@@ -69,6 +82,7 @@ const AICamera = ( {
   } = useRotation( );
   const {
     confidenceThreshold,
+    taxonomyRollupCutoff,
     fps,
     handleTaxaDetected,
     modelLoaded,
@@ -77,58 +91,44 @@ const AICamera = ( {
     setResult,
     cropRatio,
     setConfidenceThreshold,
+    setTaxonomyRollupCutoff,
     setFPS,
     setNumStoredResults,
     setCropRatio
   } = usePredictions( );
-  const {
-    takePhoto,
-    takePhotoOptions,
-    takingPhoto,
-    toggleFlash
-  } = useTakePhoto( camera, false, device );
   const [inactive, setInactive] = React.useState( false );
-  const { deviceStorageFull, showStorageFullAlert } = useDeviceStorageFull();
 
   const { t } = useTranslation();
-  const navigation = useNavigation();
+
+  const { loadTime } = usePerformance( {
+    isLoading: camera?.current !== null
+  } );
+  if ( isDebugMode( ) && loadTime ) {
+    logger.info( loadTime );
+  }
+
+  const resetCameraOnFocus = useCallback( ( ) => {
+    setResult( null );
+    resetZoom( );
+  }, [resetZoom, setResult] );
 
   // only show predictions when rank is order or lower, like we do on Seek
   const showPrediction = ( result && result?.taxon?.rank_level <= 40 ) || false;
-
-  React.useEffect( () => {
-    const unsubscribeBlur = navigation.addListener( "blur", () => {
-      setResult( null );
-      resetZoom( );
-    } );
-
-    return unsubscribeBlur;
-  }, [navigation, setResult, resetZoom] );
-
-  React.useEffect( () => {
-    const unsubscribeFocus = navigation.addListener( "focus", () => {
-      setResult( null );
-      resetZoom( );
-    } );
-
-    return unsubscribeFocus;
-  }, [navigation, setResult, resetZoom] );
-
-  const handlePress = async ( ) => {
-    if ( deviceStorageFull ) {
-      showStorageFullAlert();
-    }
-    await takePhoto( { replaceExisting: true, inactivateCallback: () => setInactive( true ) } );
-    handleCheckmarkPress( showPrediction
-      ? result
-      : null );
-  };
 
   const insets = useSafeAreaInsets( );
 
   const onFlipCamera = () => {
     resetZoom( );
     flipCamera( );
+  };
+
+  const handleTakePhoto = async ( ) => {
+    setAiSuggestion( showPrediction && result );
+    await takePhotoAndStoreUri( {
+      replaceExisting: true,
+      inactivateCallback: () => setInactive( true ),
+      navigateImmediately: true
+    } );
   };
 
   return (
@@ -138,6 +138,7 @@ const AICamera = ( {
           <FrameProcessorCamera
             cameraRef={camera}
             confidenceThreshold={confidenceThreshold}
+            taxonomyRollupCutoff={taxonomyRollupCutoff}
             device={device}
             fps={fps}
             numStoredResults={numStoredResults}
@@ -152,6 +153,7 @@ const AICamera = ( {
             pinchToZoom={pinchToZoom}
             takingPhoto={takingPhoto}
             inactive={inactive}
+            resetCameraOnFocus={resetCameraOnFocus}
           />
         </View>
       )}
@@ -179,7 +181,7 @@ const AICamera = ( {
                 asListItem={false}
                 clearBackground
                 confidence={convertOfflineScoreToConfidence( result?.score )}
-                handleCheckmarkPress={handlePress}
+                handleCheckmarkPress={handleCheckmarkPress}
                 hideNavButtons
                 taxon={result?.taxon}
                 testID={`AICamera.taxa.${result?.taxon?.id}`}
@@ -215,6 +217,7 @@ const AICamera = ( {
       <AICameraButtons
         handleZoomButtonPress={handleZoomButtonPress}
         confidenceThreshold={confidenceThreshold}
+        taxonomyRollupCutoff={taxonomyRollupCutoff}
         cropRatio={cropRatio}
         flipCamera={onFlipCamera}
         fps={fps}
@@ -223,12 +226,13 @@ const AICamera = ( {
         numStoredResults={numStoredResults}
         rotatableAnimatedStyle={rotatableAnimatedStyle}
         setConfidenceThreshold={setConfidenceThreshold}
+        setTaxonomyRollupCutoff={setTaxonomyRollupCutoff}
         setCropRatio={setCropRatio}
         setFPS={setFPS}
         setNumStoredResults={setNumStoredResults}
         showPrediction={showPrediction}
         showZoomButton={showZoomButton}
-        takePhoto={handlePress}
+        takePhoto={handleTakePhoto}
         takePhotoOptions={takePhotoOptions}
         takingPhoto={takingPhoto}
         toggleFlash={toggleFlash}

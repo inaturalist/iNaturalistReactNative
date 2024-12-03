@@ -12,6 +12,7 @@ import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import { renderApp } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
+import { signIn, signOut } from "tests/helpers/user";
 import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
 
 // We're explicitly testing navigation here so we want react-navigation
@@ -78,15 +79,15 @@ const topSuggestion = {
 };
 
 const mockUser = factory( "LocalUser" );
-// Mock useCurrentUser hook
-jest.mock( "sharedHooks/useCurrentUser", () => ( {
-  __esModule: true,
-  default: jest.fn( () => mockUser )
-} ) );
 
-beforeEach( ( ) => {
+beforeEach( async ( ) => {
+  await signIn( mockUser, { realm: global.mockRealms[__filename] } );
   useStore.setState( { isAdvancedUser: true } );
   inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
+} );
+
+afterEach( ( ) => {
+  signOut( { realm: global.mockRealms[__filename] } );
 } );
 
 const actor = userEvent.setup( );
@@ -125,7 +126,7 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
       expect( await screen.findByText( /Loading iNaturalist's AI Camera/ ) ).toBeVisible( );
       const closeButton = await screen.findByLabelText( /Close/ );
       await actor.press( closeButton );
-      expect( await screen.findByText( /Welcome to iNaturalist!/ ) ).toBeVisible( );
+      expect( await screen.findByText( /Welcome back/ ) ).toBeVisible( );
     } );
   } );
 

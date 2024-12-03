@@ -291,28 +291,38 @@ exports[`TaxonResult should render correctly 1`] = `
             ],
           ]
         }
-        testID="display-taxon-name"
+        testID="display-taxon-name.1"
       >
         <Text
           ellipsizeMode="tail"
-          maxFontSizeMultiplier={2}
+          maxFontSizeMultiplier={1.5}
           numberOfLines={3}
           style={
             [
               {
-                "fontSize": 17,
-                "lineHeight": 20.4,
-              },
-              {
                 "color": "#454545",
               },
               {
-                "fontFamily": "Lato-Medium",
+                "fontFamily": "Lato-Regular",
               },
               [
                 {
-                  "color": "#454545",
+                  "textAlign": "left",
                 },
+                [
+                  {
+                    "fontSize": 17,
+                    "lineHeight": 20.4,
+                  },
+                  {
+                    "fontFamily": "Lato-Medium",
+                  },
+                  [
+                    {
+                      "color": "#454545",
+                    },
+                  ],
+                ],
               ],
             ]
           }
@@ -324,22 +334,32 @@ exports[`TaxonResult should render correctly 1`] = `
           style={
             [
               {
-                "fontSize": 13,
-                "lineHeight": 18,
-              },
-              {
                 "color": "#454545",
               },
               {
-                "fontFamily": "Lato-Medium",
+                "fontFamily": "Lato-Regular",
               },
               [
                 {
-                  "color": "#454545",
+                  "textAlign": "left",
                 },
-                {
-                  "marginTop": 3,
-                },
+                [
+                  {
+                    "fontSize": 13,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Lato-Medium",
+                  },
+                  [
+                    {
+                      "color": "#454545",
+                    },
+                    {
+                      "marginTop": 3,
+                    },
+                  ],
+                ],
               ],
             ]
           }
@@ -347,29 +367,39 @@ exports[`TaxonResult should render correctly 1`] = `
           Family
            
           <Text
-            maxFontSizeMultiplier={2}
+            maxFontSizeMultiplier={1.5}
             style={
               [
-                {
-                  "fontSize": 13,
-                  "lineHeight": 18,
-                },
                 {
                   "color": "#454545",
                 },
                 {
-                  "fontFamily": "Lato-Medium",
+                  "fontFamily": "Lato-Regular",
                 },
                 [
                   {
-                    "fontWeight": "400",
+                    "textAlign": "left",
                   },
-                  {
-                    "color": "#454545",
-                  },
-                  {
-                    "fontWeight": "300",
-                  },
+                  [
+                    {
+                      "fontSize": 13,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Lato-Medium",
+                    },
+                    [
+                      {
+                        "fontWeight": "400",
+                      },
+                      {
+                        "color": "#454545",
+                      },
+                      {
+                        "fontWeight": "300",
+                      },
+                    ],
+                  ],
                 ],
               ]
             }

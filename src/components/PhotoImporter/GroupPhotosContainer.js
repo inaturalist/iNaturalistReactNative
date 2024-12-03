@@ -135,7 +135,6 @@ const GroupPhotosContainer = ( ): Node => {
     const newObservations = await Promise.all( groupedPhotos.map(
       ( { photos } ) => Observation.createObservationWithPhotos( photos )
     ) );
-    console.log( "[DEBUG GroupPhotosContainer.js] newObservations: ", newObservations );
     // If there are default attributes for new observations, assign them
     setObservations( newObservations.map( ( newObs, idx ) => ( {
       ...( idx === 0

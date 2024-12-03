@@ -1,6 +1,6 @@
 import Clipboard from "@react-native-clipboard/clipboard";
 import {
-  Body4,
+  Button,
   DetailsMap,
   Heading4,
   KebabMenu,
@@ -10,16 +10,16 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
 import createOpenLink from "react-native-open-maps";
-import { Menu } from "react-native-paper";
+import Observation from "realmModels/Observation";
 import { useCurrentUser } from "sharedHooks";
 
 import DetailsMapHeader from "./DetailsMapHeader";
+import ObscurationExplanation from "./ObscurationExplanation";
 
 interface Props {
-  observation: Object
+  observation: Observation
 }
 
 const DETAILS_MAP_MODAL_STYLE = { margin: 0 };
@@ -27,18 +27,13 @@ const DETAILS_MAP_MODAL_STYLE = { margin: 0 };
 const headingClass = "mt-[20px] mb-[11px] text-darkGray";
 const sectionClass = "mx-[15px] mb-[20px]";
 
-const LocationSection = ( { observation }: Props ): Node => {
+const LocationSection = ( { observation }: Props ) => {
   const currentUser = useCurrentUser( );
   const [locationKebabMenuVisible, setLocationKebabMenuVisible] = useState( false );
-  const geoprivacy = observation?.geoprivacy;
-  const positionalAccuracy = observation?.positional_accuracy;
   const [showMapModal, setShowMapModal] = useState( false );
-
-  const belongsToCurrentUser = observation?.user?.login === currentUser?.login;
-  const isPrivate = geoprivacy === "private" && !belongsToCurrentUser;
-  const isObscured = observation?.obscured && !belongsToCurrentUser;
-  const showShareOptions = !isPrivate && !isObscured;
-
+  const showShareOptions = observation && !!(
+    !observation.obscured || observation.privateLatitude
+  );
   const latitude = observation.privateLatitude || observation.latitude;
   const longitude = observation.privateLongitude || observation.longitude;
   const coordinateString = t( "Lat-Lon", {
@@ -61,11 +56,8 @@ const LocationSection = ( { observation }: Props ): Node => {
     ( ) => (
       <Map
         mapHeight={230}
-        obsLatitude={latitude}
-        obsLongitude={longitude}
-        obscured={isObscured}
+        observation={observation}
         openMapScreen={openMapScreen}
-        positionalAccuracy={positionalAccuracy}
         scrollEnabled={false}
         showLocationIndicator
         tileMapParams={tileMapParams}
@@ -75,39 +67,27 @@ const LocationSection = ( { observation }: Props ): Node => {
       />
     ),
     [
-      latitude,
-      longitude,
-      positionalAccuracy,
+      observation,
       tileMapParams,
-      isObscured,
       openMapScreen
     ]
   );
 
   const showModalMap = useMemo( ( ) => (
     <DetailsMap
-      latitude={latitude}
-      longitude={longitude}
-      obscured={isObscured}
       coordinateString={coordinateString}
       closeModal={( ) => setShowMapModal( false )}
-      positionalAccuracy={positionalAccuracy}
+      observation={observation}
       tileMapParams={tileMapParams}
       showLocationIndicator
       headerTitle={(
-        <DetailsMapHeader
-          observation={observation}
-          obscured={isObscured}
-        />
+        <DetailsMapHeader currentUser={currentUser} observation={observation} />
       )}
     />
   ), [
     coordinateString,
-    isObscured,
-    latitude,
-    longitude,
+    currentUser,
     observation,
-    positionalAccuracy,
     tileMapParams
   ] );
 
@@ -120,37 +100,51 @@ const LocationSection = ( { observation }: Props ): Node => {
             visible={locationKebabMenuVisible}
             setVisible={setLocationKebabMenuVisible}
           >
-            <Menu.Item
+            <KebabMenu.Item
+              isFirst
               title={t( "Share-location" )}
               onPress={() => createOpenLink(
                 { query: `${latitude},${longitude}` }
               )}
             />
-            <Menu.Item
+            <KebabMenu.Item
               title={t( "Copy-coordinates" )}
               onPress={() => Clipboard.setString( coordinateString )}
             />
           </KebabMenu>
         )}
       </View>
-      {displayMap( )}
+      {( observation.latitude || observation.private_latitude ) && (
+        <>
+          { displayMap( ) }
+          <Button
+            text={t( "EXPAND-MAP" )}
+            className="mb-4 mt-[20px] mx-[15px]"
+            onPress={() => {
+              setShowMapModal( true );
+            }}
+          />
+          <Modal
+            animationIn="fadeIn"
+            animationOut="fadeOut"
+            showModal={showMapModal}
+            closeModal={( ) => setShowMapModal( false )}
+            disableSwipeDirection
+            style={DETAILS_MAP_MODAL_STYLE}
+            modal={showModalMap}
+          />
+        </>
+      )}
       <View className={`mt-[11px] space-y-[11px] ${sectionClass}`}>
-        <ObservationLocation observation={observation} obscured={isObscured} details />
-        {isObscured && (
-          <Body4 className="italic ml-[20px]">
-            {t( "Obscured-observation-location-map-description" )}
-          </Body4>
+        <ObservationLocation observation={observation} details />
+        {observation.obscured && (
+          <ObscurationExplanation
+            textClassName="ml-[20px] mt-[10px]"
+            observation={observation}
+            currentUser={currentUser}
+          />
         ) }
       </View>
-      <Modal
-        animationIn="fadeIn"
-        animationOut="fadeOut"
-        showModal={showMapModal}
-        closeModal={( ) => setShowMapModal( false )}
-        disableSwipeDirection
-        style={DETAILS_MAP_MODAL_STYLE}
-        modal={showModalMap}
-      />
     </>
   );
 };

@@ -26,24 +26,30 @@ type Props = {
   count: ?number,
   exploreView: string,
   exploreViewIcon: string,
+  hasLocationPermissions?: boolean,
   hideBackButton: boolean,
   isFetchingHeaderCount: boolean,
   onPressCount?: Function,
   openFiltersModal: Function,
-  updateTaxon: Function,
-  updateLocation: Function
+  renderLocationPermissionsGate: Function,
+  requestLocationPermissions: Function,
+  updateLocation: Function,
+  updateTaxon: Function
 }
 
 const Header = ( {
   count,
   exploreView,
   exploreViewIcon,
+  hasLocationPermissions,
   hideBackButton,
   isFetchingHeaderCount,
   onPressCount,
   openFiltersModal,
-  updateTaxon,
-  updateLocation
+  renderLocationPermissionsGate,
+  requestLocationPermissions,
+  updateLocation,
+  updateTaxon
 }: Props ): Node => {
   const { t } = useTranslation( );
   const { state, numberOfFilters } = useExplore( );
@@ -90,7 +96,12 @@ const Header = ( {
                     onPress={() => setShowTaxonSearch( true )}
                   >
                     <INatIcon name="label-outline" size={15} />
-                    <Body3 className="ml-3">{t( "All-organisms" )}</Body3>
+                    <Body3
+                      maxFontSizeMultiplier={1.5}
+                      className="ml-3"
+                    >
+                      {t( "All-organisms" )}
+                    </Body3>
                   </Pressable>
                 )}
               <Pressable
@@ -99,7 +110,7 @@ const Header = ( {
                 className="flex-row items-center pt-3"
               >
                 <INatIcon name="location" size={15} />
-                <Body3 className="ml-3">{placeGuess}</Body3>
+                <Body3 maxFontSizeMultiplier={1.5} className="ml-3">{placeGuess}</Body3>
               </Pressable>
             </View>
           </View>
@@ -138,8 +149,11 @@ const Header = ( {
         updateTaxon={updateTaxon}
       />
       <ExploreLocationSearchModal
-        showModal={showLocationSearch}
         closeModal={() => { setShowLocationSearch( false ); }}
+        hasPermissions={hasLocationPermissions}
+        renderPermissionsGate={renderLocationPermissionsGate}
+        requestPermissions={requestLocationPermissions}
+        showModal={showLocationSearch}
         updateLocation={updateLocation}
       />
     </View>

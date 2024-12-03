@@ -138,9 +138,9 @@ const useSyncObservations = (
     if ( !signalAborted ) {
       await deleteLocalObservations( );
     }
-    if ( !signalAborted && canSync ) {
-      await fetchRemoteObservations( );
-    }
+    // 20241112 amanda - removed fetchRemoteObservations from the
+    // automatic sync since this is repetitive with the first fetch
+    // we're doing in useInfiniteObservationsScroll
     if ( !signalAborted ) {
       completeSync( );
     }
@@ -149,11 +149,11 @@ const useSyncObservations = (
     completeSync,
     deleteLocalObservations,
     fetchRemoteDeletions,
-    fetchRemoteObservations,
     signalAborted
   ] );
 
-  const syncManually = useCallback( async ( ) => {
+  const syncManually = useCallback( async options => {
+    const skipUploads = options?.skipUploads || false;
     // we abort the automatic sync process when a user taps the manual sync button
     // on the toolbar, per #1730
     autoSyncAbortController?.abort();
@@ -173,7 +173,7 @@ const useSyncObservations = (
     completeSync( );
     // we want to show user error messages if upload fails from user
     // being offline, so we're not checking internet connectivity here
-    if ( loggedIn ) {
+    if ( loggedIn && !skipUploads ) {
       // In theory completeSync will get called when the upload process finishes
       return startUploadObservations( );
     }
@@ -201,6 +201,10 @@ const useSyncObservations = (
     setSyncingStatus( MANUAL_SYNC_IN_PROGRESS );
     syncManually( );
   }, [syncingStatus, syncManually, setSyncingStatus] );
+
+  return {
+    syncManually
+  };
 };
 
 export default useSyncObservations;

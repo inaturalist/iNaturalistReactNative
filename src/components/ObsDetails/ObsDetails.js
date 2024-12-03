@@ -15,7 +15,10 @@ import {
 } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
-  useLayoutEffect, useMemo, useRef, useState
+  useEffect,
+  useMemo,
+  useRef,
+  useState
 } from "react";
 import { Platform } from "react-native";
 import DeviceInfo from "react-native-device-info";
@@ -54,7 +57,7 @@ type Props = {
   isConnected: boolean,
   isRefetching: boolean,
   navToSuggestions: Function,
-  notificationId: number,
+  targetActivityItemID: number,
   observation: Object,
   openAddCommentSheet: Function,
   openAgreeWithIdSheet: Function,
@@ -98,7 +101,7 @@ const ObsDetails = ( {
   isConnected,
   isRefetching,
   navToSuggestions,
-  notificationId,
+  targetActivityItemID,
   observation,
   onAgree,
   openAgreeWithIdSheet,
@@ -124,15 +127,34 @@ const ObsDetails = ( {
   const scrollViewRef = useRef( );
   const insets = useSafeAreaInsets();
   const { t } = useTranslation( );
-  const [scrollToY, setScrollToY] = useState( 0 );
+  const [invertToWhiteBackground, setInvertToWhiteBackground] = useState( false );
 
-  useLayoutEffect( ( ) => {
-    // we need useLayoutEffect here to make sure the ScrollView has already rendered
-    // before trying to scroll to the relevant activity item
-    if ( notificationId && scrollViewRef?.current ) {
-      scrollViewRef?.current?.scrollTo( { y: scrollToY } );
+  // Scroll the scrollview to this y position once if set, then unset it.
+  // Could be refactored into a hook if we need this logic elsewher
+  const [oneTimeScrollOffsetY, setOneTimeScrollOffsetY] = useState( 0 );
+  useEffect( ( ) => {
+    if ( oneTimeScrollOffsetY && scrollViewRef?.current ) {
+      scrollViewRef?.current?.scrollTo( { y: oneTimeScrollOffsetY } );
+      setOneTimeScrollOffsetY( 0 );
     }
-  } );
+  }, [oneTimeScrollOffsetY] );
+
+  // If the user just added an activity item and we're waiting for it to load,
+  // scroll to the bottom where it will be visible. Also provides immediate
+  // feedback that the user's action had an effect
+  useEffect( ( ) => {
+    if ( addingActivityItem ) {
+      scrollViewRef?.current?.scrollToEnd( );
+    }
+  }, [addingActivityItem] );
+
+  const handleScroll = e => {
+    const scrollY = e.nativeEvent.contentOffset.y;
+    const shouldInvert = !!( scrollY > 150 );
+    if ( shouldInvert !== invertToWhiteBackground ) {
+      setInvertToWhiteBackground( shouldInvert );
+    }
+  };
 
   const dynamicInsets = useMemo( () => ( {
     backgroundColor: "#ffffff",
@@ -151,11 +173,14 @@ const ObsDetails = ( {
       <ActivityTab
         activityItems={activityItems}
         isConnected={isConnected}
-        notificationId={notificationId}
+        targetItemID={targetActivityItemID}
         observation={observation}
         openAgreeWithIdSheet={openAgreeWithIdSheet}
         refetchRemoteObservation={refetchRemoteObservation}
-        setScrollToY={setScrollToY}
+        onLayoutTargetItem={event => {
+          const { layout } = event.nativeEvent;
+          setOneTimeScrollOffsetY( layout.y + layout.height );
+        }}
       />
     </HideView>
   );
@@ -200,6 +225,7 @@ const ObsDetails = ( {
           className="flex-1 flex-column"
           stickyHeaderHiddenOnScroll
           endFillColor="white"
+          onScroll={handleScroll}
         >
           <View className="bg-white h-full">
             {renderActivityTab( )}
@@ -221,6 +247,7 @@ const ObsDetails = ( {
       </View>
       <ObsDetailsHeader
         belongsToCurrentUser={belongsToCurrentUser}
+        invertToWhiteBackground={invertToWhiteBackground}
         observationId={observation?.id}
         rightIconDarkGray
         uuid={observation?.uuid}
@@ -235,16 +262,16 @@ const ObsDetails = ( {
         testID={`ObsDetails.${uuid}`}
         stickyHeaderIndices={[0, 3]}
         scrollEventThrottle={16}
-        className="flex-1 flex-column"
-        stickyHeaderHiddenOnScroll
         endFillColor="white"
+        onScroll={handleScroll}
       >
         <ObsDetailsHeader
           belongsToCurrentUser={belongsToCurrentUser}
+          invertToWhiteBackground={invertToWhiteBackground}
           observationId={observation?.id}
           uuid={observation?.uuid}
         />
-        <View>
+        <View className="-mt-[64px]">
           <ObsMediaDisplayContainer observation={observation} />
           { currentUser && (
             <FaveButton

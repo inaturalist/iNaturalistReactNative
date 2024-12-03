@@ -32,7 +32,12 @@ const NumberBadge = ( { number, light }: Props ) => {
       )}
       style={DROP_SHADOW}
     >
-      <Body3 className={textColor}>{t( "Intl-number", { val: number } )}</Body3>
+      <Body3
+        className={textColor}
+        maxFontSizeMultiplier={1}
+      >
+        {t( "Intl-number", { val: number } )}
+      </Body3>
     </View>
   );
 };

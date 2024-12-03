@@ -37,9 +37,10 @@ const ObservationsView = ( {
   setCurrentMapRegion
 }: Props ): Node => {
   const {
-    observations,
-    isFetchingNextPage,
     fetchNextPage,
+    isFetchingNextPage,
+    handlePullToRefresh,
+    observations,
     totalBounds,
     totalResults
   } = useInfiniteExploreScroll( { params: queryParams, enabled: canFetch } );
@@ -90,10 +91,12 @@ const ObservationsView = ( {
         data={observations}
         dataCanBeFetched={canFetch}
         explore
+        handlePullToRefresh={handlePullToRefresh}
         hideLoadingWheel={!isFetchingNextPage}
         isFetchingNextPage={isFetchingNextPage}
         isConnected={isConnected}
         layout={layout}
+        obsListKey="ExploreObservations"
         onEndReached={fetchNextPage}
         showNoResults={!canFetch || totalResults === 0}
         testID="ExploreObservationsAnimatedList"

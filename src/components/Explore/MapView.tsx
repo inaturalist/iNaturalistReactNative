@@ -6,7 +6,6 @@ import { getMapRegion } from "components/SharedComponents/Map/helpers/mapHelpers
 import { View } from "components/styledComponents";
 import { MapBoundaries, PLACE_MODE, useExplore } from "providers/ExploreContext.tsx";
 import React, { useEffect } from "react";
-import { Platform } from "react-native";
 import { Region } from "react-native-maps";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
@@ -70,17 +69,6 @@ const MapView = ( {
   delete tileMapParams.order;
   delete tileMapParams.orderBy;
 
-  const handleRegionChangeComplete = async ( newRegion, boundaries ) => {
-    // Seems to be a bug in react-native-maps where
-    // onRegionChangeComplete fires once on initial load before the
-    // region actually changes, so we're just ignoring that update
-    // here
-    if ( Platform.OS === "android" && Math.round( newRegion.latitude ) === 0 ) {
-      return;
-    }
-    await updateMapBoundaries( newRegion, boundaries );
-  };
-
   return (
     <View className="flex-1 overflow-hidden h-full">
       <View className="z-10">
@@ -101,12 +89,13 @@ const MapView = ( {
       <Map
         currentLocationButtonClassName="left-5 bottom-20"
         onPanDrag={onPanDrag}
-        onRegionChangeComplete={handleRegionChangeComplete}
+        onRegionChangeComplete={updateMapBoundaries}
         region={region}
         showCurrentLocationButton
         showSwitchMapTypeButton
         showsCompass={false}
         switchMapTypeButtonClassName="left-20 bottom-20"
+        showsUserLocation
         tileMapParams={tileMapParams}
         withPressableObsTiles={tileMapParams !== null}
       />

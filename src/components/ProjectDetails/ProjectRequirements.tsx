@@ -2,12 +2,14 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   fetchProjects
 } from "api/projects";
-import { ActivityIndicator, ProjectListItem, ScrollViewWrapper } from "components/SharedComponents";
+import ProjectListItem from "components/ProjectList/ProjectListItem.tsx";
+import { ActivityIndicator, ScrollViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import _ from "lodash";
 import React from "react";
 import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
 
+import formatProjectDate from "../Projects/helpers/displayDates";
 import AboutProjectType from "./AboutProjectType";
 import ProjectRuleItem from "./ProjectRuleItem";
 
@@ -17,9 +19,10 @@ const getFieldValue = item => item?.[0]?.value;
 // https://github.com/inaturalist/inaturalist/blob/0994c85e2b87661042289ff080d3fc29ed8e70b3/app/webpack/projects/show/components/requirements.jsx
 const ProjectRequirements = ( ) => {
   const navigation = useNavigation( );
-  const { params } = useRoute( );
+  const route = useRoute( );
+  const { params } = route;
   const { id } = params;
-  const { t } = useTranslation( );
+  const { t, i18n } = useTranslation( );
 
   const qualityGradeOption = option => {
     switch ( option ) {
@@ -35,9 +38,7 @@ const ProjectRequirements = ( ) => {
   const ruleOperands = {
     inclusions: [],
     exclusions: [],
-    defaults: [{
-      text: t( "Any" )
-    }]
+    defaults: []
   };
 
   const RULES = [
@@ -57,27 +58,45 @@ const ProjectRequirements = ( ) => {
     },
     {
       ...ruleOperands,
-      name: t( "Users" )
+      name: t( "Users" ),
+      defaults: [{
+        text: t( "Any--user" )
+      }]
     },
     {
       ...ruleOperands,
-      name: t( "Projects" )
+      name: t( "Projects" ),
+      defaults: [{
+        text: t( "Any--project" )
+      }]
     },
     {
       ...ruleOperands,
-      name: t( "Quality-Grade" )
+      name: t( "Quality-Grade" ),
+      defaults: [{
+        text: t( "Any--quality-grade" )
+      }]
     },
     {
       ...ruleOperands,
-      name: t( "Media-Type" )
+      name: t( "Media-Type" ),
+      defaults: [{
+        text: t( "Any--media-type" )
+      }]
     },
     {
       ...ruleOperands,
-      name: t( "Date" )
+      name: t( "Date" ),
+      defaults: [{
+        text: t( "Any--date" )
+      }]
     },
     {
       ...ruleOperands,
-      name: t( "Establishment" )
+      name: t( "Establishment" ),
+      defaults: [{
+        text: t( "Any--establishment-means" )
+      }]
     }
   ];
 
@@ -99,9 +118,17 @@ const ProjectRequirements = ( ) => {
   const createTaxonObject = taxon => ( {
     taxon,
     text: null,
-    onPress: ( ) => navigation.navigate( "TaxonDetails", {
-      id: taxon.id
-    } )
+    // onPress: ( ) => navigation.navigate( "TaxonDetails", {
+    //   id: taxon.id
+    // } )
+    onPress: ( ) => (
+      navigation.navigate( {
+        // Ensure button mashing doesn't open multiple TaxonDetails instances
+        key: `${route.key}-ProjectRequirements-TaxonDetails-${taxon.id}`,
+        name: "TaxonDetails",
+        params: { id: taxon.id }
+      } )
+    )
   } );
 
   const includedTaxonList = _.sortBy(
@@ -214,42 +241,15 @@ const ProjectRequirements = ( ) => {
     mediaRule.inclusions = mediaList;
   }
 
-  // Date Requirements
-  const projectStartDate = getFieldValue( project?.rule_preferences
-    ?.filter( pref => pref.field === "d1" ) );
-  const projectEndDate = getFieldValue( project?.rule_preferences
-    ?.filter( pref => pref.field === "d2" ) );
-  const observedOnDate = getFieldValue( project?.rule_preferences
-    ?.filter( pref => pref.field === "observed_on" ) );
-  const month = getFieldValue( project?.rule_preferences
-    ?.filter( pref => pref.field === "month" ) );
-
-  // TODO: follow date formatting
-  // https://github.com/inaturalist/inaturalist/blob/0994c85e2b87661042289ff080d3fc29ed8e70b3/app/webpack/projects/show/components/requirements.jsx#L100C3-L114C4
-  const createDateObject = ( ) => {
-    if ( projectStartDate && !projectEndDate ) {
-      return t( "Start-time", { date: projectStartDate } );
-    }
-    if ( projectStartDate && projectEndDate ) {
-      return `${projectStartDate} - ${projectEndDate}`;
-    }
-    if ( observedOnDate ) {
-      return observedOnDate;
-    }
-    if ( month ) {
-      return month;
-    }
-    return null;
-  };
-
   const dateRule = RULES.find( r => r.name === t( "Date" ) );
-  if ( createDateObject( ) !== null ) {
+  const { projectDate } = formatProjectDate( project, t, i18n );
+  if ( projectDate !== null ) {
     dateRule.inclusions = [
     // TODO: dates need internationalized formatting
     // from 2023-03-22 07:42 -06:00 to something readable
     // https://github.com/inaturalist/inaturalist/blob/0994c85e2b87661042289ff080d3fc29ed8e70b3/app/webpack/projects/shared/util.js#L4
       {
-        text: createDateObject( )
+        text: projectDate
       }
     ];
   }
@@ -288,7 +288,7 @@ const ProjectRequirements = ( ) => {
         : (
           <>
             <View className="my-4 px-4">
-              <ProjectListItem item={project} />
+              <ProjectListItem item={project} isHeader />
             </View>
             {renderItemSeparator( )}
             {RULES.map( rule => (

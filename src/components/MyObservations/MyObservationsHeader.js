@@ -7,11 +7,10 @@ import {
   INatIconButton,
   Subheading1
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { Trans } from "react-i18next";
-import User from "realmModels/User.ts";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
@@ -43,21 +42,30 @@ const MyObservationsHeader = ( {
   console.log( "currentUser", currentUser );
 
   const signedInContent = ( ) => (
-    <Trans
-      className="my-5"
-      i18nKey="Welcome-user"
-      parent={View}
-      values={{ userHandle: User.userHandle( currentUser ) }}
-      components={[
-        <Subheading1 />,
-        <Heading1 />
-      ]}
-    />
+    <Pressable
+      className="flex flex-row items-center"
+      accessibilityRole="link"
+      accessibilityHint={t( "Navigates-to-user-profile" )}
+      onPress={() => {
+        navigation.push( "UserProfile", { userId: currentUser?.id } );
+      }}
+    >
+      <Trans
+        className="my-5"
+        i18nKey="Welcome-user"
+        parent={View}
+        values={{ userHandle: currentUser?.login }}
+        components={[
+          <Subheading1 />,
+          <Heading1 />
+        ]}
+      />
+    </Pressable>
   );
 
   const signedOutContent = ( ) => (
-    <View className="my-5">
-      <View className="flex-row items-center mb-5">
+    <View className="my-5 flex-col items-center">
+      <View className="flex-row items-center justify-center mb-5">
         <INatIconButton
           className="mr-5"
           icon="inaturalist"

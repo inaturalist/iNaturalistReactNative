@@ -17,16 +17,18 @@ import ExploreTaxonSearch from "components/Explore/SearchScreens/ExploreTaxonSea
 import ExploreUserSearch from "components/Explore/SearchScreens/ExploreUserSearch";
 import Help from "components/Help/Help.tsx";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
-import NotificationsContainer from "components/Notifications/NotificationsContainer";
+import Notifications from "components/Notifications/Notifications.tsx";
 import DQAContainer from "components/ObsDetails/DQAContainer";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
-import ObsDetailsProjects from "components/ObsDetails/ObsDetailsProjects.tsx";
 import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
 import ProjectMembers from "components/ProjectDetails/ProjectMembers.tsx";
 import ProjectRequirements from "components/ProjectDetails/ProjectRequirements.tsx";
+import ProjectListContainer from "components/ProjectList/ProjectListContainer.tsx";
 import ProjectsContainer from "components/Projects/ProjectsContainer.tsx";
 import Settings from "components/Settings/Settings";
 import { Heading4 } from "components/SharedComponents";
+import FollowersList from "components/UserProfile/FollowersList.tsx";
+import FollowingList from "components/UserProfile/FollowingList.tsx";
 import UserProfile from "components/UserProfile/UserProfile";
 import { t } from "i18next";
 import ContextHeader from "navigation/ContextHeader";
@@ -69,7 +71,7 @@ const notificationsTitle = ( ) => <Heading4>{t( "NOTIFICATIONS" )}</Heading4>;
 
 // note: react navigation 7 will have a layout prop
 // which should replace all of these individual wrappers
-const FadeInNotifications = ( ) => fadeInComponent( <NotificationsContainer /> );
+const FadeInNotifications = ( ) => fadeInComponent( <Notifications /> );
 const FadeInRootExplore = ( ) => fadeInComponent( <RootExploreContainer /> );
 const FadeInMyObservations = ( ) => fadeInComponent( <MyObservationsContainer /> );
 const FadeInUserProfile = ( ) => fadeInComponent( <UserProfile /> );
@@ -84,7 +86,9 @@ const FadeInSettings = ( ) => fadeInComponent( <Settings /> );
 const FadeInHelp = ( ) => fadeInComponent( <Help /> );
 const FadeInAbout = ( ) => fadeInComponent( <About /> );
 const FadeInDonate = ( ) => fadeInComponent( <Donate /> );
-const FadeInObsDetailsProjects = ( ) => fadeInComponent( <ObsDetailsProjects /> );
+const FadeInProjectList = ( ) => fadeInComponent( <ProjectListContainer /> );
+const FadeInFollowersList = ( ) => fadeInComponent( <FollowersList /> );
+const FadeInFollowingList = ( ) => fadeInComponent( <FollowingList /> );
 
 const NOTIFICATIONS_OPTIONS = {
   ...hideHeaderLeft,
@@ -105,19 +109,17 @@ const USER_PROFILE_OPTIONS = {
   ...removeBottomBorder
 };
 
-const PROJECT_MEMBERS_OPTIONS = {
-  header: ContextHeader,
-  alignStart: true,
-  lazy: true
-};
-
-const OBS_DETAILS_PROJECTS_OPTIONS = {
+const LIST_OPTIONS = {
   header: ContextHeader,
   alignStart: true,
   lazy: true
 };
 
 const Stack = createNativeStackNavigator( );
+
+export const SCREEN_NAME_OBS_LIST = "ObsList";
+export const SCREEN_NAME_ROOT_EXPLORE = "RootExplore";
+export const SCREEN_NAME_NOTIFICATIONS = "Notifications";
 
 const TabStackNavigator = ( ): Node => (
   <Stack.Navigator
@@ -131,14 +133,14 @@ const TabStackNavigator = ( ): Node => (
       screenOptions={{ ...hideHeader }}
     >
       <Stack.Screen
-        name="ObsList"
+        name={SCREEN_NAME_OBS_LIST}
         component={FadeInMyObservations}
         options={{
           animation: "none"
         }}
       />
       <Stack.Screen
-        name="RootExplore"
+        name={SCREEN_NAME_ROOT_EXPLORE}
         component={FadeInRootExplore}
         options={{
           animation: "none"
@@ -157,7 +159,7 @@ const TabStackNavigator = ( ): Node => (
       />
     </Stack.Group>
     <Stack.Screen
-      name="Notifications"
+      name={SCREEN_NAME_NOTIFICATIONS}
       component={FadeInNotifications}
       options={NOTIFICATIONS_OPTIONS}
     />
@@ -201,12 +203,22 @@ const TabStackNavigator = ( ): Node => (
       <Stack.Screen
         name="ProjectMembers"
         component={FadeInProjectMembers}
-        options={PROJECT_MEMBERS_OPTIONS}
+        options={LIST_OPTIONS}
       />
       <Stack.Screen
-        name="ObsDetailsProjects"
-        component={FadeInObsDetailsProjects}
-        options={OBS_DETAILS_PROJECTS_OPTIONS}
+        name="ProjectList"
+        component={FadeInProjectList}
+        options={LIST_OPTIONS}
+      />
+      <Stack.Screen
+        name="FollowersList"
+        component={FadeInFollowersList}
+        options={LIST_OPTIONS}
+      />
+      <Stack.Screen
+        name="FollowingList"
+        component={FadeInFollowingList}
+        options={LIST_OPTIONS}
       />
     </Stack.Group>
     {/* Developer Stack Group */}

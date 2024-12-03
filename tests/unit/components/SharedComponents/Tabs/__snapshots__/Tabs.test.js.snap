@@ -69,32 +69,43 @@ exports[`Tabs should render correctly 1`] = `
         testID="TAB_1-tab"
       >
         <Text
-          maxFontSizeMultiplier={2}
+          maxFontSizeMultiplier={1.5}
+          numberOfLines={1}
           style={
             [
-              {
-                "fontSize": 15,
-                "lineHeight": 18,
-              },
-              {
-                "letterSpacing": 2,
-              },
               {
                 "color": "#454545",
               },
               {
-                "fontFamily": "Lato-Bold",
+                "fontFamily": "Lato-Regular",
               },
               [
                 {
-                  "alignSelf": "center",
+                  "textAlign": "left",
                 },
-                {
-                  "paddingTop": 16,
-                },
-                {
-                  "paddingBottom": 12,
-                },
+                [
+                  {
+                    "fontSize": 15,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "letterSpacing": 2,
+                  },
+                  {
+                    "fontFamily": "Lato-Bold",
+                  },
+                  [
+                    {
+                      "alignSelf": "center",
+                    },
+                    {
+                      "paddingTop": 16,
+                    },
+                    {
+                      "paddingBottom": 12,
+                    },
+                  ],
+                ],
               ],
             ]
           }
@@ -173,32 +184,43 @@ exports[`Tabs should render correctly 1`] = `
         testID="TAB_2-tab"
       >
         <Text
-          maxFontSizeMultiplier={2}
+          maxFontSizeMultiplier={1.5}
+          numberOfLines={1}
           style={
             [
-              {
-                "fontSize": 15,
-                "lineHeight": 18,
-              },
-              {
-                "letterSpacing": 2,
-              },
               {
                 "color": "#454545",
               },
               {
-                "fontFamily": "Lato-Bold",
+                "fontFamily": "Lato-Regular",
               },
               [
                 {
-                  "alignSelf": "center",
+                  "textAlign": "left",
                 },
-                {
-                  "paddingTop": 16,
-                },
-                {
-                  "paddingBottom": 12,
-                },
+                [
+                  {
+                    "fontSize": 15,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "letterSpacing": 2,
+                  },
+                  {
+                    "fontFamily": "Lato-Bold",
+                  },
+                  [
+                    {
+                      "alignSelf": "center",
+                    },
+                    {
+                      "paddingTop": 16,
+                    },
+                    {
+                      "paddingBottom": 12,
+                    },
+                  ],
+                ],
               ],
             ]
           }

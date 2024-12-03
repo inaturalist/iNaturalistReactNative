@@ -3,7 +3,7 @@
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
-import { useFocusEffect, useIsFocused } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, {
@@ -23,9 +23,6 @@ import {
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
-import useClearGalleryPhotos from "./hooks/useClearGalleryPhotos";
-import useClearRotatedOriginalPhotos from "./hooks/useClearRotatedOriginalPhotos";
-import useClearSyncedMediaForUpload from "./hooks/useClearSyncedMediaForUpload";
 import useSyncObservations from "./hooks/useSyncObservations";
 import useUploadObservations from "./hooks/useUploadObservations";
 import MyObservations from "./MyObservations";
@@ -33,11 +30,6 @@ import MyObservations from "./MyObservations";
 const { useRealm } = RealmContext;
 
 const MyObservationsContainer = ( ): Node => {
-  const isFocused = useIsFocused( );
-  // clear original, large-sized photos before a user returns to any of the Camera or AICamera flows
-  useClearRotatedOriginalPhotos( );
-  useClearGalleryPhotos( );
-  useClearSyncedMediaForUpload( isFocused );
   const { t } = useTranslation( );
   const realm = useRealm( );
   const listRef = useRef( );
@@ -45,7 +37,6 @@ const MyObservationsContainer = ( ): Node => {
   const uploadQueue = useStore( state => state.uploadQueue );
   const addToUploadQueue = useStore( state => state.addToUploadQueue );
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
-  const syncingStatus = useStore( state => state.syncingStatus );
   const startManualSync = useStore( state => state.startManualSync );
   const startAutomaticSync = useStore( state => state.startAutomaticSync );
   const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
@@ -62,7 +53,7 @@ const MyObservationsContainer = ( ): Node => {
   const canUpload = currentUser && isConnected;
 
   const { startUploadObservations } = useUploadObservations( canUpload );
-  useSyncObservations(
+  const { syncManually } = useSyncObservations(
     currentUserId,
     startUploadObservations
   );
@@ -75,7 +66,6 @@ const MyObservationsContainer = ( ): Node => {
     status,
     firstObservationsInRealm
   } = useInfiniteObservationsScroll( {
-    upsert: syncingStatus === "sync-pending",
     params: {
       user_id: currentUserId
     }
@@ -136,19 +126,32 @@ const MyObservationsContainer = ( ): Node => {
     setStartUploadObservations
   ] );
 
+  // 20241107 amanda - this seems to be a culprit for the tab bar being less
+  // tappable sometimes, because automatic sync is still in progress and gets restarted
+  // if a user toggles between tabs too quickly. using the isActive boolean should help
   useFocusEffect(
     // need to reset the state on a FocusEffect, not a blur listener, because
     // tab bar screens don't seem to blur
     useCallback( ( ) => {
+      let isActive = true;
       const unsynced = Observation.filterUnsyncedObservations( realm );
       setNumUnuploadedObservations( unsynced.length );
-      startAutomaticSync( );
+      if ( isActive ) {
+        startAutomaticSync( );
+      }
+      return () => {
+        isActive = false;
+      };
     }, [
       startAutomaticSync,
       setNumUnuploadedObservations,
       realm
     ] )
   );
+
+  const handlePullToRefresh = useCallback( async ( ) => {
+    await syncManually( { skipUploads: true } );
+  }, [syncManually] );
 
   // Scroll the list to the offset we need to restore, e.g. when you are
   // scrolled way down, edit an observation, and return. Entering ObsEdit
@@ -168,6 +171,10 @@ const MyObservationsContainer = ( ): Node => {
   const showNoResults = !currentUser
     || ( status === "success" && !!( currentUser ) && firstObservationsInRealm );
 
+  // Keep track of the scroll offset so we can restore it when we mount
+  // this component again after returning from ObsEdit
+  const onScroll = scrollEvent => setMyObsOffset( scrollEvent.nativeEvent.contentOffset.y );
+
   return (
     <MyObservations
       currentUser={currentUser}
@@ -175,15 +182,14 @@ const MyObservationsContainer = ( ): Node => {
       isConnected={isConnected}
       handleIndividualUploadPress={handleIndividualUploadPress}
       handleSyncButtonPress={handleSyncButtonPress}
+      handlePullToRefresh={handlePullToRefresh}
       layout={layout}
       listRef={listRef}
       numUnuploadedObservations={numUnuploadedObservations}
       observations={observations}
       onEndReached={fetchNextPage}
-      onListLayout={() => restoreScrollOffset()}
-      // Keep track of the scroll offset so we can restore it when we mount
-      // this component again after returning from ObsEdit
-      onScroll={scrollEvent => setMyObsOffset( scrollEvent.nativeEvent.contentOffset.y )}
+      onListLayout={restoreScrollOffset}
+      onScroll={onScroll}
       setShowLoginSheet={setShowLoginSheet}
       showLoginSheet={showLoginSheet}
       showNoResults={showNoResults}

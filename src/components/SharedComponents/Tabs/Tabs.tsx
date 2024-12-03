@@ -1,5 +1,6 @@
 import Divider from "components/SharedComponents/Divider/Divider";
 import Heading4 from "components/SharedComponents/Typography/Heading4.tsx";
+import Heading5 from "components/SharedComponents/Typography/Heading5.tsx";
 import { View } from "components/styledComponents";
 import React from "react";
 import { GestureResponderEvent, TouchableOpacity } from "react-native";
@@ -9,15 +10,27 @@ export interface Tab {
   id: string;
   text: string;
   testID?: string;
-  onPress: ( _event: GestureResponderEvent ) => void
+  onPress: ( _event: GestureResponderEvent ) => void;
+}
+
+export interface TabComponentProps {
+  id: string;
+  text: string;
 }
 
 interface Props {
-  tabs: Tab[];
   activeId: string;
+  tabs: Tab[];
+  TabComponent?: React.FC<TabComponentProps>;
+  TextComponent?: typeof Heading4 | typeof Heading5;
 }
 
-const Tabs = ( { tabs = [], activeId }: Props ) => {
+const Tabs = ( {
+  activeId,
+  tabs = [],
+  TabComponent,
+  TextComponent = Heading4
+}: Props ) => {
   const { t } = useTranslation();
   return (
     <>
@@ -43,7 +56,19 @@ const Tabs = ( { tabs = [], activeId }: Props ) => {
                   expanded: active
                 }}
               >
-                <Heading4 className="self-center pt-4 pb-3">{text}</Heading4>
+                {
+                  TabComponent
+                    ? <TabComponent id={id} text={text} />
+                    : (
+                      <TextComponent
+                        className="self-center pt-4 pb-3"
+                        maxFontSizeMultiplier={1.5}
+                        numberOfLines={1}
+                      >
+                        {text}
+                      </TextComponent>
+                    )
+                }
                 { active && <View className="h-[4px] rounded-t bg-darkGray" /> }
               </TouchableOpacity>
             </View>

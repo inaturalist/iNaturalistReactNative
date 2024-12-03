@@ -1,12 +1,8 @@
 import { Realm } from "@realm/react";
 import inatjs, { FileUpload } from "inaturalistjs";
 import uuid from "react-native-uuid";
-import { log } from "sharedHelpers/logger";
-import { isDebugMode } from "sharedHooks/useDebugMode";
 
 import Photo from "./Photo";
-
-const logger = log.extend( "ObservationPhoto" );
 
 class ObservationPhoto extends Realm.Object {
   static OBSERVATION_PHOTOS_FIELDS = {
@@ -99,9 +95,6 @@ class ObservationPhoto extends Realm.Object {
 
     if ( obsPhotoToDelete ) {
       const { getJWT } = require( "components/LoginSignUp/AuthenticationService.ts" );
-      if ( isDebugMode( ) ) {
-        logger.info( "deleteRemotePhoto, calling getJWT" );
-      }
       const apiToken = await getJWT( );
       const options = { api_token: apiToken };
       await inatjs.observation_photos.delete( { id: obsPhotoToDelete.uuid }, options );

@@ -1,0 +1,12 @@
+UPDATED
+* Animate upload icon when obs queued
+* Add button to expand obs details map (@israr002)
+* Show obs marker on taxon details map
+* Link to profile from username on My Obs (@tobias47n9e)
+* Make Explore view switcher more visible (@israr002)
+
+FIXED
+* Common name capitalization not matching web for multiple lexicons
+* Could not edit obs location without granting location permission
+* Un-uploaded sounds getting removed after a day
+* Comment/ID header getting cut off on smaller screens

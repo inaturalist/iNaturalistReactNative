@@ -40,6 +40,7 @@ const setStyles = ( {
   isWarning: boolean;
 } ) => {
   const buttonClasses = [
+    "max-w-[500px]",
     "active:opacity-75",
     "flex-row",
     "items-center",
@@ -65,12 +66,21 @@ const setStyles = ( {
       ? "bg-warningRedDisabled"
       : "bg-warningRed" );
   } else if ( isPrimary ) {
-    buttonClasses.push( disabled
-      ? "bg-darkGrayDisabled"
-      : "bg-darkGray" );
-    textClasses.push( disabled
-      ? "text-white/50"
-      : "text-white" );
+    if ( forceDark ) {
+      buttonClasses.push( disabled
+        ? "bg-mediumGray"
+        : "bg-white" );
+      textClasses.push( disabled
+        ? "text-black/50"
+        : "text-black" );
+    } else {
+      buttonClasses.push( disabled
+        ? "bg-darkGrayDisabled"
+        : "bg-darkGray" );
+      textClasses.push( disabled
+        ? "text-white/50"
+        : "text-white" );
+    }
   } else if ( isFocus ) {
     if ( forceDark ) {
       buttonClasses.push( disabled
@@ -217,6 +227,7 @@ const Button = ( {
       <Heading4
         className={classnames( textClasses )}
         testID={`${testID || "RNButton"}.text`}
+        maxFontSizeMultiplier={1.5}
       >
         {text}
       </Heading4>

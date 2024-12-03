@@ -1,5 +1,5 @@
 // @flow
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
 import {
   ActivityIndicator,
@@ -32,6 +32,7 @@ const ObsDetailsOverview = ( {
   observation
 }: Props ): Node => {
   const navigation = useNavigation( );
+  const route = useRoute( );
   const { t } = useTranslation( );
   const geoprivacy = observation?.geoprivacy;
   const taxonGeoprivacy = observation?.taxon_geoprivacy;
@@ -58,7 +59,14 @@ const ObsDetailsOverview = ( {
     return (
       <DisplayTaxon
         taxon={communityTaxon}
-        handlePress={( ) => navigation.navigate( "TaxonDetails", { id: communityTaxon.id } )}
+        handlePress={( ) => (
+          navigation.navigate( {
+            // Ensure button mashing doesn't open multiple TaxonDetails instances
+            key: `${route.key}-ObsDetailsOverview-TaxonDetails-${communityTaxon.id}`,
+            name: "TaxonDetails",
+            params: { id: communityTaxon.id }
+          } )
+        )}
         testID={`ObsDetails.taxon.${communityTaxon.id}`}
         accessibilityHint={t( "Navigates-to-taxon-details" )}
       />
@@ -80,6 +88,7 @@ const ObsDetailsOverview = ( {
             geoprivacy={geoprivacy}
             taxonGeoprivacy={taxonGeoprivacy}
             belongsToCurrentUser={belongsToCurrentUser}
+            maxFontSizeMultiplier={1}
           />
         )}
       </View>

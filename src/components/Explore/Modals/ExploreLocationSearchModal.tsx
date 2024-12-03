@@ -1,17 +1,23 @@
 import ExploreLocationSearch from "components/Explore/SearchScreens/ExploreLocationSearch";
 import Modal from "components/SharedComponents/Modal.tsx";
 import React from "react";
+import type { LocationPermissionCallbacks } from "sharedHooks/useLocationPermission.tsx";
 
 interface Props {
-  showModal: boolean;
   closeModal: () => void;
-  // TODO: Param not typed yet, because ExploreLocationSearch is not typed yet
+  hasPermissions?: boolean;
+  renderPermissionsGate: ( options: LocationPermissionCallbacks ) => React.FC;
+  requestPermissions: ( ) => void;
+  showModal: boolean;
   updateLocation: ( location: "worldwide" | { name: string } ) => void;
 }
 
 const ExploreLocationSearchModal = ( {
-  showModal,
   closeModal,
+  hasPermissions,
+  renderPermissionsGate,
+  requestPermissions,
+  showModal,
   updateLocation
 }: Props ) => (
   <Modal
@@ -22,6 +28,9 @@ const ExploreLocationSearchModal = ( {
     modal={(
       <ExploreLocationSearch
         closeModal={closeModal}
+        hasPermissions={hasPermissions}
+        renderPermissionsGate={renderPermissionsGate}
+        requestPermissions={requestPermissions}
         updateLocation={updateLocation}
       />
     )}

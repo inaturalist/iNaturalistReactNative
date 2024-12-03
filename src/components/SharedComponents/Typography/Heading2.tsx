@@ -1,20 +1,12 @@
-import {
-  tailwindFontBold
-} from "appConstants/fontFamilies.ts";
-import classnames from "classnames";
+import { tailwindFontBold } from "appConstants/fontFamilies.ts";
 import React from "react";
-import { Text, TextProps } from "react-native";
+import { TextProps } from "react-native";
+
+import InatText from "./InatText";
 
 const Heading2 = ( props: TextProps ) => (
-  <Text
-    maxFontSizeMultiplier={2}
-    className={classnames(
-      "text-2xl text-darkGray",
-      tailwindFontBold
-    )}
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    {...props}
-  />
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  <InatText className={`text-2xl ${tailwindFontBold}`} {...props} />
 );
 
 export default Heading2;

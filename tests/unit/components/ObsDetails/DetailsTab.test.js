@@ -132,7 +132,7 @@ describe( "DetailsTab", ( ) => {
     expect( viewProjectsButton ).toBeFalsy( );
   } );
 
-  test( "should display project count from both collection & traditional projects", ( ) => {
+  test( "should display project count from both collection & traditional projects ", ( ) => {
     renderComponent(
       <DetailsTab
         observation={mockObservationWithProjects}

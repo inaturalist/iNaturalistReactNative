@@ -106,7 +106,7 @@ const useOnlineSuggestions = (
       mappedTaxa.forEach( remoteTaxon => {
         realm.create(
           "Taxon",
-          { ...remoteTaxon, _synced_at: new Date( ) },
+          Taxon.forUpdate( remoteTaxon ),
           "modified"
         );
       } );

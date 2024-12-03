@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   test:
-    name: Run Tests
+    name: Run tests
     runs-on: ubuntu-latest
     steps:
     - name: Check out Git repository
@@ -30,12 +30,21 @@ jobs:
         path: node_modules
         key: node-modules-${{ hashFiles('**/package-lock.json') }}
 
-    - name: Install Dependencies
+    - name: Install dependencies
       if: steps.cache.outputs.cache-hit != 'true'
       run: npm install
 
-    - run: npm run lint
-    - run: npm test
+    # Need this for linting Ruby
+    - name: Install Ruby and gems
+      uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true
+
+    - name: Lint
+      run: npm run lint
+
+    - name: Test
+      run: npm test
 
   notify:
     name: Notify Slack

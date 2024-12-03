@@ -14,10 +14,10 @@ import {
   INatIcon,
   INatIconButton,
   List2,
-  OfflineNotice,
-  ScrollViewWrapper
+  OfflineNotice
 } from "components/SharedComponents";
 import {
+  SafeAreaView,
   View
 } from "components/styledComponents";
 import _, { compact } from "lodash";
@@ -25,16 +25,21 @@ import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import {
+  ScrollView,
   StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
+import Observation from "realmModels/Observation";
 import { log } from "sharedHelpers/logger";
 import saveObservation from "sharedHelpers/saveObservation.ts";
 import { fetchTaxonAndSave } from "sharedHelpers/taxon";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
+  useExitObservationFlow,
+  useLocalObservation,
   useQuery,
+  useRemoteObservation,
   useTranslation,
   useUserMe
 } from "sharedHooks";
@@ -50,6 +55,10 @@ import TaxonMedia from "./TaxonMedia";
 import Taxonomy from "./Taxonomy";
 import Wikipedia from "./Wikipedia";
 
+const SCROLL_VIEW_STYLE = {
+  backgroundColor: colors.white
+};
+
 const logger = log.extend( "TaxonDetails" );
 
 const { useRealm } = RealmContext;
@@ -57,7 +66,9 @@ const { useRealm } = RealmContext;
 const isTablet = DeviceInfo.isTablet();
 
 const TaxonDetails = ( ): Node => {
+  const [invertToWhiteBackground, setInvertToWhiteBackground] = useState( false );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
+  const currentEditingObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
   const setExploreView = useStore( state => state.setExploreView );
   const cameraRollUris = useStore( state => state.cameraRollUris );
@@ -73,17 +84,39 @@ const TaxonDetails = ( ): Node => {
   const [mediaIndex, setMediaIndex] = useState( 0 );
   const navState = useNavigationState( nav => nav );
   const history = navState?.routes.map( r => r.name ) || [];
-  const fromObsDetails = history.includes( "ObsDetails" );
-  const fromSuggestions = history.includes( "Suggestions" );
-  const fromObsEdit = history.includes( "ObsEdit" );
+  // Assume the stack was reset by the last instance of Explore, even though
+  // we still support backing out beyond that
+  const usableStackIndex = Math.max(
+    0,
+    history.lastIndexOf( "Explore" ),
+    history.lastIndexOf( "RootExplore" )
+  );
+  const usableHistory = history.slice( usableStackIndex, history.length );
+  const usableRoutes = navState?.routes.slice( usableStackIndex, history.length ) || [];
+  const exitObservationFlow = useExitObservationFlow( );
+
+  const fromObsDetails = usableHistory.includes( "ObsDetails" );
+  const fromSuggestions = usableHistory.includes( "Suggestions" );
+  const fromObsEdit = usableHistory.includes( "ObsEdit" );
 
   // previous ObsDetails observation uuid
   const obsUuid = fromObsDetails
-    ? _.find( navState?.routes?.slice().reverse(), r => r.name === "ObsDetails" ).params.uuid
+    ? _.find( usableRoutes.slice().reverse(), r => r.name === "ObsDetails" ).params.uuid
     : null;
+  const localObservation = useLocalObservation( obsUuid );
+  const { remoteObservation } = useRemoteObservation(
+    obsUuid,
+    !localObservation && !currentEditingObservation
+  );
+  let mappableObservation = currentEditingObservation;
+  if ( localObservation ) {
+    mappableObservation = localObservation;
+  } else if ( remoteObservation ) {
+    mappableObservation = Observation.mapApiToRealm( remoteObservation );
+  }
 
   const showSelectButton = fromSuggestions || fromObsEdit;
-  const usesVision = history[history.length - 2] === "Suggestions";
+  const usesVision = usableHistory[usableHistory.length - 2] === "Suggestions";
 
   const realm = useRealm( );
   const localTaxon = realm.objectForPrimaryKey( "Taxon", id );
@@ -172,18 +205,18 @@ const TaxonDetails = ( ): Node => {
 
   const saveForLater = useCallback( async ( ) => {
     await saveObservationFromSheet( );
-    navigation.navigate( "TabNavigator", {
-      screen: "TabStackNavigator",
-      params: {
-        screen: "ObsList"
-      }
-    } );
-  }, [navigation, saveObservationFromSheet] );
+    exitObservationFlow( );
+  }, [
+    exitObservationFlow,
+    saveObservationFromSheet
+  ] );
 
   const uploadNow = useCallback( async ( ) => {
     await saveObservationFromSheet( );
-    navigation.navigate( "LoginStackNavigator" );
-  }, [navigation, saveObservationFromSheet] );
+    exitObservationFlow( {
+      navigate: ( ) => navigation.navigate( "LoginStackNavigator" )
+    } );
+  }, [exitObservationFlow, navigation, saveObservationFromSheet] );
 
   const renderHeader = useCallback( ( { onClose } ) => (
     <TaxonDetailsMediaViewerHeader
@@ -215,12 +248,18 @@ const TaxonDetails = ( ): Node => {
       return <Body1 className="mx-3">{ t( "Something-went-wrong" ) }</Body1>;
     }
 
+    if ( !taxon ) return null;
+
     return (
       <View className="mx-3">
         <EstablishmentMeans taxon={taxon} />
         <Wikipedia taxon={taxon} />
         <Taxonomy taxon={taxon} hideNavButtons={hideNavButtons} />
-        <TaxonMapPreview taxon={taxon} showSpeciesSeenCheckmark={currentUserHasSeenTaxon} />
+        <TaxonMapPreview
+          observation={mappableObservation}
+          taxon={taxon}
+          showSpeciesSeenCheckmark={currentUserHasSeenTaxon}
+        />
       </View>
     );
   };
@@ -304,24 +343,38 @@ const TaxonDetails = ( ): Node => {
     t( "Share-your-observation-where-it-can-help-scientists" )
   ];
 
+  const handleScroll = e => {
+    const scrollY = e.nativeEvent.contentOffset.y;
+    const shouldInvert = !!( scrollY > 150 );
+    if ( shouldInvert !== invertToWhiteBackground ) {
+      setInvertToWhiteBackground( shouldInvert );
+    }
+  };
+
   return (
-    <>
-      <ScrollViewWrapper
-        testID={`TaxonDetails.${taxon?.id}`}
-        className="bg-black"
-      >
-        <TaxonDetailsHeader
-          hideNavButtons={hideNavButtons}
-          taxonId={taxon?.id}
-        />
-        {/*
+    <SafeAreaView
+      className="flex-1 bg-black"
+    >
+      {/*
           Making the bar dark here seems like the right thing, but I haven't
           figured a way to do that *and* not making the bg of the scrollview
           black, which reveals a dark area at the bottom of the screen on
           overscroll in iOS ~~~kueda20240228
         */}
-        <StatusBar barStyle="light-content" backgroundColor={colors.black} />
-        <View className="flex-1 h-full bg-black">
+      <StatusBar barStyle="light-content" backgroundColor={colors.black} />
+      <ScrollView
+        testID={`TaxonDetails.${taxon?.id}`}
+        onScroll={handleScroll}
+        contentContainerStyle={SCROLL_VIEW_STYLE}
+        scrollEventThrottle={16}
+        stickyHeaderIndices={[0]}
+      >
+        <TaxonDetailsHeader
+          invertToWhiteBackground={invertToWhiteBackground}
+          hideNavButtons={hideNavButtons}
+          taxonId={taxon?.id}
+        />
+        <View className="flex-1 h-full bg-black -mt-[64px]">
           <View className="w-full h-[420px] shrink-1">
             {displayTaxonMedia()}
             <View
@@ -342,10 +395,11 @@ const TaxonDetails = ( ): Node => {
           photos={photos}
           header={renderHeader}
         />
-      </ScrollViewWrapper>
+      </ScrollView>
       {showSelectButton && (
         <ButtonBar containerClass="items-center z-50">
           <Button
+            testID="TaxonDetails.SelectButton"
             className="max-w-[500px] w-full"
             level="focus"
             text={t( "SELECT-THIS-TAXON" )}
@@ -412,7 +466,7 @@ const TaxonDetails = ( ): Node => {
           />
         </View>
       </BottomSheet>
-    </>
+    </SafeAreaView>
   );
 };
 

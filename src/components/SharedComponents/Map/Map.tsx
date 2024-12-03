@@ -9,10 +9,11 @@ import React, {
   useRef,
   useState
 } from "react";
-import { DimensionValue, ViewStyle } from "react-native";
+import { DimensionValue, Platform, ViewStyle } from "react-native";
 import MapView, {
   BoundingBox, LatLng, MapType, Region
 } from "react-native-maps";
+import Observation from "realmModels/Observation";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation.ts";
 import { useDebugMode, useDeviceOrientation } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
@@ -55,22 +56,19 @@ interface Props {
   mapHeight?: DimensionValue; // allows for height to be defined as px or percentage
   mapType?: MapType;
   mapViewClassName?: string;
-  obscured?: boolean;
-  obsLatitude?: number;
-  obsLongitude?: number;
+  observation?: Observation;
   onCurrentLocationPress?: () => void;
   onMapReady?: () => void;
   onPanDrag?: () => void;
   onRegionChangeComplete?: ( _r: Region, _b: BoundingBox | undefined ) => void;
   openMapScreen?: () => void;
-  positionalAccuracy?: number;
   region?: Region;
   regionToAnimate?: Object;
   scrollEnabled?: boolean;
   showCurrentLocationButton?: boolean;
-  showLocationIndicator?: boolean;
   showsCompass?: boolean;
   showSwitchMapTypeButton?: boolean;
+  showsUserLocation?: boolean;
   style?: ViewStyle;
   switchMapTypeButtonClassName?: string;
   testID?: string;
@@ -91,22 +89,19 @@ const Map = ( {
   mapHeight,
   mapType,
   mapViewClassName,
-  obscured,
-  obsLatitude,
-  obsLongitude,
+  observation,
   onCurrentLocationPress,
   onMapReady = ( ) => undefined,
   onPanDrag = ( ) => undefined,
   onRegionChangeComplete,
   openMapScreen,
-  positionalAccuracy,
   region,
   regionToAnimate,
   scrollEnabled = true,
   showCurrentLocationButton,
-  showLocationIndicator,
   showsCompass,
   showSwitchMapTypeButton,
+  showsUserLocation: showsUserLocationProp,
   style,
   switchMapTypeButtonClassName,
   testID,
@@ -128,17 +123,28 @@ const Map = ( {
   } | undefined | null>( null );
   const mapViewRef = useRef<MapView>();
   const [currentMapType, setCurrentMapType] = useState( mapType || "standard" );
+  const [showsUserLocation, setShowsUserLocation] = useState( showsUserLocationProp );
 
-  let defaultInitialRegion = getDefaultRegion( obsLatitude, obsLongitude );
+  let defaultInitialRegion = null;
 
-  const obscurationCell = obscurationCellForLatLng( obsLatitude, obsLongitude );
-  if ( obscured ) {
-    defaultInitialRegion = {
-      latitude: obscurationCell.minLat + ( OBSCURATION_CELL_SIZE / 2 ),
-      longitude: obscurationCell.minLng + ( OBSCURATION_CELL_SIZE / 2 ),
-      latitudeDelta: 0.3,
-      longitudeDelta: 0.3
-    };
+  if ( observation ) {
+    if ( observation.obscured && !observation.privateLatitude ) {
+      const obscurationCell = obscurationCellForLatLng(
+        observation.latitude,
+        observation.longitude
+      );
+      defaultInitialRegion = {
+        latitude: obscurationCell.minLat + ( OBSCURATION_CELL_SIZE / 2 ),
+        longitude: obscurationCell.minLng + ( OBSCURATION_CELL_SIZE / 2 ),
+        latitudeDelta: 0.3,
+        longitudeDelta: 0.3
+      };
+    } else {
+      defaultInitialRegion = getDefaultRegion(
+        observation.privateLatitude || observation.latitude,
+        observation.privateLongitude || observation.longitude
+      );
+    }
   }
 
   useEffect( ( ) => {
@@ -171,7 +177,6 @@ const Map = ( {
 
   const onPermissionGranted = async ( ) => {
     const currentLocation = await fetchUserLocation( );
-    console.log( currentLocation, "user location in onPermissionGranted" );
     if ( currentLocation && mapViewRef?.current ) {
       mapViewRef.current?.animateToRegion( {
         latitude: currentLocation.latitude,
@@ -196,8 +201,25 @@ const Map = ( {
     return defaultInitialRegion;
   };
 
-  const handleCurrentLocationPress = ( ) => {
-    if ( onCurrentLocationPress ) { onCurrentLocationPress( ); }
+  const handleCurrentLocationPress = useCallback( ( ) => {
+    // If we aren't showing the user's location, we won't have a location to
+    // zoom to yet, so first we need to turn that on, and we'll re-call this
+    // function in an effect when we have a location
+    if ( !showsUserLocation ) {
+      setShowsUserLocation( true );
+      requestPermissions( );
+      return;
+    }
+    // If we're supposed to be showing user location but we don't have it, ask
+    // for permission again, which should result in fetching the location if
+    // we can
+    if ( !userLocation ) {
+      requestPermissions( );
+      return;
+    }
+    if ( onCurrentLocationPress ) {
+      onCurrentLocationPress( );
+    }
     if ( userLocation && mapViewRef?.current ) {
       // Zoom level based on location accuracy.
       let latitudeDelta = metersToLatitudeDelta( userLocation.accuracy, userLocation.latitude );
@@ -222,7 +244,14 @@ const Map = ( {
         longitudeDelta
       } );
     }
-  };
+  }, [
+    onCurrentLocationPress,
+    requestPermissions,
+    screenHeight,
+    screenWidth,
+    showsUserLocation,
+    userLocation
+  ] );
 
   const mapContainerStyle = [
     mapHeight
@@ -244,7 +273,13 @@ const Map = ( {
     setUserLocation( coordinate );
   };
 
-  const handleRegionChangeComplete = async newRegion => {
+  const handleRegionChangeComplete = async ( newRegion, gesture ) => {
+    // We are only interested in region changes due to user interaction.
+    // In Android, onRegionChangeComplete also fires for other map region
+    // changes and gesture.isGesture is available to test for user interaction.
+    if ( Platform.OS === "android" && !gesture.isGesture ) {
+      return;
+    }
     if ( onRegionChangeComplete ) {
       const boundaries = await mapViewRef?.current?.getMapBoundaries( );
       onRegionChangeComplete( newRegion, boundaries );
@@ -283,6 +318,10 @@ const Map = ( {
     return null;
   };
 
+  const currentUserCanViewCoords = observation && !!(
+    !observation.obscured || observation.privateLatitude
+  );
+
   return (
     <View
       style={mapContainerStyle}
@@ -309,7 +348,7 @@ const Map = ( {
         scrollEnabled={scrollEnabled}
         showsCompass={showsCompass}
         showsMyLocationButton={false}
-        showsUserLocation={hasPermissions}
+        showsUserLocation={showsUserLocation && hasPermissions}
         style={style}
         testID={testID || "Map.MapView"}
         zoomEnabled={zoomEnabled}
@@ -321,16 +360,21 @@ const Map = ( {
           withObsTiles={withObsTiles}
           withPressableObsTiles={withPressableObsTiles}
         />
-        <LocationIndicator
-          obsLatitude={obsLatitude}
-          obsLongitude={obsLongitude}
-          positionalAccuracy={positionalAccuracy}
-          showLocationIndicator={showLocationIndicator && !obscured}
-        />
-        <ObscuredLocationIndicator
-          obscurationCell={obscurationCell}
-          showLocationIndicator={showLocationIndicator && obscured}
-        />
+        { observation && ( currentUserCanViewCoords
+          ? (
+            <LocationIndicator
+              latitude={observation.privateLatitude || observation.latitude}
+              longitude={observation.privateLongitude || observation.longitude}
+              positionalAccuracy={observation.positionalAccuracy}
+            />
+          )
+          : (
+            <ObscuredLocationIndicator
+              latitude={observation.privateLatitude || observation.latitude}
+              longitude={observation.privateLongitude || observation.longitude}
+            />
+          )
+        ) }
       </MapView>
       <CurrentLocationButton
         showCurrentLocationButton={showCurrentLocationButton}
@@ -339,7 +383,7 @@ const Map = ( {
         renderPermissionsGate={renderCurrentLocationPermissionsGate}
         requestPermissions={requestPermissions}
         onPermissionGranted={onPermissionGranted}
-        handlePress={handleCurrentLocationPress}
+        onPress={handleCurrentLocationPress}
       />
       <SwitchMapTypeButton
         currentMapType={currentMapType}

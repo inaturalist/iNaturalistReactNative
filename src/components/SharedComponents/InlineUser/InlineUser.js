@@ -18,7 +18,8 @@ import User from "realmModels/User.ts";
 type Props = {
   user: {
     id: number,
-    icon_url?: string
+    icon_url?: string,
+    login: string
   },
   isConnected: boolean
 };
@@ -26,7 +27,7 @@ type Props = {
 const InlineUser = ( { user, isConnected }: Props ): Node => {
   const navigation = useNavigation();
   const userImgUri = User.uri( user );
-  const userHandle = User.userHandle( user );
+  const userHandle = user?.login;
 
   const { t } = useTranslation( );
 
@@ -46,7 +47,7 @@ const InlineUser = ( { user, isConnected }: Props ): Node => {
   return (
     <Pressable
       testID="InlineUser"
-      className="flex flex-row items-center"
+      className="flex flex-row items-center shrink"
       accessibilityRole="link"
       accessibilityLabel={t( "User", { userHandle } )}
       accessibilityHint={t( "Navigates-to-user-profile" )}
@@ -55,7 +56,15 @@ const InlineUser = ( { user, isConnected }: Props ): Node => {
       }}
     >
       <View className="mr-[7px]">{renderUserIcon()}</View>
-      <Body3>{userHandle}</Body3>
+      <Body3
+        className="w-3/4"
+        numberOfLines={1}
+        ellipsizeMode="tail"
+        selectable
+        maxFontSizeMultiplier={1}
+      >
+        {userHandle}
+      </Body3>
     </Pressable>
   );
 };

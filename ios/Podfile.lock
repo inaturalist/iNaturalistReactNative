@@ -1123,7 +1123,7 @@ PODS:
     - React-perflogger (= 0.73.7)
   - ReactNativeExceptionHandler (2.10.10):
     - React-Core
-  - RealmJS (12.6.2):
+  - RealmJS (12.13.2):
     - React
   - RNAudioRecorderPlayer (3.6.7):
     - React-Core
@@ -1181,7 +1181,7 @@ PODS:
   - VisionCamera/React (4.0.5):
     - React-Core
     - VisionCamera/FrameProcessors
-  - VisionCameraPluginInatVision (4.0.5):
+  - VisionCameraPluginInatVision (4.1.0):
     - React-Core
   - Yoga (1.14.0)
 
@@ -1546,7 +1546,7 @@ SPEC CHECKSUMS:
   React-utils: d07d009101c7dabff68b710da5c4a47b7a850d98
   ReactCommon: 8cae78d3c3eceff20ee4bbca8bb73b675a45fd5d
   ReactNativeExceptionHandler: b11ff67c78802b2f62eed0e10e75cb1ef7947c60
-  RealmJS: 385df5ee940d96f1de26b1dab153e325633d3052
+  RealmJS: bfe9a997a1f813c05c432c94405753879572a1a2
   RNAudioRecorderPlayer: 9b34adc281800e5b19258f1b91d889b1ef3abdd6
   RNCClipboard: 60fed4b71560d7bfe40e9d35dea9762b024da86d
   RNCPicker: 82ccad5b08259dc09310082118cbb6c136d7da67
@@ -1565,9 +1565,9 @@ SPEC CHECKSUMS:
   RNVectorIcons: 73ab573085f65a572d3b6233e68996d4707fd505
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   VisionCamera: 4c1d19f1ac09f2f42f758e306fcf642536627357
-  VisionCameraPluginInatVision: 8480b3955bc608e913135d3bebaa57939911fb82
+  VisionCameraPluginInatVision: ad0412249baa14ad9660e2c536f5370e6029deb2
   Yoga: c716aea2ee01df6258550c7505fa61b248145ced
 
-PODFILE CHECKSUM: c4b9a5123afaeedac9558dd67c0e10f6cf9706b0
+PODFILE CHECKSUM: eff4b75123af5d6680139a78c055b44ad37c269b
 
 COCOAPODS: 1.14.3

@@ -2,11 +2,7 @@ import { fetchTaxon } from "api/taxa";
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import _ from "lodash";
 import Taxon from "realmModels/Taxon";
-import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { isDebugMode } from "sharedHooks/useDebugMode";
-
-const logger = log.extend( "Taxon" );
 
 const uncapitalized = new Set( [
   "à",
@@ -114,7 +110,15 @@ export const generateTaxonPieces = taxon => {
   // Logic follows the SplitTaxon component from web
   // https://github.com/inaturalist/inaturalist/blob/main/app/webpack/shared/components/split_taxon.jsx
   if ( taxon.preferred_common_name ) {
-    taxonData.commonName = capitalizeCommonName( taxon.preferred_common_name );
+    // 20241111 amanda - this multiple lexicon code isn't part of the original web code for this,
+    // found here, but is needed in iNat Next:
+    // https://github.com/inaturalist/inaturalist/blob/c578c11d00ed97940f0b6d8aa0793b6afd765824/app/assets/javascripts/ang/models/taxon.js.erb#L155
+    const multipleLexicons = taxon.preferred_common_name.split( "·" );
+    taxonData.commonName = _.map(
+      multipleLexicons,
+      ( lexicon => capitalizeCommonName( lexicon )
+      )
+    ).join( " · " );
   }
 
   let { name: scientificName } = taxon;
@@ -157,9 +161,6 @@ export function accessibleTaxonName( taxon, user, t ) {
 export async function fetchTaxonAndSave( id, realm, params = {}, opts = {} ) {
   const options = { ...opts };
   if ( !options.api_token ) {
-    if ( isDebugMode( ) ) {
-      logger.info( "fetchTaxonAndSave, calling getJWT" );
-    }
     options.api_token = await getJWT( );
   }
   const remoteTaxon = await fetchTaxon( id, params, options );
@@ -167,10 +168,7 @@ export async function fetchTaxonAndSave( id, realm, params = {}, opts = {} ) {
   safeRealmWrite( realm, ( ) => {
     realm.create(
       "Taxon",
-      {
-        ...mappedRemoteTaxon,
-        _synced_at: new Date( )
-      },
+      Taxon.forUpdate( mappedRemoteTaxon ),
       "modified"
     );
   }, "saving remote taxon in ObsDetails" );

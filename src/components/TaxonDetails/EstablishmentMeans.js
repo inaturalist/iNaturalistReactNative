@@ -71,7 +71,7 @@ const EstablishmentMeans = ( { taxon }: Props ): React.Node => {
 
   return taxon?.establishment_means && (
     <View className="mb-6">
-      <Heading4 className="mb-3">{t( "ESTABLISHMENT-MEANS-header" )}</Heading4>
+      <Heading4 className="mb-3">{t( "ESTABLISHMENT-MEANS" )}</Heading4>
       <Body2>
         {displayEstablishmentMeansText( )}
         {" "}

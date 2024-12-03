@@ -124,8 +124,8 @@ const ToolbarContainer = ( {
       }
       // iPhone 4 pixel width
       return screenWidth <= 640
-        ? t( "Deleting-x-of-y", deletionParams )
-        : t( "Deleting-x-of-y-observations", deletionParams );
+        ? t( "Deleting-x-of-y--observations", deletionParams )
+        : t( "Deleting-x-of-y-observations-2", deletionParams );
     }
 
     if ( pendingUpload ) {

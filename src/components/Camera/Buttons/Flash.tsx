@@ -5,7 +5,7 @@ import React from "react";
 import { GestureResponderEvent, ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Animated from "react-native-reanimated";
-import { TakePhotoOptions } from "react-native-vision-camera";
+import type { TakePhotoOptions } from "react-native-vision-camera";
 import { useTranslation } from "sharedHooks";
 
 const isTablet = DeviceInfo.isTablet();

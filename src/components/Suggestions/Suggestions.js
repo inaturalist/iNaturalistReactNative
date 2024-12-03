@@ -78,7 +78,7 @@ const Suggestions = ( {
     />
   ), [onTaxonChosen, t, currentUser, showOfflineText] );
 
-  const renderEmptyList = useCallback( ( ) => (
+  const renderEmptyList = useMemo( ( ) => (
     <SuggestionsEmpty
       hasTopSuggestion={!!topSuggestion}
       isLoading={isLoading}
@@ -95,7 +95,6 @@ const Suggestions = ( {
       hideLocationToggleButton={hideLocationToggleButton}
       hideSkip={hideSkip}
       shouldUseEvidenceLocation={shouldUseEvidenceLocation}
-      suggestions={suggestions}
       observers={observers}
       toggleLocation={toggleLocation}
     />
@@ -105,12 +104,11 @@ const Suggestions = ( {
     hideLocationToggleButton,
     hideSkip,
     shouldUseEvidenceLocation,
-    suggestions,
     observers,
     toggleLocation
   ] );
 
-  const renderHeader = useCallback( ( ) => (
+  const renderHeader = useMemo( ( ) => (
     <SuggestionsHeader
       onPressPhoto={onPressPhoto}
       photoUris={photoUris}

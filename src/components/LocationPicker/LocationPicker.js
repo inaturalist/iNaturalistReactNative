@@ -99,8 +99,6 @@ const LocationPicker = ( {
             className="h-full"
             initialRegion={initialRegion}
             mapType={mapType}
-            obsLatitude={region.latitude}
-            obsLongitude={region.longitude}
             onCurrentLocationPress={onCurrentLocationPress}
             onMapReady={onMapReady}
             onRegionChangeComplete={onRegionChangeComplete}
@@ -108,6 +106,7 @@ const LocationPicker = ( {
             showCurrentLocationButton
             showSwitchMapTypeButton
             showsCompass={false}
+            showsUserLocation
             testID="LocationPicker.Map"
           />
         </View>

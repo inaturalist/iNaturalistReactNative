@@ -1,5 +1,4 @@
-import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
-import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { getCurrentRoute } from "navigation/navigationUtils.ts";
 import {
   useCallback,
@@ -8,10 +7,11 @@ import {
 import {
   BackHandler
 } from "react-native";
+import useExitObservationFlow from "sharedHooks/useExitObservationFlow.ts";
 
 const useBackPress = ( shouldShowDiscardSheet: boolean ) => {
   const navigation = useNavigation( );
-  const { params } = useRoute();
+  const exitObservationFlow = useExitObservationFlow( );
 
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );
 
@@ -23,23 +23,15 @@ const useBackPress = ( shouldShowDiscardSheet: boolean ) => {
       if ( currentRoute?.params?.addEvidence ) {
         navigation.navigate( "ObsEdit" );
       } else {
-        const previousScreen = params && params.previousScreen
-          ? params.previousScreen
-          : null;
-
-        if ( previousScreen && previousScreen.name === "ObsDetails" ) {
-          navigateToObsDetails( navigation, previousScreen.params.uuid );
-        } else {
-          navigation.navigate( "TabNavigator", {
-            screen: "TabStackNavigator",
-            params: {
-              screen: "ObsList"
-            }
-          } );
-        }
+        exitObservationFlow( );
       }
     }
-  }, [shouldShowDiscardSheet, setShowDiscardSheet, navigation, params] );
+  }, [
+    exitObservationFlow,
+    navigation,
+    setShowDiscardSheet,
+    shouldShowDiscardSheet
+  ] );
 
   useFocusEffect(
     // note: cannot use navigation.addListener to trigger bottom sheet in tab navigator

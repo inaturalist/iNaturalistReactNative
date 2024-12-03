@@ -1,18 +1,15 @@
 import classnames from "classnames";
-import { INatIcon, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
-import React, { ReactNode, useEffect } from "react";
-import CircularProgressBase from "react-native-circular-progress-indicator";
-import Reanimated, {
-  cancelAnimation,
-  Easing, FadeIn, interpolate,
-  Keyframe, useAnimatedStyle, useDerivedValue, useSharedValue, withRepeat,
-  withTiming
-} from "react-native-reanimated";
+import React, { ReactNode } from "react";
 import { useTranslation } from "sharedHooks";
-import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
+
+import FadeOutFadeInIcon from "./FadeOutFadeInIcon";
+import ProgressArrow from "./ProgressArrow";
+import UploadCompleteIcon from "./UploadCompleteIcon";
+import UploadProgressIcon from "./UploadProgressIcon";
+import UploadQueuedRotatingIcon from "./UploadQueuedRotatingIcon";
+import UploadStartIcon from "./UploadStartIcon";
 
 const iconClasses = [
   "items-center",
@@ -23,60 +20,30 @@ const iconClasses = [
 
 type Props = {
   white: boolean,
-  handleIndividualUploadPress: ( uuid: string ) => void,
-  layout: "horizontal" | "vertical",
-  children: ReactNode,
-  uuid: string
+  layout: "horizontal" | "vertical";
+  children: ReactNode;
+  onPress: ( ) => void;
+  progress: number;
+  uniqueKey: string;
+  queued: boolean;
 }
-const AnimatedView = Reanimated.createAnimatedComponent( View );
-
-const keyframe = new Keyframe( {
-  0: { opacity: 0 },
-  40: { opacity: 1 },
-  100: { opacity: 0 }
-} );
 
 const UploadStatus = ( {
   white = false,
-  handleIndividualUploadPress,
   layout,
   children,
-  uuid
-}: Props ): Node => {
-  const totalUploadProgress = useStore( state => state.totalUploadProgress );
-  const currentObservation = totalUploadProgress.find( o => o.uuid === uuid );
-  const progress = currentObservation?.totalProgress || 0;
-
+  onPress,
+  progress,
+  uniqueKey,
+  queued
+}: Props ) => {
   const { t } = useTranslation( );
-  const completeColor = white
+  const completeColor = ( white
     ? colors.white
-    : colors.inatGreen;
-  const color = white
+    : colors.inatGreen ) as string;
+  const color = ( white
     ? colors.white
-    : colors.darkGray;
-  const animation = useSharedValue( 0 );
-  const rotation = useDerivedValue( ( ) => interpolate(
-    animation.value,
-    [0, 1],
-    [0, 360]
-  ) );
-  const rotate = useAnimatedStyle( ( ) => ( {
-    transform: [
-      {
-        rotateZ: `${rotation.value}deg`
-      }
-    ]
-  } ), [rotation.value] );
-
-  const startAnimation = ( ) => {
-    animation.value = withRepeat(
-      withTiming( 1, {
-        duration: 10000,
-        easing: Easing.linear
-      } ),
-      -1
-    );
-  };
+    : colors.darkGray ) as string;
 
   const accessibilityLabelText = ( ) => {
     if ( progress < 0.05 ) {
@@ -88,90 +55,13 @@ const UploadStatus = ( {
     return t( "Upload-Complete" );
   };
 
-  const uploadSingleObservation = ( ) => {
-    startAnimation( );
-    handleIndividualUploadPress( uuid );
-  };
-
-  useEffect( ( ) => ( ) => cancelAnimation( rotation ), [rotation] );
-
   const showProgressArrow = ( ) => (
-    <View
-      className={classnames( "absolute", {
-        "ml-2 mt-2": layout === "horizontal",
-        "mt-2.5": layout === "horizontal" && progress > 0.05 && progress < 1
-      } )}
-      accessibilityLabel={t( "Upload-in-progress" )}
-      testID={`UploadIcon.progress.${uuid}`}
-    >
-      <INatIcon
-        name="upload-arrow"
-        color={color}
-        size={15}
-      />
-    </View>
-  );
-
-  const startUploadIcon = (
-    <INatIconButton
-      icon="upload-saved"
+    <ProgressArrow
+      layout={layout}
       color={color}
-      size={33}
-      onPress={uploadSingleObservation}
-      disabled={false}
-      accessibilityLabel={t( "Start-upload" )}
-      testID={`UploadIcon.start.${uuid}`}
+      progress={progress}
+      uniqueKey={uniqueKey}
     />
-  );
-
-  const uploadTappedIcon = (
-    <View className={classnames( iconClasses )}>
-      {showProgressArrow( )}
-      <AnimatedView style={rotate}>
-        <INatIcon name="circle-dots" color={color} size={33} />
-      </AnimatedView>
-    </View>
-  );
-
-  const uploadInProgressIcon = (
-    <View className={classnames( iconClasses )}>
-      {showProgressArrow( )}
-      <CircularProgressBase
-        activeStrokeColor={color}
-        activeStrokeWidth={2.5}
-        inActiveStrokeOpacity={0}
-        maxValue={1}
-        radius={18}
-        showProgressValue={false}
-        testID="UploadStatus.CircularProgress"
-        value={progress}
-      />
-    </View>
-  );
-
-  const uploadCompleteIcon = (
-    <View className={classnames( iconClasses )}>
-      <INatIcon
-        size={28}
-        name="upload-complete"
-        color={completeColor}
-      />
-    </View>
-  );
-
-  const fadeOutUploadCompleteIcon = (
-    <AnimatedView
-      entering={keyframe.duration( 2000 )}
-      testID={`UploadIcon.complete.${uuid}`}
-    >
-      { uploadCompleteIcon }
-    </AnimatedView>
-  );
-
-  const fadeInObsStatusComponent = (
-    <AnimatedView entering={FadeIn.duration( 1000 ).delay( 2000 )}>
-      {children}
-    </AnimatedView>
   );
 
   const iconWrapperClasses = classnames( {
@@ -179,24 +69,37 @@ const UploadStatus = ( {
   } );
 
   const displayUploadStatus = ( ) => {
-    if ( progress === 0 ) {
+    if ( progress === 0 && !queued ) {
       return (
         <View className={iconWrapperClasses}>
-          {startUploadIcon}
+          <UploadStartIcon
+            color={color}
+            uploadSingleObservation={onPress}
+            uniqueKey={uniqueKey}
+          />
         </View>
       );
     }
-    if ( progress <= 0.05 ) {
+    if ( progress === 0 && queued ) {
       return (
         <View className={iconWrapperClasses}>
-          {uploadTappedIcon}
+          <UploadQueuedRotatingIcon
+            color={color}
+            showProgressArrow={showProgressArrow}
+            iconClasses={iconClasses}
+          />
         </View>
       );
     }
-    if ( progress > 0.05 && progress < 1 ) {
+    if ( progress < 1 ) {
       return (
         <View className={iconWrapperClasses}>
-          {uploadInProgressIcon}
+          <UploadProgressIcon
+            color={color}
+            progress={progress}
+            showProgressArrow={showProgressArrow}
+            iconClasses={iconClasses}
+          />
         </View>
       );
     }
@@ -204,7 +107,10 @@ const UploadStatus = ( {
     if ( progress === 10 ) {
       return (
         <View className={iconWrapperClasses}>
-          {uploadCompleteIcon}
+          <UploadCompleteIcon
+            iconClasses={iconClasses}
+            completeColor={completeColor}
+          />
         </View>
       );
     }
@@ -218,7 +124,10 @@ const UploadStatus = ( {
             } )}
           >
             <View className={iconWrapperClasses}>
-              {uploadCompleteIcon}
+              <UploadCompleteIcon
+                iconClasses={iconClasses}
+                completeColor={completeColor}
+              />
             </View>
           </View>
           {children}
@@ -226,18 +135,15 @@ const UploadStatus = ( {
       );
     }
     return (
-      <>
-        <View
-          className={classnames( "absolute", {
-            "bottom-0": layout === "horizontal"
-          } )}
-        >
-          <View className={iconWrapperClasses}>
-            {fadeOutUploadCompleteIcon}
-          </View>
-        </View>
-        {fadeInObsStatusComponent}
-      </>
+      <FadeOutFadeInIcon
+        iconWrapperClasses={iconWrapperClasses}
+        iconClasses={iconClasses}
+        completeColor={completeColor}
+        layout={layout}
+        uniqueKey={uniqueKey}
+      >
+        {children}
+      </FadeOutFadeInIcon>
     );
   };
 

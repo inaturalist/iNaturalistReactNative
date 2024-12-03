@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/react-native";
-import DatePicker from "components/ObsEdit/DatePicker";
+import DatePicker from "components/ObsEdit/DatePicker.tsx";
 import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";

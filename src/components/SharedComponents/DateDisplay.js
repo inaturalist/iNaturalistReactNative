@@ -13,7 +13,8 @@ type Props = {
   classNameMargin?: string,
   geoprivacy?: string,
   taxonGeoprivacy?: string,
-  belongsToCurrentUser?: boolean
+  belongsToCurrentUser?: boolean,
+  maxFontSizeMultiplier?: number
 };
 
 const DateDisplay = ( {
@@ -22,7 +23,8 @@ const DateDisplay = ( {
   dateString,
   geoprivacy,
   label,
-  taxonGeoprivacy
+  taxonGeoprivacy,
+  maxFontSizeMultiplier = 2
 }: Props ): Node => {
   const { i18n } = useTranslation( );
   const obscuredDate = geoprivacy === "obscured"
@@ -52,7 +54,10 @@ const DateDisplay = ( {
         name="date"
         size={13}
       />
-      <Body4 className="ml-[5px]">
+      <Body4
+        className="ml-[5px]"
+        maxFontSizeMultiplier={maxFontSizeMultiplier}
+      >
         {date}
       </Body4>
     </View>

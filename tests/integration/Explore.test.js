@@ -68,4 +68,20 @@ describe( "Explore", ( ) => {
       screen.queryByTestId( `UploadIcon.progress.${mockRemoteObservation.uuid}` )
     ).toBeFalsy( );
   } );
+
+  it( "should trigger new observation fetch on pull-to-refresh", async ( ) => {
+    renderAppWithComponent( <ExploreContainer /> );
+    await switchToObservationsView( );
+
+    const exploreObsList = await screen.findByTestId( "ExploreObservationsAnimatedList" );
+
+    fireEvent.scroll( exploreObsList, {
+      nativeEvent: {
+        contentOffset: { y: -100 },
+        contentSize: { height: 1000, width: 100 },
+        layoutMeasurement: { height: 500, width: 100 }
+      }
+    } );
+    expect( inatjs.observations.search ).toHaveBeenCalled( );
+  } );
 } );

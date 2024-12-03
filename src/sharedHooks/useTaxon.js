@@ -65,7 +65,7 @@ const useTaxon = ( taxon: Object, fetchRemote = true ): Object => {
     safeRealmWrite( realm, ( ) => {
       realm.create(
         "Taxon",
-        { ...mappedRemoteTaxon, _synced_at: new Date( ) },
+        Taxon.forUpdate( mappedRemoteTaxon ),
         "modified"
       );
     }, "saving remote taxon in useTaxon" );

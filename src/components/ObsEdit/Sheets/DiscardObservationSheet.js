@@ -15,29 +15,27 @@ const { useRealm } = RealmContext;
 type Props = {
   onPressClose: Function,
   discardObservation: Function,
-  navToObsList: Function,
-  observations: Array<Object>
+  observations: Array<Object>,
+  onSave?: Function
 }
 
 const DiscardObservationSheet = ( {
   onPressClose,
   discardObservation,
-  navToObsList,
-  observations
+  observations,
+  onSave
 }: Props ): Node => {
   const realm = useRealm( );
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const multipleObservations = observations.length > 1;
 
-  const saveAllObservations = async ( ) => {
-    await Promise.all( observations.map( async observation => {
-      // Note that this should only happen after import when ObsEdit has
-      // multiple observations to save, none of which should have
-      // corresponding photos in cameraRollPhotos, so there's no need to
-      // write EXIF for those.
-      await Observation.saveLocalObservationForUpload( observation, realm );
-    } ) );
-  };
+  // Note that this should only happen after import when ObsEdit has
+  // multiple observations to save, none of which should have
+  // corresponding photos in cameraRollPhotos, so there's no need to
+  // write EXIF for those.
+  const saveAllObservations = async ( ) => Promise.all(
+    observations.map( o => Observation.saveLocalObservationForUpload( o, realm ) )
+  );
 
   const discardObservationandReset = () => {
     resetObservationFlowSlice();
@@ -56,7 +54,7 @@ const DiscardObservationSheet = ( {
         : t( "By-exiting-observation-not-saved" )}
       handleSecondButtonPress={( ) => {
         saveAllObservations( );
-        navToObsList( );
+        if ( typeof ( onSave ) === "function" ) onSave( );
       }}
       secondButtonText={multipleObservations && t( "SAVE-ALL" )}
       buttonText={multipleObservations
