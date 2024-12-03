@@ -24,7 +24,7 @@ type Props = {
   layout: string,
   logInButtonNeutral: boolean,
   numUnuploadedObservations: number,
-  setHeightAboveToolbar: Function,
+  setHeightAboveToolbar?: Function,
   toggleLayout: Function
 }
 
@@ -40,6 +40,7 @@ const MyObservationsHeader = ( {
 }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
+  console.log( "currentUser", currentUser );
 
   const signedInContent = ( ) => (
     <Trans
@@ -113,7 +114,9 @@ const MyObservationsHeader = ( {
           const {
             height
           } = event.nativeEvent.layout;
-          setHeightAboveToolbar( height );
+          if ( setHeightAboveToolbar ) {
+            setHeightAboveToolbar( height );
+          }
         }}
       >
         {currentUser
