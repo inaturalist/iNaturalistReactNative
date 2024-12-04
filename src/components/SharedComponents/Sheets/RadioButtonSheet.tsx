@@ -25,6 +25,7 @@ interface Props {
     }
   },
   selectedValue?: string,
+  testID?: string,
   topDescriptionText?: React.JSX.Element,
 }
 
@@ -38,6 +39,7 @@ const RadioButtonSheet = ( {
   onPressClose,
   radioValues,
   selectedValue = "none",
+  testID,
   topDescriptionText
 }: Props ) => {
   const { t } = useTranslation( );
@@ -65,6 +67,7 @@ const RadioButtonSheet = ( {
       headerText={headerText}
       insideModal={insideModal}
       onPressClose={onPressClose}
+      testID={testID}
     >
       <View className="p-4 pt-2">
         {topDescriptionText}
