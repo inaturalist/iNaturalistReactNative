@@ -109,6 +109,24 @@ class Taxon extends Realm.Object {
     };
   }
 
+  static compileSearchableName( taxon ) {
+    const names = [
+      taxon.name,
+      taxon.preferred_common_name,
+      taxon.preferredCommonName
+    ];
+    return [...new Set( names )].filter( Boolean ).join( "; " );
+  }
+
+  static forUpdate( taxon, extra = {} ) {
+    return {
+      ...taxon,
+      ...extra,
+      _searchableName: Taxon.compileSearchableName( taxon ),
+      _synced_at: new Date( )
+    };
+  }
+
   static mapApiToRealm( taxon, _realm = null ) {
     return {
       ...taxon,
@@ -130,10 +148,20 @@ class Taxon extends Realm.Object {
         mapTo: "defaultPhoto",
         optional: true
       },
-      name: "string?",
+      name: {
+        type: "string",
+        // indexed: "full-text",
+        optional: true
+      },
       preferred_common_name: {
         type: "string",
+        // indexed: "full-text",
         mapTo: "preferredCommonName",
+        optional: true
+      },
+      _searchableName: {
+        type: "string",
+        indexed: "full-text",
         optional: true
       },
       rank: "string?",

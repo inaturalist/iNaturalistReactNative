@@ -5,26 +5,29 @@ import { Body3, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { I18nManager } from "react-native";
+import { I18nManager, PixelRatio } from "react-native";
 import { useTheme } from "react-native-paper";
 import Svg, { Path } from "react-native-svg";
 import { useTranslation } from "sharedHooks";
 import { dropShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
-const HEIGHT = 24;
-
 type Props = {
   count: number
 };
+
+const BASE_DIM = 24;
 
 const PhotoCount = ( { count }: Props ): Node => {
   const { t } = useTranslation( );
   const { isRTL } = I18nManager;
   const theme = useTheme( );
-
+  const fontScale = PixelRatio.getFontScale();
+  const dim = fontScale * BASE_DIM;
+  console.log( "[DEBUG PhotoCount.js] dim: ", dim );
+  const maxFontScale = Math.ceil( fontScale );
   if ( count === 0 ) {
-    return <INatIcon name="noevidence" size={HEIGHT} color={theme.colors.inverseOnSurface} />;
+    return <INatIcon name="noevidence" size={dim} color={theme.colors.inverseOnSurface} />;
   }
 
   let photoCount = count;
@@ -38,22 +41,25 @@ const PhotoCount = ( { count }: Props ): Node => {
       testID="photo-count"
     >
       <Body3
-        maxFontSizeMultiplier={1}
         className={classnames(
           "absolute z-10",
-          "left-1.5 top-1.5",
-          {
-            "left-0.5": photoCount > 9,
-            "right-1.5": isRTL && photoCount < 9,
-            "right-0.5": photoCount > 9 && isRTL
-          }
+          "bottom-0",
+          isRTL
+            ? "right-0"
+            : "left-0",
+          "text-center"
         )}
+        style={{
+          width: dim * 0.74,
+          height: dim * 0.74
+        }}
+        maxFontSizeMultiplier={maxFontScale}
       >
         {t( "Intl-number", { val: photoCount } )}
       </Body3>
       <Svg
-        height={HEIGHT}
-        width={HEIGHT}
+        height={dim}
+        width={dim}
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

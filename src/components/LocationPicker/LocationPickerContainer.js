@@ -24,17 +24,24 @@ const setInitialRegion = currentObservation => {
     || currentObservation?.latitude;
   const longitude = currentObservation?.privateLongitude
     || currentObservation?.longitude;
+
+  const latitudeDelta = latitude && currentObservation?.positional_accuracy
+    ? metersToLatitudeDelta(
+      currentObservation?.positional_accuracy,
+      latitude
+    )
+    : 90;
+  const longitudeDelta = longitude && currentObservation?.positional_accuracy
+    ? latitudeDelta
+    : 180;
+
   return {
     // This was causing a crash when getting to the location picker before
     // current location was fetched in the observation viewer
     latitude: latitude || 0.0,
     longitude: longitude || 0.0,
-    latitudeDelta: latitude
-      ? DELTA
-      : 90,
-    longitudeDelta: longitude
-      ? DELTA
-      : 180
+    latitudeDelta,
+    longitudeDelta
   };
 };
 

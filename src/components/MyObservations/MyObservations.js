@@ -17,6 +17,7 @@ type Props = {
   currentUser: Object,
   handleIndividualUploadPress: Function,
   handleSyncButtonPress: Function,
+  handlePullToRefresh: Function,
   isConnected: boolean,
   isFetchingNextPage: boolean,
   layout: "list" | "grid",
@@ -36,6 +37,7 @@ const MyObservations = ( {
   currentUser,
   handleIndividualUploadPress,
   handleSyncButtonPress,
+  handlePullToRefresh,
   isConnected,
   isFetchingNextPage,
   layout,
@@ -77,6 +79,7 @@ const MyObservations = ( {
             <ObservationsFlashList
               dataCanBeFetched={!!currentUser}
               data={observations}
+              handlePullToRefresh={handlePullToRefresh}
               handleIndividualUploadPress={handleIndividualUploadPress}
               onScroll={animatedScrollEvent}
               hideLoadingWheel={!isFetchingNextPage || !currentUser}

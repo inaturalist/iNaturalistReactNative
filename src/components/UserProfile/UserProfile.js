@@ -25,7 +25,6 @@ import { formatLongDate } from "sharedHelpers/dateAndTime.ts";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
-  useDebugMode,
   useTranslation
 } from "sharedHooks";
 import useStore from "stores/useStore";
@@ -42,7 +41,6 @@ const UserProfile = ( ): Node => {
   const [showLoginSheet, setShowLoginSheet] = useState( false );
   const [showUnfollowSheet, setShowUnfollowSheet] = useState( false );
   const { t, i18n } = useTranslation( );
-  const { isDebug } = useDebugMode( );
 
   const fetchId = userId || login;
   const { data: remoteUser, isError, error } = useAuthenticatedQuery(
@@ -193,20 +191,18 @@ const UserProfile = ( ): Node => {
             <UserText text={user?.description} />
           </View>
         ) }
-        {isDebug && (
-          <View className="mb-8">
-            <Heading4 className="mb-[11px]">
-              {t( "PROJECTS" )}
-            </Heading4>
-            <Button
-              text={t( "VIEW-PROJECTS" )}
-              onPress={( ) => navigation.navigate( "ProjectList", {
-                projects,
-                headerOptions: projectsHeaderOptions
-              } )}
-            />
-          </View>
-        )}
+        <View className="mb-8">
+          <Heading4 className="mb-[11px]">
+            {t( "PROJECTS" )}
+          </Heading4>
+          <Button
+            text={t( "VIEW-PROJECTS" )}
+            onPress={( ) => navigation.navigate( "ProjectList", {
+              projects,
+              headerOptions: projectsHeaderOptions
+            } )}
+          />
+        </View>
         <View className="mb-8">
           <Heading4 className="mb-[11px]">
             {t( "PEOPLE--title" )}
@@ -232,11 +228,12 @@ const UserProfile = ( ): Node => {
             {t( "Affiliation", { site: user.site.name } )}
           </Body2>
         )}
-        {user.monthly_supporter && (
+        {/* TODO fix this when we know whether the user is a donor and prefers to show it */}
+        {/* {user.monthly_supporter && (
           <Body2 className="mb-5">
             {t( "Monthly-Donor" )}
           </Body2>
-        )}
+        )} */}
       </View>
       {showLoginSheet && <LoginSheet setShowLoginSheet={setShowLoginSheet} />}
       {showUnfollowSheet && (

@@ -366,6 +366,22 @@ describe( "MyObservations", ( ) => {
         } ).not.toThrow( );
       } );
 
+      it( "should trigger manual observation sync on pull-to-refresh", async ( ) => {
+        renderAppWithComponent( <MyObservationsContainer /> );
+
+        const myObsList = await screen.findByTestId( "MyObservationsAnimatedList" );
+
+        fireEvent.scroll( myObsList, {
+          nativeEvent: {
+            contentOffset: { y: -100 },
+            contentSize: { height: 1000, width: 100 },
+            layoutMeasurement: { height: 500, width: 100 }
+          }
+        } );
+
+        expect( inatjs.observations.deleted ).toHaveBeenCalled( );
+      } );
+
       describe( "on screen focus", ( ) => {
         beforeEach( ( ) => {
           zustandStorage.setItem( "lastDeletedSyncTime", "2024-05-01" );
@@ -396,5 +412,20 @@ describe( "MyObservations", ( ) => {
         } );
       } );
     } );
+
+    describe( "with no observations", ( ) => {
+      it( "should show a button to create first observation", async ( ) => {
+        renderAppWithComponent( <MyObservationsContainer /> );
+        await waitFor( ( ) => {
+          const firstObsButton = screen.getByText( "CREATE YOUR FIRST OBSERVATION" );
+          expect( firstObsButton ).toBeVisible( );
+        } );
+      } );
+    } );
+    // TODO there are different presentations for each of these states
+    // describe( "with 1 observation" );
+    // describe( "with 25 observations" );
+    // describe( "with 75 observations" );
+    // describe( "with 125 observations" );
   } );
 } );

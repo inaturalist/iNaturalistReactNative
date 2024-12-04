@@ -1,26 +1,18 @@
 // @flow
 
 import {
-  SearchBar,
-  TaxaList,
   TaxonResult,
-  ViewWrapper
+  TaxonSearch
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useCallback,
   useState
 } from "react";
 import { useTranslation } from "sharedHooks";
-import useTaxonSearch from "sharedHooks/useTaxonSearch";
-import { getShadow } from "styles/global";
+import useTaxonSearch from "sharedHooks/useTaxonSearch.ts";
 
 import ExploreSearchHeader from "./ExploreSearchHeader";
-
-const DROP_SHADOW = getShadow( {
-  offsetHeight: 4
-} );
 
 type Props = {
   closeModal: Function,
@@ -38,7 +30,11 @@ const ExploreTaxonSearch = ( {
   const { t } = useTranslation( );
   const [taxonQuery, setTaxonQuery] = useState( "" );
 
-  const { taxaSearchResults, refetch, isLoading } = useTaxonSearch( taxonQuery );
+  const {
+    taxa,
+    isLoading,
+    isLocal
+  } = useTaxonSearch( taxonQuery );
 
   const onTaxonSelected = useCallback( async newTaxon => {
     updateTaxon( newTaxon );
@@ -70,31 +66,22 @@ const ExploreTaxonSearch = ( {
   ] );
 
   return (
-    <ViewWrapper>
-      <ExploreSearchHeader
-        closeModal={closeModal}
-        headerText={t( "SEARCH-TAXA" )}
-        resetFilters={resetTaxon}
-        testID="ExploreTaxonSearch.close"
-      />
-      <View
-        className="bg-white px-6 pt-2 pb-8"
-        style={DROP_SHADOW}
-      >
-        <SearchBar
-          handleTextChange={setTaxonQuery}
-          value={taxonQuery}
-          testID="SearchTaxon"
+    <TaxonSearch
+      header={(
+        <ExploreSearchHeader
+          closeModal={closeModal}
+          headerText={t( "SEARCH-TAXA" )}
+          resetFilters={resetTaxon}
+          testID="ExploreTaxonSearch.close"
         />
-      </View>
-      <TaxaList
-        taxa={taxaSearchResults}
-        isLoading={isLoading}
-        renderItem={renderItem}
-        taxonQuery={taxonQuery}
-        refetch={refetch}
-      />
-    </ViewWrapper>
+      )}
+      isLoading={isLoading}
+      isLocal={isLocal}
+      query={taxonQuery}
+      renderItem={renderItem}
+      setQuery={setTaxonQuery}
+      taxa={taxa}
+    />
   );
 };
 

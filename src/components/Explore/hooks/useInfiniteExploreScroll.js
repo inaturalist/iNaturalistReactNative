@@ -1,5 +1,6 @@
 // @flow
 
+import { useQueryClient } from "@tanstack/react-query";
 import { searchObservations } from "api/observations";
 import { addSeconds, formatISO, parseISO } from "date-fns";
 import { flatten, last } from "lodash";
@@ -8,15 +9,14 @@ import Observation from "realmModels/Observation";
 import { useAuthenticatedInfiniteQuery } from "sharedHooks";
 
 const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object ): Object => {
+  const queryClient = useQueryClient( );
   const baseParams = {
     ...newInputParams,
     fields: Observation.EXPLORE_LIST_FIELDS,
     ttl: -1
   };
 
-  const { fields, ...queryKeyParams } = baseParams;
-
-  const queryKey = ["useInfiniteExploreScroll", "searchObservations", queryKeyParams];
+  const queryKey = ["useInfiniteExploreScroll", newInputParams];
 
   const getNextPageParam = useCallback( lastPage => {
     const lastObs = last( lastPage.results );
@@ -48,6 +48,8 @@ const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object )
     isFetchingNextPage,
     isLoading,
     fetchNextPage,
+    refetch,
+    isRefetching,
     status
   } = useAuthenticatedInfiniteQuery(
     queryKey,
@@ -89,6 +91,11 @@ const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object )
     }
   );
 
+  const handlePullToRefresh = async ( ) => {
+    queryClient.removeQueries( { queryKey } );
+    await refetch( );
+  };
+
   const observations = flatten( data?.pages?.map( r => r.results ) ) || [];
   let totalResults = data?.pages?.[0].total_results;
   if ( totalResults !== 0 && !totalResults ) {
@@ -96,10 +103,11 @@ const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object )
   }
 
   return {
-    isFetchingNextPage,
     fetchNextPage,
     isLoading,
-    observations: flatten( observations ),
+    isFetchingNextPage: isFetchingNextPage || isRefetching,
+    handlePullToRefresh,
+    observations,
     status,
     totalBounds: data?.pages?.[0].total_bounds,
     totalResults

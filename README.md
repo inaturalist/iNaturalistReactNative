@@ -236,6 +236,7 @@ git commit -a -m "Updated translations"
 ```
 
 ## Styling
+
 We're using Nativewind, a styling system for React Native based on Tailwind CSS. Check the [Nativewind documentation](https://www.nativewind.dev/) to see what styles can be used in RN.
 
 ## Icons
@@ -308,6 +309,8 @@ fastlane prod
             1. Delete the observation you just made
             1. Go to Explore and view a taxon
             1. Change to observations view and view an observation
+            1. Go to the observers profile
+            1. Go to one project this user joined (if not available try another user)
             1. Sign in
             1. Make an observation by taking a new photo in the AI Camera; tap "Upload Now" to upload immediately; wait for upload to complete before moving on
             1. Make an observation by taking a new photo in the StandardCamera; save without upload
@@ -322,6 +325,13 @@ fastlane prod
             1. Make an observation without a photo
             1. Turn off airplane mode
             1. Upload from the toolbar on MyObs
+        1. Update
+            1. Remove the app from the device
+            1. Go to TestFlight and install the latest build
+            1. Sign in and make sure you have at least one uploaded observation with photo
+            1. Make one observation but keep it saved only, and not uploaded
+            1. Install a "Release" build on top of the TestFlight build
+            1. Upload the previously only saved observation
     1. Install a "release" build on an Android device and repeat iOS steps
 1. Write release notes based on commits since the last release. Try to keep them brief but emphasize what's new and what's fixed. Just keep them in a text editor; you'll save them at a later step.
 1. Edit `package.json` and update the `version` per semantic versioning rules: bump the patch version if the only changes were bug fixes, bump minor version if there were new features, and bump the major version if the app was completely re-written or can't import data from previous versions.
@@ -330,7 +340,8 @@ fastlane prod
 1. `bundle exec fastlane tag` to create a tag and bump the build number. You'll be prompted to enter those release notes you wrote. (:wq to save and exit)
 1. `bundle exec fastlane release` to build and push a release to Github
 1. `bundle exec fastlane internal` to distribute the builds to internal test groups in TestFlight and the Play Store
-1. If it's the end of the release cycle, prep an App Store release on App Store Connect using the latest build. Write custom release notes that summarize changes since the last App Store release (not since the last build). Submit for review with manual release control. Haven't figured out a good way to automate this, maybe impossible.
+1. If it's the end of the release cycle, `bundle exec fastlane prod` to prepare an App Store release on App Store Connect. You'll be prompted to write custom release notes that summarize changes since the last App Store release (not since the last build).
+After this command line call, attach the latest build to the new version in the App Store Connect UI on the web and submit for review with manual release control. Haven't figured out a good way to automate this without submitting to review at the same time, maybe impossible.
 1. Wait at least a day for internal testers to report any blocking problems
 1. `bundle exec fastlane beta` to distribute the builds to external test groups in TestFlight and the Play Store
 1. After receiving OK during iteration meeting, make App Store release available

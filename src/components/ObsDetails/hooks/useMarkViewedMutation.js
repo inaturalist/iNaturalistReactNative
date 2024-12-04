@@ -63,11 +63,19 @@ const useMarkViewedMutation = (
   );
 
   useEffect( ( ) => {
-    if ( !remoteObservation || isMarkingViewed ) { return; }
-    if ( localObservation?.unviewed( ) === true ) {
-      setIsMarkingViewed( true );
-      markViewedMutation.mutate( { id: uuid } );
-    }
+    // If a remote obs doesn't exist, we can't mark it as viewed, and if we
+    // don't have a copy b/c of no/weak internet connection, we also probably
+    // can't mark it as viewed
+    if ( !remoteObservation ) return;
+    // If we're already in the process of marking as viewed, we don't want to
+    // do it again
+    if ( isMarkingViewed ) return;
+    // If a local copy exists and it's already been marked as viewed, we're
+    // probably good. Might be redundant with the prior check, though.
+    if ( localObservation && localObservation.viewed( ) ) return;
+
+    setIsMarkingViewed( true );
+    markViewedMutation.mutate( { id: uuid } );
   }, [
     localObservation,
     remoteObservation,

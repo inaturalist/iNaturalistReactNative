@@ -37,9 +37,10 @@ const ObservationsView = ( {
   setCurrentMapRegion
 }: Props ): Node => {
   const {
-    observations,
-    isFetchingNextPage,
     fetchNextPage,
+    isFetchingNextPage,
+    handlePullToRefresh,
+    observations,
     totalBounds,
     totalResults,
     isLoading
@@ -92,6 +93,7 @@ const ObservationsView = ( {
         data={observations}
         dataCanBeFetched={canFetch}
         explore
+        handlePullToRefresh={handlePullToRefresh}
         hideLoadingWheel={!isFetchingNextPage}
         isFetchingNextPage={isFetchingNextPage}
         isConnected={isConnected}

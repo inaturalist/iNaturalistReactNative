@@ -8,6 +8,11 @@ import Photo from "realmModels/Photo";
 
 import ObsImagePreview from "./ObsImagePreview";
 import ObsUploadStatus from "./ObsUploadStatus";
+import {
+  observationHasSound,
+  photoCountFromObservation,
+  photoFromObservation
+} from "./util";
 
 type Props = {
   currentUser: Object,
@@ -19,10 +24,7 @@ type Props = {
   style?: Object,
   queued: boolean,
   uploadProgress?: number,
-  width?: string,
-  photo: Object,
-  obsPhotosCount: number,
-  hasSound: boolean
+  width?: string
 };
 
 const ObsGridItem = ( {
@@ -35,10 +37,7 @@ const ObsGridItem = ( {
   queued,
   style,
   uploadProgress,
-  width = "w-[200px]",
-  photo,
-  obsPhotosCount,
-  hasSound
+  width = "w-[200px]"
 }: Props ): Node => {
   const displayTaxonName = useMemo( ( ) => (
     <DisplayTaxonName
@@ -61,6 +60,8 @@ const ObsGridItem = ( {
     observation?.uuid
   ] );
 
+  const photo = photoFromObservation( observation );
+
   return (
     <ObsImagePreview
       source={{
@@ -69,8 +70,8 @@ const ObsGridItem = ( {
       width={width}
       height={height}
       style={style}
-      obsPhotosCount={obsPhotosCount}
-      hasSound={hasSound}
+      obsPhotosCount={photoCountFromObservation( observation )}
+      hasSound={observationHasSound( observation )}
       isMultiplePhotosTop
       testID={`MyObservations.gridItem.${observation.uuid}`}
       useShortGradient={!explore}

@@ -38,9 +38,7 @@ num_cleaned = 0
   # doc.at("svg").remove_attribute "xmlns:inkscape"
   # doc.at("svg").remove_attribute "xmlns:sodipodi"
   doc.remove_namespaces!
-  File.open( path, "w" ) do | file |
-    file.write( doc.to_xml( indent: 2 ) )
-  end
+  File.write( path, doc.to_xml( indent: 2 ) )
   num_cleaned += 1
 end
 puts "Cleaned #{num_cleaned} SVGs"

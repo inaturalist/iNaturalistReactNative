@@ -1,4 +1,5 @@
 import RNFS from "react-native-fs";
+import Realm from "realm";
 
 import Application from "./Application";
 import Comment from "./Comment";
@@ -30,14 +31,23 @@ export default {
     User,
     Vote
   ],
-  schemaVersion: 57,
+  schemaVersion: 59,
   path: `${RNFS.DocumentDirectoryPath}/db.realm`,
   // https://github.com/realm/realm-js/pull/6076 embedded constraints
   migrationOptions: {
     resolveEmbeddedConstraints: true
   },
   // TODO: type?
-  migration: ( oldRealm, newRealm ) => {
+  migration: ( oldRealm: Realm, newRealm: Realm ) => {
+    if ( oldRealm.schemaVersion < 59 ) {
+      const oldTaxa = oldRealm.objects( "Taxon" );
+      const newTaxa = newRealm.objects( "Taxon" );
+      newTaxa.keys( ).forEach( ( objectIndex: number ) => {
+        const newTaxon = newTaxa[objectIndex];
+        const oldTaxon = oldTaxa[objectIndex];
+        newTaxon._searchableName = Taxon.compileSearchableName( oldTaxon );
+      } );
+    }
     if ( oldRealm.schemaVersion < 55 ) {
       const newObservations = newRealm.objects( "Observation" );
       newObservations.keys( ).forEach( objectIndex => {
@@ -50,8 +60,8 @@ export default {
       const newPrefs = newRealm.objects( "LocalPreferences" );
       //  TODO: type? here and below
       oldPrefs.keys( ).forEach( objectIndex => {
-        const newObsSound = newPrefs[objectIndex];
-        delete newObsSound.explore_location_permission_shown;
+        const newPreference = newPrefs[objectIndex];
+        delete newPreference.explore_location_permission_shown;
       } );
     }
     if ( oldRealm.schemaVersion < 51 ) {

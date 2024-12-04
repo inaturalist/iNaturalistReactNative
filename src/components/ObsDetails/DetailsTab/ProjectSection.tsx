@@ -6,20 +6,25 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React, { useMemo } from "react";
-import { useDebugMode } from "sharedHooks";
 
 const headingClass = "mt-[20px] mb-[11px] text-darkGray";
 const sectionClass = "mx-[15px] mb-[20px]";
 
+// TODO: can we get a centralized type/interface for our realm objects, here observation and project
 interface Props {
-  observation: Object
+  observation: {
+    project_observations: Array<{
+      project: Object;
+    }>;
+    non_traditional_projects: Array<{
+      project: Object;
+    }>;
+  }
 }
 
-const ProjectSection = ( { observation }: Props ): Node => {
+const ProjectSection = ( { observation }: Props ) => {
   const navigation = useNavigation( );
-  const { isDebug } = useDebugMode( );
 
   const traditionalProjects = observation?.project_observations?.map( p => p.project ) || [];
   const nonTraditionalProjects = observation?.non_traditional_projects?.map( p => p.project ) || [];
@@ -36,10 +41,6 @@ const ProjectSection = ( { observation }: Props ): Node => {
       projectCount: totalProjectCount
     } )
   } ), [totalProjectCount] );
-
-  if ( !isDebug ) {
-    return null;
-  }
 
   if ( totalProjectCount === 0 || typeof totalProjectCount !== "number" ) {
     return null;

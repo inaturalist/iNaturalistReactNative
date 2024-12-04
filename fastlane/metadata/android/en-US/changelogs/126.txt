@@ -1,0 +1,2 @@
+FIXED
+* Could not choose a location from Explore filters menu

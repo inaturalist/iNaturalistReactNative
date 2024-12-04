@@ -1,0 +1,18 @@
+NEW
+* Projects screen
+* Offline taxon search
+* Pull-to-refresh on MyObservations
+
+UPDATED
+* Camera performance improvements
+* Bigger font on some screens
+* Location picker zoom
+* Help link
+* New translations
+* Upload directly for multi-observation
+
+FIXED
+* Explore map on Android (@joergmlpts)
+* PhotoCount (@israr002)
+* Ensure location is saved to photos when adding evidence
+* Update user language everywhere

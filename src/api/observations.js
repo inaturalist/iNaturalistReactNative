@@ -69,7 +69,7 @@ const fetchRemoteObservations = async (
   uuids: Array<string>,
   params: Object = {},
   opts: Object = {}
-): Promise<?number> => {
+): Promise<?Array<Object>> => {
   try {
     const response = await inatjs.observations.fetch(
       uuids,
@@ -157,11 +157,12 @@ const fetchObservationUpdates = async (
 };
 
 const fetchUnviewedObservationUpdatesCount = async (
-  opts: Object
+  params: Object = {},
+  opts: Object = {}
 ): Promise<number> => {
   try {
     const { total_results: updatesCount } = await inatjs.observations.updates( {
-      observations_by: "owner",
+      ...params,
       viewed: false,
       per_page: 0
     }, opts );

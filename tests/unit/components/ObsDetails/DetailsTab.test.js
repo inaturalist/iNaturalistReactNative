@@ -3,7 +3,6 @@ import DetailsTab from "components/ObsDetails/DetailsTab/DetailsTab";
 import { TILE_URL } from "components/SharedComponents/Map/helpers/mapHelpers.ts";
 import React from "react";
 import { View } from "react-native";
-import * as useDebugMode from "sharedHooks/useDebugMode";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
@@ -133,11 +132,7 @@ describe( "DetailsTab", ( ) => {
     expect( viewProjectsButton ).toBeFalsy( );
   } );
 
-  test( "should display project count from both collection & traditional projects "
-    + "in debug mode", ( ) => {
-    jest.spyOn( useDebugMode, "default" ).mockImplementation( ( ) => ( {
-      isDebug: true
-    } ) );
+  test( "should display project count from both collection & traditional projects ", ( ) => {
     renderComponent(
       <DetailsTab
         observation={mockObservationWithProjects}

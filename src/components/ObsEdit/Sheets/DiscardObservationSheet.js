@@ -29,15 +29,13 @@ const DiscardObservationSheet = ( {
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const multipleObservations = observations.length > 1;
 
-  const saveAllObservations = async ( ) => {
-    await Promise.all( observations.map( async observation => {
-      // Note that this should only happen after import when ObsEdit has
-      // multiple observations to save, none of which should have
-      // corresponding photos in cameraRollPhotos, so there's no need to
-      // write EXIF for those.
-      await Observation.saveLocalObservationForUpload( observation, realm );
-    } ) );
-  };
+  // Note that this should only happen after import when ObsEdit has
+  // multiple observations to save, none of which should have
+  // corresponding photos in cameraRollPhotos, so there's no need to
+  // write EXIF for those.
+  const saveAllObservations = async ( ) => Promise.all(
+    observations.map( o => Observation.saveLocalObservationForUpload( o, realm ) )
+  );
 
   const discardObservationandReset = () => {
     resetObservationFlowSlice();

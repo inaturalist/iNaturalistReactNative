@@ -339,6 +339,9 @@ DELETE = DELETE
 Delete-all-observations = Delete all observations
 Delete-comment = Delete comment
 DELETE-COMMENT--question = DELETE COMMENT?
+# Button that deletes the current observation in a batch of several observations
+Delete-current-observation = Delete current observation
+# Button that deletes an observation
 Delete-observation = Delete observation
 DELETE-OBSERVATION--question = DELETE OBSERVATION?
 # Button label or accessibility label for an element that deletes a photo
@@ -676,6 +679,9 @@ More-info = More info
 MOST-FAVED = MOST FAVED
 Most-faved = Most faved
 MY-OBSERVATIONS = MY OBSERVATIONS
+# Title for section in Notifications showing notifications about observations
+# created by the viewer. Should be 16 characters or fewer or it will be ellipsized.
+MY-OBSERVATIONS--notifications = MY OBSERVATIONS
 Native = Native
 Native-to-place = Native to { $place }
 Navigates-to-AI-camera = Navigates to AI camera
@@ -740,6 +746,11 @@ Notifications = Notifications
 notifications-user-added-comment-to-observation-by-you = <0>{ $userName }</0> added a comment to an observation by you
 # notification when someone adds an identification to your observation
 notifications-user-added-identification-to-observation-by-you = <0>{ $userName }</0> added an identification to an observation by you
+# notification when someone adds a comment to an observation by someone else
+notifications-user1-added-comment-to-observation-by-user2 = <0>{ $user1 }</0> added a comment to an observation by { $user2 }
+# notification when someone adds an identification to an observation by
+# someone else
+notifications-user1-added-identification-to-observation-by-user2 = <0>{ $user1 }</0> added an identification to an observation by { $user2 }
 # Month of November
 November = November
 Obervations-must-be-manually-added = Observations must be manually added to a traditional project, either during the upload stage or after the observation has been shared to iNaturalist. A user must also join a traditional project in order to add their observations to it.
@@ -819,6 +830,9 @@ Organisms-that-are-identified-to-species = Organisms that are identified to spec
 # one of the existing options
 Other = Other
 OTHER-DATA = OTHER DATA
+# Tab on notifications showing notifications about content created by others.
+# Should be 16 characters or fewer or it will be ellipsized.
+OTHER-OBSERVATIONS--notifications = OTHER OBSERVATIONS
 OTHER-SUGGESTIONS = OTHER SUGGESTIONS
 PASSWORD = PASSWORD
 # Title showing user profile details about who a user follows and is following
@@ -860,6 +874,10 @@ PROJECTS = PROJECTS
 # As in iNat projects, collections of observations or observation search filters
 Projects = Projects
 PROJECTS-X = PROJECTS ({ $projectCount })
+# Accessibility label for pull-to-refresh on MyObservations list and grid view
+Pull-to-refresh-and-sync-observations = Pull to refresh and sync observations
+# Accessibility label for pull-to-refresh on Notifications list
+Pull-to-refresh-notifications = Pull to refresh notifications
 QUALITY-GRADE = QUALITY GRADE
 # label in project requirements
 Quality-Grade = Quality Grade
@@ -1003,6 +1021,8 @@ SAVE = SAVE
 # Label for a button that persists something
 Save = Save
 SAVE-ALL = SAVE ALL
+# Button that saves all observations in a batch of multiple observations
+Save-all-observations = Save all observations
 SAVE-CHANGES = SAVE CHANGES
 SAVE-FOR-LATER = SAVE FOR LATER
 SAVE-LOCATION = SAVE LOCATION
@@ -1058,6 +1078,8 @@ Share-map = Share map
 Share-your-observation-where-it-can-help-scientists = Share your observation, where it can help scientists across the world better understand biodiversity.
 SHOP-INATURALIST-MERCH = SHOP INATURALIST MERCH
 Show-observation-options = Show observation options.
+# Message when offline search results are being displayed
+Showing-offline-search-results--taxa = Showing offline search results. To search for more species, try again when connected to the Internet.
 # Label for button that shows identification suggestions
 Shows-identification-suggestions = Shows identification suggestions
 Shows-iNaturalist-bird-logo = Shows iNaturalist bird logo.
@@ -1260,6 +1282,12 @@ x-comments =
         [one] { $count } comment
        *[other] { $count } comments
     }
+# Number of observations with an upload failure in ObsEdit multiple observation screen
+x-failed =
+    { $count ->
+        [one] { $count } failed
+       *[other] { $count } failed
+    }
 # Subtitle for a screen showing the list of followers a user has
 X-FOLLOWERS =
     { $count ->
@@ -1346,6 +1374,12 @@ X-PHOTOS-Y-SOUNDS =
        *[other] { $soundCount } SOUNDS
     }
 X-PROJECTS = { $projectCount } PROJECTS
+# Number of observations saved in ObsEdit multiple observation screen
+x-saved =
+    { $count ->
+        [one] { $count } saved
+       *[other] { $count } saved
+    }
 # Displays number of sounds attached to an observation in the Media Viewer
 X-SOUNDS =
     { $count ->
@@ -1356,6 +1390,18 @@ X-Species =
     { $count ->
         [one] { $count } Species
        *[other] { $count } Species
+    }
+# Number of observations uploaded in ObsEdit multiple observation screen
+x-uploaded =
+    { $count ->
+        [one] { $count } uploaded
+       *[other] { $count } uploaded
+    }
+# Number of observations with upload in progress in ObsEdit multiple observation screen
+x-uploading =
+    { $count ->
+        [one] { $count } uploading
+       *[other] { $count } uploading
     }
 x-uploads-failed =
     { $count ->

@@ -3,7 +3,11 @@ import { useNavigation } from "@react-navigation/native";
 import MyObservationsEmpty from "components/MyObservations/MyObservationsEmpty";
 import navigateToObsEdit from "components/ObsEdit/helpers/navigateToObsEdit.ts";
 import {
-  ActivityIndicator, Body3, CustomFlashList, InfiniteScrollLoadingWheel
+  ActivityIndicator,
+  Body3,
+  CustomFlashList,
+  CustomRefreshControl,
+  InfiniteScrollLoadingWheel
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts.ts";
@@ -11,7 +15,8 @@ import type { Node } from "react";
 import React, {
   forwardRef,
   useCallback,
-  useMemo
+  useMemo,
+  useState
 } from "react";
 import { Animated } from "react-native";
 import RealmObservation from "realmModels/Observation";
@@ -31,6 +36,7 @@ type Props = {
   data: Array<Object>,
   dataCanBeFetched?: boolean,
   explore: boolean,
+  handlePullToRefresh: Function,
   handleIndividualUploadPress: Function,
   hideLoadingWheel: boolean,
   isConnected: boolean,
@@ -51,6 +57,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
   data,
   dataCanBeFetched,
   explore,
+  handlePullToRefresh,
   handleIndividualUploadPress,
   hideLoadingWheel,
   isConnected,
@@ -73,6 +80,13 @@ const ObservationsFlashList: Function = forwardRef( ( {
   const totalUploadProgress = useStore( state => state.totalUploadProgress );
   const prepareObsEdit = useStore( state => state.prepareObsEdit );
   const setMyObsOffsetToRestore = useStore( state => state.setMyObsOffsetToRestore );
+  const [refreshing, setRefreshing] = useState( false );
+
+  const onRefresh = async ( ) => {
+    setRefreshing( true );
+    await handlePullToRefresh( );
+    setRefreshing( false );
+  };
 
   const {
     estimatedGridItemSize,
@@ -150,12 +164,17 @@ const ObservationsFlashList: Function = forwardRef( ( {
 
   const renderFooter = useCallback( ( ) => (
     <InfiniteScrollLoadingWheel
-      hideLoadingWheel={hideLoadingWheel}
-      layout={layout}
-      isConnected={isConnected}
       explore={explore}
+      hideLoadingWheel={hideLoadingWheel}
+      isConnected={isConnected}
+      layout={layout}
     />
-  ), [hideLoadingWheel, layout, isConnected, explore] );
+  ), [
+    explore,
+    hideLoadingWheel,
+    isConnected,
+    layout
+  ] );
 
   const contentContainerStyle = useMemo( ( ) => {
     if ( layout === "list" ) { return contentContainerStyleProp; }
@@ -171,7 +190,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
 
   const renderEmptyComponent = useCallback( ( ) => {
     const showEmptyScreen = showObservationsEmptyScreen
-      ? <MyObservationsEmpty isFetchingNextPage={isFetchingNextPage} />
+      ? <MyObservationsEmpty isFetchingNextPage={isFetchingNextPage} currentUser={currentUser} />
       : (
         <Body3 className="self-center mt-[150px]">
           {t( "No-results-found-try-different-search" )}
@@ -186,6 +205,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
         </View>
       );
   }, [
+    currentUser,
     isFetchingNextPage,
     showObservationsEmptyScreen,
     showNoResults,
@@ -211,6 +231,14 @@ const ObservationsFlashList: Function = forwardRef( ( {
     }
   };
 
+  const refreshControl = (
+    <CustomRefreshControl
+      accessibilityLabel={t( "Pull-to-refresh-and-sync-observations" )}
+      refreshing={refreshing}
+      onRefresh={onRefresh}
+    />
+  );
+
   return (
     <AnimatedFlashList
       ItemSeparatorComponent={renderItemSeparator}
@@ -228,8 +256,8 @@ const ObservationsFlashList: Function = forwardRef( ( {
       onLayout={onLayout}
       onMomentumScrollEnd={onMomentumScrollEnd}
       onScroll={onScroll}
-      refreshing={isFetchingNextPage}
       renderItem={renderItem}
+      refreshControl={refreshControl}
       testID={testID}
     />
   );

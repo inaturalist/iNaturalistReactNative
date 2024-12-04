@@ -1,0 +1,10 @@
+NEW
+* Notifications from other observations
+* Pull-to-refresh on Notifications
+* Add option to save all observations from batch observation edit
+
+UPDATED
+* Improved offline taxon search
+
+FIXED
+* Remove faulty Monthly Supporter badge from user profile

@@ -8,6 +8,7 @@ import {
   Heading3,
   Heading4,
   Heading5,
+  Heading6,
   List2,
   ScrollViewWrapper,
   Subheading1,
@@ -34,6 +35,7 @@ const Typography = ( ) => {
           Heading4 (non-default color)
         </Heading4>
         <Heading5 className="my-2">Heading5</Heading5>
+        <Heading6 className="my-2">Heading6</Heading6>
         <Subheading1 className="my-2">Subheading1</Subheading1>
         <Body1 className="my-2">Body1</Body1>
         <Body2 className="my-2">Body2</Body2>

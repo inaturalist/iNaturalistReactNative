@@ -1,8 +1,38 @@
-export interface RealmObservationPhoto {
-  originalPhotoUri?: string;
+interface RealmObject {
+  isValid: ( ) => boolean;
 }
 
-export interface RealmObservation {
+export interface RealmPhoto extends RealmObject {
+  _created_at?: Date;
+  _synced_at?: Date;
+  _updated_at?: Date;
+  id: number;
+  attribution?: string;
+  licenseCode?: string; // TODO type this with actual codes
+  url?: string;
+  localFilePath?: string;
+}
+
+export interface RealmSound extends RealmObject {
+  _created_at?: Date;
+  _synced_at?: Date;
+  _updated_at?: Date;
+  id: number;
+  attribution?: string;
+  licenseCode?: string; // TODO type this with actual codes
+  file_url: string;
+}
+
+export interface RealmObservationPhoto extends RealmObject {
+  originalPhotoUri?: string;
+  photo: RealmPhoto;
+}
+
+export interface RealmObservationSound extends RealmObject {
+  sound: RealmSound;
+}
+
+export interface RealmObservation extends RealmObject {
   _created_at?: Date;
   _synced_at?: Date;
   captive_flag: boolean | null;
@@ -11,7 +41,7 @@ export interface RealmObservation {
   latitude: number | null;
   longitude: number | null;
   observationPhotos: Array<RealmObservationPhoto>;
-  observationSounds: Array<Object>;
+  observationSounds: Array<RealmObservationSound>;
   observed_on_string: string | null;
   owners_identification_from_vision: boolean | null;
   place_guess: string | null;
@@ -19,4 +49,30 @@ export interface RealmObservation {
   species_guess: string | null;
   taxon_id: number | null;
   uuid: string;
+}
+
+export interface RealmTaxon extends RealmObject {
+  id: number;
+  defaultPhoto?: RealmPhoto,
+  name?: string;
+  preferredCommonName?: string;
+  rank?: string;
+  rank_level?: number;
+  isIconic?: boolean;
+  iconic_taxon_name?: string;
+  ancestor_ids?: number[];
+  _synced_at?: Date;
+}
+
+export interface RealmUser extends RealmObject {
+  iconUrl?: string;
+  id: number;
+  locale?: string;
+  login?: string;
+  name?: string;
+  observations_count?: number;
+  prefers_common_names?: boolean;
+  prefers_community_taxa?: boolean;
+  prefers_scientific_name_first?: boolean;
+  signedIn?: boolean;
 }

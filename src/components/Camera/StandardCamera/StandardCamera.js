@@ -4,9 +4,7 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import CameraView from "components/Camera/CameraView.tsx";
 import FadeInOutView from "components/Camera/FadeInOutView";
-import useDeviceStorageFull from "components/Camera/hooks/useDeviceStorageFull";
 import useRotation from "components/Camera/hooks/useRotation.ts";
-import useTakePhoto from "components/Camera/hooks/useTakePhoto.ts";
 import useZoom from "components/Camera/hooks/useZoom.ts";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -14,7 +12,6 @@ import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, {
   useCallback,
-  useEffect,
   useMemo,
   useState
 } from "react";
@@ -22,7 +19,9 @@ import DeviceInfo from "react-native-device-info";
 import { Snackbar } from "react-native-paper";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
-import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
+import { log } from "sharedHelpers/logger";
+import { useDeviceOrientation, usePerformance } from "sharedHooks";
+import { isDebugMode } from "sharedHooks/useDebugMode";
 import useStore from "stores/useStore";
 
 import {
@@ -39,26 +38,38 @@ import PhotoPreview from "./PhotoPreview";
 
 const { useRealm } = RealmContext;
 
+const logger = log.extend( "StandardCamera" );
+
 const isTablet = DeviceInfo.isTablet( );
 
 export const MAX_PHOTOS_ALLOWED = 20;
 
 type Props = {
-  addEvidence: ?boolean,
   camera: Object,
   device: Object,
   flipCamera: Function,
   handleCheckmarkPress: Function,
-  isLandscapeMode: boolean
+  isLandscapeMode: boolean,
+  toggleFlash: Function,
+  takingPhoto: boolean,
+  takePhotoAndStoreUri: Function,
+  takePhotoOptions: Object,
+  newPhotoUris: Array<Object>,
+  setNewPhotoUris: Function
 };
 
 const StandardCamera = ( {
-  addEvidence,
   camera,
   device,
   flipCamera,
   handleCheckmarkPress,
-  isLandscapeMode
+  isLandscapeMode,
+  toggleFlash,
+  takingPhoto,
+  takePhotoAndStoreUri,
+  takePhotoOptions,
+  newPhotoUris,
+  setNewPhotoUris
 }: Props ): Node => {
   const realm = useRealm( );
   const hasFlash = device?.hasFlash;
@@ -75,14 +86,13 @@ const StandardCamera = ( {
     rotation
   } = useRotation( );
   const navigation = useNavigation( );
-  const {
-    takePhoto,
-    takePhotoOptions,
-    takingPhoto,
-    toggleFlash
-  } = useTakePhoto( camera, !!addEvidence, device );
 
-  const { deviceStorageFull, showStorageFullAlert } = useDeviceStorageFull();
+  const { loadTime } = usePerformance( {
+    isLoading: camera?.current !== null
+  } );
+  if ( isDebugMode( ) && loadTime ) {
+    logger.info( loadTime );
+  }
 
   const cameraUris = useStore( state => state.cameraUris );
   const prepareCamera = useStore( state => state.prepareCamera );
@@ -96,8 +106,6 @@ const StandardCamera = ( {
 
   const disallowAddingPhotos = totalObsPhotoUris >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
-  const [discardedChanges, setDiscardedChanges] = useState( false );
-  const [newPhotoUris, setNewPhotoUris] = useState( [] );
 
   const { screenWidth } = useDeviceOrientation( );
 
@@ -126,36 +134,7 @@ const StandardCamera = ( {
     deletePhotoFromObservation( photoUri );
     await ObservationPhoto.deletePhoto( realm, photoUri );
     setNewPhotoUris( newPhotoUris.filter( uri => uri !== photoUri ) );
-  }, [deletePhotoFromObservation, realm, newPhotoUris] );
-
-  useEffect( ( ) => {
-    // We do this navigation indirectly (vs doing it directly in DiscardChangesSheet),
-    // since we need for the bottom sheet of discard-changes to first finish dismissing,
-    // only then we can do the navigation - otherwise, this causes the bottom sheet
-    // to sometimes pop back up on the next screen - see GH issue #629
-    if ( !showDiscardSheet ) {
-      if ( discardedChanges ) {
-        newPhotoUris.forEach( uri => {
-          deletePhotoByUri( uri );
-        } );
-        navigation.goBack();
-        // We don't want any navigation effect to run again
-        setDiscardedChanges( false );
-      }
-    }
-  }, [discardedChanges, showDiscardSheet, navigation, newPhotoUris, deletePhotoByUri] );
-
-  const handleTakePhoto = async ( ) => {
-    if ( deviceStorageFull ) {
-      showStorageFullAlert();
-    }
-    if ( disallowAddingPhotos ) {
-      setShowAlert( true );
-      return;
-    }
-    const uri = await takePhoto( );
-    setNewPhotoUris( [...newPhotoUris, uri] );
-  };
+  }, [deletePhotoFromObservation, realm, newPhotoUris, setNewPhotoUris] );
 
   const onFlipCamera = () => {
     resetZoom( );
@@ -166,6 +145,21 @@ const StandardCamera = ( {
   if ( isTablet && isLandscapeMode ) {
     containerClasses.push( "flex-row" );
   }
+
+  const handleDiscard = useCallback( ( ) => {
+    newPhotoUris.forEach( uri => {
+      deletePhotoByUri( uri );
+    } );
+    navigation.goBack( );
+  }, [deletePhotoByUri, navigation, newPhotoUris] );
+
+  const handleTakePhoto = ( ) => {
+    if ( disallowAddingPhotos ) {
+      setShowAlert( true );
+      return;
+    }
+    takePhotoAndStoreUri( );
+  };
 
   return (
     <View className={classnames( containerClasses )}>
@@ -202,7 +196,7 @@ const StandardCamera = ( {
           photosTaken={photosTaken}
           rotatableAnimatedStyle={rotatableAnimatedStyle}
           showZoomButton={showZoomButton}
-          takePhoto={handleTakePhoto}
+          takePhoto={takePhotoAndStoreUri}
           takePhotoOptions={takePhotoOptions}
           toggleFlash={toggleFlash}
           zoomTextValue={zoomTextValue}
@@ -222,9 +216,7 @@ const StandardCamera = ( {
       <DiscardChangesSheet
         setShowDiscardSheet={setShowDiscardSheet}
         hidden={!showDiscardSheet}
-        onDiscard={() => {
-          setDiscardedChanges( true );
-        }}
+        onDiscard={handleDiscard}
       />
     </View>
   );

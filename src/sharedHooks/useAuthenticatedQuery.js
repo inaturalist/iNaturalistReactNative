@@ -1,5 +1,3 @@
-// @flow
-
 import { useQuery } from "@tanstack/react-query";
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import { reactQueryRetry } from "sharedHelpers/logging";
@@ -7,10 +5,10 @@ import { reactQueryRetry } from "sharedHelpers/logging";
 // Should work like React Query's useQuery except it calls the queryFunction
 // with an object that includes the JWT
 const useAuthenticatedQuery = (
-  queryKey: Array<string>,
-  queryFunction: Function,
-  queryOptions: Object = {}
-): Object => useQuery( {
+  queryKey,
+  queryFunction,
+  queryOptions = {}
+) => useQuery( {
   queryKey: [...queryKey, queryOptions.allowAnonymousJWT],
   queryFn: async ( ) => {
     // Note, getJWT() takes care of fetching a new token if the existing

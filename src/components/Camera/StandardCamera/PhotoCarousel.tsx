@@ -3,7 +3,7 @@ import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import { ActivityIndicator, INatIconButton } from "components/SharedComponents";
 import { ImageBackground, Pressable, View } from "components/styledComponents";
 import React, {
-  useCallback, useEffect, useRef, useState
+  useCallback, useRef, useState
 } from "react";
 import {
   FlatList
@@ -69,12 +69,6 @@ const PhotoCarousel = ( {
   const photoGutter = isLargeScreen
     ? LARGE_PHOTO_GUTTER
     : SMALL_PHOTO_GUTTER;
-
-  useEffect( () => {
-    if ( photoUris.length === 0 && deletePhotoMode ) {
-      setDeletePhotoMode( false );
-    }
-  }, [photoUris.length, deletePhotoMode] );
 
   // I tried passing this in as a prop but the animation wasn't as smooth
   const animatedStyle = useAnimatedStyle(
@@ -169,7 +163,12 @@ const PhotoCarousel = ( {
                         backgroundColor="rgba(0, 0, 0, 0.5)"
                         testID={`PhotoCarousel.deletePhoto.${photoUri}`}
                         accessibilityLabel={t( "Delete-photo" )}
-                        onPress={( ) => onDelete( photoUri )}
+                        onPress={( ) => {
+                          onDelete( photoUri );
+                          if ( photoUris.length === 1 && deletePhotoMode ) {
+                            setDeletePhotoMode( false );
+                          }
+                        }}
                       />
                     </View>
                   )
@@ -195,6 +194,7 @@ const PhotoCarousel = ( {
     deletePhotoMode,
     isTablet,
     photoClasses,
+    photoUris.length,
     renderSkeleton,
     showDeletePhotoMode,
     t,

@@ -242,6 +242,7 @@ const Explore = ( {
         }}
         radioValues={values}
         selectedValue={currentExploreView}
+        testID="ExploreObsViewSheet"
       />
     );
   };
@@ -307,6 +308,8 @@ const Explore = ( {
         showModal={showFiltersModal}
         closeModal={closeFiltersModal}
         filterByIconicTaxonUnknown={filterByIconicTaxonUnknown}
+        renderLocationPermissionsGate={renderLocationPermissionsGate}
+        requestLocationPermissions={requestLocationPermissions}
         updateTaxon={updateTaxon}
         updateLocation={updateLocation}
         updateUser={updateUser}

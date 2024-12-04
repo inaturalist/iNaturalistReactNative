@@ -1,7 +1,7 @@
 // @flow
 
 import {
-  ActivityIndicator, Body2, Heading5, INatIcon
+  ActivityIndicator, Body2, Heading6, INatIcon
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
@@ -45,7 +45,7 @@ const Count = ( {
     {typeof count === "number"
       ? <Body2 className="mt-2">{t( "Intl-number", { val: count } )}</Body2>
       : <ActivityIndicator size={25} />}
-    <Heading5 className="mt-2 text-center">{label}</Heading5>
+    <Heading6 className="mt-2 text-center">{label}</Heading6>
   </View>
 );
 
@@ -72,7 +72,7 @@ const CountPressable = ( {
     {typeof count === "number"
       ? <Body2 className="mt-2">{t( "Intl-number", { val: count } )}</Body2>
       : <ActivityIndicator className="mt-2" size={20} />}
-    <Heading5 className="mt-2 text-center">{label}</Heading5>
+    <Heading6 className="mt-2 text-center">{label}</Heading6>
   </Pressable>
 );
 

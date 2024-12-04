@@ -53,7 +53,7 @@ const MyObservationsContainer = ( ): Node => {
   const canUpload = currentUser && isConnected;
 
   const { startUploadObservations } = useUploadObservations( canUpload );
-  useSyncObservations(
+  const { syncManually } = useSyncObservations(
     currentUserId,
     startUploadObservations
   );
@@ -63,8 +63,7 @@ const MyObservationsContainer = ( ): Node => {
   const {
     fetchNextPage,
     isFetchingNextPage,
-    status,
-    firstObservationsInRealm
+    status
   } = useInfiniteObservationsScroll( {
     params: {
       user_id: currentUserId
@@ -149,6 +148,10 @@ const MyObservationsContainer = ( ): Node => {
     ] )
   );
 
+  const handlePullToRefresh = useCallback( async ( ) => {
+    await syncManually( { skipUploads: true } );
+  }, [syncManually] );
+
   // Scroll the list to the offset we need to restore, e.g. when you are
   // scrolled way down, edit an observation, and return. Entering ObsEdit
   // takes you into a parallel stack navigator, which will destroy MyObs, so
@@ -163,9 +166,16 @@ const MyObservationsContainer = ( ): Node => {
 
   if ( !layout ) { return null; }
 
-  // show empty screen instead of loading wheel
-  const showNoResults = !currentUser
-    || ( status === "success" && !!( currentUser ) && firstObservationsInRealm );
+  // show empty screen instead of loading wheel...
+  const showNoResults = (
+    // ...if the user is not signed in, or...
+    !currentUser
+    // ...if the signed in user is offline and has no observations, or...
+    || ( !isConnected && observations?.length === 0 )
+    // ...if signed in, online user requested their own obs for the first time
+    //    and has 0 obs
+    || status !== "pending"
+  );
 
   // Keep track of the scroll offset so we can restore it when we mount
   // this component again after returning from ObsEdit
@@ -178,6 +188,7 @@ const MyObservationsContainer = ( ): Node => {
       isConnected={isConnected}
       handleIndividualUploadPress={handleIndividualUploadPress}
       handleSyncButtonPress={handleSyncButtonPress}
+      handlePullToRefresh={handlePullToRefresh}
       layout={layout}
       listRef={listRef}
       numUnuploadedObservations={numUnuploadedObservations}

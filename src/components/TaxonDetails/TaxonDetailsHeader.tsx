@@ -22,11 +22,13 @@ import {
 const TAXON_URL = "https://www.inaturalist.org/taxa";
 
 interface Props {
+  invertToWhiteBackground: boolean
   taxonId: string
   hideNavButtons: boolean
 }
 
 const TaxonDetailsHeader = ( {
+  invertToWhiteBackground,
   taxonId,
   hideNavButtons
 }: Props ): Node => {
@@ -37,22 +39,20 @@ const TaxonDetailsHeader = ( {
 
   return (
     <View
-      className={classnames(
-        "absolute",
-        "z-10",
-        "h-12"
-      )}
+      className={classnames( "h-16 transparent z-10" )}
     >
       <OverlayHeader
         testID="TaxonDetails.BackButton"
+        invertToWhiteBackground={invertToWhiteBackground}
         rightHeaderButton={!hideNavButtons && (
           <KebabMenu
             visible={kebabMenuVisible}
             setVisible={setKebabMenuVisible}
             large
-            white
+            white={!invertToWhiteBackground}
           >
             <KebabMenu.Item
+              isFirst
               testID="MenuItem.OpenInBrowser"
               onPress={( ) => {
                 openExternalWebBrowser( taxonUrl );
