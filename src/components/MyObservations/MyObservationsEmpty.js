@@ -15,17 +15,21 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Pressable } from "react-native";
-import { useCurrentUser, useTranslation } from "sharedHooks";
+import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
 type Props = {
-  isFetchingNextPage: ?boolean
+  isFetchingNextPage: ?boolean,
+  currentUser?: Object
 }
 
-const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
+const MyObservationsEmpty = ( {
+  isFetchingNextPage,
+  // Avoids flicker related to loading currentUser yet again w/ useCurrentUser
+  currentUser
+}: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
-  const currentUser = useCurrentUser( );
   const [showModal, setShowModal] = useState( false );
 
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
@@ -44,6 +48,7 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
   if ( isFetchingNextPage ) {
     return null;
   }
+
   if ( !currentUser ) {
     return (
       <FlashListEmptyWrapper
@@ -64,6 +69,7 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
       </FlashListEmptyWrapper>
     );
   }
+
   return (
     <>
       <Modal

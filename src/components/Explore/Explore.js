@@ -242,6 +242,7 @@ const Explore = ( {
         }}
         radioValues={values}
         selectedValue={currentExploreView}
+        testID="ExploreObsViewSheet"
       />
     );
   };

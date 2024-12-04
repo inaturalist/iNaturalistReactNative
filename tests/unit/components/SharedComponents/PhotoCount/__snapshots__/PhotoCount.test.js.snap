@@ -48,10 +48,17 @@ exports[`PhotoCount renders correctly 1`] = `
                 "zIndex": 10,
               },
               {
-                "left": "16%",
+                "bottom": 0,
               },
               {
-                "top": "16%",
+                "left": 0,
+              },
+              {
+                "textAlign": "center",
+              },
+              {
+                "height": 35.519999999999996,
+                "width": 35.519999999999996,
               },
             ],
           ],

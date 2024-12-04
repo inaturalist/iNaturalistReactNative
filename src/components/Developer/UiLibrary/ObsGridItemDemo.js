@@ -34,6 +34,12 @@ const ObsGridItemDemo = ( ) => (
           ]
         } )}
       />
+      <Heading2 className="my-2">20 Photos</Heading2>
+      <ObsGridItem
+        observation={makeObservation( {
+          observationPhotos: [...Array( 20 ).keys()].map( _idx => makeObservationPhoto() )
+        } )}
+      />
       <Heading2 className="my-2">Sound + Photo</Heading2>
       <ObsGridItem
         observation={makeObservation( {

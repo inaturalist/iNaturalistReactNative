@@ -16,7 +16,7 @@ const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object )
     ttl: -1
   };
 
-  const queryKey = ["useInfiniteExploreScroll"];
+  const queryKey = ["useInfiniteExploreScroll", newInputParams];
 
   const getNextPageParam = useCallback( lastPage => {
     const lastObs = last( lastPage.results );
