@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import {
   searchObservations
 } from "api/observations";
+import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { useCallback, useEffect, useState } from "react";
 import { Linking } from "react-native";
 
@@ -28,15 +29,9 @@ const useLinking = ( currentUser: ?Object ) => {
     const uuid = results?.[0]?.uuid;
 
     if ( uuid ) {
-      navigation.navigate( "TabNavigator", {
-        screen: "TabStackNavigator",
-        params: {
-          screen: "ObsDetails",
-          params: {
-            uuid
-          }
-        }
-      } );
+      navigateToObsDetails( navigation, uuid );
+      // ObsId reset for the case the same link is pressed twice and the obsId is the same
+      setObservationId( null );
     }
   }, [navigation, observationId] );
 

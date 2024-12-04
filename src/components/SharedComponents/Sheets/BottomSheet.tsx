@@ -36,6 +36,7 @@ interface Props {
   snapPoints?: Array<string>;
   insideModal?: boolean;
   keyboardShouldPersistTaps: string;
+  testID?: string;
 }
 
 const StandardBottomSheet = ( {
@@ -47,7 +48,8 @@ const StandardBottomSheet = ( {
   onPressClose,
   snapPoints,
   insideModal,
-  keyboardShouldPersistTaps = "never"
+  keyboardShouldPersistTaps = "never",
+  testID
 }: Props ): Node => {
   if ( snapPoints ) {
     throw new Error( "BottomSheet does not accept snapPoints as a prop." );
@@ -115,6 +117,9 @@ const StandardBottomSheet = ( {
               : null
           )}
           onLayout={onLayout}
+          // Not ideal, but @gorhom/bottom-sheet components don't support
+          // testID
+          testID={testID}
         >
           <View className="items-center">
             <Heading4 testID="bottom-sheet-header">{headerText}</Heading4>

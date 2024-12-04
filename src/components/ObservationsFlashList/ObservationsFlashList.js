@@ -164,12 +164,17 @@ const ObservationsFlashList: Function = forwardRef( ( {
 
   const renderFooter = useCallback( ( ) => (
     <InfiniteScrollLoadingWheel
-      hideLoadingWheel={hideLoadingWheel}
-      layout={layout}
-      isConnected={isConnected}
       explore={explore}
+      hideLoadingWheel={hideLoadingWheel}
+      isConnected={isConnected}
+      layout={layout}
     />
-  ), [hideLoadingWheel, layout, isConnected, explore] );
+  ), [
+    explore,
+    hideLoadingWheel,
+    isConnected,
+    layout
+  ] );
 
   const contentContainerStyle = useMemo( ( ) => {
     if ( layout === "list" ) { return contentContainerStyleProp; }
@@ -185,7 +190,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
 
   const renderEmptyComponent = useCallback( ( ) => {
     const showEmptyScreen = showObservationsEmptyScreen
-      ? <MyObservationsEmpty isFetchingNextPage={isFetchingNextPage} />
+      ? <MyObservationsEmpty isFetchingNextPage={isFetchingNextPage} currentUser={currentUser} />
       : (
         <Body3 className="self-center mt-[150px]">
           {t( "No-results-found-try-different-search" )}
@@ -200,6 +205,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
         </View>
       );
   }, [
+    currentUser,
     isFetchingNextPage,
     showObservationsEmptyScreen,
     showNoResults,
