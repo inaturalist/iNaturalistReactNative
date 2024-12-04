@@ -18,7 +18,9 @@ type Props = {
   isFetchingNextPage: ?boolean
 }
 
-const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
+const MyObservationsEmpty = ( {
+  isFetchingNextPage
+}: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const [showModal, setShowModal] = useState( false );

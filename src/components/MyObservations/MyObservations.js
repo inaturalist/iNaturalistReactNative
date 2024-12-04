@@ -81,6 +81,10 @@ const MyObservations = ( {
   if ( !currentUser && observations.length === 0 ) {
     return (
       <ViewWrapper>
+        <OnboardingCarouselModal
+          showModal={!onboardingShown}
+          closeModal={() => setOnboardingShown( true )}
+        />
         <MyObservationsHeader
           currentUser={currentUser}
           handleSyncButtonPress={handleSyncButtonPress}

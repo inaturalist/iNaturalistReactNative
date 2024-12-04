@@ -39,10 +39,8 @@ const useInfiniteObservationsScroll = ( {
       };
 
       if ( pageParam ) {
-        // $FlowIgnore
         params.id_below = pageParam;
       } else {
-        // $FlowIgnore
         params.page = 1;
       }
       const { results } = await searchObservations( params, optsWithAuth );

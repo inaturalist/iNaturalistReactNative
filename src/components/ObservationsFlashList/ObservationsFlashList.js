@@ -164,12 +164,17 @@ const ObservationsFlashList: Function = forwardRef( ( {
 
   const renderFooter = useCallback( ( ) => (
     <InfiniteScrollLoadingWheel
-      hideLoadingWheel={hideLoadingWheel}
-      layout={layout}
-      isConnected={isConnected}
       explore={explore}
+      hideLoadingWheel={hideLoadingWheel}
+      isConnected={isConnected}
+      layout={layout}
     />
-  ), [hideLoadingWheel, layout, isConnected, explore] );
+  ), [
+    explore,
+    hideLoadingWheel,
+    isConnected,
+    layout
+  ] );
 
   const contentContainerStyle = useMemo( ( ) => {
     if ( layout === "list" ) { return contentContainerStyleProp; }

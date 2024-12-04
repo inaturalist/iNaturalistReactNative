@@ -39,17 +39,6 @@ const ObsPressable = ( {
   unsynced
 }: Props ) => {
   const { t } = useTranslation( );
-  const photo = observation?.observationPhotos?.[0]?.photo
-    || observation?.observation_photos?.[0]?.photo
-    || null;
-
-  const obsPhotosCount = observation?.observationPhotos?.length
-    || observation?.observation_photos?.length
-    || 0;
-  const hasSound = !!(
-    observation?.observationSounds?.length
-    || observation?.observation_sounds?.length
-  );
 
   return (
     <Pressable
@@ -79,9 +68,6 @@ const ObsPressable = ( {
               // better with RN styles than with Tailwind classes
               style={gridItemStyle}
               uploadProgress={uploadProgress}
-              photo={photo}
-              obsPhotosCount={obsPhotosCount}
-              hasSound={hasSound}
             />
           )
           : (
@@ -93,9 +79,6 @@ const ObsPressable = ( {
               queued={queued}
               uploadProgress={uploadProgress}
               unsynced={unsynced}
-              photo={photo}
-              obsPhotosCount={obsPhotosCount}
-              hasSound={hasSound}
             />
           )
       }
