@@ -284,9 +284,6 @@ Data-quality-assessment-title-casual = This observation is Casual Grade
 Data-quality-assessment-title-needs-id = This observation Needs ID
 # Data Quality Assessment description of the final quality grade when Research Grade
 Data-quality-assessment-title-research = This observation is Research Grade!
-Data-quality-casual-description = This observation needs more information verified to be considered verifiable
-Data-quality-needs-id-description = This observation needs more identifications to reach research grade
-Data-quality-research-description = This observation has enough identifications to be considered research grade
 DATE = DATE
 # label in project requirements
 Date = Date
@@ -579,7 +576,7 @@ INATURALIST-TEAM = INATURALIST TEAM
 iNaturalist-users-who-have-left-an-identification = iNaturalist users who have left an identification on another user's observation
 iNaturalist-users-who-have-observed = iNaturalist users who have observed a particular taxon at a particular time and place
 iNaturalist-uses-your-location-to-give-you = iNaturalist uses your location to give you better identification suggestions and we can automatically add a location to your observations, which helps scientists. We also use it to help you find organisms observed near your location.
-iNaturalists-apps-are-designed-and-developed-2 = iNaturalist's apps are designed, developed, and supported by the iNaturalist team: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Thea Skaff, Angie Ta, Ken-ichi Ueda, Kirk van Gorkom, Jason Walthall, & Jane Weeden.
+iNaturalists-apps-are-designed-and-developed-3 = iNaturalist's apps are designed, developed, and supported by the iNaturalist team: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Joanne Lin, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Thea Skaff, Angie Ta, Ken-ichi Ueda, Kirk van Gorkom, Jason Walthall, & Jane Weeden.
 iNaturalists-vision-is-a-world = iNaturalist's vision is a world where everyone can understand and sustain biodiversity through the practice of observing wild organisms and sharing information about them.
 Individual-encounters-with-organisms = Individual encounters with organisms at a particular time and location, usually with evidence
 INFO-TRANSFER = INFO TRANSFER
@@ -588,6 +585,7 @@ Internet-Connection-Required = Internet Connection Required
 Intl-number = { $val }
 Introduced = Introduced
 Introduced-to-place = Introduced to { $place }
+It-can-now-be-shared-for-use-in-research = It can now be shared for use in research
 It-may-take-up-to-an-hour-to-remove-content = It may take up to an hour to completely delete all associated content
 # Month of January
 January = January
@@ -1169,6 +1167,8 @@ There-is-no-way = There is no way to have an iNaturalist account without storing
 #  Wild status sheet descriptions
 This-is-a-wild-organism = This is a wild organism and wasn't placed in this location by humans.
 This-is-how-taxon-names-will-be-displayed = This is how all taxon names will be displayed to you across iNaturalist:
+This-observation-has-not-met-the-conditions-required-to-meet-Research-Grade = This observation has not met the conditions required to meet Research Grade status
+This-observation-needs-more-identifications = This observation needs more identifications to reach Research Grade status
 This-observer-has-opted-out-of-the-Community-Taxon = This observer has opted out of the Community Taxon
 This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
 To-learn-more-about-what-information = To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.
