@@ -17,6 +17,7 @@ import {
   useDebugMode, usePerformance, useTranslation
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
+// import type { UserLocation } from "sharedHooks/useWatchPosition";
 import colors from "styles/tailwindColors";
 
 import {
@@ -52,7 +53,8 @@ type Props = {
   takingPhoto: boolean,
   takePhotoAndStoreUri: Function,
   takePhotoOptions: Object,
-  setAiSuggestion: Function
+  setAiSuggestion: Function,
+  userLocation?: Object // UserLocation | null
 };
 
 const AICamera = ( {
@@ -65,7 +67,8 @@ const AICamera = ( {
   takingPhoto,
   takePhotoAndStoreUri,
   takePhotoOptions,
-  setAiSuggestion
+  setAiSuggestion,
+  userLocation
 }: Props ): Node => {
   const hasFlash = device?.hasFlash;
   const { isDebug } = useDebugMode( );
@@ -154,6 +157,7 @@ const AICamera = ( {
             takingPhoto={takingPhoto}
             inactive={inactive}
             resetCameraOnFocus={resetCameraOnFocus}
+            userLocation={userLocation}
           />
         </View>
       )}

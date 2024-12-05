@@ -24,7 +24,6 @@ const PhotoCount = ( { count }: Props ): Node => {
   const theme = useTheme( );
   const fontScale = PixelRatio.getFontScale();
   const dim = fontScale * BASE_DIM;
-  console.log( "[DEBUG PhotoCount.js] dim: ", dim );
   const maxFontScale = Math.ceil( fontScale );
   if ( count === 0 ) {
     return <INatIcon name="noevidence" size={dim} color={theme.colors.inverseOnSurface} />;

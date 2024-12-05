@@ -121,8 +121,13 @@ const StandardBottomSheet = ( {
           // testID
           testID={testID}
         >
-          <View className="items-center">
-            <Heading4 testID="bottom-sheet-header">{headerText}</Heading4>
+          <View className="mx-12 flex">
+            <Heading4
+              testID="bottom-sheet-header"
+              className="w-full text-center"
+            >
+              {headerText}
+            </Heading4>
           </View>
           {children}
           {!hideCloseButton && (

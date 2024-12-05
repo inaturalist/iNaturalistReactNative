@@ -12,12 +12,18 @@ import React, {
 } from "react";
 import { Platform } from "react-native";
 import { Worklets } from "react-native-worklets-core";
-import { modelPath, modelVersion, taxonomyPath } from "sharedHelpers/cvModel.ts";
+import {
+  geomodelPath,
+  modelPath,
+  modelVersion,
+  taxonomyPath
+} from "sharedHelpers/mlModel.ts";
 import {
   orientationPatchFrameProcessor,
   usePatchedRunAsync
 } from "sharedHelpers/visionCameraPatches";
 import { useDeviceOrientation } from "sharedHooks";
+// import type { UserLocation } from "sharedHooks/useWatchPosition";
 
 type Props = {
   // $FlowIgnore
@@ -38,7 +44,8 @@ type Props = {
   takingPhoto: boolean,
   taxonomyRollupCutoff?: number,
   inactive?: boolean,
-  resetCameraOnFocus: Function
+  resetCameraOnFocus: Function,
+  userLocation?: Object // UserLocation | null
 };
 
 const DEFAULT_FPS = 1;
@@ -67,7 +74,8 @@ const FrameProcessorCamera = ( {
   takingPhoto,
   taxonomyRollupCutoff = DEFAULT_TAXONOMY_CUTOFF_THRESHOLD,
   inactive,
-  resetCameraOnFocus
+  resetCameraOnFocus,
+  userLocation
 }: Props ): Node => {
   const { deviceOrientation } = useDeviceOrientation();
   const [lastTimestamp, setLastTimestamp] = useState( undefined );
@@ -155,7 +163,14 @@ const FrameProcessorCamera = ( {
             taxonomyRollupCutoff,
             numStoredResults,
             cropRatio,
-            patchedOrientationAndroid
+            patchedOrientationAndroid,
+            useGeoModel: !!userLocation,
+            geomodelPath,
+            location: {
+              latitude: userLocation?.latitude,
+              longitude: userLocation?.longitude,
+              elevation: userLocation?.altitude
+            }
           } );
           const timeAfter = Date.now();
           const timeTaken = timeAfter - timeBefore;
@@ -176,7 +191,8 @@ const FrameProcessorCamera = ( {
       numStoredResults,
       cropRatio,
       lastTimestamp,
-      fps
+      fps,
+      userLocation
     ]
   );
 
