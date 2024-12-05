@@ -52,7 +52,7 @@ const iosDestinationPath = path.join( __dirname, "..", "ios" );
   await fs.mkdir( iosDestinationPath, { recursive: true } );
   await fs.copyFile( iosModelPath, path.join( iosDestinationPath, iosModelFile ) );
   await fs.copyFile( iosTaxonomyPath, path.join( iosDestinationPath, iosTaxonomyFile ) );
-  console.log( "Copying geo model placeholder to be model file..." );
+  console.log( "Copying Geomodel placeholder to be model file..." );
   await fs.copyFile(
     path.join( iosDestinationPath, "geomodel.placeholder" ),
     path.join( iosDestinationPath, "geomodel.mlmodel" )

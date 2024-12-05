@@ -18,16 +18,16 @@ See [CONTRIBUTING](CONTRIBUTING.md) for guidelines on contributing to this proje
 1. Run `npx pod-install` or `cd ios && pod install` from the root directory
 1. `cp env.example .env.staging` for staging and `cp env.example .env` for production and fill in appropriate values. This is not part of the code repo (contains secrets, such as OAuth client ID).
 1. To run on Android, do this `cp android/example-keystore.properties android/keystore.properties`. Fill in the relevant values. If you are a member of iNat staff, get them from another member of iNat Staff.
-1. Add AI Camera model and taxonomy files. The computer vision model and geo model files are not part of the code repo, and have to be installed. The app itself will load the model file with the filename specified in a .env file. On Android, the current file names are specified in these env variables `ANDROID_MODEL_FILE_NAME`, `ANDROID_TAXONOMY_FILE_NAME`, and `ANDROID_GEO_MODEL_FILE_NAME`. On iOS, the current file names are specified in these env variables `IOS_MODEL_FILE_NAME`, `IOS_TAXONOMY_FILE_NAME`, and `IOS_GEO_MODEL_FILE_NAME`. After a fresh clone of the repo and copying the env.example file (see above), you have to add the files by following these steps:
+1. Add AI Camera model and taxonomy files. The computer vision model and Geomodel files are not part of the code repo, and have to be installed. The app itself will load the model file with the filename specified in a .env file. On Android, the current file names are specified in these env variables `ANDROID_MODEL_FILE_NAME`, `ANDROID_TAXONOMY_FILE_NAME`, and `ANDROID_GEO_MODEL_FILE_NAME`. On iOS, the current file names are specified in these env variables `IOS_MODEL_FILE_NAME`, `IOS_TAXONOMY_FILE_NAME`, and `IOS_GEO_MODEL_FILE_NAME`. After a fresh clone of the repo and copying the env.example file (see above), you have to add the files by following these steps:
     1. Add the example model files by executing `npm run add-example-model`. If that does not work continue with the next step.
     1. If the download script fails: The sample model files are available in this [`small_model.zip`](https://github.com/inaturalist/SeekReactNative/releases/tag/v2.9.1-138) file.
     1. On Android, these files are named `small_inception_tf1.tflite` and `small_export_tax.csv`. Create a camera folder within Android assets (i.e. `android/app/src/debug/assets/camera`) and place the files there.
     1. On iOS, these files are named `small_inception_tf1.mlmodel` and `small_export_tax.json` and should be added to the `ios` folder.
-    1. On iOS, in the `ios` folder, copy the geo model placeholder file `geomodel.placeholder` to `geomodel.mlmodel`. This file is just a placeholder to get the app to build. We'll release a functional geo model for development purposes soon.
-1. Optional: Add geo model file. If you have access to the model file, you can add it by following these steps:
+    1. On iOS, in the `ios` folder, copy the Geomodel placeholder file `geomodel.placeholder` to `geomodel.mlmodel`. This file is just a placeholder to get the app to build. We'll release a functional Geomodel for development purposes soon.
+1. Optional: Add Geomodel file. If you have access to the model file, you can add it by following these steps:
     1. Uncomment and set the `ANDROID_GEO_MODEL_FILE_NAME` and `IOS_GEO_MODEL_FILE_NAME` variables in the `.env` and `.env.staging` files.
-    1. On Android, the file geo model should be placed in the `android/app/src/debug/assets/camera` folder.
-    1. On iOS, the geo model file should be placed in the `ios` folder.
+    1. On Android, the file Geomodel should be placed in the `android/app/src/debug/assets/camera` folder.
+    1. On iOS, the Geomodel file should be placed in the `ios` folder.
 
 ### Set up pre-commit hooks
 
