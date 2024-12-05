@@ -29,7 +29,7 @@ export const taxonomyPath: string = Platform.select( {
   android: `${RNFS.DocumentDirectoryPath}/${modelFiles.ANDROIDTAXONOMY}`
 } );
 
-export const geoModelPath: string = Platform.select( {
+export const geomodelPath: string = Platform.select( {
   ios: `${RNFS.MainBundlePath}/${modelFiles.IOSGEOMODEL}`,
   android: `${RNFS.DocumentDirectoryPath}/${modelFiles.ANDROIDGEOMODEL}`
 } );
@@ -62,7 +62,7 @@ export const predictImage = ( uri: string ) => {
 };
 
 export const predictLocation = ( location: Location ) => getPredictionsForLocation( {
-  geoModelPath,
+  geomodelPath,
   taxonomyPath,
   location
 } );
@@ -84,7 +84,7 @@ const addCameraFilesAndroid = () => {
   RNFS.readDirAssets( "camera" ).then( results => {
     const model = modelFiles.ANDROIDMODEL;
     const taxonomy = modelFiles.ANDROIDTAXONOMY;
-    const geoModel = modelFiles.ANDROIDGEOMODEL;
+    const geomodel = modelFiles.ANDROIDGEOMODEL;
 
     const hasModel = results.find( r => r.name === model );
 
@@ -92,7 +92,7 @@ const addCameraFilesAndroid = () => {
     if ( hasModel !== undefined ) {
       copyFilesAndroid( `camera/${model}`, modelPath );
       copyFilesAndroid( `camera/${taxonomy}`, taxonomyPath );
-      copyFilesAndroid( `camera/${geoModel}`, geoModelPath );
+      copyFilesAndroid( `camera/${geomodel}`, geomodelPath );
     } else {
       Alert.alert(
         i18next.t( "No-model-found" ),

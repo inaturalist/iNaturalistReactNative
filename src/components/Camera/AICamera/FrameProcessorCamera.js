@@ -13,7 +13,7 @@ import React, {
 import { Platform } from "react-native";
 import { Worklets } from "react-native-worklets-core";
 import {
-  geoModelPath,
+  geomodelPath,
   modelPath,
   modelVersion,
   taxonomyPath
@@ -165,7 +165,7 @@ const FrameProcessorCamera = ( {
             cropRatio,
             patchedOrientationAndroid,
             useGeoModel: !!userLocation,
-            geoModelPath,
+            geomodelPath,
             location: {
               latitude: userLocation?.latitude,
               longitude: userLocation?.longitude,
