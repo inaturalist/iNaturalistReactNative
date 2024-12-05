@@ -11,12 +11,13 @@ import { t } from "i18next";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, {
-  useCallback,
+  useCallback, useEffect,
   useMemo,
   useState
 } from "react";
 import DeviceInfo from "react-native-device-info";
 import { Snackbar } from "react-native-paper";
+import { VolumeManager } from "react-native-volume-manager";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import { log } from "sharedHelpers/logger";
@@ -106,6 +107,7 @@ const StandardCamera = ( {
 
   const disallowAddingPhotos = totalObsPhotoUris >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
+  const [initialVolume, setInitialVolume] = useState( null );
 
   const { screenWidth } = useDeviceOrientation( );
 
@@ -153,13 +155,41 @@ const StandardCamera = ( {
     navigation.goBack( );
   }, [deletePhotoByUri, navigation, newPhotoUris] );
 
-  const handleTakePhoto = ( ) => {
+  const handleTakePhoto = useCallback( ( ) => {
     if ( disallowAddingPhotos ) {
       setShowAlert( true );
       return;
     }
     takePhotoAndStoreUri( );
-  };
+  }, [disallowAddingPhotos, takePhotoAndStoreUri] );
+
+  useEffect( () => {
+    if ( initialVolume === null ) {
+      // Fetch the current volume to set the initial state
+      VolumeManager.getVolume()
+        .then( volume => {
+          setInitialVolume( volume.volume );
+        } );
+    }
+
+    const volumeListener = VolumeManager.addVolumeListener( ( ) => {
+      if ( initialVolume !== null ) {
+        // Hardware volume button pressed - take a photo
+        handleTakePhoto();
+
+        // Revert the volume to its previous state
+        VolumeManager.setVolume( initialVolume );
+      }
+    } );
+
+    // Suppress the native volume UI
+    VolumeManager.showNativeVolumeUI( { enabled: false } );
+
+    return () => {
+      volumeListener.remove();
+      VolumeManager.showNativeVolumeUI( { enabled: true } );
+    };
+  }, [handleTakePhoto, initialVolume] );
 
   return (
     <View className={classnames( containerClasses )}>
