@@ -1,9 +1,10 @@
 // @flow
+import { Body2 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { compact } from "lodash";
 import type { Node } from "react";
 import React, { useMemo } from "react";
-import { useCurrentUser } from "sharedHooks";
+import { useCurrentUser, useTranslation } from "sharedHooks";
 
 import ActivityItem from "./ActivityItem";
 
@@ -27,6 +28,7 @@ const ActivityTab = ( {
   targetItemID,
   onLayoutTargetItem
 }: Props ): Node => {
+  const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
   const userId = currentUser?.id;
   const geoprivacy = observation?.geoprivacy;
@@ -60,30 +62,36 @@ const ActivityTab = ( {
 
   return (
     <View testID="ActivityTab">
-      {stableItems.length > 0 && stableItems.map( ( item, index ) => (
-        <View
-          onLayout={event => {
-            if ( targetItemID === item?.id ) {
+      {stableItems.length === 0
+        ? (
+          <Body2 className="text-center mt-12 px-[45px]">
+            {t( "This-observation-has-no-comments-or-identifications-yet" )}
+          </Body2>
+        )
+        : stableItems.map( ( item, index ) => (
+          <View
+            onLayout={event => {
+              if ( targetItemID === item?.id ) {
               // const { layout } = event.nativeEvent;
-              onLayoutTargetItem( event );
-            }
-          }}
-          key={item.uuid}
-        >
-          <ActivityItem
-            currentUserId={userId}
-            isFirstDisplay={index === indexOfFirstTaxonDisplayed( item.taxon?.id )}
-            isConnected={isConnected}
-            item={item}
-            openAgreeWithIdSheet={openAgreeWithIdSheet}
-            refetchRemoteObservation={refetchRemoteObservation}
-            userAgreedId={userAgreedToId}
-            geoprivacy={geoprivacy}
-            taxonGeoprivacy={taxonGeoprivacy}
-            belongsToCurrentUser={belongsToCurrentUser}
-          />
-        </View>
-      ) )}
+                onLayoutTargetItem( event );
+              }
+            }}
+            key={item.uuid}
+          >
+            <ActivityItem
+              currentUserId={userId}
+              isFirstDisplay={index === indexOfFirstTaxonDisplayed( item.taxon?.id )}
+              isConnected={isConnected}
+              item={item}
+              openAgreeWithIdSheet={openAgreeWithIdSheet}
+              refetchRemoteObservation={refetchRemoteObservation}
+              userAgreedId={userAgreedToId}
+              geoprivacy={geoprivacy}
+              taxonGeoprivacy={taxonGeoprivacy}
+              belongsToCurrentUser={belongsToCurrentUser}
+            />
+          </View>
+        ) )}
     </View>
   );
 };

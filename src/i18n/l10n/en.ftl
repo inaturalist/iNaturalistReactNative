@@ -1167,6 +1167,7 @@ There-is-no-way = There is no way to have an iNaturalist account without storing
 #  Wild status sheet descriptions
 This-is-a-wild-organism = This is a wild organism and wasn't placed in this location by humans.
 This-is-how-taxon-names-will-be-displayed = This is how all taxon names will be displayed to you across iNaturalist:
+This-observation-has-no-comments-or-identifications-yet = This observation has no comments or identifications yet.
 This-observation-has-not-met-the-conditions-required-to-meet-Research-Grade = This observation has not met the conditions required to meet Research Grade status
 This-observation-needs-more-identifications = This observation needs more identifications to reach Research Grade status
 This-observer-has-opted-out-of-the-Community-Taxon = This observer has opted out of the Community Taxon
