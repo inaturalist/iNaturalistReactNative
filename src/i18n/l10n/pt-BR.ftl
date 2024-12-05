@@ -15,6 +15,7 @@ ABOUT-UMBRELLA-PROJECTS = SOBRE PROJETOS GUARDA-CHUVA
 accessible-comname-sciname = { $commonName }({ $scientificName })
 accessible-sciname-comname = { $scientificName } ({ $commonName })
 Account-Deleted = Conta Deletada
+ACCOUNT-SETTINGS = CONFIGURAÇÕES DE CONTA
 ACTIVITY = ATIVIDADE
 Add-agreement = Adicionar acordo
 ADD-AN-ID = Adicionar um ID
@@ -49,6 +50,12 @@ ALLOW-LOCATION-ACCESS = PERMITIR ACESSO DE LOCALIZAÇÃO
 Almost-done = Quase pronto!
 Already-have-an-account = Já possui uma conta? Faz o login
 An-Internet-connection-is-required = Uma conexão com a internet é necessária para carregar mais observações.
+Any--date = Qualquer
+Any--establishment-means = Qualquer
+Any--media-type = Todas
+Any--project = Todos
+Any--quality-grade = Qualquer
+Any--user = Todos
 Anyone-using-iNaturalist-can-see = Qualquer um utilizando iNaturalist consegue ver onde essa espécie foi observada e cientistas podem mais facilmente utilizá-la para pesquisa.
 APP-LANGUAGE = IDIOMA DO APLICATIVO
 APPLY-FILTERS = APLICAR FILTROS
@@ -106,6 +113,7 @@ Clear = Limpar
 Close = Fechar
 Close-permission-request-screen = Fechar tela de requisição de permissão
 Close-search = Fechar pesquisa
+Closes-introduction = Fechar introdução
 Closes-new-observation-options = Fecha novas opções de observação.
 Closes-withdraw-id-sheet = Fecha a aba "Retirar Identificação"
 COLLABORATORS = COLABORADORES
@@ -114,13 +122,18 @@ Combine-Photos = Combinar fotos
 COMMENT = COMENTÁRIO
 Comment-options = Opções de comentário
 Common-Name-Scientific-Name = Nome Comum (Nome Científico)
+Community-based = Com base na comunidade
 Community-Guidelines = Diretrizes da Comunidade
 COMMUNITY-GUIDELINES = COMUNIDADE DE DIRETRIZES
 CONFIRM = CONFIRMAR
+CONNECT-TO-NATURE = SE LIGUE À NATUREZA
+Connect-to-Nature = Se ligue à Natureza
 Connect-with-other-naturalists = Conecte-se com outros naturalistas e participe de conversas.
 Connection-problem-Please-try-again-later = Problema de conexão. Tente novamente mais tarde.
 CONTACT-SUPPORT = CONTATE O SUPORTE
+CONTINUE = CONTINUAR
 Continue-to-iNaturalist = Continuar no iNaturalista
+Contribute-to-Science = Contribuir para a ciência
 Coordinates-copied-to-clipboard = Coordenadas copiada para a área de transferência
 Copy-coordinates = Copiar Coordenadas
 Copyright = Direitos Autorais
@@ -184,11 +197,22 @@ DELETE = EXCLUIR
 Delete-all-observations = Excluir todas as observações
 Delete-comment = Excluir comentário
 DELETE-COMMENT--question = EXCLUIR COMENTÁRIO?
+Delete-current-observation = Excluir observação atual
 Delete-observation = Excluir observação
 DELETE-OBSERVATION--question = EXCLUIR OBSERVAÇÃO?
 Delete-photo = Excluir foto
 Delete-sound = Excluir som
 Deletes-entered-text = Excluir texto inserido
+Deleting-x-of-y--observations =
+    Apagando { $currentDeleteCount } { $total ->
+        [one] de { $total }
+       *[other] de { $total } observações
+    }
+Deleting-x-of-y-observations-2 =
+    Apagando { $currentDeleteCount } { $total ->
+        [one] observação
+       *[other] de { $total } observações
+    }
 DETAILS = DETALHES
 Device-storage-full = Armazenamento do dispositivo cheio
 Device-storage-full-description = iNaturalist pode não ser capaz de salvar suas fotos ou pode falhar.
@@ -221,6 +245,7 @@ Edit-identification = Editar identificação
 EDIT-LOCATION = EDITAR LOCAL
 Edit-location = Editar localização
 Edit-Observation = Editar Observação
+Edit-your-profile-change-your-settings = Edite seu perfil, altere suas configurações de notificações e gerencie todas as outras partes da sua conta.
 Edits-this-observations-taxon = Edita estas observações do táxon
 EDUCATORS = EDUCADORES
 EMAIL = Endereço eletrônico
@@ -277,6 +302,11 @@ Flagged = Sinalizado
 Flash = flash
 Flip-camera = Virar câmera
 FOLLOW = SEGUIR
+FOLLOWING-X-PEOPLE =
+    { $count ->
+        [one] SEGUINDO { $count } PESSOA
+       *[other] SEGUINDO { $count } PESSOAS
+    }
 Forgot-Password = Esqueci a senha
 GEOPRIVACY = GEOPRIVACIDADE
 Geoprivacy-status = Geoprivacidade: { $status }
@@ -308,7 +338,13 @@ Identifiers = Identificadores
 Identifiers-View = Visualização dos identificadores
 Identify-an-organism = Identificar um organismo
 Identify-an-organism-with-the-iNaturalist-AI-Camera = Identificar um organismo com a câmera IA do inaturalista
+Identify-record-learn = Identifique, registre e aprenda sobre todas as espécies vivas na Terra usando o iNaturalist
 If-an-account-with-that-email-exists = Se existe uma conta com esse endereço eletrônico, enviamos instruções de redefinição de senha para o seu endereço eletrônico.
+If-you-leave-x-of-your-observations-removed =
+    Se você deixar este projeto tradicional, { $count ->
+        [one] 1 de suas observações
+       *[other] { $count } de suas observações
+    } também serão removidas deste projeto.
 If-you-want-to-collate-compare-promote = Se você quiser reunir, comparar ou promover um conjunto de projetos existentes, então você deve utilizar um Projeto Global. Um exemplo foi o Desafio da Natureza Urbana 2018, o qual reuniu mais de 60 projetos, e foi produzido para uma excelente página de destino onde qualquer um poderia comparar e contrastar as observações de cada cidade. Tanto os projetos de Coleção quanto os Tradicionais podem ser utilizados em um projeto Global, e até 500 projetos podem ser reunidos por um projeto Global.
 If-youre-seeing-this-error = Se você está vendo isto e está conectado na Internet, a equipe inaturalista já foi notificada. Obrigado por encontrar um erro! Se você não está conectado, por favor faça uma captura de tela e nos envie através de nosso endereço eletrônico assim que você estiver novamente conectado na Internet.
 IGNORE-LOCATION = IGNORAR LOCALIZAÇÃO
@@ -320,6 +356,7 @@ IMPORT-X-OBSERVATIONS =
     }
 IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = MELHORE ESTAS SUGESTÕES UTILIZANDO SUA LOCALIZAÇÃO
 improving--identification = Melhorando
+iNat-is-global-community = iNaturalist é uma comunidade global de naturalistas criando dados abertos para ciência, observando e identificando coletivamente organismos
 INATURALIST-ACCOUNT-SETTINGS = CONFIGURAÇÕES DA CONTA INATURALISTA
 iNaturalist-AI-Camera = Câmera IA do inaturalista
 iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = Inaturalista pode salvar as fotos que você tira no aplicativo para a galeria do seu dispositivo.
@@ -333,6 +370,7 @@ iNaturalist-is-a-501 = Inaturalista é uma organização sem fins lucrativos dos
 iNaturalist-is-a-community-of-naturalists = Inaturalista é uma comunidade de naturalistas que trabalha em conjunto para criar e identificar observações da biodiversidade selvagem.
 iNaturalist-is-loading-ID-suggestions = Inaturalista está carregando sugestões de identificação...
 iNaturalist-is-supported-by = O INATURALISTA é apoiado por uma organização independente, 501(c)(3) sem fins lucrativos, baseada nos Estados Unidos da América. A plataforma Inaturalista inclui este aplicativo, Procure por inaturalista, site, e muito mais.
+iNaturalist-is-supported-by-our-community = iNaturalist é apoiada pela nossa incrível comunidade. Estamos extraordinariamente gratos a todas as pessoas da nossa comunidade que fazem do iNaturalist a plataforma que ela é, aos naturalistas que adicionam observações e identificações, aos curadores que ajudam na curadoria da taxonomia e moderação, aos tradutores voluntários que tornam iNaturalist mais acessível para o público mundial e também aos nossos doadores comunitários.
 iNaturalist-mission-is-to-connect = A missão do inaturalista é conectar as pessoas à natureza e promover a ciência e a conservação da biodiversidade.
 INATURALIST-MISSION-VISION = MISSÃO e VISSÃO DA INATURALISTA
 INATURALIST-NETWORK = REDE INATURALISTA
@@ -343,6 +381,7 @@ INATURALIST-TEAM = TIME INATURALISTA
 iNaturalist-users-who-have-left-an-identification = Usuários inaturalista que deixaram uma identificação em observações de outro usuário
 iNaturalist-users-who-have-observed = Usuários do inaturalista que observaram um táxon particular em determinado momento e local
 iNaturalist-uses-your-location-to-give-you = O inaturalista utiliza a sua localização para lhe fornecer melhores sugestões de identificação e podermos adicionar automaticamente uma localização às suas observações, o que ajuda os cientistas. Também a utilizamos para ajudar a encontrar organismos observados próximos à sua localização.
+iNaturalists-apps-are-designed-and-developed-2 = Os aplicativos do iNaturalist são projetados, desenvolvidos e apoiados pela equipe do iNaturalist: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Thea Skaff, Angie Ta, Ken-ichi Ueda, Michelle Vryn, Jason Walthall e Jane Weeden.
 iNaturalists-vision-is-a-world = A visão do inaturalista é um mundo onde todos podem entender e sustentar a biodiversidade através da prática de observação dos organismos selvagens e compartilhamento das informações sobre eles.
 Individual-encounters-with-organisms = Encontros individuais com organismos em determinado momento e local, geralmente com evidências
 INFO-TRANSFER = TRANSFERÊNCIA DE INFORMAÇÃO
@@ -354,27 +393,91 @@ It-may-take-up-to-an-hour-to-remove-content = Pode levar até uma hora para apag
 January = Janeiro
 JOIN = JUNTE-SE
 JOIN-PROJECT = JUNTE-SE AO PROJETO
+JOIN-PROJECT--question = JUNTAR-SE AO PROJETO?
 Join-the-largest-community-of-naturalists = Junte-se à maior comunidade de naturalistas do mundo!
 JOINED = A QUE ADERIU
 Joined-date = Entrou:  { $date }
+JOINED-X-PROJECTS =
+    { $count ->
+        [one] PARTICIPANDO DE { $count } PROJETO
+       *[other] PARTICIPANDO DE { $count } PROJETOS
+    }
+JOURNAL-POSTS-WITHOUT-NUMBER =
+    { $count ->
+        [one] PUBLICAÇÃO DE BOLETIM
+       *[other] PUBLICAÇÕES DE BOLETIM
+    }
 July = Julho
 June = Junho
+Just-make-sure-the-organism-is-wild = Apenas se certifique de que o organismo é selvagem (não um animal de estimação, animal de zoológico ou planta de jardim)
+Last-Active-date = Última vez ativo: { $date }
+Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, maximumFractionDigits: 6) }
+Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBER($longitude, maximumFractionDigits: 6) }, Prec: { $accuracy }
 leading--identification = Liderando
 Learn-More = Saiba mais
+LEAVE = DEIXAR
+LEAVE-PROJECT = DEIXAR PROJETO
+LEAVE-PROJECT--question = DEIXAR PROJETO?
+LEAVE-US-A-REVIEW = DEIXE UMA AVALIACAO!
+LICENSES = LICENÇAS
+List-layout = Exibição em lista
+Loading-iNaturalists-AI-Camera = Carregando Câmera IA do iNaturalist
+Loads-content-that-requires-an-Internet-connection = Carrega conteúdo que requer uma conexão com a internet
+LOCATION = LOCALIZAÇÃO
 Location = Localização
+Location-accuracy-is-too-imprecise = A precisão da localização está muito baixa para auxiliar na identificação. Por favor, aumente o zoom.
+LOCATION-TOO-IMPRECISE = LOCALIZAÇÃO MUITO IMPRECISA
+LOG-IN = ENTRAR
 Log-in = Entrar
+Log-in-to-contribute-and-sync = Entre para contribuir e sincronizar
+Log-in-to-contribute-your-observations = Entre para contribuir com suas observações na ciência!
+LOG-IN-TO-INATURALIST = ENTRAR NO INATURALIST
+Log-in-to-iNaturalist = Entrar no iNaturalist
 LOG-OUT = SAIR
+LOG-OUT--question = SAIR?
+Login-sub-title = Documente seres vivos, identifique organismos e contribua com a ciência
+Lowest = Mais baixa
+LOWEST-RANK = CLASSIFICAÇÃO MAIS BAIXA
+MAP = MAPA
 Map-Area = Área do mapa
 March = Março
 maverick--identification = Em desacordo
 May = Mai
+MEDIA = MÍDIA
 Media-Type = Tipo de media
+MEMBERS-WITHOUT-NUMBER =
+    { $count ->
+        [one] MEMBRO
+       *[other] MEMBROS
+    }
 Menu = Menu
 Missing-Date = Data faltando
+MISSING-EVIDENCE = EVIDÊNCIA AUSENTE
+Monthly-Donor = Doador Mensal
 Months = Meses
+MONTHS = MESES
+More-info = Mais informações
+MOST-FAVED = MAIS FAVORITADOS
+Most-faved = Mais favoritados
 MY-OBSERVATIONS = MINHAS OBSERVAÇÕES
+MY-OBSERVATIONS--notifications = MINHAS OBSERVAÇÕES
 Native = Nativa
+Native-to-place = Nativo de { $place }
+Navigates-to-AI-camera = Navegar para a Câmera IA
+Navigates-to-bulk-importer = Navegar para o importador em massa
+Navigates-to-camera = Navegar para a câmera
+Navigates-to-explore = Navegue para o explorar
 Navigates-to-notifications = Navegar para notificações
+Navigates-to-observation-details = Navegar para a tela de detalhes da observação
+Navigates-to-observation-edit-screen = Navegar para a tela de edição de observação
+Navigates-to-photo-importer = Navegar para o importador de fotos
+Navigates-to-previous-screen = Navegar para a tela anterior
+Navigates-to-project-details = Navegar para os detalhes do projeto
+Navigates-to-sound-recorder = Navegar para o gravador de som
+Navigates-to-suggest-identification = Navegar para o sugestor de identificação
+Navigates-to-taxon-details = Navegar para detalhes do táxon
+Navigates-to-user-profile = Navegar para o perfil do usuário
+Navigates-to-your-observations = Navegar para suas observações
 NEARBY = NAS PROXIMIDADES
 Nearby = Nas redondezas
 Needs-ID--quality-grade = Precisa de Identificação
@@ -393,6 +496,8 @@ No-projects-match-that-search = Nenhum projeto corresponde a esta pesquisa
 No-results-found-for-that-search = Nenhum resultado encontrado para essa pesquisa.
 No-results-found-try-different-search = Nenhum resultado encontrado. Tente uma pesquisa diferente ou ajuste seus filtros.
 no-rights-reserved-cc0 = nenhum direito reservado (CC0)
+none--accuracy = sem dado
+NONE--ranks = sem dado
 Not-enough-space-left-on-device = Sem espaço para armazenamento no seu dispositivo
 Not-enough-space-left-on-device-try-again = Sem espaço de armazenamento no seu dispositivo para esta operação. Por favor, libere espaço e tente novamente.
 NOTES = NOTAS
@@ -400,6 +505,8 @@ NOTIFICATIONS = NOTIFICAÇÕES
 Notifications = Notificações
 notifications-user-added-comment-to-observation-by-you = <0>{ $userName }</0> adicionou um comentário a uma observação sua
 notifications-user-added-identification-to-observation-by-you = <0>{ $userName }</0> adicionou um comentário a uma observação sua
+notifications-user1-added-comment-to-observation-by-user2 = <0>{ $user1 }</0> adicionou um comentário a uma observação de { $user2 }
+notifications-user1-added-identification-to-observation-by-user2 = <0>{ $user1 }</0> adicionou uma identificação a uma observação de { $user2 }
 November = Novembro
 Obervations-must-be-manually-added = Observações devem ser adicionadas manualmente a um projeto tradicional, seja durante a fase de upload ou após a observação ter sido compartilhada com o iNaturalist. Um usuário também deve participar de um projeto tradicional para adicionar suas observações a ele.
 Obscured = Oculta
@@ -407,12 +514,16 @@ Observation = Observação
 Observation-Attribution = Observação: ©️ { $userName } · { $restrictions }
 OBSERVATION-BUTTON = BOTÃO DE OBSERVAÇÃO
 Observation-has-no-photos-and-no-sounds = Esta observação não possui fotos ou sons.
+Observation-location-obscured-randomized-point = A localização desta observação está oculta. Você está vendo um local aleatório no polígono de ocultação.
+Observation-location-obscured-you-can-see-your-own = A localização desta observação está oculta. Você pode sempre ver a localização de suas próprias observações.
+Observation-location-obscured-you-have-permission = A localização desta observação está oculta. Você tem permissão para ver esta localização.
 Observation-Name = Observação { $scientificName }
 Observation-options = Opções de observação
 OBSERVATION-WAS-DELETED = OBSERVAÇÃO FOI EXCLUÍDA
 Observation-with-no-evidence = Observação sem nenhuma evidência
 Observations = Observações
 Observations-created-on-iNaturalist = As observações criadas no inaturalista são usadas por cientistas ao redor do mundo.
+Observations-on-iNat-are-cited = As observações no iNaturalist são citadas em documentos científicos, levaram a redescobertas e ajudam os cientistas a entender a vida no nosso planeta
 Observations-View = Visualizar observações
 OBSERVATIONS-WITHOUT-NUMBER =
     IMPORTAR { $count ->
@@ -422,6 +533,7 @@ OBSERVATIONS-WITHOUT-NUMBER =
 Observations-you-upload-to-iNaturalist = Observações que você enviar ao inaturalista podem ser usadas por cientistas e pesquisadores ao redor do mundo.
 Observe = Observar
 Observe-and-identify-organisms-from-your-gallery = Observar e identificar organismos da sua galeria
+Observe-and-identify-organisms-in-real-time-with-your-camera = Observe e identifique organismos em tempo real com a sua câmera
 OBSERVE-ORGANISMS = OBSERVAR ORGANISMOS
 Observers = Observadores
 Observers-View = Visualizar observações
@@ -439,13 +551,16 @@ Open-drawer = Abrir pasta
 OPEN-EMAIL = ABRIR ENDEREÇO ELETRÔNICO
 Open-menu = Abrir ementa
 OPEN-SETTINGS = ABRIR AJUSTES
+Opens-add-comment-form = Abre campo de comentário
 Opens-AI-camera = Abre a câmera IA.
+Opens-edit-comment-form = Abre formato de edição
 Opens-location-permission-prompt = Abre pergunta de permissão de localização
 Opens-the-side-drawer-menu = Abre a ementa da gaveta lateral.
 Organism-is-captive = O organismo é capturado
 Organisms-that-are-identified-to-species = Organismos identificados na classificação de espécies ou abaixo
 Other = Outro
 OTHER-DATA = OUTRAS INFORMAÇÕES
+OTHER-OBSERVATIONS--notifications = OUTRAS OBSERVAÇÕES
 OTHER-SUGGESTIONS = OUTRAS SUGESTÕES
 PASSWORD = SENHA
 PEOPLE--title = PESSOAS
@@ -478,6 +593,8 @@ project-start-time-datetime = Horário de início: { $datetime }
 PROJECTS = PROJETOS
 Projects = Projetos
 PROJECTS-X = PROJETOS ({ $projectCount })
+Pull-to-refresh-and-sync-observations = Deslize para atualizar e sincronizar observações
+Pull-to-refresh-notifications = Puxe para atualizar as notificações
 QUALITY-GRADE = GRAU DE QUALIDADE
 Quality-Grade = Grau de Qualidade
 Quality-Grade-Casual--label = Nível de qualidade: Casual
@@ -509,6 +626,7 @@ Ranks-KINGDOM = REINO
 Ranks-Kingdom = Reino
 Ranks-ORDER = ORDEM
 Ranks-Order = Ordem
+Ranks-PARVORDER = PARVORDEM
 Ranks-Parvorder = Parvordem
 Ranks-PHYLUM = FILO
 Ranks-Phylum = Filo
@@ -534,7 +652,9 @@ Ranks-SUBSECTION = SUB-SEÇÃO
 Ranks-Subsection = Subseção
 Ranks-SUBSPECIES = SUB-ESPÉCIE
 Ranks-Subspecies = Subespécie
+Ranks-SUBTERCLASS = SUBTERCLASSE
 Ranks-Subterclass = Subterclasse
+Ranks-SUBTRIBE = SUBTRIBO
 Ranks-Subtribe = Subtribo
 Ranks-SUPERCLASS = SUPERCLASSE
 Ranks-Superclass = Superclasse
@@ -553,6 +673,7 @@ Ranks-Zoosection = Seção
 Ranks-ZOOSUBSECTION = ZOOSUBSEÇÃO
 Ranks-Zoosubsection = Subseção
 Read-more-on-Wikipedia = Leia mais na Wikipédia
+Record-a-sound = Gravar um som
 RECORD-NEW-SOUND = REGISTRAR NOVO SOM
 Record-organism-sounds-with-the-microphone = Gravar sons do organismo com o microfone
 RECORD-SOUND = GRAVAR SOM
@@ -587,6 +708,7 @@ Satellite--map-type = Satélite
 SAVE = SALVAR
 Save = Salvar
 SAVE-ALL = SALVAR TUDO
+Save-all-observations = Salvar todas as observações
 SAVE-CHANGES = SALVAR ALTERAÇÕES
 SAVE-FOR-LATER = SALVAR PARA MAIS TARDE
 SAVE-LOCATION = SALVAR LOCALIZAÇÃO
@@ -631,6 +753,7 @@ Share-map = Compartilhar mapa
 Share-your-observation-where-it-can-help-scientists = Compartilhe a sua observação, onde ela pode ajudar os cientistas de todo o mundo a compreenderem melhor a biodiversidade.
 SHOP-INATURALIST-MERCH = COMPRAR MERCADORIA INATURALISTA
 Show-observation-options = Mostrar opções de observação.
+Showing-offline-search-results--taxa = Mostrando resultados de pequisa sem conexão. Para pesquisar mais espécies, tente novamente quando conectado à internet.
 Shows-identification-suggestions = Mostrar sugestões de identificação
 Shows-iNaturalist-bird-logo = Mostra o logo de pássaro da iNaturalist.
 Shows-observation-creation-options = Mostrar opções de criação de observação
@@ -651,10 +774,16 @@ sound-recorder-help-One-organism = Um organismo
 sound-recorder-help-Stop-moving = Parar de se mover
 sound-recorder-help-Try-to-isolate = Tente isolar o som de um único organismo. Se não conseguir, certifique-se de deixar uma nota de qual organismo você está gravando.
 Sounds = Sons
+Source-List = <0>(Lista de fonte(s): </0><1>{ $source }</1><0>)</0>
 Spam = Spam
 Spam-Examples = Solicitação comercial, links sem vínculo, etc.
 Species = Espécie
 Species-View = Visualização de espécies
+SPECIES-WITHOUT-NUMBER =
+    { $count ->
+        [one] ESPÉCIE
+       *[other] ESPÉCIES
+    }
 Standard--map-type = Padrão
 Start-must-be-before-end = A data de início deve ser anterior à data de término.
 Start-upload = Iniciar upload
@@ -672,6 +801,7 @@ supporting--identification = Concordante
 Switches-to-tab = Alterna para a guia { $tab }
 Sync-observations = Sincronizar observações
 Syncing = Sincronizando...
+Take-multiple-photos-of-a-single-organism = Tire várias fotos de um único organismo
 Take-photo = Tirar foto
 Taxa = Táxons
 TAXON = TÁXON
@@ -687,6 +817,7 @@ Thanks-for-using-any-suggestions = Obrigado por usar este aplicativo! Você tem 
 That-user-profile-doesnt-exist = Este perfil de usuário não existe
 The-exact-location-will-be-hidden = A localização exata será ocultada publicamente, e em vez disso será generalizada para uma área maior. (Espécies ameaçadas e em perigo de extinção são automaticamente ocultadas).
 The-iNaturalist-Network = A rede inaturalista é uma coleção de sites localizados que estão totalmente conectados à comunidade global da inaturalista. Os sites da rede são apoiados por instituições locais que promovem o uso local e facilitam a utilização dos dados da inaturalista para beneficiar a biodiversidade local.
+The-location-will-not-be-visible-to-others = A localização não será visível para outras pessoas, o que pode tornar a observação impossível de identificar
 The-models-that-suggest-species = Os modelos que sugerem espécies com base na semelhança visual e localização são em parte graças às colaborações com Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona e Grant Van Horn.
 There-is-no-way = Não há como ter uma conta inaturalista sem armazenar informações pessoais, então a única forma de revogar esse consentimento é excluindo sua conta.
 This-is-a-wild-organism = Este é um organismo selvagem e não foi colocado nesse local por seres humanos.
@@ -728,8 +859,10 @@ Uploading-x-of-y-observations =
         [uma] Enviando { $currentUploadCount } observation
        *[outra] Enviando { $currentUploadCount } de { $total } observações
     }
+Use-iNaturalists-AI-Camera = Use a Câmera IA do iNaturalist para identificar organismos em tempo real
 USE-LOCATION = USAR LOCALIZAÇÃO
 Use-the-devices-other-camera = Use a outra câmera do dispositivo.
+Use-the-iNaturalist-camera-to-observe-2 = Use iNaturalist para observar e identificar organismos em tempo real. Compartilhe com a nossa comunidade para obter identificações e contribuir com a ciência!
 Use-your-devices-microphone-to-record = Use o microfone do seu dispositivo para gravar sons feitos por organismos e compartilhá-los com nossa comunidade para obter identificações e contribuir para a ciência!
 USER = USUÁRIO
 User = Usuário { $userHandle }
@@ -746,8 +879,16 @@ VIEW-CHILDREN-TAXA = VISUALIZAR TAXA INFANTIL
 VIEW-DATA-QUALITY-ASSESSMENT = VISUALIZAR AVALIAÇÃO DA QUALIDADE DE DADOS
 VIEW-EDUCATORS-GUIDE = VISUALIZAR GUIA DE EDUCADOR
 VIEW-FOLLOWERS = VISUALIZAR SEGUIDORES
+VIEW-FOLLOWING = VER SEGUINDO
 View-in-browser = Ver no navegador
+VIEW-IN-EXPLORE = VER NO EXPLORAR
+VIEW-INATURALIST-HELP = VER AJUDA DO INATURALIST
+View-photo = Ver foto
+View-photo-licensing-info = Ver informações sobre licenciamento de fotos
+VIEW-PROJECT-REQUIREMENTS = VER REQUISITOS DO PROJETO
+VIEW-PROJECTS = VER PROJETOS
 View-suggestions = Ver sugestões
+We-are-not-confident-enough-to-make-a-top-ID-suggestion = Não temos confiança suficiente para sugerir uma identificação precisa, mas aqui estão algumas outras sugestões:
 We-sent-a-confirmation-email = Enviamos uma mensagem eletrônica de confirmação para o endereço eletrônico que você se cadastrou.
 We-store-personal-information = Nós armazenamos informações pessoais, como nomes de usuário e endereços eletrônicos, a fim de gerenciar contas e de cumprir as leis de privacidade. Precisamos que você marque esta caixa para indicar que você concorda com esta utilização de informações pessoais. Para saber mais sobre quais informações coletamos e como as utilizamos, consulte a nossa Política de Privacidade e os nossos Termos de uso.
 Welcome-to-iNaturalist = Bem-vindo ao iNaturalist!
@@ -757,9 +898,71 @@ Whats-more-by-recording = Além disso, ao gravar e compartilhar suas observaçõ
 When-tapping-the-green-observation-button = Quando clicar o botão de observação verde, abra:
 WIKIPEDIA = WIKIPEDIA
 Wild = Selvagem
+WILD-STATUS = ESTADO SILVESTRE
 Withdraw = Retirar
+WITHDRAW-ID = REMOVER IDENTIFICAÇÃO
+WITHDRAW-ID-QUESTION = REMOVER IDENTIFICAÇÃO?
+Withdraws-identification = Remove a identificação
 Worldwide = Global
+WORLDWIDE = GLOBAL
+Would-you-like-to-discard-your-current-recording-and-start-over = Você gostaria de descartar o registro atual e recomeçar?
+Would-you-like-to-suggest-the-following-identification = Você gostaria de sugerir a seguinte identificação?
+x-comments =
+    { $count ->
+        [one] { $count } comentário
+       *[other] { $count } comentários
+    }
+x-failed =
+    { $count ->
+        [one] { $count } falhou
+       *[other] { $count } falharam
+    }
+X-FOLLOWERS =
+    { $count ->
+        [one] { $count } SEGUIDOR
+       *[other] { $count } SEGUIDORES
+    }
+X-Identifications =
+    { $count ->
+        [one] { $count } Identificação
+       *[other] { $count } Identificações
+    }
+x-identifications =
+    { $count ->
+        [one] { $count } identificação
+       *[other] { $count } identificações
+    }
+X-Identifiers =
+    { $count ->
+        [one] { $count } Identificador
+       *[other] { $count } Identificadores
+    }
 X-MEMBERS = { $count } MEMBROS
+X-Observations =
+    { $count ->
+        [one] 1 Observação
+       *[other] { $count } Observações
+    }
+X-observations =
+    { $count ->
+        [one] 1 observação
+       *[other] { $count } observações
+    }
+X-observations-deleted =
+    { $count ->
+        [one] 1 observação excluída
+       *[other] { $count } observações excluídas
+    }
+X-observations-uploaded =
+    { $count ->
+        [one] 1 observação enviada
+       *[other] { $count } observações enviadas
+    }
+X-Observers =
+    { $count ->
+        [one] { $count } Observador
+       *[other] { $count } Observadores
+    }
 X-of-Y =
     { $x ->
         [one] 1
@@ -768,7 +971,58 @@ X-of-Y =
         [one] de { $y }
        *[other] de { $y }
     }
+X-PHOTOS =
+    { $photoCount ->
+        [one] 1 FOTO
+       *[other] { $photoCount } FOTOS
+    }
+X-PHOTOS-X-OBSERVATIONS =
+    { $photoCount ->
+        [one] 1 FOTO
+       *[other] { $photoCount } FOTOS
+    }, { $observationCount ->
+        [one] 1 OBSERVAÇÃO
+       *[other] { $observationCount } OBSERVAÇÕES
+    }
+X-PHOTOS-Y-SOUNDS =
+    { $photoCount ->
+        [one] 1 FOTO
+       *[other] { $photoCount } FOTOS
+    }, { $soundCount ->
+        [one] 1 SOM
+       *[other] { $soundCount } SONS
+    }
 X-PROJECTS = { $projectCount } PROJETOS
+x-saved =
+    { $count ->
+        [one] { $count } salva
+       *[other] { $count } salvas
+    }
+X-SOUNDS =
+    { $count ->
+        [one] 1 SOM
+       *[other] { $count } SONS
+    }
+X-Species =
+    { $count ->
+        [one] { $count } Espécie
+       *[other] { $count } Espécies
+    }
+x-uploaded =
+    { $count ->
+        [one] { $count } enviada
+       *[other] { $count } enviadas
+    }
+x-uploading =
+    { $count ->
+        [one] { $count } enviando
+       *[other] { $count } enviados
+    }
+x-uploads-failed =
+    { $count ->
+        [one] { $count } upload falhou
+       *[other] { $count } uploads falharam
+    }
 Yes-license-my-photos = Sim, licenciar minhas fotos, sons e observações para que os cientistas possam usar meus dados (recomendado)
 You-are-offline = Você está offline
 You-are-offline-Tap-to-reload = Você está offline. Toque para recarregar.
@@ -798,3 +1052,6 @@ Youve-previously-denied-camera-permissions = Você negou as permissões da câme
 Youve-previously-denied-gallery-permissions = Você negou as permissões da galeria anteriormente, por favor habilite-as nas configurações.
 Youve-previously-denied-location-permissions = Você negou as permissões de localização anteriormente, por favor habilite-as nas configurações.
 Youve-previously-denied-microphone-permissions = Você negou as permissões de microfone anteriormente, por favor, habilite-as nas configurações.
+Zoom-in-as-much-as-possible-to-improve = Amplie o máximo possível para melhorar a precisão da localização e obter melhores identificações.
+Zoom-to-current-location = Zoom para a localização atual
+zoom-x = { $zoom }×
