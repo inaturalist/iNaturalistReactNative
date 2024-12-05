@@ -124,6 +124,7 @@ const MediaViewer = ( {
         editable={editable}
         photos={photos}
         sounds={sounds}
+        onClose={onClose}
         selectedMediaIndex={selectedMediaIndex}
         horizontalScroll={horizontalScroll}
         setSelectedMediaIndex={setSelectedMediaIndex}
