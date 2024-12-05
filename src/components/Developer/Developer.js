@@ -160,7 +160,7 @@ const Developer = (): Node => {
           <Text selectable>{taxonomyFileName}</Text>
         </View>
         <View className="flex-row mb-5">
-          <Text className="font-bold">Geo model: </Text>
+          <Text className="font-bold">Geomodel: </Text>
           <Text selectable>{geoModelFileName}</Text>
         </View>
         <H1>Paths</H1>
