@@ -13,8 +13,8 @@ export const CHUCKS_PAD = {
   latitude: 51.3313127,
   longitude: 0.0509862,
   accuracy: 5,
-  altitude: null,
-  altitudeAccuracy: null,
+  altitude: 120.0234,
+  altitudeAccuracy: 2.123,
   heading: null,
   speed: null
 };
