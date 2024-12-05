@@ -45,7 +45,7 @@ const taxonomyFileName = Platform.select( {
   ios: Config.IOS_TAXONOMY_FILE_NAME,
   android: Config.ANDROID_TAXONOMY_FILE_NAME
 } );
-const geoModelFileName = Platform.select( {
+const geomodelFileName = Platform.select( {
   ios: Config.IOS_GEO_MODEL_FILE_NAME,
   android: Config.ANDROID_GEO_MODEL_FILE_NAME
 } );
@@ -161,7 +161,7 @@ const Developer = (): Node => {
         </View>
         <View className="flex-row mb-5">
           <Text className="font-bold">Geomodel: </Text>
-          <Text selectable>{geoModelFileName}</Text>
+          <Text selectable>{geomodelFileName}</Text>
         </View>
         <H1>Paths</H1>
         <H2>Documents</H2>
