@@ -1,1 +1,1 @@
-nature,wildlife,plant ID,animal,identify,biodiversity,citizen science,conservation,field guide
+φύση, άγρια φύση, ID φυτών, ζώο, προσδιορισμός, βιοποικιλότητα, επιστήμη πολιτών, διατήρηση

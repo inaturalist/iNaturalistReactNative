@@ -82,11 +82,11 @@ const qualityGradeOption = option => {
 const qualityGradeDescription = option => {
   switch ( option ) {
     case "research":
-      return t( "Data-quality-research-description" );
+      return t( "It-can-now-be-shared-for-use-in-research" );
     case "needs_id":
-      return t( "Data-quality-needs-id-description" );
+      return t( "This-observation-needs-more-identifications" );
     default:
-      return t( "Data-quality-casual-description" );
+      return t( "This-observation-has-not-met-the-conditions-required-to-meet-Research-Grade" );
   }
 };
 

@@ -6,7 +6,20 @@
 ###
 
 ABOUT = О
+ABOUT-COLLECTION-PROJECTS = ПРО КОЛЛЕКЦИОННЫЕ ПРОЕКТЫ
+ABOUT-INATURALIST = О INATURALIST
+ABOUT-THE-DQA = О КОЛЛЕКЦИОННЫХ ПРОЕКТАХ
+About-the-DQA-description =
+    Оценка качества суммирует достоверность, точность, полноту, актуальность и уместность наблюдения iNaturalist как данных о биологическом разнообразии. Некоторые атрибуты определяются автоматически, а другие - голосованием пользователей iNat. iNaturalist
+    делится наблюдениями, имеющими оценку "Research Grade", с рядом партнеров
+    для использования в науке и охране природы.
+ABOUT-TRADITIONAL-PROJECTS = О ТРАДИЦИОННЫХ ПРОЕКТАХ
+Account-Deleted = Аккаунт удален
 ACCOUNT-SETTINGS = НАСТРОЙКИ АККАУНТА
+ACTIVITY = АКТИВНОСТИ
+Add-favorite = Добавить в избранное
+Add-Location = Добавить локацию
+ADD-OPTIONAL-COMMENT = ДОБАВИТЬ НЕОБЯЗАТЕЛЬНЫЙ КОММЕНТАРИЙ
 Agree = Согласен
 AGREE = СОГЛАСЕН
 ALL = ВСЕ
@@ -14,15 +27,28 @@ All = Все
 All-observations = Все наблюдения
 all-rights-reserved = Все права защищены
 All-taxa = Все таксоны
+Any--date = Любая
+Any--establishment-means = Любой
+Any--media-type = Любой
+Any--project = Любой
+Any--quality-grade = Любая
+Any--user = Любой
 April = Апрель
 August = Август
+BLOG = БЛОГ
 Camera = Камера
 Cancel = Отмена
 Casual--quality-grade = Случайный
 Clear = Очистить
 Close = Закрыть
+Closes-introduction = Завершает введение
 Collection-Project = Коллекционный проект
+Community-based = Основанный на мнении сообщества
 Community-Guidelines = Правила сообщества
+CONNECT-TO-NATURE = СОЕДИНИТЕСЬ С ПРИРОДОЙ
+Connect-to-Nature = Соединитесь с природой
+CONTINUE = ПРОДОЛЖЕНИЕ
+Contribute-to-Science = Внесите вклад в науку
 Coordinates-copied-to-clipboard = Координаты скопированы в буфер обмена
 Data-quality-assessment-date-is-accurate = Дата является точной
 Data-quality-assessment-date-specified = Указана дата
@@ -42,8 +68,19 @@ Date-observed-header-short = Дата, время наблюдения
 Date-Range = Диапазон дат
 date-to-date = { $d1 } - { $d2 }
 December = Декабрь
+Delete-current-observation = Удалить текущее наблюдение
 Delete-observation = Удалить наблюдения
 Delete-photo = Удалить фото
+Deleting-x-of-y--observations =
+    Удаление { $currentDeleteCount } { $total ->
+        [one] of { $total }
+       *[other] of { $total } наблюдений
+    }
+Deleting-x-of-y-observations-2 =
+    Удаление { $currentDeleteCount } { $total ->
+        [one] наблюдения
+       *[other] of { $total } наблюдений
+    }
 Device-storage-full = Память вашего устройства хранения  заполнена
 Device-storage-full-description = iNaturalist не может более сохранять ваши фото, может произойти сбой.
 DONATE = Поддержать
@@ -75,12 +112,16 @@ Go-back = Назад
 Hide = Скрыть
 ID-Withdrawn = Отзыв идентификации
 Identifiers = Эксперты
+Identify-record-learn = Идентифицируйте, регистрируйте наблюдения, узнавайте о каждом живом виде на земле с помощью iNaturalist
 If-you-leave-x-of-your-observations-removed =
     Если вы покинете этот традиционный проект, { $count ->
         [one] 1 ваше наблюдение
        *[other] { $count } ваших наблюдений
     } также будут удалены из проекта.
 improving--identification = Улучшающая
+iNat-is-global-community = iNaturalist - это глобальное сообщество натуралистов, накапливающих открытые данные для науки путем коллективного наблюдения и идентификации организмов
+iNaturalist-is-supported-by-our-community = iNaturalist поддерживается нашим удивительным сообществом. От обычных натуралистов, которые добавляют наблюдения и идентификации, до кураторов, которые управляют нашей таксономией и помогают с модерацией, до переводчиков-добровольцев, которые делают iNaturalist более доступным для аудитории по всему миру, до наших общественных спонсоров, - мы чрезвычайно благодарны всем людям в нашем сообществе, которые делают iNaturalist такой платформой, которой он является.
+iNaturalists-apps-are-designed-and-developed-2 = Приложения iNaturalist разрабатываются и поддерживаются командой iNaturalist: Яроном Будовски, Амандой Буллингтон, Тони Ивейном, Йоханнесом Кляйном, Патриком Лири, Скоттом Лоари, Абхасом Мисрараджем, Сильвеном Морином, Кэрри Зельцер, Алексом Шепардом, Теей Скафф, Энджи Та, Кен-ичи Уэдой, Кирком ван Горкомом, Джейсон Уолтхолл и Джейн Уиден.
 Introduced = Интродуцент
 January = Январь
 JOIN = ПРИСОЕДИНИТЬСЯ
@@ -108,6 +149,7 @@ Menu = Меню
 Missing-Date = Отсутствует дата
 Months = Месяцы
 MY-OBSERVATIONS = МОИ НАБЛЮДЕНИЯ
+MY-OBSERVATIONS--notifications = МОИ НАБЛЮДЕНИЯ
 Native = Естественный
 NEARBY = ПОБЛИЗОСТИ
 Nearby = Около
@@ -115,20 +157,32 @@ Needs-ID--quality-grade = Требуется идентификация
 New-Observation = Новые наблюдения
 No-Location = Местоположение не указано
 No-Media = Нет медиа
+none--accuracy = никакая
+NONE--ranks = НИКАКОЙ
 Not-enough-space-left-on-device = На устройстве недостаточно места
 Not-enough-space-left-on-device-try-again = Для данной операции на устройстве не хватает места. Пожалуйста, освободите место и попробуйте ещё раз
 Notifications = Уведомления
+notifications-user1-added-comment-to-observation-by-user2 = <0>{ $user1 }</0> добавил комментарий к наблюдению { $user2 }
+notifications-user1-added-identification-to-observation-by-user2 = <0>{ $user1 }</0> добавил идентификацию к наблюдению { $user2 }
 November = Ноябрь
 Obscured = Скрытое
 Observation = Наблюдение
+Observation-location-obscured-randomized-point = Местоположение этого объекта наблюдения скрыто. Вы видите случайную точку внутри скрытого полигона.
+Observation-location-obscured-you-can-see-your-own = Местоположение этого объекта наблюдения скрыто. Местоположение своих собственных наблюдений вы можете увидеть всегда.
+Observation-location-obscured-you-have-permission = Местоположение этого объекта наблюдения скрыто. У вас есть разрешение на просмотр этого местоположения.
 Observations = Наблюдения
+Observations-on-iNat-are-cited = Наблюдения iNaturalist цитируются в научных статьях, приводят к повторным открытиям и помогают ученым понять жизнь на нашей планете
 Observe = Наблюдать
+Observe-and-identify-organisms-in-real-time-with-your-camera = Наблюдайте и идентифицируйте организмы в режиме реального времени с помощью вашей камеры
 Observers = Наблюдатели
 October = Октябрь
 Offensive-Inappropriate = Оскорбительное / Неприемлемое
 OK = ОК
 Open = Открытое
+Opens-add-comment-form = Открывает форму добавления комментария.
+Opens-edit-comment-form = Открывает форму редактирования комментария.
 Other = Другое
+OTHER-OBSERVATIONS--notifications = ДРУГИЕ НАБЛЮДЕНИЯ
 PEOPLE--title = ЛЮДИ
 Privacy-Policy = Политика конфиденциальности
 Private = Частный
@@ -136,6 +190,7 @@ Project-Members-Only = Только участники проекта
 project-start-time-datetime = Время начала: { $datetime }
 Projects = Проекты
 PROJECTS-X = ПРОЕКТЫ ({ $projectCount })
+Pull-to-refresh-and-sync-observations = Потяните, чтобы обновить и синхронизировать наблюдения
 Quality-Grade = Уровень наблюдения
 Quality-Grade-Casual--label = Уровень качества: Обыкновенный
 Quality-Grade-Needs-ID--label = Уровень качества: Требует идентификации
@@ -187,12 +242,14 @@ Restore = Восстановить
 Satellite--map-type = Спутник
 SAVE = СОХРАНИТЬ
 Save = Сохранить
+Save-all-observations = Сохранить все наблюдения
 Scientific-Name = Научное название
 Search = Поиск
 See-project-members = Посмотреть список участников проекта
 September = Сентябрь
 Share = Поделиться
 Share-location = Поделиться местоположением
+Showing-offline-search-results--taxa = Отображены результаты автономного поиска. Чтобы найти другие виды, повторите попытку при подключении к Интернету.
 Sounds = Звуки
 Spam = Спам
 Spam-Examples = Коммерческие предложения, ссылки в никуда и т. д.
@@ -212,6 +269,8 @@ Unknown--rank = Неизвестно
 Unknown--taxon = Неизвестно
 Unknown--user = Неизвестно
 Unknown-error = Неизвестная ошибка
+Use-iNaturalists-AI-Camera = Используйте камеру искусственного интеллекта Inaturalist для идентификации организмов в режиме реального времени
+Use-the-iNaturalist-camera-to-observe-2 = Используйте iNaturalist для наблюдения и идентификации организмов в режиме реального времени. Поделитесь наблюдениями с нашим сообществом, чтобы получить идентификационные данные и внести свой вклад в науку!
 Users = Пользователи
 VIEW-FOLLOWERS = ПОСМОТРЕТЬ ТЕХ, КТО НА ВАС ПОДПИСАН
 VIEW-FOLLOWING = ПОСМОТРЕТЬ ТЕХ, НА КОГО ВЫ ПОДПИСАНЫ
@@ -221,6 +280,11 @@ Welcome-to-iNaturalist = Добро пожаловать на iNaturalist!
 Wild = Дикий
 Withdraw = Отозвать
 Worldwide = По всему миру
+x-failed =
+    { $count ->
+        [one] { $count } неуспешно
+       *[other] { $count } неуспешно
+    }
 X-FOLLOWERS =
     { $count ->
         [one] { $count } ПОДПИСАВШИЙСЯ
@@ -242,6 +306,11 @@ X-PROJECTS =
         [few] { $projectCount } ПРОЕКТОВ
        *[other] { $projectCount } ПРОЕКТОВ
     }
+x-saved =
+    { $count ->
+        [one] { $count } сохранен
+       *[other] { $count } сохранено
+    }
 X-SOUNDS =
     { $count ->
         [one] 1 АУДИО
@@ -251,6 +320,16 @@ X-Species =
     { $count ->
         [one] { $count } Вид
        *[other] { $count } Видов
+    }
+x-uploaded =
+    { $count ->
+        [one] { $count } выгружен
+       *[other] { $count } выгружены
+    }
+x-uploading =
+    { $count ->
+        [one] { $count } идет выгрузка
+       *[other] { $count }идет выгрузка
     }
 x-uploads-failed =
     { $count ->
