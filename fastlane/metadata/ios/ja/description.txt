@@ -1,3 +1,3 @@
-iNaturalist is a social network for sharing biodiversity information to help each other learn about nature. The primary goal is to connect people to nature, and the secondary goal is to generate scientifically valuable biodiversity data from these personal encounters.
+iNaturalistは、生物多様性に関する情報を共有し、自然について学び合うためのソーシャルネットワークです。 第一の目標は、人々を自然と結びつけることであり、第二の目標は、こうした個人的な出会いから科学的に価値のある生物多様性のデータを生み出すことです。
 
-iNaturalist helps you identify plants and animals with visually similar suggestions and verification by dedicated contributors. Get connected with a community of over a million scientists and naturalists who can help you learn more about nature! By recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature.
+iNaturalistは、視覚的に類似した提案と献身的な貢献者による検証で、植物や動物を同定するのに役立ちます。 100万人を超える科学者やナチュラリストのコミュニティとつながり、自然についてより深く学ぶことができます！ あなたの観察を記録し、共有することで、自然をよりよく理解し保護するために活動している科学者のための研究品質のデータを作成することができます。

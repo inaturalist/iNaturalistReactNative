@@ -63,8 +63,7 @@ const MyObservationsContainer = ( ): Node => {
   const {
     fetchNextPage,
     isFetchingNextPage,
-    status,
-    firstObservationsInRealm
+    status
   } = useInfiniteObservationsScroll( {
     params: {
       user_id: currentUserId
@@ -167,9 +166,16 @@ const MyObservationsContainer = ( ): Node => {
 
   if ( !layout ) { return null; }
 
-  // show empty screen instead of loading wheel
-  const showNoResults = !currentUser
-    || ( status === "success" && !!( currentUser ) && firstObservationsInRealm );
+  // show empty screen instead of loading wheel...
+  const showNoResults = (
+    // ...if the user is not signed in, or...
+    !currentUser
+    // ...if the signed in user is offline and has no observations, or...
+    || ( !isConnected && observations?.length === 0 )
+    // ...if signed in, online user requested their own obs for the first time
+    //    and has 0 obs
+    || status !== "pending"
+  );
 
   // Keep track of the scroll offset so we can restore it when we mount
   // this component again after returning from ObsEdit

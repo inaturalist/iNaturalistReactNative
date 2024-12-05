@@ -197,6 +197,7 @@ DELETE = 删除
 Delete-all-observations = 删除全部观察
 Delete-comment = 删除评论
 DELETE-COMMENT--question = 删除评论？
+Delete-current-observation = 删除当前观察
 Delete-observation = 删除观察
 DELETE-OBSERVATION--question = 删除观察？
 Delete-photo = 删除照片
@@ -459,6 +460,7 @@ More-info = 更多信息
 MOST-FAVED = 最多收藏
 Most-faved = 最多收藏
 MY-OBSERVATIONS = 我的观察
+MY-OBSERVATIONS--notifications = 我的观察
 Native = 本地
 Native-to-place = 原产于{ $place }
 Navigates-to-AI-camera = 导航到 AI 相机
@@ -503,6 +505,8 @@ NOTIFICATIONS = 通知
 Notifications = 通知
 notifications-user-added-comment-to-observation-by-you = <0>{ $userName }</0>向您的观察添加了一条评论
 notifications-user-added-identification-to-observation-by-you = <0>{ $userName }</0>向您的观察添加了一个鉴定
+notifications-user1-added-comment-to-observation-by-user2 = <0>{ $user1 }</0>向{ $user2 }的一项观察添加了一条评论
+notifications-user1-added-identification-to-observation-by-user2 = <0>{ $user1 }</0>向{ $user2 }的一项观察添加了一次鉴定
 November = 十一月
 Obervations-must-be-manually-added = 观测结果必须手动添加到传统项目中，要么在上传阶段，要么在观测结果共享到 iNaturalist之后。 用户还必须加入一个传统的项目，以便将他们的观察结果添加到该项目。
 Obscured = 被模糊处理
@@ -556,6 +560,7 @@ Organism-is-captive = 生物体是被圈养的
 Organisms-that-are-identified-to-species = 生物体被鉴定到“种”一级或更低层级
 Other = 其他
 OTHER-DATA = 其他数据
+OTHER-OBSERVATIONS--notifications = 其他观察
 OTHER-SUGGESTIONS = 其它建议
 PASSWORD = 密码
 PEOPLE--title = 用户
@@ -588,6 +593,8 @@ project-start-time-datetime = 开始时间：{ $datetime }
 PROJECTS = 项目
 Projects = 项目
 PROJECTS-X = 项目（{ $projectCount }）
+Pull-to-refresh-and-sync-observations = 下拉以刷新和同步观察
+Pull-to-refresh-notifications = 下拉以刷新通知
 QUALITY-GRADE = 质量级别
 Quality-Grade = 质量等级
 Quality-Grade-Casual--label = 质量级别：非正式
@@ -701,6 +708,7 @@ Satellite--map-type = 卫星
 SAVE = 储存
 Save = 保存
 SAVE-ALL = 保存全部
+Save-all-observations = 保存所有观察
 SAVE-CHANGES = 保存更改
 SAVE-FOR-LATER = 留待以后
 SAVE-LOCATION = 保存位置
@@ -745,6 +753,7 @@ Share-map = 分享地图
 Share-your-observation-where-it-can-help-scientists = 分享您的观察，可以帮助世界各地的科学家更好地了解生物多样性。
 SHOP-INATURALIST-MERCH = 购买INATURALIST周边产品
 Show-observation-options = 显示观察选项。
+Showing-offline-search-results--taxa = 显示离线搜索结果。要搜索更多物种，请在连接到互联网时重试。
 Shows-identification-suggestions = 显示鉴定建议
 Shows-iNaturalist-bird-logo = 显示 iNaturalist 鸟徽标。
 Shows-observation-creation-options = 显示观察创建选项
@@ -903,6 +912,11 @@ x-comments =
         [one] { $count }条评论
        *[other] { $count }条评论
     }
+x-failed =
+    { $count ->
+        [one] { $count }个不成功
+       *[other] { $count }个不成功
+    }
 X-FOLLOWERS =
     { $count ->
         [one] { $count }个关注者
@@ -979,6 +993,11 @@ X-PHOTOS-Y-SOUNDS =
        *[other] { $soundCount }条声音
     }
 X-PROJECTS = { $projectCount }个项目
+x-saved =
+    { $count ->
+        [one] { $count }个已保存
+       *[other] { $count }个已保存
+    }
 X-SOUNDS =
     { $count ->
         [one] 1条声音
@@ -988,6 +1007,16 @@ X-Species =
     { $count ->
         [one] { $count }个物种
        *[other] { $count }个物种
+    }
+x-uploaded =
+    { $count ->
+        [one] { $count }个已上传
+       *[other] { $count }个已上传
+    }
+x-uploading =
+    { $count ->
+        [one] { $count }个正在上传
+       *[other] { $count }个正在上传
     }
 x-uploads-failed =
     { $count ->

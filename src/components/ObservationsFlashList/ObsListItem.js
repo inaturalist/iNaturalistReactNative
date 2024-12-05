@@ -12,6 +12,11 @@ import useStore from "stores/useStore";
 
 import ObsImagePreview from "./ObsImagePreview";
 import ObsUploadStatus from "./ObsUploadStatus";
+import {
+  observationHasSound,
+  photoCountFromObservation,
+  photoFromObservation
+} from "./util";
 
 type Props = {
   currentUser: Object,
@@ -21,9 +26,6 @@ type Props = {
   queued: boolean,
   uploadProgress?: number,
   unsynced: boolean,
-  photo: Object,
-  obsPhotosCount: number,
-  hasSound: boolean
 };
 
 const ObsListItem = ( {
@@ -33,10 +35,7 @@ const ObsListItem = ( {
   onUploadButtonPress,
   queued,
   uploadProgress,
-  unsynced,
-  photo,
-  obsPhotosCount,
-  hasSound
+  unsynced
 }: Props ): Node => {
   const uploadStatus = useStore( state => state.uploadStatus );
 
@@ -66,9 +65,13 @@ const ObsListItem = ( {
       className="flex-row px-[15px] my-[11px]"
     >
       <ObsImagePreview
-        source={{ uri: Photo.displayLocalOrRemoteSquarePhoto( photo ) }}
-        obsPhotosCount={obsPhotosCount}
-        hasSound={hasSound}
+        source={{
+          uri: Photo.displayLocalOrRemoteSquarePhoto(
+            photoFromObservation( observation )
+          )
+        }}
+        obsPhotosCount={photoCountFromObservation( observation )}
+        hasSound={observationHasSound( observation )}
         opaque={unsynced}
         isSmall
         iconicTaxonName={observation.taxon?.iconic_taxon_name}

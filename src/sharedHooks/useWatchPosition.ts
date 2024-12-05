@@ -12,10 +12,12 @@ import { clearWatch, watchPosition } from "../sharedHelpers/geolocationWrapper";
 export const TARGET_POSITIONAL_ACCURACY = 10;
 const MAX_POSITION_AGE_MS = 60_000;
 
-interface UserLocation {
+export interface UserLocation {
   latitude: number,
   longitude: number,
-  positional_accuracy: number
+  positional_accuracy: number,
+  altitude: number | null,
+  altitudinal_accuracy: number | null
 }
 
 const geolocationOptions = {
@@ -74,7 +76,9 @@ const useWatchPosition = ( options: {
     const newLocation = {
       latitude: currentPosition?.coords?.latitude,
       longitude: currentPosition?.coords?.longitude,
-      positional_accuracy: currentPosition?.coords?.accuracy
+      positional_accuracy: currentPosition?.coords?.accuracy,
+      altitude: currentPosition?.coords?.altitude,
+      altitudinal_accuracy: currentPosition?.coords?.altitudeAccuracy
     };
     setUserLocation( newLocation );
     if (
