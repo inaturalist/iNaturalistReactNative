@@ -162,6 +162,9 @@ interface PLACE {
   point_geojson: {
     coordinates: Array<number>
   },
+  bounding_box_geojson?: {
+    coordinates: Array<number>
+  },
   type: string
 }
 

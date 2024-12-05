@@ -3,6 +3,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { fetchSpeciesCounts, searchObservations } from "api/observations";
+import fetchPlace from "api/places";
 import {
   fetchMembership,
   fetchProjectMembers, fetchProjectPosts, fetchProjects, joinProject, leaveProject
@@ -29,6 +30,15 @@ const ProjectDetailsContainer = ( ): Node => {
   const { data: project } = useAuthenticatedQuery(
     fetchProjectsQueryKey,
     optsWithAuth => fetchProjects( id, {
+      fields: "all"
+    }, optsWithAuth )
+  );
+
+  const fetchProjectPlaceQueryKey = ["projectPlace", "fetchPlace", project?.place_id];
+
+  const { data: projectPlace } = useAuthenticatedQuery(
+    fetchProjectPlaceQueryKey,
+    optsWithAuth => fetchPlace( project?.place_id, {
       fields: "all"
     }, optsWithAuth )
   );
@@ -141,6 +151,7 @@ const ProjectDetailsContainer = ( ): Node => {
     project.species_count = speciesCounts?.total_results;
     project.current_user_is_member = currentMembership === 1;
     project.current_user_observations_count = usersObservations?.total_results;
+    project.place = projectPlace;
   }
 
   return (
