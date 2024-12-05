@@ -1,0 +1,7 @@
+FIXED
+* Shared observation URL not opening when Explore filters open
+* Infinite loading status when signed in user has 0 observations
+* Explore filters not applying until pull-to-refresh
+* New observations not loading on My Observations when returning from another
+  screen
+* Photo count off center
