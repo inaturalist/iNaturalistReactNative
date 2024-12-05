@@ -46,8 +46,8 @@ const taxonomyFileName = Platform.select( {
   android: Config.ANDROID_TAXONOMY_FILE_NAME
 } );
 const geomodelFileName = Platform.select( {
-  ios: Config.IOS_GEO_MODEL_FILE_NAME,
-  android: Config.ANDROID_GEO_MODEL_FILE_NAME
+  ios: Config.IOS_GEOMODEL_FILE_NAME,
+  android: Config.ANDROID_GEOMODEL_FILE_NAME
 } );
 
 /* eslint-disable i18next/no-literal-string */

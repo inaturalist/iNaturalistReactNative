@@ -52,7 +52,7 @@ const iosDestinationPath = path.join( __dirname, "..", "ios" );
   const iosTaxonomyFile = process.env.IOS_TAXONOMY_FILE_NAME;
   // TODO: donwload an example Geomodel from the internet
   // NEEDS: https://github.com/inaturalist/iNaturalistMLWork/issues/146
-  // const iosGeoModelFile = process.env.IOS_GEO_MODEL_FILE_NAME;
+  // const iosGeoModelFile = process.env.IOS_GEOMODEL_FILE_NAME;
 
   console.log( "Copying model files to assets folder..." );
   await fs.mkdir( androidDestinationPath, { recursive: true } );

@@ -16,7 +16,7 @@ const modelFiles = {
   IOSGEOMODEL: "geomodel.mlmodelc",
   ANDROIDMODEL: Config.ANDROID_MODEL_FILE_NAME,
   ANDROIDTAXONOMY: Config.ANDROID_TAXONOMY_FILE_NAME,
-  ANDROIDGEOMODEL: Config.ANDROID_GEO_MODEL_FILE_NAME
+  ANDROIDGEOMODEL: Config.ANDROID_GEOMODEL_FILE_NAME
 };
 
 export const modelPath: string = Platform.select( {
