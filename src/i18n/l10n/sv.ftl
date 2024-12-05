@@ -203,6 +203,7 @@ DELETE = RADERA
 Delete-all-observations = Radera alla fynd
 Delete-comment = Radera kommentar
 DELETE-COMMENT--question = RADERA KOMMENTAR?
+Delete-current-observation = Radera aktuellt fynd
 Delete-observation = Radera fynd
 DELETE-OBSERVATION--question = RADERA FYND?
 Delete-photo = Radera bild
@@ -465,6 +466,7 @@ More-info = Mer info
 MOST-FAVED = MEST POPULÄRA
 Most-faved = Mest populära
 MY-OBSERVATIONS = MINA FYND
+MY-OBSERVATIONS--notifications = MINA FYND
 Native = Inhemsk
 Native-to-place = Inhemsk i { $place }
 Navigates-to-AI-camera = Går till AI-kamera
@@ -509,6 +511,8 @@ NOTIFICATIONS = AVISERINGAR
 Notifications = Aviseringar
 notifications-user-added-comment-to-observation-by-you = <0>{ $userName }</0> lade till en kommentar till ett av dina fynd
 notifications-user-added-identification-to-observation-by-you = <0>{ $userName }</0> lade till en bestämning till ett av dina fynd
+notifications-user1-added-comment-to-observation-by-user2 = <0>{ $user1 }</0> lade till en kommentar till ett fynd av { $user2 }
+notifications-user1-added-identification-to-observation-by-user2 = <0>{ $user1 }</0> lade till en bestämning till ett fynd av { $user2 }
 November = november
 Obervations-must-be-manually-added = Fynd måste läggas till manuellt i ett traditionellt projekt, antingen i uppladdningsmomentet eller efter att fyndet har delats till iNaturalist. En användare måste även gå med i ett traditionellt projekt för att kunna lägga till sina fynd till det.
 Obscured = Diffuserad
@@ -562,6 +566,7 @@ Organism-is-captive = Organismen är i fångenskap
 Organisms-that-are-identified-to-species = Organismer som bestäms till artnivå eller lägre
 Other = Annat
 OTHER-DATA = MER DATA
+OTHER-OBSERVATIONS--notifications = ANDRA FYND
 OTHER-SUGGESTIONS = ANDRA FÖRSLAG
 PASSWORD = LÖSENORD
 PEOPLE--title = PERSONER
@@ -594,6 +599,8 @@ project-start-time-datetime = Starttid: { $datetime }
 PROJECTS = PROJEKT
 Projects = Projekt
 PROJECTS-X = PROJEKT ({ $projectCount })
+Pull-to-refresh-and-sync-observations = Dra för att uppdatera och synka fynd
+Pull-to-refresh-notifications = Dra för att uppdatera aviseringar
 QUALITY-GRADE = KVALITETSKLASS
 Quality-Grade = Kvalitetsklass
 Quality-Grade-Casual--label = Kvalitetsklass: Grund
@@ -707,6 +714,7 @@ Satellite--map-type = Satellit
 SAVE = SPARA
 Save = Spara
 SAVE-ALL = SPARA ALLA
+Save-all-observations = Spara alla fynd
 SAVE-CHANGES = SPARA ÄNDRINGAR
 SAVE-FOR-LATER = SPARA TILL SENARE
 SAVE-LOCATION = SPARA PLATS
@@ -751,6 +759,7 @@ Share-map = Dela karta
 Share-your-observation-where-it-can-help-scientists = Dela ditt fynd där det kan hjälpa forskare runtom i världen att bättre förstå den biologiska mångfalden.
 SHOP-INATURALIST-MERCH = KÖP INATURALIST-PRYLAR
 Show-observation-options = Visa fyndalternativ.
+Showing-offline-search-results--taxa = Visar sökresultat offline. För att söka efter fler arter, försök igen när du är ansluten till internet.
 Shows-identification-suggestions = Visar bestämningsförslag
 Shows-iNaturalist-bird-logo = Visar iNaturalists fågellogotyp.
 Shows-observation-creation-options = Visar alternativ för att skapa fynd
@@ -909,6 +918,11 @@ x-comments =
         [one] { $count } kommentar
        *[other] { $count } kommentarer
     }
+x-failed =
+    { $count ->
+        [one] { $count } misslyckades
+       *[other] { $count } misslyckades
+    }
 X-FOLLOWERS =
     { $count ->
         [one] { $count } FÖLJARE
@@ -985,6 +999,11 @@ X-PHOTOS-Y-SOUNDS =
        *[other] { $soundCount } LJUD
     }
 X-PROJECTS = { $projectCount } PROJEKT
+x-saved =
+    { $count ->
+        [one] { $count } sparad
+       *[other] { $count } sparade
+    }
 X-SOUNDS =
     { $count ->
         [one] 1 LJUD
@@ -994,6 +1013,16 @@ X-Species =
     { $count ->
         [one] { $count } Art
        *[other] { $count } Arter
+    }
+x-uploaded =
+    { $count ->
+        [one] { $count } uppladdad
+       *[other] { $count } uppladdade
+    }
+x-uploading =
+    { $count ->
+        [one] { $count } laddas upp
+       *[other] { $count } laddas upp
     }
 x-uploads-failed =
     { $count ->
