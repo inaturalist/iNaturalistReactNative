@@ -90,7 +90,6 @@ If-you-leave-x-of-your-observations-removed =
 improving--identification = Parannus
 iNat-is-global-community = iNaturalist on luonnontieteilijöiden maailmanlaajuinen yhteisö, joka luo avointa dataa tieteelle havaitsemalla ja tunnistamalla eliöitä yhdessä.
 iNaturalist-is-supported-by-our-community = iNaturalistia tukee upea yhteisömme. Arvostamme suuresti kaikkia jäseniämme: arkipäivän luonnontieteilijöitä, jotka lisäävät havaintoja ja tunnistuksia, kuraattoreita, jotka hallinnoivat taksonomiaamme ja auttavat moderoinnissa, vapaaehtoisia kääntäjiä, jotka tekevät iNaturalistista saavutettavamman maailmanlaajuiselle yleisölle, sekä yhteisömme lahjoittajia. Olemme äärimmäisen kiitollisia kaikille yhteisömme jäsenille, jotka tekevät iNaturalistista sellaisen alustan kuin se on.
-iNaturalists-apps-are-designed-and-developed-2 = iNaturalistin sovelluksia suunnittelevat, kehittävät ja tukevat iNaturalist-tiimi: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Thea Skaff, Angie Ta, Ken-ichi Ueda, Kirk van Gorkom, Jason Walthall ja Jane Weeden.
 Introduced = Vieraslaji
 January = Tammikuu
 JOIN = LIITY
