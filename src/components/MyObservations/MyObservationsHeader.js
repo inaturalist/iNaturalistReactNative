@@ -23,7 +23,7 @@ type Props = {
   layout: string,
   logInButtonNeutral: boolean,
   numUnuploadedObservations: number,
-  setHeightAboveToolbar: Function,
+  setHeightAboveToolbar?: Function,
   toggleLayout: Function
 }
 
@@ -39,6 +39,7 @@ const MyObservationsHeader = ( {
 }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
+  console.log( "currentUser", currentUser );
 
   const signedInContent = ( ) => (
     <Pressable
@@ -63,8 +64,8 @@ const MyObservationsHeader = ( {
   );
 
   const signedOutContent = ( ) => (
-    <View className="my-5">
-      <View className="flex-row items-center mb-5">
+    <View className="my-5 flex-col items-center">
+      <View className="flex-row items-center justify-center mb-5">
         <INatIconButton
           className="mr-5"
           icon="inaturalist"
@@ -121,7 +122,9 @@ const MyObservationsHeader = ( {
           const {
             height
           } = event.nativeEvent.layout;
-          setHeightAboveToolbar( height );
+          if ( setHeightAboveToolbar ) {
+            setHeightAboveToolbar( height );
+          }
         }}
       >
         {currentUser
