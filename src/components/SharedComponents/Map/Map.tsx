@@ -314,23 +314,31 @@ const Map = ( {
     }
   };
 
-  const overlayObsTiles = ( ( withPressableObsTiles || withObsTiles )
-                            && ( Platform.OS !== "android"
-                              || previousTileUrl === tileUrlTemplate ) );
+  const shouldOverlayObsTiles = ( withPressableObsTiles || withObsTiles )
+    && (
+      Platform.OS !== "android"
+      || previousTileUrl === tileUrlTemplate
+    );
 
   // In Android, when we render a single frame of <MapView> without <UrlTile>
   // we use a tiny region increase of 0.001% to get onRegionChangeComplete to
   // fire and update the obs tile url. This change is too small to be visible.
-  const fuzzRegion = curRegion => ( ( Platform.OS === "android"
-        && curRegion !== null && previousTileUrl !== tileUrlTemplate )
-    ? {
+  const fuzzRegion = curRegion => (
+    {
       ...curRegion,
       latitudeDelta: 1.00001 * curRegion.latitudeDelta,
       longitudeDelta: 1.00001 * curRegion.longitudeDelta
-    }
-    : curRegion );
-  const mapRegion = fuzzRegion( setRegion( ) );
-  const mapInitialRegion = mapRegion === null
+    } );
+  const shouldFuzzRegion = curRegion => (
+    Platform.OS === "android"
+    && curRegion
+    && previousTileUrl !== tileUrlTemplate
+  );
+  const unfuzzedMapRegion = setRegion( );
+  const mapRegion = shouldFuzzRegion( unfuzzedMapRegion )
+    ? fuzzRegion( unfuzzedMapRegion )
+    : unfuzzedMapRegion;
+  const mapInitialRegion = shouldFuzzRegion( initialRegion )
     ? fuzzRegion( initialRegion )
     : initialRegion;
 
@@ -392,7 +400,7 @@ const Map = ( {
         zoomEnabled={zoomEnabled}
         zoomTapEnabled={zoomTapEnabled}
       >
-        { overlayObsTiles
+        { shouldOverlayObsTiles
         && (
           <UrlTile
             testID="Map.UrlTile"
