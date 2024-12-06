@@ -294,13 +294,14 @@ const Map = ( {
     // We are only interested in region changes due to user interaction.
     // In Android, onRegionChangeComplete also fires for other map region
     // changes and gesture.isGesture is available to test for user interaction.
+    let shouldSkipRegionUpdate = false;
     if ( Platform.OS === "android" && !gesture.isGesture ) {
       if ( previousTileUrl !== tileUrlTemplate ) {
         setPreviousTileUrl( tileUrlTemplate );
       }
-      return;
+      shouldSkipRegionUpdate = true;
     }
-    if ( onRegionChangeComplete ) {
+    if ( onRegionChangeComplete && !shouldSkipRegionUpdate ) {
       const boundaries = await mapViewRef?.current?.getMapBoundaries( );
       onRegionChangeComplete( newRegion, boundaries );
     }
