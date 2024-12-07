@@ -39,7 +39,6 @@ const MyObservationsHeader = ( {
 }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
-  console.log( "currentUser", currentUser );
 
   const signedInContent = ( ) => (
     <Pressable
@@ -105,6 +104,7 @@ const MyObservationsHeader = ( {
         onPress={( ) => navigation.navigate( "LoginStackNavigator" )}
         accessibilityRole="link"
         accessibilityLabel={t( "Log-in" )}
+        className="w-full"
         text={t( "LOG-IN-TO-INATURALIST" )}
         level={logInButtonNeutral
           ? "neutral"

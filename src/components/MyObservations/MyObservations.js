@@ -94,7 +94,7 @@ const MyObservations = ( {
           numUnuploadedObservations={numUnuploadedObservations}
           toggleLayout={toggleLayout}
         />
-        <View className="flex grow flex-col justify-center">
+        <View className="flex grow flex-col justify-center mx-[67px]">
           <GradientButton
             accessibilityLabel={t( "Add-observations" )}
             sizeClassName="w-[141px] h-[141px] self-center"
