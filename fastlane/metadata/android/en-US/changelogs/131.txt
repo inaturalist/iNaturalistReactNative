@@ -1,0 +1,14 @@
+NEW
+* Swiping down closes the media viewer
+
+UPDATED
+* New translations
+* Updated quality grade descriptions
+
+FIXED
+* Bottom sheet title covered close btn when too long
+* Photos taken in app not appearing after sync while offline
+* Explore zooming to worldwide when accessed from a project with a place
+* Obs w/ no comments or IDs just had a blank space
+* AI Camera button on My Obs was not centered
+* Maps for multiple queries were overlaid in Explore on Android (@joergmlpts)
