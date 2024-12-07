@@ -22,7 +22,7 @@ interface Props {
   disabled?: boolean;
   height?: number;
   icon: string;
-  onPress: ( _event: GestureResponderEvent ) => void;
+  onPress: ( _event?: GestureResponderEvent ) => void;
   // Inserts a white or colored view under the icon so an holes in the shape show as
   // white
   preventTransparency?: boolean;
