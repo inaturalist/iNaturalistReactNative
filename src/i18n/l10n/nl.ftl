@@ -675,6 +675,7 @@ The-models-that-suggest-species = De modellen die soorten suggereren op basis va
 There-is-no-way = Er is geen manier om een iNaturalist account te hebben zonder persoonlijke informatie op te slaan, dus de enige manier om deze toestemming in te trekken is het verwijderen van je account.
 This-is-a-wild-organism = Dit is een wild organisme dat niet op deze locatie is geplaatst door mensen.
 This-is-how-taxon-names-will-be-displayed = Dit is hoe alle taxonnamen voor jou worden weergegeven op iNaturalist:
+This-observation-has-no-comments-or-identifications-yet = Deze waarneming heeft nog geen reacties of determinaties.
 This-observer-has-opted-out-of-the-Community-Taxon = Deze waarnemer heeft zich afgemeld voor het gemeenschapstaxon
 This-organism-was-placed-by-humans = Dit organisme is op deze locatie gebracht door mensen. Dit geldt voor tuinplanten, huisdieren en dierentuindieren.
 To-learn-more-about-what-information = Voor meer informatie over welke informatie we verzamelen en hoe we deze gebruiken, zie ons Privacybeleid en onze gebruiksvoorwaarden.
