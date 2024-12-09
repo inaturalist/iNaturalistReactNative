@@ -555,8 +555,8 @@
         },
         "en" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "We use the camera so you can get identifications of your nature photos."
+            "state" : "translated",
+            "value" : "Camera access lets you use the AI Camera and take photos."
           }
         },
         "en-AU" : {
@@ -675,7 +675,7 @@
         },
         "he" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "אנו משתמשים במצלמה כדי שתקבל.י זיהויים על תמונות הטבע שלך."
           }
         },
@@ -873,7 +873,7 @@
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Vi använder kameran så att du kan få bestämningar av dina naturbilder."
           }
         },

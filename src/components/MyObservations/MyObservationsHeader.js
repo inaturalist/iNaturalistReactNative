@@ -23,7 +23,7 @@ type Props = {
   layout: string,
   logInButtonNeutral: boolean,
   numUnuploadedObservations: number,
-  setHeightAboveToolbar: Function,
+  setHeightAboveToolbar?: Function,
   toggleLayout: Function
 }
 
@@ -63,8 +63,8 @@ const MyObservationsHeader = ( {
   );
 
   const signedOutContent = ( ) => (
-    <View className="my-5">
-      <View className="flex-row items-center mb-5">
+    <View className="my-5 flex-col items-center">
+      <View className="flex-row items-center justify-center mb-5">
         <INatIconButton
           className="mr-5"
           icon="inaturalist"
@@ -104,6 +104,7 @@ const MyObservationsHeader = ( {
         onPress={( ) => navigation.navigate( "LoginStackNavigator" )}
         accessibilityRole="link"
         accessibilityLabel={t( "Log-in" )}
+        className="w-full"
         text={t( "LOG-IN-TO-INATURALIST" )}
         level={logInButtonNeutral
           ? "neutral"
@@ -121,7 +122,9 @@ const MyObservationsHeader = ( {
           const {
             height
           } = event.nativeEvent.layout;
-          setHeightAboveToolbar( height );
+          if ( setHeightAboveToolbar ) {
+            setHeightAboveToolbar( height );
+          }
         }}
       >
         {currentUser

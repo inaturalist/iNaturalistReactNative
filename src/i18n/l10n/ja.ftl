@@ -78,7 +78,6 @@ If-you-leave-x-of-your-observations-removed =
 improving--identification = 改善
 iNat-is-global-community = iNaturalistは、生物の観察と同定を行うことで科学のためのオープンデータを作成するナチュラリストのグローバル・コミュニティです。
 iNaturalist-is-supported-by-our-community = iNaturalistは素晴らしいコミュニティによって支えられています。観察記録や同定を追加してくださる一般のナチュラリストの皆様、 分類法を管理しモデレーションのお手伝いをしてくださるキュレーターの皆様、iNaturalistを世界中の皆様にご利用いただけるようにしてくださるボランティアの翻訳者の皆様、そしてコミュニティに根ざしたご寄付をくださる皆様、iNaturalistをこのようなプラットフォームに育ててくださるコミュニティの皆様には大変感謝しております。
-iNaturalists-apps-are-designed-and-developed-2 = iNaturalistのアプリはiNaturalistチームによってデザイン、開発、サポートされています： Yaron Budowski、Amanda Bullington、Tony Iwane、Johannes Klein、Patrick Leary、Scott Loarie、Abhas Misraraj、Sylvain Morin、Carrie Seltzer、Alex Shepard、Thea Skaff、Angie Ta、Ken-ichi Ueda、Kirk van Gorkom、Jason Walthall、Jane Weeden
 Introduced = 外来種
 January = 1月
 JOIN = 参加

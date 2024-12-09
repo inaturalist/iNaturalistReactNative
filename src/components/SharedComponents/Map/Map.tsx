@@ -11,7 +11,7 @@ import React, {
 } from "react";
 import { DimensionValue, Platform, ViewStyle } from "react-native";
 import MapView, {
-  BoundingBox, LatLng, MapType, Region
+  BoundingBox, LatLng, MapType, Region, UrlTile
 } from "react-native-maps";
 import Observation from "realmModels/Observation";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation.ts";
@@ -26,11 +26,11 @@ import {
   metersToLatitudeDelta,
   OBSCURATION_CELL_SIZE,
   obscurationCellForLatLng,
+  TILE_URL,
   zoomToDeltas
 } from "./helpers/mapHelpers";
 import LocationIndicator from "./LocationIndicator";
 import ObscuredLocationIndicator from "./ObscuredLocationIndicator";
-import ObsUrlTile from "./ObsUrlTile";
 import SwitchMapTypeButton from "./SwitchMapTypeButton";
 
 const NEARBY_DIM_M = 50_000;
@@ -274,14 +274,35 @@ const Map = ( {
     setUserLocation( coordinate );
   };
 
+  const queryString = Object.keys( params ).map( key => `${key}=${params[key]}` ).join( "&" );
+
+  const showPointTiles = currentZoom > 13;
+
+  // We want green points and (default) orange grid
+  const tileUrlTemplate = showPointTiles
+    ? `${TILE_URL}/points/{z}/{x}/{y}.png?${queryString}&color=%2374ac00`
+    : `${TILE_URL}/grid/{z}/{x}/{y}.png?${queryString}`;
+
+  // In Android, MapView does not reliably process tileUrlTemplate changes.
+  // Thus, we do not change tileUrlTemplate on Android anymore but first shut
+  // down the currently active obs tiles and then restart them with the new
+  // obs tile url. This is done by detecting changes to tileUrlTemplate and
+  // rendering <MapView> once without <UrlTile>.
+
+  const [previousTileUrl, setPreviousTileUrl] = useState( tileUrlTemplate );
+
   const handleRegionChangeComplete = async ( newRegion, gesture ) => {
     // We are only interested in region changes due to user interaction.
     // In Android, onRegionChangeComplete also fires for other map region
     // changes and gesture.isGesture is available to test for user interaction.
+    let shouldSkipRegionUpdate = false;
     if ( Platform.OS === "android" && !gesture.isGesture ) {
-      return;
+      if ( previousTileUrl !== tileUrlTemplate ) {
+        setPreviousTileUrl( tileUrlTemplate );
+      }
+      shouldSkipRegionUpdate = true;
     }
-    if ( onRegionChangeComplete ) {
+    if ( onRegionChangeComplete && !shouldSkipRegionUpdate ) {
       const boundaries = await mapViewRef?.current?.getMapBoundaries( );
       onRegionChangeComplete( newRegion, boundaries );
     }
@@ -295,7 +316,33 @@ const Map = ( {
     }
   };
 
-  const mapRegion = setRegion( );
+  const shouldOverlayObsTiles = ( withPressableObsTiles || withObsTiles )
+    && (
+      Platform.OS !== "android"
+      || previousTileUrl === tileUrlTemplate
+    );
+
+  // In Android, when we render a single frame of <MapView> without <UrlTile>
+  // we use a tiny region increase of 0.001% to get onRegionChangeComplete to
+  // fire and update the obs tile url. This change is too small to be visible.
+  const fuzzRegion = curRegion => (
+    {
+      ...curRegion,
+      latitudeDelta: 1.00001 * curRegion.latitudeDelta,
+      longitudeDelta: 1.00001 * curRegion.longitudeDelta
+    } );
+  const shouldFuzzRegion = curRegion => (
+    Platform.OS === "android"
+    && curRegion
+    && previousTileUrl !== tileUrlTemplate
+  );
+  const unfuzzedMapRegion = setRegion( );
+  const mapRegion = shouldFuzzRegion( unfuzzedMapRegion )
+    ? fuzzRegion( unfuzzedMapRegion )
+    : unfuzzedMapRegion;
+  const mapInitialRegion = shouldFuzzRegion( initialRegion )
+    ? fuzzRegion( initialRegion )
+    : initialRegion;
 
   const renderDebugZoomLevel = ( ) => {
     if ( isDebug ) {
@@ -333,7 +380,7 @@ const Map = ( {
       <MapView
         cameraZoomRange={cameraZoomRange}
         className={className}
-        initialRegion={initialRegion}
+        initialRegion={mapInitialRegion}
         loadingEnabled
         loadingIndicatorColor={colors.inatGreen}
         mapType={currentMapType}
@@ -356,12 +403,19 @@ const Map = ( {
         zoomEnabled={zoomEnabled}
         zoomTapEnabled={zoomTapEnabled}
       >
-        <ObsUrlTile
-          params={params}
-          showPointTiles={currentZoom > 13}
-          withObsTiles={withObsTiles}
-          withPressableObsTiles={withPressableObsTiles}
-        />
+        { shouldOverlayObsTiles
+        && (
+          <UrlTile
+            testID="Map.UrlTile"
+            tileSize={512}
+            urlTemplate={tileUrlTemplate}
+            opacity={
+              showPointTiles
+                ? 1
+                : 0.7
+            }
+          />
+        )}
         { observation && ( currentUserCanViewCoords
           ? (
             <LocationIndicator
