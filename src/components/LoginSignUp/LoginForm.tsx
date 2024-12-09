@@ -1,6 +1,4 @@
-// @flow
-
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
 import {
   Body1, Body2, Button, INatIcon, List2
@@ -8,9 +6,8 @@ import {
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import { RealmContext } from "providers/contexts.ts";
-import type { Node } from "react";
 import React, { useEffect, useRef, useState } from "react";
-import { TouchableWithoutFeedback } from "react-native";
+import { TextInput, TouchableWithoutFeedback } from "react-native";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 import colors from "styles/tailwindColors";
 
@@ -22,22 +19,32 @@ import LoginSignUpInputField from "./LoginSignUpInputField";
 
 const { useRealm } = RealmContext;
 
-type Props = {
-  hideFooter?: boolean,
+interface Props {
+  hideFooter?: boolean;
+}
+
+interface LoginFormParams {
+  emailConfirmed?: boolean;
+  prevScreen?: string;
+  projectId?: number;
+}
+
+type ParamList = {
+  LoginFormParams: LoginFormParams
 }
 
 const LoginForm = ( {
   hideFooter
-}: Props ): Node => {
-  const { params } = useRoute( );
+}: Props ) => {
+  const { params } = useRoute<RouteProp<ParamList, "LoginFormParams">>( );
   const emailConfirmed = params?.emailConfirmed;
   const realm = useRealm( );
-  const emailRef = useRef( null );
-  const passwordRef = useRef( null );
+  const emailRef = useRef<TextInput>( null );
+  const passwordRef = useRef<TextInput>( null );
   const navigation = useNavigation( );
   const [email, setEmail] = useState( "" );
   const [password, setPassword] = useState( "" );
-  const [error, setError] = useState( null );
+  const [error, setError] = useState<string | null>( null );
   const [loading, setLoading] = useState( false );
   const [isPasswordVisible, setIsPasswordVisible] = useState( false );
   const { keyboardShown } = useKeyboardInfo( );
@@ -102,7 +109,7 @@ const LoginForm = ( {
       <View className="bg-white rounded-full">
         <INatIcon
           name="checkmark-circle"
-          color={colors.inatGreen}
+          color={String( colors?.inatGreen )}
           size={19}
         />
       </View>
@@ -123,7 +130,7 @@ const LoginForm = ( {
           headerText={t( "USERNAME-OR-EMAIL" )}
           inputMode="email"
           keyboardType="email-address"
-          onChangeText={text => setEmail( text )}
+          onChangeText={( text: string ) => setEmail( text )}
           testID="Login.email"
           // https://github.com/facebook/react-native/issues/39411#issuecomment-1817575790
           // textContentType prevents visual flickering, which is a temporary issue
@@ -136,7 +143,7 @@ const LoginForm = ( {
           autoComplete="current-password"
           headerText={t( "PASSWORD" )}
           inputMode="text"
-          onChangeText={text => setPassword( text )}
+          onChangeText={( text: string ) => setPassword( text )}
           secureTextEntry={!isPasswordVisible}
           testID="Login.password"
           textContentType="password"
