@@ -1,6 +1,10 @@
 import RNFS from "react-native-fs";
+import { log } from "sharedHelpers/logger";
+import { unlink } from "sharedHelpers/util.ts";
 
 import { sentinelFilePath } from "../appConstants/paths";
+
+const logger = log.extend( "sentinelFiles" );
 
 const accessFullFilePath = fileName => `${sentinelFilePath}/${fileName}`;
 
@@ -47,7 +51,6 @@ const logStage = async (
     sentinelData.stages.push( stage );
 
     await RNFS.writeFile( fullFilePath, JSON.stringify( sentinelData ), "utf8" );
-    console.log( "Logged stage to sentinel file:", sentinelFileName, stageName );
   } catch ( error ) {
     console.error( "Failed to log stage to sentinel file:", error, sentinelFileName, stageName );
   }
@@ -57,14 +60,27 @@ const deleteSentinelFile = async ( sentinelFileName: string ): Promise<void> => 
   try {
     const fullFilePath = accessFullFilePath( sentinelFileName );
     await RNFS.unlink( fullFilePath );
-    console.log( "Deleted sentinel file:", sentinelFileName );
   } catch ( error ) {
     console.error( "Failed to delete sentinel file:", error, sentinelFileName );
   }
 };
 
+const findAndLogSentinelFiles = async ( ) => {
+  const directoryExists = await RNFS.exists( sentinelFilePath );
+  if ( !directoryExists ) { return null; }
+  const files = await RNFS.readDir( sentinelFilePath );
+
+  files.forEach( async file => {
+    const existingContent = await RNFS.readFile( file.path, "utf8" );
+    logger.debug( existingContent );
+    await unlink( file.path );
+  } );
+  return files;
+};
+
 export {
   createSentinelFile,
   deleteSentinelFile,
+  findAndLogSentinelFiles,
   logStage
 };

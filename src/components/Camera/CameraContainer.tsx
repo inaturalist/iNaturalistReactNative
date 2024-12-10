@@ -60,8 +60,7 @@ const CameraContainer = ( ) => {
   // bit off and we'll fetch the obs coordinates on ObsEdit)
   const { hasPermissions } = useLocationPermission( );
   const { userLocation } = useWatchPosition( {
-    shouldFetchLocation: !!( hasPermissions ),
-    logStage: stageName => logStageIfAICamera( stageName )
+    shouldFetchLocation: !!( hasPermissions )
   } );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
@@ -93,12 +92,19 @@ const CameraContainer = ( ) => {
   useEffect( () => {
     const generateSentinelFile = async ( ) => {
       const fileName = await createSentinelFile( "AICamera" );
-      console.log( fileName, "file name" );
       setSentinelFileName( fileName );
     };
     if ( cameraType !== "AI" ) { return; }
     generateSentinelFile( );
   }, [setSentinelFileName, cameraType] );
+
+  const logFetchingLocation = !!( hasPermissions && sentinelFileName );
+
+  useEffect( ( ) => {
+    if ( logFetchingLocation ) {
+      logStageIfAICamera( "fetch_user_location_start" );
+    }
+  }, [logStageIfAICamera, logFetchingLocation] );
 
   const {
     hasPermissions: hasSavePhotoPermission,

@@ -135,6 +135,9 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     logStageIfAICamera,
     deleteStageIfAICamera
   } ) => {
+    if ( userLocation !== null ) {
+      logStageIfAICamera( "fetch_user_location_complete" );
+    }
     // when backing out from ObsEdit -> Suggestions -> Camera, create a
     // new observation
     const uris = newPhotoState?.cameraUris || cameraUris;

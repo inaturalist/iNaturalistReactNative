@@ -27,8 +27,7 @@ const geolocationOptions = {
 };
 
 const useWatchPosition = ( options: {
-  shouldFetchLocation: boolean,
-  logStage?: ( ) => void
+  shouldFetchLocation: boolean
 } ) => {
   const navigation = useNavigation( );
   const [currentPosition, setCurrentPosition] = useState<GeolocationResponse | null>( null );
@@ -69,10 +68,9 @@ const useWatchPosition = ( options: {
       }
       setSubscriptionId( watchID );
     } catch ( error ) {
-      if ( logStage ) { logStage( "fetch_user_location_error" ); }
       failure( error as GeolocationError );
     }
-  }, [stopWatch, subscriptionId, logStage] );
+  }, [stopWatch, subscriptionId] );
 
   useEffect( ( ) => {
     if ( !currentPosition ) { return; }
@@ -88,10 +86,9 @@ const useWatchPosition = ( options: {
       subscriptionId !== null
       && currentPosition?.coords?.accuracy < TARGET_POSITIONAL_ACCURACY
     ) {
-      if ( logStage ) { logStage( "fetch_user_location_complete" ); }
       stopWatch( subscriptionId );
     }
-  }, [currentPosition, stopWatch, subscriptionId, logStage] );
+  }, [currentPosition, stopWatch, subscriptionId] );
 
   useEffect( ( ) => {
     if (
@@ -99,17 +96,15 @@ const useWatchPosition = ( options: {
       && subscriptionId === null
       && hasFocus
     ) {
-      if ( logStage ) { logStage( "fetch_user_location_start" ); }
       startWatch( );
     }
-  }, [shouldFetchLocation, startWatch, subscriptionId, hasFocus, logStage] );
+  }, [shouldFetchLocation, startWatch, subscriptionId, hasFocus] );
 
   useEffect( ( ) => {
     // When we leave the screen this hook was used on...
     const unsubscribe = navigation.addListener( "blur", ( ) => {
       // ...stop watching for location updates if we were...
       if ( subscriptionId !== null ) {
-        if ( logStage ) { logStage( "fetch_user_location_incomplete" ); }
         stopWatch( subscriptionId );
       }
       // ...and wipe the current location so we don't pick up a stale one later
