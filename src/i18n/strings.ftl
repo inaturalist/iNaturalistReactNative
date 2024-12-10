@@ -478,6 +478,9 @@ Flash = flash
 # Label for a button that toggles between the front and back cameras
 Flip-camera = Flip camera
 FOLLOW = FOLLOW
+# Tab on notifications showing notifications about content created by others.
+# Should be 16 characters or fewer or it will be ellipsized.
+FOLLOWING--notifications = FOLLOWING
 # Subtitle for a screen showing the list of people a user is following
 FOLLOWING-X-PEOPLE =
     { $count ->
@@ -676,10 +679,10 @@ MONTHS = MONTHS
 More-info = More info
 MOST-FAVED = MOST FAVED
 Most-faved = Most faved
-MY-OBSERVATIONS = MY OBSERVATIONS
 # Title for section in Notifications showing notifications about observations
 # created by the viewer. Should be 16 characters or fewer or it will be ellipsized.
-MY-OBSERVATIONS--notifications = MY OBSERVATIONS
+MY-CONTENT--notifications = MY CONTENT
+MY-OBSERVATIONS = MY OBSERVATIONS
 Native = Native
 Native-to-place = Native to { $place }
 Navigates-to-AI-camera = Navigates to AI camera
@@ -828,9 +831,6 @@ Organisms-that-are-identified-to-species = Organisms that are identified to spec
 # one of the existing options
 Other = Other
 OTHER-DATA = OTHER DATA
-# Tab on notifications showing notifications about content created by others.
-# Should be 16 characters or fewer or it will be ellipsized.
-OTHER-OBSERVATIONS--notifications = OTHER OBSERVATIONS
 OTHER-SUGGESTIONS = OTHER SUGGESTIONS
 PASSWORD = PASSWORD
 # Title showing user profile details about who a user follows and is following
