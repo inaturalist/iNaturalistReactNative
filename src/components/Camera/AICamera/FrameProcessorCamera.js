@@ -18,12 +18,13 @@ import {
   modelVersion,
   taxonomyPath
 } from "sharedHelpers/mlModel.ts";
+import { logStage } from "sharedHelpers/sentinelFiles.ts";
 import {
   orientationPatchFrameProcessor,
   usePatchedRunAsync
 } from "sharedHelpers/visionCameraPatches";
 import { useDeviceOrientation } from "sharedHooks";
-// import type { UserLocation } from "sharedHooks/useWatchPosition";
+import useStore from "stores/useStore";
 
 type Props = {
   // $FlowIgnore
@@ -77,6 +78,7 @@ const FrameProcessorCamera = ( {
   resetCameraOnFocus,
   userLocation
 }: Props ): Node => {
+  const sentinelFileName = useStore( state => state.sentinelFileName );
   const { deviceOrientation } = useDeviceOrientation();
   const [lastTimestamp, setLastTimestamp] = useState( undefined );
 
@@ -113,7 +115,7 @@ const FrameProcessorCamera = ( {
     } );
 
     return unsubscribeBlur;
-  }, [navigation, resetCameraOnFocus] );
+  }, [navigation, resetCameraOnFocus, sentinelFileName] );
 
   const handleResults = Worklets.createRunOnJS( ( result, timeTaken ) => {
     setLastTimestamp( result.timestamp );
@@ -148,7 +150,7 @@ const FrameProcessorCamera = ( {
         }
       }
 
-      patchedRunAsync( frame, () => {
+      patchedRunAsync( frame, ( ) => {
         "worklet";
 
         // Reminder: this is a worklet, running on a C++ thread. Make sure to check the
@@ -202,10 +204,22 @@ const FrameProcessorCamera = ( {
       cameraRef={cameraRef}
       device={device}
       frameProcessor={frameProcessor}
-      onCameraError={onCameraError}
-      onCaptureError={onCaptureError}
-      onClassifierError={onClassifierError}
-      onDeviceNotSupported={onDeviceNotSupported}
+      onCameraError={async ( ) => {
+        await logStage( sentinelFileName, "fallback_camera_error" );
+        onCameraError( );
+      }}
+      onCaptureError={async ( ) => {
+        await logStage( sentinelFileName, "camera_capture_error" );
+        onCaptureError( );
+      }}
+      onClassifierError={async ( ) => {
+        await logStage( sentinelFileName, "camera_classifier_error" );
+        onClassifierError( );
+      }}
+      onDeviceNotSupported={async ( ) => {
+        await logStage( sentinelFileName, "camera_device_not_supported_error" );
+        onDeviceNotSupported( );
+      }}
       pinchToZoom={pinchToZoom}
       inactive={inactive}
     />

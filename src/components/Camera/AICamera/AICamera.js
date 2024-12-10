@@ -1,5 +1,6 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import FadeInOutView from "components/Camera/FadeInOutView";
 import useRotation from "components/Camera/hooks/useRotation.ts";
@@ -13,11 +14,12 @@ import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { convertOfflineScoreToConfidence } from "sharedHelpers/convertScores.ts";
 import { log } from "sharedHelpers/logger";
+import { deleteSentinelFile, logStage } from "sharedHelpers/sentinelFiles.ts";
 import {
   useDebugMode, usePerformance, useTranslation
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
-// import type { UserLocation } from "sharedHooks/useWatchPosition";
+import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 import {
@@ -70,6 +72,9 @@ const AICamera = ( {
   setAiSuggestion,
   userLocation
 }: Props ): Node => {
+  const navigation = useNavigation( );
+  const sentinelFileName = useStore( state => state.sentinelFileName );
+
   const hasFlash = device?.hasFlash;
   const { isDebug } = useDebugMode( );
   const {
@@ -126,12 +131,18 @@ const AICamera = ( {
   };
 
   const handleTakePhoto = async ( ) => {
+    await logStage( sentinelFileName, "take_photo_start" );
     setAiSuggestion( showPrediction && result );
     await takePhotoAndStoreUri( {
       replaceExisting: true,
       inactivateCallback: () => setInactive( true ),
       navigateImmediately: true
     } );
+  };
+
+  const handleClose = async ( ) => {
+    await deleteSentinelFile( sentinelFileName );
+    navigation.goBack( );
   };
 
   return (
@@ -226,6 +237,7 @@ const AICamera = ( {
         flipCamera={onFlipCamera}
         fps={fps}
         hasFlash={hasFlash}
+        handleClose={handleClose}
         modelLoaded={modelLoaded}
         numStoredResults={numStoredResults}
         rotatableAnimatedStyle={rotatableAnimatedStyle}

@@ -4,6 +4,7 @@ import {
 } from "components/Camera/helpers/visionCameraWrapper";
 import React, {
   useCallback,
+  useEffect,
   useMemo,
   useRef,
   useState
@@ -12,6 +13,7 @@ import { Alert, StatusBar } from "react-native";
 import type {
   TakePhotoOptions
 } from "react-native-vision-camera";
+import { createSentinelFile, deleteSentinelFile, logStage } from "sharedHelpers/sentinelFiles.ts";
 import { useDeviceOrientation, useTranslation, useWatchPosition } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useStore from "stores/useStore";
@@ -28,6 +30,24 @@ const CameraContainer = ( ) => {
   const setCameraState = useStore( state => state.setCameraState );
   const evidenceToAdd = useStore( state => state.evidenceToAdd );
   const cameraUris = useStore( state => state.cameraUris );
+  const sentinelFileName = useStore( state => state.sentinelFileName );
+  const setSentinelFileName = useStore( state => state.setSentinelFileName );
+
+  const { params } = useRoute( );
+  const cameraType = params?.camera;
+
+  const logStageIfAICamera = useCallback( async (
+    stageName: string,
+    stageData: string
+  ) => {
+    if ( cameraType !== "AI" ) { return; }
+    await logStage( sentinelFileName, stageName, stageData );
+  }, [cameraType, sentinelFileName] );
+
+  const deleteStageIfAICamera = useCallback( async ( ) => {
+    if ( cameraType !== "AI" ) { return; }
+    await deleteSentinelFile( sentinelFileName );
+  }, [cameraType, sentinelFileName] );
 
   const { deviceOrientation } = useDeviceOrientation( );
   // Check if location permission granted b/c usePrepareStoreAndNavigate and
@@ -44,8 +64,6 @@ const CameraContainer = ( ) => {
   } );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
-  const { params } = useRoute( );
-  const cameraType = params?.camera;
 
   const [cameraPosition, setCameraPosition] = useState<"front" | "back">( "back" );
   // https://react-native-vision-camera.com/docs/guides/devices#selecting-multi-cams
@@ -70,6 +88,23 @@ const CameraContainer = ( ) => {
   const addEvidence = params?.addEvidence;
 
   const camera = useRef<Camera>( null );
+
+  useEffect( () => {
+    const generateSentinelFile = async ( ) => {
+      const fileName = await createSentinelFile( "AICamera" );
+      setSentinelFileName( fileName );
+    };
+    if ( cameraType !== "AI" ) { return; }
+    generateSentinelFile( );
+  }, [setSentinelFileName, cameraType] );
+
+  const logFetchingLocation = !!( hasPermissions && sentinelFileName );
+
+  useEffect( ( ) => {
+    if ( logFetchingLocation ) {
+      logStageIfAICamera( "fetch_user_location_start" );
+    }
+  }, [logStageIfAICamera, logFetchingLocation] );
 
   const {
     hasPermissions: hasSavePhotoPermission,
@@ -105,23 +140,29 @@ const CameraContainer = ( ) => {
   const handleNavigation = useCallback( async ( newPhotoState = {} ) => {
     await prepareStoreAndNavigate( {
       ...navigationOptions,
-      newPhotoState
+      newPhotoState,
+      logStageIfAICamera,
+      deleteStageIfAICamera
     } );
   }, [
     prepareStoreAndNavigate,
-    navigationOptions
+    navigationOptions,
+    logStageIfAICamera,
+    deleteStageIfAICamera
   ] );
 
   const handleCheckmarkPress = useCallback( async newPhotoState => {
     if ( !showPhotoPermissionsGate ) {
       await handleNavigation( newPhotoState );
     } else {
+      await logStageIfAICamera( "request_save_photo_permission_start" );
       requestSavePhotoPermission( );
     }
   }, [
     handleNavigation,
     requestSavePhotoPermission,
-    showPhotoPermissionsGate
+    showPhotoPermissionsGate,
+    logStageIfAICamera
   ] );
 
   const toggleFlash = ( ) => {
@@ -167,7 +208,9 @@ const CameraContainer = ( ) => {
     // this does leave a short period of time where the camera preview is still active
     // after taking the photo which we might to revisit if it doesn't look good.
     const cameraPhoto = await camera?.current?.takePhoto( takePhotoOptions );
+    await logStageIfAICamera( "take_photo_complete" );
     if ( !cameraPhoto ) {
+      await logStageIfAICamera( "take_photo_error" );
       throw new Error( "Failed to take photo: missing camera" );
     }
     if ( options?.inactivateCallback ) options.inactivateCallback();
@@ -214,6 +257,7 @@ const CameraContainer = ( ) => {
         onRequestGranted: ( ) => console.log( "granted in save photo permission gate" ),
         onRequestBlocked: ( ) => console.log( "blocked in save photo permission gate" ),
         onModalHide: async ( ) => {
+          await logStageIfAICamera( "request_save_photo_permission_complete" );
           await handleNavigation( {
             cameraUris,
             evidenceToAdd

@@ -22,6 +22,7 @@ interface Props {
   cropRatio?: string;
   flipCamera: ( _event: GestureResponderEvent ) => void;
   fps?: number;
+  handleClose: ( ) => void;
   hasFlash: boolean;
   modelLoaded: boolean;
   numStoredResults?: number;
@@ -48,6 +49,7 @@ const AICameraButtons = ( {
   cropRatio,
   flipCamera,
   fps,
+  handleClose,
   hasFlash,
   modelLoaded,
   numStoredResults,
@@ -89,7 +91,7 @@ const AICameraButtons = ( {
         className="absolute left-0 bottom-[17px] h-full justify-end flex gap-y-9"
         pointerEvents="box-none"
       >
-        <View><Close /></View>
+        <View><Close handleClose={handleClose} /></View>
       </View>
       <View
         className="absolute right-0 bottom-[6px] h-full justify-end items-end flex gap-y-9"
