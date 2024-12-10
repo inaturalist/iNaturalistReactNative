@@ -47,7 +47,6 @@ type Props = {
   camera: Object,
   device: Object,
   flipCamera: Function,
-  handleCheckmarkPress: Function,
   isLandscapeMode: boolean,
   toggleFlash: Function,
   takingPhoto: boolean,
@@ -61,7 +60,6 @@ const AICamera = ( {
   camera,
   device,
   flipCamera,
-  handleCheckmarkPress,
   isLandscapeMode,
   toggleFlash,
   takingPhoto,
@@ -181,12 +179,10 @@ const AICamera = ( {
           {showPrediction && result
             ? (
               <TaxonResult
-                accessibilityLabel={t( "View-suggestions" )}
                 asListItem={false}
                 clearBackground
                 confidence={convertOfflineScoreToConfidence( result?.score )}
-                handleCheckmarkPress={handleCheckmarkPress}
-                hideNavButtons
+                unpressable
                 taxon={result?.taxon}
                 testID={`AICamera.taxa.${result?.taxon?.id}`}
                 white
