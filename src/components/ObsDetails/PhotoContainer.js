@@ -2,7 +2,7 @@
 
 import classnames from "classnames";
 import { ActivityIndicator, OfflineNotice } from "components/SharedComponents";
-import { Image, Pressable } from "components/styledComponents";
+import { Image, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
 import Photo from "realmModels/Photo";
@@ -92,10 +92,16 @@ const PhotoContainer = ( { photo, onPress, style }: Props ): Node => {
       {renderLoadingIndicator( )}
       {image}
       {loadSuccess === false && (
-        <OfflineNotice
-          onPress={( ) => setLoadSuccess( null )}
-          color="white"
-        />
+        <View className={classnames(
+          "h-72",
+          "w-screen"
+        )}
+        >
+          <OfflineNotice
+            onPress={( ) => setLoadSuccess( null )}
+            color="white"
+          />
+        </View>
       )}
     </Pressable>
   );
