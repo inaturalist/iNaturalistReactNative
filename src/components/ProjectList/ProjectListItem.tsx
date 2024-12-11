@@ -30,7 +30,7 @@ const ProjectListItem = ( { item, isHeader = false }: Props ) => {
   const { projectDate, shouldDisplayDateRange } = formatProjectDate( item, t, i18n );
   const displayDateRange = shouldDisplayDateRange && !isHeader;
 
-  const iconClassName = "w-[62px] h-[62px] rounded-lg bg-white";
+  const iconClassName = "w-[62px] h-[62px] rounded-lg bg-white mr-3";
 
   const displayBriefcase = ( ) => (
     <INatIcon
@@ -61,7 +61,7 @@ const ProjectListItem = ( { item, isHeader = false }: Props ) => {
     return (
       <Image
         className={
-          classnames( iconClassName, "mr-3" )
+          classnames( iconClassName )
         }
         source={{ uri: productionIcon }}
         testID={`Project.${item.id}.photo`}
