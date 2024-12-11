@@ -102,7 +102,22 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
   resetUploadObservationsSlice: ( ) => {
     // Preserve the abortController just in case something might try and use it
     const { abortController } = get( );
-    return set( { ...DEFAULT_STATE, abortController } );
+    const defaultStateWithController = {
+      abortController,
+      currentUpload: null,
+      errorsByUuid: {},
+      multiError: null,
+      initialNumObservationsInQueue: 0,
+      numUnuploadedObservations: 0,
+      numUploadsAttempted: 0,
+      totalToolbarIncrements: 0,
+      totalToolbarProgress: 0,
+      totalUploadProgress: [],
+      uploadQueue: [],
+      uploadStatus: UPLOAD_PENDING
+    };
+
+    return set( defaultStateWithController );
   },
   addUploadError: ( error, obsUUID ) => set( state => ( {
     errorsByUuid: {
@@ -118,13 +133,25 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
     deactivateKeepAwake( );
     const { abortController } = get( );
     abortController?.abort();
-    return set( {
-      ...DEFAULT_STATE,
+
+    const cancelledStateWithController = {
       // Preserve the abort controller in case in might still get used. It
       // should only get regenerated when the uploads start
       abortController,
+      currentUpload: null,
+      errorsByUuid: {},
+      multiError: null,
+      initialNumObservationsInQueue: 0,
+      numUnuploadedObservations: 0,
+      numUploadsAttempted: 0,
+      totalToolbarIncrements: 0,
+      totalToolbarProgress: 0,
+      totalUploadProgress: [],
+      uploadQueue: [],
       uploadStatus: UPLOAD_CANCELLED
-    } );
+    };
+
+    return set( cancelledStateWithController );
   },
   // Sets state to indicate that upload is needed without necessarily
   // resetting the state, as there might still be observations to upload
