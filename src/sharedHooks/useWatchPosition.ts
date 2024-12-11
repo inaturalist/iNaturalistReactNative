@@ -35,6 +35,7 @@ const useWatchPosition = ( options: {
   const [userLocation, setUserLocation] = useState<UserLocation | null>( null );
   const { shouldFetchLocation } = options;
   const [hasFocus, setHasFocus] = useState( true );
+  const logStage = options?.logStage;
 
   const stopWatch = useCallback( ( id: number ) => {
     clearWatch( id );
@@ -111,7 +112,7 @@ const useWatchPosition = ( options: {
       setHasFocus( false );
     } );
     return unsubscribe;
-  }, [navigation, stopWatch, subscriptionId] );
+  }, [navigation, stopWatch, subscriptionId, logStage] );
 
   // Listen for focus. We only want to fetch location when this screen has focus.
   useEffect( ( ) => {
