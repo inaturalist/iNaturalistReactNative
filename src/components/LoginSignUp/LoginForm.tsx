@@ -8,8 +8,14 @@ import { View } from "components/styledComponents";
 import { t } from "i18next";
 import { RealmContext } from "providers/contexts.ts";
 import React, { useEffect, useRef, useState } from "react";
-import { Alert, TextInput, TouchableWithoutFeedback } from "react-native";
+import {
+  Alert,
+  Platform,
+  TextInput,
+  TouchableWithoutFeedback
+} from "react-native";
 import Realm from "realm";
+import { log } from "sharedHelpers/logger";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 import colors from "styles/tailwindColors";
 
@@ -42,50 +48,68 @@ const APPLE_BUTTON_STYLE = {
   marginTop: 10
 };
 
-async function signInWithApple( realm: Realm ) {
-  console.log( "[DEBUG LoginForm.tsx] appleAuth.State: ", appleAuth.State );
-  // performs login request
-  const appleAuthRequestResponse = await appleAuth.performRequest( {
-    requestedOperation: appleAuth.Operation.LOGIN,
-    // Note: it appears putting FULL_NAME first is important, see issue #293
-    requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL]
-  } );
-  console.log( "[DEBUG LoginForm.tsx] appleAuthRequestResponse: ", appleAuthRequestResponse );
+const logger = log.extend( "LoginForm" );
 
-  // get current authentication state for user
-  // /!\ This method must be tested on a real device. On the iOS simulator it
-  //     always throws an error.
+function showSignInWithAppleFailed() {
+  Alert.alert(
+    t( "Sign-in-with-Apple-Failed" ),
+    t( "If-you-have-an-existing-account-try-sign-in-reset" )
+  );
+}
+
+async function signInWithApple( realm: Realm ) {
+  // Request sign in w/ apple. This should pop up some system UI for signing
+  // in
+  let appleAuthRequestResponse;
+  try {
+    appleAuthRequestResponse = await appleAuth.performRequest( {
+      requestedOperation: appleAuth.Operation.LOGIN,
+      // Note: it appears putting FULL_NAME first is important, see issue #293
+      requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL]
+    } );
+  } catch ( appleAuthRequestError ) {
+    logger.error( "Apple auth request failed", appleAuthRequestError );
+    showSignInWithAppleFailed();
+    return false;
+  }
+
+  // Check if auth was successful
   const credentialState = await appleAuth.getCredentialStateForUser(
     appleAuthRequestResponse.user
   );
-  console.log( "[DEBUG LoginForm.tsx] credentialState: ", credentialState );
 
-  // use credentialState response to ensure the user is authenticated
+  // If it was, send the identity token to iNat for verification and iNat
+  // auth
   if ( credentialState === appleAuth.State.AUTHORIZED ) {
-    // user is authenticated
+    // Note that we're supporting an irregular assertion that is a JSON object
+    // w/ the actual identityToken (which is itself a JSON Web Token), and
+    // the user's name, which we only get from Apple the *first* time that
+    // grant permission, so the server cannot access it when it verifies the
+    // token
     const assertion = JSON.stringify( {
       id_token: appleAuthRequestResponse.identityToken,
-      // TODO localize this order
-      name: [
-        appleAuthRequestResponse?.fullName?.namePrefix,
-        appleAuthRequestResponse?.fullName?.givenName,
-        appleAuthRequestResponse?.fullName?.middleName,
-        appleAuthRequestResponse?.fullName?.nickname
-          ? `"${appleAuthRequestResponse.fullName.nickname}"`
-          : null,
-        appleAuthRequestResponse?.fullName?.familyName,
-        appleAuthRequestResponse?.fullName?.nameSuffix
-      ].filter( Boolean ).join( " " )
+      name: t( "apple-full-name", {
+        namePrefix: appleAuthRequestResponse?.fullName?.namePrefix,
+        givenName: appleAuthRequestResponse?.fullName?.givenName,
+        middleName: appleAuthRequestResponse?.fullName?.middleName,
+        nickname: appleAuthRequestResponse?.fullName?.nickname,
+        familyName: appleAuthRequestResponse?.fullName?.familyName,
+        nameSuffix: appleAuthRequestResponse?.fullName?.nameSuffix
+      } )
     } );
-    await authenticateUserByAssertion( "apple", assertion, realm );
+    try {
+      await authenticateUserByAssertion( "apple", assertion, realm );
+    } catch ( authenticateUserByAssertionError ) {
+      logger.error( "Assertion with Apple token failed", authenticateUserByAssertionError );
+      showSignInWithAppleFailed();
+      return false;
+    }
     return true;
   }
-  Alert.alert(
-    "Sign in with Apple Failed",
-    "If you have an existing iNat account, trying signing in with your username "
-    + "and password, or try resetting your password using the email address "
-    + "associated with your account"
-  );
+  // We only get here if the user does not grant access... I think, so no need
+  // to log an error
+  logger.info( "Apple auth failed, credentialState: ", credentialState );
+  showSignInWithAppleFailed();
   return false;
 }
 
@@ -232,12 +256,18 @@ const LoginForm = ( {
           testID="Login.loginButton"
           text={t( "LOG-IN" )}
         />
-        <AppleButton
-          buttonStyle={AppleButton.Style.BLACK}
-          buttonType={AppleButton.Type.SIGN_IN}
-          style={APPLE_BUTTON_STYLE}
-          onPress={() => signInWithApple( realm )}
-        />
+        {/*
+          Note: Sign in with Apple is doable in Android if we want to:
+          https://github.com/invertase/react-native-apple-authentication?tab=readme-ov-file#android
+        */}
+        { Platform.OS === "ios" && (
+          <AppleButton
+            buttonStyle={AppleButton.Style.BLACK}
+            buttonType={AppleButton.Type.SIGN_IN}
+            style={APPLE_BUTTON_STYLE}
+            onPress={() => logIn( async ( ) => signInWithApple( realm ) )}
+          />
+        ) }
         {!hideFooter && (
           <Body1
             className={classnames(

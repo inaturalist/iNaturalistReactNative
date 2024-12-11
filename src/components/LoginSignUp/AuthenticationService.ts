@@ -315,15 +315,13 @@ interface OauthTokenResponse extends RailsApiResponse {
 }
 
 function errorDescriptionFromResponse( response: ApiResponse<OauthTokenResponse> ): string {
-  console.log(
-    "[DEBUG AuthenticationService.ts] errorDescriptionFromResponse: ",
-    response
-  );
-  let errorDescription = response?.data?.error_description;
+  let errorDescription = response.data?.error_description;
   if ( !errorDescription && response.problem === "NETWORK_ERROR" ) {
     errorDescription = i18next.t( "You-need-an-Internet-connection-to-do-that" );
   }
-  return errorDescription || i18next.t( "Something-went-wrong" );
+  if ( errorDescription ) return errorDescription;
+  logger.error( "Indescribable error response", JSON.stringify( response ) );
+  return i18next.t( "Something-went-wrong" );
 }
 
 interface UsersEditResponse extends RailsApiResponse {
