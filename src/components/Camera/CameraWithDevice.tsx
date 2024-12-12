@@ -72,7 +72,6 @@ const CameraWithDevice = ( {
             camera={camera}
             device={device}
             flipCamera={flipCamera}
-            handleCheckmarkPress={handleCheckmarkPress}
             isLandscapeMode={isLandscapeMode}
             toggleFlash={toggleFlash}
             takingPhoto={takingPhoto}
