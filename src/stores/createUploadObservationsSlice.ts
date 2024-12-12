@@ -1,5 +1,6 @@
-import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import _ from "lodash";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import BackgroundService from "react-native-background-actions";
 import type { RealmObservation } from "realmModels/types.d.ts";
 import { StateCreator } from "zustand";
 
@@ -21,7 +22,6 @@ interface TotalUploadProgress {
 }
 
 interface UploadObservationsSlice {
-  abortController: AbortController | null,
   currentUpload: RealmObservation | null,
   errorsByUuid: Object,
   multiError: string | null,
@@ -36,7 +36,6 @@ interface UploadObservationsSlice {
 }
 
 const DEFAULT_STATE: UploadObservationsSlice = {
-  abortController: null,
   currentUpload: null,
   errorsByUuid: {},
   // Single error caught during multiple obs upload
@@ -97,13 +96,10 @@ const setTotalToolbarProgress = ( totalToolbarIncrements, totalUploadProgress ) 
     : 0
 );
 
-const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( set, get ) => ( {
+const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set => ( {
   ...DEFAULT_STATE,
   resetUploadObservationsSlice: ( ) => {
-    // Preserve the abortController just in case something might try and use it
-    const { abortController } = get( );
-    const defaultStateWithController = {
-      abortController,
+    const defaultState = {
       currentUpload: null,
       errorsByUuid: {},
       multiError: null,
@@ -117,7 +113,7 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
       uploadStatus: UPLOAD_PENDING
     };
 
-    return set( defaultStateWithController );
+    return set( defaultState );
   },
   addUploadError: ( error, obsUUID ) => set( state => ( {
     errorsByUuid: {
@@ -130,14 +126,8 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
     multiError: error
   } ) ),
   stopAllUploads: ( ) => {
-    deactivateKeepAwake( );
-    const { abortController } = get( );
-    abortController?.abort();
-
-    const cancelledStateWithController = {
-      // Preserve the abort controller in case in might still get used. It
-      // should only get regenerated when the uploads start
-      abortController,
+    BackgroundService.stop( );
+    const cancelledState = {
       currentUpload: null,
       errorsByUuid: {},
       multiError: null,
@@ -151,22 +141,16 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
       uploadStatus: UPLOAD_CANCELLED
     };
 
-    return set( cancelledStateWithController );
+    return set( cancelledState );
   },
   // Sets state to indicate that upload is needed without necessarily
   // resetting the state, as there might still be observations to upload
   setCannotUploadObservations: ( ) => set( { uploadStatus: UPLOAD_PENDING } ),
   // Sets the state to start uploading observations
-  setStartUploadObservations: ( ) => {
-    activateKeepAwake( );
-    return set( {
-      // Make a new abort controller for this upload session
-      abortController: new AbortController( ),
-      uploadStatus: UPLOAD_IN_PROGRESS
-    } );
-  },
+  setStartUploadObservations: ( ) => set( {
+    uploadStatus: UPLOAD_IN_PROGRESS
+  } ),
   completeUploads: ( ) => {
-    deactivateKeepAwake( );
     set( { uploadStatus: UPLOAD_COMPLETE } );
   },
   updateTotalUploadProgress: ( uuid: string, increment: number ) => set( state => {

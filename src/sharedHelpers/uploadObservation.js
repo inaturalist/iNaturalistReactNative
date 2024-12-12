@@ -11,48 +11,38 @@ import inatjs from "inaturalistjs";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import ObservationSound from "realmModels/ObservationSound";
-import emitUploadProgress from "sharedHelpers/emitUploadProgress.ts";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 const UPLOAD_PROGRESS_INCREMENT = 1;
+const HALF_PROGRESS_INCREMENT = UPLOAD_PROGRESS_INCREMENT / 2;
 
 // The reason this doesn't simply accept the record is because we're not being
 // strict about using Realm.Objects, so sometimes the thing we just uploaded
 // is a Realm.Object and sometimes it's a POJO, but in order to mark it as
 // uploaded and add a server-assigned id attribute, we need to find the
 // matching Realm.Object
-const markRecordUploaded = (
-  observationUUID: string,
-  recordUUID: string | null,
-  type: string,
-  response: {
-    results: Array<{id: number}>
-  },
-  realm: Object,
-  options?: {
-    record: Object
+const findRecordToMark = ( realm, observationUUID, recordUUID, type, options = {} ) => {
+  const observation = realm?.objectForPrimaryKey( "Observation", observationUUID );
+
+  switch ( type ) {
+    case "Observation":
+      return observation;
+    case "ObservationPhoto":
+      return observation?.observationPhotos?.find( op => op.uuid === recordUUID );
+    case "ObservationSound":
+      return observation?.observationSounds?.find( os => os.uuid === recordUUID );
+    case "Photo":
+      return options?.record;
+    default:
+      throw new Error( `Unknown record type: ${type}` );
   }
-) => {
+};
+
+const markRecordUploaded = ( realm, observationUUID, recordUUID, type, response, options = {} ) => {
   const { id } = response.results[0];
   if ( !realm || realm.isClosed ) return;
-  function extractRecord( obsUUID, recUUID, recordType, opts ) {
-    const observation = realm?.objectForPrimaryKey( "Observation", obsUUID );
-    let record;
-    if ( recordType === "Observation" ) {
-      record = observation;
-    } else if ( recordType === "ObservationPhoto" ) {
-      const existingObsPhoto = observation?.observationPhotos?.find( op => op.uuid === recUUID );
-      record = existingObsPhoto;
-    } else if ( recordType === "ObservationSound" ) {
-      const existingObsSound = observation?.observationSounds?.find( os => os.uuid === recUUID );
-      record = existingObsSound;
-    } else if ( recordType === "Photo" ) {
-      // Photos do not have UUIDs, so we pass the Photo itself as an option
-      record = opts?.record;
-    }
-    return record;
-  }
-  let record = extractRecord( observationUUID, recordUUID, type, options );
+
+  const record = findRecordToMark( realm, observationUUID, recordUUID, type, options );
 
   if ( !record ) {
     throw new Error(
@@ -61,53 +51,71 @@ const markRecordUploaded = (
   }
 
   try {
-    safeRealmWrite( realm, ( ) => {
-      // These flow errors don't make any sense b/c if record is undefined, we
-      // will throw an error above
-      // $FlowIgnore
-      record.id = id;
-      // $FlowIgnore
-      record._synced_at = new Date( );
-      if ( type === "Observation" ) {
-        // $FlowIgnore
-        record.needs_sync = false;
-      }
-    }, `marking record uploaded in uploadObservation.js, type: ${type}` );
-  } catch ( realmWriteError ) {
-    // Try it one more time in case it was invalidated but it's still in the
-    // database
-    if ( realmWriteError.message.match( /invalidated or deleted/ ) ) {
-      record = extractRecord( observationUUID, recordUUID, type, options );
-      safeRealmWrite( realm, ( ) => {
-        // These flow errors don't make any sense b/c if record is undefined, we
-        // will throw an error above
-        // $FlowIgnore
+    safeRealmWrite(
+      realm,
+      () => {
         record.id = id;
-        // $FlowIgnore
         record._synced_at = new Date( );
         if ( type === "Observation" ) {
-          // $FlowIgnore
           record.needs_sync = false;
         }
-      }, `marking record uploaded in uploadObservation.js, type: ${type}` );
+      },
+      `Marking record uploaded, type: ${type}`
+    );
+  } catch ( realmWriteError ) {
+    if ( realmWriteError.message.match( /invalidated or deleted/ ) ) {
+      safeRealmWrite(
+        realm,
+        () => {
+          record.id = id;
+          record._synced_at = new Date();
+          if ( type === "Observation" ) {
+            record.needs_sync = false;
+          }
+        },
+        `Marking record uploaded (retry), type: ${type}`
+      );
     }
   }
 };
 
-const uploadEvidence = async (
-  evidence: Array<Object>,
-  type: string,
-  apiSchemaMapper: Function,
-  observationId: ?number,
-  apiEndpoint: Function,
-  options: Object,
-  observationUUID?: string,
-  realm: Object
-  // $FlowIgnore
-): Promise<unknown> => {
+const removeNullValues = obj => {
+  // Remove all null values, b/c the API doesn't seem to like them for some
+  // reason (might be an error with the API as of 20220801)
+  const newObs = {};
+  Object.keys( obj ).forEach( k => {
+    if ( obj[k] !== null ) {
+      newObs[k] = obj[k];
+    }
+  } );
+  return newObs;
+};
+
+const prepareEvidenceForUpload = evidence => {
+  if ( evidence.photo ) {
+    const preparedEvidence = evidence.toJSON
+      ? evidence.toJSON()
+      : { ...evidence };
+    preparedEvidence.photo = removeNullValues( preparedEvidence.photo );
+    return preparedEvidence;
+  }
+  return evidence;
+};
+
+const uploadEvidenceWithProgress = async (
+  evidence,
+  type,
+  apiSchemaMapper,
+  observationId,
+  apiEndpoint,
+  options,
+  observationUUID,
+  realm,
+  updateTotalUploadProgress
+) => {
   const uploadToServer = async currentEvidence => {
-    const params = apiSchemaMapper( observationId, currentEvidence );
-    const evidenceUUID = currentEvidence.uuid;
+    const preparedEvidence = prepareEvidenceForUpload( currentEvidence );
+    const params = apiSchemaMapper( observationId, preparedEvidence );
 
     const response = await createOrUpdateEvidence(
       apiEndpoint,
@@ -116,197 +124,259 @@ const uploadEvidence = async (
     );
 
     if ( response && observationUUID ) {
-      // we're emitting progress increments:
-      // one when the upload of obs
-      // half one when obsPhoto/obsSound is successfully uploaded
-      // half one when the obsPhoto/obsSound is attached to the obs
-      emitUploadProgress( observationUUID, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
-      // TODO: can't mark records as uploaded by primary key for ObsPhotos and ObsSound anymore
-      markRecordUploaded( observationUUID, evidenceUUID, type, response, realm, {
-        record: currentEvidence
-      } );
+      updateTotalUploadProgress( observationUUID, HALF_PROGRESS_INCREMENT );
+      markRecordUploaded(
+        realm,
+        observationUUID,
+        preparedEvidence.uuid,
+        type,
+        response,
+        { record: preparedEvidence }
+      );
     }
 
     return response;
   };
 
-  const responses = await Promise.all( evidence.map( item => {
-    let currentEvidence = item;
-
-    if ( currentEvidence.photo ) {
-      currentEvidence = item.toJSON( );
-      // Remove all null values, b/c the API doesn't seem to like them
-      const newPhoto = {};
-      const { photo } = currentEvidence;
-      Object.keys( photo ).forEach( k => {
-        if ( photo[k] !== null ) {
-          newPhoto[k] = photo[k];
-        }
-      } );
-      currentEvidence.photo = newPhoto;
-    }
-
-    return uploadToServer( currentEvidence );
-  } ) );
-  // eslint-disable-next-line consistent-return
-  return responses[0];
+  return Promise.all( evidence.map( uploadToServer ) );
 };
 
-async function uploadObservation( obs: Object, realm: Object, opts: Object = {} ): Object {
-  // we're emitting progress increments:
-  // half one when upload of obs started
-  // half one when upload of obs finished
-  // half one when obsPhoto/obsSound is successfully uploaded
-  // half one when the obsPhoto/obsSound is attached to the obs
-  emitUploadProgress( obs.uuid, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
-  const apiToken = await getJWT( );
+const validateApiToken = async ( ) => {
+  const apiToken = getJWT( );
   // don't bother trying to upload unless there's a logged in user
   if ( !apiToken ) {
-    throw new Error(
-      "Gack, tried to upload an observation without API token!"
-    );
+    throw new Error( "Cannot upload observation without API token" );
   }
-  const obsToUpload = Observation.mapObservationForUpload( obs );
-  const options = { ...opts, api_token: apiToken };
+  return apiToken;
+};
 
-  // Remove all null values, b/c the API doesn't seem to like them for some
-  // reason (might be an error with the API as of 20220801)
-  const newObs = {};
-  Object.keys( obsToUpload ).forEach( k => {
-    if ( obsToUpload[k] !== null ) {
-      newObs[k] = obsToUpload[k];
-    }
-  } );
-
-  let response;
-
-  // First upload the photos/sounds (before uploading the observation itself)
-  const hasPhotos = obs?.observationPhotos?.length > 0;
-  const unsyncedObservationPhotos = hasPhotos
-    ? obs?.observationPhotos?.filter( op => !op.wasSynced( ) )
-    : [];
-  const unsyncedPhotos = unsyncedObservationPhotos?.map( op => {
-    try {
-      return op.photo;
-    } catch ( accessError ) {
-      if ( !accessError.message.match( /No object with key/ ) ) {
-        throw accessError;
-      }
-      return null;
-    }
-  } ).flat( );
-  const modifiedObservationPhotos = hasPhotos
-    ? obs?.observationPhotos?.filter( op => op.wasSynced( ) && op.needsSync( ) )
-    : [];
-
-  await Promise.all( [
-    unsyncedPhotos.length > 0
-      ? uploadEvidence(
-        unsyncedPhotos,
-        "Photo",
-        ObservationPhoto.mapPhotoForUpload,
-        null,
-        inatjs.photos.create,
-        options,
-        obs.uuid,
-        realm
-      )
-      : null
-  ] );
-
-  const hasSounds = obs.observationSounds.length > 0;
-  const unsyncedObservationSounds = hasSounds
-    ? obs.observationSounds.filter( item => !item.wasSynced( ) )
-    : [];
-  await Promise.all( [
-    unsyncedObservationSounds.length > 0
-      ? uploadEvidence(
-        unsyncedObservationSounds,
-        "ObservationSound",
-        ObservationSound.mapSoundForUpload,
-        null,
-        inatjs.sounds.create,
-        options,
-        obs.uuid,
-        realm
-      )
-      : null
-  ] );
-
-  const wasPreviouslySynced = obs.wasSynced( );
+const uploadOrUpdateObservation = async (
+  preparedObs,
+  uploadOptions,
+  obs,
+  updateTotalUploadProgress
+) => {
   const uploadParams = {
-    observation: { ...newObs },
+    observation: preparedObs,
     fields: { id: true }
   };
 
-  if ( wasPreviouslySynced ) {
-    response = await updateObservation( {
+  const wasPreviouslySynced = obs.wasSynced();
+
+  const response = wasPreviouslySynced
+    ? await updateObservation( {
       ...uploadParams,
-      id: newObs.uuid,
+      id: preparedObs.uuid,
       ignore_photos: true
-    }, options );
-  } else {
-    response = await createObservation( uploadParams, options );
+    }, uploadOptions )
+    : await createObservation( uploadParams, uploadOptions );
+
+  updateTotalUploadProgress( preparedObs.uuid, HALF_PROGRESS_INCREMENT );
+  return response;
+};
+
+const getUnsyncedPhotos = obs => {
+  const hasPhotos = obs?.observationPhotos?.length > 0;
+  return hasPhotos
+    ? obs.observationPhotos
+      .filter( op => !op.wasSynced() )
+      .map( op => {
+        try {
+          return op.photo;
+        } catch ( accessError ) {
+          if ( !accessError.message.match( /No object with key/ ) ) {
+            throw accessError;
+          }
+          return null;
+        }
+      } )
+      .filter( photo => photo !== null )
+    : [];
+};
+
+const getUnsyncedSounds = obs => ( obs.observationSounds.length > 0
+  ? obs.observationSounds.filter( item => !item.wasSynced() )
+  : [] );
+
+const uploadUnsyncedSounds = async ( obs, uploadOptions, realm, updateTotalUploadProgress ) => {
+  const unsyncedSounds = getUnsyncedSounds( obs );
+  if ( unsyncedSounds.length > 0 ) {
+    await uploadEvidenceWithProgress(
+      unsyncedSounds,
+      "ObservationSound",
+      ObservationSound.mapSoundForUpload,
+      null,
+      inatjs.sounds.create,
+      uploadOptions,
+      obs.uuid,
+      realm,
+      updateTotalUploadProgress
+    );
   }
-  emitUploadProgress( obs.uuid, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
+};
 
-  if ( !response ) {
-    return response;
+const uploadUnsyncedPhotos = async ( obs, uploadOptions, realm, updateTotalUploadProgress ) => {
+  const unsyncedPhotos = getUnsyncedPhotos( obs );
+  if ( unsyncedPhotos.length > 0 ) {
+    await uploadEvidenceWithProgress(
+      unsyncedPhotos,
+      "Photo",
+      ObservationPhoto.mapPhotoForUpload,
+      null,
+      inatjs.photos.create,
+      uploadOptions,
+      obs.uuid,
+      realm,
+      updateTotalUploadProgress
+    );
   }
+};
 
-  const { uuid: obsUUID } = response.results[0];
-
+const uploadUnsyncedMedia = async ( obs, uploadOptions, realm, updateTotalUploadProgress ) => {
   await Promise.all( [
-    // Attach the newly uploaded photos/sounds to the uploaded observation
-    unsyncedObservationPhotos.length > 0
-      ? uploadEvidence(
-        unsyncedObservationPhotos,
-        "ObservationPhoto",
-        ObservationPhoto.mapPhotoForAttachingToObs,
-        obsUUID,
-        inatjs.observation_photos.create,
-        options,
-        obsUUID,
-        realm
-      )
-      : null,
-    unsyncedObservationSounds.length > 0
-      ? uploadEvidence(
-        unsyncedObservationSounds,
-        "ObservationSound",
-        ObservationSound.mapSoundForAttachingToObs,
-        obsUUID,
-        inatjs.observation_sounds.create,
-        options,
-        obsUUID,
-        realm
-      )
-      : null,
-    // Update any existing modified photos/sounds
-    modifiedObservationPhotos.length > 0
-      ? uploadEvidence(
-        modifiedObservationPhotos,
-        "ObservationPhoto",
-        ObservationPhoto.mapPhotoForUpdating,
-        obsUUID,
-        inatjs.observation_photos.update,
-        options,
-        obsUUID,
-        realm
-      )
-      : null
+    uploadUnsyncedPhotos( obs, uploadOptions, realm, updateTotalUploadProgress ),
+    uploadUnsyncedSounds( obs, uploadOptions, realm, updateTotalUploadProgress )
   ] );
-  // Make sure this happens *after* ObservationPhotos and ObservationSounds
-  // are created so the observation doesn't appear uploaded until all its
-  // media successfully uploads
-  markRecordUploaded( obs.uuid, null, "Observation", response, realm );
-  // fetch observation and upsert it
+};
+
+const attachUnsyncedPhotos = async (
+  obs,
+  obsUUID,
+  uploadOptions,
+  realm,
+  updateTotalUploadProgress
+) => {
+  const unsyncedObservationPhotos = obs?.observationPhotos?.filter( op => !op.wasSynced() ) || [];
+  if ( unsyncedObservationPhotos.length > 0 ) {
+    await uploadEvidenceWithProgress(
+      unsyncedObservationPhotos,
+      "ObservationPhoto",
+      ObservationPhoto.mapPhotoForAttachingToObs,
+      obsUUID,
+      inatjs.observation_photos.create,
+      uploadOptions,
+      obsUUID,
+      realm,
+      updateTotalUploadProgress
+    );
+  }
+};
+
+const attachUnsyncedSounds = async (
+  obs,
+  obsUUID,
+  uploadOptions,
+  realm,
+  updateTotalUploadProgress
+) => {
+  const unsyncedObservationSounds = obs.observationSounds.filter( item => !item.wasSynced() );
+  if ( unsyncedObservationSounds.length > 0 ) {
+    await uploadEvidenceWithProgress(
+      unsyncedObservationSounds,
+      "ObservationSound",
+      ObservationSound.mapSoundForAttachingToObs,
+      obsUUID,
+      inatjs.observation_sounds.create,
+      uploadOptions,
+      obsUUID,
+      realm,
+      updateTotalUploadProgress
+    );
+  }
+};
+
+const updateModifiedPhotos = async (
+  obs,
+  obsUUID,
+  uploadOptions,
+  realm,
+  updateTotalUploadProgress
+) => {
+  const modifiedObservationPhotos = obs?.observationPhotos?.filter(
+    op => op.wasSynced( ) && op.needsSync( )
+  ) || [];
+  if ( modifiedObservationPhotos.length > 0 ) {
+    await uploadEvidenceWithProgress(
+      modifiedObservationPhotos,
+      "ObservationPhoto",
+      ObservationPhoto.mapPhotoForUpdating,
+      obsUUID,
+      inatjs.observation_photos.update,
+      uploadOptions,
+      obsUUID,
+      realm,
+      updateTotalUploadProgress
+    );
+  }
+};
+
+const attachMediaToObservation = async (
+  obs,
+  obsUUID,
+  uploadOptions,
+  realm,
+  updateTotalUploadProgress
+) => {
+  await Promise.all( [
+    attachUnsyncedPhotos( obs, obsUUID, uploadOptions, realm, updateTotalUploadProgress ),
+    attachUnsyncedSounds( obs, obsUUID, uploadOptions, realm, updateTotalUploadProgress ),
+    updateModifiedPhotos( obs, obsUUID, uploadOptions, realm, updateTotalUploadProgress )
+  ] );
+};
+
+const fetchAndUpsertRemoteObservation = async ( obsUUID, realm, options = {} ) => {
   const remoteObs = await fetchRemoteObservation(
     obsUUID,
     { fields: Observation.LIST_FIELDS },
     options
   );
   Observation.upsertRemoteObservations( [remoteObs], realm, { force: true } );
+};
+
+const finalizeObservationUpload = ( obs, response, realm ) => {
+  const obsUUID = response.results[0].uuid;
+
+  // Mark observation as uploaded
+  markRecordUploaded( realm, obs.uuid, null, "Observation", response );
+
+  // Fetch and upsert remote observation
+  return fetchAndUpsertRemoteObservation( obsUUID, realm );
+};
+
+async function uploadObservation( obs: Object, realm: Object, opts: Object = {} ): Object {
+  const { updateTotalUploadProgress } = opts;
+  updateTotalUploadProgress( obs.uuid, HALF_PROGRESS_INCREMENT );
+  const apiToken = await validateApiToken( );
+  const options = { ...opts, api_token: apiToken };
+
+  const newObs = removeNullValues( Observation.mapObservationForUpload( obs ) );
+
+  await uploadUnsyncedMedia(
+    obs,
+    options,
+    realm,
+    updateTotalUploadProgress
+  );
+
+  const response = await uploadOrUpdateObservation(
+    newObs,
+    options,
+    obs,
+    updateTotalUploadProgress
+  );
+
+  if ( !response ) return response;
+
+  await attachMediaToObservation(
+    obs,
+    response.results[0].uuid,
+    options,
+    realm,
+    updateTotalUploadProgress
+  );
+
+  finalizeObservationUpload( obs, response, realm );
+
   return response;
 }
 

@@ -21,12 +21,10 @@ import {
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
-import {
-  UPLOAD_PENDING
-} from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
 
 import useSyncObservations from "./hooks/useSyncObservations";
+import useToolbarTimeout from "./hooks/useToolbarTimeout";
 import useUploadObservations from "./hooks/useUploadObservations";
 import MyObservations from "./MyObservations";
 
@@ -36,10 +34,7 @@ const MyObservationsContainer = ( ): Node => {
   const { t } = useTranslation( );
   const realm = useRealm( );
   const listRef = useRef( );
-  const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
   const uploadQueue = useStore( state => state.uploadQueue );
-  const addToUploadQueue = useStore( state => state.addToUploadQueue );
-  const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
   const startManualSync = useStore( state => state.startManualSync );
   const startAutomaticSync = useStore( state => state.startAutomaticSync );
   const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
@@ -47,6 +42,7 @@ const MyObservationsContainer = ( ): Node => {
   const myObsOffsetToRestore = useStore( state => state.myObsOffsetToRestore );
   const setMyObsOffset = useStore( state => state.setMyObsOffset );
   const uploadStatus = useStore( state => state.uploadStatus );
+  useToolbarTimeout( uploadStatus );
 
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
@@ -56,7 +52,7 @@ const MyObservationsContainer = ( ): Node => {
   const currentUserId = currentUser?.id;
   const canUpload = currentUser && isConnected;
 
-  const { startUploadObservations } = useUploadObservations( canUpload );
+  const { startUploadObservations, startIndividualUpload } = useUploadObservations( canUpload );
   const { syncManually } = useSyncObservations(
     currentUserId,
     startUploadObservations
@@ -115,21 +111,12 @@ const MyObservationsContainer = ( ): Node => {
     if ( uploadExists ) return;
     if ( !confirmLoggedIn( ) ) return;
     if ( !confirmInternetConnection( ) ) return;
-    const observation = realm.objectForPrimaryKey( "Observation", uuid );
-    addTotalToolbarIncrements( observation );
-    addToUploadQueue( uuid );
-    if ( uploadStatus === UPLOAD_PENDING ) {
-      setStartUploadObservations( );
-    }
+    startIndividualUpload( uuid );
   }, [
-    confirmLoggedIn,
-    uploadQueue,
     confirmInternetConnection,
-    realm,
-    addTotalToolbarIncrements,
-    addToUploadQueue,
-    setStartUploadObservations,
-    uploadStatus
+    confirmLoggedIn,
+    startIndividualUpload,
+    uploadQueue
   ] );
 
   // 20241107 amanda - this seems to be a culprit for the tab bar being less
