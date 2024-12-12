@@ -1,0 +1,14 @@
+NEW
+* Sign in with Apple
+
+UPDATED
+* Shorten Notifications tab labels
+* Use standard back button on Suggestions taxon search
+* Prevent tap on AI Camera suggestion from doing anything
+
+FIXED
+* Observation detail not scrollable while offline
+* My Observations was scrolling to an unexpected position after editing an
+  un-uploaded observation
+* Text in project list for project w/o icon misaligned
+* Extraneous loading indicator on observation detail
