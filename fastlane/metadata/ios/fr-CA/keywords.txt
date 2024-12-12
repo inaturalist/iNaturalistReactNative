@@ -1,1 +1,1 @@
-nature,wildlife,plant ID,animal,identify,biodiversity,citizen science,conservation,field guide
+Nature,faune , ID, végétal,animal,identification,biodiversité,science citoyen,conservation,guide

@@ -131,6 +131,7 @@
   "Satellite--map-type": "Satellit",
   "SAVE": "SPÄICHEREN",
   "Save": "Späicheren",
+  "Save-all-observations": "All Observatioune späicheren",
   "Scientific-Name": "Wëssenschaftlech Numm",
   "Search": "Sichen",
   "September": "September",
@@ -144,6 +145,7 @@
   "supporting--identification": "Ënnerstëtzend",
   "Syncing": "Synchronisatioun...",
   "Taxa": "Taxa",
+  "This-observation-has-no-comments-or-identifications-yet": "Dës Observatioun huet nach keng Kommentaren oder Bestëmmungen.",
   "Traditional-Project": "Traditionelle Projet",
   "Umbrella-Project": "Daachprojet",
   "Unknown--rank": "Onbekannt",
@@ -156,6 +158,10 @@
   "Wild": "Wëll",
   "Withdraw": "Zréckzéien",
   "Worldwide": "Weltwäit",
+  "x-failed": "{ $count ->\n  [one] { $count } feelgeschloen\n *[other] { $count } feelgeschloen\n}",
   "X-PROJECTS": "{ $projectCount } PROJETEN",
+  "x-saved": "{ $count ->\n  [one] { $count } gespäichert\n *[other] { $count } gespäichert\n}",
+  "x-uploaded": "{ $count ->\n  [one] { $count } eropgelueden\n *[other] { $count } eropgelueden\n}",
+  "x-uploading": "{ $count ->\n  [one] { $count } gëtt eropgelueden\n *[other] { $count } ginn eropgelueden\n}",
   "You-need-log-in-to-do-that": "Dir musst agelogged si fir dëst ze maachen."
 }
