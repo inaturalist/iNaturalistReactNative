@@ -67,7 +67,11 @@ export const I18NEXT_CONFIG = {
           "aeiou".indexOf( txt[0].toLowerCase( ) ) >= 0
             ? "vow"
             : "con"
-        )
+        ),
+        JOIN: ( args, opts = {} ) => args
+          .filter( Boolean )
+          .filter( s => typeof ( s ) === "string" )
+          .join( opts.separator )
       }
     }
   },

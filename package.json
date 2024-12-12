@@ -47,6 +47,7 @@
     "@candlefinance/faster-image": "^1.4.3",
     "@formidable-webview/webshell": "^2.6.0",
     "@gorhom/bottom-sheet": "^4.6.1",
+    "@invertase/react-native-apple-authentication": "^2.4.0",
     "@likashefqet/react-native-image-zoom": "^4.2.0",
     "@react-native-camera-roll/camera-roll": "github:inaturalist/react-native-cameraroll",
     "@react-native-clipboard/clipboard": "^1.13.2",

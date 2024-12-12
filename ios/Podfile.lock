@@ -1125,6 +1125,8 @@ PODS:
     - React-Core
   - RealmJS (12.13.2):
     - React
+  - RNAppleAuthentication (2.4.0):
+    - React-Core
   - RNAudioRecorderPlayer (3.6.7):
     - React-Core
   - RNCClipboard (1.13.2):
@@ -1260,6 +1262,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeExceptionHandler (from `../node_modules/react-native-exception-handler`)
   - RealmJS (from `../node_modules/realm`)
+  - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
   - RNAudioRecorderPlayer (from `../node_modules/react-native-audio-recorder-player`)
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
@@ -1432,6 +1435,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-exception-handler"
   RealmJS:
     :path: "../node_modules/realm"
+  RNAppleAuthentication:
+    :path: "../node_modules/@invertase/react-native-apple-authentication"
   RNAudioRecorderPlayer:
     :path: "../node_modules/react-native-audio-recorder-player"
   RNCClipboard:
@@ -1547,6 +1552,7 @@ SPEC CHECKSUMS:
   ReactCommon: 8cae78d3c3eceff20ee4bbca8bb73b675a45fd5d
   ReactNativeExceptionHandler: b11ff67c78802b2f62eed0e10e75cb1ef7947c60
   RealmJS: bfe9a997a1f813c05c432c94405753879572a1a2
+  RNAppleAuthentication: e00c76acb03351f5544373c78fa7f359bef6d5d3
   RNAudioRecorderPlayer: 9b34adc281800e5b19258f1b91d889b1ef3abdd6
   RNCClipboard: 60fed4b71560d7bfe40e9d35dea9762b024da86d
   RNCPicker: 82ccad5b08259dc09310082118cbb6c136d7da67

@@ -89,6 +89,7 @@ export interface ApiTaxon {
 
 export interface ApiUser {
   id?: number;
+  locale?: string;
   login?: string;
 }
 

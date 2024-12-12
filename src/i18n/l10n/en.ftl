@@ -111,6 +111,15 @@ Any--user = Any
 #  Geoprivacy sheet descriptions
 Anyone-using-iNaturalist-can-see = Anyone using iNaturalist can see where this species was observed, and scientists can most easily use it for research.
 APP-LANGUAGE = APP LANGUAGE
+# Combine pieces of a person's name provided by Apple. See
+# https://developer.apple.com/documentation/foundation/nspersonnamecomponents
+# for documentation of what the variables mean. The JOIN function will
+# combine all the arguments and separate them by the "separator" option. For
+# example, JOIN($givenName, $familyName) might result in a string like "Jane
+# Doe". You can ommit pieces of the name, or choose not to use the JOIN
+# function if you want, but the easiest thing to do is probably just to alter
+# the order of the pieces.
+apple-full-name = { JOIN($namePrefix, $givenName, $middleName, $nickname, $familyName, $nameSuffix, separator: " ") }
 APPLY-FILTERS = APPLY FILTERS
 Apply-filters = Apply filters
 # Month of April
@@ -531,6 +540,8 @@ Identify-an-organism-with-the-iNaturalist-AI-Camera = Identify an organism with 
 # Onboarding message describing one of the reasons to use iNat
 Identify-record-learn = Identify, record, and learn about every living species on earth using iNaturalist
 If-an-account-with-that-email-exists = If an account with that email exists, we've sent password reset instructions to your email.
+# Body of an error alert when signing in with a third party fails (e.g. Apple, Google)
+If-you-have-an-existing-account-try-sign-in-reset = If you have an existing iNat account, trying signing in with your username and password, or try resetting your password using the email address associated with your account.
 # Explanation that observations are removed from a collection project
 If-you-leave-x-of-your-observations-removed =
     If you leave this traditional project, { $count ->
@@ -1083,6 +1094,8 @@ Shows-identification-suggestions = Shows identification suggestions
 Shows-iNaturalist-bird-logo = Shows iNaturalist bird logo.
 # Accessibility hint for button that shows observation creation options
 Shows-observation-creation-options = Shows observation creation options
+# Title of an error alert when Sign in with Apple fails
+Sign-in-with-Apple-Failed = Sign in with Apple Failed
 Some-data-privacy-laws = Some data privacy laws, like the European Union's General Data Protection Regulation (GDPR), require explicit consent to transfer personal information from their jurisdictions to other jurisdictions where the legal protection of this information is not considered adequate. As of 2020, the European Union no longer considers the United States to be a jurisdiction that provides adequate legal protection of personal information, specifically because of the possibility of the US government surveilling data entering the US. It is possible other jurisdictions may have the same opinion.
 # Generic error message
 Something-went-wrong = Something went wrong.
