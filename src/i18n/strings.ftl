@@ -541,7 +541,7 @@ Identify-an-organism-with-the-iNaturalist-AI-Camera = Identify an organism with 
 Identify-record-learn = Identify, record, and learn about every living species on earth using iNaturalist
 If-an-account-with-that-email-exists = If an account with that email exists, we've sent password reset instructions to your email.
 # Body of an error alert when signing in with a third party fails (e.g. Apple, Google)
-If-you-have-an-existing-account-try-sign-in-reset = If you have an existing iNat account, trying signing in with your username and password, or try resetting your password using the email address associated with your account.
+If-you-have-an-existing-account-try-sign-in-reset = If you have an existing iNat account, try signing in with your username and password, or try resetting your password using the email address associated with your account.
 # Explanation that observations are removed from a collection project
 If-you-leave-x-of-your-observations-removed =
     If you leave this traditional project, { $count ->
