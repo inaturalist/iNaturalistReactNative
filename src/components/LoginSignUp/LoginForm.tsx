@@ -1,3 +1,4 @@
+import { appleAuth, AppleButton } from "@invertase/react-native-apple-authentication";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
 import {
@@ -7,12 +8,14 @@ import { View } from "components/styledComponents";
 import { t } from "i18next";
 import { RealmContext } from "providers/contexts.ts";
 import React, { useEffect, useRef, useState } from "react";
-import { TextInput, TouchableWithoutFeedback } from "react-native";
+import { Alert, TextInput, TouchableWithoutFeedback } from "react-native";
+import Realm from "realm";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 import colors from "styles/tailwindColors";
 
 import {
-  authenticateUser
+  authenticateUser,
+  authenticateUserByAssertion
 } from "./AuthenticationService";
 import Error from "./Error";
 import LoginSignUpInputField from "./LoginSignUpInputField";
@@ -31,6 +34,59 @@ interface LoginFormParams {
 
 type ParamList = {
   LoginFormParams: LoginFormParams
+}
+
+const APPLE_BUTTON_STYLE = {
+  maxWidth: 500,
+  height: 45, // You must specify a height
+  marginTop: 10
+};
+
+async function signInWithApple( realm: Realm ) {
+  console.log( "[DEBUG LoginForm.tsx] appleAuth.State: ", appleAuth.State );
+  // performs login request
+  const appleAuthRequestResponse = await appleAuth.performRequest( {
+    requestedOperation: appleAuth.Operation.LOGIN,
+    // Note: it appears putting FULL_NAME first is important, see issue #293
+    requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL]
+  } );
+  console.log( "[DEBUG LoginForm.tsx] appleAuthRequestResponse: ", appleAuthRequestResponse );
+
+  // get current authentication state for user
+  // /!\ This method must be tested on a real device. On the iOS simulator it
+  //     always throws an error.
+  const credentialState = await appleAuth.getCredentialStateForUser(
+    appleAuthRequestResponse.user
+  );
+  console.log( "[DEBUG LoginForm.tsx] credentialState: ", credentialState );
+
+  // use credentialState response to ensure the user is authenticated
+  if ( credentialState === appleAuth.State.AUTHORIZED ) {
+    // user is authenticated
+    const assertion = JSON.stringify( {
+      id_token: appleAuthRequestResponse.identityToken,
+      // TODO localize this order
+      name: [
+        appleAuthRequestResponse?.fullName?.namePrefix,
+        appleAuthRequestResponse?.fullName?.givenName,
+        appleAuthRequestResponse?.fullName?.middleName,
+        appleAuthRequestResponse?.fullName?.nickname
+          ? `"${appleAuthRequestResponse.fullName.nickname}"`
+          : null,
+        appleAuthRequestResponse?.fullName?.familyName,
+        appleAuthRequestResponse?.fullName?.nameSuffix
+      ].filter( Boolean ).join( " " )
+    } );
+    await authenticateUserByAssertion( "apple", assertion, realm );
+    return true;
+  }
+  Alert.alert(
+    "Sign in with Apple Failed",
+    "If you have an existing iNat account, trying signing in with your username "
+    + "and password, or try resetting your password using the email address "
+    + "associated with your account"
+  );
+  return false;
 }
 
 const LoginForm = ( {
@@ -70,13 +126,9 @@ const LoginForm = ( {
     return unsubscrubeTransition;
   }, [navigation] );
 
-  const login = async ( ) => {
+  const logIn = React.useCallback( async ( logInCallback: () => Promise<boolean> ) => {
     setLoading( true );
-    const success = await authenticateUser(
-      email.trim( ),
-      password,
-      realm
-    );
+    const success = await logInCallback( );
 
     if ( !success ) {
       setError( t( "Failed-to-log-in" ) );
@@ -98,31 +150,28 @@ const LoginForm = ( {
     } else {
       navigation.getParent( )?.goBack( );
     }
-  };
-
-  const togglePasswordVisibility = () => {
-    setIsPasswordVisible( prevState => !prevState );
-  };
-
-  const showEmailConfirmed = ( ) => (
-    <View className="flex-row mb-5 items-center justify-center mx-2">
-      <View className="bg-white rounded-full">
-        <INatIcon
-          name="checkmark-circle"
-          color={String( colors?.inatGreen )}
-          size={19}
-        />
-      </View>
-      <List2 className="ml-3 text-white font-medium">
-        {t( "Your-email-is-confirmed" )}
-      </List2>
-    </View>
-  );
+  }, [
+    navigation,
+    params
+  ] );
 
   return (
     <TouchableWithoutFeedback accessibilityRole="button" onPress={blurFields}>
       <View className="px-4 mt-[9px] justify-end">
-        {emailConfirmed && showEmailConfirmed( )}
+        { emailConfirmed && (
+          <View className="flex-row mb-5 items-center justify-center mx-2">
+            <View className="bg-white rounded-full">
+              <INatIcon
+                name="checkmark-circle"
+                color={String( colors?.inatGreen )}
+                size={19}
+              />
+            </View>
+            <List2 className="ml-3 text-white font-medium">
+              {t( "Your-email-is-confirmed" )}
+            </List2>
+          </View>
+        ) }
         <LoginSignUpInputField
           ref={emailRef}
           accessibilityLabel={t( "USERNAME-OR-EMAIL" )}
@@ -152,7 +201,7 @@ const LoginForm = ( {
           <Body2
             accessibilityRole="button"
             className="underline p-4 color-white"
-            onPress={() => togglePasswordVisibility()}
+            onPress={() => setIsPasswordVisible( prevState => !prevState )}
           >
             {isPasswordVisible
               ? t( "Hide" )
@@ -175,9 +224,19 @@ const LoginForm = ( {
           forceDark
           level="focus"
           loading={loading}
-          onPress={login}
+          onPress={() => logIn( async () => authenticateUser(
+            email.trim( ),
+            password,
+            realm
+          ) )}
           testID="Login.loginButton"
           text={t( "LOG-IN" )}
+        />
+        <AppleButton
+          buttonStyle={AppleButton.Style.BLACK}
+          buttonType={AppleButton.Type.SIGN_IN}
+          style={APPLE_BUTTON_STYLE}
+          onPress={() => signInWithApple( realm )}
         />
         {!hideFooter && (
           <Body1
