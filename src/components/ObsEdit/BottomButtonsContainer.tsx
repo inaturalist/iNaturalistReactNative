@@ -2,7 +2,7 @@ import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/CrosshairCircle";
-import useUploadObservations from "components/MyObservations/hooks/useUploadObservations.ts";
+// import useUploadObservations from "components/MyObservations/hooks/useUploadObservations.ts";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
@@ -40,11 +40,12 @@ const BottomButtonsContainer = ( {
   const currentUser = useCurrentUser( );
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const unsavedChanges = useStore( state => state.unsavedChanges );
-  const addToUploadQueue = useStore( state => state.addToUploadQueue );
-  const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
+  // const addToUploadQueue = useStore( state => state.addToUploadQueue );
+  // const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
   const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
   const setMyObsOffset = useStore( state => state.setMyObsOffset );
   const setSavedOrUploadedMultiObsFlow = useStore( state => state.setSavedOrUploadedMultiObsFlow );
+  const addObservationsToUploadQueue = useStore( state => state.addObservationsToUploadQueue );
   const incrementTotalSavedObservations = useStore(
     state => state.incrementTotalSavedObservations
   );
@@ -65,8 +66,8 @@ const BottomButtonsContainer = ( {
 
   const passesTests = passesEvidenceTest && hasIdentification;
 
-  const canUpload = currentUser && isConnected;
-  const { startUploadsFromMultiObsEdit } = useUploadObservations( canUpload );
+  // const canUpload = currentUser && isConnected;
+  // const { startIndividualUpload } = useUploadObservations( canUpload );
 
   const setNextScreen = useCallback( async ( { type }: Object ) => {
     const savedObservation = await saveObservation( currentObservation, cameraRollUris, realm );
@@ -82,11 +83,10 @@ const BottomButtonsContainer = ( {
       setMyObsOffset( 0 );
     }
     if ( type === "upload" ) {
-      const { uuid } = savedObservation;
-      addTotalToolbarIncrements( savedObservation );
-      addToUploadQueue( uuid );
+      // const { uuid } = savedObservation;
+      addObservationsToUploadQueue( [savedObservation] );
       transitionAnimation();
-      startUploadsFromMultiObsEdit( );
+      // startIndividualUpload( uuid );
     } else {
       incrementTotalSavedObservations( );
     }
@@ -108,8 +108,7 @@ const BottomButtonsContainer = ( {
       setButtonPressed( null );
     }
   }, [
-    addToUploadQueue,
-    addTotalToolbarIncrements,
+    addObservationsToUploadQueue,
     cameraRollUris,
     currentObservation,
     currentObservationIndex,
@@ -122,7 +121,6 @@ const BottomButtonsContainer = ( {
     setCurrentObservationIndex,
     setMyObsOffset,
     setSavedOrUploadedMultiObsFlow,
-    startUploadsFromMultiObsEdit,
     transitionAnimation
   ] );
 

@@ -153,8 +153,7 @@ const validateApiToken = async ( ) => {
 const uploadOrUpdateObservation = async (
   preparedObs,
   uploadOptions,
-  obs,
-  updateTotalUploadProgress
+  obs
 ) => {
   const uploadParams = {
     observation: preparedObs,
@@ -170,8 +169,6 @@ const uploadOrUpdateObservation = async (
       ignore_photos: true
     }, uploadOptions )
     : await createObservation( uploadParams, uploadOptions );
-
-  updateTotalUploadProgress( preparedObs.uuid, HALF_PROGRESS_INCREMENT );
   return response;
 };
 
@@ -333,14 +330,11 @@ const fetchAndUpsertRemoteObservation = async ( obsUUID, realm, options = {} ) =
   Observation.upsertRemoteObservations( [remoteObs], realm, { force: true } );
 };
 
-const finalizeObservationUpload = ( obs, response, realm ) => {
-  const obsUUID = response.results[0].uuid;
-
-  // Mark observation as uploaded
-  markRecordUploaded( realm, obs.uuid, null, "Observation", response );
-
-  // Fetch and upsert remote observation
-  return fetchAndUpsertRemoteObservation( obsUUID, realm );
+const finalizeObservationUpload = ( response, realm, updateTotalUploadProgress ) => {
+  const { uuid } = response.results[0];
+  updateTotalUploadProgress( uuid, HALF_PROGRESS_INCREMENT );
+  markRecordUploaded( realm, uuid, null, "Observation", response );
+  return fetchAndUpsertRemoteObservation( uuid, realm );
 };
 
 async function uploadObservation( obs: Object, realm: Object, opts: Object = {} ): Object {
@@ -361,8 +355,7 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
   const response = await uploadOrUpdateObservation(
     newObs,
     options,
-    obs,
-    updateTotalUploadProgress
+    obs
   );
 
   if ( !response ) return response;
@@ -375,7 +368,7 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
     updateTotalUploadProgress
   );
 
-  finalizeObservationUpload( obs, response, realm );
+  finalizeObservationUpload( response, realm, updateTotalUploadProgress );
 
   return response;
 }

@@ -18,11 +18,11 @@ interface TotalUploadProgress {
   uuid: string,
   currentIncrements: number,
   totalIncrements: number,
-  totalProgress: number
+  progress: number // Calculated as currentIncrements / totalIncrements
 }
 
 interface UploadObservationsSlice {
-  currentUpload: RealmObservation | null,
+  abortController: AbortController | null,
   errorsByUuid: Object,
   multiError: string | null,
   initialNumObservationsInQueue: number,
@@ -36,7 +36,7 @@ interface UploadObservationsSlice {
 }
 
 const DEFAULT_STATE: UploadObservationsSlice = {
-  currentUpload: null,
+  abortController: null,
   errorsByUuid: {},
   // Single error caught during multiple obs upload
   multiError: null,
@@ -52,30 +52,28 @@ const DEFAULT_STATE: UploadObservationsSlice = {
   uploadStatus: UPLOAD_PENDING
 };
 
-const countEvidenceIncrements = ( upload, evidence ) => {
-  const evidenceToUpload = upload?.[evidence];
-  if ( evidenceToUpload && evidenceToUpload.length > 0 ) {
-    const evidenceNeedsUpdate = evidenceToUpload
-      .filter( e => e.wasSynced( ) ).length;
-    const evidenceNeedsSync = evidenceToUpload
-      .filter( e => !e.wasSynced( ) ).length;
-    // since we're incrementing by half when evidence is attached to
-    // an observation, we also want to count half the total increments for previously
-    // synced evidence
-    return evidenceNeedsSync + ( evidenceNeedsUpdate / 2 );
-  }
-  return 0;
+const countTotalIncrements = upload => {
+  const baseIncrement = 1; // Always count the observation upload itself
+  const photoIncrements = upload?.observationPhotos
+    ? upload.observationPhotos.filter( p => !p.wasSynced() ).length
+    : 0;
+  const soundIncrements = upload?.observationSounds
+    ? upload.observationSounds.filter( s => !s.wasSynced() ).length
+    : 0;
+
+  return baseIncrement + photoIncrements + soundIncrements;
 };
 
-const countTotalIncrements = upload => 1
-  + countEvidenceIncrements( upload, "observationPhotos" )
-  + countEvidenceIncrements( upload, "observationSounds" );
+const calculateTotalToolbarProgress = totalUploadProgress => {
+  if ( totalUploadProgress.length === 0 ) return 0;
 
-const createUploadProgressObj = ( upload, increment ) => ( {
-  uuid: upload.uuid,
-  currentIncrements: increment,
-  totalIncrements: countTotalIncrements( upload )
-} );
+  const totalIncrements = totalUploadProgress
+    .reduce( ( sum, progress ) => sum + progress.totalIncrements, 0 );
+  const currentIncrements = totalUploadProgress
+    .reduce( ( sum, progress ) => sum + progress.currentIncrements, 0 );
+
+  return currentIncrements / totalIncrements;
+};
 
 const countMappedIncrements = list => list.reduce(
   ( count, current ) => count + Number( current ),
@@ -86,21 +84,19 @@ const setCurrentToolbarIncrements = totalUploadProgress => countMappedIncrements
   totalUploadProgress.map( u => u.currentIncrements )
 );
 
-const calculateTotalToolbarIncrements = uploads => countMappedIncrements(
-  uploads.map( u => countTotalIncrements( u ) )
-);
-
 const setTotalToolbarProgress = ( totalToolbarIncrements, totalUploadProgress ) => (
   totalToolbarIncrements > 0
     ? setCurrentToolbarIncrements( totalUploadProgress ) / totalToolbarIncrements
     : 0
 );
 
-const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set => ( {
+const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( set, get ) => ( {
   ...DEFAULT_STATE,
   resetUploadObservationsSlice: ( ) => {
-    const defaultState = {
-      currentUpload: null,
+    // Preserve the abortController just in case something might try and use it
+    const { abortController } = get( );
+    const defaultStateWithController = {
+      abortController,
       errorsByUuid: {},
       multiError: null,
       initialNumObservationsInQueue: 0,
@@ -113,7 +109,7 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
       uploadStatus: UPLOAD_PENDING
     };
 
-    return set( defaultState );
+    return set( defaultStateWithController );
   },
   addUploadError: ( error, obsUUID ) => set( state => ( {
     errorsByUuid: {
@@ -125,10 +121,19 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
     },
     multiError: error
   } ) ),
-  stopAllUploads: ( ) => {
-    BackgroundService.stop( );
-    const cancelledState = {
-      currentUpload: null,
+  stopAllUploads: async ( ) => {
+    const { abortController } = get( );
+    abortController?.abort( );
+
+    // Stop the background service
+    if ( await BackgroundService.isRunning( ) ) {
+      await BackgroundService.stop( );
+    }
+
+    const cancelledStateWithController = {
+      // Preserve the abort controller in case in might still get used. It
+      // should only get regenerated when the uploads start
+      abortController,
       errorsByUuid: {},
       multiError: null,
       initialNumObservationsInQueue: 0,
@@ -141,93 +146,69 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
       uploadStatus: UPLOAD_CANCELLED
     };
 
-    return set( cancelledState );
+    return set( cancelledStateWithController );
   },
   // Sets state to indicate that upload is needed without necessarily
   // resetting the state, as there might still be observations to upload
   setCannotUploadObservations: ( ) => set( { uploadStatus: UPLOAD_PENDING } ),
   // Sets the state to start uploading observations
   setStartUploadObservations: ( ) => set( {
+    // Make a new abort controller for this upload session
+    abortController: new AbortController( ),
     uploadStatus: UPLOAD_IN_PROGRESS
   } ),
   completeUploads: ( ) => {
     set( { uploadStatus: UPLOAD_COMPLETE } );
   },
   updateTotalUploadProgress: ( uuid: string, increment: number ) => set( state => {
-    const {
-      currentUpload,
-      totalToolbarIncrements,
-      totalUploadProgress: existingTotalUploadProgress
-    } = state;
-    // Zustand does *not* make deep copies when making supposedly immutable
-    // state changes, so for nested objects like this, we need to create a
-    // new object explicitly.
-    // https://github.com/pmndrs/zustand/blob/main/docs/guides/immutable-state-and-merging.md#nested-objects
-    const totalUploadProgress = existingTotalUploadProgress
-      ? [...existingTotalUploadProgress]
-      : [];
-    const currentObsProgressObj = totalUploadProgress.find( o => o.uuid === uuid );
-    if ( !currentObsProgressObj && currentUpload ) {
-      const progressObj = createUploadProgressObj(
-        currentUpload,
-        increment
-      );
-      totalUploadProgress.push( progressObj );
-    } else if ( currentObsProgressObj ) {
-      currentObsProgressObj.currentIncrements += increment;
-    }
-    const obsProgressObj = totalUploadProgress.find( o => o.uuid === uuid );
-    if ( obsProgressObj ) {
-      obsProgressObj.totalProgress = (
-        obsProgressObj.currentIncrements / obsProgressObj.totalIncrements
-      );
-    }
-    return {
-      totalUploadProgress,
-      totalToolbarProgress: setTotalToolbarProgress( totalToolbarIncrements, totalUploadProgress )
+    const { totalUploadProgress } = state;
+
+    const updatedProgress = totalUploadProgress.map( progress => ( progress.uuid === uuid
+      ? {
+        ...progress,
+        currentIncrements: progress.currentIncrements + increment,
+        progress: ( progress.currentIncrements + increment ) / progress.totalIncrements
+      }
+      : progress ) );
+
+    const progressState = {
+      totalUploadProgress: updatedProgress,
+      totalToolbarProgress: calculateTotalToolbarProgress( updatedProgress )
     };
+    return progressState;
   } ),
   setUploadStatus: ( uploadStatus: UploadStatus ) => set( ( ) => ( {
     uploadStatus
   } ) ),
-  addToUploadQueue: ( uuids: string | string[] ) => set( state => {
-    let copyOfUploadQueue = state.uploadQueue;
-    if ( typeof uuids === "string" ) {
-      copyOfUploadQueue.unshift( uuids );
-    } else {
-      copyOfUploadQueue = copyOfUploadQueue.concat( uuids );
-    }
-    return ( {
-      uploadQueue: copyOfUploadQueue,
-      initialNumObservationsInQueue: state.initialNumObservationsInQueue
-        + ( typeof uuids === "string"
-          ? 1
-          : uuids.length )
-    } );
-  } ),
   removeFromUploadQueue: ( ) => set( state => {
     const copyOfUploadQueue = state.uploadQueue;
     copyOfUploadQueue.pop( );
     return ( {
-      uploadQueue: copyOfUploadQueue,
-      currentUpload: null
+      uploadQueue: copyOfUploadQueue
     } );
   } ),
-  setCurrentUpload: observation => set( state => ( {
-    currentUpload: observation,
+  incrementNumUploadsAttempted: ( ) => set( state => ( {
     numUploadsAttempted: state.numUploadsAttempted + 1
   } ) ),
-  setTotalToolbarIncrements: queuedObservations => set( ( ) => ( {
-    totalToolbarIncrements: calculateTotalToolbarIncrements( queuedObservations )
-  } ) ),
-  addTotalToolbarIncrements: observation => set( state => {
-    const { totalToolbarIncrements: previousToolbarIncrements } = state;
+  addObservationsToUploadQueue: ( observations: RealmObservation[] ) => set( state => {
+    let copyOfUploadQueue = state.uploadQueue;
 
-    const additionalToolbarIncrements = calculateTotalToolbarIncrements( [observation] );
+    const observationsToAdd = observations.map( obs => obs.uuid );
+    copyOfUploadQueue = copyOfUploadQueue.concat( observationsToAdd );
+    const newUploadProgressItems = observations.map( obs => ( {
+      uuid: obs.uuid,
+      currentIncrements: 0,
+      totalIncrements: countTotalIncrements( obs ),
+      progress: 0
+    } ) );
 
-    return ( {
-      totalToolbarIncrements: previousToolbarIncrements + additionalToolbarIncrements
-    } );
+    const uploadQueueState = {
+      uploadQueue: copyOfUploadQueue,
+      initialNumObservationsInQueue: state.initialNumObservationsInQueue + observations.length,
+      totalUploadProgress: [...state.totalUploadProgress, ...newUploadProgressItems]
+    };
+
+    return uploadQueueState;
   } ),
   setNumUnuploadedObservations: numUnuploadedObservations => set( ( ) => ( {
     numUnuploadedObservations
