@@ -67,7 +67,7 @@ const OtherDataSection = ( {
       )}
       {showWildStatusSheet && (
         <WildStatusSheet
-          selectedValue={currentObservation?.captive_flag}
+          selectedValue={currentObservation?.captive_flag || false}
           onPressClose={( ) => setShowWildStatusSheet( false )}
           updateCaptiveStatus={value => updateObservationKeys( {
             captive_flag: value
