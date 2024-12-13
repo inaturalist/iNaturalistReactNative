@@ -148,6 +148,9 @@ const Map = ( {
     }
   }
 
+  const [defaultInitialRegionState,
+    setDefaultInitialRegionState] = useState( defaultInitialRegion );
+
   useEffect( ( ) => {
     // in LocationPicker we're setting initialRegion to eliminate jitteriness
     // when scrolling, which means we also must use this method to reset the map
@@ -199,7 +202,7 @@ const Map = ( {
     if ( region?.latitude ) {
       return region;
     }
-    return defaultInitialRegion;
+    return defaultInitialRegionState;
   };
 
   const handleCurrentLocationPress = useCallback( ( ) => {
@@ -302,9 +305,13 @@ const Map = ( {
       }
       shouldSkipRegionUpdate = true;
     }
-    if ( onRegionChangeComplete && !shouldSkipRegionUpdate ) {
-      const boundaries = await mapViewRef?.current?.getMapBoundaries( );
-      onRegionChangeComplete( newRegion, boundaries );
+    if ( !shouldSkipRegionUpdate ) {
+      if ( onRegionChangeComplete ) {
+        const boundaries = await mapViewRef?.current?.getMapBoundaries( );
+        onRegionChangeComplete( newRegion, boundaries );
+      } else if ( Platform.OS === "android" ) {
+        setDefaultInitialRegionState( newRegion );
+      }
     }
     setCurrentZoom( calculateZoom( screenWidth, newRegion.longitudeDelta ) );
   };
