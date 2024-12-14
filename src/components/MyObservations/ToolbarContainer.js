@@ -50,6 +50,8 @@ const ToolbarContainer = ( {
   const uploadStatus = useStore( state => state.uploadStatus );
   const syncingStatus = useStore( state => state.syncingStatus );
   const initialNumDeletionsInQueue = useStore( state => state.initialNumDeletionsInQueue );
+  // const totalUploadProgress = useStore( state => state.totalUploadProgress );
+  // console.log( uploadStatus, totalUploadProgress, "total progress and status" );
 
   const stopAllUploads = useStore( state => state.stopAllUploads );
   const numUploadsAttempted = useStore( state => state.numUploadsAttempted );

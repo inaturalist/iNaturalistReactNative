@@ -24,7 +24,6 @@ import {
 import useStore from "stores/useStore";
 
 import useSyncObservations from "./hooks/useSyncObservations";
-import useToolbarTimeout from "./hooks/useToolbarTimeout";
 import useUploadObservations from "./hooks/useUploadObservations";
 import MyObservations from "./MyObservations";
 
@@ -41,8 +40,6 @@ const MyObservationsContainer = ( ): Node => {
   const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
   const myObsOffsetToRestore = useStore( state => state.myObsOffsetToRestore );
   const setMyObsOffset = useStore( state => state.setMyObsOffset );
-  const uploadStatus = useStore( state => state.uploadStatus );
-  useToolbarTimeout( uploadStatus );
 
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
@@ -127,6 +124,7 @@ const MyObservationsContainer = ( ): Node => {
     // tab bar screens don't seem to blur
     useCallback( ( ) => {
       let isActive = true;
+      console.log( "use focus effect" );
       const unsynced = Observation.filterUnsyncedObservations( realm );
       setNumUnuploadedObservations( unsynced.length );
       if ( isActive ) {

@@ -33,11 +33,12 @@ const useToolbarTimeout = ( uploadStatus: "string" ) => {
         resetUploadObservationsSlice( );
         resetNumUnsyncedObs( );
       }, MS_BEFORE_TOOLBAR_RESET );
-    } else {
-      timer = setTimeout( () => {
-        resetSyncToolbar( );
-        resetNumUnsyncedObs( );
-      }, MS_BEFORE_TOOLBAR_RESET );
+    // } else {
+    //   timer = setTimeout( () => {
+    //     console.log( "timeout 2" );
+    //     resetSyncToolbar( );
+    //     resetNumUnsyncedObs( );
+    //   }, MS_BEFORE_TOOLBAR_RESET );
     }
     return () => {
       clearTimeout( timer );

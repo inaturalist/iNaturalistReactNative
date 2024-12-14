@@ -2,7 +2,6 @@ import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/CrosshairCircle";
-// import useUploadObservations from "components/MyObservations/hooks/useUploadObservations.ts";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
@@ -40,8 +39,6 @@ const BottomButtonsContainer = ( {
   const currentUser = useCurrentUser( );
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const unsavedChanges = useStore( state => state.unsavedChanges );
-  // const addToUploadQueue = useStore( state => state.addToUploadQueue );
-  // const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
   const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
   const setMyObsOffset = useStore( state => state.setMyObsOffset );
   const setSavedOrUploadedMultiObsFlow = useStore( state => state.setSavedOrUploadedMultiObsFlow );
@@ -66,9 +63,6 @@ const BottomButtonsContainer = ( {
 
   const passesTests = passesEvidenceTest && hasIdentification;
 
-  // const canUpload = currentUser && isConnected;
-  // const { startIndividualUpload } = useUploadObservations( canUpload );
-
   const setNextScreen = useCallback( async ( { type }: Object ) => {
     const savedObservation = await saveObservation( currentObservation, cameraRollUris, realm );
     if ( savedObservation && observations?.length > 1 ) {
@@ -83,10 +77,8 @@ const BottomButtonsContainer = ( {
       setMyObsOffset( 0 );
     }
     if ( type === "upload" ) {
-      // const { uuid } = savedObservation;
       addObservationsToUploadQueue( [savedObservation] );
-      transitionAnimation();
-      // startIndividualUpload( uuid );
+      transitionAnimation( );
     } else {
       incrementTotalSavedObservations( );
     }

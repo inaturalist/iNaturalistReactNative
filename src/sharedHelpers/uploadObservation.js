@@ -341,20 +341,20 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
   const { updateTotalUploadProgress } = opts;
   updateTotalUploadProgress( obs.uuid, HALF_PROGRESS_INCREMENT );
   const apiToken = await validateApiToken( );
-  const options = { ...opts, api_token: apiToken };
+  const uploadOptions = { api_token: apiToken };
 
   const newObs = removeNullValues( Observation.mapObservationForUpload( obs ) );
 
   await uploadUnsyncedMedia(
     obs,
-    options,
+    uploadOptions,
     realm,
     updateTotalUploadProgress
   );
 
   const response = await uploadOrUpdateObservation(
     newObs,
-    options,
+    uploadOptions,
     obs
   );
 
@@ -363,7 +363,7 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
   await attachMediaToObservation(
     obs,
     response.results[0].uuid,
-    options,
+    uploadOptions,
     realm,
     updateTotalUploadProgress
   );

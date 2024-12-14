@@ -1,7 +1,8 @@
 import { RealmContext } from "providers/contexts.ts";
 import {
-  useCallback, useEffect,
-  useMemo, useState
+  useCallback,
+  useEffect,
+  useMemo
 } from "react";
 import BackgroundService from "react-native-background-actions";
 import Observation from "realmModels/Observation";
@@ -10,15 +11,12 @@ import uploadObservation, { handleUploadError } from "sharedHelpers/uploadObserv
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
+import useToolbarTimeout from "./useToolbarTimeout";
+
 const { useRealm } = RealmContext;
 
 const MS_BEFORE_UPLOAD_TIMES_OUT = 60_000 * 5; // 5 minutes
 const BACKGROUND_TASK_NAME = "ObservationUpload";
-
-export interface UploadOptions {
-  signal?: AbortSignal;
-  updateTotalUploadProgress?: ( uuid: string, increment: number ) => void;
-}
 
 export default function useUploadObservations( canUpload: boolean ) {
   const realm = useRealm( );
@@ -37,8 +35,10 @@ export default function useUploadObservations( canUpload: boolean ) {
   const abortController = useStore( state => state.abortController );
   const addObservationsToUploadQueue = useStore( state => state.addObservationsToUploadQueue );
   const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
-
-  const [isUploading, setIsUploading] = useState( false );
+  const uploadStatus = useStore( state => state.uploadStatus );
+  const isUploading = useStore( state => state.isUploading );
+  const setIsUploading = useStore( state => state.setIsUploading );
+  useToolbarTimeout( uploadStatus );
 
   const unsyncedList = useMemo(
     ( ) => Observation.filterUnsyncedObservations( realm ),
@@ -63,7 +63,6 @@ export default function useUploadObservations( canUpload: boolean ) {
 
   const stopBackgroundService = useCallback( async ( ) => {
     setIsUploading( false );
-
     abortController?.abort( );
 
     try {
@@ -72,15 +71,16 @@ export default function useUploadObservations( canUpload: boolean ) {
     } catch ( error ) {
       console.error( "Error stopping background service:", error );
     }
-  }, [abortController, completeUploads] );
+  }, [
+    abortController,
+    completeUploads,
+    setIsUploading
+  ] );
 
   const uploadSingleObservation = useCallback( async (
-    observation: RealmObservation,
-    options: UploadOptions = {}
+    observation: RealmObservation
   ) => {
     const { uuid } = observation;
-
-    const uploadSignal = options.signal || abortController?.signal;
 
     try {
       await BackgroundService.updateNotification( {
@@ -92,7 +92,6 @@ export default function useUploadObservations( canUpload: boolean ) {
       }, MS_BEFORE_UPLOAD_TIMES_OUT );
 
       await uploadObservation( observation, realm, {
-        signal: uploadSignal,
         updateTotalUploadProgress
       } );
 
@@ -117,8 +116,6 @@ export default function useUploadObservations( canUpload: boolean ) {
       await BackgroundService.stop( );
       return;
     }
-
-    setIsUploading( true );
 
     const processQueue = async ( ) => {
       if ( uploadQueue.length === 0 ) {
@@ -189,13 +186,19 @@ export default function useUploadObservations( canUpload: boolean ) {
       const isBackgroundServiceRunning = await BackgroundService.isRunning( );
 
       // If queue is not empty and background service is not running, start it
-      if ( uploadQueue.length > 0 && !isBackgroundServiceRunning ) {
+      if ( uploadQueue.length > 0 && !isBackgroundServiceRunning && !isUploading ) {
+        setIsUploading( true );
         await startBackgroundUploadService( );
       }
     };
 
     handleQueueChange( );
-  }, [uploadQueue, startBackgroundUploadService] );
+  }, [
+    uploadQueue,
+    startBackgroundUploadService,
+    isUploading,
+    setIsUploading
+  ] );
 
   const startUploadObservations = useCallback( async ( ) => {
     if ( !canUpload ) return;
@@ -223,8 +226,6 @@ export default function useUploadObservations( canUpload: boolean ) {
 
   return {
     startIndividualUpload,
-    startUploadObservations,
-    stopUpload: stopBackgroundService,
-    isUploading
+    startUploadObservations
   };
 }
