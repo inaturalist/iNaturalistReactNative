@@ -89,7 +89,6 @@
     "react-native": "0.73.7",
     "react-native-animated-dots-carousel": "^2.0.0",
     "react-native-audio-recorder-player": "^3.6.7",
-    "react-native-background-actions": "^4.0.1",
     "react-native-bouncy-checkbox": "^3.0.7",
     "react-native-circular-progress-indicator": "^4.4.2",
     "react-native-config": "^1.5.1",

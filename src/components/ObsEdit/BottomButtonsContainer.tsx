@@ -2,6 +2,7 @@ import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/CrosshairCircle";
+import useUploadObservations from "components/MyObservations/hooks/useUploadObservations.ts";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
@@ -42,7 +43,6 @@ const BottomButtonsContainer = ( {
   const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
   const setMyObsOffset = useStore( state => state.setMyObsOffset );
   const setSavedOrUploadedMultiObsFlow = useStore( state => state.setSavedOrUploadedMultiObsFlow );
-  const addObservationsToUploadQueue = useStore( state => state.addObservationsToUploadQueue );
   const incrementTotalSavedObservations = useStore(
     state => state.incrementTotalSavedObservations
   );
@@ -57,6 +57,8 @@ const BottomButtonsContainer = ( {
   const [buttonPressed, setButtonPressed] = useState( null );
   const [loading, setLoading] = useState( false );
   const exitObservationFlow = useExitObservationFlow( );
+  const canUpload = currentUser && isConnected;
+  const { startIndividualUpload } = useUploadObservations( canUpload );
 
   const hasIdentification = currentObservation?.taxon
     && currentObservation?.taxon.rank_level !== 100;
@@ -77,7 +79,7 @@ const BottomButtonsContainer = ( {
       setMyObsOffset( 0 );
     }
     if ( type === "upload" ) {
-      addObservationsToUploadQueue( [savedObservation] );
+      startIndividualUpload( savedObservation.uuid );
       transitionAnimation( );
     } else {
       incrementTotalSavedObservations( );
@@ -100,7 +102,6 @@ const BottomButtonsContainer = ( {
       setButtonPressed( null );
     }
   }, [
-    addObservationsToUploadQueue,
     cameraRollUris,
     currentObservation,
     currentObservationIndex,
@@ -113,6 +114,7 @@ const BottomButtonsContainer = ( {
     setCurrentObservationIndex,
     setMyObsOffset,
     setSavedOrUploadedMultiObsFlow,
+    startIndividualUpload,
     transitionAnimation
   ] );
 

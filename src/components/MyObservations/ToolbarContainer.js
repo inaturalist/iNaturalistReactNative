@@ -50,8 +50,6 @@ const ToolbarContainer = ( {
   const uploadStatus = useStore( state => state.uploadStatus );
   const syncingStatus = useStore( state => state.syncingStatus );
   const initialNumDeletionsInQueue = useStore( state => state.initialNumDeletionsInQueue );
-  // const totalUploadProgress = useStore( state => state.totalUploadProgress );
-  // console.log( uploadStatus, totalUploadProgress, "total progress and status" );
 
   const stopAllUploads = useStore( state => state.stopAllUploads );
   const numUploadsAttempted = useStore( state => state.numUploadsAttempted );
@@ -130,8 +128,8 @@ const ToolbarContainer = ( {
         : t( "Deleting-x-of-y-observations-2", deletionParams );
     }
 
-    if ( pendingUpload ) {
-      return t( "Upload-x-observations", { count: numUnuploadedObservations } );
+    if ( uploadsComplete ) {
+      return t( "X-observations-uploaded", { count: numUploadsAttempted } );
     }
 
     if ( uploadInProgress ) {
@@ -141,8 +139,8 @@ const ToolbarContainer = ( {
         : t( "Uploading-x-of-y-observations", translationParams );
     }
 
-    if ( uploadsComplete ) {
-      return t( "X-observations-uploaded", { count: numUploadsAttempted } );
+    if ( pendingUpload ) {
+      return t( "Upload-x-observations", { count: numUnuploadedObservations } );
     }
 
     return "";

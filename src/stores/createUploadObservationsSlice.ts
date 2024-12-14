@@ -1,6 +1,5 @@
+import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import _ from "lodash";
-// eslint-disable-next-line import/no-extraneous-dependencies
-import BackgroundService from "react-native-background-actions";
 import type { RealmObservation } from "realmModels/types.d.ts";
 import { StateCreator } from "zustand";
 
@@ -23,10 +22,10 @@ interface TotalUploadProgress {
 
 interface UploadObservationsSlice {
   abortController: AbortController | null,
+  currentUpload: RealmObservation | null,
   errorsByUuid: Object,
   multiError: string | null,
   initialNumObservationsInQueue: number,
-  isUploading: boolean,
   numUnuploadedObservations: number,
   numUploadsAttempted: number,
   totalToolbarProgress: number,
@@ -37,11 +36,11 @@ interface UploadObservationsSlice {
 
 const DEFAULT_STATE: UploadObservationsSlice = {
   abortController: null,
+  currentUpload: null,
   errorsByUuid: {},
   // Single error caught during multiple obs upload
   multiError: null,
   initialNumObservationsInQueue: 0,
-  isUploading: false,
   numUnuploadedObservations: 0,
   // Increments even if there was an error, so here "attempted" means we tried
   // to upload it, not that it succeeded
@@ -82,10 +81,10 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
     const { abortController } = get( );
     const defaultStateWithController = {
       abortController,
+      currentUpload: null,
       errorsByUuid: {},
       multiError: null,
       initialNumObservationsInQueue: 0,
-      isUploading: false,
       numUnuploadedObservations: 0,
       numUploadsAttempted: 0,
       totalToolbarProgress: 0,
@@ -107,22 +106,18 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
     multiError: error
   } ) ),
   stopAllUploads: async ( ) => {
+    deactivateKeepAwake( );
     const { abortController } = get( );
     abortController?.abort( );
-
-    // Stop the background service
-    if ( await BackgroundService.isRunning( ) ) {
-      await BackgroundService.stop( );
-    }
 
     const cancelledStateWithController = {
       // Preserve the abort controller in case in might still get used. It
       // should only get regenerated when the uploads start
       abortController,
+      currentUpload: null,
       errorsByUuid: {},
       multiError: null,
       initialNumObservationsInQueue: 0,
-      isUploading: false,
       numUnuploadedObservations: 0,
       numUploadsAttempted: 0,
       totalToolbarProgress: 0,
@@ -137,29 +132,55 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
   // resetting the state, as there might still be observations to upload
   setCannotUploadObservations: ( ) => set( { uploadStatus: UPLOAD_PENDING } ),
   // Sets the state to start uploading observations
-  setStartUploadObservations: ( ) => set( {
-    // Make a new abort controller for this upload session
-    abortController: new AbortController( ),
-    uploadStatus: UPLOAD_IN_PROGRESS
-  } ),
+  setStartUploadObservations: ( ) => {
+    activateKeepAwake( );
+    set( {
+
+      // Make a new abort controller for this upload session
+      abortController: new AbortController( ),
+      uploadStatus: UPLOAD_IN_PROGRESS
+    } );
+  },
   completeUploads: ( ) => {
+    deactivateKeepAwake( );
     set( { uploadStatus: UPLOAD_COMPLETE } );
   },
   updateTotalUploadProgress: ( uuid: string, increment: number ) => set( state => {
     const { totalUploadProgress } = state;
 
-    const updatedProgress = totalUploadProgress.map( progress => ( progress.uuid === uuid
-      ? {
-        ...progress,
-        currentIncrements: progress.currentIncrements + increment,
-        progress: ( progress.currentIncrements + increment ) / progress.totalIncrements
+    const updatedProgress = totalUploadProgress.map( progress => {
+      // Only update the progress for the matching UUID
+      if ( progress.uuid === uuid ) {
+        const newCurrentIncrements = progress.currentIncrements + increment;
+        const newProgress = Math.min(
+          newCurrentIncrements / progress.totalIncrements,
+          1
+        );
+
+        return {
+          ...progress,
+          currentIncrements: newCurrentIncrements,
+          progress: newProgress
+        };
       }
-      : progress ) );
+      return progress;
+    } );
+
+    const totalToolbarProgress = calculateTotalToolbarProgress( updatedProgress );
 
     const progressState = {
       totalUploadProgress: updatedProgress,
-      totalToolbarProgress: calculateTotalToolbarProgress( updatedProgress )
+      totalToolbarProgress
     };
+
+    // console.log(
+    //   `Progress update for ${uuid}:`,
+    //   {
+    //     increment,
+    //     updatedProgress,
+    //     totalToolbarProgress
+    //   }
+    // );
     return progressState;
   } ),
   setUploadStatus: ( uploadStatus: UploadStatus ) => set( ( ) => ( {
@@ -169,26 +190,26 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
     const copyOfUploadQueue = state.uploadQueue;
     copyOfUploadQueue.pop( );
     return ( {
-      uploadQueue: copyOfUploadQueue
+      uploadQueue: copyOfUploadQueue,
+      currentUpload: null
     } );
   } ),
-  incrementNumUploadsAttempted: ( ) => set( state => ( {
-    numUploadsAttempted: state.numUploadsAttempted + 1
-  } ) ),
   addObservationsToUploadQueue: ( observations: RealmObservation[] ) => set( state => {
-    let copyOfUploadQueue = state.uploadQueue;
+    const copyOfUploadQueue = state.uploadQueue;
 
     const observationsToAdd = observations.map( obs => obs.uuid );
-    copyOfUploadQueue = copyOfUploadQueue.concat( observationsToAdd );
+    const newUploadQueue = copyOfUploadQueue.concat( observationsToAdd );
+
+    // Create upload progress items with proper type checking
     const newUploadProgressItems = observations.map( obs => ( {
       uuid: obs.uuid,
       currentIncrements: 0,
       totalIncrements: countTotalIncrements( obs ),
       progress: 0
-    } ) );
+    } ) ).filter( item => item.uuid ); // Filter out any potentially undefined UUIDs
 
     const uploadQueueState = {
-      uploadQueue: copyOfUploadQueue,
+      uploadQueue: newUploadQueue,
       initialNumObservationsInQueue: state.initialNumObservationsInQueue + observations.length,
       totalUploadProgress: [...state.totalUploadProgress, ...newUploadProgressItems]
     };
@@ -206,13 +227,7 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
       uploadQueue
     } = state;
 
-    const updatedProgress = totalUploadProgress.map( progress => ( progress.uuid === uuid
-      ? {
-        ...progress,
-        currentIncrements: progress.totalIncrements,
-        progress: 1
-      }
-      : progress ) );
+    const updatedProgress = totalUploadProgress.filter( progress => progress.uuid !== uuid );
 
     // return the new queue without the uuid of the object already deleted remotely
     const queueWithDeleted = _.remove( uploadQueue, uuidInQueue => uuidInQueue !== uuid );
@@ -227,8 +242,9 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
         : UPLOAD_IN_PROGRESS
     } );
   } ),
-  setIsUploading: isUploading => set( ( ) => ( {
-    isUploading
+  setCurrentUpload: observation => set( state => ( {
+    currentUpload: observation,
+    numUploadsAttempted: state.numUploadsAttempted + 1
   } ) )
 } );
 
