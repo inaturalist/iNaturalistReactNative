@@ -124,7 +124,6 @@ const MyObservationsContainer = ( ): Node => {
     // tab bar screens don't seem to blur
     useCallback( ( ) => {
       let isActive = true;
-      console.log( "use focus effect" );
       const unsynced = Observation.filterUnsyncedObservations( realm );
       setNumUnuploadedObservations( unsynced.length );
       if ( isActive ) {
