@@ -8,7 +8,6 @@ interface Props {
   name: string;
   color?: string;
   size?: number;
-  dropShadow?: boolean;
 }
 
 type Aliases = {
@@ -82,23 +81,13 @@ const ALIASES: Aliases = {
 
 // Use default color if none is specified
 const INatIcon = ( {
-  testID, name, color, size, dropShadow
-}: Props ) => {
-  const style = dropShadow
-    ? {
-      shadowOpacity: 2,
-      textShadowRadius: 4,
-      textShadowOffset: { width: 2, height: 2 }
-    }
-    : null;
-  return (
-    <Icon
-      testID={testID}
-      name={ALIASES[name] || name}
-      color={color || colors.darkGray}
-      size={size}
-      style={style}
-    />
-  );
-};
+  testID, name, color, size
+}: Props ) => (
+  <Icon
+    testID={testID}
+    name={ALIASES[name] || name}
+    color={color || colors.darkGray}
+    size={size}
+  />
+);
 export default INatIcon;

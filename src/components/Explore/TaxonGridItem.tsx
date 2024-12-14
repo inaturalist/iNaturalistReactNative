@@ -1,31 +1,23 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import ObsImagePreview from "components/ObservationsFlashList/ObsImagePreview";
-import { Body4, DisplayTaxonName, INatIcon } from "components/SharedComponents";
+import { Body4, DisplayTaxonName } from "components/SharedComponents";
 import SpeciesSeenCheckmark from "components/SharedComponents/SpeciesSeenCheckmark";
 import { Pressable, View } from "components/styledComponents";
-import {
-  EXPLORE_ACTION,
-  useExplore
-} from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React from "react";
 import Photo from "realmModels/Photo";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useCurrentUser, useFontScale, useTranslation } from "sharedHooks";
-import colors from "styles/tailwindColors";
 
 interface Props {
   count: number;
   showSpeciesSeenCheckmark: boolean;
   style?: Object;
-  setCurrentExploreView: Function,
   // I guess this is expecting an API response and not a RealmTaxon
   taxon: {
     default_photo: Object;
     iconic_taxon_name: string;
     id: number;
-    preferred_common_name: string;
-    name: string;
   };
 }
 
@@ -33,10 +25,8 @@ const TaxonGridItem = ( {
   count,
   showSpeciesSeenCheckmark = false,
   style,
-  taxon,
-  setCurrentExploreView
+  taxon
 }: Props ): Node => {
-  const { dispatch } = useExplore( );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
@@ -80,24 +70,6 @@ const TaxonGridItem = ( {
           <View className="absolute top-3 left-3">
             <SpeciesSeenCheckmark />
           </View>
-        )}
-
-        {count && (
-          <Pressable
-            accessibilityRole="button"
-            className="absolute top-0 right-0 pr-3 pt-3"
-            onPress={( ) => {
-              dispatch( {
-                type: EXPLORE_ACTION.CHANGE_TAXON,
-                taxon,
-                taxonId: taxon?.id,
-                taxonName: taxon?.preferred_common_name || taxon?.name
-              } );
-              setCurrentExploreView( "observations" );
-            }}
-          >
-            <INatIcon name="observations" size={15} color={colors.white} dropShadow />
-          </Pressable>
         )}
 
         <View className="absolute bottom-0 flex p-2 w-full">
