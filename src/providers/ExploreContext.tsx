@@ -230,6 +230,8 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {
     type: EXPLORE_ACTION.CHANGE_TAXON,
     taxon: { id: number } | null,
+    taxonId: number,
+    taxonName: string,
     storedState: State
   }
   | { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN }
