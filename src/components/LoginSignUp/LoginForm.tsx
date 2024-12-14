@@ -1,4 +1,4 @@
-import { appleAuth, AppleButton } from "@invertase/react-native-apple-authentication";
+import { appleAuth, AppleButton, AppleError } from "@invertase/react-native-apple-authentication";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
 import {
@@ -42,6 +42,10 @@ type ParamList = {
   LoginFormParams: LoginFormParams
 }
 
+interface AppleAuthError {
+  code: AppleError;
+}
+
 const APPLE_BUTTON_STYLE = {
   maxWidth: 500,
   height: 45, // You must specify a height
@@ -68,6 +72,10 @@ async function signInWithApple( realm: Realm ) {
       requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL]
     } );
   } catch ( appleAuthRequestError ) {
+    if ( ( appleAuthRequestError as AppleAuthError ).code === appleAuth.Error.CANCELED ) {
+      // The user canceled sign in, no need to log
+      return false;
+    }
     logger.error( "Apple auth request failed", appleAuthRequestError );
     showSignInWithAppleFailed();
     return false;
