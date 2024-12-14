@@ -99,6 +99,7 @@ const AICamera = ( {
   } = usePredictions( );
   const [inactive, setInactive] = React.useState( false );
   const [initialVolume, setInitialVolume] = useState( null );
+  const [hasTakenPhoto, setHasTakenPhoto] = useState( false );
 
   const { t } = useTranslation();
 
@@ -125,12 +126,14 @@ const AICamera = ( {
   };
 
   const handleTakePhoto = useCallback( async ( ) => {
+    setHasTakenPhoto( true );
     setAiSuggestion( showPrediction && result );
     await takePhotoAndStoreUri( {
       replaceExisting: true,
       inactivateCallback: () => setInactive( true ),
       navigateImmediately: true
     } );
+    setHasTakenPhoto( false );
   }, [setAiSuggestion, takePhotoAndStoreUri, result, showPrediction] );
 
   useEffect( () => {
@@ -142,10 +145,10 @@ const AICamera = ( {
         } );
     }
 
-    const volumeListener = VolumeManager.addVolumeListener( ( ) => {
-      if ( initialVolume !== null ) {
+    const volumeListener = VolumeManager.addVolumeListener( async ( ) => {
+      if ( initialVolume !== null && !hasTakenPhoto ) {
         // Hardware volume button pressed - take a photo
-        handleTakePhoto();
+        await handleTakePhoto();
 
         // Revert the volume to its previous state
         VolumeManager.setVolume( initialVolume );
@@ -159,7 +162,7 @@ const AICamera = ( {
       volumeListener.remove();
       VolumeManager.showNativeVolumeUI( { enabled: true } );
     };
-  }, [handleTakePhoto, initialVolume] );
+  }, [handleTakePhoto, hasTakenPhoto, initialVolume] );
 
   return (
     <>
