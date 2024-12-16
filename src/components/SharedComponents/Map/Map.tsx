@@ -37,6 +37,7 @@ const NEARBY_DIM_M = 50_000;
 const CURRENT_LOCATION_ZOOM_LEVEL = 15; // target zoom level when user hits current location btn
 const MIN_ZOOM_LEVEL = 0; // default in react-native-maps, for Google Maps only
 const MIN_CENTER_COORDINATE_DISTANCE = 5;
+const ANIMATION_DURATION = 500; // 500 millisecs is animateToRegion's default duration
 
 const getDefaultRegion = ( initialLatitude, initialLongitude ) => ( {
   latitude: initialLatitude || 25, // Default to something US centric
@@ -204,58 +205,6 @@ const Map = ( {
     return observationRegion;
   };
 
-  const handleCurrentLocationPress = useCallback( ( ) => {
-    // If we aren't showing the user's location, we won't have a location to
-    // zoom to yet, so first we need to turn that on, and we'll re-call this
-    // function in an effect when we have a location
-    if ( !showsUserLocation ) {
-      setShowsUserLocation( true );
-      requestPermissions( );
-      return;
-    }
-    // If we're supposed to be showing user location but we don't have it, ask
-    // for permission again, which should result in fetching the location if
-    // we can
-    if ( !userLocation ) {
-      requestPermissions( );
-      return;
-    }
-    if ( onCurrentLocationPress ) {
-      onCurrentLocationPress( );
-    }
-    if ( userLocation && mapViewRef?.current ) {
-      // Zoom level based on location accuracy.
-      let latitudeDelta = metersToLatitudeDelta( userLocation.accuracy, userLocation.latitude );
-      // Intentional use of latitudeDelta here because longitudeDelta is harder to calculate
-      let longitudeDelta = metersToLatitudeDelta( userLocation.accuracy, userLocation.latitude );
-      // If this map redefines the level we want to zoom into when the user
-      // wants to see their current location, choose which ever is more
-      // zoomed out, the configured zoom level or the zoom level based on the
-      // coordinate accuracy
-      const [configuredLatitudeDelta, configuredLongitudeDelta] = zoomToDeltas(
-        CURRENT_LOCATION_ZOOM_LEVEL,
-        screenWidth,
-        screenHeight
-      );
-      latitudeDelta = Math.max( latitudeDelta, configuredLatitudeDelta );
-      longitudeDelta = Math.max( longitudeDelta, configuredLongitudeDelta );
-
-      mapViewRef.current?.animateToRegion( {
-        latitude: userLocation.latitude,
-        longitude: userLocation.longitude,
-        latitudeDelta,
-        longitudeDelta
-      } );
-    }
-  }, [
-    onCurrentLocationPress,
-    requestPermissions,
-    screenHeight,
-    screenWidth,
-    showsUserLocation,
-    userLocation
-  ] );
-
   const mapContainerStyle = [
     mapHeight
       ? { height: mapHeight }
@@ -293,7 +242,7 @@ const Map = ( {
 
   const [previousTileUrl, setPreviousTileUrl] = useState( tileUrlTemplate );
 
-  const handleRegionChangeComplete = async ( newRegion, gesture ) => {
+  const handleRegionChangeComplete = useCallback( async ( newRegion, gesture ) => {
     // We are only interested in region changes due to user interaction.
     // In Android, onRegionChangeComplete also fires for other map region
     // changes and gesture.isGesture is available to test for user interaction.
@@ -313,7 +262,72 @@ const Map = ( {
       }
     }
     setCurrentZoom( calculateZoom( screenWidth, newRegion.longitudeDelta ) );
-  };
+  }, [
+    tileUrlTemplate,
+    previousTileUrl,
+    onRegionChangeComplete,
+    screenWidth
+  ] );
+
+  const handleCurrentLocationPress = useCallback( ( ) => {
+    // If we aren't showing the user's location, we won't have a location to
+    // zoom to yet, so first we need to turn that on, and we'll re-call this
+    // function in an effect when we have a location
+    if ( !showsUserLocation ) {
+      setShowsUserLocation( true );
+      requestPermissions( );
+      return;
+    }
+    // If we're supposed to be showing user location but we don't have it, ask
+    // for permission again, which should result in fetching the location if
+    // we can
+    if ( !userLocation ) {
+      requestPermissions( );
+      return;
+    }
+    if ( onCurrentLocationPress ) {
+      onCurrentLocationPress( );
+    }
+    if ( userLocation && mapViewRef?.current ) {
+      // Zoom level based on location accuracy.
+      let latitudeDelta = metersToLatitudeDelta( userLocation.accuracy, userLocation.latitude );
+      // Intentional use of latitudeDelta here because longitudeDelta is harder to calculate
+      let longitudeDelta = metersToLatitudeDelta( userLocation.accuracy, userLocation.latitude );
+      // If this map redefines the level we want to zoom into when the user
+      // wants to see their current location, choose which ever is more
+      // zoomed out, the configured zoom level or the zoom level based on the
+      // coordinate accuracy
+      const [configuredLatitudeDelta, configuredLongitudeDelta] = zoomToDeltas(
+        CURRENT_LOCATION_ZOOM_LEVEL,
+        screenWidth,
+        screenHeight
+      );
+      latitudeDelta = Math.max( latitudeDelta, configuredLatitudeDelta );
+      longitudeDelta = Math.max( longitudeDelta, configuredLongitudeDelta );
+      const newRegion = {
+        latitude: userLocation.latitude,
+        longitude: userLocation.longitude,
+        latitudeDelta,
+        longitudeDelta
+      };
+      mapViewRef.current?.animateToRegion( newRegion, ANIMATION_DURATION );
+      if ( Platform.OS === "android" ) {
+        // In Android, animateToRegion() does not invoke this callback.
+        setTimeout(
+          ( ) => handleRegionChangeComplete( newRegion, { isGesture: true } ),
+          1.5 * ANIMATION_DURATION
+        );
+      }
+    }
+  }, [
+    onCurrentLocationPress,
+    requestPermissions,
+    screenHeight,
+    screenWidth,
+    showsUserLocation,
+    userLocation,
+    handleRegionChangeComplete
+  ] );
 
   const handleMapPress = e => {
     if ( withPressableObsTiles ) onMapPressForObsLyr( e.nativeEvent.coordinate );
