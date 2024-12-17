@@ -335,6 +335,7 @@ Identify-an-organism = Identifikasi suatu organisme
 Identify-an-organism-with-the-iNaturalist-AI-Camera = Identifikasi suatu organisme dengan Kamera AI iNaturalist
 Identify-record-learn = Identifikasi, catat, dan pelajari semua makhluk hidup di dunia menggunakan iNaturalist
 If-an-account-with-that-email-exists = Jika suatu akun dengan email tersebut ditemukan, kami sudah mengirimkan perintah untuk mengatur ulang kata sandi ke email Anda.
+If-you-have-an-existing-account-try-sign-in-reset = Jika Anda sudah memiliki akun iNat, cobalah masuk dengan nama pengguna dan kata sandi Anda atau mengatur ulang kata sandi Anda menggunakan alamat email yang terhubung dengan akun Anda.
 If-you-leave-x-of-your-observations-removed =
     Kalau Anda keluar dari proyek tradisional ini, { $count ->
         [one] 1 pengamatan Anda

@@ -89,6 +89,7 @@ Hide = Piilota
 ID-Withdrawn = Tunnistus peruutettu
 Identifiers = Tunnistajaa
 Identify-record-learn = Tunnista, tallenna ja opi jokaisesta elävästä lajista maapallolla iNaturalistin avulla.
+If-you-have-an-existing-account-try-sign-in-reset = Jos sinulla on olemassa oleva iNaturalist-tili, yritä kirjautua sisään käyttäjätunnuksella ja salasanalla, tai kokeile salasanan palauttamista käyttäen tiliisi liitettyä sähköpostiosoitetta.
 If-you-leave-x-of-your-observations-removed =
     Jos poistut tästä projektista, { $count ->
         [one] yksi havaintosi

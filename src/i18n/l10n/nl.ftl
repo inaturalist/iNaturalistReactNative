@@ -274,6 +274,7 @@ EXPAND-MAP = VERGROOT KAART
 Explore = Verkennen
 EXPLORE = VERKENNEN
 Explore-Filters = Filters verkennen
+EXPLORE-IDENTIFIERS = VERKEN EXPERTS
 FEATURED = FUNCTIES
 February = Februari
 Filter = Filter
@@ -318,13 +319,27 @@ Highest = Hoogste
 HIGHEST-RANK = HOOGSTE RANG
 I-agree-to-the-Terms-of-Use = Ik ga akkoord met de Gebruiksvoorwaarden en het Privacybeleid en ik onderschrijf de communautaire richtlijnen (vereist).
 ID-Withdrawn = ID ingetrokken
+IDENTIFICATION = DETERMINATIE
+Identification-options = Determinatie opties
+IDENTIFICATIONS-WITHOUT-NUMBER =
+    { $count ->
+        [one] DETERMINATIE
+       *[other] DETERMINATIES
+    }
 Identifiers = Determineerders
 Identify-record-learn = Determineren, opnemen, vastleggen, opslaan en leren over elke levende soort op aarde met behulp van iNaturalist
+If-you-have-an-existing-account-try-sign-in-reset = Als je een bestaand iNat account hebt, probeer je dan aan te melden met je gebruikersnaam en wachtwoord of probeer jouw wachtwoord opnieuw in te stellen met het e-mailadres dat aan jouw account is gekoppeld.
 If-you-leave-x-of-your-observations-removed =
     Als je dit traditionele project verlaat, { $count ->
         [one] zal 1 van je waarnemingen
        *[other] zullen  { $count } van je waarnemingen
     } ook van dit project worden verwijderd.
+If-you-want-to-collate-compare-promote = Als je een aantal bestaande projecten wilt samenvoegen, vergelijken of promoten, dan moet je een overkoepelend project gebruiken. Bijvoorbeeld de 2018 City Nature Challenge, die meer dan 60 projecten heeft samengevoegd, maakte een geweldige landingspagina waar iedereen de waarnemingen van elke stad kon vergelijken en weerleggen. Zowel Collectie als Traditionele projecten kunnen gebruikt worden in een Overkoepelend project en maximaal 500 projecten kunnen samengevoegd in een collectie door een Overkoepelend project.
+IMPORT-X-OBSERVATIONS =
+    IMPORTEER { $count ->
+        [one] 1 WAARNEMING
+       *[other] { $count } WAARNEMINGEN
+    }
 improving--identification = Verbeterend
 iNat-is-global-community = iNaturalist is een wereldwijde gemeenschap van naturalisten die open data maken voor wetenschap door organismen collectief te observeren en identificeren
 iNaturalist-helps-you-identify = iNaturalist helpt je de planten en dieren om je heen te determineren terwijl je tegelijkertijd gegevens voor wetenschap en natuurbescherming genereert. Maak verbinding met een gemeenschap van miljoenen wetenschappers en naturalisten die je kunnen helpen meer te leren over de natuur!
@@ -370,6 +385,8 @@ June = Juni
 leading--identification = Leidend
 Learn-More = Meer informatie
 LEAVE-PROJECT--question = PROJECT VERLATEN ?
+LEAVE-US-A-REVIEW = GEEF ONS EEN BEOORDELING!
+LICENSES = LicentieS
 Location = Locatie
 Log-in = Inloggen
 LOG-OUT = AFMELDEN
@@ -545,12 +562,12 @@ Ranks-Infraclass = Infraklasse
 Ranks-Infrahybrid = Infrahybride
 Ranks-Infraorder = Infraorde
 Ranks-Kingdom = Rijk
-Ranks-Order = Sorteer
+Ranks-ORDER = ORDE
 Ranks-Parvorder = Parvorde
 Ranks-Phylum = Stam
 Ranks-Section = Sectie
-Ranks-SPECIES = SOORTEN
-Ranks-Species = Soorten
+Ranks-SPECIES = SOORT
+Ranks-Species = Soort
 Ranks-Statefmatter = Toestand van de materie
 Ranks-Subclass = Onderklasse
 Ranks-Subfamily = Onderfamilie
@@ -587,6 +604,7 @@ Remove-Photos = Verwijder foto's
 Remove-project-filter = Verwijder projectfilter
 Remove-taxon-filter = Verwijder taxonfilter
 Remove-user-filter = Verwijder gebruikersfilter
+Removes-this-observations-taxon = Verwijdert het taxon van deze waarneming
 Research-Grade--quality-grade = Onderzoekskwaliteit
 Reset-verb = Herstel
 Restore = Herstellen
@@ -597,6 +615,7 @@ Save-all-observations = Sla alle waarnemingen op
 Scientific-Name = Wetenschappelijke naam
 Search = Zoeken
 Search-suggestions-with-location = Zoek suggesties met locatie
+See-observations-by-this-user-in-Explore = Toon waarnemingen van deze gebruiker in Verkennen
 Selects-iconic-taxon-X-for-identification = Selecteert icontaxon { $iconicTaxon } voor determinatie.
 Separate-Photos = Foto's scheiden
 September = September
@@ -770,6 +789,11 @@ x-comments =
         [one] { $count } opmerking
        *[other] { $count } opmerkingen
     }
+x-failed =
+    { $count ->
+        [one] { $count } is mislukt
+       *[other] { $count } zijn mislukt
+    }
 X-FOLLOWERS =
     { $count ->
         [one] { $count } VOLGER
@@ -846,6 +870,11 @@ X-PHOTOS-Y-SOUNDS =
        *[other] { $soundCount } GELUIDEN
     }
 X-PROJECTS = { $projectCount } PROJECTEN
+x-saved =
+    { $count ->
+        [one] { $count } opgeslagen
+       *[other] { $count } opgeslagen
+    }
 X-SOUNDS =
     { $count ->
         [one] 1 GELUID
@@ -855,6 +884,16 @@ X-Species =
     { $count ->
         [one] { $count } Soort
        *[other] { $count } Soorten
+    }
+x-uploaded =
+    { $count ->
+        [one] { $count } geupload
+       *[other] { $count } geupload
+    }
+x-uploading =
+    { $count ->
+        [one] { $count } aan het uploaden
+       *[other] { $count } aan het uploaden
     }
 x-uploads-failed =
     { $count ->

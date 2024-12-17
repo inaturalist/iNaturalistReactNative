@@ -74,6 +74,7 @@ Hide = Elrejtés
 ID-Withdrawn = Azonosítás visszavonva
 Identifiers = Meghatározók
 Identify-record-learn = Az iNaturalist használatával rögzíts megfigyeléseket, határozz meg bármilyen élőlényet és tanulj róluk.
+If-you-have-an-existing-account-try-sign-in-reset = Ha már van egy iNat-fiókod, próbálj meg bejelentkezni a felhasználói neveddel és a jelszavaddal, vagy kérj új jelszót a fiókodhoz tartozó email címre.
 If-you-leave-x-of-your-observations-removed =
     Ha kilépsz ebből a hagyományos projektből, { $count ->
         [one] egy megfigyelésed
