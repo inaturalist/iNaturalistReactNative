@@ -1,6 +1,6 @@
 import {
   BottomSheet,
-  Button,
+  ButtonBar,
   List2
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -34,33 +34,39 @@ const WarningSheet = ( {
   secondButtonText,
   testID,
   text
-}: Props ) => (
-  <BottomSheet
-    onPressClose={onPressClose}
-    headerText={headerText}
-    hidden={hidden}
-    insideModal={insideModal}
-  >
-    <View className="items-center p-5" testID={testID}>
-      {text && <List2 className="mb-6">{text}</List2>}
-      <View className="flex-row">
-        {secondButtonText && handleSecondButtonPress && (
-          <Button
-            onPress={handleSecondButtonPress}
-            text={secondButtonText}
-          />
-        ) }
-        <Button
-          onPress={confirm}
-          loading={loading}
-          disabled={loading}
-          text={buttonText}
-          level={buttonType || "warning"}
-          className="grow ml-3"
-        />
+}: Props ) => {
+  const buttons = [
+    {
+      title: buttonText,
+      onPress: confirm,
+      disabled: loading,
+      level: buttonType || "warning",
+      loading,
+      className: "grow ml-3"
+    }
+  ];
+
+  if ( secondButtonText && handleSecondButtonPress ) {
+    buttons.unshift( {
+      title: secondButtonText,
+      isPrimary: false,
+      onPress: handleSecondButtonPress
+    } );
+  }
+
+  return (
+    <BottomSheet
+      onPressClose={onPressClose}
+      headerText={headerText}
+      hidden={hidden}
+      insideModal={insideModal}
+    >
+      <View className="flex-col items-center p-5" testID={testID}>
+        {text && <List2 className="mb-6">{text}</List2>}
+        <ButtonBar buttonConfiguration={buttons} />
       </View>
-    </View>
-  </BottomSheet>
-);
+    </BottomSheet>
+  );
+};
 
 export default WarningSheet;

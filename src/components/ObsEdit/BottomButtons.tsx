@@ -7,6 +7,12 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";
+import { getShadow } from "styles/global";
+
+const DROP_SHADOW = getShadow( {
+  offsetHeight: -3,
+  shadowOpacity: 0.2
+} );
 
 type Props = {
   buttonPressed: boolean,
@@ -48,6 +54,7 @@ const BottomButtons = ( {
 
   const saveChangesButton = (
     <Button
+      className="px-[25px]"
       onPress={( ) => handlePress( "save" )}
       testID="ObsEdit.saveChangesButton"
       text={t( "SAVE-CHANGES" )}
@@ -59,42 +66,77 @@ const BottomButtons = ( {
     />
   );
 
-  const uploadButton = (
-    <Button
-      className="ml-3 grow"
-      level={showFocusedUploadButton
+  // const uploadButton = (
+  //   <Button
+  //     className="ml-3 grow"
+  //     level={showFocusedUploadButton
+  //       ? "focus"
+  //       : "neutral"}
+  //     text={t( "UPLOAD-NOW" )}
+  //     testID="ObsEdit.uploadButton"
+  //     onPress={( ) => handlePress( "upload" )}
+  //     loading={buttonPressed === "upload" && loading}
+  //     disabled={disabled}
+  //   />
+  // );
+
+  const buttons = [
+    {
+      title: t( "SAVE" ),
+      onPress: ( ) => handlePress( "save" ),
+      isPrimary: false,
+      testID: "ObsEdit.saveButton",
+      disabled,
+      level: "neutral",
+      loading: isSaving,
+      isPrimary: false,
+      className: "px-[25px]"
+    },
+    {
+      title: t( "UPLOAD-NOW" ),
+      onPress: ( ) => handlePress( "upload" ),
+      isPrimary: false,
+      testID: "ObsDetail.cvSuggestionsButton",
+      accessibilityHint: "Shows-identification-suggestions",
+      loading: buttonPressed === "upload" && loading,
+      level: showFocusedUploadButton
         ? "focus"
-        : "neutral"}
-      text={t( "UPLOAD-NOW" )}
-      testID="ObsEdit.uploadButton"
-      onPress={( ) => handlePress( "upload" )}
-      loading={buttonPressed === "upload" && loading}
-      disabled={disabled}
-    />
-  );
+        : "neutral",
+      disabled,
+      isPrimary: true,
+      className: "ml-3 grow"
+    }
+  ];
 
   const renderButtons = ( ) => {
     if ( canSaveOnly ) {
-      return saveButton;
+      return (
+        <ButtonBar>
+          {saveButton}
+        </ButtonBar>
+      );
     }
     if ( wasSynced ) {
-      return saveChangesButton;
+      return (
+        <ButtonBar>
+          {saveChangesButton}
+        </ButtonBar>
+      );
     }
     return (
-      <View className={classnames( "flex-row justify-evenly", {
-        "opacity-50": showHalfOpacity
-      } )}
-      >
-        {saveButton}
-        {uploadButton}
-      </View>
+      <ButtonBar buttonConfiguration={buttons} containerClass="p-[15px]" />
     );
   };
 
   return (
-    <ButtonBar>
-      {renderButtons( )}
-    </ButtonBar>
+    <View
+      className={classnames( "bg-white", {
+        "opacity-50": showHalfOpacity
+      } )}
+      style={DROP_SHADOW}
+    >
+      { renderButtons( ) }
+    </View>
   );
 };
 
