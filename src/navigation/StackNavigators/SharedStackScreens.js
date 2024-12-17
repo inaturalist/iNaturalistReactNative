@@ -15,6 +15,7 @@ import {
   fadeInComponent,
   hideHeader,
   removeBottomBorder,
+  showHeader,
   showSimpleCustomHeader
 } from "navigation/navigationOptions";
 import type { Node } from "react";
@@ -74,6 +75,7 @@ const SharedStackScreens = ( ): Node => (
     <Stack.Group
       screenOptions={{
         ...removeBottomBorder,
+        ...showHeader,
         headerTitleAlign: "center",
         headerBackTitleVisible: false
       }}

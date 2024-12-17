@@ -33,40 +33,6 @@ export interface ApiObservationsUpdatesParams extends ApiParams {
 
 // Model types, need to be ordered by reference
 
-export interface ApiTaxon {
-  id?: number;
-  name?: string;
-  preferred_common_name?: string;
-}
-
-export interface ApiUser {
-  id?: number;
-  login?: string;
-}
-
-export interface ApiComment {
-  body?: string;
-  user?: ApiUser;
-}
-
-export interface ApiIdentification {
-  body?: string;
-  taxon?: ApiTaxon;
-  user?: ApiUser;
-}
-
-export interface ApiNotification {
-  comment?: ApiComment;
-  comment_id?: number;
-  created_at: string;
-  id: number;
-  identification?: ApiIdentification;
-  identification_id?: number;
-  notifier_type: string;
-  resource_uuid: string;
-  viewed?: boolean;
-}
-
 interface ApiFlag {
   id?: number;
 }
@@ -111,6 +77,43 @@ export interface ApiObservationSound {
   sound?: ApiSound;
   position?: number;
   uuid?: string;
+}
+
+export interface ApiTaxon {
+  default_photo?: ApiPhoto;
+  iconic_taxon_name?: string;
+  id?: number;
+  name?: string;
+  preferred_common_name?: string;
+}
+
+export interface ApiUser {
+  id?: number;
+  locale?: string;
+  login?: string;
+}
+
+export interface ApiComment {
+  body?: string;
+  user?: ApiUser;
+}
+
+export interface ApiIdentification {
+  body?: string;
+  taxon?: ApiTaxon;
+  user?: ApiUser;
+}
+
+export interface ApiNotification {
+  comment?: ApiComment;
+  comment_id?: number;
+  created_at: string;
+  id: number;
+  identification?: ApiIdentification;
+  identification_id?: number;
+  notifier_type: string;
+  resource_uuid: string;
+  viewed?: boolean;
 }
 
 export interface ApiObservation {

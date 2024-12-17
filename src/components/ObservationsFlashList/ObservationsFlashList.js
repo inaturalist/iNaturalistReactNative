@@ -190,7 +190,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
 
   const renderEmptyComponent = useCallback( ( ) => {
     const showEmptyScreen = showObservationsEmptyScreen
-      ? <MyObservationsEmpty isFetchingNextPage={isFetchingNextPage} currentUser={currentUser} />
+      ? <MyObservationsEmpty isFetchingNextPage={isFetchingNextPage} />
       : (
         <Body3 className="self-center mt-[150px]">
           {t( "No-results-found-try-different-search" )}
@@ -205,7 +205,6 @@ const ObservationsFlashList: Function = forwardRef( ( {
         </View>
       );
   }, [
-    currentUser,
     isFetchingNextPage,
     showObservationsEmptyScreen,
     showNoResults,

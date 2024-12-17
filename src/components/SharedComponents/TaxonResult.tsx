@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import type { ApiTaxon } from "api/types";
 import classnames from "classnames";
 import ObsImagePreview from "components/ObservationsFlashList/ObsImagePreview";
 import {
@@ -6,7 +7,9 @@ import {
   INatIconButton
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import React from "react";
+import React, { PropsWithChildren } from "react";
+import type { GestureResponderEvent } from "react-native";
+import type { RealmTaxon } from "realmModels/types";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useCurrentUser, useTaxon, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
@@ -24,20 +27,25 @@ interface TaxonResultProps {
   first?: boolean;
   fromLocal?: boolean;
   handleCheckmarkPress: ( taxon: Object ) => void;
-  handleTaxonOrEditPress?: () => void;
   handleRemovePress?: () => void;
+  handleTaxonOrEditPress?: ( _event?: GestureResponderEvent ) => void;
   hideInfoButton?: boolean;
+  hideNavButtons?: boolean;
+  isTopSuggestion?: boolean;
   lastScreen?: string | null;
   onPressInfo?: ( taxon: Object ) => void;
   showCheckmark?: boolean;
   showEditButton?: boolean;
   showRemoveButton?: boolean;
-  taxon: Object;
+  taxon: RealmTaxon | ApiTaxon;
   testID: string;
-  white?: boolean;
+  unpressable?: boolean; // Overrides other props controlling interactive elements
   vision?: boolean;
-  isTopSuggestion?: boolean;
-  hideNavButtons?: boolean;
+  white?: boolean;
+}
+
+interface TaxonResultMainProps extends PropsWithChildren {
+  className?: string;
 }
 
 const TaxonResult = ( {
@@ -51,20 +59,21 @@ const TaxonResult = ( {
   first = false,
   fromLocal = true,
   handleCheckmarkPress,
-  handleTaxonOrEditPress,
   handleRemovePress,
+  handleTaxonOrEditPress,
   hideInfoButton = false,
   hideNavButtons = false,
+  isTopSuggestion = false,
   lastScreen = null,
   onPressInfo,
-  showEditButton = false,
   showCheckmark = true,
+  showEditButton = false,
   showRemoveButton = false,
   taxon: taxonProp,
   testID,
-  white = false,
+  unpressable = false,
   vision = false,
-  isTopSuggestion = false
+  white = false
 }: TaxonResultProps ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -75,23 +84,56 @@ const TaxonResult = ( {
   // network requests for useTaxon instead of making individual API calls.
   // right now, this fetches a single taxon at a time on AI camera &
   // a short list of taxa from offline Suggestions
-  const { taxon: localTaxon } = useTaxon( taxonProp, fetchRemote );
+  const { taxon: localTaxon } = useTaxon( taxonProp, fetchRemote ) as { taxon: RealmTaxon };
   const usableTaxon = fromLocal
     ? localTaxon
     : taxonProp;
-  // useTaxon could return null, and it's at least remotely possible taxonProp is null
-  if ( !usableTaxon ) return null;
-
-  const taxonImage = { uri: usableTaxon?.default_photo?.url };
   const accessibleName = accessibleTaxonName( usableTaxon, currentUser, t );
-
-  const navToTaxonDetails = ( ) => {
+  const navToTaxonDetails = React.useCallback( ( ) => {
     navigation.push( "TaxonDetails", {
       id: usableTaxon?.id,
       hideNavButtons,
       lastScreen,
       vision
     } );
+  }, [
+    hideNavButtons,
+    lastScreen,
+    navigation,
+    usableTaxon?.id,
+    vision
+  ] );
+  const TaxonResultMain = React.useCallback( ( props: TaxonResultMainProps ) => (
+    unpressable
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      ? <View {...props}>{ props.children }</View>
+      : (
+        <Pressable
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          {...props}
+          onPress={handleTaxonOrEditPress || navToTaxonDetails}
+          accessible
+          accessibilityRole="link"
+          accessibilityLabel={accessibleName}
+          accessibilityHint={t( "Navigates-to-taxon-details" )}
+        >
+          { props.children }
+        </Pressable>
+      )
+  ), [
+    accessibleName,
+    handleTaxonOrEditPress,
+    navToTaxonDetails,
+    t,
+    unpressable
+  ] );
+
+  // useTaxon could return null, and it's at least remotely possible taxonProp is null
+  if ( !usableTaxon ) return null;
+
+  const taxonImage = {
+    uri: ( usableTaxon as ApiTaxon )?.default_photo?.url
+      || ( usableTaxon as RealmTaxon )?.defaultPhoto?.url
   };
 
   const renderCheckmark = () => {
@@ -103,7 +145,7 @@ const TaxonResult = ( {
           } )}
           icon="checkmark"
           size={21}
-          color={String( colors.white )}
+          color={String( colors?.white )}
           onPress={() => handleCheckmarkPress( usableTaxon )}
           accessibilityLabel={accessibilityLabel}
           testID={`${testID}.checkmark`}
@@ -117,8 +159,8 @@ const TaxonResult = ( {
         size={40}
         color={String(
           clearBackground
-            ? colors.white
-            : colors.darkGray
+            ? colors?.white
+            : colors?.darkGray
         )}
         onPress={() => handleCheckmarkPress( usableTaxon )}
         accessibilityLabel={accessibilityLabel}
@@ -141,20 +183,16 @@ const TaxonResult = ( {
       }
       testID={testID}
     >
-      <Pressable
+      <TaxonResultMain
         className={
           classnames( "flex-row items-center shrink", {
             "py-3": asListItem
           } )
         }
-        onPress={handleTaxonOrEditPress || navToTaxonDetails}
-        accessible
-        accessibilityRole="link"
-        accessibilityLabel={accessibleName}
-        accessibilityHint={t( "Navigates-to-taxon-details" )}
       >
         <View className="w-[62px] h-[62px] justify-center relative">
           <ObsImagePreview
+            // TODO fix when ObsImagePreview typed
             source={taxonImage}
             testID={`${testID}.photo`}
             iconicTaxonName={usableTaxon?.iconic_taxon_name}
@@ -192,51 +230,52 @@ const TaxonResult = ( {
             </View>
           )}
         </View>
-      </Pressable>
-      <View className="flex-row items-center">
-        { !hideInfoButton && (
-          <INatIconButton
-            icon="info-circle-outline"
-            size={22}
-            onPress={( ) => {
-              if ( typeof ( onPressInfo ) === "function" ) {
-                onPressInfo( usableTaxon );
-                return;
-              }
-              navToTaxonDetails( );
-            }}
-            color={String(
-              clearBackground
-                ? colors.white
-                : colors.darkGray
-            )}
-            accessibilityLabel={t( "More-info" )}
-            accessibilityHint={t( "Navigates-to-taxon-details" )}
-          />
-        )}
-        { showCheckmark
-          && renderCheckmark()}
-        { showEditButton
-            && (
-              <INatIconButton
-                icon="edit"
-                size={20}
-                onPress={handleTaxonOrEditPress}
-                accessibilityLabel={t( "Edit-identification" )}
-                accessibilityHint={t( "Edits-this-observations-taxon" )}
-              />
-            )}
-        { showRemoveButton && handleRemovePress
-          && (
+      </TaxonResultMain>
+      { !unpressable && (
+        <View className="flex-row items-center">
+          { !hideInfoButton && (
             <INatIconButton
-              icon="close"
-              size={20}
-              onPress={handleRemovePress}
-              accessibilityLabel={t( "Remove-identification" )}
-              accessibilityHint={t( "Removes-this-observations-taxon" )}
+              icon="info-circle-outline"
+              size={22}
+              onPress={( ) => {
+                if ( typeof ( onPressInfo ) === "function" ) {
+                  onPressInfo( usableTaxon );
+                  return;
+                }
+                navToTaxonDetails( );
+              }}
+              color={String(
+                clearBackground
+                  ? colors?.white
+                  : colors?.darkGray
+              )}
+              accessibilityLabel={t( "More-info" )}
+              accessibilityHint={t( "Navigates-to-taxon-details" )}
             />
           )}
-      </View>
+          { showCheckmark && renderCheckmark()}
+          { showEditButton && handleTaxonOrEditPress
+              && (
+                <INatIconButton
+                  icon="edit"
+                  size={20}
+                  onPress={handleTaxonOrEditPress}
+                  accessibilityLabel={t( "Edit-identification" )}
+                  accessibilityHint={t( "Edits-this-observations-taxon" )}
+                />
+              )}
+          { showRemoveButton && handleRemovePress
+            && (
+              <INatIconButton
+                icon="close"
+                size={20}
+                onPress={handleRemovePress}
+                accessibilityLabel={t( "Remove-identification" )}
+                accessibilityHint={t( "Removes-this-observations-taxon" )}
+              />
+            )}
+        </View>
+      ) }
     </View>
   );
 };

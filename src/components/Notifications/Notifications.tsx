@@ -23,12 +23,12 @@ const Notifications = ( ) => {
         tabs={[
           {
             id: OWNER_TAB,
-            text: t( "MY-OBSERVATIONS--notifications" ),
+            text: t( "MY-CONTENT--notifications" ),
             onPress: () => setActiveTab( OWNER_TAB )
           },
           {
             id: OTHER_TAB,
-            text: t( "OTHER-OBSERVATIONS--notifications" ),
+            text: t( "FOLLOWING--notifications" ),
             onPress: () => setActiveTab( OTHER_TAB )
           }
         ]}

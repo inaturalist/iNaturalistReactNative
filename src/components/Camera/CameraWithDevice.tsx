@@ -3,6 +3,7 @@ import React from "react";
 import DeviceInfo from "react-native-device-info";
 import type { CameraDevice } from "react-native-vision-camera";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
+import { UserLocation } from "sharedHooks/useWatchPosition.ts";
 
 import AICamera from "./AICamera/AICamera";
 import StandardCamera from "./StandardCamera/StandardCamera";
@@ -21,7 +22,8 @@ interface Props {
   newPhotoUris: Array<Object>,
   setNewPhotoUris: Function,
   takePhotoOptions: Object,
-  setAiSuggestion: Function
+  setAiSuggestion: Function,
+  userLocation: UserLocation | null
 }
 
 const CameraWithDevice = ( {
@@ -36,7 +38,8 @@ const CameraWithDevice = ( {
   newPhotoUris,
   setNewPhotoUris,
   takePhotoOptions,
-  setAiSuggestion
+  setAiSuggestion,
+  userLocation
 }: Props ) => {
   const { isLandscapeMode } = useDeviceOrientation( );
   const flexDirection = isTablet && isLandscapeMode
@@ -69,13 +72,13 @@ const CameraWithDevice = ( {
             camera={camera}
             device={device}
             flipCamera={flipCamera}
-            handleCheckmarkPress={handleCheckmarkPress}
             isLandscapeMode={isLandscapeMode}
             toggleFlash={toggleFlash}
             takingPhoto={takingPhoto}
             takePhotoAndStoreUri={takePhotoAndStoreUri}
             takePhotoOptions={takePhotoOptions}
             setAiSuggestion={setAiSuggestion}
+            userLocation={userLocation}
           />
         )}
     </View>

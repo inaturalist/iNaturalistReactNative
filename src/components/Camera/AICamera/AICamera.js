@@ -18,6 +18,7 @@ import {
   useDebugMode, usePerformance, useTranslation
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
+// import type { UserLocation } from "sharedHooks/useWatchPosition";
 import colors from "styles/tailwindColors";
 
 import {
@@ -47,26 +48,26 @@ type Props = {
   camera: Object,
   device: Object,
   flipCamera: Function,
-  handleCheckmarkPress: Function,
   isLandscapeMode: boolean,
   toggleFlash: Function,
   takingPhoto: boolean,
   takePhotoAndStoreUri: Function,
   takePhotoOptions: Object,
-  setAiSuggestion: Function
+  setAiSuggestion: Function,
+  userLocation?: Object // UserLocation | null
 };
 
 const AICamera = ( {
   camera,
   device,
   flipCamera,
-  handleCheckmarkPress,
   isLandscapeMode,
   toggleFlash,
   takingPhoto,
   takePhotoAndStoreUri,
   takePhotoOptions,
-  setAiSuggestion
+  setAiSuggestion,
+  userLocation
 }: Props ): Node => {
   const hasFlash = device?.hasFlash;
   const { isDebug } = useDebugMode( );
@@ -187,6 +188,7 @@ const AICamera = ( {
             takingPhoto={takingPhoto}
             inactive={inactive}
             resetCameraOnFocus={resetCameraOnFocus}
+            userLocation={userLocation}
           />
         </View>
       )}
@@ -210,12 +212,10 @@ const AICamera = ( {
           {showPrediction && result
             ? (
               <TaxonResult
-                accessibilityLabel={t( "View-suggestions" )}
                 asListItem={false}
                 clearBackground
                 confidence={convertOfflineScoreToConfidence( result?.score )}
-                handleCheckmarkPress={handleCheckmarkPress}
-                hideNavButtons
+                unpressable
                 taxon={result?.taxon}
                 testID={`AICamera.taxa.${result?.taxon?.id}`}
                 white

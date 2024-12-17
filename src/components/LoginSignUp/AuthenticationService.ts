@@ -1,7 +1,8 @@
 import type { QueryClient } from "@tanstack/query-core";
+import type { ApiUser } from "api/types";
 import { getUserAgent } from "api/userAgent";
 import { fetchUserMe } from "api/users";
-import { ApiResponse, create } from "apisauce";
+import { ApiResponse, ApisauceInstance, create } from "apisauce";
 import {
   computerVisionPath,
   galleryPhotosPath,
@@ -314,11 +315,13 @@ interface OauthTokenResponse extends RailsApiResponse {
 }
 
 function errorDescriptionFromResponse( response: ApiResponse<OauthTokenResponse> ): string {
-  let errorDescription = response?.data?.error_description;
+  let errorDescription = response.data?.error_description;
   if ( !errorDescription && response.problem === "NETWORK_ERROR" ) {
     errorDescription = i18next.t( "You-need-an-Internet-connection-to-do-that" );
   }
-  return errorDescription || i18next.t( "Something-went-wrong" );
+  if ( errorDescription ) return errorDescription;
+  logger.error( "Indescribable error response", JSON.stringify( response ) );
+  return i18next.t( "Something-went-wrong" );
 }
 
 interface UsersEditResponse extends RailsApiResponse {
@@ -327,42 +330,18 @@ interface UsersEditResponse extends RailsApiResponse {
   name?: string;
 }
 
-/**
- * Verifies login credentials
- *
- * @param username
- * @param password
- * @return null in case of error, otherwise an object of accessToken,
- *  username (=iNaturalist username)
- */
-const verifyCredentials = async (
-  username: string,
-  password: string
-) => {
-  const formData = {
-    format: "json",
-    grant_type: "password",
-    client_id: Config.OAUTH_CLIENT_ID,
-    client_secret: Config.OAUTH_CLIENT_SECRET,
-    password,
-    username,
-    locale: i18next.language
-  };
+interface UserDetails {
+  accessToken: string;
+  username: string;
+  userId: number;
+}
 
-  const api = createAPI();
-
-  const tokenResponse = await api.post<OauthTokenResponse>( "/oauth/token", formData );
-
+async function afterVerifyCredentials(
+  tokenResponse: ApiResponse<OauthTokenResponse>,
+  apiClient: ApisauceInstance
+): Promise<UserDetails | null> {
   if ( !tokenResponse.ok ) {
     showErrorAlert( errorDescriptionFromResponse( tokenResponse ) );
-
-    if ( tokenResponse.problem !== "CLIENT_ERROR" ) {
-      console.error(
-        "verifyCredentials failed when calling /oauth/token - ",
-        tokenResponse.problem,
-        tokenResponse.status
-      );
-    }
     return null;
   }
 
@@ -371,7 +350,7 @@ const verifyCredentials = async (
   if ( !accessToken ) throw new Error( "Fetched empty OAuth access token" );
 
   // Next, find the iNat username (since we currently only have the FB/Google email)
-  const usersEditResponse = await api.get<UsersEditResponse>(
+  const usersEditResponse = await apiClient.get<UsersEditResponse>(
     "/users/edit.json",
     {},
     {
@@ -406,23 +385,38 @@ const verifyCredentials = async (
     username: iNatUsername,
     userId: iNatID
   };
-};
+}
 
 /**
- * Authenticates a user and saves authentication details to secure storage, to
- * be used when calling iNat APIs.
+ * Verifies login credentials
  *
  * @param username
  * @param password
- * @returns false in case of authentication error, true otherwise.
+ * @return null in case of error, otherwise an object of accessToken,
+ *  username (=iNaturalist username)
  */
-const authenticateUser = async (
+async function verifyCredentials(
   username: string,
-  password: string,
-  realm: Realm
-): Promise<boolean> => {
-  const userDetails = await verifyCredentials( username, password );
+  password: string
+): Promise<UserDetails | null> {
+  const formData = {
+    format: "json",
+    grant_type: "password",
+    client_id: Config.OAUTH_CLIENT_ID,
+    client_secret: Config.OAUTH_CLIENT_SECRET,
+    password,
+    username,
+    locale: i18next.language
+  };
 
+  const apiClient = createAPI();
+
+  const tokenResponse = await apiClient.post<OauthTokenResponse>( "/oauth/token", formData );
+
+  return afterVerifyCredentials( tokenResponse, apiClient );
+}
+
+async function afterAuthenticateUser( userDetails: UserDetails | null, realm: Realm ) {
   if ( !userDetails ) {
     return false;
   }
@@ -444,7 +438,7 @@ const authenticateUser = async (
   const options = {
     api_token: apiToken
   };
-  const remoteUser = await fetchUserMe( { }, options );
+  const remoteUser = await fetchUserMe( { }, options ) as ApiUser;
   const localUser = remoteUser
     ? {
       ...remoteUser,
@@ -462,7 +456,46 @@ const authenticateUser = async (
     realm.create( "User", localUser, UpdateMode.Modified );
   }, "saving current user in AuthenticationService" );
   return true;
+}
+
+/**
+ * Authenticates a user and saves authentication details to secure storage, to
+ * be used when calling iNat APIs.
+ *
+ * @param username
+ * @param password
+ * @returns false in case of authentication error, true otherwise.
+ */
+const authenticateUser = async (
+  username: string,
+  password: string,
+  realm: Realm
+): Promise<boolean> => {
+  const userDetails = await verifyCredentials( username, password );
+
+  return afterAuthenticateUser( userDetails, realm );
 };
+
+async function authenticateUserByAssertion(
+  assertionType: "apple" | "google",
+  assertion: string,
+  realm: Realm
+) {
+  const apiClient = createAPI( { Accept: "application/json" } );
+  const formData = {
+    client_id: Config.OAUTH_CLIENT_ID,
+    client_secret: Config.OAUTH_CLIENT_SECRET,
+    locale: i18next.language,
+    assertion,
+    assertion_type: assertionType
+  };
+  const tokenResponse = await apiClient.post<OauthTokenResponse>(
+    "/oauth/assertion_token",
+    formData
+  );
+  const userDetails = await afterVerifyCredentials( tokenResponse, apiClient );
+  return afterAuthenticateUser( userDetails, realm );
+}
 
 interface CreateUserResponse {
   errors?: string[]
@@ -542,6 +575,7 @@ const resetPassword = async ( email: string ) => {
 export {
   API_HOST,
   authenticateUser,
+  authenticateUserByAssertion,
   getAnonymousJWT,
   getJWT,
   getUsername,

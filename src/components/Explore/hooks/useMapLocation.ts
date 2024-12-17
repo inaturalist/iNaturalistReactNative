@@ -53,12 +53,16 @@ const useMapLocation = ( currentMapRegion, setCurrentMapRegion ) => {
   useEffect( ( ) => {
     // region gets set when a user is navigating from ExploreLocationSearch
     if ( placeIdWasSet ) {
-      const { coordinates } = place.point_geojson;
-      setCurrentMapRegion( {
-        ...initialMapRegion,
-        latitude: coordinates[1],
-        longitude: coordinates[0]
-      } );
+      const coordinates = place?.point_geojson?.coordinates
+        ? place.point_geojson.coordinates
+        : place?.bounding_box_geojson?.coordinates;
+      if ( coordinates ) {
+        setCurrentMapRegion( {
+          ...initialMapRegion,
+          latitude: coordinates[1],
+          longitude: coordinates[0]
+        } );
+      }
     } else if ( mapWasReset ) {
       // map gets set or reset back to nearby/worldwide, but only if the placeMode
       // has changed

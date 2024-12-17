@@ -85,8 +85,13 @@ const MediaViewer = ( {
   // If we've removed an item the selectedPhoto index might refer to a item
   // that no longer exists, so change it to the previous one
   useEffect( ( ) => {
-    if ( selectedMediaIndex >= uris.length ) {
-      setSelectedMediaIndex( Math.max( 0, selectedMediaIndex - 1 ) );
+    if ( uris.length > 0 && selectedMediaIndex >= uris.length ) {
+      const newIndex = Math.max( 0, selectedMediaIndex - 1 );
+      setSelectedMediaIndex( newIndex );
+      horizontalScroll?.current?.scrollToIndex( {
+        index: newIndex,
+        animated: false
+      } );
     }
   }, [selectedMediaIndex, setSelectedMediaIndex, uris.length] );
 
@@ -124,6 +129,7 @@ const MediaViewer = ( {
         editable={editable}
         photos={photos}
         sounds={sounds}
+        onClose={onClose}
         selectedMediaIndex={selectedMediaIndex}
         horizontalScroll={horizontalScroll}
         setSelectedMediaIndex={setSelectedMediaIndex}

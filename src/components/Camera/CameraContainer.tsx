@@ -206,6 +206,7 @@ const CameraContainer = ( ) => {
         newPhotoUris={newPhotoUris}
         setNewPhotoUris={setNewPhotoUris}
         setAiSuggestion={setAiSuggestion}
+        userLocation={userLocation}
       />
       {showPhotoPermissionsGate && renderSavePhotoPermissionGate( {
         // If the user does not give location permissions in any form,

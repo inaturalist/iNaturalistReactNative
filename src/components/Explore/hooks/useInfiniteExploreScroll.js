@@ -46,6 +46,7 @@ const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object )
   const {
     data,
     isFetchingNextPage,
+    isLoading,
     fetchNextPage,
     refetch,
     isRefetching,
@@ -103,6 +104,7 @@ const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object )
 
   return {
     fetchNextPage,
+    isLoading,
     isFetchingNextPage: isFetchingNextPage || isRefetching,
     handlePullToRefresh,
     observations,

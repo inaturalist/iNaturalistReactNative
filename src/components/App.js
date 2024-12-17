@@ -11,8 +11,8 @@ import React, { useEffect, useState } from "react";
 import { LogBox } from "react-native";
 import Realm from "realm";
 import clearCaches from "sharedHelpers/clearCaches.ts";
-import { addARCameraFiles } from "sharedHelpers/cvModel.ts";
 import { log } from "sharedHelpers/logger";
+import { addARCameraFiles } from "sharedHelpers/mlModel.ts";
 import {
   useCurrentUser,
   useIconicTaxa,

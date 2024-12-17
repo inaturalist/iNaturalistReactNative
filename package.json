@@ -1,6 +1,6 @@
 {
   "name": "inaturalistreactnative",
-  "version": "0.55.3",
+  "version": "0.57.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -47,6 +47,7 @@
     "@candlefinance/faster-image": "^1.4.3",
     "@formidable-webview/webshell": "^2.6.0",
     "@gorhom/bottom-sheet": "^4.6.1",
+    "@invertase/react-native-apple-authentication": "^2.4.0",
     "@likashefqet/react-native-image-zoom": "^4.2.0",
     "@react-native-camera-roll/camera-roll": "github:inaturalist/react-native-cameraroll",
     "@react-native-clipboard/clipboard": "^1.13.2",
@@ -135,7 +136,7 @@
     "realm": "^12.6.2",
     "sanitize-html": "^2.13.0",
     "ts-jest": "^29.1.2",
-    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision",
+    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision#8788e6d6718a4501056bad1f9ee5dbcfd354be92",
     "zustand": "^4.5.2"
   },
   "devDependencies": {

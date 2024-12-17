@@ -21,3 +21,9 @@ echo "Linking $IOS_MODEL_FILE_NAME to cvmodel.mlmodel..."
 ln -f $SRCROOT/$IOS_MODEL_FILE_NAME $SRCROOT/cvmodel.mlmodel
 echo "Linking $IOS_TAXONOMY_FILE_NAME to taxonomy.json..."
 ln -f $SRCROOT/$IOS_TAXONOMY_FILE_NAME $SRCROOT/taxonomy.json
+
+if [ -f $SRCROOT/$IOS_GEOMODEL_FILE_NAME ]; then
+  echo "Geomodel file does exist at $SRCROOT/$IOS_GEOMODEL_FILE_NAME"
+  echo "Linking $IOS_GEOMODEL_FILE_NAME to geomodel.mlmodel..."
+  ln -f $SRCROOT/$IOS_GEOMODEL_FILE_NAME $SRCROOT/geomodel.mlmodel
+fi
