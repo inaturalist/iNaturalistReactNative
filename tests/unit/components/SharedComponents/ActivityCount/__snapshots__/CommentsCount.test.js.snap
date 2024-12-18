@@ -26,7 +26,7 @@ exports[`CommentsCount renders default reliably 1`] = `
           "color": "#454545",
           "fontSize": 14,
         },
-        undefined,
+        null,
         {
           "fontFamily": "INatIcon",
           "fontStyle": "normal",
@@ -101,7 +101,7 @@ exports[`CommentsCount renders filled reliably 1`] = `
           "color": "#454545",
           "fontSize": 14,
         },
-        undefined,
+        null,
         {
           "fontFamily": "INatIcon",
           "fontStyle": "normal",
@@ -176,7 +176,7 @@ exports[`CommentsCount renders white reliably 1`] = `
           "color": "#ffffff",
           "fontSize": 14,
         },
-        undefined,
+        null,
         {
           "fontFamily": "INatIcon",
           "fontStyle": "normal",
