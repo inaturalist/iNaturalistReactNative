@@ -22,6 +22,15 @@ global.ReanimatedDataMock = {
   now: () => 0
 };
 
+jest.mock( "react-native-volume-manager", () => ( {
+  VolumeManager: {
+    getVolume: jest.fn( () => Promise.resolve( 0.5 ) ),
+    setVolume: jest.fn( ),
+    addVolumeListener: jest.fn( () => ( { remove: jest.fn() } ) ),
+    showNativeVolumeUI: jest.fn()
+  }
+} ) );
+
 // Mock the react-native-logs config because it has a dependency on AuthenticationService
 // instead use console.logs for tests
 jest.mock( "../react-native-logs.config", () => {

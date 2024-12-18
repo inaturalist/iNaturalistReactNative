@@ -1,15 +1,17 @@
-import { useNavigation } from "@react-navigation/native";
 import { TransparentCircleButton } from "components/SharedComponents";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 
-const Close = ( ) => {
+interface Props {
+  handleClose: ( ) => void;
+}
+
+const Close = ( { handleClose }: Props ) => {
   const { t } = useTranslation( );
-  const navigation = useNavigation( );
 
   return (
     <TransparentCircleButton
-      onPress={( ) => navigation.goBack( )}
+      onPress={handleClose}
       accessibilityLabel={t( "Close" )}
       accessibilityHint={t( "Navigates-to-previous-screen" )}
       icon="close"

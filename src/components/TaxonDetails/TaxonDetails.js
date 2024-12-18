@@ -56,7 +56,8 @@ import Taxonomy from "./Taxonomy";
 import Wikipedia from "./Wikipedia";
 
 const SCROLL_VIEW_STYLE = {
-  backgroundColor: colors.white
+  backgroundColor: colors.white,
+  flexGrow: 1
 };
 
 const logger = log.extend( "TaxonDetails" );
@@ -228,7 +229,7 @@ const TaxonDetails = ( ): Node => {
 
   const displayTaxonDetails = ( ) => {
     if ( isLoading ) {
-      return <View className="m-3 flex-1 h-full"><ActivityIndicator /></View>;
+      return <View className="m-3 flex-1 h-full justify-center"><ActivityIndicator /></View>;
     }
 
     if ( error?.message?.match( /Network request failed/ ) ) {
@@ -374,7 +375,7 @@ const TaxonDetails = ( ): Node => {
           hideNavButtons={hideNavButtons}
           taxonId={taxon?.id}
         />
-        <View className="flex-1 h-full bg-black -mt-[64px]">
+        <View className="flex flex-1 flex-grow bg-black -mt-[64px]">
           <View className="w-full h-[420px] shrink-1">
             {displayTaxonMedia()}
             <View

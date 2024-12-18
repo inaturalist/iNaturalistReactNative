@@ -23,6 +23,7 @@ const usePrepareStoreAndNavigate = ( ): Function => {
   const observations = useStore( state => state.observations );
   const setSavingPhoto = useStore( state => state.setSavingPhoto );
   const setCameraState = useStore( state => state.setCameraState );
+  const setSentinelFileName = useStore( state => state.setSentinelFileName );
 
   const { deviceStorageFull, showStorageFullAlert } = useDeviceStorageFull( );
 
@@ -31,15 +32,22 @@ const usePrepareStoreAndNavigate = ( ): Function => {
   const handleSavingToPhotoLibrary = useCallback( async (
     uris,
     addPhotoPermissionResult,
-    userLocation
+    userLocation,
+    logStageIfAICamera
   ) => {
-    if ( addPhotoPermissionResult !== "granted" ) return Promise.resolve( );
+    await logStageIfAICamera( "save_photos_to_photo_library_start" );
+    if ( addPhotoPermissionResult !== "granted" ) {
+      await logStageIfAICamera( "save_photos_to_photo_library_error" );
+      return Promise.resolve( );
+    }
     if ( deviceStorageFull ) {
+      await logStageIfAICamera( "save_photos_to_photo_library_error" );
       showStorageFullAlert( );
       return Promise.resolve( );
     }
     setSavingPhoto( true );
     const savedPhotoUris = await savePhotosToCameraGallery( uris, userLocation );
+    await logStageIfAICamera( "save_photos_to_photo_library_complete" );
     if ( savedPhotoUris.length > 0 ) {
       // Save these camera roll URIs, so later on observation editor can update
       // the EXIF metadata of these photos, once we retrieve a location.
@@ -60,7 +68,8 @@ const usePrepareStoreAndNavigate = ( ): Function => {
   const createObsWithCameraPhotos = useCallback( async (
     uris,
     addPhotoPermissionResult,
-    userLocation
+    userLocation,
+    logStageIfAICamera
   ) => {
     const newObservation = await Observation.new( );
 
@@ -81,13 +90,15 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     await handleSavingToPhotoLibrary(
       uris,
       addPhotoPermissionResult,
-      userLocation
+      userLocation,
+      logStageIfAICamera
     );
   }, [setObservations, handleSavingToPhotoLibrary] );
 
   const updateObsWithCameraPhotos = useCallback( async (
     addPhotoPermissionResult,
-    userLocation
+    userLocation,
+    logStageIfAICamera
   ) => {
     const obsPhotos = await ObservationPhoto.createObsPhotosWithPosition(
       evidenceToAdd,
@@ -103,7 +114,8 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     await handleSavingToPhotoLibrary(
       evidenceToAdd,
       addPhotoPermissionResult,
-      userLocation
+      userLocation,
+      logStageIfAICamera
     );
   }, [
     evidenceToAdd,
@@ -119,17 +131,31 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     visionResult,
     addPhotoPermissionResult,
     userLocation,
-    newPhotoState
+    newPhotoState,
+    logStageIfAICamera,
+    deleteStageIfAICamera
   } ) => {
+    if ( userLocation !== null ) {
+      logStageIfAICamera( "fetch_user_location_complete" );
+    }
     // when backing out from ObsEdit -> Suggestions -> Camera, create a
     // new observation
     const uris = newPhotoState?.cameraUris || cameraUris;
     if ( addEvidence ) {
-      await updateObsWithCameraPhotos( addPhotoPermissionResult, userLocation );
+      await updateObsWithCameraPhotos( addPhotoPermissionResult, userLocation, logStageIfAICamera );
+      await deleteStageIfAICamera( );
+      setSentinelFileName( null );
       return navigation.goBack( );
     }
 
-    await createObsWithCameraPhotos( uris, addPhotoPermissionResult, userLocation );
+    await createObsWithCameraPhotos(
+      uris,
+      addPhotoPermissionResult,
+      userLocation,
+      logStageIfAICamera
+    );
+    await deleteStageIfAICamera( );
+    setSentinelFileName( null );
     return navigation.push( "Suggestions", {
       entryScreen: "CameraWithDevice",
       lastScreen: "CameraWithDevice",
@@ -139,6 +165,7 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     addEvidence,
     cameraUris,
     createObsWithCameraPhotos,
+    setSentinelFileName,
     navigation,
     updateObsWithCameraPhotos
   ] );
