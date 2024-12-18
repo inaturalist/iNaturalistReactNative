@@ -72,7 +72,7 @@ const findAndLogSentinelFiles = async ( ) => {
 
   files.forEach( async file => {
     const existingContent = await RNFS.readFile( file.path, "utf8" );
-    logger.debug( existingContent );
+    logger.error( "Camera flow error: ", existingContent );
     await unlink( file.path );
   } );
   return files;
