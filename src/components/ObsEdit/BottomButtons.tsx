@@ -40,18 +40,6 @@ const BottomButtons = ( {
   const isSaving = buttonPressed === "save" && loading;
   const disabled = buttonPressed !== null;
 
-  const saveButton = (
-    <Button
-      className="px-[25px]"
-      onPress={( ) => handlePress( "save" )}
-      testID="ObsEdit.saveButton"
-      text={t( "SAVE" )}
-      level="neutral"
-      loading={isSaving}
-      disabled={disabled}
-    />
-  );
-
   const saveChangesButton = (
     <Button
       className="px-[25px]"
@@ -66,54 +54,37 @@ const BottomButtons = ( {
     />
   );
 
-  // const uploadButton = (
-  //   <Button
-  //     className="ml-3 grow"
-  //     level={showFocusedUploadButton
-  //       ? "focus"
-  //       : "neutral"}
-  //     text={t( "UPLOAD-NOW" )}
-  //     testID="ObsEdit.uploadButton"
-  //     onPress={( ) => handlePress( "upload" )}
-  //     loading={buttonPressed === "upload" && loading}
-  //     disabled={disabled}
-  //   />
-  // );
+  const saveButton = {
+    title: t( "SAVE" ),
+    onPress: ( ) => handlePress( "save" ),
+    isPrimary: false,
+    testID: "ObsEdit.saveButton",
+    disabled,
+    level: "neutral",
+    loading: isSaving,
+    isPrimary: false,
+    className: "px-[25px]"
+  };
 
-  const buttons = [
-    {
-      title: t( "SAVE" ),
-      onPress: ( ) => handlePress( "save" ),
-      isPrimary: false,
-      testID: "ObsEdit.saveButton",
-      disabled,
-      level: "neutral",
-      loading: isSaving,
-      isPrimary: false,
-      className: "px-[25px]"
-    },
-    {
-      title: t( "UPLOAD-NOW" ),
-      onPress: ( ) => handlePress( "upload" ),
-      isPrimary: false,
-      testID: "ObsDetail.cvSuggestionsButton",
-      accessibilityHint: "Shows-identification-suggestions",
-      loading: buttonPressed === "upload" && loading,
-      level: showFocusedUploadButton
-        ? "focus"
-        : "neutral",
-      disabled,
-      isPrimary: true,
-      className: "ml-3 grow"
-    }
-  ];
+  const uploadButton = {
+    title: t( "UPLOAD-NOW" ),
+    onPress: ( ) => handlePress( "upload" ),
+    isPrimary: true,
+    testID: "ObsEdit.uploadButton",
+    loading: buttonPressed === "upload" && loading,
+    level: showFocusedUploadButton
+      ? "focus"
+      : "neutral",
+    disabled,
+    className: "ml-3 grow"
+  };
+
+  const buttonConfiguration = [saveButton, uploadButton];
 
   const renderButtons = ( ) => {
     if ( canSaveOnly ) {
       return (
-        <ButtonBar>
-          {saveButton}
-        </ButtonBar>
+        <ButtonBar buttonConfiguration={[saveButton]} />
       );
     }
     if ( wasSynced ) {
@@ -124,7 +95,7 @@ const BottomButtons = ( {
       );
     }
     return (
-      <ButtonBar buttonConfiguration={buttons} containerClass="p-[15px]" />
+      <ButtonBar buttonConfiguration={buttonConfiguration} containerClass="p-[15px]" />
     );
   };
 
