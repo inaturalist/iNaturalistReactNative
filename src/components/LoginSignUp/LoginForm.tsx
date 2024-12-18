@@ -1,6 +1,12 @@
 import { appleAuth, AppleButton } from "@invertase/react-native-apple-authentication";
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes as googleStatusCodes
+} from "@react-native-google-signin/google-signin";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
+import Debug from "components/Developer/Debug.tsx";
 import {
   Body1, Body2, Button, INatIcon, List2
 } from "components/SharedComponents";
@@ -14,6 +20,7 @@ import {
   TextInput,
   TouchableWithoutFeedback
 } from "react-native";
+import Config from "react-native-config";
 import Realm from "realm";
 import { log } from "sharedHelpers/logger";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
@@ -111,6 +118,58 @@ async function signInWithApple( realm: Realm ) {
   logger.info( "Apple auth failed, credentialState: ", credentialState );
   showSignInWithAppleFailed();
   return false;
+}
+
+GoogleSignin.configure( {
+  iosClientId: Config.GOOGLE_IOS_CLIENT_ID,
+  webClientId: Config.GOOGLE_WEB_CLIENT_ID,
+  scopes: [
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/userinfo.profile"
+  ]
+} );
+
+async function confirmGooglePlayServices() {
+  try {
+    await GoogleSignin.hasPlayServices( );
+    return true;
+  } catch ( hasPlayServicesError ) {
+    if (
+      ( hasPlayServicesError as { code: string } ).code
+      === googleStatusCodes.PLAY_SERVICES_NOT_AVAILABLE
+    ) {
+      Alert.alert(
+        t( "Google-Play-Services-Not-Installed" ),
+        t( "You-must-install-Google-Play-Services-to-sign-in-with-Google" )
+      );
+      return false;
+    }
+    throw hasPlayServicesError;
+  }
+}
+
+function showSignInWithGoogleFailed() {
+  Alert.alert(
+    t( "Sign-in-with-Google-Failed" ),
+    t( "If-you-have-an-existing-account-try-sign-in-reset" )
+  );
+}
+
+async function signInWithGoogle( realm: Realm ) {
+  const hasPlayServices = await confirmGooglePlayServices( );
+  if ( !hasPlayServices ) return false;
+  const signInResp = await GoogleSignin.signIn();
+  if ( signInResp.type === "cancelled" ) return false;
+  const tokens = await GoogleSignin.getTokens();
+  if ( !tokens?.accessToken ) return false;
+  try {
+    await authenticateUserByAssertion( "google", tokens.accessToken, realm );
+  } catch ( authenticateUserByAssertionError ) {
+    logger.error( "Assertion with Google token failed", authenticateUserByAssertionError );
+    showSignInWithGoogleFailed();
+    return false;
+  }
+  return true;
 }
 
 const LoginForm = ( {
@@ -268,6 +327,22 @@ const LoginForm = ( {
             onPress={() => logIn( async ( ) => signInWithApple( realm ) )}
           />
         ) }
+        <Debug>
+          <View className="w-full items-center mt-3">
+            <GoogleSigninButton
+              size={GoogleSigninButton.Size.Wide}
+              color={GoogleSigninButton.Color.Light}
+              onPress={() => logIn( async ( ) => signInWithGoogle( realm ) )}
+              disabled={loading}
+            />
+            <GoogleSigninButton
+              size={GoogleSigninButton.Size.Wide}
+              color={GoogleSigninButton.Color.Dark}
+              onPress={() => logIn( async ( ) => signInWithGoogle( realm ) )}
+              disabled={loading}
+            />
+          </View>
+        </Debug>
         {!hideFooter && (
           <Body1
             className={classnames(
