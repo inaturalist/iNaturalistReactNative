@@ -13,6 +13,7 @@ import Realm from "realm";
 import clearCaches from "sharedHelpers/clearCaches.ts";
 import { log } from "sharedHelpers/logger";
 import { addARCameraFiles } from "sharedHelpers/mlModel.ts";
+import { findAndLogSentinelFiles } from "sharedHelpers/sentinelFiles.ts";
 import {
   useCurrentUser,
   useIconicTaxa,
@@ -95,6 +96,7 @@ const App = ( { children }: Props ): Node => {
 
   useEffect( ( ) => {
     addARCameraFiles( );
+    findAndLogSentinelFiles( );
   }, [] );
 
   useEffect( ( ) => {

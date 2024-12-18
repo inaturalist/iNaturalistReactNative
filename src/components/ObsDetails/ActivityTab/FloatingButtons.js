@@ -1,6 +1,6 @@
 // @flow
 import {
-  Button
+  ButtonBar
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -28,26 +28,35 @@ const FloatingButtons = ( {
 }: Props ): Node => {
   const { t } = useTranslation( );
 
+  const buttons = [
+    {
+      title: t( "COMMENT" ),
+      onPress: openAddCommentSheet,
+      isPrimary: false,
+      testID: "ObsDetail.commentButton",
+      disabled: showAddCommentSheet,
+      accessibilityHint: "Opens-add-comment-form",
+      className: "w-1/2 mx-6"
+    },
+    {
+      title: t( "SUGGEST-ID" ),
+      onPress: navToSuggestions,
+      isPrimary: false,
+      testID: "ObsDetail.cvSuggestionsButton",
+      accessibilityHint: "Shows-identification-suggestions",
+      accessibilityRole: "link",
+      className: "w-1/2 mx-6"
+    }
+  ];
+
   return (
     <View
-      className="flex-row justify-evenly bg-white pt-4 pb-4 px-6"
+      className="bg-white"
       style={DROP_SHADOW}
     >
-      <Button
-        text={t( "COMMENT" )}
-        onPress={openAddCommentSheet}
-        className="w-1/2 mx-6"
-        testID="ObsDetail.commentButton"
-        disabled={showAddCommentSheet}
-        accessibilityHint={t( "Opens-add-comment-form" )}
-      />
-      <Button
-        text={t( "SUGGEST-ID" )}
-        onPress={navToSuggestions}
-        className="w-1/2 mx-6"
-        testID="ObsDetail.cvSuggestionsButton"
-        accessibilityRole="link"
-        accessibilityHint={t( "Shows-identification-suggestions" )}
+      <ButtonBar
+        buttonConfiguration={buttons}
+        containerClass="justify-evenly p-[15px]"
       />
     </View>
   );

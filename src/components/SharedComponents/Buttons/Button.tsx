@@ -22,6 +22,7 @@ interface ButtonProps {
   testID?: string;
   text: string;
   dropdown?: boolean;
+  maxFontSizeMultiplier: number
 }
 
 const setStyles = ( {
@@ -170,7 +171,8 @@ const Button = ( {
   onPress,
   testID,
   text,
-  dropdown
+  dropdown,
+  maxFontSizeMultiplier = 1.5
 }: ButtonProps ) => {
   const isPrimary = level === "primary";
   const isWarning = level === "warning";
@@ -227,7 +229,8 @@ const Button = ( {
       <Heading4
         className={classnames( textClasses )}
         testID={`${testID || "RNButton"}.text`}
-        maxFontSizeMultiplier={1.5}
+        maxFontSizeMultiplier={maxFontSizeMultiplier}
+        numberOfLines={3}
       >
         {text}
       </Heading4>

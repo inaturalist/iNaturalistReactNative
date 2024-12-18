@@ -1,6 +1,6 @@
 // Helpers for LoginForm. Might be better in AuthenticationService, but
 // there's also some UI-related stuff in here, e.g. alerts
-import { appleAuth } from "@invertase/react-native-apple-authentication";
+import { appleAuth, AppleError } from "@invertase/react-native-apple-authentication";
 import {
   GoogleSignin,
   statusCodes as googleStatusCodes
@@ -14,6 +14,10 @@ import { log } from "sharedHelpers/logger";
 import {
   authenticateUserByAssertion
 } from "./AuthenticationService";
+
+interface AppleAuthError {
+  code: AppleError;
+}
 
 const logger = log.extend( "loginFormHelpers" );
 
@@ -35,6 +39,10 @@ async function signInWithApple( realm: Realm ) {
       requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL]
     } );
   } catch ( appleAuthRequestError ) {
+    if ( ( appleAuthRequestError as AppleAuthError ).code === appleAuth.Error.CANCELED ) {
+      // The user canceled sign in, no need to log
+      return false;
+    }
     logger.error( "Apple auth request failed", appleAuthRequestError );
     showSignInWithAppleFailed();
     return false;

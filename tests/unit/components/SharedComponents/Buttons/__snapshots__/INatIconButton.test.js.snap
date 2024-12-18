@@ -73,7 +73,7 @@ exports[`INatIconButton renders correctly 1`] = `
             "color": "#454545",
             "fontSize": 18,
           },
-          undefined,
+          null,
           {
             "fontFamily": "INatIcon",
             "fontStyle": "normal",
