@@ -3,7 +3,7 @@
 import fetchSearchResults from "api/search.ts";
 import {
   Body1,
-  Button,
+  ButtonBar,
   List2,
   SearchBar,
   ViewWrapper
@@ -128,6 +128,21 @@ const ExploreLocationSearch = ( {
 
   const renderFooter = ( ) => <View className="h-[336px]" />;
 
+  const buttons = [
+    {
+      title: t( "NEARBY" ),
+      onPress: onNearbyPressed,
+      isPrimary: false,
+      className: "w-1/2 mx-6"
+    },
+    {
+      title: t( "WORLDWIDE" ),
+      onPress: resetPlace,
+      isPrimary: false,
+      className: "w-1/2 mx-6"
+    }
+  ];
+
   return (
     <ViewWrapper testID="explore-location-search">
       <ExploreSearchHeader
@@ -137,7 +152,7 @@ const ExploreLocationSearch = ( {
         testID="ExploreLocationSearch.close"
       />
       <View
-        className="bg-white pt-2 pb-4"
+        className="bg-white pt-2"
         style={DROP_SHADOW}
       >
         <View className="px-6">
@@ -146,19 +161,7 @@ const ExploreLocationSearch = ( {
             value={locationName}
             testID="ExploreLocationSearch.locationSearch"
           />
-        </View>
-        <View className="flex-row px-6 mt-5 justify-around">
-          <Button
-            className="w-1/2"
-            onPress={onNearbyPressed}
-            text={t( "NEARBY" )}
-          />
-          <View className="px-5" />
-          <Button
-            className="w-1/2"
-            onPress={resetPlace}
-            text={t( "WORLDWIDE" )}
-          />
+          <ButtonBar buttonConfiguration={buttons} containerClass="justify-center p-[15px]" />
         </View>
       </View>
       <FlatList
