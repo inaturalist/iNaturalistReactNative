@@ -1,5 +1,6 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import FadeInOutView from "components/Camera/FadeInOutView";
 import useRotation from "components/Camera/hooks/useRotation.ts";
@@ -14,11 +15,12 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { VolumeManager } from "react-native-volume-manager";
 import { convertOfflineScoreToConfidence } from "sharedHelpers/convertScores.ts";
 import { log } from "sharedHelpers/logger";
+import { deleteSentinelFile, logStage } from "sharedHelpers/sentinelFiles.ts";
 import {
   useDebugMode, usePerformance, useTranslation
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
-// import type { UserLocation } from "sharedHooks/useWatchPosition";
+import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 import {
@@ -69,6 +71,9 @@ const AICamera = ( {
   setAiSuggestion,
   userLocation
 }: Props ): Node => {
+  const navigation = useNavigation( );
+  const sentinelFileName = useStore( state => state.sentinelFileName );
+
   const hasFlash = device?.hasFlash;
   const { isDebug } = useDebugMode( );
   const {
@@ -127,6 +132,7 @@ const AICamera = ( {
   };
 
   const handleTakePhoto = useCallback( async ( ) => {
+    await logStage( sentinelFileName, "take_photo_start" );
     setHasTakenPhoto( true );
     setAiSuggestion( showPrediction && result );
     await takePhotoAndStoreUri( {
@@ -135,7 +141,13 @@ const AICamera = ( {
       navigateImmediately: true
     } );
     setHasTakenPhoto( false );
-  }, [setAiSuggestion, takePhotoAndStoreUri, result, showPrediction] );
+  }, [
+    setAiSuggestion,
+    sentinelFileName,
+    takePhotoAndStoreUri,
+    result,
+    showPrediction
+  ] );
 
   useEffect( () => {
     if ( initialVolume === null ) {
@@ -164,6 +176,11 @@ const AICamera = ( {
       VolumeManager.showNativeVolumeUI( { enabled: true } );
     };
   }, [handleTakePhoto, hasTakenPhoto, initialVolume] );
+
+  const handleClose = async ( ) => {
+    await deleteSentinelFile( sentinelFileName );
+    navigation.goBack( );
+  };
 
   return (
     <>
@@ -255,6 +272,7 @@ const AICamera = ( {
         flipCamera={onFlipCamera}
         fps={fps}
         hasFlash={hasFlash}
+        handleClose={handleClose}
         modelLoaded={modelLoaded}
         numStoredResults={numStoredResults}
         rotatableAnimatedStyle={rotatableAnimatedStyle}

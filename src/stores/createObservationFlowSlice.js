@@ -23,7 +23,8 @@ const DEFAULT_STATE = {
   savingPhoto: false,
   savedOrUploadedMultiObsFlow: false,
   unsavedChanges: false,
-  totalSavedObservations: 0
+  totalSavedObservations: 0,
+  sentinelFileName: null
 };
 
 const removeObsSoundFromObservation = ( currentObservation, uri ) => {
@@ -185,6 +186,9 @@ const createObservationFlowSlice = ( set, get ) => ( {
     return ( {
       totalSavedObservations: existingTotalSavedObservations + 1
     } );
+  } ),
+  setSentinelFileName: sentinelFileName => set( {
+    sentinelFileName
   } )
 } );
 

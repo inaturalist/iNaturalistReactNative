@@ -8,4 +8,6 @@ export const photoUploadPath = `${RNFS.DocumentDirectoryPath}/photoUploads`;
 
 export const rotatedOriginalPhotosPath = `${RNFS.DocumentDirectoryPath}/rotatedOriginalPhotos`;
 
+export const sentinelFilePath = `${RNFS.DocumentDirectoryPath}/sentinelFiles`;
+
 export const soundUploadPath = `${RNFS.DocumentDirectoryPath}/soundUploads`;
