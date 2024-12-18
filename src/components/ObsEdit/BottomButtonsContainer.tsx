@@ -40,8 +40,6 @@ const BottomButtonsContainer = ( {
   const currentUser = useCurrentUser( );
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const unsavedChanges = useStore( state => state.unsavedChanges );
-  const addToUploadQueue = useStore( state => state.addToUploadQueue );
-  const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
   const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
   const setMyObsOffset = useStore( state => state.setMyObsOffset );
   const setSavedOrUploadedMultiObsFlow = useStore( state => state.setSavedOrUploadedMultiObsFlow );
@@ -59,14 +57,13 @@ const BottomButtonsContainer = ( {
   const [buttonPressed, setButtonPressed] = useState( null );
   const [loading, setLoading] = useState( false );
   const exitObservationFlow = useExitObservationFlow( );
+  const canUpload = currentUser && isConnected;
+  const { startIndividualUpload } = useUploadObservations( canUpload );
 
   const hasIdentification = currentObservation?.taxon
     && currentObservation?.taxon.rank_level !== 100;
 
   const passesTests = passesEvidenceTest && hasIdentification;
-
-  const canUpload = currentUser && isConnected;
-  const { startUploadsFromMultiObsEdit } = useUploadObservations( canUpload );
 
   const setNextScreen = useCallback( async ( { type }: Object ) => {
     const savedObservation = await saveObservation( currentObservation, cameraRollUris, realm );
@@ -82,11 +79,8 @@ const BottomButtonsContainer = ( {
       setMyObsOffset( 0 );
     }
     if ( type === "upload" ) {
-      const { uuid } = savedObservation;
-      addTotalToolbarIncrements( savedObservation );
-      addToUploadQueue( uuid );
-      transitionAnimation();
-      startUploadsFromMultiObsEdit( );
+      startIndividualUpload( savedObservation.uuid );
+      transitionAnimation( );
     } else {
       incrementTotalSavedObservations( );
     }
@@ -108,8 +102,6 @@ const BottomButtonsContainer = ( {
       setButtonPressed( null );
     }
   }, [
-    addToUploadQueue,
-    addTotalToolbarIncrements,
     cameraRollUris,
     currentObservation,
     currentObservationIndex,
@@ -122,7 +114,7 @@ const BottomButtonsContainer = ( {
     setCurrentObservationIndex,
     setMyObsOffset,
     setSavedOrUploadedMultiObsFlow,
-    startUploadsFromMultiObsEdit,
+    startIndividualUpload,
     transitionAnimation
   ] );
 
