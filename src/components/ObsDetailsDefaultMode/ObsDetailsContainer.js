@@ -28,7 +28,6 @@ import {
 import useRemoteObservation, {
   fetchRemoteObservationKey
 } from "sharedHooks/useRemoteObservation";
-import { ACTIVITY_TAB, DETAILS_TAB } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 
 import useMarkViewedMutation from "./hooks/useMarkViewedMutation";
@@ -52,7 +51,6 @@ const initialState = {
   addingActivityItem: false,
   comment: null,
   commentIsOptional: false,
-  obsDetailsTab: ACTIVITY_TAB,
   identBodySheetShown: false,
   newIdentification: null,
   observationShown: null,
@@ -174,8 +172,6 @@ const reducer = ( state, action ) => {
 
 const ObsDetailsContainer = ( ): Node => {
   const setObservations = useStore( state => state.setObservations );
-  const obsDetailsTab = useStore( state => state.obsDetailsTab );
-  const setObsDetailsTab = useStore( state => state.setObsDetailsTab );
   const currentUser = useCurrentUser( );
   const { params } = useRoute();
   const {
@@ -317,21 +313,6 @@ const ObsDetailsContainer = ( ): Node => {
       } );
     }
   }, [remoteObservation, isRefetching] );
-
-  const tabs = [
-    {
-      id: ACTIVITY_TAB,
-      testID: "ObsDetails.ActivityTab",
-      onPress: ( ) => setObsDetailsTab( ACTIVITY_TAB ),
-      text: t( "ACTIVITY" )
-    },
-    {
-      id: DETAILS_TAB,
-      testID: "ObsDetails.DetailsTab",
-      onPress: () => setObsDetailsTab( DETAILS_TAB ),
-      text: t( "DETAILS" )
-    }
-  ];
 
   const { refetch: refetchObservationUpdates } = useObservationsUpdates(
     !!currentUser && !!observation
@@ -486,8 +467,6 @@ const ObsDetailsContainer = ( ): Node => {
     }
   };
 
-  const showActivityTab = obsDetailsTab === ACTIVITY_TAB;
-
   const invalidateQueryAndRefetch = ( ) => {
     invalidateRemoteObservationFetch( );
     refetchRemoteObservation( );
@@ -596,7 +575,6 @@ const ObsDetailsContainer = ( ): Node => {
       commentIsOptional={commentIsOptional}
       confirmCommentFromCommentSheet={confirmCommentFromCommentSheet}
       confirmRemoteObsWasDeleted={confirmRemoteObsWasDeleted}
-      obsDetailsTab={obsDetailsTab}
       currentUser={currentUser}
       editIdentBody={( ) => dispatch( { type: SHOW_EDIT_IDENT_BODY_SHEET } )}
       onPotentialDisagreePressed={onPotentialDisagreePressed}
@@ -614,13 +592,11 @@ const ObsDetailsContainer = ( ): Node => {
       potentialDisagreeSheetDiscardChanges={potentialDisagreeSheetDiscardChanges}
       refetchRemoteObservation={invalidateQueryAndRefetch}
       remoteObsWasDeleted={remoteObsWasDeleted}
-      showActivityTab={showActivityTab}
       showAgreeWithIdSheet={!!showAgreeWithIdSheet}
       showAddCommentSheet={showAddCommentSheet}
       showSuggestIdSheet={!!showSuggestIdSheet}
       suggestIdSheetDiscardChanges={suggestIdSheetDiscardChanges}
       showPotentialDisagreementSheet={showPotentialDisagreementSheet}
-      tabs={tabs}
       identBodySheetShown={identBodySheetShown}
       newIdentification={newIdentification}
       onChangeIdentBody={body => dispatch( {

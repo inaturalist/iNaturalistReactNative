@@ -3,9 +3,6 @@ import PotentialDisagreementSheet from
   "components/ObsDetails/Sheets/PotentialDisagreementSheet";
 import {
   ActivityIndicator,
-  HideView,
-  ObservationLocation,
-  Tabs,
   TextInputSheet,
   WarningSheet
 } from "components/SharedComponents";
@@ -25,11 +22,13 @@ import {
   useTranslation
 } from "sharedHooks";
 
-import ActivityTab from "./ActivityTab/ActivityTab";
-import FloatingButtons from "./ActivityTab/FloatingButtons";
+import ActivitySection from "./ActivitySection/ActivitySection";
+import FloatingButtons from "./ActivitySection/FloatingButtons";
 import CommunityTaxon from "./CommunityTaxon";
-import DetailsTab from "./DetailsTab/DetailsTab";
+import DetailsSection from "./DetailsSection/DetailsSection";
 import FaveButton from "./FaveButton";
+import LocationSection from "./LocationSection/LocationSection";
+import MoreSection from "./MoreSection/MoreSection";
 import ObsDetailsHeaderRight from "./ObsDetailsHeaderRight";
 import ObserverDetails from "./ObserverDetails";
 import ObsMediaDisplayContainer from "./ObsMediaDisplayContainer";
@@ -45,7 +44,6 @@ type Props = {
   commentIsOptional: ?boolean,
   confirmCommentFromCommentSheet: Function,
   confirmRemoteObsWasDeleted?: Function,
-  obsDetailsTab: string,
   currentUser: Object,
   editIdentBody: Function,
   hideAddCommentSheet: Function,
@@ -61,13 +59,11 @@ type Props = {
   potentialDisagreeSheetDiscardChanges: Function,
   refetchRemoteObservation: Function,
   remoteObsWasDeleted?: boolean,
-  showActivityTab: boolean,
   showAgreeWithIdSheet: boolean,
   showPotentialDisagreementSheet: boolean,
   showAddCommentSheet: Function,
   showSuggestIdSheet: boolean,
   suggestIdSheetDiscardChanges: Function,
-  tabs: Array<Object>,
   identBodySheetShown?: boolean,
   onCloseIdentBodySheet?: Function,
   newIdentification?: null | {
@@ -88,7 +84,6 @@ const ObsDetails = ( {
   commentIsOptional,
   confirmCommentFromCommentSheet,
   confirmRemoteObsWasDeleted,
-  obsDetailsTab,
   currentUser,
   editIdentBody,
   hideAddCommentSheet,
@@ -104,13 +99,11 @@ const ObsDetails = ( {
   potentialDisagreeSheetDiscardChanges,
   refetchRemoteObservation,
   remoteObsWasDeleted,
-  showActivityTab,
   showAgreeWithIdSheet,
   showPotentialDisagreementSheet,
   showAddCommentSheet,
   showSuggestIdSheet,
   suggestIdSheetDiscardChanges,
-  tabs,
   identBodySheetShown,
   onCloseIdentBodySheet,
   newIdentification,
@@ -133,41 +126,15 @@ const ObsDetails = ( {
   // If the user just added an activity item and we're waiting for it to load,
   // scroll to the bottom where it will be visible. Also provides immediate
   // feedback that the user's action had an effect
-  useEffect( ( ) => {
-    if ( addingActivityItem ) {
-      scrollViewRef?.current?.scrollToEnd( );
-    }
-  }, [addingActivityItem] );
+  // useEffect( ( ) => {
+  //   if ( addingActivityItem ) {
+  //     scrollViewRef?.current?.scrollToEnd( );
+  //   }
+  // }, [addingActivityItem] );
 
   const textInputStyle = Platform.OS === "android" && {
     height: 125
   };
-
-  const renderActivityTab = ( ) => (
-    <HideView show={showActivityTab}>
-      <ActivityTab
-        activityItems={activityItems}
-        isConnected={isConnected}
-        targetItemID={targetActivityItemID}
-        observation={observation}
-        openAgreeWithIdSheet={openAgreeWithIdSheet}
-        refetchRemoteObservation={refetchRemoteObservation}
-        onLayoutTargetItem={event => {
-          const { layout } = event.nativeEvent;
-          setOneTimeScrollOffsetY( layout.y + layout.height );
-        }}
-      />
-    </HideView>
-  );
-
-  const renderDetailsTab = ( ) => (
-    <HideView noInitialRender show={!showActivityTab}>
-      <DetailsTab
-        currentUser={currentUser}
-        observation={observation}
-      />
-    </HideView>
-  );
 
   const renderPhone = ( ) => (
     <>
@@ -201,25 +168,30 @@ const ObsDetails = ( {
           belongsToCurrentUser={belongsToCurrentUser}
           observation={observation}
         />
-        <ObservationLocation
-          observation={observation}
-          obscured={observation?.obscured}
-          classNameMargin="mx-3 mb-2"
-        />
-        <View className="bg-white">
-          <Tabs tabs={tabs} activeId={obsDetailsTab} />
-        </View>
+        <LocationSection observation={observation} />
         <View className="bg-white h-full">
-          {renderActivityTab( )}
-          {renderDetailsTab( )}
+          <ActivitySection
+            activityItems={activityItems}
+            isConnected={isConnected}
+            targetItemID={targetActivityItemID}
+            observation={observation}
+            openAgreeWithIdSheet={openAgreeWithIdSheet}
+            refetchRemoteObservation={refetchRemoteObservation}
+            onLayoutTargetItem={event => {
+              const { layout } = event.nativeEvent;
+              setOneTimeScrollOffsetY( layout.y + layout.height );
+            }}
+          />
           {addingActivityItem && (
             <View className="flex-row items-center justify-center p-10">
               <ActivityIndicator size={50} />
             </View>
           )}
+          <DetailsSection observation={observation} />
+          <MoreSection observation={observation} />
         </View>
       </ScrollView>
-      {showActivityTab && currentUser && (
+      {currentUser && (
         <FloatingButtons
           navToSuggestions={navToSuggestions}
           openAddCommentSheet={openAddCommentSheet}

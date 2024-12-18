@@ -1,5 +1,5 @@
 // @flow
-import { Body2 } from "components/SharedComponents";
+import { Body2, Divider, Heading3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { compact } from "lodash";
 import type { Node } from "react";
@@ -19,7 +19,7 @@ type Props = {
   onLayoutTargetItem: ( event: Object ) => void
 }
 
-const ActivityTab = ( {
+const ActivitySection = ( {
   observation,
   refetchRemoteObservation,
   activityItems,
@@ -61,7 +61,9 @@ const ActivityTab = ( {
     .findIndex( item => item?.taxon?.id === taxonId );
 
   return (
-    <View testID="ActivityTab">
+    <View testID="ActivitySection">
+      <Heading3 className="m-4">{t( "Activity" )}</Heading3>
+      <Divider />
       {stableItems.length === 0
         ? (
           <Body2 className="text-center mt-12 px-[45px]">
@@ -72,7 +74,6 @@ const ActivityTab = ( {
           <View
             onLayout={event => {
               if ( targetItemID === item?.id ) {
-              // const { layout } = event.nativeEvent;
                 onLayoutTargetItem( event );
               }
             }}
@@ -96,4 +97,4 @@ const ActivityTab = ( {
   );
 };
 
-export default ActivityTab;
+export default ActivitySection;

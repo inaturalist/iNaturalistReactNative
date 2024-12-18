@@ -41,6 +41,8 @@ Account-Deleted = Account Deleted
 # Label for button that shows all account settings
 ACCOUNT-SETTINGS = ACCOUNT SETTINGS
 ACTIVITY = ACTIVITY
+# Label for section of ObsDetails with community comments and ids
+Activity = Activity
 # Label for a button that adds a vote of agreement
 Add-agreement = Add agreement
 ADD-AN-ID = ADD AN ID
@@ -261,6 +263,8 @@ Create-an-observation-evidence = Create an observation with no evidence
 CREATE-YOUR-FIRST-OBSERVATION = CREATE YOUR FIRST OBSERVATION
 DATA-QUALITY = DATA QUALITY
 DATA-QUALITY-ASSESSMENT = DATA QUALITY ASSESSMENT
+# Label for button that navigates users to the data quality screen
+Data-Quality-Assessment = Data Quality Assessment
 Data-quality-assessment-can-taxon-still-be-confirmed-improved-based-on-the-evidence = Based on the evidence, can the Community Taxon still be improved?
 Data-quality-assessment-community-taxon-species-level-or-lower = Community taxon at species level or lower
 # Data Quality Assessment section label: whether or not the observation date is accurate
@@ -369,6 +373,8 @@ Deleting-x-of-y-observations-2 =
         [one] observation
        *[other] of { $total } observations
     }
+# Label for section of ObsDetails with information about copyright, upload date, etc.
+Details = Details
 # Tab label or section title for content that describes further details, e.g.
 # the details of an observation
 DETAILS = DETAILS
@@ -687,6 +693,8 @@ MISSING-EVIDENCE = MISSING EVIDENCE
 Monthly-Donor = Monthly Donor
 Months = Months
 MONTHS = MONTHS
+# Label for section of ObsDetails with information about obseration projects, DQA, etc.
+More = More
 More-info = More info
 MOST-FAVED = MOST FAVED
 Most-faved = Most faved
@@ -770,6 +778,7 @@ Obscured = Obscured
 Observation = Observation
 Observation-Attribution = Observation: © { $userName } · { $restrictions }
 OBSERVATION-BUTTON = OBSERVATION BUTTON
+Observation-Copyright = Observation Copyright: © { $userName } · { $restrictions }
 Observation-has-no-photos-and-no-sounds = This observation has no photos and no sounds.
 # Displayed when user views an obscured location on the ObsDetail map screen
 Observation-location-obscured-randomized-point = This observation’s location is obscured. You are seeing a randomized point within the obscuration polygon.
@@ -804,6 +813,8 @@ Observe-and-identify-organisms-from-your-gallery = Observe and identify organism
 Observe-and-identify-organisms-in-real-time-with-your-camera = Observe and identify organisms in real time with your camera
 # Text for a button prompting the user to grant access to the camera
 OBSERVE-ORGANISMS = OBSERVE ORGANISMS
+# This label is used in ObsDetails to describe the observation location
+OBSERVED-IN--label = OBSERVED IN
 Observers = Observers
 # Section in Explore that shows people who added observations given a set of search filters
 Observers-View = Observers View

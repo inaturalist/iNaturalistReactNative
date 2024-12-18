@@ -1,6 +1,6 @@
 // @flow
 
-import { Body4 } from "components/SharedComponents";
+import { Body3 } from "components/SharedComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
@@ -39,12 +39,12 @@ const Attribution = ( { observation }: Props ): Node => {
     : t( "Unknown--user" );
 
   return (
-    <Body4>
-      {t( "Observation-Attribution", {
+    <Body3 className="mt-4">
+      {t( "Observation-Copyright", {
         userName,
         restrictions: renderRestrictions( observation.license_code )
       } )}
-    </Body4>
+    </Body3>
   );
 };
 

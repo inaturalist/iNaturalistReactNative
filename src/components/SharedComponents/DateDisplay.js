@@ -14,7 +14,9 @@ type Props = {
   geoprivacy?: string,
   taxonGeoprivacy?: string,
   belongsToCurrentUser?: boolean,
-  maxFontSizeMultiplier?: number
+  maxFontSizeMultiplier?: number,
+  hideIcon?: boolean,
+  textComponent?: Function,
 };
 
 const DateDisplay = ( {
@@ -24,9 +26,17 @@ const DateDisplay = ( {
   geoprivacy,
   label,
   taxonGeoprivacy,
+  hideIcon,
+  textComponent: TextComponentProp,
   maxFontSizeMultiplier = 2
 }: Props ): Node => {
   const { i18n } = useTranslation( );
+
+  let TextComponent = TextComponentProp;
+  if ( !TextComponent ) {
+    TextComponent = Body4;
+  }
+
   const obscuredDate = geoprivacy === "obscured"
     || taxonGeoprivacy === "obscured"
     || geoprivacy === "private"
@@ -50,16 +60,18 @@ const DateDisplay = ( {
 
   return (
     <View className={classNames( "flex flex-row items-center", classNameMargin )}>
-      <INatIcon
-        name="date"
-        size={13}
-      />
-      <Body4
-        className="ml-[5px]"
+      {!hideIcon && (
+        <INatIcon
+          name="date"
+          size={13}
+        />
+      )}
+      <TextComponent
+        className={!hideIcon && "ml-[5px]"}
         maxFontSizeMultiplier={maxFontSizeMultiplier}
       >
         {date}
-      </Body4>
+      </TextComponent>
     </View>
   );
 };

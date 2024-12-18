@@ -1,15 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
-import {
-  Button,
-  Divider,
-  Heading4
-} from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { Body3 } from "components/SharedComponents";
 import { t } from "i18next";
 import React, { useMemo } from "react";
-
-const headingClass = "mt-[20px] mb-[11px] text-darkGray";
-const sectionClass = "mx-[15px] mb-[20px]";
 
 // TODO: can we get a centralized type/interface for our realm objects, here observation and project
 interface Props {
@@ -23,7 +15,7 @@ interface Props {
   }
 }
 
-const ProjectSection = ( { observation }: Props ) => {
+const ProjectButton = ( { observation }: Props ) => {
   const navigation = useNavigation( );
 
   const traditionalProjects = observation?.project_observations?.map( p => p.project ) || [];
@@ -47,24 +39,16 @@ const ProjectSection = ( { observation }: Props ) => {
   }
 
   return (
-    <>
-      <View className={sectionClass}>
-        <Heading4 className={headingClass}>
-          {t( "PROJECTS-X", {
-            projectCount: totalProjectCount
-          } )}
-        </Heading4>
-        <Button
-          text={t( "VIEW-PROJECTS" )}
-          onPress={( ) => navigation.navigate( "ProjectList", {
-            projects: allProjects,
-            headerOptions
-          } )}
-        />
-      </View>
-      <Divider />
-    </>
+    <Body3
+      className="underline mt-[11px]"
+      onPress={( ) => navigation.navigate( "ProjectList", {
+        projects: allProjects,
+        headerOptions
+      } )}
+    >
+      {t( "Projects" )}
+    </Body3>
   );
 };
 
-export default ProjectSection;
+export default ProjectButton;
