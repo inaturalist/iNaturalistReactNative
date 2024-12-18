@@ -55,7 +55,6 @@ type Props = {
   editIdentBody: Function,
   hideAddCommentSheet: Function,
   isConnected: boolean,
-  isRefetching: boolean,
   navToSuggestions: Function,
   targetActivityItemID: number,
   observation: Object,
@@ -99,7 +98,6 @@ const ObsDetails = ( {
   editIdentBody,
   hideAddCommentSheet,
   isConnected,
-  isRefetching,
   navToSuggestions,
   targetActivityItemID,
   observation,
@@ -212,7 +210,6 @@ const ObsDetails = ( {
           <ObsDetailsOverview
             belongsToCurrentUser={belongsToCurrentUser}
             isConnected={isConnected}
-            isRefetching={isRefetching}
             observation={observation}
           />
         </View>
@@ -284,7 +281,6 @@ const ObsDetails = ( {
         <ObsDetailsOverview
           belongsToCurrentUser={belongsToCurrentUser}
           isConnected={isConnected}
-          isRefetching={isRefetching}
           observation={observation}
         />
         <View className="bg-white">

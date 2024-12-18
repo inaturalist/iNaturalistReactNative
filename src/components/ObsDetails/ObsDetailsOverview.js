@@ -1,8 +1,6 @@
 // @flow
 import { useNavigation, useRoute } from "@react-navigation/native";
-import classnames from "classnames";
 import {
-  ActivityIndicator,
   Body1,
   Body4,
   DateDisplay,
@@ -21,14 +19,12 @@ import {
 type Props = {
   belongsToCurrentUser: boolean,
   isConnected: boolean,
-  isRefetching: boolean,
   observation: Object,
 }
 
 const ObsDetailsOverview = ( {
   belongsToCurrentUser,
   isConnected,
-  isRefetching,
   observation
 }: Props ): Node => {
   const navigation = useNavigation( );
@@ -38,15 +34,6 @@ const ObsDetailsOverview = ( {
   const taxonGeoprivacy = observation?.taxon_geoprivacy;
 
   const communityTaxon = observation?.taxon;
-
-  const loadingIndicator = (
-    <ActivityIndicator
-      className={classnames(
-        "absolute w-full"
-      )}
-      size={25}
-    />
-  );
 
   const showCommunityTaxon = ( ) => {
     if ( !communityTaxon ) {
@@ -76,7 +63,6 @@ const ObsDetailsOverview = ( {
   return (
     <View className="bg-white">
       <View className="flex-row justify-between mx-[15px] mt-[13px]">
-        {( !observation || isRefetching ) && loadingIndicator}
         <InlineUser user={observation?.user} isConnected={isConnected} />
         {observation && (
           <DateDisplay

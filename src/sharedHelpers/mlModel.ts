@@ -62,7 +62,7 @@ export const predictImage = ( uri: string ) => {
 };
 
 export const predictLocation = ( location: Location ) => getPredictionsForLocation( {
-  geoModelPath: geomodelPath,
+  geomodelPath,
   taxonomyPath,
   location
 } );

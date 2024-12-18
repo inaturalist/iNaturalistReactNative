@@ -8,10 +8,11 @@ import useZoom from "components/Camera/hooks/useZoom.ts";
 import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { VolumeManager } from "react-native-volume-manager";
 import { convertOfflineScoreToConfidence } from "sharedHelpers/convertScores.ts";
 import { log } from "sharedHelpers/logger";
 import { deleteSentinelFile, logStage } from "sharedHelpers/sentinelFiles.ts";
@@ -49,7 +50,6 @@ type Props = {
   camera: Object,
   device: Object,
   flipCamera: Function,
-  handleCheckmarkPress: Function,
   isLandscapeMode: boolean,
   toggleFlash: Function,
   takingPhoto: boolean,
@@ -63,7 +63,6 @@ const AICamera = ( {
   camera,
   device,
   flipCamera,
-  handleCheckmarkPress,
   isLandscapeMode,
   toggleFlash,
   takingPhoto,
@@ -105,6 +104,8 @@ const AICamera = ( {
     setCropRatio
   } = usePredictions( );
   const [inactive, setInactive] = React.useState( false );
+  const [initialVolume, setInitialVolume] = useState( null );
+  const [hasTakenPhoto, setHasTakenPhoto] = useState( false );
 
   const { t } = useTranslation();
 
@@ -130,15 +131,51 @@ const AICamera = ( {
     flipCamera( );
   };
 
-  const handleTakePhoto = async ( ) => {
+  const handleTakePhoto = useCallback( async ( ) => {
     await logStage( sentinelFileName, "take_photo_start" );
+    setHasTakenPhoto( true );
     setAiSuggestion( showPrediction && result );
     await takePhotoAndStoreUri( {
       replaceExisting: true,
       inactivateCallback: () => setInactive( true ),
       navigateImmediately: true
     } );
-  };
+    setHasTakenPhoto( false );
+  }, [
+    setAiSuggestion,
+    sentinelFileName,
+    takePhotoAndStoreUri,
+    result,
+    showPrediction
+  ] );
+
+  useEffect( () => {
+    if ( initialVolume === null ) {
+      // Fetch the current volume to set the initial state
+      VolumeManager.getVolume()
+        .then( volume => {
+          setInitialVolume( volume.volume );
+        } );
+    }
+
+    const volumeListener = VolumeManager.addVolumeListener( async ( ) => {
+      if ( initialVolume !== null && !hasTakenPhoto ) {
+        // Hardware volume button pressed - take a photo
+        await handleTakePhoto();
+
+        // Revert the volume to its previous state
+        VolumeManager.setVolume( initialVolume );
+      }
+    } );
+
+    // Suppress the native volume UI
+    VolumeManager.showNativeVolumeUI( { enabled: false } );
+
+    return () => {
+      volumeListener.remove();
+      VolumeManager.showNativeVolumeUI( { enabled: true } );
+    };
+  }, [handleTakePhoto, hasTakenPhoto, initialVolume] );
 
   const handleClose = async ( ) => {
     await deleteSentinelFile( sentinelFileName );
@@ -192,12 +229,10 @@ const AICamera = ( {
           {showPrediction && result
             ? (
               <TaxonResult
-                accessibilityLabel={t( "View-suggestions" )}
                 asListItem={false}
                 clearBackground
                 confidence={convertOfflineScoreToConfidence( result?.score )}
-                handleCheckmarkPress={handleCheckmarkPress}
-                hideNavButtons
+                unpressable
                 taxon={result?.taxon}
                 testID={`AICamera.taxa.${result?.taxon?.id}`}
                 white

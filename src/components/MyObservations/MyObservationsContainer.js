@@ -21,6 +21,9 @@ import {
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
+import {
+  UPLOAD_PENDING
+} from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
 
 import useSyncObservations from "./hooks/useSyncObservations";
@@ -43,6 +46,7 @@ const MyObservationsContainer = ( ): Node => {
   const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
   const myObsOffsetToRestore = useStore( state => state.myObsOffsetToRestore );
   const setMyObsOffset = useStore( state => state.setMyObsOffset );
+  const uploadStatus = useStore( state => state.uploadStatus );
 
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
@@ -114,7 +118,9 @@ const MyObservationsContainer = ( ): Node => {
     const observation = realm.objectForPrimaryKey( "Observation", uuid );
     addTotalToolbarIncrements( observation );
     addToUploadQueue( uuid );
-    setStartUploadObservations( );
+    if ( uploadStatus === UPLOAD_PENDING ) {
+      setStartUploadObservations( );
+    }
   }, [
     confirmLoggedIn,
     uploadQueue,
@@ -122,7 +128,8 @@ const MyObservationsContainer = ( ): Node => {
     realm,
     addTotalToolbarIncrements,
     addToUploadQueue,
-    setStartUploadObservations
+    setStartUploadObservations,
+    uploadStatus
   ] );
 
   // 20241107 amanda - this seems to be a culprit for the tab bar being less

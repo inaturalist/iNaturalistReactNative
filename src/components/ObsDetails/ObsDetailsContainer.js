@@ -602,7 +602,6 @@ const ObsDetailsContainer = ( ): Node => {
       onPotentialDisagreePressed={onPotentialDisagreePressed}
       hideAddCommentSheet={hideAddCommentSheet}
       isConnected={isConnected}
-      isRefetching={isRefetching}
       navToSuggestions={navToSuggestions}
       targetActivityItemID={targetActivityItemID}
       // saving observation in state (i.e. using observationShown)

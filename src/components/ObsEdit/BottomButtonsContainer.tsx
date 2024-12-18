@@ -43,6 +43,7 @@ const BottomButtonsContainer = ( {
   const addToUploadQueue = useStore( state => state.addToUploadQueue );
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
   const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
+  const setMyObsOffset = useStore( state => state.setMyObsOffset );
   const setSavedOrUploadedMultiObsFlow = useStore( state => state.setSavedOrUploadedMultiObsFlow );
   const incrementTotalSavedObservations = useStore(
     state => state.incrementTotalSavedObservations
@@ -78,6 +79,7 @@ const BottomButtonsContainer = ( {
     // observation visible at the top
     if ( isNewObs ) {
       resetMyObsOffsetToRestore( );
+      setMyObsOffset( 0 );
     }
     if ( type === "upload" ) {
       const { uuid } = savedObservation;
@@ -118,6 +120,7 @@ const BottomButtonsContainer = ( {
     realm,
     resetMyObsOffsetToRestore,
     setCurrentObservationIndex,
+    setMyObsOffset,
     setSavedOrUploadedMultiObsFlow,
     startUploadsFromMultiObsEdit,
     transitionAnimation

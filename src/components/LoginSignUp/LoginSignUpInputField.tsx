@@ -1,28 +1,15 @@
-// @flow
-
-import {
-  Heading4
-} from "components/SharedComponents";
+import { Heading4 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
-import React, { forwardRef } from "react";
+import React, { forwardRef, Ref } from "react";
+import { TextInput as RNTextInput, TextInputProps } from "react-native";
 import { TextInput } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  accessibilityLabel: string,
-  autoComplete?: string,
-  headerText: string,
-  inputMode?: string,
-  keyboardType?: string,
-  onChangeText: Function,
-  secureTextEntry?: boolean,
-  testID: string,
-  textContentType?: string
+interface Props extends TextInputProps {
+  headerText: string;
 }
 
 const CONTENT_STYLE = {
-  position: "relative",
   top: 2,
   lineHeight: 18
 };
@@ -41,8 +28,7 @@ const LoginSignUpInputField: Function = forwardRef( ( {
   secureTextEntry = false,
   testID,
   textContentType
-  // $FlowIgnore
-}: Props, ref: unknown ): Node => (
+}: Props, ref: Ref<RNTextInput> ) => (
   <View className="mx-2">
     <Heading4 className="color-white mt-[25px] mb-[11px]">
       {headerText}
@@ -55,13 +41,13 @@ const LoginSignUpInputField: Function = forwardRef( ( {
       className="h-[45px]"
       contentStyle={CONTENT_STYLE}
       outlineStyle={OUTLINE_STYLE}
-      activeOutlineColor={colors.inatGreen}
+      activeOutlineColor={String( colors?.inatGreen )}
       inputMode={inputMode}
       keyboardType={keyboardType}
       mode="outlined"
       onChangeText={onChangeText}
       secureTextEntry={secureTextEntry}
-      selectionColor={colors.darkGray}
+      selectionColor={String( colors?.darkGray )}
       testID={testID}
       textContentType={textContentType}
     />

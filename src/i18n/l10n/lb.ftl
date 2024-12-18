@@ -137,6 +137,7 @@ Restore = Restauréieren
 Satellite--map-type = Satellit
 SAVE = SPÄICHEREN
 Save = Späicheren
+Save-all-observations = All Observatioune späicheren
 Scientific-Name = Wëssenschaftlech Numm
 Search = Sichen
 September = September
@@ -150,6 +151,7 @@ Stop-verb = Stop
 supporting--identification = Ënnerstëtzend
 Syncing = Synchronisatioun...
 Taxa = Taxa
+This-observation-has-no-comments-or-identifications-yet = Dës Observatioun huet nach keng Kommentaren oder Bestëmmungen.
 Traditional-Project = Traditionelle Projet
 Umbrella-Project = Daachprojet
 Unknown--rank = Onbekannt
@@ -162,5 +164,25 @@ View-suggestions = Virschléi kucken
 Wild = Wëll
 Withdraw = Zréckzéien
 Worldwide = Weltwäit
+x-failed =
+    { $count ->
+        [one] { $count } feelgeschloen
+       *[other] { $count } feelgeschloen
+    }
 X-PROJECTS = { $projectCount } PROJETEN
+x-saved =
+    { $count ->
+        [one] { $count } gespäichert
+       *[other] { $count } gespäichert
+    }
+x-uploaded =
+    { $count ->
+        [one] { $count } eropgelueden
+       *[other] { $count } eropgelueden
+    }
+x-uploading =
+    { $count ->
+        [one] { $count } gëtt eropgelueden
+       *[other] { $count } ginn eropgelueden
+    }
 You-need-log-in-to-do-that = Dir musst agelogged si fir dëst ze maachen.

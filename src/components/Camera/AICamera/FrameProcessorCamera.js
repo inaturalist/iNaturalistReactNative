@@ -166,8 +166,8 @@ const FrameProcessorCamera = ( {
             numStoredResults,
             cropRatio,
             patchedOrientationAndroid,
-            useGeoModel: !!userLocation,
-            geoModelPath: geomodelPath,
+            useGeomodel: !!userLocation,
+            geomodelPath,
             location: {
               latitude: userLocation?.latitude,
               longitude: userLocation?.longitude,
