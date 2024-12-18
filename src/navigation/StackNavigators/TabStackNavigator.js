@@ -19,7 +19,8 @@ import Help from "components/Help/Help.tsx";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import Notifications from "components/Notifications/Notifications.tsx";
 import DQAContainer from "components/ObsDetails/DQAContainer";
-import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
+import ObsDetailsDefaultModeContainer from "components/ObsDetailsDefaultMode/ObsDetailsContainer";
+// import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
 import ProjectMembers from "components/ProjectDetails/ProjectMembers.tsx";
 import ProjectRequirements from "components/ProjectDetails/ProjectRequirements.tsx";
@@ -76,7 +77,9 @@ const FadeInRootExplore = ( ) => fadeInComponent( <RootExploreContainer /> );
 const FadeInMyObservations = ( ) => fadeInComponent( <MyObservationsContainer /> );
 const FadeInUserProfile = ( ) => fadeInComponent( <UserProfile /> );
 const FadeInExploreContainer = ( ) => fadeInComponent( <ExploreContainer /> );
-const FadeInObsDetailsContainer = ( ) => fadeInComponent( <ObsDetailsContainer /> );
+const FadeInObsDetailsDefaultModeContainer = ( ) => fadeInComponent(
+  <ObsDetailsDefaultModeContainer />
+);
 const FadeInDQAContainer = ( ) => fadeInComponent( <DQAContainer /> );
 const FadeInProjectsContainer = ( ) => fadeInComponent( <ProjectsContainer /> );
 const FadeInProjectDetailsContainer = ( ) => fadeInComponent( <ProjectDetailsContainer /> );
@@ -152,11 +155,20 @@ const TabStackNavigator = ( ): Node => (
       />
       <Stack.Screen
         name="ObsDetails"
+        component={FadeInObsDetailsDefaultModeContainer}
+        options={{
+          unmountOnBlur: true,
+          ...showHeader,
+          ...blankHeaderTitle
+        }}
+      />
+      {/* <Stack.Screen
+        name="ObsDetails"
         component={FadeInObsDetailsContainer}
         options={{
           unmountOnBlur: true
         }}
-      />
+      /> */}
     </Stack.Group>
     <Stack.Screen
       name={SCREEN_NAME_NOTIFICATIONS}
