@@ -22,7 +22,7 @@ interface ButtonProps {
   testID?: string;
   text: string;
   dropdown?: boolean;
-  maxFontSizeMultiplier: number
+  maxFontSizeMultiplier?: number
 }
 
 const setStyles = ( {

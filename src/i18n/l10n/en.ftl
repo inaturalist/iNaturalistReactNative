@@ -513,6 +513,7 @@ Get-more-accurate-suggestions-create-useful-data = Get more accurate suggestions
 Get-your-identification-verified-by-real-people = Get your identification verified by real people in the iNaturalist community
 # Label for button that returns to the previous screen
 Go-back = Go back
+Google-Play-Services-Not-Installed = Google Play Services Not Installed
 # Text for a button that asks the user to grant permission
 GRANT-PERMISSION = GRANT PERMISSION
 # Title of a screen asking for permission
@@ -1110,6 +1111,9 @@ Shows-iNaturalist-bird-logo = Shows iNaturalist bird logo.
 Shows-observation-creation-options = Shows observation creation options
 # Title of an error alert when Sign in with Apple fails
 Sign-in-with-Apple-Failed = Sign in with Apple Failed
+# Label for button that allows user to sign in with their Google account
+Sign-in-with-Google = Sign in with Google
+Sign-in-with-Google-Failed = Sign in with Google Failed
 Some-data-privacy-laws = Some data privacy laws, like the European Union's General Data Protection Regulation (GDPR), require explicit consent to transfer personal information from their jurisdictions to other jurisdictions where the legal protection of this information is not considered adequate. As of 2020, the European Union no longer considers the United States to be a jurisdiction that provides adequate legal protection of personal information, specifically because of the possibility of the US government surveilling data entering the US. It is possible other jurisdictions may have the same opinion.
 # Generic error message
 Something-went-wrong = Something went wrong.
@@ -1454,6 +1458,7 @@ You-changed-filters-will-be-discarded = You changed filters, but they were not a
 You-have-opted-out-of-the-Community-Taxon = You have opted out of the Community Taxon
 You-havent-joined-any-projects-yet = You haven’t joined any projects yet!
 You-must-be-logged-in-to-view-messages = You must be logged in to view messages
+You-must-install-Google-Play-Services-to-sign-in-with-Google = You must install Google Play Services to sign in with Google.
 # Error message when you try to do something that requires an Internet
 # connection but such a connection is, tragically, missing
 You-need-an-Internet-connection-to-do-that = You need an Internet connection to do that.
