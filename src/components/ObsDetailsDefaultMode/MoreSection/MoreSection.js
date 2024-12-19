@@ -24,7 +24,7 @@ const MoreSection = ( { observation }: Props ): Node => {
   if ( !observation ) return null;
 
   return (
-    <View className="m-4 pb-4">
+    <View className="m-4 mb-8">
       <Heading3 className="mt-5 mb-1">{t( "More" )}</Heading3>
       <ProjectButton observation={observation} />
       <DQAButton observationUUID={observationUUID} />

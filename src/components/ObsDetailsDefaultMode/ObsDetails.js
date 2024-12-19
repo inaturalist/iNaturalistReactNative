@@ -117,27 +117,42 @@ const ObsDetails = ( {
   // Scroll the scrollview to this y position once if set, then unset it.
   // Could be refactored into a hook if we need this logic elsewher
   const [oneTimeScrollOffsetY, setOneTimeScrollOffsetY] = useState( 0 );
+  const [heightOfTopContent, setHeightOfTopContent] = useState( 0 );
+
   useEffect( ( ) => {
     if ( oneTimeScrollOffsetY && scrollViewRef?.current ) {
       scrollViewRef?.current?.scrollTo( { y: oneTimeScrollOffsetY } );
       setOneTimeScrollOffsetY( 0 );
+      setHeightOfTopContent( 0 );
     }
   }, [oneTimeScrollOffsetY] );
 
   // If the user just added an activity item and we're waiting for it to load,
   // scroll to the bottom where it will be visible. Also provides immediate
   // feedback that the user's action had an effect
-  // useEffect( ( ) => {
-  //   if ( addingActivityItem ) {
-  //     scrollViewRef?.current?.scrollToEnd( );
-  //   }
-  // }, [addingActivityItem] );
+  useEffect( ( ) => {
+    if ( addingActivityItem ) {
+      scrollViewRef?.current?.scrollToEnd( );
+    }
+  }, [addingActivityItem] );
 
   const textInputStyle = Platform.OS === "android" && {
     height: 125
   };
 
-  const renderPhone = ( ) => (
+  const setOffsetToActivityItem = e => {
+    const { layout } = e.nativeEvent;
+    const newOffset = layout.y + layout.height + heightOfTopContent;
+    setOneTimeScrollOffsetY( newOffset );
+  };
+
+  const setHeightOfContentAboveCommunitySection = e => {
+    const { layout } = e.nativeEvent;
+    const newOffset = layout.height;
+    setHeightOfTopContent( newOffset );
+  };
+
+  const renderScrollview = ( ) => (
     <>
       <ObsDetailsHeaderRight
         belongsToCurrentUser={belongsToCurrentUser}
@@ -148,53 +163,51 @@ const ObsDetails = ( {
         ref={scrollViewRef}
         testID={`ObsDetails.${uuid}`}
         scrollEventThrottle={16}
-        endFillColor="white"
       >
-        <ObserverDetails
-          belongsToCurrentUser={belongsToCurrentUser}
-          isConnected={isConnected}
-          observation={observation}
-        />
-        <View>
-          <ObsMediaDisplayContainer observation={observation} />
-          { currentUser && (
-            <FaveButton
-              observation={observation}
-              currentUser={currentUser}
-              afterToggleFave={refetchRemoteObservation}
-            />
-          ) }
-        </View>
-        <CommunityTaxon
-          belongsToCurrentUser={belongsToCurrentUser}
-          observation={observation}
-        />
-        <MapSection observation={observation} />
-        <LocationSection
-          belongsToCurrentUser={belongsToCurrentUser}
-          observation={observation}
-        />
-        <View className="bg-white h-full">
-          <CommunitySection
-            activityItems={activityItems}
+        <View
+          onLayout={setHeightOfContentAboveCommunitySection}
+        >
+          <ObserverDetails
+            belongsToCurrentUser={belongsToCurrentUser}
             isConnected={isConnected}
-            targetItemID={targetActivityItemID}
             observation={observation}
-            openAgreeWithIdSheet={openAgreeWithIdSheet}
-            refetchRemoteObservation={refetchRemoteObservation}
-            onLayoutTargetItem={event => {
-              const { layout } = event.nativeEvent;
-              setOneTimeScrollOffsetY( layout.y + layout.height );
-            }}
           />
-          {addingActivityItem && (
-            <View className="flex-row items-center justify-center p-10">
-              <ActivityIndicator size={50} />
-            </View>
-          )}
-          <DetailsSection observation={observation} />
-          <MoreSection observation={observation} />
+          <View>
+            <ObsMediaDisplayContainer observation={observation} />
+            { currentUser && (
+              <FaveButton
+                observation={observation}
+                currentUser={currentUser}
+                afterToggleFave={refetchRemoteObservation}
+              />
+            ) }
+          </View>
+          <CommunityTaxon
+            belongsToCurrentUser={belongsToCurrentUser}
+            observation={observation}
+          />
+          <MapSection observation={observation} />
+          <LocationSection
+            belongsToCurrentUser={belongsToCurrentUser}
+            observation={observation}
+          />
         </View>
+        <CommunitySection
+          activityItems={activityItems}
+          isConnected={isConnected}
+          targetItemID={targetActivityItemID}
+          observation={observation}
+          openAgreeWithIdSheet={openAgreeWithIdSheet}
+          refetchRemoteObservation={refetchRemoteObservation}
+          onLayoutTargetItem={setOffsetToActivityItem}
+        />
+        {addingActivityItem && (
+          <View className="flex-row items-center justify-center p-10">
+            <ActivityIndicator size={50} />
+          </View>
+        )}
+        <DetailsSection observation={observation} />
+        <MoreSection observation={observation} />
       </ScrollView>
       {currentUser && (
         <FloatingButtons
@@ -221,7 +234,7 @@ const ObsDetails = ( {
     <SafeAreaView
       className="flex-1 bg-white"
     >
-      {renderPhone( )}
+      {renderScrollview( )}
       {showAgreeWithIdSheet && newIdentification && (
         <AgreeWithIDSheet
           onAgree={onAgree}
