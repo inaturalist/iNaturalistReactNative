@@ -12,6 +12,7 @@ const config: Config = {
   preset: "react-native",
   setupFiles: [
     "./node_modules/react-native-gesture-handler/jestSetup.js",
+    "./node_modules/@react-native-google-signin/google-signin/jest/build/jest/setup.js",
     "<rootDir>/tests/jest.setup.js"
   ],
   globalSetup: "<rootDir>/tests/jest.globalSetup.js",
