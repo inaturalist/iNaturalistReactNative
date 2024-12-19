@@ -61,7 +61,7 @@ const ActivitySection = ( {
     .findIndex( item => item?.taxon?.id === taxonId );
 
   return (
-    <View testID="ActivitySection">
+    <View testID="CommunitySection">
       <Heading3 className="m-4">{t( "Community" )}</Heading3>
       <Divider />
       {stableItems.length === 0

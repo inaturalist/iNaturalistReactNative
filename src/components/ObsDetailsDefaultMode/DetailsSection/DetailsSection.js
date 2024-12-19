@@ -4,23 +4,19 @@ import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndS
 import {
   Body3,
   DateDisplay,
-  Heading3,
-  Heading4
+  Heading3
 } from "components/SharedComponents";
-import UserText from "components/SharedComponents/UserText.tsx";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 
 import Attribution from "./Attribution";
+import GeoprivacyStatus from "./GeoprivacyStatus";
 
 type Props = {
   observation: Object
 }
-
-const headingClass = "mt-[20px] mb-[11px] text-darkGray";
-const sectionClass = "mx-[15px] mb-[20px]";
 
 const DetailsSection = ( { observation }: Props ): Node => {
   const application = observation?.application?.name;
@@ -30,17 +26,11 @@ const DetailsSection = ( { observation }: Props ): Node => {
   return (
     <View className="mx-4 mt-8">
       <Heading3>{t( "Details" )}</Heading3>
-      {observation.description && (
-        <View className={sectionClass}>
-          <Heading4 className={headingClass}>{t( "NOTES" )}</Heading4>
-          <UserText>{observation.description}</UserText>
-        </View>
-      )}
+      <GeoprivacyStatus geoprivacy={observation?.geoprivacy} />
       <Attribution observation={observation} />
-
       <View className="mt-3">
         <DateDisplay
-          label={t( "Date-uploaded-header-short" )}
+          label={t( "Date-uploaded-on-header-short" )}
           dateString={checkCamelAndSnakeCase( observation, "createdAt" )}
           hideIcon
           textComponent={Body3}

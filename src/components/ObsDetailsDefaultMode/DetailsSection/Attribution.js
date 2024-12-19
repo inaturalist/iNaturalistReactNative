@@ -39,7 +39,7 @@ const Attribution = ( { observation }: Props ): Node => {
     : t( "Unknown--user" );
 
   return (
-    <Body3 className="mt-4">
+    <Body3 className="mt-3">
       {t( "Observation-Copyright", {
         userName,
         restrictions: renderRestrictions( observation.license_code )

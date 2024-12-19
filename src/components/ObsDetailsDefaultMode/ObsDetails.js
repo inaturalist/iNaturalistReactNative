@@ -30,6 +30,7 @@ import FaveButton from "./FaveButton";
 import LocationSection from "./LocationSection/LocationSection";
 import MapSection from "./MapSection/MapSection";
 import MoreSection from "./MoreSection/MoreSection";
+import NotesSection from "./NotesSection/NotesSection";
 import ObsDetailsHeaderRight from "./ObsDetailsHeaderRight";
 import ObserverDetails from "./ObserverDetails";
 import ObsMediaDisplayContainer from "./ObsMediaDisplayContainer";
@@ -192,6 +193,7 @@ const ObsDetails = ( {
             observation={observation}
           />
         </View>
+        <NotesSection description={observation.description} />
         <CommunitySection
           activityItems={activityItems}
           isConnected={isConnected}

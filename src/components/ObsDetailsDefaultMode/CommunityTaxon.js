@@ -7,7 +7,7 @@ import {
   ObsStatus,
   Subheading1
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import {
@@ -28,31 +28,36 @@ const CommunityTaxon = ( {
   const { t } = useTranslation( );
 
   const communityTaxon = observation?.taxon;
+  const taxonId = communityTaxon?.id || "unknown";
 
   const showCommunityTaxon = ( ) => (
     <DisplayTaxonName
       taxon={communityTaxon}
-      handlePress={( ) => (
-        navigation.navigate( {
-          // Ensure button mashing doesn't open multiple TaxonDetails instances
-          key: `${route.key}-CommunityTaxon-TaxonDetails-${communityTaxon.id}`,
-          name: "TaxonDetails",
-          params: { id: communityTaxon.id }
-        } )
-      )}
-      testID={`ObsDetails.taxon.${communityTaxon.id}`}
+      testID={`ObsDetails.taxon.${taxonId}`}
       accessibilityHint={t( "Navigates-to-taxon-details" )}
       topTextComponent={Heading1}
       bottomTextComponent={Subheading1}
     />
   );
 
+  const handlePress = ( ) => navigation.navigate( {
+    // Ensure button mashing doesn't open multiple TaxonDetails instances
+    key: `${route.key}-CommunityTaxon-TaxonDetails-${taxonId}`,
+    name: "TaxonDetails",
+    params: { id: taxonId }
+  } );
+
   return (
     <View className="bg-white px-5 pt-5">
       <View className="flex-row my-[11px] items-center">
-        <View className="shrink">
+        <Pressable
+          accessibilityRole="button"
+          className="shrink"
+          onPress={handlePress}
+          testID={`ObsDetails.taxon.${taxonId}`}
+        >
           {observation && showCommunityTaxon( )}
-        </View>
+        </Pressable>
         <View className="ml-auto">
           <ObsStatus layout="vertical" observation={observation} />
         </View>

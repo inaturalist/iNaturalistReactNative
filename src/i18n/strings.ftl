@@ -329,6 +329,7 @@ Date-uploaded = Date uploaded
 Date-uploaded-header-short = Uploaded
 DATE-UPLOADED-NEWEST = DATE UPLOADED - NEWEST TO OLDEST
 DATE-UPLOADED-OLDEST = DATE UPLOADED - OLDEST TO NEWEST
+Date-uploaded-on-header-short = Uploaded on:
 # Used when displaying a relative time - in this case, X days ago (e.g. 3d = 3 days ago)
 datetime-difference-days = { $count }d
 # Used when displaying a relative time - in this case, X hours ago (e.g. 3h = 3 hours ago)
@@ -760,6 +761,8 @@ Not-enough-space-left-on-device = Not enough space left on device
 Not-enough-space-left-on-device-try-again = There is not enough storage space left on your device to do that. Please free up some space and try again.
 # Header for observation description on observation detail
 NOTES = NOTES
+# Label for section in ObsDetails with notes/description of observation
+Notes = Notes
 NOTIFICATIONS = NOTIFICATIONS
 Notifications = Notifications
 # notification when someone adds a comment to your observation
