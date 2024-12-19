@@ -226,6 +226,8 @@ COMMENT = COMMENT
 Comment-options = Comment options
 # Label for a setting that shows the common name first
 Common-Name-Scientific-Name = Common Name (Scientific Name)
+# Label for section of ObsDetails with community comments and ids
+Community = Community
 Community-based = Community-based
 Community-Guidelines = Community Guidelines
 COMMUNITY-GUIDELINES = COMMUNITY GUIDELINES
@@ -261,6 +263,8 @@ Create-an-observation-evidence = Create an observation with no evidence
 CREATE-YOUR-FIRST-OBSERVATION = CREATE YOUR FIRST OBSERVATION
 DATA-QUALITY = DATA QUALITY
 DATA-QUALITY-ASSESSMENT = DATA QUALITY ASSESSMENT
+# Label for button that navigates users to the data quality screen
+Data-Quality-Assessment = Data Quality Assessment
 Data-quality-assessment-can-taxon-still-be-confirmed-improved-based-on-the-evidence = Based on the evidence, can the Community Taxon still be improved?
 Data-quality-assessment-community-taxon-species-level-or-lower = Community taxon at species level or lower
 # Data Quality Assessment section label: whether or not the observation date is accurate
@@ -325,6 +329,7 @@ Date-uploaded = Date uploaded
 Date-uploaded-header-short = Uploaded
 DATE-UPLOADED-NEWEST = DATE UPLOADED - NEWEST TO OLDEST
 DATE-UPLOADED-OLDEST = DATE UPLOADED - OLDEST TO NEWEST
+Date-uploaded-on-header-short = Uploaded on:
 # Used when displaying a relative time - in this case, X days ago (e.g. 3d = 3 days ago)
 datetime-difference-days = { $count }d
 # Used when displaying a relative time - in this case, X hours ago (e.g. 3h = 3 hours ago)
@@ -369,6 +374,8 @@ Deleting-x-of-y-observations-2 =
         [one] observation
        *[other] of { $total } observations
     }
+# Label for section of ObsDetails with information about copyright, upload date, etc.
+Details = Details
 # Tab label or section title for content that describes further details, e.g.
 # the details of an observation
 DETAILS = DETAILS
@@ -687,6 +694,8 @@ MISSING-EVIDENCE = MISSING EVIDENCE
 Monthly-Donor = Monthly Donor
 Months = Months
 MONTHS = MONTHS
+# Label for section of ObsDetails with information about obseration projects, DQA, etc.
+More = More
 More-info = More info
 MOST-FAVED = MOST FAVED
 Most-faved = Most faved
@@ -752,6 +761,8 @@ Not-enough-space-left-on-device = Not enough space left on device
 Not-enough-space-left-on-device-try-again = There is not enough storage space left on your device to do that. Please free up some space and try again.
 # Header for observation description on observation detail
 NOTES = NOTES
+# Label for section in ObsDetails with notes/description of observation
+Notes = Notes
 NOTIFICATIONS = NOTIFICATIONS
 Notifications = Notifications
 # notification when someone adds a comment to your observation
@@ -770,6 +781,7 @@ Obscured = Obscured
 Observation = Observation
 Observation-Attribution = Observation: © { $userName } · { $restrictions }
 OBSERVATION-BUTTON = OBSERVATION BUTTON
+Observation-Copyright = Observation Copyright: © { $userName } · { $restrictions }
 Observation-has-no-photos-and-no-sounds = This observation has no photos and no sounds.
 # Displayed when user views an obscured location on the ObsDetail map screen
 Observation-location-obscured-randomized-point = This observation’s location is obscured. You are seeing a randomized point within the obscuration polygon.
@@ -804,6 +816,8 @@ Observe-and-identify-organisms-from-your-gallery = Observe and identify organism
 Observe-and-identify-organisms-in-real-time-with-your-camera = Observe and identify organisms in real time with your camera
 # Text for a button prompting the user to grant access to the camera
 OBSERVE-ORGANISMS = OBSERVE ORGANISMS
+# This label is used in ObsDetails to describe the observation location
+OBSERVED-IN--label = OBSERVED IN
 Observers = Observers
 # Section in Explore that shows people who added observations given a set of search filters
 Observers-View = Observers View
