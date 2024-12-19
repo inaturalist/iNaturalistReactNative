@@ -62,7 +62,7 @@ const ActivitySection = ( {
 
   return (
     <View testID="ActivitySection">
-      <Heading3 className="m-4">{t( "Activity" )}</Heading3>
+      <Heading3 className="m-4">{t( "Community" )}</Heading3>
       <Divider />
       {stableItems.length === 0
         ? (

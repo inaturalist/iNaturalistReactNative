@@ -48,8 +48,8 @@ const CommunityTaxon = ( {
   );
 
   return (
-    <View className="bg-white px-3">
-      <View className="flex-row my-[11px] mx-3 items-center">
+    <View className="bg-white px-5 pt-5">
+      <View className="flex-row my-[11px] items-center">
         <View className="shrink">
           {observation && showCommunityTaxon( )}
         </View>

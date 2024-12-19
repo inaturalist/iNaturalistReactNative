@@ -17,15 +17,13 @@ import ObsMedia from "./ObsMedia";
 type Props = {
   loading: boolean,
   photos: Array<Object>,
-  sounds: Array<Object>,
-  tablet: boolean
+  sounds: Array<Object>
 }
 
 const ObsMediaDisplay = ( {
   loading,
   photos = [],
-  sounds = [],
-  tablet
+  sounds = []
 }: Props ): Node => {
   const { t } = useTranslation( );
 
@@ -38,7 +36,6 @@ const ObsMediaDisplay = ( {
           loading={loading}
           photos={photos}
           sounds={sounds}
-          tablet={tablet}
         />
         {!loading && items.length > 1 && (
           <View className="absolute bottom-5 left-5">
@@ -52,10 +49,7 @@ const ObsMediaDisplay = ( {
   return (
     <View
       className={classnames(
-        "bg-black flex-row justify-center items-center",
-        tablet
-          ? "h-full"
-          : "h-72"
+        "bg-black flex-row justify-center items-center h-72"
       )}
       accessible
       accessibilityLabel={t( "Observation-has-no-photos-and-no-sounds" )}

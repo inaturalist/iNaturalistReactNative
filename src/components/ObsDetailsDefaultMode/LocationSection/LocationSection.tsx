@@ -1,148 +1,63 @@
-// import Clipboard from "@react-native-clipboard/clipboard";
+import classnames from "classnames";
 import {
-  DetailsMap,
+  DateDisplay,
   Heading5,
-  // Heading4,
-  // KebabMenu,
-  Map,
-  Modal,
-  ObservationLocation
+  List2,
+  SimpleObservationLocation
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import React, { useCallback, useMemo, useState } from "react";
-// import createOpenLink from "react-native-open-maps";
+import React from "react";
 import Observation from "realmModels/Observation";
 import { useCurrentUser } from "sharedHooks";
 
-import DetailsMapHeader from "./DetailsMapHeader";
 import ObscurationExplanation from "./ObscurationExplanation";
 
 interface Props {
+  belongsToCurrentUser: boolean,
   observation: Observation
 }
 
-const DETAILS_MAP_MODAL_STYLE = { margin: 0 };
-
-// const headingClass = "mt-[20px] mb-[11px] text-darkGray";
-const sectionClass = "mx-[15px] mb-[20px]";
-
-const LocationSection = ( { observation }: Props ) => {
+const LocationSection = ( { belongsToCurrentUser, observation }: Props ) => {
   const currentUser = useCurrentUser( );
-  // const [locationKebabMenuVisible, setLocationKebabMenuVisible] = useState( false );
-  const [showMapModal, setShowMapModal] = useState( false );
-  // const showShareOptions = observation && !!(
-  //   !observation.obscured || observation.privateLatitude
-  // );
-  const latitude = observation.privateLatitude || observation.latitude;
-  const longitude = observation.privateLongitude || observation.longitude;
-  const coordinateString = t( "Lat-Lon", {
-    latitude,
-    longitude
-  } );
+  const geoprivacy = observation?.geoprivacy;
+  const taxonGeoprivacy = observation?.taxon_geoprivacy;
 
-  const openMapScreen = useCallback( ( ) => setShowMapModal( true ), [] );
-
-  const taxonId = observation?.taxon?.id;
-
-  const tileMapParams = useMemo( ( ) => ( taxonId
-    ? {
-      taxon_id: taxonId,
-      verifiable: true
-    }
-    : null ), [taxonId] );
-
-  const displayMap = useCallback(
-    ( ) => (
-      <Map
-        mapHeight={230}
-        observation={observation}
-        openMapScreen={openMapScreen}
-        scrollEnabled={false}
-        showLocationIndicator
-        tileMapParams={tileMapParams}
-        withObsTiles={tileMapParams !== null}
-        zoomEnabled={false}
-        zoomTapEnabled={false}
-      />
-    ),
-    [
-      observation,
-      tileMapParams,
-      openMapScreen
-    ]
-  );
-
-  const showModalMap = useMemo( ( ) => (
-    <DetailsMap
-      coordinateString={coordinateString}
-      closeModal={( ) => setShowMapModal( false )}
-      observation={observation}
-      tileMapParams={tileMapParams}
-      showLocationIndicator
-      headerTitle={(
-        <DetailsMapHeader currentUser={currentUser} observation={observation} />
-      )}
-    />
-  ), [
-    coordinateString,
-    currentUser,
-    observation,
-    tileMapParams
-  ] );
+  const cardClass = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mx-0.5";
 
   return (
-    <View className="py-5">
-      {/* <View className="flex-row justify-between items-center mt-[8px] mx-[15px]">
-        <Heading4 className={headingClass}>{t( "LOCATION" )}</Heading4>
-        {showShareOptions && (
-          <KebabMenu
-            visible={locationKebabMenuVisible}
-            setVisible={setLocationKebabMenuVisible}
-          >
-            <KebabMenu.Item
-              isFirst
-              title={t( "Share-location" )}
-              onPress={() => createOpenLink(
-                { query: `${latitude},${longitude}` }
-              )}
-            />
-            <KebabMenu.Item
-              title={t( "Copy-coordinates" )}
-              onPress={() => Clipboard.setString( coordinateString )}
-            />
-          </KebabMenu>
-        )}
-      </View> */}
-      {( observation.latitude || observation.private_latitude ) && (
-        <>
-          { displayMap( ) }
-          <Modal
-            animationIn="fadeIn"
-            animationOut="fadeOut"
-            showModal={showMapModal}
-            closeModal={( ) => setShowMapModal( false )}
-            disableSwipeDirection
-            style={DETAILS_MAP_MODAL_STYLE}
-            modal={showModalMap}
-          />
-        </>
-      )}
+    <View className="pt-1 pb-5">
       <View className="m-4">
-        <Heading5>
+        <Heading5 className="mb-2">
           {t( "OBSERVED-IN--label" )}
         </Heading5>
-        <View className={`mt-[11px] space-y-[11px] ${sectionClass}`}>
-          <ObservationLocation observation={observation} details />
-          {observation.obscured && (
-            <ObscurationExplanation
-              textClassName="ml-[20px] mt-[10px]"
-              observation={observation}
-              currentUser={currentUser}
+        <SimpleObservationLocation observation={observation} />
+        {observation.obscured && (
+          <ObscurationExplanation
+            textClassName="ml-[20px] mt-[10px]"
+            observation={observation}
+            currentUser={currentUser}
+          />
+        ) }
+        {observation && (
+          <View className="mt-2">
+            <DateDisplay
+              dateString={
+                observation.time_observed_at
+              || observation.observed_on_string
+              || observation.observed_on
+              }
+              geoprivacy={geoprivacy}
+              taxonGeoprivacy={taxonGeoprivacy}
+              belongsToCurrentUser={belongsToCurrentUser}
+              maxFontSizeMultiplier={1}
+              hideIcon
+              textComponent={List2}
             />
-          ) }
-        </View>
+          </View>
+        )}
       </View>
+      <View className={classnames( cardClass )} />
     </View>
   );
 };

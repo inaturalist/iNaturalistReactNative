@@ -1,4 +1,5 @@
 // @flow
+import classnames from "classnames";
 import {
   DateDisplay,
   InlineUser
@@ -21,23 +22,27 @@ const ObserverDetails = ( {
   const geoprivacy = observation?.geoprivacy;
   const taxonGeoprivacy = observation?.taxon_geoprivacy;
 
+  const cardClass = "rounded-t-2xl border-lightGray border-[2px] mt-5 border-b-0 -mx-0.5";
+
   return (
     <View className="bg-white">
-      <View className="flex-row justify-between mx-[15px] my-[13px]">
-        <InlineUser user={observation?.user} isConnected={isConnected} />
-        {observation && (
-          <DateDisplay
-            dateString={
-              observation.time_observed_at
+      <View className={classnames( cardClass )}>
+        <View className="flex-row justify-between mx-[15px] my-[13px]">
+          <InlineUser user={observation?.user} isConnected={isConnected} />
+          {observation && (
+            <DateDisplay
+              dateString={
+                observation.time_observed_at
               || observation.observed_on_string
               || observation.observed_on
-            }
-            geoprivacy={geoprivacy}
-            taxonGeoprivacy={taxonGeoprivacy}
-            belongsToCurrentUser={belongsToCurrentUser}
-            maxFontSizeMultiplier={1}
-          />
-        )}
+              }
+              geoprivacy={geoprivacy}
+              taxonGeoprivacy={taxonGeoprivacy}
+              belongsToCurrentUser={belongsToCurrentUser}
+              maxFontSizeMultiplier={1}
+            />
+          )}
+        </View>
       </View>
     </View>
   );

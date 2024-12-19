@@ -1,13 +1,14 @@
 // @flow
 
+import
+ObscurationExplanation
+  from "components/ObsDetailsDefaultMode/LocationSection/ObscurationExplanation.tsx";
 import {
   ObservationLocation
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-
-import ObscurationExplanation from "./ObscurationExplanation";
 
 type Props = {
   currentUser: { id: number },

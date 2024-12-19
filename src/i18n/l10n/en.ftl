@@ -41,8 +41,6 @@ Account-Deleted = Account Deleted
 # Label for button that shows all account settings
 ACCOUNT-SETTINGS = ACCOUNT SETTINGS
 ACTIVITY = ACTIVITY
-# Label for section of ObsDetails with community comments and ids
-Activity = Activity
 # Label for a button that adds a vote of agreement
 Add-agreement = Add agreement
 ADD-AN-ID = ADD AN ID
@@ -228,6 +226,8 @@ COMMENT = COMMENT
 Comment-options = Comment options
 # Label for a setting that shows the common name first
 Common-Name-Scientific-Name = Common Name (Scientific Name)
+# Label for section of ObsDetails with community comments and ids
+Community = Community
 Community-based = Community-based
 Community-Guidelines = Community Guidelines
 COMMUNITY-GUIDELINES = COMMUNITY GUIDELINES

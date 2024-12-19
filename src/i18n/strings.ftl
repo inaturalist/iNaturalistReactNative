@@ -42,7 +42,7 @@ Account-Deleted = Account Deleted
 ACCOUNT-SETTINGS = ACCOUNT SETTINGS
 ACTIVITY = ACTIVITY
 # Label for section of ObsDetails with community comments and ids
-Activity = Activity
+Community = Community
 # Label for a button that adds a vote of agreement
 Add-agreement = Add agreement
 ADD-AN-ID = ADD AN ID

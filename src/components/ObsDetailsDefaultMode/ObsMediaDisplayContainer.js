@@ -6,8 +6,7 @@ import React, { useMemo } from "react";
 import ObsMediaDisplay from "./ObsMediaDisplay";
 
 type Props = {
-  observation: Object,
-  tablet?: boolean
+  observation: Object
 }
 
 // TODO replace this hack. Without this you get errors about the
@@ -28,8 +27,7 @@ function jsonifyPotentialRealmObjects( objects ) {
 }
 
 const ObsMediaDisplayContainer = ( {
-  observation,
-  tablet = false
+  observation
 }: Props ): Node => {
   const photos = useMemo( ( ) => jsonifyPotentialRealmObjects(
     (
@@ -54,7 +52,6 @@ const ObsMediaDisplayContainer = ( {
       loading={!observation}
       photos={photos}
       sounds={sounds}
-      tablet={tablet}
     />
   );
 };

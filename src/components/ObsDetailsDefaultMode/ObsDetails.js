@@ -22,12 +22,13 @@ import {
   useTranslation
 } from "sharedHooks";
 
-import ActivitySection from "./ActivitySection/ActivitySection";
-import FloatingButtons from "./ActivitySection/FloatingButtons";
+import CommunitySection from "./CommunitySection/CommunitySection";
+import FloatingButtons from "./CommunitySection/FloatingButtons";
 import CommunityTaxon from "./CommunityTaxon";
 import DetailsSection from "./DetailsSection/DetailsSection";
 import FaveButton from "./FaveButton";
 import LocationSection from "./LocationSection/LocationSection";
+import MapSection from "./MapSection/MapSection";
 import MoreSection from "./MoreSection/MoreSection";
 import ObsDetailsHeaderRight from "./ObsDetailsHeaderRight";
 import ObserverDetails from "./ObserverDetails";
@@ -168,9 +169,13 @@ const ObsDetails = ( {
           belongsToCurrentUser={belongsToCurrentUser}
           observation={observation}
         />
-        <LocationSection observation={observation} />
+        <MapSection observation={observation} />
+        <LocationSection
+          belongsToCurrentUser={belongsToCurrentUser}
+          observation={observation}
+        />
         <View className="bg-white h-full">
-          <ActivitySection
+          <CommunitySection
             activityItems={activityItems}
             isConnected={isConnected}
             targetItemID={targetActivityItemID}
