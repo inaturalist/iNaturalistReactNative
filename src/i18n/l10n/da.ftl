@@ -339,6 +339,7 @@ Identify-an-organism = Identificér en organisme
 Identify-an-organism-with-the-iNaturalist-AI-Camera = Identificér en organisme med iNaturalist AI-kamera
 Identify-record-learn = Identificér, registrér og få viden om alle levende arter på jorden med iNaturalist
 If-an-account-with-that-email-exists = Findes en konto med denne e-mail, har vi sendt en vejledning til nulstilling af adgangskode til denne e-mail.
+If-you-have-an-existing-account-try-sign-in-reset = Har man en aktiv iNat-konto, forsøg at logge ind med brugernavnet og adgangskoden, eller prøv at nulstille adgangskoden via den med kontoen associerede e-mailadresse.
 If-you-leave-x-of-your-observations-removed =
     Forlader man dette traditionelle projekt, fjernes { $count ->
         [one] 1 af ens observationer

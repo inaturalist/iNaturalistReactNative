@@ -345,6 +345,7 @@ Identify-an-organism = Betäm en organism
 Identify-an-organism-with-the-iNaturalist-AI-Camera = Bestäm en organism med iNaturalists AI-kamera
 Identify-record-learn = Bestäm, spara och lära dig om alla levande arter på jorden, med iNaturalist
 If-an-account-with-that-email-exists = Om ett konto med den e-posten finns, har vi skickat instruktioner för att återställa lösenordet till din e-post.
+If-you-have-an-existing-account-try-sign-in-reset = Om du har ett befintligt iNat-konto försök logga in med ditt användarnamn och lösenord, eller försök återställa ditt lösenord med den e-postadress som är kopplad till ditt konto.
 If-you-leave-x-of-your-observations-removed =
     Om du lämnar detta traditionella projekt, { $count ->
         [one] 1 av dina fynd

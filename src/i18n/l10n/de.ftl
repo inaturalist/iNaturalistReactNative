@@ -32,7 +32,7 @@ ADD-OPTIONAL-COMMENT = OPTIONALEN KOMMENTAR HINZUFÜGEN
 Add-optional-notes = Optionale Anmerkungen hinzufügen
 Adds-your-vote-of-agreement = Fügt deine Zustimmung hinzu
 Adds-your-vote-of-disagreement = Fügt deinen Widerspruch hinzu
-Affiliation = Zugehörigkeit: { $site }
+Affiliation = Netzwerk: { $site }
 Agree = Zustimmen
 AGREE = Zustimmen
 Agree-to-all-of-the-above = Allen oben genannten Punkten zustimmen
@@ -337,6 +337,7 @@ Identify-an-organism = Organismus bestimmen
 Identify-an-organism-with-the-iNaturalist-AI-Camera = Bestimme einen Organismus mit der iNaturalist KI-Kamera
 Identify-record-learn = Bestimme, erfasse und entdecke mit iNaturalist die Artenvielfalt der Welt
 If-an-account-with-that-email-exists = Wenn ein Konto mit dieser E-Mail-Adresse existiert, wurden Anweisungen zum Zurücksetzen des Passworts an deine E-Mail-Adresse gesendet.
+If-you-have-an-existing-account-try-sign-in-reset = Wenn du bereits ein iNat-Konto hast, versuche dich mit deinem Benutzernamen und Passwort anzumelden, oder versuche dein Passwort mit der E-Mail-Adresse deines Kontos zurückzusetzen.
 If-you-leave-x-of-your-observations-removed =
     Wenn du dieses traditionelle Projekt verlässt, { $count ->
         [one] wird eine deiner Beobachtungen
@@ -402,8 +403,8 @@ JOINED-X-PROJECTS =
     }
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
-        [one] Tagebucheintrag
-       *[other] Tagebucheinträge
+        [one] Journal-Beitrag
+       *[other] Journal-Beiträge
     }
 July = Juli
 June = Juni
@@ -779,8 +780,8 @@ Species = Arten
 Species-View = Arten-Ansicht
 SPECIES-WITHOUT-NUMBER =
     { $count ->
-        [one] Art
-       *[other] Arten
+        [one] ART
+       *[other] ARTEN
     }
 Standard--map-type = Standard
 Start-must-be-before-end = Das Startdatum muss vor dem Enddatum liegen.
@@ -880,7 +881,7 @@ VIEW-CHILDREN-TAXA = UNTERGEORDNETE TAXA ANZEIGEN
 VIEW-DATA-QUALITY-ASSESSMENT = BEWERTUNG DER DATENQUALITÄT ANZEIGEN
 VIEW-EDUCATORS-GUIDE = LEITFADEN FÜR PÄDAGOGEN ANZEIGEN
 VIEW-FOLLOWERS = FOLLOWER ANZEIGEN
-VIEW-FOLLOWING = PERSONEN, DENEN DU FOLGST
+VIEW-FOLLOWING = FOLGT DIESEN PERSONEN
 View-in-browser = Im Browser anzeigen
 VIEW-IN-EXPLORE = IN ERKUNDEN ANZEIGEN
 VIEW-INATURALIST-HELP = HILFE FÜR INATURALIST ANZEIGEN
