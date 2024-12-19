@@ -126,9 +126,21 @@ function showSignInWithGoogleFailed() {
 async function signInWithGoogle( realm: Realm ) {
   const hasPlayServices = await confirmGooglePlayServices( );
   if ( !hasPlayServices ) return false;
-  const signInResp = await GoogleSignin.signIn();
+  let signInResp;
+  try {
+    signInResp = await GoogleSignin.signIn();
+  } catch ( signInError ) {
+    logger.error( "Failed to sign in with Google", signInError );
+    return false;
+  }
   if ( signInResp.type === "cancelled" ) return false;
-  const tokens = await GoogleSignin.getTokens();
+  let tokens;
+  try {
+    tokens = await GoogleSignin.getTokens();
+  } catch ( getTokensError ) {
+    logger.error( "Failed to get tokens from Google", getTokensError );
+    return false;
+  }
   if ( !tokens?.accessToken ) return false;
   try {
     await authenticateUserByAssertion( "google", tokens.accessToken, realm );

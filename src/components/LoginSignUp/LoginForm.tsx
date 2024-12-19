@@ -1,8 +1,6 @@
 import { AppleButton } from "@invertase/react-native-apple-authentication";
-import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
-import Debug from "components/Developer/Debug.tsx";
 import {
   Body1, Body2, Button, INatIcon, List2
 } from "components/SharedComponents";
@@ -200,22 +198,12 @@ const LoginForm = ( {
             onPress={() => logIn( async ( ) => signInWithApple( realm ) )}
           />
         ) }
-        <Debug>
-          <View className="w-full items-center mt-3">
-            <GoogleSigninButton
-              size={GoogleSigninButton.Size.Wide}
-              color={GoogleSigninButton.Color.Light}
-              onPress={() => logIn( async ( ) => signInWithGoogle( realm ) )}
-              disabled={loading}
-            />
-            <GoogleSigninButton
-              size={GoogleSigninButton.Size.Wide}
-              color={GoogleSigninButton.Color.Dark}
-              onPress={() => logIn( async ( ) => signInWithGoogle( realm ) )}
-              disabled={loading}
-            />
-          </View>
-        </Debug>
+        <Button
+          text={t( "Sign-in-with-Google" )}
+          onPress={() => logIn( async ( ) => signInWithGoogle( realm ) )}
+          disabled={loading}
+          className="mt-3"
+        />
         {!hideFooter && (
           <Body1
             className={classnames(

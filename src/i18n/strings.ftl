@@ -1097,6 +1097,8 @@ Shows-iNaturalist-bird-logo = Shows iNaturalist bird logo.
 Shows-observation-creation-options = Shows observation creation options
 # Title of an error alert when Sign in with Apple fails
 Sign-in-with-Apple-Failed = Sign in with Apple Failed
+# Label for button that allows user to sign in with their Google account
+Sign-in-with-Google = Sign in with Google
 Sign-in-with-Google-Failed = Sign in with Google Failed
 Some-data-privacy-laws = Some data privacy laws, like the European Union's General Data Protection Regulation (GDPR), require explicit consent to transfer personal information from their jurisdictions to other jurisdictions where the legal protection of this information is not considered adequate. As of 2020, the European Union no longer considers the United States to be a jurisdiction that provides adequate legal protection of personal information, specifically because of the possibility of the US government surveilling data entering the US. It is possible other jurisdictions may have the same opinion.
 # Generic error message
