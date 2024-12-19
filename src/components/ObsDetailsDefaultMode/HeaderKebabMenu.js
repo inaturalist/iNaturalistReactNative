@@ -8,13 +8,11 @@ import { Alert, Platform, Share } from "react-native";
 const observationsUrl = "https://www.inaturalist.org/observations";
 
 type Props = {
-  observationId: number,
-  white?: boolean
+  observationId: number
 }
 
 const HeaderKebabMenu = ( {
-  observationId,
-  white = true
+  observationId
 }: Props ): Node => {
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
 
@@ -44,7 +42,6 @@ const HeaderKebabMenu = ( {
     <KebabMenu
       visible={kebabMenuVisible}
       setVisible={setKebabMenuVisible}
-      white={white}
       accessibilityLabel={t( "Observation-options" )}
       accessibilityHint={t( "Show-observation-options" )}
       large
