@@ -30,6 +30,14 @@
 				<string>inaturalistmobile</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.796686868523-4m5ne09fa17p5me04s1qdlsnci9e8qeo</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>132</string>
@@ -55,6 +63,8 @@
 	<string>Add existing sounds to your observations.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>iNaturalist Next uses the camera to add photos to your observations of nature.</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>© iNaturalist</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
@@ -94,7 +104,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSHumanReadableCopyright</key>
-	<string>© iNaturalist</string>
 </dict>
 </plist>

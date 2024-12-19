@@ -1,4 +1,10 @@
 PODS:
+  - AppAuth (1.7.6):
+    - AppAuth/Core (= 1.7.6)
+    - AppAuth/ExternalUserAgent (= 1.7.6)
+  - AppAuth/Core (1.7.6)
+  - AppAuth/ExternalUserAgent (1.7.6):
+    - AppAuth/Core
   - boost (1.83.0)
   - BVLinearGradient (2.8.3):
     - React-Core
@@ -21,6 +27,14 @@ PODS:
     - ReactCommon/turbomodule/core (= 0.73.7)
   - fmt (6.2.1)
   - glog (0.3.5)
+  - GoogleSignIn (7.1.0):
+    - AppAuth (< 2.0, >= 1.7.3)
+    - GTMAppAuth (< 5.0, >= 4.1.1)
+    - GTMSessionFetcher/Core (~> 3.3)
+  - GTMAppAuth (4.1.1):
+    - AppAuth/Core (~> 1.7)
+    - GTMSessionFetcher/Core (< 4.0, >= 3.3)
+  - GTMSessionFetcher/Core (3.5.0)
   - hermes-engine (0.73.7):
     - hermes-engine/Pre-built (= 0.73.7)
   - hermes-engine/Pre-built (0.73.7)
@@ -1151,6 +1165,9 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
+  - RNGoogleSignin (13.1.0):
+    - GoogleSignIn (~> 7.1)
+    - React-Core
   - RNLocalize (3.1.0):
     - React-Core
   - RNPermissions (4.1.5):
@@ -1276,6 +1293,7 @@ DEPENDENCIES:
   - "RNFlashList (from `../node_modules/@shopify/flash-list`)"
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNLocalize (from `../node_modules/react-native-localize`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -1290,7 +1308,11 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - AppAuth
     - fmt
+    - GoogleSignIn
+    - GTMAppAuth
+    - GTMSessionFetcher
     - libevent
     - MMKV
     - MMKVCore
@@ -1461,6 +1483,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-fs"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNGoogleSignin:
+    :path: "../node_modules/@react-native-google-signin/google-signin"
   RNLocalize:
     :path: "../node_modules/react-native-localize"
   RNPermissions:
@@ -1485,6 +1509,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
@@ -1493,6 +1518,9 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: 40b791f4a1df779e7e4aa12c000319f4f216d40a
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
+  GoogleSignIn: d4281ab6cf21542b1cfaff85c191f230b399d2db
+  GTMAppAuth: f69bd07d68cd3b766125f7e072c45d7340dea0de
+  GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
   hermes-engine: 39589e9c297d024e90fe68f6830ff86c4e01498a
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   MMKV: f7d1d5945c8765f97f39c3d121f353d46735d801
@@ -1571,6 +1599,7 @@ SPEC CHECKSUMS:
   RNFlashList: 818cb6cff1f47cabe1acd6298c98af1a39b9b18c
   RNFS: 89de7d7f4c0f6bafa05343c578f61118c8282ed8
   RNGestureHandler: e262eeb792addec0705a116456f210ee1be0dcd0
+  RNGoogleSignin: ba93c1137f8d5cebdd39b04f493fd212ddf5ecd6
   RNLocalize: 080849cb8a824d9f759b8a5ae00c8321d46dbed0
   RNPermissions: f14c20f4eb7a20fff611ad9f467da7bb5872ac4f
   RNReanimated: b158619f02f1384a5be9e1203b58e0e4a80407d7
@@ -1586,4 +1615,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: eff4b75123af5d6680139a78c055b44ad37c269b
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.14.3
