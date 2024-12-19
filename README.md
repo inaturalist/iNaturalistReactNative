@@ -350,3 +350,5 @@ After this command line call, attach the latest build to the new version in the 
 1. Wait at least a day for internal testers to report any blocking problems
 1. `bundle exec fastlane beta` to distribute the builds to external test groups in TestFlight and the Play Store
 1. After receiving OK during iteration meeting, make App Store release available
+    1. Start the staged release in App Store Connect
+    1. Mark the Github release as the latest non-pre-release

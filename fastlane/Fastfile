@@ -449,7 +449,8 @@ lane :release do
       description: changelog,
       # This is really just a fallback in case last_tag isn't really a tag
       commitish: "main",
-      upload_assets: [apk_path]
+      upload_assets: [apk_path],
+      is_prerelease: true
     )
   end
   system "git checkout #{original_branch}", exception: true
