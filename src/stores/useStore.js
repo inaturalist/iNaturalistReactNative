@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { MMKV } from "react-native-mmkv";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
@@ -73,9 +74,22 @@ const useStore = create( persist(
   {
     name: "persisted-zustand",
     partialize: state => ( {
-      isAdvancedUser: state.isAdvancedUser
+      // Vestigial un-namespaced values in the layout slice
+      isAdvancedUser: state.isAdvancedUser,
+      obsDetailsTab: state.obsDetailsTab,
+
+      // Dynamically select all values in the layout slice's namespace
+      layout: ( Object.keys( state.layout ).reduce( ( memo, key ) => {
+        if ( typeof ( state.layout[key] ) !== "function" ) {
+          memo[key] = state.layout[key];
+        }
+        return memo;
+      }, {} ) )
     } ),
-    storage: createJSONStorage( () => zustandStorage )
+    storage: createJSONStorage( () => zustandStorage ),
+    // We need to deep merge to persist nested objects, like layout
+    // https://zustand.docs.pmnd.rs/middlewares/persist#persisting-a-state-with-nested-objects
+    merge: ( persisted, current ) => _.merge( current, persisted )
   }
 ) );
 

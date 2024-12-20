@@ -21,6 +21,7 @@ import { fetchTaxonAndSave } from "sharedHelpers/taxon";
 import {
   useAuthenticatedMutation,
   useCurrentUser,
+  useLayoutPrefs,
   useLocalObservation,
   useObservationsUpdates,
   useTranslation
@@ -174,8 +175,10 @@ const reducer = ( state, action ) => {
 
 const ObsDetailsContainer = ( ): Node => {
   const setObservations = useStore( state => state.setObservations );
-  const obsDetailsTab = useStore( state => state.obsDetailsTab );
-  const setObsDetailsTab = useStore( state => state.setObsDetailsTab );
+  const {
+    obsDetailsTab,
+    setObsDetailsTab
+  } = useLayoutPrefs( );
   const currentUser = useCurrentUser( );
   const { params } = useRoute();
   const {

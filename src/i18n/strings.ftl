@@ -64,6 +64,7 @@ Add-optional-notes = Add optional notes
 Adds-your-vote-of-agreement = Adds your vote of agreement
 # Hint for a button that adds a vote of disagreement
 Adds-your-vote-of-disagreement = Adds your vote of disagreement
+Advanced--interface-mode = Advanced
 Affiliation = Affiliation: { $site }
 # Label for button that adds an identification of the same taxon as another identification
 Agree = Agree
@@ -346,6 +347,7 @@ datetime-format-long = Pp
 datetime-format-short = M/d/yy h:mm a
 # Month of December
 December = December
+Default--interface-mode = Default
 DELETE = DELETE
 Delete-all-observations = Delete all observations
 Delete-comment = Delete comment
@@ -579,6 +581,7 @@ iNaturalist-has-no-ID-suggestions-for-this-photo = iNaturalist has no ID suggest
 INATURALIST-HELP-PAGE = INATURALIST HELP PAGE
 iNaturalist-helps-you-identify = iNaturalist helps you identify the plants and animals around you while generating data for science and conservation. Get connected with a community of millions scientists and naturalists who can help you learn more about nature!
 iNaturalist-identification-suggestions-are-based-on = iNaturalist's identification suggestions are based on observations and identifications made by the iNaturalist community, including { $user1 }, { $user2 }, { $user3 }, and many others.
+INATURALIST-INTERFACE-MODE = INATURALIST INTERFACE MODE
 iNaturalist-is-a-501 = iNaturalist is a 501(c)(3) non-profit in the United States of America (Tax ID/EIN 92-1296468).
 iNaturalist-is-a-community-of-naturalists = iNaturalist is a community of naturalists that works together to create and identify wild biodiversity observations.
 iNaturalist-is-loading-ID-suggestions = iNaturalist is loading ID suggestions...
