@@ -8,6 +8,7 @@ import { t } from "i18next";
 import { getCurrentRoute } from "navigation/navigationUtils.ts";
 import * as React from "react";
 import { log } from "sharedHelpers/logger";
+import { useLayoutPrefs } from "sharedHooks";
 import useStore from "stores/useStore";
 
 const logger = log.extend( "AddObsButton" );
@@ -19,12 +20,14 @@ const AddObsButton = (): React.Node => {
   const closeModal = React.useCallback( () => setModal( false ), [] );
 
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
-  const isAdvancedUser = useStore( state => state.isAdvancedUser );
+  const { isAllAddObsOptionsMode } = useLayoutPrefs( );
   const navigation = useNavigation( );
   React.useEffect( ( ) => {
-    // don't remove this logger.info statement: it's used for internal metrics
-    logger.info( `isAdvancedUser: ${isAdvancedUser}` );
-  }, [isAdvancedUser] );
+    // don't remove this logger.info statement: it's used for internal
+    // metrics. isAdvancedUser name is vestigial, changing it will make it
+    // impossible to compare with older log data
+    logger.info( `isAdvancedUser: ${isAllAddObsOptionsMode}` );
+  }, [isAllAddObsOptionsMode] );
 
   const navAndCloseModal = ( screen, params ) => {
     const currentRoute = getCurrentRoute();
@@ -74,15 +77,15 @@ const AddObsButton = (): React.Node => {
       />
       <GradientButton
         sizeClassName="w-[69px] h-[69px]"
-        onPress={isAdvancedUser
+        onPress={isAllAddObsOptionsMode
           ? openModal
           : navToARCamera}
         accessibilityLabel={t( "Add-observations" )}
-        accessibilityHint={isAdvancedUser
+        accessibilityHint={isAllAddObsOptionsMode
           ? t( "Shows-observation-creation-options" )
           : t( "Opens-AI-camera" )}
-        iconName={isAdvancedUser && "plus"}
-        iconSize={isAdvancedUser && 31}
+        iconName={isAllAddObsOptionsMode && "plus"}
+        iconSize={isAllAddObsOptionsMode && 31}
       />
     </>
   );
