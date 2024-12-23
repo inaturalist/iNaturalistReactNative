@@ -1,5 +1,3 @@
-// @flow
-
 import { RealmContext } from "providers/contexts.ts";
 import {
   useEffect,
@@ -14,7 +12,11 @@ const { useRealm } = RealmContext;
 
 const useOfflineSuggestions = (
   selectedPhotoUri: string,
-  options: Object
+  options: {
+    dispatch: () => void,
+    flattenedUploadParams: Object,
+    tryOfflineSuggestions: boolean
+  }
 ): {
   offlineSuggestions: Array<Object>
 } => {
@@ -22,13 +24,19 @@ const useOfflineSuggestions = (
   const [offlineSuggestions, setOfflineSuggestions] = useState( [] );
   const [error, setError] = useState( null );
 
-  const { dispatch, tryOfflineSuggestions } = options;
+  const { dispatch, flattenedUploadParams, tryOfflineSuggestions } = options;
+
+  console.log( "flattenedUploadParams", flattenedUploadParams );
 
   useEffect( ( ) => {
     const predictOffline = async ( ) => {
       let rawPredictions = [];
       try {
-        const result = await predictImage( selectedPhotoUri );
+        const location = {
+          latitude: flattenedUploadParams?.lat,
+          longitude: flattenedUploadParams?.lng
+        };
+        const result = await predictImage( selectedPhotoUri, location );
         rawPredictions = result.predictions;
       } catch ( predictImageError ) {
         dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "offline-error" } );
@@ -71,7 +79,7 @@ const useOfflineSuggestions = (
         setError( predictOfflineError );
       } );
     }
-  }, [selectedPhotoUri, tryOfflineSuggestions, setError, dispatch, realm] );
+  }, [selectedPhotoUri, tryOfflineSuggestions, setError, dispatch, realm, flattenedUploadParams] );
 
   if ( error ) throw error;
 
