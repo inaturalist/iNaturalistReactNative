@@ -26,8 +26,6 @@ const useOfflineSuggestions = (
 
   const { dispatch, flattenedUploadParams, tryOfflineSuggestions } = options;
 
-  console.log( "flattenedUploadParams", flattenedUploadParams );
-
   useEffect( ( ) => {
     const predictOffline = async ( ) => {
       let rawPredictions = [];
