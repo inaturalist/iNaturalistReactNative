@@ -25,6 +25,7 @@ import {
 } from "sharedHelpers/visionCameraPatches";
 import { useDeviceOrientation } from "sharedHooks";
 import useStore from "stores/useStore";
+import { lookUpLocation } from "vision-camera-plugin-inatvision";
 
 type Props = {
   // $FlowIgnore
@@ -134,6 +135,10 @@ const FrameProcessorCamera = ( {
 
   const patchedOrientationAndroid = orientationPatchFrameProcessor( deviceOrientation );
   const patchedRunAsync = usePatchedRunAsync( );
+  const hasUserLocation = !!userLocation && !!userLocation?.latitude && !!userLocation?.longitude;
+  const location = hasUserLocation
+    ? lookUpLocation( userLocation )
+    : null;
   const frameProcessor = useFrameProcessor(
     frame => {
       "worklet";
@@ -166,12 +171,12 @@ const FrameProcessorCamera = ( {
             numStoredResults,
             cropRatio,
             patchedOrientationAndroid,
-            useGeomodel: !!userLocation,
+            useGeomodel: !!location,
             geomodelPath,
             location: {
-              latitude: userLocation?.latitude,
-              longitude: userLocation?.longitude,
-              elevation: userLocation?.altitude
+              latitude: location?.latitude,
+              longitude: location?.longitude,
+              elevation: location?.altitude
             }
           } );
           const timeAfter = Date.now();
@@ -194,7 +199,7 @@ const FrameProcessorCamera = ( {
       cropRatio,
       lastTimestamp,
       fps,
-      userLocation
+      location
     ]
   );
 
