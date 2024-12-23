@@ -19,8 +19,6 @@ import SliderControl from "./SliderControl";
 const AIDebugButton = ( {
   confidenceThreshold,
   setConfidenceThreshold,
-  taxonomyRollupCutoff,
-  setTaxonomyRollupCutoff,
   fps,
   setFPS,
   numStoredResults,
@@ -80,15 +78,6 @@ const AIDebugButton = ( {
               setValue={setConfidenceThreshold}
               precision={2}
               step={0.05}
-            />
-            <SliderControl
-              name="Taxonomy Rollup Cutoff"
-              min={0}
-              max={0.0001}
-              value={taxonomyRollupCutoff}
-              setValue={setTaxonomyRollupCutoff}
-              precision={5}
-              step={0.00001}
             />
             <SliderControl
               name="Center Crop Ratio (Android only)"
