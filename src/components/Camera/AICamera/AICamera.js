@@ -89,7 +89,6 @@ const AICamera = ( {
   } = useRotation( );
   const {
     confidenceThreshold,
-    taxonomyRollupCutoff,
     fps,
     handleTaxaDetected,
     modelLoaded,
@@ -98,7 +97,6 @@ const AICamera = ( {
     setResult,
     cropRatio,
     setConfidenceThreshold,
-    setTaxonomyRollupCutoff,
     setFPS,
     setNumStoredResults,
     setCropRatio
@@ -189,7 +187,6 @@ const AICamera = ( {
           <FrameProcessorCamera
             cameraRef={camera}
             confidenceThreshold={confidenceThreshold}
-            taxonomyRollupCutoff={taxonomyRollupCutoff}
             device={device}
             fps={fps}
             numStoredResults={numStoredResults}
@@ -267,7 +264,6 @@ const AICamera = ( {
       <AICameraButtons
         handleZoomButtonPress={handleZoomButtonPress}
         confidenceThreshold={confidenceThreshold}
-        taxonomyRollupCutoff={taxonomyRollupCutoff}
         cropRatio={cropRatio}
         flipCamera={onFlipCamera}
         fps={fps}
@@ -277,7 +273,6 @@ const AICamera = ( {
         numStoredResults={numStoredResults}
         rotatableAnimatedStyle={rotatableAnimatedStyle}
         setConfidenceThreshold={setConfidenceThreshold}
-        setTaxonomyRollupCutoff={setTaxonomyRollupCutoff}
         setCropRatio={setCropRatio}
         setFPS={setFPS}
         setNumStoredResults={setNumStoredResults}
