@@ -25,7 +25,6 @@ import {
 } from "sharedHelpers/visionCameraPatches";
 import { useDeviceOrientation } from "sharedHooks";
 import useStore from "stores/useStore";
-import { lookUpLocation } from "vision-camera-plugin-inatvision";
 
 type Props = {
   // $FlowIgnore
@@ -138,7 +137,7 @@ const FrameProcessorCamera = ( {
   // so we need to do this here before calling the useFrameProcessor hook.
   // For predictions from file this function runs in the vision-plugin code directly.
   const location = hasUserLocation
-    ? lookUpLocation( userLocation )
+    ? InatVision.lookUpLocation( userLocation )
     : null;
   const frameProcessor = useFrameProcessor(
     frame => {
