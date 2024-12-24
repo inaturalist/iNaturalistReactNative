@@ -133,6 +133,10 @@ const FrameProcessorCamera = ( {
   const patchedOrientationAndroid = orientationPatchFrameProcessor( deviceOrientation );
   const patchedRunAsync = usePatchedRunAsync( );
   const hasUserLocation = userLocation?.latitude != null && userLocation?.longitude != null;
+  // The vision-plugin has a function to look up the location of the user in a h3 gridded world
+  // unfortunately, I was not able to run this new function in the worklets directly,
+  // so we need to do this here before calling the useFrameProcessor hook.
+  // For predictions from file this function runs in the vision-plugin code directly.
   const location = hasUserLocation
     ? lookUpLocation( userLocation )
     : null;
