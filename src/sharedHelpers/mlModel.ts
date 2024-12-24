@@ -52,7 +52,7 @@ export const predictImage = ( uri: string, location: Location ) => {
   if ( !url ) {
     throw new Error( `predictImage received invalid URI: ${uri}` );
   }
-  const hasLocation = !!location && !!location?.latitude && !!location?.longitude;
+  const hasLocation = location?.latitude != null && location?.longitude != null;
   return getPredictionsForImage( {
     uri: url.toString(),
     modelPath,

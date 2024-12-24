@@ -132,7 +132,7 @@ const FrameProcessorCamera = ( {
 
   const patchedOrientationAndroid = orientationPatchFrameProcessor( deviceOrientation );
   const patchedRunAsync = usePatchedRunAsync( );
-  const hasUserLocation = !!userLocation && !!userLocation?.latitude && !!userLocation?.longitude;
+  const hasUserLocation = userLocation?.latitude != null && userLocation?.longitude != null;
   const location = hasUserLocation
     ? lookUpLocation( userLocation )
     : null;
@@ -167,7 +167,7 @@ const FrameProcessorCamera = ( {
             numStoredResults,
             cropRatio,
             patchedOrientationAndroid,
-            useGeomodel: !!location,
+            useGeomodel: hasUserLocation,
             geomodelPath,
             location: {
               latitude: location?.latitude,
@@ -194,6 +194,7 @@ const FrameProcessorCamera = ( {
       cropRatio,
       lastTimestamp,
       fps,
+      hasUserLocation,
       location
     ]
   );
