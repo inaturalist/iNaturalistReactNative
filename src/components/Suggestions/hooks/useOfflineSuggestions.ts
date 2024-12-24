@@ -14,7 +14,8 @@ const useOfflineSuggestions = (
   selectedPhotoUri: string,
   options: {
     dispatch: () => void,
-    flattenedUploadParams: Object,
+    latitude: number,
+    longitude: number,
     tryOfflineSuggestions: boolean
   }
 ): {
@@ -24,16 +25,15 @@ const useOfflineSuggestions = (
   const [offlineSuggestions, setOfflineSuggestions] = useState( [] );
   const [error, setError] = useState( null );
 
-  const { dispatch, flattenedUploadParams, tryOfflineSuggestions } = options;
+  const {
+    dispatch, latitude, longitude, tryOfflineSuggestions
+  } = options;
 
   useEffect( ( ) => {
     const predictOffline = async ( ) => {
       let rawPredictions = [];
       try {
-        const location = {
-          latitude: flattenedUploadParams?.lat,
-          longitude: flattenedUploadParams?.lng
-        };
+        const location = { latitude, longitude };
         const result = await predictImage( selectedPhotoUri, location );
         rawPredictions = result.predictions;
       } catch ( predictImageError ) {
@@ -77,7 +77,7 @@ const useOfflineSuggestions = (
         setError( predictOfflineError );
       } );
     }
-  }, [selectedPhotoUri, tryOfflineSuggestions, setError, dispatch, realm, flattenedUploadParams] );
+  }, [selectedPhotoUri, tryOfflineSuggestions, setError, dispatch, realm, latitude, longitude] );
 
   if ( error ) throw error;
 
