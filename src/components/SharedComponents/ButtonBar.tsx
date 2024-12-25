@@ -51,7 +51,6 @@ const ButtonBar = ( {
         const {
           title, onPress, isPrimary, ...props
         } = button;
-        console.log( "props", { ...props } );
         return (
           <Button
             maxFontSizeMultiplier={1}
@@ -63,7 +62,6 @@ const ButtonBar = ( {
           />
         );
       } )}
-
       {children}
     </View>
   );
