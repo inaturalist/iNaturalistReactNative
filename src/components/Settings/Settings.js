@@ -253,7 +253,6 @@ const Settings = ( ) => {
           </View>
           <View className="mt-4 pr-5">
             <RadioButtonRow
-              testID="all-observation-option"
               smallLabel
               checked={!isDefaultMode}
               onPress={( ) => setIsDefaultMode( false )}
