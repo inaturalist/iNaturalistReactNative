@@ -29,10 +29,10 @@ import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedMutation,
   useCurrentUser,
+  useLayoutPrefs,
   useTranslation,
   useUserMe
 } from "sharedHooks";
-import useStore from "stores/useStore";
 
 import LanguageSetting from "./LanguageSetting";
 
@@ -54,8 +54,12 @@ const Settings = ( ) => {
   const {
     remoteUser, isLoading, refetchUserMe
   } = useUserMe();
-  const isAdvancedUser = useStore( state => state.isAdvancedUser );
-  const setIsAdvancedUser = useStore( state => state.setIsAdvancedUser );
+  const {
+    isDefaultMode,
+    isAllAddObsOptionsMode,
+    setIsDefaultMode,
+    setIsAllAddObsOptionsMode
+  } = useLayoutPrefs( );
   const [settings, setSettings] = useState( {} );
   const [isSaving, setIsSaving] = useState( false );
   const [showingWebViewSettings, setShowingWebViewSettings] = useState( false );
@@ -140,30 +144,6 @@ const Settings = ( ) => {
 
     updateUserMutation.mutate( payload );
   }, [settings?.id, updateUserMutation] );
-
-  const renderLoggedOut = ( ) => (
-    <>
-      <Heading4>{t( "OBSERVATION-BUTTON" )}</Heading4>
-      <Body2 className="mt-3">{t( "When-tapping-the-green-observation-button" )}</Body2>
-      <View className="mt-[22px] pr-5">
-        <RadioButtonRow
-          smallLabel
-          checked={!isAdvancedUser}
-          onPress={() => setIsAdvancedUser( false )}
-          label={t( "iNaturalist-AI-Camera" )}
-        />
-      </View>
-      <View className="mt-4 pr-5">
-        <RadioButtonRow
-          testID="all-observation-option"
-          smallLabel
-          checked={isAdvancedUser}
-          onPress={() => setIsAdvancedUser( true )}
-          label={t( "All-observation-option" )}
-        />
-      </View>
-    </>
-  );
 
   const renderLoggedIn = ( ) => (
     <View>
@@ -261,7 +241,46 @@ const Settings = ( ) => {
     <ScrollViewWrapper>
       <StatusBar barStyle="dark-content" />
       <View className="p-5">
-        {renderLoggedOut( )}
+        <View className="mb-5">
+          <Heading4>{t( "INATURALIST-INTERFACE-MODE" )}</Heading4>
+          <View className="mt-[22px] pr-5">
+            <RadioButtonRow
+              smallLabel
+              checked={isDefaultMode}
+              onPress={( ) => setIsDefaultMode( true )}
+              label={t( "Default--interface-mode" )}
+            />
+          </View>
+          <View className="mt-4 pr-5">
+            <RadioButtonRow
+              smallLabel
+              checked={!isDefaultMode}
+              onPress={( ) => setIsDefaultMode( false )}
+              label={t( "Advanced--interface-mode" )}
+            />
+          </View>
+        </View>
+        <View className="mb-5">
+          <Heading4>{t( "OBSERVATION-BUTTON" )}</Heading4>
+          <Body2 className="mt-3">{t( "When-tapping-the-green-observation-button" )}</Body2>
+          <View className="mt-[22px] pr-5">
+            <RadioButtonRow
+              smallLabel
+              checked={!isAllAddObsOptionsMode}
+              onPress={() => setIsAllAddObsOptionsMode( false )}
+              label={t( "iNaturalist-AI-Camera" )}
+            />
+          </View>
+          <View className="mt-4 pr-5">
+            <RadioButtonRow
+              testID="all-observation-option"
+              smallLabel
+              checked={isAllAddObsOptionsMode}
+              onPress={() => setIsAllAddObsOptionsMode( true )}
+              label={t( "All-observation-option" )}
+            />
+          </View>
+        </View>
         {currentUser && renderLoggedIn( )}
       </View>
     </ScrollViewWrapper>
