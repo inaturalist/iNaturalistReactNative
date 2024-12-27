@@ -33,6 +33,7 @@ import {
   useTranslation,
   useUserMe
 } from "sharedHooks";
+import { isDebugMode } from "sharedHooks/useDebugMode";
 
 import LanguageSetting from "./LanguageSetting";
 
@@ -63,16 +64,21 @@ const Settings = ( ) => {
   const [settings, setSettings] = useState( {} );
   const [isSaving, setIsSaving] = useState( false );
   const [showingWebViewSettings, setShowingWebViewSettings] = useState( false );
+  const [refreshSettings, setRefreshSettings] = useState( false );
 
   useFocusEffect(
     useCallback( () => {
+      // make sure the screen refreshes if debug mode is toggled
+      // since the last time the user was on the settings screen
+      // note: remove this when INATURALIST INTERFACE MODE is publicly available
+      setRefreshSettings( !!refreshSettings );
       if ( showingWebViewSettings ) {
         // When we get back from the webview of settings - in case the user updated their profile
         // photo or other details
         refetchUserMe();
         setShowingWebViewSettings( false );
       }
-    }, [showingWebViewSettings, refetchUserMe] )
+    }, [showingWebViewSettings, refetchUserMe, refreshSettings] )
   );
 
   const confirmInternetConnection = useCallback( ( ) => {
@@ -241,25 +247,27 @@ const Settings = ( ) => {
     <ScrollViewWrapper>
       <StatusBar barStyle="dark-content" />
       <View className="p-5">
-        <View className="mb-5">
-          <Heading4>{t( "INATURALIST-INTERFACE-MODE" )}</Heading4>
-          <View className="mt-[22px] pr-5">
-            <RadioButtonRow
-              smallLabel
-              checked={isDefaultMode}
-              onPress={( ) => setIsDefaultMode( true )}
-              label={t( "Default--interface-mode" )}
-            />
+        {isDebugMode( ) && (
+          <View className="mb-5">
+            <Heading4>{t( "INATURALIST-INTERFACE-MODE" )}</Heading4>
+            <View className="mt-[22px] pr-5">
+              <RadioButtonRow
+                smallLabel
+                checked={isDefaultMode}
+                onPress={( ) => setIsDefaultMode( true )}
+                label={t( "Default--interface-mode" )}
+              />
+            </View>
+            <View className="mt-4 pr-5">
+              <RadioButtonRow
+                smallLabel
+                checked={!isDefaultMode}
+                onPress={( ) => setIsDefaultMode( false )}
+                label={t( "Advanced--interface-mode" )}
+              />
+            </View>
           </View>
-          <View className="mt-4 pr-5">
-            <RadioButtonRow
-              smallLabel
-              checked={!isDefaultMode}
-              onPress={( ) => setIsDefaultMode( false )}
-              label={t( "Advanced--interface-mode" )}
-            />
-          </View>
-        </View>
+        )}
         <View className="mb-5">
           <Heading4>{t( "OBSERVATION-BUTTON" )}</Heading4>
           <Body2 className="mt-3">{t( "When-tapping-the-green-observation-button" )}</Body2>
