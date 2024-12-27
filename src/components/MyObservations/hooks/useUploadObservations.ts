@@ -1,131 +1,81 @@
 import { RealmContext } from "providers/contexts.ts";
 import {
-  useCallback, useEffect, useMemo
+  useCallback,
+  useEffect,
+  useMemo
 } from "react";
-import { EventRegister } from "react-native-event-listeners";
 import Observation from "realmModels/Observation";
 import type { RealmObservation } from "realmModels/types.d.ts";
-import {
-  INCREMENT_SINGLE_UPLOAD_PROGRESS
-} from "sharedHelpers/emitUploadProgress.ts";
 import uploadObservation, { handleUploadError } from "sharedHelpers/uploadObservation";
-import {
-  useTranslation
-} from "sharedHooks";
-import {
-  UPLOAD_CANCELLED,
-  UPLOAD_COMPLETE,
-  UPLOAD_IN_PROGRESS
-} from "stores/createUploadObservationsSlice.ts";
+import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
-export const MS_BEFORE_TOOLBAR_RESET = 5_000;
-const MS_BEFORE_UPLOAD_TIMES_OUT = 60_000 * 5;
+import { UPLOAD_IN_PROGRESS } from "../../../stores/createUploadObservationsSlice";
+import useToolbarTimeout from "./useToolbarTimeout";
 
 const { useRealm } = RealmContext;
 
-// eslint-disable-next-line no-undef
-export default ( canUpload: boolean ) => {
+const MS_BEFORE_UPLOAD_TIMES_OUT = 60_000 * 5; // 5 minutes
+
+export default function useUploadObservations( canUpload: boolean ) {
   const realm = useRealm( );
+  const { t } = useTranslation( );
 
   const addUploadError = useStore( state => state.addUploadError );
   const completeUploads = useStore( state => state.completeUploads );
-  const currentUpload = useStore( state => state.currentUpload );
   const removeDeletedObsFromUploadQueue = useStore(
     state => state.removeDeletedObsFromUploadQueue
   );
   const removeFromUploadQueue = useStore( state => state.removeFromUploadQueue );
-  const resetUploadObservationsSlice = useStore( state => state.resetUploadObservationsSlice );
-  const setCurrentUpload = useStore( state => state.setCurrentUpload );
   const updateTotalUploadProgress = useStore( state => state.updateTotalUploadProgress );
+  // const setCannotUploadObservations = useStore( state => state.setCannotUploadObservations );
   const uploadQueue = useStore( state => state.uploadQueue );
-  const uploadStatus = useStore( state => state.uploadStatus );
-  const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
-  const setTotalToolbarIncrements = useStore( state => state.setTotalToolbarIncrements );
-  const addToUploadQueue = useStore( state => state.addToUploadQueue );
+  const abortController = useStore( state => state.abortController );
+  const addObservationsToUploadQueue = useStore( state => state.addObservationsToUploadQueue );
   const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
-  const setCannotUploadObservations = useStore( state => state.setCannotUploadObservations );
-  const resetSyncToolbar = useStore( state => state.resetSyncToolbar );
-  const initialNumObservationsInQueue = useStore( state => state.initialNumObservationsInQueue );
+  const uploadStatus = useStore( state => state.uploadStatus );
+  const currentUpload = useStore( state => state.currentUpload );
+  const setCurrentUpload = useStore( state => state.setCurrentUpload );
+  useToolbarTimeout( uploadStatus );
 
-  const unsyncedList = Observation.filterUnsyncedObservations( realm );
-  const unsyncedUuids = useMemo( ( ) => unsyncedList.map( o => o.uuid ), [unsyncedList] );
-  const abortController = useStore( storeState => storeState.abortController );
+  const unsyncedList = useMemo(
+    ( ) => Observation.filterUnsyncedObservations( realm ),
+    [realm]
+  );
 
-  const { t } = useTranslation( );
-
-  const resetNumUnsyncedObs = useCallback( ( ) => {
-    if ( !realm || realm.isClosed ) return;
-    const unsynced = Observation.filterUnsyncedObservations( realm );
-    setNumUnuploadedObservations( unsynced.length );
-  }, [realm, setNumUnuploadedObservations] );
-
-  useEffect( () => {
-    // eslint-disable-next-line no-undef
-    let timer: number | NodeJS.Timeout;
-    if ( [UPLOAD_COMPLETE, UPLOAD_CANCELLED].indexOf( uploadStatus ) >= 0 ) {
-      timer = setTimeout( () => {
-        resetUploadObservationsSlice( );
-        resetNumUnsyncedObs( );
-      }, MS_BEFORE_TOOLBAR_RESET );
-    } else {
-      timer = setTimeout( () => {
-        resetSyncToolbar( );
-        resetNumUnsyncedObs( );
-      }, MS_BEFORE_TOOLBAR_RESET );
+  const catchUploadError = useCallback( async ( error: Error, uuid: string ) => {
+    if ( error.name === "AbortError" ) {
+      addUploadError( "Upload cancelled", uuid );
+      return;
     }
-    return () => {
-      clearTimeout( timer );
-    };
-  }, [
-    resetNumUnsyncedObs,
-    resetSyncToolbar,
-    resetUploadObservationsSlice,
-    uploadStatus
-  ] );
 
-  useEffect( ( ) => {
-    const progressListener = EventRegister.addEventListener(
-      INCREMENT_SINGLE_UPLOAD_PROGRESS,
-      increments => {
-        const uuid = increments[0];
-        const increment = increments[1];
-        updateTotalUploadProgress( uuid, increment );
-      }
-    );
-    return ( ) => {
-      EventRegister?.removeEventListener( progressListener as string );
-    };
-  }, [
-    updateTotalUploadProgress
-  ] );
+    const message = handleUploadError( error, t );
 
-  const uploadObservationAndCatchError = useCallback( async ( observation: RealmObservation ) => {
+    if ( message?.match( /That observation no longer exists/ ) ) {
+      removeDeletedObsFromUploadQueue( uuid );
+      await Observation.deleteLocalObservation( realm, uuid );
+    } else {
+      addUploadError( message, uuid );
+    }
+  }, [realm, t, addUploadError, removeDeletedObsFromUploadQueue] );
+
+  const uploadSingleObservation = useCallback( async (
+    observation: RealmObservation
+  ) => {
     const { uuid } = observation;
-    setCurrentUpload( observation );
+
     try {
-      const timeoutID = setTimeout( ( ) => {
-        abortController.abort( );
+      const timeoutId = setTimeout( ( ) => {
+        abortController?.abort( );
       }, MS_BEFORE_UPLOAD_TIMES_OUT );
-      await uploadObservation( observation, realm, { signal: abortController.signal } );
-      clearTimeout( timeoutID );
-    } catch ( uploadErr ) {
-      const uploadError = uploadErr as Error;
-      if ( uploadError.name === "AbortError" ) {
-        addUploadError( "aborted", observation.uuid );
-      } else {
-        const message = handleUploadError( uploadError, t );
-        if ( message?.match( /That observation no longer exists./ ) ) {
-          // 20240531 amanda - it seems like we have to update the UI
-          // for the progress bar before actually deleting the observation
-          // locally, otherwise Realm will throw an error while trying
-          // to load the individual progress for a deleted observation
-          removeDeletedObsFromUploadQueue( uuid );
-          await Observation.deleteLocalObservation( realm, uuid );
-        } else {
-          addUploadError( message, uuid );
-        }
-      }
+
+      await uploadObservation( observation, realm, {
+        updateTotalUploadProgress
+      } );
+
+      clearTimeout( timeoutId );
+    } catch ( error ) {
+      await catchUploadError( error as Error, uuid );
     } finally {
       removeFromUploadQueue( );
       if (
@@ -137,89 +87,83 @@ export default ( canUpload: boolean ) => {
     }
   }, [
     abortController,
-    addUploadError,
+    catchUploadError,
     completeUploads,
     currentUpload,
     realm,
-    removeDeletedObsFromUploadQueue,
     removeFromUploadQueue,
-    setCurrentUpload,
-    t,
+    updateTotalUploadProgress,
     uploadQueue
   ] );
 
   useEffect( ( ) => {
-    const uploadNextObservation = async ( ) => {
-      const lastQueuedUuid = uploadQueue[uploadQueue.length - 1];
-      const localObservation = realm.objectForPrimaryKey<RealmObservation>(
-        "Observation",
-        lastQueuedUuid
-      );
-      if ( localObservation ) {
-        await uploadObservationAndCatchError( localObservation );
-      }
-    };
-    if (
-      uploadStatus === UPLOAD_IN_PROGRESS
+    const shouldStartUpload = canUpload
       && uploadQueue.length > 0
-      && !currentUpload
-    ) {
-      if ( abortController && !abortController.signal.aborted ) {
-        uploadNextObservation( );
-      }
+      && uploadStatus !== UPLOAD_IN_PROGRESS;
+
+    const shouldProcessNextUpload = !currentUpload
+      && abortController
+      && !abortController.signal.aborted;
+
+    if ( shouldStartUpload ) {
+      setStartUploadObservations( );
+    }
+
+    if ( shouldProcessNextUpload ) {
+      const processNextObservation = async () => {
+        const lastQueuedUuid = uploadQueue[uploadQueue.length - 1];
+        if ( !lastQueuedUuid ) { return; }
+        const observation = realm.objectForPrimaryKey<RealmObservation>(
+          "Observation",
+          lastQueuedUuid
+        );
+
+        if ( !observation ) return;
+
+        setCurrentUpload( observation );
+        await uploadSingleObservation( observation );
+      };
+
+      processNextObservation( );
     }
   }, [
-    abortController,
-    currentUpload,
-    initialNumObservationsInQueue,
-    realm,
-    uploadObservationAndCatchError,
+    canUpload,
     uploadQueue,
-    uploadStatus
+    uploadStatus,
+    currentUpload,
+    abortController,
+    realm,
+    setStartUploadObservations,
+    setCurrentUpload,
+    uploadSingleObservation
   ] );
 
-  const createUploadQueueAllUnsynced = useCallback( ( ) => {
-    const uuidsQuery = unsyncedUuids
-      .map( ( uploadUuid: string ) => `'${uploadUuid}'` ).join( ", " );
-    const uploads = realm.objects( "Observation" )
-      .filtered( `uuid IN { ${uuidsQuery} }` );
-    setTotalToolbarIncrements( uploads );
-    addToUploadQueue( unsyncedUuids );
-    if ( canUpload ) {
-      setStartUploadObservations( );
-    } else {
-      setCannotUploadObservations( );
-    }
+  const addAllUnsyncedUploadsToQueue = useCallback( async ( ) => {
+    if ( !canUpload ) return;
+    addObservationsToUploadQueue( unsyncedList );
   }, [
-    addToUploadQueue,
+    canUpload,
+    unsyncedList,
+    addObservationsToUploadQueue
+  ] );
+
+  const addIndividualUploadToQueue = useCallback( async ( uuid: string ) => {
+    if ( !canUpload ) return;
+
+    const observation = realm.objectForPrimaryKey( "Observation", uuid );
+    if ( !observation ) {
+      console.error( "Observation not found" );
+      return;
+    }
+    addObservationsToUploadQueue( [observation] );
+  }, [
     canUpload,
     realm,
-    setCannotUploadObservations,
-    setStartUploadObservations,
-    setTotalToolbarIncrements,
-    unsyncedUuids
-  ] );
-
-  const startUploadObservations = useCallback( async ( ) => {
-    createUploadQueueAllUnsynced( );
-  }, [
-    createUploadQueueAllUnsynced
-  ] );
-
-  const startUploadsFromMultiObsEdit = useCallback( async ( ) => {
-    if ( canUpload ) {
-      setStartUploadObservations( );
-    } else {
-      setCannotUploadObservations( );
-    }
-  }, [
-    canUpload,
-    setCannotUploadObservations,
-    setStartUploadObservations
+    addObservationsToUploadQueue
   ] );
 
   return {
-    startUploadObservations,
-    startUploadsFromMultiObsEdit
+    startIndividualUpload: addIndividualUploadToQueue,
+    startUploadObservations: addAllUnsyncedUploadsToQueue
   };
-};
+}

@@ -128,8 +128,8 @@ const ToolbarContainer = ( {
         : t( "Deleting-x-of-y-observations-2", deletionParams );
     }
 
-    if ( pendingUpload ) {
-      return t( "Upload-x-observations", { count: numUnuploadedObservations } );
+    if ( uploadsComplete ) {
+      return t( "X-observations-uploaded", { count: numUploadsAttempted } );
     }
 
     if ( uploadInProgress ) {
@@ -139,8 +139,8 @@ const ToolbarContainer = ( {
         : t( "Uploading-x-of-y-observations", translationParams );
     }
 
-    if ( uploadsComplete ) {
-      return t( "X-observations-uploaded", { count: numUploadsAttempted } );
+    if ( pendingUpload ) {
+      return t( "Upload-x-observations", { count: numUnuploadedObservations } );
     }
 
     return "";
