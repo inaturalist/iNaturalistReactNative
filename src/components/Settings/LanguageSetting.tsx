@@ -4,6 +4,7 @@ import {
   Heading4,
   PickerSheet
 } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import changeLanguage from "sharedHelpers/changeLanguage.ts";
@@ -51,8 +52,8 @@ const LanguageSetting = ( { onChange }: Props ) => {
   }
 
   return (
-    <>
-      <Heading4 className="mt-7">{t( "APP-LANGUAGE" )}</Heading4>
+    <View className="mb-9">
+      <Heading4>{t( "APP-LANGUAGE" )}</Heading4>
       <Button
         className="mt-4"
         text={t( "CHANGE-APP-LANGUAGE" )}
@@ -75,7 +76,7 @@ const LanguageSetting = ( { onChange }: Props ) => {
           pickerValues={webLocalesOptions}
         />
       )}
-    </>
+    </View>
   );
 };
 

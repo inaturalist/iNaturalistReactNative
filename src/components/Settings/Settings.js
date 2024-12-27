@@ -145,16 +145,9 @@ const Settings = ( ) => {
     updateUserMutation.mutate( payload );
   }, [settings?.id, updateUserMutation] );
 
-  const renderLoggedIn = ( ) => (
-    <View>
-      {( isSaving || isLoading ) && (
-        <View className="absolute z-10 bg-white/80
-         w-full h-full flex items-center justify-center"
-        >
-          <ActivityIndicator size={50} />
-        </View>
-      )}
-      <Heading4 className="mt-7">{t( "TAXON-NAMES-DISPLAY" )}</Heading4>
+  const renderTaxonNamesSection = ( ) => (
+    <View className="mb-9">
+      <Heading4>{t( "TAXON-NAMES-DISPLAY" )}</Heading4>
       <Body2 className="mt-3">{t( "This-is-how-taxon-names-will-be-displayed" )}</Body2>
       <View className="mt-[22px]">
         <RadioButtonRow
@@ -180,6 +173,19 @@ const Settings = ( ) => {
           label={t( "Scientific-Name" )}
         />
       </View>
+    </View>
+  );
+
+  const renderLoggedIn = ( ) => (
+    <View>
+      {( isSaving || isLoading ) && (
+        <View className="absolute z-10 bg-white/80
+         w-full h-full flex items-center justify-center"
+        >
+          <ActivityIndicator size={50} />
+        </View>
+      )}
+      {!isDefaultMode && renderTaxonNamesSection( )}
       <LanguageSetting
         onChange={newLocale => {
           QueueItem.enqueue(
@@ -194,46 +200,48 @@ const Settings = ( ) => {
           );
         }}
       />
-      <Heading4 className="mt-7">{t( "INATURALIST-ACCOUNT-SETTINGS" )}</Heading4>
-      <Body2 className="mt-2">{t( "Edit-your-profile-change-your-settings" )}</Body2>
-      <Button
-        className="mt-4"
-        text={t( "ACCOUNT-SETTINGS" )}
-        onPress={() => {
-          confirmInternetConnection( );
-          if ( !isConnected ) { return; }
-          setShowingWebViewSettings( true );
+      <View>
+        <Heading4>{t( "INATURALIST-ACCOUNT-SETTINGS" )}</Heading4>
+        <Body2 className="mt-2">{t( "Edit-your-profile-change-your-settings" )}</Body2>
+        <Button
+          className="mt-4"
+          text={t( "ACCOUNT-SETTINGS" )}
+          onPress={() => {
+            confirmInternetConnection( );
+            if ( !isConnected ) { return; }
+            setShowingWebViewSettings( true );
 
-          navigation.navigate( "FullPageWebView", {
-            title: t( "ACCOUNT-SETTINGS" ),
-            loggedIn: true,
-            initialUrl: SETTINGS_URL,
-            blurEvent: FINISHED_WEB_SETTINGS,
-            clickablePathnames: ["/users/delete"],
-            skipSetSourceInShouldStartLoadWithRequest: true,
-            shouldLoadUrl: url => {
-              async function signOutGoHome() {
-                Alert.alert(
-                  t( "Account-Deleted" ),
-                  t( "It-may-take-up-to-an-hour-to-remove-content" )
-                );
-                // sign out
-                await signOut( { realm, clearRealm: true, queryClient } );
-                // navigate to My Obs
-                navigation.navigate( "ObsList" );
+            navigation.navigate( "FullPageWebView", {
+              title: t( "ACCOUNT-SETTINGS" ),
+              loggedIn: true,
+              initialUrl: SETTINGS_URL,
+              blurEvent: FINISHED_WEB_SETTINGS,
+              clickablePathnames: ["/users/delete"],
+              skipSetSourceInShouldStartLoadWithRequest: true,
+              shouldLoadUrl: url => {
+                async function signOutGoHome() {
+                  Alert.alert(
+                    t( "Account-Deleted" ),
+                    t( "It-may-take-up-to-an-hour-to-remove-content" )
+                  );
+                  // sign out
+                  await signOut( { realm, clearRealm: true, queryClient } );
+                  // navigate to My Obs
+                  navigation.navigate( "ObsList" );
+                }
+                // If the webview navigates to a URL that indicates the account
+                // was deleted, sign the current user out of the app
+                if ( url === `${Config.OAUTH_API_URL}/?account_deleted=true` ) {
+                  signOutGoHome( );
+                  return false;
+                }
+                return true;
               }
-              // If the webview navigates to a URL that indicates the account
-              // was deleted, sign the current user out of the app
-              if ( url === `${Config.OAUTH_API_URL}/?account_deleted=true` ) {
-                signOutGoHome( );
-                return false;
-              }
-              return true;
-            }
-          } );
-        }}
-        accessibilityLabel={t( "INATURALIST-SETTINGS" )}
-      />
+            } );
+          }}
+          accessibilityLabel={t( "INATURALIST-SETTINGS" )}
+        />
+      </View>
     </View>
   );
 
@@ -241,9 +249,9 @@ const Settings = ( ) => {
     <ScrollViewWrapper>
       <StatusBar barStyle="dark-content" />
       <View className="p-5">
-        <View className="mb-5">
-          <Heading4>{t( "INATURALIST-INTERFACE-MODE" )}</Heading4>
-          <View className="mt-[22px] pr-5">
+        <View className="mb-9">
+          <Heading4>{t( "INATURALIST-MODE" )}</Heading4>
+          <View className="mt-[22px]">
             <RadioButtonRow
               smallLabel
               checked={isDefaultMode}
@@ -251,36 +259,39 @@ const Settings = ( ) => {
               label={t( "Default--interface-mode" )}
             />
           </View>
-          <View className="mt-4 pr-5">
+          <View className="mt-4">
             <RadioButtonRow
+              testID="advanced-interface-option"
               smallLabel
               checked={!isDefaultMode}
               onPress={( ) => setIsDefaultMode( false )}
-              label={t( "Advanced--interface-mode" )}
+              label={t( "Advanced--interface-mode-with-explainer" )}
             />
           </View>
         </View>
-        <View className="mb-5">
-          <Heading4>{t( "OBSERVATION-BUTTON" )}</Heading4>
-          <Body2 className="mt-3">{t( "When-tapping-the-green-observation-button" )}</Body2>
-          <View className="mt-[22px] pr-5">
-            <RadioButtonRow
-              smallLabel
-              checked={!isAllAddObsOptionsMode}
-              onPress={() => setIsAllAddObsOptionsMode( false )}
-              label={t( "iNaturalist-AI-Camera" )}
-            />
+        {!isDefaultMode && (
+          <View className="mb-9">
+            <Heading4>{t( "OBSERVATION-BUTTON" )}</Heading4>
+            <Body2 className="mt-3">{t( "When-tapping-the-green-observation-button" )}</Body2>
+            <View className="mt-[22px] pr-5">
+              <RadioButtonRow
+                smallLabel
+                checked={!isAllAddObsOptionsMode}
+                onPress={() => setIsAllAddObsOptionsMode( false )}
+                label={t( "iNaturalist-AI-Camera" )}
+              />
+            </View>
+            <View className="mt-4 pr-5">
+              <RadioButtonRow
+                testID="all-observation-option"
+                smallLabel
+                checked={isAllAddObsOptionsMode}
+                onPress={() => setIsAllAddObsOptionsMode( true )}
+                label={t( "All-observation-option" )}
+              />
+            </View>
           </View>
-          <View className="mt-4 pr-5">
-            <RadioButtonRow
-              testID="all-observation-option"
-              smallLabel
-              checked={isAllAddObsOptionsMode}
-              onPress={() => setIsAllAddObsOptionsMode( true )}
-              label={t( "All-observation-option" )}
-            />
-          </View>
-        </View>
+        )}
         {currentUser && renderLoggedIn( )}
       </View>
     </ScrollViewWrapper>
