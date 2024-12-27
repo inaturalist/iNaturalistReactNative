@@ -261,6 +261,7 @@ const Settings = ( ) => {
           </View>
           <View className="mt-4">
             <RadioButtonRow
+              testID="advanced-interface-option"
               smallLabel
               checked={!isDefaultMode}
               onPress={( ) => setIsDefaultMode( false )}
