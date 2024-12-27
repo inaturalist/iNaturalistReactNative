@@ -64,7 +64,7 @@ Add-optional-notes = Add optional notes
 Adds-your-vote-of-agreement = Adds your vote of agreement
 # Hint for a button that adds a vote of disagreement
 Adds-your-vote-of-disagreement = Adds your vote of disagreement
-Advanced--interface-mode = Advanced
+Advanced--interface-mode-with-explainer = Advanced (Upload multiple photos and sounds)
 Affiliation = Affiliation: { $site }
 # Label for button that adds an identification of the same taxon as another identification
 Agree = Agree
@@ -581,7 +581,6 @@ iNaturalist-has-no-ID-suggestions-for-this-photo = iNaturalist has no ID suggest
 INATURALIST-HELP-PAGE = INATURALIST HELP PAGE
 iNaturalist-helps-you-identify = iNaturalist helps you identify the plants and animals around you while generating data for science and conservation. Get connected with a community of millions scientists and naturalists who can help you learn more about nature!
 iNaturalist-identification-suggestions-are-based-on = iNaturalist's identification suggestions are based on observations and identifications made by the iNaturalist community, including { $user1 }, { $user2 }, { $user3 }, and many others.
-INATURALIST-INTERFACE-MODE = INATURALIST INTERFACE MODE
 iNaturalist-is-a-501 = iNaturalist is a 501(c)(3) non-profit in the United States of America (Tax ID/EIN 92-1296468).
 iNaturalist-is-a-community-of-naturalists = iNaturalist is a community of naturalists that works together to create and identify wild biodiversity observations.
 iNaturalist-is-loading-ID-suggestions = iNaturalist is loading ID suggestions...
@@ -589,6 +588,7 @@ iNaturalist-is-supported-by = iNaturalist is supported by an independent, 501(c)
 iNaturalist-is-supported-by-our-community = iNaturalist is supported by our amazing community. From everyday naturalists who add observations and identifications, to curators who manage our taxonomy and help with moderation, to the volunteer translators who make iNaturalist more accessible to worldwide audiences, to our community-based donors, we are extraordinarily grateful to all the people in our community who make iNaturalist the platform it is.
 iNaturalist-mission-is-to-connect = iNaturalist's mission is to connect people to nature and advance biodiversity science and conservation.
 INATURALIST-MISSION-VISION = INATURALIST'S MISSION & VISION
+INATURALIST-MODE = INATURALIST MODE
 INATURALIST-NETWORK = INATURALIST NETWORK
 INATURALIST-SETTINGS = INATURALIST SETTINGS
 # Label for the role a user plays on iNaturalist, e.g. "INATURALIST STAFF"
