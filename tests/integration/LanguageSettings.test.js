@@ -35,6 +35,12 @@ beforeAll( uniqueRealmBeforeAll );
 afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
+const toggleAdvancedMode = async ( ) => {
+  const advancedRadioButton = await screen
+    .findByText( /Advanced/ );
+  fireEvent.press( advancedRadioButton );
+};
+
 describe( "LanguageSettings", ( ) => {
   test( "uses locale preference of the local device", ( ) => {
     renderAppWithComponent( <Settings /> );
@@ -63,12 +69,14 @@ describe( "LanguageSettings", ( ) => {
 
     test( "uses locale preference from server", async ( ) => {
       renderAppWithComponent( <Settings /> );
+      await toggleAdvancedMode( );
       const sciNameText = await screen.findByText( /Научное название/ );
       expect( sciNameText ).toBeVisible( );
     } );
 
     test( "changes locales and updates server with new locale", async ( ) => {
       renderAppWithComponent( <Settings /> );
+      await toggleAdvancedMode( );
       const changeLocaleButton = await screen.findByText( /CHANGE APP LANGUAGE/ );
       fireEvent.press( changeLocaleButton );
       const picker = await screen.findByTestId( "ReactNativePicker" );
