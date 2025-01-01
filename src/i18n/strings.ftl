@@ -698,7 +698,7 @@ MISSING-EVIDENCE = MISSING EVIDENCE
 Monthly-Donor = Monthly Donor
 Months = Months
 MONTHS = MONTHS
-# Label for section of ObsDetails with information about obseration projects, DQA, etc.
+# Label for section of ObsDetails with information about observation projects, DQA, etc.
 More = More
 More-info = More info
 MOST-FAVED = MOST FAVED

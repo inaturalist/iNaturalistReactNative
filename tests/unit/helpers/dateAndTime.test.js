@@ -133,7 +133,13 @@ describe( "formatDifferenceForHumans", ( ) => {
     expect( formatDifferenceForHumans( subDays( new Date(), 16 ), i18next ) ).toMatch( /2w/ );
   } );
   it( "should show day and month if over 30 days ago but still this year", ( ) => {
-    const date = subDays( new Date(), 40 );
+    const now = new Date();
+    // This test will only work after the first 40 days of the year have
+    // passed
+    if ( now.getUTCMonth() <= 1 ) return;
+    if ( now.getUTCMonth() <= 2 && now.getDay() < 10 ) return;
+
+    const date = subDays( now, 40 );
     const dateString = formatDifferenceForHumans( date, i18next );
     const pattern = new RegExp( `\\w+ ${date.getDate()}` );
     expect( dateString ).toMatch( pattern );
