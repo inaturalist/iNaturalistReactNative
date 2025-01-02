@@ -38,6 +38,7 @@ ADD-OPTIONAL-COMMENT = OPTIONEEL COMMENTAAR TOEVOEGEN
 Add-optional-notes = Optionele notities toevoegen
 Adds-your-vote-of-agreement = Voegt jouw stem van overeenkomst toe
 Adds-your-vote-of-disagreement = Voegt jouw stem van meningsverschil toe
+Advanced--interface-mode-with-explainer = Geavanceerd (Upload verscheidene foto's en geluiden)
 Affiliation = Affiliatie: { $site }
 Agree = Akkoord
 AGREE = EENS
@@ -64,6 +65,7 @@ Any--quality-grade = Elke
 Any--user = Elke
 Anyone-using-iNaturalist-can-see = Iedereen die iNaturalist gebruikt kan zien waar deze soort is waargenomen en wetenschappers kunnen het het gemakkelijkst gebruiken voor onderzoek.
 APP-LANGUAGE = APP TAAL
+apple-full-name = { JOIN($namePrefix, $givenName, $middleName, $nickname, $familyName, $nameSuffix, separator: " ") }
 APPLY-FILTERS = FILTERS TOEPASSEN
 Apply-filters = Filters toepassen
 April = April
@@ -128,6 +130,7 @@ Combine-Photos = Combineer foto's
 COMMENT = OPMERKING
 Comment-options = Opmerkingopties
 Common-Name-Scientific-Name = Algemene naam (Scientific Naam)
+Community = Gemeenschap
 Community-based = Gemeenschap-gebaseerd
 Community-Guidelines = Gemeenschapsrichtlijnen
 COMMUNITY-GUIDELINES = GEMEENSCHAPSRICHTLIJNEN
@@ -152,6 +155,7 @@ Create-an-observation-evidence = Creëer een waarneming zonder bewijs
 CREATE-YOUR-FIRST-OBSERVATION = MAAK JE EERSTE WAARNEMING
 DATA-QUALITY = GEGEVENSKWALITEIT
 DATA-QUALITY-ASSESSMENT = GEGEVENSKWALITEIT ASSESSMENT
+Data-Quality-Assessment = Beoordeling van Gegevenskwaliteit
 Data-quality-assessment-can-taxon-still-be-confirmed-improved-based-on-the-evidence = Gebaseerd op het bewijs, kan het gemeenschapstaxon nog steeds verbeterd worden?
 Data-quality-assessment-community-taxon-species-level-or-lower = Gemeenschapstaxon op soortniveau of lager
 Data-quality-assessment-date-is-accurate = Datum klopt
@@ -189,6 +193,7 @@ Date-uploaded = Datum geupload
 Date-uploaded-header-short = Geupload
 DATE-UPLOADED-NEWEST = DATUM GEUPLOAD - NIEUWSTE EERST
 DATE-UPLOADED-OLDEST = DATUM GEUPLOAD - OUDSTE EERST
+Date-uploaded-on-header-short = Geüpload op:
 datetime-difference-days = { $count }d
 datetime-difference-hours = { $count }u
 datetime-difference-minutes = { $count }m
@@ -196,6 +201,7 @@ datetime-difference-weeks = { $count }w
 datetime-format-long = dd-M-yyyy HH:mm
 datetime-format-short = d-M-yyyy HH:mm
 December = December
+Default--interface-mode = Standaard
 DELETE = VERWIJDEREN
 Delete-all-observations = Verwijder alle waarnemingen
 Delete-comment = Verwijder opmerking
@@ -216,6 +222,7 @@ Deleting-x-of-y-observations-2 =
         [one] waarneming
        *[other] van { $total } waarnemingen
     }
+Details = Details
 DETAILS = DETAILS
 Device-storage-full = Apparaatopslag vol
 Device-storage-full-description = iNaturalist is mogelijk niet in staat om jouw foto's op te slaan of kan crashen.
@@ -274,8 +281,17 @@ EXPAND-MAP = VERGROOT KAART
 Explore = Verkennen
 EXPLORE = VERKENNEN
 Explore-Filters = Filters verkennen
+EXPLORE-IDENTIFIERS = VERKEN EXPERTS
+EXPLORE-OBSERVATIONS = VERKEN WAARNEMINGEN
+EXPLORE-OBSERVERS = VERKEN WAARNEMERS
+EXPLORE-SPECIES = VERKEN SOORTEN
+Failed-to-delete-sound = Geluid verwijderen mislukt
+Failed-to-log-in = Inloggen mislukt
 FEATURED = FUNCTIES
 February = Februari
+FEEDBACK = TERUGKOPPELING
+Feedback-Submitted = Terugkoppeling ingediend
+Fetching-location = Locatie ophalen...
 Filter = Filter
 FILTER-BY-A-PROJECT = FILTER DOOR EEN PROJECT
 FILTER-BY-A-USER = FILTER DOOR EEN GEBRUIKER
@@ -289,6 +305,7 @@ Flag-An-Item = Een item melden
 Flag-Item-Description =
     Melden brengt iets onder de aandacht van vrijwillige sitecuratoren.
     Meld geen problemen die je kunt oplossen met determinaties, kwaliteitsbeoordeling of door in gesprek te gaan met de maker van de inhoud.
+Flag-Item-Other = Gemarkeerd als  Other Description Box
 Flag-Item-Other-Description = Een andere reden die je hieronder kunt uitleggen.
 Flag-Item-Other-Input-Hint = Geef de reden waarom je dit item meldt
 Flagged = Gemeld
@@ -307,6 +324,7 @@ Geoprivacy-status = Geoprivacy: { $status }
 Get-more-accurate-suggestions-create-useful-data = Krijg nauwkeuriger suggesties en maak handige gegevens voor wetenschap door je locatie te gebruiken
 Get-your-identification-verified-by-real-people = Je determinatie wordt geverifieerd door echte mensen in de iNaturalist gemeenschap
 Go-back = Ga terug
+Google-Play-Services-Not-Installed = Google Play Services is niet geïnstalleerd
 GRANT-PERMISSION = GRANT PERMISSIE
 Grant-Permission-title = Toestemming verlenen
 Grid-layout = Rasterweergave
@@ -317,16 +335,48 @@ Hide = Verbergen
 Highest = Hoogste
 HIGHEST-RANK = HOOGSTE RANG
 I-agree-to-the-Terms-of-Use = Ik ga akkoord met de Gebruiksvoorwaarden en het Privacybeleid en ik onderschrijf de communautaire richtlijnen (vereist).
+I-consent-to-allow-iNaturalist-to-store = Ik stem ermee in dat iNaturalist persoonlijke informatie over mij kan opslaan en verwerken om mijn account te beheren (vereist)
+I-consent-to-allow-my-personal-information = Ik sta toe dat mijn persoonlijke gegevens aan de Verenigde Staten van Amerika worden overgedragen (vereist)
+Iconic-taxon-name = IconicTaxon-naam: { $iconicTaxon }
 ID-Withdrawn = ID ingetrokken
+IDENTIFICATION = DETERMINATIE
+Identification-options = Determinatie opties
+IDENTIFICATIONS-WITHOUT-NUMBER =
+    { $count ->
+        [one] DETERMINATIE
+       *[other] DETERMINATIES
+    }
 Identifiers = Determineerders
+Identifiers-View = Determineerders weergave
+Identify-an-organism = Determineer een organisme
+Identify-an-organism-with-the-iNaturalist-AI-Camera = Determineer een organisme met de iNaturalist AI Camera
 Identify-record-learn = Determineren, opnemen, vastleggen, opslaan en leren over elke levende soort op aarde met behulp van iNaturalist
+If-an-account-with-that-email-exists = Als er een account met dat e-mailadres bestaat, hebben we de instructies voor het resetten van het wachtwoord naar je e-mail gestuurd.
+If-you-have-an-existing-account-try-sign-in-reset = Als je een bestaand iNat account hebt, probeer je dan aan te melden met je gebruikersnaam en wachtwoord of probeer jouw wachtwoord opnieuw in te stellen met het e-mailadres dat aan jouw account is gekoppeld.
 If-you-leave-x-of-your-observations-removed =
     Als je dit traditionele project verlaat, { $count ->
         [one] zal 1 van je waarnemingen
        *[other] zullen  { $count } van je waarnemingen
     } ook van dit project worden verwijderd.
+If-you-want-to-collate-compare-promote = Als je een aantal bestaande projecten wilt samenvoegen, vergelijken of promoten, dan moet je een overkoepelend project gebruiken. Bijvoorbeeld de 2018 City Nature Challenge, die meer dan 60 projecten heeft samengevoegd, maakte een geweldige landingspagina waar iedereen de waarnemingen van elke stad kon vergelijken en weerleggen. Zowel Collectie als Traditionele projecten kunnen gebruikt worden in een Overkoepelend project en maximaal 500 projecten kunnen samengevoegd in een collectie door een Overkoepelend project.
+If-youre-seeing-this-error = Als je dit ziet en online bent, is het iNat personeel al op de hoogte gesteld. Bedankt voor het vinden van een bug! Als je offline bent, maak dan een schermafbeelding en stuur ons een e-mail wanneer je weer op het internet bent.
+IGNORE-LOCATION = NEGEER LOCATIE
+Import-Photos-From = Foto's importeren van
+IMPORT-X-OBSERVATIONS =
+    IMPORTEER { $count ->
+        [one] 1 WAARNEMING
+       *[other] { $count } WAARNEMINGEN
+    }
+IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = VERBETER DEZE SUGGESTIONS DOOR JE LOCATIE TE GEBRUIKEN
 improving--identification = Verbeterend
 iNat-is-global-community = iNaturalist is een wereldwijde gemeenschap van naturalisten die open data maken voor wetenschap door organismen collectief te observeren en identificeren
+INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT INSTELLINGEN
+iNaturalist-AI-Camera = iNaturalist AI Camera
+iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNaturalist kan foto's die je in de app neemt opslaan in de galerij van je toestel.
+INATURALIST-COMMUNITY = INATURALIST GEMEENSCHAP
+INATURALIST-FORUM = INATURALIST FORUM
+iNaturalist-has-no-ID-suggestions-for-this-photo = iNaturalist heeft geen ID-suggesties voor deze foto.
+INATURALIST-HELP-PAGE = INATURALIST HELP PAGINA
 iNaturalist-helps-you-identify = iNaturalist helpt je de planten en dieren om je heen te determineren terwijl je tegelijkertijd gegevens voor wetenschap en natuurbescherming genereert. Maak verbinding met een gemeenschap van miljoenen wetenschappers en naturalisten die je kunnen helpen meer te leren over de natuur!
 iNaturalist-identification-suggestions-are-based-on = iNaturalist's determinatiesuggesties zijn gebaseerd op waarnemingen en determinaties gemaakt door de iNaturalist gemeenschap, waaronder { $user1 }, { $user2 }, { $user3 } en vele anderen.
 iNaturalist-is-a-501 = iNaturalist is een 501(c)(3) non-profit organisatie in de Verenigde Staten van Amerika (Tax ID/EIN 92-1296468).
@@ -336,6 +386,7 @@ iNaturalist-is-supported-by = iNaturalist wordt ondersteund door een onafhankeli
 iNaturalist-is-supported-by-our-community = iNaturalist wordt ondersteund door onze geweldige community. Van alledaagse naturalisten die waarnemingen en determinaties toevoegen,  curatoren die de taxonomie managen en helpen bij het modereren, de vrijwillige vertalers die iNaturalist toegankelijk maken voor wereldwijd publiek, tot onze op de gemeenschap gebaseerde donoren zijn we buitengewoon dankbaar voor alle mensen in onze gemeenschap die iNaturalist tot het platform maken dat het is.
 iNaturalist-mission-is-to-connect = iNaturalist's missie is om mensen te verbinden met de natuur en om biodiversiteit wetenschap en behoud te bevorderen.
 INATURALIST-MISSION-VISION = INATURALIST'S MISSIE en VISIE
+INATURALIST-MODE = INATURALIST MODE
 INATURALIST-NETWORK = INATURALIST NETWERK
 INATURALIST-SETTINGS = INATURALIST INSTELLINGEN
 INATURALIST-STAFF = { $inaturalist } STAFF
@@ -360,23 +411,54 @@ JOIN-PROJECT = NEEM DEEL AAN PROJECT
 JOIN-PROJECT--question = DEELNEMEN AAN EEN PROJECT?
 Join-the-largest-community-of-naturalists = Sluit je aan bij de grootste groep naturalisten ter wereld!
 JOINED = SLOOT ZICH AAN BIJ
+Joined-date = Lid geworden op { $date }
 JOINED-X-PROJECTS =
     { $count ->
         [one] NEEMT DEEL AAN { $count } PROJECT
        *[other] NEEMT DEEL AAN { $count } PROJECTEN
     }
+JOURNAL-POSTS-WITHOUT-NUMBER =
+    { $count ->
+        [one] DAGBOEK POST
+       *[other] DAGBOEK POSTS
+    }
 July = Juli
 June = Juni
+Just-make-sure-the-organism-is-wild = Zorg ervoor dat het organisme wild is (geen huisdier, dierentuindier of tuinplant)
+Last-Active-date = Laatst actief: { $date }
+Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, maximumFractionDigits: 6) }
+Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBER($longitude, maximumFractionDigits: 6) }, Acc: { $accuracy }
 leading--identification = Leidend
 Learn-More = Meer informatie
+LEAVE = VERLATEN
+LEAVE-PROJECT = PROJECT VERLATEN
 LEAVE-PROJECT--question = PROJECT VERLATEN ?
+LEAVE-US-A-REVIEW = GEEF ONS EEN BEOORDELING!
+LICENSES = LicentieS
+List-layout = Lijst lay-out
+Loading-iNaturalists-AI-Camera = Laden van de iNaturalist's AI Camera
+Loads-content-that-requires-an-Internet-connection = Laad inhoud die een internetverbinding vereist
+LOCATION = LOCATIE
 Location = Locatie
+Location-accuracy-is-too-imprecise = Locatie nauwkeurigheid is te onnauwkeurig om de determinatiemiddelen te helpen. Zoom in.
+LOCATION-TOO-IMPRECISE = LOCATIE TE ONNAUWKEURIG
+LOG-IN = AANMELDEN
 Log-in = Inloggen
+Log-in-to-contribute-and-sync = Log in om bij te dragen & te synchroniseren
+Log-in-to-contribute-your-observations = Log in om met je waarnemingen bij te dragen aan de wetenschap!
+LOG-IN-TO-INATURALIST = AANMELDEN BIJ INATURALIST
+Log-in-to-iNaturalist = Aanmelden bij iNaturalist
 LOG-OUT = AFMELDEN
+LOG-OUT--question = AFMELDEN?
+Login-sub-title = Documenteer levende wezens, determineer organismen & draag bij aan de wetenschap
+Lowest = Laagste
+LOWEST-RANK = LAAGSTE RANG
+MAP = KAART
 Map-Area = Gebied van de kaart
 March = Maart
 maverick--identification = Afwijkend
 May = Mei
+MEDIA = MEDIA
 Media-Type = Mediatype
 MEMBERS-WITHOUT-NUMBER =
     { $count ->
@@ -389,6 +471,7 @@ MISSING-EVIDENCE = ONTBREKEND BEWIJS
 Monthly-Donor = Maandelijkse Donor
 Months = Maanden
 MONTHS = MAANDEN
+More = Meer
 More-info = Meer info
 MOST-FAVED = POPULAIRST
 Most-faved = Populairst
@@ -434,6 +517,7 @@ NONE--ranks = GEEN
 Not-enough-space-left-on-device = Niet genoeg ruimte over op apparaat
 Not-enough-space-left-on-device-try-again = Er is niet genoeg opslagruimte beschikbaar op je apparaat om dat te doen. Maak wat ruimte vrij en probeer het opnieuw.
 NOTES = NOTITIES
+Notes = Opmerkingen
 NOTIFICATIONS = NOTIFICATIES
 Notifications = Notificaties
 notifications-user-added-comment-to-observation-by-you = <0>{ $userName }</0> heeft een opmerking toegevoegd aan een waarneming van jou
@@ -446,6 +530,7 @@ Obscured = Vervaagd
 Observation = Waarneming
 Observation-Attribution = Waarneming: ©️ { $userName } · { $restrictions }
 OBSERVATION-BUTTON = Waarnemingsbutton
+Observation-Copyright = Waarneming Copyright: © { $userName } · { $restrictions }
 Observation-has-no-photos-and-no-sounds = Deze waarneming heeft geen foto's en geen geluiden.
 Observation-location-obscured-randomized-point = De locatie van deze waarneming is vervaagd. Je ziet een willekeurig punt binnen de vervagingsveelhoek.
 Observation-location-obscured-you-can-see-your-own = De locatie van deze waarneming is vervaagd. Je kunt altijd de locatie van je eigen waarnemingen zien.
@@ -468,6 +553,7 @@ Observe = Waarnemen
 Observe-and-identify-organisms-from-your-gallery = Observeer en determineer organismen uit je galerij
 Observe-and-identify-organisms-in-real-time-with-your-camera = Observeer en determineer organismen in realtime met je camera
 OBSERVE-ORGANISMS = NEEM ORGANISMEN WAAR
+OBSERVED-IN--label = WAARGENOMEN IN
 Observers = Waarnemers
 Observers-View = Toon waarnemers
 October = Oktober
@@ -483,8 +569,14 @@ Open = Open
 Open-drawer = Open de lade
 OPEN-EMAIL = E-MAIL OPEN
 Open-menu = Menu openen.
+OPEN-SETTINGS = OPEN INSTELLINGEN
 Opens-add-comment-form = Opent een commentaarformulier
-Opens-edit-comment-form = Opent het bewerkingscommentaar formulier.
+Opens-AI-camera = Opent de AI camera.
+Opens-edit-comment-form = Opent het bewerkingsreactie formulier.
+Opens-location-permission-prompt = Opent locatierechten prompt
+Opens-the-side-drawer-menu = Opent het zijmenu
+Organism-is-captive = Organisme is in gevangenschap
+Organisms-that-are-identified-to-species = Organismen die tot op rang soort of lager zijn gedetermineerd
 Other = Anders
 OTHER-DATA = ANDERE GEGEVENS
 OTHER-SUGGESTIONS = ANDERE SUGGESTIONS
@@ -534,6 +626,7 @@ Ranks-EPIFAMILY = EPIFAMILIE
 Ranks-Epifamily = Epifamilie
 Ranks-FAMILY = FAMILIE
 Ranks-Family = Familie
+Ranks-FORM = VORM
 Ranks-Form = Vorm
 Ranks-GENUS = GENUS
 Ranks-Genus = Geslacht
@@ -541,34 +634,61 @@ Ranks-GENUSHYBRID = GENUSHYBRID
 Ranks-Genushybrid = Intragenerische hybride
 Ranks-HYBRID = HYBRIDE
 Ranks-Hybrid = Hybride
+Ranks-INFRACLASS = INFRACLASS
 Ranks-Infraclass = Infraklasse
+Ranks-INFRAHYBRID = INFRAHYBRID
 Ranks-Infrahybrid = Infrahybride
+Ranks-INFRAORDER = INFRAORDER
 Ranks-Infraorder = Infraorde
+Ranks-KINGDOM = RIJK
 Ranks-Kingdom = Rijk
-Ranks-Order = Sorteer
+Ranks-ORDER = ORDE
+Ranks-Order = Orde
+Ranks-PARVORDER = PARVORDE
 Ranks-Parvorder = Parvorde
+Ranks-PHYLUM = STAM
 Ranks-Phylum = Stam
+Ranks-SECTION = SECTIE
 Ranks-Section = Sectie
-Ranks-SPECIES = SOORTEN
-Ranks-Species = Soorten
+Ranks-SPECIES = SOORT
+Ranks-Species = Soort
 Ranks-Statefmatter = Toestand van de materie
+Ranks-STATEOFMATTER = TOESTAND VAN DE MATERIE
+Ranks-SUBCLASS = SUBKLASSE
 Ranks-Subclass = Onderklasse
+Ranks-SUBFAMILY = ONDERFAMILIE
 Ranks-Subfamily = Onderfamilie
+Ranks-SUBGENUS = ONDERGESLACHT
 Ranks-Subgenus = Ondergeslacht
-Ranks-Subkingdom = subrijk
+Ranks-SUBKINGDOM = ONDERRIJK
+Ranks-Subkingdom = Onderrijk
+Ranks-SUBORDER = ONDERORDE
 Ranks-Suborder = Onderorde
+Ranks-SUBPHYLUM = ONDERSTAM
 Ranks-Subphylum = Onderstam
+Ranks-SUBSECTION = SUBSECTIE
 Ranks-Subsection = Subsectie
+Ranks-SUBSPECIES = ONDERSOORT
 Ranks-Subspecies = Ondersoort
+Ranks-SUBTERCLASS = SUBTERKLASSE
 Ranks-Subterclass = Subterklasse
+Ranks-SUBTRIBE = ONDERTAK
 Ranks-Subtribe = Ondertak
+Ranks-SUPERCLASS = SUPERKLASSE
 Ranks-Superclass = Superklasse
+Ranks-SUPERFAMILY = SUPERFAMILIE
 Ranks-Superfamily = Superfamilie
+Ranks-SUPERORDER = SUPERORDE
 Ranks-Superorder = Superorde
+Ranks-SUPERTRIBE = SUPERTAK
 Ranks-Supertribe = Supertak
+Ranks-TRIBE = GESLACHTENGROEP
 Ranks-Tribe = Geslachtengroep
+Ranks-VARIETY = VARIETEIT
 Ranks-Variety = Variëteit
+Ranks-ZOOSECTION = ZOOSECTIE
 Ranks-Zoosection = Zoösectie
+Ranks-ZOOSUBSECTION = ZOO-ONDERSECTIE
 Ranks-Zoosubsection = Zoö-ondersectie
 Read-more-on-Wikipedia = Lees meer op Wikipedia
 Record-a-sound = Een geluid opnemen
@@ -587,16 +707,59 @@ Remove-Photos = Verwijder foto's
 Remove-project-filter = Verwijder projectfilter
 Remove-taxon-filter = Verwijder taxonfilter
 Remove-user-filter = Verwijder gebruikersfilter
+Removes-this-observations-taxon = Verwijdert het taxon van deze waarneming
+Removes-your-vote-of-agreement = Verwijdert jouw stem van overeenkomst
+Removes-your-vote-of-disagreement = Verwijdert je stem van meningsverschil
 Research-Grade--quality-grade = Onderzoekskwaliteit
+RESET-PASSWORD = WACHTWOORD OPNIEUW INSTELLEN
+RESET-RECORDING = LOPENDE OPNAME RESETTEN
+RESET-SEARCH = RESET SEARCH
+RESET-SOUND-header = GELUID TERUGZETTEN?
 Reset-verb = Herstel
+RESTART-APP = APP HERSTARTEN
 Restore = Herstellen
+Reveal = Onthullen
+REVIEW-INATURALIST = REVIEW INATURALIST
+REVIEWED = GECONTROLEERD
+Reviewed-observations-only = Alleen nagekeken waarnemingen
 Satellite--map-type = Sateliet
 SAVE = OPSLAAN
 Save = Opslaan
+SAVE-ALL = ALLES OPSLAAN
 Save-all-observations = Sla alle waarnemingen op
+SAVE-CHANGES = WIJZIGINGEN OPSLAAN
+SAVE-FOR-LATER = OPSLAAN VOOR LATER
+SAVE-LOCATION = LOCATIE OPSLAAN
+SAVE-PHOTOS = FOTO'S OPSLAAN
+Save-photos-to-your-gallery = Sla foto's op in je galerij
+Saved-Observation = Waarneming opgeslagen, in wachtrij om te uploaden
+Scan-the-area-around-you-for-organisms = Scan het gebied om je heen voor organismen.
 Scientific-Name = Wetenschappelijke naam
+Scientific-Name-Common-Name = Wetenschappelijke naam (lokale volksnaam)
+SEARCH = ZOEK
 Search = Zoeken
+Search-for-a-project = Zoek naar een project
+SEARCH-FOR-A-TAXON = ZOEK NAAR EEN TAXON
+Search-for-a-taxon = Zoek naar een taxon
+SEARCH-LOCATION = ZOEK LOCATIE
+SEARCH-PROJECTS = ZOEK PROJECTEN
 Search-suggestions-with-location = Zoek suggesties met locatie
+Search-suggestions-without-location = Zoek suggesties zonder locatie te gebruiken
+SEARCH-TAXA = ZOEK TAXA
+SEARCH-USERS = ZOEK GEBRUIKERS
+See-all-your-observations-in-explore = Bekijk al je waarnemingen in verkennen
+See-observations-by-this-user-in-Explore = Toon waarnemingen van deze gebruiker in Verkennen
+See-observations-in-explore = Toon waarnemingen in verkennen
+See-observations-of-this-taxon-in-explore = Toon waarnemingen van dit taxon in verkennen
+See-project-members = Toon projectdeelnemers
+See-species-observed-by-this-user-in-Explore = Toon de soorten waargenomen door deze gebruiker in Verkennen
+Select-a-date-and-time-for-observation = Selecteer een datum en tijd voor de waarneming
+Select-captive-or-cultivated-status = Selecteer de status in gevangenschap of gekweekt
+Select-geoprivacy-status = Selecteer geoprivacy status
+Select-or-drag-media = Selecteer of sleep media.
+Select-photo = Selecteer foto
+SELECT-THIS-TAXON = SELECTEER DIT TAXON
+Select-user = Selecteer gebruiker
 Selects-iconic-taxon-X-for-identification = Selecteert icontaxon { $iconicTaxon } voor determinatie.
 Separate-Photos = Foto's scheiden
 September = September
@@ -612,6 +775,9 @@ Showing-offline-search-results--taxa = Toon offline zoekresultaten. Om naar meer
 Shows-identification-suggestions = Toont determinatiesuggesties
 Shows-iNaturalist-bird-logo = Toont iNaturalist vogellogo.
 Shows-observation-creation-options = Toont waarnemingsmakenopties
+Sign-in-with-Apple-Failed = Aanmelden met Apple is mislukt
+Sign-in-with-Google = Aanmelden met Google
+Sign-in-with-Google-Failed = Aanmelden met Google is mislukt
 Some-data-privacy-laws = Een aantal privacywetgevingen, zoals de Algemene Verordening Gegevensbescherming (AVG) van de Europese Unie hebben expliciete toestemming nodig om persoonlijke gegevens van hun jurisdictie over te dragen aan andere jurisdicties waar de rechtsbescherming van deze informatie niet adequaat wordt geacht. Vanaf 2020 beschouwt de Europese Unie de Verenigde Staten niet langer als een jurisdictie die adequate wettelijke bescherming van persoonsgegevens biedt. Specifiek vanwege de mogelijkheid dat de Amerikaanse regering onderzoek doet naar gegevens die de VS binnenkomen. Het is mogelijk dat men voor andere rechtsgebieden dezelfde mening heeft.
 Something-went-wrong = Er ging iets mis.
 Sorry-this-observation-was-deleted = Sorry, deze waarneming is verwijderd
@@ -770,6 +936,11 @@ x-comments =
         [one] { $count } opmerking
        *[other] { $count } opmerkingen
     }
+x-failed =
+    { $count ->
+        [one] { $count } is mislukt
+       *[other] { $count } zijn mislukt
+    }
 X-FOLLOWERS =
     { $count ->
         [one] { $count } VOLGER
@@ -846,6 +1017,11 @@ X-PHOTOS-Y-SOUNDS =
        *[other] { $soundCount } GELUIDEN
     }
 X-PROJECTS = { $projectCount } PROJECTEN
+x-saved =
+    { $count ->
+        [one] { $count } opgeslagen
+       *[other] { $count } opgeslagen
+    }
 X-SOUNDS =
     { $count ->
         [one] 1 GELUID
@@ -855,6 +1031,16 @@ X-Species =
     { $count ->
         [one] { $count } Soort
        *[other] { $count } Soorten
+    }
+x-uploaded =
+    { $count ->
+        [one] { $count } geupload
+       *[other] { $count } geupload
+    }
+x-uploading =
+    { $count ->
+        [one] { $count } aan het uploaden
+       *[other] { $count } aan het uploaden
     }
 x-uploads-failed =
     { $count ->
@@ -878,6 +1064,7 @@ You-changed-filters-will-be-discarded = Je hebt filters veranderd, maar ze werde
 You-have-opted-out-of-the-Community-Taxon = Je hebt je afgemeld voor het gemeenschapstaxon
 You-havent-joined-any-projects-yet = Je neemt nog niet deel aan projecten.
 You-must-be-logged-in-to-view-messages = Je moet ingelogd zijn om berichten te bekijken
+You-must-install-Google-Play-Services-to-sign-in-with-Google = Je moet Google Play Services installeren om je aan te kunnen melden met Google.
 You-need-an-Internet-connection-to-do-that = Je hebt een internetverbinding nodig om dat te doen.
 You-need-log-in-to-do-that = Je moet inloggen om dat te doen.
 You-will-see-notifications = Je ziet hier meldingen zodra je inlogt en waarnemingen uploadt.

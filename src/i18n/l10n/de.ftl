@@ -32,7 +32,8 @@ ADD-OPTIONAL-COMMENT = OPTIONALEN KOMMENTAR HINZUFÜGEN
 Add-optional-notes = Optionale Anmerkungen hinzufügen
 Adds-your-vote-of-agreement = Fügt deine Zustimmung hinzu
 Adds-your-vote-of-disagreement = Fügt deinen Widerspruch hinzu
-Affiliation = Zugehörigkeit: { $site }
+Advanced--interface-mode-with-explainer = Erweitert (Mehrere Fotos und Tonaufnahmen hochladen)
+Affiliation = Netzwerk: { $site }
 Agree = Zustimmen
 AGREE = Zustimmen
 Agree-to-all-of-the-above = Allen oben genannten Punkten zustimmen
@@ -123,6 +124,7 @@ Combine-Photos = Fotos zusammenführen
 COMMENT = KOMMENTAR
 Comment-options = Kommentar-Optionen
 Common-Name-Scientific-Name = Gebräuchlicher Name (Wissenschaftlicher Name)
+Community = Community
 Community-based = Community-basiert
 Community-Guidelines = Community-Richtlinien
 COMMUNITY-GUIDELINES = COMMUNITY-RICHTLINIEN
@@ -147,6 +149,7 @@ Create-an-observation-evidence = Eine Beobachtung ohne Nachweis erstellen
 CREATE-YOUR-FIRST-OBSERVATION = ERSTELLE DEINE ERSTE BEOBACHTUNG
 DATA-QUALITY = DATENQUALITÄT
 DATA-QUALITY-ASSESSMENT = BEWERTUNG DER DATENQUALITÄT
+Data-Quality-Assessment = Bewertung der Datenqualität
 Data-quality-assessment-can-taxon-still-be-confirmed-improved-based-on-the-evidence = Kann das Gemeinschaftstaxon auf der Grundlage der Erkenntnisse noch verbessert werden?
 Data-quality-assessment-community-taxon-species-level-or-lower = Gemeinschaftstaxon auf Artniveau oder niedriger
 Data-quality-assessment-date-is-accurate = Datum stimmt
@@ -184,6 +187,7 @@ Date-uploaded = Hochgeladen am
 Date-uploaded-header-short = Hochgeladen
 DATE-UPLOADED-NEWEST = HOCHGELADEN AM - NEUESTE ZUERST
 DATE-UPLOADED-OLDEST = HOCHGELADEN AM - ÄLTESTE ZUERST
+Date-uploaded-on-header-short = Hochgeladen am:
 datetime-difference-days = { $count } Tage
 datetime-difference-hours = { $count } Std.
 datetime-difference-minutes = { $count } Min.
@@ -191,6 +195,7 @@ datetime-difference-weeks = { $count } Wo.
 datetime-format-long = dd. MMMM yyyy HH:mm
 datetime-format-short = dd. MM.yy,  HH:mm
 December = Dezember
+Default--interface-mode = Standard
 DELETE = LÖSCHEN
 Delete-all-observations = Alle Beobachtungen löschen
 Delete-comment = Kommentar löschen
@@ -211,6 +216,7 @@ Deleting-x-of-y-observations-2 =
         [one] Beobachtung wird gelöscht
        *[other] von { $total } Beobachtungen werden gelöscht
     }
+Details = Details
 DETAILS = DETAILS
 Device-storage-full = Gerätespeicher aufgebraucht
 Device-storage-full-description = Möglicherweise kann iNaturalist deine Fotos nicht speichern oder stürzt ab.
@@ -298,7 +304,7 @@ Flagged = Gemeldet
 Flash = Kamerablitz
 Flip-camera = Kamera wechseln
 FOLLOW = FOLGEN
-FOLLOWING--notifications = FOLLOWING
+FOLLOWING--notifications = ANDERE BEOBACHTUNGEN
 FOLLOWING-X-PEOPLE =
     { $count ->
         [one] FOLGT { $count } PERSON
@@ -310,6 +316,7 @@ Geoprivacy-status = Sichtbarkeit des Fundorts: { $status }
 Get-more-accurate-suggestions-create-useful-data = Erhalte genauere Vorschläge und erstelle nützliche Daten für die Wissenschaft, indem du deinen Standort aktivierst
 Get-your-identification-verified-by-real-people = Lasse deine Bestimmung von echten Menschen in der iNaturalist-Gemeinschaft überprüfen
 Go-back = Zurück gehen
+Google-Play-Services-Not-Installed = Google Play-Dienste sind nicht installiert
 GRANT-PERMISSION = ZUGRIFF GEWÄHREN
 Grant-Permission-title = Zugriff gewähren
 Grid-layout = Rasteransicht
@@ -337,6 +344,7 @@ Identify-an-organism = Organismus bestimmen
 Identify-an-organism-with-the-iNaturalist-AI-Camera = Bestimme einen Organismus mit der iNaturalist KI-Kamera
 Identify-record-learn = Bestimme, erfasse und entdecke mit iNaturalist die Artenvielfalt der Welt
 If-an-account-with-that-email-exists = Wenn ein Konto mit dieser E-Mail-Adresse existiert, wurden Anweisungen zum Zurücksetzen des Passworts an deine E-Mail-Adresse gesendet.
+If-you-have-an-existing-account-try-sign-in-reset = Wenn du bereits ein iNat-Konto hast, versuche dich mit deinem Benutzernamen und Passwort anzumelden, oder versuche dein Passwort mit der E-Mail-Adresse deines Kontos zurückzusetzen.
 If-you-leave-x-of-your-observations-removed =
     Wenn du dieses traditionelle Projekt verlässt, { $count ->
         [one] wird eine deiner Beobachtungen
@@ -402,8 +410,8 @@ JOINED-X-PROJECTS =
     }
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
-        [one] Tagebucheintrag
-       *[other] Tagebucheinträge
+        [one] Journal-Beitrag
+       *[other] Journal-Beiträge
     }
 July = Juli
 June = Juni
@@ -454,10 +462,11 @@ MISSING-EVIDENCE = FEHLENDE BELEGE
 Monthly-Donor = Monatlicher Spender
 Months = Monate
 MONTHS = MONATE
+More = Mehr
 More-info = Weitere Informationen
 MOST-FAVED = MEIST FAVORISIERT
 Most-faved = Meist favorisiert
-MY-CONTENT--notifications = MEIN INHALT
+MY-CONTENT--notifications = MEINE BEOBACHTUNGEN
 MY-OBSERVATIONS = MEINE BEOBACHTUNGEN
 Native = einheimisch
 Native-to-place = Einheimisch in { $place }
@@ -499,6 +508,7 @@ NONE--ranks = KEINER
 Not-enough-space-left-on-device = Nicht genug Speicherplatz auf dem Gerät vorhanden
 Not-enough-space-left-on-device-try-again = Es ist nicht genügend Speicherplatz auf dem Gerät vorhanden. Bitte gib etwas Speicherplatz frei und versuche es erneut.
 NOTES = Hinweise
+Notes = Bemerkungen
 NOTIFICATIONS = BENACHRICHTIGUNGEN
 Notifications = Benachrichtigungen
 notifications-user-added-comment-to-observation-by-you = <0>{ $userName }</0> hat einen Kommentar zu einer deiner Beobachtungen hinzugefügt
@@ -511,6 +521,7 @@ Obscured = Verschleiert
 Observation = Beobachtung
 Observation-Attribution = Beobachtung: © { $userName } • { $restrictions }
 OBSERVATION-BUTTON = BEOBACHTUNGS-TASTE
+Observation-Copyright = Copyright der Beobachtung: © { $userName } • { $restrictions }
 Observation-has-no-photos-and-no-sounds = Diese Beobachtung hat weder Fotos noch Tonaufnahmen.
 Observation-location-obscured-randomized-point = Der genaue Standort dieser Beobachtung wurde verschleiert, und es wird ein zufälliger Punkt innerhalb eines definierten Polygons angezeigt.
 Observation-location-obscured-you-can-see-your-own = Der Standort dieser Beobachtung wurde unkenntlich gemacht. Von deinen eigenen Beobachtungen kannst du immer die genauen Koordinaten sehen.
@@ -533,6 +544,7 @@ Observe = Beobachten
 Observe-and-identify-organisms-from-your-gallery = Beobachte und bestimme die Lebewesen aus deiner Foto-Galerie
 Observe-and-identify-organisms-in-real-time-with-your-camera = Beobachte und bestimme Lebewesen in Echtzeit mit deiner Kamera
 OBSERVE-ORGANISMS = JETZT BEOBACHTEN
+OBSERVED-IN--label = BEOBACHTET IN
 Observers = Beobachtende
 Observers-View = Beobachteransicht
 October = Oktober
@@ -576,7 +588,7 @@ PLEASE-LOG-IN = BITTE ANMELDEN
 Please-try-again-when-you-are-connected-to-the-internet = Bitte versuche es erneut, wenn du mit dem Internet verbunden bist.
 Please-try-again-when-you-are-online = Bitte versuche es erneut, wenn du online bist!
 POTENTIAL-DISAGREEMENT = BESTEHT EINWAND GEGEN DIE AKTUELLE BESTIMMUNG?
-Potential-disagreement-description = <0>Soll der Bestimmung </0><1></1> <0>widersprochen werden?<0>
+Potential-disagreement-description = <0>Soll der Bestimmung </0><1></1><0>widersprochen werden?<0>
 Potential-disagreement-disagree = <0>Widerspruch (</0><1></1> <0>ist als ID aber möglich)</0>
 Potential-disagreement-unsure = <0>kein Veto, aber</0> <1></1> <0>traue ich mir als Bestimmung zu</0>
 Previous-observation = Vorherige Beobachtung
@@ -755,6 +767,8 @@ Shows-identification-suggestions = Zeigt Bestimmungsvorschläge
 Shows-iNaturalist-bird-logo = Zeigt das iNaturalist-Vogellogo.
 Shows-observation-creation-options = Zeigt Optionen für die Erfassung von Beobachtungen
 Sign-in-with-Apple-Failed = Anmeldung mit Apple fehlgeschlagen
+Sign-in-with-Google = Mit Google anmelden
+Sign-in-with-Google-Failed = Anmeldung mit Google fehlgeschlagen
 Some-data-privacy-laws = Einige Datenschutzgesetze, wie die Datenschutz-Grundverordnung (DSGVO) der Europäischen Union, erfordern die ausdrückliche Zustimmung zur Übermittlung personenbezogener Daten aus ihrem Hoheitsgebiet in andere Hoheitsgebiete, in denen der rechtliche Schutz dieser Daten nicht als angemessen angesehen wird. Ab 2020 betrachtet die Europäische Union die Vereinigten Staaten nicht mehr als ein Land, das einen angemessenen Rechtsschutz für personenbezogene Daten bietet, insbesondere wegen der Möglichkeit, dass die US-Regierung Daten überwacht, die in die USA gelangen. Es ist möglich, dass andere Gerichtsbarkeiten die gleiche Meinung vertreten.
 Something-went-wrong = Ein Problem ist aufgetreten.
 Sorry-this-observation-was-deleted = Leider wurde diese Beobachtung entfernt.
@@ -779,8 +793,8 @@ Species = Arten
 Species-View = Arten-Ansicht
 SPECIES-WITHOUT-NUMBER =
     { $count ->
-        [one] Art
-       *[other] Arten
+        [one] ART
+       *[other] ARTEN
     }
 Standard--map-type = Standard
 Start-must-be-before-end = Das Startdatum muss vor dem Enddatum liegen.
@@ -880,7 +894,7 @@ VIEW-CHILDREN-TAXA = UNTERGEORDNETE TAXA ANZEIGEN
 VIEW-DATA-QUALITY-ASSESSMENT = BEWERTUNG DER DATENQUALITÄT ANZEIGEN
 VIEW-EDUCATORS-GUIDE = LEITFADEN FÜR PÄDAGOGEN ANZEIGEN
 VIEW-FOLLOWERS = FOLLOWER ANZEIGEN
-VIEW-FOLLOWING = PERSONEN, DENEN DU FOLGST
+VIEW-FOLLOWING = FOLGT DIESEN PERSONEN
 View-in-browser = Im Browser anzeigen
 VIEW-IN-EXPLORE = IN ERKUNDEN ANZEIGEN
 VIEW-INATURALIST-HELP = HILFE FÜR INATURALIST ANZEIGEN
@@ -1041,6 +1055,7 @@ You-changed-filters-will-be-discarded = Du hast die Filter geändert, aber sie w
 You-have-opted-out-of-the-Community-Taxon = Du hast dich gegen eine Teilnahme am Community-Taxon entschieden
 You-havent-joined-any-projects-yet = Du bist noch keinen Projekten beigetreten!
 You-must-be-logged-in-to-view-messages = Du musst eingeloggt sein, um Nachrichten anzusehen.
+You-must-install-Google-Play-Services-to-sign-in-with-Google = Um sich bei Google anzumelden, muss Google Play Services installiert sein.
 You-need-an-Internet-connection-to-do-that = Du brauchst eine Verbindung zum Internet, um das tun zu können.
 You-need-log-in-to-do-that = Dazu musst du dich zuerst anmelden.
 You-will-see-notifications = Hier wirst du Benachrichtigungen sehen, sobald du eingeloggt bist und eine Beobachtung hochgeladen hast.
