@@ -6,6 +6,7 @@
 ###
 
 ABOUT = TIETOJA
+Advanced--interface-mode-with-explainer = Lisäasetukset (Lataa useita kuvia ja ääniä)
 Agree = Samaa mieltä
 AGREE = SAMAA MIELTÄ
 ALL = KAIKKI
@@ -54,6 +55,7 @@ Date-Range = Ajanjakso
 date-to-date = { $d1 } - { $d2 }
 Date-uploaded-on-header-short = Ladattu:
 December = joulukuu
+Default--interface-mode = Oletus
 Delete-observation = Poista havainto
 Delete-photo = Poista kuva
 Deleting-x-of-y--observations =

@@ -110,7 +110,13 @@ const jsonifyPath = async ( inPath, outPath, options = { } ) => {
     );
   } );
   const ftl2js = util.promisify( fluent.ftl2js );
+  if ( options.verbose ) {
+    console.log( "Converting FTL to JS for", inPath );
+  }
   const localizations = await ftl2js( ftlTxt.toString( ), { respectComments: false } );
+  if ( options.verbose ) {
+    console.log( "Convered FTL to JS for", inPath );
+  }
   const massagedLocalizations = options.checkify
     ? checkifyLocalizations( localizations )
     : localizations;
