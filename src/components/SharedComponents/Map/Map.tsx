@@ -150,25 +150,27 @@ const Map = ( {
 
   // In Android, we maintain a state for defaultInitialRegion and initialRegion
   // that is updated on gestures like pan and zoom. This state is always null in iOS.
-  const [localRegion, setLocalRegion] = useState<Region|null>( Platform.OS === "android"
-    ? initialRegion || defaultInitialRegion
-    : null );
+  const [androidLocalRegion, setAndroidLocalRegion] = useState<Region|null>(
+    Platform.OS === "android"
+      ? initialRegion || defaultInitialRegion
+      : null
+  );
 
   // In Android, onMapReady does not fire when we pass parameter region instead
   // of parameter initialRegion. This state allows us to fire onMapReady and
   // fire it only once. This state is always false in iOS.
-  const [onMapReadyHasFired, setOnMapReadyHasFired] = useState( false );
+  const [onMapReadyHasFiredAndroid, setOnMapReadyHasFiredAndroid] = useState( false );
 
   // In Android, animateToRegion animates to the given region but the map then
   // immediately returns to the previous region. We fake a gesture to the
   // desired region to make it stick. This state stores the region for this
   // gesture. This state is always null in iOS.
-  const [animateRegion, setAnimateRegion] = useState<Region|null>( null );
+  const [androidAnimateRegion, setAndroidAnimateRegion] = useState<Region|null>( null );
 
   const animateToRegion = ( newRegion: Region ) => {
     mapViewRef.current?.animateToRegion( newRegion );
     if ( Platform.OS === "android" ) {
-      setAnimateRegion( newRegion );
+      setAndroidAnimateRegion( newRegion );
     }
   };
 
@@ -216,7 +218,7 @@ const Map = ( {
     onPermissionGranted
   } );
 
-  // In Android, we always return a state, either region or localRegion.
+  // In Android, we always return a state, either region or androidLocalRegion.
   const setRegion = ( ) => {
     if ( Platform.OS !== "android" && initialRegion ) {
       return null;
@@ -225,7 +227,7 @@ const Map = ( {
       return region;
     }
     return Platform.OS === "android"
-      ? localRegion
+      ? androidLocalRegion
       : defaultInitialRegion;
   };
 
@@ -327,8 +329,8 @@ const Map = ( {
       if ( previousTileUrl !== tileUrlTemplate ) {
         setPreviousTileUrl( tileUrlTemplate );
       }
-      if ( !onMapReadyHasFired && onMapReady ) {
-        setOnMapReadyHasFired( true );
+      if ( !onMapReadyHasFiredAndroid && onMapReady ) {
+        setOnMapReadyHasFiredAndroid( true );
         onMapReady();
       }
       shouldSkipRegionUpdate = true;
@@ -338,18 +340,18 @@ const Map = ( {
         const boundaries = await mapViewRef?.current?.getMapBoundaries( );
         onRegionChangeComplete( newRegion, boundaries );
       }
-      if ( localRegion ) {
-        setLocalRegion( newRegion );
+      if ( androidLocalRegion ) {
+        setAndroidLocalRegion( newRegion );
       }
     }
     setCurrentZoom( calculateZoom( screenWidth, newRegion.longitudeDelta ) );
   }, [
     previousTileUrl,
     tileUrlTemplate,
-    onMapReadyHasFired,
+    onMapReadyHasFiredAndroid,
     onMapReady,
     onRegionChangeComplete,
-    localRegion,
+    androidLocalRegion,
     screenWidth
   ] );
 
@@ -358,21 +360,21 @@ const Map = ( {
   // desired region to make it stick.
   useEffect(
     ( ) => {
-      if ( Platform.OS === "android" && animateRegion ) {
-        const curRegion = localRegion || region;
+      if ( Platform.OS === "android" && androidAnimateRegion ) {
+        const curRegion = androidLocalRegion || region;
         const newRegion = {
           ...curRegion, // provides defaults for latitudeDelta and longitudeDelta
-          ...animateRegion
+          ...androidAnimateRegion
         };
         setTimeout(
           ( ) => handleRegionChangeComplete( newRegion, { isGesture: true } )
         );
-        setAnimateRegion( null );
+        setAndroidAnimateRegion( null );
       }
     },
     [
-      animateRegion,
-      localRegion,
+      androidAnimateRegion,
+      androidLocalRegion,
       region,
       handleRegionChangeComplete
     ]
