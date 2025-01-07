@@ -15,11 +15,16 @@ type Props = {
 const PhotosSection = ( { taxon, observationPhoto }: Props ) => {
   const [displayPortraitLayout, setDisplayPortraitLayout] = useState( null );
 
-  const taxonPhotos = compact(
+  const photos = compact(
     taxon?.taxonPhotos
       ? taxon.taxonPhotos.map( taxonPhoto => taxonPhoto.photo )
       : [taxon?.defaultPhoto]
   );
+
+  // don't show the iconic taxon photo which is a mashup of 9 photos
+  const taxonPhotos = taxon.isIconic
+    ? photos.slice( 1, 4 )
+    : photos.slice( 0, 3 );
 
   useEffect( ( ) => {
     const checkImageOrientation = async ( ) => {

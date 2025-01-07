@@ -43,7 +43,7 @@ const MatchHeader = ( { taxon, confidence }: Props ) => {
       <Body2 className="mb-2">{t( "You-observed-a-new-species" )}</Body2>
       <View className="flex-row justify-between items-center">
         {showSuggestedTaxon( )}
-        <View className="justify-end items-center">
+        <View className="justify-end items-center ml-5">
           <Subheading1 className="text-inatGreen mb-2">
             {t( "X-percent", { count: confidence } )}
           </Subheading1>
