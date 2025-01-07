@@ -148,12 +148,38 @@ const Map = ( {
     }
   }
 
+  // In Android, we maintain a state for defaultInitialRegion and initialRegion
+  // that is updated on gestures like pan and zoom. This state is always null in iOS.
+  const [androidLocalRegion, setAndroidLocalRegion] = useState<Region|null>(
+    Platform.OS === "android"
+      ? initialRegion || defaultInitialRegion
+      : null
+  );
+
+  // In Android, onMapReady does not fire when we pass parameter region instead
+  // of parameter initialRegion. This state allows us to fire onMapReady and
+  // fire it only once. This state is always false in iOS.
+  const [onMapReadyHasFiredAndroid, setOnMapReadyHasFiredAndroid] = useState( false );
+
+  // In Android, animateToRegion animates to the given region but the map then
+  // immediately returns to the previous region. We fake a gesture to the
+  // desired region to make it stick. This state stores the region for this
+  // gesture. This state is always null in iOS.
+  const [androidAnimateRegion, setAndroidAnimateRegion] = useState<Region|null>( null );
+
+  const animateToRegion = ( newRegion: Region ) => {
+    mapViewRef.current?.animateToRegion( newRegion );
+    if ( Platform.OS === "android" ) {
+      setAndroidAnimateRegion( newRegion );
+    }
+  };
+
   useEffect( ( ) => {
     // in LocationPicker we're setting initialRegion to eliminate jitteriness
     // when scrolling, which means we also must use this method to reset the map
     // when searching for a location by typing a place name and selecting place coordinates
-    if ( !regionToAnimate ) { return; }
-    mapViewRef.current?.animateToRegion( {
+    if ( !regionToAnimate || !mapViewRef.current ) { return; }
+    animateToRegion( {
       latitude: regionToAnimate.latitude,
       longitude: regionToAnimate.longitude
     } );
@@ -179,7 +205,7 @@ const Map = ( {
   const onPermissionGranted = async ( ) => {
     const currentLocation = await fetchUserLocation( );
     if ( currentLocation && mapViewRef?.current ) {
-      mapViewRef.current?.animateToRegion( {
+      animateToRegion( {
         latitude: currentLocation.latitude,
         longitude: currentLocation.longitude,
         latitudeDelta: metersToLatitudeDelta( NEARBY_DIM_M, currentLocation.latitude ),
@@ -192,14 +218,17 @@ const Map = ( {
     onPermissionGranted
   } );
 
+  // In Android, we always return a state, either region or androidLocalRegion.
   const setRegion = ( ) => {
-    if ( initialRegion ) {
+    if ( Platform.OS !== "android" && initialRegion ) {
       return null;
     }
     if ( region?.latitude ) {
       return region;
     }
-    return defaultInitialRegion;
+    return Platform.OS === "android"
+      ? androidLocalRegion
+      : defaultInitialRegion;
   };
 
   const handleCurrentLocationPress = useCallback( ( ) => {
@@ -238,7 +267,7 @@ const Map = ( {
       latitudeDelta = Math.max( latitudeDelta, configuredLatitudeDelta );
       longitudeDelta = Math.max( longitudeDelta, configuredLongitudeDelta );
 
-      mapViewRef.current?.animateToRegion( {
+      animateToRegion( {
         latitude: userLocation.latitude,
         longitude: userLocation.longitude,
         latitudeDelta,
@@ -291,7 +320,7 @@ const Map = ( {
 
   const [previousTileUrl, setPreviousTileUrl] = useState( tileUrlTemplate );
 
-  const handleRegionChangeComplete = async ( newRegion, gesture ) => {
+  const handleRegionChangeComplete = useCallback( async ( newRegion, gesture ) => {
     // We are only interested in region changes due to user interaction.
     // In Android, onRegionChangeComplete also fires for other map region
     // changes and gesture.isGesture is available to test for user interaction.
@@ -300,14 +329,56 @@ const Map = ( {
       if ( previousTileUrl !== tileUrlTemplate ) {
         setPreviousTileUrl( tileUrlTemplate );
       }
+      if ( !onMapReadyHasFiredAndroid && onMapReady ) {
+        setOnMapReadyHasFiredAndroid( true );
+        onMapReady();
+      }
       shouldSkipRegionUpdate = true;
     }
-    if ( onRegionChangeComplete && !shouldSkipRegionUpdate ) {
-      const boundaries = await mapViewRef?.current?.getMapBoundaries( );
-      onRegionChangeComplete( newRegion, boundaries );
+    if ( !shouldSkipRegionUpdate ) {
+      if ( onRegionChangeComplete ) {
+        const boundaries = await mapViewRef?.current?.getMapBoundaries( );
+        onRegionChangeComplete( newRegion, boundaries );
+      }
+      if ( androidLocalRegion ) {
+        setAndroidLocalRegion( newRegion );
+      }
     }
     setCurrentZoom( calculateZoom( screenWidth, newRegion.longitudeDelta ) );
-  };
+  }, [
+    previousTileUrl,
+    tileUrlTemplate,
+    onMapReadyHasFiredAndroid,
+    onMapReady,
+    onRegionChangeComplete,
+    androidLocalRegion,
+    screenWidth
+  ] );
+
+  // In Android, animateToRegion animates to the given region but the map then
+  // immediately returns to the previous region. We fake a gesture to the
+  // desired region to make it stick.
+  useEffect(
+    ( ) => {
+      if ( Platform.OS === "android" && androidAnimateRegion ) {
+        const curRegion = androidLocalRegion || region;
+        const newRegion = {
+          ...curRegion, // provides defaults for latitudeDelta and longitudeDelta
+          ...androidAnimateRegion
+        };
+        setTimeout(
+          ( ) => handleRegionChangeComplete( newRegion, { isGesture: true } )
+        );
+        setAndroidAnimateRegion( null );
+      }
+    },
+    [
+      androidAnimateRegion,
+      androidLocalRegion,
+      region,
+      handleRegionChangeComplete
+    ]
+  );
 
   const handleMapPress = e => {
     if ( withPressableObsTiles ) onMapPressForObsLyr( e.nativeEvent.coordinate );
@@ -340,8 +411,11 @@ const Map = ( {
   const mapRegion = shouldFuzzRegion( unfuzzedMapRegion )
     ? fuzzRegion( unfuzzedMapRegion )
     : unfuzzedMapRegion;
-  const mapInitialRegion = shouldFuzzRegion( initialRegion )
-    ? fuzzRegion( initialRegion )
+
+  // In Android, we maintain initialRegion as state localRegion and
+  // pass null to parameter initialRegion.
+  const mapInitialRegion = Platform.OS === "android"
+    ? null
     : initialRegion;
 
   const renderDebugZoomLevel = ( ) => {
