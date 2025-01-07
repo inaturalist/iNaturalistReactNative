@@ -35,15 +35,20 @@ beforeAll( uniqueRealmBeforeAll );
 afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
+const toggleAdvancedMode = async ( ) => {
+  const advancedRadioButton = await screen.findByTestId( "advanced-interface-option" );
+  fireEvent.press( advancedRadioButton );
+};
+
 describe( "LanguageSettings", ( ) => {
-  test( "uses locale preference of the local device", ( ) => {
+  it( "uses locale preference of the local device", ( ) => {
     renderAppWithComponent( <Settings /> );
     const systemLocale = getInatLocaleFromSystemLocale( );
     expect( systemLocale ).toEqual( "en" );
     expect( i18next.language ).toEqual( systemLocale );
   } );
 
-  describe( "when signed in", ( ) => {
+  describe( "when signed in as Russian language user", ( ) => {
     beforeEach( async ( ) => {
       await signIn( mockUserWithRussianWebLocale, { realm: global.mockRealms[__filename] } );
       jest.useFakeTimers( );
@@ -61,22 +66,32 @@ describe( "LanguageSettings", ( ) => {
       await signOut( { realm: global.mockRealms[__filename] } );
     } );
 
-    test( "uses locale preference from server", async ( ) => {
+    it( "uses locale preference from server", async ( ) => {
       renderAppWithComponent( <Settings /> );
-      const sciNameText = await screen.findByText( /Научное название/ );
+      await toggleAdvancedMode( );
+      const sciNameText = await screen.findByText(
+        i18next.t( "Scientific-Name", { lang: "ru" } )
+      );
       expect( sciNameText ).toBeVisible( );
     } );
 
-    test( "changes locales and updates server with new locale", async ( ) => {
+    it( "allows change to Swedish and requests remote locale change", async ( ) => {
       renderAppWithComponent( <Settings /> );
-      const changeLocaleButton = await screen.findByText( /CHANGE APP LANGUAGE/ );
+      await toggleAdvancedMode( );
+      const changeLocaleButton = await screen.findByText(
+        i18next.t( "CHANGE-APP-LANGUAGE", { lang: "ru" } )
+      );
       fireEvent.press( changeLocaleButton );
       const picker = await screen.findByTestId( "ReactNativePicker" );
       fireEvent( picker, "onValueChange", "sv" );
       expect( picker.props.selectedIndex ).toStrictEqual( 1 );
-      const confirmText = await screen.findByText( /CONFIRM/ );
+      const confirmText = await screen.findByText(
+        i18next.t( "CONFIRM", { lang: "ru" } )
+      );
       fireEvent.press( confirmText );
-      const sciNameText = await screen.findByText( "Vetenskapligt namn" );
+      const sciNameText = await screen.findByText(
+        i18next.t( "Scientific-Name", { lang: "sv" } )
+      );
       expect( sciNameText ).toBeVisible( );
       expect( inatjs.users.update ).toHaveBeenCalledWith( {
         id: mockUserWithRussianWebLocale.id,
@@ -88,7 +103,7 @@ describe( "LanguageSettings", ( ) => {
       } );
     } );
 
-    test( "revert to system locale on sign out", async ( ) => {
+    it( "reverts to system locale on sign out", async ( ) => {
       renderAppWithComponent( <Settings /> );
       await signOut( { realm: global.mockRealms[__filename] } );
       expect( i18next.language ).toEqual( "en" );

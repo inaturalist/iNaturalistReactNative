@@ -64,6 +64,7 @@ Add-optional-notes = Add optional notes
 Adds-your-vote-of-agreement = Adds your vote of agreement
 # Hint for a button that adds a vote of disagreement
 Adds-your-vote-of-disagreement = Adds your vote of disagreement
+Advanced--interface-mode-with-explainer = Advanced (Upload multiple photos and sounds)
 Affiliation = Affiliation: { $site }
 # Label for button that adds an identification of the same taxon as another identification
 Agree = Agree
@@ -202,7 +203,8 @@ CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
 CHOOSE-PHOTOS = CHOOSE PHOTOS
 # Label for button that chooses a taxon
 Choose-taxon = Choose taxon
-# Label for button that chooses top taxon
+# Label for button that chooses the best suggestion among a list of suggested
+# taxa for an identification
 Choose-top-taxon = Choose top taxon
 # Label for a button that clears content, like the text entered in a text
 # field
@@ -350,6 +352,7 @@ datetime-format-long = Pp
 datetime-format-short = M/d/yy h:mm a
 # Month of December
 December = December
+Default--interface-mode = Default
 DELETE = DELETE
 Delete-all-observations = Delete all observations
 Delete-comment = Delete comment
@@ -590,6 +593,7 @@ iNaturalist-is-supported-by = iNaturalist is supported by an independent, 501(c)
 iNaturalist-is-supported-by-our-community = iNaturalist is supported by our amazing community. From everyday naturalists who add observations and identifications, to curators who manage our taxonomy and help with moderation, to the volunteer translators who make iNaturalist more accessible to worldwide audiences, to our community-based donors, we are extraordinarily grateful to all the people in our community who make iNaturalist the platform it is.
 iNaturalist-mission-is-to-connect = iNaturalist's mission is to connect people to nature and advance biodiversity science and conservation.
 INATURALIST-MISSION-VISION = INATURALIST'S MISSION & VISION
+INATURALIST-MODE = INATURALIST MODE
 INATURALIST-NETWORK = INATURALIST NETWORK
 INATURALIST-SETTINGS = INATURALIST SETTINGS
 # Label for the role a user plays on iNaturalist, e.g. "INATURALIST STAFF"
@@ -699,7 +703,7 @@ MISSING-EVIDENCE = MISSING EVIDENCE
 Monthly-Donor = Monthly Donor
 Months = Months
 MONTHS = MONTHS
-# Label for section of ObsDetails with information about obseration projects, DQA, etc.
+# Label for section of ObsDetails with information about observation projects, DQA, etc.
 More = More
 More-info = More info
 MOST-FAVED = MOST FAVED
