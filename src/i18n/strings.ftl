@@ -85,6 +85,8 @@ All-organisms = All organisms
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = all rights reserved
 All-taxa = All taxa
+# Title in explore filters
+ALL-USERS-EXCEPT = ALL USERS EXCEPT
 ALLOW-LOCATION-ACCESS = ALLOW LOCATION ACCESS
 # As in automated identification suggestions
 Almost-done = Almost done!
@@ -148,6 +150,8 @@ By-exiting-observation-not-saved = By exiting, your observation will not be save
 By-exiting-your-observations-not-saved = By exiting, your observations will not be saved. You can save them to your device, or you can delete them.
 By-exiting-your-photos-will-not-be-saved = By exiting, your photos will not be saved.
 By-exiting-your-recorded-sound-will-not-be-saved = By exiting, your recorded sound will not be saved.
+# Button in explore filters to search for species or observations by the signed in user
+BY-ME = BY ME
 # Lead in to a list including "Get your identifcation verified..." and "Share your observation..."
 By-uploading-your-observation-to-iNaturalist-you-can = By uploading your observation to iNaturalist, you can:
 Camera = Camera
@@ -703,7 +707,6 @@ Most-faved = Most faved
 # Title for section in Notifications showing notifications about observations
 # created by the viewer. Should be 16 characters or fewer or it will be ellipsized.
 MY-CONTENT--notifications = MY CONTENT
-MY-OBSERVATIONS = MY OBSERVATIONS
 Native = Native
 Native-to-place = Native to { $place }
 Navigates-to-AI-camera = Navigates to AI camera
@@ -754,6 +757,8 @@ no-rights-reserved-cc0 = no rights reserved (CC0)
 none--accuracy = none
 # Option when selecting taxonomic ranks that indicates no rank was selected
 NONE--ranks = NONE
+# Button in explore filters to search for species or observations NOT by the signed in user
+NOT-BY-ME = NOT BY ME
 # Error message title when not enough storage space on device, e.g. when the
 # disk is full and you try to save a photo
 Not-enough-space-left-on-device = Not enough space left on device

@@ -110,7 +110,12 @@ class Observation extends Realm.Object {
       rank_level: true
     },
     taxon_geoprivacy: true,
-    time_observed_at: true
+    time_observed_at: true,
+    user: {
+      id: true,
+      uuid: true,
+      login: true
+    }
   };
 
   static LIST_FIELDS = {

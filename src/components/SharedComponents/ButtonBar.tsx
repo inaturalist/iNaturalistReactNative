@@ -40,7 +40,7 @@ const ButtonBar = ( {
         containerClass,
         {
           "p-[15px] w-full": !buttonConfiguration,
-          "flex-row": buttonConfiguration
+          "flex-row justify-center": buttonConfiguration
         }
       )}
       onLayout={onLayout}
@@ -51,7 +51,7 @@ const ButtonBar = ( {
         const {
           title, onPress, isPrimary, ...props
         } = button;
-        console.log( "props", { ...props } );
+
         return (
           <Button
             maxFontSizeMultiplier={1}

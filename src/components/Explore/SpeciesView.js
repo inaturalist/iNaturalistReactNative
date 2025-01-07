@@ -83,6 +83,15 @@ const SpeciesView = ( {
     r => r.taxon.id
   ) || [], [seenByCurrentUser?.results] );
 
+  let results = data;
+  let totalResultsCount = totalResults;
+
+  if ( queryParams.excludeUser ) {
+    const filtered = data.filter( r => !pageObservedTaxonIds.includes( r.taxon.id ) );
+    totalResultsCount = filtered.length;
+    results = filtered;
+  }
+
   useEffect( ( ) => {
     if ( pageObservedTaxonIds.length > 0 ) {
       pageObservedTaxonIds.forEach( id => {
@@ -102,8 +111,8 @@ const SpeciesView = ( {
     />
   );
   useEffect( ( ) => {
-    handleUpdateCount( "species", totalResults );
-  }, [totalResults, handleUpdateCount] );
+    handleUpdateCount( "species", totalResultsCount );
+  }, [totalResultsCount, handleUpdateCount] );
 
   const contentContainerStyle = useMemo( ( ) => ( {
     ...flashListStyle,
@@ -114,7 +123,7 @@ const SpeciesView = ( {
     <ExploreFlashList
       canFetch={canFetch}
       contentContainerStyle={contentContainerStyle}
-      data={data}
+      data={results}
       estimatedItemSize={estimatedGridItemSize}
       fetchNextPage={fetchNextPage}
       hideLoadingWheel={!isFetchingNextPage}

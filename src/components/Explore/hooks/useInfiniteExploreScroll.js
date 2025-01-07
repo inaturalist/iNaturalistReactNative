@@ -16,6 +16,8 @@ const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object )
     ttl: -1
   };
 
+  const excludedUser = newInputParams.excludeUser;
+
   const queryKey = ["useInfiniteExploreScroll", newInputParams];
 
   const getNextPageParam = useCallback( lastPage => {
@@ -96,8 +98,16 @@ const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object )
     await refetch( );
   };
 
-  const observations = flatten( data?.pages?.map( r => r.results ) ) || [];
+  let observations = flatten( data?.pages?.map( r => r.results ) ) || [];
   let totalResults = data?.pages?.[0].total_results;
+
+  // filter out obs from excluded user and adjust count
+  if ( excludedUser && observations ) {
+    const filtered = observations.filter( observation => observation?.user.id !== excludedUser.id );
+    totalResults = filtered.length;
+    observations = filtered;
+  }
+
   if ( totalResults !== 0 && !totalResults ) {
     totalResults = null;
   }

@@ -2,7 +2,7 @@
 
 import fetchSearchResults from "api/search.ts";
 import {
-  Button,
+  ButtonBar,
   SearchBar,
   ViewWrapper
 } from "components/SharedComponents";
@@ -46,13 +46,13 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
     )
   );
 
-  const onUserSelected = useCallback( async user => {
+  const onUserSelected = useCallback( async ( user, exclude ) => {
     if ( !user.id && !user.login ) {
       // If both of those are missing, we can not query by user
       // TODO: user facing error message
       return;
     }
-    updateUser( user );
+    updateUser( user, exclude );
     closeModal();
   }, [updateUser, closeModal] );
 
@@ -74,6 +74,30 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
     />
   );
 
+  const buttons = [
+    {
+      title: t( "BY-ME" ),
+      onPress: () => {
+        if ( currentUser ) {
+          onUserSelected( currentUser );
+        }
+      },
+      isPrimary: false,
+      className: "w-1/2 mx-2"
+    },
+    {
+      title: t( "NOT-BY-ME" ),
+      onPress: () => {
+        console.log( "not by me pressed" );
+        if ( currentUser ) {
+          onUserSelected( currentUser, true );
+        }
+      },
+      isPrimary: false,
+      className: "w-1/2 mx-2"
+    }
+  ];
+
   return (
     <ViewWrapper>
       <ExploreSearchHeader
@@ -91,15 +115,7 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
           value={userQuery}
           testID="SearchUser"
         />
-        <Button
-          text={t( "MY-OBSERVATIONS" )}
-          className="mt-5"
-          onPress={() => {
-            if ( currentUser ) {
-              onUserSelected( currentUser );
-            }
-          }}
-        />
+        {currentUser && <ButtonBar buttonConfiguration={buttons} containerClass="pt-[15px]" />}
       </View>
       <UserList
         ListEmptyComponent={renderEmptyList}

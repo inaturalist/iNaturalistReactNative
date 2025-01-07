@@ -105,12 +105,19 @@ const RootExploreContainerWithContext = ( ): Node => {
   }, [checkPermissions, defaultExploreLocation, dispatch, navigation] );
 
   // Object | null
-  const updateUser = ( user: Object ) => {
-    dispatch( {
-      type: EXPLORE_ACTION.SET_USER,
-      user,
-      userId: user?.id
-    } );
+  const updateUser = ( user: Object, exclude ) => {
+    if ( exclude ) {
+      dispatch( {
+        type: EXPLORE_ACTION.EXCLUDE_USER,
+        excludeUser: user
+      } );
+    } else {
+      dispatch( {
+        type: EXPLORE_ACTION.SET_USER,
+        user,
+        userId: user?.id
+      } );
+    }
   };
 
   const updateProject = ( project: Object ) => {
