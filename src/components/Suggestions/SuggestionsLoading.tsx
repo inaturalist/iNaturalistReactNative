@@ -1,4 +1,3 @@
-import { useRoute } from "@react-navigation/native";
 import {
   ActivityIndicator,
   Body1
@@ -9,6 +8,7 @@ import {
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 
 import Suggestion from "./Suggestion";
 
@@ -20,11 +20,10 @@ const SuggestionsLoading = ( {
   onTaxonChosen
 }: Props ): Node => {
   const { t } = useTranslation( );
-  const { params } = useRoute( );
-  const { aiCameraSuggestion } = params;
+  const aiCameraSuggestion = useStore( state => state.matchScreenSuggestion );
 
-  // TODO: fix this with match screen suggestions, but only ones within showPrediction
-  // rank range
+  const showPrediction = ( aiCameraSuggestion && aiCameraSuggestion?.taxon?.rank_level <= 40 )
+    || false;
 
   const displayAICameraSuggestion = ( ) => (
     <>
@@ -41,7 +40,7 @@ const SuggestionsLoading = ( {
     <View className="justify-center items-center mt-5" testID="SuggestionsList.loading">
       <ActivityIndicator size={50} />
       <Body1 className="pt-6">{t( "iNaturalist-is-loading-ID-suggestions" )}</Body1>
-      {aiCameraSuggestion && displayAICameraSuggestion( )}
+      {showPrediction && displayAICameraSuggestion( )}
     </View>
   );
 };

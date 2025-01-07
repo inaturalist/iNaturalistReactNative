@@ -22,7 +22,6 @@ import {
 } from "navigation/navigationOptions";
 import type { Node } from "react";
 import React from "react";
-import { useLayoutPrefs } from "sharedHooks";
 
 const suggestionsTitle = ( ) => <Heading4>{t( "ADD-AN-ID" )}</Heading4>;
 const taxonSearchTitle = ( ) => <Heading4>{t( "SEARCH" )}</Heading4>;
@@ -45,88 +44,77 @@ const FadeInMatchContainer = ( ) => fadeInComponent(
 // These screens need to be within the NoBottomTabStackNavigator
 // as well as the TabStackNavigator to retain navigation history
 
-const SharedStackScreens = ( ): Node => {
-  const {
-    isDefaultMode
-  } = useLayoutPrefs( );
-
-  return (
+const SharedStackScreens = ( ): Node => (
+  <Stack.Group
+    screenOptions={{
+      cardStyle: {
+        backgroundColor: "rgba(0,0,0,0)",
+        opacity: 1
+      }
+    }}
+  >
+    {/* Screens with hidden header */}
     <Stack.Group
       screenOptions={{
-        cardStyle: {
-          backgroundColor: "rgba(0,0,0,0)",
-          opacity: 1
-        }
+        ...hideHeader
       }}
     >
-      {/* Screens with hidden header */}
-      <Stack.Group
-        screenOptions={{
-          ...hideHeader
-        }}
-      >
-        <Stack.Screen
-          name="ObsEdit"
-          component={FadeInObsEdit}
-        />
-        <Stack.Screen
-          name="LocationPicker"
-          component={FadeInLocationPickerContainer}
-        />
-        <Stack.Screen
-          name="TaxonDetails"
-          component={FadeInTaxonDetails}
-        />
-        <Stack.Screen
-          name="PhotoSharing"
-          component={FadeInPhotoSharing}
-        />
-      </Stack.Group>
-      {/* Screens with centered header */}
-      <Stack.Group
-        screenOptions={{
-          ...removeBottomBorder,
-          ...showHeader,
-          headerTitleAlign: "center",
-          headerBackTitleVisible: false
-        }}
-      >
-        {isDefaultMode
-          ? (
-            <Stack.Screen
-              name="Suggestions"
-              component={FadeInMatchContainer}
-              options={{
-                unmountOnBlur: true,
-                ...showHeader,
-                ...blankHeaderTitle
-              }}
-            />
-          )
-          : (
-            <Stack.Screen
-              name="Suggestions"
-              component={FadeInSuggestionsContainer}
-              options={{
-                headerTitle: suggestionsTitle
-              }}
-            />
-          )}
-        <Stack.Screen
-          name="TaxonSearch"
-          component={FadeInTaxonSearch}
-          options={{
-            headerTitle: taxonSearchTitle
-          }}
-        />
-      </Stack.Group>
       <Stack.Screen
-        name="FullPageWebView"
-        component={FadeInFullPageWebView}
-        options={showSimpleCustomHeader}
+        name="ObsEdit"
+        component={FadeInObsEdit}
+      />
+      <Stack.Screen
+        name="LocationPicker"
+        component={FadeInLocationPickerContainer}
+      />
+      <Stack.Screen
+        name="TaxonDetails"
+        component={FadeInTaxonDetails}
+      />
+      <Stack.Screen
+        name="PhotoSharing"
+        component={FadeInPhotoSharing}
       />
     </Stack.Group>
-  );
-};
+    {/* Screens with centered header */}
+    <Stack.Group
+      screenOptions={{
+        ...removeBottomBorder,
+        ...showHeader,
+        headerTitleAlign: "center",
+        headerBackTitleVisible: false
+      }}
+    >
+      <Stack.Screen
+        name="Match"
+        component={FadeInMatchContainer}
+        options={{
+          unmountOnBlur: true,
+          ...showHeader,
+          ...blankHeaderTitle
+        }}
+      />
+      <Stack.Screen
+        name="Suggestions"
+        component={FadeInSuggestionsContainer}
+        options={{
+          headerTitle: suggestionsTitle
+        }}
+      />
+      <Stack.Screen
+        name="TaxonSearch"
+        component={FadeInTaxonSearch}
+        options={{
+          headerTitle: taxonSearchTitle
+        }}
+      />
+    </Stack.Group>
+    <Stack.Screen
+      name="FullPageWebView"
+      component={FadeInFullPageWebView}
+      options={showSimpleCustomHeader}
+    />
+  </Stack.Group>
+);
 
 export default SharedStackScreens;

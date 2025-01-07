@@ -12,8 +12,6 @@ const MatchContainer = ( ) => {
 
   const { taxon } = useTaxon( matchScreenSuggestion?.taxon );
 
-  console.log( taxon?.taxonPhotos?.[0], "taxon photos" );
-
   const navToTaxonDetails = ( ) => {
     navigation.push( "TaxonDetails", {
       id: taxon?.id,
@@ -21,9 +19,7 @@ const MatchContainer = ( ) => {
     } );
   };
 
-  const handleSaveOrDiscardPress = action => {
-    console.log( action, "action" );
-  };
+  const handleSaveOrDiscardPress = action => console.log( action, "action" );
 
   const confidence = matchScreenSuggestion
     ? Math.round( matchScreenSuggestion.score * 100 )

@@ -13,29 +13,7 @@ import MatchHeader from "./MatchHeader";
 import PhotosSection from "./PhotosSection";
 import SaveDiscardButtons from "./SaveDiscardButtons";
 
-// const taxon = {
-//   name: "Taxon name",
-//   preferred_common_name: "Common name",
-//   id: 1,
-//   taxonPhotos: [{
-//     photo: {
-//       id: 1,
-//       url: "https://static.inaturalist.org/photos/33215492/large.jpeg"
-//     }
-//   }, {
-//     photo: {
-//       id: 2,
-//       url: "https://inaturalist-open-data.s3.amazonaws.com/photos/150607778/large.jpg"
-//     }
-//   },
-//   {
-//     photo: {
-//       id: 3,
-//       url: "https://inaturalist-open-data.s3.amazonaws.com/photos/5749655/large.jpeg"
-//     }
-//   }]
-// };
-
+// example data
 const secondTaxon = {
   name: "Aves",
   preferred_common_name: "Birds",
@@ -73,7 +51,11 @@ const Match = ( {
             confidence={confidence}
           />
         </View>
-        <PhotosSection taxon={taxon} observationPhoto={observationPhoto} />
+        <PhotosSection
+          taxon={taxon}
+          observationPhoto={observationPhoto}
+          navToTaxonDetails={navToTaxonDetails}
+        />
         {!latitude
           ? <EmptyMapSection />
           : (

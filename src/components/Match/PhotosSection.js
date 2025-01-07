@@ -9,10 +9,11 @@ import getImageDimensions from "sharedHelpers/getImageDimensions";
 
 type Props = {
   taxon: Object,
-  observationPhoto: string
+  observationPhoto: string,
+  navToTaxonDetails: ( ) => void
 }
 
-const PhotosSection = ( { taxon, observationPhoto }: Props ) => {
+const PhotosSection = ( { taxon, observationPhoto, navToTaxonDetails }: Props ) => {
   const [displayPortraitLayout, setDisplayPortraitLayout] = useState( null );
 
   const photos = compact(
@@ -76,7 +77,7 @@ const PhotosSection = ( { taxon, observationPhoto }: Props ) => {
       {taxonPhotos.map( photo => (
         <Pressable
           accessibilityRole="button"
-          onPress={() => console.log( "open taxon details" )}
+          onPress={navToTaxonDetails}
           accessibilityState={{ disabled: false }}
           key={photo.id}
           className={classnames(
