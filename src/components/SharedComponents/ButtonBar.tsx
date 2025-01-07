@@ -10,7 +10,7 @@ const DROP_SHADOW = getShadow( {
 
 interface ButtonConfiguration {
   title: string,
-  onPress: Function,
+  onPress: ( ) => void,
   isPrimary: boolean
 }
 
@@ -18,7 +18,7 @@ interface Props extends PropsWithChildren {
   containerClass?: string,
   onLayout?: () => void,
   sticky?: boolean,
-  buttonConfiguration: Array<ButtonConfiguration>
+  buttonConfiguration?: Array<ButtonConfiguration>
 }
 
 // Ensure this component is placed outside of scroll views
@@ -46,17 +46,21 @@ const ButtonBar = ( {
       onLayout={onLayout}
       style={DROP_SHADOW}
     >
-      {buttonConfiguration
-      && buttonConfiguration.map( button => {
+      {buttonConfiguration && buttonConfiguration.map( button => {
         const {
           title, onPress, isPrimary, ...props
         } = button;
         return (
           <Button
+            key={`ButtonBar-Button-${title}`}
             maxFontSizeMultiplier={1}
             text={title}
             onPress={onPress}
-            isPrimary={isPrimary}
+            level={
+              isPrimary
+                ? "primary"
+                : "neutral"
+            }
             // eslint-disable-next-line react/jsx-props-no-spreading
             {...props}
           />

@@ -32,6 +32,19 @@ export interface RealmObservationSound extends RealmObject {
   sound: RealmSound;
 }
 
+export interface RealmTaxon extends RealmObject {
+  id: number;
+  defaultPhoto?: RealmPhoto,
+  name?: string;
+  preferredCommonName?: string;
+  rank?: string;
+  rank_level?: number;
+  isIconic?: boolean;
+  iconic_taxon_name?: string;
+  ancestor_ids?: number[];
+  _synced_at?: Date;
+}
+
 export interface RealmObservation extends RealmObject {
   _created_at?: Date;
   _synced_at?: Date;
@@ -48,20 +61,8 @@ export interface RealmObservation extends RealmObject {
   positional_accuracy: number | null;
   species_guess: string | null;
   taxon_id: number | null;
+  taxon?: RealmTaxon;
   uuid: string;
-}
-
-export interface RealmTaxon extends RealmObject {
-  id: number;
-  defaultPhoto?: RealmPhoto,
-  name?: string;
-  preferredCommonName?: string;
-  rank?: string;
-  rank_level?: number;
-  isIconic?: boolean;
-  iconic_taxon_name?: string;
-  ancestor_ids?: number[];
-  _synced_at?: Date;
 }
 
 export interface RealmUser extends RealmObject {

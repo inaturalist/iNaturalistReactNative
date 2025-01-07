@@ -166,14 +166,16 @@ const ObsEdit = ( ): Node => {
         </KeyboardAwareScrollView>
       </ViewWrapper>
       {savedOrUploadedMultiObsFlow && <MultipleObservationsUploadStatus />}
-      <BottomButtonsContainer
-        currentObservation={currentObservation}
-        currentObservationIndex={currentObservationIndex}
-        observations={observations}
-        passesEvidenceTest={passesEvidenceTest}
-        setCurrentObservationIndex={setCurrentObservationIndex}
-        transitionAnimation={fade}
-      />
+      {currentObservation && (
+        <BottomButtonsContainer
+          currentObservation={currentObservation}
+          currentObservationIndex={currentObservationIndex}
+          observations={observations}
+          passesEvidenceTest={passesEvidenceTest}
+          setCurrentObservationIndex={setCurrentObservationIndex}
+          transitionAnimation={fade}
+        />
+      )}
       {renderLocationPermissionGate( {
         // If the user does not give location permissions in any form,
         // navigate to the location picker (if granted we just continue fetching the location)
