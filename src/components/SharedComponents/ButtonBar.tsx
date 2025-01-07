@@ -11,7 +11,8 @@ const DROP_SHADOW = getShadow( {
 interface ButtonConfiguration {
   title: string,
   onPress: ( ) => void,
-  isPrimary: boolean
+  isPrimary: boolean,
+  className?: string
 }
 
 interface Props extends PropsWithChildren {

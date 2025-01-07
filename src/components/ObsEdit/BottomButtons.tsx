@@ -87,7 +87,10 @@ const BottomButtons = ( {
   const renderButtons = ( ) => {
     if ( canSaveOnly ) {
       return (
-        <ButtonBar buttonConfiguration={[saveButton]} />
+        <ButtonBar
+          buttonConfiguration={[{ ...saveButton, className: "grow" }]}
+          containerClass="p-[15px]"
+        />
       );
     }
     if ( wasSynced ) {
