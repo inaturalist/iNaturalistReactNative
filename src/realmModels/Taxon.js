@@ -28,7 +28,12 @@ class Taxon extends Realm.Object {
     name: true,
     preferred_common_name: true,
     rank: true,
-    rank_level: true
+    rank_level: true,
+    taxon_photos: {
+      photo: {
+        url: true
+      }
+    }
   };
 
   static STATEOFMATTER_LEVEL = 100;
@@ -169,7 +174,8 @@ class Taxon extends Realm.Object {
       isIconic: "bool?",
       iconic_taxon_name: "string?",
       ancestor_ids: "int[]",
-      _synced_at: "date?"
+      _synced_at: "date?",
+      taxonPhotos: "TaxonPhoto[]"
     }
   };
 }

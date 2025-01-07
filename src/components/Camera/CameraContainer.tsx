@@ -81,7 +81,6 @@ const CameraContainer = ( ) => {
     enableShutterSound: false,
     ...( hasFlash && { flash: "off" } as const )
   } as const;
-  const [aiSuggestion, setAiSuggestion] = useState( null );
   const [takePhotoOptions, setTakePhotoOptions] = useState<TakePhotoOptions>( initialPhotoOptions );
   const [takingPhoto, setTakingPhoto] = useState( false );
   const [newPhotoUris, setNewPhotoUris] = useState( [] );
@@ -127,10 +126,9 @@ const CameraContainer = ( ) => {
   };
 
   const navigationOptions = useMemo( ( ) => ( {
-    visionResult: aiSuggestion,
     addPhotoPermissionResult,
     userLocation
-  } ), [addPhotoPermissionResult, aiSuggestion, userLocation] );
+  } ), [addPhotoPermissionResult, userLocation] );
 
   const prepareStoreAndNavigate = usePrepareStoreAndNavigate( );
 
@@ -248,7 +246,6 @@ const CameraContainer = ( ) => {
         takePhotoOptions={takePhotoOptions}
         newPhotoUris={newPhotoUris}
         setNewPhotoUris={setNewPhotoUris}
-        setAiSuggestion={setAiSuggestion}
         userLocation={userLocation}
       />
       {showPhotoPermissionsGate && renderSavePhotoPermissionGate( {

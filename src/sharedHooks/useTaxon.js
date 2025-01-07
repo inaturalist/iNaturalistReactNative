@@ -32,6 +32,7 @@ const useTaxon = ( taxon: Object, fetchRemote = true ): Object => {
     ? (
       !localTaxon.preferred_common_name
       || !localTaxon.default_photo?.url
+      || !localTaxon.taxon_photos
     )
     : false;
   const localTaxonNeedsSync = (

@@ -187,7 +187,9 @@ const ObsDetails = ( {
             belongsToCurrentUser={belongsToCurrentUser}
             observation={observation}
           />
-          <MapSection observation={observation} />
+          <View className="mt-5">
+            <MapSection observation={observation} />
+          </View>
           <LocationSection
             belongsToCurrentUser={belongsToCurrentUser}
             observation={observation}

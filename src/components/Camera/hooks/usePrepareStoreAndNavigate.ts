@@ -128,7 +128,6 @@ const usePrepareStoreAndNavigate = ( ): Function => {
   ] );
 
   const prepareStoreAndNavigate = useCallback( async ( {
-    visionResult,
     addPhotoPermissionResult,
     userLocation,
     newPhotoState,
@@ -158,8 +157,7 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     setSentinelFileName( null );
     return navigation.push( "Suggestions", {
       entryScreen: "CameraWithDevice",
-      lastScreen: "CameraWithDevice",
-      aiCameraSuggestion: visionResult || null
+      lastScreen: "CameraWithDevice"
     } );
   }, [
     addEvidence,

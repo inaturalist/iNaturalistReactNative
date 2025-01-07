@@ -51,13 +51,13 @@ const ButtonBar = ( {
         const {
           title, onPress, isPrimary, ...props
         } = button;
-        console.log( "props", { ...props } );
         return (
           <Button
             maxFontSizeMultiplier={1}
             text={title}
             onPress={onPress}
             isPrimary={isPrimary}
+            key={title}
             // eslint-disable-next-line react/jsx-props-no-spreading
             {...props}
           />

@@ -23,6 +23,9 @@ const SuggestionsLoading = ( {
   const { params } = useRoute( );
   const { aiCameraSuggestion } = params;
 
+  // TODO: fix this with match screen suggestions, but only ones within showPrediction
+  // rank range
+
   const displayAICameraSuggestion = ( ) => (
     <>
       <View className="pt-6" />
