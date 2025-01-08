@@ -195,6 +195,7 @@ const MyObservationsSimple = ( {
               handlePullToRefresh={handlePullToRefresh}
               handleIndividualUploadPress={handleIndividualUploadPress}
               hideLoadingWheel
+              hideMetadata
               isFetchingNextPage={isFetchingNextPage}
               isConnected={isConnected}
               obsListKey="MyObservations"

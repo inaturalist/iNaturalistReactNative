@@ -21,6 +21,7 @@ import {
 type Props = {
   currentUser: Object,
   explore: boolean,
+  hideMetadata?: boolean,
   onUploadButtonPress: Function,
   observation: Object,
   queued: boolean,
@@ -31,6 +32,7 @@ type Props = {
 const ObsListItem = ( {
   currentUser,
   explore = false,
+  hideMetadata,
   observation,
   onUploadButtonPress,
   queued,
@@ -76,24 +78,28 @@ const ObsListItem = ( {
         isSmall
         iconicTaxonName={observation.taxon?.iconic_taxon_name}
       />
-      <View className="pr-[25px] flex-1 ml-[10px]">
+      <View className="pr-[25px] flex-1 ml-[10px] justify-center">
         {displayTaxonName}
-        <ObservationLocation
-          observation={observation}
-          obscured={isObscured}
-          classNameMargin="mt-1"
-        />
-        <DateDisplay
-          dateString={
-            observation.time_observed_at
-            || observation.observed_on_string
-            || observation.observed_on
-          }
-          classNameMargin="mt-1"
-          geoprivacy={geoprivacy}
-          taxonGeoprivacy={taxonGeoprivacy}
-          belongsToCurrentUser={belongsToCurrentUser}
-        />
+        {!hideMetadata && (
+          <>
+            <ObservationLocation
+              observation={observation}
+              obscured={isObscured}
+              classNameMargin="mt-1"
+            />
+            <DateDisplay
+              dateString={
+                observation.time_observed_at
+                || observation.observed_on_string
+                || observation.observed_on
+              }
+              classNameMargin="mt-1"
+              geoprivacy={geoprivacy}
+              taxonGeoprivacy={taxonGeoprivacy}
+              belongsToCurrentUser={belongsToCurrentUser}
+            />
+          </>
+        )}
       </View>
       <View
         className={classnames(
