@@ -21,6 +21,7 @@ import {
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
+import { isDebugMode } from "sharedHooks/useDebugMode";
 import {
   UPLOAD_PENDING
 } from "stores/createUploadObservationsSlice.ts";
@@ -37,6 +38,7 @@ const MyObservationsContainer = ( ): Node => {
   const { t } = useTranslation( );
   const realm = useRealm( );
   const listRef = useRef( );
+
   const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
   const uploadQueue = useStore( state => state.uploadQueue );
   const addToUploadQueue = useStore( state => state.addToUploadQueue );
@@ -189,7 +191,7 @@ const MyObservationsContainer = ( ): Node => {
   // this component again after returning from ObsEdit
   const onScroll = scrollEvent => setMyObsOffset( scrollEvent.nativeEvent.contentOffset.y );
 
-  if ( !currentUser && observations.length > 0 ) {
+  if ( isDebugMode() && !currentUser && observations.length > 0 ) {
     return (
       <MyObservationsSimple
         currentUser={currentUser}
