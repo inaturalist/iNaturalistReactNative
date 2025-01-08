@@ -11,18 +11,23 @@ import {
   ViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import { RealmContext } from "providers/contexts.ts";
 import React, { useCallback, useState } from "react";
 import type {
   RealmObservation,
-  RealmUser
+  RealmTaxon
+  // RealmUser
 } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
+import Announcements from "./Announcements";
 import LoginSheet from "./LoginSheet";
 
+const { useRealm } = RealmContext;
+
 interface Props {
-  currentUser: RealmUser;
+  // currentUser: RealmUser;
   handleIndividualUploadPress: ( uuid: string ) => void;
   handleSyncButtonPress: ( ) => void;
   handlePullToRefresh: ( ) => void;
@@ -45,7 +50,7 @@ const OBSERVATIONS_TAB = "observations";
 const TAXA_TAB = "taxa";
 
 const MyObservationsSimple = ( {
-  currentUser,
+  // currentUser,
   handleIndividualUploadPress,
   handleSyncButtonPress,
   handlePullToRefresh,
@@ -65,8 +70,18 @@ const MyObservationsSimple = ( {
 }: Props ) => {
   const { t } = useTranslation( );
   const [activeTab, setActiveTab] = useState( OBSERVATIONS_TAB );
-  const numTotalObservations = 99999999;
-  const numTotalTaxa = 99999999;
+
+  // Calculate obs and leaf taxa counts from local observations
+  const realm = useRealm();
+  const numTotalObservations = realm.objects( "Observation" ).length;
+  const distinctTaxonObs = realm.objects( "Observation" )
+    .filtered( "taxon != null DISTINCT(taxon.id)" );
+  const taxonIds = distinctTaxonObs.map( o => ( o.taxon as RealmTaxon ).id );
+  const ancestorIds = distinctTaxonObs.map( o => (
+    [...( o.taxon as RealmTaxon )?.ancestor_ids?.entries() || []]
+  ) ).flat( Infinity );
+  const leafTaxonIds = taxonIds.filter( taxonId => !ancestorIds.includes( taxonId ) );
+  const numTotalTaxa = leafTaxonIds.length;
 
   interface StatTabProps {
     id: string;
@@ -88,7 +103,7 @@ const MyObservationsSimple = ( {
         <Heading5>{ label }</Heading5>
       </View>
     );
-  }, [t] );
+  }, [t, numTotalObservations, numTotalTaxa] );
 
   return (
     <>
@@ -138,12 +153,13 @@ const MyObservationsSimple = ( {
         />
         { activeTab === OBSERVATIONS_TAB && (
           <ObservationsFlashList
-            dataCanBeFetched={!!currentUser}
+            // dataCanBeFetched={!!currentUser}
             data={observations.filter( o => o.isValid() )}
             handlePullToRefresh={handlePullToRefresh}
             handleIndividualUploadPress={handleIndividualUploadPress}
             // onScroll={animatedScrollEvent}
-            hideLoadingWheel={!isFetchingNextPage || !currentUser}
+            // hideLoadingWheel={!isFetchingNextPage || !currentUser}
+            hideLoadingWheel
             isFetchingNextPage={isFetchingNextPage}
             isConnected={isConnected}
             obsListKey="MyObservations"
@@ -154,9 +170,9 @@ const MyObservationsSimple = ( {
             showObservationsEmptyScreen
             showNoResults={showNoResults}
             testID="MyObservationsAnimatedList"
-            // renderHeader={(
-            //   <Announcements isConnected={isConnected} />
-            // )}
+            renderHeader={(
+              <Announcements isConnected={isConnected} />
+            )}
           />
         ) }
         { activeTab === TAXA_TAB && (
