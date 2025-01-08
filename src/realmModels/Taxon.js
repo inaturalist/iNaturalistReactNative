@@ -20,6 +20,7 @@ class Taxon extends Realm.Object {
   };
 
   static LIMITED_TAXON_FIELDS = {
+    ancestor_ids: true,
     default_photo: {
       id: true,
       url: true
@@ -124,12 +125,22 @@ class Taxon extends Realm.Object {
   }
 
   static forUpdate( taxon, extra = {} ) {
-    return {
+    const taxonForUpdate = {
       ...taxon,
       ...extra,
       _searchableName: Taxon.compileSearchableName( taxon ),
       _synced_at: new Date( )
     };
+    // This doesn't seem like the best place to do validation, but IDK where
+    // else. If we assign `undefined` to ancestor_ids, Realm seems to insert
+    // an empty array for no reason.
+    if (
+      taxonForUpdate.rank_level < Taxon.STATEOFMATTER_LEVEL
+      && ( !taxonForUpdate.ancestor_ids || taxonForUpdate.ancestor_ids.length === 0 )
+    ) {
+      throw new Error( "Tried to save taxon w/o ancestor_ids" );
+    }
+    return taxonForUpdate;
   }
 
   static mapApiToRealm( taxon, _realm = null ) {

@@ -11,7 +11,7 @@ import { useCurrentUser, useFontScale, useTranslation } from "sharedHooks";
 
 export interface Props {
   headerText?: string;
-  showSpeciesSeenCheckmark: boolean;
+  showSpeciesSeenCheckmark?: boolean;
   style?: Object;
   taxon: ApiTaxon;
   upperRight?: React.ReactNode;
