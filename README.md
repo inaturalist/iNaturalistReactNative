@@ -256,7 +256,7 @@ We have a custom set of icons stored as SVG files and compiled into a font. New 
 
 ## Logging with Sentinel Files
 
-We're using sentinel files to be able to track unsuccessful user flows. This is helpful for debugging issues related to cameras freezing, location requests stalling, or other difficult to reproduce hardware issues. Related code is in `sharedHelpers/sentinelFiles.ts`. The first user flow where we implemented this is the Camera, so you can look there for an example. To implement:
+A sentinel file is a file used for the purpose of tracking the status of a system. In iNat Next, we're using sentinel files to track unsuccessful user flows. This is helpful for debugging issues related to cameras freezing, location requests stalling, or other difficult to reproduce hardware issues. Related code is in `sharedHelpers/sentinelFiles.ts`. The first user flow where we implemented this is the Camera, so you can look there for an example. To implement:
 
 1. At the beginning of a user flow (i.e., opening the Camera), generate a sentinel file using `await createSentinelFile( )` and passing in the name of the user flow.
 1. Log any subsequent steps in the user flow using `await logStage()` and passing in the sentinel file name, stage name, and any related data. Examples of stages in the Camera include fetching user location, saving photos, and taking a photo.
