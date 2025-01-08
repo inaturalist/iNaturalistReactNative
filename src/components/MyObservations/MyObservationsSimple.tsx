@@ -12,14 +12,13 @@ import {
 } from "components/SharedComponents";
 import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList.tsx";
 import TaxonGridItem from "components/SharedComponents/TaxonGridItem.tsx";
-import { View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts.ts";
 import React, { useCallback, useMemo, useState } from "react";
 import Realm from "realm";
 import type {
   RealmObservation,
   RealmTaxon
-  // RealmUser
 } from "realmModels/types";
 import { useGridLayout, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
@@ -143,11 +142,15 @@ const MyObservationsSimple = ( {
     <>
       <ViewWrapper>
         { numUnuploadedObservations > 0 && (
-          <View className="bg-inatGreen p-2 items-center">
+          <Pressable
+            accessibilityRole="button"
+            className="bg-inatGreen p-2 items-center"
+            onPress={handleSyncButtonPress}
+          >
             <Body3 className="text-white">
               { t( "Upload-x-observations", { count: numUnuploadedObservations } ) }
             </Body3>
-          </View>
+          </Pressable>
         ) }
         <View className="flex-row justify-between items-center px-5 py-1">
           <Heading3>{ t( "My-Observations" ) }</Heading3>
