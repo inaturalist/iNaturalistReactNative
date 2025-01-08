@@ -46,6 +46,7 @@ const TaxonGridItem = ( {
       accessibilityRole="button"
       testID={`TaxonGridItem.Pressable.${taxon.id}`}
       onPress={( ) => (
+        // Again, not sure how to placate TypeScript w/ React Navigation
         navigation.navigate( {
           // Ensure button mashing doesn't open multiple TaxonDetails instances
           key: `${route.key}-TaxonGridItem-TaxonDetails-${taxon.id}`,

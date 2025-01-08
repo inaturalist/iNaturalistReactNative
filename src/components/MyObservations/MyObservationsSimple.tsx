@@ -29,14 +29,13 @@ import LoginSheet from "./LoginSheet";
 const { useRealm } = RealmContext;
 
 interface Props {
-  // currentUser: RealmUser;
   handleIndividualUploadPress: ( uuid: string ) => void;
   handleSyncButtonPress: ( ) => void;
   handlePullToRefresh: ( ) => void;
   isConnected: boolean;
   isFetchingNextPage: boolean;
   layout: "list" | "grid";
-  listRef?: React.RefObject<FlashList>;
+  listRef?: React.RefObject<FlashList<RealmObservation>>;
   numUnuploadedObservations: number;
   observations: RealmObservation[];
   onEndReached: ( ) => void;
@@ -58,7 +57,6 @@ const OBSERVATIONS_TAB = "observations";
 const TAXA_TAB = "taxa";
 
 const MyObservationsSimple = ( {
-  // currentUser,
   handleIndividualUploadPress,
   handleSyncButtonPress,
   handlePullToRefresh,

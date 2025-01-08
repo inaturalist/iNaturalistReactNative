@@ -38,9 +38,10 @@ const ExploreTaxonGridItem = ( {
         <Pressable
           accessibilityRole="button"
           onPress={( ) => {
+            if ( !( taxon?.id && taxon?.name ) ) return;
             dispatch( {
               type: EXPLORE_ACTION.CHANGE_TAXON,
-              taxon,
+              taxon: { id: taxon.id },
               taxonId: taxon?.id,
               taxonName: taxon?.preferred_common_name || taxon?.name
             } );

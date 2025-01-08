@@ -29,7 +29,7 @@ interface Props {
 
 const Tabs = ( {
   activeId,
-  activeColor = colors?.darkGray,
+  activeColor = String( colors?.darkGray ),
   tabs = [],
   TabComponent,
   TextComponent = Heading4

@@ -1,15 +1,10 @@
 import { Pressable } from "components/styledComponents";
 import React from "react";
-import RealmObservation from "realmModels/Observation";
+import type { RealmObservation } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 
 import ObsGridItem from "./ObsGridItem";
 import ObsListItem from "./ObsListItem";
-
-// TODO remove when we figure out how to type the Realm models
-interface Observation extends RealmObservation {
-  uuid: string;
-}
 
 type Props = {
   currentUser: Object,
@@ -21,7 +16,7 @@ type Props = {
   gridItemStyle: Object,
   isLargeFontScale: boolean,
   layout: "list" | "grid",
-  observation: Observation,
+  observation: RealmObservation,
   uploadProgress: number,
   unsynced: boolean
 };
