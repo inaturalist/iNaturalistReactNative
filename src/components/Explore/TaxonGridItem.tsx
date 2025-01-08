@@ -7,7 +7,6 @@ import {
   EXPLORE_ACTION,
   useExplore
 } from "providers/ExploreContext.tsx";
-import type { Node } from "react";
 import React from "react";
 import Photo from "realmModels/Photo";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
@@ -35,7 +34,7 @@ const TaxonGridItem = ( {
   style,
   taxon,
   setCurrentExploreView
-}: Props ): Node => {
+}: Props ) => {
   const { dispatch } = useExplore( );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
@@ -96,7 +95,7 @@ const TaxonGridItem = ( {
               setCurrentExploreView( "observations" );
             }}
           >
-            <INatIcon name="observations" size={15} color={colors.white} dropShadow />
+            <INatIcon name="observations" size={15} color={String( colors?.white )} dropShadow />
           </Pressable>
         )}
 
@@ -110,7 +109,7 @@ const TaxonGridItem = ( {
             </Body4>
           )}
           <DisplayTaxonName
-            keyBase={taxon?.id}
+            keyBase={`TaxonGridItem-DisplayTaxonName-${taxon?.id}`}
             taxon={taxon}
             scientificNameFirst={currentUser?.prefers_scientific_name_first}
             prefersCommonNames={currentUser?.prefers_common_names}
