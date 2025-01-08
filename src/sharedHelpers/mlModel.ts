@@ -36,7 +36,7 @@ export const geomodelPath: string = Platform.select( {
 
 export const modelVersion = Config.CV_MODEL_VERSION;
 
-export const predictImage = ( uri: string ) => {
+export const predictImage = ( uri: string, location: Location ) => {
   // Ensure uri is actually well-formed and try to make it well-formed if it's
   // a path
   let url;
@@ -52,12 +52,18 @@ export const predictImage = ( uri: string ) => {
   if ( !url ) {
     throw new Error( `predictImage received invalid URI: ${uri}` );
   }
+  const hasLocation = location?.latitude != null && location?.longitude != null;
   return getPredictionsForImage( {
     uri: url.toString(),
     modelPath,
     taxonomyPath,
     version: modelVersion,
-    confidenceThreshold: 0.2
+    confidenceThreshold: 0.2,
+    useGeomodel: hasLocation,
+    geomodelPath,
+    location: hasLocation
+      ? location
+      : undefined
   } );
 };
 

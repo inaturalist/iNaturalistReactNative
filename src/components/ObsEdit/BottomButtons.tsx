@@ -4,7 +4,6 @@ import {
   ButtonBar
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
@@ -14,8 +13,13 @@ const DROP_SHADOW = getShadow( {
   shadowOpacity: 0.2
 } );
 
+export const UPLOAD = "upload";
+export const SAVE = "save";
+
+export type ButtonType = typeof SAVE | typeof UPLOAD | null;
+
 type Props = {
-  buttonPressed: boolean,
+  buttonPressed: ButtonType,
   canSaveOnly: boolean,
   handlePress: Function,
   loading: boolean,
@@ -34,16 +38,16 @@ const BottomButtons = ( {
   showFocusedUploadButton,
   showHalfOpacity,
   wasSynced
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
 
-  const isSaving = buttonPressed === "save" && loading;
+  const isSaving = buttonPressed === SAVE && loading;
   const disabled = buttonPressed !== null;
 
   const saveChangesButton = (
     <Button
       className="px-[25px]"
-      onPress={( ) => handlePress( "save" )}
+      onPress={( ) => handlePress( SAVE )}
       testID="ObsEdit.saveChangesButton"
       text={t( "SAVE-CHANGES" )}
       level={showFocusedChangesButton
@@ -56,22 +60,21 @@ const BottomButtons = ( {
 
   const saveButton = {
     title: t( "SAVE" ),
-    onPress: ( ) => handlePress( "save" ),
+    onPress: ( ) => handlePress( SAVE ),
     isPrimary: false,
     testID: "ObsEdit.saveButton",
     disabled,
     level: "neutral",
     loading: isSaving,
-    isPrimary: false,
     className: "px-[25px]"
   };
 
   const uploadButton = {
     title: t( "UPLOAD-NOW" ),
-    onPress: ( ) => handlePress( "upload" ),
+    onPress: ( ) => handlePress( UPLOAD ),
     isPrimary: true,
     testID: "ObsEdit.uploadButton",
-    loading: buttonPressed === "upload" && loading,
+    loading: buttonPressed === UPLOAD && loading,
     level: showFocusedUploadButton
       ? "focus"
       : "neutral",
@@ -84,7 +87,10 @@ const BottomButtons = ( {
   const renderButtons = ( ) => {
     if ( canSaveOnly ) {
       return (
-        <ButtonBar buttonConfiguration={[saveButton]} />
+        <ButtonBar
+          buttonConfiguration={[{ ...saveButton, className: "grow" }]}
+          containerClass="p-[15px]"
+        />
       );
     }
     if ( wasSynced ) {

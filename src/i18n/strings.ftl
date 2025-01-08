@@ -203,7 +203,8 @@ CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
 CHOOSE-PHOTOS = CHOOSE PHOTOS
 # Label for button that chooses a taxon
 Choose-taxon = Choose taxon
-# Label for button that chooses top taxon
+# Label for button that chooses the best suggestion among a list of suggested
+# taxa for an identification
 Choose-top-taxon = Choose top taxon
 # Label for a button that clears content, like the text entered in a text
 # field
@@ -707,7 +708,7 @@ MISSING-EVIDENCE = MISSING EVIDENCE
 Monthly-Donor = Monthly Donor
 Months = Months
 MONTHS = MONTHS
-# Label for section of ObsDetails with information about obseration projects, DQA, etc.
+# Label for section of ObsDetails with information about observation projects, DQA, etc.
 More = More
 More-info = More info
 MOST-FAVED = MOST FAVED

@@ -4,8 +4,8 @@ import {
 import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/CrosshairCircle";
 import useUploadObservations from "components/MyObservations/hooks/useUploadObservations.ts";
 import { RealmContext } from "providers/contexts.ts";
-import type { Node } from "react";
 import React, { useCallback, useState } from "react";
+import type { RealmObservation } from "realmModels/types";
 import saveObservation from "sharedHelpers/saveObservation.ts";
 import {
   useCurrentUser,
@@ -13,7 +13,8 @@ import {
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
-import BottomButtons from "./BottomButtons";
+import type { ButtonType } from "./BottomButtons";
+import BottomButtons, { UPLOAD } from "./BottomButtons";
 import ImpreciseLocationSheet from "./Sheets/ImpreciseLocationSheet";
 import MissingEvidenceSheet from "./Sheets/MissingEvidenceSheet";
 
@@ -22,7 +23,7 @@ const { useRealm } = RealmContext;
 type Props = {
   passesEvidenceTest: boolean,
   observations: Array<Object>,
-  currentObservation: Object,
+  currentObservation: RealmObservation,
   currentObservationIndex: number,
   setCurrentObservationIndex: Function,
   transitionAnimation: Function
@@ -35,7 +36,7 @@ const BottomButtonsContainer = ( {
   observations,
   setCurrentObservationIndex,
   transitionAnimation
-}: Props ): Node => {
+}: Props ) => {
   const { isConnected } = useNetInfo( );
   const currentUser = useCurrentUser( );
   const cameraRollUris = useStore( state => state.cameraRollUris );
@@ -48,27 +49,27 @@ const BottomButtonsContainer = ( {
   const incrementTotalSavedObservations = useStore(
     state => state.incrementTotalSavedObservations
   );
-  const isNewObs = !currentObservation?._created_at;
-  const hasPhotos = currentObservation?.observationPhotos?.length > 0;
+  const isNewObs = !currentObservation._created_at;
+  const hasPhotos = currentObservation.observationPhotos?.length > 0;
   const hasImportedPhotos = hasPhotos && cameraRollUris.length === 0;
 
   const realm = useRealm( );
   const [showMissingEvidenceSheet, setShowMissingEvidenceSheet] = useState( false );
   const [showImpreciseLocationSheet, setShowImpreciseLocationSheet] = useState( false );
   const [allowUserToUpload, setAllowUserToUpload] = useState( false );
-  const [buttonPressed, setButtonPressed] = useState( null );
+  const [buttonPressed, setButtonPressed] = useState<ButtonType>( null );
   const [loading, setLoading] = useState( false );
   const exitObservationFlow = useExitObservationFlow( );
 
-  const hasIdentification = currentObservation?.taxon
-    && currentObservation?.taxon.rank_level !== 100;
+  const hasIdentification = currentObservation.taxon
+    && currentObservation.taxon.rank_level !== 100;
 
   const passesTests = passesEvidenceTest && hasIdentification;
 
-  const canUpload = currentUser && isConnected;
+  const canUpload = !!( currentUser && isConnected );
   const { startUploadsFromMultiObsEdit } = useUploadObservations( canUpload );
 
-  const setNextScreen = useCallback( async ( { type }: Object ) => {
+  const setNextScreen = useCallback( async ( type: ButtonType ) => {
     const savedObservation = await saveObservation( currentObservation, cameraRollUris, realm );
     if ( savedObservation && observations?.length > 1 ) {
       transitionAnimation();
@@ -81,7 +82,7 @@ const BottomButtonsContainer = ( {
       resetMyObsOffsetToRestore( );
       setMyObsOffset( 0 );
     }
-    if ( type === "upload" ) {
+    if ( type === UPLOAD ) {
       const { uuid } = savedObservation;
       addTotalToolbarIncrements( savedObservation );
       addToUploadQueue( uuid );
@@ -154,11 +155,11 @@ const BottomButtonsContainer = ( {
     passesEvidenceTest
   ] );
 
-  const handlePress = useCallback( type => {
+  const handlePress = useCallback( ( type: ButtonType ) => {
     if ( showMissingEvidence( ) ) { return; }
     setLoading( true );
     setButtonPressed( type );
-    setNextScreen( { type } );
+    setNextScreen( type );
   }, [setNextScreen, showMissingEvidence] );
 
   return (
@@ -179,9 +180,9 @@ const BottomButtonsContainer = ( {
         handlePress={handlePress}
         loading={loading}
         showFocusedChangesButton={unsavedChanges}
-        showFocusedUploadButton={passesTests}
+        showFocusedUploadButton={!!passesTests}
         showHalfOpacity={!passesEvidenceTest}
-        wasSynced={currentObservation?._synced_at}
+        wasSynced={!!( currentObservation?._synced_at )}
       />
     </>
   );

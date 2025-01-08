@@ -221,6 +221,8 @@ const SuggestionsContainer = ( ) => {
     offlineSuggestions
   } = useOfflineSuggestions( selectedPhotoUri, {
     dispatch,
+    latitude: flattenedUploadParams?.lat,
+    longitude: flattenedUploadParams?.lng,
     tryOfflineSuggestions
   } );
 
