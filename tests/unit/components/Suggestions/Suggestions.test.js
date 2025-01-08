@@ -1,4 +1,3 @@
-import { useRoute } from "@react-navigation/native";
 import {
   fireEvent,
   screen,
@@ -22,7 +21,9 @@ const mockCreateId = jest.fn( );
 
 const initialStoreState = useStore.getState( );
 
-const mockTaxon = factory( "RemoteTaxon" );
+const mockTaxon = factory( "RemoteTaxon", {
+  rank_level: 20
+} );
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   __esModule: true,
@@ -103,48 +104,43 @@ describe( "Suggestions", ( ) => {
     expect( loadingText ).toBeVisible( );
   } );
 
-  it( "should display loading wheel and vision result when coming from AICamera", async ( ) => {
+  describe( "loading from AI camera", ( ) => {
     const mockVisionResult = {
       score: 0.9,
       taxon: mockTaxon
     };
-    useRoute.mockImplementation( ( ) => ( {
-      params: {
-        aiCameraSuggestion: mockVisionResult
-      }
-    } ) );
-    renderComponent(
-      <Suggestions
-        suggestions={initialSuggestions}
-        isLoading
-      />
-    );
-    const loadingText = screen.getByText( /iNaturalist is loading ID suggestions.../ );
-    expect( loadingText ).toBeVisible( );
-    const taxonName = await screen.findByText( mockVisionResult.taxon.name );
-    expect( taxonName ).toBeVisible( );
-  } );
 
-  it( "should display no vision result if not coming from AICamera", async ( ) => {
-    const mockVisionResult = {
-      score: 0.9,
-      taxon: mockTaxon
-    };
-    useRoute.mockImplementation( ( ) => ( {
-      params: {
-        aiCameraSuggestion: undefined
-      }
-    } ) );
-    renderComponent(
-      <Suggestions
-        suggestions={initialSuggestions}
-        isLoading
-      />
-    );
-    const loadingText = screen.getByText( /iNaturalist is loading ID suggestions.../ );
-    expect( loadingText ).toBeVisible( );
-    const taxonName = screen.queryByText( mockVisionResult.taxon.name );
-    expect( taxonName ).toBeFalsy( );
+    beforeEach( ( ) => {
+      useStore.setState( { matchScreenSuggestion: mockVisionResult } );
+    } );
+
+    it( "should display loading wheel and vision result when coming from AICamera", async ( ) => {
+      renderComponent(
+        <Suggestions
+          suggestions={initialSuggestions}
+          isLoading
+        />
+      );
+      const loadingText = screen.getByText( /iNaturalist is loading ID suggestions.../ );
+      expect( loadingText ).toBeVisible( );
+      const displayName = await screen.findByTestId(
+        `display-taxon-name.${mockVisionResult.taxon.id}`
+      );
+      expect( displayName ).toHaveTextContent( mockVisionResult.taxon.name );
+    } );
+
+    it( "should display no vision result if not coming from AICamera", async ( ) => {
+      renderComponent(
+        <Suggestions
+          suggestions={initialSuggestions}
+          isLoading
+        />
+      );
+      const loadingText = screen.getByText( /iNaturalist is loading ID suggestions.../ );
+      expect( loadingText ).toBeVisible( );
+      const taxonName = screen.queryByText( mockVisionResult.taxon.name );
+      expect( taxonName ).toBeFalsy( );
+    } );
   } );
 
   it( "should create an id when checkmark is pressed", async ( ) => {

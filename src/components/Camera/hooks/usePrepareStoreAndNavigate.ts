@@ -5,20 +5,13 @@ import {
 } from "react";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
-import { useLayoutPrefs } from "sharedHooks";
-import { isDebugMode } from "sharedHooks/useDebugMode";
 import useStore from "stores/useStore";
 
 import savePhotosToCameraGallery from "../helpers/savePhotosToCameraGallery";
 
 const usePrepareStoreAndNavigate = ( ): Function => {
-  const {
-    isDefaultMode
-  } = useLayoutPrefs( );
-
   const navigation = useNavigation( );
   const { params } = useRoute( );
-  const cameraType = params?.camera;
   const addEvidence = params?.addEvidence;
   const setObservations = useStore( state => state.setObservations );
   const updateObservations = useStore( state => state.updateObservations );
@@ -139,7 +132,8 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     userLocation,
     newPhotoState,
     logStageIfAICamera,
-    deleteStageIfAICamera
+    deleteStageIfAICamera,
+    showMatchScreen
   } ) => {
     if ( userLocation !== null ) {
       logStageIfAICamera( "fetch_user_location_complete" );
@@ -162,9 +156,7 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     );
     await deleteStageIfAICamera( );
     setSentinelFileName( null );
-    const showMatchScreen = cameraType === "AI"
-      && isDefaultMode
-      && isDebugMode( );
+
     if ( showMatchScreen ) {
       return navigation.push( "Match", {
         entryScreen: "CameraWithDevice",
@@ -180,8 +172,6 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     addEvidence,
     createObsWithCameraPhotos,
     setSentinelFileName,
-    cameraType,
-    isDefaultMode,
     navigation,
     updateObsWithCameraPhotos
   ] );
