@@ -17,13 +17,40 @@ jest.mock( "sharedHooks/useCurrentUser", () => ( {
   default: ( ) => null
 } ) );
 
+function renderBottomButtonsContainer( props = {} ) {
+  return renderComponent(
+    <BottomButtonsContainer
+      passesEvidenceTest
+      observations={[]}
+      currentObservation={mockObservation}
+      currentObservationIndex={0}
+      setCurrentObservationIndex={0}
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      transitionAnimation={() => {}}
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...props}
+    />
+  );
+}
+
 describe( "BottomButtonsContainer", () => {
   it( "has no accessibility errors", () => {
-    expect( <BottomButtonsContainer /> ).toBeAccessible();
+    expect(
+      <BottomButtonsContainer
+        passesEvidenceTest
+        observations={[]}
+        currentObservation={mockObservation}
+        currentObservationIndex={0}
+        setCurrentObservationIndex={0}
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        transitionAnimation={() => {}}
+        // eslint-disable-next-line react/jsx-props-no-spreading
+      />
+    ).toBeAccessible();
   } );
 
   it( "shows save button when user is logged out", () => {
-    renderComponent( <BottomButtonsContainer /> );
+    renderBottomButtonsContainer();
 
     const save = screen.getByText( /SAVE/ );
 
@@ -32,9 +59,7 @@ describe( "BottomButtonsContainer", () => {
 
   it( "shows save changes button when user logged in and observation was previously synced", () => {
     jest.spyOn( useCurrentUser, "default" ).mockImplementation( ( ) => mockUser );
-    renderComponent( <BottomButtonsContainer
-      currentObservation={mockObservation}
-    /> );
+    renderBottomButtonsContainer( );
 
     const saveChanges = screen.getByText( /SAVE CHANGES/ );
 
@@ -43,7 +68,9 @@ describe( "BottomButtonsContainer", () => {
 
   it( "shows save and upload button when user logged in with new observation", () => {
     jest.spyOn( useCurrentUser, "default" ).mockImplementation( ( ) => mockUser );
-    renderComponent( <BottomButtonsContainer /> );
+    renderBottomButtonsContainer( {
+      currentObservation: factory( "LocalObservation" )
+    } );
 
     const save = screen.getByText( /SAVE/ );
     expect( save ).toBeVisible( );
