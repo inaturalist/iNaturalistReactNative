@@ -107,7 +107,10 @@ const CameraContainer = ( ) => {
     generateSentinelFile( );
   }, [setSentinelFileName, cameraType] );
 
-  const logFetchingLocation = !!( hasPermissions && sentinelFileName );
+  const logFetchingLocation = useMemo(
+    ( ) => !!( hasPermissions && sentinelFileName ),
+    [hasPermissions, sentinelFileName]
+  );
 
   useEffect( ( ) => {
     if ( logFetchingLocation ) {
