@@ -52,6 +52,7 @@ const logStage = async (
 
     await RNFS.writeFile( fullFilePath, JSON.stringify( sentinelData ), "utf8" );
   } catch ( error ) {
+    console.log( error, sentinelFileName, stageName, "Failed to log stage to sentinel file" );
     console.error( "Failed to log stage to sentinel file:", error, sentinelFileName, stageName );
   }
 };

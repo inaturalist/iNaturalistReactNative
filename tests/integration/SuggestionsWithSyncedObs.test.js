@@ -43,6 +43,11 @@ afterAll( uniqueRealmAfterAll );
 const initialStoreState = useStore.getState( );
 beforeAll( async ( ) => {
   useStore.setState( initialStoreState, true );
+  useStore.setState( {
+    layout: {
+      isDefaultMode: false
+    }
+  } );
   // userEvent recommends fake timers
   jest.useFakeTimers( );
 } );
