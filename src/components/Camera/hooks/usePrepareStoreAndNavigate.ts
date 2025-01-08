@@ -128,12 +128,12 @@ const usePrepareStoreAndNavigate = ( ): Function => {
   ] );
 
   const prepareStoreAndNavigate = useCallback( async ( {
-    visionResult,
     addPhotoPermissionResult,
     userLocation,
     newPhotoState,
     logStageIfAICamera,
-    deleteStageIfAICamera
+    deleteStageIfAICamera,
+    showMatchScreen
   } ) => {
     if ( userLocation !== null ) {
       logStageIfAICamera( "fetch_user_location_complete" );
@@ -156,14 +156,20 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     );
     await deleteStageIfAICamera( );
     setSentinelFileName( null );
+
+    if ( showMatchScreen ) {
+      return navigation.push( "Match", {
+        entryScreen: "CameraWithDevice",
+        lastScreen: "CameraWithDevice"
+      } );
+    }
     return navigation.push( "Suggestions", {
       entryScreen: "CameraWithDevice",
-      lastScreen: "CameraWithDevice",
-      aiCameraSuggestion: visionResult || null
+      lastScreen: "CameraWithDevice"
     } );
   }, [
-    addEvidence,
     cameraUris,
+    addEvidence,
     createObsWithCameraPhotos,
     setSentinelFileName,
     navigation,

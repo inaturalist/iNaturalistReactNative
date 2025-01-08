@@ -41,6 +41,7 @@ type Props = {
   small?: boolean,
   taxon: Object,
   topTextComponent?: Function,
+  underlineTopText?: boolean,
   withdrawn?: boolean
 };
 
@@ -58,6 +59,7 @@ const DisplayTaxonName = ( {
   small = false,
   taxon,
   topTextComponent: TopTextComponentProp,
+  underlineTopText = false,
   withdrawn
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -121,7 +123,12 @@ const DisplayTaxonName = ( {
 
   const topTextComponent = (
     <TopTextComponent
-      className={textClassName}
+      className={classnames(
+        textClassName,
+        {
+          underline: underlineTopText
+        }
+      )}
       numberOfLines={setNumberOfLines( )}
       ellipsizeMode="tail"
       selectable={selectable}

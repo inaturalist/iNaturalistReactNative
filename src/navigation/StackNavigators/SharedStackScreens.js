@@ -4,6 +4,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import FullPageWebView from "components/FullPageWebView/FullPageWebView.tsx";
 import LocationPickerContainer from "components/LocationPicker/LocationPickerContainer";
+import MatchContainer from "components/Match/MatchContainer";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import PhotoSharing from "components/PhotoSharing";
 import { Heading4 } from "components/SharedComponents";
@@ -12,6 +13,7 @@ import SuggestionsTaxonSearch from "components/Suggestions/SuggestionsTaxonSearc
 import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import { t } from "i18next";
 import {
+  blankHeaderTitle,
   fadeInComponent,
   hideHeader,
   removeBottomBorder,
@@ -35,6 +37,9 @@ const FadeInTaxonDetails = ( ) => fadeInComponent( <TaxonDetails /> );
 const FadeInSuggestionsContainer = ( ) => fadeInComponent( <SuggestionsContainer /> );
 const FadeInTaxonSearch = ( ) => fadeInComponent( <SuggestionsTaxonSearch /> );
 const FadeInFullPageWebView = ( ) => fadeInComponent( <FullPageWebView /> );
+const FadeInMatchContainer = ( ) => fadeInComponent(
+  <MatchContainer />
+);
 
 // These screens need to be within the NoBottomTabStackNavigator
 // as well as the TabStackNavigator to retain navigation history
@@ -80,6 +85,15 @@ const SharedStackScreens = ( ): Node => (
         headerBackTitleVisible: false
       }}
     >
+      <Stack.Screen
+        name="Match"
+        component={FadeInMatchContainer}
+        options={{
+          unmountOnBlur: true,
+          ...showHeader,
+          ...blankHeaderTitle
+        }}
+      />
       <Stack.Screen
         name="Suggestions"
         component={FadeInSuggestionsContainer}

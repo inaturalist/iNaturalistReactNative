@@ -12,6 +12,7 @@ import Photo from "./Photo";
 import QueueItem from "./QueueItem";
 import Sound from "./Sound";
 import Taxon from "./Taxon";
+import TaxonPhoto from "./TaxonPhoto";
 import User from "./User";
 import Vote from "./Vote";
 
@@ -28,10 +29,11 @@ export default {
     QueueItem,
     Sound,
     Taxon,
+    TaxonPhoto,
     User,
     Vote
   ],
-  schemaVersion: 59,
+  schemaVersion: 62,
   path: `${RNFS.DocumentDirectoryPath}/db.realm`,
   // https://github.com/realm/realm-js/pull/6076 embedded constraints
   migrationOptions: {

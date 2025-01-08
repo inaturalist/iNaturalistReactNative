@@ -55,6 +55,10 @@ ADD-EVIDENCE = ADD EVIDENCE
 Add-evidence = Add evidence
 Add-favorite = Add favorite
 Add-Location = Add Location
+Add-location-for-better-identifications = Add location for better identifications
+ADD-LOCATION-FOR-BETTER-IDS = ADD LOCATION FOR BETTER IDS
+# Accessibility hint for adding a location to a new obseration in the Match screen new user flow
+Add-location-to-refresh-suggestions = Add location to refresh suggestions
 # Accessibility label for a button that starts the process of adding an
 # observation, e.g. the button in the tab bar
 Add-observations = Add observations
@@ -233,6 +237,8 @@ Community = Community
 Community-based = Community-based
 Community-Guidelines = Community Guidelines
 COMMUNITY-GUIDELINES = COMMUNITY GUIDELINES
+# Label on match screen for how much confidence there is for a suggestion (i.e. 99% confidence)
+Confidence--label = Confidence
 # Button that confirms a choice the user has made
 CONFIRM = CONFIRM
 # Onboarding header (underneath the logo)
@@ -613,6 +619,8 @@ Introduced = Introduced
 Introduced-to-place = Introduced to { $place }
 It-can-now-be-shared-for-use-in-research = It can now be shared for use in research
 It-may-take-up-to-an-hour-to-remove-content = It may take up to an hour to completely delete all associated content
+# Label for suggested list of organisms from computer vision in the Match screen new user flow
+It-might-also-be = It might also be
 # Month of January
 January = January
 JOIN = JOIN
@@ -649,6 +657,7 @@ Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBE
 # Identification category
 leading--identification = Leading
 Learn-More = Learn More
+LEARN-MORE-ABOUT-THIS-SPECIES = LEARN MORE ABOUT THIS SPECIES
 LEAVE = LEAVE
 LEAVE-PROJECT = LEAVE PROJECT
 # Asking for confirmation if the user wants to leave this project
@@ -1384,6 +1393,8 @@ X-of-Y =
         [one] of { $y }
        *[other] of { $y }
     }
+X-percent = { $count }%
+X-percent-confidence = { $count }% confidence
 # Displays number of photos attached to an observation in the Media Viewer
 X-PHOTOS =
     { $photoCount ->
@@ -1468,6 +1479,7 @@ You-must-install-Google-Play-Services-to-sign-in-with-Google = You must install 
 You-need-an-Internet-connection-to-do-that = You need an Internet connection to do that.
 # Error message when you try to do something that requires log in
 You-need-log-in-to-do-that = You need to log in to do that.
+You-observed-a-new-species = You observed a new species!
 You-will-see-notifications = You’ll see notifications here once you log in & upload observations.
 Your-donation-to-iNaturalist = Your donation to iNaturalist supports the improvement and stability of the mobile apps and website that connects millions of people to nature and enables the protection of biodiversity worldwide!
 Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
