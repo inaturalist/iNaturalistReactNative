@@ -136,8 +136,8 @@ const FrameProcessorCamera = ( {
   // unfortunately, I was not able to run this new function in the worklets directly,
   // so we need to do this here before calling the useFrameProcessor hook.
   // For predictions from file this function runs in the vision-plugin code directly.
-  const location = hasUserLocation
-    ? InatVision.lookUpLocation( userLocation )
+  const geoModelCellLocation = hasUserLocation
+    ? InatVision.getCellLocation( userLocation )
     : null;
   const frameProcessor = useFrameProcessor(
     frame => {
@@ -173,9 +173,9 @@ const FrameProcessorCamera = ( {
             useGeomodel: hasUserLocation,
             geomodelPath,
             location: {
-              latitude: location?.latitude,
-              longitude: location?.longitude,
-              elevation: location?.altitude
+              latitude: geoModelCellLocation?.latitude,
+              longitude: geoModelCellLocation?.longitude,
+              elevation: geoModelCellLocation?.elevation
             }
           } );
           const timeAfter = Date.now();
@@ -198,7 +198,7 @@ const FrameProcessorCamera = ( {
       lastTimestamp,
       fps,
       hasUserLocation,
-      location
+      geoModelCellLocation
     ]
   );
 
