@@ -25,7 +25,8 @@ type Props = {
   handleSaveOrDiscardPress: ( ) => void,
   navToTaxonDetails: ( ) => void,
   taxon: Object,
-  confidence: number
+  confidence: number,
+  handleLocationPickerPressed: ( ) => void
 }
 
 const Match = ( {
@@ -33,7 +34,8 @@ const Match = ( {
   handleSaveOrDiscardPress,
   navToTaxonDetails,
   taxon,
-  confidence
+  confidence,
+  handleLocationPickerPressed
 }: Props ) => {
   const { t } = useTranslation( );
 
@@ -57,13 +59,16 @@ const Match = ( {
           navToTaxonDetails={navToTaxonDetails}
         />
         {!latitude
-          ? <EmptyMapSection />
+          ? <EmptyMapSection handleLocationPickerPressed={handleLocationPickerPressed} />
           : (
             <MapSection observation={observation} />
           )}
         <LocationSection
           belongsToCurrentUser
           observation={observation}
+          handleLocationPickerPressed={!latitude
+            ? handleLocationPickerPressed
+            : null}
         />
         <View className="px-5 pt-2">
           <Button
@@ -84,13 +89,16 @@ const Match = ( {
               taxon: secondTaxon
             }]}
           />
-          <Button
-            className="mb-7"
-            level="neutral"
-            text={t( "ADD-LOCATION-FOR-BETTER-IDS" )}
-            onPress={navToTaxonDetails}
-            accessibilityHint={t( "Add-location-to-refresh-suggestions" )}
-          />
+          {!latitude && (
+            <Button
+              className="mb-7"
+              level="neutral"
+              text={t( "ADD-LOCATION-FOR-BETTER-IDS" )}
+              onPress={handleLocationPickerPressed}
+              accessibilityLabel={t( "Edit-location" )}
+              accessibilityHint={t( "Add-location-to-refresh-suggestions" )}
+            />
+          )}
         </View>
       </ScrollViewWrapper>
       <SaveDiscardButtons
