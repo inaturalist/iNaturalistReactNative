@@ -173,8 +173,6 @@ const FrameProcessorCamera = ( {
             useGeomodel: hasUserLocation,
             geomodelPath,
             location: {
-              latitude: location?.latitude,
-              longitude: location?.longitude,
               latitude: geoModelCellLocation?.latitude,
               longitude: geoModelCellLocation?.longitude,
               elevation: geoModelCellLocation?.elevation
