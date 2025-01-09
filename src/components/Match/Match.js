@@ -25,7 +25,8 @@ type Props = {
   handleSaveOrDiscardPress: ( ) => void,
   navToTaxonDetails: ( ) => void,
   taxon: Object,
-  confidence: number
+  confidence: number,
+  handleLocationPickerPressed: ( ) => void
 }
 
 const Match = ( {
@@ -33,7 +34,8 @@ const Match = ( {
   handleSaveOrDiscardPress,
   navToTaxonDetails,
   taxon,
-  confidence
+  confidence,
+  handleLocationPickerPressed
 }: Props ) => {
   const { t } = useTranslation( );
 
@@ -57,13 +59,14 @@ const Match = ( {
           navToTaxonDetails={navToTaxonDetails}
         />
         {!latitude
-          ? <EmptyMapSection />
+          ? <EmptyMapSection handleLocationPickerPressed={handleLocationPickerPressed} />
           : (
             <MapSection observation={observation} />
           )}
         <LocationSection
           belongsToCurrentUser
           observation={observation}
+          handleLocationPickerPressed={handleLocationPickerPressed}
         />
         <View className="px-5 pt-2">
           <Button
@@ -88,7 +91,8 @@ const Match = ( {
             className="mb-7"
             level="neutral"
             text={t( "ADD-LOCATION-FOR-BETTER-IDS" )}
-            onPress={navToTaxonDetails}
+            onPress={handleLocationPickerPressed}
+            accessibilityLabel={t( "Edit-location" )}
             accessibilityHint={t( "Add-location-to-refresh-suggestions" )}
           />
         </View>
