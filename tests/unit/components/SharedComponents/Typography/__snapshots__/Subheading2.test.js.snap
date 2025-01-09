@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Subheading2 renders correctly 1`] = `
+<Text
+  maxFontSizeMultiplier={2}
+  style={
+    [
+      {
+        "color": "#454545",
+      },
+      {
+        "fontFamily": "Lato-Regular",
+      },
+      [
+        {
+          "textAlign": "left",
+        },
+        [
+          {
+            "fontSize": 20,
+            "lineHeight": 24,
+          },
+          {
+            "fontFamily": "Lato-Bold",
+          },
+        ],
+      ],
+    ]
+  }
+>
+  Subheading2
+</Text>
+`;
