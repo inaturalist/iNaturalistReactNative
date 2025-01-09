@@ -1,6 +1,6 @@
 import {
   INatIcon,
-  Subheading1
+  Subheading2
 } from "components/SharedComponents";
 import { ImageBackground, Pressable } from "components/styledComponents";
 import React from "react";
@@ -27,9 +27,9 @@ const EmptyMapSection = ( {
         accessibilityIgnoresInvertColors
       >
         <INatIcon name="location" size={40} color={colors.white} />
-        <Subheading1 className="mt-3 text-white px-28 text-center">
+        <Subheading2 className="mt-3 text-white px-28 text-center">
           {t( "Add-location-for-better-identifications" )}
-        </Subheading1>
+        </Subheading2>
       </ImageBackground>
     </Pressable>
   );

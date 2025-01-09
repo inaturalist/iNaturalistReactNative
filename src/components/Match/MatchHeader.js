@@ -3,7 +3,7 @@ import {
   Body4,
   DisplayTaxonName,
   Heading1,
-  Subheading1
+  Subheading2
 } from "components/SharedComponents";
 import {
   View
@@ -33,7 +33,7 @@ const MatchHeader = ( { taxon, confidence }: Props ) => {
         testID={`ObsDetails.taxon.${taxonId}`}
         accessibilityHint={t( "Navigates-to-taxon-details" )}
         topTextComponent={Heading1}
-        bottomTextComponent={Subheading1}
+        bottomTextComponent={Subheading2}
       />
     </View>
   );
@@ -44,9 +44,9 @@ const MatchHeader = ( { taxon, confidence }: Props ) => {
       <View className="flex-row justify-between items-center">
         {showSuggestedTaxon( )}
         <View className="justify-end items-center ml-5">
-          <Subheading1 className="text-inatGreen mb-2">
+          <Subheading2 className="text-inatGreen mb-2">
             {t( "X-percent", { count: confidence } )}
-          </Subheading1>
+          </Subheading2>
           <Body4 className="text-inatGreen">
             {t( "Confidence--label" )}
           </Body4>
