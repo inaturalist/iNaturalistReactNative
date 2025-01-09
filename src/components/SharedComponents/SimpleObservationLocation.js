@@ -45,8 +45,9 @@ const SimpleObservationLocation = ( {
       accessibilityValue={{
         text: displayLocation
       }}
+      disabled={displayLocation !== null}
       onPress={( ) => {
-        if ( handleLocationPickerPressed ) {
+        if ( handleLocationPickerPressed !== undefined ) {
           handleLocationPickerPressed( );
         }
       }}

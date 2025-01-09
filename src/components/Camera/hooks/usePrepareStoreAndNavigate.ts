@@ -5,6 +5,7 @@ import {
 } from "react";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
+import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import useStore from "stores/useStore";
 
 import savePhotosToCameraGallery from "../helpers/savePhotosToCameraGallery";
@@ -77,9 +78,11 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     // Suggestions after the changes to permissions github issue is complete, and
     // we'll be able to updateObservationKeys on the observation there
     if ( userLocation?.latitude ) {
+      const placeName = await fetchPlaceName( userLocation.latitude, userLocation.longitude );
       newObservation.latitude = userLocation?.latitude;
       newObservation.longitude = userLocation?.longitude;
       newObservation.positional_accuracy = userLocation?.positional_accuracy;
+      newObservation.place_guess = placeName;
     }
     newObservation.observationPhotos = await ObservationPhoto
       .createObsPhotosWithPosition( uris, {

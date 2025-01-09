@@ -66,7 +66,9 @@ const Match = ( {
         <LocationSection
           belongsToCurrentUser
           observation={observation}
-          handleLocationPickerPressed={handleLocationPickerPressed}
+          handleLocationPickerPressed={!latitude
+            ? handleLocationPickerPressed
+            : null}
         />
         <View className="px-5 pt-2">
           <Button
@@ -87,14 +89,16 @@ const Match = ( {
               taxon: secondTaxon
             }]}
           />
-          <Button
-            className="mb-7"
-            level="neutral"
-            text={t( "ADD-LOCATION-FOR-BETTER-IDS" )}
-            onPress={handleLocationPickerPressed}
-            accessibilityLabel={t( "Edit-location" )}
-            accessibilityHint={t( "Add-location-to-refresh-suggestions" )}
-          />
+          {!latitude && (
+            <Button
+              className="mb-7"
+              level="neutral"
+              text={t( "ADD-LOCATION-FOR-BETTER-IDS" )}
+              onPress={handleLocationPickerPressed}
+              accessibilityLabel={t( "Edit-location" )}
+              accessibilityHint={t( "Add-location-to-refresh-suggestions" )}
+            />
+          )}
         </View>
       </ScrollViewWrapper>
       <SaveDiscardButtons
