@@ -657,6 +657,7 @@ Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBE
 # Identification category
 leading--identification = Leading
 Learn-More = Learn More
+LEARN-MORE-ABOUT-THIS-GROUP = LEARN MORE ABOUT THIS GROUP
 LEARN-MORE-ABOUT-THIS-SPECIES = LEARN MORE ABOUT THIS SPECIES
 LEAVE = LEAVE
 LEAVE-PROJECT = LEAVE PROJECT
