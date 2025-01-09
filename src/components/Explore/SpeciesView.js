@@ -3,6 +3,9 @@
 import { fetchSpeciesCounts } from "api/observations";
 import TaxonGridItem from "components/Explore/TaxonGridItem.tsx";
 import _ from "lodash";
+import {
+  useExplore
+} from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useEffect, useMemo, useState } from "react";
 import Taxon from "realmModels/Taxon";
@@ -35,6 +38,7 @@ const SpeciesView = ( {
   // on screen
   const [observedTaxonIds, setObservedTaxonIds] = useState( new Set( ) );
   const currentUser = useCurrentUser( );
+  const { state } = useExplore();
   const {
     estimatedGridItemSize,
     flashListStyle,
@@ -83,13 +87,17 @@ const SpeciesView = ( {
     r => r.taxon.id
   ) || [], [seenByCurrentUser?.results] );
 
-  let results = data;
   let totalResultsCount = totalResults;
 
-  if ( queryParams.excludeUser ) {
-    const filtered = data.filter( r => !pageObservedTaxonIds.includes( r.taxon.id ) );
-    totalResultsCount = filtered.length;
-    results = filtered;
+  const filteredData
+    = data.filter( r => !observedTaxonIds.has( r.taxon.id ) );
+
+  const results = state.excludeUser
+    ? filteredData
+    : data;
+
+  if ( state.excludeUser ) {
+    totalResultsCount = totalResults - ( totalResults - filteredData.length );
   }
 
   useEffect( ( ) => {

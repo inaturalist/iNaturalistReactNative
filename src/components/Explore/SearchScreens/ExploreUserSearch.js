@@ -88,7 +88,6 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
     {
       title: t( "NOT-BY-ME" ),
       onPress: () => {
-        console.log( "not by me pressed" );
         if ( currentUser ) {
           onUserSelected( currentUser, true );
         }
