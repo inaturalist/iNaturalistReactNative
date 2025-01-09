@@ -27,7 +27,7 @@ const SimpleObservationLocation = ( {
   );
 
   if ( !displayLocation ) {
-    displayLocation = t( "No-Location" );
+    displayLocation = t( "Add-Location" );
   }
 
   if ( !observation ) {
