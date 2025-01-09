@@ -69,7 +69,9 @@ const Match = ( {
           <Button
             className="mb-2"
             level="primary"
-            text={t( "LEARN-MORE-ABOUT-THIS-SPECIES" )}
+            text={taxon?.rank_level === 10
+              ? t( "LEARN-MORE-ABOUT-THIS-SPECIES" )
+              : t( "LEARN-MORE-ABOUT-THIS-GROUP" )}
             onPress={navToTaxonDetails}
             accessibilityHint={t( "Navigates-to-taxon-details" )}
           />

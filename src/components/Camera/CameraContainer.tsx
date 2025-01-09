@@ -102,21 +102,13 @@ const CameraContainer = ( ) => {
     const generateSentinelFile = async ( ) => {
       const fileName = await createSentinelFile( "AICamera" );
       setSentinelFileName( fileName );
+      if ( hasPermissions ) {
+        await logStage( fileName, "fetch_user_location_start" );
+      }
     };
     if ( cameraType !== "AI" ) { return; }
     generateSentinelFile( );
-  }, [setSentinelFileName, cameraType] );
-
-  const logFetchingLocation = useMemo(
-    ( ) => !!( hasPermissions && sentinelFileName ),
-    [hasPermissions, sentinelFileName]
-  );
-
-  useEffect( ( ) => {
-    if ( logFetchingLocation ) {
-      logStageIfAICamera( "fetch_user_location_start" );
-    }
-  }, [logStageIfAICamera, logFetchingLocation] );
+  }, [setSentinelFileName, cameraType, hasPermissions] );
 
   const {
     hasPermissions: hasSavePhotoPermission,
