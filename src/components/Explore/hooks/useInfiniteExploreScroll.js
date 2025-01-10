@@ -10,9 +10,18 @@ import { useAuthenticatedInfiniteQuery } from "sharedHooks";
 
 const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object ): Object => {
   const queryClient = useQueryClient( );
+
+  const fields = {
+    ...Observation.EXPLORE_LIST_FIELDS,
+    user: { // included here for exclude by current user in explore filters
+      id: true,
+      uuid: true,
+      login: true
+    }
+  };
   const baseParams = {
     ...newInputParams,
-    fields: Observation.EXPLORE_LIST_FIELDS,
+    fields,
     ttl: -1
   };
 

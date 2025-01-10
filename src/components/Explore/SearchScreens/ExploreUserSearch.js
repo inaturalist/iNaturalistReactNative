@@ -114,7 +114,12 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
           value={userQuery}
           testID="SearchUser"
         />
-        {currentUser && <ButtonBar buttonConfiguration={buttons} containerClass="pt-[15px]" />}
+        {currentUser && (
+          <ButtonBar
+            buttonConfiguration={buttons}
+            containerClass="justify-center pt-[15px]"
+          />
+        )}
       </View>
       <UserList
         ListEmptyComponent={renderEmptyList}

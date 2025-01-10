@@ -40,7 +40,7 @@ const ButtonBar = ( {
         containerClass,
         {
           "p-[15px] w-full": !buttonConfiguration,
-          "flex-row justify-center": buttonConfiguration
+          "flex-row": buttonConfiguration
         }
       )}
       onLayout={onLayout}
@@ -54,6 +54,7 @@ const ButtonBar = ( {
 
         return (
           <Button
+            key={`ButtonBar.button.${button.title}`}
             maxFontSizeMultiplier={1}
             text={title}
             onPress={onPress}
