@@ -41,9 +41,9 @@ const TaxonDetailsHeader = ( {
 
   const taxonUrl = `${TAXON_URL}/${taxon?.id}`;
 
-  let rightHeaderButton;
+  let headerRight;
   if ( !hideNavButtons ) {
-    rightHeaderButton = (
+    headerRight = (
       <KebabMenu
         visible={kebabMenuVisible}
         setVisible={setKebabMenuVisible}
@@ -78,7 +78,7 @@ const TaxonDetailsHeader = ( {
             try {
               return await Share.share( sharingOptions );
             } catch ( err ) {
-              Alert.alert( err.message );
+              Alert.alert( ( err as Error ).message );
               return null;
             }
           }}
@@ -95,7 +95,7 @@ const TaxonDetailsHeader = ( {
       <OverlayHeader
         testID="TaxonDetails.BackButton"
         invertToWhiteBackground={invertToWhiteBackground}
-        rightHeaderButton={rightHeaderButton}
+        headerRight={headerRight}
       >
         { hasTitle && (
           <DisplayTaxonName

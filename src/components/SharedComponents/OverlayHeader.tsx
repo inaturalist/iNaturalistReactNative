@@ -10,14 +10,14 @@ import colors from "styles/tailwindColors";
 
 interface Props extends PropsWithChildren {
   invertToWhiteBackground: boolean
-  rightHeaderButton?: React.JSX.Element;
+  headerRight?: React.JSX.Element;
   testID: string,
 }
 
 const OverlayHeader = ( {
   children,
   invertToWhiteBackground,
-  rightHeaderButton,
+  headerRight,
   testID
 }: Props ) => (
   <View className={
@@ -46,7 +46,7 @@ const OverlayHeader = ( {
       </View>
     )}
     <View className="py-[7px]">
-      {rightHeaderButton}
+      {headerRight}
     </View>
   </View>
 );
