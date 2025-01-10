@@ -3,6 +3,7 @@
 import { refresh, useNetInfo } from "@react-native-community/netinfo";
 import { useNavigation, useNavigationState, useRoute } from "@react-navigation/native";
 import { fetchSpeciesCounts } from "api/observations";
+import MatchSaveDiscardButtons from "components/Match/SaveDiscardButtons";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
   ActivityIndicator,
@@ -99,6 +100,7 @@ const TaxonDetails = ( ): Node => {
   const fromObsDetails = usableHistory.includes( "ObsDetails" );
   const fromSuggestions = usableHistory.includes( "Suggestions" );
   const fromObsEdit = usableHistory.includes( "ObsEdit" );
+  const fromMatch = usableHistory.includes( "Match" );
 
   // previous ObsDetails observation uuid
   const obsUuid = fromObsDetails
@@ -371,9 +373,14 @@ const TaxonDetails = ( ): Node => {
         stickyHeaderIndices={[0]}
       >
         <TaxonDetailsHeader
-          invertToWhiteBackground={invertToWhiteBackground}
+          invertToWhiteBackground={
+            fromMatch
+              ? true
+              : invertToWhiteBackground
+          }
+          hasTitle={fromMatch}
           hideNavButtons={hideNavButtons}
-          taxonId={taxon?.id}
+          taxon={taxon}
         />
         <View className="flex flex-1 flex-grow bg-black -mt-[64px]">
           <View className="w-full h-[420px] shrink-1">
@@ -397,6 +404,21 @@ const TaxonDetails = ( ): Node => {
           header={renderHeader}
         />
       </ScrollView>
+      {fromMatch && (
+        <MatchSaveDiscardButtons
+          handlePress={async action => {
+            if ( action === "save" ) {
+              await saveObservation( currentEditingObservation, cameraRollUris, realm );
+            }
+            navigation.navigate( "TabNavigator", {
+              screen: "TabStackNavigator",
+              params: {
+                screen: "ObsList"
+              }
+            } );
+          }}
+        />
+      )}
       {showSelectButton && (
         <ButtonBar containerClass="items-center z-50">
           <Button

@@ -5,16 +5,17 @@ import {
 import {
   View
 } from "components/styledComponents";
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import colors from "styles/tailwindColors";
 
-interface Props {
+interface Props extends PropsWithChildren {
   invertToWhiteBackground: boolean
-  rightHeaderButton: React.JSX.Element;
+  rightHeaderButton?: React.JSX.Element;
   testID: string,
 }
 
 const OverlayHeader = ( {
+  children,
   invertToWhiteBackground,
   rightHeaderButton,
   testID
@@ -30,13 +31,20 @@ const OverlayHeader = ( {
   >
     <View className="py-[21px]">
       <BackButton
-        color={invertToWhiteBackground
-          ? colors.darkGray
-          : colors.white}
+        color={String(
+          invertToWhiteBackground
+            ? colors?.darkGray
+            : colors?.white
+        )}
         inCustomHeader
         testID={testID}
       />
     </View>
+    {children && (
+      <View className="grow items-center justify-center">
+        {children}
+      </View>
+    )}
     <View className="py-[7px]">
       {rightHeaderButton}
     </View>
