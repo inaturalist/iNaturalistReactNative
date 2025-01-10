@@ -75,6 +75,7 @@ export { default as Heading6 } from "./Typography/Heading6";
 export { default as List2 } from "./Typography/List2";
 export { default as P } from "./Typography/P";
 export { default as Subheading1 } from "./Typography/Subheading1";
+export { default as Subheading2 } from "./Typography/Subheading2";
 export { default as UnderlinedLink } from "./Typography/UnderlinedLink";
 export { default as UploadProgressBar } from "./UploadProgressBar";
 export { default as UploadStatus } from "./UploadStatus/UploadStatus";
