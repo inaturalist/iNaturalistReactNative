@@ -5,6 +5,7 @@ import {
 } from "react";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
+import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import useStore from "stores/useStore";
 
 import savePhotosToCameraGallery from "../helpers/savePhotosToCameraGallery";
@@ -77,9 +78,11 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     // Suggestions after the changes to permissions github issue is complete, and
     // we'll be able to updateObservationKeys on the observation there
     if ( userLocation?.latitude ) {
+      const placeName = await fetchPlaceName( userLocation.latitude, userLocation.longitude );
       newObservation.latitude = userLocation?.latitude;
       newObservation.longitude = userLocation?.longitude;
       newObservation.positional_accuracy = userLocation?.positional_accuracy;
+      newObservation.place_guess = placeName;
     }
     newObservation.observationPhotos = await ObservationPhoto
       .createObsPhotosWithPosition( uris, {
@@ -128,12 +131,12 @@ const usePrepareStoreAndNavigate = ( ): Function => {
   ] );
 
   const prepareStoreAndNavigate = useCallback( async ( {
-    visionResult,
     addPhotoPermissionResult,
     userLocation,
     newPhotoState,
     logStageIfAICamera,
-    deleteStageIfAICamera
+    deleteStageIfAICamera,
+    showMatchScreen
   } ) => {
     if ( userLocation !== null ) {
       logStageIfAICamera( "fetch_user_location_complete" );
@@ -156,14 +159,20 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     );
     await deleteStageIfAICamera( );
     setSentinelFileName( null );
+
+    if ( showMatchScreen ) {
+      return navigation.push( "Match", {
+        entryScreen: "CameraWithDevice",
+        lastScreen: "CameraWithDevice"
+      } );
+    }
     return navigation.push( "Suggestions", {
       entryScreen: "CameraWithDevice",
-      lastScreen: "CameraWithDevice",
-      aiCameraSuggestion: visionResult || null
+      lastScreen: "CameraWithDevice"
     } );
   }, [
-    addEvidence,
     cameraUris,
+    addEvidence,
     createObsWithCameraPhotos,
     setSentinelFileName,
     navigation,

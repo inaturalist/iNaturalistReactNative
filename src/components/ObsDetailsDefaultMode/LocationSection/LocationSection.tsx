@@ -15,10 +15,15 @@ import ObscurationExplanation from "./ObscurationExplanation";
 
 interface Props {
   belongsToCurrentUser: boolean,
-  observation: Observation
+  observation: Observation,
+  handleLocationPickerPressed?: ( ) => void
 }
 
-const LocationSection = ( { belongsToCurrentUser, observation }: Props ) => {
+const LocationSection = ( {
+  belongsToCurrentUser,
+  observation,
+  handleLocationPickerPressed
+}: Props ) => {
   const currentUser = useCurrentUser( );
   const geoprivacy = observation?.geoprivacy;
   const taxonGeoprivacy = observation?.taxon_geoprivacy;
@@ -31,7 +36,10 @@ const LocationSection = ( { belongsToCurrentUser, observation }: Props ) => {
         <Heading5 className="mb-2">
           {t( "OBSERVED-IN--label" )}
         </Heading5>
-        <SimpleObservationLocation observation={observation} />
+        <SimpleObservationLocation
+          observation={observation}
+          handleLocationPickerPressed={handleLocationPickerPressed}
+        />
         {observation.obscured && (
           <ObscurationExplanation
             textClassName="ml-[20px] mt-[10px]"

@@ -22,7 +22,6 @@ interface Props {
   newPhotoUris: Array<Object>,
   setNewPhotoUris: Function,
   takePhotoOptions: Object,
-  setAiSuggestion: Function,
   userLocation: UserLocation | null
 }
 
@@ -38,7 +37,6 @@ const CameraWithDevice = ( {
   newPhotoUris,
   setNewPhotoUris,
   takePhotoOptions,
-  setAiSuggestion,
   userLocation
 }: Props ) => {
   const { isLandscapeMode } = useDeviceOrientation( );
@@ -77,7 +75,6 @@ const CameraWithDevice = ( {
             takingPhoto={takingPhoto}
             takePhotoAndStoreUri={takePhotoAndStoreUri}
             takePhotoOptions={takePhotoOptions}
-            setAiSuggestion={setAiSuggestion}
             userLocation={userLocation}
           />
         )}

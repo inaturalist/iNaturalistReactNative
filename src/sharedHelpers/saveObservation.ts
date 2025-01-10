@@ -1,9 +1,10 @@
 import type Realm from "realm";
 import Observation from "realmModels/Observation";
+import type { RealmObservation } from "realmModels/types";
 import { ExifToWrite, writeExifToFile } from "sharedHelpers/parseExif";
 
 const writeExifToCameraRollPhotos = async (
-  observation: Observation,
+  observation: RealmObservation,
   cameraRollUris: string[],
   exif: ExifToWrite
 ) => {
@@ -17,7 +18,7 @@ const writeExifToCameraRollPhotos = async (
 };
 
 const saveObservation = async (
-  observation: Observation,
+  observation: RealmObservation,
   cameraRollUris: string[],
   realm: Realm
 ) => {

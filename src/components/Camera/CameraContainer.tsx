@@ -14,7 +14,10 @@ import type {
   TakePhotoOptions
 } from "react-native-vision-camera";
 import { createSentinelFile, deleteSentinelFile, logStage } from "sharedHelpers/sentinelFiles.ts";
-import { useDeviceOrientation, useTranslation, useWatchPosition } from "sharedHooks";
+import {
+  useDeviceOrientation, useLayoutPrefs, useTranslation, useWatchPosition
+} from "sharedHooks";
+import { isDebugMode } from "sharedHooks/useDebugMode";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useStore from "stores/useStore";
 
@@ -26,6 +29,9 @@ import useSavePhotoPermission from "./hooks/useSavePhotoPermission";
 export const MAX_PHOTOS_ALLOWED = 20;
 
 const CameraContainer = ( ) => {
+  const {
+    isDefaultMode
+  } = useLayoutPrefs( );
   const currentObservation = useStore( state => state.currentObservation );
   const setCameraState = useStore( state => state.setCameraState );
   const evidenceToAdd = useStore( state => state.evidenceToAdd );
@@ -35,6 +41,10 @@ const CameraContainer = ( ) => {
 
   const { params } = useRoute( );
   const cameraType = params?.camera;
+
+  const showMatchScreen = cameraType === "AI"
+  && isDefaultMode
+  && isDebugMode( );
 
   const logStageIfAICamera = useCallback( async (
     stageName: string,
@@ -81,7 +91,6 @@ const CameraContainer = ( ) => {
     enableShutterSound: false,
     ...( hasFlash && { flash: "off" } as const )
   } as const;
-  const [aiSuggestion, setAiSuggestion] = useState( null );
   const [takePhotoOptions, setTakePhotoOptions] = useState<TakePhotoOptions>( initialPhotoOptions );
   const [takingPhoto, setTakingPhoto] = useState( false );
   const [newPhotoUris, setNewPhotoUris] = useState( [] );
@@ -93,18 +102,13 @@ const CameraContainer = ( ) => {
     const generateSentinelFile = async ( ) => {
       const fileName = await createSentinelFile( "AICamera" );
       setSentinelFileName( fileName );
+      if ( hasPermissions ) {
+        await logStage( fileName, "fetch_user_location_start" );
+      }
     };
     if ( cameraType !== "AI" ) { return; }
     generateSentinelFile( );
-  }, [setSentinelFileName, cameraType] );
-
-  const logFetchingLocation = !!( hasPermissions && sentinelFileName );
-
-  useEffect( ( ) => {
-    if ( logFetchingLocation ) {
-      logStageIfAICamera( "fetch_user_location_start" );
-    }
-  }, [logStageIfAICamera, logFetchingLocation] );
+  }, [setSentinelFileName, cameraType, hasPermissions] );
 
   const {
     hasPermissions: hasSavePhotoPermission,
@@ -127,10 +131,9 @@ const CameraContainer = ( ) => {
   };
 
   const navigationOptions = useMemo( ( ) => ( {
-    visionResult: aiSuggestion,
     addPhotoPermissionResult,
     userLocation
-  } ), [addPhotoPermissionResult, aiSuggestion, userLocation] );
+  } ), [addPhotoPermissionResult, userLocation] );
 
   const prepareStoreAndNavigate = usePrepareStoreAndNavigate( );
 
@@ -142,13 +145,15 @@ const CameraContainer = ( ) => {
       ...navigationOptions,
       newPhotoState,
       logStageIfAICamera,
-      deleteStageIfAICamera
+      deleteStageIfAICamera,
+      showMatchScreen
     } );
   }, [
     prepareStoreAndNavigate,
     navigationOptions,
     logStageIfAICamera,
-    deleteStageIfAICamera
+    deleteStageIfAICamera,
+    showMatchScreen
   ] );
 
   const handleCheckmarkPress = useCallback( async newPhotoState => {
@@ -248,7 +253,6 @@ const CameraContainer = ( ) => {
         takePhotoOptions={takePhotoOptions}
         newPhotoUris={newPhotoUris}
         setNewPhotoUris={setNewPhotoUris}
-        setAiSuggestion={setAiSuggestion}
         userLocation={userLocation}
       />
       {showPhotoPermissionsGate && renderSavePhotoPermissionGate( {

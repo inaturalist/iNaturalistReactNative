@@ -18,7 +18,6 @@ const usePredictions = ( ) => {
   const [resultTimestamp, setResultTimestamp] = useState<number | undefined>( undefined );
   const [modelLoaded, setModelLoaded] = useState( false );
   const [confidenceThreshold, setConfidenceThreshold] = useState( 0.5 );
-  const [taxonomyRollupCutoff, setTaxonomyRollupCutoff] = useState( 0.0 );
   const [fps, setFPS] = useState( 1 );
   const [numStoredResults, setNumStoredResults] = useState( 4 );
   const [cropRatio, setCropRatio] = useState( 1 );
@@ -69,7 +68,6 @@ const usePredictions = ( ) => {
 
   return {
     confidenceThreshold,
-    taxonomyRollupCutoff,
     fps,
     handleTaxaDetected,
     modelLoaded,
@@ -79,7 +77,6 @@ const usePredictions = ( ) => {
     resultTimestamp,
     setResult,
     setConfidenceThreshold,
-    setTaxonomyRollupCutoff,
     setFPS,
     setNumStoredResults,
     setCropRatio

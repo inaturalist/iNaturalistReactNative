@@ -37,6 +37,14 @@ const useWatchPosition = ( options: {
   const [hasFocus, setHasFocus] = useState( true );
   const logStage = options?.logStage;
 
+  const shouldStartWatch = shouldFetchLocation
+    && subscriptionId === null
+    && hasFocus
+    && ( !userLocation || userLocation.positional_accuracy >= TARGET_POSITIONAL_ACCURACY );
+
+  const shouldStopWatch = subscriptionId !== null
+    && currentPosition?.coords?.accuracy < TARGET_POSITIONAL_ACCURACY;
+
   const stopWatch = useCallback( ( id: number ) => {
     clearWatch( id );
     setSubscriptionId( null );
@@ -82,23 +90,16 @@ const useWatchPosition = ( options: {
       altitudinal_accuracy: currentPosition?.coords?.altitudeAccuracy
     };
     setUserLocation( newLocation );
-    if (
-      subscriptionId !== null
-      && currentPosition?.coords?.accuracy < TARGET_POSITIONAL_ACCURACY
-    ) {
+    if ( shouldStopWatch ) {
       stopWatch( subscriptionId );
     }
-  }, [currentPosition, stopWatch, subscriptionId] );
+  }, [currentPosition, stopWatch, subscriptionId, shouldStopWatch] );
 
   useEffect( ( ) => {
-    if (
-      shouldFetchLocation
-      && subscriptionId === null
-      && hasFocus
-    ) {
+    if ( shouldStartWatch ) {
       startWatch( );
     }
-  }, [shouldFetchLocation, startWatch, subscriptionId, hasFocus] );
+  }, [shouldStartWatch, startWatch] );
 
   useEffect( ( ) => {
     // When we leave the screen this hook was used on...

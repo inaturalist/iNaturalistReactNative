@@ -1,7 +1,7 @@
 import useStore from "stores/useStore";
 
 // Wraps values from the layout slice with descriptive names
-const useLayoutPrefs = ( ) => useStore( state => ( {
+const selector = state => ( {
   // Vestigial stuff
   obsDetailsTab: state.obsDetailsTab,
   setObsDetailsTab: state.setObsDetailsTab,
@@ -10,6 +10,8 @@ const useLayoutPrefs = ( ) => useStore( state => ( {
 
   // newer stuff
   ...state.layout
-} ) );
+} );
+
+const useLayoutPrefs = ( ) => useStore( selector );
 
 export default useLayoutPrefs;

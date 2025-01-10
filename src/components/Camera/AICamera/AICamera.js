@@ -55,7 +55,6 @@ type Props = {
   takingPhoto: boolean,
   takePhotoAndStoreUri: Function,
   takePhotoOptions: Object,
-  setAiSuggestion: Function,
   userLocation?: Object // UserLocation | null
 };
 
@@ -68,11 +67,11 @@ const AICamera = ( {
   takingPhoto,
   takePhotoAndStoreUri,
   takePhotoOptions,
-  setAiSuggestion,
   userLocation
 }: Props ): Node => {
   const navigation = useNavigation( );
   const sentinelFileName = useStore( state => state.sentinelFileName );
+  const setMatchScreenSuggestion = useStore( state => state.setMatchScreenSuggestion );
 
   const hasFlash = device?.hasFlash;
   const { isDebug } = useDebugMode( );
@@ -89,7 +88,6 @@ const AICamera = ( {
   } = useRotation( );
   const {
     confidenceThreshold,
-    taxonomyRollupCutoff,
     fps,
     handleTaxaDetected,
     modelLoaded,
@@ -98,7 +96,6 @@ const AICamera = ( {
     setResult,
     cropRatio,
     setConfidenceThreshold,
-    setTaxonomyRollupCutoff,
     setFPS,
     setNumStoredResults,
     setCropRatio
@@ -134,7 +131,7 @@ const AICamera = ( {
   const handleTakePhoto = useCallback( async ( ) => {
     await logStage( sentinelFileName, "take_photo_start" );
     setHasTakenPhoto( true );
-    setAiSuggestion( showPrediction && result );
+    setMatchScreenSuggestion( result );
     await takePhotoAndStoreUri( {
       replaceExisting: true,
       inactivateCallback: () => setInactive( true ),
@@ -142,11 +139,10 @@ const AICamera = ( {
     } );
     setHasTakenPhoto( false );
   }, [
-    setAiSuggestion,
+    setMatchScreenSuggestion,
     sentinelFileName,
     takePhotoAndStoreUri,
-    result,
-    showPrediction
+    result
   ] );
 
   useEffect( () => {
@@ -189,7 +185,6 @@ const AICamera = ( {
           <FrameProcessorCamera
             cameraRef={camera}
             confidenceThreshold={confidenceThreshold}
-            taxonomyRollupCutoff={taxonomyRollupCutoff}
             device={device}
             fps={fps}
             numStoredResults={numStoredResults}
@@ -267,7 +262,6 @@ const AICamera = ( {
       <AICameraButtons
         handleZoomButtonPress={handleZoomButtonPress}
         confidenceThreshold={confidenceThreshold}
-        taxonomyRollupCutoff={taxonomyRollupCutoff}
         cropRatio={cropRatio}
         flipCamera={onFlipCamera}
         fps={fps}
@@ -277,7 +271,6 @@ const AICamera = ( {
         numStoredResults={numStoredResults}
         rotatableAnimatedStyle={rotatableAnimatedStyle}
         setConfidenceThreshold={setConfidenceThreshold}
-        setTaxonomyRollupCutoff={setTaxonomyRollupCutoff}
         setCropRatio={setCropRatio}
         setFPS={setFPS}
         setNumStoredResults={setNumStoredResults}

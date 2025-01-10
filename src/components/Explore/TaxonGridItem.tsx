@@ -44,7 +44,6 @@ const TaxonGridItem = ( {
   const { isLargeFontScale } = useFontScale();
   const route = useRoute( );
 
-  console.log( "showSpeciesSeenCheckmark", showSpeciesSeenCheckmark );
   const source = {
     uri: Photo.displayLocalOrRemoteMediumPhoto(
       taxon?.default_photo
