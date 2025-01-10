@@ -14,7 +14,7 @@ const useNavigateWithTaxonSelected = (
 ) => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
-  const { entryScreen } = params;
+  const { entryScreen } = params || {};
   const currentObservation = useStore( state => state.currentObservation );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const vision = options?.vision;

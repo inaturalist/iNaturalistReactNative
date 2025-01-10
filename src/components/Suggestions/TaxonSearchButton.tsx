@@ -17,7 +17,10 @@ const TaxonSearchButton = ( ) => {
     <INatIconButton
       icon="magnifying-glass"
       onPress={
-        ( ) => navigation.navigate( "TaxonSearch", { entryScreen, lastScreen: "Suggestions" } )
+        ( ) => navigation.navigate(
+          "SuggestionsTaxonSearch",
+          { entryScreen, lastScreen: "Suggestions" }
+        )
       }
       accessibilityLabel={t( "Search" )}
     />

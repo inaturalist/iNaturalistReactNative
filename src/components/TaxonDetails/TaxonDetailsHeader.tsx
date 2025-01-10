@@ -1,7 +1,9 @@
+import { useNavigation } from "@react-navigation/native";
 import type { ApiTaxon } from "api/types";
 import classnames from "classnames";
 import {
   DisplayTaxonName,
+  INatIconButton,
   KebabMenu,
   OverlayHeader
 } from "components/SharedComponents";
@@ -23,26 +25,33 @@ import {
 
 const TAXON_URL = "https://www.inaturalist.org/taxa";
 
+export const OPTIONS = "options";
+export const SEARCH = "search";
+
 interface Props {
   invertToWhiteBackground: boolean;
   taxon: ApiTaxon | RealmTaxon;
   hasTitle?: boolean;
-  hideNavButtons: boolean;
+  headerRightType?: typeof OPTIONS | typeof SEARCH;
+  // By default this navigates to SuggestionsTaxonSearch
+  onPressSearch?: ( ) => void;
 }
 
 const TaxonDetailsHeader = ( {
   invertToWhiteBackground,
   taxon,
   hasTitle,
-  hideNavButtons
+  headerRightType,
+  onPressSearch
 }: Props ) => {
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
   const { t } = useTranslation( );
+  const navigation = useNavigation();
 
   const taxonUrl = `${TAXON_URL}/${taxon?.id}`;
 
   let headerRight;
-  if ( !hideNavButtons ) {
+  if ( headerRightType === OPTIONS ) {
     headerRight = (
       <KebabMenu
         visible={kebabMenuVisible}
@@ -85,6 +94,18 @@ const TaxonDetailsHeader = ( {
           title={t( "Share" )}
         />
       </KebabMenu>
+    );
+  } else if ( headerRightType === SEARCH ) {
+    headerRight = (
+      <INatIconButton
+        icon="magnifying-glass"
+        onPress={
+          typeof ( onPressSearch ) === "function"
+            ? ( ) => onPressSearch()
+            : ( ) => navigation.navigate( "SuggestionsTaxonSearch" )
+        }
+        accessibilityLabel={t( "Search" )}
+      />
     );
   }
 
