@@ -45,7 +45,11 @@ const OverlayHeader = ( {
         {children}
       </View>
     )}
-    <View className="py-[7px]">
+    {/*
+      Even if there's no headerRight, we want a spacer here so the center
+      element remains centered in the header.
+    */}
+    <View className="py-[7px] min-w-[42px] justify-center">
       {headerRight}
     </View>
   </View>
