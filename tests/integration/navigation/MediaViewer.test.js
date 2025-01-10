@@ -41,7 +41,7 @@ afterAll( uniqueRealmAfterAll );
 
 const mockUser = factory( "LocalUser" );
 
-jest.mock( "components/Suggestions/hooks/useOnlineSuggestions.ts", ( ) => jest.fn( () => ( {
+jest.mock( "sharedHooks/useSuggestions/useOnlineSuggestions.ts", ( ) => jest.fn( () => ( {
   dataUpdatedAt: new Date( ),
   error: null,
   loadingOnlineSuggestions: false,
