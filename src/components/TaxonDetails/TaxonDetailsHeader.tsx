@@ -120,8 +120,9 @@ const TaxonDetailsHeader = ( {
       >
         { hasTitle && (
           <DisplayTaxonName
-            taxon={taxon}
             showOneNameOnly
+            taxon={taxon}
+            textCentered
           />
         ) }
       </OverlayHeader>

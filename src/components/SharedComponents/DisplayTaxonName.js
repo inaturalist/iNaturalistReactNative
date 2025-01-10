@@ -40,6 +40,7 @@ type Props = {
   selectable?: boolean,
   small?: boolean,
   taxon: Object,
+  textCentered?: boolean,
   topTextComponent?: Function,
   underlineTopText?: boolean,
   withdrawn?: boolean
@@ -58,6 +59,7 @@ const DisplayTaxonName = ( {
   selectable,
   small = false,
   taxon,
+  textCentered,
   topTextComponent: TopTextComponentProp,
   underlineTopText = false,
   withdrawn
@@ -65,12 +67,18 @@ const DisplayTaxonName = ( {
   const { t } = useTranslation( );
 
   const textClassName = useMemo( ( ) => {
-    const textColorClass = color || "text-darkGray";
+    const classes = [];
+    if ( textCentered ) classes.push( "text-center" );
     if ( withdrawn ) {
-      return "text-darkGray opacity-50 line-through";
+      return `text-darkGray opacity-50 line-through ${classes.join( " " )}`;
     }
-    return textColorClass;
-  }, [color, withdrawn] );
+    classes.push( color || "text-darkGray" );
+    return classes.join( " " );
+  }, [
+    color,
+    textCentered,
+    withdrawn
+  ] );
 
   if ( !taxon || !taxon.id ) {
     return (

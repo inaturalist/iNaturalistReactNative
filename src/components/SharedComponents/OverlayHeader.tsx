@@ -41,7 +41,7 @@ const OverlayHeader = ( {
       />
     </View>
     {children && (
-      <View className="grow items-center justify-center">
+      <View className="shrink items-center justify-center">
         {children}
       </View>
     )}
