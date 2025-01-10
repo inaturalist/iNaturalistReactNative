@@ -16,8 +16,6 @@ import useStore from "stores/useStore";
 
 const { useRealm } = RealmContext;
 
-// import useNavigateWithTaxonSelected from "./hooks/useNavigateWithTaxonSelected";
-
 const MatchTaxonSearchScreen = ( ) => {
   const [taxonQuery, setTaxonQuery] = useState( "" );
   const [selectedTaxon, setSelectedTaxon] = useState<ApiTaxon>( null );
@@ -68,8 +66,7 @@ const MatchTaxonSearchScreen = ( ) => {
         first={index === 0}
         handleCheckmarkPress={() => setSelectedTaxon( taxon )}
         hideNavButtons
-        // TODO fix this; TaxonResult doesn't need suggestion-specific logic
-        isTopSuggestion
+        checkmarkFocused
         taxon={taxon}
         testID={`Search.taxa.${taxon.id}`}
       />
