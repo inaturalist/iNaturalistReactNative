@@ -1,10 +1,10 @@
 import { faker } from "@faker-js/faker";
-import TaxonGridItem from "components/Explore/TaxonGridItem.tsx";
 import {
   Heading1,
   Heading2,
   ScrollViewWrapper
 } from "components/SharedComponents";
+import TaxonGridItem from "components/SharedComponents/TaxonGridItem.tsx";
 import { View } from "components/styledComponents";
 import { ExploreProvider } from "providers/ExploreContext.tsx";
 import React from "react";

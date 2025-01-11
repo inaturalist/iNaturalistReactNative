@@ -21,6 +21,7 @@ import {
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
+import { isDebugMode } from "sharedHooks/useDebugMode";
 import {
   UPLOAD_PENDING
 } from "stores/createUploadObservationsSlice.ts";
@@ -29,6 +30,7 @@ import useStore from "stores/useStore";
 import useSyncObservations from "./hooks/useSyncObservations";
 import useUploadObservations from "./hooks/useUploadObservations";
 import MyObservations from "./MyObservations";
+import MyObservationsSimple from "./MyObservationsSimple";
 
 const { useRealm } = RealmContext;
 
@@ -36,6 +38,7 @@ const MyObservationsContainer = ( ): Node => {
   const { t } = useTranslation( );
   const realm = useRealm( );
   const listRef = useRef( );
+
   const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
   const uploadQueue = useStore( state => state.uploadQueue );
   const addToUploadQueue = useStore( state => state.addToUploadQueue );
@@ -187,6 +190,30 @@ const MyObservationsContainer = ( ): Node => {
   // Keep track of the scroll offset so we can restore it when we mount
   // this component again after returning from ObsEdit
   const onScroll = scrollEvent => setMyObsOffset( scrollEvent.nativeEvent.contentOffset.y );
+
+  if ( isDebugMode() && !currentUser && observations.length > 0 ) {
+    return (
+      <MyObservationsSimple
+        currentUser={currentUser}
+        isFetchingNextPage={isFetchingNextPage}
+        isConnected={isConnected}
+        handleIndividualUploadPress={handleIndividualUploadPress}
+        handleSyncButtonPress={handleSyncButtonPress}
+        handlePullToRefresh={handlePullToRefresh}
+        layout={layout}
+        listRef={listRef}
+        numUnuploadedObservations={numUnuploadedObservations}
+        observations={observations}
+        onEndReached={fetchNextPage}
+        onListLayout={restoreScrollOffset}
+        onScroll={onScroll}
+        setShowLoginSheet={setShowLoginSheet}
+        showLoginSheet={showLoginSheet}
+        showNoResults={showNoResults}
+        toggleLayout={toggleLayout}
+      />
+    );
+  }
 
   return (
     <MyObservations

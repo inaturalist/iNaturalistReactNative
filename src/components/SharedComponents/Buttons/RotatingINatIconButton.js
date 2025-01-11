@@ -28,7 +28,7 @@ type Props = {
   icon: string,
   mode?: "contained",
   onPress: Function,
-  rotating: ?boolean,
+  rotating?: boolean,
   size?: number,
   style?: Object,
   testID?: string,
