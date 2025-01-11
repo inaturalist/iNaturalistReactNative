@@ -108,7 +108,7 @@ const MyObservationsSimple = ( {
   // Get leaf taxa if we're viewing the species tab
   let leafTaxa: Realm.Results | Array<RealmTaxon> = [];
   if ( activeTab === TAXA_TAB ) {
-    // IDK how to placate TypeScript here. ~~~kueda 20240108
+    // IDK how to placate TypeScript here. ~~~kueda 20250108
     leafTaxa = realm.objects( "Taxon" ).filtered( "id IN $0", leafTaxonIds );
   }
 
@@ -139,7 +139,7 @@ const MyObservationsSimple = ( {
   return (
     <>
       <ViewWrapper isDebug>
-        { numUnuploadedObservations > 0 && (
+        { numUnuploadedObservations >= 10 && (
           <Pressable
             accessibilityRole="button"
             className="bg-inatGreen p-2 items-center"
