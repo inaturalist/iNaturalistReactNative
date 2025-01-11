@@ -5,18 +5,19 @@ import {
 import {
   View
 } from "components/styledComponents";
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import colors from "styles/tailwindColors";
 
-interface Props {
+interface Props extends PropsWithChildren {
   invertToWhiteBackground: boolean
-  rightHeaderButton: React.JSX.Element;
+  headerRight?: React.JSX.Element;
   testID: string,
 }
 
 const OverlayHeader = ( {
+  children,
   invertToWhiteBackground,
-  rightHeaderButton,
+  headerRight,
   testID
 }: Props ) => (
   <View className={
@@ -30,15 +31,26 @@ const OverlayHeader = ( {
   >
     <View className="py-[21px]">
       <BackButton
-        color={invertToWhiteBackground
-          ? colors.darkGray
-          : colors.white}
+        color={String(
+          invertToWhiteBackground
+            ? colors?.darkGray
+            : colors?.white
+        )}
         inCustomHeader
         testID={testID}
       />
     </View>
-    <View className="py-[7px]">
-      {rightHeaderButton}
+    {children && (
+      <View className="shrink items-center justify-center">
+        {children}
+      </View>
+    )}
+    {/*
+      Even if there's no headerRight, we want a spacer here so the center
+      element remains centered in the header.
+    */}
+    <View className="py-[7px] min-w-[42px] justify-center">
+      {headerRight}
     </View>
   </View>
 );

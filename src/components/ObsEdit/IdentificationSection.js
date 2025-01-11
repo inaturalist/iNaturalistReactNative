@@ -59,7 +59,10 @@ const IdentificationSection = ( {
       } );
     } else {
       // Go directly to taxon search in case there are no photos
-      navigation.navigate( "TaxonSearch", { entryScreen: "ObsEdit", lastScreen: "ObsEdit" } );
+      navigation.navigate( "SuggestionsTaxonSearch", {
+        entryScreen: "ObsEdit",
+        lastScreen: "ObsEdit"
+      } );
     }
   }, [
     hasIdentification,

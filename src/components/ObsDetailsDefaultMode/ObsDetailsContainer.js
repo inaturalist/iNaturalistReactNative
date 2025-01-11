@@ -463,7 +463,7 @@ const ObsDetailsContainer = ( ): Node => {
       } );
     } else {
       // Go directly to taxon search in case there are no photos
-      navigation.navigate( "TaxonSearch", { lastScreen: "ObsDetails" } );
+      navigation.navigate( "SuggestionsTaxonSearch", { lastScreen: "ObsDetails" } );
     }
   };
 

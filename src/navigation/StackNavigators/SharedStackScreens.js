@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import FullPageWebView from "components/FullPageWebView/FullPageWebView.tsx";
 import LocationPickerContainer from "components/LocationPicker/LocationPickerContainer";
 import MatchContainer from "components/Match/MatchContainer";
+import MatchTaxonSearchScreen from "components/Match/MatchTaxonSearchScreen.tsx";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import PhotoSharing from "components/PhotoSharing";
 import { Heading4 } from "components/SharedComponents";
@@ -35,7 +36,8 @@ const FadeInLocationPickerContainer = ( ) => fadeInComponent( <LocationPickerCon
 const FadeInPhotoSharing = ( ) => fadeInComponent( <PhotoSharing /> );
 const FadeInTaxonDetails = ( ) => fadeInComponent( <TaxonDetails /> );
 const FadeInSuggestionsContainer = ( ) => fadeInComponent( <SuggestionsContainer /> );
-const FadeInTaxonSearch = ( ) => fadeInComponent( <SuggestionsTaxonSearch /> );
+const FadeInSuggestionsTaxonSearch = ( ) => fadeInComponent( <SuggestionsTaxonSearch /> );
+const FadeInMatchTaxonSearchScreen = ( ) => fadeInComponent( <MatchTaxonSearchScreen /> );
 const FadeInFullPageWebView = ( ) => fadeInComponent( <FullPageWebView /> );
 const FadeInMatchContainer = ( ) => fadeInComponent(
   <MatchContainer />
@@ -102,8 +104,15 @@ const SharedStackScreens = ( ): Node => (
         }}
       />
       <Stack.Screen
-        name="TaxonSearch"
-        component={FadeInTaxonSearch}
+        name="SuggestionsTaxonSearch"
+        component={FadeInSuggestionsTaxonSearch}
+        options={{
+          headerTitle: taxonSearchTitle
+        }}
+      />
+      <Stack.Screen
+        name="MatchTaxonSearchScreen"
+        component={FadeInMatchTaxonSearchScreen}
         options={{
           headerTitle: taxonSearchTitle
         }}

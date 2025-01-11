@@ -41,7 +41,7 @@ const Suggestion = ( {
     confidencePosition="text"
     fetchRemote={false}
     first
-    isTopSuggestion={isTopSuggestion}
+    checkmarkFocused={isTopSuggestion}
     showCheckmark={!hideCheckmark}
     handleCheckmarkPress={onTaxonChosen}
     hideNavButtons

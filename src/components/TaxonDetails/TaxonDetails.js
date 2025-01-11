@@ -3,6 +3,7 @@
 import { refresh, useNetInfo } from "@react-native-community/netinfo";
 import { useNavigation, useNavigationState, useRoute } from "@react-navigation/native";
 import { fetchSpeciesCounts } from "api/observations";
+import MatchSaveDiscardButtons from "components/Match/SaveDiscardButtons";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
   ActivityIndicator,
@@ -47,7 +48,10 @@ import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 import EstablishmentMeans from "./EstablishmentMeans";
-import TaxonDetailsHeader from "./TaxonDetailsHeader";
+import TaxonDetailsHeader, {
+  OPTIONS as TAXON_DETAILS_HEADER_RIGHT_OPTIONS,
+  SEARCH as TAXON_DETAILS_HEADER_RIGHT_SEARCH
+} from "./TaxonDetailsHeader";
 import TaxonDetailsMediaViewerHeader from "./TaxonDetailsMediaViewerHeader";
 import TaxonDetailsTitle from "./TaxonDetailsTitle";
 import TaxonMapPreview from "./TaxonMapPreview";
@@ -67,22 +71,32 @@ const { useRealm } = RealmContext;
 const isTablet = DeviceInfo.isTablet();
 
 const TaxonDetails = ( ): Node => {
+  // Local state
   const [invertToWhiteBackground, setInvertToWhiteBackground] = useState( false );
+  const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
+  const [sheetVisible, setSheetVisible] = useState( false );
+  const [mediaIndex, setMediaIndex] = useState( 0 );
+
+  // Plug into global state
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const currentEditingObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
   const setExploreView = useStore( state => state.setExploreView );
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
+
+  // Hooks
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { id, hideNavButtons } = params;
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
-  const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
-  const [sheetVisible, setSheetVisible] = useState( false );
   const { remoteUser } = useUserMe( );
-  const [mediaIndex, setMediaIndex] = useState( 0 );
+  const exitObservationFlow = useExitObservationFlow( );
+  const realm = useRealm( );
+  const currentUser = useCurrentUser( );
+
+  // Figure out where the user navigated from
   const navState = useNavigationState( nav => nav );
   const history = navState?.routes.map( r => r.name ) || [];
   // Assume the stack was reset by the last instance of Explore, even though
@@ -93,12 +107,11 @@ const TaxonDetails = ( ): Node => {
     history.lastIndexOf( "RootExplore" )
   );
   const usableHistory = history.slice( usableStackIndex, history.length );
-  const usableRoutes = navState?.routes.slice( usableStackIndex, history.length ) || [];
-  const exitObservationFlow = useExitObservationFlow( );
-
   const fromObsDetails = usableHistory.includes( "ObsDetails" );
   const fromSuggestions = usableHistory.includes( "Suggestions" );
   const fromObsEdit = usableHistory.includes( "ObsEdit" );
+  const fromMatch = usableHistory.includes( "Match" );
+  const usableRoutes = navState?.routes.slice( usableStackIndex, history.length ) || [];
 
   // previous ObsDetails observation uuid
   const obsUuid = fromObsDetails
@@ -117,9 +130,19 @@ const TaxonDetails = ( ): Node => {
   }
 
   const showSelectButton = fromSuggestions || fromObsEdit;
-  const usesVision = usableHistory[usableHistory.length - 2] === "Suggestions";
 
-  const realm = useRealm( );
+  // Determine if this taxon was automatically suggested or if the user chose
+  // it themselves. If the user reached TaxonDetails from Match or
+  // Suggestions, that means they got here by viewing more info about one of
+  // the automatically suggested taxa. Any other situation, e.g. getting here
+  // from a taxon search interface or by going up or down the taxonomic
+  // hierarchy on TaxonDetails, means the user manually chose a taxon.
+  const prevScreen = usableHistory[usableHistory.length - 2];
+  const identFromVision = [
+    "Match",
+    "Suggestions"
+  ].includes( prevScreen );
+
   const localTaxon = realm.objectForPrimaryKey( "Taxon", id );
 
   const taxonFetchParams = {
@@ -138,8 +161,6 @@ const TaxonDetails = ( ): Node => {
   );
 
   const taxon = remoteTaxon || localTaxon;
-
-  const currentUser = useCurrentUser( );
 
   const { data: seenByCurrentUser } = useQuery(
     ["fetchSpeciesCounts", taxon?.id],
@@ -174,12 +195,12 @@ const TaxonDetails = ( ): Node => {
   const updateTaxon = useCallback( ( ) => {
     updateObservationKeys( {
       taxon,
-      owners_identification_from_vision: usesVision
+      owners_identification_from_vision: identFromVision
     } );
   }, [
     taxon,
     updateObservationKeys,
-    usesVision
+    identFromVision
   ] );
 
   // Close the sheet, save, the obs, any additional UI futzing required
@@ -352,16 +373,24 @@ const TaxonDetails = ( ): Node => {
     }
   };
 
+  // Choose what kind of header to show
+  let headerRightType = TAXON_DETAILS_HEADER_RIGHT_OPTIONS;
+  if ( hideNavButtons ) {
+    headerRightType = undefined;
+  } else if ( fromMatch ) {
+    headerRightType = TAXON_DETAILS_HEADER_RIGHT_SEARCH;
+  }
+
   return (
     <SafeAreaView
       className="flex-1 bg-black"
     >
       {/*
-          Making the bar dark here seems like the right thing, but I haven't
-          figured a way to do that *and* not making the bg of the scrollview
-          black, which reveals a dark area at the bottom of the screen on
-          overscroll in iOS ~~~kueda20240228
-        */}
+        Making the bar dark here seems like the right thing, but I haven't
+        figured a way to do that *and* not making the bg of the scrollview
+        black, which reveals a dark area at the bottom of the screen on
+        overscroll in iOS ~~~kueda20240228
+      */}
       <StatusBar barStyle="light-content" backgroundColor={colors.black} />
       <ScrollView
         testID={`TaxonDetails.${taxon?.id}`}
@@ -371,9 +400,19 @@ const TaxonDetails = ( ): Node => {
         stickyHeaderIndices={[0]}
       >
         <TaxonDetailsHeader
-          invertToWhiteBackground={invertToWhiteBackground}
-          hideNavButtons={hideNavButtons}
-          taxonId={taxon?.id}
+          invertToWhiteBackground={
+            fromMatch
+              ? true
+              : invertToWhiteBackground
+          }
+          hasTitle={fromMatch}
+          headerRightType={headerRightType}
+          onPressSearch={
+            fromMatch
+              ? ( ) => navigation.navigate( "MatchTaxonSearchScreen" )
+              : undefined
+          }
+          taxon={taxon}
         />
         <View className="flex flex-1 flex-grow bg-black -mt-[64px]">
           <View className="w-full h-[420px] shrink-1">
@@ -397,6 +436,16 @@ const TaxonDetails = ( ): Node => {
           header={renderHeader}
         />
       </ScrollView>
+      {fromMatch && (
+        <MatchSaveDiscardButtons
+          handlePress={async action => {
+            if ( action === "save" ) {
+              await saveObservationFromSheet( );
+            }
+            exitObservationFlow( );
+          }}
+        />
+      )}
       {showSelectButton && (
         <ButtonBar containerClass="items-center z-50">
           <Button
