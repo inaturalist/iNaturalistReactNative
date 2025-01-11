@@ -7,18 +7,12 @@ import { View } from "components/styledComponents";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 
-import AdditionalSuggestionsScroll from "./AdditionalSuggestions/AdditionalSuggestionsScroll";
+import AdditionalSuggestionsScrollContainer
+  from "./AdditionalSuggestions/AdditionalSuggestionsScrollContainer";
 import EmptyMapSection from "./EmptyMapSection";
 import MatchHeader from "./MatchHeader";
 import PhotosSection from "./PhotosSection";
 import SaveDiscardButtons from "./SaveDiscardButtons";
-
-// example data
-const secondTaxon = {
-  name: "Aves",
-  preferred_common_name: "Birds",
-  id: 3
-};
 
 type Props = {
   observation: Object,
@@ -80,14 +74,9 @@ const Match = ( {
             onPress={navToTaxonDetails}
             accessibilityHint={t( "Navigates-to-taxon-details" )}
           />
-          <AdditionalSuggestionsScroll
-            suggestions={[{
-              score: 0.99,
-              taxon
-            }, {
-              score: 0.86,
-              taxon: secondTaxon
-            }]}
+          <AdditionalSuggestionsScrollContainer
+            observation={observation}
+            observationPhoto={observationPhoto}
           />
           {!latitude && (
             <Button
