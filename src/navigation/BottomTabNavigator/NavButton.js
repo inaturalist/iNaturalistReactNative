@@ -75,6 +75,7 @@ const NavButton = ( {
     <Pressable
       className="flex-column items-center w-[20%] justify-end"
       onPress={onPress}
+      key={`NavButton-${accessibilityLabel}`}
       accessibilityLabel={accessibilityLabel}
       accessibilityRole="tab"
       accessibilityHint={accessibilityHint}

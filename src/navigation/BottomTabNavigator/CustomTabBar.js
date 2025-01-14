@@ -23,7 +23,19 @@ type Props = {
 const CustomTabBar = ( { tabs }: Props ): Node => {
   const tabList = tabs.map( tab => <NavButton {...tab} key={tab.testID} /> );
 
-  tabList.splice( -2, 0, <AddObsButton key="AddObsButton" /> );
+  tabList.splice(
+    -2,
+    0,
+    // Absolutely position the AddObsButton so it can float outside of the tab
+    // bar
+    (
+      <View className="w-[69px] h-[60px] mx-3" key="CustomTabBar-AddObs">
+        <View className="absolute top-[-13px]">
+          <AddObsButton key="AddObsButton" />
+        </View>
+      </View>
+    )
+  );
 
   const insets = useSafeAreaInsets( );
 
