@@ -1,7 +1,7 @@
 // @flow
 
 import { fetchSpeciesCounts } from "api/observations";
-import TaxonGridItem from "components/Explore/TaxonGridItem.tsx";
+import ExploreTaxonGridItem from "components/Explore/ExploreTaxonGridItem.tsx";
 import _ from "lodash";
 import {
   useExplore
@@ -123,7 +123,7 @@ const SpeciesView = ( {
   }, [pageObservedTaxonIds, observedTaxonIds] );
 
   const renderItem = ( { item } ) => (
-    <TaxonGridItem
+    <ExploreTaxonGridItem
       setCurrentExploreView={setCurrentExploreView}
       count={item?.count}
       style={gridItemStyle}

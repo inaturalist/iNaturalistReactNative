@@ -721,6 +721,7 @@ Most-faved = Most faved
 # Title for section in Notifications showing notifications about observations
 # created by the viewer. Should be 16 characters or fewer or it will be ellipsized.
 MY-CONTENT--notifications = MY CONTENT
+My-Observations = My Observations
 Native = Native
 Native-to-place = Native to { $place }
 Navigates-to-AI-camera = Navigates to AI camera
@@ -1374,6 +1375,12 @@ X-observations =
         [one] 1 observation
        *[other] { $count } observations
     }
+# Label for a count of observations that appears above this text
+X-OBSERVATIONS--below-number =
+    { $count ->
+        [one] OBSERVATION
+       *[other] OBSERVATIONS
+    }
 X-observations-deleted =
     { $count ->
         [one] 1 observation deleted
@@ -1443,6 +1450,12 @@ X-Species =
     { $count ->
         [one] { $count } Species
        *[other] { $count } Species
+    }
+# Label for a count of observations that appears above this text
+X-SPECIES--below-number =
+    { $count ->
+        [one] SPECIES
+       *[other] SPECIES
     }
 # Number of observations uploaded in ObsEdit multiple observation screen
 x-uploaded =

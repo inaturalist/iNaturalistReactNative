@@ -1,5 +1,9 @@
+import { useNavigation } from "@react-navigation/native";
+import type { ApiTaxon } from "api/types";
 import classnames from "classnames";
 import {
+  DisplayTaxonName,
+  INatIconButton,
   KebabMenu,
   OverlayHeader
 } from "components/SharedComponents";
@@ -7,13 +11,13 @@ import {
   View
 } from "components/styledComponents";
 import _ from "lodash";
-import type { Node } from "react";
 import React, { useState } from "react";
 import {
   Alert,
   Platform,
   Share
 } from "react-native";
+import type { RealmTaxon } from "realmModels/types";
 import { openExternalWebBrowser } from "sharedHelpers/util.ts";
 import {
   useTranslation
@@ -21,21 +25,89 @@ import {
 
 const TAXON_URL = "https://www.inaturalist.org/taxa";
 
+export const OPTIONS = "options";
+export const SEARCH = "search";
+
 interface Props {
-  invertToWhiteBackground: boolean
-  taxonId: string
-  hideNavButtons: boolean
+  invertToWhiteBackground: boolean;
+  taxon: ApiTaxon | RealmTaxon;
+  hasTitle?: boolean;
+  headerRightType?: typeof OPTIONS | typeof SEARCH;
+  // By default this navigates to SuggestionsTaxonSearch
+  onPressSearch?: ( ) => void;
 }
 
 const TaxonDetailsHeader = ( {
   invertToWhiteBackground,
-  taxonId,
-  hideNavButtons
-}: Props ): Node => {
+  taxon,
+  hasTitle,
+  headerRightType,
+  onPressSearch
+}: Props ) => {
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
   const { t } = useTranslation( );
+  const navigation = useNavigation();
 
-  const taxonUrl = `${TAXON_URL}/${taxonId}`;
+  const taxonUrl = `${TAXON_URL}/${taxon?.id}`;
+
+  let headerRight;
+  if ( headerRightType === OPTIONS ) {
+    headerRight = (
+      <KebabMenu
+        visible={kebabMenuVisible}
+        setVisible={setKebabMenuVisible}
+        large
+        white={!invertToWhiteBackground}
+      >
+        <KebabMenu.Item
+          isFirst
+          testID="MenuItem.OpenInBrowser"
+          onPress={( ) => {
+            openExternalWebBrowser( taxonUrl );
+            setKebabMenuVisible( false );
+          }}
+          title={t( "View-in-browser" )}
+        />
+        <KebabMenu.Item
+          testID="MenuItem.Share"
+          onPress={async ( ) => {
+            const sharingOptions = {
+              url: "",
+              message: ""
+            };
+
+            if ( Platform.OS === "ios" ) {
+              sharingOptions.url = taxonUrl;
+            } else {
+              sharingOptions.message = taxonUrl;
+            }
+
+            setKebabMenuVisible( false );
+
+            try {
+              return await Share.share( sharingOptions );
+            } catch ( err ) {
+              Alert.alert( ( err as Error ).message );
+              return null;
+            }
+          }}
+          title={t( "Share" )}
+        />
+      </KebabMenu>
+    );
+  } else if ( headerRightType === SEARCH ) {
+    headerRight = (
+      <INatIconButton
+        icon="magnifying-glass"
+        onPress={
+          typeof ( onPressSearch ) === "function"
+            ? ( ) => onPressSearch()
+            : ( ) => navigation.navigate( "SuggestionsTaxonSearch" )
+        }
+        accessibilityLabel={t( "Search" )}
+      />
+    );
+  }
 
   return (
     <View
@@ -44,50 +116,16 @@ const TaxonDetailsHeader = ( {
       <OverlayHeader
         testID="TaxonDetails.BackButton"
         invertToWhiteBackground={invertToWhiteBackground}
-        rightHeaderButton={!hideNavButtons && (
-          <KebabMenu
-            visible={kebabMenuVisible}
-            setVisible={setKebabMenuVisible}
-            large
-            white={!invertToWhiteBackground}
-          >
-            <KebabMenu.Item
-              isFirst
-              testID="MenuItem.OpenInBrowser"
-              onPress={( ) => {
-                openExternalWebBrowser( taxonUrl );
-                setKebabMenuVisible( false );
-              }}
-              title={t( "View-in-browser" )}
-            />
-            <KebabMenu.Item
-              testID="MenuItem.Share"
-              onPress={async ( ) => {
-                const sharingOptions = {
-                  url: "",
-                  message: ""
-                };
-
-                if ( Platform.OS === "ios" ) {
-                  sharingOptions.url = taxonUrl;
-                } else {
-                  sharingOptions.message = taxonUrl;
-                }
-
-                setKebabMenuVisible( false );
-
-                try {
-                  return await Share.share( sharingOptions );
-                } catch ( err ) {
-                  Alert.alert( err.message );
-                  return null;
-                }
-              }}
-              title={t( "Share" )}
-            />
-          </KebabMenu>
-        )}
-      />
+        headerRight={headerRight}
+      >
+        { hasTitle && (
+          <DisplayTaxonName
+            showOneNameOnly
+            taxon={taxon}
+            textCentered
+          />
+        ) }
+      </OverlayHeader>
     </View>
   );
 };

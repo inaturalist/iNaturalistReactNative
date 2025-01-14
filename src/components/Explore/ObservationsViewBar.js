@@ -8,6 +8,7 @@ import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
 type Props = {
+  hideMap?: boolean,
   layout: string,
   updateObservationsView: Function
 };
@@ -18,6 +19,7 @@ const DROP_SHADOW = getShadow( {
 } );
 
 const ObservationsViewBar = ( {
+  hideMap,
   layout,
   updateObservationsView
 }: Props ): Node => {
@@ -33,14 +35,16 @@ const ObservationsViewBar = ( {
       icon: "grid",
       accessibilityLabel: "Grid",
       testID: "SegmentedButton.grid"
-    },
-    {
+    }
+  ];
+  if ( !hideMap ) {
+    buttons.push( {
       value: "map",
       icon: "map",
       accessibilityLabel: "Map",
       testID: "SegmentedButton.map"
-    }
-  ];
+    } );
+  }
 
   return (
     <View
