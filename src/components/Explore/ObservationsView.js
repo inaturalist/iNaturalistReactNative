@@ -73,7 +73,7 @@ const ObservationsView = ( {
   } = useInfiniteExploreScroll( { params: queryParams, enabled: canFetch } );
 
   const curUserObsCount = currentUserObs?.total_results;
-  const totalCount = excludeUser
+  const totalCount = ( excludeUser && currentUserObs && observations.length > 0 )
     ? totalResults - curUserObsCount
     : totalResults;
 
