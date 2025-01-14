@@ -13,7 +13,7 @@ const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object )
 
   const fields = {
     ...Observation.EXPLORE_LIST_FIELDS,
-    user: { // included here for exclude by current user in explore filters
+    user: { // included here for "exclude by current user" in explore filters
       id: true,
       uuid: true,
       login: true
@@ -109,11 +109,11 @@ const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object )
 
   let observations = flatten( data?.pages?.map( r => r.results ) ) || [];
   let totalResults = data?.pages?.[0].total_results;
+  let filtered = [];
 
   // filter out obs from excluded user and adjust count
   if ( excludedUser && observations ) {
-    const filtered = observations.filter( observation => observation?.user.id !== excludedUser.id );
-    totalResults = filtered.length;
+    filtered = observations.filter( observation => observation?.user.id !== excludedUser.id );
     observations = filtered;
   }
 

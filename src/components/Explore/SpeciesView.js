@@ -39,12 +39,38 @@ const SpeciesView = ( {
   const [observedTaxonIds, setObservedTaxonIds] = useState( new Set( ) );
   const currentUser = useCurrentUser( );
   const { state } = useExplore();
+  const { excludeUser } = state;
   const {
     estimatedGridItemSize,
     flashListStyle,
     gridItemStyle,
     numColumns
   } = useGridLayout( );
+
+  // query all of current users seen species if "not by me" explore filter
+  const { data: seenByCurrentUserAll } = useQuery(
+    ["fetchSpeciesCountsAll"],
+    ( ) => fetchSpeciesCounts( {
+      user_id: currentUser?.id,
+      ttl: -1,
+      fields: {
+        taxon: {
+          id: true
+        }
+      }
+    } ),
+    {
+      enabled: ( !!currentUser && !!excludeUser )
+    }
+  );
+
+  const pageObservedTaxonIdsAll = useMemo( ( ) => seenByCurrentUserAll?.results?.map(
+    r => r.taxon.id
+  ) || [], [seenByCurrentUserAll?.results] );
+
+  const params = excludeUser
+    ? { ...queryParams, without_taxon_id: pageObservedTaxonIdsAll }
+    : queryParams;
 
   const {
     data,
@@ -55,7 +81,7 @@ const SpeciesView = ( {
     "fetchSpeciesCounts",
     fetchSpeciesCounts,
     {
-      ...queryParams,
+      ...params,
       fields: {
         taxon: Taxon.LIMITED_TAXON_FIELDS
       }
@@ -87,19 +113,6 @@ const SpeciesView = ( {
     r => r.taxon.id
   ) || [], [seenByCurrentUser?.results] );
 
-  let totalResultsCount = totalResults;
-
-  const filteredData
-    = data.filter( r => !observedTaxonIds.has( r.taxon.id ) );
-
-  const results = state.excludeUser
-    ? filteredData
-    : data;
-
-  if ( state.excludeUser ) {
-    totalResultsCount = totalResults - ( totalResults - filteredData.length );
-  }
-
   useEffect( ( ) => {
     if ( pageObservedTaxonIds.length > 0 ) {
       pageObservedTaxonIds.forEach( id => {
@@ -119,8 +132,8 @@ const SpeciesView = ( {
     />
   );
   useEffect( ( ) => {
-    handleUpdateCount( "species", totalResultsCount );
-  }, [totalResultsCount, handleUpdateCount] );
+    handleUpdateCount( "species", totalResults );
+  }, [handleUpdateCount, totalResults] );
 
   const contentContainerStyle = useMemo( ( ) => ( {
     ...flashListStyle,
@@ -131,7 +144,7 @@ const SpeciesView = ( {
     <ExploreFlashList
       canFetch={canFetch}
       contentContainerStyle={contentContainerStyle}
-      data={results}
+      data={data}
       estimatedItemSize={estimatedGridItemSize}
       fetchNextPage={fetchNextPage}
       hideLoadingWheel={!isFetchingNextPage}

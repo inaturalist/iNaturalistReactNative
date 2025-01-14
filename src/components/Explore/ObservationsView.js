@@ -3,14 +3,22 @@
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
+import {
+  searchObservations
+} from "api/observations";
 import useInfiniteExploreScroll from "components/Explore/hooks/useInfiniteExploreScroll";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
 import { View } from "components/styledComponents";
+import {
+  useExplore
+} from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useEffect } from "react";
 import { Dimensions } from "react-native";
 import {
-  useDeviceOrientation
+  useCurrentUser,
+  useDeviceOrientation,
+  useQuery
 } from "sharedHooks";
 
 import MapView from "./MapView";
@@ -36,6 +44,24 @@ const ObservationsView = ( {
   currentMapRegion,
   setCurrentMapRegion
 }: Props ): Node => {
+  const currentUser = useCurrentUser( );
+  const { state } = useExplore();
+  const { excludeUser } = state;
+
+  // get total count of current users obs
+  const { data: currentUserObs } = useQuery(
+    ["fetchCurrentUserObservations"],
+    ( ) => searchObservations( {
+      user_id: currentUser?.id,
+      ...queryParams,
+      fields: {
+      }
+    } ),
+    {
+      enabled: ( !!currentUser && !!excludeUser )
+    }
+  );
+
   const {
     fetchNextPage,
     isFetchingNextPage,
@@ -45,6 +71,12 @@ const ObservationsView = ( {
     totalResults,
     isLoading
   } = useInfiniteExploreScroll( { params: queryParams, enabled: canFetch } );
+
+  const curUserObsCount = currentUserObs?.total_results;
+  const totalCount = excludeUser
+    ? totalResults - curUserObsCount
+    : totalResults;
+
   const {
     isLandscapeMode,
     isTablet,
@@ -53,8 +85,8 @@ const ObservationsView = ( {
   } = useDeviceOrientation( );
 
   useEffect( ( ) => {
-    handleUpdateCount( "observations", totalResults );
-  }, [totalResults, handleUpdateCount] );
+    handleUpdateCount( "observations", totalCount );
+  }, [handleUpdateCount, totalCount] );
 
   const { isConnected } = useNetInfo( );
 
