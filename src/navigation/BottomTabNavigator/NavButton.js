@@ -1,6 +1,6 @@
 // @flow
-import { INatIconButton, UserIcon } from "components/SharedComponents";
-import { Pressable } from "components/styledComponents";
+import { Body3, INatIconButton, UserIcon } from "components/SharedComponents";
+import { Pressable, View } from "components/styledComponents";
 import NotificationsIconContainer from "navigation/BottomTabNavigator/NotificationsIconContainer";
 import * as React from "react";
 import colors from "styles/tailwindColors";
@@ -58,8 +58,9 @@ const NavButton = ( {
     height
   };
 
+  let iconComponent;
   if ( userIconUri ) {
-    return (
+    iconComponent = (
       <Pressable
         className="flex items-center justify-center"
         {...sharedProps}
@@ -67,10 +68,8 @@ const NavButton = ( {
         <UserIcon uri={userIconUri} active={active} />
       </Pressable>
     );
-  }
-
-  if ( icon === "notifications-bell" ) {
-    return (
+  } else if ( icon === "notifications-bell" ) {
+    iconComponent = (
       <NotificationsIconContainer
         icon={icon}
         size={size}
@@ -78,17 +77,32 @@ const NavButton = ( {
         {...notificationProps}
       />
     );
+  } else {
+    iconComponent = (
+      <INatIconButton
+        icon={icon}
+        color={active
+          ? colors.inatGreen
+          : colors.darkGray}
+        size={size}
+        {...sharedProps}
+      />
+    );
   }
 
   return (
-    <INatIconButton
-      icon={icon}
-      color={active
-        ? colors.inatGreen
-        : colors.darkGray}
-      size={size}
-      {...sharedProps}
-    />
+    <View className="flex-column items-center w-[20%]">
+      {iconComponent}
+      <Body3
+        numberOfLines={1}
+        className={active
+          ? "text-inatGreen"
+          : "text-darkGray"}
+        maxFontSizeMultiplier={1.2}
+      >
+        { accessibilityLabel }
+      </Body3>
+    </View>
   );
 };
 
