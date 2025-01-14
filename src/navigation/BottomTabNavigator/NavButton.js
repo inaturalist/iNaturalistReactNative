@@ -28,32 +28,12 @@ const NavButton = ( {
   active,
   accessibilityLabel,
   accessibilityHint,
-  accessibilityRole = "tab",
   width = 44,
   height = 44
 }: Props ): React.Node => {
   /* eslint-disable react/jsx-props-no-spreading */
   const sharedProps = {
     testID,
-    onPress,
-    accessibilityRole,
-    accessibilityLabel,
-    accessibilityHint,
-    accessibilityState: {
-      selected: active,
-      expanded: active,
-      disabled: false
-    },
-    width,
-    height
-  };
-
-  const notificationProps = {
-    testID,
-    onPress,
-    accessibilityRole,
-    accessibilityLabel,
-    accessibilityHint,
     width,
     height
   };
@@ -61,12 +41,12 @@ const NavButton = ( {
   let iconComponent;
   if ( userIconUri ) {
     iconComponent = (
-      <Pressable
+      <View
         className="flex items-center justify-center"
         {...sharedProps}
       >
         <UserIcon uri={userIconUri} active={active} />
-      </Pressable>
+      </View>
     );
   } else if ( icon === "notifications-bell" ) {
     iconComponent = (
@@ -74,13 +54,14 @@ const NavButton = ( {
         icon={icon}
         size={size}
         active={active}
-        {...notificationProps}
+        {...sharedProps}
       />
     );
   } else {
     iconComponent = (
       <INatIconButton
         icon={icon}
+        iconOnly
         color={active
           ? colors.inatGreen
           : colors.darkGray}
@@ -91,7 +72,17 @@ const NavButton = ( {
   }
 
   return (
-    <View className="flex-column items-center w-[20%]">
+    <Pressable
+      className="flex-column items-center w-[20%] justify-end"
+      onPress={onPress}
+      accessibilityLabel={accessibilityLabel}
+      accessibilityRole="tab"
+      accessibilityHint={accessibilityHint}
+      accessibilityState={{
+        selected: active,
+        disabled: false
+      }}
+    >
       {iconComponent}
       <Body3
         numberOfLines={1}
@@ -100,9 +91,9 @@ const NavButton = ( {
           : "text-darkGray"}
         maxFontSizeMultiplier={1.2}
       >
-        { accessibilityLabel }
+        {accessibilityLabel}
       </Body3>
-    </View>
+    </Pressable>
   );
 };
 
