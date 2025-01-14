@@ -7,8 +7,8 @@ import { View } from "components/styledComponents";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 
-import AdditionalSuggestionsScrollContainer
-  from "./AdditionalSuggestions/AdditionalSuggestionsScrollContainer";
+import AdditionalSuggestionsScroll
+  from "./AdditionalSuggestions/AdditionalSuggestionsScroll";
 import EmptyMapSection from "./EmptyMapSection";
 import MatchHeader from "./MatchHeader";
 import PhotosSection from "./PhotosSection";
@@ -16,36 +16,35 @@ import SaveDiscardButtons from "./SaveDiscardButtons";
 
 type Props = {
   observation: Object,
+  observationPhoto: string,
   handleSaveOrDiscardPress: ( ) => void,
   navToTaxonDetails: ( ) => void,
   taxon: Object,
-  confidence: number,
-  handleLocationPickerPressed: ( ) => void
+  handleLocationPickerPressed: ( ) => void,
+  suggestions: Object,
+  onTaxonChosen: ( ) => void
 }
 
 const Match = ( {
   observation,
+  observationPhoto,
   handleSaveOrDiscardPress,
   navToTaxonDetails,
   taxon,
-  confidence,
-  handleLocationPickerPressed
+  handleLocationPickerPressed,
+  suggestions,
+  onTaxonChosen
 }: Props ) => {
   const { t } = useTranslation( );
 
   const latitude = observation?.privateLatitude || observation?.latitude;
-  const observationPhoto = observation?.observationPhotos?.[0]?.photo?.url
-    || observation?.observationPhotos?.[0]?.photo?.localFilePath;
 
   return (
     <>
       <ScrollViewWrapper>
         <Divider />
         <View className="p-5">
-          <MatchHeader
-            taxon={taxon}
-            confidence={confidence}
-          />
+          <MatchHeader topSuggestion={suggestions?.topSuggestion} />
         </View>
         <PhotosSection
           taxon={taxon}
@@ -74,9 +73,9 @@ const Match = ( {
             onPress={navToTaxonDetails}
             accessibilityHint={t( "Navigates-to-taxon-details" )}
           />
-          <AdditionalSuggestionsScrollContainer
-            observation={observation}
-            observationPhoto={observationPhoto}
+          <AdditionalSuggestionsScroll
+            onTaxonChosen={onTaxonChosen}
+            otherSuggestions={suggestions?.otherSuggestions}
           />
           {!latitude && (
             <Button

@@ -33,7 +33,7 @@ const useOnlineSuggestions = (
   const realm = useRealm( );
   const {
     onFetchError,
-    onOnlineFetched,
+    onFetched,
     scoreImageParams,
     queryKey,
     shouldFetchOnlineSuggestions
@@ -117,11 +117,11 @@ const useOnlineSuggestions = (
   useEffect( ( ) => {
     if ( onlineSuggestions !== undefined ) {
       saveTaxaToRealm( );
-      onOnlineFetched( );
+      onFetched( { isOnline: true } );
     } else if ( error ) {
       onFetchError( { isOnline: true } );
     }
-  }, [onFetchError, onlineSuggestions, error, saveTaxaToRealm, onOnlineFetched] );
+  }, [onFetchError, onlineSuggestions, error, saveTaxaToRealm, onFetched] );
 
   const queryObject = {
     dataUpdatedAt,

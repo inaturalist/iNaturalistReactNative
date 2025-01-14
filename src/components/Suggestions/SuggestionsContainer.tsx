@@ -186,19 +186,19 @@ const SuggestionsContainer = ( ) => {
   const onlineSuggestionsAttempted = fetchStatus === FETCH_STATUS_ONLINE_FETCHED
     || fetchStatus === FETCH_STATUS_ONLINE_ERROR;
 
-  const onFetchError = ( { isOnline } ) => dispatch( {
+  const onFetchError = useCallback( ( { isOnline } ) => dispatch( {
     type: "SET_FETCH_STATUS",
     fetchStatus: isOnline
       ? FETCH_STATUS_ONLINE_ERROR
       : FETCH_STATUS_OFFLINE_ERROR
-  } );
+  } ), [] );
 
-  const onFetched = ( { isOnline } ) => dispatch( {
+  const onFetched = useCallback( ( { isOnline } ) => dispatch( {
     type: "SET_FETCH_STATUS",
     fetchStatus: isOnline
       ? FETCH_STATUS_ONLINE_FETCHED
       : FETCH_STATUS_OFFLINE_FETCHED
-  } );
+  } ), [] );
 
   const {
     timedOut,
@@ -317,23 +317,23 @@ const SuggestionsContainer = ( ) => {
 
   const headerRight = useCallback( ( ) => <TaxonSearchButton />, [] );
 
+  const shouldSetImageParams = useMemo(
+    () => _.isEqual( initialSuggestions, suggestions ),
+    [suggestions]
+  );
+
   useEffect( ( ) => {
     const onFocus = navigation.addListener( "focus", ( ) => {
       // resizeImage crashes if trying to resize an https:// photo while there is no internet
       // in this situation, we can skip creating upload parameters since we're loading
       // offline suggestions anyway
-      if ( _.isEqual( initialSuggestions, suggestions ) ) {
-        setImageParams( );
+      if ( shouldSetImageParams ) {
+        setImageParams();
       }
       navigation.setOptions( { headerRight } );
     } );
     return onFocus;
-  }, [
-    headerRight,
-    navigation,
-    setImageParams,
-    suggestions
-  ] );
+  }, [navigation, setImageParams, shouldSetImageParams, headerRight] );
 
   const onPermissionGranted = useCallback( async ( ) => {
     const userLocation = await fetchCoarseUserLocation( );
