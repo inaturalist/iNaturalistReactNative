@@ -3,17 +3,19 @@ import {
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import flattenUploadParams from "components/Suggestions/helpers/flattenUploadParams.ts";
+import {
+  FETCH_STATUS_LOADING,
+  FETCH_STATUS_OFFLINE_ERROR,
+  FETCH_STATUS_OFFLINE_FETCHED,
+  FETCH_STATUS_ONLINE_ERROR,
+  FETCH_STATUS_ONLINE_FETCHED,
+  initialSuggestions
+} from "components/Suggestions/SuggestionsContainer.tsx";
 import _ from "lodash";
 import React, { useCallback, useEffect, useReducer } from "react";
 import { useLocationPermission, useSuggestions } from "sharedHooks";
 
 import AdditionalSuggestionsScroll from "./AdditionalSuggestionsScroll";
-
-const initialSuggestions = {
-  otherSuggestions: [],
-  topSuggestion: null,
-  topSuggestionType: "none"
-};
 
 const setQueryKey = ( selectedPhotoUri, shouldUseEvidenceLocation ) => [
   "scoreImage",
@@ -22,9 +24,8 @@ const setQueryKey = ( selectedPhotoUri, shouldUseEvidenceLocation ) => [
 ];
 
 const initialState = {
-  // loading, online-fetched, online-error, offline-fetched, offline-error
-  fetchStatus: "loading",
-  flattenedUploadParams: null,
+  fetchStatus: FETCH_STATUS_LOADING,
+  scoreImageParams: null,
   queryKey: [],
   selectedTaxon: null,
   shouldUseEvidenceLocation: false
@@ -32,10 +33,10 @@ const initialState = {
 
 const reducer = ( state, action ) => {
   switch ( action.type ) {
-    case "FLATTEN_UPLOAD_PARAMS":
+    case "SET_UPLOAD_PARAMS":
       return {
         ...state,
-        flattenedUploadParams: action.flattenedUploadParams,
+        scoreImageParams: action.scoreImageParams,
         queryKey: setQueryKey( state.selectedPhotoUri, state.shouldUseEvidenceLocation )
       };
     case "SELECT_TAXON":
@@ -51,8 +52,8 @@ const reducer = ( state, action ) => {
     case "TOGGLE_LOCATION":
       return {
         ...state,
-        fetchStatus: "loading",
-        flattenedUploadParams: action.flattenedUploadParams,
+        fetchStatus: FETCH_STATUS_LOADING,
+        scoreImageParams: action.scoreImageParams,
         shouldUseEvidenceLocation: action.shouldUseEvidenceLocation,
         queryKey: setQueryKey( state.selectedPhotoUri, action.shouldUseEvidenceLocation )
       };
@@ -80,26 +81,40 @@ const AdditionalSuggestionsScrollContainer = ( {
   } );
 
   const {
-    flattenedUploadParams,
+    scoreImageParams,
     fetchStatus,
     queryKey,
     shouldUseEvidenceLocation
   } = state;
 
   const shouldFetchOnlineSuggestions = ( hasPermissions !== undefined )
-    && fetchStatus === "loading";
+    && fetchStatus === FETCH_STATUS_LOADING;
 
-  const onlineSuggestionsAttempted = fetchStatus === "online-fetched"
-    || fetchStatus === "online-error";
+  const onlineSuggestionsAttempted = fetchStatus === FETCH_STATUS_ONLINE_FETCHED
+    || fetchStatus === FETCH_STATUS_ONLINE_ERROR;
+
+  const onFetchError = ( { isOnline } ) => dispatch( {
+    type: "SET_FETCH_STATUS",
+    fetchStatus: isOnline
+      ? FETCH_STATUS_ONLINE_ERROR
+      : FETCH_STATUS_OFFLINE_ERROR
+  } );
+
+  const onFetched = ( { isOnline } ) => dispatch( {
+    type: "SET_FETCH_STATUS",
+    fetchStatus: isOnline
+      ? FETCH_STATUS_ONLINE_FETCHED
+      : FETCH_STATUS_OFFLINE_FETCHED
+  } );
 
   const {
     suggestions
-  } = useSuggestions( {
+  } = useSuggestions( selectedPhotoUri, {
     shouldFetchOnlineSuggestions,
-    dispatch,
-    flattenedUploadParams,
+    onFetchError,
+    onFetched,
+    scoreImageParams,
     queryKey,
-    selectedPhotoUri,
     onlineSuggestionsAttempted
   } );
 
@@ -126,7 +141,7 @@ const AdditionalSuggestionsScrollContainer = ( {
       return;
     }
     const newImageParams = await createUploadParams( selectedPhotoUri, shouldUseEvidenceLocation );
-    dispatch( { type: "FLATTEN_UPLOAD_PARAMS", flattenedUploadParams: newImageParams } );
+    dispatch( { type: "SET_UPLOAD_PARAMS", scoreImageParams: newImageParams } );
   }, [
     createUploadParams,
     isConnected,

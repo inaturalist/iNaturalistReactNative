@@ -30,6 +30,20 @@ import TaxonSearchButton from "./TaxonSearchButton";
 
 const logger = log.extend( "SuggestionsContainer" );
 
+export const FETCH_STATUS_LOADING = "loading";
+export const FETCH_STATUS_ONLINE_FETCHED = "online-fetched";
+export const FETCH_STATUS_ONLINE_ERROR = "online-error";
+export const FETCH_STATUS_FETCHING_OFFLINE = "fetching-offline";
+export const FETCH_STATUS_OFFLINE_FETCHED = "offline-fetched";
+export const FETCH_STATUS_OFFLINE_ERROR = "offline-error";
+
+export const TOP_SUGGESTION_NONE = "none";
+export const TOP_SUGGESTION_HUMAN = "human";
+export const TOP_SUGGESTION_ABOVE_ONLINE_THRESHOLD = "above-online-threshold";
+export const TOP_SUGGESTION_ABOVE_OFFLINE_THRESHOLD = "above-offline-threshold";
+export const TOP_SUGGESTION_COMMON_ANCESTOR = "common-ancestor";
+export const TOP_SUGGESTION_NOT_CONFIDENT = "not-confident";
+
 const setQueryKey = ( selectedPhotoUri, shouldUseEvidenceLocation ) => [
   "scoreImage",
   selectedPhotoUri,
@@ -45,27 +59,23 @@ export type Suggestion = {
   }
 };
 
+export type TopSuggestionType = string;
+
 export type Suggestions = {
   otherSuggestions: Suggestion[];
   topSuggestion: Suggestion | null;
-  topSuggestionType: "none"
-    | "human"
-    | "above-online-threshold"
-    | "above-offline-threshold"
-    | "common-ancestor"
-    | "not-confident";
+  topSuggestionType: TopSuggestionType;
 };
 
-const initialSuggestions: Suggestions = {
+export const initialSuggestions: Suggestions = {
   otherSuggestions: [],
   topSuggestion: null,
-  topSuggestionType: "none"
+  topSuggestionType: TOP_SUGGESTION_NONE
 };
 
 const initialState = {
-  // loading, online-fetched, online-error, offline-fetched, offline-error
-  fetchStatus: "loading",
-  flattenedUploadParams: null,
+  fetchStatus: FETCH_STATUS_LOADING,
+  scoreImageParams: null,
   mediaViewerVisible: false,
   queryKey: [],
   selectedPhotoUri: null,
@@ -75,18 +85,18 @@ const initialState = {
 
 const reducer = ( state, action ) => {
   switch ( action.type ) {
-    case "FLATTEN_UPLOAD_PARAMS":
+    case "SET_UPLOAD_PARAMS":
       return {
         ...state,
-        flattenedUploadParams: action.flattenedUploadParams,
+        scoreImageParams: action.scoreImageParams,
         queryKey: setQueryKey( state.selectedPhotoUri, state.shouldUseEvidenceLocation )
       };
     case "SELECT_PHOTO":
       return {
         ...state,
-        fetchStatus: "loading",
+        fetchStatus: FETCH_STATUS_LOADING,
         selectedPhotoUri: action.selectedPhotoUri,
-        flattenedUploadParams: action.flattenedUploadParams,
+        scoreImageParams: action.scoreImageParams,
         queryKey: setQueryKey( action.selectedPhotoUri, state.shouldUseEvidenceLocation )
       };
     case "SELECT_TAXON":
@@ -102,8 +112,8 @@ const reducer = ( state, action ) => {
     case "TOGGLE_LOCATION":
       return {
         ...state,
-        fetchStatus: "loading",
-        flattenedUploadParams: action.flattenedUploadParams,
+        fetchStatus: FETCH_STATUS_LOADING,
+        scoreImageParams: action.scoreImageParams,
         shouldUseEvidenceLocation: action.shouldUseEvidenceLocation,
         queryKey: setQueryKey( state.selectedPhotoUri, action.shouldUseEvidenceLocation )
       };
@@ -161,7 +171,7 @@ const SuggestionsContainer = ( ) => {
   }, [requestPermissions] );
 
   const {
-    flattenedUploadParams,
+    scoreImageParams,
     fetchStatus,
     mediaViewerVisible,
     queryKey,
@@ -171,10 +181,24 @@ const SuggestionsContainer = ( ) => {
   } = state;
 
   const shouldFetchOnlineSuggestions = ( hasPermissions !== undefined )
-    && fetchStatus === "loading";
+    && fetchStatus === FETCH_STATUS_LOADING;
 
-  const onlineSuggestionsAttempted = fetchStatus === "online-fetched"
-    || fetchStatus === "online-error";
+  const onlineSuggestionsAttempted = fetchStatus === FETCH_STATUS_ONLINE_FETCHED
+    || fetchStatus === FETCH_STATUS_ONLINE_ERROR;
+
+  const onFetchError = ( { isOnline } ) => dispatch( {
+    type: "SET_FETCH_STATUS",
+    fetchStatus: isOnline
+      ? FETCH_STATUS_ONLINE_ERROR
+      : FETCH_STATUS_OFFLINE_ERROR
+  } );
+
+  const onFetched = ( { isOnline } ) => dispatch( {
+    type: "SET_FETCH_STATUS",
+    fetchStatus: isOnline
+      ? FETCH_STATUS_ONLINE_FETCHED
+      : FETCH_STATUS_OFFLINE_FETCHED
+  } );
 
   const {
     timedOut,
@@ -186,12 +210,12 @@ const SuggestionsContainer = ( ) => {
     suggestions,
     usingOfflineSuggestions,
     urlWillCrashOffline
-  } = useSuggestions( {
+  } = useSuggestions( selectedPhotoUri, {
     shouldFetchOnlineSuggestions,
-    dispatch,
-    flattenedUploadParams,
+    onFetchError,
+    onFetched,
+    scoreImageParams,
     queryKey,
-    selectedPhotoUri,
     onlineSuggestionsAttempted
   } );
 
@@ -231,7 +255,7 @@ const SuggestionsContainer = ( ) => {
         dispatch( {
           type: "SELECT_PHOTO",
           selectedPhotoUri: uri,
-          flattenedUploadParams: newImageParams
+          scoreImageParams: newImageParams
         } );
       }
     },
@@ -242,7 +266,7 @@ const SuggestionsContainer = ( ) => {
     ]
   );
 
-  const isLoading = fetchStatus === "loading";
+  const isLoading = fetchStatus === FETCH_STATUS_LOADING;
 
   const { loadTime } = usePerformance( {
     isLoading
@@ -257,7 +281,7 @@ const SuggestionsContainer = ( ) => {
     dispatch( {
       type: "TOGGLE_LOCATION",
       shouldUseEvidenceLocation: showLocation,
-      flattenedUploadParams: newImageParams
+      scoreImageParams: newImageParams
     } );
   }, [
     createUploadParams,
@@ -270,7 +294,7 @@ const SuggestionsContainer = ( ) => {
     // suggestions
     if ( !isConnected ) { return; }
     resetTimeout( );
-    dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "loading" } );
+    dispatch( { type: "SET_FETCH_STATUS", fetchStatus: FETCH_STATUS_LOADING } );
   }, [isConnected, resetTimeout] );
 
   const hideLocationToggleButton = usingOfflineSuggestions
@@ -283,7 +307,7 @@ const SuggestionsContainer = ( ) => {
       return;
     }
     const newImageParams = await createUploadParams( selectedPhotoUri, shouldUseEvidenceLocation );
-    dispatch( { type: "FLATTEN_UPLOAD_PARAMS", flattenedUploadParams: newImageParams } );
+    dispatch( { type: "SET_UPLOAD_PARAMS", scoreImageParams: newImageParams } );
   }, [
     createUploadParams,
     isConnected,
@@ -320,7 +344,7 @@ const SuggestionsContainer = ( ) => {
     dispatch( {
       type: "TOGGLE_LOCATION",
       shouldUseEvidenceLocation: true,
-      flattenedUploadParams: newImageParams
+      scoreImageParams: newImageParams
     } );
   }, [selectedPhotoUri, updateObservationKeys] );
 

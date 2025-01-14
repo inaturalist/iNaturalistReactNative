@@ -4,18 +4,14 @@ import {
   waitFor
 } from "@testing-library/react-native";
 import Suggestions from "components/Suggestions/Suggestions";
+import {
+  initialSuggestions
+} from "components/Suggestions/SuggestionsContainer.tsx";
 import i18next from "i18next";
 import React from "react";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
-
-const initialSuggestions = {
-  topSuggestion: null,
-  otherSuggestions: [],
-  topSuggestionType: "none",
-  usingOfflineSuggestions: false
-};
 
 const mockCreateId = jest.fn( );
 
