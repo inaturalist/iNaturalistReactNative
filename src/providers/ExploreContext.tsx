@@ -232,7 +232,7 @@ type Action = {type: EXPLORE_ACTION.RESET}
     taxon: { id: number } | null,
     taxonId: number,
     taxonName: string,
-    storedState: State
+    storedState?: State
   }
   | { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN }
   | {type: EXPLORE_ACTION.SET_EXPLORE_LOCATION, exploreLocation: DefaultLocation}

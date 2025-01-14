@@ -31,7 +31,7 @@ interface TaxonResultProps {
   handleTaxonOrEditPress?: ( _event?: GestureResponderEvent ) => void;
   hideInfoButton?: boolean;
   hideNavButtons?: boolean;
-  isTopSuggestion?: boolean;
+  checkmarkFocused?: boolean;
   lastScreen?: string | null;
   onPressInfo?: ( taxon: Object ) => void;
   showCheckmark?: boolean;
@@ -52,6 +52,7 @@ const TaxonResult = ( {
   accessibilityLabel,
   activeColor,
   asListItem = true,
+  checkmarkFocused = false,
   clearBackground,
   confidence,
   confidencePosition = "photo",
@@ -63,7 +64,6 @@ const TaxonResult = ( {
   handleTaxonOrEditPress,
   hideInfoButton = false,
   hideNavButtons = false,
-  isTopSuggestion = false,
   lastScreen = null,
   onPressInfo,
   showCheckmark = true,
@@ -137,12 +137,10 @@ const TaxonResult = ( {
   };
 
   const renderCheckmark = () => {
-    if ( isTopSuggestion ) {
+    if ( checkmarkFocused ) {
       return (
         <INatIconButton
-          className={classnames( "ml-2", {
-            "bg-inatGreen rounded-full h-[40px] w-[40px]": isTopSuggestion
-          } )}
+          className="ml-2 bg-inatGreen rounded-full h-[40px] w-[40px]"
           icon="checkmark"
           size={21}
           color={String( colors?.white )}

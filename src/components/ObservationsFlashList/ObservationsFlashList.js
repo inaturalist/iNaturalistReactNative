@@ -38,7 +38,8 @@ type Props = {
   explore: boolean,
   handlePullToRefresh: Function,
   handleIndividualUploadPress: Function,
-  hideLoadingWheel: boolean,
+  hideLoadingWheel?: boolean,
+  hideMetadata?: boolean,
   isConnected: boolean,
   isFetchingNextPage?: boolean,
   layout: "list" | "grid",
@@ -60,6 +61,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
   handlePullToRefresh,
   handleIndividualUploadPress,
   hideLoadingWheel,
+  hideMetadata,
   isConnected,
   isFetchingNextPage,
   layout,
@@ -129,6 +131,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
         currentUser={currentUser}
         explore={explore}
         gridItemStyle={gridItemStyle}
+        hideMetadata={hideMetadata}
         isLargeFontScale={isLargeFontScale}
         layout={layout}
         observation={observation}
@@ -145,6 +148,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
     gridItemStyle,
     isLargeFontScale,
     handleIndividualUploadPress,
+    hideMetadata,
     obsListKey,
     layout,
     realm,

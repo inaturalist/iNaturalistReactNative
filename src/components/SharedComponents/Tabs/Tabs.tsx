@@ -5,6 +5,7 @@ import { View } from "components/styledComponents";
 import React from "react";
 import { GestureResponderEvent, TouchableOpacity } from "react-native";
 import useTranslation from "sharedHooks/useTranslation";
+import colors from "styles/tailwindColors";
 
 export interface Tab {
   id: string;
@@ -19,6 +20,7 @@ export interface TabComponentProps {
 }
 
 interface Props {
+  activeColor?: string;
   activeId: string;
   tabs: Tab[];
   TabComponent?: React.FC<TabComponentProps>;
@@ -27,6 +29,7 @@ interface Props {
 
 const Tabs = ( {
   activeId,
+  activeColor = String( colors?.darkGray ),
   tabs = [],
   TabComponent,
   TextComponent = Heading4
@@ -69,7 +72,12 @@ const Tabs = ( {
                       </TextComponent>
                     )
                 }
-                { active && <View className="h-[4px] rounded-t bg-darkGray" /> }
+                { active && (
+                  <View
+                    className="h-[4px] rounded-t"
+                    style={{ backgroundColor: activeColor }}
+                  />
+                ) }
               </TouchableOpacity>
             </View>
           );

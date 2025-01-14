@@ -2,8 +2,7 @@ import {
   fireEvent,
   screen
 } from "@testing-library/react-native";
-import TaxonGridItem from "components/Explore/TaxonGridItem.tsx";
-import { ExploreProvider } from "providers/ExploreContext.tsx";
+import TaxonGridItem from "components/SharedComponents/TaxonGridItem.tsx";
 import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
@@ -36,24 +35,12 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
 } ) );
 
 const renderTaxonGridItem = ( ) => renderComponent(
-  <ExploreProvider>
-    <TaxonGridItem
-      taxon={mockTaxon}
-    />
-  </ExploreProvider>
+  <TaxonGridItem taxon={mockTaxon} />
 );
 
 describe( "TaxonGridItem", ( ) => {
   it( "should be accessible", ( ) => {
-    const taxonGridItem = (
-      <ExploreProvider>
-        <TaxonGridItem
-          taxon={mockTaxon}
-          count={400}
-        />
-      </ExploreProvider>
-    );
-    expect( taxonGridItem ).toBeAccessible();
+    expect( <TaxonGridItem taxon={mockTaxon} /> ).toBeAccessible();
   } );
 
   it( "should navigate to user profile on tap", ( ) => {

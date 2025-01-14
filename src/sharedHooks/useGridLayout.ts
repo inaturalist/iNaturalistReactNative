@@ -12,7 +12,7 @@ const flashListStyle = {
   paddingBottom: TAB_BAR_HEIGHT + HALF_GUTTER
 };
 
-const useGridLayout = layout => {
+const useGridLayout = ( layout?: "list" ) => {
   const {
     isLandscapeMode, isTablet, screenWidth, screenHeight
   } = useDeviceOrientation();

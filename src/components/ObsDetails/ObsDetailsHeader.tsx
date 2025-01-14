@@ -59,7 +59,7 @@ const ObsDetailsHeader = ( {
       <OverlayHeader
         testID="ObsDetails.BackButton"
         invertToWhiteBackground={invertToWhiteBackground}
-        rightHeaderButton={
+        headerRight={
           belongsToCurrentUser
             ? (
               <INatIconButton
@@ -69,9 +69,11 @@ const ObsDetailsHeader = ( {
                   navigateToObsEdit( navigation, setMyObsOffsetToRestore );
                 }}
                 icon="pencil"
-                color={whiteIcon
-                  ? colors.white
-                  : colors.darkGray}
+                color={String(
+                  whiteIcon
+                    ? colors?.white
+                    : colors?.darkGray
+                )}
                 accessibilityLabel={t( "Edit" )}
               />
             )
