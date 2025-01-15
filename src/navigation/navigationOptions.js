@@ -81,11 +81,16 @@ const hideDrawerHeaderLeft = {
   )
 };
 
+const preventSwipeToGoBack = {
+  gestureEnabled: false
+};
+
 export {
   blankHeaderTitle,
   fadeInComponent,
   hideDrawerHeaderLeft,
   hideHeader,
+  preventSwipeToGoBack,
   removeBottomBorder,
   showHeader,
   showLongHeader,
