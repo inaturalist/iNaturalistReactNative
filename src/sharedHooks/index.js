@@ -19,6 +19,7 @@ export { default as useLayoutPrefs } from "./useLayoutPrefs";
 export { default as useLocalObservation } from "./useLocalObservation";
 export { default as useLocalObservations } from "./useLocalObservations";
 export { default as useLocationPermission } from "./useLocationPermission";
+export { default as useNavigateToObsEdit } from "./useNavigateToObsEdit";
 export { default as useObservationsUpdates } from "./useObservationsUpdates";
 export { default as useObservationUpdatesWhenFocused } from "./useObservationUpdatesWhenFocused";
 export { default as usePerformance } from "./usePerformance";

@@ -1,14 +1,14 @@
 import { useNavigation } from "@react-navigation/native";
-import navigateToObsEdit from "components/ObsEdit/helpers/navigateToObsEdit.ts";
 import {
   INatIconButton
 } from "components/SharedComponents";
 import React, { useCallback, useEffect } from "react";
+import type { RealmObservation } from "realmModels/types";
 import {
   useLocalObservation,
+  useNavigateToObsEdit,
   useTranslation
 } from "sharedHooks";
-import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 import HeaderKebabMenu from "./HeaderKebabMenu";
@@ -27,20 +27,17 @@ const ObsDetailsHeader = ( {
   const navigation = useNavigation( );
   const localObservation = useLocalObservation( uuid );
   const { t } = useTranslation( );
-  const prepareObsEdit = useStore( state => state.prepareObsEdit );
-  const setMyObsOffsetToRestore = useStore( state => state.setMyObsOffsetToRestore );
+  const navigateToObsEdit = useNavigateToObsEdit( );
 
   const headerRight = useCallback(
     ( ) => ( belongsToCurrentUser
       ? (
         <INatIconButton
           testID="ObsDetail.editButton"
-          onPress={() => {
-            prepareObsEdit( localObservation );
-            navigateToObsEdit( navigation, setMyObsOffsetToRestore );
-          }}
+          // TODO remove cast when useLocalObservation converted to typescript
+          onPress={() => navigateToObsEdit( localObservation as RealmObservation )}
           icon="pencil"
-          color={colors.darkGray}
+          color={String( colors?.darkGray )}
           accessibilityLabel={t( "Edit" )}
         />
       )
@@ -48,10 +45,8 @@ const ObsDetailsHeader = ( {
     [
       belongsToCurrentUser,
       localObservation,
-      navigation,
+      navigateToObsEdit,
       observationId,
-      prepareObsEdit,
-      setMyObsOffsetToRestore,
       t
     ]
   );

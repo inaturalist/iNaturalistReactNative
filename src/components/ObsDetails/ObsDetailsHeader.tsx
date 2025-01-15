@@ -1,6 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
-import navigateToObsEdit from "components/ObsEdit/helpers/navigateToObsEdit.ts";
 import {
   INatIconButton,
   OverlayHeader
@@ -10,11 +8,12 @@ import {
 } from "components/styledComponents";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
+import type { RealmObservation } from "realmModels/types";
 import {
   useLocalObservation,
+  useNavigateToObsEdit,
   useTranslation
 } from "sharedHooks";
-import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 import HeaderKebabMenu from "./HeaderKebabMenu";
@@ -36,11 +35,9 @@ const ObsDetailsHeader = ( {
   rightIconDarkGray = false,
   uuid
 }: Props ) => {
-  const navigation = useNavigation( );
   const localObservation = useLocalObservation( uuid );
+  const navigateToObsEdit = useNavigateToObsEdit( );
   const { t } = useTranslation( );
-  const prepareObsEdit = useStore( state => state.prepareObsEdit );
-  const setMyObsOffsetToRestore = useStore( state => state.setMyObsOffsetToRestore );
 
   const whiteIcon = !rightIconDarkGray && !invertToWhiteBackground;
 
@@ -64,10 +61,8 @@ const ObsDetailsHeader = ( {
             ? (
               <INatIconButton
                 testID="ObsDetail.editButton"
-                onPress={() => {
-                  prepareObsEdit( localObservation );
-                  navigateToObsEdit( navigation, setMyObsOffsetToRestore );
-                }}
+                // TODO remove this cast when useLocalObservation is properly typed
+                onPress={() => navigateToObsEdit( localObservation as RealmObservation )}
                 icon="pencil"
                 color={String(
                   whiteIcon

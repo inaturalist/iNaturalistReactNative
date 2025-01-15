@@ -3,8 +3,7 @@
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import navigateToObsEdit from "components/ObsEdit/helpers/navigateToObsEdit.ts";
+import { useFocusEffect } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, {
@@ -18,6 +17,7 @@ import {
   useCurrentUser,
   useInfiniteObservationsScroll,
   useLocalObservations,
+  useNavigateToObsEdit,
   useObservationsUpdates,
   useStoredLayout,
   useTranslation
@@ -39,7 +39,7 @@ const MyObservationsContainer = ( ): Node => {
   const { t } = useTranslation( );
   const realm = useRealm( );
   const listRef = useRef( );
-  const navigation = useNavigation( );
+  const navigateToObsEdit = useNavigateToObsEdit( );
 
   const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
   const uploadQueue = useStore( state => state.uploadQueue );
@@ -52,8 +52,6 @@ const MyObservationsContainer = ( ): Node => {
   const myObsOffsetToRestore = useStore( state => state.myObsOffsetToRestore );
   const setMyObsOffset = useStore( state => state.setMyObsOffset );
   const uploadStatus = useStore( state => state.uploadStatus );
-  const prepareObsEdit = useStore( state => state.prepareObsEdit );
-  const setMyObsOffsetToRestore = useStore( state => state.setMyObsOffsetToRestore );
 
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
@@ -122,9 +120,7 @@ const MyObservationsContainer = ( ): Node => {
     if ( uploadExists ) return;
     const observation = realm.objectForPrimaryKey( "Observation", uuid );
     if ( isDebugMode( ) && observation.missingBasics( ) ) {
-      // TODO refactor this into a hook
-      prepareObsEdit( observation );
-      navigateToObsEdit( navigation, setMyObsOffsetToRestore );
+      navigateToObsEdit( observation );
       return;
     }
     if ( !confirmLoggedIn( ) ) return;
@@ -139,13 +135,11 @@ const MyObservationsContainer = ( ): Node => {
     addToUploadQueue,
     confirmInternetConnection,
     confirmLoggedIn,
-    prepareObsEdit,
+    navigateToObsEdit,
     realm,
-    setMyObsOffsetToRestore,
     setStartUploadObservations,
     uploadQueue,
-    uploadStatus,
-    navigation
+    uploadStatus
   ] );
 
   // 20241107 amanda - this seems to be a culprit for the tab bar being less
