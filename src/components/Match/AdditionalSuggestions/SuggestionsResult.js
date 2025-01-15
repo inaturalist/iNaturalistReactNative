@@ -62,6 +62,7 @@ const SuggestionsResult = ( {
       }
       onPress={handlePress}
       testID={testID}
+      key={testID}
     >
       <View className="w-[62px] h-[62px] mr-3">
         <ObsImagePreview

@@ -32,8 +32,9 @@ const useOnlineSuggestions = (
 ): OnlineSuggestionsResponse => {
   const realm = useRealm( );
   const {
-    dispatch,
-    flattenedUploadParams,
+    onFetchError,
+    onFetched,
+    scoreImageParams,
     queryKey,
     shouldFetchOnlineSuggestions
   } = options;
@@ -43,7 +44,7 @@ const useOnlineSuggestions = (
   const { isConnected } = useNetInfo( );
 
   async function queryFn( optsWithAuth ) {
-    const params = flattenedUploadParams;
+    const params = scoreImageParams;
     return scoreImage( params, optsWithAuth );
   }
 
@@ -60,7 +61,7 @@ const useOnlineSuggestions = (
     queryFn,
     {
       enabled: !!shouldFetchOnlineSuggestions
-        && !!( flattenedUploadParams?.image ),
+        && !!( scoreImageParams?.image ),
       allowAnonymousJWT: true
     }
   );
@@ -70,7 +71,7 @@ const useOnlineSuggestions = (
     const timer = setTimeout( ( ) => {
       if ( onlineSuggestions === undefined ) {
         queryClient.cancelQueries( { queryKey } );
-        dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "online-error" } );
+        onFetchError( { isOnline: true } );
         setTimedOut( true );
       }
     }, SCORE_IMAGE_TIMEOUT );
@@ -78,7 +79,7 @@ const useOnlineSuggestions = (
     return ( ) => {
       clearTimeout( timer );
     };
-  }, [onlineSuggestions, queryKey, queryClient, dispatch] );
+  }, [onlineSuggestions, queryKey, queryClient, onFetchError] );
 
   const resetTimeout = useCallback( ( ) => {
     setTimedOut( false );
@@ -88,7 +89,7 @@ const useOnlineSuggestions = (
     if ( isConnected === false ) {
       setTimedOut( true );
     }
-  }, [isConnected, dispatch] );
+  }, [isConnected] );
 
   const saveTaxaToRealm = useCallback( ( ) => {
     // we're already getting all this taxon information anytime we make this API
@@ -116,11 +117,11 @@ const useOnlineSuggestions = (
   useEffect( ( ) => {
     if ( onlineSuggestions !== undefined ) {
       saveTaxaToRealm( );
-      dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "online-fetched" } );
+      onFetched( { isOnline: true } );
     } else if ( error ) {
-      dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "online-error" } );
+      onFetchError( { isOnline: true } );
     }
-  }, [dispatch, onlineSuggestions, error, saveTaxaToRealm] );
+  }, [onFetchError, onlineSuggestions, error, saveTaxaToRealm, onFetched] );
 
   const queryObject = {
     dataUpdatedAt,

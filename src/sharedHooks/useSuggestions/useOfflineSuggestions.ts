@@ -11,9 +11,10 @@ const logger = log.extend( "useOfflineSuggestions" );
 const { useRealm } = RealmContext;
 
 const useOfflineSuggestions = (
-  selectedPhotoUri: string,
+  photoUri: string,
   options: {
-    dispatch: () => void,
+    onFetchError: ( { isOnline: boolean } ) => void,
+    onFetchError: ( { isOnline: boolean } ) => void,
     latitude: number,
     longitude: number,
     tryOfflineSuggestions: boolean
@@ -26,7 +27,7 @@ const useOfflineSuggestions = (
   const [error, setError] = useState( null );
 
   const {
-    dispatch, latitude, longitude, tryOfflineSuggestions
+    onFetchError, onFetched, latitude, longitude, tryOfflineSuggestions
   } = options;
 
   useEffect( ( ) => {
@@ -34,10 +35,10 @@ const useOfflineSuggestions = (
       let rawPredictions = [];
       try {
         const location = { latitude, longitude };
-        const result = await predictImage( selectedPhotoUri, location );
+        const result = await predictImage( photoUri, location );
         rawPredictions = result.predictions;
       } catch ( predictImageError ) {
-        dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "offline-error" } );
+        onFetchError( { isOnline: false } );
         logger.error( "Error predicting image offline", predictImageError );
         throw predictImageError;
       }
@@ -64,20 +65,27 @@ const useOfflineSuggestions = (
           }
         } ) );
       setOfflineSuggestions( formattedPredictions );
-      dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "offline-fetched" } );
+      onFetched( { isOnline: false } );
       return formattedPredictions;
     };
 
-    if ( selectedPhotoUri && tryOfflineSuggestions ) {
-      dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "fetching-offline" } );
+    if ( photoUri && tryOfflineSuggestions ) {
       predictOffline( ).catch( predictOfflineError => {
         // For some reason if you throw here, it doesn't actually buble up. Is
         // an effect callback run in a promise?
-        dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "offline-error" } );
+        onFetchError( { isOnline: false } );
         setError( predictOfflineError );
       } );
     }
-  }, [selectedPhotoUri, tryOfflineSuggestions, setError, dispatch, realm, latitude, longitude] );
+  }, [
+    photoUri,
+    tryOfflineSuggestions,
+    setError,
+    onFetched,
+    onFetchError,
+    realm,
+    latitude,
+    longitude] );
 
   if ( error ) throw error;
 
