@@ -551,8 +551,9 @@ class Observation extends Realm.Object {
   }
 
   missingBasics() {
-    const missingDate = !Date.parse( this.observed_on_string );
-    const missingCoords = typeof ( this.latitude ) !== "number";
+    const missingDate = !Date.parse( this.observed_on_string ) && !this.time_observed_at;
+    const missingCoords = typeof ( this.latitude ) !== "number"
+      && typeof ( this.privateLatitude ) !== "number";
     return missingDate || missingCoords;
   }
 }

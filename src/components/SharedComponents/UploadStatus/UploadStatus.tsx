@@ -1,16 +1,13 @@
 import classnames from "classnames";
-import { INatIconButton } from "components/SharedComponents";
+import { CircleDots, INatIcon, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { ReactNode } from "react";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import FadeOutFadeInIcon from "./FadeOutFadeInIcon";
-import ProgressArrow from "./ProgressArrow";
 import UploadCompleteIcon from "./UploadCompleteIcon";
 import UploadProgressIcon from "./UploadProgressIcon";
-import UploadQueuedRotatingIcon from "./UploadQueuedRotatingIcon";
-import UploadStartIcon from "./UploadStartIcon";
 
 const iconClasses = [
   "items-center",
@@ -58,64 +55,72 @@ const UploadStatus = ( {
     return t( "Upload-Complete" );
   };
 
-  const showProgressArrow = ( ) => (
-    <ProgressArrow
-      layout={layout}
-      color={color}
-      progress={progress}
-      uniqueKey={uniqueKey}
-    />
-  );
-
   const iconWrapperClasses = classnames( {
     "items-center justify-center w-[49px]": layout === "vertical"
   } );
 
   const displayUploadStatus = ( ) => {
     if ( progress === 0 && !queued ) {
-      if ( needsEdit ) {
-        return (
-          <View className={iconWrapperClasses}>
-            <INatIconButton
-              icon="pencil"
-              color={color}
-              size={15}
-              onPress={onPress}
-              disabled={false}
-              accessibilityLabel={t( "Edit-Observation" )}
-            />
-          </View>
-        );
-      }
       return (
         <View className={iconWrapperClasses}>
-          <UploadStartIcon
-            color={color}
-            uploadSingleObservation={onPress}
-            uniqueKey={uniqueKey}
-          />
+          <INatIconButton
+            accessibilityLabel={
+              needsEdit
+                ? t( "Edit-Observation" )
+                : t( "Start-upload" )
+            }
+            testID={
+              needsEdit
+                ? `UploadIcon.needsEdit.${uniqueKey}`
+                : `UploadIcon.start.${uniqueKey}`
+            }
+            onPress={onPress}
+          >
+            <CircleDots
+              color={color}
+              className={classnames( iconClasses )}
+            >
+              <INatIcon
+                name={
+                  needsEdit
+                    ? "pencil"
+                    : "upload-arrow"
+                }
+                color={color}
+                size={15}
+              />
+            </CircleDots>
+          </INatIconButton>
         </View>
       );
     }
+
     if ( progress === 0 && queued ) {
       return (
         <View className={iconWrapperClasses}>
-          <UploadQueuedRotatingIcon
+          <CircleDots
+            animated
             color={color}
-            showProgressArrow={showProgressArrow}
-            iconClasses={iconClasses}
-          />
+            className={classnames( iconClasses )}
+          >
+            <INatIcon
+              name="upload-arrow"
+              color={color}
+              size={15}
+            />
+          </CircleDots>
         </View>
       );
     }
+
     if ( progress < 1 ) {
       return (
         <View className={iconWrapperClasses}>
           <UploadProgressIcon
             color={color}
             progress={progress}
-            showProgressArrow={showProgressArrow}
             iconClasses={iconClasses}
+            uniqueKey={uniqueKey}
           />
         </View>
       );

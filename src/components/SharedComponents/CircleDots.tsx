@@ -1,24 +1,31 @@
-import classnames from "classnames";
 import { INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import type { PropsWithChildren } from "react";
 import React, { useCallback, useEffect } from "react";
 import Reanimated, {
-  Easing, interpolate,
-  useAnimatedStyle, useDerivedValue, useSharedValue, withRepeat,
+  Easing,
+  interpolate,
+  useAnimatedStyle,
+  useDerivedValue,
+  useSharedValue,
+  withRepeat,
   withTiming
 } from "react-native-reanimated";
+import colors from "styles/tailwindColors";
 
-type Props = {
-  iconClasses: Array<string>;
-  color: string;
-  showProgressArrow: React.JSX.Element;
+interface Props extends PropsWithChildren {
+  animated?: boolean;
+  className?: string;
+  color?: string;
 }
+
 const AnimatedView = Reanimated.createAnimatedComponent( View );
 
-const UploadQueuedRotatingIcon = ( {
-  showProgressArrow,
-  iconClasses,
-  color
+const CircleDots = ( {
+  animated,
+  children,
+  className,
+  color = String( colors?.darkGray || "black" )
 }: Props ) => {
   const animation = useSharedValue( 0 );
   const rotation = useDerivedValue( ( ) => interpolate(
@@ -44,17 +51,28 @@ const UploadQueuedRotatingIcon = ( {
     );
   }, [animation] );
 
+  const stopAnimation = useCallback( ( ) => {
+    animation.value = 0;
+  }, [animation] );
+
   useEffect( ( ) => {
-    startAnimation( );
-  }, [startAnimation] );
+    if ( animated ) {
+      startAnimation( );
+    } else {
+      stopAnimation( );
+    }
+  }, [animated, startAnimation, stopAnimation] );
 
   return (
-    <View className={classnames( iconClasses )}>
-      {showProgressArrow( )}
+    <View className={`${className} justify-center items-center`}>
+      <View className="absolute">
+        { children }
+      </View>
       <AnimatedView style={rotate} testID="UploadStatus.QueuedRotatingIcon">
         <INatIcon name="circle-dots" color={color} size={33} />
       </AnimatedView>
     </View>
   );
 };
-export default UploadQueuedRotatingIcon;
+
+export default CircleDots;

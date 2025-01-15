@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import { INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import {
   GestureResponderEvent,
   Platform,
@@ -10,10 +10,9 @@ import {
 } from "react-native";
 import colors from "styles/tailwindColors";
 
-interface Props {
+interface Props extends PropsWithChildren {
   accessibilityHint?: string;
   accessibilityLabel: string;
-  children?: React.ReactNode;
   // There is probably a better way to indicate that this tailwind prop is
   // supported everywhere, but I haven't found it yet. ~~~kueda 20241016
   // eslint-disable-next-line react/no-unused-prop-types
@@ -21,7 +20,7 @@ interface Props {
   color?: string;
   disabled?: boolean;
   height?: number;
-  icon: string;
+  icon?: string;
   onPress: ( _event?: GestureResponderEvent ) => void;
   // Inserts a white or colored view under the icon so an holes in the shape show as
   // white

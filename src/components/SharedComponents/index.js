@@ -14,6 +14,7 @@ export { default as TransparentCircleButton } from "./Buttons/TransparentCircleB
 export { default as Carousel } from "./Carousel";
 export { default as CarouselDots } from "./CarouselDots";
 export { default as Checkbox } from "./Checkbox";
+export { default as CircleDots } from "./CircleDots";
 export { default as ConfidenceInterval } from "./ConfidenceInterval";
 export { default as DateDisplay } from "./DateDisplay";
 export { default as DateTimePicker } from "./DateTimePicker";
