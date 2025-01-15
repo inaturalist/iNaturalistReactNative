@@ -20,12 +20,18 @@ import * as ImagePicker from "react-native-image-picker";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import { sleep } from "sharedHelpers/util.ts";
+import { useLayoutPrefs } from "sharedHooks";
+import { isDebugMode } from "sharedHooks/useDebugMode";
 import useExitObservationsFlow from "sharedHooks/useExitObservationFlow.ts";
 import useStore from "stores/useStore";
 
 const MAX_PHOTOS_ALLOWED = 20;
+const DEFAULT_MODE_MAX_PHOTOS_ALLOWED = 1;
 
 const PhotoGallery = ( ): Node => {
+  const {
+    isDefaultMode
+  } = useLayoutPrefs( );
   const navigation = useNavigation( );
   const [photoGalleryShown, setPhotoGalleryShown] = useState( false );
   const setPhotoImporterState = useStore( state => state.setPhotoImporterState );
@@ -47,14 +53,26 @@ const PhotoGallery = ( ): Node => {
   const fromGroupPhotos = params
     ? params.fromGroupPhotos
     : false;
+  const lastScreen = params?.lastScreen;
 
   const navToObsEdit = useCallback( ( ) => navigation.navigate( "ObsEdit", {
     lastScreen: "PhotoGallery"
   } ), [navigation] );
 
-  const navToSuggestions = useCallback( ( ) => navigation.navigate( "Suggestions", {
-    lastScreen: "PhotoGallery"
-  } ), [navigation] );
+  const advanceToMatchScreen = lastScreen === "Camera"
+    && isDefaultMode
+    && isDebugMode( );
+
+  const navToMatchOrSuggestions = useCallback( ( ) => {
+    if ( advanceToMatchScreen ) {
+      return navigation.navigate( "Match", {
+        lastScreen: "PhotoGallery"
+      } );
+    }
+    return navigation.navigate( "Suggestions", {
+      lastScreen: "PhotoGallery"
+    } );
+  }, [navigation, advanceToMatchScreen] );
 
   const moveImagesToDocumentsDirectory = async selectedImages => {
     const path = galleryPhotosPath;
@@ -93,7 +111,9 @@ const PhotoGallery = ( ): Node => {
     // According to the native code of the image picker library, it never rejects the promise,
     // just returns a response object with errorCode
     const response = await ImagePicker.launchImageLibrary( {
-      selectionLimit: MAX_PHOTOS_ALLOWED,
+      selectionLimit: advanceToMatchScreen
+        ? DEFAULT_MODE_MAX_PHOTOS_ALLOWED
+        : MAX_PHOTOS_ALLOWED,
       mediaType: "photo",
       includeBase64: false,
       forceOldAndroidPhotoPicker: true,
@@ -169,7 +189,7 @@ const PhotoGallery = ( ): Node => {
       setPhotoImporterState( {
         observations: [newObservation]
       } );
-      navToSuggestions();
+      navToMatchOrSuggestions();
       setPhotoGalleryShown( false );
     } else {
       // navigate to group photos
@@ -184,6 +204,7 @@ const PhotoGallery = ( ): Node => {
       setPhotoGalleryShown( false );
     }
   }, [
+    advanceToMatchScreen,
     currentObservation,
     currentObservationIndex,
     evidenceToAdd,
@@ -193,7 +214,7 @@ const PhotoGallery = ( ): Node => {
     groupedPhotos,
     navigation,
     navToObsEdit,
-    navToSuggestions,
+    navToMatchOrSuggestions,
     numOfObsPhotos,
     observations,
     params,

@@ -32,7 +32,10 @@ const Gallery = ( { rotatableAnimatedStyle }: Props ) => {
           "border-2",
           "rounded"
         )}
-        onPress={( ) => navigation.push( "PhotoGallery", { cmonBack: true } )}
+        onPress={( ) => navigation.push( "PhotoGallery", {
+          cmonBack: true,
+          lastScreen: "Camera"
+        } )}
         accessibilityLabel={t( "Photo-importer" )}
         accessibilityHint={t( "Navigates-to-photo-importer" )}
         icon="gallery"
