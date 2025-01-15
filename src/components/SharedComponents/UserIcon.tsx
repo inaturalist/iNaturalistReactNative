@@ -9,6 +9,8 @@ interface Props {
   large?: boolean;
   medium?: boolean;
   small?: boolean;
+  // size of the icon; overrides large, medium, and small
+  size?: number;
   uri?: string;
 }
 
@@ -16,10 +18,12 @@ const UserIcon = ( {
   active,
   large,
   medium,
+  size: sizeProp,
   small,
   uri
 }: Props ) => {
   const getSize = ( ) => {
+    if ( sizeProp ) return sizeProp;
     if ( small ) {
       return 22;
     }

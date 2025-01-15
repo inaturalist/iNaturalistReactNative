@@ -1,4 +1,7 @@
+import type { ApiUser } from "api/types";
 import Realm, { ObjectSchema } from "realm";
+
+import type { RealmUser } from "./types";
 
 class User extends Realm.Object {
   static FIELDS = {
@@ -20,8 +23,9 @@ class User extends Realm.Object {
   };
 
   // getting user icon data from production instead of staging
-  static uri( user: { icon_url?: string } ) {
-    return user?.icon_url?.replace( "staticdev", "static" );
+  static uri( user?: RealmUser | ApiUser ) {
+    const iconUrl = ( user as ApiUser )?.icon_url || ( user as RealmUser )?.iconUrl;
+    return iconUrl?.replace( "staticdev", "static" );
   }
 
   static currentUser( realm: Realm ) {

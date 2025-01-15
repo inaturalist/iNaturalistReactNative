@@ -191,7 +191,7 @@ const MyObservationsContainer = ( ): Node => {
   // this component again after returning from ObsEdit
   const onScroll = scrollEvent => setMyObsOffset( scrollEvent.nativeEvent.contentOffset.y );
 
-  if ( isDebugMode() && !currentUser && observations.length > 0 ) {
+  if ( isDebugMode() && observations.length > 0 ) {
     return (
       <MyObservationsSimple
         currentUser={currentUser}

@@ -67,6 +67,7 @@ export interface RealmObservation extends RealmObject {
 
 export interface RealmUser extends RealmObject {
   iconUrl?: string;
+  iconUrl?: string;
   id: number;
   locale?: string;
   login?: string;

@@ -8,6 +8,7 @@ import {
   Heading5,
   RotatingINatIconButton,
   Tabs,
+  UserIcon,
   ViewWrapper
 } from "components/SharedComponents";
 import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList.tsx";
@@ -18,8 +19,10 @@ import React, { useCallback, useMemo, useState } from "react";
 import Realm from "realm";
 import type {
   RealmObservation,
-  RealmTaxon
+  RealmTaxon,
+  RealmUser
 } from "realmModels/types";
+import User from "realmModels/User.ts";
 import { useGridLayout, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
@@ -29,6 +32,7 @@ import LoginSheet from "./LoginSheet";
 const { useRealm } = RealmContext;
 
 interface Props {
+  currentUser?: RealmUser;
   handleIndividualUploadPress: ( uuid: string ) => void;
   handleSyncButtonPress: ( ) => void;
   handlePullToRefresh: ( ) => void;
@@ -57,6 +61,7 @@ const OBSERVATIONS_TAB = "observations";
 const TAXA_TAB = "taxa";
 
 const MyObservationsSimple = ( {
+  currentUser,
   handleIndividualUploadPress,
   handleSyncButtonPress,
   handlePullToRefresh,
@@ -151,7 +156,20 @@ const MyObservationsSimple = ( {
           </Pressable>
         ) }
         <View className="flex-row justify-between items-center px-5 py-1">
-          <Heading3>{ t( "My-Observations" ) }</Heading3>
+          <View className="flex-row items-center">
+            {currentUser && (
+              <View className="mr-2">
+                <UserIcon size={32} uri={User.uri( currentUser )} />
+              </View>
+            )}
+            <Heading3>
+              {
+                currentUser
+                  ? currentUser.login
+                  : t( "My-Observations" )
+              }
+            </Heading3>
+          </View>
           <RotatingINatIconButton
             icon={
               numUnuploadedObservations > 0
