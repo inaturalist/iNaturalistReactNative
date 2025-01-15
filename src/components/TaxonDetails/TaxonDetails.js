@@ -290,6 +290,8 @@ const TaxonDetails = ( ): Node => {
     <CarouselDots length={photos.length} index={mediaIndex} />
   );
 
+  const showExploreButton = !hideNavButtons && isConnected && !fromMatch;
+
   const displayTaxonTitle = useCallback( ( ) => (
     <View
       className="w-full flex-row items-center pl-5 pr-5 pb-5"
@@ -300,7 +302,7 @@ const TaxonDetails = ( ): Node => {
         showSpeciesSeenCheckmark={currentUserHasSeenTaxon}
         taxon={taxon}
       />
-      {!hideNavButtons && isConnected && (
+      {showExploreButton && (
         <View className="ml-2">
           <INatIconButton
             icon="compass-rose-outline"
@@ -330,8 +332,7 @@ const TaxonDetails = ( ): Node => {
     </View>
   ), [
     currentUserHasSeenTaxon,
-    hideNavButtons,
-    isConnected,
+    showExploreButton,
     navigation,
     setExploreView,
     t,
