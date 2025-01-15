@@ -21,8 +21,7 @@ class User extends Realm.Object {
 
   // getting user icon data from production instead of staging
   static uri( user: { icon_url?: string } ) {
-    return user?.icon_url
-      && { uri: user?.icon_url.replace( "staticdev", "static" ) };
+    return user?.icon_url?.replace( "staticdev", "static" );
   }
 
   static currentUser( realm: Realm ) {

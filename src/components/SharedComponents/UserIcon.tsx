@@ -1,22 +1,24 @@
-// @flow
-
 import { INatIcon } from "components/SharedComponents";
-import { FasterImageView } from "components/styledComponents";
-import type { Node } from "react";
+import { FasterImageView, View } from "components/styledComponents";
 import React from "react";
+import type { ImageStyle } from "react-native";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  uri: Object,
-  small?: boolean,
-  active?: boolean,
-  large?: boolean,
-  medium?: boolean
+interface Props {
+  active?: boolean;
+  large?: boolean;
+  medium?: boolean;
+  small?: boolean;
+  uri?: string;
 }
 
 const UserIcon = ( {
-  uri, small, active, large, medium
-}: Props ): Node => {
+  active,
+  large,
+  medium,
+  small,
+  uri
+}: Props ) => {
   const getSize = ( ) => {
     if ( small ) {
       return 22;
@@ -34,30 +36,40 @@ const UserIcon = ( {
 
   // For unknown reasons, the green border doesn't show up on Android using nativewind classNames
   // but it works with style, might warrant further investigation or an issue in nativewind
-  const style = {
+  const style: ImageStyle = {
     width: size,
     height: size,
     overflow: "hidden"
   };
-  const activeStyle = {
-    borderColor: colors.inatGreen,
+  const activeStyle: ImageStyle = {
+    borderColor: String( colors?.inatGreen ),
     borderWidth: 3,
     borderRadius: size / 2
   };
   return (
-    uri?.uri
+    uri
       ? (
-        <FasterImageView
-          testID="UserIcon.photo"
-          style={[active && activeStyle, style]}
-          source={{
-            url: uri?.uri,
-            borderRadius: size / 2,
-            resizeMode: "cover"
-          }}
+        <View
           accessibilityRole="image"
           accessibilityIgnoresInvertColors
-        />
+          testID="UserIcon.photo"
+        >
+          <FasterImageView
+            style={{
+              ...(
+                active
+                  ? activeStyle
+                  : {}
+              ),
+              ...style
+            }}
+            source={{
+              url: uri,
+              borderRadius: size / 2,
+              resizeMode: "cover"
+            }}
+          />
+        </View>
       )
       : (
         <INatIcon
