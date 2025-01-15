@@ -73,7 +73,7 @@ const MyObservationsSimple = ( {
   observations,
   onEndReached,
   onListLayout,
-  onScroll: _onScroll,
+  onScroll,
   setShowLoginSheet,
   showLoginSheet,
   showNoResults,
@@ -218,6 +218,7 @@ const MyObservationsSimple = ( {
               layout={layout}
               onEndReached={onEndReached}
               onLayout={onListLayout}
+              onScroll={onScroll}
               ref={listRef}
               showObservationsEmptyScreen
               showNoResults={showNoResults}

@@ -5,6 +5,7 @@ export default define( "LocalObservation", faker => ( {
   // This is a Realm object method that we use to see if a record was deleted or not
   isValid: jest.fn( ( ) => true ),
   wasSynced: jest.fn( ( ) => false ),
+  missingBasics: jest.fn( ( ) => false ),
   needsSync: jest.fn( ( ) => true ),
   observationPhotos: [],
   observationSounds: [],

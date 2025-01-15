@@ -1,14 +1,19 @@
 // @flow
 import classnames from "classnames";
 import {
-  DateDisplay, DisplayTaxonName, ObservationLocation
+  DateDisplay,
+  DisplayTaxonName,
+  INatIcon,
+  ObservationLocation
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useMemo } from "react";
 import Photo from "realmModels/Photo";
+import { useDebugMode } from "sharedHooks";
 import { UPLOAD_IN_PROGRESS } from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
+import colors from "styles/tailwindColors";
 
 import ObsImagePreview from "./ObsImagePreview";
 import ObsUploadStatus from "./ObsUploadStatus";
@@ -40,12 +45,21 @@ const ObsListItem = ( {
   unsynced
 }: Props ): Node => {
   const uploadStatus = useStore( state => state.uploadStatus );
+  const { isDebug } = useDebugMode( );
 
   const belongsToCurrentUser = observation?.user?.login === currentUser?.login;
 
   const isObscured = observation?.obscured && !belongsToCurrentUser;
   const geoprivacy = observation?.geoprivacy;
   const taxonGeoprivacy = observation?.taxon_geoprivacy;
+  const missingBasics = (
+    // Currently just a test
+    isDebug
+    // Only works for Realm observations
+    && typeof ( observation.needsSync ) === "function"
+    && observation.needsSync()
+    && observation.missingBasics()
+  );
 
   const displayTaxonName = useMemo( ( ) => (
     <DisplayTaxonName
@@ -66,18 +80,29 @@ const ObsListItem = ( {
       testID={`MyObservations.obsListItem.${observation.uuid}`}
       className="flex-row px-[15px] my-[11px]"
     >
-      <ObsImagePreview
-        source={{
-          uri: Photo.displayLocalOrRemoteSquarePhoto(
-            photoFromObservation( observation )
-          )
-        }}
-        obsPhotosCount={photoCountFromObservation( observation )}
-        hasSound={observationHasSound( observation )}
-        opaque={unsynced}
-        isSmall
-        iconicTaxonName={observation.taxon?.iconic_taxon_name}
-      />
+      <View>
+        <ObsImagePreview
+          source={{
+            uri: Photo.displayLocalOrRemoteSquarePhoto(
+              photoFromObservation( observation )
+            )
+          }}
+          obsPhotosCount={photoCountFromObservation( observation )}
+          hasSound={observationHasSound( observation )}
+          opaque={unsynced}
+          isSmall
+          iconicTaxonName={observation.taxon?.iconic_taxon_name}
+        />
+        {missingBasics && (
+          <View className="absolute bottom-2 right-2">
+            <INatIcon
+              name="triangle-exclamation"
+              color={colors.warningRed}
+              size={16}
+            />
+          </View>
+        )}
+      </View>
       <View className="pr-[25px] flex-1 ml-[10px] justify-center">
         {displayTaxonName}
         {!hideMetadata && (

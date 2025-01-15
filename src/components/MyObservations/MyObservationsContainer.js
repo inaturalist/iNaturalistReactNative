@@ -3,7 +3,8 @@
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import navigateToObsEdit from "components/ObsEdit/helpers/navigateToObsEdit.ts";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, {
@@ -38,6 +39,7 @@ const MyObservationsContainer = ( ): Node => {
   const { t } = useTranslation( );
   const realm = useRealm( );
   const listRef = useRef( );
+  const navigation = useNavigation( );
 
   const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
   const uploadQueue = useStore( state => state.uploadQueue );
@@ -50,6 +52,8 @@ const MyObservationsContainer = ( ): Node => {
   const myObsOffsetToRestore = useStore( state => state.myObsOffsetToRestore );
   const setMyObsOffset = useStore( state => state.setMyObsOffset );
   const uploadStatus = useStore( state => state.uploadStatus );
+  const prepareObsEdit = useStore( state => state.prepareObsEdit );
+  const setMyObsOffsetToRestore = useStore( state => state.setMyObsOffsetToRestore );
 
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
@@ -116,23 +120,32 @@ const MyObservationsContainer = ( ): Node => {
   const handleIndividualUploadPress = useCallback( uuid => {
     const uploadExists = uploadQueue.includes( uuid );
     if ( uploadExists ) return;
+    const observation = realm.objectForPrimaryKey( "Observation", uuid );
+    if ( isDebugMode( ) && observation.missingBasics( ) ) {
+      // TODO refactor this into a hook
+      prepareObsEdit( observation );
+      navigateToObsEdit( navigation, setMyObsOffsetToRestore );
+      return;
+    }
     if ( !confirmLoggedIn( ) ) return;
     if ( !confirmInternetConnection( ) ) return;
-    const observation = realm.objectForPrimaryKey( "Observation", uuid );
     addTotalToolbarIncrements( observation );
     addToUploadQueue( uuid );
     if ( uploadStatus === UPLOAD_PENDING ) {
       setStartUploadObservations( );
     }
   }, [
-    confirmLoggedIn,
-    uploadQueue,
-    confirmInternetConnection,
-    realm,
     addTotalToolbarIncrements,
     addToUploadQueue,
+    confirmInternetConnection,
+    confirmLoggedIn,
+    prepareObsEdit,
+    realm,
+    setMyObsOffsetToRestore,
     setStartUploadObservations,
-    uploadStatus
+    uploadQueue,
+    uploadStatus,
+    navigation
   ] );
 
   // 20241107 amanda - this seems to be a culprit for the tab bar being less

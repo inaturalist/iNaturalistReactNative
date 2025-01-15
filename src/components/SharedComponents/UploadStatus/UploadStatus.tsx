@@ -1,4 +1,5 @@
 import classnames from "classnames";
+import { INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { ReactNode } from "react";
 import { useTranslation } from "sharedHooks";
@@ -22,6 +23,7 @@ type Props = {
   white: boolean,
   layout: "horizontal" | "vertical";
   children: ReactNode;
+  needsEdit?: boolean;
   onPress: ( ) => void;
   progress: number;
   uniqueKey: string;
@@ -32,6 +34,7 @@ const UploadStatus = ( {
   white = false,
   layout,
   children,
+  needsEdit,
   onPress,
   progress,
   uniqueKey,
@@ -70,6 +73,20 @@ const UploadStatus = ( {
 
   const displayUploadStatus = ( ) => {
     if ( progress === 0 && !queued ) {
+      if ( needsEdit ) {
+        return (
+          <View className={iconWrapperClasses}>
+            <INatIconButton
+              icon="pencil"
+              color={color}
+              size={15}
+              onPress={onPress}
+              disabled={false}
+              accessibilityLabel={t( "Edit-Observation" )}
+            />
+          </View>
+        );
+      }
       return (
         <View className={iconWrapperClasses}>
           <UploadStartIcon
