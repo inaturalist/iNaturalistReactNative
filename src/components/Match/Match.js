@@ -19,7 +19,6 @@ type Props = {
   observationPhoto: string,
   handleSaveOrDiscardPress: ( ) => void,
   navToTaxonDetails: ( ) => void,
-  taxon: Object,
   handleLocationPickerPressed: ( ) => void,
   suggestions: Object,
   onTaxonChosen: ( ) => void
@@ -30,7 +29,6 @@ const Match = ( {
   observationPhoto,
   handleSaveOrDiscardPress,
   navToTaxonDetails,
-  taxon,
   handleLocationPickerPressed,
   suggestions,
   onTaxonChosen
@@ -38,13 +36,16 @@ const Match = ( {
   const { t } = useTranslation( );
 
   const latitude = observation?.privateLatitude || observation?.latitude;
+  const topSuggestion = suggestions?.topSuggestion;
+  const otherSuggestions = suggestions?.otherSuggestions;
+  const taxon = topSuggestion?.taxon;
 
   return (
     <>
       <ScrollViewWrapper>
         <Divider />
         <View className="p-5">
-          <MatchHeader topSuggestion={suggestions?.topSuggestion} />
+          <MatchHeader topSuggestion={topSuggestion} />
         </View>
         <PhotosSection
           taxon={taxon}
@@ -75,7 +76,7 @@ const Match = ( {
           />
           <AdditionalSuggestionsScroll
             onTaxonChosen={onTaxonChosen}
-            otherSuggestions={suggestions?.otherSuggestions}
+            otherSuggestions={otherSuggestions}
           />
           {!latitude && (
             <Button

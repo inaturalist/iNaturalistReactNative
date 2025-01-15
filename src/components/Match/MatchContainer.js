@@ -18,7 +18,7 @@ import React, {
 } from "react";
 import saveObservation from "sharedHelpers/saveObservation.ts";
 import {
-  useExitObservationFlow, useLocationPermission, useSuggestions, useTaxon
+  useExitObservationFlow, useLocationPermission, useSuggestions
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -75,7 +75,8 @@ const MatchContainer = ( ) => {
   const currentObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
   const cameraRollUris = useStore( state => state.cameraRollUris );
-  const matchScreenSuggestion = useStore( state => state.matchScreenSuggestion );
+  // likely need aiCameraSuggestion for loading screen
+  // const aICameraSuggestion = useStore( state => state.aICameraSuggestion );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const navigation = useNavigation( );
   const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
@@ -85,24 +86,8 @@ const MatchContainer = ( ) => {
   const observationPhoto = obsPhotos?.[0]?.photo?.url
     || obsPhotos?.[0]?.photo?.localFilePath;
 
-  const { taxon } = useTaxon( matchScreenSuggestion?.taxon );
   const realm = useRealm( );
   const exitObservationFlow = useExitObservationFlow( );
-
-  const navToTaxonDetails = ( ) => {
-    navigation.push( "TaxonDetails", { id: taxon?.id } );
-  };
-
-  const handleSaveOrDiscardPress = async action => {
-    if ( action === "save" ) {
-      updateObservationKeys( {
-        taxon,
-        owners_identification_from_vision: true
-      } );
-      await saveObservation( getCurrentObservation( ), cameraRollUris, realm );
-    }
-    exitObservationFlow( );
-  };
 
   const openLocationPicker = ( ) => {
     navigation.navigate( "LocationPicker" );
@@ -211,16 +196,33 @@ const MatchContainer = ( ) => {
     return null;
   }
 
-  if ( suggestions?.otherSuggestions?.length > 0 && !suggestions?.topSuggestion ) {
+  const topSuggestion = suggestions?.topSuggestion;
+  const hasNoOtherSuggestions = suggestions?.otherSuggestions?.length === 0;
+
+  if ( !hasNoOtherSuggestions && !topSuggestion ) {
     const newTopSuggestion = suggestions?.otherSuggestions.pop( );
     suggestions.topSuggestion = newTopSuggestion;
   }
 
-  // This might happen when this component is still mounted in the background
-  // but the state is getting torn down b/c the user exited the obs flow. If
-  // we render the match screen in that scenario we'll get some errors due to
-  // the missing taxon.
-  if ( !matchScreenSuggestion ) return null;
+  const navToTaxonDetails = ( ) => {
+    navigation.push( "TaxonDetails", { id: topSuggestion?.id } );
+  };
+
+  const handleSaveOrDiscardPress = async action => {
+    if ( action === "save" ) {
+      updateObservationKeys( {
+        taxon: topSuggestion?.taxon,
+        owners_identification_from_vision: true
+      } );
+      await saveObservation( getCurrentObservation( ), cameraRollUris, realm );
+    }
+    exitObservationFlow( );
+  };
+
+  // TODO: replace with a loading screen whenever designs are ready
+  if ( hasNoOtherSuggestions && !topSuggestion ) {
+    return null;
+  }
 
   return (
     <>
@@ -230,7 +232,6 @@ const MatchContainer = ( ) => {
         onTaxonChosen={onTaxonChosen}
         handleSaveOrDiscardPress={handleSaveOrDiscardPress}
         navToTaxonDetails={navToTaxonDetails}
-        taxon={taxon}
         handleLocationPickerPressed={handleLocationPickerPressed}
         suggestions={suggestions}
       />

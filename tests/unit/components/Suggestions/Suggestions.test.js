@@ -107,7 +107,7 @@ describe( "Suggestions", ( ) => {
     };
 
     beforeEach( ( ) => {
-      useStore.setState( { matchScreenSuggestion: mockVisionResult } );
+      useStore.setState( { aICameraSuggestion: mockVisionResult } );
     } );
 
     it( "should display loading wheel and vision result when coming from AICamera", async ( ) => {

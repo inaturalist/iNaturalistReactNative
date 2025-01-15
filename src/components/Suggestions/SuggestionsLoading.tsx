@@ -20,7 +20,7 @@ const SuggestionsLoading = ( {
   onTaxonChosen
 }: Props ): Node => {
   const { t } = useTranslation( );
-  const aiCameraSuggestion = useStore( state => state.matchScreenSuggestion );
+  const aiCameraSuggestion = useStore( state => state.aICameraSuggestion );
 
   const showPrediction = ( aiCameraSuggestion && aiCameraSuggestion?.taxon?.rank_level <= 40 )
     || false;
