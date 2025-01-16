@@ -78,7 +78,7 @@ const ObsGridItem = ( {
       iconicTaxonName={observation.taxon?.iconic_taxon_name}
       white
     >
-      <View className="absolute bottom-0 flex p-2 w-full">
+      <View className="absolute bottom-0 items-start p-2">
         <ObsUploadStatus
           classNameMargin="mb-1"
           explore={explore}

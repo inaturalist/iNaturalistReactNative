@@ -129,6 +129,10 @@ const ObsListItem = ( {
       <View
         className={classnames(
           "flex-0 justify-start flex-row",
+          // Hard-coding these dimensions keeps the layout from jumping around
+          // when the children change
+          "w-[51px]",
+          "h-[65px]",
           { "justify-center": uploadStatus === UPLOAD_IN_PROGRESS }
         )}
       >

@@ -55,14 +55,14 @@ const UploadStatus = ( {
     return t( "Upload-Complete" );
   };
 
-  const iconWrapperClasses = classnames( {
-    "items-center justify-center w-[49px]": layout === "vertical"
-  } );
+  const wrapperClassName = layout === "vertical"
+    ? classnames( "items-center justify-center w-[49px]" )
+    : "w-[44px]";
 
   const displayUploadStatus = ( ) => {
     if ( progress === 0 && !queued ) {
       return (
-        <View className={iconWrapperClasses}>
+        <View className={wrapperClassName}>
           <INatIconButton
             accessibilityLabel={
               needsEdit
@@ -97,7 +97,7 @@ const UploadStatus = ( {
 
     if ( progress === 0 && queued ) {
       return (
-        <View className={iconWrapperClasses}>
+        <View className={wrapperClassName}>
           <CircleDots
             animated
             color={color}
@@ -115,7 +115,7 @@ const UploadStatus = ( {
 
     if ( progress < 1 ) {
       return (
-        <View className={iconWrapperClasses}>
+        <View className={wrapperClassName}>
           <UploadProgressIcon
             color={color}
             progress={progress}
@@ -128,7 +128,7 @@ const UploadStatus = ( {
     // Test of end state before animation
     if ( progress === 10 ) {
       return (
-        <View className={iconWrapperClasses}>
+        <View className={wrapperClassName}>
           <UploadCompleteIcon
             iconClasses={iconClasses}
             completeColor={completeColor}
@@ -139,13 +139,13 @@ const UploadStatus = ( {
     // Test of end state with all elements overlayed
     if ( progress === 11 ) {
       return (
-        <View className="justify-center">
+        <View>
           <View
-            className={classnames( "absolute", {
+            className={classnames( "absolute", "h-full justify-center", {
               "bottom-0": layout === "horizontal"
             } )}
           >
-            <View className={iconWrapperClasses}>
+            <View className={wrapperClassName}>
               <UploadCompleteIcon
                 iconClasses={iconClasses}
                 completeColor={completeColor}
@@ -158,7 +158,7 @@ const UploadStatus = ( {
     }
     return (
       <FadeOutFadeInIcon
-        iconWrapperClasses={iconWrapperClasses}
+        iconWrapperClasses={wrapperClassName}
         iconClasses={iconClasses}
         completeColor={completeColor}
         layout={layout}
@@ -173,10 +173,12 @@ const UploadStatus = ( {
     <View
       accessible
       accessibilityLabel={accessibilityLabelText( )}
-      className={classnames( {
-        "h-[44px] justify-end": layout === "horizontal",
-        "justify-center": layout !== "horizontal"
-      } )}
+      className={classnames(
+        "justify-center",
+        layout === "horizontal"
+          ? "h-[44px]"
+          : "h-[65px]"
+      )}
     >
       {displayUploadStatus( )}
     </View>

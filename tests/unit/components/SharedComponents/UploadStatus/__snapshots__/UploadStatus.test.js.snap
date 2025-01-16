@@ -10,6 +10,9 @@ exports[`UploadStatus displays complete icon when progress is 1 1`] = `
         {
           "justifyContent": "center",
         },
+        {
+          "height": 65,
+        },
       ],
     ]
   }
@@ -21,11 +24,27 @@ exports[`UploadStatus displays complete icon when progress is 1 1`] = `
           {
             "position": "absolute",
           },
+          {
+            "height": "100%",
+          },
+          {
+            "justifyContent": "center",
+          },
         ],
       ]
     }
   >
-    <View>
+    <View
+      style={
+        [
+          [
+            {
+              "width": 44,
+            },
+          ],
+        ]
+      }
+    >
       <View
         collapsable={false}
         entering={
@@ -143,11 +162,24 @@ exports[`UploadStatus displays progress bar when progress is greater than 5% 1`]
         {
           "justifyContent": "center",
         },
+        {
+          "height": 65,
+        },
       ],
     ]
   }
 >
-  <View>
+  <View
+    style={
+      [
+        [
+          {
+            "width": 44,
+          },
+        ],
+      ]
+    }
+  >
     <View
       accessibilityLabel="Upload in progress"
       style={
@@ -234,11 +266,24 @@ exports[`UploadStatus displays rotating circle progress when upload is queued bu
         {
           "justifyContent": "center",
         },
+        {
+          "height": 65,
+        },
       ],
     ]
   }
 >
-  <View>
+  <View
+    style={
+      [
+        [
+          {
+            "width": 44,
+          },
+        ],
+      ]
+    }
+  >
     <View
       style={
         [
@@ -349,11 +394,24 @@ exports[`UploadStatus displays start icon when upload is unsynced and not queued
         {
           "justifyContent": "center",
         },
+        {
+          "height": 65,
+        },
       ],
     ]
   }
 >
-  <View>
+  <View
+    style={
+      [
+        [
+          {
+            "width": 44,
+          },
+        ],
+      ]
+    }
+  >
     <View
       accessibilityLabel="Start upload"
       accessibilityRole="button"
