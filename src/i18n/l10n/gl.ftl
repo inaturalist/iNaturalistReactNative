@@ -82,7 +82,6 @@ Media-Type = Tipo de Medios
 Menu = Menú
 Missing-Date = Falta a Data
 Months = Meses
-MY-OBSERVATIONS = AS MIÑAS OBSERVACIÓNS
 Native = Nativa
 NEARBY = PRÓXIMAS
 Nearby = Próximas

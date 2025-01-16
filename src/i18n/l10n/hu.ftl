@@ -7,6 +7,9 @@
 
 ABOUT = RÓLA
 ACCOUNT-SETTINGS = FIÓKBEÁLLÍTÁSOK
+Add-location-for-better-identifications = A pontos azonosításhoz hely is szükséges
+ADD-LOCATION-FOR-BETTER-IDS = A PONTOS AZONOSÍTÁSHOZ HELY IS SZÜKSÉGES
+Add-location-to-refresh-suggestions = Hely hozzáadásával a javaslatok frissülnek
 Advanced--interface-mode-with-explainer = Haladó (több fénykép és hang feltöltése)
 Agree = Egyetért
 AGREE = EGYETÉRTEK
@@ -27,6 +30,7 @@ Collection-Project = Gyűjtőprojekt
 Community = Közösség
 Community-based = Közösségtől származó
 Community-Guidelines = Közösségi irányelvek
+Confidence--label = Bizonyosság
 CONNECT-TO-NATURE = KAPCSOLÓDJ A TERMÉSZETHEZ
 Connect-to-Nature = Kapcsolódj a természethez
 CONTINUE = FOLYTATÁS
@@ -91,6 +95,7 @@ If-you-leave-x-of-your-observations-removed =
 improving--identification = Javító
 iNat-is-global-community = Az iNaturalist természetbarátok globális közössége, amely az élőlények kollektív megfigyelése és azonosítása révén tudományos szempontból értékes adatokat szolgáltat a természetről.
 Introduced = Jövevény
+It-might-also-be = Ez sem kizárt:
 January = Január
 JOIN = CSATLAKOZÁS
 JOIN-PROJECT--question = CSATLAKOZOL A PROJEKTHEZ?
@@ -99,6 +104,7 @@ July = Július
 June = Június
 leading--identification = Vezető
 Learn-More = További információ
+LEARN-MORE-ABOUT-THIS-SPECIES = TOVÁBBI INFORMÁCIÓ A FAJRÓL
 LEAVE-PROJECT--question = KILÉPSZ A PROJEKTBŐL?
 Location = Hely
 Log-in = Bejelentkezés
@@ -113,6 +119,7 @@ Missing-Date = Hiányzó dátum
 Months = Hónapok
 More = Továbbiak
 MY-CONTENT--notifications = TARTALMAIM
+My-Observations = Megfigyeléseim
 Native = Őshonos
 NEARBY = KÖZELI
 Nearby = Közeli
@@ -230,11 +237,23 @@ x-failed =
         [one] { $count } hibába ütközött
        *[other] { $count } hibába ütközött
     }
+X-OBSERVATIONS--below-number =
+    { $count ->
+        [one] MEGFIGYELÉS
+       *[other] MEGFIGYELÉS
+    }
+X-percent = { $count }%
+X-percent-confidence = { $count }% bizonyosság
 X-PROJECTS = { $projectCount } PROJEKT
 x-saved =
     { $count ->
         [one] { $count } elmentve
        *[other] { $count } elmentve
+    }
+X-SPECIES--below-number =
+    { $count ->
+        [one] FAJ
+       *[other] FAJ
     }
 x-uploaded =
     { $count ->
@@ -248,3 +267,4 @@ x-uploading =
     }
 You-must-install-Google-Play-Services-to-sign-in-with-Google = Google-fiókkal történő bejelentkezéshez szükséges a Google Play Services telepítése
 You-need-log-in-to-do-that = Ehhez be kell jelentkezned.
+You-observed-a-new-species = Egy új fajt figyeltél meg!

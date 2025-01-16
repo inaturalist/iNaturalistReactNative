@@ -51,7 +51,6 @@ maverick--identification = Maverick
 Menu = Meniu
 Missing-Date = Lipsește data
 Months = Luni
-MY-OBSERVATIONS = OBSERVAȚIILE MELE
 NEARBY = APROAPE
 Nearby = În apropiere
 Needs-ID--quality-grade = Necesită ID

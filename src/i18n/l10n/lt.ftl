@@ -6,6 +6,7 @@
 ###
 
 ABOUT = APIE
+Advanced--interface-mode-with-explainer = Išplėstinis (įkelti kelias nuotraukas ir garsus)
 Agree = Sutikti
 AGREE = SUTINKU
 ALL = VISI
@@ -13,6 +14,7 @@ All = Visi
 All-observations = Visi stebėjimai
 all-rights-reserved = Visos teisės saugomos
 All-taxa = Visi taksonai
+apple-full-name = { JOIN($namePrefix, $givenName, $middleName, $nickname, $familyName, $nameSuffix, separator: " ") }
 April = Balandis
 August = Rugpjūtis
 Camera = Kamera
@@ -21,6 +23,7 @@ Casual--quality-grade = Nepilnas
 Close = Uždaryti
 Closes-introduction = Uždaro įvadą
 Collection-Project = Grupinis projektas
+Community = Bendruomenė
 Community-based = Pagrįsta bendruomene
 Community-Guidelines = Bendruomenės gairės
 CONNECT-TO-NATURE = PRISILIESK PRIE GAMTOS
@@ -28,6 +31,7 @@ Connect-to-Nature = Prisiliesk prie gamtos
 CONTINUE = TĘSTI
 Contribute-to-Science = Prisidėti prie mokslo
 Coordinates-copied-to-clipboard = Koordinatės nukopijuotos į mainų sritį
+Data-Quality-Assessment = Duomenų kokybės įvertinimas
 Data-quality-assessment-date-is-accurate = Data tiksli
 Data-quality-assessment-date-specified = Data nurodyta
 Data-quality-assessment-evidence-of-organism = Organizmo buvimo įrodymai
@@ -44,10 +48,13 @@ Date-observed = Stebėjimo data
 Date-observed-header-short = Stebėta
 Date-Range = Periodas
 date-to-date = { $d1 }–{ $d2 }
+Date-uploaded-on-header-short = Įkelta:
 December = Gruodis
+Default--interface-mode = Numatytasis
 Delete-current-observation = Trintį esamą stebėjimą
 Delete-observation = Ištrinti stebėjimą
 Delete-photo = Ištrinti nuotrauką
+Details = Išsami informacija
 DONATE = PAREMTI
 Edit = Redaguoti
 Edit-Observation = Redaguoti stebėjimus
@@ -66,11 +73,14 @@ Flag-An-Item = Žymėti elementą
 Flag-Item-Other-Description = Kita priežastis, kurią galite paaiškinti žemiau.
 Flag-Item-Other-Input-Hint = Paaiškinkite, kodėl pažymėjote šį objektą
 Flagged = Pažymėta
+FOLLOWING--notifications = SEKAMA
 Go-back = Grįžti
+Google-Play-Services-Not-Installed = „Google Play“ paslaugos neįdiegtos
 Hide = Paslėpti
 ID-Withdrawn = ID atšauktas
 Identifiers = Identifikuotojai
 Identify-record-learn = Atpažinkite, įrašykite ir sužinokite apie kiekvieną  žemėje gyvenančią rūšį naudodami „iNaturalist“
+If-you-have-an-existing-account-try-sign-in-reset = Jei turite esamą „iNat“ paskyrą, bandykite prisijungti su savo vartotojo vardu ir slaptažodžiu arba bandykite atkurti savo slaptažodį naudodami el. pašto adresą, susietą su savo paskyra.
 If-you-leave-x-of-your-observations-removed =
     Jei išeisite iš šio tradicinio projekto, { $count ->
         [one] 1 iš jūsų stebėjimų
@@ -78,6 +88,7 @@ If-you-leave-x-of-your-observations-removed =
     } taip pat bus pašalinti iš šio projekto.
 improving--identification = Patobulintas
 iNat-is-global-community = „iNaturalist“ – tai pasaulinė gamtininkų bendruomenė, kurianti atvirus duomenis mokslui bendrai stebėdama ir identifikuodama organizmus
+INATURALIST-MODE = INATURALIST REŽIMAS
 iNaturalists-apps-are-designed-and-developed-3 = iNaturalist programėles kuria, programuoja ir palaiko iNaturalist komanda: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Joanne Lin, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Thea Skaff, Angie Ta, Ken-ichi Ueda, Kirk van Gorkom, Jason Walthall ir Jane Weeden.
 Introduced = Introdukuotas
 It-can-now-be-shared-for-use-in-research = Ją dabar galima bendrinti, kad būtų naudojama tyrimuose
@@ -100,7 +111,8 @@ Media-Type = Medijos tipas
 Menu = Meniu
 Missing-Date = Trūksta datos
 Months = Mėnesiai
-MY-OBSERVATIONS = MANO STEBĖJIMAI
+More = Daugiau
+MY-CONTENT--notifications = MANO TURINYS
 Native = Vietinis
 NEARBY = NETOLIESE
 Nearby = Netoliese
@@ -110,15 +122,18 @@ No-Location = Nėra vietos
 No-Media = Be medijos
 Not-enough-space-left-on-device = Įrenginyje nėra pakankamai vietos
 Not-enough-space-left-on-device-try-again = Tam atlikti įrenginyje nebėra pakankamai vietos. Atlaisvinkite vietos ir bandykite dar kartą.
+Notes = Pastabos
 Notifications = Pranešimai
 notifications-user1-added-comment-to-observation-by-user2 = <0>{ $user1 }</0> pridėjo prie stebėjimo komentarą { $user2 }
 notifications-user1-added-identification-to-observation-by-user2 = <0>{ $user1 }</0> pridėjo prie stebėjimo identifikaciją { $user2 }
 November = Lapkritis
 Obscured = Paslėptas
 Observation = Stebėjimas
+Observation-Copyright = Stebėjimo autoriaus teisės: © { $userName } · { $restrictions }
 Observations = Stebėjimai
 Observations-on-iNat-are-cited = Stebėjimai „iNaturalist“ cituojami moksliniuose laikraščiuose, leido mokslininkams padaryti atradimus iš naujo ir padėjo jiems suprasti gyvybę mūsų planetoje
 Observe = Stebėkite
+OBSERVED-IN--label = STEBĖTA
 Observers = Stebėtojai
 October = Spalis
 Offensive-Inappropriate = Įžeidžiantis / Nepriimtinas
@@ -131,6 +146,7 @@ Project-Members-Only = Tik projekto nariams
 project-start-time-datetime = Pradžios laikas: { $datetime }
 Projects = Projektai
 PROJECTS-X = PROJEKTAI ({ $projectCount })
+Pull-to-refresh-and-sync-observations = Patraukite, kad atnaujintumėte ir sinchronizuotumėte stebėjimusstebėjimus
 Pull-to-refresh-notifications = Patraukti, kad atsinaujintų pranešimai
 Quality-Grade = Kokybės įvertinimas
 Ranks-Class = Klasė
@@ -175,6 +191,10 @@ Search = Paieška
 September = Rugsėjis
 Share = Dalintis
 Share-location = Dalintis buvimo vietos informacija
+Showing-offline-search-results--taxa = Rodomi paieškos rezultatai neprisijungus. Norėdami rasti daugiau rūšių, bandykite dar kartą, kai prisijungsite prie interneto.
+Sign-in-with-Apple-Failed = Nepavyko prisijungti su „Apple“
+Sign-in-with-Google = Prisijungti su „Google“
+Sign-in-with-Google-Failed = Nepavyko prisijungti su „Google“
 Sounds = Garsai
 Spam = Šlamštas
 Spam-Examples = Reklamos, neveikiančios nuorodos ir t. t.
@@ -200,4 +220,25 @@ View-suggestions = Žiūrėti pasiūlymus
 Wild = Laukinis
 Withdraw = Atsiimti
 Worldwide = Visame pasaulyje
+x-failed =
+    { $count ->
+        [one] { $count } nepavyko
+       *[other] { $count } nepavyko
+    }
 X-PROJECTS = { $projectCount } PROJEKTAI (-Ų)
+x-saved =
+    { $count ->
+        [one] { $count } įrašytas
+       *[other] { $count } įrašyta
+    }
+x-uploaded =
+    { $count ->
+        [one] { $count } įkeltas
+       *[other] { $count } įkelta
+    }
+x-uploading =
+    { $count ->
+        [one] { $count } įkeliamas
+       *[other] { $count } įkeliama
+    }
+You-must-install-Google-Play-Services-to-sign-in-with-Google = Turite įdiegti „Google Play“ paslaugas, kad prisijungtumėte su „Google“.
