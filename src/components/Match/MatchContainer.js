@@ -200,7 +200,8 @@ const MatchContainer = ( ) => {
   const hasNoOtherSuggestions = suggestions?.otherSuggestions?.length === 0;
 
   if ( !hasNoOtherSuggestions && !topSuggestion ) {
-    const newTopSuggestion = suggestions?.otherSuggestions.pop( );
+    const newTopSuggestion = _.first( suggestions?.otherSuggestions );
+    _.remove( suggestions?.otherSuggestions, ( element, i ) => i === 0 );
     suggestions.topSuggestion = newTopSuggestion;
   }
 
