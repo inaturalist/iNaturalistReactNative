@@ -47,7 +47,7 @@ const useInfiniteObservationsScroll = ( {
       return response;
     },
     {
-      getNextPageParam: lastPage => last( lastPage )?.id,
+      getNextPageParam: lastPage => last( lastPage.results )?.id,
       enabled: !!( currentUser )
     }
   );

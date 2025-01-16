@@ -227,6 +227,7 @@ const MyObservationsSimple = ( {
           <>
             <ObservationsFlashList
               data={observations.filter( o => o.isValid() )}
+              dataCanBeFetched={!!currentUser}
               handlePullToRefresh={handlePullToRefresh}
               handleIndividualUploadPress={handleIndividualUploadPress}
               hideLoadingWheel
