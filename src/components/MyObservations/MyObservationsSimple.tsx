@@ -14,8 +14,7 @@ import {
 import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList.tsx";
 import TaxonGridItem from "components/SharedComponents/TaxonGridItem.tsx";
 import { Pressable, View } from "components/styledComponents";
-import { RealmContext } from "providers/contexts.ts";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import Realm from "realm";
 import type {
   RealmObservation,
@@ -29,25 +28,28 @@ import colors from "styles/tailwindColors";
 import Announcements from "./Announcements";
 import LoginSheet from "./LoginSheet";
 
-const { useRealm } = RealmContext;
-
-interface Props {
+export interface Props {
+  activeTab: string;
   currentUser?: RealmUser;
   handleIndividualUploadPress: ( uuid: string ) => void;
-  handleSyncButtonPress: ( ) => void;
   handlePullToRefresh: ( ) => void;
+  handleSyncButtonPress: ( ) => void;
   isConnected: boolean;
   isFetchingNextPage: boolean;
   layout: "list" | "grid";
   listRef?: React.RefObject<FlashList<RealmObservation>>;
+  numTotalObservations?: number;
+  numTotalTaxa?: number;
   numUnuploadedObservations: number;
   observations: RealmObservation[];
   onEndReached: ( ) => void;
   onListLayout?: ( ) => void;
   onScroll?: ( ) => void;
+  setActiveTab: ( newTab: string ) => void;
   setShowLoginSheet: ( newValue: boolean ) => void;
   showLoginSheet: boolean;
   showNoResults: boolean;
+  taxa?: RealmTaxon[] | Realm.Results;
   toggleLayout: ( ) => void;
 }
 
@@ -57,30 +59,34 @@ interface TaxaFlashListRenderItemProps {
   item: RealmTaxon;
 }
 
-const OBSERVATIONS_TAB = "observations";
-const TAXA_TAB = "taxa";
+export const OBSERVATIONS_TAB = "observations";
+export const TAXA_TAB = "taxa";
 
 const MyObservationsSimple = ( {
+  activeTab,
   currentUser,
   handleIndividualUploadPress,
-  handleSyncButtonPress,
   handlePullToRefresh,
+  handleSyncButtonPress,
   isConnected,
   isFetchingNextPage,
   layout,
   listRef,
+  numTotalObservations,
+  numTotalTaxa,
   numUnuploadedObservations,
   observations,
   onEndReached,
   onListLayout,
   onScroll,
+  setActiveTab,
   setShowLoginSheet,
   showLoginSheet,
   showNoResults,
+  taxa,
   toggleLayout
 }: Props ) => {
   const { t } = useTranslation( );
-  const [activeTab, setActiveTab] = useState( OBSERVATIONS_TAB );
   const {
     estimatedGridItemSize,
     flashListStyle,
@@ -92,31 +98,6 @@ const MyObservationsSimple = ( {
     paddingTop: 10
   } ), [flashListStyle] );
 
-  // Calculate obs and leaf taxa counts from local observations
-  const realm = useRealm();
-  const numTotalObservations = realm.objects( "Observation" ).length;
-  const distinctTaxonObs = realm.objects( "Observation" )
-    .filtered( "taxon != null DISTINCT(taxon.id)" );
-  const taxonIds = distinctTaxonObs.map( o => ( o.taxon as RealmTaxon ).id );
-  const ancestorIds = distinctTaxonObs.map( o => {
-    // We're filtering b/c for taxa above species level, the taxon's own
-    // ID is included in ancestor ids for some reason (this is a bug...
-    // somewhere)
-    const taxonAncestorIds = (
-      ( o.taxon as RealmTaxon )?.ancestor_ids || []
-    ).filter( id => Number( id ) !== Number( o.taxon?.id ) );
-    return taxonAncestorIds;
-  } ).flat( Infinity );
-  const leafTaxonIds = taxonIds.filter( taxonId => !ancestorIds.includes( taxonId ) );
-  const numTotalTaxa = leafTaxonIds.length;
-
-  // Get leaf taxa if we're viewing the species tab
-  let leafTaxa: Realm.Results | Array<RealmTaxon> = [];
-  if ( activeTab === TAXA_TAB ) {
-    // IDK how to placate TypeScript here. ~~~kueda 20250108
-    leafTaxa = realm.objects( "Taxon" ).filtered( "id IN $0", leafTaxonIds );
-  }
-
   // If I define this interface outside of the component like a sane person
   // eslint has a mysterious fit. ~~~~kueda 20250108
   interface StatTabProps {
@@ -124,18 +105,24 @@ const MyObservationsSimple = ( {
     text: string;
   }
   const StatTab = useCallback( ( { id, text: _text }: StatTabProps ) => {
-    let stat: number;
+    let stat: number | undefined;
     let label: string;
     if ( id === OBSERVATIONS_TAB ) {
       stat = numTotalObservations;
-      label = t( "X-OBSERVATIONS--below-number", { count: numTotalObservations } );
+      label = t( "X-OBSERVATIONS--below-number", { count: numTotalObservations || 0 } );
     } else {
       stat = numTotalTaxa;
-      label = t( "X-SPECIES--below-number", { count: numTotalTaxa } );
+      label = t( "X-SPECIES--below-number", { count: numTotalTaxa || 0 } );
     }
     return (
       <View className="items-center p-3">
-        <Body1 className="mb-[4px]">{ t( "Intl-number", { val: stat } ) }</Body1>
+        <Body1 className="mb-[4px]">
+          {
+            typeof ( stat ) === "number"
+              ? t( "Intl-number", { val: stat } )
+              : "--"
+          }
+        </Body1>
         <Heading5>{ label }</Heading5>
       </View>
     );
@@ -238,7 +225,7 @@ const MyObservationsSimple = ( {
           <CustomFlashList
             canFetch={false}
             contentContainerStyle={taxaFlashListStyle}
-            data={leafTaxa}
+            data={taxa}
             estimatedItemSize={estimatedGridItemSize}
             hideLoadingWheel
             isConnected={false}
@@ -251,7 +238,7 @@ const MyObservationsSimple = ( {
                 taxon={item}
               />
             )}
-            totalResults={leafTaxa.length}
+            totalResults={numTotalTaxa}
             testID="ExploreSpeciesAnimatedList"
           />
         ) }

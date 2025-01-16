@@ -31,7 +31,7 @@ import useStore from "stores/useStore";
 import useSyncObservations from "./hooks/useSyncObservations";
 import useUploadObservations from "./hooks/useUploadObservations";
 import MyObservations from "./MyObservations";
-import MyObservationsSimple from "./MyObservationsSimple";
+import MyObservationsSimpleContainer from "./MyObservationsSimpleContainer";
 
 const { useRealm } = RealmContext;
 
@@ -200,7 +200,7 @@ const MyObservationsContainer = ( ): Node => {
 
   if ( isDebugMode() && observations.length > 0 ) {
     return (
-      <MyObservationsSimple
+      <MyObservationsSimpleContainer
         currentUser={currentUser}
         isFetchingNextPage={isFetchingNextPage}
         isConnected={isConnected}
