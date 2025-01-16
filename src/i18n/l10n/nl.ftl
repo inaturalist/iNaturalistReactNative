@@ -53,6 +53,7 @@ All-observations = Alle waarnemingen
 All-organisms = Alle organismen
 all-rights-reserved = alle rechten voorbehouden
 All-taxa = Alle taxa
+ALL-USERS-EXCEPT = ALLE GEBRUIKERS BEHALVE
 ALLOW-LOCATION-ACCESS = LOCATIE TOESTAAN
 Almost-done = Bijna klaar!
 Already-have-an-account = Heb je al een account? Log in
@@ -87,6 +88,7 @@ By-exiting-observation-not-saved = Als je afsluit word je waarneming niet opgesl
 By-exiting-your-observations-not-saved = Als je afsluit word je waarneming niet opgeslagen. Je kunt ze op je apparaat opslaan of verwijderen.
 By-exiting-your-photos-will-not-be-saved = Als je afsluit worden je foto's niet opgeslagen.
 By-exiting-your-recorded-sound-will-not-be-saved = Als je afsluit wordt je opgenomen geluid niet opgeslagen.
+BY-ME = DOOR MIJ
 By-uploading-your-observation-to-iNaturalist-you-can = Door je waarneming te uploaden naar iNaturalist, kun je:
 Camera = Camera
 CANCEL = ANNULEREN
@@ -134,6 +136,7 @@ Community = Gemeenschap
 Community-based = Gemeenschap-gebaseerd
 Community-Guidelines = Gemeenschapsrichtlijnen
 COMMUNITY-GUIDELINES = GEMEENSCHAPSRICHTLIJNEN
+Confidence--label = Zekerheid
 CONFIRM = BEVESTIG
 CONNECT-TO-NATURE = VERBINDING MAKEN MET DE NATUUR
 Connect-to-Nature = Trek de natuur in
@@ -476,7 +479,6 @@ More-info = Meer info
 MOST-FAVED = POPULAIRST
 Most-faved = Populairst
 MY-CONTENT--notifications = MIJN INHOUD
-MY-OBSERVATIONS = MIJN WAARNEMINGEN
 Native = Inheems
 Native-to-place = Inheems in { $place }
 Navigates-to-AI-camera = Navigeer naar de AI camera
@@ -514,6 +516,7 @@ No-results-found-try-different-search = Geen resultaten gevonden. Probeer een an
 no-rights-reserved-cc0 = geen rechten voorbehouden (CC0)
 none--accuracy = geen
 NONE--ranks = GEEN
+NOT-BY-ME = NIET DOOR MIJ
 Not-enough-space-left-on-device = Niet genoeg ruimte over op apparaat
 Not-enough-space-left-on-device-try-again = Er is niet genoeg opslagruimte beschikbaar op je apparaat om dat te doen. Maak wat ruimte vrij en probeer het opnieuw.
 NOTES = NOTITIES
@@ -995,6 +998,7 @@ X-of-Y =
         [one] van { $y }
        *[other] van { $y }
     }
+X-percent-confidence = { $count }% zekerheid
 X-PHOTOS =
     { $photoCount ->
         [one] 1 FOTO
@@ -1067,6 +1071,7 @@ You-must-be-logged-in-to-view-messages = Je moet ingelogd zijn om berichten te b
 You-must-install-Google-Play-Services-to-sign-in-with-Google = Je moet Google Play Services installeren om je aan te kunnen melden met Google.
 You-need-an-Internet-connection-to-do-that = Je hebt een internetverbinding nodig om dat te doen.
 You-need-log-in-to-do-that = Je moet inloggen om dat te doen.
+You-observed-a-new-species = Je hebt een nieuwe soort waargenomen!
 You-will-see-notifications = Je ziet hier meldingen zodra je inlogt en waarnemingen uploadt.
 Your-donation-to-iNaturalist = Uw donatie aan iNaturalist ondersteunt de verbetering en stabiliteit van de mobiele apps en website die miljoenen mensen met de natuur verbindt en wereldwijd de biodiversiteit beschermt!
 Your-email-is-confirmed = Je e-mailadres is bevestigd! Log in om door te gaan.

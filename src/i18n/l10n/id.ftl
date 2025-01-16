@@ -27,6 +27,9 @@ ADD-EVIDENCE = TAMBAH BUKTI
 Add-evidence = Tambah bukti
 Add-favorite = Tambah favorit
 Add-Location = Tambah Lokasi
+Add-location-for-better-identifications = Tambahkan lokasi untuk mendapatkan identifikasi yang lebih baik
+ADD-LOCATION-FOR-BETTER-IDS = TAMBAHKAN LOKASI SUPAYA ID-NYA LEBIH BAIK
+Add-location-to-refresh-suggestions = Tambahkan lokasi untuk menyegarkan rekomendasi
 Add-observations = Tambah pengamatan
 ADD-OPTIONAL-COMMENT = TAMBAH KOMENTAR OPSIONAL
 Add-optional-notes = Tambahkan catatan opsional
@@ -46,6 +49,7 @@ All-observations = Semua pengamatan
 All-organisms = Semua organisme
 all-rights-reserved = hak cipta dilindungi undang-undang
 All-taxa = Semua taksa
+ALL-USERS-EXCEPT = SEMUA PENGGUNA KECUALI
 ALLOW-LOCATION-ACCESS = IZINKAN AKSES LOKASI
 Almost-done = Hampir selesai!
 Already-have-an-account = Sudah memiliki akun? Masuk
@@ -80,6 +84,7 @@ By-exiting-observation-not-saved = Dengan keluar, pengamatan Anda tidak akan dis
 By-exiting-your-observations-not-saved = Dengan keluar, pengamatan Anda tidak akan disimpan. Anda bisa menyimpannya di perangkat Anda, atau Anda bisa menghapusnya.
 By-exiting-your-photos-will-not-be-saved = Dengan keluar, gambar Anda tidak akan disimpan.
 By-exiting-your-recorded-sound-will-not-be-saved = Dengan keluar, rekaman suara Anda tidak akan disimpan.
+BY-ME = OLEH SAYA
 By-uploading-your-observation-to-iNaturalist-you-can = Dengan mengunggah pengamatan Anda ke iNaturalist, Anda bisa:
 Camera = Kamera
 CANCEL = BATAL
@@ -127,6 +132,7 @@ Community = Komunitas
 Community-based = Berbasis komunitas
 Community-Guidelines = Pedoman Komunitas
 COMMUNITY-GUIDELINES = PEDOMAN KOMUNITAS
+Confidence--label = Tingkat Kepercayaan
 CONFIRM = KONFIRMASI
 CONNECT-TO-NATURE = TERHUBUNG DENGAN ALAM
 Connect-to-Nature = Terhubung dengan Alam
@@ -393,6 +399,7 @@ Introduced = Diperkenalkan
 Introduced-to-place = Diperkenalkan di { $place }
 It-can-now-be-shared-for-use-in-research = Sekarang ia bisa dibagikan untuk digunakan dalam penelitian
 It-may-take-up-to-an-hour-to-remove-content = Penghapusan seluruh konten yang terkait dapat memerlukan waktu hingga satu jam
+It-might-also-be = Ini bisa juga berupa
 January = Januari
 JOIN = GABUNG
 JOIN-PROJECT = BERGABUNG DENGAN PROYEK
@@ -418,6 +425,7 @@ Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, 
 Lat-Lon-Acc = Lin: { NUMBER($latitude, maximumFractionDigits: 6) }, Buj: { NUMBER($longitude, maximumFractionDigits: 6) }, Aku: { $accuracy }
 leading--identification = Memimpin
 Learn-More = Pelajari lebih lanjut
+LEARN-MORE-ABOUT-THIS-SPECIES = PELAJARI LEBIH LANJUT MENGENAI SPESIES INI
 LEAVE = KELUAR
 LEAVE-PROJECT = KELUAR DARI PROYEK
 LEAVE-PROJECT--question = TINGGALKAN PROYEK?
@@ -464,7 +472,7 @@ More-info = Info lebih lanjut
 MOST-FAVED = PALING FAVORIT
 Most-faved = Paling favorit
 MY-CONTENT--notifications = KONTEN SAYA
-MY-OBSERVATIONS = PENGAMATAN SAYA
+My-Observations = Pengamatan Saya
 Native = Asli
 Native-to-place = Asli { $place }
 Navigates-to-AI-camera = Pergi ke kamera AI
@@ -502,6 +510,7 @@ No-results-found-try-different-search = Tidak ada hasil yang ditemukan. Coba pen
 no-rights-reserved-cc0 = tanpa perlindungan hak (CC0)
 none--accuracy = tidak ada
 NONE--ranks = TIDAK ADA
+NOT-BY-ME = BUKAN OLEH SAYA
 Not-enough-space-left-on-device = Ruang penyimpanan di perangkat tidak cukup
 Not-enough-space-left-on-device-try-again = Ruang penyimpanan di perangkat Anda tidak cukup untuk melakukan tindakan tersebut. Bersihkan ruang penyimpanan Anda dan coba lagi.
 NOTES = CATATAN
@@ -962,6 +971,11 @@ X-observations =
         [one] 1 pengamatan
        *[other] { $count } pengamatan
     }
+X-OBSERVATIONS--below-number =
+    { $count ->
+        [one] PENGAMATAN
+       *[other] PENGAMATAN
+    }
 X-observations-deleted =
     { $count ->
         [one] 1 pengamatan dihapus
@@ -985,6 +999,8 @@ X-of-Y =
         [one] dari { $y }
        *[other] dari { $y }
     }
+X-percent = { $count }%
+X-percent-confidence = tingkat kepercayaan { $count }%
 X-PHOTOS =
     { $photoCount ->
         [one] 1 GAMBAR
@@ -1022,6 +1038,11 @@ X-Species =
         [one] { $count } Spesies
        *[other] { $count } Spesies
     }
+X-SPECIES--below-number =
+    { $count ->
+        [one] SPESIES
+       *[other] SPESIES
+    }
 x-uploaded =
     { $count ->
         [one] { $count } terunggah
@@ -1053,10 +1074,12 @@ You-can-upload-this-observation-to-our-community = Anda bisa mengunggah pengamat
 You-changed-filters-will-be-discarded = Anda telah mengubah penyaring, tetapi mereka belum diterapkan ke hasil pencarian jelajah Anda.
 You-have-opted-out-of-the-Community-Taxon = Anda telah memilih untuk keluar dari Takson Komunitas
 You-havent-joined-any-projects-yet = Anda belum bergabung dengan proyek apa pun!
+You-likely-observed-a-new-species = Kamu kemungkinan besar telah mengamati spesies baru!
 You-must-be-logged-in-to-view-messages = Anda harus masuk untuk melihat pesan-pesan
 You-must-install-Google-Play-Services-to-sign-in-with-Google = Anda harus memasang Layanan Google Play untuk masuk dengan Google.
 You-need-an-Internet-connection-to-do-that = Anda memerlukan koneksi Internet untuk melakukan hal tersebut.
 You-need-log-in-to-do-that = Anda harus masuk untuk melakukannya.
+You-observed-a-new-species = Kamu telah mengamati spesies baru!
 You-will-see-notifications = Anda akan melihat notifikasi-notifikasi di sini setelah Anda masuk & mengunggah pengamatan.
 Your-donation-to-iNaturalist = Sumbangan Anda untuk iNaturalist mendukung perkembangan dan stabilitas aplikasi seluler serta situs web yang menghubungkan jutaan orang dengan alam serta mendukung perlindungan keanekaragaman hayati di seluruh dunia!
 Your-email-is-confirmed = Email Anda berhasil dikonfirmasi! Silakan masuk untuk melanjutkan prosesnya.

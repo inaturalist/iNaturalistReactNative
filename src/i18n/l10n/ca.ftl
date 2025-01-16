@@ -134,7 +134,6 @@ Media-Type = Tipus de fitxer multimèdia
 Menu = Menú
 Missing-Date = No hi ha data
 Months = Mesos
-MY-OBSERVATIONS = LES MEVES OBSERVACIONS
 Native = Nativa
 NEARBY = PROPER
 Nearby = Propera

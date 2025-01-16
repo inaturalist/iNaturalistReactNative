@@ -78,7 +78,6 @@ Media-Type = Typ média
 Menu = Menu
 Missing-Date = Chýba dátum
 Months = Mesiace
-MY-OBSERVATIONS = MOJE POZOROVANIA
 Native = Pôvodný
 NEARBY = V OKOLÍ
 Nearby = V blízkosti

@@ -27,11 +27,15 @@ ADD-EVIDENCE = 添加证据
 Add-evidence = 添加证据
 Add-favorite = 添加收藏
 Add-Location = 添加位置
+Add-location-for-better-identifications = 添加位置以获得更好的鉴定结果
+ADD-LOCATION-FOR-BETTER-IDS = 添加位置以获得更好的鉴定结果
+Add-location-to-refresh-suggestions = 添加位置以刷新建议
 Add-observations = 添加观察
 ADD-OPTIONAL-COMMENT = 添加可选评论
 Add-optional-notes = 添加可选注释
 Adds-your-vote-of-agreement = 添加你的同意意见投票
 Adds-your-vote-of-disagreement = 添加你的不同意意见投票
+Advanced--interface-mode-with-explainer = 高级（上传多个图片和声音）
 Affiliation = 所属：{ $site }
 Agree = 同意
 AGREE = 同意
@@ -46,6 +50,7 @@ All-observations = 所有观察
 All-organisms = 所有有机体
 all-rights-reserved = 保留所有权利
 All-taxa = 所有分类群
+ALL-USERS-EXCEPT = 所有用户，但排除
 ALLOW-LOCATION-ACCESS = 允许访问位置
 Almost-done = 差不多完成了 ！
 Already-have-an-account = 已经有账户了？登入
@@ -80,6 +85,7 @@ By-exiting-observation-not-saved = 退出将不会保存您的观察。
 By-exiting-your-observations-not-saved = 退出将不会保存您的观察记录。您可以将它们保存到您的设备，或者您可以删除它们。
 By-exiting-your-photos-will-not-be-saved = 退出将不会保存您的照片。
 By-exiting-your-recorded-sound-will-not-be-saved = 退出将不会保存您的录音。
+BY-ME = 我的
 By-uploading-your-observation-to-iNaturalist-you-can = 通过上传您的观察记录到 iNaturalist，您可以：
 Camera = 相机
 CANCEL = 取消
@@ -127,6 +133,7 @@ Community = 社群
 Community-based = 基于社群的
 Community-Guidelines = 社群指引
 COMMUNITY-GUIDELINES = 社群指引
+Confidence--label = 置信度
 CONFIRM = 确认
 CONNECT-TO-NATURE = 与自然连接
 Connect-to-Nature = 与自然连接
@@ -194,6 +201,7 @@ datetime-difference-weeks = { $count }周
 datetime-format-long = Pp
 datetime-format-short = M/d/yy h:mm a
 December = 十二月
+Default--interface-mode = 默认
 DELETE = 删除
 Delete-all-observations = 删除全部观察
 Delete-comment = 删除评论
@@ -378,6 +386,7 @@ iNaturalist-is-supported-by = iNaturalist得到设在美利坚合众国的一个
 iNaturalist-is-supported-by-our-community = iNaturalist 是我们伟大的社区支持的。 从每天添加观察和鉴定的自然观察者到管理我们分类学和帮助规范社区的馆长， 使世界各地的受众更容易访问iNaturalist的志愿翻译者，对于我们社区的捐助者，我们特别感谢我们社群中使iNaturalist成为如今这个平台的所有人。
 iNaturalist-mission-is-to-connect = iNaturalist的使命是把人们与大自然联系起来，促进生物多样性科学和保护。
 INATURALIST-MISSION-VISION = INATURALIST任务和愿景
+INATURALIST-MODE = INATURALIST模式
 INATURALIST-NETWORK = INATURALIST网络
 INATURALIST-SETTINGS = INATURALIST设置
 INATURALIST-STAFF = { $inaturalist }员工
@@ -396,6 +405,7 @@ Introduced = 外来
 Introduced-to-place = 在{ $place }系外来种
 It-can-now-be-shared-for-use-in-research = 现在可以共享用于研究
 It-may-take-up-to-an-hour-to-remove-content = 完全删除所有相关内容可能需要一小时的时间
+It-might-also-be = 它也可能是
 January = 一月
 JOIN = 加入
 JOIN-PROJECT = 加入项目
@@ -421,6 +431,8 @@ Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, 
 Lat-Lon-Acc = 经度: { NUMBER($latitude, maximumFractionDigits: 6) }, 纬度: { NUMBER($longitude, maximumFractionDigits: 6) }, 精度: { $accuracy }
 leading--identification = 领先的意见
 Learn-More = 了解更多
+LEARN-MORE-ABOUT-THIS-GROUP = 更多关于此组的信息
+LEARN-MORE-ABOUT-THIS-SPECIES = 更多关于此物种的信息
 LEAVE = 离开
 LEAVE-PROJECT = 离开项目
 LEAVE-PROJECT--question = 离开项目？
@@ -467,7 +479,7 @@ More-info = 更多信息
 MOST-FAVED = 最多收藏
 Most-faved = 最多收藏
 MY-CONTENT--notifications = 我的内容
-MY-OBSERVATIONS = 我的观察
+My-Observations = 我的观察记录
 Native = 本地
 Native-to-place = 原产于{ $place }
 Navigates-to-AI-camera = 导航到 AI 相机
@@ -505,6 +517,7 @@ No-results-found-try-different-search = 未找到任何结果。请尝试不同�
 no-rights-reserved-cc0 = 不保留权利（CC0）
 none--accuracy = 无
 NONE--ranks = 无
+NOT-BY-ME = 不是我的
 Not-enough-space-left-on-device = 设备存储空间不足
 Not-enough-space-left-on-device-try-again = 您的设备上没有足够的存储空间来做这件事。请释放一些空间然后重试。
 NOTES = 备注
@@ -963,6 +976,11 @@ X-observations =
         [one] 1个观察
        *[other] { $count }个观察
     }
+X-OBSERVATIONS--below-number =
+    { $count ->
+        [one] 个观察
+       *[other] 个观察
+    }
 X-observations-deleted =
     { $count ->
         [one] 删除了1个观察
@@ -986,6 +1004,8 @@ X-of-Y =
         [one] 1个
        *[other] { $x }个
     }
+X-percent = { $count }%
+X-percent-confidence = { $count }%置信度
 X-PHOTOS =
     { $photoCount ->
         [one] 1张照片
@@ -1023,6 +1043,11 @@ X-Species =
         [one] { $count }个物种
        *[other] { $count }个物种
     }
+X-SPECIES--below-number =
+    { $count ->
+        [one] 个物种
+       *[other] 个物种
+    }
 x-uploaded =
     { $count ->
         [one] { $count }个已上传
@@ -1054,10 +1079,19 @@ You-can-upload-this-observation-to-our-community = 您可以将此观察记录�
 You-changed-filters-will-be-discarded = 您更改了筛选器，但它们没有应用到您的探索搜索结果。
 You-have-opted-out-of-the-Community-Taxon = 您已选择退出社区分类单元
 You-havent-joined-any-projects-yet = 您尚未加入任何项目！
+You-likely-observed-a-new-species = 您很可能观察到了一个新物种！
+You-likely-observed-a-species = 您很可能观察到了一个物种
+You-likely-observed-an-organism-in-this-group = 你很可能观察到了这个组中的一个生物体
+You-may-have-observed-a-new-species = 您可能观察到了一个新物种！
+You-may-have-observed-a-species = 您可能观察到了一个物种
+You-may-have-observed-an-organism-in-this-group = 你可能观察到了这个组中的一个生物体
 You-must-be-logged-in-to-view-messages = 您必须登录才能查看您的消息。
 You-must-install-Google-Play-Services-to-sign-in-with-Google = 您必须安装Google Play服务才能登录 Google。
 You-need-an-Internet-connection-to-do-that = 您需要互联网连接才能做到这一点。
 You-need-log-in-to-do-that = 您必须先登录。
+You-observed-a-new-species = 您观察到了一个新物种！
+You-observed-a-species = 您观察到了一个物种
+You-observed-an-organism-in-this-group = 你观察到了这个组中的一个生物体
 You-will-see-notifications = 一旦您登录并上传观察，您将在这里看到通知。
 Your-donation-to-iNaturalist = 您对 iNaturalist 的捐赠有助于改善和稳定移动应用和网站，这些应用和网站将千百万人连接到大自然，并能保护世界各地的生物多样性！
 Your-email-is-confirmed = 您的电子邮件已确认！请登录以继续。

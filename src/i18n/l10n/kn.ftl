@@ -78,7 +78,6 @@ Media-Type = ಮಾಧ್ಯಮದ ವಿಧ
 Menu = ಮೆನು
 Missing-Date = ಕಾಣೆಯಾದ ದಿನಾಂಕ
 Months = ತಿಂಗಳುಗಳು
-MY-OBSERVATIONS = ನನ್ನ ವೀಕ್ಷಣೆಗಳು
 Native = ಸ್ಥಳೀಯ
 NEARBY = ಸಮೀಪದವುಗಳು
 Nearby = ಸಮೀಪದ

@@ -70,6 +70,7 @@ Hide = 非表示
 ID-Withdrawn = 同定の撤回
 Identifiers = 同定者
 Identify-record-learn = iNaturalistを使って地球上のすべての生物種を同定、記録、学習します。
+If-you-have-an-existing-account-try-sign-in-reset = 既存のiNatアカウントをお持ちの場合は、ユーザー名とパスワードを入力してサインインするか、アカウントに関連付けられたメールアドレスを使用してパスワードをリセットしてみてください。
 If-you-leave-x-of-your-observations-removed =
     このプロジェクトから離れてしまうと、{ $count ->
         [one] 1 of your observations
@@ -181,6 +182,7 @@ Search = 検索
 See-project-members = プロジェクトメンバーを表示
 September = 9月
 Share = 共有
+Sign-in-with-Apple-Failed = Appleでサインインできませんでした
 Sounds = 音声
 Spam = スパム
 Spam-Examples = セールス、どこにも繋がらないリンクなど。

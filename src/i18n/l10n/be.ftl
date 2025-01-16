@@ -80,7 +80,6 @@ Media-Type = Тып медыя-файлу
 Menu = Меню
 Missing-Date = Адсутнічае дата
 Months = Месяцы
-MY-OBSERVATIONS = МАЕ НАЗІРАННІ
 Native = Мясцовы
 NEARBY = ПАБЛІЗУ
 Nearby = Паблізу
