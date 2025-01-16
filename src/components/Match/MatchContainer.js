@@ -165,7 +165,7 @@ const MatchContainer = ( ) => {
     // can become the new top suggestion
     const chosenIndex = _.findIndex(
       sortedList,
-      s => s === selection
+      suggestion => suggestion.taxon.id === selection.taxon.id
     );
     if ( chosenIndex !== -1 ) {
       const newList = [
