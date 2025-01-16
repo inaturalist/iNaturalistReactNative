@@ -6,6 +6,7 @@ import _, { compact } from "lodash";
 import React, { useEffect, useState } from "react";
 import Photo from "realmModels/Photo";
 import getImageDimensions from "sharedHelpers/getImageDimensions";
+import { useTaxon } from "sharedHooks";
 
 type Props = {
   taxon: Object,
@@ -16,14 +17,17 @@ type Props = {
 const PhotosSection = ( { taxon, observationPhoto, navToTaxonDetails }: Props ) => {
   const [displayPortraitLayout, setDisplayPortraitLayout] = useState( null );
 
+  const { taxon: localTaxon } = useTaxon( taxon );
+  const localTaxonPhotos = localTaxon?.taxonPhotos;
+
   const photos = compact(
-    taxon?.taxonPhotos
-      ? taxon.taxonPhotos.map( taxonPhoto => taxonPhoto.photo )
+    localTaxonPhotos
+      ? localTaxonPhotos.map( taxonPhoto => taxonPhoto.photo )
       : [taxon?.defaultPhoto]
   );
 
   // don't show the iconic taxon photo which is a mashup of 9 photos
-  const taxonPhotos = taxon.isIconic
+  const taxonPhotos = localTaxon?.isIconic
     ? photos.slice( 1, 4 )
     : photos.slice( 0, 3 );
 

@@ -6,7 +6,7 @@ import { useTranslation } from "sharedHooks";
 
 import SuggestionsResult from "./SuggestionsResult";
 
-const AdditionalSuggestionsScroll = ( { otherSuggestions, onTaxonChosen } ) => {
+const AdditionalSuggestionsScroll = ( { otherSuggestions, onSuggestionChosen } ) => {
   const { t } = useTranslation( );
   const [maxHeight, setMaxHeight] = useState( 0 );
 
@@ -23,11 +23,13 @@ const AdditionalSuggestionsScroll = ( { otherSuggestions, onTaxonChosen } ) => {
   const renderItem = ( { item: suggestion } ) => {
     const confidence = calculateConfidence( suggestion );
 
+    const handlePress = ( ) => onSuggestionChosen( suggestion );
+
     return (
       <SuggestionsResult
         confidence={confidence}
         fetchRemote={false}
-        handlePress={onTaxonChosen}
+        handlePress={handlePress}
         taxon={suggestion?.taxon}
         onLayoutHeight={handleLayout}
         forcedHeight={maxHeight}

@@ -4,6 +4,7 @@ import MapSection
   from "components/ObsDetailsDefaultMode/MapSection/MapSection";
 import { Button, Divider, ScrollViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import _ from "lodash";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 
@@ -20,8 +21,9 @@ type Props = {
   handleSaveOrDiscardPress: ( ) => void,
   navToTaxonDetails: ( ) => void,
   handleLocationPickerPressed: ( ) => void,
-  suggestions: Object,
-  onTaxonChosen: ( ) => void
+  topSuggestion: Object,
+  otherSuggestions: Array<Object>,
+  onSuggestionChosen: ( ) => void
 }
 
 const Match = ( {
@@ -30,14 +32,13 @@ const Match = ( {
   handleSaveOrDiscardPress,
   navToTaxonDetails,
   handleLocationPickerPressed,
-  suggestions,
-  onTaxonChosen
+  topSuggestion,
+  otherSuggestions,
+  onSuggestionChosen
 }: Props ) => {
   const { t } = useTranslation( );
 
   const latitude = observation?.privateLatitude || observation?.latitude;
-  const topSuggestion = suggestions?.topSuggestion;
-  const otherSuggestions = suggestions?.otherSuggestions;
   const taxon = topSuggestion?.taxon;
 
   return (
@@ -75,7 +76,7 @@ const Match = ( {
             accessibilityHint={t( "Navigates-to-taxon-details" )}
           />
           <AdditionalSuggestionsScroll
-            onTaxonChosen={onTaxonChosen}
+            onSuggestionChosen={onSuggestionChosen}
             otherSuggestions={otherSuggestions}
           />
           {!latitude && (
