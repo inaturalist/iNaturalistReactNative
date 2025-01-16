@@ -813,6 +813,7 @@ OBSERVATION-WAS-DELETED = OBSERVATION WAS DELETED
 Observation-with-no-evidence = Observation with no evidence
 Observations = Observations
 Observations-created-on-iNaturalist = Observations created on iNaturalist are used by scientists around the world.
+Observations-need-location-date--warning = iNaturalist observations need a location and date to be useful to scientists. Please check observations with this icon before uploading.
 Observations-on-iNat-are-cited = Observations on iNaturalist are cited in scientific papers, have led to rediscoveries, and help scientists understand life on our planet
 Observations-View = Observations View
 # Might be used when the number is represented using an image or other

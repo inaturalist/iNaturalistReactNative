@@ -6,6 +6,7 @@ import {
   Body3,
   Heading3,
   Heading5,
+  INatIcon,
   InfiniteScrollLoadingWheel,
   RotatingINatIconButton,
   Tabs,
@@ -160,6 +161,32 @@ const MyObservationsSimple = ( {
     taxa?.length
   ] );
 
+  const obsMissingBasicsExist = useMemo( ( ) => (
+    numUnuploadedObservations > 0 && !!observations.find( o => o.needsSync() && o.missingBasics( ) )
+  ), [numUnuploadedObservations, observations] );
+
+  const renderObservationsHeader = useCallback( ( ) => (
+    <>
+      { obsMissingBasicsExist && (
+        <View className="flex-row items-center px-[32px] py-[20px]">
+          <INatIcon
+            name="triangle-exclamation"
+            color={String( colors?.warningRed )}
+            size={22}
+          />
+          <Body3 className="shrink ml-[20px]">
+            { t( "Observations-need-location-date--warning" ) }
+          </Body3>
+        </View>
+      ) }
+      <Announcements isConnected={isConnected} />
+    </>
+  ), [
+    isConnected,
+    obsMissingBasicsExist,
+    t
+  ] );
+
   return (
     <>
       <ViewWrapper isDebug>
@@ -243,9 +270,7 @@ const MyObservationsSimple = ( {
               showObservationsEmptyScreen
               showNoResults={showNoResults}
               testID="MyObservationsAnimatedList"
-              renderHeader={(
-                <Announcements isConnected={isConnected} />
-              )}
+              renderHeader={renderObservationsHeader}
             />
             <ObservationsViewBar
               hideMap
