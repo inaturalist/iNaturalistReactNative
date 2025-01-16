@@ -1,8 +1,10 @@
 const calculateConfidence = suggestion => {
   if ( !suggestion ) { return null; }
-  return suggestion?.score
-    ? Math.round( suggestion.score )
-    : Math.round( suggestion.combined_score );
+  const score = suggestion?.score
+    ? suggestion.score
+    : suggestion.combined_score;
+  const confidence = parseFloat( score.toFixed( 1 ) );
+  return confidence;
 };
 
 export default calculateConfidence;
