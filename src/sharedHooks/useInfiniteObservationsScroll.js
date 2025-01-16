@@ -27,7 +27,7 @@ const useInfiniteObservationsScroll = ( {
   const queryKey = ["useInfiniteObservationsScroll", "searchObservations", queryKeyParams];
 
   const {
-    data: observations,
+    data,
     isFetchingNextPage,
     fetchNextPage,
     status
@@ -43,8 +43,8 @@ const useInfiniteObservationsScroll = ( {
       } else {
         params.page = 1;
       }
-      const { results } = await searchObservations( params, optsWithAuth );
-      return results || [];
+      const response = await searchObservations( params, optsWithAuth );
+      return response;
     },
     {
       getNextPageParam: lastPage => last( lastPage )?.id,
@@ -53,11 +53,11 @@ const useInfiniteObservationsScroll = ( {
   );
 
   const newlyFetchedObservations = useMemo( ( ) => {
-    if ( observations?.pages ) {
-      return flatten( last( observations.pages ) );
+    if ( data?.pages ) {
+      return flatten( last( data.pages )?.results );
     }
     return null;
-  }, [observations?.pages] );
+  }, [data?.pages] );
 
   useEffect( ( ) => {
     if ( newlyFetchedObservations ) {
@@ -71,9 +71,10 @@ const useInfiniteObservationsScroll = ( {
   const hasLocalObservations = realm?.objects( "Observation" )?.length > 0;
 
   const infiniteScrollObject = {
-    observations: flatten( observations?.pages ),
+    observations: flatten( data?.pages?.map( page => page.results ) ),
     status,
-    firstObservationsInRealm: hasLocalObservations
+    firstObservationsInRealm: hasLocalObservations,
+    totalResults: data?.pages?.[0]?.total_results
   };
 
   return currentUser

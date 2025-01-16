@@ -53,7 +53,10 @@ const MyObservationsContainer = ( ): Node => {
   const setMyObsOffset = useStore( state => state.setMyObsOffset );
   const uploadStatus = useStore( state => state.uploadStatus );
 
-  const { observationList: observations } = useLocalObservations( );
+  const {
+    observationList: observations,
+    totalResults: totalResultsLocal
+  } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
 
   const { isConnected } = useNetInfo( );
@@ -72,7 +75,8 @@ const MyObservationsContainer = ( ): Node => {
   const {
     fetchNextPage,
     isFetchingNextPage,
-    status
+    status,
+    totalResults: totalResultsRemote
   } = useInfiniteObservationsScroll( {
     params: {
       user_id: currentUserId
@@ -210,6 +214,7 @@ const MyObservationsContainer = ( ): Node => {
         layout={layout}
         listRef={listRef}
         numUnuploadedObservations={numUnuploadedObservations}
+        numTotalObservations={totalResultsRemote || totalResultsLocal}
         observations={observations}
         onEndReached={fetchNextPage}
         onListLayout={restoreScrollOffset}

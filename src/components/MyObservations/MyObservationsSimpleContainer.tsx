@@ -1,7 +1,7 @@
 import { RealmContext } from "providers/contexts.ts";
 import React, { useState } from "react";
 import Realm from "realm";
-import type { RealmTaxon } from "realmModels/types";
+import type { RealmObservation, RealmTaxon } from "realmModels/types";
 
 import MyObservationsSimple, {
   OBSERVATIONS_TAB,
@@ -20,6 +20,7 @@ const MyObservationsSimpleContainer = ( {
   isFetchingNextPage,
   layout,
   listRef,
+  numTotalObservations,
   numUnuploadedObservations,
   observations,
   onEndReached,
@@ -31,30 +32,34 @@ const MyObservationsSimpleContainer = ( {
   toggleLayout
 }: Props ) => {
   const [activeTab, setActiveTab] = useState( OBSERVATIONS_TAB );
-
-  // Calculate obs and leaf taxa counts from local observations
   const realm = useRealm();
-  const numTotalObservations = realm.objects( "Observation" ).length;
-  const distinctTaxonObs = realm.objects( "Observation" )
-    .filtered( "taxon != null DISTINCT(taxon.id)" );
-  const taxonIds = distinctTaxonObs.map( o => ( o.taxon as RealmTaxon ).id );
-  const ancestorIds = distinctTaxonObs.map( o => {
-    // We're filtering b/c for taxa above species level, the taxon's own
-    // ID is included in ancestor ids for some reason (this is a bug...
-    // somewhere)
-    const taxonAncestorIds = (
-      ( o.taxon as RealmTaxon )?.ancestor_ids || []
-    ).filter( id => Number( id ) !== Number( o.taxon?.id ) );
-    return taxonAncestorIds;
-  } ).flat( Infinity );
-  const leafTaxonIds = taxonIds.filter( taxonId => !ancestorIds.includes( taxonId ) );
-  const numTotalTaxa = leafTaxonIds.length;
 
-  // Get leaf taxa if we're viewing the species tab
+  let numTotalTaxa: number | undefined;
   let leafTaxa: Realm.Results | Array<RealmTaxon> = [];
-  if ( activeTab === TAXA_TAB ) {
-    // IDK how to placate TypeScript here. ~~~kueda 20250108
-    leafTaxa = realm.objects( "Taxon" ).filtered( "id IN $0", leafTaxonIds );
+  if ( !currentUser ) {
+    // Calculate obs and leaf taxa counts from local observations
+    const distinctTaxonObs = realm.objects<RealmObservation>( "Observation" )
+      .filtered( "taxon != null DISTINCT(taxon.id)" );
+    const taxonIds: number[] = distinctTaxonObs
+      .map( o => o.taxon?.id || 0 )
+      .filter( Boolean );
+    const ancestorIds = distinctTaxonObs.map( o => {
+      // We're filtering b/c for taxa above species level, the taxon's own
+      // ID is included in ancestor ids for some reason (this is a bug...
+      // somewhere)
+      const taxonAncestorIds = (
+        o.taxon?.ancestor_ids || []
+      ).filter( id => Number( id ) !== Number( o.taxon?.id ) );
+      return taxonAncestorIds;
+    } ).flat( Infinity );
+    const leafTaxonIds = taxonIds.filter( taxonId => !ancestorIds.includes( taxonId ) );
+    numTotalTaxa = leafTaxonIds.length;
+
+    // Get leaf taxa if we're viewing the species tab
+    if ( activeTab === TAXA_TAB ) {
+      // IDK how to placate TypeScript here. ~~~kueda 20250108
+      leafTaxa = realm.objects( "Taxon" ).filtered( "id IN $0", leafTaxonIds );
+    }
   }
 
   return (
