@@ -6,6 +6,7 @@ import {
   Body3,
   Heading3,
   Heading5,
+  InfiniteScrollLoadingWheel,
   RotatingINatIconButton,
   Tabs,
   UserIcon,
@@ -51,6 +52,8 @@ export interface Props {
   showNoResults: boolean;
   taxa?: RealmTaxon[] | Realm.Results;
   toggleLayout: ( ) => void;
+  fetchMoreTaxa: ( ) => void;
+  isFetchingTaxa?: boolean;
 }
 
 interface TaxaFlashListRenderItemProps {
@@ -84,7 +87,10 @@ const MyObservationsSimple = ( {
   showLoginSheet,
   showNoResults,
   taxa,
-  toggleLayout
+  toggleLayout,
+
+  fetchMoreTaxa,
+  isFetchingTaxa
 }: Props ) => {
   const { t } = useTranslation( );
   const {
@@ -127,6 +133,32 @@ const MyObservationsSimple = ( {
       </View>
     );
   }, [t, numTotalObservations, numTotalTaxa] );
+
+  const renderTaxaFooter = useCallback( ( ) => {
+    if ( isFetchingTaxa ) {
+      return (
+        <InfiniteScrollLoadingWheel
+          hideLoadingWheel={false}
+          layout={layout}
+          isConnected={isConnected}
+        />
+      );
+    }
+    if ( !taxa?.length ) {
+      return (
+        <View className="w-full h-full p-5 justify-center align-center text-center">
+          <Body1 className="text-center">{ t( "You-havent-observed-any-species-yet" ) }</Body1>
+        </View>
+      );
+    }
+    return <View />;
+  }, [
+    layout,
+    isConnected,
+    isFetchingTaxa,
+    t,
+    taxa?.length
+  ] );
 
   return (
     <>
@@ -223,23 +255,30 @@ const MyObservationsSimple = ( {
         ) }
         { activeTab === TAXA_TAB && (
           <CustomFlashList
-            canFetch={false}
+            canFetch={!!currentUser}
             contentContainerStyle={taxaFlashListStyle}
             data={taxa}
             estimatedItemSize={estimatedGridItemSize}
             hideLoadingWheel
-            isConnected={false}
+            isConnected={isConnected}
             keyExtractor={( item: RealmTaxon ) => item.id}
             layout="grid"
             numColumns={numColumns}
             renderItem={( { item }: TaxaFlashListRenderItemProps ) => item && (
               <TaxonGridItem
+                showSpeciesSeenCheckmark
                 style={gridItemStyle}
                 taxon={item}
               />
             )}
             totalResults={numTotalTaxa}
-            testID="ExploreSpeciesAnimatedList"
+            onEndReached={
+              currentUser
+                ? fetchMoreTaxa
+                : undefined
+            }
+            refreshing={isFetchingTaxa}
+            ListFooterComponent={renderTaxaFooter}
           />
         ) }
       </ViewWrapper>

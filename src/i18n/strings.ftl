@@ -1486,6 +1486,7 @@ You-can-upload-this-observation-to-our-community = You can upload this observati
 You-changed-filters-will-be-discarded = You changed filters, but they were not applied to your explore search results.
 You-have-opted-out-of-the-Community-Taxon = You have opted out of the Community Taxon
 You-havent-joined-any-projects-yet = You haven’t joined any projects yet!
+You-havent-observed-any-species-yet = You haven't observed any species yet.
 You-likely-observed-a-new-species = You likely observed a new species!
 You-likely-observed-a-species = You likely observed a species
 You-likely-observed-an-organism-in-this-group = You likely observed an organism in this group
