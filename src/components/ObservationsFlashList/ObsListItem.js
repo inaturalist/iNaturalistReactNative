@@ -88,6 +88,7 @@ const ObsListItem = ( {
             )
           }}
           obsPhotosCount={photoCountFromObservation( observation )}
+          hidePhotoCount={missingBasics}
           hasSound={observationHasSound( observation )}
           opaque={unsynced}
           isSmall
