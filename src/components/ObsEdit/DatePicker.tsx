@@ -22,6 +22,9 @@ const DatePicker = ( { currentObservation, updateObservationKeys }: Props ) => {
   const openModal = () => setShowModal( true );
   const closeModal = () => setShowModal( false );
 
+  const observationDate = currentObservation?.observed_on_string
+    || currentObservation?.time_observed_at;
+
   const handlePicked = ( value: Date ) => {
     const dateString = formatISONoSeconds( value );
     updateObservationKeys( {
@@ -31,14 +34,17 @@ const DatePicker = ( { currentObservation, updateObservationKeys }: Props ) => {
   };
 
   const displayDate = ( ) => formatLongDatetime(
-    currentObservation?.observed_on_string || currentObservation?.time_observed_at,
+    observationDate,
     i18n,
     { missing: null }
   );
 
+  const observationDateForPicker = new Date( observationDate );
+
   return (
     <>
       <DateTimePicker
+        date={observationDateForPicker}
         datetime
         isDateTimePickerVisible={showModal}
         onDatePicked={handlePicked}

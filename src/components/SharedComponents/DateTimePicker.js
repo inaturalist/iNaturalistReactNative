@@ -5,6 +5,7 @@ import { Appearance } from "react-native";
 import DateTimePicker from "react-native-modal-datetime-picker";
 
 type Props = {
+  date: Date,
   toggleDateTimePicker: Function,
   onDatePicked: Function,
   isDateTimePickerVisible: boolean,
@@ -16,6 +17,7 @@ type Props = {
 const EmptyHeader = ( ) => null;
 
 const DatePicker = ( {
+  date,
   datetime,
   isDateTimePickerVisible,
   onDatePicked,
@@ -34,10 +36,11 @@ const DatePicker = ( {
         ? "datetime"
         : "date"}
       onCancel={toggleDateTimePicker}
-      onConfirm={date => {
-        onDatePicked( date );
+      onConfirm={selectedDate => {
+        onDatePicked( selectedDate );
         toggleDateTimePicker( );
       }}
+      date={date || new Date( )}
     />
   );
 };
