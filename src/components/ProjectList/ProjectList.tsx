@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import type { ApiProject } from "api/types";
 import {
   CustomFlashList
 } from "components/SharedComponents";
@@ -15,7 +16,7 @@ interface Props {
   ListEmptyComponent?: React.JSX.Element
   ListFooterComponent?: React.JSX.Element
   onEndReached?: ( ) => void
-  onPress?: ( ) => void
+  onPress?: ( project: ApiProject ) => void
   accessibilityLabel?: string
 }
 
@@ -30,7 +31,7 @@ const ProjectList = ( {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
 
-  const renderProject = ( { item: project } ) => (
+  const renderProject = ( { item: project }: { item: ApiProject } ) => (
     <Pressable
       className="px-4 py-1.5"
       onPress={( ) => {

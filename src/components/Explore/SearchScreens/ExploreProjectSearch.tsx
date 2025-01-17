@@ -1,13 +1,11 @@
-// @flow
-
 import { searchProjects } from "api/projects";
+import type { ApiOpts, ApiProject } from "api/types";
 import ProjectList from "components/ProjectList/ProjectList.tsx";
 import {
   SearchBar,
   ViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, {
   useCallback,
   useState
@@ -23,22 +21,22 @@ const DROP_SHADOW = getShadow( {
 } );
 
 type Props = {
-  closeModal: Function,
-  updateProject: Function
+  closeModal: ( ) => void,
+  updateProject: ( project: ApiProject ) => void
 };
 
-const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
+const ExploreProjectSearch = ( { closeModal, updateProject }: Props ) => {
   const [projectQuery, setProjectQuery] = useState( "" );
   const { t } = useTranslation();
 
   const { data, isLoading, refetch } = useAuthenticatedQuery(
     ["searchProjects", projectQuery],
-    optsWithAuth => searchProjects( { q: projectQuery }, optsWithAuth )
+    ( optsWithAuth: ApiOpts ) => searchProjects( { q: projectQuery }, optsWithAuth )
   );
 
   const projects = data?.results;
 
-  const onProjectSelected = useCallback( async project => {
+  const onProjectSelected = useCallback( async ( project: ApiProject ) => {
     if ( !project.id ) {
       // If this is missing, we can not query by project
       // TODO: user facing error message
@@ -55,16 +53,6 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
     },
     [updateProject, closeModal]
   );
-
-  const renderEmptyList = ( ) => (
-    <EmptySearchResults
-      isLoading={isLoading}
-      searchQuery={projectQuery}
-      refetch={refetch}
-    />
-  );
-
-  const renderFooter = ( ) => <View className="h-[336px]" />;
 
   return (
     <ViewWrapper>
@@ -86,8 +74,14 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
       </View>
       <ProjectList
         projects={projects}
-        ListFooterComponent={renderFooter}
-        ListEmptyCompoent={renderEmptyList}
+        ListFooterComponent={<View className="h-[336px]" />}
+        ListEmptyComponent={(
+          <EmptySearchResults
+            isLoading={isLoading}
+            searchQuery={projectQuery}
+            refetch={refetch}
+          />
+        )}
         onPress={onProjectSelected}
         accessibilityLabel={t( "Change-project" )}
       />

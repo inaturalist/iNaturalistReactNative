@@ -1,3 +1,4 @@
+import type { ApiProject } from "api/types";
 import classnames from "classnames";
 import displayProjectType from "components/Projects/helpers/displayProjectType.ts";
 import {
@@ -15,12 +16,7 @@ import formatProjectDate from "../Projects/helpers/displayDates";
 const defaultProjectIcon = "https://www.inaturalist.org/attachment_defaults/general/span2.png";
 
 type Props = {
-  item: {
-    id: string;
-    icon: string;
-    title: string;
-    project_type: string;
-  } | undefined | null;
+  item?: ApiProject | null;
   isHeader?: boolean;
 };
 

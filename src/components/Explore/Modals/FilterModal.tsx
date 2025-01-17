@@ -1,3 +1,4 @@
+import type { ApiProject } from "api/types";
 import classNames from "classnames";
 import NumberBadge from "components/Explore/NumberBadge.tsx";
 import ProjectListItem from "components/ProjectList/ProjectListItem.tsx";
@@ -68,8 +69,7 @@ interface Props {
   updateLocation: ( location: "worldwide" | { name: string } ) => void;
   // TODO: Param not typed yet, because ExploreUserSearch is not typed yet
   updateUser: ( user: null | { login: string } ) => void;
-  // TODO: Param not typed yet, because ExploreProjectSearch is not typed yet
-  updateProject: ( project: null | { title: string } ) => void;
+  updateProject: ( project: ApiProject ) => void;
 }
 
 const FilterModal = ( {
