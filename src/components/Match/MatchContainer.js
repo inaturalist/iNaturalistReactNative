@@ -34,8 +34,8 @@ const initialState = {
   fetchStatus: FETCH_STATUS_LOADING,
   scoreImageParams: null,
   queryKey: [],
-  selectedTaxon: null,
-  shouldUseEvidenceLocation: false
+  shouldUseEvidenceLocation: false,
+  orderedSuggestions: []
 };
 
 const reducer = ( state, action ) => {
@@ -45,11 +45,6 @@ const reducer = ( state, action ) => {
         ...state,
         scoreImageParams: action.scoreImageParams,
         queryKey: setQueryKey( state.selectedPhotoUri, state.shouldUseEvidenceLocation )
-      };
-    case "SELECT_TAXON":
-      return {
-        ...state,
-        selectedTaxon: action.selectedTaxon
       };
     case "SET_FETCH_STATUS":
       return {
@@ -63,6 +58,11 @@ const reducer = ( state, action ) => {
         scoreImageParams: action.scoreImageParams,
         shouldUseEvidenceLocation: action.shouldUseEvidenceLocation,
         queryKey: setQueryKey( state.selectedPhotoUri, action.shouldUseEvidenceLocation )
+      };
+    case "ORDER_SUGGESTIONS":
+      return {
+        ...state,
+        orderedSuggestions: action.orderedSuggestions
       };
     default:
       throw new Error( );
@@ -114,7 +114,8 @@ const MatchContainer = ( ) => {
     scoreImageParams,
     fetchStatus,
     queryKey,
-    shouldUseEvidenceLocation
+    shouldUseEvidenceLocation,
+    orderedSuggestions
   } = state;
 
   const shouldFetchOnlineSuggestions = ( hasPermissions !== undefined )
@@ -148,12 +149,37 @@ const MatchContainer = ( ) => {
     onlineSuggestionsAttempted
   } );
 
-  const onTaxonChosen = useCallback( selectedTaxon => {
-    dispatch( {
-      type: "SELECT_TAXON",
-      selectedTaxon
-    } );
-  }, [] );
+  const onSuggestionChosen = useCallback( selection => {
+    const suggestionsList = [...orderedSuggestions];
+
+    // make sure to reorder the list by confidence score
+    // for when a user taps multiple suggestions and pushes a new top suggestion to
+    // the top of the list
+    const sortedList = _.orderBy(
+      suggestionsList,
+      suggestion => suggestion.combined_score || suggestion.score,
+      ["desc"]
+    );
+
+    // order the chosen suggestion at the beginning of the list, so it
+    // can become the new top suggestion
+    const chosenIndex = _.findIndex(
+      sortedList,
+      suggestion => suggestion.taxon.id === selection.taxon.id
+    );
+    if ( chosenIndex !== -1 ) {
+      const newList = [
+        selection, // Add selected item at the beginning
+        ...sortedList.slice( 0, chosenIndex ), // Items before the selected one
+        ...sortedList.slice( chosenIndex + 1 ) // Items after the selected one
+      ];
+
+      dispatch( {
+        type: "ORDER_SUGGESTIONS",
+        orderedSuggestions: newList
+      } );
+    }
+  }, [orderedSuggestions] );
 
   const createUploadParams = useCallback( async ( uri, showLocation ) => {
     const newImageParams = await flattenUploadParams( uri );
@@ -192,18 +218,37 @@ const MatchContainer = ( ) => {
     return onFocus;
   }, [navigation, setImageParams, suggestions] );
 
+  useEffect( ( ) => {
+    if ( !suggestions || suggestions.length === 0 ) {
+      return;
+    }
+    const orderedList = [...suggestions.otherSuggestions];
+    if ( suggestions?.topSuggestion ) {
+      orderedList.unshift( suggestions?.topSuggestion );
+    }
+    // make sure list is in order of confidence score
+    const sortedList = _.orderBy(
+      orderedList,
+      suggestion => suggestion.combined_score || suggestion.score,
+      ["desc"]
+    );
+    dispatch( {
+      type: "ORDER_SUGGESTIONS",
+      orderedSuggestions: sortedList
+    } );
+  }, [suggestions] );
+
   if ( fetchStatus === FETCH_STATUS_LOADING ) {
     return null;
   }
 
-  const topSuggestion = suggestions?.topSuggestion;
-  const hasNoOtherSuggestions = suggestions?.otherSuggestions?.length === 0;
-
-  if ( !hasNoOtherSuggestions && !topSuggestion ) {
-    const newTopSuggestion = _.first( suggestions?.otherSuggestions );
-    _.remove( suggestions?.otherSuggestions, ( element, i ) => i === 0 );
-    suggestions.topSuggestion = newTopSuggestion;
+  // TODO: replace with a loading screen whenever designs are ready
+  if ( orderedSuggestions.length === 0 ) {
+    return null;
   }
+
+  const topSuggestion = _.first( orderedSuggestions );
+  const otherSuggestions = _.without( orderedSuggestions, topSuggestion );
 
   const navToTaxonDetails = ( ) => {
     navigation.push( "TaxonDetails", { id: topSuggestion?.id } );
@@ -220,21 +265,17 @@ const MatchContainer = ( ) => {
     exitObservationFlow( );
   };
 
-  // TODO: replace with a loading screen whenever designs are ready
-  if ( hasNoOtherSuggestions && !topSuggestion ) {
-    return null;
-  }
-
   return (
     <>
       <Match
         observation={currentObservation}
         observationPhoto={observationPhoto}
-        onTaxonChosen={onTaxonChosen}
+        onSuggestionChosen={onSuggestionChosen}
         handleSaveOrDiscardPress={handleSaveOrDiscardPress}
         navToTaxonDetails={navToTaxonDetails}
         handleLocationPickerPressed={handleLocationPickerPressed}
-        suggestions={suggestions}
+        topSuggestion={topSuggestion}
+        otherSuggestions={otherSuggestions}
       />
       {renderPermissionsGate( { onPermissionGranted: openLocationPicker } )}
     </>
