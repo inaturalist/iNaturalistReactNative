@@ -1,4 +1,4 @@
-import fetchSearchResults from "api/search.ts";
+import { fetchSearchResults } from "api/search.ts";
 import type { ApiOpts } from "api/types";
 import { RealmContext } from "providers/contexts.ts";
 import { useEffect } from "react";

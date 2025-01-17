@@ -1,4 +1,4 @@
-import { searchProjects } from "api/projects";
+import { search } from "api/search.ts";
 import type { ApiProject } from "api/types";
 import ProjectList from "components/ProjectList/ProjectList.tsx";
 import {
@@ -32,15 +32,28 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ) => {
   // TODO fix these types if/when we ever figure out how to type react query
   // wrappers like useInfiniteScroll
   const {
-    data: projects,
+    data,
     isFetching,
     fetchNextPage,
     refetch
   } = useInfiniteScroll(
     ["ExploreProjectSearch", projectQuery],
-    searchProjects,
-    { q: projectQuery }
+    search,
+    {
+      q: projectQuery,
+      sources: "projects",
+      fields: {
+        project: {
+          id: true,
+          title: true,
+          icon: true,
+          project_type: true
+        }
+      }
+    }
   );
+
+  const projects = data.map( ( r: { project: ApiProject } ) => r.project );
 
   const onProjectSelected = useCallback( async ( project: ApiProject ) => {
     if ( !project.id ) {

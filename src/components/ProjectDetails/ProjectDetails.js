@@ -137,8 +137,6 @@ const ProjectDetails = ( {
     );
   };
 
-  console.log( project?.header_image_url, "header" );
-
   const backgroundImageSource = project?.header_image_url
     ? { uri: project.header_image_url }
     : require( "images/background/project_banner.jpg" );

@@ -1,6 +1,5 @@
 // @flow
 
-import { flatten } from "lodash";
 import { useAuthenticatedInfiniteQuery } from "sharedHooks";
 
 const useInfiniteScroll = (
@@ -26,7 +25,7 @@ const useInfiniteScroll = (
     status
   } = useAuthenticatedInfiniteQuery(
     [queryKey, baseParams],
-    async ( { pageParam = 0 }, optsWithAuth ) => {
+    async ( { pageParam = 1 }, optsWithAuth ) => {
       const params = {
         ...baseParams
       };
@@ -43,11 +42,11 @@ const useInfiniteScroll = (
     }
   );
 
-  const pages = data?.pages;
-  const allResults = pages?.map( page => page?.results );
+  const pages = data?.pages || [];
+  const allResults = pages?.map( page => page?.results ).flat( Infinity ).filter( Boolean );
 
   return {
-    data: flatten( allResults ),
+    data: allResults,
     isFetching,
     isFetchingNextPage,
     fetchNextPage,
