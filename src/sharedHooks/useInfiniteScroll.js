@@ -7,7 +7,7 @@ const useInfiniteScroll = (
   queryKey: string,
   apiCall: Function,
   newInputParams: Object,
-  options: {
+  options?: {
     enabled: boolean
   }
 ): Object => {
@@ -22,6 +22,7 @@ const useInfiniteScroll = (
     isFetching,
     isFetchingNextPage,
     fetchNextPage,
+    refetch,
     status
   } = useAuthenticatedInfiniteQuery(
     [queryKey, baseParams],
@@ -38,7 +39,7 @@ const useInfiniteScroll = (
       getNextPageParam: lastPage => ( lastPage
         ? lastPage.page + 1
         : 1 ),
-      enabled: options.enabled
+      enabled: options?.enabled
     }
   );
 
@@ -50,6 +51,7 @@ const useInfiniteScroll = (
     isFetching,
     isFetchingNextPage,
     fetchNextPage,
+    refetch,
     status,
     totalResults: pages?.[0]
       ? pages?.[0].total_results

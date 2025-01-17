@@ -1,5 +1,5 @@
 import { searchProjects } from "api/projects";
-import type { ApiOpts, ApiProject } from "api/types";
+import type { ApiProject } from "api/types";
 import ProjectList from "components/ProjectList/ProjectList.tsx";
 import {
   SearchBar,
@@ -10,7 +10,7 @@ import React, {
   useCallback,
   useState
 } from "react";
-import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
+import { useInfiniteScroll, useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
 import EmptySearchResults from "./EmptySearchResults";
@@ -29,12 +29,18 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ) => {
   const [projectQuery, setProjectQuery] = useState( "" );
   const { t } = useTranslation();
 
-  const { data, isLoading, refetch } = useAuthenticatedQuery(
-    ["searchProjects", projectQuery],
-    ( optsWithAuth: ApiOpts ) => searchProjects( { q: projectQuery }, optsWithAuth )
+  // TODO fix these types if/when we ever figure out how to type react query
+  // wrappers like useInfiniteScroll
+  const {
+    data: projects,
+    isFetching,
+    fetchNextPage,
+    refetch
+  } = useInfiniteScroll(
+    ["ExploreProjectSearch", projectQuery],
+    searchProjects,
+    { q: projectQuery }
   );
-
-  const projects = data?.results;
 
   const onProjectSelected = useCallback( async ( project: ApiProject ) => {
     if ( !project.id ) {
@@ -77,11 +83,12 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ) => {
         ListFooterComponent={<View className="h-[336px]" />}
         ListEmptyComponent={(
           <EmptySearchResults
-            isLoading={isLoading}
+            isLoading={isFetching}
             searchQuery={projectQuery}
             refetch={refetch}
           />
         )}
+        onEndReached={fetchNextPage}
         onPress={onProjectSelected}
         accessibilityLabel={t( "Change-project" )}
       />
