@@ -22,6 +22,7 @@ type Props = {
   className?: string,
   hasSound?: boolean,
   height?: string,
+  hidePhotoCount?: boolean,
   iconicTaxonName?: string,
   isBackground?: boolean,
   isMultiplePhotosTop?: boolean,
@@ -43,6 +44,7 @@ const ObsImagePreview = ( {
   className,
   hasSound = false,
   height = "h-[62px]",
+  hidePhotoCount,
   iconicTaxonName,
   isBackground = true,
   isMultiplePhotosTop = false,
@@ -73,7 +75,7 @@ const ObsImagePreview = ( {
   ];
 
   const renderPhotoCount = useCallback( ( ) => {
-    if ( obsPhotosCount <= 1 ) return null;
+    if ( obsPhotosCount <= 1 || hidePhotoCount ) return null;
 
     if ( isSmall ) {
       return (
@@ -107,6 +109,7 @@ const ObsImagePreview = ( {
       </View>
     );
   }, [
+    hidePhotoCount,
     isMultiplePhotosTop,
     isSmall,
     obsPhotosCount

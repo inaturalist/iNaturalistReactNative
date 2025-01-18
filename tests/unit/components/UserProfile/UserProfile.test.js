@@ -69,7 +69,8 @@ describe( "UserProfile", () => {
     ).toBeTruthy( );
     const userIcon = screen.getByTestId( "UserIcon.photo" );
     expect( userIcon ).toBeTruthy( );
-    expect( userIcon.props.source ).toHaveProperty( "url", mockUser.icon_url );
+    // eslint-disable-next-line testing-library/no-node-access
+    expect( userIcon.children[0].props.source ).toHaveProperty( "url", mockUser.icon_url );
   } );
 
   test( "renders followers and following buttons", async () => {

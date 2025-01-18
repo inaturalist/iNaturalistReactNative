@@ -21,7 +21,7 @@ const snapshotUser = { login: "some_login", icon_url: "some_icon_url" };
 const snapshotUserWithoutImage = { login: "some_login", icon_url: null };
 
 jest.mock(
-  "components/SharedComponents/UserIcon/UserIcon",
+  "components/SharedComponents/UserIcon",
   () => function MockUserIcon( ) {
     const MockName = "mockUserIcon";
     return <MockName testID={MockName} />;

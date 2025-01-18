@@ -41,7 +41,7 @@ const UiLibraryItem = ( ) => {
   // For reasons I don't understand hot reload doesn't work with this LIBRARY
   // approach, so if you want that you might just need to render the
   // component explicitly here. ~~~~kueda20240613
-  // return <LoginSignUpLearnMoreDemo />;
+  // return <ObsGridItemDemo />;
   return typeof ( LIBRARY[params.component] ) === "function"
     ? LIBRARY[params.component]()
     : <ActivityIndicator />;

@@ -11,6 +11,7 @@ import React from "react";
 export function makeObservation( options = {} ) {
   return {
     uuid: faker.string.uuid( ),
+    missingBasics: ( ) => false,
     ...options
   };
 }
@@ -103,36 +104,46 @@ const ObsListItemDemo = ( ) => (
       <Heading1 className="my-2">Upload statuses</Heading1>
       <Heading2 className="my-2">Synced</Heading2>
       <ObsListItem
-        observation={{ uuid: "the-uuid", _synced_at: new Date( ) }}
+        observation={makeObservation( { _synced_at: new Date( ) } )}
+      />
+      <Heading2 className="my-2">Edit needed</Heading2>
+      <ObsListItem
+        observation={makeObservation( {
+          needsSync: () => true,
+          missingBasics: () => true
+        } )}
+        uploadProgress={0}
       />
       <Heading2 className="my-2">Upload needed</Heading2>
-      <ObsListItem observation={{ uuid: "the-uuid" }} uploadProgress={0} />
+      <ObsListItem observation={makeObservation()} uploadProgress={0} />
+      <Heading2 className="my-2">Upload Queued</Heading2>
+      <ObsListItem observation={makeObservation()} uploadProgress={0} queued />
       <Heading2 className="my-2">Upload in progress</Heading2>
       <ObsListItem
-        observation={{ uuid: "the-uuid" }}
+        observation={makeObservation()}
         uploadProgress={0.4}
       />
       <Heading2 className="my-2">Upload complete, w/ animation</Heading2>
       <ObsListItem
-        observation={{ uuid: "the-uuid" }}
+        observation={makeObservation()}
         uploadProgress={1}
       />
       <Heading2 className="my-2">Upload complete, w/ animation, w/ ID</Heading2>
       <ObsListItem
-        observation={{
+        observation={makeObservation( {
           uuid: "the-uuid",
           identifications: [{ uuid: "another-uuid", current: true }]
-        }}
+        } )}
         uploadProgress={1}
       />
       <Heading2 className="my-2">Upload complete, before animation</Heading2>
       <ObsListItem
-        observation={{ uuid: "the-uuid" }}
+        observation={makeObservation()}
         uploadProgress={10}
       />
       <Heading2 className="my-2">Upload complete, overlay of animated elements</Heading2>
       <ObsListItem
-        observation={{ uuid: "the-uuid" }}
+        observation={makeObservation()}
         uploadProgress={11}
         showUploadStatus
       />

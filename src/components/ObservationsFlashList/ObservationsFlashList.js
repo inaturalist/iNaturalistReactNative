@@ -1,7 +1,6 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
 import MyObservationsEmpty from "components/MyObservations/MyObservationsEmpty";
-import navigateToObsEdit from "components/ObsEdit/helpers/navigateToObsEdit.ts";
 import {
   ActivityIndicator,
   Body3,
@@ -21,7 +20,11 @@ import React, {
 import { Animated } from "react-native";
 import RealmObservation from "realmModels/Observation";
 import {
-  useCurrentUser, useFontScale, useGridLayout, useTranslation
+  useCurrentUser,
+  useFontScale,
+  useGridLayout,
+  useNavigateToObsEdit,
+  useTranslation
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -78,10 +81,9 @@ const ObservationsFlashList: Function = forwardRef( ( {
   const { isLargeFontScale } = useFontScale( );
   const currentUser = useCurrentUser( );
   const navigation = useNavigation( );
+  const navigateToObsEdit = useNavigateToObsEdit( );
   const uploadQueue = useStore( state => state.uploadQueue );
   const totalUploadProgress = useStore( state => state.totalUploadProgress );
-  const prepareObsEdit = useStore( state => state.prepareObsEdit );
-  const setMyObsOffsetToRestore = useStore( state => state.setMyObsOffsetToRestore );
   const [refreshing, setRefreshing] = useState( false );
 
   const onRefresh = async ( ) => {
@@ -113,8 +115,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
 
     const onItemPress = ( ) => {
       if ( obsNeedsSync ) {
-        prepareObsEdit( observation );
-        navigateToObsEdit( navigation, setMyObsOffsetToRestore );
+        navigateToObsEdit( observation );
       } else {
         // Uniquely identify the list this observation appears in so we can ensure
         // ObsDetails doesn't get pushed onto the stack twice after multiple taps
@@ -146,17 +147,16 @@ const ObservationsFlashList: Function = forwardRef( ( {
     currentUser,
     explore,
     gridItemStyle,
-    isLargeFontScale,
     handleIndividualUploadPress,
     hideMetadata,
-    obsListKey,
+    isLargeFontScale,
     layout,
+    navigateToObsEdit,
+    navigation,
+    obsListKey,
     realm,
     totalUploadProgress,
-    uploadQueue,
-    prepareObsEdit,
-    setMyObsOffsetToRestore,
-    navigation
+    uploadQueue
   ] );
 
   const renderItemSeparator = useCallback( ( ) => {

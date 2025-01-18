@@ -6,45 +6,55 @@ import {
   Body3,
   Heading3,
   Heading5,
+  INatIcon,
+  InfiniteScrollLoadingWheel,
   RotatingINatIconButton,
   Tabs,
+  UserIcon,
   ViewWrapper
 } from "components/SharedComponents";
 import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList.tsx";
 import TaxonGridItem from "components/SharedComponents/TaxonGridItem.tsx";
 import { Pressable, View } from "components/styledComponents";
-import { RealmContext } from "providers/contexts.ts";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import Realm from "realm";
 import type {
   RealmObservation,
-  RealmTaxon
+  RealmTaxon,
+  RealmUser
 } from "realmModels/types";
+import User from "realmModels/User.ts";
 import { useGridLayout, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import Announcements from "./Announcements";
 import LoginSheet from "./LoginSheet";
 
-const { useRealm } = RealmContext;
-
-interface Props {
+export interface Props {
+  activeTab: string;
+  currentUser?: RealmUser;
   handleIndividualUploadPress: ( uuid: string ) => void;
-  handleSyncButtonPress: ( ) => void;
   handlePullToRefresh: ( ) => void;
+  handleSyncButtonPress: ( ) => void;
   isConnected: boolean;
   isFetchingNextPage: boolean;
   layout: "list" | "grid";
   listRef?: React.RefObject<FlashList<RealmObservation>>;
+  numTotalObservations?: number;
+  numTotalTaxa?: number;
   numUnuploadedObservations: number;
   observations: RealmObservation[];
   onEndReached: ( ) => void;
   onListLayout?: ( ) => void;
   onScroll?: ( ) => void;
+  setActiveTab: ( newTab: string ) => void;
   setShowLoginSheet: ( newValue: boolean ) => void;
   showLoginSheet: boolean;
   showNoResults: boolean;
+  taxa?: RealmTaxon[] | Realm.Results;
   toggleLayout: ( ) => void;
+  fetchMoreTaxa: ( ) => void;
+  isFetchingTaxa?: boolean;
 }
 
 interface TaxaFlashListRenderItemProps {
@@ -53,29 +63,37 @@ interface TaxaFlashListRenderItemProps {
   item: RealmTaxon;
 }
 
-const OBSERVATIONS_TAB = "observations";
-const TAXA_TAB = "taxa";
+export const OBSERVATIONS_TAB = "observations";
+export const TAXA_TAB = "taxa";
 
 const MyObservationsSimple = ( {
+  activeTab,
+  currentUser,
   handleIndividualUploadPress,
-  handleSyncButtonPress,
   handlePullToRefresh,
+  handleSyncButtonPress,
   isConnected,
   isFetchingNextPage,
   layout,
   listRef,
+  numTotalObservations,
+  numTotalTaxa,
   numUnuploadedObservations,
   observations,
   onEndReached,
   onListLayout,
-  onScroll: _onScroll,
+  onScroll,
+  setActiveTab,
   setShowLoginSheet,
   showLoginSheet,
   showNoResults,
-  toggleLayout
+  taxa,
+  toggleLayout,
+
+  fetchMoreTaxa,
+  isFetchingTaxa
 }: Props ) => {
   const { t } = useTranslation( );
-  const [activeTab, setActiveTab] = useState( OBSERVATIONS_TAB );
   const {
     estimatedGridItemSize,
     flashListStyle,
@@ -87,31 +105,6 @@ const MyObservationsSimple = ( {
     paddingTop: 10
   } ), [flashListStyle] );
 
-  // Calculate obs and leaf taxa counts from local observations
-  const realm = useRealm();
-  const numTotalObservations = realm.objects( "Observation" ).length;
-  const distinctTaxonObs = realm.objects( "Observation" )
-    .filtered( "taxon != null DISTINCT(taxon.id)" );
-  const taxonIds = distinctTaxonObs.map( o => ( o.taxon as RealmTaxon ).id );
-  const ancestorIds = distinctTaxonObs.map( o => {
-    // We're filtering b/c for taxa above species level, the taxon's own
-    // ID is included in ancestor ids for some reason (this is a bug...
-    // somewhere)
-    const taxonAncestorIds = (
-      ( o.taxon as RealmTaxon )?.ancestor_ids || []
-    ).filter( id => Number( id ) !== Number( o.taxon?.id ) );
-    return taxonAncestorIds;
-  } ).flat( Infinity );
-  const leafTaxonIds = taxonIds.filter( taxonId => !ancestorIds.includes( taxonId ) );
-  const numTotalTaxa = leafTaxonIds.length;
-
-  // Get leaf taxa if we're viewing the species tab
-  let leafTaxa: Realm.Results | Array<RealmTaxon> = [];
-  if ( activeTab === TAXA_TAB ) {
-    // IDK how to placate TypeScript here. ~~~kueda 20250108
-    leafTaxa = realm.objects( "Taxon" ).filtered( "id IN $0", leafTaxonIds );
-  }
-
   // If I define this interface outside of the component like a sane person
   // eslint has a mysterious fit. ~~~~kueda 20250108
   interface StatTabProps {
@@ -119,22 +112,80 @@ const MyObservationsSimple = ( {
     text: string;
   }
   const StatTab = useCallback( ( { id, text: _text }: StatTabProps ) => {
-    let stat: number;
+    let stat: number | undefined;
     let label: string;
     if ( id === OBSERVATIONS_TAB ) {
       stat = numTotalObservations;
-      label = t( "X-OBSERVATIONS--below-number", { count: numTotalObservations } );
+      label = t( "X-OBSERVATIONS--below-number", { count: numTotalObservations || 0 } );
     } else {
       stat = numTotalTaxa;
-      label = t( "X-SPECIES--below-number", { count: numTotalTaxa } );
+      label = t( "X-SPECIES--below-number", { count: numTotalTaxa || 0 } );
     }
     return (
       <View className="items-center p-3">
-        <Body1 className="mb-[4px]">{ t( "Intl-number", { val: stat } ) }</Body1>
+        <Body1 className="mb-[4px]">
+          {
+            typeof ( stat ) === "number"
+              ? t( "Intl-number", { val: stat } )
+              : "--"
+          }
+        </Body1>
         <Heading5>{ label }</Heading5>
       </View>
     );
   }, [t, numTotalObservations, numTotalTaxa] );
+
+  const renderTaxaFooter = useCallback( ( ) => {
+    if ( isFetchingTaxa ) {
+      return (
+        <InfiniteScrollLoadingWheel
+          hideLoadingWheel={false}
+          layout={layout}
+          isConnected={isConnected}
+        />
+      );
+    }
+    if ( !taxa?.length ) {
+      return (
+        <View className="w-full h-full p-5 justify-center align-center text-center">
+          <Body1 className="text-center">{ t( "You-havent-observed-any-species-yet" ) }</Body1>
+        </View>
+      );
+    }
+    return <View />;
+  }, [
+    layout,
+    isConnected,
+    isFetchingTaxa,
+    t,
+    taxa?.length
+  ] );
+
+  const obsMissingBasicsExist = useMemo( ( ) => (
+    numUnuploadedObservations > 0 && !!observations.find( o => o.needsSync() && o.missingBasics( ) )
+  ), [numUnuploadedObservations, observations] );
+
+  const renderObservationsHeader = useCallback( ( ) => (
+    <>
+      { obsMissingBasicsExist && (
+        <View className="flex-row items-center px-[32px] py-[20px]">
+          <INatIcon
+            name="triangle-exclamation"
+            color={String( colors?.warningRed )}
+            size={22}
+          />
+          <Body3 className="shrink ml-[20px]">
+            { t( "Observations-need-location-date--warning" ) }
+          </Body3>
+        </View>
+      ) }
+      <Announcements isConnected={isConnected} />
+    </>
+  ), [
+    isConnected,
+    obsMissingBasicsExist,
+    t
+  ] );
 
   return (
     <>
@@ -151,7 +202,20 @@ const MyObservationsSimple = ( {
           </Pressable>
         ) }
         <View className="flex-row justify-between items-center px-5 py-1">
-          <Heading3>{ t( "My-Observations" ) }</Heading3>
+          <View className="flex-row items-center">
+            {currentUser && (
+              <View className="mr-2">
+                <UserIcon size={32} uri={User.uri( currentUser )} />
+              </View>
+            )}
+            <Heading3>
+              {
+                currentUser
+                  ? currentUser.login
+                  : t( "My-Observations" )
+              }
+            </Heading3>
+          </View>
           <RotatingINatIconButton
             icon={
               numUnuploadedObservations > 0
@@ -190,6 +254,7 @@ const MyObservationsSimple = ( {
           <>
             <ObservationsFlashList
               data={observations.filter( o => o.isValid() )}
+              dataCanBeFetched={!!currentUser}
               handlePullToRefresh={handlePullToRefresh}
               handleIndividualUploadPress={handleIndividualUploadPress}
               hideLoadingWheel
@@ -200,13 +265,12 @@ const MyObservationsSimple = ( {
               layout={layout}
               onEndReached={onEndReached}
               onLayout={onListLayout}
+              onScroll={onScroll}
               ref={listRef}
               showObservationsEmptyScreen
               showNoResults={showNoResults}
               testID="MyObservationsAnimatedList"
-              renderHeader={(
-                <Announcements isConnected={isConnected} />
-              )}
+              renderHeader={renderObservationsHeader}
             />
             <ObservationsViewBar
               hideMap
@@ -217,23 +281,30 @@ const MyObservationsSimple = ( {
         ) }
         { activeTab === TAXA_TAB && (
           <CustomFlashList
-            canFetch={false}
+            canFetch={!!currentUser}
             contentContainerStyle={taxaFlashListStyle}
-            data={leafTaxa}
+            data={taxa}
             estimatedItemSize={estimatedGridItemSize}
             hideLoadingWheel
-            isConnected={false}
+            isConnected={isConnected}
             keyExtractor={( item: RealmTaxon ) => item.id}
             layout="grid"
             numColumns={numColumns}
             renderItem={( { item }: TaxaFlashListRenderItemProps ) => item && (
               <TaxonGridItem
+                showSpeciesSeenCheckmark
                 style={gridItemStyle}
                 taxon={item}
               />
             )}
-            totalResults={leafTaxa.length}
-            testID="ExploreSpeciesAnimatedList"
+            totalResults={numTotalTaxa}
+            onEndReached={
+              currentUser
+                ? fetchMoreTaxa
+                : undefined
+            }
+            refreshing={isFetchingTaxa}
+            ListFooterComponent={renderTaxaFooter}
           />
         ) }
       </ViewWrapper>
