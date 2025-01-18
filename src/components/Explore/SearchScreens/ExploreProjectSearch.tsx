@@ -1,18 +1,16 @@
-// @flow
-
-import { searchProjects } from "api/projects";
+import { search } from "api/search.ts";
+import type { ApiProject } from "api/types";
 import ProjectList from "components/ProjectList/ProjectList.tsx";
 import {
   SearchBar,
   ViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, {
   useCallback,
   useState
 } from "react";
-import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
+import { useInfiniteScroll, useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
 import EmptySearchResults from "./EmptySearchResults";
@@ -23,22 +21,41 @@ const DROP_SHADOW = getShadow( {
 } );
 
 type Props = {
-  closeModal: Function,
-  updateProject: Function
+  closeModal: ( ) => void,
+  updateProject: ( project: ApiProject ) => void
 };
 
-const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
+const ExploreProjectSearch = ( { closeModal, updateProject }: Props ) => {
   const [projectQuery, setProjectQuery] = useState( "" );
   const { t } = useTranslation();
 
-  const { data, isLoading, refetch } = useAuthenticatedQuery(
-    ["searchProjects", projectQuery],
-    optsWithAuth => searchProjects( { q: projectQuery }, optsWithAuth )
+  // TODO fix these types if/when we ever figure out how to type react query
+  // wrappers like useInfiniteScroll
+  const {
+    data,
+    isFetching,
+    fetchNextPage,
+    refetch
+  } = useInfiniteScroll(
+    ["ExploreProjectSearch", projectQuery],
+    search,
+    {
+      q: projectQuery,
+      sources: "projects",
+      fields: {
+        project: {
+          id: true,
+          title: true,
+          icon: true,
+          project_type: true
+        }
+      }
+    }
   );
 
-  const projects = data?.results;
+  const projects = data.map( ( r: { project: ApiProject } ) => r.project );
 
-  const onProjectSelected = useCallback( async project => {
+  const onProjectSelected = useCallback( async ( project: ApiProject ) => {
     if ( !project.id ) {
       // If this is missing, we can not query by project
       // TODO: user facing error message
@@ -55,16 +72,6 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
     },
     [updateProject, closeModal]
   );
-
-  const renderEmptyList = ( ) => (
-    <EmptySearchResults
-      isLoading={isLoading}
-      searchQuery={projectQuery}
-      refetch={refetch}
-    />
-  );
-
-  const renderFooter = ( ) => <View className="h-[336px]" />;
 
   return (
     <ViewWrapper>
@@ -86,8 +93,15 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
       </View>
       <ProjectList
         projects={projects}
-        ListFooterComponent={renderFooter}
-        ListEmptyCompoent={renderEmptyList}
+        ListFooterComponent={<View className="h-[336px]" />}
+        ListEmptyComponent={(
+          <EmptySearchResults
+            isLoading={isFetching}
+            searchQuery={projectQuery}
+            refetch={refetch}
+          />
+        )}
+        onEndReached={fetchNextPage}
         onPress={onProjectSelected}
         accessibilityLabel={t( "Change-project" )}
       />

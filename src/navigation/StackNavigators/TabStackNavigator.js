@@ -12,7 +12,7 @@ import Donate from "components/Donate/Donate.tsx";
 import ExploreContainer from "components/Explore/ExploreContainer";
 import RootExploreContainer from "components/Explore/RootExploreContainer";
 import ExploreLocationSearch from "components/Explore/SearchScreens/ExploreLocationSearch";
-import ExploreProjectSearch from "components/Explore/SearchScreens/ExploreProjectSearch";
+import ExploreProjectSearch from "components/Explore/SearchScreens/ExploreProjectSearch.tsx";
 import ExploreTaxonSearch from "components/Explore/SearchScreens/ExploreTaxonSearch";
 import ExploreUserSearch from "components/Explore/SearchScreens/ExploreUserSearch";
 import Help from "components/Help/Help.tsx";

@@ -16,7 +16,9 @@ export interface ApiPlace {
 }
 
 export interface ApiProject {
+  icon?: string;
   id?: number;
+  project_type?: "collection" | "umbrella" | ""; // FYI "" means "traditional"
   title?: string;
 }
 

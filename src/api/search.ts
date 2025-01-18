@@ -33,10 +33,11 @@ const PARAMS: ApiParams = {
   fields: "all"
 };
 
-const fetchSearchResults = async (
+// Vanilla search wrapper with error handling
+const search = async (
   params: SearchParams = {},
   opts: ApiOpts = {}
-): Promise<null | ( ApiPlace | ApiProject | ApiTaxon | ApiUser )[]> => {
+): Promise<null | SearchResponse> => {
   let response: SearchResponse;
   try {
     response = await inatjs.search( { ...PARAMS, ...params }, opts );
@@ -46,6 +47,15 @@ const fetchSearchResults = async (
     // this is just to placate typescript
     return null;
   }
+  return response;
+};
+
+// Hits /search AND maps results so it just returns and array of results
+const fetchSearchResults = async (
+  params: SearchParams = {},
+  opts: ApiOpts = {}
+): Promise<null | ( ApiPlace | ApiProject | ApiTaxon | ApiUser )[]> => {
+  const response = await search( params, opts );
   if ( !response ) { return null; }
   const sources = [params.sources].flat();
   const records: ( ApiPlace | ApiProject | ApiTaxon | ApiUser )[] = [];
@@ -65,4 +75,4 @@ const fetchSearchResults = async (
   return records;
 };
 
-export default fetchSearchResults;
+export { fetchSearchResults, search };
