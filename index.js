@@ -4,7 +4,6 @@
 import "react-native-url-polyfill/auto";
 
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { NavigationContainer } from "@react-navigation/native";
 import {
   QueryClient,
   QueryClientProvider
@@ -14,6 +13,7 @@ import ErrorBoundary from "components/ErrorBoundary";
 import initI18next from "i18n/initI18next";
 import { t } from "i18next";
 import inatjs from "inaturalistjs";
+import OfflineNavigationGuard from "navigation/OfflineNavigationGuard.tsx";
 import INatPaperProvider from "providers/INatPaperProvider";
 import RealmProvider from "providers/RealmProvider";
 import React from "react";
@@ -29,7 +29,6 @@ import { reactQueryRetry } from "sharedHelpers/logging";
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
 import { getUserAgent } from "./src/api/userAgent";
-import { navigationRef } from "./src/navigation/navigationUtils";
 
 const logger = log.extend( "index.js" );
 
@@ -125,12 +124,11 @@ const AppWithProviders = ( ) => (
         <INatPaperProvider>
           <GestureHandlerRootView className="flex-1">
             <BottomSheetModalProvider>
-              {/* NavigationContainer needs to be nested above ObsEditProvider */}
-              <NavigationContainer ref={navigationRef}>
+              <OfflineNavigationGuard>
                 <ErrorBoundary>
                   <App />
                 </ErrorBoundary>
-              </NavigationContainer>
+              </OfflineNavigationGuard>
             </BottomSheetModalProvider>
           </GestureHandlerRootView>
         </INatPaperProvider>
