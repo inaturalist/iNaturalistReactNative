@@ -43,7 +43,7 @@
     "reassure": "reassure"
   },
   "dependencies": {
-    "@bam.tech/react-native-image-resizer": "^3.0.7",
+    "@bam.tech/react-native-image-resizer": "^3.0.11",
     "@candlefinance/faster-image": "^1.4.3",
     "@formidable-webview/webshell": "^2.6.0",
     "@gorhom/bottom-sheet": "^4.6.1",
