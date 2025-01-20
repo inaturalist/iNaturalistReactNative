@@ -918,9 +918,9 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - react-native-config (1.5.1):
-    - react-native-config/App (= 1.5.1)
-  - react-native-config/App (1.5.1):
+  - react-native-config (1.5.3):
+    - react-native-config/App (= 1.5.3)
+  - react-native-config/App (1.5.3):
     - React-Core
   - react-native-exif-reader (0.4.2):
     - React-Core
@@ -1548,7 +1548,7 @@ SPEC CHECKSUMS:
   React-logger: 3017d7c365f7df9a4575f13e98c1ef1d96b85ba5
   React-Mapbuffer: 768950d2253c4d3da3c40ac7259eafd3ce6f30f2
   react-native-cameraroll: 71a0dc2273bbb802bd5d4caffed9eff21fefa0d3
-  react-native-config: 136f9755ccc991cc6438053a44363259ad4c7813
+  react-native-config: ea75335a7cca1d3326de1da384227e580a7c082e
   react-native-exif-reader: d871d62023d532e33cc230ede6e2ba9cbfe220e2
   react-native-geocoder-reborn: a3c3d8460910309e750609c373b6887ec6f67a8f
   react-native-geolocation: 52795f4d0d1e40a42b020e6063bfaa0c33c8ed6d
