@@ -932,7 +932,7 @@ PODS:
     - React-Core
   - react-native-image-picker (7.0.0):
     - React-Core
-  - react-native-image-resizer (3.0.7):
+  - react-native-image-resizer (3.0.11):
     - React-Core
   - react-native-keep-awake (1.2.3):
     - React-Core
@@ -1155,7 +1155,7 @@ PODS:
     - React-Core
   - RNDeviceInfo (10.13.1):
     - React-Core
-  - RNFlashList (1.7.1):
+  - RNFlashList (1.7.2):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1553,7 +1553,7 @@ SPEC CHECKSUMS:
   react-native-geocoder-reborn: a3c3d8460910309e750609c373b6887ec6f67a8f
   react-native-geolocation: 52795f4d0d1e40a42b020e6063bfaa0c33c8ed6d
   react-native-image-picker: b64848e41db57068721d5db3cea54e32ecb92791
-  react-native-image-resizer: 73c63c5b349aa95b0761d0e19c7b7bcfe89c3bf6
+  react-native-image-resizer: 24c5d06fae2176dc0caed4b6396e02befb44064a
   react-native-keep-awake: 3c347cbcb834e5ce4b5717e9e2734b374f6fd70f
   react-native-mail: 6e83813066984b26403d3fdfe79ac7bb31857e3c
   react-native-maps: 85da55259d35bd50b5161d2ec0ee153d454158cc
@@ -1596,7 +1596,7 @@ SPEC CHECKSUMS:
   RNCPicker: fb82ba6cfba077a80a32412bc7b5391130a4e25f
   RNDateTimePicker: b43e41f10305dde521c0ab1370d7454979ec4287
   RNDeviceInfo: 538b62f03991eb4a2a15cf6fec5fff6bb5edc34e
-  RNFlashList: 818cb6cff1f47cabe1acd6298c98af1a39b9b18c
+  RNFlashList: acc8b5f413b16c09304d7bbd2fc9e51f6ee16f71
   RNFS: 89de7d7f4c0f6bafa05343c578f61118c8282ed8
   RNGestureHandler: e262eeb792addec0705a116456f210ee1be0dcd0
   RNGoogleSignin: ba93c1137f8d5cebdd39b04f493fd212ddf5ecd6

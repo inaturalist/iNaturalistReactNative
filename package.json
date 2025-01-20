@@ -43,7 +43,7 @@
     "reassure": "reassure"
   },
   "dependencies": {
-    "@bam.tech/react-native-image-resizer": "^3.0.7",
+    "@bam.tech/react-native-image-resizer": "^3.0.11",
     "@candlefinance/faster-image": "^1.4.3",
     "@formidable-webview/webshell": "^2.6.0",
     "@gorhom/bottom-sheet": "^4.6.1",
@@ -65,7 +65,7 @@
     "@react-navigation/native-stack": "^6.9.26",
     "@realm/react": "^0.6.2",
     "@sayem314/react-native-keep-awake": "^1.2.3",
-    "@shopify/flash-list": "^1.7.1",
+    "@shopify/flash-list": "^1.7.2",
     "@tanstack/react-query": "^5.29.0",
     "apisauce": "^3.0.1",
     "axios": "^1.7.4",
@@ -128,7 +128,7 @@
     "react-native-svg": "^15.1.0",
     "react-native-svg-transformer": "^1.3.0",
     "react-native-url-polyfill": "^2.0.0",
-    "react-native-uuid": "^2.0.2",
+    "react-native-uuid": "^2.0.3",
     "react-native-vector-icons": "^10.0.3",
     "react-native-vision-camera": "4.0.5",
     "react-native-volume-manager": "^1.10.0",
