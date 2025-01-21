@@ -1,8 +1,8 @@
 import { Realm } from "@realm/react";
 import { FileUpload } from "inaturalistjs";
 import { Platform } from "react-native";
-import uuid from "react-native-uuid";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import * as uuid from "uuid";
 
 import Sound from "./Sound";
 

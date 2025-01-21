@@ -101,6 +101,7 @@
     "react-native-fs": "^2.20.0",
     "react-native-geocoder-reborn": "^0.9.0",
     "react-native-gesture-handler": "^2.16.0",
+    "react-native-get-random-values": "^1.11.0",
     "react-native-image-picker": "github:inaturalist/react-native-image-picker",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-linear-gradient": "^2.8.3",
@@ -128,7 +129,6 @@
     "react-native-svg": "^15.1.0",
     "react-native-svg-transformer": "^1.3.0",
     "react-native-url-polyfill": "^2.0.0",
-    "react-native-uuid": "^2.0.3",
     "react-native-vector-icons": "^10.0.3",
     "react-native-vision-camera": "4.0.5",
     "react-native-volume-manager": "^1.10.0",
@@ -137,6 +137,7 @@
     "realm": "^12.6.2",
     "sanitize-html": "^2.13.0",
     "ts-jest": "^29.1.2",
+    "uuid": "^11.0.5",
     "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision#dcad11b1532cb8b777eaaf78d6df0a704e8c71d3",
     "zustand": "^4.5.2"
   },

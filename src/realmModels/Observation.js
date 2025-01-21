@@ -1,10 +1,10 @@
 import { Realm } from "@realm/react";
 import { Alert } from "react-native";
-import uuid from "react-native-uuid";
 import { getNowISO } from "sharedHelpers/dateAndTime.ts";
 import { log } from "sharedHelpers/logger";
 import { readExifFromMultiplePhotos } from "sharedHelpers/parseExif";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import * as uuid from "uuid";
 
 import Application from "./Application";
 import Comment from "./Comment";

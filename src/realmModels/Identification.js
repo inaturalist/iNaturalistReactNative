@@ -1,5 +1,5 @@
 import { Realm } from "@realm/react";
-import rnUUID from "react-native-uuid";
+import * as uuid from "uuid";
 
 import Flag from "./Flag";
 import Taxon from "./Taxon";
@@ -43,7 +43,7 @@ class Identification extends Realm.Object {
   static new = attrs => {
     const newIdent = {
       ...attrs,
-      uuid: rnUUID.v4( )
+      uuid: uuid.v4( )
     };
 
     return newIdent;

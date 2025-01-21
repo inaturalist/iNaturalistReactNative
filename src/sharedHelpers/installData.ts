@@ -1,6 +1,6 @@
 import RNFS from "react-native-fs";
 import { MMKV, useMMKVBoolean } from "react-native-mmkv";
-import uuid from "react-native-uuid";
+import * as uuid from "uuid";
 
 const MMKV_ID = "install-data";
 const INSTALL_ID = "installID";

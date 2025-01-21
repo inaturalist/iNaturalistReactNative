@@ -1,3 +1,9 @@
+// Recommendation from the uuid library is to import get-random-values before
+// uuid, so we're importing it first thing in the entry point.
+// https://www.npmjs.com/package/uuid#react-native--expo
+// eslint-disable-next-line simple-import-sort/imports
+import "react-native-get-random-values";
+
 import "react-native-gesture-handler/jestSetup";
 import "@shopify/flash-list/jestSetup";
 
