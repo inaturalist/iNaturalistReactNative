@@ -231,7 +231,7 @@ const AICamera = ( {
                 asListItem={false}
                 clearBackground
                 confidence={
-                  ( isDefaultMode && isDebug )
+                  isDefaultMode
                     ? null
                     : convertOfflineScoreToConfidence( result?.score )
                 }
