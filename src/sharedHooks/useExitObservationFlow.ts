@@ -24,15 +24,8 @@ interface Options {
 export default function useExitObservationFlow( ) {
   const navigation = useNavigation( );
   const { params } = useRoute<RouteProp<ObsFlowParams, string>>( );
-  const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
 
   return useCallback( ( options: Options = {} ) => {
-    // In theory everything that needs to be saved has been saved at this
-    // point, so clean up the state before we ditch this posicle stand. Note
-    // that for mysterious reasons, tests seem to like it better if we do
-    // this before navigating
-    resetObservationFlowSlice( );
-
     const previousScreen = params && params.previousScreen
       ? params.previousScreen
       : null;
@@ -50,7 +43,6 @@ export default function useExitObservationFlow( ) {
     }
   }, [
     navigation,
-    params,
-    resetObservationFlowSlice
+    params
   ] );
 }
