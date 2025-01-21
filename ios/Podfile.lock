@@ -930,6 +930,8 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
+  - react-native-get-random-values (1.11.0):
+    - React-Core
   - react-native-image-picker (7.0.0):
     - React-Core
   - react-native-image-resizer (3.0.11):
@@ -1246,6 +1248,7 @@ DEPENDENCIES:
   - react-native-exif-reader (from `../node_modules/react-native-exif-reader`)
   - react-native-geocoder-reborn (from `../node_modules/react-native-geocoder-reborn`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
+  - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - "react-native-image-resizer (from `../node_modules/@bam.tech/react-native-image-resizer`)"
   - "react-native-keep-awake (from `../node_modules/@sayem314/react-native-keep-awake`)"
@@ -1389,6 +1392,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-geocoder-reborn"
   react-native-geolocation:
     :path: "../node_modules/@react-native-community/geolocation"
+  react-native-get-random-values:
+    :path: "../node_modules/react-native-get-random-values"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
   react-native-image-resizer:
@@ -1552,6 +1557,7 @@ SPEC CHECKSUMS:
   react-native-exif-reader: d871d62023d532e33cc230ede6e2ba9cbfe220e2
   react-native-geocoder-reborn: a3c3d8460910309e750609c373b6887ec6f67a8f
   react-native-geolocation: 52795f4d0d1e40a42b020e6063bfaa0c33c8ed6d
+  react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
   react-native-image-picker: b64848e41db57068721d5db3cea54e32ecb92791
   react-native-image-resizer: 24c5d06fae2176dc0caed4b6396e02befb44064a
   react-native-keep-awake: 3c347cbcb834e5ce4b5717e9e2734b374f6fd70f

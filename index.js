@@ -1,5 +1,11 @@
 // @flow
 
+// Recommendation from the uuid library is to import get-random-values before
+// uuid, so we're importing it first thing in the entry point.
+// https://www.npmjs.com/package/uuid#react-native--expo
+// eslint-disable-next-line simple-import-sort/imports
+import "react-native-get-random-values";
+
 // React Native doesn't have a functional URL as of Feb 2024
 import "react-native-url-polyfill/auto";
 

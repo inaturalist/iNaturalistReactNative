@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import React from "react";
 import { View } from "react-native";
-import uuid from "react-native-uuid";
+import * as uuid from "uuid";
 
 interface CarouselDotsProps {
   length: number;
