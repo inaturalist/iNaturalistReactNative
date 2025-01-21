@@ -252,14 +252,17 @@ const MatchContainer = ( ) => {
   const topSuggestion = _.first( orderedSuggestions );
   const otherSuggestions = _.without( orderedSuggestions, topSuggestion );
 
+  const taxon = topSuggestion?.taxon;
+  const taxonId = taxon?.id;
+
   const navToTaxonDetails = ( ) => {
-    navigation.push( "TaxonDetails", { id: topSuggestion?.id } );
+    navigation.push( "TaxonDetails", { id: taxonId } );
   };
 
   const handleSaveOrDiscardPress = async action => {
     if ( action === "save" ) {
       updateObservationKeys( {
-        taxon: topSuggestion?.taxon,
+        taxon,
         owners_identification_from_vision: true
       } );
       await saveObservation( getCurrentObservation( ), cameraRollUris, realm );
