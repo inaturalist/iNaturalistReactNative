@@ -8,7 +8,7 @@ import Reanimated, {
 import UploadCompleteIcon from "./UploadCompleteIcon";
 
 type Props = {
-  iconWrapperClasses: Object;
+  iconWrapperClasses: string;
   iconClasses: Array<string>;
   completeColor: string;
   layout: "horizontal" | "vertical";
@@ -51,7 +51,7 @@ const FadeOutFadeInIcon = ( {
   return (
     <>
       <View
-        className={classnames( "absolute", {
+        className={classnames( "absolute h-full justify-center", {
           "bottom-0": layout === "horizontal"
         } )}
       >

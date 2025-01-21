@@ -1,3 +1,4 @@
+import type { ApiProject } from "api/types";
 import classNames from "classnames";
 import NumberBadge from "components/Explore/NumberBadge.tsx";
 import ProjectListItem from "components/ProjectList/ProjectListItem.tsx";
@@ -68,8 +69,7 @@ interface Props {
   updateLocation: ( location: "worldwide" | { name: string } ) => void;
   // TODO: Param not typed yet, because ExploreUserSearch is not typed yet
   updateUser: ( user: null | { login: string } ) => void;
-  // TODO: Param not typed yet, because ExploreProjectSearch is not typed yet
-  updateProject: ( project: null | { title: string } ) => void;
+  updateProject: ( project: ApiProject ) => void;
 }
 
 const FilterModal = ( {
@@ -120,6 +120,7 @@ const FilterModal = ( {
     sortBy,
     taxon,
     user,
+    excludeUser,
     wildStatus
   } = state;
 
@@ -635,6 +636,7 @@ const FilterModal = ( {
   const observedEndBeforeStart = d1 > d2;
   const uploadedEndBeforeStart = createdD1 > createdD2;
   const hasError = observedEndBeforeStart || uploadedEndBeforeStart;
+  const displayUser = user || excludeUser;
 
   return (
     <ViewWrapper className="flex-1 bg-white" testID="filter-modal">
@@ -829,9 +831,11 @@ const FilterModal = ( {
 
           {/* User Section */}
           <View className="mb-7">
-            <Heading4 className="mb-5">{t( "USER" )}</Heading4>
+            {excludeUser
+              ? <Heading4 className="mb-5">{t( "ALL-USERS-EXCEPT" )}</Heading4>
+              : <Heading4 className="mb-5">{t( "USER" )}</Heading4>}
             <View className="mb-5">
-              {user
+              {displayUser
                 ? (
                   <Pressable
                     className="flex-row justify-around items-center"
@@ -842,8 +846,8 @@ const FilterModal = ( {
                     }}
                   >
                     <UserListItem
-                      item={{ user }}
-                      countText={t( "X-Observations", { count: user.observations_count } )}
+                      item={{ user: displayUser }}
+                      countText={t( "X-Observations", { count: displayUser.observations_count } )}
                       pressable={false}
                     />
                     <View className="flex-row items-center">
@@ -1353,6 +1357,7 @@ const FilterModal = ( {
       />
       <ExploreUserSearchModal
         showModal={showUserSearchModal}
+        currentUser={currentUser}
         closeModal={() => { setShowUserSearchModal( false ); }}
         updateUser={updateUser}
       />

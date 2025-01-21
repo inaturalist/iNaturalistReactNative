@@ -1,86 +1,85 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`UserIcon displays active user image correctly 1`] = `
-<FasterImageView
+<View
   accessibilityIgnoresInvertColors={true}
   accessibilityRole="image"
-  source={
-    {
-      "borderRadius": 20,
-      "resizeMode": "cover",
-      "url": "some_uri",
+  testID="UserIcon.photo"
+>
+  <FasterImageView
+    source={
+      {
+        "borderRadius": 20,
+        "resizeMode": "cover",
+        "url": "https://loremflickr.com/640/480?lock=4455548378415104",
+      }
     }
-  }
-  style={
-    [
+    style={
       [
         {
           "borderColor": "#74AC00",
           "borderRadius": 20,
           "borderWidth": 3,
-        },
-        {
           "height": 40,
           "overflow": "hidden",
           "width": 40,
         },
-      ],
-    ]
-  }
-  testID="UserIcon.photo"
-/>
+      ]
+    }
+  />
+</View>
 `;
 
 exports[`UserIcon displays small user image correctly 1`] = `
-<FasterImageView
+<View
   accessibilityIgnoresInvertColors={true}
   accessibilityRole="image"
-  source={
-    {
-      "borderRadius": 11,
-      "resizeMode": "cover",
-      "url": "some_uri",
+  testID="UserIcon.photo"
+>
+  <FasterImageView
+    source={
+      {
+        "borderRadius": 11,
+        "resizeMode": "cover",
+        "url": "https://loremflickr.com/640/480?lock=4455548378415104",
+      }
     }
-  }
-  style={
-    [
+    style={
       [
-        undefined,
         {
           "height": 22,
           "overflow": "hidden",
           "width": 22,
         },
-      ],
-    ]
-  }
-  testID="UserIcon.photo"
-/>
+      ]
+    }
+  />
+</View>
 `;
 
 exports[`UserIcon displays user image correctly 1`] = `
-<FasterImageView
+<View
   accessibilityIgnoresInvertColors={true}
   accessibilityRole="image"
-  source={
-    {
-      "borderRadius": 20,
-      "resizeMode": "cover",
-      "url": "some_uri",
+  testID="UserIcon.photo"
+>
+  <FasterImageView
+    source={
+      {
+        "borderRadius": 20,
+        "resizeMode": "cover",
+        "url": "https://loremflickr.com/640/480?lock=4455548378415104",
+      }
     }
-  }
-  style={
-    [
+    style={
       [
-        undefined,
         {
           "height": 40,
           "overflow": "hidden",
           "width": 40,
         },
-      ],
-    ]
-  }
-  testID="UserIcon.photo"
-/>
+      ]
+    }
+  />
+</View>
 `;

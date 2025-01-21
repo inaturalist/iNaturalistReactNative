@@ -5,7 +5,7 @@ import Photo from "realmModels/Photo";
 import Sound from "realmModels/Sound";
 
 const DEFAULT_STATE = {
-  matchScreenSuggestion: null,
+  aICameraSuggestion: null,
   cameraRollUris: [],
   currentObservation: null,
   currentObservationIndex: 0,
@@ -191,8 +191,8 @@ const createObservationFlowSlice = ( set, get ) => ( {
   setSentinelFileName: sentinelFileName => set( {
     sentinelFileName
   } ),
-  setMatchScreenSuggestion: suggestion => set( {
-    matchScreenSuggestion: suggestion
+  setAICameraSuggestion: suggestion => set( {
+    aICameraSuggestion: suggestion
   } )
 } );
 

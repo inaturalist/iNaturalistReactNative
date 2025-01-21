@@ -4,54 +4,49 @@ import MapSection
   from "components/ObsDetailsDefaultMode/MapSection/MapSection";
 import { Button, Divider, ScrollViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import _ from "lodash";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 
-import AdditionalSuggestionsScroll from "./AdditionalSuggestions/AdditionalSuggestionsScroll";
+import AdditionalSuggestionsScroll
+  from "./AdditionalSuggestions/AdditionalSuggestionsScroll";
 import EmptyMapSection from "./EmptyMapSection";
 import MatchHeader from "./MatchHeader";
 import PhotosSection from "./PhotosSection";
 import SaveDiscardButtons from "./SaveDiscardButtons";
 
-// example data
-const secondTaxon = {
-  name: "Aves",
-  preferred_common_name: "Birds",
-  id: 3
-};
-
 type Props = {
   observation: Object,
+  observationPhoto: string,
   handleSaveOrDiscardPress: ( ) => void,
   navToTaxonDetails: ( ) => void,
-  taxon: Object,
-  confidence: number,
-  handleLocationPickerPressed: ( ) => void
+  handleLocationPickerPressed: ( ) => void,
+  topSuggestion: Object,
+  otherSuggestions: Array<Object>,
+  onSuggestionChosen: ( ) => void
 }
 
 const Match = ( {
   observation,
+  observationPhoto,
   handleSaveOrDiscardPress,
   navToTaxonDetails,
-  taxon,
-  confidence,
-  handleLocationPickerPressed
+  handleLocationPickerPressed,
+  topSuggestion,
+  otherSuggestions,
+  onSuggestionChosen
 }: Props ) => {
   const { t } = useTranslation( );
 
   const latitude = observation?.privateLatitude || observation?.latitude;
-  const observationPhoto = observation?.observationPhotos?.[0]?.photo?.url
-    || observation?.observationPhotos?.[0]?.photo?.localFilePath;
+  const taxon = topSuggestion?.taxon;
 
   return (
     <>
       <ScrollViewWrapper>
         <Divider />
         <View className="p-5">
-          <MatchHeader
-            taxon={taxon}
-            confidence={confidence}
-          />
+          <MatchHeader topSuggestion={topSuggestion} />
         </View>
         <PhotosSection
           taxon={taxon}
@@ -81,13 +76,8 @@ const Match = ( {
             accessibilityHint={t( "Navigates-to-taxon-details" )}
           />
           <AdditionalSuggestionsScroll
-            suggestions={[{
-              score: 0.99,
-              taxon
-            }, {
-              score: 0.86,
-              taxon: secondTaxon
-            }]}
+            onSuggestionChosen={onSuggestionChosen}
+            otherSuggestions={otherSuggestions}
           />
           {!latitude && (
             <Button

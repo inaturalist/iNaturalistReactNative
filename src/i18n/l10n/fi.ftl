@@ -6,6 +6,7 @@
 ###
 
 ABOUT = TIETOJA
+Advanced--interface-mode-with-explainer = Lisäasetukset (Lataa useita kuvia ja ääniä)
 Agree = Samaa mieltä
 AGREE = SAMAA MIELTÄ
 ALL = KAIKKI
@@ -54,6 +55,7 @@ Date-Range = Ajanjakso
 date-to-date = { $d1 } - { $d2 }
 Date-uploaded-on-header-short = Ladattu:
 December = joulukuu
+Default--interface-mode = Oletus
 Delete-observation = Poista havainto
 Delete-photo = Poista kuva
 Deleting-x-of-y--observations =
@@ -126,7 +128,7 @@ Missing-Date = Puuttuva päivämäärä
 Months = Kuukaudet
 More = Lisää
 MY-CONTENT--notifications = SISÄLTÖNI
-MY-OBSERVATIONS = HAVAINTONI
+My-Observations = Havaintoni
 Native = Alkuperäinen
 NEARBY = LÄHELLÄ
 Nearby = Lähistöllä
@@ -248,6 +250,16 @@ Wild = Villi
 Withdraw = Peruuta
 Worldwide = Maailmanlaajuinen
 X-MEMBERS = { $count } JÄSENET
+X-OBSERVATIONS--below-number =
+    { $count ->
+        [one] HAVAINTO
+       *[other] HAVAINTOA
+    }
 X-PROJECTS = { $projectCount } PROJEKTIA
+X-SPECIES--below-number =
+    { $count ->
+        [one] LAJI
+       *[other] LAJIA
+    }
 You-must-install-Google-Play-Services-to-sign-in-with-Google = Sinun on asennettava Google Play -palvelut, jotta voit kirjautua Google-tilillä.
 You-need-log-in-to-do-that = Sinun täytyy kirjautua ensin.

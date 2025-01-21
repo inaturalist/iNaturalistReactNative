@@ -16,7 +16,9 @@ export interface ApiPlace {
 }
 
 export interface ApiProject {
+  icon?: string;
   id?: number;
+  project_type?: "collection" | "umbrella" | ""; // FYI "" means "traditional"
   title?: string;
 }
 
@@ -88,6 +90,7 @@ export interface ApiTaxon {
 }
 
 export interface ApiUser {
+  icon_url?: string;
   id?: number;
   locale?: string;
   login?: string;

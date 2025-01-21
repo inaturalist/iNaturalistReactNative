@@ -320,6 +320,14 @@ Identifiers = Määrajad
 Identify-an-organism = Määratle organism
 Identify-an-organism-with-the-iNaturalist-AI-Camera = Määratle organism iNaturalisti AI-kaamera abil
 If-an-account-with-that-email-exists = Kui selle e-posti aadressiga konto eksisteerib, oleme salasõna lähtestamise juhendi sinu e-postile saatnud.
+If-you-have-an-existing-account-try-sign-in-reset = Kui sul on olemasolev iNaturalisti konto, proovi oma kasutajatunnuse ja salasõnaga sisse logida või oma salasõna kontoga seotud e-posti aadressi abil lähtestada.
+IGNORE-LOCATION = IGNOREERI ASUKOHTA
+Import-Photos-From = Impordi fotosid:
+IMPORT-X-OBSERVATIONS =
+    IMPORDI { $count ->
+        [one] 1 VAATLUS
+       *[other] { $count } VAATLUST
+    }
 improving--identification = Täiendaja
 INATURALIST-ACCOUNT-SETTINGS = INATURALISTI KONTO SÄTTED
 iNaturalist-AI-Camera = iNaturalisti AI-kaamera
@@ -381,6 +389,9 @@ Location-accuracy-is-too-imprecise = Asukoht on määratlejate abistamiseks liig
 LOCATION-TOO-IMPRECISE = ASUKOHT LIIGA EBATÄPNE
 LOG-IN = LOGI SISSE
 Log-in = Logi sisse
+Log-in-to-contribute-your-observations = Vaatlustega teaduse aitamiseks logi sisse!
+LOG-IN-TO-INATURALIST = LOGI INATURALISTI SISSE
+Log-in-to-iNaturalist = Logi iNaturalisti sisse
 LOG-OUT = LOGI VÄLJA
 LOG-OUT--question = LOGI VÄLJA?
 Login-sub-title = Dokumenteeri elusloodust, määra organisme ja aita teadust
@@ -408,9 +419,15 @@ More-info = Lisainfo
 MOST-FAVED = LEMMIK
 Most-faved = Lemmik
 MY-CONTENT--notifications = MINU SISU
-MY-OBSERVATIONS = MINU VAATLUSED
 Native = Kohalik
+Native-to-place = Kohalik paigas: { $place }
+Navigates-to-AI-camera = Mine AI-kaamerasse
+Navigates-to-bulk-importer = Mine mass-importijasse
+Navigates-to-camera = Mine kaamerasse
+Navigates-to-explore = Mine avastama
 Navigates-to-notifications = Mine teavituste juurde
+Navigates-to-observation-details = Mine vaatluse andmete lehele
+Navigates-to-observation-edit-screen = Mine vaatluse muutmise lehele
 Navigates-to-photo-importer = Mine fotoimportiasse
 Navigates-to-previous-screen = Mine eelmisele ekraanile
 Navigates-to-project-details = Mine projekti andmete lehele

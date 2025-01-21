@@ -37,6 +37,7 @@ export enum EXPLORE_ACTION {
   SET_REVIEWED = "SET_REVIEWED",
   SET_TAXON_NAME = "SET_TAXON_NAME",
   SET_USER = "SET_USER",
+  SET_EXCLUDE_USER = "SET_EXCLUDE_USER",
   SET_WILD_STATUS = "SET_WILD_STATUS",
   TOGGLE_CASUAL = "TOGGLE_CASUAL",
   TOGGLE_NEEDS_ID = "TOGGLE_NEEDS_ID",
@@ -221,12 +222,20 @@ type State = {
   // and should be typed as such (e.g., in realm model)
   user: Object | undefined | null,
   user_id: number | undefined | null,
+  excludeUser: Object | undefined | null,
   verifiable: boolean,
   wildStatus: WILD_STATUS
 }
 type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.DISCARD, snapshot: State}
   | {type: EXPLORE_ACTION.SET_USER, user: Object | null, userId: number | null, storedState: State}
+  | {
+    type: EXPLORE_ACTION.EXCLUDE_USER,
+    user: null,
+    userId: null,
+    excludeUser: Object,
+    storedState: State
+  }
   | {
     type: EXPLORE_ACTION.CHANGE_TAXON,
     taxon: { id: number } | null,
@@ -464,7 +473,16 @@ function exploreReducer( state: State, action: Action ) {
         ...state,
         ...action.storedState,
         user: action.user,
-        user_id: action.userId
+        user_id: action.userId,
+        excludeUser: null
+      };
+    case EXPLORE_ACTION.EXCLUDE_USER:
+      return {
+        ...state,
+        ...action.storedState,
+        excludeUser: action.excludeUser,
+        user: null,
+        user_id: null
       };
     case EXPLORE_ACTION.SET_PROJECT:
       return {

@@ -71,7 +71,7 @@ const AICamera = ( {
 }: Props ): Node => {
   const navigation = useNavigation( );
   const sentinelFileName = useStore( state => state.sentinelFileName );
-  const setMatchScreenSuggestion = useStore( state => state.setMatchScreenSuggestion );
+  const setAICameraSuggestion = useStore( state => state.setAICameraSuggestion );
 
   const hasFlash = device?.hasFlash;
   const { isDebug } = useDebugMode( );
@@ -131,7 +131,7 @@ const AICamera = ( {
   const handleTakePhoto = useCallback( async ( ) => {
     await logStage( sentinelFileName, "take_photo_start" );
     setHasTakenPhoto( true );
-    setMatchScreenSuggestion( result );
+    setAICameraSuggestion( result );
     await takePhotoAndStoreUri( {
       replaceExisting: true,
       inactivateCallback: () => setInactive( true ),
@@ -139,7 +139,7 @@ const AICamera = ( {
     } );
     setHasTakenPhoto( false );
   }, [
-    setMatchScreenSuggestion,
+    setAICameraSuggestion,
     sentinelFileName,
     takePhotoAndStoreUri,
     result

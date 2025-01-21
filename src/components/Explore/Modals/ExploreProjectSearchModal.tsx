@@ -1,12 +1,12 @@
-import ExploreProjectSearch from "components/Explore/SearchScreens/ExploreProjectSearch";
+import type { ApiProject } from "api/types";
+import ExploreProjectSearch from "components/Explore/SearchScreens/ExploreProjectSearch.tsx";
 import Modal from "components/SharedComponents/Modal.tsx";
 import React from "react";
 
 interface Props {
   showModal: boolean;
   closeModal: () => void;
-  // TODO: Param not typed yet, because ExploreProjectSearch is not typed yet
-  updateProject: ( project: null | { title: string } ) => void;
+  updateProject: ( project: ApiProject ) => void;
 }
 
 const ExploreProjectSearchModal = ( {

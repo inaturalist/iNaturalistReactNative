@@ -70,30 +70,38 @@ const ObsGridItemDemo = ( ) => (
       <Heading1>Upload</Heading1>
       <Heading2 className="my-2">Synced</Heading2>
       <ObsGridItem
-        observation={{ uuid: "the-uuid", _synced_at: new Date( ) }}
+        observation={makeObservation( { _synced_at: new Date( ) } )}
+      />
+      <Heading2 className="my-2">Edit needed</Heading2>
+      <ObsGridItem
+        observation={makeObservation( {
+          needsSync: () => true,
+          missingBasics: () => true
+        } )}
+        uploadProgress={0}
       />
       <Heading2 className="my-2">Upload needed</Heading2>
-      <ObsGridItem observation={{ uuid: "the-uuid" }} uploadProgress={0} />
+      <ObsGridItem observation={makeObservation()} uploadProgress={0} />
+      <Heading2 className="my-2">Upload Queued</Heading2>
+      <ObsGridItem observation={makeObservation()} uploadProgress={0} queued />
       <Heading2 className="my-2">Upload in progress</Heading2>
       <ObsGridItem
-        observation={{ uuid: "the-uuid" }}
+        observation={makeObservation()}
         uploadProgress={0.4}
       />
       <Heading2 className="my-2">Upload complete, w/ animation</Heading2>
       <ObsGridItem
-        observation={{
-          uuid: "the-uuid"
-        }}
+        observation={makeObservation()}
         uploadProgress={1}
       />
       <Heading2 className="my-2">Upload complete, before animation</Heading2>
       <ObsGridItem
-        observation={{ uuid: "the-uuid" }}
+        observation={makeObservation()}
         uploadProgress={10}
       />
       <Heading2 className="my-2">Upload complete, overlay of animated elements</Heading2>
       <ObsGridItem
-        observation={{ uuid: "the-uuid" }}
+        observation={makeObservation()}
         uploadProgress={11}
       />
     </View>

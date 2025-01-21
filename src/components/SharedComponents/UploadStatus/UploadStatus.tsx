@@ -1,15 +1,13 @@
 import classnames from "classnames";
+import { CircleDots, INatIcon, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { ReactNode } from "react";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import FadeOutFadeInIcon from "./FadeOutFadeInIcon";
-import ProgressArrow from "./ProgressArrow";
 import UploadCompleteIcon from "./UploadCompleteIcon";
 import UploadProgressIcon from "./UploadProgressIcon";
-import UploadQueuedRotatingIcon from "./UploadQueuedRotatingIcon";
-import UploadStartIcon from "./UploadStartIcon";
 
 const iconClasses = [
   "items-center",
@@ -22,6 +20,7 @@ type Props = {
   white: boolean,
   layout: "horizontal" | "vertical";
   children: ReactNode;
+  needsEdit?: boolean;
   onPress: ( ) => void;
   progress: number;
   uniqueKey: string;
@@ -32,6 +31,7 @@ const UploadStatus = ( {
   white = false,
   layout,
   children,
+  needsEdit,
   onPress,
   progress,
   uniqueKey,
@@ -55,50 +55,72 @@ const UploadStatus = ( {
     return t( "Upload-Complete" );
   };
 
-  const showProgressArrow = ( ) => (
-    <ProgressArrow
-      layout={layout}
-      color={color}
-      progress={progress}
-      uniqueKey={uniqueKey}
-    />
-  );
-
-  const iconWrapperClasses = classnames( {
-    "items-center justify-center w-[49px]": layout === "vertical"
-  } );
+  const wrapperClassName = layout === "vertical"
+    ? classnames( "items-center justify-center w-[49px]" )
+    : "w-[44px]";
 
   const displayUploadStatus = ( ) => {
     if ( progress === 0 && !queued ) {
       return (
-        <View className={iconWrapperClasses}>
-          <UploadStartIcon
-            color={color}
-            uploadSingleObservation={onPress}
-            uniqueKey={uniqueKey}
-          />
+        <View className={wrapperClassName}>
+          <INatIconButton
+            accessibilityLabel={
+              needsEdit
+                ? t( "Edit-Observation" )
+                : t( "Start-upload" )
+            }
+            testID={
+              needsEdit
+                ? `UploadIcon.needsEdit.${uniqueKey}`
+                : `UploadIcon.start.${uniqueKey}`
+            }
+            onPress={onPress}
+          >
+            <CircleDots
+              color={color}
+              className={classnames( iconClasses )}
+            >
+              <INatIcon
+                name={
+                  needsEdit
+                    ? "pencil"
+                    : "upload-arrow"
+                }
+                color={color}
+                size={15}
+              />
+            </CircleDots>
+          </INatIconButton>
         </View>
       );
     }
+
     if ( progress === 0 && queued ) {
       return (
-        <View className={iconWrapperClasses}>
-          <UploadQueuedRotatingIcon
+        <View className={wrapperClassName}>
+          <CircleDots
+            animated
             color={color}
-            showProgressArrow={showProgressArrow}
-            iconClasses={iconClasses}
-          />
+            className={classnames( iconClasses )}
+          >
+            <INatIcon
+              name="upload-arrow"
+              color={color}
+              size={15}
+            />
+          </CircleDots>
         </View>
       );
     }
+
     if ( progress < 1 ) {
       return (
-        <View className={iconWrapperClasses}>
+        <View className={wrapperClassName}>
           <UploadProgressIcon
             color={color}
             progress={progress}
-            showProgressArrow={showProgressArrow}
             iconClasses={iconClasses}
+            uniqueKey={uniqueKey}
           />
         </View>
       );
@@ -106,7 +128,7 @@ const UploadStatus = ( {
     // Test of end state before animation
     if ( progress === 10 ) {
       return (
-        <View className={iconWrapperClasses}>
+        <View className={wrapperClassName}>
           <UploadCompleteIcon
             iconClasses={iconClasses}
             completeColor={completeColor}
@@ -117,13 +139,13 @@ const UploadStatus = ( {
     // Test of end state with all elements overlayed
     if ( progress === 11 ) {
       return (
-        <View className="justify-center">
+        <View>
           <View
-            className={classnames( "absolute", {
+            className={classnames( "absolute", "h-full justify-center", {
               "bottom-0": layout === "horizontal"
             } )}
           >
-            <View className={iconWrapperClasses}>
+            <View className={wrapperClassName}>
               <UploadCompleteIcon
                 iconClasses={iconClasses}
                 completeColor={completeColor}
@@ -136,7 +158,7 @@ const UploadStatus = ( {
     }
     return (
       <FadeOutFadeInIcon
-        iconWrapperClasses={iconWrapperClasses}
+        iconWrapperClasses={wrapperClassName}
         iconClasses={iconClasses}
         completeColor={completeColor}
         layout={layout}
@@ -151,10 +173,12 @@ const UploadStatus = ( {
     <View
       accessible
       accessibilityLabel={accessibilityLabelText( )}
-      className={classnames( {
-        "h-[44px] justify-end": layout === "horizontal",
-        "justify-center": layout !== "horizontal"
-      } )}
+      className={classnames(
+        "justify-center",
+        layout === "horizontal"
+          ? "h-[44px]"
+          : "h-[65px]"
+      )}
     >
       {displayUploadStatus( )}
     </View>

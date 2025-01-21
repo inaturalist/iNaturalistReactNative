@@ -17,6 +17,7 @@ const useLocalObservations = ( ): Object => {
   // views from rendering when they have focus.
   const stagedObservationList = useRef( [] );
   const [observationList, setObservationList] = useState( [] );
+  const [totalResults, setTotalResults] = useState( null );
 
   const realm = useRealm( );
 
@@ -37,6 +38,7 @@ const useLocalObservations = ( ): Object => {
       setNumUnuploadedObservations( unsynced.length );
 
       setObservationList( stagedObservationList.current );
+      setTotalResults( obsNotFlaggedForDeletion.length );
     } );
     // eslint-disable-next-line consistent-return
     return ( ) => {
@@ -46,7 +48,8 @@ const useLocalObservations = ( ): Object => {
   }, [realm, setNumUnuploadedObservations] );
 
   return {
-    observationList: observationList.filter( o => o.isValid() )
+    observationList: observationList.filter( o => o.isValid() ),
+    totalResults
   };
 };
 

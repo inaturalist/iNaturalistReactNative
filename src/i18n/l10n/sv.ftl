@@ -33,11 +33,15 @@ ADD-EVIDENCE = LÄGG TILL STÖD
 Add-evidence = Lägg till stöd
 Add-favorite = Lägg till favorit
 Add-Location = Lägg till plats
+Add-location-for-better-identifications = Lägg till fyndplats för bättre bestämningar
+ADD-LOCATION-FOR-BETTER-IDS = LÄGG TILL FYNDPLATS FÖR BÄTTRE BESTÄMNINGAR
+Add-location-to-refresh-suggestions = Lägg till fyndplats för nya förslag
 Add-observations = Lägg till fynd
 ADD-OPTIONAL-COMMENT = LÄGG TILL EV. KOMMENTAR
 Add-optional-notes = Lägg till valfria anteckningar
 Adds-your-vote-of-agreement = Rösta på att hålla med
 Adds-your-vote-of-disagreement = Rösta för att inte hålla med
+Advanced--interface-mode-with-explainer = Avancerat (Ladda upp flera bilder och ljud)
 Affiliation = Anknytning: { $site }
 Agree = Håller med
 AGREE = GODKÄNN
@@ -52,6 +56,7 @@ All-observations = Alla fynd
 All-organisms = Alla organismer
 all-rights-reserved = alla rättigheter förbehållna
 All-taxa = Alla taxa
+ALL-USERS-EXCEPT = ALLA ANVÄNDARE UTOM
 ALLOW-LOCATION-ACCESS = TILLÅT ÅTKOMST TILL PLATS
 Almost-done = Nästan klar!
 Already-have-an-account = Har du redan ett konto? Logga in
@@ -86,6 +91,7 @@ By-exiting-observation-not-saved = Genom att avsluta kommer ditt fynd inte att s
 By-exiting-your-observations-not-saved = Genom att avsluta kommer dina fynd inte att sparas. Du kan spara dem på din enhet, eller radera dem.
 By-exiting-your-photos-will-not-be-saved = Genom att avsluta kommer dina bilder inte att sparas.
 By-exiting-your-recorded-sound-will-not-be-saved = Genom att avsluta kommer ditt inspelade ljud inte att sparas.
+BY-ME = AV MIG
 By-uploading-your-observation-to-iNaturalist-you-can = Genom att ladda upp ditt fynd till iNaturalist kan du:
 Camera = Kamera
 CANCEL = AVBRYT
@@ -133,6 +139,7 @@ Community = Community
 Community-based = Community-baserat
 Community-Guidelines = Communityns riktlinjer
 COMMUNITY-GUIDELINES = COMMUNITYNS RIKTLINJER
+Confidence--label = Konfidens
 CONFIRM = BEKRÄFTA
 CONNECT-TO-NATURE = FÅ KONTAKT MED NATUREN
 Connect-to-Nature = Få kontakt med naturen
@@ -200,6 +207,7 @@ datetime-difference-weeks = { $count }w
 datetime-format-long = yyyy-MM-dd, HH:mm
 datetime-format-short = d/M-yy HH:mm
 December = december
+Default--interface-mode = Standard
 DELETE = RADERA
 Delete-all-observations = Radera alla fynd
 Delete-comment = Radera kommentar
@@ -384,6 +392,7 @@ iNaturalist-is-supported-by = iNaturalist stöds av en oberoende, 501(c)(3) icke
 iNaturalist-is-supported-by-our-community = iNaturalist stöds av vår fantastiska community. Från vanliga naturforskare som lägger till fynd och bestämningar, till förvaltare som hanterar vår taxonomi och hjälp med moderering, till de frivilliga översättare som gör iNaturalist mer tillgänglig för en global skara, till våra community-baserade donatorer, är vi utomordentligt tacksamma för alla människor i vår community som gör iNaturalist till den plattform den är.
 iNaturalist-mission-is-to-connect = iNaturalists mission är att få människor av knyta an till naturen och främja vetenskap om biologisk mångfald samt naturvård.
 INATURALIST-MISSION-VISION = INATURALISTS MISSION & VISION
+INATURALIST-MODE = INATURALIST-LÄGE
 INATURALIST-NETWORK = INATURALIST-NÄTVERKET
 INATURALIST-SETTINGS = INATURALIST-INSTÄLLNINGAR
 INATURALIST-STAFF = { $inaturalist } PERSONAL
@@ -402,6 +411,7 @@ Introduced = Införd
 Introduced-to-place = Införd till { $place }
 It-can-now-be-shared-for-use-in-research = Det kan nu delas för att användas i forskning
 It-may-take-up-to-an-hour-to-remove-content = Det kan ta upp till en timme att helt radera allt tillhörande innehåll
+It-might-also-be = Det kan också vara
 January = Januari
 JOIN = GÅ MED
 JOIN-PROJECT = GÅ MED I PROJEKT
@@ -427,6 +437,8 @@ Lat-Lon = { NUMBER($latitude, maximumFraktionDigits: 6) }, { NUMBER($longitude, 
 Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Long: { NUMBER($longitude, maximumFractionDigits: 6) }, Acc: { $accuracy }
 leading--identification = Leder
 Learn-More = Läs mer
+LEARN-MORE-ABOUT-THIS-GROUP = LÄS MER OM DENNA GRUPP
+LEARN-MORE-ABOUT-THIS-SPECIES = LÄS MER OM DENNA ART
 LEAVE = LÄMNA
 LEAVE-PROJECT = LÄMNA PROJEKT
 LEAVE-PROJECT--question = LÄMNA PROJEKT?
@@ -473,7 +485,7 @@ More-info = Mer info
 MOST-FAVED = MEST POPULÄRA
 Most-faved = Mest populära
 MY-CONTENT--notifications = MITT INNEHÅLL
-MY-OBSERVATIONS = MINA FYND
+My-Observations = Mina fynd
 Native = Inhemsk
 Native-to-place = Inhemsk i { $place }
 Navigates-to-AI-camera = Går till AI-kamera
@@ -511,6 +523,7 @@ No-results-found-try-different-search = Inga resultat hittades. Prova en annan s
 no-rights-reserved-cc0 = inga rättigheter förbehållna (CC0)
 none--accuracy = ingen
 NONE--ranks = INGEN
+NOT-BY-ME = INTE AV MIG
 Not-enough-space-left-on-device = Inte tillräckligt med utrymme kvar på enheten
 Not-enough-space-left-on-device-try-again = Det inte finns inte tillräckligt med lagringsutrymme kvar på din enhet för att göra det. Rensa upp lite och försök igen.
 NOTES = ANTECKNINGAR
@@ -969,6 +982,11 @@ X-observations =
         [one] 1 fynd
        *[other] { $count } fynd
     }
+X-OBSERVATIONS--below-number =
+    { $count ->
+        [one] FYND
+       *[other] FYND
+    }
 X-observations-deleted =
     { $count ->
         [one] 1 fynd raderad
@@ -992,6 +1010,8 @@ X-of-Y =
         [one] av { $y }
        *[other] av { $y }
     }
+X-percent = { $count }%
+X-percent-confidence = { $count }% konfidens
 X-PHOTOS =
     { $photoCount ->
         [one] 1 BILD
@@ -1029,6 +1049,11 @@ X-Species =
         [one] { $count } Art
        *[other] { $count } Arter
     }
+X-SPECIES--below-number =
+    { $count ->
+        [one] ART
+       *[other] ARTER
+    }
 x-uploaded =
     { $count ->
         [one] { $count } uppladdad
@@ -1060,10 +1085,19 @@ You-can-upload-this-observation-to-our-community = Du kan ladda upp detta fynd t
 You-changed-filters-will-be-discarded = Du ändrade filter, men de tillämpades inte på dina sökresultat i utforska.
 You-have-opted-out-of-the-Community-Taxon = Du har valt bort Communityns taxon
 You-havent-joined-any-projects-yet = Du har inte gått med i några projekt ännu!
+You-likely-observed-a-new-species = Du såg antagligen en ny art!
+You-likely-observed-a-species = Du såg antagligen en art
+You-likely-observed-an-organism-in-this-group = Du såg antagligen en organism i den här gruppen
+You-may-have-observed-a-new-species = Du kan ha sett en ny art!
+You-may-have-observed-a-species = Du kan ha sett en art
+You-may-have-observed-an-organism-in-this-group = Du kan ha sett en organism i den här gruppen
 You-must-be-logged-in-to-view-messages = Du måste vara inloggad för att se meddelanden
 You-must-install-Google-Play-Services-to-sign-in-with-Google = Du måste installera Google Play-tjänster för att logga in med Google.
 You-need-an-Internet-connection-to-do-that = Du behöver en internetanslutning för att göra det.
 You-need-log-in-to-do-that = Du måste logga in för att göra det.
+You-observed-a-new-species = Du observerade en ny art!
+You-observed-a-species = Du såg en art
+You-observed-an-organism-in-this-group = Du såg en organism i den här gruppen
 You-will-see-notifications = Du kommer se aviseringar här när du väl loggat in och laddat upp fynd.
 Your-donation-to-iNaturalist = Din donation till iNaturalist stödjer förbättringar och stabilitet i mobilapparna och webbplatsen som knyter miljontals människor till naturen och möjliggör skydd av biologisk mångfald över hela världen!
 Your-email-is-confirmed = Din e-postadress är bekräftad! Logga in för att fortsätta.

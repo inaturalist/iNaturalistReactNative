@@ -15,27 +15,34 @@ import { log } from "sharedHelpers/logger";
 import {
   useLastScreen,
   useLocationPermission,
-  usePerformance
+  usePerformance,
+  useSuggestions
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 import useStore from "stores/useStore";
 
 import fetchCoarseUserLocation from "../../sharedHelpers/fetchUserLocation";
 import flattenUploadParams from "./helpers/flattenUploadParams";
-import isolateHumans, { humanFilter } from "./helpers/isolateHumans";
-import sortSuggestions from "./helpers/sortSuggestions";
 import useClearComputerVisionDirectory from "./hooks/useClearComputerVisionDirectory";
 import useNavigateWithTaxonSelected from "./hooks/useNavigateWithTaxonSelected";
-import useOfflineSuggestions from "./hooks/useOfflineSuggestions";
-import useOnlineSuggestions from "./hooks/useOnlineSuggestions";
 import Suggestions from "./Suggestions";
 import TaxonSearchButton from "./TaxonSearchButton";
 
 const logger = log.extend( "SuggestionsContainer" );
 
-const ONLINE_THRESHOLD = 78;
-// note: offline threshold may need to change based on input from the CV team
-const OFFLINE_THRESHOLD = 0.78;
+export const FETCH_STATUS_LOADING = "loading";
+export const FETCH_STATUS_ONLINE_FETCHED = "online-fetched";
+export const FETCH_STATUS_ONLINE_ERROR = "online-error";
+export const FETCH_STATUS_FETCHING_OFFLINE = "fetching-offline";
+export const FETCH_STATUS_OFFLINE_FETCHED = "offline-fetched";
+export const FETCH_STATUS_OFFLINE_ERROR = "offline-error";
+
+export const TOP_SUGGESTION_NONE = "none";
+export const TOP_SUGGESTION_HUMAN = "human";
+export const TOP_SUGGESTION_ABOVE_ONLINE_THRESHOLD = "above-online-threshold";
+export const TOP_SUGGESTION_ABOVE_OFFLINE_THRESHOLD = "above-offline-threshold";
+export const TOP_SUGGESTION_COMMON_ANCESTOR = "common-ancestor";
+export const TOP_SUGGESTION_NOT_CONFIDENT = "not-confident";
 
 const setQueryKey = ( selectedPhotoUri, shouldUseEvidenceLocation ) => [
   "scoreImage",
@@ -52,27 +59,23 @@ export type Suggestion = {
   }
 };
 
+export type TopSuggestionType = string;
+
 export type Suggestions = {
   otherSuggestions: Suggestion[];
   topSuggestion: Suggestion | null;
-  topSuggestionType: "none"
-    | "human"
-    | "above-online-threshold"
-    | "above-offline-threshold"
-    | "common-ancestor"
-    | "not-confident";
+  topSuggestionType: TopSuggestionType;
 };
 
-const initialSuggestions: Suggestions = {
+export const initialSuggestions: Suggestions = {
   otherSuggestions: [],
   topSuggestion: null,
-  topSuggestionType: "none"
+  topSuggestionType: TOP_SUGGESTION_NONE
 };
 
 const initialState = {
-  // loading, online-fetched, online-error, offline-fetched, offline-error
-  fetchStatus: "loading",
-  flattenedUploadParams: null,
+  fetchStatus: FETCH_STATUS_LOADING,
+  scoreImageParams: null,
   mediaViewerVisible: false,
   queryKey: [],
   selectedPhotoUri: null,
@@ -82,18 +85,18 @@ const initialState = {
 
 const reducer = ( state, action ) => {
   switch ( action.type ) {
-    case "FLATTEN_UPLOAD_PARAMS":
+    case "SET_UPLOAD_PARAMS":
       return {
         ...state,
-        flattenedUploadParams: action.flattenedUploadParams,
+        scoreImageParams: action.scoreImageParams,
         queryKey: setQueryKey( state.selectedPhotoUri, state.shouldUseEvidenceLocation )
       };
     case "SELECT_PHOTO":
       return {
         ...state,
-        fetchStatus: "loading",
+        fetchStatus: FETCH_STATUS_LOADING,
         selectedPhotoUri: action.selectedPhotoUri,
-        flattenedUploadParams: action.flattenedUploadParams,
+        scoreImageParams: action.scoreImageParams,
         queryKey: setQueryKey( action.selectedPhotoUri, state.shouldUseEvidenceLocation )
       };
     case "SELECT_TAXON":
@@ -109,8 +112,8 @@ const reducer = ( state, action ) => {
     case "TOGGLE_LOCATION":
       return {
         ...state,
-        fetchStatus: "loading",
-        flattenedUploadParams: action.flattenedUploadParams,
+        fetchStatus: FETCH_STATUS_LOADING,
+        scoreImageParams: action.scoreImageParams,
         shouldUseEvidenceLocation: action.shouldUseEvidenceLocation,
         queryKey: setQueryKey( state.selectedPhotoUri, action.shouldUseEvidenceLocation )
       };
@@ -168,7 +171,7 @@ const SuggestionsContainer = ( ) => {
   }, [requestPermissions] );
 
   const {
-    flattenedUploadParams,
+    scoreImageParams,
     fetchStatus,
     mediaViewerVisible,
     queryKey,
@@ -178,19 +181,42 @@ const SuggestionsContainer = ( ) => {
   } = state;
 
   const shouldFetchOnlineSuggestions = ( hasPermissions !== undefined )
-    && fetchStatus === "loading";
+    && fetchStatus === FETCH_STATUS_LOADING;
+
+  const onlineSuggestionsAttempted = fetchStatus === FETCH_STATUS_ONLINE_FETCHED
+    || fetchStatus === FETCH_STATUS_ONLINE_ERROR;
+
+  const onFetchError = useCallback( ( { isOnline } ) => dispatch( {
+    type: "SET_FETCH_STATUS",
+    fetchStatus: isOnline
+      ? FETCH_STATUS_ONLINE_ERROR
+      : FETCH_STATUS_OFFLINE_ERROR
+  } ), [] );
+
+  const onFetched = useCallback( ( { isOnline } ) => dispatch( {
+    type: "SET_FETCH_STATUS",
+    fetchStatus: isOnline
+      ? FETCH_STATUS_ONLINE_FETCHED
+      : FETCH_STATUS_OFFLINE_FETCHED
+  } ), [] );
 
   const {
-    dataUpdatedAt: onlineSuggestionsUpdatedAt,
-    error: onlineSuggestionsError,
-    onlineSuggestions,
     timedOut,
-    resetTimeout
-  } = useOnlineSuggestions( {
-    dispatch,
-    flattenedUploadParams,
+    resetTimeout,
+    onlineSuggestions,
+    offlineSuggestions,
+    onlineSuggestionsError,
+    onlineSuggestionsUpdatedAt,
+    suggestions,
+    usingOfflineSuggestions,
+    urlWillCrashOffline
+  } = useSuggestions( selectedPhotoUri, {
+    shouldFetchOnlineSuggestions,
+    onFetchError,
+    onFetched,
+    scoreImageParams,
     queryKey,
-    shouldFetchOnlineSuggestions
+    onlineSuggestionsAttempted
   } );
 
   const createUploadParams = useCallback( async ( uri, showLocation ) => {
@@ -203,33 +229,6 @@ const SuggestionsContainer = ( ) => {
   }, [
     currentObservation
   ] );
-
-  // 20240815 amanda - it's conceivable that we would want to use a cached image here eventually,
-  // since the user can see the small square version of this image in MyObs/ObsDetails already
-  // but for now, passing in an https photo to predictImage while offline crashes the app
-  const urlWillCrashOffline = selectedPhotoUri.includes( "https://" ) && !isConnected;
-
-  // skip to offline suggestions if internet connection is spotty
-  const tryOfflineSuggestions = !urlWillCrashOffline && (
-    timedOut
-    || (
-      ( !onlineSuggestions || onlineSuggestions?.results?.length === 0 )
-      && ( fetchStatus === "online-fetched" || fetchStatus === "online-error" ) )
-  );
-
-  const {
-    offlineSuggestions
-  } = useOfflineSuggestions( selectedPhotoUri, {
-    dispatch,
-    latitude: flattenedUploadParams?.lat,
-    longitude: flattenedUploadParams?.lng,
-    tryOfflineSuggestions
-  } );
-
-  const usingOfflineSuggestions = tryOfflineSuggestions || (
-    offlineSuggestions.length > 0
-      && ( !onlineSuggestions || onlineSuggestions?.results?.length === 0 )
-  );
 
   const setSelectedTaxon = taxon => {
     dispatch( {
@@ -256,7 +255,7 @@ const SuggestionsContainer = ( ) => {
         dispatch( {
           type: "SELECT_PHOTO",
           selectedPhotoUri: uri,
-          flattenedUploadParams: newImageParams
+          scoreImageParams: newImageParams
         } );
       }
     },
@@ -267,11 +266,7 @@ const SuggestionsContainer = ( ) => {
     ]
   );
 
-  const unfilteredSuggestions = onlineSuggestions?.results?.length > 0
-    ? onlineSuggestions.results
-    : offlineSuggestions;
-
-  const isLoading = fetchStatus === "loading";
+  const isLoading = fetchStatus === FETCH_STATUS_LOADING;
 
   const { loadTime } = usePerformance( {
     isLoading
@@ -280,100 +275,13 @@ const SuggestionsContainer = ( ) => {
     logger.info( loadTime );
   }
 
-  const filterSuggestions = useCallback( ( suggestionsToFilter: Suggestion[] ) => {
-    const sortedSuggestions = sortSuggestions(
-      isolateHumans( suggestionsToFilter ),
-      { usingOfflineSuggestions }
-    );
-    const newSuggestions = {
-      ...initialSuggestions,
-      otherSuggestions: sortedSuggestions
-    };
-    // no suggestions
-    if ( sortedSuggestions.length === 0 ) {
-      return {
-        ...newSuggestions,
-        otherSuggestions: [],
-        topSuggestionType: "none"
-      };
-    }
-    // human top suggestion
-    if ( sortedSuggestions.find( humanFilter ) ) {
-      return {
-        ...newSuggestions,
-        topSuggestion: sortedSuggestions[0],
-        topSuggestionType: "human",
-        otherSuggestions: []
-      };
-    }
-
-    // Note: score_vision responses have combined_score values between 0 and
-    // 100, compared with offline model results that have scores between 0
-    // and 1
-    const filterCriteria = usingOfflineSuggestions
-      ? s => s.score > OFFLINE_THRESHOLD
-      : s => s.combined_score > ONLINE_THRESHOLD;
-
-    const suggestionAboveThreshold = _.find(
-      sortedSuggestions,
-      filterCriteria
-    );
-
-    if ( suggestionAboveThreshold ) {
-      // make sure we're not returning the top suggestion in Other Suggestions
-      const firstSuggestion = _.remove(
-        sortedSuggestions,
-        ( s: Suggestion ) => s.taxon.id === suggestionAboveThreshold.taxon.id
-      ).at( 0 );
-      return {
-        ...newSuggestions,
-        topSuggestion: firstSuggestion,
-        topSuggestionType: usingOfflineSuggestions
-          ? "above-offline-threshold"
-          : "above-online-threshold"
-      };
-    }
-    if ( !suggestionAboveThreshold && usingOfflineSuggestions ) {
-      // no top suggestion for offline
-      return {
-        ...newSuggestions,
-        topSuggestion: null,
-        topSuggestionType: "not-confident"
-      };
-    }
-
-    // online common ancestor
-    if ( onlineSuggestions?.common_ancestor ) {
-      return {
-        ...newSuggestions,
-        topSuggestion: onlineSuggestions?.common_ancestor,
-        topSuggestionType: "common-ancestor"
-      };
-    }
-
-    // no top suggestion
-    return {
-      ...newSuggestions,
-      topSuggestionType: "not-confident"
-    };
-  }, [
-    onlineSuggestions?.common_ancestor,
-    usingOfflineSuggestions
-  ] );
-
-  // since we can calculate this, there's no need to store it in state
-  const suggestions = useMemo(
-    ( ) => filterSuggestions( unfilteredSuggestions ),
-    [unfilteredSuggestions, filterSuggestions]
-  );
-
   const toggleLocation = useCallback( async ( { showLocation } ) => {
     const newImageParams = await createUploadParams( selectedPhotoUri, showLocation );
     resetTimeout( );
     dispatch( {
       type: "TOGGLE_LOCATION",
       shouldUseEvidenceLocation: showLocation,
-      flattenedUploadParams: newImageParams
+      scoreImageParams: newImageParams
     } );
   }, [
     createUploadParams,
@@ -386,7 +294,7 @@ const SuggestionsContainer = ( ) => {
     // suggestions
     if ( !isConnected ) { return; }
     resetTimeout( );
-    dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "loading" } );
+    dispatch( { type: "SET_FETCH_STATUS", fetchStatus: FETCH_STATUS_LOADING } );
   }, [isConnected, resetTimeout] );
 
   const hideLocationToggleButton = usingOfflineSuggestions
@@ -399,7 +307,7 @@ const SuggestionsContainer = ( ) => {
       return;
     }
     const newImageParams = await createUploadParams( selectedPhotoUri, shouldUseEvidenceLocation );
-    dispatch( { type: "FLATTEN_UPLOAD_PARAMS", flattenedUploadParams: newImageParams } );
+    dispatch( { type: "SET_UPLOAD_PARAMS", scoreImageParams: newImageParams } );
   }, [
     createUploadParams,
     isConnected,
@@ -409,23 +317,23 @@ const SuggestionsContainer = ( ) => {
 
   const headerRight = useCallback( ( ) => <TaxonSearchButton />, [] );
 
+  const shouldSetImageParams = useMemo(
+    () => _.isEqual( initialSuggestions, suggestions ),
+    [suggestions]
+  );
+
   useEffect( ( ) => {
     const onFocus = navigation.addListener( "focus", ( ) => {
       // resizeImage crashes if trying to resize an https:// photo while there is no internet
       // in this situation, we can skip creating upload parameters since we're loading
       // offline suggestions anyway
-      if ( _.isEqual( initialSuggestions, suggestions ) ) {
-        setImageParams( );
+      if ( shouldSetImageParams ) {
+        setImageParams();
       }
       navigation.setOptions( { headerRight } );
     } );
     return onFocus;
-  }, [
-    headerRight,
-    navigation,
-    setImageParams,
-    suggestions
-  ] );
+  }, [navigation, setImageParams, shouldSetImageParams, headerRight] );
 
   const onPermissionGranted = useCallback( async ( ) => {
     const userLocation = await fetchCoarseUserLocation( );
@@ -436,7 +344,7 @@ const SuggestionsContainer = ( ) => {
     dispatch( {
       type: "TOGGLE_LOCATION",
       shouldUseEvidenceLocation: true,
-      flattenedUploadParams: newImageParams
+      scoreImageParams: newImageParams
     } );
   }, [selectedPhotoUri, updateObservationKeys] );
 

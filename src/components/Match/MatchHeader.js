@@ -1,3 +1,4 @@
+import calculateConfidence from "components/Match/calculateConfidence";
 import {
   Body2,
   Body4,
@@ -15,20 +16,20 @@ import { useTranslation } from "sharedHooks";
 const { useRealm } = RealmContext;
 
 type Props = {
-  taxon: {
-    preferred_common_name: string,
-    name: string,
-    id: number
-  },
-  confidence: number
+  topSuggestion: Object
 }
 
-const MatchHeader = ( { taxon, confidence }: Props ) => {
+const MatchHeader = ( { topSuggestion }: Props ) => {
   const { t } = useTranslation( );
   const realm = useRealm( );
+  const taxon = topSuggestion?.taxon;
 
-  const hasSeenSpecies = realm.objects( "Observation" )
-    .filtered( `taxon.id == ${taxon.id} && taxon.rank_level == 10` )[0];
+  const confidence = calculateConfidence( topSuggestion );
+
+  const hasSeenSpecies = taxon?.id
+    ? realm.objects( "Observation" )
+      .filtered( `taxon.id == ${taxon.id} && taxon.rank_level == 10` )[0]
+    : false;
 
   const suggestedTaxon = taxon;
   const taxonId = taxon?.id || "unknown";

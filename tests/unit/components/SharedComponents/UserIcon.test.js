@@ -2,7 +2,8 @@ import { render, screen } from "@testing-library/react-native";
 import { UserIcon } from "components/SharedComponents";
 import React from "react";
 
-const mockUri = { uri: "some_uri" };
+// Can't user faker or the snapshot will be unstable
+const mockUri = "https://loremflickr.com/640/480?lock=4455548378415104";
 
 describe( "UserIcon", () => {
   it( "should not have accessibility erros", () => {
@@ -37,7 +38,11 @@ describe( "UserIcon", () => {
 
     // TODO: replace with getByRole
     const profilePicture = screen.getByTestId( "UserIcon.photo" );
-    expect( profilePicture ).toBeTruthy();
-    expect( profilePicture.props.source ).toHaveProperty( "url", mockUri.uri );
+    // FasterImage doesn't provide a TS-compliant way to specify a test ID, so
+    // I'm not sure how else we'd access it
+    // eslint-disable-next-line testing-library/no-node-access
+    expect( profilePicture.children[0] ).toBeTruthy();
+    // eslint-disable-next-line testing-library/no-node-access
+    expect( profilePicture.children[0].props.source ).toHaveProperty( "url", mockUri );
   } );
 } );

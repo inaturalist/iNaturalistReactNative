@@ -106,9 +106,7 @@ const Misc = (): Node => {
           <View>
             <Body2 className="my-2 text-center flex-grow">UserIcon</Body2>
             <UserIcon
-              uri={{
-                uri: "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155"
-              }}
+              uri="https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155"
             />
           </View>
           <View>

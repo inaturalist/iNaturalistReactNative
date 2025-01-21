@@ -31,6 +31,7 @@ type Props = {
   bottomTextComponent?: Function,
   color?: string,
   ellipsizeCommonName?: boolean,
+  numberOfLinesBottomText?: number,
   keyBase?: string,
   layout?: "horizontal" | "vertical",
   removeStyling?: boolean,
@@ -50,6 +51,7 @@ const DisplayTaxonName = ( {
   bottomTextComponent: BottomTextComponentProp,
   color,
   ellipsizeCommonName,
+  numberOfLinesBottomText,
   keyBase = "",
   layout = "vertical",
   removeStyling = false,
@@ -175,6 +177,7 @@ const DisplayTaxonName = ( {
     <BottomTextComponent
       className={classnames( textClassName, "mt-[3px]" )}
       selectable={selectable}
+      numberOfLines={numberOfLinesBottomText}
     >
       {scientificNameFirst
         ? commonName

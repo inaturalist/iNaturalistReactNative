@@ -14,6 +14,7 @@ export { default as TransparentCircleButton } from "./Buttons/TransparentCircleB
 export { default as Carousel } from "./Carousel";
 export { default as CarouselDots } from "./CarouselDots";
 export { default as Checkbox } from "./Checkbox";
+export { default as CircleDots } from "./CircleDots";
 export { default as ConfidenceInterval } from "./ConfidenceInterval";
 export { default as DateDisplay } from "./DateDisplay";
 export { default as DateTimePicker } from "./DateTimePicker";
@@ -79,6 +80,6 @@ export { default as Subheading2 } from "./Typography/Subheading2";
 export { default as UnderlinedLink } from "./Typography/UnderlinedLink";
 export { default as UploadProgressBar } from "./UploadProgressBar";
 export { default as UploadStatus } from "./UploadStatus/UploadStatus";
-export { default as UserIcon } from "./UserIcon/UserIcon";
+export { default as UserIcon } from "./UserIcon";
 export { default as UserText } from "./UserText";
 export { default as ViewWrapper } from "./ViewWrapper";

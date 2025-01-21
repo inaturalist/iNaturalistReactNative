@@ -84,7 +84,6 @@ Media-Type = Medya Türü
 Menu = Menü
 Missing-Date = Eksik Tarih
 Months = Aylar
-MY-OBSERVATIONS = BENİM GÖZLEMLERİM
 Native = Yerli
 NEARBY = YAKINDAKİ
 Nearby = Yakında

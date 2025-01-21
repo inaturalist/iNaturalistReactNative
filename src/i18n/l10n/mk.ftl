@@ -66,7 +66,6 @@ maverick--identification = Бунтовник
 May = мај
 Menu = мени
 Months = Месеци
-MY-OBSERVATIONS = Мои набљудувања
 Native = домороден
 NEARBY = ВО БЛИЗИНА
 Nearby = Во близина

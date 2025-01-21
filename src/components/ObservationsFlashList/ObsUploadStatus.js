@@ -3,6 +3,7 @@
 import { ObsStatus, UploadStatus } from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";
+import { useDebugMode } from "sharedHooks";
 
 type Props = {
   classNameMargin?: string,
@@ -30,6 +31,8 @@ const ObsUploadStatus = ( {
   const showUploadStatus = typeof ( progress ) === "number";
   const hideStatus = !showUploadStatus && !showObsStatus && !explore;
   const showObsStatusOnly = ( !showUploadStatus && showObsStatus ) || explore;
+  const { isDebug } = useDebugMode( );
+
   const obsStatus = (
     <ObsStatus
       observation={observation}
@@ -52,6 +55,7 @@ const ObsUploadStatus = ( {
     <UploadStatus
       white={white}
       layout={layout}
+      needsEdit={isDebug && !!observation?.missingBasics()}
       onPress={onPress}
       progress={progress}
       uniqueKey={observation.uuid}

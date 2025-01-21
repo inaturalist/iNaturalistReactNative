@@ -133,7 +133,8 @@ const UserText = ( {
     fontSize: 16,
     lineHeight: 22,
     color: colors.darkGray,
-    ...htmlStyle
+    ...htmlStyle,
+    width: "100%"
   };
   const fonts = [fontRegular, ...defaultSystemFonts];
 

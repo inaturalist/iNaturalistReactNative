@@ -12,7 +12,7 @@ import Donate from "components/Donate/Donate.tsx";
 import ExploreContainer from "components/Explore/ExploreContainer";
 import RootExploreContainer from "components/Explore/RootExploreContainer";
 import ExploreLocationSearch from "components/Explore/SearchScreens/ExploreLocationSearch";
-import ExploreProjectSearch from "components/Explore/SearchScreens/ExploreProjectSearch";
+import ExploreProjectSearch from "components/Explore/SearchScreens/ExploreProjectSearch.tsx";
 import ExploreTaxonSearch from "components/Explore/SearchScreens/ExploreTaxonSearch";
 import ExploreUserSearch from "components/Explore/SearchScreens/ExploreUserSearch";
 import Help from "components/Help/Help.tsx";
@@ -38,6 +38,7 @@ import {
   fadeInComponent,
   hideHeader,
   hideHeaderLeft,
+  preventSwipeToGoBack,
   removeBottomBorder,
   showHeader,
   showLongHeader
@@ -98,6 +99,7 @@ const FadeInFollowersList = ( ) => fadeInComponent( <FollowersList /> );
 const FadeInFollowingList = ( ) => fadeInComponent( <FollowingList /> );
 
 const NOTIFICATIONS_OPTIONS = {
+  ...preventSwipeToGoBack,
   ...hideHeaderLeft,
   headerTitle: notificationsTitle,
   headerTitleAlign: "center",
@@ -145,6 +147,7 @@ const TabStackNavigator = ( ): Node => {
           name={SCREEN_NAME_OBS_LIST}
           component={FadeInMyObservations}
           options={{
+            ...preventSwipeToGoBack,
             animation: "none"
           }}
         />
@@ -152,6 +155,7 @@ const TabStackNavigator = ( ): Node => {
           name={SCREEN_NAME_ROOT_EXPLORE}
           component={FadeInRootExplore}
           options={{
+            ...preventSwipeToGoBack,
             animation: "none"
           }}
         />
@@ -206,7 +210,10 @@ const TabStackNavigator = ( ): Node => {
         <Stack.Screen
           name="Projects"
           component={FadeInProjectsContainer}
-          options={{ ...removeBottomBorder }}
+          options={{
+            ...removeBottomBorder,
+            ...preventSwipeToGoBack
+          }}
         />
         <Stack.Screen
           name="ProjectDetails"

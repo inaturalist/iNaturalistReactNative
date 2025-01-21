@@ -549,6 +549,13 @@ class Observation extends Realm.Object {
   faves() {
     return this.votes.filter( vote => vote?.vote_scope === null );
   }
+
+  missingBasics() {
+    const missingDate = !Date.parse( this.observed_on_string ) && !this.time_observed_at;
+    const missingCoords = typeof ( this.latitude ) !== "number"
+      && typeof ( this.privateLatitude ) !== "number";
+    return missingDate || missingCoords;
+  }
 }
 
 export default Observation;

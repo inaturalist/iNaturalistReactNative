@@ -27,6 +27,9 @@ ADD-EVIDENCE = BELEGE HINZUFÜGEN
 Add-evidence = Belege hinzufügen
 Add-favorite = Als Favorit hinzufügen
 Add-Location = Standort hinzufügen
+Add-location-for-better-identifications = Standort hinzufügen, um bessere Bestimmungen zu erhalten
+ADD-LOCATION-FOR-BETTER-IDS = FÜR BESSERE IDS EINEN STANDORT HINZUFÜGEN
+Add-location-to-refresh-suggestions = Standort hinzufügen, um die Bestimmungsvorschläge zu aktualisieren
 Add-observations = Beobachtung(en) hinzufügen
 ADD-OPTIONAL-COMMENT = OPTIONALEN KOMMENTAR HINZUFÜGEN
 Add-optional-notes = Optionale Anmerkungen hinzufügen
@@ -47,6 +50,7 @@ All-observations = Alle Beobachtungen
 All-organisms = Alle Organismen
 all-rights-reserved = Alle Rechte vorbehalten
 All-taxa = Alle Taxa
+ALL-USERS-EXCEPT = ALLE BENUTZER, AUSSER
 ALLOW-LOCATION-ACCESS = ZUGRIFF AUF DEN STANDORT ERLAUBEN
 Almost-done = Fast geschafft!
 Already-have-an-account = Du hast bereits ein Konto? Anmelden
@@ -81,6 +85,7 @@ By-exiting-observation-not-saved = Beim Beenden wird deine Beobachtung nicht ges
 By-exiting-your-observations-not-saved = Beim Beenden werden deine Beobachtungen nicht gespeichert. Du kannst sie auf deinem Gerät speichern oder löschen.
 By-exiting-your-photos-will-not-be-saved = Beim Beenden werden deine Fotos nicht gespeichert.
 By-exiting-your-recorded-sound-will-not-be-saved = Beim Beenden wird deine Tonaufnahme nicht gespeichert.
+BY-ME = MEINE
 By-uploading-your-observation-to-iNaturalist-you-can = Durch das Hochladen deiner Beobachtung auf iNaturalist kannst du:
 Camera = Kamera
 CANCEL = ABBRECHEN
@@ -128,6 +133,7 @@ Community = Community
 Community-based = Community-basiert
 Community-Guidelines = Community-Richtlinien
 COMMUNITY-GUIDELINES = COMMUNITY-RICHTLINIEN
+Confidence--label = Wahrscheinlichkeit
 CONFIRM = BESTÄTIGEN
 CONNECT-TO-NATURE = ERLEBE DIE NATUR!
 Connect-to-Nature = Erlebe die Natur
@@ -170,9 +176,9 @@ Data-quality-assessment-title-needs-id = Diese Beobachtung hat 'benötigt ID'-St
 Data-quality-assessment-title-research = Diese Beobachtung hat Forschungsqualität!
 DATE = DATUM
 Date = Datum
-date-format-long = dd.MMM.yyyy
-date-format-month-day = d. MMM
-date-format-month-year = MMM. yyyy
+date-format-long = dd.LLL.yyyy
+date-format-month-day = d. LLL
+date-format-month-year = LLL. yyyy
 date-format-short = dd. MM. yy
 DATE-OBSERVED = BEOBACHTET AM
 Date-observed = Beobachtet am
@@ -221,7 +227,7 @@ DETAILS = DETAILS
 Device-storage-full = Gerätespeicher aufgebraucht
 Device-storage-full-description = Möglicherweise kann iNaturalist deine Fotos nicht speichern oder stürzt ab.
 Disable-flash = Blitz der Kamera deaktivieren
-Disagreement = *@{ $username } stimmt nicht zu, das es <0/> ist
+Disagreement = *@{ $username } stimmt der Identifikation als <0/> nicht zu
 DISCARD = VERWERFEN
 DISCARD-ALL = ALLE VERWERFEN
 DISCARD-CHANGES = ÄNDERUNGEN VERWERFEN
@@ -378,6 +384,7 @@ iNaturalist-is-supported-by = iNaturalist wird von einer unabhängigen, 501(c)(3
 iNaturalist-is-supported-by-our-community = iNaturalist wird von unserer großartigen Gemeinschaft unterstützt. Von alltäglichen Naturforschern, die Beobachtungen und Identifizierungen hinzufügen, über Kuratoren, die unsere Taxonomie verwalten und bei der Moderation helfen, bis hin zu den freiwilligen Übersetzern, die iNaturalist für ein weltweites Publikum zugänglich machen, und unseren Spendern aus der Gemeinschaft - wir sind all den Menschen in unserer Gemeinschaft außerordentlich dankbar, die iNaturalist zu der Plattform machen, die es ist.
 iNaturalist-mission-is-to-connect = iNaturalist hat es sich zur Aufgabe gemacht, Menschen mit der Natur in Kontakt zu bringen und die Wissenschaft und den Schutz der biologischen Vielfalt zu fördern.
 INATURALIST-MISSION-VISION = MISSION UND VISION VON INATURALIST
+INATURALIST-MODE = INATURALIST MODE
 INATURALIST-NETWORK = INATURALIST-NETZWERK
 INATURALIST-SETTINGS = INATURALIST-EINSTELLUNGEN
 INATURALIST-STAFF = { $inaturalist }-Mitarbeitende
@@ -396,6 +403,7 @@ Introduced = eingeführt
 Introduced-to-place = Eingeführt in { $place }
 It-can-now-be-shared-for-use-in-research = Es kann nun besser für Forschungszwecke geteilt werden
 It-may-take-up-to-an-hour-to-remove-content = Es kann bis zu einer Stunde dauern, bis alle zugehörigen Inhalte vollständig gelöscht sind.
+It-might-also-be = andere Vorschläge
 January = Januar
 JOIN = Teilnehmen
 JOIN-PROJECT = PROJEKT BEITRETEN
@@ -421,6 +429,7 @@ Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, 
 Lat-Lon-Acc = Breite: { NUMBER($latitude, maximumFractionDigits: 6) }, Länge: { NUMBER($longitude, maximumFractionDigits: 6) }, Genauigkeit: { $accuracy }
 leading--identification = initiativ
 Learn-More = Mehr erfahren
+LEARN-MORE-ABOUT-THIS-SPECIES = MEHR ÜBER DIESE ART ERFAHREN
 LEAVE = VERLASSEN
 LEAVE-PROJECT = PROJEKT VERLASSEN
 LEAVE-PROJECT--question = PROJEKT VERLASSEN?
@@ -467,7 +476,7 @@ More-info = Weitere Informationen
 MOST-FAVED = MEIST FAVORISIERT
 Most-faved = Meist favorisiert
 MY-CONTENT--notifications = MEINE BEOBACHTUNGEN
-MY-OBSERVATIONS = MEINE BEOBACHTUNGEN
+My-Observations = Meine Beobachtungen
 Native = einheimisch
 Native-to-place = Einheimisch in { $place }
 Navigates-to-AI-camera = AI-Kamera öffnen
@@ -505,6 +514,7 @@ No-results-found-try-different-search = Keine Ergebnisse gefunden. Änder deine 
 no-rights-reserved-cc0 = keine Rechte vorbehalten (CC0)
 none--accuracy = keine
 NONE--ranks = KEINER
+NOT-BY-ME = VON ANDEREN
 Not-enough-space-left-on-device = Nicht genug Speicherplatz auf dem Gerät vorhanden
 Not-enough-space-left-on-device-try-again = Es ist nicht genügend Speicherplatz auf dem Gerät vorhanden. Bitte gib etwas Speicherplatz frei und versuche es erneut.
 NOTES = Hinweise
@@ -963,6 +973,11 @@ X-observations =
         [one] 1 Beobachtung
        *[other] { $count } Beobachtungen
     }
+X-OBSERVATIONS--below-number =
+    { $count ->
+        [one] BEOBACHTUNG
+       *[other] BEOBACHTUNGEN
+    }
 X-observations-deleted =
     { $count ->
         [one] 1 Beobachtung gelöscht
@@ -986,6 +1001,8 @@ X-of-Y =
         [one] von { $y }
        *[other] von { $y }
     }
+X-percent = { $count }%
+X-percent-confidence = { $count }% Wahrscheinlichkeit
 X-PHOTOS =
     { $photoCount ->
         [one] 1 FOTO
@@ -1023,6 +1040,11 @@ X-Species =
         [one] { $count } Art
        *[other] { $count } Arten
     }
+X-SPECIES--below-number =
+    { $count ->
+        [one] ART
+       *[other] ARTEN
+    }
 x-uploaded =
     { $count ->
         [one] { $count } hochgeladen
@@ -1054,10 +1076,19 @@ You-can-upload-this-observation-to-our-community = Du kannst diese Beobachtung i
 You-changed-filters-will-be-discarded = Du hast die Filter geändert, aber sie wurden nicht deine Suchergebnisse angewendet.
 You-have-opted-out-of-the-Community-Taxon = Du hast dich gegen eine Teilnahme am Community-Taxon entschieden
 You-havent-joined-any-projects-yet = Du bist noch keinen Projekten beigetreten!
+You-likely-observed-a-new-species = Du hast wahrscheinlich eine neue Art beobachtet!
+You-likely-observed-a-species = Du hast wahrscheinlich eine Art beobachtet
+You-likely-observed-an-organism-in-this-group = Du hast wahrscheinlich einen Organismus in dieser Gruppe beobachtet
+You-may-have-observed-a-new-species = Du könntest eine neue Art beobachtet haben!
+You-may-have-observed-a-species = Du könntest eine Art beobachtet haben
+You-may-have-observed-an-organism-in-this-group = Du könntest einen Organismus in dieser Gruppe beobachtet haben
 You-must-be-logged-in-to-view-messages = Du musst eingeloggt sein, um Nachrichten anzusehen.
 You-must-install-Google-Play-Services-to-sign-in-with-Google = Um sich bei Google anzumelden, muss Google Play Services installiert sein.
 You-need-an-Internet-connection-to-do-that = Du brauchst eine Verbindung zum Internet, um das tun zu können.
 You-need-log-in-to-do-that = Dazu musst du dich zuerst anmelden.
+You-observed-a-new-species = Du hast eine neue Art beobachtet!
+You-observed-a-species = Du hast eine Art beobachtet
+You-observed-an-organism-in-this-group = Du hast einen Organismus in dieser Gruppe beobachtet
 You-will-see-notifications = Hier wirst du Benachrichtigungen sehen, sobald du eingeloggt bist und eine Beobachtung hochgeladen hast.
 Your-donation-to-iNaturalist = Deine Spende an iNaturalist unterstützt die Verbesserung und Stabilität der mobilen Apps und Webseiten, die Millionen von Menschen mit der Natur verbindet und den Schutz der biologischen Vielfalt weltweit ermöglicht!
 Your-email-is-confirmed = Deine E-Mail ist bestätigt! Bitte melde dich an, um fortzufahren.

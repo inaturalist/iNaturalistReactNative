@@ -81,7 +81,6 @@ Media-Type = Medietype
 Menu = Meny
 Missing-Date = Mangler dato
 Months = Måneder
-MY-OBSERVATIONS = MINE OBSERVASJONER
 Native = Hjemmehørende
 NEARBY = I NÆRHETEN
 Nearby = Nære

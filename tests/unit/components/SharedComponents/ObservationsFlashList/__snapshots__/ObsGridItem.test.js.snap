@@ -190,16 +190,13 @@ exports[`ObsGridItem for an observation with a photo should render 1`] = `
             "bottom": 0,
           },
           {
-            "display": "flex",
+            "alignItems": "flex-start",
           },
           {
             "paddingBottom": 8,
             "paddingLeft": 8,
             "paddingRight": 8,
             "paddingTop": 8,
-          },
-          {
-            "width": "100%",
           },
         ],
       ]
@@ -413,16 +410,13 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
             "bottom": 0,
           },
           {
-            "display": "flex",
+            "alignItems": "flex-start",
           },
           {
             "paddingBottom": 8,
             "paddingLeft": 8,
             "paddingRight": 8,
             "paddingTop": 8,
-          },
-          {
-            "width": "100%",
           },
         ],
       ]

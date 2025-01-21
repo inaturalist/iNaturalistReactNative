@@ -1,0 +1,2 @@
+Previous build (134) crashes when trying to use the AI camera.
+This build contains no code changes, but has vision model v2.13.

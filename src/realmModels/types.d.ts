@@ -53,6 +53,8 @@ export interface RealmObservation extends RealmObject {
   geoprivacy: string | null;
   latitude: number | null;
   longitude: number | null;
+  missingBasics: ( ) => boolean;
+  needsSync: ( ) => boolean;
   observationPhotos: Array<RealmObservationPhoto>;
   observationSounds: Array<RealmObservationSound>;
   observed_on_string: string | null;
@@ -66,6 +68,7 @@ export interface RealmObservation extends RealmObject {
 }
 
 export interface RealmUser extends RealmObject {
+  iconUrl?: string;
   iconUrl?: string;
   id: number;
   locale?: string;

@@ -134,7 +134,6 @@ Menu = Menú
 Missing-Date = Falta la fecha
 Months = Meses
 More-info = Más información
-MY-OBSERVATIONS = MIS OBSERVACIONES
 Native = Nativa
 NEARBY = CERCANOS
 Nearby = Cercanos

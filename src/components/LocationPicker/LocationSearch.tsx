@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import fetchSearchResults from "api/search.ts";
+import { fetchSearchResults } from "api/search.ts";
 import type { ApiOpts } from "api/types.d.ts";
 import {
   Body3,

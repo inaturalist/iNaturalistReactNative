@@ -90,6 +90,8 @@ All-organisms = All organisms
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = all rights reserved
 All-taxa = All taxa
+# Title in explore filters
+ALL-USERS-EXCEPT = ALL USERS EXCEPT
 ALLOW-LOCATION-ACCESS = ALLOW LOCATION ACCESS
 # As in automated identification suggestions
 Almost-done = Almost done!
@@ -153,6 +155,8 @@ By-exiting-observation-not-saved = By exiting, your observation will not be save
 By-exiting-your-observations-not-saved = By exiting, your observations will not be saved. You can save them to your device, or you can delete them.
 By-exiting-your-photos-will-not-be-saved = By exiting, your photos will not be saved.
 By-exiting-your-recorded-sound-will-not-be-saved = By exiting, your recorded sound will not be saved.
+# Button in explore filters to search for species or observations by the signed in user
+BY-ME = BY ME
 # Lead in to a list including "Get your identifcation verified..." and "Share your observation..."
 By-uploading-your-observation-to-iNaturalist-you-can = By uploading your observation to iNaturalist, you can:
 Camera = Camera
@@ -717,7 +721,6 @@ Most-faved = Most faved
 # Title for section in Notifications showing notifications about observations
 # created by the viewer. Should be 16 characters or fewer or it will be ellipsized.
 MY-CONTENT--notifications = MY CONTENT
-MY-OBSERVATIONS = MY OBSERVATIONS
 My-Observations = My Observations
 # Label for the bottom tab that shows your observations. Feel free to be
 # flexible in translating this to keep it as short as possible. "My
@@ -775,6 +778,8 @@ no-rights-reserved-cc0 = no rights reserved (CC0)
 none--accuracy = none
 # Option when selecting taxonomic ranks that indicates no rank was selected
 NONE--ranks = NONE
+# Button in explore filters to search for species or observations NOT by the signed in user
+NOT-BY-ME = NOT BY ME
 # Error message title when not enough storage space on device, e.g. when the
 # disk is full and you try to save a photo
 Not-enough-space-left-on-device = Not enough space left on device
@@ -824,6 +829,7 @@ OBSERVATION-WAS-DELETED = OBSERVATION WAS DELETED
 Observation-with-no-evidence = Observation with no evidence
 Observations = Observations
 Observations-created-on-iNaturalist = Observations created on iNaturalist are used by scientists around the world.
+Observations-need-location-date--warning = iNaturalist observations need a location and date to be useful to scientists. Please check observations with this icon before uploading.
 Observations-on-iNat-are-cited = Observations on iNaturalist are cited in scientific papers, have led to rediscoveries, and help scientists understand life on our planet
 Observations-View = Observations View
 # Might be used when the number is represented using an image or other
@@ -1496,6 +1502,7 @@ You-can-upload-this-observation-to-our-community = You can upload this observati
 You-changed-filters-will-be-discarded = You changed filters, but they were not applied to your explore search results.
 You-have-opted-out-of-the-Community-Taxon = You have opted out of the Community Taxon
 You-havent-joined-any-projects-yet = You haven’t joined any projects yet!
+You-havent-observed-any-species-yet = You haven't observed any species yet.
 You-likely-observed-a-new-species = You likely observed a new species!
 You-likely-observed-a-species = You likely observed a species
 You-likely-observed-an-organism-in-this-group = You likely observed an organism in this group

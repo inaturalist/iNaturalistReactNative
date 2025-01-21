@@ -17,6 +17,7 @@ import {
   useCurrentUser,
   useInfiniteObservationsScroll,
   useLocalObservations,
+  useNavigateToObsEdit,
   useObservationsUpdates,
   useStoredLayout,
   useTranslation
@@ -30,7 +31,7 @@ import useStore from "stores/useStore";
 import useSyncObservations from "./hooks/useSyncObservations";
 import useUploadObservations from "./hooks/useUploadObservations";
 import MyObservations from "./MyObservations";
-import MyObservationsSimple from "./MyObservationsSimple";
+import MyObservationsSimpleContainer from "./MyObservationsSimpleContainer";
 
 const { useRealm } = RealmContext;
 
@@ -38,6 +39,7 @@ const MyObservationsContainer = ( ): Node => {
   const { t } = useTranslation( );
   const realm = useRealm( );
   const listRef = useRef( );
+  const navigateToObsEdit = useNavigateToObsEdit( );
 
   const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
   const uploadQueue = useStore( state => state.uploadQueue );
@@ -51,7 +53,10 @@ const MyObservationsContainer = ( ): Node => {
   const setMyObsOffset = useStore( state => state.setMyObsOffset );
   const uploadStatus = useStore( state => state.uploadStatus );
 
-  const { observationList: observations } = useLocalObservations( );
+  const {
+    observationList: observations,
+    totalResults: totalResultsLocal
+  } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
 
   const { isConnected } = useNetInfo( );
@@ -70,7 +75,8 @@ const MyObservationsContainer = ( ): Node => {
   const {
     fetchNextPage,
     isFetchingNextPage,
-    status
+    status,
+    totalResults: totalResultsRemote
   } = useInfiniteObservationsScroll( {
     params: {
       user_id: currentUserId
@@ -116,22 +122,27 @@ const MyObservationsContainer = ( ): Node => {
   const handleIndividualUploadPress = useCallback( uuid => {
     const uploadExists = uploadQueue.includes( uuid );
     if ( uploadExists ) return;
+    const observation = realm.objectForPrimaryKey( "Observation", uuid );
+    if ( isDebugMode( ) && observation.missingBasics( ) ) {
+      navigateToObsEdit( observation );
+      return;
+    }
     if ( !confirmLoggedIn( ) ) return;
     if ( !confirmInternetConnection( ) ) return;
-    const observation = realm.objectForPrimaryKey( "Observation", uuid );
     addTotalToolbarIncrements( observation );
     addToUploadQueue( uuid );
     if ( uploadStatus === UPLOAD_PENDING ) {
       setStartUploadObservations( );
     }
   }, [
-    confirmLoggedIn,
-    uploadQueue,
-    confirmInternetConnection,
-    realm,
     addTotalToolbarIncrements,
     addToUploadQueue,
+    confirmInternetConnection,
+    confirmLoggedIn,
+    navigateToObsEdit,
+    realm,
     setStartUploadObservations,
+    uploadQueue,
     uploadStatus
   ] );
 
@@ -191,9 +202,9 @@ const MyObservationsContainer = ( ): Node => {
   // this component again after returning from ObsEdit
   const onScroll = scrollEvent => setMyObsOffset( scrollEvent.nativeEvent.contentOffset.y );
 
-  if ( isDebugMode() && !currentUser && observations.length > 0 ) {
+  if ( isDebugMode() && observations.length > 0 ) {
     return (
-      <MyObservationsSimple
+      <MyObservationsSimpleContainer
         currentUser={currentUser}
         isFetchingNextPage={isFetchingNextPage}
         isConnected={isConnected}
@@ -203,6 +214,7 @@ const MyObservationsContainer = ( ): Node => {
         layout={layout}
         listRef={listRef}
         numUnuploadedObservations={numUnuploadedObservations}
+        numTotalObservations={totalResultsRemote || totalResultsLocal}
         observations={observations}
         onEndReached={fetchNextPage}
         onListLayout={restoreScrollOffset}

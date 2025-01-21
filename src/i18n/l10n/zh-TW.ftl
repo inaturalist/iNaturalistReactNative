@@ -111,7 +111,6 @@ Media-Type = 多媒體類型
 Menu = 選單
 Missing-Date = 缺漏日期
 Months = 月
-MY-OBSERVATIONS = 我的觀察紀錄
 Native = 原生
 NEARBY = 附近的
 Nearby = 附近

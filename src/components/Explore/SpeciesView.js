@@ -3,6 +3,9 @@
 import { fetchSpeciesCounts } from "api/observations";
 import ExploreTaxonGridItem from "components/Explore/ExploreTaxonGridItem.tsx";
 import _ from "lodash";
+import {
+  useExplore
+} from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useEffect, useMemo, useState } from "react";
 import Taxon from "realmModels/Taxon";
@@ -35,12 +38,39 @@ const SpeciesView = ( {
   // on screen
   const [observedTaxonIds, setObservedTaxonIds] = useState( new Set( ) );
   const currentUser = useCurrentUser( );
+  const { state } = useExplore();
+  const { excludeUser } = state;
   const {
     estimatedGridItemSize,
     flashListStyle,
     gridItemStyle,
     numColumns
   } = useGridLayout( );
+
+  // query all of current users seen species if "not by me" explore filter
+  const { data: seenByCurrentUserAll } = useQuery(
+    ["fetchSpeciesCountsAll"],
+    ( ) => fetchSpeciesCounts( {
+      user_id: currentUser?.id,
+      ttl: -1,
+      fields: {
+        taxon: {
+          id: true
+        }
+      }
+    } ),
+    {
+      enabled: ( !!currentUser && !!excludeUser )
+    }
+  );
+
+  const pageObservedTaxonIdsAll = useMemo( ( ) => seenByCurrentUserAll?.results?.map(
+    r => r.taxon.id
+  ) || [], [seenByCurrentUserAll?.results] );
+
+  const params = excludeUser
+    ? { ...queryParams, without_taxon_id: pageObservedTaxonIdsAll }
+    : queryParams;
 
   const {
     data,
@@ -51,7 +81,7 @@ const SpeciesView = ( {
     "fetchSpeciesCounts",
     fetchSpeciesCounts,
     {
-      ...queryParams,
+      ...params,
       fields: {
         taxon: Taxon.LIMITED_TAXON_FIELDS
       }
@@ -103,7 +133,7 @@ const SpeciesView = ( {
   );
   useEffect( ( ) => {
     handleUpdateCount( "species", totalResults );
-  }, [totalResults, handleUpdateCount] );
+  }, [handleUpdateCount, totalResults] );
 
   const contentContainerStyle = useMemo( ( ) => ( {
     ...flashListStyle,
