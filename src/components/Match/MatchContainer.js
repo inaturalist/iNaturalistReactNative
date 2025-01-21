@@ -87,7 +87,9 @@ const MatchContainer = ( ) => {
     || obsPhotos?.[0]?.photo?.localFilePath;
 
   const realm = useRealm( );
-  const exitObservationFlow = useExitObservationFlow( );
+  const exitObservationFlow = useExitObservationFlow( {
+    skipStoreReset: true
+  } );
 
   const openLocationPicker = ( ) => {
     navigation.navigate( "LocationPicker" );
