@@ -21,7 +21,7 @@ interface Options {
   navigate?: ( ) => void;
 }
 
-export default function useExitObservationFlow( ) {
+export default function useExitObservationFlow( exitOptions ) {
   const navigation = useNavigation( );
   const { params } = useRoute<RouteProp<ObsFlowParams, string>>( );
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
@@ -31,7 +31,12 @@ export default function useExitObservationFlow( ) {
     // point, so clean up the state before we ditch this posicle stand. Note
     // that for mysterious reasons, tests seem to like it better if we do
     // this before navigating
-    resetObservationFlowSlice( );
+    if ( !exitOptions?.skipStoreReset ) {
+      // want a skip option because on MatchContainer this is causing the whole component
+      // to rerender with no currentObservation, which means useSuggestions crashes from
+      // having no photo passed in, and many parts of the UI also result in crashes
+      resetObservationFlowSlice( );
+    }
 
     const previousScreen = params && params.previousScreen
       ? params.previousScreen
@@ -51,6 +56,7 @@ export default function useExitObservationFlow( ) {
   }, [
     navigation,
     params,
-    resetObservationFlowSlice
+    resetObservationFlowSlice,
+    exitOptions
   ] );
 }
