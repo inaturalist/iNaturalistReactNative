@@ -24,9 +24,10 @@ function saveTaxaToRealm( taxa: Taxon[], realm: Realm ) {
   }, "saving remote taxon from useTaxonSearch" );
 }
 
-const useTaxonSearch = ( taxonQuery = "" ) => {
+const useTaxonSearch = ( taxonQueryArg = "" ) => {
   const realm = useRealm( );
   const iconicTaxa = useIconicTaxa( { reload: false } );
+  const taxonQuery = taxonQueryArg.trim();
 
   const { data: remoteTaxa, refetch, isLoading } = useAuthenticatedQuery(
     ["fetchTaxonSuggestions", taxonQuery],

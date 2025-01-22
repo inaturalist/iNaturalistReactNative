@@ -158,10 +158,10 @@ describe( "TaxonDetails", ( ) => {
     await actor.type( searchBar, "b" );
 
     const searchedTaxon = mockTaxaList[0];
-    const searchedTaxonName = await screen.findByText( searchedTaxon.name );
-    await waitFor( ( ) => {
-      expect( searchedTaxonName ).toBeVisible( );
+    await waitFor( async ( ) => {
+      expect( await screen.findByText( searchedTaxon.name ) ).toBeVisible( );
     } );
+    const searchedTaxonName = await screen.findByText( searchedTaxon.name );
     await actor.press( searchedTaxonName );
 
     const taxonDetailsScreen = await screen.findByTestId( `TaxonDetails.${searchedTaxon.id}` );
