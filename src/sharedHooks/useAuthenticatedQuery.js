@@ -1,10 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getJWT, isLoggedIn } from "components/LoginSignUp/AuthenticationService.ts";
 import { useEffect, useState } from "react";
-import { logWithoutRemote } from "sharedHelpers/logger";
 import { reactQueryRetry } from "sharedHelpers/logging";
-
-const localLogger = logWithoutRemote.extend( "useAuthenticatedQuery" );
 
 const LOGGED_IN_UNKNOWN = null;
 
@@ -18,9 +15,11 @@ const useAuthenticatedQuery = (
   const [userLoggedIn, setUserLoggedIn] = useState( LOGGED_IN_UNKNOWN );
 
   // Whether we perform this query and whether we need to re-perform it
-  // depends on whether the user is signed in. The vulnerability here is that
-  // this effect might not run frequently enough to change when a user signs
-  // in or out
+  // depends on whether the user is signed in. The possible vulnerability
+  // here is that this effect might not run frequently enough to change when
+  // a user signs in or out. The reason we're not using useCurrentUser is it
+  // doesn't tell us whether we know the user's auth state yet, it only
+  // returns null when we don't know OR the user is signed out.
   useEffect( ( ) => {
     isLoggedIn()
       .then( result => setUserLoggedIn( result ) )
@@ -31,9 +30,6 @@ const useAuthenticatedQuery = (
   // signed in or we wouldn't be using useAuthenticatedQuery in the first
   // place, so we need to redo this request if the auth state changed
   const authQueryKey = [...queryKey, queryOptions.allowAnonymousJWT, userLoggedIn];
-  if ( authQueryKey.includes( "useIconicTaxa" ) ) {
-    localLogger.debug( "authQueryKey: ", authQueryKey );
-  }
 
   return useQuery( {
     queryKey: authQueryKey,
