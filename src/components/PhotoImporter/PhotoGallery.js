@@ -19,6 +19,7 @@ import RNFS from "react-native-fs";
 import * as ImagePicker from "react-native-image-picker";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
+import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import { sleep } from "sharedHelpers/util.ts";
 import { useLayoutPrefs } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
@@ -63,7 +64,7 @@ const PhotoGallery = ( ): Node => {
     && isDefaultMode
     && isDebugMode( );
 
-  const navToMatchOrSuggestions = useCallback( ( ) => {
+  const navToMatchOrSuggestions = useCallback( async ( ) => {
     if ( advanceToMatchScreen ) {
       return navigation.navigate( "Match", {
         lastScreen: "PhotoGallery"
@@ -186,10 +187,18 @@ const PhotoGallery = ( ): Node => {
     } else if ( selectedImages.length === 1 ) {
       // create a new observation and skip group photos screen
       const newObservation = await Observation.createObservationWithPhotos( [selectedImages[0]] );
+      // fetch place name to display on Match screen
+      if ( newObservation.latitude ) {
+        const placeName = await fetchPlaceName(
+          newObservation.latitude,
+          newObservation.longitude
+        );
+        newObservation.place_guess = placeName;
+      }
       setPhotoImporterState( {
         observations: [newObservation]
       } );
-      navToMatchOrSuggestions();
+      navToMatchOrSuggestions( );
       setPhotoGalleryShown( false );
     } else {
       // navigate to group photos
