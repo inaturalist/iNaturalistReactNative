@@ -24,9 +24,12 @@ function saveTaxaToRealm( taxa: Taxon[], realm: Realm ) {
   }, "saving remote taxon from useTaxonSearch" );
 }
 
-const useTaxonSearch = ( taxonQuery = "" ) => {
+const useTaxonSearch = ( taxonQueryArg = "" ) => {
   const realm = useRealm( );
   const iconicTaxa = useIconicTaxa( { reload: false } );
+  // Remove leading and trailing whitespace, no need to perform new queries or
+  // potentially get different results b/c of meaningless whitespace
+  const taxonQuery = taxonQueryArg.trim();
 
   const { data: remoteTaxa, refetch, isLoading } = useAuthenticatedQuery(
     ["fetchTaxonSuggestions", taxonQuery],

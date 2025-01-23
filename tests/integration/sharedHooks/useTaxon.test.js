@@ -115,7 +115,7 @@ describe( "when there is no local taxon with taxon id", ( ) => {
 
     it( "should return a taxon like a local taxon record if the request succeeds", async ( ) => {
       const { result } = renderHook( ( ) => useTaxon( { id: mockTaxon.id } ) );
-      expect( result.current.taxon ).toHaveProperty( "default_photo" );
+      await waitFor( ( ) => expect( result.current.taxon ).toHaveProperty( "default_photo" ) );
     } );
   } );
 
