@@ -8,14 +8,17 @@ import { formatApiDatetime, formatMonthYearDate } from "sharedHelpers/dateAndTim
 import { useTranslation } from "sharedHooks";
 
 type Props = {
-  label?: string,
-  dateString: string,
-  classNameMargin?: string,
-  geoprivacy?: string,
-  taxonGeoprivacy?: string,
   belongsToCurrentUser?: boolean,
-  maxFontSizeMultiplier?: number,
+  classNameMargin?: string,
+  dateString: string,
+  geoprivacy?: string,
   hideIcon?: boolean,
+  // Convert the time to the viewer's time zone; otherwise will get displayed
+  // the way it is in the string
+  inViewerTimeZone?: boolean,
+  label?: string,
+  maxFontSizeMultiplier?: number,
+  taxonGeoprivacy?: string,
   textComponent?: Function,
 };
 
@@ -24,11 +27,12 @@ const DateDisplay = ( {
   classNameMargin,
   dateString,
   geoprivacy,
-  label,
-  taxonGeoprivacy,
   hideIcon,
-  textComponent: TextComponentProp,
-  maxFontSizeMultiplier = 2
+  inViewerTimeZone,
+  label,
+  maxFontSizeMultiplier = 2,
+  taxonGeoprivacy,
+  textComponent: TextComponentProp
 }: Props ): Node => {
   const { i18n } = useTranslation( );
 
@@ -46,12 +50,13 @@ const DateDisplay = ( {
     if ( !belongsToCurrentUser && obscuredDate ) {
       return formatMonthYearDate( dateString, i18n );
     }
-    return formatApiDatetime( dateString, i18n );
+    return formatApiDatetime( dateString, i18n, { inViewerTimeZone } );
   }, [
     belongsToCurrentUser,
     obscuredDate,
     dateString,
-    i18n
+    i18n,
+    inViewerTimeZone
   ] );
 
   const date = useMemo( ( ) => ( label

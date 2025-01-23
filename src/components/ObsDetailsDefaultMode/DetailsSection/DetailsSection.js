@@ -33,6 +33,7 @@ const DetailsSection = ( { observation }: Props ): Node => {
           label={t( "Date-uploaded-on-header-short" )}
           dateString={checkCamelAndSnakeCase( observation, "createdAt" )}
           hideIcon
+          inViewerTimeZone
           textComponent={Body3}
         />
       </View>

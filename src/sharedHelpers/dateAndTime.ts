@@ -284,8 +284,12 @@ function formatDifferenceForHumans( date: Date | string, i18n: i18next ) {
   return format( d, i18n.t( "date-format-month-day" ), formatOpts );
 }
 
-type FormatDateStringOptions = {
+interface FormatDateStringOptions {
   missing?: string | null;
+}
+
+interface FormatApiDatetimeOptions extends FormatDateStringOptions {
+  inViewerTimeZone?: boolean;
 }
 
 function formatDateString(
@@ -333,11 +337,31 @@ function formatLongDatetime(
 function formatApiDatetime(
   dateString: string,
   i18n: i18next,
-  options: FormatDateStringOptions = {}
+  options: FormatApiDatetimeOptions = {}
 ) {
   const hasTime = String( dateString ).includes( "T" );
   if ( hasTime ) {
-    return formatDateString( dateString, i18n.t( "datetime-format-short" ), i18n, options );
+    let isoDateString = dateString;
+    // If we don't want to display this in the viewer's time zone, we need to
+    // remove offset information and any Z so this gets parsed as a *local*
+    // datetime and no offset gets applied, so the time should be exactly as
+    // it is in the string. This is kind of a cheat since the actual date
+    // object *will* be in local time and thus inaccurate, so any formatting
+    // that shows an offset or a zone will be wrong... but we're not using
+    // either ATM. If in the future we want to show offsets or time zone
+    // names, date-fns supports this
+    // (https://date-fns.org/v2.8.1/docs/Time-Zones) and our API does return
+    // the IANA time zone for the observation in observed_time_zone
+    if ( !options.inViewerTimeZone ) {
+      isoDateString = dateString.replace( /[+-]\d\d:\d\d/, "" );
+      isoDateString = isoDateString.replace( "Z", "" );
+    }
+    return formatDateString(
+      isoDateString,
+      i18n.t( "datetime-format-short" ),
+      i18n,
+      options
+    );
   }
   return formatDateString( dateString, i18n.t( "date-format-short" ), i18n, options );
 }

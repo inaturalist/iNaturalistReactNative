@@ -143,6 +143,7 @@ const DetailsTab = ( { currentUser, observation }: Props ): Node => {
         <DateDisplay
           label={t( "Date-uploaded-header-short" )}
           dateString={checkCamelAndSnakeCase( observation, "createdAt" )}
+          inViewerTimeZone
         />
       </View>
       <Divider />
