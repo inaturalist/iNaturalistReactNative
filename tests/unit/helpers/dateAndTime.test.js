@@ -51,7 +51,7 @@ describe( "formatApiDatetime", ( ) => {
 
     it( "should return a localized datetime for a remote observation created_at date", ( ) => {
       expect(
-        formatApiDatetime( remoteObservation.created_at, i18next )
+        formatApiDatetime( remoteObservation.created_at, i18next, { inViewerTimeZone: true } )
       ).toEqual( "2/13/15 4:41 AM" );
     } );
 
@@ -67,10 +67,17 @@ describe( "formatApiDatetime", ( ) => {
       ).toEqual( "2/13/15 5:15 AM" );
     } );
 
-    it( "should return the date in the local time zone by default", () => {
+    it( "should return the date in the literal time zone by default", () => {
       expect( process.env.TZ ).toEqual( "UTC" );
       expect(
         formatApiDatetime( "2023-01-02T08:00:00+01:00", i18next )
+      ).toEqual( "1/2/23 8:00 AM" );
+    } );
+
+    it( "should return the date in the local time zone when requested", () => {
+      expect( process.env.TZ ).toEqual( "UTC" );
+      expect(
+        formatApiDatetime( "2023-01-02T08:00:00+01:00", i18next, { inViewerTimeZone: true } )
       ).toEqual( "1/2/23 7:00 AM" );
     } );
 
