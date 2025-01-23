@@ -2,7 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
-import FadeInOutView from "components/Camera/FadeInOutView";
+import FadeInOutView from "components/Camera/FadeInOutView.tsx";
 import useRotation from "components/Camera/hooks/useRotation.ts";
 import useZoom from "components/Camera/hooks/useZoom.ts";
 import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
@@ -266,7 +266,7 @@ const AICamera = ( {
           </View>
         </View>
       )}
-      <FadeInOutView takingPhoto={takingPhoto} />
+      <FadeInOutView takingPhoto={takingPhoto} cameraType="AI" />
       <AICameraButtons
         handleZoomButtonPress={handleZoomButtonPress}
         confidenceThreshold={confidenceThreshold}

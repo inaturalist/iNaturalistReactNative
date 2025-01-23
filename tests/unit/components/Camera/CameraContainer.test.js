@@ -38,7 +38,7 @@ jest.mock( "components/Camera/CameraView.tsx", () => ( {
   default: ( ) => mockView
 } ) );
 
-jest.mock( "components/Camera/FadeInOutView", () => ( {
+jest.mock( "components/Camera/FadeInOutView.tsx", () => ( {
   __esModule: true,
   default: () => mockView
 } ) );
