@@ -128,18 +128,19 @@ const Settings = ( ) => {
     setIsSaving( true );
 
     const payload = {
-      id: settings?.id
+      id: settings?.id,
+      user: {}
     };
 
     if ( nameDisplayPref === NAME_DISPLAY_COM_SCI ) {
-      payload["user[prefers_common_names]"] = true;
-      payload["user[prefers_scientific_name_first]"] = false;
+      payload.user.prefers_common_names = true;
+      payload.user.prefers_scientific_name_first = false;
     } else if ( nameDisplayPref === NAME_DISPLAY_SCI_COM ) {
-      payload["user[prefers_common_names]"] = true;
-      payload["user[prefers_scientific_name_first]"] = true;
+      payload.user.prefers_common_names = true;
+      payload.user.prefers_scientific_name_first = true;
     } else if ( nameDisplayPref === NAME_DISPLAY_SCI ) {
-      payload["user[prefers_common_names]"] = false;
-      payload["user[prefers_scientific_name_first]"] = false;
+      payload.user.prefers_common_names = false;
+      payload.user.prefers_scientific_name_first = false;
     }
 
     updateUserMutation.mutate( payload );
