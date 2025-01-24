@@ -24,7 +24,6 @@ const useAuthenticatedInfiniteQuery = (
   retry: ( failureCount, error ) => reactQueryRetry( failureCount, error, {
     queryKey
   } ),
-  initialPageParam: 1,
   ...queryOptions
 } );
 
