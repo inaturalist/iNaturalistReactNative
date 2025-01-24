@@ -119,9 +119,50 @@ export interface ApiNotification {
   viewed?: boolean;
 }
 
-export interface ApiObservation {
+export interface ApiRecord {
+  created_at?: string;
+  id?: number;
+  updated_at?: string;
+}
+
+export interface ApiObservation extends ApiRecord {
   observation_photos?: ApiObservationPhoto[];
   observation_sounds?: ApiObservationSound[];
+  time_observed_at?: string;
   user?: ApiUser;
   uuid: string;
+}
+
+export interface ApiObservationsSearchResponse extends ApiResponse {
+  results: ApiObservation[]
+}
+
+export const ORDER_BY_CREATED_AT = "created_at";
+export const ORDER_BY_GEO_SCORE = "geo_score";
+export const ORDER_BY_ID = "id";
+export const ORDER_BY_OBSERVED_ON = "observed_on";
+export const ORDER_BY_RANDOM = "random";
+export const ORDER_BY_SPECIES_GUESS = "species_guess";
+export const ORDER_BY_UPDATED_AT = "updated_at";
+export const ORDER_BY_VOTES = "votes";
+
+export const ORDER_ASC = "asc";
+export const ORDER_DESC = "desc";
+
+export interface ApiObservationsSearchParams extends ApiParams {
+  created_d1?: string;
+  created_d2?: string;
+  d1?: string;
+  d2?: string;
+  id_below?: number;
+  order?: typeof ORDER_ASC | typeof ORDER_DESC;
+  order_by?: typeof ORDER_BY_CREATED_AT |
+    typeof ORDER_BY_GEO_SCORE |
+    typeof ORDER_BY_ID |
+    typeof ORDER_BY_OBSERVED_ON |
+    typeof ORDER_BY_RANDOM |
+    typeof ORDER_BY_SPECIES_GUESS |
+    typeof ORDER_BY_UPDATED_AT |
+    typeof ORDER_BY_VOTES;
+  return_bounds?: boolean;
 }
