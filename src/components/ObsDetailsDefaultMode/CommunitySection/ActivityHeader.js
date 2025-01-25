@@ -132,6 +132,7 @@ const ActivityHeader = ( {
         <View>
           {item.created_at && (
             <DateDisplay
+              asDifference
               belongsToCurrentUser={belongsToCurrentUser}
               dateString={item.updated_at || item.created_at}
               geoprivacy={geoprivacy}

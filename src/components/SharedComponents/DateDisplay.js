@@ -4,10 +4,16 @@ import { Body4, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useMemo } from "react";
-import { formatApiDatetime, formatMonthYearDate } from "sharedHelpers/dateAndTime.ts";
+import {
+  formatApiDatetime,
+  formatDifferenceForHumans,
+  formatMonthYearDate
+} from "sharedHelpers/dateAndTime.ts";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
+  // Display the date as a difference, or relative date, e.g. "1d" or "3w"
+  asDifference?: boolean,
   belongsToCurrentUser?: boolean,
   classNameMargin?: string,
   dateString: string,
@@ -26,6 +32,7 @@ type Props = {
 };
 
 const DateDisplay = ( {
+  asDifference,
   belongsToCurrentUser,
   classNameMargin,
   dateString,
@@ -45,42 +52,37 @@ const DateDisplay = ( {
     TextComponent = Body4;
   }
 
-  const obscuredDate = geoprivacy === "obscured"
+  const dateObscured = geoprivacy === "obscured"
     || taxonGeoprivacy === "obscured"
     || geoprivacy === "private"
     || taxonGeoprivacy === "private";
 
-  const formatDate = useMemo( () => {
-    if ( !belongsToCurrentUser && obscuredDate ) {
+  const formattedDate = useMemo( () => {
+    if ( !belongsToCurrentUser && dateObscured ) {
       return formatMonthYearDate( dateString, i18n );
+    }
+    if ( asDifference ) {
+      return formatDifferenceForHumans( dateString, i18n );
     }
     return formatApiDatetime( dateString, i18n, { literalTime, timeZone } );
   }, [
+    asDifference,
     belongsToCurrentUser,
-    obscuredDate,
+    dateObscured,
     dateString,
     i18n,
     literalTime,
     timeZone
   ] );
 
-  const date = useMemo( ( ) => ( label
-    ? `${label} `
-    : "" ) + formatDate, [formatDate, label] );
-
   return (
     <View className={classNames( "flex flex-row items-center", classNameMargin )}>
-      {!hideIcon && (
-        <INatIcon
-          name="date"
-          size={13}
-        />
-      )}
+      {!hideIcon && <INatIcon name="date" size={13} />}
       <TextComponent
         className={!hideIcon && "ml-[5px]"}
         maxFontSizeMultiplier={maxFontSizeMultiplier}
       >
-        {date}
+        { `${label || ""} ${formattedDate}`.trim( ) }
       </TextComponent>
     </View>
   );
