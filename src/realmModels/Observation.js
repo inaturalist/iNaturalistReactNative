@@ -53,6 +53,7 @@ class Observation extends Realm.Object {
     place_guess: true,
     quality_grade: true,
     observation_sounds: ObservationSound.OBSERVATION_SOUNDS_FIELDS,
+    observed_time_zone: true,
     taxon: Taxon.TAXON_FIELDS,
     taxon_geoprivacy: true,
     time_observed_at: true,
@@ -95,6 +96,7 @@ class Observation extends Realm.Object {
     latitude: true,
     longitude: true,
     observation_photos: ObservationPhoto.OBSERVATION_PHOTOS_FIELDS,
+    observed_time_zone: true,
     place_guess: true,
     quality_grade: true,
     obscured: true,
@@ -488,6 +490,7 @@ class Observation extends Realm.Object {
       // date and/or time submitted to the server when a new obs is uploaded
       observed_on_string: "string?",
       observed_on: "string?",
+      observed_time_zone: "string?",
       obscured: "bool?",
       owners_identification_from_vision: "bool?",
       species_guess: "string?",

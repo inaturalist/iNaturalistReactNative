@@ -40,6 +40,7 @@ const ObserverDetails = ( {
               taxonGeoprivacy={taxonGeoprivacy}
               belongsToCurrentUser={belongsToCurrentUser}
               maxFontSizeMultiplier={1}
+              timeZone={observation.observed_time_zone}
             />
           )}
         </View>

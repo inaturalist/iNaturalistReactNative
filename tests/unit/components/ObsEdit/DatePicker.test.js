@@ -27,14 +27,14 @@ describe( "DatePicker", ( ) => {
   it( "displays date with no seconds from local observation", ( ) => {
     renderComponent( <DatePicker currentObservation={mockLocalObservation} /> );
 
-    const date = screen.getByText( "08/09/2024, 12:21 PM" );
+    const date = screen.getByText( "08/09/2024, 12:21 PM (UTC)" );
     expect( date ).toBeVisible( );
   } );
 
   it( "displays date with no seconds from remote observation", ( ) => {
     renderComponent( <DatePicker currentObservation={mockRemoteObservation} /> );
 
-    const date = screen.getByText( "06/15/2024, 5:26 PM" );
+    const date = screen.getByText( "06/15/2024, 5:26 PM (UTC)" );
     expect( date ).toBeVisible( );
   } );
 

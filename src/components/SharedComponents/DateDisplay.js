@@ -13,13 +13,13 @@ type Props = {
   dateString: string,
   geoprivacy?: string,
   hideIcon?: boolean,
-  // Convert the time to the viewer's time zone; otherwise will get displayed
-  // the way it is in the string
-  inViewerTimeZone?: boolean,
   label?: string,
   maxFontSizeMultiplier?: number,
   taxonGeoprivacy?: string,
   textComponent?: Function,
+  // Convert the time to the this time zone; otherwise display in the
+  // current / local time zone
+  timeZone?: string;
 };
 
 const DateDisplay = ( {
@@ -28,11 +28,11 @@ const DateDisplay = ( {
   dateString,
   geoprivacy,
   hideIcon,
-  inViewerTimeZone,
   label,
   maxFontSizeMultiplier = 2,
   taxonGeoprivacy,
-  textComponent: TextComponentProp
+  textComponent: TextComponentProp,
+  timeZone
 }: Props ): Node => {
   const { i18n } = useTranslation( );
 
@@ -50,13 +50,13 @@ const DateDisplay = ( {
     if ( !belongsToCurrentUser && obscuredDate ) {
       return formatMonthYearDate( dateString, i18n );
     }
-    return formatApiDatetime( dateString, i18n, { inViewerTimeZone } );
+    return formatApiDatetime( dateString, i18n, { timeZone } );
   }, [
     belongsToCurrentUser,
     obscuredDate,
     dateString,
     i18n,
-    inViewerTimeZone
+    timeZone
   ] );
 
   const date = useMemo( ( ) => ( label

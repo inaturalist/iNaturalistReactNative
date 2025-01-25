@@ -77,6 +77,7 @@ import {
   zhCN,
   zhTW
 } from "date-fns/locale";
+import { formatInTimeZone } from "date-fns-tz";
 import { i18n as i18next } from "i18next";
 
 // Convert iNat locale to date-fns locale. Note that coverage is *not*
@@ -286,10 +287,7 @@ function formatDifferenceForHumans( date: Date | string, i18n: i18next ) {
 
 interface FormatDateStringOptions {
   missing?: string | null;
-}
-
-interface FormatApiDatetimeOptions extends FormatDateStringOptions {
-  inViewerTimeZone?: boolean;
+  timeZone?: string;
 }
 
 function formatDateString(
@@ -303,8 +301,15 @@ function formatDateString(
       ? i18n.t( "Missing-Date" )
       : options.missing;
   }
-  return format(
+  const timeZone = (
+    // If we received a time zone, display the time in the requested zone
+    options.timeZone
+    // Otherwise use the system / local time zone
+    || Intl.DateTimeFormat( ).resolvedOptions( ).timeZone
+  );
+  return formatInTimeZone(
     parseISO( dateString ),
+    timeZone,
     fmt,
     { locale: dateFnsLocale( i18n.language ) }
   );
@@ -337,27 +342,12 @@ function formatLongDatetime(
 function formatApiDatetime(
   dateString: string,
   i18n: i18next,
-  options: FormatApiDatetimeOptions = {}
+  options: FormatDateStringOptions = {}
 ) {
   const hasTime = String( dateString ).includes( "T" );
   if ( hasTime ) {
-    let isoDateString = dateString;
-    // If we don't want to display this in the viewer's time zone, we need to
-    // remove offset information and any Z so this gets parsed as a *local*
-    // datetime and no offset gets applied, so the time should be exactly as
-    // it is in the string. This is kind of a cheat since the actual date
-    // object *will* be in local time and thus inaccurate, so any formatting
-    // that shows an offset or a zone will be wrong... but we're not using
-    // either ATM. If in the future we want to show offsets or time zone
-    // names, date-fns supports this
-    // (https://date-fns.org/v2.8.1/docs/Time-Zones) and our API does return
-    // the IANA time zone for the observation in observed_time_zone
-    if ( !options.inViewerTimeZone ) {
-      isoDateString = dateString.replace( /[+-]\d\d:\d\d/, "" );
-      isoDateString = isoDateString.replace( "Z", "" );
-    }
     return formatDateString(
-      isoDateString,
+      dateString,
       i18n.t( "datetime-format-short" ),
       i18n,
       options

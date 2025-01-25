@@ -135,7 +135,6 @@ const ActivityHeader = ( {
               belongsToCurrentUser={belongsToCurrentUser}
               dateString={item.updated_at || item.created_at}
               geoprivacy={geoprivacy}
-              inViewerTimeZone
               maxFontSizeMultiplier={1}
               taxonGeoprivacy={taxonGeoprivacy}
             />

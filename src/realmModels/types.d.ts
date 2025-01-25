@@ -55,15 +55,19 @@ export interface RealmObservation extends RealmObject {
   longitude: number | null;
   missingBasics: ( ) => boolean;
   needsSync: ( ) => boolean;
+  obscured?: boolean;
   observationPhotos: Array<RealmObservationPhoto>;
   observationSounds: Array<RealmObservationSound>;
+  observed_on?: string;
   observed_on_string: string | null;
+  observed_time_zone?: string;
   owners_identification_from_vision: boolean | null;
   place_guess: string | null;
   positional_accuracy: number | null;
   species_guess: string | null;
   taxon_id: number | null;
   taxon?: RealmTaxon;
+  taxon_geoprivacy?: "open" | "private" | "obscured" | null;
   uuid: string;
 }
 

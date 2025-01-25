@@ -8,14 +8,14 @@ import {
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import React from "react";
-import Observation from "realmModels/Observation";
+import type { RealmObservation } from "realmModels/types";
 import { useCurrentUser } from "sharedHooks";
 
 import ObscurationExplanation from "./ObscurationExplanation";
 
 interface Props {
   belongsToCurrentUser: boolean,
-  observation: Observation,
+  observation: RealmObservation,
   handleLocationPickerPressed?: ( ) => void
 }
 
@@ -61,6 +61,7 @@ const LocationSection = ( {
               maxFontSizeMultiplier={1}
               hideIcon
               textComponent={List2}
+              timeZone={observation.observed_time_zone}
             />
           </View>
         )}
