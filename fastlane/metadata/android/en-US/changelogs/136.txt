@@ -1,0 +1,12 @@
+Editing an observation’s date improved
+Explore search fixes
+Observation Details - even long list items fit on screen
+Match screen has fewer crashes
+Non-unique unique identifiers will no longer be generated
+Sharing photos into the app shows a location name
+Fixes to the way we load from the API
+Time zone-aware observation details.
+Fix to correctly use user’s taxon name display.
+
+Cleaner AI camera interface with prediction confidence dots removed
+More responsive AI camera interface

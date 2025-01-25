@@ -3,7 +3,7 @@
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import CameraView from "components/Camera/CameraView.tsx";
-import FadeInOutView from "components/Camera/FadeInOutView";
+import FadeInOutView from "components/Camera/FadeInOutView.tsx";
 import useRotation from "components/Camera/hooks/useRotation.ts";
 import useZoom from "components/Camera/hooks/useZoom.ts";
 import { View } from "components/styledComponents";
@@ -215,7 +215,7 @@ const StandardCamera = ( {
             pinchToZoom={pinchToZoom}
           />
         )}
-        <FadeInOutView takingPhoto={takingPhoto} />
+        <FadeInOutView takingPhoto={takingPhoto} cameraType="Standard" />
         <CameraOptionsButtons
           handleZoomButtonPress={handleZoomButtonPress}
           disabled={disallowAddingPhotos}

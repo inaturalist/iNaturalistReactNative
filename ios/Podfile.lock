@@ -918,9 +918,9 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - react-native-config (1.5.3):
-    - react-native-config/App (= 1.5.3)
-  - react-native-config/App (1.5.3):
+  - react-native-config (1.5.1):
+    - react-native-config/App (= 1.5.1)
+  - react-native-config/App (1.5.1):
     - React-Core
   - react-native-exif-reader (0.4.2):
     - React-Core
@@ -930,11 +930,9 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - react-native-get-random-values (1.11.0):
-    - React-Core
   - react-native-image-picker (7.0.0):
     - React-Core
-  - react-native-image-resizer (3.0.11):
+  - react-native-image-resizer (3.0.7):
     - React-Core
   - react-native-keep-awake (1.2.3):
     - React-Core
@@ -1157,7 +1155,7 @@ PODS:
     - React-Core
   - RNDeviceInfo (10.13.1):
     - React-Core
-  - RNFlashList (1.7.2):
+  - RNFlashList (1.7.1):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1248,7 +1246,6 @@ DEPENDENCIES:
   - react-native-exif-reader (from `../node_modules/react-native-exif-reader`)
   - react-native-geocoder-reborn (from `../node_modules/react-native-geocoder-reborn`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
-  - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - "react-native-image-resizer (from `../node_modules/@bam.tech/react-native-image-resizer`)"
   - "react-native-keep-awake (from `../node_modules/@sayem314/react-native-keep-awake`)"
@@ -1392,8 +1389,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-geocoder-reborn"
   react-native-geolocation:
     :path: "../node_modules/@react-native-community/geolocation"
-  react-native-get-random-values:
-    :path: "../node_modules/react-native-get-random-values"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
   react-native-image-resizer:
@@ -1553,13 +1548,12 @@ SPEC CHECKSUMS:
   React-logger: 3017d7c365f7df9a4575f13e98c1ef1d96b85ba5
   React-Mapbuffer: 768950d2253c4d3da3c40ac7259eafd3ce6f30f2
   react-native-cameraroll: 71a0dc2273bbb802bd5d4caffed9eff21fefa0d3
-  react-native-config: ea75335a7cca1d3326de1da384227e580a7c082e
+  react-native-config: 136f9755ccc991cc6438053a44363259ad4c7813
   react-native-exif-reader: d871d62023d532e33cc230ede6e2ba9cbfe220e2
   react-native-geocoder-reborn: a3c3d8460910309e750609c373b6887ec6f67a8f
   react-native-geolocation: 52795f4d0d1e40a42b020e6063bfaa0c33c8ed6d
-  react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
   react-native-image-picker: b64848e41db57068721d5db3cea54e32ecb92791
-  react-native-image-resizer: 24c5d06fae2176dc0caed4b6396e02befb44064a
+  react-native-image-resizer: 73c63c5b349aa95b0761d0e19c7b7bcfe89c3bf6
   react-native-keep-awake: 3c347cbcb834e5ce4b5717e9e2734b374f6fd70f
   react-native-mail: 6e83813066984b26403d3fdfe79ac7bb31857e3c
   react-native-maps: 85da55259d35bd50b5161d2ec0ee153d454158cc
@@ -1602,7 +1596,7 @@ SPEC CHECKSUMS:
   RNCPicker: fb82ba6cfba077a80a32412bc7b5391130a4e25f
   RNDateTimePicker: b43e41f10305dde521c0ab1370d7454979ec4287
   RNDeviceInfo: 538b62f03991eb4a2a15cf6fec5fff6bb5edc34e
-  RNFlashList: acc8b5f413b16c09304d7bbd2fc9e51f6ee16f71
+  RNFlashList: 818cb6cff1f47cabe1acd6298c98af1a39b9b18c
   RNFS: 89de7d7f4c0f6bafa05343c578f61118c8282ed8
   RNGestureHandler: e262eeb792addec0705a116456f210ee1be0dcd0
   RNGoogleSignin: ba93c1137f8d5cebdd39b04f493fd212ddf5ecd6

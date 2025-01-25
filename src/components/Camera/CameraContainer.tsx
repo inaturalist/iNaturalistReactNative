@@ -213,12 +213,12 @@ const CameraContainer = ( ) => {
     // this does leave a short period of time where the camera preview is still active
     // after taking the photo which we might to revisit if it doesn't look good.
     const cameraPhoto = await camera?.current?.takePhoto( takePhotoOptions );
+    if ( options?.inactivateCallback ) options.inactivateCallback();
     await logStageIfAICamera( "take_photo_complete" );
     if ( !cameraPhoto ) {
       await logStageIfAICamera( "take_photo_error" );
       throw new Error( "Failed to take photo: missing camera" );
     }
-    if ( options?.inactivateCallback ) options.inactivateCallback();
     const uri = await saveRotatedPhotoToDocumentsDirectory( cameraPhoto, deviceOrientation );
     const newPhotoState = await updateTakePhotoStore( uri, options );
     setTakingPhoto( false );
