@@ -138,7 +138,11 @@ const DetailsTab = ( { currentUser, observation }: Props ): Node => {
         <DateDisplay
           classNameMargin="mb-[12px]"
           label={t( "Date-observed-header-short" )}
-          dateString={checkCamelAndSnakeCase( observation, "timeObservedAt" )}
+          dateString={
+            checkCamelAndSnakeCase( observation, "timeObservedAt" )
+            || checkCamelAndSnakeCase( observation, "observed_on_string" )
+            || checkCamelAndSnakeCase( observation, "observed_on" )
+          }
           timeZone={observation.observed_time_zone}
         />
         <DateDisplay

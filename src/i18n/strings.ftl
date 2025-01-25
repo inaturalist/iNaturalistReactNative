@@ -352,10 +352,12 @@ datetime-difference-minutes = { $count }m
 datetime-difference-weeks = { $count }w
 # Longer datetime, e.g. on ObsEdit
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
-datetime-format-long = Pp (zzz)
+datetime-format-long = Pp
+datetime-format-long-with-zone = Pp (zzz)
 # Shorter datetime, e.g. on comments and IDs
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
-datetime-format-short = M/d/yy h:mm a zzz
+datetime-format-short = M/d/yy h:mm a
+datetime-format-short-with-zone = M/d/yy h:mm a zzz
 # Month of December
 December = December
 Default--interface-mode = Default

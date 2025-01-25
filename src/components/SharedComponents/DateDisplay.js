@@ -14,6 +14,9 @@ type Props = {
   geoprivacy?: string,
   hideIcon?: boolean,
   label?: string,
+  // Display the time as literally expressed in the dateString, i.e. don't
+  // assume it's in any time zone
+  literalTime?: boolean,
   maxFontSizeMultiplier?: number,
   taxonGeoprivacy?: string,
   textComponent?: Function,
@@ -29,6 +32,7 @@ const DateDisplay = ( {
   geoprivacy,
   hideIcon,
   label,
+  literalTime,
   maxFontSizeMultiplier = 2,
   taxonGeoprivacy,
   textComponent: TextComponentProp,
@@ -50,12 +54,13 @@ const DateDisplay = ( {
     if ( !belongsToCurrentUser && obscuredDate ) {
       return formatMonthYearDate( dateString, i18n );
     }
-    return formatApiDatetime( dateString, i18n, { timeZone } );
+    return formatApiDatetime( dateString, i18n, { literalTime, timeZone } );
   }, [
     belongsToCurrentUser,
     obscuredDate,
     dateString,
     i18n,
+    literalTime,
     timeZone
   ] );
 

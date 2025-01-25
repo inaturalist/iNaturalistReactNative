@@ -286,12 +286,19 @@ function formatDifferenceForHumans( date: Date | string, i18n: i18next ) {
 }
 
 interface FormatDateStringOptions {
+  // Display the time as literally expressed in the dateString, i.e. don't
+  // assume it's in any time zone
+  literalTime?: boolean;
+  // Text to show if date is missing
   missing?: string | null;
+  // IANA time zone name
   timeZone?: string;
 }
 
+type DateString = string | null;
+
 function formatDateString(
-  dateString: string,
+  dateString: DateString,
   fmt: string,
   i18n: i18next,
   options: FormatDateStringOptions = { }
@@ -301,14 +308,21 @@ function formatDateString(
       ? i18n.t( "Missing-Date" )
       : options.missing;
   }
-  const timeZone = (
+  let timeZone = (
     // If we received a time zone, display the time in the requested zone
     options.timeZone
     // Otherwise use the system / local time zone
     || Intl.DateTimeFormat( ).resolvedOptions( ).timeZone
   );
+  let isoDateString = dateString;
+  if ( options.literalTime ) {
+    isoDateString = dateString.replace( /[+-]\d\d:\d\d/, "" );
+    isoDateString = isoDateString.replace( "Z", "" );
+    // eslint-disable-next-line prefer-destructuring
+    timeZone = Intl.DateTimeFormat( ).resolvedOptions( ).timeZone;
+  }
   return formatInTimeZone(
-    parseISO( dateString ),
+    parseISO( isoDateString ),
     timeZone,
     fmt,
     { locale: dateFnsLocale( i18n.language ) }
@@ -316,7 +330,7 @@ function formatDateString(
 }
 
 function formatMonthYearDate(
-  dateString: string,
+  dateString: DateString,
   i18n: i18next,
   options: FormatDateStringOptions = {}
 ) {
@@ -324,7 +338,7 @@ function formatMonthYearDate(
 }
 
 function formatLongDate(
-  dateString: string,
+  dateString: DateString,
   i18n: i18next,
   options: FormatDateStringOptions = {}
 ) {
@@ -332,15 +346,18 @@ function formatLongDate(
 }
 
 function formatLongDatetime(
-  dateString: string,
+  dateString: DateString,
   i18n: i18next,
   options: FormatDateStringOptions = {}
 ) {
-  return formatDateString( dateString, i18n.t( "datetime-format-long" ), i18n, options );
+  const fmt = options.literalTime && !options.timeZone
+    ? i18n.t( "datetime-format-long" )
+    : i18n.t( "datetime-format-long-with-zone" );
+  return formatDateString( dateString, fmt, i18n, options );
 }
 
 function formatApiDatetime(
-  dateString: string,
+  dateString: DateString,
   i18n: i18next,
   options: FormatDateStringOptions = {}
 ) {
@@ -348,16 +365,23 @@ function formatApiDatetime(
   if ( hasTime ) {
     return formatDateString(
       dateString,
-      i18n.t( "datetime-format-short" ),
+      options.literalTime && !options.timeZone
+        ? i18n.t( "datetime-format-short" )
+        : i18n.t( "datetime-format-short-with-zone" ),
       i18n,
       options
     );
   }
-  return formatDateString( dateString, i18n.t( "date-format-short" ), i18n, options );
+  return formatDateString(
+    dateString,
+    i18n.t( "date-format-short" ),
+    i18n,
+    options
+  );
 }
 
 function formatProjectsApiDatetimeLong(
-  dateString: string,
+  dateString: DateString,
   i18n: i18next,
   options: FormatDateStringOptions = {}
 ) {
@@ -368,7 +392,9 @@ function formatProjectsApiDatetimeLong(
   const hasSpaces = String( dateString ).includes( " " );
   if ( hasSpaces ) {
     return formatDateString(
-      dateString.split( " " )[0],
+      dateString
+        ? dateString.split( " " )[0]
+        : dateString,
       i18n.t( "date-format-long" ),
       i18n,
       options

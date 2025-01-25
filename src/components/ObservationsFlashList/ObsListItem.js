@@ -124,6 +124,7 @@ const ObsListItem = ( {
               taxonGeoprivacy={taxonGeoprivacy}
               timeZone={observation.observed_time_zone}
               belongsToCurrentUser={belongsToCurrentUser}
+              literalTime={unsynced}
             />
           </>
         )}
