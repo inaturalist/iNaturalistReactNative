@@ -40,13 +40,7 @@ const LocationSection = ( {
           observation={observation}
           handleLocationPickerPressed={handleLocationPickerPressed}
         />
-        {observation.obscured && (
-          <ObscurationExplanation
-            textClassName="ml-[20px] mt-[10px]"
-            observation={observation}
-            currentUser={currentUser}
-          />
-        ) }
+
         {observation && (
           <View className="mt-2">
             <DateDisplay
@@ -64,6 +58,13 @@ const LocationSection = ( {
             />
           </View>
         )}
+        {observation.obscured && (
+          <ObscurationExplanation
+            textClassName="mt-[10px]"
+            observation={observation}
+            currentUser={currentUser}
+          />
+        ) }
       </View>
       <View className={classnames( cardClass )} />
     </View>
