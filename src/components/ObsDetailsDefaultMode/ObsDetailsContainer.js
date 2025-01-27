@@ -6,6 +6,7 @@ import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/nativ
 import { useQueryClient } from "@tanstack/react-query";
 import { createComment } from "api/comments";
 import { createIdentification } from "api/identifications";
+import { fetchSubscriptions } from "api/observations";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, {
@@ -20,6 +21,7 @@ import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { fetchTaxonAndSave } from "sharedHelpers/taxon";
 import {
   useAuthenticatedMutation,
+  useAuthenticatedQuery,
   useCurrentUser,
   useLocalObservation,
   useObservationsUpdates,
@@ -276,6 +278,16 @@ const ObsDetailsContainer = ( ): Node => {
   const belongsToCurrentUser = (
     observation?.user?.id === currentUser?.id
     || ( !observation?.user && !observation?.id )
+  );
+
+  const { data: subscriptions, refetch: refetchSubscriptions } = useAuthenticatedQuery(
+    [
+      "fetchSubscriptions"
+    ],
+    optsWithAuth => fetchSubscriptions( { uuid, fields: "user_id" }, optsWithAuth ),
+    {
+      enabled: !!( currentUser ) && !belongsToCurrentUser
+    }
   );
 
   const invalidateRemoteObservationFetch = useCallback( ( ) => {
@@ -595,6 +607,10 @@ const ObsDetailsContainer = ( ): Node => {
       showAgreeWithIdSheet={!!showAgreeWithIdSheet}
       showAddCommentSheet={showAddCommentSheet}
       showSuggestIdSheet={!!showSuggestIdSheet}
+      refetchSubscriptions={refetchSubscriptions}
+      subscriptions={!belongsToCurrentUser
+        ? subscriptions?.results
+        : []}
       suggestIdSheetDiscardChanges={suggestIdSheetDiscardChanges}
       showPotentialDisagreementSheet={showPotentialDisagreementSheet}
       identBodySheetShown={identBodySheetShown}

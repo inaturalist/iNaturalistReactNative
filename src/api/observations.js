@@ -221,10 +221,33 @@ const checkForDeletedObservations = async (
   }
 };
 
+const fetchSubscriptions = async (
+  params: Object = {},
+  opts: Object = {}
+) : Promise<?Object> => {
+  try {
+    return inatjs.observations.subscriptions( params, opts );
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
+const createSubscription = async (
+  params: Object = {},
+  opts: Object = {}
+) : Promise<?Object> => {
+  try {
+    return inatjs.observations.subscribe( params, opts );
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
 export {
   checkForDeletedObservations,
   createObservation,
   createOrUpdateEvidence,
+  createSubscription,
   deleteRemoteObservation,
   faveObservation,
   fetchIdentifiers,
@@ -233,6 +256,7 @@ export {
   fetchRemoteObservation,
   fetchRemoteObservations,
   fetchSpeciesCounts,
+  fetchSubscriptions,
   fetchUnviewedObservationUpdatesCount,
   markAsReviewed,
   markObservationUpdatesViewed,

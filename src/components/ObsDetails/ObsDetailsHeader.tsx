@@ -23,7 +23,9 @@ const isTablet = DeviceInfo.isTablet( );
 interface Props {
   belongsToCurrentUser?: boolean,
   invertToWhiteBackground: boolean,
+  subscriptions: Object,
   observationId: number,
+  refetchSubscriptions: Function,
   rightIconDarkGray?: boolean,
   uuid: string
 }
@@ -31,7 +33,9 @@ interface Props {
 const ObsDetailsHeader = ( {
   belongsToCurrentUser,
   invertToWhiteBackground,
+  subscriptions,
   observationId,
+  refetchSubscriptions,
   rightIconDarkGray = false,
   uuid
 }: Props ) => {
@@ -72,7 +76,15 @@ const ObsDetailsHeader = ( {
                 accessibilityLabel={t( "Edit" )}
               />
             )
-            : <HeaderKebabMenu observationId={observationId} white={whiteIcon} />
+            : (
+              <HeaderKebabMenu
+                observationId={observationId}
+                white={whiteIcon}
+                subscriptions={subscriptions}
+                uuid={uuid}
+                refetchSubscriptions={refetchSubscriptions}
+              />
+            )
         }
       />
     </LinearGradient>

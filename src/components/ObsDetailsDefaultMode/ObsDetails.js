@@ -60,11 +60,13 @@ type Props = {
   onPotentialDisagreePressed: Function,
   potentialDisagreeSheetDiscardChanges: Function,
   refetchRemoteObservation: Function,
+  refetchSubscriptions: Function,
   remoteObsWasDeleted?: boolean,
   showAgreeWithIdSheet: boolean,
   showPotentialDisagreementSheet: boolean,
   showAddCommentSheet: Function,
   showSuggestIdSheet: boolean,
+  subscriptions?: Object,
   suggestIdSheetDiscardChanges: Function,
   identBodySheetShown?: boolean,
   onCloseIdentBodySheet?: Function,
@@ -100,11 +102,13 @@ const ObsDetails = ( {
   openAddCommentSheet,
   potentialDisagreeSheetDiscardChanges,
   refetchRemoteObservation,
+  refetchSubscriptions,
   remoteObsWasDeleted,
   showAgreeWithIdSheet,
   showPotentialDisagreementSheet,
   showAddCommentSheet,
   showSuggestIdSheet,
+  subscriptions,
   suggestIdSheetDiscardChanges,
   identBodySheetShown,
   onCloseIdentBodySheet,
@@ -159,6 +163,8 @@ const ObsDetails = ( {
         belongsToCurrentUser={belongsToCurrentUser}
         observationId={observation?.id}
         uuid={observation?.uuid}
+        refetchSubscriptions={refetchSubscriptions}
+        subscriptions={subscriptions}
       />
       <ScrollView
         ref={scrollViewRef}

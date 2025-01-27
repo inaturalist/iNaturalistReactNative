@@ -27,6 +27,25 @@ describe( "ObsDetailsHeader", () => {
     fireEvent.press( anchorButton );
     const shareButton = await screen.findByTestId( "MenuItem.Share" );
     expect( shareButton ).toBeTruthy( );
+    const enableNotificationsButton = await screen.findByTestId( "MenuItem.EnableNotifications" );
+    expect( enableNotificationsButton ).toBeTruthy( );
+  } );
+
+  it( "shows ignore notification button in options menu when subscribed to obs", async ( ) => {
+    renderComponent(
+      <ObsDetailsHeader
+        observation={factory( "RemoteObservation" )}
+        belongsToCurrentUser={false}
+        subscriptions={[{ id: 324810661, user_id: 6280741 }]}
+      />
+    );
+    const anchorButton = screen.getByLabelText( i18next.t( "Observation-options" ) );
+    expect( anchorButton ).toBeTruthy( );
+    fireEvent.press( anchorButton );
+    const shareButton = await screen.findByTestId( "MenuItem.Share" );
+    expect( shareButton ).toBeTruthy( );
+    const ignoreNotificationsButton = await screen.findByTestId( "MenuItem.IgnoreNotifications" );
+    expect( ignoreNotificationsButton ).toBeTruthy( );
   } );
 
   it( "does not show options menu when observation belongs to current user", ( ) => {

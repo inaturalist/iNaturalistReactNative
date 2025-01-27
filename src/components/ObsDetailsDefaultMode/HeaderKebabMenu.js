@@ -1,18 +1,28 @@
 // @flow
+import { createSubscription } from "api/observations";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Alert, Platform, Share } from "react-native";
+import {
+  useAuthenticatedMutation
+} from "sharedHooks";
 
 const observationsUrl = "https://www.inaturalist.org/observations";
 
 type Props = {
-  observationId: number
+  observationId: number,
+  uuid: string,
+  refetchSubscriptions: Function,
+  subscriptions: Object
 }
 
 const HeaderKebabMenu = ( {
-  observationId
+  observationId,
+  uuid,
+  refetchSubscriptions,
+  subscriptions
 }: Props ): Node => {
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
 
@@ -28,10 +38,34 @@ const HeaderKebabMenu = ( {
     sharingOptions.message = url;
   }
 
+  const isSubscribed = subscriptions?.length > 0;
+
   const handleShare = async ( ) => {
     setKebabMenuVisible( false );
     try {
       return await Share.share( sharingOptions );
+    } catch ( error ) {
+      Alert.alert( error.message );
+      return null;
+    }
+  };
+
+  const toggleSubscription = useAuthenticatedMutation(
+    ( params, optsWithAuth ) => createSubscription( params, optsWithAuth ),
+    {
+      onSuccess: () => {
+        refetchSubscriptions();
+      },
+      onError: error => {
+        Alert.alert( error.message );
+      }
+    }
+  );
+
+  const toggleSubscriptionOnPress = async ( ) => {
+    setKebabMenuVisible( false );
+    try {
+      return await toggleSubscription.mutate( { uuid } );
     } catch ( error ) {
       Alert.alert( error.message );
       return null;
@@ -52,6 +86,23 @@ const HeaderKebabMenu = ( {
         title={t( "Share" )}
         testID="MenuItem.Share"
       />
+      {isSubscribed
+        ? (
+          <KebabMenu.Item
+            isFirst
+            onPress={toggleSubscriptionOnPress}
+            title={t( "Ignore-notifications" )}
+            testID="MenuItem.IgnoreNotifications"
+          />
+        )
+        : (
+          <KebabMenu.Item
+            isFirst
+            onPress={toggleSubscriptionOnPress}
+            title={t( "Enable-notifications" )}
+            testID="MenuItem.EnableNotifications"
+          />
+        )}
     </KebabMenu>
   );
 };
