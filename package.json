@@ -1,6 +1,6 @@
 {
   "name": "inaturalistreactnative",
-  "version": "0.57.4",
+  "version": "0.57.5",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
