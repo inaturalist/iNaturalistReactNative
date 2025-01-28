@@ -52,9 +52,9 @@ const PhotosSection = ( { taxon, observationPhoto, navToTaxonDetails }: Props ) 
         "relative",
         {
           // Landscape layout: full width on top
-          "w-full h-2/3": !displayPortraitLayout,
+          "w-full h-2/3 pb-[3px]": !displayPortraitLayout,
           // Portrait layout: 2/3 width on left
-          "w-2/3 h-full": displayPortraitLayout
+          "w-2/3 h-full pr-[3px]": displayPortraitLayout
         }
       )}
     >
@@ -72,9 +72,9 @@ const PhotosSection = ( { taxon, observationPhoto, navToTaxonDetails }: Props ) 
       "flex",
       {
         // Landscape layout: row of photos at bottom
-        "flex-row w-full h-1/3": !displayPortraitLayout,
+        "flex-row w-full h-1/3 space-x-[3px]": !displayPortraitLayout,
         // Portrait layout: column of photos on right
-        "flex-col w-1/3 h-full": displayPortraitLayout
+        "flex-col w-1/3 h-full space-y-[3px]": displayPortraitLayout
       }
     )}
     >

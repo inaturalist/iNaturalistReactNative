@@ -53,6 +53,7 @@ const Match = ( {
           observationPhoto={observationPhoto}
           navToTaxonDetails={navToTaxonDetails}
         />
+        <View className="border-[1.5px] border-white" />
         {!latitude
           ? <EmptyMapSection handleLocationPickerPressed={handleLocationPickerPressed} />
           : (
