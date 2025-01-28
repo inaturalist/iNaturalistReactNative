@@ -184,11 +184,11 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                 },
                 [
                   {
-                    "fontSize": 13,
-                    "lineHeight": 18,
+                    "fontSize": 11,
+                    "lineHeight": 13.2,
                   },
                   {
-                    "fontFamily": "Lato-Medium",
+                    "fontFamily": "Lato-Regular",
                   },
                   [
                     {
@@ -328,11 +328,11 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                 },
                 [
                   {
-                    "fontSize": 13,
-                    "lineHeight": 18,
+                    "fontSize": 11,
+                    "lineHeight": 13.2,
                   },
                   {
-                    "fontFamily": "Lato-Medium",
+                    "fontFamily": "Lato-Regular",
                   },
                   [
                     {
@@ -645,11 +645,11 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                 },
                 [
                   {
-                    "fontSize": 13,
-                    "lineHeight": 18,
+                    "fontSize": 11,
+                    "lineHeight": 13.2,
                   },
                   {
-                    "fontFamily": "Lato-Medium",
+                    "fontFamily": "Lato-Regular",
                   },
                   [
                     {
@@ -789,11 +789,11 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                 },
                 [
                   {
-                    "fontSize": 13,
-                    "lineHeight": 18,
+                    "fontSize": 11,
+                    "lineHeight": 13.2,
                   },
                   {
-                    "fontFamily": "Lato-Medium",
+                    "fontFamily": "Lato-Regular",
                   },
                   [
                     {
