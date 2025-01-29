@@ -231,7 +231,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
 
   // only used id as a fallback key because after upload
   // react thinks we've rendered a second item w/ a duplicate key
-  const keyExtractor = item => `${item.id}-${item?.default_photo?.url || "no-photo"}`;
+  const keyExtractor = item => item.uuid || item.id;
 
   const onMomentumScrollEnd = ( ) => {
     if ( dataCanBeFetched ) {
