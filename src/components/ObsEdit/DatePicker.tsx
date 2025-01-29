@@ -36,7 +36,7 @@ const DatePicker = ( { currentObservation, updateObservationKeys }: Props ) => {
 
   const displayDate = ( ) => {
     const opts = {
-      literalTime: currentObservation?._synced_at === null,
+      literalTime: !currentObservation?.observed_time_zone,
       timeZone: currentObservation?.observed_time_zone,
       missing: null
     };

@@ -11,7 +11,8 @@ const mockLocalObservation = factory( "LocalObservation", {
 const mockRemoteObservation = factory( "RemoteObservation", {
   // jest timezone is set to UTC time
   time_observed_at: "2024-06-15T17:26:00-00:00",
-  observed_on_string: null
+  observed_on_string: null,
+  observed_time_zone: "UTC"
 } );
 
 const mockLocalObservationNoDate = factory( "LocalObservation", {
@@ -27,7 +28,7 @@ describe( "DatePicker", ( ) => {
   it( "displays date with no seconds from local observation", ( ) => {
     renderComponent( <DatePicker currentObservation={mockLocalObservation} /> );
 
-    const date = screen.getByText( "08/09/2024, 12:21 PM (UTC)" );
+    const date = screen.getByText( "08/09/2024, 12:21 PM" );
     expect( date ).toBeVisible( );
   } );
 
