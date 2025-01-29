@@ -162,6 +162,7 @@ const MyObservationsSimple = ( {
     };
 
     // Add a unique key to ensure component recreation
+    // so images don't get recycled and show on the wrong taxon
     const itemKey = `taxon-${taxonId}-${source.uri}`;
 
     return (
@@ -348,14 +349,6 @@ const MyObservationsSimple = ( {
             }
             refreshing={isFetchingTaxa}
             ListFooterComponent={renderTaxaFooter}
-            disableScrollViewPanResponder
-            overrideItemLayout={( ) => {
-              layout.size = estimatedGridItemSize;
-              layout.span = 1;
-            }}
-            maintainVisibleContentPosition={{
-              minIndexForVisible: 0
-            }}
           />
         ) }
       </ViewWrapper>
