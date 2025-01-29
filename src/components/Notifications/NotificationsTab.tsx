@@ -1,7 +1,7 @@
 import { fetchUnviewedObservationUpdatesCount } from "api/observations";
 import type { ApiOpts } from "api/types";
+import { Heading4 } from "components/SharedComponents";
 import type { TabComponentProps } from "components/SharedComponents/Tabs/Tabs";
-import Heading5 from "components/SharedComponents/Typography/Heading5.tsx";
 import { View } from "components/styledComponents";
 import React, { useEffect } from "react";
 import { EventRegister } from "react-native-event-listeners";
@@ -57,12 +57,12 @@ const NotificationsTab = ( { id, text }: TabComponentProps ) => {
 
   return (
     <View className="flex-row px-3 pt-4 pb-3 justify-center items-center">
-      <Heading5
+      <Heading4
         maxFontSizeMultiplier={1.5}
         numberOfLines={1}
       >
         { text }
-      </Heading5>
+      </Heading4>
       { Number( numUnviewed ) > 0 && (
         <View className="h-[6px] w-[6px] ml-1 rounded-full bg-inatGreen" />
       ) }
