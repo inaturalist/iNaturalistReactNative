@@ -57,6 +57,7 @@ const ObsImage = ( {
         className={classNames( CLASS_NAMES )}
         testID="ObsList.photo"
         accessibilityIgnoresInvertColors
+        fadeDuration={0}
       />
     ) }
     { opaque && (

@@ -127,6 +127,10 @@ const ObservationsFlashList: Function = forwardRef( ( {
       }
     };
 
+    // Add a unique key to ensure component recreation
+    // so images don't get recycled and show on the wrong taxon
+    const itemKey = `uuid-${uuid}`;
+
     return (
       <ObsPressable
         currentUser={currentUser}
@@ -135,6 +139,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
         hideMetadata={hideMetadata}
         isLargeFontScale={isLargeFontScale}
         layout={layout}
+        key={itemKey}
         observation={observation}
         onItemPress={onItemPress}
         onUploadButtonPress={onUploadButtonPress}
@@ -226,7 +231,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
 
   // only used id as a fallback key because after upload
   // react thinks we've rendered a second item w/ a duplicate key
-  const keyExtractor = item => item.uuid || item.id;
+  const keyExtractor = item => `${item.id}-${item?.default_photo?.url || "no-photo"}`;
 
   const onMomentumScrollEnd = ( ) => {
     if ( dataCanBeFetched ) {

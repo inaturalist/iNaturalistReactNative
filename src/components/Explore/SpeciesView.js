@@ -122,15 +122,25 @@ const SpeciesView = ( {
     }
   }, [pageObservedTaxonIds, observedTaxonIds] );
 
-  const renderItem = ( { item } ) => (
-    <ExploreTaxonGridItem
-      setCurrentExploreView={setCurrentExploreView}
-      count={item?.count}
-      style={gridItemStyle}
-      taxon={item?.taxon}
-      showSpeciesSeenCheckmark={observedTaxonIds.has( item?.taxon.id )}
-    />
-  );
+  const renderItem = ( { item } ) => {
+    const taxon = item?.taxon;
+    const taxonId = taxon.id;
+    // Add a unique key to ensure component recreation
+    // so images don't get recycled and show on the wrong taxon
+    const itemKey = `taxon-${taxonId}-${taxon?.default_photo?.url}`;
+
+    return (
+      <ExploreTaxonGridItem
+        setCurrentExploreView={setCurrentExploreView}
+        key={itemKey}
+        count={item?.count}
+        style={gridItemStyle}
+        taxon={taxon}
+        showSpeciesSeenCheckmark={observedTaxonIds.has( taxonId )}
+      />
+    );
+  };
+
   useEffect( ( ) => {
     handleUpdateCount( "species", totalResults );
   }, [handleUpdateCount, totalResults] );
@@ -150,7 +160,7 @@ const SpeciesView = ( {
       hideLoadingWheel={!isFetchingNextPage}
       isFetchingNextPage={isFetchingNextPage}
       isConnected={isConnected}
-      keyExtractor={item => item?.taxon?.id || item}
+      keyExtractor={item => `${item.taxon.id}-${item?.taxon?.default_photo?.url || "no-photo"}`}
       layout="grid"
       numColumns={numColumns}
       renderItem={renderItem}
