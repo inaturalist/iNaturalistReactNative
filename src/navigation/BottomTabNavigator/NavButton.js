@@ -1,5 +1,5 @@
 // @flow
-import { Body3, INatIconButton, UserIcon } from "components/SharedComponents";
+import { Body4, INatIconButton, UserIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import NotificationsIconContainer from "navigation/BottomTabNavigator/NotificationsIconContainer";
 import * as React from "react";
@@ -85,7 +85,7 @@ const NavButton = ( {
       }}
     >
       {iconComponent}
-      <Body3
+      <Body4
         numberOfLines={1}
         className={active
           ? "text-inatGreen"
@@ -93,7 +93,7 @@ const NavButton = ( {
         maxFontSizeMultiplier={1.2}
       >
         {accessibilityLabel}
-      </Body3>
+      </Body4>
     </Pressable>
   );
 };
