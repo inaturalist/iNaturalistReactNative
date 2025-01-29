@@ -1,3 +1,4 @@
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
 import ObservationsViewBar from "components/Explore/ObservationsViewBar";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
@@ -14,21 +15,24 @@ import {
   ViewWrapper
 } from "components/SharedComponents";
 import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList.tsx";
-import TaxonGridItem from "components/SharedComponents/TaxonGridItem.tsx";
+// import TaxonGridItem from "components/SharedComponents/TaxonGridItem.tsx";
 import { Pressable, View } from "components/styledComponents";
 import React, { useCallback, useMemo } from "react";
 import Realm from "realm";
+import Photo from "realmModels/Photo";
 import type {
   RealmObservation,
   RealmTaxon,
   RealmUser
 } from "realmModels/types";
 import User from "realmModels/User.ts";
+import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useGridLayout, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import Announcements from "./Announcements";
 import LoginSheet from "./LoginSheet";
+import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
 
 export interface Props {
   activeTab: string;
@@ -89,11 +93,13 @@ const MyObservationsSimple = ( {
   showNoResults,
   taxa,
   toggleLayout,
-
   fetchMoreTaxa,
   isFetchingTaxa
 }: Props ) => {
   const { t } = useTranslation( );
+  const navigation = useNavigation( );
+  const route = useRoute( );
+
   const {
     estimatedGridItemSize,
     flashListStyle,
@@ -134,6 +140,47 @@ const MyObservationsSimple = ( {
       </View>
     );
   }, [t, numTotalObservations, numTotalTaxa] );
+
+  const renderTaxaItem = useCallback( ( { item: taxon }: TaxaFlashListRenderItemProps ) => {
+    const taxonId = taxon.id;
+    const navToTaxonDetails = ( ) => (
+      // Again, not sure how to placate TypeScript w/ React Navigation
+      navigation.navigate( {
+        // Ensure button mashing doesn't open multiple TaxonDetails instances
+        key: `${route.key}-TaxonGridItem-TaxonDetails-${taxonId}`,
+        name: "TaxonDetails",
+        params: { id: taxonId }
+      } )
+    );
+
+    const accessibleName = accessibleTaxonName( taxon, currentUser, t );
+
+    const source = {
+      uri: Photo.displayLocalOrRemoteMediumPhoto(
+        taxon?.default_photo
+      )
+    };
+
+    // Add a unique key to ensure component recreation
+    const itemKey = `taxon-${taxonId}-${source.uri}`;
+
+    return (
+      <SimpleTaxonGridItem
+        key={itemKey}
+        style={gridItemStyle}
+        taxon={taxon}
+        navToTaxonDetails={navToTaxonDetails}
+        accessibleName={accessibleName}
+        source={source}
+      />
+    );
+  }, [
+    currentUser,
+    gridItemStyle,
+    navigation,
+    route.key,
+    t
+  ] );
 
   const renderTaxaFooter = useCallback( ( ) => {
     if ( isFetchingTaxa ) {
@@ -287,16 +334,12 @@ const MyObservationsSimple = ( {
             estimatedItemSize={estimatedGridItemSize}
             hideLoadingWheel
             isConnected={isConnected}
-            keyExtractor={( item: RealmTaxon ) => item.id}
+            keyExtractor={(
+              item: RealmTaxon
+            ) => `${item.id}-${item?.default_photo?.url || "no-photo"}`}
             layout="grid"
             numColumns={numColumns}
-            renderItem={( { item }: TaxaFlashListRenderItemProps ) => item && (
-              <TaxonGridItem
-                showSpeciesSeenCheckmark
-                style={gridItemStyle}
-                taxon={item}
-              />
-            )}
+            renderItem={renderTaxaItem}
             totalResults={numTotalTaxa}
             onEndReached={
               currentUser
@@ -305,6 +348,14 @@ const MyObservationsSimple = ( {
             }
             refreshing={isFetchingTaxa}
             ListFooterComponent={renderTaxaFooter}
+            disableScrollViewPanResponder
+            overrideItemLayout={( ) => {
+              layout.size = estimatedGridItemSize;
+              layout.span = 1;
+            }}
+            maintainVisibleContentPosition={{
+              minIndexForVisible: 0
+            }}
           />
         ) }
       </ViewWrapper>
