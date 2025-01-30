@@ -136,6 +136,7 @@ const ActivityHeader = ( {
               belongsToCurrentUser={belongsToCurrentUser}
               dateString={item.updated_at || item.created_at}
               geoprivacy={geoprivacy}
+              hideIcon
               maxFontSizeMultiplier={1}
               taxonGeoprivacy={taxonGeoprivacy}
             />

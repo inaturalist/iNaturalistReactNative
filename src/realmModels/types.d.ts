@@ -64,8 +64,8 @@ export interface RealmObservationPojo {
   latitude: number | null;
   longitude: number | null;
   obscured?: boolean;
-  observationPhotos: Array<RealmObservationPhoto>;
-  observationSounds: Array<RealmObservationSound>;
+  observationPhotos: Array<RealmObservationPhotoPojo>;
+  observationSounds: Array<RealmObservationSoundPojo>;
   observed_on?: string;
   observed_on_string: string | null;
   observed_time_zone?: string;
@@ -84,8 +84,8 @@ export interface RealmObservationPojo {
 export interface RealmObservation extends RealmObservationPojo {
   missingBasics: ( ) => boolean;
   needsSync: ( ) => boolean;
-  observationPhotos: Array<RealmObservationPhotoPojo>;
-  observationSounds: Array<RealmObservationSoundPojo>;
+  observationPhotos: Array<RealmObservationPhoto>;
+  observationSounds: Array<RealmObservationSound>;
   unviewed: ( ) => boolean;
   updateNeedsSync: ( ) => boolean;
   viewed: ( ) => boolean;

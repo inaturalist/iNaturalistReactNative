@@ -140,8 +140,8 @@ const DetailsTab = ( { currentUser, observation }: Props ): Node => {
           label={t( "Date-observed-header-short" )}
           dateString={
             checkCamelAndSnakeCase( observation, "timeObservedAt" )
-            || checkCamelAndSnakeCase( observation, "observed_on_string" )
-            || checkCamelAndSnakeCase( observation, "observed_on" )
+            || observation.observed_on_string
+            || observation.observed_on
           }
           timeZone={observation.observed_time_zone}
         />
