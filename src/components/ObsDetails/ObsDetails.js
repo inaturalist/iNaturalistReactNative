@@ -65,12 +65,14 @@ type Props = {
   onPotentialDisagreePressed: Function,
   potentialDisagreeSheetDiscardChanges: Function,
   refetchRemoteObservation: Function,
+  refetchSubscriptions: Function,
   remoteObsWasDeleted?: boolean,
   showActivityTab: boolean,
   showAgreeWithIdSheet: boolean,
   showPotentialDisagreementSheet: boolean,
   showAddCommentSheet: Function,
   showSuggestIdSheet: boolean,
+  subscriptions?: Object,
   suggestIdSheetDiscardChanges: Function,
   tabs: Array<Object>,
   identBodySheetShown?: boolean,
@@ -108,12 +110,14 @@ const ObsDetails = ( {
   openAddCommentSheet,
   potentialDisagreeSheetDiscardChanges,
   refetchRemoteObservation,
+  refetchSubscriptions,
   remoteObsWasDeleted,
   showActivityTab,
   showAgreeWithIdSheet,
   showPotentialDisagreementSheet,
   showAddCommentSheet,
   showSuggestIdSheet,
+  subscriptions,
   suggestIdSheetDiscardChanges,
   tabs,
   identBodySheetShown,
@@ -248,6 +252,8 @@ const ObsDetails = ( {
         observationId={observation?.id}
         rightIconDarkGray
         uuid={observation?.uuid}
+        refetchSubscriptions={refetchSubscriptions}
+        subscriptions={subscriptions}
       />
     </View>
   );
@@ -264,9 +270,11 @@ const ObsDetails = ( {
       >
         <ObsDetailsHeader
           belongsToCurrentUser={belongsToCurrentUser}
+          subscriptions={subscriptions}
           invertToWhiteBackground={invertToWhiteBackground}
           observationId={observation?.id}
           uuid={observation?.uuid}
+          refetchSubscriptions={refetchSubscriptions}
         />
         <View className="-mt-[64px]">
           <ObsMediaDisplayContainer observation={observation} />

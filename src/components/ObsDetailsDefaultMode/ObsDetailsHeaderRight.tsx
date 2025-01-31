@@ -16,13 +16,17 @@ import HeaderKebabMenu from "./HeaderKebabMenu";
 interface Props {
   belongsToCurrentUser?: boolean,
   observationId: number,
-  uuid: string
+  uuid: string,
+  refetchSubscriptions: Function,
+  subscriptions: Object
 }
 
 const ObsDetailsHeader = ( {
   belongsToCurrentUser,
   observationId,
-  uuid
+  uuid,
+  refetchSubscriptions,
+  subscriptions
 }: Props ) => {
   const navigation = useNavigation( );
   const localObservation = useLocalObservation( uuid );
@@ -41,12 +45,22 @@ const ObsDetailsHeader = ( {
           accessibilityLabel={t( "Edit" )}
         />
       )
-      : <HeaderKebabMenu observationId={observationId} /> ),
+      : (
+        <HeaderKebabMenu
+          observationId={observationId}
+          subscriptions={subscriptions}
+          uuid={uuid}
+          refetchSubscriptions={refetchSubscriptions}
+        />
+      ) ),
     [
+      uuid,
       belongsToCurrentUser,
       localObservation,
       navigateToObsEdit,
       observationId,
+      refetchSubscriptions,
+      subscriptions,
       t
     ]
   );
