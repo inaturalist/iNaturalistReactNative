@@ -46,32 +46,39 @@ describe( "formatApiDatetime", ( ) => {
 
     it( "should return a localized datetime when a datetime string is passed in", ( ) => {
       const date = "2022-11-02T18:43:00+00:00";
-      expect( formatApiDatetime( date, i18next ) ).toEqual( "11/2/22 6:43 PM" );
+      expect( formatApiDatetime( date, i18next ) ).toEqual( "11/2/22 6:43 PM UTC" );
     } );
 
     it( "should return a localized datetime for a remote observation created_at date", ( ) => {
       expect(
-        formatApiDatetime( remoteObservation.created_at, i18next )
-      ).toEqual( "2/13/15 4:41 AM" );
+        formatApiDatetime( remoteObservation.created_at, i18next, { inViewerTimeZone: true } )
+      ).toEqual( "2/13/15 4:41 AM UTC" );
     } );
 
     it( "should return a localized datetime for a remote identification created_at date", ( ) => {
       expect(
         formatApiDatetime( remoteIdentification.created_at, i18next )
-      ).toEqual( "2/13/15 5:12 AM" );
+      ).toEqual( "2/13/15 5:12 AM UTC" );
     } );
 
     it( "should return a localized datetime for a remote comment created_at date", ( ) => {
       expect(
         formatApiDatetime( remoteComment.created_at, i18next )
-      ).toEqual( "2/13/15 5:15 AM" );
+      ).toEqual( "2/13/15 5:15 AM UTC" );
     } );
 
     it( "should return the date in the local time zone by default", () => {
       expect( process.env.TZ ).toEqual( "UTC" );
       expect(
         formatApiDatetime( "2023-01-02T08:00:00+01:00", i18next )
-      ).toEqual( "1/2/23 7:00 AM" );
+      ).toEqual( "1/2/23 7:00 AM UTC" );
+    } );
+
+    it( "should return the date in a requested time zone", () => {
+      expect( process.env.TZ ).toEqual( "UTC" );
+      expect(
+        formatApiDatetime( "2023-01-02T08:00:00+01:00", i18next, { timeZone: "Asia/Tokyo" } )
+      ).toEqual( "1/2/23 4:00 PM GMT+9" );
     } );
 
     it.todo(

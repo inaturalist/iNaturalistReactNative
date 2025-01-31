@@ -1,17 +1,16 @@
 import { Body2, DateTimePicker, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React, { useState } from "react";
+import type { RealmObservationPojo } from "realmModels/types";
 import {
   formatISONoSeconds,
+  formatLongDate,
   formatLongDatetime
 } from "sharedHelpers/dateAndTime.ts";
 import useTranslation from "sharedHooks/useTranslation";
 
 interface Props {
-  currentObservation: {
-    observed_on_string: string;
-    time_observed_at: string;
-  };
+  currentObservation: RealmObservationPojo;
   updateObservationKeys: ( { observed_on_string }: { observed_on_string: string } ) => void;
 }
 
@@ -23,7 +22,9 @@ const DatePicker = ( { currentObservation, updateObservationKeys }: Props ) => {
   const closeModal = () => setShowModal( false );
 
   const observationDate = currentObservation?.observed_on_string
-    || currentObservation?.time_observed_at;
+    || currentObservation?.time_observed_at
+    || currentObservation?.observed_on
+    || null;
 
   const handlePicked = ( value: Date ) => {
     const dateString = formatISONoSeconds( value );
@@ -33,13 +34,21 @@ const DatePicker = ( { currentObservation, updateObservationKeys }: Props ) => {
     closeModal();
   };
 
-  const displayDate = ( ) => formatLongDatetime(
-    observationDate,
-    i18n,
-    { missing: null }
-  );
+  const displayDate = ( ) => {
+    const opts = {
+      literalTime: !currentObservation?.observed_time_zone,
+      timeZone: currentObservation?.observed_time_zone,
+      missing: null
+    };
+    if ( String( observationDate ).includes( "T" ) ) {
+      return formatLongDatetime( observationDate, i18n, opts );
+    }
+    return formatLongDate( observationDate, i18n, opts );
+  };
 
-  const observationDateForPicker = new Date( observationDate );
+  const observationDateForPicker = observationDate
+    ? new Date( observationDate )
+    : new Date( );
 
   return (
     <>

@@ -122,7 +122,9 @@ const ObsListItem = ( {
               classNameMargin="mt-1"
               geoprivacy={geoprivacy}
               taxonGeoprivacy={taxonGeoprivacy}
+              timeZone={observation.observed_time_zone}
               belongsToCurrentUser={belongsToCurrentUser}
+              literalTime={!observation.observed_time_zone}
             />
           </>
         )}

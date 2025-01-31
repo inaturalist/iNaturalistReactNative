@@ -90,12 +90,13 @@ const EvidenceSectionContainer = ( {
   ] );
 
   const hasValidDate = useMemo( ( ) => {
-    const observationDate = parseISO(
-      currentObservation?.observed_on_string || currentObservation?.time_observed_at
+    const observationDateString = (
+      currentObservation?.observed_on_string
+      || currentObservation?.time_observed_at
     );
-    if ( observationDate
-      && !isFuture( observationDate )
-      && differenceInCalendarYears( observationDate, new Date( ) ) <= 130
+    if ( observationDateString
+      && !isFuture( parseISO( observationDateString ) )
+      && differenceInCalendarYears( parseISO( observationDateString ), new Date( ) ) <= 130
     ) {
       return true;
     }
