@@ -138,7 +138,7 @@
     "sanitize-html": "^2.13.0",
     "ts-jest": "^29.1.2",
     "uuid": "^11.0.5",
-    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision#dcad11b1532cb8b777eaaf78d6df0a704e8c71d3",
+    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision#fb3c35d3b19c9bdeb4c0de359f3c1b8133b2a8eb",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
