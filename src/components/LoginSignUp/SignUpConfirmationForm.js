@@ -35,13 +35,13 @@ const SignUpConfirmationForm = ( ): Node => {
   const { params } = useRoute( );
   const { user } = params;
   const [learnSheet, setLearnSheet] = useState( NONE );
-  const [error, setError] = useState( null );
 
-  const [username, setUsername] = useState( "" );
-  const [password, setPassword] = useState( "" );
   const usernameRef = useRef( null );
   const passwordRef = useRef( null );
 
+  const [username, setUsername] = useState( "" );
+  const [password, setPassword] = useState( "" );
+  const [error, setError] = useState( null );
   const blurFields = () => {
     if ( usernameRef.current ) {
       usernameRef.current.blur();
