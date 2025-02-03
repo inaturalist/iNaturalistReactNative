@@ -31,8 +31,7 @@ const LOGIN_SCREEN_OPTIONS = {
   headerTintColor: "white",
   contentStyle: {
     backgroundColor: "black"
-  },
-  headerRight: LoginCloseButton
+  }
 };
 
 const LoginStackNavigator = ( ): Node => (
@@ -42,6 +41,7 @@ const LoginStackNavigator = ( ): Node => (
       component={Login}
       options={{
         ...LOGIN_SCREEN_OPTIONS,
+        headerRight: LoginCloseButton,
         ...hideHeaderLeft
       }}
     />
