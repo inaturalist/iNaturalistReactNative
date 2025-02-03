@@ -194,8 +194,10 @@ const LoginForm = ( {
               onPress={() => logIn( async ( ) => signInWithApple( realm ) )}
               disabled={loading}
               className="mr-8"
-              icon="inaturalist"
-              size={22}
+              icon="apple"
+              // According to the Apple Design Guidelines, the icon has a margin inside the svg
+              // so we scale it here to fill the entire button
+              size={50}
               color={colors.black}
               backgroundColor={colors.white}
               accessibilityLabel={t( "Sign-in-with-Apple" )}
