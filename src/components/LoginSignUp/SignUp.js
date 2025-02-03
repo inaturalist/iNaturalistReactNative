@@ -21,7 +21,6 @@ const SignUp = ( ): Node => {
   } = useKeyboardInfo( TARGET_NON_KEYBOARD_HEIGHT );
 
   const hideHeader = nonKeyboardHeight < HIDE_HEADER_HEIGHT && keyboardShown;
-  const hideFooter = nonKeyboardHeight < HIDE_HEADER_HEIGHT && keyboardShown;
 
   return (
     <LoginSignUpWrapper
@@ -33,7 +32,7 @@ const SignUp = ( ): Node => {
         headerText={t( "Join-the-largest-community-of-naturalists" )}
         hideHeader={hideHeader}
       />
-      <SignUpForm hideFooter={hideFooter} />
+      <SignUpForm />
     </LoginSignUpWrapper>
   );
 };

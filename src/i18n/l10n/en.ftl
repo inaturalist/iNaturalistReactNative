@@ -74,9 +74,6 @@ Affiliation = Affiliation: { $site }
 Agree = Agree
 # Label for button that adds an identification of the same taxon as another identification
 AGREE = AGREE
-# Checkbox label that checks all of the consent agreements a user must make
-# before signing up
-Agree-to-all-of-the-above = Agree to all of the above
 AGREE-WITH-ID = AGREE WITH ID?
 Agree-with-ID-description = Would you like to agree with the ID and suggest the following identification?
 # This is what we call the camera that
@@ -93,7 +90,6 @@ All-taxa = All taxa
 # Title in explore filters
 ALL-USERS-EXCEPT = ALL USERS EXCEPT
 ALLOW-LOCATION-ACCESS = ALLOW LOCATION ACCESS
-Already-have-an-account = Already have an account? Log in
 An-Internet-connection-is-required = An Internet connection is required to load more observations.
 # Option when choosing a value for an date filter that indicates any value is
 # acceptable
@@ -543,8 +539,6 @@ Hide = Hide
 Highest = Highest
 HIGHEST-RANK = HIGHEST RANK
 I-agree-to-the-Terms-of-Use = I agree to the Terms of Use and Privacy Policy, and I have reviewed the Community Guidelines (required).
-I-consent-to-allow-iNaturalist-to-store = I consent to allow iNaturalist to store and process limited kinds of personal information about me in order to manage my account (required)
-I-consent-to-allow-my-personal-information = I consent to allow my personal information to be transferred to the United States of America (required)
 Iconic-taxon-name = Iconic taxon name: { $iconicTaxon }
 # Identification Status
 ID-Withdrawn = ID Withdrawn
@@ -1492,7 +1486,6 @@ x-uploads-failed =
         [one] { $count } upload failed
        *[other] { $count } uploads failed
     }
-Yes-license-my-photos = Yes, license my photos, sounds, and observations so scientists can use my data (recommended)
 You-are-offline = You are offline
 You-are-offline-Tap-to-reload = You are offline. Tap to reload.
 You-are-offline-Tap-to-try-again = You are offline. Tap to try again.

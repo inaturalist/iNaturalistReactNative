@@ -1,7 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import {
-  Body1, Button
-} from "components/SharedComponents";
+import { Button } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import React, { useEffect, useRef, useState } from "react";
@@ -9,11 +7,7 @@ import { TextInput, TouchableWithoutFeedback } from "react-native";
 
 import LoginSignUpInputField from "./LoginSignUpInputField";
 
-type Props = {
-  hideFooter: boolean
-}
-
-const SignUpForm = ( { hideFooter }: Props ) => {
+const SignUpForm = ( ) => {
   const navigation = useNavigation( );
   const [email, setEmail] = useState( "" );
   const emailRef = useRef<TextInput>( null );
@@ -51,7 +45,7 @@ const SignUpForm = ( { hideFooter }: Props ) => {
           textContentType="emailAddress"
         />
         <Button
-          className="mt-[30px]"
+          className="mt-[30px] mb-[35px]"
           disabled={!email}
           level="focus"
           onPress={( ) => {
@@ -65,14 +59,6 @@ const SignUpForm = ( { hideFooter }: Props ) => {
           testID="Signup.signupButton"
           text={t( "CONTINUE" )}
         />
-        {!hideFooter && (
-          <Body1
-            className="color-white self-center mt-[31px] mb-[35px] underline"
-            onPress={( ) => navigation.navigate( "LoginStackNavigator", { screen: "Login" } )}
-          >
-            {t( "Already-have-an-account" )}
-          </Body1>
-        )}
       </View>
     </TouchableWithoutFeedback>
   );
