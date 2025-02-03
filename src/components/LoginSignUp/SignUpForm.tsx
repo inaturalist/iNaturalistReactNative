@@ -92,7 +92,7 @@ const SignUpForm = ( { hideFooter }: Props ) => {
             } );
           }}
           testID="Signup.signupButton"
-          text={t( "CREATE-AN-ACCOUNT" )}
+          text={t( "CONTINUE" )}
         />
         {!hideFooter && (
           <Body1
