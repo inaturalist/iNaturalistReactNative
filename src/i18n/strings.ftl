@@ -350,13 +350,23 @@ datetime-difference-hours = { $count }h
 datetime-difference-minutes = { $count }m
 # Used when displaying a relative time - in this case, X weeks ago (e.g. 3w = 3 weeks ago)
 datetime-difference-weeks = { $count }w
-# Longer datetime, e.g. on ObsEdit
+# Longer datetime, e.g. when editing an observation
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 datetime-format-long = Pp
+# Longer datetime with time zone, e.g. when editing an observation and we know
+# the time zone See complete list of formatting styles at
+# https://date-fns.org/v2.29.3/docs/format and time zone formatting
+# characters at
+# https://github.com/marnusw/date-fns-tz?tab=readme-ov-file#formatintimezone
 datetime-format-long-with-zone = Pp (zzz)
-# Shorter datetime, e.g. on comments and IDs
+# Shorter datetime, e.g. on observation detail view
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 datetime-format-short = M/d/yy h:mm a
+# Shorter datetime with time zone, e.g. on observation detail view
+# See complete list of formatting styles at
+# https://date-fns.org/v2.29.3/docs/format and time zone formatting
+# characters at
+# https://github.com/marnusw/date-fns-tz?tab=readme-ov-file#formatintimezone
 datetime-format-short-with-zone = M/d/yy h:mm a zzz
 # Month of December
 December = December
@@ -863,7 +873,7 @@ Observers-View = Observers View
 # Month of October
 October = October
 Offensive-Inappropriate = Offensive/Inappropriate
-Offensive-Inappropriate-Examples = Misleading or illegal content, racial or ethnic slurs, etc. For more on our defintion of "appropriate," see the FAQ.
+Offensive-Inappropriate-Examples = Misleading or illegal content, racial or ethnic slurs, etc. For more on our definition of "appropriate," see the FAQ.
 Offline-DQA-description = The DQA may not be accurate. Check your internet connection and try again.
 Offline-suggestions-do-not-use-your-location = Offline suggestions do not use your location and may differ from online suggestions. Taxon images and common names may not load.
 # Generic confirmation, e.g. button on a warning alert
