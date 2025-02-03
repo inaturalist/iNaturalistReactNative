@@ -1,8 +1,7 @@
-import { AppleButton } from "@invertase/react-native-apple-authentication";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
 import {
-  Body1, Body2, Button, INatIcon, List2
+  Body1, Body2, Button, Heading4, INatIcon, INatIconButton, List2
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -36,12 +35,6 @@ interface LoginFormParams {
 type ParamList = {
   LoginFormParams: LoginFormParams
 }
-
-const APPLE_BUTTON_STYLE = {
-  maxWidth: 500,
-  height: 45, // You must specify a height
-  marginTop: 10
-};
 
 const LoginForm = ( {
   hideFooter
@@ -186,24 +179,44 @@ const LoginForm = ( {
           testID="Login.loginButton"
           text={t( "LOG-IN" )}
         />
-        {/*
-          Note: Sign in with Apple is doable in Android if we want to:
-          https://github.com/invertase/react-native-apple-authentication?tab=readme-ov-file#android
-        */}
-        { Platform.OS === "ios" && (
-          <AppleButton
-            buttonStyle={AppleButton.Style.BLACK}
-            buttonType={AppleButton.Type.SIGN_IN}
-            style={APPLE_BUTTON_STYLE}
-            onPress={() => logIn( async ( ) => signInWithApple( realm ) )}
+        <Heading4
+          className="color-white self-center mt-10"
+        >
+          {t( "OR-SIGN-IN-WITH" )}
+        </Heading4>
+        <View className="flex-row justify-center mt-5">
+          {/*
+            Note: Sign in with Apple is doable in Android if we want to:
+            https://github.com/invertase/react-native-apple-authentication?tab=readme-ov-file#android
+          */}
+          { Platform.OS === "ios" && (
+            <INatIconButton
+              onPress={() => logIn( async ( ) => signInWithApple( realm ) )}
+              disabled={loading}
+              className="mr-8"
+              icon="inaturalist"
+              size={22}
+              color={colors.black}
+              backgroundColor={colors.white}
+              accessibilityLabel={t( "Sign-in-with-Apple" )}
+              mode="contained"
+              width={50}
+              height={50}
+            />
+          ) }
+          <INatIconButton
+            onPress={() => logIn( async ( ) => signInWithGoogle( realm ) )}
+            disabled={loading}
+            icon="inaturalist"
+            size={22}
+            color={colors.black}
+            backgroundColor={colors.white}
+            accessibilityLabel={t( "Sign-in-with-Google" )}
+            mode="contained"
+            width={50}
+            height={50}
           />
-        ) }
-        <Button
-          text={t( "Sign-in-with-Google" )}
-          onPress={() => logIn( async ( ) => signInWithGoogle( realm ) )}
-          disabled={loading}
-          className="mt-3"
-        />
+        </View>
         {!hideFooter && (
           <Body1
             className={classnames(
