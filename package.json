@@ -39,7 +39,6 @@
     "e2e": "npm run e2e:build && npm run e2e:test",
     "icons": "./scripts/update-icon-font.sh",
     "add-example-model": "node scripts/add-example-model.js",
-    "add-github-actions-test-model": "node scripts/add-github-actions-test-model.js",
     "reassure": "reassure"
   },
   "dependencies": {

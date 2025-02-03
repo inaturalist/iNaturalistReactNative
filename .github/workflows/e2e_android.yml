@@ -93,7 +93,7 @@ jobs:
 
     # Download the example model otherwise an error alert will be shown on app start, requires .env
     - name: Download a fake cv model and taxonomy file into the assets folder
-      run: npm run add-github-actions-test-model
+      run: npm run add-example-model -- -f=main
 
     # Macos-latest runner has 3 Java versions pre-installed, if not specified as here, the build step errors with requiring at least Java 11 or higher
     # So, this step is needed for the apk build step, but somehow this is breaking emulator setup, so it is placed here
