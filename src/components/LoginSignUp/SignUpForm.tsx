@@ -5,7 +5,7 @@ import {
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import React, { useEffect, useRef, useState } from "react";
-import { TouchableWithoutFeedback } from "react-native";
+import { TextInput, TouchableWithoutFeedback } from "react-native";
 
 import LoginSignUpInputField from "./LoginSignUpInputField";
 
@@ -19,8 +19,8 @@ const SignUpForm = ( { hideFooter }: Props ) => {
   const [username, setUsername] = useState( "" );
   const [password, setPassword] = useState( "" );
   const usernameRef = useRef( null );
-  const emailRef = useRef( null );
   const passwordRef = useRef( null );
+  const emailRef = useRef<TextInput>( null );
 
   const blurFields = () => {
     if ( emailRef.current ) {
@@ -56,7 +56,7 @@ const SignUpForm = ( { hideFooter }: Props ) => {
           headerText={t( "EMAIL" )}
           inputMode="email"
           keyboardType="email-address"
-          onChangeText={text => setEmail( text )}
+          onChangeText={( text: string ) => setEmail( text )}
           testID="Signup.email"
           textContentType="emailAddress"
         />
