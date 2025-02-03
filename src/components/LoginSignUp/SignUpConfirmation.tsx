@@ -1,5 +1,3 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import {
   Body1,
@@ -7,7 +5,6 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React from "react";
 import { openInbox } from "sharedHelpers/mail.ts";
 
@@ -16,7 +13,7 @@ import LoginSignUpWrapper from "./LoginSignUpWrapper";
 
 const textClass = "color-white self-center text-center mt-5 px-10";
 
-const SignUpConfirmation = ( ): Node => {
+const SignUpConfirmation = ( ) => {
   const navigation = useNavigation( );
 
   return (

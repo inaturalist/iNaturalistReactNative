@@ -8,7 +8,7 @@ import LearnMore from "components/LoginSignUp/LearnMore.tsx";
 import LicensePhotos from "components/LoginSignUp/LicensePhotos";
 import Login from "components/LoginSignUp/Login.tsx";
 import SignUp from "components/LoginSignUp/SignUp";
-import SignUpConfirmation from "components/LoginSignUp/SignUpConfirmation";
+import SignUpConfirmation from "components/LoginSignUp/SignUpConfirmation.tsx";
 import { CloseButton } from "components/SharedComponents";
 import {
   hideHeaderLeft,
