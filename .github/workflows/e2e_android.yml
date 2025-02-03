@@ -92,7 +92,7 @@ jobs:
       run: mv release.keystore android/app/release.keystore
 
     # Download the example model otherwise an error alert will be shown on app start, requires .env
-    - name: Download a fake cv model and taxonomy file into the assets folder
+    - name: Download the small example cv and geomodel
       run: npm run add-example-model -- -f=main
 
     # Macos-latest runner has 3 Java versions pre-installed, if not specified as here, the build step errors with requiring at least Java 11 or higher
