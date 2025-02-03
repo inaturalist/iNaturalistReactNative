@@ -1,12 +1,9 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import {
   Body1, Button
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React, { useEffect, useRef, useState } from "react";
 import { TouchableWithoutFeedback } from "react-native";
 
@@ -16,7 +13,7 @@ type Props = {
   hideFooter: boolean
 }
 
-const SignUpForm = ( { hideFooter }: Props ): Node => {
+const SignUpForm = ( { hideFooter }: Props ) => {
   const navigation = useNavigation( );
   const [email, setEmail] = useState( "" );
   const [username, setUsername] = useState( "" );
