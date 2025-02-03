@@ -13,7 +13,7 @@ import LoginSignUpWrapper from "./LoginSignUpWrapper";
 
 const textClass = "color-white self-center text-center mt-5 px-10";
 
-const SignUpConfirmation = ( ) => {
+const SignUpConfirmationOld = ( ) => {
   const navigation = useNavigation( );
 
   return (
@@ -49,4 +49,4 @@ const SignUpConfirmation = ( ) => {
   );
 };
 
-export default SignUpConfirmation;
+export default SignUpConfirmationOld;

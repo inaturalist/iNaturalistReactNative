@@ -6,18 +6,18 @@ import type { Node } from "react";
 import React from "react";
 
 import Header from "./Header";
-import LicensePhotosForm from "./LicensePhotosForm";
 import LoginSignUpWrapper from "./LoginSignUpWrapper";
+import SignUpConfirmationForm from "./SignUpConfirmationForm";
 
-const LicensePhotos = ( ): Node => (
+const SignUpConfirmation = ( ): Node => (
   <LoginSignUpWrapper backgroundSource={require( "images/background/plants.jpg" )}>
     <ScrollView
       keyboardShouldPersistTaps="always"
     >
       <Header headerText={t( "Almost-done" )} />
-      <LicensePhotosForm />
+      <SignUpConfirmationForm />
     </ScrollView>
   </LoginSignUpWrapper>
 );
 
-export default LicensePhotos;
+export default SignUpConfirmation;

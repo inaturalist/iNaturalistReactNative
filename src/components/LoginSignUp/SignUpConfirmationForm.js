@@ -28,7 +28,7 @@ const LICENSES = "LICENSES";
 const PERSONAL_INFO = "PERSONAL_INFO";
 const INFO_TRANSFER = "INFO_TRANSFER";
 
-const LicensePhotosForm = ( ): Node => {
+const SignUpConfirmationForm = ( ): Node => {
   const realm = useRealm( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
@@ -250,11 +250,11 @@ const LicensePhotosForm = ( ): Node => {
           || !checkboxes.third.checked
           || !checkboxes.fourth.checked
         }
-        testID="LicensePhotos.signupButton"
+        testID="SignUpConfirmationForm.signupButton"
       />
-      {renderLearnSheet( )}
+      {renderLearnSheet()}
     </View>
   );
 };
 
-export default LicensePhotosForm;
+export default SignUpConfirmationForm;
