@@ -3,7 +3,7 @@ import classnames from "classnames";
 import {
   Body1, Body2, Button, Heading4, INatIcon, INatIconButton, List2
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { Image, View } from "components/styledComponents";
 import { t } from "i18next";
 import { RealmContext } from "providers/contexts.ts";
 import React, { useEffect, useRef, useState } from "react";
@@ -209,15 +209,19 @@ const LoginForm = ( {
           <INatIconButton
             onPress={() => logIn( async ( ) => signInWithGoogle( realm ) )}
             disabled={loading}
-            icon="inaturalist"
-            size={22}
-            color={colors.black}
             backgroundColor={colors.white}
             accessibilityLabel={t( "Sign-in-with-Google" )}
             mode="contained"
             width={50}
             height={50}
-          />
+          >
+            <Image
+              className="w-[20px] h-[20px]"
+              source={require( "images/google.png" )}
+              accessibilityIgnoresInvertColors
+            />
+          </INatIconButton>
+
         </View>
         {!hideFooter && (
           <Body1
