@@ -13,13 +13,14 @@ import { View } from "components/styledComponents";
 import { t } from "i18next";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import {
   authenticateUser,
   registerUser
 } from "./AuthenticationService";
 import Error from "./Error";
+import LoginSignUpInputField from "./LoginSignUpInputField";
 
 const { useRealm } = RealmContext;
 
@@ -35,6 +36,32 @@ const SignUpConfirmationForm = ( ): Node => {
   const { user } = params;
   const [learnSheet, setLearnSheet] = useState( NONE );
   const [error, setError] = useState( null );
+
+  const [username, setUsername] = useState( "" );
+  const [password, setPassword] = useState( "" );
+  const usernameRef = useRef( null );
+  const passwordRef = useRef( null );
+
+  const blurFields = () => {
+    if ( usernameRef.current ) {
+      usernameRef.current.blur();
+    }
+    if ( passwordRef.current ) {
+      passwordRef.current.blur();
+    }
+  };
+
+  useEffect( () => {
+    const unsubscribeBlur = navigation.addListener( "blur", blurFields );
+
+    return unsubscribeBlur;
+  }, [navigation] );
+
+  useEffect( () => {
+    const unsubscrubeTransition = navigation.addListener( "transitionEnd", blurFields );
+
+    return unsubscrubeTransition;
+  }, [navigation] );
 
   const onTermsPressed = async () => {
     const url = "https://www.inaturalist.org/pages/terms";
@@ -123,6 +150,8 @@ const SignUpConfirmationForm = ( ): Node => {
   const register = async ( ) => {
     if ( loading ) { return; }
     setLoading( true );
+    user.login = username;
+    user.password = password;
     user.pi_consent = true;
     user.data_transfer_consent = true;
     if ( checkboxes.first.checked === true ) {
@@ -236,6 +265,24 @@ const SignUpConfirmationForm = ( ): Node => {
 
   return (
     <View className="px-3 mt-[9px] justify-end">
+      <LoginSignUpInputField
+        ref={usernameRef}
+        accessibilityLabel={t( "USERNAME" )}
+        headerText={t( "USERNAME" )}
+        onChangeText={text => setUsername( text )}
+        testID="Signup.username"
+        textContentType="username"
+      />
+      <LoginSignUpInputField
+        ref={passwordRef}
+        accessibilityLabel={t( "PASSWORD" )}
+        autoComplete="new-password"
+        headerText={t( "PASSWORD" )}
+        onChangeText={text => setPassword( text )}
+        secureTextEntry
+        testID="Signup.password"
+        textContentType="newPassword"
+      />
       {Object.keys( checkboxes ).map( row => checkboxRow( row ) )}
       {error && <Error error={error} />}
       <Button

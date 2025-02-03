@@ -16,21 +16,11 @@ type Props = {
 const SignUpForm = ( { hideFooter }: Props ) => {
   const navigation = useNavigation( );
   const [email, setEmail] = useState( "" );
-  const [username, setUsername] = useState( "" );
-  const [password, setPassword] = useState( "" );
-  const usernameRef = useRef( null );
-  const passwordRef = useRef( null );
   const emailRef = useRef<TextInput>( null );
 
   const blurFields = () => {
     if ( emailRef.current ) {
       emailRef.current.blur();
-    }
-    if ( usernameRef.current ) {
-      usernameRef.current.blur();
-    }
-    if ( passwordRef.current ) {
-      passwordRef.current.blur();
     }
   };
 
@@ -60,34 +50,14 @@ const SignUpForm = ( { hideFooter }: Props ) => {
           testID="Signup.email"
           textContentType="emailAddress"
         />
-        <LoginSignUpInputField
-          ref={usernameRef}
-          accessibilityLabel={t( "USERNAME" )}
-          headerText={t( "USERNAME" )}
-          onChangeText={text => setUsername( text )}
-          testID="Signup.username"
-          textContentType="username"
-        />
-        <LoginSignUpInputField
-          ref={passwordRef}
-          accessibilityLabel={t( "PASSWORD" )}
-          autoComplete="new-password"
-          headerText={t( "PASSWORD" )}
-          onChangeText={text => setPassword( text )}
-          secureTextEntry
-          testID="Signup.password"
-          textContentType="newPassword"
-        />
         <Button
           className="mt-[30px]"
-          disabled={!email || !password || !username}
+          disabled={!email}
           level="focus"
           onPress={( ) => {
-            navigation.navigate( "LicensePhotos", {
+            navigation.navigate( "SignUpConfirmation", {
               user: {
-                email,
-                login: username,
-                password
+                email
               }
             } );
           }}
