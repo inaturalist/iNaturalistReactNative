@@ -1,7 +1,6 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
-import classnames from "classnames";
 import {
   Body2,
   Button,
@@ -35,6 +34,10 @@ const SignUpConfirmationForm = ( ): Node => {
   const [username, setUsername] = useState( "" );
   const [password, setPassword] = useState( "" );
   const [error, setError] = useState( null );
+
+  const [checked, setChecked] = useState( false );
+  const [loading, setLoading] = useState( false );
+
   const blurFields = () => {
     if ( usernameRef.current ) {
       usernameRef.current.blur();
@@ -56,7 +59,7 @@ const SignUpConfirmationForm = ( ): Node => {
     return unsubscrubeTransition;
   }, [navigation] );
 
-  const onTermsPressed = async () => {
+  const onLearnMorePressed = async () => {
     const url = "https://www.inaturalist.org/pages/terms";
     navigation.navigate( "FullPageWebView", {
       title: t( "TERMS-OF-USE" ),
@@ -64,81 +67,6 @@ const SignUpConfirmationForm = ( ): Node => {
       loggedIn: false
     } );
   };
-
-  const onPrivacyPressed = async () => {
-    const url = "https://www.inaturalist.org/pages/privacy";
-    navigation.navigate( "FullPageWebView", {
-      title: t( "PRIVACY-POLICY" ),
-      initialUrl: url,
-      loggedIn: false
-    } );
-  };
-
-  const onCommunityPressed = async () => {
-    const url = "https://www.inaturalist.org/pages/community+guidelines";
-    navigation.navigate( "FullPageWebView", {
-      title: t( "COMMUNITY-GUIDELINES" ),
-      initialUrl: url,
-      loggedIn: false
-    } );
-  };
-
-  const initialCheckboxState = {
-    first: {
-      text: t( "Yes-license-my-photos" ),
-      checked: true,
-      links: [
-        {
-          label: t( "Learn-More" ),
-          onPress: () => setLearnSheet( LICENSES )
-        }
-      ]
-    },
-    second: {
-      text: t( "I-consent-to-allow-iNaturalist-to-store" ),
-      checked: false,
-      links: [
-        {
-          label: t( "Learn-More" ),
-          onPress: () => setLearnSheet( PERSONAL_INFO )
-        }
-      ]
-    },
-    third: {
-      text: t( "I-consent-to-allow-my-personal-information" ),
-      checked: false,
-      links: [
-        {
-          label: t( "Learn-More" ),
-          onPress: () => setLearnSheet( INFO_TRANSFER )
-        }
-      ]
-    },
-    fourth: {
-      text: t( "I-agree-to-the-Terms-of-Use" ),
-      checked: false,
-      links: [
-        {
-          label: t( "Terms-of-Use" ),
-          onPress: () => onTermsPressed()
-        },
-        {
-          label: t( "Privacy-Policy" ),
-          onPress: () => onPrivacyPressed()
-        },
-        {
-          label: t( "Community-Guidelines" ),
-          onPress: () => onCommunityPressed()
-        }
-      ]
-    },
-    fifth: {
-      text: t( "Agree-to-all-of-the-above" ),
-      checked: false
-    }
-  };
-  const [checkboxes, setCheckboxes] = useState( initialCheckboxState );
-  const [loading, setLoading] = useState( false );
 
   const register = async ( ) => {
     if ( loading ) { return; }
@@ -164,95 +92,6 @@ const SignUpConfirmationForm = ( ): Node => {
       navigation.navigate( "Login" );
       return;
     }
-  };
-
-  const checkboxRow = row => {
-    const { links, text, checked } = checkboxes[row];
-
-    return (
-      <View
-        className={classnames( "flex-row mb-4", {
-          "mt-10 mb-0": row === "fifth",
-          "items-start": row !== "fifth",
-          "items-center": row === "fifth"
-        } )}
-        key={row}
-      >
-        <Checkbox
-          transparent
-          isChecked={checked}
-          onPress={( ) => {
-            const updatedCheckboxes = checkboxes;
-            if ( row === "fifth" ) {
-              updatedCheckboxes.first.checked = true;
-              updatedCheckboxes.second.checked = true;
-              updatedCheckboxes.third.checked = true;
-              updatedCheckboxes.fourth.checked = true;
-              updatedCheckboxes.fifth.checked = true;
-            } else {
-              if ( updatedCheckboxes[row].checked === true ) {
-                updatedCheckboxes.fifth.checked = false;
-              }
-              updatedCheckboxes[row].checked = !checked;
-            }
-
-            setCheckboxes( { ...updatedCheckboxes } );
-          }}
-        />
-        <View className="flex-1">
-          <Body2 className="flex-wrap color-white">{text}</Body2>
-          {links && links.map( link => (
-            <UnderlinedLink
-              className="color-white mt-[9px]"
-              key={link.label}
-              onPress={link.onPress}
-            >
-              {link.label}
-            </UnderlinedLink>
-          ) )}
-        </View>
-      </View>
-    );
-  };
-
-  const renderLearnSheet = ( ) => {
-    switch ( learnSheet ) {
-      case LICENSES:
-        return (
-          <TextSheet
-            headerText={t( "LICENSES" )}
-            texts={[t( "Check-this-box-if-you-want-to-apply-a-Creative-Commons" )]}
-            setShowSheet={setLearnSheet}
-          />
-        );
-      case PERSONAL_INFO:
-        return (
-          <TextSheet
-            headerText={t( "PERSONAL-INFO" )}
-            texts={[
-              t( "We-store-personal-information" ),
-              t( "There-is-no-way" )
-            ]}
-            setShowSheet={setLearnSheet}
-          />
-        );
-      case INFO_TRANSFER:
-        return (
-          <TextSheet
-            headerText={t( "INFO-TRANSFER" )}
-            texts={[
-              t( "Some-data-privacy-laws" ),
-              t( "Using-iNaturalist-requires-the-storage" ),
-              t( "To-learn-more-about-what-information" ),
-              t( "There-is-no-way" )
-            ]}
-            setShowSheet={setLearnSheet}
-          />
-        );
-      case NONE:
-      default:
-        return null;
-    }
     navigation.navigate( "TabNavigator" );
   };
 
@@ -276,7 +115,31 @@ const SignUpConfirmationForm = ( ): Node => {
         testID="Signup.password"
         textContentType="newPassword"
       />
-      {Object.keys( checkboxes ).map( row => checkboxRow( row ) )}
+      <View className="flex-row mt-5 mx-2 items-start">
+        <Checkbox
+          transparent
+          isChecked={checked}
+          onPress={() => {
+            setChecked( !checked );
+          }}
+        />
+        <View className="flex-1">
+          <Body2
+            className="flex-wrap color-white"
+            onPress={() => {
+              setChecked( !checked );
+            }}
+          >
+            {t( "I-agree-to-the-Terms-of-Use" )}
+          </Body2>
+          <UnderlinedLink
+            className="color-white mt-[9px]"
+            onPress={onLearnMorePressed}
+          >
+            {t( "Learn-More" )}
+          </UnderlinedLink>
+        </View>
+      </View>
       {error && <Error error={error} />}
       <Button
         level="focus"

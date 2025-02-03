@@ -74,9 +74,6 @@ Affiliation = Affiliation: { $site }
 Agree = Agree
 # Label for button that adds an identification of the same taxon as another identification
 AGREE = AGREE
-# Checkbox label that checks all of the consent agreements a user must make
-# before signing up
-Agree-to-all-of-the-above = Agree to all of the above
 AGREE-WITH-ID = AGREE WITH ID?
 Agree-with-ID-description = Would you like to agree with the ID and suggest the following identification?
 # This is what we call the camera that
@@ -197,7 +194,6 @@ Change-taxon-filter = Change taxon filter
 Change-user = Change user
 # Label for a button that cycles through zoom levels for the camera
 Change-zoom = Change zoom
-Check-this-box-if-you-want-to-apply-a-Creative-Commons = Check this box if you want to apply a Creative Commons Attribution-NonCommercial license to uploaded content. This means anyone can copy and reuse your photos and/or observations without asking for permission as long as they give you credit and don't use the works commercially. You can choose a different license or remove the license later, but this is the best license for sharing with researchers.
 # Notification that appears after pressing the reset password button
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
 # Label for a text input field during sign up to choose a username
@@ -253,7 +249,6 @@ Connection-problem-Please-try-again-later = Connection problem. Please try again
 CONTACT-SUPPORT = CONTACT SUPPORT
 # Continue button in onboarding screen
 CONTINUE = CONTINUE
-Continue-to-iNaturalist = Continue to iNaturalist
 # Onboarding message describing one of the reasons to use iNat
 Contribute-to-Science = Contribute to Science
 # Notification when coordinates have been copied
@@ -544,8 +539,6 @@ Hide = Hide
 Highest = Highest
 HIGHEST-RANK = HIGHEST RANK
 I-agree-to-the-Terms-of-Use = I agree to the Terms of Use and Privacy Policy, and I have reviewed the Community Guidelines (required).
-I-consent-to-allow-iNaturalist-to-store = I consent to allow iNaturalist to store and process limited kinds of personal information about me in order to manage my account (required)
-I-consent-to-allow-my-personal-information = I consent to allow my personal information to be transferred to the United States of America (required)
 Iconic-taxon-name = Iconic taxon name: { $iconicTaxon }
 # Identification Status
 ID-Withdrawn = ID Withdrawn
@@ -620,7 +613,6 @@ iNaturalist-uses-your-location-to-give-you = iNaturalist uses your location to g
 iNaturalists-apps-are-designed-and-developed-3 = iNaturalist's apps are designed, developed, and supported by the iNaturalist team: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Joanne Lin, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Thea Skaff, Angie Ta, Ken-ichi Ueda, Kirk van Gorkom, Jason Walthall, & Jane Weeden.
 iNaturalists-vision-is-a-world = iNaturalist's vision is a world where everyone can understand and sustain biodiversity through the practice of observing wild organisms and sharing information about them.
 Individual-encounters-with-organisms = Individual encounters with organisms at a particular time and location, usually with evidence
-INFO-TRANSFER = INFO TRANSFER
 # Title for dialog telling the user that an Internet connection is required
 Internet-Connection-Required = Internet Connection Required
 Intl-number = { $val }
@@ -673,7 +665,6 @@ LEAVE-PROJECT = LEAVE PROJECT
 # Asking for confirmation if the user wants to leave this project
 LEAVE-PROJECT--question = LEAVE PROJECT?
 LEAVE-US-A-REVIEW = LEAVE US A REVIEW!
-LICENSES = LICENSES
 # Label for button to switch to a list layout of observations
 List-layout = List layout
 Loading-iNaturalists-AI-Camera = Loading iNaturalist's AI Camera
@@ -870,7 +861,6 @@ OK = OK
 # Sort order, refers to newest or oldest date
 Oldest-to-newest = Oldest to newest
 Once-you-create-and-upload-observations = Once you create & upload observations, other members of our community can add identifications to help your observations reach research grade.
-One-last-step = One last step!
 # Adjective, as in geoprivacy
 Open = Open
 OPEN-EMAIL = OPEN EMAIL
@@ -898,7 +888,6 @@ OTHER-SUGGESTIONS = OTHER SUGGESTIONS
 PASSWORD = PASSWORD
 # Title showing user profile details about who a user follows and is following
 PEOPLE--title = PEOPLE
-PERSONAL-INFO = PERSONAL INFO
 Photo-importer = Photo importer
 PHOTO-LICENSING = PHOTO LICENSING
 Photos = Photos
@@ -911,7 +900,6 @@ Please-Allow-Gallery-Access = Please Allow Gallery Access
 Please-allow-Location-Access = Please allow Location Access
 # Title of screen asking for permission to access the microphone when access was denied
 Please-allow-Microphone-Access = Please allow Microphone Access
-Please-click-the-link = Please click the link in the email within 60 minutes  to confirm your account
 # Title of a screen asking for permission when permission has been denied
 Please-Grant-Permission = Please Grant Permission
 PLEASE-LOG-IN = PLEASE LOG IN
@@ -1153,7 +1141,6 @@ Sign-in-with-Apple-Failed = Sign in with Apple Failed
 # Accessibility label for button that allows user to sign in with their Google account
 Sign-in-with-Google = Sign in with Google
 Sign-in-with-Google-Failed = Sign in with Google Failed
-Some-data-privacy-laws = Some data privacy laws, like the European Union's General Data Protection Regulation (GDPR), require explicit consent to transfer personal information from their jurisdictions to other jurisdictions where the legal protection of this information is not considered adequate. As of 2020, the European Union no longer considers the United States to be a jurisdiction that provides adequate legal protection of personal information, specifically because of the possibility of the US government surveilling data entering the US. It is possible other jurisdictions may have the same opinion.
 # Generic error message
 Something-went-wrong = Something went wrong.
 Sorry-this-observation-was-deleted = Sorry, this observation was deleted
@@ -1233,7 +1220,6 @@ The-iNaturalist-Network = The iNaturalist network is a collection of localized w
 # Describes what happens when geoprivacy is set to private
 The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify
 The-models-that-suggest-species = The models that suggest species based on visual similarity and location are thanks in part to collaborations with Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona, and Grant Van Horn.
-There-is-no-way = There is no way to have an iNaturalist account without storing personal information, so the only way to revoke this consent is to delete your account.
 #  Wild status sheet descriptions
 This-is-a-wild-organism = This is a wild organism and wasn't placed in this location by humans.
 This-is-how-taxon-names-will-be-displayed = This is how all taxon names will be displayed to you across iNaturalist:
@@ -1242,7 +1228,6 @@ This-observation-has-not-met-the-conditions-required-to-meet-Research-Grade = Th
 This-observation-needs-more-identifications = This observation needs more identifications to reach Research Grade status
 This-observer-has-opted-out-of-the-Community-Taxon = This observer has opted out of the Community Taxon
 This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
-To-learn-more-about-what-information = To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.
 To-sync-your-observations-to-iNaturalist = To sync your observations to iNaturalist, please log in.
 To-view-nearby-organisms-please-enable-location = To view nearby organisms, please enable location.
 To-view-nearby-projects-please-enable-location = To view nearby projects, please enable location.
@@ -1298,7 +1283,6 @@ User = User { $userHandle }
 USERNAME-OR-EMAIL = USERNAME OR EMAIL
 # label in project requirements
 Users = Users
-Using-iNaturalist-requires-the-storage = Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US.
 # Listing of app and build versions
 Version-app-build = Version { $appVersion } ({ $buildVersion })
 VIEW-ALL-X-PLACES = VIEW ALL { $count } PLACES
@@ -1326,8 +1310,6 @@ VIEW-PROJECTS = VIEW PROJECTS
 # or photo
 View-suggestions = View suggestions
 We-are-not-confident-enough-to-make-a-top-ID-suggestion = We’re not confident enough to make a top ID suggestion, but here are some other suggestions:
-We-sent-a-confirmation-email = We sent a confirmation email to the email you signed up with.
-We-store-personal-information = We store personal information like usernames and email addresses in order to manage accounts, and to comply with privacy laws, we need you to check this box to indicate that you consent to this use of personal information. To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.
 Welcome-to-iNaturalist = Welcome to iNaturalist!
 # Welcome user back to app
 Welcome-user = <0>Welcome back,</0><1>{ $userHandle }</1>
@@ -1492,7 +1474,6 @@ x-uploads-failed =
         [one] { $count } upload failed
        *[other] { $count } uploads failed
     }
-Yes-license-my-photos = Yes, license my photos, sounds, and observations so scientists can use my data (recommended)
 You-are-offline = You are offline
 You-are-offline-Tap-to-reload = You are offline. Tap to reload.
 You-are-offline-Tap-to-try-again = You are offline. Tap to try again.
