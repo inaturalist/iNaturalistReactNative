@@ -55,6 +55,7 @@ const SignUpForm = ( { hideFooter }: Props ) => {
           disabled={!email}
           level="focus"
           onPress={( ) => {
+            // TODO: Implement email validation before navigating
             navigation.navigate( "SignUpConfirmation", {
               user: {
                 email
