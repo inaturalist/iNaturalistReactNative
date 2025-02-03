@@ -7,6 +7,7 @@ import { Image, View } from "components/styledComponents";
 import { t } from "i18next";
 import { RealmContext } from "providers/contexts.ts";
 import React, { useEffect, useRef, useState } from "react";
+import { Trans } from "react-i18next";
 import {
   Platform,
   TextInput,
@@ -224,17 +225,22 @@ const LoginForm = ( {
 
         </View>
         {!hideFooter && (
-          <Body1
+          <Trans
             className={classnames(
-              "color-white self-center mt-[31px] underline",
+              "self-center mt-[31px] underline",
               // When the keyboard is up this pushes the form up enough to cut
               // off the username label on some devices
               !keyboardShown && "mb-[35px]"
             )}
+            i18nKey="Dont-have-an-account"
             onPress={( ) => navigation.navigate( "SignUp" )}
-          >
-            {t( "Dont-have-an-account" )}
-          </Body1>
+            components={[
+              <Body1 className="text-white" />,
+              <Body1
+                className="text-white font-Lato-Bold"
+              />
+            ]}
+          />
         )}
       </View>
     </TouchableWithoutFeedback>
