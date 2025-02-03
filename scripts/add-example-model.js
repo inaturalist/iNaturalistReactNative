@@ -2,6 +2,7 @@
 const { DownloaderHelper } = require( "node-downloader-helper" );
 const fs = require( "fs" ).promises;
 const path = require( "path" );
+const yargs = require( "yargs" );
 
 const binariesBaseDir
   = "https://github.com/inaturalist/model-files/releases/download/v25.01.15";
@@ -18,25 +19,26 @@ const iosGeo = `${binariesBaseDir}/${geomodelFilename}.${iosExt}`;
 const taxonomyCSV = `${binariesBaseDir}/taxonomy.csv`;
 const taxonomyJSON = `${binariesBaseDir}/taxonomy.json`;
 
-const androidDestination = path.join(
-  __dirname,
-  "..",
-  "android",
-  "app",
-  "src",
-  "debug",
-  "assets",
-  "camera"
-);
-const iosDestination = path.join( __dirname, "..", "ios" );
+const downloadAndroid = async argv => {
+  console.log( "argv", argv );
+  const androidFlavor = argv.androidFlavor || "debug";
+  console.log( "androidFlavor", androidFlavor );
+  const androidDestination = path.join(
+    __dirname,
+    "..",
+    "android",
+    "app",
+    "src",
+    androidFlavor,
+    "assets",
+    "camera"
+  );
 
-const androidModel = path.join(
-  androidDestination,
-  `${cvModelFilename}.${androidExt}`
-);
-const iosModel = path.join( iosDestination, `${cvModelFilename}.${iosExt}` );
+  const androidModel = path.join(
+    androidDestination,
+    `${cvModelFilename}.${androidExt}`
+  );
 
-( async () => {
   console.log( "Checking android model files..." );
   let exist = true;
   try {
@@ -73,9 +75,13 @@ const iosModel = path.join( iosDestination, `${cvModelFilename}.${iosExt}` );
   console.log( "Downloaded!" );
 
   console.log( "Android done!" );
-} )();
+};
 
-( async () => {
+const downloadIOS = async () => {
+  const iosDestination = path.join( __dirname, "..", "ios" );
+
+  const iosModel = path.join( iosDestination, `${cvModelFilename}.${iosExt}` );
+
   console.log( "Checking ios model files..." );
   let exist = true;
   try {
@@ -112,4 +118,24 @@ const iosModel = path.join( iosDestination, `${cvModelFilename}.${iosExt}` );
   console.log( "Downloaded!" );
 
   console.log( "iOS done!" );
-} )();
+};
+
+// eslint-disable-next-line no-unused-expressions
+yargs
+  .usage( "Usage: $0 [args]" )
+  .option( "androidFlavor", {
+    alias: "f",
+    type: "string",
+    description: "Android flavor to download model files into"
+  } )
+  .command(
+    "$0",
+    "Download example model files if not present",
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    () => {},
+    async argv => {
+      await downloadAndroid( argv );
+      await downloadIOS();
+    }
+  )
+  .help().argv;
