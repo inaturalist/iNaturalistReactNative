@@ -4,7 +4,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import FullPageWebView from "components/FullPageWebView/FullPageWebView.tsx";
 import ForgotPassword from "components/LoginSignUp/ForgotPassword";
-import LearnMore from "components/LoginSignUp/LearnMore.tsx";
 import Login from "components/LoginSignUp/Login.tsx";
 import SignUp from "components/LoginSignUp/SignUp.tsx";
 import SignUpConfirmation from "components/LoginSignUp/SignUpConfirmation.tsx";
@@ -53,11 +52,6 @@ const LoginStackNavigator = ( ): Node => (
     <Stack.Screen
       name="ForgotPassword"
       component={ForgotPassword}
-      options={LOGIN_SCREEN_OPTIONS}
-    />
-    <Stack.Screen
-      name="LearnMore"
-      component={LearnMore}
       options={LOGIN_SCREEN_OPTIONS}
     />
     <Stack.Screen
