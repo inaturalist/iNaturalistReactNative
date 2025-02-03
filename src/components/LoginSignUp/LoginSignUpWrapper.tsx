@@ -1,10 +1,12 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import { ImageBackground, SafeAreaView, ScrollView } from "components/styledComponents";
-import type { Node } from "react";
-import React, { useEffect } from "react";
+import React, { PropsWithChildren, useEffect } from "react";
+import type {
+  ImageSourcePropType,
+  ImageStyle,
+  StyleProp
+} from "react-native";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -12,12 +14,9 @@ import {
 } from "react-native";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  // $FlowIgnore
-  backgroundSource: unknown,
-  // $FlowIgnore
-  children: unknown,
-  imageStyle?: Object,
+interface Props extends PropsWithChildren {
+  backgroundSource: ImageSourcePropType,
+  imageStyle?: StyleProp<ImageStyle>,
   keyboardVerticalOffset?: number,
   scrollEnabled?: boolean
 }
@@ -25,12 +24,12 @@ type Props = {
 const KEYBOARD_AVOIDING_VIEW_STYLE = {
   flex: 1,
   flexGrow: 1
-};
+} as const;
 
 const SCROLL_VIEW_STYLE = {
   flex: 1,
   justifyContent: "space-between"
-};
+} as const;
 
 const LoginSignupWrapper = ( {
   backgroundSource,
@@ -38,7 +37,7 @@ const LoginSignupWrapper = ( {
   imageStyle,
   keyboardVerticalOffset,
   scrollEnabled = true
-}: Props ): Node => {
+}: Props ) => {
   const navigation = useNavigation( );
   // Make the StatusBar translucent in Android but reset it when we leave
   // because this alters the layout.
