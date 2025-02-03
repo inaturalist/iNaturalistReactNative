@@ -93,8 +93,6 @@ All-taxa = All taxa
 # Title in explore filters
 ALL-USERS-EXCEPT = ALL USERS EXCEPT
 ALLOW-LOCATION-ACCESS = ALLOW LOCATION ACCESS
-# As in automated identification suggestions
-Almost-done = Almost done!
 Already-have-an-account = Already have an account? Log in
 An-Internet-connection-is-required = An Internet connection is required to load more observations.
 # Option when choosing a value for an date filter that indicates any value is
