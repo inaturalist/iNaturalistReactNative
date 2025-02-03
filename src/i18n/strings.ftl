@@ -886,6 +886,7 @@ Opens-AI-camera = Opens AI camera.
 Opens-edit-comment-form = Opens edit comment form.
 Opens-location-permission-prompt = Opens location permission prompt
 Opens-the-side-drawer-menu = Opens the side drawer menu.
+OR-SIGN-IN-WITH = OR SIGN IN WITH
 # Picker prompt on observation edit
 Organism-is-captive = Organism is captive
 Organisms-that-are-identified-to-species = Organisms that are identified to species rank or below
