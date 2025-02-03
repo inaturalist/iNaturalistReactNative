@@ -6,7 +6,6 @@ import {
   Body2,
   Button,
   Checkbox,
-  TextSheet,
   UnderlinedLink
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -24,17 +23,11 @@ import LoginSignUpInputField from "./LoginSignUpInputField";
 
 const { useRealm } = RealmContext;
 
-const NONE = "NONE";
-const LICENSES = "LICENSES";
-const PERSONAL_INFO = "PERSONAL_INFO";
-const INFO_TRANSFER = "INFO_TRANSFER";
-
 const SignUpConfirmationForm = ( ): Node => {
   const realm = useRealm( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { user } = params;
-  const [learnSheet, setLearnSheet] = useState( NONE );
 
   const usernameRef = useRef( null );
   const passwordRef = useRef( null );
@@ -171,7 +164,6 @@ const SignUpConfirmationForm = ( ): Node => {
       navigation.navigate( "Login" );
       return;
     }
-    navigation.navigate( "SignUpConfirmation" );
   };
 
   const checkboxRow = row => {
@@ -261,6 +253,7 @@ const SignUpConfirmationForm = ( ): Node => {
       default:
         return null;
     }
+    navigation.navigate( "TabNavigator" );
   };
 
   return (
@@ -294,7 +287,6 @@ const SignUpConfirmationForm = ( ): Node => {
         disabled={loading || !username || !password || !checked}
         testID="SignUpConfirmationForm.signupButton"
       />
-      {renderLearnSheet()}
     </View>
   );
 };
