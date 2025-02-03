@@ -289,14 +289,9 @@ const SignUpConfirmationForm = ( ): Node => {
         level="focus"
         text={t( "CREATE-AN-ACCOUNT" )}
         onPress={register}
-        className="my-[36px]"
+        className="my-5"
         loading={loading}
-        disabled={
-          loading
-          || !checkboxes.second.checked
-          || !checkboxes.third.checked
-          || !checkboxes.fourth.checked
-        }
+        disabled={loading || !username || !password || !checked}
         testID="SignUpConfirmationForm.signupButton"
       />
       {renderLearnSheet()}
