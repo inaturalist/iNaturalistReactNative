@@ -200,6 +200,8 @@ Change-zoom = Change zoom
 Check-this-box-if-you-want-to-apply-a-Creative-Commons = Check this box if you want to apply a Creative Commons Attribution-NonCommercial license to uploaded content. This means anyone can copy and reuse your photos and/or observations without asking for permission as long as they give you credit and don't use the works commercially. You can choose a different license or remove the license later, but this is the best license for sharing with researchers.
 # Notification that appears after pressing the reset password button
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
+# Label for a text input field during sign up to choose a username
+CHOOSE-A-USERNAME = CHOOSE A USERNAME
 # Text for a button prompting the user to grant access to the gallery
 CHOOSE-PHOTOS = CHOOSE PHOTOS
 # Label for button that chooses a taxon
@@ -1292,7 +1294,6 @@ Use-the-iNaturalist-camera-to-observe-2 = Use iNaturalist to observe and identif
 Use-your-devices-microphone-to-record = Use your device’s microphone to record sounds made by organisms and share them with our community to get identifications and contribute to science!
 USER = USER
 User = User { $userHandle }
-USERNAME = USERNAME
 # Appears above the text fields
 USERNAME-OR-EMAIL = USERNAME OR EMAIL
 # label in project requirements

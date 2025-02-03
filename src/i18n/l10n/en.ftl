@@ -196,6 +196,8 @@ Change-user = Change user
 Change-zoom = Change zoom
 # Notification that appears after pressing the reset password button
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
+# Label for a text input field during sign up to choose a username
+CHOOSE-A-USERNAME = CHOOSE A USERNAME
 # Text for a button prompting the user to grant access to the gallery
 CHOOSE-PHOTOS = CHOOSE PHOTOS
 # Label for button that chooses a taxon
@@ -1280,7 +1282,6 @@ Use-the-iNaturalist-camera-to-observe-2 = Use iNaturalist to observe and identif
 Use-your-devices-microphone-to-record = Use your device’s microphone to record sounds made by organisms and share them with our community to get identifications and contribute to science!
 USER = USER
 User = User { $userHandle }
-USERNAME = USERNAME
 # Appears above the text fields
 USERNAME-OR-EMAIL = USERNAME OR EMAIL
 # label in project requirements

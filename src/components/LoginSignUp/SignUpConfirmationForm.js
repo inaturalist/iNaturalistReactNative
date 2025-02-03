@@ -267,8 +267,8 @@ const SignUpConfirmationForm = ( ): Node => {
     <View className="px-3 mt-[9px] justify-end">
       <LoginSignUpInputField
         ref={usernameRef}
-        accessibilityLabel={t( "USERNAME" )}
-        headerText={t( "USERNAME" )}
+        accessibilityLabel={t( "CHOOSE-A-USERNAME" )}
+        headerText={t( "CHOOSE-A-USERNAME" )}
         onChangeText={text => setUsername( text )}
         testID="Signup.username"
         textContentType="username"
