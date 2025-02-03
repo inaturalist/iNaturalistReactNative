@@ -5,12 +5,14 @@ import { t } from "i18next";
 import React, { useEffect, useRef, useState } from "react";
 import { TextInput, TouchableWithoutFeedback } from "react-native";
 
+import Error from "./Error";
 import LoginSignUpInputField from "./LoginSignUpInputField";
 
 const SignUpForm = ( ) => {
   const navigation = useNavigation( );
-  const [email, setEmail] = useState( "" );
   const emailRef = useRef<TextInput>( null );
+  const [email, setEmail] = useState( "" );
+  const [error, setError] = useState( null );
 
   const blurFields = () => {
     if ( emailRef.current ) {
@@ -30,6 +32,18 @@ const SignUpForm = ( ) => {
     return unsubscrubeTransition;
   }, [navigation] );
 
+  const onContinue = ( ) => {
+    // TODO: Implement email validation before navigating
+    if ( error ) {
+      setError( null );
+    }
+    navigation.navigate( "SignUpConfirmation", {
+      user: {
+        email
+      }
+    } );
+  };
+
   return (
     <TouchableWithoutFeedback accessibilityRole="button" onPress={blurFields}>
       <View className="px-4 mt-[9px] justify-end">
@@ -44,18 +58,12 @@ const SignUpForm = ( ) => {
           testID="Signup.email"
           textContentType="emailAddress"
         />
+        {error && <Error error={error} />}
         <Button
           className="mt-[30px] mb-[35px]"
           disabled={!email}
           level="focus"
-          onPress={( ) => {
-            // TODO: Implement email validation before navigating
-            navigation.navigate( "SignUpConfirmation", {
-              user: {
-                email
-              }
-            } );
-          }}
+          onPress={( ) => onContinue( )}
           testID="Signup.signupButton"
           text={t( "CONTINUE" )}
         />
