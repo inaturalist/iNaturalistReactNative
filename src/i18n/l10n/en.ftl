@@ -426,7 +426,7 @@ DONATE = DONATE
 DONATE-TO-INATURALIST = DONATE TO INATURALIST
 # Label for a button the user taps when a task is complete
 DONE = DONE
-Dont-have-an-account = Don't have an account? Sign up
+Dont-have-an-account = <0>Don't have an account? </0><1>Sign up</1>
 During-app-start-no-model-found = During app start there was no computer vision model found. There will be no AI camera.
 # Button for editing something
 Edit = Edit
