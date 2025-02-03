@@ -1,7 +1,4 @@
-// @flow
-
 import { t } from "i18next";
-import type { Node } from "react";
 import React from "react";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 
@@ -13,7 +10,7 @@ const TARGET_NON_KEYBOARD_HEIGHT = 440;
 const HIDE_HEADER_HEIGHT = 580;
 const IMAGE_STYLE = { opacity: 0.5 };
 
-const SignUp = ( ): Node => {
+const SignUp = ( ) => {
   const {
     keyboardShown,
     keyboardVerticalOffset,
