@@ -48,7 +48,7 @@ const SignUpForm = ( { hideFooter }: Props ) => {
 
   return (
     <TouchableWithoutFeedback accessibilityRole="button" onPress={blurFields}>
-      <View className="px-4 mt-[9px] justify-end">
+      <View className="px-4 justify-end">
         <LoginSignUpInputField
           ref={emailRef}
           accessibilityLabel={t( "EMAIL" )}
