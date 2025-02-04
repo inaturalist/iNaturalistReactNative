@@ -25,7 +25,9 @@ const SignUpConfirmationForm = ( ) => {
   const realm = useRealm( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
-  const { user } = params;
+  const { user }: {
+    email: string;
+  } = params;
 
   const usernameRef = useRef<TextInput>( null );
   const passwordRef = useRef<TextInput>( null );
