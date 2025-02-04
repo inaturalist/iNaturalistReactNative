@@ -1,5 +1,3 @@
-// @flow
-
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   Body2,
@@ -10,9 +8,9 @@ import {
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import { RealmContext } from "providers/contexts.ts";
-import type { Node } from "react";
 import React, { useEffect, useRef, useState } from "react";
 import { Trans } from "react-i18next";
+import { TextInput } from "react-native";
 
 import {
   authenticateUser,
@@ -23,18 +21,18 @@ import LoginSignUpInputField from "./LoginSignUpInputField";
 
 const { useRealm } = RealmContext;
 
-const SignUpConfirmationForm = ( ): Node => {
+const SignUpConfirmationForm = ( ) => {
   const realm = useRealm( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { user } = params;
 
-  const usernameRef = useRef( null );
-  const passwordRef = useRef( null );
+  const usernameRef = useRef<TextInput>( null );
+  const passwordRef = useRef<TextInput>( null );
 
   const [username, setUsername] = useState( "" );
   const [password, setPassword] = useState( "" );
-  const [error, setError] = useState( null );
+  const [error, setError] = useState<string>( );
 
   const [checked, setChecked] = useState( false );
   const [loading, setLoading] = useState( false );
@@ -74,13 +72,18 @@ const SignUpConfirmationForm = ( ): Node => {
     setLoading( true );
     user.login = username;
     user.password = password;
+    // TODO: this checkbox was removed
+    // || !checkboxes.second.checked
+    // TODO: this checkbox was removed
+    // || !checkboxes.third.checked
     user.pi_consent = true;
     user.data_transfer_consent = true;
-    if ( checkboxes.first.checked === true ) {
-      user.preferred_observation_license = "CC-BY-NC";
-      user.preferred_photo_license = "CC-BY-NC";
-      user.preferred_sound_license = "CC-BY-NC";
-    }
+    // TODO: this checkbox was removed
+    // if ( checkboxes.first.checked === true ) {
+    //   user.preferred_observation_license = "CC-BY-NC";
+    //   user.preferred_photo_license = "CC-BY-NC";
+    //   user.preferred_sound_license = "CC-BY-NC";
+    // }
     const registrationError = await registerUser( user );
     if ( registrationError ) {
       setError( registrationError );
@@ -102,7 +105,7 @@ const SignUpConfirmationForm = ( ): Node => {
         ref={usernameRef}
         accessibilityLabel={t( "CHOOSE-A-USERNAME" )}
         headerText={t( "CHOOSE-A-USERNAME" )}
-        onChangeText={text => setUsername( text )}
+        onChangeText={( text: string ) => setUsername( text )}
         testID="Signup.username"
         textContentType="username"
       />
@@ -111,13 +114,14 @@ const SignUpConfirmationForm = ( ): Node => {
         accessibilityLabel={t( "PASSWORD" )}
         autoComplete="new-password"
         headerText={t( "PASSWORD" )}
-        onChangeText={text => setPassword( text )}
+        onChangeText={( text: string ) => setPassword( text )}
         secureTextEntry
         testID="Signup.password"
         textContentType="newPassword"
       />
       <View className="flex-row mt-5 mx-2 items-start">
         <Checkbox
+          accessibilityLabel={t( "I-agree-to-the-Terms-of-Use" )}
           transparent
           isChecked={checked}
           onPress={() => {
