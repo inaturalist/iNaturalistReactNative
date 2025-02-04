@@ -77,11 +77,11 @@ const SignUpConfirmationForm = ( ) => {
     user.login = username;
     user.password = password;
     // TODO: this checkbox was removed
-    // || !checkboxes.second.checked
+    // || checkboxes.second.checked
+    // user.pi_consent = true;
     // TODO: this checkbox was removed
-    // || !checkboxes.third.checked
-    user.pi_consent = true;
-    user.data_transfer_consent = true;
+    // || checkboxes.third.checked
+    // user.data_transfer_consent = true;
     // TODO: this checkbox was removed
     // if ( checkboxes.first.checked === true ) {
     //   user.preferred_observation_license = "CC-BY-NC";
