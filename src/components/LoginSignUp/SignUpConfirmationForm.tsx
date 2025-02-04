@@ -61,9 +61,11 @@ const SignUpConfirmationForm = ( ) => {
   }, [navigation] );
 
   const onLearnMorePressed = async () => {
+    // TODO: Leadership will decide what to link to
     const url = "https://www.inaturalist.org/pages/terms";
     navigation.navigate( "FullPageWebView", {
-      title: t( "TERMS-OF-USE" ),
+      // TODO: This is a placeholder title
+      title: "iNaturalist",
       initialUrl: url,
       loggedIn: false
     } );
