@@ -12,7 +12,7 @@ const SignUpForm = ( ) => {
   const navigation = useNavigation( );
   const emailRef = useRef<TextInput>( null );
   const [email, setEmail] = useState( "" );
-  const [error, setError] = useState( null );
+  const [error, setError] = useState<string>( );
 
   const blurFields = () => {
     if ( emailRef.current ) {
@@ -33,9 +33,12 @@ const SignUpForm = ( ) => {
   }, [navigation] );
 
   const onContinue = ( ) => {
-    // TODO: Implement email validation before navigating
-    if ( error ) {
-      setError( null );
+    // TODO: Implement email validation with a server call before navigating
+    // TODO: This is only an example of a validation to check that the Error component is working
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if ( !emailRegex.test( email ) ) {
+      setError( "Please enter a valid email address" );
+      return;
     }
     navigation.navigate( "SignUpConfirmation", {
       user: {
