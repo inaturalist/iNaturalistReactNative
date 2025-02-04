@@ -13,6 +13,11 @@ interface Props {
 const Error = ( { error }: Props ) => (
   <View className="flex-row items-center justify-center mt-5">
     <View className="relative items-center justify-center">
+      {/*
+        Little bit of a hack to color the exclamation mark of the icon white.
+        The icon is a SVG of a triangle with a transparent exclamation mark in the middle.
+        So, I am adding a white background behind the center of the icon.s
+      */}
       <View className="absolute bg-white w-[4px] h-[14px]" />
       <INatIcon
         name="triangle-exclamation"
