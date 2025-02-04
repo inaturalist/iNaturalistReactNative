@@ -16,7 +16,7 @@ const Error = ( { error }: Props ) => (
       {/*
         Little bit of a hack to color the exclamation mark of the icon white.
         The icon is a SVG of a triangle with a transparent exclamation mark in the middle.
-        So, I am adding a white background behind the center of the icon.s
+        So, I am adding a white background behind the center of the icon.
       */}
       <View className="absolute bg-white w-[4px] h-[14px]" />
       <INatIcon
