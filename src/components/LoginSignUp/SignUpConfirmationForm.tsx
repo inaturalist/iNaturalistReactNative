@@ -76,18 +76,12 @@ const SignUpConfirmationForm = ( ) => {
     setLoading( true );
     user.login = username;
     user.password = password;
-    // TODO: this checkbox was removed
-    // || checkboxes.second.checked
-    // user.pi_consent = true;
-    // TODO: this checkbox was removed
-    // || checkboxes.third.checked
-    // user.data_transfer_consent = true;
-    // TODO: this checkbox was removed
-    // if ( checkboxes.first.checked === true ) {
-    //   user.preferred_observation_license = "CC-BY-NC";
-    //   user.preferred_photo_license = "CC-BY-NC";
-    //   user.preferred_sound_license = "CC-BY-NC";
-    // }
+    // Because checked === true, the following items are considered to be consented too
+    user.pi_consent = true;
+    user.data_transfer_consent = true;
+    user.preferred_observation_license = "CC-BY-NC";
+    user.preferred_photo_license = "CC-BY-NC";
+    user.preferred_sound_license = "CC-BY-NC";
     const registrationError = await registerUser( user );
     if ( registrationError ) {
       setError( registrationError );
