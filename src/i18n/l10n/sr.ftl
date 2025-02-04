@@ -91,7 +91,6 @@ New-Observation = Nova opservacija
 No-Location = Nema lokacije
 No-Media = Nema medija
 Notes = Beleške
-Notifications = Obaveštenja
 November = Novembar
 Obscured = Prikriveno
 Observations = Opservacije

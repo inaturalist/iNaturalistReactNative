@@ -85,7 +85,6 @@ Needs-ID--quality-grade = Нуждае се от разпознаване
 New-Observation = Ново наблюдение
 No-Location = Няма местоположение
 No-Media = Без медия
-Notifications = Известия
 November = ноември
 Obscured = Замаскирано
 Observations = Наблюдения

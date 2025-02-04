@@ -107,7 +107,6 @@ Needs-ID--quality-grade = รอจำแนกชนิด
 New-Observation = การสังเกตใหม่
 No-Location = ไม่​มี​ตำแหน่ง
 No-Media = ไม่มีสื่อ
-Notifications = การแจ้งเตือน
 November = พฤศจิกายน
 Obscured = ถูกพราง
 Observations = การสังเกต

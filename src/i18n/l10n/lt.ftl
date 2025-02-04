@@ -6,6 +6,9 @@
 ###
 
 ABOUT = APIE
+Add-location-for-better-identifications = Geresnėms identifikacijoms pridėti vietą
+ADD-LOCATION-FOR-BETTER-IDS = GERESNĖMS ID PRIDĖTI VIETĄ
+Add-location-to-refresh-suggestions = Pridėti vietą pasiūlymams atnaujinti
 Advanced--interface-mode-with-explainer = Išplėstinis (įkelti kelias nuotraukas ir garsus)
 Agree = Sutikti
 AGREE = SUTINKU
@@ -14,9 +17,11 @@ All = Visi
 All-observations = Visi stebėjimai
 all-rights-reserved = Visos teisės saugomos
 All-taxa = Visi taksonai
+ALL-USERS-EXCEPT = VISI VARTOTOJAI, IŠSKYRUS
 apple-full-name = { JOIN($namePrefix, $givenName, $middleName, $nickname, $familyName, $nameSuffix, separator: " ") }
 April = Balandis
 August = Rugpjūtis
+BY-ME = MANO
 Camera = Kamera
 Cancel = Atšaukti
 Casual--quality-grade = Nepilnas
@@ -26,6 +31,7 @@ Collection-Project = Grupinis projektas
 Community = Bendruomenė
 Community-based = Pagrįsta bendruomene
 Community-Guidelines = Bendruomenės gairės
+Confidence--label = Patikimumas
 CONNECT-TO-NATURE = PRISILIESK PRIE GAMTOS
 Connect-to-Nature = Prisiliesk prie gamtos
 CONTINUE = TĘSTI
@@ -49,6 +55,8 @@ Date-observed-header-short = Stebėta
 Date-Range = Periodas
 date-to-date = { $d1 }–{ $d2 }
 Date-uploaded-on-header-short = Įkelta:
+datetime-format-long-with-zone = Pp (zzz)
+datetime-format-short-with-zone = m/d/mmmm h:mm a zzz
 December = Gruodis
 Default--interface-mode = Numatytasis
 Delete-current-observation = Trintį esamą stebėjimą
@@ -58,6 +66,7 @@ Details = Išsami informacija
 DONATE = PAREMTI
 Edit = Redaguoti
 Edit-Observation = Redaguoti stebėjimus
+Enable-notifications = Įjungti pranešimus
 Endemic = Endeminis
 Error = Klaida
 Error-title = Klaida
@@ -86,12 +95,14 @@ If-you-leave-x-of-your-observations-removed =
         [one] 1 iš jūsų stebėjimų
        *[other] { $count } iš jūsų stebėjimų
     } taip pat bus pašalinti iš šio projekto.
+Ignore-notifications = Ignoruoti pranešimus
 improving--identification = Patobulintas
 iNat-is-global-community = „iNaturalist“ – tai pasaulinė gamtininkų bendruomenė, kurianti atvirus duomenis mokslui bendrai stebėdama ir identifikuodama organizmus
 INATURALIST-MODE = INATURALIST REŽIMAS
 iNaturalists-apps-are-designed-and-developed-3 = iNaturalist programėles kuria, programuoja ir palaiko iNaturalist komanda: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Joanne Lin, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Thea Skaff, Angie Ta, Ken-ichi Ueda, Kirk van Gorkom, Jason Walthall ir Jane Weeden.
 Introduced = Introdukuotas
 It-can-now-be-shared-for-use-in-research = Ją dabar galima bendrinti, kad būtų naudojama tyrimuose
+It-might-also-be = Be to, tai gali būti ir
 January = Sausis
 JOIN = JUNGTIS
 JOIN-PROJECT--question = PRISIJUNGTI PRIE PROJEKTO?
@@ -100,6 +111,8 @@ July = Liepa
 June = Birželis
 leading--identification = Vedantis
 Learn-More = Sužinokite daugiau
+LEARN-MORE-ABOUT-THIS-GROUP = SUŽINOTI APIE ŠIĄ GRUPĘ DAUGIAU
+LEARN-MORE-ABOUT-THIS-SPECIES = SUŽINOTI APIE ŠIĄ RŪŠĮ DAUGIAU
 LEAVE-PROJECT--question = IŠEITI IŠ PROJEKTO?
 Location = Vieta
 LOG-OUT = ATSIJUNGTI
@@ -113,6 +126,8 @@ Missing-Date = Trūksta datos
 Months = Mėnesiai
 More = Daugiau
 MY-CONTENT--notifications = MANO TURINYS
+My-Observations = Mano stebėjimai
+My-Observations--bottom-tab = Aš
 Native = Vietinis
 NEARBY = NETOLIESE
 Nearby = Netoliese
@@ -120,10 +135,11 @@ Needs-ID--quality-grade = Trūksta ID
 New-Observation = Naujas stebėjimas
 No-Location = Nėra vietos
 No-Media = Be medijos
+NOT-BY-ME = NE MANO
 Not-enough-space-left-on-device = Įrenginyje nėra pakankamai vietos
 Not-enough-space-left-on-device-try-again = Tam atlikti įrenginyje nebėra pakankamai vietos. Atlaisvinkite vietos ir bandykite dar kartą.
 Notes = Pastabos
-Notifications = Pranešimai
+Notifications--bottom-tab = Veikla
 notifications-user1-added-comment-to-observation-by-user2 = <0>{ $user1 }</0> pridėjo prie stebėjimo komentarą { $user2 }
 notifications-user1-added-identification-to-observation-by-user2 = <0>{ $user1 }</0> pridėjo prie stebėjimo identifikaciją { $user2 }
 November = Lapkritis
@@ -131,6 +147,7 @@ Obscured = Paslėptas
 Observation = Stebėjimas
 Observation-Copyright = Stebėjimo autoriaus teisės: © { $userName } · { $restrictions }
 Observations = Stebėjimai
+Observations-need-location-date--warning = iNaturalist stebėjimams reikia vietos ir datos, kad būtų naudingi mokslininkams. Prieš įkeldami, stebėjimus patikrinkite su šia piktograma.
 Observations-on-iNat-are-cited = Stebėjimai „iNaturalist“ cituojami moksliniuose laikraščiuose, leido mokslininkams padaryti atradimus iš naujo ir padėjo jiems suprasti gyvybę mūsų planetoje
 Observe = Stebėkite
 OBSERVED-IN--label = STEBĖTA
@@ -225,11 +242,23 @@ x-failed =
         [one] { $count } nepavyko
        *[other] { $count } nepavyko
     }
+X-OBSERVATIONS--below-number =
+    { $count ->
+        [one] STEBĖJIMAS
+       *[other] STEBĖJIMAI (-Ų)
+    }
+X-percent = { $count } %
+X-percent-confidence = { $count } % patikimumo
 X-PROJECTS = { $projectCount } PROJEKTAI (-Ų)
 x-saved =
     { $count ->
         [one] { $count } įrašytas
        *[other] { $count } įrašyta
+    }
+X-SPECIES--below-number =
+    { $count ->
+        [one] RŪŠIS
+       *[other] RŪŠYS (-IŲ)
     }
 x-uploaded =
     { $count ->
@@ -241,4 +270,14 @@ x-uploading =
         [one] { $count } įkeliamas
        *[other] { $count } įkeliama
     }
+You-havent-observed-any-species-yet = Kol kas dar nestebėjote jokių rūšių.
+You-likely-observed-a-new-species = Gali būti, kad stebėjote naują rūšį!
+You-likely-observed-a-species = Gali būti, kad stebėjote rūšį
+You-likely-observed-an-organism-in-this-group = Gali būti, kad stebėjote organizmą šioje grupėje
+You-may-have-observed-a-new-species = Gali būti, kad stebėjote naują rūšį!
+You-may-have-observed-a-species = Gali būti, kad stebėjote rūšį
+You-may-have-observed-an-organism-in-this-group = Galbūt stebėjote organizmą šioje grupėje
 You-must-install-Google-Play-Services-to-sign-in-with-Google = Turite įdiegti „Google Play“ paslaugas, kad prisijungtumėte su „Google“.
+You-observed-a-new-species = Jūs stebėjote naują rūšį!
+You-observed-a-species = Stebėjote rūšį
+You-observed-an-organism-in-this-group = Stebėjote organizmą šioje grupėje

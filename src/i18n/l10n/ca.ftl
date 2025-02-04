@@ -141,7 +141,6 @@ Needs-ID--quality-grade = Necessita ID
 New-Observation = Nova observació
 No-Location = Sense ubicació
 No-Media = Sense fitxers audiovisuals
-Notifications = Notificacions
 November = novembre
 Obscured = Enfosquit
 Observations = Observacions

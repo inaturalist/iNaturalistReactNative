@@ -88,7 +88,6 @@ Needs-ID--quality-grade = Nepieciešama ID
 New-Observation = Jauns novērojums
 No-Location = Nav atrašanās vietas
 No-Media = Nav fotogrāfiju
-Notifications = Paziņojumi
 November = Novembris
 Obscured = Noslēpta
 Observations = Novērojumi

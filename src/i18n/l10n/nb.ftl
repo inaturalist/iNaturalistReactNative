@@ -88,7 +88,6 @@ Needs-ID--quality-grade = Trenger ID
 New-Observation = Ny observasjon
 No-Location = Ingen posisjon
 No-Media = Ingen media
-Notifications = Varsler
 November = November
 Obscured = Tilslørt
 Observations = Observasjoner

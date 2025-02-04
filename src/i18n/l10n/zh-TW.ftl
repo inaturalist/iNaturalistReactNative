@@ -118,7 +118,6 @@ Needs-ID--quality-grade = 需要鑑定
 New-Observation = 新觀察記錄
 No-Location = 無位置資訊
 No-Media = 沒有媒體
-Notifications = 通知
 November = 11月
 Obscured = 座標遮蔽
 Observations = 觀察

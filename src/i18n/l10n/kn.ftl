@@ -85,7 +85,6 @@ Needs-ID--quality-grade = ID ಅಗತ್ಯವಿದೆ
 New-Observation = ಹೊಸ ವೀಕ್ಷಣೆ
 No-Location = ಸ್ಥಳ ಇಲ್ಲ
 No-Media = ಯಾವುದೇ ಮಾಧ್ಯಮವಿಲ್ಲ
-Notifications = ಅಧಿಸೂಚನೆ
 November = ನವೆಂಬರ್
 Obscured = ಮಸುಕಾಗಿಸಲಾಗಿದೆ
 Observations = ವೀಕ್ಷಣೆಗಳು

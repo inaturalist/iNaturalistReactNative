@@ -92,7 +92,6 @@ Needs-ID--quality-grade = צריך זיהוי
 New-Observation = תצפית חדשה
 No-Location = ללא מיקום
 No-Media = ללא מדיה
-Notifications = התראות
 November = נובמבר
 Obscured = מוסתר
 Observations = תצפיות

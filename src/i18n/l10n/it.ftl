@@ -298,7 +298,6 @@ Needs-ID--quality-grade = Serve ID
 New-Observation = Nuova Osservazione
 No-Location = Nessuna posizione
 No-Media = Nessun File
-Notifications = Notifiche
 November = Novembre
 Obscured = Oscurata
 Observations = Osservazioni

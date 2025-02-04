@@ -88,7 +88,6 @@ Needs-ID--quality-grade = Χρειάζεται Ταυτοποίηση
 New-Observation = Νέα παρατήρηση
 No-Location = Χωρίς τοποθεσία
 No-Media = Κανένα πολυμέσο
-Notifications = Ειδοποιήσεις
 November = Νοέμβριος
 Obscured = Αποκρύφτηκε
 Observations = Παρατηρήσεις
