@@ -444,6 +444,10 @@ const Map = ( {
     !observation.obscured || observation.privateLatitude
   );
 
+  const latitude = observation?.privateLatitude || observation?.latitude;
+  const longitude = observation?.privateLongitude || observation?.longitude;
+  const hasCoordinates = latitude && longitude;
+
   return (
     <View
       style={mapContainerStyle}
@@ -490,18 +494,18 @@ const Map = ( {
             }
           />
         )}
-        { observation && ( currentUserCanViewCoords
+        { observation && hasCoordinates && ( currentUserCanViewCoords
           ? (
             <LocationIndicator
-              latitude={observation.privateLatitude || observation.latitude}
-              longitude={observation.privateLongitude || observation.longitude}
+              latitude={latitude}
+              longitude={longitude}
               positionalAccuracy={observation.positionalAccuracy}
             />
           )
           : (
             <ObscuredLocationIndicator
-              latitude={observation.privateLatitude || observation.latitude}
-              longitude={observation.privateLongitude || observation.longitude}
+              latitude={latitude}
+              longitude={longitude}
             />
           )
         ) }
