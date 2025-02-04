@@ -60,17 +60,6 @@ const SignUpConfirmationForm = ( ) => {
     return unsubscrubeTransition;
   }, [navigation] );
 
-  const onLearnMorePressed = async () => {
-    // TODO: Leadership will decide what to link to
-    const url = "https://www.inaturalist.org/pages/terms";
-    navigation.navigate( "FullPageWebView", {
-      // TODO: This is a placeholder title
-      title: "iNaturalist",
-      initialUrl: url,
-      loggedIn: false
-    } );
-  };
-
   const register = async ( ) => {
     if ( loading ) { return; }
     setLoading( true );
@@ -138,7 +127,7 @@ const SignUpConfirmationForm = ( ) => {
           />
           <UnderlinedLink
             className="color-white mt-[9px]"
-            onPress={onLearnMorePressed}
+            onPress={() => navigation.navigate( "LearnMore" )}
           >
             {t( "Learn-More" )}
           </UnderlinedLink>
