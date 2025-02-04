@@ -6,6 +6,24 @@
 ###
 
 ABOUT = HAKKINDA
+ABOUT-COLLECTION-PROJECTS = KOLEKSİYON PROJELERİ HAKKINDA
+ABOUT-INATURALIST = iNaturalist HAKKINDA
+ABOUT-THE-DQA = DQA HAKKINDA
+About-the-DQA-description = Kalite Derecesi, bir iNaturalist gözleminin biyolojik çeşitlilik verisi olarak doğruluğunu, hassasiyetini, tamamlanmışlığını, alakalılığını ve uygunluğunu özetler. Bazı özellikler otomatik olarak belirlenirken, diğerleri iNat kullanıcıları tarafından oylanır. iNaturalist, lisanslı "Araştırma Derecesi" gözlemleri, bilim ve koruma amacıyla kullanılmak üzere bir dizi veri ortağıyla paylaşır.
+ABOUT-TRADITIONAL-PROJECTS = GELENEKSEL PROJELER HAKKINDA
+ABOUT-UMBRELLA-PROJECTS = ŞEMSİYE PROJELERİ HAKKINDA
+accessible-comname-sciname = { $commonName } ({ $scientificName })
+accessible-sciname-comname = { $scientificName } ({ $commonName })
+Account-Deleted = Hesap silindi
+ACCOUNT-SETTINGS = HESAP AYARLARI
+ACTIVITY = FAALİYET
+Add-agreement = Anlaşma Ekle
+ADD-AN-ID = Bir Kimlik Ekle
+Add-an-ID-Later = Kimliği daha sonra ekle
+ADD-COMMENT = YORUM EKLE
+Add-Date-Time = Tarih/Saat ekle
+Add-disagreement = Anlaşmazlık Ekle
+ADD-EVIDENCE = Kanıt Ekle
 Agree = Onayla
 AGREE = ONAYLA
 ALL = TÜMÜ
@@ -91,7 +109,6 @@ Needs-ID--quality-grade = Tanımlama Gerekli
 New-Observation = Yeni Gözlem
 No-Location = Konum Yok
 No-Media = Ortam Yok
-Notifications = Bildirimler
 November = Kasım
 Obscured = Gizlenmiş
 Observations = Gözlemler

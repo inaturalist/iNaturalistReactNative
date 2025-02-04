@@ -27,6 +27,9 @@ ADD-EVIDENCE = ADICIONAR EVIDÊNCIA
 Add-evidence = Adicionar evidência
 Add-favorite = Adicionar favorito
 Add-Location = Adicionar Localização
+Add-location-for-better-identifications = Adicionar localização para melhores identificações
+ADD-LOCATION-FOR-BETTER-IDS = ADICIONAR LOCAL PARA MELHORES IDS
+Add-location-to-refresh-suggestions = Adicionar localização para atualizar as sugestões
 Add-observations = Adicionar observações
 ADD-OPTIONAL-COMMENT = Adicionar COMENTÁRIO OPCIONAL
 Add-optional-notes = Adicionar notas opcionais
@@ -47,6 +50,7 @@ All-observations = Todas as observações
 All-organisms = Todos os organismos
 all-rights-reserved = todos os direitos reservados
 All-taxa = Todos os táxons
+ALL-USERS-EXCEPT = TODOS OS USUÁRIOS EXCETO
 ALLOW-LOCATION-ACCESS = PERMITIR ACESSO DE LOCALIZAÇÃO
 Almost-done = Quase pronto!
 Already-have-an-account = Já possui uma conta? Faz o login
@@ -80,6 +84,7 @@ By-exiting-observation-not-saved = Ao sair, sua observação não será salva.
 By-exiting-your-observations-not-saved = Ao sair, suas observações não serão salvas. Você pode salvá-las em seu aparelho, ou você pode deletá-las.
 By-exiting-your-photos-will-not-be-saved = Ao sair, suas fotos não serão salvas.
 By-exiting-your-recorded-sound-will-not-be-saved = Ao sair, seu som gravado não será salvo.
+BY-ME = POR MIM
 By-uploading-your-observation-to-iNaturalist-you-can = Ao enviar sua observação ao iNaturalist, você pode:
 Camera = Câmera
 CANCEL = CANCELAR
@@ -127,6 +132,7 @@ Community = Comunidade
 Community-based = Com base na comunidade
 Community-Guidelines = Diretrizes da Comunidade
 COMMUNITY-GUIDELINES = COMUNIDADE DE DIRETRIZES
+Confidence--label = confiança
 CONFIRM = CONFIRMAR
 CONNECT-TO-NATURE = SE LIGUE À NATUREZA
 Connect-to-Nature = Se ligue à Natureza
@@ -398,6 +404,7 @@ Introduced = Introduzido
 Introduced-to-place = Introduzido para  { $place }
 It-can-now-be-shared-for-use-in-research = Agora pode ser compartilhado para uso em pesquisas
 It-may-take-up-to-an-hour-to-remove-content = Pode levar até uma hora para apagar completamente todo o conteúdo associado
+It-might-also-be = Poderia também ser
 January = Janeiro
 JOIN = JUNTE-SE
 JOIN-PROJECT = JUNTE-SE AO PROJETO
@@ -423,6 +430,8 @@ Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, 
 Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBER($longitude, maximumFractionDigits: 6) }, Prec: { $accuracy }
 leading--identification = Liderando
 Learn-More = Saiba mais
+LEARN-MORE-ABOUT-THIS-GROUP = SAIBA MAIS SOBRE ESTE GRUPO
+LEARN-MORE-ABOUT-THIS-SPECIES = SAIBA MAIS SOBRE ESTA ESPÉCIE
 LEAVE = DEIXAR
 LEAVE-PROJECT = DEIXAR PROJETO
 LEAVE-PROJECT--question = DEIXAR PROJETO?
@@ -469,6 +478,8 @@ More-info = Mais informações
 MOST-FAVED = MAIS FAVORITADOS
 Most-faved = Mais favoritados
 MY-CONTENT--notifications = MEU CONTEÚDO
+My-Observations = Minhas Observações
+My-Observations--bottom-tab = Minhas
 Native = Nativa
 Native-to-place = Nativo de { $place }
 Navigates-to-AI-camera = Navegar para a Câmera IA
@@ -506,12 +517,13 @@ No-results-found-try-different-search = Nenhum resultado encontrado. Tente uma p
 no-rights-reserved-cc0 = nenhum direito reservado (CC0)
 none--accuracy = sem dado
 NONE--ranks = sem dado
+NOT-BY-ME = POR OUTROS
 Not-enough-space-left-on-device = Sem espaço para armazenamento no seu dispositivo
 Not-enough-space-left-on-device-try-again = Sem espaço de armazenamento no seu dispositivo para esta operação. Por favor, libere espaço e tente novamente.
 NOTES = NOTAS
 Notes = Anotações
 NOTIFICATIONS = NOTIFICAÇÕES
-Notifications = Notificações
+Notifications--bottom-tab = Atividades
 notifications-user-added-comment-to-observation-by-you = <0>{ $userName }</0> adicionou um comentário a uma observação sua
 notifications-user-added-identification-to-observation-by-you = <0>{ $userName }</0> adicionou um comentário a uma observação sua
 notifications-user1-added-comment-to-observation-by-user2 = <0>{ $user1 }</0> adicionou um comentário a uma observação de { $user2 }
@@ -533,6 +545,7 @@ OBSERVATION-WAS-DELETED = OBSERVAÇÃO FOI EXCLUÍDA
 Observation-with-no-evidence = Observação sem nenhuma evidência
 Observations = Observações
 Observations-created-on-iNaturalist = As observações criadas no inaturalista são usadas por cientistas ao redor do mundo.
+Observations-need-location-date--warning = As observações do iNaturalist precisam de uma localização e de uma data para serem úteis aos cientistas. Por favor, verifique as observações com este ícone antes de fazer o upload.
 Observations-on-iNat-are-cited = As observações no iNaturalist são citadas em documentos científicos, levaram a redescobertas e ajudam os cientistas a entender a vida no nosso planeta
 Observations-View = Visualizar observações
 OBSERVATIONS-WITHOUT-NUMBER =
@@ -550,7 +563,6 @@ Observers = Observadores
 Observers-View = Visualizar observações
 October = Outubro
 Offensive-Inappropriate = Ofensivo/inapropriado
-Offensive-Inappropriate-Examples = Conteúdo enganoso ou ilegal, racial ou insultos étnicos, etc. Para saber mais sobre a nossa definição de "apropriado", veja as perguntas frequentes.
 Offline-DQA-description = O DQA pode não ser preciso. Verifique sua conexão com a rede e tente novamente.
 Offline-suggestions-do-not-use-your-location = As sugestões feitas de forma desconectada não utilizam sua localização e podem diferir daquelas feitas de forma conectada. Imagens de táxon e nomes comuns podem não carregar.
 OK = Ok
@@ -558,7 +570,6 @@ Oldest-to-newest = Da mais antiga à mais recente
 Once-you-create-and-upload-observations = Assim que você criar e enviar suas observações, outros membros da nossa comunidade podem adicionar identificações para ajudar suas observações a chegarem ao nível de pesquisa.
 One-last-step = Uma última etapa!
 Open = Aberta
-Open-drawer = Abrir pasta
 OPEN-EMAIL = ABRIR ENDEREÇO ELETRÔNICO
 Open-menu = Abrir ementa
 OPEN-SETTINGS = ABRIR AJUSTES
@@ -964,6 +975,11 @@ X-observations =
         [one] 1 observação
        *[other] { $count } observações
     }
+X-OBSERVATIONS--below-number =
+    { $count ->
+        [one] OBSERVAÇÃO
+       *[other] OBSERVAÇÕES
+    }
 X-observations-deleted =
     { $count ->
         [one] 1 observação excluída
@@ -987,6 +1003,8 @@ X-of-Y =
         [one] de { $y }
        *[other] de { $y }
     }
+X-percent = { $count }%
+X-percent-confidence = { $count }% de confiança
 X-PHOTOS =
     { $photoCount ->
         [one] 1 FOTO
@@ -1024,6 +1042,11 @@ X-Species =
         [one] { $count } Espécie
        *[other] { $count } Espécies
     }
+X-SPECIES--below-number =
+    { $count ->
+        [one] ESPÉCIE
+       *[other] ESPÉCIES
+    }
 x-uploaded =
     { $count ->
         [one] { $count } enviada
@@ -1055,10 +1078,20 @@ You-can-upload-this-observation-to-our-community = Você pode enviar esta observ
 You-changed-filters-will-be-discarded = Você alterou os filtros, mas eles não foram aplicados aos resultados da pesquisa de exploração.
 You-have-opted-out-of-the-Community-Taxon = Você optou por sair da Comunidade do Táxon
 You-havent-joined-any-projects-yet = Você ainda não se juntou a nenhum projeto!
+You-havent-observed-any-species-yet = Você ainda não observou nenhuma espécie.
+You-likely-observed-a-new-species = Você provavelmente observou uma nova espécie!
+You-likely-observed-a-species = Você provavelmente observou uma espécie
+You-likely-observed-an-organism-in-this-group = Você provavelmente observou um organismo neste grupo
+You-may-have-observed-a-new-species = Você pode ter observado uma nova espécie!
+You-may-have-observed-a-species = Você pode ter observado uma espécie
+You-may-have-observed-an-organism-in-this-group = Você pode ter observado um organismo neste grupo
 You-must-be-logged-in-to-view-messages = Você precisa estar logado para ver as mensagens
 You-must-install-Google-Play-Services-to-sign-in-with-Google = Você deve instalar o Google Play Services para fazer login com o Google.
 You-need-an-Internet-connection-to-do-that = Você precisa de uma conexão com a ‘internet’ para fazer isso.
 You-need-log-in-to-do-that = Você precisa fazer login para fazer isso.
+You-observed-a-new-species = Você observou uma nova espécie!
+You-observed-a-species = Você observou uma espécie
+You-observed-an-organism-in-this-group = Você observou um organismo nesse grupo
 You-will-see-notifications = Você verá notificações aqui quando entrar e carregar observações.
 Your-donation-to-iNaturalist = A sua doação para o iNaturalist apoia a melhoria e a estabilidade dos aplicativos móveis e sites que conectam milhões de pessoas à natureza, e permitem a protecção da biodiversidade em todo o mundo!
 Your-email-is-confirmed = Seu endereço eletrônico foi confirmado! Por favor, entre para continuar.

@@ -33,6 +33,9 @@ ADD-EVIDENCE = VOEG BEWIJS TOE
 Add-evidence = Voeg bewijs toe
 Add-favorite = Favoriet toevoegen
 Add-Location = Locatie toevoegen
+Add-location-for-better-identifications = Voeg locatie toe voor betere determinaties
+ADD-LOCATION-FOR-BETTER-IDS = VOEG LOCATIE TOE VOOR BETERE DETERMINATIES
+Add-location-to-refresh-suggestions = Voeg locatie toe om voorstellen te verversen
 Add-observations = Waarnemingen toevoegen
 ADD-OPTIONAL-COMMENT = OPTIONEEL COMMENTAAR TOEVOEGEN
 Add-optional-notes = Optionele notities toevoegen
@@ -202,7 +205,9 @@ datetime-difference-hours = { $count }u
 datetime-difference-minutes = { $count }m
 datetime-difference-weeks = { $count }w
 datetime-format-long = dd-M-yyyy HH:mm
+datetime-format-long-with-zone = Pp (zzz)
 datetime-format-short = d-M-yyyy HH:mm
+datetime-format-short-with-zone = d-M-yyyy HH:mm a zzz
 December = December
 Default--interface-mode = Standaard
 DELETE = VERWIJDEREN
@@ -264,6 +269,7 @@ EDUCATORS = OPLEIDERS
 EMAIL = E-mailadres
 EMAIL-DEBUG-LOGS = E-MAIL DEBUG LOGS
 Enable-flash = Schakel flitser in
+Enable-notifications = Meldingen inschakelen
 Endemic = Endemisch
 Endemic-to-place = Endemisch in { $place }
 Error = Fout
@@ -364,6 +370,7 @@ If-you-leave-x-of-your-observations-removed =
 If-you-want-to-collate-compare-promote = Als je een aantal bestaande projecten wilt samenvoegen, vergelijken of promoten, dan moet je een overkoepelend project gebruiken. Bijvoorbeeld de 2018 City Nature Challenge, die meer dan 60 projecten heeft samengevoegd, maakte een geweldige landingspagina waar iedereen de waarnemingen van elke stad kon vergelijken en weerleggen. Zowel Collectie als Traditionele projecten kunnen gebruikt worden in een Overkoepelend project en maximaal 500 projecten kunnen samengevoegd in een collectie door een Overkoepelend project.
 If-youre-seeing-this-error = Als je dit ziet en online bent, is het iNat personeel al op de hoogte gesteld. Bedankt voor het vinden van een bug! Als je offline bent, maak dan een schermafbeelding en stuur ons een e-mail wanneer je weer op het internet bent.
 IGNORE-LOCATION = NEGEER LOCATIE
+Ignore-notifications = Meldingen uitschakelen
 Import-Photos-From = Foto's importeren van
 IMPORT-X-OBSERVATIONS =
     IMPORTEER { $count ->
@@ -408,6 +415,7 @@ Introduced = Geïntroduceerd
 Introduced-to-place = Geïntroduceerd in { $place }
 It-can-now-be-shared-for-use-in-research = Het kan nu worden gedeeld voor gebruik in onderzoek
 It-may-take-up-to-an-hour-to-remove-content = Het kan tot een uur duren om alle bijbehorende inhoud volledig te verwijderen
+It-might-also-be = Het kan ook zijn
 January = Januari
 JOIN = DOE MEE
 JOIN-PROJECT = NEEM DEEL AAN PROJECT
@@ -433,6 +441,8 @@ Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, 
 Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBER($longitude, maximumFractionDigits: 6) }, Acc: { $accuracy }
 leading--identification = Leidend
 Learn-More = Meer informatie
+LEARN-MORE-ABOUT-THIS-GROUP = LEER MEER OVER DEZE GROEP
+LEARN-MORE-ABOUT-THIS-SPECIES = LEER MEER OVER DEZE SOORT
 LEAVE = VERLATEN
 LEAVE-PROJECT = PROJECT VERLATEN
 LEAVE-PROJECT--question = PROJECT VERLATEN ?
@@ -479,6 +489,8 @@ More-info = Meer info
 MOST-FAVED = POPULAIRST
 Most-faved = Populairst
 MY-CONTENT--notifications = MIJN INHOUD
+My-Observations = Mijn Waarnemingen
+My-Observations--bottom-tab = Mijn
 Native = Inheems
 Native-to-place = Inheems in { $place }
 Navigates-to-AI-camera = Navigeer naar de AI camera
@@ -522,7 +534,7 @@ Not-enough-space-left-on-device-try-again = Er is niet genoeg opslagruimte besch
 NOTES = NOTITIES
 Notes = Opmerkingen
 NOTIFICATIONS = NOTIFICATIES
-Notifications = Notificaties
+Notifications--bottom-tab = Nieuws
 notifications-user-added-comment-to-observation-by-you = <0>{ $userName }</0> heeft een opmerking toegevoegd aan een waarneming van jou
 notifications-user-added-identification-to-observation-by-you = <0>{ $userName }</0> heeft een determinatie toegevoegd aan een waarneming van jou
 notifications-user1-added-comment-to-observation-by-user2 = <0>{ $user1 }</0> heeft een opmerking toegevoegd aan een waarneming door { $user2 }
@@ -544,6 +556,7 @@ OBSERVATION-WAS-DELETED = WAARNEMING WERD VERWIJDERD
 Observation-with-no-evidence = Waarneming zonder bewijs
 Observations = Waarnemingen
 Observations-created-on-iNaturalist = Waarnemingen gemaakt op iNaturalist worden gebruikt door wetenschappers over de hele wereld.
+Observations-need-location-date--warning = iNaturalist waarnemingen hebben een locatie en datum nodig om nuttig te zijn voor wetenschappers. Controleer waarnemingen met dit pictogram voordat je deze uploadt.
 Observations-on-iNat-are-cited = Waarnemingen op iNaturalist worden aangehaald in wetenschappelijke artikelen, hebben geleid tot herontdekkingen en helpen  wetenschappers leven op onze planeet te begrijpen
 Observations-View = Weergave waarnemingen
 OBSERVATIONS-WITHOUT-NUMBER =
@@ -561,7 +574,6 @@ Observers = Waarnemers
 Observers-View = Toon waarnemers
 October = Oktober
 Offensive-Inappropriate = Aanstootgevend/Ongepast
-Offensive-Inappropriate-Examples = Misleidende of illegale inhoud, raciale of etnische smet, enz. Zie de FAQ voor meer informatie over onze definitie van "geschikt".
 Offline-DQA-description = Mogelijk is de DQA niet correct. Controleer je internetverbinding en probeer het opnieuw.
 Offline-suggestions-do-not-use-your-location = Offline suggesties gebruiken je locatie niet en kunnen afwijken van online suggesties. Taxon afbeeldingen en lokale volksnamen mogen niet geladen worden.
 OK = OK
@@ -569,7 +581,6 @@ Oldest-to-newest = Oudste eerst
 Once-you-create-and-upload-observations = Wanneer je waarnemingen maakt en uploadt kunnen andere leden van onze gemeenschap determinaties toevoegen om je waarnemingen te helpen de status van Onderzoekskwaliteit te bereiken.
 One-last-step = Nog één stap!
 Open = Open
-Open-drawer = Open de lade
 OPEN-EMAIL = E-MAIL OPEN
 Open-menu = Menu openen.
 OPEN-SETTINGS = OPEN INSTELLINGEN
@@ -975,6 +986,11 @@ X-observations =
         [one] 1 waarneming
        *[other] { $count } waarnemingen
     }
+X-OBSERVATIONS--below-number =
+    { $count ->
+        [one] WAARNEMING
+       *[other] WAARNEMINGEN
+    }
 X-observations-deleted =
     { $count ->
         [one] 1 waarneming verwijderd
@@ -998,6 +1014,7 @@ X-of-Y =
         [one] van { $y }
        *[other] van { $y }
     }
+X-percent = { $count }%
 X-percent-confidence = { $count }% zekerheid
 X-PHOTOS =
     { $photoCount ->
@@ -1036,6 +1053,11 @@ X-Species =
         [one] { $count } Soort
        *[other] { $count } Soorten
     }
+X-SPECIES--below-number =
+    { $count ->
+        [one] SOORT
+       *[other] SOORTEN
+    }
 x-uploaded =
     { $count ->
         [one] { $count } geupload
@@ -1067,11 +1089,20 @@ You-can-upload-this-observation-to-our-community = U kunt deze waarneming upload
 You-changed-filters-will-be-discarded = Je hebt filters veranderd, maar ze werden niet toegepast op uw zoekresultaten.
 You-have-opted-out-of-the-Community-Taxon = Je hebt je afgemeld voor het gemeenschapstaxon
 You-havent-joined-any-projects-yet = Je neemt nog niet deel aan projecten.
+You-havent-observed-any-species-yet = Je hebt nog geen soorten waargenomen.
+You-likely-observed-a-new-species = Je hebt waarschijnlijk een nieuwe soort waargenomen!
+You-likely-observed-a-species = Je hebt waarschijnlijk een soort waargenomen
+You-likely-observed-an-organism-in-this-group = Je hebt waarschijnlijk een organisme uit deze groep waargenomen
+You-may-have-observed-a-new-species = Misschien heb jij een nieuwe soort waargenomen!
+You-may-have-observed-a-species = Je hebt mogelijk een soort waargenomen
+You-may-have-observed-an-organism-in-this-group = Mogelijk heb je een organisme uit deze groep waargenomen
 You-must-be-logged-in-to-view-messages = Je moet ingelogd zijn om berichten te bekijken
 You-must-install-Google-Play-Services-to-sign-in-with-Google = Je moet Google Play Services installeren om je aan te kunnen melden met Google.
 You-need-an-Internet-connection-to-do-that = Je hebt een internetverbinding nodig om dat te doen.
 You-need-log-in-to-do-that = Je moet inloggen om dat te doen.
 You-observed-a-new-species = Je hebt een nieuwe soort waargenomen!
+You-observed-a-species = Je hebt een soort waargenomen
+You-observed-an-organism-in-this-group = Je hebt een organisme uit deze groep waargenomen
 You-will-see-notifications = Je ziet hier meldingen zodra je inlogt en waarnemingen uploadt.
 Your-donation-to-iNaturalist = Uw donatie aan iNaturalist ondersteunt de verbetering en stabiliteit van de mobiele apps en website die miljoenen mensen met de natuur verbindt en wereldwijd de biodiversiteit beschermt!
 Your-email-is-confirmed = Je e-mailadres is bevestigd! Log in om door te gaan.

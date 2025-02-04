@@ -74,6 +74,7 @@ Device-storage-full-description = iNaturalist ei ehkä pysty tallentamaan valoku
 DONATE = LAHJOITA
 Edit = Muokkaa
 Edit-Observation = Muokkaa havaintoa
+Enable-notifications = Salli ilmoitukset
 Endemic = Endeeminen
 Error = Virhe
 Error-title = Virhe
@@ -141,7 +142,6 @@ NONE--ranks = EI MIKÄÄN
 Not-enough-space-left-on-device = Laitteessa ei ole riittävästi tilaa
 Not-enough-space-left-on-device-try-again = Laitteellasi ei ole tarpeeksi tallennustilaa. Vapauta tilaa ja yritä uudelleen.
 Notes = Muistiinpanot
-Notifications = Ilmoitukset
 November = marraskuu
 Obscured = Karkeistettu
 Observation = Havainto
@@ -261,5 +261,13 @@ X-SPECIES--below-number =
         [one] LAJI
        *[other] LAJIA
     }
+You-likely-observed-a-new-species = Havaitsit todennäköisesti uuden lajin!
+You-likely-observed-a-species = Havaitsit todennäköisesti lajin
+You-likely-observed-an-organism-in-this-group = Havaitsit todennäköisesti eliön tästä ryhmästä
+You-may-have-observed-a-new-species = Saatoit havaita uuden lajin!
+You-may-have-observed-a-species = Saatoit havaita lajin
+You-may-have-observed-an-organism-in-this-group = Saatoit havaita eliön tästä ryhmästä
 You-must-install-Google-Play-Services-to-sign-in-with-Google = Sinun on asennettava Google Play -palvelut, jotta voit kirjautua Google-tilillä.
 You-need-log-in-to-do-that = Sinun täytyy kirjautua ensin.
+You-observed-a-species = Havaitsit lajin
+You-observed-an-organism-in-this-group = Havaitsit eliön tästä ryhmästä

@@ -89,7 +89,6 @@ Needs-ID--quality-grade = Potreban ID
 New-Observation = Novo opažanje
 No-Location = Bez lokacije
 No-Media = Bez medija
-Notifications = Obavijesti
 November = Studeni
 Obscured = Sakriveno
 Observations = Opažanja

@@ -109,7 +109,6 @@ No-Location = 位置情報がありません
 No-Media = 写真・音声なし
 Not-enough-space-left-on-device = デバイスに十分な空き容量がありません
 Not-enough-space-left-on-device-try-again = デバイスに十分な空き容量がありません。空き容量を確保して、もう一度お試しください。
-Notifications = 通知
 November = 11月
 Obscured = 不明瞭
 Observation = 観察記録

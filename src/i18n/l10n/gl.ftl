@@ -89,7 +89,6 @@ Needs-ID--quality-grade = Precisa identificación
 New-Observation = Nova Observación
 No-Location = Sen Ubicación
 No-Media = Sen Medios
-Notifications = Notificacións
 November = novembro
 Obscured = Escurecido
 Observations = Observacións
