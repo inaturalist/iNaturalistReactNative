@@ -125,21 +125,13 @@ const SignUpConfirmationForm = ( ): Node => {
           }}
         />
         <View className="flex-1">
-          <Body2
-            className="flex-wrap color-white"
-            onPress={() => {
-              setChecked( !checked );
-            }}
-          >
-            {t( "I-agree-to-the-Terms-of-Use" )}
-          </Body2>
           <Trans
-            className="flex-wrap color-white"
+            className="flex-wrap"
             i18nKey="I-agree-to-the-Terms-of-Use"
             onPress={() => setChecked( !checked )}
             components={[
               <Body2 className="text-white" />,
-              <Body2 className="text-white font-italics" />
+              <Body2 className="text-white font-Lato-Italic" />
             ]}
           />
           <UnderlinedLink
