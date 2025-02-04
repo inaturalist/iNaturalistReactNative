@@ -12,6 +12,7 @@ import { t } from "i18next";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useEffect, useRef, useState } from "react";
+import { Trans } from "react-i18next";
 
 import {
   authenticateUser,
@@ -132,6 +133,15 @@ const SignUpConfirmationForm = ( ): Node => {
           >
             {t( "I-agree-to-the-Terms-of-Use" )}
           </Body2>
+          <Trans
+            className="flex-wrap color-white"
+            i18nKey="I-agree-to-the-Terms-of-Use"
+            onPress={() => setChecked( !checked )}
+            components={[
+              <Body2 className="text-white" />,
+              <Body2 className="text-white font-italics" />
+            ]}
+          />
           <UnderlinedLink
             className="color-white mt-[9px]"
             onPress={onLearnMorePressed}
