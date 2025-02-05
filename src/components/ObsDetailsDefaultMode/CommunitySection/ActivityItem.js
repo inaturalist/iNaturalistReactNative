@@ -2,6 +2,7 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
+  Body4,
   Divider, INatIconButton, UserText
 } from "components/SharedComponents";
 import DisplayTaxon from "components/SharedComponents/DisplayTaxon";
@@ -107,6 +108,9 @@ const ActivityItem = ( {
             withdrawn={idWithdrawn}
           />
         )}
+        <Body4 className="py-2">
+          {t( "This-is-your-identification-other-people-may-help-confirm-it" )}
+        </Body4>
       </View>
       <Divider />
     </View>

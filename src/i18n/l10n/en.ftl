@@ -1237,6 +1237,7 @@ The-models-that-suggest-species = The models that suggest species based on visua
 #  Wild status sheet descriptions
 This-is-a-wild-organism = This is a wild organism and wasn't placed in this location by humans.
 This-is-how-taxon-names-will-be-displayed = This is how all taxon names will be displayed to you across iNaturalist:
+This-is-your-identification-other-people-may-help-confirm-it = This is your identification. Other people may help confirm it!
 This-observation-has-no-comments-or-identifications-yet = This observation has no comments or identifications yet.
 This-observation-has-not-met-the-conditions-required-to-meet-Research-Grade = This observation has not met the conditions required to meet Research Grade status
 This-observation-needs-more-identifications = This observation needs more identifications to reach Research Grade status
