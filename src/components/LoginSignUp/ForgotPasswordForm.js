@@ -2,6 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import {
+  Body1,
   Button
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -42,6 +43,9 @@ const ForgotPasswordForm = ( { reset }: Props ): Node => {
   return (
     <TouchableWithoutFeedback accessibilityRole="button" onPress={blurFields}>
       <View className="px-4 my-5 justify-end">
+        <Body1 className="text-center color-white">
+          {t( "Lets-reset-your-password" )}
+        </Body1>
         <LoginSignUpInputField
           ref={emailRef}
           accessibilityLabel={t( "EMAIL" )}
