@@ -53,6 +53,7 @@ const ForgotPasswordForm = ( { reset }: Props ): Node => {
         />
         <Button
           level="focus"
+          forceDark
           text={t( "RESET-PASSWORD" )}
           onPress={( ) => reset( email )}
           className="my-[30px]"

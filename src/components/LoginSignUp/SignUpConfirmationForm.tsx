@@ -153,6 +153,7 @@ const SignUpConfirmationForm = ( ) => {
       {error && <Error error={error} />}
       <Button
         level="focus"
+        forceDark
         text={t( "CREATE-AN-ACCOUNT" )}
         onPress={register}
         className="my-5"

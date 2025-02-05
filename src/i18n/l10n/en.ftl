@@ -665,6 +665,7 @@ LEAVE-PROJECT = LEAVE PROJECT
 # Asking for confirmation if the user wants to leave this project
 LEAVE-PROJECT--question = LEAVE PROJECT?
 LEAVE-US-A-REVIEW = LEAVE US A REVIEW!
+Lets-reset-your-password = Let’s reset your password.
 # Label for button to switch to a list layout of observations
 List-layout = List layout
 Loading-iNaturalists-AI-Camera = Loading iNaturalist's AI Camera

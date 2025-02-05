@@ -66,6 +66,7 @@ const SignUpForm = ( ) => {
           className="mt-[30px] mb-[35px]"
           disabled={!email}
           level="focus"
+          forceDark
           onPress={( ) => onContinue( )}
           testID="Signup.signupButton"
           text={t( "CONTINUE" )}
