@@ -19,7 +19,6 @@ const ITEMS = sortBy( [
   { title: "Buttons", component: "Buttons" },
   { title: "Floating Action Bar", component: "FloatingActionBarDemo" },
   { title: "Icons", component: "Icons" },
-  { title: "Login/Signup LearnMore", component: "LoginSignUpLearnMoreDemo" },
   { title: "Typography", component: "Typography" },
   { title: "ObsListItem", component: "ObsListItemDemo" },
   { title: "TaxonResult", component: "TaxonResultDemo" },

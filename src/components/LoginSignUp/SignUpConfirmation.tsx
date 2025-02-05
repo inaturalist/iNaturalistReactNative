@@ -1,23 +1,20 @@
-// @flow
-
 import { ScrollView } from "components/styledComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React from "react";
 
 import Header from "./Header";
-import LicensePhotosForm from "./LicensePhotosForm";
 import LoginSignUpWrapper from "./LoginSignUpWrapper";
+import SignUpConfirmationForm from "./SignUpConfirmationForm";
 
-const LicensePhotos = ( ): Node => (
+const SignUpConfirmation = ( ) => (
   <LoginSignUpWrapper backgroundSource={require( "images/background/plants.jpg" )}>
     <ScrollView
       keyboardShouldPersistTaps="always"
     >
-      <Header headerText={t( "Almost-done" )} />
-      <LicensePhotosForm />
+      <Header headerText={t( "Join-the-largest-community-of-naturalists" )} />
+      <SignUpConfirmationForm />
     </ScrollView>
   </LoginSignUpWrapper>
 );
 
-export default LicensePhotos;
+export default SignUpConfirmation;
