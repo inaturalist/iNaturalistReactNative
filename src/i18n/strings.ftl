@@ -1053,10 +1053,10 @@ Removes-this-observations-taxon = Removes this observation's taxon
 Removes-your-vote-of-agreement = Removes your vote of agreement
 # Hint for a button that removes a vote of disagreement
 Removes-your-vote-of-disagreement = Removes your vote of disagreement
-Research-Grade-Status = Research Grade Status
 # Quality grade indicating observation is accurate and complete enough to
 # share outside of iNat
 Research-Grade--quality-grade = Research Grade
+Research-Grade-Status = Research Grade Status
 # Reset password button
 RESET-PASSWORD = RESET PASSWORD
 # Label for a button that resets a sound recording
@@ -1241,7 +1241,10 @@ This-is-how-taxon-names-will-be-displayed = This is how all taxon names will be 
 This-is-your-identification-other-people-may-help-confirm-it = This is your identification. Other people may help confirm it!
 This-observation-has-no-comments-or-identifications-yet = This observation has no comments or identifications yet.
 This-observation-has-not-met-the-conditions-required-to-meet-Research-Grade = This observation has not met the conditions required to meet Research Grade status
+This-observation-is-not-eligible-for-research-grade-status = This observation is not eligible for research grade status. Learn more in the Data Quality Assessment below.
+This-observation-is-research-grade-and-can-be-used-by-scientists = This observation is research grade and can be used by scientists!
 This-observation-needs-more-identifications = This observation needs more identifications to reach Research Grade status
+This-observation-needs-more-identifications-to-become-research-grade = This observation needs more identifications to become research grade.
 This-observer-has-opted-out-of-the-Community-Taxon = This observer has opted out of the Community Taxon
 This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
 To-sync-your-observations-to-iNaturalist = To sync your observations to iNaturalist, please log in.

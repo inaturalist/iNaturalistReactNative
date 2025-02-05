@@ -18,20 +18,20 @@ const StatusSection = ( { observation }: Props ): Node => {
   if ( !observation ) return null;
 
   const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
-  const qualityGradeTextKey = () => {
+  const qualityGradeText = () => {
     if ( qualityGrade === "research" ) {
-      return "Quality-Grade-Research--label";
+      return t( "This-observation-is-research-grade-and-can-be-used-by-scientists" );
     }
     if ( qualityGrade === "needs_id" ) {
-      return "Quality-Grade-Needs-ID--label";
+      return t( "This-observation-needs-more-identifications-to-become-research-grade" );
     }
-    return "Quality-Grade-Casual--label";
+    return t( "This-observation-is-not-eligible-for-research-grade-status" );
   };
 
   return (
     <View className="m-4 mb-8">
       <Heading3 className="mt-5 mb-1">{t( "Research-Grade-Status" )}</Heading3>
-      <Body3>{t( qualityGradeTextKey() )}</Body3>
+      <Body3>{qualityGradeText()}</Body3>
     </View>
   );
 };
