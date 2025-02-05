@@ -27,7 +27,8 @@ type Props = {
   userAgreedId?: string,
   geoprivacy: string,
   taxonGeoprivacy: string,
-  belongsToCurrentUser: boolean
+  belongsToCurrentUser: boolean,
+  showExplainerText: boolean
 }
 
 const ActivityItem = ( {
@@ -40,7 +41,8 @@ const ActivityItem = ( {
   userAgreedId,
   geoprivacy,
   taxonGeoprivacy,
-  belongsToCurrentUser
+  belongsToCurrentUser,
+  showExplainerText
 }: Props ): Node => {
   const navigation = useNavigation( );
   const route = useRoute( );
@@ -108,9 +110,11 @@ const ActivityItem = ( {
             withdrawn={idWithdrawn}
           />
         )}
-        <Body4 className="py-2">
-          {t( "This-is-your-identification-other-people-may-help-confirm-it" )}
-        </Body4>
+        { showExplainerText && (
+          <Body4 className="py-2 font-Lato-Italic">
+            {t( "This-is-your-identification-other-people-may-help-confirm-it" )}
+          </Body4>
+        )}
       </View>
       <Divider />
     </View>
