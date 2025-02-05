@@ -29,9 +29,9 @@ const StatusSection = ( { observation }: Props ): Node => {
   };
 
   return (
-    <View className="m-4 mb-8">
-      <Heading3 className="mt-5 mb-1">{t( "Research-Grade-Status" )}</Heading3>
-      <Body3>{qualityGradeText()}</Body3>
+    <View className="mx-4 mt-8">
+      <Heading3>{t( "Research-Grade-Status" )}</Heading3>
+      <Body3 className="mt-3">{qualityGradeText()}</Body3>
     </View>
   );
 };
