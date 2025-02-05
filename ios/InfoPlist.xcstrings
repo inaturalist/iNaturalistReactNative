@@ -73,6 +73,12 @@
             "value" : "Füge Tonaufnahmen zu deinen Beobachtungen hinzu."
           }
         },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add existing sounds to your observations."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -223,6 +229,12 @@
             "value" : "Mit dem Kamerazugriff kann die KI-Kamera benutzt und fotografiert machen."
           }
         },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Camera access lets you use the AI Camera and take photos."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -358,6 +370,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Diese Erlaubnis wird nicht vorsätzlich verlangt. Wenn dies angezeigt wird, erstelle bitte ein Bildschirmfoto und sende es per E-Mail an help@inaturalist.org."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
           }
         },
         "es" : {
@@ -538,6 +556,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Προσθέστε συντεταγμένες GPS στις παρατηρήσεις, δείξτε τη θέση σας στους χάρτες, και πολλά άλλα."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
           }
         },
         "en-NZ" : {
@@ -822,6 +846,12 @@
             "value" : "Erstelle Audio-Aufnahmen als Naturbeobachtungen."
           }
         },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Record sound observations of nature."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -972,6 +1002,12 @@
             "value" : "Exportiere Fotos aus iNaturalist-Next in deine Bibliothek."
           }
         },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Export iNaturalist Next photos to your library."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1120,6 +1156,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Exportiere und importiere iNaturalist Next-Fotos in deine/aus deiner Bibliothek"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Export and import iNaturalist Next photos to and from your library."
           }
         },
         "es" : {
