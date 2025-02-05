@@ -196,8 +196,9 @@ const LoginForm = ( {
               disabled={loading}
               className="mr-8"
               icon="apple"
-              // According to the Apple Design Guidelines, the icon has a margin inside the svg
-              // so we scale it here to fill the entire button
+              // The svg icon for the Apple logo was downloaded from Apple,
+              // according to the Design Guidelines it already has a margin inside the svg
+              // so we scale it here to fill the entire button.
               size={50}
               color={colors.black}
               backgroundColor={colors.white}
