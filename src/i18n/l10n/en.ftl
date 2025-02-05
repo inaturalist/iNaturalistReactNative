@@ -249,6 +249,7 @@ Connection-problem-Please-try-again-later = Connection problem. Please try again
 CONTACT-SUPPORT = CONTACT SUPPORT
 # Continue button in onboarding screen
 CONTINUE = CONTINUE
+Continue-to-iNaturalist = Continue to iNaturalist
 # Onboarding message describing one of the reasons to use iNat
 Contribute-to-Science = Contribute to Science
 # Notification when coordinates have been copied
@@ -861,6 +862,7 @@ OK = OK
 # Sort order, refers to newest or oldest date
 Oldest-to-newest = Oldest to newest
 Once-you-create-and-upload-observations = Once you create & upload observations, other members of our community can add identifications to help your observations reach research grade.
+One-last-step = One last step!
 # Adjective, as in geoprivacy
 Open = Open
 OPEN-EMAIL = OPEN EMAIL
@@ -900,6 +902,7 @@ Please-Allow-Gallery-Access = Please Allow Gallery Access
 Please-allow-Location-Access = Please allow Location Access
 # Title of screen asking for permission to access the microphone when access was denied
 Please-allow-Microphone-Access = Please allow Microphone Access
+Please-click-the-link = Please click the link in the email within 60 minutes  to confirm your account
 # Title of a screen asking for permission when permission has been denied
 Please-Grant-Permission = Please Grant Permission
 PLEASE-LOG-IN = PLEASE LOG IN
@@ -1310,6 +1313,7 @@ VIEW-PROJECTS = VIEW PROJECTS
 # or photo
 View-suggestions = View suggestions
 We-are-not-confident-enough-to-make-a-top-ID-suggestion = We’re not confident enough to make a top ID suggestion, but here are some other suggestions:
+We-sent-a-confirmation-email = We sent a confirmation email to the email you signed up with.
 Welcome-to-iNaturalist = Welcome to iNaturalist!
 # Welcome user back to app
 Welcome-user = <0>Welcome back,</0><1>{ $userHandle }</1>
