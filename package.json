@@ -9,7 +9,7 @@
     "ios:release": "npx react-native run-ios --device --mode Release",
     "start": "react-native start",
     "clean": "./scripts/clean.sh",
-    "clean-start": "npx react-native clean-project-auto && npx pod-install && npm start -- --reset-cache",
+    "clean-start": "npx react-native clean-project && npx pod-install && npm run clean && npm start -- --reset-cache",
     "test": "jest tests/integration && jest tests/unit tests/helpers",
     "test:clear": "jest --clearCache",
     "test:memory": "jest --runInBand --logHeapUsage",
