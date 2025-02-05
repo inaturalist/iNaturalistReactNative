@@ -1,0 +1,7 @@
+Minor UI fixes
+Prevent visual photo recycling in grid lists
+Display time zones and times in time zones
+Follow/Unfollow button
+Login/SignUp flow UI changes
+Fix: crash in offline taxon search
+Fix: Android crash on SELECT THIS TAXON
