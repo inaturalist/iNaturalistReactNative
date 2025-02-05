@@ -35,6 +35,7 @@ import ObserverDetails from "./ObserverDetails";
 import ObsMediaDisplayContainer from "./ObsMediaDisplayContainer";
 import AgreeWithIDSheet from "./Sheets/AgreeWithIDSheet";
 import SuggestIDSheet from "./Sheets/SuggestIDSheet";
+import StatusSection from "./StatusSection/StatusSection";
 
 type Props = {
   activityItems: Array<Object>,
@@ -208,6 +209,7 @@ const ObsDetails = ( {
             <ActivityIndicator size={50} />
           </View>
         )}
+        <StatusSection observation={observation} />
         <DetailsSection observation={observation} />
         <MoreSection observation={observation} />
       </ScrollView>
