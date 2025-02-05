@@ -231,9 +231,9 @@ COMMENT = COMMENT
 Comment-options = Comment options
 # Label for a setting that shows the common name first
 Common-Name-Scientific-Name = Common Name (Scientific Name)
-# Label for section of ObsDetails with community comments and ids
-Community = Community
 Community-based = Community-based
+# Label for section of ObsDetails with community comments and ids
+Community-Discussion = Community Discussion
 Community-Guidelines = Community Guidelines
 COMMUNITY-GUIDELINES = COMMUNITY GUIDELINES
 # Label on match screen for how much confidence there is for a suggestion (i.e. 99% confidence)
