@@ -25,7 +25,7 @@ const LearnMore = ( ) => {
   ), [navigation] );
 
   return (
-    <LoginSignUpWrapper backgroundSource={require( "images/background/butterfly.jpg" )}>
+    <LoginSignUpWrapper backgroundSource={require( "images/background/pink_flower.jpg" )}>
       <Header />
       <View className="flex-1 w-full h-full justify-center p-5">
         <Button

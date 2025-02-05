@@ -1,7 +1,4 @@
-// @flow
-
 import { t } from "i18next";
-import type { Node } from "react";
 import React from "react";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 
@@ -13,7 +10,7 @@ const TARGET_NON_KEYBOARD_HEIGHT = 440;
 const HIDE_HEADER_HEIGHT = 580;
 const IMAGE_STYLE = { opacity: 0.5 };
 
-const SignUp = ( ): Node => {
+const SignUp = ( ) => {
   const {
     keyboardShown,
     keyboardVerticalOffset,
@@ -21,7 +18,6 @@ const SignUp = ( ): Node => {
   } = useKeyboardInfo( TARGET_NON_KEYBOARD_HEIGHT );
 
   const hideHeader = nonKeyboardHeight < HIDE_HEADER_HEIGHT && keyboardShown;
-  const hideFooter = nonKeyboardHeight < HIDE_HEADER_HEIGHT && keyboardShown;
 
   return (
     <LoginSignUpWrapper
@@ -33,7 +29,7 @@ const SignUp = ( ): Node => {
         headerText={t( "Join-the-largest-community-of-naturalists" )}
         hideHeader={hideHeader}
       />
-      <SignUpForm hideFooter={hideFooter} />
+      <SignUpForm />
     </LoginSignUpWrapper>
   );
 };

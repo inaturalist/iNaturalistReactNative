@@ -1,13 +1,13 @@
-import { AppleButton } from "@invertase/react-native-apple-authentication";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
 import {
-  Body1, Body2, Button, INatIcon, List2
+  Body1, Body2, Button, Heading4, INatIcon, INatIconButton, List2
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { Image, View } from "components/styledComponents";
 import { t } from "i18next";
 import { RealmContext } from "providers/contexts.ts";
 import React, { useEffect, useRef, useState } from "react";
+import { Trans } from "react-i18next";
 import {
   Platform,
   TextInput,
@@ -36,12 +36,6 @@ interface LoginFormParams {
 type ParamList = {
   LoginFormParams: LoginFormParams
 }
-
-const APPLE_BUTTON_STYLE = {
-  maxWidth: 500,
-  height: 45, // You must specify a height
-  marginTop: 10
-};
 
 const LoginForm = ( {
   hideFooter
@@ -186,36 +180,68 @@ const LoginForm = ( {
           testID="Login.loginButton"
           text={t( "LOG-IN" )}
         />
-        {/*
-          Note: Sign in with Apple is doable in Android if we want to:
-          https://github.com/invertase/react-native-apple-authentication?tab=readme-ov-file#android
-        */}
-        { Platform.OS === "ios" && (
-          <AppleButton
-            buttonStyle={AppleButton.Style.BLACK}
-            buttonType={AppleButton.Type.SIGN_IN}
-            style={APPLE_BUTTON_STYLE}
-            onPress={() => logIn( async ( ) => signInWithApple( realm ) )}
-          />
-        ) }
-        <Button
-          text={t( "Sign-in-with-Google" )}
-          onPress={() => logIn( async ( ) => signInWithGoogle( realm ) )}
-          disabled={loading}
-          className="mt-3"
-        />
+        <Heading4
+          className="color-white self-center mt-10"
+        >
+          {t( "OR-SIGN-IN-WITH" )}
+        </Heading4>
+        <View className="flex-row justify-center mt-5">
+          {/*
+            Note: Sign in with Apple is doable in Android if we want to:
+            https://github.com/invertase/react-native-apple-authentication?tab=readme-ov-file#android
+          */}
+          { Platform.OS === "ios" && (
+            <INatIconButton
+              onPress={() => logIn( async ( ) => signInWithApple( realm ) )}
+              disabled={loading}
+              className="mr-8"
+              icon="apple"
+              // The svg icon for the Apple logo was downloaded from Apple,
+              // according to the Design Guidelines it already has a margin inside the svg
+              // so we scale it here to fill the entire button.
+              size={50}
+              color={colors.black}
+              backgroundColor={colors.white}
+              accessibilityLabel={t( "Sign-in-with-Apple" )}
+              mode="contained"
+              width={50}
+              height={50}
+            />
+          ) }
+          <INatIconButton
+            onPress={() => logIn( async ( ) => signInWithGoogle( realm ) )}
+            disabled={loading}
+            backgroundColor={colors.white}
+            accessibilityLabel={t( "Sign-in-with-Google" )}
+            mode="contained"
+            width={50}
+            height={50}
+          >
+            <Image
+              className="w-[20px] h-[20px]"
+              source={require( "images/google.png" )}
+              accessibilityIgnoresInvertColors
+            />
+          </INatIconButton>
+
+        </View>
         {!hideFooter && (
-          <Body1
+          <Trans
             className={classnames(
-              "color-white self-center mt-[31px] underline",
+              "self-center mt-[31px] underline",
               // When the keyboard is up this pushes the form up enough to cut
               // off the username label on some devices
               !keyboardShown && "mb-[35px]"
             )}
+            i18nKey="Dont-have-an-account"
             onPress={( ) => navigation.navigate( "SignUp" )}
-          >
-            {t( "Dont-have-an-account" )}
-          </Body1>
+            components={[
+              <Body1 className="text-white" />,
+              <Body1
+                className="text-white font-Lato-Bold"
+              />
+            ]}
+          />
         )}
       </View>
     </TouchableWithoutFeedback>
