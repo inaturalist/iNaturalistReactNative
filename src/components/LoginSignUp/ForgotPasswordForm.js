@@ -48,9 +48,9 @@ const ForgotPasswordForm = ( { reset }: Props ): Node => {
         </Body1>
         <LoginSignUpInputField
           ref={emailRef}
-          accessibilityLabel={t( "EMAIL" )}
+          accessibilityLabel={t( "USERNAME-OR-EMAIL" )}
           autoComplete="email"
-          headerText={t( "EMAIL" )}
+          headerText={t( "USERNAME-OR-EMAIL" )}
           keyboardType="email-address"
           onChangeText={text => setEmail( text )}
           testID="Login.email"
