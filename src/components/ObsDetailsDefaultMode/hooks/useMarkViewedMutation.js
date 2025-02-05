@@ -63,6 +63,8 @@ const useMarkViewedMutation = (
   );
 
   useEffect( ( ) => {
+    // If user is not signed in, we can't mark as viewed
+    if ( !currentUser ) return;
     // If a remote obs doesn't exist, we can't mark it as viewed, and if we
     // don't have a copy b/c of no/weak internet connection, we also probably
     // can't mark it as viewed
@@ -77,6 +79,7 @@ const useMarkViewedMutation = (
     setIsMarkingViewed( true );
     markViewedMutation.mutate( { id: uuid } );
   }, [
+    currentUser,
     localObservation,
     remoteObservation,
     uuid,
