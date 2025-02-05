@@ -1,9 +1,7 @@
 // @flow
 
 import {
-  Body3,
-  Heading3,
-  LabelColonValue
+  Heading3
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -29,15 +27,6 @@ const MoreSection = ( { observation }: Props ): Node => {
       <Heading3 className="mt-5 mb-1">{t( "More" )}</Heading3>
       <ProjectButton observation={observation} />
       <DQAButton observationUUID={observationUUID} />
-      <View className="mt-3">
-        <LabelColonValue
-          label="ID"
-          value={String( observation.id )}
-          valueSelectable
-          LabelComponent={Body3}
-          ValueComponent={Body3}
-        />
-      </View>
       <ViewInBrowserButton id={observation.id} />
       <ShareButton id={observation.id} />
     </View>
