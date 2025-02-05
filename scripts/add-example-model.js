@@ -20,9 +20,7 @@ const taxonomyCSV = `${binariesBaseDir}/taxonomy.csv`;
 const taxonomyJSON = `${binariesBaseDir}/taxonomy.json`;
 
 const downloadAndroid = async argv => {
-  console.log( "argv", argv );
   const androidFlavor = argv.androidFlavor || "debug";
-  console.log( "androidFlavor", androidFlavor );
   const androidDestination = path.join(
     __dirname,
     "..",
