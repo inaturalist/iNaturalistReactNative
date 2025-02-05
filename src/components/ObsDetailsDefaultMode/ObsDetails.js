@@ -26,7 +26,6 @@ import CommunitySection from "./CommunitySection/CommunitySection";
 import FloatingButtons from "./CommunitySection/FloatingButtons";
 import CommunityTaxon from "./CommunityTaxon";
 import DetailsSection from "./DetailsSection/DetailsSection";
-import FaveButton from "./FaveButton";
 import LocationSection from "./LocationSection/LocationSection";
 import MapSection from "./MapSection/MapSection";
 import MoreSection from "./MoreSection/MoreSection";
@@ -181,13 +180,6 @@ const ObsDetails = ( {
           />
           <View>
             <ObsMediaDisplayContainer observation={observation} />
-            { currentUser && (
-              <FaveButton
-                observation={observation}
-                currentUser={currentUser}
-                afterToggleFave={refetchRemoteObservation}
-              />
-            ) }
           </View>
           <CommunityTaxon
             belongsToCurrentUser={belongsToCurrentUser}
