@@ -38,15 +38,6 @@ const MoreSection = ( { observation }: Props ): Node => {
           ValueComponent={Body3}
         />
       </View>
-      <View className="mt-3">
-        <LabelColonValue
-          label="UUID"
-          value={observation.uuid}
-          valueSelectable
-          LabelComponent={Body3}
-          ValueComponent={Body3}
-        />
-      </View>
       <ViewInBrowserButton id={observation.id} />
       <ShareButton id={observation.id} />
     </View>
