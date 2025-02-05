@@ -64,6 +64,18 @@ const SignUpConfirmationForm = ( ) => {
     if ( loading ) { return; }
     setLoading( true );
     user.login = username;
+    // If password is less than 6 characters set error and return
+    if ( password.length < 6 ) {
+      setError( t( "Please-make-sure-your-password-is-at-least-6-characters" ) );
+      setLoading( false );
+      return;
+    }
+    // If password is "password" set error and return
+    if ( password.toLowerCase() === "password" ) {
+      setError( t( "Please-choose-a-different-password" ) );
+      setLoading( false );
+      return;
+    }
     user.password = password;
     // Because checked === true, the following items are considered to be consented too
     user.pi_consent = true;
@@ -73,7 +85,12 @@ const SignUpConfirmationForm = ( ) => {
     user.preferred_sound_license = "CC-BY-NC";
     const registrationError = await registerUser( user );
     if ( registrationError ) {
-      setError( registrationError );
+      // Currently the error is a string coming directly from the server
+      if ( registrationError === "Username has already been taken" ) {
+        setError( t( "That-username-is-unavailable" ) );
+      } else {
+        setError( registrationError );
+      }
       setLoading( false );
       return;
     }
