@@ -563,7 +563,6 @@ IDENTIFICATIONS-WITHOUT-NUMBER =
 Identifiers = Identifiers
 Identifiers-View = Identifiers View
 Identify-an-organism = Identify an organism
-Identify-an-organism-with-the-iNaturalist-AI-Camera = Identify an organism with the iNaturalist AI Camera
 # Onboarding message describing one of the reasons to use iNat
 Identify-record-learn = Identify, record, and learn about every living species on earth using iNaturalist
 If-an-account-with-that-email-exists = If an account with that email exists, we've sent password reset instructions to your email.
@@ -1290,6 +1289,7 @@ Uploading-x-of-y-observations =
         [one] Uploading { $currentUploadCount } observation
        *[other] Uploading { $currentUploadCount } of { $total } observations
     }
+Use-iNaturalist-to-identify-any-living-thing = Use iNaturalist to identify any living thing
 Use-iNaturalists-AI-Camera = Use iNaturalist's AI Camera to identify organisms in real time
 # Text for a button prompting the user to grant access to location
 USE-LOCATION = USE LOCATION
