@@ -43,7 +43,7 @@ const AdditionalSuggestionsScroll = ( { otherSuggestions, onSuggestionChosen } )
 
   return (
     <View className="mt-4 mb-7">
-      <Heading3 className="mb-3">{t( "It-might-also-be" )}</Heading3>
+      <Heading3 className="mx-5 mb-3">{t( "It-might-also-be" )}</Heading3>
       <CustomFlashList
         horizontal
         renderItem={renderItem}

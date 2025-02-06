@@ -68,11 +68,11 @@ const Match = ( {
             ? handleLocationPickerPressed
             : null}
         />
-        <View className="px-5 pt-2">
+        <View className="pt-2">
           {
             isConnected && (
               <Button
-                className="mb-2"
+                className="mx-5 mb-2"
                 level="primary"
                 text={taxon?.rank_level === 10
                   ? t( "LEARN-MORE-ABOUT-THIS-SPECIES" )
