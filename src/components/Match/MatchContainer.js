@@ -168,24 +168,20 @@ const MatchContainer = ( ) => {
       ["desc"]
     );
 
-    // order the chosen suggestion at the beginning of the list, so it
-    // can become the new top suggestion
     const chosenIndex = _.findIndex(
       sortedList,
       suggestion => suggestion.taxon.id === selection.taxon.id
     );
     if ( chosenIndex !== -1 ) {
-      const newList = [
-        selection, // Add selected item at the beginning
-        ...sortedList.slice( 0, chosenIndex ), // Items before the selected one
-        ...sortedList.slice( chosenIndex + 1 ) // Items after the selected one
-      ];
-
+      // Set new top suggestion
+      setTopSuggestion( sortedList[chosenIndex] );
+      // We can set the entire list here since we are filtering out the top suggestion in render
       dispatch( {
         type: "ORDER_SUGGESTIONS",
-        orderedSuggestions: newList
+        orderedSuggestions: sortedList
       } );
     }
+    // TODO: scroll to top of screen
   }, [orderedSuggestions] );
 
   const createUploadParams = useCallback( async ( uri, showLocation ) => {
