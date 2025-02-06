@@ -75,7 +75,7 @@ const MatchContainer = ( ) => {
   const currentObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
   const cameraRollUris = useStore( state => state.cameraRollUris );
-  const aICameraSuggestion = useStore( state => state.aICameraSuggestion );
+  // const aICameraSuggestion = useStore( state => state.aICameraSuggestion );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const navigation = useNavigation( );
   const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
@@ -107,11 +107,7 @@ const MatchContainer = ( ) => {
   const evidenceHasLocation = !!currentObservation?.latitude;
 
   // Start with the AI camera suggestion as top ID
-  // TODO: should we exclude suggestions with rank_level > 40?
-  const initialTopSuggestion = aICameraSuggestion?.taxon?.rank_level <= 40
-    ? aICameraSuggestion
-    : null;
-  const [topSuggestion, setTopSuggestion] = useState( initialTopSuggestion );
+  const [topSuggestion, setTopSuggestion] = useState( );
   const [state, dispatch] = useReducer( reducer, {
     ...initialState,
     shouldUseEvidenceLocation: evidenceHasLocation
@@ -241,6 +237,9 @@ const MatchContainer = ( ) => {
     } );
   }, [suggestions] );
 
+  if ( !topSuggestion ) {
+    return null;
+  }
 
   const taxon = topSuggestion?.taxon;
   const taxonId = taxon?.id;
