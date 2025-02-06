@@ -75,8 +75,7 @@ const MatchContainer = ( ) => {
   const currentObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
   const cameraRollUris = useStore( state => state.cameraRollUris );
-  // likely need aiCameraSuggestion for loading screen
-  // const aICameraSuggestion = useStore( state => state.aICameraSuggestion );
+  const aICameraSuggestion = useStore( state => state.aICameraSuggestion );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const navigation = useNavigation( );
   const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
@@ -107,6 +106,12 @@ const MatchContainer = ( ) => {
 
   const evidenceHasLocation = !!currentObservation?.latitude;
 
+  // Start with the AI camera suggestion as top ID
+  // TODO: should we exclude suggestions with rank_level > 40?
+  const initialTopSuggestion = aICameraSuggestion?.taxon?.rank_level <= 40
+    ? aICameraSuggestion
+    : null;
+  const [topSuggestion, setTopSuggestion] = useState( initialTopSuggestion );
   const [state, dispatch] = useReducer( reducer, {
     ...initialState,
     shouldUseEvidenceLocation: evidenceHasLocation
@@ -246,11 +251,15 @@ const MatchContainer = ( ) => {
 
   const otherSuggestionsLoading = fetchStatus === FETCH_STATUS_LOADING;
 
-  const topSuggestion = _.first( orderedSuggestions );
-  const otherSuggestions = _.without( orderedSuggestions, topSuggestion );
 
   const taxon = topSuggestion?.taxon;
   const taxonId = taxon?.id;
+
+  // Remove the top suggestion from the list of other suggestions
+  // TODO: in the case of the top suggestion being the initial ai camera suggestion and removing
+  // it from the list here it means Confidence of all suggestions will not be 100
+  const otherSuggestions = orderedSuggestions
+    .filter( suggestion => suggestion.taxon.id !== taxonId );
 
   const navToTaxonDetails = ( ) => {
     navigation.push( "TaxonDetails", { id: taxonId } );
