@@ -227,6 +227,8 @@ const Settings = ( ) => {
                   );
                   // sign out
                   await signOut( { realm, clearRealm: true, queryClient } );
+                  // revert back to default mode
+                  setIsDefaultMode( true );
                   // navigate to My Obs
                   navigation.navigate( "ObsList" );
                 }
