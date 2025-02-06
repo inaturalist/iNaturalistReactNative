@@ -17,7 +17,7 @@ type Props = {
 
 const STYLESHEET = {
   alignItems: "center"
-};
+} as const;
 
 const ICONIC_TAXA = [
   "plantae",
