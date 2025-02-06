@@ -247,9 +247,6 @@ const MatchContainer = ( ) => {
 
   const otherSuggestionsLoading = fetchStatus === FETCH_STATUS_LOADING;
   // Remove the top suggestion from the list of other suggestions
-  // TODO: in the case of the top suggestion being the initial ai camera suggestion and removing
-  // it from the list here it means Confidence of all suggestions will not be 100 because ai camera
-  // uses "best-branch" and online suggestions uses "common-ancestor" approach
   const otherSuggestions = orderedSuggestions
     .filter( suggestion => suggestion.taxon.id !== taxonId );
 
