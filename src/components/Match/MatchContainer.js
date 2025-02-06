@@ -44,7 +44,7 @@ const reducer = ( state, action ) => {
       return {
         ...state,
         scoreImageParams: action.scoreImageParams,
-        queryKey: setQueryKey( state.selectedPhotoUri, state.shouldUseEvidenceLocation )
+        queryKey: setQueryKey( action.scoreImageParams.image.uri, state.shouldUseEvidenceLocation )
       };
     case "SET_FETCH_STATUS":
       return {
@@ -57,7 +57,7 @@ const reducer = ( state, action ) => {
         fetchStatus: FETCH_STATUS_LOADING,
         scoreImageParams: action.scoreImageParams,
         shouldUseEvidenceLocation: action.shouldUseEvidenceLocation,
-        queryKey: setQueryKey( state.selectedPhotoUri, action.shouldUseEvidenceLocation )
+        queryKey: setQueryKey( action.scoreImageParams.image.uri, action.shouldUseEvidenceLocation )
       };
     case "ORDER_SUGGESTIONS":
       return {
