@@ -1,3 +1,4 @@
+import { useNetInfo } from "@react-native-community/netinfo";
 import LocationSection
   from "components/ObsDetailsDefaultMode/LocationSection/LocationSection.tsx";
 import MapSection
@@ -37,6 +38,7 @@ const Match = ( {
   onSuggestionChosen
 }: Props ) => {
   const { t } = useTranslation( );
+  const { isConnected } = useNetInfo( );
 
   const latitude = observation?.privateLatitude || observation?.latitude;
   const taxon = topSuggestion?.taxon;
@@ -67,15 +69,19 @@ const Match = ( {
             : null}
         />
         <View className="px-5 pt-2">
-          <Button
-            className="mb-2"
-            level="primary"
-            text={taxon?.rank_level === 10
-              ? t( "LEARN-MORE-ABOUT-THIS-SPECIES" )
-              : t( "LEARN-MORE-ABOUT-THIS-GROUP" )}
-            onPress={navToTaxonDetails}
-            accessibilityHint={t( "Navigates-to-taxon-details" )}
-          />
+          {
+            isConnected && (
+              <Button
+                className="mb-2"
+                level="primary"
+                text={taxon?.rank_level === 10
+                  ? t( "LEARN-MORE-ABOUT-THIS-SPECIES" )
+                  : t( "LEARN-MORE-ABOUT-THIS-GROUP" )}
+                onPress={navToTaxonDetails}
+                accessibilityHint={t( "Navigates-to-taxon-details" )}
+              />
+            )
+          }
           <AdditionalSuggestionsScroll
             onSuggestionChosen={onSuggestionChosen}
             otherSuggestions={otherSuggestions}
