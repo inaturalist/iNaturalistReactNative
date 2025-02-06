@@ -41,11 +41,14 @@ const AdditionalSuggestionsScroll = ( { otherSuggestions, onSuggestionChosen } )
     return null;
   }
 
+  const renderHeader = () => <View className="ml-5" />;
+
   return (
     <View className="mt-4 mb-7">
       <Heading3 className="mx-5 mb-3">{t( "It-might-also-be" )}</Heading3>
       <CustomFlashList
         horizontal
+        ListHeaderComponent={renderHeader}
         renderItem={renderItem}
         estimatedItemSize={160}
         keyExtractor={item => item?.taxon?.id}
