@@ -244,10 +244,7 @@ const MatchContainer = ( ) => {
     return null;
   }
 
-  // TODO: replace with a loading screen whenever designs are ready
-  if ( orderedSuggestions.length === 0 ) {
-    return null;
-  }
+  const otherSuggestionsLoading = fetchStatus === FETCH_STATUS_LOADING;
 
   const topSuggestion = _.first( orderedSuggestions );
   const otherSuggestions = _.without( orderedSuggestions, topSuggestion );
@@ -281,6 +278,7 @@ const MatchContainer = ( ) => {
         handleLocationPickerPressed={handleLocationPickerPressed}
         topSuggestion={topSuggestion}
         otherSuggestions={otherSuggestions}
+        otherSuggestionsLoading={otherSuggestionsLoading}
       />
       {renderPermissionsGate( { onPermissionGranted: openLocationPicker } )}
     </>
