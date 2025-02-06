@@ -75,6 +75,7 @@ const MatchContainer = ( ) => {
   const currentObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
   const cameraRollUris = useStore( state => state.cameraRollUris );
+  // likely need aiCameraSuggestion for loading screen
   // const aICameraSuggestion = useStore( state => state.aICameraSuggestion );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const navigation = useNavigation( );
@@ -106,7 +107,6 @@ const MatchContainer = ( ) => {
 
   const evidenceHasLocation = !!currentObservation?.latitude;
 
-  // Start with the AI camera suggestion as top ID
   const [topSuggestion, setTopSuggestion] = useState( );
   const [state, dispatch] = useReducer( reducer, {
     ...initialState,
