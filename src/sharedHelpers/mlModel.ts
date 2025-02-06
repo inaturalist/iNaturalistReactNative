@@ -58,7 +58,6 @@ export const predictImage = ( uri: string, location: Location ) => {
     modelPath,
     taxonomyPath,
     version: modelVersion,
-    confidenceThreshold: 0.2,
     useGeomodel: hasLocation,
     geomodelPath,
     location: hasLocation
