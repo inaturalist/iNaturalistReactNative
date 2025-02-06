@@ -14,7 +14,7 @@ import {
 import _ from "lodash";
 import { RealmContext } from "providers/contexts.ts";
 import React, {
-  useCallback, useEffect, useReducer, useRef
+  useCallback, useEffect, useReducer, useRef, useState
 } from "react";
 import saveObservation from "sharedHelpers/saveObservation.ts";
 import {
