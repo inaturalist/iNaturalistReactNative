@@ -17,9 +17,9 @@ const usePredictions = ( ) => {
   const [result, setResult] = useState<StoredResult | null>( null );
   const [resultTimestamp, setResultTimestamp] = useState<number | undefined>( undefined );
   const [modelLoaded, setModelLoaded] = useState( false );
-  const [confidenceThreshold, setConfidenceThreshold] = useState( 0.5 );
+  const [confidenceThreshold, setConfidenceThreshold] = useState( 0.7 );
   const [fps, setFPS] = useState( 1 );
-  const [numStoredResults, setNumStoredResults] = useState( 4 );
+  const [numStoredResults, setNumStoredResults] = useState( 5 );
   const [cropRatio, setCropRatio] = useState( 1 );
   const iconicTaxa = useIconicTaxa( );
 
