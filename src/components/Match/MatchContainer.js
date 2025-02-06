@@ -227,7 +227,7 @@ const MatchContainer = ( ) => {
     }
     const orderedList = [...suggestions.otherSuggestions];
     if ( suggestions?.topSuggestion ) {
-      orderedList.unshift( suggestions?.topSuggestion );
+      setTopSuggestion( suggestions?.topSuggestion );
     }
     // make sure list is in order of confidence score
     const sortedList = _.orderBy(
