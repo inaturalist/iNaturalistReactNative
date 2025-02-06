@@ -4,7 +4,7 @@ import ActivityHeaderKebabMenu from "components/ObsDetails/ActivityTab/ActivityH
 import WithdrawIDSheet from "components/ObsDetails/Sheets/WithdrawIDSheet";
 import {
   ActivityIndicator,
-  Body4, DateDisplay,
+  DateDisplay,
   INatIcon, InlineUser, TextInputSheet, WarningSheet
 } from "components/SharedComponents";
 import {
@@ -49,7 +49,7 @@ const ActivityHeader = ( {
   const [showEditCommentSheet, setShowEditCommentSheet] = useState( false );
   const [showDeleteCommentSheet, setShowDeleteCommentSheet] = useState( false );
   const [showWithdrawIDSheet, setShowWithdrawIDSheet] = useState( false );
-  const { category, user, vision } = item;
+  const { user, vision } = item;
 
   const itemType = item.category
     ? "Identification"
@@ -73,57 +73,11 @@ const ActivityHeader = ( {
     vision
   ] );
 
-  const renderStatus = useCallback( () => {
-    if ( flagged ) {
-      return (
-        <Body4 maxFontSizeMultiplier={1}>
-          {t( "Flagged" )}
-        </Body4>
-      );
-    }
-    if ( idWithdrawn ) {
-      return (
-        <Body4 maxFontSizeMultiplier={1}>
-          { t( "ID-Withdrawn" )}
-        </Body4>
-      );
-    }
-    if ( category ) {
-      let categoryText;
-      switch ( category ) {
-        case "improving":
-          categoryText = t( "improving--identification" );
-          break;
-        case "maverick":
-          categoryText = t( "maverick--identification" );
-          break;
-        case "leading":
-          categoryText = t( "leading--identification" );
-          break;
-        default:
-          categoryText = t( "supporting--identification" );
-      }
-      return (
-        <Body4 maxFontSizeMultiplier={1}>
-          { categoryText }
-        </Body4>
-      );
-    }
-    return (
-      <Body4 />
-    );
-  }, [
-    category,
-    flagged,
-    idWithdrawn
-  ] );
-
   return (
     <View className={classnames( "flex-row justify-between", classNameMargin )}>
       <InlineUser user={user} isConnected={isConnected} />
       <View className="flex-row items-center space-x-[15px] -mr-[15px]">
         {renderIcon()}
-        {renderStatus()}
         {/*
           Note that even though the date is conditionally rendered, we need to
           wrap it in a View that's always there so the space-x-[] can be

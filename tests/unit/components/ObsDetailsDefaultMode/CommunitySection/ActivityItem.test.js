@@ -96,28 +96,4 @@ describe( "ActivityItem", () => {
     fireEvent.press( agreeButton );
     expect( mockopenAgreeWithIdSheet ).toHaveBeenCalledWith( mockIdentification.taxon );
   } );
-
-  it( "renders withdrawn id label", async ( ) => {
-    const mockId = factory( "LocalIdentification", {
-      uuid: "123456789",
-      user: factory( "LocalUser" ),
-      taxon: factory( "LocalTaxon", {
-        name: "Miner's Lettuce"
-      } ),
-      current: false
-    } );
-    renderComponent(
-      <ActivityItem
-        currentUserId="000"
-        item={mockId}
-        key={mockId.uuid}
-        userAgreedId=""
-      />
-    );
-
-    const idWithdrawn = await screen.findByText( "ID Withdrawn" );
-    await waitFor( ( ) => {
-      expect( idWithdrawn ).toBeTruthy( );
-    } );
-  } );
 } );

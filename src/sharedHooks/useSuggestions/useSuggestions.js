@@ -42,7 +42,7 @@ export const useSuggestions = ( photoUri, options ) => {
   // 20240815 amanda - it's conceivable that we would want to use a cached image here eventually,
   // since the user can see the small square version of this image in MyObs/ObsDetails already
   // but for now, passing in an https photo to predictImage while offline crashes the app
-  const urlWillCrashOffline = photoUri.includes( "https://" ) && !isConnected;
+  const urlWillCrashOffline = photoUri?.includes( "https://" ) && !isConnected;
 
   // skip to offline suggestions if internet connection is spotty
   const tryOfflineSuggestions = !urlWillCrashOffline && (
