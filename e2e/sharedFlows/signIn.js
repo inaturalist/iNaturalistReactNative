@@ -4,12 +4,19 @@ import {
 import Config from "react-native-config-node";
 
 export default async function signIn() {
-  const loginText = element( by.id( "log-in-to-iNaturalist-button.text" ) );
-  // 10000 timeout is for github actions, which was failing with a
-  // shorter timeout period
-  await waitFor( loginText ).toBeVisible().withTimeout( 10000 );
-  await expect( loginText ).toBeVisible();
-  await element( by.id( "log-in-to-iNaturalist-button.text" ) ).tap();
+  // Find the Menu item from tabs
+  const openDrawerMenuItem = element( by.id( "OPEN_DRAWER" ) );
+  await waitFor( openDrawerMenuItem ).toBeVisible().withTimeout( 10000 );
+  await expect( openDrawerMenuItem ).toBeVisible();
+  await element( by.id( "OPEN_DRAWER" ) ).tap();
+  // Tap the Log-In menu item
+  // TODO: consider this a temporary solution as it only checks for the drawer-top-banner
+  // which can be a login prompt or the logged in user's details. If the user is already
+  // logged in, this should fail instead.
+  const loginMenuItem = element( by.id( "drawer-top-banner" ) );
+  await waitFor( loginMenuItem ).toBeVisible().withTimeout( 10000 );
+  await expect( loginMenuItem ).toBeVisible();
+  await element( by.id( "drawer-top-banner" ) ).tap();
   const usernameInput = element( by.id( "Login.email" ) );
   await waitFor( usernameInput ).toBeVisible().withTimeout( 10000 );
   await expect( usernameInput ).toBeVisible();
