@@ -17,7 +17,7 @@ import SaveDiscardButtons from "./SaveDiscardButtons";
 
 type Props = {
   observation: Object,
-  observationPhoto: string,
+  obsPhotos: Array<Object>,
   handleSaveOrDiscardPress: ( ) => void,
   navToTaxonDetails: ( ) => void,
   handleLocationPickerPressed: ( ) => void,
@@ -28,7 +28,7 @@ type Props = {
 
 const Match = ( {
   observation,
-  observationPhoto,
+  obsPhotos,
   handleSaveOrDiscardPress,
   navToTaxonDetails,
   handleLocationPickerPressed,
@@ -50,7 +50,7 @@ const Match = ( {
         </View>
         <PhotosSection
           taxon={taxon}
-          observationPhoto={observationPhoto}
+          obsPhotos={obsPhotos}
           navToTaxonDetails={navToTaxonDetails}
         />
         <View className="border-[1.5px] border-white" />
