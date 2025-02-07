@@ -1,0 +1,4 @@
+UI changes on default mode's ObsDetail, Match screen, and MyObservations
+Fix double point confidence scores was off by factor of 100 for off-line suggestions
+Does not show top suggestion if there is no common ancestor on Match screen
+Adds mediaviewer when obs photo tapped on match screen
