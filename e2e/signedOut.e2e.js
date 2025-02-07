@@ -15,7 +15,7 @@ describe( "Signed out user", () => {
 
   it( "should start at My Observations with log in text", async () => {
     await closeOnboarding( );
-    const loginText = element( by.id( "log-in-to-iNaturalist-button.text" ) );
+    const loginText = element( by.id( "use-iNaturalist-intro-text" ) );
     await waitFor( loginText ).toBeVisible( ).withTimeout( 10000 );
     await expect( loginText ).toBeVisible( );
   } );

@@ -88,7 +88,10 @@ const MyObservations = ( {
         />
         <View className="flex grow flex-col justify-center mx-[67px]">
           <Pressable accessibilityRole="button" onPress={navToARCamera}>
-            <Heading2 className="mb-8 text-center">
+            <Heading2
+              testID="use-iNaturalist-intro-text"
+              className="mb-8 text-center"
+            >
               {t( "Use-iNaturalist-to-identify-any-living-thing" )}
             </Heading2>
           </Pressable>
