@@ -265,7 +265,7 @@ const MatchContainer = ( ) => {
     <>
       <Match
         observation={currentObservation}
-        observationPhoto={observationPhoto}
+        obsPhotos={obsPhotos}
         onSuggestionChosen={onSuggestionChosen}
         handleSaveOrDiscardPress={handleSaveOrDiscardPress}
         navToTaxonDetails={navToTaxonDetails}
