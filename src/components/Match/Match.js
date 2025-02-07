@@ -24,6 +24,7 @@ type Props = {
   handleLocationPickerPressed: ( ) => void,
   topSuggestion: Object,
   otherSuggestions: Array<Object>,
+  otherSuggestionsLoading: boolean,
   onSuggestionChosen: ( ) => void
 }
 
@@ -35,6 +36,7 @@ const Match = ( {
   handleLocationPickerPressed,
   topSuggestion,
   otherSuggestions,
+  otherSuggestionsLoading,
   onSuggestionChosen
 }: Props ) => {
   const { t } = useTranslation( );
@@ -85,6 +87,7 @@ const Match = ( {
           <AdditionalSuggestionsScroll
             onSuggestionChosen={onSuggestionChosen}
             otherSuggestions={otherSuggestions}
+            otherSuggestionsLoading={otherSuggestionsLoading}
           />
           {!latitude && (
             <Button

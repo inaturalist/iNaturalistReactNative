@@ -49,8 +49,8 @@ type Props = {
 };
 
 const DEFAULT_FPS = 1;
-const DEFAULT_CONFIDENCE_THRESHOLD = 0.5;
-const DEFAULT_NUM_STORED_RESULTS = 4;
+const DEFAULT_CONFIDENCE_THRESHOLD = 0.7;
+const DEFAULT_NUM_STORED_RESULTS = 5;
 const DEFAULT_CROP_RATIO = 1.0;
 
 let framesProcessingTime = [];
