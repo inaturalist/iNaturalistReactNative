@@ -12,6 +12,7 @@ import {
 import GradientButton from "components/SharedComponents/Buttons/GradientButton.tsx";
 import Modal from "components/SharedComponents/Modal.tsx";
 import { View } from "components/styledComponents";
+import Arrow from "images/svg/curved_arrow_down.svg";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Pressable } from "react-native";
@@ -85,27 +86,26 @@ const MyObservations = ( {
           showModal={!onboardingShown}
           closeModal={() => setOnboardingShown( true )}
         />
-        <MyObservationsHeader
-          currentUser={currentUser}
-          handleSyncButtonPress={handleSyncButtonPress}
-          hideToolbar={observations.length === 0}
-          layout={layout}
-          logInButtonNeutral={observations.length === 0}
-          numUnuploadedObservations={numUnuploadedObservations}
-          toggleLayout={toggleLayout}
-        />
         <View className="flex grow flex-col justify-center mx-[67px]">
-          <GradientButton
-            accessibilityLabel={t( "Add-observations" )}
-            sizeClassName="w-[141px] h-[141px] self-center"
-            onPress={navToARCamera}
-            iconSize={76}
-          />
           <Pressable accessibilityRole="button" onPress={navToARCamera}>
-            <Heading2 className="mt-6 text-center">
-              {t( "Identify-an-organism-with-the-iNaturalist-AI-Camera" )}
+            <Heading2
+              testID="use-iNaturalist-intro-text"
+              className="mb-8 text-center"
+            >
+              {t( "Use-iNaturalist-to-identify-any-living-thing" )}
             </Heading2>
           </Pressable>
+          <View className="relative w-[141px] self-center">
+            {/* $FlowIgnore[not-a-component] */}
+            <Arrow className="absolute right-[-20px] top-[-23px]" />
+            <GradientButton
+              clas
+              accessibilityLabel={t( "Add-observations" )}
+              sizeClassName="w-[141px] h-[141px] self-center"
+              onPress={navToARCamera}
+              iconSize={76}
+            />
+          </View>
         </View>
         <Modal
           showModal={showModal}

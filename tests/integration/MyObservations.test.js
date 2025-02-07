@@ -153,7 +153,7 @@ describe( "MyObservations", ( ) => {
       const signedInUsers = realm.objects( "User" ).filtered( "signedIn == true" );
       expect( signedInUsers.length ).toEqual( 0 );
       renderAppWithComponent( <MyObservationsContainer /> );
-      const loginText = i18next.t( "Log-in-to-contribute-your-observations" );
+      const loginText = i18next.t( "Use-iNaturalist-to-identify-any-living-thing" );
       expect( await screen.findByText( loginText ) ).toBeTruthy( );
       // Unpleasant, but without adjusting the timeout it doesn't seem like
       // all of these requests get caught

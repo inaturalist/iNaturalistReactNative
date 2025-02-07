@@ -183,6 +183,7 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
 
   const renderTopBanner = useCallback( ( ) => (
     <Pressable
+      testID="drawer-top-banner"
       accessibilityRole="button"
       className={classnames(
         currentUser
