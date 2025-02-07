@@ -24,6 +24,14 @@ const MatchHeader = ( { topSuggestion }: Props ) => {
   const realm = useRealm( );
   const taxon = topSuggestion?.taxon;
 
+  if ( !topSuggestion ) {
+    return (
+      <Body2>
+        {t( "iNaturalist-couldnt-identify-this-organism" )}
+      </Body2>
+    );
+  }
+
   const confidence = calculateConfidence( topSuggestion );
 
   const hasSeenSpecies = taxon?.id

@@ -595,6 +595,7 @@ INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT SETTINGS
 iNaturalist-AI-Camera = iNaturalist AI Camera
 iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNaturalist can save photos you take in the app to your device’s gallery.
 INATURALIST-COMMUNITY = INATURALIST COMMUNITY
+iNaturalist-couldnt-identify-this-organism = iNaturalist couldn’t identify this organism.
 INATURALIST-FORUM = INATURALIST FORUM
 iNaturalist-has-no-ID-suggestions-for-this-photo = iNaturalist has no ID suggestions for this photo.
 INATURALIST-HELP-PAGE = INATURALIST HELP PAGE

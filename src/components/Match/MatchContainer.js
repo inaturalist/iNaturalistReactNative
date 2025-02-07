@@ -238,10 +238,6 @@ const MatchContainer = ( ) => {
     } );
   }, [suggestions] );
 
-  if ( !topSuggestion ) {
-    return null;
-  }
-
   const taxon = topSuggestion?.taxon;
   const taxonId = taxon?.id;
 
