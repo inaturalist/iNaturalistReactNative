@@ -241,7 +241,7 @@ const MatchContainer = ( ) => {
   const taxon = topSuggestion?.taxon;
   const taxonId = taxon?.id;
 
-  const otherSuggestionsLoading = fetchStatus === FETCH_STATUS_LOADING;
+  const suggestionsLoading = fetchStatus === FETCH_STATUS_LOADING;
   // Remove the top suggestion from the list of other suggestions
   const otherSuggestions = orderedSuggestions
     .filter( suggestion => suggestion.taxon.id !== taxonId );
@@ -272,7 +272,7 @@ const MatchContainer = ( ) => {
         handleLocationPickerPressed={handleLocationPickerPressed}
         topSuggestion={topSuggestion}
         otherSuggestions={otherSuggestions}
-        otherSuggestionsLoading={otherSuggestionsLoading}
+        suggestionsLoading={suggestionsLoading}
       />
       {renderPermissionsGate( { onPermissionGranted: openLocationPicker } )}
     </>
