@@ -67,28 +67,16 @@ const MatchHeader = ( { topSuggestion }: Props ) => {
     if ( confidenceType === "observed" ) {
       if ( rankDescription === "new_species" ) {
         congratulatoryText = t( "You-observed-a-new-species" );
-      } else if ( rankDescription === "species" ) {
-        congratulatoryText = t( "You-observed-a-species" );
-      } else if ( rankDescription === "organism" ) {
-        congratulatoryText = t( "You-observed-an-organism-in-this-group" );
       }
     }
     if ( confidenceType === "likely_observed" ) {
       if ( rankDescription === "new_species" ) {
         congratulatoryText = t( "You-likely-observed-a-new-species" );
-      } else if ( rankDescription === "species" ) {
-        congratulatoryText = t( "You-likely-observed-a-species" );
-      } else if ( rankDescription === "organism" ) {
-        congratulatoryText = t( "You-likely-observed-an-organism-in-this-group" );
       }
     }
     if ( confidenceType === "may_have_observed" ) {
       if ( rankDescription === "new_species" ) {
         congratulatoryText = t( "You-may-have-observed-a-new-species" );
-      } else if ( rankDescription === "species" ) {
-        congratulatoryText = t( "You-may-have-observed-a-species" );
-      } else if ( rankDescription === "organism" ) {
-        congratulatoryText = t( "You-may-have-observed-an-organism-in-this-group" );
       }
     }
     return congratulatoryText;
