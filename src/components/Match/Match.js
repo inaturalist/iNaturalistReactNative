@@ -3,7 +3,9 @@ import LocationSection
   from "components/ObsDetailsDefaultMode/LocationSection/LocationSection.tsx";
 import MapSection
   from "components/ObsDetailsDefaultMode/MapSection/MapSection";
-import { Button, Divider, ScrollViewWrapper } from "components/SharedComponents";
+import {
+  ActivityIndicator, Button, Divider, ScrollViewWrapper
+} from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import _ from "lodash";
 import React from "react";
@@ -24,7 +26,7 @@ type Props = {
   handleLocationPickerPressed: ( ) => void,
   topSuggestion: Object,
   otherSuggestions: Array<Object>,
-  otherSuggestionsLoading: boolean,
+  suggestionsLoading: boolean,
   onSuggestionChosen: ( ) => void
 }
 
@@ -36,7 +38,7 @@ const Match = ( {
   handleLocationPickerPressed,
   topSuggestion,
   otherSuggestions,
-  otherSuggestionsLoading,
+  suggestionsLoading,
   onSuggestionChosen
 }: Props ) => {
   const { t } = useTranslation( );
@@ -50,7 +52,13 @@ const Match = ( {
       <ScrollViewWrapper>
         <Divider />
         <View className="p-5">
-          <MatchHeader topSuggestion={topSuggestion} />
+          {
+            suggestionsLoading
+              ? (
+                <ActivityIndicator size={33} />
+              )
+              : <MatchHeader topSuggestion={topSuggestion} />
+          }
         </View>
         <PhotosSection
           taxon={taxon}
@@ -87,7 +95,7 @@ const Match = ( {
           <AdditionalSuggestionsScroll
             onSuggestionChosen={onSuggestionChosen}
             otherSuggestions={otherSuggestions}
-            otherSuggestionsLoading={otherSuggestionsLoading}
+            suggestionsLoading={suggestionsLoading}
           />
           {!latitude && (
             <Button

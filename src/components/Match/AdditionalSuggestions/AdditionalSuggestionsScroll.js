@@ -8,7 +8,7 @@ import SuggestionsResult from "./SuggestionsResult";
 
 const AdditionalSuggestionsScroll = ( {
   otherSuggestions,
-  otherSuggestionsLoading,
+  suggestionsLoading,
   onSuggestionChosen
 } ) => {
   const { t } = useTranslation( );
@@ -41,7 +41,7 @@ const AdditionalSuggestionsScroll = ( {
     );
   };
 
-  if ( !otherSuggestionsLoading && otherSuggestions?.length === 0 ) {
+  if ( !suggestionsLoading && otherSuggestions?.length === 0 ) {
     return null;
   }
 
@@ -50,7 +50,7 @@ const AdditionalSuggestionsScroll = ( {
   return (
     <View className="mt-4 mb-7">
       <Heading3 className="mx-5 mb-3">{t( "It-might-also-be" )}</Heading3>
-      {!otherSuggestionsLoading
+      {!suggestionsLoading
         ? (
           <CustomFlashList
             ListHeaderComponent={renderHeader}
