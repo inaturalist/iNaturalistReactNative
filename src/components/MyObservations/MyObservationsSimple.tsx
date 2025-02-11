@@ -264,22 +264,24 @@ const MyObservationsSimple = ( {
               }
             </Heading3>
           </View>
-          <RotatingINatIconButton
-            icon={
-              numUnuploadedObservations > 0
-                ? "sync-unsynced"
-                : "sync"
-            }
-            onPress={handleSyncButtonPress}
-            color={String(
-              numUnuploadedObservations > 0
-                ? colors?.inatGreen
-                : colors?.darkGray
-            )}
-            accessibilityLabel={t( "Sync-observations" )}
-            size={26}
-            testID="SyncButton"
-          />
+          {currentUser && (
+            <RotatingINatIconButton
+              icon={
+                numUnuploadedObservations > 0
+                  ? "sync-unsynced"
+                  : "sync"
+              }
+              onPress={handleSyncButtonPress}
+              color={String(
+                numUnuploadedObservations > 0
+                  ? colors?.inatGreen
+                  : colors?.darkGray
+              )}
+              accessibilityLabel={t( "Sync-observations" )}
+              size={26}
+              testID="SyncButton"
+            />
+          )}
         </View>
         <Tabs
           activeColor={String( colors?.inatGreen )}
