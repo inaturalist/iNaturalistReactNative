@@ -256,7 +256,10 @@ const Settings = ( ) => {
             <RadioButtonRow
               smallLabel
               checked={isDefaultMode}
-              onPress={( ) => setIsDefaultMode( true )}
+              onPress={( ) => {
+                setIsDefaultMode( true );
+                setIsAllAddObsOptionsMode( false );
+              }}
               label={t( "Default--interface-mode" )}
             />
           </View>
