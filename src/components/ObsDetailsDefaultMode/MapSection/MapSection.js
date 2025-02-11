@@ -12,12 +12,13 @@ import { useCurrentUser } from "sharedHooks";
 import DetailsMapHeader from "./DetailsMapHeader";
 
 interface Props {
-  observation: Observation
+  observation: Observation,
+  taxon?: Object
 }
 
 const DETAILS_MAP_MODAL_STYLE = { margin: 0 };
 
-const MapSection = ( { observation }: Props ) => {
+const MapSection = ( { observation, taxon }: Props ) => {
   const currentUser = useCurrentUser( );
   const [showMapModal, setShowMapModal] = useState( false );
   const latitude = observation.privateLatitude || observation.latitude;
@@ -29,7 +30,7 @@ const MapSection = ( { observation }: Props ) => {
 
   const openMapScreen = useCallback( ( ) => setShowMapModal( true ), [] );
 
-  const taxonId = observation?.taxon?.id;
+  const taxonId = taxon?.id || observation?.taxon?.id;
 
   const tileMapParams = useMemo( ( ) => ( taxonId
     ? {
@@ -44,6 +45,7 @@ const MapSection = ( { observation }: Props ) => {
       closeModal={( ) => setShowMapModal( false )}
       observation={observation}
       tileMapParams={tileMapParams}
+      withObsTiles={tileMapParams !== null}
       showLocationIndicator
       headerTitle={(
         <DetailsMapHeader currentUser={currentUser} observation={observation} />

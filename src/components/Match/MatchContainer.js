@@ -178,6 +178,7 @@ const MatchContainer = ( ) => {
       } );
     }
     // TODO: scroll to top of screen
+    // TODO: should this set owners_identification_from_vision: false?
   }, [orderedSuggestions] );
 
   const createUploadParams = useCallback( async ( uri, showLocation ) => {
