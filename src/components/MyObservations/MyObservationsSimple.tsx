@@ -250,7 +250,16 @@ const MyObservationsSimple = ( {
           </Pressable>
         ) }
         <View className="flex-row justify-between items-center px-5 py-1">
-          <View className="flex-row items-center">
+          <Pressable
+            accessibilityRole="button"
+            className="flex-row items-center"
+            onPress={() => {
+              if ( !currentUser ) {
+                return;
+              }
+              navigation.push( "UserProfile", { userId: currentUser?.id } );
+            }}
+          >
             {currentUser && (
               <View className="mr-2">
                 <UserIcon size={32} uri={User.uri( currentUser )} />
@@ -263,7 +272,7 @@ const MyObservationsSimple = ( {
                   : t( "My-Observations" )
               }
             </Heading3>
-          </View>
+          </Pressable>
           {currentUser && (
             <RotatingINatIconButton
               icon={
