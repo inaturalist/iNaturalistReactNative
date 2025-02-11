@@ -61,7 +61,7 @@ const Match = ( {
         {!latitude
           ? <EmptyMapSection handleLocationPickerPressed={handleLocationPickerPressed} />
           : (
-            <MapSection observation={observation} />
+            <MapSection observation={observation} taxon={taxon} />
           )}
         <LocationSection
           belongsToCurrentUser
