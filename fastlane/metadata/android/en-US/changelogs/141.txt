@@ -1,0 +1,5 @@
+Fix: Crash with certain timezones
+Match screen: Show map tiles, do not show text for non-new species, photo count, card UI
+MyObs: hide sync button for logged out user, navigate to user profile
+Force AI camera mode when switching to default mode
+Update to React Native 0.73.11
