@@ -27,7 +27,8 @@ type Props = {
   topSuggestion: Object,
   otherSuggestions: Array<Object>,
   suggestionsLoading: boolean,
-  onSuggestionChosen: ( ) => void
+  onSuggestionChosen: ( ) => void,
+  scrollRef: Object
 }
 
 const Match = ( {
@@ -39,7 +40,8 @@ const Match = ( {
   topSuggestion,
   otherSuggestions,
   suggestionsLoading,
-  onSuggestionChosen
+  onSuggestionChosen,
+  scrollRef
 }: Props ) => {
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
@@ -49,7 +51,7 @@ const Match = ( {
 
   return (
     <>
-      <ScrollViewWrapper>
+      <ScrollViewWrapper scrollRef={scrollRef}>
         <Divider />
         <View className="p-5">
           {
