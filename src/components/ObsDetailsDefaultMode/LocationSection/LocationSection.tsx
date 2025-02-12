@@ -1,4 +1,3 @@
-import classnames from "classnames";
 import {
   DateDisplay,
   Heading5,
@@ -28,10 +27,8 @@ const LocationSection = ( {
   const geoprivacy = observation?.geoprivacy;
   const taxonGeoprivacy = observation?.taxon_geoprivacy;
 
-  const cardClass = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mx-0.5";
-
   return (
-    <View className="pt-1 pb-5">
+    <View className="py-1">
       <View className="m-4">
         <Heading5 className="mb-2">
           {t( "OBSERVED-IN--label" )}
@@ -67,7 +64,6 @@ const LocationSection = ( {
           />
         ) }
       </View>
-      <View className={classnames( cardClass )} />
     </View>
   );
 };

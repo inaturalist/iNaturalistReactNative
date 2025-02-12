@@ -72,6 +72,7 @@ const { useRealm } = RealmContext;
 
 const MatchContainer = ( ) => {
   const hasLoadedRef = useRef( false );
+  const scrollRef = useRef( null );
   const currentObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
   const cameraRollUris = useStore( state => state.cameraRollUris );
@@ -152,6 +153,12 @@ const MatchContainer = ( ) => {
     onlineSuggestionsAttempted
   } );
 
+  const scrollToTop = useCallback( ( ) => {
+    if ( scrollRef.current ) {
+      scrollRef.current.scrollTo( { y: 0, animated: true } );
+    }
+  }, [] );
+
   const onSuggestionChosen = useCallback( selection => {
     const suggestionsList = [...orderedSuggestions];
 
@@ -177,9 +184,9 @@ const MatchContainer = ( ) => {
         orderedSuggestions: sortedList
       } );
     }
-    // TODO: scroll to top of screen
+    scrollToTop( );
     // TODO: should this set owners_identification_from_vision: false?
-  }, [orderedSuggestions] );
+  }, [orderedSuggestions, scrollToTop] );
 
   const createUploadParams = useCallback( async ( uri, showLocation ) => {
     const newImageParams = await flattenUploadParams( uri );
@@ -274,6 +281,7 @@ const MatchContainer = ( ) => {
         topSuggestion={topSuggestion}
         otherSuggestions={otherSuggestions}
         suggestionsLoading={suggestionsLoading}
+        scrollRef={scrollRef}
       />
       {renderPermissionsGate( { onPermissionGranted: openLocationPicker } )}
     </>

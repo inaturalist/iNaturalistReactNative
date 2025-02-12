@@ -4,7 +4,7 @@ import LocationSection
 import MapSection
   from "components/ObsDetailsDefaultMode/MapSection/MapSection";
 import {
-  ActivityIndicator, Button, Divider, ScrollViewWrapper
+  ActivityIndicator, Button, ScrollViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import _ from "lodash";
@@ -18,6 +18,9 @@ import MatchHeader from "./MatchHeader";
 import PhotosSection from "./PhotosSection";
 import SaveDiscardButtons from "./SaveDiscardButtons";
 
+const cardClassTop = "rounded-t-2xl border-lightGray border-[2px] p-4 border-b-0 -mb-0.5";
+const cardClassBottom = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mt-0.5 mb-4";
+
 type Props = {
   observation: Object,
   obsPhotos: Array<Object>,
@@ -27,7 +30,8 @@ type Props = {
   topSuggestion: Object,
   otherSuggestions: Array<Object>,
   suggestionsLoading: boolean,
-  onSuggestionChosen: ( ) => void
+  onSuggestionChosen: ( ) => void,
+  scrollRef: Object
 }
 
 const Match = ( {
@@ -39,7 +43,8 @@ const Match = ( {
   topSuggestion,
   otherSuggestions,
   suggestionsLoading,
-  onSuggestionChosen
+  onSuggestionChosen,
+  scrollRef
 }: Props ) => {
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
@@ -49,9 +54,8 @@ const Match = ( {
 
   return (
     <>
-      <ScrollViewWrapper>
-        <Divider />
-        <View className="p-5">
+      <ScrollViewWrapper scrollRef={scrollRef}>
+        <View className={cardClassTop}>
           {
             suggestionsLoading
               ? (
@@ -78,6 +82,7 @@ const Match = ( {
             ? handleLocationPickerPressed
             : null}
         />
+        <View className={cardClassBottom} />
         <View className="pt-2">
           {
             isConnected && (

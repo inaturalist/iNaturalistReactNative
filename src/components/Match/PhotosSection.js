@@ -1,6 +1,9 @@
 import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
+  PhotoCount
+} from "components/SharedComponents";
+import {
   Image, Pressable, View
 } from "components/styledComponents";
 import _, { compact } from "lodash";
@@ -76,6 +79,12 @@ const PhotosSection = ( {
         className="w-full h-full"
         accessibilityIgnoresInvertColors
       />
+      {observationPhotos.length > 1 && (
+        <View className="absolute bottom-5 left-5">
+          <PhotoCount count={observationPhotos.length} />
+        </View>
+      )}
+
     </Pressable>
   );
 
