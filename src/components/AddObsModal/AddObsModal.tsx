@@ -64,7 +64,7 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
       className: classnames( GREEN_CIRCLE_CLASS, MARGINS.standardCamera )
     },
     photoLibrary: {
-      text: t( "Upload-photos-from-your-gallery" ),
+      text: t( "Upload-photos-from-your-photo-library" ),
       icon: "gallery",
       onPress: ( ) => navAndCloseModal( "PhotoGallery" ),
       testID: "import-media-button",

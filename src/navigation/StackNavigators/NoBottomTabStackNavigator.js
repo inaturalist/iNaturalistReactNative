@@ -72,21 +72,6 @@ const CameraContainerWithPermission = ( ) => fadeInComponent(
   </Mortal>
 );
 
-// const GalleryContainerWithPermission = ( ) => (
-//   <PermissionGateContainer
-//     permissions={READ_WRITE_MEDIA_PERMISSIONS}
-//     title={t( "Observe-and-identify-organisms-from-your-gallery" )}
-//     titleDenied={t( "Please-Allow-Gallery-Access" )}
-//     body={t( "Upload-photos-from-your-gallery-and-create-observations" )}
-//     blockedPrompt={t( "Youve-previously-denied-gallery-permissions" )}
-//     buttonText={t( "CHOOSE-PHOTOS" )}
-//     icon="gallery"
-//     image={require( "images/background/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
-//   >
-//     <PhotoGallery />
-//   </PermissionGateContainer>
-// );
-
 // On iOS we don't actually need PHOTO LIBRARY permission to import photos,
 // and in fact, if we ask for it and the user denies it after already
 // granting add-only permission, the user can never grant it again until they

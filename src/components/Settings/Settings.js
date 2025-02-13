@@ -289,11 +289,11 @@ const Settings = ( ) => {
             </View>
             <View className="mt-4 pr-5">
               <RadioButtonRow
-                testID="all-observation-option"
+                testID="all-observation-options"
                 smallLabel
                 checked={isAllAddObsOptionsMode}
                 onPress={() => setIsAllAddObsOptionsMode( true )}
-                label={t( "All-observation-option" )}
+                label={t( "All-observation-options" )}
               />
             </View>
           </View>
