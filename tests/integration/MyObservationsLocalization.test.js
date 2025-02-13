@@ -7,6 +7,7 @@ import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderAppWithComponent } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
+import useStore from "stores/useStore";
 import { signIn, signOut } from "tests/helpers/user";
 
 // UNIQUE REALM SETUP
@@ -42,6 +43,15 @@ const mockUser = factory( "LocalUser", {
 //   iconUrl: faker.image.url( ),
 //   locale: "es"
 // } );
+
+beforeEach( ( ) => {
+  useStore.setState( {
+    layout: {
+      isDefaultMode: false
+    },
+    isAdvancedUser: true
+  } );
+} );
 
 describe( "MyObservations", ( ) => {
   describe( "localization for current user", ( ) => {
