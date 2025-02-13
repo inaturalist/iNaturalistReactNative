@@ -92,7 +92,9 @@ const TaxonDetails = ( ): Node => {
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
   const { remoteUser } = useUserMe( );
-  const exitObservationFlow = useExitObservationFlow( );
+  const exitObservationFlow = useExitObservationFlow( {
+    skipStoreReset: true
+  } );
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
 
