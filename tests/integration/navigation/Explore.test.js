@@ -8,6 +8,7 @@ import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import ReactNativePermissions from "react-native-permissions";
 import Observation from "realmModels/Observation";
+import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
@@ -83,6 +84,15 @@ beforeAll( async () => {
     return makeResponse( mockObservations );
   } );
   inatjs.taxa.fetch.mockResolvedValue( makeResponse( [mockTaxon] ) );
+} );
+
+beforeEach( ( ) => {
+  useStore.setState( {
+    layout: {
+      isDefaultMode: false
+    },
+    isAdvancedUser: true
+  } );
 } );
 
 const actor = userEvent.setup( );

@@ -75,7 +75,12 @@ const topSuggestion = {
 const actor = userEvent.setup( );
 
 beforeEach( ( ) => {
-  useStore.setState( { isAdvancedUser: true } );
+  useStore.setState( {
+    layout: {
+      isDefaultMode: false
+    },
+    isAdvancedUser: true
+  } );
   inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
 } );
 

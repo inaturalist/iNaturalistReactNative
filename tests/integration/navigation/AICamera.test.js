@@ -82,7 +82,12 @@ const mockUser = factory( "LocalUser" );
 
 beforeEach( async ( ) => {
   await signIn( mockUser, { realm: global.mockRealms[__filename] } );
-  useStore.setState( { isAdvancedUser: true } );
+  useStore.setState( {
+    layout: {
+      isDefaultMode: false
+    },
+    isAdvancedUser: true
+  } );
   inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
 } );
 

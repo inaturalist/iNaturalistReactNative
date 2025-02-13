@@ -245,6 +245,9 @@ describe( "Suggestions", ( ) => {
     beforeEach( async ( ) => {
       await signIn( mockUser, { realm: global.mockRealms[__filename] } );
       useStore.setState( {
+        layout: {
+          isDefaultMode: false
+        },
         isAdvancedUser: true
       } );
       inatjs.computervision.score_image
