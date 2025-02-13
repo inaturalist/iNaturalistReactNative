@@ -2,12 +2,12 @@ import { screen, waitFor } from "@testing-library/react-native";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 // import inatjs from "inaturalistjs";
 import React from "react";
+import useStore from "stores/useStore";
 import factory from "tests/factory";
 // import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderAppWithComponent } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
-import useStore from "stores/useStore";
 import { signIn, signOut } from "tests/helpers/user";
 
 // UNIQUE REALM SETUP
