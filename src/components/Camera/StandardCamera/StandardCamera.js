@@ -97,12 +97,12 @@ const StandardCamera = ( {
 
   const cameraUris = useStore( state => state.cameraUris );
   const prepareCamera = useStore( state => state.prepareCamera );
-  const galleryUris = useStore( state => state.galleryUris );
+  const photoLibraryUris = useStore( state => state.photoLibraryUris );
   const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
 
   const totalObsPhotoUris = useMemo(
-    ( ) => [...cameraUris, ...galleryUris].length,
-    [cameraUris, galleryUris]
+    ( ) => [...cameraUris, ...photoLibraryUris].length,
+    [cameraUris, photoLibraryUris]
   );
 
   const disallowAddingPhotos = totalObsPhotoUris >= MAX_PHOTOS_ALLOWED;
@@ -113,7 +113,7 @@ const StandardCamera = ( {
 
   // newPhotoUris tracks photos taken in *this* instance of the camera. The
   // camera might be instantiated with several cameraUris or
-  // galleryUris already in state, but we only want to show the CTA button or discard modal
+  // photoLibraryUris already in state, but we only want to show the CTA button or discard modal
   // when the user has taken a photo with *this* instance of the camera
   const photosTaken = newPhotoUris.length > 0 && totalObsPhotoUris > 0;
   const {

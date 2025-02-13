@@ -1,9 +1,9 @@
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
-import { savePhotosToCameraGallery } from "components/Camera/helpers/savePhotosToCameraGallery.ts";
+import { savePhotosToPhotoLibrary } from "components/Camera/helpers/savePhotosToPhotoLibrary.ts";
 import faker from "tests/helpers/faker";
 
 describe( "userPrepareStoreAndNavigate", ( ) => {
-  describe( "savePhotosToCameraGallery", ( ) => {
+  describe( "savePhotosToPhotoLibrary", ( ) => {
     it( "should call CameraRoll.save three times when given three uris", async ( ) => {
       const uris = [
         faker.system.filePath( ),
@@ -11,7 +11,7 @@ describe( "userPrepareStoreAndNavigate", ( ) => {
         faker.system.filePath( )
       ];
       const mockOnEachSuccess = jest.fn( );
-      await savePhotosToCameraGallery( uris, mockOnEachSuccess );
+      await savePhotosToPhotoLibrary( uris, mockOnEachSuccess );
       // This should test that CameraRoll.save was called once for each of the
       // uris AND that it was called in the order of the uris array
       // https://jestjs.io/docs/mock-functions#custom-matchers

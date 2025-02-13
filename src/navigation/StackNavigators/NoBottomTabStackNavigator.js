@@ -7,7 +7,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // eslint-disable-next-line import/no-unresolved
 import CameraContainer from "components/Camera/CameraContainer";
 import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
-import PhotoGallery from "components/PhotoImporter/PhotoGallery";
+import PhotoLibrary from "components/PhotoImporter/PhotoLibrary";
 import { Heading4 } from "components/SharedComponents";
 import Mortal from "components/SharedComponents/Mortal";
 import PermissionGateContainer, {
@@ -79,8 +79,8 @@ const CameraContainerWithPermission = ( ) => fadeInComponent(
 // albums, but for now this works. ~~~~kueda20240829
 
 // TODO verify this is true for Android
-const GalleryContainerWithPermission = ( ) => (
-  <PhotoGallery />
+const PhotoLibraryContainerWithPermission = ( ) => (
+  <PhotoLibrary />
 );
 
 const SoundRecorderWithPermission = ( ) => fadeInComponent(
@@ -117,8 +117,8 @@ const NoBottomTabStackNavigator = ( ): Node => (
         options={CAMERA_SCREEN_OPTIONS}
       />
       <Stack.Screen
-        name="PhotoGallery"
-        component={GalleryContainerWithPermission}
+        name="PhotoLibrary"
+        component={PhotoLibraryContainerWithPermission}
         options={hideHeader}
       />
       <Stack.Screen
