@@ -237,7 +237,7 @@ const MyObservationsSimple = ( {
 
   return (
     <>
-      <ViewWrapper isDebug>
+      <ViewWrapper>
         { numUnuploadedObservations >= 10 && (
           <Pressable
             accessibilityRole="button"

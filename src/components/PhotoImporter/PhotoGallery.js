@@ -22,7 +22,6 @@ import ObservationPhoto from "realmModels/ObservationPhoto";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import { sleep } from "sharedHelpers/util.ts";
 import { useLayoutPrefs } from "sharedHooks";
-import { isDebugMode } from "sharedHooks/useDebugMode";
 import useExitObservationsFlow from "sharedHooks/useExitObservationFlow.ts";
 import useStore from "stores/useStore";
 
@@ -61,8 +60,7 @@ const PhotoGallery = ( ): Node => {
   } ), [navigation] );
 
   const advanceToMatchScreen = lastScreen === "Camera"
-    && isDefaultMode
-    && isDebugMode( );
+    && isDefaultMode;
 
   const navToMatchOrSuggestions = useCallback( async ( ) => {
     if ( advanceToMatchScreen ) {
