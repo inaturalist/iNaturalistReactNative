@@ -31,6 +31,7 @@ import useStore from "stores/useStore";
 import useSyncObservations from "./hooks/useSyncObservations";
 import useUploadObservations from "./hooks/useUploadObservations";
 import MyObservations from "./MyObservations";
+import MyObservationsEmptyLoggedOut from "./MyObservationsEmptyLoggedOut";
 import MyObservationsSimpleContainer from "./MyObservationsSimpleContainer";
 
 const { useRealm } = RealmContext;
@@ -206,7 +207,10 @@ const MyObservationsContainer = ( ): Node => {
   // this component again after returning from ObsEdit
   const onScroll = scrollEvent => setMyObsOffset( scrollEvent.nativeEvent.contentOffset.y );
 
-  if ( isDefaultMode && observations.length > 0 ) {
+  if ( observations.length === 0 && !currentUser ) {
+    return <MyObservationsEmptyLoggedOut />;
+  }
+  if ( isDefaultMode ) {
     return (
       <MyObservationsSimpleContainer
         currentUser={currentUser}
