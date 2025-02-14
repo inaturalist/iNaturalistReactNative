@@ -1,6 +1,6 @@
 import {
   computerVisionPath,
-  galleryPhotosPath,
+  photoLibraryPhotosPath,
   photoUploadPath,
   rotatedOriginalPhotosPath,
   soundUploadPath
@@ -46,8 +46,8 @@ const sharedDirectories = [
     directoryName: "ComputerVisionSuggestions"
   },
   {
-    path: galleryPhotosPath,
-    directoryName: "GalleryPhotos"
+    path: photoLibraryPhotosPath,
+    directoryName: "PhotoLibraryPhotos"
   },
   {
     path: photoUploadPath,

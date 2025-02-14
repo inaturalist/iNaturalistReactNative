@@ -7,7 +7,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // eslint-disable-next-line import/no-unresolved
 import CameraContainer from "components/Camera/CameraContainer";
 import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
-import PhotoGallery from "components/PhotoImporter/PhotoGallery";
+import PhotoLibrary from "components/PhotoImporter/PhotoLibrary";
 import { Heading4 } from "components/SharedComponents";
 import Mortal from "components/SharedComponents/Mortal";
 import PermissionGateContainer, {
@@ -72,21 +72,6 @@ const CameraContainerWithPermission = ( ) => fadeInComponent(
   </Mortal>
 );
 
-// const GalleryContainerWithPermission = ( ) => (
-//   <PermissionGateContainer
-//     permissions={READ_WRITE_MEDIA_PERMISSIONS}
-//     title={t( "Observe-and-identify-organisms-from-your-gallery" )}
-//     titleDenied={t( "Please-Allow-Gallery-Access" )}
-//     body={t( "Upload-photos-from-your-gallery-and-create-observations" )}
-//     blockedPrompt={t( "Youve-previously-denied-gallery-permissions" )}
-//     buttonText={t( "CHOOSE-PHOTOS" )}
-//     icon="gallery"
-//     image={require( "images/background/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
-//   >
-//     <PhotoGallery />
-//   </PermissionGateContainer>
-// );
-
 // On iOS we don't actually need PHOTO LIBRARY permission to import photos,
 // and in fact, if we ask for it and the user denies it after already
 // granting add-only permission, the user can never grant it again until they
@@ -94,8 +79,8 @@ const CameraContainerWithPermission = ( ) => fadeInComponent(
 // albums, but for now this works. ~~~~kueda20240829
 
 // TODO verify this is true for Android
-const GalleryContainerWithPermission = ( ) => (
-  <PhotoGallery />
+const PhotoLibraryContainerWithPermission = ( ) => (
+  <PhotoLibrary />
 );
 
 const SoundRecorderWithPermission = ( ) => fadeInComponent(
@@ -132,8 +117,8 @@ const NoBottomTabStackNavigator = ( ): Node => (
         options={CAMERA_SCREEN_OPTIONS}
       />
       <Stack.Screen
-        name="PhotoGallery"
-        component={GalleryContainerWithPermission}
+        name="PhotoLibrary"
+        component={PhotoLibraryContainerWithPermission}
         options={hideHeader}
       />
       <Stack.Screen

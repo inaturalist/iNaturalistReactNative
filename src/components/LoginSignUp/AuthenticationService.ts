@@ -5,7 +5,7 @@ import { fetchUserMe } from "api/users";
 import { ApiResponse, ApisauceInstance, create } from "apisauce";
 import {
   computerVisionPath,
-  galleryPhotosPath,
+  photoLibraryPhotosPath,
   photoUploadPath,
   rotatedOriginalPhotosPath,
   soundUploadPath
@@ -180,7 +180,7 @@ const signOut = async (
   await unlink( logFilePath );
   // clear all directories containing user generated data within Documents Directory
   await removeAllFilesFromDirectory( computerVisionPath );
-  await removeAllFilesFromDirectory( galleryPhotosPath );
+  await removeAllFilesFromDirectory( photoLibraryPhotosPath );
   await removeAllFilesFromDirectory( photoUploadPath );
   await removeAllFilesFromDirectory( rotatedOriginalPhotosPath );
   await removeAllFilesFromDirectory( soundUploadPath );

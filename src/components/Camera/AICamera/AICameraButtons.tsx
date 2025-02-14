@@ -1,7 +1,7 @@
 import CameraFlip from "components/Camera/Buttons/CameraFlip.tsx";
 import Close from "components/Camera/Buttons/Close.tsx";
 import Flash from "components/Camera/Buttons/Flash.tsx";
-import Gallery from "components/Camera/Buttons/Gallery.tsx";
+import PhotoLibraryIcon from "components/Camera/Buttons/PhotoLibraryIcon.tsx";
 import TakePhoto from "components/Camera/Buttons/TakePhoto.tsx";
 import Zoom from "components/Camera/Buttons/Zoom.tsx";
 import TabletButtons from "components/Camera/TabletButtons.tsx";
@@ -70,7 +70,7 @@ const AICameraButtons = ( {
         disabled={!modelLoaded || takingPhoto}
         flipCamera={flipCamera}
         hasFlash={hasFlash}
-        hasGalleryButton
+        hasPhotoLibraryButton
         rotatableAnimatedStyle={rotatableAnimatedStyle}
         showPrediction={showPrediction}
         showZoomButton={showZoomButton}
@@ -128,7 +128,7 @@ const AICameraButtons = ( {
         </View>
         <View><CameraFlip flipCamera={flipCamera} /></View>
         <View>
-          <Gallery rotatableAnimatedStyle={rotatableAnimatedStyle} />
+          <PhotoLibraryIcon rotatableAnimatedStyle={rotatableAnimatedStyle} />
         </View>
       </View>
       <View className="flex-row justify-center items-center w-full" pointerEvents="box-none">

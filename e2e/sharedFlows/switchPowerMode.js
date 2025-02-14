@@ -15,7 +15,7 @@ export default async function switchPowerMode() {
   await waitFor( advancedInterfaceRadioButton ).toBeVisible().withTimeout( 10000 );
   await advancedInterfaceRadioButton.tap();
   // Tap the settings radio button for power user mode
-  const powerUserRadioButton = element( by.id( "all-observation-option" ) );
+  const powerUserRadioButton = element( by.id( "all-observation-options" ) );
   await waitFor( powerUserRadioButton ).toBeVisible().withTimeout( 10000 );
   await powerUserRadioButton.tap();
 }

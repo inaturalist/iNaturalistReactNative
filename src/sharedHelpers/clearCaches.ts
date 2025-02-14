@@ -1,5 +1,5 @@
 import {
-  galleryPhotosPath, photoUploadPath, rotatedOriginalPhotosPath, soundUploadPath
+  photoLibraryPhotosPath, photoUploadPath, rotatedOriginalPhotosPath, soundUploadPath
 } from "appConstants/paths.ts";
 import { log } from "sharedHelpers/logger";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory.ts";
@@ -26,7 +26,7 @@ const clearRotatedOriginalPhotosDirectory = async ( ) => {
 };
 
 const clearGalleryPhotos = async ( ) => {
-  await removeAllFilesFromDirectory( galleryPhotosPath );
+  await removeAllFilesFromDirectory( photoLibraryPhotosPath );
 };
 
 // this hook checks to see which localFilePaths are still needed in photoUploads/

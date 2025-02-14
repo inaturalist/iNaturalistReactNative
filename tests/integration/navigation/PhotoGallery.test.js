@@ -69,7 +69,7 @@ const navigateToPhotoImporter = async ( ) => {
   await actor.press( photoImporter );
 };
 
-describe( "PhotoGallery navigation", ( ) => {
+describe( "PhotoLibrary navigation", ( ) => {
   global.withAnimatedTimeTravelEnabled( );
   beforeEach( ( ) => {
     useStore.setState( { isAdvancedUser: true } );
