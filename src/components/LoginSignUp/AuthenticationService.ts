@@ -1,7 +1,7 @@
 import type { QueryClient } from "@tanstack/query-core";
 import type { ApiUser } from "api/types";
 import { getUserAgent } from "api/userAgent.ts";
-import { fetchUserMe } from "api/users";
+import { fetchUserEmailAvailable, fetchUserMe } from "api/users";
 import { ApiResponse, ApisauceInstance, create } from "apisauce";
 import {
   computerVisionPath,
@@ -570,6 +570,23 @@ const resetPassword = async ( email: string ) => {
   }
 
   return null;
+};
+
+/**
+ * Check if an email is available for registration
+ *
+ * @param email
+ *
+ * @returns boolean if email is available or not
+ */
+const emailAvailable = async ( email: string ) => {
+  // try to fetch user data (especially for loading user icon) from userMe
+  const apiToken = await getAnonymousJWT( );
+  const options = {
+    api_token: apiToken
+  };
+  const isAvailable = await fetchUserEmailAvailable( email, options );
+  return isAvailable;
 };
 
 export {
