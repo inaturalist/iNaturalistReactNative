@@ -54,11 +54,11 @@ const AddEvidenceSheet = ( {
             accessibilityHint={t( "Navigates-to-camera" )}
           />
           <EvidenceButton
-            icon="gallery"
+            icon="photo-library"
             handlePress={( ) => {
-              // Show photo gallery, but skip group photos phase
+              // Show photo library, but skip group photos phase
               navigation.navigate( "NoBottomTabStackNavigator", {
-                screen: "PhotoGallery",
+                screen: "PhotoLibrary",
                 params: { skipGroupPhotos: true }
               } );
             }}

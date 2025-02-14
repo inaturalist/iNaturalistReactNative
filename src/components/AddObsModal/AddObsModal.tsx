@@ -64,9 +64,9 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
       className: classnames( GREEN_CIRCLE_CLASS, MARGINS.standardCamera )
     },
     photoLibrary: {
-      text: t( "Upload-photos-from-your-gallery" ),
-      icon: "gallery",
-      onPress: ( ) => navAndCloseModal( "PhotoGallery" ),
+      text: t( "Upload-photos-from-your-photo-library" ),
+      icon: "photo-library",
+      onPress: ( ) => navAndCloseModal( "PhotoLibrary" ),
       testID: "import-media-button",
       className: classnames( GREEN_CIRCLE_CLASS, MARGINS.photoLibrary ),
       accessibilityLabel: t( "Photo-importer" ),

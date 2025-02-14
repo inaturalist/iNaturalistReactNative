@@ -2,7 +2,10 @@ import RNFS from "react-native-fs";
 
 export const computerVisionPath = `${RNFS.DocumentDirectoryPath}/computerVisionSuggestions`;
 
-export const galleryPhotosPath = `${RNFS.DocumentDirectoryPath}/galleryPhotos`;
+// note: when changing naming from gallery to photoLibrary in issue MOB-431,
+// this galleryPhotos path was intentionally left as-is, to avoid any issues
+// with cleaning caches
+export const photoLibraryPhotosPath = `${RNFS.DocumentDirectoryPath}/galleryPhotos`;
 
 export const photoUploadPath = `${RNFS.DocumentDirectoryPath}/photoUploads`;
 

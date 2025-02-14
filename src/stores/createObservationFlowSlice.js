@@ -10,7 +10,7 @@ const DEFAULT_STATE = {
   currentObservation: null,
   currentObservationIndex: 0,
   evidenceToAdd: [],
-  galleryUris: [],
+  photoLibraryUris: [],
   groupedPhotos: [],
   observations: [],
   // Track when any obs was last marked as viewed so we know when to update
@@ -140,7 +140,7 @@ const createObservationFlowSlice = ( set, get ) => ( {
     currentObservation: observationToJSON( updatedObservations[state.currentObservationIndex] )
   } ) ),
   setPhotoImporterState: options => set( state => ( {
-    galleryUris: options?.galleryUris || state.galleryUris,
+    photoLibraryUris: options?.photoLibraryUris || state.photoLibraryUris,
     savingPhoto: options?.savingPhoto || state.savingPhoto,
     evidenceToAdd: options?.evidenceToAdd || state.evidenceToAdd,
     groupedPhotos: options?.groupedPhotos || state.groupedPhotos,

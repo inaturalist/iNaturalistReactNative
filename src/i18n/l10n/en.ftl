@@ -51,7 +51,7 @@ Add-Date-Time = Add Date/Time
 Add-disagreement = Add disagreement
 ADD-EVIDENCE = ADD EVIDENCE
 # Label for a button that shows options for adding evidence, e.g. camera,
-# gallery, sound, etc
+# photo library, sound, etc
 Add-evidence = Add evidence
 Add-favorite = Add favorite
 Add-Location = Add Location
@@ -81,7 +81,7 @@ Agree-with-ID-description = Would you like to agree with the ID and suggest the 
 AI-Camera = AI Camera
 ALL = ALL
 All = All
-All-observation-option = All observation options (including iNaturalist AI Camera, Standard Camera, Uploading from Gallery, and Sound Recorder)
+All-observation-options = All observation options (including iNaturalist AI Camera, Standard Camera, Uploading from Photo Library, and Sound Recorder)
 All-observations = All observations
 All-organisms = All organisms
 # As in intellectual property rights over a photo or other creative work
@@ -198,8 +198,6 @@ Change-zoom = Change zoom
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
 # Label for a text input field during sign up to choose a username
 CHOOSE-A-USERNAME = CHOOSE A USERNAME
-# Text for a button prompting the user to grant access to the gallery
-CHOOSE-PHOTOS = CHOOSE PHOTOS
 # Label for button that chooses a taxon
 Choose-taxon = Choose taxon
 # Label for button that chooses the best suggestion among a list of suggested
@@ -592,7 +590,7 @@ improving--identification = Improving
 iNat-is-global-community = iNaturalist is a global community of naturalists creating open data for science by collectively observing & identifying organisms
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT SETTINGS
 iNaturalist-AI-Camera = iNaturalist AI Camera
-iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNaturalist can save photos you take in the app to your device’s gallery.
+iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-photo-library = iNaturalist can save photos you take in the app to your device’s photo library.
 INATURALIST-COMMUNITY = INATURALIST COMMUNITY
 iNaturalist-couldnt-identify-this-organism = iNaturalist couldn’t identify this organism.
 INATURALIST-FORUM = INATURALIST FORUM
@@ -850,8 +848,6 @@ OBSERVATIONS-WITHOUT-NUMBER =
 Observations-you-upload-to-iNaturalist = Observations you upload to iNaturalist can be used by scientists and researchers worldwide.
 # Button that starts a new observation
 Observe = Observe
-# Title of screen asking for permission to access the gallery
-Observe-and-identify-organisms-from-your-gallery = Observe and identify organisms from your gallery
 # Title of screen asking for permission to access the camera
 Observe-and-identify-organisms-in-real-time-with-your-camera = Observe and identify organisms in real time with your camera
 # Text for a button prompting the user to grant access to the camera
@@ -905,8 +901,6 @@ Photos = Photos
 Photos-you-take-will-appear-here = Photos you take will appear here
 # Title of screen asking for permission to access the camera when access was denied
 Please-allow-Camera-Access = Please allow Camera Access
-# Title of screen asking for permission to access the gallery when access was denied
-Please-Allow-Gallery-Access = Please Allow Gallery Access
 # Title of screen asking for permission to access location when access was denied
 Please-allow-Location-Access = Please allow Location Access
 # Title of screen asking for permission to access the microphone when access was denied
@@ -1090,7 +1084,7 @@ SAVE-CHANGES = SAVE CHANGES
 SAVE-FOR-LATER = SAVE FOR LATER
 SAVE-LOCATION = SAVE LOCATION
 SAVE-PHOTOS = SAVE PHOTOS
-Save-photos-to-your-gallery = Save photos to your gallery
+Save-photos-to-your-photo-library = Save photos to your photo library
 Saved-Observation = Saved observation, in queue to upload
 Scan-the-area-around-you-for-organisms = Scan the area around you for organisms.
 Scientific-Name = Scientific Name
@@ -1269,8 +1263,7 @@ Unreviewed-observations-only = Unreviewed observations only
 Upload-Complete = Upload Complete
 Upload-in-progress = Upload in progress
 UPLOAD-NOW = UPLOAD NOW
-Upload-photos-from-your-gallery = Upload multiple photos from your gallery
-Upload-photos-from-your-gallery-and-create-observations = Upload photos from your gallery and create observations and get identifications of organisms you’ve already observed!
+Upload-photos-from-your-photo-library = Upload multiple photos from your photo library
 Upload-Progress = Upload { $uploadProgress } percent complete
 UPLOAD-TO-INATURALIST = UPLOAD TO INATURALIST
 # Shows the number of observations a user can upload to iNat from my observations page
@@ -1530,7 +1523,6 @@ Youre-always-in-control-of-the-location-privacy = You’re always in control of 
 # permission has been denied
 Youve-denied-permission-prompt = You’ve denied permission. Please grant permission in the settings app.
 Youve-previously-denied-camera-permissions = You've previously denied camera permissions, so please enable them in settings.
-Youve-previously-denied-gallery-permissions = You’ve previously denied gallery permissions, so please enable them in settings.
 Youve-previously-denied-location-permissions = You’ve previously denied location permissions, so please enable them in settings.
 Youve-previously-denied-microphone-permissions = You’ve previously denied microphone permissions, so please enable them in settings.
 Zoom-in-as-much-as-possible-to-improve = Zoom in as much as possible to improve location accuracy and get better identifications.

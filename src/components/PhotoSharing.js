@@ -74,7 +74,7 @@ const PhotoSharing = ( ): Node => {
       // Go to GroupPhotos screen
       const firstObservationDefaults = { description: sharedText };
       setPhotoImporterState( {
-        galleryUris: photoUris.map( x => x.image.uri ),
+        photoLibraryUris: photoUris.map( x => x.image.uri ),
         groupedPhotos: photoUris.map( photo => ( {
           photos: [photo]
         } ) ),
