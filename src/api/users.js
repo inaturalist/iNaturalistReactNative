@@ -154,9 +154,22 @@ const updateUsers = async ( params: Object = {}, opts: Object = {} ): Promise<?O
   }
 };
 
+const fetchUserEmailAvailable = async (
+  email: string,
+  params: Object = {},
+  opts: Object = {}
+): Promise<?Object> => {
+  try {
+    return await inatjs.users.emailAvailable( { email }, { ...params, ...opts } );
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
 export {
   blockUser,
   fetchRemoteUser,
+  fetchUserEmailAvailable,
   fetchUserMe,
   fetchUserProjects,
   fetchUsers,
