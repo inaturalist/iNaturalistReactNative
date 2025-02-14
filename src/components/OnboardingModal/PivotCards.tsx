@@ -89,8 +89,26 @@ const SecondObservationCard = ( { showModal, closeModal }: Props ) => {
   );
 };
 
+const FiftyObservationCard = ( { showModal, closeModal }: Props ) => {
+  const { t } = useTranslation( );
+  return (
+    <OnboardingModal
+      showModal={showModal}
+      closeModal={closeModal}
+      slides={[
+        {
+          title: t( "Welcome-back" ),
+          description: t( "Weve-made-some-updates" ),
+          imageSource: require( "images/background/using-inaturalist-in-the-field.png" )
+        }
+      ]}
+    />
+  );
+};
+
 export {
   AccountCreationCard,
+  FiftyObservationCard,
   FirstObservationCard,
   NotificationOnboarding,
   SecondObservationCard

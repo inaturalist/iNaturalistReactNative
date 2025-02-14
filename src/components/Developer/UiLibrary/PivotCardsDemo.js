@@ -1,5 +1,6 @@
 import {
   AccountCreationCard,
+  FiftyObservationCard,
   FirstObservationCard,
   NotificationOnboarding,
   SecondObservationCard
@@ -38,6 +39,10 @@ const Buttons = ( ) => {
     {
       title: "Second Observation",
       component: SecondObservationCard
+    },
+    {
+      title: "Fifty Observation",
+      component: FiftyObservationCard
     },
     {
       title: "Notification Onboarding",
