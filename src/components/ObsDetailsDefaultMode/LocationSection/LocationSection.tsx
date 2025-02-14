@@ -27,19 +27,32 @@ const LocationSection = ( {
   const currentUser = useCurrentUser( );
   const geoprivacy = observation?.geoprivacy;
   const taxonGeoprivacy = observation?.taxon_geoprivacy;
+  const latitude = observation?.privateLatitude || observation?.latitude;
 
   const cardClass = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mx-0.5";
 
   return (
     <View className="pt-1 pb-5">
       <View className="m-4">
-        <Heading5 className="mb-2">
-          {t( "OBSERVED-IN--label" )}
-        </Heading5>
-        <SimpleObservationLocation
-          observation={observation}
-          handleLocationPickerPressed={handleLocationPickerPressed}
-        />
+        {
+          !latitude
+            ? (
+              <Heading5 className="mb-2">
+                {t( "OBSERVED-AT--label" )}
+              </Heading5>
+            )
+            : (
+              <>
+                <Heading5 className="mb-2">
+                  {t( "OBSERVED-IN--label" )}
+                </Heading5>
+                <SimpleObservationLocation
+                  observation={observation}
+                  handleLocationPickerPressed={handleLocationPickerPressed}
+                />
+              </>
+            )
+        }
 
         {observation && (
           <View className="mt-2">

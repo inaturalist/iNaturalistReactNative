@@ -856,6 +856,8 @@ Observe-and-identify-organisms-from-your-gallery = Observe and identify organism
 Observe-and-identify-organisms-in-real-time-with-your-camera = Observe and identify organisms in real time with your camera
 # Text for a button prompting the user to grant access to the camera
 OBSERVE-ORGANISMS = OBSERVE ORGANISMS
+# This label is used in ObsDetails to describe the observation time
+OBSERVED-AT--label = OBSERVED AT
 # This label is used in ObsDetails to describe the observation location
 OBSERVED-IN--label = OBSERVED IN
 Observers = Observers
