@@ -42,7 +42,7 @@ const SignUpForm = ( ) => {
         }
       } );
     } else {
-      setError( "Error" );
+      setError( t( "That-email-is-already-associated-with-an-account" ) );
     }
   };
 
