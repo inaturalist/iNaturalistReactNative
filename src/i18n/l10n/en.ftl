@@ -244,6 +244,7 @@ COMMUNITY-GUIDELINES = COMMUNITY GUIDELINES
 Confidence--label = Confidence
 # Button that confirms a choice the user has made
 CONFIRM = CONFIRM
+Congrats-on-making-your-first-observation = Congrats on making your first observation!
 # Onboarding header (underneath the logo)
 CONNECT-TO-NATURE = CONNECT TO NATURE
 # Onboarding slides
@@ -549,6 +550,7 @@ Grid-layout = Grid layout
 Group-Photos = Group Photos
 # Onboarding for users learning to group photos in the camera roll
 Group-photos-onboarding = Group photos into observations– make sure there is only one species per observation
+Grow-your-collection = Grow your collection
 HELP = HELP
 Hide = Hide
 Highest = Highest
@@ -1299,6 +1301,7 @@ Uploading-x-of-y-observations =
         [one] Uploading { $currentUploadCount } observation
        *[other] Uploading { $currentUploadCount } of { $total } observations
     }
+Use-iNaturalist-to-collect-any-kind-of = Use iNaturalist to collect any kind of plant, insect, spider, bird, or other animal and add them to your observations!
 Use-iNaturalist-to-identify-any-living-thing = Use iNaturalist to identify any living thing
 Use-iNaturalists-AI-Camera = Use iNaturalist's AI Camera to identify organisms in real time
 # Text for a button prompting the user to grant access to location
@@ -1522,6 +1525,7 @@ You-have-opted-out-of-the-Community-Taxon = You have opted out of the Community 
 You-havent-joined-any-projects-yet = You haven’t joined any projects yet!
 You-havent-observed-any-species-yet = You haven't observed any species yet.
 You-likely-observed-a-new-species = You likely observed a new species!
+You-make-an-observation-every-time-you = You make an observation every time you take a picture of an organism with a date and location.
 You-may-have-observed-a-new-species = You may have observed a new species!
 You-must-be-logged-in-to-view-messages = You must be logged in to view messages
 You-must-install-Google-Play-Services-to-sign-in-with-Google = You must install Google Play Services to sign in with Google.

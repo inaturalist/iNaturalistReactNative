@@ -1549,3 +1549,8 @@ Zoom-in-as-much-as-possible-to-improve = Zoom in as much as possible to improve 
 Zoom-to-current-location = Zoom to current location
 # Label for button that shows zoom level, e.g. on a camera
 zoom-x = { $zoom }×
+Congrats-on-making-your-first-observation = Congrats on making your first observation!
+You-make-an-observation-every-time-you = You make an observation every time you take a picture of an organism with a date and location.
+Grow-your-collection = Grow your collection
+Use-iNaturalist-to-collect-any-kind-of = Use iNaturalist to collect any kind of plant, insect, spider, bird, or other animal and add them to your observations!
+

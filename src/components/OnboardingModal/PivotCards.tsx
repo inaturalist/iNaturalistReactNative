@@ -40,6 +40,28 @@ const AccountCreationCard = ( { showModal, closeModal }: Props ) => {
   );
 };
 
+const FirstObservationCard = ( { showModal, closeModal }: Props ) => {
+  const { t } = useTranslation( );
+  return (
+    <OnboardingModal
+      showModal={showModal}
+      closeModal={closeModal}
+      slides={[
+        {
+          title: t( "Congrats-on-making-your-first-observation" ),
+          description: t( "You-make-an-observation-every-time-you" ),
+          imageSource: require( "images/background/camera-finder.png" )
+        },
+        {
+          title: t( "Grow-your-collection" ),
+          description: t( "Use-iNaturalist-to-collect-any-kind-of" ),
+          imageSource: require( "images/background/iconic-taxon-photos-collage.png" )
+        }
+      ]}
+    />
+  );
+};
+
 const SecondObservationCard = ( { showModal, closeModal }: Props ) => {
   const { t } = useTranslation( );
   return (
@@ -69,6 +91,7 @@ const SecondObservationCard = ( { showModal, closeModal }: Props ) => {
 
 export {
   AccountCreationCard,
+  FirstObservationCard,
   NotificationOnboarding,
   SecondObservationCard
 };
