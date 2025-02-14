@@ -1222,6 +1222,7 @@ TERMS-OF-USE = TERMS OF USE
 Text-Box-to-Describe-Reason-for-Flag = Text box to describe reason for flag.
 Thank-you-for-sharing-your-feedback = Thank you for sharing your feedback to help us improve!
 Thanks-for-using-any-suggestions = Thanks for using this app! Do you have any suggestions for the people who make it?
+That-email-is-already-associated-with-an-account = That email is already associated with an account.
 That-user-profile-doesnt-exist = That user profile doesn't exist
 That-username-is-unavailable = That username is unavailable
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).

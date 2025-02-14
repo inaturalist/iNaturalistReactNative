@@ -1,4 +1,4 @@
-import { getUserAgent } from "api/userAgent";
+import { getUserAgent } from "api/userAgent.ts";
 import { create } from "apisauce";
 // eslint-disable-next-line import/no-cycle
 import { getAnonymousJWT, getJWT } from "components/LoginSignUp/AuthenticationService.ts";
