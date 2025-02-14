@@ -1343,9 +1343,11 @@ VIEW-PROJECTS = VIEW PROJECTS
 View-suggestions = View suggestions
 Watch-your-notifications-for-identifications = Watch your notifications for identifications!
 We-are-not-confident-enough-to-make-a-top-ID-suggestion = We’re not confident enough to make a top ID suggestion, but here are some other suggestions:
+Welcome-back = Welcome back!
 Welcome-to-iNaturalist = Welcome to iNaturalist!
 # Welcome user back to app
 Welcome-user = <0>Welcome back,</0><1>{ $userHandle }</1>
+Weve-made-some-updates = We've made some updates, so we recommend taking a look at your settings. You can always update these later.
 WHAT-IS-INATURALIST = WHAT IS INATURALIST?
 Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!
 When-tapping-the-green-observation-button = When tapping the green observation button, open:
@@ -1553,5 +1555,3 @@ Zoom-in-as-much-as-possible-to-improve = Zoom in as much as possible to improve 
 Zoom-to-current-location = Zoom to current location
 # Label for button that shows zoom level, e.g. on a camera
 zoom-x = { $zoom }×
-Welcome-back = Welcome back!
-Weve-made-some-updates = We've made some updates, so we recommend taking a look at your settings. You can always update these later.
