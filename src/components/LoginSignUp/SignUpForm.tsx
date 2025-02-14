@@ -13,6 +13,7 @@ const SignUpForm = ( ) => {
   const navigation = useNavigation( );
   const emailRef = useRef<TextInput>( null );
   const [email, setEmail] = useState( "" );
+  const [isLoading, setIsLoading] = useState( false );
   const [error, setError] = useState<string>( );
 
   const blurFields = () => {
@@ -34,7 +35,9 @@ const SignUpForm = ( ) => {
   }, [navigation] );
 
   const onContinue = async ( ) => {
+    setIsLoading( true );
     const isAvailable = await emailAvailable( email );
+    setIsLoading( false );
     if ( isAvailable ) {
       navigation.navigate( "SignUpConfirmation", {
         user: {
@@ -63,12 +66,13 @@ const SignUpForm = ( ) => {
         {error && <Error error={error} />}
         <Button
           className="mt-[30px] mb-[35px]"
-          disabled={!email}
+          disabled={!email || isLoading}
           level="focus"
           forceDark
           onPress={( ) => onContinue( )}
           testID="Signup.signupButton"
           text={t( "CONTINUE" )}
+          loading={isLoading}
         />
       </View>
     </TouchableWithoutFeedback>
