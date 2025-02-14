@@ -10,7 +10,7 @@ import { flatten } from "lodash";
 import React from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { sleep } from "sharedHelpers/util.ts";
-import { zustandStorage } from "stores/useStore";
+import useStore, { zustandStorage } from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderAppWithComponent } from "tests/helpers/render";
@@ -128,6 +128,15 @@ const displayItemByText = text => {
   const item = screen.getByText( text );
   expect( item ).toBeVisible( );
 };
+
+beforeEach( ( ) => {
+  useStore.setState( {
+    layout: {
+      isDefaultMode: false
+    },
+    isAdvancedUser: true
+  } );
+} );
 
 describe( "MyObservations", ( ) => {
   // For some reason this interferes with the "should not make a request to

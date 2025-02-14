@@ -17,7 +17,6 @@ import { createSentinelFile, deleteSentinelFile, logStage } from "sharedHelpers/
 import {
   useDeviceOrientation, useLayoutPrefs, useTranslation, useWatchPosition
 } from "sharedHooks";
-import { isDebugMode } from "sharedHooks/useDebugMode";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useStore from "stores/useStore";
 
@@ -43,8 +42,7 @@ const CameraContainer = ( ) => {
   const cameraType = params?.camera;
 
   const showMatchScreen = cameraType === "AI"
-  && isDefaultMode
-  && isDebugMode( );
+  && isDefaultMode;
 
   const logStageIfAICamera = useCallback( async (
     stageName: string,
