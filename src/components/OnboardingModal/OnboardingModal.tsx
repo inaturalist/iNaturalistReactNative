@@ -3,13 +3,14 @@ import {
 } from "components/SharedComponents";
 import { Image } from "components/styledComponents";
 import * as React from "react";
+import { ImageSourcePropType } from "react-native";
 import { useTranslation } from "sharedHooks";
 
 import OnboardingModalBase from "./OnboardingModalBase";
 
 interface Slide {
   title: string;
-  imageURI?: string;
+  imageSource?: ImageSourcePropType;
   description: string;
 }
 
@@ -30,9 +31,9 @@ const OnboardingModal = ( { showModal, closeModal, slides }: Props ) => {
     >
       <Heading2 className="mb-5">{currentSlide.title}</Heading2>
       {
-        // Image only shows when imageURI is defined
-        currentSlide.imageURI && (
-          <Image source={{ uri: currentSlide.imageURI }} className="h-[131px]" />
+        // Image only shows when imageSource is defined
+        currentSlide.imageSource && (
+          <Image source={currentSlide.imageSource} className="h-[131px]" />
         )
       }
       <Body3 className="mb-5">{currentSlide.description}</Body3>

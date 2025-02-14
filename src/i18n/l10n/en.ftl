@@ -83,6 +83,7 @@ ALL = ALL
 All = All
 All-observation-options = All observation options (including iNaturalist AI Camera, Standard Camera, Uploading from Photo Library, and Sound Recorder)
 All-observations = All observations
+All-observations-submitted-to-iNaturalist-need-a-date-and-location = All observations submitted to iNaturalist need a date and location to be useful to scientists. Please update observations if they need more information.
 All-organisms = All organisms
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = all rights reserved
@@ -1526,6 +1527,7 @@ You-will-see-notifications = You’ll see notifications here once you log in & u
 Your-donation-to-iNaturalist = Your donation to iNaturalist supports the improvement and stability of the mobile apps and website that connects millions of people to nature and enables the protection of biodiversity worldwide!
 Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
 Your-location-uncertainty-is-over-x-km = Your location uncertainty is over { $x } km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
+Your-observations-can-now-help-scientists = Your observations can now help scientists.
 Youre-always-in-control-of-the-location-privacy = You’re always in control of the location privacy of every observation you create.
 # Text prompting the user to open Settings to grant permission after
 # permission has been denied
