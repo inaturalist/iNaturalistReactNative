@@ -770,6 +770,8 @@ New-Observation = New Observation
 # Sort order, refers to newest or oldest date
 Newest-to-oldest = Newest to oldest
 Next-observation = Next observation
+# Accessibility label for a button that goes to the next slide on onboarding cards
+Next-slide = Next slide
 # Error message when no camera can be found
 No-Camera-Available = No Camera Available
 # Alert dialog title when attempting to send email but no email is installed
@@ -927,6 +929,8 @@ Potential-disagreement-description = <0>Is the evidence enough to confirm this i
 Potential-disagreement-disagree = <0>No, but this is a member of </0><1></1>
 Potential-disagreement-unsure = <0>I don't know but I am sure this is </0><1></1>
 Previous-observation = Previous observation
+# Accessibility label for a button that goes to the previous slide on onboarding cards
+Previous-slide = Previous slide
 Privacy-Policy = Privacy Policy
 PRIVACY-POLICY = PRIVACY POLICY
 Private = Private
