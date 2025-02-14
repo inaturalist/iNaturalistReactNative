@@ -29,7 +29,7 @@ export default async function signIn() {
   const loginButton = element( by.id( "Login.loginButton" ) );
   await expect( loginButton ).toBeVisible();
   await element( by.id( "Login.loginButton" ) ).tap();
-  const username = element( by.text( `${Config.E2E_TEST_USERNAME}` ) );
+  const username = element( by.text( `${Config.E2E_TEST_USERNAME}` ) ).atIndex( 1 );
   await waitFor( username ).toBeVisible().withTimeout( 10000 );
   await expect( username ).toBeVisible();
   return username;
