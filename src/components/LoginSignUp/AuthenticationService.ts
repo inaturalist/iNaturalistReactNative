@@ -585,14 +585,15 @@ const emailAvailable = async ( email: string ) => {
   const options = {
     api_token: apiToken
   };
-  const isAvailable = await fetchUserEmailAvailable( email, options );
-  return isAvailable;
+  const response = await fetchUserEmailAvailable( email, options ) as { available: boolean };
+  return response?.available;
 };
 
 export {
   API_HOST,
   authenticateUser,
   authenticateUserByAssertion,
+  emailAvailable,
   getAnonymousJWT,
   getJWT,
   getUsername,

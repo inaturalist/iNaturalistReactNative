@@ -5,6 +5,7 @@ import { t } from "i18next";
 import React, { useEffect, useRef, useState } from "react";
 import { TextInput, TouchableWithoutFeedback } from "react-native";
 
+import { emailAvailable } from "./AuthenticationService";
 import Error from "./Error";
 import LoginSignUpInputField from "./LoginSignUpInputField";
 
@@ -32,19 +33,17 @@ const SignUpForm = ( ) => {
     return unsubscrubeTransition;
   }, [navigation] );
 
-  const onContinue = ( ) => {
-    // TODO: Implement email validation with a server call before navigating
-    // TODO: This is only an example of a validation to check that the Error component is working
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if ( !emailRegex.test( email ) ) {
-      setError( "Please enter a valid email address" );
-      return;
+  const onContinue = async ( ) => {
+    const isAvailable = await emailAvailable( email );
+    if ( isAvailable ) {
+      navigation.navigate( "SignUpConfirmation", {
+        user: {
+          email
+        }
+      } );
+    } else {
+      setError( "Error" );
     }
-    navigation.navigate( "SignUpConfirmation", {
-      user: {
-        email
-      }
-    } );
   };
 
   return (
