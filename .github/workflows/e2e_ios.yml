@@ -55,9 +55,9 @@ jobs:
       uses: actions/cache@v4
       with:
         path: node_modules
-        key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+        key: macOS-node-modules-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
-          ${{ runner.os }}-node-modules-
+          macOS-node-modules-
 
     - name: Rebuild detox from cache
       if: steps.cache.outputs.cache-hit == 'true'
