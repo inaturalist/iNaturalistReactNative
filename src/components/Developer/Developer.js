@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { INatApiError, INatApiTooManyRequestsError } from "api/error";
-import { getUserAgent } from "api/userAgent";
+import { getUserAgent } from "api/userAgent.ts";
 import classnames from "classnames";
 import {
   Button,

@@ -1,6 +1,6 @@
 import type { QueryClient } from "@tanstack/query-core";
 import type { ApiUser } from "api/types";
-import { getUserAgent } from "api/userAgent";
+import { getUserAgent } from "api/userAgent.ts";
 import { fetchUserMe } from "api/users";
 import { ApiResponse, ApisauceInstance, create } from "apisauce";
 import {
