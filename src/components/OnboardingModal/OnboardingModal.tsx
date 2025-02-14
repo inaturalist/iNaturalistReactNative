@@ -28,14 +28,14 @@ const OnboardingModal = ( { showModal, closeModal, slides }: Props ) => {
     <OnboardingModalBase
       closeModal={closeModal}
     >
-      <Heading2>{currentSlide.title}</Heading2>
+      <Heading2 className="mb-5">{currentSlide.title}</Heading2>
       {
         // Image only shows when imageURI is defined
         currentSlide.imageURI && (
           <Image source={{ uri: currentSlide.imageURI }} className="h-[131px]" />
         )
       }
-      <Body3>{currentSlide.description}</Body3>
+      <Body3 className="mb-5">{currentSlide.description}</Body3>
       {/* Slide navigation only shows when more than one Slide */}
       {/* Continue button if we are on last slide */}
       {
