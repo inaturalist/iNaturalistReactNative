@@ -873,6 +873,7 @@ OK = OK
 # Sort order, refers to newest or oldest date
 Oldest-to-newest = Oldest to newest
 Once-you-create-and-upload-observations = Once you create & upload observations, other members of our community can add identifications to help your observations reach research grade.
+Once-youve-uploaded-to-iNaturalist = Once you’ve uploaded to iNaturalist, other naturalists in our community can help confirm your identifications. Keep an eye on your notifications for updates!
 # Adjective, as in geoprivacy
 Open = Open
 OPEN-EMAIL = OPEN EMAIL
@@ -1328,6 +1329,7 @@ VIEW-PROJECTS = VIEW PROJECTS
 # Label for a button that shows identification suggestions for an observation
 # or photo
 View-suggestions = View suggestions
+Watch-your-notifications-for-identifications = Watch your notifications for identifications!
 We-are-not-confident-enough-to-make-a-top-ID-suggestion = We’re not confident enough to make a top ID suggestion, but here are some other suggestions:
 Welcome-to-iNaturalist = Welcome to iNaturalist!
 # Welcome user back to app
@@ -1535,5 +1537,3 @@ Zoom-in-as-much-as-possible-to-improve = Zoom in as much as possible to improve 
 Zoom-to-current-location = Zoom to current location
 # Label for button that shows zoom level, e.g. on a camera
 zoom-x = { $zoom }×
-Watch-your-notifications-for-identifications = Watch your notifications for identifications!
-Once-youve-uploaded-to-iNaturalist = Once you’ve uploaded to iNaturalist, other naturalists in our community can help confirm your identifications. Keep an eye on your notifications for updates!
