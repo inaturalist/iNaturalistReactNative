@@ -215,6 +215,9 @@ Close-search = Close search
 # Accessibility hint for button that closes the introductory slides that
 # appear when you first install the app
 Closes-introduction = Closes introduction
+# Accessibility hint for button that closes the help that
+# appears when you start a new observation for the first time
+Closes-new-observation-explanation = Closes new observation explanation.
 Closes-new-observation-options = Closes new observation options.
 Closes-withdraw-id-sheet = Closes "Withdraw ID" sheet
 # Heading for a section that describes people and organizations that
