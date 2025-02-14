@@ -532,6 +532,7 @@ FOLLOWING-X-PEOPLE =
 Forgot-Password = Forgot Password
 GEOPRIVACY = GEOPRIVACY
 Geoprivacy-status = Geoprivacy: { $status }
+Get-identifications-from-real-people = Get identifications from real people.
 # Title of screen asking for permission to access location
 Get-more-accurate-suggestions-create-useful-data = Get more accurate suggestions & create useful data for science using your location
 # Preceded by the fragment, "By uploading your observation to iNaturalist, you can:"
@@ -552,6 +553,7 @@ HELP = HELP
 Hide = Hide
 Highest = Highest
 HIGHEST-RANK = HIGHEST RANK
+How-does-it-feel-to-identify = How does it feel to identify and connect to the nature around you?
 I-agree-to-the-Terms-of-Use = <0>I agree to the Terms of Use and Privacy Policy, and I have reviewed the Community Guidelines (</0><1>required</1><0>).</0>
 Iconic-taxon-name = Iconic taxon name: { $iconicTaxon }
 # Identification Status
@@ -898,6 +900,7 @@ Organisms-that-are-identified-to-species = Organisms that are identified to spec
 # one of the existing options
 Other = Other
 OTHER-DATA = OTHER DATA
+Other-members-of-our-community-can-verify = Other members of our community can verify and identify your observations if you upload them to iNaturalist.
 OTHER-SUGGESTIONS = OTHER SUGGESTIONS
 PASSWORD = PASSWORD
 # Title showing user profile details about who a user follows and is following
@@ -1096,6 +1099,7 @@ Saved-Observation = Saved observation, in queue to upload
 Scan-the-area-around-you-for-organisms = Scan the area around you for organisms.
 Scientific-Name = Scientific Name
 Scientific-Name-Common-Name = Scientific Name (Common Name)
+Scientists-use-citizen-science-data = Scientists use citizen science data just like yours to help better understand species across the globe.
 # Title for a search interface
 SEARCH = SEARCH
 # Title for a search interface
@@ -1527,11 +1531,13 @@ You-will-see-notifications = You’ll see notifications here once you log in & u
 Your-donation-to-iNaturalist = Your donation to iNaturalist supports the improvement and stability of the mobile apps and website that connects millions of people to nature and enables the protection of biodiversity worldwide!
 Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
 Your-location-uncertainty-is-over-x-km = Your location uncertainty is over { $x } km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
+Your-observations-can-help-scientists = Your observations can help scientists!
 Your-observations-can-now-help-scientists = Your observations can now help scientists.
 Youre-always-in-control-of-the-location-privacy = You’re always in control of the location privacy of every observation you create.
 # Text prompting the user to open Settings to grant permission after
 # permission has been denied
 Youve-denied-permission-prompt = You’ve denied permission. Please grant permission in the settings app.
+Youve-made-2-observations = You’ve made 2 observations!
 Youve-previously-denied-camera-permissions = You've previously denied camera permissions, so please enable them in settings.
 Youve-previously-denied-location-permissions = You’ve previously denied location permissions, so please enable them in settings.
 Youve-previously-denied-microphone-permissions = You’ve previously denied microphone permissions, so please enable them in settings.
