@@ -33,7 +33,10 @@ const OnboardingModal = ( { showModal, closeModal, slides }: Props ) => {
       {
         // Image only shows when imageSource is defined
         currentSlide.imageSource && (
-          <Image source={currentSlide.imageSource} className="h-[131px]" />
+          <Image
+            className="self-center h-[131px] aspect-[2/1] rounded-lg mb-5"
+            source={currentSlide.imageSource}
+          />
         )
       }
       <Body3 className="mb-5">{currentSlide.description}</Body3>
