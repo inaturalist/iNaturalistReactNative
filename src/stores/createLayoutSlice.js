@@ -11,8 +11,8 @@ const createLayoutSlice = set => ( {
 
   // Please put new stuff in this namespace so they will be saved to disk
   layout: {
-    // Controls all all layouts related to default mode
-    isDefaultMode: true,
+    // Controls all layouts related to default mode
+    isDefaultMode: false,
     setIsDefaultMode: newValue => set( state => ( {
       layout: {
         ...state.layout,
