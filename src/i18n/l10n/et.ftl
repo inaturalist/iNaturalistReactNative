@@ -27,28 +27,30 @@ ADD-EVIDENCE = LISA TÕEND
 Add-evidence = Lisa tõend
 Add-favorite = Lisa lemmikuks
 Add-Location = Lisa asukoht
+Add-location-for-better-identifications = Add location for better identifications
+ADD-LOCATION-FOR-BETTER-IDS = ADD LOCATION FOR BETTER IDS
+Add-location-to-refresh-suggestions = Add location to refresh suggestions
 Add-observations = Lisa vaatluseid
 ADD-OPTIONAL-COMMENT = LISA SOOVIKORRAL KOMMENTAAR
 Add-optional-notes = Lisa soovi korral märkuseid
 Adds-your-vote-of-agreement = Lisab sinupoolse nõustumise
 Adds-your-vote-of-disagreement = Lisab sinupoolse mitte nõustumise
+Advanced--interface-mode-with-explainer = Advanced (Upload multiple photos and sounds)
 Affiliation = Kuuluvus: { $site }
 Agree = Nõustun
 AGREE = NÕUSTUN
-Agree-to-all-of-the-above = Nõustu kõige ülalolevaga
 AGREE-WITH-ID = NÕUSTUS MÄÄRATLUSEGA?
 Agree-with-ID-description = Sooviksid sa määratlusega nõusutuda ja seda omalt poolt välja pakkuda?
 AI-Camera = AI-kaamera
 ALL = KÕIK
 All = Kõik
-All-observation-option = Kõik vaatluse võimalused (muuhulgas iNaturalist AI-kaamera, tavakaamera, galeriist üleslaadimine ja heli salvestamine)
+All-observation-options = All observation options (including iNaturalist AI Camera, Standard Camera, Uploading from Photo Library, and Sound Recorder)
 All-observations = Kõik vaatlused
 All-organisms = Kõik organismid
 all-rights-reserved = kõig õigused kaitstud
 All-taxa = Kõik taksonid
+ALL-USERS-EXCEPT = ALL USERS EXCEPT
 ALLOW-LOCATION-ACCESS = LUBA LIGIPÄÄSU ASUKOHALE
-Almost-done = Peaaegu valmis!
-Already-have-an-account = Konto olemas? Logi sisse
 An-Internet-connection-is-required = Vaatluste juurde laadimiseks vajad interneti ühendust.
 Any--date = Kõik
 Any--establishment-means = Kõik
@@ -80,6 +82,7 @@ By-exiting-observation-not-saved = Väljudes su vaatlust ei salvestata.
 By-exiting-your-observations-not-saved = Väljudes su vaatluseid ei salvestata. Võid need enda seadmesse salvestada või kustutada.
 By-exiting-your-photos-will-not-be-saved = Väljudes su fotosid ei salvestata.
 By-exiting-your-recorded-sound-will-not-be-saved = Väljudes sinu heli ei salvestata.
+BY-ME = BY ME
 By-uploading-your-observation-to-iNaturalist-you-can = Oma vaatluseid iNaturalisti laadides saad:
 Camera = Kaamera
 CANCEL = KATKESTA
@@ -105,9 +108,8 @@ Change-taxon = Muuda taksonit
 Change-taxon-filter = Muuda taksonifiltrit
 Change-user = Muuda kasutajat
 Change-zoom = Muuda suurendusastet
-Check-this-box-if-you-want-to-apply-a-Creative-Commons = Pane siia linnuke, kui soovid üleslaetud sisu puhul rakendada Creative Commons'i Attribution-NonCommercial (Viitamine-Mitteäriline) litsentsi. See tähendab, et igaüks võib su fotosid ja/või vaatluseid kopeerida ja taaskasutada ilma luba küsimata, kui ta mainib sind ja ei kasuta teoseid kaubanduslikul eesmärgil. Sa võid hiljem valida mõne muu litsentsi või litsentsi eemaldada, kuid see on parim litsents teadlastega jagamiseks.
 CHECK-YOUR-EMAIL = KONTROLLI OMA E-POSTI!
-CHOOSE-PHOTOS = VALI FOTOD
+CHOOSE-A-USERNAME = CHOOSE A USERNAME
 Choose-taxon = Vali takson
 Choose-top-taxon = Vali kõrgeima taseme takson
 Clear = Tühjenda
@@ -124,8 +126,10 @@ COMMENT = KOMMENTEERI
 Comment-options = Kommentaari sätted
 Common-Name-Scientific-Name = Rahvapärane nimetus (Teaduslik nimetus)
 Community-based = Kogukonnapõhine
+Community-Discussion = Community Discussion
 Community-Guidelines = Kogukonna reeglid
 COMMUNITY-GUIDELINES = KOGUKONNA REEGLID
+Confidence--label = Confidence
 CONFIRM = KINNITA
 CONNECT-TO-NATURE = LEIA SEOS LOODUSEGA
 Connect-to-Nature = Leia seos loodusega
@@ -133,7 +137,6 @@ Connect-with-other-naturalists = Suhtle teise loodusarmastajatega ja osale vestl
 Connection-problem-Please-try-again-later = Ühenduse probleem. Palun proovi hiljem uuesti.
 CONTACT-SUPPORT = KONTAKTEERU KASUTAJATOEGA
 CONTINUE = JÄTKA
-Continue-to-iNaturalist = Mine edasi iNaturalisti
 Contribute-to-Science = Aita teadust
 Coordinates-copied-to-clipboard = Kooridnaadid kopeeritud
 Copy-coordinates = Kopeeri koordinaadid
@@ -147,6 +150,7 @@ Create-an-observation-evidence = Loo ilma tõendusmaterjalita vaatlus
 CREATE-YOUR-FIRST-OBSERVATION = LOO OMA ESIMENE VAATLUS
 DATA-QUALITY = ANDMETE KVALITEET
 DATA-QUALITY-ASSESSMENT = ANDMETE KVALITEED HINNANG
+Data-Quality-Assessment = Data Quality Assessment
 Data-quality-assessment-can-taxon-still-be-confirmed-improved-based-on-the-evidence = Kas kogukondliku taksonit saab tõendusmaterjalist lähtuvalt täpsustada?
 Data-quality-assessment-community-taxon-species-level-or-lower = Kogukondlik takson on liigi tasemel või täpsem
 Data-quality-assessment-date-is-accurate = Kuupäev on täpne
@@ -184,13 +188,17 @@ Date-uploaded = Üleslaadimise kuupäev
 Date-uploaded-header-short = Üleslaetud
 DATE-UPLOADED-NEWEST = ÜLESLAADIMISE KUUPÄEV - UUEMAST VANEMAKS
 DATE-UPLOADED-OLDEST = ÜLESLAADIMISE KUUPÄEV - VANEMAST UUEMAKS
+Date-uploaded-on-header-short = Uploaded on:
 datetime-difference-days = { $count } p
 datetime-difference-hours = { $count } t
 datetime-difference-minutes = { $count } m
 datetime-difference-weeks = { $count } n
 datetime-format-long = Pp
+datetime-format-long-with-zone = Pp (zzz)
 datetime-format-short = dd.MM.yy hh.mm
+datetime-format-short-with-zone = M/d/yy h:mm a zzz
 December = detsember
+Default--interface-mode = Default
 DELETE = KUSTUTA
 Delete-all-observations = Kustuta kõik vaatlused
 Delete-comment = Kustuta kommentaar
@@ -211,6 +219,7 @@ Deleting-x-of-y-observations-2 =
         [one] vaatlust
        *[other] / { $total } vaatlust
     }
+Details = Details
 DETAILS = DETAILSEM
 Device-storage-full = Seadme mälu täis
 Device-storage-full-description = iNaturalist ei pruugi suuta su fotosid salvestada või võib kokku joosta.
@@ -234,7 +243,7 @@ DISMISS = KATKESTA
 DONATE = ANNETA
 DONATE-TO-INATURALIST = ANNETA INATURALISTILE
 DONE = VALMIS
-Dont-have-an-account = Kontot pole? Registreeru
+Dont-have-an-account = <0>Don't have an account? </0><1>Sign up</1>
 During-app-start-no-model-found = Rakenduse käivitamisel ei leitud masin-nägemismudelit. AI-kaamera ei toimi.
 Edit = Muuda
 EDIT-COMMENT = MUUDA KOMMENTAARI
@@ -249,6 +258,7 @@ EDUCATORS = HARIDUSTÖÖTAJAD
 EMAIL = E-POST
 EMAIL-DEBUG-LOGS = VEALOGID E-POSTI
 Enable-flash = Välk sisse
+Enable-notifications = Enable notifications
 Endemic = Endeemiline
 Endemic-to-place = Endeemiline kohas { $place }
 Error = Viga
@@ -260,6 +270,7 @@ Error-voting-in-DQA-description = Sinu hinnang andmete kvaliteedile ei pruukinud
 Establishment = Asutus
 ESTABLISHMENT-MEANS = ASUSTAMISMEETOD
 Every-observation-needs = Iga vaatlus vajab määrajate abistamiseks asukohta, kuupäeva ja kellaaega. Kui muretsed asukoha privaatsuse pärast, saad muuta geoprivaatsuse sätteid.
+Every-time-a-collection-project = Every time a collection project's page is loaded, iNaturalist will perform a quick search and display all observations that match the project's requirements. It is an easy way to display a set of observations, such as for a class project, a park, or a bioblitz without making participants take the extra step of manually adding their observations to a project.
 EVIDENCE = TÕENDID
 Exact-Date = Täpne kuupäev
 EXACT-DATE = TÄPNE KUUPÄEV
@@ -282,14 +293,22 @@ Fetching-location = Otsin asukohta...
 Filter = Filtreeri
 FILTER-BY-A-PROJECT = FILTREERI PROJEKTI JÄRGI
 FILTER-BY-A-USER = FILTREERI KASUTAJA JÄRGI
+Filter-by-observed-between-dates = Filter by observations observed between two specific dates
+Filter-by-observed-during-months = Filter by observations observed during specific months
+Filter-by-observed-on-date = Filter by observations observed on a specific date
+Filter-by-uploaded-between-dates = Filter by observations uploaded between two specific dates
+Filter-by-uploaded-on-date = Filter by observations uploaded on a specific date
 Filters = Filtrid
 Flag-An-Item = Lisa märkus
+Flag-Item-Description = Flagging brings something to the attention of volunteer site curators. Please don't flag problems you can address with identifications, the Data Quality Assessment, or by talking to the person who made the content.
+Flag-Item-Other = Flagged as Other Description Box
 Flag-Item-Other-Description = Mõni teine põhjus, mida saad allpool kirjeldada.
 Flag-Item-Other-Input-Hint = Põhjus märkuse lisamiseks
 Flagged = Märkusega
 Flash = välk
 Flip-camera = Pööra kaamerat
 FOLLOW = JÄLGI
+FOLLOWING--notifications = FOLLOWING
 FOLLOWING-X-PEOPLE =
     { $count ->
         [one] JÄLGIN { $count } INIMEST
@@ -298,7 +317,10 @@ FOLLOWING-X-PEOPLE =
 Forgot-Password = Unustasin salasõna
 GEOPRIVACY = GEOPRIVAATSUS
 Geoprivacy-status = Geoprivaatsus: { $status }
+Get-more-accurate-suggestions-create-useful-data = Get more accurate suggestions & create useful data for science using your location
+Get-your-identification-verified-by-real-people = Get your identification verified by real people in the iNaturalist community
 Go-back = Tagasi
+Google-Play-Services-Not-Installed = Google Play Services Not Installed
 GRANT-PERMISSION = ANNA LUBA
 Grant-Permission-title = Anna luba
 Grid-layout = Ruudustikuna
@@ -308,6 +330,8 @@ HELP = ABI
 Hide = Peida
 Highest = Üldiseim
 HIGHEST-RANK = Üldiseim tase
+I-agree-to-the-Terms-of-Use = <0>I agree to the Terms of Use and Privacy Policy, and I have reviewed the Community Guidelines (</0><1>required</1><0>).</0>
+Iconic-taxon-name = Iconic taxon name: { $iconicTaxon }
 ID-Withdrawn = Määratlus tagasivõetud
 IDENTIFICATION = MÄÄRATLUS
 Identification-options = Määratluse sätted
@@ -317,39 +341,65 @@ IDENTIFICATIONS-WITHOUT-NUMBER =
        *[other] MÄÄRATLUST
     }
 Identifiers = Määrajad
+Identifiers-View = Identifiers View
 Identify-an-organism = Määratle organism
-Identify-an-organism-with-the-iNaturalist-AI-Camera = Määratle organism iNaturalisti AI-kaamera abil
+Identify-record-learn = Identify, record, and learn about every living species on earth using iNaturalist
 If-an-account-with-that-email-exists = Kui selle e-posti aadressiga konto eksisteerib, oleme salasõna lähtestamise juhendi sinu e-postile saatnud.
 If-you-have-an-existing-account-try-sign-in-reset = Kui sul on olemasolev iNaturalisti konto, proovi oma kasutajatunnuse ja salasõnaga sisse logida või oma salasõna kontoga seotud e-posti aadressi abil lähtestada.
+If-you-leave-x-of-your-observations-removed =
+    If you leave this traditional project, { $count ->
+        [one] 1 of your observations
+       *[other] { $count } of your observations
+    } will also be removed from this project.
+If-you-want-to-collate-compare-promote = If you want to collate, compare, or promote a set of existing projects, then an Umbrella project is what you should use. For example the 2018 City Nature Challenge, which collated over 60 projects, made for a great landing page where anyone could compare and contrast each city's observations. Both Collection and Traditional projects can be used in an Umbrella project, and up to 500 projects can be collated by an Umbrella project.
+If-youre-seeing-this-error = If you're seeing this and you're online, iNat staff have already been notified. Thanks for finding a bug! If you're offline, please take a screenshot and send us an email when you're back on the Internet.
 IGNORE-LOCATION = IGNOREERI ASUKOHTA
+Ignore-notifications = Ignore notifications
 Import-Photos-From = Impordi fotosid:
 IMPORT-X-OBSERVATIONS =
     IMPORDI { $count ->
         [one] 1 VAATLUS
        *[other] { $count } VAATLUST
     }
+IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = IMPROVE THESE SUGGESTIONS BY USING YOUR LOCATION
 improving--identification = Täiendaja
+iNat-is-global-community = iNaturalist is a global community of naturalists creating open data for science by collectively observing & identifying organisms
 INATURALIST-ACCOUNT-SETTINGS = INATURALISTI KONTO SÄTTED
 iNaturalist-AI-Camera = iNaturalisti AI-kaamera
+iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-photo-library = iNaturalist can save photos you take in the app to your device’s photo library.
 INATURALIST-COMMUNITY = INATURALISTI KOGUKOND
+iNaturalist-couldnt-identify-this-organism = iNaturalist couldn’t identify this organism.
 INATURALIST-FORUM = INATURALISTI FOORUM
 iNaturalist-has-no-ID-suggestions-for-this-photo = iNaturalist ei oska sellele fotole pakkuda ühtegi määratlust.
 INATURALIST-HELP-PAGE = INATURALISTI ABILEHT
+iNaturalist-helps-you-identify = iNaturalist helps you identify the plants and animals around you while generating data for science and conservation. Get connected with a community of millions scientists and naturalists who can help you learn more about nature!
+iNaturalist-identification-suggestions-are-based-on = iNaturalist's identification suggestions are based on observations and identifications made by the iNaturalist community, including { $user1 }, { $user2 }, { $user3 }, and many others.
+iNaturalist-is-a-501 = iNaturalist is a 501(c)(3) non-profit in the United States of America (Tax ID/EIN 92-1296468).
+iNaturalist-is-a-community-of-naturalists = iNaturalist is a community of naturalists that works together to create and identify wild biodiversity observations.
+iNaturalist-is-loading-ID-suggestions = iNaturalist is loading ID suggestions...
+iNaturalist-is-supported-by = iNaturalist is supported by an independent, 501(c)(3) nonprofit organization based in the United States of America. The iNaturalist platform includes this app, Seek by iNaturalist, the iNaturalist website, and more.
+iNaturalist-is-supported-by-our-community = iNaturalist is supported by our amazing community. From everyday naturalists who add observations and identifications, to curators who manage our taxonomy and help with moderation, to the volunteer translators who make iNaturalist more accessible to worldwide audiences, to our community-based donors, we are extraordinarily grateful to all the people in our community who make iNaturalist the platform it is.
+iNaturalist-mission-is-to-connect = iNaturalist's mission is to connect people to nature and advance biodiversity science and conservation.
 INATURALIST-MISSION-VISION = INATURALISTI MISSIOON & VISIOON
+INATURALIST-MODE = INATURALIST MODE
 INATURALIST-NETWORK = INATURALISTI VÕRGUSTIK
 INATURALIST-SETTINGS = INATURALISTI SÄTTED
 INATURALIST-STAFF = { $inaturalist }I MEESKOND
 INATURALIST-STORE = INATURALISTI POOD
 INATURALIST-TEAM = INATURALISTI MEESKOND
+iNaturalist-users-who-have-left-an-identification = iNaturalist users who have left an identification on another user's observation
+iNaturalist-users-who-have-observed = iNaturalist users who have observed a particular taxon at a particular time and place
+iNaturalist-uses-your-location-to-give-you = iNaturalist uses your location to give you better identification suggestions and we can automatically add a location to your observations, which helps scientists. We also use it to help you find organisms observed near your location.
 iNaturalists-apps-are-designed-and-developed-3 = iNaturalisti rakendusi disainib, arendab ja toetab iNaturalist meeskond: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Joanne Lin, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Thea Skaff, Angie Ta, Ken-ichi Ueda, Kirk van Gorkom, Jason Walthall ja Jane Weeden.
 iNaturalists-vision-is-a-world = iNaturalisti visiooniks on maailm, kus kõik suudavad metsikuid orgnaisme vaadeldes ja nende kohta infot jagades mõista ja hoida bioloogilist mitmekesisust.
 Individual-encounters-with-organisms = Kokkupuuted organismidega kindlal ajal ja kindlas kohas, enamasti koos tõendusmaterjaliga.
-INFO-TRANSFER = ANDMETE ÜLEKANNE
 Internet-Connection-Required = Vaja interneti ühendust
 Intl-number = { $val }
 Introduced = Sissetoodud
 Introduced-to-place = Sissetoodud kohta { $place }
 It-can-now-be-shared-for-use-in-research = Seda saab nüüd teadustöö jaoks jagada
+It-may-take-up-to-an-hour-to-remove-content = It may take up to an hour to completely delete all associated content
+It-might-also-be = It might also be
 January = jaanuar
 JOIN = LIITU
 JOIN-PROJECT = LIITU PROJEKTIGA
@@ -375,11 +425,13 @@ Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, 
 Lat-Lon-Acc = Laius: { NUMBER($latitude, maximumFractionDigits: 6) }, pikkus: { NUMBER($longitude, maximumFractionDigits: 6) }, täpsus: { $accuracy }
 leading--identification = Suunaja
 Learn-More = Lisateave
+LEARN-MORE-ABOUT-THIS-GROUP = LEARN MORE ABOUT THIS GROUP
+LEARN-MORE-ABOUT-THIS-SPECIES = LEARN MORE ABOUT THIS SPECIES
 LEAVE = LAHKU
 LEAVE-PROJECT = LAHKU PROJEKTIST
 LEAVE-PROJECT--question = LAHKU PROJEKTIST?
 LEAVE-US-A-REVIEW = KIRJUTA MEIST ARVUSTUS!
-LICENSES = LITSENTSID
+Lets-reset-your-password = Let’s reset your password.
 List-layout = Nimekirja vaade
 Loading-iNaturalists-AI-Camera = Laen iNaturalisti AI-kaamerat
 Loads-content-that-requires-an-Internet-connection = Laeb sisu, mis nõuab internetiühendust
@@ -389,6 +441,7 @@ Location-accuracy-is-too-imprecise = Asukoht on määratlejate abistamiseks liig
 LOCATION-TOO-IMPRECISE = ASUKOHT LIIGA EBATÄPNE
 LOG-IN = LOGI SISSE
 Log-in = Logi sisse
+Log-in-to-contribute-and-sync = Log in to contribute & sync
 Log-in-to-contribute-your-observations = Vaatlustega teaduse aitamiseks logi sisse!
 LOG-IN-TO-INATURALIST = LOGI INATURALISTI SISSE
 Log-in-to-iNaturalist = Logi iNaturalisti sisse
@@ -415,10 +468,13 @@ MISSING-EVIDENCE = TÕENDID PUUDUVAD
 Monthly-Donor = Igakuine toetaja
 Months = Kuud
 MONTHS = KUUD
+More = More
 More-info = Lisainfo
 MOST-FAVED = LEMMIK
 Most-faved = Lemmik
 MY-CONTENT--notifications = MINU SISU
+My-Observations = My Observations
+My-Observations--bottom-tab = Me
 Native = Kohalik
 Native-to-place = Kohalik paigas: { $place }
 Navigates-to-AI-camera = Mine AI-kaamerasse
@@ -456,30 +512,57 @@ No-results-found-try-different-search = Tulemusi ei leitud. Proovi teist otsingu
 no-rights-reserved-cc0 = piiramata õigustega (CC0)
 none--accuracy = puudub
 NONE--ranks = PUUDUB
+NOT-BY-ME = NOT BY ME
 Not-enough-space-left-on-device = Seadmes pole piisavalt ruumi
 Not-enough-space-left-on-device-try-again = Sinu seadmes pole selleks piisavalt salvestusmahtu. Palun vabasta natuke mahtu ja proovi uuesti.
 NOTES = MÄRKMED
+Notes = Notes
 NOTIFICATIONS = TEAVITUSED
+Notifications--bottom-tab = Activity
 notifications-user-added-comment-to-observation-by-you = <0>{ $userName }</0> lisas sinu tehtud vaatlusele kommentaari
 notifications-user-added-identification-to-observation-by-you = <0>{ $userName }</0> lisas sinu tehtud vaatlusele määratluse
 notifications-user1-added-comment-to-observation-by-user2 = <0>{ $user1 }</0> lisas kommentaari kasutaja { $user2 } vaatlusele
 notifications-user1-added-identification-to-observation-by-user2 = <0>{ $user1 }</0> lisas määratluse kasutaja { $user2 } vaatlusele
 November = november
+Obervations-must-be-manually-added = Observations must be manually added to a traditional project, either during the upload stage or after the observation has been shared to iNaturalist. A user must also join a traditional project in order to add their observations to it.
 Obscured = Varjatud
 Observation = Vaatlus
 Observation-Attribution = Vaatlus: © { $userName } · { $restrictions }
 OBSERVATION-BUTTON = VAATLEMISNUPP
+Observation-Copyright = Observation Copyright: © { $userName } · { $restrictions }
 Observation-has-no-photos-and-no-sounds = Sel vaatlusel pole pilte ega helisid.
+Observation-location-obscured-randomized-point = This observation’s location is obscured. You are seeing a randomized point within the obscuration polygon.
+Observation-location-obscured-you-can-see-your-own = This observation’s location is obscured. You can always see the location of your own observations.
+Observation-location-obscured-you-have-permission = This observation’s location is obscured. You have permission to see this location.
 Observation-Name = Vaatlus { $scientificName }
 Observation-options = Vaatluse sätted
 OBSERVATION-WAS-DELETED = VAATLUS KUSTUTATUD
+Observation-with-no-evidence = Observation with no evidence
 Observations = Vaatlused
+Observations-created-on-iNaturalist = Observations created on iNaturalist are used by scientists around the world.
+Observations-need-location-date--warning = iNaturalist observations need a location and date to be useful to scientists. Please check observations with this icon before uploading.
+Observations-on-iNat-are-cited = Observations on iNaturalist are cited in scientific papers, have led to rediscoveries, and help scientists understand life on our planet
+Observations-View = Observations View
+OBSERVATIONS-WITHOUT-NUMBER =
+    { $count ->
+        [one] OBSERVATION
+       *[other] OBSERVATIONS
+    }
+Observations-you-upload-to-iNaturalist = Observations you upload to iNaturalist can be used by scientists and researchers worldwide.
 Observe = Vaatle
+Observe-and-identify-organisms-in-real-time-with-your-camera = Observe and identify organisms in real time with your camera
+OBSERVE-ORGANISMS = OBSERVE ORGANISMS
+OBSERVED-IN--label = OBSERVED IN
 Observers = Vaatlejad
+Observers-View = Observers View
 October = oktoober
 Offensive-Inappropriate = Solvav / ebasobiv
+Offensive-Inappropriate-Examples = Misleading or illegal content, racial or ethnic slurs, etc. For more on our definition of "appropriate," see the FAQ.
+Offline-DQA-description = The DQA may not be accurate. Check your internet connection and try again.
+Offline-suggestions-do-not-use-your-location = Offline suggestions do not use your location and may differ from online suggestions. Taxon images and common names may not load.
 OK = OK
-One-last-step = Veel üks samm!
+Oldest-to-newest = Oldest to newest
+Once-you-create-and-upload-observations = Once you create & upload observations, other members of our community can add identifications to help your observations reach research grade.
 Open = Avalik
 OPEN-EMAIL = AVA E-POST
 Open-menu = Ava menüü.
@@ -489,18 +572,32 @@ Opens-AI-camera = Avab AI-kaamera.
 Opens-edit-comment-form = Avab kommentaari muutmise vormi.
 Opens-location-permission-prompt = Avab asukoha õigused
 Opens-the-side-drawer-menu = Avab kõrvalmenüü.
+OR-SIGN-IN-WITH = OR SIGN IN WITH
 Organism-is-captive = Organism on vangistatud
+Organisms-that-are-identified-to-species = Organisms that are identified to species rank or below
 Other = Muu
 OTHER-DATA = MUUD ANDMED
 OTHER-SUGGESTIONS = TEISED PAKKUMISED
 PASSWORD = SALASÕNA
 PEOPLE--title = INIMESED
-PERSONAL-INFO = ISIKLIK INFO
 Photo-importer = Foto importija
 PHOTO-LICENSING = FOTO LITSENTS
 Photos = Fotod
 Photos-you-take-will-appear-here = Sinu tehtud fotod ilmuvad siia
+Please-allow-Camera-Access = Please allow Camera Access
+Please-allow-Location-Access = Please allow Location Access
+Please-allow-Microphone-Access = Please allow Microphone Access
+Please-choose-a-different-password = Please choose a different password.
+Please-Grant-Permission = Please Grant Permission
 PLEASE-LOG-IN = PALUN LOGI SISSE
+Please-make-sure-your-password-is-at-least-6-characters = Please make sure your password is at least 6 characters.
+Please-try-again-when-you-are-connected-to-the-internet = Please try again when you are connected to the Internet.
+Please-try-again-when-you-are-online = Please try again when you are online!
+POTENTIAL-DISAGREEMENT = POTENTIAL DISAGREEMENT
+Potential-disagreement-description = <0>Is the evidence enough to confirm this is </0><1></1><0>?<0>
+Potential-disagreement-disagree = <0>No, but this is a member of </0><1></1>
+Potential-disagreement-unsure = <0>I don't know but I am sure this is </0><1></1>
+Previous-observation = Previous observation
 Privacy-Policy = Privaatsusreeglid
 PRIVACY-POLICY = PRIVAATSUSPOLIITIKA
 Private = Isiklik
@@ -511,48 +608,84 @@ project-start-time-datetime = Algus: { $datetime }
 PROJECTS = PROJEKTID
 Projects = Projektid
 PROJECTS-X = PROJEKTID ({ $projectCount })
+Pull-to-refresh-and-sync-observations = Pull to refresh and sync observations
 Pull-to-refresh-notifications = Libista teadete värskendamiseks
 QUALITY-GRADE = KVALITEEDIHINNANG
 Quality-Grade = Kvaliteedihinnang
 Quality-Grade-Casual--label = Kvaliteedihinnang: Juhuvaatlus
 Quality-Grade-Needs-ID--label = Kvaliteedihinnang: Vajab määramist
 Quality-Grade-Research--label = Kvaliteedihinnang: Teaduskõlbulik
+Ranks-CLASS = CLASS
 Ranks-Class = Klass
+Ranks-COMPLEX = COMPLEX
 Ranks-Complex = Liigikompleks
+Ranks-EPIFAMILY = EPIFAMILY
 Ranks-Epifamily = Episugukond
+Ranks-FAMILY = FAMILY
 Ranks-Family = Sugukond
+Ranks-FORM = FORM
 Ranks-Form = Vorm
+Ranks-GENUS = GENUS
 Ranks-Genus = Perekond
+Ranks-GENUSHYBRID = GENUSHYBRID
 Ranks-Genushybrid = Hübriidperekond
+Ranks-HYBRID = HYBRID
 Ranks-Hybrid = Hübriid
+Ranks-INFRACLASS = INFRACLASS
 Ranks-Infraclass = Infraklass
+Ranks-INFRAHYBRID = INFRAHYBRID
 Ranks-Infrahybrid = Alamhübriid
+Ranks-INFRAORDER = INFRAORDER
 Ranks-Infraorder = Infraselts
+Ranks-KINGDOM = KINGDOM
 Ranks-Kingdom = Riik
+Ranks-ORDER = ORDER
 Ranks-Order = Järjestus
+Ranks-PARVORDER = PARVORDER
 Ranks-Parvorder = Parvklass
+Ranks-PHYLUM = PHYLUM
 Ranks-Phylum = Hõimkond
+Ranks-SECTION = SECTION
 Ranks-Section = Sektsioon
 Ranks-SPECIES = LIIGID
 Ranks-Species = Liigid
 Ranks-Statefmatter = Mateeria
+Ranks-STATEOFMATTER = STATE OF MATTER
+Ranks-SUBCLASS = SUBCLASS
 Ranks-Subclass = Alamklass
+Ranks-SUBFAMILY = SUBFAMILY
 Ranks-Subfamily = Alamsugukond
+Ranks-SUBGENUS = SUBGENUS
 Ranks-Subgenus = Alamperekond
+Ranks-SUBKINGDOM = SUBKINGDOM
 Ranks-Subkingdom = Alamriik
+Ranks-SUBORDER = SUBORDER
 Ranks-Suborder = Alamselts
+Ranks-SUBPHYLUM = SUBPHYLUM
 Ranks-Subphylum = Alamhõimkond
+Ranks-SUBSECTION = SUBSECTION
 Ranks-Subsection = Alamsektsioon
+Ranks-SUBSPECIES = SUBSPECIES
 Ranks-Subspecies = Alamliik
+Ranks-SUBTERCLASS = SUBTERCLASS
 Ranks-Subterclass = Subterklass
+Ranks-SUBTRIBE = SUBTRIBE
 Ranks-Subtribe = Alamtriibus
+Ranks-SUPERCLASS = SUPERCLASS
 Ranks-Superclass = Ülemklass
+Ranks-SUPERFAMILY = SUPERFAMILY
 Ranks-Superfamily = Ülemsugukond
+Ranks-SUPERORDER = SUPERORDER
 Ranks-Superorder = Ülemselts
+Ranks-SUPERTRIBE = SUPERTRIBE
 Ranks-Supertribe = Ülemtriibus
+Ranks-TRIBE = TRIBE
 Ranks-Tribe = Triibus
+Ranks-VARIETY = VARIETY
 Ranks-Variety = Teisend
+Ranks-ZOOSECTION = ZOOSECTION
 Ranks-Zoosection = Zooloogiline sektsioon
+Ranks-ZOOSUBSECTION = ZOOSUBSECTION
 Ranks-Zoosubsection = Zooloogiline alamsektsioon
 Read-more-on-Wikipedia = Loe edasi Vikipeediast
 Record-a-sound = Salvesta heli
@@ -575,6 +708,7 @@ Removes-this-observations-taxon = Eemaldab sellev aatluse taksoni
 Removes-your-vote-of-agreement = Eemaldab sinu nõustumise
 Removes-your-vote-of-disagreement = Eemaldab sinu mittenõustumise
 Research-Grade--quality-grade = Teaduskõlbulik
+Research-Grade-Status = Research Grade Status
 RESET-PASSWORD = LÄHTESTA SALASÕNA
 RESET-RECORDING = LÄHTESTA SALVESTUS
 RESET-SEARCH = LÄHTESTA OTSING
@@ -584,6 +718,8 @@ RESTART-APP = TÄISKÄIVITA RAKENDUS
 Restore = Taasta
 Reveal = Näita
 REVIEW-INATURALIST = ARVUSTA INATURALISTI
+REVIEWED = REVIEWED
+Reviewed-observations-only = Reviewed observations only
 Satellite--map-type = Satelliit
 SAVE = SALVESTA
 Save = Salvesta
@@ -593,9 +729,11 @@ SAVE-CHANGES = SALVESTA MUUTUSED
 SAVE-FOR-LATER = SÄILITA HILISEMAKS
 SAVE-LOCATION = SALVESTA ASUKOHT
 SAVE-PHOTOS = SALVESTA FOTOD
-Save-photos-to-your-gallery = Salvesta fotod enda galeriisse
+Save-photos-to-your-photo-library = Save photos to your photo library
 Saved-Observation = Salvestatud vaatlused, mis ootavad üleslaadimist
+Scan-the-area-around-you-for-organisms = Scan the area around you for organisms.
 Scientific-Name = Teaduslik nimi
+Scientific-Name-Common-Name = Scientific Name (Common Name)
 SEARCH = OTSING
 Search = Otsi
 Search-for-a-project = Otsi projekti
@@ -607,10 +745,39 @@ Search-suggestions-with-location = Asukohaga otsingusoovitused
 Search-suggestions-without-location = Asukohata otsingusoovitused
 SEARCH-TAXA = OTSI TAKSONIT
 SEARCH-USERS = OTSI KASUTAJAT
+See-all-your-observations-in-explore = See all your observations in explore
+See-observations-by-this-user-in-Explore = See observations by this user in Explore
+See-observations-in-explore = See observations in explore
+See-observations-of-this-taxon-in-explore = See observations of this taxon in explore
+See-project-members = See project members
+See-species-observed-by-this-user-in-Explore = See species observed by this user in Explore
+Select-a-date-and-time-for-observation = Select a date and time for observation
+Select-captive-or-cultivated-status = Select captive or cultivated status
+Select-geoprivacy-status = Select geoprivacy status
+Select-or-drag-media = Select or drag media
+Select-photo = Select photo
+SELECT-THIS-TAXON = SELECT THIS TAXON
+Select-user = Select user
+Selects-iconic-taxon-X-for-identification = Selects iconic taxon { $iconicTaxon } for identification.
+Separate-Photos = Separate Photos
 September = september
+SETTINGS = SETTINGS
 Share = Jaga
+SHARE-DEBUG-LOGS = SHARE DEBUG LOGS
 Share-location = Jaga asukohta
+Share-map = Share map
+Share-your-observation-where-it-can-help-scientists = Share your observation, where it can help scientists across the world better understand biodiversity.
+SHOP-INATURALIST-MERCH = SHOP INATURALIST MERCH
+Show-observation-options = Show observation options.
+Showing-offline-search-results--taxa = Showing offline search results. To search for more species, try again when connected to the Internet.
+Shows-identification-suggestions = Shows identification suggestions
+Shows-iNaturalist-bird-logo = Shows iNaturalist bird logo.
+Shows-observation-creation-options = Shows observation creation options
+Sign-in-with-Apple = Sign in with Apple
 Sign-in-with-Apple-Failed = Apple'i abil sisselogimine ebaõnnestus
+Sign-in-with-Google = Sign in with Google
+Sign-in-with-Google-Failed = Sign in with Google Failed
+Something-went-wrong = Something went wrong.
 Sorry-this-observation-was-deleted = Vabandust, see vaatlus on kustutatud
 Sorry-we-dont-know-how-to-open-that-URL = Vabandust, me ei oska seda aadressi avada: { $url }
 SORT-BY = SORTEERI
@@ -624,14 +791,24 @@ sound-recorder-help-Keep-it-short = Las olla lühike
 sound-recorder-help-Make-sure = Ära lase endae liigutuste helil organismi tekitatavat heli summutada.
 sound-recorder-help-One-organism = Üks organism
 sound-recorder-help-Stop-moving = Ära liiguta
+sound-recorder-help-Try-to-isolate = Try to isolate the sound of a single organism. If you can’t, make sure to leave a note of which organism you’re recording.
 Sounds = Helid
+Source-List = <0>(Source List: </0><1>{ $source }</1><0>)</0>
 Spam = Rämpspost
 Spam-Examples = Ärilisi teateid, katkiseid linke, jne.
 Species = Liigid
+Species-View = Species View
+SPECIES-WITHOUT-NUMBER =
+    { $count ->
+        [one] SPECIES
+       *[other] SPECIES
+    }
 Standard--map-type = Normaalne
 Start-must-be-before-end = Alguskuupäev peab olema lõppkuupäevast varasem.
 Start-upload = Alusta üles laadimist
 Starts-recording-sound = Alustab heli salvestamist
+Stay-on-this-screen = Stay on this screen while your location loads.
+Still-need-help = Still need help? You can file a support request here.
 Stop-upload = Katkesta üleslaadimine
 Stop-verb = Peata
 Stops-recording-sound = Lõpetab heli salvestamise
@@ -653,10 +830,27 @@ TAXONOMY-header = TAKSONOOMIA
 TEAM = MEESKOND
 Terms-of-Use = Kasutustingimused
 TERMS-OF-USE = KASUTUSTINGIMUSED
+Text-Box-to-Describe-Reason-for-Flag = Text box to describe reason for flag.
+Thank-you-for-sharing-your-feedback = Thank you for sharing your feedback to help us improve!
+Thanks-for-using-any-suggestions = Thanks for using this app! Do you have any suggestions for the people who make it?
+That-email-is-already-associated-with-an-account = That email is already associated with an account.
 That-user-profile-doesnt-exist = Selle kasutaja profiili ei eksisteeri
+That-username-is-unavailable = That username is unavailable
+The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
+The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
+The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify
+The-models-that-suggest-species = The models that suggest species based on visual similarity and location are thanks in part to collaborations with Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona, and Grant Van Horn.
+This-is-a-wild-organism = This is a wild organism and wasn't placed in this location by humans.
+This-is-how-taxon-names-will-be-displayed = This is how all taxon names will be displayed to you across iNaturalist:
+This-is-your-identification-other-people-may-help-confirm-it = This is your identification. Other people may help confirm it!
 This-observation-has-no-comments-or-identifications-yet = Sel vaatlusel pole veel kommentaar või määratlusi.
 This-observation-has-not-met-the-conditions-required-to-meet-Research-Grade = See vaatlus ei vasta veel teaduskõlbulikuks kuulutamise tingimustele
+This-observation-is-not-eligible-for-research-grade-status = This observation is not eligible for research grade status. Learn more in the Data Quality Assessment below.
+This-observation-is-research-grade-and-can-be-used-by-scientists = This observation is research grade and can be used by scientists!
 This-observation-needs-more-identifications = See vaatlus vajab teaduskõlbulikuks kuulutamiseks rohkem määratlusi
+This-observation-needs-more-identifications-to-become-research-grade = This observation needs more identifications to become research grade.
+This-observer-has-opted-out-of-the-Community-Taxon = This observer has opted out of the Community Taxon
+This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
 To-sync-your-observations-to-iNaturalist = Enda vaatluste iNaturalistiga sünkroniseerimiseks logi sisse.
 To-view-nearby-organisms-please-enable-location = Läheduses asuvate organismide nägemiseks lülita oma asukoht sisse.
 To-view-nearby-projects-please-enable-location = Läheduses asuvate projektide nägemiseks lülita oma asukoht sisse.
@@ -671,10 +865,11 @@ Unknown--taxon = Teadmata
 Unknown--user = Teadmata
 Unknown-error = Teadmata viga
 Unknown-organism = Tundmatu organism
+Unreviewed-observations-only = Unreviewed observations only
 Upload-Complete = Üleslaadimine lõpetatud
 Upload-in-progress = Üleslaadimine kestab
 UPLOAD-NOW = LAE ÜLES
-Upload-photos-from-your-gallery = Lae oma galeriist mitu fotot
+Upload-photos-from-your-photo-library = Upload multiple photos from your photo library
 Upload-Progress = Üleslaadimine { $uploadProgress } protsenti valmis
 UPLOAD-TO-INATURALIST = LAE INATURALISTI
 Upload-x-observations =
@@ -683,31 +878,66 @@ Upload-x-observations =
        *[other] { $count } vaatlust
     }
 Uploaded-via-application = Allikas: { $application }
+Uploading-x-of-y = Uploading { $currentUploadCount } of { $total }
+Uploading-x-of-y-observations =
+    { $total ->
+        [one] Uploading { $currentUploadCount } observation
+       *[other] Uploading { $currentUploadCount } of { $total } observations
+    }
+Use-iNaturalist-to-identify-any-living-thing = Use iNaturalist to identify any living thing
+Use-iNaturalists-AI-Camera = Use iNaturalist's AI Camera to identify organisms in real time
 USE-LOCATION = KASUTA ASUKOHTA
 Use-the-devices-other-camera = Kasuta seadme teist kaamerat
+Use-the-iNaturalist-camera-to-observe-2 = Use iNaturalist to observe and identify organisms in real time. Share them with our community to get identifications and contribute to science!
+Use-your-devices-microphone-to-record = Use your device’s microphone to record sounds made by organisms and share them with our community to get identifications and contribute to science!
 USER = KASUTAJA
 User = Kasutaja { $userHandle }
-USERNAME = KASUTAJATUNNUS
 USERNAME-OR-EMAIL = KASUTAJATUNNUS VÕI E-POST
 Users = Kasutajad
 Version-app-build = Versioon { $appVersion } ({ $buildVersion })
 VIEW-ALL-X-PLACES = VAATA { $count } KOHTA
 VIEW-ALL-X-PROJECTS = VAATA { $count } PROJEKTI
 VIEW-ALL-X-TAXA = VAATA { $count } TAKSONIT
+VIEW-ALL-X-USERS = VIEW ALL { $count } USERS
+VIEW-CHILDREN-TAXA = VIEW CHILDREN TAXA
+VIEW-DATA-QUALITY-ASSESSMENT = VIEW DATA QUALITY ASSESSMENT
+VIEW-EDUCATORS-GUIDE = VIEW EDUCATOR'S GUIDE
+VIEW-FOLLOWERS = VIEW FOLLOWERS
+VIEW-FOLLOWING = VIEW FOLLOWING
 View-in-browser = Kuva veebilehitsejas
+VIEW-IN-EXPLORE = VIEW IN EXPLORE
+VIEW-INATURALIST-HELP = VIEW INATURALIST HELP
+View-photo = View photo
+View-photo-licensing-info = View photo licensing info
+VIEW-PROJECT-REQUIREMENTS = VIEW PROJECT REQUIREMENTS
+VIEW-PROJECTS = VIEW PROJECTS
 View-suggestions = Vaata soovitusi
+We-are-not-confident-enough-to-make-a-top-ID-suggestion = We’re not confident enough to make a top ID suggestion, but here are some other suggestions:
+Welcome-to-iNaturalist = Welcome to iNaturalist!
+Welcome-user = <0>Welcome back,</0><1>{ $userHandle }</1>
 WHAT-IS-INATURALIST = MIS ON INATURALIST?
+Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!
+When-tapping-the-green-observation-button = When tapping the green observation button, open:
 WIKIPEDIA = VIKIPEEDIA
 Wild = Metsik
 WILD-STATUS = STAATUSEGA
 Withdraw = Võta tagasi
+WITHDRAW-ID = WITHDRAW ID
+WITHDRAW-ID-QUESTION = WITHDRAW ID?
+Withdraws-identification = Withdraws identification
 Worldwide = Globaalselt
 WORLDWIDE = MAAILMAS
+Would-you-like-to-discard-your-current-recording-and-start-over = Would you like to discard your current recording and start over?
 Would-you-like-to-suggest-the-following-identification = Soovid seda määratlust pakkuda?
 x-comments =
     { $count ->
         [one] { $count } kommentaar
        *[other] { $count } kommentaari
+    }
+x-failed =
+    { $count ->
+        [one] { $count } failed
+       *[other] { $count } failed
     }
 X-FOLLOWERS =
     { $count ->
@@ -740,6 +970,11 @@ X-observations =
         [one] 1 vaatlus
        *[other] { $count } vaatlust
     }
+X-OBSERVATIONS--below-number =
+    { $count ->
+        [one] OBSERVATION
+       *[other] OBSERVATIONS
+    }
 X-observations-deleted =
     { $count ->
         [one] 1 vaatlus kustutatud
@@ -763,6 +998,8 @@ X-of-Y =
         [one] / { $y }
        *[other] / { $y }
     }
+X-percent = { $count }%
+X-percent-confidence = { $count }% confidence
 X-PHOTOS =
     { $photoCount ->
         [one] 1 FOTO
@@ -785,6 +1022,11 @@ X-PHOTOS-Y-SOUNDS =
        *[other] { $soundCount } HELI
     }
 X-PROJECTS = { $projectCount } PROJEKTI
+x-saved =
+    { $count ->
+        [one] { $count } saved
+       *[other] { $count } saved
+    }
 X-SOUNDS =
     { $count ->
         [one] 1 HELI
@@ -795,12 +1037,58 @@ X-Species =
         [one] { $count } liik
        *[other] { $count } liiki
     }
+X-SPECIES--below-number =
+    { $count ->
+        [one] SPECIES
+       *[other] SPECIES
+    }
+x-uploaded =
+    { $count ->
+        [one] { $count } uploaded
+       *[other] { $count } uploaded
+    }
+x-uploading =
+    { $count ->
+        [one] { $count } uploading
+       *[other] { $count } uploading
+    }
 x-uploads-failed =
     { $count ->
         [one] { $count } üleslaadimine ebaõnnestus
        *[other] { $count } üleslaadimist ebaõnnestus
     }
-Yes-license-my-photos = Jah, litsenseerige mu fotod, helid ja vaatlused nii, et teadlased mu andmeid kasutada saaks (soovituslik)
 You-are-offline = Internetiühendus puudub
+You-are-offline-Tap-to-reload = You are offline. Tap to reload.
+You-are-offline-Tap-to-try-again = You are offline. Tap to try again.
+You-can-add-up-to-20-media = You can add up to 20 photos and 20 sounds per observation.
+You-can-also-check-out-merchandise = You can also check out merchandise for iNaturalist and Seek at our store below!
+You-can-also-explore-existing-observations = You can also explore existing observations on iNaturalist to discover what's around you.
+You-can-click-join-on-the-project-page = You can click “join” on the project page.
+You-can-find-answers-on-our-help-page = You can find answers on our help page.
+You-can-only-add-20-photos-per-observation = You can only add 20 photos per observation
+You-can-search-observations-of-any-plant-or-animal = You can search observations of any plant or animal anywhere in the world with Explore!
+You-can-still-share-the-file = You can still share the file with another app. If you can email it, please send it to { $email }
+You-can-upload-this-observation-to-our-community = You can upload this observation to our community to get an identification from a real person, and help our AI improve its identifications in the future
+You-changed-filters-will-be-discarded = You changed filters, but they were not applied to your explore search results.
+You-have-opted-out-of-the-Community-Taxon = You have opted out of the Community Taxon
+You-havent-joined-any-projects-yet = You haven’t joined any projects yet!
+You-havent-observed-any-species-yet = You haven't observed any species yet.
+You-likely-observed-a-new-species = You likely observed a new species!
+You-may-have-observed-a-new-species = You may have observed a new species!
+You-must-be-logged-in-to-view-messages = You must be logged in to view messages
+You-must-install-Google-Play-Services-to-sign-in-with-Google = You must install Google Play Services to sign in with Google.
+You-need-an-Internet-connection-to-do-that = You need an Internet connection to do that.
+You-need-log-in-to-do-that = You need to log in to do that.
+You-observed-a-new-species = You observed a new species!
 You-will-see-notifications = Teavitusi näed peale sisse logimist ja vaatluste üles laadimist.
+Your-donation-to-iNaturalist = Your donation to iNaturalist supports the improvement and stability of the mobile apps and website that connects millions of people to nature and enables the protection of biodiversity worldwide!
+Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
+Your-location-uncertainty-is-over-x-km = Your location uncertainty is over { $x } km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
+Youre-always-in-control-of-the-location-privacy = You’re always in control of the location privacy of every observation you create.
+Youve-denied-permission-prompt = You’ve denied permission. Please grant permission in the settings app.
+Youve-previously-denied-camera-permissions = You've previously denied camera permissions, so please enable them in settings.
+Youve-previously-denied-location-permissions = You’ve previously denied location permissions, so please enable them in settings.
+Youve-previously-denied-microphone-permissions = You’ve previously denied microphone permissions, so please enable them in settings.
+Zoom-in-as-much-as-possible-to-improve = Zoom in as much as possible to improve location accuracy and get better identifications.
+Zoom-to-current-location = Zoom to current location
 zoom-x = { $zoom }×
