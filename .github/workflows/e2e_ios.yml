@@ -55,13 +55,8 @@ jobs:
       uses: actions/cache@v4
       id: cache
       with:
-        path: |
-          **/node_modules
-          !**/node_modules/.cache
-        key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-modules-
-          ${{ runner.os }}-
+        path: node_modules
+        key: node-modules-${{ hashFiles('**/package-lock.json') }}
 
     - name: Rebuild detox from cache
       if: steps.cache.outputs.cache-hit == 'true'
