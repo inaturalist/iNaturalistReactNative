@@ -4,7 +4,7 @@ import {
 } from "components/SharedComponents";
 import React, { useState } from "react";
 import { EventRegister } from "react-native-event-listeners";
-import { useTranslation } from "sharedHooks";
+import { useCurrentUser, useLayoutPrefs, useTranslation } from "sharedHooks";
 
 import NotificationsContainer from "./NotificationsContainer";
 import NotificationsTab, {
@@ -16,6 +16,8 @@ import NotificationsTab, {
 const Notifications = ( ) => {
   const [activeTab, setActiveTab] = useState<typeof OWNER_TAB | typeof OTHER_TAB>( OWNER_TAB );
   const { t } = useTranslation();
+  const { isDefaultMode } = useLayoutPrefs( );
+  const currentUser = useCurrentUser( );
 
   return (
     <ViewWrapper>
@@ -37,12 +39,14 @@ const Notifications = ( ) => {
       />
       {activeTab === OWNER_TAB && (
         <NotificationsContainer
+          currentUser={currentUser}
           notificationParams={{ observations_by: "owner" }}
           onRefresh={( ) => EventRegister.emit( NOTIFICATIONS_REFRESHED, OWNER_TAB )}
         />
       )}
       {activeTab === OTHER_TAB && (
         <NotificationsContainer
+          currentUser={currentUser}
           notificationParams={{ observations_by: "following" }}
           onRefresh={( ) => EventRegister.emit( NOTIFICATIONS_REFRESHED, OTHER_TAB )}
         />
