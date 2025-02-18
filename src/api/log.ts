@@ -5,6 +5,7 @@ import { getAnonymousJWT, getJWT } from "components/LoginSignUp/AuthenticationSe
 import Config from "react-native-config";
 import { transportFunctionType } from "react-native-logs";
 import { getInstallID } from "sharedHelpers/installData.ts";
+import useStore from "stores/useStore";
 
 const API_HOST: string
     = Config.API_URL || process.env.API_URL || "https://api.inaturalist.org/v2";
@@ -21,6 +22,10 @@ function isError( error: { message?: string, stack?: string } ) {
   if ( error instanceof Error ) return true;
   if ( error?.stack && error?.message ) return true;
   return false;
+}
+
+function isDefaultMode( ) {
+  return useStore.getState( ).layout.isDefaultMode === true;
 }
 
 // Custom transport for posting to iNat API logging
@@ -71,7 +76,10 @@ const iNatLogstashTransport: transportFunctionType = async props => {
     context: props.extension,
     timestamp: new Date().toISOString(),
     error_type: errorType,
-    backtrace
+    backtrace,
+    mode: isDefaultMode( )
+      ? "default"
+      : "advanced"
   };
   try {
     await api.post( "/log", formData, {
