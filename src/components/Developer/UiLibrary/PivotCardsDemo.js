@@ -11,10 +11,12 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useState } from "react";
+import useStore from "stores/useStore";
 
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
 const Buttons = ( ) => {
+  const resetShownOnce = useStore( state => state.layout.resetShownOnce );
   const [modalIndex, setModalIndex] = useState( -1 );
 
   const setShowingModal = index => {
@@ -46,22 +48,28 @@ const Buttons = ( ) => {
 
   return (
     <ScrollViewWrapper>
-      {
-        pivotCards.map( ( { title, component }, index ) => (
-          <View className="p-4">
-            <Button
-              className="mb-2"
-              level="primary"
-              text={title}
-              onPress={() => setShowingModal( index )}
-            />
-            {React.createElement(
-              component,
-              { triggerCondition: modalIndex === index }
-            )}
-          </View>
-        ) )
-      }
+      <Button
+        className="mb-2"
+        level="primary"
+        text="Rest shown state"
+        onPress={() => {
+          resetShownOnce( );
+          setModalIndex( -1 );
+        }}
+      />
+      {pivotCards.map( ( { title, component }, index ) => (
+        <View className="p-4">
+          <Button
+            className="mb-2"
+            level="primary"
+            text={title}
+            onPress={() => setShowingModal( index )}
+          />
+          {React.createElement( component, {
+            triggerCondition: modalIndex === index
+          } )}
+        </View>
+      ) )}
     </ScrollViewWrapper>
   );
 };

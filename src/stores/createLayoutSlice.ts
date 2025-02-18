@@ -31,6 +31,12 @@ const createLayoutSlice = set => ( {
           [key]: true
         }
       }
+    } ) ),
+    resetShownOnce: () => set( state => ( {
+      layout: {
+        ...state.layout,
+        shownOnce: {}
+      }
     } ) )
   }
 } );
