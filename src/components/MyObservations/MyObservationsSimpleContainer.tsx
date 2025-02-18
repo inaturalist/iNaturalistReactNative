@@ -32,7 +32,8 @@ const MyObservationsSimpleContainer = ( {
   setShowLoginSheet,
   showLoginSheet,
   showNoResults,
-  toggleLayout
+  toggleLayout,
+  justFinishedSignup
 }: Props ) => {
   const [activeTab, setActiveTab] = useState( OBSERVATIONS_TAB );
   const realm = useRealm();
@@ -118,6 +119,7 @@ const MyObservationsSimpleContainer = ( {
       setActiveTab={setActiveTab}
       fetchMoreTaxa={fetchMoreTaxa}
       isFetchingTaxa={isFetchingTaxa}
+      justFinishedSignup={justFinishedSignup}
     />
   );
 };

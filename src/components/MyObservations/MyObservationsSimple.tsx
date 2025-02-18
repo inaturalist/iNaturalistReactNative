@@ -60,6 +60,7 @@ export interface Props {
   toggleLayout: ( ) => void;
   fetchMoreTaxa: ( ) => void;
   isFetchingTaxa?: boolean;
+  justFinishedSignup?: boolean;
 }
 
 interface TaxaFlashListRenderItemProps {
@@ -95,7 +96,8 @@ const MyObservationsSimple = ( {
   taxa,
   toggleLayout,
   fetchMoreTaxa,
-  isFetchingTaxa
+  isFetchingTaxa,
+  justFinishedSignup = false
 }: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
