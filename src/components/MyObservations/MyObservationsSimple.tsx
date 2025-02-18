@@ -375,7 +375,7 @@ const MyObservationsSimple = ( {
       {/* These four cards should show only in default mode */}
       <FirstObservationCard triggerCondition={numTotalObservations === 1} />
       <SecondObservationCard triggerCondition={numTotalObservations === 2} />
-      <FiftyObservationCard triggerCondition={numTotalObservations >= 50} />
+      <FiftyObservationCard triggerCondition={!!currentUser && numTotalObservations >= 50} />
       <AccountCreationCard
         triggerCondition={
           justFinishedSignup && !!currentUser && numTotalObservations < 20
