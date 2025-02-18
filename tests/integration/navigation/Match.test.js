@@ -64,7 +64,8 @@ const topSuggestion = {
 beforeEach( async ( ) => {
   useStore.setState( {
     layout: {
-      isDefaultMode: true
+      isDefaultMode: true,
+      oneTimeShows: {}
     },
     isAdvancedUser: false
   } );

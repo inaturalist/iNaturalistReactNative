@@ -86,7 +86,8 @@ const displayItemByText = text => {
 beforeEach( ( ) => {
   useStore.setState( {
     layout: {
-      isDefaultMode: true
+      isDefaultMode: true,
+      oneTimeShows: {}
     },
     isAdvancedUser: false
   } );
