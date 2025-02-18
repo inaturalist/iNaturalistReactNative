@@ -1,10 +1,13 @@
+import { NotificationOnboarding } from "components/OnboardingModal/PivotCards.tsx";
 import {
   Tabs,
   ViewWrapper
 } from "components/SharedComponents";
 import React, { useState } from "react";
 import { EventRegister } from "react-native-event-listeners";
-import { useCurrentUser, useLayoutPrefs, useTranslation } from "sharedHooks";
+import {
+  useCurrentUser, useLayoutPrefs, useLocalObservations, useTranslation
+} from "sharedHooks";
 
 import NotificationsContainer from "./NotificationsContainer";
 import NotificationsTab, {
@@ -18,6 +21,9 @@ const Notifications = ( ) => {
   const { t } = useTranslation();
   const { isDefaultMode } = useLayoutPrefs( );
   const currentUser = useCurrentUser( );
+  const {
+    totalResults: totalResultsLocal
+  } = useLocalObservations( );
 
   return (
     <ViewWrapper>
@@ -51,6 +57,9 @@ const Notifications = ( ) => {
           onRefresh={( ) => EventRegister.emit( NOTIFICATIONS_REFRESHED, OTHER_TAB )}
         />
       )}
+      <NotificationOnboarding
+        triggerCondition={isDefaultMode && !!currentUser && totalResultsLocal < 10}
+      />
     </ViewWrapper>
   );
 };
