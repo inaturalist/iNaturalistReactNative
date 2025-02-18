@@ -16,7 +16,7 @@ const SimpleObservationLocation = ( {
 }: Props ): Node => {
   const { t } = useTranslation( );
 
-  let displayLocation = useMemo(
+  const displayLocation = useMemo(
     ( ) => checkCamelAndSnakeCase(
       observation,
       observation.private_place_guess
@@ -25,10 +25,6 @@ const SimpleObservationLocation = ( {
     ),
     [observation]
   );
-
-  if ( !displayLocation ) {
-    displayLocation = t( "Add-Location" );
-  }
 
   if ( !observation ) {
     return null;
