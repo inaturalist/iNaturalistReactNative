@@ -10,6 +10,7 @@ const NotificationOnboarding = ( { triggerCondition }: Props ) => {
   const { t } = useTranslation( );
   return (
     <OnboardingModal
+      showKey="notification-onboarding"
       triggerCondition={triggerCondition}
       slides={[
         {
@@ -25,6 +26,7 @@ const AccountCreationCard = ( { triggerCondition }: Props ) => {
   const { t } = useTranslation( );
   return (
     <OnboardingModal
+      showKey="account-creation"
       triggerCondition={triggerCondition}
       slides={[
         {
@@ -63,6 +65,7 @@ const SecondObservationCard = ( { triggerCondition }: Props ) => {
   const { t } = useTranslation( );
   return (
     <OnboardingModal
+      showKey="second-observation"
       triggerCondition={triggerCondition}
       slides={[
         {
@@ -89,6 +92,7 @@ const FiftyObservationCard = ( { triggerCondition }: Props ) => {
   const { t } = useTranslation( );
   return (
     <OnboardingModal
+      showKey="fifty-observation"
       triggerCondition={triggerCondition}
       slides={[
         {
