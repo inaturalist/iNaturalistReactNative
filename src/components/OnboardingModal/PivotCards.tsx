@@ -71,7 +71,7 @@ const SecondObservationCard = ( { triggerCondition }: Props ) => {
         {
           title: t( "Youve-made-2-observations" ),
           description: t( "How-does-it-feel-to-identify" ),
-          imageSource: require( "images/background/tucans.png" )
+          imageSource: require( "images/background/toucans.jpg" )
         },
         {
           title: t( "Your-observations-can-help-scientists" ),
