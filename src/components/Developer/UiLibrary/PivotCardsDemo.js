@@ -15,16 +15,10 @@ import React, { useState } from "react";
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
 const Buttons = ( ) => {
-  const [showModal, setShowModal] = useState( false );
-  const [modalIndex, setModalIndex] = useState( 0 );
+  const [modalIndex, setModalIndex] = useState( -1 );
 
   const setShowingModal = index => {
     setModalIndex( index );
-    setShowModal( true );
-  };
-
-  const closeModal = () => {
-    setShowModal( false );
   };
 
   const pivotCards = [
@@ -63,7 +57,7 @@ const Buttons = ( ) => {
             />
             {React.createElement(
               component,
-              { showModal: showModal && modalIndex === index, closeModal }
+              { triggerCondition: modalIndex === index }
             )}
           </View>
         ) )
