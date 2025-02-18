@@ -70,7 +70,7 @@ const AddObsModalHelp = ( {
               storage.set( HIDE_ADD_OBS_HELP_TEXT, true );
             }}
             accessibilityLabel={t( "Close" )}
-            accessibilityHint={t( "Closes-new-observation-options" )}
+            accessibilityHint={t( "Closes-new-observation-explanation" )}
           />
         </View>
       </View>

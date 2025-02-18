@@ -1,0 +1,69 @@
+import {
+  AccountCreationCard,
+  FiftyObservationCard,
+  FirstObservationCard,
+  NotificationOnboarding,
+  SecondObservationCard
+} from "components/OnboardingModal/PivotCards.tsx";
+import {
+  Button,
+  ScrollViewWrapper
+} from "components/SharedComponents";
+import { View } from "components/styledComponents";
+import React, { useState } from "react";
+
+/* eslint-disable i18next/no-literal-string */
+/* eslint-disable react/no-unescaped-entities */
+const Buttons = ( ) => {
+  const [modalIndex, setModalIndex] = useState( -1 );
+
+  const setShowingModal = index => {
+    setModalIndex( index );
+  };
+
+  const pivotCards = [
+    {
+      title: "Account Creation",
+      component: AccountCreationCard
+    },
+    {
+      title: "First Observation",
+      component: FirstObservationCard
+    },
+    {
+      title: "Second Observation",
+      component: SecondObservationCard
+    },
+    {
+      title: "Fifty Observation",
+      component: FiftyObservationCard
+    },
+    {
+      title: "Notification Onboarding",
+      component: NotificationOnboarding
+    }
+  ];
+
+  return (
+    <ScrollViewWrapper>
+      {
+        pivotCards.map( ( { title, component }, index ) => (
+          <View className="p-4">
+            <Button
+              className="mb-2"
+              level="primary"
+              text={title}
+              onPress={() => setShowingModal( index )}
+            />
+            {React.createElement(
+              component,
+              { triggerCondition: modalIndex === index }
+            )}
+          </View>
+        ) )
+      }
+    </ScrollViewWrapper>
+  );
+};
+
+export default Buttons;

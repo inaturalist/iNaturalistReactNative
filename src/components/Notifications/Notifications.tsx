@@ -1,10 +1,13 @@
+import { NotificationOnboarding } from "components/OnboardingModal/PivotCards.tsx";
 import {
   Tabs,
   ViewWrapper
 } from "components/SharedComponents";
 import React, { useState } from "react";
 import { EventRegister } from "react-native-event-listeners";
-import { useTranslation } from "sharedHooks";
+import {
+  useCurrentUser, useLayoutPrefs, useLocalObservations, useTranslation
+} from "sharedHooks";
 
 import NotificationsContainer from "./NotificationsContainer";
 import NotificationsTab, {
@@ -16,6 +19,11 @@ import NotificationsTab, {
 const Notifications = ( ) => {
   const [activeTab, setActiveTab] = useState<typeof OWNER_TAB | typeof OTHER_TAB>( OWNER_TAB );
   const { t } = useTranslation();
+  const { isDefaultMode } = useLayoutPrefs( );
+  const currentUser = useCurrentUser( );
+  const {
+    totalResults: totalResultsLocal
+  } = useLocalObservations( );
 
   return (
     <ViewWrapper>
@@ -37,16 +45,21 @@ const Notifications = ( ) => {
       />
       {activeTab === OWNER_TAB && (
         <NotificationsContainer
+          currentUser={currentUser}
           notificationParams={{ observations_by: "owner" }}
           onRefresh={( ) => EventRegister.emit( NOTIFICATIONS_REFRESHED, OWNER_TAB )}
         />
       )}
       {activeTab === OTHER_TAB && (
         <NotificationsContainer
+          currentUser={currentUser}
           notificationParams={{ observations_by: "following" }}
           onRefresh={( ) => EventRegister.emit( NOTIFICATIONS_REFRESHED, OTHER_TAB )}
         />
       )}
+      <NotificationOnboarding
+        triggerCondition={isDefaultMode && !!currentUser && totalResultsLocal < 10}
+      />
     </ViewWrapper>
   );
 };

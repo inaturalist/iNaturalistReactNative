@@ -9,6 +9,7 @@ import Icons from "./UiLibrary/Icons";
 import Misc from "./UiLibrary/Misc";
 import ObsGridItemDemo from "./UiLibrary/ObsGridItemDemo";
 import ObsListItemDemo from "./UiLibrary/ObsListItemDemo";
+import PivotCardsDemo from "./UiLibrary/PivotCardsDemo";
 import TaxonGridItemDemo from "./UiLibrary/TaxonGridItemDemo";
 import TaxonResultDemo from "./UiLibrary/TaxonResultDemo";
 import ToolbarDemo from "./UiLibrary/ToolbarDemo";
@@ -22,6 +23,7 @@ const LIBRARY = {
   Misc,
   ObsGridItemDemo,
   ObsListItemDemo,
+  PivotCardsDemo,
   TaxonGridItemDemo,
   TaxonResultDemo,
   ToolbarDemo,

@@ -100,7 +100,15 @@ const SignUpConfirmationForm = ( ) => {
       navigation.navigate( "Login" );
       return;
     }
-    navigation.navigate( "TabNavigator" );
+    navigation.navigate( "TabNavigator", {
+      screen: "TabStackNavigator",
+      params: {
+        screen: "ObsList",
+        params: {
+          justFinishedSignup: true
+        }
+      }
+    } );
   };
 
   return (

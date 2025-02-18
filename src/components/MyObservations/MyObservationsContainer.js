@@ -1,9 +1,8 @@
 // @flow
-
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, {
@@ -44,6 +43,10 @@ const MyObservationsContainer = ( ): Node => {
   const realm = useRealm( );
   const listRef = useRef( );
   const navigateToObsEdit = useNavigateToObsEdit( );
+
+  // Get navigation params
+  const { params } = useRoute( );
+  const { justFinishedSignup } = params || { };
 
   const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
   const uploadQueue = useStore( state => state.uploadQueue );
@@ -231,6 +234,7 @@ const MyObservationsContainer = ( ): Node => {
         showLoginSheet={showLoginSheet}
         showNoResults={showNoResults}
         toggleLayout={toggleLayout}
+        justFinishedSignup={justFinishedSignup}
       />
     );
   }

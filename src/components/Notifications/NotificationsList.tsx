@@ -10,10 +10,12 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useCallback } from "react";
-import { useCurrentUser, useTranslation } from "sharedHooks";
+import type { RealmUser } from "realmModels/types";
+import { useTranslation } from "sharedHooks";
 import type { Notification } from "sharedHooks/useInfiniteNotificationsScroll";
 
 type Props = {
+  currentUser: RealmUser | null,
   data: ApiNotification[],
   isError?: boolean,
   isFetching?: boolean,
@@ -32,6 +34,7 @@ interface RenderItemProps {
 }
 
 const NotificationsList = ( {
+  currentUser,
   data,
   isError,
   isFetching,
@@ -43,8 +46,6 @@ const NotificationsList = ( {
   refreshing
 }: Props ) => {
   const { t } = useTranslation( );
-  const user = useCurrentUser( );
-
   const renderItem = useCallback( ( { item }: RenderItemProps ) => (
     <NotificationsListItem notification={item} />
   ), [] );
@@ -73,7 +74,7 @@ const NotificationsList = ( {
 
     let msg = t( "No-Notifications-Found" );
     let msg2 = null;
-    if ( !user ) {
+    if ( !currentUser ) {
       msg = t( "Once-you-create-and-upload-observations" );
       msg2 = t( "You-will-see-notifications" );
     }
@@ -88,7 +89,7 @@ const NotificationsList = ( {
       </>
     );
   }, [
-    user,
+    currentUser,
     isError,
     isInitialLoading,
     isConnected,
