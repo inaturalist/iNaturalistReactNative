@@ -1,0 +1,38 @@
+export enum OBS_DETAILS_TAB {
+  ACTIVITY = "ACTIVITY",
+  DETAILS = "DETAILS"
+}
+
+const createLayoutSlice = set => ( {
+  // Vestigial un-namespaced values
+  isAdvancedUser: false,
+  setIsAdvancedUser: ( newValue: boolean ) => set( { isAdvancedUser: newValue } ),
+
+  obsDetailsTab: OBS_DETAILS_TAB.ACTIVITY,
+  setObsDetailsTab: ( newValue: OBS_DETAILS_TAB ) => set( { obsDetailsTab: newValue } ),
+
+  // Please put new stuff in this namespace so they will be saved to disk
+  layout: {
+    // Controls all all layouts related to default mode
+    isDefaultMode: true,
+    setIsDefaultMode: ( newValue: boolean ) => set( state => ( {
+      layout: {
+        ...state.layout,
+        isDefaultMode: newValue
+      }
+    } ) ),
+    // State to control pivot cards and other onboarding material being shown only once
+    oneTimeShows: {},
+    setOneTimeShown: ( key: string ) => set( state => ( {
+      layout: {
+        ...state.layout,
+        oneTimeShows: {
+          ...state.layout.oneTimeShows,
+          [key]: true
+        }
+      }
+    } ) )
+  }
+} );
+
+export default createLayoutSlice;
