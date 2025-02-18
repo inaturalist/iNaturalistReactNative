@@ -12,10 +12,10 @@ files:
   # As of 20250205, the Crowdin CLI seems to *remove* the English source text
   # when syncing this file, so we're disabling sync for now.
   # https://community.crowdin.com/t/xcstrings-sync-w-crowdin-cli-removes-source-text/12154
-  # - source: /ios/InfoPlist.xcstrings
-  #   dest: /ReactNative/InfoPlist.xcstrings
-  #   translation: /ios/InfoPlist.xcstrings
-  #   multilingual: true
+  - source: /ios/InfoPlist.xcstrings
+    dest: /ReactNative/InfoPlist.xcstrings
+    translation: /ios/InfoPlist.xcstrings
+    multilingual: true
     # Strings for AppStore description etc
     # Note: this uses the Crowdin osx-locale with some custom mapping in metadata/i18ncli.js
   - source: /fastlane/metadata/ios/default/description.txt
