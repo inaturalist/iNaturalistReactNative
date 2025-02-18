@@ -5,6 +5,7 @@ import { Image, View } from "components/styledComponents";
 import * as React from "react";
 import { ImageSourcePropType } from "react-native";
 import { useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 
 import OnboardingModalBase from "./OnboardingModalBase";
 
@@ -15,13 +16,22 @@ interface Slide {
 }
 
 interface Props {
-  showModal: boolean;
-  closeModal: ( ) => void;
+  showKey: string;
+  triggerCondition: boolean;
   slides: Slide[];
 }
 
-const OnboardingModal = ( { showModal, closeModal, slides }: Props ) => {
+const OnboardingModal = ( { showKey, triggerCondition, slides }: Props ) => {
   const { t } = useTranslation( );
+
+  // Controls wether to show the modal, and to show it only once to the user
+  const oneTimeShows = useStore( state => state.layout.oneTimeShows );
+  const setOneTimeShown = useStore( state => state.layout.setOneTimeShown );
+  const showModal = !oneTimeShows[showKey] && triggerCondition;
+  const closeModal = () => {
+    setOneTimeShown( showKey );
+  };
+
   const [currentSlideIndex, setCurrentSlideIndex] = React.useState( 0 );
   const currentSlide = slides[currentSlideIndex];
 

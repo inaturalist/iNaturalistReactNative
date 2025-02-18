@@ -3,16 +3,14 @@ import React from "react";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
-  showModal: boolean;
-  closeModal: () => void;
+  triggerCondition: boolean;
 }
 
-const NotificationOnboarding = ( { showModal, closeModal }: Props ) => {
+const NotificationOnboarding = ( { triggerCondition }: Props ) => {
   const { t } = useTranslation( );
   return (
     <OnboardingModal
-      showModal={showModal}
-      closeModal={closeModal}
+      triggerCondition={triggerCondition}
       slides={[
         {
           title: t( "Watch-your-notifications-for-identifications" ),
@@ -23,12 +21,11 @@ const NotificationOnboarding = ( { showModal, closeModal }: Props ) => {
   );
 };
 
-const AccountCreationCard = ( { showModal, closeModal }: Props ) => {
+const AccountCreationCard = ( { triggerCondition }: Props ) => {
   const { t } = useTranslation( );
   return (
     <OnboardingModal
-      showModal={showModal}
-      closeModal={closeModal}
+      triggerCondition={triggerCondition}
       slides={[
         {
           title: t( "Your-observations-can-now-help-scientists" ),
@@ -40,12 +37,12 @@ const AccountCreationCard = ( { showModal, closeModal }: Props ) => {
   );
 };
 
-const FirstObservationCard = ( { showModal, closeModal }: Props ) => {
+const FirstObservationCard = ( { triggerCondition }: Props ) => {
   const { t } = useTranslation( );
   return (
     <OnboardingModal
-      showModal={showModal}
-      closeModal={closeModal}
+      showKey="first-observation"
+      triggerCondition={triggerCondition}
       slides={[
         {
           title: t( "Congrats-on-making-your-first-observation" ),
@@ -62,12 +59,11 @@ const FirstObservationCard = ( { showModal, closeModal }: Props ) => {
   );
 };
 
-const SecondObservationCard = ( { showModal, closeModal }: Props ) => {
+const SecondObservationCard = ( { triggerCondition }: Props ) => {
   const { t } = useTranslation( );
   return (
     <OnboardingModal
-      showModal={showModal}
-      closeModal={closeModal}
+      triggerCondition={triggerCondition}
       slides={[
         {
           title: t( "Youve-made-2-observations" ),
@@ -89,12 +85,11 @@ const SecondObservationCard = ( { showModal, closeModal }: Props ) => {
   );
 };
 
-const FiftyObservationCard = ( { showModal, closeModal }: Props ) => {
+const FiftyObservationCard = ( { triggerCondition }: Props ) => {
   const { t } = useTranslation( );
   return (
     <OnboardingModal
-      showModal={showModal}
-      closeModal={closeModal}
+      triggerCondition={triggerCondition}
       slides={[
         {
           title: t( "Welcome-back" ),

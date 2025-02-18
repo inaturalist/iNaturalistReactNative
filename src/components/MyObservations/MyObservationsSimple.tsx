@@ -2,6 +2,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
 import ObservationsViewBar from "components/Explore/ObservationsViewBar";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
+import { FirstObservationCard } from "components/OnboardingModal/PivotCards.tsx";
 import {
   Body1,
   Body3,
@@ -364,6 +365,7 @@ const MyObservationsSimple = ( {
         ) }
       </ViewWrapper>
       {showLoginSheet && <LoginSheet setShowLoginSheet={setShowLoginSheet} />}
+      <FirstObservationCard triggerCondition={numTotalObservations >= 1} />
     </>
   );
 };
