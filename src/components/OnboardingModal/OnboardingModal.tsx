@@ -25,11 +25,11 @@ const OnboardingModal = ( { showKey, triggerCondition, slides }: Props ) => {
   const { t } = useTranslation( );
 
   // Controls wether to show the modal, and to show it only once to the user
-  const oneTimeShows = useStore( state => state.layout.oneTimeShows );
-  const setOneTimeShown = useStore( state => state.layout.setOneTimeShown );
-  const showModal = !oneTimeShows[showKey] && triggerCondition;
+  const shownOnce = useStore( state => state.layout.shownOnce );
+  const setShownOnce = useStore( state => state.layout.setShownOnce );
+  const showModal = !shownOnce[showKey] && triggerCondition;
   const closeModal = () => {
-    setOneTimeShown( showKey );
+    setShownOnce( showKey );
   };
 
   const [currentSlideIndex, setCurrentSlideIndex] = React.useState( 0 );
@@ -59,6 +59,14 @@ const OnboardingModal = ( { showKey, triggerCondition, slides }: Props ) => {
             className="self-center h-[131px] aspect-[2/1] rounded-lg mt-5"
             source={currentSlide.imageSource}
           />
+          <View className="w-full mt-5">
+            <Image
+              className="self-center rounded-lg"
+              source={currentSlide.imageSource}
+              style={imageStyle}
+              resizeMode="cover"
+            />
+          </View>
         )
       }
       <Body3 className="mt-5">{currentSlide.description}</Body3>

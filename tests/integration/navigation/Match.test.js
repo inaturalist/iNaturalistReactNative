@@ -65,7 +65,7 @@ beforeEach( async ( ) => {
   useStore.setState( {
     layout: {
       isDefaultMode: true,
-      oneTimeShows: {}
+      shownOnce: {}
     },
     isAdvancedUser: false
   } );

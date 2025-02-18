@@ -22,12 +22,12 @@ const createLayoutSlice = set => ( {
       }
     } ) ),
     // State to control pivot cards and other onboarding material being shown only once
-    oneTimeShows: {},
-    setOneTimeShown: ( key: string ) => set( state => ( {
+    shownOnce: {},
+    setShownOnce: ( key: string ) => set( state => ( {
       layout: {
         ...state.layout,
-        oneTimeShows: {
-          ...state.layout.oneTimeShows,
+        shownOnce: {
+          ...state.layout.shownOnce,
           [key]: true
         }
       }
