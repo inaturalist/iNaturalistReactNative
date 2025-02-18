@@ -3,7 +3,7 @@ import {
 } from "components/SharedComponents";
 import { Image, View } from "components/styledComponents";
 import * as React from "react";
-import { ImageSourcePropType } from "react-native";
+import { ImageSourcePropType, ImageStyle } from "react-native";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -47,6 +47,11 @@ const OnboardingModal = ( { showKey, triggerCondition, slides }: Props ) => {
     }
   };
 
+  const imageStyle: ImageStyle = {
+    width: "100%",
+    height: undefined,
+    aspectRatio: 2
+  };
   const modalContent = (
     <OnboardingModalBase
       closeModal={closeModal}
@@ -55,10 +60,6 @@ const OnboardingModal = ( { showKey, triggerCondition, slides }: Props ) => {
       {
         // Image only shows when imageSource is defined
         currentSlide.imageSource && (
-          <Image
-            className="self-center h-[131px] aspect-[2/1] rounded-lg mt-5"
-            source={currentSlide.imageSource}
-          />
           <View className="w-full mt-5">
             <Image
               className="self-center rounded-lg"
