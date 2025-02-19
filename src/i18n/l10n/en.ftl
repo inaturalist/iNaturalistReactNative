@@ -1166,6 +1166,7 @@ Sign-in-with-Apple-Failed = Sign in with Apple Failed
 # Accessibility label for button that allows user to sign in with their Google account
 Sign-in-with-Google = Sign in with Google
 Sign-in-with-Google-Failed = Sign in with Google Failed
+Skip-for-now = Skip for now
 # Generic error message
 Something-went-wrong = Something went wrong.
 Sorry-this-observation-was-deleted = Sorry, this observation was deleted
