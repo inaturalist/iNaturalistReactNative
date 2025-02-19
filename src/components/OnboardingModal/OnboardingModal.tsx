@@ -14,6 +14,12 @@ interface Slide {
   title: string;
   imageSource?: ImageSourcePropType;
   description: string;
+}
+
+interface Props {
+  showKey: string;
+  triggerCondition: boolean;
+  slides: Slide[];
   altActionButton?: {
     text: string;
     onPress: () => void;
@@ -23,13 +29,9 @@ interface Slide {
   };
 }
 
-interface Props {
-  showKey: string;
-  triggerCondition: boolean;
-  slides: Slide[];
-}
-
-const OnboardingModal = ( { showKey, triggerCondition, slides }: Props ) => {
+const OnboardingModal = ( {
+  showKey, triggerCondition, slides, altActionButton, altCloseButton
+}: Props ) => {
   const { t } = useTranslation( );
 
   // Controls wether to show the modal, and to show it only once to the user
@@ -55,32 +57,31 @@ const OnboardingModal = ( { showKey, triggerCondition, slides }: Props ) => {
     }
   };
 
-  const renderAltButton = ( ) => {
-    if ( currentSlide.altActionButton ) {
-      return (
-        <Button
-          className="mt-5"
-          level="focus"
-          text={currentSlide.altActionButton.text}
-          onPress={() => {
-            currentSlide.altActionButton.onPress( );
-            closeModal( );
-          }}
-        />
-      );
-    }
-    return null;
+  const renderAltActionButton = ( ) => {
+    if ( currentSlideIndex !== slides.length - 1 ) { return null; }
+    if ( !altActionButton ) { return null; }
+    return (
+      <Button
+        className="mt-5"
+        level="focus"
+        text={altActionButton.text}
+        onPress={() => {
+          altActionButton.onPress( );
+          closeModal( );
+        }}
+      />
+    );
   };
 
   const renderCloseButton = ( ) => {
     if ( currentSlideIndex !== slides.length - 1 ) { return null; }
-    if ( currentSlide.altCloseButton ) {
+    if ( altCloseButton ) {
       return (
         <UnderlinedLink
           className="mt-5 self-center"
           onPress={closeModal}
         >
-          {currentSlide.altCloseButton.text}
+          {altCloseButton.text}
         </UnderlinedLink>
       );
     }
@@ -149,7 +150,7 @@ const OnboardingModal = ( { showKey, triggerCondition, slides }: Props ) => {
         </View>
       )}
       {/* Some slides have an alternative call-to-action button */}
-      {renderAltButton()}
+      {renderAltActionButton()}
       {/* Continue button if we are on last slide */}
       {renderCloseButton()}
     </OnboardingModalBase>

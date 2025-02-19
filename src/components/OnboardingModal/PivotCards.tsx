@@ -100,18 +100,18 @@ const FiftyObservationCard = ( { triggerCondition }: Props ) => {
         {
           title: t( "Welcome-back" ),
           description: t( "Weve-made-some-updates" ),
-          imageSource: require( "images/background/using-inaturalist-in-the-field.png" ),
-          altActionButton: {
-            text: t( "OPEN-SETTINGS" ),
-            onPress: ( ) => {
-              navigation.navigate( "Settings" );
-            }
-          },
-          altCloseButton: {
-            text: t( "Skip-for-now" )
-          }
+          imageSource: require( "images/background/using-inaturalist-in-the-field.png" )
         }
       ]}
+      altActionButton={{
+        text: t( "OPEN-SETTINGS" ),
+        onPress: ( ) => {
+          navigation.navigate( "Settings" );
+        }
+      }}
+      altCloseButton={{
+        text: t( "Skip-for-now" )
+      }}
     />
   );
 };
