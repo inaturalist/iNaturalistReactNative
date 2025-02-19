@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import OnboardingModal from "components/OnboardingModal/OnboardingModal.tsx";
 import React from "react";
 import { useTranslation } from "sharedHooks";
@@ -90,6 +91,7 @@ const SecondObservationCard = ( { triggerCondition }: Props ) => {
 
 const FiftyObservationCard = ( { triggerCondition }: Props ) => {
   const { t } = useTranslation( );
+  const navigation = useNavigation( );
   return (
     <OnboardingModal
       showKey="fifty-observation"
@@ -98,7 +100,16 @@ const FiftyObservationCard = ( { triggerCondition }: Props ) => {
         {
           title: t( "Welcome-back" ),
           description: t( "Weve-made-some-updates" ),
-          imageSource: require( "images/background/using-inaturalist-in-the-field.png" )
+          imageSource: require( "images/background/using-inaturalist-in-the-field.png" ),
+          altActionButton: {
+            text: t( "OPEN-SETTINGS" ),
+            onPress: ( ) => {
+              navigation.navigate( "Settings" );
+            }
+          },
+          altCloseButton: {
+            text: t( "Skip-for-now" )
+          }
         }
       ]}
     />

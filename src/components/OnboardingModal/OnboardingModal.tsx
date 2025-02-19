@@ -1,5 +1,6 @@
 import {
-  Body3, Button, Heading2, Heading3, INatIconButton, Modal
+  Body3, Button, Heading2, Heading3, INatIconButton, Modal,
+  UnderlinedLink
 } from "components/SharedComponents";
 import { Image, View } from "components/styledComponents";
 import * as React from "react";
@@ -13,6 +14,13 @@ interface Slide {
   title: string;
   imageSource?: ImageSourcePropType;
   description: string;
+  altActionButton?: {
+    text: string;
+    onPress: () => void;
+  };
+  altCloseButton?: {
+    text: string;
+  };
 }
 
 interface Props {
@@ -45,6 +53,40 @@ const OnboardingModal = ( { showKey, triggerCondition, slides }: Props ) => {
     if ( currentSlideIndex > 0 ) {
       setCurrentSlideIndex( prev => prev - 1 );
     }
+  };
+
+  const renderAltButton = ( ) => {
+    if ( currentSlide.altActionButton ) {
+      return (
+        <Button
+          className="mt-5"
+          level="focus"
+          text={currentSlide.altActionButton.text}
+          onPress={() => {
+            currentSlide.altActionButton.onPress( );
+            closeModal( );
+          }}
+        />
+      );
+    }
+    return null;
+  };
+
+  const renderCloseButton = ( ) => {
+    if ( currentSlideIndex !== slides.length - 1 ) { return null; }
+    if ( currentSlide.altCloseButton ) {
+      return (
+        <UnderlinedLink
+          className="mt-5 self-center"
+          onPress={closeModal}
+        >
+          {currentSlide.altCloseButton.text}
+        </UnderlinedLink>
+      );
+    }
+    return (
+      <Button className="mt-5" level="focus" text={t( "CONTINUE" )} onPress={closeModal} />
+    );
   };
 
   const imageStyle: ImageStyle = {
@@ -106,14 +148,10 @@ const OnboardingModal = ( { showKey, triggerCondition, slides }: Props ) => {
           </View>
         </View>
       )}
-
+      {/* Some slides have an alternative call-to-action button */}
+      {renderAltButton()}
       {/* Continue button if we are on last slide */}
-      {
-        currentSlideIndex === slides.length - 1
-        && (
-          <Button className="mt-5" level="focus" text={t( "CONTINUE" )} onPress={closeModal} />
-        )
-      }
+      {renderCloseButton()}
     </OnboardingModalBase>
   );
 
