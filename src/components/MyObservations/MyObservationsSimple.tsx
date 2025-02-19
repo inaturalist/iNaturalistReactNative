@@ -11,18 +11,15 @@ import {
 import {
   Body1,
   Body3,
-  Heading3,
   Heading5,
   INatIcon,
   InfiniteScrollLoadingWheel,
-  RotatingINatIconButton,
   Tabs,
-  UserIcon,
   ViewWrapper
 } from "components/SharedComponents";
 import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList.tsx";
 // import TaxonGridItem from "components/SharedComponents/TaxonGridItem.tsx";
-import { Pressable, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import React, { useCallback, useMemo } from "react";
 import Realm from "realm";
 import Photo from "realmModels/Photo";
@@ -31,13 +28,13 @@ import type {
   RealmTaxon,
   RealmUser
 } from "realmModels/types";
-import User from "realmModels/User.ts";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useGridLayout, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import Announcements from "./Announcements";
 import LoginSheet from "./LoginSheet";
+import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
 import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
 
 export interface Props {
@@ -246,60 +243,10 @@ const MyObservationsSimple = ( {
   return (
     <>
       <ViewWrapper>
-        { numUnuploadedObservations >= 10 && (
-          <Pressable
-            accessibilityRole="button"
-            className="bg-inatGreen p-2 items-center"
-            onPress={handleSyncButtonPress}
-          >
-            <Body3 className="text-white">
-              { t( "Upload-x-observations", { count: numUnuploadedObservations } ) }
-            </Body3>
-          </Pressable>
-        ) }
-        <View className="flex-row justify-between items-center px-5 py-1">
-          <Pressable
-            accessibilityRole="button"
-            className="flex-row items-center"
-            onPress={() => {
-              if ( !currentUser ) {
-                return;
-              }
-              navigation.push( "UserProfile", { userId: currentUser?.id } );
-            }}
-          >
-            {currentUser && (
-              <View className="mr-2">
-                <UserIcon size={32} uri={User.uri( currentUser )} />
-              </View>
-            )}
-            <Heading3>
-              {
-                currentUser
-                  ? currentUser.login
-                  : t( "My-Observations" )
-              }
-            </Heading3>
-          </Pressable>
-          {currentUser && (
-            <RotatingINatIconButton
-              icon={
-                numUnuploadedObservations > 0
-                  ? "sync-unsynced"
-                  : "sync"
-              }
-              onPress={handleSyncButtonPress}
-              color={String(
-                numUnuploadedObservations > 0
-                  ? colors?.inatGreen
-                  : colors?.darkGray
-              )}
-              accessibilityLabel={t( "Sync-observations" )}
-              size={26}
-              testID="SyncButton"
-            />
-          )}
-        </View>
+        <MyObservationsSimpleHeader
+          currentUser={currentUser}
+          handleSyncButtonPress={handleSyncButtonPress}
+        />
         <Tabs
           activeColor={String( colors?.inatGreen )}
           activeId={activeTab}
