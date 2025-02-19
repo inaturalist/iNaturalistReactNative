@@ -55,6 +55,7 @@ interface Props {
   zoomTextValue: string;
   useLocation: boolean;
   toggleLocation: ( _event: GestureResponderEvent ) => void;
+  isDefaultMode: boolean;
 }
 
 // Empty space where a camera button should be so buttons don't jump around
@@ -89,7 +90,8 @@ const TabletButtons = ( {
   toggleFlash,
   zoomTextValue,
   useLocation,
-  toggleLocation
+  toggleLocation,
+  isDefaultMode
 }: Props ) => {
   const tabletCameraOptionsClasses = [
     "absolute",
@@ -104,11 +106,13 @@ const TabletButtons = ( {
   return (
     <View className={classnames( tabletCameraOptionsClasses )} pointerEvents="box-none">
       { photosTaken && <CameraButtonPlaceholder extraClassName="mb-[25px]" /> }
-      <Location
-        rotatableAnimatedStyle={rotatableAnimatedStyle}
-        toggleLocation={toggleLocation}
-        useLocation={useLocation}
-      />
+      {!isDefaultMode && (
+        <Location
+          rotatableAnimatedStyle={rotatableAnimatedStyle}
+          toggleLocation={toggleLocation}
+          useLocation={useLocation}
+        />
+      )}
       <Zoom
         handleZoomButtonPress={handleZoomButtonPress}
         zoomTextValue={zoomTextValue}

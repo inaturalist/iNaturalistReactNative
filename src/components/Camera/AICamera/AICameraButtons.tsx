@@ -11,6 +11,7 @@ import React from "react";
 import { GestureResponderEvent, ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import type { TakePhotoOptions } from "react-native-vision-camera";
+import { useLayoutPrefs } from "sharedHooks";
 
 import AIDebugButton from "./AIDebugButton";
 
@@ -68,6 +69,7 @@ const AICameraButtons = ( {
   useLocation,
   toggleLocation
 }: Props ) => {
+  const { isDefaultMode } = useLayoutPrefs();
   if ( isTablet ) {
     return (
       <TabletButtons
@@ -85,6 +87,7 @@ const AICameraButtons = ( {
         zoomTextValue={zoomTextValue}
         useLocation={useLocation}
         toggleLocation={toggleLocation}
+        isDefaultMode={isDefaultMode}
       />
     );
   }
@@ -117,13 +120,15 @@ const AICameraButtons = ( {
           accessibilityRole="adjustable"
           accessibilityValue={{ min: 0, max: 100, now: 50 }}
         />
-        <View>
-          <Location
-            toggleLocation={toggleLocation}
-            useLocation={useLocation}
-            rotatableAnimatedStyle={rotatableAnimatedStyle}
-          />
-        </View>
+        {!isDefaultMode && (
+          <View>
+            <Location
+              toggleLocation={toggleLocation}
+              useLocation={useLocation}
+              rotatableAnimatedStyle={rotatableAnimatedStyle}
+            />
+          </View>
+        )}
         {showZoomButton && (
           <View>
             <Zoom
