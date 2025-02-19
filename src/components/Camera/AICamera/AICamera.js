@@ -36,6 +36,7 @@ import {
 import AICameraButtons from "./AICameraButtons";
 import FrameProcessorCamera from "./FrameProcessorCamera";
 import usePredictions from "./hooks/usePredictions";
+import LocationStatus from "./LocationStatus";
 
 const isTablet = DeviceInfo.isTablet();
 
@@ -113,13 +114,22 @@ const AICamera = ( {
   const [hasTakenPhoto, setHasTakenPhoto] = useState( false );
 
   const [useLocation, setUseLocation] = useState( !!hasLocationPermissions );
+  const [locationStatusVisible, setLocationStatusVisible] = useState( false );
+
   const toggleLocation = () => {
     if ( !useLocation && !hasLocationPermissions ) {
       requestLocationPermissions( );
       return;
     }
     setUseLocation( prev => !prev );
+    // Always show status when button is pressed
+    setLocationStatusVisible( true );
   };
+
+  const handleLocationStatusEnd = ( ) => {
+    setLocationStatusVisible( false );
+  };
+
   useEffect( ( ) => {
     if ( hasLocationPermissions ) {
       setUseLocation( true );
@@ -200,21 +210,6 @@ const AICamera = ( {
     navigation.goBack( );
   };
 
-  const renderLocationStatus = ( ) => {
-    const name = useLocation
-      ? "map-marker-outline"
-      : "map-marker-outline-off";
-    const text = useLocation
-      ? t( "Using-location" )
-      : t( "Ignoring-location" );
-    return (
-      <View className="flex-row self-center items-center bg-darkGray/50 rounded-lg mt-4 p-2">
-        <INatIcon name={name} size={19} color={colors.white} />
-        <Body1 className="text-white ml-2">{text}</Body1>
-      </View>
-    );
-  };
-
   return (
     <>
       {device && (
@@ -282,7 +277,11 @@ const AICamera = ( {
                   : t( "Loading-iNaturalists-AI-Camera" )}
               </Body1>
             )}
-          {renderLocationStatus( )}
+          <LocationStatus
+            useLocation={useLocation}
+            visible={locationStatusVisible}
+            onAnimationEnd={handleLocationStatusEnd}
+          />
           {isDebug && result && (
             <Body1 className="text-deeppink self-center mt-[22px]">
               {`Age of result: ${Date.now() - result.timestamp}ms`}
