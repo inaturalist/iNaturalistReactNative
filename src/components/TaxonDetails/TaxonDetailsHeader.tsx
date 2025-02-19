@@ -3,6 +3,7 @@ import type { ApiTaxon } from "api/types";
 import classnames from "classnames";
 import {
   DisplayTaxonName,
+  Heading3,
   INatIconButton,
   KebabMenu,
   OverlayHeader
@@ -120,6 +121,7 @@ const TaxonDetailsHeader = ( {
       >
         { hasTitle && (
           <DisplayTaxonName
+            topTextComponent={Heading3}
             showOneNameOnly
             taxon={taxon}
             textCentered
