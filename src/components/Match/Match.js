@@ -104,7 +104,7 @@ const Match = ( {
           />
           {!latitude && (
             <Button
-              className="mb-7"
+              className="mx-5 mb-7"
               level="neutral"
               text={t( "ADD-LOCATION-FOR-BETTER-IDS" )}
               onPress={handleLocationPickerPressed}
