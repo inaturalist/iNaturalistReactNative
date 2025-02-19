@@ -109,8 +109,8 @@ async function navigateToObsDetails( ) {
 }
 
 async function navigateToRootExplore( ) {
-  const welcomeBack = await screen.findByText( /Welcome back/ );
-  await waitFor( ( ) => expect( welcomeBack ).toBeVisible( ) );
+  const emptyScreen = await screen.findByText( /Use iNaturalist to identify any living thing/ );
+  await waitFor( ( ) => expect( emptyScreen ).toBeVisible( ) );
   const tabBar = await screen.findByTestId( "CustomTabBar" );
   const exploreButton = await within( tabBar ).findByText( "Explore" );
   await actor.press( exploreButton );

@@ -423,11 +423,11 @@ describe( "MyObservations", ( ) => {
     } );
 
     describe( "with no observations", ( ) => {
-      it( "should show a button to create first observation", async ( ) => {
+      it( "should show AI camera button to create first observation", async ( ) => {
         renderAppWithComponent( <MyObservationsContainer /> );
         await waitFor( ( ) => {
-          const firstObsButton = screen.getByText( "CREATE YOUR FIRST OBSERVATION" );
-          expect( firstObsButton ).toBeVisible( );
+          const aiCameraButton = screen.getByTestId( "add-obs-button" );
+          expect( aiCameraButton ).toBeVisible( );
         } );
       } );
     } );

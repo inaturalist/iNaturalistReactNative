@@ -63,9 +63,10 @@ describe( "MyObservations", ( ) => {
       await signIn( mockUser, { realm: global.mockRealms[__filename] } );
       renderAppWithComponent( <MyObservationsContainer /> );
       await waitFor( ( ) => {
-        expect( screen.getByText( /Welcome back/ ) ).toBeTruthy( );
+        // since we haven't loaded any observations in here, user will see the empty screen
+        // after logging in
+        expect( screen.getByText( /Use iNaturalist to identify any living thing/ ) ).toBeTruthy( );
       } );
-      expect( screen.queryByText( /Welcome-user/ ) ).toBeFalsy( );
     } );
 
     // 20240730 - amanda - hiding these since we're not soft launching with internationalization
