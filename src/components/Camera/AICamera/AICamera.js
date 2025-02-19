@@ -108,6 +108,9 @@ const AICamera = ( {
   const [initialVolume, setInitialVolume] = useState( null );
   const [hasTakenPhoto, setHasTakenPhoto] = useState( false );
 
+  const [useLocation, setUseLocation] = useState( true );
+  const toggleLocation = () => setUseLocation( !useLocation );
+
   const { t } = useTranslation();
 
   const { loadTime } = usePerformance( {
@@ -289,6 +292,8 @@ const AICamera = ( {
         takingPhoto={takingPhoto}
         toggleFlash={toggleFlash}
         zoomTextValue={zoomTextValue}
+        useLocation={useLocation}
+        toggleLocation={toggleLocation}
       />
     </>
   );

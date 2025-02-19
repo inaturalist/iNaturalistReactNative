@@ -1,6 +1,7 @@
 import CameraFlip from "components/Camera/Buttons/CameraFlip.tsx";
 import Close from "components/Camera/Buttons/Close.tsx";
 import Flash from "components/Camera/Buttons/Flash.tsx";
+import Location from "components/Camera/Buttons/Location.tsx";
 import PhotoLibraryIcon from "components/Camera/Buttons/PhotoLibraryIcon.tsx";
 import TakePhoto from "components/Camera/Buttons/TakePhoto.tsx";
 import Zoom from "components/Camera/Buttons/Zoom.tsx";
@@ -38,6 +39,8 @@ interface Props {
   takingPhoto: boolean;
   toggleFlash: ( _event: GestureResponderEvent ) => void;
   zoomTextValue: string;
+  useLocation: boolean;
+  toggleLocation: ( _event: GestureResponderEvent ) => void;
 }
 
 const AICameraButtons = ( {
@@ -61,7 +64,9 @@ const AICameraButtons = ( {
   takePhotoOptions,
   takingPhoto,
   toggleFlash,
-  zoomTextValue
+  zoomTextValue,
+  useLocation,
+  toggleLocation
 }: Props ) => {
   if ( isTablet ) {
     return (
@@ -78,6 +83,8 @@ const AICameraButtons = ( {
         takePhotoOptions={takePhotoOptions}
         toggleFlash={toggleFlash}
         zoomTextValue={zoomTextValue}
+        useLocation={useLocation}
+        toggleLocation={toggleLocation}
       />
     );
   }
@@ -111,10 +118,9 @@ const AICameraButtons = ( {
           accessibilityValue={{ min: 0, max: 100, now: 50 }}
         />
         <View>
-          <Zoom
-            zoomTextValue={zoomTextValue}
-            handleZoomButtonPress={handleZoomButtonPress}
-            showZoomButton={showZoomButton}
+          <Location
+            toggleLocation={toggleLocation}
+            useLocation={useLocation}
             rotatableAnimatedStyle={rotatableAnimatedStyle}
           />
         </View>

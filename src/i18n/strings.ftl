@@ -407,6 +407,8 @@ Device-storage-full = Device storage full
 Device-storage-full-description = iNaturalist may not be able to save your photos or may crash.
 # Button that disables the camera's flash
 Disable-flash = Disable flash
+# Button that disables the camera to use location for suggestions
+Disable-location = Disable location
 # Disagreement notice with an identificaiton, <0/> will get replaced by a
 # taxon name
 Disagreement = *@{ $username } disagrees this is <0/>
@@ -455,6 +457,8 @@ EMAIL = EMAIL
 EMAIL-DEBUG-LOGS = EMAIL DEBUG LOGS
 # Button that enables the camera's flash
 Enable-flash = Enable flash
+# Button that enables the camera to use location for suggestions
+Enable-location = Enable location
 # Button that subscribes the user to notifications for an observation
 Enable-notifications = Enable notifications
 # Indicates a species only occurs in a specific place
@@ -516,7 +520,7 @@ Flag-Item-Other-Description = Some other reason you can explain below.
 Flag-Item-Other-Input-Hint = Specify the reason you're flagging this item
 # Status when an item has been flagged
 Flagged = Flagged
-Flash = flash
+Flash = Flash
 # Label for a button that toggles between the front and back cameras
 Flip-camera = Flip camera
 FOLLOW = FOLLOW
