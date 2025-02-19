@@ -65,6 +65,7 @@ const Match = ( {
           }
         </View>
         <PhotosSection
+          representativePhoto={topSuggestion?.taxon?.representative_photo}
           taxon={taxon}
           obsPhotos={obsPhotos}
           navToTaxonDetails={navToTaxonDetails}

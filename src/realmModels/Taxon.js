@@ -25,6 +25,10 @@ class Taxon extends Realm.Object {
       id: true,
       url: true
     },
+    representative_photo: {
+      id: true,
+      url: true
+    },
     iconic_taxon_name: true,
     name: true,
     preferred_common_name: true,
