@@ -6,20 +6,24 @@ import {
 import {
   Image, Pressable, View
 } from "components/styledComponents";
-import _, { compact } from "lodash";
+import _, { compact, uniqBy } from "lodash";
 import React, { useEffect, useState } from "react";
 import Photo from "realmModels/Photo";
 import getImageDimensions from "sharedHelpers/getImageDimensions";
 import { useTaxon } from "sharedHooks";
 
 type Props = {
+  representativePhoto: Object,
   taxon: Object,
   obsPhotos: Array<Object>,
   navToTaxonDetails: ( ) => void
 }
 
 const PhotosSection = ( {
-  taxon, obsPhotos, navToTaxonDetails
+  representativePhoto,
+  taxon,
+  obsPhotos,
+  navToTaxonDetails
 }: Props ) => {
   const [displayPortraitLayout, setDisplayPortraitLayout] = useState( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
@@ -34,17 +38,21 @@ const PhotosSection = ( {
       ? localTaxonPhotos.map( taxonPhoto => taxonPhoto.photo )
       : [taxon?.defaultPhoto]
   );
+  // don't show the iconic taxon photo which is a mashup of 9 photos
+  const taxonPhotosNoIconic = localTaxon?.isIconic
+    ? taxonPhotos.slice( 1, 4 )
+    : taxonPhotos.slice( 0, 3 );
+
+  // Add the representative photo at the start of the list of taxon photos.
+  const taxonPhotosWithRepPhoto = compact( [representativePhoto, ...taxonPhotosNoIconic] );
+  // The representative photo might be already included in taxonPhotosNoIconic
+  const uniqueTaxonPhotos = uniqBy( taxonPhotosWithRepPhoto, "id" );
 
   const observationPhotos = compact(
     obsPhotos
       ? obsPhotos.map( obsPhoto => obsPhoto.photo )
       : []
   );
-
-  // don't show the iconic taxon photo which is a mashup of 9 photos
-  const taxonPhotosNoIconic = localTaxon?.isIconic
-    ? taxonPhotos.slice( 1, 4 )
-    : taxonPhotos.slice( 0, 3 );
 
   useEffect( ( ) => {
     const checkImageOrientation = async ( ) => {
@@ -99,7 +107,7 @@ const PhotosSection = ( {
       }
     )}
     >
-      {taxonPhotosNoIconic.map( photo => (
+      {uniqueTaxonPhotos.map( photo => (
         <Pressable
           accessibilityRole="button"
           onPress={navToTaxonDetails}
