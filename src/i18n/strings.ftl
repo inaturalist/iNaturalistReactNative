@@ -591,6 +591,7 @@ If-youre-seeing-this-error = If you're seeing this and you're online, iNat staff
 IGNORE-LOCATION = IGNORE LOCATION
 # Button to stop recieving notifications about observation
 Ignore-notifications = Ignore notifications
+Ignoring-location = Ignoring location
 Import-Photos-From = Import Photos From
 # Shows the number of observations a user is about to import
 IMPORT-X-OBSERVATIONS =
@@ -1320,6 +1321,7 @@ User = User { $userHandle }
 USERNAME-OR-EMAIL = USERNAME OR EMAIL
 # label in project requirements
 Users = Users
+Using-location = Using location
 # Listing of app and build versions
 Version-app-build = Version { $appVersion } ({ $buildVersion })
 VIEW-ALL-X-PLACES = VIEW ALL { $count } PLACES
@@ -1560,5 +1562,3 @@ Zoom-in-as-much-as-possible-to-improve = Zoom in as much as possible to improve 
 Zoom-to-current-location = Zoom to current location
 # Label for button that shows zoom level, e.g. on a camera
 zoom-x = { $zoom }×
-Using-location = Using location
-Ignoring-location = Ignoring location
