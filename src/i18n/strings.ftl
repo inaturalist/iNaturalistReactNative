@@ -879,7 +879,7 @@ October = October
 Offensive-Inappropriate = Offensive/Inappropriate
 Offensive-Inappropriate-Examples = Misleading or illegal content, racial or ethnic slurs, etc. For more on our definition of "appropriate," see the FAQ.
 Offline-DQA-description = The DQA may not be accurate. Check your internet connection and try again.
-Offline-suggestions-do-not-use-your-location = Offline suggestions do not use your location and may differ from online suggestions. Taxon images and common names may not load.
+Offline-suggestions-may-differ-from-online = Offline suggestions may differ from online suggestions, and taxon images and common names may not load.
 # Generic confirmation, e.g. button on a warning alert
 OK = OK
 # Sort order, refers to newest or oldest date
