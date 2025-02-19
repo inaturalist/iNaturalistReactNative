@@ -208,6 +208,7 @@ const AICamera = ( {
             inactive={inactive}
             resetCameraOnFocus={resetCameraOnFocus}
             userLocation={userLocation}
+            useLocation={useLocation}
           />
         </View>
       )}
