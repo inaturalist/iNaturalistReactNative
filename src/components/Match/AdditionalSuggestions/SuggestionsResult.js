@@ -49,7 +49,9 @@ const SuggestionsResult = ( {
   if ( !usableTaxon ) return null;
 
   const taxonImage = {
-    uri: usableTaxon?.default_photo?.url
+    uri: taxonProp?.representativePhoto?.url
+      || taxonProp?.representative_photo?.url
+      || usableTaxon?.default_photo?.url
       || usableTaxon?.defaultPhoto?.url
   };
 
