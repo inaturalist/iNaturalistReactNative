@@ -3,6 +3,12 @@ import { FlashList } from "@shopify/flash-list";
 import ObservationsViewBar from "components/Explore/ObservationsViewBar";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
 import {
+  AccountCreationCard,
+  FiftyObservationCard,
+  FirstObservationCard,
+  SecondObservationCard
+} from "components/OnboardingModal/PivotCards.tsx";
+import {
   Body1,
   Body3,
   Heading5,
@@ -56,6 +62,7 @@ export interface Props {
   toggleLayout: ( ) => void;
   fetchMoreTaxa: ( ) => void;
   isFetchingTaxa?: boolean;
+  justFinishedSignup?: boolean;
 }
 
 interface TaxaFlashListRenderItemProps {
@@ -91,7 +98,8 @@ const MyObservationsSimple = ( {
   taxa,
   toggleLayout,
   fetchMoreTaxa,
-  isFetchingTaxa
+  isFetchingTaxa,
+  justFinishedSignup = false
 }: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -311,6 +319,15 @@ const MyObservationsSimple = ( {
         ) }
       </ViewWrapper>
       {showLoginSheet && <LoginSheet setShowLoginSheet={setShowLoginSheet} />}
+      {/* These four cards should show only in default mode */}
+      <FirstObservationCard triggerCondition={numTotalObservations === 1} />
+      <SecondObservationCard triggerCondition={numTotalObservations === 2} />
+      <FiftyObservationCard triggerCondition={!!currentUser && numTotalObservations >= 50} />
+      <AccountCreationCard
+        triggerCondition={
+          justFinishedSignup && !!currentUser && numTotalObservations < 20
+        }
+      />
     </>
   );
 };
