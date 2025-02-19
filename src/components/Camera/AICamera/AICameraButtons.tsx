@@ -118,6 +118,15 @@ const AICameraButtons = ( {
             rotatableAnimatedStyle={rotatableAnimatedStyle}
           />
         </View>
+        {showZoomButton && (
+          <View>
+            <Zoom
+              zoomTextValue={zoomTextValue}
+              handleZoomButtonPress={handleZoomButtonPress}
+              rotatableAnimatedStyle={rotatableAnimatedStyle}
+            />
+          </View>
+        )}
         <View>
           <Flash
             toggleFlash={toggleFlash}
