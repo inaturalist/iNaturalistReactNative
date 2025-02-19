@@ -108,7 +108,7 @@ const AICamera = ( {
   const [initialVolume, setInitialVolume] = useState( null );
   const [hasTakenPhoto, setHasTakenPhoto] = useState( false );
 
-  const [useLocation, setUseLocation] = useState( true );
+  const [useLocation, setUseLocation] = useState( !!userLocation );
   const toggleLocation = () => setUseLocation( !useLocation );
 
   const { t } = useTranslation();
