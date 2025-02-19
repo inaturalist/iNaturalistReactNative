@@ -58,7 +58,9 @@ type Props = {
   takingPhoto: boolean,
   takePhotoAndStoreUri: Function,
   takePhotoOptions: Object,
-  userLocation?: Object // UserLocation | null
+  userLocation?: Object, // UserLocation | null
+  hasLocationPermissions: boolean,
+  requestLocationPermissions: () => void,
 };
 
 const AICamera = ( {
@@ -70,7 +72,9 @@ const AICamera = ( {
   takingPhoto,
   takePhotoAndStoreUri,
   takePhotoOptions,
-  userLocation
+  userLocation,
+  hasLocationPermissions,
+  requestLocationPermissions
 }: Props ): Node => {
   const navigation = useNavigation( );
   const sentinelFileName = useStore( state => state.sentinelFileName );
@@ -108,8 +112,19 @@ const AICamera = ( {
   const [initialVolume, setInitialVolume] = useState( null );
   const [hasTakenPhoto, setHasTakenPhoto] = useState( false );
 
-  const [useLocation, setUseLocation] = useState( !!userLocation );
-  const toggleLocation = () => setUseLocation( !useLocation );
+  const [useLocation, setUseLocation] = useState( !!hasLocationPermissions );
+  const toggleLocation = () => {
+    if ( !useLocation && !hasLocationPermissions ) {
+      requestLocationPermissions( );
+      return;
+    }
+    setUseLocation( prev => !prev );
+  };
+  useEffect( ( ) => {
+    if ( hasLocationPermissions ) {
+      setUseLocation( true );
+    }
+  }, [hasLocationPermissions] );
 
   const { t } = useTranslation();
 
