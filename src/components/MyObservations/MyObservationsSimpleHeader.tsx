@@ -1,16 +1,14 @@
-import { useNavigation } from "@react-navigation/native";
 import {
   Body3,
+  HeaderUser,
   Heading3,
-  RotatingINatIconButton,
-  UserIcon
+  RotatingINatIconButton
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
 import type {
   RealmUser
 } from "realmModels/types";
-import User from "realmModels/User.ts";
 import { useTranslation } from "sharedHooks";
 import {
   MANUAL_SYNC_IN_PROGRESS
@@ -26,14 +24,15 @@ import colors from "styles/tailwindColors";
 export interface Props {
   currentUser?: RealmUser;
   handleSyncButtonPress: ( ) => void;
+  isConnected: boolean;
 }
 
 const MyObservationsSimpleHeader = ( {
   currentUser,
-  handleSyncButtonPress
+  handleSyncButtonPress,
+  isConnected
 }: Props ) => {
   const { t } = useTranslation( );
-  const navigation = useNavigation( );
 
   // TODO: all the code related to showing the sync button is pretty convoluted and'
   // should be cleaned up at some point, but right now it's ported from our ToolbarContainer/Toolbar
@@ -81,29 +80,9 @@ const MyObservationsSimpleHeader = ( {
         </Pressable>
       ) }
       <View className="flex-row justify-between items-center px-5 py-1">
-        <Pressable
-          accessibilityRole="button"
-          className="flex-row items-center"
-          onPress={() => {
-            if ( !currentUser ) {
-              return;
-            }
-            navigation.push( "UserProfile", { userId: currentUser?.id } );
-          }}
-        >
-          {currentUser && (
-            <View className="mr-2">
-              <UserIcon size={32} uri={User.uri( currentUser )} />
-            </View>
-          )}
-          <Heading3>
-            {
-              currentUser
-                ? currentUser.login
-                : t( "My-Observations" )
-            }
-          </Heading3>
-        </Pressable>
+        {currentUser
+          ? <HeaderUser user={currentUser} isConnected={isConnected} />
+          : <Heading3>{ t( "My-Observations" ) }</Heading3>}
         {currentUser && (
           <RotatingINatIconButton
             icon={

@@ -245,6 +245,7 @@ const MyObservationsSimple = ( {
       <ViewWrapper>
         <MyObservationsSimpleHeader
           currentUser={currentUser}
+          isConnected={isConnected}
           handleSyncButtonPress={handleSyncButtonPress}
         />
         <Tabs
