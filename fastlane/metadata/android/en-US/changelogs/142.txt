@@ -1,0 +1,14 @@
+All modes:
+App starts in Advanced mode; Default mode now opt-in, not in debug
+Change texts to use "Photo library"
+Validate emails during sign up
+
+Default mode:
+Fix: Sync button animation, MyObs loading state
+Fix: skip ObsDetail from taxon details
+Pivot Cards
+Match screen uses Taxon Photo Similarity
+Few UI changes
+
+Advanced mode:
+Camera button to use vs. ignore location
