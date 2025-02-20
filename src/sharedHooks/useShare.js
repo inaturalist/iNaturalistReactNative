@@ -20,7 +20,7 @@ const useShare = ( ): void => {
 
     const { mimeType, data } = item;
 
-    if ( !mimeType || !data ) {
+    if ( !mimeType && !data ) {
       // user hasn't shared any images
       return;
     }
