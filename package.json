@@ -11,8 +11,6 @@
     "clean": "./scripts/clean.sh",
     "clean-start": "npx react-native clean-project && npx pod-install && npm run clean && npm start -- --reset-cache",
     "test": "jest tests/integration && jest tests/unit tests/helpers",
-    "test:integration": "jest tests/integration",
-    "test:unit": "jest tests/unit tests/helpers",
     "test:clear": "jest --clearCache",
     "test:memory": "jest --runInBand --logHeapUsage",
     "lint": "npm run lint:eslint && npm run lint:flow && npm run lint:rubocop",
