@@ -29,7 +29,7 @@ const useLinking = ( currentUser: ?Object ) => {
     const uuid = results?.[0]?.uuid;
 
     if ( uuid ) {
-      navigateToObsDetails( navigation, uuid );
+      navigateToObsDetails( navigation, uuid, results );
       // ObsId reset for the case the same link is pressed twice and the obsId is the same
       setObservationId( null );
     }
