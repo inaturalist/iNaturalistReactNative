@@ -22,7 +22,9 @@ interface Props {
   newPhotoUris: Array<Object>,
   setNewPhotoUris: Function,
   takePhotoOptions: Object,
-  userLocation: UserLocation | null
+  userLocation: UserLocation | null,
+  hasLocationPermissions: boolean,
+  requestLocationPermissions: () => void,
 }
 
 const CameraWithDevice = ( {
@@ -37,7 +39,9 @@ const CameraWithDevice = ( {
   newPhotoUris,
   setNewPhotoUris,
   takePhotoOptions,
-  userLocation
+  userLocation,
+  hasLocationPermissions,
+  requestLocationPermissions
 }: Props ) => {
   const { isLandscapeMode } = useDeviceOrientation( );
   const flexDirection = isTablet && isLandscapeMode
@@ -76,6 +80,8 @@ const CameraWithDevice = ( {
             takePhotoAndStoreUri={takePhotoAndStoreUri}
             takePhotoOptions={takePhotoOptions}
             userLocation={userLocation}
+            hasLocationPermissions={hasLocationPermissions}
+            requestLocationPermissions={requestLocationPermissions}
           />
         )}
     </View>

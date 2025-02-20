@@ -11,6 +11,7 @@ import type { TakePhotoOptions } from "react-native-vision-camera";
 import CameraFlip from "./Buttons/CameraFlip";
 import Flash from "./Buttons/Flash";
 import GreenCheckmark from "./Buttons/GreenCheckmark";
+import Location from "./Buttons/Location";
 import TakePhoto from "./Buttons/TakePhoto";
 import Zoom from "./Buttons/Zoom";
 
@@ -52,6 +53,9 @@ interface Props {
   takePhotoOptions: TakePhotoOptions;
   toggleFlash: ( _event: GestureResponderEvent ) => void;
   zoomTextValue: string;
+  useLocation: boolean;
+  toggleLocation: ( _event: GestureResponderEvent ) => void;
+  isDefaultMode: boolean;
 }
 
 // Empty space where a camera button should be so buttons don't jump around
@@ -84,7 +88,10 @@ const TabletButtons = ( {
   takePhoto,
   takePhotoOptions,
   toggleFlash,
-  zoomTextValue
+  zoomTextValue,
+  useLocation,
+  toggleLocation,
+  isDefaultMode
 }: Props ) => {
   const tabletCameraOptionsClasses = [
     "absolute",
@@ -99,6 +106,13 @@ const TabletButtons = ( {
   return (
     <View className={classnames( tabletCameraOptionsClasses )} pointerEvents="box-none">
       { photosTaken && <CameraButtonPlaceholder extraClassName="mb-[25px]" /> }
+      {!isDefaultMode && (
+        <Location
+          rotatableAnimatedStyle={rotatableAnimatedStyle}
+          toggleLocation={toggleLocation}
+          useLocation={useLocation}
+        />
+      )}
       <Zoom
         handleZoomButtonPress={handleZoomButtonPress}
         zoomTextValue={zoomTextValue}

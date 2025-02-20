@@ -1,6 +1,7 @@
 import CameraFlip from "components/Camera/Buttons/CameraFlip.tsx";
 import Close from "components/Camera/Buttons/Close.tsx";
 import Flash from "components/Camera/Buttons/Flash.tsx";
+import Location from "components/Camera/Buttons/Location.tsx";
 import PhotoLibraryIcon from "components/Camera/Buttons/PhotoLibraryIcon.tsx";
 import TakePhoto from "components/Camera/Buttons/TakePhoto.tsx";
 import Zoom from "components/Camera/Buttons/Zoom.tsx";
@@ -10,6 +11,7 @@ import React from "react";
 import { GestureResponderEvent, ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import type { TakePhotoOptions } from "react-native-vision-camera";
+import { useLayoutPrefs } from "sharedHooks";
 
 import AIDebugButton from "./AIDebugButton";
 
@@ -38,6 +40,8 @@ interface Props {
   takingPhoto: boolean;
   toggleFlash: ( _event: GestureResponderEvent ) => void;
   zoomTextValue: string;
+  useLocation: boolean;
+  toggleLocation: ( _event: GestureResponderEvent ) => void;
 }
 
 const AICameraButtons = ( {
@@ -61,8 +65,11 @@ const AICameraButtons = ( {
   takePhotoOptions,
   takingPhoto,
   toggleFlash,
-  zoomTextValue
+  zoomTextValue,
+  useLocation,
+  toggleLocation
 }: Props ) => {
+  const { isDefaultMode } = useLayoutPrefs();
   if ( isTablet ) {
     return (
       <TabletButtons
@@ -78,6 +85,9 @@ const AICameraButtons = ( {
         takePhotoOptions={takePhotoOptions}
         toggleFlash={toggleFlash}
         zoomTextValue={zoomTextValue}
+        useLocation={useLocation}
+        toggleLocation={toggleLocation}
+        isDefaultMode={isDefaultMode}
       />
     );
   }
@@ -110,14 +120,24 @@ const AICameraButtons = ( {
           accessibilityRole="adjustable"
           accessibilityValue={{ min: 0, max: 100, now: 50 }}
         />
-        <View>
-          <Zoom
-            zoomTextValue={zoomTextValue}
-            handleZoomButtonPress={handleZoomButtonPress}
-            showZoomButton={showZoomButton}
-            rotatableAnimatedStyle={rotatableAnimatedStyle}
-          />
-        </View>
+        {!isDefaultMode && (
+          <View>
+            <Location
+              toggleLocation={toggleLocation}
+              useLocation={useLocation}
+              rotatableAnimatedStyle={rotatableAnimatedStyle}
+            />
+          </View>
+        )}
+        {showZoomButton && (
+          <View>
+            <Zoom
+              zoomTextValue={zoomTextValue}
+              handleZoomButtonPress={handleZoomButtonPress}
+              rotatableAnimatedStyle={rotatableAnimatedStyle}
+            />
+          </View>
+        )}
         <View>
           <Flash
             toggleFlash={toggleFlash}

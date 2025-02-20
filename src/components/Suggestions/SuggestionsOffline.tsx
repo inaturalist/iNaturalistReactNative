@@ -19,19 +19,19 @@ const SuggestionsOffline = ( {
   return (
     <Pressable
       accessibilityRole="button"
-      className="border border-warningYellow border-[3px] m-5 rounded-2xl"
+      className="border-lightGray border-[3px] m-5 rounded-2xl"
       onPress={reloadSuggestions}
     >
       <View className="p-5">
-        <View className="flex-row mb-2">
+        <View className="flex-row mb-2 items-center">
           <INatIcon
             name="offline"
             size={22}
-            color={colors.warningYellow}
+            color={colors.mediumGray}
           />
           <Body2 className="mx-2">{t( "You-are-offline-Tap-to-reload" )}</Body2>
         </View>
-        <Body3>{ t( "Offline-suggestions-do-not-use-your-location" ) }</Body3>
+        <Body3>{ t( "Offline-suggestions-may-differ-from-online" ) }</Body3>
       </View>
     </Pressable>
   );

@@ -23,7 +23,7 @@ import {
   orientationPatchFrameProcessor,
   usePatchedRunAsync
 } from "sharedHelpers/visionCameraPatches";
-import { useDeviceOrientation } from "sharedHooks";
+import { useDeviceOrientation, useLayoutPrefs } from "sharedHooks";
 import useStore from "stores/useStore";
 
 type Props = {
@@ -45,7 +45,8 @@ type Props = {
   takingPhoto: boolean,
   inactive?: boolean,
   resetCameraOnFocus: Function,
-  userLocation?: Object // UserLocation | null
+  userLocation?: Object, // UserLocation | null
+  useLocation: boolean
 };
 
 const DEFAULT_FPS = 1;
@@ -73,13 +74,20 @@ const FrameProcessorCamera = ( {
   takingPhoto,
   inactive,
   resetCameraOnFocus,
-  userLocation
+  userLocation,
+  useLocation
 }: Props ): Node => {
   const sentinelFileName = useStore( state => state.sentinelFileName );
+  const { isDefaultMode } = useLayoutPrefs( );
   const { deviceOrientation } = useDeviceOrientation();
   const [lastTimestamp, setLastTimestamp] = useState( undefined );
 
   const navigation = useNavigation();
+
+  // When useLocation changes, we need to reset the stored results
+  useEffect( () => {
+    InatVision.resetStoredResults();
+  }, [useLocation] );
 
   useEffect( () => {
     // This registers a listener for the frame processor plugin's log events
@@ -132,6 +140,9 @@ const FrameProcessorCamera = ( {
   const patchedOrientationAndroid = orientationPatchFrameProcessor( deviceOrientation );
   const patchedRunAsync = usePatchedRunAsync( );
   const hasUserLocation = userLocation?.latitude != null && userLocation?.longitude != null;
+  const useGeomodel = isDefaultMode
+    ? hasUserLocation
+    : ( useLocation && hasUserLocation );
   // The vision-plugin has a function to look up the location of the user in a h3 gridded world
   // unfortunately, I was not able to run this new function in the worklets directly,
   // so we need to do this here before calling the useFrameProcessor hook.
@@ -170,7 +181,7 @@ const FrameProcessorCamera = ( {
             numStoredResults,
             cropRatio,
             patchedOrientationAndroid,
-            useGeomodel: hasUserLocation,
+            useGeomodel,
             geomodelPath,
             location: {
               latitude: geoModelCellLocation?.latitude,
@@ -197,7 +208,7 @@ const FrameProcessorCamera = ( {
       cropRatio,
       lastTimestamp,
       fps,
-      hasUserLocation,
+      useGeomodel,
       geoModelCellLocation
     ]
   );

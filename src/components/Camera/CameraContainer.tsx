@@ -66,9 +66,13 @@ const CameraContainer = ( ) => {
   // request before landing here, so it's ok if we're not fetching the
   // location here for the user's first observation (suggestions might be a
   // bit off and we'll fetch the obs coordinates on ObsEdit)
-  const { hasPermissions } = useLocationPermission( );
+  const {
+    hasPermissions: hasLocationPermissions,
+    renderPermissionsGate: renderLocationPermissionsGate,
+    requestPermissions: requestLocationPermissions
+  } = useLocationPermission( );
   const { userLocation } = useWatchPosition( {
-    shouldFetchLocation: !!( hasPermissions )
+    shouldFetchLocation: !!( hasLocationPermissions )
   } );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
@@ -100,13 +104,13 @@ const CameraContainer = ( ) => {
     const generateSentinelFile = async ( ) => {
       const fileName = await createSentinelFile( "AICamera" );
       setSentinelFileName( fileName );
-      if ( hasPermissions ) {
+      if ( hasLocationPermissions ) {
         await logStage( fileName, "fetch_user_location_start" );
       }
     };
     if ( cameraType !== "AI" ) { return; }
     generateSentinelFile( );
-  }, [setSentinelFileName, cameraType, hasPermissions] );
+  }, [setSentinelFileName, cameraType, hasLocationPermissions] );
 
   const {
     hasPermissions: hasSavePhotoPermission,
@@ -252,10 +256,10 @@ const CameraContainer = ( ) => {
         newPhotoUris={newPhotoUris}
         setNewPhotoUris={setNewPhotoUris}
         userLocation={userLocation}
+        hasLocationPermissions={hasLocationPermissions}
+        requestLocationPermissions={requestLocationPermissions}
       />
       {showPhotoPermissionsGate && renderSavePhotoPermissionGate( {
-        // If the user does not give location permissions in any form,
-        // navigate to the location picker (if granted we just continue fetching the location)
         onRequestGranted: ( ) => console.log( "granted in save photo permission gate" ),
         onRequestBlocked: ( ) => console.log( "blocked in save photo permission gate" ),
         onModalHide: async ( ) => {
@@ -264,6 +268,13 @@ const CameraContainer = ( ) => {
             cameraUris,
             evidenceToAdd
           } );
+        }
+      } )}
+      {renderLocationPermissionsGate( {
+        onRequestGranted: ( ) => console.log( "granted in location permission gate" ),
+        onRequestBlocked: ( ) => console.log( "blocked in location permission gate" ),
+        onModalHide: async ( ) => {
+          await logStageIfAICamera( "request_location_permission_complete" );
         }
       } )}
     </>

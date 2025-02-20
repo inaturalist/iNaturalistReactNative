@@ -163,7 +163,7 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
         </View>
@@ -307,7 +307,7 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
         </View>

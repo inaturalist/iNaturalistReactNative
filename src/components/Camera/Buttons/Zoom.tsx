@@ -17,21 +17,15 @@ interface Props {
   handleZoomButtonPress: ( _event: GestureResponderEvent ) => void;
   zoomClassName?: string;
   zoomTextValue: string;
-  showZoomButton: boolean;
 }
 
 const Zoom = ( {
   rotatableAnimatedStyle,
   handleZoomButtonPress,
   zoomClassName,
-  zoomTextValue,
-  showZoomButton
+  zoomTextValue
 }: Props ) => {
   const { t } = useTranslation();
-
-  if ( !showZoomButton ) {
-    return null;
-  }
 
   return (
     <Animated.View

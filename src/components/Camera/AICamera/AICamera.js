@@ -36,6 +36,7 @@ import {
 import AICameraButtons from "./AICameraButtons";
 import FrameProcessorCamera from "./FrameProcessorCamera";
 import usePredictions from "./hooks/usePredictions";
+import LocationStatus from "./LocationStatus";
 
 const isTablet = DeviceInfo.isTablet();
 
@@ -58,7 +59,9 @@ type Props = {
   takingPhoto: boolean,
   takePhotoAndStoreUri: Function,
   takePhotoOptions: Object,
-  userLocation?: Object // UserLocation | null
+  userLocation?: Object, // UserLocation | null
+  hasLocationPermissions: boolean,
+  requestLocationPermissions: () => void,
 };
 
 const AICamera = ( {
@@ -70,7 +73,9 @@ const AICamera = ( {
   takingPhoto,
   takePhotoAndStoreUri,
   takePhotoOptions,
-  userLocation
+  userLocation,
+  hasLocationPermissions,
+  requestLocationPermissions
 }: Props ): Node => {
   const navigation = useNavigation( );
   const sentinelFileName = useStore( state => state.sentinelFileName );
@@ -107,6 +112,29 @@ const AICamera = ( {
   const [inactive, setInactive] = React.useState( false );
   const [initialVolume, setInitialVolume] = useState( null );
   const [hasTakenPhoto, setHasTakenPhoto] = useState( false );
+
+  const [useLocation, setUseLocation] = useState( !!hasLocationPermissions );
+  const [locationStatusVisible, setLocationStatusVisible] = useState( false );
+
+  const toggleLocation = () => {
+    if ( !useLocation && !hasLocationPermissions ) {
+      requestLocationPermissions( );
+      return;
+    }
+    setUseLocation( prev => !prev );
+    // Always show status when button is pressed
+    setLocationStatusVisible( true );
+  };
+
+  const handleLocationStatusEnd = ( ) => {
+    setLocationStatusVisible( false );
+  };
+
+  useEffect( ( ) => {
+    if ( hasLocationPermissions ) {
+      setUseLocation( true );
+    }
+  }, [hasLocationPermissions] );
 
   const { t } = useTranslation();
 
@@ -205,6 +233,7 @@ const AICamera = ( {
             inactive={inactive}
             resetCameraOnFocus={resetCameraOnFocus}
             userLocation={userLocation}
+            useLocation={useLocation}
           />
         </View>
       )}
@@ -248,6 +277,11 @@ const AICamera = ( {
                   : t( "Loading-iNaturalists-AI-Camera" )}
               </Body1>
             )}
+          <LocationStatus
+            useLocation={useLocation}
+            visible={locationStatusVisible}
+            onAnimationEnd={handleLocationStatusEnd}
+          />
           {isDebug && result && (
             <Body1 className="text-deeppink self-center mt-[22px]">
               {`Age of result: ${Date.now() - result.timestamp}ms`}
@@ -258,11 +292,7 @@ const AICamera = ( {
       {!modelLoaded && (
         <View className="absolute left-1/2 top-1/2">
           <View className="right-[57px] bottom-[57px]">
-            <INatIcon
-              name="inaturalist"
-              size={114}
-              color={colors.white}
-            />
+            <INatIcon name="inaturalist" size={114} color={colors.white} />
           </View>
         </View>
       )}
@@ -289,6 +319,8 @@ const AICamera = ( {
         takingPhoto={takingPhoto}
         toggleFlash={toggleFlash}
         zoomTextValue={zoomTextValue}
+        useLocation={useLocation}
+        toggleLocation={toggleLocation}
       />
     </>
   );
