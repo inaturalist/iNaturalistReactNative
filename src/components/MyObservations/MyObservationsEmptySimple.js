@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import AddObsModal from "components/AddObsModal/AddObsModal.tsx";
 import OnboardingCarouselModal from "components/Onboarding/OnboardingCarouselModal";
 import {
+  HeaderUser,
   Heading2,
   ViewWrapper
 } from "components/SharedComponents";
@@ -46,6 +47,11 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected }: Props ): Node 
         showModal={!onboardingShown}
         closeModal={() => setOnboardingShown( true )}
       />
+      {!!currentUser && (
+        <View className="absolute px-6 py-4">
+          <HeaderUser user={currentUser} isConnected={isConnected} />
+        </View>
+      )}
       <View className="flex grow flex-col justify-center mx-[67px]">
         <Pressable accessibilityRole="button" onPress={navToARCamera}>
           <Heading2
