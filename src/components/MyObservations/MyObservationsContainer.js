@@ -34,7 +34,7 @@ import FullScreenActivityIndicator from "./FullScreenActivityIndicator";
 import useSyncObservations from "./hooks/useSyncObservations";
 import useUploadObservations from "./hooks/useUploadObservations";
 import MyObservations from "./MyObservations";
-import MyObservationsEmptyLoggedOut from "./MyObservationsEmptyLoggedOut";
+import MyObservationsEmptySimple from "./MyObservationsEmptySimple";
 import MyObservationsSimpleContainer from "./MyObservationsSimpleContainer";
 
 const logger = log.extend( "MyObservationsContainer" );
@@ -228,7 +228,7 @@ const MyObservationsContainer = ( ): Node => {
 
   if ( observations.length === 0 ) {
     return showNoResults
-      ? <MyObservationsEmptyLoggedOut />
+      ? <MyObservationsEmptySimple />
       : <FullScreenActivityIndicator />;
   }
 

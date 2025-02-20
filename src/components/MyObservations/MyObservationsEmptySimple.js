@@ -17,7 +17,7 @@ import { useOnboardingShown } from "sharedHelpers/installData.ts";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
-const MyObservationsEmptyLoggedOut = ( ): Node => {
+const MyObservationsEmptySimple = ( ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const [onboardingShown, setOnboardingShown] = useOnboardingShown( );
@@ -76,4 +76,4 @@ const MyObservationsEmptyLoggedOut = ( ): Node => {
   );
 };
 
-export default MyObservationsEmptyLoggedOut;
+export default MyObservationsEmptySimple;
