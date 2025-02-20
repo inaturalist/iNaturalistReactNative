@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import AddObsModal from "components/AddObsModal/AddObsModal.tsx";
 import OnboardingCarouselModal from "components/Onboarding/OnboardingCarouselModal";
 import {
+  HeaderUser,
   Heading2,
   ViewWrapper
 } from "components/SharedComponents";
@@ -13,14 +14,21 @@ import Arrow from "images/svg/curved_arrow_down.svg";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Pressable } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useOnboardingShown } from "sharedHelpers/installData.ts";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
-const MyObservationsEmptyLoggedOut = ( ): Node => {
-  const { t } = useTranslation( );
-  const navigation = useNavigation( );
-  const [onboardingShown, setOnboardingShown] = useOnboardingShown( );
+interface Props {
+  currentUser: any;
+  isConnected: boolean;
+}
+
+const MyObservationsEmptySimple = ( { currentUser, isConnected }: Props ): Node => {
+  const { top } = useSafeAreaInsets();
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+  const [onboardingShown, setOnboardingShown] = useOnboardingShown();
   const [showModal, setShowModal] = useState( false );
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const navAndCloseModal = ( screen, params ) => {
@@ -41,6 +49,11 @@ const MyObservationsEmptyLoggedOut = ( ): Node => {
         showModal={!onboardingShown}
         closeModal={() => setOnboardingShown( true )}
       />
+      {!!currentUser && (
+        <View className={`absolute px-6 py-4 mt-[${top}px]`}>
+          <HeaderUser user={currentUser} isConnected={isConnected} />
+        </View>
+      )}
       <View className="flex grow flex-col justify-center mx-[67px]">
         <Pressable accessibilityRole="button" onPress={navToARCamera}>
           <Heading2
@@ -76,4 +89,4 @@ const MyObservationsEmptyLoggedOut = ( ): Node => {
   );
 };
 
-export default MyObservationsEmptyLoggedOut;
+export default MyObservationsEmptySimple;
