@@ -5,7 +5,7 @@ import { Pressable, View } from "components/styledComponents";
 import React from "react";
 import { useLayoutPrefs } from "sharedHooks";
 import type { Notification } from "sharedHooks/useInfiniteNotificationsScroll";
-import { ACTIVITY_TAB } from "stores/createLayoutSlice";
+import { OBS_DETAILS_TAB } from "stores/createLayoutSlice.ts";
 
 type Props = {
   notification: Notification
@@ -28,7 +28,7 @@ const NotificationsListItem = ( { notification }: Props ) => {
         }
       )}
       onPress={( ) => {
-        setObsDetailsTab( ACTIVITY_TAB );
+        setObsDetailsTab( OBS_DETAILS_TAB.ACTIVITY );
         navigation.navigate( "TabStackNavigator", {
           screen: "ObsDetails",
           params: {

@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import type { ApiObservationsUpdatesParams } from "api/types";
 import NotificationsList from "components/Notifications/NotificationsList.tsx";
 import React, { useEffect, useState } from "react";
+import type { RealmUser } from "realmModels/types";
 import { log } from "sharedHelpers/logger";
 import { useInfiniteNotificationsScroll, usePerformance } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
@@ -12,11 +13,13 @@ import { isDebugMode } from "sharedHooks/useDebugMode";
 const logger = log.extend( "NotificationsContainer" );
 
 interface Props {
+  currentUser: RealmUser | null;
   notificationParams: ApiObservationsUpdatesParams;
   onRefresh?: ( ) => void;
 }
 
 const NotificationsContainer = ( {
+  currentUser,
   notificationParams,
   onRefresh: onRefreshProp
 }: Props ) => {
@@ -57,6 +60,7 @@ const NotificationsContainer = ( {
 
   return (
     <NotificationsList
+      currentUser={currentUser}
       data={notifications}
       isError={isError}
       isFetching={isFetching}

@@ -4,6 +4,7 @@ import Taxon from "realmModels/Taxon";
 import handleError from "./error";
 
 const PARAMS = {
+  include_representative_photos: true,
   fields: {
     combined_score: true,
     vision_score: true,

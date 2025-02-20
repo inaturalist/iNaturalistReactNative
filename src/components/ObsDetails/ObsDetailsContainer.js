@@ -31,7 +31,7 @@ import {
 import useRemoteObservation, {
   fetchRemoteObservationKey
 } from "sharedHooks/useRemoteObservation";
-import { ACTIVITY_TAB, DETAILS_TAB } from "stores/createLayoutSlice";
+import { OBS_DETAILS_TAB } from "stores/createLayoutSlice.ts";
 import useStore from "stores/useStore";
 
 import useMarkViewedMutation from "./hooks/useMarkViewedMutation";
@@ -55,7 +55,7 @@ const initialState = {
   addingActivityItem: false,
   comment: null,
   commentIsOptional: false,
-  obsDetailsTab: ACTIVITY_TAB,
+  obsDetailsTab: OBS_DETAILS_TAB.ACTIVITY,
   identBodySheetShown: false,
   newIdentification: null,
   observationShown: null,
@@ -335,15 +335,15 @@ const ObsDetailsContainer = ( ): Node => {
 
   const tabs = [
     {
-      id: ACTIVITY_TAB,
+      id: OBS_DETAILS_TAB.ACTIVITY,
       testID: "ObsDetails.ActivityTab",
-      onPress: ( ) => setObsDetailsTab( ACTIVITY_TAB ),
+      onPress: ( ) => setObsDetailsTab( OBS_DETAILS_TAB.ACTIVITY ),
       text: t( "ACTIVITY" )
     },
     {
-      id: DETAILS_TAB,
+      id: OBS_DETAILS_TAB.DETAILS,
       testID: "ObsDetails.DetailsTab",
-      onPress: () => setObsDetailsTab( DETAILS_TAB ),
+      onPress: () => setObsDetailsTab( OBS_DETAILS_TAB.DETAILS ),
       text: t( "DETAILS" )
     }
   ];
@@ -501,7 +501,7 @@ const ObsDetailsContainer = ( ): Node => {
     }
   };
 
-  const showActivityTab = obsDetailsTab === ACTIVITY_TAB;
+  const showActivityTab = obsDetailsTab === OBS_DETAILS_TAB.ACTIVITY;
 
   const invalidateQueryAndRefetch = ( ) => {
     invalidateRemoteObservationFetch( );

@@ -6,20 +6,24 @@ import {
 import {
   Image, Pressable, View
 } from "components/styledComponents";
-import _, { compact } from "lodash";
+import _, { compact, uniqBy } from "lodash";
 import React, { useEffect, useState } from "react";
 import Photo from "realmModels/Photo";
 import getImageDimensions from "sharedHelpers/getImageDimensions";
 import { useTaxon } from "sharedHooks";
 
 type Props = {
+  representativePhoto: Object,
   taxon: Object,
   obsPhotos: Array<Object>,
   navToTaxonDetails: ( ) => void
 }
 
 const PhotosSection = ( {
-  taxon, obsPhotos, navToTaxonDetails
+  representativePhoto,
+  taxon,
+  obsPhotos,
+  navToTaxonDetails
 }: Props ) => {
   const [displayPortraitLayout, setDisplayPortraitLayout] = useState( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
@@ -34,17 +38,21 @@ const PhotosSection = ( {
       ? localTaxonPhotos.map( taxonPhoto => taxonPhoto.photo )
       : [taxon?.defaultPhoto]
   );
+  // don't show the iconic taxon photo which is a mashup of 9 photos
+  const taxonPhotosNoIconic = localTaxon?.isIconic
+    ? taxonPhotos.slice( 1, 4 )
+    : taxonPhotos.slice( 0, 3 );
+
+  // Add the representative photo at the start of the list of taxon photos.
+  const taxonPhotosWithRepPhoto = compact( [representativePhoto, ...taxonPhotosNoIconic] );
+  // The representative photo might be already included in taxonPhotosNoIconic
+  const uniqueTaxonPhotos = uniqBy( taxonPhotosWithRepPhoto, "id" );
 
   const observationPhotos = compact(
     obsPhotos
       ? obsPhotos.map( obsPhoto => obsPhoto.photo )
       : []
   );
-
-  // don't show the iconic taxon photo which is a mashup of 9 photos
-  const taxonPhotosNoIconic = localTaxon?.isIconic
-    ? taxonPhotos.slice( 1, 4 )
-    : taxonPhotos.slice( 0, 3 );
 
   useEffect( ( ) => {
     const checkImageOrientation = async ( ) => {
@@ -58,6 +66,53 @@ const PhotosSection = ( {
     checkImageOrientation( );
   }, [observationPhoto] );
 
+  const getLayoutClasses = ( ) => {
+    // Basic layout: no taxon photos + obs photo a square
+    let containerClass = "flex-row";
+    let observationPhotoClass = "w-full h-full";
+    let taxonPhotosContainerClass;
+    let taxonPhotoClass;
+    // If there is only one taxon photo: obs photo a square,
+    // taxon photo a square in the lower right corner of the obs photo
+    if ( uniqueTaxonPhotos.length === 1 ) {
+      containerClass = "flex-row relative";
+      observationPhotoClass = "w-full h-full";
+      taxonPhotosContainerClass = "absolute bottom-0 right-0 w-1/3 h-1/3";
+      taxonPhotoClass = "w-full h-full border-l-[3px] border-t-[3px] border-white";
+    }
+    if ( uniqueTaxonPhotos.length > 1 ) {
+      if ( displayPortraitLayout ) {
+        containerClass = "flex-row";
+        observationPhotoClass = "w-2/3 h-full pr-[3px]";
+        if ( uniqueTaxonPhotos.length === 2 ) {
+          taxonPhotosContainerClass = "flex-col w-1/3 h-full space-y-[3px]";
+          taxonPhotoClass = "w-full h-1/2";
+        } else {
+          taxonPhotosContainerClass = "flex-col w-1/3 h-full space-y-[3px]";
+          taxonPhotoClass = "w-full h-1/3";
+        }
+      } else {
+        containerClass = "flex-col";
+        observationPhotoClass = "w-full h-2/3 pb-[3px]";
+        if ( uniqueTaxonPhotos.length === 2 ) {
+          taxonPhotosContainerClass = "flex-row w-full h-1/3 space-x-[3px]";
+          taxonPhotoClass = "w-1/2 h-full";
+        } else {
+          taxonPhotosContainerClass = "flex-row w-full h-1/3 space-x-[3px]";
+          taxonPhotoClass = "w-1/3 h-full";
+        }
+      }
+    }
+    return {
+      containerClass,
+      observationPhotoClass,
+      taxonPhotosContainerClass,
+      taxonPhotoClass
+    };
+  };
+
+  const layoutClasses = getLayoutClasses();
+
   const renderObservationPhoto = ( ) => (
     <Pressable
       accessibilityRole="button"
@@ -65,12 +120,7 @@ const PhotosSection = ( {
       accessibilityState={{ disabled: false }}
       className={classnames(
         "relative",
-        {
-          // Landscape layout: full width on top
-          "w-full h-2/3 pb-[3px]": !displayPortraitLayout,
-          // Portrait layout: 2/3 width on left
-          "w-2/3 h-full pr-[3px]": displayPortraitLayout
-        }
+        layoutClasses?.observationPhotoClass
       )}
     >
       <Image
@@ -91,15 +141,10 @@ const PhotosSection = ( {
   const renderTaxonPhotos = ( ) => (
     <View className={classnames(
       "flex",
-      {
-        // Landscape layout: row of photos at bottom
-        "flex-row w-full h-1/3 space-x-[3px]": !displayPortraitLayout,
-        // Portrait layout: column of photos on right
-        "flex-col w-1/3 h-full space-y-[3px]": displayPortraitLayout
-      }
+      layoutClasses?.taxonPhotosContainerClass
     )}
     >
-      {taxonPhotosNoIconic.map( photo => (
+      {uniqueTaxonPhotos.map( photo => (
         <Pressable
           accessibilityRole="button"
           onPress={navToTaxonDetails}
@@ -107,12 +152,7 @@ const PhotosSection = ( {
           key={photo.id}
           className={classnames(
             "relative",
-            {
-              // Landscape layout: equal width photos in a row
-              "w-1/3 h-full": !displayPortraitLayout,
-              // Portrait layout: equal height photos in a column
-              "w-full h-1/3": displayPortraitLayout
-            }
+            layoutClasses?.taxonPhotoClass
           )}
         >
           <Image
@@ -135,15 +175,9 @@ const PhotosSection = ( {
   }
 
   return (
-    <View className={classnames( "h-[390px]", {
-      // Landscape layout: stack vertically
-      "flex-col": !displayPortraitLayout,
-      // Portrait layout: align horizontally
-      "flex-row": displayPortraitLayout
-    } )}
-    >
+    <View className={classnames( "h-[390px]", layoutClasses.containerClass )}>
       {renderObservationPhoto( )}
-      {renderTaxonPhotos( )}
+      {uniqueTaxonPhotos.length > 0 && renderTaxonPhotos( )}
       <MediaViewerModal
         showModal={mediaViewerVisible}
         onClose={( ) => setMediaViewerVisible( false )}
