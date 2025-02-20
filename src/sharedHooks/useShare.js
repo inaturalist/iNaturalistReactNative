@@ -12,7 +12,7 @@ type SharedItem = {
 const useShare = ( ): void => {
   const navigation = useNavigation( );
 
-  const handleShare = useCallback( async ( item: ?SharedItem ) => {
+  const handleShare = useCallback( ( item: ?SharedItem ) => {
     if ( !item ) {
       // user hasn't shared any items
       return;
@@ -20,7 +20,7 @@ const useShare = ( ): void => {
 
     const { mimeType, data } = item;
 
-    if ( !mimeType && !data ) {
+    if ( !mimeType || !data ) {
       // user hasn't shared any images
       return;
     }
