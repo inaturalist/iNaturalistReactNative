@@ -30,6 +30,7 @@ import {
 } from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
 
+import FullScreenActivityIndicator from "./FullScreenActivityIndicator";
 import useSyncObservations from "./hooks/useSyncObservations";
 import useUploadObservations from "./hooks/useUploadObservations";
 import MyObservations from "./MyObservations";
@@ -206,8 +207,12 @@ const MyObservationsContainer = ( ): Node => {
 
   if ( !layout ) { return null; }
 
+  // API call fetching obs has completed but results are not yet stored in realm
+  // for display here
+  const showLoading = totalResultsRemote > 0 && observations.length === 0;
+
   // show empty screen instead of loading wheel...
-  const showNoResults = (
+  const showNoResults = !showLoading && (
     // ...if the user is not signed in, or...
     !currentUser
     // ...if the signed in user is offline and has no observations, or...
@@ -221,9 +226,12 @@ const MyObservationsContainer = ( ): Node => {
   // this component again after returning from ObsEdit
   const onScroll = scrollEvent => setMyObsOffset( scrollEvent.nativeEvent.contentOffset.y );
 
-  if ( observations.length === 0 && !currentUser ) {
-    return <MyObservationsEmptyLoggedOut />;
+  if ( observations.length === 0 ) {
+    return showNoResults
+      ? <MyObservationsEmptyLoggedOut />
+      : <FullScreenActivityIndicator />;
   }
+
   if ( isDefaultMode ) {
     return (
       <MyObservationsSimpleContainer
