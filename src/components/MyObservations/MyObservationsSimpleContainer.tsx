@@ -1,10 +1,11 @@
 import { fetchSpeciesCounts } from "api/observations";
 import { RealmContext } from "providers/contexts.ts";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Realm from "realm";
 import Taxon from "realmModels/Taxon";
 import type { RealmObservation, RealmTaxon } from "realmModels/types";
 import { useInfiniteScroll } from "sharedHooks";
+import { zustandStorage } from "stores/useStore";
 
 import MyObservationsSimple, {
   OBSERVATIONS_TAB,
@@ -35,6 +36,8 @@ const MyObservationsSimpleContainer = ( {
   toggleLayout,
   justFinishedSignup
 }: Props ) => {
+  const numOfUserObservations = zustandStorage.getItem( "numOfUserObservations" );
+  const numOfUserSpecies = zustandStorage.getItem( "numOfUserSpecies" );
   const [activeTab, setActiveTab] = useState( OBSERVATIONS_TAB );
   const realm = useRealm();
 
@@ -85,6 +88,26 @@ const MyObservationsSimpleContainer = ( {
     }
   );
 
+  const numTotalTaxa = typeof ( numTotalTaxaRemote ) === "number"
+    ? numTotalTaxaRemote
+    : numTotalTaxaLocal;
+
+  useEffect( ( ) => {
+    // persist this number in zustand so a user can see their latest observations count
+    // even if they're offline
+    if ( numTotalObservations > numOfUserObservations ) {
+      zustandStorage.setItem( "numOfUserObservations", numTotalObservations );
+    }
+  }, [numTotalObservations, numOfUserObservations] );
+
+  useEffect( ( ) => {
+    // persist this number in zustand so a user can see their latest species count
+    // even if they're offline
+    if ( numTotalTaxa > numOfUserSpecies ) {
+      zustandStorage.setItem( "numOfUserSpecies", numTotalTaxa );
+    }
+  }, [numTotalTaxa, numOfUserSpecies] );
+
   return (
     <MyObservationsSimple
       currentUser={currentUser}
@@ -104,12 +127,8 @@ const MyObservationsSimpleContainer = ( {
       showLoginSheet={showLoginSheet}
       showNoResults={showNoResults}
       toggleLayout={toggleLayout}
-      numTotalTaxa={
-        typeof ( numTotalTaxaRemote ) === "number"
-          ? numTotalTaxaRemote
-          : numTotalTaxaLocal
-      }
-      numTotalObservations={numTotalObservations}
+      numTotalTaxa={numOfUserSpecies}
+      numTotalObservations={numOfUserObservations}
       taxa={
         currentUser
           ? remoteObservedTaxaCounts.map( tc => Taxon.mapApiToRealm( tc.taxon ) )
