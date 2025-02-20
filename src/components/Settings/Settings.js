@@ -227,6 +227,8 @@ const Settings = ( ) => {
                   );
                   // sign out
                   await signOut( { realm, clearRealm: true, queryClient } );
+                  // revert back to default mode
+                  setIsDefaultMode( true );
                   // navigate to My Obs
                   navigation.navigate( "ObsList" );
                 }
@@ -256,7 +258,10 @@ const Settings = ( ) => {
             <RadioButtonRow
               smallLabel
               checked={isDefaultMode}
-              onPress={( ) => setIsDefaultMode( true )}
+              onPress={( ) => {
+                setIsDefaultMode( true );
+                setIsAllAddObsOptionsMode( false );
+              }}
               label={t( "Default--interface-mode" )}
             />
           </View>
@@ -284,11 +289,11 @@ const Settings = ( ) => {
             </View>
             <View className="mt-4 pr-5">
               <RadioButtonRow
-                testID="all-observation-option"
+                testID="all-observation-options"
                 smallLabel
                 checked={isAllAddObsOptionsMode}
                 onPress={() => setIsAllAddObsOptionsMode( true )}
-                label={t( "All-observation-option" )}
+                label={t( "All-observation-options" )}
               />
             </View>
           </View>

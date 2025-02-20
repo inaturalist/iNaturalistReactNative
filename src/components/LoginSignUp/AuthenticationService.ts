@@ -1,11 +1,11 @@
 import type { QueryClient } from "@tanstack/query-core";
 import type { ApiUser } from "api/types";
-import { getUserAgent } from "api/userAgent";
-import { fetchUserMe } from "api/users";
+import { getUserAgent } from "api/userAgent.ts";
+import { fetchUserEmailAvailable, fetchUserMe } from "api/users";
 import { ApiResponse, ApisauceInstance, create } from "apisauce";
 import {
   computerVisionPath,
-  galleryPhotosPath,
+  photoLibraryPhotosPath,
   photoUploadPath,
   rotatedOriginalPhotosPath,
   soundUploadPath
@@ -180,7 +180,7 @@ const signOut = async (
   await unlink( logFilePath );
   // clear all directories containing user generated data within Documents Directory
   await removeAllFilesFromDirectory( computerVisionPath );
-  await removeAllFilesFromDirectory( galleryPhotosPath );
+  await removeAllFilesFromDirectory( photoLibraryPhotosPath );
   await removeAllFilesFromDirectory( photoUploadPath );
   await removeAllFilesFromDirectory( rotatedOriginalPhotosPath );
   await removeAllFilesFromDirectory( soundUploadPath );
@@ -572,10 +572,28 @@ const resetPassword = async ( email: string ) => {
   return null;
 };
 
+/**
+ * Check if an email is available for registration
+ *
+ * @param email
+ *
+ * @returns boolean if email is available or not
+ */
+const emailAvailable = async ( email: string ) => {
+  // try to fetch user data (especially for loading user icon) from userMe
+  const apiToken = await getAnonymousJWT( );
+  const options = {
+    api_token: apiToken
+  };
+  const response = await fetchUserEmailAvailable( email, options ) as { available: boolean };
+  return response?.available;
+};
+
 export {
   API_HOST,
   authenticateUser,
   authenticateUserByAssertion,
+  emailAvailable,
   getAnonymousJWT,
   getJWT,
   getUsername,

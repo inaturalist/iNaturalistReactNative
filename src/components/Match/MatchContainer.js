@@ -14,7 +14,7 @@ import {
 import _ from "lodash";
 import { RealmContext } from "providers/contexts.ts";
 import React, {
-  useCallback, useEffect, useReducer, useRef
+  useCallback, useEffect, useReducer, useRef, useState
 } from "react";
 import saveObservation from "sharedHelpers/saveObservation.ts";
 import {
@@ -44,7 +44,7 @@ const reducer = ( state, action ) => {
       return {
         ...state,
         scoreImageParams: action.scoreImageParams,
-        queryKey: setQueryKey( state.selectedPhotoUri, state.shouldUseEvidenceLocation )
+        queryKey: setQueryKey( action.scoreImageParams.image.uri, state.shouldUseEvidenceLocation )
       };
     case "SET_FETCH_STATUS":
       return {
@@ -57,7 +57,7 @@ const reducer = ( state, action ) => {
         fetchStatus: FETCH_STATUS_LOADING,
         scoreImageParams: action.scoreImageParams,
         shouldUseEvidenceLocation: action.shouldUseEvidenceLocation,
-        queryKey: setQueryKey( state.selectedPhotoUri, action.shouldUseEvidenceLocation )
+        queryKey: setQueryKey( action.scoreImageParams.image.uri, action.shouldUseEvidenceLocation )
       };
     case "ORDER_SUGGESTIONS":
       return {
@@ -72,6 +72,7 @@ const { useRealm } = RealmContext;
 
 const MatchContainer = ( ) => {
   const hasLoadedRef = useRef( false );
+  const scrollRef = useRef( null );
   const currentObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
   const cameraRollUris = useStore( state => state.cameraRollUris );
@@ -107,6 +108,7 @@ const MatchContainer = ( ) => {
 
   const evidenceHasLocation = !!currentObservation?.latitude;
 
+  const [topSuggestion, setTopSuggestion] = useState( );
   const [state, dispatch] = useReducer( reducer, {
     ...initialState,
     shouldUseEvidenceLocation: evidenceHasLocation
@@ -151,6 +153,12 @@ const MatchContainer = ( ) => {
     onlineSuggestionsAttempted
   } );
 
+  const scrollToTop = useCallback( ( ) => {
+    if ( scrollRef.current ) {
+      scrollRef.current.scrollTo( { y: 0, animated: true } );
+    }
+  }, [] );
+
   const onSuggestionChosen = useCallback( selection => {
     const suggestionsList = [...orderedSuggestions];
 
@@ -163,25 +171,22 @@ const MatchContainer = ( ) => {
       ["desc"]
     );
 
-    // order the chosen suggestion at the beginning of the list, so it
-    // can become the new top suggestion
     const chosenIndex = _.findIndex(
       sortedList,
       suggestion => suggestion.taxon.id === selection.taxon.id
     );
     if ( chosenIndex !== -1 ) {
-      const newList = [
-        selection, // Add selected item at the beginning
-        ...sortedList.slice( 0, chosenIndex ), // Items before the selected one
-        ...sortedList.slice( chosenIndex + 1 ) // Items after the selected one
-      ];
-
+      // Set new top suggestion
+      setTopSuggestion( sortedList[chosenIndex] );
+      // We can set the entire list here since we are filtering out the top suggestion in render
       dispatch( {
         type: "ORDER_SUGGESTIONS",
-        orderedSuggestions: newList
+        orderedSuggestions: sortedList
       } );
     }
-  }, [orderedSuggestions] );
+    scrollToTop( );
+    // TODO: should this set owners_identification_from_vision: false?
+  }, [orderedSuggestions, scrollToTop] );
 
   const createUploadParams = useCallback( async ( uri, showLocation ) => {
     const newImageParams = await flattenUploadParams( uri );
@@ -226,6 +231,7 @@ const MatchContainer = ( ) => {
     }
     const orderedList = [...suggestions.otherSuggestions];
     if ( suggestions?.topSuggestion ) {
+      setTopSuggestion( suggestions?.topSuggestion );
       orderedList.unshift( suggestions?.topSuggestion );
     }
     // make sure list is in order of confidence score
@@ -240,20 +246,13 @@ const MatchContainer = ( ) => {
     } );
   }, [suggestions] );
 
-  if ( fetchStatus === FETCH_STATUS_LOADING ) {
-    return null;
-  }
-
-  // TODO: replace with a loading screen whenever designs are ready
-  if ( orderedSuggestions.length === 0 ) {
-    return null;
-  }
-
-  const topSuggestion = _.first( orderedSuggestions );
-  const otherSuggestions = _.without( orderedSuggestions, topSuggestion );
-
   const taxon = topSuggestion?.taxon;
   const taxonId = taxon?.id;
+
+  const suggestionsLoading = fetchStatus === FETCH_STATUS_LOADING;
+  // Remove the top suggestion from the list of other suggestions
+  const otherSuggestions = orderedSuggestions
+    .filter( suggestion => suggestion.taxon.id !== taxonId );
 
   const navToTaxonDetails = ( ) => {
     navigation.push( "TaxonDetails", { id: taxonId } );
@@ -274,13 +273,15 @@ const MatchContainer = ( ) => {
     <>
       <Match
         observation={currentObservation}
-        observationPhoto={observationPhoto}
+        obsPhotos={obsPhotos}
         onSuggestionChosen={onSuggestionChosen}
         handleSaveOrDiscardPress={handleSaveOrDiscardPress}
         navToTaxonDetails={navToTaxonDetails}
         handleLocationPickerPressed={handleLocationPickerPressed}
         topSuggestion={topSuggestion}
         otherSuggestions={otherSuggestions}
+        suggestionsLoading={suggestionsLoading}
+        scrollRef={scrollRef}
       />
       {renderPermissionsGate( { onPermissionGranted: openLocationPicker } )}
     </>

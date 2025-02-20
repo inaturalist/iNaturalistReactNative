@@ -16,13 +16,13 @@ import Observation from "realmModels/Observation";
 import {
   useCurrentUser,
   useInfiniteObservationsScroll,
+  useLayoutPrefs,
   useLocalObservations,
   useNavigateToObsEdit,
   useObservationsUpdates,
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
-import { isDebugMode } from "sharedHooks/useDebugMode";
 import {
   UPLOAD_PENDING
 } from "stores/createUploadObservationsSlice.ts";
@@ -31,11 +31,15 @@ import useStore from "stores/useStore";
 import useSyncObservations from "./hooks/useSyncObservations";
 import useUploadObservations from "./hooks/useUploadObservations";
 import MyObservations from "./MyObservations";
+import MyObservationsEmptyLoggedOut from "./MyObservationsEmptyLoggedOut";
 import MyObservationsSimpleContainer from "./MyObservationsSimpleContainer";
 
 const { useRealm } = RealmContext;
 
 const MyObservationsContainer = ( ): Node => {
+  const {
+    isDefaultMode
+  } = useLayoutPrefs( );
   const { t } = useTranslation( );
   const realm = useRealm( );
   const listRef = useRef( );
@@ -123,7 +127,7 @@ const MyObservationsContainer = ( ): Node => {
     const uploadExists = uploadQueue.includes( uuid );
     if ( uploadExists ) return;
     const observation = realm.objectForPrimaryKey( "Observation", uuid );
-    if ( isDebugMode( ) && observation.missingBasics( ) ) {
+    if ( isDefaultMode && observation.missingBasics( ) ) {
       navigateToObsEdit( observation );
       return;
     }
@@ -139,6 +143,7 @@ const MyObservationsContainer = ( ): Node => {
     addToUploadQueue,
     confirmInternetConnection,
     confirmLoggedIn,
+    isDefaultMode,
     navigateToObsEdit,
     realm,
     setStartUploadObservations,
@@ -202,7 +207,10 @@ const MyObservationsContainer = ( ): Node => {
   // this component again after returning from ObsEdit
   const onScroll = scrollEvent => setMyObsOffset( scrollEvent.nativeEvent.contentOffset.y );
 
-  if ( isDebugMode() && observations.length > 0 ) {
+  if ( observations.length === 0 && !currentUser ) {
+    return <MyObservationsEmptyLoggedOut />;
+  }
+  if ( isDefaultMode ) {
     return (
       <MyObservationsSimpleContainer
         currentUser={currentUser}

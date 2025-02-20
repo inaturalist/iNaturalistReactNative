@@ -8,7 +8,7 @@ import ObservationPhoto from "realmModels/ObservationPhoto";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import useStore from "stores/useStore";
 
-import savePhotosToCameraGallery from "../helpers/savePhotosToCameraGallery";
+import savePhotosToPhotoLibrary from "../helpers/savePhotosToPhotoLibrary";
 
 const usePrepareStoreAndNavigate = ( ): Function => {
   const navigation = useNavigation( );
@@ -47,7 +47,7 @@ const usePrepareStoreAndNavigate = ( ): Function => {
       return Promise.resolve( );
     }
     setSavingPhoto( true );
-    const savedPhotoUris = await savePhotosToCameraGallery( uris, userLocation );
+    const savedPhotoUris = await savePhotosToPhotoLibrary( uris, userLocation );
     await logStageIfAICamera( "save_photos_to_photo_library_complete" );
     if ( savedPhotoUris.length > 0 ) {
       // Save these camera roll URIs, so later on observation editor can update

@@ -49,7 +49,7 @@ describe( "SoundRecorder navigation", ( ) => {
       renderApp( );
       await waitFor( ( ) => {
         global.timeTravel( );
-        expect( screen.getByText( /Log in to contribute/ ) ).toBeVisible( );
+        expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeVisible( );
       } );
       const tabBar = await screen.findByTestId( "CustomTabBar" );
       const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
@@ -59,7 +59,7 @@ describe( "SoundRecorder navigation", ( ) => {
       const mediaNavButtons = await screen.findByTestId( "MediaNavButtons" );
       const closeButton = await within( mediaNavButtons ).findByLabelText( "Close" );
       await actor.press( closeButton );
-      expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
+      expect( await screen.findByText( /Use iNaturalist to identify/ ) ).toBeVisible( );
     } );
   } );
 } );

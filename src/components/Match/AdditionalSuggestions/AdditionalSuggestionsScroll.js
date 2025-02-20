@@ -1,12 +1,16 @@
 import calculateConfidence from "components/Match/calculateConfidence";
-import { CustomFlashList, Heading3 } from "components/SharedComponents";
+import { ActivityIndicator, CustomFlashList, Heading3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "sharedHooks";
 
 import SuggestionsResult from "./SuggestionsResult";
 
-const AdditionalSuggestionsScroll = ( { otherSuggestions, onSuggestionChosen } ) => {
+const AdditionalSuggestionsScroll = ( {
+  otherSuggestions,
+  suggestionsLoading,
+  onSuggestionChosen
+} ) => {
   const { t } = useTranslation( );
   const [maxHeight, setMaxHeight] = useState( 0 );
 
@@ -37,20 +41,27 @@ const AdditionalSuggestionsScroll = ( { otherSuggestions, onSuggestionChosen } )
     );
   };
 
-  if ( otherSuggestions?.length === 0 ) {
+  if ( !suggestionsLoading && otherSuggestions?.length === 0 ) {
     return null;
   }
 
+  const renderHeader = () => <View className="ml-5" />;
+
   return (
     <View className="mt-4 mb-7">
-      <Heading3 className="mb-3">{t( "It-might-also-be" )}</Heading3>
-      <CustomFlashList
-        horizontal
-        renderItem={renderItem}
-        estimatedItemSize={160}
-        keyExtractor={item => item?.taxon?.id}
-        data={otherSuggestions}
-      />
+      <Heading3 className="mx-5 mb-3">{t( "It-might-also-be" )}</Heading3>
+      {!suggestionsLoading
+        ? (
+          <CustomFlashList
+            ListHeaderComponent={renderHeader}
+            horizontal
+            renderItem={renderItem}
+            estimatedItemSize={160}
+            keyExtractor={item => item?.taxon?.id}
+            data={otherSuggestions}
+          />
+        )
+        : <ActivityIndicator className="my-3" size={40} />}
     </View>
   );
 };

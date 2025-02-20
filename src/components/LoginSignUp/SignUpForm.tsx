@@ -5,6 +5,7 @@ import { t } from "i18next";
 import React, { useEffect, useRef, useState } from "react";
 import { TextInput, TouchableWithoutFeedback } from "react-native";
 
+import { emailAvailable } from "./AuthenticationService";
 import Error from "./Error";
 import LoginSignUpInputField from "./LoginSignUpInputField";
 
@@ -12,6 +13,7 @@ const SignUpForm = ( ) => {
   const navigation = useNavigation( );
   const emailRef = useRef<TextInput>( null );
   const [email, setEmail] = useState( "" );
+  const [isLoading, setIsLoading] = useState( false );
   const [error, setError] = useState<string>( );
 
   const blurFields = () => {
@@ -32,19 +34,19 @@ const SignUpForm = ( ) => {
     return unsubscrubeTransition;
   }, [navigation] );
 
-  const onContinue = ( ) => {
-    // TODO: Implement email validation with a server call before navigating
-    // TODO: This is only an example of a validation to check that the Error component is working
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if ( !emailRegex.test( email ) ) {
-      setError( "Please enter a valid email address" );
-      return;
+  const onContinue = async ( ) => {
+    setIsLoading( true );
+    const isAvailable = await emailAvailable( email );
+    setIsLoading( false );
+    if ( isAvailable ) {
+      navigation.navigate( "SignUpConfirmation", {
+        user: {
+          email
+        }
+      } );
+    } else {
+      setError( t( "That-email-is-already-associated-with-an-account" ) );
     }
-    navigation.navigate( "SignUpConfirmation", {
-      user: {
-        email
-      }
-    } );
   };
 
   return (
@@ -64,12 +66,13 @@ const SignUpForm = ( ) => {
         {error && <Error error={error} />}
         <Button
           className="mt-[30px] mb-[35px]"
-          disabled={!email}
+          disabled={!email || isLoading}
           level="focus"
           forceDark
           onPress={( ) => onContinue( )}
           testID="Signup.signupButton"
           text={t( "CONTINUE" )}
+          loading={isLoading}
         />
       </View>
     </TouchableWithoutFeedback>

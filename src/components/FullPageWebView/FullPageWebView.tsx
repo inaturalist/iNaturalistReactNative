@@ -4,7 +4,7 @@ import {
   useNavigation,
   useRoute
 } from "@react-navigation/native";
-import { getUserAgent } from "api/userAgent";
+import { getUserAgent } from "api/userAgent.ts";
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import { ActivityIndicator, Mortal, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";

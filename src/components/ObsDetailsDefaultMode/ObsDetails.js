@@ -26,7 +26,6 @@ import CommunitySection from "./CommunitySection/CommunitySection";
 import FloatingButtons from "./CommunitySection/FloatingButtons";
 import CommunityTaxon from "./CommunityTaxon";
 import DetailsSection from "./DetailsSection/DetailsSection";
-import FaveButton from "./FaveButton";
 import LocationSection from "./LocationSection/LocationSection";
 import MapSection from "./MapSection/MapSection";
 import MoreSection from "./MoreSection/MoreSection";
@@ -36,6 +35,7 @@ import ObserverDetails from "./ObserverDetails";
 import ObsMediaDisplayContainer from "./ObsMediaDisplayContainer";
 import AgreeWithIDSheet from "./Sheets/AgreeWithIDSheet";
 import SuggestIDSheet from "./Sheets/SuggestIDSheet";
+import StatusSection from "./StatusSection/StatusSection";
 
 type Props = {
   activityItems: Array<Object>,
@@ -181,13 +181,6 @@ const ObsDetails = ( {
           />
           <View>
             <ObsMediaDisplayContainer observation={observation} />
-            { currentUser && (
-              <FaveButton
-                observation={observation}
-                currentUser={currentUser}
-                afterToggleFave={refetchRemoteObservation}
-              />
-            ) }
           </View>
           <CommunityTaxon
             belongsToCurrentUser={belongsToCurrentUser}
@@ -216,6 +209,7 @@ const ObsDetails = ( {
             <ActivityIndicator size={50} />
           </View>
         )}
+        <StatusSection observation={observation} />
         <DetailsSection observation={observation} />
         <MoreSection observation={observation} />
       </ScrollView>

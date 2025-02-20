@@ -4,7 +4,8 @@ import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndS
 import {
   Body3,
   DateDisplay,
-  Heading3
+  Heading3,
+  LabelColonValue
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -37,8 +38,19 @@ const DetailsSection = ( { observation }: Props ): Node => {
         />
       </View>
       {application && (
-        <Body3 className="mt-3">{t( "Uploaded-via-application", { application } )}</Body3>
+        <Body3 className="mt-3">
+          {t( "Uploaded-via-application", { application } )}
+        </Body3>
       )}
+      <View className="mt-3">
+        <LabelColonValue
+          label="ID"
+          value={String( observation.id )}
+          valueSelectable
+          LabelComponent={Body3}
+          ValueComponent={Body3}
+        />
+      </View>
     </View>
   );
 };

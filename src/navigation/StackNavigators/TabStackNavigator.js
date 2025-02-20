@@ -45,7 +45,9 @@ import {
 } from "navigation/navigationOptions";
 import type { Node } from "react";
 import React from "react";
-import { isDebugMode } from "sharedHooks/useDebugMode";
+import {
+  useLayoutPrefs
+} from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import SharedStackScreens from "./SharedStackScreens";
@@ -131,7 +133,9 @@ export const SCREEN_NAME_ROOT_EXPLORE = "RootExplore";
 export const SCREEN_NAME_NOTIFICATIONS = "Notifications";
 
 const TabStackNavigator = ( ): Node => {
-  const isDebug = isDebugMode( );
+  const {
+    isDefaultMode
+  } = useLayoutPrefs( );
   return (
     <Stack.Navigator
       screenOptions={{
@@ -163,7 +167,7 @@ const TabStackNavigator = ( ): Node => {
           name="Explore"
           component={FadeInExploreContainer}
         />
-        {isDebug
+        {isDefaultMode
           ? (
             <Stack.Screen
               name="ObsDetails"

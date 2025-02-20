@@ -25,12 +25,16 @@ import User from "realmModels/User.ts";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import { log } from "sharedHelpers/logger";
 import { useCurrentUser, useTranslation } from "sharedHooks";
-import { zustandStorage } from "stores/useStore";
+import useStore, { zustandStorage } from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 const { useRealm } = RealmContext;
 
 const { width } = Dimensions.get( "screen" );
+
+function isDefaultMode( ) {
+  return useStore.getState( ).layout.isDefaultMode === true;
+}
 
 const drawerScrollViewStyle = {
   backgroundColor: "white",
@@ -183,6 +187,7 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
 
   const renderTopBanner = useCallback( ( ) => (
     <Pressable
+      testID="drawer-top-banner"
       accessibilityRole="button"
       className={classnames(
         currentUser
@@ -265,7 +270,10 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
       showOfflineAlert( t );
       return false;
     }
-    feedbackLogger.info( text );
+    const mode = isDefaultMode( )
+      ? "DEFAULT:"
+      : "ADVANCED:";
+    feedbackLogger.info( mode, text );
     Alert.alert( t( "Feedback-Submitted" ), t( "Thank-you-for-sharing-your-feedback" ) );
     setShowFeedback( false );
     return true;

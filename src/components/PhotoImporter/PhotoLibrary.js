@@ -1,6 +1,6 @@
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import {
-  galleryPhotosPath
+  photoLibraryPhotosPath
 } from "appConstants/paths.ts";
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { ActivityAnimation, ViewWrapper } from "components/SharedComponents";
@@ -22,24 +22,23 @@ import ObservationPhoto from "realmModels/ObservationPhoto";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import { sleep } from "sharedHelpers/util.ts";
 import { useLayoutPrefs } from "sharedHooks";
-import { isDebugMode } from "sharedHooks/useDebugMode";
 import useExitObservationsFlow from "sharedHooks/useExitObservationFlow.ts";
 import useStore from "stores/useStore";
 
 const MAX_PHOTOS_ALLOWED = 20;
 const DEFAULT_MODE_MAX_PHOTOS_ALLOWED = 1;
 
-const PhotoGallery = ( ): Node => {
+const PhotoLibrary = ( ): Node => {
   const {
     isDefaultMode
   } = useLayoutPrefs( );
   const navigation = useNavigation( );
-  const [photoGalleryShown, setPhotoGalleryShown] = useState( false );
+  const [photoLibraryShown, setPhotoLibraryShown] = useState( false );
   const setPhotoImporterState = useStore( state => state.setPhotoImporterState );
   const setGroupedPhotos = useStore( state => state.setGroupedPhotos );
   const groupedPhotos = useStore( state => state.groupedPhotos );
   const updateObservations = useStore( state => state.updateObservations );
-  const galleryUris = useStore( state => state.galleryUris );
+  const photoLibraryUris = useStore( state => state.photoLibraryUris );
   const evidenceToAdd = useStore( state => state.evidenceToAdd );
   const currentObservation = useStore( state => state.currentObservation );
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
@@ -57,26 +56,25 @@ const PhotoGallery = ( ): Node => {
   const lastScreen = params?.lastScreen;
 
   const navToObsEdit = useCallback( ( ) => navigation.navigate( "ObsEdit", {
-    lastScreen: "PhotoGallery"
+    lastScreen: "PhotoLibrary"
   } ), [navigation] );
 
   const advanceToMatchScreen = lastScreen === "Camera"
-    && isDefaultMode
-    && isDebugMode( );
+    && isDefaultMode;
 
   const navToMatchOrSuggestions = useCallback( async ( ) => {
     if ( advanceToMatchScreen ) {
       return navigation.navigate( "Match", {
-        lastScreen: "PhotoGallery"
+        lastScreen: "PhotoLibrary"
       } );
     }
     return navigation.navigate( "Suggestions", {
-      lastScreen: "PhotoGallery"
+      lastScreen: "PhotoLibrary"
     } );
   }, [navigation, advanceToMatchScreen] );
 
   const moveImagesToDocumentsDirectory = async selectedImages => {
-    const path = galleryPhotosPath;
+    const path = photoLibraryPhotosPath;
     await RNFS.mkdir( path );
 
     const movedImages = await Promise.all( selectedImages.map( async ( { image } ) => {
@@ -96,12 +94,12 @@ const PhotoGallery = ( ): Node => {
     return movedImages;
   };
 
-  const showPhotoGallery = React.useCallback( async () => {
-    if ( photoGalleryShown ) {
+  const showPhotoLibrary = React.useCallback( async () => {
+    if ( photoLibraryShown ) {
       return;
     }
 
-    setPhotoGalleryShown( true );
+    setPhotoLibraryShown( true );
 
     if ( Platform.OS === "ios" ) {
       // iOS has annoying transition of the screen - that if we don't wait enough time,
@@ -141,7 +139,7 @@ const PhotoGallery = ( ): Node => {
       } else {
         exitObservationsFlow();
       }
-      setPhotoGalleryShown( false );
+      setPhotoLibraryShown( false );
       return;
     }
 
@@ -156,7 +154,7 @@ const PhotoGallery = ( ): Node => {
       } ) )] );
       navigation.setParams( { fromGroupPhotos: false } );
       navigation.navigate( "NoBottomTabStackNavigator", { screen: "GroupPhotos" } );
-      setPhotoGalleryShown( false );
+      setPhotoLibraryShown( false );
       return;
     }
 
@@ -165,7 +163,7 @@ const PhotoGallery = ( ): Node => {
     if ( skipGroupPhotos ) {
       // add evidence to existing observation
       setPhotoImporterState( {
-        galleryUris: [...galleryUris, ...importedPhotoUris],
+        photoLibraryUris: [...photoLibraryUris, ...importedPhotoUris],
         evidenceToAdd: [...evidenceToAdd, ...importedPhotoUris]
       } );
       const obsPhotos = await ObservationPhoto
@@ -183,7 +181,7 @@ const PhotoGallery = ( ): Node => {
       observations[currentObservationIndex] = updatedCurrentObservation;
       updateObservations( observations );
       navToObsEdit();
-      setPhotoGalleryShown( false );
+      setPhotoLibraryShown( false );
     } else if ( selectedImages.length === 1 ) {
       // create a new observation and skip group photos screen
       const newObservation = await Observation.createObservationWithPhotos( [selectedImages[0]] );
@@ -199,18 +197,18 @@ const PhotoGallery = ( ): Node => {
         observations: [newObservation]
       } );
       navToMatchOrSuggestions( );
-      setPhotoGalleryShown( false );
+      setPhotoLibraryShown( false );
     } else {
       // navigate to group photos
       setPhotoImporterState( {
-        galleryUris: [...galleryUris, ...importedPhotoUris],
+        photoLibraryUris: [...photoLibraryUris, ...importedPhotoUris],
         groupedPhotos: selectedImages.map( photo => ( {
           photos: [photo]
         } ) )
       } );
       navigation.setParams( { fromGroupPhotos: false } );
       navigation.navigate( "NoBottomTabStackNavigator", { screen: "GroupPhotos" } );
-      setPhotoGalleryShown( false );
+      setPhotoLibraryShown( false );
     }
   }, [
     advanceToMatchScreen,
@@ -219,7 +217,7 @@ const PhotoGallery = ( ): Node => {
     evidenceToAdd,
     exitObservationsFlow,
     fromGroupPhotos,
-    galleryUris,
+    photoLibraryUris,
     groupedPhotos,
     navigation,
     navToObsEdit,
@@ -227,7 +225,7 @@ const PhotoGallery = ( ): Node => {
     numOfObsPhotos,
     observations,
     params,
-    photoGalleryShown,
+    photoLibraryShown,
     setGroupedPhotos,
     setPhotoImporterState,
     skipGroupPhotos,
@@ -241,8 +239,8 @@ const PhotoGallery = ( ): Node => {
 
       // Wait for screen to finish transition
       interactionHandle = InteractionManager.runAfterInteractions( () => {
-        if ( !photoGalleryShown ) {
-          showPhotoGallery();
+        if ( !photoLibraryShown ) {
+          showPhotoLibrary();
         }
       } );
 
@@ -252,11 +250,11 @@ const PhotoGallery = ( ): Node => {
           interactionHandle.cancel();
         }
       };
-    }, [photoGalleryShown, showPhotoGallery] )
+    }, [photoLibraryShown, showPhotoLibrary] )
   );
 
   return (
-    <ViewWrapper testID="PhotoGallery">
+    <ViewWrapper testID="PhotoLibrary">
       <View className="flex-1 w-full h-full justify-center items-center">
         <ActivityAnimation />
       </View>
@@ -264,4 +262,4 @@ const PhotoGallery = ( ): Node => {
   );
 };
 
-export default PhotoGallery;
+export default PhotoLibrary;

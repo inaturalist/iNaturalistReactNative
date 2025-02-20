@@ -105,6 +105,15 @@ const uploadObsEditObservation = async options => {
   await actor.press( uploadButton );
 };
 
+beforeEach( ( ) => {
+  useStore.setState( {
+    layout: {
+      isDefaultMode: false
+    },
+    isAdvancedUser: true
+  } );
+} );
+
 describe( "ObsEdit", ( ) => {
   async function findAndPressById( labelText ) {
     const pressable = await screen.findByTestId( labelText );
@@ -130,7 +139,6 @@ describe( "ObsEdit", ( ) => {
   beforeAll( async () => {
     jest.useFakeTimers( );
     useStore.setState( {
-      isAdvancedUser: true,
       initialNumObservationsInQueue: 3,
       numUploadsAttempted: 2
     } );

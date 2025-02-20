@@ -2,6 +2,7 @@ import { screen, waitFor } from "@testing-library/react-native";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 // import inatjs from "inaturalistjs";
 import React from "react";
+import useStore from "stores/useStore";
 import factory from "tests/factory";
 // import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -42,6 +43,15 @@ const mockUser = factory( "LocalUser", {
 //   iconUrl: faker.image.url( ),
 //   locale: "es"
 // } );
+
+beforeEach( ( ) => {
+  useStore.setState( {
+    layout: {
+      isDefaultMode: false
+    },
+    isAdvancedUser: true
+  } );
+} );
 
 describe( "MyObservations", ( ) => {
   describe( "localization for current user", ( ) => {

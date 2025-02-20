@@ -25,7 +25,7 @@ const useShare = ( ): void => {
       return;
     }
 
-    // show user a loading animation screen (like PhotoGallery)
+    // show user a loading animation screen (like PhotoLibrary)
     // while observations are created
     navigation.navigate( "PhotoSharing", { item } );
   }, [navigation] );

@@ -60,7 +60,7 @@ const actor = userEvent.setup( );
 const navigateToPhotoImporter = async ( ) => {
   await waitFor( ( ) => {
     global.timeTravel( );
-    expect( screen.getByText( /Log in to contribute/ ) ).toBeVisible( );
+    expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeVisible( );
   } );
   const tabBar = await screen.findByTestId( "CustomTabBar" );
   const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
@@ -69,7 +69,7 @@ const navigateToPhotoImporter = async ( ) => {
   await actor.press( photoImporter );
 };
 
-describe( "PhotoGallery navigation", ( ) => {
+describe( "PhotoLibrary navigation", ( ) => {
   global.withAnimatedTimeTravelEnabled( );
   beforeEach( ( ) => {
     useStore.setState( { isAdvancedUser: true } );

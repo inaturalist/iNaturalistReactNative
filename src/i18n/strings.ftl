@@ -51,7 +51,7 @@ Add-Date-Time = Add Date/Time
 Add-disagreement = Add disagreement
 ADD-EVIDENCE = ADD EVIDENCE
 # Label for a button that shows options for adding evidence, e.g. camera,
-# gallery, sound, etc
+# photo library, sound, etc
 Add-evidence = Add evidence
 Add-favorite = Add favorite
 Add-Location = Add Location
@@ -81,7 +81,7 @@ Agree-with-ID-description = Would you like to agree with the ID and suggest the 
 AI-Camera = AI Camera
 ALL = ALL
 All = All
-All-observation-option = All observation options (including iNaturalist AI Camera, Standard Camera, Uploading from Gallery, and Sound Recorder)
+All-observation-options = All observation options (including iNaturalist AI Camera, Standard Camera, Uploading from Photo Library, and Sound Recorder)
 All-observations = All observations
 All-organisms = All organisms
 # As in intellectual property rights over a photo or other creative work
@@ -198,8 +198,6 @@ Change-zoom = Change zoom
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
 # Label for a text input field during sign up to choose a username
 CHOOSE-A-USERNAME = CHOOSE A USERNAME
-# Text for a button prompting the user to grant access to the gallery
-CHOOSE-PHOTOS = CHOOSE PHOTOS
 # Label for button that chooses a taxon
 Choose-taxon = Choose taxon
 # Label for button that chooses the best suggestion among a list of suggested
@@ -231,9 +229,9 @@ COMMENT = COMMENT
 Comment-options = Comment options
 # Label for a setting that shows the common name first
 Common-Name-Scientific-Name = Common Name (Scientific Name)
-# Label for section of ObsDetails with community comments and ids
-Community = Community
 Community-based = Community-based
+# Label for section of ObsDetails with community comments and ids
+Community-Discussion = Community Discussion
 Community-Guidelines = Community Guidelines
 COMMUNITY-GUIDELINES = COMMUNITY GUIDELINES
 # Label on match screen for how much confidence there is for a suggestion (i.e. 99% confidence)
@@ -563,7 +561,6 @@ IDENTIFICATIONS-WITHOUT-NUMBER =
 Identifiers = Identifiers
 Identifiers-View = Identifiers View
 Identify-an-organism = Identify an organism
-Identify-an-organism-with-the-iNaturalist-AI-Camera = Identify an organism with the iNaturalist AI Camera
 # Onboarding message describing one of the reasons to use iNat
 Identify-record-learn = Identify, record, and learn about every living species on earth using iNaturalist
 If-an-account-with-that-email-exists = If an account with that email exists, we've sent password reset instructions to your email.
@@ -593,8 +590,9 @@ improving--identification = Improving
 iNat-is-global-community = iNaturalist is a global community of naturalists creating open data for science by collectively observing & identifying organisms
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT SETTINGS
 iNaturalist-AI-Camera = iNaturalist AI Camera
-iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNaturalist can save photos you take in the app to your device’s gallery.
+iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-photo-library = iNaturalist can save photos you take in the app to your device’s photo library.
 INATURALIST-COMMUNITY = INATURALIST COMMUNITY
+iNaturalist-couldnt-identify-this-organism = iNaturalist couldn’t identify this organism.
 INATURALIST-FORUM = INATURALIST FORUM
 iNaturalist-has-no-ID-suggestions-for-this-photo = iNaturalist has no ID suggestions for this photo.
 INATURALIST-HELP-PAGE = INATURALIST HELP PAGE
@@ -850,8 +848,6 @@ OBSERVATIONS-WITHOUT-NUMBER =
 Observations-you-upload-to-iNaturalist = Observations you upload to iNaturalist can be used by scientists and researchers worldwide.
 # Button that starts a new observation
 Observe = Observe
-# Title of screen asking for permission to access the gallery
-Observe-and-identify-organisms-from-your-gallery = Observe and identify organisms from your gallery
 # Title of screen asking for permission to access the camera
 Observe-and-identify-organisms-in-real-time-with-your-camera = Observe and identify organisms in real time with your camera
 # Text for a button prompting the user to grant access to the camera
@@ -907,8 +903,6 @@ Photos = Photos
 Photos-you-take-will-appear-here = Photos you take will appear here
 # Title of screen asking for permission to access the camera when access was denied
 Please-allow-Camera-Access = Please allow Camera Access
-# Title of screen asking for permission to access the gallery when access was denied
-Please-Allow-Gallery-Access = Please Allow Gallery Access
 # Title of screen asking for permission to access location when access was denied
 Please-allow-Location-Access = Please allow Location Access
 # Title of screen asking for permission to access the microphone when access was denied
@@ -1058,6 +1052,7 @@ Removes-your-vote-of-disagreement = Removes your vote of disagreement
 # Quality grade indicating observation is accurate and complete enough to
 # share outside of iNat
 Research-Grade--quality-grade = Research Grade
+Research-Grade-Status = Research Grade Status
 # Reset password button
 RESET-PASSWORD = RESET PASSWORD
 # Label for a button that resets a sound recording
@@ -1091,7 +1086,7 @@ SAVE-CHANGES = SAVE CHANGES
 SAVE-FOR-LATER = SAVE FOR LATER
 SAVE-LOCATION = SAVE LOCATION
 SAVE-PHOTOS = SAVE PHOTOS
-Save-photos-to-your-gallery = Save photos to your gallery
+Save-photos-to-your-photo-library = Save photos to your photo library
 Saved-Observation = Saved observation, in queue to upload
 Scan-the-area-around-you-for-organisms = Scan the area around you for organisms.
 Scientific-Name = Scientific Name
@@ -1229,6 +1224,7 @@ TERMS-OF-USE = TERMS OF USE
 Text-Box-to-Describe-Reason-for-Flag = Text box to describe reason for flag.
 Thank-you-for-sharing-your-feedback = Thank you for sharing your feedback to help us improve!
 Thanks-for-using-any-suggestions = Thanks for using this app! Do you have any suggestions for the people who make it?
+That-email-is-already-associated-with-an-account = That email is already associated with an account.
 That-user-profile-doesnt-exist = That user profile doesn't exist
 That-username-is-unavailable = That username is unavailable
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
@@ -1239,9 +1235,13 @@ The-models-that-suggest-species = The models that suggest species based on visua
 #  Wild status sheet descriptions
 This-is-a-wild-organism = This is a wild organism and wasn't placed in this location by humans.
 This-is-how-taxon-names-will-be-displayed = This is how all taxon names will be displayed to you across iNaturalist:
+This-is-your-identification-other-people-may-help-confirm-it = This is your identification. Other people may help confirm it!
 This-observation-has-no-comments-or-identifications-yet = This observation has no comments or identifications yet.
 This-observation-has-not-met-the-conditions-required-to-meet-Research-Grade = This observation has not met the conditions required to meet Research Grade status
+This-observation-is-not-eligible-for-research-grade-status = This observation is not eligible for research grade status. Learn more in the Data Quality Assessment below.
+This-observation-is-research-grade-and-can-be-used-by-scientists = This observation is research grade and can be used by scientists!
 This-observation-needs-more-identifications = This observation needs more identifications to reach Research Grade status
+This-observation-needs-more-identifications-to-become-research-grade = This observation needs more identifications to become research grade.
 This-observer-has-opted-out-of-the-Community-Taxon = This observer has opted out of the Community Taxon
 This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
 To-sync-your-observations-to-iNaturalist = To sync your observations to iNaturalist, please log in.
@@ -1266,8 +1266,7 @@ Unreviewed-observations-only = Unreviewed observations only
 Upload-Complete = Upload Complete
 Upload-in-progress = Upload in progress
 UPLOAD-NOW = UPLOAD NOW
-Upload-photos-from-your-gallery = Upload multiple photos from your gallery
-Upload-photos-from-your-gallery-and-create-observations = Upload photos from your gallery and create observations and get identifications of organisms you’ve already observed!
+Upload-photos-from-your-photo-library = Upload multiple photos from your photo library
 Upload-Progress = Upload { $uploadProgress } percent complete
 UPLOAD-TO-INATURALIST = UPLOAD TO INATURALIST
 # Shows the number of observations a user can upload to iNat from my observations page
@@ -1287,6 +1286,7 @@ Uploading-x-of-y-observations =
         [one] Uploading { $currentUploadCount } observation
        *[other] Uploading { $currentUploadCount } of { $total } observations
     }
+Use-iNaturalist-to-identify-any-living-thing = Use iNaturalist to identify any living thing
 Use-iNaturalists-AI-Camera = Use iNaturalist's AI Camera to identify organisms in real time
 # Text for a button prompting the user to grant access to location
 USE-LOCATION = USE LOCATION
@@ -1508,11 +1508,7 @@ You-have-opted-out-of-the-Community-Taxon = You have opted out of the Community 
 You-havent-joined-any-projects-yet = You haven’t joined any projects yet!
 You-havent-observed-any-species-yet = You haven't observed any species yet.
 You-likely-observed-a-new-species = You likely observed a new species!
-You-likely-observed-a-species = You likely observed a species
-You-likely-observed-an-organism-in-this-group = You likely observed an organism in this group
 You-may-have-observed-a-new-species = You may have observed a new species!
-You-may-have-observed-a-species = You may have observed a species
-You-may-have-observed-an-organism-in-this-group = You may have observed an organism in this group
 You-must-be-logged-in-to-view-messages = You must be logged in to view messages
 You-must-install-Google-Play-Services-to-sign-in-with-Google = You must install Google Play Services to sign in with Google.
 # Error message when you try to do something that requires an Internet
@@ -1521,8 +1517,6 @@ You-need-an-Internet-connection-to-do-that = You need an Internet connection to 
 # Error message when you try to do something that requires log in
 You-need-log-in-to-do-that = You need to log in to do that.
 You-observed-a-new-species = You observed a new species!
-You-observed-a-species = You observed a species
-You-observed-an-organism-in-this-group = You observed an organism in this group
 You-will-see-notifications = You’ll see notifications here once you log in & upload observations.
 Your-donation-to-iNaturalist = Your donation to iNaturalist supports the improvement and stability of the mobile apps and website that connects millions of people to nature and enables the protection of biodiversity worldwide!
 Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
@@ -1532,7 +1526,6 @@ Youre-always-in-control-of-the-location-privacy = You’re always in control of 
 # permission has been denied
 Youve-denied-permission-prompt = You’ve denied permission. Please grant permission in the settings app.
 Youve-previously-denied-camera-permissions = You've previously denied camera permissions, so please enable them in settings.
-Youve-previously-denied-gallery-permissions = You’ve previously denied gallery permissions, so please enable them in settings.
 Youve-previously-denied-location-permissions = You’ve previously denied location permissions, so please enable them in settings.
 Youve-previously-denied-microphone-permissions = You’ve previously denied microphone permissions, so please enable them in settings.
 Zoom-in-as-much-as-possible-to-improve = Zoom in as much as possible to improve location accuracy and get better identifications.

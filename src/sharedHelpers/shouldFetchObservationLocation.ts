@@ -1,4 +1,4 @@
-import { galleryPhotosPath, rotatedOriginalPhotosPath } from "appConstants/paths.ts";
+import { photoLibraryPhotosPath, rotatedOriginalPhotosPath } from "appConstants/paths.ts";
 import { DocumentDirectoryPath } from "react-native-fs";
 import type { RealmObservation } from "realmModels/types.d.ts";
 import {
@@ -22,7 +22,7 @@ export function isNew( observation: RealmObservation ) {
 }
 
 export function isFromGallery( observation: RealmObservation ) {
-  return originalPhotoUri( observation ).includes( galleryPhotosPath );
+  return originalPhotoUri( observation ).includes( photoLibraryPhotosPath );
 }
 
 export function isFromSharing( observation: RealmObservation ) {

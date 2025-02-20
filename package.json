@@ -1,6 +1,6 @@
 {
   "name": "inaturalistreactnative",
-  "version": "0.58.0",
+  "version": "0.58.2",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -86,7 +86,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-i18next": "^14.1.0",
-    "react-native": "0.73.7",
+    "react-native": "0.73.11",
     "react-native-animated-dots-carousel": "^2.0.0",
     "react-native-audio-recorder-player": "^3.6.7",
     "react-native-bouncy-checkbox": "^3.0.7",
@@ -202,5 +202,6 @@
   },
   "engines": {
     "node": ">=18"
-  }
+  },
+  "packageManager": "yarn@3.6.4"
 }

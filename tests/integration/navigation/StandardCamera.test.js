@@ -47,7 +47,7 @@ const actor = userEvent.setup( );
 const navigateToCamera = async ( ) => {
   await waitFor( ( ) => {
     global.timeTravel( );
-    expect( screen.getByText( /Log in to contribute/ ) ).toBeVisible( );
+    expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeVisible( );
   } );
   const tabBar = await screen.findByTestId( "CustomTabBar" );
   const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
@@ -68,7 +68,7 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
       await actor.press( closeButton );
       await waitFor( ( ) => {
         global.timeTravel( );
-        expect( screen.getByText( /Log in to contribute/ ) ).toBeVisible( );
+        expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeVisible( );
       } );
     } );
   } );

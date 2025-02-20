@@ -205,6 +205,9 @@ const setupAppWithSignedInUser = async hasLocation => {
   useStore.setState( {
     observations,
     currentObservation: observations[0],
+    layout: {
+      isDefaultMode: false
+    },
     isAdvancedUser: true
   } );
   await renderAppWithObservations( observations, __filename );

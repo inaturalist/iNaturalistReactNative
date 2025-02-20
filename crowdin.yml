@@ -9,6 +9,9 @@ files:
     # mess with this later in i18ncli
     translation: /src/i18n/l10n/%locale%.ftl
     type: ftl
+  # As of 20250205, the Crowdin CLI seems to *remove* the English source text
+  # when syncing this file, so we're disabling sync for now.
+  # https://community.crowdin.com/t/xcstrings-sync-w-crowdin-cli-removes-source-text/12154
   - source: /ios/InfoPlist.xcstrings
     dest: /ReactNative/InfoPlist.xcstrings
     translation: /ios/InfoPlist.xcstrings

@@ -321,12 +321,28 @@ function formatDateString(
     // eslint-disable-next-line prefer-destructuring
     timeZone = Intl.DateTimeFormat( ).resolvedOptions( ).timeZone;
   }
-  return formatInTimeZone(
-    parseISO( isoDateString ),
-    timeZone,
-    fmt,
-    { locale: dateFnsLocale( i18n.language ) }
-  );
+
+  try {
+    return formatInTimeZone(
+      parseISO( isoDateString ),
+      timeZone,
+      fmt,
+      { locale: dateFnsLocale( i18n.language ) }
+    );
+  } catch ( error ) {
+    console.warn( "Error formatting date", error );
+    // In case of: RangeError: Incorrect timeZone information provided
+    if ( error instanceof RangeError ) {
+      // Remove timezone (zzz) from format string
+      fmt = fmt.replace( / zzz/g, "" );
+      return format(
+        parseISO( isoDateString ),
+        fmt,
+        { locale: dateFnsLocale( i18n.language ) }
+      );
+    }
+    return i18n.t( "Missing-Date" );
+  }
 }
 
 function formatMonthYearDate(

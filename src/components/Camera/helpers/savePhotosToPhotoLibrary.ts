@@ -12,9 +12,9 @@ import { log } from "sharedHelpers/logger";
 
 import { displayName as appName } from "../../../../app.json";
 
-const logger = log.extend( "savePhotosToCameraGallery" );
+const logger = log.extend( "savePhotosToPhotoLibrary" );
 
-// Save URIs to camera gallery (if a photo was taken using the app,
+// Save URIs to camera photo library (if a photo was taken using the app,
 // we want it accessible in the camera's folder, as if the user has taken those photos
 // via their own camera app).
 // One could argue this is a private method and shouldn't be exported and
@@ -22,7 +22,7 @@ const logger = log.extend( "savePhotosToCameraGallery" );
 // be too complicated, so this at least makes it easy to test this one part
 // ~~~kueda20240614
 // $FlowIgnore
-export async function savePhotosToCameraGallery(
+export async function savePhotosToPhotoLibrary(
   uris: [string],
   location: Object
 ) {
@@ -55,7 +55,7 @@ export async function savePhotosToCameraGallery(
         return savedUris;
       } catch ( cameraRollSaveError ) {
         // should never get here since in usePrepareStoreAndNavigate we check for device full
-        // and skip saving to gallery
+        // and skip saving to photo library
         if (
           cameraRollSaveError.message.match( /No space left on device/ )
           || cameraRollSaveError.message.match( /PHPhotosErrorDomain error 3305/ )
@@ -88,4 +88,4 @@ export async function savePhotosToCameraGallery(
   return savedPhotoUris;
 }
 
-export default savePhotosToCameraGallery;
+export default savePhotosToPhotoLibrary;

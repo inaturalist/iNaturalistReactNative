@@ -1,4 +1,8 @@
 import classnames from "classnames";
+import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
+import {
+  PhotoCount
+} from "components/SharedComponents";
 import {
   Image, Pressable, View
 } from "components/styledComponents";
@@ -10,26 +14,37 @@ import { useTaxon } from "sharedHooks";
 
 type Props = {
   taxon: Object,
-  observationPhoto: string,
+  obsPhotos: Array<Object>,
   navToTaxonDetails: ( ) => void
 }
 
-const PhotosSection = ( { taxon, observationPhoto, navToTaxonDetails }: Props ) => {
+const PhotosSection = ( {
+  taxon, obsPhotos, navToTaxonDetails
+}: Props ) => {
   const [displayPortraitLayout, setDisplayPortraitLayout] = useState( null );
+  const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
 
   const { taxon: localTaxon } = useTaxon( taxon );
   const localTaxonPhotos = localTaxon?.taxonPhotos;
+  const observationPhoto = obsPhotos?.[0]?.photo?.url
+  || obsPhotos?.[0]?.photo?.localFilePath;
 
-  const photos = compact(
+  const taxonPhotos = compact(
     localTaxonPhotos
       ? localTaxonPhotos.map( taxonPhoto => taxonPhoto.photo )
       : [taxon?.defaultPhoto]
   );
 
+  const observationPhotos = compact(
+    obsPhotos
+      ? obsPhotos.map( obsPhoto => obsPhoto.photo )
+      : []
+  );
+
   // don't show the iconic taxon photo which is a mashup of 9 photos
-  const taxonPhotos = localTaxon?.isIconic
-    ? photos.slice( 1, 4 )
-    : photos.slice( 0, 3 );
+  const taxonPhotosNoIconic = localTaxon?.isIconic
+    ? taxonPhotos.slice( 1, 4 )
+    : taxonPhotos.slice( 0, 3 );
 
   useEffect( ( ) => {
     const checkImageOrientation = async ( ) => {
@@ -46,7 +61,7 @@ const PhotosSection = ( { taxon, observationPhoto, navToTaxonDetails }: Props ) 
   const renderObservationPhoto = ( ) => (
     <Pressable
       accessibilityRole="button"
-      onPress={() => console.log( "open obs details?" )}
+      onPress={() => setMediaViewerVisible( true )}
       accessibilityState={{ disabled: false }}
       className={classnames(
         "relative",
@@ -64,6 +79,12 @@ const PhotosSection = ( { taxon, observationPhoto, navToTaxonDetails }: Props ) 
         className="w-full h-full"
         accessibilityIgnoresInvertColors
       />
+      {observationPhotos.length > 1 && (
+        <View className="absolute bottom-5 left-5">
+          <PhotoCount count={observationPhotos.length} />
+        </View>
+      )}
+
     </Pressable>
   );
 
@@ -78,7 +99,7 @@ const PhotosSection = ( { taxon, observationPhoto, navToTaxonDetails }: Props ) 
       }
     )}
     >
-      {taxonPhotos.map( photo => (
+      {taxonPhotosNoIconic.map( photo => (
         <Pressable
           accessibilityRole="button"
           onPress={navToTaxonDetails}
@@ -123,6 +144,12 @@ const PhotosSection = ( { taxon, observationPhoto, navToTaxonDetails }: Props ) 
     >
       {renderObservationPhoto( )}
       {renderTaxonPhotos( )}
+      <MediaViewerModal
+        showModal={mediaViewerVisible}
+        onClose={( ) => setMediaViewerVisible( false )}
+        uri={observationPhoto}
+        photos={observationPhotos}
+      />
     </View>
   );
 };

@@ -4,7 +4,6 @@ import {
   Body4,
   DisplayTaxonName,
   Heading1,
-  ObsStatus,
   Subheading1
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
@@ -58,9 +57,6 @@ const CommunityTaxon = ( {
         >
           {observation && showCommunityTaxon( )}
         </Pressable>
-        <View className="ml-auto">
-          <ObsStatus layout="vertical" observation={observation} />
-        </View>
       </View>
       {
         (

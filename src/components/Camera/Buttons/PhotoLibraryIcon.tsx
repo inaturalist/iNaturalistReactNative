@@ -14,7 +14,7 @@ interface Props {
 
 const isTablet = DeviceInfo.isTablet();
 
-const Gallery = ( { rotatableAnimatedStyle }: Props ) => {
+const PhotoLibraryIcon = ( { rotatableAnimatedStyle }: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
 
@@ -32,13 +32,13 @@ const Gallery = ( { rotatableAnimatedStyle }: Props ) => {
           "border-2",
           "rounded"
         )}
-        onPress={( ) => navigation.push( "PhotoGallery", {
+        onPress={( ) => navigation.push( "PhotoLibrary", {
           cmonBack: true,
           lastScreen: "Camera"
         } )}
         accessibilityLabel={t( "Photo-importer" )}
         accessibilityHint={t( "Navigates-to-photo-importer" )}
-        icon="gallery"
+        icon="photo-library"
         color={( colors?.white as string ) || "white"}
         size={26}
         width={62}
@@ -48,4 +48,4 @@ const Gallery = ( { rotatableAnimatedStyle }: Props ) => {
   );
 };
 
-export default Gallery;
+export default PhotoLibraryIcon;

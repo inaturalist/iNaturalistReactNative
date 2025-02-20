@@ -73,7 +73,7 @@ const GroupPhotos = ( {
 
   const addPhotos = useCallback( () => {
     navigation.navigate( "NoBottomTabStackNavigator", {
-      screen: "PhotoGallery",
+      screen: "PhotoLibrary",
       params: { fromGroupPhotos: true }
     } );
   }, [navigation] );
