@@ -35,7 +35,7 @@ const LocationSection = ( {
     <View className="pt-1 pb-5">
       <View className="m-4">
         {
-          !latitude
+          latitude !== undefined
             ? (
               <Heading5 className="mb-2">
                 {t( "OBSERVED-AT--label" )}
