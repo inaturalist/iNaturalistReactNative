@@ -12,6 +12,7 @@ import React, {
 } from "react";
 import { Alert } from "react-native";
 import Observation from "realmModels/Observation";
+import { log } from "sharedHelpers/logger";
 import {
   useCurrentUser,
   useInfiniteObservationsScroll,
@@ -19,9 +20,11 @@ import {
   useLocalObservations,
   useNavigateToObsEdit,
   useObservationsUpdates,
+  usePerformance,
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
+import { isDebugMode } from "sharedHooks/useDebugMode";
 import {
   UPLOAD_PENDING
 } from "stores/createUploadObservationsSlice.ts";
@@ -33,9 +36,17 @@ import MyObservations from "./MyObservations";
 import MyObservationsEmptyLoggedOut from "./MyObservationsEmptyLoggedOut";
 import MyObservationsSimpleContainer from "./MyObservationsSimpleContainer";
 
+const logger = log.extend( "MyObservationsContainer" );
+
 const { useRealm } = RealmContext;
 
 const MyObservationsContainer = ( ): Node => {
+  const { loadTime } = usePerformance( {
+    screenName: "MyObservations"
+  } );
+  if ( isDebugMode( ) ) {
+    logger.info( loadTime );
+  }
   const {
     isDefaultMode
   } = useLayoutPrefs( );
