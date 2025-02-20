@@ -228,8 +228,15 @@ const MyObservationsContainer = ( ): Node => {
 
   if ( observations.length === 0 ) {
     return showNoResults
-      ? <MyObservationsEmptySimple />
-      : <FullScreenActivityIndicator />;
+      ? (
+        <MyObservationsEmptySimple
+          currentUser={currentUser}
+          isConnected={isConnected}
+        />
+      )
+      : (
+        <FullScreenActivityIndicator />
+      );
   }
 
   if ( isDefaultMode ) {

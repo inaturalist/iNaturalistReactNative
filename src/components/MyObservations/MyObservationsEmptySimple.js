@@ -17,10 +17,15 @@ import { useOnboardingShown } from "sharedHelpers/installData.ts";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
-const MyObservationsEmptySimple = ( ): Node => {
-  const { t } = useTranslation( );
-  const navigation = useNavigation( );
-  const [onboardingShown, setOnboardingShown] = useOnboardingShown( );
+interface Props {
+  currentUser: any;
+  isConnected: boolean;
+}
+
+const MyObservationsEmptySimple = ( { currentUser, isConnected }: Props ): Node => {
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+  const [onboardingShown, setOnboardingShown] = useOnboardingShown();
   const [showModal, setShowModal] = useState( false );
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const navAndCloseModal = ( screen, params ) => {
