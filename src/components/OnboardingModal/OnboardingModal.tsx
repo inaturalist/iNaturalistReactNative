@@ -165,6 +165,7 @@ const OnboardingModal = ( {
       showModal={showModal}
       closeModal={closeModal}
       modal={modalContent}
+      fullScreen
     />
   );
 };

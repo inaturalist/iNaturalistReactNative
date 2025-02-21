@@ -1,8 +1,7 @@
-import { INatIconButton } from "components/SharedComponents";
+import { INatIconButton, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { PropsWithChildren } from "react";
 import { StatusBar } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
@@ -15,13 +14,11 @@ const OnboardingModalBase = ( {
   children
 }: Props ) => {
   const { t } = useTranslation( );
-  const { top } = useSafeAreaInsets();
-
   return (
-    <>
+    <ViewWrapper wrapperClassName="bg-white/0">
       <StatusBar barStyle="light-content" backgroundColor="black" />
       <View className="flex-1 relative">
-        <View className={`absolute mt-[${top}px] right-0`}>
+        <View className="absolute right-0 m-3">
           <INatIconButton
             icon="close"
             color={colors?.white}
@@ -34,13 +31,13 @@ const OnboardingModalBase = ( {
 
         <View className="flex-1 justify-center items-center">
           <View
-            className="bg-white rounded-3xl p-[25px]"
+            className="bg-white rounded-3xl p-7 m-7"
           >
             {children}
           </View>
         </View>
       </View>
-    </>
+    </ViewWrapper>
   );
 };
 
