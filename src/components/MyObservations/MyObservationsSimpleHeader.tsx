@@ -1,10 +1,9 @@
 import {
-  Body3,
   HeaderUser,
   Heading3,
   RotatingINatIconButton
 } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import React from "react";
 import type {
   RealmUser
@@ -20,6 +19,8 @@ import {
 } from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
+
+import SimpleUploadBannerContainer from "./SimpleUploadBannerContainer";
 
 export interface Props {
   currentUser?: RealmUser;
@@ -68,17 +69,7 @@ const MyObservationsSimpleHeader = ( {
 
   return (
     <>
-      { numUnuploadedObservations >= 10 && (
-        <Pressable
-          accessibilityRole="button"
-          className="bg-inatGreen p-2 items-center"
-          onPress={handleSyncButtonPress}
-        >
-          <Body3 className="text-white">
-            { t( "Upload-x-observations", { count: numUnuploadedObservations } ) }
-          </Body3>
-        </Pressable>
-      ) }
+      <SimpleUploadBannerContainer handleSyncButtonPress={handleSyncButtonPress} />
       <View className="flex-row justify-between items-center px-5 py-1">
         {currentUser
           ? <HeaderUser user={currentUser} isConnected={isConnected} />
