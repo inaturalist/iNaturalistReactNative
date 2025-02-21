@@ -119,7 +119,6 @@ const ObservationsFlashList: Function = forwardRef( ( {
   const renderItem = useCallback( ( { item: observation } ) => {
     // Empty box
     if ( observation.empty ) {
-      console.log( "observation", observation );
       return (
         <View
           className="rounded-[15px] border-dotted border-4 border-lightGray"
