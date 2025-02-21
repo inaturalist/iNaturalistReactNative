@@ -52,18 +52,58 @@ export const predictImage = ( uri: string, location: Location ) => {
   if ( !url ) {
     throw new Error( `predictImage received invalid URI: ${uri}` );
   }
+  // Temporarily disable actual call and return fake data
+  console.log( "getPredictionsForImage", getPredictionsForImage );
   const hasLocation = location?.latitude != null && location?.longitude != null;
-  return getPredictionsForImage( {
-    uri: url.toString(),
-    modelPath,
-    taxonomyPath,
-    version: modelVersion,
-    useGeomodel: hasLocation,
-    geomodelPath,
-    location: hasLocation
-      ? location
-      : undefined
-  } );
+  const fakeData = {
+    options: {
+      uri: url.toString(),
+      modelPath,
+      taxonomyPath,
+      version: modelVersion,
+      useGeomodel: hasLocation,
+      geomodelPath,
+      location: hasLocation
+        ? location
+        : undefined
+    },
+    predictions: [
+      {
+        name: "Fake Prediction",
+        rank_level: 10,
+        score: 90,
+        vision_score: 87,
+        geo_score: 0.3,
+        geo_threshold: 0.2,
+        taxon_id: 12345
+      }
+    ],
+    timeElapsed: 1000,
+    commonAncestor: {
+      name: "Fake Ancestor",
+      rank_level: 20,
+      score: 92,
+      vision_score: 88,
+      geo_score: 0.3,
+      geo_threshold: 0.2,
+      taxon_id: 12344
+    }
+  };
+  return Promise.resolve( fakeData );
+  //
+  //
+  // Uncomment the following lines to enable actual call
+  // return getPredictionsForImage( {
+  //   uri: url.toString(),
+  //   modelPath,
+  //   taxonomyPath,
+  //   version: modelVersion,
+  //   useGeomodel: hasLocation,
+  //   geomodelPath,
+  //   location: hasLocation
+  //     ? location
+  //     : undefined
+  // } );
 };
 
 export const predictLocation = ( location: Location ) => getPredictionsForLocation( {
