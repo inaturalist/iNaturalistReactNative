@@ -103,24 +103,15 @@ describe( "Suggestions", ( ) => {
   // We need to navigate from MyObs to ObsEdit to Suggestions for all of these
   // tests
   async function navigateToSuggestionsViaObsEditForObservation( observation ) {
-    const observationRow = await screen.findByTestId(
-      `MyObservations.obsListItem.${observation.uuid}`
+    const observationGridItem = await screen.findByTestId(
+      `MyObservations.obsGridItem.${observation.uuid}`
     );
-    await actor.press( observationRow );
+    await actor.press( observationGridItem );
     const addIdButton = observation.taxon
       ? await screen.findByLabelText( "Edit identification" )
       : await screen.findByText( "ADD AN ID" );
     await actor.press( addIdButton );
   }
-
-  // async function navigateToSuggestionsViaObsDetailsForObservation( observation ) {
-  //   const observationRow = await screen.findByTestId(
-  //     `MyObservations.obsListItem.${observation.uuid}`
-  //   );
-  //   await actor.press( observationRow );
-  //   const addIdButton = await screen.findByText( "SUGGEST ID" );
-  //   await actor.press( addIdButton );
-  // }
 
   async function navigateToSuggestionsViaCameraForObservation( ) {
     const tabBar = await screen.findByTestId( "CustomTabBar" );

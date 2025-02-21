@@ -169,10 +169,10 @@ const makeMockObservationsWithLocation = ( ) => ( [
 const actor = userEvent.setup( );
 
 const navigateToSuggestionsForObservationViaObsEdit = async observation => {
-  const observationRow = await screen.findByTestId(
-    `MyObservations.obsListItem.${observation.uuid}`
+  const observationGridItem = await screen.findByTestId(
+    `MyObservations.obsGridItem.${observation.uuid}`
   );
-  await actor.press( observationRow );
+  await actor.press( observationGridItem );
   const addIdButton = await screen.findByText( "ADD AN ID" );
   await actor.press( addIdButton );
 };

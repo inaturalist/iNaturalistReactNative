@@ -80,7 +80,7 @@ async function renderAppWithObservations(
   // by removing code until I was just rendering the stack navigator... and
   // that was still erroring out. Hopefully this will prevent that particular
   // point of confusion in the future. ~~~kueda 20240104
-  await screen.findByTestId( `MyObservations.obsListItem.${observations[0].uuid}` );
+  await screen.findByTestId( `MyObservations.obsGridItem.${observations[0].uuid}` );
 }
 
 /**

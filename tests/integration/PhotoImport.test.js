@@ -146,9 +146,9 @@ describe( "Photo Import", ( ) => {
     await actor.press( saveButton );
     // Wait until header shows that there's an obs to upload
     await screen.findByText( /Upload \d observation/ );
-    const obsListItems = await screen.findAllByTestId( /MyObservations\.obsListItem\..*/ );
+    const obsGridItems = await screen.findAllByTestId( /MyObservations\.obsGridItem\..*/ );
     await waitFor( () => {
-      expect( obsListItems[0] ).toBeVisible( );
+      expect( obsGridItems[0] ).toBeVisible( );
     }, { timeout: 3_000, interval: 500 } );
   }
 

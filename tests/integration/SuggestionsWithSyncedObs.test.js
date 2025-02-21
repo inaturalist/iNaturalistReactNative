@@ -133,10 +133,10 @@ afterEach( ( ) => {
 //   // We need to navigate from MyObs to ObsDetails to Suggestions to TaxonSearch for all of these
 //   // tests
 //   async function navigateToTaxonSearchForObservation( observation ) {
-//     const observationRow = await screen.findByTestId(
-//       `MyObservations.obsListItem.${observation.uuid}`
+//     const observationGridItem = await screen.findByTestId(
+//       `MyObservations.obsGridItem.${observation.uuid}`
 //     );
-//     await actor.press( observationRow );
+//     await actor.press( observationGridItem );
 //     const suggestIdButton = await screen.findByText( "SUGGEST ID" );
 //     await act( async ( ) => actor.press( suggestIdButton ) );
 //     await screen.findByTestId(
@@ -147,10 +147,10 @@ afterEach( ( ) => {
 //   }
 
 //   async function navigateToTaxonSearchForObservationViaObsEdit( observation ) {
-//     const observationRow = await screen.findByTestId(
-//       `MyObservations.obsListItem.${observation.uuid}`
+//     const observationGridItem = await screen.findByTestId(
+//       `MyObservations.obsGridItem.${observation.uuid}`
 //     );
-//     await actor.press( observationRow );
+//     await actor.press( observationGridItem );
 //     const editButton = await screen.findByLabelText( "Edit" );
 //     await act( async ( ) => actor.press( editButton ) );
 //     const addIdButton = await screen.findByText( "ADD AN ID" );
@@ -229,19 +229,19 @@ describe( "Suggestions", ( ) => {
   // We need to navigate from MyObs to ObsDetails to Suggestions for all of these
   // tests
   const navigateToSuggestionsForObservation = async observation => {
-    const observationRow = await screen.findByTestId(
-      `MyObservations.obsListItem.${observation.uuid}`
+    const observationGridItem = await screen.findByTestId(
+      `MyObservations.obsGridItem.${observation.uuid}`
     );
-    await actor.press( observationRow );
+    await actor.press( observationGridItem );
     const suggestIdButton = await screen.findByText( "SUGGEST ID" );
     await act( async ( ) => actor.press( suggestIdButton ) );
   };
 
   const navigateToSuggestionsForObservationViaObsEdit = async observation => {
-    const observationRow = await screen.findByTestId(
-      `MyObservations.obsListItem.${observation.uuid}`
+    const observationGridItem = await screen.findByTestId(
+      `MyObservations.obsGridItem.${observation.uuid}`
     );
-    await actor.press( observationRow );
+    await actor.press( observationGridItem );
     const editButton = await screen.findByLabelText( "Edit" );
     await act( async ( ) => actor.press( editButton ) );
     const addIdButton = await screen.findByText( "ADD AN ID" );
@@ -304,11 +304,11 @@ describe( "Suggestions", ( ) => {
     expect( saveChangesButton ).toBeTruthy( );
     await actor.press( saveChangesButton );
     // Ensure we're back on MyObs
-    const observationRow = await screen.findByTestId(
-      `MyObservations.obsListItem.${observations[0].uuid}`
+    const observationGridItem = await screen.findByTestId(
+      `MyObservations.obsGridItem.${observations[0].uuid}`
     );
     await waitFor( ( ) => {
-      expect( observationRow ).toBeVisible( );
+      expect( observationGridItem ).toBeVisible( );
     }, { timeout: 3000, interval: 500 } );
     const savedObservation = global.mockRealms[__filename]
       .objectForPrimaryKey( "Observation", observations[0].uuid );

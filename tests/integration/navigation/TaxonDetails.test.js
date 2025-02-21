@@ -115,10 +115,10 @@ describe( "TaxonDetails", ( ) => {
 
   // navigate to ObsDetails -> Suggest ID -> Suggestions -> TaxonDetails
   async function navigateToTaxonDetailsViaSuggestId( observation ) {
-    const observationRow = await screen.findByTestId(
-      `MyObservations.obsListItem.${observation.uuid}`
+    const observationGridItem = await screen.findByTestId(
+      `MyObservations.obsGridItem.${observation.uuid}`
     );
-    await actor.press( observationRow );
+    await actor.press( observationGridItem );
     const suggestIdButton = await screen.findByText( /SUGGEST ID/ );
     expect( suggestIdButton ).toBeVisible( );
     await actor.press( suggestIdButton );
@@ -127,10 +127,10 @@ describe( "TaxonDetails", ( ) => {
 
   // navigate to ObsEdit -> Suggestions -> TaxonDetails
   async function navigateToTaxonDetailsViaObsEdit( observation ) {
-    const observationRow = await screen.findByTestId(
-      `MyObservations.obsListItem.${observation.uuid}`
+    const observationGridItem = await screen.findByTestId(
+      `MyObservations.obsGridItem.${observation.uuid}`
     );
-    await actor.press( observationRow );
+    await actor.press( observationGridItem );
     const editButton = await screen.findByLabelText( /Edit/ );
     expect( editButton ).toBeVisible( );
     await actor.press( editButton );
@@ -141,10 +141,10 @@ describe( "TaxonDetails", ( ) => {
 
   // navigate to ObsEdit -> Suggestions -> TaxonSearch -> TaxonDetails
   async function navigateToTaxonDetailsViaTaxonSearch( observation ) {
-    const observationRow = await screen.findByTestId(
-      `MyObservations.obsListItem.${observation.uuid}`
+    const observationGridItem = await screen.findByTestId(
+      `MyObservations.obsGridItem.${observation.uuid}`
     );
-    await actor.press( observationRow );
+    await actor.press( observationGridItem );
     const editButton = await screen.findByLabelText( /Edit/ );
     expect( editButton ).toBeVisible( );
     await actor.press( editButton );
