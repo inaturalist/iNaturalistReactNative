@@ -58,7 +58,9 @@ const Notifications = ( ) => {
         />
       )}
       <NotificationOnboarding
-        triggerCondition={isDefaultMode && !!currentUser && totalResultsLocal < 10}
+        triggerCondition={
+          isDefaultMode && !!currentUser && !!totalResultsLocal && totalResultsLocal < 10
+        }
       />
     </ViewWrapper>
   );
