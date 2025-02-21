@@ -265,6 +265,7 @@ const MyObservationsSimple = ( {
               renderHeader={renderObservationsHeader}
             />
             <ObservationsViewBar
+              gridFirst
               hideMap
               layout={layout}
               updateObservationsView={toggleLayout}
