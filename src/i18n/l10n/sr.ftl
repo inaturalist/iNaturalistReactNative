@@ -19,7 +19,6 @@ Cancel = Otkaži
 Casual--quality-grade = Neobavezno
 Close = Zatvori
 Collection-Project = Pretražni projekat
-Community = Zajednica
 Community-Guidelines = Smernice zajednice
 Coordinates-copied-to-clipboard = Koordinate kopirane
 Data-Quality-Assessment = Procena kvaliteta podataka
