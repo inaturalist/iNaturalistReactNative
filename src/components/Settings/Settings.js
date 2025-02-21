@@ -270,7 +270,10 @@ const Settings = ( ) => {
               testID="advanced-interface-option"
               smallLabel
               checked={!isDefaultMode}
-              onPress={( ) => setIsDefaultMode( false )}
+              onPress={( ) => {
+                setIsDefaultMode( false );
+                setIsAllAddObsOptionsMode( true );
+              }}
               label={t( "Advanced--interface-mode-with-explainer" )}
             />
           </View>
