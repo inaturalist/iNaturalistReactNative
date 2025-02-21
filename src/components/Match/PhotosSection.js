@@ -47,6 +47,9 @@ const PhotosSection = ( {
   const taxonPhotosWithRepPhoto = compact( [representativePhoto, ...taxonPhotosNoIconic] );
   // The representative photo might be already included in taxonPhotosNoIconic
   const uniqueTaxonPhotos = uniqBy( taxonPhotosWithRepPhoto, "id" );
+  if ( uniqueTaxonPhotos.length > 3 ) {
+    uniqueTaxonPhotos.pop( );
+  }
 
   const observationPhotos = compact(
     obsPhotos
