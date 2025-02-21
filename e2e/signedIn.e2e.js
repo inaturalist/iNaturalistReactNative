@@ -64,14 +64,15 @@ describe( "Signed in user", () => {
     */
     const username = await signIn( );
 
-    /*
-    / 2. Switch UI to power user mode
-    */
-    await switchPowerMode( );
     // Switch to list view as well
     const listToggle = element( by.id( "MyObservationsToolbar.toggleListView" ) );
     await waitFor( listToggle ).toBeVisible( ).withTimeout( 10000 );
     await listToggle.tap();
+
+    /*
+    / 2. Switch UI to power user mode
+    */
+    await switchPowerMode();
 
     /*
     / 3. Create two observations without evidence
