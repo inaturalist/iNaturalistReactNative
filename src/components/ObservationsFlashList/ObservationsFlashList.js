@@ -101,21 +101,6 @@ const ObservationsFlashList: Function = forwardRef( ( {
   } = useGridLayout( layout );
   const { t } = useTranslation( );
 
-  const dataFilledWithEmptyBoxes = useMemo( ( ) => {
-    // In grid layout fill up to 8 items to make sure the grid is filled
-    if ( layout === "grid" ) {
-      // Fill up to 8 items to make sure the grid is filled
-      const emptyBoxes = new Array( 8 - ( data.length % 8 ) ).fill( { empty: true } );
-      // Add random id to empty boxes to ensure they are unique
-      const emptyBoxesWithId = emptyBoxes.map( ( box, index ) => ( {
-        ...box,
-        id: `empty-${index}`
-      } ) );
-      return [...data, ...emptyBoxesWithId];
-    }
-    return data;
-  }, [data, layout] );
-
   const renderItem = useCallback( ( { item: observation } ) => {
     // Empty box
     if ( observation.empty ) {
@@ -278,7 +263,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
       ListFooterComponent={renderFooter}
       ListHeaderComponent={renderHeader}
       contentContainerStyle={contentContainerStyle}
-      data={dataFilledWithEmptyBoxes}
+      data={data}
       estimatedItemSize={estimatedItemSize}
       extraData={extraData}
       ref={ref}

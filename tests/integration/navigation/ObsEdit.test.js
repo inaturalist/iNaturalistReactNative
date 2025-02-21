@@ -147,10 +147,10 @@ describe( "ObsEdit", ( ) => {
   describe( "from MyObservations", ( ) => {
     async function navigateToObsEditOrObsDetails( observations ) {
       await renderAppWithObservations( observations, __filename );
-      const observationRow = await screen.findByTestId(
-        `MyObservations.obsListItem.${observations[0].uuid}`
+      const observationGridItem = await screen.findByTestId(
+        `MyObservations.obsGridItem.${observations[0].uuid}`
       );
-      await actor.press( observationRow );
+      await actor.press( observationGridItem );
     }
 
     it( "should show correct observation when navigating from MyObservations", async ( ) => {

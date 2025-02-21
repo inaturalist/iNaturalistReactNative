@@ -97,10 +97,10 @@ describe( "MediaViewer navigation", ( ) => {
 
     async function navigateToObsEdit( ) {
       await renderAppWithObservations( observations, __filename );
-      const observationRow = await screen.findByTestId(
-        `MyObservations.obsListItem.${observation.uuid}`
+      const observationGridItem = await screen.findByTestId(
+        `MyObservations.obsGridItem.${observation.uuid}`
       );
-      await actor.press( observationRow );
+      await actor.press( observationGridItem );
     }
 
     it( "should show the first photo when tapped", async ( ) => {
@@ -183,10 +183,10 @@ describe( "MediaViewer navigation", ( ) => {
 
     async function navigateToObsDetail( ) {
       await renderAppWithObservations( observations, __filename );
-      const observationRow = await screen.findByTestId(
-        `MyObservations.obsListItem.${observation.uuid}`
+      const observationGridItem = await screen.findByTestId(
+        `MyObservations.obsGridItem.${observation.uuid}`
       );
-      await actor.press( observationRow );
+      await actor.press( observationGridItem );
       expect( await screen.findByTestId( `ObsDetails.${observation.uuid}` ) ).toBeVisible( );
     }
 
@@ -256,10 +256,10 @@ describe( "MediaViewer navigation", ( ) => {
 
     async function navigateToTaxonDetail( ) {
       await renderAppWithObservations( observations, __filename );
-      const observationRow = await screen.findByTestId(
-        `MyObservations.obsListItem.${observation.uuid}`
+      const observationGridItem = await screen.findByTestId(
+        `MyObservations.obsGridItem.${observation.uuid}`
       );
-      await actor.press( observationRow );
+      await actor.press( observationGridItem );
       expect( await screen.findByTestId( `ObsDetails.${observation.uuid}` ) ).toBeVisible( );
       const displayedTaxon = await screen.findByText( taxon.name );
       await act( async ( ) => actor.press( displayedTaxon ) );
@@ -308,10 +308,10 @@ describe( "MediaViewer navigation", ( ) => {
 
     async function navigateToSuggestions( ) {
       await renderAppWithObservations( observations, __filename );
-      const observationRow = await screen.findByTestId(
-        `MyObservations.obsListItem.${observation.uuid}`
+      const observationGridItem = await screen.findByTestId(
+        `MyObservations.obsGridItem.${observation.uuid}`
       );
-      await actor.press( observationRow );
+      await actor.press( observationGridItem );
       expect( await screen.findByTestId( `ObsDetails.${observation.uuid}` ) ).toBeVisible( );
       const suggestButton = await screen.findByTestId(
         "ObsDetail.cvSuggestionsButton"

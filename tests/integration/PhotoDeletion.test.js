@@ -129,8 +129,8 @@ describe( "Photo Deletion", ( ) => {
     // Wait until header shows that there's an obs to upload
     await screen.findByText( /Upload \d observation/ );
     // await screen.findByLabelText( "Grid layout" );
-    const obsListItems = await screen.findAllByTestId( /MyObservations\.obsListItem\..*/ );
-    await actor.press( obsListItems[0] );
+    const obsGridItems = await screen.findAllByTestId( /MyObservations\.obsGridItem\..*/ );
+    await actor.press( obsGridItems[0] );
   }
 
   async function expectNoPhotosInStandardCamera() {

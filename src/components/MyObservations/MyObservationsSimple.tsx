@@ -217,6 +217,22 @@ const MyObservationsSimple = ( {
     />
   );
 
+  const dataFilledWithEmptyBoxes = useMemo( ( ) => {
+    const data = observations.filter( o => o.isValid() );
+    // In grid layout fill up to 8 items to make sure the grid is filled
+    if ( layout === "grid" ) {
+    // Fill up to 8 items to make sure the grid is filled
+      const emptyBoxes = new Array( 8 - ( data.length % 8 ) ).fill( { empty: true } );
+      // Add random id to empty boxes to ensure they are unique
+      const emptyBoxesWithId = emptyBoxes.map( ( box, index ) => ( {
+        ...box,
+        id: `empty-${index}`
+      } ) );
+      return [...data, ...emptyBoxesWithId];
+    }
+    return data;
+  }, [observations, layout] );
+
   return (
     <>
       <ViewWrapper>
@@ -245,7 +261,7 @@ const MyObservationsSimple = ( {
         { activeTab === OBSERVATIONS_TAB && (
           <>
             <ObservationsFlashList
-              data={observations.filter( o => o.isValid() )}
+              data={dataFilledWithEmptyBoxes}
               dataCanBeFetched={!!currentUser}
               handlePullToRefresh={handlePullToRefresh}
               handleIndividualUploadPress={handleIndividualUploadPress}
@@ -265,6 +281,7 @@ const MyObservationsSimple = ( {
               renderHeader={renderObservationsHeader}
             />
             <ObservationsViewBar
+              gridFirst
               hideMap
               layout={layout}
               updateObservationsView={toggleLayout}
