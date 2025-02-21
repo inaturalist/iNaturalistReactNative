@@ -95,3 +95,6 @@ artifacts/
 
 # GitGuardian cache file
 .cache_ggshield
+
+# Eslint cache
+.eslintcache

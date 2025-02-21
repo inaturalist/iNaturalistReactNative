@@ -16,7 +16,7 @@
     "lint": "npm run lint:eslint && npm run lint:flow && npm run lint:rubocop",
     "lint:fix": "npm run lint:eslint:fix && npm run lint:flow && npm run lint:rubocop:fix",
     "lint:eslint": "eslint .",
-    "lint:eslint:fix": "eslint . --fix",
+    "lint:eslint:fix": "npx lint-staged",
     "lint:flow": "flow check",
     "lint:rubocop": "bundle exec rubocop",
     "lint:rubocop:fix": "bundle exec rubocop -A",
@@ -203,5 +203,10 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "yarn@3.6.4"
+  "packageManager": "yarn@3.6.4",
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --cache --fix --max-warnings=0 --cache-location .eslintcache"
+    ]
+  }
 }
