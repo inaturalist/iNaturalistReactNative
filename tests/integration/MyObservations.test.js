@@ -345,9 +345,9 @@ describe( "MyObservations", ( ) => {
         fireEvent.press( button );
         // Awaiting the first observation because using await in the forEach errors out
         const firstObs = mockSyncedObservations[0];
-        await screen.findByTestId( `MyObservations.gridItem.${firstObs.uuid}` );
+        await screen.findByTestId( `MyObservations.obsGridItem.${firstObs.uuid}` );
         mockSyncedObservations.forEach( obs => {
-          displayItemByTestId( `MyObservations.gridItem.${obs.uuid}` );
+          displayItemByTestId( `MyObservations.obsGridItem.${obs.uuid}` );
         } );
       } );
 
