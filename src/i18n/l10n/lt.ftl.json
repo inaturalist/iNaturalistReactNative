@@ -22,7 +22,6 @@
   "Close": "Uždaryti",
   "Closes-introduction": "Uždaro įvadą",
   "Collection-Project": "Grupinis projektas",
-  "Community": "Bendruomenė",
   "Community-based": "Pagrįsta bendruomene",
   "Community-Guidelines": "Bendruomenės gairės",
   "Confidence--label": "Patikimumas",
@@ -238,13 +237,7 @@
   "x-uploading": "{ $count ->\n  [one] { $count } įkeliamas\n *[other] { $count } įkeliama\n}",
   "You-havent-observed-any-species-yet": "Kol kas dar nestebėjote jokių rūšių.",
   "You-likely-observed-a-new-species": "Gali būti, kad stebėjote naują rūšį!",
-  "You-likely-observed-a-species": "Gali būti, kad stebėjote rūšį",
-  "You-likely-observed-an-organism-in-this-group": "Gali būti, kad stebėjote organizmą šioje grupėje",
   "You-may-have-observed-a-new-species": "Gali būti, kad stebėjote naują rūšį!",
-  "You-may-have-observed-a-species": "Gali būti, kad stebėjote rūšį",
-  "You-may-have-observed-an-organism-in-this-group": "Galbūt stebėjote organizmą šioje grupėje",
   "You-must-install-Google-Play-Services-to-sign-in-with-Google": "Turite įdiegti „Google Play“ paslaugas, kad prisijungtumėte su „Google“.",
-  "You-observed-a-new-species": "Jūs stebėjote naują rūšį!",
-  "You-observed-a-species": "Stebėjote rūšį",
-  "You-observed-an-organism-in-this-group": "Stebėjote organizmą šioje grupėje"
+  "You-observed-a-new-species": "Jūs stebėjote naują rūšį!"
 }
