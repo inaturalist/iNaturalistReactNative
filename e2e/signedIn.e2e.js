@@ -32,8 +32,8 @@ describe( "Signed in user", () => {
     // this component becomes visible, and there may be other observations in
     // the list, we need to wait for the right CommentsCount component to be
     // visible
-    const obsGridItem = element( by.id( /MyObservations\.obsGridItem\..*/ ) ).atIndex( 0 );
-    const obsListItemAttributes = await obsGridItem.getAttributes( );
+    const obsListItem = element( by.id( /MyObservations\.obsListItem\..*/ ) ).atIndex( 0 );
+    const obsListItemAttributes = await obsListItem.getAttributes( );
     const uuid = obsListItemAttributes.elements
       ? obsListItemAttributes.elements[0].identifier.split( "." ).pop( )
       : obsListItemAttributes.identifier.split( "." ).pop( );
@@ -41,7 +41,7 @@ describe( "Signed in user", () => {
     if ( options.upload ) {
       const commentCount = element(
         by.id( "ObsStatus.commentsCount" )
-          .withAncestor( by.id( `MyObservations.obsGridItem.${uuid}` ) )
+          .withAncestor( by.id( `MyObservations.obsListItem.${uuid}` ) )
       );
       await waitFor( commentCount ).toBeVisible().withTimeout( 10000 );
     }
@@ -50,8 +50,8 @@ describe( "Signed in user", () => {
   }
 
   async function deleteObservationByUUID( uuid, username, options = { uploaded: false } ) {
-    const obsGridItem = element( by.id( `MyObservations.obsGridItem.${uuid}` ) );
-    await obsGridItem.tap();
+    const obsListItem = element( by.id( `MyObservations.obsListItem.${uuid}` ) );
+    await obsListItem.tap();
     await deleteObservation( options );
     // Make sure we're back on MyObservations
     await waitFor( username ).toBeVisible().withTimeout( 10000 );
@@ -68,6 +68,10 @@ describe( "Signed in user", () => {
     / 2. Switch UI to power user mode
     */
     await switchPowerMode( );
+    // Switch to list view as well
+    const listToggle = element( by.id( "MyObservationsToolbar.toggleListView" ) );
+    await waitFor( listToggle ).toBeVisible( ).withTimeout( 10000 );
+    await listToggle.tap();
 
     /*
     / 3. Create two observations without evidence
@@ -81,8 +85,8 @@ describe( "Signed in user", () => {
     /*
     / 4. Update the observation by adding a comment
     */
-    const obsGridItem = element( by.id( `MyObservations.obsGridItem.${uuid}` ) );
-    await obsGridItem.tap();
+    const obsListItem = element( by.id( `MyObservations.obsListItem.${uuid}` ) );
+    await obsListItem.tap();
     const commentButton = element( by.id( "ObsDetail.commentButton" ) );
     await waitFor( commentButton ).toBeVisible().withTimeout( 10000 );
     await commentButton.tap();
@@ -116,6 +120,6 @@ describe( "Signed in user", () => {
     // point, and we can confirm deletion by testing for the absence of the
     // list item for the observation we deleted.
     await waitFor( element( by.text( /Upload 1 observation/ ) ) ).toBeVisible( ).withTimeout( 20_000 );
-    await expect( obsGridItem ).toBeNotVisible( );
+    await expect( obsListItem ).toBeNotVisible( );
   } );
 } );
