@@ -6,7 +6,11 @@ const createMyObsSlice = ( set, get ) => ( {
   myObsOffsetToRestore: 0,
   resetMyObsOffsetToRestore: ( ) => set( { myObsOffsetToRestore: 0 } ),
   setMyObsOffset: newOffset => set( { myObsOffset: newOffset } ),
-  setMyObsOffsetToRestore: ( ) => set( { myObsOffsetToRestore: get( ).myObsOffset } )
+  setMyObsOffsetToRestore: ( ) => set( { myObsOffsetToRestore: get( ).myObsOffset } ),
+  numOfUserObservations: 0,
+  setNumOfUserObservations: newNum => set( { numOfUserObservations: newNum } ),
+  numOfUserSpecies: 0,
+  setNumOfUserSpecies: newNum => set( { numOfUserSpecies: newNum } )
 } );
 
 export default createMyObsSlice;
