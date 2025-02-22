@@ -318,8 +318,8 @@ fastlane prod
             1. Make an observation using the AI Camera
             1. Delete the observation you just made
             1. Go to Explore and view a taxon
-            1. Change to observations view and view an observation
             1. Search for observations in a place
+            1. Change to observations view and view an observation
             1. Go to the observers profile
             1. Go to one project this user joined (if not available try another user)
             1. Sign in
