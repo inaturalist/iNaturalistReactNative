@@ -22,7 +22,6 @@ type Props = {
   canFetch?: boolean,
   isConnected: boolean,
   queryParams: Object,
-  setCurrentExploreView: Function,
   handleUpdateCount: Function
 }
 
@@ -30,7 +29,6 @@ const SpeciesView = ( {
   canFetch,
   isConnected,
   queryParams,
-  setCurrentExploreView,
   handleUpdateCount
 }: Props ): Node => {
   // 20240814 - amanda: not sure if we actually need observedTaxonIds in state in the long
@@ -131,7 +129,6 @@ const SpeciesView = ( {
 
     return (
       <ExploreTaxonGridItem
-        setCurrentExploreView={setCurrentExploreView}
         key={itemKey}
         count={item?.count}
         style={gridItemStyle}
