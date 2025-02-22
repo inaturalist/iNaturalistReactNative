@@ -98,3 +98,6 @@ artifacts/
 
 # Eslint cache
 .eslintcache
+
+# Rubocop cache
+**/tmp/rubocop_cache
