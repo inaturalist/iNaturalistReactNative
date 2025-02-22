@@ -1,0 +1,15 @@
+ADDED
+* Dotted boxes in grid view
+* Translations
+* Upload banner in default mode
+
+UPDATED
+* Load more higher ranks as common ancestor suggestion
+* Switching to advanced mode toggles all observation types mode
+* More consistent observations/species numbers
+* Tapping an observation navigates to observation details in default mode
+
+FIXED
+* Sharing into app
+* Observed-in location
+* Notification onboarding
