@@ -23,6 +23,7 @@ import {
   useCurrentUser,
   useFontScale,
   useGridLayout,
+  useLayoutPrefs,
   useNavigateToObsEdit,
   useTranslation
 } from "sharedHooks";
@@ -77,6 +78,9 @@ const ObservationsFlashList: Function = forwardRef( ( {
   showObservationsEmptyScreen,
   testID
 }: Props, ref ): Node => {
+  const {
+    isDefaultMode
+  } = useLayoutPrefs( );
   const realm = useRealm( );
   const { isLargeFontScale } = useFontScale( );
   const currentUser = useCurrentUser( );
@@ -123,7 +127,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
     const queued = uploadQueue.includes( uuid );
 
     const onItemPress = ( ) => {
-      if ( obsNeedsSync ) {
+      if ( obsNeedsSync && !isDefaultMode ) {
         navigateToObsEdit( observation );
       } else {
         // Uniquely identify the list this observation appears in so we can ensure
@@ -163,6 +167,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
     gridItemStyle,
     handleIndividualUploadPress,
     hideMetadata,
+    isDefaultMode,
     isLargeFontScale,
     layout,
     navigateToObsEdit,
