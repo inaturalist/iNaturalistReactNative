@@ -90,7 +90,7 @@ describe( "PhotoLibrary navigation", ( ) => {
     } );
   } );
 
-  it( "advances to Suggestions when one photo is selected", async ( ) => {
+  it( "advances to ObsEdit when one photo is selected", async ( ) => {
     jest.spyOn( rnImagePicker, "launchImageLibrary" ).mockImplementation(
       ( ) => ( {
         assets: mockAsset
@@ -98,10 +98,30 @@ describe( "PhotoLibrary navigation", ( ) => {
     );
     renderApp( );
     await navigateToPhotoImporter( );
-    const suggestionsText = await screen.findByText( /Add an ID Later/ );
+    const newObsText = await screen.findByText( /New Observation/ );
     await waitFor( ( ) => {
-      // user should land on Suggestions
-      expect( suggestionsText ).toBeTruthy( );
+      // user should land on ObsEdit
+      expect( newObsText ).toBeTruthy( );
+    } );
+  } );
+
+  describe( "when in flow mode of suggestions being next screen", ( ) => {
+    beforeEach( ( ) => {
+      useStore.setState( { isAdvancedUser: true, layout: { isSuggestionsFlowMode: true } } );
+    } );
+    it( "advances to Suggestions when one photo is selected", async ( ) => {
+      jest.spyOn( rnImagePicker, "launchImageLibrary" ).mockImplementation(
+        ( ) => ( {
+          assets: mockAsset
+        } )
+      );
+      renderApp( );
+      await navigateToPhotoImporter( );
+      const suggestionsText = await screen.findByText( /Add an ID Later/ );
+      await waitFor( ( ) => {
+        // user should land on Suggestions
+        expect( suggestionsText ).toBeTruthy( );
+      } );
     } );
   } );
 } );
