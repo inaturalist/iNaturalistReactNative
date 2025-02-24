@@ -90,4 +90,31 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
     await actor.press( checkmarkButton );
     expect( await screen.findByText( /ADD AN ID/ ) ).toBeVisible( );
   } );
+
+  describe( "when navigating to Suggestions", ( ) => {
+    beforeEach( () => {
+      useStore.setState( {
+        isAdvancedUser: true,
+        layout: { isSuggestionsFlowMode: true }
+      } );
+    } );
+
+    it( "should advance to Suggestions when photo taken and checkmark tapped", async ( ) => {
+      const mockWatchPosition = jest.fn( ( success, _error, _options ) => success( {
+        coords: {
+          latitude: 56,
+          longitude: 9,
+          accuracy: 8
+        }
+      } ) );
+      Geolocation.watchPosition.mockImplementation( mockWatchPosition );
+      renderApp( );
+      await navigateToCamera( );
+      const takePhotoButton = await screen.findByLabelText( /Take photo/ );
+      await actor.press( takePhotoButton );
+      const checkmarkButton = await screen.findByLabelText( "View suggestions" );
+      await actor.press( checkmarkButton );
+      expect( await screen.findByText( /ADD AN ID/ ) ).toBeVisible( );
+    } );
+  } );
 } );
