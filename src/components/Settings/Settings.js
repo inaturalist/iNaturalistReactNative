@@ -319,6 +319,7 @@ const Settings = ( ) => {
             </View>
             <View className="mt-4 pr-5">
               <RadioButtonRow
+                testID="suggestions-flow-mode"
                 smallLabel
                 checked={isSuggestionsFlowMode}
                 onPress={() => setIsSuggestionsFlowMode( true )}

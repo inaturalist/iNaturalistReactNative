@@ -18,4 +18,8 @@ export default async function switchPowerMode() {
   const powerUserRadioButton = element( by.id( "all-observation-options" ) );
   await waitFor( powerUserRadioButton ).toBeVisible().withTimeout( 10000 );
   await powerUserRadioButton.tap();
+  // Tap the settings radio button for suggestions flow first mode
+  const suggestionsFlowButton = element( by.id( "suggestions-flow-mode" ) );
+  await waitFor( suggestionsFlowButton ).toBeVisible().withTimeout( 10000 );
+  await suggestionsFlowButton.tap();
 }
