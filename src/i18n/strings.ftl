@@ -1564,3 +1564,6 @@ Zoom-in-as-much-as-possible-to-improve = Zoom in as much as possible to improve 
 Zoom-to-current-location = Zoom to current location
 # Label for button that shows zoom level, e.g. on a camera
 zoom-x = { $zoom }×
+SUGGESTIONS = SUGGESTIONS
+After-capturing-or-importing-photos-show = After capturing or importing photos, show:
+ID-Suggestions = ID Suggestions
