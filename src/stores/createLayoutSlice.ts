@@ -21,11 +21,11 @@ const createLayoutSlice = set => ( {
         isDefaultMode: newValue
       }
     } ) ),
-    isSuggestionsFlowMode: false,
+    isAdvancedSuggestionsMode: false,
     setIsSuggestionsFlowMode: ( newValue: boolean ) => set( state => ( {
       layout: {
         ...state.layout,
-        isSuggestionsFlowMode: newValue
+        isAdvancedSuggestionsMode: newValue
       }
     } ) ),
     // State to control pivot cards and other onboarding material being shown only once

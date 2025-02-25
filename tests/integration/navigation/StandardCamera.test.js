@@ -98,7 +98,7 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
     beforeEach( () => {
       useStore.setState( {
         isAdvancedUser: true,
-        layout: { isSuggestionsFlowMode: true }
+        layout: { isAdvancedSuggestionsMode: true }
       } );
     } );
 

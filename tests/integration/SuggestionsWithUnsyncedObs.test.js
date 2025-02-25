@@ -207,7 +207,7 @@ const setupAppWithSignedInUser = async hasLocation => {
     currentObservation: observations[0],
     layout: {
       isDefaultMode: false,
-      isSuggestionsFlowMode: true
+      isAdvancedSuggestionsMode: true
     },
     isAdvancedUser: true
   } );

@@ -238,7 +238,7 @@ describe( "Suggestions", ( ) => {
       useStore.setState( {
         layout: {
           isDefaultMode: false,
-          isSuggestionsFlowMode: true
+          isAdvancedSuggestionsMode: true
         },
         isAdvancedUser: true
       } );

@@ -110,7 +110,7 @@ describe( "PhotoLibrary navigation when suggestions screen is preferred next scr
   beforeEach( () => {
     useStore.setState( {
       isAdvancedUser: true,
-      layout: { isSuggestionsFlowMode: true }
+      layout: { isAdvancedSuggestionsMode: true }
     } );
   } );
   it( "advances to Suggestions when one photo is selected", async () => {

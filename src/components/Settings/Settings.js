@@ -59,7 +59,7 @@ const Settings = ( ) => {
     isAllAddObsOptionsMode,
     setIsDefaultMode,
     setIsAllAddObsOptionsMode,
-    isSuggestionsFlowMode,
+    isAdvancedSuggestionsMode,
     setIsSuggestionsFlowMode
   } = useLayoutPrefs();
   const [settings, setSettings] = useState( {} );
@@ -312,7 +312,7 @@ const Settings = ( ) => {
             <View className="mt-[22px] pr-5">
               <RadioButtonRow
                 smallLabel
-                checked={!isSuggestionsFlowMode}
+                checked={!isAdvancedSuggestionsMode}
                 onPress={() => setIsSuggestionsFlowMode( false )}
                 label={t( "Edit-Observation" )}
               />
@@ -321,7 +321,7 @@ const Settings = ( ) => {
               <RadioButtonRow
                 testID="suggestions-flow-mode"
                 smallLabel
-                checked={isSuggestionsFlowMode}
+                checked={isAdvancedSuggestionsMode}
                 onPress={() => setIsSuggestionsFlowMode( true )}
                 label={t( "ID-Suggestions" )}
               />

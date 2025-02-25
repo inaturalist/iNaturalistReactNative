@@ -86,7 +86,7 @@ beforeEach( async ( ) => {
   useStore.setState( {
     layout: {
       isDefaultMode: false,
-      isSuggestionsFlowMode: false
+      isAdvancedSuggestionsMode: false
     },
     isAdvancedUser: true
   } );
@@ -154,7 +154,7 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
       useStore.setState( {
         layout: {
           isDefaultMode: false,
-          isSuggestionsFlowMode: true
+          isAdvancedSuggestionsMode: true
         },
         isAdvancedUser: true
       } );
