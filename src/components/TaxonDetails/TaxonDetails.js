@@ -88,7 +88,7 @@ const TaxonDetails = ( ): Node => {
   // Hooks
   const navigation = useNavigation( );
   const { params } = useRoute( );
-  const { id, hideNavButtons } = params;
+  const { id, hideNavButtons, representativePhoto } = params;
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
   const { remoteUser } = useUserMe( );
@@ -188,11 +188,18 @@ const TaxonDetails = ( ): Node => {
 
   const currentUserHasSeenTaxon = seenByCurrentUser?.total_results === 1;
 
-  const photos = compact(
+  const taxonPhotos = compact(
     taxon?.taxonPhotos
       ? taxon.taxonPhotos.map( taxonPhoto => taxonPhoto.photo )
       : [taxon?.defaultPhoto]
   );
+  // Add the representative photo at the start of the list of taxon photos.
+  const taxonPhotosWithRepPhoto = compact( [
+    representativePhoto,
+    ...taxonPhotos
+  ] );
+  // The representative photo might be already included in taxonPhotosNoIconic
+  const photos = _.uniqBy( taxonPhotosWithRepPhoto, "id" );
 
   const updateTaxon = useCallback( ( ) => {
     updateObservationKeys( {
