@@ -194,11 +194,11 @@ const TaxonDetails = ( ): Node => {
       : [taxon?.defaultPhoto]
   );
   // Add the representative photo at the start of the list of taxon photos.
-  const taxonPhotosWithRepPhoto = compact( [
-    representativePhoto,
-    ...taxonPhotos
-  ] );
-  // The representative photo might be already included in taxonPhotosNoIconic
+  // The representative photo is not necessarily a part of taxon photos, e.g. if the taxon here
+  // was navigated to from a common ancestor suggestion, the representative photo could be from
+  // any of its children taxa.
+  const taxonPhotosWithRepPhoto = compact( [representativePhoto, ...taxonPhotos] );
+  // The representative photo might be included in taxonPhotos, so we need to remove duplicates
   const photos = _.uniqBy( taxonPhotosWithRepPhoto, "id" );
 
   const updateTaxon = useCallback( ( ) => {
