@@ -457,7 +457,7 @@ const TaxonDetails = ( ): Node => {
         />
       )}
       {showSelectButton && (
-        <ButtonBar containerClass="items-center z-50">
+        <ButtonBar containerClass="items-center z-50 bg-white">
           <Button
             testID="TaxonDetails.SelectButton"
             className="max-w-[500px] w-full"
