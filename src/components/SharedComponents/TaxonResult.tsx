@@ -92,6 +92,7 @@ const TaxonResult = ( {
   // A representative photo is dependant on the actual image that was scored by computer vision
   // and is currently not added to the taxon realm. So, if it is available directly from the
   // suggestion, i.e. taxonProp, use it. Otherwise, use the default photo from the taxon.
+  const representativePhotoId = ( taxonProp as ApiTaxon )?.representative_photo?.id;
   const taxonImage = {
     uri: ( taxonProp as ApiTaxon )?.representative_photo?.url
       || ( usableTaxon as ApiTaxon )?.default_photo?.url
@@ -103,12 +104,14 @@ const TaxonResult = ( {
       id: usableTaxon?.id,
       hideNavButtons,
       lastScreen,
+      representativePhotoId,
       vision
     } );
   }, [
     hideNavButtons,
     lastScreen,
     navigation,
+    representativePhotoId,
     usableTaxon?.id,
     vision
   ] );
