@@ -63,7 +63,7 @@ const PhotoLibrary = ( ): Node => {
   const advanceToMatchScreen = lastScreen === "Camera"
     && isDefaultMode;
 
-  const navToNextScreen = useCallback( async ( ) => {
+  const navBasedOnUserSettings = useCallback( async ( ) => {
     if ( advanceToMatchScreen ) {
       return navigation.navigate( "Match", {
         lastScreen: "PhotoLibrary"
@@ -202,7 +202,7 @@ const PhotoLibrary = ( ): Node => {
       setPhotoImporterState( {
         observations: [newObservation]
       } );
-      navToNextScreen( );
+      navBasedOnUserSettings( );
       setPhotoLibraryShown( false );
     } else {
       // navigate to group photos
@@ -227,7 +227,7 @@ const PhotoLibrary = ( ): Node => {
     groupedPhotos,
     navigation,
     navToObsEdit,
-    navToNextScreen,
+    navBasedOnUserSettings,
     numOfObsPhotos,
     observations,
     params,
