@@ -132,7 +132,8 @@ const TaxonResult = ( {
   if ( !usableTaxon ) return null;
 
   const taxonImage = {
-    uri: ( usableTaxon as ApiTaxon )?.default_photo?.url
+    uri: ( taxonProp as ApiTaxon )?.representative_photo?.url
+      || ( usableTaxon as ApiTaxon )?.default_photo?.url
       || ( usableTaxon as RealmTaxon )?.defaultPhoto?.url
   };
 
