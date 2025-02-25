@@ -131,6 +131,9 @@ const TaxonResult = ( {
   // useTaxon could return null, and it's at least remotely possible taxonProp is null
   if ( !usableTaxon ) return null;
 
+  // A representative photo is dependant on the actual image that was scored by computer vision
+  // and is currently not added to the taxon realm. So, if it is available directly from the
+  // suggestion, i.e. taxonProp, use it. Otherwise, use the default photo from the taxon.
   const taxonImage = {
     uri: ( taxonProp as ApiTaxon )?.representative_photo?.url
       || ( usableTaxon as ApiTaxon )?.default_photo?.url
