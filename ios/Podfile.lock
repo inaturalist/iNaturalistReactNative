@@ -39,9 +39,9 @@ PODS:
     - hermes-engine/Pre-built (= 0.73.11)
   - hermes-engine/Pre-built (0.73.11)
   - libevent (2.1.12)
-  - MMKV (2.0.2):
-    - MMKVCore (~> 2.0.2)
-  - MMKVCore (2.0.2)
+  - MMKV (2.1.0):
+    - MMKVCore (~> 2.1.0)
+  - MMKVCore (2.1.1)
   - Mute (0.6.1)
   - RCT-Folly (2022.05.16.00):
     - boost
@@ -1528,8 +1528,8 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
   hermes-engine: d992945b77c506e5164e6a9a77510c9d57472c59
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  MMKV: 3eacda84cd1c4fc95cf848d3ecb69d85ed56006c
-  MMKVCore: 508b4d3a8ce031f1b5c8bd235f0517fb3f4c73a9
+  MMKV: ce484c1ac40bf76d5f09a0195d2ec5b3d3840d55
+  MMKVCore: 1eb661c6c498ab88e3df9ce5d8ff94d05fcc0567
   Mute: 20135a96076f140cc82bfc8b810e2d6150d8ec7e
   RCT-Folly: cd21f1661364f975ae76b3308167ad66b09f53f5
   RCTRequired: 415e56f7c33799a6483e41e4dce607f3daf1e69b
