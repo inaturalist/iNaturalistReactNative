@@ -90,7 +90,8 @@ beforeAll( async () => {
 beforeEach( ( ) => {
   useStore.setState( {
     layout: {
-      isDefaultMode: false
+      isDefaultMode: false,
+      isSuggestionsFlowMode: true
     },
     isAdvancedUser: true
   } );
