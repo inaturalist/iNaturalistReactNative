@@ -232,12 +232,13 @@ describe( "Suggestions", ( ) => {
     // } );
   } );
 
-  describe( "when reached from Camera", ( ) => {
+  describe( "when reached from Camera directly", ( ) => {
     beforeEach( async ( ) => {
       await signIn( mockUser, { realm: global.mockRealms[__filename] } );
       useStore.setState( {
         layout: {
-          isDefaultMode: false
+          isDefaultMode: false,
+          isSuggestionsFlowMode: true
         },
         isAdvancedUser: true
       } );
