@@ -254,8 +254,11 @@ const MatchContainer = ( ) => {
   const otherSuggestions = orderedSuggestions
     .filter( suggestion => suggestion.taxon.id !== taxonId );
 
-  const navToTaxonDetails = ( ) => {
-    navigation.push( "TaxonDetails", { id: taxonId } );
+  const navToTaxonDetails = photoID => {
+    navigation.push(
+      "TaxonDetails",
+      { id: taxonId, firstPhotoID: photoID }
+    );
   };
 
   const handleSaveOrDiscardPress = async action => {

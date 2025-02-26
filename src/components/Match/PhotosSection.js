@@ -16,7 +16,7 @@ type Props = {
   representativePhoto: Object,
   taxon: Object,
   obsPhotos: Array<Object>,
-  navToTaxonDetails: ( ) => void
+  navToTaxonDetails: ( photoID: number ) => void
 }
 
 const PhotosSection = ( {
@@ -35,7 +35,7 @@ const PhotosSection = ( {
 
   const taxonPhotos = compact(
     localTaxonPhotos
-      ? localTaxonPhotos.map( taxonPhoto => taxonPhoto.photo )
+      ? localTaxonPhotos.map( taxonPhoto => ( { ...taxonPhoto.photo } ) )
       : [taxon?.defaultPhoto]
   );
   // don't show the iconic taxon photo which is a mashup of 9 photos
@@ -150,7 +150,7 @@ const PhotosSection = ( {
       {uniqueTaxonPhotos.map( photo => (
         <Pressable
           accessibilityRole="button"
-          onPress={navToTaxonDetails}
+          onPress={() => navToTaxonDetails( photo.id )}
           accessibilityState={{ disabled: false }}
           key={photo.id}
           className={classnames(
