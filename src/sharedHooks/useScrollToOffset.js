@@ -12,18 +12,15 @@ const useScrollToOffset = scrollViewRef => {
   const [oneTimeScrollOffsetY, setOneTimeScrollOffsetY] = useState( 0 );
   const [heightOfTopContent, setHeightOfTopContent] = useState( 0 );
 
-  const setOffsetToActivityItem = useCallback( e => {
-    const { layout } = e.nativeEvent;
-    const newOffset = layout.y + layout.height + heightOfTopContent;
-    console.log( newOffset, "new offset" );
+  const setOffsetToActivityItem = useCallback( layout => {
+    const newOffset = layout.y + heightOfTopContent;
 
     if ( Math.abs( newOffset - oneTimeScrollOffsetY ) > 1 ) {
       setOneTimeScrollOffsetY( newOffset );
     }
   }, [heightOfTopContent, oneTimeScrollOffsetY] );
 
-  const setHeightOfContentAboveSection = useCallback( e => {
-    const { layout } = e.nativeEvent;
+  const setHeightOfContentAboveSection = useCallback( layout => {
     const newOffset = layout.height;
     if ( Math.abs( newOffset - heightOfTopContent ) > 1 ) {
       setHeightOfTopContent( newOffset );
@@ -31,7 +28,7 @@ const useScrollToOffset = scrollViewRef => {
   }, [heightOfTopContent] );
 
   useEffect( ( ) => {
-    if ( oneTimeScrollOffsetY && scrollViewRef?.current ) {
+    if ( oneTimeScrollOffsetY > 0 && scrollViewRef?.current ) {
       InteractionManager.runAfterInteractions( ( ) => {
         scrollViewRef?.current?.scrollTo( { y: oneTimeScrollOffsetY, animated: true } );
 

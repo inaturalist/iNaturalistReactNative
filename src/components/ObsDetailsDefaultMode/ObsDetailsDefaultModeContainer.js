@@ -122,8 +122,6 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
   const [state, dispatch] = useReducer( reducer, initialState );
   const [remoteObsWasDeleted, setRemoteObsWasDeleted] = useState( false );
 
-  console.log( uuid, "uuid in ObsDetailsDefaultModeContainer" );
-
   const {
     activityItems,
     addingActivityItem,

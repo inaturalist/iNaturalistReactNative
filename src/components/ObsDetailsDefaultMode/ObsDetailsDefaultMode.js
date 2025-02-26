@@ -85,7 +85,10 @@ const ObsDetailsDefaultMode = ( {
         scrollEventThrottle={16}
       >
         <View
-          onLayout={setHeightOfContentAboveCommunitySection}
+          onLayout={event => {
+            const { layout } = event.nativeEvent;
+            setHeightOfContentAboveCommunitySection( layout );
+          }}
         >
           <ObserverDetails
             belongsToCurrentUser={belongsToCurrentUser}
@@ -106,8 +109,8 @@ const ObsDetailsDefaultMode = ( {
             belongsToCurrentUser={belongsToCurrentUser}
             observation={observation}
           />
+          <NotesSection description={observation.description} />
         </View>
-        <NotesSection description={observation.description} />
         <CommunitySection
           activityItems={activityItems}
           isConnected={isConnected}
