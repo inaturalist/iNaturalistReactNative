@@ -27,7 +27,6 @@ import LoginSignUpInputField from "./LoginSignUpInputField";
 const { useRealm } = RealmContext;
 
 interface Props {
-  hideFooter?: boolean;
   scrollViewRef?: React.Ref
 }
 
@@ -42,7 +41,6 @@ type ParamList = {
 }
 
 const LoginForm = ( {
-  hideFooter,
   scrollViewRef
 }: Props ) => {
   const firstInputFieldRef = useRef( null );
@@ -275,7 +273,7 @@ const LoginForm = ( {
           testID="Login.loginButton"
           text={t( "LOG-IN" )}
         />
-        {!hideFooter && renderFooter( )}
+        {renderFooter( )}
       </View>
     </TouchableWithoutFeedback>
   );

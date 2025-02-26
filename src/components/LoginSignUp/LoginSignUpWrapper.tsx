@@ -1,6 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
-import { ImageBackground, SafeAreaView, ScrollView } from "components/styledComponents";
+import {
+  ImageBackground, SafeAreaView, ScrollView, View
+} from "components/styledComponents";
 import React, {
   PropsWithChildren, useEffect, useRef
 } from "react";
@@ -21,9 +23,10 @@ interface Props extends PropsWithChildren {
   imageStyle?: StyleProp<ImageStyle>
 }
 
+const windowHeight = Dimensions.get( "window" ).height;
+
 const SCROLL_VIEW_STYLE = {
-  // Make sure content can expand beyond the screen height to enable scrolling
-  minHeight: Dimensions.get( "window" ).height * 1.1
+  minHeight: windowHeight * 1.1
 } as const;
 
 const LoginSignupWrapper = ( {
@@ -33,14 +36,35 @@ const LoginSignupWrapper = ( {
 }: Props ) => {
   const scrollViewRef = useRef( null );
   const navigation = useNavigation( );
+
+  useEffect( ( ) => {
+    const resetScroll = ( ) => {
+      if ( scrollViewRef.current ) {
+        scrollViewRef.current?.scrollTo( { y: 0, animated: false } );
+      }
+    };
+    const unsubscribe = navigation.addListener( "focus", ( ) => {
+      console.log( "resetting scroll" );
+      resetScroll( );
+    } );
+    return unsubscribe;
+  }, [navigation] );
+
   // Make the StatusBar translucent in Android but reset it when we leave
   // because this alters the layout.
   useEffect( ( ) => {
     if ( Platform.OS !== "android" ) return ( ) => undefined;
     // Hide on first render
     StatusBar.setTranslucent( true );
-    // StatusBar.setTranslucent( true );
+
+    const resetScroll = () => {
+      if ( scrollViewRef.current ) {
+        scrollViewRef.current?.scrollTo( { y: 0, animated: false } );
+      }
+    };
     const unsubscribe = navigation.addListener( "focus", ( ) => {
+      console.log( "resetting scroll" );
+      resetScroll( );
       // Hide when focused
       StatusBar.setTranslucent( true );
     } );
@@ -55,10 +79,12 @@ const LoginSignupWrapper = ( {
     return unsubscribe;
   }, [navigation] );
 
+  const fitContentWithinScreenStyle = { height: windowHeight * 0.85 };
+
   return (
     <ImageBackground
       source={backgroundSource}
-      className="h-full"
+      className="h-full w-full"
       imageStyle={imageStyle}
     >
       <SafeAreaView
@@ -78,12 +104,17 @@ const LoginSignupWrapper = ( {
         />
         <ScrollView
           ref={scrollViewRef}
-          keyboardShouldPersistTaps="always"
+          keyboardShouldPersistTaps="never"
+          keyboardDismissMode="on-drag"
           contentContainerStyle={SCROLL_VIEW_STYLE}
         >
-          {typeof children === "function"
-            ? children( { scrollViewRef } )
-            : children}
+          <View style={fitContentWithinScreenStyle}>
+            <View className="flex-1 flex-column justify-between">
+              {typeof children === "function"
+                ? children( { scrollViewRef } )
+                : children}
+            </View>
+          </View>
         </ScrollView>
       </SafeAreaView>
     </ImageBackground>
