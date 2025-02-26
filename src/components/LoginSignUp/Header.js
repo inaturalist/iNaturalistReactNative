@@ -19,10 +19,10 @@ const Header = ( { headerText, hideHeader }: Props ): Node => {
     <INaturalistLogo width="234" height="43" />
   );
   return (
-    <View className="w-full items-center shrink">
+    <View className="items-center mx-[55px]">
       {renderLogo()}
       {headerText && (
-        <Body1 className="text-center color-white mt-[24px] max-w-[280px]">
+        <Body1 className="text-center color-white mt-[23px]">
           {headerText}
         </Body1>
       )}

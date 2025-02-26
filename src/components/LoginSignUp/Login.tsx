@@ -7,18 +7,17 @@ import LoginForm from "./LoginForm";
 import LoginSignUpWrapper from "./LoginSignUpWrapper";
 
 const TARGET_NON_KEYBOARD_HEIGHT = 420 as const;
-const HIDE_HEADER_HEIGHT = 570 as const;
-const HIDE_FOOTER_HEIGHT = 500 as const;
 
 const Login = ( ) => {
   const {
     keyboardShown,
-    keyboardVerticalOffset,
-    nonKeyboardHeight
+    keyboardVerticalOffset
   } = useKeyboardInfo( TARGET_NON_KEYBOARD_HEIGHT );
 
-  const hideHeader = keyboardShown && ( nonKeyboardHeight < HIDE_HEADER_HEIGHT );
-  const hideFooter = keyboardShown && ( nonKeyboardHeight < HIDE_FOOTER_HEIGHT );
+  const hideHeader = keyboardShown;
+  const hideFooter = keyboardShown;
+
+  console.log( hideFooter, "hide footer" );
 
   const renderLoginForm = useCallback( ( ) => (
     <>

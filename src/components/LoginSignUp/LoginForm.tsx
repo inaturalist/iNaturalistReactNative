@@ -110,6 +110,71 @@ const LoginForm = ( {
     setIsDefaultMode
   ] );
 
+  const renderFooter = ( ) => (
+    <>
+      <Heading4
+        className="color-white self-center mt-10"
+      >
+        {t( "OR-SIGN-IN-WITH" )}
+      </Heading4>
+      <View className="flex-row justify-center mt-5">
+        {/*
+          Note: Sign in with Apple is doable in Android if we want to:
+          https://github.com/invertase/react-native-apple-authentication?tab=readme-ov-file#android
+        */}
+        { Platform.OS === "ios" && (
+          <INatIconButton
+            onPress={() => logIn( async ( ) => signInWithApple( realm ) )}
+            disabled={loading}
+            className="mr-8"
+            icon="apple"
+            // The svg icon for the Apple logo was downloaded from Apple,
+            // according to the Design Guidelines it already has a margin inside the svg
+            // so we scale it here to fill the entire button.
+            size={50}
+            color={colors.black}
+            backgroundColor={colors.white}
+            accessibilityLabel={t( "Sign-in-with-Apple" )}
+            mode="contained"
+            width={50}
+            height={50}
+          />
+        ) }
+        <INatIconButton
+          onPress={() => logIn( async ( ) => signInWithGoogle( realm ) )}
+          disabled={loading}
+          backgroundColor={colors.white}
+          accessibilityLabel={t( "Sign-in-with-Google" )}
+          mode="contained"
+          width={50}
+          height={50}
+        >
+          <Image
+            className="w-[20px] h-[20px]"
+            source={require( "images/google.png" )}
+            accessibilityIgnoresInvertColors
+          />
+        </INatIconButton>
+      </View>
+      <Trans
+        className={classnames(
+          "self-center mt-[31px] underline",
+          // When the keyboard is up this pushes the form up enough to cut
+          // off the username label on some devices
+          !keyboardShown && "mb-[35px]"
+        )}
+        i18nKey="Dont-have-an-account"
+        onPress={( ) => navigation.navigate( "SignUp" )}
+        components={[
+          <Body1 className="text-white" />,
+          <Body1
+            className="text-white font-Lato-Bold"
+          />
+        ]}
+      />
+    </>
+  );
+
   return (
     <TouchableWithoutFeedback accessibilityRole="button" onPress={blurFields}>
       <View className="px-4 mt-[9px] justify-end">
@@ -155,7 +220,7 @@ const LoginForm = ( {
         <View className="flex-row justify-between">
           <Body2
             accessibilityRole="button"
-            className="underline p-4 color-white"
+            className="underline p-[15px] color-white"
             onPress={() => setIsPasswordVisible( prevState => !prevState )}
           >
             {isPasswordVisible
@@ -164,7 +229,7 @@ const LoginForm = ( {
           </Body2>
           <Body2
             accessibilityRole="button"
-            className="underline p-4 color-white"
+            className="underline p-[15px] color-white"
             onPress={( ) => navigation.navigate( "ForgotPassword" )}
           >
             {t( "Forgot-Password" )}
@@ -187,69 +252,7 @@ const LoginForm = ( {
           testID="Login.loginButton"
           text={t( "LOG-IN" )}
         />
-        <Heading4
-          className="color-white self-center mt-10"
-        >
-          {t( "OR-SIGN-IN-WITH" )}
-        </Heading4>
-        <View className="flex-row justify-center mt-5">
-          {/*
-            Note: Sign in with Apple is doable in Android if we want to:
-            https://github.com/invertase/react-native-apple-authentication?tab=readme-ov-file#android
-          */}
-          { Platform.OS === "ios" && (
-            <INatIconButton
-              onPress={() => logIn( async ( ) => signInWithApple( realm ) )}
-              disabled={loading}
-              className="mr-8"
-              icon="apple"
-              // The svg icon for the Apple logo was downloaded from Apple,
-              // according to the Design Guidelines it already has a margin inside the svg
-              // so we scale it here to fill the entire button.
-              size={50}
-              color={colors.black}
-              backgroundColor={colors.white}
-              accessibilityLabel={t( "Sign-in-with-Apple" )}
-              mode="contained"
-              width={50}
-              height={50}
-            />
-          ) }
-          <INatIconButton
-            onPress={() => logIn( async ( ) => signInWithGoogle( realm ) )}
-            disabled={loading}
-            backgroundColor={colors.white}
-            accessibilityLabel={t( "Sign-in-with-Google" )}
-            mode="contained"
-            width={50}
-            height={50}
-          >
-            <Image
-              className="w-[20px] h-[20px]"
-              source={require( "images/google.png" )}
-              accessibilityIgnoresInvertColors
-            />
-          </INatIconButton>
-
-        </View>
-        {!hideFooter && (
-          <Trans
-            className={classnames(
-              "self-center mt-[31px] underline",
-              // When the keyboard is up this pushes the form up enough to cut
-              // off the username label on some devices
-              !keyboardShown && "mb-[35px]"
-            )}
-            i18nKey="Dont-have-an-account"
-            onPress={( ) => navigation.navigate( "SignUp" )}
-            components={[
-              <Body1 className="text-white" />,
-              <Body1
-                className="text-white font-Lato-Bold"
-              />
-            ]}
-          />
-        )}
+        {!hideFooter && renderFooter( )}
       </View>
     </TouchableWithoutFeedback>
   );
