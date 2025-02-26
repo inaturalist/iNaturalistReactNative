@@ -44,7 +44,6 @@ const LoginSignupWrapper = ( {
       }
     };
     const unsubscribe = navigation.addListener( "focus", ( ) => {
-      console.log( "resetting scroll" );
       resetScroll( );
     } );
     return unsubscribe;
