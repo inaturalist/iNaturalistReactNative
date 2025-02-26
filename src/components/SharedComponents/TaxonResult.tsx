@@ -97,13 +97,16 @@ const TaxonResult = ( {
       || ( usableTaxon as ApiTaxon )?.default_photo?.url
       || ( usableTaxon as RealmTaxon )?.defaultPhoto?.url
   };
+  const taxonImageID = ( taxonProp as ApiTaxon )?.representative_photo?.id
+    || ( usableTaxon as ApiTaxon )?.default_photo?.id
+    || ( usableTaxon as RealmTaxon )?.defaultPhoto?.id;
 
   const navToTaxonDetails = React.useCallback( ( ) => {
     navigation.push( "TaxonDetails", {
       id: usableTaxon?.id,
       hideNavButtons,
       lastScreen,
-      representativePhoto: ( taxonProp as ApiTaxon )?.representative_photo,
+      firstPhotoID: taxonImageID,
       vision
     } );
   }, [
@@ -112,7 +115,7 @@ const TaxonResult = ( {
     navigation,
     usableTaxon?.id,
     vision,
-    taxonProp
+    taxonImageID
   ] );
   const TaxonResultMain = React.useCallback( ( props: TaxonResultMainProps ) => (
     unpressable

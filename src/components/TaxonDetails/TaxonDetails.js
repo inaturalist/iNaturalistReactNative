@@ -88,7 +88,7 @@ const TaxonDetails = ( ): Node => {
   // Hooks
   const navigation = useNavigation( );
   const { params } = useRoute( );
-  const { id, hideNavButtons, representativePhoto } = params;
+  const { id, hideNavButtons, firstPhotoID } = params;
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
   const { remoteUser } = useUserMe( );
@@ -188,18 +188,19 @@ const TaxonDetails = ( ): Node => {
 
   const currentUserHasSeenTaxon = seenByCurrentUser?.total_results === 1;
 
-  const taxonPhotos = compact(
+  const photos = compact(
     taxon?.taxonPhotos
       ? taxon.taxonPhotos.map( taxonPhoto => taxonPhoto.photo )
       : [taxon?.defaultPhoto]
   );
-  // Add the representative photo at the start of the list of taxon photos.
-  // The representative photo is not necessarily a part of taxon photos, e.g. if the taxon here
-  // was navigated to from a common ancestor suggestion, the representative photo could be from
-  // any of its children taxa.
-  const taxonPhotosWithRepPhoto = compact( [representativePhoto, ...taxonPhotos] );
-  // The representative photo might be included in taxonPhotos, so we need to remove duplicates
-  const photos = _.uniqBy( taxonPhotosWithRepPhoto, "id" );
+  // Move the first photo to top if it was passed in as a prop
+  if ( firstPhotoID ) {
+    const firstPhotoIndex = photos.findIndex( photo => photo.id === firstPhotoID );
+    if ( firstPhotoIndex > 0 ) {
+      const firstPhoto = photos.splice( firstPhotoIndex, 1 );
+      photos.unshift( firstPhoto[0] );
+    }
+  }
 
   const updateTaxon = useCallback( ( ) => {
     updateObservationKeys( {
