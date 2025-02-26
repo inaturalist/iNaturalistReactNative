@@ -74,7 +74,8 @@ const ActivitySection = ( {
           <View
             onLayout={event => {
               if ( targetItemID === item?.id ) {
-                onLayoutTargetItem( event );
+                const { layout } = event.nativeEvent;
+                onLayoutTargetItem( layout );
               }
             }}
             key={item.uuid}

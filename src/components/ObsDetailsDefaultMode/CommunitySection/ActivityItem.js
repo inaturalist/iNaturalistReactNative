@@ -68,7 +68,7 @@ const ActivityItem = ( {
   );
 
   return (
-    <View className="flex-column">
+    <View className="">
       <View className="mx-[15px] pb-[7px]">
         <ActivityHeaderContainer
           item={item}
