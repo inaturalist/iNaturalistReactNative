@@ -17,6 +17,7 @@ const PhotoSharing = ( ): Node => {
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const prepareObsEdit = useStore( state => state.prepareObsEdit );
   const setPhotoImporterState = useStore( state => state.setPhotoImporterState );
+  const isAdvancedSuggestionsMode = useStore( state => state.layout.isAdvancedSuggestionsMode );
   const [navigationHandled, setNavigationHandled] = useState( null );
 
   const createObservationAndNavToObsEdit = useCallback( async photoUris => {
@@ -24,7 +25,14 @@ const PhotoSharing = ( ): Node => {
       const newObservation = await Observation.createObservationWithPhotos( photoUris );
       newObservation.description = sharedText;
       prepareObsEdit( newObservation );
-      navigation.navigate( "NoBottomTabStackNavigator", { screen: "ObsEdit" } );
+      if ( isAdvancedSuggestionsMode ) {
+        navigation.navigate(
+          "NoBottomTabStackNavigator",
+          { screen: "Suggestions", params: { lastScreen: "PhotoSharing" } }
+        );
+      } else {
+        navigation.navigate( "NoBottomTabStackNavigator", { screen: "ObsEdit" } );
+      }
     } catch ( e ) {
       Alert.alert(
         "Photo sharing failed: couldn't create new observation:",
@@ -34,7 +42,8 @@ const PhotoSharing = ( ): Node => {
   }, [
     navigation,
     prepareObsEdit,
-    sharedText
+    sharedText,
+    isAdvancedSuggestionsMode
   ] );
 
   useEffect( ( ) => {

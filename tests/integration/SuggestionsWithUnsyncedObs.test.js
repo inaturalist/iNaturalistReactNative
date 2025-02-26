@@ -206,7 +206,8 @@ const setupAppWithSignedInUser = async hasLocation => {
     observations,
     currentObservation: observations[0],
     layout: {
-      isDefaultMode: false
+      isDefaultMode: false,
+      isAdvancedSuggestionsMode: true
     },
     isAdvancedUser: true
   } );
@@ -291,7 +292,7 @@ describe( "from ObsEdit with human observation", ( ) => {
   } );
 } );
 
-describe( "from AICamera", ( ) => {
+describe( "from AICamera directly", ( ) => {
   global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
   beforeEach( async ( ) => {
     inatjs.computervision.score_image
