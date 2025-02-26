@@ -1,5 +1,4 @@
-// @flow
-
+// flow was giving a lot of annoying errors on this screen, so added TypeScript
 import { useRoute } from "@react-navigation/native";
 import { createComment } from "api/comments";
 import { createIdentification } from "api/identifications";
@@ -26,16 +25,62 @@ import SuggestIDSheet from "./Sheets/SuggestIDSheet";
 
 const { useRealm } = RealmContext;
 
-const textInputStyle = Platform.OS === "android" && {
-  height: 125
-};
+const textInputStyle = Platform.OS === "android"
+  ? {
+    height: 125
+  }
+  : undefined;
 
-const initialIdentState = {
+interface Taxon {
+  id: number;
+  ancestor_ids: number[];
+  [key: string]: unknown;
+}
+
+interface Observation {
+  uuid?: string;
+  taxon?: Taxon;
+  community_taxon?: Taxon;
+  prefers_community_taxon: boolean | null;
+  user?: {
+    prefers_community_taxa: boolean;
+  };
+  [key: string]: unknown;
+}
+
+interface Identification {
+  taxon?: Taxon;
+  body?: string;
+  vision?: boolean;
+}
+
+interface IdentState {
+  comment: string | null;
+  commentIsOptional: boolean;
+  identBodySheetShown: boolean;
+  newIdentification: Identification | null;
+  showPotentialDisagreementSheet: boolean;
+  showSuggestIdSheet: boolean;
+  identTaxon: Taxon | null;
+}
+
+type IdentAction =
+  | { type: "SET_IDENT_TAXON"; taxon: Taxon }
+  | { type: "CLEAR_SUGGESTED_TAXON" }
+  | { type: "CONFIRM_ID" }
+  | { type: "DISCARD_ID" }
+  | { type: "HIDE_EDIT_IDENT_BODY_SHEET" }
+  | { type: "HIDE_POTENTIAL_DISAGREEMENT_SHEET" }
+  | { type: "SET_NEW_IDENTIFICATION"; taxon?: Taxon; body?: string; vision?: boolean }
+  | { type: "SHOW_EDIT_IDENT_BODY_SHEET" }
+  | { type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET" }
+  | { type: "SUBMIT_IDENTIFICATION" };
+
+const initialIdentState: IdentState = {
   comment: null,
   commentIsOptional: false,
   identBodySheetShown: false,
   newIdentification: null,
-  showAgreeWithIdSheet: false,
   showPotentialDisagreementSheet: false,
   showSuggestIdSheet: false,
   identTaxon: null
@@ -52,7 +97,7 @@ const SHOW_EDIT_IDENT_BODY_SHEET = "SHOW_EDIT_IDENT_BODY_SHEET";
 const SHOW_POTENTIAL_DISAGREEMENT_SHEET = "SHOW_POTENTIAL_DISAGREEMENT_SHEET";
 const SUBMIT_IDENTIFICATION = "SUBMIT_IDENTIFICATION";
 
-const identReducer = ( state, action ) => {
+const identReducer = ( state: IdentState, action: IdentAction ): IdentState => {
   switch ( action.type ) {
     case SHOW_POTENTIAL_DISAGREEMENT_SHEET:
       return {
@@ -110,19 +155,30 @@ const identReducer = ( state, action ) => {
   }
 };
 
-type Props = {
-  closeAgreeWithIdSheet: Function,
-  confirmRemoteObsWasDeleted?: Function,
-  handleCommentMutationSuccess: Function,
-  handleIdentificationMutationSuccess: Function,
-  hideAddCommentSheet: Function,
-  loadActivityItem: Function,
-  observation: Object,
-  remoteObsWasDeleted?: boolean,
-  showAddCommentSheet?: boolean
+interface RouteParams {
+  identAt?: string;
+  identTaxonId?: number;
+  identTaxonFromVision?: boolean;
+  uuid?: string;
+  [key: string]: unknown;
 }
 
-const ObsDetails = ( {
+interface Props {
+  agreeIdentification: boolean;
+  closeAgreeWithIdSheet: () => void;
+  confirmRemoteObsWasDeleted?: () => void;
+  handleCommentMutationSuccess: ( data: unknown ) => void;
+  handleIdentificationMutationSuccess: ( data: unknown ) => void;
+  hideAddCommentSheet: () => void;
+  loadActivityItem: () => void;
+  observation: Observation;
+  remoteObsWasDeleted?: boolean;
+  showAddCommentSheet?: boolean;
+  showAgreeWithIdSheet: boolean;
+}
+
+const IdentificationSheets: React.FC<Props> = ( {
+  agreeIdentification,
   closeAgreeWithIdSheet,
   confirmRemoteObsWasDeleted,
   handleCommentMutationSuccess,
@@ -131,15 +187,17 @@ const ObsDetails = ( {
   loadActivityItem,
   observation,
   remoteObsWasDeleted,
-  showAddCommentSheet
+  showAddCommentSheet,
+  showAgreeWithIdSheet
 }: Props ): Node => {
   const { params } = useRoute();
+  const routeParams = params as RouteParams;
   const {
     identAt,
     identTaxonId,
     identTaxonFromVision,
     uuid
-  } = params;
+  } = routeParams;
   const [state, dispatch] = useReducer( identReducer, initialIdentState );
 
   const {
@@ -148,7 +206,6 @@ const ObsDetails = ( {
     identBodySheetShown,
     identTaxon,
     newIdentification,
-    showAgreeWithIdSheet,
     showPotentialDisagreementSheet,
     showSuggestIdSheet
   } = state;
@@ -220,8 +277,8 @@ const ObsDetails = ( {
       observationTaxon = observation?.community_taxon || observation.taxon;
     }
     return observationTaxon
-        && identTaxon.id !== observationTaxon.id
-      && observationTaxon.ancestor_ids.includes( identTaxon.id );
+        && identTaxon?.id !== observationTaxon.id
+        && observationTaxon.ancestor_ids.includes( identTaxon?.id );
   }, [identTaxon?.id, observation] );
 
   const setNewIdentification = useCallback( ( ) => {
@@ -278,7 +335,7 @@ const ObsDetails = ( {
     realm
   ] );
 
-  const onAgree = useCallback( ident => {
+  const onAgree = useCallback( ( ident: Identification ) => {
     const agreeParams = {
       observation_id: observation?.uuid,
       taxon_id: ident.taxon?.id,
@@ -294,7 +351,7 @@ const ObsDetails = ( {
     dispatch( { type: HIDE_POTENTIAL_DISAGREEMENT_SHEET } );
   }, [] );
 
-  const doSuggestId = useCallback( potentialDisagree => {
+  const doSuggestId = useCallback( ( potentialDisagree?: boolean ) => {
     if ( !newIdentification?.taxon ) {
       throw new Error( "Cannot create an identification without a taxon" );
     }
@@ -323,7 +380,7 @@ const ObsDetails = ( {
     hasPotentialDisagreement
   ] );
 
-  const onPotentialDisagreePressed = useCallback( potentialDisagree => {
+  const onPotentialDisagreePressed = useCallback( ( potentialDisagree?: boolean ) => {
     dispatch( { type: SUBMIT_IDENTIFICATION } );
     doSuggestId( potentialDisagree );
   }, [doSuggestId] );
@@ -346,7 +403,7 @@ const ObsDetails = ( {
     }
   );
 
-  const onCommentAdded = useCallback( body => {
+  const onCommentAdded = useCallback( ( body: string ) => {
     loadActivityItem( );
     createCommentMutation.mutate( {
       comment: {
@@ -357,7 +414,7 @@ const ObsDetails = ( {
     } );
   }, [createCommentMutation, uuid, loadActivityItem] );
 
-  const confirmCommentFromCommentSheet = useCallback( newComment => {
+  const confirmCommentFromCommentSheet = useCallback( ( newComment: string ) => {
     if ( !commentIsOptional ) {
       onCommentAdded( newComment );
     }
@@ -367,13 +424,13 @@ const ObsDetails = ( {
 
   return (
     <>
-      {showAgreeWithIdSheet && newIdentification && (
+      {showAgreeWithIdSheet && agreeIdentification && (
         <AgreeWithIDSheet
           onAgree={onAgree}
           editIdentBody={editIdentBody}
           hidden={identBodySheetShown}
           onPressClose={closeAgreeWithIdSheet}
-          identification={newIdentification}
+          identification={agreeIdentification}
         />
       )}
       {/* AddCommentSheet */}
@@ -435,4 +492,4 @@ const ObsDetails = ( {
   );
 };
 
-export default ObsDetails;
+export default IdentificationSheets;

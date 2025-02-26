@@ -5,6 +5,7 @@ import {
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { fetchSubscriptions } from "api/observations";
+import IdentificationSheets from "components/ObsDetailsDefaultMode/IdentificationSheets.tsx";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, {
@@ -28,7 +29,6 @@ import useRemoteObservation, {
 import useStore from "stores/useStore";
 
 import useMarkViewedMutation from "./hooks/useMarkViewedMutation";
-import IdentificationSheets from "./IdentificationSheets";
 import ObsDetailsDefaultMode from "./ObsDetailsDefaultMode";
 
 const { useRealm } = RealmContext;
@@ -89,12 +89,13 @@ const reducer = ( state, action ) => {
       return {
         ...state,
         showAgreeWithIdSheet: true,
-        newIdentification: action.newIdentification
+        agreeIdentification: action.agreeIdentification
       };
     case HIDE_AGREE_SHEET:
       return {
         ...state,
-        showAgreeWithIdSheet: false
+        showAgreeWithIdSheet: false,
+        agreeIdentification: null
       };
     case SET_ADD_COMMENT_SHEET:
       return {
@@ -121,11 +122,15 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
   const [state, dispatch] = useReducer( reducer, initialState );
   const [remoteObsWasDeleted, setRemoteObsWasDeleted] = useState( false );
 
+  console.log( uuid, "uuid in ObsDetailsDefaultModeContainer" );
+
   const {
     activityItems,
     addingActivityItem,
+    agreeIdentification,
     observationShown,
-    showAddCommentSheet
+    showAddCommentSheet,
+    showAgreeWithIdSheet
   } = state;
   const queryClient = useQueryClient( );
 
@@ -244,7 +249,7 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
   const openAgreeWithIdSheet = useCallback( taxon => {
     dispatch( {
       type: SHOW_AGREE_SHEET,
-      newIdentification: { taxon }
+      agreeIdentification: { taxon }
     } );
   }, [] );
 
@@ -351,6 +356,7 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
         uuid={uuid}
       />
       <IdentificationSheets
+        agreeIdentification={agreeIdentification}
         closeAgreeWithIdSheet={closeAgreeWithIdSheet}
         confirmRemoteObsWasDeleted={confirmRemoteObsWasDeleted}
         handleCommentMutationSuccess={handleCommentMutationSuccess}
@@ -360,6 +366,7 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
         observation={observationShown}
         remoteObsWasDeleted={remoteObsWasDeleted}
         showAddCommentSheet={showAddCommentSheet}
+        showAgreeWithIdSheet={showAgreeWithIdSheet}
       />
     </>
   );
