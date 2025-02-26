@@ -88,7 +88,9 @@ const TaxonDetails = ( ): Node => {
   // Hooks
   const navigation = useNavigation( );
   const { params } = useRoute( );
-  const { id, hideNavButtons, firstPhotoID } = params;
+  const {
+    id, hideNavButtons, firstPhotoID, representativePhoto
+  } = params;
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
   const { remoteUser } = useUserMe( );
@@ -200,6 +202,10 @@ const TaxonDetails = ( ): Node => {
       const firstPhoto = photos.splice( firstPhotoIndex, 1 );
       photos.unshift( firstPhoto[0] );
     }
+  }
+  // Add the representative photo to the top of the list
+  if ( representativePhoto ) {
+    photos.unshift( representativePhoto );
   }
 
   const updateTaxon = useCallback( ( ) => {
