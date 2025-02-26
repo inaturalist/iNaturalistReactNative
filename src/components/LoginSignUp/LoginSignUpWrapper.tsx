@@ -1,14 +1,16 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import { ImageBackground, SafeAreaView, ScrollView } from "components/styledComponents";
-import React, { PropsWithChildren, useEffect } from "react";
+import React, {
+  PropsWithChildren, useEffect, useRef
+} from "react";
 import type {
   ImageSourcePropType,
   ImageStyle,
   StyleProp
 } from "react-native";
 import {
-  KeyboardAvoidingView,
+  Dimensions,
   Platform,
   StatusBar
 } from "react-native";
@@ -16,28 +18,20 @@ import colors from "styles/tailwindColors";
 
 interface Props extends PropsWithChildren {
   backgroundSource: ImageSourcePropType,
-  imageStyle?: StyleProp<ImageStyle>,
-  keyboardVerticalOffset?: number,
-  scrollEnabled?: boolean
+  imageStyle?: StyleProp<ImageStyle>
 }
 
-const KEYBOARD_AVOIDING_VIEW_STYLE = {
-  flex: 1,
-  flexGrow: 1
-} as const;
-
 const SCROLL_VIEW_STYLE = {
-  flex: 1,
-  justifyContent: "space-between"
+  // Make sure content can expand beyond the screen height to enable scrolling
+  minHeight: Dimensions.get( "window" ).height * 1.1
 } as const;
 
 const LoginSignupWrapper = ( {
   backgroundSource,
   children,
-  imageStyle,
-  keyboardVerticalOffset,
-  scrollEnabled = true
+  imageStyle
 }: Props ) => {
+  const scrollViewRef = useRef( null );
   const navigation = useNavigation( );
   // Make the StatusBar translucent in Android but reset it when we leave
   // because this alters the layout.
@@ -82,19 +76,15 @@ const LoginSignupWrapper = ( {
           barStyle="light-content"
           backgroundColor={colors.black}
         />
-        <KeyboardAvoidingView
-          keyboardVerticalOffset={keyboardVerticalOffset}
-          behavior="padding"
-          style={KEYBOARD_AVOIDING_VIEW_STYLE}
+        <ScrollView
+          ref={scrollViewRef}
+          keyboardShouldPersistTaps="always"
+          contentContainerStyle={SCROLL_VIEW_STYLE}
         >
-          <ScrollView
-            keyboardShouldPersistTaps="always"
-            contentContainerStyle={SCROLL_VIEW_STYLE}
-            scrollEnabled={scrollEnabled}
-          >
-            {children}
-          </ScrollView>
-        </KeyboardAvoidingView>
+          {typeof children === "function"
+            ? children( { scrollViewRef } )
+            : children}
+        </ScrollView>
       </SafeAreaView>
     </ImageBackground>
   );

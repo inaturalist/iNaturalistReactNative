@@ -6,7 +6,9 @@ import {
 import { Image, View } from "components/styledComponents";
 import { t } from "i18next";
 import { RealmContext } from "providers/contexts.ts";
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useCallback, useEffect, useRef, useState
+} from "react";
 import { Trans } from "react-i18next";
 import {
   Platform,
@@ -26,6 +28,7 @@ const { useRealm } = RealmContext;
 
 interface Props {
   hideFooter?: boolean;
+  scrollViewRef?: React.Ref
 }
 
 interface LoginFormParams {
@@ -39,8 +42,10 @@ type ParamList = {
 }
 
 const LoginForm = ( {
-  hideFooter
+  hideFooter,
+  scrollViewRef
 }: Props ) => {
+  const firstInputFieldRef = useRef( null );
   const { params } = useRoute<RouteProp<ParamList, "LoginFormParams">>( );
   const emailConfirmed = params?.emailConfirmed;
   const realm = useRealm( );
@@ -109,6 +114,22 @@ const LoginForm = ( {
     params,
     setIsDefaultMode
   ] );
+
+  const scrollToItem = useCallback( ( ) => {
+    firstInputFieldRef.current.measureLayout(
+      scrollViewRef.current,
+      ( _, y ) => {
+        scrollViewRef.current.scrollTo( { y, animated: true } );
+      },
+      () => console.log( "Failed to measure" )
+    );
+  }, [scrollViewRef] );
+
+  useEffect( ( ) => {
+    if ( keyboardShown ) {
+      scrollToItem( );
+    }
+  }, [keyboardShown, scrollToItem] );
 
   const renderFooter = ( ) => (
     <>
@@ -192,20 +213,22 @@ const LoginForm = ( {
             </List2>
           </View>
         ) }
-        <LoginSignUpInputField
-          ref={emailRef}
-          accessibilityLabel={t( "USERNAME-OR-EMAIL" )}
-          autoComplete="email"
-          headerText={t( "USERNAME-OR-EMAIL" )}
-          inputMode="email"
-          keyboardType="email-address"
-          onChangeText={( text: string ) => setEmail( text )}
-          testID="Login.email"
-          // https://github.com/facebook/react-native/issues/39411#issuecomment-1817575790
-          // textContentType prevents visual flickering, which is a temporary issue
-          // in iOS 17
-          textContentType="emailAddress"
-        />
+        <View ref={firstInputFieldRef}>
+          <LoginSignUpInputField
+            ref={emailRef}
+            accessibilityLabel={t( "USERNAME-OR-EMAIL" )}
+            autoComplete="email"
+            headerText={t( "USERNAME-OR-EMAIL" )}
+            inputMode="email"
+            keyboardType="email-address"
+            onChangeText={( text: string ) => setEmail( text )}
+            testID="Login.email"
+            // https://github.com/facebook/react-native/issues/39411#issuecomment-1817575790
+            // textContentType prevents visual flickering, which is a temporary issue
+            // in iOS 17
+            textContentType="emailAddress"
+          />
+        </View>
         <LoginSignUpInputField
           ref={passwordRef}
           accessibilityLabel={t( "PASSWORD" )}
