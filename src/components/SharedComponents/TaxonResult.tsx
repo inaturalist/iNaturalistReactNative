@@ -92,14 +92,11 @@ const TaxonResult = ( {
   // A representative photo is dependant on the actual image that was scored by computer vision
   // and is currently not added to the taxon realm. So, if it is available directly from the
   // suggestion, i.e. taxonProp, use it. Otherwise, use the default photo from the taxon.
-  const taxonImage = {
-    uri: ( taxonProp as ApiTaxon )?.representative_photo?.url
-      || ( usableTaxon as ApiTaxon )?.default_photo?.url
-      || ( usableTaxon as RealmTaxon )?.defaultPhoto?.url
-  };
-  const taxonImageID = ( taxonProp as ApiTaxon )?.representative_photo?.id
-    || ( usableTaxon as ApiTaxon )?.default_photo?.id
-    || ( usableTaxon as RealmTaxon )?.defaultPhoto?.id;
+  const taxonImage = ( taxonProp as ApiTaxon )?.representative_photo
+      || ( usableTaxon as ApiTaxon )?.default_photo
+      || ( usableTaxon as RealmTaxon )?.defaultPhoto;
+  const taxonImageSource = { uri: taxonImage?.url };
+  const taxonImageID = taxonImage?.id;
 
   const navToTaxonDetails = React.useCallback( ( ) => {
     navigation.push( "TaxonDetails", {
@@ -200,7 +197,7 @@ const TaxonResult = ( {
         <View className="w-[62px] h-[62px] justify-center relative">
           <ObsImagePreview
             // TODO fix when ObsImagePreview typed
-            source={taxonImage}
+            source={taxonImageSource}
             testID={`${testID}.photo`}
             iconicTaxonName={usableTaxon?.iconic_taxon_name}
             className="rounded-xl"
