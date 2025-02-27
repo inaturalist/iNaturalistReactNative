@@ -162,6 +162,7 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     setSentinelFileName( null );
 
     if ( showMatchScreen ) {
+      // skip navigation while offline results would load here
       return navigation.push( "Match", {
         entryScreen: "CameraWithDevice",
         lastScreen: "CameraWithDevice"
