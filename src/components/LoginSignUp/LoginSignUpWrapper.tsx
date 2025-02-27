@@ -103,7 +103,7 @@ const LoginSignupWrapper = ( {
         />
         <ScrollView
           ref={scrollViewRef}
-          keyboardShouldPersistTaps="never"
+          keyboardShouldPersistTaps="handled"
           keyboardDismissMode="on-drag"
           contentContainerStyle={SCROLL_VIEW_STYLE}
         >
