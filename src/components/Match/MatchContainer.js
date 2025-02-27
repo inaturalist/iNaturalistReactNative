@@ -254,8 +254,14 @@ const MatchContainer = ( ) => {
   const otherSuggestions = orderedSuggestions
     .filter( suggestion => suggestion.taxon.id !== taxonId );
 
-  const navToTaxonDetails = ( ) => {
-    navigation.push( "TaxonDetails", { id: taxonId } );
+  const navToTaxonDetails = photo => {
+    const params = { id: taxonId };
+    if ( !photo?.isRepresentativeButOtherTaxon ) {
+      params.firstPhotoID = photo.id;
+    } else {
+      params.representativePhoto = photo;
+    }
+    navigation.push( "TaxonDetails", params );
   };
 
   const handleSaveOrDiscardPress = async action => {

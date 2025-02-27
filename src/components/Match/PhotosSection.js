@@ -6,7 +6,7 @@ import {
 import {
   Image, Pressable, View
 } from "components/styledComponents";
-import _, { compact, uniqBy } from "lodash";
+import _, { compact } from "lodash";
 import React, { useEffect, useState } from "react";
 import Photo from "realmModels/Photo";
 import getImageDimensions from "sharedHelpers/getImageDimensions";
@@ -16,7 +16,7 @@ type Props = {
   representativePhoto: Object,
   taxon: Object,
   obsPhotos: Array<Object>,
-  navToTaxonDetails: ( ) => void
+  navToTaxonDetails: ( photo: Object ) => void
 }
 
 const PhotosSection = ( {
@@ -35,21 +35,32 @@ const PhotosSection = ( {
 
   const taxonPhotos = compact(
     localTaxonPhotos
-      ? localTaxonPhotos.map( taxonPhoto => taxonPhoto.photo )
+      ? localTaxonPhotos.map( taxonPhoto => ( { ...taxonPhoto.photo } ) )
       : [taxon?.defaultPhoto]
   );
-  // don't show the iconic taxon photo which is a mashup of 9 photos
-  const taxonPhotosNoIconic = localTaxon?.isIconic
-    ? taxonPhotos.slice( 1, 4 )
-    : taxonPhotos.slice( 0, 3 );
-
-  // Add the representative photo at the start of the list of taxon photos.
-  const taxonPhotosWithRepPhoto = compact( [representativePhoto, ...taxonPhotosNoIconic] );
-  // The representative photo might be already included in taxonPhotosNoIconic
-  const uniqueTaxonPhotos = uniqBy( taxonPhotosWithRepPhoto, "id" );
-  if ( uniqueTaxonPhotos.length > 3 ) {
-    uniqueTaxonPhotos.pop( );
+  // don't show the iconic taxon photo which is a mashup of 9 bestTaxonPhotos
+  if ( localTaxon?.isIconic ) {
+    taxonPhotos.splice( 0 );
   }
+
+  // If the representative photo is already included in taxonPhotos, don't add it but move
+  // it to the start of the list.
+  let firstPhoto;
+  if ( representativePhoto && taxonPhotos.some( photo => photo.id === representativePhoto.id ) ) {
+    const repPhotoIndex = taxonPhotos.findIndex( photo => photo.id === representativePhoto.id );
+    // The first photo to show is the realm version of the representative photo
+    firstPhoto = taxonPhotos.splice( repPhotoIndex, 1 )[0];
+  } else if ( representativePhoto ) {
+    // This is possible because a representative photo can be from a different taxon, e.g. children
+    // of common ancestors. In this case, the representative photo is not included in taxonPhotos.
+    firstPhoto = { ...representativePhoto, isRepresentativeButOtherTaxon: true };
+  }
+  // Add the representative photo at the start of the list of taxon bestTaxonPhotos.
+  const taxonPhotosWithRepPhoto = compact( [
+    firstPhoto,
+    ...taxonPhotos
+  ] );
+  const bestTaxonPhotos = taxonPhotosWithRepPhoto.slice( 0, 3 );
 
   const observationPhotos = compact(
     obsPhotos
@@ -70,24 +81,24 @@ const PhotosSection = ( {
   }, [observationPhoto] );
 
   const getLayoutClasses = ( ) => {
-    // Basic layout: no taxon photos + obs photo a square
+    // Basic layout: no taxon bestTaxonPhotos + obs photo a square
     let containerClass = "flex-row";
     let observationPhotoClass = "w-full h-full";
     let taxonPhotosContainerClass;
     let taxonPhotoClass;
     // If there is only one taxon photo: obs photo a square,
     // taxon photo a square in the lower right corner of the obs photo
-    if ( uniqueTaxonPhotos.length === 1 ) {
+    if ( bestTaxonPhotos.length === 1 ) {
       containerClass = "flex-row relative";
       observationPhotoClass = "w-full h-full";
       taxonPhotosContainerClass = "absolute bottom-0 right-0 w-1/3 h-1/3";
       taxonPhotoClass = "w-full h-full border-l-[3px] border-t-[3px] border-white";
     }
-    if ( uniqueTaxonPhotos.length > 1 ) {
+    if ( bestTaxonPhotos.length > 1 ) {
       if ( displayPortraitLayout ) {
         containerClass = "flex-row";
         observationPhotoClass = "w-2/3 h-full pr-[3px]";
-        if ( uniqueTaxonPhotos.length === 2 ) {
+        if ( bestTaxonPhotos.length === 2 ) {
           taxonPhotosContainerClass = "flex-col w-1/3 h-full space-y-[3px]";
           taxonPhotoClass = "w-full h-1/2";
         } else {
@@ -97,7 +108,7 @@ const PhotosSection = ( {
       } else {
         containerClass = "flex-col";
         observationPhotoClass = "w-full h-2/3 pb-[3px]";
-        if ( uniqueTaxonPhotos.length === 2 ) {
+        if ( bestTaxonPhotos.length === 2 ) {
           taxonPhotosContainerClass = "flex-row w-full h-1/3 space-x-[3px]";
           taxonPhotoClass = "w-1/2 h-full";
         } else {
@@ -147,10 +158,10 @@ const PhotosSection = ( {
       layoutClasses?.taxonPhotosContainerClass
     )}
     >
-      {uniqueTaxonPhotos.map( photo => (
+      {bestTaxonPhotos.map( photo => (
         <Pressable
           accessibilityRole="button"
-          onPress={navToTaxonDetails}
+          onPress={() => navToTaxonDetails( photo )}
           accessibilityState={{ disabled: false }}
           key={photo.id}
           className={classnames(
@@ -180,12 +191,12 @@ const PhotosSection = ( {
   return (
     <View className={classnames( "h-[390px]", layoutClasses.containerClass )}>
       {renderObservationPhoto( )}
-      {uniqueTaxonPhotos.length > 0 && renderTaxonPhotos( )}
+      {bestTaxonPhotos.length > 0 && renderTaxonPhotos( )}
       <MediaViewerModal
         showModal={mediaViewerVisible}
         onClose={( ) => setMediaViewerVisible( false )}
         uri={observationPhoto}
-        photos={observationPhotos}
+        bestTaxonPhotos={observationPhotos}
       />
     </View>
   );
