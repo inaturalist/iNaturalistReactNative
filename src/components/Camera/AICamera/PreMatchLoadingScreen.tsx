@@ -1,4 +1,4 @@
-import { ActivityIndicator, Body1 } from "components/SharedComponents";
+import { ActivityIndicator, Body1, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect, useRef, useState } from "react";
@@ -25,11 +25,13 @@ const PreMatchLoadingScreen = ( { takingPhoto }: Props ): Node => {
     if ( takingPhoto ) {
       setShowLoading( true );
       Animated.sequence( [
-        // fade screen out to black, but don't fade back in for pre-match loading screen
-        Animated.timing( fadeAnimation, fade( 1 ) )
+        // fade screen out to partial opacity and don't fade back in for pre-match loading screen
+        Animated.timing( fadeAnimation, fade( 0.8 ) )
       ] ).start( );
     }
   }, [takingPhoto, fadeAnimation] );
+
+  const navigateToMatch = ( ) => console.log( "navigate to match screen" );
 
   const animatedStyle = {
     zIndex: 1000,
@@ -47,14 +49,21 @@ const PreMatchLoadingScreen = ( { takingPhoto }: Props ): Node => {
     >
       {showLoading && (
         <>
-          <Body1 className="absolute right-10 top-20 text-white underline">
-            {t( "Skip" )}
-          </Body1>
+          <View className="absolute right-5 top-10 text-white underline">
+            <INatIconButton
+              onPress={navigateToMatch}
+              accessibilityLabel={t( "Skip-additional-suggestions" )}
+              accessibilityHint={t( "Navigates-to-match-screen" )}
+              icon="skip"
+              color={colors.white}
+              size={20}
+            />
+          </View>
           <View className="flex-1 items-center justify-center">
             <Body1 className="text-white">
               {t( "Getting-an-even-more-accurate-ID" )}
             </Body1>
-            <Body1 className="text-white mt-5 mb-10">
+            <Body1 className="text-white mt-2 mb-[29px]">
               {t( "This-may-take-a-few-seconds" )}
             </Body1>
             <ActivityIndicator

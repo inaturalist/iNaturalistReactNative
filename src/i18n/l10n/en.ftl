@@ -543,7 +543,7 @@ Get-identifications-from-real-people = Get identifications from real people.
 Get-more-accurate-suggestions-create-useful-data = Get more accurate suggestions & create useful data for science using your location
 # Preceded by the fragment, "By uploading your observation to iNaturalist, you can:"
 Get-your-identification-verified-by-real-people = Get your identification verified by real people in the iNaturalist community
-Getting-an-even-more-accurate-ID = Getting an even more accurate ID
+Getting-an-even-more-accurate-ID = Getting an even more accurate ID...
 # Label for button that returns to the previous screen
 Go-back = Go back
 Google-Play-Services-Not-Installed = Google Play Services Not Installed
@@ -757,6 +757,7 @@ Navigates-to-AI-camera = Navigates to AI camera
 Navigates-to-bulk-importer = Navigates to bulk importer
 Navigates-to-camera = Navigates to camera
 Navigates-to-explore = Navigates to explore
+Navigates-to-match-screen = Navigates to match screen
 Navigates-to-notifications = Navigates to notifications
 Navigates-to-observation-details = Navigates to observation details screen
 Navigates-to-observation-edit-screen = Navigate to observation edit screen
@@ -1176,8 +1177,8 @@ Sign-in-with-Apple-Failed = Sign in with Apple Failed
 # Accessibility label for button that allows user to sign in with their Google account
 Sign-in-with-Google = Sign in with Google
 Sign-in-with-Google-Failed = Sign in with Google Failed
-# Button to allow user to skip online vision result loading from AICamera -> Match
-Skip = Skip
+# Accessibility label on loading screen from AICamera -> Match which skips loading online suggestions
+Skip-additional-suggestions = Skip additional suggestions
 Skip-for-now = Skip for now
 # Generic error message
 Something-went-wrong = Something went wrong.
@@ -1265,7 +1266,7 @@ The-models-that-suggest-species = The models that suggest species based on visua
 This-is-a-wild-organism = This is a wild organism and wasn't placed in this location by humans.
 This-is-how-taxon-names-will-be-displayed = This is how all taxon names will be displayed to you across iNaturalist:
 This-is-your-identification-other-people-may-help-confirm-it = This is your identification. Other people may help confirm it!
-This-may-take-a-few-seconds = This may take a few seconds
+This-may-take-a-few-seconds = This may take a few seconds.
 This-observation-has-no-comments-or-identifications-yet = This observation has no comments or identifications yet.
 This-observation-has-not-met-the-conditions-required-to-meet-Research-Grade = This observation has not met the conditions required to meet Research Grade status
 This-observation-is-not-eligible-for-research-grade-status = This observation is not eligible for research grade status. Learn more in the Data Quality Assessment below.
