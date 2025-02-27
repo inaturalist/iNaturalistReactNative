@@ -9,7 +9,7 @@ import {
 import { Pressable, View } from "components/styledComponents";
 import React, { PropsWithChildren } from "react";
 import type { GestureResponderEvent } from "react-native";
-import type { RealmTaxon } from "realmModels/types";
+import type { RealmTaxon, RealmTaxonPhoto } from "realmModels/types";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useCurrentUser, useTaxon, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
@@ -92,27 +92,38 @@ const TaxonResult = ( {
   // A representative photo is dependant on the actual image that was scored by computer vision
   // and is currently not added to the taxon realm. So, if it is available directly from the
   // suggestion, i.e. taxonProp, use it. Otherwise, use the default photo from the taxon.
-  const taxonImage = ( taxonProp as ApiTaxon )?.representative_photo
+  const representativePhoto = ( taxonProp as ApiTaxon )?.representative_photo;
+  const taxonImage = representativePhoto
       || ( usableTaxon as ApiTaxon )?.default_photo
       || ( usableTaxon as RealmTaxon )?.defaultPhoto;
   const taxonImageSource = { uri: taxonImage?.url };
-  const taxonImageID = taxonImage?.id;
+
+  const isRepresentativeButOtherTaxon = representativePhoto
+    && !localTaxon?.taxonPhotos?.some(
+      ( tp: RealmTaxonPhoto ) => tp.photo.id === representativePhoto.id
+    );
 
   const navToTaxonDetails = React.useCallback( ( ) => {
-    navigation.push( "TaxonDetails", {
+    const params = {
       id: usableTaxon?.id,
       hideNavButtons,
       lastScreen,
-      firstPhotoID: taxonImageID,
       vision
-    } );
+    };
+    if ( !isRepresentativeButOtherTaxon ) {
+      params.firstPhotoID = taxonImage?.id;
+    } else {
+      params.representativePhoto = taxonImage;
+    }
+    navigation.push( "TaxonDetails", params );
   }, [
     hideNavButtons,
     lastScreen,
     navigation,
     usableTaxon?.id,
     vision,
-    taxonImageID
+    taxonImage,
+    isRepresentativeButOtherTaxon
   ] );
   const TaxonResultMain = React.useCallback( ( props: TaxonResultMainProps ) => (
     unpressable
