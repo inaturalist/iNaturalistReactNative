@@ -93,9 +93,14 @@ const TaxonResult = ( {
   // and is currently not added to the taxon realm. So, if it is available directly from the
   // suggestion, i.e. taxonProp, use it. Otherwise, use the default photo from the taxon.
   const representativePhoto = ( taxonProp as ApiTaxon )?.representative_photo;
-  const taxonImage = representativePhoto
+  // I have seen the RealmTaxon that is accessed here get invalidated and deleted
+  // while this screen is still in stack and therefore the app erroring out.
+  // Have not had time to investigate further, but this is a workaround for now.
+  const taxonImagePointer = representativePhoto
       || ( usableTaxon as ApiTaxon )?.default_photo
       || ( usableTaxon as RealmTaxon )?.defaultPhoto;
+  const taxonImage = React.useMemo( () => ( { ...taxonImagePointer } ), [taxonImagePointer] );
+
   const taxonImageSource = { uri: taxonImage?.url };
 
   const isRepresentativeButOtherTaxon = representativePhoto
