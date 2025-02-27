@@ -7,22 +7,18 @@ import LoginSignUpWrapper from "./LoginSignUpWrapper";
 import SignUpForm from "./SignUpForm";
 
 const TARGET_NON_KEYBOARD_HEIGHT = 440;
-const HIDE_HEADER_HEIGHT = 580;
 const IMAGE_STYLE = { opacity: 0.5 };
 
 const SignUp = ( ) => {
   const {
-    keyboardShown,
-    keyboardVerticalOffset,
-    nonKeyboardHeight
+    keyboardShown
   } = useKeyboardInfo( TARGET_NON_KEYBOARD_HEIGHT );
 
-  const hideHeader = nonKeyboardHeight < HIDE_HEADER_HEIGHT && keyboardShown;
+  const hideHeader = keyboardShown;
 
   return (
     <LoginSignUpWrapper
       backgroundSource={require( "images/background/birger-strahl-ksiGE4hMiso-unsplash.jpg" )}
-      keyboardVerticalOffset={keyboardVerticalOffset}
       imageStyle={IMAGE_STYLE}
     >
       <Header

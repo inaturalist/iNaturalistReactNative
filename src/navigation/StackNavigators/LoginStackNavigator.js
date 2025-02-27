@@ -21,7 +21,7 @@ const Stack = createNativeStackNavigator( );
 const LoginCloseButton = ( ) => (
   <CloseButton
     handleClose={navigation => navigation.getParent( )?.goBack( )}
-    buttonClassName="mr-[-15px]"
+    buttonClassName="mr-[-5px]"
   />
 );
 
