@@ -14,7 +14,7 @@ const { useRealm } = RealmContext;
 // only return predictions from rank ORDER or lower. do we still want this
 // for the Match screen?
 
-const RANK_LEVEL_ORDER = 40;
+// const RANK_LEVEL_ORDER = 40;
 
 const formatPredictions = ( rawPredictions, iconicTaxa ) => {
   // similar to what we're doing in the AICamera to get iconic taxon name,
@@ -27,9 +27,9 @@ const formatPredictions = ( rawPredictions, iconicTaxa ) => {
   // returned similarly to how we return them on web; this is returning a
   // single branch like on the AI Camera 2023-12-08
   const formattedPredictions = rawPredictions?.reverse( )
-    .filter( prediction => prediction.rank_level <= RANK_LEVEL_ORDER )
+    // .filter( prediction => prediction.rank_level <= RANK_LEVEL_ORDER )
     .map( prediction => ( {
-      score: prediction.score,
+      combined_score: prediction.combined_score,
       taxon: {
         id: Number( prediction.taxon_id ),
         name: prediction.name,
