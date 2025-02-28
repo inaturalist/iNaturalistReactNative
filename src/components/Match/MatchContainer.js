@@ -167,7 +167,7 @@ const MatchContainer = ( ) => {
     // the top of the list
     const sortedList = _.orderBy(
       suggestionsList,
-      suggestion => suggestion.combined_score || suggestion.score,
+      suggestion => suggestion.combined_score,
       ["desc"]
     );
 
@@ -237,7 +237,7 @@ const MatchContainer = ( ) => {
     // make sure list is in order of confidence score
     const sortedList = _.orderBy(
       orderedList,
-      suggestion => suggestion.combined_score || suggestion.score,
+      suggestion => suggestion.combined_score,
       ["desc"]
     );
     dispatch( {
