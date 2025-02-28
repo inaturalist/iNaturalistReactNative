@@ -8,7 +8,6 @@ const mockModelResult = {
     {
       name: "Sempervivum tectorum",
       rank_level: 10,
-      rank: "species",
       combined_score: 96,
       taxon_id: 51779
     }
