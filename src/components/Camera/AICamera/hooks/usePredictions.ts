@@ -39,11 +39,7 @@ const usePredictions = ( ) => {
         name: p.name,
         rank_level: p.rank_level,
         combined_score: p.combined_score,
-        taxon_id: p.taxon_id,
-        ancestor_ids: p.ancestor_ids,
-        rank: p.rank,
-        iconic_class_id: p.iconic_class_id,
-        spatial_class_id: p.spatial_class_id
+        taxon_id: p.taxon_id
       } ) )
       .sort( ( a, b ) => a.rank_level - b.rank_level );
     const branchIDs = branch.map( t => t.taxon_id );
