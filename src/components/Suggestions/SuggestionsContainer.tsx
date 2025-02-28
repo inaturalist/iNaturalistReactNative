@@ -204,7 +204,6 @@ const SuggestionsContainer = ( ) => {
     timedOut,
     resetTimeout,
     onlineSuggestions,
-    offlineSuggestions,
     onlineSuggestionsError,
     onlineSuggestionsUpdatedAt,
     suggestions,
@@ -351,13 +350,13 @@ const SuggestionsContainer = ( ) => {
   const debugData = {
     timedOut,
     onlineSuggestions,
-    offlineSuggestions,
     onlineSuggestionsError,
     onlineSuggestionsUpdatedAt,
     selectedPhotoUri,
     shouldUseEvidenceLocation,
     topSuggestionType: suggestions?.topSuggestionType,
-    usingOfflineSuggestions
+    usingOfflineSuggestions,
+    suggestions
   };
 
   return (
