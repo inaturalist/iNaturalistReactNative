@@ -54,6 +54,7 @@ const useOnlineSuggestions = (
   const {
     data: onlineSuggestions,
     dataUpdatedAt,
+    refetch,
     fetchStatus,
     error
   } = useAuthenticatedQuery(
@@ -126,6 +127,7 @@ const useOnlineSuggestions = (
   const queryObject = {
     dataUpdatedAt,
     error,
+    refetch,
     timedOut,
     resetTimeout,
     fetchStatus

@@ -22,7 +22,7 @@ const MapSection = ( { observation, taxon }: Props ) => {
   const currentUser = useCurrentUser( );
   const [showMapModal, setShowMapModal] = useState( false );
   const latitude = observation.privateLatitude || observation.latitude;
-  const longitude = observation.privateLongitude || observation.longitude;
+  const longitude = observation.privateLongitude || observation.privateLongitude;
   const coordinateString = t( "Lat-Lon", {
     latitude,
     longitude

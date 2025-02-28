@@ -15,13 +15,13 @@ import ObscurationExplanation from "./ObscurationExplanation";
 interface Props {
   belongsToCurrentUser: boolean,
   observation: RealmObservation,
-  handleLocationPickerPressed?: ( ) => void
+  handleAddLocationPressed?: ( ) => void
 }
 
 const LocationSection = ( {
   belongsToCurrentUser,
   observation,
-  handleLocationPickerPressed
+  handleAddLocationPressed
 }: Props ) => {
   const currentUser = useCurrentUser( );
   const geoprivacy = observation?.geoprivacy;
@@ -32,7 +32,7 @@ const LocationSection = ( {
     <View className="py-1">
       <View className="m-4">
         {
-          latitude !== undefined
+          latitude === undefined
             ? (
               <Heading5 className="mb-2">
                 {t( "OBSERVED-AT--label" )}
@@ -45,7 +45,7 @@ const LocationSection = ( {
                 </Heading5>
                 <SimpleObservationLocation
                   observation={observation}
-                  handleLocationPickerPressed={handleLocationPickerPressed}
+                  handleAddLocationPressed={handleAddLocationPressed}
                 />
               </>
             )

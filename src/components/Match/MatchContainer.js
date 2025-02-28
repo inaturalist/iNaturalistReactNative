@@ -16,12 +16,14 @@ import { RealmContext } from "providers/contexts.ts";
 import React, {
   useCallback, useEffect, useReducer, useRef, useState
 } from "react";
+import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import saveObservation from "sharedHelpers/saveObservation.ts";
 import {
   useExitObservationFlow, useLocationPermission, useSuggestions
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
+import fetchUserLocation from "../../sharedHelpers/fetchUserLocation";
 import Match from "./Match";
 
 const setQueryKey = ( selectedPhotoUri, shouldUseEvidenceLocation ) => [
@@ -92,18 +94,6 @@ const MatchContainer = ( ) => {
     skipStoreReset: true
   } );
 
-  const openLocationPicker = ( ) => {
-    navigation.navigate( "LocationPicker" );
-  };
-
-  const handleLocationPickerPressed = ( ) => {
-    if ( hasPermissions ) {
-      openLocationPicker( );
-    } else {
-      requestPermissions( );
-    }
-  };
-
   const { isConnected } = useNetInfo( );
 
   const evidenceHasLocation = !!currentObservation?.latitude;
@@ -143,7 +133,8 @@ const MatchContainer = ( ) => {
   } ), [] );
 
   const {
-    suggestions
+    suggestions,
+    refetchSuggestions
   } = useSuggestions( observationPhoto, {
     shouldFetchOnlineSuggestions,
     onFetchError,
@@ -152,6 +143,36 @@ const MatchContainer = ( ) => {
     queryKey,
     onlineSuggestionsAttempted
   } );
+
+  const getCurrentUserLocation = async ( ) => {
+    const currentUserLocation = await fetchUserLocation( );
+    const placeName
+     = await fetchPlaceName( currentUserLocation.latitude, currentUserLocation.longitude );
+    updateObservationKeys( {
+      latitude: currentUserLocation.latitude,
+      longitude: currentUserLocation.longitude,
+      place_guess: placeName
+    } );
+    const newScoreImageParams = {
+      ...scoreImageParams,
+      lat: currentUserLocation.latitude,
+      lng: currentUserLocation.longitude
+    };
+    dispatch( {
+      type: "TOGGLE_LOCATION",
+      shouldUseEvidenceLocation: true,
+      scoreImageParams: newScoreImageParams
+    } );
+    refetchSuggestions();
+  };
+
+  const handleAddLocationPressed = ( ) => {
+    if ( hasPermissions ) {
+      getCurrentUserLocation();
+    } else {
+      requestPermissions( );
+    }
+  };
 
   const scrollToTop = useCallback( ( ) => {
     if ( scrollRef.current ) {
@@ -277,13 +298,13 @@ const MatchContainer = ( ) => {
         onSuggestionChosen={onSuggestionChosen}
         handleSaveOrDiscardPress={handleSaveOrDiscardPress}
         navToTaxonDetails={navToTaxonDetails}
-        handleLocationPickerPressed={handleLocationPickerPressed}
+        handleAddLocationPressed={handleAddLocationPressed}
         topSuggestion={topSuggestion}
         otherSuggestions={otherSuggestions}
         suggestionsLoading={suggestionsLoading}
         scrollRef={scrollRef}
       />
-      {renderPermissionsGate( { onPermissionGranted: openLocationPicker } )}
+      {renderPermissionsGate( { onPermissionGranted: getCurrentUserLocation } )}
     </>
   );
 };

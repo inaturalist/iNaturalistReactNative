@@ -6,13 +6,11 @@ import React, { useMemo } from "react";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
-  observation: Object,
-  handleLocationPickerPressed?: ( ) => void
+  observation: Object
 };
 
 const SimpleObservationLocation = ( {
-  observation,
-  handleLocationPickerPressed
+  observation
 }: Props ): Node => {
   const { t } = useTranslation( );
 
@@ -35,17 +33,9 @@ const SimpleObservationLocation = ( {
       className="text-darkGray"
       ellipsizeMode="tail"
       accessible
-      accessibilityLabel={handleLocationPickerPressed
-        ? t( "Edit-location" )
-        : t( "Location" )}
+      accessibilityLabel={t( "Location" )}
       accessibilityValue={{
         text: displayLocation
-      }}
-      disabled={displayLocation !== null}
-      onPress={( ) => {
-        if ( handleLocationPickerPressed !== undefined ) {
-          handleLocationPickerPressed( );
-        }
       }}
     >
       {displayLocation}
