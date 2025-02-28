@@ -76,6 +76,7 @@ const MatchContainer = ( ) => {
   const currentObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
   const cameraRollUris = useStore( state => state.cameraRollUris );
+  // const offlineSuggestions = useStore( state => state.offlineSuggestions );
   // likely need aiCameraSuggestion for loading screen
   // const aICameraSuggestion = useStore( state => state.aICameraSuggestion );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
