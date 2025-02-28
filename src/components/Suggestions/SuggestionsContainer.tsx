@@ -51,7 +51,6 @@ const setQueryKey = ( selectedPhotoUri, shouldUseEvidenceLocation ) => [
 ];
 
 export type Suggestion = {
-  score: number;
   combined_score: number;
   taxon: {
     id: number;
