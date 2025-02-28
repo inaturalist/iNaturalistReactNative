@@ -13,7 +13,7 @@ import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { VolumeManager } from "react-native-volume-manager";
-import { convertOfflineScoreToConfidence } from "sharedHelpers/convertScores.ts";
+import convertScoreToConfidence from "sharedHelpers/convertScores.ts";
 import { log } from "sharedHelpers/logger";
 import { deleteSentinelFile, logStage } from "sharedHelpers/sentinelFiles.ts";
 import {
@@ -263,7 +263,7 @@ const AICamera = ( {
                 confidence={
                   isDefaultMode
                     ? null
-                    : convertOfflineScoreToConfidence( result?.score )
+                    : convertScoreToConfidence( result?.combined_score )
                 }
                 unpressable
                 taxon={result?.taxon}

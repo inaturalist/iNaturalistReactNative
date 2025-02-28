@@ -9,7 +9,7 @@ interface StoredResult {
     name: string;
     iconic_taxon_name: string;
   };
-  score: number;
+  combined_score: number;
   timestamp: number;
 }
 
@@ -17,7 +17,7 @@ const usePredictions = ( ) => {
   const [result, setResult] = useState<StoredResult | null>( null );
   const [resultTimestamp, setResultTimestamp] = useState<number | undefined>( undefined );
   const [modelLoaded, setModelLoaded] = useState( false );
-  const [confidenceThreshold, setConfidenceThreshold] = useState( 0.7 );
+  const [confidenceThreshold, setConfidenceThreshold] = useState( 70 );
   const [fps, setFPS] = useState( 1 );
   const [numStoredResults, setNumStoredResults] = useState( 5 );
   const [cropRatio, setCropRatio] = useState( 1 );
@@ -38,7 +38,7 @@ const usePredictions = ( ) => {
       .map( p => ( {
         name: p.name,
         rank_level: p.rank_level,
-        score: p.score,
+        combined_score: p.combined_score,
         taxon_id: p.taxon_id,
         ancestor_ids: p.ancestor_ids,
         rank: p.rank,
@@ -59,7 +59,7 @@ const usePredictions = ( ) => {
           name: finestPrediction.name,
           iconic_taxon_name: iconicTaxon?.name
         },
-        score: finestPrediction.score,
+        combined_score: finestPrediction.combined_score,
         timestamp: cvResult.timestamp
       };
     }
