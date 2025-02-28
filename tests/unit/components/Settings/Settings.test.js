@@ -55,16 +55,16 @@ describe( "Settings", ( ) => {
   it( "should toggle the green observation button", async ( ) => {
     renderComponent( <Settings /> );
     await toggleAdvancedMode( );
-    const aiCameraRow = await screen.findByLabelText( "iNaturalist AI Camera" );
-    expect( aiCameraRow ).toHaveProp( "accessibilityState", expect.objectContaining( {
-      checked: true
-    } ) );
     const allObsOptions = await screen.findByLabelText( /All observation options/ );
     expect( allObsOptions ).toHaveProp( "accessibilityState", expect.objectContaining( {
+      checked: true
+    } ) );
+    const aiCameraRow = await screen.findByLabelText( "iNaturalist AI Camera" );
+    expect( aiCameraRow ).toHaveProp( "accessibilityState", expect.objectContaining( {
       checked: false
     } ) );
-    fireEvent.press( allObsOptions );
-    expect( allObsOptions ).toHaveProp( "accessibilityState", expect.objectContaining( {
+    fireEvent.press( aiCameraRow );
+    expect( aiCameraRow ).toHaveProp( "accessibilityState", expect.objectContaining( {
       checked: true
     } ) );
   } );

@@ -22,15 +22,15 @@ const mockModelResult = {
   predictions: [
     factory( "ModelPrediction", {
       rank_level: 30,
-      score: 0.86
+      combined_score: 86
     } ),
     factory( "ModelPrediction", {
       rank_level: 20,
-      score: 0.96
+      combined_score: 96
     } ),
     factory( "ModelPrediction", {
       rank_level: 10,
-      score: 0.40
+      combined_score: 40
     } )]
 };
 
@@ -38,11 +38,11 @@ const mockModelResultNoConfidence = {
   predictions: [
     factory( "ModelPrediction", {
       rank_level: 30,
-      score: 0.7
+      combined_score: 70
     } ),
     factory( "ModelPrediction", {
       rank_level: 20,
-      score: 0.65
+      combined_score: 65
     } )
   ]
 };
@@ -51,11 +51,11 @@ const mockModelResultWithHuman = {
   predictions: [
     factory( "ModelPrediction", {
       rank_level: 20,
-      score: 0.86
+      combined_score: 86
     } ),
     factory( "ModelPrediction", {
       rank_level: 30,
-      score: 0.96,
+      combined_score: 96,
       name: "Homo"
     } )
   ]
@@ -169,10 +169,10 @@ const makeMockObservationsWithLocation = ( ) => ( [
 const actor = userEvent.setup( );
 
 const navigateToSuggestionsForObservationViaObsEdit = async observation => {
-  const observationRow = await screen.findByTestId(
-    `MyObservations.obsListItem.${observation.uuid}`
+  const observationGridItem = await screen.findByTestId(
+    `MyObservations.obsGridItem.${observation.uuid}`
   );
-  await actor.press( observationRow );
+  await actor.press( observationGridItem );
   const addIdButton = await screen.findByText( "ADD AN ID" );
   await actor.press( addIdButton );
 };
@@ -206,7 +206,8 @@ const setupAppWithSignedInUser = async hasLocation => {
     observations,
     currentObservation: observations[0],
     layout: {
-      isDefaultMode: false
+      isDefaultMode: false,
+      isAdvancedSuggestionsMode: true
     },
     isAdvancedUser: true
   } );
@@ -291,7 +292,7 @@ describe( "from ObsEdit with human observation", ( ) => {
   } );
 } );
 
-describe( "from AICamera", ( ) => {
+describe( "from AICamera directly", ( ) => {
   global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
   beforeEach( async ( ) => {
     inatjs.computervision.score_image

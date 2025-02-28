@@ -169,7 +169,6 @@ const Explore = ( {
         {currentExploreView === "species" && (
           <SpeciesView
             canFetch={canFetch}
-            setCurrentExploreView={setCurrentExploreView}
             isConnected={isConnected}
             queryParams={queryParams}
             handleUpdateCount={handleUpdateCount}

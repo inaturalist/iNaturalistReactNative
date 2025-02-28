@@ -2,10 +2,7 @@ import {
   TaxonResult
 } from "components/SharedComponents";
 import React from "react";
-import {
-  convertOfflineScoreToConfidence,
-  convertOnlineScoreToConfidence
-} from "sharedHelpers/convertScores.ts";
+import convertScoreToConfidence from "sharedHelpers/convertScores.ts";
 
 interface Props {
   accessibilityLabel: string;
@@ -18,7 +15,6 @@ interface Props {
       rank: string;
       iconic_taxon_name: string;
     };
-    score: number;
     combined_score: number;
   };
   isTopSuggestion?: boolean;
@@ -35,9 +31,7 @@ const Suggestion = ( {
   <TaxonResult
     accessibilityLabel={accessibilityLabel}
     activeColor="bg-inatGreen"
-    confidence={suggestion?.score
-      ? convertOfflineScoreToConfidence( suggestion?.score )
-      : convertOnlineScoreToConfidence( suggestion?.combined_score )}
+    confidence={convertScoreToConfidence( suggestion?.combined_score )}
     confidencePosition="text"
     fetchRemote={false}
     first

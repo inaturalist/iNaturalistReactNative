@@ -19,7 +19,7 @@ export const storage = new MMKV( );
 export const zustandStorage = {
   setItem: ( name, value ) => storage.set( name, value ),
   getItem: name => {
-    const value = storage.getString( name );
+    const value = storage.getString( name ) || storage.getNumber( name );
     return value ?? null;
   },
   removeItem: name => storage.delete( name )

@@ -13,8 +13,8 @@ else
   echo
 fi
 
-# Run lint and flow
-npm run lint:fix
+# Run lint on staged files and run flow
+npm run lint:staged:fix
 
 # Generate translations from strings.ftl
 npm run translate

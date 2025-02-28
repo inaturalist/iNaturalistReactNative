@@ -35,7 +35,6 @@ Adds-your-vote-of-disagreement = Afegir el teu vot de desacord
 Affiliation = Afiliació: { $site }
 Agree = D'acord
 AGREE = D'ACORD
-Agree-to-all-of-the-above = D'acord amb tot
 AGREE-WITH-ID = D'ACORD AMB LA ID?
 Agree-with-ID-description = Vols acceptar la ID i suggerir la pròxima identificació?
 AI-Camera = Càmera IA

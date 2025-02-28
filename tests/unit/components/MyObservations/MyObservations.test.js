@@ -102,7 +102,7 @@ describe( "MyObservations", () => {
   it( "render grid view", ( ) => {
     renderMyObservations( "grid" );
     mockObservations.forEach( obs => {
-      expect( screen.getByTestId( `MyObservations.gridItem.${obs.uuid}` ) ).toBeTruthy();
+      expect( screen.getByTestId( `MyObservations.obsGridItem.${obs.uuid}` ) ).toBeTruthy();
     } );
   } );
 

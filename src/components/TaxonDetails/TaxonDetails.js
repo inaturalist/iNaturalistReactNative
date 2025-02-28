@@ -88,7 +88,9 @@ const TaxonDetails = ( ): Node => {
   // Hooks
   const navigation = useNavigation( );
   const { params } = useRoute( );
-  const { id, hideNavButtons } = params;
+  const {
+    id, hideNavButtons, firstPhotoID, representativePhoto
+  } = params;
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
   const { remoteUser } = useUserMe( );
@@ -193,6 +195,18 @@ const TaxonDetails = ( ): Node => {
       ? taxon.taxonPhotos.map( taxonPhoto => taxonPhoto.photo )
       : [taxon?.defaultPhoto]
   );
+  // Move the first photo to top if it was passed in as a prop
+  if ( firstPhotoID ) {
+    const firstPhotoIndex = photos.findIndex( photo => photo.id === firstPhotoID );
+    if ( firstPhotoIndex > 0 ) {
+      const firstPhoto = photos.splice( firstPhotoIndex, 1 );
+      photos.unshift( firstPhoto[0] );
+    }
+  }
+  // Add the representative photo to the top of the list
+  if ( representativePhoto ) {
+    photos.unshift( representativePhoto );
+  }
 
   const updateTaxon = useCallback( ( ) => {
     updateObservationKeys( {
@@ -450,7 +464,7 @@ const TaxonDetails = ( ): Node => {
         />
       )}
       {showSelectButton && (
-        <ButtonBar containerClass="items-center z-50">
+        <ButtonBar containerClass="items-center z-50 bg-white">
           <Button
             testID="TaxonDetails.SelectButton"
             className="max-w-[500px] w-full"

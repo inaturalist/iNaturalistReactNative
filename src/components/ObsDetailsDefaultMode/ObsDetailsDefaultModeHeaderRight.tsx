@@ -21,7 +21,7 @@ interface Props {
   subscriptions: Object
 }
 
-const ObsDetailsHeader = ( {
+const ObsDetailsDefaultModeHeader = ( {
   belongsToCurrentUser,
   observationId,
   uuid,
@@ -73,4 +73,4 @@ const ObsDetailsHeader = ( {
   return null;
 };
 
-export default ObsDetailsHeader;
+export default ObsDetailsDefaultModeHeader;

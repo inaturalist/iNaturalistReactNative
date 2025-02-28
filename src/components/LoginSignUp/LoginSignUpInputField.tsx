@@ -29,8 +29,8 @@ const LoginSignUpInputField: Function = forwardRef( ( {
   testID,
   textContentType
 }: Props, ref: Ref<RNTextInput> ) => (
-  <View className="mx-2">
-    <Heading4 className="color-white mt-[25px] mb-[11px]">
+  <View className="mx-2 mt-[20px]">
+    <Heading4 className="color-white mb-[12px]">
       {headerText}
     </Heading4>
     <TextInput

@@ -26,13 +26,13 @@ const LocationSection = ( {
   const currentUser = useCurrentUser( );
   const geoprivacy = observation?.geoprivacy;
   const taxonGeoprivacy = observation?.taxon_geoprivacy;
-  const latitude = observation?.privateLatitude || observation?.latitude;
+  const hasLocation = observation?.privateLatitude != null || observation?.latitude != null;
 
   return (
     <View className="py-1">
       <View className="m-4">
         {
-          latitude === undefined
+          !hasLocation
             ? (
               <Heading5 className="mb-2">
                 {t( "OBSERVED-AT--label" )}

@@ -188,11 +188,5 @@ x-uploading =
     }
 You-havent-observed-any-species-yet = Dir hutt nach keng Aarten observéiert.
 You-likely-observed-a-new-species = Dir hutt warscheinlech eng nei Aart observéiert!
-You-likely-observed-a-species = Dir hutt warscheinlech eng Aart observéiert
-You-likely-observed-an-organism-in-this-group = Dir hutt warscheinlech en Organismus an dëser Grupp observéiert
 You-may-have-observed-a-new-species = Dir hutt eventuell eng nei Aart observéiert!
-You-may-have-observed-a-species = Dir hutt eventuell eng Aart observéiert
-You-may-have-observed-an-organism-in-this-group = Dir hutt eventuell en Organismus an dëser Grupp observéiert
 You-need-log-in-to-do-that = Dir musst agelogged si fir dëst ze maachen.
-You-observed-a-species = Dir hutt eng Aart observéiert
-You-observed-an-organism-in-this-group = Dir hutt en Organismus an dëser Grupp observéiert

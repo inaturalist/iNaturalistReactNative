@@ -111,11 +111,9 @@ describe( "Photo Deletion", ( ) => {
     await actor.press( discardButton );
   }
 
-  async function confirmPhotosAndSkipId() {
+  async function confirmPhotos() {
     const checkmarkButton = await screen.findByLabelText( "View suggestions" );
     await actor.press( checkmarkButton );
-    const skipIdButton = await screen.findByText( /Add an ID Later/ );
-    await actor.press( skipIdButton );
   }
 
   async function saveAndEditObs() {
@@ -129,8 +127,8 @@ describe( "Photo Deletion", ( ) => {
     // Wait until header shows that there's an obs to upload
     await screen.findByText( /Upload \d observation/ );
     // await screen.findByLabelText( "Grid layout" );
-    const obsListItems = await screen.findAllByTestId( /MyObservations\.obsListItem\..*/ );
-    await actor.press( obsListItems[0] );
+    const obsGridItems = await screen.findAllByTestId( /MyObservations\.obsGridItem\..*/ );
+    await actor.press( obsGridItems[0] );
   }
 
   async function expectNoPhotosInStandardCamera() {
@@ -168,7 +166,7 @@ describe( "Photo Deletion", ( ) => {
   it( "should delete from StandardCamera for existing photo", async ( ) => {
     renderApp( );
     await takePhotoForNewObs();
-    await confirmPhotosAndSkipId();
+    await confirmPhotos();
     await saveAndEditObs();
     // Enter camera to add new photo
     const addEvidenceButton = await await screen.findByLabelText( "Add evidence" );
@@ -186,7 +184,7 @@ describe( "Photo Deletion", ( ) => {
   it( "should delete from ObsEdit for new camera photo", async ( ) => {
     renderApp( );
     await takePhotoForNewObs();
-    await confirmPhotosAndSkipId();
+    await confirmPhotos();
     await viewPhotoFromObsEdit();
     await deletePhotoInMediaViewer( );
     await expectObsEditToHaveNoPhotos();
@@ -195,7 +193,7 @@ describe( "Photo Deletion", ( ) => {
   it( "should delete from ObsEdit for existing camera photo", async ( ) => {
     renderApp( );
     await takePhotoForNewObs();
-    await confirmPhotosAndSkipId();
+    await confirmPhotos();
     await saveAndEditObs();
     await viewPhotoFromObsEdit();
     await deletePhotoInMediaViewer( );

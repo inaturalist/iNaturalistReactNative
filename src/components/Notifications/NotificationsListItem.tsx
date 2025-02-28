@@ -29,15 +29,11 @@ const NotificationsListItem = ( { notification }: Props ) => {
       )}
       onPress={( ) => {
         setObsDetailsTab( OBS_DETAILS_TAB.ACTIVITY );
-        navigation.navigate( "TabStackNavigator", {
-          screen: "ObsDetails",
-          params: {
-            uuid: notification.resource_uuid,
-            targetActivityItemID: notification.identification_id || notification.comment_id
-          }
+        navigation.push( "ObsDetails", {
+          uuid: notification.resource_uuid,
+          targetActivityItemID: notification.identification_id || notification.comment_id
         } );
       }}
-
     >
       <ObsNotification notification={notification} />
       <View className="pr-[20px] pl-2">

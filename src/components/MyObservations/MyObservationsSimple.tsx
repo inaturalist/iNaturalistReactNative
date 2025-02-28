@@ -11,14 +11,12 @@ import {
 import {
   Body1,
   Body3,
-  Heading5,
   INatIcon,
   InfiniteScrollLoadingWheel,
   Tabs,
   ViewWrapper
 } from "components/SharedComponents";
 import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList.tsx";
-// import TaxonGridItem from "components/SharedComponents/TaxonGridItem.tsx";
 import { View } from "components/styledComponents";
 import React, { useCallback, useMemo } from "react";
 import Realm from "realm";
@@ -36,6 +34,7 @@ import Announcements from "./Announcements";
 import LoginSheet from "./LoginSheet";
 import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
 import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
+import StatTab from "./StatTab";
 
 export interface Props {
   activeTab: string;
@@ -115,36 +114,6 @@ const MyObservationsSimple = ( {
     ...flashListStyle,
     paddingTop: 10
   } ), [flashListStyle] );
-
-  // If I define this interface outside of the component like a sane person
-  // eslint has a mysterious fit. ~~~~kueda 20250108
-  interface StatTabProps {
-    id: string;
-    text: string;
-  }
-  const StatTab = useCallback( ( { id, text: _text }: StatTabProps ) => {
-    let stat: number | undefined;
-    let label: string;
-    if ( id === OBSERVATIONS_TAB ) {
-      stat = numTotalObservations;
-      label = t( "X-OBSERVATIONS--below-number", { count: numTotalObservations || 0 } );
-    } else {
-      stat = numTotalTaxa;
-      label = t( "X-SPECIES--below-number", { count: numTotalTaxa || 0 } );
-    }
-    return (
-      <View className="items-center p-3">
-        <Body1 className="mb-[4px]">
-          {
-            typeof ( stat ) === "number"
-              ? t( "Intl-number", { val: stat } )
-              : "--"
-          }
-        </Body1>
-        <Heading5>{ label }</Heading5>
-      </View>
-    );
-  }, [t, numTotalObservations, numTotalTaxa] );
 
   const renderTaxaItem = useCallback( ( { item: taxon }: TaxaFlashListRenderItemProps ) => {
     const taxonId = taxon.id;
@@ -240,6 +209,30 @@ const MyObservationsSimple = ( {
     t
   ] );
 
+  const renderTabComponent = ( { id } ) => (
+    <StatTab
+      id={id}
+      numTotalObservations={numTotalObservations}
+      numTotalTaxa={numTotalTaxa}
+    />
+  );
+
+  const dataFilledWithEmptyBoxes = useMemo( ( ) => {
+    const data = observations.filter( o => o.isValid() );
+    // In grid layout fill up to 8 items to make sure the grid is filled
+    if ( layout === "grid" ) {
+    // Fill up to 8 items to make sure the grid is filled
+      const emptyBoxes = new Array( 8 - ( data.length % 8 ) ).fill( { empty: true } );
+      // Add random id to empty boxes to ensure they are unique
+      const emptyBoxesWithId = emptyBoxes.map( ( box, index ) => ( {
+        ...box,
+        id: `empty-${index}`
+      } ) );
+      return [...data, ...emptyBoxesWithId];
+    }
+    return data;
+  }, [observations, layout] );
+
   return (
     <>
       <ViewWrapper>
@@ -263,12 +256,12 @@ const MyObservationsSimple = ( {
               onPress: () => setActiveTab( TAXA_TAB )
             }
           ]}
-          TabComponent={StatTab}
+          TabComponent={renderTabComponent}
         />
         { activeTab === OBSERVATIONS_TAB && (
           <>
             <ObservationsFlashList
-              data={observations.filter( o => o.isValid() )}
+              data={dataFilledWithEmptyBoxes}
               dataCanBeFetched={!!currentUser}
               handlePullToRefresh={handlePullToRefresh}
               handleIndividualUploadPress={handleIndividualUploadPress}
@@ -288,6 +281,7 @@ const MyObservationsSimple = ( {
               renderHeader={renderObservationsHeader}
             />
             <ObservationsViewBar
+              gridFirst
               hideMap
               layout={layout}
               updateObservationsView={toggleLayout}

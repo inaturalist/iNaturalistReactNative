@@ -58,8 +58,10 @@ const Settings = ( ) => {
     isDefaultMode,
     isAllAddObsOptionsMode,
     setIsDefaultMode,
-    setIsAllAddObsOptionsMode
-  } = useLayoutPrefs( );
+    setIsAllAddObsOptionsMode,
+    isAdvancedSuggestionsMode,
+    setIsSuggestionsFlowMode
+  } = useLayoutPrefs();
   const [settings, setSettings] = useState( {} );
   const [isSaving, setIsSaving] = useState( false );
   const [showingWebViewSettings, setShowingWebViewSettings] = useState( false );
@@ -270,7 +272,10 @@ const Settings = ( ) => {
               testID="advanced-interface-option"
               smallLabel
               checked={!isDefaultMode}
-              onPress={( ) => setIsDefaultMode( false )}
+              onPress={( ) => {
+                setIsDefaultMode( false );
+                setIsAllAddObsOptionsMode( true );
+              }}
               label={t( "Advanced--interface-mode-with-explainer" )}
             />
           </View>
@@ -298,7 +303,32 @@ const Settings = ( ) => {
             </View>
           </View>
         )}
-        {currentUser && renderLoggedIn( )}
+        {!isDefaultMode && (
+          <View className="mb-9">
+            <Heading4>{t( "SUGGESTIONS" )}</Heading4>
+            <Body2 className="mt-3">
+              {t( "After-capturing-or-importing-photos-show" )}
+            </Body2>
+            <View className="mt-[22px] pr-5">
+              <RadioButtonRow
+                smallLabel
+                checked={!isAdvancedSuggestionsMode}
+                onPress={() => setIsSuggestionsFlowMode( false )}
+                label={t( "Edit-Observation" )}
+              />
+            </View>
+            <View className="mt-4 pr-5">
+              <RadioButtonRow
+                testID="suggestions-flow-mode"
+                smallLabel
+                checked={isAdvancedSuggestionsMode}
+                onPress={() => setIsSuggestionsFlowMode( true )}
+                label={t( "ID-Suggestions" )}
+              />
+            </View>
+          </View>
+        )}
+        {currentUser && renderLoggedIn()}
       </View>
     </ScrollViewWrapper>
   );

@@ -6,7 +6,9 @@ import {
 import { Image, View } from "components/styledComponents";
 import { t } from "i18next";
 import { RealmContext } from "providers/contexts.ts";
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useCallback, useEffect, useRef, useState
+} from "react";
 import { Trans } from "react-i18next";
 import {
   Platform,
@@ -25,7 +27,7 @@ import LoginSignUpInputField from "./LoginSignUpInputField";
 const { useRealm } = RealmContext;
 
 interface Props {
-  hideFooter?: boolean;
+  scrollViewRef?: React.Ref
 }
 
 interface LoginFormParams {
@@ -39,8 +41,9 @@ type ParamList = {
 }
 
 const LoginForm = ( {
-  hideFooter
+  scrollViewRef
 }: Props ) => {
+  const firstInputFieldRef = useRef( null );
   const { params } = useRoute<RouteProp<ParamList, "LoginFormParams">>( );
   const emailConfirmed = params?.emailConfirmed;
   const realm = useRealm( );
@@ -110,6 +113,87 @@ const LoginForm = ( {
     setIsDefaultMode
   ] );
 
+  const scrollToItem = useCallback( ( ) => {
+    firstInputFieldRef.current.measureLayout(
+      scrollViewRef.current,
+      ( _, y ) => {
+        scrollViewRef.current.scrollTo( { y, animated: true } );
+      },
+      () => console.log( "Failed to measure" )
+    );
+  }, [scrollViewRef] );
+
+  useEffect( ( ) => {
+    if ( keyboardShown ) {
+      scrollToItem( );
+    }
+  }, [keyboardShown, scrollToItem] );
+
+  const renderFooter = ( ) => (
+    <>
+      <Heading4
+        className="color-white self-center mt-10"
+      >
+        {t( "OR-SIGN-IN-WITH" )}
+      </Heading4>
+      <View className="flex-row justify-center mt-5">
+        {/*
+          Note: Sign in with Apple is doable in Android if we want to:
+          https://github.com/invertase/react-native-apple-authentication?tab=readme-ov-file#android
+        */}
+        { Platform.OS === "ios" && (
+          <INatIconButton
+            onPress={() => logIn( async ( ) => signInWithApple( realm ) )}
+            disabled={loading}
+            className="mr-8"
+            icon="apple"
+            // The svg icon for the Apple logo was downloaded from Apple,
+            // according to the Design Guidelines it already has a margin inside the svg
+            // so we scale it here to fill the entire button.
+            size={50}
+            color={colors.black}
+            backgroundColor={colors.white}
+            accessibilityLabel={t( "Sign-in-with-Apple" )}
+            mode="contained"
+            width={50}
+            height={50}
+          />
+        ) }
+        <INatIconButton
+          onPress={() => logIn( async ( ) => signInWithGoogle( realm ) )}
+          disabled={loading}
+          backgroundColor={colors.white}
+          accessibilityLabel={t( "Sign-in-with-Google" )}
+          mode="contained"
+          width={50}
+          height={50}
+        >
+          <Image
+            className="w-[20px] h-[20px]"
+            source={require( "images/google.png" )}
+            accessibilityIgnoresInvertColors
+          />
+        </INatIconButton>
+      </View>
+      <Trans
+        className={classnames(
+          "self-center mt-[31px] underline",
+          // When the keyboard is up this pushes the form up enough to cut
+          // off the username label on some devices
+          !keyboardShown && "mb-[35px]"
+        )}
+        i18nKey="Dont-have-an-account"
+        onPress={( ) => navigation.navigate( "SignUp" )}
+        components={[
+          <Body1 className="text-white" />,
+          <Body1
+            className="text-white font-Lato-Bold"
+          />
+        ]}
+      />
+    </>
+  );
+
   return (
     <TouchableWithoutFeedback accessibilityRole="button" onPress={blurFields}>
       <View className="px-4 mt-[9px] justify-end">
@@ -127,20 +211,22 @@ const LoginForm = ( {
             </List2>
           </View>
         ) }
-        <LoginSignUpInputField
-          ref={emailRef}
-          accessibilityLabel={t( "USERNAME-OR-EMAIL" )}
-          autoComplete="email"
-          headerText={t( "USERNAME-OR-EMAIL" )}
-          inputMode="email"
-          keyboardType="email-address"
-          onChangeText={( text: string ) => setEmail( text )}
-          testID="Login.email"
-          // https://github.com/facebook/react-native/issues/39411#issuecomment-1817575790
-          // textContentType prevents visual flickering, which is a temporary issue
-          // in iOS 17
-          textContentType="emailAddress"
-        />
+        <View ref={firstInputFieldRef}>
+          <LoginSignUpInputField
+            ref={emailRef}
+            accessibilityLabel={t( "USERNAME-OR-EMAIL" )}
+            autoComplete="email"
+            headerText={t( "USERNAME-OR-EMAIL" )}
+            inputMode="email"
+            keyboardType="email-address"
+            onChangeText={( text: string ) => setEmail( text )}
+            testID="Login.email"
+            // https://github.com/facebook/react-native/issues/39411#issuecomment-1817575790
+            // textContentType prevents visual flickering, which is a temporary issue
+            // in iOS 17
+            textContentType="emailAddress"
+          />
+        </View>
         <LoginSignUpInputField
           ref={passwordRef}
           accessibilityLabel={t( "PASSWORD" )}
@@ -155,7 +241,7 @@ const LoginForm = ( {
         <View className="flex-row justify-between">
           <Body2
             accessibilityRole="button"
-            className="underline p-4 color-white"
+            className="underline p-[15px] color-white"
             onPress={() => setIsPasswordVisible( prevState => !prevState )}
           >
             {isPasswordVisible
@@ -164,7 +250,7 @@ const LoginForm = ( {
           </Body2>
           <Body2
             accessibilityRole="button"
-            className="underline p-4 color-white"
+            className="underline p-[15px] color-white"
             onPress={( ) => navigation.navigate( "ForgotPassword" )}
           >
             {t( "Forgot-Password" )}
@@ -187,69 +273,7 @@ const LoginForm = ( {
           testID="Login.loginButton"
           text={t( "LOG-IN" )}
         />
-        <Heading4
-          className="color-white self-center mt-10"
-        >
-          {t( "OR-SIGN-IN-WITH" )}
-        </Heading4>
-        <View className="flex-row justify-center mt-5">
-          {/*
-            Note: Sign in with Apple is doable in Android if we want to:
-            https://github.com/invertase/react-native-apple-authentication?tab=readme-ov-file#android
-          */}
-          { Platform.OS === "ios" && (
-            <INatIconButton
-              onPress={() => logIn( async ( ) => signInWithApple( realm ) )}
-              disabled={loading}
-              className="mr-8"
-              icon="apple"
-              // The svg icon for the Apple logo was downloaded from Apple,
-              // according to the Design Guidelines it already has a margin inside the svg
-              // so we scale it here to fill the entire button.
-              size={50}
-              color={colors.black}
-              backgroundColor={colors.white}
-              accessibilityLabel={t( "Sign-in-with-Apple" )}
-              mode="contained"
-              width={50}
-              height={50}
-            />
-          ) }
-          <INatIconButton
-            onPress={() => logIn( async ( ) => signInWithGoogle( realm ) )}
-            disabled={loading}
-            backgroundColor={colors.white}
-            accessibilityLabel={t( "Sign-in-with-Google" )}
-            mode="contained"
-            width={50}
-            height={50}
-          >
-            <Image
-              className="w-[20px] h-[20px]"
-              source={require( "images/google.png" )}
-              accessibilityIgnoresInvertColors
-            />
-          </INatIconButton>
-
-        </View>
-        {!hideFooter && (
-          <Trans
-            className={classnames(
-              "self-center mt-[31px] underline",
-              // When the keyboard is up this pushes the form up enough to cut
-              // off the username label on some devices
-              !keyboardShown && "mb-[35px]"
-            )}
-            i18nKey="Dont-have-an-account"
-            onPress={( ) => navigation.navigate( "SignUp" )}
-            components={[
-              <Body1 className="text-white" />,
-              <Body1
-                className="text-white font-Lato-Bold"
-              />
-            ]}
-          />
-        )}
+        {renderFooter( )}
       </View>
     </TouchableWithoutFeedback>
   );

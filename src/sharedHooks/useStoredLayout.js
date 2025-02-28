@@ -15,7 +15,7 @@ const useStoredLayout = ( storageKey: string ): Object => {
       const storedLayout = zustandStorage.getItem( storageKey );
       const defaultLayout = storageKey === "exploreObservationsLayout"
         ? "map"
-        : "list";
+        : "grid";
       setLayout( storedLayout || defaultLayout );
     };
 

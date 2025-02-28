@@ -23,6 +23,7 @@ import {
   useCurrentUser,
   useFontScale,
   useGridLayout,
+  useLayoutPrefs,
   useNavigateToObsEdit,
   useTranslation
 } from "sharedHooks";
@@ -77,6 +78,9 @@ const ObservationsFlashList: Function = forwardRef( ( {
   showObservationsEmptyScreen,
   testID
 }: Props, ref ): Node => {
+  const {
+    isDefaultMode
+  } = useLayoutPrefs( );
   const realm = useRealm( );
   const { isLargeFontScale } = useFontScale( );
   const currentUser = useCurrentUser( );
@@ -102,6 +106,15 @@ const ObservationsFlashList: Function = forwardRef( ( {
   const { t } = useTranslation( );
 
   const renderItem = useCallback( ( { item: observation } ) => {
+    // Empty box
+    if ( observation.empty ) {
+      return (
+        <View
+          className="rounded-[15px] border-dotted border-4 border-lightGray"
+          style={gridItemStyle}
+        />
+      );
+    }
     const { uuid } = observation;
     const onUploadButtonPress = ( ) => handleIndividualUploadPress( uuid );
     // 20240529 amanda - filtering in realm is a fast way to look up sync status
@@ -114,7 +127,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
     const queued = uploadQueue.includes( uuid );
 
     const onItemPress = ( ) => {
-      if ( obsNeedsSync ) {
+      if ( obsNeedsSync && !isDefaultMode ) {
         navigateToObsEdit( observation );
       } else {
         // Uniquely identify the list this observation appears in so we can ensure
@@ -154,6 +167,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
     gridItemStyle,
     handleIndividualUploadPress,
     hideMetadata,
+    isDefaultMode,
     isLargeFontScale,
     layout,
     navigateToObsEdit,

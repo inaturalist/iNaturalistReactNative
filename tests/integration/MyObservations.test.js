@@ -324,33 +324,6 @@ describe( "MyObservations", ( ) => {
         } );
       } );
 
-      it( "displays observation status", async () => {
-        const realm = global.mockRealms[__filename];
-        expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
-        renderAppWithComponent( <MyObservationsContainer /> );
-        const syncIcon = await screen.findByTestId( "SyncButton" );
-        await waitFor( ( ) => {
-          expect( syncIcon ).toBeVisible( );
-        } );
-        mockSyncedObservations.forEach( obs => {
-          displayItemByTestId( `ObsStatus.${obs.uuid}` );
-        } );
-      } );
-
-      it( "renders grid view on button press", async () => {
-        const realm = global.mockRealms[__filename];
-        expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
-        renderAppWithComponent( <MyObservationsContainer /> );
-        const button = await screen.findByTestId( "MyObservationsToolbar.toggleGridView" );
-        fireEvent.press( button );
-        // Awaiting the first observation because using await in the forEach errors out
-        const firstObs = mockSyncedObservations[0];
-        await screen.findByTestId( `MyObservations.gridItem.${firstObs.uuid}` );
-        mockSyncedObservations.forEach( obs => {
-          displayItemByTestId( `MyObservations.gridItem.${obs.uuid}` );
-        } );
-      } );
-
       it( "hides observation status in grid view", async () => {
         const realm = global.mockRealms[__filename];
         expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
@@ -358,7 +331,34 @@ describe( "MyObservations", ( ) => {
         displayItemByTestId( "SyncButton" );
         mockSyncedObservations.forEach( obs => {
           const obsStatus = screen.queryByTestId( `ObsStatus.${obs.uuid}` );
-          expect( obsStatus ).toBeFalsy( );
+          expect( obsStatus ).toBeFalsy();
+        } );
+      } );
+
+      it( "renders list view on button press", async () => {
+        const realm = global.mockRealms[__filename];
+        expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+        renderAppWithComponent( <MyObservationsContainer /> );
+        const button = await screen.findByTestId( "MyObservationsToolbar.toggleListView" );
+        fireEvent.press( button );
+        // Awaiting the first observation because using await in the forEach errors out
+        const firstObs = mockSyncedObservations[0];
+        await screen.findByTestId( `MyObservations.obsListItem.${firstObs.uuid}` );
+        mockSyncedObservations.forEach( obs => {
+          displayItemByTestId( `MyObservations.obsListItem.${obs.uuid}` );
+        } );
+      } );
+
+      it( "displays observation status in list view", async () => {
+        const realm = global.mockRealms[__filename];
+        expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+        renderAppWithComponent( <MyObservationsContainer /> );
+        const syncIcon = await screen.findByTestId( "SyncButton" );
+        await waitFor( () => {
+          expect( syncIcon ).toBeVisible();
+        } );
+        mockSyncedObservations.forEach( obs => {
+          displayItemByTestId( `ObsStatus.${obs.uuid}` );
         } );
       } );
 

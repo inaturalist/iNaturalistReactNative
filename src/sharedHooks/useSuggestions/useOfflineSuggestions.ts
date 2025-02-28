@@ -10,6 +10,16 @@ const logger = log.extend( "useOfflineSuggestions" );
 
 const { useRealm } = RealmContext;
 
+interface OfflineSuggestion {
+  combined_score: number;
+  taxon: {
+    id: number;
+    name: string;
+    rank_level: number;
+    iconic_taxon_name: string | undefined;
+  };
+}
+
 const useOfflineSuggestions = (
   photoUri: string,
   options: {
@@ -20,10 +30,10 @@ const useOfflineSuggestions = (
     tryOfflineSuggestions: boolean
   }
 ): {
-  offlineSuggestions: Array<Object>
+  offlineSuggestions: OfflineSuggestion[];
 } => {
   const realm = useRealm( );
-  const [offlineSuggestions, setOfflineSuggestions] = useState( [] );
+  const [offlineSuggestions, setOfflineSuggestions] = useState<OfflineSuggestion[]>( [] );
   const [error, setError] = useState( null );
 
   const {
@@ -56,7 +66,7 @@ const useOfflineSuggestions = (
       const formattedPredictions = rawPredictions?.reverse( )
         .filter( prediction => prediction.rank_level <= 40 )
         .map( prediction => ( {
-          score: prediction.score,
+          combined_score: prediction.combined_score,
           taxon: {
             id: Number( prediction.taxon_id ),
             name: prediction.name,

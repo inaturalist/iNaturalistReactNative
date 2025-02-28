@@ -39,9 +39,9 @@ PODS:
     - hermes-engine/Pre-built (= 0.73.11)
   - hermes-engine/Pre-built (0.73.11)
   - libevent (2.1.12)
-  - MMKV (2.0.2):
-    - MMKVCore (~> 2.0.2)
-  - MMKVCore (2.0.2)
+  - MMKV (2.1.0):
+    - MMKVCore (~> 2.1.0)
+  - MMKVCore (2.1.1)
   - Mute (0.6.1)
   - RCT-Folly (2022.05.16.00):
     - boost
@@ -1206,7 +1206,7 @@ PODS:
   - VisionCamera/React (4.0.5):
     - React-Core
     - VisionCamera/FrameProcessors
-  - VisionCameraPluginInatVision (4.2.2):
+  - VisionCameraPluginInatVision (5.0.0):
     - React-Core
   - Yoga (1.14.0)
 
@@ -1528,8 +1528,8 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
   hermes-engine: d992945b77c506e5164e6a9a77510c9d57472c59
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  MMKV: 3eacda84cd1c4fc95cf848d3ecb69d85ed56006c
-  MMKVCore: 508b4d3a8ce031f1b5c8bd235f0517fb3f4c73a9
+  MMKV: ce484c1ac40bf76d5f09a0195d2ec5b3d3840d55
+  MMKVCore: 1eb661c6c498ab88e3df9ce5d8ff94d05fcc0567
   Mute: 20135a96076f140cc82bfc8b810e2d6150d8ec7e
   RCT-Folly: 7169b2b1c44399c76a47b5deaaba715eeeb476c0
   RCTRequired: 415e56f7c33799a6483e41e4dce607f3daf1e69b
@@ -1616,7 +1616,7 @@ SPEC CHECKSUMS:
   RNVectorIcons: 102cd20472bf0d7cd15443d43cd87f9c97228ac3
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   VisionCamera: f02de0b1b6b1516b327bd8215237a97e7386db8a
-  VisionCameraPluginInatVision: 69370c8be26b9b7372996d423f4fdb4c94e42ab1
+  VisionCameraPluginInatVision: 54906a97413a22b55ca21ed674cb4b2b9af9ccc5
   Yoga: 1f93d5925ea12fb0880b21efe3566677337cf2ed
 
 PODFILE CHECKSUM: eff4b75123af5d6680139a78c055b44ad37c269b

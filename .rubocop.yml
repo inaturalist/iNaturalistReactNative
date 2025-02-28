@@ -1,5 +1,8 @@
 AllCops:
   NewCops: enable
+  UseCache: true
+  CacheRootDirectory: tmp/rubocop_cache
+  MaxFilesInCache: 5000
 
 Layout/ArgumentAlignment:
   EnforcedStyle: with_fixed_indentation

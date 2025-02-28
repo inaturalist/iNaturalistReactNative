@@ -70,6 +70,7 @@ Adds-your-vote-of-agreement = Adds your vote of agreement
 Adds-your-vote-of-disagreement = Adds your vote of disagreement
 Advanced--interface-mode-with-explainer = Advanced (Upload multiple photos and sounds)
 Affiliation = Affiliation: { $site }
+After-capturing-or-importing-photos-show = After capturing or importing photos, show:
 # Label for button that adds an identification of the same taxon as another identification
 Agree = Agree
 # Label for button that adds an identification of the same taxon as another identification
@@ -562,6 +563,7 @@ HIGHEST-RANK = HIGHEST RANK
 How-does-it-feel-to-identify = How does it feel to identify and connect to the nature around you?
 I-agree-to-the-Terms-of-Use = <0>I agree to the Terms of Use and Privacy Policy, and I have reviewed the Community Guidelines (</0><1>required</1><0>).</0>
 Iconic-taxon-name = Iconic taxon name: { $iconicTaxon }
+ID-Suggestions = ID Suggestions
 # Identification Status
 ID-Withdrawn = ID Withdrawn
 IDENTIFICATION = IDENTIFICATION
@@ -1225,6 +1227,7 @@ SUBMIT-ID-SUGGESTION = SUBMIT ID SUGGESTION
 SUGGEST-ID = SUGGEST ID
 # Label for element that suggest an identification
 Suggest-ID = SUGGEST ID
+SUGGESTIONS = SUGGESTIONS
 # Identification category
 supporting--identification = Supporting
 Switches-to-tab = Switches to { $tab } tab.

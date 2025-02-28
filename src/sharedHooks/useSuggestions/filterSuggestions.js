@@ -12,13 +12,11 @@ import _ from "lodash";
 import isolateHumans, { humanFilter } from "./isolateHumans";
 import sortSuggestions from "./sortSuggestions";
 
-const ONLINE_THRESHOLD = 78;
-// note: offline threshold may need to change based on input from the CV team
-const OFFLINE_THRESHOLD = 0.78;
+const THRESHOLD = 78;
 
 // this function does a few things:
 // 1. it makes sure that if there is a human suggestion, human is the only result returned
-// 2. it makes sure we're filtering out any results below the ONLINE_THRESHOLD or OFFLINE_THRESHOLD
+// 2. it makes sure we're filtering out any results below the THRESHOLD
 // so we only show results we're fairly confident in
 // 3. it splits the top suggestion result out from the rest of the suggestions, which is helpful for
 // displaying in SuggestionsContainer
@@ -52,16 +50,9 @@ const filterSuggestions = ( suggestionsToFilter, usingOfflineSuggestions, common
     };
   }
 
-  // Note: score_vision responses have combined_score values between 0 and
-  // 100, compared with offline model results that have scores between 0
-  // and 1
-  const filterCriteria = usingOfflineSuggestions
-    ? s => s.score > OFFLINE_THRESHOLD
-    : s => s.combined_score > ONLINE_THRESHOLD;
-
   const suggestionAboveThreshold = _.find(
     sortedSuggestions,
-    filterCriteria
+    s => s.combined_score > THRESHOLD
   );
 
   if ( suggestionAboveThreshold ) {

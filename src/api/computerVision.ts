@@ -5,6 +5,7 @@ import handleError from "./error";
 
 const PARAMS = {
   include_representative_photos: true,
+  test_feature: "ancestor_unrestricted",
   fields: {
     combined_score: true,
     vision_score: true,
