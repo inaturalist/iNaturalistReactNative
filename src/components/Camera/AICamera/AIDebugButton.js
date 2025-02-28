@@ -73,11 +73,9 @@ const AIDebugButton = ( {
             <SliderControl
               name="Confidence Threshold"
               min={0}
-              max={1}
+              max={100}
               value={confidenceThreshold}
               setValue={setConfidenceThreshold}
-              precision={2}
-              step={0.05}
             />
             <SliderControl
               name="Center Crop Ratio (Android only)"

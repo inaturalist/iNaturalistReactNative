@@ -20,9 +20,18 @@ type Props = {
     shouldUseEvidenceLocation: boolean,
     topSuggestionType: string,
     onlineSuggestions: [],
-    offlineSuggestions: [],
     usingOfflineSuggestions: boolean,
-    onlineSuggestionsError: Error
+    onlineSuggestionsError: Error,
+    suggestions: {
+      otherSuggestions: [],
+      topSuggestion: {
+        taxon: {
+          id: number,
+          name: string
+        },
+        combined_score: number
+      }
+    }
   },
   handleSkip: Function,
   hideLocationToggleButton: Function,
@@ -91,20 +100,19 @@ const SuggestionsFooter = ( {
           <Body3 className="text-white">Online suggestions using location: {JSON.stringify( debugData?.shouldUseEvidenceLocation )}</Body3>
           <Body3 className="text-white">Top suggestion type: {JSON.stringify( debugData?.topSuggestionType )}</Body3>
           <Body3 className="text-white">Num online suggestions: {JSON.stringify( debugData?.onlineSuggestions?.results.length )}</Body3>
-          <Body3 className="text-white">Num offline suggestions: {JSON.stringify( debugData?.offlineSuggestions?.length )}</Body3>
           <Body3 className="text-white">Using offline suggestions: {JSON.stringify( debugData?.usingOfflineSuggestions )}</Body3>
           <Body3 className="text-white">Error loading online: {JSON.stringify( debugData?.onlineSuggestionsError )}</Body3>
-          { debugData.offlineSuggestions && (
+          { debugData?.usingOfflineSuggestions && (
             <View className="mb-3">
               <Body3 className="text-white">Offline Scores</Body3>
               <View className="flex-row border-b border-white">
                 <Body4 className="text-white grow">Taxon</Body4>
                 <Body4 className="text-white w-[20%]">Score</Body4>
               </View>
-              { debugData.offlineSuggestions?.filter( Boolean ).map( suggestion => (
+              { debugData.suggestions?.otherSuggestions?.filter( Boolean ).map( suggestion => (
                 <View key={`sugg-debug-${suggestion.taxon.id}`} className="flex-row">
                   <Body4 className="text-white grow">{suggestion.taxon.name}</Body4>
-                  <Body4 className="text-white w-[20%]">{Number( suggestion.score ).toFixed( 4 )}</Body4>
+                  <Body4 className="text-white w-[20%]">{Number( suggestion.combined_score ).toFixed( 4 )}</Body4>
                 </View>
               ) )}
             </View>

@@ -22,15 +22,15 @@ const mockModelResult = {
   predictions: [
     factory( "ModelPrediction", {
       rank_level: 30,
-      score: 0.86
+      combined_score: 86
     } ),
     factory( "ModelPrediction", {
       rank_level: 20,
-      score: 0.96
+      combined_score: 96
     } ),
     factory( "ModelPrediction", {
       rank_level: 10,
-      score: 0.40
+      combined_score: 40
     } )]
 };
 
@@ -38,11 +38,11 @@ const mockModelResultNoConfidence = {
   predictions: [
     factory( "ModelPrediction", {
       rank_level: 30,
-      score: 0.7
+      combined_score: 70
     } ),
     factory( "ModelPrediction", {
       rank_level: 20,
-      score: 0.65
+      combined_score: 65
     } )
   ]
 };
@@ -51,11 +51,11 @@ const mockModelResultWithHuman = {
   predictions: [
     factory( "ModelPrediction", {
       rank_level: 20,
-      score: 0.86
+      combined_score: 86
     } ),
     factory( "ModelPrediction", {
       rank_level: 30,
-      score: 0.96,
+      combined_score: 96,
       name: "Homo"
     } )
   ]
