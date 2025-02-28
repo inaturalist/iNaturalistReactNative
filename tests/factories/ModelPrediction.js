@@ -12,6 +12,6 @@ export default define( "ModelPrediction", faker => ( {
     20,
     10
   ] ),
-  score: faker.number.float( { min: 0.8, max: 1 } ),
+  combined_score: faker.number.float( { min: 80, max: 100 } ),
   taxon_id: faker.number.int( )
 } ) );
