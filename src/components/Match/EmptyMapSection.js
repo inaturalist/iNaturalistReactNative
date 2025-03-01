@@ -8,18 +8,18 @@ import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  handleLocationPickerPressed: ( ) => void
+  handleAddLocationPressed: ( ) => void
 }
 
 const EmptyMapSection = ( {
-  handleLocationPickerPressed
+  handleAddLocationPressed
 }: Props ) => {
   const { t } = useTranslation( );
   return (
     <Pressable
       accessibilityLabel={t( "Edit-location" )}
       accessibilityRole="link"
-      onPress={handleLocationPickerPressed}
+      onPress={handleAddLocationPressed}
     >
       <ImageBackground
         className="w-full h-[230px] flex items-center justify-center"

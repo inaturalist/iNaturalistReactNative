@@ -26,7 +26,7 @@ type Props = {
   obsPhotos: Array<Object>,
   handleSaveOrDiscardPress: ( ) => void,
   navToTaxonDetails: ( ) => void,
-  handleLocationPickerPressed: ( ) => void,
+  handleAddLocationPressed: ( ) => void,
   topSuggestion: Object,
   otherSuggestions: Array<Object>,
   suggestionsLoading: boolean,
@@ -39,7 +39,7 @@ const Match = ( {
   obsPhotos,
   handleSaveOrDiscardPress,
   navToTaxonDetails,
-  handleLocationPickerPressed,
+  handleAddLocationPressed,
   topSuggestion,
   otherSuggestions,
   suggestionsLoading,
@@ -72,15 +72,15 @@ const Match = ( {
         />
         <View className="border-[1.5px] border-white" />
         {!latitude
-          ? <EmptyMapSection handleLocationPickerPressed={handleLocationPickerPressed} />
+          ? <EmptyMapSection handleAddLocationPressed={handleAddLocationPressed} />
           : (
             <MapSection observation={observation} taxon={taxon} />
           )}
         <LocationSection
           belongsToCurrentUser
           observation={observation}
-          handleLocationPickerPressed={!latitude
-            ? handleLocationPickerPressed
+          handleAddLocationPressed={!latitude
+            ? handleAddLocationPressed
             : null}
         />
         <View className={cardClassBottom} />
@@ -108,7 +108,7 @@ const Match = ( {
               className="mx-5 mb-7"
               level="neutral"
               text={t( "ADD-LOCATION-FOR-BETTER-IDS" )}
-              onPress={handleLocationPickerPressed}
+              onPress={handleAddLocationPressed}
               accessibilityLabel={t( "Edit-location" )}
               accessibilityHint={t( "Add-location-to-refresh-suggestions" )}
             />

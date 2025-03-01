@@ -21,6 +21,7 @@ export const useSuggestions = ( photoUri, options ) => {
     dataUpdatedAt: onlineSuggestionsUpdatedAt,
     error: onlineSuggestionsError,
     onlineSuggestions,
+    refetch: refetchOnlineSuggestions,
     timedOut,
     resetTimeout
   } = useOnlineSuggestions( {
@@ -37,6 +38,12 @@ export const useSuggestions = ( photoUri, options ) => {
     onlineSuggestions,
     timedOut,
     resetTimeout
+  };
+
+  const refetchSuggestions = () => {
+    if ( shouldFetchOnlineSuggestions ) {
+      refetchOnlineSuggestions();
+    }
   };
 
   // 20240815 amanda - it's conceivable that we would want to use a cached image here eventually,
@@ -91,7 +98,8 @@ export const useSuggestions = ( photoUri, options ) => {
     ...onlineSuggestionsResponse,
     suggestions,
     usingOfflineSuggestions,
-    urlWillCrashOffline
+    urlWillCrashOffline,
+    refetchSuggestions
   };
 };
 
