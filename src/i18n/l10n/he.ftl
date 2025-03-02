@@ -182,3 +182,4 @@ Wild = בר
 Withdraw = שלילה
 Worldwide = בכל העולם
 You-need-log-in-to-do-that = עליך להיכנס על מנת לעשות זאת.
+You-observed-a-new-species = צפית במין חדש!
