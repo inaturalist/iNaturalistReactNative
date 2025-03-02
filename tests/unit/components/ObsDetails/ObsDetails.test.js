@@ -82,7 +82,6 @@ jest.mock( "sharedHooks/useIsUserConfirmed", () => ( {
   default: () => true
 } ) );
 
-
 jest.mock( "sharedHooks/useLocalObservation", () => ( {
   __esModule: true,
   default: ( ) => null
