@@ -19,6 +19,7 @@ interface Props {
   secondButtonText?: string;
   testID?: string;
   text?: string;
+  rawText?: string;
 }
 
 const WarningSheet = ( {
@@ -33,7 +34,8 @@ const WarningSheet = ( {
   onPressClose,
   secondButtonText,
   testID,
-  text
+  text,
+  rawText
 }: Props ) => {
   const buttons = [
     {
@@ -63,6 +65,7 @@ const WarningSheet = ( {
     >
       <View className="flex-col items-center p-5" testID={testID}>
         {text && <List2 className="mb-6">{text}</List2>}
+        {rawText}
         <ButtonBar buttonConfiguration={buttons} />
       </View>
     </BottomSheet>

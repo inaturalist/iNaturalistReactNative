@@ -90,6 +90,11 @@ useRoute.mockImplementation( ( ) => ( {
   params: { uuid: mockObservation.uuid }
 } ) );
 
+jest.mock( "sharedHooks/useIsUserConfirmed", () => ( {
+  __esModule: true,
+  default: () => true
+} ) );
+
 jest.mock( "@react-navigation/native", () => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {

@@ -77,6 +77,12 @@ const mockUser = factory( "LocalUser", {
   id: "1234"
 } );
 
+jest.mock( "sharedHooks/useIsUserConfirmed", () => ( {
+  __esModule: true,
+  default: () => true
+} ) );
+
+
 jest.mock( "sharedHooks/useLocalObservation", () => ( {
   __esModule: true,
   default: ( ) => null

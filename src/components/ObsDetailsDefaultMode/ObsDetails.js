@@ -6,11 +6,13 @@ import {
   TextInputSheet,
   WarningSheet
 } from "components/SharedComponents";
+import EmailConfirmationSheet from "components/SharedComponents/Sheets/EmailConfirmationSheet";
 import {
   SafeAreaView,
   ScrollView,
   View
 } from "components/styledComponents";
+import { t } from "i18next";
 import type { Node } from "react";
 import React, {
   useEffect,
@@ -18,9 +20,7 @@ import React, {
   useState
 } from "react";
 import { Platform } from "react-native";
-import {
-  useTranslation
-} from "sharedHooks";
+import useIsUserConfirmed from "sharedHooks/useIsUserConfirmed";
 
 import CommunitySection from "./CommunitySection/CommunitySection";
 import FloatingButtons from "./CommunitySection/FloatingButtons";
@@ -117,12 +117,12 @@ const ObsDetails = ( {
   uuid
 }: Props ): Node => {
   const scrollViewRef = useRef( );
-  const { t } = useTranslation( );
-
   // Scroll the scrollview to this y position once if set, then unset it.
   // Could be refactored into a hook if we need this logic elsewher
   const [oneTimeScrollOffsetY, setOneTimeScrollOffsetY] = useState( 0 );
   const [heightOfTopContent, setHeightOfTopContent] = useState( 0 );
+  const isUserConfirmed = useIsUserConfirmed();
+  const [showUserNeedToConfirm, setShowUserNeedToConfirm] = useState( false );
 
   useEffect( ( ) => {
     if ( oneTimeScrollOffsetY && scrollViewRef?.current ) {
@@ -131,6 +131,18 @@ const ObsDetails = ( {
       setHeightOfTopContent( 0 );
     }
   }, [oneTimeScrollOffsetY] );
+
+  const callFunctionIfConfirmedEmail = ( func, params = {} ) => {
+    // Allow the user to add a comment, suggest an ID, etc.  - only if they've
+    // confirmed their email or if they're the observer of this observation
+    if ( isUserConfirmed || belongsToCurrentUser ) {
+      if ( func ) func( params );
+      return true;
+    }
+    // Show the user the bottom sheet that tells them they need to confirm
+    setShowUserNeedToConfirm( true );
+    return false;
+  };
 
   // If the user just added an activity item and we're waiting for it to load,
   // scroll to the bottom where it will be visible. Also provides immediate
@@ -165,6 +177,8 @@ const ObsDetails = ( {
         uuid={observation?.uuid}
         refetchSubscriptions={refetchSubscriptions}
         subscriptions={subscriptions}
+        setShowUserNeedToConfirm={setShowUserNeedToConfirm}
+        isUserConfirmed={isUserConfirmed}
       />
       <ScrollView
         ref={scrollViewRef}
@@ -200,7 +214,9 @@ const ObsDetails = ( {
           isConnected={isConnected}
           targetItemID={targetActivityItemID}
           observation={observation}
-          openAgreeWithIdSheet={openAgreeWithIdSheet}
+          openAgreeWithIdSheet={
+            params => callFunctionIfConfirmedEmail( openAgreeWithIdSheet, params )
+          }
           refetchRemoteObservation={refetchRemoteObservation}
           onLayoutTargetItem={setOffsetToActivityItem}
         />
@@ -215,9 +231,13 @@ const ObsDetails = ( {
       </ScrollView>
       {currentUser && (
         <FloatingButtons
-          navToSuggestions={navToSuggestions}
-          openAddCommentSheet={openAddCommentSheet}
           showAddCommentSheet={showAddCommentSheet}
+          navToSuggestions={() => callFunctionIfConfirmedEmail(
+            navToSuggestions
+          )}
+          openAddCommentSheet={
+            params => callFunctionIfConfirmedEmail( openAddCommentSheet, params )
+          }
         />
       )}
     </>
@@ -284,6 +304,11 @@ const ObsDetails = ( {
           onPressClose={potentialDisagreeSheetDiscardChanges}
           newTaxon={newIdentification.taxon}
           oldTaxon={observation.taxon}
+        />
+      )}
+      {showUserNeedToConfirm && (
+        <EmailConfirmationSheet
+          onPressClose={() => setShowUserNeedToConfirm( false )}
         />
       )}
       {/*
