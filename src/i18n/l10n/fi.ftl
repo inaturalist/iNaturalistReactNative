@@ -7,6 +7,7 @@
 
 ABOUT = TIETOJA
 Advanced--interface-mode-with-explainer = Lisäasetukset (Lataa useita kuvia ja ääniä)
+After-capturing-or-importing-photos-show = Kuvien oton tai tuonnin jälkeen näytä:
 Agree = Samaa mieltä
 AGREE = SAMAA MIELTÄ
 ALL = KAIKKI
@@ -96,6 +97,7 @@ Go-back = Mene takaisin
 Google-Play-Services-Not-Installed = Google Play -palveluita ei ole asennettu
 Grow-your-collection = Kasvata kokoelmaasi
 Hide = Piilota
+ID-Suggestions = Ehdotukset
 ID-Withdrawn = Tunnistus peruutettu
 Identifiers = Tunnistajaa
 Identify-record-learn = Tunnista, tallenna ja opi jokaisesta elävästä lajista maapallolla iNaturalistin avulla.
@@ -234,6 +236,7 @@ Spam-Examples = Kaupallinen tarjous, linkit ei mihinkään, yms.
 Species = Lajit
 Standard--map-type = Standardi
 Stop-verb = Pysäytä
+SUGGESTIONS = EHDOTUKSET
 supporting--identification = Tukee määritystä
 Syncing = Synkronoidaan...
 Taxa = Taksonit
