@@ -1,6 +1,7 @@
 import { useRoute } from "@react-navigation/native";
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
-import ObsDetailsContainer from "components/ObsDetailsDefaultMode/ObsDetailsContainer";
+import ObsDetailsDefaultModeContainer from
+    "components/ObsDetailsDefaultMode/ObsDetailsDefaultModeContainer";
 import { t } from "i18next";
 import React from "react";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
@@ -132,7 +133,7 @@ jest.mock( "sharedHooks/useObservationsUpdates", () => ( {
 } ) );
 
 const renderObsDetails = ( ) => renderComponent(
-  <ObsDetailsContainer />
+  <ObsDetailsDefaultModeContainer />
 );
 
 describe( "ObsDetails", () => {

@@ -172,7 +172,7 @@ const reducer = ( state, action ) => {
   }
 };
 
-const ObsDetailsContainer = ( ): Node => {
+const ObsDetailsDefaultModeContainer = ( ): Node => {
   const setObservations = useStore( state => state.setObservations );
   const currentUser = useCurrentUser( );
   const { params } = useRoute();
@@ -628,4 +628,4 @@ const ObsDetailsContainer = ( ): Node => {
   );
 };
 
-export default ObsDetailsContainer;
+export default ObsDetailsDefaultModeContainer;
