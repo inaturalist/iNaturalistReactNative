@@ -42,9 +42,17 @@ export interface RealmObservationSound extends RealmObject {
   wasSynced: ( ) => boolean;
 }
 
+export interface RealmTaxonPhoto extends RealmObject {
+  _created_at?: Date;
+  _synced_at?: Date;
+  _updated_at?: Date;
+  id: number;
+  photo: RealmPhoto;
+}
+
 export interface RealmTaxon extends RealmObject {
   id: number;
-  defaultPhoto?: RealmPhoto,
+  defaultPhoto?: RealmPhoto;
   name?: string;
   preferredCommonName?: string;
   rank?: string;
@@ -53,6 +61,7 @@ export interface RealmTaxon extends RealmObject {
   iconic_taxon_name?: string;
   ancestor_ids?: number[];
   _synced_at?: Date;
+  taxonPhotos?: RealmTaxonPhoto[];
 }
 
 export interface RealmObservationPojo {

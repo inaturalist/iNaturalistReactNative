@@ -20,8 +20,8 @@ import MyObservationsContainer from "components/MyObservations/MyObservationsCon
 import Notifications from "components/Notifications/Notifications.tsx";
 import DQAContainer from "components/ObsDetails/DQAContainer";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
-import ObsDetailsDefaultModeContainer from
-  "components/ObsDetailsDefaultMode/ObsDetailsDefaultModeContainer";
+import ObsDetailsDefaultModeContainer
+  from "components/ObsDetailsDefaultMode/ObsDetailsDefaultModeContainer";
 import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
 import ProjectMembers from "components/ProjectDetails/ProjectMembers.tsx";
 import ProjectRequirements from "components/ProjectDetails/ProjectRequirements.tsx";

@@ -3,17 +3,18 @@ const calculateConfidence = suggestion => {
     return null;
   }
 
-  // Note: combined_score have values between 0 and 100,
-  // compared with vision-plugin v4.2.2 model results that have a score field between 0 and 1
-  // However, the common_ancestor from the API also has a score field with a range of 0-100
-  const factor = suggestion.score > 1
-    ? 1
-    : 100;
-  const score = suggestion?.score
-    ? suggestion.score * factor
-    : suggestion.combined_score;
-  const confidence = parseFloat( score.toFixed( 1 ) );
-  return confidence;
+  // Note: combined_score as returned from vision-plugin >v5 as well as iNatVisionAPI
+  // have values between 0 and 100.
+  // For common_ancestor from API, the combined_core parameter is renamed to score by the node API
+  if ( suggestion.combined_score === undefined && suggestion.score !== undefined ) {
+    return parseFloat( suggestion.score.toFixed( 1 ) );
+  } if ( suggestion.combined_score !== undefined ) {
+    return parseFloat( suggestion.combined_score.toFixed( 1 ) );
+  }
+
+  // Return null confidence if neither score exists - I hope to see this as NaN and detect the
+  // problem rather than hiding it.
+  return null;
 };
 
 export default calculateConfidence;

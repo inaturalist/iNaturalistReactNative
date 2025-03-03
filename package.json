@@ -15,7 +15,7 @@
     "test:memory": "jest --runInBand --logHeapUsage",
     "lint": "npm run lint:eslint && npm run lint:flow && npm run lint:rubocop",
     "lint:fix": "npm run lint:eslint:fix && npm run lint:flow && npm run lint:rubocop:fix",
-    "lint:staged:fix": "npx lint-staged",
+    "lint:staged:fix": "npx lint-staged && npm run lint:flow",
     "lint:eslint": "eslint .",
     "lint:eslint:fix": "eslint . --fix",
     "lint:flow": "flow check",
@@ -138,7 +138,7 @@
     "sanitize-html": "^2.13.0",
     "ts-jest": "^29.1.2",
     "uuid": "^11.0.5",
-    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision#fb3c35d3b19c9bdeb4c0de359f3c1b8133b2a8eb",
+    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision#83b1e532f00e25a51e7408acbe3c5b178370013b",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
@@ -207,8 +207,7 @@
   "packageManager": "yarn@3.6.4",
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --cache --fix --max-warnings=0 --cache-location .eslintcache",
-      "flow check --temp-dir=/tmp/flow --max-workers 4"
+      "eslint --cache --fix --max-warnings=0 --cache-location .eslintcache"
     ],
     "*.rb": [
       "bundle exec rubocop --force-exclusion --parallel"

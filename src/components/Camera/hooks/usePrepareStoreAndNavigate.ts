@@ -25,6 +25,7 @@ const usePrepareStoreAndNavigate = ( ): Function => {
   const setSavingPhoto = useStore( state => state.setSavingPhoto );
   const setCameraState = useStore( state => state.setCameraState );
   const setSentinelFileName = useStore( state => state.setSentinelFileName );
+  const isAdvancedSuggestionsMode = useStore( state => state.layout.isAdvancedSuggestionsMode );
 
   const { deviceStorageFull, showStorageFullAlert } = useDeviceStorageFull( );
 
@@ -166,7 +167,13 @@ const usePrepareStoreAndNavigate = ( ): Function => {
         lastScreen: "CameraWithDevice"
       } );
     }
-    return navigation.push( "Suggestions", {
+    if ( isAdvancedSuggestionsMode ) {
+      return navigation.push( "Suggestions", {
+        entryScreen: "CameraWithDevice",
+        lastScreen: "CameraWithDevice"
+      } );
+    }
+    return navigation.push( "ObsEdit", {
       entryScreen: "CameraWithDevice",
       lastScreen: "CameraWithDevice"
     } );
@@ -176,7 +183,8 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     createObsWithCameraPhotos,
     setSentinelFileName,
     navigation,
-    updateObsWithCameraPhotos
+    updateObsWithCameraPhotos,
+    isAdvancedSuggestionsMode
   ] );
 
   return prepareStoreAndNavigate;

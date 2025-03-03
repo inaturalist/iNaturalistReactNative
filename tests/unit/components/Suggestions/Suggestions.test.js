@@ -102,7 +102,7 @@ describe( "Suggestions", ( ) => {
 
   describe( "loading from AI camera", ( ) => {
     const mockVisionResult = {
-      score: 0.9,
+      combined_score: 90,
       taxon: mockTaxon
     };
 

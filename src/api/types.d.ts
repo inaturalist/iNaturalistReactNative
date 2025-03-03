@@ -83,6 +83,7 @@ export interface ApiObservationSound {
 
 export interface ApiTaxon {
   default_photo?: ApiPhoto;
+  representative_photo?: ApiPhoto;
   iconic_taxon_name?: string;
   id?: number;
   name?: string;

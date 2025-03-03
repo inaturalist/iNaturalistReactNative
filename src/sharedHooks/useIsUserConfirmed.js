@@ -10,7 +10,7 @@ const { parseISO, isAfter } = require( "date-fns" );
 // TODO - need to decide on the date
 const USER_MIN_REGISTRATION_DATE = parseISO( "2012-01-01T00:00:00Z" );
 
-const useIsUserConfirmed = ( ) => {
+const useIsUserConfirmed = ( ): boolean => {
   const { remoteUser } = useUserMe( );
   // By default, we consider the user confirmed (to not show email confirmation bottom sheet
   // to non-logged-in users, users with earlier registration date, etc.)

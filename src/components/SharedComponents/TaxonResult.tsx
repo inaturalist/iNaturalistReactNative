@@ -9,7 +9,7 @@ import {
 import { Pressable, View } from "components/styledComponents";
 import React, { PropsWithChildren } from "react";
 import type { GestureResponderEvent } from "react-native";
-import type { RealmTaxon } from "realmModels/types";
+import type { RealmTaxon, RealmTaxonPhoto } from "realmModels/types";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useCurrentUser, useTaxon, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
@@ -89,19 +89,46 @@ const TaxonResult = ( {
     ? localTaxon
     : taxonProp;
   const accessibleName = accessibleTaxonName( usableTaxon, currentUser, t );
+  // A representative photo is dependant on the actual image that was scored by computer vision
+  // and is currently not added to the taxon realm. So, if it is available directly from the
+  // suggestion, i.e. taxonProp, use it. Otherwise, use the default photo from the taxon.
+  const representativePhoto = ( taxonProp as ApiTaxon )?.representative_photo;
+  // I have seen the RealmTaxon that is accessed here get invalidated and deleted
+  // while this screen is still in stack and therefore the app erroring out.
+  // Have not had time to investigate further, but this is a workaround for now.
+  const taxonImagePointer = representativePhoto
+      || ( usableTaxon as ApiTaxon )?.default_photo
+      || ( usableTaxon as RealmTaxon )?.defaultPhoto;
+  const taxonImage = React.useMemo( () => ( { ...taxonImagePointer } ), [taxonImagePointer] );
+
+  const taxonImageSource = { uri: taxonImage?.url };
+
+  const isRepresentativeButOtherTaxon = representativePhoto
+    && !localTaxon?.taxonPhotos?.some(
+      ( tp: RealmTaxonPhoto ) => tp.photo.id === representativePhoto.id
+    );
+
   const navToTaxonDetails = React.useCallback( ( ) => {
-    navigation.push( "TaxonDetails", {
+    const params = {
       id: usableTaxon?.id,
       hideNavButtons,
       lastScreen,
       vision
-    } );
+    };
+    if ( !isRepresentativeButOtherTaxon ) {
+      params.firstPhotoID = taxonImage?.id;
+    } else {
+      params.representativePhoto = taxonImage;
+    }
+    navigation.push( "TaxonDetails", params );
   }, [
     hideNavButtons,
     lastScreen,
     navigation,
     usableTaxon?.id,
-    vision
+    vision,
+    taxonImage,
+    isRepresentativeButOtherTaxon
   ] );
   const TaxonResultMain = React.useCallback( ( props: TaxonResultMainProps ) => (
     unpressable
@@ -130,11 +157,6 @@ const TaxonResult = ( {
 
   // useTaxon could return null, and it's at least remotely possible taxonProp is null
   if ( !usableTaxon ) return null;
-
-  const taxonImage = {
-    uri: ( usableTaxon as ApiTaxon )?.default_photo?.url
-      || ( usableTaxon as RealmTaxon )?.defaultPhoto?.url
-  };
 
   const renderCheckmark = () => {
     if ( checkmarkFocused ) {
@@ -191,7 +213,7 @@ const TaxonResult = ( {
         <View className="w-[62px] h-[62px] justify-center relative">
           <ObsImagePreview
             // TODO fix when ObsImagePreview typed
-            source={taxonImage}
+            source={taxonImageSource}
             testID={`${testID}.photo`}
             iconicTaxonName={usableTaxon?.iconic_taxon_name}
             className="rounded-xl"

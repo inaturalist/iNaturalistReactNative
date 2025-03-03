@@ -52,8 +52,7 @@ const SuggestionsResult = ( {
   // and is currently not added to the taxon realm. So, if it is available directly from the
   // suggestion, i.e. taxonProp, use it. Otherwise, use the default photo from the taxon.
   const taxonImage = {
-    uri: taxonProp?.representativePhoto?.url
-      || taxonProp?.representative_photo?.url
+    uri: taxonProp?.representative_photo?.url
       || usableTaxon?.default_photo?.url
       || usableTaxon?.defaultPhoto?.url
   };

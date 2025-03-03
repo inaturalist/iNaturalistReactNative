@@ -1,7 +1,7 @@
 import { screen, waitFor } from "@testing-library/react-native";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
-import DefaultModeObsDetailsContainer from
-    "components/ObsDetailsDefaultMode/ObsDetailsDefaultModeContainer";
+import DefaultModeObsDetailsContainer
+  from "components/ObsDetailsDefaultMode/ObsDetailsDefaultModeContainer";
 import inatjs from "inaturalistjs";
 import React from "react";
 import Observation from "realmModels/Observation";

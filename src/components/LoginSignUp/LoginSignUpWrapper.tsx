@@ -1,14 +1,18 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
-import { ImageBackground, SafeAreaView, ScrollView } from "components/styledComponents";
-import React, { PropsWithChildren, useEffect } from "react";
+import {
+  ImageBackground, SafeAreaView, ScrollView, View
+} from "components/styledComponents";
+import React, {
+  PropsWithChildren, useEffect, useRef
+} from "react";
 import type {
   ImageSourcePropType,
   ImageStyle,
   StyleProp
 } from "react-native";
 import {
-  KeyboardAvoidingView,
+  Dimensions,
   Platform,
   StatusBar
 } from "react-native";
@@ -16,37 +20,50 @@ import colors from "styles/tailwindColors";
 
 interface Props extends PropsWithChildren {
   backgroundSource: ImageSourcePropType,
-  imageStyle?: StyleProp<ImageStyle>,
-  keyboardVerticalOffset?: number,
-  scrollEnabled?: boolean
+  imageStyle?: StyleProp<ImageStyle>
 }
 
-const KEYBOARD_AVOIDING_VIEW_STYLE = {
-  flex: 1,
-  flexGrow: 1
-} as const;
+const windowHeight = Dimensions.get( "window" ).height;
 
 const SCROLL_VIEW_STYLE = {
-  flex: 1,
-  justifyContent: "space-between"
+  minHeight: windowHeight * 1.1
 } as const;
 
 const LoginSignupWrapper = ( {
   backgroundSource,
   children,
-  imageStyle,
-  keyboardVerticalOffset,
-  scrollEnabled = true
+  imageStyle
 }: Props ) => {
+  const scrollViewRef = useRef( null );
   const navigation = useNavigation( );
+
+  useEffect( ( ) => {
+    const resetScroll = ( ) => {
+      if ( scrollViewRef.current ) {
+        scrollViewRef.current?.scrollTo( { y: 0, animated: false } );
+      }
+    };
+    const unsubscribe = navigation.addListener( "focus", ( ) => {
+      resetScroll( );
+    } );
+    return unsubscribe;
+  }, [navigation] );
+
   // Make the StatusBar translucent in Android but reset it when we leave
   // because this alters the layout.
   useEffect( ( ) => {
     if ( Platform.OS !== "android" ) return ( ) => undefined;
     // Hide on first render
     StatusBar.setTranslucent( true );
-    // StatusBar.setTranslucent( true );
+
+    const resetScroll = () => {
+      if ( scrollViewRef.current ) {
+        scrollViewRef.current?.scrollTo( { y: 0, animated: false } );
+      }
+    };
     const unsubscribe = navigation.addListener( "focus", ( ) => {
+      console.log( "resetting scroll" );
+      resetScroll( );
       // Hide when focused
       StatusBar.setTranslucent( true );
     } );
@@ -61,10 +78,12 @@ const LoginSignupWrapper = ( {
     return unsubscribe;
   }, [navigation] );
 
+  const fitContentWithinScreenStyle = { height: windowHeight * 0.85 };
+
   return (
     <ImageBackground
       source={backgroundSource}
-      className="h-full"
+      className="h-full w-full"
       imageStyle={imageStyle}
     >
       <SafeAreaView
@@ -82,19 +101,20 @@ const LoginSignupWrapper = ( {
           barStyle="light-content"
           backgroundColor={colors.black}
         />
-        <KeyboardAvoidingView
-          keyboardVerticalOffset={keyboardVerticalOffset}
-          behavior="padding"
-          style={KEYBOARD_AVOIDING_VIEW_STYLE}
+        <ScrollView
+          ref={scrollViewRef}
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
+          contentContainerStyle={SCROLL_VIEW_STYLE}
         >
-          <ScrollView
-            keyboardShouldPersistTaps="always"
-            contentContainerStyle={SCROLL_VIEW_STYLE}
-            scrollEnabled={scrollEnabled}
-          >
-            {children}
-          </ScrollView>
-        </KeyboardAvoidingView>
+          <View style={fitContentWithinScreenStyle}>
+            <View className="flex-1 flex-column justify-between">
+              {typeof children === "function"
+                ? children( { scrollViewRef } )
+                : children}
+            </View>
+          </View>
+        </ScrollView>
       </SafeAreaView>
     </ImageBackground>
   );

@@ -1,7 +1,7 @@
 import { useRoute } from "@react-navigation/native";
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
-import ObsDetailsDefaultModeContainer from
-    "components/ObsDetailsDefaultMode/ObsDetailsDefaultModeContainer";
+import ObsDetailsDefaultModeContainer
+  from "components/ObsDetailsDefaultMode/ObsDetailsDefaultModeContainer";
 import { t } from "i18next";
 import React from "react";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";

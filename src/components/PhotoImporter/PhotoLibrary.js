@@ -44,6 +44,7 @@ const PhotoLibrary = ( ): Node => {
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const observations = useStore( state => state.observations );
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
+  const isAdvancedSuggestionsMode = useStore( state => state.layout.isAdvancedSuggestionsMode );
   const exitObservationsFlow = useExitObservationsFlow( );
 
   const { params } = useRoute( );
@@ -62,16 +63,21 @@ const PhotoLibrary = ( ): Node => {
   const advanceToMatchScreen = lastScreen === "Camera"
     && isDefaultMode;
 
-  const navToMatchOrSuggestions = useCallback( async ( ) => {
+  const navBasedOnUserSettings = useCallback( async ( ) => {
     if ( advanceToMatchScreen ) {
       return navigation.navigate( "Match", {
         lastScreen: "PhotoLibrary"
       } );
     }
-    return navigation.navigate( "Suggestions", {
+    if ( isAdvancedSuggestionsMode ) {
+      return navigation.navigate( "Suggestions", {
+        lastScreen: "PhotoLibrary"
+      } );
+    }
+    return navigation.navigate( "ObsEdit", {
       lastScreen: "PhotoLibrary"
     } );
-  }, [navigation, advanceToMatchScreen] );
+  }, [navigation, advanceToMatchScreen, isAdvancedSuggestionsMode] );
 
   const moveImagesToDocumentsDirectory = async selectedImages => {
     const path = photoLibraryPhotosPath;
@@ -196,7 +202,7 @@ const PhotoLibrary = ( ): Node => {
       setPhotoImporterState( {
         observations: [newObservation]
       } );
-      navToMatchOrSuggestions( );
+      navBasedOnUserSettings( );
       setPhotoLibraryShown( false );
     } else {
       // navigate to group photos
@@ -221,7 +227,7 @@ const PhotoLibrary = ( ): Node => {
     groupedPhotos,
     navigation,
     navToObsEdit,
-    navToMatchOrSuggestions,
+    navBasedOnUserSettings,
     numOfObsPhotos,
     observations,
     params,
