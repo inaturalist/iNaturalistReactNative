@@ -19,16 +19,25 @@ const mockUnsyncedObservations = [
   factory( "LocalObservation", {
     _synced_at: null,
     _created_at: faker.date.past( ),
+    observed_on_string: "2024-05-01",
+    latitude: 1.2345,
+    longitude: 1.2345,
     taxon: factory( "LocalTaxon" )
   } ),
   factory( "LocalObservation", {
     _synced_at: null,
     _created_at: faker.date.past( ),
+    observed_on_string: "2024-05-02",
+    latitude: 1.2345,
+    longitude: 1.2345,
     taxon: factory( "LocalTaxon" )
   } ),
   factory( "LocalObservation", {
     _synced_at: null,
     _created_at: faker.date.past( ),
+    observed_on_string: "2024-05-03",
+    latitude: 1.2345,
+    longitude: 1.2345,
     taxon: factory( "LocalTaxon" )
   } )
 ];
