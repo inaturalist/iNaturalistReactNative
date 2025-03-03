@@ -7,7 +7,7 @@ import useStore from "stores/useStore";
 
 import filterSuggestions from "./filterSuggestions";
 import useOfflineSuggestionsForMatch from "./useOfflineSuggestionsForMatch";
-// import useOnlineSuggestionsForMatch from "./useOnlineSuggestionsForMatch";
+import useOnlineSuggestionsForMatch from "./useOnlineSuggestionsForMatch";
 
 const convertSuggestionsObjToList = suggestions => {
   const matchSuggestionsList = [...suggestions.otherSuggestions];
@@ -32,7 +32,7 @@ const useSuggestionsForMatch = ( ) => {
   } );
 
   useOfflineSuggestionsForMatch( );
-  // useOnlineSuggestionsForMatch( );
+  useOnlineSuggestionsForMatch( );
 
   const unfilteredSuggestions = useMemo(
     () => ( onlineSuggestions.length > 0

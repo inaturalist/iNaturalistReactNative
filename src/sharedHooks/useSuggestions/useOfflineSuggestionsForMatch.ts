@@ -11,7 +11,7 @@ import {
 } from "sharedHelpers/sortSuggestionsForMatch.ts";
 import useStore from "stores/useStore";
 
-const logger = log.extend( "useOfflineSuggestions" );
+const logger = log.extend( "useOfflineSuggestionsForMatch" );
 
 const { useRealm } = RealmContext;
 
@@ -72,6 +72,8 @@ const useOfflineSuggestionsForMatch = ( ) => {
     const latitude = currentObservation?.latitude;
     const longitude = currentObservation?.longitude;
     const location = { latitude, longitude };
+
+    logger.debug( location, "does offline suggestions correctly use location?" );
 
     let rawPredictions = [];
     try {

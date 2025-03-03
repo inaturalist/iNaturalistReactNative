@@ -1,3 +1,4 @@
+import { FETCH_STATUS_ONLINE_ERROR } from "components/Suggestions/SuggestionsContainer.tsx";
 import { StateCreator } from "zustand";
 
 // at the moment this is used for the Match screen but it's
@@ -19,7 +20,6 @@ const DEFAULT_STATE = {
   offlineSuggestions: [],
   onlineSuggestions: [],
   otherSuggestions: [],
-  shouldUseLocation: false,
   suggestionsError: null,
   suggestionsList: [],
   topSuggestion: null,
@@ -34,10 +34,8 @@ interface SuggestionsSlice {
   resetSuggestionsSlice: ( ) => void
   setOfflineSuggestions: ( ) => void,
   setOnlineSuggestions: ( ) => void,
-  setShouldUseLocation: ( ) => void,
   setSuggestionsError: ( ) => void,
   setTopAndOtherSuggestions: ( ) => void,
-  shouldUseLocation: boolean,
   suggestionsList: Array<Object>,
   suggestionsError: boolean,
   topSuggestion: Object,
@@ -50,16 +48,18 @@ const createSuggestionsSlice: StateCreator<SuggestionsSlice> = set => ( {
   setOnlineSuggestions: onlineSuggestions => set( ( ) => ( {
     // default to showing onlineSuggestions if they exist
     onlineSuggestions,
-    offlineSuggestions: [],
+    offlineSuggestions: new Array( 0 ),
     isLoading: false
   } ) ),
-  setSuggestionsError: suggestionsError => set( ( ) => ( { suggestionsError } ) ),
+  setSuggestionsError: suggestionsError => set( ( ) => ( {
+    suggestionsError,
+    isLoading: suggestionsError !== FETCH_STATUS_ONLINE_ERROR
+  } ) ),
   resetSuggestionsSlice: ( ) => set( { ...DEFAULT_STATE } ),
   setTopAndOtherSuggestions: ( newTopSuggestion, newOtherSuggestions ) => set( ( ) => ( {
     topSuggestion: newTopSuggestion,
     otherSuggestions: newOtherSuggestions
   } ) ),
-  setShouldUseLocation: shouldUseLocation => set( ( ) => ( { shouldUseLocation } ) ),
   setCommonAncestor: commonAncestor => set( ( ) => ( { commonAncestor } ) ),
   setSuggestionsList: suggestionsList => set( ( ) => ( { suggestionsList } ) ),
   setIsLoading: isLoading => set( ( ) => ( { isLoading } ) )

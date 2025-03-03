@@ -3,14 +3,18 @@ import flattenUploadParams from "components/Suggestions/helpers/flattenUploadPar
 import { FETCH_STATUS_ONLINE_ERROR } from "components/Suggestions/SuggestionsContainer.tsx";
 import { RealmContext } from "providers/contexts.ts";
 import { useCallback, useEffect } from "react";
+import { log } from "sharedHelpers/logger";
 import {
   findPhotoUriFromCurrentObservation,
   saveTaxaFromOnlineSuggestionsToRealm
 } from "sharedHelpers/sortSuggestionsForMatch.ts";
 import {
-  useAuthenticatedQuery
+  useAuthenticatedQuery,
+  useLocationPermission
 } from "sharedHooks";
 import useStore from "stores/useStore";
+
+const logger = log.extend( "useOnlineSuggestionsForMatch" );
 
 type OnlineSuggestionsResponse = {
   dataUpdatedAt: Date,
@@ -43,16 +47,16 @@ const createImageParams = async ( currentObservation, shouldUseLocation ) => {
 const useOnlineSuggestions = ( ): OnlineSuggestionsResponse => {
   const currentObservation = useStore( state => state.currentObservation );
   const setOnlineSuggestions = useStore( state => state.setOnlineSuggestions );
-  const offlineSuggestions = useStore( state => state.offlineSuggestions );
   const setSuggestionsError = useStore( state => state.setSuggestionsError );
-  const shouldUseLocation = useStore( state => state.shouldUseLocation );
   const setCommonAncestor = useStore( state => state.setCommonAncestor );
   const realm = useRealm( );
+  const { hasPermissions: shouldUseLocation } = useLocationPermission( );
 
   const photoUri = findPhotoUriFromCurrentObservation( currentObservation );
 
   async function queryFn( optsWithAuth ) {
     const params = await createImageParams( currentObservation, shouldUseLocation );
+    logger.debug( params, "params for online suggestions: does this have location?" );
     return scoreImage( params, optsWithAuth );
   }
 
@@ -63,8 +67,6 @@ const useOnlineSuggestions = ( ): OnlineSuggestionsResponse => {
   // uploading images
   const {
     data: onlineSuggestions,
-    dataUpdatedAt,
-    fetchStatus,
     error
   } = useAuthenticatedQuery(
     queryKey,
@@ -72,6 +74,8 @@ const useOnlineSuggestions = ( ): OnlineSuggestionsResponse => {
     {
       enabled: !!( photoUri ),
       allowAnonymousJWT: true,
+      // using this instead of a useEffect to time out suggestions on a
+      // slow connection but haven't tested this in the wild yet
       staleTime: SCORE_IMAGE_TIMEOUT
     }
   );
@@ -82,8 +86,7 @@ const useOnlineSuggestions = ( ): OnlineSuggestionsResponse => {
     saveTaxaFromOnlineSuggestionsToRealm( onlineSuggestions, realm );
   }, [onlineSuggestions, realm, setCommonAncestor, setOnlineSuggestions] );
 
-  const shouldUpdateOnlineSuggestions = onlineSuggestions !== undefined
-    && offlineSuggestions.length > 0;
+  const shouldUpdateOnlineSuggestions = onlineSuggestions !== undefined;
 
   useEffect( ( ) => {
     if ( shouldUpdateOnlineSuggestions ) {
@@ -99,16 +102,7 @@ const useOnlineSuggestions = ( ): OnlineSuggestionsResponse => {
     updateOnlineSuggestions
   ] );
 
-  const queryObject = {
-    dataUpdatedAt,
-    error,
-    fetchStatus
-  };
-
-  return {
-    ...queryObject,
-    onlineSuggestions
-  };
+  return null;
 };
 
 export default useOnlineSuggestions;

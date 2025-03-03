@@ -5,7 +5,6 @@ import _ from "lodash";
 import { RealmContext } from "providers/contexts.ts";
 import React, {
   useCallback,
-  useMemo,
   useRef
 } from "react";
 import saveObservation from "sharedHelpers/saveObservation.ts";
@@ -38,11 +37,9 @@ const MatchContainer = ( ) => {
   const setSuggestionsList = useStore( state => state.setSuggestionsList );
   const onlineSuggestions = useStore( state => state.onlineSuggestions );
   const offlineSuggestions = useStore( state => state.offlineSuggestions );
-  const shouldUseLocation = useStore( state => state.shouldUseLocation );
   const isLoading = useStore( state => state.isLoading );
 
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
-  // const setShouldUseLocation = useStore( state => state.setShouldUseLocation );
   const navigation = useNavigation( );
   const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
 
@@ -55,17 +52,17 @@ const MatchContainer = ( ) => {
     skipStoreReset: true
   } );
 
-  const openLocationPicker = ( ) => {
+  const openLocationPicker = useCallback( ( ) => {
     navigation.navigate( "LocationPicker" );
-  };
+  }, [navigation] );
 
-  const handleLocationPickerPressed = ( ) => {
+  const handleLocationPickerPressed = useCallback( ( ) => {
     if ( hasPermissions ) {
       openLocationPicker( );
     } else {
       requestPermissions( );
     }
-  };
+  }, [hasPermissions, openLocationPicker, requestPermissions] );
 
   const scrollToTop = useCallback( ( ) => {
     if ( scrollRef.current ) {
@@ -92,7 +89,7 @@ const MatchContainer = ( ) => {
   const taxon = topSuggestion?.taxon;
   const taxonId = taxon?.id;
 
-  const navToTaxonDetails = photo => {
+  const navToTaxonDetails = useCallback( photo => {
     const params = { id: taxonId };
     if ( !photo?.isRepresentativeButOtherTaxon ) {
       params.firstPhotoID = photo.id;
@@ -100,9 +97,9 @@ const MatchContainer = ( ) => {
       params.representativePhoto = photo;
     }
     navigation.push( "TaxonDetails", params );
-  };
+  }, [navigation, taxonId] );
 
-  const handleSaveOrDiscardPress = async action => {
+  const handleSaveOrDiscardPress = useCallback( async action => {
     if ( action === "save" ) {
       updateObservationKeys( {
         taxon,
@@ -111,12 +108,14 @@ const MatchContainer = ( ) => {
       await saveObservation( getCurrentObservation( ), cameraRollUris, realm );
     }
     exitObservationFlow( );
-  };
-
-  const suggestionsLoading = useMemo( () => (
-    ( !offlineSuggestions || offlineSuggestions.length === 0 )
-      && ( !onlineSuggestions || onlineSuggestions.length === 0 )
-  ), [offlineSuggestions, onlineSuggestions] );
+  }, [
+    cameraRollUris,
+    exitObservationFlow,
+    getCurrentObservation,
+    realm,
+    taxon,
+    updateObservationKeys
+  ] );
 
   return (
     <>
@@ -130,7 +129,6 @@ const MatchContainer = ( ) => {
           handleLocationPickerPressed={handleLocationPickerPressed}
           topSuggestion={topSuggestion}
           otherSuggestions={otherSuggestions}
-          suggestionsLoading={suggestionsLoading}
           scrollRef={scrollRef}
         />
         {renderPermissionsGate( { onPermissionGranted: openLocationPicker } )}
@@ -147,10 +145,6 @@ const MatchContainer = ( ) => {
             <Body3 className="text-white">
               Offline suggestions length:
               {JSON.stringify( offlineSuggestions.length )}
-            </Body3>
-            <Body3 className="text-white">
-              Should use location:
-              {JSON.stringify( shouldUseLocation )}
             </Body3>
           </View>
         )}
