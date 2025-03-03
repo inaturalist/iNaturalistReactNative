@@ -6,7 +6,6 @@ import {
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
-import { useSuggestionsForMatch } from "sharedHooks";
 import useStore from "stores/useStore";
 
 import savePhotosToPhotoLibrary from "../helpers/savePhotosToPhotoLibrary";
@@ -27,8 +26,7 @@ const usePrepareStoreAndNavigate = ( ): Function => {
   const setCameraState = useStore( state => state.setCameraState );
   const setSentinelFileName = useStore( state => state.setSentinelFileName );
   const isAdvancedSuggestionsMode = useStore( state => state.layout.isAdvancedSuggestionsMode );
-
-  useSuggestionsForMatch( );
+  const setIsLoading = useStore( state => state.setIsLoading );
 
   const { deviceStorageFull, showStorageFullAlert } = useDeviceStorageFull( );
 
@@ -165,7 +163,7 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     setSentinelFileName( null );
 
     if ( showMatchScreen ) {
-      // skip navigation while offline results would load here
+      setIsLoading( true );
       return navigation.push( "Match", {
         entryScreen: "CameraWithDevice",
         lastScreen: "CameraWithDevice"
@@ -188,7 +186,8 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     setSentinelFileName,
     navigation,
     updateObsWithCameraPhotos,
-    isAdvancedSuggestionsMode
+    isAdvancedSuggestionsMode,
+    setIsLoading
   ] );
 
   return prepareStoreAndNavigate;

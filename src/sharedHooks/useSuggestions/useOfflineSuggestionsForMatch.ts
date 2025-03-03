@@ -15,10 +15,10 @@ const logger = log.extend( "useOfflineSuggestions" );
 
 const { useRealm } = RealmContext;
 
-// only return predictions from rank ORDER or lower. do we still want this
-// for the Match screen?
+// we might need to change this RANK_LEVEL
+// but it's currently helpful for testing that we're getting results
 
-// const RANK_LEVEL_ORDER = 40;
+const RANK_LEVEL = 90;
 
 const formatPredictions = ( rawPredictions, iconicTaxa ) => {
   // similar to what we're doing in the AICamera to get iconic taxon name,
@@ -31,7 +31,7 @@ const formatPredictions = ( rawPredictions, iconicTaxa ) => {
   // returned similarly to how we return them on web; this is returning a
   // single branch like on the AI Camera 2023-12-08
   const formattedPredictions = rawPredictions?.reverse( )
-    // .filter( prediction => prediction.rank_level <= RANK_LEVEL_ORDER )
+    .filter( prediction => prediction.rank_level <= RANK_LEVEL )
     .map( prediction => ( {
       combined_score: prediction.combined_score,
       taxon: {
@@ -46,6 +46,7 @@ const formatPredictions = ( rawPredictions, iconicTaxa ) => {
 
 const useOfflineSuggestionsForMatch = ( ) => {
   const currentObservation = useStore( state => state.currentObservation );
+  const offlineSuggestions = useStore( state => state.offlineSuggestions );
   const setOfflineSuggestions = useStore( state => state.setOfflineSuggestions );
   const setSuggestionsError = useStore( state => state.setSuggestionsError );
   const realm = useRealm( );
@@ -57,7 +58,9 @@ const useOfflineSuggestionsForMatch = ( ) => {
   // since the user can see the small square version of this image in MyObs/ObsDetails already
   // but for now, passing in an https photo to predictImage while offline crashes the app
   const urlWillCrashOffline = photoUri?.includes( "https://" );
-  const shouldFetchOffline = currentObservation !== null && !urlWillCrashOffline;
+  const shouldFetchOffline = currentObservation !== null
+    && !urlWillCrashOffline
+    && offlineSuggestions.length === 0;
 
   const handleError = useCallback( error => {
     setSuggestionsError( FETCH_STATUS_OFFLINE_ERROR );

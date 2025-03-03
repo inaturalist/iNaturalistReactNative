@@ -2,7 +2,7 @@ import scoreImage from "api/computerVision.ts";
 import flattenUploadParams from "components/Suggestions/helpers/flattenUploadParams.ts";
 import { FETCH_STATUS_ONLINE_ERROR } from "components/Suggestions/SuggestionsContainer.tsx";
 import { RealmContext } from "providers/contexts.ts";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import {
   findPhotoUriFromCurrentObservation,
   saveTaxaFromOnlineSuggestionsToRealm
@@ -19,7 +19,6 @@ type OnlineSuggestionsResponse = {
   fetchStatus: string
 }
 
-// const SCORE_IMAGE_TIMEOUT = 5_000;
 const SCORE_IMAGE_TIMEOUT = 5000;
 
 const { useRealm } = RealmContext;
@@ -44,6 +43,7 @@ const createImageParams = async ( currentObservation, shouldUseLocation ) => {
 const useOnlineSuggestions = ( ): OnlineSuggestionsResponse => {
   const currentObservation = useStore( state => state.currentObservation );
   const setOnlineSuggestions = useStore( state => state.setOnlineSuggestions );
+  const offlineSuggestions = useStore( state => state.offlineSuggestions );
   const setSuggestionsError = useStore( state => state.setSuggestionsError );
   const shouldUseLocation = useStore( state => state.shouldUseLocation );
   const setCommonAncestor = useStore( state => state.setCommonAncestor );
@@ -76,23 +76,27 @@ const useOnlineSuggestions = ( ): OnlineSuggestionsResponse => {
     }
   );
 
-  console.log( onlineSuggestions, "online suggestions " );
+  const updateOnlineSuggestions = useCallback( ( ) => {
+    setOnlineSuggestions( onlineSuggestions.results );
+    setCommonAncestor( onlineSuggestions?.common_ancestor );
+    saveTaxaFromOnlineSuggestionsToRealm( onlineSuggestions, realm );
+  }, [onlineSuggestions, realm, setCommonAncestor, setOnlineSuggestions] );
+
+  const shouldUpdateOnlineSuggestions = onlineSuggestions !== undefined
+    && offlineSuggestions.length > 0;
 
   useEffect( ( ) => {
-    if ( onlineSuggestions !== undefined ) {
-      setOnlineSuggestions( onlineSuggestions.results );
-      setCommonAncestor( onlineSuggestions?.common_ancestor );
-      saveTaxaFromOnlineSuggestionsToRealm( onlineSuggestions, realm );
+    if ( shouldUpdateOnlineSuggestions ) {
+      updateOnlineSuggestions( );
     } else if ( error ) {
       setSuggestionsError( FETCH_STATUS_ONLINE_ERROR );
     }
   }, [
-    setSuggestionsError,
-    setCommonAncestor,
-    onlineSuggestions,
     error,
     setOnlineSuggestions,
-    realm
+    setSuggestionsError,
+    shouldUpdateOnlineSuggestions,
+    updateOnlineSuggestions
   ] );
 
   const queryObject = {

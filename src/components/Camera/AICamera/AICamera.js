@@ -37,7 +37,6 @@ import AICameraButtons from "./AICameraButtons";
 import FrameProcessorCamera from "./FrameProcessorCamera";
 import usePredictions from "./hooks/usePredictions";
 import LocationStatus from "./LocationStatus";
-import PreMatchLoadingScreen from "./PreMatchLoadingScreen";
 
 const isTablet = DeviceInfo.isTablet();
 
@@ -322,11 +321,7 @@ const AICamera = ( {
         useLocation={useLocation}
         toggleLocation={toggleLocation}
       />
-      {/* PreMatchLoadingScreen needs to be below AICameraButtons to make sure
-      those are also hidden */}
-      {isDefaultMode
-        ? <PreMatchLoadingScreen takingPhoto={takingPhoto} />
-        : <FadeInOutView takingPhoto={takingPhoto} cameraType="AI" />}
+      <FadeInOutView takingPhoto={takingPhoto} cameraType="AI" />
     </>
   );
 };

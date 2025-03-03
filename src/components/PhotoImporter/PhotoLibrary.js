@@ -46,6 +46,7 @@ const PhotoLibrary = ( ): Node => {
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
   const isAdvancedSuggestionsMode = useStore( state => state.layout.isAdvancedSuggestionsMode );
   const exitObservationsFlow = useExitObservationsFlow( );
+  const setIsLoading = useStore( state => state.setIsLoading );
 
   const { params } = useRoute( );
   const skipGroupPhotos = params
@@ -65,6 +66,7 @@ const PhotoLibrary = ( ): Node => {
 
   const navBasedOnUserSettings = useCallback( async ( ) => {
     if ( advanceToMatchScreen ) {
+      setIsLoading( true );
       return navigation.navigate( "Match", {
         lastScreen: "PhotoLibrary"
       } );
@@ -77,7 +79,7 @@ const PhotoLibrary = ( ): Node => {
     return navigation.navigate( "ObsEdit", {
       lastScreen: "PhotoLibrary"
     } );
-  }, [navigation, advanceToMatchScreen, isAdvancedSuggestionsMode] );
+  }, [navigation, advanceToMatchScreen, isAdvancedSuggestionsMode, setIsLoading] );
 
   const moveImagesToDocumentsDirectory = async selectedImages => {
     const path = photoLibraryPhotosPath;

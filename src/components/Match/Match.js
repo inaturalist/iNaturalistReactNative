@@ -10,6 +10,7 @@ import { View } from "components/styledComponents";
 import _ from "lodash";
 import React from "react";
 import { useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 
 import AdditionalSuggestionsScroll
   from "./AdditionalSuggestions/AdditionalSuggestionsScroll";
@@ -29,7 +30,6 @@ type Props = {
   handleLocationPickerPressed: ( ) => void,
   topSuggestion: Object,
   otherSuggestions: Array<Object>,
-  suggestionsLoading: boolean,
   onSuggestionChosen: ( ) => void,
   scrollRef: Object
 }
@@ -42,12 +42,12 @@ const Match = ( {
   handleLocationPickerPressed,
   topSuggestion,
   otherSuggestions,
-  suggestionsLoading,
   onSuggestionChosen,
   scrollRef
 }: Props ) => {
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
+  const isLoading = useStore( state => state.isLoading );
 
   const latitude = observation?.privateLatitude || observation?.latitude;
   const taxon = topSuggestion?.taxon;
@@ -57,7 +57,7 @@ const Match = ( {
       <ScrollViewWrapper scrollRef={scrollRef}>
         <View className={cardClassTop}>
           {
-            suggestionsLoading
+            isLoading
               ? (
                 <ActivityIndicator size={33} />
               )
@@ -101,7 +101,7 @@ const Match = ( {
           <AdditionalSuggestionsScroll
             onSuggestionChosen={onSuggestionChosen}
             otherSuggestions={otherSuggestions}
-            suggestionsLoading={suggestionsLoading}
+            isLoading={isLoading}
           />
           {!latitude && (
             <Button

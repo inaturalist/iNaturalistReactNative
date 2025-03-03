@@ -22,7 +22,8 @@ const DEFAULT_STATE = {
   shouldUseLocation: false,
   suggestionsError: null,
   suggestionsList: [],
-  topSuggestion: null
+  topSuggestion: null,
+  isLoading: true
 };
 
 interface SuggestionsSlice {
@@ -40,12 +41,18 @@ interface SuggestionsSlice {
   suggestionsList: Array<Object>,
   suggestionsError: boolean,
   topSuggestion: Object,
+  isLoading: boolean
 }
 
 const createSuggestionsSlice: StateCreator<SuggestionsSlice> = set => ( {
   ...DEFAULT_STATE,
   setOfflineSuggestions: offlineSuggestions => set( ( ) => ( { offlineSuggestions } ) ),
-  setOnlineSuggestions: onlineSuggestions => set( ( ) => ( { onlineSuggestions } ) ),
+  setOnlineSuggestions: onlineSuggestions => set( ( ) => ( {
+    // default to showing onlineSuggestions if they exist
+    onlineSuggestions,
+    offlineSuggestions: [],
+    isLoading: false
+  } ) ),
   setSuggestionsError: suggestionsError => set( ( ) => ( { suggestionsError } ) ),
   resetSuggestionsSlice: ( ) => set( { ...DEFAULT_STATE } ),
   setTopAndOtherSuggestions: ( newTopSuggestion, newOtherSuggestions ) => set( ( ) => ( {
@@ -54,7 +61,8 @@ const createSuggestionsSlice: StateCreator<SuggestionsSlice> = set => ( {
   } ) ),
   setShouldUseLocation: shouldUseLocation => set( ( ) => ( { shouldUseLocation } ) ),
   setCommonAncestor: commonAncestor => set( ( ) => ( { commonAncestor } ) ),
-  setSuggestionsList: suggestionsList => set( ( ) => ( { suggestionsList } ) )
+  setSuggestionsList: suggestionsList => set( ( ) => ( { suggestionsList } ) ),
+  setIsLoading: isLoading => set( ( ) => ( { isLoading } ) )
 } );
 
 export default createSuggestionsSlice;
