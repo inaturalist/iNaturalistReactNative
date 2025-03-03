@@ -1,8 +1,6 @@
-// @flow
 import classNames from "classnames";
 import { Body4, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useMemo } from "react";
 import {
   formatApiDatetime,
@@ -11,25 +9,25 @@ import {
 } from "sharedHelpers/dateAndTime.ts";
 import { useTranslation } from "sharedHooks";
 
-type Props = {
+interface Props {
   // Display the date as a difference, or relative date, e.g. "1d" or "3w"
-  asDifference?: boolean,
-  belongsToCurrentUser?: boolean,
-  classNameMargin?: string,
-  dateString: string,
-  geoprivacy?: string,
-  hideIcon?: boolean,
-  label?: string,
+  asDifference?: boolean;
+  belongsToCurrentUser?: boolean;
+  classNameMargin?: string;
+  dateString: string;
+  geoprivacy?: string;
+  hideIcon?: boolean;
+  label?: string;
   // Display the time as literally expressed in the dateString, i.e. don't
   // assume it's in any time zone
-  literalTime?: boolean,
-  maxFontSizeMultiplier?: number,
-  taxonGeoprivacy?: string,
-  textComponent?: Function,
+  literalTime?: boolean;
+  maxFontSizeMultiplier?: number;
+  taxonGeoprivacy?: string;
+  textComponent?: ( props ) => React.JSX.Element;
   // Convert the time to the this time zone; otherwise display in the
   // current / local time zone
   timeZone?: string;
-};
+}
 
 const DateDisplay = ( {
   asDifference,
@@ -44,7 +42,7 @@ const DateDisplay = ( {
   taxonGeoprivacy,
   textComponent: TextComponentProp,
   timeZone
-}: Props ): Node => {
+}: Props ) => {
   const { i18n } = useTranslation( );
 
   let TextComponent = TextComponentProp;
