@@ -1,13 +1,14 @@
 import { ObsStatus, UploadStatus } from "components/SharedComponents";
 import React from "react";
+import type { RealmObservation } from "realmModels/types";
 import { useDebugMode } from "sharedHooks";
 
 interface Props {
   classNameMargin?: string;
   explore?: boolean;
   layout?: "horizontal" | "vertical";
-  observation: Object;
-  onPress: Function;
+  observation: RealmObservation;
+  onPress: ( ) => void;
   progress?: number;
   queued: boolean;
   showObsStatus?: boolean;
