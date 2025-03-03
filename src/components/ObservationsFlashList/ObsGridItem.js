@@ -18,6 +18,7 @@ type Props = {
   currentUser: Object,
   explore: boolean,
   height?: string,
+  hideObsUploadStatus?: boolean,
   isLargeFontScale: boolean,
   observation: Object,
   onUploadButtonPress: Function,
@@ -31,6 +32,7 @@ const ObsGridItem = ( {
   currentUser,
   explore,
   height = "w-[200px]",
+  hideObsUploadStatus,
   isLargeFontScale,
   observation,
   onUploadButtonPress,
@@ -79,16 +81,18 @@ const ObsGridItem = ( {
       white
     >
       <View className="absolute bottom-0 items-start p-2">
-        <ObsUploadStatus
-          classNameMargin="mb-1"
-          explore={explore}
-          layout="horizontal"
-          observation={observation}
-          onPress={onUploadButtonPress}
-          queued={queued}
-          progress={uploadProgress}
-          white
-        />
+        {!hideObsUploadStatus && (
+          <ObsUploadStatus
+            classNameMargin="mb-1"
+            explore={explore}
+            layout="horizontal"
+            observation={observation}
+            onPress={onUploadButtonPress}
+            queued={queued}
+            progress={uploadProgress}
+            white
+          />
+        )}
         {displayTaxonName}
       </View>
     </ObsImagePreview>

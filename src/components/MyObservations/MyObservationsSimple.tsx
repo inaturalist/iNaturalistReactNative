@@ -268,6 +268,7 @@ const MyObservationsSimple = ( {
               handleIndividualUploadPress={handleIndividualUploadPress}
               hideLoadingWheel
               hideMetadata
+              hideObsUploadStatus={!currentUser}
               isFetchingNextPage={isFetchingNextPage}
               isConnected={isConnected}
               obsListKey="MyObservations"
