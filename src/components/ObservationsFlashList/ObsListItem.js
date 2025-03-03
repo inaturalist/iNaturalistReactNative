@@ -90,7 +90,7 @@ const ObsListItem = ( {
           obsPhotosCount={photoCountFromObservation( observation )}
           hidePhotoCount={missingBasics}
           hasSound={observationHasSound( observation )}
-          opaque={unsynced}
+          opaque={!!currentUser && unsynced}
           isSmall
           iconicTaxonName={observation.taxon?.iconic_taxon_name}
         />
