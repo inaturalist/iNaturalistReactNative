@@ -30,7 +30,7 @@ import LocationSection from "./LocationSection/LocationSection";
 import MapSection from "./MapSection/MapSection";
 import MoreSection from "./MoreSection/MoreSection";
 import NotesSection from "./NotesSection/NotesSection";
-import ObsDetailsHeaderRight from "./ObsDetailsHeaderRight";
+import ObsDetailsHeaderRight from "./ObsDetailsDefaultModeHeaderRight";
 import ObserverDetails from "./ObserverDetails";
 import ObsMediaDisplayContainer from "./ObsMediaDisplayContainer";
 import AgreeWithIDSheet from "./Sheets/AgreeWithIDSheet";
@@ -79,7 +79,7 @@ type Props = {
   uuid: string
 }
 
-const ObsDetails = ( {
+const ObsDetailsDefaultMode = ( {
   activityItems,
   addingActivityItem,
   closeAgreeWithIdSheet,
@@ -332,4 +332,4 @@ const ObsDetails = ( {
   );
 };
 
-export default ObsDetails;
+export default ObsDetailsDefaultMode;

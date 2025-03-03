@@ -33,7 +33,7 @@ import useRemoteObservation, {
 import useStore from "stores/useStore";
 
 import useMarkViewedMutation from "./hooks/useMarkViewedMutation";
-import ObsDetails from "./ObsDetails";
+import ObsDetailsDefaultMode from "./ObsDetailsDefaultMode";
 
 const { useRealm } = RealmContext;
 
@@ -578,7 +578,7 @@ const ObsDetailsContainer = ( ): Node => {
   };
 
   return observationShown && (
-    <ObsDetails
+    <ObsDetailsDefaultMode
       activityItems={activityItems || []}
       addingActivityItem={addingActivityItem}
       closeAgreeWithIdSheet={closeAgreeWithIdSheet}
