@@ -5,7 +5,7 @@ import type { RealmObservation } from "realmModels/types";
 interface Props {
   classNameMargin?: string;
   explore?: boolean;
-  layout?: "horizontal" | "vertical";
+  layout: "horizontal" | "vertical";
   observation: RealmObservation;
   onPress: ( ) => void;
   progress?: number;
