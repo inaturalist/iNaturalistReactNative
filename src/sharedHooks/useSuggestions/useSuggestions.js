@@ -63,27 +63,34 @@ export const useSuggestions = ( photoUri, options ) => {
   } );
 
   const usingOfflineSuggestions = tryOfflineSuggestions || (
-    offlineSuggestions.length > 0
+    offlineSuggestions?.results?.length > 0
       && ( !onlineSuggestions || onlineSuggestions?.results?.length === 0 )
   );
 
   const hasOnlineSuggestionResults = onlineSuggestions?.results?.length > 0;
 
-  const unfilteredSuggestions = hasOnlineSuggestionResults
-    ? onlineSuggestions.results
-    : offlineSuggestions;
+  const unfilteredSuggestions = useMemo(
+    ( ) => ( hasOnlineSuggestionResults
+      ? onlineSuggestions.results || []
+      : offlineSuggestions.results || [] ),
+    [hasOnlineSuggestionResults, onlineSuggestions, offlineSuggestions]
+  );
+
+  const commonAncestor = hasOnlineSuggestionResults
+    ? onlineSuggestions?.commonAncestor
+    : offlineSuggestions?.commonAncestor;
 
   // since we can calculate this, there's no need to store it in state
   const suggestions = useMemo(
     ( ) => filterSuggestions(
       unfilteredSuggestions,
       usingOfflineSuggestions,
-      onlineSuggestions?.common_ancestor
+      commonAncestor
     ),
     [
       unfilteredSuggestions,
       usingOfflineSuggestions,
-      onlineSuggestions?.common_ancestor
+      commonAncestor
     ]
   );
 
