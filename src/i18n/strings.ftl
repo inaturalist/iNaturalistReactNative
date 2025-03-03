@@ -456,6 +456,7 @@ Edits-this-observations-taxon = Edits this observation's taxon
 EDUCATORS = EDUCATORS
 EMAIL = EMAIL
 EMAIL-DEBUG-LOGS = EMAIL DEBUG LOGS
+EMAIL-SENT = EMAIL SENT!
 # Button that enables the camera's flash
 Enable-flash = Enable flash
 # Button that enables the camera to use location for suggestions
@@ -604,6 +605,7 @@ IMPORT-X-OBSERVATIONS =
 IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = IMPROVE THESE SUGGESTIONS BY USING YOUR LOCATION
 # Identification category
 improving--identification = Improving
+In-order-to-add-comments-or-IDs = In order to add comments or IDs on other people’s content, please confirm your email. Please click the link sent to <b>{ $email }</b> to confirm your email address.
 iNat-is-global-community = iNaturalist is a global community of naturalists creating open data for science by collectively observing & identifying organisms
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT SETTINGS
 iNaturalist-AI-Camera = iNaturalist AI Camera
@@ -929,6 +931,7 @@ Please-allow-Location-Access = Please allow Location Access
 # Title of screen asking for permission to access the microphone when access was denied
 Please-allow-Microphone-Access = Please allow Microphone Access
 Please-choose-a-different-password = Please choose a different password.
+PLEASE-CONFIRM-EMAIL = PLEASE CONFIRM EMAIL
 # Title of a screen asking for permission when permission has been denied
 Please-Grant-Permission = Please Grant Permission
 PLEASE-LOG-IN = PLEASE LOG IN
@@ -1076,6 +1079,7 @@ Removes-your-vote-of-disagreement = Removes your vote of disagreement
 # share outside of iNat
 Research-Grade--quality-grade = Research Grade
 Research-Grade-Status = Research Grade Status
+RESEND-CONFIRMATION-EMAIL = RESEND CONFIRMATION EMAIL
 # Reset password button
 RESET-PASSWORD = RESET PASSWORD
 # Label for a button that resets a sound recording

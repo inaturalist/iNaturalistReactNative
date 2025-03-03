@@ -2,6 +2,7 @@
 import {
   ActivityIndicator
 } from "components/SharedComponents";
+import EmailConfirmationSheet from "components/SharedComponents/Sheets/EmailConfirmationSheet";
 import {
   SafeAreaView,
   ScrollView,
@@ -9,11 +10,12 @@ import {
 } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
-  useRef
+  useRef, useState
 } from "react";
 import {
   useScrollToOffset
 } from "sharedHooks";
+import useIsUserConfirmed from "sharedHooks/useIsUserConfirmed";
 
 import CommunitySection from "./CommunitySection/CommunitySection";
 import FloatingButtons from "./CommunitySection/FloatingButtons";
@@ -64,11 +66,25 @@ const ObsDetailsDefaultMode = ( {
   uuid
 }: Props ): Node => {
   const scrollViewRef = useRef( );
+  const isUserConfirmed = useIsUserConfirmed();
+  const [showUserNeedToConfirm, setShowUserNeedToConfirm] = useState( false );
 
   const {
     setHeightOfContentAboveSection: setHeightOfContentAboveCommunitySection,
     setOffsetToActivityItem
   } = useScrollToOffset( scrollViewRef );
+
+  const callFunctionIfConfirmedEmail = ( func, params = {} ) => {
+    // Allow the user to add a comment, suggest an ID, etc.  - only if they've
+    // confirmed their email or if they're the observer of this observation
+    if ( isUserConfirmed || belongsToCurrentUser ) {
+      if ( func ) func( params );
+      return true;
+    }
+    // Show the user the bottom sheet that tells them they need to confirm
+    setShowUserNeedToConfirm( true );
+    return false;
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -78,6 +94,8 @@ const ObsDetailsDefaultMode = ( {
         uuid={observation?.uuid}
         refetchSubscriptions={refetchSubscriptions}
         subscriptions={subscriptions}
+        setShowUserNeedToConfirm={setShowUserNeedToConfirm}
+        isUserConfirmed={isUserConfirmed}
       />
       <ScrollView
         ref={scrollViewRef}
@@ -116,7 +134,9 @@ const ObsDetailsDefaultMode = ( {
           isConnected={isConnected}
           targetItemID={targetActivityItemID}
           observation={observation}
-          openAgreeWithIdSheet={openAgreeWithIdSheet}
+          openAgreeWithIdSheet={
+            params => callFunctionIfConfirmedEmail( openAgreeWithIdSheet, params )
+          }
           refetchRemoteObservation={refetchRemoteObservation}
           onLayoutTargetItem={setOffsetToActivityItem}
         />
@@ -131,9 +151,18 @@ const ObsDetailsDefaultMode = ( {
       </ScrollView>
       {currentUser && (
         <FloatingButtons
-          navToSuggestions={navToSuggestions}
-          openAddCommentSheet={openAddCommentSheet}
           showAddCommentSheet={showAddCommentSheet}
+          navToSuggestions={() => callFunctionIfConfirmedEmail(
+            navToSuggestions
+          )}
+          openAddCommentSheet={
+            params => callFunctionIfConfirmedEmail( openAddCommentSheet, params )
+          }
+        />
+      )}
+      {showUserNeedToConfirm && (
+        <EmailConfirmationSheet
+          onPressClose={() => setShowUserNeedToConfirm( false )}
         />
       )}
     </SafeAreaView>

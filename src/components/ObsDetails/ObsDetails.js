@@ -8,6 +8,7 @@ import {
   TextInputSheet,
   WarningSheet
 } from "components/SharedComponents";
+import EmailConfirmationSheet from "components/SharedComponents/Sheets/EmailConfirmationSheet";
 import {
   SafeAreaView,
   ScrollView,
@@ -28,6 +29,7 @@ import {
 import {
   useTranslation
 } from "sharedHooks";
+import useIsUserConfirmed from "sharedHooks/useIsUserConfirmed";
 
 import ActivityTab from "./ActivityTab/ActivityTab";
 import FloatingButtons from "./ActivityTab/FloatingButtons";
@@ -130,6 +132,8 @@ const ObsDetails = ( {
   const insets = useSafeAreaInsets();
   const { t } = useTranslation( );
   const [invertToWhiteBackground, setInvertToWhiteBackground] = useState( false );
+  const isUserConfirmed = useIsUserConfirmed();
+  const [showUserNeedToConfirm, setShowUserNeedToConfirm] = useState( false );
 
   // Scroll the scrollview to this y position once if set, then unset it.
   // Could be refactored into a hook if we need this logic elsewher
@@ -158,6 +162,18 @@ const ObsDetails = ( {
     }
   };
 
+  const callFunctionIfConfirmedEmail = ( func, params = {} ) => {
+    // Allow the user to add a comment, suggest an ID, etc.  - only if they've
+    // confirmed their email or if they're the observer of this observation
+    if ( isUserConfirmed || belongsToCurrentUser ) {
+      if ( func ) func( params );
+      return true;
+    }
+    // Show the user the bottom sheet that tells them they need to confirm
+    setShowUserNeedToConfirm( true );
+    return false;
+  };
+
   const dynamicInsets = useMemo( () => ( {
     backgroundColor: "#ffffff",
     paddingTop: insets.top,
@@ -177,7 +193,9 @@ const ObsDetails = ( {
         isConnected={isConnected}
         targetItemID={targetActivityItemID}
         observation={observation}
-        openAgreeWithIdSheet={openAgreeWithIdSheet}
+        openAgreeWithIdSheet={
+          params => callFunctionIfConfirmedEmail( openAgreeWithIdSheet, params )
+        }
         refetchRemoteObservation={refetchRemoteObservation}
         onLayoutTargetItem={event => {
           const { layout } = event.nativeEvent;
@@ -204,6 +222,7 @@ const ObsDetails = ( {
           <FaveButton
             observation={observation}
             currentUser={currentUser}
+            beforeToggleFave={callFunctionIfConfirmedEmail}
             afterToggleFave={refetchRemoteObservation}
             top
           />
@@ -240,8 +259,12 @@ const ObsDetails = ( {
         </ScrollView>
         {showActivityTab && (
           <FloatingButtons
-            navToSuggestions={navToSuggestions}
-            openAddCommentSheet={openAddCommentSheet}
+            navToSuggestions={() => callFunctionIfConfirmedEmail(
+              navToSuggestions
+            )}
+            openAddCommentSheet={
+              params => callFunctionIfConfirmedEmail( openAddCommentSheet, params )
+            }
             showAddCommentSheet={showAddCommentSheet}
           />
         )}
@@ -254,6 +277,8 @@ const ObsDetails = ( {
         uuid={observation?.uuid}
         refetchSubscriptions={refetchSubscriptions}
         subscriptions={subscriptions}
+        setShowUserNeedToConfirm={setShowUserNeedToConfirm}
+        isUserConfirmed={isUserConfirmed}
       />
     </View>
   );
@@ -275,6 +300,8 @@ const ObsDetails = ( {
           observationId={observation?.id}
           uuid={observation?.uuid}
           refetchSubscriptions={refetchSubscriptions}
+          setShowUserNeedToConfirm={setShowUserNeedToConfirm}
+          isUserConfirmed={isUserConfirmed}
         />
         <View className="-mt-[64px]">
           <ObsMediaDisplayContainer observation={observation} />
@@ -282,6 +309,7 @@ const ObsDetails = ( {
             <FaveButton
               observation={observation}
               currentUser={currentUser}
+              beforeToggleFave={callFunctionIfConfirmedEmail}
               afterToggleFave={refetchRemoteObservation}
             />
           ) }
@@ -306,8 +334,12 @@ const ObsDetails = ( {
       </ScrollView>
       {showActivityTab && currentUser && (
         <FloatingButtons
-          navToSuggestions={navToSuggestions}
-          openAddCommentSheet={openAddCommentSheet}
+          navToSuggestions={() => callFunctionIfConfirmedEmail(
+            navToSuggestions
+          )}
+          openAddCommentSheet={
+            params => callFunctionIfConfirmedEmail( openAddCommentSheet, params )
+          }
           showAddCommentSheet={showAddCommentSheet}
         />
       )}
@@ -380,6 +412,12 @@ const ObsDetails = ( {
           oldTaxon={observation.taxon}
         />
       )}
+      {showUserNeedToConfirm && (
+        <EmailConfirmationSheet
+          onPressClose={() => setShowUserNeedToConfirm( false )}
+        />
+      )}
+
       {/*
         * FWIW, some situations in which this could happen are
         * 1. User loaded obs in explore and it was deleted between then and

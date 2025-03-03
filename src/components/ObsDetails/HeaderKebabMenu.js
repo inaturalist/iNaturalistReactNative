@@ -16,7 +16,9 @@ type Props = {
   white?: boolean,
   subscriptions: Object,
   uuid: string,
-  refetchSubscriptions: Function
+  refetchSubscriptions: Function,
+  setShowUserNeedToConfirm: Function,
+  isUserConfirmed: boolean
 }
 
 const HeaderKebabMenu = ( {
@@ -24,7 +26,9 @@ const HeaderKebabMenu = ( {
   white = true,
   subscriptions,
   uuid,
-  refetchSubscriptions
+  refetchSubscriptions,
+  setShowUserNeedToConfirm,
+  isUserConfirmed
 }: Props ): Node => {
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
 
@@ -65,6 +69,12 @@ const HeaderKebabMenu = ( {
 
   const toggleSubscriptionOnPress = async ( ) => {
     setKebabMenuVisible( false );
+
+    if ( !isUserConfirmed ) {
+      // User can't subscribe to notifications for this observation until they confirm their email
+      setShowUserNeedToConfirm( true );
+      return null;
+    }
     try {
       return await toggleSubscription.mutate( { uuid } );
     } catch ( error ) {

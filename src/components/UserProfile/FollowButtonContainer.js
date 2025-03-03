@@ -18,6 +18,8 @@ type Props = {
   setShowLoginSheet: Function,
   setShowUnfollowSheet: Function,
   userId: number,
+  setShowUserNeedToConfirm: Function,
+  isUserConfirmed: boolean
 };
 
 const FollowButtonContainer = ( {
@@ -26,7 +28,9 @@ const FollowButtonContainer = ( {
   relationship,
   setShowLoginSheet,
   setShowUnfollowSheet,
-  userId
+  userId,
+  setShowUserNeedToConfirm,
+  isUserConfirmed
 }: Props ): Node => {
   const [loading, setLoading] = useState( false );
   const { t } = useTranslation( );
@@ -88,6 +92,11 @@ const FollowButtonContainer = ( {
       setShowLoginSheet( true );
       return;
     }
+    if ( !isUserConfirmed ) {
+      setShowUserNeedToConfirm( true );
+      return;
+    }
+
     setLoading( true );
     follow();
   };
@@ -97,6 +106,11 @@ const FollowButtonContainer = ( {
       setShowLoginSheet( true );
       return;
     }
+    if ( !isUserConfirmed ) {
+      setShowUserNeedToConfirm( true );
+      return;
+    }
+
     setShowUnfollowSheet( true );
   };
 
