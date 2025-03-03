@@ -14,24 +14,32 @@ interface OfflineSuggestion {
 }
 
 const DEFAULT_STATE = {
+  commonAncestor: null,
+  fetchStatus: null,
   offlineSuggestions: [],
   onlineSuggestions: [],
-  suggestionsError: null,
-  topSuggestion: null,
   otherSuggestions: [],
-  shouldUseLocation: false
+  shouldUseLocation: false,
+  suggestionsError: null,
+  suggestionsList: [],
+  topSuggestion: null
 };
 
 interface SuggestionsSlice {
+  commonAncestor: Object,
   offlineSuggestions: OfflineSuggestion[],
   onlineSuggestions: Array<Object>,
+  otherSuggestions: Array<Object>,
+  resetSuggestionsSlice: ( ) => void
   setOfflineSuggestions: ( ) => void,
   setOnlineSuggestions: ( ) => void,
-  suggestionsError: boolean,
+  setShouldUseLocation: ( ) => void,
   setSuggestionsError: ( ) => void,
+  setTopAndOtherSuggestions: ( ) => void,
+  shouldUseLocation: boolean,
+  suggestionsList: Array<Object>,
+  suggestionsError: boolean,
   topSuggestion: Object,
-  otherSuggestions: Array<Object>,
-  shouldUseLocation: boolean
 }
 
 const createSuggestionsSlice: StateCreator<SuggestionsSlice> = set => ( {
@@ -44,7 +52,9 @@ const createSuggestionsSlice: StateCreator<SuggestionsSlice> = set => ( {
     topSuggestion: newTopSuggestion,
     otherSuggestions: newOtherSuggestions
   } ) ),
-  setShouldUseLocation: shouldUseLocation => set( ( ) => ( { shouldUseLocation } ) )
+  setShouldUseLocation: shouldUseLocation => set( ( ) => ( { shouldUseLocation } ) ),
+  setCommonAncestor: commonAncestor => set( ( ) => ( { commonAncestor } ) ),
+  setSuggestionsList: suggestionsList => set( ( ) => ( { suggestionsList } ) )
 } );
 
 export default createSuggestionsSlice;

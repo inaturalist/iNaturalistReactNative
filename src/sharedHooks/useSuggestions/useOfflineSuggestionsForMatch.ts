@@ -1,3 +1,4 @@
+import { FETCH_STATUS_OFFLINE_ERROR } from "components/Suggestions/SuggestionsContainer.tsx";
 import { RealmContext } from "providers/contexts.ts";
 import {
   useCallback,
@@ -5,6 +6,9 @@ import {
 } from "react";
 import { log } from "sharedHelpers/logger";
 import { predictImage } from "sharedHelpers/mlModel.ts";
+import {
+  findPhotoUriFromCurrentObservation
+} from "sharedHelpers/sortSuggestionsForMatch.ts";
 import useStore from "stores/useStore";
 
 const logger = log.extend( "useOfflineSuggestions" );
@@ -47,18 +51,21 @@ const useOfflineSuggestionsForMatch = ( ) => {
   const realm = useRealm( );
   const iconicTaxa = realm?.objects( "Taxon" ).filtered( "isIconic = true" );
 
+  const photoUri = findPhotoUriFromCurrentObservation( currentObservation );
+
+  // 20240815 amanda - it's conceivable that we would want to use a cached image here eventually,
+  // since the user can see the small square version of this image in MyObs/ObsDetails already
+  // but for now, passing in an https photo to predictImage while offline crashes the app
+  const urlWillCrashOffline = photoUri?.includes( "https://" );
+  const shouldFetchOffline = currentObservation !== null && !urlWillCrashOffline;
+
   const handleError = useCallback( error => {
-    setSuggestionsError( error );
+    setSuggestionsError( FETCH_STATUS_OFFLINE_ERROR );
     logger.error( "Error predicting image offline", error );
     throw error;
   }, [setSuggestionsError] );
 
   const predictOffline = useCallback( async ( ) => {
-    const obsPhotos = currentObservation?.observationPhotos;
-
-    const photoUri = obsPhotos?.[0]?.photo?.url
-      || obsPhotos?.[0]?.photo?.localFilePath;
-
     const latitude = currentObservation?.latitude;
     const longitude = currentObservation?.longitude;
     const location = { latitude, longitude };
@@ -74,16 +81,17 @@ const useOfflineSuggestionsForMatch = ( ) => {
     setOfflineSuggestions( formattedPredictions );
   }, [
     currentObservation,
-    setOfflineSuggestions,
     handleError,
-    iconicTaxa
+    iconicTaxa,
+    photoUri,
+    setOfflineSuggestions
   ] );
 
   useEffect( ( ) => {
-    if ( currentObservation !== null ) {
+    if ( shouldFetchOffline ) {
       predictOffline( );
     }
-  }, [currentObservation, predictOffline] );
+  }, [shouldFetchOffline, predictOffline] );
 
   return null;
 };

@@ -6,7 +6,7 @@ import {
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
-import { useOfflineSuggestionsForMatch } from "sharedHooks";
+import { useSuggestionsForMatch } from "sharedHooks";
 import useStore from "stores/useStore";
 
 import savePhotosToPhotoLibrary from "../helpers/savePhotosToPhotoLibrary";
@@ -28,7 +28,7 @@ const usePrepareStoreAndNavigate = ( ): Function => {
   const setSentinelFileName = useStore( state => state.setSentinelFileName );
   const isAdvancedSuggestionsMode = useStore( state => state.layout.isAdvancedSuggestionsMode );
 
-  useOfflineSuggestionsForMatch( );
+  useSuggestionsForMatch( );
 
   const { deviceStorageFull, showStorageFullAlert } = useDeviceStorageFull( );
 

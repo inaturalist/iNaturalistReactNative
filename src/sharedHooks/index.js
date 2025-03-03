@@ -32,6 +32,9 @@ export {
   default as useOfflineSuggestionsForMatch
 } from "./useSuggestions/useOfflineSuggestionsForMatch";
 export { default as useSuggestions } from "./useSuggestions/useSuggestions";
+export {
+  default as useSuggestionsForMatch
+} from "./useSuggestions/useSuggestionsForMatch";
 export { default as useTaxon } from "./useTaxon";
 export { default as useTaxonSearch } from "./useTaxonSearch";
 export { default as useTranslation } from "./useTranslation";

@@ -14,15 +14,16 @@ import {
 import _ from "lodash";
 import { RealmContext } from "providers/contexts.ts";
 import React, {
-  useCallback, useEffect, useRef
+  useCallback, useRef
 } from "react";
 import saveObservation from "sharedHelpers/saveObservation.ts";
 import {
-  findInitialTopSuggestionAndOtherSuggestions,
   reorderSuggestionsAfterNewSelection
 } from "sharedHelpers/sortSuggestionsForMatch.ts";
 import {
-  useExitObservationFlow, useLocationPermission
+  useExitObservationFlow,
+  useLocationPermission,
+  useSuggestionsForMatch
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -82,16 +83,20 @@ const MatchContainer = ( ) => {
   const currentObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
   const cameraRollUris = useStore( state => state.cameraRollUris );
-  const offlineSuggestions = useStore( state => state.offlineSuggestions );
   const setTopAndOtherSuggestions = useStore( state => state.setTopAndOtherSuggestions );
   const topSuggestion = useStore( state => state.topSuggestion );
   const otherSuggestions = useStore( state => state.otherSuggestions );
-  // likely need aiCameraSuggestion for loading screen
-  // const aICameraSuggestion = useStore( state => state.aICameraSuggestion );
+  const suggestionsList = useStore( state => state.suggestionsList );
+  const setSuggestionsList = useStore( state => state.setSuggestionsList );
+
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   // const setShouldUseLocation = useStore( state => state.setShouldUseLocation );
   const navigation = useNavigation( );
   const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
+
+  console.log( topSuggestion, otherSuggestions, "top and other match" );
+
+  useSuggestionsForMatch( );
 
   const obsPhotos = currentObservation?.observationPhotos;
 
@@ -170,16 +175,21 @@ const MatchContainer = ( ) => {
     }
   }, [] );
 
-  const orderedSuggestions = offlineSuggestions;
-
   const onSuggestionChosen = useCallback( selection => {
+    const reorderedSuggestions = reorderSuggestionsAfterNewSelection( selection, suggestionsList );
     const {
       topSuggestion: newTopSuggestion,
       otherSuggestions: newOtherSuggestions
-    } = reorderSuggestionsAfterNewSelection( selection, orderedSuggestions );
+    } = reorderedSuggestions;
     setTopAndOtherSuggestions( newTopSuggestion, newOtherSuggestions );
+    setSuggestionsList( reorderedSuggestions );
     scrollToTop( );
-  }, [orderedSuggestions, scrollToTop, setTopAndOtherSuggestions] );
+  }, [
+    suggestionsList,
+    scrollToTop,
+    setTopAndOtherSuggestions,
+    setSuggestionsList
+  ] );
 
   // const createUploadParams = useCallback( async ( uri, showLocation ) => {
   //   const newImageParams = await flattenUploadParams( uri );
@@ -239,14 +249,6 @@ const MatchContainer = ( ) => {
   //     orderedSuggestions: sortedList
   //   } );
   // }, [suggestions] );
-
-  useEffect( ( ) => {
-    const {
-      topSuggestion: newTopSuggestion,
-      otherSuggestions: newOtherSuggestions
-    } = findInitialTopSuggestionAndOtherSuggestions( offlineSuggestions );
-    setTopAndOtherSuggestions( newTopSuggestion, newOtherSuggestions );
-  }, [offlineSuggestions, setTopAndOtherSuggestions] );
 
   const taxon = topSuggestion?.taxon;
   const taxonId = taxon?.id;
