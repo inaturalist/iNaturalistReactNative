@@ -19,10 +19,8 @@ const DEFAULT_STATE = {
   fetchStatus: null,
   offlineSuggestions: [],
   onlineSuggestions: [],
-  otherSuggestions: [],
   suggestionsError: null,
   suggestionsList: [],
-  topSuggestion: null,
   isLoading: true
 };
 
@@ -30,15 +28,12 @@ interface SuggestionsSlice {
   commonAncestor: Object,
   offlineSuggestions: OfflineSuggestion[],
   onlineSuggestions: Array<Object>,
-  otherSuggestions: Array<Object>,
   resetSuggestionsSlice: ( ) => void
   setOfflineSuggestions: ( ) => void,
   setOnlineSuggestions: ( ) => void,
   setSuggestionsError: ( ) => void,
-  setTopAndOtherSuggestions: ( ) => void,
   suggestionsList: Array<Object>,
   suggestionsError: boolean,
-  topSuggestion: Object,
   isLoading: boolean
 }
 
@@ -48,7 +43,7 @@ const createSuggestionsSlice: StateCreator<SuggestionsSlice> = set => ( {
   setOnlineSuggestions: onlineSuggestions => set( ( ) => ( {
     // default to showing onlineSuggestions if they exist
     onlineSuggestions,
-    offlineSuggestions: new Array( 0 ),
+    offlineSuggestions: [],
     isLoading: false
   } ) ),
   setSuggestionsError: suggestionsError => set( ( ) => ( {
@@ -56,10 +51,6 @@ const createSuggestionsSlice: StateCreator<SuggestionsSlice> = set => ( {
     isLoading: suggestionsError !== FETCH_STATUS_ONLINE_ERROR
   } ) ),
   resetSuggestionsSlice: ( ) => set( { ...DEFAULT_STATE } ),
-  setTopAndOtherSuggestions: ( newTopSuggestion, newOtherSuggestions ) => set( ( ) => ( {
-    topSuggestion: newTopSuggestion,
-    otherSuggestions: newOtherSuggestions
-  } ) ),
   setCommonAncestor: commonAncestor => set( ( ) => ( { commonAncestor } ) ),
   setSuggestionsList: suggestionsList => set( ( ) => ( { suggestionsList } ) ),
   setIsLoading: isLoading => set( ( ) => ( { isLoading } ) )

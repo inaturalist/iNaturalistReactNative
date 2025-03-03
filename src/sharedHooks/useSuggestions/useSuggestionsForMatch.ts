@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { useEffect, useMemo, useRef } from "react";
 import {
+  convertSuggestionsObjToList,
   findInitialTopSuggestionAndOtherSuggestions
 } from "sharedHelpers/sortSuggestionsForMatch.ts";
 import useStore from "stores/useStore";
@@ -9,20 +10,10 @@ import filterSuggestions from "./filterSuggestions";
 import useOfflineSuggestionsForMatch from "./useOfflineSuggestionsForMatch";
 import useOnlineSuggestionsForMatch from "./useOnlineSuggestionsForMatch";
 
-const convertSuggestionsObjToList = suggestions => {
-  const matchSuggestionsList = [...suggestions.otherSuggestions];
-
-  if ( suggestions?.topSuggestion ) {
-    matchSuggestionsList.unshift( suggestions?.topSuggestion );
-  }
-  return matchSuggestionsList;
-};
-
 const useSuggestionsForMatch = ( ) => {
   const offlineSuggestions = useStore( state => state.offlineSuggestions );
   const onlineSuggestions = useStore( state => state.onlineSuggestions );
   const commonAncestor = useStore( state => state.commonAncestor );
-  const setTopAndOtherSuggestions = useStore( state => state.setTopAndOtherSuggestions );
   const setSuggestionsList = useStore( state => state.setSuggestionsList );
 
   // Track previous suggestion sources to detect changes
@@ -81,18 +72,13 @@ const useSuggestionsForMatch = ( ) => {
     // Only update if sources changed to avoid render loops
     if ( sourcesChanged ) {
       const initialSuggestions = findInitialTopSuggestionAndOtherSuggestions( suggestions );
-      const {
-        topSuggestion: newTopSuggestion,
-        otherSuggestions: newOtherSuggestions
-      } = initialSuggestions;
-      setTopAndOtherSuggestions( newTopSuggestion, newOtherSuggestions );
-      setSuggestionsList( initialSuggestions );
+      const newSuggestionsList = convertSuggestionsObjToList( initialSuggestions );
+      setSuggestionsList( newSuggestionsList );
       // Update previous sources ref
       previousSourcesRef.current = currentSources;
     }
   }, [
     suggestions,
-    setTopAndOtherSuggestions,
     setSuggestionsList,
     offlineSuggestions.length,
     onlineSuggestions.length

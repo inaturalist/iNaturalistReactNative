@@ -28,8 +28,6 @@ type Props = {
   handleSaveOrDiscardPress: ( ) => void,
   navToTaxonDetails: ( ) => void,
   handleLocationPickerPressed: ( ) => void,
-  topSuggestion: Object,
-  otherSuggestions: Array<Object>,
   onSuggestionChosen: ( ) => void,
   scrollRef: Object
 }
@@ -40,17 +38,16 @@ const Match = ( {
   handleSaveOrDiscardPress,
   navToTaxonDetails,
   handleLocationPickerPressed,
-  topSuggestion,
-  otherSuggestions,
   onSuggestionChosen,
   scrollRef
 }: Props ) => {
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
   const isLoading = useStore( state => state.isLoading );
+  const suggestionsList = useStore( state => state.suggestionsList );
 
   const latitude = observation?.privateLatitude || observation?.latitude;
-  const taxon = topSuggestion?.taxon;
+  const taxon = suggestionsList?.[0]?.taxon;
 
   return (
     <>
@@ -61,11 +58,11 @@ const Match = ( {
               ? (
                 <ActivityIndicator size={33} />
               )
-              : <MatchHeader topSuggestion={topSuggestion} />
+              : <MatchHeader topSuggestion={suggestionsList?.[0]} />
           }
         </View>
         <PhotosSection
-          representativePhoto={topSuggestion?.taxon?.representative_photo}
+          representativePhoto={taxon?.representative_photo}
           taxon={taxon}
           obsPhotos={obsPhotos}
           navToTaxonDetails={navToTaxonDetails}
@@ -100,7 +97,7 @@ const Match = ( {
           }
           <AdditionalSuggestionsScroll
             onSuggestionChosen={onSuggestionChosen}
-            otherSuggestions={otherSuggestions}
+            otherSuggestions={_.tail( suggestionsList )}
             isLoading={isLoading}
           />
           {!latitude && (

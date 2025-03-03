@@ -74,7 +74,17 @@ const findPhotoUriFromCurrentObservation = observation => {
     || obsPhotos?.[0]?.photo?.localFilePath;
 };
 
+const convertSuggestionsObjToList = suggestions => {
+  const matchSuggestionsList = [...suggestions.otherSuggestions];
+
+  if ( suggestions?.topSuggestion ) {
+    matchSuggestionsList.unshift( suggestions?.topSuggestion );
+  }
+  return matchSuggestionsList;
+};
+
 export {
+  convertSuggestionsObjToList,
   findInitialTopSuggestionAndOtherSuggestions,
   findPhotoUriFromCurrentObservation,
   reorderSuggestionsAfterNewSelection,

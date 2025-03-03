@@ -9,6 +9,7 @@ import React, {
 } from "react";
 import saveObservation from "sharedHelpers/saveObservation.ts";
 import {
+  convertSuggestionsObjToList,
   reorderSuggestionsAfterNewSelection
 } from "sharedHelpers/sortSuggestionsForMatch.ts";
 import {
@@ -30,9 +31,6 @@ const MatchContainer = ( ) => {
   const currentObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
   const cameraRollUris = useStore( state => state.cameraRollUris );
-  const setTopAndOtherSuggestions = useStore( state => state.setTopAndOtherSuggestions );
-  const topSuggestion = useStore( state => state.topSuggestion );
-  const otherSuggestions = useStore( state => state.otherSuggestions );
   const suggestionsList = useStore( state => state.suggestionsList );
   const setSuggestionsList = useStore( state => state.setSuggestionsList );
   const onlineSuggestions = useStore( state => state.onlineSuggestions );
@@ -72,21 +70,16 @@ const MatchContainer = ( ) => {
 
   const onSuggestionChosen = useCallback( selection => {
     const reorderedSuggestions = reorderSuggestionsAfterNewSelection( selection, suggestionsList );
-    const {
-      topSuggestion: newTopSuggestion,
-      otherSuggestions: newOtherSuggestions
-    } = reorderedSuggestions;
-    setTopAndOtherSuggestions( newTopSuggestion, newOtherSuggestions );
-    setSuggestionsList( reorderedSuggestions );
+    const newSuggestionsList = convertSuggestionsObjToList( reorderedSuggestions );
+    setSuggestionsList( newSuggestionsList );
     scrollToTop( );
   }, [
     suggestionsList,
     scrollToTop,
-    setTopAndOtherSuggestions,
     setSuggestionsList
   ] );
 
-  const taxon = topSuggestion?.taxon;
+  const taxon = suggestionsList?.[0]?.taxon;
   const taxonId = taxon?.id;
 
   const navToTaxonDetails = useCallback( photo => {
@@ -127,8 +120,6 @@ const MatchContainer = ( ) => {
           handleSaveOrDiscardPress={handleSaveOrDiscardPress}
           navToTaxonDetails={navToTaxonDetails}
           handleLocationPickerPressed={handleLocationPickerPressed}
-          topSuggestion={topSuggestion}
-          otherSuggestions={otherSuggestions}
           scrollRef={scrollRef}
         />
         {renderPermissionsGate( { onPermissionGranted: openLocationPicker } )}
