@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import { CircleDots, INatIcon, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import React, { ReactNode } from "react";
+import React, { PropsWithChildren } from "react";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
@@ -16,10 +16,9 @@ const iconClasses = [
   "h-[44px]"
 ];
 
-type Props = {
-  white: boolean,
+interface Props extends PropsWithChildren {
+  white: boolean;
   layout: "horizontal" | "vertical";
-  children: ReactNode;
   needsEdit?: boolean;
   onPress: ( ) => void;
   progress: number;
