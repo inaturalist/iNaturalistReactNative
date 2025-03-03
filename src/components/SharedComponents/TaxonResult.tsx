@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import type { ApiTaxon } from "api/types";
 import classnames from "classnames";
-import ObsImagePreview from "components/ObservationsFlashList/ObsImagePreview";
+import ObsImagePreview from "components/ObservationsFlashList/ObsImagePreview.tsx";
 import {
   DisplayTaxonName,
   INatIconButton
