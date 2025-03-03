@@ -1,7 +1,6 @@
 import { ObsStatus, UploadStatus } from "components/SharedComponents";
 import React from "react";
 import type { RealmObservation } from "realmModels/types";
-import { useDebugMode } from "sharedHooks";
 
 interface Props {
   classNameMargin?: string;
@@ -29,7 +28,6 @@ const ObsUploadStatus = ( {
   const showUploadStatus = typeof ( progress ) === "number";
   const hideStatus = !showUploadStatus && !showObsStatus && !explore;
   const showObsStatusOnly = ( !showUploadStatus && showObsStatus ) || explore;
-  const { isDebug } = useDebugMode( );
 
   const obsStatus = (
     <ObsStatus
@@ -53,7 +51,7 @@ const ObsUploadStatus = ( {
     <UploadStatus
       white={white}
       layout={layout}
-      needsEdit={isDebug && !!observation?.missingBasics()}
+      needsEdit={observation?.missingBasics()}
       onPress={onPress}
       progress={progress}
       uniqueKey={observation.uuid}
