@@ -28,9 +28,18 @@ const reorderSuggestionsAfterNewSelection = ( selection, suggestions ) => {
   if ( chosenIndex === -1 ) {
     return null;
   }
+
+  // Get the chosen suggestion
+  const topSuggestion = sortedList[chosenIndex];
+
+  // Create a new array of other suggestions, excluding the chosen one
+  const otherSuggestions = sortedList.filter(
+    suggestion => suggestion.taxon.id !== topSuggestion.taxon.id
+  );
+
   return {
-    topSuggestion: sortedList[chosenIndex],
-    otherSuggestions: sortedList
+    topSuggestion,
+    otherSuggestions
   };
 };
 
