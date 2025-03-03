@@ -92,9 +92,11 @@ export interface RealmObservationPojo {
   _synced_at?: Date;
   captive_flag: boolean | null;
   comments: Array<RealmComment>;
+  comments_viewed?: boolean;
   description: string | null;
   geoprivacy: string | null;
   identifications: Array<RealmIdentification>;
+  identifications_viewed?: boolean;
   latitude: number | null;
   longitude: number | null;
   obscured?: boolean;
