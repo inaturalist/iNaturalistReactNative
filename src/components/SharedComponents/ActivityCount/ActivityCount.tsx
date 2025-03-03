@@ -1,21 +1,18 @@
-// @flow
-
 import classNames from "classnames";
 import INatIcon from "components/SharedComponents/INatIcon";
 import Body3 from "components/SharedComponents/Typography/Body3.tsx";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  accessibilityLabel?: string,
-  white?: boolean,
-  count: number,
-  icon?: string,
-  testID?: string,
-  classNameMargin?: string
+interface Props {
+  accessibilityLabel?: string;
+  white?: boolean;
+  count: number;
+  icon?: string;
+  testID?: string;
+  classNameMargin?: string;
 }
 
 const ActivityCount = ( {
@@ -25,7 +22,7 @@ const ActivityCount = ( {
   icon,
   testID,
   classNameMargin
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
 
   return (
