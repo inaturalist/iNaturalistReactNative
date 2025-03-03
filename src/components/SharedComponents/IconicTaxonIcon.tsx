@@ -1,12 +1,12 @@
-import classnames from "classnames";
+import classnames, { ArgumentArray } from "classnames";
 import { INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
 import colors from "styles/tailwindColors";
 
 interface Props {
-  iconicTaxonName: string;
-  imageClassName?: string;
+  iconicTaxonName?: string;
+  imageClassName?: ArgumentArray;
   isBackground?: boolean;
   size?: number;
   white?: boolean;
