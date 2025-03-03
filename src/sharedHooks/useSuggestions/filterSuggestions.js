@@ -78,11 +78,16 @@ const filterSuggestions = ( suggestionsToFilter, usingOfflineSuggestions, common
     };
   }
 
-  // online common ancestor
+  // online or offline common ancestor
   if ( commonAncestor ) {
+    const sortableCommonAncestor = {
+      ...commonAncestor,
+      // temp patch to let calling code sort online common ancestor with other suggestions
+      combined_score: commonAncestor.combined_score ?? commonAncestor.score
+    };
     return {
       ...newSuggestions,
-      topSuggestion: commonAncestor,
+      topSuggestion: sortableCommonAncestor,
       topSuggestionType: TOP_SUGGESTION_COMMON_ANCESTOR
     };
   }
