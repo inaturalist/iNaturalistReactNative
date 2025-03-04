@@ -4,46 +4,63 @@ import {
   useCallback,
   useEffect
 } from "react";
+import type { RealmTaxon } from "realmModels/types";
 import { log } from "sharedHelpers/logger";
 import { predictImage } from "sharedHelpers/mlModel.ts";
 import {
   findPhotoUriFromCurrentObservation
 } from "sharedHelpers/sortSuggestionsForMatch.ts";
 import useStore from "stores/useStore";
+import { Prediction } from "vision-camera-plugin-inatvision";
 
 const logger = log.extend( "useOfflineSuggestionsForMatch" );
 
 const { useRealm } = RealmContext;
 
-// we might need to change this RANK_LEVEL
-// but it's currently helpful for testing that we're getting results
+interface OfflineSuggestion {
+  combined_score: number;
+  taxon: {
+    id: number;
+    name: string;
+    rank_level: number;
+    iconic_taxon_name: string | undefined;
+  };
+}
 
-const RANK_LEVEL = 90;
+// This function handles either regular or common ancestor predictions as input objects.
+const formatPrediction = (
+  prediction: Prediction,
+  iconicTaxa: RealmTaxon[]
+): OfflineSuggestion => {
+  const iconicTaxaIds = iconicTaxa.map( t => t.id );
+  const iconicTaxaLookup: {
+      [key: number]: string
+    } = iconicTaxa.reduce( ( acc, t ) => {
+      acc[t.id] = t.name;
+      return acc;
+    }, { } );
+  // The "lowest" ancestor_id that matches an iconic taxon
+  // is the iconic taxon of this prediction.
+  const iconicTaxonId = prediction.ancestor_ids
+    // Need to reverse so we find the most specific iconic taxon first as an ancestor_ids is
+    // a list of ancestor ids from tip to root of taxonomy
+    // e.g. Aves is included in Animalia
+    .reverse()
+    .find( id => iconicTaxaIds.includes( id ) );
+  let iconicTaxonName;
+  if ( iconicTaxonId !== undefined ) {
+    iconicTaxonName = iconicTaxaLookup[iconicTaxonId];
+  }
 
-const formatPredictions = ( rawPredictions, iconicTaxa, commonAncestor ) => {
-  // similar to what we're doing in the AICamera to get iconic taxon name,
-  // but we're offline so we only need the local list from realm
-  // and don't need to fetch taxon from the API
-  const branchIDs = [...rawPredictions.map( t => t.taxon_id ), ...( commonAncestor
-    ? [commonAncestor.taxon_id]
-    : [] )];
-  const iconicTaxonName = iconicTaxa?.find( t => branchIDs.indexOf( t.id ) >= 0 )?.name;
-  // using the same rank level for displaying predictions in AI Camera
-  // this is all temporary, since we ultimately want predictions
-  // returned similarly to how we return them on web; this is returning a
-  // single branch like on the AI Camera 2023-12-08
-  const formattedPredictions = rawPredictions?.reverse( )
-    .filter( prediction => prediction.rank_level <= RANK_LEVEL )
-    .map( prediction => ( {
-      combined_score: prediction.combined_score,
-      taxon: {
-        id: Number( prediction.taxon_id ),
-        name: prediction.name,
-        rank_level: prediction.rank_level,
-        iconic_taxon_name: iconicTaxonName
-      }
-    } ) );
-  return formattedPredictions;
+  return {
+    combined_score: prediction.combined_score,
+    taxon: {
+      id: prediction.taxon_id,
+      name: prediction.name,
+      rank_level: prediction.rank_level,
+      iconic_taxon_name: iconicTaxonName
+    }
+  };
 };
 
 const useOfflineSuggestionsForMatch = ( ) => {
@@ -52,6 +69,9 @@ const useOfflineSuggestionsForMatch = ( ) => {
   const setOfflineSuggestions = useStore( state => state.setOfflineSuggestions );
   const setCommonAncestor = useStore( state => state.setCommonAncestor );
   const realm = useRealm( );
+  // similar to what we're doing in the AICamera to get iconic taxon name,
+  // but we're offline so we only need the local list from realm
+  // and don't need to fetch taxon from the API
   const iconicTaxa = realm?.objects( "Taxon" ).filtered( "isIconic = true" );
 
   const photoUri = findPhotoUriFromCurrentObservation( currentObservation );
@@ -86,7 +106,9 @@ const useOfflineSuggestionsForMatch = ( ) => {
     } catch ( predictImageError ) {
       handleError( predictImageError );
     }
-    const formattedPredictions = formatPredictions( rawPredictions, iconicTaxa, commonAncestor );
+
+    const formattedPredictions = rawPredictions
+      .map( prediction => formatPrediction( prediction, iconicTaxa ) );
     setOfflineSuggestions( formattedPredictions );
     setCommonAncestor( commonAncestor );
   }, [

@@ -32,16 +32,10 @@ const useSuggestionsForMatch = ( ) => {
     [onlineSuggestions, offlineSuggestions]
   );
 
-  const usingOfflineSuggestions = useMemo(
-    () => offlineSuggestions.length > 0 && ( !onlineSuggestions || onlineSuggestions.length === 0 ),
-    [offlineSuggestions.length, onlineSuggestions]
-  );
-
   // since we can calculate this, there's no need to store it in state
   const suggestions = useMemo( ( ) => {
     const filteredSuggestions = filterSuggestions(
       unfilteredSuggestions,
-      usingOfflineSuggestions,
       commonAncestor
     );
 
@@ -49,7 +43,6 @@ const useSuggestionsForMatch = ( ) => {
     return matchSuggestionsList;
   }, [
     unfilteredSuggestions,
-    usingOfflineSuggestions,
     commonAncestor
   ] );
 
