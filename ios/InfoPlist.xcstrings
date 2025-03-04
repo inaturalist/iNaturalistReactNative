@@ -7,19 +7,19 @@
       "localizations" : {
         "da" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "iNat Next"
           }
         },
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "iNat Next"
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "iNat Next"
           }
         }
@@ -32,19 +32,19 @@
       "localizations" : {
         "da" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "iNaturalistReactNative"
           }
         },
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "iNaturalistReactNative"
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "iNaturalistReactNative"
           }
         }
@@ -57,157 +57,157 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Přidejte existující zvuky do vašich pozorování."
           }
         },
         "da" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Føj eksisterende lyde til observationerne."
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Füge Tonaufnahmen zu deinen Beobachtungen hinzu."
           }
         },
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Add existing sounds to your observations."
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Añadir sonidos existentes a tus observaciones."
           }
         },
         "es-AR" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Añadir sonidos existentes a tus observaciones."
           }
         },
         "es-CO" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Añadir sonidos existentes a tus observaciones."
           }
         },
         "es-CR" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Añadir sonidos existentes a tus observaciones."
           }
         },
         "es-MX" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Añadir sonidos existentes a tus observaciones."
           }
         },
         "et" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Lisa vaatlustele olemasolevaid helisid."
           }
         },
         "fa" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "صداهای موجود را به مشاهدات خود اضافه کنید."
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Lisää ääniä havaintoihisi."
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Ajoutez des sons existant à vos observations. "
           }
         },
         "fr-CA" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Ajoutez des sons existant à vos observations. "
           }
         },
         "hu" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Meglévő hangok hozzáadása a megfigyelésedhez"
           }
         },
         "id" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Tambahkan suara yang sudah ada ke pengamatan Anda."
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Aggiungi suoni esistenti alle tue osservazioni."
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "既存の音声を観察記録に追加します。"
           }
         },
         "lt" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Prie savo stebėjimų pridėkite turimų garsų."
           }
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Voeg bestaande geluiden toe aan je waarnemingen."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Adicione sons existentes às suas observações."
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Lägg till befintliga ljud till dina fynd."
           }
         },
         "th" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "เพิ่มเสียงที่บันทึกไว้ไปยังการสังเกตของคุณ"
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Mevcut sesleri gözlemlerinize ekleyin."
           }
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Додавайте наявні звуки до своїх спостережень."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "将现有声音添加到您的观察。"
           }
         }
@@ -227,6 +227,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mit dem Kamerazugriff kann fotografiert und die KI-Kamera verwendet werden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Camera access lets you use the AI Camera and take photos."
           }
         },
         "es" : {
@@ -351,8 +357,8 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : ""
+            "state" : "translated",
+            "value" : "(c) iNaturalist"
           }
         }
       },
@@ -364,151 +370,151 @@
       "localizations" : {
         "da" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Vi anmoder ikke bevidst om denne tilladelse. Ser man derfor dette, bedes man tage et skærmfoto og kontakte help@inaturalist.org"
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Diese Erlaubnis wird nicht vorsätzlich verlangt. Wenn dies angezeigt wird, erstelle bitte ein Bildschirmfoto und sende es per E-Mail an help@inaturalist.org."
           }
         },
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "No solicitamos este permiso a propósito. Si estás viendo esto, por favor, haz una captura de pantalla y envíala por correo electrónico a help@inaturalist.org"
           }
         },
         "es-AR" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "No solicitamos este permiso a propósito. Si estás viendo esto, por favor, haz una captura de pantalla y envíala por correo electrónico a help@inaturalist.org"
           }
         },
         "es-CO" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "No solicitamos este permiso a propósito. Si estás viendo esto, por favor, haz una captura de pantalla y envíala por correo electrónico a help@inaturalist.org"
           }
         },
         "es-CR" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "No solicitamos este permiso a propósito. Si estás viendo esto, por favor, haz una captura de pantalla y envíala por correo electrónico a help@inaturalist.org"
           }
         },
         "es-MX" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "No solicitamos este permiso a propósito. Si estás viendo esto, por favor, haz una captura de pantalla y envíala por correo electrónico a help@inaturalist.org"
           }
         },
         "fa" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "ما عمداً این اجازه را نمی‌خواهیم.  اگر این را می بینید، لطفاً یک اسکرین شات بگیرید و آن را به help@inaturalist.org ایمیل کنید"
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Emme tarkoituksella pyydä tätä lupaa. Jos näet tämän, ota kuvakaappaus ja lähetä se osoitteeseen help@inaturalist.org"
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Nous ne demandons pas intentionnellement cette permission. Si vous voyez ceci, prenez une capture d'écran et envoyez un email à help@inaturalist.org  "
           }
         },
         "fr-CA" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Nous ne demandons pas intentionnellement cette permission. Si vous voyez ceci, prenez une capture d'écran et envoyez un email à help@inaturalist.org  "
           }
         },
         "hu" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Ez az engedélykérés nem szándékos. Ha ezt látod, kérjük küldj egy képernyőmentést a help@inaturalist.org címre."
           }
         },
         "id" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Kami tidak sengaja meminta izin ini. Jika kamu melihat pesan ini, tolong tangkap layar Anda dan email ke help@inaturalist.org"
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Non chiediamo intenzionalmente questo permesso. Se stai vedendo questo, per favore fai uno screenshot e invialo a help@inaturalist.org"
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "私たちは意図的にこの許可を要求していません。これが表示された場合は、スクリーンショットを撮って help@inaturalist.org にメールで送信してください。"
           }
         },
         "lt" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Šio leidimo mes neprašome specialiai. Jei tai matote, nufotografuokite ekraną ir atsiųskite jį el. paštu help@inaturalist.org"
           }
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "We vragen niet opzettelijk om deze toestemming. Als je dit ziet, neem dan een screenshot en stuur een e-mail naar help@inaturalist.org"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Não solicitamos essa permissão intencionalmente. Se você está vendo isso, por favor faça uma captura de tela e a envie por email para help@inaturalist.org"
           }
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Мы намеренно не запрашиваем это разрешение. Если вы видите это, пожалуйста, сделайте скриншот и отправьте его на help@inaturalist.org"
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Vi begär inte avsiktligt denna tillåtelse. Om du ser detta, ta en skärmbild och skicka den till help@inaturalist.org"
           }
         },
         "th" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "เราไม่ได้ร้องขอสิทธิ์นี้โดยเจตนา หากคุณพบข้อความนี้ กรุณาถ่ายภาพหน้าจอและส่งอีเมลไปที่ help@inaturalist.org"
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Bu izni kasıtlı olarak talep etmiyoruz. Eğer bunu görüyorsanız, lütfen bir ekran görüntüsü alıp help@inaturalist.org adresine e-posta gönderin."
           }
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Ми не запитуємо цей дозвіл навмисно. Якщо ви бачите це, будь ласка, зробіть скриншот і надішліть його на help@inaturalist.org"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "我们没有故意请求此权限。如果您看到这一提示，请截图并发送电子邮件给help@inaturalist.org"
           }
         }
@@ -520,313 +526,313 @@
       "localizations" : {
         "ar" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "أضف إحداثيات GPS إلى الملاحظات، و اعرض موقعك على الخرائط، و المزيد."
           }
         },
         "be" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Дадаць GPS каардынаты да назіранняў, паказаць вашае месцазнаходжанне на мапе ды іншае."
           }
         },
         "bg" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Добавяне на координати към наблюдения, показване на текущо местоположение на картата и др."
           }
         },
         "ca" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Afegeix coordenades GPS a les observacions, mostra la seva ubicació als mapes i més."
           }
         },
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Přidejte GPS souřadnice do pozorování, ukažte svou polohu na mapách a další."
           }
         },
         "da" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Føj GPS-koordinater til observationer, vis din placering på kort mm."
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Fügen deinen Beobachtungen GPS-Koordinaten hinzu, zeige deinen Standort auf Karten an und vieles mehr."
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Προσθέστε συντεταγμένες GPS στις παρατηρήσεις, δείξτε τη θέση σας στους χάρτες, και πολλά άλλα."
           }
         },
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Add GPS coordinates to observations, show your location on maps, and more."
           }
         },
         "en-NZ" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Add GPS coordinates to observations, show your location on maps, and more."
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Añadir coordenadas GPS a las observaciones, mostrar su ubicación en mapas y mucho más."
           }
         },
         "es-AR" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Agrega las coordenadas de GPS a Observaciones, muestra tu ubicación en el mapa y más."
           }
         },
         "es-CO" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Añade coordenadas GPS a las observaciones, muestra tu ubicación en los mapas y más."
           }
         },
         "es-CR" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Añade coordenadas GPS a tus observaciones, muestra tu ubicación en mapas y mucho más."
           }
         },
         "es-MX" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Añade coordenadas GPS a las observaciones, ver su ubicación en mapas y mucho más."
           }
         },
         "et" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Lisa vaatlustele GPS-koordinaate, näita oma asukohta kaardil jne."
           }
         },
         "eu" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "GPS koordenatuak gehitu behaketei, zure kokapena erakutsi mapan, eta askoz gehiago."
           }
         },
         "fa" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "مختصات GPS را به مشاهدات اضافه کنید، موقعیت مکانی خود را روی نقشه ها نشان دهید و موارد دیگر."
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Lisää GPS-koordinaatit havaintoihin, näytä sijaintisi kartoilla, ja muuta."
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Ajouter les coordonnées GPS aux observations, identifier votre position sur des cartes, et plus."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Ajouter les coordonnées GPS aux observations, identifier votre position sur des cartes, et plus encore."
           }
         },
         "gl" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Engadir coordendas GPS ás observacións, mostrar a túa localización en mapas e máis."
           }
         },
         "he" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "להוסיף קואורדינטות GPS לתצפיות, להציג את מיקומך על מפות ועוד."
           }
         },
         "hr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Dodaj GPS koordinate opažanjima, pokaži svoju lokaciju na kartama i još mnogo toga."
           }
         },
         "hu" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "GPS-koordináták a megfigyelésekhez, helyzetmegjelenítés és egyebek."
           }
         },
         "id" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Tambahkan koordinat GPS ke pengamatan, tunjukkan lokasi anda di peta, dan banyak lagi."
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Aggiungi coordinate GPS alle osservazioni, mostra la tua posizione sulle mappe, e ancora di più."
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "GPS座標を観察記録に追加したり、地図に位置を表示したりすることができます。"
           }
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "დაამატეთ GPS კოორდინატები დაკვირვებებს, აჩვენეთ თქვენი ადგილმდებარეობა რუკებზე და სხვა."
           }
         },
         "kk" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Бақылауларға GPS координаттарын қосу, орналасқан жеріңізді карталарда көрсету және т.б."
           }
         },
         "kn" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "ವೀಕ್ಷಣೆಗಳಿಗೆ ಜಿಪಿಎಸ್ ನಿರ್ದೇಶಾಂಕಗಳನ್ನು ಸೇರಿಸಿ, ನಿಮ್ಮ ಸ್ಥಳವನ್ನು ಭೂಪಟದಲ್ಲಿ ಪ್ರದರ್ಶಿಸಿ, ಮತ್ತು ಇನ್ನೂ ಹೆಚ್ಚು."
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "GPS 좌표를 관찰에 추가, 내 위치를 지도에 표시, 및 기타"
           }
         },
         "lb" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Füügt GPS Koordinate bei Är Observatiounen, wéisst Är Lokalitéit a Weideres."
           }
         },
         "lt" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Prie stebėjimų pridėkite GPS koordinates, parodykite savo vietą žemėlapiuose ir daugiau."
           }
         },
         "lv" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Pievieno novērojumiem GPS koordinātas, apskati savu atrašanās vietu kartē un vēl."
           }
         },
         "nb-NO" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Legg til GPS-koordinater til observasjoner, vis din plassering på kart, og mer."
           }
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Voeg GPS-coördinaten aan waarnemingen toe, toon jouw locatie op de kaarten en meer."
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Dodaj współrzędne GPS do obserwacji; pokaż na mapie swoją lokalizację."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Adiciona coordenadas GPS às observações, mostra a sua localização em mapas e mais."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Adiciona coordenadas GPS às observações, mostra a sua localização em mapas e mais."
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Adăugați coordonatele GPS la observații, afișați locația dvs. pe hărți și multe altele."
           }
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Добавить координаты GPS к наблюдениям, показать ваше местоположение на картах и многое другое."
           }
         },
         "si" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "නිරීක්ෂණවලට GPS ඛණ්ඩාංක එක් කරන්න, සිතියම්වල ඔබේ ස්ථානය පෙන්වන්න සහ තවත් දේ."
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Pridajte k pozorovaniam GPS súradnice, zobrazte svoju polohu na mapách a viac."
           }
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Dodajte GPS koordinate opazovanjem, pokažite svojo lokacijo na zemljevidih in več."
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Lägg till GPS-koordinater till fynd, visa din plats på kartor, med mera."
           }
         },
         "th" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "เพิ่มพิกัด GPS ให้กับการสังเกต แสดงตำแหน่งของคุณบนแผนที่ และอื่น ๆ"
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Gözlemlerinize GPS koordinatları ekleyin, haritada yerinizi gösterin ve daha fazlasını yapın."
           }
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Додати GPS-координати до спостережень, показати своє розташування на мапі та багато іншого."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "为观察记录添加GPS坐标，在地图上显示您的位置，等等。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "新增 GPS 座標至觀察記錄，在地圖上顯示您的座標以及其他資訊等等。"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "新增 GPS 座標至觀察記錄，在地圖上顯示您的座標以及其他資訊等等。"
           }
         }
@@ -838,157 +844,157 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Zaznamenávejte zvuková pozorování přírody."
           }
         },
         "da" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Optag lydobservationer af naturen."
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Verwende Audio-Aufnahmen für Naturbeobachtungen"
           }
         },
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Record sound observations of nature."
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Grabar sonidos de la naturaleza."
           }
         },
         "es-AR" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Grabar sonidos de la naturaleza."
           }
         },
         "es-CO" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Grabar sonidos de la naturaleza."
           }
         },
         "es-CR" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Grabar sonidos de la naturaleza."
           }
         },
         "es-MX" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Grabar sonidos de la naturaleza."
           }
         },
         "fa" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "مشاهدات صوتی طبیعت را ضبط کنید."
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Tallenna äänihavaintoja."
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Enregistrez l'observation des sons de la nature.  "
           }
         },
         "fr-CA" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Enregistrez l'observation des sons de la nature.  "
           }
         },
         "hu" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Hanggal rendelkező megfigyelések rögzítése"
           }
         },
         "id" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Rekam pengamatan suara dari alam."
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Registra le osservazioni sonore della natura."
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "自然の音声の観察記録を取ります。"
           }
         },
         "lt" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Įrašykite gamtos garsų stebėjimus."
           }
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Neem natuurgeluid op voor een waarneming"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Gravar sons observados da natureza."
           }
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Сделайте аудионаблюдения природы."
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Spela in ljudfynd av naturen."
           }
         },
         "th" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "บันทึกเสียงจากธรรมชาติ"
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Doğanın sesli gözlemlerini kaydedin."
           }
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Записуйте ваші спостереження звуків природи."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "记录大自然的声音观察。"
           }
         }
@@ -1000,157 +1006,157 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Exportovat další fotky iNaturalist do vaší knihovny."
           }
         },
         "da" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Eksportér iNaturalist Next-fotos til mediebiblioteket."
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Exportiere Fotos aus iNaturalist-Next in deine Bibliothek."
           }
         },
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Export iNaturalist Next photos to your library."
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Exportar fotos de iNaturalist Next a tu biblioteca."
           }
         },
         "es-AR" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Exportar fotos de iNaturalist Next a tu biblioteca."
           }
         },
         "es-CO" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Exportar fotos de iNaturalist Next a tu biblioteca."
           }
         },
         "es-CR" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Exportar fotos de iNaturalist Next a tu biblioteca."
           }
         },
         "es-MX" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Exportar fotos de iNaturalist Next a tu biblioteca."
           }
         },
         "fa" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "عکس های بعدی iNaturalist را به کتابخانه خود صادر کنید."
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Vie iNaturalist Next -kuvat galleriaasi."
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Exportez les photos d'iNaturalist Next vers votre bibliothèque.  "
           }
         },
         "fr-CA" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Exportez les photos d'iNaturalist Next vers votre bibliothèque.  "
           }
         },
         "hu" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "iNaturalist Next fényképek exportálása a könyvtáradba"
           }
         },
         "id" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Ekspor gambar iNaturalist Next ke pustaka Anda."
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Esporta le foto iNaturalist Next nella tua libreria."
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "iNaturalist Next の写真をライブラリに書き出します。"
           }
         },
         "lt" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Eksportuokite „iNaturalist Next“ nuotraukas į savo biblioteką."
           }
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Exporteer iNaturalist Next foto's naar jouw bibliotheek."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Exportar fotos Next do iNaturalist para a sua biblioteca."
           }
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Экспортируйте фото iNaturalist Next в вашу библиотеку."
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Exportera iNaturalist Next-bilder till ditt galleri."
           }
         },
         "th" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "ส่งออกภาพถ่ายจาก iNaturalist Next ไปยังคลังภาพของคุณ"
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "iNaturalist'e Sonraki fotoğraflarını kütüphanenize aktarın."
           }
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Експортуйте фотографії iNaturalist Next у вашу бібліотеку."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "将 iNaturalist Next的照片导出到您的库。"
           }
         }
@@ -1162,157 +1168,157 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Export a import fotografií iNaturalist Next do knihovny a z knihovny."
           }
         },
         "da" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Eksportér/importér iNaturalist Next-fotos til/fra mediebiblioteket."
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Exportiere und importiere iNaturalist Next-Fotos in deine/aus deiner Bibliothek"
           }
         },
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Export and import iNaturalist Next photos to and from your library."
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Exportar e importar fotos de iNaturalist Next desde y hacia tu biblioteca."
           }
         },
         "es-AR" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Exportar e importar fotos de iNaturalist Next desde y hacia tu biblioteca."
           }
         },
         "es-CO" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Exportar e importar fotos de iNaturalist Next desde y hacia tu biblioteca."
           }
         },
         "es-CR" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Exportar e importar fotos de iNaturalist Next desde y hacia tu biblioteca."
           }
         },
         "es-MX" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Exportar e importar fotos de iNaturalist Next desde y hacia tu biblioteca."
           }
         },
         "fa" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "عکس های بعدی iNaturalist را به کتابخانه خود صادر کنید."
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Vie ja tuo iNaturalist Next -kuvia galleriaasi/galleriastasi."
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Exportez et importez les photos de iNaturalist Next depuis et vers votre bibliothèque. "
           }
         },
         "fr-CA" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Exportez et importez les photos de iNaturalist Next depuis et vers votre bibliothèque. "
           }
         },
         "hu" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "iNaturalist Next fényképek exportálása a könyvtáradba és importálása onnan."
           }
         },
         "id" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Ekspor dan impor gambar iNaturalist Next ke atau dari pustaka Anda."
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Esporta ed importa le foto iNaturalist Next da e verso la tua libreria."
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "iNaturalist Next の写真をライブラリに書き出したり、ライブラリから読み込んだりします。"
           }
         },
         "lt" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Eksportuokite ir importuokite „iNaturalist Next“ nuotraukas į savo biblioteką ir iš jos."
           }
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Exporteer en importeer iNaturalist Next foto's naar en vanuit jouw bibliotheek."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Exportar e importar fotos do iNaturalist Next para e da sua biblioteca."
           }
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Экспортируйте и импортируйте фото iNaturalist Next \"в\" и \"из\"  вашей библиотеки."
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Exportera och importera iNaturalist Next-bilder till och från ditt galleri."
           }
         },
         "th" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "ส่งออกและนำเข้าภาพถ่ายจาก iNaturalist Next ไปยังคลังภาพของคุณและจากคลังภาพของคุณ"
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "iNaturalist Sonraki fotoğraflarını kütüphanenize aktarın ve kütüphanenizden dışa aktarın."
           }
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Експортуйте та імпортуйте фотографії iNaturalist Next у вашу бібліотеку та з неї."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "在您的库和iNaturalist Next之间导入或导出照片。"
           }
         }
