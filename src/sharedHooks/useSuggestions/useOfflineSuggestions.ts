@@ -102,7 +102,7 @@ const useOfflineSuggestions = (
       };
     };
 
-    const formattedPredictions = rawPredictions?.reverse( )
+    const formattedPredictions = rawPredictions
       .map( prediction => formatPrediction( prediction ) );
 
     const commonAncestorSuggestion = commonAncestor
