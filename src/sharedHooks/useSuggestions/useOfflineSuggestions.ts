@@ -78,8 +78,8 @@ const useOfflineSuggestions = (
 
     // This function handles either regular or common ancestor predictions as input objects.
     const formatPrediction = ( prediction: Prediction ): OfflineSuggestion => {
-      // The first ancestor_id that matches an iconic taxon is the iconic taxon
-      // of this prediction.
+      // The "lowest" ancestor_id that matches an iconic taxon
+      // is the iconic taxon of this prediction.
       const iconicTaxonId = prediction.ancestor_ids
         // Need to reverse so we find the most specific iconic taxon first as an ancestor_ids is
         // a list of ancestor ids from tip to root of taxonomy
