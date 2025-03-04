@@ -21,7 +21,8 @@ const DEFAULT_STATE = {
   onlineSuggestions: [],
   suggestionsError: null,
   suggestionsList: [],
-  isLoading: true
+  isLoading: true,
+  timedOut: false
 };
 
 interface SuggestionsSlice {
@@ -34,7 +35,8 @@ interface SuggestionsSlice {
   setSuggestionsError: ( ) => void,
   suggestionsList: Array<Object>,
   suggestionsError: boolean,
-  isLoading: boolean
+  isLoading: boolean,
+  timedOut: boolean
 }
 
 const createSuggestionsSlice: StateCreator<SuggestionsSlice> = set => ( {
@@ -53,7 +55,8 @@ const createSuggestionsSlice: StateCreator<SuggestionsSlice> = set => ( {
   resetSuggestionsSlice: ( ) => set( { ...DEFAULT_STATE } ),
   setCommonAncestor: commonAncestor => set( ( ) => ( { commonAncestor } ) ),
   setSuggestionsList: suggestionsList => set( ( ) => ( { suggestionsList } ) ),
-  setIsLoading: isLoading => set( ( ) => ( { isLoading } ) )
+  setIsLoading: isLoading => set( ( ) => ( { isLoading } ) ),
+  setTimedOut: timedOut => set( ( ) => ( { timedOut } ) )
 } );
 
 export default createSuggestionsSlice;

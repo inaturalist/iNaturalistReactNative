@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision.ts";
 import flattenUploadParams from "components/Suggestions/helpers/flattenUploadParams.ts";
 import { FETCH_STATUS_ONLINE_ERROR } from "components/Suggestions/SuggestionsContainer.tsx";
@@ -23,7 +24,7 @@ type OnlineSuggestionsResponse = {
   fetchStatus: string
 }
 
-const SCORE_IMAGE_TIMEOUT = 5000;
+const SCORE_IMAGE_TIMEOUT = 5_000;
 
 const { useRealm } = RealmContext;
 
@@ -49,6 +50,7 @@ const useOnlineSuggestions = ( ): OnlineSuggestionsResponse => {
   const setOnlineSuggestions = useStore( state => state.setOnlineSuggestions );
   const setSuggestionsError = useStore( state => state.setSuggestionsError );
   const setCommonAncestor = useStore( state => state.setCommonAncestor );
+  const setTimedOut = useStore( state => state.setTimedOut );
   const realm = useRealm( );
   const { hasPermissions: shouldUseLocation } = useLocationPermission( );
 
@@ -59,6 +61,8 @@ const useOnlineSuggestions = ( ): OnlineSuggestionsResponse => {
     logger.debug( params, "params for online suggestions: does this have location?" );
     return scoreImage( params, optsWithAuth );
   }
+
+  const queryClient = useQueryClient( );
 
   const queryKey = setQueryKey( photoUri, shouldUseLocation );
 
@@ -73,10 +77,7 @@ const useOnlineSuggestions = ( ): OnlineSuggestionsResponse => {
     queryFn,
     {
       enabled: !!( photoUri ),
-      allowAnonymousJWT: true,
-      // using this instead of a useEffect to time out suggestions on a
-      // slow connection but haven't tested this in the wild yet
-      staleTime: SCORE_IMAGE_TIMEOUT
+      allowAnonymousJWT: true
     }
   );
 
@@ -101,6 +102,19 @@ const useOnlineSuggestions = ( ): OnlineSuggestionsResponse => {
     shouldUpdateOnlineSuggestions,
     updateOnlineSuggestions
   ] );
+
+  useEffect( ( ) => {
+    const timer = setTimeout( ( ) => {
+      if ( onlineSuggestions === undefined ) {
+        queryClient.cancelQueries( { queryKey } );
+        setTimedOut( true );
+      }
+    }, SCORE_IMAGE_TIMEOUT );
+
+    return ( ) => {
+      clearTimeout( timer );
+    };
+  }, [onlineSuggestions, queryClient, setTimedOut, queryKey] );
 
   return null;
 };

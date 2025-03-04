@@ -15,11 +15,13 @@ const useSuggestionsForMatch = ( ) => {
   const onlineSuggestions = useStore( state => state.onlineSuggestions );
   const commonAncestor = useStore( state => state.commonAncestor );
   const setSuggestionsList = useStore( state => state.setSuggestionsList );
+  const timedOut = useStore( state => state.timedOut );
 
   // Track previous suggestion sources to detect changes
   const previousSourcesRef = useRef( {
     offlineLength: 0,
-    onlineLength: 0
+    onlineLength: 0,
+    timedOut: false
   } );
 
   useOfflineSuggestionsForMatch( );
@@ -62,12 +64,14 @@ const useSuggestionsForMatch = ( ) => {
     // Check if suggestion sources have changed to avoid unnecessary updates
     const currentSources = {
       offlineLength: offlineSuggestions.length,
-      onlineLength: onlineSuggestions.length
+      onlineLength: onlineSuggestions.length,
+      timedOut
     };
 
     const sourcesChanged
     = currentSources.offlineLength !== previousSourcesRef.current.offlineLength
-    || currentSources.onlineLength !== previousSourcesRef.current.onlineLength;
+    || currentSources.onlineLength !== previousSourcesRef.current.onlineLength
+    || currentSources.timedOut !== previousSourcesRef.current.timedOut;
 
     // Only update if sources changed to avoid render loops
     if ( sourcesChanged ) {
@@ -81,7 +85,8 @@ const useSuggestionsForMatch = ( ) => {
     suggestions,
     setSuggestionsList,
     offlineSuggestions.length,
-    onlineSuggestions.length
+    onlineSuggestions.length,
+    timedOut
   ] );
 
   return suggestions;
