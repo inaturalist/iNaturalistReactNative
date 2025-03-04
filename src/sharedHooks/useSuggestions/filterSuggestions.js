@@ -69,14 +69,6 @@ const filterSuggestions = ( suggestionsToFilter, usingOfflineSuggestions, common
         : TOP_SUGGESTION_ABOVE_ONLINE_THRESHOLD
     };
   }
-  if ( !suggestionAboveThreshold && usingOfflineSuggestions ) {
-    // no top suggestion for offline
-    return {
-      ...newSuggestions,
-      topSuggestion: null,
-      topSuggestionType: TOP_SUGGESTION_NOT_CONFIDENT
-    };
-  }
 
   // online or offline common ancestor
   if ( commonAncestor ) {
@@ -89,6 +81,15 @@ const filterSuggestions = ( suggestionsToFilter, usingOfflineSuggestions, common
       ...newSuggestions,
       topSuggestion: sortableCommonAncestor,
       topSuggestionType: TOP_SUGGESTION_COMMON_ANCESTOR
+    };
+  }
+
+  if ( !suggestionAboveThreshold ) {
+    // no top suggestion and no common ancestor
+    return {
+      ...newSuggestions,
+      topSuggestion: null,
+      topSuggestionType: TOP_SUGGESTION_NOT_CONFIDENT
     };
   }
 
