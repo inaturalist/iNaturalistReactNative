@@ -3,7 +3,11 @@ import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
 import RNFS from "react-native-fs";
 import type { Location } from "vision-camera-plugin-inatvision";
-import { getPredictionsForImage, getPredictionsForLocation } from "vision-camera-plugin-inatvision";
+import {
+  getPredictionsForImage,
+  getPredictionsForLocation,
+  MODE
+} from "vision-camera-plugin-inatvision";
 
 const modelFiles = {
   // The iOS model and taxonomy files always have to be referenced in the
@@ -62,7 +66,8 @@ export const predictImage = ( uri: string, location: Location ) => {
     geomodelPath,
     location: hasLocation
       ? location
-      : undefined
+      : undefined,
+    mode: MODE.COMMON_ANCESTOR
   } );
 };
 
