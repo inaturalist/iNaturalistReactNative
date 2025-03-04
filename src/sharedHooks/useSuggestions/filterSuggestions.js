@@ -1,7 +1,6 @@
 import {
   initialSuggestions,
-  TOP_SUGGESTION_ABOVE_OFFLINE_THRESHOLD,
-  TOP_SUGGESTION_ABOVE_ONLINE_THRESHOLD,
+  TOP_SUGGESTION_ABOVE_THRESHOLD,
   TOP_SUGGESTION_COMMON_ANCESTOR,
   TOP_SUGGESTION_HUMAN,
   TOP_SUGGESTION_NONE,
@@ -64,9 +63,7 @@ const filterSuggestions = ( suggestionsToFilter, usingOfflineSuggestions, common
     return {
       ...newSuggestions,
       topSuggestion: firstSuggestion,
-      topSuggestionType: usingOfflineSuggestions
-        ? TOP_SUGGESTION_ABOVE_OFFLINE_THRESHOLD
-        : TOP_SUGGESTION_ABOVE_ONLINE_THRESHOLD
+      topSuggestionType: TOP_SUGGESTION_ABOVE_THRESHOLD
     };
   }
 
