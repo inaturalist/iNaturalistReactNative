@@ -4,7 +4,7 @@ import ObservationsViewBar from "components/Explore/ObservationsViewBar";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
 import {
   AccountCreationCard,
-  FiftyObservationCard,
+  // FiftyObservationCard,
   FirstObservationCard,
   SecondObservationCard
 } from "components/OnboardingModal/PivotCards.tsx";
@@ -317,7 +317,10 @@ const MyObservationsSimple = ( {
       {/* These four cards should show only in default mode */}
       <FirstObservationCard triggerCondition={numTotalObservations === 1} />
       <SecondObservationCard triggerCondition={numTotalObservations === 2} />
+      {/* This card was showing up at the wrong places but probably needs other code changes
+          before we can turn it back on.
       <FiftyObservationCard triggerCondition={!!currentUser && numTotalObservations >= 50} />
+      */}
       <AccountCreationCard
         triggerCondition={
           justFinishedSignup && !!currentUser && numTotalObservations < 20
