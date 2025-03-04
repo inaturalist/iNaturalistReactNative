@@ -16,12 +16,14 @@ import { RealmContext } from "providers/contexts.ts";
 import React, {
   useCallback, useEffect, useReducer, useRef, useState
 } from "react";
+import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import saveObservation from "sharedHelpers/saveObservation.ts";
 import {
   useExitObservationFlow, useLocationPermission, useSuggestions
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
+import fetchUserLocation from "../../sharedHelpers/fetchUserLocation";
 import Match from "./Match";
 
 const setQueryKey = ( selectedPhotoUri, shouldUseEvidenceLocation ) => [
@@ -51,7 +53,7 @@ const reducer = ( state, action ) => {
         ...state,
         fetchStatus: action.fetchStatus
       };
-    case "TOGGLE_LOCATION":
+    case "SET_LOCATION":
       return {
         ...state,
         fetchStatus: FETCH_STATUS_LOADING,
@@ -80,7 +82,9 @@ const MatchContainer = ( ) => {
   // const aICameraSuggestion = useStore( state => state.aICameraSuggestion );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const navigation = useNavigation( );
-  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
+  const {
+    hasPermissions, renderPermissionsGate, requestPermissions
+  } = useLocationPermission( );
 
   const obsPhotos = currentObservation?.observationPhotos;
 
@@ -91,18 +95,6 @@ const MatchContainer = ( ) => {
   const exitObservationFlow = useExitObservationFlow( {
     skipStoreReset: true
   } );
-
-  const openLocationPicker = ( ) => {
-    navigation.navigate( "LocationPicker" );
-  };
-
-  const handleLocationPickerPressed = ( ) => {
-    if ( hasPermissions ) {
-      openLocationPicker( );
-    } else {
-      requestPermissions( );
-    }
-  };
 
   const { isConnected } = useNetInfo( );
 
@@ -143,7 +135,8 @@ const MatchContainer = ( ) => {
   } ), [] );
 
   const {
-    suggestions
+    suggestions,
+    refetchSuggestions
   } = useSuggestions( observationPhoto, {
     shouldFetchOnlineSuggestions,
     onFetchError,
@@ -152,6 +145,50 @@ const MatchContainer = ( ) => {
     queryKey,
     onlineSuggestionsAttempted
   } );
+  const [currentPlaceGuess, setCurrentPlaceGuess] = useState( );
+
+  useEffect( () => {
+    if ( !currentPlaceGuess ) return;
+
+    updateObservationKeys( { place_guess: currentPlaceGuess } );
+  }, [currentPlaceGuess, updateObservationKeys] );
+
+  const getCurrentUserLocation = async ( ) => {
+    const currentUserLocation = await fetchUserLocation( );
+    const placeGuess
+     = await fetchPlaceName( currentUserLocation?.latitude, currentUserLocation?.longitude );
+
+    if ( placeGuess ) {
+      // Cannot call updateObservationKeys directly from here, since fetchPlaceName might take
+      // a while to return, in the meantime the current copy of the observation might have
+      // changed, so we update the observation from useEffect of currentPlaceGuess, so it will
+      // always have the latest copy of the current observation (see GH issue #584)
+      setCurrentPlaceGuess( placeGuess );
+    }
+    updateObservationKeys( {
+      latitude: currentUserLocation?.latitude,
+      longitude: currentUserLocation?.longitude
+    } );
+    const newScoreImageParams = {
+      ...scoreImageParams,
+      lat: currentUserLocation?.latitude,
+      lng: currentUserLocation?.longitude
+    };
+    dispatch( {
+      type: "SET_LOCATION",
+      shouldUseEvidenceLocation: true,
+      scoreImageParams: newScoreImageParams
+    } );
+    refetchSuggestions();
+  };
+
+  const handleAddLocationPressed = ( ) => {
+    if ( hasPermissions ) {
+      getCurrentUserLocation();
+    } else {
+      requestPermissions( );
+    }
+  };
 
   const scrollToTop = useCallback( ( ) => {
     if ( scrollRef.current ) {
@@ -283,13 +320,20 @@ const MatchContainer = ( ) => {
         onSuggestionChosen={onSuggestionChosen}
         handleSaveOrDiscardPress={handleSaveOrDiscardPress}
         navToTaxonDetails={navToTaxonDetails}
-        handleLocationPickerPressed={handleLocationPickerPressed}
+        handleAddLocationPressed={handleAddLocationPressed}
         topSuggestion={topSuggestion}
         otherSuggestions={otherSuggestions}
         suggestionsLoading={suggestionsLoading}
         scrollRef={scrollRef}
       />
-      {renderPermissionsGate( { onPermissionGranted: openLocationPicker } )}
+      {renderPermissionsGate(
+        {
+          onPermissionGranted: getCurrentUserLocation
+        },
+        {
+          closeOnInitialBlock: true
+        }
+      )}
     </>
   );
 };

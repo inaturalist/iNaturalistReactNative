@@ -18,6 +18,10 @@ export interface LocationPermissionCallbacks {
   onModalHide?: ( ) => void;
 }
 
+export interface LocationPermissionOptions {
+  closeOnInitialBlock?: boolean;
+}
+
 /**
  * A hook to check and request location permissions.
  * @returns {boolean} hasPermissions - Undefined if permissions have not been checked yet.
@@ -30,16 +34,24 @@ const useLocationPermission = ( ) => {
   const [hasPermissions, setHasPermissions] = useState<boolean>( );
   const [showPermissionGate, setShowPermissionGate] = useState( false );
   const [hasBlockedPermissions, setHasBlockedPermissions] = useState( false );
+  const [initialBlock, setInitialBlock] = useState( false );
 
   // PermissionGate callbacks need to use useCallback, otherwise they'll
   // trigger re-renders if/when they change
-  const renderPermissionsGate = useCallback( ( callbacks?: LocationPermissionCallbacks ) => {
+  const renderPermissionsGate = useCallback( (
+    callbacks?: LocationPermissionCallbacks,
+    options?: LocationPermissionOptions
+  ) => {
     const {
       onPermissionGranted,
       onPermissionDenied,
       onPermissionBlocked,
       onModalHide
     } = callbacks || { };
+
+    const {
+      closeOnInitialBlock = false
+    } = options || { };
 
     // this prevents infinite rerenders of the LocationPermissionGate component
     if ( !showPermissionGate ) {
@@ -58,6 +70,7 @@ const useLocationPermission = ( ) => {
           setShowPermissionGate( false );
           setHasPermissions( true );
           setHasBlockedPermissions( false );
+          setInitialBlock( false );
           if ( onPermissionGranted ) onPermissionGranted( );
         }}
         onPermissionDenied={( ) => {
@@ -67,11 +80,17 @@ const useLocationPermission = ( ) => {
           setHasPermissions( false );
           setHasBlockedPermissions( true );
           setShowPermissionGate( true );
+          if ( !initialBlock ) {
+            setInitialBlock( true );
+            if ( closeOnInitialBlock ) {
+              setShowPermissionGate( false );
+            }
+          }
           if ( onPermissionBlocked ) onPermissionBlocked( );
         }}
       />
     );
-  }, [showPermissionGate] );
+  }, [initialBlock, showPermissionGate] );
 
   // This gets exported and used as a dependency, so it needs to have
   // referential stability

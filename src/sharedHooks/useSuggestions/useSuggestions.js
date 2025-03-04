@@ -21,6 +21,7 @@ export const useSuggestions = ( photoUri, options ) => {
     dataUpdatedAt: onlineSuggestionsUpdatedAt,
     error: onlineSuggestionsError,
     onlineSuggestions,
+    refetch: refetchOnlineSuggestions,
     timedOut,
     resetTimeout
   } = useOnlineSuggestions( {
@@ -53,7 +54,8 @@ export const useSuggestions = ( photoUri, options ) => {
   );
 
   const {
-    offlineSuggestions
+    offlineSuggestions,
+    refetchOfflineSuggestions
   } = useOfflineSuggestions( photoUri, {
     onFetched,
     onFetchError,
@@ -61,6 +63,15 @@ export const useSuggestions = ( photoUri, options ) => {
     longitude: scoreImageParams?.lng,
     tryOfflineSuggestions
   } );
+
+  const refetchSuggestions = () => {
+    if ( shouldFetchOnlineSuggestions ) {
+      refetchOnlineSuggestions();
+    }
+    if ( tryOfflineSuggestions ) {
+      refetchOfflineSuggestions();
+    }
+  };
 
   const usingOfflineSuggestions = tryOfflineSuggestions || (
     offlineSuggestions?.results?.length > 0
@@ -98,7 +109,8 @@ export const useSuggestions = ( photoUri, options ) => {
     ...onlineSuggestionsResponse,
     suggestions,
     usingOfflineSuggestions,
-    urlWillCrashOffline
+    urlWillCrashOffline,
+    refetchSuggestions
   };
 };
 
