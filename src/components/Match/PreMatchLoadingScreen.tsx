@@ -2,6 +2,9 @@ import {
   ActivityIndicator, Body1, INatIconButton
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import {
+  FETCH_STATUS_ONLINE_FETCHED
+} from "components/Suggestions/SuggestionsContainer.tsx";
 import type { Node } from "react";
 import React, { useEffect, useRef } from "react";
 import { Animated } from "react-native";
@@ -17,7 +20,7 @@ const fade = value => ( {
 
 const PreMatchLoadingScreen = ( ): Node => {
   const isLoading = useStore( state => state.isLoading );
-  const setIsLoading = useStore( state => state.setIsLoading );
+  const setOnlineSuggestions = useStore( state => state.setOnlineSuggestions );
   const fadeAnimation = useRef( new Animated.Value( 0 ) ).current;
   const { t } = useTranslation( );
 
@@ -30,7 +33,7 @@ const PreMatchLoadingScreen = ( ): Node => {
     }
   }, [isLoading, fadeAnimation] );
 
-  const skipOnlineSuggestions = ( ) => setIsLoading( false );
+  const skipOnlineSuggestions = ( ) => setOnlineSuggestions( [], FETCH_STATUS_ONLINE_FETCHED );
 
   const animatedStyle = {
     position: "absolute",
