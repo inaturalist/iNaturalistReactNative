@@ -39,8 +39,7 @@ export const FETCH_STATUS_OFFLINE_ERROR = "offline-error";
 
 export const TOP_SUGGESTION_NONE = "none";
 export const TOP_SUGGESTION_HUMAN = "human";
-export const TOP_SUGGESTION_ABOVE_ONLINE_THRESHOLD = "above-online-threshold";
-export const TOP_SUGGESTION_ABOVE_OFFLINE_THRESHOLD = "above-offline-threshold";
+export const TOP_SUGGESTION_ABOVE_THRESHOLD = "above-threshold";
 export const TOP_SUGGESTION_COMMON_ANCESTOR = "common-ancestor";
 export const TOP_SUGGESTION_NOT_CONFIDENT = "not-confident";
 

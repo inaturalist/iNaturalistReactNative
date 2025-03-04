@@ -6,6 +6,7 @@ import {
 } from "react";
 import { log } from "sharedHelpers/logger";
 import { predictImage } from "sharedHelpers/mlModel.ts";
+import { Prediction } from "vision-camera-plugin-inatvision";
 
 const logger = log.extend( "useOfflineSuggestions" );
 
@@ -24,8 +25,8 @@ interface OfflineSuggestion {
 const useOfflineSuggestions = (
   photoUri: string,
   options: {
-    onFetchError: ( { isOnline: boolean } ) => void,
-    onFetchError: ( { isOnline: boolean } ) => void,
+    onFetchError: ( _p: { isOnline: boolean } ) => void,
+    onFetched: ( _p: { isOnline: boolean } ) => void,
     latitude: number,
     longitude: number,
     tryOfflineSuggestions: boolean
@@ -35,6 +36,7 @@ const useOfflineSuggestions = (
     results: OfflineSuggestion[],
     commonAncestor: OfflineSuggestion | undefined
   };
+  refetchOfflineSuggestions: () => void;
 } => {
   const realm = useRealm( );
   const [offlineSuggestions, setOfflineSuggestions] = useState<{
@@ -66,25 +68,41 @@ const useOfflineSuggestions = (
     // but we're offline so we only need the local list from realm
     // and don't need to fetch taxon from the API
     const iconicTaxa = realm?.objects( "Taxon" ).filtered( "isIconic = true" );
-    const branchIDs = [...rawPredictions.map( t => t.taxon_id ), ...( commonAncestor
-      ? [commonAncestor.taxon_id]
-      : [] )];
-    const iconicTaxonName = iconicTaxa?.find( t => branchIDs.indexOf( t.id ) >= 0 )?.name;
+    const iconicTaxaIds = iconicTaxa.map( t => t.id );
+    const iconicTaxaLookup: {
+      [key: number]: string
+    } = iconicTaxa.reduce( ( acc, t ) => {
+      acc[t.id] = t.name;
+      return acc;
+    }, { } );
 
-    // This function handles either regular or common ancestor predictions as input objects. I'm
-    // not going to define an interface for them in the middle of refactoring and changing logic.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const formatPrediction = ( prediction: any ): OfflineSuggestion => ( {
-      combined_score: prediction.combined_score,
-      taxon: {
-        id: Number( prediction.taxon_id ),
-        name: prediction.name,
-        rank_level: prediction.rank_level,
-        iconic_taxon_name: iconicTaxonName
+    // This function handles either regular or common ancestor predictions as input objects.
+    const formatPrediction = ( prediction: Prediction ): OfflineSuggestion => {
+      // The "lowest" ancestor_id that matches an iconic taxon
+      // is the iconic taxon of this prediction.
+      const iconicTaxonId = prediction.ancestor_ids
+        // Need to reverse so we find the most specific iconic taxon first as an ancestor_ids is
+        // a list of ancestor ids from tip to root of taxonomy
+        // e.g. Aves is included in Animalia
+        .reverse()
+        .find( id => iconicTaxaIds.includes( id ) );
+      let iconicTaxonName;
+      if ( iconicTaxonId !== undefined ) {
+        iconicTaxonName = iconicTaxaLookup[iconicTaxonId];
       }
-    } );
 
-    const formattedPredictions = rawPredictions?.reverse( )
+      return {
+        combined_score: prediction.combined_score,
+        taxon: {
+          id: prediction.taxon_id,
+          name: prediction.name,
+          rank_level: prediction.rank_level,
+          iconic_taxon_name: iconicTaxonName
+        }
+      };
+    };
+
+    const formattedPredictions = rawPredictions
       .map( prediction => formatPrediction( prediction ) );
 
     const commonAncestorSuggestion = commonAncestor
@@ -123,7 +141,8 @@ const useOfflineSuggestions = (
     photoUri,
     tryOfflineSuggestions,
     setError,
-    onFetchError] );
+    onFetchError
+  ] );
 
   if ( error ) throw error;
 

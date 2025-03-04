@@ -1,7 +1,6 @@
 import {
   initialSuggestions,
-  TOP_SUGGESTION_ABOVE_OFFLINE_THRESHOLD,
-  TOP_SUGGESTION_ABOVE_ONLINE_THRESHOLD,
+  TOP_SUGGESTION_ABOVE_THRESHOLD,
   TOP_SUGGESTION_COMMON_ANCESTOR,
   TOP_SUGGESTION_HUMAN,
   TOP_SUGGESTION_NONE,
@@ -10,24 +9,24 @@ import {
 import _ from "lodash";
 
 import isolateHumans, { humanFilter } from "./isolateHumans";
-import sortSuggestions from "./sortSuggestions";
 
 const THRESHOLD = 78;
 
 // this function does a few things:
 // 1. it makes sure that if there is a human suggestion, human is the only result returned
-// 2. it makes sure we're filtering out any results below the THRESHOLD
-// so we only show results we're fairly confident in
-// 3. it splits the top suggestion result out from the rest of the suggestions, which is helpful for
+// 2. it splits the top suggestion result out from the rest of the suggestions, which is helpful for
 // displaying in SuggestionsContainer
-// 4. it checks for a common ancestor as a fallback top suggestion if user is online
+// 4. it checks for a common ancestor as a fallback top suggestion
 // 5. it returns topSuggestionType which is useful for debugging, since we're doing a lot of
 // filtering of both online and offline suggestions
-const filterSuggestions = ( suggestionsToFilter, usingOfflineSuggestions, commonAncestor ) => {
-  const sortedSuggestions = sortSuggestions(
+const filterSuggestions = ( suggestionsToFilter, commonAncestor ) => {
+  const sortedSuggestions = _.orderBy(
+    // TODO: handling humans is implemented in the vision-plugin, can it be removed here?
     isolateHumans( suggestionsToFilter ),
-    { usingOfflineSuggestions }
+    "combined_score",
+    "desc"
   );
+
   const newSuggestions = {
     ...initialSuggestions,
     otherSuggestions: sortedSuggestions
@@ -64,17 +63,7 @@ const filterSuggestions = ( suggestionsToFilter, usingOfflineSuggestions, common
     return {
       ...newSuggestions,
       topSuggestion: firstSuggestion,
-      topSuggestionType: usingOfflineSuggestions
-        ? TOP_SUGGESTION_ABOVE_OFFLINE_THRESHOLD
-        : TOP_SUGGESTION_ABOVE_ONLINE_THRESHOLD
-    };
-  }
-  if ( !suggestionAboveThreshold && usingOfflineSuggestions ) {
-    // no top suggestion for offline
-    return {
-      ...newSuggestions,
-      topSuggestion: null,
-      topSuggestionType: TOP_SUGGESTION_NOT_CONFIDENT
+      topSuggestionType: TOP_SUGGESTION_ABOVE_THRESHOLD
     };
   }
 

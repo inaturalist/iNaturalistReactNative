@@ -95,12 +95,10 @@ export const useSuggestions = ( photoUri, options ) => {
   const suggestions = useMemo(
     ( ) => filterSuggestions(
       unfilteredSuggestions,
-      usingOfflineSuggestions,
       commonAncestor
     ),
     [
       unfilteredSuggestions,
-      usingOfflineSuggestions,
       commonAncestor
     ]
   );
