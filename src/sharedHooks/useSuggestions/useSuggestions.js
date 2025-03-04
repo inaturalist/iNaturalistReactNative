@@ -40,12 +40,6 @@ export const useSuggestions = ( photoUri, options ) => {
     resetTimeout
   };
 
-  const refetchSuggestions = () => {
-    if ( shouldFetchOnlineSuggestions ) {
-      refetchOnlineSuggestions();
-    }
-  };
-
   // 20240815 amanda - it's conceivable that we would want to use a cached image here eventually,
   // since the user can see the small square version of this image in MyObs/ObsDetails already
   // but for now, passing in an https photo to predictImage while offline crashes the app
@@ -60,7 +54,8 @@ export const useSuggestions = ( photoUri, options ) => {
   );
 
   const {
-    offlineSuggestions
+    offlineSuggestions,
+    refetchOfflineSuggestions
   } = useOfflineSuggestions( photoUri, {
     onFetched,
     onFetchError,
@@ -68,6 +63,15 @@ export const useSuggestions = ( photoUri, options ) => {
     longitude: scoreImageParams?.lng,
     tryOfflineSuggestions
   } );
+
+  const refetchSuggestions = () => {
+    if ( shouldFetchOnlineSuggestions ) {
+      refetchOnlineSuggestions();
+    }
+    if ( tryOfflineSuggestions ) {
+      refetchOfflineSuggestions();
+    }
+  };
 
   const usingOfflineSuggestions = tryOfflineSuggestions || (
     offlineSuggestions.length > 0

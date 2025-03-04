@@ -143,15 +143,29 @@ const MatchContainer = ( ) => {
     queryKey,
     onlineSuggestionsAttempted
   } );
+  const [currentPlaceGuess, setCurrentPlaceGuess] = useState( );
+
+  useEffect( () => {
+    if ( !currentPlaceGuess ) return;
+
+    updateObservationKeys( { place_guess: currentPlaceGuess } );
+  }, [currentPlaceGuess, updateObservationKeys] );
 
   const getCurrentUserLocation = async ( ) => {
     const currentUserLocation = await fetchUserLocation( );
-    const placeName
+    const placeGuess
      = await fetchPlaceName( currentUserLocation.latitude, currentUserLocation.longitude );
+
+    if ( placeGuess ) {
+      // Cannot call updateObservationKeys directly from here, since fetchPlaceName might take
+      // a while to return, in the meantime the current copy of the observation might have
+      // changed, so we update the observation from useEffect of currentPlaceGuess, so it will
+      // always have the latest copy of the current observation (see GH issue #584)
+      setCurrentPlaceGuess( placeGuess );
+    }
     updateObservationKeys( {
       latitude: currentUserLocation.latitude,
-      longitude: currentUserLocation.longitude,
-      place_guess: placeName
+      longitude: currentUserLocation.longitude
     } );
     const newScoreImageParams = {
       ...scoreImageParams,

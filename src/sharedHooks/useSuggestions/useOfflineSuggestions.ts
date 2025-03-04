@@ -1,5 +1,6 @@
 import { RealmContext } from "providers/contexts.ts";
 import {
+  useCallback,
   useEffect,
   useState
 } from "react";
@@ -40,67 +41,63 @@ const useOfflineSuggestions = (
     onFetchError, onFetched, latitude, longitude, tryOfflineSuggestions
   } = options;
 
-  useEffect( ( ) => {
-    const predictOffline = async ( ) => {
-      let rawPredictions = [];
-      try {
-        const location = { latitude, longitude };
-        const result = await predictImage( photoUri, location );
-        rawPredictions = result.predictions;
-      } catch ( predictImageError ) {
-        onFetchError( { isOnline: false } );
-        logger.error( "Error predicting image offline", predictImageError );
-        throw predictImageError;
-      }
-      // similar to what we're doing in the AICamera to get iconic taxon name,
-      // but we're offline so we only need the local list from realm
-      // and don't need to fetch taxon from the API
-      const iconicTaxa = realm?.objects( "Taxon" ).filtered( "isIconic = true" );
-      const branchIDs = rawPredictions.map( t => t.taxon_id );
-      const iconicTaxonName = iconicTaxa?.find( t => branchIDs.indexOf( t.id ) >= 0 )?.name;
-
-      // using the same rank level for displaying predictions in AI Camera
-      // this is all temporary, since we ultimately want predictions
-      // returned similarly to how we return them on web; this is returning a
-      // single branch like on the AI Camera 2023-12-08
-      const formattedPredictions = rawPredictions?.reverse( )
-        .filter( prediction => prediction.rank_level <= 40 )
-        .map( prediction => ( {
-          combined_score: prediction.combined_score,
-          taxon: {
-            id: Number( prediction.taxon_id ),
-            name: prediction.name,
-            rank_level: prediction.rank_level,
-            iconic_taxon_name: iconicTaxonName
-          }
-        } ) );
-      setOfflineSuggestions( formattedPredictions );
-      onFetched( { isOnline: false } );
-      return formattedPredictions;
-    };
-
-    if ( photoUri && tryOfflineSuggestions ) {
-      predictOffline( ).catch( predictOfflineError => {
-        // For some reason if you throw here, it doesn't actually buble up. Is
-        // an effect callback run in a promise?
-        onFetchError( { isOnline: false } );
-        setError( predictOfflineError );
-      } );
+  const predictOffline = useCallback( async ( ) => {
+    let rawPredictions = [];
+    try {
+      const location = { latitude, longitude };
+      const result = await predictImage( photoUri, location );
+      rawPredictions = result.predictions;
+    } catch ( predictImageError ) {
+      onFetchError( { isOnline: false } );
+      logger.error( "Error predicting image offline", predictImageError );
+      throw predictImageError;
     }
-  }, [
-    photoUri,
-    tryOfflineSuggestions,
-    setError,
-    onFetched,
-    onFetchError,
-    realm,
-    latitude,
-    longitude] );
+    // similar to what we're doing in the AICamera to get iconic taxon name,
+    // but we're offline so we only need the local list from realm
+    // and don't need to fetch taxon from the API
+    const iconicTaxa = realm?.objects( "Taxon" ).filtered( "isIconic = true" );
+    const branchIDs = rawPredictions.map( t => t.taxon_id );
+    const iconicTaxonName = iconicTaxa?.find( t => branchIDs.indexOf( t.id ) >= 0 )?.name;
+
+    // using the same rank level for displaying predictions in AI Camera
+    // this is all temporary, since we ultimately want predictions
+    // returned similarly to how we return them on web; this is returning a
+    // single branch like on the AI Camera 2023-12-08
+    const formattedPredictions = rawPredictions?.reverse( )
+      .filter( prediction => prediction.rank_level <= 40 )
+      .map( prediction => ( {
+        combined_score: prediction.combined_score,
+        taxon: {
+          id: Number( prediction.taxon_id ),
+          name: prediction.name,
+          rank_level: prediction.rank_level,
+          iconic_taxon_name: iconicTaxonName
+        }
+      } ) );
+    setOfflineSuggestions( formattedPredictions );
+    onFetched( { isOnline: false } );
+    return formattedPredictions;
+  }, [latitude, longitude, onFetchError, onFetched, photoUri, realm] );
+
+  const refetchOfflineSuggestions = useCallback( () => {
+    predictOffline().catch( predictOfflineError => {
+      // TODO: make this not potentially bubble up
+      onFetchError( { isOnline: false } );
+      setError( predictOfflineError );
+    } );
+  }, [onFetchError, predictOffline] );
+
+  useEffect( ( ) => {
+    if ( photoUri && tryOfflineSuggestions ) {
+      refetchOfflineSuggestions();
+    }
+  }, [photoUri, refetchOfflineSuggestions, tryOfflineSuggestions] );
 
   if ( error ) throw error;
 
   return {
-    offlineSuggestions
+    offlineSuggestions,
+    refetchOfflineSuggestions
   };
 };
 
