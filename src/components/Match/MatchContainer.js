@@ -326,14 +326,7 @@ const MatchContainer = ( ) => {
         suggestionsLoading={suggestionsLoading}
         scrollRef={scrollRef}
       />
-      {renderPermissionsGate(
-        {
-          onPermissionGranted: getCurrentUserLocation
-        },
-        {
-          closeOnInitialBlock: true
-        }
-      )}
+      {renderPermissionsGate( { onPermissionGranted: getCurrentUserLocation } )}
     </>
   );
 };
