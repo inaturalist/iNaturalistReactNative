@@ -14,3 +14,8 @@ export const MODE = {
   BEST_BRANCH: "BEST_BRANCH",
   COMMON_ANCESTOR: "COMMON_ANCESTOR"
 };
+
+export const COMMON_ANCESTOR_RANK_TYPE = {
+  MAJOR: "major",
+  UNRESTRICTED: "unrestricted"
+};
