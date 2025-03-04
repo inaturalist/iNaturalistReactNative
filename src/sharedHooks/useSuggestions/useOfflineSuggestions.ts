@@ -25,8 +25,8 @@ interface OfflineSuggestion {
 const useOfflineSuggestions = (
   photoUri: string,
   options: {
-    onFetchError: ( { isOnline: boolean } ) => void,
-    onFetchError: ( { isOnline: boolean } ) => void,
+    onFetchError: ( _p: { isOnline: boolean } ) => void,
+    onFetched: ( _p: { isOnline: boolean } ) => void,
     latitude: number,
     longitude: number,
     tryOfflineSuggestions: boolean
@@ -122,7 +122,8 @@ const useOfflineSuggestions = (
     photoUri,
     tryOfflineSuggestions,
     setError,
-    onFetchError] );
+    onFetchError
+  ] );
 
   if ( error ) throw error;
 
