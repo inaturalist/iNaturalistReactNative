@@ -53,7 +53,7 @@ const reducer = ( state, action ) => {
         ...state,
         fetchStatus: action.fetchStatus
       };
-    case "TOGGLE_LOCATION":
+    case "SET_LOCATION":
       return {
         ...state,
         fetchStatus: FETCH_STATUS_LOADING,
@@ -175,7 +175,7 @@ const MatchContainer = ( ) => {
       lng: currentUserLocation.longitude
     };
     dispatch( {
-      type: "TOGGLE_LOCATION",
+      type: "SET_LOCATION",
       shouldUseEvidenceLocation: true,
       scoreImageParams: newScoreImageParams
     } );
