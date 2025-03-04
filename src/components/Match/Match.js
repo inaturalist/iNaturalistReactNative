@@ -10,6 +10,7 @@ import { View } from "components/styledComponents";
 import _ from "lodash";
 import React from "react";
 import { useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 
 import AdditionalSuggestionsScroll
   from "./AdditionalSuggestions/AdditionalSuggestionsScroll";
@@ -27,9 +28,6 @@ type Props = {
   handleSaveOrDiscardPress: ( ) => void,
   navToTaxonDetails: ( ) => void,
   handleLocationPickerPressed: ( ) => void,
-  topSuggestion: Object,
-  otherSuggestions: Array<Object>,
-  suggestionsLoading: boolean,
   onSuggestionChosen: ( ) => void,
   scrollRef: Object
 }
@@ -40,32 +38,31 @@ const Match = ( {
   handleSaveOrDiscardPress,
   navToTaxonDetails,
   handleLocationPickerPressed,
-  topSuggestion,
-  otherSuggestions,
-  suggestionsLoading,
   onSuggestionChosen,
   scrollRef
 }: Props ) => {
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
+  const isLoading = useStore( state => state.isLoading );
+  const suggestionsList = useStore( state => state.suggestionsList );
 
   const latitude = observation?.privateLatitude || observation?.latitude;
-  const taxon = topSuggestion?.taxon;
+  const taxon = suggestionsList?.[0]?.taxon;
 
   return (
     <>
       <ScrollViewWrapper scrollRef={scrollRef}>
         <View className={cardClassTop}>
           {
-            suggestionsLoading
+            isLoading
               ? (
                 <ActivityIndicator size={33} />
               )
-              : <MatchHeader topSuggestion={topSuggestion} />
+              : <MatchHeader topSuggestion={suggestionsList?.[0]} />
           }
         </View>
         <PhotosSection
-          representativePhoto={topSuggestion?.taxon?.representative_photo}
+          representativePhoto={taxon?.representative_photo}
           taxon={taxon}
           obsPhotos={obsPhotos}
           navToTaxonDetails={navToTaxonDetails}
@@ -100,8 +97,8 @@ const Match = ( {
           }
           <AdditionalSuggestionsScroll
             onSuggestionChosen={onSuggestionChosen}
-            otherSuggestions={otherSuggestions}
-            suggestionsLoading={suggestionsLoading}
+            otherSuggestions={_.tail( suggestionsList )}
+            isLoading={isLoading}
           />
           {!latitude && (
             <Button

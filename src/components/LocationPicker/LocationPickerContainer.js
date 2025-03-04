@@ -144,6 +144,7 @@ const reducer = ( state, action ) => {
 };
 
 const LocationPickerContainer = ( ): Node => {
+  const resetSuggestionsSlice = useStore( state => state.resetSuggestionsSlice );
   const currentObservation = useStore( state => state.currentObservation );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const navigation = useNavigation( );
@@ -216,6 +217,7 @@ const LocationPickerContainer = ( ): Node => {
   const onMapReady = ( ) => dispatch( { type: "HANDLE_MAP_READY" } );
 
   const handleSave = ( ) => {
+    resetSuggestionsSlice( );
     const keysToUpdate = {
       latitude: region.latitude,
       longitude: region.longitude,

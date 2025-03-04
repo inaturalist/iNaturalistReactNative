@@ -1,0 +1,110 @@
+import { FETCH_STATUS_OFFLINE_ERROR } from "components/Suggestions/SuggestionsContainer.tsx";
+import { RealmContext } from "providers/contexts.ts";
+import {
+  useCallback,
+  useEffect
+} from "react";
+import { log } from "sharedHelpers/logger";
+import { predictImage } from "sharedHelpers/mlModel.ts";
+import {
+  findPhotoUriFromCurrentObservation
+} from "sharedHelpers/sortSuggestionsForMatch.ts";
+import useStore from "stores/useStore";
+
+const logger = log.extend( "useOfflineSuggestionsForMatch" );
+
+const { useRealm } = RealmContext;
+
+// we might need to change this RANK_LEVEL
+// but it's currently helpful for testing that we're getting results
+
+const RANK_LEVEL = 90;
+
+const formatPredictions = ( rawPredictions, iconicTaxa, commonAncestor ) => {
+  // similar to what we're doing in the AICamera to get iconic taxon name,
+  // but we're offline so we only need the local list from realm
+  // and don't need to fetch taxon from the API
+  const branchIDs = [...rawPredictions.map( t => t.taxon_id ), ...( commonAncestor
+    ? [commonAncestor.taxon_id]
+    : [] )];
+  const iconicTaxonName = iconicTaxa?.find( t => branchIDs.indexOf( t.id ) >= 0 )?.name;
+  // using the same rank level for displaying predictions in AI Camera
+  // this is all temporary, since we ultimately want predictions
+  // returned similarly to how we return them on web; this is returning a
+  // single branch like on the AI Camera 2023-12-08
+  const formattedPredictions = rawPredictions?.reverse( )
+    .filter( prediction => prediction.rank_level <= RANK_LEVEL )
+    .map( prediction => ( {
+      combined_score: prediction.combined_score,
+      taxon: {
+        id: Number( prediction.taxon_id ),
+        name: prediction.name,
+        rank_level: prediction.rank_level,
+        iconic_taxon_name: iconicTaxonName
+      }
+    } ) );
+  return formattedPredictions;
+};
+
+const useOfflineSuggestionsForMatch = ( ) => {
+  const currentObservation = useStore( state => state.currentObservation );
+  const offlineSuggestions = useStore( state => state.offlineSuggestions );
+  const setOfflineSuggestions = useStore( state => state.setOfflineSuggestions );
+  const setCommonAncestor = useStore( state => state.setCommonAncestor );
+  const realm = useRealm( );
+  const iconicTaxa = realm?.objects( "Taxon" ).filtered( "isIconic = true" );
+
+  const photoUri = findPhotoUriFromCurrentObservation( currentObservation );
+
+  // 20240815 amanda - it's conceivable that we would want to use a cached image here eventually,
+  // since the user can see the small square version of this image in MyObs/ObsDetails already
+  // but for now, passing in an https photo to predictImage while offline crashes the app
+  const urlWillCrashOffline = photoUri?.includes( "https://" );
+  const shouldFetchOffline = currentObservation !== null
+    && !urlWillCrashOffline
+    && offlineSuggestions.length === 0;
+
+  const handleError = useCallback( error => {
+    setOfflineSuggestions( [], FETCH_STATUS_OFFLINE_ERROR );
+    logger.error( "Error predicting image offline", error );
+    throw error;
+  }, [setOfflineSuggestions] );
+
+  const predictOffline = useCallback( async ( ) => {
+    const latitude = currentObservation?.latitude;
+    const longitude = currentObservation?.longitude;
+    const location = { latitude, longitude };
+
+    let rawPredictions = [];
+    let commonAncestor;
+    try {
+      const result = await predictImage( photoUri, location );
+      rawPredictions = result.predictions;
+      // Destructuring here leads to different errors from the linter.
+      // eslint-disable-next-line prefer-destructuring
+      commonAncestor = result.commonAncestor;
+    } catch ( predictImageError ) {
+      handleError( predictImageError );
+    }
+    const formattedPredictions = formatPredictions( rawPredictions, iconicTaxa, commonAncestor );
+    setOfflineSuggestions( formattedPredictions );
+    setCommonAncestor( commonAncestor );
+  }, [
+    currentObservation,
+    handleError,
+    iconicTaxa,
+    photoUri,
+    setCommonAncestor,
+    setOfflineSuggestions
+  ] );
+
+  useEffect( ( ) => {
+    if ( shouldFetchOffline ) {
+      predictOffline( );
+    }
+  }, [shouldFetchOffline, predictOffline] );
+
+  return null;
+};
+
+export default useOfflineSuggestionsForMatch;

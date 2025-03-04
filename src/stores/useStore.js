@@ -8,6 +8,7 @@ import createLayoutSlice from "./createLayoutSlice";
 import createMyObsSlice from "./createMyObsSlice";
 import createObservationFlowSlice from "./createObservationFlowSlice";
 import createRootExploreSlice from "./createRootExploreSlice";
+import createSuggestionsSlice from "./createSuggestionsSlice";
 import createSyncObservationsSlice from "./createSyncObservationsSlice";
 import createUploadObservationsSlice from "./createUploadObservationsSlice";
 
@@ -36,6 +37,7 @@ const useStore = create( persist(
       createMyObsSlice( ...args ),
       createObservationFlowSlice( ...args ),
       createRootExploreSlice( ...args ),
+      createSuggestionsSlice( ...args ),
       createSyncObservationsSlice( ...args ),
       createUploadObservationsSlice( ...args )
     ];

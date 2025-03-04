@@ -31,6 +31,7 @@ const AdditionalSuggestionsScroll = ( {
 
     return (
       <SuggestionsResult
+        key={suggestion?.taxon?.id}
         confidence={confidence}
         fetchRemote={false}
         handlePress={handlePress}
