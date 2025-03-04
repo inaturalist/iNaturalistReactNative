@@ -82,7 +82,9 @@ const MatchContainer = ( ) => {
   // const aICameraSuggestion = useStore( state => state.aICameraSuggestion );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const navigation = useNavigation( );
-  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
+  const {
+    hasPermissions, renderPermissionsGate, requestPermissions
+  } = useLocationPermission( );
 
   const obsPhotos = currentObservation?.observationPhotos;
 
@@ -324,7 +326,9 @@ const MatchContainer = ( ) => {
         suggestionsLoading={suggestionsLoading}
         scrollRef={scrollRef}
       />
-      {renderPermissionsGate( { onPermissionGranted: getCurrentUserLocation } )}
+      {renderPermissionsGate( {
+        onPermissionGranted: getCurrentUserLocation
+      } )}
     </>
   );
 };

@@ -30,6 +30,7 @@ const useLocationPermission = ( ) => {
   const [hasPermissions, setHasPermissions] = useState<boolean>( );
   const [showPermissionGate, setShowPermissionGate] = useState( false );
   const [hasBlockedPermissions, setHasBlockedPermissions] = useState( false );
+  const [initialBlock, setInitialBlock] = useState( false );
 
   // PermissionGate callbacks need to use useCallback, otherwise they'll
   // trigger re-renders if/when they change
@@ -58,6 +59,7 @@ const useLocationPermission = ( ) => {
           setShowPermissionGate( false );
           setHasPermissions( true );
           setHasBlockedPermissions( false );
+          setInitialBlock( false );
           if ( onPermissionGranted ) onPermissionGranted( );
         }}
         onPermissionDenied={( ) => {
@@ -67,11 +69,15 @@ const useLocationPermission = ( ) => {
           setHasPermissions( false );
           setHasBlockedPermissions( true );
           setShowPermissionGate( true );
+          if ( !initialBlock ) {
+            setInitialBlock( true );
+            setShowPermissionGate( false );
+          }
           if ( onPermissionBlocked ) onPermissionBlocked( );
         }}
       />
     );
-  }, [showPermissionGate] );
+  }, [initialBlock, showPermissionGate] );
 
   // This gets exported and used as a dependency, so it needs to have
   // referential stability
