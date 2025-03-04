@@ -13,5 +13,7 @@ export default define( "ModelPrediction", faker => ( {
     10
   ] ),
   combined_score: faker.number.float( { min: 80, max: 100 } ),
-  taxon_id: faker.number.int( )
+  vision_score: faker.number.float( { min: 80, max: 100 } ),
+  taxon_id: faker.number.int( ),
+  ancestor_ids: faker.helpers.arrayElements( [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] )
 } ) );
