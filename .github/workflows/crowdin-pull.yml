@@ -56,7 +56,7 @@ jobs:
           upload_translations: false
           # Download options
           download_translations: true
-          skip_untranslated_strings: true
+          # skip_untranslated_strings: true
           export_only_approved: true
           # Without this, the action will force push changes to the branch
           # before we get a chance to normalize and validate in the next
