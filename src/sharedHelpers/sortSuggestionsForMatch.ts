@@ -12,35 +12,24 @@ const sortSuggestionsForMatch = suggestionsList => {
   return sortedList;
 };
 
-const reorderSuggestionsAfterNewSelection = ( selection, suggestions ) => {
+const reorderSuggestionsWithSelectionFirst = ( selection, suggestions ) => {
   const suggestionsList = [...suggestions];
 
-  // make sure to reorder the list by confidence score
-  // for when a user taps multiple suggestions and pushes a new top suggestion to
-  // the top of the list
-  const sortedList = sortSuggestionsForMatch( suggestionsList );
-
-  const chosenIndex = _.findIndex(
-    sortedList,
+  const selectedIndex = _.findIndex(
+    suggestionsList,
     suggestion => suggestion.taxon.id === selection.taxon.id
   );
 
-  if ( chosenIndex === -1 ) {
-    return null;
+  // If selection is not in the list, return the original list
+  if ( selectedIndex === -1 ) {
+    return suggestionsList;
   }
 
-  // Get the chosen suggestion
-  const topSuggestion = sortedList[chosenIndex];
+  // Remove the selection from the array and add as first item
+  const selectedSuggestion = suggestionsList.splice( selectedIndex, 1 )[0];
+  suggestionsList.unshift( selectedSuggestion );
 
-  // Create a new array of other suggestions, excluding the chosen one
-  const otherSuggestions = sortedList.filter(
-    suggestion => suggestion.taxon.id !== topSuggestion.taxon.id
-  );
-
-  return {
-    topSuggestion,
-    otherSuggestions
-  };
+  return suggestionsList;
 };
 
 const findInitialTopSuggestionAndOtherSuggestions = suggestionsList => {
@@ -96,7 +85,7 @@ export {
   convertSuggestionsObjToList,
   findInitialTopSuggestionAndOtherSuggestions,
   findPhotoUriFromCurrentObservation,
-  reorderSuggestionsAfterNewSelection,
+  reorderSuggestionsWithSelectionFirst,
   saveTaxaFromOnlineSuggestionsToRealm,
   sortSuggestionsForMatch
 };

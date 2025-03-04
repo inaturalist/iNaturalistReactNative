@@ -5,14 +5,12 @@ import _ from "lodash";
 import { RealmContext } from "providers/contexts.ts";
 import React, {
   useCallback,
-  useEffect,
   useRef
 } from "react";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import saveObservation from "sharedHelpers/saveObservation.ts";
 import {
-  convertSuggestionsObjToList,
-  reorderSuggestionsAfterNewSelection
+  reorderSuggestionsWithSelectionFirst
 } from "sharedHelpers/sortSuggestionsForMatch.ts";
 import {
   useExitObservationFlow,
@@ -34,7 +32,6 @@ const MatchContainer = ( ) => {
   const scrollRef = useRef( null );
   const currentObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
-  const resetSuggestionsSlice = useStore( state => state.resetSuggestionsSlice );
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const {
     suggestionsList,
@@ -93,9 +90,8 @@ const MatchContainer = ( ) => {
   }, [] );
 
   const onSuggestionChosen = useCallback( selection => {
-    const reorderedSuggestions = reorderSuggestionsAfterNewSelection( selection, suggestionsList );
-    const newSuggestionsList = convertSuggestionsObjToList( reorderedSuggestions );
-    setSuggestionsList( newSuggestionsList );
+    const reorderedSuggestions = reorderSuggestionsWithSelectionFirst( selection, suggestionsList );
+    setSuggestionsList( reorderedSuggestions );
     scrollToTop( );
   }, [
     suggestionsList,
@@ -133,13 +129,6 @@ const MatchContainer = ( ) => {
     taxon,
     updateObservationKeys
   ] );
-
-  useEffect( ( ) => {
-    const unsubscribe = navigation.addListener( "blur", ( ) => {
-      resetSuggestionsSlice( );
-    } );
-    return unsubscribe;
-  }, [navigation, resetSuggestionsSlice] );
 
   return (
     <>

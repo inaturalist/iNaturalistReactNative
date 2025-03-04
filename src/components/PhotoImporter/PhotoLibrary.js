@@ -45,6 +45,7 @@ const PhotoLibrary = ( ): Node => {
   const observations = useStore( state => state.observations );
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
   const isAdvancedSuggestionsMode = useStore( state => state.layout.isAdvancedSuggestionsMode );
+  const resetSuggestionsSlice = useStore( state => state.resetSuggestionsSlice );
   const exitObservationsFlow = useExitObservationsFlow( );
 
   const { params } = useRoute( );
@@ -240,6 +241,7 @@ const PhotoLibrary = ( ): Node => {
 
   useFocusEffect(
     React.useCallback( () => {
+      resetSuggestionsSlice( );
       // This will run when the screen comes into focus.
       let interactionHandle = null;
 
@@ -256,7 +258,7 @@ const PhotoLibrary = ( ): Node => {
           interactionHandle.cancel();
         }
       };
-    }, [photoLibraryShown, showPhotoLibrary] )
+    }, [photoLibraryShown, showPhotoLibrary, resetSuggestionsSlice] )
   );
 
   return (
