@@ -79,9 +79,6 @@ const Match = ( {
         <LocationSection
           belongsToCurrentUser
           observation={observation}
-          handleAddLocationPressed={!latitude
-            ? handleAddLocationPressed
-            : null}
         />
         <View className={cardClassBottom} />
         <View className="pt-2">
