@@ -1,4 +1,3 @@
-import { FETCH_STATUS_ONLINE_ERROR } from "components/Suggestions/SuggestionsContainer.tsx";
 import { StateCreator } from "zustand";
 
 // at the moment this is used for the Match screen but it's
@@ -19,7 +18,6 @@ const DEFAULT_STATE = {
   fetchStatus: null,
   offlineSuggestions: [],
   onlineSuggestions: [],
-  suggestionsError: null,
   suggestionsList: [],
   isLoading: true,
   timedOut: false
@@ -27,34 +25,33 @@ const DEFAULT_STATE = {
 
 interface SuggestionsSlice {
   commonAncestor: Object,
+  fetchStatus: string | null,
   offlineSuggestions: OfflineSuggestion[],
   onlineSuggestions: Array<Object>,
   resetSuggestionsSlice: ( ) => void
   setOfflineSuggestions: ( ) => void,
   setOnlineSuggestions: ( ) => void,
-  setSuggestionsError: ( ) => void,
   suggestionsList: Array<Object>,
-  suggestionsError: boolean,
   isLoading: boolean,
   timedOut: boolean
 }
 
 const createSuggestionsSlice: StateCreator<SuggestionsSlice> = set => ( {
   ...DEFAULT_STATE,
-  setOfflineSuggestions: offlineSuggestions => set( ( ) => ( { offlineSuggestions } ) ),
-  setOnlineSuggestions: onlineSuggestions => set( ( ) => ( {
-    // default to showing onlineSuggestions if they exist
-    onlineSuggestions,
-    offlineSuggestions: [],
-    isLoading: false
+  setOfflineSuggestions: ( offlineSuggestions, fetchStatus = null ) => set( ( ) => ( {
+    offlineSuggestions,
+    fetchStatus
   } ) ),
-  setSuggestionsError: suggestionsError => set( ( ) => ( {
-    suggestionsError,
-    isLoading: suggestionsError !== FETCH_STATUS_ONLINE_ERROR
+  setOnlineSuggestions: ( onlineSuggestions, fetchStatus = null ) => set( ( ) => ( {
+    onlineSuggestions,
+    fetchStatus
   } ) ),
   resetSuggestionsSlice: ( ) => set( { ...DEFAULT_STATE } ),
   setCommonAncestor: commonAncestor => set( ( ) => ( { commonAncestor } ) ),
-  setSuggestionsList: suggestionsList => set( ( ) => ( { suggestionsList } ) ),
+  setSuggestionsList: suggestionsList => set( ( ) => ( {
+    suggestionsList,
+    isLoading: false
+  } ) ),
   setIsLoading: isLoading => set( ( ) => ( { isLoading } ) ),
   setTimedOut: timedOut => set( ( ) => ( { timedOut } ) )
 } );

@@ -1,5 +1,9 @@
+import {
+  FETCH_STATUS_ONLINE_ERROR,
+  FETCH_STATUS_ONLINE_FETCHED
+} from "components/Suggestions/SuggestionsContainer.tsx";
 import _ from "lodash";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
 import {
   convertSuggestionsObjToList,
   findInitialTopSuggestionAndOtherSuggestions
@@ -16,13 +20,7 @@ const useSuggestionsForMatch = ( ) => {
   const commonAncestor = useStore( state => state.commonAncestor );
   const setSuggestionsList = useStore( state => state.setSuggestionsList );
   const timedOut = useStore( state => state.timedOut );
-
-  // Track previous suggestion sources to detect changes
-  const previousSourcesRef = useRef( {
-    offlineLength: 0,
-    onlineLength: 0,
-    timedOut: false
-  } );
+  const fetchStatus = useStore( state => state.fetchStatus );
 
   useOfflineSuggestionsForMatch( );
   useOnlineSuggestionsForMatch( );
@@ -61,32 +59,21 @@ const useSuggestionsForMatch = ( ) => {
       return;
     }
 
-    // Check if suggestion sources have changed to avoid unnecessary updates
-    const currentSources = {
-      offlineLength: offlineSuggestions.length,
-      onlineLength: onlineSuggestions.length,
-      timedOut
-    };
-
-    const sourcesChanged
-    = currentSources.offlineLength !== previousSourcesRef.current.offlineLength
-    || currentSources.onlineLength !== previousSourcesRef.current.onlineLength
-    || currentSources.timedOut !== previousSourcesRef.current.timedOut;
-
-    // Only update if sources changed to avoid render loops
-    if ( sourcesChanged ) {
+    if ( onlineSuggestions.length > 0
+        || timedOut
+        || fetchStatus === FETCH_STATUS_ONLINE_FETCHED
+        || fetchStatus === FETCH_STATUS_ONLINE_ERROR ) {
       const initialSuggestions = findInitialTopSuggestionAndOtherSuggestions( suggestions );
       const newSuggestionsList = convertSuggestionsObjToList( initialSuggestions );
       setSuggestionsList( newSuggestionsList );
-      // Update previous sources ref
-      previousSourcesRef.current = currentSources;
     }
   }, [
     suggestions,
     setSuggestionsList,
     offlineSuggestions.length,
     onlineSuggestions.length,
-    timedOut
+    timedOut,
+    fetchStatus
   ] );
 
   return suggestions;

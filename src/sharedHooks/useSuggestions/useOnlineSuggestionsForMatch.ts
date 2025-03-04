@@ -1,7 +1,11 @@
+import { useNetInfo } from "@react-native-community/netinfo";
 import { useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision.ts";
 import flattenUploadParams from "components/Suggestions/helpers/flattenUploadParams.ts";
-import { FETCH_STATUS_ONLINE_ERROR } from "components/Suggestions/SuggestionsContainer.tsx";
+import {
+  FETCH_STATUS_ONLINE_ERROR,
+  FETCH_STATUS_ONLINE_FETCHED
+} from "components/Suggestions/SuggestionsContainer.tsx";
 import { RealmContext } from "providers/contexts.ts";
 import { useCallback, useEffect } from "react";
 import { log } from "sharedHelpers/logger";
@@ -28,17 +32,18 @@ const SCORE_IMAGE_TIMEOUT = 5_000;
 
 const { useRealm } = RealmContext;
 
-const setQueryKey = ( uri, shouldUseEvidenceLocation ) => [
+const setQueryKey = ( uri, shouldUseEvidenceLocation, latitude ) => [
   "scoreImage",
   uri,
-  { shouldUseEvidenceLocation }
+  { shouldUseEvidenceLocation },
+  { latitude }
 ];
 
-const createImageParams = async ( currentObservation, shouldUseLocation ) => {
+const createImageParams = async currentObservation => {
   const photoUri = findPhotoUriFromCurrentObservation( currentObservation );
 
   const scoreImageParams = await flattenUploadParams( photoUri );
-  if ( shouldUseLocation && currentObservation?.latitude ) {
+  if ( currentObservation?.latitude ) {
     scoreImageParams.lat = currentObservation?.latitude;
     scoreImageParams.lng = currentObservation?.longitude;
   }
@@ -46,25 +51,32 @@ const createImageParams = async ( currentObservation, shouldUseLocation ) => {
 };
 
 const useOnlineSuggestions = ( ): OnlineSuggestionsResponse => {
+  const { isConnected } = useNetInfo( );
   const currentObservation = useStore( state => state.currentObservation );
   const setOnlineSuggestions = useStore( state => state.setOnlineSuggestions );
-  const setSuggestionsError = useStore( state => state.setSuggestionsError );
   const setCommonAncestor = useStore( state => state.setCommonAncestor );
   const setTimedOut = useStore( state => state.setTimedOut );
   const realm = useRealm( );
   const { hasPermissions: shouldUseLocation } = useLocationPermission( );
 
-  const photoUri = findPhotoUriFromCurrentObservation( currentObservation );
+  // being extra careful to make sure the lat/lng is getting set in createImageParams
+  // if a user goes from no location permissions to having location permissions
+  const latestObservation = useStore.getState( ).currentObservation;
 
-  async function queryFn( optsWithAuth ) {
-    const params = await createImageParams( currentObservation, shouldUseLocation );
-    logger.debug( params, "params for online suggestions: does this have location?" );
-    return scoreImage( params, optsWithAuth );
-  }
+  const photoUri = findPhotoUriFromCurrentObservation( currentObservation );
 
   const queryClient = useQueryClient( );
 
-  const queryKey = setQueryKey( photoUri, shouldUseLocation );
+  const truncatedLatForQueryKey = currentObservation?.latitude?.toFixed( 2 ) || null;
+
+  const queryKey = setQueryKey( photoUri, shouldUseLocation, truncatedLatForQueryKey );
+
+  const queryFn = useCallback( async optsWithAuth => {
+    const params = await createImageParams( latestObservation );
+    logger.debug( params, "params for online suggestions: does this have location?" );
+
+    return scoreImage( params, optsWithAuth );
+  }, [latestObservation] );
 
   // TODO if this is a remote observation with an `id` param, use
   // scoreObservation instead so we don't have to spend time resizing and
@@ -82,7 +94,7 @@ const useOnlineSuggestions = ( ): OnlineSuggestionsResponse => {
   );
 
   const updateOnlineSuggestions = useCallback( ( ) => {
-    setOnlineSuggestions( onlineSuggestions.results );
+    setOnlineSuggestions( onlineSuggestions.results, FETCH_STATUS_ONLINE_FETCHED );
     setCommonAncestor( onlineSuggestions?.common_ancestor );
     saveTaxaFromOnlineSuggestionsToRealm( onlineSuggestions, realm );
   }, [onlineSuggestions, realm, setCommonAncestor, setOnlineSuggestions] );
@@ -93,12 +105,11 @@ const useOnlineSuggestions = ( ): OnlineSuggestionsResponse => {
     if ( shouldUpdateOnlineSuggestions ) {
       updateOnlineSuggestions( );
     } else if ( error ) {
-      setSuggestionsError( FETCH_STATUS_ONLINE_ERROR );
+      setOnlineSuggestions( [], FETCH_STATUS_ONLINE_ERROR );
     }
   }, [
     error,
     setOnlineSuggestions,
-    setSuggestionsError,
     shouldUpdateOnlineSuggestions,
     updateOnlineSuggestions
   ] );
@@ -115,6 +126,12 @@ const useOnlineSuggestions = ( ): OnlineSuggestionsResponse => {
       clearTimeout( timer );
     };
   }, [onlineSuggestions, queryClient, setTimedOut, queryKey] );
+
+  useEffect( () => {
+    if ( isConnected === false ) {
+      setTimedOut( true );
+    }
+  }, [isConnected, setTimedOut] );
 
   return null;
 };

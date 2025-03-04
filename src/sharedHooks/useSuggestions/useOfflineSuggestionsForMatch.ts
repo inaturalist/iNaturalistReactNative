@@ -48,7 +48,6 @@ const useOfflineSuggestionsForMatch = ( ) => {
   const currentObservation = useStore( state => state.currentObservation );
   const offlineSuggestions = useStore( state => state.offlineSuggestions );
   const setOfflineSuggestions = useStore( state => state.setOfflineSuggestions );
-  const setSuggestionsError = useStore( state => state.setSuggestionsError );
   const realm = useRealm( );
   const iconicTaxa = realm?.objects( "Taxon" ).filtered( "isIconic = true" );
 
@@ -63,17 +62,15 @@ const useOfflineSuggestionsForMatch = ( ) => {
     && offlineSuggestions.length === 0;
 
   const handleError = useCallback( error => {
-    setSuggestionsError( FETCH_STATUS_OFFLINE_ERROR );
+    setOfflineSuggestions( [], FETCH_STATUS_OFFLINE_ERROR );
     logger.error( "Error predicting image offline", error );
     throw error;
-  }, [setSuggestionsError] );
+  }, [setOfflineSuggestions] );
 
   const predictOffline = useCallback( async ( ) => {
     const latitude = currentObservation?.latitude;
     const longitude = currentObservation?.longitude;
     const location = { latitude, longitude };
-
-    logger.debug( location, "does offline suggestions correctly use location?" );
 
     let rawPredictions = [];
     try {

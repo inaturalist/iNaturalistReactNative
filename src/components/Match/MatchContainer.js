@@ -33,6 +33,10 @@ const MatchContainer = ( ) => {
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const suggestionsList = useStore( state => state.suggestionsList );
   const setSuggestionsList = useStore( state => state.setSuggestionsList );
+  // NOTE: onlineSuggestions and offlineSuggestions are not used in this component
+  // except for debugging purposes. suggestionsList is the source of truth for suggestions
+  // this can be refactored at some point into something like a debugInfo object
+  // but might be time consuming because of the way zustand handles nested objects
   const onlineSuggestions = useStore( state => state.onlineSuggestions );
   const offlineSuggestions = useStore( state => state.offlineSuggestions );
   const isLoading = useStore( state => state.isLoading );
