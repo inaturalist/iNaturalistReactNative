@@ -5,6 +5,7 @@ import _ from "lodash";
 import { RealmContext } from "providers/contexts.ts";
 import React, {
   useCallback,
+  useEffect,
   useRef
 } from "react";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
@@ -28,27 +29,32 @@ import PreMatchLoadingScreen from "./PreMatchLoadingScreen";
 const { useRealm } = RealmContext;
 
 const MatchContainer = ( ) => {
-  const resetSuggestionsSlice = useStore( state => state.resetSuggestionsSlice );
+  const setSuggestionsList = useStore( state => state.setSuggestionsList );
   const isDebug = isDebugMode( );
   const scrollRef = useRef( null );
   const currentObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
+  const resetSuggestionsSlice = useStore( state => state.resetSuggestionsSlice );
   const cameraRollUris = useStore( state => state.cameraRollUris );
-  const suggestionsList = useStore( state => state.suggestionsList );
-  const setSuggestionsList = useStore( state => state.setSuggestionsList );
-  // NOTE: onlineSuggestions and offlineSuggestions are not used in this component
-  // except for debugging purposes. suggestionsList is the source of truth for suggestions
-  // this can be refactored at some point into something like a debugInfo object
-  // but might be time consuming because of the way zustand handles nested objects
-  const onlineSuggestions = useStore( state => state.onlineSuggestions );
-  const offlineSuggestions = useStore( state => state.offlineSuggestions );
-  const isLoading = useStore( state => state.isLoading );
+  const {
+    suggestionsList,
+    // NOTE: onlineSuggestions and offlineSuggestions are not used in this component
+    // except for debugging purposes. suggestionsList is the source of truth for suggestions
+    // this can be refactored at some point into something like a debugInfo object
+    // but might be time consuming because of the way zustand handles nested objects
+    onlineSuggestions,
+    offlineSuggestions,
+    isLoading,
+    fetchStatus
+  } = useStore.getState( );
 
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const navigation = useNavigation( );
   const {
     hasPermissions, renderPermissionsGate, requestPermissions
   } = useLocationPermission( );
+
+  const observationHasNoLocation = _.isEmpty( currentObservation?.latitude );
 
   useSuggestionsForMatch( );
 
@@ -57,14 +63,12 @@ const MatchContainer = ( ) => {
     const placeGuess
      = await fetchPlaceName( currentUserLocation?.latitude, currentUserLocation?.longitude );
 
-    resetSuggestionsSlice( );
-
     updateObservationKeys( {
       latitude: currentUserLocation?.latitude,
       longitude: currentUserLocation?.longitude,
       place_guess: placeGuess
     } );
-  }, [updateObservationKeys, resetSuggestionsSlice] );
+  }, [updateObservationKeys] );
 
   const obsPhotos = currentObservation?.observationPhotos;
 
@@ -74,13 +78,13 @@ const MatchContainer = ( ) => {
     skipStoreReset: true
   } );
 
-  const handleLocationPickerPressed = useCallback( ( ) => {
-    if ( hasPermissions ) {
+  const handleAddLocationPressed = useCallback( ( ) => {
+    if ( hasPermissions && observationHasNoLocation ) {
       getCurrentUserLocation( );
     } else {
       requestPermissions( );
     }
-  }, [hasPermissions, getCurrentUserLocation, requestPermissions] );
+  }, [hasPermissions, getCurrentUserLocation, requestPermissions, observationHasNoLocation] );
 
   const scrollToTop = useCallback( ( ) => {
     if ( scrollRef.current ) {
@@ -130,6 +134,13 @@ const MatchContainer = ( ) => {
     updateObservationKeys
   ] );
 
+  useEffect( ( ) => {
+    const unsubscribe = navigation.addListener( "blur", ( ) => {
+      resetSuggestionsSlice( );
+    } );
+    return unsubscribe;
+  }, [navigation, resetSuggestionsSlice] );
+
   return (
     <>
       <ViewWrapper isDebug={isDebug}>
@@ -139,7 +150,7 @@ const MatchContainer = ( ) => {
           onSuggestionChosen={onSuggestionChosen}
           handleSaveOrDiscardPress={handleSaveOrDiscardPress}
           navToTaxonDetails={navToTaxonDetails}
-          handleLocationPickerPressed={handleLocationPickerPressed}
+          handleAddLocationPressed={handleAddLocationPressed}
           scrollRef={scrollRef}
         />
         {renderPermissionsGate(
@@ -163,6 +174,15 @@ const MatchContainer = ( ) => {
             <Body3 className="text-white">
               Offline suggestions length:
               {JSON.stringify( offlineSuggestions.length )}
+            </Body3>
+            <Body3 className="text-white">
+              Fetch status:
+              {JSON.stringify( fetchStatus )}
+            </Body3>
+            <Body3 className="text-white">
+              Lat/lng:
+              {JSON.stringify( currentObservation?.latitude )}
+              {JSON.stringify( currentObservation?.longitude )}
             </Body3>
           </View>
         )}

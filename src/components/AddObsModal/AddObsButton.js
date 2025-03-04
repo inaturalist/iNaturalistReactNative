@@ -20,6 +20,8 @@ const AddObsButton = (): React.Node => {
   const closeModal = React.useCallback( () => setModal( false ), [] );
 
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
+  const resetSuggestionsSlice = useStore( state => state.resetSuggestionsSlice );
+
   const { isAllAddObsOptionsMode } = useLayoutPrefs( );
   const navigation = useNavigation( );
   React.useEffect( ( ) => {
@@ -30,6 +32,7 @@ const AddObsButton = (): React.Node => {
   }, [isAllAddObsOptionsMode] );
 
   const navAndCloseModal = ( screen, params ) => {
+    resetSuggestionsSlice( );
     const currentRoute = getCurrentRoute();
     if ( screen !== "ObsEdit" ) {
       resetObservationFlowSlice( );

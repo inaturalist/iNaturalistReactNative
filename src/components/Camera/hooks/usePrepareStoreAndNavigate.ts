@@ -26,7 +26,6 @@ const usePrepareStoreAndNavigate = ( ): Function => {
   const setCameraState = useStore( state => state.setCameraState );
   const setSentinelFileName = useStore( state => state.setSentinelFileName );
   const isAdvancedSuggestionsMode = useStore( state => state.layout.isAdvancedSuggestionsMode );
-  const resetSuggestionsSlice = useStore( state => state.resetSuggestionsSlice );
 
   const { deviceStorageFull, showStorageFullAlert } = useDeviceStorageFull( );
 
@@ -163,7 +162,6 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     setSentinelFileName( null );
 
     if ( showMatchScreen ) {
-      resetSuggestionsSlice( );
       return navigation.push( "Match", {
         entryScreen: "CameraWithDevice",
         lastScreen: "CameraWithDevice"
@@ -186,8 +184,7 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     setSentinelFileName,
     navigation,
     updateObsWithCameraPhotos,
-    isAdvancedSuggestionsMode,
-    resetSuggestionsSlice
+    isAdvancedSuggestionsMode
   ] );
 
   return prepareStoreAndNavigate;

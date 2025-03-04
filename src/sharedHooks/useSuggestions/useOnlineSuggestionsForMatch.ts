@@ -2,12 +2,8 @@ import { useNetInfo } from "@react-native-community/netinfo";
 import { useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision.ts";
 import flattenUploadParams from "components/Suggestions/helpers/flattenUploadParams.ts";
-import {
-  FETCH_STATUS_ONLINE_ERROR,
-  FETCH_STATUS_ONLINE_FETCHED
-} from "components/Suggestions/SuggestionsContainer.tsx";
 import { RealmContext } from "providers/contexts.ts";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { log } from "sharedHelpers/logger";
 import {
   findPhotoUriFromCurrentObservation,
@@ -17,6 +13,12 @@ import {
   useAuthenticatedQuery,
   useLocationPermission
 } from "sharedHooks";
+import {
+  FETCH_STATUS_ONLINE_DISCONNECTED,
+  FETCH_STATUS_ONLINE_ERROR,
+  FETCH_STATUS_ONLINE_FETCHED,
+  FETCH_STATUS_ONLINE_TIMED_OUT
+} from "stores/createSuggestionsSlice.ts";
 import useStore from "stores/useStore";
 
 const logger = log.extend( "useOnlineSuggestionsForMatch" );
@@ -28,7 +30,7 @@ type OnlineSuggestionsResponse = {
   fetchStatus: string
 }
 
-const SCORE_IMAGE_TIMEOUT = 5_000;
+const SCORE_IMAGE_TIMEOUT = 5000;
 
 const { useRealm } = RealmContext;
 
@@ -50,14 +52,15 @@ const createImageParams = async currentObservation => {
   return scoreImageParams;
 };
 
-const useOnlineSuggestions = ( ): OnlineSuggestionsResponse => {
+const useOnlineSuggestionsForMatch = ( ): OnlineSuggestionsResponse => {
   const { isConnected } = useNetInfo( );
   const currentObservation = useStore( state => state.currentObservation );
   const setOnlineSuggestions = useStore( state => state.setOnlineSuggestions );
-  const setCommonAncestor = useStore( state => state.setCommonAncestor );
-  const setTimedOut = useStore( state => state.setTimedOut );
+  const storedOnlineSuggestions = useStore( state => state.onlineSuggestions );
   const realm = useRealm( );
   const { hasPermissions: shouldUseLocation } = useLocationPermission( );
+
+  const emptyStore = storedOnlineSuggestions.length === 0;
 
   // being extra careful to make sure the lat/lng is getting set in createImageParams
   // if a user goes from no location permissions to having location permissions
@@ -93,47 +96,61 @@ const useOnlineSuggestions = ( ): OnlineSuggestionsResponse => {
     }
   );
 
-  const updateOnlineSuggestions = useCallback( ( ) => {
-    setOnlineSuggestions( onlineSuggestions.results, FETCH_STATUS_ONLINE_FETCHED );
-    setCommonAncestor( onlineSuggestions?.common_ancestor );
-    saveTaxaFromOnlineSuggestionsToRealm( onlineSuggestions, realm );
-  }, [onlineSuggestions, realm, setCommonAncestor, setOnlineSuggestions] );
+  const shouldUpdateOnlineSuggestions = useMemo( ( ) => onlineSuggestions?.results !== undefined
+    && emptyStore, [onlineSuggestions, emptyStore] );
 
-  const shouldUpdateOnlineSuggestions = onlineSuggestions !== undefined;
+  const needsTimeoutAndShouldFetch = useMemo( ( ) => onlineSuggestions === undefined
+    && emptyStore, [onlineSuggestions, emptyStore] );
+
+  const isDisconnectedAndShouldFetch = useMemo( ( ) => isConnected === false
+    && emptyStore, [isConnected, emptyStore] );
+
+  const hasErrorAndShouldFetch = useMemo( ( ) => error && emptyStore, [error, emptyStore] );
 
   useEffect( ( ) => {
     if ( shouldUpdateOnlineSuggestions ) {
-      updateOnlineSuggestions( );
-    } else if ( error ) {
-      setOnlineSuggestions( [], FETCH_STATUS_ONLINE_ERROR );
+      setOnlineSuggestions( onlineSuggestions.results, {
+        fetchStatus: FETCH_STATUS_ONLINE_FETCHED,
+        commonAncestor: onlineSuggestions?.common_ancestor
+      } );
+      saveTaxaFromOnlineSuggestionsToRealm( onlineSuggestions, realm );
+    } else if ( hasErrorAndShouldFetch ) {
+      setOnlineSuggestions( [], {
+        fetchStatus: FETCH_STATUS_ONLINE_ERROR
+      } );
     }
   }, [
-    error,
+    hasErrorAndShouldFetch,
     setOnlineSuggestions,
     shouldUpdateOnlineSuggestions,
-    updateOnlineSuggestions
+    onlineSuggestions,
+    realm
   ] );
 
   useEffect( ( ) => {
     const timer = setTimeout( ( ) => {
-      if ( onlineSuggestions === undefined ) {
+      if ( needsTimeoutAndShouldFetch ) {
         queryClient.cancelQueries( { queryKey } );
-        setTimedOut( true );
+        setOnlineSuggestions( [], {
+          fetchStatus: FETCH_STATUS_ONLINE_TIMED_OUT
+        } );
       }
     }, SCORE_IMAGE_TIMEOUT );
 
     return ( ) => {
       clearTimeout( timer );
     };
-  }, [onlineSuggestions, queryClient, setTimedOut, queryKey] );
+  }, [needsTimeoutAndShouldFetch, queryClient, setOnlineSuggestions, queryKey] );
 
   useEffect( () => {
-    if ( isConnected === false ) {
-      setTimedOut( true );
+    if ( isDisconnectedAndShouldFetch ) {
+      setOnlineSuggestions( [], {
+        fetchStatus: FETCH_STATUS_ONLINE_DISCONNECTED
+      } );
     }
-  }, [isConnected, setTimedOut] );
+  }, [isDisconnectedAndShouldFetch, setOnlineSuggestions] );
 
   return null;
 };
 
-export default useOnlineSuggestions;
+export default useOnlineSuggestionsForMatch;

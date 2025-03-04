@@ -1,4 +1,7 @@
-import { FETCH_STATUS_OFFLINE_ERROR } from "components/Suggestions/SuggestionsContainer.tsx";
+import {
+  FETCH_STATUS_OFFLINE_ERROR,
+  FETCH_STATUS_OFFLINE_FETCHED
+} from "components/Suggestions/SuggestionsContainer.tsx";
 import { RealmContext } from "providers/contexts.ts";
 import {
   useCallback,
@@ -67,7 +70,6 @@ const useOfflineSuggestionsForMatch = ( ) => {
   const currentObservation = useStore( state => state.currentObservation );
   const offlineSuggestions = useStore( state => state.offlineSuggestions );
   const setOfflineSuggestions = useStore( state => state.setOfflineSuggestions );
-  const setCommonAncestor = useStore( state => state.setCommonAncestor );
   const realm = useRealm( );
   // similar to what we're doing in the AICamera to get iconic taxon name,
   // but we're offline so we only need the local list from realm
@@ -85,7 +87,9 @@ const useOfflineSuggestionsForMatch = ( ) => {
     && offlineSuggestions.length === 0;
 
   const handleError = useCallback( error => {
-    setOfflineSuggestions( [], FETCH_STATUS_OFFLINE_ERROR );
+    setOfflineSuggestions( [], {
+      fetchStatus: FETCH_STATUS_OFFLINE_ERROR
+    } );
     logger.error( "Error predicting image offline", error );
     throw error;
   }, [setOfflineSuggestions] );
@@ -109,14 +113,15 @@ const useOfflineSuggestionsForMatch = ( ) => {
 
     const formattedPredictions = rawPredictions
       .map( prediction => formatPrediction( prediction, iconicTaxa ) );
-    setOfflineSuggestions( formattedPredictions );
-    setCommonAncestor( commonAncestor );
+    setOfflineSuggestions( formattedPredictions, {
+      fetchStatus: FETCH_STATUS_OFFLINE_FETCHED,
+      commonAncestor
+    } );
   }, [
     currentObservation,
     handleError,
     iconicTaxa,
     photoUri,
-    setCommonAncestor,
     setOfflineSuggestions
   ] );
 

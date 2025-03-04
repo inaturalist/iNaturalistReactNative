@@ -1,75 +1,94 @@
-import {
-  FETCH_STATUS_ONLINE_ERROR,
-  FETCH_STATUS_ONLINE_FETCHED
-} from "components/Suggestions/SuggestionsContainer.tsx";
 import _ from "lodash";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import {
-  convertSuggestionsObjToList,
-  findInitialTopSuggestionAndOtherSuggestions
+  convertSuggestionsObjToList
 } from "sharedHelpers/sortSuggestionsForMatch.ts";
+import {
+  FETCH_STATUS_ONLINE_DISCONNECTED,
+  FETCH_STATUS_ONLINE_ERROR,
+  FETCH_STATUS_ONLINE_FETCHED,
+  FETCH_STATUS_ONLINE_SKIPPED,
+  FETCH_STATUS_ONLINE_TIMED_OUT
+} from "stores/createSuggestionsSlice.ts";
 import useStore from "stores/useStore";
 
 import filterSuggestions from "./filterSuggestions";
 import useOfflineSuggestionsForMatch from "./useOfflineSuggestionsForMatch";
 import useOnlineSuggestionsForMatch from "./useOnlineSuggestionsForMatch";
 
+const onlineFetchStatuses = [
+  FETCH_STATUS_ONLINE_ERROR,
+  FETCH_STATUS_ONLINE_FETCHED,
+  FETCH_STATUS_ONLINE_SKIPPED,
+  FETCH_STATUS_ONLINE_TIMED_OUT,
+  FETCH_STATUS_ONLINE_DISCONNECTED
+];
+
 const useSuggestionsForMatch = ( ) => {
+  const fetchStatus = useStore( state => state.fetchStatus );
+  const commonAncestor = useStore( state => state.commonAncestor );
   const offlineSuggestions = useStore( state => state.offlineSuggestions );
   const onlineSuggestions = useStore( state => state.onlineSuggestions );
-  const commonAncestor = useStore( state => state.commonAncestor );
   const setSuggestionsList = useStore( state => state.setSuggestionsList );
-  const timedOut = useStore( state => state.timedOut );
-  const fetchStatus = useStore( state => state.fetchStatus );
+  const currentObservation = useStore( state => state.currentObservation );
+  const resetSuggestionsSlice = useStore( state => state.resetSuggestionsSlice );
+
+  // Track previous observation state to detect when location is added
+  const prevObservationRef = useRef( currentObservation );
+
+  // Determine if location was just added
+  const wasLocationJustAdded = useMemo( () => {
+    const prevObs = prevObservationRef.current;
+    const currentObs = currentObservation;
+
+    // Check if location was added (previously null/undefined but now exists)
+    const locationJustAdded
+        = prevObs && currentObs
+        && ( ( !prevObs.latitude && currentObs.latitude )
+        || ( !prevObs.longitude && currentObs.longitude ) );
+
+    return locationJustAdded;
+  }, [currentObservation] );
+
+  // Update the ref after checking
+  useEffect( () => {
+    prevObservationRef.current = currentObservation;
+  }, [currentObservation] );
+
+  // If location was just added, reset the suggestions store
+  useEffect( () => {
+    if ( wasLocationJustAdded ) {
+      resetSuggestionsSlice( );
+    }
+  }, [wasLocationJustAdded, resetSuggestionsSlice] );
 
   useOfflineSuggestionsForMatch( );
   useOnlineSuggestionsForMatch( );
 
-  const unfilteredSuggestions = useMemo(
-    () => ( onlineSuggestions.length > 0
-      ? onlineSuggestions
-      : offlineSuggestions ),
-    [onlineSuggestions, offlineSuggestions]
-  );
-
-  // since we can calculate this, there's no need to store it in state
-  const suggestions = useMemo( ( ) => {
-    const filteredSuggestions = filterSuggestions(
-      unfilteredSuggestions,
-      commonAncestor
-    );
-
-    const matchSuggestionsList = convertSuggestionsObjToList( filteredSuggestions );
-    return matchSuggestionsList;
-  }, [
-    unfilteredSuggestions,
-    commonAncestor
-  ] );
+  const shouldUpdateSuggestionsList = useMemo( ( ) => (
+    onlineFetchStatuses.includes( fetchStatus )
+  ), [fetchStatus] );
 
   useEffect( ( ) => {
-    // Skip if no suggestions available yet
-    if ( offlineSuggestions.length === 0 && onlineSuggestions.length === 0 ) {
-      return;
-    }
+    const unfilteredSuggestions = onlineSuggestions.length > 0
+      ? onlineSuggestions
+      : offlineSuggestions;
 
-    if ( onlineSuggestions.length > 0
-        || timedOut
-        || fetchStatus === FETCH_STATUS_ONLINE_FETCHED
-        || fetchStatus === FETCH_STATUS_ONLINE_ERROR ) {
-      const initialSuggestions = findInitialTopSuggestionAndOtherSuggestions( suggestions );
-      const newSuggestionsList = convertSuggestionsObjToList( initialSuggestions );
+    const filteredSuggestions = filterSuggestions( unfilteredSuggestions, commonAncestor );
+
+    if ( shouldUpdateSuggestionsList ) {
+      const newSuggestionsList = convertSuggestionsObjToList( filteredSuggestions );
       setSuggestionsList( newSuggestionsList );
     }
   }, [
-    fetchStatus,
-    offlineSuggestions.length,
-    onlineSuggestions.length,
+    shouldUpdateSuggestionsList,
     setSuggestionsList,
-    suggestions,
-    timedOut
+    commonAncestor,
+    onlineSuggestions,
+    offlineSuggestions
   ] );
 
-  return suggestions;
+  return null;
 };
 
 export default useSuggestionsForMatch;

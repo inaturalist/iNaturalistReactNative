@@ -19,6 +19,13 @@ import {
   useSuggestions
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
+import {
+  FETCH_STATUS_LOADING,
+  FETCH_STATUS_OFFLINE_ERROR,
+  FETCH_STATUS_OFFLINE_FETCHED,
+  FETCH_STATUS_ONLINE_ERROR,
+  FETCH_STATUS_ONLINE_FETCHED
+} from "stores/createSuggestionsSlice.ts";
 import useStore from "stores/useStore";
 
 import fetchCoarseUserLocation from "../../sharedHelpers/fetchUserLocation";
@@ -29,13 +36,6 @@ import Suggestions from "./Suggestions";
 import TaxonSearchButton from "./TaxonSearchButton";
 
 const logger = log.extend( "SuggestionsContainer" );
-
-export const FETCH_STATUS_LOADING = "loading";
-export const FETCH_STATUS_ONLINE_FETCHED = "online-fetched";
-export const FETCH_STATUS_ONLINE_ERROR = "online-error";
-export const FETCH_STATUS_FETCHING_OFFLINE = "fetching-offline";
-export const FETCH_STATUS_OFFLINE_FETCHED = "offline-fetched";
-export const FETCH_STATUS_OFFLINE_ERROR = "offline-error";
 
 export const TOP_SUGGESTION_NONE = "none";
 export const TOP_SUGGESTION_HUMAN = "human";

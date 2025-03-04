@@ -2,13 +2,13 @@ import {
   ActivityIndicator, Body1, INatIconButton
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import {
-  FETCH_STATUS_ONLINE_FETCHED
-} from "components/Suggestions/SuggestionsContainer.tsx";
 import type { Node } from "react";
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { Animated } from "react-native";
 import { useTranslation } from "sharedHooks";
+import {
+  FETCH_STATUS_ONLINE_SKIPPED
+} from "stores/createSuggestionsSlice.ts";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
@@ -33,7 +33,15 @@ const PreMatchLoadingScreen = ( ): Node => {
     }
   }, [isLoading, fadeAnimation] );
 
-  const skipOnlineSuggestions = ( ) => setOnlineSuggestions( [], FETCH_STATUS_ONLINE_FETCHED );
+  const skipOnlineSuggestions = useCallback(
+    ( ) => {
+      setOnlineSuggestions( [], {
+        fetchStatus: FETCH_STATUS_ONLINE_SKIPPED,
+        commonAncestor: null
+      } );
+    },
+    [setOnlineSuggestions]
+  );
 
   const animatedStyle = {
     position: "absolute",
