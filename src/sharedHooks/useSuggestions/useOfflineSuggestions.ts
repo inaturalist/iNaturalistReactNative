@@ -36,6 +36,7 @@ const useOfflineSuggestions = (
     results: OfflineSuggestion[],
     commonAncestor: OfflineSuggestion | undefined
   };
+  refetchOfflineSuggestions: () => void;
 } => {
   const realm = useRealm( );
   const [offlineSuggestions, setOfflineSuggestions] = useState<{
