@@ -156,7 +156,7 @@ const MatchContainer = ( ) => {
   const getCurrentUserLocation = async ( ) => {
     const currentUserLocation = await fetchUserLocation( );
     const placeGuess
-     = await fetchPlaceName( currentUserLocation.latitude, currentUserLocation.longitude );
+     = await fetchPlaceName( currentUserLocation?.latitude, currentUserLocation?.longitude );
 
     if ( placeGuess ) {
       // Cannot call updateObservationKeys directly from here, since fetchPlaceName might take
