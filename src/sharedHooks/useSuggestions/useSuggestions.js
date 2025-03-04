@@ -77,7 +77,7 @@ export const useSuggestions = ( photoUri, options ) => {
   );
 
   const commonAncestor = hasOnlineSuggestionResults
-    ? onlineSuggestions?.commonAncestor
+    ? onlineSuggestions?.common_ancestor
     : offlineSuggestions?.commonAncestor;
 
   // since we can calculate this, there's no need to store it in state
