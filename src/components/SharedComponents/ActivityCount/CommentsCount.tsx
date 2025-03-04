@@ -1,17 +1,15 @@
-// @flow
-import type { Node } from "react";
 import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 import ActivityCount from "./ActivityCount";
 
-type Props = {
-    count: number,
-    filled?: boolean,
-    classNameMargin?: string,
-    testID?: string,
-    white?: boolean
-};
+interface Props {
+    count: number;
+    filled?: boolean;
+    classNameMargin?: string;
+    testID?: string;
+    white?: boolean;
+}
 
 const CommentsCount = ( {
   count,
@@ -19,7 +17,7 @@ const CommentsCount = ( {
   classNameMargin,
   testID,
   white
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation();
 
   // 03072023 amanda - applying chris' bandaid fix from PR #515: https://github.com/inaturalist/iNaturalistReactNative/pull/515

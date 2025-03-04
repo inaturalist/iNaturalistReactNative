@@ -1,9 +1,8 @@
-// @flow
-import classNames from "classnames";
+import classNames, { ArgumentArray } from "classnames";
 import { INatIcon, PhotoCount } from "components/SharedComponents";
 import { LinearGradient, View } from "components/styledComponents";
-import type { Node } from "react";
-import React, { useCallback } from "react";
+import React, { PropsWithChildren, useCallback } from "react";
+import { ViewStyle } from "react-native";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
@@ -13,31 +12,28 @@ const ICON_DROP_SHADOW = getShadow( {
   offsetHeight: 1
 } );
 
-type SOURCE = {
-  uri: string,
-};
-
-type Props = {
-  children?: Node,
-  className?: string,
-  hasSound?: boolean,
-  height?: string,
-  hidePhotoCount?: boolean,
-  iconicTaxonName?: string,
-  isBackground?: boolean,
-  isMultiplePhotosTop?: boolean,
-  isSmall?: boolean,
-  obsPhotosCount?: number,
-  opaque?: boolean,
-  selectable?: boolean,
-  selected?: boolean,
-  source: SOURCE,
-  style?: Object,
-  testID?: string,
-  useShortGradient?: boolean,
-  white?: boolean,
-  width?: string
-};
+interface Props extends PropsWithChildren {
+  className?: string;
+  hasSound?: boolean;
+  height?: string;
+  hidePhotoCount?: boolean;
+  iconicTaxonName?: string;
+  isBackground?: boolean;
+  isMultiplePhotosTop?: boolean;
+  isSmall?: boolean;
+  obsPhotosCount?: number;
+  opaque?: boolean;
+  selectable?: boolean;
+  selected?: boolean;
+  source: {
+    uri: string;
+  };
+  style?: ViewStyle;
+  testID?: string;
+  useShortGradient?: boolean;
+  white?: boolean;
+  width?: string;
+}
 
 const ObsImagePreview = ( {
   children,
@@ -59,12 +55,12 @@ const ObsImagePreview = ( {
   useShortGradient,
   white = false,
   width = "w-[62px]"
-}: Props ): Node => {
+}: Props ) => {
   const borderRadius = isSmall
     ? "rounded-lg"
     : "rounded-2xl";
 
-  const imageClassNames = [
+  const imageClassNames: ArgumentArray = [
     "max-h-[210px]",
     "overflow-hidden",
     "relative",

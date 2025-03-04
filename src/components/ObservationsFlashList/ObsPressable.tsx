@@ -11,6 +11,7 @@ type Props = {
   queued: boolean,
   explore: boolean,
   hideMetadata?: boolean,
+  hideObsUploadStatus?: boolean,
   onUploadButtonPress: ( ) => void,
   onItemPress: ( ) => void,
   gridItemStyle: Object,
@@ -26,6 +27,7 @@ const ObsPressable = ( {
   queued,
   explore,
   hideMetadata,
+  hideObsUploadStatus,
   isLargeFontScale,
   onUploadButtonPress,
   onItemPress,
@@ -57,6 +59,7 @@ const ObsPressable = ( {
             <ObsGridItem
               currentUser={currentUser}
               explore={explore}
+              hideObsUploadStatus={hideObsUploadStatus}
               isLargeFontScale={isLargeFontScale}
               onUploadButtonPress={onUploadButtonPress}
               observation={observation}
@@ -72,6 +75,7 @@ const ObsPressable = ( {
               currentUser={currentUser}
               explore={explore}
               hideMetadata={hideMetadata}
+              hideObsUploadStatus={hideObsUploadStatus}
               onUploadButtonPress={onUploadButtonPress}
               observation={observation}
               queued={queued}

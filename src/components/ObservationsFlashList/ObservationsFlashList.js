@@ -44,6 +44,7 @@ type Props = {
   handleIndividualUploadPress: Function,
   hideLoadingWheel?: boolean,
   hideMetadata?: boolean,
+  hideObsUploadStatus?: boolean,
   isConnected: boolean,
   isFetchingNextPage?: boolean,
   layout: "list" | "grid",
@@ -66,6 +67,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
   handleIndividualUploadPress,
   hideLoadingWheel,
   hideMetadata,
+  hideObsUploadStatus,
   isConnected,
   isFetchingNextPage,
   layout,
@@ -150,6 +152,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
         explore={explore}
         gridItemStyle={gridItemStyle}
         hideMetadata={hideMetadata}
+        hideObsUploadStatus={hideObsUploadStatus}
         isLargeFontScale={isLargeFontScale}
         layout={layout}
         key={itemKey}
@@ -167,6 +170,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
     gridItemStyle,
     handleIndividualUploadPress,
     hideMetadata,
+    hideObsUploadStatus,
     isDefaultMode,
     isLargeFontScale,
     layout,

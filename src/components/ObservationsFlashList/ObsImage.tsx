@@ -1,28 +1,24 @@
-// @flow
 import classNames from "classnames";
 import { IconicTaxonIcon } from "components/SharedComponents";
 import { Image, View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 
-type URI = {
-  uri: string,
-};
-
-type Props = {
-  iconicTaxonIconSize?: number,
-  iconicTaxonName?: string,
-  imageClassName?: string,
-  isBackground?: boolean,
-  opaque?: boolean,
-  uri?: URI,
-  white?: boolean
-};
+interface Props {
+  iconicTaxonIconSize?: number;
+  iconicTaxonName?: string;
+  imageClassName?: string;
+  isBackground?: boolean;
+  opaque?: boolean;
+  uri?: {
+    uri: string;
+  };
+  white?: boolean;
+}
 
 const CLASS_NAMES = [
   "grow",
   "aspect-square"
-];
+] as const;
 
 const ObsImage = ( {
   iconicTaxonName,
@@ -32,7 +28,7 @@ const ObsImage = ( {
   uri,
   white = false,
   iconicTaxonIconSize
-}: Props ): Node => (
+}: Props ) => (
   <View className={classNames( CLASS_NAMES, "relative" )}>
     <View className="absolute w-full h-full">
       <IconicTaxonIcon

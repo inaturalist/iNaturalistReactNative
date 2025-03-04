@@ -32,6 +32,7 @@ type Props = {
   queued: boolean,
   uploadProgress?: number,
   unsynced: boolean,
+  hideObsUploadStatus?: boolean
 };
 
 const ObsListItem = ( {
@@ -42,7 +43,8 @@ const ObsListItem = ( {
   onUploadButtonPress,
   queued,
   uploadProgress,
-  unsynced
+  unsynced,
+  hideObsUploadStatus
 }: Props ): Node => {
   const uploadStatus = useStore( state => state.uploadStatus );
   const { isDebug } = useDebugMode( );
@@ -90,7 +92,7 @@ const ObsListItem = ( {
           obsPhotosCount={photoCountFromObservation( observation )}
           hidePhotoCount={missingBasics}
           hasSound={observationHasSound( observation )}
-          opaque={unsynced}
+          opaque={!!currentUser && unsynced}
           isSmall
           iconicTaxonName={observation.taxon?.iconic_taxon_name}
         />
@@ -139,15 +141,17 @@ const ObsListItem = ( {
           { "justify-center": uploadStatus === UPLOAD_IN_PROGRESS }
         )}
       >
-        <ObsUploadStatus
-          explore={explore}
-          onPress={onUploadButtonPress}
-          layout="vertical"
-          observation={observation}
-          progress={uploadProgress}
-          queued={queued}
-          showObsStatus
-        />
+        {!hideObsUploadStatus && (
+          <ObsUploadStatus
+            explore={explore}
+            onPress={onUploadButtonPress}
+            layout="vertical"
+            observation={observation}
+            progress={uploadProgress}
+            queued={queued}
+            showObsStatus
+          />
+        )}
       </View>
     </View>
   );

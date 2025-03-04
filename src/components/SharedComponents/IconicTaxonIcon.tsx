@@ -1,18 +1,15 @@
-// @flow
-
-import classnames from "classnames";
+import classnames, { ArgumentArray } from "classnames";
 import { INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  iconicTaxonName: string,
-  imageClassName?: string,
-  isBackground?: boolean,
-  size?: number,
-  white?: boolean
+interface Props {
+  iconicTaxonName?: string;
+  imageClassName?: ArgumentArray;
+  isBackground?: boolean;
+  size?: number;
+  white?: boolean;
 }
 
 const IconicTaxonIcon = ( {
@@ -21,8 +18,8 @@ const IconicTaxonIcon = ( {
   isBackground = false,
   size = 30,
   white = false
-}: Props ): Node => {
-  let color = null;
+}: Props ) => {
+  let color;
   if ( white ) {
     color = isBackground
       ? colors.mediumGrayGhost

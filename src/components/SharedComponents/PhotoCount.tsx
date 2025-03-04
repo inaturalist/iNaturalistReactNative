@@ -1,9 +1,6 @@
-// @flow
-
 import classnames from "classnames";
 import { Body3, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import { I18nManager, PixelRatio } from "react-native";
 import { useTheme } from "react-native-paper";
@@ -12,13 +9,13 @@ import { useTranslation } from "sharedHooks";
 import { dropShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  count: number
-};
-
 const BASE_DIM = 24;
 
-const PhotoCount = ( { count }: Props ): Node => {
+interface Props {
+  count: number;
+}
+
+const PhotoCount = ( { count }: Props ) => {
   const { t } = useTranslation( );
   const { isRTL } = I18nManager;
   const theme = useTheme( );
@@ -61,6 +58,8 @@ const PhotoCount = ( { count }: Props ): Node => {
         width={dim}
         viewBox="0 0 24 24"
         fill="none"
+        // Following property is not typed
+        // https://github.com/software-mansion/react-native-svg/issues/1638
         xmlns="http://www.w3.org/2000/svg"
       >
         <Path

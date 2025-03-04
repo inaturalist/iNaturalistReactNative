@@ -1,4 +1,3 @@
-// @flow
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import CasualGrade from "images/svg/casual_grade.svg";
@@ -7,16 +6,19 @@ import ResearchGrade from "images/svg/research_grade.svg";
 import * as React from "react";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  qualityGrade: ?string,
-  color?: boolean,
-  opacity?: boolean
+interface Props {
+  qualityGrade: string | null,
+  color?: string,
+  opacity?: number
 }
 
-const qualityGradeSVG = ( qualityGrade, color, opacity ) => {
+const qualityGradeSVG = (
+  qualityGrade: string | null,
+  color: string,
+  opacity: number
+) => {
   if ( qualityGrade === "research" ) {
     return (
-    // $FlowIgnore[not-a-component]
       <ResearchGrade
         accessible
         accessibilityLabel={t( "Quality-Grade-Research--label" )}
@@ -28,7 +30,6 @@ const qualityGradeSVG = ( qualityGrade, color, opacity ) => {
   }
   if ( qualityGrade === "needs_id" ) {
     return (
-    // $FlowIgnore[not-a-component]
       <NeedsIdGrade
         accessible
         accessibilityLabel={t( "Quality-Grade-Needs-ID--label" )}
@@ -39,7 +40,6 @@ const qualityGradeSVG = ( qualityGrade, color, opacity ) => {
     );
   }
   return (
-    // $FlowIgnore[not-a-component]
     <CasualGrade
       accessible
       accessibilityLabel={t( "Quality-Grade-Casual--label" )}
@@ -50,7 +50,7 @@ const qualityGradeSVG = ( qualityGrade, color, opacity ) => {
   );
 };
 
-const QualityGradeStatus = ( { qualityGrade, color, opacity }: Props ): React.Node => {
+const QualityGradeStatus = ( { qualityGrade, color, opacity }: Props ) => {
   const svgColor = color || colors.darkGray;
   const svgOpacity = opacity || 1;
   return (
