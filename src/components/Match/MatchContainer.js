@@ -166,13 +166,13 @@ const MatchContainer = ( ) => {
       setCurrentPlaceGuess( placeGuess );
     }
     updateObservationKeys( {
-      latitude: currentUserLocation.latitude,
-      longitude: currentUserLocation.longitude
+      latitude: currentUserLocation?.latitude,
+      longitude: currentUserLocation?.longitude
     } );
     const newScoreImageParams = {
       ...scoreImageParams,
-      lat: currentUserLocation.latitude,
-      lng: currentUserLocation.longitude
+      lat: currentUserLocation?.latitude,
+      lng: currentUserLocation?.longitude
     };
     dispatch( {
       type: "SET_LOCATION",
