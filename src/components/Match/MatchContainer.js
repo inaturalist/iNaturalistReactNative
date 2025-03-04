@@ -7,6 +7,7 @@ import React, {
   useCallback,
   useRef
 } from "react";
+import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import saveObservation from "sharedHelpers/saveObservation.ts";
 import {
   convertSuggestionsObjToList,
@@ -20,12 +21,14 @@ import {
 import { isDebugMode } from "sharedHooks/useDebugMode";
 import useStore from "stores/useStore";
 
+import fetchUserLocation from "../../sharedHelpers/fetchUserLocation";
 import Match from "./Match";
 import PreMatchLoadingScreen from "./PreMatchLoadingScreen";
 
 const { useRealm } = RealmContext;
 
 const MatchContainer = ( ) => {
+  const resetSuggestionsSlice = useStore( state => state.resetSuggestionsSlice );
   const isDebug = isDebugMode( );
   const scrollRef = useRef( null );
   const currentObservation = useStore( state => state.currentObservation );
@@ -43,28 +46,41 @@ const MatchContainer = ( ) => {
 
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const navigation = useNavigation( );
-  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
+  const {
+    hasPermissions, renderPermissionsGate, requestPermissions
+  } = useLocationPermission( );
 
   useSuggestionsForMatch( );
+
+  const getCurrentUserLocation = useCallback( async ( ) => {
+    const currentUserLocation = await fetchUserLocation( );
+    const placeGuess
+     = await fetchPlaceName( currentUserLocation?.latitude, currentUserLocation?.longitude );
+
+    resetSuggestionsSlice( );
+
+    updateObservationKeys( {
+      latitude: currentUserLocation?.latitude,
+      longitude: currentUserLocation?.longitude,
+      place_guess: placeGuess
+    } );
+  }, [updateObservationKeys, resetSuggestionsSlice] );
 
   const obsPhotos = currentObservation?.observationPhotos;
 
   const realm = useRealm( );
+
   const exitObservationFlow = useExitObservationFlow( {
     skipStoreReset: true
   } );
 
-  const openLocationPicker = useCallback( ( ) => {
-    navigation.navigate( "LocationPicker" );
-  }, [navigation] );
-
   const handleLocationPickerPressed = useCallback( ( ) => {
     if ( hasPermissions ) {
-      openLocationPicker( );
+      getCurrentUserLocation( );
     } else {
       requestPermissions( );
     }
-  }, [hasPermissions, openLocationPicker, requestPermissions] );
+  }, [hasPermissions, getCurrentUserLocation, requestPermissions] );
 
   const scrollToTop = useCallback( ( ) => {
     if ( scrollRef.current ) {
@@ -126,7 +142,14 @@ const MatchContainer = ( ) => {
           handleLocationPickerPressed={handleLocationPickerPressed}
           scrollRef={scrollRef}
         />
-        {renderPermissionsGate( { onPermissionGranted: openLocationPicker } )}
+        {renderPermissionsGate(
+          {
+            onPermissionGranted: getCurrentUserLocation
+          },
+          {
+            closeOnInitialBlock: true
+          }
+        )}
         {/* eslint-disable i18next/no-literal-string */}
         {/* eslint-disable react/jsx-one-expression-per-line */}
         {/* eslint-disable max-len */}

@@ -64,12 +64,39 @@ export interface RealmTaxon extends RealmObject {
   taxonPhotos?: RealmTaxonPhoto[];
 }
 
+export interface RealmUser extends RealmObject {
+  iconUrl?: string;
+  iconUrl?: string;
+  id: number;
+  locale?: string;
+  login?: string;
+  name?: string;
+  observations_count?: number;
+  prefers_common_names?: boolean;
+  prefers_community_taxa?: boolean;
+  prefers_scientific_name_first?: boolean;
+  signedIn?: boolean;
+}
+
+interface RealmComment extends RealmObject {
+  user: RealmUser;
+}
+
+interface RealmIdentification extends RealmObject {
+  current: boolean;
+  user: RealmUser;
+}
+
 export interface RealmObservationPojo {
   _created_at?: Date;
   _synced_at?: Date;
   captive_flag: boolean | null;
+  comments: Array<RealmComment>;
+  comments_viewed?: boolean;
   description: string | null;
   geoprivacy: string | null;
+  identifications: Array<RealmIdentification>;
+  identifications_viewed?: boolean;
   latitude: number | null;
   longitude: number | null;
   obscured?: boolean;
@@ -99,18 +126,4 @@ export interface RealmObservation extends RealmObservationPojo {
   updateNeedsSync: ( ) => boolean;
   viewed: ( ) => boolean;
   wasSynced: ( ) => boolean;
-}
-
-export interface RealmUser extends RealmObject {
-  iconUrl?: string;
-  iconUrl?: string;
-  id: number;
-  locale?: string;
-  login?: string;
-  name?: string;
-  observations_count?: number;
-  prefers_common_names?: boolean;
-  prefers_community_taxa?: boolean;
-  prefers_scientific_name_first?: boolean;
-  signedIn?: boolean;
 }

@@ -187,27 +187,28 @@ const MyObservationsSimple = ( {
     numUnuploadedObservations > 0 && !!observations.find( o => o.needsSync() && o.missingBasics( ) )
   ), [numUnuploadedObservations, observations] );
 
-  const renderObservationsHeader = useCallback( ( ) => (
-    <>
-      { obsMissingBasicsExist && (
-        <View className="flex-row items-center px-[32px] py-[20px]">
-          <INatIcon
-            name="triangle-exclamation"
-            color={String( colors?.warningRed )}
-            size={22}
-          />
-          <Body3 className="shrink ml-[20px]">
-            { t( "Observations-need-location-date--warning" ) }
-          </Body3>
-        </View>
-      ) }
-      <Announcements isConnected={isConnected} />
-    </>
-  ), [
-    isConnected,
-    obsMissingBasicsExist,
-    t
-  ] );
+  const renderObservationsHeader = ( ) => {
+    if ( !currentUser ) {
+      return null;
+    }
+    return (
+      <>
+        { obsMissingBasicsExist && (
+          <View className="flex-row items-center px-[32px] py-[20px]">
+            <INatIcon
+              name="triangle-exclamation"
+              color={String( colors?.warningRed )}
+              size={22}
+            />
+            <Body3 className="shrink ml-[20px]">
+              { t( "Observations-need-location-date--warning" ) }
+            </Body3>
+          </View>
+        ) }
+        <Announcements isConnected={isConnected} />
+      </>
+    );
+  };
 
   const renderTabComponent = ( { id } ) => (
     <StatTab
@@ -267,6 +268,7 @@ const MyObservationsSimple = ( {
               handleIndividualUploadPress={handleIndividualUploadPress}
               hideLoadingWheel
               hideMetadata
+              hideObsUploadStatus={!currentUser}
               isFetchingNextPage={isFetchingNextPage}
               isConnected={isConnected}
               obsListKey="MyObservations"

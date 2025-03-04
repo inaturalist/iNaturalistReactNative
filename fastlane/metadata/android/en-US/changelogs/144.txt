@@ -1,0 +1,11 @@
+Bug Fixes:
+Corrected login screen scrolling behavior when text field is selected
+Fixed match screen reload issues after granting location permissions
+Resolved warning display for logged out users
+Corrected match screen header text
+Resolved inconsistent scrolling behavior from Notifications to ActivityItem
+
+Features:
+Taxon photo similarity on suggestions and taxon detail screens
+Observation flow control
+Improved parity between offline and online suggestions

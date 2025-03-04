@@ -1,5 +1,3 @@
-// @flow
-
 import classNames from "classnames";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import {
@@ -8,26 +6,25 @@ import {
   QualityGradeStatus
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useCallback } from "react";
-import Observation from "realmModels/Observation";
+import type { RealmObservation } from "realmModels/types";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  observation: typeof Observation,
-  layout?: "horizontal" | "vertical",
-  white?: boolean,
-  classNameMargin?: string,
-  testID?: string
-};
-/* eslint-disable react-native/no-inline-styles */
+interface Props {
+  observation: RealmObservation;
+  layout?: "horizontal" | "vertical";
+  white?: boolean;
+  classNameMargin?: string;
+  testID?: string;
+}
+
 const ObsStatus = ( {
   observation,
   white,
   layout = "vertical",
   classNameMargin,
   testID
-}: Props ): Node => {
+}: Props ) => {
   const margin = layout === "vertical"
     ? "mb-1 ml-1"
     : "mr-2";

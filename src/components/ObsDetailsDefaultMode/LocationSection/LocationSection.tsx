@@ -14,14 +14,12 @@ import ObscurationExplanation from "./ObscurationExplanation";
 
 interface Props {
   belongsToCurrentUser: boolean,
-  observation: RealmObservation,
-  handleLocationPickerPressed?: ( ) => void
+  observation: RealmObservation
 }
 
 const LocationSection = ( {
   belongsToCurrentUser,
-  observation,
-  handleLocationPickerPressed
+  observation
 }: Props ) => {
   const currentUser = useCurrentUser( );
   const geoprivacy = observation?.geoprivacy;
@@ -45,7 +43,6 @@ const LocationSection = ( {
                 </Heading5>
                 <SimpleObservationLocation
                   observation={observation}
-                  handleLocationPickerPressed={handleLocationPickerPressed}
                 />
               </>
             )

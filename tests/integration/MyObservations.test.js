@@ -20,6 +20,9 @@ import { signIn, signOut } from "tests/helpers/user";
 const mockUnsyncedObservations = [
   factory( "LocalObservation", {
     _synced_at: null,
+    observed_on_string: "2024-05-01",
+    latitude: 1.2345,
+    longitude: 1.2345,
     observationPhotos: [
       factory( "LocalObservationPhoto", {
         photo: {
@@ -31,6 +34,9 @@ const mockUnsyncedObservations = [
   } ),
   factory( "LocalObservation", {
     _synced_at: null,
+    observed_on_string: "2024-05-02",
+    latitude: 1.2345,
+    longitude: 1.2345,
     observationPhotos: [
       factory( "LocalObservationPhoto", {
         photo: {

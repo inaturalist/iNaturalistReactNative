@@ -4,6 +4,7 @@ import Config from "react-native-config";
 import RNFS from "react-native-fs";
 import type { Location } from "vision-camera-plugin-inatvision";
 import {
+  COMMON_ANCESTOR_RANK_TYPE,
   getPredictionsForImage,
   getPredictionsForLocation,
   MODE
@@ -67,7 +68,8 @@ export const predictImage = ( uri: string, location: Location ) => {
     location: hasLocation
       ? location
       : undefined,
-    mode: MODE.COMMON_ANCESTOR
+    mode: MODE.COMMON_ANCESTOR,
+    commonAncestorRankType: COMMON_ANCESTOR_RANK_TYPE.UNRESTRICTED
   } );
 };
 

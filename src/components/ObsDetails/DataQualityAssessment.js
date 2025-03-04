@@ -11,7 +11,8 @@ import {
   ScrollViewWrapper,
   ViewWrapper
 } from "components/SharedComponents";
-import QualityGradeStatus from "components/SharedComponents/QualityGradeStatus/QualityGradeStatus";
+// eslint-disable-next-line max-len
+import QualityGradeStatus from "components/SharedComponents/QualityGradeStatus/QualityGradeStatus.tsx";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
