@@ -73,6 +73,11 @@ export const useSuggestions = ( photoUri, options ) => {
     }
   };
 
+  const usingOfflineSuggestions = tryOfflineSuggestions || (
+    offlineSuggestions?.results?.length > 0
+      && ( !onlineSuggestions || onlineSuggestions?.results?.length === 0 )
+  );
+
   const hasOnlineSuggestionResults = onlineSuggestions?.results?.length > 0;
 
   const unfilteredSuggestions = useMemo(
@@ -101,6 +106,7 @@ export const useSuggestions = ( photoUri, options ) => {
   return {
     ...onlineSuggestionsResponse,
     suggestions,
+    usingOfflineSuggestions,
     urlWillCrashOffline,
     refetchSuggestions
   };
