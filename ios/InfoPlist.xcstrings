@@ -229,6 +229,12 @@
             "value" : "Mit dem Kamerazugriff kann fotografiert und die KI-Kamera verwendet werden."
           }
         },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Camera access lets you use the AI Camera and take photos."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -351,8 +357,8 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : ""
+            "state" : "translated",
+            "value" : "(c) iNaturalist"
           }
         }
       },
