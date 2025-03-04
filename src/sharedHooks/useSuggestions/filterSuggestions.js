@@ -81,15 +81,6 @@ const filterSuggestions = ( suggestionsToFilter, usingOfflineSuggestions, common
     };
   }
 
-  if ( !suggestionAboveThreshold ) {
-    // no top suggestion and no common ancestor
-    return {
-      ...newSuggestions,
-      topSuggestion: null,
-      topSuggestionType: TOP_SUGGESTION_NOT_CONFIDENT
-    };
-  }
-
   // no top suggestion
   return {
     ...newSuggestions,
