@@ -18,6 +18,10 @@ export interface LocationPermissionCallbacks {
   onModalHide?: ( ) => void;
 }
 
+export interface LocationPermissionOptions {
+  closeOnInitialBlock?: boolean;
+}
+
 /**
  * A hook to check and request location permissions.
  * @returns {boolean} hasPermissions - Undefined if permissions have not been checked yet.
@@ -34,13 +38,20 @@ const useLocationPermission = ( ) => {
 
   // PermissionGate callbacks need to use useCallback, otherwise they'll
   // trigger re-renders if/when they change
-  const renderPermissionsGate = useCallback( ( callbacks?: LocationPermissionCallbacks ) => {
+  const renderPermissionsGate = useCallback( (
+    callbacks?: LocationPermissionCallbacks,
+    options?: LocationPermissionOptions
+  ) => {
     const {
       onPermissionGranted,
       onPermissionDenied,
       onPermissionBlocked,
       onModalHide
     } = callbacks || { };
+
+    const {
+      closeOnInitialBlock = false
+    } = options || { };
 
     // this prevents infinite rerenders of the LocationPermissionGate component
     if ( !showPermissionGate ) {
@@ -71,7 +82,9 @@ const useLocationPermission = ( ) => {
           setShowPermissionGate( true );
           if ( !initialBlock ) {
             setInitialBlock( true );
-            setShowPermissionGate( false );
+            if ( closeOnInitialBlock ) {
+              setShowPermissionGate( false );
+            }
           }
           if ( onPermissionBlocked ) onPermissionBlocked( );
         }}
