@@ -20,11 +20,13 @@ const { useRealm } = RealmContext;
 
 const RANK_LEVEL = 90;
 
-const formatPredictions = ( rawPredictions, iconicTaxa ) => {
+const formatPredictions = ( rawPredictions, iconicTaxa, commonAncestor ) => {
   // similar to what we're doing in the AICamera to get iconic taxon name,
   // but we're offline so we only need the local list from realm
   // and don't need to fetch taxon from the API
-  const branchIDs = rawPredictions.map( t => t.taxon_id );
+  const branchIDs = [...rawPredictions.map( t => t.taxon_id ), ...( commonAncestor
+    ? [commonAncestor.taxon_id]
+    : [] )];
   const iconicTaxonName = iconicTaxa?.find( t => branchIDs.indexOf( t.id ) >= 0 )?.name;
   // using the same rank level for displaying predictions in AI Camera
   // this is all temporary, since we ultimately want predictions
@@ -48,6 +50,7 @@ const useOfflineSuggestionsForMatch = ( ) => {
   const currentObservation = useStore( state => state.currentObservation );
   const offlineSuggestions = useStore( state => state.offlineSuggestions );
   const setOfflineSuggestions = useStore( state => state.setOfflineSuggestions );
+  const setCommonAncestor = useStore( state => state.setCommonAncestor );
   const realm = useRealm( );
   const iconicTaxa = realm?.objects( "Taxon" ).filtered( "isIconic = true" );
 
@@ -73,19 +76,25 @@ const useOfflineSuggestionsForMatch = ( ) => {
     const location = { latitude, longitude };
 
     let rawPredictions = [];
+    let commonAncestor;
     try {
       const result = await predictImage( photoUri, location );
       rawPredictions = result.predictions;
+      // Destructuring here leads to different errors from the linter.
+      // eslint-disable-next-line prefer-destructuring
+      commonAncestor = result.commonAncestor;
     } catch ( predictImageError ) {
       handleError( predictImageError );
     }
-    const formattedPredictions = formatPredictions( rawPredictions, iconicTaxa );
+    const formattedPredictions = formatPredictions( rawPredictions, iconicTaxa, commonAncestor );
     setOfflineSuggestions( formattedPredictions );
+    setCommonAncestor( commonAncestor );
   }, [
     currentObservation,
     handleError,
     iconicTaxa,
     photoUri,
+    setCommonAncestor,
     setOfflineSuggestions
   ] );
 

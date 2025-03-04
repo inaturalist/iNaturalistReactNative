@@ -68,12 +68,12 @@ const useSuggestionsForMatch = ( ) => {
       setSuggestionsList( newSuggestionsList );
     }
   }, [
-    suggestions,
-    setSuggestionsList,
+    fetchStatus,
     offlineSuggestions.length,
     onlineSuggestions.length,
-    timedOut,
-    fetchStatus
+    setSuggestionsList,
+    suggestions,
+    timedOut
   ] );
 
   return suggestions;
