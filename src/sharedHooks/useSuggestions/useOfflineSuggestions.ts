@@ -6,6 +6,7 @@ import {
 } from "react";
 import { log } from "sharedHelpers/logger";
 import { predictImage } from "sharedHelpers/mlModel.ts";
+import { Prediction } from "vision-camera-plugin-inatvision";
 
 const logger = log.extend( "useOfflineSuggestions" );
 
@@ -71,10 +72,8 @@ const useOfflineSuggestions = (
       : [] )];
     const iconicTaxonName = iconicTaxa?.find( t => branchIDs.indexOf( t.id ) >= 0 )?.name;
 
-    // This function handles either regular or common ancestor predictions as input objects. I'm
-    // not going to define an interface for them in the middle of refactoring and changing logic.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const formatPrediction = ( prediction: any ): OfflineSuggestion => ( {
+    // This function handles either regular or common ancestor predictions as input objects.
+    const formatPrediction = ( prediction: Prediction ): OfflineSuggestion => ( {
       combined_score: prediction.combined_score,
       taxon: {
         id: Number( prediction.taxon_id ),
