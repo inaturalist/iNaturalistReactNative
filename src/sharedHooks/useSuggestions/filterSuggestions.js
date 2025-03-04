@@ -9,7 +9,6 @@ import {
 import _ from "lodash";
 
 import isolateHumans, { humanFilter } from "./isolateHumans";
-import sortSuggestions from "./sortSuggestions";
 
 const THRESHOLD = 78;
 
@@ -22,11 +21,13 @@ const THRESHOLD = 78;
 // 4. it checks for a common ancestor as a fallback top suggestion if user is online
 // 5. it returns topSuggestionType which is useful for debugging, since we're doing a lot of
 // filtering of both online and offline suggestions
-const filterSuggestions = ( suggestionsToFilter, usingOfflineSuggestions, commonAncestor ) => {
-  const sortedSuggestions = sortSuggestions(
+const filterSuggestions = ( suggestionsToFilter, commonAncestor ) => {
+  const sortedSuggestions = _.orderBy(
     isolateHumans( suggestionsToFilter ),
-    { usingOfflineSuggestions }
+    "combined_score",
+    "desc"
   );
+
   const newSuggestions = {
     ...initialSuggestions,
     otherSuggestions: sortedSuggestions
