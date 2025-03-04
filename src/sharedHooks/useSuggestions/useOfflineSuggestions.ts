@@ -94,7 +94,7 @@ const useOfflineSuggestions = (
       return {
         combined_score: prediction.combined_score,
         taxon: {
-          id: Number( prediction.taxon_id ),
+          id: prediction.taxon_id,
           name: prediction.name,
           rank_level: prediction.rank_level,
           iconic_taxon_name: iconicTaxonName
