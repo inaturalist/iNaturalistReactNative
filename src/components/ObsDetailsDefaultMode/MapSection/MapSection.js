@@ -63,9 +63,9 @@ const MapSection = ( { observation, taxon }: Props ) => {
   }
 
   return (
-    <View className="h-[230px]">
+    <View className="h-[200px]">
       <Map
-        mapHeight={230}
+        mapHeight={200}
         observation={observation}
         openMapScreen={openMapScreen}
         scrollEnabled={false}
