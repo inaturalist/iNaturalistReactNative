@@ -2,10 +2,8 @@
 
 import classnames from "classnames";
 import {
-  Body1,
   DisplayTaxonName,
-  IconicTaxonIcon,
-  Subheading2
+  IconicTaxonIcon
 } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
@@ -16,20 +14,22 @@ import { useCurrentUser, useTranslation } from "sharedHooks";
 type Props = {
   accessibilityHint?: string,
   accessibilityLabel?: string,
+  bottomTextComponent?: Function,
   handlePress: Function,
-  largerText?: boolean,
   taxon: Object,
   testID?: string,
+  topTextComponent?: Function,
   withdrawn?: boolean
 }
 
 const DisplayTaxon = ( {
   accessibilityHint,
   accessibilityLabel,
+  bottomTextComponent,
   handlePress,
-  largerText = false,
   taxon,
   testID,
+  topTextComponent,
   withdrawn
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -81,12 +81,8 @@ const DisplayTaxon = ( {
               withdrawn={withdrawn}
               scientificNameFirst={currentUser?.prefers_scientific_name_first}
               prefersCommonNames={currentUser?.prefers_common_names}
-              topTextComponent={largerText
-                ? Subheading2
-                : undefined}
-              bottomTextComponent={largerText
-                ? Body1
-                : undefined}
+              topTextComponent={topTextComponent}
+              bottomTextComponent={bottomTextComponent}
             />
           </View>
         </View>

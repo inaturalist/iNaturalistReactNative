@@ -1,6 +1,7 @@
 // @flow
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
+  Body1,
   Body4,
   DisplayTaxon,
   DisplayTaxonName,
@@ -56,7 +57,8 @@ const CommunityTaxon = ( {
           testID={`ObsDetails.taxon.${taxonId}`}
           accessibilityHint={t( "Navigates-to-taxon-details" )}
           handlePress={handlePress}
-          largerText
+          topTextComponent={Subheading2}
+          bottomTextComponent={Body1}
         />
       )
       : (
