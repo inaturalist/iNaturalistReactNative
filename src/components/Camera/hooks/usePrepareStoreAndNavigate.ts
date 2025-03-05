@@ -163,6 +163,8 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     await deleteStageIfAICamera( );
     setSentinelFileName( null );
 
+    console.log( "navigating from AI camera usePrepareSTore" );
+
     if ( showMatchScreen ) {
       return navigation.push( "Match", {
         entryScreen: "CameraWithDevice",

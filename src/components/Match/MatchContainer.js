@@ -45,6 +45,8 @@ const MatchContainer = ( ) => {
     fetchStatus
   } = useStore.getState( );
 
+  console.log( isLoading, "is loading" );
+
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const navigation = useNavigation( );
   const {

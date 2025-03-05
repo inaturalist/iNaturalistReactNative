@@ -31,6 +31,9 @@ export { default as useStoredLayout } from "./useStoredLayout";
 export {
   default as useOfflineSuggestionsForMatch
 } from "./useSuggestions/useOfflineSuggestionsForMatch";
+export {
+  default as useOnlineSuggestionsForMatch
+} from "./useSuggestions/useOnlineSuggestionsForMatch";
 export { default as useSuggestions } from "./useSuggestions/useSuggestions";
 export {
   default as useSuggestionsForMatch
