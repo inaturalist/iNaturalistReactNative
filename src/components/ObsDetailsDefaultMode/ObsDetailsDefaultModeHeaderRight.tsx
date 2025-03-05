@@ -18,7 +18,9 @@ interface Props {
   observationId: number,
   uuid: string,
   refetchSubscriptions: Function,
-  subscriptions: Object
+  subscriptions: Object,
+  setShowUserNeedToConfirm: Function,
+  isUserConfirmed: boolean
 }
 
 const ObsDetailsDefaultModeHeader = ( {
@@ -26,7 +28,9 @@ const ObsDetailsDefaultModeHeader = ( {
   observationId,
   uuid,
   refetchSubscriptions,
-  subscriptions
+  subscriptions,
+  setShowUserNeedToConfirm,
+  isUserConfirmed
 }: Props ) => {
   const navigation = useNavigation( );
   const localObservation = useLocalObservation( uuid );
@@ -51,6 +55,8 @@ const ObsDetailsDefaultModeHeader = ( {
           subscriptions={subscriptions}
           uuid={uuid}
           refetchSubscriptions={refetchSubscriptions}
+          setShowUserNeedToConfirm={setShowUserNeedToConfirm}
+          isUserConfirmed={isUserConfirmed}
         />
       ) ),
     [
@@ -61,7 +67,9 @@ const ObsDetailsDefaultModeHeader = ( {
       observationId,
       refetchSubscriptions,
       subscriptions,
-      t
+      t,
+      isUserConfirmed,
+      setShowUserNeedToConfirm
     ]
   );
 

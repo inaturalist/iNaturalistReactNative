@@ -1,6 +1,7 @@
 import { useRoute } from "@react-navigation/native";
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
-import ObsDetailsContainer from "components/ObsDetailsDefaultMode/ObsDetailsDefaultModeContainer";
+import ObsDetailsDefaultModeContainer
+  from "components/ObsDetailsDefaultMode/ObsDetailsDefaultModeContainer";
 import { t } from "i18next";
 import React from "react";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
@@ -90,6 +91,11 @@ useRoute.mockImplementation( ( ) => ( {
   params: { uuid: mockObservation.uuid }
 } ) );
 
+jest.mock( "sharedHooks/useIsUserConfirmed", () => ( {
+  __esModule: true,
+  default: () => true
+} ) );
+
 jest.mock( "@react-navigation/native", () => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
@@ -127,7 +133,7 @@ jest.mock( "sharedHooks/useObservationsUpdates", () => ( {
 } ) );
 
 const renderObsDetails = ( ) => renderComponent(
-  <ObsDetailsContainer />
+  <ObsDetailsDefaultModeContainer />
 );
 
 describe( "ObsDetails", () => {

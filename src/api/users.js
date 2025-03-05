@@ -24,7 +24,9 @@ const REMOTE_USER_FIELDS = {
   species_count: true,
   updated_at: true,
   prefers_common_names: true,
-  prefers_scientific_name_first: true
+  prefers_scientific_name_first: true,
+  confirmed_at: true,
+  email: true
 };
 
 const REMOTE_USER_PARAMS = {
@@ -166,6 +168,17 @@ const fetchUserEmailAvailable = async (
   }
 };
 
+const resendEmailConfirmation = async (
+  opts: Object = {}
+): Promise<?Object> => {
+  try {
+    const response = await inatjs.users.resendConfirmation( { }, opts );
+    return response;
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
 export {
   blockUser,
   fetchRemoteUser,
@@ -174,6 +187,7 @@ export {
   fetchUserProjects,
   fetchUsers,
   muteUser,
+  resendEmailConfirmation,
   unblockUser,
   unmuteUser,
   updateUsers

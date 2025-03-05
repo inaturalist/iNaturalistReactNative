@@ -21,12 +21,14 @@ type Props = {
   observation: Object,
   currentUser?: Object,
   afterToggleFave: Function,
+  beforeToggleFave?: Function,
   top?: boolean
 }
 
 const FaveButton = ( {
   observation,
   currentUser,
+  beforeToggleFave = ( ) => true,
   afterToggleFave = ( ) => undefined,
   top = false
 }: Props ): Node => {
@@ -95,6 +97,7 @@ const FaveButton = ( {
 
   const toggleFave = useCallback( ( ) => {
     if ( !currentUser ) return;
+    if ( !beforeToggleFave( ) ) return;
     setLoading( true );
     if ( isFaved ) {
       setIsFaved( false );
@@ -103,13 +106,7 @@ const FaveButton = ( {
       setIsFaved( true );
       createFaveMutation.mutate( { uuid } );
     }
-  }, [
-    currentUser,
-    createFaveMutation,
-    createUnfaveMutation,
-    isFaved,
-    uuid
-  ] );
+  }, [currentUser, beforeToggleFave, isFaved, createUnfaveMutation, uuid, createFaveMutation] );
 
   if ( !observation ) {
     return null;

@@ -16,6 +16,7 @@ import {
   UserIcon,
   UserText
 } from "components/SharedComponents";
+import EmailConfirmationSheet from "components/SharedComponents/Sheets/EmailConfirmationSheet";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
@@ -27,6 +28,7 @@ import {
   useCurrentUser,
   useTranslation
 } from "sharedHooks";
+import useIsUserConfirmed from "sharedHooks/useIsUserConfirmed";
 import useStore from "stores/useStore";
 
 import FollowButtonContainer from "./FollowButtonContainer";
@@ -40,6 +42,8 @@ const UserProfile = ( ): Node => {
   const { userId, login } = params;
   const [showLoginSheet, setShowLoginSheet] = useState( false );
   const [showUnfollowSheet, setShowUnfollowSheet] = useState( false );
+  const isUserConfirmed = useIsUserConfirmed();
+  const [showUserNeedToConfirm, setShowUserNeedToConfirm] = useState( false );
   const { t, i18n } = useTranslation( );
 
   const fetchId = userId || login;
@@ -182,6 +186,8 @@ const UserProfile = ( ): Node => {
               setShowLoginSheet={setShowLoginSheet}
               currentUser={currentUser}
               setShowUnfollowSheet={setShowUnfollowSheet}
+              setShowUserNeedToConfirm={setShowUserNeedToConfirm}
+              isUserConfirmed={isUserConfirmed}
             />
           )}
         </View>
@@ -235,6 +241,11 @@ const UserProfile = ( ): Node => {
           </Body2>
         )} */}
       </View>
+      {showUserNeedToConfirm && (
+        <EmailConfirmationSheet
+          onPressClose={() => setShowUserNeedToConfirm( false )}
+        />
+      )}
       {showLoginSheet && <LoginSheet setShowLoginSheet={setShowLoginSheet} />}
       {showUnfollowSheet && (
         <UnfollowSheet

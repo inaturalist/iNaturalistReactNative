@@ -12,6 +12,7 @@ import {
   Button,
   List2
 } from "components/SharedComponents";
+import EmailConfirmationSheet from "components/SharedComponents/Sheets/EmailConfirmationSheet";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import { compact, groupBy } from "lodash";
@@ -21,9 +22,10 @@ import Observation from "realmModels/Observation";
 import { log } from "sharedHelpers/logger";
 import {
   useAuthenticatedMutation,
-  useAuthenticatedQuery,
+  useAuthenticatedQuery, useCurrentUser,
   useLocalObservation
 } from "sharedHooks";
+import useIsUserConfirmed from "sharedHooks/useIsUserConfirmed";
 import useRemoteObservation from "sharedHooks/useRemoteObservation";
 
 const logger = log.extend( "DQAContainer" );
@@ -37,6 +39,8 @@ const DQAContainer = ( ): React.Node => {
   const [loadingMetric, setLoadingMetric] = useState( "none" );
   const [hideErrorSheet, setHideErrorSheet] = useState( true );
   const [hideOfflineSheet, setHideOfflineSheet] = useState( true );
+  const isUserConfirmed = useIsUserConfirmed();
+  const [showUserNeedToConfirm, setShowUserNeedToConfirm] = useState( false );
 
   const localObservation = useLocalObservation( observationUUID );
   const fetchRemoteObservationEnabled = !localObservation || localObservation?.wasSynced();
@@ -48,11 +52,25 @@ const DQAContainer = ( ): React.Node => {
   const observation = remoteObservation
     ? Observation.mapApiToRealm( remoteObservation )
     : localObservation;
+  const currentUser = useCurrentUser( );
+  const belongsToCurrentUser = observation?.user?.login === currentUser?.login;
 
   const fetchMetricsParams = {
     id: observationUUID,
     fields: "metric,agree,user_id",
     ttl: -1
+  };
+
+  const callFunctionIfConfirmedEmail = ( func, funcParams ) => {
+    // Allow the user to add a comment, suggest an ID, etc.  - only if they've
+    // confirmed their email or if they're the observer of this observation
+    if ( isUserConfirmed || belongsToCurrentUser ) {
+      if ( func ) func( funcParams );
+      return true;
+    }
+    // Show the user the bottom sheet that tells them they need to confirm
+    setShowUserNeedToConfirm( true );
+    return false;
   };
 
   const setNotLoading = useCallback( () => {
@@ -271,15 +289,27 @@ const DQAContainer = ( ): React.Node => {
         loadingDisagree={loadingDisagree}
         loadingMetric={loadingMetric}
         qualityGrade={observation?.quality_grade}
-        setMetricVote={setMetricVote}
-        removeMetricVote={removeMetricVote}
-        setNeedsIDVote={setNeedsIDVote}
-        removeNeedsIDVote={removeNeedsIDVote}
+        setMetricVote={metricParams => callFunctionIfConfirmedEmail( setMetricVote, metricParams )}
+        removeMetricVote={
+          metricParams => callFunctionIfConfirmedEmail( removeMetricVote, metricParams )
+        }
+        setNeedsIDVote={
+          metricParams => callFunctionIfConfirmedEmail( setNeedsIDVote, metricParams )
+        }
+        removeNeedsIDVote={
+          metricParams => callFunctionIfConfirmedEmail( removeNeedsIDVote, metricParams )
+        }
         ifMajorityAgree={ifMajorityAgree}
         checkTest={checkTest}
         isConnected={isConnected}
         recheckisConnected={refreshNetInfo}
       />
+      {showUserNeedToConfirm && (
+        <EmailConfirmationSheet
+          onPressClose={() => setShowUserNeedToConfirm( false )}
+        />
+      )}
+
       <BottomSheet
         headerText={t( "ERROR-VOTING-IN-DQA" )}
         hidden={hideErrorSheet}
