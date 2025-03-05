@@ -11,6 +11,7 @@ import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
+  useMemo,
   useReducer,
   useState
 } from "react";
@@ -180,6 +181,17 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
     || ( !observation?.user && !observation?.id )
   );
 
+  const isSimpleMode = useMemo( () => (
+    // Simple mode applies only when:
+    // 1. It's the current user's observation (or an observation being created)
+    // 2. AND the observation hasn't been synced yet
+    // 3. AND the user isn't logged in
+    ( belongsToCurrentUser || !observation?.user )
+      && localObservation
+      && !localObservation.wasSynced()
+      && !currentUser
+  ), [belongsToCurrentUser, localObservation, currentUser, observation?.user] );
+
   const { data: subscriptions, refetch: refetchSubscriptions } = useAuthenticatedQuery(
     [
       "fetchSubscriptions"
@@ -342,6 +354,7 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
         belongsToCurrentUser={belongsToCurrentUser}
         currentUser={currentUser}
         isConnected={isConnected}
+        isSimpleMode={isSimpleMode}
         navToSuggestions={navToSuggestions}
         observation={observationShown}
         openAddCommentSheet={openAddCommentSheet}

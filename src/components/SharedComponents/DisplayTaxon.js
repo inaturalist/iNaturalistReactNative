@@ -1,7 +1,10 @@
 // @flow
 
 import classnames from "classnames";
-import { DisplayTaxonName, IconicTaxonIcon } from "components/SharedComponents";
+import {
+  DisplayTaxonName,
+  IconicTaxonIcon
+} from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -11,18 +14,22 @@ import { useCurrentUser, useTranslation } from "sharedHooks";
 type Props = {
   accessibilityHint?: string,
   accessibilityLabel?: string,
+  bottomTextComponent?: Function,
   handlePress: Function,
   taxon: Object,
   testID?: string,
+  topTextComponent?: Function,
   withdrawn?: boolean
 }
 
 const DisplayTaxon = ( {
   accessibilityHint,
   accessibilityLabel,
+  bottomTextComponent,
   handlePress,
   taxon,
   testID,
+  topTextComponent,
   withdrawn
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -74,6 +81,8 @@ const DisplayTaxon = ( {
               withdrawn={withdrawn}
               scientificNameFirst={currentUser?.prefers_scientific_name_first}
               prefersCommonNames={currentUser?.prefers_common_names}
+              topTextComponent={topTextComponent}
+              bottomTextComponent={bottomTextComponent}
             />
           </View>
         </View>
