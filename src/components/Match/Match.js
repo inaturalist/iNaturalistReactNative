@@ -10,7 +10,6 @@ import { View } from "components/styledComponents";
 import _ from "lodash";
 import React from "react";
 import { useTranslation } from "sharedHooks";
-import useStore from "stores/useStore";
 
 import AdditionalSuggestionsScroll
   from "./AdditionalSuggestions/AdditionalSuggestionsScroll";
@@ -23,31 +22,36 @@ const cardClassTop = "rounded-t-2xl border-lightGray border-[2px] p-4 border-b-0
 const cardClassBottom = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mt-0.5 mb-4";
 
 type Props = {
-  observation: Object,
-  obsPhotos: Array<Object>,
-  handleSaveOrDiscardPress: ( ) => void,
-  navToTaxonDetails: ( ) => void,
   handleAddLocationPressed: ( ) => void,
+  handleSaveOrDiscardPress: ( ) => void,
+  isLoading: boolean,
+  navToTaxonDetails: ( ) => void,
+  obsPhotos: Array<Object>,
+  observation: Object,
   onSuggestionChosen: ( ) => void,
-  scrollRef: Object
+  scrollRef: Object,
+  suggestionsList: Array<Object>
 }
 
 const Match = ( {
-  observation,
-  obsPhotos,
-  handleSaveOrDiscardPress,
-  navToTaxonDetails,
   handleAddLocationPressed,
+  handleSaveOrDiscardPress,
+  isLoading,
+  navToTaxonDetails,
+  obsPhotos,
+  observation,
   onSuggestionChosen,
-  scrollRef
+  scrollRef,
+  suggestionsList
 }: Props ) => {
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
-  const isLoading = useStore( state => state.isLoading );
-  const suggestionsList = useStore( state => state.suggestionsList );
 
   const latitude = observation?.privateLatitude || observation?.latitude;
-  const taxon = suggestionsList?.[0]?.taxon;
+
+  const firstSuggestion = suggestionsList?.[0];
+  const taxon = firstSuggestion?.taxon;
+  const additionalSuggestions = _.tail( suggestionsList );
 
   return (
     <>
@@ -58,7 +62,7 @@ const Match = ( {
               ? (
                 <ActivityIndicator size={33} />
               )
-              : <MatchHeader topSuggestion={suggestionsList?.[0]} />
+              : <MatchHeader firstSuggestion={firstSuggestion} taxon={taxon} />
           }
         </View>
         <PhotosSection
@@ -94,7 +98,7 @@ const Match = ( {
           }
           <AdditionalSuggestionsScroll
             onSuggestionChosen={onSuggestionChosen}
-            otherSuggestions={_.tail( suggestionsList )}
+            additionalSuggestions={additionalSuggestions}
             isLoading={isLoading}
           />
           {!latitude && (

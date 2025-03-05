@@ -33,19 +33,17 @@ const MatchContainer = ( ) => {
   const currentObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
   const cameraRollUris = useStore( state => state.cameraRollUris );
+  const suggestionsList = useStore( state => state.suggestionsList );
+  const isLoading = useStore( state => state.isLoading );
   const {
-    suggestionsList,
-    // NOTE: onlineSuggestions and offlineSuggestions are not used in this component
-    // except for debugging purposes. suggestionsList is the source of truth for suggestions
+    // NOTE: onlineSuggestions, offlineSuggestions, and fetchStatus are not used in this component
+    // except for debugging purposes. suggestionsList is the source of truth for suggestions.
     // this can be refactored at some point into something like a debugInfo object
     // but might be time consuming because of the way zustand handles nested objects
     onlineSuggestions,
     offlineSuggestions,
-    isLoading,
     fetchStatus
   } = useStore.getState( );
-
-  console.log( isLoading, "is loading" );
 
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const navigation = useNavigation( );
@@ -93,6 +91,8 @@ const MatchContainer = ( ) => {
 
   const onSuggestionChosen = useCallback( selection => {
     const reorderedSuggestions = reorderSuggestionsWithSelectionFirst( selection, suggestionsList );
+    const first = reorderedSuggestions?.[0];
+    console.log( first, "first suggestions" );
     setSuggestionsList( reorderedSuggestions );
     scrollToTop( );
   }, [
@@ -136,13 +136,15 @@ const MatchContainer = ( ) => {
     <>
       <ViewWrapper isDebug={isDebug}>
         <Match
-          observation={currentObservation}
-          obsPhotos={obsPhotos}
-          onSuggestionChosen={onSuggestionChosen}
-          handleSaveOrDiscardPress={handleSaveOrDiscardPress}
-          navToTaxonDetails={navToTaxonDetails}
           handleAddLocationPressed={handleAddLocationPressed}
+          handleSaveOrDiscardPress={handleSaveOrDiscardPress}
+          isLoading={isLoading}
+          navToTaxonDetails={navToTaxonDetails}
+          obsPhotos={obsPhotos}
+          observation={currentObservation}
+          onSuggestionChosen={onSuggestionChosen}
           scrollRef={scrollRef}
+          suggestionsList={suggestionsList}
         />
         {renderPermissionsGate(
           {

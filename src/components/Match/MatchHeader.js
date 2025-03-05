@@ -10,37 +10,44 @@ import {
   View
 } from "components/styledComponents";
 import { RealmContext } from "providers/contexts.ts";
-import React from "react";
-import { useTranslation } from "sharedHooks";
+import React, { useCallback } from "react";
+import { useTaxon, useTranslation } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
 type Props = {
-  topSuggestion: Object
+  firstSuggestion: Object,
+  taxon: Object
 }
 
-const MatchHeader = ( { topSuggestion }: Props ) => {
+const MatchHeader = ( { firstSuggestion, taxon }: Props ) => {
   const { t } = useTranslation( );
   const realm = useRealm( );
-  const taxon = topSuggestion?.taxon;
+  const { taxon: localTaxon } = useTaxon( taxon, true );
+  const usableTaxon = localTaxon || taxon;
 
-  if ( !topSuggestion ) {
-    return (
-      <Body2>
-        {t( "iNaturalist-couldnt-identify-this-organism" )}
-      </Body2>
-    );
-  }
+  console.log( taxon, "Taxon" );
 
-  const confidence = calculateConfidence( topSuggestion );
+  const confidence = calculateConfidence( firstSuggestion );
 
-  const hasSeenSpecies = taxon?.id
+  const hasSeenSpecies = usableTaxon?.id
     ? realm.objects( "Observation" )
-      .filtered( `taxon.id == ${taxon.id} && taxon.rank_level == 10` )[0]
+      .filtered( `taxon.id == ${usableTaxon.id} && taxon.rank_level == 10` )[0]
     : false;
 
-  const suggestedTaxon = taxon;
-  const taxonId = taxon?.id || "unknown";
+  const taxonId = usableTaxon?.id || "unknown";
+
+  const showSuggestedTaxon = useCallback( ( ) => (
+    <View className="shrink">
+      <DisplayTaxonName
+        taxon={usableTaxon}
+        testID={`ObsDetails.taxon.${taxonId}`}
+        accessibilityHint={t( "Navigates-to-taxon-details" )}
+        topTextComponent={Heading1}
+        bottomTextComponent={Subheading2}
+      />
+    </View>
+  ), [t, usableTaxon, taxonId] );
 
   const observationStatus = ( ) => {
     let confidenceType = "may_have_observed";
@@ -96,17 +103,13 @@ const MatchHeader = ( { topSuggestion }: Props ) => {
     return congratulatoryText;
   };
 
-  const showSuggestedTaxon = ( ) => (
-    <View className="shrink">
-      <DisplayTaxonName
-        taxon={suggestedTaxon}
-        testID={`ObsDetails.taxon.${taxonId}`}
-        accessibilityHint={t( "Navigates-to-taxon-details" )}
-        topTextComponent={Heading1}
-        bottomTextComponent={Subheading2}
-      />
-    </View>
-  );
+  if ( !firstSuggestion ) {
+    return (
+      <Body2>
+        {t( "iNaturalist-couldnt-identify-this-organism" )}
+      </Body2>
+    );
+  }
 
   return (
     <View>

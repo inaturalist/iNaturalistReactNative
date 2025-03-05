@@ -7,7 +7,7 @@ import { useTranslation } from "sharedHooks";
 import SuggestionsResult from "./SuggestionsResult";
 
 const AdditionalSuggestionsScroll = ( {
-  otherSuggestions,
+  additionalSuggestions,
   suggestionsLoading,
   onSuggestionChosen
 } ) => {
@@ -42,7 +42,7 @@ const AdditionalSuggestionsScroll = ( {
     );
   };
 
-  if ( !suggestionsLoading && otherSuggestions?.length === 0 ) {
+  if ( !suggestionsLoading && additionalSuggestions?.length === 0 ) {
     return null;
   }
 
@@ -59,7 +59,7 @@ const AdditionalSuggestionsScroll = ( {
             renderItem={renderItem}
             estimatedItemSize={160}
             keyExtractor={item => item?.taxon?.id}
-            data={otherSuggestions}
+            data={additionalSuggestions}
           />
         )
         : <ActivityIndicator className="my-3" size={40} />}
