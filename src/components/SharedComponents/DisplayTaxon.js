@@ -1,7 +1,12 @@
 // @flow
 
 import classnames from "classnames";
-import { DisplayTaxonName, IconicTaxonIcon } from "components/SharedComponents";
+import {
+  Body1,
+  DisplayTaxonName,
+  IconicTaxonIcon,
+  Subheading2
+} from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -12,6 +17,7 @@ type Props = {
   accessibilityHint?: string,
   accessibilityLabel?: string,
   handlePress: Function,
+  largerText?: boolean,
   taxon: Object,
   testID?: string,
   withdrawn?: boolean
@@ -21,6 +27,7 @@ const DisplayTaxon = ( {
   accessibilityHint,
   accessibilityLabel,
   handlePress,
+  largerText = false,
   taxon,
   testID,
   withdrawn
@@ -74,6 +81,12 @@ const DisplayTaxon = ( {
               withdrawn={withdrawn}
               scientificNameFirst={currentUser?.prefers_scientific_name_first}
               prefersCommonNames={currentUser?.prefers_common_names}
+              topTextComponent={largerText
+                ? Subheading2
+                : undefined}
+              bottomTextComponent={largerText
+                ? Body1
+                : undefined}
             />
           </View>
         </View>
