@@ -70,14 +70,16 @@ const PreMatchLoadingScreen = ( { isLoading, onSkip }: Props ) => {
         <View
           className="absolute right-5 top-10 text-white"
         >
-          <INatIconButton
-            onPress={onSkip}
-            accessibilityLabel={t( "Skip-additional-suggestions" )}
-            accessibilityHint={t( "Navigates-to-match-screen" )}
-            icon="skip"
-            color={colors.white}
-            size={20}
-          />
+          {!!onSkip && (
+            <INatIconButton
+              onPress={onSkip}
+              accessibilityLabel={t( "Skip-additional-suggestions" )}
+              accessibilityHint={t( "Navigates-to-match-screen" )}
+              icon="skip"
+              color={colors.white}
+              size={20}
+            />
+          )}
         </View>
       </View>
     </>

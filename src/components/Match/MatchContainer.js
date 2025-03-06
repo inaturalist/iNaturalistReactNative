@@ -378,9 +378,6 @@ const MatchContainer = ( ) => {
       </ViewWrapper>
       <PreMatchLoadingScreen
         isLoading={suggestionsLoading}
-        onSkip={
-          () => console.log( "Skip not implemented yet" )
-        }
       />
     </>
   );
