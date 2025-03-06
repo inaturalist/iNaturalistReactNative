@@ -295,7 +295,12 @@ const MatchContainer = ( ) => {
   const taxon = topSuggestion?.taxon;
   const taxonId = taxon?.id;
 
-  const suggestionsLoading = fetchStatus === FETCH_STATUS_LOADING;
+  const suggestionsLoading = fetchStatus === FETCH_STATUS_LOADING
+  // Currently online and off-line suggestions run in sequence,
+  // so in case online suggestions error out also show a loading state while offline is running.
+  // The idea being that FETCH_STATUS_ONLINE_ERROR is the same as offline suggestions loading.
+    || ( usingOfflineSuggestions && fetchStatus === FETCH_STATUS_ONLINE_ERROR );
+
   // Remove the top suggestion from the list of other suggestions
   const otherSuggestions = orderedSuggestions
     .filter( suggestion => suggestion.taxon.id !== taxonId );
