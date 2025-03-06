@@ -2,6 +2,8 @@ import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
+import { Body3, Heading4, ViewWrapper } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import flattenUploadParams from "components/Suggestions/helpers/flattenUploadParams.ts";
 import {
   FETCH_STATUS_LOADING,
@@ -21,10 +23,12 @@ import saveObservation from "sharedHelpers/saveObservation.ts";
 import {
   useExitObservationFlow, useLocationPermission, useSuggestions
 } from "sharedHooks";
+import { isDebugMode } from "sharedHooks/useDebugMode";
 import useStore from "stores/useStore";
 
 import fetchUserLocation from "../../sharedHelpers/fetchUserLocation";
 import Match from "./Match";
+import PreMatchLoadingScreen from "./PreMatchLoadingScreen";
 
 const setQueryKey = ( selectedPhotoUri, shouldUseEvidenceLocation ) => [
   "scoreImage",
@@ -74,6 +78,7 @@ const { useRealm } = RealmContext;
 
 const MatchContainer = ( ) => {
   const hasLoadedRef = useRef( false );
+  const isDebug = isDebugMode( );
   const scrollRef = useRef( null );
   const currentObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
@@ -314,19 +319,42 @@ const MatchContainer = ( ) => {
 
   return (
     <>
-      <Match
-        observation={currentObservation}
-        obsPhotos={obsPhotos}
-        onSuggestionChosen={onSuggestionChosen}
-        handleSaveOrDiscardPress={handleSaveOrDiscardPress}
-        navToTaxonDetails={navToTaxonDetails}
-        handleAddLocationPressed={handleAddLocationPressed}
-        topSuggestion={topSuggestion}
-        otherSuggestions={otherSuggestions}
-        suggestionsLoading={suggestionsLoading}
-        scrollRef={scrollRef}
-      />
-      {renderPermissionsGate( { onPermissionGranted: getCurrentUserLocation } )}
+      <ViewWrapper isDebug={isDebug}>
+        <Match
+          observation={currentObservation}
+          obsPhotos={obsPhotos}
+          onSuggestionChosen={onSuggestionChosen}
+          handleSaveOrDiscardPress={handleSaveOrDiscardPress}
+          navToTaxonDetails={navToTaxonDetails}
+          handleAddLocationPressed={handleAddLocationPressed}
+          topSuggestion={topSuggestion}
+          otherSuggestions={otherSuggestions}
+          suggestionsLoading={suggestionsLoading}
+          scrollRef={scrollRef}
+        />
+        {renderPermissionsGate( { onPermissionGranted: getCurrentUserLocation } )}
+        {/* eslint-disable i18next/no-literal-string */}
+        {/* eslint-disable react/jsx-one-expression-per-line */}
+        {/* eslint-disable max-len */}
+        { isDebug && (
+          <View className="bg-deeppink text-white p-3">
+            <Heading4 className="text-white">Diagnostics</Heading4>
+            <Body3 className="text-white">
+              scoreImageParams:
+              {JSON.stringify( scoreImageParams )}
+            </Body3>
+            <Body3 className="text-white">
+              fetchStatus:
+              {JSON.stringify( fetchStatus )}
+            </Body3>
+            <Body3 className="text-white">
+              Should use location:
+              {JSON.stringify( shouldUseEvidenceLocation )}
+            </Body3>
+          </View>
+        )}
+      </ViewWrapper>
+      {suggestionsLoading && <PreMatchLoadingScreen />}
     </>
   );
 };
