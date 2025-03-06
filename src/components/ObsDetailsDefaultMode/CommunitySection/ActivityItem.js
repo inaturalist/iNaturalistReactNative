@@ -76,7 +76,7 @@ const ActivityItem = ( {
   }
 
   return (
-    <View className="">
+    <View testID="ObsDetailsDefaultMode.ActivityItem">
       <View className="mx-[15px] pb-[7px]">
         <ActivityHeaderContainer
           item={item}

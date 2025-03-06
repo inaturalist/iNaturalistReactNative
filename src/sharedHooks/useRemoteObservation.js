@@ -10,14 +10,15 @@ const { useRealm } = RealmContext;
 export const fetchRemoteObservationKey = "fetchRemoteObservation";
 
 const filterHiddenContent = observation => {
-  if ( observation === undefined ) {
+  if ( observation === undefined || observation === null ) {
     return observation;
   }
   const filteredObservation = observation;
 
-  filteredObservation.comments = filteredObservation.comments.filter( comment => !comment.hidden );
-  filteredObservation.identifications = filteredObservation.identifications
-    .filter( identification => !identification.hidden );
+  filteredObservation.comments = filteredObservation?.comments
+    ?.filter( comment => !comment.hidden ) || [];
+  filteredObservation.identifications = filteredObservation?.identifications
+    ?.filter( identification => !identification.hidden ) || [];
 
   return filteredObservation;
 };

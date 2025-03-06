@@ -73,7 +73,7 @@ const ActivityItem = ( {
   }
 
   return (
-    <View className="flex-column">
+    <View className="flex-column" testID="ObsDetails.ActivityItem">
       <View className="mx-[15px] pb-[7px]">
         <ActivityHeaderContainer
           item={item}
