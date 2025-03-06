@@ -28,6 +28,8 @@ import ObserverDetails from "./ObserverDetails";
 import ObsMediaDisplayContainer from "./ObsMediaDisplayContainer";
 import StatusSection from "./StatusSection/StatusSection";
 
+const cardClassBottom = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mt-0.5 mb-4";
+
 type Props = {
   activityItems: Array<Object>,
   addingActivityItem: Function,
@@ -118,6 +120,7 @@ const ObsDetailsDefaultMode = ( {
             observation={observation}
           />
           <NotesSection description={observation.description} />
+          {!isSimpleMode && <View className={cardClassBottom} />}
         </View>
         {!isSimpleMode && (
           <>
