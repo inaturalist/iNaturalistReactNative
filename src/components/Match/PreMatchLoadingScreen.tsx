@@ -3,11 +3,11 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useEffect, useRef } from "react";
-import { Animated } from "react-native";
+import { Animated, ViewStyle } from "react-native";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
-const fade = value => ( {
+const fade = ( value: number ) => ( {
   toValue: value,
   duration: 100,
   useNativeDriver: true
@@ -33,7 +33,7 @@ const PreMatchLoadingScreen = ( { isLoading, setIsLoading }: Props ) => {
 
   const skipOnlineSuggestions = ( ) => setIsLoading( false );
 
-  const animatedStyle = {
+  const animatedStyle: ViewStyle = {
     position: "absolute",
     height: "100%",
     width: "100%",
@@ -42,7 +42,7 @@ const PreMatchLoadingScreen = ( { isLoading, setIsLoading }: Props ) => {
     zIndex: 999
   };
 
-  const viewStyle = {
+  const viewStyle: ViewStyle = {
     position: "absolute",
     height: "100%",
     width: "100%",
