@@ -68,7 +68,7 @@ Add-optional-notes = Add optional notes
 Adds-your-vote-of-agreement = Adds your vote of agreement
 # Hint for a button that adds a vote of disagreement
 Adds-your-vote-of-disagreement = Adds your vote of disagreement
-Advanced--interface-mode-with-explainer = Advanced (Upload multiple photos and sounds)
+Advanced--interface-mode-with-explainer = Show Advanced Settings (Upload multiple photos and sounds)
 Affiliation = Affiliation: { $site }
 After-capturing-or-importing-photos-show = After capturing or importing photos, show:
 # Label for button that adds an identification of the same taxon as another identification
@@ -370,7 +370,6 @@ datetime-format-short = M/d/yy h:mm a
 datetime-format-short-with-zone = M/d/yy h:mm a zzz
 # Month of December
 December = December
-Default--interface-mode = Default
 DELETE = DELETE
 Delete-all-observations = Delete all observations
 Delete-comment = Delete comment
