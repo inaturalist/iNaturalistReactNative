@@ -15,10 +15,10 @@ const fade = ( value: number ) => ( {
 
 interface Props {
   isLoading: boolean;
-  setIsLoading: ( value: boolean ) => void;
+  onSkip: ( ) => void;
 }
 
-const PreMatchLoadingScreen = ( { isLoading, setIsLoading }: Props ) => {
+const PreMatchLoadingScreen = ( { isLoading, onSkip }: Props ) => {
   const fadeAnimation = useRef( new Animated.Value( 0 ) ).current;
   const { t } = useTranslation( );
 
@@ -30,8 +30,6 @@ const PreMatchLoadingScreen = ( { isLoading, setIsLoading }: Props ) => {
       ] ).start( );
     }
   }, [isLoading, fadeAnimation] );
-
-  const skipOnlineSuggestions = ( ) => setIsLoading( false );
 
   const animatedStyle: ViewStyle = {
     position: "absolute",
@@ -73,7 +71,7 @@ const PreMatchLoadingScreen = ( { isLoading, setIsLoading }: Props ) => {
           className="absolute right-5 top-10 text-white underline"
         >
           <INatIconButton
-            onPress={skipOnlineSuggestions}
+            onPress={onSkip}
             accessibilityLabel={t( "Skip-additional-suggestions" )}
             accessibilityHint={t( "Navigates-to-match-screen" )}
             icon="skip"
