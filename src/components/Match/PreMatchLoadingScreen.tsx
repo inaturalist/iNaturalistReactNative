@@ -2,11 +2,9 @@ import {
   ActivityIndicator, Body1, INatIconButton
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useEffect, useRef } from "react";
 import { Animated } from "react-native";
 import { useTranslation } from "sharedHooks";
-import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 const fade = value => ( {
@@ -15,9 +13,12 @@ const fade = value => ( {
   useNativeDriver: true
 } );
 
-const PreMatchLoadingScreen = ( ): Node => {
-  const isLoading = useStore( state => state.isLoading );
-  const setIsLoading = useStore( state => state.setIsLoading );
+interface Props {
+  isLoading: boolean;
+  setIsLoading: ( value: boolean ) => void;
+}
+
+const PreMatchLoadingScreen = ( { isLoading, setIsLoading }: Props ) => {
   const fadeAnimation = useRef( new Animated.Value( 0 ) ).current;
   const { t } = useTranslation( );
 
