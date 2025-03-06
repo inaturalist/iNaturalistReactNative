@@ -26,11 +26,12 @@ jest.mock( "@react-navigation/native", ( ) => {
 
 const initialStoreState = useStore.getState( );
 
-const toggleAdvancedMode = async ( ) => {
-  const advancedRadioButton = await screen
-    .findByText( /Advanced/ );
-  fireEvent.press( advancedRadioButton );
-};
+// TODO: this will be required when the advanced interface mode is toggled off by default
+// const toggleAdvancedMode = async ( ) => {
+//   const advancedRadioButton = await screen
+//     .findByText( /Advanced/ );
+//   fireEvent.press( advancedRadioButton );
+// };
 
 beforeAll( async ( ) => {
   useStore.setState( initialStoreState, true );
@@ -54,7 +55,7 @@ beforeEach( ( ) => {
 describe( "Settings", ( ) => {
   it( "should toggle the green observation button", async ( ) => {
     renderComponent( <Settings /> );
-    await toggleAdvancedMode( );
+    // await toggleAdvancedMode( );
     const allObsOptions = await screen.findByLabelText( /All observation options/ );
     expect( allObsOptions ).toHaveProp( "accessibilityState", expect.objectContaining( {
       checked: true
@@ -80,7 +81,7 @@ describe( "Settings", ( ) => {
 
     it( "should toggle taxon names display", async ( ) => {
       renderComponent( <Settings /> );
-      await toggleAdvancedMode( );
+      // await toggleAdvancedMode( );
       const sciNameFirst = await screen.findByLabelText( "Scientific Name (Common Name)" );
       expect( sciNameFirst ).toHaveProp( "accessibilityState", expect.objectContaining( {
         checked: false
@@ -118,7 +119,7 @@ describe( "Settings", ( ) => {
 
       it( "should not change state if taxon names toggled with no internet", async ( ) => {
         renderComponent( <Settings /> );
-        await toggleAdvancedMode( );
+        // await toggleAdvancedMode( );
         const sciNameFirst = await screen.findByLabelText( "Scientific Name (Common Name)" );
         expect( sciNameFirst ).toHaveProp( "accessibilityState", expect.objectContaining( {
           checked: false
@@ -144,7 +145,7 @@ describe( "Settings", ( ) => {
 
   test( "should change language immediately via language picker via online results", async ( ) => {
     renderComponent( <Settings /> );
-    await toggleAdvancedMode( );
+    // await toggleAdvancedMode( );
     const changeLanguageButton = await screen.findByText( /CHANGE APP LANGUAGE/ );
     fireEvent.press( changeLanguageButton );
     const picker = await screen.findByTestId( "ReactNativePicker" );
