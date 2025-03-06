@@ -36,8 +36,10 @@ const setQueryKey = ( selectedPhotoUri, shouldUseEvidenceLocation ) => [
   { shouldUseEvidenceLocation }
 ];
 
+const FETCH_STATUS_OFFLINE_SKIPPED = "offline-skipped";
 const initialState = {
-  fetchStatus: FETCH_STATUS_LOADING,
+  onlineFetchStatus: FETCH_STATUS_LOADING,
+  offlineFetchStatus: FETCH_STATUS_LOADING,
   scoreImageParams: null,
   queryKey: [],
   shouldUseEvidenceLocation: false,
@@ -52,15 +54,21 @@ const reducer = ( state, action ) => {
         scoreImageParams: action.scoreImageParams,
         queryKey: setQueryKey( action.scoreImageParams.image.uri, state.shouldUseEvidenceLocation )
       };
-    case "SET_FETCH_STATUS":
+    case "SET_ONLINE_FETCH_STATUS":
       return {
         ...state,
-        fetchStatus: action.fetchStatus
+        onlineFetchStatus: action.onlineFetchStatus
+      };
+    case "SET_OFFLINE_FETCH_STATUS":
+      return {
+        ...state,
+        offlineFetchStatus: action.offlineFetchStatus
       };
     case "SET_LOCATION":
       return {
         ...state,
-        fetchStatus: FETCH_STATUS_LOADING,
+        onlineFetchStatus: FETCH_STATUS_LOADING,
+        offlineFetchStatus: FETCH_STATUS_LOADING,
         scoreImageParams: action.scoreImageParams,
         shouldUseEvidenceLocation: action.shouldUseEvidenceLocation,
         queryKey: setQueryKey( action.scoreImageParams.image.uri, action.shouldUseEvidenceLocation )
@@ -113,31 +121,52 @@ const MatchContainer = ( ) => {
 
   const {
     scoreImageParams,
-    fetchStatus,
+    onlineFetchStatus,
+    offlineFetchStatus,
     queryKey,
     shouldUseEvidenceLocation,
     orderedSuggestions
   } = state;
 
   const shouldFetchOnlineSuggestions = ( hasPermissions !== undefined )
-      && fetchStatus === FETCH_STATUS_LOADING;
+      && onlineFetchStatus === FETCH_STATUS_LOADING;
 
-  const onlineSuggestionsAttempted = fetchStatus === FETCH_STATUS_ONLINE_FETCHED
-      || fetchStatus === FETCH_STATUS_ONLINE_ERROR;
+  const onlineSuggestionsAttempted = onlineFetchStatus === FETCH_STATUS_ONLINE_FETCHED
+      || onlineFetchStatus === FETCH_STATUS_ONLINE_ERROR;
 
-  const onFetchError = useCallback( ( { isOnline } ) => dispatch( {
-    type: "SET_FETCH_STATUS",
-    fetchStatus: isOnline
-      ? FETCH_STATUS_ONLINE_ERROR
-      : FETCH_STATUS_OFFLINE_ERROR
-  } ), [] );
+  const onFetchError = useCallback(
+    ( { isOnline } ) => ( isOnline
+      ? dispatch( {
+        type: "SET_ONLINE_FETCH_STATUS",
+        onlineFetchStatus: FETCH_STATUS_ONLINE_ERROR
+      } )
+      : dispatch( {
+        type: "SET_OFFLINE_FETCH_STATUS",
+        offlineFetchStatus: FETCH_STATUS_OFFLINE_ERROR
+      } ) ),
+    []
+  );
 
-  const onFetched = useCallback( ( { isOnline } ) => dispatch( {
-    type: "SET_FETCH_STATUS",
-    fetchStatus: isOnline
-      ? FETCH_STATUS_ONLINE_FETCHED
-      : FETCH_STATUS_OFFLINE_FETCHED
-  } ), [] );
+  const onFetched = useCallback(
+    ( { isOnline } ) => {
+      if ( isOnline ) {
+        dispatch( {
+          type: "SET_ONLINE_FETCH_STATUS",
+          onlineFetchStatus: FETCH_STATUS_ONLINE_FETCHED
+        } );
+        dispatch( {
+          type: "SET_OFFLINE_FETCH_STATUS",
+          offlineFetchStatus: FETCH_STATUS_OFFLINE_SKIPPED
+        } );
+      } else {
+        dispatch( {
+          type: "SET_OFFLINE_FETCH_STATUS",
+          offlineFetchStatus: FETCH_STATUS_OFFLINE_FETCHED
+        } );
+      }
+    },
+    []
+  );
 
   const {
     timedOut,
@@ -295,11 +324,8 @@ const MatchContainer = ( ) => {
   const taxon = topSuggestion?.taxon;
   const taxonId = taxon?.id;
 
-  const suggestionsLoading = fetchStatus === FETCH_STATUS_LOADING
-  // Currently online and off-line suggestions run in sequence,
-  // so in case online suggestions error out also show a loading state while offline is running.
-  // The idea being that FETCH_STATUS_ONLINE_ERROR is the same as offline suggestions loading.
-    || ( usingOfflineSuggestions && fetchStatus === FETCH_STATUS_ONLINE_ERROR );
+  const suggestionsLoading = onlineFetchStatus === FETCH_STATUS_LOADING
+    || offlineFetchStatus === FETCH_STATUS_LOADING;
 
   // Remove the top suggestion from the list of other suggestions
   const otherSuggestions = orderedSuggestions
@@ -349,8 +375,12 @@ const MatchContainer = ( ) => {
           <View className="bg-deeppink text-white p-3">
             <Heading4 className="text-white">Diagnostics</Heading4>
             <Body3 className="text-white">
-              Fetch status:
-              {JSON.stringify( fetchStatus )}
+              Online fetch status:
+              {JSON.stringify( onlineFetchStatus )}
+            </Body3>
+            <Body3 className="text-white">
+              Offline fetch status:
+              {JSON.stringify( offlineFetchStatus )}
             </Body3>
             <Body3 className="text-white">
               Lat/lng:
