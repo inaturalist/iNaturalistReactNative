@@ -340,10 +340,6 @@ const MatchContainer = ( ) => {
           <View className="bg-deeppink text-white p-3">
             <Heading4 className="text-white">Diagnostics</Heading4>
             <Body3 className="text-white">
-              scoreImageParams:
-              {JSON.stringify( scoreImageParams )}
-            </Body3>
-            <Body3 className="text-white">
               Fetch status:
               {JSON.stringify( fetchStatus )}
             </Body3>
