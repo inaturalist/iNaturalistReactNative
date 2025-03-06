@@ -13,7 +13,8 @@ import {
   Button,
   Heading4,
   RadioButtonRow,
-  ScrollViewWrapper
+  ScrollViewWrapper,
+  SwitchRow
 } from "components/SharedComponents";
 import { RealmContext } from "providers/contexts.ts";
 import React, { useCallback, useEffect, useState } from "react";
@@ -257,24 +258,13 @@ const Settings = ( ) => {
         <View className="mb-9">
           <Heading4>{t( "INATURALIST-MODE" )}</Heading4>
           <View className="mt-[22px]">
-            <RadioButtonRow
-              smallLabel
-              checked={isDefaultMode}
-              onPress={( ) => {
-                setIsDefaultMode( true );
-                setIsAllAddObsOptionsMode( false );
-              }}
-              label={t( "Default--interface-mode" )}
-            />
-          </View>
-          <View className="mt-4">
-            <RadioButtonRow
+            <SwitchRow
               testID="advanced-interface-option"
               smallLabel
-              checked={!isDefaultMode}
-              onPress={( ) => {
-                setIsDefaultMode( false );
-                setIsAllAddObsOptionsMode( true );
+              value={!isDefaultMode}
+              onValueChange={newValue => {
+                setIsDefaultMode( !newValue );
+                setIsAllAddObsOptionsMode( newValue );
               }}
               label={t( "Advanced--interface-mode-with-explainer" )}
             />
