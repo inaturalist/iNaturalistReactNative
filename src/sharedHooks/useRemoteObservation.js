@@ -9,6 +9,19 @@ const { useRealm } = RealmContext;
 
 export const fetchRemoteObservationKey = "fetchRemoteObservation";
 
+const filterHiddenContent = observation => {
+  if ( observation === undefined ) {
+    return observation;
+  }
+  const filteredObservation = observation;
+
+  filteredObservation.comments = filteredObservation.comments.filter( comment => !comment.hidden );
+  filteredObservation.identifications = filteredObservation.identifications
+    .filter( identification => !identification.hidden );
+
+  return filteredObservation;
+};
+
 const useRemoteObservation = ( uuid: string, enabled: boolean ): Object => {
   const fetchRemoteObservationQueryKey = useMemo(
     ( ) => ( [fetchRemoteObservationKey, uuid] ),
@@ -60,7 +73,7 @@ const useRemoteObservation = ( uuid: string, enabled: boolean ): Object => {
   ] );
 
   return {
-    remoteObservation,
+    remoteObservation: filterHiddenContent( remoteObservation ),
     refetchRemoteObservation,
     isRefetching,
     fetchRemoteObservationError

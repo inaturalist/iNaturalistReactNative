@@ -8,6 +8,7 @@ class Comment extends Realm.Object {
     uuid: true,
     body: true,
     created_at: true,
+    hidden: true,
     flags: Flag.FLAG_FIELDS,
     id: true,
     user: User && User.FIELDS
@@ -21,6 +22,7 @@ class Comment extends Realm.Object {
       body: "string?",
       created_at: "string?",
       flags: "Flag[]",
+      hidden: "bool?",
       id: "int?",
       user: "User?",
       // this creates an inverse relationship so comments
