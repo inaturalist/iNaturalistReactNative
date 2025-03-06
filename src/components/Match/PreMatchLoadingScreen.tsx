@@ -68,7 +68,7 @@ const PreMatchLoadingScreen = ( { isLoading, onSkip }: Props ) => {
           />
         </View>
         <View
-          className="absolute right-5 top-10 text-white underline"
+          className="absolute right-5 top-10 text-white"
         >
           <INatIconButton
             onPress={onSkip}
