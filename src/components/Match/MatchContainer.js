@@ -344,12 +344,13 @@ const MatchContainer = ( ) => {
               {JSON.stringify( scoreImageParams )}
             </Body3>
             <Body3 className="text-white">
-              fetchStatus:
+              Fetch status:
               {JSON.stringify( fetchStatus )}
             </Body3>
             <Body3 className="text-white">
-              Should use location:
-              {JSON.stringify( shouldUseEvidenceLocation )}
+              Lat/lng:
+              {JSON.stringify( currentObservation?.latitude )}
+              {JSON.stringify( currentObservation?.longitude )}
             </Body3>
           </View>
         )}
