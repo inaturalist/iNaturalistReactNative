@@ -30,7 +30,6 @@ import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useGridLayout, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
-import Announcements from "./Announcements";
 import LoginSheet from "./LoginSheet";
 import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
 import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
@@ -205,7 +204,8 @@ const MyObservationsSimple = ( {
             </Body3>
           </View>
         ) }
-        <Announcements isConnected={isConnected} />
+        {/* Announcements were broken in default mode, so removed for now */}
+        {/* <Announcements isConnected={isConnected} /> */}
       </>
     );
   };
