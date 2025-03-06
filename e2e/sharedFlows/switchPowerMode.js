@@ -12,7 +12,7 @@ export default async function switchPowerMode() {
   await settingsDrawerMenuItem.tap();
   // Tap the settings switch for advanced interface mode
   // TODO: this will be required when the advanced interface mode is toggled off by default
-  // const advancedInterfaceSwitch = element( by.id( "advanced-interface-option" ) );
+  // const advancedInterfaceSwitch = element( by.id( "advanced-interface-switch" ) );
   // await waitFor( advancedInterfaceSwitch ).toBeVisible().withTimeout( 10000 );
   // await advancedInterfaceSwitch.tap();
   // Tap the settings radio button for power user mode

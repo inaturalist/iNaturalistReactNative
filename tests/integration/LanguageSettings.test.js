@@ -35,10 +35,11 @@ beforeAll( uniqueRealmBeforeAll );
 afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
-const toggleAdvancedMode = async ( ) => {
-  const advancedRadioButton = await screen.findByTestId( "advanced-interface-option" );
-  fireEvent.press( advancedRadioButton );
-};
+// TODO: this will be required when the advanced interface mode is toggled off by default
+// const toggleAdvancedMode = async ( ) => {
+//   const advancedRadioButton = await screen.findByTestId( "advanced-interface-switch" );
+//   fireEvent.press( advancedRadioButton );
+// };
 
 describe( "LanguageSettings", ( ) => {
   it( "uses locale preference of the local device", ( ) => {
@@ -68,7 +69,7 @@ describe( "LanguageSettings", ( ) => {
 
     it( "uses locale preference from server", async ( ) => {
       renderAppWithComponent( <Settings /> );
-      await toggleAdvancedMode( );
+      // await toggleAdvancedMode( );
       const sciNameText = await screen.findByText(
         i18next.t( "Scientific-Name", { lang: "ru" } )
       );
@@ -77,7 +78,7 @@ describe( "LanguageSettings", ( ) => {
 
     it( "allows change to Swedish and requests remote locale change", async ( ) => {
       renderAppWithComponent( <Settings /> );
-      await toggleAdvancedMode( );
+      // await toggleAdvancedMode( );
       const changeLocaleButton = await screen.findByText(
         i18next.t( "CHANGE-APP-LANGUAGE", { lang: "ru" } )
       );

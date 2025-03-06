@@ -259,7 +259,7 @@ const Settings = ( ) => {
           <Heading4>{t( "INATURALIST-MODE" )}</Heading4>
           <View className="mt-[22px]">
             <SwitchRow
-              testID="advanced-interface-option"
+              testID="advanced-interface-switch"
               smallLabel
               value={!isDefaultMode}
               onValueChange={newValue => {
