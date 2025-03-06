@@ -51,6 +51,8 @@ const ActivityItem = ( {
     ? item.current
     : undefined;
 
+  const isHidden = item.hidden;
+
   const idWithdrawn = isCurrent !== undefined && !isCurrent;
   const showAgreeButton = user?.id !== currentUserId
     && userAgreedId !== taxon?.id
@@ -67,8 +69,14 @@ const ActivityItem = ( {
     } )
   );
 
+  // we're doing this filtering directly in useRemoteObservation and useLocalObservation
+  // to make sure we're not displaying hidden content, but this is an extra safeguard
+  if ( isHidden ) {
+    return null;
+  }
+
   return (
-    <View className="">
+    <View testID="ObsDetailsDefaultMode.ActivityItem">
       <View className="mx-[15px] pb-[7px]">
         <ActivityHeaderContainer
           item={item}

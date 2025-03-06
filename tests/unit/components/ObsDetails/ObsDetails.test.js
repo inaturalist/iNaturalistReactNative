@@ -7,7 +7,7 @@ import { View } from "react-native";
 import { formatApiDatetime } from "sharedHelpers/dateAndTime.ts";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import * as useCurrentUser from "sharedHooks/useCurrentUser.ts";
-import * as useLocalObservation from "sharedHooks/useLocalObservation";
+import * as useLocalObservation from "sharedHooks/useLocalObservation.ts";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
