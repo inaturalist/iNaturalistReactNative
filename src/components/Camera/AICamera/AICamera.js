@@ -296,6 +296,7 @@ const AICamera = ( {
           </View>
         </View>
       )}
+      <FadeInOutView takingPhoto={takingPhoto} cameraType="AI" />
       <AICameraButtons
         handleZoomButtonPress={handleZoomButtonPress}
         confidenceThreshold={confidenceThreshold}
@@ -321,7 +322,6 @@ const AICamera = ( {
         useLocation={useLocation}
         toggleLocation={toggleLocation}
       />
-      <FadeInOutView takingPhoto={takingPhoto} cameraType="AI" />
     </>
   );
 };
