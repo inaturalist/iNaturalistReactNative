@@ -140,7 +140,11 @@ const MatchContainer = ( ) => {
   } ), [] );
 
   const {
+    timedOut,
+    onlineSuggestionsError,
+    onlineSuggestionsUpdatedAt,
     suggestions,
+    usingOfflineSuggestions,
     refetchSuggestions
   } = useSuggestions( observationPhoto, {
     shouldFetchOnlineSuggestions,
@@ -347,6 +351,22 @@ const MatchContainer = ( ) => {
               Lat/lng:
               {JSON.stringify( currentObservation?.latitude )}
               {JSON.stringify( currentObservation?.longitude )}
+            </Body3>
+            <Body3 className="text-white">
+              Using offline suggestions:
+              {JSON.stringify( usingOfflineSuggestions )}
+            </Body3>
+            <Body3 className="text-white">
+              Timed out:
+              {JSON.stringify( timedOut )}
+            </Body3>
+            <Body3 className="text-white">
+              Online suggestions error:
+              {JSON.stringify( onlineSuggestionsError )}
+            </Body3>
+            <Body3 className="text-white">
+              Online suggestions updated at:
+              {JSON.stringify( onlineSuggestionsUpdatedAt )}
             </Body3>
           </View>
         )}
