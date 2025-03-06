@@ -153,6 +153,12 @@ const MatchContainer = ( ) => {
     updateObservationKeys( { place_guess: currentPlaceGuess } );
   }, [currentPlaceGuess, updateObservationKeys] );
 
+  const scrollToTop = useCallback( () => {
+    if ( scrollRef.current ) {
+      scrollRef.current.scrollTo( { y: 0, animated: true } );
+    }
+  }, [] );
+
   const getCurrentUserLocation = async ( ) => {
     const currentUserLocation = await fetchUserLocation( );
     const placeGuess
@@ -180,6 +186,8 @@ const MatchContainer = ( ) => {
       scoreImageParams: newScoreImageParams
     } );
     refetchSuggestions();
+    // Scroll to top of the screen
+    scrollToTop( );
   };
 
   const handleAddLocationPressed = ( ) => {
@@ -189,12 +197,6 @@ const MatchContainer = ( ) => {
       requestPermissions( );
     }
   };
-
-  const scrollToTop = useCallback( ( ) => {
-    if ( scrollRef.current ) {
-      scrollRef.current.scrollTo( { y: 0, animated: true } );
-    }
-  }, [] );
 
   const onSuggestionChosen = useCallback( selection => {
     const suggestionsList = [...orderedSuggestions];
