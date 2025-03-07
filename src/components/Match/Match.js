@@ -32,7 +32,9 @@ type Props = {
   otherSuggestions: Array<Object>,
   suggestionsLoading: boolean,
   onSuggestionChosen: ( ) => void,
-  scrollRef: Object
+  scrollRef: Object,
+  iconicTaxon: Object,
+  setIconicTaxon: ( ) => void
 }
 
 const Match = ( {
@@ -45,15 +47,16 @@ const Match = ( {
   otherSuggestions,
   suggestionsLoading,
   onSuggestionChosen,
-  scrollRef
+  scrollRef,
+  iconicTaxon,
+  setIconicTaxon
 }: Props ) => {
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
 
+  topSuggestion = null;
   const latitude = observation?.privateLatitude || observation?.latitude;
   const taxon = topSuggestion?.taxon;
-
-  topSuggestion = null;
 
   // In case the photo could not be identified
   if ( !topSuggestion ) {
@@ -80,9 +83,8 @@ const Match = ( {
               {t( "Do-you-know-what-group-this-is-in" )}
             </Heading3>
             <IconicSuggestionsScroll
-              onSuggestionChosen={onSuggestionChosen}
-              otherSuggestions={otherSuggestions}
-              suggestionsLoading={suggestionsLoading}
+              iconicTaxonChosen={iconicTaxon}
+              onIconicTaxonChosen={setIconicTaxon}
             />
             <Body2 className="mx-4 mt-7 mb-20">
               {t( "If-you-took-the-original-photo-you-can-help" )}
