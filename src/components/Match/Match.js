@@ -55,8 +55,6 @@ const Match = ( {
 
   topSuggestion = null;
 
-  console.log( "topSuggestion", topSuggestion );
-
   // In case the photo could not be identified
   if ( !topSuggestion ) {
     return (
