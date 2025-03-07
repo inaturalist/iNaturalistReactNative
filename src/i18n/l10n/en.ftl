@@ -272,7 +272,6 @@ Couldnt-create-identification-error = Couldn't create identification { $error }
 Couldnt-create-identification-unknown-error = Couldn't create identification, unknown error.
 CREATE-AN-ACCOUNT = CREATE AN ACCOUNT
 Create-an-observation-evidence = Create an observation with no evidence
-CREATE-YOUR-FIRST-OBSERVATION = CREATE YOUR FIRST OBSERVATION
 DATA-QUALITY = DATA QUALITY
 DATA-QUALITY-ASSESSMENT = DATA QUALITY ASSESSMENT
 # Label for button that navigates users to the data quality screen
@@ -616,7 +615,6 @@ INATURALIST-HELP-PAGE = INATURALIST HELP PAGE
 iNaturalist-helps-you-identify = iNaturalist helps you identify the plants and animals around you while generating data for science and conservation. Get connected with a community of millions scientists and naturalists who can help you learn more about nature!
 iNaturalist-identification-suggestions-are-based-on = iNaturalist's identification suggestions are based on observations and identifications made by the iNaturalist community, including { $user1 }, { $user2 }, { $user3 }, and many others.
 iNaturalist-is-a-501 = iNaturalist is a 501(c)(3) non-profit in the United States of America (Tax ID/EIN 92-1296468).
-iNaturalist-is-a-community-of-naturalists = iNaturalist is a community of naturalists that works together to create and identify wild biodiversity observations.
 iNaturalist-is-loading-ID-suggestions = iNaturalist is loading ID suggestions...
 iNaturalist-is-supported-by = iNaturalist is supported by an independent, 501(c)(3) nonprofit organization based in the United States of America. The iNaturalist platform includes this app, Seek by iNaturalist, the iNaturalist website, and more.
 iNaturalist-is-supported-by-our-community = iNaturalist is supported by our amazing community. From everyday naturalists who add observations and identifications, to curators who manage our taxonomy and help with moderation, to the volunteer translators who make iNaturalist more accessible to worldwide audiences, to our community-based donors, we are extraordinarily grateful to all the people in our community who make iNaturalist the platform it is.
@@ -852,7 +850,6 @@ Observation-options = Observation options
 OBSERVATION-WAS-DELETED = OBSERVATION WAS DELETED
 Observation-with-no-evidence = Observation with no evidence
 Observations = Observations
-Observations-created-on-iNaturalist = Observations created on iNaturalist are used by scientists around the world.
 Observations-need-location-date--warning = iNaturalist observations need a location and date to be useful to scientists. Please check observations with this icon before uploading.
 Observations-on-iNat-are-cited = Observations on iNaturalist are cited in scientific papers, have led to rediscoveries, and help scientists understand life on our planet
 Observations-View = Observations View
@@ -865,8 +862,6 @@ OBSERVATIONS-WITHOUT-NUMBER =
     }
 # Onboarding text on MyObservations: Onboarding text on MyObservations: 11-50 observations
 Observations-you-upload-to-iNaturalist = Observations you upload to iNaturalist can be used by scientists and researchers worldwide.
-# Button that starts a new observation
-Observe = Observe
 # Title of screen asking for permission to access the camera
 Observe-and-identify-organisms-in-real-time-with-your-camera = Observe and identify organisms in real time with your camera
 # Text for a button prompting the user to grant access to the camera
@@ -1132,8 +1127,6 @@ SEARCH-USERS = SEARCH USERS
 See-all-your-observations-in-explore = See all your observations in explore
 # Accessibility label for Observations button on UserProfile screen
 See-observations-by-this-user-in-Explore = See observations by this user in Explore
-# Accessibility label for Explore button in MyObservationsEmpty for logged out user
-See-observations-in-explore = See observations in explore
 # Accessibility label for Explore button on TaxonDetails screen
 See-observations-of-this-taxon-in-explore = See observations of this taxon in explore
 # Accessibility label for navigating to project members screen
@@ -1356,7 +1349,6 @@ View-suggestions = View suggestions
 Watch-your-notifications-for-identifications = Watch your notifications for identifications!
 We-are-not-confident-enough-to-make-a-top-ID-suggestion = We’re not confident enough to make a top ID suggestion, but here are some other suggestions:
 Welcome-back = Welcome back!
-Welcome-to-iNaturalist = Welcome to iNaturalist!
 # Welcome user back to app
 Welcome-user = <0>Welcome back,</0><1>{ $userHandle }</1>
 Weve-made-some-updates = We've made some updates, so we recommend taking a look at your settings. You can always update these later.
@@ -1526,7 +1518,6 @@ You-are-offline-Tap-to-reload = You are offline. Tap to reload.
 You-are-offline-Tap-to-try-again = You are offline. Tap to try again.
 You-can-add-up-to-20-media = You can add up to 20 photos and 20 sounds per observation.
 You-can-also-check-out-merchandise = You can also check out merchandise for iNaturalist and Seek at our store below!
-You-can-also-explore-existing-observations = You can also explore existing observations on iNaturalist to discover what's around you.
 You-can-click-join-on-the-project-page = You can click “join” on the project page.
 You-can-find-answers-on-our-help-page = You can find answers on our help page.
 You-can-only-add-20-photos-per-observation = You can only add 20 photos per observation
