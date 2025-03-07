@@ -90,6 +90,11 @@ export interface ApiTaxon {
   preferred_common_name?: string;
 }
 
+export interface ApiSpeciesCount {
+  count: number;
+ taxon: ApiTaxon?;
+}
+
 export interface ApiUser {
   icon_url?: string;
   id?: number;

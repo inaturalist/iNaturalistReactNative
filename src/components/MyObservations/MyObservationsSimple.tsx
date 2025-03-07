@@ -23,6 +23,7 @@ import Realm from "realm";
 import Photo from "realmModels/Photo";
 import type {
   RealmObservation,
+  RealmSpeciesCount,
   RealmTaxon,
   RealmUser
 } from "realmModels/types";
@@ -67,7 +68,7 @@ export interface Props {
 interface TaxaFlashListRenderItemProps {
   // I'm pretty sure this is some kind of bug ~~~~kueda 20250108
   // eslint-disable-next-line react/no-unused-prop-types
-  item: RealmTaxon;
+  item: RealmSpeciesCount;
 }
 
 export const OBSERVATIONS_TAB = "observations";
@@ -103,7 +104,6 @@ const MyObservationsSimple = ( {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const route = useRoute( );
-
   const {
     estimatedGridItemSize,
     flashListStyle,
@@ -115,8 +115,8 @@ const MyObservationsSimple = ( {
     paddingTop: 10
   } ), [flashListStyle] );
 
-  const renderTaxaItem = useCallback( ( { item: taxon }: TaxaFlashListRenderItemProps ) => {
-    const taxonId = taxon.id;
+  const renderTaxaItem = useCallback( ( { item: speciesCount }: TaxaFlashListRenderItemProps ) => {
+    const taxonId = speciesCount.taxon.id;
     const navToTaxonDetails = ( ) => (
       // Again, not sure how to placate TypeScript w/ React Navigation
       navigation.navigate( {
@@ -127,11 +127,11 @@ const MyObservationsSimple = ( {
       } )
     );
 
-    const accessibleName = accessibleTaxonName( taxon, currentUser, t );
+    const accessibleName = accessibleTaxonName( speciesCount.taxon, currentUser, t );
 
     const source = {
       uri: Photo.displayLocalOrRemoteMediumPhoto(
-        taxon?.default_photo
+        speciesCount.taxon?.default_photo
       )
     };
 
@@ -143,7 +143,7 @@ const MyObservationsSimple = ( {
       <SimpleTaxonGridItem
         key={itemKey}
         style={gridItemStyle}
-        taxon={taxon}
+        speciesCount={speciesCount}
         navToTaxonDetails={navToTaxonDetails}
         accessibleName={accessibleName}
         source={source}
@@ -299,8 +299,8 @@ const MyObservationsSimple = ( {
             hideLoadingWheel
             isConnected={isConnected}
             keyExtractor={(
-              item: RealmTaxon
-            ) => `${item.id}-${item?.default_photo?.url || "no-photo"}`}
+              item: RealmSpeciesCount
+            ) => `${item.taxon.id}-${item?.taxon?.default_photo?.url || "no-photo"}`}
             layout="grid"
             numColumns={numColumns}
             renderItem={renderTaxaItem}
