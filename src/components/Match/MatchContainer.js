@@ -114,6 +114,8 @@ const MatchContainer = ( ) => {
   const evidenceHasLocation = !!currentObservation?.latitude;
 
   const [topSuggestion, setTopSuggestion] = useState( );
+  const [iconicTaxon, setIconicTaxon] = useState( );
+
   const [state, dispatch] = useReducer( reducer, {
     ...initialState,
     shouldUseEvidenceLocation: evidenceHasLocation
@@ -368,6 +370,8 @@ const MatchContainer = ( ) => {
           otherSuggestions={otherSuggestions}
           suggestionsLoading={suggestionsLoading}
           scrollRef={scrollRef}
+          iconicTaxon={iconicTaxon}
+          setIconicTaxon={setIconicTaxon}
         />
         {renderPermissionsGate( { onPermissionGranted: getCurrentUserLocation } )}
         {/* eslint-disable i18next/no-literal-string */}
