@@ -13,6 +13,7 @@ import {
   Body3,
   INatIcon,
   InfiniteScrollLoadingWheel,
+  OfflineNotice,
   Tabs,
   ViewWrapper
 } from "components/SharedComponents";
@@ -61,6 +62,7 @@ export interface Props {
   fetchMoreTaxa: ( ) => void;
   isFetchingTaxa?: boolean;
   justFinishedSignup?: boolean;
+  refetchTaxa: ( ) => void;
 }
 
 interface TaxaFlashListRenderItemProps {
@@ -97,7 +99,8 @@ const MyObservationsSimple = ( {
   toggleLayout,
   fetchMoreTaxa,
   isFetchingTaxa,
-  justFinishedSignup = false
+  justFinishedSignup = false,
+  refetchTaxa
 }: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -234,6 +237,17 @@ const MyObservationsSimple = ( {
     return data;
   }, [observations, layout] );
 
+  const renderOfflineNotice = ( ) => {
+    if ( isConnected === false ) {
+      return (
+        <View className="flex-1 items-center justify-center">
+          <OfflineNotice onPress={refetchTaxa} />
+        </View>
+      );
+    }
+    return null;
+  };
+
   return (
     <>
       <ViewWrapper>
@@ -290,7 +304,7 @@ const MyObservationsSimple = ( {
             />
           </>
         ) }
-        { activeTab === TAXA_TAB && (
+        { ( activeTab === TAXA_TAB && taxa.length > 0 ) && (
           <CustomFlashList
             canFetch={!!currentUser}
             contentContainerStyle={taxaFlashListStyle}
@@ -313,7 +327,8 @@ const MyObservationsSimple = ( {
             refreshing={isFetchingTaxa}
             ListFooterComponent={renderTaxaFooter}
           />
-        ) }
+        )}
+        { ( activeTab === TAXA_TAB && taxa.length === 0 ) && renderOfflineNotice( )}
       </ViewWrapper>
       {showLoginSheet && <LoginSheet setShowLoginSheet={setShowLoginSheet} />}
       {/* These four cards should show only in default mode */}
