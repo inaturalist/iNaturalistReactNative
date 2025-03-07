@@ -21,7 +21,15 @@ describe( "Match", ( ) => {
     handleSaveOrDiscardPress: jest.fn(),
     navToTaxonDetails: jest.fn(),
     handleAddLocationPressed: jest.fn(),
-    scrollRef: { current: null }
+    scrollRef: { current: null },
+    topSuggestion: {
+      combined_score: 92,
+      taxon: factory( "LocalTaxon" )
+    },
+    otherSuggestions: [{
+      combined_score: 90,
+      taxon: factory( "LocalTaxon" )
+    }]
   };
 
   beforeEach( () => {
