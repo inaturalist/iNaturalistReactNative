@@ -433,6 +433,7 @@ DISCARD-X-OBSERVATIONS =
        *[other] DISCARD { $count } OBSERVATIONS
     }
 DISMISS = DISMISS
+Do-you-know-what-group-this-is-in = Do you know what group this is in?
 DONATE = DONATE
 DONATE-TO-INATURALIST = DONATE TO INATURALIST
 # Label for a button the user taps when a task is complete

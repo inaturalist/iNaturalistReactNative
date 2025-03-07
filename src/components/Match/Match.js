@@ -52,6 +52,34 @@ const Match = ( {
   const latitude = observation?.privateLatitude || observation?.latitude;
   const taxon = topSuggestion?.taxon;
 
+  // In case the photo could not be identified
+  if ( !topSuggestion ) {
+    return (
+      <>
+        <ScrollViewWrapper scrollRef={scrollRef}>
+          <View className={cardClassTop}>
+            {
+              suggestionsLoading
+                ? (
+                  <ActivityIndicator size={33} />
+                )
+                : <MatchHeader topSuggestion={topSuggestion} />
+            }
+          </View>
+          <PhotosSection
+            representativePhoto={topSuggestion?.taxon?.representative_photo}
+            taxon={taxon}
+            obsPhotos={obsPhotos}
+            navToTaxonDetails={navToTaxonDetails}
+          />
+        </ScrollViewWrapper>
+        <SaveDiscardButtons
+          handlePress={handleSaveOrDiscardPress}
+        />
+      </>
+    );
+  }
+
   return (
     <>
       <ScrollViewWrapper scrollRef={scrollRef}>

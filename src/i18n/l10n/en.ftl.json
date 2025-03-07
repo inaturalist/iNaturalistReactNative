@@ -227,6 +227,7 @@
   "DISCARD-SOUND--question": "DISCARD SOUND?",
   "DISCARD-X-OBSERVATIONS": "{ $count ->\n  [one] DISCARD OBSERVATION\n *[other] DISCARD { $count } OBSERVATIONS\n}",
   "DISMISS": "DISMISS",
+  "Do-you-know-what-group-this-is-in": "Do you know what group this is in?",
   "DONATE": "DONATE",
   "DONATE-TO-INATURALIST": "DONATE TO INATURALIST",
   "DONE": "DONE",
