@@ -1,6 +1,5 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
-import MyObservationsEmpty from "components/MyObservations/MyObservationsEmpty";
 import {
   ActivityIndicator,
   Body3,
@@ -46,7 +45,6 @@ type Props = {
   hideMetadata?: boolean,
   hideObsUploadStatus?: boolean,
   isConnected: boolean,
-  isFetchingNextPage?: boolean,
   layout: "list" | "grid",
   obsListKey: string,
   onEndReached: Function,
@@ -69,7 +67,6 @@ const ObservationsFlashList: Function = forwardRef( ( {
   hideMetadata,
   hideObsUploadStatus,
   isConnected,
-  isFetchingNextPage,
   layout,
   obsListKey = "unknown",
   onEndReached,
@@ -217,7 +214,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
 
   const renderEmptyComponent = useCallback( ( ) => {
     const showEmptyScreen = showObservationsEmptyScreen
-      ? <MyObservationsEmpty isFetchingNextPage={isFetchingNextPage} />
+      ? null
       : (
         <Body3 className="self-center mt-[150px]">
           {t( "No-results-found-try-different-search" )}
@@ -232,7 +229,6 @@ const ObservationsFlashList: Function = forwardRef( ( {
         </View>
       );
   }, [
-    isFetchingNextPage,
     showObservationsEmptyScreen,
     showNoResults,
     t

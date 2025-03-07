@@ -84,7 +84,6 @@ const MyObservations = ( {
               handleIndividualUploadPress={handleIndividualUploadPress}
               onScroll={animatedScrollEvent}
               hideLoadingWheel={!isFetchingNextPage || !currentUser}
-              isFetchingNextPage={isFetchingNextPage}
               isConnected={isConnected}
               obsListKey="MyObservations"
               layout={layout}

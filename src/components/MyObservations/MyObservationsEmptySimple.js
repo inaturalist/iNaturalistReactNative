@@ -14,18 +14,16 @@ import Arrow from "images/svg/curved_arrow_down.svg";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Pressable } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useOnboardingShown } from "sharedHelpers/installData.ts";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
 interface Props {
-  currentUser: any;
+  currentUser: Object | null;
   isConnected: boolean;
 }
 
 const MyObservationsEmptySimple = ( { currentUser, isConnected }: Props ): Node => {
-  const { top } = useSafeAreaInsets();
   const { t } = useTranslation();
   const navigation = useNavigation();
   const [onboardingShown, setOnboardingShown] = useOnboardingShown();
@@ -50,11 +48,11 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected }: Props ): Node 
         closeModal={() => setOnboardingShown( true )}
       />
       {!!currentUser && (
-        <View className={`absolute px-6 py-4 mt-[${top}px]`}>
+        <View className="flex-start ml-[18px] mt-[26px]">
           <HeaderUser user={currentUser} isConnected={isConnected} />
         </View>
       )}
-      <View className="flex grow flex-col justify-center mx-[67px]">
+      <View className="grow justify-center mx-[67px]">
         <Pressable accessibilityRole="button" onPress={navToARCamera}>
           <Heading2
             testID="use-iNaturalist-intro-text"
