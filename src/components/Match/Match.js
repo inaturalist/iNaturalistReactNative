@@ -14,6 +14,7 @@ import { useTranslation } from "sharedHooks";
 import AdditionalSuggestionsScroll
   from "./AdditionalSuggestions/AdditionalSuggestionsScroll";
 import EmptyMapSection from "./EmptyMapSection";
+import IconicSuggestionsScroll from "./IconicSuggestions/IconicSuggestionsScroll";
 import MatchHeader from "./MatchHeader";
 import PhotosSection from "./PhotosSection";
 import SaveDiscardButtons from "./SaveDiscardButtons";
@@ -80,6 +81,11 @@ const Match = ( {
             <Heading3 className="mx-4">
               {t( "Do-you-know-what-group-this-is-in" )}
             </Heading3>
+            <IconicSuggestionsScroll
+              onSuggestionChosen={onSuggestionChosen}
+              otherSuggestions={otherSuggestions}
+              suggestionsLoading={suggestionsLoading}
+            />
             <Body2 className="mx-4 mt-7 mb-20">
               {t( "If-you-took-the-original-photo-you-can-help" )}
             </Body2>
