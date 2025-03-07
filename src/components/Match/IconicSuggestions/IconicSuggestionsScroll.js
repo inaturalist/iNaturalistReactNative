@@ -35,7 +35,7 @@ const IconicSuggestionsScroll = ( {
     );
   };
 
-  console.log( "iconicTaxa", iconicTaxa );
+  console.log( "iconicTaxonChosen", iconicTaxonChosen );
 
   const renderHeader = () => <View className="ml-5" />;
   return (

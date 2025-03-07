@@ -18,6 +18,7 @@ type Props = {
   handlePress?: ( ) => void,
   taxon: RealmTaxon | ApiTaxon,
   testID?: string,
+  selected?: boolean
 }
 
 const IconicSuggestion = ( {
@@ -25,7 +26,8 @@ const IconicSuggestion = ( {
   fromLocal = true,
   handlePress,
   taxon: taxonProp,
-  testID = `IconicSuggestion.${taxonProp?.id}`
+  testID = `IconicSuggestion.${taxonProp?.id}`,
+  selected
 }: Props ) => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
@@ -55,7 +57,10 @@ const IconicSuggestion = ( {
   const cardContent = classnames(
     "px-[10px] py-[19px]",
     "flex-row justify-center items-center",
-    "border-lightGray border-[2px] rounded-2xl",
+    "border-[2px] rounded-2xl",
+    !selected
+      ? "border-lightGray"
+      : "border-inatGreen",
     "mr-3.5"
   );
 
