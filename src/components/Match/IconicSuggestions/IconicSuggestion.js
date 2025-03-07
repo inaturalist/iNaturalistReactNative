@@ -56,7 +56,6 @@ const IconicSuggestion = ( {
     "px-[10px] py-[19px]",
     "flex-row justify-center items-center",
     "border-lightGray border-[2px] rounded-2xl",
-    "w-[241px]",
     "mr-3.5"
   );
 
@@ -84,17 +83,15 @@ const IconicSuggestion = ( {
           isBackground={false}
         />
       </View>
-      <View className="w-[149px]">
-        <DisplayTaxonName
-          taxon={usableTaxon}
-          color="text-darkGray"
-          scientificNameFirst={currentUser?.prefers_scientific_name_first}
-          prefersCommonNames={currentUser?.prefers_common_names}
-          underlineTopText
-          ellipsizeCommonName
-          numberOfLinesBottomText={1}
-        />
-      </View>
+      <DisplayTaxonName
+        taxon={usableTaxon}
+        color="text-darkGray"
+        scientificNameFirst={currentUser?.prefers_scientific_name_first}
+        prefersCommonNames={currentUser?.prefers_common_names}
+        underlineTopText
+        ellipsizeCommonName
+        numberOfLinesBottomText={1}
+      />
     </Pressable>
   );
 };
