@@ -134,6 +134,7 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
   const queryClient = useQueryClient( );
 
   const localObservation = useLocalObservation( uuid );
+  const wasSynced = localObservation && localObservation?.wasSynced();
 
   const fetchRemoteObservationEnabled = !!(
     !remoteObsWasDeleted
@@ -364,6 +365,7 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
         showAddCommentSheet={showAddCommentSheet}
         subscriptions={subscriptionResults}
         targetActivityItemID={targetActivityItemID}
+        wasSynced={wasSynced}
         uuid={uuid}
       />
       <IdentificationSheets

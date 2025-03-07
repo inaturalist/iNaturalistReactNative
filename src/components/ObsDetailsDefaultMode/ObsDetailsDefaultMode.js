@@ -46,6 +46,7 @@ type Props = {
   showAddCommentSheet: Function,
   subscriptions?: Object,
   targetActivityItemID: number,
+  wasSynced: boolean,
   uuid: string
 }
 
@@ -65,6 +66,7 @@ const ObsDetailsDefaultMode = ( {
   showAddCommentSheet,
   subscriptions,
   targetActivityItemID,
+  wasSynced,
   uuid
 }: Props ): Node => {
   const scrollViewRef = useRef( );
@@ -74,7 +76,6 @@ const ObsDetailsDefaultMode = ( {
     setOffsetToActivityItem
   } = useScrollToOffset( scrollViewRef );
 
-  const wasSynced = observation?.wasSynced();
   const showFloatingButtons = wasSynced && currentUser;
 
   return (

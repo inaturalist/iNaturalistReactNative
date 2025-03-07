@@ -73,7 +73,8 @@ const MyObservationsSimpleContainer = ( {
     data: remoteObservedTaxaCounts,
     isFetchingNextPage: isFetchingTaxa,
     fetchNextPage: fetchMoreTaxa,
-    totalResults: numTotalTaxaRemote
+    totalResults: numTotalTaxaRemote,
+    refetch: refetchTaxa
   } = useInfiniteScroll(
     "MyObsSimple-fetchSpeciesCounts",
     fetchSpeciesCounts,
@@ -139,6 +140,7 @@ const MyObservationsSimpleContainer = ( {
       fetchMoreTaxa={fetchMoreTaxa}
       isFetchingTaxa={isFetchingTaxa}
       justFinishedSignup={justFinishedSignup}
+      refetchTaxa={refetchTaxa}
     />
   );
 };
