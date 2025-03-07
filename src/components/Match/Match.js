@@ -4,7 +4,7 @@ import LocationSection
 import MapSection
   from "components/ObsDetailsDefaultMode/MapSection/MapSection";
 import {
-  ActivityIndicator, Button, ScrollViewWrapper
+  ActivityIndicator, Body2, Button, Heading3, ScrollViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import _ from "lodash";
@@ -52,6 +52,10 @@ const Match = ( {
   const latitude = observation?.privateLatitude || observation?.latitude;
   const taxon = topSuggestion?.taxon;
 
+  topSuggestion = null;
+
+  console.log( "topSuggestion", topSuggestion );
+
   // In case the photo could not be identified
   if ( !topSuggestion ) {
     return (
@@ -72,6 +76,14 @@ const Match = ( {
             obsPhotos={obsPhotos}
             navToTaxonDetails={navToTaxonDetails}
           />
+          <View className="mt-5">
+            <Heading3 className="mx-4">
+              {t( "Do-you-know-what-group-this-is-in" )}
+            </Heading3>
+            <Body2 className="mx-4 mt-7">
+              {t( "If-you-took-the-original-photo-you-can-help" )}
+            </Body2>
+          </View>
         </ScrollViewWrapper>
         <SaveDiscardButtons
           handlePress={handleSaveOrDiscardPress}
