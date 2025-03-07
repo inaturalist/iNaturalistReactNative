@@ -80,7 +80,7 @@ const Match = ( {
             <Heading3 className="mx-4">
               {t( "Do-you-know-what-group-this-is-in" )}
             </Heading3>
-            <Body2 className="mx-4 mt-7">
+            <Body2 className="mx-4 mt-7 mb-20">
               {t( "If-you-took-the-original-photo-you-can-help" )}
             </Body2>
           </View>
