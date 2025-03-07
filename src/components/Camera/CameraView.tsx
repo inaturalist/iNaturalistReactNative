@@ -30,10 +30,10 @@ interface Props {
   cameraRef: React.RefObject<Camera>,
   device: CameraDevice,
   frameProcessor?: Function,
-  onCameraError?: Function,
-  onCaptureError?: Function,
-  onClassifierError?: Function,
-  onDeviceNotSupported?: Function,
+  onCameraError: ( error: CameraRuntimeError ) => void,
+  onCaptureError: ( error: CameraRuntimeError ) => void,
+  onClassifierError: ( error: CameraRuntimeError ) => void,
+  onDeviceNotSupported: ( error: CameraRuntimeError ) => void,
   pinchToZoom?: Function,
   resizeMode?: "cover" | "contain",
   inactive?: boolean
@@ -92,13 +92,13 @@ const CameraView = ( {
       // If it is a "device/" error, return the error code
       if ( error.code.includes( "device/" ) ) {
         console.log( "error :>> ", error );
-        onDeviceNotSupported( error.code );
+        onDeviceNotSupported( error );
         return;
       }
 
       if ( error.code.includes( "capture/" ) ) {
         console.log( "error :>> ", error );
-        onCaptureError( error.code );
+        onCaptureError( error );
         return;
       }
 
@@ -119,7 +119,7 @@ const CameraView = ( {
           return;
         }
       }
-      onCameraError( error.code );
+      onCameraError( error );
     },
     [
       onClassifierError,
