@@ -74,6 +74,9 @@ const ObsDetailsDefaultMode = ( {
     setOffsetToActivityItem
   } = useScrollToOffset( scrollViewRef );
 
+  const wasSynced = observation?.wasSynced();
+  const showFloatingButtons = wasSynced && currentUser;
+
   return (
     <SafeAreaView className="flex-1 bg-white">
       <ObsDetailsDefaultModeHeaderRight
@@ -144,7 +147,7 @@ const ObsDetailsDefaultMode = ( {
           </>
         )}
       </ScrollView>
-      {currentUser && (
+      {showFloatingButtons && (
         <FloatingButtons
           navToSuggestions={navToSuggestions}
           openAddCommentSheet={openAddCommentSheet}
