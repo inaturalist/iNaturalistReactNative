@@ -6,19 +6,21 @@ import {
   DisplayTaxonName
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import type { RealmTaxon } from "realmModels/types";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
-import { useCurrentUser, useTaxon, useTranslation } from "sharedHooks";
+import {
+  useCurrentUser, useTaxon, useTranslation
+} from "sharedHooks";
 
 type Props = {
   confidence: number,
   fetchRemote?: boolean,
   fromLocal?: boolean,
-  handlePress: ( ) => void,
+  handlePress?: ( ) => void,
   taxon: RealmTaxon | ApiTaxon,
   testID?: string,
-  onLayoutHeight: ( ) => void,
+  updateMaxHeight?: ( ) => void,
   forcedHeight: number
 }
 
@@ -29,11 +31,22 @@ const SuggestionsResult = ( {
   handlePress,
   taxon: taxonProp,
   testID = `SuggestionsResult.${taxonProp?.id}`,
-  onLayoutHeight,
+  updateMaxHeight,
   forcedHeight
 }: Props ) => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
+
+  // make sure we only measure heights of items once
+  const measuredRef = useRef( false );
+
+  useEffect( ( ) => {
+    if ( forcedHeight > 0 ) {
+      measuredRef.current = true;
+    } else {
+      measuredRef.current = false;
+    }
+  }, [forcedHeight] );
 
   // thinking about future performance, it might make more sense to batch
   // network requests for useTaxon instead of making individual API calls.
@@ -57,30 +70,49 @@ const SuggestionsResult = ( {
       || usableTaxon?.defaultPhoto?.url
   };
 
+  // Handle the onLayout event to measure item height
+  const handleLayout = event => {
+    const { height } = event.nativeEvent.layout;
+    // Only report height once to avoid infinite loops
+    if ( updateMaxHeight && height > 0 && !measuredRef.current ) {
+      measuredRef.current = true;
+      updateMaxHeight( height );
+    }
+  };
+
+  const cardContent = classnames(
+    "px-[10px] py-[19px]",
+    "flex-row justify-center items-center",
+    "border-lightGray border-[2px] rounded-2xl",
+    "w-[241px]",
+    "mr-3.5"
+  );
+
+  // note: it doesn't seem like we need to add styling here as long as we're
+  // using isReady and rerendering the whole list, but be suspicious of tailwind
+  // if the bottom padding is getting cut off in this list
+  const styleWithForcedHeight = forcedHeight
+    ? {
+      height: forcedHeight
+    }
+    : undefined;
+
   return (
-    <View
-      style={forcedHeight
-        ? { height: forcedHeight }
-        : undefined}
-      onLayout={onLayoutHeight}
-      className={classnames(
-        "border-lightGray border-[2px] rounded-2xl",
-        "w-[241px] mr-4 py-4"
-      )}
-    >
+    <View onLayout={handleLayout}>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={accessibleName}
-        className={
-          classnames(
-            "mr-4 px-2.5",
-            "flex-row justify-center items-center",
-            "h-fit"
-          )
-        }
-        onPress={handlePress}
+        className={cardContent}
+        onPress={( ) => {
+          if ( handlePress !== undefined ) {
+            handlePress( );
+          }
+        }}
         testID={testID}
         key={testID}
+        style={forcedHeight
+          ? styleWithForcedHeight
+          : undefined}
       >
         <View className="w-[62px] h-[62px] mr-3">
           <ObsImagePreview
@@ -93,7 +125,7 @@ const SuggestionsResult = ( {
             isBackground={false}
           />
         </View>
-        <View className="shrink">
+        <View className="w-[149px]">
           <DisplayTaxonName
             taxon={usableTaxon}
             color="text-darkGray"
