@@ -114,6 +114,8 @@ const MatchContainer = ( ) => {
   const evidenceHasLocation = !!currentObservation?.latitude;
 
   const [topSuggestion, setTopSuggestion] = useState( );
+  const [iconicTaxon, setIconicTaxon] = useState( );
+
   const [state, dispatch] = useReducer( reducer, {
     ...initialState,
     shouldUseEvidenceLocation: evidenceHasLocation
@@ -154,6 +156,8 @@ const MatchContainer = ( ) => {
           type: "SET_ONLINE_FETCH_STATUS",
           onlineFetchStatus: FETCH_STATUS_ONLINE_FETCHED
         } );
+        // Currently we start offline only when online has an error, so
+        // we can register offline as skipped if online is successful
         dispatch( {
           type: "SET_OFFLINE_FETCH_STATUS",
           offlineFetchStatus: FETCH_STATUS_OFFLINE_SKIPPED
@@ -346,7 +350,7 @@ const MatchContainer = ( ) => {
   const handleSaveOrDiscardPress = async action => {
     if ( action === "save" ) {
       updateObservationKeys( {
-        taxon,
+        taxon: taxon || iconicTaxon,
         owners_identification_from_vision: true
       } );
       await saveObservation( getCurrentObservation( ), cameraRollUris, realm );
@@ -368,12 +372,14 @@ const MatchContainer = ( ) => {
           otherSuggestions={otherSuggestions}
           suggestionsLoading={suggestionsLoading}
           scrollRef={scrollRef}
+          iconicTaxon={iconicTaxon}
+          setIconicTaxon={setIconicTaxon}
         />
         {renderPermissionsGate( { onPermissionGranted: getCurrentUserLocation } )}
         {/* eslint-disable i18next/no-literal-string */}
         {/* eslint-disable react/jsx-one-expression-per-line */}
         {/* eslint-disable max-len */}
-        { isDebug && (
+        {isDebug && (
           <View className="bg-deeppink text-white p-3">
             <Heading4 className="text-white">Diagnostics</Heading4>
             <Body3 className="text-white">
@@ -408,9 +414,7 @@ const MatchContainer = ( ) => {
           </View>
         )}
       </ViewWrapper>
-      <PreMatchLoadingScreen
-        isLoading={suggestionsLoading}
-      />
+      <PreMatchLoadingScreen isLoading={suggestionsLoading} />
     </>
   );
 };
