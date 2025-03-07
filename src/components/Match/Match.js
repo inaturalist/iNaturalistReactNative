@@ -54,7 +54,6 @@ const Match = ( {
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
 
-  topSuggestion = null;
   const latitude = observation?.privateLatitude || observation?.latitude;
   const taxon = topSuggestion?.taxon;
 
