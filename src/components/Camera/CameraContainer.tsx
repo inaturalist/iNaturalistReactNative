@@ -42,7 +42,7 @@ const CameraContainer = ( ) => {
   const cameraType = params?.camera;
 
   const showMatchScreen = cameraType === "AI"
-  && isDefaultMode;
+    && isDefaultMode;
 
   const logStageIfAICamera = useCallback( async (
     stageName: string,

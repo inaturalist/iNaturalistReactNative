@@ -194,7 +194,7 @@ exports[`InlineUser when offline renders reliably 1`] = `
       }
       testID="InlineUser.FallbackPicture"
     >
-      
+      
     </Text>
   </View>
   <Text
@@ -322,7 +322,7 @@ exports[`InlineUser when user has no icon set renders reliably 1`] = `
       }
       testID="InlineUser.FallbackPicture"
     >
-      
+      
     </Text>
   </View>
   <Text

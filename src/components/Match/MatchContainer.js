@@ -2,6 +2,8 @@ import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
+import { Body3, Heading4, ViewWrapper } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import flattenUploadParams from "components/Suggestions/helpers/flattenUploadParams.ts";
 import {
   FETCH_STATUS_LOADING,
@@ -21,10 +23,12 @@ import saveObservation from "sharedHelpers/saveObservation.ts";
 import {
   useExitObservationFlow, useLocationPermission, useSuggestions
 } from "sharedHooks";
+import { isDebugMode } from "sharedHooks/useDebugMode";
 import useStore from "stores/useStore";
 
 import fetchUserLocation from "../../sharedHelpers/fetchUserLocation";
 import Match from "./Match";
+import PreMatchLoadingScreen from "./PreMatchLoadingScreen";
 
 const setQueryKey = ( selectedPhotoUri, shouldUseEvidenceLocation ) => [
   "scoreImage",
@@ -32,8 +36,10 @@ const setQueryKey = ( selectedPhotoUri, shouldUseEvidenceLocation ) => [
   { shouldUseEvidenceLocation }
 ];
 
+const FETCH_STATUS_OFFLINE_SKIPPED = "offline-skipped";
 const initialState = {
-  fetchStatus: FETCH_STATUS_LOADING,
+  onlineFetchStatus: FETCH_STATUS_LOADING,
+  offlineFetchStatus: FETCH_STATUS_LOADING,
   scoreImageParams: null,
   queryKey: [],
   shouldUseEvidenceLocation: false,
@@ -48,15 +54,21 @@ const reducer = ( state, action ) => {
         scoreImageParams: action.scoreImageParams,
         queryKey: setQueryKey( action.scoreImageParams.image.uri, state.shouldUseEvidenceLocation )
       };
-    case "SET_FETCH_STATUS":
+    case "SET_ONLINE_FETCH_STATUS":
       return {
         ...state,
-        fetchStatus: action.fetchStatus
+        onlineFetchStatus: action.onlineFetchStatus
+      };
+    case "SET_OFFLINE_FETCH_STATUS":
+      return {
+        ...state,
+        offlineFetchStatus: action.offlineFetchStatus
       };
     case "SET_LOCATION":
       return {
         ...state,
-        fetchStatus: FETCH_STATUS_LOADING,
+        onlineFetchStatus: FETCH_STATUS_LOADING,
+        offlineFetchStatus: FETCH_STATUS_LOADING,
         scoreImageParams: action.scoreImageParams,
         shouldUseEvidenceLocation: action.shouldUseEvidenceLocation,
         queryKey: setQueryKey( action.scoreImageParams.image.uri, action.shouldUseEvidenceLocation )
@@ -74,6 +86,7 @@ const { useRealm } = RealmContext;
 
 const MatchContainer = ( ) => {
   const hasLoadedRef = useRef( false );
+  const isDebug = isDebugMode( );
   const scrollRef = useRef( null );
   const currentObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
@@ -108,34 +121,59 @@ const MatchContainer = ( ) => {
 
   const {
     scoreImageParams,
-    fetchStatus,
+    onlineFetchStatus,
+    offlineFetchStatus,
     queryKey,
     shouldUseEvidenceLocation,
     orderedSuggestions
   } = state;
 
   const shouldFetchOnlineSuggestions = ( hasPermissions !== undefined )
-      && fetchStatus === FETCH_STATUS_LOADING;
+      && onlineFetchStatus === FETCH_STATUS_LOADING;
 
-  const onlineSuggestionsAttempted = fetchStatus === FETCH_STATUS_ONLINE_FETCHED
-      || fetchStatus === FETCH_STATUS_ONLINE_ERROR;
+  const onlineSuggestionsAttempted = onlineFetchStatus === FETCH_STATUS_ONLINE_FETCHED
+      || onlineFetchStatus === FETCH_STATUS_ONLINE_ERROR;
 
-  const onFetchError = useCallback( ( { isOnline } ) => dispatch( {
-    type: "SET_FETCH_STATUS",
-    fetchStatus: isOnline
-      ? FETCH_STATUS_ONLINE_ERROR
-      : FETCH_STATUS_OFFLINE_ERROR
-  } ), [] );
+  const onFetchError = useCallback(
+    ( { isOnline } ) => ( isOnline
+      ? dispatch( {
+        type: "SET_ONLINE_FETCH_STATUS",
+        onlineFetchStatus: FETCH_STATUS_ONLINE_ERROR
+      } )
+      : dispatch( {
+        type: "SET_OFFLINE_FETCH_STATUS",
+        offlineFetchStatus: FETCH_STATUS_OFFLINE_ERROR
+      } ) ),
+    []
+  );
 
-  const onFetched = useCallback( ( { isOnline } ) => dispatch( {
-    type: "SET_FETCH_STATUS",
-    fetchStatus: isOnline
-      ? FETCH_STATUS_ONLINE_FETCHED
-      : FETCH_STATUS_OFFLINE_FETCHED
-  } ), [] );
+  const onFetched = useCallback(
+    ( { isOnline } ) => {
+      if ( isOnline ) {
+        dispatch( {
+          type: "SET_ONLINE_FETCH_STATUS",
+          onlineFetchStatus: FETCH_STATUS_ONLINE_FETCHED
+        } );
+        dispatch( {
+          type: "SET_OFFLINE_FETCH_STATUS",
+          offlineFetchStatus: FETCH_STATUS_OFFLINE_SKIPPED
+        } );
+      } else {
+        dispatch( {
+          type: "SET_OFFLINE_FETCH_STATUS",
+          offlineFetchStatus: FETCH_STATUS_OFFLINE_FETCHED
+        } );
+      }
+    },
+    []
+  );
 
   const {
+    timedOut,
+    onlineSuggestionsError,
+    onlineSuggestionsUpdatedAt,
     suggestions,
+    usingOfflineSuggestions,
     refetchSuggestions
   } = useSuggestions( observationPhoto, {
     shouldFetchOnlineSuggestions,
@@ -288,7 +326,9 @@ const MatchContainer = ( ) => {
   const taxon = topSuggestion?.taxon;
   const taxonId = taxon?.id;
 
-  const suggestionsLoading = fetchStatus === FETCH_STATUS_LOADING;
+  const suggestionsLoading = onlineFetchStatus === FETCH_STATUS_LOADING
+    || offlineFetchStatus === FETCH_STATUS_LOADING;
+
   // Remove the top suggestion from the list of other suggestions
   const otherSuggestions = orderedSuggestions
     .filter( suggestion => suggestion.taxon.id !== taxonId );
@@ -316,19 +356,61 @@ const MatchContainer = ( ) => {
 
   return (
     <>
-      <Match
-        observation={currentObservation}
-        obsPhotos={obsPhotos}
-        onSuggestionChosen={onSuggestionChosen}
-        handleSaveOrDiscardPress={handleSaveOrDiscardPress}
-        navToTaxonDetails={navToTaxonDetails}
-        handleAddLocationPressed={handleAddLocationPressed}
-        topSuggestion={topSuggestion}
-        otherSuggestions={otherSuggestions}
-        suggestionsLoading={suggestionsLoading}
-        scrollRef={scrollRef}
+      <ViewWrapper isDebug={isDebug}>
+        <Match
+          observation={currentObservation}
+          obsPhotos={obsPhotos}
+          onSuggestionChosen={onSuggestionChosen}
+          handleSaveOrDiscardPress={handleSaveOrDiscardPress}
+          navToTaxonDetails={navToTaxonDetails}
+          handleAddLocationPressed={handleAddLocationPressed}
+          topSuggestion={topSuggestion}
+          otherSuggestions={otherSuggestions}
+          suggestionsLoading={suggestionsLoading}
+          scrollRef={scrollRef}
+        />
+        {renderPermissionsGate( { onPermissionGranted: getCurrentUserLocation } )}
+        {/* eslint-disable i18next/no-literal-string */}
+        {/* eslint-disable react/jsx-one-expression-per-line */}
+        {/* eslint-disable max-len */}
+        { isDebug && (
+          <View className="bg-deeppink text-white p-3">
+            <Heading4 className="text-white">Diagnostics</Heading4>
+            <Body3 className="text-white">
+              Online fetch status:
+              {JSON.stringify( onlineFetchStatus )}
+            </Body3>
+            <Body3 className="text-white">
+              Offline fetch status:
+              {JSON.stringify( offlineFetchStatus )}
+            </Body3>
+            <Body3 className="text-white">
+              Lat/lng:
+              {JSON.stringify( currentObservation?.latitude )}
+              {JSON.stringify( currentObservation?.longitude )}
+            </Body3>
+            <Body3 className="text-white">
+              Using offline suggestions:
+              {JSON.stringify( usingOfflineSuggestions )}
+            </Body3>
+            <Body3 className="text-white">
+              Timed out:
+              {JSON.stringify( timedOut )}
+            </Body3>
+            <Body3 className="text-white">
+              Online suggestions error:
+              {JSON.stringify( onlineSuggestionsError )}
+            </Body3>
+            <Body3 className="text-white">
+              Online suggestions updated at:
+              {JSON.stringify( onlineSuggestionsUpdatedAt )}
+            </Body3>
+          </View>
+        )}
+      </ViewWrapper>
+      <PreMatchLoadingScreen
+        isLoading={suggestionsLoading}
       />
-      {renderPermissionsGate( { onPermissionGranted: getCurrentUserLocation } )}
     </>
   );
 };
