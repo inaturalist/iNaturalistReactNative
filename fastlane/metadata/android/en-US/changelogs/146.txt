@@ -1,0 +1,2 @@
+- Improvements for location permissions, moderated content, and fixes for user interface bugs.
+- Temporarily removes buggy display of announcements from simplified My Observations.
