@@ -350,7 +350,7 @@ const MatchContainer = ( ) => {
   const handleSaveOrDiscardPress = async action => {
     if ( action === "save" ) {
       updateObservationKeys( {
-        taxon,
+        taxon: taxon || iconicTaxon,
         owners_identification_from_vision: true
       } );
       await saveObservation( getCurrentObservation( ), cameraRollUris, realm );
