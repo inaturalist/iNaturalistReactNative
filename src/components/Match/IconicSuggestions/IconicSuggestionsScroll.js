@@ -10,25 +10,30 @@ import IconicSuggestion from "./IconicSuggestion";
 const { useRealm } = RealmContext;
 
 const IconicSuggestionsScroll = ( {
-  onSuggestionChosen
+  iconicTaxonChosen,
+  onIconicTaxonChosen
 } ) => {
   const realm = useRealm();
 
   const iconicTaxa = realm?.objects( "Taxon" ).filtered( "isIconic = true" );
 
-  const handleSuggestionPress = useCallback(
-    suggestion => {
-      onSuggestionChosen( suggestion );
+  const handleIconicSuggestionPress = useCallback(
+    iconicTaxon => {
+      onIconicTaxonChosen( iconicTaxon );
     },
-    [onSuggestionChosen]
+    [onIconicTaxonChosen]
   );
 
-  const renderItem = ( { item: taxon } ) => (
-    <IconicSuggestion
-      handlePress={() => handleSuggestionPress( taxon )}
-      taxon={taxon}
-    />
-  );
+  const renderItem = ( { item: taxon } ) => {
+    const selected = iconicTaxonChosen?.id === taxon?.id;
+    return (
+      <IconicSuggestion
+        handlePress={() => handleIconicSuggestionPress( taxon )}
+        taxon={taxon}
+        selected={selected}
+      />
+    );
+  };
 
   console.log( "iconicTaxa", iconicTaxa );
 
