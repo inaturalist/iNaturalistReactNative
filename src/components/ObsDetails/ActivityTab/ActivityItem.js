@@ -85,7 +85,7 @@ const ActivityItem = ( {
           belongsToCurrentUser={belongsToCurrentUser}
         />
         {taxon && (
-          <View className="flex-row items-center justify-between mr-[23px] mb-4 mt-1">
+          <View className="flex-row items-center justify-between mb-4 mt-1">
             <DisplayTaxon
               taxon={taxon}
               handlePress={navToTaxonDetails}
