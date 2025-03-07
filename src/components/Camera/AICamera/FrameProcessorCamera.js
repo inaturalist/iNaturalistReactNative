@@ -219,21 +219,21 @@ const FrameProcessorCamera = ( {
       cameraRef={cameraRef}
       device={device}
       frameProcessor={frameProcessor}
-      onCameraError={async ( ) => {
+      onCameraError={async error => {
+        onCameraError( error );
         await logStage( sentinelFileName, "fallback_camera_error" );
-        onCameraError( );
       }}
-      onCaptureError={async ( ) => {
+      onCaptureError={async error => {
+        onCaptureError( error );
         await logStage( sentinelFileName, "camera_capture_error" );
-        onCaptureError( );
       }}
-      onClassifierError={async ( ) => {
+      onClassifierError={async error => {
+        onClassifierError( error );
         await logStage( sentinelFileName, "camera_classifier_error" );
-        onClassifierError( );
       }}
-      onDeviceNotSupported={async ( ) => {
+      onDeviceNotSupported={async error => {
+        onDeviceNotSupported( error );
         await logStage( sentinelFileName, "camera_device_not_supported_error" );
-        onDeviceNotSupported( );
       }}
       pinchToZoom={pinchToZoom}
       inactive={inactive}
