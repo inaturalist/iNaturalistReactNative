@@ -10,8 +10,6 @@ import {
 } from "components/OnboardingModal/PivotCards.tsx";
 import {
   Body1,
-  Body3,
-  INatIcon,
   InfiniteScrollLoadingWheel,
   OfflineNotice,
   Tabs,
@@ -31,8 +29,10 @@ import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useGridLayout, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
+import Announcements from "./Announcements";
 import LoginSheet from "./LoginSheet";
 import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
+import SimpleErrorHeader from "./SimpleErrorHeader";
 import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
 import StatTab from "./StatTab";
 
@@ -189,30 +189,6 @@ const MyObservationsSimple = ( {
     numUnuploadedObservations > 0 && !!observations.find( o => o.needsSync() && o.missingBasics( ) )
   ), [numUnuploadedObservations, observations] );
 
-  const renderObservationsHeader = ( ) => {
-    if ( !currentUser ) {
-      return null;
-    }
-    return (
-      <>
-        { obsMissingBasicsExist && (
-          <View className="flex-row items-center px-[32px] py-[20px]">
-            <INatIcon
-              name="triangle-exclamation"
-              color={String( colors?.warningRed )}
-              size={22}
-            />
-            <Body3 className="shrink ml-[20px]">
-              { t( "Observations-need-location-date--warning" ) }
-            </Body3>
-          </View>
-        ) }
-        {/* Announcements were broken in default mode, so removed for now */}
-        {/* <Announcements isConnected={isConnected} /> */}
-      </>
-    );
-  };
-
   const renderTabComponent = ( { id } ) => (
     <StatTab
       id={id}
@@ -294,7 +270,9 @@ const MyObservationsSimple = ( {
               showObservationsEmptyScreen
               showNoResults={showNoResults}
               testID="MyObservationsAnimatedList"
-              renderHeader={renderObservationsHeader}
+              renderHeader={currentUser && ( obsMissingBasicsExist
+                ? <SimpleErrorHeader isConnected={isConnected} />
+                : <Announcements isConnected={isConnected} /> )}
             />
             <ObservationsViewBar
               gridFirst
