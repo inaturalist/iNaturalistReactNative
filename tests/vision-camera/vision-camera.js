@@ -106,7 +106,7 @@ export const mockSortDevices = ( _left, _right ) => 1;
 
 export const mockUseCameraDevice = _deviceType => {
   const device = {
-    devices: ["wide-angle-camera"],
+    physicalDevices: ["wide-angle-camera"],
     hasFlash: true,
     hasTorch: true,
     id: "1",
