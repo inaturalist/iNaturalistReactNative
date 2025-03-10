@@ -1,5 +1,3 @@
-// @flow
-
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import AddObsModal from "components/AddObsModal/AddObsModal.tsx";
 import { Modal } from "components/SharedComponents";
@@ -13,7 +11,7 @@ import useStore from "stores/useStore";
 
 const logger = log.extend( "AddObsButton" );
 
-const AddObsButton = (): React.Node => {
+const AddObsButton = () => {
   const [showModal, setModal] = React.useState( false );
 
   const openModal = React.useCallback( () => setModal( true ), [] );
@@ -29,7 +27,9 @@ const AddObsButton = (): React.Node => {
     logger.info( `isAdvancedUser: ${isAllAddObsOptionsMode}` );
   }, [isAllAddObsOptionsMode] );
 
-  const navAndCloseModal = ( screen, params ) => {
+  const navAndCloseModal = ( screen: string, params?: {
+    camera?: string
+  } ) => {
     const currentRoute = getCurrentRoute();
     if ( screen !== "ObsEdit" ) {
       resetObservationFlowSlice( );
