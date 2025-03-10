@@ -203,6 +203,188 @@ exports[`ObsGridItem for an observation with a photo should render 1`] = `
       ]
     }
   >
+    <View
+      style={
+        [
+          [
+            {
+              "flexDirection": "row",
+            },
+            {
+              "marginBottom": 4,
+            },
+          ],
+        ]
+      }
+      testID="ObsStatus.00000000-0000-0000-0000-000000000000"
+    >
+      <View
+        accessibilityLabel="0 identifications"
+        accessible={true}
+        style={
+          [
+            [
+              {
+                "flexDirection": "row",
+              },
+              {
+                "alignItems": "center",
+              },
+              {
+                "marginRight": 8,
+              },
+            ],
+          ]
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#ffffff",
+                "fontSize": 14,
+              },
+              null,
+              {
+                "fontFamily": "INatIcon",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          maxFontSizeMultiplier={2}
+          style={
+            [
+              {
+                "color": "#454545",
+              },
+              {
+                "fontFamily": "Lato-Regular",
+              },
+              [
+                {
+                  "textAlign": "left",
+                },
+                [
+                  {
+                    "fontSize": 13,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Lato-Medium",
+                  },
+                  [
+                    {
+                      "marginLeft": 6,
+                    },
+                    {
+                      "color": "#ffffff",
+                    },
+                  ],
+                ],
+              ],
+            ]
+          }
+        >
+          0
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="0 comments"
+        accessible={true}
+        style={
+          [
+            [
+              {
+                "flexDirection": "row",
+              },
+              {
+                "alignItems": "center",
+              },
+              {
+                "marginRight": 8,
+              },
+            ],
+          ]
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#ffffff",
+                "fontSize": 14,
+              },
+              null,
+              {
+                "fontFamily": "INatIcon",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          maxFontSizeMultiplier={2}
+          style={
+            [
+              {
+                "color": "#454545",
+              },
+              {
+                "fontFamily": "Lato-Regular",
+              },
+              [
+                {
+                  "textAlign": "left",
+                },
+                [
+                  {
+                    "fontSize": 13,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Lato-Medium",
+                  },
+                  [
+                    {
+                      "marginLeft": 6,
+                    },
+                    {
+                      "color": "#ffffff",
+                    },
+                  ],
+                ],
+              ],
+            ]
+          }
+          testID="ObsStatus.commentsCount"
+        >
+          0
+        </Text>
+      </View>
+      <View>
+        <SvgMock
+          accessibilityLabel="Quality Grade: Casual"
+          accessible={true}
+          color="#ffffff"
+          opacity={1}
+          testID="QualityGrade.casual"
+        />
+      </View>
+    </View>
     <Text
       maxFontSizeMultiplier={2}
       numberOfLines={1}
@@ -423,6 +605,188 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
       ]
     }
   >
+    <View
+      style={
+        [
+          [
+            {
+              "flexDirection": "row",
+            },
+            {
+              "marginBottom": 4,
+            },
+          ],
+        ]
+      }
+      testID="ObsStatus.00000000-0000-0000-0000-000000000000"
+    >
+      <View
+        accessibilityLabel="0 identifications"
+        accessible={true}
+        style={
+          [
+            [
+              {
+                "flexDirection": "row",
+              },
+              {
+                "alignItems": "center",
+              },
+              {
+                "marginRight": 8,
+              },
+            ],
+          ]
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#ffffff",
+                "fontSize": 14,
+              },
+              null,
+              {
+                "fontFamily": "INatIcon",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          maxFontSizeMultiplier={2}
+          style={
+            [
+              {
+                "color": "#454545",
+              },
+              {
+                "fontFamily": "Lato-Regular",
+              },
+              [
+                {
+                  "textAlign": "left",
+                },
+                [
+                  {
+                    "fontSize": 13,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Lato-Medium",
+                  },
+                  [
+                    {
+                      "marginLeft": 6,
+                    },
+                    {
+                      "color": "#ffffff",
+                    },
+                  ],
+                ],
+              ],
+            ]
+          }
+        >
+          0
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="0 comments"
+        accessible={true}
+        style={
+          [
+            [
+              {
+                "flexDirection": "row",
+              },
+              {
+                "alignItems": "center",
+              },
+              {
+                "marginRight": 8,
+              },
+            ],
+          ]
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#ffffff",
+                "fontSize": 14,
+              },
+              null,
+              {
+                "fontFamily": "INatIcon",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          maxFontSizeMultiplier={2}
+          style={
+            [
+              {
+                "color": "#454545",
+              },
+              {
+                "fontFamily": "Lato-Regular",
+              },
+              [
+                {
+                  "textAlign": "left",
+                },
+                [
+                  {
+                    "fontSize": 13,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Lato-Medium",
+                  },
+                  [
+                    {
+                      "marginLeft": 6,
+                    },
+                    {
+                      "color": "#ffffff",
+                    },
+                  ],
+                ],
+              ],
+            ]
+          }
+          testID="ObsStatus.commentsCount"
+        >
+          0
+        </Text>
+      </View>
+      <View>
+        <SvgMock
+          accessibilityLabel="Quality Grade: Casual"
+          accessible={true}
+          color="#ffffff"
+          opacity={1}
+          testID="QualityGrade.casual"
+        />
+      </View>
+    </View>
     <Text
       maxFontSizeMultiplier={2}
       numberOfLines={1}
