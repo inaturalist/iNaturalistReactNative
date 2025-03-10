@@ -6,7 +6,6 @@ import React from "react";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
 import { wrapInNavigationContainer } from "tests/helpers/render";
-import { mockCamera, mockUseCameraDevice } from "tests/vision-camera/vision-camera";
 
 jest.mock( "components/MediaViewer/MediaViewerModal", ( ) => jest.fn( ( ) => null ) );
 
@@ -38,14 +37,12 @@ const mockObservation = factory( "RemoteObservation", {
   ]
 } );
 
-const mockCameraDevice = mockUseCameraDevice( "front" );
-const renderCamera = () => render(
+const renderCamera = ( ) => render(
   wrapInNavigationContainer(
     <StandardCamera
-      camera={mockCamera}
-      device={mockCameraDevice}
-      takePhotoOptions={{}}
-      setNewPhotoUris={jest.fn()}
+      camera={{}}
+      device={{}}
+      setNewPhotoUris={jest.fn( )}
       newPhotoUris={[]}
     />
   )
