@@ -1,5 +1,5 @@
 import { screen, userEvent } from "@testing-library/react-native";
-import AddObsButton from "components/AddObsModal/AddObsButton";
+import AddObsButton from "components/AddObsModal/AddObsButton.tsx";
 import i18next from "i18next";
 import React from "react";
 import useStore from "stores/useStore";
