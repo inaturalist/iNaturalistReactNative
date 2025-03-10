@@ -28,16 +28,16 @@ const useZoom = ( device: CameraDevice ): Object => {
   const initialZoomTextValue = "1";
   const zoomButtonOptions = useMemo( () => {
     const options = [initialZoomTextValue];
-    if ( device.physicalDevices.includes( "ultra-wide-angle-camera" ) ) {
+    if ( device?.physicalDevices?.includes( "ultra-wide-angle-camera" ) ) {
       // Add a 0.5x zoom option for ultra-wide-angle cameras to front of array
       options.unshift( ".5" );
     }
-    if ( device.physicalDevices.includes( "telephoto-camera" ) ) {
+    if ( device?.physicalDevices?.includes( "telephoto-camera" ) ) {
       // Add a 3x zoom option for telephoto cameras to end of array
       options.push( "3" );
     }
     return options;
-  }, [device.physicalDevices] );
+  }, [device?.physicalDevices] );
   const minZoom = device?.minZoom ?? 1;
   const neutralZoom = device?.neutralZoom ?? 2;
   // this maxZoom zooms to 3x magnification on an iPhone 15 Pro
