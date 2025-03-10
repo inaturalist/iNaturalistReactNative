@@ -32,7 +32,8 @@ type Props = {
   queued: boolean,
   uploadProgress?: number,
   unsynced: boolean,
-  hideObsUploadStatus?: boolean
+  hideObsUploadStatus?: boolean,
+  hideObsStatus?: boolean
 };
 
 const ObsListItem = ( {
@@ -44,7 +45,8 @@ const ObsListItem = ( {
   queued,
   uploadProgress,
   unsynced,
-  hideObsUploadStatus
+  hideObsUploadStatus,
+  hideObsStatus = false
 }: Props ): Node => {
   const uploadStatus = useStore( state => state.uploadStatus );
   const { isDebug } = useDebugMode( );
@@ -149,7 +151,7 @@ const ObsListItem = ( {
             observation={observation}
             progress={uploadProgress}
             queued={queued}
-            showObsStatus
+            showObsStatus={!hideObsStatus}
           />
         )}
       </View>
