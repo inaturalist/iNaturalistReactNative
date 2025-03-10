@@ -11,7 +11,6 @@ class SpeciesCount extends Realm.Object {
   };
 
   static mapApiToRealm( speciesCount, realm = null ) {
-    console.log( "realm map", speciesCount );
     const count = {
       count: speciesCount.count,
       taxon: Taxon.mapApiToRealm( speciesCount?.taxon, realm )

@@ -1,7 +1,9 @@
 import type { ApiSpeciesCount } from "api/types";
 import classNames from "classnames";
 import { Body4, DisplayTaxonName } from "components/SharedComponents";
-import { Image, Pressable, View } from "components/styledComponents";
+import {
+  Image, LinearGradient, Pressable, View
+} from "components/styledComponents";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 
@@ -33,6 +35,7 @@ const SimpleTaxonGridItem = ( {
 }: Props ) => {
   const { t } = useTranslation();
   const { count } = speciesCount;
+
   return (
     <Pressable
       accessibilityRole="button"
@@ -48,6 +51,12 @@ const SimpleTaxonGridItem = ( {
         testID="ObsList.photo"
         accessibilityIgnoresInvertColors
         fadeDuration={0}
+      />
+      <LinearGradient
+        colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.6) 100%)"]}
+        className="absolute w-full h-full"
+        start={{ x: 0, y: 0.5 }}
+        end={{ x: 0, y: 1 }}
       />
       <View className="absolute bottom-0 flex p-2 w-full">
         <Body4
