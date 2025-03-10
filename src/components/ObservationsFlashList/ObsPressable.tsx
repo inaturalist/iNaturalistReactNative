@@ -62,7 +62,6 @@ const ObsPressable = ( {
               currentUser={currentUser}
               explore={explore}
               hideObsUploadStatus={hideObsUploadStatus}
-              hideObsStatus={hideObsStatus}
               isLargeFontScale={isLargeFontScale}
               onUploadButtonPress={onUploadButtonPress}
               observation={observation}

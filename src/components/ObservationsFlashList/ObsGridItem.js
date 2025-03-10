@@ -19,7 +19,6 @@ type Props = {
   explore: boolean,
   height?: string,
   hideObsUploadStatus?: boolean,
-  hideObsStatus?: boolean,
   isLargeFontScale: boolean,
   observation: Object,
   onUploadButtonPress: Function,
@@ -34,7 +33,6 @@ const ObsGridItem = ( {
   explore,
   height = "w-[200px]",
   hideObsUploadStatus,
-  hideObsStatus,
   isLargeFontScale,
   observation,
   onUploadButtonPress,
@@ -93,7 +91,6 @@ const ObsGridItem = ( {
             queued={queued}
             progress={uploadProgress}
             white
-            showObsStatus={!hideObsStatus}
           />
         )}
         {displayTaxonName}
