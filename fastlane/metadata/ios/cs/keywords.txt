@@ -1,1 +1,1 @@
-nature,wildlife,plant ID,animal,identify,biodiversity,citizen science,conservation,field guide
+divoká příroda,rostliny,zvíře,identita,biodiverzita,občanská věda,ochrana přírody,terénní průvodce
