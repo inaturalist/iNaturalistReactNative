@@ -5,7 +5,7 @@ import {
   useState
 } from "react";
 import {
-  Gesture, GestureResponderEvent
+  Gesture
 } from "react-native-gesture-handler";
 import {
   Extrapolate,
@@ -14,7 +14,7 @@ import {
   useSharedValue,
   withSpring
 } from "react-native-reanimated";
-import type { CameraProps } from "react-native-vision-camera";
+import type { CameraDevice, CameraProps } from "react-native-vision-camera";
 
 // This is taken from react-native-vision library itself: https://github.com/mrousavy/react-native-vision-camera/blob/9eed89aac6155eba155595f3e006707152550d0d/package/example/src/Constants.ts#L19 https://github.com/mrousavy/react-native-vision-camera/blob/9eed89aac6155eba155595f3e006707152550d0d/package/example/src/CameraPage.tsx#L34
 
@@ -24,9 +24,20 @@ const MAX_ZOOM_FACTOR = 20;
 // Used for calculating the final zoom by pinch gesture
 const SCALE_FULL_ZOOM = 3;
 
-const zoomButtonOptions = [".5", "1", "3"];
-
-const useZoom = ( device: Object ): Object => {
+const useZoom = ( device: CameraDevice ): Object => {
+  const initialZoomTextValue = "1";
+  const zoomButtonOptions = useMemo( () => {
+    const options = [initialZoomTextValue];
+    if ( device.physicalDevices.includes( "ultra-wide-angle-camera" ) ) {
+      // Add a 0.5x zoom option for ultra-wide-angle cameras to front of array
+      options.unshift( ".5" );
+    }
+    if ( device.physicalDevices.includes( "telephoto-camera" ) ) {
+      // Add a 3x zoom option for telephoto cameras to end of array
+      options.push( "3" );
+    }
+    return options;
+  }, [device.physicalDevices] );
   const minZoom = device?.minZoom ?? 1;
   const neutralZoom = device?.neutralZoom ?? 2;
   // this maxZoom zooms to 3x magnification on an iPhone 15 Pro
@@ -40,7 +51,6 @@ const useZoom = ( device: Object ): Object => {
     : neutralZoom;
   const zoom = useSharedValue( initialZoom );
   const startZoom = useSharedValue( initialZoom );
-  const initialZoomTextValue = zoomButtonOptions[1];
   const [zoomTextValue, setZoomTextValue] = useState( initialZoomTextValue );
 
   const zoomButtonValues = [minZoom, neutralZoom, maxZoomWithButton];
@@ -69,7 +79,7 @@ const useZoom = ( device: Object ): Object => {
     setZoomTextValue( initialZoomTextValue );
   };
 
-  const onZoomChange = useCallback( scale => {
+  const onZoomChange = useCallback( ( scale: number ) => {
     // Calculate new zoom value from pinch to zoom (since scale factor is relative to initial pinch)
     const newScale = interpolate(
       scale,
@@ -101,7 +111,8 @@ const useZoom = ( device: Object ): Object => {
     maxZoomWithPinch,
     minZoom,
     startZoom.value,
-    zoom
+    zoom,
+    zoomButtonOptions
   ] );
 
   const animatedProps = useAnimatedProps < CameraProps >(
@@ -113,7 +124,8 @@ const useZoom = ( device: Object ): Object => {
     .runOnJS( true )
     .onStart( ( ) => {
       onZoomStart( );
-    } ).onChange( ( e: GestureResponderEvent ) => {
+    } )
+    .onChange( e => {
       onZoomChange( e.scale );
     } ), [
     onZoomChange,
