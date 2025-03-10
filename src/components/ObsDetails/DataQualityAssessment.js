@@ -73,8 +73,8 @@ const DataQualityAssessment = ( {
 }: Props ): Node => {
   const isResearchGrade = qualityGrade === "research";
   const sectionClass = "flex-row my-[14px] space-x-[11px]";
-  const voteClass = "flex-row mr-[15px] my-[7px] justify-between items-center";
-  const listTextClass = "flex-row shrink space-x-[11px]";
+  const voteClass = "flex-row mr-[15px] my-[7px] justify-between";
+  const listTextClass = "flex-row shrink space-x-[11px] mr-[11px] items-center";
 
   const renderMetricIndicator = metric => {
     const ifAgree = ifMajorityAgree( metric );
