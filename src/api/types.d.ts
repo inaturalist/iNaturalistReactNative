@@ -92,7 +92,7 @@ export interface ApiTaxon {
 
 export interface ApiSpeciesCount {
   count: number;
- taxon: ApiTaxon?;
+  taxon: ApiTaxon?;
 }
 
 export interface ApiUser {
