@@ -1,3 +1,7 @@
+// we don't need this or switchPowerMode.e2e.js.js since they're repetititve
+// with what we're already doing in the signedIn and aiCamera tests
+// and we would see any failures there
+
 import { device } from "detox";
 
 import { iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
