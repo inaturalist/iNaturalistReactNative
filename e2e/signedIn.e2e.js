@@ -6,7 +6,6 @@ import { iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
 import closeOnboarding from "./sharedFlows/closeOnboarding";
 import deleteObservation from "./sharedFlows/deleteObservation";
 import signIn from "./sharedFlows/signIn";
-import switchPowerMode from "./sharedFlows/switchPowerMode";
 import uploadObservation from "./sharedFlows/uploadObservation";
 
 describe( "Signed in user", () => {
@@ -70,12 +69,7 @@ describe( "Signed in user", () => {
     await listToggle.tap();
 
     /*
-    / 2. Switch UI to power user mode
-    */
-    await switchPowerMode();
-
-    /*
-    / 3. Create two observations without evidence
+    / 2. Create two observations without evidence
     */
     const uuid = await createAndUploadObservation( { upload: true } );
     // Create a second b/c later we want to test that the deleted status text
@@ -84,7 +78,7 @@ describe( "Signed in user", () => {
     await createAndUploadObservation( );
 
     /*
-    / 4. Update the observation by adding a comment
+    / 3. Update the observation by adding a comment
     */
     const obsListItem = element( by.id( `MyObservations.obsListItem.${uuid}` ) );
     await obsListItem.tap();
@@ -111,7 +105,7 @@ describe( "Signed in user", () => {
     await waitFor( username ).toBeVisible( ).withTimeout( 10000 );
 
     /*
-    / 5. Delete the two observations without evidence
+    / 4. Delete the two observations without evidence
     */
     await deleteObservationByUUID( uuid, username, { uploaded: true } );
     // It would be nice to test for the "1 observation deleted" status text in
