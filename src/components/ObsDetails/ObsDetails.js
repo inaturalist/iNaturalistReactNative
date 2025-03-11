@@ -301,8 +301,8 @@ const ObsDetails = ( {
           </View>
         </View>
         <View className="bg-white h-full">
-          {renderActivityTab()}
-          {renderDetailsTab()}
+          {renderActivityTab( )}
+          {renderDetailsTab( )}
           {addingActivityItem && (
             <View className="flex-row items-center justify-center p-10">
               <ActivityIndicator size={50} />
