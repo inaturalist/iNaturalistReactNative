@@ -26,6 +26,7 @@ import {
   useSafeAreaInsets
 } from "react-native-safe-area-context";
 import {
+  useScrollToOffset,
   useTranslation
 } from "sharedHooks";
 
@@ -131,15 +132,10 @@ const ObsDetails = ( {
   const { t } = useTranslation( );
   const [invertToWhiteBackground, setInvertToWhiteBackground] = useState( false );
 
-  // Scroll the scrollview to this y position once if set, then unset it.
-  // Could be refactored into a hook if we need this logic elsewher
-  const [oneTimeScrollOffsetY, setOneTimeScrollOffsetY] = useState( 0 );
-  useEffect( ( ) => {
-    if ( oneTimeScrollOffsetY && scrollViewRef?.current ) {
-      scrollViewRef?.current?.scrollTo( { y: oneTimeScrollOffsetY } );
-      setOneTimeScrollOffsetY( 0 );
-    }
-  }, [oneTimeScrollOffsetY] );
+  const {
+    setHeightOfContentAboveSection: setHeightOfContentAboveActivityTab,
+    setOffsetToActivityItem
+  } = useScrollToOffset( scrollViewRef );
 
   // If the user just added an activity item and we're waiting for it to load,
   // scroll to the bottom where it will be visible. Also provides immediate
@@ -179,10 +175,7 @@ const ObsDetails = ( {
         observation={observation}
         openAgreeWithIdSheet={openAgreeWithIdSheet}
         refetchRemoteObservation={refetchRemoteObservation}
-        onLayoutTargetItem={event => {
-          const { layout } = event.nativeEvent;
-          setOneTimeScrollOffsetY( layout.y + layout.height );
-        }}
+        onLayoutTargetItem={setOffsetToActivityItem}
       />
     </HideView>
   );
@@ -228,6 +221,12 @@ const ObsDetails = ( {
           endFillColor="white"
           onScroll={handleScroll}
         >
+          <View
+            onLayout={event => {
+              const { layout } = event.nativeEvent;
+              setHeightOfContentAboveActivityTab( layout );
+            }}
+          />
           <View className="bg-white h-full">
             {renderActivityTab( )}
             {renderDetailsTab( )}
@@ -276,32 +275,41 @@ const ObsDetails = ( {
           uuid={observation?.uuid}
           refetchSubscriptions={refetchSubscriptions}
         />
-        <View className="-mt-[64px]">
-          <ObsMediaDisplayContainer observation={observation} />
-          { currentUser && (
-            <FaveButton
-              observation={observation}
-              currentUser={currentUser}
-              afterToggleFave={refetchRemoteObservation}
-            />
-          ) }
-        </View>
-        <ObsDetailsOverview
-          belongsToCurrentUser={belongsToCurrentUser}
-          isConnected={isConnected}
-          observation={observation}
-        />
-        <View className="bg-white">
-          <Tabs tabs={tabs} activeId={obsDetailsTab} />
-        </View>
         <View className="bg-white h-full">
-          {renderActivityTab( )}
-          {renderDetailsTab( )}
-          {addingActivityItem && (
-            <View className="flex-row items-center justify-center p-10">
-              <ActivityIndicator size={50} />
+          <View
+            onLayout={event => {
+              const { layout } = event.nativeEvent;
+              setHeightOfContentAboveActivityTab( layout );
+            }}
+          >
+            <View className="-mt-[64px]">
+              <ObsMediaDisplayContainer observation={observation} />
+              {currentUser && (
+                <FaveButton
+                  observation={observation}
+                  currentUser={currentUser}
+                  afterToggleFave={refetchRemoteObservation}
+                />
+              )}
             </View>
-          )}
+            <ObsDetailsOverview
+              belongsToCurrentUser={belongsToCurrentUser}
+              isConnected={isConnected}
+              observation={observation}
+            />
+            <View className="bg-white">
+              <Tabs tabs={tabs} activeId={obsDetailsTab} />
+            </View>
+          </View>
+          <View className="bg-white h-full">
+            {renderActivityTab()}
+            {renderDetailsTab()}
+            {addingActivityItem && (
+              <View className="flex-row items-center justify-center p-10">
+                <ActivityIndicator size={50} />
+              </View>
+            )}
+          </View>
         </View>
       </ScrollView>
       {showActivityTab && currentUser && (
