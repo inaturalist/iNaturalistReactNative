@@ -275,41 +275,39 @@ const ObsDetails = ( {
           uuid={observation?.uuid}
           refetchSubscriptions={refetchSubscriptions}
         />
-        <View className="bg-white h-full">
-          <View
-            onLayout={event => {
-              const { layout } = event.nativeEvent;
-              setHeightOfContentAboveActivityTab( layout );
-            }}
-          >
-            <View className="-mt-[64px]">
-              <ObsMediaDisplayContainer observation={observation} />
-              {currentUser && (
-                <FaveButton
-                  observation={observation}
-                  currentUser={currentUser}
-                  afterToggleFave={refetchRemoteObservation}
-                />
-              )}
-            </View>
-            <ObsDetailsOverview
-              belongsToCurrentUser={belongsToCurrentUser}
-              isConnected={isConnected}
-              observation={observation}
-            />
-            <View className="bg-white">
-              <Tabs tabs={tabs} activeId={obsDetailsTab} />
-            </View>
-          </View>
-          <View className="bg-white h-full">
-            {renderActivityTab()}
-            {renderDetailsTab()}
-            {addingActivityItem && (
-              <View className="flex-row items-center justify-center p-10">
-                <ActivityIndicator size={50} />
-              </View>
+        <View
+          onLayout={event => {
+            const { layout } = event.nativeEvent;
+            setHeightOfContentAboveActivityTab( layout );
+          }}
+        >
+          <View className="-mt-[64px]">
+            <ObsMediaDisplayContainer observation={observation} />
+            {currentUser && (
+              <FaveButton
+                observation={observation}
+                currentUser={currentUser}
+                afterToggleFave={refetchRemoteObservation}
+              />
             )}
           </View>
+          <ObsDetailsOverview
+            belongsToCurrentUser={belongsToCurrentUser}
+            isConnected={isConnected}
+            observation={observation}
+          />
+          <View className="bg-white">
+            <Tabs tabs={tabs} activeId={obsDetailsTab} />
+          </View>
+        </View>
+        <View className="bg-white h-full">
+          {renderActivityTab()}
+          {renderDetailsTab()}
+          {addingActivityItem && (
+            <View className="flex-row items-center justify-center p-10">
+              <ActivityIndicator size={50} />
+            </View>
+          )}
         </View>
       </ScrollView>
       {showActivityTab && currentUser && (
