@@ -646,7 +646,7 @@
 				CODE_SIGN_ENTITLEMENTS = iNaturalistReactNative/iNaturalistReactNative.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEVELOPMENT_TEAM = N5J7L4P93Z;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
@@ -773,7 +773,7 @@
 				CODE_SIGN_ENTITLEMENTS = iNaturalistReactNative/iNaturalistReactNativeRelease.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEVELOPMENT_TEAM = N5J7L4P93Z;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				HEADER_SEARCH_PATHS = (
@@ -1053,7 +1053,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = "iNaturalistReactNative-ShareExtension/iNaturalistReactNative-ShareExtension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = N5J7L4P93Z;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "i386 arm64";
@@ -1098,7 +1098,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = N5J7L4P93Z;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "i386 arm64";
