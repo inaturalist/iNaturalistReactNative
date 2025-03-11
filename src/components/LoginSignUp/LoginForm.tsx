@@ -15,7 +15,6 @@ import {
   TextInput,
   TouchableWithoutFeedback
 } from "react-native";
-import { useLayoutPrefs } from "sharedHooks";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 import colors from "styles/tailwindColors";
 
@@ -56,9 +55,6 @@ const LoginForm = ( {
   const [loading, setLoading] = useState( false );
   const [isPasswordVisible, setIsPasswordVisible] = useState( false );
   const { keyboardShown } = useKeyboardInfo( );
-  const {
-    setIsDefaultMode
-  } = useLayoutPrefs( );
 
   const blurFields = () => {
     if ( emailRef.current ) {
@@ -91,8 +87,6 @@ const LoginForm = ( {
       return;
     }
     setLoading( false );
-    // Logged-in users should be in advanced mode by default
-    setIsDefaultMode( false );
 
     if ( params?.prevScreen && params?.projectId ) {
       navigation.navigate( "TabNavigator", {
@@ -109,8 +103,7 @@ const LoginForm = ( {
     }
   }, [
     navigation,
-    params,
-    setIsDefaultMode
+    params
   ] );
 
   const scrollToItem = useCallback( ( ) => {
