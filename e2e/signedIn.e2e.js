@@ -2,7 +2,7 @@ import {
   by, device, element, expect, waitFor
 } from "detox";
 
-import { iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
+import { iNatE2eAfterEach, iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
 import closeOnboarding from "./sharedFlows/closeOnboarding";
 import deleteObservation from "./sharedFlows/deleteObservation";
 import signIn from "./sharedFlows/signIn";
@@ -12,6 +12,7 @@ import uploadObservation from "./sharedFlows/uploadObservation";
 describe( "Signed in user", () => {
   beforeAll( async ( ) => iNatE2eBeforeAll( device ) );
   beforeEach( async ( ) => iNatE2eBeforeEach( device ) );
+  afterEach( async ( ) => iNatE2eAfterEach( device ) );
 
   async function createAndUploadObservation( options = { upload: false } ) {
     const addObsButton = element( by.id( "add-obs-button" ) );

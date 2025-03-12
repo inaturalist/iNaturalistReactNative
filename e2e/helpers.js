@@ -1,5 +1,7 @@
 import { execSync } from "child_process";
 
+const detox = require( "detox" );
+
 export async function iNatE2eBeforeAll( device ) {
   if ( device.getPlatform() === "android" ) {
     await device.launchApp( {
@@ -52,4 +54,43 @@ export async function iNatE2eBeforeEach( device ) {
     // eslint-disable-next-line max-len
     `plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/${device.id}/data/Library/UserConfigurationProfiles/PublicInfo/PublicEffectiveUserSettings.plist`
   );
+}
+
+export function terminateApp( deviceId, bundleId ) {
+  try {
+    console.log( `Attempting to terminate ${bundleId} on device ${deviceId}...` );
+    const result = execSync( `/usr/bin/xcrun simctl terminate ${deviceId} ${bundleId}` );
+    console.log( "App terminated successfully." );
+    console.log( result.toString() );
+  } catch ( error ) {
+    if ( error.stderr && error.stderr.toString().includes( "found nothing to terminate" ) ) {
+      console.log( "App is not running, nothing to terminate." );
+    } else {
+      console.error( "Error during app termination:", error.message );
+      throw error;
+    }
+  }
+}
+
+export async function iNatE2eAfterEach( ) {
+  const { device } = detox;
+
+  if ( !device ) {
+    console.log( "Device is undefined, skipping app termination" );
+    return;
+  }
+
+  // Only try to get deviceId for iOS
+  if ( device.getPlatform && await device.getPlatform() === "ios" ) {
+    try {
+      const deviceId = await device.deviceId;
+      const bundleId = "org.inaturalist.iNaturalistMobile";
+
+      if ( deviceId && bundleId ) {
+        terminateApp( deviceId, bundleId );
+      }
+    } catch ( error ) {
+      console.log( "Could not get device ID:", error.message );
+    }
+  }
 }

@@ -2,7 +2,7 @@ import {
   by, device, element, waitFor
 } from "detox";
 
-import { iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
+import { iNatE2eAfterEach, iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
 import closeOnboarding from "./sharedFlows/closeOnboarding";
 import deleteObservation from "./sharedFlows/deleteObservation";
 import signIn from "./sharedFlows/signIn";
@@ -14,6 +14,7 @@ const TIMEOUT = 10_000;
 describe( "AICamera", () => {
   beforeAll( async () => iNatE2eBeforeAll( device ) );
   beforeEach( async () => iNatE2eBeforeEach( device ) );
+  afterEach( async () => iNatE2eAfterEach( device ) );
 
   it(
     "should open the ai camera, take photo, select a suggestion, upload and delete observation",
