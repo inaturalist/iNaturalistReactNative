@@ -48,7 +48,7 @@ const SimpleTaxonGridItem = ( {
       <Image
         source={source}
         className="grow aspect-square"
-        testID="ObsList.photo"
+        testID="TaxonGridItem.photo"
         accessibilityIgnoresInvertColors
         fadeDuration={0}
       />
