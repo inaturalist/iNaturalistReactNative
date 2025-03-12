@@ -24,11 +24,13 @@ const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get( );
 const DELETION_STARTED_PROGRESS = 0.25;
 
 type Props = {
+  numUnuploadedObservations: number,
   handleSyncButtonPress: Function
 }
 
 const SimpleUploadBannerContainer = ( {
-  handleSyncButtonPress
+  handleSyncButtonPress,
+  numUnuploadedObservations
 }: Props ): Node => {
   const numOfUserObservations = zustandStorage.getItem( "numOfUserObservations" );
   const currentDeleteCount = useStore( state => state.currentDeleteCount );
@@ -36,7 +38,6 @@ const SimpleUploadBannerContainer = ( {
   const uploadMultiError = useStore( state => state.multiError );
   const uploadErrorsByUuid = useStore( state => state.errorsByUuid );
   const initialNumObservationsInQueue = useStore( state => state.initialNumObservationsInQueue );
-  const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
   const totalToolbarProgress = useStore( state => state.totalToolbarProgress );
   const uploadStatus = useStore( state => state.uploadStatus );
   const syncingStatus = useStore( state => state.syncingStatus );
