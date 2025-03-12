@@ -1,10 +1,10 @@
-import type { ApiSpeciesCount } from "api/types";
 import classNames from "classnames";
 import { Body4, DisplayTaxonName } from "components/SharedComponents";
 import {
   Image, LinearGradient, Pressable, View
 } from "components/styledComponents";
 import React from "react";
+import type { RealmTaxon } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 
 const imageClassNames = [
@@ -16,6 +16,11 @@ const imageClassNames = [
   "rounded-2xl"
 ];
 
+interface SpeciesCount {
+  count: number,
+  taxon: RealmTaxon
+}
+
 export interface Props {
   accessibleName: string;
   navToTaxonDetails: ( ) => void;
@@ -23,7 +28,7 @@ export interface Props {
     uri: string
   };
   style?: Object;
-  speciesCount: ApiSpeciesCount;
+  speciesCount: SpeciesCount;
 }
 
 const SimpleTaxonGridItem = ( {
