@@ -64,11 +64,6 @@ export interface RealmTaxon extends RealmObject {
   taxonPhotos?: RealmTaxonPhoto[];
 }
 
-export interface RealmSpeciesCount extends RealmObject {
-  count: number;
-  taxon: RealmTaxon;
-}
-
 export interface RealmUser extends RealmObject {
   iconUrl?: string;
   iconUrl?: string;

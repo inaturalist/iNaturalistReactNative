@@ -1,10 +1,8 @@
 import { fetchSpeciesCounts } from "api/observations";
 import { RealmContext } from "providers/contexts.ts";
 import React, { useEffect, useState } from "react";
-import Realm from "realm";
-import SpeciesCount from "realmModels/SpeciesCount";
 import Taxon from "realmModels/Taxon";
-import type { RealmObservation, RealmSpeciesCount } from "realmModels/types";
+import type { RealmObservation, RealmTaxon } from "realmModels/types";
 import { useInfiniteScroll } from "sharedHooks";
 import { zustandStorage } from "stores/useStore";
 
@@ -15,6 +13,11 @@ import MyObservationsSimple, {
 } from "./MyObservationsSimple";
 
 const { useRealm } = RealmContext;
+
+interface SpeciesCount {
+  count: number,
+  taxon: RealmTaxon
+  }
 
 const MyObservationsSimpleContainer = ( {
   currentUser,
@@ -43,7 +46,7 @@ const MyObservationsSimpleContainer = ( {
   const realm = useRealm();
 
   let numTotalTaxaLocal: number | undefined;
-  const localObservedSpeciesCount: Realm.Results | Array<RealmSpeciesCount> = [];
+  const localObservedSpeciesCount: Array<SpeciesCount> = [];
   if ( !currentUser ) {
     // Calculate obs and leaf taxa counts from local observations
     const distinctTaxonObs = realm.objects<RealmObservation>( "Observation" )
@@ -136,8 +139,8 @@ const MyObservationsSimpleContainer = ( {
       numTotalObservations={numOfUserObservations}
       taxa={
         currentUser
-          ? remoteObservedTaxaCounts.map( tc => SpeciesCount.mapApiToRealm( tc ) )
-          : localObservedSpeciesCount.map( tc => SpeciesCount.mapApiToRealm( tc ) )
+          ? remoteObservedTaxaCounts
+          : localObservedSpeciesCount
       }
       activeTab={activeTab}
       setActiveTab={setActiveTab}

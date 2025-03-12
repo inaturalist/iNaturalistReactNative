@@ -11,7 +11,6 @@ import ObservationSound from "./ObservationSound";
 import Photo from "./Photo";
 import QueueItem from "./QueueItem";
 import Sound from "./Sound";
-import SpeciesCount from "./SpeciesCount";
 import Taxon from "./Taxon";
 import TaxonPhoto from "./TaxonPhoto";
 import User from "./User";
@@ -29,7 +28,6 @@ export default {
     Photo,
     QueueItem,
     Sound,
-    SpeciesCount,
     Taxon,
     TaxonPhoto,
     User,

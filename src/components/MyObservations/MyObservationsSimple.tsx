@@ -19,11 +19,9 @@ import {
 import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList.tsx";
 import { View } from "components/styledComponents";
 import React, { useCallback, useMemo } from "react";
-import Realm from "realm";
 import Photo from "realmModels/Photo";
 import type {
   RealmObservation,
-  RealmSpeciesCount,
   RealmTaxon,
   RealmUser
 } from "realmModels/types";
@@ -36,6 +34,11 @@ import LoginSheet from "./LoginSheet";
 import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
 import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
 import StatTab from "./StatTab";
+
+interface SpeciesCount {
+count: number,
+taxon: RealmTaxon
+}
 
 export interface Props {
   activeTab: string;
@@ -58,7 +61,7 @@ export interface Props {
   setShowLoginSheet: ( newValue: boolean ) => void;
   showLoginSheet: boolean;
   showNoResults: boolean;
-  taxa?: RealmTaxon[] | Realm.Results;
+  taxa?: SpeciesCount[];
   toggleLayout: ( ) => void;
   fetchMoreTaxa: ( ) => void;
   isFetchingTaxa?: boolean;
@@ -68,7 +71,9 @@ export interface Props {
 interface TaxaFlashListRenderItemProps {
   // I'm pretty sure this is some kind of bug ~~~~kueda 20250108
   // eslint-disable-next-line react/no-unused-prop-types
-  item: RealmSpeciesCount;
+  count: number,
+    // eslint-disable-next-line react/no-unused-prop-types
+  taxon: RealmTaxon;
 }
 
 export const OBSERVATIONS_TAB = "observations";
@@ -299,7 +304,7 @@ const MyObservationsSimple = ( {
             hideLoadingWheel
             isConnected={isConnected}
             keyExtractor={(
-              item: RealmSpeciesCount
+              item: SpeciesCount
             ) => `${item.taxon.id}-${item?.taxon?.default_photo?.url || "no-photo"}`}
             layout="grid"
             numColumns={numColumns}
