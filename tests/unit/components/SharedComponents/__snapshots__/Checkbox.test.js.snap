@@ -278,7 +278,7 @@ exports[`Checkbox renders reliably being checked 1`] = `
           ]
         }
       >
-        
+        
       </Text>
     </View>
   </View>
