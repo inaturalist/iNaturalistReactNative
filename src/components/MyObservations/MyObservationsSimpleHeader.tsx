@@ -25,6 +25,7 @@ import SimpleUploadBannerContainer from "./SimpleUploadBannerContainer";
 
 export interface Props {
   currentUser?: RealmUser;
+  numUnuploadedObservations: number;
   handleSyncButtonPress: ( ) => void;
   isConnected: boolean;
 }
@@ -32,7 +33,8 @@ export interface Props {
 const MyObservationsSimpleHeader = ( {
   currentUser,
   handleSyncButtonPress,
-  isConnected
+  isConnected,
+  numUnuploadedObservations
 }: Props ) => {
   const { t } = useTranslation( );
 
@@ -42,7 +44,6 @@ const MyObservationsSimpleHeader = ( {
   const currentDeleteCount = useStore( state => state.currentDeleteCount );
   const uploadErrorsByUuid = useStore( state => state.errorsByUuid );
   const initialNumObservationsInQueue = useStore( state => state.initialNumObservationsInQueue );
-  const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
   const uploadStatus = useStore( state => state.uploadStatus );
   const syncingStatus = useStore( state => state.syncingStatus );
   const initialNumDeletionsInQueue = useStore( state => state.initialNumDeletionsInQueue );

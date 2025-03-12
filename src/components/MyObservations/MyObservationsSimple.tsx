@@ -230,6 +230,7 @@ const MyObservationsSimple = ( {
         <MyObservationsSimpleHeader
           currentUser={currentUser}
           isConnected={isConnected}
+          numUnuploadedObservations={numUnuploadedObservations}
           handleSyncButtonPress={handleSyncButtonPress}
         />
         <Tabs
