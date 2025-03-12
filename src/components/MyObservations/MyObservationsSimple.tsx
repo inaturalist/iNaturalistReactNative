@@ -41,7 +41,7 @@ export interface Props {
   currentUser?: RealmUser;
   handleIndividualUploadPress: ( uuid: string ) => void;
   handlePullToRefresh: ( ) => void;
-  handleSyncButtonPress: ( ) => void;
+  handleSyncButtonPress: ( _p: { unuploadedObsMissingBasicsIDs: string[] } ) => void;
   isConnected: boolean;
   isFetchingNextPage: boolean;
   layout: "list" | "grid";
@@ -241,7 +241,7 @@ const MyObservationsSimple = ( {
           isConnected={isConnected}
           numUploadableObservations={numUploadableObservations}
           handleSyncButtonPress={() => {
-            handleSyncButtonPress( unuploadedObsMissingBasicsIDs );
+            handleSyncButtonPress( { unuploadedObsMissingBasicsIDs } );
           }}
         />
         <Tabs
