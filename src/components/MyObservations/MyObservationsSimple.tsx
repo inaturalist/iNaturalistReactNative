@@ -45,7 +45,7 @@ export interface Props {
   currentUser?: RealmUser;
   handleIndividualUploadPress: ( uuid: string ) => void;
   handlePullToRefresh: ( ) => void;
-  handleSyncButtonPress: ( ) => void;
+  handleSyncButtonPress: ( _p: { unuploadedObsMissingBasicsIDs: string[] } ) => void;
   isConnected: boolean;
   isFetchingNextPage: boolean;
   layout: "list" | "grid";
@@ -188,9 +188,18 @@ const MyObservationsSimple = ( {
     taxa?.length
   ] );
 
+  const unuploadedObsMissingBasicsIDs = useMemo( () => (
+    observations
+      .filter( o => o.needsSync() && o.missingBasics() )
+      .map( o => o.uuid )
+  ), [observations] );
+
+  const numUnuploadedObsMissingBasics = unuploadedObsMissingBasicsIDs.length;
   const obsMissingBasicsExist = useMemo( ( ) => (
-    numUnuploadedObservations > 0 && !!observations.find( o => o.needsSync() && o.missingBasics( ) )
-  ), [numUnuploadedObservations, observations] );
+    numUnuploadedObservations > 0 && numUnuploadedObsMissingBasics > 0
+  ), [numUnuploadedObservations, numUnuploadedObsMissingBasics] );
+
+  const numUploadableObservations = numUnuploadedObservations - numUnuploadedObsMissingBasics;
 
   const renderTabComponent = ( { id } ) => (
     <StatTab
@@ -233,7 +242,10 @@ const MyObservationsSimple = ( {
         <MyObservationsSimpleHeader
           currentUser={currentUser}
           isConnected={isConnected}
-          handleSyncButtonPress={handleSyncButtonPress}
+          numUploadableObservations={numUploadableObservations}
+          handleSyncButtonPress={() => {
+            handleSyncButtonPress( { unuploadedObsMissingBasicsIDs } );
+          }}
         />
         <Tabs
           activeColor={String( colors?.inatGreen )}

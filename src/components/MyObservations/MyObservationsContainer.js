@@ -127,13 +127,16 @@ const MyObservationsContainer = ( ): Node => {
     return currentUser;
   }, [currentUser] );
 
-  const handleSyncButtonPress = useCallback( ( ) => {
+  const handleSyncButtonPress = useCallback( options => {
+    const { unuploadedObsMissingBasicsIDs } = options || { };
     if ( !confirmLoggedIn( ) ) { return; }
     if ( !confirmInternetConnection( ) ) { return; }
 
     startManualSync( );
+    syncManually( { skipSomeUploads: unuploadedObsMissingBasicsIDs } );
   }, [
     startManualSync,
+    syncManually,
     confirmInternetConnection,
     confirmLoggedIn
   ] );

@@ -24,11 +24,13 @@ const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get( );
 const DELETION_STARTED_PROGRESS = 0.25;
 
 type Props = {
+  numUploadableObservations: number,
   handleSyncButtonPress: Function
 }
 
 const SimpleUploadBannerContainer = ( {
-  handleSyncButtonPress
+  handleSyncButtonPress,
+  numUploadableObservations
 }: Props ): Node => {
   const numOfUserObservations = zustandStorage.getItem( "numOfUserObservations" );
   const currentDeleteCount = useStore( state => state.currentDeleteCount );
@@ -36,7 +38,6 @@ const SimpleUploadBannerContainer = ( {
   const uploadMultiError = useStore( state => state.multiError );
   const uploadErrorsByUuid = useStore( state => state.errorsByUuid );
   const initialNumObservationsInQueue = useStore( state => state.initialNumObservationsInQueue );
-  const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
   const totalToolbarProgress = useStore( state => state.totalToolbarProgress );
   const uploadStatus = useStore( state => state.uploadStatus );
   const syncingStatus = useStore( state => state.syncingStatus );
@@ -63,7 +64,7 @@ const SimpleUploadBannerContainer = ( {
 
   const automaticSyncInProgress = syncingStatus === AUTOMATIC_SYNC_IN_PROGRESS;
   const manualSyncInProgress = syncingStatus === MANUAL_SYNC_IN_PROGRESS;
-  const pendingUpload = uploadStatus === UPLOAD_PENDING && numUnuploadedObservations > 0;
+  const pendingUpload = uploadStatus === UPLOAD_PENDING && numUploadableObservations > 0;
   const uploadInProgress = uploadStatus === UPLOAD_IN_PROGRESS && numUploadsAttempted > 0;
   const uploadsComplete = uploadStatus === UPLOAD_COMPLETE && initialNumObservationsInQueue > 0;
   const totalUploadErrors = Object.keys( uploadErrorsByUuid ).length;
@@ -104,7 +105,7 @@ const SimpleUploadBannerContainer = ( {
     }
 
     if ( pendingUpload ) {
-      return t( "Upload-x-observations", { count: numUnuploadedObservations } );
+      return t( "Upload-x-observations", { count: numUploadableObservations } );
     }
 
     if ( uploadInProgress ) {
@@ -124,7 +125,7 @@ const SimpleUploadBannerContainer = ( {
     deletionsComplete,
     initialNumDeletionsInQueue,
     numUploadsAttempted,
-    numUnuploadedObservations,
+    numUploadableObservations,
     pendingUpload,
     manualSyncInProgress,
     t,
