@@ -196,7 +196,7 @@ const PhotosSection = ( {
         showModal={mediaViewerVisible}
         onClose={( ) => setMediaViewerVisible( false )}
         uri={observationPhoto}
-        bestTaxonPhotos={observationPhotos}
+        photos={observationPhotos}
       />
     </View>
   );
