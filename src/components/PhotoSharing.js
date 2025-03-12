@@ -54,7 +54,9 @@ const PhotoSharing = ( ): Node => {
       return;
     }
 
-    // Move to ObsEdit screen (new observation, with shared photos).
+    // when sharing, we need to reset zustand like we do while
+    // navigating through the AddObsModal
+    resetObservationFlowSlice( );
 
     // Create a new observation with multiple shared photos (one or more)
     let photoUris;

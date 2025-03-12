@@ -51,7 +51,7 @@ const Buttons = ( ) => {
       <Button
         className="mb-2"
         level="primary"
-        text="Rest shown state"
+        text="Reset shown state"
         onPress={() => {
           resetShownOnce( );
           setModalIndex( -1 );

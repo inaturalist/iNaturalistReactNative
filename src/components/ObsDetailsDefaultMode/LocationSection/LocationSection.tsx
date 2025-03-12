@@ -66,13 +66,13 @@ const LocationSection = ( {
             />
           </View>
         )}
-        {observation.obscured && (
+        {observation?.obscured && (
           <ObscurationExplanation
             textClassName="mt-[10px]"
             observation={observation}
             currentUser={currentUser}
           />
-        ) }
+        )}
       </View>
     </View>
   );

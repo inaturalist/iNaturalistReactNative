@@ -10,9 +10,8 @@ import {
 } from "components/OnboardingModal/PivotCards.tsx";
 import {
   Body1,
-  Body3,
-  INatIcon,
   InfiniteScrollLoadingWheel,
+  OfflineNotice,
   Tabs,
   ViewWrapper
 } from "components/SharedComponents";
@@ -32,6 +31,7 @@ import colors from "styles/tailwindColors";
 import Announcements from "./Announcements";
 import LoginSheet from "./LoginSheet";
 import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
+import SimpleErrorHeader from "./SimpleErrorHeader";
 import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
 import StatTab from "./StatTab";
 
@@ -66,6 +66,7 @@ export interface Props {
   fetchMoreTaxa: ( ) => void;
   isFetchingTaxa?: boolean;
   justFinishedSignup?: boolean;
+  refetchTaxa: ( ) => void;
 }
 
 interface TaxaFlashListRenderItemProps {
@@ -104,7 +105,8 @@ const MyObservationsSimple = ( {
   toggleLayout,
   fetchMoreTaxa,
   isFetchingTaxa,
-  justFinishedSignup = false
+  justFinishedSignup = false,
+  refetchTaxa
 }: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -192,29 +194,6 @@ const MyObservationsSimple = ( {
     numUnuploadedObservations > 0 && !!observations.find( o => o.needsSync() && o.missingBasics( ) )
   ), [numUnuploadedObservations, observations] );
 
-  const renderObservationsHeader = ( ) => {
-    if ( !currentUser ) {
-      return null;
-    }
-    return (
-      <>
-        { obsMissingBasicsExist && (
-          <View className="flex-row items-center px-[32px] py-[20px]">
-            <INatIcon
-              name="triangle-exclamation"
-              color={String( colors?.warningRed )}
-              size={22}
-            />
-            <Body3 className="shrink ml-[20px]">
-              { t( "Observations-need-location-date--warning" ) }
-            </Body3>
-          </View>
-        ) }
-        <Announcements isConnected={isConnected} />
-      </>
-    );
-  };
-
   const renderTabComponent = ( { id } ) => (
     <StatTab
       id={id}
@@ -238,6 +217,17 @@ const MyObservationsSimple = ( {
     }
     return data;
   }, [observations, layout] );
+
+  const renderOfflineNotice = ( ) => {
+    if ( isConnected === false ) {
+      return (
+        <View className="flex-1 items-center justify-center">
+          <OfflineNotice onPress={refetchTaxa} />
+        </View>
+      );
+    }
+    return null;
+  };
 
   return (
     <>
@@ -274,6 +264,7 @@ const MyObservationsSimple = ( {
               hideLoadingWheel
               hideMetadata
               hideObsUploadStatus={!currentUser}
+              hideObsStatus
               isFetchingNextPage={isFetchingNextPage}
               isConnected={isConnected}
               obsListKey="MyObservations"
@@ -285,7 +276,9 @@ const MyObservationsSimple = ( {
               showObservationsEmptyScreen
               showNoResults={showNoResults}
               testID="MyObservationsAnimatedList"
-              renderHeader={renderObservationsHeader}
+              renderHeader={currentUser && ( obsMissingBasicsExist
+                ? <SimpleErrorHeader isConnected={isConnected} />
+                : <Announcements isConnected={isConnected} /> )}
             />
             <ObservationsViewBar
               gridFirst
@@ -295,7 +288,7 @@ const MyObservationsSimple = ( {
             />
           </>
         ) }
-        { activeTab === TAXA_TAB && (
+        { ( activeTab === TAXA_TAB && taxa.length > 0 ) && (
           <CustomFlashList
             canFetch={!!currentUser}
             contentContainerStyle={taxaFlashListStyle}
@@ -318,7 +311,8 @@ const MyObservationsSimple = ( {
             refreshing={isFetchingTaxa}
             ListFooterComponent={renderTaxaFooter}
           />
-        ) }
+        )}
+        { ( activeTab === TAXA_TAB && taxa.length === 0 ) && renderOfflineNotice( )}
       </ViewWrapper>
       {showLoginSheet && <LoginSheet setShowLoginSheet={setShowLoginSheet} />}
       {/* These four cards should show only in default mode */}

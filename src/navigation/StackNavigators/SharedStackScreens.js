@@ -24,8 +24,16 @@ import {
 import type { Node } from "react";
 import React from "react";
 
-const suggestionsTitle = ( ) => <Heading4>{t( "ADD-AN-ID" )}</Heading4>;
-const taxonSearchTitle = ( ) => <Heading4>{t( "SEARCH" )}</Heading4>;
+const suggestionsTitle = () => (
+  <Heading4 accessibilityRole="header" numberOfLines={1}>
+    {t( "ADD-AN-ID" )}
+  </Heading4>
+);
+const taxonSearchTitle = () => (
+  <Heading4 accessibilityRole="header" numberOfLines={1}>
+    {t( "SEARCH" )}
+  </Heading4>
+);
 
 const Stack = createNativeStackNavigator( );
 

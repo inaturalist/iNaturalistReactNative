@@ -18,6 +18,13 @@ const OnboardingModalBase = ( {
     <ViewWrapper wrapperClassName="bg-white/0">
       <StatusBar barStyle="light-content" backgroundColor="black" />
       <View className="flex-1 relative">
+        <View className="flex-1 justify-center items-center">
+          <View
+            className="bg-white rounded-3xl p-7 m-7"
+          >
+            {children}
+          </View>
+        </View>
         <View className="absolute right-0 m-3">
           <INatIconButton
             icon="close"
@@ -29,13 +36,6 @@ const OnboardingModalBase = ( {
           />
         </View>
 
-        <View className="flex-1 justify-center items-center">
-          <View
-            className="bg-white rounded-3xl p-7 m-7"
-          >
-            {children}
-          </View>
-        </View>
       </View>
     </ViewWrapper>
   );

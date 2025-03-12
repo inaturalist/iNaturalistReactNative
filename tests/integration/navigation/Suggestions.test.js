@@ -96,6 +96,14 @@ beforeAll( async () => {
   jest.useFakeTimers( );
 } );
 
+beforeEach( async () => {
+  useStore.setState( {
+    layout: {
+      isDefaultMode: false
+    }
+  } );
+} );
+
 describe( "Suggestions", ( ) => {
   global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
   const actor = userEvent.setup( );

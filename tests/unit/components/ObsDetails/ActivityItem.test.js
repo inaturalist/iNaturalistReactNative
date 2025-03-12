@@ -13,6 +13,11 @@ const mockIdentification = factory( "LocalIdentification", {
   taxon: mockTaxon
 } );
 
+const mockIdentificationWithHiddenContent = {
+  ...mockIdentification,
+  hidden: true
+};
+
 describe( "ActivityItem", () => {
   it( "renders name of identification taxon", async ( ) => {
     renderComponent(
@@ -119,5 +124,27 @@ describe( "ActivityItem", () => {
     await waitFor( ( ) => {
       expect( idWithdrawn ).toBeTruthy( );
     } );
+  } );
+
+  it( "should not show hidden content", async ( ) => {
+    renderComponent(
+      <ActivityItem
+        currentUserId="000"
+        item={mockIdentificationWithHiddenContent}
+      />
+    );
+    const activityItem = screen.queryByTestId( "ObsDetails.ActivityItem" );
+    expect( activityItem ).toBeFalsy( );
+  } );
+
+  it( "should show unhidden content", async ( ) => {
+    renderComponent(
+      <ActivityItem
+        currentUserId="000"
+        item={mockIdentification}
+      />
+    );
+    const activityItem = screen.queryByTestId( "ObsDetails.ActivityItem" );
+    expect( activityItem ).toBeVisible( );
   } );
 } );

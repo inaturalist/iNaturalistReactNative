@@ -48,6 +48,8 @@ const ActivityItem = ( {
     ? item.current
     : undefined;
 
+  const isHidden = item.hidden;
+
   const idWithdrawn = isCurrent !== undefined && !isCurrent;
   const showAgreeButton = user?.id !== currentUserId
     && userAgreedId !== taxon?.id
@@ -64,8 +66,14 @@ const ActivityItem = ( {
     } )
   );
 
+  // we're doing this filtering directly in useRemoteObservation and useLocalObservation
+  // to make sure we're not displaying hidden content, but this is an extra safeguard
+  if ( isHidden ) {
+    return null;
+  }
+
   return (
-    <View className="flex-column">
+    <View className="flex-column" testID="ObsDetails.ActivityItem">
       <View className="mx-[15px] pb-[7px]">
         <ActivityHeaderContainer
           item={item}
@@ -77,7 +85,7 @@ const ActivityItem = ( {
           belongsToCurrentUser={belongsToCurrentUser}
         />
         {taxon && (
-          <View className="flex-row items-center justify-between mr-[23px] mb-4 mt-1">
+          <View className="flex-row items-center justify-between mb-4 mt-1">
             <DisplayTaxon
               taxon={taxon}
               handlePress={navToTaxonDetails}

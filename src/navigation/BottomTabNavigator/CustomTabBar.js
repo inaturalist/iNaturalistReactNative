@@ -1,6 +1,6 @@
 // @flow
 import classNames from "classnames";
-import AddObsButton from "components/AddObsModal/AddObsButton";
+import AddObsButton from "components/AddObsModal/AddObsButton.tsx";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";

@@ -50,6 +50,14 @@ jest.mock( "sharedHooks/useSuggestions/useOnlineSuggestions.ts", ( ) => jest.fn(
   }
 } ) ) );
 
+beforeEach( async () => {
+  useStore.setState( {
+    layout: {
+      isDefaultMode: false
+    }
+  } );
+} );
+
 describe( "MediaViewer navigation", ( ) => {
   const actor = userEvent.setup( );
 
