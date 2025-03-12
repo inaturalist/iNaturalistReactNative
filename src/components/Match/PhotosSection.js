@@ -10,7 +10,6 @@ import _, { compact } from "lodash";
 import React, { useEffect, useState } from "react";
 import Photo from "realmModels/Photo";
 import getImageDimensions from "sharedHelpers/getImageDimensions";
-import { useTaxon } from "sharedHooks";
 
 type Props = {
   representativePhoto: Object,
@@ -28,8 +27,7 @@ const PhotosSection = ( {
   const [displayPortraitLayout, setDisplayPortraitLayout] = useState( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
 
-  const { taxon: localTaxon } = useTaxon( taxon );
-  const localTaxonPhotos = localTaxon?.taxonPhotos;
+  const localTaxonPhotos = taxon?.taxonPhotos;
   const observationPhoto = obsPhotos?.[0]?.photo?.url
   || obsPhotos?.[0]?.photo?.localFilePath;
 
@@ -39,7 +37,7 @@ const PhotosSection = ( {
       : [taxon?.defaultPhoto]
   );
   // don't show the iconic taxon photo which is a mashup of 9 bestTaxonPhotos
-  if ( localTaxon?.isIconic ) {
+  if ( taxon?.isIconic ) {
     taxonPhotos.splice( 0 );
   }
 

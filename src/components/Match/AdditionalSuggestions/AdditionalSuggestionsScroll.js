@@ -76,7 +76,6 @@ const AdditionalSuggestionsScroll = ( {
               <SuggestionsResult
                 key={`measuring-${taxonId}`}
                 confidence={confidence}
-                fetchRemote={false}
                 handlePress={undefined}
                 taxon={suggestion?.taxon}
                 updateMaxHeight={height => updateMaxHeight( height, taxonId )}
@@ -95,7 +94,6 @@ const AdditionalSuggestionsScroll = ( {
     return (
       <SuggestionsResult
         confidence={confidence}
-        fetchRemote={false}
         handlePress={( ) => handleSuggestionPress( suggestion )}
         taxon={suggestion?.taxon}
         updateMaxHeight={undefined}

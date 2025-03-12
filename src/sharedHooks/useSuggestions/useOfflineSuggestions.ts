@@ -91,10 +91,12 @@ const useOfflineSuggestions = (
         iconicTaxonName = iconicTaxaLookup[iconicTaxonId];
       }
 
+      const id = prediction.taxon_id;
+
       return {
         combined_score: prediction.combined_score,
         taxon: {
-          id: prediction.taxon_id,
+          id,
           name: prediction.name,
           rank_level: prediction.rank_level,
           iconic_taxon_name: iconicTaxonName

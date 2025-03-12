@@ -358,6 +358,24 @@ const MatchContainer = ( ) => {
     exitObservationFlow( );
   };
 
+  const taxonIds = otherSuggestions?.map( suggestion => suggestion.taxon.id );
+  const localTaxa = realm.objects( "Taxon" ).filtered( "id IN $0", taxonIds );
+
+  // show local taxon photos in additional suggestions list if they're available
+  const suggestionsWithLocalTaxonPhotos = otherSuggestions.map( suggestion => {
+    const localTaxon = localTaxa.find( local => local.id === suggestion.taxon.id );
+
+    if ( localTaxon ) {
+      return {
+        ...suggestion,
+        taxon: localTaxon
+      };
+    }
+
+    // don't do anything if there are no local suggestions
+    return suggestion;
+  } );
+
   return (
     <>
       <ViewWrapper isDebug={isDebug}>
@@ -369,7 +387,7 @@ const MatchContainer = ( ) => {
           navToTaxonDetails={navToTaxonDetails}
           handleAddLocationPressed={handleAddLocationPressed}
           topSuggestion={topSuggestion}
-          otherSuggestions={otherSuggestions}
+          otherSuggestions={suggestionsWithLocalTaxonPhotos}
           suggestionsLoading={suggestionsLoading}
           scrollRef={scrollRef}
           iconicTaxon={iconicTaxon}
