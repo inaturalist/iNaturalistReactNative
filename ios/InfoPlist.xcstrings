@@ -3,7 +3,7 @@
   "strings" : {
     "CFBundleDisplayName" : {
       "comment" : "Bundle display name",
-      "shouldTranslate" : false,
+      "extractionState" : "extracted_with_value",
       "localizations" : {
         "af" : {
           "stringUnit" : {
@@ -419,12 +419,6 @@
             "value" : "iNat Next"
           }
         },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "new",
@@ -461,11 +455,12 @@
             "value" : "iNat Next"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "CFBundleName" : {
       "comment" : "Bundle name",
-      "shouldTranslate" : false,
+      "extractionState" : "extracted_with_value",
       "localizations" : {
         "af" : {
           "stringUnit" : {
@@ -881,12 +876,6 @@
             "value" : "iNaturalistReactNative"
           }
         },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "new",
@@ -923,10 +912,12 @@
             "value" : "iNaturalistReactNative"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "NSAppleMusicUsageDescription" : {
       "comment" : "Description of why we ask for permission to access the music library.",
+      "extractionState" : "extracted_with_value",
       "localizations" : {
         "af" : {
           "stringUnit" : {
@@ -1340,12 +1331,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "เพิ่มเสียงที่บันทึกไว้ไปยังการสังเกตของคุณ"
-          }
-        },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
           }
         },
         "tr" : {
@@ -1804,12 +1789,6 @@
             "value" : "Camera access lets you use the AI Camera and take photos."
           }
         },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1850,468 +1829,464 @@
     },
     "NSHumanReadableCopyright" : {
       "comment" : "Copyright (human-readable)",
-      "shouldTranslate" : false,
+      "extractionState" : "extracted_with_value",
       "localizations" : {
         "af" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "ar" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "be" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "bg" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "br" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "bs" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "ca" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "cs" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "da" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "(c) iNaturalist"
+            "value" : ""
           }
         },
         "en-AU" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "en-GB" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "en-NZ" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "eo" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "es-AR" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "es-CO" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "es-CR" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "es-MX" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "et" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "eu" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "fa" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "fil" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "fr-CA" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "gd" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "gl" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "gu" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "he" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "hi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "hr" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "hu" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "id" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "kk" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "kn" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "lb" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "lt" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "lv" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "mi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "mk" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "ml" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "mr" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "ms" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "nb-NO" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "pa" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "sat" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "si" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "sq" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "sr" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "sw" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "ta" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "te" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "th" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "(c) iNaturalist"
-          }
-        },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "needs_review",
             "value" : "(c) iNaturalist"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "NSLocationAlwaysAndWhenInUseUsageDescription" : {
       "comment" : "Privacy - Location Always and When In Use Usage Description",
+      "extractionState" : "extracted_with_value",
       "localizations" : {
         "af" : {
           "stringUnit" : {
@@ -2727,12 +2702,6 @@
             "value" : "เราไม่ได้ร้องขอสิทธิ์นี้โดยเจตนา หากคุณพบข้อความนี้ กรุณาถ่ายภาพหน้าจอและส่งอีเมลไปที่ help@inaturalist.org"
           }
         },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2773,6 +2742,7 @@
     },
     "NSLocationWhenInUseUsageDescription" : {
       "comment" : "Privacy - Location When In Use Usage Description",
+      "extractionState" : "extracted_with_value",
       "localizations" : {
         "af" : {
           "stringUnit" : {
@@ -3188,12 +3158,6 @@
             "value" : "เพิ่มพิกัด GPS ให้กับการสังเกต แสดงตำแหน่งของคุณบนแผนที่ และอื่น ๆ"
           }
         },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3234,6 +3198,7 @@
     },
     "NSMicrophoneUsageDescription" : {
       "comment" : "Privacy - Microphone Usage Description",
+      "extractionState" : "extracted_with_value",
       "localizations" : {
         "af" : {
           "stringUnit" : {
@@ -3649,12 +3614,6 @@
             "value" : "บันทึกเสียงจากธรรมชาติ"
           }
         },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3695,6 +3654,7 @@
     },
     "NSPhotoLibraryAddUsageDescription" : {
       "comment" : "Privacy - Photo Library Additions Usage Description",
+      "extractionState" : "extracted_with_value",
       "localizations" : {
         "af" : {
           "stringUnit" : {
@@ -4110,12 +4070,6 @@
             "value" : "ส่งออกภาพถ่ายจาก iNaturalist Next ไปยังคลังภาพของคุณ"
           }
         },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4156,6 +4110,7 @@
     },
     "NSPhotoLibraryUsageDescription" : {
       "comment" : "Privacy - Photo Library Usage Description",
+      "extractionState" : "extracted_with_value",
       "localizations" : {
         "af" : {
           "stringUnit" : {
@@ -4569,12 +4524,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ส่งออกและนำเข้าภาพถ่ายจาก iNaturalist Next ไปยังคลังภาพของคุณและจากคลังภาพของคุณ"
-          }
-        },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
           }
         },
         "tr" : {

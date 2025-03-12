@@ -17,8 +17,7 @@ import type { Node } from "react";
 import React, {
   useEffect,
   useMemo,
-  useRef,
-  useState
+  useRef
 } from "react";
 import { Platform } from "react-native";
 import DeviceInfo from "react-native-device-info";
@@ -30,11 +29,11 @@ import {
   useTranslation
 } from "sharedHooks";
 
+import ObsDetailsHeaderRight from "../ObsDetailsDefaultMode/ObsDetailsDefaultModeHeaderRight";
 import ActivityTab from "./ActivityTab/ActivityTab";
 import FloatingButtons from "./ActivityTab/FloatingButtons";
 import DetailsTab from "./DetailsTab/DetailsTab";
 import FaveButton from "./FaveButton";
-import ObsDetailsHeader from "./ObsDetailsHeader";
 import ObsDetailsOverview from "./ObsDetailsOverview";
 import ObsMediaDisplayContainer from "./ObsMediaDisplayContainer";
 import AgreeWithIDSheet from "./Sheets/AgreeWithIDSheet";
@@ -130,7 +129,6 @@ const ObsDetails = ( {
   const scrollViewRef = useRef( );
   const insets = useSafeAreaInsets();
   const { t } = useTranslation( );
-  const [invertToWhiteBackground, setInvertToWhiteBackground] = useState( false );
 
   const {
     setHeightOfContentAboveSection: setHeightOfContentAboveActivityTab,
@@ -145,14 +143,6 @@ const ObsDetails = ( {
       scrollViewRef?.current?.scrollToEnd( );
     }
   }, [addingActivityItem] );
-
-  const handleScroll = e => {
-    const scrollY = e.nativeEvent.contentOffset.y;
-    const shouldInvert = !!( scrollY > 150 );
-    if ( shouldInvert !== invertToWhiteBackground ) {
-      setInvertToWhiteBackground( shouldInvert );
-    }
-  };
 
   const dynamicInsets = useMemo( () => ( {
     backgroundColor: "#ffffff",
@@ -189,6 +179,16 @@ const ObsDetails = ( {
     </HideView>
   );
 
+  const renderHeaderRight = ( ) => (
+    <ObsDetailsHeaderRight
+      belongsToCurrentUser={belongsToCurrentUser}
+      observationId={observation?.id}
+      uuid={observation?.uuid}
+      refetchSubscriptions={refetchSubscriptions}
+      subscriptions={subscriptions}
+    />
+  );
+
   const renderTablet = () => (
     <View className="flex-1 flex-row bg-white">
       <View className="w-[33%]">
@@ -219,7 +219,6 @@ const ObsDetails = ( {
           className="flex-1 flex-column"
           stickyHeaderHiddenOnScroll
           endFillColor="white"
-          onScroll={handleScroll}
         >
           <View
             onLayout={event => {
@@ -245,15 +244,7 @@ const ObsDetails = ( {
           />
         )}
       </View>
-      <ObsDetailsHeader
-        belongsToCurrentUser={belongsToCurrentUser}
-        invertToWhiteBackground={invertToWhiteBackground}
-        observationId={observation?.id}
-        rightIconDarkGray
-        uuid={observation?.uuid}
-        refetchSubscriptions={refetchSubscriptions}
-        subscriptions={subscriptions}
-      />
+      {renderHeaderRight( )}
     </View>
   );
 
@@ -265,31 +256,23 @@ const ObsDetails = ( {
         stickyHeaderIndices={[0, 3]}
         scrollEventThrottle={16}
         endFillColor="white"
-        onScroll={handleScroll}
       >
-        <ObsDetailsHeader
-          belongsToCurrentUser={belongsToCurrentUser}
-          subscriptions={subscriptions}
-          invertToWhiteBackground={invertToWhiteBackground}
-          observationId={observation?.id}
-          uuid={observation?.uuid}
-          refetchSubscriptions={refetchSubscriptions}
-        />
         <View
           onLayout={event => {
             const { layout } = event.nativeEvent;
             setHeightOfContentAboveActivityTab( layout );
           }}
         >
-          <View className="-mt-[64px]">
+          {renderHeaderRight( )}
+          <View>
             <ObsMediaDisplayContainer observation={observation} />
-            {currentUser && (
+            { currentUser && (
               <FaveButton
                 observation={observation}
                 currentUser={currentUser}
                 afterToggleFave={refetchRemoteObservation}
               />
-            )}
+            ) }
           </View>
           <ObsDetailsOverview
             belongsToCurrentUser={belongsToCurrentUser}

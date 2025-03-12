@@ -170,6 +170,12 @@ const LIST_OPTIONS = {
   lazy: true
 };
 
+const OBS_DETAILS_OPTIONS = {
+  unmountOnBlur: true,
+  ...showHeader,
+  ...blankHeaderTitle
+};
+
 const Stack = createNativeStackNavigator( );
 
 export const SCREEN_NAME_OBS_LIST = "ObsList";
@@ -216,20 +222,14 @@ const TabStackNavigator = ( ): Node => {
             <Stack.Screen
               name="ObsDetails"
               component={FadeInObsDetailsDefaultModeContainer}
-              options={{
-                unmountOnBlur: true,
-                ...showHeader,
-                ...blankHeaderTitle
-              }}
+              options={OBS_DETAILS_OPTIONS}
             />
           )
           : (
             <Stack.Screen
               name="ObsDetails"
               component={FadeInObsDetailsContainer}
-              options={{
-                unmountOnBlur: true
-              }}
+              options={OBS_DETAILS_OPTIONS}
             />
           )}
       </Stack.Group>
