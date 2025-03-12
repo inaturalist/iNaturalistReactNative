@@ -16,35 +16,31 @@ const DropdownItem = ( {
   handlePress,
   iconName,
   text
-}: Props ) => {
-  const caret = (
-    <INatIcon
-      name="caret"
-      size={10}
-    />
-  );
-
-  return (
-    <Pressable
-      accessibilityRole="button"
-      className="flex-row flex-nowrap ml-1 pt-5 pb-2 items-center"
-      onPress={handlePress}
-      accessibilityLabel={accessibilityLabel}
-    >
-      <View className="w-[30px] items-center mt-[1px] mr-1">
+}: Props ) => (
+  <Pressable
+    accessibilityRole="button"
+    className="flex-row"
+    onPress={handlePress}
+    accessibilityLabel={accessibilityLabel}
+  >
+    <View className="flex-row ml-1 py-[10px] items-center">
+      <View className="w-[30px] items-center mr-1">
         <INatIcon
           size={14}
           name={iconName}
         />
       </View>
-      <Body2 className="mr-3">
+      <Body2 className="mr-[13px]">
         {text}
       </Body2>
-      <View className="mt-[3px]">
-        {caret}
-      </View>
-    </Pressable>
-  );
-};
+    </View>
+    <View className="mt-4">
+      <INatIcon
+        name="triangle-down"
+        size={24}
+      />
+    </View>
+  </Pressable>
+);
 
 export default DropdownItem;
