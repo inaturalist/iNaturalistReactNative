@@ -17,7 +17,7 @@ const { useRealm } = RealmContext;
 interface SpeciesCount {
   count: number,
   taxon: RealmTaxon
-  }
+}
 
 const MyObservationsSimpleContainer = ( {
   currentUser,
