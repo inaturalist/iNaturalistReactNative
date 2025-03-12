@@ -185,11 +185,13 @@ const MyObservationsSimple = ( {
     taxa?.length
   ] );
 
-  const unuploadedObsMissingBasics = useMemo( () => (
-    observations.filter( o => o.needsSync() && o.missingBasics() )
+  const unuploadedObsMissingBasicsIDs = useMemo( () => (
+    observations
+      .filter( o => o.needsSync() && o.missingBasics() )
+      .map( o => o.uuid )
   ), [observations] );
 
-  const numUnuploadedObsMissingBasics = unuploadedObsMissingBasics.length;
+  const numUnuploadedObsMissingBasics = unuploadedObsMissingBasicsIDs.length;
   const obsMissingBasicsExist = useMemo( ( ) => (
     numUnuploadedObservations > 0 && numUnuploadedObsMissingBasics > 0
   ), [numUnuploadedObservations, numUnuploadedObsMissingBasics] );
@@ -238,7 +240,9 @@ const MyObservationsSimple = ( {
           currentUser={currentUser}
           isConnected={isConnected}
           numUploadableObservations={numUploadableObservations}
-          handleSyncButtonPress={handleSyncButtonPress}
+          handleSyncButtonPress={() => {
+            handleSyncButtonPress( unuploadedObsMissingBasicsIDs );
+          }}
         />
         <Tabs
           activeColor={String( colors?.inatGreen )}
