@@ -185,9 +185,14 @@ const MyObservationsSimple = ( {
     taxa?.length
   ] );
 
+  const unuploadedObservationsWithMissingBasics = useMemo( () => (
+    observations.filter( o => o.needsSync() && o.missingBasics() )
+  ), [observations] );
+
+  const numUnuploadedObservationsWithMissingBasics = unuploadedObservationsWithMissingBasics.length;
   const obsMissingBasicsExist = useMemo( ( ) => (
-    numUnuploadedObservations > 0 && !!observations.find( o => o.needsSync() && o.missingBasics( ) )
-  ), [numUnuploadedObservations, observations] );
+    numUnuploadedObservations > 0 && numUnuploadedObservationsWithMissingBasics > 0
+  ), [numUnuploadedObservations, numUnuploadedObservationsWithMissingBasics] );
 
   const renderTabComponent = ( { id } ) => (
     <StatTab
