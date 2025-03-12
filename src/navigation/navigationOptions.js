@@ -21,7 +21,7 @@ const baseHeaderOptions: Object = {
   headerShown: true,
   headerBackTitleVisible: false,
   headerShadowVisible: false,
-  headerLeft: () => <BackButton inCustomHeader />
+  headerLeft: () => <BackButton inCustomHeader testID="header-back-button" />
 };
 
 const showHeader: Object = {

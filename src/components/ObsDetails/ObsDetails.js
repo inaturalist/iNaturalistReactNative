@@ -29,11 +29,11 @@ import {
   useTranslation
 } from "sharedHooks";
 
+import ObsDetailsHeaderRight from "../ObsDetailsDefaultMode/ObsDetailsDefaultModeHeaderRight";
 import ActivityTab from "./ActivityTab/ActivityTab";
 import FloatingButtons from "./ActivityTab/FloatingButtons";
 import DetailsTab from "./DetailsTab/DetailsTab";
 import FaveButton from "./FaveButton";
-import ObsDetailsHeader from "./ObsDetailsHeader";
 import ObsDetailsOverview from "./ObsDetailsOverview";
 import ObsMediaDisplayContainer from "./ObsMediaDisplayContainer";
 import AgreeWithIDSheet from "./Sheets/AgreeWithIDSheet";
@@ -129,7 +129,6 @@ const ObsDetails = ( {
   const scrollViewRef = useRef( );
   const insets = useSafeAreaInsets();
   const { t } = useTranslation( );
-  const [invertToWhiteBackground, setInvertToWhiteBackground] = useState( false );
 
   // Scroll the scrollview to this y position once if set, then unset it.
   // Could be refactored into a hook if we need this logic elsewher
@@ -149,14 +148,6 @@ const ObsDetails = ( {
       scrollViewRef?.current?.scrollToEnd( );
     }
   }, [addingActivityItem] );
-
-  const handleScroll = e => {
-    const scrollY = e.nativeEvent.contentOffset.y;
-    const shouldInvert = !!( scrollY > 150 );
-    if ( shouldInvert !== invertToWhiteBackground ) {
-      setInvertToWhiteBackground( shouldInvert );
-    }
-  };
 
   const dynamicInsets = useMemo( () => ( {
     backgroundColor: "#ffffff",
@@ -196,6 +187,16 @@ const ObsDetails = ( {
     </HideView>
   );
 
+  const renderHeaderRight = ( ) => (
+    <ObsDetailsHeaderRight
+      belongsToCurrentUser={belongsToCurrentUser}
+      observationId={observation?.id}
+      uuid={observation?.uuid}
+      refetchSubscriptions={refetchSubscriptions}
+      subscriptions={subscriptions}
+    />
+  );
+
   const renderTablet = () => (
     <View className="flex-1 flex-row bg-white">
       <View className="w-[33%]">
@@ -226,7 +227,6 @@ const ObsDetails = ( {
           className="flex-1 flex-column"
           stickyHeaderHiddenOnScroll
           endFillColor="white"
-          onScroll={handleScroll}
         >
           <View className="bg-white h-full">
             {renderActivityTab( )}
@@ -246,15 +246,7 @@ const ObsDetails = ( {
           />
         )}
       </View>
-      <ObsDetailsHeader
-        belongsToCurrentUser={belongsToCurrentUser}
-        invertToWhiteBackground={invertToWhiteBackground}
-        observationId={observation?.id}
-        rightIconDarkGray
-        uuid={observation?.uuid}
-        refetchSubscriptions={refetchSubscriptions}
-        subscriptions={subscriptions}
-      />
+      {renderHeaderRight( )}
     </View>
   );
 
@@ -266,17 +258,9 @@ const ObsDetails = ( {
         stickyHeaderIndices={[0, 3]}
         scrollEventThrottle={16}
         endFillColor="white"
-        onScroll={handleScroll}
       >
-        <ObsDetailsHeader
-          belongsToCurrentUser={belongsToCurrentUser}
-          subscriptions={subscriptions}
-          invertToWhiteBackground={invertToWhiteBackground}
-          observationId={observation?.id}
-          uuid={observation?.uuid}
-          refetchSubscriptions={refetchSubscriptions}
-        />
-        <View className="-mt-[64px]">
+        {renderHeaderRight( )}
+        <View>
           <ObsMediaDisplayContainer observation={observation} />
           { currentUser && (
             <FaveButton

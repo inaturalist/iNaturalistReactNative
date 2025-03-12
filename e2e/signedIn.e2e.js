@@ -2,7 +2,7 @@ import {
   by, device, element, expect, waitFor
 } from "detox";
 
-import { iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
+import { iNatE2eAfterEach, iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
 import closeOnboarding from "./sharedFlows/closeOnboarding";
 import deleteObservation from "./sharedFlows/deleteObservation";
 import signIn from "./sharedFlows/signIn";
@@ -11,6 +11,7 @@ import uploadObservation from "./sharedFlows/uploadObservation";
 describe( "Signed in user", () => {
   beforeAll( async ( ) => iNatE2eBeforeAll( device ) );
   beforeEach( async ( ) => iNatE2eBeforeEach( device ) );
+  afterEach( async ( ) => iNatE2eAfterEach( device ) );
 
   async function createAndUploadObservation( options = { upload: false } ) {
     const addObsButton = element( by.id( "add-obs-button" ) );
@@ -101,7 +102,7 @@ describe( "Signed in user", () => {
     await element( by.id( `ObsDetails.${uuid}` ) ).scrollTo( "bottom" );
     const comment = element( by.text( "This is a comment" ) );
     await waitFor( comment ).toBeVisible().withTimeout( 10000 );
-    await element( by.id( "ObsDetails.BackButton" ) ).tap( );
+    await element( by.id( "header-back-button" ) ).tap( );
     await waitFor( username ).toBeVisible( ).withTimeout( 10000 );
 
     /*
