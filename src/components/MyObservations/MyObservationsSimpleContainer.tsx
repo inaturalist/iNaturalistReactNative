@@ -1,7 +1,6 @@
 import { fetchSpeciesCounts } from "api/observations";
 import { RealmContext } from "providers/contexts.ts";
 import React, { useEffect, useState } from "react";
-import Realm from "realm";
 import Taxon from "realmModels/Taxon";
 import type { RealmObservation, RealmTaxon } from "realmModels/types";
 import { useInfiniteScroll } from "sharedHooks";
@@ -14,6 +13,11 @@ import MyObservationsSimple, {
 } from "./MyObservationsSimple";
 
 const { useRealm } = RealmContext;
+
+interface SpeciesCount {
+  count: number,
+  taxon: RealmTaxon
+}
 
 const MyObservationsSimpleContainer = ( {
   currentUser,
@@ -42,7 +46,7 @@ const MyObservationsSimpleContainer = ( {
   const realm = useRealm();
 
   let numTotalTaxaLocal: number | undefined;
-  let localObservedTaxa: Realm.Results | Array<RealmTaxon> = [];
+  const localObservedSpeciesCount: Array<SpeciesCount> = [];
   if ( !currentUser ) {
     // Calculate obs and leaf taxa counts from local observations
     const distinctTaxonObs = realm.objects<RealmObservation>( "Observation" )
@@ -65,7 +69,11 @@ const MyObservationsSimpleContainer = ( {
     // Get leaf taxa if we're viewing the species tab
     if ( activeTab === TAXA_TAB ) {
       // IDK how to placate TypeScript here. ~~~kueda 20250108
-      localObservedTaxa = realm.objects( "Taxon" ).filtered( "id IN $0", leafTaxonIds );
+      const localObs = realm.objects( "Observation" ).filtered( "taxon.id IN $0", leafTaxonIds );
+      leafTaxonIds.forEach( id => {
+        const obs = localObs.filter( o => o.taxon.id === id );
+        localObservedSpeciesCount.push( { count: obs.length, taxon: obs[0].taxon } );
+      } );
     }
   }
 
@@ -132,8 +140,8 @@ const MyObservationsSimpleContainer = ( {
       numTotalObservations={numOfUserObservations}
       taxa={
         currentUser
-          ? remoteObservedTaxaCounts.map( tc => Taxon.mapApiToRealm( tc.taxon ) )
-          : localObservedTaxa
+          ? remoteObservedTaxaCounts
+          : localObservedSpeciesCount
       }
       activeTab={activeTab}
       setActiveTab={setActiveTab}

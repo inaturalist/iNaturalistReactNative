@@ -18,7 +18,6 @@ import {
 import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList.tsx";
 import { View } from "components/styledComponents";
 import React, { useCallback, useMemo } from "react";
-import Realm from "realm";
 import Photo from "realmModels/Photo";
 import type {
   RealmObservation,
@@ -35,6 +34,11 @@ import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
 import SimpleErrorHeader from "./SimpleErrorHeader";
 import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
 import StatTab from "./StatTab";
+
+interface SpeciesCount {
+  count: number,
+  taxon: RealmTaxon
+}
 
 export interface Props {
   activeTab: string;
@@ -57,7 +61,7 @@ export interface Props {
   setShowLoginSheet: ( newValue: boolean ) => void;
   showLoginSheet: boolean;
   showNoResults: boolean;
-  taxa?: RealmTaxon[] | Realm.Results;
+  taxa?: SpeciesCount[];
   toggleLayout: ( ) => void;
   fetchMoreTaxa: ( ) => void;
   isFetchingTaxa?: boolean;
@@ -68,7 +72,7 @@ export interface Props {
 interface TaxaFlashListRenderItemProps {
   // I'm pretty sure this is some kind of bug ~~~~kueda 20250108
   // eslint-disable-next-line react/no-unused-prop-types
-  item: RealmTaxon;
+  item: SpeciesCount;
 }
 
 export const OBSERVATIONS_TAB = "observations";
@@ -105,7 +109,6 @@ const MyObservationsSimple = ( {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const route = useRoute( );
-
   const {
     estimatedGridItemSize,
     flashListStyle,
@@ -117,8 +120,8 @@ const MyObservationsSimple = ( {
     paddingTop: 10
   } ), [flashListStyle] );
 
-  const renderTaxaItem = useCallback( ( { item: taxon }: TaxaFlashListRenderItemProps ) => {
-    const taxonId = taxon.id;
+  const renderTaxaItem = useCallback( ( { item: speciesCount }: TaxaFlashListRenderItemProps ) => {
+    const taxonId = speciesCount.taxon.id;
     const navToTaxonDetails = ( ) => (
       // Again, not sure how to placate TypeScript w/ React Navigation
       navigation.navigate( {
@@ -129,11 +132,11 @@ const MyObservationsSimple = ( {
       } )
     );
 
-    const accessibleName = accessibleTaxonName( taxon, currentUser, t );
+    const accessibleName = accessibleTaxonName( speciesCount.taxon, currentUser, t );
 
     const source = {
       uri: Photo.displayLocalOrRemoteMediumPhoto(
-        taxon?.default_photo
+        speciesCount.taxon?.default_photo
       )
     };
 
@@ -145,7 +148,7 @@ const MyObservationsSimple = ( {
       <SimpleTaxonGridItem
         key={itemKey}
         style={gridItemStyle}
-        taxon={taxon}
+        speciesCount={speciesCount}
         navToTaxonDetails={navToTaxonDetails}
         accessibleName={accessibleName}
         source={source}
@@ -292,8 +295,8 @@ const MyObservationsSimple = ( {
             hideLoadingWheel
             isConnected={isConnected}
             keyExtractor={(
-              item: RealmTaxon
-            ) => `${item.id}-${item?.default_photo?.url || "no-photo"}`}
+              item: SpeciesCount
+            ) => `${item.taxon.id}-${item?.taxon?.default_photo?.url || "no-photo"}`}
             layout="grid"
             numColumns={numColumns}
             renderItem={renderTaxaItem}
