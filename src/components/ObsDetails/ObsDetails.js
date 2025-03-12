@@ -257,13 +257,13 @@ const ObsDetails = ( {
         scrollEventThrottle={16}
         endFillColor="white"
       >
+        {renderHeaderRight( )}
         <View
           onLayout={event => {
             const { layout } = event.nativeEvent;
             setHeightOfContentAboveActivityTab( layout );
           }}
         >
-          {renderHeaderRight( )}
           <View>
             <ObsMediaDisplayContainer observation={observation} />
             { currentUser && (
