@@ -22,8 +22,8 @@ const { useRealm } = RealmContext;
 
 const useSyncObservations = (
   currentUserId: number,
-  startUploadObservations: ( ) => void
-): void => {
+  startUploadObservations: ( _skipSomeUuids: string[] | undefined ) => void
+) => {
   const { isConnected } = useNetInfo( );
   const loggedIn = !!( currentUserId );
   const deleteQueue = useStore( state => state.deleteQueue );
@@ -159,7 +159,12 @@ const useSyncObservations = (
     signalAborted
   ] );
 
-  const syncManually = useCallback( async options => {
+  interface Options {
+    skipUploads?: boolean;
+    // uuids of observations to skip uploading
+    skipSomeUploads?: string[];
+  }
+  const syncManually = useCallback( async ( options: Options ) => {
     const skipUploads = options?.skipUploads || false;
     // we abort the automatic sync process when a user taps the manual sync button
     // on the toolbar, per #1730
@@ -182,7 +187,7 @@ const useSyncObservations = (
     // being offline, so we're not checking internet connectivity here
     if ( loggedIn && !skipUploads ) {
       // In theory completeSync will get called when the upload process finishes
-      return startUploadObservations( );
+      return startUploadObservations( options?.skipSomeUploads );
     }
     return Promise.resolve();
   }, [
