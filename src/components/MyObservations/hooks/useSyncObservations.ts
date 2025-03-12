@@ -206,7 +206,6 @@ const useSyncObservations = (
   useEffect( ( ) => {
     if ( syncingStatus !== BEGIN_MANUAL_SYNC ) { return; }
     setSyncingStatus( MANUAL_SYNC_IN_PROGRESS );
-    syncManually( );
   }, [syncingStatus, syncManually, setSyncingStatus] );
 
   return {
