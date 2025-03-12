@@ -72,9 +72,7 @@ export interface Props {
 interface TaxaFlashListRenderItemProps {
   // I'm pretty sure this is some kind of bug ~~~~kueda 20250108
   // eslint-disable-next-line react/no-unused-prop-types
-  count: number,
-    // eslint-disable-next-line react/no-unused-prop-types
-  taxon: RealmTaxon;
+  item: SpeciesCount;
 }
 
 export const OBSERVATIONS_TAB = "observations";
