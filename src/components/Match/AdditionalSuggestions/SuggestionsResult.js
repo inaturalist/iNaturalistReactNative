@@ -10,13 +10,11 @@ import React, { useEffect, useRef } from "react";
 import type { RealmTaxon } from "realmModels/types";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import {
-  useCurrentUser, useTaxon, useTranslation
+  useCurrentUser, useTranslation
 } from "sharedHooks";
 
 type Props = {
   confidence: number,
-  fetchRemote?: boolean,
-  fromLocal?: boolean,
   handlePress?: ( ) => void,
   taxon: RealmTaxon | ApiTaxon,
   testID?: string,
@@ -26,11 +24,9 @@ type Props = {
 
 const SuggestionsResult = ( {
   confidence,
-  fetchRemote = true,
-  fromLocal = true,
   handlePress,
-  taxon: taxonProp,
-  testID = `SuggestionsResult.${taxonProp?.id}`,
+  taxon,
+  testID = `SuggestionsResult.${taxon?.id}`,
   updateMaxHeight,
   forcedHeight
 }: Props ) => {
@@ -48,26 +44,15 @@ const SuggestionsResult = ( {
     }
   }, [forcedHeight] );
 
-  // thinking about future performance, it might make more sense to batch
-  // network requests for useTaxon instead of making individual API calls.
-  // right now, this fetches a single taxon at a time on AI camera &
-  // a short list of taxa from offline Suggestions
-  const { taxon: localTaxon } = useTaxon( taxonProp, fetchRemote );
-  const usableTaxon = fromLocal
-    ? localTaxon
-    : taxonProp;
-  const accessibleName = accessibleTaxonName( usableTaxon, currentUser, t );
-
-  // useTaxon could return null, and it's at least remotely possible taxonProp is null
-  if ( !usableTaxon ) return null;
+  const accessibleName = accessibleTaxonName( taxon, currentUser, t );
 
   // A representative photo is dependant on the actual image that was scored by computer vision
   // and is currently not added to the taxon realm. So, if it is available directly from the
   // suggestion, i.e. taxonProp, use it. Otherwise, use the default photo from the taxon.
   const taxonImage = {
-    uri: taxonProp?.representative_photo?.url
-      || usableTaxon?.default_photo?.url
-      || usableTaxon?.defaultPhoto?.url
+    uri: taxon?.representative_photo?.url
+      || taxon?.default_photo?.url
+      || taxon?.defaultPhoto?.url
   };
 
   // Handle the onLayout event to measure item height
@@ -119,7 +104,7 @@ const SuggestionsResult = ( {
           // TODO fix when ObsImagePreview typed
             source={taxonImage}
             testID={`${testID}.photo`}
-            iconicTaxonName={usableTaxon?.iconic_taxon_name}
+            iconicTaxonName={taxon?.iconic_taxon_name}
             className="rounded-xl"
             isSmall
             isBackground={false}
@@ -127,7 +112,7 @@ const SuggestionsResult = ( {
         </View>
         <View className="w-[149px]">
           <DisplayTaxonName
-            taxon={usableTaxon}
+            taxon={taxon}
             color="text-darkGray"
             scientificNameFirst={currentUser?.prefers_scientific_name_first}
             prefersCommonNames={currentUser?.prefers_common_names}
