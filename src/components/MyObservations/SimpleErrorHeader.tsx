@@ -1,5 +1,6 @@
 import {
   Body3,
+  CircleDots,
   INatIcon
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -21,11 +22,15 @@ const SimpleErrorHeader = ( {
     <>
       <Announcements isConnected={isConnected} />
       <View className="flex-row items-center px-[32px] py-[20px]">
-        <INatIcon
-          name="triangle-exclamation"
-          color={String( colors?.warningRed )}
-          size={22}
-        />
+        <CircleDots
+          color={colors.darkGray}
+        >
+          <INatIcon
+            name="pencil"
+            color={colors.darkGray}
+            size={15}
+          />
+        </CircleDots>
         <Body3 className="shrink ml-[20px]">
           { t( "Observations-need-location-date--warning" ) }
         </Body3>
