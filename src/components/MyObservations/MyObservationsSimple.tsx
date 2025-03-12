@@ -185,14 +185,16 @@ const MyObservationsSimple = ( {
     taxa?.length
   ] );
 
-  const unuploadedObservationsWithMissingBasics = useMemo( () => (
+  const unuploadedObsMissingBasics = useMemo( () => (
     observations.filter( o => o.needsSync() && o.missingBasics() )
   ), [observations] );
 
-  const numUnuploadedObservationsWithMissingBasics = unuploadedObservationsWithMissingBasics.length;
+  const numUnuploadedObsMissingBasics = unuploadedObsMissingBasics.length;
   const obsMissingBasicsExist = useMemo( ( ) => (
-    numUnuploadedObservations > 0 && numUnuploadedObservationsWithMissingBasics > 0
-  ), [numUnuploadedObservations, numUnuploadedObservationsWithMissingBasics] );
+    numUnuploadedObservations > 0 && numUnuploadedObsMissingBasics > 0
+  ), [numUnuploadedObservations, numUnuploadedObsMissingBasics] );
+
+  const numUploadableObservations = numUnuploadedObservations - numUnuploadedObsMissingBasics;
 
   const renderTabComponent = ( { id } ) => (
     <StatTab
@@ -235,7 +237,7 @@ const MyObservationsSimple = ( {
         <MyObservationsSimpleHeader
           currentUser={currentUser}
           isConnected={isConnected}
-          numUnuploadedObservations={numUnuploadedObservations}
+          numUploadableObservations={numUploadableObservations}
           handleSyncButtonPress={handleSyncButtonPress}
         />
         <Tabs
