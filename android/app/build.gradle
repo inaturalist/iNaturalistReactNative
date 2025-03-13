@@ -112,7 +112,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 149
-        versionName "0.59.6"
+        versionName "0.59.7"
         setProperty("archivesBaseName", applicationId + "-v" + versionName + "+" + versionCode)
         manifestPlaceholders = [ GMAPS_API_KEY:project.env.get("GMAPS_API_KEY") ]
         // Detox Android setup
