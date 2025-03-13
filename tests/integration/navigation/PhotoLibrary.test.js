@@ -72,7 +72,10 @@ const navigateToPhotoImporter = async ( ) => {
 describe( "PhotoLibrary navigation", ( ) => {
   global.withAnimatedTimeTravelEnabled( );
   beforeEach( ( ) => {
-    useStore.setState( { isAdvancedUser: true } );
+    useStore.setState( {
+      isAdvancedUser: true,
+      layout: { isAdvancedSuggestionsMode: false }
+    } );
   } );
 
   it( "advances to GroupPhotos when multiple photos are selected", async ( ) => {
