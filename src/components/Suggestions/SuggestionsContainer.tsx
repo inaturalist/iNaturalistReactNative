@@ -195,7 +195,7 @@ const SuggestionsContainer = ( ) => {
       || onlineFetchStatus === FETCH_STATUS_ONLINE_ERROR;
 
   const onFetchError = useCallback(
-    ( { isOnline } ) => ( isOnline
+    ( { isOnline }: { isOnline: boolean } ) => ( isOnline
       ? dispatch( {
         type: "SET_ONLINE_FETCH_STATUS",
         onlineFetchStatus: FETCH_STATUS_ONLINE_ERROR
@@ -208,7 +208,7 @@ const SuggestionsContainer = ( ) => {
   );
 
   const onFetched = useCallback(
-    ( { isOnline } ) => {
+    ( { isOnline }: { isOnline: boolean } ) => {
       if ( isOnline ) {
         dispatch( {
           type: "SET_ONLINE_FETCH_STATUS",
