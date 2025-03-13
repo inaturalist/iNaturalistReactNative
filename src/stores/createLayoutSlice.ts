@@ -21,7 +21,7 @@ const createLayoutSlice = set => ( {
         isDefaultMode: newValue
       }
     } ) ),
-    isAdvancedSuggestionsMode: false,
+    isAdvancedSuggestionsMode: true,
     setIsSuggestionsFlowMode: ( newValue: boolean ) => set( state => ( {
       layout: {
         ...state.layout,
