@@ -38,7 +38,8 @@ const MyObservationsSimpleContainer = ( {
   showLoginSheet,
   showNoResults,
   toggleLayout,
-  justFinishedSignup
+  justFinishedSignup,
+  loggedInWhileInDefaultMode
 }: Props ) => {
   const numOfUserObservations = zustandStorage.getItem( "numOfUserObservations" );
   const numOfUserSpecies = zustandStorage.getItem( "numOfUserSpecies" );
@@ -148,6 +149,7 @@ const MyObservationsSimpleContainer = ( {
       fetchMoreTaxa={fetchMoreTaxa}
       isFetchingTaxa={isFetchingTaxa}
       justFinishedSignup={justFinishedSignup}
+      loggedInWhileInDefaultMode={loggedInWhileInDefaultMode}
       refetchTaxa={refetchTaxa}
     />
   );

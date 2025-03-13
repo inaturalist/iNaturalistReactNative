@@ -15,6 +15,7 @@ import {
   TextInput,
   TouchableWithoutFeedback
 } from "react-native";
+import { useLayoutPrefs } from "sharedHooks";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 import colors from "styles/tailwindColors";
 
@@ -42,13 +43,14 @@ type ParamList = {
 const LoginForm = ( {
   scrollViewRef
 }: Props ) => {
-  const firstInputFieldRef = useRef( null );
+  const navigation = useNavigation( );
   const { params } = useRoute<RouteProp<ParamList, "LoginFormParams">>( );
   const emailConfirmed = params?.emailConfirmed;
   const realm = useRealm( );
+  const { isDefaultMode, setLoggedInWhileInDefaultMode } = useLayoutPrefs( );
+  const firstInputFieldRef = useRef( null );
   const emailRef = useRef<TextInput>( null );
   const passwordRef = useRef<TextInput>( null );
-  const navigation = useNavigation( );
   const [email, setEmail] = useState( "" );
   const [password, setPassword] = useState( "" );
   const [error, setError] = useState<string | null>( null );
@@ -88,6 +90,8 @@ const LoginForm = ( {
     }
     setLoading( false );
 
+    // Set a state to zustand that we just logged in while in default mode
+    setLoggedInWhileInDefaultMode( isDefaultMode );
     if ( params?.prevScreen && params?.projectId ) {
       navigation.navigate( "TabNavigator", {
         screen: "TabStackNavigator",
@@ -103,7 +107,9 @@ const LoginForm = ( {
     }
   }, [
     navigation,
-    params
+    params,
+    isDefaultMode,
+    setLoggedInWhileInDefaultMode
   ] );
 
   const scrollToItem = useCallback( ( ) => {
