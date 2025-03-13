@@ -848,7 +848,6 @@ Observation-location-obscured-you-can-see-your-own = This observation’s locati
 # Displayed when user views an obscured location of someone else's observation
 # when they have permission to view the coordinates
 Observation-location-obscured-you-have-permission = This observation’s location is obscured. You have permission to see this location.
-Observation-Name = Observation { $scientificName }
 # Label for a menu that shows various actions you can take for an observation
 Observation-options = Observation options
 OBSERVATION-WAS-DELETED = OBSERVATION WAS DELETED
