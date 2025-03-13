@@ -82,7 +82,7 @@ const IconicSuggestion = ( {
           // TODO fix when ObsImagePreview typed
           source={taxonImage}
           testID={`${testID}.photo`}
-          iconicTaxonName={usableTaxon?.iconic_taxon_name}
+          iconicTaxonName={usableTaxon?.name}
           className="rounded-xl"
           isSmall
           isBackground={false}
