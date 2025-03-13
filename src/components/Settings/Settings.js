@@ -309,14 +309,6 @@ const Settings = ( ) => {
             <Body2 className="mt-3">
               {t( "After-capturing-or-importing-photos-show" )}
             </Body2>
-            <View className="mt-[22px] pr-5">
-              <RadioButtonRow
-                smallLabel
-                checked={!isAdvancedSuggestionsMode}
-                onPress={() => setIsSuggestionsFlowMode( false )}
-                label={t( "Edit-Observation" )}
-              />
-            </View>
             <View className="mt-4 pr-5">
               <RadioButtonRow
                 testID="suggestions-flow-mode"
@@ -324,6 +316,14 @@ const Settings = ( ) => {
                 checked={isAdvancedSuggestionsMode}
                 onPress={() => setIsSuggestionsFlowMode( true )}
                 label={t( "ID-Suggestions" )}
+              />
+            </View>
+            <View className="mt-[22px] pr-5">
+              <RadioButtonRow
+                smallLabel
+                checked={!isAdvancedSuggestionsMode}
+                onPress={() => setIsSuggestionsFlowMode( false )}
+                label={t( "Edit-Observation" )}
               />
             </View>
           </View>
