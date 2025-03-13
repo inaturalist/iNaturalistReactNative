@@ -381,12 +381,14 @@ const SuggestionsContainer = ( ) => {
 
   const debugData = {
     timedOut,
+    onlineFetchStatus,
     onlineSuggestions,
     onlineSuggestionsError,
     onlineSuggestionsUpdatedAt,
     selectedPhotoUri,
     shouldUseEvidenceLocation,
     topSuggestionType: suggestions?.topSuggestionType,
+    offlineFetchStatus,
     usingOfflineSuggestions,
     suggestions
   };
