@@ -37,7 +37,6 @@ const useSavePhotoPermission = ( ) => {
   const renderPermissionsGate = useCallback( ( callbacks?: SavePhotoPermissionCallbacks ) => {
     const {
       onPermissionGranted,
-      onPermissionDenied,
       onPermissionBlocked,
       onModalHide
     } = callbacks || { };
@@ -53,18 +52,15 @@ const useSavePhotoPermission = ( ) => {
         withoutNavigation
         onModalHide={( ) => {
           setShowPermissionGate( false );
-          if ( onModalHide ) onModalHide( );
+          if ( !hasPermissions && onModalHide ) onModalHide( );
         }}
-        onPermissionGranted={( ) => {
+        onPhotoPermissionGranted={( ) => {
           setShowPermissionGate( false );
           setHasPermissions( true );
           setHasBlockedPermissions( false );
           if ( onPermissionGranted ) onPermissionGranted( );
         }}
-        onPermissionDenied={( ) => {
-          if ( onPermissionDenied ) onPermissionDenied( );
-        }}
-        onPermissionBlocked={( ) => {
+        onPhotoPermissionBlocked={( ) => {
           setHasPermissions( false );
           setHasBlockedPermissions( true );
           setShowPermissionGate( true );
@@ -72,7 +68,7 @@ const useSavePhotoPermission = ( ) => {
         }}
       />
     );
-  }, [showPermissionGate] );
+  }, [showPermissionGate, hasPermissions] );
 
   // This gets exported and used as a dependency, so it needs to have
   // referential stability
