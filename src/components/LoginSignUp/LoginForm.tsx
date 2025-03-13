@@ -42,13 +42,13 @@ type ParamList = {
 const LoginForm = ( {
   scrollViewRef
 }: Props ) => {
-  const firstInputFieldRef = useRef( null );
+  const navigation = useNavigation( );
   const { params } = useRoute<RouteProp<ParamList, "LoginFormParams">>( );
   const emailConfirmed = params?.emailConfirmed;
   const realm = useRealm( );
+  const firstInputFieldRef = useRef( null );
   const emailRef = useRef<TextInput>( null );
   const passwordRef = useRef<TextInput>( null );
-  const navigation = useNavigation( );
   const [email, setEmail] = useState( "" );
   const [password, setPassword] = useState( "" );
   const [error, setError] = useState<string | null>( null );
