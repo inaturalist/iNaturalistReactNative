@@ -58,7 +58,7 @@ const MyObservationsContainer = ( ): Node => {
 
   // Get navigation params
   const { params } = useRoute( );
-  const { justFinishedSignup } = params || { };
+  const { justFinishedSignup, justFinishedLogin } = params || {};
 
   const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
   const uploadQueue = useStore( state => state.uploadQueue );
@@ -264,6 +264,7 @@ const MyObservationsContainer = ( ): Node => {
         showNoResults={showNoResults}
         toggleLayout={toggleLayout}
         justFinishedSignup={justFinishedSignup}
+        justFinishedLogin={justFinishedLogin}
       />
     );
   }
