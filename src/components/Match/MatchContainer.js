@@ -28,6 +28,7 @@ import { isDebugMode } from "sharedHooks/useDebugMode";
 import useStore from "stores/useStore";
 
 import fetchUserLocation from "../../sharedHelpers/fetchUserLocation";
+import tryToReplaceWithLocalTaxon from "./helpers/tryToReplaceWithLocalTaxon";
 import Match from "./Match";
 import PreMatchLoadingScreen from "./PreMatchLoadingScreen";
 
@@ -330,6 +331,15 @@ const MatchContainer = ( ) => {
   const taxon = topSuggestion?.taxon;
   const taxonId = taxon?.id;
 
+  // not the prettiest code; trying to be consistent about showing common name
+  // and taxon photo for offline suggestions in AICamera and otherSuggestions
+  // without relying on the useTaxon hook which only deals with one taxon at a time
+  const topSuggestionInRealm = realm.objects( "Taxon" ).filtered( "id IN $0", [taxonId] );
+  const topSuggestionWithLocalTaxon = tryToReplaceWithLocalTaxon(
+    topSuggestionInRealm,
+    topSuggestion
+  );
+
   const suggestionsLoading = onlineFetchStatus === FETCH_STATUS_LOADING
     || offlineFetchStatus === FETCH_STATUS_LOADING;
 
@@ -362,19 +372,8 @@ const MatchContainer = ( ) => {
   const localTaxa = realm.objects( "Taxon" ).filtered( "id IN $0", taxonIds );
 
   // show local taxon photos in additional suggestions list if they're available
-  const suggestionsWithLocalTaxonPhotos = otherSuggestions.map( suggestion => {
-    const localTaxon = localTaxa.find( local => local.id === suggestion.taxon.id );
-
-    if ( localTaxon ) {
-      return {
-        ...suggestion,
-        taxon: localTaxon
-      };
-    }
-
-    // don't do anything if there are no local suggestions
-    return suggestion;
-  } );
+  const suggestionsWithLocalTaxonPhotos = otherSuggestions
+    .map( suggestion => tryToReplaceWithLocalTaxon( localTaxa, suggestion ) );
 
   return (
     <>
@@ -386,7 +385,7 @@ const MatchContainer = ( ) => {
           handleSaveOrDiscardPress={handleSaveOrDiscardPress}
           navToTaxonDetails={navToTaxonDetails}
           handleAddLocationPressed={handleAddLocationPressed}
-          topSuggestion={topSuggestion}
+          topSuggestion={topSuggestionWithLocalTaxon}
           otherSuggestions={suggestionsWithLocalTaxonPhotos}
           suggestionsLoading={suggestionsLoading}
           scrollRef={scrollRef}
