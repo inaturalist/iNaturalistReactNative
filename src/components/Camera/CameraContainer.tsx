@@ -21,6 +21,7 @@ import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useStore from "stores/useStore";
 
 import CameraWithDevice from "./CameraWithDevice";
+import savePhotosToPhotoLibrary from "./helpers/savePhotosToPhotoLibrary";
 import saveRotatedPhotoToDocumentsDirectory from "./helpers/saveRotatedPhotoToDocumentsDirectory";
 import usePrepareStoreAndNavigate from "./hooks/usePrepareStoreAndNavigate";
 import useSavePhotoPermission from "./hooks/useSavePhotoPermission";
@@ -37,6 +38,7 @@ const CameraContainer = ( ) => {
   const cameraUris = useStore( state => state.cameraUris );
   const sentinelFileName = useStore( state => state.sentinelFileName );
   const setSentinelFileName = useStore( state => state.setSentinelFileName );
+  const addCameraRollUris = useStore( state => state.addCameraRollUris );
 
   const { params } = useRoute( );
   const cameraType = params?.camera;
@@ -260,8 +262,20 @@ const CameraContainer = ( ) => {
         requestLocationPermissions={requestLocationPermissions}
       />
       {showPhotoPermissionsGate && renderSavePhotoPermissionGate( {
-        onRequestGranted: ( ) => console.log( "granted in save photo permission gate" ),
-        onRequestBlocked: ( ) => console.log( "blocked in save photo permission gate" ),
+        onPermissionGranted: async ( ) => {
+          const savedPhotoUris = await savePhotosToPhotoLibrary( cameraUris, userLocation );
+          await logStageIfAICamera( "save_photos_to_photo_library_first_permission" );
+          if ( savedPhotoUris.length > 0 ) {
+            // Save these camera roll URIs, so later on observation editor can update
+            // the EXIF metadata of these photos, once we retrieve a location.
+            addCameraRollUris( savedPhotoUris );
+          }
+          await logStageIfAICamera( "request_save_photo_permission_complete" );
+          await handleNavigation( {
+            cameraUris,
+            evidenceToAdd
+          } );
+        },
         onModalHide: async ( ) => {
           await logStageIfAICamera( "request_save_photo_permission_complete" );
           await handleNavigation( {
