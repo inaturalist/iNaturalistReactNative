@@ -20,7 +20,10 @@ type Props = {
   syncDisabled: boolean,
   showsCancelUploadButton: boolean,
   showsCheckmark: boolean,
-  statusText: string,
+  status: {
+    text: string,
+    styling: string
+  },
   stopAllUploads: Function
 }
 
@@ -31,7 +34,7 @@ const SimpleUploadBanner = ( {
   syncDisabled = false,
   showsCancelUploadButton = false,
   showsCheckmark = false,
-  statusText = "",
+  status,
   stopAllUploads
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -60,13 +63,11 @@ const SimpleUploadBanner = ( {
     </Body2>
   );
 
-  const renderUploadStatusText = ( ) => (
-    <View className={classnames(
-      "bg-white items-center",
-      {
-        "bg-inatGreen": progress === 0
-      }
-    )}
+  const renderUploadStatusText = () => (
+    <View
+      className={classnames( "bg-white items-center", {
+        "bg-inatGreen": status.styling === "white-on-green"
+      } )}
     >
       <View className="flex-row items-center">
         <Pressable
@@ -74,16 +75,13 @@ const SimpleUploadBanner = ( {
           accessibilityRole="button"
           disabled={syncDisabled}
         >
-          <Body2 className={classnames(
-            "text-darkGray py-3",
-            {
-              "text-white": progress === 0
-            }
-          )}
+          <Body2
+            className={classnames( "text-darkGray py-3", {
+              "text-white": status.styling === "white-on-green"
+            } )}
           >
-            {statusText}
+            {status.text}
           </Body2>
-
         </Pressable>
         {error && renderErrorText( )}
         {showsCancelUploadButton && renderCancelButton( )}
@@ -94,7 +92,7 @@ const SimpleUploadBanner = ( {
 
   return (
     <View className="py-2">
-      {statusText !== "" && renderUploadStatusText( )}
+      {status.text !== "" && renderUploadStatusText( )}
       <UploadProgressBar progress={progress} />
     </View>
   );
