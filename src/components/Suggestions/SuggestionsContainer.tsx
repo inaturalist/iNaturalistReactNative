@@ -36,6 +36,7 @@ export const FETCH_STATUS_ONLINE_ERROR = "online-error";
 export const FETCH_STATUS_FETCHING_OFFLINE = "fetching-offline";
 export const FETCH_STATUS_OFFLINE_FETCHED = "offline-fetched";
 export const FETCH_STATUS_OFFLINE_ERROR = "offline-error";
+export const FETCH_STATUS_OFFLINE_SKIPPED = "offline-skipped";
 
 export const TOP_SUGGESTION_NONE = "none";
 export const TOP_SUGGESTION_HUMAN = "human";

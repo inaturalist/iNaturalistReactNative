@@ -9,6 +9,7 @@ import {
   FETCH_STATUS_LOADING,
   FETCH_STATUS_OFFLINE_ERROR,
   FETCH_STATUS_OFFLINE_FETCHED,
+  FETCH_STATUS_OFFLINE_SKIPPED,
   FETCH_STATUS_ONLINE_ERROR,
   FETCH_STATUS_ONLINE_FETCHED,
   initialSuggestions
@@ -36,7 +37,6 @@ const setQueryKey = ( selectedPhotoUri, shouldUseEvidenceLocation ) => [
   { shouldUseEvidenceLocation }
 ];
 
-const FETCH_STATUS_OFFLINE_SKIPPED = "offline-skipped";
 const initialState = {
   onlineFetchStatus: FETCH_STATUS_LOADING,
   offlineFetchStatus: FETCH_STATUS_LOADING,
