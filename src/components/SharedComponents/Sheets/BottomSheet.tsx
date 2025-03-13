@@ -105,6 +105,7 @@ const StandardBottomSheet = ( {
       index={0}
       ref={sheetRef}
       style={marginOnWide}
+      accessible={false}
     >
       <BottomSheetScrollView
         keyboardShouldPersistTaps={keyboardShouldPersistTaps}

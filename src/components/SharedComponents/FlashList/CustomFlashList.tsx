@@ -6,7 +6,6 @@ import React, {
 const CustomFlashList: Function = forwardRef( ( props, ref ) => (
   <FlashList
     ref={ref}
-    accessible
     disableAutoLayout
     initialNumToRender={5}
     onEndReachedThreshold={0.2}
