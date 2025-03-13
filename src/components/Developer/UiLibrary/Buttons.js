@@ -1,4 +1,4 @@
-import AddObsButton from "components/AddObsModal/AddObsButton.tsx";
+import AddObsButton from "components/AddObsModal/AddObsButton";
 import {
   Body1,
   Body2,

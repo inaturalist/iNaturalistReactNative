@@ -1,6 +1,8 @@
+// @flow
+
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import AddObsModal from "components/AddObsModal/AddObsModal.tsx";
-import { INatIconButton, Modal } from "components/SharedComponents";
+import { Modal } from "components/SharedComponents";
 import GradientButton from "components/SharedComponents/Buttons/GradientButton.tsx";
 import { t } from "i18next";
 import { getCurrentRoute } from "navigation/navigationUtils.ts";
@@ -11,11 +13,7 @@ import useStore from "stores/useStore";
 
 const logger = log.extend( "AddObsButton" );
 
-interface Props {
-  plusOnly?: boolean;
-}
-
-const AddObsButton = ( { plusOnly }: Props ) => {
+const AddObsButton = (): React.Node => {
   const [showModal, setModal] = React.useState( false );
 
   const openModal = React.useCallback( () => setModal( true ), [] );
@@ -31,9 +29,7 @@ const AddObsButton = ( { plusOnly }: Props ) => {
     logger.info( `isAdvancedUser: ${isAllAddObsOptionsMode}` );
   }, [isAllAddObsOptionsMode] );
 
-  const navAndCloseModal = ( screen: string, params?: {
-    camera?: string
-  } ) => {
+  const navAndCloseModal = ( screen, params ) => {
     const currentRoute = getCurrentRoute();
     if ( screen !== "ObsEdit" ) {
       resetObservationFlowSlice( );
@@ -79,30 +75,18 @@ const AddObsButton = ( { plusOnly }: Props ) => {
         closeModal={closeModal}
         modal={addObsModal}
       />
-      {
-        !plusOnly
-          ? (
-            <GradientButton
-              sizeClassName="w-[69px] h-[69px] mb-[5px]"
-              onPress={isAllAddObsOptionsMode
-                ? openModal
-                : navToARCamera}
-              accessibilityLabel={t( "Add-observations" )}
-              accessibilityHint={isAllAddObsOptionsMode
-                ? t( "Shows-observation-creation-options" )
-                : t( "Opens-AI-camera" )}
-              iconName={isAllAddObsOptionsMode && "plus"}
-              iconSize={isAllAddObsOptionsMode && 31}
-            />
-          )
-          : (
-            <INatIconButton
-              onPress={openModal}
-              accessibilityLabel={t( "Add-observations" )}
-              icon="plus"
-            />
-          )
-      }
+      <GradientButton
+        sizeClassName="w-[69px] h-[69px] mb-[5px]"
+        onPress={isAllAddObsOptionsMode
+          ? openModal
+          : navToARCamera}
+        accessibilityLabel={t( "Add-observations" )}
+        accessibilityHint={isAllAddObsOptionsMode
+          ? t( "Shows-observation-creation-options" )
+          : t( "Opens-AI-camera" )}
+        iconName={isAllAddObsOptionsMode && "plus"}
+        iconSize={isAllAddObsOptionsMode && 31}
+      />
     </>
   );
 };

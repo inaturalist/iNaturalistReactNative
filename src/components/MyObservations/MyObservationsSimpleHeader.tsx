@@ -1,4 +1,3 @@
-import AddObsButton from "components/AddObsModal/AddObsButton.tsx";
 import {
   HeaderUser,
   Heading3,
@@ -99,7 +98,6 @@ const MyObservationsSimpleHeader = ( {
             testID="SyncButton"
           />
         )}
-        <AddObsButton plusOnly />
       </View>
     </>
   );
