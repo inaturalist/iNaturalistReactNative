@@ -48,9 +48,7 @@ const MyObservationsContainer = ( ): Node => {
   if ( isDebugMode( ) ) {
     logger.info( loadTime );
   }
-  const {
-    isDefaultMode
-  } = useLayoutPrefs( );
+  const { isDefaultMode, loggedInWhileInDefaultMode } = useLayoutPrefs();
   const { t } = useTranslation( );
   const realm = useRealm( );
   const listRef = useRef( );
@@ -58,7 +56,7 @@ const MyObservationsContainer = ( ): Node => {
 
   // Get navigation params
   const { params } = useRoute( );
-  const { justFinishedSignup, justFinishedLogin } = params || {};
+  const { justFinishedSignup } = params || {};
 
   const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
   const uploadQueue = useStore( state => state.uploadQueue );
@@ -264,7 +262,7 @@ const MyObservationsContainer = ( ): Node => {
         showNoResults={showNoResults}
         toggleLayout={toggleLayout}
         justFinishedSignup={justFinishedSignup}
-        justFinishedLogin={justFinishedLogin}
+        loggedInWhileInDefaultMode={loggedInWhileInDefaultMode}
       />
     );
   }

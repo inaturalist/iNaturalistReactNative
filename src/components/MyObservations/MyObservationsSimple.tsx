@@ -66,7 +66,7 @@ export interface Props {
   fetchMoreTaxa: ( ) => void;
   isFetchingTaxa?: boolean;
   justFinishedSignup?: boolean;
-  justFinishedLogin?: boolean;
+  loggedInWhileInDefaultMode?: boolean;
   refetchTaxa: ( ) => void;
 }
 
@@ -105,7 +105,7 @@ const MyObservationsSimple = ( {
   fetchMoreTaxa,
   isFetchingTaxa,
   justFinishedSignup = false,
-  justFinishedLogin = false,
+  loggedInWhileInDefaultMode = false,
   refetchTaxa
 }: Props ) => {
   const { t } = useTranslation( );
@@ -332,7 +332,7 @@ const MyObservationsSimple = ( {
       <SecondObservationCard triggerCondition={numTotalObservations === 2} />
       <FiftyObservationCard
         triggerCondition={
-          justFinishedLogin && !!currentUser && numTotalObservations >= 50
+          loggedInWhileInDefaultMode && !!currentUser && numTotalObservations >= 50
         }
       />
       <AccountCreationCard

@@ -254,7 +254,7 @@ const LoginForm = ( {
           className={classnames( "mt-[30px]", {
             "mt-5": error
           } )}
-          disabled={!email || !password}
+          // disabled={!email || !password}
           forceDark
           level="focus"
           loading={loading}
