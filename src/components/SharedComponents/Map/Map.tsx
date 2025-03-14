@@ -34,7 +34,7 @@ import ObscuredLocationIndicator from "./ObscuredLocationIndicator";
 import SwitchMapTypeButton from "./SwitchMapTypeButton";
 
 const NEARBY_DIM_M = 50_000;
-const CURRENT_LOCATION_ZOOM_LEVEL = 15; // target zoom level when user hits current location btn
+const CURRENT_LOCATION_ZOOM_LEVEL = 20; // target zoom level when user hits current location btn
 const MIN_ZOOM_LEVEL = 0; // default in react-native-maps, for Google Maps only
 const MIN_CENTER_COORDINATE_DISTANCE = 5;
 
