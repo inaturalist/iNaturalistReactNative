@@ -24,7 +24,6 @@ import {
 import Config from "react-native-config";
 import { EventRegister } from "react-native-event-listeners";
 import QueueItem from "realmModels/QueueItem.ts";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useCurrentUser,
   useLayoutPrefs,
@@ -48,7 +47,7 @@ const Settings = ( ) => {
   const currentUser = useCurrentUser( );
   const {
     remoteUser, isLoading, refetchUserMe
-  } = useUserMe();
+  } = useUserMe( { updateRealm: false } );
   const {
     isDefaultMode,
     isAllAddObsOptionsMode,
@@ -86,9 +85,6 @@ const Settings = ( ) => {
 
   useEffect( () => {
     if ( remoteUser ) {
-      safeRealmWrite( realm, ( ) => {
-        realm.create( "User", remoteUser, "modified" );
-      }, "modifying current user via remote fetch in Settings" );
       setSettings( remoteUser );
       setIsSaving( false );
     }
