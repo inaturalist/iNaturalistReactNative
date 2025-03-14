@@ -3,8 +3,7 @@ import useSyncObservations from "components/MyObservations/hooks/useSyncObservat
 import inatjs from "inaturalistjs";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
-  BEGIN_AUTOMATIC_SYNC,
-  BEGIN_MANUAL_SYNC
+  BEGIN_AUTOMATIC_SYNC
 } from "stores/createSyncObservationsSlice.ts";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
@@ -220,19 +219,6 @@ describe( "automatic sync while user is logged in", ( ) => {
     renderHook( ( ) => useSyncObservations( currentUserId, mockUpload ) );
     await waitFor( ( ) => {
       expect( mockUpload ).not.toHaveBeenCalled( );
-    } );
-  } );
-} );
-
-describe( "manual sync while user is logged in", ( ) => {
-  it( "should begin uploading unsynced observations", async ( ) => {
-    useStore.setState( {
-      ...syncingStore,
-      syncingStatus: BEGIN_MANUAL_SYNC
-    } );
-    renderHook( ( ) => useSyncObservations( currentUserId, mockUpload ) );
-    await waitFor( ( ) => {
-      expect( mockUpload ).toHaveBeenCalled( );
     } );
   } );
 } );

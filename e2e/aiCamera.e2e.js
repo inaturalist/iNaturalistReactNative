@@ -2,11 +2,10 @@ import {
   by, device, element, waitFor
 } from "detox";
 
-import { iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
+import { iNatE2eAfterEach, iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
 import closeOnboarding from "./sharedFlows/closeOnboarding";
 import deleteObservation from "./sharedFlows/deleteObservation";
 import signIn from "./sharedFlows/signIn";
-import switchPowerMode from "./sharedFlows/switchPowerMode";
 import uploadObservation from "./sharedFlows/uploadObservation";
 
 const TIMEOUT = 10_000;
@@ -14,6 +13,7 @@ const TIMEOUT = 10_000;
 describe( "AICamera", () => {
   beforeAll( async () => iNatE2eBeforeAll( device ) );
   beforeEach( async () => iNatE2eBeforeEach( device ) );
+  afterEach( async () => iNatE2eAfterEach( device ) );
 
   it(
     "should open the ai camera, take photo, select a suggestion, upload and delete observation",
@@ -25,12 +25,7 @@ describe( "AICamera", () => {
       const username = await signIn();
 
       /*
-      / 2. Switch UI to power user mode
-      */
-      await switchPowerMode();
-
-      /*
-      / 3. Take photo with AI Camera, select a suggestion, upload and delete observation
+      / 2. Take photo with AI Camera, select a suggestion, upload and delete observation
       */
       // Tap to open AICamera
       const addObsButton = element( by.id( "add-obs-button" ) );

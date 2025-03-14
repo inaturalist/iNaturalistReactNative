@@ -4,7 +4,7 @@ import ObservationsViewBar from "components/Explore/ObservationsViewBar";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
 import {
   AccountCreationCard,
-  // FiftyObservationCard,
+  FiftyObservationCard,
   FirstObservationCard,
   SecondObservationCard
 } from "components/OnboardingModal/PivotCards.tsx";
@@ -18,7 +18,6 @@ import {
 import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList.tsx";
 import { View } from "components/styledComponents";
 import React, { useCallback, useMemo } from "react";
-import Realm from "realm";
 import Photo from "realmModels/Photo";
 import type {
   RealmObservation,
@@ -36,12 +35,17 @@ import SimpleErrorHeader from "./SimpleErrorHeader";
 import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
 import StatTab from "./StatTab";
 
+interface SpeciesCount {
+  count: number,
+  taxon: RealmTaxon
+}
+
 export interface Props {
   activeTab: string;
   currentUser?: RealmUser;
   handleIndividualUploadPress: ( uuid: string ) => void;
   handlePullToRefresh: ( ) => void;
-  handleSyncButtonPress: ( ) => void;
+  handleSyncButtonPress: ( _p: { unuploadedObsMissingBasicsIDs: string[] } ) => void;
   isConnected: boolean;
   isFetchingNextPage: boolean;
   layout: "list" | "grid";
@@ -57,18 +61,19 @@ export interface Props {
   setShowLoginSheet: ( newValue: boolean ) => void;
   showLoginSheet: boolean;
   showNoResults: boolean;
-  taxa?: RealmTaxon[] | Realm.Results;
+  taxa?: SpeciesCount[];
   toggleLayout: ( ) => void;
   fetchMoreTaxa: ( ) => void;
   isFetchingTaxa?: boolean;
   justFinishedSignup?: boolean;
+  loggedInWhileInDefaultMode?: boolean;
   refetchTaxa: ( ) => void;
 }
 
 interface TaxaFlashListRenderItemProps {
   // I'm pretty sure this is some kind of bug ~~~~kueda 20250108
   // eslint-disable-next-line react/no-unused-prop-types
-  item: RealmTaxon;
+  item: SpeciesCount;
 }
 
 export const OBSERVATIONS_TAB = "observations";
@@ -100,12 +105,12 @@ const MyObservationsSimple = ( {
   fetchMoreTaxa,
   isFetchingTaxa,
   justFinishedSignup = false,
+  loggedInWhileInDefaultMode = false,
   refetchTaxa
 }: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const route = useRoute( );
-
   const {
     estimatedGridItemSize,
     flashListStyle,
@@ -117,8 +122,8 @@ const MyObservationsSimple = ( {
     paddingTop: 10
   } ), [flashListStyle] );
 
-  const renderTaxaItem = useCallback( ( { item: taxon }: TaxaFlashListRenderItemProps ) => {
-    const taxonId = taxon.id;
+  const renderTaxaItem = useCallback( ( { item: speciesCount }: TaxaFlashListRenderItemProps ) => {
+    const taxonId = speciesCount.taxon.id;
     const navToTaxonDetails = ( ) => (
       // Again, not sure how to placate TypeScript w/ React Navigation
       navigation.navigate( {
@@ -129,11 +134,11 @@ const MyObservationsSimple = ( {
       } )
     );
 
-    const accessibleName = accessibleTaxonName( taxon, currentUser, t );
+    const accessibleName = accessibleTaxonName( speciesCount.taxon, currentUser, t );
 
     const source = {
       uri: Photo.displayLocalOrRemoteMediumPhoto(
-        taxon?.default_photo
+        speciesCount.taxon?.default_photo
       )
     };
 
@@ -145,7 +150,7 @@ const MyObservationsSimple = ( {
       <SimpleTaxonGridItem
         key={itemKey}
         style={gridItemStyle}
-        taxon={taxon}
+        speciesCount={speciesCount}
         navToTaxonDetails={navToTaxonDetails}
         accessibleName={accessibleName}
         source={source}
@@ -185,9 +190,18 @@ const MyObservationsSimple = ( {
     taxa?.length
   ] );
 
+  const unuploadedObsMissingBasicsIDs = useMemo( () => (
+    observations
+      .filter( o => o.needsSync() && o.missingBasics() )
+      .map( o => o.uuid )
+  ), [observations] );
+
+  const numUnuploadedObsMissingBasics = unuploadedObsMissingBasicsIDs.length;
   const obsMissingBasicsExist = useMemo( ( ) => (
-    numUnuploadedObservations > 0 && !!observations.find( o => o.needsSync() && o.missingBasics( ) )
-  ), [numUnuploadedObservations, observations] );
+    numUnuploadedObservations > 0 && numUnuploadedObsMissingBasics > 0
+  ), [numUnuploadedObservations, numUnuploadedObsMissingBasics] );
+
+  const numUploadableObservations = numUnuploadedObservations - numUnuploadedObsMissingBasics;
 
   const renderTabComponent = ( { id } ) => (
     <StatTab
@@ -230,7 +244,10 @@ const MyObservationsSimple = ( {
         <MyObservationsSimpleHeader
           currentUser={currentUser}
           isConnected={isConnected}
-          handleSyncButtonPress={handleSyncButtonPress}
+          numUploadableObservations={numUploadableObservations}
+          handleSyncButtonPress={() => {
+            handleSyncButtonPress( { unuploadedObsMissingBasicsIDs } );
+          }}
         />
         <Tabs
           activeColor={String( colors?.inatGreen )}
@@ -292,8 +309,8 @@ const MyObservationsSimple = ( {
             hideLoadingWheel
             isConnected={isConnected}
             keyExtractor={(
-              item: RealmTaxon
-            ) => `${item.id}-${item?.default_photo?.url || "no-photo"}`}
+              item: SpeciesCount
+            ) => `${item.taxon.id}-${item?.taxon?.default_photo?.url || "no-photo"}`}
             layout="grid"
             numColumns={numColumns}
             renderItem={renderTaxaItem}
@@ -313,10 +330,11 @@ const MyObservationsSimple = ( {
       {/* These four cards should show only in default mode */}
       <FirstObservationCard triggerCondition={numTotalObservations === 1} />
       <SecondObservationCard triggerCondition={numTotalObservations === 2} />
-      {/* This card was showing up at the wrong places but probably needs other code changes
-          before we can turn it back on.
-      <FiftyObservationCard triggerCondition={!!currentUser && numTotalObservations >= 50} />
-      */}
+      <FiftyObservationCard
+        triggerCondition={
+          loggedInWhileInDefaultMode && !!currentUser && numTotalObservations >= 50
+        }
+      />
       <AccountCreationCard
         triggerCondition={
           justFinishedSignup && !!currentUser && numTotalObservations < 20

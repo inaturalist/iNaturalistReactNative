@@ -124,7 +124,14 @@ const Announcements = ( {
         scrollEnabled={false}
         testID="announcements-webview"
       />
-      {dismissible && <Button className="m-3" text={t( "DISMISS" )} onPress={dismiss} />}
+      {dismissible && (
+        <Button
+          className="m-3"
+          text={t( "DISMISS" )}
+          onPress={dismiss}
+          testID="announcements-dismiss"
+        />
+      )}
     </View>
   );
 };

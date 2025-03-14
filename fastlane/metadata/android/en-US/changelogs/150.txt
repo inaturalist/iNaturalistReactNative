@@ -1,0 +1,13 @@
+UPDATED
+* Show species counts in my obs list
+* Make app default to the suggestions-first mode
+
+FIXED
+* Remove some unnecessary taxon fetches
+* Icons for dropdown carets
+* Do not upload observations that have missing location or date when in default mode
+* Save photo to device when first permission granted
+* Some accessibility problems
+* Loading state problem on suggestions
+* Sync banner style
+* Iconic taxa icons on match screen

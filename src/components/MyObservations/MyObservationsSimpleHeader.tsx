@@ -25,6 +25,7 @@ import SimpleUploadBannerContainer from "./SimpleUploadBannerContainer";
 
 export interface Props {
   currentUser?: RealmUser;
+  numUploadableObservations: number;
   handleSyncButtonPress: ( ) => void;
   isConnected: boolean;
 }
@@ -32,7 +33,8 @@ export interface Props {
 const MyObservationsSimpleHeader = ( {
   currentUser,
   handleSyncButtonPress,
-  isConnected
+  isConnected,
+  numUploadableObservations
 }: Props ) => {
   const { t } = useTranslation( );
 
@@ -42,7 +44,6 @@ const MyObservationsSimpleHeader = ( {
   const currentDeleteCount = useStore( state => state.currentDeleteCount );
   const uploadErrorsByUuid = useStore( state => state.errorsByUuid );
   const initialNumObservationsInQueue = useStore( state => state.initialNumObservationsInQueue );
-  const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
   const uploadStatus = useStore( state => state.uploadStatus );
   const syncingStatus = useStore( state => state.syncingStatus );
   const initialNumDeletionsInQueue = useStore( state => state.initialNumDeletionsInQueue );
@@ -52,7 +53,7 @@ const MyObservationsSimpleHeader = ( {
   const deletionsInProgress = initialNumDeletionsInQueue > 0 && !deletionsComplete;
 
   const manualSyncInProgress = syncingStatus === MANUAL_SYNC_IN_PROGRESS;
-  const pendingUpload = uploadStatus === UPLOAD_PENDING && numUnuploadedObservations > 0;
+  const pendingUpload = uploadStatus === UPLOAD_PENDING && numUploadableObservations > 0;
   const uploadInProgress = uploadStatus === UPLOAD_IN_PROGRESS && numUploadsAttempted > 0;
   const uploadsComplete = uploadStatus === UPLOAD_COMPLETE && initialNumObservationsInQueue > 0;
   const totalUploadErrors = Object.keys( uploadErrorsByUuid ).length;
@@ -70,7 +71,10 @@ const MyObservationsSimpleHeader = ( {
 
   return (
     <>
-      <SimpleUploadBannerContainer handleSyncButtonPress={handleSyncButtonPress} />
+      <SimpleUploadBannerContainer
+        handleSyncButtonPress={handleSyncButtonPress}
+        numUploadableObservations={numUploadableObservations}
+      />
       <View className="flex-row justify-between items-center px-5 py-1">
         {currentUser
           ? <HeaderUser user={currentUser} isConnected={isConnected} />
@@ -84,7 +88,7 @@ const MyObservationsSimpleHeader = ( {
             }
             onPress={handleSyncButtonPress}
             color={String(
-              numUnuploadedObservations > 0
+              numUploadableObservations > 0
                 ? colors?.inatGreen
                 : colors?.darkGray
             )}

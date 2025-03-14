@@ -178,13 +178,18 @@ export default ( canUpload: boolean ) => {
     uploadStatus
   ] );
 
-  const createUploadQueueAllUnsynced = useCallback( ( ) => {
-    const uuidsQuery = unsyncedUuids
+  const createUploadQueueAllUnsynced = useCallback( ( skipSomeUuids: string[] | undefined ) => {
+    const uploadsUuids = unsyncedUuids
+      .filter( ( uuid: string ) => !skipSomeUuids?.includes( uuid ) );
+    if ( uploadsUuids.length === 0 ) {
+      return;
+    }
+    const uuidsQuery = uploadsUuids
       .map( ( uploadUuid: string ) => `'${uploadUuid}'` ).join( ", " );
     const uploads = realm.objects( "Observation" )
       .filtered( `uuid IN { ${uuidsQuery} }` );
     setTotalToolbarIncrements( uploads );
-    addToUploadQueue( unsyncedUuids );
+    addToUploadQueue( uploadsUuids );
     if ( canUpload ) {
       setStartUploadObservations( );
     } else {
@@ -200,8 +205,8 @@ export default ( canUpload: boolean ) => {
     unsyncedUuids
   ] );
 
-  const startUploadObservations = useCallback( async ( ) => {
-    createUploadQueueAllUnsynced( );
+  const startUploadObservations = useCallback( async ( skipSomeUuids: string[] | undefined ) => {
+    createUploadQueueAllUnsynced( skipSomeUuids );
   }, [
     createUploadQueueAllUnsynced
   ] );

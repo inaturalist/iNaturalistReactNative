@@ -1,0 +1,17 @@
+NEW
+* Full screen loading state on match screen
+* UI for match screen without suggestion
+* Plus icon button to add all observation types
+
+UPDATED
+* Use default mode from first app install
+* Hide obs status on my obs list
+
+FIXED
+* Other suggestions items same height
+* Hide floating buttons in ObsDetailsDefaultMode
+* Reset zoom in media viewer
+* Crash on species tab
+* Announcements in default mode
+* Zoom options are actual physical devices
+* Lingering state, and possible crash for photo import

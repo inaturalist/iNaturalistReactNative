@@ -17,8 +17,7 @@ import type { Node } from "react";
 import React, {
   useEffect,
   useMemo,
-  useRef,
-  useState
+  useRef
 } from "react";
 import { Platform } from "react-native";
 import DeviceInfo from "react-native-device-info";
@@ -26,14 +25,15 @@ import {
   useSafeAreaInsets
 } from "react-native-safe-area-context";
 import {
+  useScrollToOffset,
   useTranslation
 } from "sharedHooks";
 
+import ObsDetailsHeaderRight from "../ObsDetailsDefaultMode/ObsDetailsDefaultModeHeaderRight";
 import ActivityTab from "./ActivityTab/ActivityTab";
 import FloatingButtons from "./ActivityTab/FloatingButtons";
 import DetailsTab from "./DetailsTab/DetailsTab";
 import FaveButton from "./FaveButton";
-import ObsDetailsHeader from "./ObsDetailsHeader";
 import ObsDetailsOverview from "./ObsDetailsOverview";
 import ObsMediaDisplayContainer from "./ObsMediaDisplayContainer";
 import AgreeWithIDSheet from "./Sheets/AgreeWithIDSheet";
@@ -129,17 +129,11 @@ const ObsDetails = ( {
   const scrollViewRef = useRef( );
   const insets = useSafeAreaInsets();
   const { t } = useTranslation( );
-  const [invertToWhiteBackground, setInvertToWhiteBackground] = useState( false );
 
-  // Scroll the scrollview to this y position once if set, then unset it.
-  // Could be refactored into a hook if we need this logic elsewher
-  const [oneTimeScrollOffsetY, setOneTimeScrollOffsetY] = useState( 0 );
-  useEffect( ( ) => {
-    if ( oneTimeScrollOffsetY && scrollViewRef?.current ) {
-      scrollViewRef?.current?.scrollTo( { y: oneTimeScrollOffsetY } );
-      setOneTimeScrollOffsetY( 0 );
-    }
-  }, [oneTimeScrollOffsetY] );
+  const {
+    setHeightOfContentAboveSection: setHeightOfContentAboveActivityTab,
+    setOffsetToActivityItem
+  } = useScrollToOffset( scrollViewRef );
 
   // If the user just added an activity item and we're waiting for it to load,
   // scroll to the bottom where it will be visible. Also provides immediate
@@ -149,14 +143,6 @@ const ObsDetails = ( {
       scrollViewRef?.current?.scrollToEnd( );
     }
   }, [addingActivityItem] );
-
-  const handleScroll = e => {
-    const scrollY = e.nativeEvent.contentOffset.y;
-    const shouldInvert = !!( scrollY > 150 );
-    if ( shouldInvert !== invertToWhiteBackground ) {
-      setInvertToWhiteBackground( shouldInvert );
-    }
-  };
 
   const dynamicInsets = useMemo( () => ( {
     backgroundColor: "#ffffff",
@@ -179,10 +165,7 @@ const ObsDetails = ( {
         observation={observation}
         openAgreeWithIdSheet={openAgreeWithIdSheet}
         refetchRemoteObservation={refetchRemoteObservation}
-        onLayoutTargetItem={event => {
-          const { layout } = event.nativeEvent;
-          setOneTimeScrollOffsetY( layout.y + layout.height );
-        }}
+        onLayoutTargetItem={setOffsetToActivityItem}
       />
     </HideView>
   );
@@ -194,6 +177,16 @@ const ObsDetails = ( {
         observation={observation}
       />
     </HideView>
+  );
+
+  const renderHeaderRight = ( ) => (
+    <ObsDetailsHeaderRight
+      belongsToCurrentUser={belongsToCurrentUser}
+      observationId={observation?.id}
+      uuid={observation?.uuid}
+      refetchSubscriptions={refetchSubscriptions}
+      subscriptions={subscriptions}
+    />
   );
 
   const renderTablet = () => (
@@ -226,8 +219,13 @@ const ObsDetails = ( {
           className="flex-1 flex-column"
           stickyHeaderHiddenOnScroll
           endFillColor="white"
-          onScroll={handleScroll}
         >
+          <View
+            onLayout={event => {
+              const { layout } = event.nativeEvent;
+              setHeightOfContentAboveActivityTab( layout );
+            }}
+          />
           <View className="bg-white h-full">
             {renderActivityTab( )}
             {renderDetailsTab( )}
@@ -246,15 +244,7 @@ const ObsDetails = ( {
           />
         )}
       </View>
-      <ObsDetailsHeader
-        belongsToCurrentUser={belongsToCurrentUser}
-        invertToWhiteBackground={invertToWhiteBackground}
-        observationId={observation?.id}
-        rightIconDarkGray
-        uuid={observation?.uuid}
-        refetchSubscriptions={refetchSubscriptions}
-        subscriptions={subscriptions}
-      />
+      {renderHeaderRight( )}
     </View>
   );
 
@@ -266,33 +256,32 @@ const ObsDetails = ( {
         stickyHeaderIndices={[0, 3]}
         scrollEventThrottle={16}
         endFillColor="white"
-        onScroll={handleScroll}
       >
-        <ObsDetailsHeader
-          belongsToCurrentUser={belongsToCurrentUser}
-          subscriptions={subscriptions}
-          invertToWhiteBackground={invertToWhiteBackground}
-          observationId={observation?.id}
-          uuid={observation?.uuid}
-          refetchSubscriptions={refetchSubscriptions}
-        />
-        <View className="-mt-[64px]">
-          <ObsMediaDisplayContainer observation={observation} />
-          { currentUser && (
-            <FaveButton
-              observation={observation}
-              currentUser={currentUser}
-              afterToggleFave={refetchRemoteObservation}
-            />
-          ) }
-        </View>
-        <ObsDetailsOverview
-          belongsToCurrentUser={belongsToCurrentUser}
-          isConnected={isConnected}
-          observation={observation}
-        />
-        <View className="bg-white">
-          <Tabs tabs={tabs} activeId={obsDetailsTab} />
+        {renderHeaderRight( )}
+        <View
+          onLayout={event => {
+            const { layout } = event.nativeEvent;
+            setHeightOfContentAboveActivityTab( layout );
+          }}
+        >
+          <View>
+            <ObsMediaDisplayContainer observation={observation} />
+            { currentUser && (
+              <FaveButton
+                observation={observation}
+                currentUser={currentUser}
+                afterToggleFave={refetchRemoteObservation}
+              />
+            ) }
+          </View>
+          <ObsDetailsOverview
+            belongsToCurrentUser={belongsToCurrentUser}
+            isConnected={isConnected}
+            observation={observation}
+          />
+          <View className="bg-white">
+            <Tabs tabs={tabs} activeId={obsDetailsTab} />
+          </View>
         </View>
         <View className="bg-white h-full">
           {renderActivityTab( )}

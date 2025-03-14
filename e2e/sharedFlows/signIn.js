@@ -3,7 +3,14 @@ import {
 } from "detox";
 import Config from "react-native-config-node";
 
+import dismissAnnouncements from "./dismissAnnouncements";
+import switchPowerMode from "./switchPowerMode";
+
 export default async function signIn() {
+  /*
+    Switch UI to power user mode
+  */
+  await switchPowerMode();
   // Find the Menu item from tabs
   const openDrawerMenuItem = element( by.id( "OPEN_DRAWER" ) );
   await waitFor( openDrawerMenuItem ).toBeVisible().withTimeout( 10000 );
@@ -32,5 +39,10 @@ export default async function signIn() {
   const username = element( by.text( `${Config.E2E_TEST_USERNAME}` ) ).atIndex( 1 );
   await waitFor( username ).toBeVisible().withTimeout( 10000 );
   await expect( username ).toBeVisible();
+
+  /*
+    Dismiss announcements if they're blocking the UI
+  */
+  await dismissAnnouncements();
   return username;
 }

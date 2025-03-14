@@ -14,6 +14,8 @@ import Attribution from "./Attribution";
 
 type Props = {
   debugData: {
+    onlineFetchStatus: string,
+    offlineFetchStatus: string,
     selectedPhotoUri: string,
     onlineSuggestionsUpdatedAt: Date,
     timedOut: boolean,
@@ -94,6 +96,8 @@ const SuggestionsFooter = ( {
       { isDebug && (
         <View className="bg-deeppink text-white p-3">
           <Heading4 className="text-white">Diagnostics</Heading4>
+          <Body3 className="text-white">Online fetch status: {JSON.stringify( debugData?.onlineFetchStatus )}</Body3>
+          <Body3 className="text-white">Online fetch status: {JSON.stringify( debugData?.offlineFetchStatus )}</Body3>
           <Body3 className="text-white">Online suggestions URI: {JSON.stringify( debugData?.selectedPhotoUri )}</Body3>
           <Body3 className="text-white">Online suggestions updated at: {formatISONoTimezone( debugData?.onlineSuggestionsUpdatedAt )}</Body3>
           <Body3 className="text-white">Online suggestions timed out: {JSON.stringify( debugData?.timedOut )}</Body3>

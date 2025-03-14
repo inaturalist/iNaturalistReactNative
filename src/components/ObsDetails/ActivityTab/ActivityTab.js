@@ -72,8 +72,8 @@ const ActivityTab = ( {
           <View
             onLayout={event => {
               if ( targetItemID === item?.id ) {
-              // const { layout } = event.nativeEvent;
-                onLayoutTargetItem( event );
+                const { layout } = event.nativeEvent;
+                onLayoutTargetItem( layout );
               }
             }}
             key={item.uuid}
