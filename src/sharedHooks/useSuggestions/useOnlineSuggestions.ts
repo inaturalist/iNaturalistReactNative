@@ -88,10 +88,9 @@ const useOnlineSuggestions = (
 
   useEffect( () => {
     if ( isConnected === false ) {
-      onFetchError( { isOnline: true } );
       setTimedOut( true );
     }
-  }, [onFetchError, isConnected] );
+  }, [isConnected] );
 
   const saveTaxaToRealm = useCallback( ( ) => {
     // we're already getting all this taxon information anytime we make this API
