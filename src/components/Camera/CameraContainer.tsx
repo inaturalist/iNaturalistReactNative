@@ -45,6 +45,8 @@ const CameraContainer = ( ) => {
 
   const showMatchScreen = cameraType === "AI"
     && isDefaultMode;
+  const showSuggestionsScreen = cameraType === "AI"
+    && !isDefaultMode;
 
   const logStageIfAICamera = useCallback( async (
     stageName: string,
@@ -150,14 +152,16 @@ const CameraContainer = ( ) => {
       newPhotoState,
       logStageIfAICamera,
       deleteStageIfAICamera,
-      showMatchScreen
+      showMatchScreen,
+      showSuggestionsScreen
     } );
   }, [
     prepareStoreAndNavigate,
     navigationOptions,
     logStageIfAICamera,
     deleteStageIfAICamera,
-    showMatchScreen
+    showMatchScreen,
+    showSuggestionsScreen
   ] );
 
   const handleCheckmarkPress = useCallback( async newPhotoState => {

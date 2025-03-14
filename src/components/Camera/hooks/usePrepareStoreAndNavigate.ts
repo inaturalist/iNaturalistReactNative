@@ -137,7 +137,8 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     newPhotoState,
     logStageIfAICamera,
     deleteStageIfAICamera,
-    showMatchScreen
+    showMatchScreen,
+    showSuggestionsScreen
   } ) => {
     if ( userLocation !== null ) {
       logStageIfAICamera( "fetch_user_location_complete" );
@@ -167,7 +168,7 @@ const usePrepareStoreAndNavigate = ( ): Function => {
         lastScreen: "CameraWithDevice"
       } );
     }
-    if ( isAdvancedSuggestionsMode ) {
+    if ( showSuggestionsScreen || isAdvancedSuggestionsMode ) {
       return navigation.push( "Suggestions", {
         entryScreen: "CameraWithDevice",
         lastScreen: "CameraWithDevice"
