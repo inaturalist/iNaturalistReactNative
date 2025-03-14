@@ -22,6 +22,7 @@ import React, {
 } from "react";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import saveObservation from "sharedHelpers/saveObservation.ts";
+import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservationLocation.ts";
 import {
   useExitObservationFlow, useLocationPermission, useSuggestions, useWatchPosition
 } from "sharedHooks";
@@ -198,15 +199,19 @@ const MatchContainer = ( ) => {
     }
   }, [] );
 
+  const shouldFetchUserLocation
+  = shouldFetchObservationLocation( currentObservation ) && hasPermissions;
+
   const {
-    isFetchingLocation,
     stopWatch,
     subscriptionId,
     userLocation
-  } = useWatchPosition( { shouldFetchLocation: hasPermissions } );
+  } = useWatchPosition( {
+    shouldFetchLocation: shouldFetchUserLocation
+  } );
 
   const getCurrentUserPlaceName = useCallback( async () => {
-    if ( currentUserLocation?.latitude !== undefined && !isFetchingLocation ) {
+    if ( currentUserLocation?.latitude ) {
       const placeGuess
       = await fetchPlaceName( currentUserLocation?.latitude, currentUserLocation?.longitude );
       if ( placeGuess ) {
@@ -217,7 +222,7 @@ const MatchContainer = ( ) => {
         setCurrentPlaceGuess( placeGuess );
       }
     }
-  }, [currentUserLocation, isFetchingLocation] );
+  }, [currentUserLocation] );
 
   const handleRefetchSuggestions = useCallback( () => {
     const newScoreImageParams = {
@@ -242,8 +247,7 @@ const MatchContainer = ( ) => {
     currentUserLocation?.longitude] );
 
   useEffect( () => {
-    if ( currentUserLocation?.latitude !== null && !hasRefetchedSuggestions && suggestions ) {
-      getCurrentUserPlaceName( );
+    if ( currentUserLocation?.latitude && !hasRefetchedSuggestions && suggestions ) {
       handleRefetchSuggestions();
     }
   }, [
@@ -261,6 +265,7 @@ const MatchContainer = ( ) => {
     }
     if ( userLocation?.latitude ) {
       setCurrentUserLocation( userLocation );
+      getCurrentUserPlaceName( );
       updateObservationKeys( userLocation );
     }
   }, [
@@ -270,7 +275,8 @@ const MatchContainer = ( ) => {
     stopWatch,
     subscriptionId,
     currentUserLocation,
-    scoreImageParams
+    scoreImageParams,
+    getCurrentUserPlaceName
   ] );
 
   useEffect( () => {
