@@ -10,6 +10,8 @@ import "react-native-get-random-values";
 import "react-native-url-polyfill/auto";
 
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { getCurrentRoute } from "navigation/navigationUtils.ts";
+import { zustandStorage } from "stores/useStore";
 import {
   QueryClient,
   QueryClientProvider
@@ -31,6 +33,7 @@ import { startNetworkLogging } from "react-native-network-logger";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { getInstallID } from "sharedHelpers/installData.ts";
 import { reactQueryRetry } from "sharedHelpers/logging";
+import DeviceInfo from "react-native-device-info";
 
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
@@ -78,7 +81,7 @@ const jsErrorHandler = ( e, isFatal ) => {
   // if ( !e.name && !e.message ) return;
   if ( isFatal ) {
     logger.error( "Fatal JS Error: ", e );
-    Alert.alert( "D'OH", `${e.message}\n\n${e.stack}` );
+    Alert.alert( "Fatal JS Error", `${e.message}\n\n${e.stack}` );
   } else {
     // This should get logged by ErrorBoundary. For some reason this handler
     // gets called too, so we don't want to double-report errors
@@ -93,9 +96,29 @@ setJSExceptionHandler( jsErrorHandler, true );
 // tested this by raising an exception in RNGestureHandler.m
 // https://stackoverflow.com/questions/63270492/how-to-raise-native-error-in-react-native-app
 // https://github.com/a7ul/react-native-exception-handler#react-native-navigation-wix
-setNativeExceptionHandler( exceptionString => {
-  logger.error( `Native Error: ${exceptionString}` );
-}, false );
+setNativeExceptionHandler(
+  async exceptionString => {
+    try {
+      const crashData = {
+        error: exceptionString,
+        screen: getCurrentRoute()?.name || "",
+        memoryUsage: await DeviceInfo.getUsedMemory(),
+        timestamp: new Date().toISOString(),
+        appVersion: await DeviceInfo.getVersion()
+      };
+
+      // Store crash data for retrieval on next app launch
+      zustandStorage.setItem( "LAST_CRASH_DATA", JSON.stringify( crashData ) );
+
+      logger.error( `Native Error: ${exceptionString}`, crashData );
+    } catch ( e ) {
+      // Last-ditch attempt to log something
+      logger.error( `Native Error: ${exceptionString} (failed to save context)` );
+    }
+  },
+  true, // Force quit the app to prevent zombie states
+  true // Enable on iOS
+);
 
 // Only in debug builds
 // eslint-disable-next-line no-undef
