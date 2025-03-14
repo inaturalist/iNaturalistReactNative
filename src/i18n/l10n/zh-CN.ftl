@@ -551,7 +551,6 @@ Observation-has-no-photos-and-no-sounds = 此观察记录没有照片，也没�
 Observation-location-obscured-randomized-point = 这个观察记录的位置是模糊的。你看到了模糊多边形中的一个随机的点。
 Observation-location-obscured-you-can-see-your-own = 此观察记录的位置是模糊的。您总是可以看到您自己观察的位置。
 Observation-location-obscured-you-have-permission = 此观察记录的位置是模糊的。您有权查看此位置。
-Observation-Name = 观察{ $scientificName }
 Observation-options = 观察选项
 OBSERVATION-WAS-DELETED = 观察被删除
 Observation-with-no-evidence = 创建一个没有证据的观察

@@ -503,7 +503,6 @@
   "Observation-location-obscured-randomized-point": "Denne observations placering er sløret. Det viste punkt er et randomiseret punkt indenfor sløringspolygonen.",
   "Observation-location-obscured-you-can-see-your-own": "Denne observations placering er sløret. Man kan altid se placeringen på sine egne observationer.",
   "Observation-location-obscured-you-have-permission": "Denne observations placering er sløret. Du har tilladelse til at se denne placering.",
-  "Observation-Name": "Observation { $scientificName }",
   "Observation-options": "Observationsmuligheder",
   "OBSERVATION-WAS-DELETED": "OBSERVATION ER SLETTET",
   "Observation-with-no-evidence": "Observation uden bevis",

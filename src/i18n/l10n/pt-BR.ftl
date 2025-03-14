@@ -551,7 +551,6 @@ Observation-has-no-photos-and-no-sounds = Esta observação não possui fotos ou
 Observation-location-obscured-randomized-point = A localização desta observação está oculta. Você está vendo um local aleatório no polígono de ocultação.
 Observation-location-obscured-you-can-see-your-own = A localização desta observação está oculta. Você pode sempre ver a localização de suas próprias observações.
 Observation-location-obscured-you-have-permission = A localização desta observação está oculta. Você tem permissão para ver esta localização.
-Observation-Name = Observação { $scientificName }
 Observation-options = Opções de observação
 OBSERVATION-WAS-DELETED = OBSERVAÇÃO FOI EXCLUÍDA
 Observation-with-no-evidence = Observação sem nenhuma evidência

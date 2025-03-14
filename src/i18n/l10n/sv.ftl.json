@@ -503,7 +503,6 @@
   "Observation-location-obscured-randomized-point": "Detta fynds position är diffuserad. Du ser en slumpartad punkt inom diffuseringspolygonen.",
   "Observation-location-obscured-you-can-see-your-own": "Detta fynds position är diffuserad. Du kan alltid se positionen för dina egna fynd.",
   "Observation-location-obscured-you-have-permission": "Detta fynds position är diffuserad. Du har behörighet att se denna position.",
-  "Observation-Name": "Fynd { $scientificName }",
   "Observation-options": "Fyndalternativ",
   "OBSERVATION-WAS-DELETED": "FYNDET RADERADES",
   "Observation-with-no-evidence": "Fynd utan belägg",

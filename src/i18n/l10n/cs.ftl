@@ -549,7 +549,6 @@ Observation-has-no-photos-and-no-sounds = Toto pozorování nemá žádné fotog
 Observation-location-obscured-randomized-point = Poloha tohoto pozorování je zastřená. Vidíte náhodně vybraný bod v polygonu zastínění.
 Observation-location-obscured-you-can-see-your-own = Pozice tohoto pozorování je skrytá. Vždy můžete vidět polohu vašich vlastních pozorování.
 Observation-location-obscured-you-have-permission = Pozice tohoto pozorování je skrytá. Máte oprávnění k zobrazení tohoto umístění.
-Observation-Name = Pozorování { $scientificName }
 Observation-options = Možnosti pozorování
 OBSERVATION-WAS-DELETED = POZOROVÁNÍ BYLO SMAZÁNO
 Observation-with-no-evidence = Pozorování bez důkazů
