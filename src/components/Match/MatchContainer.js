@@ -16,17 +16,17 @@ import {
 import _ from "lodash";
 import { RealmContext } from "providers/contexts.ts";
 import React, {
-  useCallback, useEffect, useReducer, useRef, useState
+  useCallback,
+  useEffect, useReducer, useRef, useState
 } from "react";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import saveObservation from "sharedHelpers/saveObservation.ts";
 import {
-  useExitObservationFlow, useLocationPermission, useSuggestions
+  useExitObservationFlow, useLocationPermission, useSuggestions, useWatchPosition
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 import useStore from "stores/useStore";
 
-import fetchUserLocation from "../../sharedHelpers/fetchUserLocation";
 import Match from "./Match";
 import PreMatchLoadingScreen from "./PreMatchLoadingScreen";
 
@@ -115,6 +115,7 @@ const MatchContainer = ( ) => {
 
   const [topSuggestion, setTopSuggestion] = useState( );
   const [iconicTaxon, setIconicTaxon] = useState( );
+  const [currentUserLocation, setCurrentUserLocation] = useState( null );
 
   const [state, dispatch] = useReducer( reducer, {
     ...initialState,
@@ -188,12 +189,7 @@ const MatchContainer = ( ) => {
     onlineSuggestionsAttempted
   } );
   const [currentPlaceGuess, setCurrentPlaceGuess] = useState( );
-
-  useEffect( () => {
-    if ( !currentPlaceGuess ) return;
-
-    updateObservationKeys( { place_guess: currentPlaceGuess } );
-  }, [currentPlaceGuess, updateObservationKeys] );
+  const [hasRefetchedSuggestions, setHasRefetchedSuggestions] = useState( false );
 
   const scrollToTop = useCallback( () => {
     if ( scrollRef.current ) {
@@ -201,22 +197,28 @@ const MatchContainer = ( ) => {
     }
   }, [] );
 
-  const getCurrentUserLocation = async ( ) => {
-    const currentUserLocation = await fetchUserLocation( );
-    const placeGuess
-     = await fetchPlaceName( currentUserLocation?.latitude, currentUserLocation?.longitude );
+  const {
+    isFetchingLocation,
+    stopWatch,
+    subscriptionId,
+    userLocation
+  } = useWatchPosition( { shouldFetchLocation: hasPermissions } );
 
-    if ( placeGuess ) {
-      // Cannot call updateObservationKeys directly from here, since fetchPlaceName might take
-      // a while to return, in the meantime the current copy of the observation might have
-      // changed, so we update the observation from useEffect of currentPlaceGuess, so it will
-      // always have the latest copy of the current observation (see GH issue #584)
-      setCurrentPlaceGuess( placeGuess );
+  const getCurrentUserPlaceName = useCallback( async () => {
+    if ( currentUserLocation?.latitude !== undefined && !isFetchingLocation ) {
+      const placeGuess
+      = await fetchPlaceName( currentUserLocation?.latitude, currentUserLocation?.longitude );
+      if ( placeGuess ) {
+        // Cannot call updateObservationKeys directly from here, since fetchPlaceName might take
+        // a while to return, in the meantime the current copy of the observation might have
+        // changed, so we update the observation from useEffect of currentPlaceGuess, so it will
+        // always have the latest copy of the current observation (see GH issue #584)
+        setCurrentPlaceGuess( placeGuess );
+      }
     }
-    updateObservationKeys( {
-      latitude: currentUserLocation?.latitude,
-      longitude: currentUserLocation?.longitude
-    } );
+  }, [currentUserLocation, isFetchingLocation] );
+
+  const handleRefetchSuggestions = useCallback( () => {
     const newScoreImageParams = {
       ...scoreImageParams,
       lat: currentUserLocation?.latitude,
@@ -228,14 +230,55 @@ const MatchContainer = ( ) => {
       scoreImageParams: newScoreImageParams
     } );
     refetchSuggestions();
-    // Scroll to top of the screen
+    setHasRefetchedSuggestions( true );
+    // // Scroll to top of the screen
     scrollToTop( );
-  };
+  }, [
+    refetchSuggestions,
+    scoreImageParams,
+    scrollToTop,
+    currentUserLocation?.latitude,
+    currentUserLocation?.longitude] );
+
+  useEffect( () => {
+    if ( currentUserLocation?.latitude !== null && !hasRefetchedSuggestions && suggestions ) {
+      getCurrentUserPlaceName( );
+      handleRefetchSuggestions();
+    }
+  }, [
+    currentUserLocation,
+    getCurrentUserPlaceName,
+    handleRefetchSuggestions,
+    hasRefetchedSuggestions,
+    suggestions
+  ] );
+
+  useEffect( ( ) => {
+    if ( !scoreImageParams ) return;
+    if ( userLocation === currentUserLocation ) {
+      return;
+    }
+    if ( userLocation?.latitude ) {
+      setCurrentUserLocation( userLocation );
+      updateObservationKeys( userLocation );
+    }
+  }, [
+    userLocation,
+    updateObservationKeys,
+    handleRefetchSuggestions,
+    stopWatch,
+    subscriptionId,
+    currentUserLocation,
+    scoreImageParams
+  ] );
+
+  useEffect( () => {
+    if ( !currentPlaceGuess ) return;
+    updateObservationKeys( { place_guess: currentPlaceGuess } );
+  }, [currentPlaceGuess, updateObservationKeys] );
 
   const handleAddLocationPressed = ( ) => {
-    if ( hasPermissions ) {
-      getCurrentUserLocation();
-    } else {
+    if ( !hasPermissions ) {
       requestPermissions( );
     }
   };
@@ -355,6 +398,7 @@ const MatchContainer = ( ) => {
       } );
       await saveObservation( getCurrentObservation( ), cameraRollUris, realm );
     }
+    stopWatch( subscriptionId );
     exitObservationFlow( );
   };
 
@@ -375,7 +419,7 @@ const MatchContainer = ( ) => {
           iconicTaxon={iconicTaxon}
           setIconicTaxon={setIconicTaxon}
         />
-        {renderPermissionsGate( { onPermissionGranted: getCurrentUserLocation } )}
+        {renderPermissionsGate( { onPermissionGranted: getCurrentUserPlaceName } )}
         {/* eslint-disable i18next/no-literal-string */}
         {/* eslint-disable react/jsx-one-expression-per-line */}
         {/* eslint-disable max-len */}
