@@ -503,7 +503,6 @@
   "Observation-location-obscured-randomized-point": "E megfigyelés földrajzi helye ki van takarva. Amit látsz, az egy random hely a pontos hely köré rajzolt területen belül.",
   "Observation-location-obscured-you-can-see-your-own": "E megfigyelés földrajzi helye ki van takarva. A saját megfigyeléseid földrajzi helyét bármikor megtekintheted.",
   "Observation-location-obscured-you-have-permission": "E megfigyelés földrajzi helye ki van takarva, vuszont van jogosultságod a pontos hely megtekintéséhez.",
-  "Observation-Name": "Observation { $scientificName }",
   "Observation-options": "Observation options",
   "OBSERVATION-WAS-DELETED": "OBSERVATION WAS DELETED",
   "Observation-with-no-evidence": "Observation with no evidence",

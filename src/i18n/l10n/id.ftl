@@ -549,7 +549,6 @@ Observation-has-no-photos-and-no-sounds = Pengamatan ini tidak memiliki gambar m
 Observation-location-obscured-randomized-point = Lokasi pengamatan ini dikaburkan. Anda sedang melihat titik acak di dalam poligon pengaburan.
 Observation-location-obscured-you-can-see-your-own = Lokasi pengamatan ini dikaburkan. Anda tetap bisa melihat lokasi pengamatan Anda sendiri.
 Observation-location-obscured-you-have-permission = Lokasi pengamatan ini dikaburkan. Anda perlu izin untuk melihat lokasi pengamatan ini.
-Observation-Name = Pengamatan { $scientificName }
 Observation-options = Pilihan pengamatan
 OBSERVATION-WAS-DELETED = PENGAMATAN DIHAPUS
 Observation-with-no-evidence = Pengamatan tanpa bukti

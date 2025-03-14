@@ -549,7 +549,6 @@ Observation-has-no-photos-and-no-sounds = This observation has no photos and no 
 Observation-location-obscured-randomized-point = Tämän havainnon sijainti on karkeistettu. Näet satunnaisen pisteen mahdollisen havaintoalueen sisällä.
 Observation-location-obscured-you-can-see-your-own = Tämän havainnon sijainti on karkeistettu. Näet aina omien havaintojesi sijainnit.
 Observation-location-obscured-you-have-permission = Tämän havainnon sijainti on karkeistettu. Sinulla on oikeus nähdä tämä sijainti.
-Observation-Name = Observation { $scientificName }
 Observation-options = Observation options
 OBSERVATION-WAS-DELETED = OBSERVATION WAS DELETED
 Observation-with-no-evidence = Observation with no evidence

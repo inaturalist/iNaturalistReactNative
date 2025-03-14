@@ -557,7 +557,6 @@ Observation-has-no-photos-and-no-sounds = Deze waarneming heeft geen foto's en g
 Observation-location-obscured-randomized-point = De locatie van deze waarneming is vervaagd. Je ziet een willekeurig punt binnen de vervagingsveelhoek.
 Observation-location-obscured-you-can-see-your-own = De locatie van deze waarneming is vervaagd. Je kunt altijd de locatie van je eigen waarnemingen zien.
 Observation-location-obscured-you-have-permission = De locatie van deze waarneming is vervaagd. Je hebt toestemming om deze locatie te bekijken.
-Observation-Name = Waarneming { $scientificName }
 Observation-options = Waarnemingsopties
 OBSERVATION-WAS-DELETED = WAARNEMING WERD VERWIJDERD
 Observation-with-no-evidence = Waarneming zonder bewijs
