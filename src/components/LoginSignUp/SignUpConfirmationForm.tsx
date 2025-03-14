@@ -10,7 +10,7 @@ import { t } from "i18next";
 import { RealmContext } from "providers/contexts.ts";
 import React, { useEffect, useRef, useState } from "react";
 import { Trans } from "react-i18next";
-import { TextInput } from "react-native";
+import { TextInput, TouchableWithoutFeedback } from "react-native";
 
 import {
   authenticateUser,
@@ -112,64 +112,66 @@ const SignUpConfirmationForm = ( ) => {
   };
 
   return (
-    <View className="px-3 mt-[9px] justify-end">
-      <LoginSignUpInputField
-        ref={usernameRef}
-        accessibilityLabel={t( "CHOOSE-A-USERNAME" )}
-        headerText={t( "CHOOSE-A-USERNAME" )}
-        onChangeText={( text: string ) => setUsername( text )}
-        testID="Signup.username"
-        textContentType="username"
-      />
-      <LoginSignUpInputField
-        ref={passwordRef}
-        accessibilityLabel={t( "PASSWORD" )}
-        autoComplete="new-password"
-        headerText={t( "PASSWORD" )}
-        onChangeText={( text: string ) => setPassword( text )}
-        secureTextEntry
-        testID="Signup.password"
-        textContentType="newPassword"
-      />
-      <View className="flex-row mt-5 mx-2 items-start">
-        <Checkbox
-          accessibilityLabel={t( "I-agree-to-the-Terms-of-Use" )}
-          transparent
-          isChecked={checked}
-          onPress={() => {
-            setChecked( !checked );
-          }}
+    <TouchableWithoutFeedback accessible={false} onPress={blurFields}>
+      <View className="px-3 mt-[9px] justify-end">
+        <LoginSignUpInputField
+          ref={usernameRef}
+          accessibilityLabel={t( "CHOOSE-A-USERNAME" )}
+          headerText={t( "CHOOSE-A-USERNAME" )}
+          onChangeText={( text: string ) => setUsername( text )}
+          testID="Signup.username"
+          textContentType="username"
         />
-        <View className="flex-1">
-          <Trans
-            className="flex-wrap"
-            i18nKey="I-agree-to-the-Terms-of-Use"
-            onPress={() => setChecked( !checked )}
-            components={[
-              <Body2 className="text-white" />,
-              <Body2 className="text-white font-Lato-Italic" />
-            ]}
+        <LoginSignUpInputField
+          ref={passwordRef}
+          accessibilityLabel={t( "PASSWORD" )}
+          autoComplete="new-password"
+          headerText={t( "PASSWORD" )}
+          onChangeText={( text: string ) => setPassword( text )}
+          secureTextEntry
+          testID="Signup.password"
+          textContentType="newPassword"
+        />
+        <View className="flex-row mt-5 mx-2 items-start">
+          <Checkbox
+            accessibilityLabel={t( "I-agree-to-the-Terms-of-Use" )}
+            transparent
+            isChecked={checked}
+            onPress={() => {
+              setChecked( !checked );
+            }}
           />
-          <UnderlinedLink
-            className="color-white mt-[9px]"
-            onPress={() => navigation.navigate( "LearnMore" )}
-          >
-            {t( "Learn-More" )}
-          </UnderlinedLink>
+          <View className="flex-1">
+            <Trans
+              className="flex-wrap"
+              i18nKey="I-agree-to-the-Terms-of-Use"
+              onPress={() => setChecked( !checked )}
+              components={[
+                <Body2 className="text-white" />,
+                <Body2 className="text-white font-Lato-Italic" />
+              ]}
+            />
+            <UnderlinedLink
+              className="color-white mt-[9px]"
+              onPress={() => navigation.navigate( "LearnMore" )}
+            >
+              {t( "Learn-More" )}
+            </UnderlinedLink>
+          </View>
         </View>
+        {error && <Error error={error} />}
+        <Button
+          level="focus"
+          forceDark
+          text={t( "CREATE-AN-ACCOUNT" )}
+          onPress={register}
+          className="my-5"
+          loading={loading}
+          disabled={loading || !username || !password || !checked}
+          testID="SignUpConfirmationForm.signupButton"
+        />
       </View>
-      {error && <Error error={error} />}
-      <Button
-        level="focus"
-        forceDark
-        text={t( "CREATE-AN-ACCOUNT" )}
-        onPress={register}
-        className="my-5"
-        loading={loading}
-        disabled={loading || !username || !password || !checked}
-        testID="SignUpConfirmationForm.signupButton"
-      />
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
