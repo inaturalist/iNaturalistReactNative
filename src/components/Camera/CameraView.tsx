@@ -9,7 +9,7 @@ import VeryBadIpadRotator from "components/SharedComponents/VeryBadIpadRotator";
 import React, {
   useCallback
 } from "react";
-import { Platform, StyleSheet } from "react-native";
+import { Dimensions, Platform, StyleSheet } from "react-native";
 import {
   Gesture, GestureDetector
 } from "react-native-gesture-handler";
@@ -28,6 +28,7 @@ Reanimated.addWhitelistedNativeProps( {
 interface Props {
   animatedProps: CameraProps,
   cameraRef: React.RefObject<Camera>,
+  cameraScreen: "standard" | "ai",
   device: CameraDevice,
   frameProcessor?: Function,
   onCameraError: ( error: CameraRuntimeError ) => void,
@@ -44,6 +45,7 @@ interface Props {
 const CameraView = ( {
   animatedProps,
   cameraRef,
+  cameraScreen,
   device,
   frameProcessor,
   onCameraError,
@@ -64,11 +66,30 @@ const CameraView = ( {
   const appState = useAppState( );
   const isActive = !inactive && isFocused && appState === "active";
 
+  // Select the camera format based on the screen aspect ratio on ai camera as it is full-screen
+  const screen = Dimensions.get( "screen" );
+  const aiVideoAspectRatio = screen.height / screen.width;
+  const aiPhotoAspectRatio = screen.height / screen.width;
+  const standardVideoAspectRatio = 3 / 4;
+  const standardPhotoAspectRatio = 3 / 4;
   // Select a format that provides the highest resolution for photos and videos
   const iosFormat = useCameraFormat( device, [
+    {
+      videoAspectRatio: cameraScreen === "standard"
+        ? standardVideoAspectRatio
+        : aiVideoAspectRatio
+    },
+    {
+      photoAspectRatio: cameraScreen === "standard"
+        ? standardPhotoAspectRatio
+        : aiPhotoAspectRatio
+    },
     { photoResolution: "max" },
     { videoResolution: "max" }
   ] );
+  if ( Platform.OS === "android" ) {
+    console.log( "Android is not using a specific camera format because we never got around to" );
+  }
   const format = Platform.OS === "ios"
     ? iosFormat
     : undefined;

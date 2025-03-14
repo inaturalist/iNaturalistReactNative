@@ -217,6 +217,7 @@ const FrameProcessorCamera = ( {
     <CameraView
       animatedProps={animatedProps}
       cameraRef={cameraRef}
+      cameraScreen="ai"
       device={device}
       frameProcessor={frameProcessor}
       onCameraError={async error => {
