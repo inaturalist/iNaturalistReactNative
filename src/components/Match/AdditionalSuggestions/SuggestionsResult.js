@@ -99,17 +99,15 @@ const SuggestionsResult = ( {
           ? styleWithForcedHeight
           : undefined}
       >
-        <View className="w-[62px] h-[62px] mr-3">
-          <ObsImagePreview
+        <ObsImagePreview
           // TODO fix when ObsImagePreview typed
-            source={taxonImage}
-            testID={`${testID}.photo`}
-            iconicTaxonName={taxon?.iconic_taxon_name}
-            className="rounded-xl"
-            isSmall
-            isBackground={false}
-          />
-        </View>
+          source={taxonImage}
+          testID={`${testID}.photo`}
+          iconicTaxonName={taxon?.iconic_taxon_name}
+          className="rounded-xl mr-3"
+          isSmall
+          isBackground={false}
+        />
         <View className="w-[149px]">
           <DisplayTaxonName
             taxon={taxon}
