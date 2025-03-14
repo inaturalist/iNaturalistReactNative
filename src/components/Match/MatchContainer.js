@@ -12,6 +12,7 @@ import {
   FETCH_STATUS_OFFLINE_SKIPPED,
   FETCH_STATUS_ONLINE_ERROR,
   FETCH_STATUS_ONLINE_FETCHED,
+  FETCH_STATUS_ONLINE_SKIPPED,
   initialSuggestions
 } from "components/Suggestions/SuggestionsContainer.tsx";
 import _ from "lodash";
@@ -138,20 +139,31 @@ const MatchContainer = ( ) => {
       || onlineFetchStatus === FETCH_STATUS_ONLINE_ERROR;
 
   const onFetchError = useCallback(
-    ( { isOnline } ) => ( isOnline
-      ? dispatch( {
-        type: "SET_ONLINE_FETCH_STATUS",
-        onlineFetchStatus: FETCH_STATUS_ONLINE_ERROR
-      } )
-      : dispatch( {
-        type: "SET_OFFLINE_FETCH_STATUS",
-        offlineFetchStatus: FETCH_STATUS_OFFLINE_ERROR
-      } ) ),
-    []
+    ( { isOnline }: { isOnline: boolean } ) => {
+      if ( isOnline ) {
+        dispatch( {
+          type: "SET_ONLINE_FETCH_STATUS",
+          onlineFetchStatus: FETCH_STATUS_ONLINE_ERROR
+        } );
+      } else {
+        dispatch( {
+          type: "SET_OFFLINE_FETCH_STATUS",
+          offlineFetchStatus: FETCH_STATUS_OFFLINE_ERROR
+        } );
+        // If offline is finished, and online still in loading state it means it never started
+        if ( onlineFetchStatus === FETCH_STATUS_LOADING ) {
+          dispatch( {
+            type: "SET_ONLINE_FETCH_STATUS",
+            onlineFetchStatus: FETCH_STATUS_ONLINE_SKIPPED
+          } );
+        }
+      }
+    },
+    [onlineFetchStatus]
   );
 
   const onFetched = useCallback(
-    ( { isOnline } ) => {
+    ( { isOnline }: { isOnline: boolean } ) => {
       if ( isOnline ) {
         dispatch( {
           type: "SET_ONLINE_FETCH_STATUS",
@@ -168,9 +180,16 @@ const MatchContainer = ( ) => {
           type: "SET_OFFLINE_FETCH_STATUS",
           offlineFetchStatus: FETCH_STATUS_OFFLINE_FETCHED
         } );
+        // If offline is finished, and online still in loading state it means it never started
+        if ( onlineFetchStatus === FETCH_STATUS_LOADING ) {
+          dispatch( {
+            type: "SET_ONLINE_FETCH_STATUS",
+            onlineFetchStatus: FETCH_STATUS_ONLINE_SKIPPED
+          } );
+        }
       }
     },
-    []
+    [onlineFetchStatus]
   );
 
   const {
