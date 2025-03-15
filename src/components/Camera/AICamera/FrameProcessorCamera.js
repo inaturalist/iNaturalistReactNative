@@ -31,6 +31,7 @@ type Props = {
   animatedProps: unknown,
   cameraRef: Object,
   confidenceThreshold?: number,
+  debugFormat?: Object,
   device: Object,
   fps?: number,
   numStoredResults?: number,
@@ -61,6 +62,7 @@ const FrameProcessorCamera = ( {
   cameraRef,
   confidenceThreshold = DEFAULT_CONFIDENCE_THRESHOLD,
   cropRatio = DEFAULT_CROP_RATIO,
+  debugFormat,
   device,
   fps = DEFAULT_FPS,
   numStoredResults = DEFAULT_NUM_STORED_RESULTS,
@@ -218,6 +220,7 @@ const FrameProcessorCamera = ( {
       animatedProps={animatedProps}
       cameraRef={cameraRef}
       cameraScreen="ai"
+      debugFormat={debugFormat}
       device={device}
       frameProcessor={frameProcessor}
       onCameraError={async error => {

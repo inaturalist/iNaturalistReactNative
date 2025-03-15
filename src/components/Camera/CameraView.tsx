@@ -14,7 +14,9 @@ import {
   Gesture, GestureDetector
 } from "react-native-gesture-handler";
 import Reanimated from "react-native-reanimated";
-import type { CameraDevice, CameraProps, CameraRuntimeError } from "react-native-vision-camera";
+import type {
+  CameraDevice, CameraDeviceFormat, CameraProps, CameraRuntimeError
+} from "react-native-vision-camera";
 import { orientationPatch } from "sharedHelpers/visionCameraPatches";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
 
@@ -29,6 +31,7 @@ interface Props {
   animatedProps: CameraProps,
   cameraRef: React.RefObject<Camera>,
   cameraScreen: "standard" | "ai",
+  debugFormat: CameraDeviceFormat | undefined,
   device: CameraDevice,
   frameProcessor?: Function,
   onCameraError: ( error: CameraRuntimeError ) => void,
@@ -46,6 +49,7 @@ const CameraView = ( {
   animatedProps,
   cameraRef,
   cameraScreen,
+  debugFormat,
   device,
   frameProcessor,
   onCameraError,
@@ -171,7 +175,7 @@ const CameraView = ( {
           // we can't use the native zoom since it doesn't expose a zoom value to JS
           enableZoomGesture={false}
           exposure={exposure}
-          format={format}
+          format={debugFormat || format}
           frameProcessor={frameProcessor}
           isActive={isActive}
           onError={onError}

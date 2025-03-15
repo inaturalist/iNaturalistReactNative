@@ -1,11 +1,13 @@
 import classnames from "classnames";
 import {
+  Button,
+  Heading4,
   INatIconButton
 } from "components/SharedComponents";
 import {
   CIRCLE_SIZE
 } from "components/SharedComponents/Buttons/TransparentCircleButton.tsx";
-import { View } from "components/styledComponents";
+import { Text, View } from "components/styledComponents";
 import React, { useState } from "react";
 import {
   Modal,
@@ -17,7 +19,9 @@ import colors from "styles/tailwindColors";
 import SliderControl from "./SliderControl";
 
 const AIDebugButton = ( {
+  changeDebugFormat,
   confidenceThreshold,
+  debugFormat,
   setConfidenceThreshold,
   fps,
   setFPS,
@@ -41,7 +45,7 @@ const AIDebugButton = ( {
           CIRCLE_SIZE
         )}
         backgroundColor={colors.deeppink}
-        onPress={( ) => setModalVisible( true )}
+        onPress={() => setModalVisible( true )}
         accessibilityLabel="Debug"
         accessibilityHint="Show debug tools"
         icon="gear"
@@ -51,11 +55,22 @@ const AIDebugButton = ( {
       <Portal>
         <Modal
           visible={modalVisible}
-          onDismiss={( ) => setModalVisible( false )}
+          onDismiss={() => setModalVisible( false )}
           // eslint-disable-next-line react-native/no-inline-styles
           contentContainerStyle={{ margin: 20 }}
         >
           <View className="p-5 bg-deeppink">
+            {/* eslint-disable-next-line i18next/no-literal-string */}
+            <Heading4 className="text-white">Debug camera format:</Heading4>
+            {/* eslint-disable-next-line react-native/no-inline-styles */}
+            <Text className="text-white" style={{ fontSize: 8 }}>
+              {JSON.stringify( debugFormat, null, 2 )}
+            </Text>
+            <Button
+              onPress={() => changeDebugFormat( )}
+              className="bg-white"
+              text="Change debug format"
+            />
             <SliderControl
               name="FPS"
               min={1}

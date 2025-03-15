@@ -10,7 +10,7 @@ import { View } from "components/styledComponents";
 import React from "react";
 import { GestureResponderEvent, ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import type { TakePhotoOptions } from "react-native-vision-camera";
+import type { CameraDeviceFormat, TakePhotoOptions } from "react-native-vision-camera";
 import { useLayoutPrefs } from "sharedHooks";
 
 import AIDebugButton from "./AIDebugButton";
@@ -28,11 +28,13 @@ interface Props {
   modelLoaded: boolean;
   numStoredResults?: number;
   rotatableAnimatedStyle: ViewStyle;
-  // Those four are debug only so I don't bother with types
+  debugFormat?: CameraDeviceFormat;
+  // Those five are debug only so I don't bother with types
   setConfidenceThreshold?: Function;
   setCropRatio?: Function,
   setFPS?: Function,
   setNumStoredResults?: Function,
+  changeDebugFormat?: Function;
   showPrediction: boolean;
   showZoomButton: boolean;
   takePhoto: () => Promise<void>;
@@ -46,8 +48,10 @@ interface Props {
 
 const AICameraButtons = ( {
   handleZoomButtonPress,
+  changeDebugFormat,
   confidenceThreshold,
   cropRatio,
+  debugFormat,
   flipCamera,
   fps,
   handleClose,
@@ -112,6 +116,8 @@ const AICameraButtons = ( {
           setNumStoredResults={setNumStoredResults}
           cropRatio={cropRatio}
           setCropRatio={setCropRatio}
+          debugFormat={debugFormat}
+          changeDebugFormat={changeDebugFormat}
           // TODO: The following are just to get accessibility tests to pass...
           // without making anything truly accessible. The test seems to think
           // AIDebugButton is itself not accessible, but it's really
