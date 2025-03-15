@@ -4,7 +4,7 @@ import ObservationsViewBar from "components/Explore/ObservationsViewBar";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
 import {
   AccountCreationCard,
-  // FiftyObservationCard,
+  FiftyObservationCard,
   FirstObservationCard,
   SecondObservationCard
 } from "components/OnboardingModal/PivotCards.tsx";
@@ -66,6 +66,7 @@ export interface Props {
   fetchMoreTaxa: ( ) => void;
   isFetchingTaxa?: boolean;
   justFinishedSignup?: boolean;
+  loggedInWhileInDefaultMode?: boolean;
   refetchTaxa: ( ) => void;
 }
 
@@ -104,6 +105,7 @@ const MyObservationsSimple = ( {
   fetchMoreTaxa,
   isFetchingTaxa,
   justFinishedSignup = false,
+  loggedInWhileInDefaultMode = false,
   refetchTaxa
 }: Props ) => {
   const { t } = useTranslation( );
@@ -328,10 +330,11 @@ const MyObservationsSimple = ( {
       {/* These four cards should show only in default mode */}
       <FirstObservationCard triggerCondition={numTotalObservations === 1} />
       <SecondObservationCard triggerCondition={numTotalObservations === 2} />
-      {/* This card was showing up at the wrong places but probably needs other code changes
-          before we can turn it back on.
-      <FiftyObservationCard triggerCondition={!!currentUser && numTotalObservations >= 50} />
-      */}
+      <FiftyObservationCard
+        triggerCondition={
+          loggedInWhileInDefaultMode && !!currentUser && numTotalObservations >= 50
+        }
+      />
       <AccountCreationCard
         triggerCondition={
           justFinishedSignup && !!currentUser && numTotalObservations < 20

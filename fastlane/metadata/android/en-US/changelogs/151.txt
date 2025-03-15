@@ -1,0 +1,11 @@
+UPDATED
+* Translations
+
+FIXED
+* Common name display on Match
+* Welcome back pivot card
+* Fade of upload icon into obs status
+* Loading state on suggestions
+* Accessibility on sign-up form
+* AI camera always navigates to suggestions regardless of ObsEdit-first settings
+* One photo shared navigates to Match in default mode

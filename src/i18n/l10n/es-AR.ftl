@@ -549,7 +549,6 @@ Observation-has-no-photos-and-no-sounds = This observation has no photos and no 
 Observation-location-obscured-randomized-point = This observation’s location is obscured. You are seeing a randomized point within the obscuration polygon.
 Observation-location-obscured-you-can-see-your-own = This observation’s location is obscured. You can always see the location of your own observations.
 Observation-location-obscured-you-have-permission = This observation’s location is obscured. You have permission to see this location.
-Observation-Name = Observation { $scientificName }
 Observation-options = Observation options
 OBSERVATION-WAS-DELETED = OBSERVATION WAS DELETED
 Observation-with-no-evidence = Observation with no evidence

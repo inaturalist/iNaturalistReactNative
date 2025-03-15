@@ -503,7 +503,6 @@
   "Observation-location-obscured-randomized-point": "La ubicación de la observación está oscurecida. Estás viendo un punto aleatorio dentro del polígono de oscurecimiento.",
   "Observation-location-obscured-you-can-see-your-own": "La ubicación de la observación está oscurecida. Siempre puedes ver la ubicación de tus propias observaciones.",
   "Observation-location-obscured-you-have-permission": "La ubicación de la observación está oscurecida. Tienes permitido ver esta ubicación.",
-  "Observation-Name": "Observation { $scientificName }",
   "Observation-options": "Observation options",
   "OBSERVATION-WAS-DELETED": "OBSERVATION WAS DELETED",
   "Observation-with-no-evidence": "Observation with no evidence",

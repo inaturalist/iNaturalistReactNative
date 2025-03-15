@@ -2,7 +2,6 @@ import Geolocation from "@react-native-community/geolocation";
 import {
   screen,
   userEvent,
-  waitFor,
   within
 } from "@testing-library/react-native";
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions.ts";
@@ -125,18 +124,6 @@ const navToObsEditWithTopSuggestion = async ( ) => {
   expect( evidenceList.props.data.length ).toEqual( 1 );
 };
 
-const takePhotoAndNavToObsEdit = async () => {
-  const takePhotoButton = await screen.findByLabelText( /Take photo/ );
-  await actor.press( takePhotoButton );
-  await waitFor( ( ) => {
-    global.timeTravel( );
-    expect( screen.getByTestId( "EvidenceList.DraggableFlatList" ) ).toBeVisible();
-    // one photo from AICamera
-  } );
-  const evidenceList = await screen.findByTestId( "EvidenceList.DraggableFlatList" );
-  expect( evidenceList.props.data.length ).toEqual( 1 );
-};
-
 describe( "AICamera navigation with advanced user layout", ( ) => {
   describe( "from MyObs", ( ) => {
     it( "should return to MyObs when close button tapped", async ( ) => {
@@ -196,34 +183,6 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
       BackHandler.mockPressBack( );
       await takePhotoAndNavToSuggestions( );
       await navToObsEditWithTopSuggestion( );
-    } );
-  } );
-
-  describe( "to ObsEdit", () => {
-    beforeEach( () => {
-      const mockWatchPosition = jest.fn( ( success, _error, _options ) => success( {
-        coords: {
-          latitude: 56,
-          longitude: 9,
-          accuracy: 8
-        }
-      } ) );
-      Geolocation.watchPosition.mockImplementation( mockWatchPosition );
-      jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
-        handleTaxaDetected: jest.fn(),
-        modelLoaded: true,
-        result: {
-          taxon: mockLocalTaxon
-        },
-        setResult: jest.fn()
-      } ) );
-    } );
-
-    it( "should advance to obs edit screen", async () => {
-      renderApp();
-      await navToAICamera();
-      expect( await screen.findByText( mockLocalTaxon.name ) ).toBeTruthy();
-      await takePhotoAndNavToObsEdit();
     } );
   } );
 } );

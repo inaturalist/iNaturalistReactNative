@@ -33,10 +33,10 @@ const logger = log.extend( "SuggestionsContainer" );
 export const FETCH_STATUS_LOADING = "loading";
 export const FETCH_STATUS_ONLINE_FETCHED = "online-fetched";
 export const FETCH_STATUS_ONLINE_ERROR = "online-error";
-export const FETCH_STATUS_FETCHING_OFFLINE = "fetching-offline";
 export const FETCH_STATUS_OFFLINE_FETCHED = "offline-fetched";
 export const FETCH_STATUS_OFFLINE_ERROR = "offline-error";
 export const FETCH_STATUS_OFFLINE_SKIPPED = "offline-skipped";
+export const FETCH_STATUS_ONLINE_SKIPPED = "online-skipped";
 
 export const TOP_SUGGESTION_NONE = "none";
 export const TOP_SUGGESTION_HUMAN = "human";
@@ -195,16 +195,27 @@ const SuggestionsContainer = ( ) => {
       || onlineFetchStatus === FETCH_STATUS_ONLINE_ERROR;
 
   const onFetchError = useCallback(
-    ( { isOnline }: { isOnline: boolean } ) => ( isOnline
-      ? dispatch( {
-        type: "SET_ONLINE_FETCH_STATUS",
-        onlineFetchStatus: FETCH_STATUS_ONLINE_ERROR
-      } )
-      : dispatch( {
-        type: "SET_OFFLINE_FETCH_STATUS",
-        offlineFetchStatus: FETCH_STATUS_OFFLINE_ERROR
-      } ) ),
-    []
+    ( { isOnline }: { isOnline: boolean } ) => {
+      if ( isOnline ) {
+        dispatch( {
+          type: "SET_ONLINE_FETCH_STATUS",
+          onlineFetchStatus: FETCH_STATUS_ONLINE_ERROR
+        } );
+      } else {
+        dispatch( {
+          type: "SET_OFFLINE_FETCH_STATUS",
+          offlineFetchStatus: FETCH_STATUS_OFFLINE_ERROR
+        } );
+        // If offline is finished, and online still in loading state it means it never started
+        if ( onlineFetchStatus === FETCH_STATUS_LOADING ) {
+          dispatch( {
+            type: "SET_ONLINE_FETCH_STATUS",
+            onlineFetchStatus: FETCH_STATUS_ONLINE_SKIPPED
+          } );
+        }
+      }
+    },
+    [onlineFetchStatus]
   );
 
   const onFetched = useCallback(
@@ -225,9 +236,16 @@ const SuggestionsContainer = ( ) => {
           type: "SET_OFFLINE_FETCH_STATUS",
           offlineFetchStatus: FETCH_STATUS_OFFLINE_FETCHED
         } );
+        // If offline is finished, and online still in loading state it means it never started
+        if ( onlineFetchStatus === FETCH_STATUS_LOADING ) {
+          dispatch( {
+            type: "SET_ONLINE_FETCH_STATUS",
+            onlineFetchStatus: FETCH_STATUS_ONLINE_SKIPPED
+          } );
+        }
       }
     },
-    []
+    [onlineFetchStatus]
   );
 
   const {

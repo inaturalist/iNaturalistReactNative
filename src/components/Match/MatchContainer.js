@@ -12,6 +12,7 @@ import {
   FETCH_STATUS_OFFLINE_SKIPPED,
   FETCH_STATUS_ONLINE_ERROR,
   FETCH_STATUS_ONLINE_FETCHED,
+  FETCH_STATUS_ONLINE_SKIPPED,
   initialSuggestions
 } from "components/Suggestions/SuggestionsContainer.tsx";
 import _ from "lodash";
@@ -28,6 +29,7 @@ import { isDebugMode } from "sharedHooks/useDebugMode";
 import useStore from "stores/useStore";
 
 import fetchUserLocation from "../../sharedHelpers/fetchUserLocation";
+import tryToReplaceWithLocalTaxon from "./helpers/tryToReplaceWithLocalTaxon";
 import Match from "./Match";
 import PreMatchLoadingScreen from "./PreMatchLoadingScreen";
 
@@ -137,20 +139,31 @@ const MatchContainer = ( ) => {
       || onlineFetchStatus === FETCH_STATUS_ONLINE_ERROR;
 
   const onFetchError = useCallback(
-    ( { isOnline } ) => ( isOnline
-      ? dispatch( {
-        type: "SET_ONLINE_FETCH_STATUS",
-        onlineFetchStatus: FETCH_STATUS_ONLINE_ERROR
-      } )
-      : dispatch( {
-        type: "SET_OFFLINE_FETCH_STATUS",
-        offlineFetchStatus: FETCH_STATUS_OFFLINE_ERROR
-      } ) ),
-    []
+    ( { isOnline }: { isOnline: boolean } ) => {
+      if ( isOnline ) {
+        dispatch( {
+          type: "SET_ONLINE_FETCH_STATUS",
+          onlineFetchStatus: FETCH_STATUS_ONLINE_ERROR
+        } );
+      } else {
+        dispatch( {
+          type: "SET_OFFLINE_FETCH_STATUS",
+          offlineFetchStatus: FETCH_STATUS_OFFLINE_ERROR
+        } );
+        // If offline is finished, and online still in loading state it means it never started
+        if ( onlineFetchStatus === FETCH_STATUS_LOADING ) {
+          dispatch( {
+            type: "SET_ONLINE_FETCH_STATUS",
+            onlineFetchStatus: FETCH_STATUS_ONLINE_SKIPPED
+          } );
+        }
+      }
+    },
+    [onlineFetchStatus]
   );
 
   const onFetched = useCallback(
-    ( { isOnline } ) => {
+    ( { isOnline }: { isOnline: boolean } ) => {
       if ( isOnline ) {
         dispatch( {
           type: "SET_ONLINE_FETCH_STATUS",
@@ -167,9 +180,16 @@ const MatchContainer = ( ) => {
           type: "SET_OFFLINE_FETCH_STATUS",
           offlineFetchStatus: FETCH_STATUS_OFFLINE_FETCHED
         } );
+        // If offline is finished, and online still in loading state it means it never started
+        if ( onlineFetchStatus === FETCH_STATUS_LOADING ) {
+          dispatch( {
+            type: "SET_ONLINE_FETCH_STATUS",
+            onlineFetchStatus: FETCH_STATUS_ONLINE_SKIPPED
+          } );
+        }
       }
     },
-    []
+    [onlineFetchStatus]
   );
 
   const {
@@ -330,6 +350,15 @@ const MatchContainer = ( ) => {
   const taxon = topSuggestion?.taxon;
   const taxonId = taxon?.id;
 
+  // not the prettiest code; trying to be consistent about showing common name
+  // and taxon photo for offline suggestions in AICamera and otherSuggestions
+  // without relying on the useTaxon hook which only deals with one taxon at a time
+  const topSuggestionInRealm = realm.objects( "Taxon" ).filtered( "id IN $0", [taxonId] );
+  const topSuggestionWithLocalTaxon = tryToReplaceWithLocalTaxon(
+    topSuggestionInRealm,
+    topSuggestion
+  );
+
   const suggestionsLoading = onlineFetchStatus === FETCH_STATUS_LOADING
     || offlineFetchStatus === FETCH_STATUS_LOADING;
 
@@ -362,19 +391,8 @@ const MatchContainer = ( ) => {
   const localTaxa = realm.objects( "Taxon" ).filtered( "id IN $0", taxonIds );
 
   // show local taxon photos in additional suggestions list if they're available
-  const suggestionsWithLocalTaxonPhotos = otherSuggestions.map( suggestion => {
-    const localTaxon = localTaxa.find( local => local.id === suggestion.taxon.id );
-
-    if ( localTaxon ) {
-      return {
-        ...suggestion,
-        taxon: localTaxon
-      };
-    }
-
-    // don't do anything if there are no local suggestions
-    return suggestion;
-  } );
+  const suggestionsWithLocalTaxonPhotos = otherSuggestions
+    .map( suggestion => tryToReplaceWithLocalTaxon( localTaxa, suggestion ) );
 
   return (
     <>
@@ -386,7 +404,7 @@ const MatchContainer = ( ) => {
           handleSaveOrDiscardPress={handleSaveOrDiscardPress}
           navToTaxonDetails={navToTaxonDetails}
           handleAddLocationPressed={handleAddLocationPressed}
-          topSuggestion={topSuggestion}
+          topSuggestion={topSuggestionWithLocalTaxon}
           otherSuggestions={suggestionsWithLocalTaxonPhotos}
           suggestionsLoading={suggestionsLoading}
           scrollRef={scrollRef}

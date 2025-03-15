@@ -50,7 +50,7 @@ const SignUpForm = ( ) => {
   };
 
   return (
-    <TouchableWithoutFeedback accessibilityRole="button" onPress={blurFields}>
+    <TouchableWithoutFeedback accessible={false} onPress={blurFields}>
       <View className="px-4 mt-[9px] justify-end">
         <LoginSignUpInputField
           ref={emailRef}

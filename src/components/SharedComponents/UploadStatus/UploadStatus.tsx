@@ -5,7 +5,7 @@ import React, { PropsWithChildren } from "react";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
-import FadeOutFadeInIcon from "./FadeOutFadeInIcon";
+import FadeOutIcon from "./FadeOutIcon";
 import UploadCompleteIcon from "./UploadCompleteIcon";
 import UploadProgressIcon from "./UploadProgressIcon";
 
@@ -29,7 +29,6 @@ interface Props extends PropsWithChildren {
 const UploadStatus = ( {
   white = false,
   layout,
-  children,
   needsEdit,
   onPress,
   progress,
@@ -124,47 +123,18 @@ const UploadStatus = ( {
         </View>
       );
     }
-    // Test of end state before animation
-    if ( progress === 10 ) {
-      return (
+
+    return (
+      <FadeOutIcon
+        uniqueKey={uniqueKey}
+      >
         <View className={wrapperClassName}>
           <UploadCompleteIcon
             iconClasses={iconClasses}
             completeColor={completeColor}
           />
         </View>
-      );
-    }
-    // Test of end state with all elements overlayed
-    if ( progress === 11 ) {
-      return (
-        <View>
-          <View
-            className={classnames( "absolute", "h-full justify-center", {
-              "bottom-0": layout === "horizontal"
-            } )}
-          >
-            <View className={wrapperClassName}>
-              <UploadCompleteIcon
-                iconClasses={iconClasses}
-                completeColor={completeColor}
-              />
-            </View>
-          </View>
-          {children}
-        </View>
-      );
-    }
-    return (
-      <FadeOutFadeInIcon
-        iconWrapperClasses={wrapperClassName}
-        iconClasses={iconClasses}
-        completeColor={completeColor}
-        layout={layout}
-        uniqueKey={uniqueKey}
-      >
-        {children}
-      </FadeOutFadeInIcon>
+      </FadeOutIcon>
     );
   };
 

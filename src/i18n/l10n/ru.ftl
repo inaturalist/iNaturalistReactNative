@@ -554,7 +554,6 @@ Observation-has-no-photos-and-no-sounds = This observation has no photos and no 
 Observation-location-obscured-randomized-point = Местоположение этого объекта наблюдения скрыто. Вы видите случайную точку внутри скрытого полигона.
 Observation-location-obscured-you-can-see-your-own = Местоположение этого объекта наблюдения скрыто. Местоположение своих собственных наблюдений вы можете увидеть всегда.
 Observation-location-obscured-you-have-permission = Местоположение этого объекта наблюдения скрыто. У вас есть разрешение на просмотр этого местоположения.
-Observation-Name = Observation { $scientificName }
 Observation-options = Observation options
 OBSERVATION-WAS-DELETED = OBSERVATION WAS DELETED
 Observation-with-no-evidence = Observation with no evidence

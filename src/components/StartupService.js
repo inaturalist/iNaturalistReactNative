@@ -17,6 +17,7 @@ import {
   usePerformance
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
+import { zustandStorage } from "stores/useStore";
 
 // Ignore warnings about 3rd parties that haven't implemented the new
 // NativeEventEmitter interface methods yet. As of 20230517, this is coming
@@ -80,8 +81,21 @@ const StartupService = ( ) => {
       // don't remove this logger.info statement: it's used for internal metrics
       logger.info( "pickup" );
 
+      const checkForPreviousCrash = async ( ) => {
+        try {
+          const crashData = zustandStorage.getItem( "LAST_CRASH_DATA" );
+          if ( crashData ) {
+            logger.error( `Last Crash Data: ${JSON.parse( crashData )}` );
+            zustandStorage.removeItem( "LAST_CRASH_DATA" );
+          }
+        } catch ( e ) {
+          logger.error( "Failed to process previous crash data", e );
+        }
+      };
+
       try {
-        checkForSignedInUser( );
+        await checkForSignedInUser( );
+        await checkForPreviousCrash( );
 
         await addARCameraFiles( );
         await findAndLogSentinelFiles( );
