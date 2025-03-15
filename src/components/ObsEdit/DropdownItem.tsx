@@ -19,22 +19,20 @@ const DropdownItem = ( {
 }: Props ) => (
   <Pressable
     accessibilityRole="button"
-    className="flex-row"
+    className="flex-row ml-1 items-start flex-1 py-[10px]"
     onPress={handlePress}
     accessibilityLabel={accessibilityLabel}
   >
-    <View className="flex-row ml-1 py-[10px] items-center">
-      <View className="w-[30px] items-center mr-1">
-        <INatIcon
-          size={14}
-          name={iconName}
-        />
-      </View>
-      <Body2 className="mr-[13px]">
-        {text}
-      </Body2>
+    <View className="w-[30px] h-[21px] items-center justify-center mx-1">
+      <INatIcon
+        size={14}
+        name={iconName}
+      />
     </View>
-    <View className="mt-4">
+    <Body2 className="flex-shrink">
+      {text}
+    </Body2>
+    <View className="pt-1.5 ml-[13px] h-[21px]">
       <INatIcon
         name="triangle-down"
         size={24}
