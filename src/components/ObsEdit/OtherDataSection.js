@@ -86,6 +86,7 @@ const OtherDataSection = ( {
         />
       )}
       <Heading4 className="pb-[10px]">{t( "OTHER-DATA" )}</Heading4>
+
       <DropdownItem
         accessibilityLabel={t( "Select-geoprivacy-status" )}
         handlePress={( ) => setShowGeoprivacySheet( true )}
