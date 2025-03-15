@@ -1,5 +1,4 @@
 import { ActivityIndicator } from "components/SharedComponents";
-import type { Node } from "react";
 import React, { useEffect, useRef } from "react";
 import { Animated } from "react-native";
 import colors from "styles/tailwindColors";
@@ -15,7 +14,7 @@ const fade = value => ( {
   useNativeDriver: true
 } );
 
-const FadeInOutView = ( { takingPhoto, cameraType }: Props ): Node => {
+const FadeInOutView = ( { takingPhoto, cameraType }: Props ) => {
   const fadeAnimation = useRef( new Animated.Value( 0 ) ).current;
 
   useEffect( ( ) => {

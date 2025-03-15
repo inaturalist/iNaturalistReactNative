@@ -116,6 +116,14 @@ const AICamera = ( {
   const [useLocation, setUseLocation] = useState( !!hasLocationPermissions );
   const [locationStatusVisible, setLocationStatusVisible] = useState( false );
 
+  const [debugFormatIndex, setDebugFormatIndex] = useState( 0 );
+  const changeDebugFormat = ( ) => {
+    setDebugFormatIndex( prev => ( prev + 1 ) % device.formats.length );
+  };
+  const debugFormat = isDebugMode()
+    ? device.formats[debugFormatIndex]
+    : undefined;
+
   const toggleLocation = () => {
     if ( !useLocation && !hasLocationPermissions ) {
       requestLocationPermissions( );
@@ -217,6 +225,7 @@ const AICamera = ( {
           <FrameProcessorCamera
             cameraRef={camera}
             confidenceThreshold={confidenceThreshold}
+            debugFormat={debugFormat}
             device={device}
             fps={fps}
             numStoredResults={numStoredResults}
@@ -299,8 +308,10 @@ const AICamera = ( {
       <FadeInOutView takingPhoto={takingPhoto} cameraType="AI" />
       <AICameraButtons
         handleZoomButtonPress={handleZoomButtonPress}
+        changeDebugFormat={changeDebugFormat}
         confidenceThreshold={confidenceThreshold}
         cropRatio={cropRatio}
+        debugFormat={debugFormat}
         flipCamera={onFlipCamera}
         fps={fps}
         hasFlash={hasFlash}

@@ -207,6 +207,7 @@ const StandardCamera = ( {
           <CameraView
             animatedProps={animatedProps}
             cameraRef={camera}
+            cameraScreen="standard"
             device={device}
             onCameraError={handleCameraError}
             onCaptureError={handleCaptureError}
