@@ -24,6 +24,7 @@ import {
 import Config from "react-native-config";
 import { EventRegister } from "react-native-event-listeners";
 import QueueItem from "realmModels/QueueItem.ts";
+// import { log } from "sharedHelpers/logger";
 import {
   useCurrentUser,
   useLayoutPrefs,
@@ -38,6 +39,8 @@ const { useRealm } = RealmContext;
 
 const SETTINGS_URL = `${Config.OAUTH_API_URL}/users/edit?noh1=true`;
 const FINISHED_WEB_SETTINGS = "finished-web-settings";
+
+// const logger = log.extend( "Settings" );
 
 const Settings = ( ) => {
   const realm = useRealm( );
@@ -85,6 +88,7 @@ const Settings = ( ) => {
 
   useEffect( () => {
     if ( remoteUser ) {
+      // logger.info( remoteUser, "remote user fetched in Settings" );
       setSettings( remoteUser );
       setIsSaving( false );
     }
@@ -113,15 +117,21 @@ const Settings = ( ) => {
       )}
       <TaxonNamesSetting
         onChange={options => {
+          // logger.info( "Enqueuing taxon name change with options:", options );
+          // logger.info( `Current user ID being updated: ${settings.id}` );
+
+          const payload = JSON.stringify( {
+            id: settings.id,
+            user: {
+              prefers_common_names: options.prefers_common_names,
+              prefers_scientific_name_first: options.prefers_scientific_name_first
+            }
+          } );
+
+          // log.info( `Payload to be enqueued: ${payload}` );
           QueueItem.enqueue(
             realm,
-            JSON.stringify( {
-              id: settings.id,
-              user: {
-                prefers_common_names: options.prefers_common_names,
-                prefers_scientific_name_first: options.prefers_scientific_name_first
-              }
-            } ),
+            payload,
             "taxon-names-change"
           );
         }}

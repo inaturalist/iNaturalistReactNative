@@ -8,12 +8,15 @@ import React, { useCallback } from "react";
 import {
   View
 } from "react-native";
+// import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useCurrentUser,
   useLayoutPrefs,
   useTranslation
 } from "sharedHooks";
+
+// const logger = log.extend( "TaxonNamesSetting" );
 
 const { useRealm } = RealmContext;
 
@@ -39,6 +42,8 @@ const TaxonNamesSetting = ( { onChange }: Props ) => {
   const changeTaxonNameDisplay = useCallback( nameDisplayPref => {
     const options = {};
 
+    // logger.info( `Changing taxon name display to: ${nameDisplayPref}` );
+
     if ( nameDisplayPref === NAME_DISPLAY_COM_SCI ) {
       options.prefers_common_names = true;
       options.prefers_scientific_name_first = false;
@@ -50,9 +55,15 @@ const TaxonNamesSetting = ( { onChange }: Props ) => {
       options.prefers_scientific_name_first = false;
     }
 
+    // logger.info( "Writing to realm with options:", options );
+
     safeRealmWrite( realm, ( ) => {
       currentUser.prefers_common_names = options.prefers_common_names;
       currentUser.prefers_scientific_name_first = options.prefers_scientific_name_first;
+      // logger.info(
+      // eslint-disable-next-line max-len
+      // `Realm updated for user ${currentUser.login}, prefers_common_names: ${currentUser.prefers_common_names}, prefers_scientific_name_first: ${currentUser.prefers_scientific_name_first}`;
+      // );
     }, "saving user in TaxonNamesSetting" );
     onChange( options );
     return currentUser;
