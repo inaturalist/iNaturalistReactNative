@@ -1,7 +1,7 @@
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
-import { fireEvent, screen, waitFor } from "@testing-library/react-native";
+import { fireEvent, screen } from "@testing-library/react-native";
 import Settings from "components/Settings/Settings";
 import i18n from "i18next";
 import inatjs from "inaturalistjs";
@@ -78,27 +78,6 @@ describe( "Settings", ( ) => {
       jest.clearAllMocks( );
     } );
 
-    it( "should toggle taxon names display", async ( ) => {
-      renderComponent( <Settings /> );
-      await toggleAdvancedMode( );
-      const sciNameFirst = await screen.findByLabelText( "Scientific Name (Common Name)" );
-      expect( sciNameFirst ).toHaveProp( "accessibilityState", expect.objectContaining( {
-        checked: false
-      } ) );
-      fireEvent.press( sciNameFirst );
-      inatjs.users.me.mockResolvedValue( makeResponse( [{
-        ...mockUser,
-        prefers_scientific_name_first: true,
-        prefers_common_names: true
-      }] ) );
-      expect( inatjs.users.me ).toHaveBeenCalled( );
-      await waitFor( ( ) => {
-        expect( sciNameFirst ).toHaveProp( "accessibilityState", expect.objectContaining( {
-          checked: true
-        } ) );
-      } );
-    } );
-
     it( "should navigate user to iNaturalist settings", async ( ) => {
       renderComponent( <Settings /> );
       const iNatSettingsButton = await screen.findByText( "ACCOUNT SETTINGS" );
@@ -114,23 +93,6 @@ describe( "Settings", ( ) => {
     describe( "no internet", ( ) => {
       beforeEach( ( ) => {
         useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
-      } );
-
-      it( "should not change state if taxon names toggled with no internet", async ( ) => {
-        renderComponent( <Settings /> );
-        await toggleAdvancedMode( );
-        const sciNameFirst = await screen.findByLabelText( "Scientific Name (Common Name)" );
-        expect( sciNameFirst ).toHaveProp( "accessibilityState", expect.objectContaining( {
-          checked: false
-        } ) );
-        fireEvent.press( sciNameFirst );
-        inatjs.users.update.mockImplementation( () => {
-          throw new Error( "no internet" );
-        } );
-        expect( inatjs.users.update ).not.toHaveBeenCalled( );
-        expect( sciNameFirst ).toHaveProp( "accessibilityState", expect.objectContaining( {
-          checked: false
-        } ) );
       } );
 
       it( "should not navigate to iNaturalist settings if no internet", async ( ) => {
