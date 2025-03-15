@@ -7,8 +7,7 @@ import {
 import useFocusTap from "components/Camera/hooks/useFocusTap.ts";
 import VeryBadIpadRotator from "components/SharedComponents/VeryBadIpadRotator";
 import React, {
-  useCallback,
-  useState
+  useCallback
 } from "react";
 import { Dimensions, Platform, StyleSheet } from "react-native";
 import {
@@ -71,9 +70,8 @@ const CameraView = ( {
   const screen = Dimensions.get( "screen" );
   const aiVideoAspectRatio = screen.height / screen.width;
   const aiPhotoAspectRatio = screen.height / screen.width;
-  const [targetStandardAspectRatio, setTargetStandardAspectRatio] = useState<number>( );
-  const standardVideoAspectRatio = targetStandardAspectRatio || 3 / 4;
-  const standardPhotoAspectRatio = targetStandardAspectRatio || 3 / 4;
+  const standardVideoAspectRatio = 4 / 3;
+  const standardPhotoAspectRatio = 4 / 3;
   // Select a format that provides the highest resolution for photos and videos
   const iosFormat = useCameraFormat( device, [
     {
@@ -170,10 +168,6 @@ const CameraView = ( {
           ref={cameraRef}
           animatedProps={animatedProps}
           device={device}
-          onLayout={event => {
-            const { width, height } = event.nativeEvent.layout;
-            setTargetStandardAspectRatio( width / height );
-          }}
           // we can't use the native zoom since it doesn't expose a zoom value to JS
           enableZoomGesture={false}
           exposure={exposure}
