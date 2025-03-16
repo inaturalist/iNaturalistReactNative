@@ -4,8 +4,10 @@ const createMyObsSlice = ( set, get ) => ( {
   // when navigating to ObsEdit, so we lose scroll position)
   myObsOffset: 0,
   myObsOffsetToRestore: 0,
+  myObsLoaded: false,
   resetMyObsOffsetToRestore: ( ) => set( { myObsOffsetToRestore: 0 } ),
   setMyObsOffset: newOffset => set( { myObsOffset: newOffset } ),
+  setMyObsLoaded: ( ) => set( { myObsLoaded: true } ),
   setMyObsOffsetToRestore: ( ) => set( { myObsOffsetToRestore: get( ).myObsOffset } ),
   numOfUserObservations: 0,
   setNumOfUserObservations: newNum => set( { numOfUserObservations: newNum } ),

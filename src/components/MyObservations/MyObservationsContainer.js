@@ -6,7 +6,7 @@ import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, {
-  useCallback,
+  useCallback, useEffect,
   useRef,
   useState
 } from "react";
@@ -28,7 +28,7 @@ import { isDebugMode } from "sharedHooks/useDebugMode";
 import {
   UPLOAD_PENDING
 } from "stores/createUploadObservationsSlice.ts";
-import useStore from "stores/useStore";
+import useStore, { zustandStorage } from "stores/useStore";
 
 import FullScreenActivityIndicator from "./FullScreenActivityIndicator";
 import useSyncObservations from "./hooks/useSyncObservations";
@@ -101,6 +101,16 @@ const MyObservationsContainer = ( ): Node => {
       user_id: currentUserId
     }
   } );
+  const myObsLoaded = useStore( state => state.myObsLoaded );
+  const setMyObsLoaded = useStore( state => state.setMyObsLoaded );
+
+  useEffect( () => {
+    if ( !myObsLoaded && totalResultsRemote ) {
+      // Only set observation count once when the app loads
+      zustandStorage.setItem( "numOfUserObservations", totalResultsRemote );
+      setMyObsLoaded( );
+    }
+  }, [myObsLoaded, totalResultsRemote, setMyObsLoaded] );
 
   const [showLoginSheet, setShowLoginSheet] = useState( false );
 
