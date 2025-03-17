@@ -114,7 +114,7 @@ const useTaxonSearch = ( taxonQueryArg = "" ) => {
   }
 
   // Show local taxa if available
-  if ( localTaxa !== null ) {
+  if ( localTaxa !== null && localTaxa.length > 0 ) {
     return {
       taxa: localTaxa,
       refetch: ( ) => undefined,
