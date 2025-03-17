@@ -1,8 +1,8 @@
-import { useRoute } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
 import { getJWT, isLoggedIn } from "components/LoginSignUp/AuthenticationService.ts";
 import { useEffect, useState } from "react";
 import { reactQueryRetry } from "sharedHelpers/logging";
+import { useSafeRoute } from "sharedHooks";
 
 const LOGGED_IN_UNKNOWN = null;
 
@@ -14,7 +14,7 @@ const useAuthenticatedQuery = (
   queryOptions = {}
 ) => {
   const [userLoggedIn, setUserLoggedIn] = useState( LOGGED_IN_UNKNOWN );
-  const route = useRoute( );
+  const route = useSafeRoute( );
 
   // Whether we perform this query and whether we need to re-perform it
   // depends on whether the user is signed in. The possible vulnerability

@@ -1,9 +1,9 @@
 // @flow
 
-import { useRoute } from "@react-navigation/native";
 import { useMutation } from "@tanstack/react-query";
 import handleError from "api/error";
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
+import { useSafeRoute } from "sharedHooks";
 
 import { log } from "../../react-native-logs.config";
 
@@ -15,7 +15,7 @@ const useAuthenticatedMutation = (
   mutationFunction: Function,
   mutationOptions: Object = {}
 ): Object => {
-  const route = useRoute( );
+  const route = useSafeRoute( );
 
   return useMutation( {
     mutationFn: async params => {

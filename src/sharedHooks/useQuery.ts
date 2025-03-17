@@ -1,6 +1,6 @@
-import { useRoute } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
 import { reactQueryRetry } from "sharedHelpers/logging";
+import { useSafeRoute } from "sharedHooks";
 
 // Should work like React Query's useQuery with our custom reactQueryRetry
 const useNonAuthenticatedQuery = (
@@ -8,7 +8,7 @@ const useNonAuthenticatedQuery = (
   queryFunction: Function,
   queryOptions: Object = {}
 ): Object => {
-  const route = useRoute( );
+  const route = useSafeRoute( );
 
   return useQuery( {
     queryKey: [...queryKey, queryOptions.allowAnonymousJWT],
