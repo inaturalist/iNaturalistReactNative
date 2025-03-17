@@ -76,7 +76,11 @@ const ObsDetailsDefaultMode = ( {
     setOffsetToActivityItem
   } = useScrollToOffset( scrollViewRef );
 
-  const showFloatingButtons = wasSynced && currentUser;
+  const isSavedObservationByCurrentUser = belongsToCurrentUser && !wasSynced;
+
+  // floating buttons should show when you're logged in for your observations
+  // as well as other's observations. they should not show if it's your own saved observation
+  const showFloatingButtons = currentUser && !isSavedObservationByCurrentUser;
 
   return (
     <SafeAreaView className="flex-1 bg-white">
