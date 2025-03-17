@@ -244,7 +244,8 @@ const MatchContainer = ( ) => {
     scoreImageParams,
     scrollToTop,
     currentUserLocation?.latitude,
-    currentUserLocation?.longitude] );
+    currentUserLocation?.longitude
+  ] );
 
   useEffect( () => {
     if ( currentUserLocation?.latitude && !hasRefetchedSuggestions && suggestions ) {
