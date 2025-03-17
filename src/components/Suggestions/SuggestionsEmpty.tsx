@@ -1,6 +1,5 @@
 import { useRoute } from "@react-navigation/native";
 import { Body1 } from "components/SharedComponents";
-import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 
@@ -8,11 +7,11 @@ import SuggestionsLoading from "./SuggestionsLoading";
 import SuggestionsOffline from "./SuggestionsOffline";
 
 interface Props {
-  hasTopSuggestion?: boolean,
-  isLoading: boolean,
-  onTaxonChosen: Function,
-  reloadSuggestions: Function,
-  urlWillCrashOffline: boolean
+  hasTopSuggestion?: boolean;
+  isLoading: boolean;
+  onTaxonChosen: ( ) => void;
+  reloadSuggestions: ( ) => void;
+  urlWillCrashOffline: boolean;
 }
 
 const SuggestionsEmpty = ( {
@@ -21,7 +20,7 @@ const SuggestionsEmpty = ( {
   onTaxonChosen,
   reloadSuggestions,
   urlWillCrashOffline
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const { params } = useRoute( );
   const { lastScreen } = params;
