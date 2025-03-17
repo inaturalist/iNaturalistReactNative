@@ -1,5 +1,5 @@
 // @flow
-import KebabMenu from "components/SharedComponents/KebabMenu";
+import KebabMenu from "components/SharedComponents/KebabMenu.tsx";
 import {
   View
 } from "components/styledComponents";
