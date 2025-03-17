@@ -109,11 +109,24 @@ function reactQueryRetry( failureCount, error, options = {} ) {
   }
   handleError( error, {
     throw: false,
-    onApiError: apiError => {
+    onApiError: async apiError => {
       if ( apiError.status === 401 || apiError.status === 403 ) {
         // If we get a 401 or 403, call getJWT
         // which has a timestamp check if we need to refresh the token
-        getJWT( );
+        logger.error( "JWT error detected in React Query retry:", {
+          queryKey: options?.queryKey
+            ? inspect( options.queryKey )
+            : "unknown",
+          url: error?.response?.url,
+          routeName: options?.routeName || error?.routeName,
+          timestamp: new Date().toISOString()
+        } );
+
+        try {
+          await getJWT( true ); // Force refresh token
+        } catch ( refreshError ) {
+          logger.error( "Error refreshing JWT during retry:", refreshError );
+        }
       }
       // Consider handling 500+ errors differently. if you can detect them
       // before processing, you want to disable retry
