@@ -1,0 +1,10 @@
+UPDATED
+* Remove plus button
+* Camera formats in AI camera and Standard camera
+* Location accuracy on match screen
+
+FIXED
+* Minor styling issues, and offline states
+* Hide "no suggestions" while loading
+* Zoom map in further when tapping current location button
+* Offline taxon name preference change
