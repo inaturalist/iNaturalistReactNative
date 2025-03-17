@@ -1,33 +1,29 @@
-// @flow
-
 import { tailwindFontMedium } from "appConstants/fontFamilies.ts";
 import INatIconButton from "components/SharedComponents/Buttons/INatIconButton.tsx";
-import type { Node } from "react";
+import type { PropsWithChildren } from "react";
 import React from "react";
 import { Menu } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  accessibilityHint?: string,
-  accessibilityLabel?: string,
-  // $FlowIgnore
-  children: unknown,
-  large?: boolean,
-  setVisible: Function,
-  visible: boolean,
-  white?: boolean,
+interface Props extends PropsWithChildren {
+  accessibilityHint?: string;
+  accessibilityLabel?: string;
+  large?: boolean;
+  setVisible: ( visible: boolean ) => void;
+  visible: boolean;
+  white?: boolean;
 }
 
 const FIRST_MENU_ITEM_STYLE = {
   padding: 14
-};
+} as const;
 
 const MENU_ITEM_STYLE = {
   ...FIRST_MENU_ITEM_STYLE,
   borderTopColor: colors.lightGray,
   borderTopWidth: 1
-};
+} as const;
 
 const MENU_CONTENT_STYLE = {
   backgroundColor: colors.white,
@@ -38,7 +34,7 @@ const MENU_CONTENT_STYLE = {
   // Not ideal, but seems to work in most situations to get the menu to appear
   // below the button that opens it
   top: 40
-};
+} as const;
 
 // Should be the same as Body3, we just can't use that component *and* get all
 // the advantages of Menu.Item, hence the custom style
@@ -47,7 +43,7 @@ const MENU_ITEM_TITLE_STYLE = {
   fontFamily: tailwindFontMedium,
   lineHeight: 18,
   color: colors.darkGray
-};
+} as const;
 
 const KebabMenu = ( {
   accessibilityHint,
@@ -57,7 +53,7 @@ const KebabMenu = ( {
   setVisible,
   visible,
   white
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const openMenu = ( ) => setVisible( true );
   const closeMenu = ( ) => setVisible( false );
@@ -90,12 +86,12 @@ const KebabMenu = ( {
   );
 };
 
-type KebabMenuItemProps = {
-  accessibilityLabel?: string,
-  isFirst?: boolean,
-  onPress: Function,
-  testID?: string,
-  title: string
+interface KebabMenuItemProps {
+  accessibilityLabel?: string;
+  isFirst?: boolean;
+  onPress: ( ) => void;
+  testID?: string;
+  title: string;
 }
 const KebabMenuItem = ( {
   accessibilityLabel,
@@ -103,7 +99,7 @@ const KebabMenuItem = ( {
   onPress,
   testID,
   title
-}: KebabMenuItemProps ): Node => (
+}: KebabMenuItemProps ) => (
   <Menu.Item
     accessibilityLabel={accessibilityLabel}
     testID={testID}
