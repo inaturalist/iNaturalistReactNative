@@ -4,6 +4,7 @@ import { RealmContext } from "providers/contexts.ts";
 import { useCallback, useEffect, useState } from "react";
 import Realm, { UpdateMode } from "realm";
 import Taxon from "realmModels/Taxon";
+import type { RealmTaxon } from "realmModels/types";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import validateRealmSearch from "sharedHelpers/validateRealmSearch.ts";
 import { useAuthenticatedQuery, useIconicTaxa } from "sharedHooks";
@@ -31,7 +32,7 @@ const useTaxonSearch = ( taxonQueryArg = "" ) => {
   // Remove leading and trailing whitespace, no need to perform new queries or
   // potentially get different results b/c of meaningless whitespace
   const taxonQuery = taxonQueryArg.trim();
-  const [localTaxa, setLocalTaxa] = useState( null );
+  const [localTaxa, setLocalTaxa] = useState<RealmTaxon[] | null>( null );
 
   const { data: remoteTaxa, refetch, isLoading } = useAuthenticatedQuery(
     ["fetchTaxonSuggestions", taxonQuery],
@@ -59,7 +60,7 @@ const useTaxonSearch = ( taxonQueryArg = "" ) => {
     }
   }, [realm, remoteTaxa] );
 
-  const safeRealmSearch = useCallback( async searchString => {
+  const safeRealmSearch = useCallback( async ( searchString: string ) => {
     try {
       const { cleanedQuery } = validateRealmSearch( searchString );
       return await realm.objects( "Taxon" ).filtered(
