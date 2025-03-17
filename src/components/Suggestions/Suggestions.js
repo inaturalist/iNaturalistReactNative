@@ -63,11 +63,10 @@ const Suggestions = ( {
     topSuggestion
   } = suggestions;
 
-  const showOfflineText = !isLoading && usingOfflineSuggestions;
-
   const taxonIds = otherSuggestions?.map( s => s.taxon.id );
   const observers = useObservers( taxonIds );
   const isEmptyList = !topSuggestion && otherSuggestions?.length === 0;
+  const showOfflineText = !isLoading && usingOfflineSuggestions && !isEmptyList;
 
   const renderSuggestion = useCallback( ( { item: suggestion } ) => (
     <Suggestion
