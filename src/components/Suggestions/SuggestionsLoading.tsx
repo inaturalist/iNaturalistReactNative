@@ -5,7 +5,6 @@ import {
 import {
   View
 } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
@@ -13,12 +12,12 @@ import useStore from "stores/useStore";
 import Suggestion from "./Suggestion";
 
 interface Props {
-  onTaxonChosen: Function
+  onTaxonChosen: ( ) => void;
 }
 
 const SuggestionsLoading = ( {
   onTaxonChosen
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const aiCameraSuggestion = useStore( state => state.aICameraSuggestion );
 
