@@ -1,7 +1,7 @@
 import { useRoute } from "@react-navigation/native";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
-import { reactQueryRetry } from "sharedHelpers/logging";
+import { handleRetryDelay, reactQueryRetry } from "sharedHelpers/logging";
 
 // Should work like React Query's useInfiniteQuery with our custom reactQueryRetry
 // and authentication
@@ -30,6 +30,7 @@ const useAuthenticatedInfiniteQuery = (
       routeName: route?.name,
       routeParams: route?.params
     } ),
+    retryDelay: ( failureCount, error ) => handleRetryDelay( failureCount, error ),
     ...queryOptions
   } );
 };

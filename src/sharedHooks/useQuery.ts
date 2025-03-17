@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { reactQueryRetry } from "sharedHelpers/logging";
+import { handleRetryDelay, reactQueryRetry } from "sharedHelpers/logging";
 import { useSafeRoute } from "sharedHooks";
 
 // Should work like React Query's useQuery with our custom reactQueryRetry
@@ -18,6 +18,7 @@ const useNonAuthenticatedQuery = (
       routeName: route?.name,
       routeParams: route?.params
     } ),
+    retryDelay: ( failureCount, error ) => handleRetryDelay( failureCount, error ),
     ...queryOptions
   } );
 };

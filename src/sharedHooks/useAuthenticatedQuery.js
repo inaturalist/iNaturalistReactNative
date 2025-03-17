@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getJWT, isLoggedIn } from "components/LoginSignUp/AuthenticationService.ts";
 import { useEffect, useState } from "react";
-import { reactQueryRetry } from "sharedHelpers/logging";
+import { handleRetryDelay, reactQueryRetry } from "sharedHelpers/logging";
 import { useSafeRoute } from "sharedHooks";
 
 const LOGGED_IN_UNKNOWN = null;
@@ -50,6 +50,7 @@ const useAuthenticatedQuery = (
       routeName: route?.name,
       routeParams: route?.params
     } ),
+    retryDelay: ( failureCount, error ) => handleRetryDelay( failureCount, error ),
     ...queryOptions,
     // Authenticated queries should not run until we know whether or not the
     // user is signed in
