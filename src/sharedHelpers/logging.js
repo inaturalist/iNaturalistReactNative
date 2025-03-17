@@ -10,12 +10,72 @@ function inspect( target ) {
   return JSON.stringify( target );
 }
 
+function handleRetryDelay( failureCount, error ) {
+  // Special handling for 429 errors - use exponential backoff
+  if ( error.status === 429 || ( error.response && error.response.status === 429 ) ) {
+    const baseDelay = 1000;
+    const exponentialDelay = baseDelay * 2 ** failureCount;
+    const jitter = Math.random() * 100; // Add randomness
+    return exponentialDelay + jitter; // Progressive backoff
+  }
+
+  // Default React Query retry delay for other errors
+  return Math.min( 1000 * 2 ** failureCount, 30000 );
+}
+
+function handleTooManyRequestsErrors( failureCount, error, options = {} ) {
+  const errorContext = {
+    queryKey: options?.queryKey
+      ? inspect( options.queryKey )
+      : "unknown",
+    failureCount,
+    timestamp: new Date().toISOString(),
+    errorType: error?.name || "Unknown",
+    status: error?.status || ( error.response
+      ? error.response.status
+      : null ),
+    url: error?.response?.url,
+    routeName: options?.routeName || error?.routeName,
+    routeParams: options?.routeParams || error?.routeParams
+  };
+
+  if ( error.status === 429 || ( error.response && error.response.status === 429 ) ) {
+    defaultLogger.error(
+      "429 in reactQueryRetry:",
+      errorContext
+    );
+
+    // Use progressive backoff for rate limit errors using handleRetryDelay;
+    // wait longer between retries
+    const shouldRetry = failureCount < 3;
+
+    // Let the error handler know this was a rate limit error but don't throw to allow retry
+    handleError( error, {
+      throw: false,
+      context: errorContext,
+      onApiError: apiError => {
+        console.log( apiError, "API error in reactQueryRetry handleTooManyRequestsErrors" );
+      }
+    } );
+
+    return shouldRetry;
+  }
+  return null;
+}
+
 // Note that this should not be async. When you're using it with reactQuery,
 // returning a promise is like returning true, which means it retries
 // forever
 function reactQueryRetry( failureCount, error, options = {} ) {
   const isOffline = error instanceof TypeError && error.message.match( "Network request failed" );
   const logger = options.logger || defaultLogger;
+
+  // trying to get more context in Grafana for TooManyRequests errors
+  const rateLimitRetryDecision = handleTooManyRequestsErrors( failureCount, error, options );
+  if ( rateLimitRetryDecision !== null ) {
+    return rateLimitRetryDecision;
+  }
+
   if ( typeof ( options.beforeRetry ) === "function" ) {
     options.beforeRetry( failureCount, error );
   }
@@ -64,6 +124,7 @@ function reactQueryRetry( failureCount, error, options = {} ) {
 
 // eslint-disable-next-line import/prefer-default-export
 export {
+  handleRetryDelay,
   inspect,
   reactQueryRetry
 };
