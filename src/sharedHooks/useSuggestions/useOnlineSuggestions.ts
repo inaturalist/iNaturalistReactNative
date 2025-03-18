@@ -3,6 +3,7 @@ import {
 } from "@react-native-community/netinfo";
 import { useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision.ts";
+import i18n from "i18next";
 import { RealmContext } from "providers/contexts.ts";
 import {
   useCallback, useEffect, useState
@@ -10,10 +11,9 @@ import {
 import Taxon from "realmModels/Taxon";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
-  useCurrentUser,
-  useAuthenticatedQuery
+  useAuthenticatedQuery,
+  useCurrentUser
 } from "sharedHooks";
-import i18n from "i18next";
 
 const SCORE_IMAGE_TIMEOUT = 5_000;
 
