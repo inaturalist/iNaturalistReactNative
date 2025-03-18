@@ -46,14 +46,13 @@ const useOnlineSuggestions = (
   const { isConnected } = useNetInfo( );
   const currentUser = useCurrentUser();
 
-  // Set locale using the current device locale
-  // if there is no user session
-  if ( !currentUser ) {
-    scoreImageParams.locale = i18n.language || "en";
-  }
-
   async function queryFn( optsWithAuth ) {
-    const params = scoreImageParams;
+    let params = scoreImageParams;
+    // Set locale using the current device locale
+    // if there is no user session
+    if ( !currentUser ) {
+      params = { ...scoreImageParams, locale: i18n.language || "en" };
+    }
     return scoreImage( params, optsWithAuth );
   }
 
