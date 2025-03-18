@@ -12,7 +12,10 @@ import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import ObservationSound from "realmModels/ObservationSound";
 import emitUploadProgress from "sharedHelpers/emitUploadProgress.ts";
+import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+
+const logger = log.extend( "uploadObservation" );
 
 const UPLOAD_PROGRESS_INCREMENT = 1;
 
@@ -106,28 +109,43 @@ const uploadEvidence = async (
   // $FlowIgnore
 ): Promise<unknown> => {
   const uploadToServer = async currentEvidence => {
-    const params = apiSchemaMapper( observationId, currentEvidence );
-    const evidenceUUID = currentEvidence.uuid;
+    try {
+      const params = apiSchemaMapper( observationId, currentEvidence );
+      const evidenceUUID = currentEvidence.uuid;
 
-    const response = await createOrUpdateEvidence(
-      apiEndpoint,
-      params,
-      options
-    );
+      const response = await createOrUpdateEvidence(
+        apiEndpoint,
+        params,
+        options
+      );
 
-    if ( response && observationUUID ) {
+      if ( response && observationUUID ) {
       // we're emitting progress increments:
       // one when the upload of obs
       // half one when obsPhoto/obsSound is successfully uploaded
       // half one when the obsPhoto/obsSound is attached to the obs
-      emitUploadProgress( observationUUID, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
-      // TODO: can't mark records as uploaded by primary key for ObsPhotos and ObsSound anymore
-      markRecordUploaded( observationUUID, evidenceUUID, type, response, realm, {
-        record: currentEvidence
-      } );
+        emitUploadProgress( observationUUID, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
+        // TODO: can't mark records as uploaded by primary key for ObsPhotos and ObsSound anymore
+        markRecordUploaded( observationUUID, evidenceUUID, type, response, realm, {
+          record: currentEvidence
+        } );
+      }
+      return response;
+    } catch ( error ) {
+      if ( error.status === 401
+      || ( error.errors && error.errors[0]?.errorCode === "401" )
+      || JSON.stringify( error ).includes( "JWT is missing or invalid" ) ) {
+        logger.error( "JWT_ERROR in uploadEvidence", {
+          type,
+          evidenceUUID: currentEvidence.uuid,
+          observationUUID,
+          errorStatus: error.status,
+          errorMessage: error.message,
+          timestamp: new Date().toISOString()
+        } );
+      }
+      return null;
     }
-
-    return response;
   };
 
   const responses = await Promise.all( evidence.map( item => {

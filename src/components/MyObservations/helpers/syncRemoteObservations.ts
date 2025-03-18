@@ -4,7 +4,6 @@ import Observation from "realmModels/Observation";
 import { sleep } from "sharedHelpers/util.ts";
 
 async function syncRemoteObservations( realm, currentUserId: number, deletionsCompletedAt: Date ) {
-  const apiToken = await getJWT( );
   const searchParams = {
     user_id: currentUserId,
     per_page: 50,
@@ -23,6 +22,7 @@ async function syncRemoteObservations( realm, currentUserId: number, deletionsCo
       await sleep( naptime );
     }
   }
+  const apiToken = await getJWT( );
   const { results } = await searchObservations( searchParams, { api_token: apiToken } );
   await Observation.upsertRemoteObservations( results, realm );
 }

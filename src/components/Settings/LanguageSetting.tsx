@@ -1,4 +1,5 @@
 import fetchAvailableLocales from "api/translations";
+import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import {
   Button,
   Heading4,
@@ -40,7 +41,8 @@ const LanguageSetting = ( { onChange }: Props ) => {
         ? JSON.parse( currentLocales )
         : [] );
 
-      const locales = await fetchAvailableLocales();
+      const apiToken = await getJWT( );
+      const locales = await fetchAvailableLocales( {}, { api_token: apiToken } );
       zustandStorage.setItem( "availableLocales", JSON.stringify( locales ) );
       setWebLocales( locales as LocalesResponse );
     }

@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import {
   searchObservations
 } from "api/observations";
+import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { useCallback, useEffect, useState } from "react";
 import { Linking } from "react-native";
@@ -25,7 +26,11 @@ const useLinking = ( currentUser: ?Object ) => {
 
   const navigateToObservations = useCallback( async ( ) => {
     const searchParams = { id: observationId };
-    const { results } = await searchObservations( searchParams );
+    const apiToken = await getJWT( );
+    const options = {
+      api_token: apiToken
+    };
+    const { results } = await searchObservations( searchParams, options );
     const uuid = results?.[0]?.uuid;
 
     if ( uuid ) {
