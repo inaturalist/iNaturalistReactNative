@@ -10,8 +10,10 @@ import {
 import Taxon from "realmModels/Taxon";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
+  useCurrentUser,
   useAuthenticatedQuery
 } from "sharedHooks";
+import i18n from "i18next";
 
 const SCORE_IMAGE_TIMEOUT = 5_000;
 
@@ -42,6 +44,13 @@ const useOnlineSuggestions = (
   const queryClient = useQueryClient( );
   const [timedOut, setTimedOut] = useState( false );
   const { isConnected } = useNetInfo( );
+  const currentUser = useCurrentUser();
+
+  // Set locale using the current device locale
+  // if there is no user session
+  if ( !currentUser ) {
+    scoreImageParams.locale = i18n.language || "en";
+  }
 
   async function queryFn( optsWithAuth ) {
     const params = scoreImageParams;
