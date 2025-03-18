@@ -29,7 +29,26 @@ const useAuthenticatedMutation = (
       return mutationFunction( params, options );
     },
     onError: error => {
-    // Capture context for 429 errors
+      if ( error.status === 401
+        || ( error.errors && error.errors[0]?.errorCode === "401" )
+        || JSON.stringify( error ).includes( "JWT is missing or invalid" ) ) {
+        const errorContext = {
+          routeName: route?.name,
+          routeParams: route?.params,
+          mutationName: mutationOptions.mutationKey || "unknown",
+          timestamp: new Date().toISOString(),
+          errorMessage: error.message || "JWT is missing or invalid"
+        };
+
+        logger.error( "401 JWT error in mutation:", errorContext );
+
+        // Try to refresh the token explicitly
+        // Important: We don't await this to avoid blocking the error handling
+        getJWT( true ).catch( refreshError => {
+          logger.error( "Failed to refresh token in mutation after 401:", refreshError );
+        } );
+      }
+
       if ( error.status === 429 || ( error.response && error.response.status === 429 ) ) {
         const errorContext = {
           routeName: route?.name,
@@ -40,14 +59,13 @@ const useAuthenticatedMutation = (
 
         logger.error( "429 in mutation:", errorContext );
 
-        // Pass context to handleError
         return handleError( error, {
           context: errorContext,
           throw: mutationOptions.throwOnError !== false
         } );
       }
 
-      // Call original handleError for non-429 errors
+      // Call original handleError for non-429 and non-401 errors
       return handleError( error );
     },
     ...mutationOptions
