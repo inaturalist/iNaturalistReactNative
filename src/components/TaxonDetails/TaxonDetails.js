@@ -21,6 +21,7 @@ import {
   SafeAreaView,
   View
 } from "components/styledComponents";
+import i18n from "i18next";
 import _, { compact } from "lodash";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
@@ -149,8 +150,12 @@ const TaxonDetails = ( ): Node => {
 
   const localTaxon = realm.objectForPrimaryKey( "Taxon", id );
 
+  // Use locale in case there is no user session
+  const locale = i18n?.language ?? "en";
+
   const taxonFetchParams = {
-    place_id: remoteUser?.place_id
+    place_id: remoteUser?.place_id,
+    ...( !currentUser && { locale } )
   };
 
   // Note that we want to authenticate this to localize names, desc language, etc.
