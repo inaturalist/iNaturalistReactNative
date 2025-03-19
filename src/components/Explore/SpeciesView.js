@@ -2,6 +2,7 @@
 
 import { fetchSpeciesCounts } from "api/observations";
 import ExploreTaxonGridItem from "components/Explore/ExploreTaxonGridItem.tsx";
+import i18n from "i18next";
 import _ from "lodash";
 import {
   useExplore
@@ -70,6 +71,8 @@ const SpeciesView = ( {
     ? { ...queryParams, without_taxon_id: pageObservedTaxonIdsAll }
     : queryParams;
 
+  const locale = i18n?.language ?? "en";
+
   const {
     data,
     isFetchingNextPage,
@@ -80,6 +83,7 @@ const SpeciesView = ( {
     fetchSpeciesCounts,
     {
       ...params,
+      ...( !currentUser && { locale } ),
       fields: {
         taxon: Taxon.LIMITED_TAXON_FIELDS
       }
