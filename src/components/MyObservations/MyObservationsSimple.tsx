@@ -202,7 +202,9 @@ const MyObservationsSimple = ( {
     numUnuploadedObservations > 0 && numUnuploadedObsMissingBasics > 0
   ), [numUnuploadedObservations, numUnuploadedObsMissingBasics] );
 
-  const numUploadableObservations = numUnuploadedObservations - numUnuploadedObsMissingBasics;
+  const numUploadableObservations = isDefaultMode
+    ? numUnuploadedObservations - numUnuploadedObsMissingBasics
+    : numUnuploadedObservations;
 
   const renderTabComponent = ( { id } ) => (
     <StatTab

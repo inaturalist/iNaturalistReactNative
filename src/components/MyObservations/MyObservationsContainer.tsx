@@ -150,12 +150,16 @@ const MyObservationsContainer = ( ): React.FC => {
     if ( !confirmInternetConnection( ) ) { return; }
 
     startManualSync( );
-    syncManually( { skipSomeUploads: unuploadedObsMissingBasicsIDs } );
+    const syncOptions = isDefaultMode
+      ? { skipSomeUploads: unuploadedObsMissingBasicsIDs }
+      : { };
+    syncManually( syncOptions );
   }, [
     startManualSync,
     syncManually,
     confirmInternetConnection,
-    confirmLoggedIn
+    confirmLoggedIn,
+    isDefaultMode
   ] );
 
   const handleIndividualUploadPress = useCallback( uuid => {
