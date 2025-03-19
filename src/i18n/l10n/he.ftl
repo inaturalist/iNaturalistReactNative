@@ -180,7 +180,7 @@ date-format-month-day = MMM d
 date-format-month-year = MMM yyyy
 date-format-short = M/d/yy
 DATE-OBSERVED = DATE OBSERVED
-Date-observed = תאריך צפייה
+Date-observed = תאריך התצפית
 Date-observed-header-short = נצפה
 DATE-OBSERVED-NEWEST = DATE OBSERVED - NEWEST TO OLDEST
 DATE-OBSERVED-OLDEST = DATE OBSERVED - OLDEST TO NEWEST
@@ -305,7 +305,7 @@ Filter-by-observed-during-months = Filter by observations observed during specif
 Filter-by-observed-on-date = Filter by observations observed on a specific date
 Filter-by-uploaded-between-dates = Filter by observations uploaded between two specific dates
 Filter-by-uploaded-on-date = Filter by observations uploaded on a specific date
-Filters = פילטרים
+Filters = מסננים
 Flag-An-Item = סימון פריט
 Flag-Item-Description = Flagging brings something to the attention of volunteer site curators. Please don't flag problems you can address with identifications, the Data Quality Assessment, or by talking to the person who made the content.
 Flag-Item-Other = Flagged as Other Description Box
@@ -376,7 +376,7 @@ IMPORT-X-OBSERVATIONS =
        *[other] { $count } OBSERVATIONS
     }
 IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = IMPROVE THESE SUGGESTIONS BY USING YOUR LOCATION
-improving--identification = משתפר.ת
+improving--identification = משפר
 iNat-is-global-community = iNaturalist is a global community of naturalists creating open data for science by collectively observing & identifying organisms
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT SETTINGS
 iNaturalist-AI-Camera = iNaturalist AI Camera
