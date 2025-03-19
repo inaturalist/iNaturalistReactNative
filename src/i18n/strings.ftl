@@ -68,7 +68,8 @@ Add-optional-notes = Add optional notes
 Adds-your-vote-of-agreement = Adds your vote of agreement
 # Hint for a button that adds a vote of disagreement
 Adds-your-vote-of-disagreement = Adds your vote of disagreement
-Advanced--interface-mode-with-explainer = Advanced (Upload multiple photos and sounds)
+# Label for toggle that changes the app's mode
+Advanced--interface-mode = Advanced
 Affiliation = Affiliation: { $site }
 After-capturing-or-importing-photos-show = After capturing or importing photos, show:
 # Label for button that adds an identification of the same taxon as another identification

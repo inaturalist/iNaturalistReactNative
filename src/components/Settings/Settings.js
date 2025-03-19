@@ -266,7 +266,7 @@ const Settings = ( ) => {
                 setIsDefaultMode( !newValue );
                 setIsAllAddObsOptionsMode( newValue );
               }}
-              label={t( "Advanced--interface-mode-with-explainer" )}
+              label={t( "Advanced--interface-mode" )}
             />
           </View>
         </View>
