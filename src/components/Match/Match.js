@@ -58,7 +58,7 @@ const Match = ( {
   const taxon = topSuggestion?.taxon;
 
   // In case the photo could not be identified
-  if ( !topSuggestion ) {
+  if ( !topSuggestion && otherSuggestions.length === 0 ) {
     return (
       <>
         <ScrollViewWrapper scrollRef={scrollRef}>
