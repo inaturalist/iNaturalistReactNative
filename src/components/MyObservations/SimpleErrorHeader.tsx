@@ -5,7 +5,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
-import { useTranslation } from "sharedHooks";
+import { useLayoutPrefs, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import Announcements from "./Announcements";
@@ -17,7 +17,12 @@ export interface Props {
 const SimpleErrorHeader = ( {
   isConnected
 }: Props ) => {
+  const { isDefaultMode } = useLayoutPrefs( );
   const { t } = useTranslation( );
+
+  if ( !isDefaultMode ) {
+    return null;
+  }
   return (
     <>
       <Announcements isConnected={isConnected} />

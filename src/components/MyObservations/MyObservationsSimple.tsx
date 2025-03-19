@@ -25,7 +25,7 @@ import type {
   RealmUser
 } from "realmModels/types";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
-import { useGridLayout, useTranslation } from "sharedHooks";
+import { useGridLayout, useLayoutPrefs, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import Announcements from "./Announcements";
@@ -108,6 +108,7 @@ const MyObservationsSimple = ( {
   loggedInWhileInDefaultMode = false,
   refetchTaxa
 }: Props ) => {
+  const { isDefaultMode } = useLayoutPrefs( );
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const route = useRoute( );
@@ -276,7 +277,7 @@ const MyObservationsSimple = ( {
               hideLoadingWheel
               hideMetadata
               hideObsUploadStatus={!currentUser}
-              hideObsStatus
+              hideObsStatus={isDefaultMode}
               isFetchingNextPage={isFetchingNextPage}
               isConnected={isConnected}
               obsListKey="MyObservations"
@@ -327,19 +328,23 @@ const MyObservationsSimple = ( {
         { ( activeTab === TAXA_TAB && taxa.length === 0 ) && renderOfflineNotice( )}
       </ViewWrapper>
       {showLoginSheet && <LoginSheet setShowLoginSheet={setShowLoginSheet} />}
-      {/* These four cards should show only in default mode */}
-      <FirstObservationCard triggerCondition={numTotalObservations === 1} />
-      <SecondObservationCard triggerCondition={numTotalObservations === 2} />
-      <FiftyObservationCard
-        triggerCondition={
-          loggedInWhileInDefaultMode && !!currentUser && numTotalObservations >= 50
-        }
-      />
-      <AccountCreationCard
-        triggerCondition={
-          justFinishedSignup && !!currentUser && numTotalObservations < 20
-        }
-      />
+      {isDefaultMode && (
+        <>
+          {/* These four cards should show only in default mode */}
+          <FirstObservationCard triggerCondition={numTotalObservations === 1} />
+          <SecondObservationCard triggerCondition={numTotalObservations === 2} />
+          <FiftyObservationCard
+            triggerCondition={
+              loggedInWhileInDefaultMode && !!currentUser && numTotalObservations >= 50
+            }
+          />
+          <AccountCreationCard
+            triggerCondition={
+              justFinishedSignup && !!currentUser && numTotalObservations < 20
+            }
+          />
+        </>
+      )}
     </>
   );
 };

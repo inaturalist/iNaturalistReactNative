@@ -129,8 +129,6 @@ Apply-filters = Apply filters
 April = April
 Are-you-an-educator = Are you an educator wanting to use iNaturalist with your students?
 Are-you-sure-you-want-to-log-out = Are you sure you want to log out of your iNaturalist account? All observations that haven’t been uploaded to iNaturalist will be deleted.
-# Onboarding text on MyObservations: 0-10 observations
-As-you-upload-more-observations = As you upload more observations, others in our community may be able to help you identify them!
 attribution-cc-by = some rights reserved (CC BY)
 attribution-cc-by-nc = some rights reserved (CC BY-NC)
 attribution-cc-by-nc-nd = some rights reserved (CC BY-NC-ND)
@@ -551,8 +549,6 @@ Google-Play-Services-Not-Installed = Google Play Services Not Installed
 GRANT-PERMISSION = GRANT PERMISSION
 # Title of a screen asking for permission
 Grant-Permission-title = Grant Permission
-# Label for button to switch to a grid layout of observations
-Grid-layout = Grid layout
 Group-Photos = Group Photos
 # Onboarding for users learning to group photos in the camera roll
 Group-photos-onboarding = Group photos into observations– make sure there is only one species per observation
@@ -692,8 +688,6 @@ LEAVE-PROJECT = LEAVE PROJECT
 LEAVE-PROJECT--question = LEAVE PROJECT?
 LEAVE-US-A-REVIEW = LEAVE US A REVIEW!
 Lets-reset-your-password = Let’s reset your password.
-# Label for button to switch to a list layout of observations
-List-layout = List layout
 Loading-iNaturalists-AI-Camera = Loading iNaturalist's AI Camera
 Loads-content-that-requires-an-Internet-connection = Loads content that requires an Internet connection
 LOCATION = LOCATION
@@ -701,10 +695,6 @@ Location = Location
 Location-accuracy-is-too-imprecise = Location accuracy is too imprecise to help identifiers. Please zoom in.
 LOCATION-TOO-IMPRECISE = LOCATION TOO IMPRECISE
 LOG-IN = LOG IN
-# Second person imperative label to go to log in screen
-Log-in = Log in
-Log-in-to-contribute-and-sync = Log in to contribute & sync
-Log-in-to-contribute-your-observations = Log in to contribute your observations to science!
 LOG-IN-TO-INATURALIST = LOG IN TO INATURALIST
 Log-in-to-iNaturalist = Log in to iNaturalist
 LOG-OUT = LOG OUT
@@ -863,8 +853,6 @@ OBSERVATIONS-WITHOUT-NUMBER =
         [one] OBSERVATION
        *[other] OBSERVATIONS
     }
-# Onboarding text on MyObservations: Onboarding text on MyObservations: 11-50 observations
-Observations-you-upload-to-iNaturalist = Observations you upload to iNaturalist can be used by scientists and researchers worldwide.
 # Title of screen asking for permission to access the camera
 Observe-and-identify-organisms-in-real-time-with-your-camera = Observe and identify organisms in real time with your camera
 # Text for a button prompting the user to grant access to the camera
@@ -1126,8 +1114,6 @@ Search-suggestions-with-location = Search suggestions with location
 Search-suggestions-without-location = Search suggestions without location
 SEARCH-TAXA = SEARCH TAXA
 SEARCH-USERS = SEARCH USERS
-# Accessibility label for Explore button on MyObservations toolbar
-See-all-your-observations-in-explore = See all your observations in explore
 # Accessibility label for Observations button on UserProfile screen
 See-observations-by-this-user-in-Explore = See observations by this user in Explore
 # Accessibility label for Explore button on TaxonDetails screen
@@ -1355,8 +1341,6 @@ View-suggestions = View suggestions
 Watch-your-notifications-for-identifications = Watch your notifications for identifications!
 We-are-not-confident-enough-to-make-a-top-ID-suggestion = We’re not confident enough to make a top ID suggestion, but here are some other suggestions:
 Welcome-back = Welcome back!
-# Welcome user back to app
-Welcome-user = <0>Welcome back,</0><1>{ $userHandle }</1>
 Weve-made-some-updates = We've made some updates, so we recommend taking a look at your settings. You can always update these later.
 WHAT-IS-INATURALIST = WHAT IS INATURALIST?
 Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!
@@ -1413,12 +1397,6 @@ X-Observations =
     { $count ->
         [one] 1 Observation
        *[other] { $count } Observations
-    }
-# Shows number of observations in a variety of contexts
-X-observations =
-    { $count ->
-        [one] 1 observation
-       *[other] { $count } observations
     }
 # Label for a count of observations that appears above this text
 X-OBSERVATIONS--below-number =
@@ -1527,8 +1505,6 @@ You-can-also-check-out-merchandise = You can also check out merchandise for iNat
 You-can-click-join-on-the-project-page = You can click “join” on the project page.
 You-can-find-answers-on-our-help-page = You can find answers on our help page.
 You-can-only-add-20-photos-per-observation = You can only add 20 photos per observation
-# Onboarding text on MyObservations: Onboarding text on MyObservations: 51-100 observations
-You-can-search-observations-of-any-plant-or-animal = You can search observations of any plant or animal anywhere in the world with Explore!
 You-can-still-share-the-file = You can still share the file with another app. If you can email it, please send it to { $email }
 You-can-upload-this-observation-to-our-community = You can upload this observation to our community to get an identification from a real person, and help our AI improve its identifications in the future
 You-changed-filters-will-be-discarded = You changed filters, but they were not applied to your explore search results.
