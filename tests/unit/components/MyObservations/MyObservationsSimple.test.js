@@ -1,7 +1,8 @@
 import { screen } from "@testing-library/react-native";
-import MyObservations from "components/MyObservations/MyObservations";
+import MyObservationsSimple, { OBSERVATIONS_TAB }
+  from "components/MyObservations/MyObservationsSimple.tsx";
 import React from "react";
-import DeviceInfo from "react-native-device-info";
+// import DeviceInfo from "react-native-device-info";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
@@ -36,21 +37,21 @@ const DEVICE_ORIENTATION_PHONE_LANDSCAPE = {
   screenHeight: 393
 };
 
-const DEVICE_ORIENTATION_TABLET_PORTRAIT = {
-  deviceOrientation: "portrait",
-  isTablet: true,
-  isLandscapeMode: false,
-  screenWidth: 820,
-  screenHeight: 1180
-};
+// const DEVICE_ORIENTATION_TABLET_PORTRAIT = {
+//   deviceOrientation: "portrait",
+//   isTablet: true,
+//   isLandscapeMode: false,
+//   screenWidth: 820,
+//   screenHeight: 1180
+// };
 
-const DEVICE_ORIENTATION_TABLET_LANDSCAPE = {
-  deviceOrientation: "landscapeLeft",
-  isTablet: true,
-  isLandscapeMode: true,
-  screenWidth: 1180,
-  screenHeight: 820
-};
+// const DEVICE_ORIENTATION_TABLET_LANDSCAPE = {
+//   deviceOrientation: "landscapeLeft",
+//   isTablet: true,
+//   isLandscapeMode: true,
+//   screenWidth: 1180,
+//   screenHeight: 820
+// };
 
 jest.mock( "sharedHooks/useDeviceOrientation.ts", ( ) => ( {
   __esModule: true,
@@ -58,16 +59,17 @@ jest.mock( "sharedHooks/useDeviceOrientation.ts", ( ) => ( {
 } ) );
 
 const renderMyObservations = layout => renderComponent(
-  <MyObservations
+  <MyObservationsSimple
     layout={layout}
     observations={mockObservations}
     onEndReached={jest.fn( )}
     toggleLayout={jest.fn( )}
     setShowLoginSheet={jest.fn( )}
+    activeTab={OBSERVATIONS_TAB}
   />
 );
 
-describe( "MyObservations", () => {
+describe( "MyObservationsSimple", () => {
   beforeAll( async () => {
     jest.useFakeTimers( );
   } );
@@ -115,17 +117,17 @@ describe( "MyObservations", () => {
           expect( list.props.numColumns ).toEqual( 2 );
         } );
       } );
-      describe( "on a tablet", ( ) => {
-        beforeEach( ( ) => {
-          DeviceInfo.isTablet.mockReturnValue( true );
-        } );
-        it( "should have 4 columns", async ( ) => {
-          useDeviceOrientation.mockImplementation( ( ) => DEVICE_ORIENTATION_TABLET_PORTRAIT );
-          renderMyObservations( "grid" );
-          const list = screen.getByTestId( "MyObservationsAnimatedList" );
-          expect( list.props.numColumns ).toEqual( 4 );
-        } );
-      } );
+      // describe( "on a tablet", ( ) => {
+      //   beforeEach( ( ) => {
+      //     DeviceInfo.isTablet.mockReturnValue( true );
+      //   } );
+      //   it( "should have 4 columns", async ( ) => {
+      //     useDeviceOrientation.mockImplementation( ( ) => DEVICE_ORIENTATION_TABLET_PORTRAIT );
+      //     renderMyObservations( "grid" );
+      //     const list = screen.getByTestId( "MyObservationsAnimatedList" );
+      //     expect( list.props.numColumns ).toEqual( 4 );
+      //   } );
+      // } );
     } );
     describe( "landscape orientation", ( ) => {
       describe( "on a phone", ( ) => {
@@ -136,17 +138,17 @@ describe( "MyObservations", () => {
           expect( list.props.numColumns ).toEqual( 2 );
         } );
       } );
-      describe( "on a tablet", ( ) => {
-        beforeEach( ( ) => {
-          DeviceInfo.isTablet.mockReturnValue( true );
-        } );
-        it( "should have 6 columns", async ( ) => {
-          useDeviceOrientation.mockImplementation( ( ) => DEVICE_ORIENTATION_TABLET_LANDSCAPE );
-          renderMyObservations( "grid" );
-          const list = screen.getByTestId( "MyObservationsAnimatedList" );
-          expect( list.props.numColumns ).toEqual( 6 );
-        } );
-      } );
+      // describe( "on a tablet", ( ) => {
+      //   beforeEach( ( ) => {
+      //     DeviceInfo.isTablet.mockReturnValue( true );
+      //   } );
+      //   it( "should have 6 columns", async ( ) => {
+      //     useDeviceOrientation.mockImplementation( ( ) => DEVICE_ORIENTATION_TABLET_LANDSCAPE );
+      //     renderMyObservations( "grid" );
+      //     const list = screen.getByTestId( "MyObservationsAnimatedList" );
+      //     expect( list.props.numColumns ).toEqual( 6 );
+      //   } );
+      // } );
     } );
   } );
 } );

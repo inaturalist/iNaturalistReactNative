@@ -345,7 +345,7 @@ describe( "MyObservations", ( ) => {
         const realm = global.mockRealms[__filename];
         expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
         renderAppWithComponent( <MyObservationsContainer /> );
-        const button = await screen.findByTestId( "MyObservationsToolbar.toggleListView" );
+        const button = await screen.findByTestId( "SegmentedButton.list" );
         fireEvent.press( button );
         // Awaiting the first observation because using await in the forEach errors out
         const firstObs = mockSyncedObservations[0];
