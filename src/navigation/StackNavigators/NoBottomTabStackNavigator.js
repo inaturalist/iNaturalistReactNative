@@ -29,8 +29,10 @@ import SharedStackScreens from "./SharedStackScreens";
 
 const Stack = createNativeStackNavigator( );
 
-const soundRecorderTitle = ( ) => (
-  <Heading4 className="text-white">{t( "RECORD-NEW-SOUND" )}</Heading4>
+const soundRecorderTitle = () => (
+  <Heading4 className="text-white" accessibilityRole="header" numberOfLines={1}>
+    {t( "RECORD-NEW-SOUND" )}
+  </Heading4>
 );
 
 const CAMERA_SCREEN_OPTIONS = {

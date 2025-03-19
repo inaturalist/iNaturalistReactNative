@@ -18,21 +18,33 @@ exports[`UploadStatus displays complete icon when progress is 1 1`] = `
   }
 >
   <View
-    style={
-      [
-        [
-          {
-            "position": "absolute",
+    collapsable={false}
+    entering={
+      InnerKeyframe {
+        "build": [Function],
+        "callbackV": undefined,
+        "definitions": {
+          "0": {
+            "opacity": 0,
           },
-          {
-            "height": "100%",
+          "100": {
+            "opacity": 0,
           },
-          {
-            "justifyContent": "center",
+          "40": {
+            "opacity": 1,
           },
-        ],
-      ]
+        },
+        "delayV": undefined,
+        "durationV": 2000,
+        "reduceMotionV": "system",
+      }
     }
+    jestAnimatedStyle={
+      {
+        "value": {},
+      }
+    }
+    testID="UploadIcon.complete.undefined"
   >
     <View
       style={
@@ -46,109 +58,50 @@ exports[`UploadStatus displays complete icon when progress is 1 1`] = `
       }
     >
       <View
-        collapsable={false}
-        entering={
-          InnerKeyframe {
-            "build": [Function],
-            "callbackV": undefined,
-            "definitions": {
-              "0": {
-                "opacity": 0,
+        style={
+          [
+            [
+              {
+                "alignItems": "center",
               },
-              "100": {
-                "opacity": 0,
+              {
+                "justifyContent": "center",
               },
-              "40": {
-                "opacity": 1,
+              {
+                "width": 44,
               },
-            },
-            "delayV": undefined,
-            "durationV": 2000,
-            "reduceMotionV": "system",
-          }
+              {
+                "height": 44,
+              },
+            ],
+          ]
         }
-        jestAnimatedStyle={
-          {
-            "value": {},
-          }
-        }
-        testID="UploadIcon.complete.undefined"
+        testID="UploadStatus.Complete"
       >
-        <View
+        <Text
+          allowFontScaling={false}
+          selectable={false}
           style={
             [
-              [
-                {
-                  "alignItems": "center",
-                },
-                {
-                  "justifyContent": "center",
-                },
-                {
-                  "width": 44,
-                },
-                {
-                  "height": 44,
-                },
-              ],
+              {
+                "color": "#74AC00",
+                "fontSize": 28,
+              },
+              null,
+              {
+                "fontFamily": "INatIcon",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
             ]
           }
-          testID="UploadStatus.Complete"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
-            style={
-              [
-                {
-                  "color": "#74AC00",
-                  "fontSize": 28,
-                },
-                null,
-                {
-                  "fontFamily": "INatIcon",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
-              ]
-            }
-          >
-            
-          </Text>
-        </View>
+          
+        </Text>
       </View>
     </View>
   </View>
-  <View
-    collapsable={false}
-    entering={
-      FadeIn {
-        "build": [Function],
-        "callbackV": undefined,
-        "dampingRatioV": undefined,
-        "dampingV": undefined,
-        "delayV": 2000,
-        "durationV": 1000,
-        "easingV": undefined,
-        "initialValues": undefined,
-        "massV": undefined,
-        "overshootClampingV": undefined,
-        "randomizeDelay": false,
-        "reduceMotionV": "system",
-        "restDisplacementThresholdV": undefined,
-        "restSpeedThresholdV": undefined,
-        "rotateV": undefined,
-        "stiffnessV": undefined,
-        "type": undefined,
-      }
-    }
-    jestAnimatedStyle={
-      {
-        "value": {},
-      }
-    }
-  />
 </View>
 `;
 
@@ -238,7 +191,7 @@ exports[`UploadStatus displays progress bar when progress is greater than 5% 1`]
             ]
           }
         >
-          
+          
         </Text>
       </View>
       <CircularProgress
@@ -328,7 +281,7 @@ exports[`UploadStatus displays rotating circle progress when upload is queued bu
             ]
           }
         >
-          
+          
         </Text>
       </View>
       <View
@@ -376,7 +329,7 @@ exports[`UploadStatus displays rotating circle progress when upload is queued bu
             ]
           }
         >
-          
+          
         </Text>
       </View>
     </View>
@@ -524,7 +477,7 @@ exports[`UploadStatus displays start icon when upload is unsynced and not queued
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <View
@@ -572,7 +525,7 @@ exports[`UploadStatus displays start icon when upload is unsynced and not queued
                 ]
               }
             >
-              
+              
             </Text>
           </View>
         </View>

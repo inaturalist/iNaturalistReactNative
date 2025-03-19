@@ -43,22 +43,20 @@ type ParamList = {
 const LoginForm = ( {
   scrollViewRef
 }: Props ) => {
-  const firstInputFieldRef = useRef( null );
+  const navigation = useNavigation( );
   const { params } = useRoute<RouteProp<ParamList, "LoginFormParams">>( );
   const emailConfirmed = params?.emailConfirmed;
   const realm = useRealm( );
+  const { isDefaultMode, setLoggedInWhileInDefaultMode } = useLayoutPrefs( );
+  const firstInputFieldRef = useRef( null );
   const emailRef = useRef<TextInput>( null );
   const passwordRef = useRef<TextInput>( null );
-  const navigation = useNavigation( );
   const [email, setEmail] = useState( "" );
   const [password, setPassword] = useState( "" );
   const [error, setError] = useState<string | null>( null );
   const [loading, setLoading] = useState( false );
   const [isPasswordVisible, setIsPasswordVisible] = useState( false );
   const { keyboardShown } = useKeyboardInfo( );
-  const {
-    setIsDefaultMode
-  } = useLayoutPrefs( );
 
   const blurFields = () => {
     if ( emailRef.current ) {
@@ -91,9 +89,9 @@ const LoginForm = ( {
       return;
     }
     setLoading( false );
-    // Logged-in users should be in advanced mode by default
-    setIsDefaultMode( false );
 
+    // Set a state to zustand that we just logged in while in default mode
+    setLoggedInWhileInDefaultMode( isDefaultMode );
     if ( params?.prevScreen && params?.projectId ) {
       navigation.navigate( "TabNavigator", {
         screen: "TabStackNavigator",
@@ -110,7 +108,8 @@ const LoginForm = ( {
   }, [
     navigation,
     params,
-    setIsDefaultMode
+    isDefaultMode,
+    setLoggedInWhileInDefaultMode
   ] );
 
   const scrollToItem = useCallback( ( ) => {
@@ -195,7 +194,7 @@ const LoginForm = ( {
   );
 
   return (
-    <TouchableWithoutFeedback accessibilityRole="button" onPress={blurFields}>
+    <TouchableWithoutFeedback accessible={false} onPress={blurFields}>
       <View className="px-4 mt-[9px] justify-end">
         { emailConfirmed && (
           <View className="flex-row mb-5 items-center justify-center mx-2">

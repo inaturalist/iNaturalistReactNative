@@ -58,6 +58,12 @@ const navigateToCamera = async ( ) => {
 
 describe( "StandardCamera navigation with advanced user layout", ( ) => {
   global.withAnimatedTimeTravelEnabled( );
+  beforeEach( () => {
+    useStore.setState( {
+      isAdvancedUser: true,
+      layout: { isAdvancedSuggestionsMode: false }
+    } );
+  } );
 
   describe( "from MyObs", ( ) => {
     it( "should return to MyObs when close button tapped", async ( ) => {
@@ -97,7 +103,6 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
   describe( "when navigating to Suggestions", ( ) => {
     beforeEach( () => {
       useStore.setState( {
-        isAdvancedUser: true,
         layout: { isAdvancedSuggestionsMode: true }
       } );
     } );

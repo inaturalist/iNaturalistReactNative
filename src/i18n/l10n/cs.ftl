@@ -28,6 +28,7 @@ Add-evidence = Přidat důkaz
 Add-favorite = Přidat oblíbený
 Add-Location = Přidat umístění
 Add-location-for-better-identifications = Přidat umístění pro lepší identifikaci
+ADD-LOCATION-FOR-BETTER-IDS = ADD LOCATION FOR BETTER IDS
 Add-location-to-refresh-suggestions = Přidat umístění k obnově návrhů
 Add-observations = Přidat pozorování
 ADD-OPTIONAL-COMMENT = PŘIDAT VOLITELNÝ KOMENTÁŘ
@@ -36,6 +37,7 @@ Adds-your-vote-of-agreement = Přidá vaše hlasování o dohodě
 Adds-your-vote-of-disagreement = Přidá vaše hlasování o nesouhlasu
 Advanced--interface-mode-with-explainer = Pokročilé (Nahrání více fotografií a zvuků)
 Affiliation = Přidružení: { $site }
+After-capturing-or-importing-photos-show = Po zachycení nebo importu fotografií, zobrazte:
 Agree = Souhlasím
 AGREE = SOUHLASÍM
 AGREE-WITH-ID = SOUHLAS S ID?
@@ -43,10 +45,13 @@ Agree-with-ID-description = Chcete souhlasit s ID a navrhnout následující ide
 AI-Camera = AI kamera
 ALL = Vše
 All = Vše
+All-observation-options = Všechny možnosti pozorování (včetně iNaturalist AI fotoaparátu, standardního fotoaparátu, nahrávání z knihovny fotografií a záznamu zvuku)
 All-observations = Všechna pozorování
+All-observations-submitted-to-iNaturalist-need-a-date-and-location = Všechna pozorování zaslaná do iNaturalist musí mít datum a místo, aby byla pro vědce užitečná. Aktualizujte pozorování, pokud potřebují další informace.
 All-organisms = všechny organismy
 all-rights-reserved = Všechna práva vyhrazena
 All-taxa = Všechny taxony
+ALL-USERS-EXCEPT = ALL USERS EXCEPT
 ALLOW-LOCATION-ACCESS = POVOLIT PŘÍSTUP K LOKACI
 An-Internet-connection-is-required = Pro načtení více pozorování je vyžadováno připojení k internetu.
 Any--date = Jakýkoliv
@@ -79,6 +84,7 @@ By-exiting-observation-not-saved = Ukončením nebude vaše pozorování uložen
 By-exiting-your-observations-not-saved = Ukončením nebudou vaše pozorování uložena. Můžete je uložit do zařízení nebo je můžete odstranit.
 By-exiting-your-photos-will-not-be-saved = Po ukončení nebudou vaše fotografie uloženy.
 By-exiting-your-recorded-sound-will-not-be-saved = Ukončením nebude váš nahraný zvuk uložen.
+BY-ME = BY ME
 By-uploading-your-observation-to-iNaturalist-you-can = Nahráváním pozorování na iNaturalist, můžete:
 Camera = Fotoaparát
 CANCEL = ZRUŠIT
@@ -105,13 +111,16 @@ Change-taxon-filter = Změnit filtr taxonu
 Change-user = Změnit uživatele
 Change-zoom = Změnit přiblížení
 CHECK-YOUR-EMAIL = ZKONTROLUJTE VÁŠ E-MAIL
+CHOOSE-A-USERNAME = ZADEJTE UŽIVATELSKÉ JMÉNO
 Choose-taxon = Vybrat taxon
 Choose-top-taxon = Vybrat nejlepší taxon
 Clear = Vymazat
 Close = Zavřít
 Close-permission-request-screen = Zavřít obrazovku s žádostí o oprávnění
 Close-search = Zavřít hledání
+Closes-explanation = Closes explanation
 Closes-introduction = Ukončit úvod
+Closes-new-observation-explanation = Closes new observation explanation.
 Closes-new-observation-options = Uzavírá nové možnosti pozorování.
 Closes-withdraw-id-sheet = Zavře list "Odebrat ID"
 COLLABORATORS = SPOLUPRACOVNÍCI
@@ -121,9 +130,13 @@ COMMENT = KOMENTÁŘ
 Comment-options = Možnosti komentáře
 Common-Name-Scientific-Name = Obecný název (Vědecký název)
 Community-based = Na základě komunity
+Community-Discussion = Komunitní diskuse
 Community-Guidelines = Pravidla komunity
 COMMUNITY-GUIDELINES = POKYNY SPOLEČENSTVÍ
+Confidence--label = Confidence
 CONFIRM = POTVRDIT
+Congrats-on-making-your-first-observation = Gratulujeme k tvému prvnímu pozorování!
+CONNECT-TO-NATURE = KONTAKT S PŘÍRODOU
 Connect-to-Nature = Spojte se s přírodou
 Connect-with-other-naturalists = Spojte se s ostatními přírodovědci a zapojte se do rozhovorů.
 Connection-problem-Please-try-again-later = Problém s připojením. Zkuste to znovu později.
@@ -139,7 +152,6 @@ Couldnt-create-identification-error = Nelze vytvořit identifikaci { $error }
 Couldnt-create-identification-unknown-error = Nepodařilo se vytvořit identifikaci, neznámá chyba.
 CREATE-AN-ACCOUNT = VYTVOŘIT ÚČET
 Create-an-observation-evidence = Vytvořte pozorování bez důkazů
-CREATE-YOUR-FIRST-OBSERVATION = VYTVOŘTE SVÉ PRVNÍ POZOROVÁNÍ
 DATA-QUALITY = KVALITA DAT
 DATA-QUALITY-ASSESSMENT = POSOUZENÍ KVALITY DAT
 Data-Quality-Assessment = Hodnocení kvality dat
@@ -186,7 +198,9 @@ datetime-difference-hours = { $count }h
 datetime-difference-minutes = { $count }m
 datetime-difference-weeks = { $count }t
 datetime-format-long = Pp
+datetime-format-long-with-zone = Pp (zzz)
 datetime-format-short = M/d/yy h:mm a
+datetime-format-short-with-zone = M/d/yy h:mm a zzz
 December = Prosinec
 Default--interface-mode = Výchozí
 DELETE = SMAZAT
@@ -214,6 +228,7 @@ DETAILS = DETAILY
 Device-storage-full = Úložiště zařízení je plné
 Device-storage-full-description = iNaturalist nemusí být schopen uložit vaše fotky nebo se může zhroutit.
 Disable-flash = Vypnout blesk
+Disable-location = Zakázat polohu
 Disagreement = *@{ $username } nesouhlasí s tím, že to je <0/>
 DISCARD = ODSTRANIT
 DISCARD-ALL = ODSTRANIT VŠE
@@ -230,9 +245,11 @@ DISCARD-X-OBSERVATIONS =
        *[other] ZAHODIT { $count } POZOROVÁNÍ
     }
 DISMISS = ODVOLAT
+Do-you-know-what-group-this-is-in = Do you know what group this is in?
 DONATE = DAROVAT
 DONATE-TO-INATURALIST = DAROVAT INATURALIST
 DONE = HOTOVO
+Dont-have-an-account = <0>Nemáte účet? </0><1>Zaregistrujte se</1>
 During-app-start-no-model-found = Při spuštění aplikace nebyl nalezen žádný model počítačového vidění. Nebude žádná AI kamera.
 Edit = Editovat
 EDIT-COMMENT = UPRAVIT KOMENTÁŘ
@@ -243,8 +260,11 @@ Edit-location = Upravit umístění
 Edit-Observation = Editovat pozorování
 Edit-your-profile-change-your-settings = Upravte svůj profil, změňte nastavení oznámení a spravujte všechny ostatní části vašeho účtu.
 Edits-this-observations-taxon = Upraví tento taxon pozorování
+EDUCATORS = EDUCATORS
 EMAIL = E-MAIL
+EMAIL-DEBUG-LOGS = EMAIL DEBUG LOGS
 Enable-flash = Povolit blesk
+Enable-location = Povolit polohu
 Enable-notifications = Povolit oznámení
 Endemic = endemický
 Endemic-to-place = Endemický v { $place }
@@ -255,6 +275,7 @@ Error-title = Chyba
 ERROR-VOTING-IN-DQA = CHYBA HLASOVÁNÍ V DQA
 Error-voting-in-DQA-description = Váš hlas možná nebyl v DQA odeslán. Zkontrolujte připojení k internetu a zkuste to znovu.
 Establishment = Vznik
+ESTABLISHMENT-MEANS = ESTABLISHMENT MEANS
 Every-observation-needs = Každé pozorování potřebuje místo, datum a čas, aby bylo užitečné pro identifikátory. Pokud je pro vás důležité soukromí polohy, můžete upravit geosoukromí.
 Every-time-a-collection-project = Pokaždé, když je načtena stránka projektu kolekce, iNaturalist provede rychlé vyhledávání a zobrazí všechna pozorování, která odpovídají požadavkům projektu. Je to snadný způsob zobrazení řady pozorování, jako je například u třídního projektu, parku, nebo bioblitz bez toho, aby účastníci učinili další krok ručního přidávání svých pozorování do projektu.
 EVIDENCE = DŮKAZ
@@ -281,12 +302,17 @@ FILTER-BY-A-PROJECT = FILTROVAT PODLE PROJEKTU
 FILTER-BY-A-USER = FILTROVAT PODLE UŽIVATELE
 Filter-by-observed-between-dates = Filtrovat podle pozorování pozorovaných mezi dvěma konkrétními daty
 Filter-by-observed-during-months = Filtrovat podle pozorování pozorovaných během konkrétních měsíců
+Filter-by-observed-on-date = Filtrovat podle pozorování pozorovaných v určitém datu
+Filter-by-uploaded-between-dates = Filtrovat podle pozorování nahraných mezi dvěma konkrétními daty
+Filter-by-uploaded-on-date = Filtrovat podle pozorování nahraných v určitém datu
 Filters = Filtry
 Flag-An-Item = Označit položku
+Flag-Item-Description = Označení něco přináší dobrovolným kurátorům stránek. Neoznačte prosím problémy, které můžete řešit s identifikací, hodnocením kvality údajů nebo rozhovorem s osobou, která obsah vytvořila.
 Flag-Item-Other = Označeno jako jiný popis
 Flag-Item-Other-Description = Jiný důvod můžete vysvětlit níže.
 Flag-Item-Other-Input-Hint = Uveďte důvod, proč označujete tuto položku
 Flagged = Označený
+Flash = Blesk
 Flip-camera = Přepnout kameru
 FOLLOW = SLEDOVAT
 FOLLOWING--notifications = SLEDUJÍCÍ
@@ -298,8 +324,10 @@ FOLLOWING-X-PEOPLE =
 Forgot-Password = Zapomenuté heslo
 GEOPRIVACY = GEOSOUKROMÍ
 Geoprivacy-status = Geosoukromí: { $status }
+Get-identifications-from-real-people = Získejte identifikaci od skutečných lidí.
 Get-more-accurate-suggestions-create-useful-data = Získejte více přesných návrhů a vytvořte užitečná data pro vědu pomocí vaší polohy
 Get-your-identification-verified-by-real-people = Získejte svou identifikaci ověřenou skutečnými lidmi v komunitě iNaturalist
+Getting-an-even-more-accurate-ID = Getting an even more accurate ID...
 Go-back = Jít zpět
 Google-Play-Services-Not-Installed = Služby Google Play nejsou nainstalovány
 GRANT-PERMISSION = UDĚLIT POVOLENÍ
@@ -307,11 +335,15 @@ Grant-Permission-title = Udělit oprávnění
 Grid-layout = Mřížkové rozložení
 Group-Photos = Skupinové fotografie
 Group-photos-onboarding = Seskupit fotografie do pozorování – ujistěte se, že na jedno pozorování připadá pouze jeden druh.
+Grow-your-collection = Budujte svoji sbírku
 HELP = NÁPOVĚDA
 Hide = Skrýt
 Highest = Nejvyšší
 HIGHEST-RANK = NEJVYŠŠÍ HODNOTA
+How-does-it-feel-to-identify = Jak se cítíte s rozeznáváním a propojením s přírodou kolem vás?
+I-agree-to-the-Terms-of-Use = <0>Souhlasím s podmínkami používání a Zásadami ochrany osobních údajů a přezkoumal jsem obecné zásady komunity (</0><1>vyžadováno</1><0>).</0>
 Iconic-taxon-name = Název ikonického taxonu: { $iconicTaxon }
+ID-Suggestions = ID Suggestions
 ID-Withdrawn = ID odebráno
 IDENTIFICATION = IDENTIFIKACE
 Identification-options = Možnosti identifikace
@@ -331,9 +363,12 @@ If-you-leave-x-of-your-observations-removed =
         [one] 1 z vašich pozorování
        *[other] { $count } vašich pozorování
     } budou z tohoto projektu také odstraněny.
+If-you-took-the-original-photo-you-can-help = If you took the original photo of the organism, you can help train iNaturalist to identify this species by saving and uploading it to iNaturalist, where the community can help identify it.
 If-you-want-to-collate-compare-promote = Pokud chcete shromáždit, porovnat nebo propagovat sadu existujících projektů, měli byste použít zastřešující projekt. Například výzva City Nature Challenge 2018, která shromáždila více než 60 projektů, vytvořila skvělou vstupní stránku, kde mohl kdokoli porovnat a porovnávat pozorování jednotlivých měst. V zastřešujícím projektu lze použít jak sbírkové, tak tradiční projekty a zastřešující projekt může srovnat až 500 projektů.
 If-youre-seeing-this-error = Pokud se vám tato zpráva zobrazuje a jste online, zaměstnanci iNat již byli informováni. Děkujeme za nalezení chyby! Pokud jste offline, udělejte si prosím snímek obrazovky a pošlete nám e-mail, až budete opět na internetu.
 IGNORE-LOCATION = IGNOROVAT LOKALITU
+Ignore-notifications = Ignorovat oznámení
+Ignoring-location = Ignoring location
 Import-Photos-From = Importovat fotografie z
 IMPORT-X-OBSERVATIONS =
     IMPORT { $count ->
@@ -345,19 +380,21 @@ improving--identification = Zlepšování
 iNat-is-global-community = iNaturalist je globální komunita přírodovědců, která vytváří otevřená data pro vědu tím, že kolektivně sleduje a identifikuje organismy
 INATURALIST-ACCOUNT-SETTINGS = NASTAVENÍ ÚČTU INATURALIST
 iNaturalist-AI-Camera = AI Fotoaparát iNaturalist
+iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-photo-library = iNaturalist může fotky, které pořídíte v aplikaci, ukládat do knihovny fotografií vašeho zařízení.
 INATURALIST-COMMUNITY = KOMUNITA INATURALIST
+iNaturalist-couldnt-identify-this-organism = iNaturalist nemohl identifikovat tento organismus.
 INATURALIST-FORUM = FÓRUM INATURALIST
 iNaturalist-has-no-ID-suggestions-for-this-photo = iNaturalist nemá žádné návrhy ID pro tuto fotografii.
 INATURALIST-HELP-PAGE = STRANA NÁPOVĚDY INATURALIST
 iNaturalist-helps-you-identify = iNaturalist vám pomůže identifikovat rostliny a zvířata kolem vás při generování dat pro vědu a ochranu. Spojte se s komunitou milionů vědců a přírodovědců, kteří vám mohou pomoci dozvědět se více o přírodě!
 iNaturalist-identification-suggestions-are-based-on = Návrhy identifikace iNaturalist jsou založeny na pozorování a identifikacích od komunity iNaturalist včetně { $user1 }, { $user2 }, { $user3 }a mnoha dalších.
 iNaturalist-is-a-501 = iNaturalist je nezisková organizace 501(c)(3) ve Spojených státech amerických (Tax ID/EIN 92-1296468).
-iNaturalist-is-a-community-of-naturalists = iNaturalist je komunita přírodovědců, která spolupracuje na vytváření a určování pozorování biodiverzity ve volné přírodě.
 iNaturalist-is-loading-ID-suggestions = iNaturalist načítá návrhy identifikace...
 iNaturalist-is-supported-by = iNaturalist je podporován nezávislou neziskovou organizací 501(c)(3) se sídlem ve Spojených státech amerických. Platforma iNaturalist zahrnuje tuto aplikaci, Seek by iNaturalist, webové stránky iNaturalist a další.
 iNaturalist-is-supported-by-our-community = iNaturalist je podporován naší úžasnou komunitou. Od běžných přírodovědců, kteří přidávají svá pozorování a identifikace, přes kurátory, kteří spravují naši taxonomii a pomáhají s moderováním, až po dobrovolné překladatele, díky nimž je iNaturalist přístupnější celosvětovému publiku, a naše komunitní dárce - jsme mimořádně vděční všem lidem z naší komunity, kteří dělají iNaturalist takovou platformou, jakou je.
 iNaturalist-mission-is-to-connect = Posláním iNaturalist je spojovat lidi s přírodou a podporovat vědu a ochranu biodiverzity.
 INATURALIST-MISSION-VISION = MISE A VIZE INATURALIST
+INATURALIST-MODE = INATURALIST MODE
 INATURALIST-NETWORK = SÍŤ INATURALIST
 INATURALIST-SETTINGS = NASTAVENÍ INATURALIST
 INATURALIST-STAFF = { $inaturalist } ZAMĚSTNANCI
@@ -373,7 +410,9 @@ Internet-Connection-Required = Vyžadováno připojení k Internetu
 Intl-number = { $val }
 Introduced = zavlečený
 Introduced-to-place = Zavlečen do { $place }
+It-can-now-be-shared-for-use-in-research = Nyní může být sdílen pro použití ve výzkumu
 It-may-take-up-to-an-hour-to-remove-content = Úplně odstranit veškerý související obsah může trvat až hodinu.
+It-might-also-be = Může to být i
 January = Leden
 JOIN = PŘIPOJIT SE
 JOIN-PROJECT = PŘIPOJIT SE K PROJEKTU
@@ -399,10 +438,13 @@ Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, 
 Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBER($longitude, maximumFractionDigits: 6) }, Přesnost: { $accuracy }
 leading--identification = Vedoucí
 Learn-More = Více informací
+LEARN-MORE-ABOUT-THIS-GROUP = LEARN MORE ABOUT THIS GROUP
+LEARN-MORE-ABOUT-THIS-SPECIES = LEARN MORE ABOUT THIS SPECIES
 LEAVE = ODEJÍT
 LEAVE-PROJECT = OPUSTIT PROJEKT
 LEAVE-PROJECT--question = OPUSTIT PROJEKT?
 LEAVE-US-A-REVIEW = ZANECHTE NÁM RECENZI!
+Lets-reset-your-password = Obnovte své heslo.
 List-layout = Rozložení seznamu
 Loading-iNaturalists-AI-Camera = Načítání AI kamery iNaturalist
 Loads-content-that-requires-an-Internet-connection = Načte obsah, který vyžaduje připojení k internetu
@@ -438,8 +480,10 @@ Missing-Date = Chybějící datum
 MISSING-EVIDENCE = CHYBĚJÍCÍ DŮKAZ
 Monthly-Donor = Měsíční dárce
 Months = Měsíce
+MONTHS = MONTHS
 More = Více
 More-info = Více informací
+MOST-FAVED = MOST FAVED
 Most-faved = Nejoblíbenější
 MY-CONTENT--notifications = MŮJ OBSAH
 My-Observations = Moje pozorování
@@ -450,6 +494,7 @@ Navigates-to-AI-camera = Přejít do AI kamery
 Navigates-to-bulk-importer = Přejděte na dávkový import
 Navigates-to-camera = Přejít do fotoaparátu
 Navigates-to-explore = Přejděte na průzkum
+Navigates-to-match-screen = Navigates to match screen
 Navigates-to-notifications = Přejděte na oznamování
 Navigates-to-observation-details = Přejděte na obrazovku detailů pozorování
 Navigates-to-observation-edit-screen = Přejděte na obrazoovku úpravy pozorování
@@ -467,6 +512,7 @@ Needs-ID--quality-grade = Potřebuje identifikaci
 New-Observation = Nové pozorování
 Newest-to-oldest = Od nejnovějších k nejstarším
 Next-observation = Další pozorování
+Next-slide = Next slide
 No-Camera-Available = Kamera není k dispozici
 No-email-app-installed = Není nainstalována žádná e-mailová aplikace
 No-email-app-installed-body = Pokud máte jiný způsob odesílání e-mailu, adresa je { $address }
@@ -480,6 +526,8 @@ No-results-found-for-that-search = Pro toto vyhledávání nebyly nalezeny žád
 No-results-found-try-different-search = Nebyly nalezeny žádné výsledky. Zkuste jiné vyhledávání nebo upravte filtry.
 no-rights-reserved-cc0 = žádná práva vyhrazena (CC0)
 none--accuracy = žádný
+NONE--ranks = NONE
+NOT-BY-ME = NOT BY ME
 Not-enough-space-left-on-device = Nedostatek místa v zařízení
 Not-enough-space-left-on-device-try-again = K tomu není na vašem zařízení dostatek místa. Uvolněte prosím místo a zkuste to znovu.
 NOTES = POZNÁMKY
@@ -489,6 +537,7 @@ Notifications--bottom-tab = Aktivita
 notifications-user-added-comment-to-observation-by-you = <0>{ $userName }</0> přidal komentář k vašemu pozorování
 notifications-user-added-identification-to-observation-by-you = <0>{ $userName }</0> přidal identifikaci k vašemu pozorování
 notifications-user1-added-comment-to-observation-by-user2 = <0>{ $user1 }</0> přidal komentář k pozorování od { $user2 }
+notifications-user1-added-identification-to-observation-by-user2 = <0>{ $user1 }</0> přidal identifikaci k pozorování od { $user2 }
 November = Listopad
 Obervations-must-be-manually-added = Pozorování musí být ručně přidána do tradičního projektu, a to buď během fáze nahrávání, nebo poté, co bylo pozorování sdíleno s iNaturalist. Uživatel se také musí připojit k tradičnímu projektu, aby k němu přidal svá pozorování.
 Obscured = Přibližné
@@ -498,12 +547,12 @@ OBSERVATION-BUTTON = TLAČÍTKO POZOROVÁNÍ
 Observation-Copyright = Pozorování Copyright: © { $userName } · { $restrictions }
 Observation-has-no-photos-and-no-sounds = Toto pozorování nemá žádné fotografie ani zvuky.
 Observation-location-obscured-randomized-point = Poloha tohoto pozorování je zastřená. Vidíte náhodně vybraný bod v polygonu zastínění.
-Observation-Name = Pozorování { $scientificName }
+Observation-location-obscured-you-can-see-your-own = Pozice tohoto pozorování je skrytá. Vždy můžete vidět polohu vašich vlastních pozorování.
+Observation-location-obscured-you-have-permission = Pozice tohoto pozorování je skrytá. Máte oprávnění k zobrazení tohoto umístění.
 Observation-options = Možnosti pozorování
 OBSERVATION-WAS-DELETED = POZOROVÁNÍ BYLO SMAZÁNO
 Observation-with-no-evidence = Pozorování bez důkazů
 Observations = Pozorování
-Observations-created-on-iNaturalist = Pozorování vytvořená v systému iNaturalist používají vědci po celém světě.
 Observations-need-location-date--warning = iNaturalist pozorování potřebují místo a datum, které jsou pro vědce užitečné. Před nahráváním prosím zkontrolujte pozorování s touto ikonou.
 Observations-on-iNat-are-cited = Pozorování na iNaturalist jsou uvedena ve vědeckých dokumentech, vedla k opětovnému objevování a pomáhají vědcům pochopit život na naší planetě
 Observations-View = Zobrazení pozorování
@@ -513,29 +562,36 @@ OBSERVATIONS-WITHOUT-NUMBER =
        *[other] POZOROVÁNÍ
     }
 Observations-you-upload-to-iNaturalist = Pozorování, která nahrajete do systému iNaturalist, mohou využívat vědci a výzkumníci po celém světě.
-Observe = Pozorovat
 Observe-and-identify-organisms-in-real-time-with-your-camera = Sledujte a identifikujte organismy v reálném čase pomocí fotoaparátu
 OBSERVE-ORGANISMS = POZOROVÁNÍ ORGANISMŮ
+OBSERVED-AT--label = OBSERVED AT
+OBSERVED-IN--label = OBSERVED IN
 Observers = Pozorovatelé
 Observers-View = Pohled pozorovatelů
 October = Říjen
 Offensive-Inappropriate = Útočný / nevhodný
+Offensive-Inappropriate-Examples = Zavádějící nebo nelegální obsah, rasové nebo etnické napadání atp. Podrobnosti k naší definici toho, co je „vhodné“ najdete ve FAQ.
 Offline-DQA-description = DQA nemusí být přesný. Zkontrolujte připojení k internetu a zkuste to znovu.
+Offline-suggestions-may-differ-from-online = Offline návrhy se mohou lišit od online návrhů a obrázky taxonu a běžné názvy se nemusí načíst.
 OK = Dobře
 Oldest-to-newest = Od nejstarších k nejnovějším
 Once-you-create-and-upload-observations = Jakmile vytvoříte a nahrajete pozorování, mohou ostatní členové naší komunity přidávat identifikace, které pomohou vašim pozorováním dosáhnout výzkumného stupně.
+Once-youve-uploaded-to-iNaturalist = Jakmile jste nahráli do iNaturalist, ostatní přírodovědci v naší komunitě mohou pomoci potvrdit vaši identifikaci. Sledujte naše oznámení o aktualizacích!
 Open = Otevřený
 OPEN-EMAIL = OTEVŘÍT E-MAIL
 Open-menu = Otevřít menu.
 OPEN-SETTINGS = OTEVŘÍT NASTAVENÍ
+Opens-add-comment-form = Otevře editační formulář komentáře.
 Opens-AI-camera = Otevře AI kameru.
 Opens-edit-comment-form = Otevře editační formulář komentáře.
 Opens-location-permission-prompt = Otevře výzvu k povolení polohy
 Opens-the-side-drawer-menu = Otevře nabídku postranní zásuvky.
+OR-SIGN-IN-WITH = OR SIGN IN WITH
 Organism-is-captive = Organismus je v zajetí
 Organisms-that-are-identified-to-species = Organismy, které jsou identifikovány na druhovou nebo nižší úroveň
 Other = Ostatní
 OTHER-DATA = OSTATNÍ DATA
+Other-members-of-our-community-can-verify = Ostatní členové naší komunity mohou ověřit a identifikovat vaše pozorování, pokud je nahrajete na iNaturalist.
 OTHER-SUGGESTIONS = DALŠÍ NÁVRHY
 PASSWORD = HESLO
 PEOPLE--title = LIDÉ
@@ -546,8 +602,10 @@ Photos-you-take-will-appear-here = Pořízené fotografie se zobrazí zde
 Please-allow-Camera-Access = Povolte přístup ke kameře
 Please-allow-Location-Access = Povolte přístup k poloze
 Please-allow-Microphone-Access = Povolte přístup k mikrofonu
+Please-choose-a-different-password = Zvolte prosím jiné heslo.
 Please-Grant-Permission = Udělte oprávnění
 PLEASE-LOG-IN = PŘIHLASTE SE
+Please-make-sure-your-password-is-at-least-6-characters = Ujistěte se, že vaše heslo má alespoň 6 znaků.
 Please-try-again-when-you-are-connected-to-the-internet = Zkuste to prosím znovu, až budete připojeni k internetu.
 Please-try-again-when-you-are-online = Zkuste to prosím znovu, až budete online!
 POTENTIAL-DISAGREEMENT = POTENCIÁLNÍ NESHODY
@@ -555,6 +613,7 @@ Potential-disagreement-description = <0>Stačí důkazy k potvrzení, že je to 
 Potential-disagreement-disagree = <0>Ne, ale toto je členem </0><1></1>
 Potential-disagreement-unsure = <0>Nevím, ale jsem si jistý, že to je </0><1></1>
 Previous-observation = Předchozí pozorování
+Previous-slide = Předchozí snímek
 Privacy-Policy = Zásady ochrany osobních údajů
 PRIVACY-POLICY = ZÁSADY OCHRANY SOUKROMÍ
 Private = Soukromý
@@ -576,50 +635,83 @@ Ranks-CLASS = TŘÍDA
 Ranks-Class = Třída
 Ranks-COMPLEX = KOMPLEXNÍ
 Ranks-Complex = Komplex
+Ranks-EPIFAMILY = EPIFAMILY
 Ranks-Epifamily = epičeleď
+Ranks-FAMILY = FAMILY
 Ranks-Family = Čeleď
+Ranks-FORM = FORM
 Ranks-Form = forma
+Ranks-GENUS = GENUS
 Ranks-Genus = rod
+Ranks-GENUSHYBRID = GENUSHYBRID
 Ranks-Genushybrid = hybridní rod
 Ranks-HYBRID = HYBRID
 Ranks-Hybrid = kříženec
+Ranks-INFRACLASS = INFRACLASS
 Ranks-Infraclass = Infratřída
+Ranks-INFRAHYBRID = INFRAHYBRID
 Ranks-Infrahybrid = infrahybrid
+Ranks-INFRAORDER = INFRAORDER
 Ranks-Infraorder = Infrařád
+Ranks-KINGDOM = KINGDOM
 Ranks-Kingdom = Říše
+Ranks-ORDER = ORDER
 Ranks-Order = Řadit
+Ranks-PARVORDER = PARVORDER
 Ranks-Parvorder = parvorder
+Ranks-PHYLUM = PHYLUM
 Ranks-Phylum = kmen
+Ranks-SECTION = SECTION
 Ranks-Section = sekce
 Ranks-SPECIES = DRUH
 Ranks-Species = druhů
 Ranks-Statefmatter = Stav věci
+Ranks-STATEOFMATTER = STATE OF MATTER
+Ranks-SUBCLASS = SUBCLASS
 Ranks-Subclass = Podtřída
+Ranks-SUBFAMILY = SUBFAMILY
 Ranks-Subfamily = podčeleď
+Ranks-SUBGENUS = SUBGENUS
 Ranks-Subgenus = podrod
+Ranks-SUBKINGDOM = SUBKINGDOM
 Ranks-Subkingdom = Podříše
+Ranks-SUBORDER = SUBORDER
 Ranks-Suborder = Podřád
+Ranks-SUBPHYLUM = SUBPHYLUM
 Ranks-Subphylum = Podkmen
+Ranks-SUBSECTION = SUBSECTION
 Ranks-Subsection = pododdíl
+Ranks-SUBSPECIES = SUBSPECIES
 Ranks-Subspecies = poddruh
+Ranks-SUBTERCLASS = SUBTERCLASS
 Ranks-Subterclass = Nadtřída
+Ranks-SUBTRIBE = SUBTRIBE
 Ranks-Subtribe = Podtribus
+Ranks-SUPERCLASS = SUPERCLASS
 Ranks-Superclass = Nadtřída
+Ranks-SUPERFAMILY = SUPERFAMILY
 Ranks-Superfamily = nadčeleď
+Ranks-SUPERORDER = SUPERORDER
 Ranks-Superorder = Nadřád
+Ranks-SUPERTRIBE = SUPERTRIBE
 Ranks-Supertribe = Nadtribus
 Ranks-TRIBE = KMEN
 Ranks-Tribe = Tribus
 Ranks-VARIETY = VARIETA
 Ranks-Variety = odrůda
+Ranks-ZOOSECTION = ZOOSECTION
 Ranks-Zoosection = zoosekce
+Ranks-ZOOSUBSECTION = ZOOSUBSECTION
 Ranks-Zoosubsection = Zoopodsekce
 Read-more-on-Wikipedia = Přečtěte si více na Wikipedii
 Record-a-sound = Nahrát zvuk
+RECORD-NEW-SOUND = RECORD NEW SOUND
 Record-organism-sounds-with-the-microphone = Zaznamenejte zvuky organismu mikrofonem
+RECORD-SOUND = RECORD SOUND
 Record-verb = Záznam
 Recording-sound = Nahrávání zvuku
 Recording-stopped-Tap-play-the-current-recording = Nahrávání zastaveno. Klepněte na přehrávání aktuálního záznamu.
+REDO-SEARCH-IN-MAP-AREA = REDO SEARCH IN MAP AREA
 Remove-agreement = Odstranit souhlas
 Remove-disagreement = Odstranit nesouhlas
 Remove-favorite = Odebrat oblíbené
@@ -632,6 +724,7 @@ Removes-this-observations-taxon = Odstraní taxony tohoto pozorování
 Removes-your-vote-of-agreement = Odstraní vaše hlasování o dohodě
 Removes-your-vote-of-disagreement = Odstraní váš nesouhlas
 Research-Grade--quality-grade = Výzkumný stupeň
+Research-Grade-Status = Stav výzkumného stupně
 RESET-PASSWORD = RESETOVAT HESLO
 RESET-RECORDING = RESETOVAT ZÁZNAM
 RESET-SEARCH = RESETOVAT HLEDÁNÍ
@@ -652,10 +745,12 @@ SAVE-CHANGES = ULOŽIT ZMĚNY
 SAVE-FOR-LATER = ULOŽIT NA POZDĚJI
 SAVE-LOCATION = ULOŽIT LOKALITU
 SAVE-PHOTOS = ULOŽIT FOTKY
+Save-photos-to-your-photo-library = Ukládat fotky do knihovny fotografií
 Saved-Observation = Uložené pozorování, které jsou ve frontě k nahrání
 Scan-the-area-around-you-for-organisms = Prohledejte oblast kolem sebe a vyhledejte organismy.
 Scientific-Name = Vědecký název
 Scientific-Name-Common-Name = Vědecký název (obecný název)
+Scientists-use-citizen-science-data = Vědci používají data občanské vědy stejně jako vy k lepšímu pochopení druhů na celém světě.
 SEARCH = HLEDAT
 Search = Hledat
 Search-for-a-project = Hledat projekt
@@ -665,12 +760,13 @@ SEARCH-LOCATION = HLEDAT LOKALITU
 SEARCH-PROJECTS = HLEDAT PROJEKTY
 Search-suggestions-with-location = Hledat návrhy s polohou
 Search-suggestions-without-location = Hledat návrhy bez polohy
+SEARCH-TAXA = HLEDAT TAXON
 SEARCH-USERS = HLEDAT UŽIVATELE
 See-all-your-observations-in-explore = Podívejte se na všechna vaše pozorování v průzkumu
 See-observations-by-this-user-in-Explore = Zobrazit pozorování tohoto uživatele v průzkumu
-See-observations-in-explore = Zobrazit pozorování v průzkumu
 See-observations-of-this-taxon-in-explore = Zobrazit pozorování tohoto taxonu při průzkumu
 See-project-members = Zobrazit členy projektu
+See-species-observed-by-this-user-in-Explore = Podívejte se na druhy pozorované tímto uživatelem v Procházení
 Select-a-date-and-time-for-observation = Vyberte datum a čas pozorování
 Select-captive-or-cultivated-status = Vyberte stav v zajetí nebo pěstované
 Select-geoprivacy-status = Vyberte stav soukromí zeměpisné polohy
@@ -678,18 +774,27 @@ Select-or-drag-media = Vyberte nebo přetáhněte média
 Select-photo = Vybrat fotografii
 SELECT-THIS-TAXON = VYBRAT TENTO TAXON
 Select-user = Vybrat uživatele
+Selects-iconic-taxon-X-for-identification = Vybere ikonický taxon { $iconicTaxon } pro identifikaci.
 Separate-Photos = Oddělit fotky
 September = září
 SETTINGS = NASTAVENÍ
 Share = Sdílet
+SHARE-DEBUG-LOGS = SHARE DEBUG LOGS
 Share-location = Sdílet polohu
 Share-map = Sdílet mapu
 Share-your-observation-where-it-can-help-scientists = Sdílejte vaše pozorování, kde může pomoci vědcům z celého světa lépe pochopit biologickou rozmanitost.
 SHOP-INATURALIST-MERCH = KUPTE SI NĚCO V OBCHODU INATURALIST
 Show-observation-options = Zobrazit možnosti pozorování.
+Showing-offline-search-results--taxa = Zobrazení výsledků offline vyhledávání. Chcete-li vyhledat více druhů, zkuste to znovu při připojení k internetu.
 Shows-identification-suggestions = Zobrazí návrhy identifikace
 Shows-iNaturalist-bird-logo = Zobrazí logo ptáka iNaturalist.
 Shows-observation-creation-options = Zobrazí možnosti vytvoření pozorování
+Sign-in-with-Apple = Přihlásit se pomocí Apple
+Sign-in-with-Apple-Failed = Přihlášení pomocí Apple se nezdařilo
+Sign-in-with-Google = Přihlásit se pomocí Google
+Sign-in-with-Google-Failed = Přihlášení pomocí Google se nezdařilo
+Skip-additional-suggestions = Skip additional suggestions
+Skip-for-now = Prozatím přeskočit
 Something-went-wrong = Něco se pokazilo.
 Sorry-this-observation-was-deleted = Omlouváme se, toto pozorování bylo smazáno
 Sorry-we-dont-know-how-to-open-that-URL = Omlouváme se, ale nevíme, jak otevřít tuto URL: { $url }
@@ -711,6 +816,11 @@ Spam = Spam
 Spam-Examples = Komerční žádost, neplatné odkazy atd.
 Species = druhů
 Species-View = Zobrazení druhů
+SPECIES-WITHOUT-NUMBER =
+    { $count ->
+        [one] SPECIES
+       *[other] SPECIES
+    }
 Standard--map-type = Standardní
 Start-must-be-before-end = Počáteční datum musí být před datem ukončení.
 Start-upload = Spustit nahrávání
@@ -721,13 +831,20 @@ Stop-upload = Zastavit nahrávání
 Stop-verb = Zastavit
 Stops-recording-sound = Zastaví nahrávání zvuku
 SUBMIT = ODESLAT
+SUBMIT-ID-SUGGESTION = SUBMIT ID SUGGESTION
+SUGGEST-ID = SUGGEST ID
+Suggest-ID = SUGGEST ID
+SUGGESTIONS = SUGGESTIONS
 supporting--identification = Podpora
+Switches-to-tab = Přepne na kartu { $tab }.
 Sync-observations = Synchronizovat pozorování
 Syncing = Synchronizuji...
 Take-multiple-photos-of-a-single-organism = Vyfotit více fotografií jednoho organismu
 Take-photo = Vyfotit
 Taxa = Taxony
 TAXON = TAXON
+TAXON-NAMES-DISPLAY = TAXON NAMES DISPLAY
+TAXONOMIC-RANKS = TAXONOMIC RANKS
 TAXONOMY-header = TAXONOMIE
 TEAM = TÝM
 Terms-of-Use = Podmínky použití
@@ -735,19 +852,30 @@ TERMS-OF-USE = PODMÍNKY POUŽITÍ
 Text-Box-to-Describe-Reason-for-Flag = Textové pole pro popis důvodu označení.
 Thank-you-for-sharing-your-feedback = Děkujeme, že jste sdíleli vaši zpětnou vazbu, která nám pomůže zlepšit se!
 Thanks-for-using-any-suggestions = Děkujeme, že používáte tuto aplikaci! Máte nějaké návrhy pro lidi, kteří ji vyvíjejí?
+That-email-is-already-associated-with-an-account = Tento e-mail je již přiřazen k účtu.
 That-user-profile-doesnt-exist = Tento uživatelský profil neexistuje
+That-username-is-unavailable = Toto uživatelské jméno není k dispozici
 The-exact-location-will-be-hidden = Přesná poloha bude skryta veřejně, místo toho bude zobecněna do větší oblasti (ohrožené a ohrožené druhy jsou automaticky skryté).
 The-iNaturalist-Network = Síť iNaturalist je sbírka lokalizovaných webů, které jsou plně propojeny s globální komunitou iNaturalist. Síťové stránky jsou podporovány místními institucemi, které podporují místní využití a usnadňují využívání údajů z iNaturalist ve prospěch místní biologické rozmanitosti.
 The-location-will-not-be-visible-to-others = Poloha nebude viditelná pro ostatní, což by mohlo znemožnit identifikaci pozorování
 The-models-that-suggest-species = Modely, které navrhují druhy na základě vizuální podobnosti a polohy, jsou částečně díky spolupráci s Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona a Grant Van Horn.
 This-is-a-wild-organism = Jedná se o divoký organismus a lidé jej na toto místo neumístili.
 This-is-how-taxon-names-will-be-displayed = Takto budou zobrazeny všechny názvy taxonů napříč iNaturalist:
+This-is-your-identification-other-people-may-help-confirm-it = Toto je Vaše identifikace. Ostatní lidé mohou pomoci potvrdit ji!
+This-may-take-a-few-seconds = This may take a few seconds.
+This-observation-has-no-comments-or-identifications-yet = Toto pozorování zatím nemá žádné komentáře ani identifikace.
+This-observation-has-not-met-the-conditions-required-to-meet-Research-Grade = Toto pozorování nesplňuje podmínky požadované pro splnění statusu výzkumného stupně
+This-observation-is-not-eligible-for-research-grade-status = Toto pozorování není způsobilé pro status výzkumného stupně. Další informace se dozvíte v níže uvedeném hodnocení kvality dat.
+This-observation-is-research-grade-and-can-be-used-by-scientists = Toto pozorování má výzkumný stupeň a může být použito vědci!
+This-observation-needs-more-identifications = Toto pozorování vyžaduje více identifikací, aby bylo dosaženo statusu výzkumného stupně
+This-observation-needs-more-identifications-to-become-research-grade = Toto pozorování potřebuje více identifikací, aby se mohlo stát výzkumným stupněm.
 This-observer-has-opted-out-of-the-Community-Taxon = Tento pozorovatel se rozhodl opustit komunitní taxon
 This-organism-was-placed-by-humans = Tento organismus sem umístili lidé. Týká se to takových organismů, jakou jsou zahradní rostliny, zvířata v zájmovém chovu a zvířata chovaná v zoologických zahradách.
 To-sync-your-observations-to-iNaturalist = Chcete-li synchronizovat svá pozorování s iNaturalist, přihlaste se prosím.
 To-view-nearby-organisms-please-enable-location = Chcete-li zobrazit blízké organismy, povolte umístění.
 To-view-nearby-projects-please-enable-location = Pro zobrazení blízkých projektů povolte umístění.
 Toggle-map-type = Přepnout typ mapy
+TOP-ID-SUGGESTION = TOP ID SUGGESTION
 Traditional-Project = Tradiční projekt
 Umbrella-Project = Zastřešující projekt
 UNFOLLOW = PŘESTAT SLEDOVAT
@@ -761,6 +889,7 @@ Unreviewed-observations-only = Pouze nepřezkoumaná pozorování
 Upload-Complete = Nahrávání dokončeno
 Upload-in-progress = Probíhá nahrávání
 UPLOAD-NOW = NAHRÁT NYNÍ
+Upload-photos-from-your-photo-library = Nahrát více fotek z Vaší knihovny fotografií
 Upload-Progress = Nahrávání { $uploadProgress } procent dokončeno
 UPLOAD-TO-INATURALIST = NAHRÁT DO INATURALIST
 Upload-x-observations =
@@ -769,6 +898,15 @@ Upload-x-observations =
        *[other] { $count } pozorování
     }
 Uploaded-via-application = Nahráno pomocí: { $application }
+Uploading-x-of-y = Nahrávání { $currentUploadCount } z { $total }
+Uploading-x-of-y-observations =
+    { $total ->
+        [one] Uploading { $currentUploadCount } observation
+       *[other] Uploading { $currentUploadCount } of { $total } observations
+    }
+Use-iNaturalist-to-collect-any-kind-of = Použij iNaturalist k zachycení jakékoliv rostliny, hmyzu, pavouka, ptáka nebo jiného zvířete a přidej je k vašim pozorováním!
+Use-iNaturalist-to-identify-any-living-thing = Použijte iNaturalist k identifikaci jakékoliv živé věci
+Use-iNaturalists-AI-Camera = Použijte AI kameru iNaturalist k identifikaci organismů v reálném čase
 USE-LOCATION = POUŽÍT LOKALITU
 Use-the-devices-other-camera = Použít jinou kameru zařízení.
 Use-the-iNaturalist-camera-to-observe-2 = Používejte iNaturalist k pozorování a identifikaci organismů v reálném čase. Sdílejte je s naší komunitou pro identifikování a přispění k vědě!
@@ -777,27 +915,40 @@ USER = UŽIVATEL
 User = Uživatel { $userHandle }
 USERNAME-OR-EMAIL = UŽIVATELSKÉ JMÉNO NEBO E-MAIL
 Users = Uživatelé
+Using-location = Použití polohy
+Version-app-build = Verze { $appVersion } ({ $buildVersion })
 VIEW-ALL-X-PLACES = ZOBRAZIT VŠECH { $count } MÍST
 VIEW-ALL-X-PROJECTS = ZOBRAZIT VŠECH { $count } PROJEKTŮ
+VIEW-ALL-X-TAXA = VIEW ALL { $count } TAXA
+VIEW-ALL-X-USERS = VIEW ALL { $count } USERS
 VIEW-CHILDREN-TAXA = ZOBRAZIT PODŘAZENÁ TAXA
 VIEW-DATA-QUALITY-ASSESSMENT = ZOBRAZIT POSOUZENÍ KVALITY DAT
+VIEW-EDUCATORS-GUIDE = VIEW EDUCATOR'S GUIDE
 VIEW-FOLLOWERS = ZOBRAZIT SLEDUJÍCÍ
 VIEW-FOLLOWING = ZOBRAZIT SLEDOVÁNÍ
 View-in-browser = Zobrazit v prohlížeči
+VIEW-IN-EXPLORE = VIEW IN EXPLORE
 VIEW-INATURALIST-HELP = ZOBRAZIT INATURALIST NÁPOVĚDU
 View-photo = Zobrazit fotografii
 View-photo-licensing-info = Zobrazit informace o licenci fotografie
+VIEW-PROJECT-REQUIREMENTS = VIEW PROJECT REQUIREMENTS
 VIEW-PROJECTS = ZOBRAZIT PROJEKTY
 View-suggestions = Zobrazit návrhy
+Watch-your-notifications-for-identifications = Sledujte oznámení o identifikaci!
 We-are-not-confident-enough-to-make-a-top-ID-suggestion = Nejsme si dostatečně jistí na to, abychom vytvořili nejlepší návrh ID, ale zde jsou nějaké další návrhy:
-Welcome-to-iNaturalist = Vítejte v iNaturalist!
+Welcome-back = Vítejte zpět!
 Welcome-user = <0>Vítejte zpět,</0><1>{ $userHandle }</1>
+Weve-made-some-updates = Provedli jsme nějaké aktualizace, takže se doporučujeme podívat na vaše nastavení. Vždy je můžete aktualizovat.
 WHAT-IS-INATURALIST = CO JE INATURALIST?
 Whats-more-by-recording = Co víc, nahráváním a sdílením vašich pozorování vytvoříte kvalitní výzkumná data pro vědce, kteří se snaží lépe porozumět přírodě a chránit. Takže pokud se vám líbí nahrávání svých nálezů z venkovního prostoru, nebo pokud se vám líbí naučit se o životě, připojte se k nám!
 When-tapping-the-green-observation-button = Při klepnutí na zelené tlačítko pozorování, otevřete:
 WIKIPEDIA = WIKIPEDIE
 Wild = divoký
+WILD-STATUS = WILD STATUS
 Withdraw = Odstranit
+WITHDRAW-ID = WITHDRAW ID
+WITHDRAW-ID-QUESTION = WITHDRAW ID?
+Withdraws-identification = Odstranit identifikaci
 Worldwide = Celosvětové
 WORLDWIDE = CELOSVĚTOVĚ
 Would-you-like-to-discard-your-current-recording-and-start-over = Chcete zahodit aktuální nahrávání a začít znovu?
@@ -807,14 +958,134 @@ x-comments =
         [one] { $count } komentář
        *[other] { $count } komentáře
     }
+x-failed =
+    { $count ->
+        [one] { $count } failed
+       *[other] { $count } failed
+    }
+X-FOLLOWERS =
+    { $count ->
+        [one] { $count } FOLLOWER
+       *[other] { $count } FOLLOWERS
+    }
+X-Identifications =
+    { $count ->
+        [one] { $count } Identification
+       *[other] { $count } Identifications
+    }
+x-identifications =
+    { $count ->
+        [one] { $count } identification
+       *[other] { $count } identifications
+    }
+X-Identifiers =
+    { $count ->
+        [one] { $count } Identifier
+       *[other] { $count } Identifiers
+    }
 X-MEMBERS = { $count } ČLENŮ
+X-Observations =
+    { $count ->
+        [one] 1 Observation
+       *[other] { $count } Observations
+    }
+X-observations =
+    { $count ->
+        [one] 1 observation
+       *[other] { $count } observations
+    }
+X-OBSERVATIONS--below-number =
+    { $count ->
+        [one] OBSERVATION
+       *[other] OBSERVATIONS
+    }
+X-observations-deleted =
+    { $count ->
+        [one] 1 observation deleted
+       *[other] { $count } observations deleted
+    }
+X-observations-uploaded =
+    { $count ->
+        [one] 1 observation uploaded
+       *[other] { $count } observations uploaded
+    }
+X-Observers =
+    { $count ->
+        [one] { $count } Observer
+       *[other] { $count } Observers
+    }
+X-of-Y =
+    { $x ->
+        [one] 1
+       *[other] { $x }
+    } { $y ->
+        [one] of { $y }
+       *[other] of { $y }
+    }
 X-percent = { $count }%
+X-percent-confidence = { $count }% confidence
+X-PHOTOS =
+    { $photoCount ->
+        [one] 1 PHOTO
+       *[other] { $photoCount } PHOTOS
+    }
+X-PHOTOS-X-OBSERVATIONS =
+    { $photoCount ->
+        [one] 1 PHOTO
+       *[other] { $photoCount } PHOTOS
+    }, { $observationCount ->
+        [one] 1 OBSERVATION
+       *[other] { $observationCount } OBSERVATIONS
+    }
+X-PHOTOS-Y-SOUNDS =
+    { $photoCount ->
+        [one] 1 PHOTO
+       *[other] { $photoCount } PHOTOS
+    }, { $soundCount ->
+        [one] 1 SOUND
+       *[other] { $soundCount } SOUNDS
+    }
+X-PROJECTS = { $projectCount } PROJECTS
+x-saved =
+    { $count ->
+        [one] { $count } saved
+       *[other] { $count } saved
+    }
+X-SOUNDS =
+    { $count ->
+        [one] 1 SOUND
+       *[other] { $count } SOUNDS
+    }
+X-Species =
+    { $count ->
+        [one] { $count } Species
+       *[other] { $count } Species
+    }
+X-SPECIES--below-number =
+    { $count ->
+        [one] SPECIES
+       *[other] SPECIES
+    }
+x-uploaded =
+    { $count ->
+        [one] { $count } uploaded
+       *[other] { $count } uploaded
+    }
+x-uploading =
+    { $count ->
+        [one] { $count } uploading
+       *[other] { $count } uploading
+    }
+x-uploads-failed =
+    { $count ->
+        [one] { $count } upload failed
+       *[other] { $count } uploads failed
+    }
 You-are-offline = Jste offline
 You-are-offline-Tap-to-reload = Jste v režimu offline. Klepnutím obnovíte.
 You-are-offline-Tap-to-try-again = Jste offline. Klepnutím to zkuste znovu.
 You-can-add-up-to-20-media = Můžete přidat až 20 fotografií a 20 zvuků na pozorování.
 You-can-also-check-out-merchandise = Můžete se také podívat na zboží pro iNaturalist a Seek v našem obchodě níže!
-You-can-also-explore-existing-observations = Můžete také prozkoumat existující pozorování na iNaturalist a zjistit, co je kolem vás.
 You-can-click-join-on-the-project-page = Můžete kliknout na "připojit se" na stránce projektu.
 You-can-find-answers-on-our-help-page = Odpovědi můžete najít na naší stránce nápovědy.
 You-can-only-add-20-photos-per-observation = Můžete přidat pouze 20 fotografií na jedno pozorování
@@ -826,15 +1097,31 @@ You-have-opted-out-of-the-Community-Taxon = Odebrali jste se z komunitního taxo
 You-havent-joined-any-projects-yet = Zatím jste se nepřipojili k žádným projektům!
 You-havent-observed-any-species-yet = Zatím jste nepozorovali žádné druhy.
 You-likely-observed-a-new-species = Pravděpodobně jsi pozoroval nový druh!
+You-likely-observed-a-species = You likely observed a species
+You-likely-observed-an-organism-in-this-group = You likely observed an organism in this group
+You-make-an-observation-every-time-you = Pozorování provedete pokaždé, když vyfotografujete organismus s datem a místem.
+You-may-have-observed-a-new-species = Pravděpodobně jste pozorovali nový druh!
+You-may-have-observed-a-species = You may have observed a species
+You-may-have-observed-an-organism-in-this-group = You may have observed an organism in this group
 You-must-be-logged-in-to-view-messages = Pro zobrazení zpráv se musíte přihlásit
+You-must-install-Google-Play-Services-to-sign-in-with-Google = Chcete-li se přihlásit přes Google, musíte nainstalovat Služby Google Play.
 You-need-an-Internet-connection-to-do-that = K tomu potřebujete připojení k internetu.
 You-need-log-in-to-do-that = Pro tuto akci je nutné se přihlásit.
+You-observed-a-new-species = Pozorovali jste nový druh!
+You-observed-a-species = You observed a species
+You-observed-an-organism-in-this-group = You observed an organism in this group
 You-will-see-notifications = Jakmile se přihlásíte a nahrajete pozorování, uvidíte oznámení.
 Your-donation-to-iNaturalist = Váš dar iNaturalist podporuje zlepšení a stabilitu mobilních aplikací a webových stránek, které propojují miliony lidí s přírodou a umožňují ochranu biologické rozmanitosti po celém světě!
 Your-email-is-confirmed = Váš e-mail je potvrzen! Pro pokračování se přihlaste.
 Your-location-uncertainty-is-over-x-km = Nejistota vašeho umístění je nad { $x } km, což je příliš vysoká na to, aby mohla být užitečná pro identifikátory. Upravte polohu a přiblížení, dokud se kruh přesnosti nezmění na zelenou a bude zaměřen na místo, kde jste pozorovali organismus.
+Your-observations-can-help-scientists = Vaše pozorování mohou pomoci vědcům!
+Your-observations-can-now-help-scientists = Vaše pozorování mohou nyní vědcům pomoci.
 Youre-always-in-control-of-the-location-privacy = Vždy máte pod kontrolou soukromí na místě každého vytvořeného pozorování.
+Youve-denied-permission-prompt = Odmítli jste oprávnění. Prosím, udělte oprávnění v nastavení aplikace.
+Youve-made-2-observations = Provedli jste 2 pozorování!
+Youve-previously-denied-camera-permissions = Dříve jste odepřeli oprávnění k fotoaparátu, proto je prosím povolte v nastavení.
 Youve-previously-denied-location-permissions = Dříve jste odepřeli oprávnění k poloze, proto je prosím povolte v nastavení.
+Youve-previously-denied-microphone-permissions = Dříve jste zamítli oprávnění k mikrofonu, proto je prosím povolte v nastavení.
 Zoom-in-as-much-as-possible-to-improve = Přiblížit co nejvíce pro zlepšení přesnosti polohy a lepší identifikace.
 Zoom-to-current-location = Přiblížit na aktuální polohu
 zoom-x = { $zoom }×

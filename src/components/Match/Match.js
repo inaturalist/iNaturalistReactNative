@@ -4,7 +4,7 @@ import LocationSection
 import MapSection
   from "components/ObsDetailsDefaultMode/MapSection/MapSection";
 import {
-  ActivityIndicator, Button, ScrollViewWrapper
+  ActivityIndicator, Body2, Button, Heading3, ScrollViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import _ from "lodash";
@@ -14,6 +14,7 @@ import { useTranslation } from "sharedHooks";
 import AdditionalSuggestionsScroll
   from "./AdditionalSuggestions/AdditionalSuggestionsScroll";
 import EmptyMapSection from "./EmptyMapSection";
+import IconicSuggestionsScroll from "./IconicSuggestions/IconicSuggestionsScroll";
 import MatchHeader from "./MatchHeader";
 import PhotosSection from "./PhotosSection";
 import SaveDiscardButtons from "./SaveDiscardButtons";
@@ -31,7 +32,9 @@ type Props = {
   otherSuggestions: Array<Object>,
   suggestionsLoading: boolean,
   onSuggestionChosen: ( ) => void,
-  scrollRef: Object
+  scrollRef: Object,
+  iconicTaxon: Object,
+  setIconicTaxon: ( ) => void
 }
 
 const Match = ( {
@@ -44,13 +47,58 @@ const Match = ( {
   otherSuggestions,
   suggestionsLoading,
   onSuggestionChosen,
-  scrollRef
+  scrollRef,
+  iconicTaxon,
+  setIconicTaxon
 }: Props ) => {
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
 
   const latitude = observation?.privateLatitude || observation?.latitude;
   const taxon = topSuggestion?.taxon;
+
+  // In case the photo could not be identified
+  if ( !topSuggestion && otherSuggestions.length === 0 ) {
+    return (
+      <>
+        <ScrollViewWrapper scrollRef={scrollRef}>
+          <View className={cardClassTop}>
+            {
+              suggestionsLoading
+                ? (
+                  <ActivityIndicator size={33} />
+                )
+                : <MatchHeader topSuggestion={topSuggestion} />
+            }
+          </View>
+          <PhotosSection
+            representativePhoto={topSuggestion?.taxon?.representative_photo}
+            taxon={taxon}
+            obsPhotos={obsPhotos}
+            navToTaxonDetails={navToTaxonDetails}
+          />
+          { !suggestionsLoading
+    && (
+      <View className="mt-5">
+        <Heading3 className="mx-4">
+          {t( "Do-you-know-what-group-this-is-in" )}
+        </Heading3>
+        <IconicSuggestionsScroll
+          iconicTaxonChosen={iconicTaxon}
+          onIconicTaxonChosen={setIconicTaxon}
+        />
+        <Body2 className="mx-4 mt-7 mb-20">
+          {t( "If-you-took-the-original-photo-you-can-help" )}
+        </Body2>
+      </View>
+    )}
+        </ScrollViewWrapper>
+        <SaveDiscardButtons
+          handlePress={handleSaveOrDiscardPress}
+        />
+      </>
+    );
+  }
 
   return (
     <>

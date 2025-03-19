@@ -3,7 +3,6 @@ import {
 } from "@react-native-community/netinfo";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
-import { updateUsers } from "api/users";
 import {
   signOut
 } from "components/LoginSignUp/AuthenticationService.ts";
@@ -26,9 +25,8 @@ import {
 import Config from "react-native-config";
 import { EventRegister } from "react-native-event-listeners";
 import QueueItem from "realmModels/QueueItem.ts";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+// import { log } from "sharedHelpers/logger";
 import {
-  useAuthenticatedMutation,
   useCurrentUser,
   useLayoutPrefs,
   useTranslation,
@@ -36,15 +34,14 @@ import {
 } from "sharedHooks";
 
 import LanguageSetting from "./LanguageSetting";
+import TaxonNamesSetting from "./TaxonNamesSetting";
 
 const { useRealm } = RealmContext;
 
 const SETTINGS_URL = `${Config.OAUTH_API_URL}/users/edit?noh1=true`;
 const FINISHED_WEB_SETTINGS = "finished-web-settings";
 
-const NAME_DISPLAY_COM_SCI = "com-sci";
-const NAME_DISPLAY_SCI_COM = "sci-com";
-const NAME_DISPLAY_SCI = "sci";
+// const logger = log.extend( "Settings" );
 
 const Settings = ( ) => {
   const realm = useRealm( );
@@ -54,7 +51,7 @@ const Settings = ( ) => {
   const currentUser = useCurrentUser( );
   const {
     remoteUser, isLoading, refetchUserMe
-  } = useUserMe();
+  } = useUserMe( { updateRealm: false } );
   const {
     isDefaultMode,
     isAllAddObsOptionsMode,
@@ -90,26 +87,9 @@ const Settings = ( ) => {
 
   const queryClient = useQueryClient();
 
-  const updateUserMutation = useAuthenticatedMutation(
-    ( params, optsWithAuth ) => updateUsers( params, optsWithAuth ),
-    {
-      onSuccess: () => {
-        setIsSaving( false );
-        queryClient.invalidateQueries( { queryKey: ["fetchUserMe"] } );
-        refetchUserMe();
-      },
-      onError: () => {
-        setIsSaving( false );
-        confirmInternetConnection( );
-      }
-    }
-  );
-
   useEffect( () => {
     if ( remoteUser ) {
-      safeRealmWrite( realm, ( ) => {
-        realm.create( "User", remoteUser, "modified" );
-      }, "modifying current user via remote fetch in Settings" );
+      // logger.info( remoteUser, "remote user fetched in Settings" );
       setSettings( remoteUser );
       setIsSaving( false );
     }
@@ -127,59 +107,6 @@ const Settings = ( ) => {
     };
   }, [refetchUserMe] );
 
-  const changeTaxonNameDisplay = useCallback( nameDisplayPref => {
-    setIsSaving( true );
-
-    const payload = {
-      id: settings?.id,
-      user: {}
-    };
-
-    if ( nameDisplayPref === NAME_DISPLAY_COM_SCI ) {
-      payload.user.prefers_common_names = true;
-      payload.user.prefers_scientific_name_first = false;
-    } else if ( nameDisplayPref === NAME_DISPLAY_SCI_COM ) {
-      payload.user.prefers_common_names = true;
-      payload.user.prefers_scientific_name_first = true;
-    } else if ( nameDisplayPref === NAME_DISPLAY_SCI ) {
-      payload.user.prefers_common_names = false;
-      payload.user.prefers_scientific_name_first = false;
-    }
-
-    updateUserMutation.mutate( payload );
-  }, [settings?.id, updateUserMutation] );
-
-  const renderTaxonNamesSection = ( ) => (
-    <View className="mb-9">
-      <Heading4>{t( "TAXON-NAMES-DISPLAY" )}</Heading4>
-      <Body2 className="mt-3">{t( "This-is-how-taxon-names-will-be-displayed" )}</Body2>
-      <View className="mt-[22px]">
-        <RadioButtonRow
-          smallLabel
-          checked={settings.prefers_common_names && !settings.prefers_scientific_name_first}
-          onPress={() => changeTaxonNameDisplay( NAME_DISPLAY_COM_SCI )}
-          label={t( "Common-Name-Scientific-Name" )}
-        />
-      </View>
-      <View className="mt-4">
-        <RadioButtonRow
-          smallLabel
-          checked={settings.prefers_common_names && settings.prefers_scientific_name_first}
-          onPress={() => changeTaxonNameDisplay( NAME_DISPLAY_SCI_COM )}
-          label={t( "Scientific-Name-Common-Name" )}
-        />
-      </View>
-      <View className="mt-4">
-        <RadioButtonRow
-          smallLabel
-          checked={!settings.prefers_common_names && !settings.prefers_scientific_name_first}
-          onPress={() => changeTaxonNameDisplay( NAME_DISPLAY_SCI )}
-          label={t( "Scientific-Name" )}
-        />
-      </View>
-    </View>
-  );
-
   const renderLoggedIn = ( ) => (
     <View>
       {( isSaving || isLoading ) && (
@@ -189,7 +116,27 @@ const Settings = ( ) => {
           <ActivityIndicator size={50} />
         </View>
       )}
-      {!isDefaultMode && renderTaxonNamesSection( )}
+      <TaxonNamesSetting
+        onChange={options => {
+          // logger.info( "Enqueuing taxon name change with options:", options );
+          // logger.info( `Current user ID being updated: ${settings.id}` );
+
+          const payload = JSON.stringify( {
+            id: settings.id,
+            user: {
+              prefers_common_names: options.prefers_common_names,
+              prefers_scientific_name_first: options.prefers_scientific_name_first
+            }
+          } );
+
+          // log.info( `Payload to be enqueued: ${payload}` );
+          QueueItem.enqueue(
+            realm,
+            payload,
+            "taxon-names-change"
+          );
+        }}
+      />
       <LanguageSetting
         onChange={newLocale => {
           QueueItem.enqueue(
@@ -299,14 +246,6 @@ const Settings = ( ) => {
             <Body2 className="mt-3">
               {t( "After-capturing-or-importing-photos-show" )}
             </Body2>
-            <View className="mt-[22px] pr-5">
-              <RadioButtonRow
-                smallLabel
-                checked={!isAdvancedSuggestionsMode}
-                onPress={() => setIsSuggestionsFlowMode( false )}
-                label={t( "Edit-Observation" )}
-              />
-            </View>
             <View className="mt-4 pr-5">
               <RadioButtonRow
                 testID="suggestions-flow-mode"
@@ -314,6 +253,14 @@ const Settings = ( ) => {
                 checked={isAdvancedSuggestionsMode}
                 onPress={() => setIsSuggestionsFlowMode( true )}
                 label={t( "ID-Suggestions" )}
+              />
+            </View>
+            <View className="mt-[22px] pr-5">
+              <RadioButtonRow
+                smallLabel
+                checked={!isAdvancedSuggestionsMode}
+                onPress={() => setIsSuggestionsFlowMode( false )}
+                label={t( "Edit-Observation" )}
               />
             </View>
           </View>

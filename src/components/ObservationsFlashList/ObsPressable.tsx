@@ -12,6 +12,7 @@ type Props = {
   explore: boolean,
   hideMetadata?: boolean,
   hideObsUploadStatus?: boolean,
+  hideObsStatus?: boolean,
   onUploadButtonPress: ( ) => void,
   onItemPress: ( ) => void,
   gridItemStyle: Object,
@@ -28,6 +29,7 @@ const ObsPressable = ( {
   explore,
   hideMetadata,
   hideObsUploadStatus,
+  hideObsStatus,
   isLargeFontScale,
   onUploadButtonPress,
   onItemPress,
@@ -47,10 +49,6 @@ const ObsPressable = ( {
       accessibilityHint={unsynced
         ? t( "Navigates-to-observation-edit-screen" )
         : t( "Navigates-to-observation-details" )}
-      accessibilityLabel={t( "Observation-Name", {
-      // TODO: use the name that the user prefers (common or scientific)
-        scientificName: observation.species_guess
-      } )}
       disabled={queued}
     >
       {
@@ -76,6 +74,7 @@ const ObsPressable = ( {
               explore={explore}
               hideMetadata={hideMetadata}
               hideObsUploadStatus={hideObsUploadStatus}
+              hideObsStatus={hideObsStatus}
               onUploadButtonPress={onUploadButtonPress}
               observation={observation}
               queued={queued}

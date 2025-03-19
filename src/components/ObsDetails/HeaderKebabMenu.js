@@ -1,12 +1,13 @@
 // @flow
 import { createSubscription } from "api/observations";
-import KebabMenu from "components/SharedComponents/KebabMenu";
+import KebabMenu from "components/SharedComponents/KebabMenu.tsx";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Alert, Platform, Share } from "react-native";
 import {
-  useAuthenticatedMutation
+  useAuthenticatedMutation,
+  useCurrentUser
 } from "sharedHooks";
 
 const observationsUrl = "https://www.inaturalist.org/observations";
@@ -26,6 +27,7 @@ const HeaderKebabMenu = ( {
   uuid,
   refetchSubscriptions
 }: Props ): Node => {
+  const currentUser = useCurrentUser( );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
 
   const url = `${observationsUrl}/${observationId?.toString( )}`;
@@ -88,7 +90,7 @@ const HeaderKebabMenu = ( {
         title={t( "Share" )}
         testID="MenuItem.Share"
       />
-      {isSubscribed
+      {!!currentUser && ( isSubscribed
         ? (
           <KebabMenu.Item
             isFirst
@@ -104,7 +106,7 @@ const HeaderKebabMenu = ( {
             title={t( "Enable-notifications" )}
             testID="MenuItem.EnableNotifications"
           />
-        )}
+        ) )}
 
     </KebabMenu>
   );

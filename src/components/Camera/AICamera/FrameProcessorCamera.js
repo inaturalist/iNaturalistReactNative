@@ -31,6 +31,7 @@ type Props = {
   animatedProps: unknown,
   cameraRef: Object,
   confidenceThreshold?: number,
+  debugFormat?: Object,
   device: Object,
   fps?: number,
   numStoredResults?: number,
@@ -61,6 +62,7 @@ const FrameProcessorCamera = ( {
   cameraRef,
   confidenceThreshold = DEFAULT_CONFIDENCE_THRESHOLD,
   cropRatio = DEFAULT_CROP_RATIO,
+  debugFormat,
   device,
   fps = DEFAULT_FPS,
   numStoredResults = DEFAULT_NUM_STORED_RESULTS,
@@ -217,23 +219,25 @@ const FrameProcessorCamera = ( {
     <CameraView
       animatedProps={animatedProps}
       cameraRef={cameraRef}
+      cameraScreen="ai"
+      debugFormat={debugFormat}
       device={device}
       frameProcessor={frameProcessor}
-      onCameraError={async ( ) => {
+      onCameraError={async error => {
+        onCameraError( error );
         await logStage( sentinelFileName, "fallback_camera_error" );
-        onCameraError( );
       }}
-      onCaptureError={async ( ) => {
+      onCaptureError={async error => {
+        onCaptureError( error );
         await logStage( sentinelFileName, "camera_capture_error" );
-        onCaptureError( );
       }}
-      onClassifierError={async ( ) => {
+      onClassifierError={async error => {
+        onClassifierError( error );
         await logStage( sentinelFileName, "camera_classifier_error" );
-        onClassifierError( );
       }}
-      onDeviceNotSupported={async ( ) => {
+      onDeviceNotSupported={async error => {
+        onDeviceNotSupported( error );
         await logStage( sentinelFileName, "camera_device_not_supported_error" );
-        onDeviceNotSupported( );
       }}
       pinchToZoom={pinchToZoom}
       inactive={inactive}

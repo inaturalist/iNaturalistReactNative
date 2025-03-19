@@ -1,0 +1,12 @@
+NEW
+* User mode does not switch to advanced while logging in
+
+UPDATED
+* Translations
+
+FIXED
+* Use fixed header in ObsDetails advanced mode
+* Scroll to top of item from notification
+* Show simple obs detail also for logged in users
+* Media viewer on match screen
+* Pencil icon on warning banner

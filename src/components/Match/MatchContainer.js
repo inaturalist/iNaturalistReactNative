@@ -2,29 +2,37 @@ import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
+import { Body3, Heading4, ViewWrapper } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import flattenUploadParams from "components/Suggestions/helpers/flattenUploadParams.ts";
 import {
   FETCH_STATUS_LOADING,
   FETCH_STATUS_OFFLINE_ERROR,
   FETCH_STATUS_OFFLINE_FETCHED,
+  FETCH_STATUS_OFFLINE_SKIPPED,
   FETCH_STATUS_ONLINE_ERROR,
   FETCH_STATUS_ONLINE_FETCHED,
+  FETCH_STATUS_ONLINE_SKIPPED,
   initialSuggestions
 } from "components/Suggestions/SuggestionsContainer.tsx";
 import _ from "lodash";
 import { RealmContext } from "providers/contexts.ts";
 import React, {
-  useCallback, useEffect, useReducer, useRef, useState
+  useCallback,
+  useEffect, useReducer, useRef, useState
 } from "react";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import saveObservation from "sharedHelpers/saveObservation.ts";
+import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservationLocation.ts";
 import {
-  useExitObservationFlow, useLocationPermission, useSuggestions
+  useExitObservationFlow, useLocationPermission, useSuggestions, useWatchPosition
 } from "sharedHooks";
+import { isDebugMode } from "sharedHooks/useDebugMode";
 import useStore from "stores/useStore";
 
-import fetchUserLocation from "../../sharedHelpers/fetchUserLocation";
+import tryToReplaceWithLocalTaxon from "./helpers/tryToReplaceWithLocalTaxon";
 import Match from "./Match";
+import PreMatchLoadingScreen from "./PreMatchLoadingScreen";
 
 const setQueryKey = ( selectedPhotoUri, shouldUseEvidenceLocation ) => [
   "scoreImage",
@@ -33,7 +41,8 @@ const setQueryKey = ( selectedPhotoUri, shouldUseEvidenceLocation ) => [
 ];
 
 const initialState = {
-  fetchStatus: FETCH_STATUS_LOADING,
+  onlineFetchStatus: FETCH_STATUS_LOADING,
+  offlineFetchStatus: FETCH_STATUS_LOADING,
   scoreImageParams: null,
   queryKey: [],
   shouldUseEvidenceLocation: false,
@@ -48,15 +57,21 @@ const reducer = ( state, action ) => {
         scoreImageParams: action.scoreImageParams,
         queryKey: setQueryKey( action.scoreImageParams.image.uri, state.shouldUseEvidenceLocation )
       };
-    case "SET_FETCH_STATUS":
+    case "SET_ONLINE_FETCH_STATUS":
       return {
         ...state,
-        fetchStatus: action.fetchStatus
+        onlineFetchStatus: action.onlineFetchStatus
+      };
+    case "SET_OFFLINE_FETCH_STATUS":
+      return {
+        ...state,
+        offlineFetchStatus: action.offlineFetchStatus
       };
     case "SET_LOCATION":
       return {
         ...state,
-        fetchStatus: FETCH_STATUS_LOADING,
+        onlineFetchStatus: FETCH_STATUS_LOADING,
+        offlineFetchStatus: FETCH_STATUS_LOADING,
         scoreImageParams: action.scoreImageParams,
         shouldUseEvidenceLocation: action.shouldUseEvidenceLocation,
         queryKey: setQueryKey( action.scoreImageParams.image.uri, action.shouldUseEvidenceLocation )
@@ -74,6 +89,7 @@ const { useRealm } = RealmContext;
 
 const MatchContainer = ( ) => {
   const hasLoadedRef = useRef( false );
+  const isDebug = isDebugMode( );
   const scrollRef = useRef( null );
   const currentObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
@@ -101,6 +117,9 @@ const MatchContainer = ( ) => {
   const evidenceHasLocation = !!currentObservation?.latitude;
 
   const [topSuggestion, setTopSuggestion] = useState( );
+  const [iconicTaxon, setIconicTaxon] = useState( );
+  const [currentUserLocation, setCurrentUserLocation] = useState( null );
+
   const [state, dispatch] = useReducer( reducer, {
     ...initialState,
     shouldUseEvidenceLocation: evidenceHasLocation
@@ -108,34 +127,79 @@ const MatchContainer = ( ) => {
 
   const {
     scoreImageParams,
-    fetchStatus,
+    onlineFetchStatus,
+    offlineFetchStatus,
     queryKey,
     shouldUseEvidenceLocation,
     orderedSuggestions
   } = state;
 
   const shouldFetchOnlineSuggestions = ( hasPermissions !== undefined )
-      && fetchStatus === FETCH_STATUS_LOADING;
+      && onlineFetchStatus === FETCH_STATUS_LOADING;
 
-  const onlineSuggestionsAttempted = fetchStatus === FETCH_STATUS_ONLINE_FETCHED
-      || fetchStatus === FETCH_STATUS_ONLINE_ERROR;
+  const onlineSuggestionsAttempted = onlineFetchStatus === FETCH_STATUS_ONLINE_FETCHED
+      || onlineFetchStatus === FETCH_STATUS_ONLINE_ERROR;
 
-  const onFetchError = useCallback( ( { isOnline } ) => dispatch( {
-    type: "SET_FETCH_STATUS",
-    fetchStatus: isOnline
-      ? FETCH_STATUS_ONLINE_ERROR
-      : FETCH_STATUS_OFFLINE_ERROR
-  } ), [] );
+  const onFetchError = useCallback(
+    ( { isOnline }: { isOnline: boolean } ) => {
+      if ( isOnline ) {
+        dispatch( {
+          type: "SET_ONLINE_FETCH_STATUS",
+          onlineFetchStatus: FETCH_STATUS_ONLINE_ERROR
+        } );
+      } else {
+        dispatch( {
+          type: "SET_OFFLINE_FETCH_STATUS",
+          offlineFetchStatus: FETCH_STATUS_OFFLINE_ERROR
+        } );
+        // If offline is finished, and online still in loading state it means it never started
+        if ( onlineFetchStatus === FETCH_STATUS_LOADING ) {
+          dispatch( {
+            type: "SET_ONLINE_FETCH_STATUS",
+            onlineFetchStatus: FETCH_STATUS_ONLINE_SKIPPED
+          } );
+        }
+      }
+    },
+    [onlineFetchStatus]
+  );
 
-  const onFetched = useCallback( ( { isOnline } ) => dispatch( {
-    type: "SET_FETCH_STATUS",
-    fetchStatus: isOnline
-      ? FETCH_STATUS_ONLINE_FETCHED
-      : FETCH_STATUS_OFFLINE_FETCHED
-  } ), [] );
+  const onFetched = useCallback(
+    ( { isOnline }: { isOnline: boolean } ) => {
+      if ( isOnline ) {
+        dispatch( {
+          type: "SET_ONLINE_FETCH_STATUS",
+          onlineFetchStatus: FETCH_STATUS_ONLINE_FETCHED
+        } );
+        // Currently we start offline only when online has an error, so
+        // we can register offline as skipped if online is successful
+        dispatch( {
+          type: "SET_OFFLINE_FETCH_STATUS",
+          offlineFetchStatus: FETCH_STATUS_OFFLINE_SKIPPED
+        } );
+      } else {
+        dispatch( {
+          type: "SET_OFFLINE_FETCH_STATUS",
+          offlineFetchStatus: FETCH_STATUS_OFFLINE_FETCHED
+        } );
+        // If offline is finished, and online still in loading state it means it never started
+        if ( onlineFetchStatus === FETCH_STATUS_LOADING ) {
+          dispatch( {
+            type: "SET_ONLINE_FETCH_STATUS",
+            onlineFetchStatus: FETCH_STATUS_ONLINE_SKIPPED
+          } );
+        }
+      }
+    },
+    [onlineFetchStatus]
+  );
 
   const {
+    timedOut,
+    onlineSuggestionsError,
+    onlineSuggestionsUpdatedAt,
     suggestions,
+    usingOfflineSuggestions,
     refetchSuggestions
   } = useSuggestions( observationPhoto, {
     shouldFetchOnlineSuggestions,
@@ -146,29 +210,40 @@ const MatchContainer = ( ) => {
     onlineSuggestionsAttempted
   } );
   const [currentPlaceGuess, setCurrentPlaceGuess] = useState( );
+  const [hasRefetchedSuggestions, setHasRefetchedSuggestions] = useState( false );
 
-  useEffect( () => {
-    if ( !currentPlaceGuess ) return;
-
-    updateObservationKeys( { place_guess: currentPlaceGuess } );
-  }, [currentPlaceGuess, updateObservationKeys] );
-
-  const getCurrentUserLocation = async ( ) => {
-    const currentUserLocation = await fetchUserLocation( );
-    const placeGuess
-     = await fetchPlaceName( currentUserLocation?.latitude, currentUserLocation?.longitude );
-
-    if ( placeGuess ) {
-      // Cannot call updateObservationKeys directly from here, since fetchPlaceName might take
-      // a while to return, in the meantime the current copy of the observation might have
-      // changed, so we update the observation from useEffect of currentPlaceGuess, so it will
-      // always have the latest copy of the current observation (see GH issue #584)
-      setCurrentPlaceGuess( placeGuess );
+  const scrollToTop = useCallback( () => {
+    if ( scrollRef.current ) {
+      scrollRef.current.scrollTo( { y: 0, animated: true } );
     }
-    updateObservationKeys( {
-      latitude: currentUserLocation?.latitude,
-      longitude: currentUserLocation?.longitude
-    } );
+  }, [] );
+
+  const shouldFetchUserLocation
+  = shouldFetchObservationLocation( currentObservation ) && hasPermissions;
+
+  const {
+    stopWatch,
+    subscriptionId,
+    userLocation
+  } = useWatchPosition( {
+    shouldFetchLocation: shouldFetchUserLocation
+  } );
+
+  const getCurrentUserPlaceName = useCallback( async () => {
+    if ( currentUserLocation?.latitude ) {
+      const placeGuess
+      = await fetchPlaceName( currentUserLocation?.latitude, currentUserLocation?.longitude );
+      if ( placeGuess ) {
+        // Cannot call updateObservationKeys directly from here, since fetchPlaceName might take
+        // a while to return, in the meantime the current copy of the observation might have
+        // changed, so we update the observation from useEffect of currentPlaceGuess, so it will
+        // always have the latest copy of the current observation (see GH issue #584)
+        setCurrentPlaceGuess( placeGuess );
+      }
+    }
+  }, [currentUserLocation] );
+
+  const handleRefetchSuggestions = useCallback( () => {
     const newScoreImageParams = {
       ...scoreImageParams,
       lat: currentUserLocation?.latitude,
@@ -180,21 +255,60 @@ const MatchContainer = ( ) => {
       scoreImageParams: newScoreImageParams
     } );
     refetchSuggestions();
-  };
+    setHasRefetchedSuggestions( true );
+    // // Scroll to top of the screen
+    scrollToTop( );
+  }, [
+    refetchSuggestions,
+    scoreImageParams,
+    scrollToTop,
+    currentUserLocation?.latitude,
+    currentUserLocation?.longitude
+  ] );
+
+  useEffect( () => {
+    if ( currentUserLocation?.latitude && !hasRefetchedSuggestions && suggestions ) {
+      handleRefetchSuggestions();
+    }
+  }, [
+    currentUserLocation,
+    getCurrentUserPlaceName,
+    handleRefetchSuggestions,
+    hasRefetchedSuggestions,
+    suggestions
+  ] );
+
+  useEffect( ( ) => {
+    if ( !scoreImageParams ) return;
+    if ( userLocation === currentUserLocation ) {
+      return;
+    }
+    if ( userLocation?.latitude ) {
+      setCurrentUserLocation( userLocation );
+      getCurrentUserPlaceName( );
+      updateObservationKeys( userLocation );
+    }
+  }, [
+    userLocation,
+    updateObservationKeys,
+    handleRefetchSuggestions,
+    stopWatch,
+    subscriptionId,
+    currentUserLocation,
+    scoreImageParams,
+    getCurrentUserPlaceName
+  ] );
+
+  useEffect( () => {
+    if ( !currentPlaceGuess ) return;
+    updateObservationKeys( { place_guess: currentPlaceGuess } );
+  }, [currentPlaceGuess, updateObservationKeys] );
 
   const handleAddLocationPressed = ( ) => {
-    if ( hasPermissions ) {
-      getCurrentUserLocation();
-    } else {
+    if ( !hasPermissions ) {
       requestPermissions( );
     }
   };
-
-  const scrollToTop = useCallback( ( ) => {
-    if ( scrollRef.current ) {
-      scrollRef.current.scrollTo( { y: 0, animated: true } );
-    }
-  }, [] );
 
   const onSuggestionChosen = useCallback( selection => {
     const suggestionsList = [...orderedSuggestions];
@@ -286,7 +400,18 @@ const MatchContainer = ( ) => {
   const taxon = topSuggestion?.taxon;
   const taxonId = taxon?.id;
 
-  const suggestionsLoading = fetchStatus === FETCH_STATUS_LOADING;
+  // not the prettiest code; trying to be consistent about showing common name
+  // and taxon photo for offline suggestions in AICamera and otherSuggestions
+  // without relying on the useTaxon hook which only deals with one taxon at a time
+  const topSuggestionInRealm = realm.objects( "Taxon" ).filtered( "id IN $0", [taxonId] );
+  const topSuggestionWithLocalTaxon = tryToReplaceWithLocalTaxon(
+    topSuggestionInRealm,
+    topSuggestion
+  );
+
+  const suggestionsLoading = onlineFetchStatus === FETCH_STATUS_LOADING
+    || offlineFetchStatus === FETCH_STATUS_LOADING;
+
   // Remove the top suggestion from the list of other suggestions
   const otherSuggestions = orderedSuggestions
     .filter( suggestion => suggestion.taxon.id !== taxonId );
@@ -304,36 +429,79 @@ const MatchContainer = ( ) => {
   const handleSaveOrDiscardPress = async action => {
     if ( action === "save" ) {
       updateObservationKeys( {
-        taxon,
+        taxon: taxon || iconicTaxon,
         owners_identification_from_vision: true
       } );
       await saveObservation( getCurrentObservation( ), cameraRollUris, realm );
     }
+    stopWatch( subscriptionId );
     exitObservationFlow( );
   };
 
+  const taxonIds = otherSuggestions?.map( suggestion => suggestion.taxon.id );
+  const localTaxa = realm.objects( "Taxon" ).filtered( "id IN $0", taxonIds );
+
+  // show local taxon photos in additional suggestions list if they're available
+  const suggestionsWithLocalTaxonPhotos = otherSuggestions
+    .map( suggestion => tryToReplaceWithLocalTaxon( localTaxa, suggestion ) );
+
   return (
     <>
-      <Match
-        observation={currentObservation}
-        obsPhotos={obsPhotos}
-        onSuggestionChosen={onSuggestionChosen}
-        handleSaveOrDiscardPress={handleSaveOrDiscardPress}
-        navToTaxonDetails={navToTaxonDetails}
-        handleAddLocationPressed={handleAddLocationPressed}
-        topSuggestion={topSuggestion}
-        otherSuggestions={otherSuggestions}
-        suggestionsLoading={suggestionsLoading}
-        scrollRef={scrollRef}
-      />
-      {renderPermissionsGate(
-        {
-          onPermissionGranted: getCurrentUserLocation
-        },
-        {
-          closeOnInitialBlock: true
-        }
-      )}
+      <ViewWrapper isDebug={isDebug}>
+        <Match
+          observation={currentObservation}
+          obsPhotos={obsPhotos}
+          onSuggestionChosen={onSuggestionChosen}
+          handleSaveOrDiscardPress={handleSaveOrDiscardPress}
+          navToTaxonDetails={navToTaxonDetails}
+          handleAddLocationPressed={handleAddLocationPressed}
+          topSuggestion={topSuggestionWithLocalTaxon}
+          otherSuggestions={suggestionsWithLocalTaxonPhotos}
+          suggestionsLoading={suggestionsLoading}
+          scrollRef={scrollRef}
+          iconicTaxon={iconicTaxon}
+          setIconicTaxon={setIconicTaxon}
+        />
+        {renderPermissionsGate( { onPermissionGranted: getCurrentUserPlaceName } )}
+        {/* eslint-disable i18next/no-literal-string */}
+        {/* eslint-disable react/jsx-one-expression-per-line */}
+        {/* eslint-disable max-len */}
+        {isDebug && (
+          <View className="bg-deeppink text-white p-3">
+            <Heading4 className="text-white">Diagnostics</Heading4>
+            <Body3 className="text-white">
+              Online fetch status:
+              {JSON.stringify( onlineFetchStatus )}
+            </Body3>
+            <Body3 className="text-white">
+              Offline fetch status:
+              {JSON.stringify( offlineFetchStatus )}
+            </Body3>
+            <Body3 className="text-white">
+              Lat/lng:
+              {JSON.stringify( currentObservation?.latitude )}
+              {JSON.stringify( currentObservation?.longitude )}
+            </Body3>
+            <Body3 className="text-white">
+              Using offline suggestions:
+              {JSON.stringify( usingOfflineSuggestions )}
+            </Body3>
+            <Body3 className="text-white">
+              Timed out:
+              {JSON.stringify( timedOut )}
+            </Body3>
+            <Body3 className="text-white">
+              Online suggestions error:
+              {JSON.stringify( onlineSuggestionsError )}
+            </Body3>
+            <Body3 className="text-white">
+              Online suggestions updated at:
+              {JSON.stringify( onlineSuggestionsUpdatedAt )}
+            </Body3>
+          </View>
+        )}
+      </ViewWrapper>
+      <PreMatchLoadingScreen isLoading={suggestionsLoading} />
     </>
   );
 };

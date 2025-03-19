@@ -7,7 +7,7 @@ import { View } from "react-native";
 import { formatApiDatetime } from "sharedHelpers/dateAndTime.ts";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import * as useCurrentUser from "sharedHooks/useCurrentUser.ts";
-import * as useLocalObservation from "sharedHooks/useLocalObservation";
+import * as useLocalObservation from "sharedHooks/useLocalObservation.ts";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -258,58 +258,7 @@ describe( "ObsDetails", () => {
     // );
   } );
 
-  describe( "viewing own observation", ( ) => {
-    async function expectEditAndNotMenu( ) {
-      const editLabelText = t( "Edit" );
-      const editButton = await screen.findByLabelText( editLabelText );
-      expect( editButton ).toBeTruthy( );
-      const kebabMenuLabelText = t( "Observation-options" );
-      const kebabMenu = screen.queryByLabelText( kebabMenuLabelText );
-      expect( kebabMenu ).toBeFalsy( );
-    }
-
-    it( "should show the edit button and not the menu", async ( ) => {
-      const mockOwnObservation = factory( "LocalObservation", { user: mockUser } );
-      jest.spyOn( useLocalObservation, "default" ).mockImplementation( () => mockOwnObservation );
-      jest.spyOn( useCurrentUser, "default" ).mockImplementation( () => mockOwnObservation.user );
-      renderObsDetails( );
-      expect( mockOwnObservation.user.id ).toEqual( mockUser.id );
-      await expectEditAndNotMenu( );
-    } );
-
-    it(
-      "should show the edit button and not the menu when the observation has never been uploaded",
-      async ( ) => {
-        const observation = factory( "LocalObservation" );
-        jest.spyOn( useLocalObservation, "default" )
-          .mockImplementation( () => observation );
-        jest.spyOn( useCurrentUser, "default" ).mockImplementation( () => observation.user );
-        renderObsDetails( );
-        // An unuploaded observation *should* be the only situation where an
-        // observation has no user, b/c a user can make observations before
-        // signing in
-        expect( observation.user ).toBeFalsy( );
-        await expectEditAndNotMenu( );
-      }
-    );
-  } );
-
   describe( "viewing someone else's observation", ( ) => {
-    it( "should show the menu and not the edit button", async ( ) => {
-      expect( mockObservation.user.id ).not.toEqual( mockUser.id );
-      renderObsDetails( );
-      jest.spyOn( useLocalObservation, "default" ).mockImplementation( () => mockObservation );
-      jest.spyOn( useCurrentUser, "default" ).mockImplementation( () => null );
-      renderObsDetails( );
-      expect( await screen.findByTestId( `ObsDetails.${mockObservation.uuid}` ) ).toBeTruthy( );
-      const kebabMenuLabelText = t( "Observation-options" );
-      const kebabMenu = await screen.findByLabelText( kebabMenuLabelText );
-      expect( kebabMenu ).toBeTruthy( );
-      const editLabelText = t( "Edit" );
-      const editButton = screen.queryByLabelText( editLabelText );
-      expect( editButton ).toBeFalsy( );
-    } );
-
     it( "should agree with another user's identification when agree button pressed", async ( ) => {
       const firstIdentification = factory( "RemoteIdentification", {
         taxon: factory( "RemoteTaxon", {

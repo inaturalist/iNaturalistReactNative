@@ -38,8 +38,8 @@ const deleteRemotelyDeletedObservations = ( deletedObservations, realm ) => {
 
 // eslint-disable-next-line no-undef
 export default syncRemoteDeletedObservations = async realm => {
-  const apiToken = await getJWT( );
   const deletedParams = setParamsWithLastSyncTime( realm );
+  const apiToken = await getJWT( );
   const response = await checkForDeletedObservations( deletedParams, { api_token: apiToken } );
   const currentSyncTime = format( new Date( ), "yyyy-MM-dd" );
   zustandStorage.setItem( "lastDeletedSyncTime", currentSyncTime );

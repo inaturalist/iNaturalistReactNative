@@ -53,16 +53,61 @@ import colors from "styles/tailwindColors";
 
 import SharedStackScreens from "./SharedStackScreens";
 
-const aboutTitle = () => <Heading4>{t( "ABOUT-INATURALIST" )}</Heading4>;
-const donateTitle = () => <Heading4>{t( "DONATE" )}</Heading4>;
-const helpTitle = () => <Heading4>{t( "HELP" )}</Heading4>;
-const locationSearchTitle = () => <Heading4>{t( "SEARCH-LOCATION" )}</Heading4>;
-const dqaTitle = ( ) => <Heading4>{t( "DATA-QUALITY-ASSESSMENT" )}</Heading4>;
-const projectRequirementsTitle = () => <Heading4>{t( "PROJECT-REQUIREMENTS" )}</Heading4>;
-const projectSearchTitle = () => <Heading4>{t( "SEARCH-PROJECTS" )}</Heading4>;
-const taxonSearchTitle = () => <Heading4>{t( "SEARCH-TAXA" )}</Heading4>;
-const userSearchTitle = () => <Heading4>{t( "SEARCH-USERS" )}</Heading4>;
-const settingsTitle = () => <Heading4>{t( "SETTINGS" )}</Heading4>;
+const aboutTitle = () => (
+  <Heading4 accessibilityRole="header" numberOfLines={1}>
+    {t( "ABOUT-INATURALIST" )}
+  </Heading4>
+);
+const donateTitle = () => (
+  <Heading4 accessibilityRole="header" numberOfLines={1}>
+    {t( "DONATE" )}
+  </Heading4>
+);
+const helpTitle = () => (
+  <Heading4 accessibilityRole="header" numberOfLines={1}>
+    {t( "HELP" )}
+  </Heading4>
+);
+const locationSearchTitle = () => (
+  <Heading4 accessibilityRole="header" numberOfLines={1}>
+    {t( "SEARCH-LOCATION" )}
+  </Heading4>
+);
+const dqaTitle = () => (
+  <Heading4 accessibilityRole="header" numberOfLines={1}>
+    {t( "DATA-QUALITY-ASSESSMENT" )}
+  </Heading4>
+);
+const projectRequirementsTitle = () => (
+  <Heading4 accessibilityRole="header" numberOfLines={1}>
+    {t( "PROJECT-REQUIREMENTS" )}
+  </Heading4>
+);
+const projectSearchTitle = () => (
+  <Heading4 accessibilityRole="header" numberOfLines={1}>
+    {t( "SEARCH-PROJECTS" )}
+  </Heading4>
+);
+const taxonSearchTitle = () => (
+  <Heading4 accessibilityRole="header" numberOfLines={1}>
+    {t( "SEARCH-TAXA" )}
+  </Heading4>
+);
+const userSearchTitle = () => (
+  <Heading4 accessibilityRole="header" numberOfLines={1}>
+    {t( "SEARCH-USERS" )}
+  </Heading4>
+);
+const settingsTitle = () => (
+  <Heading4 accessibilityRole="header" numberOfLines={1}>
+    {t( "SETTINGS" )}
+  </Heading4>
+);
+const notificationsTitle = () => (
+  <Heading4 accessibilityRole="header" numberOfLines={1}>
+    {t( "NOTIFICATIONS" )}
+  </Heading4>
+);
 
 // eslint-disable-next-line i18next/no-literal-string
 const debugTitle = () => <Heading4 className="text-white">DEBUG</Heading4>;
@@ -72,8 +117,6 @@ const uiLibTitle = () => <Heading4 className="text-white">UI LIBRARY</Heading4>;
 const uiLibItemTitle = () => <Heading4 className="text-white">UI LIBRARY ITEM</Heading4>;
 // eslint-disable-next-line i18next/no-literal-string
 const logTitle = () => <Heading4 className="text-white">LOG</Heading4>;
-
-const notificationsTitle = ( ) => <Heading4>{t( "NOTIFICATIONS" )}</Heading4>;
 
 // note: react navigation 7 will have a layout prop
 // which should replace all of these individual wrappers
@@ -127,6 +170,12 @@ const LIST_OPTIONS = {
   lazy: true
 };
 
+const OBS_DETAILS_OPTIONS = {
+  unmountOnBlur: true,
+  ...showHeader,
+  ...blankHeaderTitle
+};
+
 const Stack = createNativeStackNavigator( );
 
 export const SCREEN_NAME_OBS_LIST = "ObsList";
@@ -173,20 +222,14 @@ const TabStackNavigator = ( ): Node => {
             <Stack.Screen
               name="ObsDetails"
               component={FadeInObsDetailsDefaultModeContainer}
-              options={{
-                unmountOnBlur: true,
-                ...showHeader,
-                ...blankHeaderTitle
-              }}
+              options={OBS_DETAILS_OPTIONS}
             />
           )
           : (
             <Stack.Screen
               name="ObsDetails"
               component={FadeInObsDetailsContainer}
-              options={{
-                unmountOnBlur: true
-              }}
+              options={OBS_DETAILS_OPTIONS}
             />
           )}
       </Stack.Group>

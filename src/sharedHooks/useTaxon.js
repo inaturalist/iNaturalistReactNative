@@ -1,10 +1,14 @@
 // @flow
 
 import { fetchTaxon } from "api/taxa";
+import i18n from "i18next";
 import { RealmContext } from "providers/contexts.ts";
 import Taxon from "realmModels/Taxon";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { useAuthenticatedQuery } from "sharedHooks";
+import {
+  useAuthenticatedQuery,
+  useCurrentUser
+} from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
@@ -45,6 +49,15 @@ const useTaxon = ( taxon: Object, fetchRemote = true ): Object => {
   );
   const enabled = !!( canFetchTaxon && fetchRemote && localTaxonNeedsSync );
 
+  const currentUser = useCurrentUser();
+  // Use locale in case there is no user session
+  const locale = i18n?.language ?? "en";
+
+  const params = {
+    fields: Taxon.LIMITED_TAXON_FIELDS,
+    ...( !currentUser && { locale } )
+  };
+
   const {
     data: remoteTaxon,
     error,
@@ -52,7 +65,7 @@ const useTaxon = ( taxon: Object, fetchRemote = true ): Object => {
     refetch
   } = useAuthenticatedQuery(
     ["fetchTaxon", taxonId],
-    optsWithAuth => fetchTaxon( taxonId, { fields: Taxon.LIMITED_TAXON_FIELDS }, optsWithAuth ),
+    optsWithAuth => fetchTaxon( taxonId, params, optsWithAuth ),
     {
       enabled
     }

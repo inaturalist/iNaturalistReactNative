@@ -48,9 +48,7 @@ const MyObservationsContainer = ( ): Node => {
   if ( isDebugMode( ) ) {
     logger.info( loadTime );
   }
-  const {
-    isDefaultMode
-  } = useLayoutPrefs( );
+  const { isDefaultMode, loggedInWhileInDefaultMode } = useLayoutPrefs();
   const { t } = useTranslation( );
   const realm = useRealm( );
   const listRef = useRef( );
@@ -58,7 +56,7 @@ const MyObservationsContainer = ( ): Node => {
 
   // Get navigation params
   const { params } = useRoute( );
-  const { justFinishedSignup } = params || { };
+  const { justFinishedSignup } = params || {};
 
   const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
   const uploadQueue = useStore( state => state.uploadQueue );
@@ -127,13 +125,16 @@ const MyObservationsContainer = ( ): Node => {
     return currentUser;
   }, [currentUser] );
 
-  const handleSyncButtonPress = useCallback( ( ) => {
+  const handleSyncButtonPress = useCallback( options => {
+    const { unuploadedObsMissingBasicsIDs } = options || { };
     if ( !confirmLoggedIn( ) ) { return; }
     if ( !confirmInternetConnection( ) ) { return; }
 
     startManualSync( );
+    syncManually( { skipSomeUploads: unuploadedObsMissingBasicsIDs } );
   }, [
     startManualSync,
+    syncManually,
     confirmInternetConnection,
     confirmLoggedIn
   ] );
@@ -261,6 +262,7 @@ const MyObservationsContainer = ( ): Node => {
         showNoResults={showNoResults}
         toggleLayout={toggleLayout}
         justFinishedSignup={justFinishedSignup}
+        loggedInWhileInDefaultMode={loggedInWhileInDefaultMode}
       />
     );
   }

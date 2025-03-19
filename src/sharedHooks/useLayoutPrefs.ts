@@ -7,7 +7,8 @@ const selector = state => ( {
   setObsDetailsTab: state.setObsDetailsTab,
   isAllAddObsOptionsMode: state.isAdvancedUser,
   setIsAllAddObsOptionsMode: state.setIsAdvancedUser,
-
+  loggedInWhileInDefaultMode: state.loggedInWhileInDefaultMode,
+  setLoggedInWhileInDefaultMode: state.setLoggedInWhileInDefaultMode,
   // newer stuff
   ...state.layout
 } );

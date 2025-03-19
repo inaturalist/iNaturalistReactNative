@@ -1,5 +1,6 @@
 // @flow
 import { fetchRemoteObservation } from "api/observations";
+import i18n from "i18next";
 import { RealmContext } from "providers/contexts.ts";
 import { useCallback, useEffect, useMemo } from "react";
 import Observation from "realmModels/Observation";
@@ -9,6 +10,20 @@ const { useRealm } = RealmContext;
 
 export const fetchRemoteObservationKey = "fetchRemoteObservation";
 
+const filterHiddenContent = observation => {
+  if ( observation === undefined || observation === null ) {
+    return observation;
+  }
+  const filteredObservation = observation;
+
+  filteredObservation.comments = filteredObservation?.comments
+    ?.filter( comment => !comment.hidden ) || [];
+  filteredObservation.identifications = filteredObservation?.identifications
+    ?.filter( identification => !identification.hidden ) || [];
+
+  return filteredObservation;
+};
+
 const useRemoteObservation = ( uuid: string, enabled: boolean ): Object => {
   const fetchRemoteObservationQueryKey = useMemo(
     ( ) => ( [fetchRemoteObservationKey, uuid] ),
@@ -17,6 +32,8 @@ const useRemoteObservation = ( uuid: string, enabled: boolean ): Object => {
 
   const currentUser = useCurrentUser( );
   const realm = useRealm( );
+
+  const locale = i18n?.language ?? "en";
 
   const {
     data: remoteObservation,
@@ -29,6 +46,7 @@ const useRemoteObservation = ( uuid: string, enabled: boolean ): Object => {
       uuid,
       {
         include_new_projects: true,
+        ...( !currentUser && { locale } ),
         fields: Observation.FIELDS
       },
       optsWithAuth
@@ -60,7 +78,7 @@ const useRemoteObservation = ( uuid: string, enabled: boolean ): Object => {
   ] );
 
   return {
-    remoteObservation,
+    remoteObservation: filterHiddenContent( remoteObservation ),
     refetchRemoteObservation,
     isRefetching,
     fetchRemoteObservationError

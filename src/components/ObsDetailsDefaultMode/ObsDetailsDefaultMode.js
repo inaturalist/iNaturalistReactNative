@@ -28,6 +28,8 @@ import ObserverDetails from "./ObserverDetails";
 import ObsMediaDisplayContainer from "./ObsMediaDisplayContainer";
 import StatusSection from "./StatusSection/StatusSection";
 
+const cardClassBottom = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mt-0.5 mb-4";
+
 type Props = {
   activityItems: Array<Object>,
   addingActivityItem: Function,
@@ -44,6 +46,7 @@ type Props = {
   showAddCommentSheet: Function,
   subscriptions?: Object,
   targetActivityItemID: number,
+  wasSynced: boolean,
   uuid: string
 }
 
@@ -63,6 +66,7 @@ const ObsDetailsDefaultMode = ( {
   showAddCommentSheet,
   subscriptions,
   targetActivityItemID,
+  wasSynced,
   uuid
 }: Props ): Node => {
   const scrollViewRef = useRef( );
@@ -71,6 +75,12 @@ const ObsDetailsDefaultMode = ( {
     setHeightOfContentAboveSection: setHeightOfContentAboveCommunitySection,
     setOffsetToActivityItem
   } = useScrollToOffset( scrollViewRef );
+
+  const isSavedObservationByCurrentUser = belongsToCurrentUser && !wasSynced;
+
+  // floating buttons should show when you're logged in for your observations
+  // as well as other's observations. they should not show if it's your own saved observation
+  const showFloatingButtons = currentUser && !isSavedObservationByCurrentUser;
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -118,6 +128,7 @@ const ObsDetailsDefaultMode = ( {
             observation={observation}
           />
           <NotesSection description={observation.description} />
+          {!isSimpleMode && <View className={cardClassBottom} />}
         </View>
         {!isSimpleMode && (
           <>
@@ -141,7 +152,7 @@ const ObsDetailsDefaultMode = ( {
           </>
         )}
       </ScrollView>
-      {currentUser && (
+      {showFloatingButtons && (
         <FloatingButtons
           navToSuggestions={navToSuggestions}
           openAddCommentSheet={openAddCommentSheet}

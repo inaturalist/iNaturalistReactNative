@@ -83,6 +83,7 @@ const MainMediaDisplay = ( {
         <CustomImageZoom
           uri={uri}
           setZooming={setZooming}
+          selectedMediaIndex={selectedMediaIndex}
         />
         {
           editable
@@ -115,7 +116,8 @@ const MainMediaDisplay = ( {
   }, [
     deletePhotoLabel,
     editable,
-    onDeletePhoto
+    onDeletePhoto,
+    selectedMediaIndex
   ] );
 
   const renderSound = useCallback( sound => (

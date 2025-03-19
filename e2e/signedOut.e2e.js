@@ -6,12 +6,13 @@ import {
   waitFor
 } from "detox";
 
-import { iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
+import { iNatE2eAfterEach, iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
 import closeOnboarding from "./sharedFlows/closeOnboarding";
 
 describe( "Signed out user", () => {
   beforeAll( async ( ) => iNatE2eBeforeAll( device ) );
   beforeEach( async ( ) => iNatE2eBeforeEach( device ) );
+  afterEach( async ( ) => iNatE2eAfterEach( device ) );
 
   it( "should start at My Observations with log in text", async () => {
     await closeOnboarding( );
