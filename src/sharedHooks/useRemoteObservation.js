@@ -1,5 +1,6 @@
 // @flow
 import { fetchRemoteObservation } from "api/observations";
+import i18n from "i18next";
 import { RealmContext } from "providers/contexts.ts";
 import { useCallback, useEffect, useMemo } from "react";
 import Observation from "realmModels/Observation";
@@ -32,6 +33,8 @@ const useRemoteObservation = ( uuid: string, enabled: boolean ): Object => {
   const currentUser = useCurrentUser( );
   const realm = useRealm( );
 
+  const locale = i18n?.language ?? "en";
+
   const {
     data: remoteObservation,
     refetch: refetchRemoteObservation,
@@ -43,6 +46,7 @@ const useRemoteObservation = ( uuid: string, enabled: boolean ): Object => {
       uuid,
       {
         include_new_projects: true,
+        ...( !currentUser && { locale } ),
         fields: Observation.FIELDS
       },
       optsWithAuth
