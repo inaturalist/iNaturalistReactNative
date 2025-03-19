@@ -49,7 +49,7 @@ const SwitchRow = ( {
     <Pressable
       className={classNames}
       testID={testID}
-      accessibilityRole="button"
+      accessibilityRole="switch"
       accessibilityState={{ checked: value, disabled }}
       onPress={handlePress}
       disabled={disabled}
