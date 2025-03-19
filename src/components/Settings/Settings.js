@@ -64,6 +64,11 @@ const Settings = ( ) => {
   const [isSaving, setIsSaving] = useState( false );
   const [showingWebViewSettings, setShowingWebViewSettings] = useState( false );
 
+  const handleAdvancedModeToggle = useCallback( newValue => {
+    setIsDefaultMode( !newValue );
+    setIsAllAddObsOptionsMode( newValue );
+  }, [setIsDefaultMode, setIsAllAddObsOptionsMode] );
+
   useFocusEffect(
     useCallback( () => {
       if ( showingWebViewSettings ) {
@@ -209,10 +214,7 @@ const Settings = ( ) => {
               testID="advanced-interface-switch"
               smallLabel
               value={!isDefaultMode}
-              onValueChange={newValue => {
-                setIsDefaultMode( !newValue );
-                setIsAllAddObsOptionsMode( newValue );
-              }}
+              onValueChange={handleAdvancedModeToggle}
               label={t( "Advanced--interface-mode" )}
             />
           </View>
