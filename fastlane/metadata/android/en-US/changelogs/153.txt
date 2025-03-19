@@ -1,0 +1,8 @@
+UPDATED
+* Better error handling
+* Show additional suggestions on match screen also when there is no top suggestion
+
+FIXED
+* Show buttons on ObsDetails
+* Hide subscribe button when logged out
+* Common names are not translated until signup
