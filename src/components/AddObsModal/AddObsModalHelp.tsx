@@ -95,7 +95,7 @@ const AddObsModalHelp = ( {
                   name={item.icon}
                   size={30}
                   color={String(
-                    item.icon === "arcamera"
+                    item.icon === "green-camera-sparkle"
                       ? colors?.inatGreen
                       : colors?.darkGray
                   )}
