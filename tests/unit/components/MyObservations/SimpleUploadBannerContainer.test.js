@@ -10,8 +10,10 @@ import {
   UPLOAD_IN_PROGRESS,
   UPLOAD_PENDING
 } from "stores/createUploadObservationsSlice.ts";
-import useStore from "stores/useStore";
+import useStore, { zustandStorage } from "stores/useStore";
 import { renderComponent } from "tests/helpers/render";
+
+const mockUser = {};
 
 const deletionStore = {
   currentDeleteCount: 1,
@@ -35,7 +37,7 @@ describe( "SimpleUploadBannerContainer", () => {
       uploadStatus: UPLOAD_PENDING,
       syncingStatus: MANUAL_SYNC_IN_PROGRESS
     } );
-    renderComponent( <SimpleUploadBannerContainer /> );
+    renderComponent( <SimpleUploadBannerContainer currentUser={mockUser} /> );
 
     const statusText = screen.getByText( /Syncing.../ );
     expect( statusText ).toBeVisible( );
@@ -50,7 +52,12 @@ describe( "SimpleUploadBannerContainer", () => {
       uploadStatus: UPLOAD_PENDING,
       syncingStatus: SYNC_PENDING
     } );
-    renderComponent( <SimpleUploadBannerContainer numUploadableObservations={1} /> );
+    renderComponent(
+      <SimpleUploadBannerContainer
+        numUploadableObservations={1}
+        currentUser={mockUser}
+      />
+    );
 
     const statusText = screen.getByText( /Upload 1 observation/ );
     expect( statusText ).toBeVisible( );
@@ -67,7 +74,7 @@ describe( "SimpleUploadBannerContainer", () => {
       uploadStatus: UPLOAD_IN_PROGRESS,
       syncingStatus: SYNC_PENDING
     } );
-    renderComponent( <SimpleUploadBannerContainer /> );
+    renderComponent( <SimpleUploadBannerContainer currentUser={mockUser} /> );
 
     const statusText = screen.getByText( /Uploading 1 observation/ );
     expect( statusText ).toBeVisible( );
@@ -85,7 +92,7 @@ describe( "SimpleUploadBannerContainer", () => {
       syncingStatus: SYNC_PENDING,
       initialNumObservationsInQueue: numUploadsAttempted
     } );
-    renderComponent( <SimpleUploadBannerContainer /> );
+    renderComponent( <SimpleUploadBannerContainer currentUser={mockUser} /> );
 
     const statusText = screen.getByText( /1 observation uploaded/ );
     expect( statusText ).toBeVisible( );
@@ -100,7 +107,12 @@ describe( "SimpleUploadBannerContainer", () => {
       uploadStatus: UPLOAD_PENDING,
       syncingStatus: SYNC_PENDING
     } );
-    renderComponent( <SimpleUploadBannerContainer numUploadableObservations={4} /> );
+    renderComponent(
+      <SimpleUploadBannerContainer
+        numUploadableObservations={4}
+        currentUser={mockUser}
+      />
+    );
 
     const statusText = screen.getByText( /Upload 4 observations/ );
     expect( statusText ).toBeVisible( );
@@ -117,7 +129,7 @@ describe( "SimpleUploadBannerContainer", () => {
       syncingStatus: SYNC_PENDING,
       initialNumObservationsInQueue: 5
     } );
-    renderComponent( <SimpleUploadBannerContainer /> );
+    renderComponent( <SimpleUploadBannerContainer currentUser={mockUser} /> );
 
     const statusText = screen.getByText( /Uploading 2 of 5 observations/ );
     expect( statusText ).toBeVisible( );
@@ -135,7 +147,7 @@ describe( "SimpleUploadBannerContainer", () => {
       syncingStatus: SYNC_PENDING,
       initialNumObservationsInQueue: numUploadsAttempted
     } );
-    renderComponent( <SimpleUploadBannerContainer /> );
+    renderComponent( <SimpleUploadBannerContainer currentUser={mockUser} /> );
 
     const statusText = screen.getByText( /7 observations uploaded/ );
     expect( statusText ).toBeVisible( );
@@ -168,7 +180,7 @@ describe( "SimpleUploadBannerContainer", () => {
       deleteQueue: [{}],
       initialNumDeletionsInQueue: 1
     } );
-    renderComponent( <SimpleUploadBannerContainer /> );
+    renderComponent( <SimpleUploadBannerContainer currentUser={mockUser} /> );
 
     const statusText = screen.getByText( /1 observation deleted/ );
     expect( statusText ).toBeVisible( );
@@ -185,12 +197,55 @@ describe( "SimpleUploadBannerContainer", () => {
       deleteError,
       initialNumDeletionsInQueue: 2
     } );
-    renderComponent( <SimpleUploadBannerContainer /> );
+    renderComponent( <SimpleUploadBannerContainer currentUser={mockUser} /> );
 
     const deletingText = screen.getByText( /Deleting/ );
     expect( deletingText ).toBeVisible( );
 
     const statusText = screen.getByText( deleteError );
+    expect( statusText ).toBeVisible( );
+  } );
+
+  it( "should hide banner if logged out and only one observation", ( ) => {
+    zustandStorage.setItem( "numOfUserObservations", 1 );
+    useStore.setState( {
+      layout: {
+        isDefaultMode: false
+      },
+      isAdvancedUser: true,
+      uploadStatus: UPLOAD_PENDING,
+      syncingStatus: SYNC_PENDING,
+      numOfUserObservations: 1
+    } );
+    renderComponent(
+      <SimpleUploadBannerContainer
+        numUploadableObservations={1}
+        currentUser={null}
+      />
+    );
+
+    const statusText = screen.queryByText( /Upload 1 observation/ );
+    expect( statusText ).toBeFalsy( );
+  } );
+
+  it( "should show banner if logged out with more than one observation", ( ) => {
+    zustandStorage.setItem( "numOfUserObservations", 2 );
+    useStore.setState( {
+      layout: {
+        isDefaultMode: false
+      },
+      isAdvancedUser: true,
+      uploadStatus: UPLOAD_PENDING,
+      syncingStatus: SYNC_PENDING
+    } );
+    renderComponent(
+      <SimpleUploadBannerContainer
+        numUploadableObservations={1}
+        currentUser={null}
+      />
+    );
+
+    const statusText = screen.getByText( /Upload 1 observation/ );
     expect( statusText ).toBeVisible( );
   } );
 } );
