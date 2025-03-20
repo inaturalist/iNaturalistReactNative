@@ -28,7 +28,6 @@ const MyObservationsSimpleContainer = ( {
   isFetchingNextPage,
   layout,
   listRef,
-  numTotalObservations,
   numUnuploadedObservations,
   observations,
   onEndReached,
@@ -101,14 +100,6 @@ const MyObservationsSimpleContainer = ( {
   const numTotalTaxa = typeof ( numTotalTaxaRemote ) === "number"
     ? numTotalTaxaRemote
     : numTotalTaxaLocal;
-
-  useEffect( ( ) => {
-    // persist this number in zustand so a user can see their latest observations count
-    // even if they're offline
-    if ( numTotalObservations > numOfUserObservations ) {
-      zustandStorage.setItem( "numOfUserObservations", numTotalObservations );
-    }
-  }, [numTotalObservations, numOfUserObservations] );
 
   useEffect( ( ) => {
     // persist this number in zustand so a user can see their latest species count

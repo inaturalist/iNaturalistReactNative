@@ -4,6 +4,7 @@ import { getNowISO } from "sharedHelpers/dateAndTime.ts";
 import { log } from "sharedHelpers/logger";
 import { readExifFromMultiplePhotos } from "sharedHelpers/parseExif";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import { zustandStorage } from "stores/useStore";
 import * as uuid from "uuid";
 
 import Application from "./Application";
@@ -293,6 +294,12 @@ class Observation extends Realm.Object {
       // also using modified for updating observations which were already saved locally
       realm.create( "Observation", obsToSave, "modified" );
     }, "saving local observation for upload in Observation" );
+
+    const numTotalObservations = zustandStorage.getItem( "numOfUserObservations" );
+    if ( numTotalObservations ) {
+      zustandStorage.setItem( "numOfUserObservations", numTotalObservations + 1 );
+    }
+
     return realm.objectForPrimaryKey( "Observation", obs.uuid );
   }
 

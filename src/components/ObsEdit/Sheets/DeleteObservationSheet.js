@@ -8,7 +8,7 @@ import type { Node } from "react";
 import React, { useCallback } from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useTranslation } from "sharedHooks";
-import useStore from "stores/useStore";
+import useStore, { zustandStorage } from "stores/useStore";
 
 const { useRealm } = RealmContext;
 
@@ -46,6 +46,10 @@ const DeleteObservationSheet = ( {
       updateObservations( observations.filter( o => o.uuid !== uuid ) );
       onPressClose( );
       return;
+    }
+    const numTotalObservations = zustandStorage.getItem( "numOfUserObservations" );
+    if ( numTotalObservations ) {
+      zustandStorage.setItem( "numOfUserObservations", numTotalObservations - 1 );
     }
     if ( typeof ( onDelete ) === "function" ) {
       onDelete( );
