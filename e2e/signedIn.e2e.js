@@ -8,6 +8,10 @@ import deleteObservation from "./sharedFlows/deleteObservation";
 import signIn from "./sharedFlows/signIn";
 import uploadObservation from "./sharedFlows/uploadObservation";
 
+function delay( ms ) {
+  return new Promise( resolve => { setTimeout( resolve, ms ); } );
+}
+
 describe( "Signed in user", () => {
   beforeAll( async ( ) => iNatE2eBeforeAll( device ) );
   beforeEach( async ( ) => iNatE2eBeforeEach( device ) );
@@ -116,6 +120,11 @@ describe( "Signed in user", () => {
     // point, and we can confirm deletion by testing for the absence of the
     // list item for the observation we deleted.
     await waitFor( element( by.text( /Upload 1 observation/ ) ) ).toBeVisible( ).withTimeout( 20_000 );
+
+    // the timing of syncing deletions seems to be different in the actual app versus these
+    // e2e tests, so deleting an observation here still shows the observation
+    // in the list unless this delay( ) is added
+    await delay( 3000 );
     await expect( obsListItem ).toBeNotVisible( );
   } );
 } );
