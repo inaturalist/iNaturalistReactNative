@@ -65,7 +65,7 @@ describe( "Signed in user", () => {
     const username = await signIn( );
 
     // Switch to list view as well
-    const listToggle = element( by.id( "MyObservationsToolbar.toggleListView" ) );
+    const listToggle = element( by.id( "SegmentedButton.list" ) );
     await waitFor( listToggle ).toBeVisible( ).withTimeout( 10000 );
     await listToggle.tap();
 

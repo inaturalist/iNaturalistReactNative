@@ -31,7 +31,9 @@ const useLocalObservations = ( ): Object => {
         [["needs_sync", true], ["_created_at", true]]
       );
 
-      const obsNotFlaggedForDeletion = sortedCollection.filtered( "_deleted_at == nil" );
+      // eslint-disable-next-line max-len
+      const deletionFilters = "_deleted_at == nil OR _pending_deletion == false OR _pending_deletion == null";
+      const obsNotFlaggedForDeletion = sortedCollection.filtered( deletionFilters );
       stagedObservationList.current = [...obsNotFlaggedForDeletion];
 
       const unsynced = Observation.filterUnsyncedObservations( realm );

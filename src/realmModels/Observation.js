@@ -460,10 +460,32 @@ class Observation extends Realm.Object {
     }
   };
 
+  static markPendingDeletion( realm, uuidToDelete ) {
+    const observation = realm.objectForPrimaryKey( "Observation", uuidToDelete );
+    if ( observation ) {
+      safeRealmWrite( realm, ( ) => {
+        observation._pending_deletion = true;
+        observation._deletion_attempted_at = new Date( );
+      } );
+    }
+  }
+
+  static clearPendingDeletion( realm, uuidToDelete ) {
+    const observation = realm.objectForPrimaryKey( "Observation", uuidToDelete );
+    if ( observation ) {
+      safeRealmWrite( realm, ( ) => {
+        observation._pending_deletion = false;
+        observation._deletion_attempted_at = null;
+      } );
+    }
+  }
+
   static schema = {
     name: "Observation",
     primaryKey: "uuid",
     properties: {
+      _pending_deletion: "bool?",
+      _deletion_attempted_at: "date?",
       // datetime the observation was created on the device
       _created_at: "date?",
       // datetime the observation was requested to be deleted
