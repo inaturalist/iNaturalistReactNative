@@ -17,12 +17,13 @@ type Props = {
   testID?: string
 }
 
-// styling lifted from
+// styling lifted from with added padding to increase tappable area
 // https://github.com/react-navigation/react-navigation/blob/395410a7a751492ad846c7723dd33b55891173e1/packages/elements/src/Header/HeaderBackButton.tsx
 const REACT_NAVIGATION_BACK_BUTTON_STYLES = {
   container: {
     ...Platform.select( {
       ios: {
+        padding: 10,
         paddingLeft: 8,
         paddingRight: 22
       },

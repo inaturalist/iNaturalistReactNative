@@ -74,8 +74,6 @@ const HeaderKebabMenu = ( {
     }
   };
 
-  console.log( "currentUser", currentUser );
-
   return (
     <KebabMenu
       visible={kebabMenuVisible}
