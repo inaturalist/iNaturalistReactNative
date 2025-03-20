@@ -32,7 +32,7 @@ const useLocalObservations = ( ): Object => {
       );
 
       // eslint-disable-next-line max-len
-      const deletionFilters = "_deleted_at == nil OR _pending_deletion == false OR _pending_deletion == null";
+      const deletionFilters = "_deleted_at == nil OR _pending_deletion == false OR _pending_deletion == nil";
       const obsNotFlaggedForDeletion = sortedCollection.filtered( deletionFilters );
       stagedObservationList.current = [...obsNotFlaggedForDeletion];
 

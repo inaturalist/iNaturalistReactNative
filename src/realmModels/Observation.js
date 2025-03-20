@@ -465,7 +465,6 @@ class Observation extends Realm.Object {
     if ( observation ) {
       safeRealmWrite( realm, ( ) => {
         observation._pending_deletion = true;
-        observation._deletion_attempted_at = new Date( );
       } );
     }
   }
@@ -475,7 +474,6 @@ class Observation extends Realm.Object {
     if ( observation ) {
       safeRealmWrite( realm, ( ) => {
         observation._pending_deletion = false;
-        observation._deletion_attempted_at = null;
       } );
     }
   }
@@ -485,7 +483,6 @@ class Observation extends Realm.Object {
     primaryKey: "uuid",
     properties: {
       _pending_deletion: "bool?",
-      _deletion_attempted_at: "date?",
       // datetime the observation was created on the device
       _created_at: "date?",
       // datetime the observation was requested to be deleted

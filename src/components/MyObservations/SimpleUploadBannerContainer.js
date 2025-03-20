@@ -4,7 +4,6 @@ import type { Node } from "react";
 import React, { useCallback, useMemo } from "react";
 import { Dimensions, PixelRatio } from "react-native";
 import {
-  useLayoutPrefs,
   useTranslation
 } from "sharedHooks";
 import {
@@ -26,16 +25,15 @@ const DELETION_STARTED_PROGRESS = 0.25;
 
 type Props = {
   numUploadableObservations: number,
-  handleSyncButtonPress: Function
+  handleSyncButtonPress: Function,
+  currentUser: Object
 }
 
 const SimpleUploadBannerContainer = ( {
   handleSyncButtonPress,
-  numUploadableObservations
+  numUploadableObservations,
+  currentUser
 }: Props ): Node => {
-  const {
-    isDefaultMode
-  } = useLayoutPrefs( );
   const numOfUserObservations = zustandStorage.getItem( "numOfUserObservations" );
   const currentDeleteCount = useStore( state => state.currentDeleteCount );
   const deleteError = useStore( state => state.deleteError );
@@ -180,7 +178,7 @@ const SimpleUploadBannerContainer = ( {
 
   // hide when there are less than two observations to upload
   // but make sure completed status is displayed when uploads are finished
-  if ( isDefaultMode && numOfUserObservations < 2 && progress === 0 ) {
+  if ( !currentUser && numOfUserObservations < 2 && progress === 0 ) {
     return null;
   }
   return (
