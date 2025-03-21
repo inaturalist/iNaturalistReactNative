@@ -57,7 +57,7 @@ const Match = ( {
   const latitude = observation?.privateLatitude || observation?.latitude;
   const taxon = topSuggestion?.taxon;
 
-  // In case the photo could not be identified
+  // In case there are no suggestions, at all
   if ( !topSuggestion && otherSuggestions.length === 0 ) {
     return (
       <>
@@ -96,6 +96,13 @@ const Match = ( {
         <SaveDiscardButtons
           handlePress={handleSaveOrDiscardPress}
         />
+      </>
+    );
+  }
+  // In case there are suggestions but no top suggestion
+  if ( !topSuggestion ) {
+    return (
+      <>
       </>
     );
   }
