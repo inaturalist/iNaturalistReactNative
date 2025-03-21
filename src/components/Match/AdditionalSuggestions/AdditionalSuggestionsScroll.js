@@ -107,7 +107,7 @@ const AdditionalSuggestionsScroll = ( {
     return null;
   }
 
-  const renderHeader = () => <View className="ml-5" />;
+  const renderHeader = () => <View className="ml-4" />;
 
   const keepHiddenUntilCardHeightsMeasured = {
     opacity: isVisible
