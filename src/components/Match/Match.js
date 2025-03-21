@@ -103,6 +103,21 @@ const Match = ( {
   if ( !topSuggestion ) {
     return (
       <>
+        <ScrollViewWrapper scrollRef={scrollRef}>
+          <PhotosSection
+            representativePhoto={topSuggestion?.taxon?.representative_photo}
+            taxon={taxon}
+            obsPhotos={obsPhotos}
+            navToTaxonDetails={navToTaxonDetails}
+          />
+          { !suggestionsLoading
+          && (
+            <View className="mt-5" />
+          )}
+        </ScrollViewWrapper>
+        <SaveDiscardButtons
+          handlePress={handleSaveOrDiscardPress}
+        />
       </>
     );
   }
