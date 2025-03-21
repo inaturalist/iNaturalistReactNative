@@ -127,10 +127,23 @@ const Match = ( {
             obsPhotos={obsPhotos}
             navToTaxonDetails={navToTaxonDetails}
           />
-          { !suggestionsLoading
-          && (
-            <View className="mt-5" />
-          )}
+          <View className="pt-2">
+            <AdditionalSuggestionsScroll
+              onSuggestionChosen={onSuggestionChosen}
+              otherSuggestions={otherSuggestions}
+              suggestionsLoading={suggestionsLoading}
+            />
+            {!latitude && (
+              <Button
+                className="mx-5 mb-7"
+                level="neutral"
+                text={t( "ADD-LOCATION-FOR-BETTER-IDS" )}
+                onPress={handleAddLocationPressed}
+                accessibilityLabel={t( "Edit-location" )}
+                accessibilityHint={t( "Add-location-to-refresh-suggestions" )}
+              />
+            )}
+          </View>
         </ScrollViewWrapper>
         <SaveDiscardButtons
           handlePress={handleSaveOrDiscardPress}
