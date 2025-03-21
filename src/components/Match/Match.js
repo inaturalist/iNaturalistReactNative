@@ -108,6 +108,19 @@ const Match = ( {
     return (
       <>
         <ScrollViewWrapper scrollRef={scrollRef}>
+          <View className={cardClassTop}>
+            {
+              suggestionsLoading
+                ? (
+                  <ActivityIndicator size={33} />
+                )
+                : (
+                  <Body2>
+                    {t( "Were-not-confident-enough-to-make-an-ID" )}
+                  </Body2>
+                )
+            }
+          </View>
           <PhotosSection
             representativePhoto={topSuggestion?.taxon?.representative_photo}
             taxon={taxon}
