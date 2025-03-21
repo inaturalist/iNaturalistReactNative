@@ -21,7 +21,8 @@ import SaveDiscardButtons from "./SaveDiscardButtons";
 
 const cardClassTop
   = "rounded-t-2xl border-lightGray border-[2px] py-[18px] px-5 border-b-0 -mb-0.5";
-const cardClassBottom = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mt-0.5 mb-4";
+const cardClassBottom
+  = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mt-0.5 mb-[30px]";
 
 type Props = {
   observation: Object,
@@ -92,7 +93,7 @@ const Match = ( {
                 iconicTaxonChosen={iconicTaxon}
                 onIconicTaxonChosen={setIconicTaxon}
               />
-              <Body2 className="mx-4 mt-7 mb-20">
+              <Body2 className="mx-4 my-[30px]">
                 {t( "If-you-took-the-original-photo-you-can-help" )}
               </Body2>
             </View>
