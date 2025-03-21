@@ -69,7 +69,7 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected }: Props ): Node 
             accessibilityLabel={t( "Add-observations" )}
             sizeClassName="w-[141px] h-[141px] self-center"
             onPress={navToARCamera}
-            iconSize={76}
+            iconSize={96}
           />
         </View>
       </View>

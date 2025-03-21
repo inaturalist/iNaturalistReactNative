@@ -43,8 +43,8 @@ const GradientButton = ( {
     >
       <View className="grow aspect-square flex items-center justify-center">
         <INatIcon
-          name={iconName || "arcamera"}
-          size={iconSize || 37}
+          name={iconName || "aicamera"}
+          size={iconSize || 47}
           color={colors.white}
         />
       </View>
