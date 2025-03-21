@@ -64,12 +64,24 @@ const useSyncObservations = (
     deleteQueue.forEach( async ( uuid: string, i: number ) => {
       setCurrentDeletionUuid( uuid );
       const observation = realm.objectForPrimaryKey( "Observation", uuid );
+
+      // Mark as pending deletion first instead of immediately deleting
+      Observation.markPendingDeletion( realm, uuid );
+
       const hasBeenSyncedRemotely = observation?._synced_at;
 
       if ( !hasBeenSyncedRemotely ) {
         Observation.deleteLocalObservation( realm, uuid );
       } else {
-        handleRemoteDeletion.mutate( { uuid } );
+        try {
+          await handleRemoteDeletion.mutateAsync( { uuid } );
+        } catch ( error ) {
+          // In case of failure, clear the pending deletion flag after some time
+          // to allow retrying later
+          setTimeout( ( ) => {
+            Observation.clearPendingDeletion( realm, uuid );
+          }, 60000 );
+        }
       }
 
       if ( i > 0 ) {

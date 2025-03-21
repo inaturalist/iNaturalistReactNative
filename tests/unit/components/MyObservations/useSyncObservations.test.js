@@ -50,11 +50,11 @@ const mockRemoteObservation = factory( "RemoteObservation", {
   taxon: factory.states( "genus" )( "RemoteTaxon" )
 } );
 
-const mockMutate = jest.fn();
+const mockMutateAsync = jest.fn();
 jest.mock( "sharedHooks/useAuthenticatedMutation", ( ) => ( {
   __esModule: true,
   default: ( ) => ( {
-    mutate: mockMutate
+    mutateAsync: mockMutateAsync
   } )
 } ) );
 
@@ -140,7 +140,7 @@ describe( "automatic sync while user is logged out", ( ) => {
     await waitFor( ( ) => {
       expect( deletedObs ).toBeFalsy( );
     } );
-    expect( mockMutate ).not.toHaveBeenCalled( );
+    expect( mockMutateAsync ).not.toHaveBeenCalled( );
   } );
 } );
 
@@ -176,7 +176,7 @@ describe( "automatic sync while user is logged in", ( ) => {
       renderHook( ( ) => useSyncObservations( currentUserId ) );
 
       await waitFor( ( ) => {
-        expect( mockMutate ).not.toHaveBeenCalled( );
+        expect( mockMutateAsync ).not.toHaveBeenCalled( );
       } );
     } );
 
@@ -195,7 +195,7 @@ describe( "automatic sync while user is logged in", ( ) => {
       renderHook( ( ) => useSyncObservations( currentUserId ) );
 
       await waitFor( ( ) => {
-        expect( mockMutate )
+        expect( mockMutateAsync )
           .toHaveBeenCalledWith( { uuid: syncedObservations[0].uuid } );
       } );
     } );

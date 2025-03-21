@@ -24,7 +24,6 @@ const ITEMS = sortBy( [
   { title: "TaxonResult", component: "TaxonResultDemo" },
   { title: "ObsGridItem", component: "ObsGridItemDemo" },
   { title: "TaxonGridItem", component: "TaxonGridItemDemo" },
-  { title: "Toolbar", component: "ToolbarDemo" },
   { title: "PivotCards", component: "PivotCardsDemo" }
 ], item => item.title );
 ITEMS.push( { title: "Everything Else", component: "Misc" } );

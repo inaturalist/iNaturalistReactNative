@@ -25,12 +25,14 @@ const DELETION_STARTED_PROGRESS = 0.25;
 
 type Props = {
   numUploadableObservations: number,
-  handleSyncButtonPress: Function
+  handleSyncButtonPress: Function,
+  currentUser: Object
 }
 
 const SimpleUploadBannerContainer = ( {
   handleSyncButtonPress,
-  numUploadableObservations
+  numUploadableObservations,
+  currentUser
 }: Props ): Node => {
   const numOfUserObservations = zustandStorage.getItem( "numOfUserObservations" );
   const currentDeleteCount = useStore( state => state.currentDeleteCount );
@@ -176,7 +178,7 @@ const SimpleUploadBannerContainer = ( {
 
   // hide when there are less than two observations to upload
   // but make sure completed status is displayed when uploads are finished
-  if ( numOfUserObservations < 2 && progress === 0 ) {
+  if ( !currentUser && numOfUserObservations < 2 && progress === 0 ) {
     return null;
   }
   return (

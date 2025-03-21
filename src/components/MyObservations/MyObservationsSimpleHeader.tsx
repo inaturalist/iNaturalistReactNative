@@ -73,6 +73,7 @@ const MyObservationsSimpleHeader = ( {
       <SimpleUploadBannerContainer
         handleSyncButtonPress={handleSyncButtonPress}
         numUploadableObservations={numUploadableObservations}
+        currentUser={currentUser}
       />
       <View className="flex-row justify-between items-center px-5 py-1">
         {currentUser
