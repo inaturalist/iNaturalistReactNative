@@ -86,14 +86,14 @@ const Match = ( {
           { !suggestionsLoading
           && (
             <View className="mt-5">
-              <Heading3 className="mx-4">
+              <Heading3 className="mx-5">
                 {t( "Do-you-know-what-group-this-is-in" )}
               </Heading3>
               <IconicSuggestionsScroll
                 iconicTaxonChosen={iconicTaxon}
                 onIconicTaxonChosen={setIconicTaxon}
               />
-              <Body2 className="mx-4 my-[30px]">
+              <Body2 className="mx-5 my-[30px]">
                 {t( "If-you-took-the-original-photo-you-can-help" )}
               </Body2>
               {!latitude && (
