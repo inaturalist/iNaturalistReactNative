@@ -12,7 +12,8 @@ import {
   Button,
   Heading4,
   RadioButtonRow,
-  ScrollViewWrapper
+  ScrollViewWrapper,
+  SwitchRow
 } from "components/SharedComponents";
 import { RealmContext } from "providers/contexts.ts";
 import React, { useCallback, useEffect, useState } from "react";
@@ -62,6 +63,11 @@ const Settings = ( ) => {
   const [settings, setSettings] = useState( {} );
   const [isSaving, setIsSaving] = useState( false );
   const [showingWebViewSettings, setShowingWebViewSettings] = useState( false );
+
+  const handleAdvancedModeToggle = useCallback( newValue => {
+    setIsDefaultMode( !newValue );
+    setIsAllAddObsOptionsMode( newValue );
+  }, [setIsDefaultMode, setIsAllAddObsOptionsMode] );
 
   useFocusEffect(
     useCallback( () => {
@@ -204,26 +210,12 @@ const Settings = ( ) => {
         <View className="mb-9">
           <Heading4>{t( "INATURALIST-MODE" )}</Heading4>
           <View className="mt-[22px]">
-            <RadioButtonRow
+            <SwitchRow
+              testID="advanced-interface-switch"
               smallLabel
-              checked={isDefaultMode}
-              onPress={( ) => {
-                setIsDefaultMode( true );
-                setIsAllAddObsOptionsMode( false );
-              }}
-              label={t( "Default--interface-mode" )}
-            />
-          </View>
-          <View className="mt-4">
-            <RadioButtonRow
-              testID="advanced-interface-option"
-              smallLabel
-              checked={!isDefaultMode}
-              onPress={( ) => {
-                setIsDefaultMode( false );
-                setIsAllAddObsOptionsMode( true );
-              }}
-              label={t( "Advanced--interface-mode-with-explainer" )}
+              value={!isDefaultMode}
+              onValueChange={handleAdvancedModeToggle}
+              label={t( "Advanced--interface-mode" )}
             />
           </View>
         </View>
