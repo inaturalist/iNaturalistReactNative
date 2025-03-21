@@ -117,7 +117,7 @@ const AdditionalSuggestionsScroll = ( {
 
   return (
     <View className="mt-4 mb-7">
-      <Heading3 className="mx-5 mb-3">
+      <Heading3 className="mx-5 mb-[15px]">
         {noTopSuggestion
           ? t( "It-might-be-one-of-these" )
           : t( "It-might-also-be" )}
