@@ -116,7 +116,7 @@ const AdditionalSuggestionsScroll = ( {
   };
 
   return (
-    <View className="mt-4 mb-7">
+    <>
       <Heading3 className="mx-5 mb-[15px]">
         {noTopSuggestion
           ? t( "It-might-be-one-of-these" )
@@ -140,7 +140,7 @@ const AdditionalSuggestionsScroll = ( {
           </>
         )
         : <ActivityIndicator className="my-3" size={40} />}
-    </View>
+    </>
   );
 };
 

@@ -139,7 +139,7 @@ const Match = ( {
             obsPhotos={obsPhotos}
             navToTaxonDetails={navToTaxonDetails}
           />
-          <View className="pt-2">
+          <View className="mt-5 mb-[30px]">
             <AdditionalSuggestionsScroll
               noTopSuggestion
               onSuggestionChosen={onSuggestionChosen}
@@ -194,20 +194,20 @@ const Match = ( {
           observation={observation}
         />
         <View className={cardClassBottom} />
-        <View className="pt-2">
-          {
-            isConnected && (
-              <Button
-                className="mx-5 mb-2"
-                level="primary"
-                text={taxon?.rank_level === 10
-                  ? t( "LEARN-MORE-ABOUT-THIS-SPECIES" )
-                  : t( "LEARN-MORE-ABOUT-THIS-GROUP" )}
-                onPress={navToTaxonDetails}
-                accessibilityHint={t( "Navigates-to-taxon-details" )}
-              />
-            )
-          }
+        {
+          isConnected && (
+            <Button
+              className="mx-4 mb-[30px]"
+              level="primary"
+              text={taxon?.rank_level === 10
+                ? t( "LEARN-MORE-ABOUT-THIS-SPECIES" )
+                : t( "LEARN-MORE-ABOUT-THIS-GROUP" )}
+              onPress={navToTaxonDetails}
+              accessibilityHint={t( "Navigates-to-taxon-details" )}
+            />
+          )
+        }
+        <View className="mb-[30px]">
           <AdditionalSuggestionsScroll
             onSuggestionChosen={onSuggestionChosen}
             otherSuggestions={otherSuggestions}
