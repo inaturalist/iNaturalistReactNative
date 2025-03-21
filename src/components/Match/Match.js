@@ -129,6 +129,7 @@ const Match = ( {
           />
           <View className="pt-2">
             <AdditionalSuggestionsScroll
+              noTopSuggestion
               onSuggestionChosen={onSuggestionChosen}
               otherSuggestions={otherSuggestions}
               suggestionsLoading={suggestionsLoading}

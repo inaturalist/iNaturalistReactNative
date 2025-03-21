@@ -9,6 +9,7 @@ import { useTranslation } from "sharedHooks";
 import SuggestionsResult from "./SuggestionsResult";
 
 const AdditionalSuggestionsScroll = ( {
+  noTopSuggestion,
   otherSuggestions,
   suggestionsLoading,
   onSuggestionChosen
@@ -116,7 +117,11 @@ const AdditionalSuggestionsScroll = ( {
 
   return (
     <View className="mt-4 mb-7">
-      <Heading3 className="mx-5 mb-3">{t( "It-might-also-be" )}</Heading3>
+      <Heading3 className="mx-5 mb-3">
+        {noTopSuggestion
+          ? t( "It-might-be-one-of-these" )
+          : t( "It-might-also-be" )}
+      </Heading3>
 
       {!suggestionsLoading
         ? (
