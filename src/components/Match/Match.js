@@ -19,7 +19,8 @@ import MatchHeader from "./MatchHeader";
 import PhotosSection from "./PhotosSection";
 import SaveDiscardButtons from "./SaveDiscardButtons";
 
-const cardClassTop = "rounded-t-2xl border-lightGray border-[2px] p-4 border-b-0 -mb-0.5";
+const cardClassTop
+  = "rounded-t-2xl border-lightGray border-[2px] py-[18px] px-5 border-b-0 -mb-0.5";
 const cardClassBottom = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mt-0.5 mb-4";
 
 type Props = {
