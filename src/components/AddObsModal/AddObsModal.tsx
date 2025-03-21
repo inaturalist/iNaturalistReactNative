@@ -47,7 +47,7 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
   const obsCreateItems = useMemo( ( ) => ( {
     aiCamera: {
       text: t( "Use-iNaturalists-AI-Camera" ),
-      icon: "green-camera-sparkle",
+      icon: "aicamera",
       onPress: ( ) => navAndCloseModal( "Camera", { camera: "AI" } ),
       testID: "aicamera-button",
       className: classnames( GREEN_CIRCLE_CLASS, "absolute bottom-[26px]" ),
@@ -121,14 +121,11 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
       accessibilityHint={accessibilityHint}
       accessibilityLabel={accessibilityLabel}
       className={className}
-      color={icon === "camera-sparkle-green-circle"
-        ? String( colors?.inatGreen )
-        : String( colors?.white )}
-      backgroundColor={icon === "camera-sparkle-green-circle" && String( colors?.white )}
+      color={String( colors?.white )}
       icon={icon}
       onPress={onPress}
-      size={icon === "camera-sparkle-green-circle"
-        ? 45
+      size={icon === "aicamera"
+        ? 38
         : 30}
       testID={testID}
     />
@@ -143,10 +140,7 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
       } )}
       >
         {renderAddObsIcon( obsCreateItems.standardCamera )}
-        {AI_CAMERA_SUPPORTED && renderAddObsIcon( {
-          ...obsCreateItems.aiCamera,
-          icon: "camera-sparkle-green-circle"
-        } )}
+        {AI_CAMERA_SUPPORTED && renderAddObsIcon( obsCreateItems.aiCamera )}
         {renderAddObsIcon( obsCreateItems.photoLibrary )}
       </View>
       <View className={classnames( ROW_CLASS, "items-center" )}>
