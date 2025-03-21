@@ -98,6 +98,16 @@ const Match = ( {
               </Body2>
             </View>
           )}
+          {!latitude && (
+            <Button
+              className="mx-4 mb-[30px]"
+              level="neutral"
+              text={t( "ADD-LOCATION-FOR-BETTER-IDS" )}
+              onPress={handleAddLocationPressed}
+              accessibilityLabel={t( "Edit-location" )}
+              accessibilityHint={t( "Add-location-to-refresh-suggestions" )}
+            />
+          )}
         </ScrollViewWrapper>
         <SaveDiscardButtons
           handlePress={handleSaveOrDiscardPress}
