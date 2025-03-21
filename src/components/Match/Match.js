@@ -68,7 +68,11 @@ const Match = ( {
                 ? (
                   <ActivityIndicator size={33} />
                 )
-                : <MatchHeader topSuggestion={topSuggestion} />
+                : (
+                  <Body2>
+                    {t( "iNaturalist-couldnt-identify-this-organism" )}
+                  </Body2>
+                )
             }
           </View>
           <PhotosSection
