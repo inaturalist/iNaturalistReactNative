@@ -78,20 +78,20 @@ const Match = ( {
             navToTaxonDetails={navToTaxonDetails}
           />
           { !suggestionsLoading
-    && (
-      <View className="mt-5">
-        <Heading3 className="mx-4">
-          {t( "Do-you-know-what-group-this-is-in" )}
-        </Heading3>
-        <IconicSuggestionsScroll
-          iconicTaxonChosen={iconicTaxon}
-          onIconicTaxonChosen={setIconicTaxon}
-        />
-        <Body2 className="mx-4 mt-7 mb-20">
-          {t( "If-you-took-the-original-photo-you-can-help" )}
-        </Body2>
-      </View>
-    )}
+          && (
+            <View className="mt-5">
+              <Heading3 className="mx-4">
+                {t( "Do-you-know-what-group-this-is-in" )}
+              </Heading3>
+              <IconicSuggestionsScroll
+                iconicTaxonChosen={iconicTaxon}
+                onIconicTaxonChosen={setIconicTaxon}
+              />
+              <Body2 className="mx-4 mt-7 mb-20">
+                {t( "If-you-took-the-original-photo-you-can-help" )}
+              </Body2>
+            </View>
+          )}
         </ScrollViewWrapper>
         <SaveDiscardButtons
           handlePress={handleSaveOrDiscardPress}
