@@ -24,15 +24,13 @@ const Settings = ( ) => {
   const { t } = useTranslation();
   const currentUser = useCurrentUser( );
   const {
-    isDefaultMode,
-    setIsDefaultMode,
-    setIsAllAddObsOptionsMode
-  } = useLayoutPrefs();
+    displayAdvancedSettings,
+    setDisplayAdvancedSettings
+  } = useLayoutPrefs( );
 
-  const handleAdvancedModeToggle = useCallback( newValue => {
-    setIsDefaultMode( !newValue );
-    setIsAllAddObsOptionsMode( newValue );
-  }, [setIsDefaultMode, setIsAllAddObsOptionsMode] );
+  const handleValueChange = useCallback( newValue => {
+    setDisplayAdvancedSettings( newValue );
+  }, [setDisplayAdvancedSettings] );
 
   return (
     <ScrollViewWrapper>
@@ -42,11 +40,11 @@ const Settings = ( ) => {
         <SwitchRow
           testID="advanced-interface-switch"
           smallLabel
-          value={!isDefaultMode}
-          onValueChange={handleAdvancedModeToggle}
+          value={displayAdvancedSettings}
+          onValueChange={handleValueChange}
           label={t( "View-Advanced-Settings" )}
         />
-        {!isDefaultMode && <AdvancedSettings />}
+        {displayAdvancedSettings && <AdvancedSettings />}
         {currentUser && <LoggedInDefaultSettings />}
       </View>
     </ScrollViewWrapper>

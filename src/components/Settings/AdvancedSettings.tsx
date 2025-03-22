@@ -17,11 +17,12 @@ import {
 const AdvancedSettings = ( ) => {
   const { t } = useTranslation();
   const {
-    isDefaultMode,
     isAllAddObsOptionsMode,
     setIsAllAddObsOptionsMode,
     isAdvancedSuggestionsMode,
-    setIsSuggestionsFlowMode
+    setIsSuggestionsFlowMode,
+    isDefaultMode,
+    setIsDefaultMode
   } = useLayoutPrefs();
 
   const renderSettingDescription = description => (
@@ -30,26 +31,24 @@ const AdvancedSettings = ( ) => {
 
   return (
     <>
-      {!isDefaultMode && (
-        <View className="mt-[20px]">
-          {renderSettingDescription( t( "When-tapping-the-green-observation-button" ) )}
-          <RadioButtonRow
-            classNames="mt-[16.5px]"
-            testID="all-observation-options"
-            smallLabel
-            checked={isAllAddObsOptionsMode}
-            onPress={() => setIsAllAddObsOptionsMode( true )}
-            label={t( "All-observation-options--list" )}
-          />
-          <RadioButtonRow
-            classNames="mt-[16.5px]"
-            smallLabel
-            checked={!isAllAddObsOptionsMode}
-            onPress={() => setIsAllAddObsOptionsMode( false )}
-            label={t( "iNaturalist-AI-Camera" )}
-          />
-        </View>
-      )}
+      <View className="mt-[20px]">
+        {renderSettingDescription( t( "When-tapping-the-green-observation-button" ) )}
+        <RadioButtonRow
+          classNames="mt-[16.5px]"
+          testID="all-observation-options"
+          smallLabel
+          checked={isAllAddObsOptionsMode}
+          onPress={() => setIsAllAddObsOptionsMode( true )}
+          label={t( "All-observation-options--list" )}
+        />
+        <RadioButtonRow
+          classNames="mt-[16.5px]"
+          smallLabel
+          checked={!isAllAddObsOptionsMode}
+          onPress={() => setIsAllAddObsOptionsMode( false )}
+          label={t( "iNaturalist-AI-Camera" )}
+        />
+      </View>
       <View className="mt-[20px]">
         {renderSettingDescription( t( "After-capturing-or-importing-photos-show" ) )}
         <RadioButtonRow
@@ -80,15 +79,15 @@ const AdvancedSettings = ( ) => {
         <RadioButtonRow
           classNames="mt-[16.5px]"
           smallLabel
-          // checked={!isAdvancedSuggestionsMode}
-          // onPress={() => setIsSuggestionsFlowMode( false )}
+          checked={!isDefaultMode}
+          onPress={() => setIsDefaultMode( false )}
           label={t( "Activity-Details-View" )}
         />
         <RadioButtonRow
           classNames="mt-[16.5px]"
           smallLabel
-          // checked={!isAdvancedSuggestionsMode}
-          // onPress={() => setIsSuggestionsFlowMode( false )}
+          checked={isDefaultMode}
+          onPress={() => setIsDefaultMode( true )}
           label={t( "Simple-View" )}
         />
       </View>
