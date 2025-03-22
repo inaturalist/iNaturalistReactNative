@@ -1,3 +1,3 @@
-iNaturalist is a social network for sharing biodiversity information to help each other learn about nature. The primary goal is to connect people to nature, and the secondary goal is to generate scientifically valuable biodiversity data from these personal encounters.
+愛自然(iNaturalist)是一個分享生物多樣性資訊的社交網路，旨在幫助彼此學習有關自然的知識。 首要目標是連結人與大自然，次要目標則是透過這些個人觀察紀錄，產生具有科學價值的生物多樣性資料。
 
-iNaturalist helps you identify plants and animals with visually similar suggestions and verification by dedicated contributors. Get connected with a community of over a million scientists and naturalists who can help you learn more about nature! By recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature.
+愛自然透過視覺相似建議與熱心的使用者驗證機制，以協助您辨識動植物。 連結超過一百萬名科學家與自然觀察家組成的專業社群，讓您深入探索自然知識！ 透過記錄並分享觀察紀錄，您所產出的研究等級資料將協助科學家更深入地理解自然生態，以保護大自然。
