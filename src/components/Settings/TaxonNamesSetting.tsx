@@ -12,7 +12,6 @@ import {
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useCurrentUser,
-  useLayoutPrefs,
   useTranslation
 } from "sharedHooks";
 
@@ -35,9 +34,6 @@ const TaxonNamesSetting = ( { onChange }: Props ) => {
   const realm = useRealm( );
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
-  const {
-    isDefaultMode
-  } = useLayoutPrefs();
 
   const changeTaxonNameDisplay = useCallback( nameDisplayPref => {
     const options = {};
@@ -69,7 +65,7 @@ const TaxonNamesSetting = ( { onChange }: Props ) => {
     return currentUser;
   }, [currentUser, realm, onChange] );
 
-  if ( isDefaultMode || !currentUser ) {
+  if ( !currentUser ) {
     return null;
   }
 
