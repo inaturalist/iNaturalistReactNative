@@ -18,7 +18,7 @@ const PhotoSharing = ( ): Node => {
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const prepareObsEdit = useStore( state => state.prepareObsEdit );
   const setPhotoImporterState = useStore( state => state.setPhotoImporterState );
-  const { isAdvancedSuggestionsMode, isDefaultMode } = useLayoutPrefs();
+  const { screenAfterPhotoEvidence } = useLayoutPrefs();
   const [navigationHandled, setNavigationHandled] = useState( null );
 
   const createObservationAndNavToObsEdit = useCallback( async photoUris => {
@@ -26,9 +26,9 @@ const PhotoSharing = ( ): Node => {
       const newObservation = await Observation.createObservationWithPhotos( photoUris );
       newObservation.description = sharedText;
       prepareObsEdit( newObservation );
-      if ( isDefaultMode ) {
+      if ( screenAfterPhotoEvidence === "Match" ) {
         navigation.navigate( "NoBottomTabStackNavigator", { screen: "Match" } );
-      } else if ( isAdvancedSuggestionsMode ) {
+      } else if ( screenAfterPhotoEvidence === "Suggestions" ) {
         navigation.navigate(
           "NoBottomTabStackNavigator",
           { screen: "Suggestions", params: { lastScreen: "PhotoSharing" } }
@@ -46,8 +46,7 @@ const PhotoSharing = ( ): Node => {
     navigation,
     prepareObsEdit,
     sharedText,
-    isAdvancedSuggestionsMode,
-    isDefaultMode
+    screenAfterPhotoEvidence
   ] );
 
   useEffect( ( ) => {

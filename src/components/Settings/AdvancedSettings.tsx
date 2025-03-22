@@ -19,10 +19,10 @@ const AdvancedSettings = ( ) => {
   const {
     isAllAddObsOptionsMode,
     setIsAllAddObsOptionsMode,
-    isAdvancedSuggestionsMode,
-    setIsSuggestionsFlowMode,
     isDefaultMode,
-    setIsDefaultMode
+    setIsDefaultMode,
+    screenAfterPhotoEvidence,
+    setScreenAfterPhotoEvidence
   } = useLayoutPrefs();
 
   const renderSettingDescription = description => (
@@ -55,22 +55,22 @@ const AdvancedSettings = ( ) => {
           classNames="mt-[16.5px]"
           testID="suggestions-flow-mode"
           smallLabel
-          checked={isAdvancedSuggestionsMode}
-          onPress={() => setIsSuggestionsFlowMode( true )}
+          checked={screenAfterPhotoEvidence === "Suggestions"}
+          onPress={() => setScreenAfterPhotoEvidence( "Suggestions" )}
           label={t( "ID-Suggestions" )}
         />
         <RadioButtonRow
           classNames="mt-[16.5px]"
           smallLabel
-          checked={!isAdvancedSuggestionsMode}
-          onPress={() => setIsSuggestionsFlowMode( false )}
+          checked={screenAfterPhotoEvidence === "ObsEdit"}
+          onPress={() => setScreenAfterPhotoEvidence( "ObsEdit" )}
           label={t( "Edit-Observation" )}
         />
         <RadioButtonRow
           classNames="mt-[16.5px]"
           smallLabel
-          // checked={!isAdvancedSuggestionsMode}
-          // onPress={() => setIsSuggestionsFlowMode( false )}
+          checked={screenAfterPhotoEvidence === "Match"}
+          onPress={() => setScreenAfterPhotoEvidence( "Match" )}
           label={t( "Match-Screen" )}
         />
       </View>

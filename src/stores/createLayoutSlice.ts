@@ -25,11 +25,12 @@ const createLayoutSlice = set => ( {
         isDefaultMode: newValue
       }
     } ) ),
-    isAdvancedSuggestionsMode: true,
-    setIsSuggestionsFlowMode: ( newValue: boolean ) => set( state => ( {
+    // Suggestions | ObsEdit | Match
+    screenAfterPhotoEvidence: "Match",
+    setScreenAfterPhotoEvidence: ( newScreen: string ) => set( state => ( {
       layout: {
         ...state.layout,
-        isAdvancedSuggestionsMode: newValue
+        screenAfterPhotoEvidence: newScreen
       }
     } ) ),
     displayAdvancedSettings: false,

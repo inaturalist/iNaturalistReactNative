@@ -6,6 +6,9 @@ import {
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
+import {
+  useLayoutPrefs
+} from "sharedHooks";
 import useStore from "stores/useStore";
 
 import savePhotosToPhotoLibrary from "../helpers/savePhotosToPhotoLibrary";
@@ -25,7 +28,7 @@ const usePrepareStoreAndNavigate = ( ): Function => {
   const setSavingPhoto = useStore( state => state.setSavingPhoto );
   const setCameraState = useStore( state => state.setCameraState );
   const setSentinelFileName = useStore( state => state.setSentinelFileName );
-  const isAdvancedSuggestionsMode = useStore( state => state.layout.isAdvancedSuggestionsMode );
+  const { screenAfterPhotoEvidence, isDefaultMode } = useLayoutPrefs( );
 
   const { deviceStorageFull, showStorageFullAlert } = useDeviceStorageFull( );
 
@@ -137,8 +140,7 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     newPhotoState,
     logStageIfAICamera,
     deleteStageIfAICamera,
-    showMatchScreen,
-    showSuggestionsScreen
+    cameraType
   } ) => {
     if ( userLocation !== null ) {
       logStageIfAICamera( "fetch_user_location_complete" );
@@ -162,13 +164,28 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     await deleteStageIfAICamera( );
     setSentinelFileName( null );
 
-    if ( showMatchScreen ) {
+    // AI camera can only go to Match/Suggestions
+    if ( cameraType === "AI" ) {
+      if ( isDefaultMode ) {
+        return navigation.push( "Match", {
+          entryScreen: "CameraWithDevice",
+          lastScreen: "CameraWithDevice"
+        } );
+      }
+      return navigation.push( "Suggestions", {
+        entryScreen: "CameraWithDevice",
+        lastScreen: "CameraWithDevice"
+      } );
+    }
+
+    // Multicapture camera navigates based on user settings
+    if ( screenAfterPhotoEvidence === "Match" ) {
       return navigation.push( "Match", {
         entryScreen: "CameraWithDevice",
         lastScreen: "CameraWithDevice"
       } );
     }
-    if ( showSuggestionsScreen || isAdvancedSuggestionsMode ) {
+    if ( screenAfterPhotoEvidence === "Suggestions" ) {
       return navigation.push( "Suggestions", {
         entryScreen: "CameraWithDevice",
         lastScreen: "CameraWithDevice"
@@ -185,7 +202,8 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     setSentinelFileName,
     navigation,
     updateObsWithCameraPhotos,
-    isAdvancedSuggestionsMode
+    screenAfterPhotoEvidence,
+    isDefaultMode
   ] );
 
   return prepareStoreAndNavigate;
