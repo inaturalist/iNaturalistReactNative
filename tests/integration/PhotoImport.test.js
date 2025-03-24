@@ -91,7 +91,8 @@ beforeEach( ( ) => {
   useStore.setState( {
     layout: {
       isDefaultMode: false,
-      isAdvancedSuggestionsMode: true
+      isAdvancedSuggestionsMode: true,
+      screenAfterPhotoEvidence: "Suggestions"
     },
     isAdvancedUser: true
   } );

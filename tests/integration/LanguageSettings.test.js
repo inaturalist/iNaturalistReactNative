@@ -36,8 +36,8 @@ afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
 const toggleAdvancedMode = async ( ) => {
-  const advancedRadioButton = await screen.findByTestId( "advanced-interface-option" );
-  fireEvent.press( advancedRadioButton );
+  const advancedSwitch = await screen.findByTestId( "advanced-interface-switch.switch" );
+  fireEvent.press( advancedSwitch );
 };
 
 describe( "LanguageSettings", ( ) => {
