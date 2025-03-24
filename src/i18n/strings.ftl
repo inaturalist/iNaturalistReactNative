@@ -731,6 +731,7 @@ MONTHS = MONTHS
 # Label for section of ObsDetails with information about observation projects, DQA, etc.
 More = More
 More-info = More info
+More-ways-to-observe = More ways to observe
 MOST-FAVED = MOST FAVED
 Most-faved = Most faved
 # Title for section in Notifications showing notifications about observations
@@ -1550,4 +1551,4 @@ Zoom-in-as-much-as-possible-to-improve = Zoom in as much as possible to improve 
 Zoom-to-current-location = Zoom to current location
 # Label for button that shows zoom level, e.g. on a camera
 zoom-x = { $zoom }×
-More-ways-to-observe = More ways to observe
+You-can-record-sounds-take-multiple-photos-import = You can record sounds, take multiple photos, import from your photo library, and more by holding down (instead of tapping) the camera button.
