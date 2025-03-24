@@ -35,7 +35,7 @@ const IconicSuggestionsScroll = ( {
     );
   };
 
-  const renderHeader = () => <View className="ml-5" />;
+  const renderHeader = () => <View className="ml-4" />;
   return (
     <View className="mt-4">
       <CustomFlashList
