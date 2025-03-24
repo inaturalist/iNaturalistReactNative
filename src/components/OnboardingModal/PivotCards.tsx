@@ -70,7 +70,7 @@ const SecondObservationCard = ( { triggerCondition }: Props ) => {
       triggerCondition={triggerCondition}
       slides={[
         {
-          title: t( "Youve-made-2-observations" ),
+          title: t( "Youve-made-5-observations" ),
           description: t( "How-does-it-feel-to-identify" ),
           imageSource: require( "images/background/toucans.jpg" )
         },
