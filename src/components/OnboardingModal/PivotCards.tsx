@@ -62,11 +62,11 @@ const FirstObservationCard = ( { triggerCondition }: Props ) => {
   );
 };
 
-const SecondObservationCard = ( { triggerCondition }: Props ) => {
+const FiveObservationCard = ( { triggerCondition }: Props ) => {
   const { t } = useTranslation( );
   return (
     <OnboardingModal
-      showKey="second-observation"
+      showKey="five-observation"
       triggerCondition={triggerCondition}
       slides={[
         {
@@ -120,6 +120,6 @@ export {
   AccountCreationCard,
   FiftyObservationCard,
   FirstObservationCard,
-  NotificationOnboarding,
-  SecondObservationCard
+  FiveObservationCard,
+  NotificationOnboarding
 };
