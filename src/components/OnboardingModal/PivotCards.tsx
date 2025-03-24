@@ -89,6 +89,23 @@ const SecondObservationCard = ( { triggerCondition }: Props ) => {
   );
 };
 
+const TenObservationCard = ( { triggerCondition }: Props ) => {
+  const { t } = useTranslation( );
+  return (
+    <OnboardingModal
+      showKey="ten-observation"
+      triggerCondition={triggerCondition}
+      slides={[
+        {
+          title: t( "More-ways-to-observe" ),
+          description: t( "You-can-record-sounds-take-multiple-photos-import" ),
+          imageSource: require( "images/background/obs-wheel-pivot.png" )
+        }
+      ]}
+    />
+  );
+};
+
 const FiftyObservationCard = ( { triggerCondition }: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -121,5 +138,6 @@ export {
   FiftyObservationCard,
   FirstObservationCard,
   NotificationOnboarding,
-  SecondObservationCard
+  SecondObservationCard,
+  TenObservationCard
 };
