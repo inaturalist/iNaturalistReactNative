@@ -26,10 +26,9 @@ jest.mock( "@react-navigation/native", ( ) => {
 
 const initialStoreState = useStore.getState( );
 
-const toggleAdvancedMode = async ( ) => {
-  const advancedRadioButton = await screen
-    .findByText( /Advanced/ );
-  fireEvent.press( advancedRadioButton );
+const toggleAdvancedSwitch = async ( ) => {
+  const advancedSwitch = await screen.findByTestId( "advanced-interface-switch.switch" );
+  fireEvent.press( advancedSwitch );
 };
 
 beforeAll( async ( ) => {
@@ -52,20 +51,20 @@ beforeEach( ( ) => {
 } );
 
 describe( "Settings", ( ) => {
-  it( "should toggle the green observation button", async ( ) => {
+  it( "should toggle the green observation button from AICamera -> all options", async ( ) => {
     renderComponent( <Settings /> );
-    await toggleAdvancedMode( );
+    await toggleAdvancedSwitch( );
+    const aiCameraRow = await screen.findByLabelText( "iNaturalist AI Camera" );
+    expect( aiCameraRow ).toHaveProp( "accessibilityState", expect.objectContaining( {
+      checked: true
+    } ) );
     const allObsOptions = await screen.findByLabelText( /All observation options/ );
+    fireEvent.press( allObsOptions );
     expect( allObsOptions ).toHaveProp( "accessibilityState", expect.objectContaining( {
       checked: true
     } ) );
-    const aiCameraRow = await screen.findByLabelText( "iNaturalist AI Camera" );
     expect( aiCameraRow ).toHaveProp( "accessibilityState", expect.objectContaining( {
       checked: false
-    } ) );
-    fireEvent.press( aiCameraRow );
-    expect( aiCameraRow ).toHaveProp( "accessibilityState", expect.objectContaining( {
-      checked: true
     } ) );
   } );
 
@@ -106,7 +105,7 @@ describe( "Settings", ( ) => {
 
   test( "should change language immediately via language picker via online results", async ( ) => {
     renderComponent( <Settings /> );
-    await toggleAdvancedMode( );
+    await toggleAdvancedSwitch( );
     const changeLanguageButton = await screen.findByText( /CHANGE APP LANGUAGE/ );
     fireEvent.press( changeLanguageButton );
     const picker = await screen.findByTestId( "ReactNativePicker" );
