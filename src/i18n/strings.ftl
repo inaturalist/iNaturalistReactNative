@@ -1550,3 +1550,4 @@ Zoom-in-as-much-as-possible-to-improve = Zoom in as much as possible to improve 
 Zoom-to-current-location = Zoom to current location
 # Label for button that shows zoom level, e.g. on a camera
 zoom-x = { $zoom }×
+More-ways-to-observe = More ways to observe

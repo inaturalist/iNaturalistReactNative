@@ -731,6 +731,7 @@ MONTHS = MONTHS
 # Label for section of ObsDetails with information about observation projects, DQA, etc.
 More = More
 More-info = More info
+More-ways-to-observe = More ways to observe
 MOST-FAVED = MOST FAVED
 Most-faved = Most faved
 # Title for section in Notifications showing notifications about observations
