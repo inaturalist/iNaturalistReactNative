@@ -9,6 +9,7 @@ import { useTranslation } from "sharedHooks";
 import SuggestionsResult from "./SuggestionsResult";
 
 const AdditionalSuggestionsScroll = ( {
+  noTopSuggestion,
   otherSuggestions,
   suggestionsLoading,
   onSuggestionChosen
@@ -106,7 +107,7 @@ const AdditionalSuggestionsScroll = ( {
     return null;
   }
 
-  const renderHeader = () => <View className="ml-5" />;
+  const renderHeader = () => <View className="ml-4" />;
 
   const keepHiddenUntilCardHeightsMeasured = {
     opacity: isVisible
@@ -115,8 +116,12 @@ const AdditionalSuggestionsScroll = ( {
   };
 
   return (
-    <View className="mt-4 mb-7">
-      <Heading3 className="mx-5 mb-3">{t( "It-might-also-be" )}</Heading3>
+    <>
+      <Heading3 className="mx-5 mb-[15px]">
+        {noTopSuggestion
+          ? t( "It-might-be-one-of-these" )
+          : t( "It-might-also-be" )}
+      </Heading3>
 
       {!suggestionsLoading
         ? (
@@ -135,7 +140,7 @@ const AdditionalSuggestionsScroll = ( {
           </>
         )
         : <ActivityIndicator className="my-3" size={40} />}
-    </View>
+    </>
   );
 };
 

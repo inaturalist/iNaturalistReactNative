@@ -25,11 +25,7 @@ const MatchHeader = ( { topSuggestion }: Props ) => {
   const taxon = topSuggestion?.taxon;
 
   if ( !topSuggestion ) {
-    return (
-      <Body2>
-        {t( "iNaturalist-couldnt-identify-this-organism" )}
-      </Body2>
-    );
+    return null;
   }
 
   const confidence = calculateConfidence( topSuggestion );

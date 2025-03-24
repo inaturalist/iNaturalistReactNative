@@ -644,6 +644,8 @@ It-can-now-be-shared-for-use-in-research = It can now be shared for use in resea
 It-may-take-up-to-an-hour-to-remove-content = It may take up to an hour to completely delete all associated content
 # Label for suggested list of organisms from computer vision in the Match screen new user flow
 It-might-also-be = It might also be
+# Label for suggested list of organisms from computer vision in the Match screen new user flow when there is no top suggestion
+It-might-be-one-of-these = It might be one of these
 # Month of January
 January = January
 JOIN = JOIN
@@ -1040,7 +1042,7 @@ RECORD-SOUND = RECORD SOUND
 Record-verb = Record
 # Status while recording a sound
 Recording-sound = Recording sound
-Recording-stopped-Tap-play-the-current-recording = Recording stopped. Tap play the current recording.
+Recording-stopped-Tap-to-play-the-current-recording = Recording stopped. Tap to play the current recording.
 REDO-SEARCH-IN-MAP-AREA = REDO SEARCH IN MAP AREA
 # Label for a button that removes a vote of agreement
 Remove-agreement = Remove agreement
@@ -1345,6 +1347,8 @@ View-suggestions = View suggestions
 Watch-your-notifications-for-identifications = Watch your notifications for identifications!
 We-are-not-confident-enough-to-make-a-top-ID-suggestion = We’re not confident enough to make a top ID suggestion, but here are some other suggestions:
 Welcome-back = Welcome back!
+# Title on the mtch screen, when there is no top suggestion but other suggestions with low confidence
+Were-not-confident-enough-to-make-an-ID = We’re not confident enough to make an ID.
 Weve-made-some-updates = We've made some updates, so we recommend taking a look at your settings. You can always update these later.
 WHAT-IS-INATURALIST = WHAT IS INATURALIST?
 Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!
