@@ -191,7 +191,7 @@ const SoundRecorder = (): Node => {
 
   const helpText = useMemo( ( ) => {
     if ( status === RECORDING ) return t( "Recording-sound" );
-    if ( status === STOPPED ) return t( "Recording-stopped-Tap-play-the-current-recording" );
+    if ( status === STOPPED ) return t( "Recording-stopped-Tap-to-play-the-current-recording" );
     return null;
   }, [status, t] );
 

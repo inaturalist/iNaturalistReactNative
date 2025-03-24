@@ -1041,7 +1041,7 @@ RECORD-SOUND = RECORD SOUND
 Record-verb = Record
 # Status while recording a sound
 Recording-sound = Recording sound
-Recording-stopped-Tap-play-the-current-recording = Recording stopped. Tap play the current recording.
+Recording-stopped-Tap-to-play-the-current-recording = Recording stopped. Tap to play the current recording.
 REDO-SEARCH-IN-MAP-AREA = REDO SEARCH IN MAP AREA
 # Label for a button that removes a vote of agreement
 Remove-agreement = Remove agreement
