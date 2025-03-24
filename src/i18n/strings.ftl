@@ -1510,6 +1510,7 @@ You-can-also-check-out-merchandise = You can also check out merchandise for iNat
 You-can-click-join-on-the-project-page = You can click “join” on the project page.
 You-can-find-answers-on-our-help-page = You can find answers on our help page.
 You-can-only-add-20-photos-per-observation = You can only add 20 photos per observation
+You-can-record-sounds-take-multiple-photos-import = You can record sounds, take multiple photos, import from your photo library, and more by holding down (instead of tapping) the camera button.
 You-can-still-share-the-file = You can still share the file with another app. If you can email it, please send it to { $email }
 You-can-upload-this-observation-to-our-community = You can upload this observation to our community to get an identification from a real person, and help our AI improve its identifications in the future
 You-changed-filters-will-be-discarded = You changed filters, but they were not applied to your explore search results.
@@ -1551,4 +1552,3 @@ Zoom-in-as-much-as-possible-to-improve = Zoom in as much as possible to improve 
 Zoom-to-current-location = Zoom to current location
 # Label for button that shows zoom level, e.g. on a camera
 zoom-x = { $zoom }×
-You-can-record-sounds-take-multiple-photos-import = You can record sounds, take multiple photos, import from your photo library, and more by holding down (instead of tapping) the camera button.
