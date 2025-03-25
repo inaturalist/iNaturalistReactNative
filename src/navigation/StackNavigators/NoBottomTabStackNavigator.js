@@ -62,12 +62,13 @@ const CameraContainerWithPermission = ( ) => fadeInComponent(
   <Mortal>
     <PermissionGateContainer
       permissions={CAMERA_PERMISSIONS}
-      title={t( "Observe-and-identify-organisms-in-real-time-with-your-camera" )}
+      title={t( "Identify-organisms-in-real-time-with-your-camera" )}
       titleDenied={t( "Please-allow-Camera-Access" )}
-      body={t( "Use-the-iNaturalist-camera-to-observe-2" )}
+      body={t( "Use-the-iNaturalist-camera-to-see-real-time-identifications-and-take-photos" )}
       blockedPrompt={t( "Youve-previously-denied-camera-permissions" )}
       buttonText={t( "OBSERVE-ORGANISMS" )}
       icon="camera"
+      image={require( "images/background/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
     >
       <CameraContainer />
     </PermissionGateContainer>
@@ -89,9 +90,9 @@ const SoundRecorderWithPermission = ( ) => fadeInComponent(
   <Mortal>
     <PermissionGateContainer
       permissions={AUDIO_PERMISSIONS}
-      title={t( "Record-organism-sounds-with-the-microphone" )}
+      title={t( "Record-animal-sounds" )}
       titleDenied={t( "Please-allow-Microphone-Access" )}
-      body={t( "Use-your-devices-microphone-to-record" )}
+      body={t( "Use-your-devices-microphone-to-record-animal-sounds-and-share-them" )}
       blockedPrompt={t( "Youve-previously-denied-microphone-permissions" )}
       buttonText={t( "RECORD-SOUND" )}
       icon="microphone"

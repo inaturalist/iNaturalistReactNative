@@ -9,7 +9,7 @@ const Login = ( ) => {
   const renderLoginForm = useCallback( ( { scrollViewRef } ) => (
     <>
       <Header
-        headerText={t( "Login-sub-title" )}
+        headerText={t( "A-global-community-for-nature" )}
       />
       <LoginForm
         scrollViewRef={scrollViewRef}

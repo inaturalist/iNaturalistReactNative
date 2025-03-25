@@ -23,6 +23,8 @@
 ###   result of performing an action on the accessibility element." We write
 ###   them in third person singular ending with a period.
 
+# Subheader under logo in the login screen
+A-global-community-for-nature = A global community for nature
 # Header for a general description, e.g. of a user, or of iNaturalist itself
 ABOUT = ABOUT
 ABOUT-COLLECTION-PROJECTS = ABOUT COLLECTION PROJECTS
@@ -234,7 +236,6 @@ COMMENT = COMMENT
 Comment-options = Comment options
 # Label for a setting that shows the common name first
 Common-Name-Scientific-Name = Common Name (Scientific Name)
-Community-based = Community-based
 # Label for section of ObsDetails with community comments and ids
 Community-Discussion = Community Discussion
 Community-Guidelines = Community Guidelines
@@ -244,17 +245,13 @@ Confidence--label = Confidence
 # Button that confirms a choice the user has made
 CONFIRM = CONFIRM
 Congrats-on-making-your-first-observation = Congrats on making your first observation!
-# Onboarding header (underneath the logo)
-CONNECT-TO-NATURE = CONNECT TO NATURE
-# Onboarding slides
-Connect-to-Nature = Connect to Nature
+# Onboarding carousel header second screen
+Connect-with-expert-naturalists = Connect with expert naturalists
 Connect-with-other-naturalists = Connect with other naturalists and engage in conversations.
 Connection-problem-Please-try-again-later = Connection problem. Please try again later.
 CONTACT-SUPPORT = CONTACT SUPPORT
 # Continue button in onboarding screen
 CONTINUE = CONTINUE
-# Onboarding message describing one of the reasons to use iNat
-Contribute-to-Science = Contribute to Science
 # Notification when coordinates have been copied
 Coordinates-copied-to-clipboard = Coordinates copied to clipboard
 # Button that copies coordinates to the clipboard
@@ -430,6 +427,8 @@ DISCARD-X-OBSERVATIONS =
         [one] DISCARD OBSERVATION
        *[other] DISCARD { $count } OBSERVATIONS
     }
+# Onboarding header (underneath the logo)
+DISCOVER-NATURE-AROUND-YOU = DISCOVER NATURE AROUND YOU
 DISMISS = DISMISS
 Do-you-know-what-group-this-is-in = Do you know what group this is in?
 DONATE = DONATE
@@ -486,6 +485,8 @@ Exact-Date = Exact Date
 EXACT-DATE = EXACT DATE
 except = except
 EXPAND-MAP = EXPAND MAP
+# Onboarding carousel second screen description
+Experts-help-verify-and-improve-IDs = Experts help verify and improve IDs
 Explore = Explore
 EXPLORE = EXPLORE
 Explore-Filters = Explore Filters
@@ -536,9 +537,9 @@ FOLLOWING-X-PEOPLE =
 Forgot-Password = Forgot Password
 GEOPRIVACY = GEOPRIVACY
 Geoprivacy-status = Geoprivacy: { $status }
+# Onboarding message describing one of the reasons to use iNat
+Get-an-instant-ID-of-any-plant-animal-fungus = Get an instant ID of any plant, animal, or fungus
 Get-identifications-from-real-people = Get identifications from real people.
-# Title of screen asking for permission to access location
-Get-more-accurate-suggestions-create-useful-data = Get more accurate suggestions & create useful data for science using your location
 # Preceded by the fragment, "By uploading your observation to iNaturalist, you can:"
 Get-your-identification-verified-by-real-people = Get your identification verified by real people in the iNaturalist community
 Getting-an-even-more-accurate-ID = Getting an even more accurate ID...
@@ -554,6 +555,8 @@ Group-Photos = Group Photos
 Group-photos-onboarding = Group photos into observations– make sure there is only one species per observation
 Grow-your-collection = Grow your collection
 HELP = HELP
+# Onboarding message describing one of the reasons to use iNat
+Help-protect-species = Help protect species
 Hide = Hide
 Highest = Highest
 HIGHEST-RANK = HIGHEST RANK
@@ -574,8 +577,10 @@ IDENTIFICATIONS-WITHOUT-NUMBER =
 Identifiers = Identifiers
 Identifiers-View = Identifiers View
 Identify-an-organism = Identify an organism
-# Onboarding message describing one of the reasons to use iNat
-Identify-record-learn = Identify, record, and learn about every living species on earth using iNaturalist
+# Title of screen asking for permission to access the camera
+Identify-organisms-in-real-time-with-your-camera = Identify organisms in real time with your camera
+# Onboarding slides
+Identify-species-anywhere = Identify species anywhere
 If-an-account-with-that-email-exists = If an account with that email exists, we've sent password reset instructions to your email.
 # Body of an error alert when signing in with a third party fails (e.g. Apple, Google)
 If-you-have-an-existing-account-try-sign-in-reset = If you have an existing iNat account, try signing in with your username and password, or try resetting your password using the email address associated with your account.
@@ -585,7 +590,7 @@ If-you-leave-x-of-your-observations-removed =
         [one] 1 of your observations
        *[other] { $count } of your observations
     } will also be removed from this project.
-If-you-took-the-original-photo-you-can-help = If you took the original photo of the organism, you can help train iNaturalist to identify this species by saving and uploading it to iNaturalist, where the community can help identify it.
+If-you-save-this-observation-and-upload-it-to-iNaturalist = If you save this observation and upload it to iNaturalist, other people may be able to help identify it.
 If-you-want-to-collate-compare-promote = If you want to collate, compare, or promote a set of existing projects, then an Umbrella project is what you should use. For example the 2018 City Nature Challenge, which collated over 60 projects, made for a great landing page where anyone could compare and contrast each city's observations. Both Collection and Traditional projects can be used in an Umbrella project, and up to 500 projects can be collated by an Umbrella project.
 If-youre-seeing-this-error = If you're seeing this and you're online, iNat staff have already been notified. Thanks for finding a bug! If you're offline, please take a screenshot and send us an email when you're back on the Internet.
 IGNORE-LOCATION = IGNORE LOCATION
@@ -599,15 +604,16 @@ IMPORT-X-OBSERVATIONS =
         [one] 1 OBSERVATION
        *[other] { $count } OBSERVATIONS
     }
+# Title of screen asking for permission to access location
+Improve-suggestions-by-using-your-location = Improve suggestions by using your location
 IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = IMPROVE THESE SUGGESTIONS BY USING YOUR LOCATION
 # Identification category
 improving--identification = Improving
-iNat-is-global-community = iNaturalist is a global community of naturalists creating open data for science by collectively observing & identifying organisms
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT SETTINGS
 iNaturalist-AI-Camera = iNaturalist AI Camera
-iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-photo-library = iNaturalist can save photos you take in the app to your device’s photo library.
+iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-library = iNaturalist can save photos you take in the app to your device’s library.
+iNaturalist-can-use-your-location-to-give-you-better-identification-suggestions = iNaturalist can use your location to give you better identification suggestions. We also use it to help you find species seen nearby. Sharing your location makes it easier to create useful data for science.
 INATURALIST-COMMUNITY = INATURALIST COMMUNITY
-iNaturalist-couldnt-identify-this-organism = iNaturalist couldn’t identify this organism.
 INATURALIST-FORUM = INATURALIST FORUM
 iNaturalist-has-no-ID-suggestions-for-this-photo = iNaturalist has no ID suggestions for this photo.
 INATURALIST-HELP-PAGE = INATURALIST HELP PAGE
@@ -631,7 +637,6 @@ INATURALIST-STORE = INATURALIST STORE
 INATURALIST-TEAM = INATURALIST TEAM
 iNaturalist-users-who-have-left-an-identification = iNaturalist users who have left an identification on another user's observation
 iNaturalist-users-who-have-observed = iNaturalist users who have observed a particular taxon at a particular time and place
-iNaturalist-uses-your-location-to-give-you = iNaturalist uses your location to give you better identification suggestions and we can automatically add a location to your observations, which helps scientists. We also use it to help you find organisms observed near your location.
 iNaturalists-apps-are-designed-and-developed-3 = iNaturalist's apps are designed, developed, and supported by the iNaturalist team: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Joanne Lin, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Thea Skaff, Angie Ta, Ken-ichi Ueda, Kirk van Gorkom, Jason Walthall, & Jane Weeden.
 iNaturalists-vision-is-a-world = iNaturalist's vision is a world where everyone can understand and sustain biodiversity through the practice of observing wild organisms and sharing information about them.
 Individual-encounters-with-organisms = Individual encounters with organisms at a particular time and location, usually with evidence
@@ -649,10 +654,11 @@ It-might-be-one-of-these = It might be one of these
 # Month of January
 January = January
 JOIN = JOIN
+# Subheader under logo on sign up screen
+Join-a-global-community-for-nature = Join a global community for nature
 JOIN-PROJECT = JOIN PROJECT
 # Asking for confirmation if the user wants to join this project
 JOIN-PROJECT--question = JOIN PROJECT?
-Join-the-largest-community-of-naturalists = Join the largest community of naturalists in the world!
 # Header for joined projects
 JOINED = JOINED
 # Shows date user joined iNaturalist on user profile
@@ -701,8 +707,6 @@ LOG-IN-TO-INATURALIST = LOG IN TO INATURALIST
 Log-in-to-iNaturalist = Log in to iNaturalist
 LOG-OUT = LOG OUT
 LOG-OUT--question = LOG OUT?
-# Appears in the login screen
-Login-sub-title = Document living things, identify organisms & contribute to science
 Lowest = Lowest
 LOWEST-RANK = LOWEST RANK
 MAP = MAP
@@ -848,7 +852,6 @@ OBSERVATION-WAS-DELETED = OBSERVATION WAS DELETED
 Observation-with-no-evidence = Observation with no evidence
 Observations = Observations
 Observations-need-location-date--warning = iNaturalist observations need a location and date to be useful to scientists. Please check observations with this icon before uploading.
-Observations-on-iNat-are-cited = Observations on iNaturalist are cited in scientific papers, have led to rediscoveries, and help scientists understand life on our planet
 Observations-View = Observations View
 # Might be used when the number is represented using an image or other
 # element, not text
@@ -857,8 +860,6 @@ OBSERVATIONS-WITHOUT-NUMBER =
         [one] OBSERVATION
        *[other] OBSERVATIONS
     }
-# Title of screen asking for permission to access the camera
-Observe-and-identify-organisms-in-real-time-with-your-camera = Observe and identify organisms in real time with your camera
 # Text for a button prompting the user to grant access to the camera
 OBSERVE-ORGANISMS = OBSERVE ORGANISMS
 # This label is used in ObsDetails to describe the observation time
@@ -895,6 +896,7 @@ Opens-edit-comment-form = Opens edit comment form.
 Opens-location-permission-prompt = Opens location permission prompt
 Opens-the-side-drawer-menu = Opens the side drawer menu.
 OR-SIGN-IN-WITH = OR SIGN IN WITH
+Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Or, you can try to get a clearer photo by zooming in, getting closer, or trying a different angle.
 # Picker prompt on observation edit
 Organism-is-captive = Organism is captive
 Organisms-that-are-identified-to-species = Organisms that are identified to species rank or below
@@ -925,6 +927,7 @@ PLEASE-LOG-IN = PLEASE LOG IN
 Please-make-sure-your-password-is-at-least-6-characters = Please make sure your password is at least 6 characters.
 Please-try-again-when-you-are-connected-to-the-internet = Please try again when you are connected to the Internet.
 Please-try-again-when-you-are-online = Please try again when you are online!
+Point-the-camera-at-an-animal-plant-or-fungus = Point the camera at an animal, plant, or fungus
 POTENTIAL-DISAGREEMENT = POTENTIAL DISAGREEMENT
 Potential-disagreement-description = <0>Is the evidence enough to confirm this is </0><1></1><0>?<0>
 Potential-disagreement-disagree = <0>No, but this is a member of </0><1></1>
@@ -1033,10 +1036,10 @@ Ranks-Zoosubsection = Zoosubsection
 Read-more-on-Wikipedia = Read more on Wikipedia
 # Help text for the button that opens the sound recorder
 Record-a-sound = Record a sound
+# Title of screen asking for permission to access the microphone
+Record-animal-sounds = Record animal sounds
 # Heading for the sound recorder
 RECORD-NEW-SOUND = RECORD NEW SOUND
-# Title of screen asking for permission to access the microphone
-Record-organism-sounds-with-the-microphone = Record organism sounds with the microphone
 # Text for a button prompting the user to grant access to the microphone
 RECORD-SOUND = RECORD SOUND
 # Imperative verb for recording a sound
@@ -1099,9 +1102,8 @@ SAVE-CHANGES = SAVE CHANGES
 SAVE-FOR-LATER = SAVE FOR LATER
 SAVE-LOCATION = SAVE LOCATION
 SAVE-PHOTOS = SAVE PHOTOS
-Save-photos-to-your-photo-library = Save photos to your photo library
+Save-photos-to-your-library = Save photos to your library
 Saved-Observation = Saved observation, in queue to upload
-Scan-the-area-around-you-for-organisms = Scan the area around you for organisms.
 Scientific-Name = Scientific Name
 Scientific-Name-Common-Name = Scientific Name (Common Name)
 Scientists-use-citizen-science-data = Scientists use citizen science data just like yours to help better understand species across the globe.
@@ -1241,6 +1243,10 @@ Thanks-for-using-any-suggestions = Thanks for using this app! Do you have any su
 That-email-is-already-associated-with-an-account = That email is already associated with an account.
 That-user-profile-doesnt-exist = That user profile doesn't exist
 That-username-is-unavailable = That username is unavailable
+# Title on the match screen, when there is no top suggestion but other suggestions with low confidence
+The-AI-is-not-confident-It-may-be-one-of-the-IDs-below = The AI is not confident. It may be one of the IDs below.
+# Text on Match screen when there are no suggestions found at all for a user photo
+The-AI-is-not-confident-Upload-to-ask-the-community = The AI is not confident. Upload to ask the community.
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
 The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
 # Describes what happens when geoprivacy is set to private
@@ -1307,8 +1313,8 @@ Use-iNaturalists-AI-Camera = Use iNaturalist's AI Camera to identify organisms i
 # Text for a button prompting the user to grant access to location
 USE-LOCATION = USE LOCATION
 Use-the-devices-other-camera = Use the device's other camera.
-Use-the-iNaturalist-camera-to-observe-2 = Use iNaturalist to observe and identify organisms in real time. Share them with our community to get identifications and contribute to science!
-Use-your-devices-microphone-to-record = Use your device’s microphone to record sounds made by organisms and share them with our community to get identifications and contribute to science!
+Use-the-iNaturalist-camera-to-see-real-time-identifications-and-take-photos = Use the iNaturalist camera to see real-time identifications and take photos!
+Use-your-devices-microphone-to-record-animal-sounds-and-share-them = Use your device’s microphone to record animal sounds and share them to get identifications and contribute to science!
 USER = USER
 User = User { $userHandle }
 # Appears above the text fields
@@ -1316,6 +1322,8 @@ USERNAME-OR-EMAIL = USERNAME OR EMAIL
 # label in project requirements
 Users = Users
 Using-location = Using location
+# Onboarding carousel slide 3 description
+Verified-IDs-are-used-for-science-and-conservation = Verified IDs are used for science and conservation
 # Listing of app and build versions
 Version-app-build = Version { $appVersion } ({ $buildVersion })
 VIEW-ALL-X-PLACES = VIEW ALL { $count } PLACES
@@ -1345,8 +1353,6 @@ View-suggestions = View suggestions
 Watch-your-notifications-for-identifications = Watch your notifications for identifications!
 We-are-not-confident-enough-to-make-a-top-ID-suggestion = We’re not confident enough to make a top ID suggestion, but here are some other suggestions:
 Welcome-back = Welcome back!
-# Title on the mtch screen, when there is no top suggestion but other suggestions with low confidence
-Were-not-confident-enough-to-make-an-ID = We’re not confident enough to make an ID.
 Weve-made-some-updates = We've made some updates, so we recommend taking a look at your settings. You can always update these later.
 WHAT-IS-INATURALIST = WHAT IS INATURALIST?
 Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!
@@ -1541,7 +1547,6 @@ Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
 Your-location-uncertainty-is-over-x-km = Your location uncertainty is over { $x } km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
 Your-observations-can-help-scientists = Your observations can help scientists!
 Your-observations-can-now-help-scientists = Your observations can now help scientists.
-Youre-always-in-control-of-the-location-privacy = You’re always in control of the location privacy of every observation you create.
 # Text prompting the user to open Settings to grant permission after
 # permission has been denied
 Youve-denied-permission-prompt = You’ve denied permission. Please grant permission in the settings app.
