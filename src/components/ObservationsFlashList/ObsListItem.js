@@ -3,6 +3,7 @@ import classnames from "classnames";
 import {
   DateDisplay,
   DisplayTaxonName,
+  Heading6,
   INatIcon,
   ObservationLocation
 } from "components/SharedComponents";
@@ -10,7 +11,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useMemo } from "react";
 import Photo from "realmModels/Photo";
-import { useDebugMode } from "sharedHooks";
+import { useDebugMode, useTranslation } from "sharedHooks";
 import { UPLOAD_IN_PROGRESS } from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
@@ -48,6 +49,7 @@ const ObsListItem = ( {
   hideObsUploadStatus,
   hideObsStatus = false
 }: Props ): Node => {
+  const { t } = useTranslation();
   const uploadStatus = useStore( state => state.uploadStatus );
   const { isDebug } = useDebugMode( );
 
@@ -132,6 +134,9 @@ const ObsListItem = ( {
             />
           </>
         )}
+        <Heading6 className="mt-[10px] text-inatGreen">
+          {t( "RESEARCH-GRADE--quality-grade" )}
+        </Heading6>
       </View>
       <View
         className={classnames(
