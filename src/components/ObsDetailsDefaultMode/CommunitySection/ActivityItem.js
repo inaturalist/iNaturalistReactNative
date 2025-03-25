@@ -118,11 +118,21 @@ const ActivityItem = ( {
             withdrawn={idWithdrawn}
           />
         )}
-        { showExplainerText && (
-          <Body4 className="py-2 font-Lato-Italic">
-            {t( "This-is-your-identification-other-people-may-help-confirm-it" )}
-          </Body4>
-        )}
+        {/*
+          Only show explainer text if we are on the user's obs, if it is an ID of this user
+          and the user has in total less than 10 obs (handled in HOC)
+        */}
+        { showExplainerText
+          && belongsToCurrentUser
+          && taxon
+          && user?.id === currentUserId
+          && (
+            <Body4 className="py-2 font-Lato-Italic">
+              {t(
+                "This-is-your-identification-other-people-may-help-confirm-it"
+              )}
+            </Body4>
+          )}
       </View>
       <Divider />
     </View>
