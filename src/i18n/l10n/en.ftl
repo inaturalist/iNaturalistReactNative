@@ -234,7 +234,6 @@ COMMENT = COMMENT
 Comment-options = Comment options
 # Label for a setting that shows the common name first
 Common-Name-Scientific-Name = Common Name (Scientific Name)
-Community-based = Community-based
 # Label for section of ObsDetails with community comments and ids
 Community-Discussion = Community Discussion
 Community-Guidelines = Community Guidelines
@@ -244,17 +243,13 @@ Confidence--label = Confidence
 # Button that confirms a choice the user has made
 CONFIRM = CONFIRM
 Congrats-on-making-your-first-observation = Congrats on making your first observation!
-# Onboarding header (underneath the logo)
-CONNECT-TO-NATURE = CONNECT TO NATURE
-# Onboarding slides
-Connect-to-Nature = Connect to Nature
+# Onboarding carousel header second screen
+Connect-with-expert-naturalists = Connect with expert naturalists
 Connect-with-other-naturalists = Connect with other naturalists and engage in conversations.
 Connection-problem-Please-try-again-later = Connection problem. Please try again later.
 CONTACT-SUPPORT = CONTACT SUPPORT
 # Continue button in onboarding screen
 CONTINUE = CONTINUE
-# Onboarding message describing one of the reasons to use iNat
-Contribute-to-Science = Contribute to Science
 # Notification when coordinates have been copied
 Coordinates-copied-to-clipboard = Coordinates copied to clipboard
 # Button that copies coordinates to the clipboard
@@ -430,6 +425,8 @@ DISCARD-X-OBSERVATIONS =
         [one] DISCARD OBSERVATION
        *[other] DISCARD { $count } OBSERVATIONS
     }
+# Onboarding header (underneath the logo)
+DISCOVER-NATURE-AROUND-YOU = DISCOVER NATURE AROUND YOU
 DISMISS = DISMISS
 Do-you-know-what-group-this-is-in = Do you know what group this is in?
 DONATE = DONATE
@@ -486,6 +483,8 @@ Exact-Date = Exact Date
 EXACT-DATE = EXACT DATE
 except = except
 EXPAND-MAP = EXPAND MAP
+# Onboarding carousel second screen description
+Experts-help-verify-and-improve-IDs = Experts help verify and improve IDs
 Explore = Explore
 EXPLORE = EXPLORE
 Explore-Filters = Explore Filters
@@ -536,6 +535,8 @@ FOLLOWING-X-PEOPLE =
 Forgot-Password = Forgot Password
 GEOPRIVACY = GEOPRIVACY
 Geoprivacy-status = Geoprivacy: { $status }
+# Onboarding message describing one of the reasons to use iNat
+Get-an-instant-ID-of-any-plant-animal-fungus = Get an instant ID of any plant, animal, or fungus
 Get-identifications-from-real-people = Get identifications from real people.
 # Title of screen asking for permission to access location
 Get-more-accurate-suggestions-create-useful-data = Get more accurate suggestions & create useful data for science using your location
@@ -554,6 +555,8 @@ Group-Photos = Group Photos
 Group-photos-onboarding = Group photos into observations– make sure there is only one species per observation
 Grow-your-collection = Grow your collection
 HELP = HELP
+# Onboarding message describing one of the reasons to use iNat
+Help-protect-species = Help protect species
 Hide = Hide
 Highest = Highest
 HIGHEST-RANK = HIGHEST RANK
@@ -574,8 +577,8 @@ IDENTIFICATIONS-WITHOUT-NUMBER =
 Identifiers = Identifiers
 Identifiers-View = Identifiers View
 Identify-an-organism = Identify an organism
-# Onboarding message describing one of the reasons to use iNat
-Identify-record-learn = Identify, record, and learn about every living species on earth using iNaturalist
+# Onboarding slides
+Identify-species-anywhere = Identify species anywhere
 If-an-account-with-that-email-exists = If an account with that email exists, we've sent password reset instructions to your email.
 # Body of an error alert when signing in with a third party fails (e.g. Apple, Google)
 If-you-have-an-existing-account-try-sign-in-reset = If you have an existing iNat account, try signing in with your username and password, or try resetting your password using the email address associated with your account.
@@ -602,7 +605,6 @@ IMPORT-X-OBSERVATIONS =
 IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = IMPROVE THESE SUGGESTIONS BY USING YOUR LOCATION
 # Identification category
 improving--identification = Improving
-iNat-is-global-community = iNaturalist is a global community of naturalists creating open data for science by collectively observing & identifying organisms
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT SETTINGS
 iNaturalist-AI-Camera = iNaturalist AI Camera
 iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-photo-library = iNaturalist can save photos you take in the app to your device’s photo library.
@@ -848,7 +850,6 @@ OBSERVATION-WAS-DELETED = OBSERVATION WAS DELETED
 Observation-with-no-evidence = Observation with no evidence
 Observations = Observations
 Observations-need-location-date--warning = iNaturalist observations need a location and date to be useful to scientists. Please check observations with this icon before uploading.
-Observations-on-iNat-are-cited = Observations on iNaturalist are cited in scientific papers, have led to rediscoveries, and help scientists understand life on our planet
 Observations-View = Observations View
 # Might be used when the number is represented using an image or other
 # element, not text
@@ -1316,6 +1317,8 @@ USERNAME-OR-EMAIL = USERNAME OR EMAIL
 # label in project requirements
 Users = Users
 Using-location = Using location
+# Onboarding carousel slide 3 description
+Verified-IDs-are-used-for-science-and-conservation = Verified IDs are used for science and conservation
 # Listing of app and build versions
 Version-app-build = Version { $appVersion } ({ $buildVersion })
 VIEW-ALL-X-PLACES = VIEW ALL { $count } PLACES
