@@ -31,6 +31,7 @@ const ObsStatus = ( {
     ? "mb-1 ml-1"
     : "mr-2";
 
+  const identificationsFilled = observation?.identifications_viewed === false;
   const showCurrentIdCount = useCallback( ( ) => {
     let numCurrentIdents = observation?.identifications?.filter(
       id => id.current === true
@@ -38,7 +39,6 @@ const ObsStatus = ( {
     if ( numCurrentIdents === 0 && observation?.taxon ) {
       numCurrentIdents = 1;
     }
-    const identificationsFilled = observation?.identifications_viewed === false;
 
     return (
       <IdentificationsCount
@@ -48,11 +48,11 @@ const ObsStatus = ( {
         filled={identificationsFilled}
       />
     );
-  }, [observation, margin, white] );
+  }, [observation, margin, white, identificationsFilled] );
 
+  const commentsFilled = observation?.comments_viewed === false;
   const showCommentCount = useCallback( ( ) => {
     const numComments = observation?.comments?.length || 0;
-    const commentsFilled = observation?.comments_viewed === false;
 
     return (
       <CommentsCount
@@ -63,7 +63,7 @@ const ObsStatus = ( {
         testID="ObsStatus.commentsCount"
       />
     );
-  }, [observation, margin, white] );
+  }, [observation, margin, white, commentsFilled] );
 
   const showQualityGrade = useCallback( ( ) => {
     const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
