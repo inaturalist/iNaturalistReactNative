@@ -28,6 +28,7 @@ type Props = {
   currentUser: Object,
   explore: boolean,
   hideMetadata?: boolean,
+  hideRGLabel?: boolean,
   onUploadButtonPress: Function,
   observation: Object,
   queued: boolean,
@@ -41,6 +42,7 @@ const ObsListItem = ( {
   currentUser,
   explore = false,
   hideMetadata,
+  hideRGLabel = true,
   observation,
   onUploadButtonPress,
   queued,
@@ -134,9 +136,11 @@ const ObsListItem = ( {
             />
           </>
         )}
-        <Heading6 className="mt-[10px] text-inatGreen">
-          {t( "RESEARCH-GRADE--quality-grade" )}
-        </Heading6>
+        {!hideRGLabel && (
+          <Heading6 className="mt-[10px] text-inatGreen">
+            {t( "RESEARCH-GRADE--quality-grade" )}
+          </Heading6>
+        )}
       </View>
       <View
         className={classnames(
