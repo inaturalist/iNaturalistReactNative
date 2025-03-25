@@ -281,6 +281,7 @@ const MyObservationsSimple = ( {
               hideMetadata
               hideObsUploadStatus={!currentUser}
               hideObsStatus={isDefaultMode}
+              hideRGLabel={!isDefaultMode || !currentUser}
               isFetchingNextPage={isFetchingNextPage}
               isConnected={isConnected}
               obsListKey="MyObservations"
