@@ -62,15 +62,15 @@ const FirstObservationCard = ( { triggerCondition }: Props ) => {
   );
 };
 
-const SecondObservationCard = ( { triggerCondition }: Props ) => {
+const FiveObservationCard = ( { triggerCondition }: Props ) => {
   const { t } = useTranslation( );
   return (
     <OnboardingModal
-      showKey="second-observation"
+      showKey="five-observation"
       triggerCondition={triggerCondition}
       slides={[
         {
-          title: t( "Youve-made-2-observations" ),
+          title: t( "Youve-made-5-observations" ),
           description: t( "How-does-it-feel-to-identify" ),
           imageSource: require( "images/background/toucans.jpg" )
         },
@@ -120,6 +120,6 @@ export {
   AccountCreationCard,
   FiftyObservationCard,
   FirstObservationCard,
-  NotificationOnboarding,
-  SecondObservationCard
+  FiveObservationCard,
+  NotificationOnboarding
 };
