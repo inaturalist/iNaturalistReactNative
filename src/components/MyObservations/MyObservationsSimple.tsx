@@ -280,7 +280,7 @@ const MyObservationsSimple = ( {
               hideLoadingWheel
               hideMetadata
               hideObsUploadStatus={!currentUser}
-              hideObsStatus={isDefaultMode}
+              hideObsStatus={!currentUser}
               isFetchingNextPage={isFetchingNextPage}
               isConnected={isConnected}
               obsListKey="MyObservations"
