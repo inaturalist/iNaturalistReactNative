@@ -6,7 +6,7 @@ import {
   AccountCreationCard,
   FiftyObservationCard,
   FirstObservationCard,
-  SecondObservationCard,
+  FiveObservationCard,
   TenObservationCard
 } from "components/OnboardingModal/PivotCards.tsx";
 import {
@@ -335,7 +335,7 @@ const MyObservationsSimple = ( {
         <>
           {/* These four cards should show only in default mode */}
           <FirstObservationCard triggerCondition={numTotalObservations === 1} />
-          <SecondObservationCard triggerCondition={numTotalObservations === 2} />
+          <FiveObservationCard triggerCondition={numTotalObservations === 5} />
           <TenObservationCard triggerCondition={numTotalObservations === 10} />
           <FiftyObservationCard
             triggerCondition={

@@ -1042,7 +1042,7 @@ RECORD-SOUND = RECORD SOUND
 Record-verb = Record
 # Status while recording a sound
 Recording-sound = Recording sound
-Recording-stopped-Tap-play-the-current-recording = Recording stopped. Tap play the current recording.
+Recording-stopped-Tap-to-play-the-current-recording = Recording stopped. Tap to play the current recording.
 REDO-SEARCH-IN-MAP-AREA = REDO SEARCH IN MAP AREA
 # Label for a button that removes a vote of agreement
 Remove-agreement = Remove agreement
@@ -1544,7 +1544,7 @@ Youre-always-in-control-of-the-location-privacy = You’re always in control of 
 # Text prompting the user to open Settings to grant permission after
 # permission has been denied
 Youve-denied-permission-prompt = You’ve denied permission. Please grant permission in the settings app.
-Youve-made-2-observations = You’ve made 2 observations!
+Youve-made-5-observations = You’ve made 5 observations!
 Youve-previously-denied-camera-permissions = You've previously denied camera permissions, so please enable them in settings.
 Youve-previously-denied-location-permissions = You’ve previously denied location permissions, so please enable them in settings.
 Youve-previously-denied-microphone-permissions = You’ve previously denied microphone permissions, so please enable them in settings.
