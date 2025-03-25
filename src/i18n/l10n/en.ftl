@@ -731,6 +731,7 @@ MONTHS = MONTHS
 # Label for section of ObsDetails with information about observation projects, DQA, etc.
 More = More
 More-info = More info
+# Header for a pivot card explaining access to all observation options to new users
 More-ways-to-observe = More ways to observe
 MOST-FAVED = MOST FAVED
 Most-faved = Most faved
