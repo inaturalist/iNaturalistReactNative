@@ -22,4 +22,8 @@ export default async function switchPowerMode() {
   const suggestionsFlowButton = element( by.id( "suggestions-flow-mode" ) );
   await waitFor( suggestionsFlowButton ).toBeVisible().withTimeout( 10000 );
   await suggestionsFlowButton.tap();
+  // Tap the observation details radio button for advanced, more detailed mode
+  const observationDetailsButton = element( by.id( "advanced-observation-details-mode" ) );
+  await waitFor( observationDetailsButton ).toBeVisible().withTimeout( 10000 );
+  await observationDetailsButton.tap();
 }

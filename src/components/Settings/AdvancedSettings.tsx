@@ -77,6 +77,7 @@ const AdvancedSettings = ( ) => {
       <View className="mt-[20px]">
         {renderSettingDescription( t( "When-viewing-observations-display" ) )}
         <RadioButtonRow
+          testID="advanced-observation-details-mode"
           classNames="mt-[16.5px]"
           smallLabel
           checked={!isDefaultMode}
