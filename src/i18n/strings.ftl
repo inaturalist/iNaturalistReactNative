@@ -731,6 +731,8 @@ MONTHS = MONTHS
 # Label for section of ObsDetails with information about observation projects, DQA, etc.
 More = More
 More-info = More info
+# Header for a pivot card explaining access to all observation options to new users
+More-ways-to-observe = More ways to observe
 MOST-FAVED = MOST FAVED
 Most-faved = Most faved
 # Title for section in Notifications showing notifications about observations
@@ -1509,6 +1511,7 @@ You-can-also-check-out-merchandise = You can also check out merchandise for iNat
 You-can-click-join-on-the-project-page = You can click “join” on the project page.
 You-can-find-answers-on-our-help-page = You can find answers on our help page.
 You-can-only-add-20-photos-per-observation = You can only add 20 photos per observation
+You-can-record-sounds-take-multiple-photos-import = You can record sounds, take multiple photos, import from your photo library, and more by holding down (instead of tapping) the camera button.
 You-can-still-share-the-file = You can still share the file with another app. If you can email it, please send it to { $email }
 You-can-upload-this-observation-to-our-community = You can upload this observation to our community to get an identification from a real person, and help our AI improve its identifications in the future
 You-changed-filters-will-be-discarded = You changed filters, but they were not applied to your explore search results.
