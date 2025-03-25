@@ -45,6 +45,7 @@ type Props = {
   hideMetadata?: boolean,
   hideObsUploadStatus?: boolean,
   hideObsStatus?: boolean,
+  simpleObsStatus?: boolean,
   isConnected: boolean,
   layout: "list" | "grid",
   obsListKey: string,
@@ -68,6 +69,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
   hideMetadata,
   hideObsUploadStatus,
   hideObsStatus,
+  simpleObsStatus,
   isConnected,
   layout,
   obsListKey = "unknown",
@@ -153,6 +155,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
         hideMetadata={hideMetadata}
         hideObsUploadStatus={hideObsUploadStatus}
         hideObsStatus={hideObsStatus}
+        simpleObsStatus={simpleObsStatus}
         isLargeFontScale={isLargeFontScale}
         layout={layout}
         key={itemKey}
@@ -172,6 +175,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
     hideMetadata,
     hideObsUploadStatus,
     hideObsStatus,
+    simpleObsStatus,
     isDefaultMode,
     isLargeFontScale,
     layout,

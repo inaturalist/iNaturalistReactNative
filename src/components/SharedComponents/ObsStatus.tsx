@@ -16,6 +16,7 @@ interface Props {
   white?: boolean;
   classNameMargin?: string;
   testID?: string;
+  simpleObsStatus?: boolean;
 }
 
 const ObsStatus = ( {
@@ -23,7 +24,8 @@ const ObsStatus = ( {
   white,
   layout = "vertical",
   classNameMargin,
-  testID
+  testID,
+  simpleObsStatus
 }: Props ) => {
   const margin = layout === "vertical"
     ? "mb-1 ml-1"
@@ -73,6 +75,10 @@ const ObsStatus = ( {
       : iconColorResearchCheck;
     return <QualityGradeStatus qualityGrade={qualityGrade} color={iconColor} />;
   }, [observation, white] );
+
+  if ( simpleObsStatus ) {
+    return null;
+  }
 
   return (
     <View
