@@ -40,7 +40,7 @@ const AccountCreationCard = ( { triggerCondition }: Props ) => {
   );
 };
 
-const FirstObservationCard = ( { triggerCondition }: Props ) => {
+const OneObservationCard = ( { triggerCondition }: Props ) => {
   const { t } = useTranslation( );
   return (
     <OnboardingModal
@@ -136,8 +136,8 @@ const FiftyObservationCard = ( { triggerCondition }: Props ) => {
 export {
   AccountCreationCard,
   FiftyObservationCard,
-  FirstObservationCard,
   FiveObservationCard,
   NotificationOnboarding,
+  OneObservationCard,
   TenObservationCard
 };

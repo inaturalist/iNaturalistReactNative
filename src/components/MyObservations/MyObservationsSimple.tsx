@@ -5,8 +5,8 @@ import ObservationsFlashList from "components/ObservationsFlashList/Observations
 import {
   AccountCreationCard,
   FiftyObservationCard,
-  FirstObservationCard,
   FiveObservationCard,
+  OneObservationCard,
   TenObservationCard
 } from "components/OnboardingModal/PivotCards.tsx";
 import {
@@ -334,7 +334,7 @@ const MyObservationsSimple = ( {
       {isDefaultMode && (
         <>
           {/* These four cards should show only in default mode */}
-          <FirstObservationCard triggerCondition={numTotalObservations === 1} />
+          <OneObservationCard triggerCondition={numTotalObservations === 1} />
           <FiveObservationCard triggerCondition={numTotalObservations === 5} />
           <TenObservationCard triggerCondition={numTotalObservations === 10} />
           <FiftyObservationCard
