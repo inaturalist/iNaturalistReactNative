@@ -1,5 +1,6 @@
 // @flow
 import classnames from "classnames";
+import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import {
   DateDisplay,
   DisplayTaxonName,
@@ -69,6 +70,8 @@ const ObsListItem = ( {
     && observation.missingBasics()
   );
 
+  const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
+
   const displayTaxonName = useMemo( ( ) => (
     <DisplayTaxonName
       taxon={observation?.taxon}
@@ -136,7 +139,7 @@ const ObsListItem = ( {
             />
           </>
         )}
-        {!hideRGLabel && (
+        {!hideRGLabel && qualityGrade === "research" && (
           <Heading6 className="mt-[10px] text-inatGreen">
             {t( "RESEARCH-GRADE--quality-grade" )}
           </Heading6>
