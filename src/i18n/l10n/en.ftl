@@ -23,6 +23,8 @@
 ###   result of performing an action on the accessibility element." We write
 ###   them in third person singular ending with a period.
 
+# Subheader under logo in the login screen
+A-global-community-for-nature = A global community for nature
 # Header for a general description, e.g. of a user, or of iNaturalist itself
 ABOUT = ABOUT
 ABOUT-COLLECTION-PROJECTS = ABOUT COLLECTION PROJECTS
@@ -588,7 +590,7 @@ If-you-leave-x-of-your-observations-removed =
         [one] 1 of your observations
        *[other] { $count } of your observations
     } will also be removed from this project.
-If-you-took-the-original-photo-you-can-help = If you took the original photo of the organism, you can help train iNaturalist to identify this species by saving and uploading it to iNaturalist, where the community can help identify it.
+If-you-save-this-observation-and-upload-it-to-iNaturalist = If you save this observation and upload it to iNaturalist, other people may be able to help identify it.
 If-you-want-to-collate-compare-promote = If you want to collate, compare, or promote a set of existing projects, then an Umbrella project is what you should use. For example the 2018 City Nature Challenge, which collated over 60 projects, made for a great landing page where anyone could compare and contrast each city's observations. Both Collection and Traditional projects can be used in an Umbrella project, and up to 500 projects can be collated by an Umbrella project.
 If-youre-seeing-this-error = If you're seeing this and you're online, iNat staff have already been notified. Thanks for finding a bug! If you're offline, please take a screenshot and send us an email when you're back on the Internet.
 IGNORE-LOCATION = IGNORE LOCATION
@@ -612,7 +614,6 @@ iNaturalist-AI-Camera = iNaturalist AI Camera
 iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-library = iNaturalist can save photos you take in the app to your device’s library.
 iNaturalist-can-use-your-location-to-give-you-better-identification-suggestions = iNaturalist can use your location to give you better identification suggestions. We also use it to help you find species seen nearby. Sharing your location makes it easier to create useful data for science.
 INATURALIST-COMMUNITY = INATURALIST COMMUNITY
-iNaturalist-couldnt-identify-this-organism = iNaturalist couldn’t identify this organism.
 INATURALIST-FORUM = INATURALIST FORUM
 iNaturalist-has-no-ID-suggestions-for-this-photo = iNaturalist has no ID suggestions for this photo.
 INATURALIST-HELP-PAGE = INATURALIST HELP PAGE
@@ -653,10 +654,11 @@ It-might-be-one-of-these = It might be one of these
 # Month of January
 January = January
 JOIN = JOIN
+# Subheader under logo on sign up screen
+Join-a-global-community-for-nature = Join a global community for nature
 JOIN-PROJECT = JOIN PROJECT
 # Asking for confirmation if the user wants to join this project
 JOIN-PROJECT--question = JOIN PROJECT?
-Join-the-largest-community-of-naturalists = Join the largest community of naturalists in the world!
 # Header for joined projects
 JOINED = JOINED
 # Shows date user joined iNaturalist on user profile
@@ -705,8 +707,6 @@ LOG-IN-TO-INATURALIST = LOG IN TO INATURALIST
 Log-in-to-iNaturalist = Log in to iNaturalist
 LOG-OUT = LOG OUT
 LOG-OUT--question = LOG OUT?
-# Appears in the login screen
-Login-sub-title = Document living things, identify organisms & contribute to science
 Lowest = Lowest
 LOWEST-RANK = LOWEST RANK
 MAP = MAP
@@ -896,6 +896,7 @@ Opens-edit-comment-form = Opens edit comment form.
 Opens-location-permission-prompt = Opens location permission prompt
 Opens-the-side-drawer-menu = Opens the side drawer menu.
 OR-SIGN-IN-WITH = OR SIGN IN WITH
+Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Or, you can try to get a clearer photo by zooming in, getting closer, or trying a different angle.
 # Picker prompt on observation edit
 Organism-is-captive = Organism is captive
 Organisms-that-are-identified-to-species = Organisms that are identified to species rank or below
@@ -926,6 +927,7 @@ PLEASE-LOG-IN = PLEASE LOG IN
 Please-make-sure-your-password-is-at-least-6-characters = Please make sure your password is at least 6 characters.
 Please-try-again-when-you-are-connected-to-the-internet = Please try again when you are connected to the Internet.
 Please-try-again-when-you-are-online = Please try again when you are online!
+Point-the-camera-at-an-animal-plant-or-fungus = Point the camera at an animal, plant, or fungus
 POTENTIAL-DISAGREEMENT = POTENTIAL DISAGREEMENT
 Potential-disagreement-description = <0>Is the evidence enough to confirm this is </0><1></1><0>?<0>
 Potential-disagreement-disagree = <0>No, but this is a member of </0><1></1>
@@ -1102,7 +1104,6 @@ SAVE-LOCATION = SAVE LOCATION
 SAVE-PHOTOS = SAVE PHOTOS
 Save-photos-to-your-library = Save photos to your library
 Saved-Observation = Saved observation, in queue to upload
-Scan-the-area-around-you-for-organisms = Scan the area around you for organisms.
 Scientific-Name = Scientific Name
 Scientific-Name-Common-Name = Scientific Name (Common Name)
 Scientists-use-citizen-science-data = Scientists use citizen science data just like yours to help better understand species across the globe.
@@ -1242,6 +1243,10 @@ Thanks-for-using-any-suggestions = Thanks for using this app! Do you have any su
 That-email-is-already-associated-with-an-account = That email is already associated with an account.
 That-user-profile-doesnt-exist = That user profile doesn't exist
 That-username-is-unavailable = That username is unavailable
+# Title on the match screen, when there is no top suggestion but other suggestions with low confidence
+The-AI-is-not-confident-It-may-be-one-of-the-IDs-below = The AI is not confident. It may be one of the IDs below.
+# Text on Match screen when there are no suggestions found at all for a user photo
+The-AI-is-not-confident-Upload-to-ask-the-community = The AI is not confident. Upload to ask the community.
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
 The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
 # Describes what happens when geoprivacy is set to private
@@ -1348,8 +1353,6 @@ View-suggestions = View suggestions
 Watch-your-notifications-for-identifications = Watch your notifications for identifications!
 We-are-not-confident-enough-to-make-a-top-ID-suggestion = We’re not confident enough to make a top ID suggestion, but here are some other suggestions:
 Welcome-back = Welcome back!
-# Title on the mtch screen, when there is no top suggestion but other suggestions with low confidence
-Were-not-confident-enough-to-make-an-ID = We’re not confident enough to make an ID.
 Weve-made-some-updates = We've made some updates, so we recommend taking a look at your settings. You can always update these later.
 WHAT-IS-INATURALIST = WHAT IS INATURALIST?
 Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!

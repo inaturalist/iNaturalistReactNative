@@ -11,7 +11,7 @@ const SignUpConfirmation = ( ) => (
     <ScrollView
       keyboardShouldPersistTaps="always"
     >
-      <Header headerText={t( "Join-the-largest-community-of-naturalists" )} />
+      <Header headerText={t( "Join-a-global-community-for-nature" )} />
       <SignUpConfirmationForm />
     </ScrollView>
   </LoginSignUpWrapper>
