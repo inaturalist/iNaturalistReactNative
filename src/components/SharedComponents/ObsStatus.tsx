@@ -77,6 +77,18 @@ const ObsStatus = ( {
   }, [observation, white] );
 
   if ( simpleObsStatus ) {
+    if ( identificationsFilled || commentsFilled ) {
+      return (
+        <View
+          className={classNames( "flex-1 justify-center items-end", classNameMargin )}
+          testID={testID}
+        >
+          <View
+            className="h-[10px] w-[10px] rounded-full bg-inatGreen"
+          />
+        </View>
+      );
+    }
     return null;
   }
 
