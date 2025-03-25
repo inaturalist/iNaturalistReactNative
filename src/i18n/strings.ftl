@@ -539,7 +539,7 @@ Geoprivacy-status = Geoprivacy: { $status }
 Get-an-instant-ID-of-any-plant-animal-fungus = Get an instant ID of any plant, animal, or fungus
 Get-identifications-from-real-people = Get identifications from real people.
 # Title of screen asking for permission to access location
-Get-more-accurate-suggestions-create-useful-data = Get more accurate suggestions & create useful data for science using your location
+Improve-suggestions-by-using-your-location = Improve suggestions by using your location
 # Preceded by the fragment, "By uploading your observation to iNaturalist, you can:"
 Get-your-identification-verified-by-real-people = Get your identification verified by real people in the iNaturalist community
 Getting-an-even-more-accurate-ID = Getting an even more accurate ID...
@@ -607,7 +607,7 @@ IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = IMPROVE THESE SUGGESTIONS BY 
 improving--identification = Improving
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT SETTINGS
 iNaturalist-AI-Camera = iNaturalist AI Camera
-iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-photo-library = iNaturalist can save photos you take in the app to your device’s photo library.
+iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-library = iNaturalist can save photos you take in the app to your device’s library.
 INATURALIST-COMMUNITY = INATURALIST COMMUNITY
 iNaturalist-couldnt-identify-this-organism = iNaturalist couldn’t identify this organism.
 INATURALIST-FORUM = INATURALIST FORUM
@@ -633,7 +633,7 @@ INATURALIST-STORE = INATURALIST STORE
 INATURALIST-TEAM = INATURALIST TEAM
 iNaturalist-users-who-have-left-an-identification = iNaturalist users who have left an identification on another user's observation
 iNaturalist-users-who-have-observed = iNaturalist users who have observed a particular taxon at a particular time and place
-iNaturalist-uses-your-location-to-give-you = iNaturalist uses your location to give you better identification suggestions and we can automatically add a location to your observations, which helps scientists. We also use it to help you find organisms observed near your location.
+iNaturalist-can-use-your-location-to-give-you-better-identification-suggestions = iNaturalist can use your location to give you better identification suggestions. We also use it to help you find species seen nearby. Sharing your location makes it easier to create useful data for science.
 iNaturalists-apps-are-designed-and-developed-3 = iNaturalist's apps are designed, developed, and supported by the iNaturalist team: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Joanne Lin, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Thea Skaff, Angie Ta, Ken-ichi Ueda, Kirk van Gorkom, Jason Walthall, & Jane Weeden.
 iNaturalists-vision-is-a-world = iNaturalist's vision is a world where everyone can understand and sustain biodiversity through the practice of observing wild organisms and sharing information about them.
 Individual-encounters-with-organisms = Individual encounters with organisms at a particular time and location, usually with evidence
@@ -859,7 +859,7 @@ OBSERVATIONS-WITHOUT-NUMBER =
        *[other] OBSERVATIONS
     }
 # Title of screen asking for permission to access the camera
-Observe-and-identify-organisms-in-real-time-with-your-camera = Observe and identify organisms in real time with your camera
+Identify-organisms-in-real-time-with-your-camera = Identify organisms in real time with your camera
 # Text for a button prompting the user to grant access to the camera
 OBSERVE-ORGANISMS = OBSERVE ORGANISMS
 # This label is used in ObsDetails to describe the observation time
@@ -1037,7 +1037,7 @@ Record-a-sound = Record a sound
 # Heading for the sound recorder
 RECORD-NEW-SOUND = RECORD NEW SOUND
 # Title of screen asking for permission to access the microphone
-Record-organism-sounds-with-the-microphone = Record organism sounds with the microphone
+Record-animal-sounds = Record animal sounds
 # Text for a button prompting the user to grant access to the microphone
 RECORD-SOUND = RECORD SOUND
 # Imperative verb for recording a sound
@@ -1100,7 +1100,7 @@ SAVE-CHANGES = SAVE CHANGES
 SAVE-FOR-LATER = SAVE FOR LATER
 SAVE-LOCATION = SAVE LOCATION
 SAVE-PHOTOS = SAVE PHOTOS
-Save-photos-to-your-photo-library = Save photos to your photo library
+Save-photos-to-your-library = Save photos to your library
 Saved-Observation = Saved observation, in queue to upload
 Scan-the-area-around-you-for-organisms = Scan the area around you for organisms.
 Scientific-Name = Scientific Name
@@ -1308,8 +1308,8 @@ Use-iNaturalists-AI-Camera = Use iNaturalist's AI Camera to identify organisms i
 # Text for a button prompting the user to grant access to location
 USE-LOCATION = USE LOCATION
 Use-the-devices-other-camera = Use the device's other camera.
-Use-the-iNaturalist-camera-to-observe-2 = Use iNaturalist to observe and identify organisms in real time. Share them with our community to get identifications and contribute to science!
-Use-your-devices-microphone-to-record = Use your device’s microphone to record sounds made by organisms and share them with our community to get identifications and contribute to science!
+Use-the-iNaturalist-camera-to-see-real-time-identifications-and-take-photos = Use the iNaturalist camera to see real-time identifications and take photos!
+Use-your-devices-microphone-to-record-animal-sounds-and-share-them = Use your device’s microphone to record animal sounds and share them to get identifications and contribute to science!
 USER = USER
 User = User { $userHandle }
 # Appears above the text fields
@@ -1544,7 +1544,7 @@ Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
 Your-location-uncertainty-is-over-x-km = Your location uncertainty is over { $x } km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
 Your-observations-can-help-scientists = Your observations can help scientists!
 Your-observations-can-now-help-scientists = Your observations can now help scientists.
-Youre-always-in-control-of-the-location-privacy = You’re always in control of the location privacy of every observation you create.
+
 # Text prompting the user to open Settings to grant permission after
 # permission has been denied
 Youve-denied-permission-prompt = You’ve denied permission. Please grant permission in the settings app.
