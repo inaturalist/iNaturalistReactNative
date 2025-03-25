@@ -68,6 +68,7 @@ const CameraContainerWithPermission = ( ) => fadeInComponent(
       blockedPrompt={t( "Youve-previously-denied-camera-permissions" )}
       buttonText={t( "OBSERVE-ORGANISMS" )}
       icon="camera"
+      image={require( "images/background/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
     >
       <CameraContainer />
     </PermissionGateContainer>
