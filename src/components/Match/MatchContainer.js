@@ -1,7 +1,7 @@
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { Body3, Heading4, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import flattenUploadParams from "components/Suggestions/helpers/flattenUploadParams.ts";
@@ -90,6 +90,7 @@ const { useRealm } = RealmContext;
 const MatchContainer = ( ) => {
   const hasLoadedRef = useRef( false );
   const isDebug = isDebugMode( );
+  const { params } = useRoute( );
   const scrollRef = useRef( null );
   const currentObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
@@ -209,6 +210,10 @@ const MatchContainer = ( ) => {
     queryKey,
     onlineSuggestionsAttempted
   } );
+
+  console.log( "observationPhoto", observationPhoto );
+  console.log( "queryKey", queryKey );
+
   const [currentPlaceGuess, setCurrentPlaceGuess] = useState( );
   const [hasRefetchedSuggestions, setHasRefetchedSuggestions] = useState( false );
 
@@ -363,6 +368,13 @@ const MatchContainer = ( ) => {
     shouldUseEvidenceLocation
   ] );
 
+  useEffect( () => {
+    if ( currentObservation && params.lastScreen === "PhotoSharing" ) {
+      // resset query key to show accurate suggestios when sharing photos
+      setImageParams();
+    }
+  }, [currentObservation, params.lastScreen, setImageParams] );
+
   useEffect( ( ) => {
     const onFocus = navigation.addListener( "focus", ( ) => {
       // resizeImage crashes if trying to resize an https:// photo while there is no internet
@@ -380,6 +392,7 @@ const MatchContainer = ( ) => {
     if ( !suggestions || suggestions.length === 0 ) {
       return;
     }
+    console.log( "useeffect suggestions" );
     const orderedList = [...suggestions.otherSuggestions];
     if ( suggestions?.topSuggestion ) {
       setTopSuggestion( suggestions?.topSuggestion );
@@ -417,13 +430,13 @@ const MatchContainer = ( ) => {
     .filter( suggestion => suggestion.taxon.id !== taxonId );
 
   const navToTaxonDetails = photo => {
-    const params = { id: taxonId };
+    const navParams = { id: taxonId };
     if ( !photo?.isRepresentativeButOtherTaxon ) {
-      params.firstPhotoID = photo.id;
+      navParams.firstPhotoID = photo.id;
     } else {
-      params.representativePhoto = photo;
+      navParams.representativePhoto = photo;
     }
-    navigation.push( "TaxonDetails", params );
+    navigation.push( "TaxonDetails", navParams );
   };
 
   const handleSaveOrDiscardPress = async action => {

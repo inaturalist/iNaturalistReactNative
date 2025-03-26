@@ -25,9 +25,14 @@ const PhotoSharing = ( ): Node => {
     try {
       const newObservation = await Observation.createObservationWithPhotos( photoUris );
       newObservation.description = sharedText;
-      prepareObsEdit( newObservation );
+      console.log( "new observation", newObservation );
+      console.log( "photoUris", photoUris );
+      await prepareObsEdit( newObservation );
       if ( isDefaultMode ) {
-        navigation.navigate( "NoBottomTabStackNavigator", { screen: "Match" } );
+        navigation.navigate(
+          "NoBottomTabStackNavigator",
+          { screen: "Match", params: { lastScreen: "PhotoSharing" } }
+        );
       } else if ( isAdvancedSuggestionsMode ) {
         navigation.navigate(
           "NoBottomTabStackNavigator",
