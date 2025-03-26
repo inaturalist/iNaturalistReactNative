@@ -76,7 +76,6 @@ const ObsStatus = ( {
     return <QualityGradeStatus qualityGrade={qualityGrade} color={iconColor} />;
   }, [observation, white] );
 
-  console.log( "isSimpleObsStatus", isSimpleObsStatus );
   if ( isSimpleObsStatus ) {
     if ( identificationsFilled || commentsFilled ) {
       return (
