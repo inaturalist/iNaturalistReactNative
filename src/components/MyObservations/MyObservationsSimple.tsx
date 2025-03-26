@@ -355,6 +355,7 @@ const MyObservationsSimple = ( {
                   currentUser={currentUser}
                   explore={false}
                   queued={false}
+                  testID="PivotCardGridItem"
                 />
               )
             }}

@@ -25,7 +25,8 @@ type Props = {
   style?: Object,
   queued: boolean,
   uploadProgress?: number,
-  width?: string
+  width?: string,
+  testID?: string
 };
 
 const ObsGridItem = ( {
@@ -39,6 +40,7 @@ const ObsGridItem = ( {
   queued,
   style,
   uploadProgress,
+  testID,
   width = "w-[200px]"
 }: Props ): Node => {
   const displayTaxonName = useMemo( ( ) => (
@@ -75,7 +77,7 @@ const ObsGridItem = ( {
       obsPhotosCount={photoCountFromObservation( observation )}
       hasSound={observationHasSound( observation )}
       isMultiplePhotosTop
-      testID={`MyObservations.obsGridItem.${observation.uuid}`}
+      testID={testID || `MyObservations.obsGridItem.${observation.uuid}`}
       useShortGradient={!explore}
       iconicTaxonName={observation.taxon?.iconic_taxon_name}
       white
