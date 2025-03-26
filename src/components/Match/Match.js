@@ -72,7 +72,7 @@ const Match = ( {
                 )
                 : (
                   <Body2>
-                    {t( "iNaturalist-couldnt-identify-this-organism" )}
+                    {t( "The-AI-is-not-confident-Upload-to-ask-the-community" )}
                   </Body2>
                 )
             }
@@ -94,7 +94,10 @@ const Match = ( {
                 onIconicTaxonChosen={setIconicTaxon}
               />
               <Body2 className="mx-5 my-[30px]">
-                {t( "If-you-took-the-original-photo-you-can-help" )}
+                {t( "If-you-save-this-observation-and-upload-it-to-iNaturalist" )}
+              </Body2>
+              <Body2 className="mx-3 my-[30px]">
+                {t( "Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer" )}
               </Body2>
               {!latitude && (
                 <Button
@@ -128,7 +131,7 @@ const Match = ( {
                 )
                 : (
                   <Body2>
-                    {t( "Were-not-confident-enough-to-make-an-ID" )}
+                    {t( "The-AI-is-not-confident-It-may-be-one-of-the-IDs-below" )}
                   </Body2>
                 )
             }

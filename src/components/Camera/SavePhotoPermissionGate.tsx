@@ -21,9 +21,9 @@ const SavePhotoPermissionGate = ( {
   return (
     <PermissionGateContainer
       permissions={WRITE_MEDIA_PERMISSIONS}
-      title={t( "Save-photos-to-your-photo-library" )}
-      titleDenied={t( "Save-photos-to-your-photo-library" )}
-      body={t( "iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-photo-library" )}
+      title={t( "Save-photos-to-your-library" )}
+      titleDenied={t( "Save-photos-to-your-library" )}
+      body={t( "iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-library" )}
       buttonText={t( "SAVE-PHOTOS" )}
       icon="photo-library"
       image={require( "images/background/birger-strahl-ksiGE4hMiso-unsplash.jpg" )}
