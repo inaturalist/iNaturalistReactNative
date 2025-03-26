@@ -31,8 +31,11 @@ const AccountCreationCard = ( { triggerCondition }: Props ) => {
       triggerCondition={triggerCondition}
       slides={[
         {
-          title: t( "Your-observations-can-now-help-scientists" ),
-          description: t( "All-observations-submitted-to-iNaturalist-need-a-date-and-location" ),
+          title: t( "Youre-ready-to-share-your-observations" ),
+          description: t( "You-can-now-upload-your-observations-to-iNaturalist-and-contribute" ),
+          description2: t( "All-observations-need-a-date-and-location-to-be-used-for-science" ),
+          checkbox1: t( "Get-feedback-from-naturalists-and-experts-who-will-help-verify" ),
+          checkbox2: t( "Help-create-Research-Grade-data-used-in-science-and-conservation" ),
           imageSource: require( "images/background/camera-finder.png" )
         }
       ]}

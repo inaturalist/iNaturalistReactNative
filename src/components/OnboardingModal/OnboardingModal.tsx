@@ -1,5 +1,6 @@
 import {
-  Body3, Button, Heading2, Heading3, INatIconButton, Modal,
+  Body3, Button, Heading2, Heading3, INatIcon,
+  INatIconButton, Modal,
   UnderlinedLink
 } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
@@ -7,6 +8,7 @@ import * as React from "react";
 import { ImageSourcePropType, ImageStyle } from "react-native";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
+import colors from "styles/tailwindColors";
 
 import OnboardingModalBase from "./OnboardingModalBase";
 
@@ -15,6 +17,8 @@ interface Slide {
   imageSource?: ImageSourcePropType;
   description: string;
   description2?: string;
+  checkbox1?: string;
+  checkbox2?: string;
   imageComponentOptions?: {
     imageComponent: React.ReactNode;
     onImageComponentPress: ( ) => void;
@@ -96,6 +100,17 @@ const OnboardingModal = ( {
     );
   };
 
+  const renderCheckboxRow = ( checkboxText: string ) => (
+    <View className="flex-row">
+      <View
+        className="bg-inatGreen w-[15px] h-[15px] rounded-sm items-center justify-center mt-0.5"
+      >
+        <INatIcon name="checkmark" color={colors.white} size={10} />
+      </View>
+      <Body3 className="pl-2 shrink">{checkboxText}</Body3>
+    </View>
+  );
+
   const imageStyle: ImageStyle = {
     width: "100%",
     height: undefined,
@@ -134,7 +149,11 @@ const OnboardingModal = ( {
         )
       }
       {currentSlide.description && <Body3 className="mt-5">{currentSlide.description}</Body3>}
-      {currentSlide.description2 && <Body3 className="mt-2">{currentSlide.description2}</Body3>}
+      {currentSlide.checkbox1 && (
+        <View className="mt-3">{renderCheckboxRow( currentSlide.checkbox1 )}</View>
+      )}
+      {currentSlide.checkbox2 && renderCheckboxRow( currentSlide.checkbox2 )}
+      {currentSlide.description2 && <Body3 className="mt-3">{currentSlide.description2}</Body3>}
       {/* Slide Navigation */}
       {slides.length > 1 && (
         <View className="flex-row items-center justify-between mx-6 mt-5">
