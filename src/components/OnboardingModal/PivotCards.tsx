@@ -16,7 +16,7 @@ const NotificationOnboarding = ( { triggerCondition }: Props ) => {
       slides={[
         {
           title: t( "Watch-your-notifications-for-identifications" ),
-          description: t( "Once-youve-uploaded-to-iNaturalist" )
+          description: t( "The-iNaturalist-community-will-help-verify-and-refine-identifications" )
         }
       ]}
     />
@@ -31,8 +31,11 @@ const AccountCreationCard = ( { triggerCondition }: Props ) => {
       triggerCondition={triggerCondition}
       slides={[
         {
-          title: t( "Your-observations-can-now-help-scientists" ),
-          description: t( "All-observations-submitted-to-iNaturalist-need-a-date-and-location" ),
+          title: t( "Youre-ready-to-share-your-observations" ),
+          description: t( "You-can-now-upload-your-observations-to-iNaturalist-and-contribute" ),
+          description2: t( "All-observations-need-a-date-and-location-to-be-used-for-science" ),
+          checkbox1: t( "Get-feedback-from-naturalists-and-experts-who-will-help-verify" ),
+          checkbox2: t( "Help-create-Research-Grade-data-used-in-science-and-conservation" ),
           imageSource: require( "images/background/camera-finder.png" )
         }
       ]}
@@ -40,7 +43,7 @@ const AccountCreationCard = ( { triggerCondition }: Props ) => {
   );
 };
 
-const OneObservationCard = ( { triggerCondition }: Props ) => {
+const OneObservationCard = ( { triggerCondition, imageComponentOptions }: Props ) => {
   const { t } = useTranslation( );
   return (
     <OnboardingModal
@@ -48,14 +51,8 @@ const OneObservationCard = ( { triggerCondition }: Props ) => {
       triggerCondition={triggerCondition}
       slides={[
         {
-          title: t( "Congrats-on-making-your-first-observation" ),
-          description: t( "You-make-an-observation-every-time-you" ),
-          imageSource: require( "images/background/camera-finder.png" )
-        },
-        {
-          title: t( "Grow-your-collection" ),
-          description: t( "Use-iNaturalist-to-collect-any-kind-of" ),
-          imageSource: require( "images/background/iconic-taxon-photos-collage.png" )
+          title: t( "Congratulations-You-made-your-first-observation" ),
+          imageComponentOptions
         }
       ]}
     />
@@ -70,18 +67,9 @@ const FiveObservationCard = ( { triggerCondition }: Props ) => {
       triggerCondition={triggerCondition}
       slides={[
         {
-          title: t( "Youve-made-5-observations" ),
-          description: t( "How-does-it-feel-to-identify" ),
-          imageSource: require( "images/background/toucans.jpg" )
-        },
-        {
-          title: t( "Your-observations-can-help-scientists" ),
-          description: t( "Scientists-use-citizen-science-data" ),
-          imageSource: require( "images/background/phone-hand.jpg" )
-        },
-        {
-          title: t( "Get-identifications-from-real-people" ),
-          description: t( "Other-members-of-our-community-can-verify" ),
+          title: t( "Your-observations-can-help-science" ),
+          description: t( "Upload-your-observations-to-contribute-data-to-help-save-species" ),
+          description2: t( "Learn-from-people-who-verify-and-refine-your-identifications" ),
           imageSource: require( "images/background/using-inaturalist-in-the-field.png" )
         }
       ]}
@@ -98,7 +86,7 @@ const TenObservationCard = ( { triggerCondition }: Props ) => {
       slides={[
         {
           title: t( "More-ways-to-observe" ),
-          description: t( "You-can-record-sounds-take-multiple-photos-import" ),
+          description: t( "If-you-hold-down-instead-of-tapping-the-camera-button-you-can" ),
           imageSource: require( "images/background/obs-wheel-pivot.png" )
         }
       ]}
@@ -116,7 +104,7 @@ const FiftyObservationCard = ( { triggerCondition }: Props ) => {
       slides={[
         {
           title: t( "Welcome-back" ),
-          description: t( "Weve-made-some-updates" ),
+          description: t( "You-may-notice-changes-to-how-things-look-and-flow" ),
           imageSource: require( "images/background/using-inaturalist-in-the-field.png" )
         }
       ]}
