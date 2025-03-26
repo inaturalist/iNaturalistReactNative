@@ -83,7 +83,7 @@ const TenObservationCard = ( { triggerCondition }: Props ) => {
       slides={[
         {
           title: t( "More-ways-to-observe" ),
-          description: t( "You-can-record-sounds-take-multiple-photos-import" ),
+          description: t( "If-you-hold-down-instead-of-tapping-the-camera-button-you-can" ),
           imageSource: require( "images/background/obs-wheel-pivot.png" )
         }
       ]}
