@@ -278,10 +278,11 @@ const MyObservationsSimple = ( {
               handlePullToRefresh={handlePullToRefresh}
               handleIndividualUploadPress={handleIndividualUploadPress}
               hideLoadingWheel
-              hideMetadata
+              hideMetadata={isDefaultMode}
               hideObsUploadStatus={!currentUser}
               hideObsStatus={!currentUser}
               isSimpleObsStatus={isDefaultMode}
+              hideRGLabel={!isDefaultMode || !currentUser}
               isFetchingNextPage={isFetchingNextPage}
               isConnected={isConnected}
               obsListKey="MyObservations"

@@ -82,7 +82,9 @@ describe( "AI Camera", ( ) => {
     } ) );
     render( <AICamera /> );
 
-    const scanText = screen.getByText( i18next.t( "Scan-the-area-around-you-for-organisms" ) );
+    const scanText = screen.getByText(
+      i18next.t( "Point-the-camera-at-an-animal-plant-or-fungus" )
+    );
 
     expect( scanText ).toBeVisible( );
   } );
