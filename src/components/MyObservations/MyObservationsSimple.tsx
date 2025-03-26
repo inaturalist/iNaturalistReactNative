@@ -2,6 +2,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
 import ObservationsViewBar from "components/Explore/ObservationsViewBar";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
+import ObsGridItem from "components/ObservationsFlashList/ObsGridItem";
 import {
   AccountCreationCard,
   FiftyObservationCard,
@@ -242,6 +243,15 @@ const MyObservationsSimple = ( {
     return null;
   };
 
+  const handlePivotCardGridItemPress = ( ) => {
+    const { uuid } = observations[0];
+    navigation.navigate( {
+      key: `Obs-0-${uuid}`,
+      name: "ObsDetails",
+      params: { uuid }
+    } );
+  };
+
   return (
     <>
       <ViewWrapper>
@@ -334,7 +344,21 @@ const MyObservationsSimple = ( {
       {isDefaultMode && (
         <>
           {/* These four cards should show only in default mode */}
-          <OneObservationCard triggerCondition={numTotalObservations === 1} />
+          <OneObservationCard
+            triggerCondition={numTotalObservations === 1}
+            imageComponentOptions={{
+              onImageComponentPress: handlePivotCardGridItemPress,
+              accessibilityHint: t( "Navigates-to-observation-details" ),
+              imageComponent: (
+                <ObsGridItem
+                  observation={observations[0]}
+                  currentUser={currentUser}
+                  explore={false}
+                  queued={false}
+                />
+              )
+            }}
+          />
           <FiveObservationCard triggerCondition={numTotalObservations === 5} />
           <TenObservationCard triggerCondition={numTotalObservations === 10} />
           <FiftyObservationCard

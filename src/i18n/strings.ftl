@@ -244,7 +244,7 @@ COMMUNITY-GUIDELINES = COMMUNITY GUIDELINES
 Confidence--label = Confidence
 # Button that confirms a choice the user has made
 CONFIRM = CONFIRM
-Congrats-on-making-your-first-observation = Congrats on making your first observation!
+Congratulations-You-made-your-first-observation = Congratulations! You made your first observation!
 # Onboarding carousel header second screen
 Connect-with-expert-naturalists = Connect with expert naturalists
 Connect-with-other-naturalists = Connect with other naturalists and engage in conversations.
@@ -553,7 +553,6 @@ Grant-Permission-title = Grant Permission
 Group-Photos = Group Photos
 # Onboarding for users learning to group photos in the camera roll
 Group-photos-onboarding = Group photos into observations– make sure there is only one species per observation
-Grow-your-collection = Grow your collection
 HELP = HELP
 # Onboarding message describing one of the reasons to use iNat
 Help-protect-species = Help protect species
@@ -1307,7 +1306,6 @@ Uploading-x-of-y-observations =
         [one] Uploading { $currentUploadCount } observation
        *[other] Uploading { $currentUploadCount } of { $total } observations
     }
-Use-iNaturalist-to-collect-any-kind-of = Use iNaturalist to collect any kind of plant, insect, spider, bird, or other animal and add them to your observations!
 Use-iNaturalist-to-identify-any-living-thing = Use iNaturalist to identify any living thing
 Use-iNaturalists-AI-Camera = Use iNaturalist's AI Camera to identify organisms in real time
 # Text for a button prompting the user to grant access to location
@@ -1527,7 +1525,6 @@ You-havent-observed-any-species-yet = You haven't observed any species yet.
 You-likely-observed-a-new-species = You likely observed a new species!
 You-likely-observed-a-species = You likely observed a species
 You-likely-observed-an-organism-in-this-group = You likely observed an organism in this group
-You-make-an-observation-every-time-you = You make an observation every time you take a picture of an organism with a date and location.
 You-may-have-observed-a-new-species = You may have observed a new species!
 You-may-have-observed-a-species = You may have observed a species
 You-may-have-observed-an-organism-in-this-group = You may have observed an organism in this group

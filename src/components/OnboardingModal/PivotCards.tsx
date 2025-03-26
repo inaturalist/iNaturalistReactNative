@@ -40,7 +40,7 @@ const AccountCreationCard = ( { triggerCondition }: Props ) => {
   );
 };
 
-const OneObservationCard = ( { triggerCondition }: Props ) => {
+const OneObservationCard = ( { triggerCondition, imageComponentOptions }: Props ) => {
   const { t } = useTranslation( );
   return (
     <OnboardingModal
@@ -48,14 +48,8 @@ const OneObservationCard = ( { triggerCondition }: Props ) => {
       triggerCondition={triggerCondition}
       slides={[
         {
-          title: t( "Congrats-on-making-your-first-observation" ),
-          description: t( "You-make-an-observation-every-time-you" ),
-          imageSource: require( "images/background/camera-finder.png" )
-        },
-        {
-          title: t( "Grow-your-collection" ),
-          description: t( "Use-iNaturalist-to-collect-any-kind-of" ),
-          imageSource: require( "images/background/iconic-taxon-photos-collage.png" )
+          title: t( "Congratulations-You-made-your-first-observation" ),
+          imageComponentOptions
         }
       ]}
     />

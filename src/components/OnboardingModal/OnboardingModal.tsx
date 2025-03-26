@@ -2,7 +2,7 @@ import {
   Body3, Button, Heading2, Heading3, INatIconButton, Modal,
   UnderlinedLink
 } from "components/SharedComponents";
-import { Image, View } from "components/styledComponents";
+import { Image, Pressable, View } from "components/styledComponents";
 import * as React from "react";
 import { ImageSourcePropType, ImageStyle } from "react-native";
 import { useTranslation } from "sharedHooks";
@@ -14,6 +14,7 @@ interface Slide {
   title: string;
   imageSource?: ImageSourcePropType;
   description: string;
+  imageComponent?: React.ReactNode;
 }
 
 interface Props {
@@ -100,6 +101,20 @@ const OnboardingModal = ( {
       closeModal={closeModal}
     >
       <Heading2>{currentSlide.title}</Heading2>
+      {/* OneObservationCard shows the user's grid observation component */}
+      {currentSlide?.imageComponentOptions?.imageComponent && (
+        <Pressable
+          className="self-center mt-5"
+          onPress={( ) => {
+            currentSlide?.imageComponentOptions?.onImageComponentPress( );
+            closeModal( );
+          }}
+          accessibilityRole="link"
+          accessibilityHint={currentSlide?.imageComponentOptions?.accessibilityHint}
+        >
+          {currentSlide.imageComponentOptions.imageComponent}
+        </Pressable>
+      )}
       {
         // Image only shows when imageSource is defined
         currentSlide.imageSource && (
@@ -113,7 +128,7 @@ const OnboardingModal = ( {
           </View>
         )
       }
-      <Body3 className="mt-5">{currentSlide.description}</Body3>
+      {currentSlide.description && <Body3 className="mt-5">{currentSlide.description}</Body3>}
 
       {/* Slide Navigation */}
       {slides.length > 1 && (
