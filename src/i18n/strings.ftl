@@ -881,7 +881,6 @@ OK = OK
 # Sort order, refers to newest or oldest date
 Oldest-to-newest = Oldest to newest
 Once-you-create-and-upload-observations = Once you create & upload observations, other members of our community can add identifications to help your observations reach research grade.
-Once-youve-uploaded-to-iNaturalist = Once you’ve uploaded to iNaturalist, other naturalists in our community can help confirm your identifications. Keep an eye on your notifications for updates!
 # Adjective, as in geoprivacy
 Open = Open
 OPEN-EMAIL = OPEN EMAIL
@@ -1247,6 +1246,8 @@ The-AI-is-not-confident-It-may-be-one-of-the-IDs-below = The AI is not confident
 # Text on Match screen when there are no suggestions found at all for a user photo
 The-AI-is-not-confident-Upload-to-ask-the-community = The AI is not confident. Upload to ask the community.
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
+# Description for modal that pops up when user first logs in and goes to notifications screen
+The-iNaturalist-community-will-help-verify-and-refine-identifications = The iNaturalist community will help verify and refine identifications on your observations to create Research Grade data for science and conservation.
 The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
 # Describes what happens when geoprivacy is set to private
 The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify
@@ -1352,7 +1353,6 @@ View-suggestions = View suggestions
 Watch-your-notifications-for-identifications = Watch your notifications for identifications!
 We-are-not-confident-enough-to-make-a-top-ID-suggestion = We’re not confident enough to make a top ID suggestion, but here are some other suggestions:
 Welcome-back = Welcome back!
-Weve-made-some-updates = We've made some updates, so we recommend taking a look at your settings. You can always update these later.
 WHAT-IS-INATURALIST = WHAT IS INATURALIST?
 Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!
 When-tapping-the-green-observation-button = When tapping the green observation button, open:
@@ -1529,6 +1529,8 @@ You-likely-observed-an-organism-in-this-group = You likely observed an organism 
 You-may-have-observed-a-new-species = You may have observed a new species!
 You-may-have-observed-a-species = You may have observed a species
 You-may-have-observed-an-organism-in-this-group = You may have observed an organism in this group
+# Description for modal that pops up if user logs in and has more than 50 observations
+You-may-notice-changes-to-how-things-look-and-flow = You may notice changes to how things look and flow. You can control your options in the settings.
 You-must-be-logged-in-to-view-messages = You must be logged in to view messages
 You-must-install-Google-Play-Services-to-sign-in-with-Google = You must install Google Play Services to sign in with Google.
 # Error message when you try to do something that requires an Internet

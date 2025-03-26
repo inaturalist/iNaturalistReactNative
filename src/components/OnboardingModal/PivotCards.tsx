@@ -16,7 +16,7 @@ const NotificationOnboarding = ( { triggerCondition }: Props ) => {
       slides={[
         {
           title: t( "Watch-your-notifications-for-identifications" ),
-          description: t( "Once-youve-uploaded-to-iNaturalist" )
+          description: t( "The-iNaturalist-community-will-help-verify-and-refine-identifications" )
         }
       ]}
     />
@@ -104,7 +104,7 @@ const FiftyObservationCard = ( { triggerCondition }: Props ) => {
       slides={[
         {
           title: t( "Welcome-back" ),
-          description: t( "Weve-made-some-updates" ),
+          description: t( "You-may-notice-changes-to-how-things-look-and-flow" ),
           imageSource: require( "images/background/using-inaturalist-in-the-field.png" )
         }
       ]}
