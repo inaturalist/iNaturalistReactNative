@@ -64,18 +64,9 @@ const FiveObservationCard = ( { triggerCondition }: Props ) => {
       triggerCondition={triggerCondition}
       slides={[
         {
-          title: t( "Youve-made-5-observations" ),
-          description: t( "How-does-it-feel-to-identify" ),
-          imageSource: require( "images/background/toucans.jpg" )
-        },
-        {
-          title: t( "Your-observations-can-help-scientists" ),
-          description: t( "Scientists-use-citizen-science-data" ),
-          imageSource: require( "images/background/phone-hand.jpg" )
-        },
-        {
-          title: t( "Get-identifications-from-real-people" ),
-          description: t( "Other-members-of-our-community-can-verify" ),
+          title: t( "Your-observations-can-help-science" ),
+          description: t( "Upload-your-observations-to-contribute-data-to-help-save-species" ),
+          description2: t( "Learn-from-people-who-verify-and-refine-your-identifications" ),
           imageSource: require( "images/background/using-inaturalist-in-the-field.png" )
         }
       ]}

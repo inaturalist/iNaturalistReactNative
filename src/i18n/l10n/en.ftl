@@ -539,7 +539,6 @@ GEOPRIVACY = GEOPRIVACY
 Geoprivacy-status = Geoprivacy: { $status }
 # Onboarding message describing one of the reasons to use iNat
 Get-an-instant-ID-of-any-plant-animal-fungus = Get an instant ID of any plant, animal, or fungus
-Get-identifications-from-real-people = Get identifications from real people.
 # Preceded by the fragment, "By uploading your observation to iNaturalist, you can:"
 Get-your-identification-verified-by-real-people = Get your identification verified by real people in the iNaturalist community
 Getting-an-even-more-accurate-ID = Getting an even more accurate ID...
@@ -559,7 +558,6 @@ Help-protect-species = Help protect species
 Hide = Hide
 Highest = Highest
 HIGHEST-RANK = HIGHEST RANK
-How-does-it-feel-to-identify = How does it feel to identify and connect to the nature around you?
 I-agree-to-the-Terms-of-Use = <0>I agree to the Terms of Use and Privacy Policy, and I have reviewed the Community Guidelines (</0><1>required</1><0>).</0>
 Iconic-taxon-name = Iconic taxon name: { $iconicTaxon }
 ID-Suggestions = ID Suggestions
@@ -686,6 +684,7 @@ Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, 
 Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBER($longitude, maximumFractionDigits: 6) }, Acc: { $accuracy }
 # Identification category
 leading--identification = Leading
+Learn-from-people-who-verify-and-refine-your-identifications = Learn from people who verify and refine your identifications.
 Learn-More = Learn More
 LEARN-MORE-ABOUT-THIS-GROUP = LEARN MORE ABOUT THIS GROUP
 LEARN-MORE-ABOUT-THIS-SPECIES = LEARN MORE ABOUT THIS SPECIES
@@ -904,7 +903,6 @@ Organisms-that-are-identified-to-species = Organisms that are identified to spec
 # one of the existing options
 Other = Other
 OTHER-DATA = OTHER DATA
-Other-members-of-our-community-can-verify = Other members of our community can verify and identify your observations if you upload them to iNaturalist.
 OTHER-SUGGESTIONS = OTHER SUGGESTIONS
 PASSWORD = PASSWORD
 # Title showing user profile details about who a user follows and is following
@@ -1105,7 +1103,6 @@ Save-photos-to-your-library = Save photos to your library
 Saved-Observation = Saved observation, in queue to upload
 Scientific-Name = Scientific Name
 Scientific-Name-Common-Name = Scientific Name (Common Name)
-Scientists-use-citizen-science-data = Scientists use citizen science data just like yours to help better understand species across the globe.
 # Title for a search interface
 SEARCH = SEARCH
 # Title for a search interface
@@ -1295,6 +1292,7 @@ Upload-x-observations =
         [one] 1 observation
        *[other] { $count } observations
     }
+Upload-your-observations-to-contribute-data-to-help-save-species = Upload your observations to contribute data to help save species.
 # Describes whether a user made this observation from web, iOS, or Android
 Uploaded-via-application = Uploaded via: { $application }
 # Shows the progress of uploads for X of Y observations, but omits the
@@ -1542,12 +1540,12 @@ You-will-see-notifications = You’ll see notifications here once you log in & u
 Your-donation-to-iNaturalist = Your donation to iNaturalist supports the improvement and stability of the mobile apps and website that connects millions of people to nature and enables the protection of biodiversity worldwide!
 Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
 Your-location-uncertainty-is-over-x-km = Your location uncertainty is over { $x } km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
-Your-observations-can-help-scientists = Your observations can help scientists!
+# Title for modal shown to users after they make five observations
+Your-observations-can-help-science = Your observations can help science!
 Your-observations-can-now-help-scientists = Your observations can now help scientists.
 # Text prompting the user to open Settings to grant permission after
 # permission has been denied
 Youve-denied-permission-prompt = You’ve denied permission. Please grant permission in the settings app.
-Youve-made-5-observations = You’ve made 5 observations!
 Youve-previously-denied-camera-permissions = You've previously denied camera permissions, so please enable them in settings.
 Youve-previously-denied-location-permissions = You’ve previously denied location permissions, so please enable them in settings.
 Youve-previously-denied-microphone-permissions = You’ve previously denied microphone permissions, so please enable them in settings.

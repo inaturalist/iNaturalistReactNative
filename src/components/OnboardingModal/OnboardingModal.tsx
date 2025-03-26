@@ -14,7 +14,12 @@ interface Slide {
   title: string;
   imageSource?: ImageSourcePropType;
   description: string;
-  imageComponent?: React.ReactNode;
+  description2?: string;
+  imageComponentOptions?: {
+    imageComponent: React.ReactNode;
+    onImageComponentPress: ( ) => void;
+    accessibilityHint: string;
+  };
 }
 
 interface Props {
@@ -129,7 +134,7 @@ const OnboardingModal = ( {
         )
       }
       {currentSlide.description && <Body3 className="mt-5">{currentSlide.description}</Body3>}
-
+      {currentSlide.description2 && <Body3 className="mt-2">{currentSlide.description2}</Body3>}
       {/* Slide Navigation */}
       {slides.length > 1 && (
         <View className="flex-row items-center justify-between mx-6 mt-5">
