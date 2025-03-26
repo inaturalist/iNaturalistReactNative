@@ -1068,6 +1068,7 @@ Removes-your-vote-of-disagreement = Removes your vote of disagreement
 # Quality grade indicating observation is accurate and complete enough to
 # share outside of iNat
 Research-Grade--quality-grade = Research Grade
+RESEARCH-GRADE--quality-grade = RESEARCH GRADE
 Research-Grade-Status = Research Grade Status
 # Reset password button
 RESET-PASSWORD = RESET PASSWORD
