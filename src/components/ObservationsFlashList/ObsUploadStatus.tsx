@@ -12,7 +12,7 @@ interface Props {
   queued: boolean;
   showObsStatus?: boolean;
   white?: boolean;
-  simpleObsStatus?: boolean;
+  isSimpleObsStatus?: boolean;
 }
 
 const ObsUploadStatus = ( {
@@ -25,7 +25,7 @@ const ObsUploadStatus = ( {
   queued,
   showObsStatus = false,
   white = false,
-  simpleObsStatus = false
+  isSimpleObsStatus = false
 }: Props ) => {
   const showUploadStatus = typeof ( progress ) === "number";
   const hideStatus = !showUploadStatus && !showObsStatus && !explore;
@@ -38,7 +38,7 @@ const ObsUploadStatus = ( {
       white={white}
       classNameMargin={classNameMargin}
       testID={`ObsStatus.${observation.uuid}`}
-      simpleObsStatus={simpleObsStatus}
+      isSimpleObsStatus={isSimpleObsStatus}
     />
   );
 
