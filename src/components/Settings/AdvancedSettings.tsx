@@ -6,27 +6,24 @@ import React from "react";
 import {
   View
 } from "react-native";
-// import { log } from "sharedHelpers/logger";
 import {
   useLayoutPrefs,
   useTranslation
 } from "sharedHooks";
-
-// const logger = log.extend( "Settings" );
+import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice.ts";
 
 const AdvancedSettings = ( ) => {
   const { t } = useTranslation();
   const {
     isAllAddObsOptionsMode,
     setIsAllAddObsOptionsMode,
-    isDefaultMode,
-    setIsDefaultMode,
     screenAfterPhotoEvidence,
-    setScreenAfterPhotoEvidence
+    setScreenAfterPhotoEvidence,
+    isAdvancedSuggestionsMode
   } = useLayoutPrefs();
 
   const renderSettingDescription = description => (
-    <Body2 className="mt-3">{description}</Body2>
+    <Body2>{description}</Body2>
   );
 
   return (
@@ -34,7 +31,7 @@ const AdvancedSettings = ( ) => {
       <View className="mt-[20px]">
         {renderSettingDescription( t( "When-tapping-the-green-observation-button" ) )}
         <RadioButtonRow
-          classNames="mt-[16.5px]"
+          classNames="mt-[15px]"
           testID="all-observation-options"
           smallLabel
           checked={isAllAddObsOptionsMode}
@@ -55,41 +52,25 @@ const AdvancedSettings = ( ) => {
           classNames="mt-[16.5px]"
           testID="suggestions-flow-mode"
           smallLabel
-          checked={screenAfterPhotoEvidence === "Suggestions"}
-          onPress={() => setScreenAfterPhotoEvidence( "Suggestions" )}
+          checked={screenAfterPhotoEvidence === SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS}
+          onPress={() => setScreenAfterPhotoEvidence( SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS )}
           label={t( "ID-Suggestions" )}
         />
         <RadioButtonRow
           classNames="mt-[16.5px]"
           smallLabel
-          checked={screenAfterPhotoEvidence === "ObsEdit"}
-          onPress={() => setScreenAfterPhotoEvidence( "ObsEdit" )}
+          // isAdvancedSuggestionsMode is here for backwards compatibility
+          checked={screenAfterPhotoEvidence === SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT
+            || !isAdvancedSuggestionsMode}
+          onPress={() => setScreenAfterPhotoEvidence( SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT )}
           label={t( "Edit-Observation" )}
         />
         <RadioButtonRow
           classNames="mt-[16.5px]"
           smallLabel
-          checked={screenAfterPhotoEvidence === "Match"}
-          onPress={() => setScreenAfterPhotoEvidence( "Match" )}
+          checked={screenAfterPhotoEvidence === SCREEN_AFTER_PHOTO_EVIDENCE.MATCH}
+          onPress={() => setScreenAfterPhotoEvidence( SCREEN_AFTER_PHOTO_EVIDENCE.MATCH )}
           label={t( "Match-Screen" )}
-        />
-      </View>
-      <View className="mt-[20px]">
-        {renderSettingDescription( t( "When-viewing-observations-display" ) )}
-        <RadioButtonRow
-          testID="advanced-observation-details-mode"
-          classNames="mt-[16.5px]"
-          smallLabel
-          checked={!isDefaultMode}
-          onPress={() => setIsDefaultMode( false )}
-          label={t( "Activity-Details-View" )}
-        />
-        <RadioButtonRow
-          classNames="mt-[16.5px]"
-          smallLabel
-          checked={isDefaultMode}
-          onPress={() => setIsDefaultMode( true )}
-          label={t( "Simple-View" )}
         />
       </View>
     </>

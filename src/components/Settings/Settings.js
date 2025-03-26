@@ -8,7 +8,6 @@ import {
   StatusBar,
   View
 } from "react-native";
-// import { log } from "sharedHelpers/logger";
 import {
   useCurrentUser,
   useLayoutPrefs,
@@ -18,19 +17,21 @@ import {
 import AdvancedSettings from "./AdvancedSettings";
 import LoggedInDefaultSettings from "./LoggedInDefaultSettings";
 
-// const logger = log.extend( "Settings" );
-
 const Settings = ( ) => {
   const { t } = useTranslation();
   const currentUser = useCurrentUser( );
   const {
-    displayAdvancedSettings,
-    setDisplayAdvancedSettings
+    isDefaultMode,
+    setIsDefaultMode
   } = useLayoutPrefs( );
 
   const handleValueChange = useCallback( newValue => {
-    setDisplayAdvancedSettings( newValue );
-  }, [setDisplayAdvancedSettings] );
+    setIsDefaultMode( !newValue );
+  }, [setIsDefaultMode] );
+
+  // maybe there's a less confusing way to do this,
+  // but this worked for my brain on a deadline
+  const isAdvancedMode = !isDefaultMode;
 
   return (
     <ScrollViewWrapper>
@@ -39,12 +40,13 @@ const Settings = ( ) => {
         <Heading4 className="mb-[15px]">{t( "ADVANCED-SETTINGS" )}</Heading4>
         <SwitchRow
           testID="advanced-interface-switch"
+          classNames="ml-[6px]"
           smallLabel
-          value={displayAdvancedSettings}
+          value={isAdvancedMode}
           onValueChange={handleValueChange}
           label={t( "View-Advanced-Settings" )}
         />
-        {displayAdvancedSettings && <AdvancedSettings />}
+        {isAdvancedMode && <AdvancedSettings />}
         {currentUser && <LoggedInDefaultSettings />}
       </View>
     </ScrollViewWrapper>

@@ -82,7 +82,11 @@ describe( "AddObsButton", ( ) => {
 
 describe( "with advanced user layout", ( ) => {
   beforeEach( ( ) => {
-    useStore.setState( { isAdvancedUser: true } );
+    useStore.setState( {
+      layout: {
+        isAllAddObsOptionsMode: true
+      }
+    } );
   } );
 
   it( "opens AddObsModal", async ( ) => {
@@ -117,9 +121,9 @@ describe( "with advanced user layout", ( ) => {
     beforeEach( ( ) => {
       useStore.setState( {
         layout: {
+          isDefaultMode: false,
           isAllAddObsOptionsMode: false
-        },
-        isAdvancedUser: true
+        }
       } );
     } );
 

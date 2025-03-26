@@ -6,6 +6,7 @@ import {
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import * as rnImagePicker from "react-native-image-picker";
+import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice.ts";
 import useStore from "stores/useStore";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
@@ -73,8 +74,10 @@ describe( "PhotoLibrary navigation", ( ) => {
   global.withAnimatedTimeTravelEnabled( );
   beforeEach( ( ) => {
     useStore.setState( {
-      isAdvancedUser: true,
-      layout: { isAdvancedSuggestionsMode: false }
+      layout: {
+        screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT,
+        isAllAddObsOptionsMode: true
+      }
     } );
   } );
 
@@ -112,8 +115,10 @@ describe( "PhotoLibrary navigation when suggestions screen is preferred next scr
   global.withAnimatedTimeTravelEnabled();
   beforeEach( () => {
     useStore.setState( {
-      isAdvancedUser: true,
-      layout: { isAdvancedSuggestionsMode: true }
+      layout: {
+        screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
+        isAllAddObsOptionsMode: true
+      }
     } );
   } );
   it( "advances to Suggestions when one photo is selected", async () => {

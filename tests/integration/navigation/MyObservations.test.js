@@ -86,9 +86,9 @@ const actor = userEvent.setup( );
 beforeEach( ( ) => {
   useStore.setState( {
     layout: {
-      isDefaultMode: false
-    },
-    isAdvancedUser: true
+      isDefaultMode: false,
+      isAllAddObsOptionsMode: true
+    }
   } );
   inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
 } );

@@ -43,8 +43,6 @@ Account-Deleted = Account Deleted
 # Label for button that shows all account settings
 ACCOUNT-SETTINGS = ACCOUNT SETTINGS
 ACTIVITY = ACTIVITY
-# Radio button option for viewing observations in Settings
-Activity-Details-View = Activity & Details View
 # Label for a button that adds a vote of agreement
 Add-agreement = Add agreement
 ADD-AN-ID = ADD AN ID
@@ -1163,8 +1161,6 @@ Sign-in-with-Apple-Failed = Sign in with Apple Failed
 # Accessibility label for button that allows user to sign in with their Google account
 Sign-in-with-Google = Sign in with Google
 Sign-in-with-Google-Failed = Sign in with Google Failed
-# Radio button option for viewing observations in Settings
-Simple-View = Simple View
 # Accessibility label on loading screen from AICamera -> Match which skips loading online suggestions
 Skip-additional-suggestions = Skip additional suggestions
 Skip-for-now = Skip for now
@@ -1361,8 +1357,6 @@ Welcome-back = Welcome back!
 WHAT-IS-INATURALIST = WHAT IS INATURALIST?
 Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!
 When-tapping-the-green-observation-button = When tapping the green observation button, open:
-# Label describing radio options for how to view observations in Settings
-When-viewing-observations-display = When viewing observations, display:
 WIKIPEDIA = WIKIPEDIA
 Wild = Wild
 WILD-STATUS = WILD STATUS

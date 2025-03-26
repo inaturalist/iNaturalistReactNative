@@ -51,20 +51,20 @@ beforeEach( ( ) => {
 } );
 
 describe( "Settings", ( ) => {
-  it( "should toggle the green observation button from AICamera -> all options", async ( ) => {
+  it( "should toggle the green observation button from all options -> AICamera", async ( ) => {
     renderComponent( <Settings /> );
     await toggleAdvancedSwitch( );
-    const aiCameraRow = await screen.findByLabelText( "iNaturalist AI Camera" );
-    expect( aiCameraRow ).toHaveProp( "accessibilityState", expect.objectContaining( {
-      checked: true
-    } ) );
     const allObsOptions = await screen.findByLabelText( /All observation options/ );
-    fireEvent.press( allObsOptions );
     expect( allObsOptions ).toHaveProp( "accessibilityState", expect.objectContaining( {
       checked: true
     } ) );
+    const aiCameraRow = await screen.findByLabelText( "iNaturalist AI Camera" );
     expect( aiCameraRow ).toHaveProp( "accessibilityState", expect.objectContaining( {
       checked: false
+    } ) );
+    fireEvent.press( aiCameraRow );
+    expect( aiCameraRow ).toHaveProp( "accessibilityState", expect.objectContaining( {
+      checked: true
     } ) );
   } );
 

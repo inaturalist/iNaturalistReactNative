@@ -5,8 +5,6 @@ const selector = state => ( {
   // Vestigial stuff
   obsDetailsTab: state.obsDetailsTab,
   setObsDetailsTab: state.setObsDetailsTab,
-  isAllAddObsOptionsMode: state.isAdvancedUser,
-  setIsAllAddObsOptionsMode: state.setIsAdvancedUser,
   loggedInWhileInDefaultMode: state.loggedInWhileInDefaultMode,
   setLoggedInWhileInDefaultMode: state.setLoggedInWhileInDefaultMode,
   // newer stuff

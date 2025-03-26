@@ -32,7 +32,6 @@ describe( "SimpleUploadBannerContainer", () => {
       layout: {
         isDefaultMode: false
       },
-      isAdvancedUser: true,
       numUnuploadedObservations: 1,
       uploadStatus: UPLOAD_PENDING,
       syncingStatus: MANUAL_SYNC_IN_PROGRESS
@@ -48,7 +47,6 @@ describe( "SimpleUploadBannerContainer", () => {
       layout: {
         isDefaultMode: false
       },
-      isAdvancedUser: true,
       uploadStatus: UPLOAD_PENDING,
       syncingStatus: SYNC_PENDING
     } );
@@ -68,7 +66,6 @@ describe( "SimpleUploadBannerContainer", () => {
       layout: {
         isDefaultMode: false
       },
-      isAdvancedUser: true,
       initialNumObservationsInQueue: 1,
       numUploadsAttempted: 1,
       uploadStatus: UPLOAD_IN_PROGRESS,
@@ -86,7 +83,6 @@ describe( "SimpleUploadBannerContainer", () => {
       layout: {
         isDefaultMode: false
       },
-      isAdvancedUser: true,
       numUploadsAttempted,
       uploadStatus: UPLOAD_COMPLETE,
       syncingStatus: SYNC_PENDING,
@@ -103,7 +99,6 @@ describe( "SimpleUploadBannerContainer", () => {
       layout: {
         isDefaultMode: false
       },
-      isAdvancedUser: true,
       uploadStatus: UPLOAD_PENDING,
       syncingStatus: SYNC_PENDING
     } );
@@ -123,7 +118,6 @@ describe( "SimpleUploadBannerContainer", () => {
       layout: {
         isDefaultMode: false
       },
-      isAdvancedUser: true,
       uploadStatus: UPLOAD_IN_PROGRESS,
       numUploadsAttempted: 2,
       syncingStatus: SYNC_PENDING,
@@ -141,7 +135,6 @@ describe( "SimpleUploadBannerContainer", () => {
       layout: {
         isDefaultMode: false
       },
-      isAdvancedUser: true,
       numUploadsAttempted,
       uploadStatus: UPLOAD_COMPLETE,
       syncingStatus: SYNC_PENDING,
@@ -174,7 +167,6 @@ describe( "SimpleUploadBannerContainer", () => {
       layout: {
         isDefaultMode: false
       },
-      isAdvancedUser: true,
       ...deletionStore,
       currentDeleteCount: 1,
       deleteQueue: [{}],
@@ -192,7 +184,6 @@ describe( "SimpleUploadBannerContainer", () => {
       layout: {
         isDefaultMode: false
       },
-      isAdvancedUser: true,
       ...deletionStore,
       deleteError,
       initialNumDeletionsInQueue: 2
@@ -212,7 +203,6 @@ describe( "SimpleUploadBannerContainer", () => {
       layout: {
         isDefaultMode: false
       },
-      isAdvancedUser: true,
       uploadStatus: UPLOAD_PENDING,
       syncingStatus: SYNC_PENDING,
       numOfUserObservations: 1
@@ -234,7 +224,6 @@ describe( "SimpleUploadBannerContainer", () => {
       layout: {
         isDefaultMode: false
       },
-      isAdvancedUser: true,
       uploadStatus: UPLOAD_PENDING,
       syncingStatus: SYNC_PENDING
     } );

@@ -108,9 +108,9 @@ const uploadObsEditObservation = async options => {
 beforeEach( ( ) => {
   useStore.setState( {
     layout: {
-      isDefaultMode: false
-    },
-    isAdvancedUser: true
+      isDefaultMode: false,
+      isAllAddObsOptionsMode: true
+    }
   } );
 } );
 

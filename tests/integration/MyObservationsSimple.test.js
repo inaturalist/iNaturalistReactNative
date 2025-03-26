@@ -87,9 +87,9 @@ beforeEach( ( ) => {
   useStore.setState( {
     layout: {
       isDefaultMode: true,
-      shownOnce: {}
-    },
-    isAdvancedUser: false
+      shownOnce: {},
+      isAllAddObsOptionsMode: false
+    }
   } );
 } );
 
