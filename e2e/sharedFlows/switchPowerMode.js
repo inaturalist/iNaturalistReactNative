@@ -14,16 +14,4 @@ export default async function switchPowerMode() {
   const advancedInterfaceSwitch = element( by.id( "advanced-interface-switch.switch" ) );
   await waitFor( advancedInterfaceSwitch ).toBeVisible().withTimeout( 10000 );
   await advancedInterfaceSwitch.tap();
-  // Tap the settings radio button for power user mode
-  const powerUserRadioButton = element( by.id( "all-observation-options" ) );
-  await waitFor( powerUserRadioButton ).toBeVisible().withTimeout( 10000 );
-  await powerUserRadioButton.tap();
-  // Tap the settings radio button for suggestions flow first mode
-  const suggestionsFlowButton = element( by.id( "suggestions-flow-mode" ) );
-  await waitFor( suggestionsFlowButton ).toBeVisible().withTimeout( 10000 );
-  await suggestionsFlowButton.tap();
-  // Tap the observation details radio button for advanced, more detailed mode
-  const observationDetailsButton = element( by.id( "advanced-observation-details-mode" ) );
-  await waitFor( observationDetailsButton ).toBeVisible().withTimeout( 10000 );
-  await observationDetailsButton.tap();
 }
