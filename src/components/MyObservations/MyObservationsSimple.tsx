@@ -280,7 +280,8 @@ const MyObservationsSimple = ( {
               hideLoadingWheel
               hideMetadata={isDefaultMode}
               hideObsUploadStatus={!currentUser}
-              hideObsStatus={isDefaultMode}
+              hideObsStatus={!currentUser}
+              isSimpleObsStatus={isDefaultMode}
               hideRGLabel={!isDefaultMode || !currentUser}
               isFetchingNextPage={isFetchingNextPage}
               isConnected={isConnected}

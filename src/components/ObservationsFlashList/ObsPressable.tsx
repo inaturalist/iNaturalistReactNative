@@ -13,6 +13,7 @@ type Props = {
   hideMetadata?: boolean,
   hideObsUploadStatus?: boolean,
   hideObsStatus?: boolean,
+  isSimpleObsStatus?: boolean,
   hideRGLabel?: boolean,
   onUploadButtonPress: ( ) => void,
   onItemPress: ( ) => void,
@@ -31,6 +32,7 @@ const ObsPressable = ( {
   hideMetadata,
   hideObsUploadStatus,
   hideObsStatus,
+  isSimpleObsStatus,
   hideRGLabel,
   isLargeFontScale,
   onUploadButtonPress,
@@ -77,6 +79,7 @@ const ObsPressable = ( {
               hideMetadata={hideMetadata}
               hideObsUploadStatus={hideObsUploadStatus}
               hideObsStatus={hideObsStatus}
+              isSimpleObsStatus={isSimpleObsStatus}
               hideRGLabel={hideRGLabel}
               onUploadButtonPress={onUploadButtonPress}
               observation={observation}
