@@ -105,7 +105,6 @@ describe( "Settings", ( ) => {
 
   test( "should change language immediately via language picker via online results", async ( ) => {
     renderComponent( <Settings /> );
-    await toggleAdvancedSwitch( );
     const changeLanguageButton = await screen.findByText( /CHANGE APP LANGUAGE/ );
     fireEvent.press( changeLanguageButton );
     const picker = await screen.findByTestId( "ReactNativePicker" );
