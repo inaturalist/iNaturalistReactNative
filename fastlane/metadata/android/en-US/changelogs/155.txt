@@ -1,0 +1,12 @@
+NEW
+* Match screen UI for when there is no top suggestion but other suggestions with low confidence
+* A long press on AICamera button shows all observation options
+* Research grade label and unviewed-activity-indicator in default mode observations list
+
+UPDATED
+* Pivot Cards timing, texts, and layout
+* Several copy edits
+* Advanced mode settings layout and handling 
+
+FIXED
+* In observations list show metadata (date, location) for an advanced user
