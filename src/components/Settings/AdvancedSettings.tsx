@@ -61,7 +61,7 @@ const AdvancedSettings = ( ) => {
           smallLabel
           // isAdvancedSuggestionsMode is here for backwards compatibility
           checked={screenAfterPhotoEvidence === SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT
-            || !isAdvancedSuggestionsMode}
+            || isAdvancedSuggestionsMode === false}
           onPress={() => setScreenAfterPhotoEvidence( SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT )}
           label={t( "Edit-Observation" )}
         />
