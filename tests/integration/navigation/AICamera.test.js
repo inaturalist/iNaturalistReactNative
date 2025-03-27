@@ -142,7 +142,7 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
       useStore.setState( {
         layout: {
           isDefaultMode: false,
-          screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT,
+          screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
           isAllAddObsOptionsMode: true
         }
       } );
