@@ -86,7 +86,6 @@ beforeEach( async ( ) => {
   useStore.setState( {
     layout: {
       isDefaultMode: false,
-      screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
       isAllAddObsOptionsMode: true
     }
   } );
