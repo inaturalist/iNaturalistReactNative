@@ -7,6 +7,7 @@ import {
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import * as ImagePicker from "react-native-image-picker";
+import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice.ts";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -91,9 +92,9 @@ beforeEach( ( ) => {
   useStore.setState( {
     layout: {
       isDefaultMode: false,
-      isAdvancedSuggestionsMode: true
-    },
-    isAdvancedUser: true
+      screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
+      isAllAddObsOptionsMode: true
+    }
   } );
   inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
 } );

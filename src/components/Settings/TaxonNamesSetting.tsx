@@ -12,7 +12,6 @@ import {
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useCurrentUser,
-  useLayoutPrefs,
   useTranslation
 } from "sharedHooks";
 
@@ -35,9 +34,6 @@ const TaxonNamesSetting = ( { onChange }: Props ) => {
   const realm = useRealm( );
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
-  const {
-    isDefaultMode
-  } = useLayoutPrefs();
 
   const changeTaxonNameDisplay = useCallback( nameDisplayPref => {
     const options = {};
@@ -69,7 +65,7 @@ const TaxonNamesSetting = ( { onChange }: Props ) => {
     return currentUser;
   }, [currentUser, realm, onChange] );
 
-  if ( isDefaultMode || !currentUser ) {
+  if ( !currentUser ) {
     return null;
   }
 
@@ -91,21 +87,21 @@ const TaxonNamesSetting = ( { onChange }: Props ) => {
         checked={commonNameFirst}
         onPress={() => changeTaxonNameDisplay( NAME_DISPLAY_COM_SCI )}
         label={t( "Common-Name-Scientific-Name" )}
-        classNames="mt-[22px]"
+        classNames="ml-[6px] mt-[15px]"
       />
       <RadioButtonRow
         smallLabel
         checked={scientificNameFirst}
         onPress={() => changeTaxonNameDisplay( NAME_DISPLAY_SCI_COM )}
         label={t( "Scientific-Name-Common-Name" )}
-        classNames="mt-4"
+        classNames="ml-[6px] mt-[15px]"
       />
       <RadioButtonRow
         smallLabel
         checked={scientificNameOnly}
         onPress={() => changeTaxonNameDisplay( NAME_DISPLAY_SCI )}
         label={t( "Scientific-Name" )}
-        classNames="mt-4"
+        classNames="ml-[6px] mt-[15px]"
       />
     </View>
   );

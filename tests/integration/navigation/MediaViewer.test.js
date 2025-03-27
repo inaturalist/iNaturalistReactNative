@@ -153,7 +153,11 @@ describe( "MediaViewer navigation", ( ) => {
     }
 
     beforeEach( ( ) => {
-      useStore.setState( { isAdvancedUser: true } );
+      useStore.setState( {
+        layout: {
+          isAllAddObsOptionsMode: true
+        }
+      } );
     } );
 
     it( "should show a photo when tapped", async ( ) => {

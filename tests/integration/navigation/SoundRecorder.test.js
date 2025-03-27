@@ -37,7 +37,11 @@ afterAll( uniqueRealmAfterAll );
 
 beforeAll( async () => {
   await initI18next();
-  useStore.setState( { isAdvancedUser: true } );
+  useStore.setState( {
+    layout: {
+      isAllAddObsOptionsMode: true
+    }
+  } );
 } );
 
 describe( "SoundRecorder navigation", ( ) => {

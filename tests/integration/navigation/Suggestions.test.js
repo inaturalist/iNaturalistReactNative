@@ -240,15 +240,14 @@ describe( "Suggestions", ( ) => {
     // } );
   } );
 
-  describe( "when reached from Camera directly", ( ) => {
+  describe( "when reached from AI Camera directly", ( ) => {
     beforeEach( async ( ) => {
       await signIn( mockUser, { realm: global.mockRealms[__filename] } );
       useStore.setState( {
         layout: {
           isDefaultMode: false,
-          isAdvancedSuggestionsMode: true
-        },
-        isAdvancedUser: true
+          isAllAddObsOptionsMode: true
+        }
       } );
       inatjs.computervision.score_image
         .mockResolvedValue( makeResponse( [topSuggestion] ) );

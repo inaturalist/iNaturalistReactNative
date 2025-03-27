@@ -11,6 +11,7 @@ import {
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions.ts";
 import inatjs from "inaturalistjs";
 import * as useLocationPermission from "sharedHooks/useLocationPermission.tsx";
+import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice.ts";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import { renderAppWithObservations } from "tests/helpers/render";
@@ -207,9 +208,9 @@ const setupAppWithSignedInUser = async hasLocation => {
     currentObservation: observations[0],
     layout: {
       isDefaultMode: false,
-      isAdvancedSuggestionsMode: true
-    },
-    isAdvancedUser: true
+      screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT,
+      isAllAddObsOptionsMode: true
+    }
   } );
   await renderAppWithObservations( observations, __filename );
   return { observations };

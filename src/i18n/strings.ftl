@@ -70,7 +70,7 @@ Add-optional-notes = Add optional notes
 Adds-your-vote-of-agreement = Adds your vote of agreement
 # Hint for a button that adds a vote of disagreement
 Adds-your-vote-of-disagreement = Adds your vote of disagreement
-Advanced--interface-mode-with-explainer = Advanced (Upload multiple photos and sounds)
+ADVANCED-SETTINGS = ADVANCED SETTINGS
 Affiliation = Affiliation: { $site }
 After-capturing-or-importing-photos-show = After capturing or importing photos, show:
 # Label for button that adds an identification of the same taxon as another identification
@@ -84,7 +84,7 @@ Agree-with-ID-description = Would you like to agree with the ID and suggest the 
 AI-Camera = AI Camera
 ALL = ALL
 All = All
-All-observation-options = All observation options (including iNaturalist AI Camera, Standard Camera, Uploading from Photo Library, and Sound Recorder)
+All-observation-options--list = All observation options: iNaturalist AI Camera, Standard Camera, Uploading from Photo Library, and Sound Recorder
 All-observations = All observations
 All-observations-need-a-date-and-location-to-be-used-for-science = All observations need a date and location to be used for science. Please edit observations if they need more information.
 All-organisms = All organisms
@@ -364,7 +364,6 @@ datetime-format-short = M/d/yy h:mm a
 datetime-format-short-with-zone = M/d/yy h:mm a zzz
 # Month of December
 December = December
-Default--interface-mode = Default
 DELETE = DELETE
 Delete-all-observations = Delete all observations
 Delete-comment = Delete comment
@@ -625,7 +624,6 @@ iNaturalist-is-supported-by = iNaturalist is supported by an independent, 501(c)
 iNaturalist-is-supported-by-our-community = iNaturalist is supported by our amazing community. From everyday naturalists who add observations and identifications, to curators who manage our taxonomy and help with moderation, to the volunteer translators who make iNaturalist more accessible to worldwide audiences, to our community-based donors, we are extraordinarily grateful to all the people in our community who make iNaturalist the platform it is.
 iNaturalist-mission-is-to-connect = iNaturalist's mission is to connect people to nature and advance biodiversity science and conservation.
 INATURALIST-MISSION-VISION = INATURALIST'S MISSION & VISION
-INATURALIST-MODE = INATURALIST MODE
 INATURALIST-NETWORK = INATURALIST NETWORK
 INATURALIST-SETTINGS = INATURALIST SETTINGS
 # Label for the role a user plays on iNaturalist, e.g. "INATURALIST STAFF"
@@ -714,6 +712,8 @@ MAP = MAP
 Map-Area = Map Area
 # Month of March
 March = March
+# Radio button option for navigation flows in Settings
+Match-Screen = Match Screen
 # Identification category
 maverick--identification = Maverick
 # Month of May
@@ -837,7 +837,6 @@ Obervations-must-be-manually-added = Observations must be manually added to a tr
 Obscured = Obscured
 Observation = Observation
 Observation-Attribution = Observation: © { $userName } · { $restrictions }
-OBSERVATION-BUTTON = OBSERVATION BUTTON
 Observation-Copyright = Observation Copyright: © { $userName } · { $restrictions }
 Observation-has-no-photos-and-no-sounds = This observation has no photos and no sounds.
 # Displayed when user views an obscured location on the ObsDetail map screen
@@ -1216,7 +1215,6 @@ SUBMIT-ID-SUGGESTION = SUBMIT ID SUGGESTION
 SUGGEST-ID = SUGGEST ID
 # Label for element that suggest an identification
 Suggest-ID = SUGGEST ID
-SUGGESTIONS = SUGGESTIONS
 # Identification category
 supporting--identification = Supporting
 Switches-to-tab = Switches to { $tab } tab.
@@ -1327,6 +1325,8 @@ Using-location = Using location
 Verified-IDs-are-used-for-science-and-conservation = Verified IDs are used for science and conservation
 # Listing of app and build versions
 Version-app-build = Version { $appVersion } ({ $buildVersion })
+# Label for toggling app mode between default and advanced settings
+View-Advanced-Settings = View Advanced Settings
 VIEW-ALL-X-PLACES = VIEW ALL { $count } PLACES
 VIEW-ALL-X-PROJECTS = VIEW ALL { $count } PROJECTS
 VIEW-ALL-X-TAXA = VIEW ALL { $count } TAXA
