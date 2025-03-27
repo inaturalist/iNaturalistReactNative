@@ -22,7 +22,7 @@ const SignUp = ( ) => {
       imageStyle={IMAGE_STYLE}
     >
       <Header
-        headerText={t( "Join-the-largest-community-of-naturalists" )}
+        headerText={t( "Join-a-global-community-for-nature" )}
         hideHeader={hideHeader}
       />
       <SignUpForm />

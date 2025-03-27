@@ -1,0 +1,3 @@
+- Easier to tap back buttons
+- Unified code for My Observations in either default or advanced mode
+- Updated AI camera icon

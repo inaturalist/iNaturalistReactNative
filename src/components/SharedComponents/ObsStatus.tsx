@@ -16,6 +16,7 @@ interface Props {
   white?: boolean;
   classNameMargin?: string;
   testID?: string;
+  isSimpleObsStatus?: boolean;
 }
 
 const ObsStatus = ( {
@@ -23,12 +24,14 @@ const ObsStatus = ( {
   white,
   layout = "vertical",
   classNameMargin,
-  testID
+  testID,
+  isSimpleObsStatus
 }: Props ) => {
   const margin = layout === "vertical"
     ? "mb-1 ml-1"
     : "mr-2";
 
+  const identificationsFilled = observation?.identifications_viewed === false;
   const showCurrentIdCount = useCallback( ( ) => {
     let numCurrentIdents = observation?.identifications?.filter(
       id => id.current === true
@@ -36,7 +39,6 @@ const ObsStatus = ( {
     if ( numCurrentIdents === 0 && observation?.taxon ) {
       numCurrentIdents = 1;
     }
-    const identificationsFilled = observation?.identifications_viewed === false;
 
     return (
       <IdentificationsCount
@@ -46,11 +48,11 @@ const ObsStatus = ( {
         filled={identificationsFilled}
       />
     );
-  }, [observation, margin, white] );
+  }, [observation, margin, white, identificationsFilled] );
 
+  const commentsFilled = observation?.comments_viewed === false;
   const showCommentCount = useCallback( ( ) => {
     const numComments = observation?.comments?.length || 0;
-    const commentsFilled = observation?.comments_viewed === false;
 
     return (
       <CommentsCount
@@ -61,7 +63,7 @@ const ObsStatus = ( {
         testID="ObsStatus.commentsCount"
       />
     );
-  }, [observation, margin, white] );
+  }, [observation, margin, white, commentsFilled] );
 
   const showQualityGrade = useCallback( ( ) => {
     const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
@@ -73,6 +75,22 @@ const ObsStatus = ( {
       : iconColorResearchCheck;
     return <QualityGradeStatus qualityGrade={qualityGrade} color={iconColor} />;
   }, [observation, white] );
+
+  if ( isSimpleObsStatus ) {
+    if ( identificationsFilled || commentsFilled ) {
+      return (
+        <View
+          className={classNames( "flex-1 justify-center items-end", classNameMargin )}
+          testID={testID}
+        >
+          <View
+            className="h-[10px] w-[10px] rounded-full bg-inatGreen"
+          />
+        </View>
+      );
+    }
+    return null;
+  }
 
   return (
     <View

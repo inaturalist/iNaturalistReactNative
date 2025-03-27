@@ -18,6 +18,7 @@ const SimpleErrorHeader = ( {
   isConnected
 }: Props ) => {
   const { t } = useTranslation( );
+
   return (
     <>
       <Announcements isConnected={isConnected} />

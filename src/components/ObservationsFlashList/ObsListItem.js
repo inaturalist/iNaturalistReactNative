@@ -1,8 +1,10 @@
 // @flow
 import classnames from "classnames";
+import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import {
   DateDisplay,
   DisplayTaxonName,
+  Heading6,
   INatIcon,
   ObservationLocation
 } from "components/SharedComponents";
@@ -10,7 +12,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useMemo } from "react";
 import Photo from "realmModels/Photo";
-import { useDebugMode } from "sharedHooks";
+import { useDebugMode, useTranslation } from "sharedHooks";
 import { UPLOAD_IN_PROGRESS } from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
@@ -27,27 +29,32 @@ type Props = {
   currentUser: Object,
   explore: boolean,
   hideMetadata?: boolean,
+  hideRGLabel?: boolean,
   onUploadButtonPress: Function,
   observation: Object,
   queued: boolean,
   uploadProgress?: number,
   unsynced: boolean,
   hideObsUploadStatus?: boolean,
-  hideObsStatus?: boolean
+  hideObsStatus?: boolean,
+  isSimpleObsStatus?: boolean
 };
 
 const ObsListItem = ( {
   currentUser,
   explore = false,
   hideMetadata,
+  hideRGLabel = true,
   observation,
   onUploadButtonPress,
   queued,
   uploadProgress,
   unsynced,
   hideObsUploadStatus,
-  hideObsStatus = false
+  hideObsStatus = false,
+  isSimpleObsStatus
 }: Props ): Node => {
+  const { t } = useTranslation();
   const uploadStatus = useStore( state => state.uploadStatus );
   const { isDebug } = useDebugMode( );
 
@@ -64,6 +71,8 @@ const ObsListItem = ( {
     && observation.needsSync()
     && observation.missingBasics()
   );
+
+  const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
 
   const displayTaxonName = useMemo( ( ) => (
     <DisplayTaxonName
@@ -132,6 +141,11 @@ const ObsListItem = ( {
             />
           </>
         )}
+        {!hideRGLabel && qualityGrade === "research" && (
+          <Heading6 className="mt-[10px] text-inatGreen">
+            {t( "RESEARCH-GRADE--quality-grade" )}
+          </Heading6>
+        )}
       </View>
       <View
         className={classnames(
@@ -152,6 +166,7 @@ const ObsListItem = ( {
             progress={uploadProgress}
             queued={queued}
             showObsStatus={!hideObsStatus}
+            isSimpleObsStatus={isSimpleObsStatus}
           />
         )}
       </View>

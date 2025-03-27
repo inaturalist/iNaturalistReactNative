@@ -2759,7 +2759,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "我们没有故意请求此权限。如果您看到这一提示，请截图并发送电子邮件给help@inaturalist.org"
+            "value" : "我们不会有意请求此权限。如果您看到这一提示，请截取屏幕截图并发送至 help@inaturalist.org"
           }
         },
         "zh-Hant" : {

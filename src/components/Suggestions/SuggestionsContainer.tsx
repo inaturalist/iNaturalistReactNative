@@ -159,7 +159,7 @@ const SuggestionsContainer = ( ) => {
     selectedPhotoUri: photoUris[0],
     shouldUseEvidenceLocation: evidenceHasLocation
   } );
-  console.log( "photouri", photoUris[0] );
+
   const {
     hasPermissions,
     renderPermissionsGate,
@@ -266,9 +266,6 @@ const SuggestionsContainer = ( ) => {
     onlineSuggestionsAttempted
   } );
 
-  console.log( "selectedPhotoUri", selectedPhotoUri );
-  console.log( "queryKey", queryKey );
-
   const createUploadParams = useCallback( async ( uri, showLocation ) => {
     const newImageParams = await flattenUploadParams( uri );
     if ( showLocation && currentObservation?.latitude ) {
@@ -373,24 +370,6 @@ const SuggestionsContainer = ( ) => {
     () => _.isEqual( initialSuggestions, suggestions ),
     [suggestions]
   );
-
-  useEffect( () => {
-    const createNewImageParams = async () => {
-      const newImageParams = await createUploadParams( photoUris[0], shouldUseEvidenceLocation );
-      return newImageParams;
-    };
-    if ( currentObservation && params.lastScreen === "PhotoSharing" ) {
-      // resset query key to show accurate suggestios when sharing photos
-      const newImageParams = createNewImageParams();
-      dispatch( {
-        type: "SELECT_PHOTO",
-        selectedPhotoUri: photoUris[0],
-        scoreImageParams: newImageParams
-      } );
-      setImageParams();
-    }
-  }, [createUploadParams,
-    currentObservation, params.lastScreen, photoUris, setImageParams, shouldUseEvidenceLocation] );
 
   useEffect( ( ) => {
     const onFocus = navigation.addListener( "focus", ( ) => {

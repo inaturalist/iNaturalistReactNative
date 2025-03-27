@@ -1,7 +1,7 @@
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { Body3, Heading4, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import flattenUploadParams from "components/Suggestions/helpers/flattenUploadParams.ts";
@@ -90,7 +90,6 @@ const { useRealm } = RealmContext;
 const MatchContainer = ( ) => {
   const hasLoadedRef = useRef( false );
   const isDebug = isDebugMode( );
-  const { params } = useRoute( );
   const scrollRef = useRef( null );
   const currentObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
@@ -364,13 +363,6 @@ const MatchContainer = ( ) => {
     observationPhoto,
     shouldUseEvidenceLocation
   ] );
-
-  useEffect( () => {
-    if ( currentObservation && params.lastScreen === "PhotoSharing" ) {
-      // resset query key to show accurate suggestios when sharing photos
-      setImageParams();
-    }
-  }, [currentObservation, params.lastScreen, setImageParams] );
 
   useEffect( ( ) => {
     const onFocus = navigation.addListener( "focus", ( ) => {

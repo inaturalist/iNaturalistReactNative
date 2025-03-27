@@ -64,7 +64,7 @@ const navigateToObsEditViaGroupPhotos = async ( ) => {
   );
   await waitFor( ( ) => {
     global.timeTravel( );
-    expect( screen.getByText( /Welcome back/ ) ).toBeVisible( );
+    expect( screen.getByText( /OBSERVATIONS/ ) ).toBeVisible( );
   } );
   const tabBar = await screen.findByTestId( "CustomTabBar" );
   const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
@@ -108,9 +108,9 @@ const uploadObsEditObservation = async options => {
 beforeEach( ( ) => {
   useStore.setState( {
     layout: {
-      isDefaultMode: false
-    },
-    isAdvancedUser: true
+      isDefaultMode: false,
+      isAllAddObsOptionsMode: true
+    }
   } );
 } );
 

@@ -93,9 +93,11 @@ const AddObsModalHelp = ( {
               >
                 <INatIcon
                   name={item.icon}
-                  size={30}
+                  size={item.icon === "aicamera"
+                    ? 30
+                    : 26}
                   color={String(
-                    item.icon === "arcamera"
+                    item.icon === "aicamera"
                       ? colors?.inatGreen
                       : colors?.darkGray
                   )}

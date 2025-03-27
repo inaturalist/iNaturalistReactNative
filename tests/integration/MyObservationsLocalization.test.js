@@ -1,5 +1,5 @@
 import { screen, waitFor } from "@testing-library/react-native";
-import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
+import MyObservationsContainer from "components/MyObservations/MyObservationsContainer.tsx";
 // import inatjs from "inaturalistjs";
 import React from "react";
 import useStore from "stores/useStore";
@@ -47,9 +47,9 @@ const mockUser = factory( "LocalUser", {
 beforeEach( ( ) => {
   useStore.setState( {
     layout: {
-      isDefaultMode: false
-    },
-    isAdvancedUser: true
+      isDefaultMode: false,
+      isAllAddObsOptionsMode: true
+    }
   } );
 } );
 

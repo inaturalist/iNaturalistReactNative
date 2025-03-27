@@ -30,7 +30,7 @@ const DEFAULT_MODE_MAX_PHOTOS_ALLOWED = 1;
 
 const PhotoLibrary = ( ): Node => {
   const {
-    isDefaultMode
+    screenAfterPhotoEvidence, isDefaultMode
   } = useLayoutPrefs( );
   const navigation = useNavigation( );
   const [photoLibraryShown, setPhotoLibraryShown] = useState( false );
@@ -44,7 +44,6 @@ const PhotoLibrary = ( ): Node => {
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const observations = useStore( state => state.observations );
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
-  const isAdvancedSuggestionsMode = useStore( state => state.layout.isAdvancedSuggestionsMode );
   const exitObservationsFlow = useExitObservationsFlow( );
 
   const { params } = useRoute( );
@@ -54,30 +53,29 @@ const PhotoLibrary = ( ): Node => {
   const fromGroupPhotos = params
     ? params.fromGroupPhotos
     : false;
-  const lastScreen = params?.lastScreen;
 
   const navToObsEdit = useCallback( ( ) => navigation.navigate( "ObsEdit", {
     lastScreen: "PhotoLibrary"
   } ), [navigation] );
 
-  const advanceToMatchScreen = lastScreen === "Camera"
-    && isDefaultMode;
-
   const navBasedOnUserSettings = useCallback( async ( ) => {
-    if ( advanceToMatchScreen ) {
-      return navigation.navigate( "Match", {
-        lastScreen: "PhotoLibrary"
+    if ( isDefaultMode ) {
+      return navigation.navigate( "NoBottomTabStackNavigator", {
+        screen: "Match",
+        params: {
+          lastScreen: "PhotoLibrary"
+        }
       } );
     }
-    if ( isAdvancedSuggestionsMode ) {
-      return navigation.navigate( "Suggestions", {
+
+    // in advanced mode, navigate based on user preference
+    return navigation.navigate( "NoBottomTabStackNavigator", {
+      screen: screenAfterPhotoEvidence,
+      params: {
         lastScreen: "PhotoLibrary"
-      } );
-    }
-    return navigation.navigate( "ObsEdit", {
-      lastScreen: "PhotoLibrary"
+      }
     } );
-  }, [navigation, advanceToMatchScreen, isAdvancedSuggestionsMode] );
+  }, [navigation, screenAfterPhotoEvidence, isDefaultMode] );
 
   const moveImagesToDocumentsDirectory = async selectedImages => {
     const path = photoLibraryPhotosPath;
@@ -116,7 +114,7 @@ const PhotoLibrary = ( ): Node => {
     // According to the native code of the image picker library, it never rejects the promise,
     // just returns a response object with errorCode
     const response = await ImagePicker.launchImageLibrary( {
-      selectionLimit: advanceToMatchScreen
+      selectionLimit: screenAfterPhotoEvidence === "Match"
         ? DEFAULT_MODE_MAX_PHOTOS_ALLOWED
         : MAX_PHOTOS_ALLOWED,
       mediaType: "photo",
@@ -217,7 +215,6 @@ const PhotoLibrary = ( ): Node => {
       setPhotoLibraryShown( false );
     }
   }, [
-    advanceToMatchScreen,
     currentObservation,
     currentObservationIndex,
     evidenceToAdd,
@@ -232,6 +229,7 @@ const PhotoLibrary = ( ): Node => {
     observations,
     params,
     photoLibraryShown,
+    screenAfterPhotoEvidence,
     setGroupedPhotos,
     setPhotoImporterState,
     skipGroupPhotos,

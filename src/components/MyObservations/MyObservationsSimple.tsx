@@ -2,11 +2,13 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
 import ObservationsViewBar from "components/Explore/ObservationsViewBar";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
+import ObsGridItem from "components/ObservationsFlashList/ObsGridItem";
 import {
   AccountCreationCard,
   FiftyObservationCard,
-  FirstObservationCard,
-  SecondObservationCard
+  FiveObservationCard,
+  OneObservationCard,
+  TenObservationCard
 } from "components/OnboardingModal/PivotCards.tsx";
 import {
   Body1,
@@ -25,7 +27,7 @@ import type {
   RealmUser
 } from "realmModels/types";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
-import { useGridLayout, useTranslation } from "sharedHooks";
+import { useGridLayout, useLayoutPrefs, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import Announcements from "./Announcements";
@@ -108,6 +110,7 @@ const MyObservationsSimple = ( {
   loggedInWhileInDefaultMode = false,
   refetchTaxa
 }: Props ) => {
+  const { isDefaultMode } = useLayoutPrefs( );
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const route = useRoute( );
@@ -201,7 +204,9 @@ const MyObservationsSimple = ( {
     numUnuploadedObservations > 0 && numUnuploadedObsMissingBasics > 0
   ), [numUnuploadedObservations, numUnuploadedObsMissingBasics] );
 
-  const numUploadableObservations = numUnuploadedObservations - numUnuploadedObsMissingBasics;
+  const numUploadableObservations = isDefaultMode
+    ? numUnuploadedObservations - numUnuploadedObsMissingBasics
+    : numUnuploadedObservations;
 
   const renderTabComponent = ( { id } ) => (
     <StatTab
@@ -236,6 +241,15 @@ const MyObservationsSimple = ( {
       );
     }
     return null;
+  };
+
+  const handlePivotCardGridItemPress = ( ) => {
+    const { uuid } = observations[0];
+    navigation.navigate( {
+      key: `Obs-0-${uuid}`,
+      name: "ObsDetails",
+      params: { uuid }
+    } );
   };
 
   return (
@@ -274,9 +288,11 @@ const MyObservationsSimple = ( {
               handlePullToRefresh={handlePullToRefresh}
               handleIndividualUploadPress={handleIndividualUploadPress}
               hideLoadingWheel
-              hideMetadata
+              hideMetadata={isDefaultMode}
               hideObsUploadStatus={!currentUser}
-              hideObsStatus
+              hideObsStatus={!currentUser}
+              isSimpleObsStatus={isDefaultMode}
+              hideRGLabel={!isDefaultMode || !currentUser}
               isFetchingNextPage={isFetchingNextPage}
               isConnected={isConnected}
               obsListKey="MyObservations"
@@ -327,19 +343,39 @@ const MyObservationsSimple = ( {
         { ( activeTab === TAXA_TAB && taxa.length === 0 ) && renderOfflineNotice( )}
       </ViewWrapper>
       {showLoginSheet && <LoginSheet setShowLoginSheet={setShowLoginSheet} />}
-      {/* These four cards should show only in default mode */}
-      <FirstObservationCard triggerCondition={numTotalObservations === 1} />
-      <SecondObservationCard triggerCondition={numTotalObservations === 2} />
-      <FiftyObservationCard
-        triggerCondition={
-          loggedInWhileInDefaultMode && !!currentUser && numTotalObservations >= 50
-        }
-      />
-      <AccountCreationCard
-        triggerCondition={
-          justFinishedSignup && !!currentUser && numTotalObservations < 20
-        }
-      />
+      {isDefaultMode && (
+        <>
+          {/* These four cards should show only in default mode */}
+          <OneObservationCard
+            triggerCondition={numTotalObservations === 1}
+            imageComponentOptions={{
+              onImageComponentPress: handlePivotCardGridItemPress,
+              accessibilityHint: t( "Navigates-to-observation-details" ),
+              imageComponent: (
+                <ObsGridItem
+                  observation={observations[0]}
+                  currentUser={currentUser}
+                  explore={false}
+                  queued={false}
+                  testID="PivotCardGridItem"
+                />
+              )
+            }}
+          />
+          <FiveObservationCard triggerCondition={numTotalObservations === 5} />
+          <TenObservationCard triggerCondition={numTotalObservations === 10} />
+          <FiftyObservationCard
+            triggerCondition={
+              loggedInWhileInDefaultMode && !!currentUser && numTotalObservations >= 50
+            }
+          />
+          <AccountCreationCard
+            triggerCondition={
+              justFinishedSignup && !!currentUser && numTotalObservations < 20
+            }
+          />
+        </>
+      )}
     </>
   );
 };

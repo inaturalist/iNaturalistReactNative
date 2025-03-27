@@ -12,7 +12,6 @@ import ObsListItemDemo from "./UiLibrary/ObsListItemDemo";
 import PivotCardsDemo from "./UiLibrary/PivotCardsDemo";
 import TaxonGridItemDemo from "./UiLibrary/TaxonGridItemDemo";
 import TaxonResultDemo from "./UiLibrary/TaxonResultDemo";
-import ToolbarDemo from "./UiLibrary/ToolbarDemo";
 import Typography from "./UiLibrary/Typography";
 
 const LIBRARY = {
@@ -26,7 +25,6 @@ const LIBRARY = {
   PivotCardsDemo,
   TaxonGridItemDemo,
   TaxonResultDemo,
-  ToolbarDemo,
   Typography
 };
 

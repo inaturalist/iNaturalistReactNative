@@ -1,6 +1,6 @@
 // @flow
 
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { CommonActions, useNavigation, useRoute } from "@react-navigation/native";
 import { ActivityAnimation, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -18,40 +18,66 @@ const PhotoSharing = ( ): Node => {
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const prepareObsEdit = useStore( state => state.prepareObsEdit );
   const setPhotoImporterState = useStore( state => state.setPhotoImporterState );
-  const { isAdvancedSuggestionsMode, isDefaultMode } = useLayoutPrefs();
+  const { screenAfterPhotoEvidence, isDefaultMode } = useLayoutPrefs();
   const [navigationHandled, setNavigationHandled] = useState( null );
 
-  const createObservationAndNavToObsEdit = useCallback( async photoUris => {
+  const createObservationAndNavigate = useCallback( async photoUris => {
     try {
       const newObservation = await Observation.createObservationWithPhotos( photoUris );
       newObservation.description = sharedText;
       prepareObsEdit( newObservation );
+
       if ( isDefaultMode ) {
-        navigation.navigate(
-          "NoBottomTabStackNavigator",
-          { screen: "Match", params: { lastScreen: "PhotoSharing" } }
+        return navigation.dispatch(
+          CommonActions.reset( {
+            index: 0,
+            routes: [
+              {
+                name: "NoBottomTabStackNavigator",
+                state: {
+                  index: 0,
+                  routes: [
+                    {
+                      name: "Match",
+                      params: { lastScreen: "PhotoSharing" }
+                    }
+                  ]
+                }
+              }
+            ]
+          } )
         );
-      } else if ( isAdvancedSuggestionsMode ) {
-        navigation.navigate(
-          "NoBottomTabStackNavigator",
-          { screen: "Suggestions", params: { lastScreen: "PhotoSharing" } }
-        );
-      } else {
-        navigation.navigate( "NoBottomTabStackNavigator", { screen: "ObsEdit" } );
       }
+
+      // in advanced mode, navigate based on user preference
+
+      return navigation.dispatch(
+        CommonActions.reset( {
+          index: 0,
+          routes: [
+            {
+              name: "NoBottomTabStackNavigator",
+              state: {
+                index: 0,
+                routes: [
+                  {
+                    name: screenAfterPhotoEvidence,
+                    params: { lastScreen: "PhotoSharing" }
+                  }
+                ]
+              }
+            }
+          ]
+        } )
+      );
     } catch ( e ) {
       Alert.alert(
         "Photo sharing failed: couldn't create new observation:",
         e
       );
+      return null;
     }
-  }, [
-    navigation,
-    prepareObsEdit,
-    sharedText,
-    isAdvancedSuggestionsMode,
-    isDefaultMode
-  ] );
+  }, [sharedText, prepareObsEdit, isDefaultMode, navigation, screenAfterPhotoEvidence] );
 
   useEffect( ( ) => {
     const { mimeType, data } = item;
@@ -86,8 +112,7 @@ const PhotoSharing = ( ): Node => {
     }
 
     if ( photoUris.length === 1 ) {
-      // Only one photo - go to ObsEdit directly
-      createObservationAndNavToObsEdit( photoUris );
+      createObservationAndNavigate( photoUris );
     } else {
       // Go to GroupPhotos screen
       const firstObservationDefaults = { description: sharedText };
@@ -101,7 +126,7 @@ const PhotoSharing = ( ): Node => {
       navigation.navigate( "NoBottomTabStackNavigator", { screen: "GroupPhotos" } );
     }
   }, [
-    createObservationAndNavToObsEdit,
+    createObservationAndNavigate,
     item,
     navigation,
     resetObservationFlowSlice,

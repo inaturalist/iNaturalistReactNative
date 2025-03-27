@@ -24,10 +24,9 @@ const LocationPermissionGate = ( {
 }: Props ) => (
   <PermissionGateContainer
     permissions={LOCATION_PERMISSIONS}
-    title={t( "Get-more-accurate-suggestions-create-useful-data" )}
+    title={t( "Improve-suggestions-by-using-your-location" )}
     titleDenied={t( "Please-allow-Location-Access" )}
-    body={t( "iNaturalist-uses-your-location-to-give-you" )}
-    body2={t( "Youre-always-in-control-of-the-location-privacy" )}
+    body={t( "iNaturalist-can-use-your-location-to-give-you-better-identification-suggestions" )}
     blockedPrompt={t( "Youve-previously-denied-location-permissions" )}
     buttonText={t( "USE-LOCATION" )}
     icon="map-marker-outline"

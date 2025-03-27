@@ -3,11 +3,11 @@ import {
   Button,
   Heading1,
   Heading4,
+  INatIcon,
   INatIconButton,
   ViewWrapper
 } from "components/SharedComponents";
 import INatLogo from "images/svg/inat_logo_onboarding.svg";
-import OnBoardingIcon1 from "images/svg/onboarding_icon_1.svg";
 import OnBoardingIcon2 from "images/svg/onboarding_icon_2.svg";
 import OnBoardingIcon3 from "images/svg/onboarding_icon_3.svg";
 import React, {
@@ -28,17 +28,27 @@ import colors from "styles/tailwindColors";
 
 const SlideItem = props => {
   const {
-    item
+    item, index
   } = props;
   const Icon = item.icon;
 
   return (
     <Animated.View className="w-full h-full">
       <View className="flex flex-col items-center w-full justify-end h-full pl-4 pr-4">
-        <Icon
-          width={item.iconProps.width}
-          height={item.iconProps.height}
-        />
+        {index === 0
+          ? (
+            <INatIcon
+              name="aicamera"
+              size={71}
+              color={colors.white}
+            />
+          )
+          : (
+            <Icon
+              width={item.iconProps.width}
+              height={item.iconProps.height}
+            />
+          )}
         <Heading1 className="text-white mt-[30px]">
           {item.title}
         </Heading1>
@@ -60,10 +70,10 @@ const OnboardingCarousel = ( { closeModal } ) => {
   const paginationColor = colors.white;
   const ONBOARDING_SLIDES = [
     {
-      icon: OnBoardingIcon1,
+      icon: null,
       iconProps: { width: 70, height: 70 },
-      title: t( "Connect-to-Nature" ),
-      text: t( "Identify-record-learn" ),
+      title: t( "Identify-species-anywhere" ),
+      text: t( "Get-an-instant-ID-of-any-plant-animal-fungus" ),
       background: require( "images/background/karsten-winegeart-RAgWH6ldps0-unsplash-cropped.jpg" ),
       backgroundAnimation: useAnimatedStyle( () => {
         const opacity = interpolate(
@@ -77,8 +87,8 @@ const OnboardingCarousel = ( { closeModal } ) => {
     {
       icon: OnBoardingIcon2,
       iconProps: { width: 100, height: 100 },
-      title: t( "Community-based" ),
-      text: t( "iNat-is-global-community" ),
+      title: t( "Connect-with-expert-naturalists" ),
+      text: t( "Experts-help-verify-and-improve-IDs" ),
       background: require( "images/background/shane-rounce-DNkoNXQti3c-unsplash.jpg" ),
       backgroundAnimation: useAnimatedStyle( () => {
         const opacity = interpolate(
@@ -92,8 +102,8 @@ const OnboardingCarousel = ( { closeModal } ) => {
     {
       icon: OnBoardingIcon3,
       iconProps: { width: 70, height: 70 },
-      title: t( "Contribute-to-Science" ),
-      text: t( "Observations-on-iNat-are-cited" ),
+      title: t( "Help-protect-species" ),
+      text: t( "Verified-IDs-are-used-for-science-and-conservation" ),
       background: require( "images/background/sk-yeong-cXpdNdqp7eY-unsplash.jpg" ),
       backgroundAnimation: useAnimatedStyle( () => {
         const opacity = interpolate(
@@ -167,7 +177,9 @@ const OnboardingCarousel = ( { closeModal } ) => {
               accessibilityElementsHidden
               importantForAccessibility="no"
             />
-            <Heading4 className="text-white mt-[15px]">{t( "CONNECT-TO-NATURE" )}</Heading4>
+            <Heading4 className="text-white mt-[15px]">
+              {t( "DISCOVER-NATURE-AROUND-YOU" )}
+            </Heading4>
           </View>
 
           <View className="w-full flex-1">

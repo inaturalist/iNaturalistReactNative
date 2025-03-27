@@ -47,7 +47,7 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
   const obsCreateItems = useMemo( ( ) => ( {
     aiCamera: {
       text: t( "Use-iNaturalists-AI-Camera" ),
-      icon: "arcamera",
+      icon: "aicamera",
       onPress: ( ) => navAndCloseModal( "Camera", { camera: "AI" } ),
       testID: "aicamera-button",
       className: classnames( GREEN_CIRCLE_CLASS, "absolute bottom-[26px]" ),
@@ -124,7 +124,9 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
       color={String( colors?.white )}
       icon={icon}
       onPress={onPress}
-      size={30}
+      size={icon === "aicamera"
+        ? 38
+        : 30}
       testID={testID}
     />
   );

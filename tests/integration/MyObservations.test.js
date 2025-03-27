@@ -3,7 +3,7 @@
 
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import { MS_BEFORE_TOOLBAR_RESET } from "components/MyObservations/hooks/useUploadObservations.ts";
-import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
+import MyObservationsContainer from "components/MyObservations/MyObservationsContainer.tsx";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import { flatten } from "lodash";
@@ -138,9 +138,9 @@ const displayItemByText = text => {
 beforeEach( ( ) => {
   useStore.setState( {
     layout: {
-      isDefaultMode: false
-    },
-    isAdvancedUser: true
+      isDefaultMode: false,
+      isAllAddObsOptionsMode: true
+    }
   } );
 } );
 
@@ -324,7 +324,7 @@ describe( "MyObservations", ( ) => {
         // expect( inatjs.observations.updates ).not.toHaveBeenCalled();
         inatjs.observations.updates.mockClear( );
         renderAppWithComponent( <MyObservationsContainer /> );
-        expect( await screen.findByText( /Welcome back/ ) ).toBeTruthy();
+        expect( await screen.findByText( /OBSERVATIONS/ ) ).toBeTruthy();
         await waitFor( ( ) => {
           expect( inatjs.observations.updates ).toHaveBeenCalled( );
         } );
@@ -345,7 +345,7 @@ describe( "MyObservations", ( ) => {
         const realm = global.mockRealms[__filename];
         expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
         renderAppWithComponent( <MyObservationsContainer /> );
-        const button = await screen.findByTestId( "MyObservationsToolbar.toggleListView" );
+        const button = await screen.findByTestId( "SegmentedButton.list" );
         fireEvent.press( button );
         // Awaiting the first observation because using await in the forEach errors out
         const firstObs = mockSyncedObservations[0];
@@ -355,7 +355,13 @@ describe( "MyObservations", ( ) => {
         } );
       } );
 
-      it( "displays observation status in list view", async () => {
+      it( "displays observation status in list view in advanced mode", async () => {
+        useStore.setState( {
+          layout: {
+            isDefaultMode: false,
+            isAllAddObsOptionsMode: true
+          }
+        } );
         const realm = global.mockRealms[__filename];
         expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
         renderAppWithComponent( <MyObservationsContainer /> );

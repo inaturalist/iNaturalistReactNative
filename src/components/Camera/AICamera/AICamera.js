@@ -282,7 +282,7 @@ const AICamera = ( {
             : (
               <Body1 className="text-white self-center mt-[22px]">
                 {modelLoaded
-                  ? t( "Scan-the-area-around-you-for-organisms" )
+                  ? t( "Point-the-camera-at-an-animal-plant-or-fungus" )
                   : t( "Loading-iNaturalists-AI-Camera" )}
               </Body1>
             )}

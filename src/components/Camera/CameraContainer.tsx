@@ -15,7 +15,7 @@ import type {
 } from "react-native-vision-camera";
 import { createSentinelFile, deleteSentinelFile, logStage } from "sharedHelpers/sentinelFiles.ts";
 import {
-  useDeviceOrientation, useLayoutPrefs, useTranslation, useWatchPosition
+  useDeviceOrientation, useTranslation, useWatchPosition
 } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useStore from "stores/useStore";
@@ -29,9 +29,6 @@ import useSavePhotoPermission from "./hooks/useSavePhotoPermission";
 export const MAX_PHOTOS_ALLOWED = 20;
 
 const CameraContainer = ( ) => {
-  const {
-    isDefaultMode
-  } = useLayoutPrefs( );
   const currentObservation = useStore( state => state.currentObservation );
   const setCameraState = useStore( state => state.setCameraState );
   const evidenceToAdd = useStore( state => state.evidenceToAdd );
@@ -42,11 +39,6 @@ const CameraContainer = ( ) => {
 
   const { params } = useRoute( );
   const cameraType = params?.camera;
-
-  const showMatchScreen = cameraType === "AI"
-    && isDefaultMode;
-  const showSuggestionsScreen = cameraType === "AI"
-    && !isDefaultMode;
 
   const logStageIfAICamera = useCallback( async (
     stageName: string,
@@ -152,16 +144,14 @@ const CameraContainer = ( ) => {
       newPhotoState,
       logStageIfAICamera,
       deleteStageIfAICamera,
-      showMatchScreen,
-      showSuggestionsScreen
+      cameraType
     } );
   }, [
     prepareStoreAndNavigate,
     navigationOptions,
     logStageIfAICamera,
     deleteStageIfAICamera,
-    showMatchScreen,
-    showSuggestionsScreen
+    cameraType
   ] );
 
   const handleCheckmarkPress = useCallback( async newPhotoState => {

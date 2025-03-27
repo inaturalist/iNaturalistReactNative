@@ -3,10 +3,15 @@ export enum OBS_DETAILS_TAB {
   DETAILS = "DETAILS"
 }
 
+export enum SCREEN_AFTER_PHOTO_EVIDENCE {
+  SUGGESTIONS = "Suggestions",
+  OBS_EDIT = "ObsEdit",
+  MATCH = "Match"
+}
+
 const createLayoutSlice = set => ( {
   // Vestigial un-namespaced values
   isAdvancedUser: false,
-  setIsAdvancedUser: ( newValue: boolean ) => set( { isAdvancedUser: newValue } ),
   // Values that do not need to be persisted
   obsDetailsTab: OBS_DETAILS_TAB.ACTIVITY,
   setObsDetailsTab: ( newValue: OBS_DETAILS_TAB ) => set( { obsDetailsTab: newValue } ),
@@ -22,14 +27,36 @@ const createLayoutSlice = set => ( {
     setIsDefaultMode: ( newValue: boolean ) => set( state => ( {
       layout: {
         ...state.layout,
-        isDefaultMode: newValue
+        isDefaultMode: newValue,
+        // reset to AICamera mode if default mode is toggled on
+        // and otherwise, advanced mode default is all options
+        isAllAddObsOptionsMode: newValue !== true,
+        // reset to Match screen if default mode is toggled on
+        // and otherwise, advanced mode default is Suggestions
+        screenAfterPhotoEvidence: newValue === true
+          ? SCREEN_AFTER_PHOTO_EVIDENCE.MATCH
+          : SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS
       }
     } ) ),
-    isAdvancedSuggestionsMode: true,
-    setIsSuggestionsFlowMode: ( newValue: boolean ) => set( state => ( {
+    // leaving isAdvancedSuggestionsMode here for backwards compatibility
+    // for anyone who already set ObsEdit, but setting the default value
+    // to null so we can remove it in the future
+    isAdvancedSuggestionsMode: null,
+    screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.MATCH,
+    setScreenAfterPhotoEvidence: ( newScreen: string ) => set( state => ( {
       layout: {
         ...state.layout,
-        isAdvancedSuggestionsMode: newValue
+        screenAfterPhotoEvidence: newScreen,
+        // let's stop using this isAdvancedSuggestionsMode value once users adjust their settings
+        // so we can remove it in the future
+        isAdvancedSuggestionsMode: null
+      }
+    } ) ),
+    isAllAddObsOptionsMode: false,
+    setIsAllAddObsOptionsMode: ( newValue: boolean ) => set( state => ( {
+      layout: {
+        ...state.layout,
+        isAllAddObsOptionsMode: newValue
       }
     } ) ),
     // State to control pivot cards and other onboarding material being shown only once

@@ -89,9 +89,9 @@ beforeAll( async () => {
 beforeEach( ( ) => {
   useStore.setState( {
     layout: {
-      isDefaultMode: false
-    },
-    isAdvancedUser: true
+      isDefaultMode: false,
+      isAllAddObsOptionsMode: true
+    }
   } );
 } );
 
@@ -100,7 +100,7 @@ const actor = userEvent.setup( );
 async function navigateToObsDetails( ) {
   await waitFor( ( ) => {
     global.timeTravel( );
-    expect( screen.getByText( /Welcome back/ ) ).toBeVisible( );
+    expect( screen.getByText( /OBSERVATION/ ) ).toBeVisible( );
   } );
   const firstObservation = await screen.findByTestId(
     `ObsPressable.${mockObservations[0].uuid}`
@@ -132,31 +132,6 @@ describe( "logged in", ( ) => {
     } );
 
     global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
-
-    describe( "from MyObs toolbar", ( ) => {
-      it( "should show observations view and navigate back to MyObs", async ( ) => {
-        renderApp( );
-        await waitFor( ( ) => {
-          global.timeTravel( );
-          expect( screen.getByText( /Welcome back/ ) ).toBeVisible( );
-        } );
-        const exploreButton = await screen.findByLabelText( /See all your observations in explore/ );
-        await actor.press( exploreButton );
-        expect( inatjs.observations.search ).toHaveBeenCalledWith( expect.objectContaining( {
-          user_id: mockUser.id,
-          verifiable: true
-        } ), {
-          api_token: TEST_JWT
-        } );
-        const defaultGlobalLocation = await screen.findByText( /Worldwide/ );
-        expect( defaultGlobalLocation ).toBeVisible( );
-        const observationsViewIcon = await screen.findByLabelText( /Observations View/ );
-        expect( observationsViewIcon ).toBeVisible( );
-        const backButton = screen.queryByTestId( "Explore.BackButton" );
-        await actor.press( backButton );
-        expect( await screen.findByText( /Welcome back/ ) ).toBeVisible( );
-      } );
-    } );
 
     describe( "from TaxonDetails", ( ) => {
       it( "should show observations view and navigate back to TaxonDetails", async ( ) => {

@@ -26,10 +26,9 @@ jest.mock( "@react-navigation/native", ( ) => {
 
 const initialStoreState = useStore.getState( );
 
-const toggleAdvancedMode = async ( ) => {
-  const advancedRadioButton = await screen
-    .findByText( /Advanced/ );
-  fireEvent.press( advancedRadioButton );
+const toggleAdvancedSwitch = async ( ) => {
+  const advancedSwitch = await screen.findByTestId( "advanced-interface-switch.switch" );
+  fireEvent.press( advancedSwitch );
 };
 
 beforeAll( async ( ) => {
@@ -52,9 +51,9 @@ beforeEach( ( ) => {
 } );
 
 describe( "Settings", ( ) => {
-  it( "should toggle the green observation button", async ( ) => {
+  it( "should toggle the green observation button from all options -> AICamera", async ( ) => {
     renderComponent( <Settings /> );
-    await toggleAdvancedMode( );
+    await toggleAdvancedSwitch( );
     const allObsOptions = await screen.findByLabelText( /All observation options/ );
     expect( allObsOptions ).toHaveProp( "accessibilityState", expect.objectContaining( {
       checked: true
@@ -106,7 +105,6 @@ describe( "Settings", ( ) => {
 
   test( "should change language immediately via language picker via online results", async ( ) => {
     renderComponent( <Settings /> );
-    await toggleAdvancedMode( );
     const changeLanguageButton = await screen.findByText( /CHANGE APP LANGUAGE/ );
     fireEvent.press( changeLanguageButton );
     const picker = await screen.findByTestId( "ReactNativePicker" );

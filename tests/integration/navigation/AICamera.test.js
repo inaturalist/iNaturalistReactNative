@@ -85,9 +85,8 @@ beforeEach( async ( ) => {
   useStore.setState( {
     layout: {
       isDefaultMode: false,
-      isAdvancedSuggestionsMode: false
-    },
-    isAdvancedUser: true
+      isAllAddObsOptionsMode: true
+    }
   } );
   inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
 } );
@@ -138,14 +137,6 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
 
   describe( "to Suggestions", ( ) => {
     beforeEach( ( ) => {
-      useStore.setState( {
-        layout: {
-          isDefaultMode: false,
-          isAdvancedSuggestionsMode: true
-        },
-        isAdvancedUser: true
-      } );
-
       const mockWatchPosition = jest.fn( ( success, _error, _options ) => success( {
         coords: {
           latitude: 56,
