@@ -35,11 +35,6 @@ beforeAll( uniqueRealmBeforeAll );
 afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
-const toggleAdvancedSwitch = async ( ) => {
-  const advancedSwitch = await screen.findByTestId( "advanced-interface-switch.switch" );
-  fireEvent.press( advancedSwitch );
-};
-
 describe( "LanguageSettings", ( ) => {
   it( "uses locale preference of the local device", ( ) => {
     renderAppWithComponent( <Settings /> );
@@ -68,7 +63,6 @@ describe( "LanguageSettings", ( ) => {
 
     it( "uses locale preference from server", async ( ) => {
       renderAppWithComponent( <Settings /> );
-      await toggleAdvancedSwitch( );
       const sciNameText = await screen.findByText(
         i18next.t( "Scientific-Name", { lang: "ru" } )
       );
@@ -77,7 +71,6 @@ describe( "LanguageSettings", ( ) => {
 
     it( "allows change to Swedish and requests remote locale change", async ( ) => {
       renderAppWithComponent( <Settings /> );
-      await toggleAdvancedSwitch( );
       const changeLocaleButton = await screen.findByText(
         i18next.t( "CHANGE-APP-LANGUAGE", { lang: "ru" } )
       );
