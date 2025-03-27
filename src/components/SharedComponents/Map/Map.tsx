@@ -14,7 +14,7 @@ import MapView, {
   BoundingBox, LatLng, MapType, Region, UrlTile
 } from "react-native-maps";
 import Observation from "realmModels/Observation";
-import fetchUserLocation from "sharedHelpers/fetchUserLocation.ts";
+import fetchCourseUserLocation from "sharedHelpers/fetchCourseUserLocation.ts";
 import { useDebugMode, useDeviceOrientation } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import colors from "styles/tailwindColors";
@@ -203,7 +203,7 @@ const Map = ( {
   }, [params, currentZoom, navigation] );
 
   const onPermissionGranted = async ( ) => {
-    const currentLocation = await fetchUserLocation( );
+    const currentLocation = await fetchCourseUserLocation( );
     if ( currentLocation && mapViewRef?.current ) {
       animateToRegion( {
         latitude: currentLocation.latitude,

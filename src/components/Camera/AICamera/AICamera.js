@@ -14,6 +14,7 @@ import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { VolumeManager } from "react-native-volume-manager";
 import convertScoreToConfidence from "sharedHelpers/convertScores.ts";
+import fetchAccurateUserLocation from "sharedHelpers/fetchAccurateUserLocation.ts";
 import { log } from "sharedHelpers/logger";
 import { deleteSentinelFile, logStage } from "sharedHelpers/sentinelFiles.ts";
 import {
@@ -58,10 +59,7 @@ type Props = {
   toggleFlash: Function,
   takingPhoto: boolean,
   takePhotoAndStoreUri: Function,
-  takePhotoOptions: Object,
-  userLocation?: Object, // UserLocation | null
-  hasLocationPermissions: boolean,
-  requestLocationPermissions: () => void,
+  takePhotoOptions: Object
 };
 
 const AICamera = ( {
@@ -72,10 +70,7 @@ const AICamera = ( {
   toggleFlash,
   takingPhoto,
   takePhotoAndStoreUri,
-  takePhotoOptions,
-  userLocation,
-  hasLocationPermissions,
-  requestLocationPermissions
+  takePhotoOptions
 }: Props ): Node => {
   const navigation = useNavigation( );
   const sentinelFileName = useStore( state => state.sentinelFileName );
@@ -113,7 +108,8 @@ const AICamera = ( {
   const [initialVolume, setInitialVolume] = useState( null );
   const [hasTakenPhoto, setHasTakenPhoto] = useState( false );
 
-  const [useLocation, setUseLocation] = useState( !!hasLocationPermissions );
+  const [userLocation, setUserLocation] = useState( null );
+  const [useLocation, setUseLocation] = useState( !!userLocation );
   const [locationStatusVisible, setLocationStatusVisible] = useState( false );
 
   const [debugFormatIndex, setDebugFormatIndex] = useState( 0 );
@@ -124,11 +120,7 @@ const AICamera = ( {
     ? device.formats[debugFormatIndex]
     : undefined;
 
-  const toggleLocation = () => {
-    if ( !useLocation && !hasLocationPermissions ) {
-      requestLocationPermissions( );
-      return;
-    }
+  const toggleLocation = ( ) => {
     setUseLocation( prev => !prev );
     // Always show status when button is pressed
     setLocationStatusVisible( true );
@@ -139,10 +131,17 @@ const AICamera = ( {
   };
 
   useEffect( ( ) => {
-    if ( hasLocationPermissions ) {
+    const fetchLocation = async ( ) => {
+      const accurateUserLocation = await fetchAccurateUserLocation( );
+      setUserLocation( accurateUserLocation );
       setUseLocation( true );
+      return accurateUserLocation;
+    };
+
+    if ( !userLocation ) {
+      fetchLocation( );
     }
-  }, [hasLocationPermissions] );
+  }, [userLocation] );
 
   const { t } = useTranslation();
 
