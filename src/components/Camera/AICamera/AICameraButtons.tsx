@@ -39,7 +39,6 @@ interface Props {
   showZoomButton: boolean;
   takePhoto: () => Promise<void>;
   takePhotoOptions: TakePhotoOptions;
-  takingPhoto: boolean;
   toggleFlash: ( _event: GestureResponderEvent ) => void;
   zoomTextValue: string;
   useLocation: boolean;
@@ -67,7 +66,6 @@ const AICameraButtons = ( {
   showZoomButton,
   takePhoto,
   takePhotoOptions,
-  takingPhoto,
   toggleFlash,
   zoomTextValue,
   useLocation,
@@ -78,7 +76,7 @@ const AICameraButtons = ( {
     return (
       <TabletButtons
         handleZoomButtonPress={handleZoomButtonPress}
-        disabled={!modelLoaded || takingPhoto}
+        disabled={!modelLoaded}
         flipCamera={flipCamera}
         hasFlash={hasFlash}
         hasPhotoLibraryButton
@@ -159,7 +157,7 @@ const AICameraButtons = ( {
       </View>
       <View className="flex-row justify-center items-center w-full" pointerEvents="box-none">
         <TakePhoto
-          disabled={!modelLoaded || takingPhoto}
+          disabled={!modelLoaded}
           takePhoto={takePhoto}
           showPrediction={showPrediction}
         />
