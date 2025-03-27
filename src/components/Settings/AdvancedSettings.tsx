@@ -31,7 +31,7 @@ const AdvancedSettings = ( ) => {
       <View className="mt-[20px]">
         {renderSettingDescription( t( "When-tapping-the-green-observation-button" ) )}
         <RadioButtonRow
-          classNames="mt-[15px]"
+          classNames="ml-[6px] mt-[15px]"
           testID="all-observation-options"
           smallLabel
           checked={isAllAddObsOptionsMode}
@@ -39,7 +39,7 @@ const AdvancedSettings = ( ) => {
           label={t( "All-observation-options--list" )}
         />
         <RadioButtonRow
-          classNames="mt-[15px]"
+          classNames="ml-[6px] mt-[15px]"
           smallLabel
           checked={!isAllAddObsOptionsMode}
           onPress={() => setIsAllAddObsOptionsMode( false )}
@@ -49,7 +49,7 @@ const AdvancedSettings = ( ) => {
       <View className="mt-[20px]">
         {renderSettingDescription( t( "After-capturing-or-importing-photos-show" ) )}
         <RadioButtonRow
-          classNames="mt-[15px]"
+          classNames="ml-[6px] mt-[15px]"
           testID="suggestions-flow-mode"
           smallLabel
           checked={screenAfterPhotoEvidence === SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS}
@@ -57,7 +57,7 @@ const AdvancedSettings = ( ) => {
           label={t( "ID-Suggestions" )}
         />
         <RadioButtonRow
-          classNames="mt-[15px]"
+          classNames="ml-[6px] mt-[15px]"
           smallLabel
           // isAdvancedSuggestionsMode is here for backwards compatibility
           checked={screenAfterPhotoEvidence === SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT
@@ -66,7 +66,7 @@ const AdvancedSettings = ( ) => {
           label={t( "Edit-Observation" )}
         />
         <RadioButtonRow
-          classNames="mt-[15px]"
+          classNames="ml-[6px] mt-[15px]"
           smallLabel
           checked={screenAfterPhotoEvidence === SCREEN_AFTER_PHOTO_EVIDENCE.MATCH}
           onPress={() => setScreenAfterPhotoEvidence( SCREEN_AFTER_PHOTO_EVIDENCE.MATCH )}

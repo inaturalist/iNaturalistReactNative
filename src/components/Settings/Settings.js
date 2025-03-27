@@ -36,7 +36,7 @@ const Settings = ( ) => {
   return (
     <ScrollViewWrapper>
       <StatusBar barStyle="dark-content" />
-      <View className="p-5">
+      <View className="p-4">
         <Heading4 className="mb-[15px]">{t( "ADVANCED-SETTINGS" )}</Heading4>
         <SwitchRow
           testID="advanced-interface-switch"
