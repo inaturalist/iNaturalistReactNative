@@ -87,21 +87,21 @@ const TaxonNamesSetting = ( { onChange }: Props ) => {
         checked={commonNameFirst}
         onPress={() => changeTaxonNameDisplay( NAME_DISPLAY_COM_SCI )}
         label={t( "Common-Name-Scientific-Name" )}
-        classNames="mt-[22px]"
+        classNames="mt-[15px]"
       />
       <RadioButtonRow
         smallLabel
         checked={scientificNameFirst}
         onPress={() => changeTaxonNameDisplay( NAME_DISPLAY_SCI_COM )}
         label={t( "Scientific-Name-Common-Name" )}
-        classNames="mt-4"
+        classNames="mt-[15px]"
       />
       <RadioButtonRow
         smallLabel
         checked={scientificNameOnly}
         onPress={() => changeTaxonNameDisplay( NAME_DISPLAY_SCI )}
         label={t( "Scientific-Name" )}
-        classNames="mt-4"
+        classNames="mt-[15px]"
       />
     </View>
   );
