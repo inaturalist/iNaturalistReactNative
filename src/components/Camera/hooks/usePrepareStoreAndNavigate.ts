@@ -178,20 +178,15 @@ const usePrepareStoreAndNavigate = ( ): Function => {
       } );
     }
 
-    // Multicapture camera navigates based on user settings
-    if ( screenAfterPhotoEvidence === "Match" ) {
+    // Multicapture camera in default mode should only go to Match screen
+    if ( isDefaultMode ) {
       return navigation.push( "Match", {
         entryScreen: "CameraWithDevice",
         lastScreen: "CameraWithDevice"
       } );
     }
-    if ( screenAfterPhotoEvidence === "Suggestions" ) {
-      return navigation.push( "Suggestions", {
-        entryScreen: "CameraWithDevice",
-        lastScreen: "CameraWithDevice"
-      } );
-    }
-    return navigation.push( "ObsEdit", {
+    // Multicapture camera navigates based on user settings to Match, Suggestions, or ObsEdit
+    return navigation.push( screenAfterPhotoEvidence, {
       entryScreen: "CameraWithDevice",
       lastScreen: "CameraWithDevice"
     } );

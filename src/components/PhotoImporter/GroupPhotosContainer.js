@@ -5,6 +5,7 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import Observation from "realmModels/Observation";
+import { useLayoutPrefs } from "sharedHooks";
 import useStore from "stores/useStore";
 
 import GroupPhotos from "./GroupPhotos";
@@ -12,6 +13,9 @@ import flattenAndOrderSelectedPhotos from "./helpers/groupPhotoHelpers";
 
 const GroupPhotosContainer = ( ): Node => {
   const navigation = useNavigation( );
+  const {
+    screenAfterPhotoEvidence, isDefaultMode
+  } = useLayoutPrefs( );
   const setObservations = useStore( state => state.setObservations );
   const setGroupedPhotos = useStore( state => state.setGroupedPhotos );
   const groupedPhotos = useStore( state => state.groupedPhotos );
@@ -145,10 +149,26 @@ const GroupPhotosContainer = ( ): Node => {
     } ) ) );
     setIsCreatingObservations( false );
     if ( newObservations.length === 1 ) {
-      navigation.push( "Suggestions", { entryScreen: "GroupPhotos", lastScreen: "GroupPhotos" } );
-    } else {
-      navigation.navigate( "ObsEdit", { lastScreen: "GroupPhotos" } );
+      if ( isDefaultMode ) {
+        return navigation.navigate( "NoBottomTabStackNavigator", {
+          screen: "Match",
+          params: {
+            entryScreen: "GroupPhotos",
+            lastScreen: "GroupPhotos"
+          }
+        } );
+      }
+
+      // in advanced mode, navigate based on user preference
+      return navigation.navigate( "NoBottomTabStackNavigator", {
+        screen: screenAfterPhotoEvidence,
+        params: {
+          entryScreen: "GroupPhotos",
+          lastScreen: "GroupPhotos"
+        }
+      } );
     }
+    return navigation.navigate( "ObsEdit", { lastScreen: "GroupPhotos" } );
   };
 
   return (

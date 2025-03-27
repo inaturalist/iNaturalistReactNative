@@ -30,7 +30,7 @@ const DEFAULT_MODE_MAX_PHOTOS_ALLOWED = 1;
 
 const PhotoLibrary = ( ): Node => {
   const {
-    screenAfterPhotoEvidence
+    screenAfterPhotoEvidence, isDefaultMode
   } = useLayoutPrefs( );
   const navigation = useNavigation( );
   const [photoLibraryShown, setPhotoLibraryShown] = useState( false );
@@ -59,20 +59,23 @@ const PhotoLibrary = ( ): Node => {
   } ), [navigation] );
 
   const navBasedOnUserSettings = useCallback( async ( ) => {
-    if ( screenAfterPhotoEvidence === "Match" ) {
-      return navigation.navigate( "Match", {
-        lastScreen: "PhotoLibrary"
+    if ( isDefaultMode ) {
+      return navigation.navigate( "NoBottomTabStackNavigator", {
+        screen: "Match",
+        params: {
+          lastScreen: "PhotoLibrary"
+        }
       } );
     }
-    if ( screenAfterPhotoEvidence === "Suggestions" ) {
-      return navigation.navigate( "Suggestions", {
+
+    // in advanced mode, navigate based on user preference
+    return navigation.navigate( "NoBottomTabStackNavigator", {
+      screen: screenAfterPhotoEvidence,
+      params: {
         lastScreen: "PhotoLibrary"
-      } );
-    }
-    return navigation.navigate( "ObsEdit", {
-      lastScreen: "PhotoLibrary"
+      }
     } );
-  }, [navigation, screenAfterPhotoEvidence] );
+  }, [navigation, screenAfterPhotoEvidence, isDefaultMode] );
 
   const moveImagesToDocumentsDirectory = async selectedImages => {
     const path = photoLibraryPhotosPath;

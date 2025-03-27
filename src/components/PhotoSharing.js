@@ -18,31 +18,40 @@ const PhotoSharing = ( ): Node => {
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const prepareObsEdit = useStore( state => state.prepareObsEdit );
   const setPhotoImporterState = useStore( state => state.setPhotoImporterState );
-  const { screenAfterPhotoEvidence } = useLayoutPrefs();
+  const { screenAfterPhotoEvidence, isDefaultMode } = useLayoutPrefs();
   const [navigationHandled, setNavigationHandled] = useState( null );
 
-  const createObservationAndNavToObsEdit = useCallback( async photoUris => {
+  const createObservationAndNavigate = useCallback( async photoUris => {
     try {
       const newObservation = await Observation.createObservationWithPhotos( photoUris );
       newObservation.description = sharedText;
       prepareObsEdit( newObservation );
-      if ( screenAfterPhotoEvidence === "Match" ) {
-        navigation.navigate( "NoBottomTabStackNavigator", { screen: "Match" } );
-      } else if ( screenAfterPhotoEvidence === "Suggestions" ) {
-        navigation.navigate(
-          "NoBottomTabStackNavigator",
-          { screen: "Suggestions", params: { lastScreen: "PhotoSharing" } }
-        );
-      } else {
-        navigation.navigate( "NoBottomTabStackNavigator", { screen: "ObsEdit" } );
+
+      if ( isDefaultMode ) {
+        return navigation.navigate( "NoBottomTabStackNavigator", {
+          screen: "Match",
+          params: {
+            lastScreen: "PhotoSharing"
+          }
+        } );
       }
+
+      // in advanced mode, navigate based on user preference
+      return navigation.navigate( "NoBottomTabStackNavigator", {
+        screen: screenAfterPhotoEvidence,
+        params: {
+          lastScreen: "PhotoSharing"
+        }
+      } );
     } catch ( e ) {
       Alert.alert(
         "Photo sharing failed: couldn't create new observation:",
         e
       );
+      return null;
     }
   }, [
+    isDefaultMode,
     navigation,
     prepareObsEdit,
     sharedText,
@@ -82,8 +91,7 @@ const PhotoSharing = ( ): Node => {
     }
 
     if ( photoUris.length === 1 ) {
-      // Only one photo - go to ObsEdit directly
-      createObservationAndNavToObsEdit( photoUris );
+      createObservationAndNavigate( photoUris );
     } else {
       // Go to GroupPhotos screen
       const firstObservationDefaults = { description: sharedText };
@@ -97,7 +105,7 @@ const PhotoSharing = ( ): Node => {
       navigation.navigate( "NoBottomTabStackNavigator", { screen: "GroupPhotos" } );
     }
   }, [
-    createObservationAndNavToObsEdit,
+    createObservationAndNavigate,
     item,
     navigation,
     resetObservationFlowSlice,
