@@ -211,9 +211,6 @@ const MatchContainer = ( ) => {
     onlineSuggestionsAttempted
   } );
 
-  console.log( "observationPhoto", observationPhoto );
-  console.log( "queryKey", queryKey );
-
   const [currentPlaceGuess, setCurrentPlaceGuess] = useState( );
   const [hasRefetchedSuggestions, setHasRefetchedSuggestions] = useState( false );
 
@@ -392,7 +389,7 @@ const MatchContainer = ( ) => {
     if ( !suggestions || suggestions.length === 0 ) {
       return;
     }
-    console.log( "useeffect suggestions" );
+
     const orderedList = [...suggestions.otherSuggestions];
     if ( suggestions?.topSuggestion ) {
       setTopSuggestion( suggestions?.topSuggestion );

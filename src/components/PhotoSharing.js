@@ -25,9 +25,7 @@ const PhotoSharing = ( ): Node => {
     try {
       const newObservation = await Observation.createObservationWithPhotos( photoUris );
       newObservation.description = sharedText;
-      console.log( "new observation", newObservation );
-      console.log( "photoUris", photoUris );
-      await prepareObsEdit( newObservation );
+      prepareObsEdit( newObservation );
       if ( isDefaultMode ) {
         navigation.navigate(
           "NoBottomTabStackNavigator",
