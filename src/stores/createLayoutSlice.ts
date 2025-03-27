@@ -12,7 +12,6 @@ export enum SCREEN_AFTER_PHOTO_EVIDENCE {
 const createLayoutSlice = set => ( {
   // Vestigial un-namespaced values
   isAdvancedUser: false,
-  setIsAdvancedUser: ( newValue: boolean ) => set( { isAdvancedUser: newValue } ),
   // Values that do not need to be persisted
   obsDetailsTab: OBS_DETAILS_TAB.ACTIVITY,
   setObsDetailsTab: ( newValue: OBS_DETAILS_TAB ) => set( { obsDetailsTab: newValue } ),
