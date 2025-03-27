@@ -160,6 +160,7 @@ const CameraContainer = ( ) => {
   ] );
 
   const handleCheckmarkPress = useCallback( async newPhotoState => {
+    isCapturingPhotoRef.current = true;
     if ( !showPhotoPermissionsGate ) {
       await handleNavigation( newPhotoState );
     } else {

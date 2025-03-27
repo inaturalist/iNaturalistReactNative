@@ -72,7 +72,6 @@ const CameraWithDevice = ( {
             newPhotoUris={newPhotoUris}
             setNewPhotoUris={setNewPhotoUris}
             takePhotoOptions={takePhotoOptions}
-            isCapturingPhotoRef={isCapturingPhotoRef}
           />
         )
         : (
