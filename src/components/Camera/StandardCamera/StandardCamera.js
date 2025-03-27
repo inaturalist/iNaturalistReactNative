@@ -56,7 +56,8 @@ type Props = {
   takePhotoAndStoreUri: Function,
   takePhotoOptions: Object,
   newPhotoUris: Array<Object>,
-  setNewPhotoUris: Function
+  setNewPhotoUris: Function,
+  isCapturingPhotoRef: { current: boolean }
 };
 
 const StandardCamera = ( {
@@ -70,7 +71,8 @@ const StandardCamera = ( {
   takePhotoAndStoreUri,
   takePhotoOptions,
   newPhotoUris,
-  setNewPhotoUris
+  setNewPhotoUris,
+  isCapturingPhotoRef
 }: Props ): Node => {
   const realm = useRealm( );
   const hasFlash = device?.hasFlash;
@@ -156,12 +158,13 @@ const StandardCamera = ( {
   }, [deletePhotoByUri, navigation, newPhotoUris] );
 
   const handleTakePhoto = useCallback( ( ) => {
+    isCapturingPhotoRef.current = true;
     if ( disallowAddingPhotos ) {
       setShowAlert( true );
       return;
     }
     takePhotoAndStoreUri( );
-  }, [disallowAddingPhotos, takePhotoAndStoreUri] );
+  }, [disallowAddingPhotos, takePhotoAndStoreUri, isCapturingPhotoRef] );
 
   useEffect( () => {
     if ( initialVolume === null ) {

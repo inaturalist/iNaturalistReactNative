@@ -62,6 +62,7 @@ type Props = {
   userLocation?: Object, // UserLocation | null
   hasLocationPermissions: boolean,
   requestLocationPermissions: () => void,
+  isCapturingPhotoRef: { current: boolean }
 };
 
 const AICamera = ( {
@@ -75,7 +76,8 @@ const AICamera = ( {
   takePhotoOptions,
   userLocation,
   hasLocationPermissions,
-  requestLocationPermissions
+  requestLocationPermissions,
+  isCapturingPhotoRef
 }: Props ): Node => {
   const navigation = useNavigation( );
   const sentinelFileName = useStore( state => state.sentinelFileName );
@@ -169,6 +171,7 @@ const AICamera = ( {
   };
 
   const handleTakePhoto = useCallback( async ( ) => {
+    isCapturingPhotoRef.current = true;
     await logStage( sentinelFileName, "take_photo_start" );
     setHasTakenPhoto( true );
     setAICameraSuggestion( result );
@@ -182,7 +185,8 @@ const AICamera = ( {
     setAICameraSuggestion,
     sentinelFileName,
     takePhotoAndStoreUri,
-    result
+    result,
+    isCapturingPhotoRef
   ] );
 
   useEffect( () => {

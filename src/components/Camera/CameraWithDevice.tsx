@@ -25,6 +25,7 @@ interface Props {
   userLocation: UserLocation | null,
   hasLocationPermissions: boolean,
   requestLocationPermissions: () => void,
+  isCapturingPhotoRef: React.MutableRefObject<boolean>
 }
 
 const CameraWithDevice = ( {
@@ -41,7 +42,8 @@ const CameraWithDevice = ( {
   takePhotoOptions,
   userLocation,
   hasLocationPermissions,
-  requestLocationPermissions
+  requestLocationPermissions,
+  isCapturingPhotoRef
 }: Props ) => {
   const { isLandscapeMode } = useDeviceOrientation( );
   const flexDirection = isTablet && isLandscapeMode
@@ -52,6 +54,9 @@ const CameraWithDevice = ( {
     <View
       className={`flex-1 bg-black ${flexDirection}`}
       testID="CameraWithDevice"
+      pointerEvents={isCapturingPhotoRef.current
+        ? "none"
+        : "auto"}
     >
       {cameraType === "Standard"
         ? (
@@ -67,6 +72,7 @@ const CameraWithDevice = ( {
             newPhotoUris={newPhotoUris}
             setNewPhotoUris={setNewPhotoUris}
             takePhotoOptions={takePhotoOptions}
+            isCapturingPhotoRef={isCapturingPhotoRef}
           />
         )
         : (
@@ -82,6 +88,7 @@ const CameraWithDevice = ( {
             userLocation={userLocation}
             hasLocationPermissions={hasLocationPermissions}
             requestLocationPermissions={requestLocationPermissions}
+            isCapturingPhotoRef={isCapturingPhotoRef}
           />
         )}
     </View>

@@ -29,6 +29,10 @@ import useSavePhotoPermission from "./hooks/useSavePhotoPermission";
 export const MAX_PHOTOS_ALLOWED = 20;
 
 const CameraContainer = ( ) => {
+  // using a ref allows you to make updates a lot faster than async state updates
+  // so checking for takingPhoto state is too slow here, but using isCapturingPhotoRef.current
+  // lets us disable any user touch after the shutter button is pressed
+  const isCapturingPhotoRef = useRef( false );
   const currentObservation = useStore( state => state.currentObservation );
   const setCameraState = useStore( state => state.setCameraState );
   const evidenceToAdd = useStore( state => state.evidenceToAdd );
@@ -144,7 +148,8 @@ const CameraContainer = ( ) => {
       newPhotoState,
       logStageIfAICamera,
       deleteStageIfAICamera,
-      cameraType
+      cameraType,
+      isCapturingPhotoRef
     } );
   }, [
     prepareStoreAndNavigate,
@@ -254,6 +259,7 @@ const CameraContainer = ( ) => {
         userLocation={userLocation}
         hasLocationPermissions={hasLocationPermissions}
         requestLocationPermissions={requestLocationPermissions}
+        isCapturingPhotoRef={isCapturingPhotoRef}
       />
       {showPhotoPermissionsGate && renderSavePhotoPermissionGate( {
         onPermissionGranted: async ( ) => {
