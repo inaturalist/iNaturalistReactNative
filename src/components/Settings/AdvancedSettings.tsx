@@ -18,8 +18,7 @@ const AdvancedSettings = ( ) => {
     isAllAddObsOptionsMode,
     setIsAllAddObsOptionsMode,
     screenAfterPhotoEvidence,
-    setScreenAfterPhotoEvidence,
-    isAdvancedSuggestionsMode
+    setScreenAfterPhotoEvidence
   } = useLayoutPrefs();
 
   const renderSettingDescription = description => (
@@ -59,9 +58,7 @@ const AdvancedSettings = ( ) => {
         <RadioButtonRow
           classNames="ml-[6px] mt-[15px]"
           smallLabel
-          // isAdvancedSuggestionsMode is here for backwards compatibility
-          checked={screenAfterPhotoEvidence === SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT
-            || isAdvancedSuggestionsMode === false}
+          checked={screenAfterPhotoEvidence === SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT}
           onPress={() => setScreenAfterPhotoEvidence( SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT )}
           label={t( "Edit-Observation" )}
         />
