@@ -9,7 +9,6 @@ import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import * as useLocationPermission from "sharedHooks/useLocationPermission.tsx";
-import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice.ts";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -241,13 +240,12 @@ describe( "Suggestions", ( ) => {
     // } );
   } );
 
-  describe( "when reached from Camera directly", ( ) => {
+  describe( "when reached from AI Camera directly", ( ) => {
     beforeEach( async ( ) => {
       await signIn( mockUser, { realm: global.mockRealms[__filename] } );
       useStore.setState( {
         layout: {
           isDefaultMode: false,
-          screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT,
           isAllAddObsOptionsMode: true
         }
       } );
