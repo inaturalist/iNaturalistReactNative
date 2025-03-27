@@ -25,7 +25,7 @@ type Props = {
   combinePhotos: Function,
   groupedPhotos: Array<Object>,
   isCreatingObservations?: boolean,
-  navToObsEditOrSuggestions: Function,
+  navBasedOnUserSettings: Function,
   removePhotos: Function,
   selectedObservations: Array<Object>,
   selectObservationPhotos: Function,
@@ -37,7 +37,7 @@ const GroupPhotos = ( {
   combinePhotos,
   groupedPhotos,
   isCreatingObservations,
-  navToObsEditOrSuggestions,
+  navBasedOnUserSettings,
   removePhotos,
   selectedObservations,
   selectObservationPhotos,
@@ -193,7 +193,7 @@ const GroupPhotos = ( {
           className="max-w-[500px] w-full"
           level="focus"
           text={t( "IMPORT-X-OBSERVATIONS", { count: groupedPhotos.length } )}
-          onPress={navToObsEditOrSuggestions}
+          onPress={navBasedOnUserSettings}
           testID="GroupPhotos.next"
           loading={isCreatingObservations}
         />

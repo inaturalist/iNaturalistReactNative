@@ -134,7 +134,7 @@ const GroupPhotosContainer = ( ): Node => {
     setSelectedObservations( [] );
   };
 
-  const navToObsEditOrSuggestions = async ( ) => {
+  const navBasedOnUserSettings = async ( ) => {
     setIsCreatingObservations( true );
     const newObservations = await Promise.all( groupedPhotos.map(
       ( { photos } ) => Observation.createObservationWithPhotos( photos )
@@ -176,7 +176,7 @@ const GroupPhotosContainer = ( ): Node => {
       combinePhotos={combinePhotos}
       groupedPhotos={groupedPhotos}
       isCreatingObservations={isCreatingObservations}
-      navToObsEditOrSuggestions={navToObsEditOrSuggestions}
+      navBasedOnUserSettings={navBasedOnUserSettings}
       removePhotos={removePhotos}
       selectObservationPhotos={selectObservationPhotos}
       selectedObservations={selectedObservations}
