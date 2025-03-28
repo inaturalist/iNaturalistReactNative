@@ -146,6 +146,10 @@ const signOut = async (
     queryClient: undefined
   }
 ) => {
+  // This makes sure also any cookies will be deleted too (MOB-589)
+  const apiClient = createAPI();
+  await apiClient.get( "/logout" );
+
   if ( options.clearRealm ) {
     if ( options.realm ) {
       // Delete all the records in the realm db, including the ones accessible
@@ -411,6 +415,8 @@ async function verifyCredentials(
 
   const apiClient = createAPI();
 
+  // This makes sure also any cookies will be deleted too (MOB-589)
+  await apiClient.get( "/logout" );
   const tokenResponse = await apiClient.post<OauthTokenResponse>( "/oauth/token", formData );
 
   return afterVerifyCredentials( tokenResponse, apiClient );
