@@ -295,7 +295,7 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                 [
                   {
                     "color": "#454545",
-                    "fontSize": 40,
+                    "fontSize": 31,
                   },
                   null,
                   {
@@ -307,7 +307,7 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
         </View>
