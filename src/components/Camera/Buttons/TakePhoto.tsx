@@ -40,7 +40,10 @@ const TakePhoto = ( {
           "opacity-50": disabled
         }
       )}
-      onPress={takePhoto}
+      // using onPressIn here allows us to disable the rest of the UI
+      // from the moment the user presses the shutter button
+      // so they can't accidentally navigate twice (say, by pressing the gallery after capture)
+      onPressIn={takePhoto}
       accessibilityLabel={t( "Take-photo" )}
       accessibilityRole="button"
       accessibilityState={{ disabled }}

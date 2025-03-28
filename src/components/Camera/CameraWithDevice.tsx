@@ -25,6 +25,7 @@ interface Props {
   userLocation: UserLocation | null,
   hasLocationPermissions: boolean,
   requestLocationPermissions: () => void,
+  isCapturingPhotoRef: React.MutableRefObject<boolean>
 }
 
 const CameraWithDevice = ( {
@@ -41,7 +42,8 @@ const CameraWithDevice = ( {
   takePhotoOptions,
   userLocation,
   hasLocationPermissions,
-  requestLocationPermissions
+  requestLocationPermissions,
+  isCapturingPhotoRef
 }: Props ) => {
   const { isLandscapeMode } = useDeviceOrientation( );
   const flexDirection = isTablet && isLandscapeMode
@@ -52,6 +54,9 @@ const CameraWithDevice = ( {
     <View
       className={`flex-1 bg-black ${flexDirection}`}
       testID="CameraWithDevice"
+      pointerEvents={isCapturingPhotoRef.current
+        ? "none"
+        : "auto"}
     >
       {cameraType === "Standard"
         ? (
@@ -76,12 +81,16 @@ const CameraWithDevice = ( {
             flipCamera={flipCamera}
             isLandscapeMode={isLandscapeMode}
             toggleFlash={toggleFlash}
-            takingPhoto={takingPhoto}
+            // using isCapturingPhotoRef is less laggy than using the
+            // async takingPhoto state here. takingPhoto works differently
+            // in multicapture camera
+            takingPhoto={isCapturingPhotoRef.current}
             takePhotoAndStoreUri={takePhotoAndStoreUri}
             takePhotoOptions={takePhotoOptions}
             userLocation={userLocation}
             hasLocationPermissions={hasLocationPermissions}
             requestLocationPermissions={requestLocationPermissions}
+            isCapturingPhotoRef={isCapturingPhotoRef}
           />
         )}
     </View>

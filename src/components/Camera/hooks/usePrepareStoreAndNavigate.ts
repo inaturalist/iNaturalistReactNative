@@ -140,7 +140,8 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     newPhotoState,
     logStageIfAICamera,
     deleteStageIfAICamera,
-    cameraType
+    cameraType,
+    isCapturingPhotoRef
   } ) => {
     if ( userLocation !== null ) {
       logStageIfAICamera( "fetch_user_location_complete" );
@@ -163,6 +164,7 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     );
     await deleteStageIfAICamera( );
     setSentinelFileName( null );
+    isCapturingPhotoRef.current = false;
 
     // AI camera can only go to Match/Suggestions
     if ( cameraType === "AI" ) {

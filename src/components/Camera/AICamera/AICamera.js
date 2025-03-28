@@ -62,6 +62,7 @@ type Props = {
   userLocation?: Object, // UserLocation | null
   hasLocationPermissions: boolean,
   requestLocationPermissions: () => void,
+  isCapturingPhotoRef: { current: boolean }
 };
 
 const AICamera = ( {
@@ -75,7 +76,8 @@ const AICamera = ( {
   takePhotoOptions,
   userLocation,
   hasLocationPermissions,
-  requestLocationPermissions
+  requestLocationPermissions,
+  isCapturingPhotoRef
 }: Props ): Node => {
   const navigation = useNavigation( );
   const sentinelFileName = useStore( state => state.sentinelFileName );
@@ -111,7 +113,6 @@ const AICamera = ( {
   } = usePredictions( );
   const [inactive, setInactive] = React.useState( false );
   const [initialVolume, setInitialVolume] = useState( null );
-  const [hasTakenPhoto, setHasTakenPhoto] = useState( false );
 
   const [useLocation, setUseLocation] = useState( !!hasLocationPermissions );
   const [locationStatusVisible, setLocationStatusVisible] = useState( false );
@@ -169,20 +170,20 @@ const AICamera = ( {
   };
 
   const handleTakePhoto = useCallback( async ( ) => {
+    isCapturingPhotoRef.current = true;
     await logStage( sentinelFileName, "take_photo_start" );
-    setHasTakenPhoto( true );
     setAICameraSuggestion( result );
     await takePhotoAndStoreUri( {
       replaceExisting: true,
       inactivateCallback: () => setInactive( true ),
       navigateImmediately: true
     } );
-    setHasTakenPhoto( false );
   }, [
     setAICameraSuggestion,
     sentinelFileName,
     takePhotoAndStoreUri,
-    result
+    result,
+    isCapturingPhotoRef
   ] );
 
   useEffect( () => {
@@ -195,7 +196,7 @@ const AICamera = ( {
     }
 
     const volumeListener = VolumeManager.addVolumeListener( async ( ) => {
-      if ( initialVolume !== null && !hasTakenPhoto ) {
+      if ( initialVolume !== null && !takingPhoto ) {
         // Hardware volume button pressed - take a photo
         await handleTakePhoto();
 
@@ -211,7 +212,7 @@ const AICamera = ( {
       volumeListener.remove();
       VolumeManager.showNativeVolumeUI( { enabled: true } );
     };
-  }, [handleTakePhoto, hasTakenPhoto, initialVolume] );
+  }, [handleTakePhoto, takingPhoto, initialVolume] );
 
   const handleClose = async ( ) => {
     await deleteSentinelFile( sentinelFileName );
@@ -327,7 +328,6 @@ const AICamera = ( {
         showZoomButton={showZoomButton}
         takePhoto={handleTakePhoto}
         takePhotoOptions={takePhotoOptions}
-        takingPhoto={takingPhoto}
         toggleFlash={toggleFlash}
         zoomTextValue={zoomTextValue}
         useLocation={useLocation}
