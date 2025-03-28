@@ -148,7 +148,8 @@ const signOut = async (
 ) => {
   // This makes sure also any cookies will be deleted too (MOB-589)
   const apiClient = createAPI();
-  await apiClient.get( "/logout" );
+  // Don't await on this endpoint, to not delay the signout process
+  apiClient.get( "/logout" );
 
   if ( options.clearRealm ) {
     if ( options.realm ) {
@@ -416,7 +417,12 @@ async function verifyCredentials(
   const apiClient = createAPI();
 
   // This makes sure also any cookies will be deleted too (MOB-589)
-  await apiClient.get( "/logout" );
+  try {
+    await apiClient.get( "/logout" );
+  } catch ( error ) {
+    console.log( "Error logging out:", error.message );
+  }
+
   const tokenResponse = await apiClient.post<OauthTokenResponse>( "/oauth/token", formData );
 
   return afterVerifyCredentials( tokenResponse, apiClient );
