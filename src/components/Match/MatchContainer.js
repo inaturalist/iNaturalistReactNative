@@ -209,6 +209,7 @@ const MatchContainer = ( ) => {
     queryKey,
     onlineSuggestionsAttempted
   } );
+
   const [currentPlaceGuess, setCurrentPlaceGuess] = useState( );
   const [hasRefetchedSuggestions, setHasRefetchedSuggestions] = useState( false );
 
@@ -380,6 +381,7 @@ const MatchContainer = ( ) => {
     if ( !suggestions || suggestions.length === 0 ) {
       return;
     }
+
     const orderedList = [...suggestions.otherSuggestions];
     if ( suggestions?.topSuggestion ) {
       setTopSuggestion( suggestions?.topSuggestion );
@@ -417,13 +419,13 @@ const MatchContainer = ( ) => {
     .filter( suggestion => suggestion.taxon.id !== taxonId );
 
   const navToTaxonDetails = photo => {
-    const params = { id: taxonId };
+    const navParams = { id: taxonId };
     if ( !photo?.isRepresentativeButOtherTaxon ) {
-      params.firstPhotoID = photo.id;
+      navParams.firstPhotoID = photo.id;
     } else {
-      params.representativePhoto = photo;
+      navParams.representativePhoto = photo;
     }
-    navigation.push( "TaxonDetails", params );
+    navigation.push( "TaxonDetails", navParams );
   };
 
   const handleSaveOrDiscardPress = async action => {
