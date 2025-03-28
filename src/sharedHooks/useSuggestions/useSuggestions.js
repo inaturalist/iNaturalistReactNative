@@ -48,9 +48,7 @@ export const useSuggestions = ( photoUri, options ) => {
   // skip to offline suggestions if internet connection is spotty
   const tryOfflineSuggestions = !urlWillCrashOffline && (
     timedOut
-    || (
-      ( !onlineSuggestions || onlineSuggestions?.results?.length === 0 )
-      && onlineSuggestionsAttempted )
+    || ( !onlineSuggestions && onlineSuggestionsAttempted )
   );
 
   const {
