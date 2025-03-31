@@ -5,6 +5,21 @@ import { CHUCKS_PAD } from "appConstants/e2e.ts";
 
 let counter = 0;
 
+function getCurrentPosition(
+  success: (position: GeolocationResponse) => void,
+  error?: (error: any) => void,
+  options?: any
+) {
+  console.log("[DEBUG geolocationWrapper.e2e-mock] getCurrentPosition");
+  setTimeout(() => {
+    console.log("[DEBUG geolocationWrapper.e2e-mock] getCurrentPosition success");
+    success({
+      coords: CHUCKS_PAD,
+      timestamp: Date.now()
+    });
+  }, 500);
+}
+
 function watchPosition(
   success: ( position: GeolocationResponse ) => void
 ) {
@@ -34,5 +49,6 @@ function clearWatch( watchID: number ) {
 export {
   CHUCKS_PAD,
   clearWatch,
+  getCurrentPosition,
   watchPosition
 };

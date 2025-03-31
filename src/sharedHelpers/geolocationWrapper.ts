@@ -6,6 +6,18 @@ import Geolocation, {
   GeolocationResponse
 } from "@react-native-community/geolocation";
 
+export function getCurrentPosition(
+  success: ( position: GeolocationResponse ) => void,
+  error?: ( error: GeolocationError ) => void,
+  options?: {
+    timeout?: number;
+    maximumAge?: number;
+    enableHighAccuracy?: boolean;
+  }
+) {
+  return Geolocation.getCurrentPosition( success, error, options );
+}
+
 export function watchPosition(
   success: ( position: GeolocationResponse ) => void,
   error?: ( error: GeolocationError ) => void,

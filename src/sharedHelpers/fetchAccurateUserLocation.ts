@@ -1,4 +1,4 @@
-import Geolocation, { GeolocationResponse } from "@react-native-community/geolocation";
+import { GeolocationResponse } from "@react-native-community/geolocation";
 import {
   LOCATION_PERMISSIONS,
   permissionResultFromMultiple
@@ -8,6 +8,10 @@ import {
   checkMultiple,
   RESULTS
 } from "react-native-permissions";
+
+// Please don't change this to an aliased path or the e2e mock will not get
+// used in our e2e tests on Github Actions
+import { getCurrentPosition } from "./geolocationWrapper";
 
 const highAccuracyOptions = {
   enableHighAccuracy: true,
@@ -27,7 +31,7 @@ const getCurrentPositionWithOptions = (
   options: typeof highAccuracyOptions
 ): Promise<GeolocationResponse> => new Promise(
   ( resolve, reject ) => {
-    Geolocation.getCurrentPosition( resolve, reject, options );
+    getCurrentPosition( resolve, reject, options );
   }
 );
 
