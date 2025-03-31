@@ -6,7 +6,7 @@ import { LatLng } from "react-native-maps";
 
 // Please don't change this to an aliased path or the e2e mock will not get
 // used in our e2e tests on Github Actions
-import fetchCoarseUserLocation from "../sharedHelpers/fetchCourseUserLocation";
+import fetchCoarseUserLocation from "../sharedHelpers/fetchCoarseUserLocation";
 
 export enum EXPLORE_ACTION {
   CHANGE_SORT_BY = "CHANGE_SORT_BY",

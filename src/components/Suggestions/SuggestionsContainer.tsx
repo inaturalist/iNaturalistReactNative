@@ -21,7 +21,7 @@ import {
 import { isDebugMode } from "sharedHooks/useDebugMode";
 import useStore from "stores/useStore";
 
-import fetchCoarseUserLocation from "../../sharedHelpers/fetchCourseUserLocation";
+import fetchCoarseUserLocation from "../../sharedHelpers/fetchCoarseUserLocation";
 import flattenUploadParams from "./helpers/flattenUploadParams";
 import useClearComputerVisionDirectory from "./hooks/useClearComputerVisionDirectory";
 import useNavigateWithTaxonSelected from "./hooks/useNavigateWithTaxonSelected";

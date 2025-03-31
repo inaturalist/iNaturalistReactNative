@@ -41,7 +41,7 @@ const mockObservations = [
 ];
 
 const mockFetchUserLocation = jest.fn( () => ( { latitude: 37, longitude: 34 } ) );
-jest.mock( "sharedHelpers/fetchCourseUserLocation", () => ( {
+jest.mock( "sharedHelpers/fetchCoarseUserLocation", () => ( {
   __esModule: true,
   default: () => mockFetchUserLocation()
 } ) );
