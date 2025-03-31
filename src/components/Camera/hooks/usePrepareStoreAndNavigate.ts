@@ -139,8 +139,7 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     userLocation,
     newPhotoState,
     logStageIfAICamera,
-    deleteStageIfAICamera,
-    cameraType
+    deleteStageIfAICamera
   } ) => {
     if ( userLocation !== null ) {
       logStageIfAICamera( "fetch_user_location_complete" );
@@ -164,28 +163,14 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     await deleteStageIfAICamera( );
     setSentinelFileName( null );
 
-    // AI camera can only go to Match/Suggestions
-    if ( cameraType === "AI" ) {
-      if ( isDefaultMode ) {
-        return navigation.push( "Match", {
-          entryScreen: "CameraWithDevice",
-          lastScreen: "CameraWithDevice"
-        } );
-      }
-      return navigation.push( "Suggestions", {
-        entryScreen: "CameraWithDevice",
-        lastScreen: "CameraWithDevice"
-      } );
-    }
-
-    // Multicapture camera in default mode should only go to Match screen
+    // Camera (multicapture and ai) in default mode should only go to Match screen
     if ( isDefaultMode ) {
       return navigation.push( "Match", {
         entryScreen: "CameraWithDevice",
         lastScreen: "CameraWithDevice"
       } );
     }
-    // Multicapture camera navigates based on user settings to Match, Suggestions, or ObsEdit
+    // Camera navigates based on user settings to Match, Suggestions, or ObsEdit
     return navigation.push( screenAfterPhotoEvidence, {
       entryScreen: "CameraWithDevice",
       lastScreen: "CameraWithDevice"
