@@ -68,11 +68,13 @@ const PhotosSection = ( {
 
   useEffect( ( ) => {
     const checkImageOrientation = async ( ) => {
-      const imageDimensions = await getImageDimensions( observationPhoto );
-      if ( imageDimensions.width < imageDimensions.height ) {
-        setDisplayPortraitLayout( true );
-      } else {
-        setDisplayPortraitLayout( false );
+      if ( observationPhoto ) {
+        const imageDimensions = await getImageDimensions( observationPhoto );
+        if ( imageDimensions.width < imageDimensions.height ) {
+          setDisplayPortraitLayout( true );
+        } else {
+          setDisplayPortraitLayout( false );
+        }
       }
     };
     checkImageOrientation( );
