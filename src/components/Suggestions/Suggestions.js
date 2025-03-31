@@ -9,7 +9,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useMemo } from "react";
 import { SectionList } from "react-native";
-import { useCurrentUser, useTranslation } from "sharedHooks";
+import { useTranslation } from "sharedHooks";
 
 import useObservers from "./hooks/useObservers";
 import Suggestion from "./Suggestion";
@@ -57,7 +57,6 @@ const Suggestions = ( {
   usingOfflineSuggestions
 }: Props ): Node => {
   const { t } = useTranslation( );
-  const currentUser = useCurrentUser( );
   const {
     otherSuggestions,
     topSuggestion
@@ -151,7 +150,6 @@ const Suggestions = ( {
           suggestion={item}
           isTopSuggestion
           onTaxonChosen={onTaxonChosen}
-          hideCheckmark={!currentUser && !showOfflineText}
         />
       </View>
     );
