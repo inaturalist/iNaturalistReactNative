@@ -191,7 +191,7 @@ const setupAppWithSignedInUser = async hasLocation => {
     currentObservation: observations[0],
     layout: {
       isDefaultMode: false,
-      screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT,
+      screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
       isAllAddObsOptionsMode: true
     }
   } );

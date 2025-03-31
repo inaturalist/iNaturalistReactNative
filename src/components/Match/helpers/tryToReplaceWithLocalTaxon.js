@@ -4,7 +4,10 @@ const tryToReplaceWithLocalTaxon = ( localTaxa, suggestion ) => {
   if ( localTaxon ) {
     return {
       ...suggestion,
-      taxon: localTaxon
+      taxon: {
+        ...suggestion?.taxon,
+        ...localTaxon
+      }
     };
   }
 

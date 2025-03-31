@@ -52,11 +52,11 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
       active: isDrawerOpen
     },
     {
-      icon: "compass-rose-outline",
+      icon: "magnifying-glass",
       testID: SCREEN_NAME_ROOT_EXPLORE,
       accessibilityLabel: t( "Explore" ),
       accessibilityHint: t( "Navigates-to-explore" ),
-      size: 40,
+      size: 31,
       onPress: ( ) => {
         navigation.navigate( "RootExplore" );
       },

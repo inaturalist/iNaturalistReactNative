@@ -1377,8 +1377,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
+            "state" : "translated",
+            "value" : "新增現有錄音至觀察紀錄中。"
           }
         },
         "zh-Hant-HK" : {
@@ -1839,8 +1839,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
+            "state" : "translated",
+            "value" : "啟用相機權限後，您可使用 AI 相機來拍照。"
           }
         },
         "zh-Hant-HK" : {
@@ -2764,8 +2764,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
+            "state" : "translated",
+            "value" : "我們並未主動要求此權限。若您看到此提示，請擷圖並寄電子郵件至 help@inaturalist.org。"
           }
         },
         "zh-Hant-HK" : {
@@ -3227,7 +3227,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "新增 GPS 座標至觀察記錄，在地圖上顯示您的座標以及其他資訊等等。"
+            "value" : "新增 GPS 座標至觀察紀錄中，在地圖上顯示您的位置與其他資訊等。"
           }
         },
         "zh-Hant-HK" : {
@@ -3688,8 +3688,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
+            "state" : "translated",
+            "value" : "錄製自然界的聲音觀測紀錄。"
           }
         },
         "zh-Hant-HK" : {
@@ -4150,8 +4150,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "translated",
+            "value" : "‌匯出愛自然次世代(iNaturalist Next)的照片至您的照片圖庫。"
           }
         },
         "zh-Hant-HK" : {
@@ -4612,8 +4612,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "translated",
+            "value" : "將愛自然次世代(iNaturalist Next)的照片匯出至您的照片圖庫，或從其匯入。"
           }
         },
         "zh-Hant-HK" : {
