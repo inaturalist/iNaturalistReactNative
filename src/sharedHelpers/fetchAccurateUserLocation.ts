@@ -20,7 +20,7 @@ const highAccuracyOptions = {
   ...( Platform.OS === "ios" && { maximumAge: 0 } )
 } as const;
 
-const lowAccuracyOptions = {
+export const lowAccuracyOptions = {
   enableHighAccuracy: false,
   timeout: 2000,
   // Apply maximumAge only on iOS to avoid Android issues
