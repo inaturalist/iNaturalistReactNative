@@ -1,6 +1,6 @@
 // @flow
 
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { CommonActions, useNavigation, useRoute } from "@react-navigation/native";
 import { ActivityAnimation, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -28,21 +28,48 @@ const PhotoSharing = ( ): Node => {
       prepareObsEdit( newObservation );
 
       if ( isDefaultMode ) {
-        return navigation.navigate( "NoBottomTabStackNavigator", {
-          screen: "Match",
-          params: {
-            lastScreen: "PhotoSharing"
-          }
-        } );
+        return navigation.dispatch(
+          CommonActions.reset( {
+            index: 0,
+            routes: [
+              {
+                name: "NoBottomTabStackNavigator",
+                state: {
+                  index: 0,
+                  routes: [
+                    {
+                      name: "Match",
+                      params: { lastScreen: "PhotoSharing" }
+                    }
+                  ]
+                }
+              }
+            ]
+          } )
+        );
       }
 
       // in advanced mode, navigate based on user preference
-      return navigation.navigate( "NoBottomTabStackNavigator", {
-        screen: screenAfterPhotoEvidence,
-        params: {
-          lastScreen: "PhotoSharing"
-        }
-      } );
+
+      return navigation.dispatch(
+        CommonActions.reset( {
+          index: 0,
+          routes: [
+            {
+              name: "NoBottomTabStackNavigator",
+              state: {
+                index: 0,
+                routes: [
+                  {
+                    name: screenAfterPhotoEvidence,
+                    params: { lastScreen: "PhotoSharing" }
+                  }
+                ]
+              }
+            }
+          ]
+        } )
+      );
     } catch ( e ) {
       Alert.alert(
         "Photo sharing failed: couldn't create new observation:",
@@ -50,13 +77,7 @@ const PhotoSharing = ( ): Node => {
       );
       return null;
     }
-  }, [
-    isDefaultMode,
-    navigation,
-    prepareObsEdit,
-    sharedText,
-    screenAfterPhotoEvidence
-  ] );
+  }, [sharedText, prepareObsEdit, isDefaultMode, navigation, screenAfterPhotoEvidence] );
 
   useEffect( ( ) => {
     const { mimeType, data } = item;

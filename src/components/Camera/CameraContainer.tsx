@@ -148,15 +148,15 @@ const CameraContainer = ( ) => {
       newPhotoState,
       logStageIfAICamera,
       deleteStageIfAICamera,
-      cameraType,
-      isCapturingPhotoRef
+      isCapturingPhotoRef,
+      deleteStageIfAICamera
     } );
   }, [
     prepareStoreAndNavigate,
     navigationOptions,
     logStageIfAICamera,
-    deleteStageIfAICamera,
-    cameraType
+    isCapturingPhotoRef,
+    deleteStageIfAICamera
   ] );
 
   const handleCheckmarkPress = useCallback( async newPhotoState => {
