@@ -66,6 +66,8 @@ Add-location-to-refresh-suggestions = Add location to refresh suggestions
 Add-observations = Add observations
 ADD-OPTIONAL-COMMENT = ADD OPTIONAL COMMENT
 Add-optional-notes = Add optional notes
+# Hint for a button that adds an identification
+Adds-ID = Adds ID
 # Hint for a button that adds a vote of agreement
 Adds-your-vote-of-agreement = Adds your vote of agreement
 # Hint for a button that adds a vote of disagreement
@@ -516,7 +518,6 @@ Filter-by-uploaded-on-date = Filter by observations uploaded on a specific date
 Filters = Filters
 Flag-An-Item = Flag An Item
 Flag-Item-Description = Flagging brings something to the attention of volunteer site curators. Please don't flag problems you can address with identifications, the Data Quality Assessment, or by talking to the person who made the content.
-Flag-Item-Other = Flagged as Other Description Box
 Flag-Item-Other-Description = Some other reason you can explain below.
 Flag-Item-Other-Input-Hint = Specify the reason you're flagging this item
 # Status when an item has been flagged
@@ -543,6 +544,9 @@ Get-an-instant-ID-of-any-plant-animal-fungus = Get an instant ID of any plant, a
 Get-feedback-from-naturalists-and-experts-who-will-help-verify = Get feedback from naturalists and experts who will help verify and refine your identifications.
 # Preceded by the fragment, "By uploading your observation to iNaturalist, you can:"
 Get-your-identification-verified-by-real-people = Get your identification verified by real people in the iNaturalist community
+# Message shown to the user after they have left the AI camera where they may
+# have seen a species suggestion but before they land on the match screen,
+# where they might see a better suggestion.
 Getting-an-even-more-accurate-ID = Getting an even more accurate ID...
 # Label for button that returns to the previous screen
 Go-back = Go back
@@ -1034,6 +1038,9 @@ Ranks-Zoosection = Zoosection
 Ranks-ZOOSUBSECTION = ZOOSUBSECTION
 Ranks-Zoosubsection = Zoosubsection
 Read-more-on-Wikipedia = Read more on Wikipedia
+# Label for the input in the form for creating a flag that allows the user to
+# describe a reason they are creating the flag
+Reason--flag = Reason
 # Help text for the button that opens the sound recorder
 Record-a-sound = Record a sound
 # Title of screen asking for permission to access the microphone
@@ -1215,8 +1222,6 @@ Stops-recording-sound = Stops recording sound
 SUBMIT = SUBMIT
 SUBMIT-ID-SUGGESTION = SUBMIT ID SUGGESTION
 SUGGEST-ID = SUGGEST ID
-# Label for element that suggest an identification
-Suggest-ID = SUGGEST ID
 # Identification category
 supporting--identification = Supporting
 Switches-to-tab = Switches to { $tab } tab.
@@ -1236,7 +1241,6 @@ TAXONOMY-header = TAXONOMY
 TEAM = TEAM
 Terms-of-Use = Terms of Use
 TERMS-OF-USE = TERMS OF USE
-Text-Box-to-Describe-Reason-for-Flag = Text box to describe reason for flag.
 Thank-you-for-sharing-your-feedback = Thank you for sharing your feedback to help us improve!
 Thanks-for-using-any-suggestions = Thanks for using this app! Do you have any suggestions for the people who make it?
 That-email-is-already-associated-with-an-account = That email is already associated with an account.

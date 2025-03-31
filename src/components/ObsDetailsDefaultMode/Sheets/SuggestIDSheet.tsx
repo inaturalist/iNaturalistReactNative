@@ -89,7 +89,7 @@ const SuggestIDSheet = ( {
         className="mx-2 flex-1"
         testID="SuggestIDSheet.cvSuggestionsButton"
         accessibilityRole="link"
-        accessibilityHint={t( "Suggest-ID" )}
+        accessibilityHint={t( "Adds-ID" )}
         level="primary"
       />
     </View>
