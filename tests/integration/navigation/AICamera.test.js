@@ -8,6 +8,7 @@ import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import { BackHandler } from "react-native";
+import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice.ts";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import { renderApp } from "tests/helpers/render";
@@ -85,6 +86,7 @@ beforeEach( async ( ) => {
   useStore.setState( {
     layout: {
       isDefaultMode: false,
+      screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
       isAllAddObsOptionsMode: true
     }
   } );
