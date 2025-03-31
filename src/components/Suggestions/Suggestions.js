@@ -73,9 +73,8 @@ const Suggestions = ( {
       accessibilityLabel={t( "Choose-taxon" )}
       suggestion={suggestion}
       onTaxonChosen={onTaxonChosen}
-      hideCheckmark={!currentUser && !showOfflineText}
     />
-  ), [onTaxonChosen, t, currentUser, showOfflineText] );
+  ), [onTaxonChosen, t] );
 
   const renderEmptyList = useMemo( ( ) => (
     <SuggestionsEmpty
