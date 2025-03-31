@@ -9,6 +9,7 @@ import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import * as useLocationPermission from "sharedHooks/useLocationPermission.tsx";
+import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice.ts";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -246,6 +247,7 @@ describe( "Suggestions", ( ) => {
       useStore.setState( {
         layout: {
           isDefaultMode: false,
+          screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
           isAllAddObsOptionsMode: true
         }
       } );
