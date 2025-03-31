@@ -70,6 +70,8 @@ Add-optional-notes = Add optional notes
 Adds-your-vote-of-agreement = Adds your vote of agreement
 # Hint for a button that adds a vote of disagreement
 Adds-your-vote-of-disagreement = Adds your vote of disagreement
+# Label for toggling app mode between default and advanced settings
+Advanced-Settings = Advanced Settings
 ADVANCED-SETTINGS = ADVANCED SETTINGS
 Affiliation = Affiliation: { $site }
 After-capturing-or-importing-photos-show = After capturing or importing photos, show:
@@ -1325,8 +1327,6 @@ Using-location = Using location
 Verified-IDs-are-used-for-science-and-conservation = Verified IDs are used for science and conservation
 # Listing of app and build versions
 Version-app-build = Version { $appVersion } ({ $buildVersion })
-# Label for toggling app mode between default and advanced settings
-View-Advanced-Settings = View Advanced Settings
 VIEW-ALL-X-PLACES = VIEW ALL { $count } PLACES
 VIEW-ALL-X-PROJECTS = VIEW ALL { $count } PROJECTS
 VIEW-ALL-X-TAXA = VIEW ALL { $count } TAXA
