@@ -34,7 +34,8 @@ const PhotoLibraryIcon = ( { rotatableAnimatedStyle }: Props ) => {
         )}
         onPress={( ) => navigation.push( "PhotoLibrary", {
           cmonBack: true,
-          lastScreen: "Camera"
+          lastScreen: "Camera",
+          fromAICamera: true
         } )}
         accessibilityLabel={t( "Photo-importer" )}
         accessibilityHint={t( "Navigates-to-photo-importer" )}

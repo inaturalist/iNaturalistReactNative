@@ -26,7 +26,7 @@ import useExitObservationsFlow from "sharedHooks/useExitObservationFlow.ts";
 import useStore from "stores/useStore";
 
 const MAX_PHOTOS_ALLOWED = 20;
-const DEFAULT_MODE_MAX_PHOTOS_ALLOWED = 1;
+const FROM_AICAMERA_MAX_PHOTOS_ALLOWED = 1;
 
 const PhotoLibrary = ( ): Node => {
   const {
@@ -52,6 +52,9 @@ const PhotoLibrary = ( ): Node => {
     : false;
   const fromGroupPhotos = params
     ? params.fromGroupPhotos
+    : false;
+  const fromAICamera = params
+    ? params.fromAICamera
     : false;
 
   const navToObsEdit = useCallback( ( ) => navigation.navigate( "ObsEdit", {
@@ -114,8 +117,8 @@ const PhotoLibrary = ( ): Node => {
     // According to the native code of the image picker library, it never rejects the promise,
     // just returns a response object with errorCode
     const response = await ImagePicker.launchImageLibrary( {
-      selectionLimit: screenAfterPhotoEvidence === "Match"
-        ? DEFAULT_MODE_MAX_PHOTOS_ALLOWED
+      selectionLimit: fromAICamera
+        ? FROM_AICAMERA_MAX_PHOTOS_ALLOWED
         : MAX_PHOTOS_ALLOWED,
       mediaType: "photo",
       includeBase64: false,
@@ -229,11 +232,11 @@ const PhotoLibrary = ( ): Node => {
     observations,
     params,
     photoLibraryShown,
-    screenAfterPhotoEvidence,
     setGroupedPhotos,
     setPhotoImporterState,
     skipGroupPhotos,
-    updateObservations
+    updateObservations,
+    fromAICamera
   ] );
 
   useFocusEffect(
