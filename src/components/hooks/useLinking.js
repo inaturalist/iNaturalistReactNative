@@ -4,11 +4,13 @@ import { useNavigation } from "@react-navigation/native";
 import {
   searchObservations
 } from "api/observations";
+import navigateToCamera from "components/Camera/helpers/navigateToCamera";
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { useCallback, useEffect, useState } from "react";
 import { Linking } from "react-native";
 
+const cameraUrl = "https://www.inaturalist.org/app/ai_camera";
 const newAccountConfirmedUrl = "https://www.inaturalist.org/users/sign_in?confirmed=true";
 const existingAccountConfirmedUrl = "https://www.inaturalist.org/home?confirmed=true";
 
@@ -24,7 +26,11 @@ const useLinking = ( currentUser: ?Object ) => {
     } );
   }, [navigation, currentUser] );
 
-  const navigateToObservations = useCallback( async ( ) => {
+  const navigateCamera = useCallback( async () => {
+    navigateToCamera( navigation );
+  }, [navigation] );
+
+  const navigateToObservations = useCallback( async () => {
     const searchParams = { id: observationId };
     const apiToken = await getJWT( );
     const options = {
@@ -58,11 +64,13 @@ const useLinking = ( currentUser: ?Object ) => {
     if ( url === newAccountConfirmedUrl
       || url === existingAccountConfirmedUrl
     ) {
-      navigateConfirmedUser( );
+      navigateConfirmedUser();
+    } else if ( url === cameraUrl ) {
+      navigateCamera();
     } else {
       checkAllowedHosts( url );
     }
-  }, [navigateConfirmedUser, checkAllowedHosts] );
+  }, [navigateConfirmedUser, navigateCamera, checkAllowedHosts] );
 
   useEffect( ( ) => {
     Linking.addEventListener( "url", async ( { url } ) => {
@@ -79,11 +87,17 @@ const useLinking = ( currentUser: ?Object ) => {
     fetchInitialUrl( );
   }, [handleUrl] );
 
-  useEffect( ( ) => {
-    if ( observationId ) {
-      navigateToObservations( );
+  useEffect( () => {
+    if ( observationId && parseInt( observationId, 10 ) === 1 ) {
+      // no such observation as obs id 1.
+      // so launch the camera.
+      // this doesn't work as an iniital url, but
+      // can work if the app is launched and backgrounded
+      navigateCamera();
+    } else if ( observationId ) {
+      navigateToObservations();
     }
-  }, [observationId, navigateToObservations] );
+  }, [observationId, navigateCamera, navigateToObservations] );
 };
 
 export default useLinking;
