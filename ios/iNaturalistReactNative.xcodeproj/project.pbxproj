@@ -35,6 +35,8 @@
 		AE4DC81B3A87484CB3FD6750 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B0AEEF6CA584BCF9880EB35 /* Lato-Regular.ttf */; };
 		E23E0899594A7C6DF680FFDB /* libPods-iNaturalistReactNative-ShareExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A336AF0ADEAE537AB1B73F98 /* libPods-iNaturalistReactNative-ShareExtension.a */; };
 		E5DFC1C6FBFA45739CE91C69 /* Lato-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 69DF855D92EA4ADFB73B47F1 /* Lato-MediumItalic.ttf */; };
+		FA61ED4B2D9C5611008A1B0A /* CameraAppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA61ED4A2D9C5611008A1B0A /* CameraAppIntent.swift */; };
+		FA61ED4C2D9C5611008A1B0A /* CameraAppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA61ED4A2D9C5611008A1B0A /* CameraAppIntent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,6 +110,7 @@
 		D7AE5BDBC584A83878A04344 /* Pods-iNaturalistReactNative-ShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iNaturalistReactNative-ShareExtension.debug.xcconfig"; path = "Target Support Files/Pods-iNaturalistReactNative-ShareExtension/Pods-iNaturalistReactNative-ShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		D8663889EABFBFC3077401E3 /* Pods-iNaturalistReactNative-ShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iNaturalistReactNative-ShareExtension.release.xcconfig"; path = "Target Support Files/Pods-iNaturalistReactNative-ShareExtension/Pods-iNaturalistReactNative-ShareExtension.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		FA61ED4A2D9C5611008A1B0A /* CameraAppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraAppIntent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,6 +173,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				19A5877328F8E3310016D128 /* iNaturalistReactNative-Bridging-Header.h */,
+				FA61ED4A2D9C5611008A1B0A /* CameraAppIntent.swift */,
 			);
 			name = iNaturalistReactNative;
 			sourceTree = "<group>";
@@ -541,6 +545,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA61ED4C2D9C5611008A1B0A /* CameraAppIntent.swift in Sources */,
 				8F346E4A2CF6912700CED7B4 /* geomodel.mlmodel in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				197A169D2A7C2567001A03DC /* cvmodel.mlmodel in Sources */,
@@ -553,6 +558,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B65ED3B29F575FE0054CCEF /* ShareViewController.swift in Sources */,
+				FA61ED4B2D9C5611008A1B0A /* CameraAppIntent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
