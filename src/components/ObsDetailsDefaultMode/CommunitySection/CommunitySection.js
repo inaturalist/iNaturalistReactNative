@@ -91,11 +91,7 @@ const ActivitySection = ( {
               geoprivacy={geoprivacy}
               taxonGeoprivacy={taxonGeoprivacy}
               belongsToCurrentUser={belongsToCurrentUser}
-              showExplainerText={
-                // Only show explainer text if we are on the user's obs,
-                // and the user has in total less than 10 obs
-                belongsToCurrentUser && currentUser?.observations_count < 10
-              }
+              showExplainerText={currentUser?.observations_count < 10}
             />
           </View>
         ) )}
