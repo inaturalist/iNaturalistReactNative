@@ -45,13 +45,15 @@ const useAuthenticatedQuery = (
       };
       return queryFunction( options );
     },
-    retry: ( failureCount, error ) => reactQueryRetry( failureCount, error, {
-      queryKey,
-      routeName: route?.name,
-      routeParams: route?.params
-    } ),
-    retryDelay: ( failureCount, error ) => handleRetryDelay( failureCount, error ),
     ...queryOptions,
+    retry: queryOptions.retry !== false
+      ? ( failureCount, error ) => reactQueryRetry( failureCount, error, {
+        queryKey,
+        routeName: route?.name,
+        routeParams: route?.params
+      } )
+      : false,
+    retryDelay: ( failureCount, error ) => handleRetryDelay( failureCount, error ),
     // Authenticated queries should not run until we know whether or not the
     // user is signed in
     enabled: userLoggedIn !== LOGGED_IN_UNKNOWN && queryOptions.enabled

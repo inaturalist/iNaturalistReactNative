@@ -66,6 +66,7 @@ const TaxonResult = ( {
   hideNavButtons = false,
   lastScreen = null,
   onPressInfo,
+  retryQuery = true,
   showCheckmark = true,
   showEditButton = false,
   showRemoveButton = false,
@@ -84,7 +85,11 @@ const TaxonResult = ( {
   // network requests for useTaxon instead of making individual API calls.
   // right now, this fetches a single taxon at a time on AI camera &
   // a short list of taxa from offline Suggestions
-  const { taxon: localTaxon } = useTaxon( taxonProp, fetchRemote ) as { taxon: RealmTaxon };
+  const { taxon: localTaxon } = useTaxon(
+    taxonProp,
+    fetchRemote,
+    retryQuery
+  ) as { taxon: RealmTaxon };
   const usableTaxon = fromLocal
     ? localTaxon
     : taxonProp;

@@ -7,7 +7,7 @@ import Taxon from "realmModels/Taxon";
 import type { RealmTaxon } from "realmModels/types";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import validateRealmSearch from "sharedHelpers/validateRealmSearch.ts";
-import { useAuthenticatedQuery, useIconicTaxa } from "sharedHooks";
+import { useAuthenticatedQuery } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
@@ -28,7 +28,7 @@ function saveTaxaToRealm( taxa: Taxon[], realm: Realm ) {
 
 const useTaxonSearch = ( taxonQueryArg = "" ) => {
   const realm = useRealm( );
-  const iconicTaxa = useIconicTaxa( { reload: false } );
+  const iconicTaxa = realm?.objects( "Taxon" ).filtered( "isIconic = true" );
   // Remove leading and trailing whitespace, no need to perform new queries or
   // potentially get different results b/c of meaningless whitespace
   const taxonQuery = taxonQueryArg.trim();

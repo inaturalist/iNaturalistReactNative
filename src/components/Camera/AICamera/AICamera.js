@@ -277,6 +277,10 @@ const AICamera = ( {
                 taxon={result?.taxon}
                 testID={`AICamera.taxa.${result?.taxon?.id}`}
                 white
+                // my thinking here is that we're already making this API call over and over
+                // every second when a prediction comes back, and we likely don't want to
+                // 3x that in low network conditions if every request is failing
+                retryQuery={false}
               />
             )
             : (
