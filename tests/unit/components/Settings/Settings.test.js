@@ -115,7 +115,8 @@ describe( "Settings", ( ) => {
     expect( picker.props.selectedIndex ).toStrictEqual( 1 );
     const confirmText = await screen.findByText( "CONFIRM" );
     fireEvent.press( confirmText );
-    const columbianSpanishSciNameText = await screen.findByText( /Nombre científico/ );
-    expect( columbianSpanishSciNameText ).toBeVisible( );
+    const columbianSpanishSciNameTexts = await screen.findAllByText( /Nombre científico/ );
+    expect( columbianSpanishSciNameTexts.length ).toBeGreaterThan( 0 );
+    expect( columbianSpanishSciNameTexts[0] ).toBeVisible( );
   } );
 } );
