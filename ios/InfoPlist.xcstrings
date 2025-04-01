@@ -1005,7 +1005,7 @@
         },
         "en-AU" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Add existing sounds to your observations."
           }
         },
@@ -1251,8 +1251,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
+            "state" : "translated",
+            "value" : "Dodaj istniejące dźwięki do swoich obserwacji."
           }
         },
         "pt-BR" : {
@@ -1467,7 +1467,7 @@
         },
         "en-AU" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Camera access lets you use the AI Camera and take photos."
           }
         },
@@ -1713,8 +1713,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
+            "state" : "translated",
+            "value" : "Dostęp do kamery pozwala na używanie kamery AI i robić zdjęcia."
           }
         },
         "pt-BR" : {
@@ -1737,8 +1737,8 @@
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
+            "state" : "translated",
+            "value" : "Доступ к камере позволяет использовать камеру ИИ и делать фото."
           }
         },
         "sat" : {
@@ -2392,7 +2392,7 @@
         },
         "en-AU" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
           }
         },
@@ -2638,8 +2638,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
+            "state" : "translated",
+            "value" : "Nie żądamy tego zezwolenia celowo. Jeśli to widzisz, zrób zrzut ekranu i wyślij go na adres help@inaturalist.org"
           }
         },
         "pt-BR" : {
@@ -2854,7 +2854,7 @@
         },
         "en-AU" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Add GPS coordinates to observations, show your location on maps, and more."
           }
         },
@@ -3316,7 +3316,7 @@
         },
         "en-AU" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Record sound observations of nature."
           }
         },
@@ -3562,8 +3562,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
+            "state" : "translated",
+            "value" : "Nagraj dźwiękowe obserwacje przyrody."
           }
         },
         "pt-BR" : {
@@ -3778,7 +3778,7 @@
         },
         "en-AU" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Export iNaturalist Next photos to your library."
           }
         },
@@ -4024,8 +4024,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "translated",
+            "value" : "Eksportuj zdjęcia z iNaturalist Next do swojej biblioteki."
           }
         },
         "pt-BR" : {
@@ -4240,7 +4240,7 @@
         },
         "en-AU" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Export and import iNaturalist Next photos to and from your library."
           }
         },
@@ -4486,8 +4486,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "translated",
+            "value" : "Eksportuj i importuj zdjęcia iNaturalist Next z i do biblioteki."
           }
         },
         "pt-BR" : {

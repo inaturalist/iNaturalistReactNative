@@ -5,7 +5,7 @@
 ### translations, go to https://crowdin.com/editor/inaturalistios/724
 ###
 
-A-global-community-for-nature = A global community for nature
+A-global-community-for-nature = Globální komunita pro přírodu
 ABOUT = O aplikaci
 ABOUT-COLLECTION-PROJECTS = O PROJEKTECH SBÍREK
 ABOUT-INATURALIST = O INATURALIST
@@ -36,6 +36,7 @@ ADD-OPTIONAL-COMMENT = PŘIDAT VOLITELNÝ KOMENTÁŘ
 Add-optional-notes = Přidat volitelné poznámky
 Adds-your-vote-of-agreement = Přidá vaše hlasování o dohodě
 Adds-your-vote-of-disagreement = Přidá vaše hlasování o nesouhlasu
+Advanced-Settings = Advanced Settings
 ADVANCED-SETTINGS = ADVANCED SETTINGS
 Affiliation = Přidružení: { $site }
 After-capturing-or-importing-photos-show = Po zachycení nebo importu fotografií, zobrazte:
@@ -46,9 +47,9 @@ Agree-with-ID-description = Chcete souhlasit s ID a navrhnout následující ide
 AI-Camera = AI kamera
 ALL = Vše
 All = Vše
-All-observation-options--list = All observation options: iNaturalist AI Camera, Standard Camera, Uploading from Photo Library, and Sound Recorder
+All-observation-options--list = Všechny možnosti pozorování: Fotoaparát iNaturalist s umělou inteligencí, Standardní fotoaparát, Nahrávání z knihovny fotografií a Záznam zvuku
 All-observations = Všechna pozorování
-All-observations-need-a-date-and-location-to-be-used-for-science = All observations need a date and location to be used for science. Please edit observations if they need more information.
+All-observations-need-a-date-and-location-to-be-used-for-science = Všechna pozorování potřebují datum a místo, aby mohla být použita pro vědu. Upravte prosím pozorování, pokud potřebují více informací.
 All-organisms = všechny organismy
 all-rights-reserved = Všechna práva vyhrazena
 All-taxa = Všechny taxony
@@ -134,8 +135,8 @@ Community-Guidelines = Pravidla komunity
 COMMUNITY-GUIDELINES = POKYNY SPOLEČENSTVÍ
 Confidence--label = Confidence
 CONFIRM = POTVRDIT
-Congratulations-You-made-your-first-observation = Congratulations! You made your first observation!
-Connect-with-expert-naturalists = Connect with expert naturalists
+Congratulations-You-made-your-first-observation = Blahopřejeme! Udělali jste své první pozorování!
+Connect-with-expert-naturalists = Spojte se s odbornými přírodovědci
 Connect-with-other-naturalists = Spojte se s ostatními přírodovědci a zapojte se do rozhovorů.
 Connection-problem-Please-try-again-later = Problém s připojením. Zkuste to znovu později.
 CONTACT-SUPPORT = KONTAKTUJTE PODPORU
@@ -910,7 +911,6 @@ Users = Uživatelé
 Using-location = Použití polohy
 Verified-IDs-are-used-for-science-and-conservation = Verified IDs are used for science and conservation
 Version-app-build = Verze { $appVersion } ({ $buildVersion })
-View-Advanced-Settings = View Advanced Settings
 VIEW-ALL-X-PLACES = ZOBRAZIT VŠECH { $count } MÍST
 VIEW-ALL-X-PROJECTS = ZOBRAZIT VŠECH { $count } PROJEKTŮ
 VIEW-ALL-X-TAXA = VIEW ALL { $count } TAXA
