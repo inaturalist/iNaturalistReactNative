@@ -41,6 +41,17 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>155</string>
+	<key>INAlternativeAppNames</key>
+	<array>
+		<dict>
+			<key>INAlternativeAppName</key>
+			<string>inat</string>
+		</dict>
+		<dict>
+			<key>INAlternativeAppName</key>
+			<string>inaturalist</string>
+		</dict>
+	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
