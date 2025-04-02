@@ -165,7 +165,9 @@ const uploadEvidence = async (
     }
 
     return uploadToServer( currentEvidence );
-  } ) );
+    // filter out null responses, i.e. for photo evidence
+    // that doesn't get created when the app is backgrounded
+  } ).filter( Boolean ) );
   // eslint-disable-next-line consistent-return
   return responses[0];
 };
