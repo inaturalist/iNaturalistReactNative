@@ -43,6 +43,10 @@ const logger = log.extend( "StandardCamera" );
 
 const isTablet = DeviceInfo.isTablet( );
 
+const hasNotch = DeviceInfo.hasNotch();
+
+const hasDynamicIsland = DeviceInfo.hasDynamicIsland();
+
 export const MAX_PHOTOS_ALLOWED = 20;
 
 type Props = {
@@ -146,6 +150,12 @@ const StandardCamera = ( {
   const containerClasses = ["flex-1"];
   if ( isTablet && isLandscapeMode ) {
     containerClasses.push( "flex-row" );
+  }
+  if ( hasNotch ) {
+    containerClasses.push( "pt-[13px]" );
+  }
+  if ( hasDynamicIsland ) {
+    containerClasses.push( "pt-[20px]" );
   }
 
   const handleDiscard = useCallback( ( ) => {
