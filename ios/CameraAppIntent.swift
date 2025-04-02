@@ -34,11 +34,11 @@ struct CameraIntent: AppIntent {
     // this doesn't work as an iniital url, but
     // can work if the app is launched and backgrounded
     
-    // let obsUrl = URL(string: "https://www.inaturalist.org/observations/1")!
+    let obsUrl = URL(string: "https://www.inaturalist.org/observations/1")!
     
     let camUrl = URL(string: "https://www.inaturalist.org/app/ai_camera")!
     
-    return .result(opensIntent: OpenURLIntent(camUrl))
+    return .result(opensIntent: OpenURLIntent(obsUrl))
   }
   
   static let openAppWhenRun: Bool = true
