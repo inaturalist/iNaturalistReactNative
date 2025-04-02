@@ -11,6 +11,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Linking } from "react-native";
 
 const cameraUrl = "https://www.inaturalist.org/app/ai_camera";
+const fakeCameraUrl = "https://www.inaturalist.org/observations/1";
 const newAccountConfirmedUrl = "https://www.inaturalist.org/users/sign_in?confirmed=true";
 const existingAccountConfirmedUrl = "https://www.inaturalist.org/home?confirmed=true";
 
@@ -66,6 +67,8 @@ const useLinking = ( currentUser: ?Object ) => {
     ) {
       navigateConfirmedUser();
     } else if ( url === cameraUrl ) {
+      navigateCamera();
+    } else if ( url === fakeCameraUrl ) {
       navigateCamera();
     } else {
       checkAllowedHosts( url );
