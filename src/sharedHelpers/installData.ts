@@ -14,7 +14,7 @@ export const store = new MMKV( { id: MMKV_ID } );
 // Migrate old MMKV data if it exists. This data is explicitly *not*
 // linked to a user
 const LEGACY_MMKV_ID = "user-data";
-let legacyStore;
+const legacyStore = new MMKV( { id: LEGACY_MMKV_ID } );
 if ( legacyStore.getAllKeys().length > 0 ) {
   // Migrate data if present
   legacyStore.getAllKeys().forEach( key => {
@@ -22,15 +22,11 @@ if ( legacyStore.getAllKeys().length > 0 ) {
   } );
   // Delete the old data on disk so we never have to do this again
   RNFS.readDir( `${RNFS.DocumentDirectoryPath}/mmkv` ).then( contents => {
-    const hasLegacyFiles = contents.forEach( item => {
+    contents.forEach( item => {
       if ( item.path.match( new RegExp( `/${LEGACY_MMKV_ID}` ) ) ) {
         RNFS.unlink( item.path );
       }
     } );
-
-    if ( hasLegacyFiles ) {
-      legacyStore = new MMKV( { id: LEGACY_MMKV_ID } );
-    }
   } );
 }
 
