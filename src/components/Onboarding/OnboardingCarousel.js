@@ -7,10 +7,13 @@ import {
   INatIconButton,
   ViewWrapper
 } from "components/SharedComponents";
+import { ImageBackground } from "components/styledComponents";
 import INatLogo from "images/svg/inat_logo_onboarding.svg";
 import OnBoardingIcon2 from "images/svg/onboarding_icon_2.svg";
 import OnBoardingIcon3 from "images/svg/onboarding_icon_3.svg";
 import React, {
+  useEffect,
+  useMemo,
   useRef,
   useState
 } from "react";
@@ -24,6 +27,7 @@ import {
 import AnimatedDotsCarousel from "react-native-animated-dots-carousel";
 import Animated, { interpolate, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
+import { useOnboardingShown } from "sharedHelpers/installData.ts";
 import colors from "styles/tailwindColors";
 
 const SlideItem = props => {
@@ -60,29 +64,54 @@ const SlideItem = props => {
   );
 };
 
-const OnboardingCarousel = ( { closeModal } ) => {
+const OnboardingCarousel = ( ) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [onboardingShown, setOnboardingShown] = useOnboardingShown();
   const { width } = useWindowDimensions();
   const { t } = useTranslation( );
   const carouselRef = useRef( null );
   const progress = useSharedValue( 0 );
   const [currentIndex, setCurrentIndex] = useState( 0 );
+  const [imagesLoaded, setImagesLoaded] = useState( false );
+
+  const closeModal = () => setOnboardingShown( true );
 
   const paginationColor = colors.white;
-  const ONBOARDING_SLIDES = [
+  const backgroundAnimation1 = useAnimatedStyle( () => {
+    const opacity = interpolate(
+      progress.value,
+      [-1, 0, 1], // Fade in/out around current index
+      [0, 1, 0] // Opacity transitions
+    );
+    return { opacity };
+  } );
+
+  const backgroundAnimation2 = useAnimatedStyle( () => {
+    const opacity = interpolate(
+      progress.value,
+      [0, 1, 2], // Fade in/out around current index
+      [0, 1, 0] // Opacity transitions
+    );
+    return { opacity };
+  } );
+
+  const backgroundAnimation3 = useAnimatedStyle( () => {
+    const opacity = interpolate(
+      progress.value,
+      [1, 2, 3], // Fade in/out around current index
+      [0, 1, 0] // Opacity transitions
+    );
+    return { opacity };
+  } );
+
+  const ONBOARDING_SLIDES = useMemo( ( ) => ( [
     {
       icon: null,
       iconProps: { width: 70, height: 70 },
       title: t( "Identify-species-anywhere" ),
       text: t( "Get-an-instant-ID-of-any-plant-animal-fungus" ),
       background: require( "images/background/karsten-winegeart-RAgWH6ldps0-unsplash-cropped.jpg" ),
-      backgroundAnimation: useAnimatedStyle( () => {
-        const opacity = interpolate(
-          progress.value,
-          [-1, 0, 1], // Fade in/out around current index
-          [0, 1, 0] // Opacity transitions
-        );
-        return { opacity };
-      } )
+      backgroundAnimation: backgroundAnimation1
     },
     {
       icon: OnBoardingIcon2,
@@ -90,14 +119,7 @@ const OnboardingCarousel = ( { closeModal } ) => {
       title: t( "Connect-with-expert-naturalists" ),
       text: t( "Experts-help-verify-and-improve-IDs" ),
       background: require( "images/background/shane-rounce-DNkoNXQti3c-unsplash.jpg" ),
-      backgroundAnimation: useAnimatedStyle( () => {
-        const opacity = interpolate(
-          progress.value,
-          [0, 1, 2], // Fade in/out around current index
-          [0, 1, 0] // Opacity transitions
-        );
-        return { opacity };
-      } )
+      backgroundAnimation: backgroundAnimation2
     },
     {
       icon: OnBoardingIcon3,
@@ -105,16 +127,9 @@ const OnboardingCarousel = ( { closeModal } ) => {
       title: t( "Help-protect-species" ),
       text: t( "Verified-IDs-are-used-for-science-and-conservation" ),
       background: require( "images/background/sk-yeong-cXpdNdqp7eY-unsplash.jpg" ),
-      backgroundAnimation: useAnimatedStyle( () => {
-        const opacity = interpolate(
-          progress.value,
-          [1, 2, 3], // Fade in/out around current index
-          [0, 1, 0] // Opacity transitions
-        );
-        return { opacity };
-      } )
+      backgroundAnimation: backgroundAnimation3
     }
-  ];
+  ] ), [backgroundAnimation1, backgroundAnimation2, backgroundAnimation3, t] );
 
   const renderItem = ( { style, index, item } ) => (
     <SlideItem
@@ -124,6 +139,44 @@ const OnboardingCarousel = ( { closeModal } ) => {
       item={item}
     />
   );
+
+  const totalImages = ONBOARDING_SLIDES.length;
+
+  // Preload images; show splash screen in meantime
+  useEffect( () => {
+    const imageSources = ONBOARDING_SLIDES.map( slide => slide.background );
+
+    let loadedCount = 0;
+
+    // Preload each image
+    imageSources.forEach( source => {
+      Image.prefetch( Image.resolveAssetSource( source ).uri )
+        .then( ( ) => {
+          loadedCount += 1;
+          if ( loadedCount === totalImages ) {
+            setTimeout( ( ) => {
+              setImagesLoaded( true );
+            }, 500 );
+          }
+        } )
+        .catch( error => console.error( "Error loading image:", error ) );
+    } );
+  }, [ONBOARDING_SLIDES, totalImages] );
+
+  if ( !imagesLoaded ) {
+    return (
+      <ImageBackground
+        source={require( "images/background/daniel-olah-YNUFtf4qyh0-unsplash.jpg" )}
+        className="flex-1 items-center justify-center"
+      >
+        <INatIcon
+          name="inaturalist"
+          size={130}
+          color={colors.white}
+        />
+      </ImageBackground>
+    );
+  }
 
   return (
     <ViewWrapper wrapperClassName="bg-black">

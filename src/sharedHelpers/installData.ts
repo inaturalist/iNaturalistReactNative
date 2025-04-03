@@ -5,10 +5,11 @@ import * as uuid from "uuid";
 const MMKV_ID = "install-data";
 const INSTALL_ID = "installID";
 const ONBOARDING_SHOWN = "onboardingShown";
+export const IS_FRESH_INSTALL = "isFreshInstall";
 
 // This store is separate from the zustand store b/c it needs to survive sign
 // out, i.e these values should remain untill the app is uninstalled
-const store = new MMKV( { id: MMKV_ID } );
+export const store = new MMKV( { id: MMKV_ID } );
 
 // Migrate old MMKV data if it exists. This data is explicitly *not*
 // linked to a user
@@ -34,6 +35,7 @@ export function getInstallID( ) {
   if ( id ) return id;
   const newID: string = uuid.v4( ).toString( );
   store.set( INSTALL_ID, newID );
+  store.set( IS_FRESH_INSTALL, true );
   return newID;
 }
 
