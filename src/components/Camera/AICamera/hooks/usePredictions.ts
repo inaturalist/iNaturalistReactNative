@@ -1,6 +1,8 @@
+import { RealmContext } from "providers/contexts.ts";
 import { useState } from "react";
-import { useIconicTaxa } from "sharedHooks";
 import { Result } from "vision-camera-plugin-inatvision";
+
+const { useRealm } = RealmContext;
 
 interface StoredResult {
   taxon: {
@@ -14,6 +16,7 @@ interface StoredResult {
 }
 
 const usePredictions = ( ) => {
+  const realm = useRealm( );
   const [result, setResult] = useState<StoredResult | null>( null );
   const [resultTimestamp, setResultTimestamp] = useState<number | undefined>( undefined );
   const [modelLoaded, setModelLoaded] = useState( false );
@@ -21,7 +24,7 @@ const usePredictions = ( ) => {
   const [fps, setFPS] = useState( 1 );
   const [numStoredResults, setNumStoredResults] = useState( 5 );
   const [cropRatio, setCropRatio] = useState( 1 );
-  const iconicTaxa = useIconicTaxa( );
+  const iconicTaxa = realm?.objects( "Taxon" ).filtered( "isIconic = true" );
 
   const handleTaxaDetected = ( cvResult: Result ) => {
     if ( cvResult && !modelLoaded ) {
