@@ -1,8 +1,11 @@
 import { Realm } from "@realm/react";
 import inatjs, { FileUpload } from "inaturalistjs";
+import { log } from "sharedHelpers/logger";
 import * as uuid from "uuid";
 
 import Photo from "./Photo";
+
+const logger = log.extend( "Realm ObservationPhoto" );
 
 class ObservationPhoto extends Realm.Object {
   static OBSERVATION_PHOTOS_FIELDS = {
@@ -40,6 +43,14 @@ class ObservationPhoto extends Realm.Object {
   }
 
   static mapPhotoForAttachingToObs( observationID, observationPhoto ) {
+    // when the app is backgrounded, we don't always have the observationPhoto id
+    // available. instead, we need that upload to fail so a user
+    // can upload again later without their photo disappearing (being marked as
+    // completed in realm)
+    if ( !observationPhoto.photo || !observationPhoto.photo.id ) {
+      logger.info( `Skipping attachment of photo without ID: ${observationPhoto.uuid}` );
+      return null;
+    }
     return {
       observation_photo: {
         uuid: observationPhoto.uuid,

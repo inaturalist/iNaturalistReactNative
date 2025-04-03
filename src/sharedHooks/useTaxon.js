@@ -21,7 +21,7 @@ const ONE_WEEK_MS = (
 );
 
 // $FlowIgnore
-const useTaxon = ( taxon: Object, fetchRemote = true ): Object => {
+const useTaxon = ( taxon: Object, fetchRemote = true, retryQuery = true ): Object => {
   const realm = useRealm( );
   // taxon id is returned as a string, not a number, from CV model
   const taxonId = Number( taxon?.id );
@@ -67,7 +67,8 @@ const useTaxon = ( taxon: Object, fetchRemote = true ): Object => {
     ["fetchTaxon", taxonId],
     optsWithAuth => fetchTaxon( taxonId, params, optsWithAuth ),
     {
-      enabled
+      enabled,
+      retry: retryQuery
     }
   );
 

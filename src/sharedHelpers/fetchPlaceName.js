@@ -3,6 +3,12 @@
 import NetInfo from "@react-native-community/netinfo";
 import Geocoder from "react-native-geocoder-reborn";
 
+// 2.5 seconds, half the time as online Suggestions
+// feel free to tweak this but it's here to make the camera feel speedier
+// in spotty connectivity
+const GEOCODER_TIMEOUT = 2500;
+const TIMEOUT_ERROR_MESSAGE = "Geocoder timeout";
+
 // lifted from SeekReactNative repo
 const setPlaceName = ( results: Array<Object> ): string => {
   let placeName = "";
@@ -40,10 +46,22 @@ const fetchPlaceName = async ( lat: ?number, lng: ?number ): Promise<?string> =>
   const { isConnected } = await NetInfo.fetch( );
   if ( !isConnected ) { return null; }
   try {
-    const results = await Geocoder.geocodePosition( { lat, lng } );
+    const timeoutPromise = new Promise( ( _, reject ) => {
+      setTimeout( ( ) => reject( new Error( TIMEOUT_ERROR_MESSAGE ) ), GEOCODER_TIMEOUT );
+    } );
+
+    // Race the geocoder against the timeout
+    const results = await Promise.race( [
+      Geocoder.geocodePosition( { lat, lng } ),
+      timeoutPromise
+    ] );
     if ( results.length === 0 || typeof results !== "object" ) { return null; }
     return setPlaceName( results );
   } catch ( geocoderError ) {
+    if ( geocoderError?.message === TIMEOUT_ERROR_MESSAGE ) {
+      console.warn( "Geocoder operation timed out" );
+      return null;
+    }
     if ( !geocoderError?.message?.includes( "geocodePosition failed" ) ) throw geocoderError;
     return null;
   }
