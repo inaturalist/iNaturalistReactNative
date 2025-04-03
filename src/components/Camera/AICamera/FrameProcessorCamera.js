@@ -175,7 +175,6 @@ const FrameProcessorCamera = ( {
         // react-native-worklets-core documentation for what is supported in those worklets.
         const timeBefore = Date.now();
         try {
-          // try fetching user location here
           const result = InatVision.inatVision( frame, {
             version: modelVersion,
             modelPath,
