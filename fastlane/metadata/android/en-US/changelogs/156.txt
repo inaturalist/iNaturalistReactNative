@@ -1,0 +1,3 @@
+Updates to settings text, icons, and several bug fixes.
+
+Fix for selecting multiple images when importing from photo library or sharing into the app.
