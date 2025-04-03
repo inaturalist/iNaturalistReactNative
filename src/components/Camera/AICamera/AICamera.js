@@ -20,6 +20,7 @@ import { deleteSentinelFile, logStage } from "sharedHelpers/sentinelFiles.ts";
 import {
   useDebugMode,
   useLayoutPrefs,
+  useLocationPermission,
   usePerformance,
   useTranslation
 } from "sharedHooks";
@@ -72,6 +73,11 @@ const AICamera = ( {
   takePhotoAndStoreUri,
   takePhotoOptions
 }: Props ): Node => {
+  const {
+    hasPermissions: hasLocationPermissions,
+    renderPermissionsGate: renderLocationPermissionsGate,
+    requestPermissions: requestLocationPermissions
+  } = useLocationPermission( );
   const navigation = useNavigation( );
   const sentinelFileName = useStore( state => state.sentinelFileName );
   const setAICameraSuggestion = useStore( state => state.setAICameraSuggestion );
@@ -109,7 +115,7 @@ const AICamera = ( {
   const [hasTakenPhoto, setHasTakenPhoto] = useState( false );
 
   const [userLocation, setUserLocation] = useState( null );
-  const [useLocation, setUseLocation] = useState( !!userLocation );
+  const [useLocation, setUseLocation] = useState( !!hasLocationPermissions );
   const [locationStatusVisible, setLocationStatusVisible] = useState( false );
 
   const [debugFormatIndex, setDebugFormatIndex] = useState( 0 );
@@ -121,6 +127,10 @@ const AICamera = ( {
     : undefined;
 
   const toggleLocation = ( ) => {
+    if ( !useLocation && !hasLocationPermissions ) {
+      requestLocationPermissions( );
+      return;
+    }
     setUseLocation( prev => !prev );
     // Always show status when button is pressed
     setLocationStatusVisible( true );
@@ -138,10 +148,10 @@ const AICamera = ( {
       return accurateUserLocation;
     };
 
-    if ( !userLocation ) {
+    if ( hasLocationPermissions ) {
       fetchLocation( );
     }
-  }, [userLocation] );
+  }, [hasLocationPermissions] );
 
   const { t } = useTranslation();
 
@@ -332,6 +342,10 @@ const AICamera = ( {
         useLocation={useLocation}
         toggleLocation={toggleLocation}
       />
+      {renderLocationPermissionsGate( {
+        onRequestGranted: ( ) => console.log( "granted in location permission gate" ),
+        onRequestBlocked: ( ) => console.log( "blocked in location permission gate" )
+      } )}
     </>
   );
 };

@@ -1,61 +1,11 @@
-import { GeolocationResponse } from "@react-native-community/geolocation";
-import {
-  LOCATION_PERMISSIONS,
-  permissionResultFromMultiple
-} from "components/SharedComponents/PermissionGateContainer.tsx";
-import { Platform } from "react-native";
-import {
-  checkMultiple,
-  RESULTS
-} from "react-native-permissions";
-
 // Please don't change this to an aliased path or the e2e mock will not get
 // used in our e2e tests on Github Actions
-import { getCurrentPosition } from "./geolocationWrapper";
-
-const highAccuracyOptions = {
-  enableHighAccuracy: true,
-  timeout: 10000,
-  // Apply maximumAge only on iOS to avoid Android issues
-  ...( Platform.OS === "ios" && { maximumAge: 0 } )
-} as const;
-
-export const lowAccuracyOptions = {
-  enableHighAccuracy: false,
-  timeout: 2000,
-  // Apply maximumAge only on iOS to avoid Android issues
-  ...( Platform.OS === "ios" && { maximumAge: 0 } )
-} as const;
-
-const getCurrentPositionWithOptions = (
-  options: typeof highAccuracyOptions
-): Promise<GeolocationResponse> => new Promise(
-  ( resolve, reject ) => {
-    getCurrentPosition( resolve, reject, options );
-  }
-);
-
-const getPositionWithRetries = async (
-  options: typeof highAccuracyOptions | typeof lowAccuracyOptions,
-  retriesLeft = 3,
-  attempt = 1
-): Promise<GeolocationResponse> => {
-  try {
-    return await getCurrentPositionWithOptions( options );
-  } catch ( error ) {
-    console.warn( `Location attempt ${attempt}/${attempt + retriesLeft - 1} failed:`, error );
-
-    if ( retriesLeft <= 1 ) {
-      throw error;
-    }
-
-    await new Promise<void>( resolve => {
-      setTimeout( () => { resolve(); }, 1000 );
-    } );
-
-    return getPositionWithRetries( options, retriesLeft - 1, attempt + 1 );
-  }
-};
+import {
+  checkLocationPermissions,
+  getCurrentPositionWithOptions,
+  highAccuracyOptions,
+  lowAccuracyOptions
+} from "./geolocationWrapper";
 
 interface UserLocation {
   latitude: number;
@@ -66,17 +16,13 @@ interface UserLocation {
 }
 
 const fetchAccurateUserLocation = async (): Promise<UserLocation | null> => {
-  const permissionResult = permissionResultFromMultiple(
-    await checkMultiple( LOCATION_PERMISSIONS )
-  );
-
-  if ( Platform.OS !== "android" && permissionResult !== RESULTS.GRANTED ) {
-    console.warn( "Location permissions not granted" );
+  const permissionResult = await checkLocationPermissions( );
+  if ( permissionResult === null ) {
     return null;
   }
 
   try {
-    const highAccuracyResult = await getPositionWithRetries( highAccuracyOptions )
+    const highAccuracyResult = await getCurrentPositionWithOptions( highAccuracyOptions )
       .catch( error => {
         console.warn( "High accuracy location failed, falling back to low accuracy", error );
         return null;
@@ -92,7 +38,7 @@ const fetchAccurateUserLocation = async (): Promise<UserLocation | null> => {
       };
     }
 
-    const lowAccuracyResult = await getPositionWithRetries( lowAccuracyOptions, 2 );
+    const lowAccuracyResult = await getCurrentPositionWithOptions( lowAccuracyOptions, 2 );
 
     return {
       latitude: lowAccuracyResult.coords.latitude,

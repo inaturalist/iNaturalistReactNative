@@ -240,9 +240,11 @@ const CameraContainer = ( ) => {
       {showPhotoPermissionsGate && renderSavePhotoPermissionGate( {
         onPermissionGranted: async ( ) => {
           // we need this to make sure the very first photo after permission granted
-          // is saved to device, but it will never have a location since we aren't
-          // prompting for user location in the camera
-          const savedPhotoUris = await savePhotosToPhotoLibrary( cameraUris );
+          // is saved to device. very unlikely that we'll have a location here
+          // since we're not prompting for permission, but there are a few scenarios where it
+          // could happen, like a user enabling location on Explore before visiting the camera
+          const accurateUserLocation = await fetchAccurateUserLocation( );
+          const savedPhotoUris = await savePhotosToPhotoLibrary( cameraUris, accurateUserLocation );
           await logStageIfAICamera( "save_photos_to_photo_library_first_permission" );
           if ( savedPhotoUris.length > 0 ) {
             // Save these camera roll URIs, so later on observation editor can update
