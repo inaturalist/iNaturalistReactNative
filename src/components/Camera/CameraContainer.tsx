@@ -18,6 +18,7 @@ import { createSentinelFile, deleteSentinelFile, logStage } from "sharedHelpers/
 import {
   useDeviceOrientation, useTranslation
 } from "sharedHooks";
+import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useStore from "stores/useStore";
 
 import CameraWithDevice from "./CameraWithDevice";
@@ -54,6 +55,17 @@ const CameraContainer = ( ) => {
   }, [cameraType, sentinelFileName] );
 
   const { deviceOrientation } = useDeviceOrientation( );
+
+  const {
+    hasPermissions: hasLocationPermissions,
+    renderPermissionsGate: renderLocationPermissionsGate,
+    requestPermissions: requestLocationPermissions
+  } = useLocationPermission( );
+  // we don't want to use this for the observation location because
+  // a user could be walking with the camera open for a while, so this location
+  // will not reflect when they actually took the photo
+  const [userLocationForGeomodel, setUserLocationForGeomodel] = useState( null );
+
   const navigation = useNavigation( );
   const { t } = useTranslation( );
 
@@ -212,6 +224,18 @@ const CameraContainer = ( ) => {
     return uri;
   };
 
+  useEffect( ( ) => {
+    const fetchLocation = async ( ) => {
+      const accurateUserLocation = await fetchAccurateUserLocation( );
+      setUserLocationForGeomodel( accurateUserLocation );
+      return accurateUserLocation;
+    };
+
+    if ( hasLocationPermissions ) {
+      fetchLocation( );
+    }
+  }, [hasLocationPermissions] );
+
   if ( !device ) {
     Alert.alert(
       t( "No-Camera-Available" ),
@@ -236,6 +260,9 @@ const CameraContainer = ( ) => {
         takePhotoOptions={takePhotoOptions}
         newPhotoUris={newPhotoUris}
         setNewPhotoUris={setNewPhotoUris}
+        userLocation={userLocationForGeomodel}
+        hasLocationPermissions={hasLocationPermissions}
+        requestLocationPermissions={requestLocationPermissions}
       />
       {showPhotoPermissionsGate && renderSavePhotoPermissionGate( {
         onPermissionGranted: async ( ) => {
@@ -263,6 +290,13 @@ const CameraContainer = ( ) => {
             cameraUris,
             evidenceToAdd
           } );
+        }
+      } )}
+      {renderLocationPermissionsGate( {
+        onRequestGranted: ( ) => console.log( "granted in location permission gate" ),
+        onRequestBlocked: ( ) => console.log( "blocked in location permission gate" ),
+        onModalHide: async ( ) => {
+          await logStageIfAICamera( "request_location_permission_complete" );
         }
       } )}
     </>

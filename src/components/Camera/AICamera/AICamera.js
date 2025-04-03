@@ -14,13 +14,11 @@ import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { VolumeManager } from "react-native-volume-manager";
 import convertScoreToConfidence from "sharedHelpers/convertScores.ts";
-import fetchAccurateUserLocation from "sharedHelpers/fetchAccurateUserLocation.ts";
 import { log } from "sharedHelpers/logger";
 import { deleteSentinelFile, logStage } from "sharedHelpers/sentinelFiles.ts";
 import {
   useDebugMode,
   useLayoutPrefs,
-  useLocationPermission,
   usePerformance,
   useTranslation
 } from "sharedHooks";
@@ -60,7 +58,10 @@ type Props = {
   toggleFlash: Function,
   takingPhoto: boolean,
   takePhotoAndStoreUri: Function,
-  takePhotoOptions: Object
+  takePhotoOptions: Object,
+  userLocation?: Object, // UserLocation | null
+  hasLocationPermissions: boolean,
+  requestLocationPermissions: () => void,
 };
 
 const AICamera = ( {
@@ -71,13 +72,11 @@ const AICamera = ( {
   toggleFlash,
   takingPhoto,
   takePhotoAndStoreUri,
-  takePhotoOptions
+  takePhotoOptions,
+  userLocation,
+  hasLocationPermissions,
+  requestLocationPermissions
 }: Props ): Node => {
-  const {
-    hasPermissions: hasLocationPermissions,
-    renderPermissionsGate: renderLocationPermissionsGate,
-    requestPermissions: requestLocationPermissions
-  } = useLocationPermission( );
   const navigation = useNavigation( );
   const sentinelFileName = useStore( state => state.sentinelFileName );
   const setAICameraSuggestion = useStore( state => state.setAICameraSuggestion );
@@ -114,7 +113,6 @@ const AICamera = ( {
   const [initialVolume, setInitialVolume] = useState( null );
   const [hasTakenPhoto, setHasTakenPhoto] = useState( false );
 
-  const [userLocation, setUserLocation] = useState( null );
   const [useLocation, setUseLocation] = useState( !!hasLocationPermissions );
   const [locationStatusVisible, setLocationStatusVisible] = useState( false );
 
@@ -126,7 +124,7 @@ const AICamera = ( {
     ? device.formats[debugFormatIndex]
     : undefined;
 
-  const toggleLocation = ( ) => {
+  const toggleLocation = () => {
     if ( !useLocation && !hasLocationPermissions ) {
       requestLocationPermissions( );
       return;
@@ -141,15 +139,8 @@ const AICamera = ( {
   };
 
   useEffect( ( ) => {
-    const fetchLocation = async ( ) => {
-      const accurateUserLocation = await fetchAccurateUserLocation( );
-      setUserLocation( accurateUserLocation );
-      setUseLocation( true );
-      return accurateUserLocation;
-    };
-
     if ( hasLocationPermissions ) {
-      fetchLocation( );
+      setUseLocation( true );
     }
   }, [hasLocationPermissions] );
 
@@ -183,7 +174,9 @@ const AICamera = ( {
     setAICameraSuggestion( result );
     await takePhotoAndStoreUri( {
       replaceExisting: true,
-      inactivateCallback: () => setInactive( true ),
+      inactivateCallback: () => {
+        setInactive( true );
+      },
       navigateImmediately: true
     } );
     setHasTakenPhoto( false );
@@ -342,10 +335,6 @@ const AICamera = ( {
         useLocation={useLocation}
         toggleLocation={toggleLocation}
       />
-      {renderLocationPermissionsGate( {
-        onRequestGranted: ( ) => console.log( "granted in location permission gate" ),
-        onRequestBlocked: ( ) => console.log( "blocked in location permission gate" )
-      } )}
     </>
   );
 };
