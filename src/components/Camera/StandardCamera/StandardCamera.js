@@ -155,7 +155,7 @@ const StandardCamera = ( {
     containerClasses.push( "pt-[13px]" );
   }
   if ( hasDynamicIsland ) {
-    containerClasses.push( "pt-[20px]" );
+    containerClasses.push( "pt-[24px]" );
   }
 
   const handleDiscard = useCallback( ( ) => {
