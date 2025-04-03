@@ -44,7 +44,7 @@ const Settings = ( ) => {
           smallLabel
           value={isAdvancedMode}
           onValueChange={handleValueChange}
-          label={t( "Advanced-Settings" )}
+          label={t( "Advanced-Mode" )}
         />
         {isAdvancedMode && <AdvancedSettings />}
         {currentUser && <LoggedInDefaultSettings />}

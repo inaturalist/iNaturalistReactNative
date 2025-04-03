@@ -73,7 +73,7 @@ Adds-your-vote-of-agreement = Adds your vote of agreement
 # Hint for a button that adds a vote of disagreement
 Adds-your-vote-of-disagreement = Adds your vote of disagreement
 # Label for toggling app mode between default and advanced settings
-Advanced-Settings = Advanced Settings
+Advanced-Mode = Advanced Mode
 ADVANCED-SETTINGS = ADVANCED SETTINGS
 Affiliation = Affiliation: { $site }
 After-capturing-or-importing-photos-show = After capturing or importing photos, show:
