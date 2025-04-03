@@ -2,6 +2,15 @@ import {
   GeolocationResponse
 } from "@react-native-community/geolocation";
 import { CHUCKS_PAD } from "appConstants/e2e.ts";
+import {
+  LOCATION_PERMISSIONS,
+  permissionResultFromMultiple
+} from "components/SharedComponents/PermissionGateContainer.tsx";
+import { Platform } from "react-native";
+import {
+  checkMultiple,
+  RESULTS
+} from "react-native-permissions";
 
 let counter = 0;
 
@@ -46,9 +55,44 @@ function clearWatch( watchID: number ) {
   console.log( "[DEBUG geolocationWrapper.e2e-mock] clearWatch, watchID: ", watchID );
 }
 
+const highAccuracyOptions = {
+  enableHighAccuracy: true,
+  timeout: 10000,
+  ...( Platform.OS === "ios" && { maximumAge: 0 } )
+};
+
+const lowAccuracyOptions = {
+  enableHighAccuracy: false,
+  timeout: 2000,
+  ...( Platform.OS === "ios" && { maximumAge: 0 } )
+};
+
+const getCurrentPositionWithOptions = (
+  options
+): Promise<GeolocationResponse> => new Promise(
+  ( resolve, reject ) => {
+    console.log("[DEBUG geolocationWrapper.e2e-mock] getCurrentPositionWithOptions");
+    getCurrentPosition( resolve, reject, options );
+  }
+);
+
+const checkLocationPermissions = async ( ) => {
+  const permissionResult = permissionResultFromMultiple(
+    await checkMultiple( LOCATION_PERMISSIONS )
+  );
+  console.log("[DEBUG geolocationWrapper.e2e-mock] checkLocationPermissions");
+
+  if ( Platform.OS !== "android" && permissionResult !== RESULTS.GRANTED ) {
+    return null;
+  }
+  return permissionResult;
+};
+
 export {
-  CHUCKS_PAD,
   clearWatch,
-  getCurrentPosition,
-  watchPosition
+  watchPosition,
+  highAccuracyOptions,
+  lowAccuracyOptions,
+  getCurrentPositionWithOptions,
+  checkLocationPermissions
 };
