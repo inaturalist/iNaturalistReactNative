@@ -177,15 +177,16 @@ const AICamera = ( {
     // before aICameraSuggestion has finished being stored.
     // would be nice to refactor and set this more uniformly once the UX is more stable
     // and we're fully certain we don't want to populate observation.taxon on Suggestions -> ObsEdit
-    setAICameraSuggestion( result );
+    setAICameraSuggestion( showPrediction && result );
     await takePhotoAndStoreUri( {
       replaceExisting: true,
       inactivateCallback: () => setInactive( true ),
       navigateImmediately: true,
-      visionResult: result
+      visionResult: showPrediction && result
     } );
     setHasTakenPhoto( false );
   }, [
+    showPrediction,
     setAICameraSuggestion,
     sentinelFileName,
     takePhotoAndStoreUri,
