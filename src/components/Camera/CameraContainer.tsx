@@ -138,12 +138,13 @@ const CameraContainer = ( ) => {
   // passing newPhotoState because navigation to SuggestionsContainer for AICamera
   // happens before cameraUris state is ever set in useStore
   // and we want to make sure Suggestions has the correct observationPhotos
-  const handleNavigation = useCallback( async ( newPhotoState = {} ) => {
+  const handleNavigation = useCallback( async ( newPhotoState, visionResult ) => {
     await prepareStoreAndNavigate( {
       ...navigationOptions,
       newPhotoState,
       logStageIfAICamera,
-      deleteStageIfAICamera
+      deleteStageIfAICamera,
+      visionResult
     } );
   }, [
     prepareStoreAndNavigate,
@@ -152,9 +153,9 @@ const CameraContainer = ( ) => {
     deleteStageIfAICamera
   ] );
 
-  const handleCheckmarkPress = useCallback( async newPhotoState => {
+  const handleCheckmarkPress = useCallback( async ( newPhotoState, visionResult ) => {
     if ( !showPhotoPermissionsGate ) {
-      await handleNavigation( newPhotoState );
+      await handleNavigation( newPhotoState, visionResult );
     } else {
       await logStageIfAICamera( "request_save_photo_permission_start" );
       requestSavePhotoPermission( );
@@ -219,7 +220,7 @@ const CameraContainer = ( ) => {
     const newPhotoState = await updateTakePhotoStore( uri, options );
     setTakingPhoto( false );
     if ( options?.navigateImmediately ) {
-      await handleCheckmarkPress( newPhotoState );
+      await handleCheckmarkPress( newPhotoState, options?.visionResult );
     }
     setNewPhotoUris( [...newPhotoUris, uri] );
     return uri;
