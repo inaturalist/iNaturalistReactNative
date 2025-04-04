@@ -21,9 +21,6 @@ const SuggestionsLoading = ( {
   const { t } = useTranslation( );
   const aiCameraSuggestion = useStore( state => state.aICameraSuggestion );
 
-  const showPrediction = ( aiCameraSuggestion && aiCameraSuggestion?.taxon?.rank_level <= 40 )
-    || false;
-
   const displayAICameraSuggestion = ( ) => (
     <>
       <View className="pt-6" />
@@ -39,7 +36,7 @@ const SuggestionsLoading = ( {
     <View className="justify-center items-center mt-5" testID="SuggestionsList.loading">
       <ActivityIndicator size={50} />
       <Body1 className="pt-6">{t( "iNaturalist-is-loading-ID-suggestions" )}</Body1>
-      {showPrediction && displayAICameraSuggestion( )}
+      {aiCameraSuggestion && displayAICameraSuggestion( )}
     </View>
   );
 };
