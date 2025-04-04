@@ -12,10 +12,7 @@ import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import ObservationSound from "realmModels/ObservationSound";
 import emitUploadProgress from "sharedHelpers/emitUploadProgress.ts";
-import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-
-const logger = log.extend( "uploadObservation" );
 
 const UPLOAD_PROGRESS_INCREMENT = 1;
 
@@ -97,7 +94,7 @@ const markRecordUploaded = (
   }
 };
 
-const attachEvidence = async (
+const uploadEvidence = async (
   evidence: Array<Object>,
   type: string,
   apiSchemaMapper: Function,
@@ -109,43 +106,28 @@ const attachEvidence = async (
   // $FlowIgnore
 ): Promise<unknown> => {
   const uploadToServer = async currentEvidence => {
-    try {
-      const params = apiSchemaMapper( observationId, currentEvidence );
-      const evidenceUUID = currentEvidence.uuid;
+    const params = apiSchemaMapper( observationId, currentEvidence );
+    const evidenceUUID = currentEvidence.uuid;
 
-      const response = await createOrUpdateEvidence(
-        apiEndpoint,
-        params,
-        options
-      );
+    const response = await createOrUpdateEvidence(
+      apiEndpoint,
+      params,
+      options
+    );
 
-      if ( response && observationUUID ) {
+    if ( response && observationUUID ) {
       // we're emitting progress increments:
       // one when the upload of obs
       // half one when obsPhoto/obsSound is successfully uploaded
       // half one when the obsPhoto/obsSound is attached to the obs
-        emitUploadProgress( observationUUID, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
-        // TODO: can't mark records as uploaded by primary key for ObsPhotos and ObsSound anymore
-        markRecordUploaded( observationUUID, evidenceUUID, type, response, realm, {
-          record: currentEvidence
-        } );
-      }
-      return response;
-    } catch ( error ) {
-      if ( error.status === 401
-      || ( error.errors && error.errors[0]?.errorCode === "401" )
-      || JSON.stringify( error ).includes( "JWT is missing or invalid" ) ) {
-        logger.error( "JWT_ERROR in attachEvidence", {
-          type,
-          evidenceUUID: currentEvidence.uuid,
-          observationUUID,
-          errorStatus: error.status,
-          errorMessage: error.message,
-          timestamp: new Date().toISOString()
-        } );
-      }
-      return null;
+      emitUploadProgress( observationUUID, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
+      // TODO: can't mark records as uploaded by primary key for ObsPhotos and ObsSound anymore
+      markRecordUploaded( observationUUID, evidenceUUID, type, response, realm, {
+        record: currentEvidence
+      } );
     }
+
+    return response;
   };
 
   const responses = await Promise.all( evidence.map( item => {
@@ -165,78 +147,7 @@ const attachEvidence = async (
     }
 
     return uploadToServer( currentEvidence );
-    // filter out null responses, i.e. for photo evidence
-    // that doesn't get created when the app is backgrounded
-  } ).filter( Boolean ) );
-  // eslint-disable-next-line consistent-return
-  return responses[0];
-};
-
-const uploadEvidence = async (
-  evidence: Array<Object>,
-  type: string,
-  apiSchemaMapper: Function,
-  observationId: ?number,
-  apiEndpoint: Function,
-  options: Object,
-  observationUUID?: string
-  // $FlowIgnore
-): Promise<unknown> => {
-  const uploadToServer = async currentEvidence => {
-    try {
-      const params = apiSchemaMapper( observationId, currentEvidence );
-
-      const response = await createOrUpdateEvidence(
-        apiEndpoint,
-        params,
-        options
-      );
-
-      if ( response && observationUUID ) {
-      // we're emitting progress increments:
-      // one when the upload of obs
-      // half one when obsPhoto/obsSound is successfully uploaded
-      // half one when the obsPhoto/obsSound is attached to the obs
-        emitUploadProgress( observationUUID, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
-      }
-      return response;
-    } catch ( error ) {
-      if ( error.status === 401
-      || ( error.errors && error.errors[0]?.errorCode === "401" )
-      || JSON.stringify( error ).includes( "JWT is missing or invalid" ) ) {
-        logger.error( "JWT_ERROR in uploadEvidence", {
-          type,
-          evidenceUUID: currentEvidence.uuid,
-          observationUUID,
-          errorStatus: error.status,
-          errorMessage: error.message,
-          timestamp: new Date().toISOString()
-        } );
-      }
-      return null;
-    }
-  };
-
-  const responses = await Promise.all( evidence.map( item => {
-    let currentEvidence = item;
-
-    if ( currentEvidence.photo ) {
-      currentEvidence = item.toJSON( );
-      // Remove all null values, b/c the API doesn't seem to like them
-      const newPhoto = {};
-      const { photo } = currentEvidence;
-      Object.keys( photo ).forEach( k => {
-        if ( photo[k] !== null ) {
-          newPhoto[k] = photo[k];
-        }
-      } );
-      currentEvidence.photo = newPhoto;
-    }
-
-    return uploadToServer( currentEvidence );
-    // filter out null responses, i.e. for photo evidence
-    // that doesn't get created when the app is backgrounded
-  } ).filter( Boolean ) );
+  } ) );
   // eslint-disable-next-line consistent-return
   return responses[0];
 };
@@ -297,7 +208,8 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
         null,
         inatjs.photos.create,
         options,
-        obs.uuid
+        obs.uuid,
+        realm
       )
       : null
   ] );
@@ -315,7 +227,8 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
         null,
         inatjs.sounds.create,
         options,
-        obs.uuid
+        obs.uuid,
+        realm
       )
       : null
   ] );
@@ -346,7 +259,7 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
   await Promise.all( [
     // Attach the newly uploaded photos/sounds to the uploaded observation
     unsyncedObservationPhotos.length > 0
-      ? attachEvidence(
+      ? uploadEvidence(
         unsyncedObservationPhotos,
         "ObservationPhoto",
         ObservationPhoto.mapPhotoForAttachingToObs,
@@ -358,7 +271,7 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
       )
       : null,
     unsyncedObservationSounds.length > 0
-      ? attachEvidence(
+      ? uploadEvidence(
         unsyncedObservationSounds,
         "ObservationSound",
         ObservationSound.mapSoundForAttachingToObs,
@@ -371,7 +284,7 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
       : null,
     // Update any existing modified photos/sounds
     modifiedObservationPhotos.length > 0
-      ? attachEvidence(
+      ? uploadEvidence(
         modifiedObservationPhotos,
         "ObservationPhoto",
         ObservationPhoto.mapPhotoForUpdating,
