@@ -62,7 +62,7 @@ jobs:
       if: steps.cache.outputs.cache-hit == 'true'
       run: npx detox clean-framework-cache && npx detox build-framework-cache
 
-    # supposedly our current cache includes cache includes native modules like Realm
+    # supposedly our current cache includes native modules like Realm
     # that have compiled binaries specific to the environment where they were installed
     # which might not be the same as the github actions environment
     # so we need to rebuild them
