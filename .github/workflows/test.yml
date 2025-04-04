@@ -30,7 +30,7 @@ jobs:
         path: node_modules
         key: node-modules-${{ hashFiles('**/package-lock.json') }}
 
-    # supposedly our current cache includes cache includes native modules like Realm
+    # supposedly our current cache includes native modules like Realm
     # that have compiled binaries specific to the environment where they were installed
     # which might not be the same as the github actions environment
     # so we need to rebuild them
