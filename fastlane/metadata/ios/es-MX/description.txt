@@ -1,3 +1,14 @@
-iNaturalist es una red social para compartir información sobre biodiversidad que nos ayude a todos a conocer la naturaleza.  El objetivo principal es conectar a la gente con la naturaleza y, además, generar datos sobre biodiversidad que tengan valor científico a partir de esos hallazgos personales.
+Point the camera at plants, animals, & fungi to see species suggestions while you’re outside, or import photos from your library. iNaturalist helps millions of people like you learn more about nature using AI suggestions backed up by a global community of knowledgeable nature lovers.
 
-iNaturalist te ayuda a identificar plantas y animales mediante sugerencias visualmente similares y verificaciones de colaboradores dedicados. ¡Conecta con una comunidad de más de un millón de científicos y naturalistas que pueden ayudarte a aprender más sobre la naturaleza! Al registrar y compartir tus observaciones, proporcionarás datos de interés para las investigaciones de los científicos que trabajan para entender y proteger de mejor forma a la naturaleza.
+iNaturalist goes far beyond AI identifications—your observations are reviewed by real people and shared for science to help protect species.
+
+KEY FEATURES
+Identify species from anywhere in the world
+Keep a record of species you see
+Contribute to science by sharing your observations
+Explore and protect biodiversity 
+Connect with and learn from other nature enthusiasts
+
+iNaturalist’s nonprofit mission is to connect people to nature and advance science and conservation. iNaturalist is freely available thanks to generous support from our community of donors.
+
+Explore and learn even more at https://www.inaturalist.org.
