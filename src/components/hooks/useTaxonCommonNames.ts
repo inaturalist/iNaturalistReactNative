@@ -5,7 +5,7 @@ import Taxon from "realmModels/Taxon";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useAuthenticatedQuery, useLocationPermission } from "sharedHooks";
 
-import fetchUserLocation from "../../sharedHelpers/fetchUserLocation";
+import fetchCoarseUserLocation from "../../sharedHelpers/fetchCoarseUserLocation";
 
 const { useRealm } = RealmContext;
 
@@ -54,7 +54,7 @@ const useTaxonCommonNames = ( ) => {
 
   useEffect( ( ) => {
     const fetchLocation = async ( ) => {
-      const location = await fetchUserLocation( );
+      const location = await fetchCoarseUserLocation( );
       setUserLocation( location );
     };
     if ( hasPermissions ) {

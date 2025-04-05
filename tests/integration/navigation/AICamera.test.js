@@ -1,4 +1,3 @@
-import Geolocation from "@react-native-community/geolocation";
 import {
   screen,
   userEvent,
@@ -97,6 +96,12 @@ afterEach( ( ) => {
   signOut( { realm: global.mockRealms[__filename] } );
 } );
 
+const mockFetchUserLocation = jest.fn( () => ( { latitude: 56, longitude: 9, accuracy: 8 } ) );
+jest.mock( "sharedHelpers/fetchAccurateUserLocation", () => ( {
+  __esModule: true,
+  default: () => mockFetchUserLocation()
+} ) );
+
 const actor = userEvent.setup( );
 
 const navToAICamera = async ( ) => {
@@ -139,14 +144,6 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
 
   describe( "to Suggestions", ( ) => {
     beforeEach( ( ) => {
-      const mockWatchPosition = jest.fn( ( success, _error, _options ) => success( {
-        coords: {
-          latitude: 56,
-          longitude: 9,
-          accuracy: 8
-        }
-      } ) );
-      Geolocation.watchPosition.mockImplementation( mockWatchPosition );
       jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
         handleTaxaDetected: jest.fn( ),
         modelLoaded: true,

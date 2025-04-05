@@ -1,4 +1,3 @@
-import Geolocation from "@react-native-community/geolocation";
 import {
   screen,
   userEvent,
@@ -49,6 +48,12 @@ beforeAll( async () => {
 
 const actor = userEvent.setup( );
 
+const mockFetchUserLocation = jest.fn( () => ( { latitude: 56, longitude: 9, accuracy: 8 } ) );
+jest.mock( "sharedHelpers/fetchAccurateUserLocation", () => ( {
+  __esModule: true,
+  default: () => mockFetchUserLocation()
+} ) );
+
 const navigateToCamera = async ( ) => {
   await waitFor( ( ) => {
     global.timeTravel( );
@@ -88,14 +93,6 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
   } );
 
   it( "should advance to ObsEdit when photo taken and checkmark tapped", async () => {
-    const mockWatchPosition = jest.fn( ( success, _error, _options ) => success( {
-      coords: {
-        latitude: 56,
-        longitude: 9,
-        accuracy: 8
-      }
-    } ) );
-    Geolocation.watchPosition.mockImplementation( mockWatchPosition );
     renderApp( );
     await navigateToCamera( );
     const takePhotoButton = await screen.findByLabelText( /Take photo/ );
@@ -120,14 +117,6 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
     } );
 
     it( "should advance to Suggestions when photo taken and checkmark tapped", async ( ) => {
-      const mockWatchPosition = jest.fn( ( success, _error, _options ) => success( {
-        coords: {
-          latitude: 56,
-          longitude: 9,
-          accuracy: 8
-        }
-      } ) );
-      Geolocation.watchPosition.mockImplementation( mockWatchPosition );
       renderApp( );
       await navigateToCamera( );
       const takePhotoButton = await screen.findByLabelText( /Take photo/ );

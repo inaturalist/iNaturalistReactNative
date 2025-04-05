@@ -6,7 +6,7 @@ import {
   useTranslation
 } from "sharedHooks";
 
-import fetchUserLocation from "../../sharedHelpers/fetchUserLocation";
+import fetchCoarseUserLocation from "../../sharedHelpers/fetchCoarseUserLocation";
 import useInfiniteProjectsScroll from "./hooks/useInfiniteProjectsScroll";
 import Projects from "./Projects";
 
@@ -48,7 +48,7 @@ const ProjectsContainer = ( ) => {
   }
 
   const getCurrentUserLocation = async ( ) => {
-    const currentUserLocation = await fetchUserLocation( );
+    const currentUserLocation = await fetchCoarseUserLocation( );
     setUserLocation( currentUserLocation );
   };
 

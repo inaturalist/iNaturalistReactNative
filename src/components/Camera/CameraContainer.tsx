@@ -13,9 +13,10 @@ import { Alert, StatusBar } from "react-native";
 import type {
   TakePhotoOptions
 } from "react-native-vision-camera";
+import fetchAccurateUserLocation from "sharedHelpers/fetchAccurateUserLocation.ts";
 import { createSentinelFile, deleteSentinelFile, logStage } from "sharedHelpers/sentinelFiles.ts";
 import {
-  useDeviceOrientation, useTranslation, useWatchPosition
+  useDeviceOrientation, useTranslation
 } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useStore from "stores/useStore";
@@ -54,22 +55,17 @@ const CameraContainer = ( ) => {
   }, [cameraType, sentinelFileName] );
 
   const { deviceOrientation } = useDeviceOrientation( );
-  // Check if location permission granted b/c usePrepareStoreAndNavigate and
-  // useUserLocation need to know if permission has been granted to fetch the
-  // user's location while the camera is active. We don't want to *ask* for
-  // permission here b/c we want to avoid overloading a new user with
-  // permission requests and they will just have seen the camera permission
-  // request before landing here, so it's ok if we're not fetching the
-  // location here for the user's first observation (suggestions might be a
-  // bit off and we'll fetch the obs coordinates on ObsEdit)
+
   const {
     hasPermissions: hasLocationPermissions,
     renderPermissionsGate: renderLocationPermissionsGate,
     requestPermissions: requestLocationPermissions
   } = useLocationPermission( );
-  const { userLocation } = useWatchPosition( {
-    shouldFetchLocation: !!( hasLocationPermissions )
-  } );
+  // we don't want to use this for the observation location because
+  // a user could be walking with the camera open for a while, so this location
+  // will not reflect when they actually took the photo
+  const [userLocationForGeomodel, setUserLocationForGeomodel] = useState( null );
+
   const navigation = useNavigation( );
   const { t } = useTranslation( );
 
@@ -100,13 +96,10 @@ const CameraContainer = ( ) => {
     const generateSentinelFile = async ( ) => {
       const fileName = await createSentinelFile( "AICamera" );
       setSentinelFileName( fileName );
-      if ( hasLocationPermissions ) {
-        await logStage( fileName, "fetch_user_location_start" );
-      }
     };
     if ( cameraType !== "AI" ) { return; }
     generateSentinelFile( );
-  }, [setSentinelFileName, cameraType, hasLocationPermissions] );
+  }, [setSentinelFileName, cameraType] );
 
   const {
     hasPermissions: hasSavePhotoPermission,
@@ -129,9 +122,8 @@ const CameraContainer = ( ) => {
   };
 
   const navigationOptions = useMemo( ( ) => ( {
-    addPhotoPermissionResult,
-    userLocation
-  } ), [addPhotoPermissionResult, userLocation] );
+    addPhotoPermissionResult
+  } ), [addPhotoPermissionResult] );
 
   const prepareStoreAndNavigate = usePrepareStoreAndNavigate( );
 
@@ -139,8 +131,15 @@ const CameraContainer = ( ) => {
   // happens before cameraUris state is ever set in useStore
   // and we want to make sure Suggestions has the correct observationPhotos
   const handleNavigation = useCallback( async ( newPhotoState = {} ) => {
+    // fetch accurate user location, with a fallback to a course location
+    // at the time the user taps AI shutter or multicapture checkmark
+    // to create an observation
+    // this handles checking for location, and we do *not* want to show
+    // location permissions in the camera, so we no longer need to check for that
+    const accurateUserLocation = await fetchAccurateUserLocation( );
     await prepareStoreAndNavigate( {
       ...navigationOptions,
+      userLocation: accurateUserLocation,
       newPhotoState,
       logStageIfAICamera,
       deleteStageIfAICamera
@@ -225,6 +224,18 @@ const CameraContainer = ( ) => {
     return uri;
   };
 
+  useEffect( ( ) => {
+    const fetchLocation = async ( ) => {
+      const accurateUserLocation = await fetchAccurateUserLocation( );
+      setUserLocationForGeomodel( accurateUserLocation );
+      return accurateUserLocation;
+    };
+
+    if ( hasLocationPermissions ) {
+      fetchLocation( );
+    }
+  }, [hasLocationPermissions] );
+
   if ( !device ) {
     Alert.alert(
       t( "No-Camera-Available" ),
@@ -249,13 +260,18 @@ const CameraContainer = ( ) => {
         takePhotoOptions={takePhotoOptions}
         newPhotoUris={newPhotoUris}
         setNewPhotoUris={setNewPhotoUris}
-        userLocation={userLocation}
+        userLocation={userLocationForGeomodel}
         hasLocationPermissions={hasLocationPermissions}
         requestLocationPermissions={requestLocationPermissions}
       />
       {showPhotoPermissionsGate && renderSavePhotoPermissionGate( {
         onPermissionGranted: async ( ) => {
-          const savedPhotoUris = await savePhotosToPhotoLibrary( cameraUris, userLocation );
+          // we need this to make sure the very first photo after permission granted
+          // is saved to device. very unlikely that we'll have a location here
+          // since we're not prompting for permission, but there are a few scenarios where it
+          // could happen, like a user enabling location on Explore before visiting the camera
+          const accurateUserLocation = await fetchAccurateUserLocation( );
+          const savedPhotoUris = await savePhotosToPhotoLibrary( cameraUris, accurateUserLocation );
           await logStageIfAICamera( "save_photos_to_photo_library_first_permission" );
           if ( savedPhotoUris.length > 0 ) {
             // Save these camera roll URIs, so later on observation editor can update

@@ -174,7 +174,9 @@ const AICamera = ( {
     setAICameraSuggestion( result );
     await takePhotoAndStoreUri( {
       replaceExisting: true,
-      inactivateCallback: () => setInactive( true ),
+      inactivateCallback: () => {
+        setInactive( true );
+      },
       navigateImmediately: true
     } );
     setHasTakenPhoto( false );

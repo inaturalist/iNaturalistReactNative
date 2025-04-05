@@ -23,6 +23,12 @@ jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
   Version: 11
 } ) );
 
+const mockFetchUserLocation = jest.fn( () => ( { latitude: 56, longitude: 9, accuracy: 8 } ) );
+jest.mock( "sharedHelpers/fetchAccurateUserLocation", () => ( {
+  __esModule: true,
+  default: () => mockFetchUserLocation()
+} ) );
+
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
 jest.unmock( "@react-navigation/native" );
