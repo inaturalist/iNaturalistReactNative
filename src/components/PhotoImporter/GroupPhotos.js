@@ -186,7 +186,7 @@ const GroupPhotos = ( {
       </FloatingActionBar>
       <ButtonBar
         sticky
-        containerClass="items-center z-50"
+        containerClass="items-center z-50 bg-white"
         onLayout={onLayout}
       >
         <Button
