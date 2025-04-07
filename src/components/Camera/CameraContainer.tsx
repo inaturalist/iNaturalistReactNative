@@ -42,6 +42,13 @@ interface StoredResult {
   timestamp: number;
 }
 
+interface SavePhotoOptions {
+  replaceExisting?: boolean;
+  inactivateCallback?: () => void;
+  navigateImmediately?: boolean;
+  visionResult?: StoredResult | null;
+}
+
 export const MAX_PHOTOS_ALLOWED = 20;
 
 const CameraContainer = ( ) => {
@@ -198,11 +205,14 @@ const CameraContainer = ( ) => {
     } );
   };
 
-  const updateTakePhotoStore = async ( uri, options ) => {
+  const updateTakePhotoStore = async (
+    uri: string,
+    options?: { replaceExisting?: boolean }
+  ): Promise<PhotoState> => {
     const replaceExisting = options?.replaceExisting || false;
 
-    let newCameraUris = [];
-    let newEvidenceToAdd = [];
+    let newCameraUris: string[] = [];
+    let newEvidenceToAdd: string[] = [];
 
     if ( ( addEvidence || currentObservation?.observationPhotos?.length > 0 )
       && !replaceExisting ) {
@@ -226,7 +236,7 @@ const CameraContainer = ( ) => {
     return newCameraState;
   };
 
-  const takePhotoAndStoreUri = async options => {
+  const takePhotoAndStoreUri = async ( options: SavePhotoOptions ) => {
     setTakingPhoto( true );
     // Set the camera to inactive immediately after taking the photo,
     // this does leave a short period of time where the camera preview is still active
