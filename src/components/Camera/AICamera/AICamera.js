@@ -171,16 +171,26 @@ const AICamera = ( {
   const handleTakePhoto = useCallback( async ( ) => {
     await logStage( sentinelFileName, "take_photo_start" );
     setHasTakenPhoto( true );
-    setAICameraSuggestion( result );
+    // this feels a little duplicative, but we're currently using aICameraSuggestion
+    // to show the loading screen in Suggestions *without* setting an observation.taxon,
+    // and we're using visionResult to populate ObsEdit *with* the taxon
+    // before aICameraSuggestion has finished being stored.
+    // would be nice to refactor and set this more uniformly once the UX is more stable
+    // and we're fully certain we don't want to populate observation.taxon on Suggestions -> ObsEdit
+    const visionResult = showPrediction
+      ? result
+      : null;
+    setAICameraSuggestion( visionResult );
+
     await takePhotoAndStoreUri( {
       replaceExisting: true,
-      inactivateCallback: () => {
-        setInactive( true );
-      },
-      navigateImmediately: true
+      inactivateCallback: () => setInactive( true ),
+      navigateImmediately: true,
+      visionResult
     } );
     setHasTakenPhoto( false );
   }, [
+    showPrediction,
     setAICameraSuggestion,
     sentinelFileName,
     takePhotoAndStoreUri,

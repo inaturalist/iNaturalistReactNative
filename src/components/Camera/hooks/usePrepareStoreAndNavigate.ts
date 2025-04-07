@@ -9,6 +9,7 @@ import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import {
   useLayoutPrefs
 } from "sharedHooks";
+import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice.ts";
 import useStore from "stores/useStore";
 
 import savePhotosToPhotoLibrary from "../helpers/savePhotosToPhotoLibrary";
@@ -74,7 +75,8 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     uris,
     addPhotoPermissionResult,
     userLocation,
-    logStageIfAICamera
+    logStageIfAICamera,
+    visionResult
   ) => {
     const newObservation = await Observation.new( );
 
@@ -93,6 +95,11 @@ const usePrepareStoreAndNavigate = ( ): Function => {
         position: 0,
         local: true
       } );
+    if ( !isDefaultMode
+        && screenAfterPhotoEvidence === SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT
+        && visionResult ) {
+      newObservation.taxon = visionResult.taxon;
+    }
     setObservations( [newObservation] );
     await handleSavingToPhotoLibrary(
       uris,
@@ -100,7 +107,12 @@ const usePrepareStoreAndNavigate = ( ): Function => {
       userLocation,
       logStageIfAICamera
     );
-  }, [setObservations, handleSavingToPhotoLibrary] );
+  }, [
+    isDefaultMode,
+    screenAfterPhotoEvidence,
+    setObservations,
+    handleSavingToPhotoLibrary
+  ] );
 
   const updateObsWithCameraPhotos = useCallback( async (
     addPhotoPermissionResult,
@@ -139,7 +151,8 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     userLocation,
     newPhotoState,
     logStageIfAICamera,
-    deleteStageIfAICamera
+    deleteStageIfAICamera,
+    visionResult
   } ) => {
     if ( userLocation !== null ) {
       logStageIfAICamera( "fetch_user_location_complete" );
@@ -158,7 +171,8 @@ const usePrepareStoreAndNavigate = ( ): Function => {
       uris,
       addPhotoPermissionResult,
       userLocation,
-      logStageIfAICamera
+      logStageIfAICamera,
+      visionResult
     );
     await deleteStageIfAICamera( );
     setSentinelFileName( null );
