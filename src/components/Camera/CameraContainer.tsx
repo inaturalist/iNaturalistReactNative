@@ -27,6 +27,29 @@ import saveRotatedPhotoToDocumentsDirectory from "./helpers/saveRotatedPhotoToDo
 import usePrepareStoreAndNavigate from "./hooks/usePrepareStoreAndNavigate";
 import useSavePhotoPermission from "./hooks/useSavePhotoPermission";
 
+interface PhotoState {
+  cameraUris: string[];
+  evidenceToAdd: string[];
+}
+
+interface StoredResult {
+  taxon: {
+    rank_level: number;
+    id: number;
+    name: string;
+    iconic_taxon_name: string;
+  };
+  combined_score: number;
+  timestamp: number;
+}
+
+interface SavePhotoOptions {
+  replaceExisting?: boolean;
+  inactivateCallback?: () => void;
+  navigateImmediately?: boolean;
+  visionResult?: StoredResult | null;
+}
+
 export const MAX_PHOTOS_ALLOWED = 20;
 
 const CameraContainer = ( ) => {
@@ -130,7 +153,10 @@ const CameraContainer = ( ) => {
   // passing newPhotoState because navigation to SuggestionsContainer for AICamera
   // happens before cameraUris state is ever set in useStore
   // and we want to make sure Suggestions has the correct observationPhotos
-  const handleNavigation = useCallback( async ( newPhotoState = {} ) => {
+  const handleNavigation = useCallback( async (
+    newPhotoState: PhotoState,
+    visionResult: StoredResult | null
+  ) => {
     // fetch accurate user location, with a fallback to a course location
     // at the time the user taps AI shutter or multicapture checkmark
     // to create an observation
@@ -142,7 +168,8 @@ const CameraContainer = ( ) => {
       userLocation: accurateUserLocation,
       newPhotoState,
       logStageIfAICamera,
-      deleteStageIfAICamera
+      deleteStageIfAICamera,
+      visionResult
     } );
   }, [
     prepareStoreAndNavigate,
@@ -151,9 +178,12 @@ const CameraContainer = ( ) => {
     deleteStageIfAICamera
   ] );
 
-  const handleCheckmarkPress = useCallback( async newPhotoState => {
+  const handleCheckmarkPress = useCallback( async (
+    newPhotoState: PhotoState,
+    visionResult: StoredResult | null
+  ) => {
     if ( !showPhotoPermissionsGate ) {
-      await handleNavigation( newPhotoState );
+      await handleNavigation( newPhotoState, visionResult );
     } else {
       await logStageIfAICamera( "request_save_photo_permission_start" );
       requestSavePhotoPermission( );
@@ -174,11 +204,14 @@ const CameraContainer = ( ) => {
     } );
   };
 
-  const updateTakePhotoStore = async ( uri, options ) => {
+  const updateTakePhotoStore = async (
+    uri: string,
+    options?: { replaceExisting?: boolean }
+  ): Promise<PhotoState> => {
     const replaceExisting = options?.replaceExisting || false;
 
-    let newCameraUris = [];
-    let newEvidenceToAdd = [];
+    let newCameraUris: string[] = [];
+    let newEvidenceToAdd: string[] = [];
 
     if ( ( addEvidence || currentObservation?.observationPhotos?.length > 0 )
       && !replaceExisting ) {
@@ -202,7 +235,7 @@ const CameraContainer = ( ) => {
     return newCameraState;
   };
 
-  const takePhotoAndStoreUri = async options => {
+  const takePhotoAndStoreUri = async ( options: SavePhotoOptions ) => {
     setTakingPhoto( true );
     // Set the camera to inactive immediately after taking the photo,
     // this does leave a short period of time where the camera preview is still active
@@ -218,7 +251,7 @@ const CameraContainer = ( ) => {
     const newPhotoState = await updateTakePhotoStore( uri, options );
     setTakingPhoto( false );
     if ( options?.navigateImmediately ) {
-      await handleCheckmarkPress( newPhotoState );
+      await handleCheckmarkPress( newPhotoState, options?.visionResult );
     }
     setNewPhotoUris( [...newPhotoUris, uri] );
     return uri;
