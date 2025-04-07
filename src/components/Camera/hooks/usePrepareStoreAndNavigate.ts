@@ -98,7 +98,6 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     if ( !isDefaultMode
         && screenAfterPhotoEvidence === SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT
         && visionResult ) {
-      console.log( visionResult.taxon, "ai camera suggestion" );
       newObservation.taxon = visionResult.taxon;
     }
     setObservations( [newObservation] );

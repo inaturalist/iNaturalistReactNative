@@ -26,6 +26,22 @@ import saveRotatedPhotoToDocumentsDirectory from "./helpers/saveRotatedPhotoToDo
 import usePrepareStoreAndNavigate from "./hooks/usePrepareStoreAndNavigate";
 import useSavePhotoPermission from "./hooks/useSavePhotoPermission";
 
+interface PhotoState {
+  cameraUris: string[];
+  evidenceToAdd: string[];
+}
+
+interface StoredResult {
+  taxon: {
+    rank_level: number;
+    id: number;
+    name: string;
+    iconic_taxon_name: string;
+  };
+  combined_score: number;
+  timestamp: number;
+}
+
 export const MAX_PHOTOS_ALLOWED = 20;
 
 const CameraContainer = ( ) => {
@@ -138,7 +154,10 @@ const CameraContainer = ( ) => {
   // passing newPhotoState because navigation to SuggestionsContainer for AICamera
   // happens before cameraUris state is ever set in useStore
   // and we want to make sure Suggestions has the correct observationPhotos
-  const handleNavigation = useCallback( async ( newPhotoState, visionResult ) => {
+  const handleNavigation = useCallback( async (
+    newPhotoState: PhotoState,
+    visionResult: StoredResult | null
+  ) => {
     await prepareStoreAndNavigate( {
       ...navigationOptions,
       newPhotoState,
@@ -153,7 +172,10 @@ const CameraContainer = ( ) => {
     deleteStageIfAICamera
   ] );
 
-  const handleCheckmarkPress = useCallback( async ( newPhotoState, visionResult ) => {
+  const handleCheckmarkPress = useCallback( async (
+    newPhotoState: PhotoState,
+    visionResult: StoredResult | null
+  ) => {
     if ( !showPhotoPermissionsGate ) {
       await handleNavigation( newPhotoState, visionResult );
     } else {
