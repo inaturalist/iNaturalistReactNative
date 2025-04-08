@@ -57,7 +57,7 @@ const PreMatchLoadingScreen = ( { isLoading, onSkip }: Props ) => {
       <View style={viewStyle}>
         <View className="flex-1 items-center justify-center">
           <Body1 className="text-white">
-            {t( "Getting-an-even-more-accurate-ID" )}
+            {t( "Analyzing-for-the-best-identification" )}
           </Body1>
           <Body1 className="text-white mt-2 mb-[29px]">
             {t( "This-may-take-a-few-seconds" )}
