@@ -1,14 +1,14 @@
-Point the camera at plants, animals, & fungi to see species suggestions while you’re outside, or import photos from your library. iNaturalist helps millions of people like you learn more about nature using AI suggestions backed up by a global community of knowledgeable nature lovers.
+כוונו את המצלמה אל צמחים, בעלי חיים ופטריות כדי לראות הצעות למינים כשאתם בחוץ, או ייבאו תמונות מהספריה. iNaturalist עוזרת למיליוני אנשים כמוך ללמוד עוד על הטבע באמצעות הצעות בינה מלאכותית המגובות על ידי קהילה גלובלית של חובבי טבע בעלי ידע.
 
-iNaturalist goes far beyond AI identifications—your observations are reviewed by real people and shared for science to help protect species.
+iNaturalist הולכת הרבה מעבר לזיהויי בינה מלאכותית - התצפיות שלך נבדקות על ידי אנשים אמיתיים ומשותפות למדע כדי לסייע בהגנה על מינים.
 
-KEY FEATURES
-Identify species from anywhere in the world
-Keep a record of species you see
-Contribute to science by sharing your observations
-Explore and protect biodiversity 
-Connect with and learn from other nature enthusiasts
+מאפיינים עיקריים
+זיהוי מינים מכל מקום בעולם
+תיעוד של כל המינים שראית
+תרומה למדע על ידי שיתוף התצפיות שלכם
+חקר המגוון הביולוגי והגנה עליו 
+התחברות לחובבי טבע אחרים ולמידה מהם
 
-iNaturalist’s nonprofit mission is to connect people to nature and advance science and conservation. iNaturalist is freely available thanks to generous support from our community of donors.
+המשימה ללא מטרות רווח של iNaturalist היא לחבר אנשים לטבע ולקדם את המדע ושמירת טבע. iNaturalist זמינה בחינם הודות לתמיכה נדיבה מקהילת התורמים שלנו.
 
-Explore and learn even more at https://www.inaturalist.org.
+גלו ולמדו עוד ב-https://www.inaturalist.org.
