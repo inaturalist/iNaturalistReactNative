@@ -42,7 +42,7 @@ function handleTooManyRequestsErrors( failureCount, error, options = {} ) {
   if ( error.status === 429 || ( error.response && error.response.status === 429 ) ) {
     defaultLogger.error(
       "429 in reactQueryRetry:",
-      errorContext
+      JSON.stringify( errorContext )
     );
 
     // Use progressive backoff for rate limit errors using handleRetryDelay;

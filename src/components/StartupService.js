@@ -47,7 +47,8 @@ const checkForPreviousCrash = async ( ) => {
   try {
     const crashData = zustandStorage.getItem( "LAST_CRASH_DATA" );
     if ( crashData ) {
-      logger.error( `Last Crash Data: ${JSON.parse( crashData )}` );
+      const parsedData = JSON.parse( crashData );
+      logger.error( "Last Crash Data:", JSON.stringify( parsedData ) );
       zustandStorage.removeItem( "LAST_CRASH_DATA" );
     }
   } catch ( e ) {
