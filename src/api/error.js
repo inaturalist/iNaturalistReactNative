@@ -28,10 +28,16 @@ Object.defineProperty( INatApiError.prototype, "name", {
 
 export class INatApiTooManyRequestsError extends INatApiError {
   constructor( context?: Object ) {
-    super( { error: "Too Many Requests", status: 429 }, 429, context );
+    const errorJson = {
+      error: "Too Many Requests",
+      status: 429,
+      context
+    };
+    super( errorJson, 429, context );
   }
 }
-Object.defineProperty( INatApiTooManyRequestsError, "name", {
+
+Object.defineProperty( INatApiTooManyRequestsError.prototype, "name", {
   value: "INatApiTooManyRequestsError"
 } );
 
