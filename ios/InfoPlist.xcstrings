@@ -1119,8 +1119,8 @@
         },
         "he" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
+            "state" : "translated",
+            "value" : "הוסיפו צלילים קיימים לתצפיות שלכם.ן."
           }
         },
         "hi" : {
@@ -1581,8 +1581,8 @@
         },
         "he" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
+            "state" : "translated",
+            "value" : "גישה למצלמה מאפשרת שימוש במצלמת הבינה המלאכותית וצילום תמונות."
           }
         },
         "hi" : {
@@ -2506,8 +2506,8 @@
         },
         "he" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
+            "state" : "translated",
+            "value" : "איננו מבקשים בכוונה את הרשאה זו. אם את.ה רואה זאת, נא לצלם צילום מסך ולשלוח אותו בדוא\"ל אל help@inaturalist.org"
           }
         },
         "hi" : {
@@ -3430,8 +3430,8 @@
         },
         "he" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
+            "state" : "translated",
+            "value" : "הקליטו תצפיות קוליות של הטבע."
           }
         },
         "hi" : {
@@ -3892,8 +3892,8 @@
         },
         "he" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "translated",
+            "value" : "ייצאו את תמונות iNaturalist Next לספרייה שלכם.ן."
           }
         },
         "hi" : {
@@ -4354,8 +4354,8 @@
         },
         "he" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "translated",
+            "value" : "ייצאו וייבאו את תמונות iNaturalist Next לספרייה שלכם.ן."
           }
         },
         "hi" : {
