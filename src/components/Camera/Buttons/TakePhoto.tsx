@@ -5,7 +5,8 @@ import {
 import {
   Pressable, View
 } from "components/styledComponents";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { GestureResponderEvent } from "react-native";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -21,11 +22,39 @@ interface Props {
 const TakePhoto = ( {
   takePhoto,
   disabled,
-  showPrediction
+  showPrediction,
+  debounceTime = 400,
+  preventMultipleTaps = true
 }: Props ) => {
   const { t } = useTranslation( );
 
   const borderClass = "border-[2px] rounded-full h-[64px] w-[64px]";
+
+  const [isProcessing, setIsProcessing] = useState( false );
+  const onPressRef = useRef( takePhoto );
+
+  useEffect( ( ) => {
+    onPressRef.current = takePhoto;
+  }, [takePhoto] );
+  const handleTakePhoto = ( event?: GestureResponderEvent ) => {
+    console.log( "take photo" );
+    if ( !preventMultipleTaps ) {
+      onPressRef.current( event );
+      return;
+    }
+
+    if ( isProcessing ) return;
+
+    setIsProcessing( true );
+
+    onPressRef.current( event );
+
+    setTimeout( ( ) => {
+      setIsProcessing( false );
+    }, debounceTime );
+  };
+
+  const isDisabled = disabled || ( preventMultipleTaps && isProcessing );
 
   return (
     <Pressable
@@ -40,11 +69,11 @@ const TakePhoto = ( {
           "opacity-50": disabled
         }
       )}
-      onPress={takePhoto}
+      onPress={handleTakePhoto}
       accessibilityLabel={t( "Take-photo" )}
       accessibilityRole="button"
       accessibilityState={{ disabled }}
-      disabled={disabled}
+      disabled={isDisabled}
       style={DROP_SHADOW}
       testID="take-photo-button"
     >
