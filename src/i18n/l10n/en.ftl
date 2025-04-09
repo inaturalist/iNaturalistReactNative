@@ -99,6 +99,10 @@ All-taxa = All taxa
 ALL-USERS-EXCEPT = ALL USERS EXCEPT
 ALLOW-LOCATION-ACCESS = ALLOW LOCATION ACCESS
 An-Internet-connection-is-required = An Internet connection is required to load more observations.
+# Message shown to the user after they have left the AI camera where they may
+# have seen a species suggestion but before they land on the match screen,
+# where they might see a better suggestion.
+Analyzing-for-the-best-identification = Analyzing for the best identification...
 # Option when choosing a value for an date filter that indicates any value is
 # acceptable
 Any--date = Any
@@ -544,10 +548,6 @@ Get-an-instant-ID-of-any-plant-animal-fungus = Get an instant ID of any plant, a
 Get-feedback-from-naturalists-and-experts-who-will-help-verify = Get feedback from naturalists and experts who will help verify and refine your identifications.
 # Preceded by the fragment, "By uploading your observation to iNaturalist, you can:"
 Get-your-identification-verified-by-real-people = Get your identification verified by real people in the iNaturalist community
-# Message shown to the user after they have left the AI camera where they may
-# have seen a species suggestion but before they land on the match screen,
-# where they might see a better suggestion.
-Getting-an-even-more-accurate-ID = Getting an even more accurate ID...
 # Label for button that returns to the previous screen
 Go-back = Go back
 Google-Play-Services-Not-Installed = Google Play Services Not Installed
