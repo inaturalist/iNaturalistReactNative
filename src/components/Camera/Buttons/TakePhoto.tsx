@@ -37,7 +37,6 @@ const TakePhoto = ( {
     onPressRef.current = takePhoto;
   }, [takePhoto] );
   const handleTakePhoto = ( event?: GestureResponderEvent ) => {
-    console.log( "take photo" );
     if ( !preventMultipleTaps ) {
       onPressRef.current( event );
       return;
