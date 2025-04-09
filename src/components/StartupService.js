@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { LogBox } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
-import Realm from "realm";
+// import Realm from "realm";
 import clearCaches from "sharedHelpers/clearCaches.ts";
 import { IS_FRESH_INSTALL, store } from "sharedHelpers/installData.ts";
 import { log } from "sharedHelpers/logger";
@@ -25,7 +25,11 @@ import { zustandStorage } from "stores/useStore";
 // https://stackoverflow.com/questions/69538962
 LogBox.ignoreLogs( ["new NativeEventEmitter"] );
 
-Realm.setLogLevel( "warn" );
+// I have seen the log category (which is the second, and optional argument here) being
+// referenced in the stacktrace of a Signal 11 crash. I don't know if this call here is
+// related to the crash, but it is worth trying to silence it for a while to see if we
+// get rid of the crash that way.
+// Realm.setLogLevel( "warn" );
 
 // better to ping our own website to check for site uptime
 // with no rendering required, per issue #1770
