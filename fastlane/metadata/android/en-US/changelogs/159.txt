@@ -1,0 +1,1 @@
+Bug fixes, various improvements, and updated translations for many languages.
