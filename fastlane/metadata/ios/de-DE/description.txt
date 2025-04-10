@@ -1,14 +1,14 @@
-Point the camera at plants, animals, & fungi to see species suggestions while you’re outside, or import photos from your library. iNaturalist helps millions of people like you learn more about nature using AI suggestions backed up by a global community of knowledgeable nature lovers.
+Richte die Kamera auf Pflanzen, Tiere und Pilze, um Artenvorschläge zu erhalten, während du draußen bist, oder importiere Fotos aus deiner Bibliothek. iNaturalist hilft Millionen von Menschen wie dir, mehr über die Natur zu erfahren, indem es KI-Vorschläge nutzt, die von einer globalen Gemeinschaft von sachkundigen Naturliebhabern unterstützt werden.
 
-iNaturalist goes far beyond AI identifications—your observations are reviewed by real people and shared for science to help protect species.
+iNaturalist geht weit über KI-Identifizierungen hinaus – Ihre Beobachtungen werden von echten Menschen überprüft und für die Wissenschaft geteilt, um zum Artenschutz beizutragen.
 
-KEY FEATURES
-Identify species from anywhere in the world
-Keep a record of species you see
-Contribute to science by sharing your observations
-Explore and protect biodiversity 
-Connect with and learn from other nature enthusiasts
+HAUPTFUNKTIONEN
+Arten von überall auf der Welt identifizieren
+Erfasse jene Arten, die du siehst
+Trage zur Wissenschaft bei, indem du deine Beobachtungen teilst
+Erforsche und schütze die Artenvielfalt 
+Verbinde dich mit anderen Naturliebhabern und lerne von ihnen
 
-iNaturalist’s nonprofit mission is to connect people to nature and advance science and conservation. iNaturalist is freely available thanks to generous support from our community of donors.
+Die gemeinnützige Mission von iNaturalist ist es, Menschen mit der Natur zu verbinden und die Wissenschaft und Naturschutz voranzubringen. iNaturalist ist dank der großzügigen Unterstützung unserer Spendergemeinschaft gratis verfügbar.
 
-Explore and learn even more at https://www.inaturalist.org.
+Entdecke und erfahre noch mehr unter https://www.inaturalist.org.
