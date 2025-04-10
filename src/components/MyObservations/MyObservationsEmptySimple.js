@@ -1,7 +1,6 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
 import AddObsModal from "components/AddObsModal/AddObsModal.tsx";
-import OnboardingCarouselModal from "components/Onboarding/OnboardingCarouselModal";
 import {
   HeaderUser,
   Heading2,
@@ -14,7 +13,6 @@ import Arrow from "images/svg/curved_arrow_down.svg";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Pressable } from "react-native";
-import { useOnboardingShown } from "sharedHelpers/installData.ts";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -26,7 +24,6 @@ interface Props {
 const MyObservationsEmptySimple = ( { currentUser, isConnected }: Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const [onboardingShown, setOnboardingShown] = useOnboardingShown();
   const [showModal, setShowModal] = useState( false );
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const navAndCloseModal = ( screen, params ) => {
@@ -43,10 +40,6 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected }: Props ): Node 
 
   return (
     <ViewWrapper>
-      <OnboardingCarouselModal
-        showModal={!onboardingShown}
-        closeModal={() => setOnboardingShown( true )}
-      />
       {!!currentUser && (
         <View className="flex-start ml-[18px] mt-[26px]">
           <HeaderUser user={currentUser} isConnected={isConnected} />
