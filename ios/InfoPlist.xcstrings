@@ -3,929 +3,917 @@
   "strings" : {
     "CFBundleDisplayName" : {
       "comment" : "Bundle display name",
-      "shouldTranslate" : false,
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "af" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "ar" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "be" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "bg" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "br" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "bs" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "ca" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "cs" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "da" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "iNat Next"
+            "value" : "iNaturalist"
           }
         },
         "en-AU" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "en-GB" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "en-NZ" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "eo" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "es-AR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "es-CO" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "es-CR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "es-MX" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "et" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "eu" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "fa" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "fil" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "fr-CA" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "gd" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "gl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "gu" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "he" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "hi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "hr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "hu" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "id" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "kk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "kn" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "lb" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "lt" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "lv" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "mi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "mk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "ml" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "mr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "ms" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "nb-NO" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "pa" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "sat" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "si" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "sq" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "sr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "sw" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "ta" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "te" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "th" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
-          }
-        },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNat Next"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "CFBundleName" : {
       "comment" : "Bundle name",
-      "shouldTranslate" : false,
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "af" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "ar" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "be" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "bg" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "br" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "bs" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "ca" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "cs" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "da" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "value" : "iNaturalist"
           }
         },
         "en-AU" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "en-GB" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "en-NZ" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "eo" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "es-AR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "es-CO" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "es-CR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "es-MX" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "et" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "eu" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "fa" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "fil" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "fr-CA" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "gd" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "gl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "gu" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "he" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "hi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "hr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "hu" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "id" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "kk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "kn" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "lb" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "lt" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "lv" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "mi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "mk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "ml" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "mr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "ms" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "nb-NO" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "pa" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "sat" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "si" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "sq" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "sr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "sw" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "ta" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "te" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "th" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
-          }
-        },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalistReactNative"
+            "state" : "needs_review",
+            "value" : "iNaturalist"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "NSAppleMusicUsageDescription" : {
       "comment" : "Description of why we ask for permission to access the music library.",
@@ -1343,12 +1331,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "เพิ่มเสียงที่บันทึกไว้ไปยังการสังเกตของคุณ"
-          }
-        },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
           }
         },
         "tr" : {
@@ -1807,12 +1789,6 @@
             "value" : "Camera access lets you use the AI Camera and take photos."
           }
         },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1853,7 +1829,6 @@
     },
     "NSHumanReadableCopyright" : {
       "comment" : "Copyright (human-readable)",
-      "shouldTranslate" : false,
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "af" : {
@@ -2270,12 +2245,6 @@
             "value" : ""
           }
         },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "new",
@@ -2312,7 +2281,8 @@
             "value" : ""
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "NSLocationAlwaysAndWhenInUseUsageDescription" : {
       "comment" : "Privacy - Location Always and When In Use Usage Description",
@@ -2730,12 +2700,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "เราไม่ได้ร้องขอสิทธิ์นี้โดยเจตนา หากคุณพบข้อความนี้ กรุณาถ่ายภาพหน้าจอและส่งอีเมลไปที่ help@inaturalist.org"
-          }
-        },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
           }
         },
         "tr" : {
@@ -3194,12 +3158,6 @@
             "value" : "เพิ่มพิกัด GPS ให้กับการสังเกต แสดงตำแหน่งของคุณบนแผนที่ และอื่น ๆ"
           }
         },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3656,12 +3614,6 @@
             "value" : "บันทึกเสียงจากธรรมชาติ"
           }
         },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3706,458 +3658,452 @@
       "localizations" : {
         "af" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "ar" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "be" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "bg" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "br" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "bs" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "ca" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "cs" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Exportovat další fotky iNaturalist do vaší knihovny."
           }
         },
         "da" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eksportér iNaturalist Next-fotos til mediebiblioteket."
+            "state" : "needs_review",
+            "value" : "Eksportér iNaturalist-fotos til mediebiblioteket."
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Exportiere Fotos aus iNaturalist-Next in deine Bibliothek."
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "en-AU" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "en-GB" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "en-NZ" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "eo" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exportar fotos de iNaturalist Next a tu biblioteca."
+            "state" : "needs_review",
+            "value" : "Exportar fotos de iNaturalist a tu biblioteca."
           }
         },
         "es-AR" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exportar fotos de iNaturalist Next a tu biblioteca."
+            "state" : "needs_review",
+            "value" : "Exportar fotos de iNaturalist a tu biblioteca."
           }
         },
         "es-CO" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exportar fotos de iNaturalist Next a tu biblioteca."
+            "state" : "needs_review",
+            "value" : "Exportar fotos de iNaturalist a tu biblioteca."
           }
         },
         "es-CR" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exportar fotos de iNaturalist Next a tu biblioteca."
+            "state" : "needs_review",
+            "value" : "Exportar fotos de iNaturalist a tu biblioteca."
           }
         },
         "es-MX" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exportar fotos de iNaturalist Next a tu biblioteca."
+            "state" : "needs_review",
+            "value" : "Exportar fotos de iNaturalist a tu biblioteca."
           }
         },
         "et" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "eu" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "fa" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "عکس های بعدی iNaturalist را به کتابخانه خود صادر کنید."
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vie iNaturalist Next -kuvat galleriaasi."
+            "state" : "needs_review",
+            "value" : "Vie iNaturalist -kuvat galleriaasi."
           }
         },
         "fil" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exportez les photos d'iNaturalist Next vers votre bibliothèque.  "
+            "state" : "needs_review",
+            "value" : "Exportez les photos d'iNaturalist vers votre bibliothèque.  "
           }
         },
         "fr-CA" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exportez les photos d'iNaturalist Next vers votre bibliothèque.  "
+            "state" : "needs_review",
+            "value" : "Exportez les photos d'iNaturalist vers votre bibliothèque.  "
           }
         },
         "gd" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "gl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "gu" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "he" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "ייצאו את תמונות iNaturalist Next לספרייה שלכם.ן."
+            "state" : "needs_review",
+            "value" : "ייצאו את תמונות iNaturalist לספרייה שלכם.ן."
           }
         },
         "hi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "hr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "hu" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "iNaturalist Next fényképek exportálása a könyvtáradba"
+            "state" : "needs_review",
+            "value" : "iNaturalist fényképek exportálása a könyvtáradba"
           }
         },
         "id" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ekspor gambar iNaturalist Next ke pustaka Anda."
+            "state" : "needs_review",
+            "value" : "Ekspor gambar iNaturalist ke pustaka Anda."
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esporta le foto iNaturalist Next nella tua libreria."
+            "state" : "needs_review",
+            "value" : "Esporta le foto iNaturalist nella tua libreria."
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "iNaturalist Next の写真をライブラリに書き出します。"
+            "state" : "needs_review",
+            "value" : "iNaturalist の写真をライブラリに書き出します。"
           }
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "kk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "kn" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "lb" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "lt" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eksportuokite „iNaturalist Next“ nuotraukas į savo biblioteką."
+            "state" : "needs_review",
+            "value" : "Eksportuokite „iNaturalist“ nuotraukas į savo biblioteką."
           }
         },
         "lv" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "mi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "mk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "ml" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "mr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "ms" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "nb-NO" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exporteer iNaturalist Next foto's naar jouw bibliotheek."
+            "state" : "needs_review",
+            "value" : "Exporteer iNaturalist foto's naar jouw bibliotheek."
           }
         },
         "pa" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eksportuj zdjęcia z iNaturalist Next do swojej biblioteki."
+            "state" : "needs_review",
+            "value" : "Eksportuj zdjęcia z iNaturalist do swojej biblioteki."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Exportar fotos Next do iNaturalist para a sua biblioteca."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Экспортируйте фото iNaturalist Next в вашу библиотеку."
+            "state" : "needs_review",
+            "value" : "Экспортируйте фото iNaturalist в вашу библиотеку."
           }
         },
         "sat" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "si" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "sq" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "sr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exportera iNaturalist Next-bilder till ditt galleri."
+            "state" : "needs_review",
+            "value" : "Exportera iNaturalist-bilder till ditt galleri."
           }
         },
         "sw" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "ta" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "te" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "th" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "ส่งออกภาพถ่ายจาก iNaturalist Next ไปยังคลังภาพของคุณ"
-          }
-        },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "ส่งออกภาพถ่ายจาก iNaturalist ไปยังคลังภาพของคุณ"
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "iNaturalist'e Sonraki fotoğraflarını kütüphanenize aktarın."
           }
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Експортуйте фотографії iNaturalist Next у вашу бібліотеку."
+            "state" : "needs_review",
+            "value" : "Експортуйте фотографії iNaturalist у вашу бібліотеку."
           }
         },
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "将 iNaturalist Next的照片导出到您的库。"
+            "state" : "needs_review",
+            "value" : "将 iNaturalist的照片导出到您的库。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "‌匯出愛自然次世代(iNaturalist Next)的照片至您的照片圖庫。"
+            "state" : "needs_review",
+            "value" : "‌匯出愛自然次世代(iNaturalist)的照片至您的照片圖庫。"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist Next photos to your library."
+            "state" : "needs_review",
+            "value" : "Export iNaturalist photos to your library."
           }
         }
       }
@@ -4168,458 +4114,452 @@
       "localizations" : {
         "af" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "ar" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "be" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "bg" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "br" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "bs" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "ca" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "cs" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Export a import fotografií iNaturalist Next do knihovny a z knihovny."
+            "state" : "needs_review",
+            "value" : "Export a import fotografií iNaturalist do knihovny a z knihovny."
           }
         },
         "da" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eksportér/importér iNaturalist Next-fotos til/fra mediebiblioteket."
+            "state" : "needs_review",
+            "value" : "Eksportér/importér iNaturalist-fotos til/fra mediebiblioteket."
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exportiere und importiere iNaturalist Next-Fotos in deine/aus deiner Bibliothek"
+            "state" : "needs_review",
+            "value" : "Exportiere und importiere iNaturalist-Fotos in deine/aus deiner Bibliothek"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "en-AU" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "en-GB" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "en-NZ" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "eo" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exportar e importar fotos de iNaturalist Next desde y hacia tu biblioteca."
+            "state" : "needs_review",
+            "value" : "Exportar e importar fotos de iNaturalist desde y hacia tu biblioteca."
           }
         },
         "es-AR" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exportar e importar fotos de iNaturalist Next desde y hacia tu biblioteca."
+            "state" : "needs_review",
+            "value" : "Exportar e importar fotos de iNaturalist desde y hacia tu biblioteca."
           }
         },
         "es-CO" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exportar e importar fotos de iNaturalist Next desde y hacia tu biblioteca."
+            "state" : "needs_review",
+            "value" : "Exportar e importar fotos de iNaturalist desde y hacia tu biblioteca."
           }
         },
         "es-CR" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exportar e importar fotos de iNaturalist Next desde y hacia tu biblioteca."
+            "state" : "needs_review",
+            "value" : "Exportar e importar fotos de iNaturalist desde y hacia tu biblioteca."
           }
         },
         "es-MX" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exportar e importar fotos de iNaturalist Next desde y hacia tu biblioteca."
+            "state" : "needs_review",
+            "value" : "Exportar e importar fotos de iNaturalist desde y hacia tu biblioteca."
           }
         },
         "et" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "eu" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "fa" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "عکس های بعدی iNaturalist را به کتابخانه خود صادر کنید."
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vie ja tuo iNaturalist Next -kuvia galleriaasi/galleriastasi."
+            "state" : "needs_review",
+            "value" : "Vie ja tuo iNaturalist -kuvia galleriaasi/galleriastasi."
           }
         },
         "fil" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exportez et importez les photos de iNaturalist Next depuis et vers votre bibliothèque. "
+            "state" : "needs_review",
+            "value" : "Exportez et importez les photos de iNaturalist depuis et vers votre bibliothèque. "
           }
         },
         "fr-CA" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exportez et importez les photos de iNaturalist Next depuis et vers votre bibliothèque. "
+            "state" : "needs_review",
+            "value" : "Exportez et importez les photos de iNaturalist depuis et vers votre bibliothèque. "
           }
         },
         "gd" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "gl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "gu" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "he" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "ייצאו וייבאו את תמונות iNaturalist Next לספרייה שלכם.ן."
+            "state" : "needs_review",
+            "value" : "ייצאו וייבאו את תמונות iNaturalist לספרייה שלכם.ן."
           }
         },
         "hi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "hr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "hu" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "iNaturalist Next fényképek exportálása a könyvtáradba és importálása onnan."
+            "state" : "needs_review",
+            "value" : "iNaturalist fényképek exportálása a könyvtáradba és importálása onnan."
           }
         },
         "id" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ekspor dan impor gambar iNaturalist Next ke atau dari pustaka Anda."
+            "state" : "needs_review",
+            "value" : "Ekspor dan impor gambar iNaturalist ke atau dari pustaka Anda."
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esporta ed importa le foto iNaturalist Next da e verso la tua libreria."
+            "state" : "needs_review",
+            "value" : "Esporta ed importa le foto iNaturalist da e verso la tua libreria."
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "iNaturalist Next の写真をライブラリに書き出したり、ライブラリから読み込んだりします。"
+            "state" : "needs_review",
+            "value" : "iNaturalist の写真をライブラリに書き出したり、ライブラリから読み込んだりします。"
           }
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "kk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "kn" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "lb" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "lt" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eksportuokite ir importuokite „iNaturalist Next“ nuotraukas į savo biblioteką ir iš jos."
+            "state" : "needs_review",
+            "value" : "Eksportuokite ir importuokite „iNaturalist“ nuotraukas į savo biblioteką ir iš jos."
           }
         },
         "lv" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "mi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "mk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "ml" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "mr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "ms" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "nb-NO" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exporteer en importeer iNaturalist Next foto's naar en vanuit jouw bibliotheek."
+            "state" : "needs_review",
+            "value" : "Exporteer en importeer iNaturalist foto's naar en vanuit jouw bibliotheek."
           }
         },
         "pa" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eksportuj i importuj zdjęcia iNaturalist Next z i do biblioteki."
+            "state" : "needs_review",
+            "value" : "Eksportuj i importuj zdjęcia iNaturalist z i do biblioteki."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exportar e importar fotos do iNaturalist Next para e da sua biblioteca."
+            "state" : "needs_review",
+            "value" : "Exportar e importar fotos do iNaturalist para e da sua biblioteca."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Экспортируйте и импортируйте фото iNaturalist Next \"в\" и \"из\"  вашей библиотеки."
+            "state" : "needs_review",
+            "value" : "Экспортируйте и импортируйте фото iNaturalist \"в\" и \"из\"  вашей библиотеки."
           }
         },
         "sat" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "si" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "sl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "sq" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "sr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exportera och importera iNaturalist Next-bilder till och från ditt galleri."
+            "state" : "needs_review",
+            "value" : "Exportera och importera iNaturalist-bilder till och från ditt galleri."
           }
         },
         "sw" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "ta" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "te" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "th" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "ส่งออกและนำเข้าภาพถ่ายจาก iNaturalist Next ไปยังคลังภาพของคุณและจากคลังภาพของคุณ"
-          }
-        },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "ส่งออกและนำเข้าภาพถ่ายจาก iNaturalist ไปยังคลังภาพของคุณและจากคลังภาพของคุณ"
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "iNaturalist Sonraki fotoğraflarını kütüphanenize aktarın ve kütüphanenizden dışa aktarın."
           }
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Експортуйте та імпортуйте фотографії iNaturalist Next у вашу бібліотеку та з неї."
+            "state" : "needs_review",
+            "value" : "Експортуйте та імпортуйте фотографії iNaturalist у вашу бібліотеку та з неї."
           }
         },
         "vi" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "在您的库和iNaturalist Next之间导入或导出照片。"
+            "state" : "needs_review",
+            "value" : "在您的库和iNaturalist之间导入或导出照片。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "將愛自然次世代(iNaturalist Next)的照片匯出至您的照片圖庫，或從其匯入。"
+            "state" : "needs_review",
+            "value" : "將愛自然次世代(iNaturalist)的照片匯出至您的照片圖庫，或從其匯入。"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist Next photos to and from your library."
+            "state" : "needs_review",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         }
       }
