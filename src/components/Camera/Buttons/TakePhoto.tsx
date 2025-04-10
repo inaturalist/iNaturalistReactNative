@@ -1,12 +1,9 @@
 import classnames from "classnames";
 import {
-  INatIcon
+  INatIcon, PressableWithDebounce
 } from "components/SharedComponents";
-import {
-  Pressable, View
-} from "components/styledComponents";
-import React, { useEffect, useRef, useState } from "react";
-import { GestureResponderEvent } from "react-native";
+import { View } from "components/styledComponents";
+import React from "react";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -22,41 +19,14 @@ interface Props {
 const TakePhoto = ( {
   takePhoto,
   disabled,
-  showPrediction,
-  debounceTime = 400,
-  preventMultipleTaps = true
+  showPrediction
 }: Props ) => {
   const { t } = useTranslation( );
 
   const borderClass = "border-[2px] rounded-full h-[64px] w-[64px]";
 
-  const [isProcessing, setIsProcessing] = useState( false );
-  const onPressRef = useRef( takePhoto );
-
-  useEffect( ( ) => {
-    onPressRef.current = takePhoto;
-  }, [takePhoto] );
-  const handleTakePhoto = ( event?: GestureResponderEvent ) => {
-    if ( !preventMultipleTaps ) {
-      onPressRef.current( event );
-      return;
-    }
-
-    if ( isProcessing ) return;
-
-    setIsProcessing( true );
-
-    onPressRef.current( event );
-
-    setTimeout( ( ) => {
-      setIsProcessing( false );
-    }, debounceTime );
-  };
-
-  const isDisabled = disabled || ( preventMultipleTaps && isProcessing );
-
   return (
-    <Pressable
+    <PressableWithDebounce
       className={classnames(
         "bg-white",
         "rounded-full",
@@ -68,13 +38,15 @@ const TakePhoto = ( {
           "opacity-50": disabled
         }
       )}
-      onPress={handleTakePhoto}
+      onPress={takePhoto}
       accessibilityLabel={t( "Take-photo" )}
       accessibilityRole="button"
       accessibilityState={{ disabled }}
-      disabled={isDisabled}
+      disabled={disabled}
       style={DROP_SHADOW}
       testID="take-photo-button"
+      preventMultipleTaps
+      debounceTime={2000}
     >
       {showPrediction
         ? (
@@ -92,7 +64,7 @@ const TakePhoto = ( {
           </View>
         )
         : <View className={borderClass} />}
-    </Pressable>
+    </PressableWithDebounce>
   );
 };
 
