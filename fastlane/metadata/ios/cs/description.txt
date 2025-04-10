@@ -1,3 +1,14 @@
-iNaturalist je sociální síť pro sdílení informací o biologické rozmanitosti a ke vzájemné pomoci při poznávání přírody. Hlavním cílem je propojit lidi s přírodou a vedlejším cílem je získat z těchto osobních setkání vědecky cenné údaje o biologické rozmanitosti.
+Namiřte fotoaparát na rostliny, zvířata a houby, abyste viděli návrhy druhů, když jste venku, nebo importujte fotografie ze své knihovny. iNaturalist pomáhá milionům lidí, jako je Vy, dozvědět se více o přírodě pomocí návrhů AI podporovaných globální komunitou znalých milovníků přírody.
 
-iNaturalist vám pomůže identifikovat rostliny a zvířata s vizuálně podobnými návrhy a ověřování prostřednictvím specializovaných přispěvatelů. Spojte se s komunitou více než milionu vědců a přírodovědců, kteří vám mohou pomoci dozvědět se více o přírodě! Nahráváním a sdílením vašich pozorování vytvoříte kvalitní výzkumná data pro vědce, kteří se snaží lépe porozumět přírodě a chránit ji.
+iNaturalist daleko přesahuje identifikaci AI — vaše pozorování jsou přezkoumávána skutečnými lidmi a sdílena pro vědu za účelem ochrany druhů.
+
+KLÍČOVÉ FUNKCE
+Identifikujte druhy odkudkoliv na světě
+Uchovejte si záznam o druzích, které vidíte
+Přispějte k vědě sdílením svých pozorování
+Prozkoumejte a chraňte biodiverzitu 
+Spojte se s ostatními nadšenci přírody a učte se od nich
+
+Neziskovým posláním iNaturalist je spojovat lidi s přírodou a podporovat vědu a ochranu přírody. iNaturalist je volně dostupný díky velkorysé podpoře naší komunity dárců.
+
+Prozkoumejte a zjistěte ještě více na https://www.inaturalist.org.

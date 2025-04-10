@@ -1,3 +1,14 @@
-iNaturalist is een sociaal netwerk voor het delen van biodiversiteitsinformatie om elkaar te helpen om te leren over de natuur. Het primaire doel is het verbinden van mensen met de natuur en het secundaire doel is het genereren van wetenschappelijk waardevolle gegevens over biodiversiteit uit deze persoonlijke ontmoetingen.
+Richt de camera op planten, dieren en schimmels om suggesties voor soorten te zien terwijl je buiten bent, of importeer foto's uit je bibliotheek. iNaturalist helpt miljoenen mensen zoals jij om meer te weten te komen over de natuur met behulp van AI-suggesties die worden ondersteund door een wereldwijde gemeenschap van deskundige natuurliefhebbers.
 
-iNaturalist helpt met het determineren van planten en dieren door suggesties te doen die visueel vergelijkbaar zijn en met verificatie door toegewijde bijdragers. Kom in contact met een gemeenschap van bijna vier miljoen wetenschappers en naturalisten die je kunnen helpen meer te leren over de natuur! Door je waarnemingen te registreren en te delen genereer je data van onderzoekskwaliteit voor wetenschappers die werken om de natuur beter te begrijpen en te beschermen.
+iNaturalist gaat veel verder dan AI determinaties alleen — jouw waarnemingen worden beoordeeld door echte mensen en gedeeld met de  wetenschap om soorten te beschermen.
+
+BELANGRIJKSTE FUNCTIES
+Determineer soorten uit de hele wereld
+Houd een overzicht bij van de soorten die je ziet
+Draag bij aan de wetenschap door je waarnemingen te delen
+Verkennen en beschermen van biodiversiteit 
+Maak verbinding met en leer van andere natuurliefhebbers
+
+iNaturalist's missie is om mensen te verbinden met de natuur en om wetenschap en natuurbehoud te bevorderen - en dat allemaal nonprofit. iNaturalist is gratis beschikbaar dankzij de genereuze steun van onze gemeenschap van donateurs.
+
+Ontdek, ervaar en lees nog meer op https://www.inaturalist.org.
