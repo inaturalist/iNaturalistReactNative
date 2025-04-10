@@ -62,6 +62,7 @@ const PressableWithDebounce = ( {
       accessibilityHint={accessibilityHint}
       accessibilityLabel={accessibilityLabel}
       accessibilityRole={accessibilityRole}
+      accessibilityState={{ disabled }}
       style={style}
       className={className}
       testID={testID}
