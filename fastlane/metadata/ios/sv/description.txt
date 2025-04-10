@@ -1,4 +1,14 @@
-iNaturalist är ett socialt nätverk för att dela information om biologisk mångfald så vi kan hjälpa varandra att lära oss om naturen. Det primära målet är att människor ska få kontakt med naturen och det sekundära målet är att generera vetenskapligt värdefulla data om biologisk mångfald utifrån dessa personliga möten.
+Rikta kameran mot växter, djur och svampar för att se artförslag när du är utomhus, eller importera bilder från ditt bibliotek. iNaturalist hjälper miljontals människor som du att lära sig mer om naturen med hjälp av AI-förslag som backas upp av en global gemenskap av kunniga naturälskare.
 
-iNaturalist hjälper dig bestämma växter och djur med visuellt liknande förslag och verifiering av hängivna användare. Få kontakt med en community bestående av över en miljon vetenskapsmän och naturforskare som kan hjälpa dig att lära dig mer om naturen! Genom att spara och dela dina observationer skapar du data av forskningskvalitet för vetenskapsmän som försöker förbättra förståelsen och skyddet av naturen.
+iNaturalist går långt utöver AI-identifieringar – dina observationer granskas av riktiga människor och delas för vetenskap för att hjälpa till att skydda arter.
 
+NYCKELFUNKTIONER
+Identifiera arter från var som helst i världen
+Håll ett register över arter du ser
+Bidra till vetenskapen genom att dela med dig av dina observationer
+Utforska och skydda den biologiska mångfalden 
+Få kontakt med och lär av andra naturentusiaster
+
+iNaturalists ideella uppdrag är att koppla samman människor med naturen och främja vetenskap och bevarande. iNaturalist är fritt tillgängligt tack vare generöst stöd från vår grupp av givare.
+
+Utforska och lär dig ännu mer på https://www.inaturalist.org.
