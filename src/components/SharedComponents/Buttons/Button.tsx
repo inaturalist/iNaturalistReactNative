@@ -2,9 +2,13 @@ import { tailwindFontBold } from "appConstants/fontFamilies.ts";
 import classnames from "classnames";
 import { ActivityIndicator, Heading4, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
+import { getCurrentRoute } from "navigation/navigationUtils.ts";
 import React, { useEffect, useRef, useState } from "react";
 import { AccessibilityRole, GestureResponderEvent, ViewStyle } from "react-native";
+import { log } from "sharedHelpers/logger";
 import colors from "styles/tailwindColors";
+
+const logger = log.extend( "Button" );
 
 interface ButtonProps {
   accessibilityHint?: string;
@@ -208,7 +212,17 @@ const Button = ( {
   //   forceDark
   // } );
 
-  const handlePress = ( event?: GestureResponderEvent ) => {
+  const handlePress = async ( event?: GestureResponderEvent ) => {
+    const currentRoute = getCurrentRoute();
+    const buttonInfo = {
+      accessibilityHint: accessibilityHint || null,
+      accessibilityLabel: accessibilityLabel || null,
+      testID: testID || null,
+      text: text || null,
+      routeName: currentRoute?.name || null
+    };
+
+    logger.info( "Button tap:", JSON.stringify( buttonInfo ) );
     if ( !preventMultipleTaps ) {
       onPressRef.current( event );
       return;
