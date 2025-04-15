@@ -1,11 +1,11 @@
-Point the camera at plants, animals, & fungi to see species suggestions while you’re outside, or import photos from your library. iNaturalist helps millions of people like you learn more about nature using AI suggestions backed up by a global community of knowledgeable nature lovers.
+將相機對準植物、動物和真菌，或者從您的照片庫中匯入照片後，就能看到物種鑑定上的建議。 iNaturalist helps millions of people like you learn more about nature using AI suggestions backed up by a global community of knowledgeable nature lovers.
 
 iNaturalist goes far beyond AI identifications—your observations are reviewed by real people and shared for science to help protect species.
 
 KEY FEATURES
 Identify species from anywhere in the world
 Keep a record of species you see
-Contribute to science by sharing your observations
+分享您的觀察紀錄以貢獻於科學
 Explore and protect biodiversity 
 Connect with and learn from other nature enthusiasts
 

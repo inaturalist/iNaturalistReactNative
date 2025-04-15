@@ -5,7 +5,7 @@
 ### translations, go to https://crowdin.com/editor/inaturalistios/724
 ###
 
-A-global-community-for-nature = A global community for nature
+A-global-community-for-nature = 一個全球的大自然社群
 ABOUT = 關於
 ABOUT-COLLECTION-PROJECTS = 關於收藏專案
 ABOUT-INATURALIST = 關於《愛自然》
@@ -34,11 +34,11 @@ Add-location-to-refresh-suggestions = 新增位置以更新建議
 Add-observations = 新增觀察紀錄
 ADD-OPTIONAL-COMMENT = 新增選填的評論
 Add-optional-notes = 新增選填的註記
-Adds-ID = Adds ID
+Adds-ID = 新增物種鑑定
 Adds-your-vote-of-agreement = 新增您的同意票
 Adds-your-vote-of-disagreement = 新增您的不同意票
-Advanced-Mode = Advanced Mode
-ADVANCED-SETTINGS = ADVANCED SETTINGS
+Advanced-Mode = 進階模式
+ADVANCED-SETTINGS = 進階設定
 Affiliation = 所屬國際網路：{ $site }
 After-capturing-or-importing-photos-show = 拍攝或匯入照片後，顯示：
 Agree = 同意
