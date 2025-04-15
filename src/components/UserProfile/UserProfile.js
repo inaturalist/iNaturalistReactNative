@@ -173,8 +173,8 @@ const UserProfile = ( ): Node => {
         onSpeciesPressed={onSpeciesPressed}
       />
       <View className="mx-3">
-        <View className="mt-8 mb-4">
-          {currentUser?.login !== user?.login && (
+        {currentUser?.login !== user?.login && (
+          <View className="mt-[30px]">
             <FollowButtonContainer
               refetchRelationship={refetch}
               relationship={hasRelationshipWithCurrentUser}
@@ -183,8 +183,8 @@ const UserProfile = ( ): Node => {
               currentUser={currentUser}
               setShowUnfollowSheet={setShowUnfollowSheet}
             />
-          )}
-        </View>
+          </View>
+        )}
         { user?.description && (
           <View className="mt-[30px]">
             <Heading4 className="mb-2">{t( "ABOUT" )}</Heading4>
