@@ -186,12 +186,12 @@ const UserProfile = ( ): Node => {
           )}
         </View>
         { user?.description && (
-          <View className="mb-8">
-            <Heading4 className="mb-2 mt-5">{t( "ABOUT" )}</Heading4>
+          <View className="mt-[30px]">
+            <Heading4 className="mb-2">{t( "ABOUT" )}</Heading4>
             <UserText text={user?.description} />
           </View>
         ) }
-        <View className="mb-8">
+        <View className="mt-8 mb-8">
           <Heading4 className="mb-[11px]">
             {t( "PROJECTS" )}
           </Heading4>
