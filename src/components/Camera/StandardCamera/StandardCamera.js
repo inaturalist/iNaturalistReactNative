@@ -6,7 +6,10 @@ import CameraView from "components/Camera/CameraView.tsx";
 import FadeInOutView from "components/Camera/FadeInOutView.tsx";
 import useRotation from "components/Camera/hooks/useRotation.ts";
 import useZoom from "components/Camera/hooks/useZoom.ts";
-import { View } from "components/styledComponents";
+import {
+  SafeAreaView,
+  View
+} from "components/styledComponents";
 import { t } from "i18next";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
@@ -192,7 +195,7 @@ const StandardCamera = ( {
   }, [handleTakePhoto, initialVolume] );
 
   return (
-    <View className={classnames( containerClasses )}>
+    <SafeAreaView className={classnames( containerClasses )}>
       <PhotoPreview
         rotation={rotation}
         takingPhoto={takingPhoto}
@@ -249,7 +252,7 @@ const StandardCamera = ( {
         hidden={!showDiscardSheet}
         onDiscard={handleDiscard}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
