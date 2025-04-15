@@ -4,7 +4,7 @@ import { FasterImageView as UnstyledFasterImageView } from "@candlefinance/faste
 import {
   BottomSheetTextInput as StyledBottomSheetTextInput
 } from "@gorhom/bottom-sheet";
-import PressableWithTracking
+import UnstyledPressableWithTracking
   from "components/SharedComponents/Buttons/PressableWithTracking.tsx";
 import { styled } from "nativewind";
 import {
@@ -38,7 +38,7 @@ const Text = styled( UnstyledText );
 // $FlowIgnore
 const TextInput = styled( UntyledTextInput );
 // $FlowIgnore
-const Pressable = styled( PressableWithTracking );
+const Pressable = styled( UnstyledPressableWithTracking );
 // $FlowIgnore
 const Image = styled( UnstyledImage );
 // $FlowIgnore
