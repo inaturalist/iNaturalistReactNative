@@ -807,8 +807,6 @@ No-results-found-try-different-search = No results found. Try a different search
 no-rights-reserved-cc0 = no rights reserved (CC0)
 # Displayed in place of positional accuracy when that value is missing
 none--accuracy = none
-# Option when selecting taxonomic ranks that indicates no rank was selected
-NONE--ranks = NONE
 # Button in explore filters to search for species or observations NOT by the signed in user
 NOT-BY-ME = NOT BY ME
 # Error message title when not enough storage space on device, e.g. when the

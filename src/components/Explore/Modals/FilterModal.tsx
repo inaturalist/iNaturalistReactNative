@@ -188,9 +188,9 @@ const FilterModal = ( {
   };
 
   const taxonomicRankValues = {
-    [TAXONOMIC_RANK.none]: {
-      label: t( "NONE--ranks" ),
-      value: TAXONOMIC_RANK.none
+    [TAXONOMIC_RANK.all]: {
+      label: t( "ALL" ),
+      value: TAXONOMIC_RANK.all
     },
     [TAXONOMIC_RANK.kingdom]: {
       label: t( "Ranks-KINGDOM" ),
