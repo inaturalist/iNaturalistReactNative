@@ -1007,7 +1007,6 @@ Ranks-SUBFAMILY = SUBFAMILY
 Ranks-Subfamily = Subfamily
 Ranks-SUBGENUS = SUBGENUS
 Ranks-Subgenus = Subgenus
-Ranks-SUBKINGDOM = SUBKINGDOM
 Ranks-Subkingdom = Subkingdom
 Ranks-SUBORDER = SUBORDER
 Ranks-Suborder = Suborder
