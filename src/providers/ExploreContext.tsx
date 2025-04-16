@@ -54,7 +54,7 @@ export enum SORT_BY {
 }
 
 export enum TAXONOMIC_RANK {
-  none = null,
+  none = "none",
   kingdom = "kingdom",
   phylum = "phylum",
   subphylum = "subphylum",
@@ -513,12 +513,16 @@ function exploreReducer( state: State, action: Action ) {
     case EXPLORE_ACTION.SET_HIGHEST_TAXONOMIC_RANK:
       return {
         ...state,
-        hrank: action.hrank
+        hrank: action.hrank === TAXONOMIC_RANK.none
+          ? null
+          : action.hrank
       };
     case EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK:
       return {
         ...state,
-        lrank: action.lrank
+        lrank: action.lrank === TAXONOMIC_RANK.none
+          ? null
+          : action.lrank
       };
     case EXPLORE_ACTION.SET_DATE_OBSERVED_ALL:
       return {
