@@ -44,6 +44,10 @@ const SuggestionsResult = ( {
     }
   }, [forcedHeight] );
 
+  if ( !taxon ) {
+    return null;
+  }
+
   const accessibleName = accessibleTaxonName( taxon, currentUser, t );
 
   // A representative photo is dependant on the actual image that was scored by computer vision
