@@ -196,10 +196,6 @@ const FilterModal = ( {
       label: t( "Ranks-KINGDOM" ),
       value: TAXONOMIC_RANK.kingdom
     },
-    [TAXONOMIC_RANK.subkingdom]: {
-      label: t( "Ranks-SUBKINGDOM" ),
-      value: TAXONOMIC_RANK.subkingdom
-    },
     [TAXONOMIC_RANK.phylum]: {
       label: t( "Ranks-PHYLUM" ),
       value: TAXONOMIC_RANK.phylum
