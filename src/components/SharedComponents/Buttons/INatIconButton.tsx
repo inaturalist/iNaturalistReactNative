@@ -1,6 +1,7 @@
 import classnames from "classnames";
 import { INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import { getCurrentRoute } from "navigation/navigationUtils.ts";
 import React, { PropsWithChildren } from "react";
 import {
   GestureResponderEvent,
@@ -8,7 +9,10 @@ import {
   Pressable,
   ViewStyle
 } from "react-native";
+import { log } from "sharedHelpers/logger";
 import colors from "styles/tailwindColors";
+
+const logger = log.extend( "INatIconButton" );
 
 interface Props extends PropsWithChildren {
   accessibilityHint?: string;
@@ -171,6 +175,17 @@ const INatIconButton = ( {
     );
   }
 
+  const handlePressWithTracking = ( event?: GestureResponderEvent ) => {
+    if ( testID ) {
+      const currentRoute = getCurrentRoute( );
+      logger.info( `Button tap: ${testID}-${currentRoute?.name || "undefined"}` );
+    }
+
+    if ( onPress ) {
+      onPress( event );
+    }
+  };
+
   return (
     <Pressable
       accessibilityHint={accessibilityHint}
@@ -178,7 +193,7 @@ const INatIconButton = ( {
       accessibilityRole="button"
       accessibilityState={{ disabled }}
       disabled={disabled}
-      onPress={onPress}
+      onPress={handlePressWithTracking}
       style={( { pressed } ) => [
         ...wrapperStyle,
         { opacity: getOpacity( pressed ) }

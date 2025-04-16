@@ -78,6 +78,7 @@ const IconicTaxonChooser = ( {
           accessibilityHint={
             t( "Selects-iconic-taxon-X-for-identification", { iconicTaxon: iconicTaxonName } )
           }
+          testID={`INatIconButton.IconicTaxonButton.${iconicTaxonName}`}
         />
       </View>
     );
