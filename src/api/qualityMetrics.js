@@ -12,7 +12,7 @@ const setQualityMetric = async (
     const response = await inatjs.observations.setQualityMetric( params, opts );
     return response.results;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "setQualityMetric", opts } } );
   }
 };
 
@@ -24,7 +24,7 @@ const deleteQualityMetric = async (
     const { results } = await inatjs.observations.deleteQualityMetric( params, opts );
     return results;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "deleteQualityMetric", opts } } );
   }
 };
 
@@ -36,7 +36,7 @@ const fetchQualityMetrics = async (
     const response = await inatjs.observations.qualityMetrics( params, opts );
     return response.results;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "fetchQualityMetrics", opts } } );
   }
 };
 
