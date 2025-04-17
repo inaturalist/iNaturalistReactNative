@@ -17,7 +17,7 @@ const createComment = async (
     const { results } = await inatjs.comments.create( { ...PARAMS, ...params }, opts );
     return results;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "createComment", opts } } );
   }
 };
 
@@ -29,7 +29,7 @@ const updateComment = async (
     const { results } = await inatjs.comments.update( { ...PARAMS, ...params }, opts );
     return results;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "updateComment", opts } } );
   }
 };
 
@@ -41,7 +41,7 @@ const deleteComments = async (
     const { results } = await inatjs.comments.delete( { id }, opts );
     return results;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "deleteComments", id, opts } } );
   }
 };
 
