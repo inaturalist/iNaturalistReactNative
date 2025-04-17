@@ -13,7 +13,7 @@ const fetchAvailableLocales = async (
     if ( !response ) { return null; }
     return response?.results;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "fetchAvailableLocales", opts } } );
   }
 };
 
