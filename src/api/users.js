@@ -48,7 +48,7 @@ const fetchUserProjects = async ( params: Object = {}, opts: Object = {} ): Prom
     );
     return response?.results;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "fetchUserProjects", opts } } );
   }
 };
 
@@ -66,7 +66,7 @@ const fetchRemoteUser = async (
     } );
     return results[0];
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "fetchRemoteUser", id, opts } } );
   }
 };
 
@@ -78,7 +78,7 @@ const fetchUsers = async (
   try {
     return await inatjs.users.fetch( ids, params, opts );
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "fetchUsers", ids, opts } } );
   }
 };
 
@@ -94,7 +94,7 @@ const blockUser = async (
     } );
     return response;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "blockUser", id, opts } } );
   }
 };
 
@@ -110,7 +110,7 @@ const muteUser = async (
     } );
     return response;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "muteUser", id, opts } } );
   }
 };
 
@@ -126,7 +126,7 @@ const unblockUser = async (
     } );
     return response;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "unblockUser", id, opts } } );
   }
 };
 
@@ -142,7 +142,7 @@ const unmuteUser = async (
     } );
     return response;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "unmuteUser", id, opts } } );
   }
 };
 
@@ -150,7 +150,7 @@ const updateUsers = async ( params: Object = {}, opts: Object = {} ): Promise<?O
   try {
     return await inatjs.users.update( params, opts );
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "updateUsers", opts } } );
   }
 };
 
@@ -162,7 +162,7 @@ const fetchUserEmailAvailable = async (
   try {
     return await inatjs.users.emailAvailable( { email }, { ...params, ...opts } );
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "fetchUserEmailAvailable", email, opts } } );
   }
 };
 
