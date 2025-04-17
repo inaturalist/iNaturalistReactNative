@@ -23,7 +23,7 @@ const fetchProjects = async (
     const { results } = await inatjs.projects.fetch( id, params, opts );
     return results[0];
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "fetchProjects", id, opts } } );
   }
 };
 
@@ -34,7 +34,7 @@ const fetchProjectMembers = async (
   try {
     return await inatjs.projects.members( params, opts );
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "fetchProjectMembers", opts } } );
   }
 };
 
@@ -46,7 +46,7 @@ const fetchProjectPosts = async (
     const response = await inatjs.projects.posts( params, opts );
     return response.total_results;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "fetchProjectPosts", opts } } );
   }
 };
 
@@ -54,7 +54,7 @@ const searchProjects = async ( params: Object = {}, opts: Object = {} ): Promise
   try {
     return await inatjs.projects.search( { ...PARAMS, ...params }, opts );
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "searchProjects", opts } } );
   }
 };
 
@@ -62,7 +62,7 @@ const joinProject = async ( params: Object = {}, opts: Object = {} ): Promise<?O
   try {
     return await inatjs.projects.join( { ...PARAMS, ...params }, opts );
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "joinProject", opts } } );
   }
 };
 
@@ -70,7 +70,7 @@ const leaveProject = async ( params: Object = {}, opts: Object = {} ): Promise<?
   try {
     return await inatjs.projects.leave( { ...PARAMS, ...params }, opts );
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "leaveProject", opts } } );
   }
 };
 
@@ -79,7 +79,7 @@ const fetchMembership = async ( params: Object = {}, opts: Object = {} ): Promis
     const response = await inatjs.projects.membership( { ...PARAMS, ...params }, opts );
     return response.total_results;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "fetchMembership", opts } } );
   }
 };
 

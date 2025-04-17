@@ -92,7 +92,7 @@ async function fetchTaxon(
     }
     return response;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "fetchTaxon", id, opts } } );
   }
 }
 
@@ -102,7 +102,7 @@ async function searchTaxa( params: Object = {}, opts: Object = {} ): Promise<?Ob
     const { results } = await inatjs.taxa.search( searchParams, opts );
     return results;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "searchTaxa", opts } } );
   }
 }
 

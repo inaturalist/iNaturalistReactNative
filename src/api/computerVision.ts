@@ -20,7 +20,7 @@ const scoreImage = async (
   try {
     return inatjs.computervision.score_image( { ...PARAMS, ...params }, opts );
   } catch ( e ) {
-    return handleError( e as Error );
+    return handleError( e as Error, { context: { functionName: "scoreImage", opts } } );
   }
 };
 

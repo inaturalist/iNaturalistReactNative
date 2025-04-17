@@ -16,7 +16,7 @@ const createFlag = async (
     const { results } = await inatjs.flags.create( { ...PARAMS, ...params }, opts );
     return results;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "createFlag", opts } } );
   }
 };
 

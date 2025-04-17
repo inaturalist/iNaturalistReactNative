@@ -19,7 +19,7 @@ const searchMessages = async ( params: Object = {}, opts: Object = {} ): Promise
     const { results } = await inatjs.messages.search( { ...PARAMS, ...params }, opts );
     return results;
   } catch ( e ) {
-    return handleError( e as Error );
+    return handleError( e as Error, { context: { functionName: "searchMessages", opts } } );
   }
 };
 
