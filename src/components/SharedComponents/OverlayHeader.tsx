@@ -22,7 +22,7 @@ const OverlayHeader = ( {
 }: Props ) => (
   <View className={
     classnames(
-      "w-full justify-between flex-row px-[13px]",
+      "w-full justify-between items-center flex-row px-[13px] h-12",
       {
         "bg-white": invertToWhiteBackground
       }
