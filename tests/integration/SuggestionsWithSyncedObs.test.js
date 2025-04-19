@@ -244,7 +244,7 @@ describe( "Suggestions", ( ) => {
     await actor.press( observationGridItem );
     const editButton = await screen.findByLabelText( "Edit" );
     await act( async ( ) => actor.press( editButton ) );
-    const addIdButton = await screen.findByText( "ADD AN ID" );
+    const addIdButton = await screen.findByText( "ID WITH AI" );
     await actor.press( addIdButton );
   };
 
