@@ -116,7 +116,7 @@ const IdentificationSection = ( {
               icon={(
                 <INatIcon
                   name="magnifying-glass"
-                  size={24}
+                  size={18}
                   color={colors.darkGray}
                 />
               )}
