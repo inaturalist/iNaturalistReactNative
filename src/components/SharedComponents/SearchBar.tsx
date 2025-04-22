@@ -113,6 +113,7 @@ const SearchBar = ( {
               onPress={() => {
                 Keyboard.dismiss();
                 clearSearch();
+                setLocalValue( "" );
               }}
             />
           </View>
