@@ -13,6 +13,8 @@ import { getShadow } from "styles/global";
 
 import useMapLocation from "./hooks/useMapLocation";
 
+const DELTA = 0.02;
+
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
   elevation: 6
@@ -72,6 +74,14 @@ const MapView = ( {
   delete tileMapParams.order;
   delete tileMapParams.orderBy;
 
+  const initialRegion = {
+    ...region,
+    longitudeDelta: DELTA,
+    latitudeDelta: DELTA
+  };
+
+  console.log( region, "region in Explore MapView", initialRegion );
+
   return (
     <View className="flex-1 overflow-hidden h-full">
       <View className="z-10">
@@ -96,7 +106,7 @@ const MapView = ( {
             currentLocationButtonClassName="left-5 bottom-20"
             onPanDrag={onPanDrag}
             onRegionChangeComplete={updateMapBoundaries}
-            region={region}
+            initialRegion={initialRegion}
             showCurrentLocationButton
             showSwitchMapTypeButton
             showsCompass={false}
