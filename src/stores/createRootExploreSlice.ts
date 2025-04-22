@@ -11,7 +11,7 @@ export const initialMapRegion = {
 
 const DEFAULT_STATE = {
   rootStoredParams: {},
-  rootExploreView: "species",
+  rootExploreView: "observations",
   rootMapRegion: initialMapRegion
 };
 

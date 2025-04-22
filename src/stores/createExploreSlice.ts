@@ -10,7 +10,7 @@ export const initialMapRegion = {
 };
 
 const DEFAULT_STATE = {
-  exploreView: "species",
+  exploreView: "observations",
   mapRegion: initialMapRegion
 };
 
