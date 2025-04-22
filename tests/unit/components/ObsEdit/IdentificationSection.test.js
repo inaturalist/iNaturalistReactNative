@@ -22,13 +22,6 @@ const secondObservation = factory( "RemoteObservation", {
   }
 } );
 
-const nonIconicObservation = factory( "RemoteObservation", {
-  taxon: {
-    name: "Fox Squirrel",
-    iconic_taxon_name: null
-  }
-} );
-
 const mockObservations = [firstObservation, secondObservation];
 
 const renderIdentificationSection = ( obs, index = 0, resetState = false ) => renderComponent(
@@ -40,26 +33,6 @@ const renderIdentificationSection = ( obs, index = 0, resetState = false ) => re
 );
 
 describe( "IdentificationSection", () => {
-  it( "should show IconicTaxonChooser when there is no identification", ( ) => {
-    const observations = [
-      factory( "RemoteObservation", {
-        taxon: null
-      } )
-    ];
-    renderIdentificationSection( observations );
-    expect( screen.getByTestId( "ObsEdit.Suggestions" ) ).toBeVisible( );
-  } );
-
-  it( "should show IconicTaxonChooser when an iconic taxon is selected", ( ) => {
-    renderIdentificationSection( [firstObservation] );
-    expect( screen.getByTestId( "ObsEdit.Suggestions" ) ).toBeVisible( );
-  } );
-
-  it( "should hide IconicTaxonChooser when a non-iconic taxon is selected", ( ) => {
-    renderIdentificationSection( [nonIconicObservation] );
-    expect( screen.queryByTestId( "ObsEdit.Suggestions" ) ).toBeFalsy( );
-  } );
-
   it( "should show correct iconic taxon selection when navigating multiple observations", ( ) => {
     renderIdentificationSection( mockObservations );
     const fungiIcon = screen.getByTestId( "IconicTaxonButton.fungi" );
