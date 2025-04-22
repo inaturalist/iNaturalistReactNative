@@ -130,8 +130,9 @@ const SimpleUploadBannerContainer = ( {
       return status;
     }
 
-    if ( uploadsComplete ) {
-      status.text = t( "X-observations-uploaded", { count: numUploadsAttempted } );
+    const numUploadedWithoutErrors = numUploadsAttempted - totalUploadErrors;
+    if ( uploadsComplete && numUploadedWithoutErrors > 0 ) {
+      status.text = t( "X-observations-uploaded", { count: numUploadedWithoutErrors } );
       return status;
     }
 
@@ -145,6 +146,7 @@ const SimpleUploadBannerContainer = ( {
     pendingUpload,
     manualSyncInProgress,
     t,
+    totalUploadErrors,
     translationParams,
     uploadInProgress,
     uploadsComplete
