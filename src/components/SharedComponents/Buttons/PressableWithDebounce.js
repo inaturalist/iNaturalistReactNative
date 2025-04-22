@@ -1,7 +1,7 @@
 import {
   Pressable
 } from "components/styledComponents";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { GestureResponderEvent, ViewStyle } from "react-native";
 
 interface Props {
@@ -34,9 +34,7 @@ const PressableWithDebounce = ( {
   const [isProcessing, setIsProcessing] = useState( false );
   const onPressRef = useRef( onPress );
 
-  useEffect( ( ) => {
-    onPressRef.current = onPress;
-  }, [onPress] );
+  onPressRef.current = onPress;
 
   const handleOnPress = ( event?: GestureResponderEvent ) => {
     if ( !preventMultipleTaps ) {
