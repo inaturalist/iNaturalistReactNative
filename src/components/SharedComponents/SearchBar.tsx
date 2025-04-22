@@ -2,7 +2,7 @@ import { fontRegular } from "appConstants/fontFamilies.ts";
 import classNames from "classnames";
 import { INatIcon, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import React from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { Keyboard, TextInput as RNTextInput } from "react-native";
 import { TextInput, useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
@@ -21,6 +21,7 @@ interface Props {
   placeholder?: string;
   testID?: string;
   value: string;
+  debounceTime?: number;
 }
 
 // Ensure this component is placed outside of scroll views
@@ -34,10 +35,26 @@ const SearchBar = ( {
   input,
   placeholder,
   testID,
-  value
+  value,
+  debounceTime = 300
 }: Props ) => {
   const theme = useTheme( );
   const { t } = useTranslation( );
+  const [localValue, setLocalValue] = useState( value );
+
+  const debounceTimeout = useRef<ReturnType<typeof setTimeout>>();
+
+  const debouncedHandleTextChange = useCallback( ( text: string ) => {
+    setLocalValue( text );
+
+    if ( debounceTimeout.current ) {
+      clearTimeout( debounceTimeout.current );
+    }
+
+    debounceTimeout.current = setTimeout( ( ) => {
+      handleTextChange( text );
+    }, debounceTime );
+  }, [handleTextChange, debounceTime] );
 
   const outlineStyle = {
     borderColor: "lightgray",
@@ -76,7 +93,7 @@ const SearchBar = ( {
         dense
         keyboardType="default"
         mode="outlined"
-        onChangeText={handleTextChange}
+        onChangeText={debouncedHandleTextChange}
         outlineStyle={outlineStyle}
         placeholder={placeholder}
         selectionColor={colors.darkGray}
@@ -84,9 +101,9 @@ const SearchBar = ( {
         testID={testID}
         theme={fontTheme}
         underlineColor={colors.darkGray}
-        value={value}
+        value={localValue}
       />
-      {value?.length > 0 && clearSearch
+      {localValue?.length > 0 && clearSearch
         ? (
           <View className="absolute right-0">
             <INatIconButton
