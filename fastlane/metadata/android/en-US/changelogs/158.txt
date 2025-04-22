@@ -1,0 +1,5 @@
+Bug fixes for:
+- Group photos UI
+- AI Camera suggestion appearing on Observation Edit screen
+- Signing out and back in as a different user
+- Standard camera screen layout

@@ -11,10 +11,14 @@ export class INatApiError extends Error {
   // HTTP status code of the server response
   status: number;
 
-  constructor( json: Object, status?: number ) {
+  // Additional context information
+  context: ?Object;
+
+  constructor( json: Object, status?: number, context?: Object ) {
     super( JSON.stringify( json ) );
     this.json = json;
     this.status = status || json.status;
+    this.context = context || null;
   }
 }
 // https://wbinnssmith.com/blog/subclassing-error-in-modern-javascript/
@@ -23,23 +27,32 @@ Object.defineProperty( INatApiError.prototype, "name", {
 } );
 
 export class INatApiTooManyRequestsError extends INatApiError {
-  constructor() {
-    super( { error: "Too Many Requests", status: 429 } );
+  constructor( context?: Object ) {
+    const errorJson = {
+      error: "Too Many Requests",
+      status: 429,
+      context
+    };
+    super( errorJson, 429, context );
   }
 }
-Object.defineProperty( INatApiTooManyRequestsError, "name", {
+
+Object.defineProperty( INatApiTooManyRequestsError.prototype, "name", {
   value: "INatApiTooManyRequestsError"
 } );
 
 async function handleError( e: Object, options: Object = {} ): Object {
   if ( !e.response ) { throw e; }
 
+  // Get context from options if available
+  const context = options?.context || null;
+
   // 429 responses don't return JSON so the parsing that we do below will
   // fail. Also, info about the request that triggered the 429 response is
   // kind of irrelevant. It's the behaviors that led up to being blocked that
   // matter.
   if ( e.response.status === 429 ) {
-    throw new INatApiTooManyRequestsError( );
+    throw new INatApiTooManyRequestsError( context );
   }
 
   // Try to parse JSON in the response if this was an HTTP error. If we can't
@@ -70,7 +83,7 @@ async function handleError( e: Object, options: Object = {} ): Object {
     } );
   }
 
-  const error = new INatApiError( errorJson, e.response.status );
+  const error = new INatApiError( errorJson, e.response.status, context );
 
   // In theory code higher up in the stack will handle this error when thrown,
   // so it's probably not worth reporting at this stage. If it doesn't get
@@ -79,7 +92,10 @@ async function handleError( e: Object, options: Object = {} ): Object {
   console.error(
     `Error requesting ${e.response.url} (status: ${e.response.status}):
     ${JSON.stringify( errorJson )}`,
-    error
+    error,
+    error.context
+      ? JSON.stringify( error.context )
+      : "No context"
   );
   if ( typeof ( options.onApiError ) === "function" ) {
     options.onApiError( error );

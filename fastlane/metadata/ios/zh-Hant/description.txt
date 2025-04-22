@@ -1,3 +1,14 @@
-愛自然(iNaturalist)是一個以分享生物多樣性資訊的社群平台，讓大眾能互助學習、認識大自然。 首要目標是讓人們與自然建立連結，次要目標則是從這些親身觀察中，產出具有科學價值的生物多樣性資料。
+將相機對準植物、動物和真菌，或者從您的照片庫中匯入照片後，就能看到物種鑑定上的建議。 iNaturalist helps millions of people like you learn more about nature using AI suggestions backed up by a global community of knowledgeable nature lovers.
 
-愛自然透過視覺相似建議與熱心的使用者驗證機制，以協助您辨識動植物。 連結超過一百萬名科學家與自然觀察家組成的專業社群，讓您深入探索自然知識！ 透過記錄並分享您的觀察紀錄，您所產出的研究等級資料將協助科學家更深入地理解自然生態，以保護大自然。
+iNaturalist goes far beyond AI identifications—your observations are reviewed by real people and shared for science to help protect species.
+
+KEY FEATURES
+Identify species from anywhere in the world
+Keep a record of species you see
+分享您的觀察紀錄以貢獻於科學
+Explore and protect biodiversity 
+Connect with and learn from other nature enthusiasts
+
+iNaturalist’s nonprofit mission is to connect people to nature and advance science and conservation. iNaturalist is freely available thanks to generous support from our community of donors.
+
+Explore and learn even more at https://www.inaturalist.org.

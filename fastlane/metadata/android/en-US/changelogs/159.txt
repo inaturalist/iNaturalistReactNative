@@ -1,0 +1,4 @@
+- Improved error reporting
+- Improved onboarding carousel transitions
+- Improved text on Match screen & loading state
+- Pressing buttons multiple times rapidly now doesn't cause multiple actions
