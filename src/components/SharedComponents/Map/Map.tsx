@@ -244,7 +244,9 @@ const Map = forwardRef( ( {
     // If we're supposed to be showing user location but we don't have it, ask
     // for permission again, which should result in fetching the location if
     // we can
-    if ( !userLocation ) {
+    // skipping onCurrentLocationPress here because the handlers
+    // are handling the permissions request outside of this component (example: Explore MapView)
+    if ( !userLocation && onCurrentLocationPress === undefined ) {
       requestPermissions( );
       return;
     }

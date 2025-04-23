@@ -206,7 +206,7 @@ const MapView = ( {
         onCurrentLocationPress={handleCurrentLocationPress}
       />
       {isLoading && (
-        <View style={centeredLoadingWheel}>
+        <View style={centeredLoadingWheel} testID="activity-indicator">
           <ActivityIndicator size={50} />
         </View>
       )}
