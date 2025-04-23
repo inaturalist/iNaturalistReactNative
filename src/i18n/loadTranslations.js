@@ -1,4 +1,4 @@
-// AUTO-GENERATED. See src/iNaturalistReactNative/src/i18n/i18ncli.js
+// AUTO-GENERATED. See src/i18n/i18ncli.js
 export default locale => {
   if ( locale === "zh-TW" ) { return require( "./l10n/zh-TW.ftl.json" ); }
   if ( locale === "zh-HK" ) { return require( "./l10n/zh-HK.ftl.json" ); }
