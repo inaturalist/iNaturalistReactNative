@@ -27,9 +27,7 @@ type Props = {
   canFetch?: boolean,
   layout: string,
   queryParams: Object,
-  handleUpdateCount: Function,
-  currentMapRegion: Object,
-  setCurrentMapRegion: Function
+  handleUpdateCount: Function
 }
 
 const OBS_LIST_CONTAINER_STYLE = { paddingTop: 50 };
@@ -40,9 +38,7 @@ const ObservationsView = ( {
   canFetch,
   layout,
   queryParams,
-  handleUpdateCount,
-  currentMapRegion,
-  setCurrentMapRegion
+  handleUpdateCount
 }: Props ): Node => {
   const currentUser = useCurrentUser( );
   const { state } = useExplore();
@@ -139,8 +135,6 @@ const ObservationsView = ( {
         observationBounds={totalBounds}
         isLoading={isLoading}
         queryParams={queryParams}
-        currentMapRegion={currentMapRegion}
-        setCurrentMapRegion={setCurrentMapRegion}
       />
     </View>
   );

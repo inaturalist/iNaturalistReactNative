@@ -53,17 +53,13 @@ interface Props {
     order?: string;
     orderBy?: string;
   };
-  // currentMapRegion: Region;
-  // setCurrentMapRegion: ( Region ) => void;
   isLoading: boolean
 }
 
 const MapView = ( {
   observationBounds,
   queryParams,
-  // currentMapRegion,
   isLoading
-  // setCurrentMapRegion
 }: Props ) => {
   const { t } = useTranslation( );
   const { state: exploreState, dispatch } = useExplore( );
