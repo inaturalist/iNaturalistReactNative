@@ -64,7 +64,6 @@ const MapView = ( {
   const { t } = useTranslation( );
   const { state: exploreState, dispatch } = useExplore( );
   const [showRedoSearchButton, setShowRedoSearchButton] = useState( false );
-  const [currentMapBoundaries, setCurrentMapBoundaries] = useState<MapBoundaries>();
   const isFirstRender = useRef( true );
 
   const mapRef = useRef( null );
@@ -96,6 +95,11 @@ const MapView = ( {
       return;
     }
 
+    if ( mapRef.current
+      && exploreState.placeMode === PLACE_MODE.MAP_AREA ) {
+      return;
+    }
+
     // since we're using initialRegion, we need to animate to the correct zoom level
     // when a user switches back to NEARBY or WORLDWIDE
     if ( mapRef.current
@@ -116,30 +120,23 @@ const MapView = ( {
       const newRegion = getMapRegion( observationBounds );
 
       mapRef.current.animateToRegion( newRegion );
-
-      setCurrentMapBoundaries( {
-        swlat: observationBounds.swlat,
-        swlng: observationBounds.swlng,
-        nelat: observationBounds.nelat,
-        nelng: observationBounds.nelng
-      } );
     }
   }, [exploreState, nearbyRegion, regionFromCoordinates, observationBounds] );
 
-  const handleRegionChangeComplete = ( region, boundaries ) => {
-    if ( !boundaries ) { return; }
-    setCurrentMapBoundaries( {
-      swlat: boundaries.southWest.latitude,
-      swlng: boundaries.southWest.longitude,
-      nelat: boundaries.northEast.latitude,
-      nelng: boundaries.northEast.longitude
-    } );
-  };
-
-  const handleRedoSearch = ( ) => {
+  const handleRedoSearch = async ( ) => {
     setShowRedoSearchButton( false );
+    const currentBounds = await mapRef?.current?.getMapBoundaries( );
+    console.log( currentBounds, "current bounds" );
     dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_MAP_AREA } );
-    dispatch( { type: EXPLORE_ACTION.SET_MAP_BOUNDARIES, mapBoundaries: currentMapBoundaries } );
+    dispatch( {
+      type: EXPLORE_ACTION.SET_MAP_BOUNDARIES,
+      mapBoundaries: {
+        swlat: currentBounds.southWest.latitude,
+        swlng: currentBounds.southWest.longitude,
+        nelat: currentBounds.northEast.latitude,
+        nelng: currentBounds.northEast.longitude
+      }
+    } );
   };
 
   const tileMapParams = {
@@ -185,7 +182,6 @@ const MapView = ( {
         ref={mapRef}
         currentLocationButtonClassName="left-5 bottom-20"
         onPanDrag={handlePanDrag}
-        onRegionChangeComplete={handleRegionChangeComplete}
         initialRegion={initialRegion}
         showCurrentLocationButton
         showSwitchMapTypeButton
