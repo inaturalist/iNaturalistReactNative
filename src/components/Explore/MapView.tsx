@@ -96,16 +96,24 @@ const MapView = ( {
       return;
     }
 
-    if (
-      observationBounds
-      && [
-        PLACE_MODE.WORLDWIDE,
-        PLACE_MODE.PLACE,
-        PLACE_MODE.NEARBY
-      ].indexOf( exploreState.placeMode ) >= 0
-    ) {
+    // since we're using initialRegion, we need to animate to the correct zoom level
+    // when a user switches back to NEARBY or WORLDWIDE
+    if ( mapRef.current
+        && exploreState.placeMode === PLACE_MODE.NEARBY ) {
+      // Note: we do get observationBounds back from the API for nearby
+      // but per user feedback, we want to show users a more zoomed in view
+      // when they're looking at NEARBY view
+      mapRef.current.animateToRegion( nearbyRegion );
+      return;
+    }
+    if ( mapRef.current
+      && exploreState.placeMode === PLACE_MODE.WORLDWIDE ) {
+      mapRef.current.animateToRegion( worldwideRegion );
+    }
+    if ( mapRef.current
+      && exploreState.placeMode === PLACE_MODE.PLACE
+      && observationBounds ) {
       const newRegion = getMapRegion( observationBounds );
-      console.log( newRegion, "new region in observationBounds useEffect" );
 
       mapRef.current.animateToRegion( newRegion );
 
@@ -115,23 +123,6 @@ const MapView = ( {
         nelat: observationBounds.nelat,
         nelng: observationBounds.nelng
       } );
-      return;
-    }
-
-    if ( exploreState.place?.point_geojson?.coordinates && mapRef.current ) {
-      mapRef.current.animateToRegion( regionFromCoordinates );
-      return;
-    }
-    // since we're using initialRegion, we need to animate to the correct zoom level
-    // when a user switches back to NEARBY or WORLDWIDE
-    if ( mapRef.current
-        && exploreState.placeMode === PLACE_MODE.NEARBY ) {
-      mapRef.current.animateToRegion( nearbyRegion );
-      return;
-    }
-    if ( mapRef.current
-      && exploreState.placeMode === PLACE_MODE.WORLDWIDE ) {
-      mapRef.current.animateToRegion( worldwideRegion );
     }
   }, [exploreState, nearbyRegion, regionFromCoordinates, observationBounds] );
 
