@@ -3,6 +3,7 @@ import classnames from "classnames";
 import { Body1 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, {
+  forwardRef,
   useCallback,
   useEffect,
   useMemo,
@@ -82,7 +83,7 @@ interface Props {
 
 // TODO: fallback to another map library
 // for people who don't use GMaps (i.e. users in China)
-const Map = ( {
+const Map = forwardRef( ( {
   children,
   className = "flex-1",
   currentLocationButtonClassName,
@@ -111,7 +112,7 @@ const Map = ( {
   withPressableObsTiles,
   zoomEnabled = true,
   zoomTapEnabled = true
-}: Props ) => {
+}: Props, ref ) => {
   const { isDebug } = useDebugMode( );
   const { screenWidth, screenHeight } = useDeviceOrientation( );
   const [currentZoom, setCurrentZoom] = useState( 0 );
@@ -448,6 +449,18 @@ const Map = ( {
   const longitude = observation?.privateLongitude || observation?.longitude;
   const hasCoordinates = latitude && longitude;
 
+  const setRefs = instance => {
+    // Update our internal ref
+    mapViewRef.current = instance;
+
+    // Forward to the parent ref
+    if ( typeof ref === "function" ) {
+      ref( instance );
+    } else if ( ref ) {
+      ref.current = instance;
+    }
+  };
+
   return (
     <View
       style={mapContainerStyle}
@@ -469,7 +482,7 @@ const Map = ( {
         onRegionChangeComplete={handleRegionChangeComplete}
         onUserLocationChange={handleUserLocationChange}
         pitchEnabled={false}
-        ref={mapViewRef}
+        ref={setRefs}
         region={mapRegion}
         rotateEnabled={false}
         scrollEnabled={scrollEnabled}
@@ -529,6 +542,6 @@ const Map = ( {
       {children}
     </View>
   );
-};
+} );
 
 export default Map;
