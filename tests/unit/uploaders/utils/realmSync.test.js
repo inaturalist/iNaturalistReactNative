@@ -123,13 +123,11 @@ describe( "markRecordUploaded", () => {
       const error = new Error( "Some other error" );
       error.message = `${description}: ${error.message}`;
       throw error;
-    } )
-      .mockImplementationOnce( ( realm, callback ) => {
-      // Second call succeeds
-        callback( );
-      } );
+    } );
 
-    markRecordUploaded( "obs123", null, "Observation", mockResponse, mockRealm );
+    expect( () => {
+      markRecordUploaded( "obs123", null, "Observation", mockResponse, mockRealm );
+    } ).toThrow( /Some other error/ );
 
     // Only called once because error doesn't match invalidated pattern
     expect( safeRealmWrite ).toHaveBeenCalledTimes( 1 );
