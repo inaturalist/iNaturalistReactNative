@@ -62,7 +62,7 @@ const MapView = ( {
   isLoading
 }: Props ) => {
   const { t } = useTranslation( );
-  const { state: exploreState, dispatch } = useExplore( );
+  const { state: exploreState, dispatch, defaultExploreLocation } = useExplore( );
   const [showRedoSearchButton, setShowRedoSearchButton] = useState( false );
   const isFirstRender = useRef( true );
 
@@ -115,18 +115,23 @@ const MapView = ( {
       mapRef.current.animateToRegion( worldwideRegion );
     }
     if ( mapRef.current
-      && exploreState.placeMode === PLACE_MODE.PLACE
-      && observationBounds ) {
-      const newRegion = getMapRegion( observationBounds );
-
-      mapRef.current.animateToRegion( newRegion );
+      && exploreState.placeMode === PLACE_MODE.PLACE ) {
+      if ( observationBounds ) {
+        const newRegion = getMapRegion( observationBounds );
+        mapRef.current.animateToRegion( newRegion );
+      }
     }
-  }, [exploreState, nearbyRegion, regionFromCoordinates, observationBounds] );
+  }, [
+    exploreState.placeMode,
+    nearbyRegion,
+    regionFromCoordinates,
+    observationBounds,
+    exploreState.place?.id
+  ] );
 
   const handleRedoSearch = async ( ) => {
     setShowRedoSearchButton( false );
     const currentBounds = await mapRef?.current?.getMapBoundaries( );
-    console.log( currentBounds, "current bounds" );
     dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_MAP_AREA } );
     dispatch( {
       type: EXPLORE_ACTION.SET_MAP_BOUNDARIES,
@@ -161,6 +166,14 @@ const MapView = ( {
 
   const handlePanDrag = ( ) => setShowRedoSearchButton( true );
 
+  const handleCurrentLocationPress = async ( ) => {
+    const exploreLocation = await defaultExploreLocation( );
+    dispatch( {
+      type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
+      exploreLocation
+    } );
+  };
+
   return (
     <View className="flex-1 overflow-hidden h-full">
       <View className="z-10">
@@ -190,6 +203,7 @@ const MapView = ( {
         showsUserLocation
         tileMapParams={tileMapParams}
         withPressableObsTiles={tileMapParams !== null}
+        onCurrentLocationPress={handleCurrentLocationPress}
       />
       {isLoading && (
         <View style={centeredLoadingWheel}>
