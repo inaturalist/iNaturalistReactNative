@@ -11,7 +11,6 @@ import {
 import React, {
   useEffect, useMemo, useRef, useState
 } from "react";
-// import useMapLocation from "./hooks/useMapLocation";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
