@@ -8,7 +8,7 @@ import type { RealmObservation } from "realmModels/types.d.ts";
 import {
   INCREMENT_SINGLE_UPLOAD_PROGRESS
 } from "sharedHelpers/emitUploadProgress.ts";
-import uploadObservation, { handleUploadError } from "sharedHelpers/uploadObservation";
+import uploadObservation from "sharedHelpers/uploadObservation";
 import {
   useTranslation
 } from "sharedHooks";
@@ -18,6 +18,7 @@ import {
   UPLOAD_IN_PROGRESS
 } from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
+import { handleUploadError } from "uploaders";
 
 export const MS_BEFORE_TOOLBAR_RESET = 5_000;
 const MS_BEFORE_UPLOAD_TIMES_OUT = 60_000 * 5;
