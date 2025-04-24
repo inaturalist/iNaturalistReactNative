@@ -158,6 +158,9 @@ const Explore = ( {
             layout={layout}
             queryParams={queryParams}
             handleUpdateCount={handleUpdateCount}
+            hasLocationPermissions={hasLocationPermissions}
+            renderLocationPermissionsGate={renderLocationPermissionsGate}
+            requestLocationPermissions={requestLocationPermissions}
           />
         )}
         {currentExploreView === "species" && (

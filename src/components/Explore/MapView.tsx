@@ -53,13 +53,19 @@ interface Props {
     order?: string;
     orderBy?: string;
   };
-  isLoading: boolean
+  isLoading: boolean,
+  hasLocationPermissions?: boolean,
+  renderLocationPermissionsGate: Function,
+  requestLocationPermissions: Function
 }
 
 const MapView = ( {
   observationBounds,
   queryParams,
-  isLoading
+  isLoading,
+  hasLocationPermissions,
+  renderLocationPermissionsGate,
+  requestLocationPermissions
 }: Props ) => {
   const { t } = useTranslation( );
   const { state: exploreState, dispatch, defaultExploreLocation } = useExplore( );
@@ -167,11 +173,15 @@ const MapView = ( {
   const handlePanDrag = ( ) => setShowRedoSearchButton( true );
 
   const handleCurrentLocationPress = async ( ) => {
-    const exploreLocation = await defaultExploreLocation( );
-    dispatch( {
-      type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
-      exploreLocation
-    } );
+    if ( hasLocationPermissions ) {
+      const exploreLocation = await defaultExploreLocation( );
+      dispatch( {
+        type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
+        exploreLocation
+      } );
+    } else {
+      requestLocationPermissions( );
+    }
   };
 
   return (
@@ -210,6 +220,7 @@ const MapView = ( {
           <ActivityIndicator size={50} />
         </View>
       )}
+      {renderLocationPermissionsGate( { onPermissionGranted: handleCurrentLocationPress } )}
     </View>
   );
 };

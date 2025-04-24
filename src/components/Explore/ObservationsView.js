@@ -27,7 +27,10 @@ type Props = {
   canFetch?: boolean,
   layout: string,
   queryParams: Object,
-  handleUpdateCount: Function
+  handleUpdateCount: Function,
+  hasLocationPermissions?: boolean,
+  renderLocationPermissionsGate: Function,
+  requestLocationPermissions: Function
 }
 
 const OBS_LIST_CONTAINER_STYLE = { paddingTop: 50 };
@@ -38,7 +41,10 @@ const ObservationsView = ( {
   canFetch,
   layout,
   queryParams,
-  handleUpdateCount
+  handleUpdateCount,
+  hasLocationPermissions,
+  renderLocationPermissionsGate,
+  requestLocationPermissions
 }: Props ): Node => {
   const currentUser = useCurrentUser( );
   const { state } = useExplore();
@@ -135,6 +141,9 @@ const ObservationsView = ( {
         observationBounds={totalBounds}
         isLoading={isLoading}
         queryParams={queryParams}
+        hasLocationPermissions={hasLocationPermissions}
+        renderLocationPermissionsGate={renderLocationPermissionsGate}
+        requestLocationPermissions={requestLocationPermissions}
       />
     </View>
   );
