@@ -41,11 +41,6 @@ const IdentificationSection = ( {
 
   const hasIdentification = identTaxon && identTaxon.rank_level !== 100;
 
-  const showIconicTaxonChooser = !identTaxon
-    || identTaxon.name === identTaxon.iconic_taxon_name
-    || identTaxon.isIconic
-    || identTaxon.name === "Life";
-
   const removeTaxon = useCallback( ( ) => {
     updateObservationKeys( { taxon: undefined } );
   }, [updateObservationKeys] );
@@ -70,6 +65,13 @@ const IdentificationSection = ( {
     navigation
   ] );
 
+  const navToSuggestionsSearch = useCallback( ( ) => {
+    navigation.navigate( "SuggestionsTaxonSearch", {
+      entryScreen: "ObsEdit",
+      lastScreen: "ObsEdit"
+    } );
+  }, [navigation] );
+
   useEffect( ( ) => {
     // by adding resetScreen as a key in renderIconicTaxonChooser,
     // we force React to rerender and reset the horizontal scroll position
@@ -83,27 +85,44 @@ const IdentificationSection = ( {
     <View key={resetScreen?.toString( )}>
       <IconicTaxonChooser
         before={(
-          <Button
-            level={identTaxon
-              ? "neutral"
-              : "focus"}
-            onPress={navToSuggestions}
-            text={t( "ADD-AN-ID" )}
-            className={classnames( "rounded-full py-1 h-[36px] ml-6", {
-              "border border-darkGray border-[2px]": identTaxon
-            } )}
-            testID="ObsEdit.Suggestions"
-            icon={(
-              <INatIcon
-                name="sparkly-label"
-                size={24}
-                color={identTaxon
-                  ? colors.darkGray
-                  : colors.white}
-              />
-            )}
-            accessibilityLabel={t( "View-suggestions" )}
-          />
+          <View className="flex-row">
+            <Button
+              level={identTaxon
+                ? "neutral"
+                : "focus"}
+              onPress={navToSuggestions}
+              text={t( "ID-WITH-AI" )}
+              className={classnames( "rounded-full py-1 h-[36px] ml-6", {
+                "border border-darkGray border-[2px]": identTaxon
+              } )}
+              testID="ObsEdit.Suggestions"
+              icon={(
+                <INatIcon
+                  name="sparkly-label"
+                  size={24}
+                  color={identTaxon
+                    ? colors.darkGray
+                    : colors.white}
+                />
+              )}
+              accessibilityLabel={t( "View-suggestions" )}
+            />
+            <Button
+              level="neutral"
+              onPress={navToSuggestionsSearch}
+              text={t( "SEARCH" )}
+              className="rounded-full py-1 h-[36px] ml-2 border border-darkGray border-[2px]"
+              testID="ObsEdit.Suggestions"
+              icon={(
+                <INatIcon
+                  name="magnifying-glass"
+                  size={18}
+                  color={colors.darkGray}
+                />
+              )}
+              accessibilityLabel={t( "View-suggestions" )}
+            />
+          </View>
         )}
         chosen={
           identTaxon
@@ -158,7 +177,7 @@ const IdentificationSection = ( {
         </View>
       )}
       <View className="mt-5">
-        {showIconicTaxonChooser && renderIconicTaxonChooser( )}
+        {renderIconicTaxonChooser( )}
       </View>
     </View>
   );

@@ -124,7 +124,7 @@ describe( "Suggestions", ( ) => {
     await actor.press( observationGridItem );
     const addIdButton = observation.taxon
       ? await screen.findByLabelText( "Edit identification" )
-      : await screen.findByText( "ADD AN ID" );
+      : await screen.findByText( "ID WITH AI" );
     await actor.press( addIdButton );
   }
 

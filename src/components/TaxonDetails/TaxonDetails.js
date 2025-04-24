@@ -326,7 +326,7 @@ const TaxonDetails = ( ): Node => {
       {showExploreButton && (
         <View className="ml-2">
           <INatIconButton
-            icon="compass-rose-outline"
+            icon="magnifying-glass"
             onPress={( ) => {
               setExploreView( "observations" );
               navigation.navigate( "TabNavigator", {
@@ -342,7 +342,7 @@ const TaxonDetails = ( ): Node => {
             }}
             accessibilityLabel={t( "See-observations-of-this-taxon-in-explore" )}
             accessibilityHint={t( "Navigates-to-explore" )}
-            size={30}
+            size={20}
             color={colors.white}
             className="bg-inatGreen rounded-full"
             mode="contained"
