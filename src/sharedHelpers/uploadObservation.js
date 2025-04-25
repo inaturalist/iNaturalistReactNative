@@ -12,7 +12,11 @@ import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import ObservationSound from "realmModels/ObservationSound";
 import emitUploadProgress from "sharedHelpers/emitUploadProgress.ts";
-import { markRecordUploaded } from "uploaders";
+import {
+  markRecordUploaded,
+  prepareMediaForUpload,
+  prepareObservationForUpload
+} from "uploaders";
 
 const UPLOAD_PROGRESS_INCREMENT = 1;
 
@@ -53,21 +57,7 @@ const uploadEvidence = async (
   };
 
   const responses = await Promise.all( evidence.map( item => {
-    let currentEvidence = item;
-
-    if ( currentEvidence.photo ) {
-      currentEvidence = item.toJSON( );
-      // Remove all null values, b/c the API doesn't seem to like them
-      const newPhoto = {};
-      const { photo } = currentEvidence;
-      Object.keys( photo ).forEach( k => {
-        if ( photo[k] !== null ) {
-          newPhoto[k] = photo[k];
-        }
-      } );
-      currentEvidence.photo = newPhoto;
-    }
-
+    const currentEvidence = prepareMediaForUpload( item );
     return uploadToServer( currentEvidence );
   } ) );
   // eslint-disable-next-line consistent-return
@@ -88,17 +78,9 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
       "Gack, tried to upload an observation without API token!"
     );
   }
-  const obsToUpload = Observation.mapObservationForUpload( obs );
   const options = { ...opts, api_token: apiToken };
 
-  // Remove all null values, b/c the API doesn't seem to like them for some
-  // reason (might be an error with the API as of 20220801)
-  const newObs = {};
-  Object.keys( obsToUpload ).forEach( k => {
-    if ( obsToUpload[k] !== null ) {
-      newObs[k] = obsToUpload[k];
-    }
-  } );
+  const newObs = prepareObservationForUpload( obs );
 
   let response;
 
