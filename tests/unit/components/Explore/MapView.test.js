@@ -3,7 +3,6 @@ import { screen, userEvent } from "@testing-library/react-native";
 import MapView from "components/Explore/MapView.tsx";
 import { EXPLORE_ACTION, ExploreProvider } from "providers/ExploreContext.tsx";
 import React from "react";
-import * as useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
@@ -40,13 +39,18 @@ const mockObservationBounds = {
   nelng: 40
 };
 
+const mockRequestLocationPermissions = jest.fn( );
+
 const defaultProps = {
   observationBounds: mockObservationBounds,
   queryParams: {
     taxon_id: 1,
     return_bounds: true
   },
-  isLoading: false
+  isLoading: false,
+  hasLocationPermissions: true,
+  renderLocationPermissionsGate: jest.fn( ),
+  requestLocationPermissions: mockRequestLocationPermissions
 };
 
 const mockObservations = [
@@ -73,7 +77,7 @@ describe( "MapView", ( ) => {
   it( "should be accessible", ( ) => {
     const exploreMap = (
       <ExploreProvider>
-        <MapView observations={mockObservations} />
+        <MapView observations={mockObservations} {...defaultProps} />
       </ExploreProvider>
     );
     expect( exploreMap ).toBeAccessible( );
@@ -87,11 +91,6 @@ describe( "MapView", ( ) => {
   } );
 
   it( "should dispatch SET_EXPLORE_LOCATION when current location button is pressed", async ( ) => {
-    jest.spyOn( useLocationPermission, "default" ).mockImplementation( ( ) => ( {
-      hasPermissions: true,
-      renderPermissionsGate: jest.fn( ),
-      requestPermissions: jest.fn( )
-    } ) );
     renderMapView( );
 
     const currentLocationButton = screen.getByTestId( "Map.CurrentLocationButton" );
@@ -106,6 +105,26 @@ describe( "MapView", ( ) => {
       type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
       exploreLocation: { lat: 10, lng: 20 }
     } );
+  } );
+
+  it( "should dispatch requestLocationPermissions when current location button "
+    + " is pressed and user has not given permissions", async ( ) => {
+    renderComponent(
+      <ExploreProvider>
+        <MapView
+          {...defaultProps}
+          hasLocationPermissions={false}
+        />
+      </ExploreProvider>
+    );
+
+    const currentLocationButton = screen.getByTestId( "Map.CurrentLocationButton" );
+    await actor.press( currentLocationButton );
+
+    await Promise.resolve( );
+    jest.runAllTimers( );
+
+    expect( mockRequestLocationPermissions ).toHaveBeenCalled( );
   } );
 
   it( "should show loading indicator when isLoading is true", ( ) => {
