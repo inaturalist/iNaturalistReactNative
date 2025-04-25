@@ -1,90 +1,69 @@
+import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 import {
   prepareMediaForUpload
 } from "uploaders";
 
+const mockToJSON = jest.fn();
+
+const mockPhoto = factory( "LocalPhoto", {
+  id: faker.number.int( ),
+  attribution: faker.lorem.sentence( ),
+  licenseCode: "cc-by-nc",
+  url: "https://example.com/photo.jpg"
+} );
+
+const mockObservationPhoto = factory( "LocalObservationPhoto", {
+  photo: mockPhoto,
+  toJSON: mockToJSON
+} );
+
+mockToJSON.mockReturnValue( {
+  uuid: mockObservationPhoto.uuid,
+  photo: mockPhoto // Make sure this matches the structure expected
+} );
+
+const mockObservationPhotoWithNullValues = factory( "LocalObservationPhoto", {
+  photo: {
+    ...mockPhoto,
+    url: "https://example.com/photo/1.jpg",
+    position: null,
+    _updated_at: null
+  }
+} );
+
+const mockObservationSound = factory( "LocalObservationSound", {
+  file_url: "https://example.com/sound.mp3"
+} );
+
 describe( "prepareMediaForUpload", () => {
   test( "should handle photo objects correctly", () => {
-    const mockPhoto = {
-      uuid: "photo-123",
-      photo: {
-        id: 456,
-        url: "https://example.com/photo.jpg",
-        attribution: "Test User",
-        license_code: "CC-BY",
-        original_dimensions: { width: 1200, height: 800 },
-        metadata: null
-      },
-      toJSON: jest.fn().mockReturnValue( {
-        uuid: "photo-123",
-        photo: {
-          id: 456,
-          url: "https://example.com/photo.jpg",
-          attribution: "Test User",
-          license_code: "CC-BY",
-          original_dimensions: { width: 1200, height: 800 },
-          metadata: null
-        }
-      } )
-    };
+    const result = prepareMediaForUpload( mockObservationPhoto );
 
-    const result = prepareMediaForUpload( mockPhoto );
-
-    expect( mockPhoto.toJSON ).toHaveBeenCalled();
+    expect( mockToJSON ).toHaveBeenCalled( );
 
     expect( result ).toEqual( {
-      uuid: "photo-123",
-      photo: {
-        id: 456,
-        url: "https://example.com/photo.jpg",
-        attribution: "Test User",
-        license_code: "CC-BY",
-        original_dimensions: { width: 1200, height: 800 }
-      }
+      uuid: mockObservationPhoto.uuid,
+      photo: mockPhoto
     } );
   } );
 
   test( "should return the original object if it doesn't have a photo property", () => {
-    const mockSound = {
-      uuid: "sound-123",
-      file_url: "https://example.com/sound.mp3",
-      license_code: "CC-BY"
-    };
+    const result = prepareMediaForUpload( mockObservationSound );
 
-    const result = prepareMediaForUpload( mockSound );
-
-    expect( result ).toBe( mockSound );
+    expect( result ).toBe( mockObservationSound );
   } );
 
   test( "should handle nested photo objects with empty values", () => {
-    const mockPhoto = {
-      uuid: "photo-123",
-      photo: {
-        id: 456,
-        url: "",
-        attribution: null,
-        license_code: "CC-BY",
-        metadata: null
-      },
-      toJSON: jest.fn().mockReturnValue( {
-        uuid: "photo-123",
-        photo: {
-          id: 456,
-          url: "",
-          attribution: null,
-          license_code: "CC-BY",
-          metadata: null
-        }
-      } )
-    };
-
-    const result = prepareMediaForUpload( mockPhoto );
+    const result = prepareMediaForUpload( mockObservationPhotoWithNullValues );
 
     expect( result ).toEqual( {
-      uuid: "photo-123",
+      uuid: mockObservationPhotoWithNullValues.uuid,
       photo: {
-        id: 456,
-        url: "",
-        license_code: "CC-BY"
+        id: mockObservationPhotoWithNullValues.photo.id,
+        attribution: mockObservationPhotoWithNullValues.photo.attribution,
+        licenseCode: mockObservationPhotoWithNullValues.photo.licenseCode,
+        url: mockObservationPhotoWithNullValues.photo.url
       }
     } );
   } );
