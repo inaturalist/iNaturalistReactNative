@@ -1,19 +1,33 @@
-function prepareMediaForUpload( item: Object ): Object {
-  let currentEvidence = item;
+import ObservationPhoto from "realmModels/ObservationPhoto";
+import ObservationSound from "realmModels/ObservationSound";
 
-  if ( currentEvidence.photo ) {
-    currentEvidence = item.toJSON( );
-    // Remove all null values, b/c the API doesn't seem to like them
-    const newPhoto = {};
-    const { photo } = currentEvidence;
-    Object.keys( photo ).forEach( k => {
-      if ( photo[k] !== null ) {
-        newPhoto[k] = photo[k];
-      }
-    } );
-    currentEvidence.photo = newPhoto;
+function prepareMediaForUpload(
+  media: Object,
+  type: string,
+  action: "upload" | "attach" | "update",
+  observationId?: number | null
+): Object {
+  if ( type === "Photo" || type === "ObservationPhoto" ) {
+    if ( action === "upload" ) {
+      return ObservationPhoto.mapPhotoForUpload( observationId, media );
+    }
+    if ( action === "attach" ) {
+      return ObservationPhoto
+        .mapPhotoForAttachingToObs( observationId, media );
+    }
+    if ( action === "update" ) {
+      return ObservationPhoto.mapPhotoForUpdating( observationId, media );
+    }
+  } else if ( type === "ObservationSound" ) {
+    if ( action === "upload" ) {
+      return ObservationSound.mapSoundForUpload( observationId, media );
+    }
+    if ( action === "attach" ) {
+      return ObservationSound
+        .mapSoundForAttachingToObs( observationId, media );
+    }
   }
-  return currentEvidence;
+  throw new Error( `Unsupported media type (${type}) or action (${action})` );
 }
 
 export default prepareMediaForUpload;

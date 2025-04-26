@@ -9,8 +9,6 @@ import {
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import inatjs from "inaturalistjs";
 import Observation from "realmModels/Observation";
-import ObservationPhoto from "realmModels/ObservationPhoto";
-import ObservationSound from "realmModels/ObservationSound";
 import emitUploadProgress from "sharedHelpers/emitUploadProgress.ts";
 import {
   markRecordUploaded,
@@ -23,8 +21,8 @@ const UPLOAD_PROGRESS_INCREMENT = 1;
 const uploadEvidence = async (
   evidence: Array<Object>,
   type: string,
-  apiSchemaMapper: Function,
-  observationId: ?number,
+  action: "upload" | "attach" | "update",
+  observationId?: number | null,
   apiEndpoint: Function,
   options: Object,
   observationUUID?: string,
@@ -32,7 +30,12 @@ const uploadEvidence = async (
   // $FlowIgnore
 ): Promise<unknown> => {
   const uploadToServer = async currentEvidence => {
-    const params = apiSchemaMapper( observationId, currentEvidence );
+    const params = prepareMediaForUpload(
+      currentEvidence,
+      type,
+      action,
+      observationId
+    );
     const evidenceUUID = currentEvidence.uuid;
 
     const response = await createOrUpdateEvidence(
@@ -56,10 +59,8 @@ const uploadEvidence = async (
     return response;
   };
 
-  const responses = await Promise.all( evidence.map( item => {
-    const currentEvidence = prepareMediaForUpload( item );
-    return uploadToServer( currentEvidence );
-  } ) );
+  const responses = await Promise
+    .all( evidence.map( item => uploadToServer( item ) ) );
   // eslint-disable-next-line consistent-return
   return responses[0];
 };
@@ -108,7 +109,7 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
       ? uploadEvidence(
         unsyncedPhotos,
         "Photo",
-        ObservationPhoto.mapPhotoForUpload,
+        "upload",
         null,
         inatjs.photos.create,
         options,
@@ -127,7 +128,7 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
       ? uploadEvidence(
         unsyncedObservationSounds,
         "ObservationSound",
-        ObservationSound.mapSoundForUpload,
+        "upload",
         null,
         inatjs.sounds.create,
         options,
@@ -166,7 +167,7 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
       ? uploadEvidence(
         unsyncedObservationPhotos,
         "ObservationPhoto",
-        ObservationPhoto.mapPhotoForAttachingToObs,
+        "attach",
         obsUUID,
         inatjs.observation_photos.create,
         options,
@@ -178,7 +179,7 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
       ? uploadEvidence(
         unsyncedObservationSounds,
         "ObservationSound",
-        ObservationSound.mapSoundForAttachingToObs,
+        "attach",
         obsUUID,
         inatjs.observation_sounds.create,
         options,
@@ -191,7 +192,7 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
       ? uploadEvidence(
         modifiedObservationPhotos,
         "ObservationPhoto",
-        ObservationPhoto.mapPhotoForUpdating,
+        "update",
         obsUUID,
         inatjs.observation_photos.update,
         options,
