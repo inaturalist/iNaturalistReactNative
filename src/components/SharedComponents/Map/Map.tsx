@@ -65,7 +65,7 @@ interface Props {
   onRegionChangeComplete?: ( _r: Region, _b: BoundingBox | undefined ) => void;
   openMapScreen?: () => void;
   region?: Region;
-  regionToAnimate?: Object;
+  regionToAnimate?: Region;
   scrollEnabled?: boolean;
   showCurrentLocationButton?: boolean;
   showsCompass?: boolean;
@@ -180,10 +180,7 @@ const Map = forwardRef( ( {
     // when scrolling, which means we also must use this method to reset the map
     // when searching for a location by typing a place name and selecting place coordinates
     if ( !regionToAnimate || !mapViewRef.current ) { return; }
-    animateToRegion( {
-      latitude: regionToAnimate.latitude,
-      longitude: regionToAnimate.longitude
-    } );
+    animateToRegion( regionToAnimate );
   }, [
     regionToAnimate
   ] );
