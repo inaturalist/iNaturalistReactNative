@@ -309,7 +309,6 @@ const MyObservationsSimple = ( {
                 : <Announcements isConnected={isConnected} /> )}
             />
             <ObservationsViewBar
-              gridFirst
               hideMap
               layout={layout}
               updateObservationsView={toggleLayout}
