@@ -56,8 +56,12 @@ function createContext( e, options, extraContext ) {
     routeParams: options?.routeParams || e?.routeParams,
     ...( extraContext || {} )
   };
-  return context;
-  // TODO: remove nullish values of context
+  // Remove nullish values (null or undefined) from context
+  return Object.fromEntries(
+    Object.entries( context ).filter(
+      ( [_, value] ) => value !== null && value !== undefined
+    )
+  );
 }
 
 async function handleError( e: Object, options: Object = {} ): Object {
