@@ -54,7 +54,7 @@ interface Props {
   children?: React.ReactNode;
   className?: string;
   currentLocationButtonClassName?: string;
-  initialRegion?: boolean;
+  initialRegion?: Region;
   mapHeight?: DimensionValue; // allows for height to be defined as px or percentage
   mapType?: MapType;
   mapViewClassName?: string;
@@ -65,7 +65,7 @@ interface Props {
   onRegionChangeComplete?: ( _r: Region, _b: BoundingBox | undefined ) => void;
   openMapScreen?: () => void;
   region?: Region;
-  regionToAnimate?: Object;
+  regionToAnimate?: Region;
   scrollEnabled?: boolean;
   showCurrentLocationButton?: boolean;
   showsCompass?: boolean;
@@ -416,9 +416,9 @@ const Map = forwardRef( ( {
     : unfuzzedMapRegion;
 
   // In Android, we maintain initialRegion as state localRegion and
-  // pass null to parameter initialRegion.
+  // pass undefined to parameter initialRegion.
   const mapInitialRegion = Platform.OS === "android"
-    ? null
+    ? undefined
     : initialRegion;
 
   const renderDebugZoomLevel = ( ) => {

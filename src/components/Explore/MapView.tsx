@@ -11,6 +11,7 @@ import {
 import React, {
   useEffect, useMemo, useRef, useState
 } from "react";
+import { Region } from "react-native-maps";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
@@ -112,7 +113,9 @@ const MapView = ( {
       // Note: we do get observationBounds back from the API for nearby
       // but per user feedback, we want to show users a more zoomed in view
       // when they're looking at NEARBY view
-      mapRef.current.animateToRegion( nearbyRegion );
+      if ( nearbyRegion.latitude !== undefined && nearbyRegion.longitude !== undefined ) {
+        mapRef.current.animateToRegion( nearbyRegion );
+      }
       return;
     }
     if ( mapRef.current
@@ -157,13 +160,17 @@ const MapView = ( {
   delete tileMapParams.order;
   delete tileMapParams.orderBy;
 
-  const initialRegion = useMemo( () => {
+  const initialRegion: Region = useMemo( () => {
     if ( exploreState.placeMode === PLACE_MODE.NEARBY ) {
-      return nearbyRegion;
+      if ( nearbyRegion.latitude !== undefined && nearbyRegion.longitude !== undefined ) {
+        return nearbyRegion;
+      }
     }
 
     if ( exploreState.placeMode === PLACE_MODE.PLACE ) {
-      return regionFromCoordinates;
+      if ( regionFromCoordinates ) {
+        return regionFromCoordinates;
+      }
     }
 
     return worldwideRegion;
