@@ -93,6 +93,7 @@ const MapView = ( {
     return null;
   }, [exploreState.place] );
 
+  const [regionToAnimate, setRegionToAnimate] = useState( null );
   useEffect( ( ) => {
     // Skip animation on first render
     if ( isFirstRender.current ) {
@@ -112,18 +113,18 @@ const MapView = ( {
       // Note: we do get observationBounds back from the API for nearby
       // but per user feedback, we want to show users a more zoomed in view
       // when they're looking at NEARBY view
-      mapRef.current.animateToRegion( nearbyRegion );
+      setRegionToAnimate( nearbyRegion );
       return;
     }
     if ( mapRef.current
       && exploreState.placeMode === PLACE_MODE.WORLDWIDE ) {
-      mapRef.current.animateToRegion( worldwideRegion );
+      setRegionToAnimate( worldwideRegion );
     }
     if ( mapRef.current
       && exploreState.placeMode === PLACE_MODE.PLACE ) {
       if ( observationBounds ) {
         const newRegion = getMapRegion( observationBounds );
-        mapRef.current.animateToRegion( newRegion );
+        setRegionToAnimate( newRegion );
       }
     }
   }, [
@@ -205,6 +206,7 @@ const MapView = ( {
         currentLocationButtonClassName="left-5 bottom-20"
         onPanDrag={handlePanDrag}
         initialRegion={initialRegion}
+        regionToAnimate={regionToAnimate}
         showCurrentLocationButton
         showSwitchMapTypeButton
         showsCompass={false}
