@@ -32,13 +32,16 @@ const DROP_SHADOW = getShadow( {
   elevation: 6
 } );
 
+const activityIndicatorSize = 50;
 const centeredLoadingWheel = {
   position: "absolute",
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  backgroundColor: "rgba(0,0,0,0.3)",
+  top: "50%",
+  left: "50%",
+  transform: [
+    { translateX: -( activityIndicatorSize / 2 ) },
+    { translateY: -( activityIndicatorSize / 2 ) }
+  ],
+  backgroundColor: "rgba(0,0,0,0)",
   alignItems: "center",
   justifyContent: "center",
   zIndex: 20
@@ -223,7 +226,7 @@ const MapView = ( {
       />
       {isLoading && (
         <View style={centeredLoadingWheel} testID="activity-indicator">
-          <ActivityIndicator size={50} />
+          <ActivityIndicator size={activityIndicatorSize} />
         </View>
       )}
       {renderLocationPermissionsGate( { onPermissionGranted: handleCurrentLocationPress } )}
