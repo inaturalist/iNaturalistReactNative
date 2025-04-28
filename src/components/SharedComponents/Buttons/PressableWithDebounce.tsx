@@ -1,7 +1,8 @@
 import {
   Pressable
 } from "components/styledComponents";
-import React, { PropsWithChildren, useRef, useState } from "react";
+import type { PropsWithChildren } from "react";
+import React, { useRef, useState } from "react";
 import type { AccessibilityRole, GestureResponderEvent, ViewStyle } from "react-native";
 
 interface Props extends PropsWithChildren {
