@@ -164,7 +164,9 @@ const MapView = ( {
     }
 
     if ( exploreState.placeMode === PLACE_MODE.PLACE ) {
-      return regionFromCoordinates;
+      if ( regionFromCoordinates ) {
+        return regionFromCoordinates;
+      }
     }
 
     return worldwideRegion;
