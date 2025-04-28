@@ -11,7 +11,7 @@ interface Props extends PropsWithChildren {
   accessibilityRole?: AccessibilityRole;
   style?: ViewStyle;
   className?: string;
-  onPress: () => void;
+  onPress: ( _event?: GestureResponderEvent ) => void;
   testID?: string;
   disabled: boolean;
   debounceTime?: number;
