@@ -61,17 +61,21 @@ function createContext( e, options, extraContext ) {
 }
 
 async function handleError( e: Object, options: Object = {} ): Object {
-  if ( !e.response ) { throw e; }
-
   // Get context from options if available
   const originalContext = options?.context || null;
   const context = createContext( e, options, originalContext );
+  if ( e.status === 429 ) {
+    logger.error( "429 without a response in handleError:", JSON.stringify( context ) );
+  }
+
+  if ( !e.response ) { throw e; }
 
   // 429 responses don't return JSON so the parsing that we do below will
-  // fail. Also, info about the request that triggered the 429 response is
+  // fail. Info about the request that triggered the 429 response is
   // kind of irrelevant. It's the behaviors that led up to being blocked that
-  // matter.
+  // matter. We log it anyhow.
   if ( e.response.status === 429 ) {
+    logger.error( "429 with a response in handleError:", JSON.stringify( context ) );
     throw new INatApiTooManyRequestsError( context );
   }
 
