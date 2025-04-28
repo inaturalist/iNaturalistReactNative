@@ -5,17 +5,17 @@ import React, { useRef, useState } from "react";
 import { GestureResponderEvent, ViewStyle } from "react-native";
 
 interface Props {
-    accessibilityHint?: string;
-    accessibilityLabel?: string;
-    accessibilityRole?: string;
-    style?: ViewStyle;
-    className?: string;
-    onPress: () => void;
-    testID?: string;
-    children?: unknown;
-    disabled: boolean;
-    debounceTime?: number;
-    preventMultipleTaps?: boolean;
+  accessibilityHint?: string;
+  accessibilityLabel?: string;
+  accessibilityRole?: string;
+  style?: ViewStyle;
+  className?: string;
+  onPress: () => void;
+  testID?: string;
+  children?: unknown;
+  disabled: boolean;
+  debounceTime?: number;
+  preventMultipleTaps?: boolean;
 }
 
 const PressableWithDebounce = ( {
