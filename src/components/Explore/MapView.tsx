@@ -11,6 +11,7 @@ import {
 import React, {
   useEffect, useMemo, useRef, useState
 } from "react";
+import { Region } from "react-native-maps";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
@@ -157,7 +158,7 @@ const MapView = ( {
   delete tileMapParams.order;
   delete tileMapParams.orderBy;
 
-  const initialRegion = useMemo( () => {
+  const initialRegion: Region = useMemo( () => {
     if ( exploreState.placeMode === PLACE_MODE.NEARBY ) {
       return nearbyRegion;
     }
