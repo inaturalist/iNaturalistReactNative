@@ -59,6 +59,7 @@ const ObsUploadStatus = ( {
       progress={progress}
       uniqueKey={observation.uuid}
       queued={queued}
+      obsStatus={obsStatus}
     />
   );
 };
