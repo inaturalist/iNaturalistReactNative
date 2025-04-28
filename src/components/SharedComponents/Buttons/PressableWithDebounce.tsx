@@ -2,12 +2,12 @@ import {
   Pressable
 } from "components/styledComponents";
 import React, { useRef, useState } from "react";
-import { GestureResponderEvent, ViewStyle } from "react-native";
+import type { AccessibilityRole, GestureResponderEvent, ViewStyle } from "react-native";
 
 interface Props {
   accessibilityHint?: string;
   accessibilityLabel?: string;
-  accessibilityRole?: string;
+  accessibilityRole?: AccessibilityRole;
   style?: ViewStyle;
   className?: string;
   onPress: () => void;
