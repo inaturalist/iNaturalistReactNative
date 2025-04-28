@@ -1,10 +1,10 @@
 import {
   Pressable
 } from "components/styledComponents";
-import React, { useRef, useState } from "react";
+import React, { PropsWithChildren, useRef, useState } from "react";
 import type { AccessibilityRole, GestureResponderEvent, ViewStyle } from "react-native";
 
-interface Props {
+interface Props extends PropsWithChildren {
   accessibilityHint?: string;
   accessibilityLabel?: string;
   accessibilityRole?: AccessibilityRole;
@@ -12,7 +12,6 @@ interface Props {
   className?: string;
   onPress: () => void;
   testID?: string;
-  children?: unknown;
   disabled: boolean;
   debounceTime?: number;
   preventMultipleTaps?: boolean;
