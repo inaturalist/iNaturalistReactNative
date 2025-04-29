@@ -31,7 +31,6 @@ const CurrentLocationButton = ( {
         style={DROP_SHADOW}
         accessibilityLabel={t( "Zoom-to-current-location" )}
         onPress={onPress}
-        testID="Map.CurrentLocationButton"
       />
       {renderPermissionsGate( )}
     </>
