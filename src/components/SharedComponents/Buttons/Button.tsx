@@ -2,7 +2,7 @@ import { tailwindFontBold } from "appConstants/fontFamilies.ts";
 import classnames from "classnames";
 import { ActivityIndicator, Heading4, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { AccessibilityRole, GestureResponderEvent, ViewStyle } from "react-native";
 import colors from "styles/tailwindColors";
 
@@ -181,9 +181,7 @@ const Button = ( {
   const [isProcessing, setIsProcessing] = useState( false );
   const onPressRef = useRef( onPress );
 
-  useEffect( ( ) => {
-    onPressRef.current = onPress;
-  }, [onPress] );
+  onPressRef.current = onPress;
 
   const isPrimary = level === "primary";
   const isWarning = level === "warning";
@@ -210,19 +208,16 @@ const Button = ( {
 
   const handlePress = ( event?: GestureResponderEvent ) => {
     if ( !preventMultipleTaps ) {
-      onPressRef.current( event );
-      return;
+      return onPressRef.current( event );
     }
 
-    if ( isProcessing ) return;
-
     setIsProcessing( true );
-
     onPressRef.current( event );
 
     setTimeout( ( ) => {
       setIsProcessing( false );
     }, debounceTime );
+    return null;
   };
 
   const isDisabled = disabled || ( preventMultipleTaps && isProcessing );
