@@ -1,10 +1,11 @@
 import classnames from "classnames";
 import { CircleDots, INatIcon, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import React, { PropsWithChildren } from "react";
-import { useTranslation } from "sharedHooks";
+import React, { PropsWithChildren, ReactComponent } from "react";
+import { useLayoutPrefs, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
+import FadeOutFadeInIcon from "./FadeOutFadeInIcon";
 import FadeOutIcon from "./FadeOutIcon";
 import UploadCompleteIcon from "./UploadCompleteIcon";
 import UploadProgressIcon from "./UploadProgressIcon";
@@ -24,6 +25,7 @@ interface Props extends PropsWithChildren {
   progress: number;
   uniqueKey: string;
   queued: boolean;
+  obsStatus: ReactComponent
 }
 
 const UploadStatus = ( {
@@ -33,8 +35,10 @@ const UploadStatus = ( {
   onPress,
   progress,
   uniqueKey,
-  queued
+  queued,
+  obsStatus
 }: Props ) => {
+  const { isDefaultMode } = useLayoutPrefs();
   const { t } = useTranslation( );
   const completeColor = ( white
     ? colors.white
@@ -121,6 +125,23 @@ const UploadStatus = ( {
             uniqueKey={uniqueKey}
           />
         </View>
+      );
+    }
+
+    if ( !isDefaultMode && layout === "vertical" ) {
+      return (
+        <FadeOutFadeInIcon
+          uniqueKey={uniqueKey}
+          fadeOutIcon={(
+            <View className={wrapperClassName}>
+              <UploadCompleteIcon
+                iconClasses={iconClasses}
+                completeColor={completeColor}
+              />
+            </View>
+          )}
+          fadeInIcon={<View className={wrapperClassName}>{obsStatus}</View>}
+        />
       );
     }
 
