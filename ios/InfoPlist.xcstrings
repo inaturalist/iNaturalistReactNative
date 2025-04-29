@@ -3689,7 +3689,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "錄製自然界的聲音觀測紀錄。"
+            "value" : "錄製自然界的聲音紀錄。"
           }
         },
         "zh-Hant-HK" : {
@@ -4150,8 +4150,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
+            "state" : "translated",
+            "value" : "將 iNaturalist 照片匯出到您的照片圖庫。"
           }
         },
         "zh-Hant-HK" : {
@@ -4612,8 +4612,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
+            "state" : "translated",
+            "value" : "將 《愛自然》中的照片匯出到您的照片圖庫或從圖庫中匯入《愛自然》 照片。"
           }
         },
         "zh-Hant-HK" : {

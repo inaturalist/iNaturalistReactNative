@@ -1,14 +1,14 @@
-將相機對準植物、動物和真菌，或者從您的照片庫中匯入照片後，就能看到物種鑑定上的建議。 iNaturalist helps millions of people like you learn more about nature using AI suggestions backed up by a global community of knowledgeable nature lovers.
+將相機對準植物、動物和真菌，或者從您的照片庫中匯入照片後，就能看到物種鑑定上的建議。 《愛自然(iNaturalist)》 透過 AI 鑑定上的建議，結合全球知識豐富的自然愛好者社群，幫助像您一樣的數百萬人更深入地了解大自然。
 
-iNaturalist goes far beyond AI identifications—your observations are reviewed by real people and shared for science to help protect species.
+《愛自然》不單只是 AI 鑑定—您的觀察紀錄都有真人審閱並共享給科學研究以保護物種。
 
-KEY FEATURES
-Identify species from anywhere in the world
-Keep a record of species you see
+主要功能
+鑑定世界上任一地點的物種
+記錄您看到的物種
 分享您的觀察紀錄以貢獻於科學
-Explore and protect biodiversity 
-Connect with and learn from other nature enthusiasts
+探索和保護生物多樣性 
+連結其他自然愛好者並向他們學習
 
-iNaturalist’s nonprofit mission is to connect people to nature and advance science and conservation. iNaturalist is freely available thanks to generous support from our community of donors.
+《愛自然》在非營利的使命上是連結人類與大自然，並推展生物多樣性科學與保育工作。 感謝我們捐款者社群的慷慨支援，《愛自然》是免費的。
 
-Explore and learn even more at https://www.inaturalist.org.
+在 https://www.inaturalist.org 探索和瞭解更多資訊。
