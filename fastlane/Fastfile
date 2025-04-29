@@ -588,7 +588,7 @@ lane :download_app_store_reviews do
   
   # Save reviews to a JSON file
   output_file = "app_store_reviews.json"
-  File.open( output_file, 'w' ) do |f|
+  File.open( output_file, "w" ) do |f|
     f.write( JSON.pretty_generate( processed_reviews ) )
   end
   
