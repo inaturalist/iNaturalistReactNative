@@ -21,8 +21,7 @@ module.exports = {
         sharedHooks: "./src/sharedHooks",
         stores: "./src/stores",
         styles: "./src/styles",
-        tests: "./tests",
-        uploaders: "./src/uploaders"
+        tests: "./tests"
       }
     }],
     // Reanimated plugin has to be listed last https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/
