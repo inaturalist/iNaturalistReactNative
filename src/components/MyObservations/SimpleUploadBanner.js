@@ -92,7 +92,7 @@ const SimpleUploadBanner = ( {
 
   return (
     <View className="py-2">
-      {status.text !== "" && renderUploadStatusText( )}
+      {( status.text !== "" || !!error ) && renderUploadStatusText( )}
       <UploadProgressBar progress={progress} />
     </View>
   );
