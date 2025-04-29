@@ -38,7 +38,6 @@ const SimpleUploadBannerContainer = ( {
   const currentDeleteCount = useStore( state => state.currentDeleteCount );
   const deleteError = useStore( state => state.deleteError );
   const uploadMultiError = useStore( state => state.multiError );
-  const uploadErrorsByUuid = useStore( state => state.errorsByUuid );
   const initialNumObservationsInQueue = useStore( state => state.initialNumObservationsInQueue );
   const totalToolbarProgress = useStore( state => state.totalToolbarProgress );
   const uploadStatus = useStore( state => state.uploadStatus );
@@ -47,6 +46,8 @@ const SimpleUploadBannerContainer = ( {
 
   const stopAllUploads = useStore( state => state.stopAllUploads );
   const numUploadsAttempted = useStore( state => state.numUploadsAttempted );
+  const totalUploadErrors = useStore( state => state.getTotalUploadErrors() );
+  const numUploadedWithoutErrors = useStore( state => state.getNumUploadedWithoutErrors() );
 
   // Note that initialNumObservationsInQueue is the number of obs being uploaded in
   // the current upload session, so it might be 1 if a single obs is
@@ -69,7 +70,6 @@ const SimpleUploadBannerContainer = ( {
   const pendingUpload = uploadStatus === UPLOAD_PENDING && numUploadableObservations > 0;
   const uploadInProgress = uploadStatus === UPLOAD_IN_PROGRESS && numUploadsAttempted > 0;
   const uploadsComplete = uploadStatus === UPLOAD_COMPLETE && initialNumObservationsInQueue > 0;
-  const totalUploadErrors = Object.keys( uploadErrorsByUuid ).length;
 
   const setDeletionsProgress = ( ) => {
     // TODO: we should emit deletions progress like we do for uploads for an accurate progress
@@ -130,7 +130,6 @@ const SimpleUploadBannerContainer = ( {
       return status;
     }
 
-    const numUploadedWithoutErrors = numUploadsAttempted - totalUploadErrors;
     if ( uploadsComplete && numUploadedWithoutErrors > 0 ) {
       status.text = t( "X-observations-uploaded", { count: numUploadedWithoutErrors } );
       return status;
@@ -141,12 +140,11 @@ const SimpleUploadBannerContainer = ( {
     currentDeleteCount,
     deletionsComplete,
     initialNumDeletionsInQueue,
-    numUploadsAttempted,
+    numUploadedWithoutErrors,
     numUploadableObservations,
     pendingUpload,
     manualSyncInProgress,
     t,
-    totalUploadErrors,
     translationParams,
     uploadInProgress,
     uploadsComplete

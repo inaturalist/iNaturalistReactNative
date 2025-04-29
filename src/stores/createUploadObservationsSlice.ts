@@ -279,7 +279,9 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
         ? UPLOAD_COMPLETE
         : UPLOAD_IN_PROGRESS
     } );
-  } )
+  } ),
+  getTotalUploadErrors: () => Object.keys( get().errorsByUuid ).length,
+  getNumUploadedWithoutErrors: () => get().numUploadsAttempted - get().getTotalUploadErrors()
 } );
 
 export default createUploadObservationsSlice;
