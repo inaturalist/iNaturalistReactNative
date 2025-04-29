@@ -48,6 +48,7 @@ type Props = {
   closeFiltersModal: Function,
   count: Object,
   currentExploreView: string,
+  currentMapRegion: Object,
   filterByIconicTaxonUnknown: Function,
   handleUpdateCount: Function,
   hasLocationPermissions?: boolean,
@@ -60,6 +61,7 @@ type Props = {
   renderLocationPermissionsGate: Function,
   requestLocationPermissions: Function,
   setCurrentExploreView: Function,
+  setCurrentMapRegion: Function,
   showFiltersModal: boolean,
   startFetching: Function,
   updateLocation: Function,
@@ -73,6 +75,7 @@ const Explore = ( {
   closeFiltersModal,
   count,
   currentExploreView,
+  currentMapRegion,
   filterByIconicTaxonUnknown,
   handleUpdateCount,
   hasLocationPermissions,
@@ -85,6 +88,7 @@ const Explore = ( {
   renderLocationPermissionsGate,
   requestLocationPermissions,
   setCurrentExploreView,
+  setCurrentMapRegion,
   showFiltersModal,
   startFetching,
   updateLocation,
@@ -158,9 +162,8 @@ const Explore = ( {
             layout={layout}
             queryParams={queryParams}
             handleUpdateCount={handleUpdateCount}
-            hasLocationPermissions={hasLocationPermissions}
-            renderLocationPermissionsGate={renderLocationPermissionsGate}
-            requestLocationPermissions={requestLocationPermissions}
+            currentMapRegion={currentMapRegion}
+            setCurrentMapRegion={setCurrentMapRegion}
           />
         )}
         {currentExploreView === "species" && (

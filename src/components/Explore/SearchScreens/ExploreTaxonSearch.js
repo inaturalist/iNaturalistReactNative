@@ -52,7 +52,6 @@ const ExploreTaxonSearch = ( {
   const renderItem = useCallback( ( { item: taxon, index } ) => (
     <TaxonResult
       first={index === 0}
-      fetchRemote={false}
       handleTaxonOrEditPress={() => onTaxonSelected( taxon )}
       hideInfoButton={hideInfoButton}
       onPressInfo={onPressInfo}

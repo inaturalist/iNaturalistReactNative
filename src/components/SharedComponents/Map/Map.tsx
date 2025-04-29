@@ -3,7 +3,6 @@ import classnames from "classnames";
 import { Body1 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, {
-  forwardRef,
   useCallback,
   useEffect,
   useMemo,
@@ -54,7 +53,7 @@ interface Props {
   children?: React.ReactNode;
   className?: string;
   currentLocationButtonClassName?: string;
-  initialRegion?: Region;
+  initialRegion?: boolean;
   mapHeight?: DimensionValue; // allows for height to be defined as px or percentage
   mapType?: MapType;
   mapViewClassName?: string;
@@ -65,7 +64,7 @@ interface Props {
   onRegionChangeComplete?: ( _r: Region, _b: BoundingBox | undefined ) => void;
   openMapScreen?: () => void;
   region?: Region;
-  regionToAnimate?: Region;
+  regionToAnimate?: Object;
   scrollEnabled?: boolean;
   showCurrentLocationButton?: boolean;
   showsCompass?: boolean;
@@ -83,7 +82,7 @@ interface Props {
 
 // TODO: fallback to another map library
 // for people who don't use GMaps (i.e. users in China)
-const Map = forwardRef( ( {
+const Map = ( {
   children,
   className = "flex-1",
   currentLocationButtonClassName,
@@ -112,7 +111,7 @@ const Map = forwardRef( ( {
   withPressableObsTiles,
   zoomEnabled = true,
   zoomTapEnabled = true
-}: Props, ref ) => {
+}: Props ) => {
   const { isDebug } = useDebugMode( );
   const { screenWidth, screenHeight } = useDeviceOrientation( );
   const [currentZoom, setCurrentZoom] = useState( 0 );
@@ -244,9 +243,7 @@ const Map = forwardRef( ( {
     // If we're supposed to be showing user location but we don't have it, ask
     // for permission again, which should result in fetching the location if
     // we can
-    // skipping onCurrentLocationPress here because the handlers
-    // are handling the permissions request outside of this component (example: Explore MapView)
-    if ( !userLocation && onCurrentLocationPress === undefined ) {
+    if ( !userLocation ) {
       requestPermissions( );
       return;
     }
@@ -416,9 +413,9 @@ const Map = forwardRef( ( {
     : unfuzzedMapRegion;
 
   // In Android, we maintain initialRegion as state localRegion and
-  // pass undefined to parameter initialRegion.
+  // pass null to parameter initialRegion.
   const mapInitialRegion = Platform.OS === "android"
-    ? undefined
+    ? null
     : initialRegion;
 
   const renderDebugZoomLevel = ( ) => {
@@ -451,18 +448,6 @@ const Map = forwardRef( ( {
   const longitude = observation?.privateLongitude || observation?.longitude;
   const hasCoordinates = latitude && longitude;
 
-  const setRefs = instance => {
-    // Update our internal ref
-    mapViewRef.current = instance;
-
-    // Forward to the parent ref
-    if ( typeof ref === "function" ) {
-      ref( instance );
-    } else if ( ref ) {
-      ref.current = instance;
-    }
-  };
-
   return (
     <View
       style={mapContainerStyle}
@@ -484,7 +469,7 @@ const Map = forwardRef( ( {
         onRegionChangeComplete={handleRegionChangeComplete}
         onUserLocationChange={handleUserLocationChange}
         pitchEnabled={false}
-        ref={setRefs}
+        ref={mapViewRef}
         region={mapRegion}
         rotateEnabled={false}
         scrollEnabled={scrollEnabled}
@@ -544,6 +529,6 @@ const Map = forwardRef( ( {
       {children}
     </View>
   );
-} );
+};
 
 export default Map;

@@ -20,7 +20,6 @@ import React, {
 import { useTranslation } from "react-i18next";
 import {
   Image,
-  Platform,
   StatusBar,
   useWindowDimensions,
   View
@@ -164,12 +163,7 @@ const OnboardingCarousel = ( ) => {
     } );
   }, [ONBOARDING_SLIDES, totalImages] );
 
-  // TODO: On Android release build imagesLoaded never switched from false to true, and
-  // this screen was stuck in a loading state. On iOS it worked as expected.
-  // Disabling it now on Android to make a new release possible.
-  if ( Platform.OS === "android"
-    ? false
-    : !imagesLoaded ) {
+  if ( !imagesLoaded ) {
     return (
       <ImageBackground
         source={require( "images/background/daniel-olah-YNUFtf4qyh0-unsplash.jpg" )}
