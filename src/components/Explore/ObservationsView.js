@@ -28,8 +28,9 @@ type Props = {
   layout: string,
   queryParams: Object,
   handleUpdateCount: Function,
-  currentMapRegion: Object,
-  setCurrentMapRegion: Function
+  hasLocationPermissions?: boolean,
+  renderLocationPermissionsGate: Function,
+  requestLocationPermissions: Function
 }
 
 const OBS_LIST_CONTAINER_STYLE = { paddingTop: 50 };
@@ -41,8 +42,9 @@ const ObservationsView = ( {
   layout,
   queryParams,
   handleUpdateCount,
-  currentMapRegion,
-  setCurrentMapRegion
+  hasLocationPermissions,
+  renderLocationPermissionsGate,
+  requestLocationPermissions
 }: Props ): Node => {
   const currentUser = useCurrentUser( );
   const { state } = useExplore();
@@ -139,8 +141,9 @@ const ObservationsView = ( {
         observationBounds={totalBounds}
         isLoading={isLoading}
         queryParams={queryParams}
-        currentMapRegion={currentMapRegion}
-        setCurrentMapRegion={setCurrentMapRegion}
+        hasLocationPermissions={hasLocationPermissions}
+        renderLocationPermissionsGate={renderLocationPermissionsGate}
+        requestLocationPermissions={requestLocationPermissions}
       />
     </View>
   );
