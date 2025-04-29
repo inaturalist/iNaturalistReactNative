@@ -296,7 +296,7 @@ const AICamera = ( {
               />
             )
             : (
-              <Body1 className="text-white self-center mt-[22px]">
+              <Body1 className="text-white self-center text-center mt-[22px]">
                 {modelLoaded
                   ? t( "Point-the-camera-at-an-animal-plant-or-fungus" )
                   : t( "Loading-iNaturalists-AI-Camera" )}

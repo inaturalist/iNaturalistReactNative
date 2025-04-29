@@ -345,7 +345,7 @@ HIGHEST-RANK = YLIN TAKSONOMINEN TASO
 I-agree-to-the-Terms-of-Use = <0>Hyväksyn käyttöehdot ja tietosuojakäytännön ja olen tutustunut yhteisön sääntöihin (</0><1>pakollinen</1><0>).</0>
 Iconic-taxon-name = Kuvaketaksonin nimi: { $iconicTaxon }
 ID-Suggestions = Ehdotukset
-ID-WITH-AI = ID WITH AI
+ID-WITH-AI = Tunnistus tekoälyn avulla
 ID-Withdrawn = Tunnistus peruutettu
 IDENTIFICATION = TUNNISTUS
 Identification-options = Tunnistusvaihtoehdot
@@ -870,7 +870,7 @@ To-sync-your-observations-to-iNaturalist = Jos haluat synkronoida havaintosi iNa
 To-view-nearby-organisms-please-enable-location = Nähdäksesi lähellä olevat eliöt, ota sijainti käyttöön.
 To-view-nearby-projects-please-enable-location = Nähdäksesi lähellä olevat projektit, ota sijainti käyttöön.
 Toggle-map-type = Vaihda karttatyyppiä
-TOP-ID-SUGGESTION = SUOSITUIN TUNNISTUS
+TOP-ID-SUGGESTION = PARAS TUNNISTUS
 Traditional-Project = Perinteinen projekti
 Umbrella-Project = Sateenvarjoprojekti
 UNFOLLOW = LOPETA SEURAAMINEN
@@ -888,7 +888,7 @@ Upload-photos-from-your-photo-library = Lataa useita kuvia kuvakirjastostasi
 Upload-Progress = Lataus { $uploadProgress } prosenttisesti valmis
 UPLOAD-TO-INATURALIST = LATAA INATURALISTIIN
 Upload-x-observations =
-    Lataa{ $count ->
+    Lataa { $count ->
         [one] 1 havainto
        *[other] { $count } havaintoa
     }

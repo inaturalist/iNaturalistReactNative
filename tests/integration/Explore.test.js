@@ -2,8 +2,7 @@ import {
   fireEvent,
   screen,
   userEvent,
-  waitFor,
-  within
+  waitFor
 } from "@testing-library/react-native";
 import ExploreContainer from "components/Explore/ExploreContainer";
 import inatjs from "inaturalistjs";
@@ -36,24 +35,25 @@ beforeAll( ( ) => {
   jest.useFakeTimers( );
 } );
 
-const switchToObservationsView = async ( ) => {
+const switchToSpeciesView = async ( ) => {
+  const observationsViewIcon = await screen.findByLabelText( /Observations View/ );
+  expect( observationsViewIcon ).toBeVisible( );
+  await actor.press( observationsViewIcon );
+  const speciesRadioButton = await screen.findByText( "Species" );
+  await actor.press( speciesRadioButton );
+  const confirmButton = await screen.findByText( /EXPLORE SPECIES/ );
+  await actor.press( confirmButton );
   const speciesViewIcon = await screen.findByLabelText( /Species View/ );
   expect( speciesViewIcon ).toBeVisible( );
-  await actor.press( speciesViewIcon );
-  const observationsRadioButton = await screen.findByText( "Observations" );
-  await actor.press( observationsRadioButton );
-  const bottomSheet = await screen.findByTestId( "ExploreObsViewSheet" );
-  const confirmButton = await within( bottomSheet ).findByText( /EXPLORE OBSERVATIONS/ );
-  expect( confirmButton ).toBeVisible( );
-  await actor.press( confirmButton );
-  const obsTaxonNameElt = await screen.findByText( mockRemoteObservation.taxon.name );
-  expect( obsTaxonNameElt ).toBeTruthy( );
 };
 
 describe( "Explore", ( ) => {
-  it( "should render species view and switch to observations view list correctly", async ( ) => {
+  it( "should render observations view list correctly on page load", async ( ) => {
     renderAppWithComponent( <ExploreContainer /> );
-    await switchToObservationsView( );
+    const observationsViewIcon = await screen.findByLabelText( /Observations View/ );
+    expect( observationsViewIcon ).toBeVisible( );
+    const obsTaxonNameElt = await screen.findByText( mockRemoteObservation.taxon.name );
+    expect( obsTaxonNameElt ).toBeTruthy( );
     expect(
       await screen.findByTestId( `ObsStatus.${mockRemoteObservation.uuid}` )
     ).toBeTruthy( );
@@ -62,9 +62,13 @@ describe( "Explore", ( ) => {
     ).toBeFalsy( );
   } );
 
+  it( "should switch to species view list correctly", async ( ) => {
+    renderAppWithComponent( <ExploreContainer /> );
+    await switchToSpeciesView( );
+  } );
+
   it( "should display observations view grid correctly", async ( ) => {
     renderAppWithComponent( <ExploreContainer /> );
-    await switchToObservationsView( );
     expect(
       await screen.findByTestId( "SegmentedButton.grid" )
     ).toBeTruthy( );
@@ -77,9 +81,12 @@ describe( "Explore", ( ) => {
     ).toBeFalsy( );
   } );
 
-  it( "should trigger new observation fetch on pull-to-refresh", async ( ) => {
+  it( "should trigger new observation fetch on pull-to-refresh in list view", async ( ) => {
     renderAppWithComponent( <ExploreContainer /> );
-    await switchToObservationsView( );
+    expect(
+      await screen.findByTestId( "SegmentedButton.list" )
+    ).toBeTruthy( );
+    fireEvent.press( await screen.findByTestId( "SegmentedButton.list" ) );
 
     const exploreObsList = await screen.findByTestId( "ExploreObservationsAnimatedList" );
 
@@ -97,7 +104,6 @@ describe( "Explore", ( ) => {
 
   it( "should trigger new observation fetch when filters change", async ( ) => {
     renderAppWithComponent( <ExploreContainer /> );
-    await switchToObservationsView( );
 
     // Clear the mock so we can make sure it gets called again
     inatjs.observations.search.mockClear( );
