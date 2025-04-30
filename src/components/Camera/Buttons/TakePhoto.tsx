@@ -1,10 +1,8 @@
 import classnames from "classnames";
 import {
-  INatIcon
+  INatIcon, PressableWithDebounce
 } from "components/SharedComponents";
-import {
-  Pressable, View
-} from "components/styledComponents";
+import { View } from "components/styledComponents";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
@@ -28,7 +26,7 @@ const TakePhoto = ( {
   const borderClass = "border-[2px] rounded-full h-[64px] w-[64px]";
 
   return (
-    <Pressable
+    <PressableWithDebounce
       className={classnames(
         "bg-white",
         "rounded-full",
@@ -47,6 +45,8 @@ const TakePhoto = ( {
       disabled={disabled}
       style={DROP_SHADOW}
       testID="take-photo-button"
+      preventMultipleTaps
+      debounceTime={2000}
     >
       {showPrediction
         ? (
@@ -64,7 +64,7 @@ const TakePhoto = ( {
           </View>
         )
         : <View className={borderClass} />}
-    </Pressable>
+    </PressableWithDebounce>
   );
 };
 
