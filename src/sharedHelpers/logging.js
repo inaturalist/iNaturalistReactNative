@@ -24,27 +24,7 @@ function handleRetryDelay( failureCount, error ) {
 }
 
 function handleTooManyRequestsErrors( failureCount, error, options = {} ) {
-  const errorContext = {
-    queryKey: options?.queryKey
-      ? inspect( options.queryKey )
-      : "unknown",
-    failureCount,
-    timestamp: new Date().toISOString(),
-    errorType: error?.name || "Unknown",
-    status: error?.status || ( error.response
-      ? error.response.status
-      : null ),
-    url: error?.response?.url,
-    routeName: options?.routeName || error?.routeName,
-    routeParams: options?.routeParams || error?.routeParams
-  };
-
   if ( error.status === 429 || ( error.response && error.response.status === 429 ) ) {
-    defaultLogger.error(
-      "429 in reactQueryRetry:",
-      JSON.stringify( errorContext )
-    );
-
     // Use progressive backoff for rate limit errors using handleRetryDelay;
     // wait longer between retries
     const shouldRetry = failureCount < 3;
@@ -52,10 +32,11 @@ function handleTooManyRequestsErrors( failureCount, error, options = {} ) {
     // Let the error handler know this was a rate limit error but don't throw to allow retry
     handleError( error, {
       throw: false,
-      context: errorContext,
       onApiError: apiError => {
         console.log( apiError, "API error in reactQueryRetry handleTooManyRequestsErrors" );
-      }
+      },
+      failureCount,
+      ...options
     } );
 
     return shouldRetry;
