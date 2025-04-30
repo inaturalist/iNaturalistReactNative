@@ -541,6 +541,58 @@ lane :beta do
   )
 end
 
+lane :download_app_store_reviews do
+  desc "Download App Store reviews and save them to a file"
+
+  UI.message "Logging into App Store Connect..."
+
+  # Use credentials from the Appfile
+  apple_id = CredentialsManager::AppfileConfig.try_fetch_value( :apple_id )
+  itc_team_id = CredentialsManager::AppfileConfig.try_fetch_value( :itc_team_id )
+
+  # Explicitly login with credentials
+  Spaceship::Tunes.login( apple_id )
+  Spaceship::Tunes.select_team( team_id: itc_team_id, team_name: nil )
+
+  # Select the app using the bundle ID from the Appfile
+  UI.message "Finding app with bundle ID: #{IOS_BUNDLE_ID}"
+  app = Spaceship::Tunes::Application.find( IOS_BUNDLE_ID )
+
+  unless app
+    UI.abort_with_message! "Could not find app with bundle ID: #{IOS_BUNDLE_ID}"
+  end
+
+  # Fetch reviews
+  UI.message "Fetching reviews for #{app.name}..."
+  reviews = app.ratings.reviews
+
+  # Create an array to hold processed reviews
+  processed_reviews = []
+  reviews.each do | review |
+    # Log the review details
+    UI.message "Review ID: #{review}"
+    # Convert review object to a hash with the fields you want
+    processed_review = {
+      rating: review.rating.to_i,
+      title: review.title,
+      review_content: review.review,
+      nickname: review.nickname,
+      country: review.store_front,
+      last_modified: review.last_modified,
+      edited: review.edited,
+      responded: review.responded?,
+      developer_response: review.developer_response.response
+    }
+    processed_reviews << processed_review
+  end
+
+  # Save reviews to a JSON file
+  output_file = "app_store_reviews.json"
+  File.write( output_file, JSON.pretty_generate( processed_reviews ) )
+
+  UI.success "Downloaded #{reviews.count} reviews to #{output_file}"
+end
+
 lane :prod do
   desc "Set up App Store version and upload new metadata"
 

@@ -61,6 +61,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 
 
+### download_app_store_reviews
+
+```sh
+[bundle exec] fastlane download_app_store_reviews
+```
+
+
+
 ### prod
 
 ```sh
