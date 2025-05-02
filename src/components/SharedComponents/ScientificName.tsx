@@ -37,7 +37,8 @@ const ScientificName = ( {
   maxFontSizeMultiplier
 }: Props ) => {
   const { t } = useTranslation( );
-  const scientificNameArray = scientificNamePieces?.map( ( piece, index ) => {
+  const scientificNameArray: ( React.JSX.Element | string )[]
+  = scientificNamePieces?.map( ( piece, index ) => {
     const isItalics = piece !== rankPiece && (
       rankLevel <= Taxon.SPECIES_LEVEL || rankLevel === Taxon.GENUS_LEVEL
     );
