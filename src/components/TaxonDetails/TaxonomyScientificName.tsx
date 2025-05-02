@@ -2,7 +2,7 @@ import classnames from "classnames";
 import { Body2 } from "components/SharedComponents";
 import React from "react";
 import Taxon from "realmModels/Taxon";
-import { translatedRank } from "sharedHelpers/taxon";
+import { translatedRank } from "sharedHelpers/taxon.ts";
 import useTranslation from "sharedHooks/useTranslation.ts";
 
 interface Props {
