@@ -6,7 +6,7 @@ const useCustomTranslation = ( ) => {
   const original = useTranslation( );
   return {
     ...original,
-    t: ( key, options = {} ) => {
+    t: ( key: string, options = {} ) => {
       try {
         return original.t( key, options );
       } catch ( translationError ) {
