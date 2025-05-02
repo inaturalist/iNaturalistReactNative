@@ -2,12 +2,13 @@ import classNames from "classnames";
 import { Body3 } from "components/SharedComponents";
 import { random } from "lodash";
 import React from "react";
+import { TextProps } from "react-native";
 import Taxon from "realmModels/Taxon";
 import { translatedRank } from "sharedHelpers/taxon";
 import useTranslation from "sharedHooks/useTranslation";
 
 interface Props {
-  fontComponent: Object;
+  fontComponent: React.ComponentType<TextProps>;
   isHorizontal: boolean;
   isFirst?: boolean;
   isTitle?: boolean;
