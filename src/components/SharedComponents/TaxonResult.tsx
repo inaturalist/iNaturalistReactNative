@@ -3,6 +3,7 @@ import type { ApiTaxon } from "api/types";
 import classnames from "classnames";
 import ObsImagePreview from "components/ObservationsFlashList/ObsImagePreview.tsx";
 import {
+  Body3,
   DisplayTaxonName,
   INatIconButton
 } from "components/SharedComponents";
@@ -23,6 +24,7 @@ interface TaxonResultProps {
   clearBackground?: boolean;
   confidence?: number;
   confidencePosition?: string;
+  confidencePercentage?: number;
   fetchRemote?: boolean;
   first?: boolean;
   fromLocal?: boolean;
@@ -55,6 +57,7 @@ const TaxonResult = ( {
   checkmarkFocused = false,
   clearBackground,
   confidence,
+  confidencePercentage,
   confidencePosition = "photo",
   fetchRemote = true,
   first = false,
@@ -226,12 +229,21 @@ const TaxonResult = ( {
             white={white}
             isBackground={false}
           />
-          {!!( confidence && confidencePosition === "photo" ) && (
+          {!!( ( confidence || confidencePercentage ) && confidencePosition === "photo" ) && (
             <View className="absolute -bottom-4 w-full items-center">
-              <ConfidenceInterval
-                confidence={confidence}
-                activeColor={activeColor}
-              />
+              {confidencePercentage
+                ? (
+                  <Body3 className="color-inatGreen">
+                    {Math.round( confidencePercentage )}
+                    %
+                  </Body3>
+                )
+                : (
+                  <ConfidenceInterval
+                    confidence={confidence}
+                    activeColor={activeColor}
+                  />
+                )}
             </View>
           )}
         </View>
@@ -246,12 +258,21 @@ const TaxonResult = ( {
             scientificNameFirst={currentUser?.prefers_scientific_name_first}
             prefersCommonNames={currentUser?.prefers_common_names}
           />
-          {!!( confidence && confidencePosition === "text" ) && (
+          {!!( ( confidence || confidencePercentage ) && confidencePosition === "text" ) && (
             <View className="mt-1 w-[62px]">
-              <ConfidenceInterval
-                confidence={confidence}
-                activeColor={activeColor}
-              />
+              {confidencePercentage
+                ? (
+                  <Body3 className="color-inatGreen">
+                    {Math.round( confidencePercentage )}
+                    %
+                  </Body3>
+                )
+                : (
+                  <ConfidenceInterval
+                    confidence={confidence}
+                    activeColor={activeColor}
+                  />
+                )}
             </View>
           )}
         </View>
