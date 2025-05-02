@@ -1,51 +1,45 @@
-// @flow
+import type { ApiTaxon } from "api/types";
 import classnames from "classnames";
 import {
   Body1, Body3, Body4
 } from "components/SharedComponents";
 import ScientificName from "components/SharedComponents/ScientificName.tsx";
 import { Text, View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useMemo } from "react";
+import type { TextProps } from "react-native";
+import type { RealmTaxon } from "realmModels/types";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
 import useTranslation from "sharedHooks/useTranslation.ts";
 
-const rankNames = {
-  // $FlowIgnore
+const rankNames: Record<number, string> = {
   10: "species",
-  // $FlowIgnore
   20: "genus",
-  // $FlowIgnore
   30: "family",
-  // $FlowIgnore
   40: "order",
-  // $FlowIgnore
   50: "class",
-  // $FlowIgnore
   60: "phylum",
-  // $FlowIgnore
   70: "kingdom"
 };
 
-type Props = {
-  bottomTextComponent?: Function,
-  color?: string,
-  ellipsizeCommonName?: boolean,
-  numberOfLinesBottomText?: number,
-  keyBase?: string,
-  layout?: "horizontal" | "vertical",
-  removeStyling?: boolean,
-  prefersCommonNames?: boolean,
-  scientificNameFirst?: boolean,
-  showOneNameOnly?: boolean,
-  selectable?: boolean,
-  small?: boolean,
-  taxon: Object,
-  textCentered?: boolean,
-  topTextComponent?: Function,
-  underlineTopText?: boolean,
-  withdrawn?: boolean
-};
+interface Props {
+  bottomTextComponent?: React.ComponentType<TextProps>;
+  color?: string;
+  ellipsizeCommonName?: boolean;
+  numberOfLinesBottomText?: number;
+  keyBase?: string;
+  layout?: "horizontal" | "vertical";
+  removeStyling?: boolean;
+  prefersCommonNames?: boolean;
+  scientificNameFirst?: boolean;
+  showOneNameOnly?: boolean;
+  selectable?: boolean;
+  small?: boolean;
+  taxon: RealmTaxon | ApiTaxon;
+  textCentered?: boolean;
+  topTextComponent?: React.ComponentType<TextProps>;
+  underlineTopText?: boolean;
+  withdrawn?: boolean;
+}
 
 const DisplayTaxonName = ( {
   bottomTextComponent: BottomTextComponentProp,
@@ -65,7 +59,7 @@ const DisplayTaxonName = ( {
   topTextComponent: TopTextComponentProp,
   underlineTopText = false,
   withdrawn
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
 
   const textClassName = useMemo( ( ) => {
@@ -107,7 +101,7 @@ const DisplayTaxonName = ( {
     rank
   } = generateTaxonPieces( taxonPojo );
   const isHorizontal = layout === "horizontal";
-  const getSpaceChar = showSpace => ( showSpace && isHorizontal
+  const getSpaceChar = ( showSpace: boolean ): string => ( showSpace && isHorizontal
     ? " "
     : "" );
 
