@@ -10,7 +10,7 @@ const useCustomTranslation = ( ) => {
       try {
         return original.t( key, options );
       } catch ( translationError ) {
-        if ( !translationError.message.match( /NoClassDefFoundError/ ) ) {
+        if ( translationError instanceof Error && !translationError.message.match( /NoClassDefFoundError/ ) ) {
           throw translationError;
         }
       }
