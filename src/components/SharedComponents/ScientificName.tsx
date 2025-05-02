@@ -17,7 +17,7 @@ interface Props {
   rankLevel: number;
   rankPiece: string;
   scientificNamePieces: string[];
-  taxonId: string;
+  taxonId: string | number;
   textClassName?: string;
   maxFontSizeMultiplier?: number;
 }
