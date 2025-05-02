@@ -18,8 +18,8 @@ interface Props {
   rankPiece: string;
   scientificNamePieces: string[];
   taxonId: string | number;
-  textClassName?: string;
-  maxFontSizeMultiplier?: number;
+  textClassName: string;
+  maxFontSizeMultiplier: number;
 }
 
 const ScientificName = ( {
