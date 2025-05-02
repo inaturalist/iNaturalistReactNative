@@ -9,7 +9,7 @@ import * as React from "react";
 import { useWindowDimensions } from "react-native";
 import HTML, { defaultSystemFonts } from "react-native-render-html";
 import { openExternalWebBrowser } from "sharedHelpers/util.ts";
-import useTranslation from "sharedHooks/useTranslation";
+import useTranslation from "sharedHooks/useTranslation.ts";
 import colors from "styles/tailwindColors";
 
 type Props = {

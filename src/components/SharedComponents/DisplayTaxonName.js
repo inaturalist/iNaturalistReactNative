@@ -3,12 +3,12 @@ import classnames from "classnames";
 import {
   Body1, Body3, Body4
 } from "components/SharedComponents";
-import ScientificName from "components/SharedComponents/ScientificName";
+import ScientificName from "components/SharedComponents/ScientificName.tsx";
 import { Text, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useMemo } from "react";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
-import useTranslation from "sharedHooks/useTranslation";
+import useTranslation from "sharedHooks/useTranslation.ts";
 
 const rankNames = {
   // $FlowIgnore

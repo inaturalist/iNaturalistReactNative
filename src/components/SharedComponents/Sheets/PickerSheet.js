@@ -8,7 +8,7 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
-import useTranslation from "sharedHooks/useTranslation";
+import useTranslation from "sharedHooks/useTranslation.ts";
 
 type Props = {
   onPressClose: Function,

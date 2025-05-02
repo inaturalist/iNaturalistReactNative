@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
 import React from "react";
-import useTranslation from "sharedHooks/useTranslation";
+import useTranslation from "sharedHooks/useTranslation.ts";
 import { getShadow } from "styles/global";
 
 const DROP_SHADOW = getShadow( );

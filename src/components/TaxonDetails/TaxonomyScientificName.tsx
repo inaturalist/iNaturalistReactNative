@@ -3,7 +3,7 @@ import { Body2 } from "components/SharedComponents";
 import React from "react";
 import Taxon from "realmModels/Taxon";
 import { translatedRank } from "sharedHelpers/taxon";
-import useTranslation from "sharedHooks/useTranslation";
+import useTranslation from "sharedHooks/useTranslation.ts";
 
 interface Props {
   rank: string;

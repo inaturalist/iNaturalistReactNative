@@ -7,7 +7,7 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import useTranslation from "sharedHooks/useTranslation";
+import useTranslation from "sharedHooks/useTranslation.ts";
 import { getShadow } from "styles/global";
 
 const DROP_SHADOW = getShadow( );

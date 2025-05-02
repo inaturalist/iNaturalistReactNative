@@ -3,7 +3,7 @@ import INatIcon from "components/SharedComponents/INatIcon";
 import Body3 from "components/SharedComponents/Typography/Body3.tsx";
 import { View } from "components/styledComponents";
 import React from "react";
-import useTranslation from "sharedHooks/useTranslation";
+import useTranslation from "sharedHooks/useTranslation.ts";
 import colors from "styles/tailwindColors";
 
 interface Props {
