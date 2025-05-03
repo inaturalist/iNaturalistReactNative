@@ -133,9 +133,7 @@ export const generateTaxonPieces = ( taxon: Taxon ) => {
     ).join( " · " );
   }
 
-  let { name: scientificName } = taxon;
-
-  scientificName = scientificName?.split( " " );
+  const scientificNamePieces = taxon?.name?.split( " " );
   if ( taxon.rank_level < 10 ) {
     if ( taxon.rank === "variety" ) {
       taxonData.rankPiece = "var.";
@@ -145,13 +143,13 @@ export const generateTaxonPieces = ( taxon: Taxon ) => {
       taxonData.rankPiece = "f.";
     }
 
-    if ( taxonData.rankPiece ) {
-      scientificName.splice( -1, 0, taxonData.rankPiece );
+    if ( taxonData.rankPiece && scientificNamePieces ) {
+      scientificNamePieces.splice( -1, 0, taxonData.rankPiece );
     }
   }
 
-  taxonData.scientificNamePieces = scientificName;
-  taxonData.scientificName = scientificName?.join( " " );
+  taxonData.scientificNamePieces = scientificNamePieces;
+  taxonData.scientificName = scientificNamePieces?.join( " " );
 
   return taxonData as TaxonData;
 };
