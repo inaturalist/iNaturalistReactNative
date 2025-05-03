@@ -1,4 +1,4 @@
-import calculateConfidence from "components/Match/calculateConfidence";
+import calculateConfidence from "components/Match/calculateConfidence.ts";
 import {
   Body2,
   Body4,
