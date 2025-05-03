@@ -101,12 +101,12 @@ interface Taxon {
   rank?: string;
   rank_level: number;
   preferred_common_name?: string;
-  name: string;
+  name?: string;
 }
 
 interface TaxonData {
   rank?: string;
-  rankLevel?: number;
+  rankLevel: number;
   commonName?: string;
   rankPiece?: string;
   scientificNamePieces?: string[];
@@ -114,7 +114,7 @@ interface TaxonData {
 }
 
 export const generateTaxonPieces = ( taxon: Taxon ) => {
-  const taxonData: TaxonData = {};
+  const taxonData: Partial<TaxonData> = {};
 
   if ( taxon.rank ) taxonData.rank = capitalize( taxon.rank );
   taxonData.rankLevel = taxon.rank_level;
@@ -153,7 +153,7 @@ export const generateTaxonPieces = ( taxon: Taxon ) => {
   taxonData.scientificNamePieces = scientificName;
   taxonData.scientificName = scientificName?.join( " " );
 
-  return taxonData;
+  return taxonData as TaxonData;
 };
 
 export function accessibleTaxonName(
