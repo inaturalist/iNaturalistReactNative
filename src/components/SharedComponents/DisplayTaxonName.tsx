@@ -8,7 +8,7 @@ import { Text, View } from "components/styledComponents";
 import React, { useMemo } from "react";
 import type { TextProps } from "react-native";
 import type { RealmTaxon } from "realmModels/types";
-import { generateTaxonPieces } from "sharedHelpers/taxon";
+import { generateTaxonPieces } from "sharedHelpers/taxon.ts";
 import useTranslation from "sharedHooks/useTranslation.ts";
 
 const rankNames: Record<number, string> = {
