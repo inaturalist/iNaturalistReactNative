@@ -28,7 +28,7 @@ const uncapitalized = new Set( [
   "the"
 ] );
 
-const capitalize = s => {
+const capitalize = ( s: string ) => {
   if ( !s ) {
     return s;
   }
@@ -69,7 +69,7 @@ const capitalize = s => {
   );
 };
 
-export const capitalizeCommonName = name => {
+export const capitalizeCommonName = ( name: string ) => {
   if ( !name ) {
     return name;
   }
@@ -101,8 +101,23 @@ export const capitalizeCommonName = name => {
   } ).join( " " );
 };
 
-export const generateTaxonPieces = taxon => {
-  const taxonData = {};
+interface Taxon {
+  rank?: string;
+  rank_level: number;
+  preferred_common_name?: string;
+  name: string;
+}
+
+export const generateTaxonPieces = ( taxon: Taxon ) => {
+  interface TaxonData {
+    rank?: string;
+    rankLevel?: number;
+    commonName?: string;
+    rankPiece?: string;
+    scientificNamePieces?: string[];
+    scientificName?: string;
+  }
+  const taxonData: TaxonData = {};
 
   if ( taxon.rank ) taxonData.rank = capitalize( taxon.rank );
   taxonData.rankLevel = taxon.rank_level;
@@ -145,7 +160,11 @@ export const generateTaxonPieces = taxon => {
   return taxonData;
 };
 
-export function accessibleTaxonName( taxon, user, t ) {
+export function accessibleTaxonName(
+  taxon: Taxon,
+  user,
+  t: ( key: string, options: {} ) => string
+) {
   const { commonName, scientificName } = generateTaxonPieces( taxon );
   if ( typeof ( user?.prefers_scientific_name_first ) === "boolean" ) {
     if ( user.prefers_scientific_name_first ) {
@@ -176,7 +195,7 @@ export async function fetchTaxonAndSave( id, realm, params = {}, opts = {} ) {
 }
 
 // Translates rank in a way that can be statically checked
-export function translatedRank( rank, t ) {
+export function translatedRank( rank: string, t: ( key: string ) => string ) {
   switch ( rank ) {
     case "Class":
       return t( "Ranks-Class" );
