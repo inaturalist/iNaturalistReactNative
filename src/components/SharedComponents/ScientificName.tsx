@@ -13,10 +13,10 @@ interface Props {
   isFirst?: boolean;
   isTitle?: boolean;
   keyBase: string;
-  rank: string;
+  rank?: string;
   rankLevel: number;
-  rankPiece: string;
-  scientificNamePieces: string[];
+  rankPiece?: string;
+  scientificNamePieces?: string[];
   taxonId: string | number;
   textClassName: string;
   maxFontSizeMultiplier: number;
@@ -37,8 +37,7 @@ const ScientificName = ( {
   maxFontSizeMultiplier
 }: Props ) => {
   const { t } = useTranslation( );
-  const scientificNameArray: ( React.JSX.Element | string )[]
-  = scientificNamePieces?.map( ( piece, index ) => {
+  const scientificNameArray = scientificNamePieces?.map( ( piece, index ) => {
     const isItalics = piece !== rankPiece && (
       rankLevel <= Taxon.SPECIES_LEVEL || rankLevel === Taxon.GENUS_LEVEL
     );
