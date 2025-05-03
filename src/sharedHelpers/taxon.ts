@@ -141,16 +141,15 @@ export const generateTaxonPieces = ( taxon: Taxon ) => {
   scientificName = scientificName?.split( " " );
   if ( taxon.rank_level < 10 ) {
     if ( taxon.rank === "variety" ) {
-      taxon.rankPiece = "var.";
+      taxonData.rankPiece = "var.";
     } else if ( taxon.rank === "subspecies" ) {
-      taxon.rankPiece = "ssp.";
+      taxonData.rankPiece = "ssp.";
     } else if ( taxon.rank === "form" ) {
-      taxon.rankPiece = "f.";
+      taxonData.rankPiece = "f.";
     }
 
-    if ( taxon.rankPiece ) {
-      taxonData.rankPiece = taxon.rankPiece;
-      scientificName.splice( -1, 0, taxon.rankPiece );
+    if ( taxonData.rankPiece ) {
+      scientificName.splice( -1, 0, taxonData.rankPiece );
     }
   }
 
