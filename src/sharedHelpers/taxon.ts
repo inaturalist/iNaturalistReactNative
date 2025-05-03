@@ -104,15 +104,16 @@ interface Taxon {
   name: string;
 }
 
+interface TaxonData {
+  rank?: string;
+  rankLevel?: number;
+  commonName?: string;
+  rankPiece?: string;
+  scientificNamePieces?: string[];
+  scientificName?: string;
+}
+
 export const generateTaxonPieces = ( taxon: Taxon ) => {
-  interface TaxonData {
-    rank?: string;
-    rankLevel?: number;
-    commonName?: string;
-    rankPiece?: string;
-    scientificNamePieces?: string[];
-    scientificName?: string;
-  }
   const taxonData: TaxonData = {};
 
   if ( taxon.rank ) taxonData.rank = capitalize( taxon.rank );
