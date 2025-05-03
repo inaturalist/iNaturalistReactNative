@@ -1,4 +1,8 @@
-const calculateConfidence = suggestion => {
+interface Suggestion {
+  combined_score?: number;
+  score?: number;
+}
+const calculateConfidence = ( suggestion: Suggestion ) => {
   if ( !suggestion ) {
     return null;
   }
