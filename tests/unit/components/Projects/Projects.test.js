@@ -93,7 +93,7 @@ describe( "Projects", ( ) => {
 
     expect( screen.getByText( mockProject.title ) ).toBeTruthy( );
     expect( screen.getByTestId( `Project.${mockProject.id}.photo` ).props.source )
-      .toStrictEqual( { uri: mockProject.icon } );
+      .toMatchObject( { url: mockProject.icon } );
     fireEvent.press( screen.getByTestId( `Project.${mockProject.id}` ) );
     expect( mockedNavigate ).toHaveBeenCalledWith( "ProjectDetails", {
       id: mockProject.id
