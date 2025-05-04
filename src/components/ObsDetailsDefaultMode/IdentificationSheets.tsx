@@ -1,4 +1,3 @@
-// flow was giving a lot of annoying errors on this screen, so added TypeScript
 import { useRoute } from "@react-navigation/native";
 import { createComment } from "api/comments";
 import { createIdentification } from "api/identifications";
@@ -7,7 +6,6 @@ import {
   WarningSheet
 } from "components/SharedComponents";
 import { RealmContext } from "providers/contexts.ts";
-import type { Node } from "react";
 import React, {
   useCallback, useEffect,
   useMemo, useReducer
@@ -189,7 +187,7 @@ const IdentificationSheets: React.FC<Props> = ( {
   remoteObsWasDeleted,
   showAddCommentSheet,
   showAgreeWithIdSheet
-}: Props ): Node => {
+}: Props ) => {
   const { params } = useRoute();
   const routeParams = params as RouteParams;
   const {
