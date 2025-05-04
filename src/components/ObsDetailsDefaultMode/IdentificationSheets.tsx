@@ -13,7 +13,7 @@ import React, {
   useMemo, useReducer
 } from "react";
 import { Alert, Platform } from "react-native";
-import { fetchTaxonAndSave } from "sharedHelpers/taxon";
+import fetchTaxonAndSave from "sharedHelpers/fetchTaxonAndSave";
 import {
   useAuthenticatedMutation,
   useTranslation
