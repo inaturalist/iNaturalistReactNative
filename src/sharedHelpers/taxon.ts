@@ -1,4 +1,8 @@
+import { fetchTaxon } from "api/taxa";
+import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import _ from "lodash";
+import Taxon from "realmModels/Taxon";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 const uncapitalized = new Set( [
   "à",
@@ -169,6 +173,23 @@ export function accessibleTaxonName(
     }
   }
   return t( "accessible-comname-sciname", { scientificName, commonName } );
+}
+
+export async function fetchTaxonAndSave( id, realm, params = {}, opts = {} ) {
+  const options = { ...opts };
+  if ( !options.api_token ) {
+    options.api_token = await getJWT( );
+  }
+  const remoteTaxon = await fetchTaxon( id, params, options );
+  const mappedRemoteTaxon = Taxon.mapApiToRealm( remoteTaxon, realm );
+  safeRealmWrite( realm, ( ) => {
+    realm.create(
+      "Taxon",
+      Taxon.forUpdate( mappedRemoteTaxon ),
+      "modified"
+    );
+  }, "saving remote taxon in ObsDetails" );
+  return mappedRemoteTaxon;
 }
 
 // Translates rank in a way that can be statically checked
