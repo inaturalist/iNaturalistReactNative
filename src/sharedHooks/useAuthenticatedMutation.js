@@ -47,6 +47,11 @@ const useAuthenticatedMutation = (
         getJWT( true ).catch( refreshError => {
           logger.error( "Failed to refresh token in mutation after 401:", refreshError );
         } );
+
+        return handleError( error, {
+          context: errorContext,
+          throw: mutationOptions.throwOnError !== false
+        } );
       }
 
       if ( error.status === 429 || ( error.response && error.response.status === 429 ) ) {

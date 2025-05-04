@@ -26,6 +26,17 @@ Object.defineProperty( INatApiError.prototype, "name", {
   value: "INatApiError"
 } );
 
+export class INatApiUnauthorizedError extends INatApiError {
+  constructor( context?: Object ) {
+    const errorJson = {
+      error: "Unauthorized",
+      status: 401,
+      context
+    };
+    super( errorJson, 401, context );
+  }
+}
+
 export class INatApiTooManyRequestsError extends INatApiError {
   constructor( context?: Object ) {
     const errorJson = {
@@ -81,6 +92,8 @@ async function handleError( e: Object, options: Object = {} ): Object {
   if ( e.response.status === 429 ) {
     logger.error( "429 with a response in handleError:", JSON.stringify( context ) );
     throw new INatApiTooManyRequestsError( context );
+  } else if ( e.response.status === 401 ) {
+    throw new INatApiUnauthorizedError( context );
   }
 
   // Try to parse JSON in the response if this was an HTTP error. If we can't
