@@ -10,10 +10,15 @@ import {
   View
 } from "components/styledComponents";
 import React from "react";
+import type { RealmTaxon } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 
-type Props = {
-  topSuggestion: Object
+interface Props {
+  topSuggestion?: {
+    combined_score?: number;
+    score?: number;
+    taxon: RealmTaxon;
+  };
 }
 
 const MatchHeader = ( { topSuggestion }: Props ) => {
