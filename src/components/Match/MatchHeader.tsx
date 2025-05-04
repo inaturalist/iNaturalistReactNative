@@ -27,7 +27,6 @@ const MatchHeader = ( { topSuggestion }: Props ) => {
   const confidence = calculateConfidence( topSuggestion );
 
   const suggestedTaxon = taxon;
-  const taxonId = taxon?.id || "unknown";
 
   const observationStatus = ( ) => {
     let confidenceType = "may_have_observed";
@@ -77,8 +76,6 @@ const MatchHeader = ( { topSuggestion }: Props ) => {
     <View className="shrink">
       <DisplayTaxonName
         taxon={suggestedTaxon}
-        testID={`ObsDetails.taxon.${taxonId}`}
-        accessibilityHint={t( "Navigates-to-taxon-details" )}
         topTextComponent={Heading1}
         bottomTextComponent={Subheading2}
       />
