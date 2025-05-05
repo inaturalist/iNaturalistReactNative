@@ -154,9 +154,13 @@ export const generateTaxonPieces = ( taxon: Taxon ) => {
   return taxonData as TaxonData;
 };
 
+interface User {
+  prefers_scientific_name_first?: boolean;
+  prefers_common_names?: boolean;
+}
 export function accessibleTaxonName(
   taxon: Taxon,
-  user,
+  user: User,
   t: ( key: string, options: {} ) => string
 ) {
   const { commonName, scientificName } = generateTaxonPieces( taxon );
