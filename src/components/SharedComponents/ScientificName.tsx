@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { Body3 } from "components/SharedComponents";
 import { random } from "lodash";
 import React from "react";
-import { TextProps } from "react-native";
+import type { TextProps } from "react-native";
 import Taxon from "realmModels/Taxon";
 import { translatedRank } from "sharedHelpers/taxon.ts";
 import useTranslation from "sharedHooks/useTranslation.ts";
