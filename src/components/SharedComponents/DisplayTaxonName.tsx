@@ -100,7 +100,7 @@ const DisplayTaxonName = ( {
     rank
   } = generateTaxonPieces( taxonPojo );
   const isHorizontal = layout === "horizontal";
-  const getSpaceChar = ( showSpace: boolean ): string => ( showSpace && isHorizontal
+  const getSpaceChar = ( showSpace: boolean ) => ( showSpace && isHorizontal
     ? " "
     : "" );
 
