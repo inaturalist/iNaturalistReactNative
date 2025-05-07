@@ -145,6 +145,20 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
         onPress: ( ) => setShowConfirm( true )
       };
     }
+
+    if ( items.logout === undefined && !currentUser ) {
+      items.login = {
+        label: t( "LOG-IN" ),
+        icon: "door-enter",
+        style: {
+          opacity: 0.5,
+          display: "flex"
+        },
+        onPress: ( ) => {
+          navigation.navigate( "LoginStackNavigator" );
+        }
+      };
+    }
     if ( isDebug ) {
       items.debug = {
         label: "DEBUG",
@@ -154,12 +168,7 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
       };
     }
     return items;
-  }, [
-    currentUser,
-    isConnected,
-    isDebug,
-    t
-  ] );
+  }, [currentUser, isConnected, isDebug, navigation, t] );
 
   const onSignOut = async ( ) => {
     await signOut( { realm, clearRealm: true, queryClient } );
