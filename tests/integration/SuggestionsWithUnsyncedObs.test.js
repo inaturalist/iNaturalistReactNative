@@ -1,4 +1,3 @@
-import Geolocation from "@react-native-community/geolocation";
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
@@ -68,19 +67,11 @@ jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
   Version: 11
 } ) );
 
-const watchPositionSuccess = jest.fn( success => success( {
-  coords: {
-    latitude: 56,
-    longitude: 9,
-    accuracy: 8
-  }
+const mockFetchUserLocation = jest.fn( () => ( { latitude: 56, longitude: 9, accuracy: 8 } ) );
+jest.mock( "sharedHelpers/fetchAccurateUserLocation", () => ( {
+  __esModule: true,
+  default: () => mockFetchUserLocation()
 } ) );
-
-const mockWatchPosition = jest.fn( ( success, _error, _options ) => {
-  setTimeout( () => watchPositionSuccess( success ), 100 );
-  return 0;
-} );
-Geolocation.watchPosition.mockImplementation( mockWatchPosition );
 
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
@@ -174,25 +165,17 @@ const navigateToSuggestionsForObservationViaObsEdit = async observation => {
     `MyObservations.obsGridItem.${observation.uuid}`
   );
   await actor.press( observationGridItem );
-  const addIdButton = await screen.findByText( "ADD AN ID" );
+  const addIdButton = await screen.findByText( "ID WITH AI" );
   await actor.press( addIdButton );
 };
 
-const navigateToSuggestionsViaAICamera = async ( options = {} ) => {
+const navigateToSuggestionsViaAICamera = async ( ) => {
   const tabBar = await screen.findByTestId( "CustomTabBar" );
   const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
   await actor.press( addObsButton );
   const cameraButton = await screen.findByLabelText( /AI Camera/ );
   await actor.press( cameraButton );
 
-  if ( options.waitForLocation ) {
-    await waitFor( ( ) => {
-      expect( Geolocation.watchPosition ).toHaveReturnedWith( 0 );
-    } );
-    await waitFor( ( ) => {
-      expect( watchPositionSuccess ).toHaveReturned( );
-    }, 100 );
-  }
   const takePhotoButton = await screen.findByLabelText( /Take photo/ );
   await actor.press( takePhotoButton );
   const addIDButton = await screen.findByText( /ADD AN ID/ );
@@ -345,21 +328,19 @@ describe( "from AICamera directly", ( ) => {
   describe( "suggestions with location", ( ) => {
     it( "should call score_image with location parameters on first render", async ( ) => {
       await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( { waitForLocation: true } );
-      // const ignoreLocationButton = await screen.findByText( /IGNORE LOCATION/ );
-      // expect( ignoreLocationButton ).toBeVisible( );
-      // await waitFor( ( ) => {
-      //   expect( inatjs.computervision.score_image ).toHaveBeenCalledWith(
-      //     expect.objectContaining( {
-      //     // Don't care about fields here
-      //       fields: expect.any( Object ),
-      //       image: expect.any( Object ),
-      //       lat: 56,
-      //       lng: 9
-      //     } ),
-      //     expect.anything( )
-      //   );
-      // } );
+      await navigateToSuggestionsViaAICamera( );
+      await waitFor( ( ) => {
+        expect( inatjs.computervision.score_image ).toHaveBeenCalledWith(
+          expect.objectContaining( {
+          // Don't care about fields here
+            fields: expect.any( Object ),
+            image: expect.any( Object ),
+            lat: 56,
+            lng: 9
+          } ),
+          expect.anything( )
+        );
+      } );
     } );
   } );
 
@@ -370,6 +351,7 @@ describe( "from AICamera directly", ( ) => {
         hasPermissions: false,
         renderPermissionsGate: jest.fn( )
       } ) );
+      mockFetchUserLocation.mockReturnValue( null );
       await setupAppWithSignedInUser( );
       await navigateToSuggestionsViaAICamera( );
       await waitFor( ( ) => {

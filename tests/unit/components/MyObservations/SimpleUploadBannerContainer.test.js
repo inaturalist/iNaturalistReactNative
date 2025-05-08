@@ -146,6 +146,71 @@ describe( "SimpleUploadBannerContainer", () => {
     expect( statusText ).toBeVisible( );
   } );
 
+  it( "displays 1 upload completed and 4 failed", () => {
+    useStore.setState( {
+      layout: {
+        isDefaultMode: false
+      },
+      numUploadsAttempted: 5,
+      uploadStatus: UPLOAD_COMPLETE,
+      syncingStatus: SYNC_PENDING,
+      initialNumObservationsInQueue: 5,
+      errorsByUuid: {
+        1: true, 2: true, 3: true, 4: true
+      }
+    } );
+    renderComponent( <SimpleUploadBannerContainer currentUser={mockUser} /> );
+
+    const successText = screen.getByText( /1 observation uploaded/ );
+    const errorText = screen.getByText( /4 uploads failed/ );
+    expect( successText ).toBeVisible( );
+    expect( errorText ).toBeVisible( );
+  } );
+
+  it( "displays only error when all 5 uploads failed", () => {
+    useStore.setState( {
+      layout: {
+        isDefaultMode: false
+      },
+      uploadStatus: UPLOAD_COMPLETE,
+      syncingStatus: SYNC_PENDING,
+      initialNumObservationsInQueue: 5,
+      numUploadsAttempted: 5,
+      errorsByUuid: {
+        1: true,
+        2: true,
+        3: true,
+        4: true,
+        5: true
+      }
+    } );
+    renderComponent( <SimpleUploadBannerContainer currentUser={mockUser} /> );
+
+    const errorText = screen.getByText( /5 uploads failed/ );
+    expect( errorText ).toBeVisible();
+    const successText = screen.queryByText( /1 observation uploaded/ );
+    expect( successText ).toBeFalsy();
+  } );
+
+  it( "displays 4 uploads completed and 1 failed", () => {
+    useStore.setState( {
+      layout: {
+        isDefaultMode: false
+      },
+      uploadStatus: UPLOAD_COMPLETE,
+      syncingStatus: SYNC_PENDING,
+      initialNumObservationsInQueue: 5,
+      numUploadsAttempted: 5,
+      errorsByUuid: { 1: true }
+    } );
+    renderComponent( <SimpleUploadBannerContainer currentUser={mockUser} /> );
+
+    const successText = screen.getByText( /4 observations uploaded/ );
+    const errorText = screen.getByText( /1 upload failed/ );
+    expect( successText ).toBeVisible();
+    expect( errorText ).toBeVisible();
+  } );
+
   // 20240611 amanda - removing this test for now, since I believe the new intended UI
   // is that the user will only ever see "Syncing..." followed by
   // "1 observation deleted" UI after deleting a local observation. feel free to reinstate this

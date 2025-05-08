@@ -1,13 +1,10 @@
 import { Realm } from "@realm/react";
 import { FileUpload } from "inaturalistjs";
 import { Platform } from "react-native";
-import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import * as uuid from "uuid";
 
 import Sound from "./Sound";
-
-const logger = log.extend( "Realm ObservationSound" );
 
 class ObservationSound extends Realm.Object {
   static OBSERVATION_SOUNDS_FIELDS = {
@@ -56,14 +53,6 @@ class ObservationSound extends Realm.Object {
   }
 
   static mapSoundForAttachingToObs( id, observationSound ) {
-    // when the app is backgrounded, we don't always have the observationPhoto id
-    // available. instead, we need that upload to fail so a user
-    // can upload again later without their photo disappearing (being marked as
-    // completed in realm)
-    if ( !observationSound || !observationSound.id ) {
-      logger.info( `Skipping attachment of sound without ID: ${observationSound.uuid}` );
-      return null;
-    }
     return {
       "observation_sound[observation_id]": id,
       "observation_sound[sound_id]": observationSound.id,

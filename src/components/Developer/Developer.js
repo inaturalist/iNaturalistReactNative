@@ -126,13 +126,25 @@ const Developer = (): Node => {
                 className="mb-5"
               />
               <Button
-                onPress={() => { throw new INatApiError( { error: "Test error", status: 422 } ); }}
+                onPress={() => {
+                  throw new INatApiError( {
+                    error: "Test error",
+                    status: 422,
+                    context: {
+                      routeName: "MyObservations",
+                      timestamp: new Date().toISOString()
+                    }
+                  } );
+                }}
                 text="TEST INATAPIERROR"
                 className="mb-5"
               />
               <Button
                 onPress={() => {
-                  throw new INatApiTooManyRequestsError( );
+                  throw new INatApiTooManyRequestsError( {
+                    routeName: "TaxonDetails",
+                    timestamp: new Date().toISOString()
+                  } );
                 }}
                 text="TEST API TOO MANY REQUESTS ERROR"
                 className="mb-5"

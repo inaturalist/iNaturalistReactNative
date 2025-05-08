@@ -23,7 +23,7 @@ const searchObservations = async ( params: Object = {}, opts: Object = {} ): Pro
     response.results = response.results.map( mapToLocalSchema );
     return response;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "searchObservations", opts } } );
   }
 };
 
@@ -31,7 +31,7 @@ const faveObservation = async ( params: Object = {}, opts: Object = {} ): Promis
   try {
     return await inatjs.observations.fave( params, opts );
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "faveObservation", opts } } );
   }
 };
 
@@ -39,7 +39,7 @@ const unfaveObservation = async ( params: Object = {}, opts: Object = {} ): Prom
   try {
     return await inatjs.observations.unfave( params, opts );
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "unfaveObservation", opts } } );
   }
 };
 
@@ -61,7 +61,7 @@ const fetchRemoteObservation = async (
     }
     return null;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "fetchRemoteObservation", uuid, opts } } );
   }
 };
 
@@ -83,7 +83,7 @@ const fetchRemoteObservations = async (
     }
     return null;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "fetchRemoteObservations", uuids, opts } } );
   }
 };
 
@@ -91,7 +91,7 @@ const markAsReviewed = async ( params: Object = {}, opts: Object = {} ): Promise
   try {
     return await inatjs.observations.review( params, opts );
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "markAsReviewed", opts } } );
   }
 };
 
@@ -102,7 +102,7 @@ const markObservationUpdatesViewed = async (
   try {
     return await inatjs.observations.viewedUpdates( params, opts );
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "markObservationUpdatesViewed", opts } } );
   }
 };
 
@@ -113,7 +113,7 @@ const createObservation = async (
   try {
     return await inatjs.observations.create( params, opts );
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "createObservation", opts } } );
   }
 };
 
@@ -124,7 +124,7 @@ const updateObservation = async (
   try {
     return await inatjs.observations.update( params, opts );
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "updateObservation", opts } } );
   }
 };
 
@@ -140,7 +140,7 @@ const createOrUpdateEvidence = async (
   try {
     return await apiEndpoint( params, opts );
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "createOrUpdateEvidence", opts } } );
   }
 };
 
@@ -152,7 +152,7 @@ const fetchObservationUpdates = async (
     const { results } = await inatjs.observations.updates( params, opts );
     return results;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "fetchObservationUpdates", opts } } );
   }
 };
 
@@ -168,7 +168,12 @@ const fetchUnviewedObservationUpdatesCount = async (
     }, opts );
     return updatesCount;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, {
+      context: {
+        functionName: "fetchUnviewedObservationUpdatesCount",
+        opts
+      }
+    } );
   }
 };
 
@@ -179,7 +184,7 @@ const deleteRemoteObservation = async (
   try {
     return await inatjs.observations.delete( params, opts );
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "deleteRemoteObservation", opts } } );
   }
 };
 
@@ -187,7 +192,7 @@ const fetchObservers = async ( params: Object = {} ) : Promise<?Object> => {
   try {
     return inatjs.observations.observers( params );
   } catch ( e ) {
-    return handleError( e, { throw: true } );
+    return handleError( e, { context: { functionName: "fetchObservers" }, throw: true } );
   }
 };
 
@@ -195,7 +200,7 @@ const fetchIdentifiers = async ( params: Object = {} ) : Promise<?Object> => {
   try {
     return await inatjs.observations.identifiers( params );
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "fetchIdentifiers" } } );
   }
 };
 
@@ -206,7 +211,7 @@ const fetchSpeciesCounts = async (
   try {
     return inatjs.observations.speciesCounts( params, opts );
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "fetchSpeciesCounts", opts } } );
   }
 };
 
@@ -217,7 +222,7 @@ const checkForDeletedObservations = async (
   try {
     return await inatjs.observations.deleted( params, opts );
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "checkForDeletedObservations", opts } } );
   }
 };
 
@@ -228,7 +233,7 @@ const fetchSubscriptions = async (
   try {
     return inatjs.observations.subscriptions( params, opts );
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "fetchSubscriptions", opts } } );
   }
 };
 
@@ -239,7 +244,7 @@ const createSubscription = async (
   try {
     return inatjs.observations.subscribe( params, opts );
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "createSubscription", opts } } );
   }
 };
 

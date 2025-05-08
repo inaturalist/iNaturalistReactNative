@@ -1,0 +1,1 @@
+Bug fixes for location fetching while creating an observation and for bulk observation uploads

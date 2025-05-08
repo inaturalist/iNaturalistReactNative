@@ -6,10 +6,10 @@ import { RealmContext } from "providers/contexts.ts";
 import { useEffect } from "react";
 import { LogBox } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import { MMKV } from "react-native-mmkv";
 import Orientation from "react-native-orientation-locker";
 import Realm from "realm";
 import clearCaches from "sharedHelpers/clearCaches.ts";
+import { IS_FRESH_INSTALL, store } from "sharedHelpers/installData.ts";
 import { log } from "sharedHelpers/logger";
 import { addARCameraFiles } from "sharedHelpers/mlModel.ts";
 import { findAndLogSentinelFiles } from "sharedHelpers/sentinelFiles.ts";
@@ -33,16 +33,6 @@ NetInfo.configure( {
   reachabilityUrl: "https://www.inaturalist.org/ping"
 } );
 
-// it's not recommended to have multiple instances of MMKV in an app, but
-// we can't use the zustand one here since it hasn't been initialized yet,
-// and I don't think we can move storage creation into App.js without creating
-// a dependency cycle
-const installStatus = new MMKV( {
-  id: "install-status"
-} );
-
-const INSTALL_STATUS = "alreadyLaunched";
-
 const isTablet = DeviceInfo.isTablet( );
 
 const { useRealm } = RealmContext;
@@ -51,6 +41,19 @@ const logger = log.extend( "StartupService" );
 
 const geolocationConfig = {
   skipPermissionRequests: true
+};
+
+const checkForPreviousCrash = async ( ) => {
+  try {
+    const crashData = zustandStorage.getItem( "LAST_CRASH_DATA" );
+    if ( crashData ) {
+      const parsedData = JSON.parse( crashData );
+      logger.error( "Last Crash Data:", JSON.stringify( parsedData ) );
+      zustandStorage.removeItem( "LAST_CRASH_DATA" );
+    }
+  } catch ( e ) {
+    logger.error( "Failed to process previous crash data", e );
+  }
 };
 
 const StartupService = ( ) => {
@@ -70,35 +73,27 @@ const StartupService = ( ) => {
       // if it is, delete realm file when we sign the user out of the app
       // this handles the case where a user deletes the app, then reinstalls
       // and expects to be signed out with no previously saved data
-        const alreadyLaunched = installStatus.getBoolean( INSTALL_STATUS );
-        if ( !alreadyLaunched ) {
-          installStatus.set( INSTALL_STATUS, true );
+        const isFreshInstall = store.getBoolean( IS_FRESH_INSTALL );
+        if ( isFreshInstall ) {
+          store.set( IS_FRESH_INSTALL, false );
           if ( !currentUser ) {
             await signOut( { clearRealm: true } );
           }
+        } else {
+          // make sure the MMKV store has been created on a previous installation
+          // before trying to query it
+          // though we really should only have one store
+          await checkForPreviousCrash( );
+          // also don't bother looking for sentinel files if user has a fresh installation
+          await findAndLogSentinelFiles( );
         }
       };
       // don't remove this logger.info statement: it's used for internal metrics
       logger.info( "pickup" );
 
-      const checkForPreviousCrash = async ( ) => {
-        try {
-          const crashData = zustandStorage.getItem( "LAST_CRASH_DATA" );
-          if ( crashData ) {
-            logger.error( `Last Crash Data: ${JSON.parse( crashData )}` );
-            zustandStorage.removeItem( "LAST_CRASH_DATA" );
-          }
-        } catch ( e ) {
-          logger.error( "Failed to process previous crash data", e );
-        }
-      };
-
       try {
         await checkForSignedInUser( );
-        await checkForPreviousCrash( );
-
         await addARCameraFiles( );
-        await findAndLogSentinelFiles( );
 
         // this ensures that React Query has the most accurate depiction of whether the
         // app is online or offline. since queries only run when the app is online, this

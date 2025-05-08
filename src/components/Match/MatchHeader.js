@@ -9,11 +9,8 @@ import {
 import {
   View
 } from "components/styledComponents";
-import { RealmContext } from "providers/contexts.ts";
 import React from "react";
 import { useTranslation } from "sharedHooks";
-
-const { useRealm } = RealmContext;
 
 type Props = {
   topSuggestion: Object
@@ -21,7 +18,6 @@ type Props = {
 
 const MatchHeader = ( { topSuggestion }: Props ) => {
   const { t } = useTranslation( );
-  const realm = useRealm( );
   const taxon = topSuggestion?.taxon;
 
   if ( !topSuggestion ) {
@@ -29,11 +25,6 @@ const MatchHeader = ( { topSuggestion }: Props ) => {
   }
 
   const confidence = calculateConfidence( topSuggestion );
-
-  const hasSeenSpecies = taxon?.id
-    ? realm.objects( "Observation" )
-      .filtered( `taxon.id == ${taxon.id} && taxon.rank_level == 10` )[0]
-    : false;
 
   const suggestedTaxon = taxon;
   const taxonId = taxon?.id || "unknown";
@@ -48,11 +39,7 @@ const MatchHeader = ( { topSuggestion }: Props ) => {
 
     let rankDescription = "organism";
     if ( taxon.rank_level === 10 ) {
-      if ( !hasSeenSpecies ) {
-        rankDescription = "new_species";
-      } else {
-        rankDescription = "species";
-      }
+      rankDescription = "species";
     }
 
     return { confidenceType, rankDescription };
@@ -63,30 +50,24 @@ const MatchHeader = ( { topSuggestion }: Props ) => {
     const { confidenceType, rankDescription } = observationStatus( );
 
     if ( confidenceType === "observed" ) {
-      if ( rankDescription === "new_species" ) {
-        congratulatoryText = t( "You-observed-a-new-species" );
-      } else if ( rankDescription === "species" ) {
-        congratulatoryText = t( "You-observed-a-species" );
+      if ( rankDescription === "species" ) {
+        congratulatoryText = t( "You-observed-this-species" );
       } else if ( rankDescription === "organism" ) {
-        congratulatoryText = t( "You-observed-an-organism-in-this-group" );
+        congratulatoryText = t( "You-observed-a-species-in-this-group" );
       }
     }
     if ( confidenceType === "likely_observed" ) {
-      if ( rankDescription === "new_species" ) {
-        congratulatoryText = t( "You-likely-observed-a-new-species" );
-      } else if ( rankDescription === "species" ) {
-        congratulatoryText = t( "You-likely-observed-a-species" );
+      if ( rankDescription === "species" ) {
+        congratulatoryText = t( "You-likely-observed-this-species" );
       } else if ( rankDescription === "organism" ) {
-        congratulatoryText = t( "You-likely-observed-an-organism-in-this-group" );
+        congratulatoryText = t( "You-likely-observed-a-species-in-this-group" );
       }
     }
     if ( confidenceType === "may_have_observed" ) {
-      if ( rankDescription === "new_species" ) {
-        congratulatoryText = t( "You-may-have-observed-a-new-species" );
-      } else if ( rankDescription === "species" ) {
-        congratulatoryText = t( "You-may-have-observed-a-species" );
+      if ( rankDescription === "species" ) {
+        congratulatoryText = t( "You-may-have-observed-this-species" );
       } else if ( rankDescription === "organism" ) {
-        congratulatoryText = t( "You-may-have-observed-an-organism-in-this-group" );
+        congratulatoryText = t( "You-may-have-observed-a-species-in-this-group" );
       }
     }
     return congratulatoryText;

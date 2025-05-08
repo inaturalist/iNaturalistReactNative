@@ -6,7 +6,7 @@ import { LatLng } from "react-native-maps";
 
 // Please don't change this to an aliased path or the e2e mock will not get
 // used in our e2e tests on Github Actions
-import fetchCoarseUserLocation from "../sharedHelpers/fetchUserLocation";
+import fetchCoarseUserLocation from "../sharedHelpers/fetchCoarseUserLocation";
 
 export enum EXPLORE_ACTION {
   CHANGE_SORT_BY = "CHANGE_SORT_BY",
@@ -54,9 +54,8 @@ export enum SORT_BY {
 }
 
 export enum TAXONOMIC_RANK {
-  none = null,
+  none = "none",
   kingdom = "kingdom",
-  subkingdom = "subkingdom",
   phylum = "phylum",
   subphylum = "subphylum",
   superclass = "superclass",
@@ -514,12 +513,16 @@ function exploreReducer( state: State, action: Action ) {
     case EXPLORE_ACTION.SET_HIGHEST_TAXONOMIC_RANK:
       return {
         ...state,
-        hrank: action.hrank
+        hrank: action.hrank === TAXONOMIC_RANK.none
+          ? null
+          : action.hrank
       };
     case EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK:
       return {
         ...state,
-        lrank: action.lrank
+        lrank: action.lrank === TAXONOMIC_RANK.none
+          ? null
+          : action.lrank
       };
     case EXPLORE_ACTION.SET_DATE_OBSERVED_ALL:
       return {

@@ -73,7 +73,7 @@ Adds-your-vote-of-agreement = Adds your vote of agreement
 # Hint for a button that adds a vote of disagreement
 Adds-your-vote-of-disagreement = Adds your vote of disagreement
 # Label for toggling app mode between default and advanced settings
-Advanced-Settings = Advanced Settings
+Advanced-Mode = Advanced Mode
 ADVANCED-SETTINGS = ADVANCED SETTINGS
 Affiliation = Affiliation: { $site }
 After-capturing-or-importing-photos-show = After capturing or importing photos, show:
@@ -99,6 +99,10 @@ All-taxa = All taxa
 ALL-USERS-EXCEPT = ALL USERS EXCEPT
 ALLOW-LOCATION-ACCESS = ALLOW LOCATION ACCESS
 An-Internet-connection-is-required = An Internet connection is required to load more observations.
+# Message shown to the user after they have left the AI camera where they may
+# have seen a species suggestion but before they land on the match screen,
+# where they might see a better suggestion.
+Analyzing-for-the-best-identification = Analyzing for the best identification...
 # Option when choosing a value for an date filter that indicates any value is
 # acceptable
 Any--date = Any
@@ -544,10 +548,6 @@ Get-an-instant-ID-of-any-plant-animal-fungus = Get an instant ID of any plant, a
 Get-feedback-from-naturalists-and-experts-who-will-help-verify = Get feedback from naturalists and experts who will help verify and refine your identifications.
 # Preceded by the fragment, "By uploading your observation to iNaturalist, you can:"
 Get-your-identification-verified-by-real-people = Get your identification verified by real people in the iNaturalist community
-# Message shown to the user after they have left the AI camera where they may
-# have seen a species suggestion but before they land on the match screen,
-# where they might see a better suggestion.
-Getting-an-even-more-accurate-ID = Getting an even more accurate ID...
 # Label for button that returns to the previous screen
 Go-back = Go back
 Google-Play-Services-Not-Installed = Google Play Services Not Installed
@@ -568,6 +568,7 @@ HIGHEST-RANK = HIGHEST RANK
 I-agree-to-the-Terms-of-Use = <0>I agree to the Terms of Use and Privacy Policy, and I have reviewed the Community Guidelines (</0><1>required</1><0>).</0>
 Iconic-taxon-name = Iconic taxon name: { $iconicTaxon }
 ID-Suggestions = ID Suggestions
+ID-WITH-AI = ID WITH AI
 # Identification Status
 ID-Withdrawn = ID Withdrawn
 IDENTIFICATION = IDENTIFICATION
@@ -1007,7 +1008,6 @@ Ranks-SUBFAMILY = SUBFAMILY
 Ranks-Subfamily = Subfamily
 Ranks-SUBGENUS = SUBGENUS
 Ranks-Subgenus = Subgenus
-Ranks-SUBKINGDOM = SUBKINGDOM
 Ranks-Subkingdom = Subkingdom
 Ranks-SUBORDER = SUBORDER
 Ranks-Suborder = Suborder
@@ -1529,12 +1529,10 @@ You-changed-filters-will-be-discarded = You changed filters, but they were not a
 You-have-opted-out-of-the-Community-Taxon = You have opted out of the Community Taxon
 You-havent-joined-any-projects-yet = You haven’t joined any projects yet!
 You-havent-observed-any-species-yet = You haven't observed any species yet.
-You-likely-observed-a-new-species = You likely observed a new species!
-You-likely-observed-a-species = You likely observed a species
-You-likely-observed-an-organism-in-this-group = You likely observed an organism in this group
-You-may-have-observed-a-new-species = You may have observed a new species!
-You-may-have-observed-a-species = You may have observed a species
-You-may-have-observed-an-organism-in-this-group = You may have observed an organism in this group
+You-likely-observed-a-species-in-this-group = You likely observed a species in this group
+You-likely-observed-this-species = You likely observed this species
+You-may-have-observed-a-species-in-this-group = You may have observed a species in this group
+You-may-have-observed-this-species = You may have observed this species
 # Description for modal that pops up if user logs in and has more than 50 observations
 You-may-notice-changes-to-how-things-look-and-flow = You may notice changes to how things look and flow. You can control your options in the settings.
 You-must-be-logged-in-to-view-messages = You must be logged in to view messages
@@ -1544,9 +1542,8 @@ You-must-install-Google-Play-Services-to-sign-in-with-Google = You must install 
 You-need-an-Internet-connection-to-do-that = You need an Internet connection to do that.
 # Error message when you try to do something that requires log in
 You-need-log-in-to-do-that = You need to log in to do that.
-You-observed-a-new-species = You observed a new species!
-You-observed-a-species = You observed a species
-You-observed-an-organism-in-this-group = You observed an organism in this group
+You-observed-a-species-in-this-group = You observed a species in this group
+You-observed-this-species = You observed this species
 You-will-see-notifications = You’ll see notifications here once you log in & upload observations.
 Your-donation-to-iNaturalist = Your donation to iNaturalist supports the improvement and stability of the mobile apps and website that connects millions of people to nature and enables the protection of biodiversity worldwide!
 Your-email-is-confirmed = Your email is confirmed! Please log in to continue.

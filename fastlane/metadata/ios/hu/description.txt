@@ -1,3 +1,14 @@
-Az iNaturalist egy közösségi hálózat a biodiverzitással kapcsolatos információk megosztására a természet jobb megismerése érdekében. Az elsődleges cél az emberek és a természet összekapcsolása, a másodlagos cél pedig tudományos szempontból értékes biodiverzitási adatok gyűjtése ezekből a személyes találkozásokból.
+Point the camera at plants, animals, & fungi to see species suggestions while you’re outside, or import photos from your library. iNaturalist helps millions of people like you learn more about nature using AI suggestions backed up by a global community of knowledgeable nature lovers.
 
-Az iNaturalist vizuális hasonlóságon alapuló javaslatokkal és elkötelezett felhasználók általi ellenőrzéssel segít a növények és állatok pontos azonosításában. Csatlakozz több mint egymillió természetbarát és természettudós közösségéhez, akik segíthetnek neked többet megtudni a természetről! A megfigyeléseid rögzítésével és megosztásával kutatási minőségű adatokat hozol létre a természet jobb megértésén és védelmén dolgozó tudósok számára.
+iNaturalist goes far beyond AI identifications—your observations are reviewed by real people and shared for science to help protect species.
+
+KEY FEATURES
+Identify species from anywhere in the world
+Keep a record of species you see
+Contribute to science by sharing your observations
+Védd a biodiverzitást 
+Connect with and learn from other nature enthusiasts
+
+iNaturalist’s nonprofit mission is to connect people to nature and advance science and conservation. iNaturalist is freely available thanks to generous support from our community of donors.
+
+Explore and learn even more at https://www.inaturalist.org.

@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>iNat Next</string>
+	<string>iNaturalist</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -13,11 +13,11 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>$(PRODUCT_NAME)</string>
+	<string>iNaturalist</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.59.12</string>
+	<string>1.0.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -40,7 +40,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>155</string>
+	<string>161</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
@@ -62,7 +62,7 @@
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Add existing sounds to your observations.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>iNaturalist Next uses the camera to add photos to your observations of nature.</string>
+	<string>iNaturalist uses the camera to add photos to your observations of nature.</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>© iNaturalist</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -72,9 +72,9 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Record sound observations of nature.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Export iNaturalist Next photos to your library.</string>
+	<string>Export iNaturalist photos to your library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Export and import iNaturalist Next photos to and from your library.</string>
+	<string>Export and import iNaturalist photos to and from your library.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Lato-Bold.ttf</string>

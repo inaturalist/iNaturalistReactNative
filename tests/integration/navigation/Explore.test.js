@@ -41,7 +41,7 @@ const mockObservations = [
 ];
 
 const mockFetchUserLocation = jest.fn( () => ( { latitude: 37, longitude: 34 } ) );
-jest.mock( "sharedHelpers/fetchUserLocation", () => ( {
+jest.mock( "sharedHelpers/fetchCoarseUserLocation", () => ( {
   __esModule: true,
   default: () => mockFetchUserLocation()
 } ) );
@@ -115,6 +115,23 @@ async function navigateToRootExplore( ) {
   const exploreButton = await within( tabBar ).findByText( "Explore" );
   await actor.press( exploreButton );
 }
+
+const landOnObservationsView = async ( ) => {
+  const observationsViewIcon = await screen.findByLabelText( /Observations View/ );
+  expect( observationsViewIcon ).toBeVisible( );
+};
+
+const switchToSpeciesView = async ( ) => {
+  const observationsViewIcon = await screen.findByLabelText( /Observations View/ );
+  expect( observationsViewIcon ).toBeVisible( );
+  await actor.press( observationsViewIcon );
+  const speciesRadioButton = await screen.findByText( "Species" );
+  await actor.press( speciesRadioButton );
+  const confirmButton = await screen.findByText( /EXPLORE SPECIES/ );
+  await actor.press( confirmButton );
+  const speciesViewIcon = await screen.findByLabelText( /Species View/ );
+  expect( speciesViewIcon ).toBeVisible( );
+};
 
 describe( "logged in", ( ) => {
   beforeEach( async ( ) => {
@@ -240,8 +257,8 @@ describe( "logged in", ( ) => {
       it( "should navigate from TaxonDetails to Explore and back to TaxonDetails", async ( ) => {
         renderApp( );
         await navigateToRootExplore( );
-        const speciesViewIcon = await screen.findByLabelText( /Species View/ );
-        expect( speciesViewIcon ).toBeVisible( );
+        await landOnObservationsView( );
+        await switchToSpeciesView( );
         const firstTaxon = await screen.findByTestId( `TaxonGridItem.Pressable.${mockTaxon.id}` );
         await actor.press( firstTaxon );
         const taxonDetailsExploreButton = await screen.findByLabelText( /See observations of this taxon in explore/ );
@@ -263,12 +280,7 @@ describe( "logged in", ( ) => {
         inatjs.observations.fetch.mockResolvedValue( makeResponse( mockObservations ) );
         renderApp( );
         await navigateToRootExplore( );
-        const speciesViewIcon = await screen.findByLabelText( /Species View/ );
-        await actor.press( speciesViewIcon );
-        const observationsRadioButton = await screen.findByText( "Observations" );
-        await actor.press( observationsRadioButton );
-        const confirmButton = await screen.findByText( /EXPLORE OBSERVATIONS/ );
-        await actor.press( confirmButton );
+        await landOnObservationsView( );
         const headerCount = await screen.findByText( /1 Observation/ );
         expect( headerCount ).toBeVisible( );
         const gridView = await screen.findByTestId( "SegmentedButton.grid" );
@@ -312,8 +324,7 @@ describe( "logged in", ( ) => {
 
         renderApp( );
         await navigateToRootExplore( );
-        const speciesViewIcon = await screen.findByLabelText( /Species View/ );
-        expect( speciesViewIcon ).toBeVisible( );
+        await landOnObservationsView( );
         const defaultNearbyLocationText = await screen.findByText( /Nearby/ );
         expect( defaultNearbyLocationText ).toBeVisible( );
         const backButton = screen.queryByTestId( "Explore.BackButton" );

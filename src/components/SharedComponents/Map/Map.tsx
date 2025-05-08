@@ -3,6 +3,7 @@ import classnames from "classnames";
 import { Body1 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, {
+  forwardRef,
   useCallback,
   useEffect,
   useMemo,
@@ -14,7 +15,7 @@ import MapView, {
   BoundingBox, LatLng, MapType, Region, UrlTile
 } from "react-native-maps";
 import Observation from "realmModels/Observation";
-import fetchUserLocation from "sharedHelpers/fetchUserLocation.ts";
+import fetchCoarseUserLocation from "sharedHelpers/fetchCoarseUserLocation.ts";
 import { useDebugMode, useDeviceOrientation } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import colors from "styles/tailwindColors";
@@ -53,7 +54,7 @@ interface Props {
   children?: React.ReactNode;
   className?: string;
   currentLocationButtonClassName?: string;
-  initialRegion?: boolean;
+  initialRegion?: Region;
   mapHeight?: DimensionValue; // allows for height to be defined as px or percentage
   mapType?: MapType;
   mapViewClassName?: string;
@@ -64,7 +65,7 @@ interface Props {
   onRegionChangeComplete?: ( _r: Region, _b: BoundingBox | undefined ) => void;
   openMapScreen?: () => void;
   region?: Region;
-  regionToAnimate?: Object;
+  regionToAnimate?: Region;
   scrollEnabled?: boolean;
   showCurrentLocationButton?: boolean;
   showsCompass?: boolean;
@@ -82,7 +83,7 @@ interface Props {
 
 // TODO: fallback to another map library
 // for people who don't use GMaps (i.e. users in China)
-const Map = ( {
+const Map = forwardRef( ( {
   children,
   className = "flex-1",
   currentLocationButtonClassName,
@@ -111,7 +112,7 @@ const Map = ( {
   withPressableObsTiles,
   zoomEnabled = true,
   zoomTapEnabled = true
-}: Props ) => {
+}: Props, ref ) => {
   const { isDebug } = useDebugMode( );
   const { screenWidth, screenHeight } = useDeviceOrientation( );
   const [currentZoom, setCurrentZoom] = useState( 0 );
@@ -203,7 +204,7 @@ const Map = ( {
   }, [params, currentZoom, navigation] );
 
   const onPermissionGranted = async ( ) => {
-    const currentLocation = await fetchUserLocation( );
+    const currentLocation = await fetchCoarseUserLocation( );
     if ( currentLocation && mapViewRef?.current ) {
       animateToRegion( {
         latitude: currentLocation.latitude,
@@ -243,7 +244,9 @@ const Map = ( {
     // If we're supposed to be showing user location but we don't have it, ask
     // for permission again, which should result in fetching the location if
     // we can
-    if ( !userLocation ) {
+    // skipping onCurrentLocationPress here because the handlers
+    // are handling the permissions request outside of this component (example: Explore MapView)
+    if ( !userLocation && onCurrentLocationPress === undefined ) {
       requestPermissions( );
       return;
     }
@@ -413,9 +416,9 @@ const Map = ( {
     : unfuzzedMapRegion;
 
   // In Android, we maintain initialRegion as state localRegion and
-  // pass null to parameter initialRegion.
+  // pass undefined to parameter initialRegion.
   const mapInitialRegion = Platform.OS === "android"
-    ? null
+    ? undefined
     : initialRegion;
 
   const renderDebugZoomLevel = ( ) => {
@@ -448,6 +451,18 @@ const Map = ( {
   const longitude = observation?.privateLongitude || observation?.longitude;
   const hasCoordinates = latitude && longitude;
 
+  const setRefs = instance => {
+    // Update our internal ref
+    mapViewRef.current = instance;
+
+    // Forward to the parent ref
+    if ( typeof ref === "function" ) {
+      ref( instance );
+    } else if ( ref ) {
+      ref.current = instance;
+    }
+  };
+
   return (
     <View
       style={mapContainerStyle}
@@ -469,7 +484,7 @@ const Map = ( {
         onRegionChangeComplete={handleRegionChangeComplete}
         onUserLocationChange={handleUserLocationChange}
         pitchEnabled={false}
-        ref={mapViewRef}
+        ref={setRefs}
         region={mapRegion}
         rotateEnabled={false}
         scrollEnabled={scrollEnabled}
@@ -529,6 +544,6 @@ const Map = ( {
       {children}
     </View>
   );
-};
+} );
 
 export default Map;

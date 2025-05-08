@@ -1,1 +1,1 @@
-nature,wildlife,plant ID,animal,identify,biodiversity,citizen science,conservation,field guide
+טבע,חיות בר,זיהוי צמח,בעל חיים,זיהוי,מגוון ביולוגי,מדע אזרחי,שמירת טבע,מדריך שדה

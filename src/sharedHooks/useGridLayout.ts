@@ -7,6 +7,7 @@ const HALF_GUTTER = GUTTER / 2;
 const TAB_BAR_HEIGHT = 80;
 
 const flashListStyle = {
+  paddingTop: HALF_GUTTER,
   paddingLeft: HALF_GUTTER,
   paddingRight: HALF_GUTTER,
   paddingBottom: TAB_BAR_HEIGHT + HALF_GUTTER

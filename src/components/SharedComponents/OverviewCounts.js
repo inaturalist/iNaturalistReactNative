@@ -79,7 +79,7 @@ const CountPressable = ( {
 const OverviewCounts = ( {
   counts, onObservationPressed, onSpeciesPressed, onMembersPressed
 }: Props ): React.Node => (
-  <View className="flex-row mt-6">
+  <View className="flex-row mt-[30px]">
     <CountPressable
       accessibilityLabel={t( "See-observations-by-this-user-in-Explore" )}
       count={counts.observations_count}
