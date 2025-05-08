@@ -1,8 +1,8 @@
 import classnames from "classnames";
 import {
-  INatIcon, PressableWithDebounce
+  INatIcon
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
@@ -26,7 +26,7 @@ const TakePhoto = ( {
   const borderClass = "border-[2px] rounded-full h-[64px] w-[64px]";
 
   return (
-    <PressableWithDebounce
+    <Pressable
       className={classnames(
         "bg-white",
         "rounded-full",
@@ -64,7 +64,7 @@ const TakePhoto = ( {
           </View>
         )
         : <View className={borderClass} />}
-    </PressableWithDebounce>
+    </Pressable>
   );
 };
 

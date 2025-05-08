@@ -1,3 +1,4 @@
+import { useFocusEffect } from "@react-navigation/native";
 import CameraFlip from "components/Camera/Buttons/CameraFlip.tsx";
 import Close from "components/Camera/Buttons/Close.tsx";
 import Flash from "components/Camera/Buttons/Flash.tsx";
@@ -7,7 +8,10 @@ import TakePhoto from "components/Camera/Buttons/TakePhoto.tsx";
 import Zoom from "components/Camera/Buttons/Zoom.tsx";
 import TabletButtons from "components/Camera/TabletButtons.tsx";
 import { View } from "components/styledComponents";
-import React from "react";
+import React, {
+  useCallback, useRef,
+  useState
+} from "react";
 import { GestureResponderEvent, ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import type { CameraDeviceFormat, TakePhotoOptions } from "react-native-vision-camera";
@@ -74,6 +78,27 @@ const AICameraButtons = ( {
   toggleLocation
 }: Props ) => {
   const { isDefaultMode } = useLayoutPrefs();
+
+  const [isProcessing, setIsProcessing] = useState( false );
+  const onPressRef = useRef( takePhoto );
+
+  onPressRef.current = takePhoto;
+
+  const handleTakePhoto = ( event?: GestureResponderEvent ) => {
+    setIsProcessing( true );
+
+    onPressRef.current( event );
+    takePhoto();
+  };
+
+  useFocusEffect(
+    useCallback( ( ) => {
+      // reset processing when screen loads
+      setIsProcessing( false );
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [] )
+  );
+
   if ( isTablet ) {
     return (
       <TabletButtons
@@ -154,13 +179,16 @@ const AICameraButtons = ( {
         </View>
         <View><CameraFlip flipCamera={flipCamera} /></View>
         <View>
-          <PhotoLibraryIcon rotatableAnimatedStyle={rotatableAnimatedStyle} />
+          <PhotoLibraryIcon
+            rotatableAnimatedStyle={rotatableAnimatedStyle}
+            disabled={takingPhoto || isProcessing}
+          />
         </View>
       </View>
       <View className="flex-row justify-center items-center w-full" pointerEvents="box-none">
         <TakePhoto
-          disabled={!modelLoaded || takingPhoto}
-          takePhoto={takePhoto}
+          disabled={!modelLoaded || takingPhoto || isProcessing}
+          takePhoto={handleTakePhoto}
           showPrediction={showPrediction}
         />
       </View>
