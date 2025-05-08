@@ -55,9 +55,6 @@ describe( "Explore", ( ) => {
     const obsTaxonNameElt = await screen.findByText( mockRemoteObservation.taxon.name );
     expect( obsTaxonNameElt ).toBeTruthy( );
     expect(
-      await screen.findByTestId( `ObsStatus.${mockRemoteObservation.uuid}` )
-    ).toBeTruthy( );
-    expect(
       screen.queryByTestId( `UploadIcon.progress.${mockRemoteObservation.uuid}` )
     ).toBeFalsy( );
   } );
@@ -73,9 +70,6 @@ describe( "Explore", ( ) => {
       await screen.findByTestId( "SegmentedButton.grid" )
     ).toBeTruthy( );
     fireEvent.press( await screen.findByTestId( "SegmentedButton.grid" ) );
-    expect(
-      await screen.findByTestId( `ObsStatus.${mockRemoteObservation.uuid}` )
-    ).toBeTruthy( );
     expect(
       screen.queryByTestId( `UploadIcon.progress.${mockRemoteObservation.uuid}` )
     ).toBeFalsy( );

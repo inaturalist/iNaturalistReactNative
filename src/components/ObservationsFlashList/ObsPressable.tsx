@@ -18,7 +18,6 @@ type Props = {
   onUploadButtonPress: ( ) => void,
   onItemPress: ( ) => void,
   gridItemStyle: Object,
-  isLargeFontScale: boolean,
   layout: "list" | "grid",
   observation: RealmObservation,
   uploadProgress: number,
@@ -34,7 +33,6 @@ const ObsPressable = ( {
   hideObsStatus,
   isSimpleObsStatus,
   hideRGLabel,
-  isLargeFontScale,
   onUploadButtonPress,
   onItemPress,
   gridItemStyle,
@@ -62,7 +60,6 @@ const ObsPressable = ( {
               currentUser={currentUser}
               explore={explore}
               hideObsUploadStatus={hideObsUploadStatus}
-              isLargeFontScale={isLargeFontScale}
               onUploadButtonPress={onUploadButtonPress}
               observation={observation}
               queued={queued}

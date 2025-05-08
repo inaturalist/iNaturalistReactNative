@@ -20,7 +20,6 @@ import { Animated } from "react-native";
 import RealmObservation from "realmModels/Observation";
 import {
   useCurrentUser,
-  useFontScale,
   useGridLayout,
   useLayoutPrefs,
   useNavigateToObsEdit,
@@ -87,7 +86,6 @@ const ObservationsFlashList: Function = forwardRef( ( {
     isDefaultMode
   } = useLayoutPrefs( );
   const realm = useRealm( );
-  const { isLargeFontScale } = useFontScale( );
   const currentUser = useCurrentUser( );
   const navigation = useNavigation( );
   const navigateToObsEdit = useNavigateToObsEdit( );
@@ -159,7 +157,6 @@ const ObservationsFlashList: Function = forwardRef( ( {
         hideObsStatus={hideObsStatus}
         isSimpleObsStatus={isSimpleObsStatus}
         hideRGLabel={hideRGLabel}
-        isLargeFontScale={isLargeFontScale}
         layout={layout}
         key={itemKey}
         observation={observation}
@@ -181,7 +178,6 @@ const ObservationsFlashList: Function = forwardRef( ( {
     isSimpleObsStatus,
     hideRGLabel,
     isDefaultMode,
-    isLargeFontScale,
     layout,
     navigateToObsEdit,
     navigation,
