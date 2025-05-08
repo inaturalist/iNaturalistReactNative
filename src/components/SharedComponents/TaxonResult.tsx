@@ -24,7 +24,7 @@ interface TaxonResultProps {
   clearBackground?: boolean;
   confidence?: number;
   confidencePosition?: string;
-  confidencePercentage?: number;
+  confidencePercentage?: number | null;
   fetchRemote?: boolean;
   first?: boolean;
   fromLocal?: boolean;
@@ -231,19 +231,10 @@ const TaxonResult = ( {
           />
           {!!( ( confidence || confidencePercentage ) && confidencePosition === "photo" ) && (
             <View className="absolute -bottom-4 w-full items-center">
-              {confidencePercentage
-                ? (
-                  <Body3 className="color-inatGreen">
-                    {Math.round( confidencePercentage )}
-                    %
-                  </Body3>
-                )
-                : (
-                  <ConfidenceInterval
-                    confidence={confidence}
-                    activeColor={activeColor}
-                  />
-                )}
+              <ConfidenceInterval
+                confidence={confidence}
+                activeColor={activeColor}
+              />
             </View>
           )}
         </View>

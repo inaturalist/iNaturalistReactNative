@@ -1,3 +1,4 @@
+import calculateConfidence from "components/Match/calculateConfidence";
 import {
   TaxonResult
 } from "components/SharedComponents";
@@ -28,7 +29,7 @@ const Suggestion = ( {
   <TaxonResult
     accessibilityLabel={accessibilityLabel}
     activeColor="bg-inatGreen"
-    confidencePercentage={suggestion?.combined_score}
+    confidencePercentage={calculateConfidence( suggestion )}
     confidencePosition="text"
     fetchRemote={false}
     first
