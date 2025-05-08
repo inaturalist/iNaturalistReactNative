@@ -25,7 +25,7 @@ const searchAnnouncements = async ( params: Object = {}, opts: Object = {} ): Pr
     );
     return results;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "searchAnnouncements", opts } } );
   }
 };
 
@@ -33,7 +33,7 @@ const dismissAnnouncement = async ( params: Object = {}, opts: Object = {} ): Pr
   try {
     return await inatjs.announcements.dismiss( params, opts );
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "dismissAnnouncement", opts } } );
   }
 };
 

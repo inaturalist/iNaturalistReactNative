@@ -1,0 +1,16 @@
+NEW
+* Additional information logged for some errors
+
+UPDATED
+* Explore icon on TaxonDetails
+* ObsEdit screen ID section
+* Prevent multiple taps on Buttons
+* Default explore to obs map
+* Calculation of successful vs failed upload status
+
+FIXED
+* 422 errors with hrank/lrank
+* TaxonDetailHeader size
+* Limit 429 errors in taxa search
+* Center align camera text
+* Show obs status after upload on advanced mode list

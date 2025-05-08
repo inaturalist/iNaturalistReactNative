@@ -15,7 +15,7 @@ const fetchPlace = async (
       ? results[0]
       : null;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { context: { functionName: "fetchPlace", id, opts } } );
   }
 };
 

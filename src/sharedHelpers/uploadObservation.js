@@ -1,5 +1,5 @@
 // @flow
-import { INatApiError } from "api/error";
+
 import {
   createObservation,
   createOrUpdateEvidence,
@@ -9,14 +9,12 @@ import {
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import inatjs from "inaturalistjs";
 import Observation from "realmModels/Observation";
-import emitUploadProgress from "sharedHelpers/emitUploadProgress.ts";
 import {
   markRecordUploaded,
   prepareMediaForUpload,
   prepareObservationForUpload
 } from "uploaders";
-
-const UPLOAD_PROGRESS_INCREMENT = 1;
+import { trackEvidenceUpload, trackObservationUpload } from "uploaders/utils/progressTracker.ts";
 
 const uploadEvidence = async (
   evidence: Array<Object>,
@@ -38,6 +36,11 @@ const uploadEvidence = async (
     );
     const evidenceUUID = currentEvidence.uuid;
 
+    // Determine if this is an upload or an attachment operation
+    // for progress tracking
+    const isAttachOperation = observationId != null;
+    const evidenceProgress = trackEvidenceUpload( observationUUID );
+
     const response = await createOrUpdateEvidence(
       apiEndpoint,
       params,
@@ -45,15 +48,17 @@ const uploadEvidence = async (
     );
 
     if ( response && observationUUID ) {
-      // we're emitting progress increments:
-      // one when the upload of obs
-      // half one when obsPhoto/obsSound is successfully uploaded
-      // half one when the obsPhoto/obsSound is attached to the obs
-      emitUploadProgress( observationUUID, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
       // TODO: can't mark records as uploaded by primary key for ObsPhotos and ObsSound anymore
       markRecordUploaded( observationUUID, evidenceUUID, type, response, realm, {
         record: currentEvidence
       } );
+      if ( isAttachOperation ) {
+        // This is attaching evidence to an observation
+        evidenceProgress.attached( );
+      } else {
+        // This is uploading evidence
+        evidenceProgress.uploaded( );
+      }
     }
 
     return response;
@@ -66,12 +71,9 @@ const uploadEvidence = async (
 };
 
 async function uploadObservation( obs: Object, realm: Object, opts: Object = {} ): Object {
-  // we're emitting progress increments:
-  // half one when upload of obs started
-  // half one when upload of obs finished
-  // half one when obsPhoto/obsSound is successfully uploaded
-  // half one when the obsPhoto/obsSound is attached to the obs
-  emitUploadProgress( obs.uuid, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
+  const obsProgress = trackObservationUpload( obs.uuid );
+  obsProgress.start( );
+
   const apiToken = await getJWT( );
   // don't bother trying to upload unless there's a logged in user
   if ( !apiToken ) {
@@ -153,7 +155,7 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
   } else {
     response = await createObservation( uploadParams, options );
   }
-  emitUploadProgress( obs.uuid, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
+  obsProgress.complete( );
 
   if ( !response ) {
     return response;
@@ -213,33 +215,6 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
   );
   Observation.upsertRemoteObservations( [remoteObs], realm, { force: true } );
   return response;
-}
-
-export function handleUploadError( uploadError: Error | INatApiError, t: Function ): string {
-  let { message } = uploadError;
-  // uploadError might be an INatApiError but I don't know how to tell flow to
-  // shut up about the possibility that uploadError might not have this
-  // attribute... even though ?. will prevent that from being a problem.
-  // ~~~~kueda20240523
-  // $FlowIgnore
-  if ( uploadError?.json?.errors ) {
-    // TODO localize comma join
-    message = uploadError.json.errors.map( e => {
-      if ( e.message?.errors ) {
-        if ( typeof ( e.message.errors.flat ) === "function" ) {
-          return e.message.errors.flat( ).join( ", " );
-        }
-        return String( e.message.errors );
-      }
-      // 410 error for observations previously deleted uses e.message?.error format
-      return e.message?.error || e.message;
-    } ).join( ", " );
-  } else if ( uploadError.message?.match( /Network request failed/ ) ) {
-    message = t( "Connection-problem-Please-try-again-later" );
-  } else {
-    throw uploadError;
-  }
-  return message;
 }
 
 export default uploadObservation;

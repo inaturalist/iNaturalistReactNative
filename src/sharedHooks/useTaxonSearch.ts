@@ -1,7 +1,9 @@
 import { fetchSearchResults } from "api/search.ts";
 import type { ApiOpts } from "api/types";
 import { RealmContext } from "providers/contexts.ts";
-import { useCallback, useEffect, useState } from "react";
+import {
+  useCallback, useEffect, useMemo, useState
+} from "react";
 import Realm, { UpdateMode } from "realm";
 import Taxon from "realmModels/Taxon";
 import type { RealmTaxon } from "realmModels/types";
@@ -34,6 +36,8 @@ const useTaxonSearch = ( taxonQueryArg = "" ) => {
   const taxonQuery = taxonQueryArg.trim();
   const [localTaxa, setLocalTaxa] = useState<RealmTaxon[] | null>( null );
 
+  const shouldFetchRemote = taxonQuery.length > 0;
+
   const { data: remoteTaxa, refetch, isLoading } = useAuthenticatedQuery(
     ["fetchTaxonSuggestions", taxonQuery],
     async ( optsWithAuth: ApiOpts ) => {
@@ -50,15 +54,9 @@ const useTaxonSearch = ( taxonQueryArg = "" ) => {
       return apiTaxa?.map( taxon => Taxon.mapApiToRealm( taxon ) ) || [];
     },
     {
-      enabled: !!( taxonQuery.length > 0 )
+      enabled: shouldFetchRemote
     }
   );
-
-  useEffect( ( ) => {
-    if ( realm && remoteTaxa?.length > 0 ) {
-      saveTaxaToRealm( remoteTaxa, realm );
-    }
-  }, [realm, remoteTaxa] );
 
   const safeRealmSearch = useCallback( async ( searchString: string ) => {
     try {
@@ -82,53 +80,89 @@ const useTaxonSearch = ( taxonQueryArg = "" ) => {
   }, [realm] );
 
   useEffect( ( ) => {
-    const searchLocalTaxa = async ( ) => {
-      if (
-        taxonQuery.length > 0
-        && !isLoading
-        && ( !remoteTaxa || remoteTaxa.length === 0 )
-      ) {
-        try {
-          const results = await safeRealmSearch( taxonQuery );
-          setLocalTaxa( results );
-        } catch ( error ) {
-          console.error( "Local search failed:", error );
-          setLocalTaxa( [] );
-        }
-      } else {
-        setLocalTaxa( null );
+    let isSubscribed = true;
+    const saveOrSearchRealmTaxa = async ( ) => {
+      // save taxa to realm if we have results from the API
+      if ( realm && remoteTaxa?.length > 0 ) {
+        saveTaxaToRealm( remoteTaxa, realm );
+      }
+      // Search for local taxa if we have a query, if remote results are not loading
+      // and if remote results are empty
+      if ( taxonQuery.length === 0 ) {
+        if ( isSubscribed ) setLocalTaxa( null );
+        return;
+      }
+
+      if ( isLoading ) return;
+
+      if ( remoteTaxa && remoteTaxa.length > 0 ) {
+        if ( isSubscribed ) setLocalTaxa( null );
+        return;
+      }
+
+      try {
+        const results = await safeRealmSearch( taxonQuery );
+        if ( isSubscribed ) setLocalTaxa( results );
+      } catch ( error ) {
+        console.error( "Local search failed:", error );
+        if ( isSubscribed ) setLocalTaxa( [] );
       }
     };
 
-    searchLocalTaxa( );
-  }, [taxonQuery, isLoading, remoteTaxa, safeRealmSearch] );
+    saveOrSearchRealmTaxa( );
 
-  // Show iconic taxa by default
-  if ( taxonQuery.length === 0 ) {
+    return ( ) => {
+      isSubscribed = false;
+    };
+  }, [
+    isLoading,
+    realm,
+    remoteTaxa,
+    safeRealmSearch,
+    taxonQuery
+  ] );
+
+  return useMemo( () => {
+    // Show iconic taxa by default (empty query)
+    if ( taxonQuery.length === 0 ) {
+      return {
+        taxa: iconicTaxa,
+        refetch: () => undefined,
+        isLoading: false,
+        isLocal: false
+      };
+    }
+
+    // Show remote taxa if available
+    if ( remoteTaxa && remoteTaxa.length > 0 ) {
+      return {
+        taxa: remoteTaxa,
+        refetch,
+        isLoading,
+        isLocal: false
+      };
+    }
+
+    // Show local taxa if available
+    if ( localTaxa !== null && localTaxa.length > 0 ) {
+      return {
+        taxa: localTaxa,
+        refetch: () => undefined,
+        isLoading: false,
+        isLocal: true
+      };
+    }
+
+    // Still loading or no results
     return {
-      taxa: iconicTaxa,
-      refetch: ( ) => undefined,
-      isLoading: false,
+      taxa: isLoading
+        ? []
+        : localTaxa || [],
+      refetch,
+      isLoading,
       isLocal: false
     };
-  }
-
-  // Show local taxa if available
-  if ( localTaxa !== null && localTaxa.length > 0 ) {
-    return {
-      taxa: localTaxa,
-      refetch: ( ) => undefined,
-      isLoading: false,
-      isLocal: true
-    };
-  }
-
-  return {
-    taxa: remoteTaxa,
-    refetch,
-    isLoading,
-    isLocal: false
-  };
+  }, [taxonQuery, remoteTaxa, localTaxa, iconicTaxa, refetch, isLoading] );
 };
 
 export default useTaxonSearch;
