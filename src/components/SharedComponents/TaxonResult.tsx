@@ -254,8 +254,7 @@ const TaxonResult = ( {
               {confidencePercentage
                 ? (
                   <Body3 className="color-inatGreen">
-                    {Math.round( confidencePercentage )}
-                    %
+                    {t( "X-percent", { count: confidencePercentage } )}
                   </Body3>
                 )
                 : (
