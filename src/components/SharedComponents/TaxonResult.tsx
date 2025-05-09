@@ -229,7 +229,7 @@ const TaxonResult = ( {
             white={white}
             isBackground={false}
           />
-          {!!( ( confidence || confidencePercentage ) && confidencePosition === "photo" ) && (
+          {!!( confidence && confidencePosition === "photo" ) && (
             <View className="absolute -bottom-4 w-full items-center">
               <ConfidenceInterval
                 confidence={confidence}
