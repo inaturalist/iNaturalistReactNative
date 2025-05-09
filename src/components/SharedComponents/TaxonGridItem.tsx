@@ -6,7 +6,7 @@ import SpeciesSeenCheckmark from "components/SharedComponents/SpeciesSeenCheckma
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
 import Photo from "realmModels/Photo";
-import { accessibleTaxonName } from "sharedHelpers/taxon";
+import { accessibleTaxonName } from "sharedHelpers/taxon.ts";
 import { useCurrentUser, useFontScale, useTranslation } from "sharedHooks";
 
 export interface Props {

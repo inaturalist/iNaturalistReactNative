@@ -8,7 +8,7 @@ import {
 import { Image, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { accessibleTaxonName } from "sharedHelpers/taxon";
+import { accessibleTaxonName } from "sharedHelpers/taxon.ts";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
 type Props = {

@@ -7,7 +7,7 @@ import {
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
 import type { RealmTaxon } from "realmModels/types";
-import { accessibleTaxonName } from "sharedHelpers/taxon";
+import { accessibleTaxonName } from "sharedHelpers/taxon.ts";
 import {
   useCurrentUser, useTaxon, useTranslation
 } from "sharedHooks";

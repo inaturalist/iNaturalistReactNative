@@ -7,7 +7,7 @@ import {
   GEOPRIVACY_OPEN,
   GEOPRIVACY_PRIVATE
 } from "realmModels/Observation";
-import useTranslation from "sharedHooks/useTranslation";
+import useTranslation from "sharedHooks/useTranslation.ts";
 
 type Geoprivacy = null | GEOPRIVACY_OPEN | GEOPRIVACY_OBSCURED | GEOPRIVACY_PRIVATE;
 

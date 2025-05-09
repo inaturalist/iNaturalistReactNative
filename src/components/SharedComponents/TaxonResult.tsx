@@ -10,7 +10,7 @@ import { Pressable, View } from "components/styledComponents";
 import React, { PropsWithChildren } from "react";
 import type { GestureResponderEvent } from "react-native";
 import type { RealmTaxon, RealmTaxonPhoto } from "realmModels/types";
-import { accessibleTaxonName } from "sharedHelpers/taxon";
+import { accessibleTaxonName } from "sharedHelpers/taxon.ts";
 import { useCurrentUser, useTaxon, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 

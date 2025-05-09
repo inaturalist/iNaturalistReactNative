@@ -18,7 +18,7 @@ import ObservationSound from "realmModels/ObservationSound";
 import Photo from "realmModels/Photo";
 import { log } from "sharedHelpers/logger";
 import { useAuthenticatedMutation } from "sharedHooks";
-import useTranslation from "sharedHooks/useTranslation";
+import useTranslation from "sharedHooks/useTranslation.ts";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 

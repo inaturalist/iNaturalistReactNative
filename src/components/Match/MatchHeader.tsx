@@ -1,4 +1,4 @@
-import calculateConfidence from "components/Match/calculateConfidence";
+import calculateConfidence from "components/Match/calculateConfidence.ts";
 import {
   Body2,
   Body4,
@@ -10,10 +10,15 @@ import {
   View
 } from "components/styledComponents";
 import React from "react";
+import type { RealmTaxon } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 
-type Props = {
-  topSuggestion: Object
+interface Props {
+  topSuggestion?: {
+    combined_score?: number;
+    score?: number;
+    taxon: RealmTaxon;
+  };
 }
 
 const MatchHeader = ( { topSuggestion }: Props ) => {
@@ -27,7 +32,6 @@ const MatchHeader = ( { topSuggestion }: Props ) => {
   const confidence = calculateConfidence( topSuggestion );
 
   const suggestedTaxon = taxon;
-  const taxonId = taxon?.id || "unknown";
 
   const observationStatus = ( ) => {
     let confidenceType = "may_have_observed";
@@ -77,8 +81,6 @@ const MatchHeader = ( { topSuggestion }: Props ) => {
     <View className="shrink">
       <DisplayTaxonName
         taxon={suggestedTaxon}
-        testID={`ObsDetails.taxon.${taxonId}`}
-        accessibilityHint={t( "Navigates-to-taxon-details" )}
         topTextComponent={Heading1}
         bottomTextComponent={Subheading2}
       />

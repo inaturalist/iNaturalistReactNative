@@ -32,9 +32,9 @@ import {
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Observation from "realmModels/Observation";
+import fetchTaxonAndSave from "sharedHelpers/fetchTaxonAndSave";
 import { log } from "sharedHelpers/logger";
 import saveObservation from "sharedHelpers/saveObservation.ts";
-import { fetchTaxonAndSave } from "sharedHelpers/taxon";
 import {
   useAuthenticatedQuery,
   useCurrentUser,

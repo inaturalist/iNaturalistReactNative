@@ -1,27 +1,26 @@
-// @flow
 import classNames from "classnames";
 import { Body3 } from "components/SharedComponents";
 import { random } from "lodash";
-import type { Node } from "react";
 import React from "react";
+import type { TextProps } from "react-native";
 import Taxon from "realmModels/Taxon";
-import { translatedRank } from "sharedHelpers/taxon";
-import useTranslation from "sharedHooks/useTranslation";
+import { translatedRank } from "sharedHelpers/taxon.ts";
+import useTranslation from "sharedHooks/useTranslation.ts";
 
-type Props = {
-  fontComponent: Object,
-  isHorizontal: boolean,
-  isFirst?: boolean,
-  isTitle?: boolean,
-  keyBase: string,
-  rank: string,
-  rankLevel: number,
-  rankPiece: string,
-  scientificNamePieces: Object,
-  taxonId: string,
-  textClassName?: string,
-  maxFontSizeMultiplier?: number
-};
+interface Props {
+  fontComponent: React.ComponentType<TextProps>;
+  isHorizontal: boolean;
+  isFirst?: boolean;
+  isTitle?: boolean;
+  keyBase: string;
+  rank?: string;
+  rankLevel: number;
+  rankPiece?: string;
+  scientificNamePieces?: string[];
+  taxonId: string | number;
+  textClassName: string;
+  maxFontSizeMultiplier: number;
+}
 
 const ScientificName = ( {
   fontComponent,
@@ -36,7 +35,7 @@ const ScientificName = ( {
   taxonId,
   textClassName,
   maxFontSizeMultiplier
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const scientificNameArray = scientificNamePieces?.map( ( piece, index ) => {
     const isItalics = piece !== rankPiece && (

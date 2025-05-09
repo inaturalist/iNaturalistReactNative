@@ -17,8 +17,8 @@ import React, {
 } from "react";
 import { Alert, LogBox } from "react-native";
 import Observation from "realmModels/Observation";
+import fetchTaxonAndSave from "sharedHelpers/fetchTaxonAndSave";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { fetchTaxonAndSave } from "sharedHelpers/taxon";
 import {
   useAuthenticatedMutation,
   useAuthenticatedQuery,

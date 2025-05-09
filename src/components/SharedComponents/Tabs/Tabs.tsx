@@ -4,7 +4,7 @@ import Heading5 from "components/SharedComponents/Typography/Heading5.tsx";
 import { View } from "components/styledComponents";
 import React from "react";
 import { GestureResponderEvent, TouchableOpacity } from "react-native";
-import useTranslation from "sharedHooks/useTranslation";
+import useTranslation from "sharedHooks/useTranslation.ts";
 import colors from "styles/tailwindColors";
 
 export interface Tab {

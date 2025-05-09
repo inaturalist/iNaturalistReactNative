@@ -9,7 +9,7 @@ import {
   FlatList
 } from "react-native";
 import Photo from "realmModels/Photo";
-import useTranslation from "sharedHooks/useTranslation";
+import useTranslation from "sharedHooks/useTranslation.ts";
 
 type Props = {
   isLargeScreen?: boolean,
