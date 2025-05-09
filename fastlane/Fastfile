@@ -569,8 +569,6 @@ lane :download_app_store_reviews do
   # Create an array to hold processed reviews
   processed_reviews = []
   reviews.each do | review |
-    # Log the review details
-    UI.message "Review ID: #{review}"
     # Convert review object to a hash with the fields you want
     processed_review = {
       rating: review.rating.to_i,
