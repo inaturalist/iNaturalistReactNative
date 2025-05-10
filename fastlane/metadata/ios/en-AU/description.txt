@@ -2,6 +2,8 @@ Point the camera at plants, animals, & fungi to see species suggestions while yo
 
 iNaturalist goes far beyond AI identifications—your observations are reviewed by real people and shared for science to help protect species.
 
+
+
 KEY FEATURES
 Identify species from anywhere in the world
 Keep a record of species you see
@@ -9,6 +11,6 @@ Contribute to science by sharing your observations
 Explore and protect biodiversity 
 Connect with and learn from other nature enthusiasts
 
-iNaturalist’s nonprofit mission is to connect people to nature and advance science and conservation. iNaturalist is freely available thanks to generous support from our community of donors.
+iNaturalist's mission is to connect people to nature and advance biodiversity science and conservation. iNaturalist is freely available thanks to generous support from our community of donors.
 
 Explore and learn even more at https://www.inaturalist.org.

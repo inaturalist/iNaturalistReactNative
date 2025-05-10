@@ -1,14 +1,14 @@
-Point the camera at plants, animals, & fungi to see species suggestions while you’re outside, or import photos from your library. iNaturalist helps millions of people like you learn more about nature using AI suggestions backed up by a global community of knowledgeable nature lovers.
+Namierte fotoaparát na rastliny, zvieratá a huby, aby ste videli návrhy druhov, keď ste vonku, alebo importujte fotografie zo svojej knižnice. iNaturalist pomáha miliónom ľudí, ako je Vy, dozvedieť sa viac o prírode pomocou návrhov AI podporovaných globálnou komunitou znalých milovníkov prírody.
 
-iNaturalist goes far beyond AI identifications—your observations are reviewed by real people and shared for science to help protect species.
+iNaturalist ďaleko presahuje identifikáciu AI - vaše pozorovania sú preskúmavané skutočnými ľuďmi a zdieľané pre vedu za účelom ochrany druhov.
 
-KEY FEATURES
-Identify species from anywhere in the world
-Keep a record of species you see
-Contribute to science by sharing your observations
-Explore and protect biodiversity 
-Connect with and learn from other nature enthusiasts
+KĽÚČOVÉ FUNKCIE
+Identifikujte druhy odkiaľkoľvek na svete
+Uchovajte si záznam o druhoch, ktoré vidíte
+Prispejte k vede zdieľaním svojich pozorovaní
+Preskúmajte a chráňte biodiverzitu 
+Spojte sa s ostatnými nadšencami prírody a učte sa od nich
 
-iNaturalist’s nonprofit mission is to connect people to nature and advance science and conservation. iNaturalist is freely available thanks to generous support from our community of donors.
+Neziskovým poslaním iNaturalist je spájať ľudí s prírodou a podporovať vedu a ochranu prírody. iNaturalist je voľne dostupný vďaka veľkorysej podpore našej komunity darcov.
 
-Explore and learn even more at https://www.inaturalist.org.
+Preskúmajte a zistite ešte viac na https://www.inaturalist.org.
