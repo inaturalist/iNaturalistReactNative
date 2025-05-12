@@ -907,11 +907,11 @@ Organisms-that-are-identified-to-species = Organisms that are identified to spec
 # enter an explanation for why you are flagging something instead of choosing
 # one of the existing options
 Other = Other
+OTHER-DATA = OTHER DATA
+OTHER-SUGGESTIONS = OTHER SUGGESTIONS
 # Tab on notifications showing notifications about content created by others.
 # Should be 16 characters or fewer or it will be ellipsized.
 OTHERS--notifications = OTHERS
-OTHER-DATA = OTHER DATA
-OTHER-SUGGESTIONS = OTHER SUGGESTIONS
 PASSWORD = PASSWORD
 # Title showing user profile details about who a user follows and is following
 PEOPLE--title = PEOPLE
