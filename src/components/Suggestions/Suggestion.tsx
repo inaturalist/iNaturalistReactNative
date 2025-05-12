@@ -1,8 +1,8 @@
+import calculateConfidence from "components/Match/calculateConfidence";
 import {
   TaxonResult
 } from "components/SharedComponents";
 import React from "react";
-import convertScoreToConfidence from "sharedHelpers/convertScores.ts";
 
 interface Props {
   accessibilityLabel: string;
@@ -29,7 +29,7 @@ const Suggestion = ( {
   <TaxonResult
     accessibilityLabel={accessibilityLabel}
     activeColor="bg-inatGreen"
-    confidence={convertScoreToConfidence( suggestion?.combined_score )}
+    confidencePercentage={calculateConfidence( suggestion )}
     confidencePosition="text"
     fetchRemote={false}
     first
