@@ -1408,7 +1408,11 @@ X-Identifiers =
        *[other] { $count } Identifiers
     }
 # Subheader for number of project members screen
-X-MEMBERS = { $count } MEMBERS
+X-MEMBERS =
+    { $count ->
+        [one] { $count } MEMBER
+       *[other] { $count } MEMBERS
+    }
 # Shows number of observations in a variety of contexts
 X-Observations =
     { $count ->
