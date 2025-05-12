@@ -81,13 +81,12 @@ const IdentificationSection = ( {
     }
   }, [resetScreen, setResetScreen] );
 
-  const showIDButton = false;
   const renderIconicTaxonChooser = ( ) => (
     <View key={resetScreen?.toString( )}>
       <IconicTaxonChooser
         before={(
           <View className="flex-row ml-6">
-            {showIDButton
+            {hasPhotos
               ? (
                 <Button
                   level={identTaxon
