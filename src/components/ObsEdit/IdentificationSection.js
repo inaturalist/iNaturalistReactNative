@@ -95,7 +95,7 @@ const IdentificationSection = ( {
                     : "focus"}
                   onPress={navToSuggestions}
                   text={t( "ID-WITH-AI" )}
-                  className={classnames( "rounded-full py-1 mr-2 h-[36px]", {
+                  className={classnames( "rounded-full py-1 mr-4 h-[36px]", {
                     "border border-darkGray border-[2px]": identTaxon
                   } )}
                   testID="ObsEdit.Suggestions"
