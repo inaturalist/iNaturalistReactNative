@@ -2,7 +2,7 @@ Point the camera at plants, animals, & fungi to see species suggestions while yo
 
 iNaturalist goes far beyond AI identifications—your observations are reviewed by real people and shared for science to help protect species.
 
-KEY FEATURES
+FŐBB JELLEMZŐK
 Identify species from anywhere in the world
 Keep a record of species you see
 Contribute to science by sharing your observations

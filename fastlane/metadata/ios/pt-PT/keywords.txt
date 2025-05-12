@@ -1,1 +1,1 @@
-nature,wildlife,plant ID,animal,identify,biodiversity,citizen science,conservation,field guide
+Vida selvagem,ID de plantas,biodiversidade,ciência cidadã,conservação,guia de campo
