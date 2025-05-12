@@ -117,15 +117,20 @@ describe( "Suggestions", ( ) => {
 
   // We need to navigate from MyObs to ObsEdit to Suggestions for all of these
   // tests
-  async function navigateToSuggestionsViaObsEditForObservation( observation ) {
+  async function navigateToSuggestionsViaObsEditForObservation( observation, options ) {
     const observationGridItem = await screen.findByTestId(
       `MyObservations.obsGridItem.${observation.uuid}`
     );
     await actor.press( observationGridItem );
-    const addIdButton = observation.taxon
-      ? await screen.findByLabelText( "Edit identification" )
-      : await screen.findByText( "ID WITH AI" );
-    await actor.press( addIdButton );
+    if ( options?.toTaxonSearch ) {
+      const taxonSearchButton = await screen.findByText( "SEARCH" );
+      await actor.press( taxonSearchButton );
+    } else {
+      const addIdButton = observation.taxon
+        ? await screen.findByLabelText( "Edit identification" )
+        : await screen.findByText( "ID WITH AI" );
+      await actor.press( addIdButton );
+    }
   }
 
   async function navigateToSuggestionsViaCameraForObservation( ) {
@@ -304,12 +309,12 @@ describe( "Suggestions", ( ) => {
       "should navigate back to ObsEdit with expected observation"
       + " when reached from ObsEdit via Suggestions and search result chosen",
       async ( ) => {
-        const observations = [
-          factory( "LocalObservation", { geoprivacy: "obscured" } )
-        ];
+        const observations = makeUnsyncedObservations();
         useStore.setState( { observations } );
         await renderAppWithObservations( observations, __filename );
-        await navigateToSuggestionsViaObsEditForObservation( observations[0] );
+        await navigateToSuggestionsViaObsEditForObservation( observations[0], {
+          toTaxonSearch: true
+        } );
         const searchInput = await screen.findByLabelText( "Search for a taxon" );
         const mockSearchResultTaxon = factory( "RemoteTaxon" );
         inatjs.search.mockResolvedValue( makeResponse( [
