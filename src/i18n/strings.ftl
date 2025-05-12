@@ -530,9 +530,6 @@ Flash = Flash
 # Label for a button that toggles between the front and back cameras
 Flip-camera = Flip camera
 FOLLOW = FOLLOW
-# Tab on notifications showing notifications about content created by others.
-# Should be 16 characters or fewer or it will be ellipsized.
-FOLLOWING--notifications = FOLLOWING
 # Subtitle for a screen showing the list of people a user is following
 FOLLOWING-X-PEOPLE =
     { $count ->
@@ -910,6 +907,9 @@ Organisms-that-are-identified-to-species = Organisms that are identified to spec
 # enter an explanation for why you are flagging something instead of choosing
 # one of the existing options
 Other = Other
+# Tab on notifications showing notifications about content created by others.
+# Should be 16 characters or fewer or it will be ellipsized.
+OTHERS--notifications = OTHERS
 OTHER-DATA = OTHER DATA
 OTHER-SUGGESTIONS = OTHER SUGGESTIONS
 PASSWORD = PASSWORD
