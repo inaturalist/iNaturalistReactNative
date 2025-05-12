@@ -5,7 +5,7 @@
 ### translations, go to https://crowdin.com/editor/inaturalistios/724
 ###
 
-A-global-community-for-nature = A global community for nature
+A-global-community-for-nature = یک جامعه جهانی برای طبیعت
 ABOUT = درباره ما
 ABOUT-COLLECTION-PROJECTS = درباره پروژه های مجموعه
 ABOUT-INATURALIST = درباره iNaturalist
@@ -34,11 +34,11 @@ Add-location-to-refresh-suggestions = برای تازه کردن پیشنهاد�
 Add-observations = افزودن مشاهدات
 ADD-OPTIONAL-COMMENT = افزودن نظر اختیاری
 Add-optional-notes = افزودن یادداشت های اختیاری
-Adds-ID = Adds ID
+Adds-ID = شناسه را اضافه می کند
 Adds-your-vote-of-agreement = رای موافق شما را اضافه می کند
 Adds-your-vote-of-disagreement = رای مخالف شما را اضافه می کند
 Advanced-Mode = Advanced Mode
-ADVANCED-SETTINGS = ADVANCED SETTINGS
+ADVANCED-SETTINGS = تنظیمات پیشرفته
 Affiliation = وابستگی: { $site }
 After-capturing-or-importing-photos-show = پس از گرفتن یا وارد کردن عکس، نشان دهید:
 Agree = موافق
@@ -48,13 +48,13 @@ Agree-with-ID-description = آیا می خواهید با شناسه موافق�
 AI-Camera = دوربین هوش مصنوعی
 ALL = همه
 All = همه
-All-observation-options--list = All observation options: iNaturalist AI Camera, Standard Camera, Uploading from Photo Library, and Sound Recorder
+All-observation-options--list = همه گزینه‌های ثبت مشاهده: دوربین هوش مصنوعی iNaturalist، دوربین استاندارد، بارگذاری از گالری عکس، و ضبط صدا
 All-observations = همه مشاهدات
-All-observations-need-a-date-and-location-to-be-used-for-science = All observations need a date and location to be used for science. Please edit observations if they need more information.
+All-observations-need-a-date-and-location-to-be-used-for-science = همه مشاهدات برای استفاده در علوم به تاریخ و موقعیت مکانی نیاز دارند. لطفاً در صورت نیاز، اطلاعات بیشتری به مشاهدات اضافه کنید.
 All-organisms = همه موجودات
 all-rights-reserved = تمامی حقوق محفوظ است
 All-taxa = همه گونه ها
-ALL-USERS-EXCEPT = ALL USERS EXCEPT
+ALL-USERS-EXCEPT = همه کاربران به جز
 ALLOW-LOCATION-ACCESS = اجازه دسترسی به مکان
 An-Internet-connection-is-required = اتصال به اینترنت برای بارگیری مشاهدات بیشتر مورد نیاز است.
 Analyzing-for-the-best-identification = Analyzing for the best identification...
