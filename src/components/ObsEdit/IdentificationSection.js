@@ -86,7 +86,7 @@ const IdentificationSection = ( {
     <View key={resetScreen?.toString( )}>
       <IconicTaxonChooser
         before={(
-          <View className="flex-row">
+          <View className="flex-row ml-6">
             {showIDButton
               ? (
                 <Button
@@ -95,7 +95,7 @@ const IdentificationSection = ( {
                     : "focus"}
                   onPress={navToSuggestions}
                   text={t( "ID-WITH-AI" )}
-                  className={classnames( "rounded-full py-1 mr-2 h-[36px] ml-6", {
+                  className={classnames( "rounded-full py-1 mr-2 h-[36px]", {
                     "border border-darkGray border-[2px]": identTaxon
                   } )}
                   testID="ObsEdit.Suggestions"
