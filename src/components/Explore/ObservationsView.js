@@ -135,6 +135,7 @@ const ObservationsView = ( {
         obsListKey="ExploreObservations"
         onEndReached={fetchNextPage}
         showNoResults={!canFetch || totalResults === 0}
+        hideObsUploadStatus={layout === "grid"}
         testID="ExploreObservationsAnimatedList"
       />
       <MapView
