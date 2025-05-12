@@ -95,7 +95,7 @@ const IdentificationSection = ( {
                     : "focus"}
                   onPress={navToSuggestions}
                   text={t( "ID-WITH-AI" )}
-                  className={classnames( "rounded-full py-1 h-[36px] ml-6", {
+                  className={classnames( "rounded-full py-1 mr-2 h-[36px] ml-6", {
                     "border border-darkGray border-[2px]": identTaxon
                   } )}
                   testID="ObsEdit.Suggestions"
@@ -116,7 +116,7 @@ const IdentificationSection = ( {
               level="neutral"
               onPress={navToSuggestionsSearch}
               text={t( "SEARCH" )}
-              className="rounded-full py-1 h-[36px] ml-2 border border-darkGray border-[2px]"
+              className="rounded-full py-1 h-[36px] border border-darkGray border-[2px]"
               testID="ObsEdit.Suggestions"
               icon={(
                 <INatIcon
