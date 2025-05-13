@@ -315,7 +315,6 @@ Flagged = Označený
 Flash = Blesk
 Flip-camera = Přepnout kameru
 FOLLOW = SLEDOVAT
-FOLLOWING--notifications = SLEDUJÍCÍ
 FOLLOWING-X-PEOPLE =
     { $count ->
         [one] SLEDUJÍCÍ { $count } OSOBU
@@ -586,6 +585,7 @@ Organisms-that-are-identified-to-species = Organismy, které jsou identifikován
 Other = Ostatní
 OTHER-DATA = OSTATNÍ DATA
 OTHER-SUGGESTIONS = DALŠÍ NÁVRHY
+OTHERS--notifications = OTHERS
 PASSWORD = HESLO
 PEOPLE--title = LIDÉ
 Photo-importer = Importování fotek
@@ -974,7 +974,11 @@ X-Identifiers =
         [one] { $count } Identifier
        *[other] { $count } Identifiers
     }
-X-MEMBERS = { $count } ČLENŮ
+X-MEMBERS =
+    { $count ->
+        [one] { $count } MEMBER
+       *[other] { $count } MEMBERS
+    }
 X-Observations =
     { $count ->
         [one] 1 Observation

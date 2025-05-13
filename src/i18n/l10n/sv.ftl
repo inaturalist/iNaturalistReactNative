@@ -323,7 +323,6 @@ Flagged = Flaggat
 Flash = Blixt
 Flip-camera = Växla kamera
 FOLLOW = FÖLJ
-FOLLOWING--notifications = FÖLJER
 FOLLOWING-X-PEOPLE =
     { $count ->
         [one] FÖLJER { $count } PERSON
@@ -594,6 +593,7 @@ Organisms-that-are-identified-to-species = Organismer som bestäms till artnivå
 Other = Annat
 OTHER-DATA = MER DATA
 OTHER-SUGGESTIONS = ANDRA FÖRSLAG
+OTHERS--notifications = OTHERS
 PASSWORD = LÖSENORD
 PEOPLE--title = PERSONER
 Photo-importer = Bildimport
@@ -982,7 +982,11 @@ X-Identifiers =
         [one] { $count } bestämmare
        *[other] { $count } bestämmare
     }
-X-MEMBERS = { $count } MEDLEMMAR
+X-MEMBERS =
+    { $count ->
+        [one] { $count } MEMBER
+       *[other] { $count } MEMBERS
+    }
 X-Observations =
     { $count ->
         [one] 1 Fynd

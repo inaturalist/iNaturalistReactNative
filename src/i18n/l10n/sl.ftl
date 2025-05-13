@@ -315,7 +315,6 @@ Flagged = Prijavljeno
 Flash = Flash
 Flip-camera = Flip camera
 FOLLOW = FOLLOW
-FOLLOWING--notifications = FOLLOWING
 FOLLOWING-X-PEOPLE =
     { $count ->
         [one] FOLLOWING { $count } PERSON
@@ -586,6 +585,7 @@ Organisms-that-are-identified-to-species = Organisms that are identified to spec
 Other = Drugo
 OTHER-DATA = OTHER DATA
 OTHER-SUGGESTIONS = OTHER SUGGESTIONS
+OTHERS--notifications = OTHERS
 PASSWORD = PASSWORD
 PEOPLE--title = PEOPLE
 Photo-importer = Photo importer
@@ -974,7 +974,11 @@ X-Identifiers =
         [one] { $count } Identifier
        *[other] { $count } Identifiers
     }
-X-MEMBERS = { $count } MEMBERS
+X-MEMBERS =
+    { $count ->
+        [one] { $count } MEMBER
+       *[other] { $count } MEMBERS
+    }
 X-Observations =
     { $count ->
         [one] 1 Observation

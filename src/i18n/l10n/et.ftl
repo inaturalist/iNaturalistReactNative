@@ -315,7 +315,6 @@ Flagged = Märkusega
 Flash = Flash
 Flip-camera = Pööra kaamerat
 FOLLOW = JÄLGI
-FOLLOWING--notifications = FOLLOWING
 FOLLOWING-X-PEOPLE =
     { $count ->
         [one] JÄLGIN { $count } INIMEST
@@ -586,6 +585,7 @@ Organisms-that-are-identified-to-species = Organisms that are identified to spec
 Other = Muu
 OTHER-DATA = MUUD ANDMED
 OTHER-SUGGESTIONS = TEISED PAKKUMISED
+OTHERS--notifications = OTHERS
 PASSWORD = SALASÕNA
 PEOPLE--title = INIMESED
 Photo-importer = Foto importija
@@ -974,7 +974,11 @@ X-Identifiers =
         [one] { $count } määratleja
        *[other] { $count } määratlejat
     }
-X-MEMBERS = { $count } LIIGET
+X-MEMBERS =
+    { $count ->
+        [one] { $count } MEMBER
+       *[other] { $count } MEMBERS
+    }
 X-Observations =
     { $count ->
         [one] 1 vaatlus

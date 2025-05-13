@@ -315,7 +315,6 @@ Flagged = Telah Ditandai
 Flash = Flash
 Flip-camera = Balikkan kamera
 FOLLOW = IKUTI
-FOLLOWING--notifications = MENGIKUTI
 FOLLOWING-X-PEOPLE =
     { $count ->
         [one] MENGIKUTI { $count } ORANG
@@ -586,6 +585,7 @@ Organisms-that-are-identified-to-species = Organisme yang diidentifikasi berting
 Other = Lainnya
 OTHER-DATA = DATA LAIN
 OTHER-SUGGESTIONS = REKOMENDASI LAIN
+OTHERS--notifications = LAINNYA
 PASSWORD = KATA SANDI
 PEOPLE--title = ORANG
 Photo-importer = Pengimpor foto
@@ -974,7 +974,11 @@ X-Identifiers =
         [one] { $count } Pengidentifikasi
        *[other] { $count } Pengidentifikasi
     }
-X-MEMBERS = { $count } ANGGOTA
+X-MEMBERS =
+    { $count ->
+        [one] { $count } ANGGOTA
+       *[other] { $count } ANGGOTA
+    }
 X-Observations =
     { $count ->
         [one] 1 Pengamatan

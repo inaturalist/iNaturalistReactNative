@@ -315,7 +315,6 @@ Flagged = Označené
 Flash = Blesk
 Flip-camera = Prepnúť kameru
 FOLLOW = SLEDOVAŤ
-FOLLOWING--notifications = SLEDUJÚCE
 FOLLOWING-X-PEOPLE =
     { $count ->
         [one] SLEDUJE JEDNU OSOBU
@@ -586,6 +585,7 @@ Organisms-that-are-identified-to-species = Organizmy, ktoré sú identifikované
 Other = Ostatné
 OTHER-DATA = OSTATNÉ DÁTA
 OTHER-SUGGESTIONS = ĎALŠIE NÁVRHY
+OTHERS--notifications = OTHERS
 PASSWORD = HESLO
 PEOPLE--title = ĽUDIA
 Photo-importer = Importovanie fotiek
@@ -974,7 +974,11 @@ X-Identifiers =
         [one] { $count } identifikátor
        *[other] { $count } identifikátorov
     }
-X-MEMBERS = { $count } ČLENOV
+X-MEMBERS =
+    { $count ->
+        [one] { $count } MEMBER
+       *[other] { $count } MEMBERS
+    }
 X-Observations =
     { $count ->
         [one] 1 pozorovanie

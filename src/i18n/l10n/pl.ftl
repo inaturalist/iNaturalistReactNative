@@ -317,7 +317,6 @@ Flagged = Zgłoszono
 Flash = Błysk
 Flip-camera = Przełącz kamerę
 FOLLOW = OBSERWUJ
-FOLLOWING--notifications = OBSERWOWANE
 FOLLOWING-X-PEOPLE =
     { $count ->
         [one] OBSERWOWANIE { $count } OSOBY
@@ -593,6 +592,7 @@ Organisms-that-are-identified-to-species = Organizmy, które zostały zidentyfik
 Other = Inne
 OTHER-DATA = INNE DANE
 OTHER-SUGGESTIONS = INNE PROPOZYCJE
+OTHERS--notifications = OTHERS
 PASSWORD = HASŁO
 PEOPLE--title = LUD
 Photo-importer = Importer zdjęć
@@ -988,7 +988,11 @@ X-Identifiers =
         [few] { $count } Identyfikujących
        *[many] { $count } Identyfikujących
     }
-X-MEMBERS = { $count } CZŁONKÓW
+X-MEMBERS =
+    { $count ->
+        [one] { $count } MEMBER
+       *[other] { $count } MEMBERS
+    }
 X-Observations =
     { $count ->
         [jeden] 1 Obserwacja

@@ -315,7 +315,6 @@ Flagged = 已標記
 Flash = 閃光燈
 Flip-camera = 翻轉鏡頭
 FOLLOW = 追蹤
-FOLLOWING--notifications = 追蹤中
 FOLLOWING-X-PEOPLE =
     { $count ->
         [one] 追蹤 { $count } 人
@@ -586,6 +585,7 @@ Organisms-that-are-identified-to-species = 生物被鑑定到種或種以下的�
 Other = 其它
 OTHER-DATA = 其他資料
 OTHER-SUGGESTIONS = 其他建議
+OTHERS--notifications = OTHERS
 PASSWORD = 密碼
 PEOPLE--title = 使用者
 Photo-importer = 照片匯入
@@ -974,7 +974,11 @@ X-Identifiers =
         [one] { $count } 位鑑定者
        *[other] { $count } 位鑑定者
     }
-X-MEMBERS = { $count } 位成員
+X-MEMBERS =
+    { $count ->
+        [one] { $count } MEMBER
+       *[other] { $count } MEMBERS
+    }
 X-Observations =
     { $count ->
         [one] 一筆觀察紀錄

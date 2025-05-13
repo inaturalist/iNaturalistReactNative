@@ -315,7 +315,6 @@ Flagged = Αναφέρθηκε
 Flash = Αναλαμπή
 Flip-camera = Αναστροφή κάμερας
 FOLLOW = ΑΚΟΛΟΥΘΏ
-FOLLOWING--notifications = ΑΚΌΛΟΥΘΟΣ
 FOLLOWING-X-PEOPLE =
     { $count ->
         [one] FOLLOWING { $count } PERSON
@@ -586,6 +585,7 @@ Organisms-that-are-identified-to-species = Οργανισμοί που ταυτ�
 Other = Άλλα
 OTHER-DATA = ΑΛΛΑ ΔΕΔΟΜΕΝΑ
 OTHER-SUGGESTIONS = ΑΛΛΕΣ ΠΡΟΤΑΣΕΙΣ
+OTHERS--notifications = OTHERS
 PASSWORD = ΚΩΔΙΚΌΣ ΠΡΌΣΒΑΣΗΣ
 PEOPLE--title = ΛΑΌΣ
 Photo-importer = Εισαγωγέας φωτογραφιών
@@ -974,7 +974,11 @@ X-Identifiers =
         [one] { $count } Identifier
        *[other] { $count } Identifiers
     }
-X-MEMBERS = { $count } ΜΈΛΗ
+X-MEMBERS =
+    { $count ->
+        [one] { $count } MEMBER
+       *[other] { $count } MEMBERS
+    }
 X-Observations =
     { $count ->
         [one] 1 Observation

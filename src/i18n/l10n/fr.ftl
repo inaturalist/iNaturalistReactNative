@@ -315,7 +315,6 @@ Flagged = Marqué
 Flash = Flash
 Flip-camera = Retourner la caméra
 FOLLOW = SUIVRE
-FOLLOWING--notifications = SUIVI
 FOLLOWING-X-PEOPLE =
     { $count ->
         [one] SUIVANT { $count } PERSONNE
@@ -586,6 +585,7 @@ Organisms-that-are-identified-to-species = Organismes qui sont identifiés au ni
 Other = Autre
 OTHER-DATA = AUTRES DONNÉES
 OTHER-SUGGESTIONS = AUTRES SUGGESTIONS
+OTHERS--notifications = OTHERS
 PASSWORD = MOT DE PASSE
 PEOPLE--title = PERSONNES
 Photo-importer = Importateur d'images
@@ -974,7 +974,11 @@ X-Identifiers =
         [one] { $count } Identificateur
        *[other] { $count } Identificateurs
     }
-X-MEMBERS = { $count } MEMBRES
+X-MEMBERS =
+    { $count ->
+        [one] { $count } MEMBER
+       *[other] { $count } MEMBERS
+    }
 X-Observations =
     { $count ->
         [one] 1 Observation

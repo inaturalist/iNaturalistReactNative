@@ -320,7 +320,6 @@ Flagged = Помечено
 Flash = Вспышка
 Flip-camera = Поворотная камера
 FOLLOW = СЛЕДОВАТЬ
-FOLLOWING--notifications = СЛЕДУЮЩИЕ
 FOLLOWING-X-PEOPLE =
     { $count ->
         [one] НА ВАС ПОДПИСАН { $count } ЧЕЛОВЕК
@@ -591,6 +590,7 @@ Organisms-that-are-identified-to-species = Организмы, отнесенн�
 Other = Другое
 OTHER-DATA = ДРУГИЕ ДАННЫЕ
 OTHER-SUGGESTIONS = ДРУГИЕ ПРЕДЛОЖЕНИЯ
+OTHERS--notifications = OTHERS
 PASSWORD = ПАРОЛЬ
 PEOPLE--title = ЛЮДИ
 Photo-importer = Импортер фотографий
@@ -979,7 +979,11 @@ X-Identifiers =
         [one] { $count } Identifier
        *[other] { $count } Identifiers
     }
-X-MEMBERS = { $count }  УЧАСТНИКОВ
+X-MEMBERS =
+    { $count ->
+        [one] { $count } MEMBER
+       *[other] { $count } MEMBERS
+    }
 X-Observations =
     { $count ->
         [one] 1 Observation
