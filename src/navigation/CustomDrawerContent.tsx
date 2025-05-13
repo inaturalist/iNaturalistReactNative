@@ -144,14 +144,12 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
         },
         onPress: ( ) => setShowConfirm( true )
       };
-    }
-
-    if ( items.logout === undefined && !currentUser ) {
+    } else {
       items.login = {
         label: t( "LOG-IN" ),
         icon: "door-enter",
+        color: colors.inatGreen,
         style: {
-          opacity: 0.5,
           display: "flex"
         },
         onPress: ( ) => {
