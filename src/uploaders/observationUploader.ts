@@ -3,6 +3,7 @@ import {
   updateObservation
 } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
+import { RealmObservation, RealmObservationPojo } from "realmModels/types.d.ts";
 import {
   markRecordUploaded,
   prepareObservationForUpload
@@ -13,7 +14,38 @@ import {
 } from "uploaders/mediaUploader.ts";
 import { trackObservationUpload } from "uploaders/utils/progressTracker.ts";
 
-async function validateAndGetToken( ) {
+interface UploadOptions {
+  api_token?: string;
+  ignore_photos?: boolean;
+  [key: string]: unknown;
+}
+
+interface UploadParams {
+  observation: Partial<RealmObservationPojo>;
+  fields: {
+    id: boolean;
+    [key: string]: boolean;
+  };
+  id?: string;
+  ignore_photos?: boolean;
+}
+
+interface ObservationResponse {
+  results: Array<{
+    uuid: string;
+    [key: string]: unknown;
+  }>;
+  [key: string]: unknown;
+}
+
+interface Realm {
+  write: ( callback: () => void ) => void;
+  objects: <T>( schema: string ) => {
+    filtered: ( query: string, ...args: unknown[] ) => T[];
+  };
+}
+
+async function validateAndGetToken( ): Promise<string> {
   const apiToken = await getJWT( );
   if ( !apiToken ) {
     throw new Error( "Gack, tried to upload an observation without API token!" );
@@ -21,9 +53,13 @@ async function validateAndGetToken( ) {
   return apiToken;
 }
 
-async function createOrUpdateObservation( observation, newObs, options ) {
+async function createOrUpdateObservation(
+  observation: RealmObservation,
+  newObs: Partial<RealmObservationPojo>,
+  options: UploadOptions
+): Promise<ObservationResponse | null> {
   const wasPreviouslySynced = observation.wasSynced( );
-  const uploadParams = {
+  const uploadParams: UploadParams = {
     observation: { ...newObs },
     fields: { id: true }
   };
@@ -38,7 +74,11 @@ async function createOrUpdateObservation( observation, newObs, options ) {
   return createObservation( uploadParams, options );
 }
 
-async function uploadObservation( observation: Object, realm: Object, opts: Object = {} ): Object {
+async function uploadObservation(
+  observation: RealmObservation,
+  realm: Realm,
+  opts: UploadOptions = {}
+): Promise<ObservationResponse | null> {
   const obsProgress = trackObservationUpload( observation.uuid );
   obsProgress.start( );
 

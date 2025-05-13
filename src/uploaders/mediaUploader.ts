@@ -1,18 +1,64 @@
 import { createOrUpdateEvidence } from "api/observations";
 import inatjs from "inaturalistjs";
+import {
+  RealmObservation,
+  RealmObservationPhoto,
+  RealmObservationSound,
+  RealmPhoto
+} from "realmModels/types.d.ts";
 import { markRecordUploaded, prepareMediaForUpload } from "uploaders";
 import { trackEvidenceUpload } from "uploaders/utils/progressTracker.ts";
 
+type EvidenceType = "Photo" | "ObservationPhoto" | "ObservationSound";
+type ActionType = "upload" | "attach" | "update";
+
+interface UploadOptions {
+  api_token?: string;
+  ignore_photos?: boolean;
+  [key: string]: unknown;
+}
+
+interface ApiResponse {
+  results?: Array<{
+    id?: number;
+    uuid?: string;
+    [key: string]: unknown;
+  }>;
+  [key: string]: unknown;
+}
+
+interface ApiEndpoint {
+  ( params: unknown, options: UploadOptions ): Promise<ApiResponse>;
+}
+
+interface Realm {
+  write: ( callback: () => void ) => void;
+  objects: <T>( schema: string ) => {
+    filtered: ( query: string, ...args: unknown[] ) => T[];
+  };
+}
+
+interface Evidence {
+  uuid: string;
+  [key: string]: unknown;
+}
+
+interface MediaItems {
+  unsyncedObservationPhotos: RealmObservationPhoto[];
+  modifiedObservationPhotos: RealmObservationPhoto[];
+  unsyncedObservationSounds: RealmObservationSound[];
+}
+
 const uploadSingleEvidence = async (
-  evidence: Object,
-  type: string,
-  action: "upload" | "attach" | "update",
-  observationId?: number | null,
-  apiEndpoint: Function,
-  options: Object,
-  observationUUID?: string,
-  realm: Object
-) => {
+  evidence: Evidence,
+  type: EvidenceType,
+  action: ActionType,
+  observationId: number | null | undefined,
+  apiEndpoint: ApiEndpoint,
+  options: UploadOptions,
+  observationUUID: string | undefined,
+  realm: Realm
+): Promise<ApiResponse | null> => {
   const params = prepareMediaForUpload(
     evidence,
     type,
@@ -50,15 +96,15 @@ const uploadSingleEvidence = async (
 };
 
 const uploadEvidenceBatch = async (
-  evidence: Array<Object>,
-  type: string,
-  action: "upload" | "attach" | "update",
-  observationId?: number | null,
-  apiEndpoint: Function,
-  options: Object,
-  observationUUID?: string,
-  realm: Object
-): Promise<unknown> => {
+  evidence: Evidence[],
+  type: EvidenceType,
+  action: ActionType,
+  observationId: number | null | undefined,
+  apiEndpoint: ApiEndpoint,
+  options: UploadOptions,
+  observationUUID: string | undefined,
+  realm: Realm
+): Promise<ApiResponse | null> => {
   if ( !evidence || evidence.length === 0 ) {
     return null;
   }
@@ -79,7 +125,12 @@ const uploadEvidenceBatch = async (
   return responses[0];
 };
 
-const filterMediaForUpload = observation => {
+const filterMediaForUpload = ( observation: RealmObservation ): {
+  unsyncedPhotos: RealmPhoto[];
+  unsyncedObservationPhotos: RealmObservationPhoto[];
+  modifiedObservationPhotos: RealmObservationPhoto[];
+  unsyncedObservationSounds: RealmObservationSound[];
+} => {
   const hasPhotos = observation?.observationPhotos?.length > 0;
 
   // get photos that haven't been synced yet
@@ -97,7 +148,7 @@ const filterMediaForUpload = observation => {
       }
       return null;
     }
-  } ).filter( Boolean ).flat();
+  } ).filter( Boolean ).flat() as RealmPhoto[];
 
   // get photos that have been synced but need updating
   const modifiedObservationPhotos = hasPhotos
@@ -118,7 +169,11 @@ const filterMediaForUpload = observation => {
   };
 };
 
-async function uploadObservationMedia( observation, options, realm ) {
+async function uploadObservationMedia(
+  observation: RealmObservation,
+  options: UploadOptions,
+  realm: Realm
+): Promise<MediaItems> {
   const {
     unsyncedPhotos,
     unsyncedObservationPhotos,
@@ -161,7 +216,12 @@ async function uploadObservationMedia( observation, options, realm ) {
   };
 }
 
-async function attachMediaToObservation( observationUUID, mediaItems, options, realm ) {
+async function attachMediaToObservation(
+  observationUUID: string,
+  mediaItems: MediaItems,
+  options: UploadOptions,
+  realm: Realm
+): Promise<void> {
   // Make sure this happens *after* ObservationPhotos and ObservationSounds
   // are created so the observation doesn't appear uploaded until all its
   // media successfully uploads
