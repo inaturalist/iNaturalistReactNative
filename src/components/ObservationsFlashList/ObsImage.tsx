@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { IconicTaxonIcon } from "components/SharedComponents";
-import { Image, View } from "components/styledComponents";
+import { FasterImageView, View } from "components/styledComponents";
 import React from "react";
 
 interface Props {
@@ -48,12 +48,16 @@ const ObsImage = ( {
       />
     </View>
     { uri?.uri && (
-      <Image
-        source={uri}
+      <FasterImageView
         className={classNames( CLASS_NAMES )}
         testID="ObsList.photo"
         accessibilityIgnoresInvertColors
         fadeDuration={0}
+        source={{
+          url: uri.uri,
+          cachePolicy: "discWithCacheControl",
+          resizeMode: "cover"
+        }}
       />
     ) }
     { opaque && (
