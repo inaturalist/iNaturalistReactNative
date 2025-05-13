@@ -104,7 +104,7 @@ interface Taxon {
   name?: string;
 }
 
-interface TaxonData {
+interface TaxonDisplayData {
   rank?: string;
   rankLevel: number;
   commonName?: string;
@@ -114,10 +114,10 @@ interface TaxonData {
 }
 
 export const generateTaxonPieces = ( taxon: Taxon ) => {
-  const taxonData: Partial<TaxonData> = {};
+  const taxonDisplayData: Partial<TaxonDisplayData> = {};
 
-  if ( taxon.rank ) taxonData.rank = capitalize( taxon.rank );
-  taxonData.rankLevel = taxon.rank_level;
+  if ( taxon.rank ) taxonDisplayData.rank = capitalize( taxon.rank );
+  taxonDisplayData.rankLevel = taxon.rank_level;
 
   // Logic follows the SplitTaxon component from web
   // https://github.com/inaturalist/inaturalist/blob/main/app/webpack/shared/components/split_taxon.jsx
@@ -126,7 +126,7 @@ export const generateTaxonPieces = ( taxon: Taxon ) => {
     // found here, but is needed in iNat Next:
     // https://github.com/inaturalist/inaturalist/blob/c578c11d00ed97940f0b6d8aa0793b6afd765824/app/assets/javascripts/ang/models/taxon.js.erb#L155
     const multipleLexicons = taxon.preferred_common_name.split( "·" );
-    taxonData.commonName = _.map(
+    taxonDisplayData.commonName = _.map(
       multipleLexicons,
       ( lexicon => capitalizeCommonName( lexicon )
       )
@@ -136,22 +136,22 @@ export const generateTaxonPieces = ( taxon: Taxon ) => {
   const scientificNamePieces = taxon?.name?.split( " " );
   if ( taxon.rank_level < 10 ) {
     if ( taxon.rank === "variety" ) {
-      taxonData.rankPiece = "var.";
+      taxonDisplayData.rankPiece = "var.";
     } else if ( taxon.rank === "subspecies" ) {
-      taxonData.rankPiece = "ssp.";
+      taxonDisplayData.rankPiece = "ssp.";
     } else if ( taxon.rank === "form" ) {
-      taxonData.rankPiece = "f.";
+      taxonDisplayData.rankPiece = "f.";
     }
 
-    if ( taxonData.rankPiece && scientificNamePieces ) {
-      scientificNamePieces.splice( -1, 0, taxonData.rankPiece );
+    if ( taxonDisplayData.rankPiece && scientificNamePieces ) {
+      scientificNamePieces.splice( -1, 0, taxonDisplayData.rankPiece );
     }
   }
 
-  taxonData.scientificNamePieces = scientificNamePieces;
-  taxonData.scientificName = scientificNamePieces?.join( " " );
+  taxonDisplayData.scientificNamePieces = scientificNamePieces;
+  taxonDisplayData.scientificName = scientificNamePieces?.join( " " );
 
-  return taxonData as TaxonData;
+  return taxonDisplayData as TaxonDisplayData;
 };
 
 interface User {
