@@ -19,7 +19,6 @@ type Props = {
   explore: boolean,
   height?: string,
   hideObsUploadStatus?: boolean,
-  isLargeFontScale: boolean,
   observation: Object,
   onUploadButtonPress: Function,
   style?: Object,
@@ -34,7 +33,6 @@ const ObsGridItem = ( {
   explore,
   height = "w-[200px]",
   hideObsUploadStatus,
-  isLargeFontScale,
   observation,
   onUploadButtonPress,
   queued,
@@ -52,14 +50,12 @@ const ObsGridItem = ( {
       layout="vertical"
       prefersCommonNames={currentUser?.prefers_common_names}
       scientificNameFirst={currentUser?.prefers_scientific_name_first}
-      showOneNameOnly={!explore || isLargeFontScale}
+      showOneNameOnly
       taxon={observation?.taxon}
     />
   ), [
     currentUser?.prefers_common_names,
     currentUser?.prefers_scientific_name_first,
-    explore,
-    isLargeFontScale,
     observation?.taxon,
     observation?.uuid
   ] );

@@ -36,7 +36,7 @@ const Notifications = ( ) => {
           },
           {
             id: OTHER_TAB,
-            text: t( "FOLLOWING--notifications" ),
+            text: t( "OTHERS--notifications" ),
             onPress: () => setActiveTab( OTHER_TAB )
           }
         ]}

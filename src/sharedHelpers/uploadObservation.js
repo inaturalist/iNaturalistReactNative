@@ -9,16 +9,18 @@ import {
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import inatjs from "inaturalistjs";
 import Observation from "realmModels/Observation";
-import ObservationPhoto from "realmModels/ObservationPhoto";
-import ObservationSound from "realmModels/ObservationSound";
-import { markRecordUploaded } from "uploaders";
+import {
+  markRecordUploaded,
+  prepareMediaForUpload,
+  prepareObservationForUpload
+} from "uploaders";
 import { trackEvidenceUpload, trackObservationUpload } from "uploaders/utils/progressTracker.ts";
 
 const uploadEvidence = async (
   evidence: Array<Object>,
   type: string,
-  apiSchemaMapper: Function,
-  observationId: ?number,
+  action: "upload" | "attach" | "update",
+  observationId?: number | null,
   apiEndpoint: Function,
   options: Object,
   observationUUID?: string,
@@ -26,7 +28,12 @@ const uploadEvidence = async (
   // $FlowIgnore
 ): Promise<unknown> => {
   const uploadToServer = async currentEvidence => {
-    const params = apiSchemaMapper( observationId, currentEvidence );
+    const params = prepareMediaForUpload(
+      currentEvidence,
+      type,
+      action,
+      observationId
+    );
     const evidenceUUID = currentEvidence.uuid;
 
     // Determine if this is an upload or an attachment operation
@@ -57,24 +64,8 @@ const uploadEvidence = async (
     return response;
   };
 
-  const responses = await Promise.all( evidence.map( item => {
-    let currentEvidence = item;
-
-    if ( currentEvidence.photo ) {
-      currentEvidence = item.toJSON( );
-      // Remove all null values, b/c the API doesn't seem to like them
-      const newPhoto = {};
-      const { photo } = currentEvidence;
-      Object.keys( photo ).forEach( k => {
-        if ( photo[k] !== null ) {
-          newPhoto[k] = photo[k];
-        }
-      } );
-      currentEvidence.photo = newPhoto;
-    }
-
-    return uploadToServer( currentEvidence );
-  } ) );
+  const responses = await Promise
+    .all( evidence.map( item => uploadToServer( item ) ) );
   // eslint-disable-next-line consistent-return
   return responses[0];
 };
@@ -90,17 +81,9 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
       "Gack, tried to upload an observation without API token!"
     );
   }
-  const obsToUpload = Observation.mapObservationForUpload( obs );
   const options = { ...opts, api_token: apiToken };
 
-  // Remove all null values, b/c the API doesn't seem to like them for some
-  // reason (might be an error with the API as of 20220801)
-  const newObs = {};
-  Object.keys( obsToUpload ).forEach( k => {
-    if ( obsToUpload[k] !== null ) {
-      newObs[k] = obsToUpload[k];
-    }
-  } );
+  const newObs = prepareObservationForUpload( obs );
 
   let response;
 
@@ -128,7 +111,7 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
       ? uploadEvidence(
         unsyncedPhotos,
         "Photo",
-        ObservationPhoto.mapPhotoForUpload,
+        "upload",
         null,
         inatjs.photos.create,
         options,
@@ -147,7 +130,7 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
       ? uploadEvidence(
         unsyncedObservationSounds,
         "ObservationSound",
-        ObservationSound.mapSoundForUpload,
+        "upload",
         null,
         inatjs.sounds.create,
         options,
@@ -186,7 +169,7 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
       ? uploadEvidence(
         unsyncedObservationPhotos,
         "ObservationPhoto",
-        ObservationPhoto.mapPhotoForAttachingToObs,
+        "attach",
         obsUUID,
         inatjs.observation_photos.create,
         options,
@@ -198,7 +181,7 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
       ? uploadEvidence(
         unsyncedObservationSounds,
         "ObservationSound",
-        ObservationSound.mapSoundForAttachingToObs,
+        "attach",
         obsUUID,
         inatjs.observation_sounds.create,
         options,
@@ -211,7 +194,7 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
       ? uploadEvidence(
         modifiedObservationPhotos,
         "ObservationPhoto",
-        ObservationPhoto.mapPhotoForUpdating,
+        "update",
         obsUUID,
         inatjs.observation_photos.update,
         options,

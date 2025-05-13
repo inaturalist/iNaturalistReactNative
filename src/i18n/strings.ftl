@@ -530,9 +530,6 @@ Flash = Flash
 # Label for a button that toggles between the front and back cameras
 Flip-camera = Flip camera
 FOLLOW = FOLLOW
-# Tab on notifications showing notifications about content created by others.
-# Should be 16 characters or fewer or it will be ellipsized.
-FOLLOWING--notifications = FOLLOWING
 # Subtitle for a screen showing the list of people a user is following
 FOLLOWING-X-PEOPLE =
     { $count ->
@@ -568,6 +565,7 @@ HIGHEST-RANK = HIGHEST RANK
 I-agree-to-the-Terms-of-Use = <0>I agree to the Terms of Use and Privacy Policy, and I have reviewed the Community Guidelines (</0><1>required</1><0>).</0>
 Iconic-taxon-name = Iconic taxon name: { $iconicTaxon }
 ID-Suggestions = ID Suggestions
+# Short for: Identify with AI. Label for a button that will load identifications for a given photo/sound
 ID-WITH-AI = ID WITH AI
 # Identification Status
 ID-Withdrawn = ID Withdrawn
@@ -912,6 +910,9 @@ Organisms-that-are-identified-to-species = Organisms that are identified to spec
 Other = Other
 OTHER-DATA = OTHER DATA
 OTHER-SUGGESTIONS = OTHER SUGGESTIONS
+# Tab on notifications showing notifications about content created by others.
+# Should be 16 characters or fewer or it will be ellipsized.
+OTHERS--notifications = OTHERS
 PASSWORD = PASSWORD
 # Title showing user profile details about who a user follows and is following
 PEOPLE--title = PEOPLE

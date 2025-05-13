@@ -430,8 +430,8 @@ JOURNAL-POSTS-WITHOUT-NUMBER =
         [one] JOURNAL POST
        *[other] JOURNAL POSTS
     }
-July = July
-June = June
+July = ივლისი
+June = ივნისი
 Just-make-sure-the-organism-is-wild = Just make sure the organism is wild (not a pet, zoo animal, or garden plant)
 Last-Active-date = Last Active: { $date }
 Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, maximumFractionDigits: 6) }
@@ -464,7 +464,7 @@ Map-Area = Map Area
 March = March
 Match-Screen = Match Screen
 maverick--identification = Maverick
-May = May
+May = მაისი
 MEDIA = MEDIA
 Media-Type = Media Type
 MEMBERS-WITHOUT-NUMBER =
