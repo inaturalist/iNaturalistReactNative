@@ -1,4 +1,4 @@
-import { useFocusEffect } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import CameraFlip from "components/Camera/Buttons/CameraFlip.tsx";
 import Close from "components/Camera/Buttons/Close.tsx";
 import Flash from "components/Camera/Buttons/Flash.tsx";
@@ -9,7 +9,7 @@ import Zoom from "components/Camera/Buttons/Zoom.tsx";
 import TabletButtons from "components/Camera/TabletButtons.tsx";
 import { View } from "components/styledComponents";
 import React, {
-  useCallback, useRef,
+  useRef,
   useState
 } from "react";
 import { GestureResponderEvent, ViewStyle } from "react-native";
@@ -78,6 +78,7 @@ const AICameraButtons = ( {
   toggleLocation
 }: Props ) => {
   const { isDefaultMode } = useLayoutPrefs();
+  const navigation = useNavigation();
 
   const [isProcessing, setIsProcessing] = useState( false );
   const onPressRef = useRef( takePhoto );
@@ -88,16 +89,16 @@ const AICameraButtons = ( {
     setIsProcessing( true );
 
     onPressRef.current( event );
-    takePhoto();
   };
 
-  useFocusEffect(
-    useCallback( ( ) => {
-      // reset processing when screen loads
+  React.useEffect( () => {
+    const unsubscribe = navigation.addListener( "blur", () => {
+      // only reset buttons after screen blurs
       setIsProcessing( false );
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [] )
-  );
+    } );
+
+    return unsubscribe;
+  }, [navigation] );
 
   if ( isTablet ) {
     return (
