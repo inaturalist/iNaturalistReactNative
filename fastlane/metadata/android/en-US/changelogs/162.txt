@@ -1,0 +1,4 @@
+UPDATED
+* Decluttered explore obs grid items
+* Use percentages instead of confidence dots
+* Renamed notifications tab to "OTHERS"
