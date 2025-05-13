@@ -6,11 +6,11 @@ const useCustomTranslation = ( ) => {
   const original = useTranslation( );
   return {
     ...original,
-    t: ( key, options = {} ) => {
+    t: ( key: string, options = {} ) => {
       try {
         return original.t( key, options );
       } catch ( translationError ) {
-        if ( !translationError.message.match( /NoClassDefFoundError/ ) ) {
+        if ( translationError instanceof Error && !translationError.message.match( /NoClassDefFoundError/ ) ) {
           throw translationError;
         }
       }

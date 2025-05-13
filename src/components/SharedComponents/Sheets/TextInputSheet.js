@@ -12,7 +12,7 @@ import React, { useMemo, useRef, useState } from "react";
 import { Keyboard, Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
-import useTranslation from "sharedHooks/useTranslation";
+import useTranslation from "sharedHooks/useTranslation.ts";
 import colors from "styles/tailwindColors";
 
 // Optimized to maximize input size while minimizing post-render height

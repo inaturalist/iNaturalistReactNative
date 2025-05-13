@@ -26,7 +26,7 @@ import type {
   RealmTaxon,
   RealmUser
 } from "realmModels/types";
-import { accessibleTaxonName } from "sharedHelpers/taxon";
+import { accessibleTaxonName } from "sharedHelpers/taxon.ts";
 import { useGridLayout, useLayoutPrefs, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 

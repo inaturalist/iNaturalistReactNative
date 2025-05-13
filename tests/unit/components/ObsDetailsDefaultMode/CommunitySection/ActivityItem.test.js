@@ -2,7 +2,7 @@ import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import ActivityItem from "components/ObsDetailsDefaultMode/CommunitySection/ActivityItem";
 import i18next from "i18next";
 import React from "react";
-import { accessibleTaxonName } from "sharedHelpers/taxon";
+import { accessibleTaxonName } from "sharedHelpers/taxon.ts";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 

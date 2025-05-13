@@ -5,7 +5,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useState } from "react";
-import useTranslation from "sharedHooks/useTranslation";
+import useTranslation from "sharedHooks/useTranslation.ts";
 
 interface Props {
   bottomComponent?: React.JSX.Element

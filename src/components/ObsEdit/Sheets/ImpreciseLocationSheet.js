@@ -4,7 +4,7 @@ import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/CrosshairC
 import { TextSheet } from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";
-import useTranslation from "sharedHooks/useTranslation";
+import useTranslation from "sharedHooks/useTranslation.ts";
 
 type Props = {
   setShowImpreciseLocationSheet: Function

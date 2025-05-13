@@ -1,8 +1,4 @@
-import { fetchTaxon } from "api/taxa";
-import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import _ from "lodash";
-import Taxon from "realmModels/Taxon";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 const uncapitalized = new Set( [
   "à",
@@ -28,7 +24,7 @@ const uncapitalized = new Set( [
   "the"
 ] );
 
-const capitalize = s => {
+const capitalize = ( s: string ) => {
   if ( !s ) {
     return s;
   }
@@ -69,7 +65,7 @@ const capitalize = s => {
   );
 };
 
-export const capitalizeCommonName = name => {
+export const capitalizeCommonName = ( name: string ) => {
   if ( !name ) {
     return name;
   }
@@ -101,11 +97,27 @@ export const capitalizeCommonName = name => {
   } ).join( " " );
 };
 
-export const generateTaxonPieces = taxon => {
-  const taxonData = {};
+interface Taxon {
+  rank?: string;
+  rank_level: number;
+  preferred_common_name?: string;
+  name?: string;
+}
 
-  if ( taxon.rank ) taxonData.rank = capitalize( taxon.rank );
-  taxonData.rankLevel = taxon.rank_level;
+interface TaxonDisplayData {
+  rank?: string;
+  rankLevel: number;
+  commonName?: string;
+  rankPiece?: string;
+  scientificNamePieces?: string[];
+  scientificName?: string;
+}
+
+export const generateTaxonPieces = ( taxon: Taxon ) => {
+  const taxonDisplayData: Partial<TaxonDisplayData> = {};
+
+  if ( taxon.rank ) taxonDisplayData.rank = capitalize( taxon.rank );
+  taxonDisplayData.rankLevel = taxon.rank_level;
 
   // Logic follows the SplitTaxon component from web
   // https://github.com/inaturalist/inaturalist/blob/main/app/webpack/shared/components/split_taxon.jsx
@@ -114,38 +126,43 @@ export const generateTaxonPieces = taxon => {
     // found here, but is needed in iNat Next:
     // https://github.com/inaturalist/inaturalist/blob/c578c11d00ed97940f0b6d8aa0793b6afd765824/app/assets/javascripts/ang/models/taxon.js.erb#L155
     const multipleLexicons = taxon.preferred_common_name.split( "·" );
-    taxonData.commonName = _.map(
+    taxonDisplayData.commonName = _.map(
       multipleLexicons,
       ( lexicon => capitalizeCommonName( lexicon )
       )
     ).join( " · " );
   }
 
-  let { name: scientificName } = taxon;
-
-  scientificName = scientificName?.split( " " );
+  const scientificNamePieces = taxon?.name?.split( " " );
   if ( taxon.rank_level < 10 ) {
     if ( taxon.rank === "variety" ) {
-      taxon.rankPiece = "var.";
+      taxonDisplayData.rankPiece = "var.";
     } else if ( taxon.rank === "subspecies" ) {
-      taxon.rankPiece = "ssp.";
+      taxonDisplayData.rankPiece = "ssp.";
     } else if ( taxon.rank === "form" ) {
-      taxon.rankPiece = "f.";
+      taxonDisplayData.rankPiece = "f.";
     }
 
-    if ( taxon.rankPiece ) {
-      taxonData.rankPiece = taxon.rankPiece;
-      scientificName.splice( -1, 0, taxon.rankPiece );
+    if ( taxonDisplayData.rankPiece && scientificNamePieces ) {
+      scientificNamePieces.splice( -1, 0, taxonDisplayData.rankPiece );
     }
   }
 
-  taxonData.scientificNamePieces = scientificName;
-  taxonData.scientificName = scientificName?.join( " " );
+  taxonDisplayData.scientificNamePieces = scientificNamePieces;
+  taxonDisplayData.scientificName = scientificNamePieces?.join( " " );
 
-  return taxonData;
+  return taxonDisplayData as TaxonDisplayData;
 };
 
-export function accessibleTaxonName( taxon, user, t ) {
+interface User {
+  prefers_scientific_name_first?: boolean;
+  prefers_common_names?: boolean;
+}
+export function accessibleTaxonName(
+  taxon: Taxon,
+  user: User,
+  t: ( key: string, options: {} ) => string
+) {
   const { commonName, scientificName } = generateTaxonPieces( taxon );
   if ( typeof ( user?.prefers_scientific_name_first ) === "boolean" ) {
     if ( user.prefers_scientific_name_first ) {
@@ -158,25 +175,8 @@ export function accessibleTaxonName( taxon, user, t ) {
   return t( "accessible-comname-sciname", { scientificName, commonName } );
 }
 
-export async function fetchTaxonAndSave( id, realm, params = {}, opts = {} ) {
-  const options = { ...opts };
-  if ( !options.api_token ) {
-    options.api_token = await getJWT( );
-  }
-  const remoteTaxon = await fetchTaxon( id, params, options );
-  const mappedRemoteTaxon = Taxon.mapApiToRealm( remoteTaxon, realm );
-  safeRealmWrite( realm, ( ) => {
-    realm.create(
-      "Taxon",
-      Taxon.forUpdate( mappedRemoteTaxon ),
-      "modified"
-    );
-  }, "saving remote taxon in ObsDetails" );
-  return mappedRemoteTaxon;
-}
-
 // Translates rank in a way that can be statically checked
-export function translatedRank( rank, t ) {
+export function translatedRank( rank: string, t: ( key: string ) => string ) {
   switch ( rank ) {
     case "Class":
       return t( "Ranks-Class" );
