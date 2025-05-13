@@ -317,7 +317,6 @@ Flagged = 已标记
 Flash = 闪光灯
 Flip-camera = 翻转摄像头
 FOLLOW = 关注
-FOLLOWING--notifications = 关注中
 FOLLOWING-X-PEOPLE =
     { $count ->
         [one] 正在关注{ $count }个人
@@ -588,6 +587,7 @@ Organisms-that-are-identified-to-species = 生物体被鉴定到“种”一级�
 Other = 其他
 OTHER-DATA = 其他数据
 OTHER-SUGGESTIONS = 其它建议
+OTHERS--notifications = 其他
 PASSWORD = 密码
 PEOPLE--title = 用户
 Photo-importer = 照片导入器
@@ -976,7 +976,11 @@ X-Identifiers =
         [one] { $count }个鉴定者
        *[other] { $count }个鉴定者
     }
-X-MEMBERS = { $count }名成员
+X-MEMBERS =
+    { $count ->
+        [one] { $count } MEMBER
+       *[other] { $count } MEMBERS
+    }
 X-Observations =
     { $count ->
         [one] 1个观察

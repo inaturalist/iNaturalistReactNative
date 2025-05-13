@@ -318,7 +318,6 @@ Flagged = Liputettu
 Flash = Salama
 Flip-camera = Vaihda kameraa
 FOLLOW = SEURAA
-FOLLOWING--notifications = SEURATAAN
 FOLLOWING-X-PEOPLE =
     { $count ->
         [one] SEURAA { $count } HENKILÖÄ
@@ -589,6 +588,7 @@ Organisms-that-are-identified-to-species = Eliöt, jotka on tunnistettu lajitaso
 Other = Muu
 OTHER-DATA = MUUT TIEDOT
 OTHER-SUGGESTIONS = MUUT EHDOTUKSET
+OTHERS--notifications = OTHERS
 PASSWORD = SALASANA
 PEOPLE--title = IHMISET
 Photo-importer = Valokuvien tuonti
@@ -977,7 +977,11 @@ X-Identifiers =
         [one] { $count } tunnistaja
        *[other] { $count } tunnistajaa
     }
-X-MEMBERS = { $count } JÄSENET
+X-MEMBERS =
+    { $count ->
+        [one] { $count } JÄSEN
+       *[other] { $count } JÄSENTÄ
+    }
 X-Observations =
     { $count ->
         [one] 1 havainto

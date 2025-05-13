@@ -315,7 +315,6 @@ Flagged = סומן
 Flash = פלאש
 Flip-camera = הפוך מצלמה
 FOLLOW = לעקוב
-FOLLOWING--notifications = במעקב
 FOLLOWING-X-PEOPLE =
     { $count ->
         [one] עוקב אחרי { $count } אדם
@@ -586,6 +585,7 @@ Organisms-that-are-identified-to-species = אורגניזמים המזוהים �
 Other = אחר
 OTHER-DATA = נתונים אחרים
 OTHER-SUGGESTIONS = הצעות אחרות
+OTHERS--notifications = OTHERS
 PASSWORD = סיסמה
 PEOPLE--title = א.נשים
 Photo-importer = מייבא תמונות
@@ -974,7 +974,11 @@ X-Identifiers =
         [one] { $count } מזהה
        *[other] { $count } מזהים.ות
     }
-X-MEMBERS = { $count } חברים
+X-MEMBERS =
+    { $count ->
+        [one] { $count } MEMBER
+       *[other] { $count } MEMBERS
+    }
 X-Observations =
     { $count ->
         [one] תצפית 1

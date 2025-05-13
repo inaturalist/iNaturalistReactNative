@@ -323,7 +323,6 @@ Flagged = Gemeld
 Flash = Flitser
 Flip-camera = Verwissel camera's
 FOLLOW = VOLG
-FOLLOWING--notifications = VOLGEND
 FOLLOWING-X-PEOPLE =
     { $count ->
         [one] VOLGT { $count } PERSOON
@@ -594,6 +593,7 @@ Organisms-that-are-identified-to-species = Organismen die tot op rang soort of l
 Other = Anders
 OTHER-DATA = ANDERE GEGEVENS
 OTHER-SUGGESTIONS = ANDERE SUGGESTIONS
+OTHERS--notifications = OTHERS
 PASSWORD = WACHTWOORD
 PEOPLE--title = MENSEN
 Photo-importer = Foto importeur
@@ -982,7 +982,11 @@ X-Identifiers =
         [one] { $count } Identifier
        *[other] { $count } Identifiers
     }
-X-MEMBERS = { $count } LEDEN
+X-MEMBERS =
+    { $count ->
+        [one] { $count } MEMBER
+       *[other] { $count } MEMBERS
+    }
 X-Observations =
     { $count ->
         [one] 1 Waarneming

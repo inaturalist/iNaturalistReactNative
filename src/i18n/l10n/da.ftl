@@ -317,7 +317,6 @@ Flagged = Markeret
 Flash = Blitz
 Flip-camera = Skift kamera
 FOLLOW = FØLG
-FOLLOWING--notifications = FØLGER
 FOLLOWING-X-PEOPLE =
     { $count ->
         [one] FØLGER { $count } PERSON
@@ -588,6 +587,7 @@ Organisms-that-are-identified-to-species = Organismer identificeret på artsrang
 Other = andet
 OTHER-DATA = ANDRE DATA
 OTHER-SUGGESTIONS = ANDRE FORSLAG
+OTHERS--notifications = OTHERS
 PASSWORD = ADGANGSKODE
 PEOPLE--title = PERSONER
 Photo-importer = Fotoimportør
@@ -976,7 +976,11 @@ X-Identifiers =
         [one] { $count } identifikator
        *[other] { $count } identifikatorer
     }
-X-MEMBERS = { $count } MEDLEMMER
+X-MEMBERS =
+    { $count ->
+        [one] { $count } MEMBER
+       *[other] { $count } MEMBERS
+    }
 X-Observations =
     { $count ->
         [one] 1 observation
