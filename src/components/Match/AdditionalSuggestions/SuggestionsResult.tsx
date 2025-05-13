@@ -104,7 +104,6 @@ const SuggestionsResult = ( {
           : undefined}
       >
         <ObsImagePreview
-          // TODO fix when ObsImagePreview typed
           source={taxonImage}
           testID={`${testID}.photo`}
           iconicTaxonName={taxon?.iconic_taxon_name}
