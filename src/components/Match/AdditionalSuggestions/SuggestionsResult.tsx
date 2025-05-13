@@ -7,6 +7,7 @@ import {
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React, { useEffect, useRef } from "react";
+import type { LayoutChangeEvent } from "react-native";
 import type { RealmTaxon } from "realmModels/types";
 import { accessibleTaxonName } from "sharedHelpers/taxon.ts";
 import {
@@ -18,7 +19,7 @@ type Props = {
   handlePress?: ( ) => void,
   taxon: RealmTaxon | ApiTaxon,
   testID?: string,
-  updateMaxHeight?: ( ) => void,
+  updateMaxHeight?: ( height: number ) => void,
   forcedHeight: number
 }
 
@@ -60,7 +61,7 @@ const SuggestionsResult = ( {
   };
 
   // Handle the onLayout event to measure item height
-  const handleLayout = event => {
+  const handleLayout = ( event: LayoutChangeEvent ) => {
     const { height } = event.nativeEvent.layout;
     // Only report height once to avoid infinite loops
     if ( updateMaxHeight && height > 0 && !measuredRef.current ) {
