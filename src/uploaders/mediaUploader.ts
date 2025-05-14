@@ -95,35 +95,32 @@ const uploadSingleEvidence = async (
   return response;
 };
 
-const uploadEvidenceBatch = async (
-  evidence: Evidence[],
-  type: EvidenceType,
-  action: ActionType,
-  observationId: number | null | undefined,
-  apiEndpoint: ApiEndpoint,
+async function processMediaOperations(
+  operations: Array<{
+    evidence: Evidence;
+    type: EvidenceType;
+    action: ActionType;
+    observationId: number | null | undefined;
+    apiEndpoint: ApiEndpoint;
+  }>,
   options: UploadOptions,
   observationUUID: string | undefined,
   realm: Realm
-): Promise<ApiResponse | null> => {
-  if ( !evidence || evidence.length === 0 ) {
-    return null;
-  }
-
-  const responses = await Promise.all(
-    evidence.map( item => uploadSingleEvidence(
-      item,
-      type,
-      action,
-      observationId,
-      apiEndpoint,
+): Promise<ApiResponse[]> {
+  // use a single Promise.all instead of nested Promise.alls like we were doing before
+  return Promise.all(
+    operations.map( operation => uploadSingleEvidence(
+      operation.evidence,
+      operation.type,
+      operation.action,
+      operation.observationId,
+      operation.apiEndpoint,
       options,
       observationUUID,
       realm
     ) )
   );
-  // eslint-disable-next-line consistent-return
-  return responses[0];
-};
+}
 
 const filterMediaForUpload = ( observation: RealmObservation ): {
   unsyncedPhotos: RealmPhoto[];
@@ -169,50 +166,121 @@ const filterMediaForUpload = ( observation: RealmObservation ): {
   };
 };
 
+const createMediaOperations = (
+  mediaItems: {
+    unsyncedPhotos?: RealmPhoto[] | null;
+    unsyncedObservationPhotos?: RealmObservationPhoto[] | null;
+    modifiedObservationPhotos?: RealmObservationPhoto[] | null;
+    unsyncedObservationSounds?: RealmObservationSound[] | null;
+  },
+  observationUUID: string | undefined | null,
+  uploadAction: boolean
+): Array<{
+  evidence: Evidence;
+  type: EvidenceType;
+  action: ActionType;
+  observationId: number | null | undefined;
+  apiEndpoint: ApiEndpoint;
+}> => {
+  const operations = [];
+
+  const unsyncedPhotos = mediaItems?.unsyncedPhotos || [];
+  const unsyncedObservationPhotos = mediaItems?.unsyncedObservationPhotos || [];
+  const modifiedObservationPhotos = mediaItems?.modifiedObservationPhotos || [];
+  const unsyncedObservationSounds = mediaItems?.unsyncedObservationSounds || [];
+
+  if ( uploadAction && unsyncedPhotos?.length > 0 ) {
+    unsyncedPhotos.forEach( photo => {
+      operations.push( {
+        evidence: photo,
+        type: "Photo" as EvidenceType,
+        action: "upload" as ActionType,
+        observationId: null,
+        apiEndpoint: inatjs.photos.create
+      } );
+    } );
+  }
+
+  if ( uploadAction && unsyncedObservationSounds?.length > 0 ) {
+    unsyncedObservationSounds.forEach( sound => {
+      operations.push( {
+        evidence: sound,
+        type: "ObservationSound" as EvidenceType,
+        action: "upload" as ActionType,
+        observationId: null,
+        apiEndpoint: inatjs.sounds.create
+      } );
+    } );
+  }
+
+  // Only add attach operations if we have an observation UUID
+  if ( !uploadAction && observationUUID ) {
+    if ( unsyncedObservationPhotos?.length > 0 ) {
+      unsyncedObservationPhotos.forEach( obsPhoto => {
+        operations.push( {
+          evidence: obsPhoto,
+          type: "ObservationPhoto" as EvidenceType,
+          action: "attach" as ActionType,
+          observationId: observationUUID as unknown as number,
+          apiEndpoint: inatjs.observation_photos.create
+        } );
+      } );
+    }
+
+    if ( unsyncedObservationSounds?.length > 0 ) {
+      unsyncedObservationSounds.forEach( obsSound => {
+        operations.push( {
+          evidence: obsSound,
+          type: "ObservationSound" as EvidenceType,
+          action: "attach" as ActionType,
+          observationId: observationUUID as unknown as number,
+          apiEndpoint: inatjs.observation_sounds.create
+        } );
+      } );
+    }
+
+    if ( modifiedObservationPhotos?.length > 0 ) {
+      modifiedObservationPhotos.forEach( modifiedPhoto => {
+        operations.push( {
+          evidence: modifiedPhoto,
+          type: "ObservationPhoto" as EvidenceType,
+          action: "update" as ActionType,
+          observationId: observationUUID as unknown as number,
+          apiEndpoint: inatjs.observation_photos.update
+        } );
+      } );
+    }
+  }
+
+  return operations;
+};
+
 async function uploadObservationMedia(
   observation: RealmObservation,
   options: UploadOptions,
   realm: Realm
 ): Promise<MediaItems> {
-  const {
-    unsyncedPhotos,
-    unsyncedObservationPhotos,
-    modifiedObservationPhotos,
-    unsyncedObservationSounds
-  } = filterMediaForUpload( observation );
+  if ( !observation?.observationPhotos && !observation?.observationSounds ) {
+    return {
+      unsyncedObservationPhotos: [],
+      modifiedObservationPhotos: [],
+      unsyncedObservationSounds: []
+    };
+  }
 
-  // Upload photos and sounds in parallel
-  await Promise.all( [
-    unsyncedPhotos.length > 0
-      ? uploadEvidenceBatch(
-        unsyncedPhotos,
-        "Photo",
-        "upload",
-        null,
-        inatjs.photos.create,
-        options,
-        observation.uuid,
-        realm
-      )
-      : null,
-    unsyncedObservationSounds.length > 0
-      ? uploadEvidenceBatch(
-        unsyncedObservationSounds,
-        "ObservationSound",
-        "upload",
-        null,
-        inatjs.sounds.create,
-        options,
-        observation.uuid,
-        realm
-      )
-      : null
-  ] );
+  const mediaItems = filterMediaForUpload( observation );
+
+  // Create operations for just uploads (upload=true)
+  const operations = createMediaOperations( mediaItems, null, true );
+
+  if ( operations.length > 0 ) {
+    await processMediaOperations( operations, options, observation.uuid, realm );
+  }
 
   return {
-    unsyncedObservationPhotos,
-    modifiedObservationPhotos,
-    unsyncedObservationSounds
+    unsyncedObservationPhotos: mediaItems.unsyncedObservationPhotos,
+    modifiedObservationPhotos: mediaItems.modifiedObservationPhotos,
+    unsyncedObservationSounds: mediaItems.unsyncedObservationSounds
   };
 }
 
@@ -225,53 +293,19 @@ async function attachMediaToObservation(
   // Make sure this happens *after* ObservationPhotos and ObservationSounds
   // are created so the observation doesn't appear uploaded until all its
   // media successfully uploads
-  const {
-    unsyncedObservationPhotos,
-    modifiedObservationPhotos,
-    unsyncedObservationSounds
-  } = mediaItems;
+  if ( !mediaItems.unsyncedObservationPhotos?.length
+    && !mediaItems.modifiedObservationPhotos?.length
+    && !mediaItems.unsyncedObservationSounds?.length ) {
+    return;
+  }
 
-  await Promise.all( [
-    // Attach the newly uploaded photos to the uploaded observation
-    unsyncedObservationPhotos.length > 0
-      ? uploadEvidenceBatch(
-        unsyncedObservationPhotos,
-        "ObservationPhoto",
-        "attach",
-        observationUUID,
-        inatjs.observation_photos.create,
-        options,
-        observationUUID,
-        realm
-      )
-      : null,
-    // Attach the newly uploaded sounds to the uploaded observation
-    unsyncedObservationSounds.length > 0
-      ? uploadEvidenceBatch(
-        unsyncedObservationSounds,
-        "ObservationSound",
-        "attach",
-        observationUUID,
-        inatjs.observation_sounds.create,
-        options,
-        observationUUID,
-        realm
-      )
-      : null,
-    // Update any existing modified photos
-    modifiedObservationPhotos.length > 0
-      ? uploadEvidenceBatch(
-        modifiedObservationPhotos,
-        "ObservationPhoto",
-        "update",
-        observationUUID,
-        inatjs.observation_photos.update,
-        options,
-        observationUUID,
-        realm
-      )
-      : null
-  ] );
+  // Create operations for just attachments (upload=false)
+  const operations = createMediaOperations( mediaItems, observationUUID, false );
+
+  // Process all operations in a single Promise.all
+  if ( operations.length > 0 ) {
+    await processMediaOperations( operations, options, observationUUID, realm );
+  }
 }
 
 export {
