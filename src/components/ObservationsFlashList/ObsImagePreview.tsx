@@ -25,7 +25,7 @@ interface Props extends PropsWithChildren {
   opaque?: boolean;
   selectable?: boolean;
   selected?: boolean;
-  source: {
+  source?: {
     uri: string;
   };
   style?: ViewStyle;
