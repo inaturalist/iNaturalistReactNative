@@ -9,6 +9,7 @@ import Zoom from "components/Camera/Buttons/Zoom.tsx";
 import TabletButtons from "components/Camera/TabletButtons.tsx";
 import { View } from "components/styledComponents";
 import React, {
+  useEffect,
   useRef,
   useState
 } from "react";
@@ -91,7 +92,7 @@ const AICameraButtons = ( {
     onPressRef.current( event );
   };
 
-  React.useEffect( () => {
+  useEffect( () => {
     const unsubscribe = navigation.addListener( "blur", () => {
       // only reset buttons after screen blurs
       setIsProcessing( false );
