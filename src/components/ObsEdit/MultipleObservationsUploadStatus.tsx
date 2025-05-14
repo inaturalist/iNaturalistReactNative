@@ -12,14 +12,17 @@ const MultipleObservationsUploadStatus = ( ): Node => {
   const { t } = useTranslation( );
 
   const totalToolbarProgress = useStore( state => state.totalToolbarProgress );
-  const uploadErrorsByUuid = useStore( state => state.errorsByUuid );
-  const totalUploadErrors = Object.keys( uploadErrorsByUuid ).length;
-  const numUploadsAttempted = useStore( state => state.numUploadsAttempted );
+
+  // use same calculation as SimpleUploadBannerContainer
+  const totalUploadErrors = useStore( state => state.getTotalUploadErrors() );
   const totalSavedObservations = useStore( state => state.totalSavedObservations );
   const uploadQueue = useStore( state => state.uploadQueue );
 
   const totalUploading = uploadQueue.length;
-  const totalUploaded = numUploadsAttempted - totalUploading;
+
+  // ideally we would use numUploadedWithoutErrors like SimpleUploadBannerContainer,
+  // but that calculates the total prematurely for this component
+  const totalUploaded = useStore( state => state.getCompletedUploads() );
 
   const statusOptions = [
     {
