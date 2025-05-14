@@ -19,3 +19,21 @@ export function getCurrentRoute() {
 
   return null;
 }
+
+const navigate = ( name, params ) => {
+  navigationRef.current?.navigate( name, params );
+};
+
+const navigateToTabStack = ( screenName, params = {} ) => {
+  navigate( "TabNavigator", {
+    screen: "TabStackNavigator",
+    params: {
+      screen: screenName,
+      params
+    }
+  } );
+};
+
+export {
+  navigateToTabStack
+};
