@@ -79,6 +79,7 @@ const AICameraButtons = ( {
       <TabletButtons
         handleZoomButtonPress={handleZoomButtonPress}
         disabled={!modelLoaded || takingPhoto}
+        disabledPhotoLibrary={takingPhoto}
         flipCamera={flipCamera}
         hasFlash={hasFlash}
         hasPhotoLibraryButton
