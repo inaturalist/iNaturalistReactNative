@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import CameraFlip from "components/Camera/Buttons/CameraFlip.tsx";
 import Close from "components/Camera/Buttons/Close.tsx";
 import Flash from "components/Camera/Buttons/Flash.tsx";
@@ -8,11 +7,7 @@ import TakePhoto from "components/Camera/Buttons/TakePhoto.tsx";
 import Zoom from "components/Camera/Buttons/Zoom.tsx";
 import TabletButtons from "components/Camera/TabletButtons.tsx";
 import { View } from "components/styledComponents";
-import React, {
-  useEffect,
-  useRef,
-  useState
-} from "react";
+import React from "react";
 import { GestureResponderEvent, ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import type { CameraDeviceFormat, TakePhotoOptions } from "react-native-vision-camera";
@@ -79,33 +74,12 @@ const AICameraButtons = ( {
   toggleLocation
 }: Props ) => {
   const { isDefaultMode } = useLayoutPrefs();
-  const navigation = useNavigation();
-
-  const [isProcessing, setIsProcessing] = useState( false );
-  const onPressRef = useRef( takePhoto );
-
-  onPressRef.current = takePhoto;
-
-  const handleTakePhoto = ( event?: GestureResponderEvent ) => {
-    setIsProcessing( true );
-
-    onPressRef.current( event );
-  };
-
-  useEffect( () => {
-    const unsubscribe = navigation.addListener( "blur", () => {
-      // only reset buttons after screen blurs
-      setIsProcessing( false );
-    } );
-
-    return unsubscribe;
-  }, [navigation] );
-
   if ( isTablet ) {
     return (
       <TabletButtons
         handleZoomButtonPress={handleZoomButtonPress}
         disabled={!modelLoaded || takingPhoto}
+        disabledPhotoLibrary={takingPhoto}
         flipCamera={flipCamera}
         hasFlash={hasFlash}
         hasPhotoLibraryButton
@@ -183,14 +157,14 @@ const AICameraButtons = ( {
         <View>
           <PhotoLibraryIcon
             rotatableAnimatedStyle={rotatableAnimatedStyle}
-            disabled={takingPhoto || isProcessing}
+            disabled={takingPhoto}
           />
         </View>
       </View>
       <View className="flex-row justify-center items-center w-full" pointerEvents="box-none">
         <TakePhoto
-          disabled={!modelLoaded || takingPhoto || isProcessing}
-          takePhoto={handleTakePhoto}
+          disabled={!modelLoaded || takingPhoto}
+          takePhoto={takePhoto}
           showPrediction={showPrediction}
         />
       </View>
