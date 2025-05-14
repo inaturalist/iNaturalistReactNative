@@ -160,7 +160,7 @@ interface User {
 }
 export function accessibleTaxonName(
   taxon: Taxon,
-  user: User,
+  user: User | null,
   t: ( key: string, options: {} ) => string
 ) {
   const { commonName, scientificName } = generateTaxonPieces( taxon );
