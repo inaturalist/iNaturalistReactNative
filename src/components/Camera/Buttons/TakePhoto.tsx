@@ -45,8 +45,6 @@ const TakePhoto = ( {
       disabled={disabled}
       style={DROP_SHADOW}
       testID="take-photo-button"
-      preventMultipleTaps
-      debounceTime={2000}
     >
       {showPrediction
         ? (
