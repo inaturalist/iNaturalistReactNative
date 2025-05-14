@@ -55,9 +55,9 @@ const SuggestionsResult = ( {
   // and is currently not added to the taxon realm. So, if it is available directly from the
   // suggestion, i.e. taxonProp, use it. Otherwise, use the default photo from the taxon.
   const taxonImage = {
-    uri: taxon?.representative_photo?.url
-      || taxon?.default_photo?.url
-      || taxon?.defaultPhoto?.url
+    uri: ( taxon as ApiTaxon )?.representative_photo?.url
+      || ( taxon as ApiTaxon )?.default_photo?.url
+      || ( taxon as RealmTaxon )?.defaultPhoto?.url
   };
 
   // Handle the onLayout event to measure item height
