@@ -6,7 +6,7 @@ import {
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions.ts";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
-import { BackHandler } from "react-native";
+import { Animated, BackHandler } from "react-native";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice.ts";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
@@ -18,6 +18,26 @@ import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
 jest.unmock( "@react-navigation/native" );
+
+// Not my favorite code, but this patch is necessary to get tests passing right
+// now unless we can figure out why Animated.Value is being passed undefined,
+// which seems specifically related to the AICamera (this is also happening in the
+// Suggestions and SuggestionsWithUnsyncedObs tests which use the AICamera)
+const OriginalValue = Animated.Value;
+
+beforeEach( () => {
+  // Patch the Value constructor to be safer with undefined values
+  Animated.Value = function ( val ) {
+    return new OriginalValue( val === undefined
+      ? 0
+      : val );
+  };
+} );
+
+afterEach( () => {
+  // Restore original implementation
+  Animated.Value = OriginalValue;
+} );
 
 jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
   OS: "ios",

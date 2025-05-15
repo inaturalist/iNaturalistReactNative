@@ -162,5 +162,6 @@ global.console = {
   ...console,
   info: jest.fn(),
   error: jest.fn(),
-  warn: jest.fn()
+  warn: jest.fn(),
+  log: jest.fn()
 };
