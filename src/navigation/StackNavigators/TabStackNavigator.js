@@ -154,8 +154,7 @@ const NOTIFICATIONS_OPTIONS = {
 
 const DQA_OPTIONS = {
   ...showLongHeader,
-  headerTitle: dqaTitle,
-  unmountOnBlur: true
+  headerTitle: dqaTitle
 };
 
 const USER_PROFILE_OPTIONS = {
@@ -171,7 +170,6 @@ const LIST_OPTIONS = {
 };
 
 const OBS_DETAILS_OPTIONS = {
-  unmountOnBlur: true,
   ...showHeader,
   ...blankHeaderTitle
 };
@@ -189,7 +187,7 @@ const TabStackNavigator = ( ): Node => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerBackTitleVisible: false,
+        headerBackButtonDisplayMode: "minimal",
         headerTintColor: colors.darkGray
       }}
     >

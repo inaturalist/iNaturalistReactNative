@@ -103,7 +103,7 @@ const DetailsMap = ( {
           <HeaderBackButton
             tintColor={colors.darkGray}
             onPress={( ) => closeModal()}
-            labelVisible={false}
+            displayMode="minimal"
           />
           {headerTitle || <Heading2 className="m-0">{t( "Map-Area" )}</Heading2>}
         </View>

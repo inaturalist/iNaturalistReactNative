@@ -92,14 +92,13 @@ const SharedStackScreens = ( ): Node => (
         ...removeBottomBorder,
         ...showHeader,
         headerTitleAlign: "center",
-        headerBackTitleVisible: false
+        headerBackButtonDisplayMode: "minimal"
       }}
     >
       <Stack.Screen
         name="Match"
         component={FadeInMatchContainer}
         options={{
-          unmountOnBlur: true,
           ...showHeader,
           ...blankHeaderTitle
         }}
