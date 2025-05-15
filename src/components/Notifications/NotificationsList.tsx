@@ -1,4 +1,3 @@
-import type { ApiNotification } from "api/types";
 import NotificationsListItem from "components/Notifications/NotificationsListItem.tsx";
 import {
   ActivityIndicator,
@@ -16,7 +15,7 @@ import type { Notification } from "sharedHooks/useInfiniteNotificationsScroll";
 
 type Props = {
   currentUser: RealmUser | null,
-  data: ApiNotification[],
+  data: Notification[],
   isError?: boolean,
   isFetching?: boolean,
   isInitialLoading?: boolean,
@@ -112,7 +111,7 @@ const NotificationsList = ( {
       ListFooterComponent={renderFooter}
       data={data}
       estimatedItemSize={85}
-      keyExtractor={( item: ApiNotification ) => item.id}
+      keyExtractor={( item: Notification ) => item.id}
       onEndReached={onEndReached}
       refreshing={isFetching}
       refreshControl={refreshControl}
