@@ -18,7 +18,6 @@ import {
   WarningSheet
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import { navigateToTabStack } from "navigation/navigationUtils.ts";
 import { RealmContext } from "providers/contexts.ts";
 import React, { useCallback, useMemo, useState } from "react";
 import { Alert, Dimensions, ViewStyle } from "react-native";
@@ -200,7 +199,13 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
         if ( !currentUser ) {
           navigation.navigate( "LoginStackNavigator" );
         } else {
-          navigateToTabStack( "UserProfile", { userId: currentUser.id } );
+          navigation.navigate( "TabNavigator", {
+            screen: "TabStackNavigator",
+            params: {
+              screen: "UserProfile",
+              params: { userId: currentUser.id }
+            }
+          } );
         }
       }}
     >
@@ -246,7 +251,12 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
         label={() => renderLabel( drawerItems[key].label )}
         onPress={( ) => {
           if ( drawerItems[key].navigation ) {
-            navigateToTabStack( drawerItems[key].navigation );
+            navigation.navigate( "TabNavigator", {
+              screen: "TabStackNavigator",
+              params: {
+                screen: drawerItems[key].navigation
+              }
+            } );
           }
           if ( drawerItems[key].onPress ) {
             drawerItems[key].onPress();
@@ -256,6 +266,7 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
       />
     </View>
   ), [
+    navigation,
     drawerItemStyle,
     renderLabel,
     renderIcon,

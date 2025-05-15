@@ -7,7 +7,6 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import { navigateToTabStack } from "navigation/navigationUtils.ts";
 import { RealmContext } from "providers/contexts.ts";
 import React, { useEffect, useRef, useState } from "react";
 import { Trans } from "react-i18next";
@@ -101,8 +100,14 @@ const SignUpConfirmationForm = ( ) => {
       navigation.navigate( "Login" );
       return;
     }
-    navigateToTabStack( "ObsList", {
-      justFinishedSignup: true
+    navigation.navigate( "TabNavigator", {
+      screen: "TabStackNavigator",
+      params: {
+        screen: "ObsList",
+        params: {
+          justFinishedSignup: true
+        }
+      }
     } );
   };
 

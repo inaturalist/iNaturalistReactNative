@@ -17,12 +17,6 @@ import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
 
 import factory, { makeResponse } from "./factory";
 
-// this resolves error with importing file after Jest environment is torn down
-// https://github.com/react-navigation/react-navigation/issues/9568#issuecomment-881943770
-jest.mock( "@react-navigation/native/lib/commonjs/useLinking.native", ( ) => ( {
-  default: ( ) => ( { getInitialState: { then: jest.fn( ) } } ),
-  __esModule: true
-} ) );
 // tests seem to be slower without this global reanimated mock
 global.ReanimatedDataMock = {
   now: () => 0
@@ -161,3 +155,12 @@ jest.mock( "components/SharedComponents/Buttons/Button.tsx", () => {
   // debounce time in the actual Button component
   return jest.fn( props => actualButton( { ...props, debounceTime: 10 } ) );
 } );
+
+// this silences console methods in jest tests, to make them less noisy
+// and easier to debug. comment them out if you don't want to silence them
+global.console = {
+  ...console,
+  info: jest.fn(),
+  error: jest.fn(),
+  warn: jest.fn()
+};

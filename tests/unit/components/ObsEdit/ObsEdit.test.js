@@ -5,6 +5,9 @@ import useStore from "stores/useStore";
 import factory from "tests/factory";
 import { renderComponent, wrapInNavigationContainer } from "tests/helpers/render";
 
+// Note: HeaderBackButton has accessibility issues
+jest.mock( "@react-navigation/elements" );
+
 jest.mock( "sharedHooks/useWatchPosition", () => ( {
   __esModule: true,
   default: ( ) => ( {

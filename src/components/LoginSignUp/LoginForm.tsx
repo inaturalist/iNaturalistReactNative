@@ -5,7 +5,6 @@ import {
 } from "components/SharedComponents";
 import { Image, View } from "components/styledComponents";
 import { t } from "i18next";
-import { navigateToTabStack } from "navigation/navigationUtils.ts";
 import { RealmContext } from "providers/contexts.ts";
 import React, {
   useCallback, useEffect, useRef, useState
@@ -94,8 +93,14 @@ const LoginForm = ( {
     // Set a state to zustand that we just logged in while in default mode
     setLoggedInWhileInDefaultMode( isDefaultMode );
     if ( params?.prevScreen && params?.projectId ) {
-      navigateToTabStack( "ProjectDetails", {
-        id: params?.projectId
+      navigation.navigate( "TabNavigator", {
+        screen: "TabStackNavigator",
+        params: {
+          screen: "ProjectDetails",
+          params: {
+            id: params?.projectId
+          }
+        }
       } );
     } else {
       navigation.getParent( )?.goBack( );

@@ -14,7 +14,6 @@ import {
   WarningSheet
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { navigateToTabStack } from "navigation/navigationUtils.ts";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -200,7 +199,12 @@ const SoundRecorder = (): Node => {
     if ( params.addEvidence ) {
       navigation.navigate( "ObsEdit" );
     } else {
-      navigateToTabStack( "ObsList" );
+      navigation.navigate( "TabNavigator", {
+        screen: "TabStackNavigator",
+        params: {
+          screen: "ObsList"
+        }
+      } );
     }
   };
 
