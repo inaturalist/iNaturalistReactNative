@@ -23,6 +23,7 @@ import {
 } from "components/styledComponents";
 import i18n from "i18next";
 import _, { compact } from "lodash";
+import { navigateToTabStack } from "navigation/navigationUtils.ts";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
@@ -329,15 +330,9 @@ const TaxonDetails = ( ): Node => {
             icon="magnifying-glass"
             onPress={( ) => {
               setExploreView( "observations" );
-              navigation.navigate( "TabNavigator", {
-                screen: "TabStackNavigator",
-                params: {
-                  screen: "Explore",
-                  params: {
-                    taxon,
-                    worldwide: true
-                  }
-                }
+              navigateToTabStack( "Explore", {
+                taxon,
+                worldwide: true
               } );
             }}
             accessibilityLabel={t( "See-observations-of-this-taxon-in-explore" )}
@@ -354,7 +349,6 @@ const TaxonDetails = ( ): Node => {
   ), [
     currentUserHasSeenTaxon,
     showExploreButton,
-    navigation,
     setExploreView,
     t,
     taxon

@@ -3,6 +3,7 @@
 // state
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
+import { navigateToTabStack } from "navigation/navigationUtils.ts";
 import { useCallback } from "react";
 import useStore from "stores/useStore";
 
@@ -46,12 +47,7 @@ export default function useExitObservationFlow( exitOptions ) {
     } else if ( typeof ( options.navigate ) === "function" ) {
       options.navigate();
     } else {
-      navigation.navigate( "TabNavigator", {
-        screen: "TabStackNavigator",
-        params: {
-          screen: "ObsList"
-        }
-      } );
+      navigateToTabStack( "ObsList" );
     }
   }, [
     navigation,

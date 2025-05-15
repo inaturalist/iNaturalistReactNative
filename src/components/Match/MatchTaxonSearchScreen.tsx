@@ -4,6 +4,7 @@ import {
   TaxonResult,
   TaxonSearch
 } from "components/SharedComponents";
+import { navigateToTabStack } from "navigation/navigationUtils.ts";
 import { RealmContext } from "providers/contexts.ts";
 import React, {
   useCallback,
@@ -38,12 +39,7 @@ const MatchTaxonSearchScreen = ( ) => {
     } );
 
     saveObservation( getCurrentObservation(), cameraRollUris, realm )
-      .then( ( ) => navigation.navigate( "TabNavigator", {
-        screen: "TabStackNavigator",
-        params: {
-          screen: "ObsList"
-        }
-      } ) );
+      .then( ( ) => navigateToTabStack( "ObsList" ) );
 
     setSelectedTaxon( null );
   }, [
