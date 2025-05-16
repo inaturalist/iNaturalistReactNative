@@ -19,7 +19,7 @@ const fadeInComponent = ( component: React.JSX.Element ): React.JSX.Element => (
 
 const baseHeaderOptions: Object = {
   headerShown: true,
-  headerBackTitleVisible: false,
+  headerBackButtonDisplayMode: "minimal",
   headerShadowVisible: false,
   headerLeft: () => <BackButton inCustomHeader testID="header-back-button" />
 };
