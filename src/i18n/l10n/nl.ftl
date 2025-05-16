@@ -593,7 +593,7 @@ Organisms-that-are-identified-to-species = Organismen die tot op rang soort of l
 Other = Anders
 OTHER-DATA = ANDERE GEGEVENS
 OTHER-SUGGESTIONS = ANDERE SUGGESTIONS
-OTHERS--notifications = OTHERS
+OTHERS--notifications = ANDEREN
 PASSWORD = WACHTWOORD
 PEOPLE--title = MENSEN
 Photo-importer = Foto importeur
@@ -984,8 +984,8 @@ X-Identifiers =
     }
 X-MEMBERS =
     { $count ->
-        [one] { $count } MEMBER
-       *[other] { $count } MEMBERS
+        [one] { $count } LID
+       *[other] { $count } LEDEN
     }
 X-Observations =
     { $count ->

@@ -585,7 +585,7 @@ Organisms-that-are-identified-to-species = Organismen, die bis zum Rang einer Ar
 Other = Sonstiges
 OTHER-DATA = Weitere Daten
 OTHER-SUGGESTIONS = Weitere Vorschläge
-OTHERS--notifications = OTHERS
+OTHERS--notifications = ANDERE
 PASSWORD = PASSWORT
 PEOPLE--title = PERSONEN
 Photo-importer = Foto-Importeur
@@ -976,8 +976,8 @@ X-Identifiers =
     }
 X-MEMBERS =
     { $count ->
-        [one] { $count } MEMBER
-       *[other] { $count } MEMBERS
+        [one] { $count } MITGLIED
+       *[other] { $count } MITGLIEDER
     }
 X-Observations =
     { $count ->
