@@ -1,5 +1,6 @@
 import { createOrUpdateEvidence } from "api/observations";
 import inatjs from "inaturalistjs";
+import Realm from "realm";
 import {
   RealmObservation,
   RealmObservationPhoto,
@@ -14,34 +15,23 @@ type ActionType = "upload" | "attach" | "update";
 
 interface UploadOptions {
   api_token?: string;
-  ignore_photos?: boolean;
-  [key: string]: unknown;
+  signal: AbortController
 }
 
-interface ApiResponse {
-  results?: Array<{
-    id?: number;
-    uuid?: string;
-    [key: string]: unknown;
+interface MediaApiResponse {
+  page: number;
+  per_page: number;
+  total_results: number;
+  results: Array<{
+    id: number;
   }>;
-  [key: string]: unknown;
 }
 
 interface ApiEndpoint {
-  ( params: unknown, options: UploadOptions ): Promise<ApiResponse>;
+  ( params: unknown, options: UploadOptions ): Promise<MediaApiResponse>;
 }
 
-interface Realm {
-  write: ( callback: () => void ) => void;
-  objects: <T>( schema: string ) => {
-    filtered: ( query: string, ...args: unknown[] ) => T[];
-  };
-}
-
-interface Evidence {
-  uuid: string;
-  [key: string]: unknown;
-}
+type Evidence = RealmObservationPhoto | RealmObservationSound | RealmPhoto;
 
 interface MediaItems {
   unsyncedObservationPhotos: RealmObservationPhoto[];
@@ -58,7 +48,7 @@ const uploadSingleEvidence = async (
   options: UploadOptions,
   observationUUID: string,
   realm: Realm
-): Promise<ApiResponse | null> => {
+): Promise<MediaApiResponse | null> => {
   const params = prepareMediaForUpload(
     evidence,
     type,
@@ -106,7 +96,7 @@ async function processMediaOperations(
   options: UploadOptions,
   observationUUID: string,
   realm: Realm
-): Promise<ApiResponse[]> {
+): Promise<MediaApiResponse[]> {
   // use a single Promise.all instead of nested Promise.alls like we were doing before
   return Promise.all(
     operations.map( operation => uploadSingleEvidence(
@@ -221,7 +211,7 @@ const createMediaOperations = (
           evidence: obsPhoto,
           type: "ObservationPhoto" as EvidenceType,
           action: "attach" as ActionType,
-          observationId: observationUUID as unknown as number,
+          observationId: observationUUID as number,
           apiEndpoint: inatjs.observation_photos.create
         } );
       } );
@@ -233,7 +223,7 @@ const createMediaOperations = (
           evidence: obsSound,
           type: "ObservationSound" as EvidenceType,
           action: "attach" as ActionType,
-          observationId: observationUUID as unknown as number,
+          observationId: observationUUID as number,
           apiEndpoint: inatjs.observation_sounds.create
         } );
       } );
@@ -245,7 +235,7 @@ const createMediaOperations = (
           evidence: modifiedPhoto,
           type: "ObservationPhoto" as EvidenceType,
           action: "update" as ActionType,
-          observationId: observationUUID as unknown as number,
+          observationId: observationUUID as number,
           apiEndpoint: inatjs.observation_photos.update
         } );
       } );

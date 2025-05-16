@@ -3,6 +3,7 @@ import {
   updateObservation
 } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
+import Realm from "realm";
 import { RealmObservation, RealmObservationPojo } from "realmModels/types.d.ts";
 import {
   markRecordUploaded,
@@ -16,33 +17,26 @@ import { trackObservationUpload } from "uploaders/utils/progressTracker.ts";
 
 interface UploadOptions {
   api_token?: string;
-  ignore_photos?: boolean;
-  [key: string]: unknown;
+  signal: AbortController
 }
 
 interface UploadParams {
   observation: Partial<RealmObservationPojo>;
   fields: {
     id: boolean;
-    [key: string]: boolean;
   };
-  id?: string;
-  ignore_photos?: boolean;
+  id?: string; // for updating observation only
+  ignore_photos?: boolean; // for updating observation only
 }
 
-interface ObservationResponse {
+interface ObservationApiResponse {
+  page: number;
+  per_page: number;
+  total_results: number;
   results: Array<{
     uuid: string;
-    [key: string]: unknown;
+    id: number;
   }>;
-  [key: string]: unknown;
-}
-
-interface Realm {
-  write: ( callback: () => void ) => void;
-  objects: <T>( schema: string ) => {
-    filtered: ( query: string, ...args: unknown[] ) => T[];
-  };
 }
 
 async function validateAndGetToken( ): Promise<string> {
@@ -57,7 +51,7 @@ async function createOrUpdateObservation(
   observation: RealmObservation,
   newObs: Partial<RealmObservationPojo>,
   options: UploadOptions
-): Promise<ObservationResponse | null> {
+): Promise<ObservationApiResponse | null> {
   const wasPreviouslySynced = observation.wasSynced( );
   const uploadParams: UploadParams = {
     observation: { ...newObs },
@@ -77,8 +71,8 @@ async function createOrUpdateObservation(
 async function uploadObservation(
   observation: RealmObservation,
   realm: Realm,
-  opts: UploadOptions = {}
-): Promise<ObservationResponse | null> {
+  opts: UploadOptions
+): Promise<ObservationApiResponse | null> {
   const obsProgress = trackObservationUpload( observation.uuid );
   obsProgress.start( );
 
@@ -93,10 +87,10 @@ async function uploadObservation(
   // Step 2: upload or modify observation
   const response = await createOrUpdateObservation( observation, newObs, options );
 
+  obsProgress.complete( );
   if ( !response ) {
     return response;
   }
-  obsProgress.complete( );
 
   const { uuid: obsUUID } = response.results[0];
 
