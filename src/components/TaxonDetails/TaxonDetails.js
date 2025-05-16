@@ -146,7 +146,7 @@ const TaxonDetails = ( ): Node => {
   const identFromVision = [
     "Match",
     "Suggestions"
-  ].includes( prevScreen );
+  ].includes( prevScreen ) && usableHistory.pop( ) !== "TaxonDetails";
 
   const localTaxon = realm.objectForPrimaryKey( "Taxon", id );
 
