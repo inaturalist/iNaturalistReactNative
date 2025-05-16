@@ -56,7 +56,7 @@ const uploadSingleEvidence = async (
   observationId: number | null | undefined,
   apiEndpoint: ApiEndpoint,
   options: UploadOptions,
-  observationUUID: string | undefined,
+  observationUUID: string,
   realm: Realm
 ): Promise<ApiResponse | null> => {
   const params = prepareMediaForUpload(
@@ -104,7 +104,7 @@ async function processMediaOperations(
     apiEndpoint: ApiEndpoint;
   }>,
   options: UploadOptions,
-  observationUUID: string | undefined,
+  observationUUID: string,
   realm: Realm
 ): Promise<ApiResponse[]> {
   // use a single Promise.all instead of nested Promise.alls like we were doing before
