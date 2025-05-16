@@ -4,6 +4,13 @@ import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
+const observationWithPhotos = factory( "RemoteObservation", {
+  observationPhotos: [{ id: 1 }]
+} );
+const observationWithoutPhotos = factory( "RemoteObservation", {
+  observationPhotos: []
+} );
+
 const firstObservation = factory( "RemoteObservation", {
   taxon: {
     name: "Fungi",
@@ -33,6 +40,16 @@ const renderIdentificationSection = ( obs, index = 0, resetState = false ) => re
 );
 
 describe( "IdentificationSection", () => {
+  it( "should show ID WITH AI button when observation has photos", ( ) => {
+    renderIdentificationSection( [observationWithPhotos] );
+    expect( screen.getByText( "ID WITH AI" ) ).toBeTruthy();
+  } );
+
+  it( "should not show ID WITH AI button when observation has no photos", ( ) => {
+    renderIdentificationSection( [observationWithoutPhotos] );
+    expect( screen.queryByText( "ID WITH AI" ) ).toBeNull();
+  } );
+
   it( "should show correct iconic taxon selection when navigating multiple observations", ( ) => {
     renderIdentificationSection( mockObservations );
     const fungiIcon = screen.getByTestId( "IconicTaxonButton.fungi" );
