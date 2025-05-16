@@ -97,7 +97,7 @@ const IdentificationSection = ( {
                   className={classnames( "rounded-full py-1 mr-4 h-[36px]", {
                     "border border-darkGray border-[2px]": identTaxon
                   } )}
-                  testID="ObsEdit.Suggestions"
+                  testID="ObsEdit.IDWithAI"
                   icon={(
                     <INatIcon
                       name="sparkly-label"
