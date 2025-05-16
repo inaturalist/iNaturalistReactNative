@@ -258,13 +258,6 @@ describe( "TaxonDetails", ( ) => {
     }
   );
 
-  // TODO: we can't test back behavior as reliably in React Navigation 7;
-  // recommend moving this to an e2e test rather than an integation test
-  // it.todo(
-  //   "should create an observation with false vision attribute when reached from"
-  //   + " ancestor taxon details screen"
-  // );
-
   it(
     "should create an observation with false vision attribute when reached from"
     + " ancestor taxon details screen",

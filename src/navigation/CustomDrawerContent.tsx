@@ -266,11 +266,11 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
       />
     </View>
   ), [
-    navigation,
     drawerItemStyle,
     renderLabel,
     renderIcon,
-    drawerItems
+    drawerItems,
+    navigation
   ] );
 
   const submitFeedback = useCallback( ( text: string ) => {

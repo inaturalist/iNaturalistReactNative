@@ -40,7 +40,9 @@ const MatchTaxonSearchScreen = ( ) => {
     saveObservation( getCurrentObservation(), cameraRollUris, realm )
       .then( ( ) => navigation.navigate( "TabNavigator", {
         screen: "TabStackNavigator",
-        params: { screen: "ObsList" }
+        params: {
+          screen: "ObsList"
+        }
       } ) );
 
     setSelectedTaxon( null );

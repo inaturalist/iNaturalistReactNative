@@ -49,12 +49,6 @@ const ObsEdit = ( ): Node => {
     requestPermissions: requestLocationPermission
   } = useLocationPermission( );
 
-  console.log(
-    currentObservation?.owners_identification_from_vision,
-    currentObservation?.taxon?.name,
-    "taxon"
-  );
-
   const fadeAnim = React.useRef( new Animated.Value( 1 ) ).current;
 
   const fade = () => {

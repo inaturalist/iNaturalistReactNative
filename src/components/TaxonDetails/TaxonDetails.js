@@ -352,9 +352,9 @@ const TaxonDetails = ( ): Node => {
       )}
     </View>
   ), [
-    navigation,
     currentUserHasSeenTaxon,
     showExploreButton,
+    navigation,
     setExploreView,
     t,
     taxon

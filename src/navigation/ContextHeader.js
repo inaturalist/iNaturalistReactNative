@@ -39,7 +39,9 @@ const ContextHeader = ( {
     } else {
       navigation.navigate( "TabNavigator", {
         screen: "TabStackNavigator",
-        params: { screen: "ObsList" }
+        params: {
+          screen: "ObsList"
+        }
       } );
     }
   };
