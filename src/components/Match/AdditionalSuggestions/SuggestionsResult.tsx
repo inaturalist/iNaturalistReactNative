@@ -7,6 +7,7 @@ import {
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React, { useEffect, useRef } from "react";
+import type { LayoutChangeEvent } from "react-native";
 import type { RealmTaxon } from "realmModels/types";
 import { accessibleTaxonName } from "sharedHelpers/taxon.ts";
 import {
@@ -18,7 +19,7 @@ type Props = {
   handlePress?: ( ) => void,
   taxon: RealmTaxon | ApiTaxon,
   testID?: string,
-  updateMaxHeight?: ( ) => void,
+  updateMaxHeight?: ( height: number ) => void,
   forcedHeight: number
 }
 
@@ -53,14 +54,15 @@ const SuggestionsResult = ( {
   // A representative photo is dependant on the actual image that was scored by computer vision
   // and is currently not added to the taxon realm. So, if it is available directly from the
   // suggestion, i.e. taxonProp, use it. Otherwise, use the default photo from the taxon.
-  const taxonImage = {
-    uri: taxon?.representative_photo?.url
-      || taxon?.default_photo?.url
-      || taxon?.defaultPhoto?.url
-  };
+  const uri = ( taxon as ApiTaxon )?.representative_photo?.url
+      || ( taxon as ApiTaxon )?.default_photo?.url
+      || ( taxon as RealmTaxon )?.defaultPhoto?.url;
+  const taxonImage = uri
+    ? { uri }
+    : undefined;
 
   // Handle the onLayout event to measure item height
-  const handleLayout = event => {
+  const handleLayout = ( event: LayoutChangeEvent ) => {
     const { height } = event.nativeEvent.layout;
     // Only report height once to avoid infinite loops
     if ( updateMaxHeight && height > 0 && !measuredRef.current ) {
@@ -104,7 +106,6 @@ const SuggestionsResult = ( {
           : undefined}
       >
         <ObsImagePreview
-          // TODO fix when ObsImagePreview typed
           source={taxonImage}
           testID={`${testID}.photo`}
           iconicTaxonName={taxon?.iconic_taxon_name}

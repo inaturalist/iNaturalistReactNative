@@ -99,14 +99,14 @@ export const capitalizeCommonName = ( name: string ) => {
 
 interface Taxon {
   rank?: string;
-  rank_level: number;
+  rank_level?: number;
   preferred_common_name?: string;
   name?: string;
 }
 
 interface TaxonDisplayData {
   rank?: string;
-  rankLevel: number;
+  rankLevel?: number;
   commonName?: string;
   rankPiece?: string;
   scientificNamePieces?: string[];
@@ -160,7 +160,7 @@ interface User {
 }
 export function accessibleTaxonName(
   taxon: Taxon,
-  user: User,
+  user: User | null,
   t: ( key: string, options: {} ) => string
 ) {
   const { commonName, scientificName } = generateTaxonPieces( taxon );

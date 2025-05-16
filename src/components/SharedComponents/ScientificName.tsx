@@ -14,7 +14,7 @@ interface Props {
   isTitle?: boolean;
   keyBase: string;
   rank?: string;
-  rankLevel: number;
+  rankLevel?: number;
   rankPiece?: string;
   scientificNamePieces?: string[];
   taxonId: string | number;
@@ -38,7 +38,7 @@ const ScientificName = ( {
 }: Props ) => {
   const { t } = useTranslation( );
   const scientificNameArray = scientificNamePieces?.map( ( piece, index ) => {
-    const isItalics = piece !== rankPiece && (
+    const isItalics = piece !== rankPiece && rankLevel && (
       rankLevel <= Taxon.SPECIES_LEVEL || rankLevel === Taxon.GENUS_LEVEL
     );
     const spaceChar = ( ( index !== scientificNamePieces.length - 1 ) || isHorizontal )
@@ -67,7 +67,7 @@ const ScientificName = ( {
     );
   } );
 
-  if ( rank && rankLevel > Taxon.SPECIES_LEVEL ) {
+  if ( rank && rankLevel && rankLevel > Taxon.SPECIES_LEVEL ) {
     scientificNameArray.unshift( " " );
     scientificNameArray.unshift( translatedRank( rank, t ) );
   }
