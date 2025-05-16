@@ -281,7 +281,18 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
     } );
   } ),
   getTotalUploadErrors: () => Object.keys( get().errorsByUuid ).length,
-  getNumUploadedWithoutErrors: () => get().numUploadsAttempted - get().getTotalUploadErrors()
+  getNumUploadedWithoutErrors: () => get().numUploadsAttempted - get().getTotalUploadErrors(),
+  getCompletedUploads: () => {
+    const uploads = get().numUploadsAttempted;
+    const errors = get().getTotalUploadErrors();
+    const inQueue = get().uploadQueue.length;
+
+    // An upload is considered complete if:
+    // 1. It was attempted (increments numUploadsAttempted)
+    // 2. It's no longer in the queue (removed from uploadQueue)
+    // 3. It didn't error (not counted in errorsByUuid)
+    return Math.max( 0, uploads - inQueue - errors );
+  }
 } );
 
 export default createUploadObservationsSlice;

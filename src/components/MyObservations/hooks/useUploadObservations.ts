@@ -5,7 +5,6 @@ import {
 import { EventRegister } from "react-native-event-listeners";
 import Observation from "realmModels/Observation";
 import type { RealmObservation } from "realmModels/types.d.ts";
-import uploadObservation from "sharedHelpers/uploadObservation";
 import {
   useTranslation
 } from "sharedHooks";
@@ -16,6 +15,7 @@ import {
 } from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
 import { handleUploadError } from "uploaders";
+import uploadObservation from "uploaders/observationUploader.ts";
 import {
   INCREMENT_SINGLE_UPLOAD_PROGRESS
 } from "uploaders/utils/progressTracker.ts";
