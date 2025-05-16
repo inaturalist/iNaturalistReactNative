@@ -27,8 +27,55 @@ interface MediaApiResponse {
   }>;
 }
 
+interface MappedObservationPhotoForUpdating {
+  id: string;
+  observation_photo: {
+    observation_id: number;
+    position: number;
+  }
+}
+
+interface MappedObservationPhotoForAttaching {
+  observation_photo: {
+    uuid: string;
+    observation_id: number;
+    photo_id: number;
+    position: number;
+  }
+}
+
+interface MappedPhotoForUploading {
+  file: {
+    uri: string;
+    name: string;
+    type: string;
+  };
+}
+
+interface MappedSoundForUploading {
+  uuid: string;
+  file: {
+    uri: string;
+    name: string;
+    type: string;
+  }
+}
+
+interface MappedObservationSoundForAttaching {
+  "observation_sound[observation_id]": number;
+  "observation_sound[sound_id]": number;
+  "observation_sound[uuid]": string;
+}
+
 interface ApiEndpoint {
-  ( params: unknown, options: UploadOptions ): Promise<MediaApiResponse>;
+  (
+    params: MappedObservationPhotoForUpdating
+      | MappedObservationPhotoForAttaching
+      | MappedPhotoForUploading
+      | MappedSoundForUploading
+      | MappedObservationSoundForAttaching,
+    options: UploadOptions
+  ): Promise<MediaApiResponse>;
 }
 
 type Evidence = RealmObservationPhoto | RealmObservationSound | RealmPhoto;
@@ -67,6 +114,8 @@ const uploadSingleEvidence = async (
     params,
     options
   );
+
+  console.log( params, "params" );
 
   if ( response && observationUUID ) {
     // TODO: can't mark records as uploaded by primary key for ObsPhotos and ObsSound anymore
