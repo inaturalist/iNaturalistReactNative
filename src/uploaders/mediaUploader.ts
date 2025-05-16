@@ -85,14 +85,16 @@ const uploadSingleEvidence = async (
   return response;
 };
 
+interface Operation {
+  evidence: Evidence;
+  type: EvidenceType;
+  action: ActionType;
+  observationId: number | null | undefined;
+  apiEndpoint: ApiEndpoint;
+}
+
 async function processMediaOperations(
-  operations: Array<{
-    evidence: Evidence;
-    type: EvidenceType;
-    action: ActionType;
-    observationId: number | null | undefined;
-    apiEndpoint: ApiEndpoint;
-  }>,
+  operations: Operation[],
   options: UploadOptions,
   observationUUID: string,
   realm: Realm
@@ -165,14 +167,8 @@ const createMediaOperations = (
   },
   observationUUID: string | undefined | null,
   uploadAction: boolean
-): Array<{
-  evidence: Evidence;
-  type: EvidenceType;
-  action: ActionType;
-  observationId: number | null | undefined;
-  apiEndpoint: ApiEndpoint;
-}> => {
-  const operations = [];
+) => {
+  const operations: Operation[] = [];
 
   const unsyncedPhotos = mediaItems?.unsyncedPhotos || [];
   const unsyncedObservationPhotos = mediaItems?.unsyncedObservationPhotos || [];
