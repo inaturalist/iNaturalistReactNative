@@ -46,6 +46,10 @@ const SuggestionsResult = ( {
   }, [forcedHeight] );
 
   if ( !taxon ) {
+    console.warn( "Taxon is null" );
+    return null;
+  } if ( ( "isValid" in taxon ) && ( typeof taxon?.isValid === "function" ) && !taxon.isValid() ) {
+    console.warn( "Taxon Realm object is invalidated" );
     return null;
   }
 
