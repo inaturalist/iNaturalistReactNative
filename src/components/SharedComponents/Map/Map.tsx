@@ -480,29 +480,28 @@ const Map = forwardRef( ( {
   };
 
   useEffect( ( ) => {
-    // dev mode only: display performance metrics
+    // debug mode only: display performance metrics
     // eslint-disable-next-line no-undef
-    if ( __DEV__ ) {
-      mapTracker.reset();
+    if ( isDebug ) {
+      mapTracker.reset( );
 
       const updateInterval = setInterval( ( ) => {
         const metrics = mapTracker.getSummary( );
         setPerformanceMetrics( metrics );
       }, 500 );
 
-      return () => {
+      return ( ) => {
         clearInterval( updateInterval );
       };
     }
-    return null;
-  }, [] );
+    return () => undefined;
+  }, [isDebug] );
 
   useEffect( ( ) => {
-    // eslint-disable-next-line no-undef
-    if ( !__DEV__ ) { return; }
     // Detect when tiles are likely to be visible based on key conditions,
     // since we can't get this info directly from UrlTile
-    if ( currentZoom > 0
+    if ( isDebug
+        && currentZoom > 0
         && shouldOverlayObsTiles
         && !isLoading
         && !tilesMarkedVisible.current ) {
@@ -514,7 +513,7 @@ const Map = forwardRef( ( {
         tilesMarkedVisible.current = true;
       }, 300 );
     }
-  }, [currentZoom, shouldOverlayObsTiles, isLoading] );
+  }, [currentZoom, shouldOverlayObsTiles, isLoading, isDebug] );
 
   return (
     <View
