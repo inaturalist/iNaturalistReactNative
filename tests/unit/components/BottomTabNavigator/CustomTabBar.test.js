@@ -94,6 +94,14 @@ describe( "CustomTabBar with advanced user layout", () => {
   beforeEach( ( ) => {
     jest.resetAllMocks();
     useNetInfo.mockImplementation( ( ) => ( { isConnected: true } ) );
+    // Re-establish the safe area context mock after resetAllMocks
+    const safeAreaContext = require( "react-native-safe-area-context" );
+    safeAreaContext.useSafeAreaInsets.mockImplementation( () => ( {
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0
+    } ) );
   } );
 
   it( "should render correctly", async () => {
