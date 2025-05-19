@@ -3,7 +3,6 @@ import Config from "react-native-config";
 import { LatLng, Region } from "react-native-maps";
 import createUTFPosition from "sharedHelpers/createUTFPosition.ts";
 import getDataForPixel from "sharedHelpers/fetchUTFGridData";
-import mapTracker from "sharedHelpers/mapPerformanceTracker.ts";
 
 export const OBSCURATION_CELL_SIZE = 0.2;
 // tiles should be requested from tiles.inaturalist.org for better resource
@@ -116,6 +115,5 @@ export async function fetchObservationUUID( currentZoom: number, latLng: LatLng,
 
   const observation = getDataForPixel( mPixelPositionX, mPixelPositionY, json );
   const uuid = observation?.uuid;
-  mapTracker.markTilesTappable( );
   return uuid;
 }

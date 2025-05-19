@@ -1,39 +1,48 @@
-class SimpleMapPerformanceTracker {
-  constructor() {
-    this.reset();
+class MapPerformanceTracker {
+  private screenLoadTime: number;
+
+  private mapReadyStartTime: number;
+
+  private tilesVisibleStartTime: number;
+
+  private mapReadyDuration: number;
+
+  private tilesVisibleDuration: number;
+
+  constructor( ) {
+    this.reset( );
   }
 
-  reset() {
+  reset( ): void {
     // Timestamps
     this.screenLoadTime = Date.now();
-    this.mapReadyTime = 0;
-    this.tilesVisibleTime = 0;
+    this.mapReadyStartTime = 0;
+    this.tilesVisibleStartTime = 0;
 
     // Calculated durations (in ms)
     this.mapReadyDuration = 0;
     this.tilesVisibleDuration = 0;
   }
 
-  markMapReady() {
-    this.mapReadyTime = Date.now();
-    this.mapReadyDuration = this.mapReadyTime - this.screenLoadTime;
+  markMapReady( ): void {
+    this.mapReadyStartTime = Date.now();
+    this.mapReadyDuration = this.mapReadyStartTime - this.screenLoadTime;
   }
 
-  markTilesVisible() {
-    if ( this.tilesVisibleTime === 0 ) {
-      this.tilesVisibleTime = Date.now();
-      this.tilesVisibleDuration = this.tilesVisibleTime - this.screenLoadTime;
+  markTilesVisible( ): void {
+    if ( this.tilesVisibleStartTime === 0 ) {
+      this.tilesVisibleStartTime = Date.now();
+      this.tilesVisibleDuration = this.tilesVisibleStartTime - this.screenLoadTime;
     }
   }
 
-  getSummary() {
+  getSummary( ): { mapReadyTime: number; tilesVisibleTime: number } {
     return {
       mapReadyTime: this.mapReadyDuration,
-      tilesVisibleTime: this.tilesVisibleDuration,
-      isComplete: this.tilesVisibleTime > 0 && this.mapReadyTime > 0
+      tilesVisibleTime: this.tilesVisibleDuration
     };
   }
 }
 
-export const mapTracker = new SimpleMapPerformanceTracker();
+export const mapTracker = new MapPerformanceTracker( );
 export default mapTracker;

@@ -16,7 +16,7 @@ import MapView, {
 } from "react-native-maps";
 import Observation from "realmModels/Observation";
 import fetchCoarseUserLocation from "sharedHelpers/fetchCoarseUserLocation.ts";
-import mapTracker from "sharedHelpers/mapPerformanceTracker.ts";
+import mapTracker from "sharedHelpers/MapPerformanceTracker.ts";
 import { useDebugMode, useDeviceOrientation } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import colors from "styles/tailwindColors";
@@ -195,24 +195,6 @@ const Map = forwardRef( ( {
   }, [
     regionToAnimate
   ] );
-
-  useEffect( () => {
-    // dev mode only: display performance metrics
-    // eslint-disable-next-line no-undef
-    if ( __DEV__ ) {
-      mapTracker.reset();
-
-      const updateInterval = setInterval( () => {
-        const metrics = mapTracker.getSummary();
-        setPerformanceMetrics( metrics );
-      }, 500 );
-
-      return () => {
-        clearInterval( updateInterval );
-      };
-    }
-    return null;
-  }, [] );
 
   const params = useMemo( ( ) => {
     const newTileParams = { ...tileMapParams };
@@ -497,16 +479,38 @@ const Map = forwardRef( ( {
     }
   };
 
-  useEffect( () => {
+  useEffect( ( ) => {
+    // dev mode only: display performance metrics
+    // eslint-disable-next-line no-undef
+    if ( __DEV__ ) {
+      mapTracker.reset();
+
+      const updateInterval = setInterval( ( ) => {
+        const metrics = mapTracker.getSummary( );
+        setPerformanceMetrics( metrics );
+      }, 500 );
+
+      return () => {
+        clearInterval( updateInterval );
+      };
+    }
+    return null;
+  }, [] );
+
+  useEffect( ( ) => {
+    // eslint-disable-next-line no-undef
+    if ( !__DEV__ ) { return; }
     // Detect when tiles are likely to be visible based on key conditions,
-    // since we can't get this info from UrlTile
+    // since we can't get this info directly from UrlTile
     if ( currentZoom > 0
         && shouldOverlayObsTiles
         && !isLoading
         && !tilesMarkedVisible.current ) {
-      // Add a small delay to ensure tiles have had time to render
-      setTimeout( () => {
-        mapTracker.markTilesVisible();
+      // Add a small delay to ensure tiles have had time to render --
+      // I wouldn't call this super accurate but it was helpful enough for a ballpark
+      // and to get an idea of the average time it takes to load tiles
+      setTimeout( ( ) => {
+        mapTracker.markTilesVisible( );
         tilesMarkedVisible.current = true;
       }, 300 );
     }
