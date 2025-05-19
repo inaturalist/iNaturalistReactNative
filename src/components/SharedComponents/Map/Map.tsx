@@ -16,7 +16,7 @@ import MapView, {
 } from "react-native-maps";
 import Observation from "realmModels/Observation";
 import fetchCoarseUserLocation from "sharedHelpers/fetchCoarseUserLocation.ts";
-import mapTracker from "sharedHelpers/MapPerformanceTracker.ts";
+import mapTracker from "sharedHelpers/mapPerformanceTracker.ts";
 import { useDebugMode, useDeviceOrientation } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import colors from "styles/tailwindColors";
