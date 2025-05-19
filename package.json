@@ -86,7 +86,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-i18next": "^14.1.0",
-    "react-native": "0.74.1",
+    "react-native": "0.74.7",
     "react-native-animated-dots-carousel": "^2.0.0",
     "react-native-audio-recorder-player": "^3.6.7",
     "react-native-bouncy-checkbox": "^3.0.7",
@@ -146,10 +146,10 @@
     "@babel/runtime": "^7.24.4",
     "@faker-js/faker": "^8.4.1",
     "@fluent/syntax": "^0.19.0",
-    "@react-native/babel-preset": "0.74.83",
-    "@react-native/eslint-config": "0.74.83",
-    "@react-native/metro-config": "0.74.83",
-    "@react-native/typescript-config": "0.74.83",
+    "@react-native/babel-preset": "0.74.89",
+    "@react-native/eslint-config": "0.74.89",
+    "@react-native/metro-config": "0.74.89",
+    "@react-native/typescript-config": "0.74.89",
     "@tanstack/eslint-plugin-query": "^5.28.11",
     "@testing-library/jest-native": "^5.4.3",
     "@testing-library/react-native": "^12.4.5",
@@ -203,7 +203,6 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "yarn@3.6.4",
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "eslint --cache --fix --max-warnings=0 --cache-location .eslintcache"
