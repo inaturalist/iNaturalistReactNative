@@ -44,5 +44,5 @@ class MapPerformanceTracker {
   }
 }
 
-export const mapTracker = new MapPerformanceTracker( );
+const mapTracker = new MapPerformanceTracker( );
 export default mapTracker;
