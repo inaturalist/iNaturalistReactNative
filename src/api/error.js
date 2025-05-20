@@ -97,6 +97,7 @@ async function handleError( e: Object, options: Object = {} ): Object {
     logger.error( "429 with a response in handleError:", JSON.stringify( context ) );
     throw new INatApiTooManyRequestsError( context );
   } else if ( e.response.status === 401 ) {
+    logger.error( "401 with a response in handleError:", JSON.stringify( context ) );
     throw new INatApiUnauthorizedError( context );
   }
 
