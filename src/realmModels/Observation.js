@@ -127,6 +127,26 @@ class Observation extends Realm.Object {
     user: User && User.FIELDS
   };
 
+  static DEFAULT_MODE_LIST_FIELDS = {
+    observation_sounds: {
+      uuid: true
+    },
+    observation_photos: {
+      id: true,
+      photo: {
+        id: true,
+        url: true
+      },
+      uuid: true
+    },
+    taxon: {
+      iconic_taxon_name: true,
+      name: true,
+      preferred_common_name: true
+    },
+    quality_grade: true
+  };
+
   static async new( obs ) {
     return {
       ...obs,

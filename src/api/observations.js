@@ -18,9 +18,11 @@ function mapToLocalSchema( observation ) {
 }
 
 const searchObservations = async ( params: Object = {}, opts: Object = {} ): Promise<Object> => {
+  console.log( params.fields, "fields" );
   try {
     const response = await inatjs.observations.search( params, opts );
     response.results = response.results.map( mapToLocalSchema );
+    console.log( Object.keys( response.results[0] ), "observation from API" );
     return response;
   } catch ( e ) {
     return handleError( e, { context: { functionName: "searchObservations", opts } } );

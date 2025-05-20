@@ -3,7 +3,6 @@ import {
 } from "@react-native-community/netinfo";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { fetchSpeciesCounts } from "api/observations";
-// import { last } from "lodash";
 import { RealmContext } from "providers/contexts.ts";
 import React, {
   useCallback,
@@ -14,7 +13,7 @@ import { Alert } from "react-native";
 import Observation from "realmModels/Observation";
 import Taxon from "realmModels/Taxon";
 import type { RealmObservation, RealmTaxon } from "realmModels/types";
-// import { log } from "sharedHelpers/logger";
+import { log } from "sharedHelpers/logger";
 import {
   useCurrentUser,
   useInfiniteObservationsScroll,
@@ -23,11 +22,11 @@ import {
   useLocalObservations,
   useNavigateToObsEdit,
   useObservationsUpdates,
-  // usePerformance,
+  usePerformance,
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
-// import { isDebugMode } from "sharedHooks/useDebugMode";
+import { isDebugMode } from "sharedHooks/useDebugMode";
 import {
   UPLOAD_PENDING
 } from "stores/createUploadObservationsSlice.ts";
@@ -42,7 +41,7 @@ import MyObservationsSimple, {
   TAXA_TAB
 } from "./MyObservationsSimple";
 
-// const logger = log.extend( "MyObservationsContainer" );
+const logger = log.extend( "MyObservationsContainer" );
 
 const { useRealm } = RealmContext;
 
@@ -62,12 +61,12 @@ interface SyncOptions {
 }
 
 const MyObservationsContainer = ( ): React.FC => {
-  // const { loadTime } = usePerformance( {
-  //   screenName: "MyObservations"
-  // } );
-  // if ( isDebugMode( ) ) {
-  //   logger.info( loadTime );
-  // }
+  const { loadTime } = usePerformance( {
+    screenName: "MyObservations"
+  } );
+  if ( isDebugMode( ) ) {
+    logger.info( loadTime );
+  }
   const { isDefaultMode, loggedInWhileInDefaultMode } = useLayoutPrefs();
   const { t } = useTranslation( );
   const realm = useRealm( );

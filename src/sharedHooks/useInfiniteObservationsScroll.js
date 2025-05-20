@@ -5,20 +5,27 @@ import { flatten, last, noop } from "lodash";
 import { RealmContext } from "providers/contexts.ts";
 import { useEffect, useMemo } from "react";
 import Observation from "realmModels/Observation";
-import { useAuthenticatedInfiniteQuery, useCurrentUser } from "sharedHooks";
+import {
+  useAuthenticatedInfiniteQuery,
+  useCurrentUser,
+  useLayoutPrefs
+} from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
 const useInfiniteObservationsScroll = ( {
   params: newInputParams
 }: Object ): Object => {
+  const { isDefaultMode } = useLayoutPrefs( );
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
 
   const baseParams = {
     ...newInputParams,
     per_page: 20,
-    fields: Observation.LIST_FIELDS,
+    fields: isDefaultMode
+      ? Observation.DEFAULT_MODE_LIST_FIELDS
+      : Observation.LIST_FIELDS,
     ttl: -1
   };
 
