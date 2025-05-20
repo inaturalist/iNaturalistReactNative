@@ -83,11 +83,16 @@ async function handleError( e: Object, options: Object = {} ): Object {
   // Get context from options if available
   const originalContext = options?.context || null;
   const context = createContext( e, options, originalContext );
-  if ( e.status === 429 ) {
-    logger.error( "429 without a response in handleError:", JSON.stringify( context ) );
+  if ( !e.response ) {
+    if ( e.status === 429 ) {
+      logger.error( "429 without a response in handleError:", JSON.stringify( context ) );
+      throw new INatApiTooManyRequestsError( context );
+    } else if ( e.status === 401 ) {
+      logger.error( "401 without a response in handleError:", JSON.stringify( context ) );
+      throw new INatApiUnauthorizedError( context );
+    }
+    throw e;
   }
-
-  if ( !e.response ) { throw e; }
 
   // 429 responses don't return JSON so the parsing that we do below will
   // fail. Info about the request that triggered the 429 response is
