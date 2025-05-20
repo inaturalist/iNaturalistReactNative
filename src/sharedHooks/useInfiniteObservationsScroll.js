@@ -67,6 +67,7 @@ const useInfiniteObservationsScroll = ( {
   }, [data?.pages] );
 
   useEffect( ( ) => {
+    console.log( newlyFetchedObservations, "newly fetched observations" );
     if ( newlyFetchedObservations ) {
       Observation.upsertRemoteObservations(
         newlyFetchedObservations,

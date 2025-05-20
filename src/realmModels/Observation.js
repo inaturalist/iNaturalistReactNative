@@ -128,6 +128,7 @@ class Observation extends Realm.Object {
   };
 
   static DEFAULT_MODE_LIST_FIELDS = {
+    created_at: true,
     observation_sounds: {
       uuid: true
     },
