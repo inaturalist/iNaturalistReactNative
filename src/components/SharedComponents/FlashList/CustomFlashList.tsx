@@ -1,17 +1,115 @@
-import { FlashList } from "@shopify/flash-list";
+import { FlashList, ViewabilityConfig } from "@shopify/flash-list";
 import React, {
-  forwardRef
+  forwardRef,
+  useCallback,
+  useEffect,
+  useRef
 } from "react";
+import flashListTracker from "sharedHelpers/flashListPerformanceTracker.ts";
 
-const CustomFlashList: Function = forwardRef( ( props, ref ) => (
-  <FlashList
-    ref={ref}
-    disableAutoLayout
-    initialNumToRender={5}
-    onEndReachedThreshold={0.2}
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    {...props}
-  />
-) );
+const defaultViewabilityConfig: ViewabilityConfig = {
+  minimumViewTime: 0,
+  viewAreaCoveragePercentThreshold: 10,
+  waitForInteraction: false
+};
+
+const CustomFlashList: Function = forwardRef( ( props, ref ) => {
+  const isFirstRender = useRef( true );
+  const lastContentOffset = useRef( 0 );
+
+  const scrollStartPosition = useRef( 0 );
+  const scrollStartTime = useRef( 0 );
+  const isUserScrolling = useRef( false );
+  const ignoreInitialEvents = useRef( true );
+
+  const { onScroll, onViewableItemsChanged } = props;
+
+  useEffect( ( ) => {
+    if ( isFirstRender.current ) {
+      flashListTracker.reset( );
+      flashListTracker.markListReady( );
+      isFirstRender.current = false;
+
+      const timer = setTimeout( () => {
+        ignoreInitialEvents.current = false;
+      }, 1000 );
+
+      return () => clearTimeout( timer );
+    }
+    return ( ) => undefined;
+  }, [] );
+
+  const handleViewableItemsChanged = useCallback( info => {
+    if ( info.viewableItems.length > 0 ) {
+      flashListTracker.markItemsVisible( );
+    }
+
+    if ( onViewableItemsChanged ) {
+      onViewableItemsChanged( info );
+    }
+  }, [onViewableItemsChanged] );
+
+  const handleScroll = useCallback( event => {
+    lastContentOffset.current = event.nativeEvent.contentOffset.y;
+
+    if ( onScroll ) {
+      onScroll( event );
+    }
+  }, [onScroll] );
+
+  const handleScrollBeginDrag = useCallback( event => {
+    if ( ignoreInitialEvents.current ) return;
+
+    const { y } = event.nativeEvent.contentOffset;
+
+    scrollStartPosition.current = y;
+    scrollStartTime.current = Date.now();
+    isUserScrolling.current = true;
+
+    flashListTracker.beginScrollEvent( y );
+  }, [] );
+
+  const handleScrollEndDrag = useCallback( event => {
+    if ( ignoreInitialEvents.current || !isUserScrolling.current ) return;
+
+    const { y } = event.nativeEvent.contentOffset;
+
+    isUserScrolling.current = false;
+    flashListTracker.endScrollEvent( y );
+
+    flashListTracker.beginDataFetch();
+  }, [] );
+
+  // To be called when new data is received
+  // This needs to be exposed so it can be called from parent component
+  React.useImperativeHandle( ref, () => ( {
+    ...( ref.current || {} ),
+    notifyDataFetched: itemsCount => {
+      console.log( `Notifying tracker that ${itemsCount} items were fetched` );
+      flashListTracker.endDataFetch( itemsCount );
+    }
+  } ) );
+
+  const viewabilityConfig = {
+    ...defaultViewabilityConfig,
+    ...props.viewabilityConfig
+  };
+
+  return (
+    <FlashList
+      ref={ref}
+      disableAutoLayout
+      initialNumToRender={5}
+      onEndReachedThreshold={0.2}
+      onViewableItemsChanged={handleViewableItemsChanged}
+      onScroll={handleScroll}
+      onScrollBeginDrag={handleScrollBeginDrag}
+      onScrollEndDrag={handleScrollEndDrag}
+      viewabilityConfig={viewabilityConfig}
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...props}
+    />
+  );
+} );
 
 export default CustomFlashList;

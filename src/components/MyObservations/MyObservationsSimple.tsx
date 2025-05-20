@@ -14,6 +14,7 @@ import {
   Body1,
   InfiniteScrollLoadingWheel,
   OfflineNotice,
+  PerformanceDebugView,
   Tabs,
   ViewWrapper
 } from "components/SharedComponents";
@@ -27,7 +28,9 @@ import type {
   RealmUser
 } from "realmModels/types";
 import { accessibleTaxonName } from "sharedHelpers/taxon.ts";
-import { useGridLayout, useLayoutPrefs, useTranslation } from "sharedHooks";
+import {
+  useGridLayout, useLayoutPrefs, useTranslation
+} from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import Announcements from "./Announcements";
@@ -372,6 +375,11 @@ const MyObservationsSimple = ( {
             triggerCondition={
               justFinishedSignup && !!currentUser && numTotalObservations < 20
             }
+          />
+          <PerformanceDebugView
+            showListMetrics
+            showScrollMetrics
+            position="bottom-left"
           />
         </>
       )}
