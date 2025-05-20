@@ -36,6 +36,10 @@ export class INatApiUnauthorizedError extends INatApiError {
     super( errorJson, 401, context );
   }
 }
+// https://wbinnssmith.com/blog/subclassing-error-in-modern-javascript/
+Object.defineProperty( INatApiUnauthorizedError.prototype, "name", {
+  value: "INatApiUnauthorizedError"
+} );
 
 export class INatApiTooManyRequestsError extends INatApiError {
   constructor( context?: Object ) {
