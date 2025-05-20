@@ -1569,12 +1569,16 @@ SPEC CHECKSUMS:
   react-native-orientation-locker: dbd3f6ddbe9e62389cb0807dc2af63f6c36dec36
   react-native-render-html: 5afc4751f1a98621b3009432ef84c47019dcb2bd
   react-native-restart: 0bc732f4461709022a742bb29bcccf6bbc5b4863
+<<<<<<< HEAD
   react-native-safe-area-context: 758e894ca5a9bd1868d2a9cfbca7326a2b6bf9dc
+=======
+>>>>>>> 83eed85a7 (Update react-native-safe-area-context-to >4.10.1 (#2911))
   react-native-sensitive-info: ee358bf2b901ac3d04f63ff637b31daee44ea87f
   react-native-slider: fbf693dba15ed9cf83c539f9ac6c9646bdf98752
   react-native-volume-manager: d9d2863a2374420af89c89662333ea6adf506988
   react-native-webview: b3d56b5d601bf7f9715f41eb0914b761cc973302
   react-native-worklets-core: f730c01db8ea3d580e322617f4a631206f1905fb
+  react-native-safe-area-context: 141eca0fd4e4191288dfc8b96a7c7e1c2983447a
   React-nativeconfig: 8fd29a35a3e4e8c37682d976667663d834ba6165
   React-NativeModulesApple: 83d7077877f8eda8e1b6055b3f8f16f7db8463b5
   React-perflogger: 3887a05940ccd34a83457fd153fdeda509b31737
