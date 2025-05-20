@@ -21,6 +21,7 @@ const CustomFlashList: Function = forwardRef( ( props, ref ) => {
   const scrollStartTime = useRef( 0 );
   const isUserScrolling = useRef( false );
   const ignoreInitialEvents = useRef( true );
+  const fetchInProgress = useRef( false );
 
   const { onScroll, onViewableItemsChanged } = props;
 
@@ -77,18 +78,30 @@ const CustomFlashList: Function = forwardRef( ( props, ref ) => {
     isUserScrolling.current = false;
     flashListTracker.endScrollEvent( y );
 
-    flashListTracker.beginDataFetch();
+    fetchInProgress.current = true;
+    flashListTracker.beginDataFetch( );
   }, [] );
 
   // To be called when new data is received
   // This needs to be exposed so it can be called from parent component
-  React.useImperativeHandle( ref, () => ( {
-    ...( ref.current || {} ),
-    notifyDataFetched: itemsCount => {
-      console.log( `Notifying tracker that ${itemsCount} items were fetched` );
-      flashListTracker.endDataFetch( itemsCount );
-    }
-  } ) );
+  React.useImperativeHandle( ref, ( ) => {
+    const originalRef = typeof ref === "function"
+      ? {} // Function refs can't be read, only written
+      : ( ref?.current || {} );
+
+    return {
+      ...originalRef,
+      notifyDataFetched: itemsCount => {
+        if ( fetchInProgress.current ) {
+          flashListTracker.endDataFetch( itemsCount );
+          fetchInProgress.current = false;
+        } else {
+          flashListTracker.beginDataFetch( );
+          flashListTracker.endDataFetch( itemsCount );
+        }
+      }
+    };
+  } );
 
   const viewabilityConfig = {
     ...defaultViewabilityConfig,

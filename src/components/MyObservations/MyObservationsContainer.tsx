@@ -338,7 +338,7 @@ const MyObservationsContainer = ( ): React.FC => {
     const newObservationCount = observations.length - prevObservationsLength.current;
 
     if ( newObservationCount > 0 && listRef?.current ) {
-      console.log( `Detected ${newObservationCount} new items loaded from Realm` );
+      // console.log( `Detected ${newObservationCount} new items loaded from Realm` );
       if ( listRef.current.notifyDataFetched ) {
         listRef.current.notifyDataFetched( newObservationCount );
       } else {
