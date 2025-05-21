@@ -249,13 +249,25 @@ const CameraContainer = ( ) => {
     }
     const uri = await saveRotatedPhotoToDocumentsDirectory( cameraPhoto, deviceOrientation );
     const newPhotoState = await updateTakePhotoStore( uri, options );
-    setTakingPhoto( false );
+    if ( cameraType !== "AI" ) { setTakingPhoto( false ); }
     if ( options?.navigateImmediately ) {
       await handleCheckmarkPress( newPhotoState, options?.visionResult );
     }
     setNewPhotoUris( [...newPhotoUris, uri] );
     return uri;
   };
+
+  useEffect( () => {
+    const unsubscribe = navigation.addListener( "blur", () => {
+      // This is only needed for the AI camera, since the multicapture camera is supposed to set
+      // the takingPhoto state to false for each photo. In the AI camera, we want the buttons
+      // only to reset after the user navigates away from the camera. (It doesn't hurt to also
+      // reset the multicapture camera though I think.)
+      setTakingPhoto( false );
+    } );
+
+    return unsubscribe;
+  }, [navigation] );
 
   useEffect( ( ) => {
     const fetchLocation = async ( ) => {

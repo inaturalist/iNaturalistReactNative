@@ -26,9 +26,13 @@ import { zustandStorage } from "stores/useStore";
 // generate before building the app
 import loadTranslations, { SUPPORTED_LOCALES } from "./loadTranslations";
 
+function cleanLocaleName( locale ) {
+  return locale.replace( "_", "-" ).replace( /@.*/, "" );
+}
+
 export function getInatLocaleFromSystemLocale() {
   const systemLocale = RNLocalize.getLocales( )?.[0]?.languageTag || "en";
-  const candidateLocale = systemLocale.replace( "_", "-" ).replace( /@.*/, "" );
+  const candidateLocale = cleanLocaleName( systemLocale );
   let inatLocale = candidateLocale;
   if ( !SUPPORTED_LOCALES.includes( candidateLocale ) ) {
     const lang = candidateLocale.split( "-" )[0];
@@ -44,7 +48,7 @@ export function getInatNextLocale() {
   return currentLocale || getInatLocaleFromSystemLocale( );
 }
 
-const LOCALE = getInatNextLocale( );
+const LOCALE = cleanLocaleName( getInatNextLocale( ) );
 
 export const I18NEXT_CONFIG = {
   // Added since otherwise Android would crash - see here: https://stackoverflow.com/a/70521614 and https://www.i18next.com/misc/migration-guide

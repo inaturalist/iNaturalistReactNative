@@ -1,3 +1,4 @@
+import type { ApiTaxon } from "api/types";
 import classnames from "classnames";
 import {
   Body1, Body3, Body4
@@ -33,7 +34,7 @@ interface Props {
   showOneNameOnly?: boolean;
   selectable?: boolean;
   small?: boolean;
-  taxon: RealmTaxon;
+  taxon: RealmTaxon | ApiTaxon;
   textCentered?: boolean;
   topTextComponent?: React.ComponentType<TextProps>;
   underlineTopText?: boolean;

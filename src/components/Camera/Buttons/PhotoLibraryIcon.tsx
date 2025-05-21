@@ -10,11 +10,12 @@ import colors from "styles/tailwindColors";
 
 interface Props {
   rotatableAnimatedStyle: ViewStyle;
+  disabled?: boolean;
 }
 
 const isTablet = DeviceInfo.isTablet();
 
-const PhotoLibraryIcon = ( { rotatableAnimatedStyle }: Props ) => {
+const PhotoLibraryIcon = ( { rotatableAnimatedStyle, disabled }: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
 
@@ -44,6 +45,7 @@ const PhotoLibraryIcon = ( { rotatableAnimatedStyle }: Props ) => {
         size={26}
         width={62}
         height={62}
+        disabled={disabled}
       />
     </Animated.View>
   );

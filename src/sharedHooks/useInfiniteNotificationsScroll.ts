@@ -28,9 +28,29 @@ interface InfiniteNotificationsScrollResponse {
   refetch: ( ) => void;
 }
 
+const UPDATE_FIELDS = {
+  comment_id: true,
+  comment: {
+    user: {
+      login: true
+    }
+  },
+  created_at: true,
+  id: true,
+  identification_id: true,
+  identification: {
+    user: {
+      login: true
+    }
+  },
+  notifier_type: true,
+  resource_uuid: true,
+  viewed: true
+};
+
 const BASE_PARAMS: ApiObservationsUpdatesParams = {
   // observations_by: "owner",
-  fields: "all", // TODO narrow this down. this has a massive response
+  fields: UPDATE_FIELDS,
   per_page: 30,
   ttl: -1,
   page: 1
