@@ -13,7 +13,6 @@ import { Alert } from "react-native";
 import Observation from "realmModels/Observation";
 import Taxon from "realmModels/Taxon";
 import type { RealmObservation, RealmTaxon } from "realmModels/types";
-import { log } from "sharedHelpers/logger";
 import {
   useCurrentUser,
   useInfiniteObservationsScroll,
@@ -22,11 +21,9 @@ import {
   useLocalObservations,
   useNavigateToObsEdit,
   useObservationsUpdates,
-  usePerformance,
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
-import { isDebugMode } from "sharedHooks/useDebugMode";
 import {
   UPLOAD_PENDING
 } from "stores/createUploadObservationsSlice.ts";
@@ -40,8 +37,6 @@ import MyObservationsSimple, {
   OBSERVATIONS_TAB,
   TAXA_TAB
 } from "./MyObservationsSimple";
-
-const logger = log.extend( "MyObservationsContainer" );
 
 const { useRealm } = RealmContext;
 
@@ -61,12 +56,6 @@ interface SyncOptions {
 }
 
 const MyObservationsContainer = ( ): React.FC => {
-  const { loadTime } = usePerformance( {
-    screenName: "MyObservations"
-  } );
-  if ( isDebugMode( ) ) {
-    logger.info( loadTime );
-  }
   const { isDefaultMode, loggedInWhileInDefaultMode } = useLayoutPrefs();
   const { t } = useTranslation( );
   const realm = useRealm( );

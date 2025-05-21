@@ -23,7 +23,13 @@ const CustomFlashList: Function = forwardRef( ( props, ref ) => {
   const ignoreInitialEvents = useRef( true );
   const fetchInProgress = useRef( false );
 
-  const { onScroll, onViewableItemsChanged } = props;
+  const {
+    onMomentumScrollEnd,
+    onScroll,
+    onViewableItemsChanged,
+    onEndReached,
+    ...otherProps
+  } = props;
 
   useEffect( ( ) => {
     if ( isFirstRender.current ) {
@@ -82,6 +88,23 @@ const CustomFlashList: Function = forwardRef( ( props, ref ) => {
     flashListTracker.beginDataFetch( );
   }, [] );
 
+  const handleMomentumScrollEnd = useCallback( event => {
+    if ( onMomentumScrollEnd ) {
+      onMomentumScrollEnd( event );
+    }
+
+    if ( isUserScrolling.current && !ignoreInitialEvents.current ) {
+      const { y } = event.nativeEvent.contentOffset;
+      isUserScrolling.current = false;
+      flashListTracker.endScrollEvent( y );
+
+      if ( !fetchInProgress.current ) {
+        fetchInProgress.current = true;
+        flashListTracker.beginDataFetch();
+      }
+    }
+  }, [onMomentumScrollEnd] );
+
   // To be called when new data is received
   // This needs to be exposed so it can be called from parent component
   React.useImperativeHandle( ref, ( ) => {
@@ -98,6 +121,11 @@ const CustomFlashList: Function = forwardRef( ( props, ref ) => {
         } else {
           flashListTracker.beginDataFetch( );
           flashListTracker.endDataFetch( itemsCount );
+        }
+      },
+      scrollToOffset: params => {
+        if ( ref && typeof ref !== "function" && ref.current ) {
+          ref.current.scrollToOffset( params );
         }
       }
     };
@@ -118,9 +146,10 @@ const CustomFlashList: Function = forwardRef( ( props, ref ) => {
       onScroll={handleScroll}
       onScrollBeginDrag={handleScrollBeginDrag}
       onScrollEndDrag={handleScrollEndDrag}
+      onMomentumScrollEnd={handleMomentumScrollEnd}
       viewabilityConfig={viewabilityConfig}
       // eslint-disable-next-line react/jsx-props-no-spreading
-      {...props}
+      {...otherProps}
     />
   );
 } );

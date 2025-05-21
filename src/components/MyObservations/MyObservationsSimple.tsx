@@ -290,7 +290,7 @@ const MyObservationsSimple = ( {
               dataCanBeFetched={!!currentUser}
               handlePullToRefresh={handlePullToRefresh}
               handleIndividualUploadPress={handleIndividualUploadPress}
-              hideLoadingWheel
+              hideLoadingWheel={!isFetchingNextPage}
               hideMetadata={isDefaultMode}
               hideObsUploadStatus={!currentUser}
               hideObsStatus={!currentUser}

@@ -128,6 +128,7 @@ class Observation extends Realm.Object {
   };
 
   static DEFAULT_MODE_LIST_FIELDS = {
+    time_observed_at: true,
     created_at: true,
     observation_sounds: {
       uuid: true
@@ -145,7 +146,9 @@ class Observation extends Realm.Object {
       name: true,
       preferred_common_name: true
     },
-    quality_grade: true
+    quality_grade: true,
+    // needed for getting next page in infinite queries
+    id: true
   };
 
   static async new( obs ) {
