@@ -374,13 +374,14 @@ const MyObservationsSimple = ( {
               justFinishedSignup && !!currentUser && numTotalObservations < 20
             }
           />
-          <PerformanceDebugView
-            showListMetrics
-            showScrollMetrics
-            position="bottom-left"
-          />
+
         </>
       )}
+      <PerformanceDebugView
+        showListMetrics
+        showScrollMetrics
+        position="bottom-left"
+      />
     </>
   );
 };

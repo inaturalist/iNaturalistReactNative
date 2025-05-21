@@ -383,9 +383,15 @@ class Observation extends Realm.Object {
   static mapObservationForMyObsAdvancedMode( obs ) {
     return {
       ...Observation.mapObservationForMyObsDefaultMode( obs ),
-      comments: obs.comments,
+      comments: obs.comments.length > 0
+        ? obs.comments
+          .map( c => Comment.mapCommentForMyObsAdvancedMode( c ) )
+        : [],
       geoprivacy: obs.geoprivacy,
-      identifications: obs.identifications,
+      identifications: obs.identifications.length > 0
+        ? obs.identifications
+          .map( id => Identification.mapIdentificationForMyObsAdvancedMode( id ) )
+        : [],
       latitude: obs.latitude,
       longitude: obs.longitude,
       obscured: obs.obscured,

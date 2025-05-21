@@ -41,6 +41,13 @@ class Identification extends Realm.Object {
     return newId;
   }
 
+  static mapIdentificationForMyObsAdvancedMode( id ) {
+    return {
+      uuid: id.uuid,
+      current: id.current
+    };
+  }
+
   static new = attrs => {
     const newIdent = {
       ...attrs,
