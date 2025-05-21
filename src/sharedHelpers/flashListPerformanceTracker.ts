@@ -95,8 +95,6 @@ class FlashListPerformanceTracker {
   }
 
   endDataFetch( itemsCount: number ): void {
-    console.log( `FlashListTracker: endDataFetch called with ${itemsCount} items` );
-
     if ( this.fetchStartTime > 0 ) {
       const endTime = Date.now();
       const fetchDuration = Date.now() - this.fetchStartTime;
