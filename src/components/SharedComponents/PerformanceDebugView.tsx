@@ -8,6 +8,7 @@ import {
 } from "sharedHooks";
 
 interface PerformanceDebugViewProps {
+  showItemCountMetrics?: boolean;
   showListMetrics?: boolean;
   showScrollMetrics?: boolean;
   position?: "top-left" | "top-right" | "bottom-left" | "bottom-right";
@@ -16,6 +17,7 @@ interface PerformanceDebugViewProps {
 }
 
 const PerformanceDebugView: React.FC<PerformanceDebugViewProps> = ( {
+  showItemCountMetrics = true,
   showListMetrics = true,
   showScrollMetrics = true,
   position = "bottom-left",
@@ -24,8 +26,19 @@ const PerformanceDebugView: React.FC<PerformanceDebugViewProps> = ( {
 } ) => {
   const { isDebug } = useDebugMode( );
   const [, setRefreshCounter] = useState( 0 );
-  // Get metrics from trackers
   const listMetrics = flashListTracker.getSummary();
+
+  // make sure these values aren't undefined when initializing to avoid
+  // must be wrapped in <Text /> errors
+  const safeListMetrics = {
+    itemsVisibleTime: listMetrics?.itemsVisibleTime ?? 0,
+    scrollEvents: listMetrics?.scrollEvents ?? 0,
+    avgScrollDuration: listMetrics?.avgScrollDuration ?? 0,
+    avgFetchTime: listMetrics?.avgFetchTime ?? 0,
+    lastFetchTime: listMetrics?.lastFetchTime ?? 0,
+    lastFetchItemCount: listMetrics?.lastFetchItemCount ?? 0,
+    totalItemsDisplayed: listMetrics?.totalItemsDisplayed ?? 0
+  };
 
   // Define position classes
   const positionClasses = {
@@ -63,35 +76,38 @@ const PerformanceDebugView: React.FC<PerformanceDebugViewProps> = ( {
       )}
     >
       {showListMetrics && (
-        <>
-          <Body1 className="text-white">
-            {`List Ready: ${listMetrics.listReadyTime}ms`}
-          </Body1>
-          <Body1 className="text-white">
-            {`Items Visible: ${
-              listMetrics.itemsVisibleTime > 0
-                ? `${listMetrics.itemsVisibleTime}ms`
-                : "Not yet visible"
-            }`}
-          </Body1>
-        </>
+        <Body1 className="text-white">
+          {`Items Visible: ${
+            safeListMetrics.itemsVisibleTime > 0
+              ? `${safeListMetrics.itemsVisibleTime}ms`
+              : "Not yet visible"
+          }`}
+        </Body1>
       )}
       {showScrollMetrics && (
         <>
           <Body1 className="text-white">
-            {`Scroll Events: ${listMetrics.scrollEvents}`}
+            {`Scroll Events: ${safeListMetrics.scrollEvents}`}
           </Body1>
           <Body1 className="text-white">
-            {`Avg Scroll Time: ${listMetrics.avgScrollDuration}ms`}
+            {`Avg Scroll Time: ${safeListMetrics.avgScrollDuration}ms`}
           </Body1>
           <Body1 className="text-white">
-            {`Avg Fetch Time: ${listMetrics.avgFetchTime}ms`}
+            {`Avg Fetch Time: ${safeListMetrics.avgFetchTime}ms`}
           </Body1>
-          {listMetrics.lastFetchTime && (
-            <Body1 className="text-white">
-              {`Last Fetch: ${listMetrics.lastFetchTime}ms`}
-            </Body1>
-          )}
+          <Body1 className="text-white">
+            {`Last Fetch: ${safeListMetrics?.lastFetchTime}ms`}
+          </Body1>
+        </>
+      )}
+      {showItemCountMetrics && (
+        <>
+          <Body1 className="text-white">
+            {`Last Fetch Items: ${safeListMetrics.lastFetchItemCount}`}
+          </Body1>
+          <Body1 className="text-white">
+            {`Total Items: ${safeListMetrics.totalItemsDisplayed}`}
+          </Body1>
         </>
       )}
     </View>

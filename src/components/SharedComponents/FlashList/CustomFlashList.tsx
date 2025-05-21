@@ -34,7 +34,6 @@ const CustomFlashList: Function = forwardRef( ( props, ref ) => {
   useEffect( ( ) => {
     if ( isFirstRender.current ) {
       flashListTracker.reset( );
-      flashListTracker.markListReady( );
       isFirstRender.current = false;
 
       const timer = setTimeout( () => {

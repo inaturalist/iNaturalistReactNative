@@ -148,7 +148,6 @@ class Taxon extends Realm.Object {
   }
 
   static mapApiToRealm( taxon, _realm = null ) {
-    console.log( taxon, "taxon" );
     return {
       ...taxon,
       id: Number( taxon?.id ),

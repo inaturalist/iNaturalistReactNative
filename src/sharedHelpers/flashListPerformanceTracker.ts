@@ -1,11 +1,7 @@
 class FlashListPerformanceTracker {
   private screenLoadTime: number;
 
-  private listReadyStartTime: number;
-
   private itemsVisibleStartTime: number;
-
-  private listReadyDuration: number;
 
   private itemsVisibleDuration: number;
 
@@ -19,7 +15,25 @@ class FlashListPerformanceTracker {
 
   private currentScrollEvent: unknown = null;
 
-  private fetchStartTime = 0;
+  private fetchStartTime: number;
+
+  private fetchEvents: Array<{
+    startTime: number;
+    endTime: number;
+    duration: number;
+    itemsCount: number;
+  }> = [];
+
+  private persistentMetrics = {
+    lastFetchTime: null as number | null,
+    lastFetchTimestamp: 0,
+    avgFetchTime: 0,
+    fetchCount: 0
+  };
+
+  private lastFetchItemCount = 0;
+
+  private totalItemsDisplayed = 0;
 
   constructor() {
     this.reset();
@@ -28,20 +42,17 @@ class FlashListPerformanceTracker {
   reset(): void {
     // Timestamps
     this.screenLoadTime = Date.now();
-    this.listReadyStartTime = 0;
     this.itemsVisibleStartTime = 0;
     // Calculated durations (in ms)
-    this.listReadyDuration = 0;
     this.itemsVisibleDuration = 0;
 
     this.scrollEvents = [];
     this.currentScrollEvent = null;
     this.fetchStartTime = 0;
-  }
+    this.fetchEvents = [];
 
-  markListReady(): void {
-    this.listReadyStartTime = Date.now();
-    this.listReadyDuration = this.listReadyStartTime - this.screenLoadTime;
+    this.lastFetchItemCount = 0;
+    this.totalItemsDisplayed = 0;
   }
 
   markItemsVisible(): void {
@@ -84,11 +95,30 @@ class FlashListPerformanceTracker {
   }
 
   endDataFetch( itemsCount: number ): void {
-    if ( this.fetchStartTime > 0 && this.currentScrollEvent ) {
+    console.log( `FlashListTracker: endDataFetch called with ${itemsCount} items` );
+
+    if ( this.fetchStartTime > 0 ) {
+      const endTime = Date.now();
       const fetchDuration = Date.now() - this.fetchStartTime;
-      this.currentScrollEvent.itemsFetched += itemsCount;
-      this.currentScrollEvent.fetchDuration = fetchDuration;
-      this.fetchStartTime = 0;
+      this.fetchEvents.push( {
+        startTime: this.fetchStartTime,
+        endTime,
+        duration: fetchDuration,
+        itemsCount
+      } );
+
+      this.persistentMetrics.lastFetchTime = fetchDuration;
+      this.persistentMetrics.lastFetchTimestamp = endTime;
+
+      this.persistentMetrics.fetchCount += 1;
+      this.persistentMetrics.avgFetchTime
+        = ( ( this.persistentMetrics.avgFetchTime
+          * ( this.persistentMetrics.fetchCount - 1 ) ) + fetchDuration )
+        / this.persistentMetrics.fetchCount;
+
+      this.lastFetchItemCount = itemsCount;
+
+      this.totalItemsDisplayed += itemsCount;
     }
   }
 
@@ -99,18 +129,21 @@ class FlashListPerformanceTracker {
     return this.scrollEvents[this.scrollEvents.length - 1];
   }
 
-  getAverageScrollFetchTime() {
-    if ( this.scrollEvents.length === 0 ) {
-      return 0;
+  getAverageFetchTime() {
+    const currentSessionAvg = this.fetchEvents.length > 0
+      ? Math.round( this.fetchEvents.reduce( ( sum, event ) => sum + event.duration, 0 )
+      / this.fetchEvents.length )
+      : 0;
+
+    return Math.max( currentSessionAvg, Math.round( this.persistentMetrics.avgFetchTime ) );
+  }
+
+  getLastFetchTime(): number | null {
+    if ( this.fetchEvents.length > 0 ) {
+      return this.fetchEvents[this.fetchEvents.length - 1].duration;
     }
 
-    const eventsWithFetch = this.scrollEvents.filter( event => event.fetchDuration );
-    if ( eventsWithFetch.length === 0 ) {
-      return 0;
-    }
-
-    const totalFetchTime = eventsWithFetch.reduce( ( sum, event ) => sum + event.fetchDuration, 0 );
-    return totalFetchTime / eventsWithFetch.length;
+    return this.persistentMetrics.lastFetchTime;
   }
 
   getSummary(): {
@@ -126,17 +159,16 @@ class FlashListPerformanceTracker {
         / this.scrollEvents.length
       : 0;
 
-    const lastEvent = this.getLastScrollMetrics();
-
     return {
-      listReadyTime: this.listReadyDuration,
       itemsVisibleTime: this.itemsVisibleDuration,
       scrollEvents: this.scrollEvents.length,
       avgScrollDuration: Math.round( avg ),
-      avgFetchTime: Math.round( this.getAverageScrollFetchTime() ),
-      lastFetchTime: lastEvent && lastEvent.fetchDuration
-        ? lastEvent.fetchDuration
-        : null
+      avgFetchTime: this.getAverageFetchTime(),
+      lastFetchTime: this.getLastFetchTime(),
+      totalFetches: this.fetchEvents.length
+        + this.persistentMetrics.fetchCount - this.fetchEvents.length,
+      lastFetchItemCount: this.lastFetchItemCount,
+      totalItemsDisplayed: this.totalItemsDisplayed
     };
   }
 }
