@@ -2,19 +2,12 @@ import { searchObservations } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import Observation from "realmModels/Observation";
 import { sleep } from "sharedHelpers/util.ts";
-import useStore from "stores/useStore";
-
-function isDefaultMode( ) {
-  return useStore.getState( ).layout.isDefaultMode === true;
-}
 
 async function syncRemoteObservations( realm, currentUserId: number, deletionsCompletedAt: Date ) {
   const searchParams = {
     user_id: currentUserId,
     per_page: 50,
-    fields: isDefaultMode( )
-      ? Observation.DEFAULT_MODE_LIST_FIELDS
-      : Observation.LIST_FIELDS,
+    fields: Observation.ADVANCED_MODE_LIST_FIELDS,
     ttl: -1
   };
   // Between elasticsearch update time and API caches, there's no absolute

@@ -128,11 +128,8 @@ class Observation extends Realm.Object {
   };
 
   static DEFAULT_MODE_LIST_FIELDS = {
-    time_observed_at: true,
     created_at: true,
-    observation_sounds: {
-      uuid: true
-    },
+    id: true, // needed to get next page in infinite queries
     observation_photos: {
       id: true,
       photo: {
@@ -141,14 +138,30 @@ class Observation extends Realm.Object {
       },
       uuid: true
     },
+    observation_sounds: {
+      uuid: true
+    },
+    quality_grade: true,
     taxon: {
+      id: true,
       iconic_taxon_name: true,
       name: true,
       preferred_common_name: true
     },
-    quality_grade: true,
-    // needed for getting next page in infinite queries
-    id: true
+    time_observed_at: true,
+    uuid: true
+  };
+
+  static ADVANCED_MODE_LIST_FIELDS = {
+    ...Observation.DEFAULT_MODE_LIST_FIELDS,
+    geoprivacy: true,
+    id: true,
+    latitude: true,
+    longitude: true,
+    obscured: true,
+    observed_time_zone: true,
+    place_guess: true,
+    taxon_geoprivacy: true
   };
 
   static async new( obs ) {

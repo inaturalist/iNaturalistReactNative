@@ -7,8 +7,7 @@ import { useEffect, useMemo } from "react";
 import Observation from "realmModels/Observation";
 import {
   useAuthenticatedInfiniteQuery,
-  useCurrentUser,
-  useLayoutPrefs
+  useCurrentUser
 } from "sharedHooks";
 
 const { useRealm } = RealmContext;
@@ -16,16 +15,13 @@ const { useRealm } = RealmContext;
 const useInfiniteObservationsScroll = ( {
   params: newInputParams
 }: Object ): Object => {
-  const { isDefaultMode } = useLayoutPrefs( );
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
 
   const baseParams = {
     ...newInputParams,
     per_page: 20,
-    fields: isDefaultMode
-      ? Observation.DEFAULT_MODE_LIST_FIELDS
-      : Observation.LIST_FIELDS,
+    fields: Observation.ADVANCED_MODE_LIST_FIELDS,
     ttl: -1
   };
 
