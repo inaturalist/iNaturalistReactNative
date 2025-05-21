@@ -16,6 +16,7 @@ import MapView, {
 } from "react-native-maps";
 import Observation from "realmModels/Observation";
 import fetchCoarseUserLocation from "sharedHelpers/fetchCoarseUserLocation.ts";
+import mapTracker from "sharedHelpers/mapPerformanceTracker.ts";
 import { useDebugMode, useDeviceOrientation } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import colors from "styles/tailwindColors";
@@ -55,6 +56,7 @@ interface Props {
   className?: string;
   currentLocationButtonClassName?: string;
   initialRegion?: Region;
+  isLoading?: boolean;
   mapHeight?: DimensionValue; // allows for height to be defined as px or percentage
   mapType?: MapType;
   mapViewClassName?: string;
@@ -88,6 +90,7 @@ const Map = forwardRef( ( {
   className = "flex-1",
   currentLocationButtonClassName,
   initialRegion,
+  isLoading = true,
   mapHeight,
   mapType,
   mapViewClassName,
@@ -113,6 +116,11 @@ const Map = forwardRef( ( {
   zoomEnabled = true,
   zoomTapEnabled = true
 }: Props, ref ) => {
+  const tilesMarkedVisible = useRef( false );
+  const [performanceMetrics, setPerformanceMetrics] = useState( {
+    mapReadyTime: 0,
+    tilesVisibleTime: 0
+  } );
   const { isDebug } = useDebugMode( );
   const { screenWidth, screenHeight } = useDeviceOrientation( );
   const [currentZoom, setCurrentZoom] = useState( 0 );
@@ -463,6 +471,50 @@ const Map = forwardRef( ( {
     }
   };
 
+  const handleMapReady = ( ) => {
+    mapTracker.markMapReady( );
+
+    if ( onMapReady ) {
+      onMapReady( );
+    }
+  };
+
+  useEffect( ( ) => {
+    // debug mode only: display performance metrics
+    // eslint-disable-next-line no-undef
+    if ( isDebug ) {
+      mapTracker.reset( );
+
+      const updateInterval = setInterval( ( ) => {
+        const metrics = mapTracker.getSummary( );
+        setPerformanceMetrics( metrics );
+      }, 500 );
+
+      return ( ) => {
+        clearInterval( updateInterval );
+      };
+    }
+    return () => undefined;
+  }, [isDebug] );
+
+  useEffect( ( ) => {
+    // Detect when tiles are likely to be visible based on key conditions,
+    // since we can't get this info directly from UrlTile
+    if ( isDebug
+        && currentZoom > 0
+        && shouldOverlayObsTiles
+        && !isLoading
+        && !tilesMarkedVisible.current ) {
+      // Add a small delay to ensure tiles have had time to render --
+      // I wouldn't call this super accurate but it was helpful enough for a ballpark
+      // and to get an idea of the average time it takes to load tiles
+      setTimeout( ( ) => {
+        mapTracker.markTilesVisible( );
+        tilesMarkedVisible.current = true;
+      }, 300 );
+    }
+  }, [currentZoom, shouldOverlayObsTiles, isLoading, isDebug] );
+
   return (
     <View
       style={mapContainerStyle}
@@ -478,7 +530,7 @@ const Map = forwardRef( ( {
         loadingIndicatorColor={colors.inatGreen}
         mapType={currentMapType}
         minZoomLevel={MIN_ZOOM_LEVEL}
-        onMapReady={onMapReady}
+        onMapReady={handleMapReady}
         onPanDrag={onPanDrag}
         onPress={handleMapPress}
         onRegionChangeComplete={handleRegionChangeComplete}
@@ -542,6 +594,27 @@ const Map = forwardRef( ( {
         switchMapTypeButtonClassName={switchMapTypeButtonClassName}
       />
       {children}
+      {isDebug && (
+        <View
+          className={classnames(
+            "absolute",
+            "left-5",
+            "bottom-[280px]",
+            "bg-deeppink",
+            "p-1",
+            "z-10"
+          )}
+        >
+          <Body1 className="text-white">
+            {`Map Ready: ${performanceMetrics.mapReadyTime}ms`}
+          </Body1>
+          <Body1 className="text-white">
+            {`Tiles Visible: ${performanceMetrics.tilesVisibleTime > 0
+              ? `${performanceMetrics.tilesVisibleTime}ms`
+              : "Not yet visible"}`}
+          </Body1>
+        </View>
+      )}
     </View>
   );
 } );

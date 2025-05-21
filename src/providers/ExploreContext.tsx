@@ -373,7 +373,7 @@ async function defaultExploreLocation( ): Promise<DefaultLocation> {
     placeMode: PLACE_MODE.NEARBY,
     lat: location?.latitude,
     lng: location?.longitude,
-    radius: 50,
+    radius: 1,
     place_id: undefined,
     swlat: undefined,
     swlng: undefined,
