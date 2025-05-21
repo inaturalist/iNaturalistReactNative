@@ -196,7 +196,7 @@ const MyObservationsSimple = ( {
 
   const unuploadedObsMissingBasicsIDs = useMemo( () => (
     observations
-      .filter( o => o.needsSync() && o.missingBasics() )
+      .filter( o => o.needs_sync && o.missing_basics )
       .map( o => o.uuid )
   ), [observations] );
 
@@ -218,7 +218,7 @@ const MyObservationsSimple = ( {
   );
 
   const dataFilledWithEmptyBoxes = useMemo( ( ) => {
-    const data = observations.filter( o => o.isValid() );
+    const data = observations;
     // In grid layout fill up to 8 items to make sure the grid is filled
     if ( layout === "grid" ) {
     // Fill up to 8 items to make sure the grid is filled

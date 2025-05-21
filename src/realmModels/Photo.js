@@ -81,6 +81,7 @@ class Photo extends Realm.Object {
   }
 
   static displayLargePhoto( url ) {
+    console.log( url, "display large photo" );
     return url?.replace( "square", "large" );
   }
 

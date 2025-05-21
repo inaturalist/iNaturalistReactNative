@@ -9,6 +9,7 @@ import {
   ObservationLocation
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useMemo } from "react";
 import Photo from "realmModels/Photo";
@@ -24,6 +25,8 @@ import {
   photoCountFromObservation,
   photoFromObservation
 } from "./util";
+
+const { useRealm } = RealmContext;
 
 type Props = {
   currentUser: Object,
@@ -54,11 +57,14 @@ const ObsListItem = ( {
   hideObsStatus = false,
   isSimpleObsStatus
 }: Props ): Node => {
+  const realm = useRealm( );
   const { t } = useTranslation();
   const uploadStatus = useStore( state => state.uploadStatus );
   const { isDebug } = useDebugMode( );
 
-  const belongsToCurrentUser = observation?.user?.login === currentUser?.login;
+  // API result or Realm result
+  const belongsToCurrentUser = observation?.user?.login === currentUser?.login
+    || realm.objectForPrimaryKey( "Observation", observation.uuid ) !== null;
 
   const isObscured = observation?.obscured && !belongsToCurrentUser;
   const geoprivacy = observation?.geoprivacy;
@@ -66,10 +72,8 @@ const ObsListItem = ( {
   const missingBasics = (
     // Currently just a test
     isDebug
-    // Only works for Realm observations
-    && typeof ( observation.needsSync ) === "function"
-    && observation.needsSync()
-    && observation.missingBasics()
+    && observation.needs_sync
+    && observation.missing_basics
   );
 
   const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
