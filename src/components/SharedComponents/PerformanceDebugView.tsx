@@ -40,7 +40,6 @@ const PerformanceDebugView: React.FC<PerformanceDebugViewProps> = ( {
     totalItemsDisplayed: listMetrics?.totalItemsDisplayed ?? 0
   };
 
-  // Define position classes
   const positionClasses = {
     "top-left": "top-5 left-5",
     "top-right": "top-5 right-5",

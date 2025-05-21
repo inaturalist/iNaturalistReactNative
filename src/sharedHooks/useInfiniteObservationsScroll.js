@@ -5,10 +5,7 @@ import { flatten, last, noop } from "lodash";
 import { RealmContext } from "providers/contexts.ts";
 import { useEffect, useMemo } from "react";
 import Observation from "realmModels/Observation";
-import {
-  useAuthenticatedInfiniteQuery,
-  useCurrentUser
-} from "sharedHooks";
+import { useAuthenticatedInfiniteQuery, useCurrentUser } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 

@@ -289,7 +289,6 @@ const ObservationsFlashList: Function = forwardRef( ( {
       renderItem={renderItem}
       refreshControl={refreshControl}
       testID={testID}
-      onEndReachedThreshold={1}
     />
   );
 } );
