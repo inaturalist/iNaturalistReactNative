@@ -40,6 +40,7 @@ const cameraOptionsClasses = [
 interface Props {
   handleZoomButtonPress: ( _event: GestureResponderEvent ) => void;
   disabled: boolean;
+  disabledPhotoLibrary: boolean;
   flipCamera: ( _event: GestureResponderEvent ) => void;
   handleCheckmarkPress?: ( _event: GestureResponderEvent ) => void;
   handleClose?: ( _event: GestureResponderEvent ) => void;
@@ -76,6 +77,7 @@ const CameraButtonPlaceholder = ( { extraClassName }: { extraClassName?: string 
 const TabletButtons = ( {
   handleZoomButtonPress,
   disabled,
+  disabledPhotoLibrary,
   flipCamera,
   handleCheckmarkPress,
   handleClose,
@@ -163,7 +165,10 @@ const TabletButtons = ( {
       { showZoomButton && <CameraButtonPlaceholder extraClassName="mt-[25px]" /> }
       { hasPhotoLibraryButton && (
         <View className="absolute bottom-6">
-          <PhotoLibraryIcon rotatableAnimatedStyle={rotatableAnimatedStyle} />
+          <PhotoLibraryIcon
+            rotatableAnimatedStyle={rotatableAnimatedStyle}
+            disabled={disabledPhotoLibrary}
+          />
         </View>
       ) }
     </View>

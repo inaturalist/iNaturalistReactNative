@@ -79,6 +79,7 @@ const AICameraButtons = ( {
       <TabletButtons
         handleZoomButtonPress={handleZoomButtonPress}
         disabled={!modelLoaded || takingPhoto}
+        disabledPhotoLibrary={takingPhoto}
         flipCamera={flipCamera}
         hasFlash={hasFlash}
         hasPhotoLibraryButton
@@ -154,7 +155,10 @@ const AICameraButtons = ( {
         </View>
         <View><CameraFlip flipCamera={flipCamera} /></View>
         <View>
-          <PhotoLibraryIcon rotatableAnimatedStyle={rotatableAnimatedStyle} />
+          <PhotoLibraryIcon
+            rotatableAnimatedStyle={rotatableAnimatedStyle}
+            disabled={takingPhoto}
+          />
         </View>
       </View>
       <View className="flex-row justify-center items-center w-full" pointerEvents="box-none">

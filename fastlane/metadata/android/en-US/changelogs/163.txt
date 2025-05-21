@@ -1,0 +1,12 @@
+NEW
+* Login button in drawer menu
+
+UPDATED
+* Change Reset password field label
+
+FIXED
+* Hide "ID WITH AI" button for no media or only sounds
+* AI camera shutter button no longer pressable in rapid succesion
+* Adding an ID to a sound
+* Crash "Accessing object which has been invalidated or deleted" in SuggestionsResult
+* Crash "Format string contains an unescaped latin alphabet character `f`"

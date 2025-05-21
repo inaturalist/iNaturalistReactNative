@@ -206,9 +206,9 @@ describe( "multiple observation upload/save progress", ( ) => {
     renderObsEdit( );
     const uploadButton = await screen.findByText( /UPLOAD/ );
     fireEvent.press( uploadButton );
-    const uploadingText = await screen.findByText( /1 uploading/ );
+    const uploadedText = await screen.findByText( /1 uploaded/ );
     await waitFor( ( ) => {
-      expect( uploadingText ).toBeVisible( );
+      expect( uploadedText ).toBeVisible( );
     } );
   } );
 
@@ -233,9 +233,9 @@ describe( "multiple observation upload/save progress", ( ) => {
     } );
     const uploadButton = await screen.findByText( /UPLOAD/ );
     fireEvent.press( uploadButton );
-    const uploadingText = await screen.findByText( /1 uploading/ );
+    const uploadedText = await screen.findByText( /1 uploaded/ );
     await waitFor( ( ) => {
-      expect( uploadingText ).toBeVisible( );
+      expect( uploadedText ).toBeVisible( );
     } );
   } );
 

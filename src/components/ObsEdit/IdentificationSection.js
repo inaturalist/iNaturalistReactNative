@@ -85,33 +85,37 @@ const IdentificationSection = ( {
     <View key={resetScreen?.toString( )}>
       <IconicTaxonChooser
         before={(
-          <View className="flex-row">
-            <Button
-              level={identTaxon
-                ? "neutral"
-                : "focus"}
-              onPress={navToSuggestions}
-              text={t( "ID-WITH-AI" )}
-              className={classnames( "rounded-full py-1 h-[36px] ml-6", {
-                "border border-darkGray border-[2px]": identTaxon
-              } )}
-              testID="ObsEdit.Suggestions"
-              icon={(
-                <INatIcon
-                  name="sparkly-label"
-                  size={24}
-                  color={identTaxon
-                    ? colors.darkGray
-                    : colors.white}
+          <View className="flex-row ml-6">
+            {hasPhotos
+              ? (
+                <Button
+                  level={identTaxon
+                    ? "neutral"
+                    : "focus"}
+                  onPress={navToSuggestions}
+                  text={t( "ID-WITH-AI" )}
+                  className={classnames( "rounded-full py-1 mr-4 h-[36px]", {
+                    "border border-darkGray border-[2px]": identTaxon
+                  } )}
+                  testID="ObsEdit.IDWithAI"
+                  icon={(
+                    <INatIcon
+                      name="sparkly-label"
+                      size={24}
+                      color={identTaxon
+                        ? colors.darkGray
+                        : colors.white}
+                    />
+                  )}
+                  accessibilityLabel={t( "View-suggestions" )}
                 />
-              )}
-              accessibilityLabel={t( "View-suggestions" )}
-            />
+              )
+              : null}
             <Button
               level="neutral"
               onPress={navToSuggestionsSearch}
               text={t( "SEARCH" )}
-              className="rounded-full py-1 h-[36px] ml-2 border border-darkGray border-[2px]"
+              className="rounded-full py-1 h-[36px] border border-darkGray border-[2px]"
               testID="ObsEdit.Suggestions"
               icon={(
                 <INatIcon

@@ -222,7 +222,7 @@ describe( "ObsEdit", ( ) => {
         await renderAppWithObservations( mockObservations, __filename );
         await navigateToObsEditViaGroupPhotos( );
         await uploadObsEditObservation( );
-        const uploadStatus = await screen.findByText( /1 uploading/ );
+        const uploadStatus = await screen.findByText( /1 uploaded/ );
         expect( uploadStatus ).toBeVisible( );
         const newTitle = await screen.findByText( /New Observation/ );
         expect( newTitle ).toBeTruthy( );

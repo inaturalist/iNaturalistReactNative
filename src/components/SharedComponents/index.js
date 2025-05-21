@@ -9,6 +9,7 @@ export { default as Button } from "./Buttons/Button";
 export { default as CloseButton } from "./Buttons/CloseButton";
 export { default as EvidenceButton } from "./Buttons/EvidenceButton";
 export { default as INatIconButton } from "./Buttons/INatIconButton";
+export { default as PressableWithDebounce } from "./Buttons/PressableWithDebounce";
 export { default as RotatingINatIconButton } from "./Buttons/RotatingINatIconButton";
 export { default as TransparentCircleButton } from "./Buttons/TransparentCircleButton";
 export { default as Carousel } from "./Carousel";

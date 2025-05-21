@@ -2,9 +2,7 @@ import classnames from "classnames";
 import {
   INatIcon
 } from "components/SharedComponents";
-import {
-  Pressable, View
-} from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
