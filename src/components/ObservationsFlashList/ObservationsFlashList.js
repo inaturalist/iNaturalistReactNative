@@ -133,7 +133,8 @@ const ObservationsFlashList: Function = forwardRef( ( {
 
     const onItemPress = ( ) => {
       if ( obsNeedsSync && !isDefaultMode ) {
-        navigateToObsEdit( observation );
+        const realmObservation = realm.objectForPrimaryKey( "Observation", observation.uuid );
+        navigateToObsEdit( realmObservation );
       } else {
         // Uniquely identify the list this observation appears in so we can ensure
         // ObsDetails doesn't get pushed onto the stack twice after multiple taps
