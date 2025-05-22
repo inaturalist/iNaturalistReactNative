@@ -48,7 +48,10 @@ const useInfiniteObservationsScroll = ( {
     },
     {
       getNextPageParam: lastPage => last( lastPage.results )?.id,
-      enabled: !!( currentUser )
+      enabled: !!( currentUser ),
+      // wait for user to scroll, since we're already using syncRemoteObservations
+      // to fetch 50 observations on mount
+      refetchOnMount: false
     }
   );
 

@@ -52,6 +52,12 @@ const useLocalObservations = ( ): Object => {
         || unsyncedCount !== prevListRef.current.unsyncedCount
       ) {
         const validObservations = Array.from( filteredObservations ).filter( o => o.isValid() );
+
+        // amanda 20250522: React Native works best when minimal data is passed to components,
+        // so there aren't costly rerenders. these data transformations ensure the UI is getting
+        // exactly what it needs to display and that we're not passing around larger objects
+        // or actual Realm objects, which is especially helpful since we're doing an absurd amount
+        // of prop drilling in MyObservations
         const mappedObservations = isDefaultMode( )
           ? validObservations
             .map( observation => Observation.mapObservationForMyObsDefaultMode( observation ) )
