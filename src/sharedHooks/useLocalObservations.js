@@ -19,6 +19,12 @@ const deletionFilters
 
 const sortedFilters = [["needs_sync", true], ["_created_at", true]];
 
+const mapObservations = ( observations, isDefault ) => ( isDefault
+  ? observations
+    .map( observation => Observation.mapObservationForMyObsDefaultMode( observation ) )
+  : observations
+    .map( observation => Observation.mapObservationForMyObsAdvancedMode( observation ) ) );
+
 const useLocalObservations = ( ): Object => {
   const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
   // Use refs to maintain state without triggering re-renders of hook consumers
@@ -41,7 +47,8 @@ const useLocalObservations = ( ): Object => {
     }
     const localObservations = realm.objects( "Observation" );
 
-    const handleChange = ( ) => {
+    const handleChange = ( collection, changes ) => {
+      const { insertions, newModifications, deletions } = changes;
       const filteredObservations = localObservations
         .filtered( deletionFilters )
         .sorted( sortedFilters );
@@ -50,21 +57,37 @@ const useLocalObservations = ( ): Object => {
       const currentIsDefaultMode = isDefaultMode( );
 
       // limit list updates to when there are actual realm changes
-      if ( filteredObservations.length !== prevListRef.current.count
+      if ( ( insertions.length > 0
+          || newModifications.length > 0
+          || deletions.length > 0 )
+        || filteredObservations.length !== prevListRef.current.count
         || unsyncedCount !== prevListRef.current.unsyncedCount
         || currentIsDefaultMode !== prevListRef.current.isDefaultMode
       ) {
-        const validObservations = Array.from( filteredObservations ).filter( o => o.isValid() );
-
         // amanda 20250522: React Native works best when minimal data is passed to components,
         // so there aren't costly rerenders. these data transformations ensure the UI is getting
         // exactly what it needs to display and that we're not passing around larger objects
         // or actual Realm objects, which is especially helpful since we're doing an absurd amount
         // of prop drilling in MyObservations
-        const mappedObservations = validObservations
-          .map( observation => ( currentIsDefaultMode
-            ? Observation.mapObservationForMyObsDefaultMode( observation )
-            : Observation.mapObservationForMyObsAdvancedMode( observation ) ) );
+
+        let mappedObservations = [];
+
+        if ( insertions.length > 0
+            && newModifications.length === 0
+            && deletions.length === 0
+            && currentIsDefaultMode === prevListRef.current.isDefaultMode ) {
+          const newObservations = insertions.map( index => filteredObservations[index] )
+            .filter( o => o.isValid() );
+
+          const newMappedObservations = mapObservations( newObservations, currentIsDefaultMode );
+
+          mappedObservations = [...prevListRef.current.list, ...newMappedObservations];
+        } else {
+          // Full rebuild needed (modifications, deletions, or mode change)
+          const validObservations = Array.from( filteredObservations ).filter( o => o.isValid() );
+
+          mappedObservations = mapObservations( validObservations, currentIsDefaultMode );
+        }
 
         setObservationList( mappedObservations );
         setNumUnuploadedObservations( unsyncedCount );
@@ -72,7 +95,8 @@ const useLocalObservations = ( ): Object => {
         prevListRef.current = {
           list: mappedObservations,
           count: filteredObservations.length,
-          unsyncedCount
+          unsyncedCount,
+          isDefaultMode: currentIsDefaultMode
         };
       }
     };
