@@ -29,7 +29,8 @@ const useLocalObservations = ( ): Object => {
   const prevListRef = useRef( {
     list: [],
     count: 0,
-    unsyncedCount: 0
+    unsyncedCount: 0,
+    isDefaultMode: null
   } );
 
   const realm = useRealm( );
@@ -46,10 +47,12 @@ const useLocalObservations = ( ): Object => {
         .sorted( sortedFilters );
 
       const unsyncedCount = Observation.filterUnsyncedObservations( realm ).length;
+      const currentIsDefaultMode = isDefaultMode( );
 
       // limit list updates to when there are actual realm changes
       if ( filteredObservations.length !== prevListRef.current.count
         || unsyncedCount !== prevListRef.current.unsyncedCount
+        || currentIsDefaultMode !== prevListRef.current.isDefaultMode
       ) {
         const validObservations = Array.from( filteredObservations ).filter( o => o.isValid() );
 
@@ -58,11 +61,12 @@ const useLocalObservations = ( ): Object => {
         // exactly what it needs to display and that we're not passing around larger objects
         // or actual Realm objects, which is especially helpful since we're doing an absurd amount
         // of prop drilling in MyObservations
-        const mappedObservations = isDefaultMode( )
-          ? validObservations
-            .map( observation => Observation.mapObservationForMyObsDefaultMode( observation ) )
-          : validObservations
-            .map( observation => Observation.mapObservationForMyObsAdvancedMode( observation ) );
+        const mappedObservations = validObservations
+          .map( observation => ( currentIsDefaultMode
+            ? Observation.mapObservationForMyObsDefaultMode( observation )
+            : Observation.mapObservationForMyObsAdvancedMode( observation ) ) );
+
+        console.log( mappedObservations[0].observationPhotos.map( op => op.photo ), "photo" );
 
         setObservationList( mappedObservations );
         setNumUnuploadedObservations( unsyncedCount );
