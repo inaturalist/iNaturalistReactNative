@@ -40,7 +40,7 @@ const ActivityTab = ( {
     const currentIds = observation?.identifications;
     const userAgree = currentIds?.filter( id => id.user?.id === userId );
     return userAgree?.length > 0 && userAgree[userAgree.length - 1].current
-      ? userAgree[userAgree.length - 1].taxon.id
+      ? userAgree[userAgree.length - 1]?.taxon?.id
       : undefined;
   };
 
