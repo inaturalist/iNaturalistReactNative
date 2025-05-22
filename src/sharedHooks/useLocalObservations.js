@@ -66,8 +66,6 @@ const useLocalObservations = ( ): Object => {
             ? Observation.mapObservationForMyObsDefaultMode( observation )
             : Observation.mapObservationForMyObsAdvancedMode( observation ) ) );
 
-        console.log( mappedObservations[0].observationPhotos.map( op => op.photo ), "photo" );
-
         setObservationList( mappedObservations );
         setNumUnuploadedObservations( unsyncedCount );
 
