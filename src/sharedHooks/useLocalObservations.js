@@ -66,6 +66,12 @@ const useLocalObservations = ( ): Object => {
 
         setObservationList( mappedObservations );
         setNumUnuploadedObservations( unsyncedCount );
+
+        prevListRef.current = {
+          list: mappedObservations,
+          count: filteredObservations.length,
+          unsyncedCount
+        };
       }
     };
 
