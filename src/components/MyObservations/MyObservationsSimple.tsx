@@ -374,7 +374,6 @@ const MyObservationsSimple = ( {
               justFinishedSignup && !!currentUser && numTotalObservations < 20
             }
           />
-
         </>
       )}
       <PerformanceDebugView

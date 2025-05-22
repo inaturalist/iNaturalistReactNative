@@ -9,7 +9,6 @@ import {
   ObservationLocation
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useMemo } from "react";
 import Photo from "realmModels/Photo";
@@ -25,8 +24,6 @@ import {
   photoCountFromObservation,
   photoFromObservation
 } from "./util";
-
-const { useRealm } = RealmContext;
 
 type Props = {
   currentUser: Object,
@@ -57,14 +54,14 @@ const ObsListItem = ( {
   hideObsStatus = false,
   isSimpleObsStatus
 }: Props ): Node => {
-  const realm = useRealm( );
   const { t } = useTranslation();
   const uploadStatus = useStore( state => state.uploadStatus );
   const { isDebug } = useDebugMode( );
 
-  // API result or Realm result
-  const belongsToCurrentUser = observation?.user?.login === currentUser?.login
-    || realm.objectForPrimaryKey( "Observation", observation.uuid ) !== null;
+  // made an API change so we're no longer storing user for every observation in realm,
+  // because we already know all observations belong to the logged in user. so we need
+  // to be explicit here about different treatment on MyObservations vs. Explore
+  const belongsToCurrentUser = observation?.user?.login === currentUser?.login || !explore;
 
   const isObscured = observation?.obscured && !belongsToCurrentUser;
   const geoprivacy = observation?.geoprivacy;
