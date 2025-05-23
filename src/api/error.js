@@ -26,6 +26,21 @@ Object.defineProperty( INatApiError.prototype, "name", {
   value: "INatApiError"
 } );
 
+export class INatApiUnauthorizedError extends INatApiError {
+  constructor( context?: Object ) {
+    const errorJson = {
+      error: "Unauthorized",
+      status: 401,
+      context
+    };
+    super( errorJson, 401, context );
+  }
+}
+// https://wbinnssmith.com/blog/subclassing-error-in-modern-javascript/
+Object.defineProperty( INatApiUnauthorizedError.prototype, "name", {
+  value: "INatApiUnauthorizedError"
+} );
+
 export class INatApiTooManyRequestsError extends INatApiError {
   constructor( context?: Object ) {
     const errorJson = {
@@ -68,11 +83,16 @@ async function handleError( e: Object, options: Object = {} ): Object {
   // Get context from options if available
   const originalContext = options?.context || null;
   const context = createContext( e, options, originalContext );
-  if ( e.status === 429 ) {
-    logger.error( "429 without a response in handleError:", JSON.stringify( context ) );
+  if ( !e.response ) {
+    if ( e.status === 429 ) {
+      logger.error( "429 without a response in handleError:", JSON.stringify( context ) );
+      throw new INatApiTooManyRequestsError( context );
+    } else if ( e.status === 401 ) {
+      logger.error( "401 without a response in handleError:", JSON.stringify( context ) );
+      throw new INatApiUnauthorizedError( context );
+    }
+    throw e;
   }
-
-  if ( !e.response ) { throw e; }
 
   // 429 responses don't return JSON so the parsing that we do below will
   // fail. Info about the request that triggered the 429 response is
@@ -81,6 +101,9 @@ async function handleError( e: Object, options: Object = {} ): Object {
   if ( e.response.status === 429 ) {
     logger.error( "429 with a response in handleError:", JSON.stringify( context ) );
     throw new INatApiTooManyRequestsError( context );
+  } else if ( e.response.status === 401 ) {
+    logger.error( "401 with a response in handleError:", JSON.stringify( context ) );
+    throw new INatApiUnauthorizedError( context );
   }
 
   // Try to parse JSON in the response if this was an HTTP error. If we can't
