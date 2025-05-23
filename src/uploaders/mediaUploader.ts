@@ -7,11 +7,8 @@ import {
   RealmObservationSound,
   RealmPhoto
 } from "realmModels/types.d.ts";
-import { log } from "sharedHelpers/logger";
 import { markRecordUploaded, prepareMediaForUpload } from "uploaders";
 import { trackEvidenceUpload } from "uploaders/utils/progressTracker.ts";
-
-const logger = log.extend( "mediaUploader" );
 
 type EvidenceType = "Photo" | "ObservationPhoto" | "ObservationSound";
 type ActionType = "upload" | "attach" | "update";
@@ -119,7 +116,6 @@ const uploadSingleEvidence = async (
   );
 
   if ( !response ) {
-    logger.error( `Evidence: No response for ${action} ${type} ${evidenceUUID}` );
     throw new Error( `Failed to upload ${type} ${evidenceUUID}: no response from server` );
   }
 
@@ -315,15 +311,7 @@ async function uploadObservationMedia(
   const operations = createMediaOperations( mediaItems, null, true );
 
   if ( operations.length > 0 ) {
-    try {
-      await processMediaOperations( operations, options, observation.uuid, realm );
-      logger.info(
-        `MediaUpload: Uploaded ${operations.length} items for ${observation.uuid}`
-      );
-    } catch ( error ) {
-      logger.error( `MediaUpload: Failed upload for ${observation.uuid}`, error );
-      throw error;
-    }
+    await processMediaOperations( operations, options, observation.uuid, realm );
   }
 
   return {
@@ -353,15 +341,7 @@ async function attachMediaToObservation(
 
   // Process all operations in a single Promise.all
   if ( operations.length > 0 ) {
-    try {
-      await processMediaOperations( operations, options, observationUUID, realm );
-      logger.info(
-        `MediaUpload: Attached ${operations.length} items for ${observationUUID}`
-      );
-    } catch ( error ) {
-      logger.error( `MediaUpload: Failed attachment for ${observationUUID}`, error );
-      throw error;
-    }
+    await processMediaOperations( operations, options, observationUUID, realm );
   }
 }
 
