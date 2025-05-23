@@ -60,6 +60,16 @@ class ObservationPhoto extends Realm.Object {
     };
   }
 
+  static mapObservationPhotoForMyObsDefaultMode( obsPhoto ) {
+    return {
+      photo: {
+        url: obsPhoto?.photo?.url,
+        localFilePath: obsPhoto?.photo?.localFilePath
+      },
+      uuid: obsPhoto?.uuid
+    };
+  }
+
   static async new( uri, position ) {
     const photo = await Photo.new( uri );
     return {

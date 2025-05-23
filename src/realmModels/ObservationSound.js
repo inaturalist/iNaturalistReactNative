@@ -60,6 +60,12 @@ class ObservationSound extends Realm.Object {
     };
   }
 
+  static mapObservationSoundForMyObsDefaultMode( obsSound ) {
+    return {
+      uuid: obsSound?.uuid
+    };
+  }
+
   static async deleteLocalObservationSound( realm, uri, obsUUID ) {
     // delete uri on disk
     Sound.deleteSoundFromDeviceStorage( uri );

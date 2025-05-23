@@ -47,6 +47,7 @@ type Props = {
   isSimpleObsStatus?: boolean,
   hideRGLabel?: boolean,
   isConnected: boolean,
+  isFetchingNextPage?: boolean,
   layout: "list" | "grid",
   obsListKey: string,
   onEndReached: Function,
@@ -72,6 +73,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
   isSimpleObsStatus,
   hideRGLabel,
   isConnected,
+  isFetchingNextPage,
   layout,
   obsListKey = "unknown",
   onEndReached,
@@ -131,7 +133,8 @@ const ObservationsFlashList: Function = forwardRef( ( {
 
     const onItemPress = ( ) => {
       if ( obsNeedsSync && !isDefaultMode ) {
-        navigateToObsEdit( observation );
+        const realmObservation = realm.objectForPrimaryKey( "Observation", observation.uuid );
+        navigateToObsEdit( realmObservation );
       } else {
         // Uniquely identify the list this observation appears in so we can ensure
         // ObsDetails doesn't get pushed onto the stack twice after multiple taps
@@ -256,7 +259,9 @@ const ObservationsFlashList: Function = forwardRef( ( {
   const keyExtractor = item => item.uuid || item.id;
 
   const onMomentumScrollEnd = ( ) => {
-    if ( dataCanBeFetched ) {
+    // added isFetchingNextPage check to ensure that the list gets rendered with new
+    // fetch data in MyObservations
+    if ( dataCanBeFetched && !isFetchingNextPage ) {
       onEndReached( );
     }
   };

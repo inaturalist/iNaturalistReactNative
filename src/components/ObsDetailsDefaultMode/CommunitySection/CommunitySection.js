@@ -19,7 +19,7 @@ type Props = {
   onLayoutTargetItem: ( event: Object ) => void
 }
 
-const ActivitySection = ( {
+const CommunitySection = ( {
   observation,
   refetchRemoteObservation,
   activityItems,
@@ -40,7 +40,7 @@ const ActivitySection = ( {
     const currentIds = observation?.identifications;
     const userAgree = currentIds?.filter( id => id.user?.id === userId );
     return userAgree?.length > 0 && userAgree[userAgree.length - 1].current
-      ? userAgree[userAgree.length - 1].taxon.id
+      ? userAgree[userAgree.length - 1]?.taxon?.id
       : undefined;
   };
 
@@ -99,4 +99,4 @@ const ActivitySection = ( {
   );
 };
 
-export default ActivitySection;
+export default CommunitySection;
