@@ -76,16 +76,23 @@ async function uploadObservation(
   const obsProgress = trackObservationUpload( observation.uuid );
   obsProgress.start( );
 
-  const apiToken = await validateAndGetToken( );
-  const options = { ...opts, api_token: apiToken };
-
   const newObs = prepareObservationForUpload( observation );
 
   // Step 1: upload the photos/sounds (before uploading the observation itself)
-  const mediaItems = await uploadObservationMedia( observation, options, realm );
+  let apiToken = await validateAndGetToken( );
+  const mediaItems = await uploadObservationMedia(
+    observation,
+    { ...opts, api_token: apiToken },
+    realm
+  );
 
-  // Step 2: upload or modify observation
-  const response = await createOrUpdateObservation( observation, newObs, options );
+  // Step 2: upload or modify observation with revalidated token
+  apiToken = await validateAndGetToken( );
+  const response = await createOrUpdateObservation(
+    observation,
+    newObs,
+    { ...opts, api_token: apiToken }
+  );
 
   obsProgress.complete( );
   if ( !response ) {
@@ -94,8 +101,14 @@ async function uploadObservation(
 
   const { uuid: obsUUID } = response.results[0];
 
-  // Step 3: attach media to observation
-  await attachMediaToObservation( obsUUID, mediaItems, options, realm );
+  // Step 3: attach media to observation with revalidated token
+  apiToken = await validateAndGetToken( );
+  await attachMediaToObservation(
+    obsUUID,
+    mediaItems,
+    { ...opts, api_token: apiToken },
+    realm
+  );
 
   // Step 4: mark observation as uploaded in realm
   markRecordUploaded( observation.uuid, null, "Observation", response, realm );
