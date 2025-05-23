@@ -5,7 +5,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import About from "components/About";
 import Developer from "components/Developer/Developer";
 import Log from "components/Developer/Log";
-import NetworkLogging from "components/Developer/NetworkLogging.tsx";
 import UiLibrary from "components/Developer/UiLibrary";
 import UiLibraryItem from "components/Developer/UiLibraryItem";
 import Donate from "components/Donate/Donate.tsx";
@@ -313,14 +312,6 @@ const TabStackNavigator = ( ): Node => {
           options={{ headerTitle: debugTitle }}
 
         />
-        { // eslint-disable-next-line no-undef
-          __DEV__ && (
-            <Stack.Screen
-              name="network"
-              component={NetworkLogging}
-            />
-          )
-        }
         <Stack.Screen
           name="UILibrary"
           component={UiLibrary}

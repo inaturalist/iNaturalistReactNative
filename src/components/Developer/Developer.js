@@ -116,11 +116,6 @@ const Developer = (): Node => {
                 className="mb-5"
               />
               <Button
-                onPress={() => navigation.navigate( "network" )}
-                text="NETWORK"
-                className="mb-5"
-              />
-              <Button
                 onPress={() => { throw new Error( "Test error" ); }}
                 text="TEST ERROR"
                 className="mb-5"

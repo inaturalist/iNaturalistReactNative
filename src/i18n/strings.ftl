@@ -520,10 +520,6 @@ Filter-by-observed-on-date = Filter by observations observed on a specific date
 Filter-by-uploaded-between-dates = Filter by observations uploaded between two specific dates
 Filter-by-uploaded-on-date = Filter by observations uploaded on a specific date
 Filters = Filters
-Flag-An-Item = Flag An Item
-Flag-Item-Description = Flagging brings something to the attention of volunteer site curators. Please don't flag problems you can address with identifications, the Data Quality Assessment, or by talking to the person who made the content.
-Flag-Item-Other-Description = Some other reason you can explain below.
-Flag-Item-Other-Input-Hint = Specify the reason you're flagging this item
 # Status when an item has been flagged
 Flagged = Flagged
 Flash = Flash
@@ -876,8 +872,6 @@ Observers = Observers
 Observers-View = Observers View
 # Month of October
 October = October
-Offensive-Inappropriate = Offensive/Inappropriate
-Offensive-Inappropriate-Examples = Misleading or illegal content, racial or ethnic slurs, etc. For more on our definition of "appropriate," see the FAQ.
 Offline-DQA-description = The DQA may not be accurate. Check your internet connection and try again.
 Offline-suggestions-may-differ-from-online = Offline suggestions may differ from online suggestions, and taxon images and common names may not load.
 # Generic confirmation, e.g. button on a warning alert
@@ -904,10 +898,6 @@ Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Or, you can
 # Picker prompt on observation edit
 Organism-is-captive = Organism is captive
 Organisms-that-are-identified-to-species = Organisms that are identified to species rank or below
-# Generic option in a list for unanticipated cases, e.g. a choice to manually
-# enter an explanation for why you are flagging something instead of choosing
-# one of the existing options
-Other = Other
 OTHER-DATA = OTHER DATA
 OTHER-SUGGESTIONS = OTHER SUGGESTIONS
 # Tab on notifications showing notifications about content created by others.
@@ -1039,9 +1029,6 @@ Ranks-Zoosection = Zoosection
 Ranks-ZOOSUBSECTION = ZOOSUBSECTION
 Ranks-Zoosubsection = Zoosubsection
 Read-more-on-Wikipedia = Read more on Wikipedia
-# Label for the input in the form for creating a flag that allows the user to
-# describe a reason they are creating the flag
-Reason--flag = Reason
 # Help text for the button that opens the sound recorder
 Record-a-sound = Record a sound
 # Title of screen asking for permission to access the microphone
@@ -1102,8 +1089,6 @@ Reviewed-observations-only = Reviewed observations only
 Satellite--map-type = Satellite
 # Label for a button that persists something
 SAVE = SAVE
-# Label for a button that persists something
-Save = Save
 SAVE-ALL = SAVE ALL
 # Button that saves all observations in a batch of multiple observations
 Save-all-observations = Save all observations
@@ -1197,8 +1182,6 @@ sound-recorder-help-Stop-moving = Stop moving
 sound-recorder-help-Try-to-isolate = Try to isolate the sound of a single organism. If you can’t, make sure to leave a note of which organism you’re recording.
 Sounds = Sounds
 Source-List = <0>(Source List: </0><1>{ $source }</1><0>)</0>
-Spam = Spam
-Spam-Examples = Commercial solicitation, links to nowhere, etc.
 Species = Species
 Species-View = Species View
 SPECIES-WITHOUT-NUMBER =
@@ -1540,7 +1523,6 @@ You-may-have-observed-a-species-in-this-group = You may have observed a species 
 You-may-have-observed-this-species = You may have observed this species
 # Description for modal that pops up if user logs in and has more than 50 observations
 You-may-notice-changes-to-how-things-look-and-flow = You may notice changes to how things look and flow. You can control your options in the settings.
-You-must-be-logged-in-to-view-messages = You must be logged in to view messages
 You-must-install-Google-Play-Services-to-sign-in-with-Google = You must install Google Play Services to sign in with Google.
 # Error message when you try to do something that requires an Internet
 # connection but such a connection is, tragically, missing

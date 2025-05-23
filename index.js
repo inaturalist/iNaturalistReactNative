@@ -29,7 +29,6 @@ import { Alert, AppRegistry } from "react-native";
 import Config from "react-native-config";
 import { setJSExceptionHandler, setNativeExceptionHandler } from "react-native-exception-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { startNetworkLogging } from "react-native-network-logger";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { getInstallID } from "sharedHelpers/installData.ts";
 import { reactQueryRetry } from "sharedHelpers/logging";
@@ -113,18 +112,12 @@ setNativeExceptionHandler(
       logger.error( `Native Error: ${exceptionString}`, crashData );
     } catch ( e ) {
       // Last-ditch attempt to log something
-      logger.error( `Native Error: ${exceptionString} (failed to save context)` );
+      logger.error( `Native Error: ${exceptionString} (failed to save context)`, e );
     }
   },
   true, // Force quit the app to prevent zombie states
   true // Enable on iOS
 );
-
-// Only in debug builds
-// eslint-disable-next-line no-undef
-if ( __DEV__ ) {
-  startNetworkLogging();
-}
 
 initI18next();
 
