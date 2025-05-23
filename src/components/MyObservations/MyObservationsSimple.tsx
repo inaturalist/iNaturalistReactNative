@@ -14,6 +14,7 @@ import {
   Body1,
   InfiniteScrollLoadingWheel,
   OfflineNotice,
+  PerformanceDebugView,
   Tabs,
   ViewWrapper
 } from "components/SharedComponents";
@@ -287,7 +288,7 @@ const MyObservationsSimple = ( {
               dataCanBeFetched={!!currentUser}
               handlePullToRefresh={handlePullToRefresh}
               handleIndividualUploadPress={handleIndividualUploadPress}
-              hideLoadingWheel
+              hideLoadingWheel={!isFetchingNextPage}
               hideMetadata={isDefaultMode}
               hideObsUploadStatus={!currentUser}
               hideObsStatus={!currentUser}
@@ -375,6 +376,11 @@ const MyObservationsSimple = ( {
           />
         </>
       )}
+      <PerformanceDebugView
+        showListMetrics
+        showScrollMetrics
+        position="bottom-left"
+      />
     </>
   );
 };

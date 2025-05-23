@@ -33,14 +33,6 @@ class Identification extends Realm.Object {
     };
   }
 
-  static mapApiToRealm( id, realm = null ) {
-    const newId = {
-      ...id,
-      taxon: Taxon.mapApiToRealm( id.taxon, realm )
-    };
-    return newId;
-  }
-
   static new = attrs => {
     const newIdent = {
       ...attrs,
