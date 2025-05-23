@@ -9,8 +9,6 @@ module.exports = {
   },
   extends: [
     "airbnb",
-    // This was added to the RN0.72 template, but it does not work with our current setup
-    // "@react-native",
     "plugin:i18next/recommended",
     "plugin:@tanstack/eslint-plugin-query/recommended",
     "plugin:react-native-a11y/ios",
@@ -74,17 +72,6 @@ module.exports = {
     "no-underscore-dangle": 0,
     // This gets around eslint problems when typing functions in TS
     "no-unused-vars": 0,
-    "@typescript-eslint/no-unused-vars": [
-      "error",
-      {
-        vars: "all",
-        args: "after-used",
-        // Overriding airbnb to allow leading underscore to indicate unused var
-        argsIgnorePattern: "^_",
-        varsIgnorePattern: "^_",
-        ignoreRestSiblings: true
-      }
-    ],
     "no-void": 0,
     "prefer-destructuring": [2, { object: true, array: false }],
     quotes: [2, "double"],
@@ -133,15 +120,34 @@ module.exports = {
     "react-native-a11y/has-valid-accessibility-live-region": 1,
     "react-native-a11y/has-valid-important-for-accessibility": 1,
     "no-shadow": "off",
-    "@typescript-eslint/no-shadow": "error",
+
     // it's supposedly safe to remove no-undef because TS's compiler handles
     // this, but I'm bumping into this error a lot in VSCode - 20240624 amanda
     // https://eslint.org/docs/latest/rules/no-undef#handled_by_typescript
     "no-undef": "error",
 
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        vars: "all",
+        args: "after-used",
+        // Overriding airbnb to allow leading underscore to indicate unused var
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
+        ignoreRestSiblings: true
+      }
+    ],
     // TODO: we should actually type these at some point ~amanda 041824
+    "@typescript-eslint/no-shadow": "error",
     "@typescript-eslint/ban-types": 0,
-    "@typescript-eslint/no-var-requires": 0
+    "@typescript-eslint/no-var-requires": 0,
+    "@typescript-eslint/no-wrapper-object-types": 0,
+    "@typescript-eslint/no-require-imports": 0,
+    "@typescript-eslint/no-unsafe-function-type": 0,
+    "@typescript-eslint/no-empty-object-types": 0,
+    "@typescript-eslint/no-empty-object-type": 0,
+    "@typescript-eslint/no-explicit-any": 1,
+    "@typescript-eslint/no-unused-expressions": 1
   },
   // need this so jest doesn't show as undefined in jest.setup.js
   env: {
