@@ -232,7 +232,10 @@ const getAnonymousJWT = (): string => {
  * @returns {Promise<string|*>}
  */
 // $FlowIgnore
-const getJWT = async ( allowAnonymousJWT = false ): Promise<string | null> => {
+const getJWT = async (
+  allowAnonymousJWT = false,
+  logContext = null
+): Promise<string | null> => {
   let jwtToken: string | undefined = await getSensitiveItem( "jwtToken" );
   const storedJwtGeneratedAt = await getSensitiveItem( "jwtGeneratedAt" );
   let jwtGeneratedAt: number | null = null;
@@ -244,10 +247,16 @@ const getJWT = async ( allowAnonymousJWT = false ): Promise<string | null> => {
 
   if ( !loggedIn && allowAnonymousJWT ) {
     // User not logged in, and anonymous JWT is allowed - return it
+    if ( logContext ) {
+      logger.info( `JWT [${logContext}]: Using anonymous JWT for non-logged-in user` );
+    }
     return getAnonymousJWT();
   }
 
   if ( !loggedIn ) {
+    if ( logContext ) {
+      logger.info( `JWT [${logContext}]: User not logged in, returning null` );
+    }
     return null;
   }
 
@@ -279,10 +288,14 @@ const getJWT = async ( allowAnonymousJWT = false ): Promise<string | null> => {
     // observations shouldn't you have the opportunity to sign in again and
     // upload them?
     if ( !response.ok ) {
+      logger.error( `JWT [${logContext}]:  Token refresh failed - status: ${response.status}` );
       // this deletes the user JWT and saved login details when a user is not
       // actually signed in anymore for example, if they installed, deleted,
       // and reinstalled the app without logging out
       if ( response.status === 401 ) {
+        if ( logContext ) {
+          logger.info( `JWT [${logContext}]: User unauthorized, signing out ` );
+        }
         signOut( { clearRealm: true } );
       }
       return null;
@@ -297,6 +310,10 @@ const getJWT = async ( allowAnonymousJWT = false ): Promise<string | null> => {
 
     await setSensitiveItem( "jwtToken", jwtToken );
     await setSensitiveItem( "jwtGeneratedAt", jwtGeneratedAt.toString() );
+
+    if ( logContext ) {
+      logger.info( `JWT [${logContext}]: Token refreshed successfully` );
+    }
 
     return jwtToken;
   }
