@@ -58,7 +58,10 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
       accessibilityHint: t( "Navigates-to-explore" ),
       size: 31,
       onPress: ( ) => {
-        navigation.navigate( "RootExplore" );
+        navigation.navigate( "TabNavigator", {
+          screen: "TabStackNavigator",
+          params: { screen: "RootExplore" }
+        } );
       },
       active: SCREEN_NAME_ROOT_EXPLORE === activeTab
     },
@@ -70,7 +73,10 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
       accessibilityHint: t( "Navigates-to-your-observations" ),
       size: 40,
       onPress: ( ) => {
-        navigation.navigate( "ObsList" );
+        navigation.navigate( "TabNavigator", {
+          screen: "TabStackNavigator",
+          params: { screen: "ObsList" }
+        } );
       },
       active: SCREEN_NAME_OBS_LIST === activeTab
     },
@@ -81,7 +87,10 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
       accessibilityHint: t( "Navigates-to-notifications" ),
       size: 32,
       onPress: ( ) => {
-        navigation.navigate( "Notifications" );
+        navigation.navigate( "TabNavigator", {
+          screen: "TabStackNavigator",
+          params: { screen: "Notifications" }
+        } );
       },
       active: SCREEN_NAME_NOTIFICATIONS === activeTab
     }

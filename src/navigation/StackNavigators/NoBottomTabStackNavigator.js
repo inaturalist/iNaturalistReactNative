@@ -106,7 +106,7 @@ const SoundRecorderWithPermission = ( ) => fadeInComponent(
 const NoBottomTabStackNavigator = ( ): Node => (
   <Stack.Navigator
     screenOptions={{
-      headerBackTitleVisible: false,
+      headerBackButtonDisplayMode: "minimal",
       contentStyle: {
         backgroundColor: "white"
       }

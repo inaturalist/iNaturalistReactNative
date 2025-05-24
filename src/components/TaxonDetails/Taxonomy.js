@@ -32,7 +32,8 @@ const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ): Node => {
       name: "TaxonDetails",
       params: {
         id: taxonId,
-        hideNavButtons
+        hideNavButtons,
+        usesVision: false
       }
     } )
   );
