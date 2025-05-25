@@ -131,6 +131,7 @@
     "react-native-vector-icons": "^10.2.0",
     "react-native-vision-camera": "4.0.5",
     "react-native-volume-manager": "^1.10.0",
+    "react-native-walkthrough-tooltip": "^1.6.0",
     "react-native-webview": "^13.8.4",
     "react-native-worklets-core": "^1.3.3",
     "realm": "^20.1.0",
