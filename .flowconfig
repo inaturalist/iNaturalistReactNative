@@ -28,6 +28,9 @@ node_modules/react-native/Libraries/polyfills/.*
 .*/node_modules/@react-native/community-cli-plugin/dist/commands/bundle/index.js.flow
 .*/node_modules/@react-native/community-cli-plugin/dist/commands/bundle/buildBundle.js.flow
 .*/node_modules/metro/src/lib/JsonReporter.js.flow
+.*/node_modules/hermes-estree/dist/generated/predicates.js.flow
+.*/node_modules/react-native/Libraries/StyleSheet/StyleSheetTypes.js
+.*/node_modules/react-native/Libraries/Types/ReactDevToolsTypes.js
 
 [untyped]
 .*/node_modules/@react-native-community/cli/.*/.*

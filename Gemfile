@@ -8,6 +8,7 @@ ruby ">= 2.6.10"
 # bound in the template on Cocoapods with next React Native release.
 gem "activesupport", ">= 6.1.7.5", "< 7.1.0"
 gem "cocoapods", ">= 1.13", "< 1.15"
+gem "concurrent-ruby", "<= 1.3.4"
 gem "xcodeproj", "< 1.26.0"
 
 gem "fastlane"

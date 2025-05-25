@@ -20,6 +20,9 @@ type Props = {
     login: string
   },
   isConnected: boolean,
+  // TODO: Temporarily silencing this error because this here is a flow type
+  // and not a TypeScript type.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TextComponent: any,
   testID: string,
   useBigIcon?: boolean
