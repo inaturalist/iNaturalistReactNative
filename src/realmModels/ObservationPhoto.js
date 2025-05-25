@@ -34,7 +34,7 @@ class ObservationPhoto extends Realm.Object {
     return {
       file: new FileUpload( {
         uri,
-        name: uri.split( "/" ).pop( ),
+        name: uri?.split( "/" ).pop( ),
         type: "image/jpeg"
       } )
     };
