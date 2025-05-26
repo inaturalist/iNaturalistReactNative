@@ -44,6 +44,7 @@ const CustomTabBar = ( { tabs }: Props ): Node => {
             placement="top"
             arrowSize={{ width: 21, height: 16 }}
             backgroundColor="rgba(0,0,0,0.7)"
+            disableShadow
           >
             <AddObsButton key="AddObsButton" />
           </Tooltip>
