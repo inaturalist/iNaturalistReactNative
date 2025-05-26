@@ -27,7 +27,8 @@ const CustomTabBar = ( { tabs }: Props ): Node => {
   const tabList = tabs.map( tab => <NavButton {...tab} key={tab.testID} /> );
   const contentStyle = {
     height: 50,
-    paddingVertical: 16
+    paddingVertical: 16,
+    borderRadius: 16
   };
   tabList.splice(
     -2,
