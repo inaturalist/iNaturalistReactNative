@@ -31,6 +31,7 @@ const CustomTabBar = ( { tabs }: Props ): Node => {
     paddingHorizontal: 20,
     borderRadius: 16
   };
+  const tooltipIsVisible = false;
   tabList.splice(
     -2,
     0,
@@ -40,7 +41,7 @@ const CustomTabBar = ( { tabs }: Props ): Node => {
       <View className="w-[69px] h-[60px] mx-3" key="CustomTabBar-AddObs">
         <View className="absolute top-[-13px]">
           <Tooltip
-            isVisible
+            isVisible={tooltipIsVisible}
             content={(
               <Body2>
                 {t( "Press-and-hold-to-view-more-options" )}
@@ -52,7 +53,7 @@ const CustomTabBar = ( { tabs }: Props ): Node => {
             backgroundColor="rgba(0,0,0,0.7)"
             disableShadow
           >
-            <AddObsButton key="AddObsButton" />
+            <AddObsButton key="AddObsButton" tooltipIsVisible={tooltipIsVisible} />
           </Tooltip>
         </View>
       </View>

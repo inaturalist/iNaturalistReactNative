@@ -13,7 +13,10 @@ import useStore from "stores/useStore";
 
 const logger = log.extend( "AddObsButton" );
 
-const AddObsButton = (): React.Node => {
+interface Props {
+  tooltipIsVisible?: boolean;
+}
+const AddObsButton = ( { tooltipIsVisible }: Props ): React.Node => {
   const [showModal, setModal] = React.useState( false );
 
   const openModal = React.useCallback( () => setModal( true ), [] );
@@ -78,9 +81,15 @@ const AddObsButton = (): React.Node => {
       <GradientButton
         sizeClassName="w-[69px] h-[69px] mb-[5px]"
         onLongPress={!isAllAddObsOptionsMode && openModal}
-        onPress={isAllAddObsOptionsMode
-          ? openModal
-          : navToARCamera}
+        onPress={() => {
+          if ( tooltipIsVisible ) {
+            return;
+          }
+          if ( isAllAddObsOptionsMode ) {
+            openModal( );
+          }
+          navToARCamera( );
+        }}
         accessibilityLabel={t( "Add-observations" )}
         accessibilityHint={isAllAddObsOptionsMode
           ? t( "Shows-observation-creation-options" )
