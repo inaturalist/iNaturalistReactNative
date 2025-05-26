@@ -25,7 +25,10 @@ type Props = {
 
 const CustomTabBar = ( { tabs }: Props ): Node => {
   const tabList = tabs.map( tab => <NavButton {...tab} key={tab.testID} /> );
-
+  const contentStyle = {
+    height: 50,
+    paddingVertical: 16
+  };
   tabList.splice(
     -2,
     0,
@@ -41,6 +44,7 @@ const CustomTabBar = ( { tabs }: Props ): Node => {
                 {t( "Press-and-hold-to-view-more-options" )}
               </Body2>
             )}
+            contentStyle={contentStyle}
             placement="top"
             arrowSize={{ width: 21, height: 16 }}
             backgroundColor="rgba(0,0,0,0.7)"
