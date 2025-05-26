@@ -28,6 +28,7 @@ const CustomTabBar = ( { tabs }: Props ): Node => {
   const contentStyle = {
     height: 50,
     paddingVertical: 16,
+    paddingHorizontal: 20,
     borderRadius: 16
   };
   tabList.splice(
