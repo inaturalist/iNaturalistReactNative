@@ -1,10 +1,13 @@
 // @flow
 import classNames from "classnames";
 import AddObsButton from "components/AddObsModal/AddObsButton";
+import { Body2 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Tooltip from "react-native-walkthrough-tooltip";
 import { getShadow } from "styles/global";
 
 import NavButton from "./NavButton";
@@ -31,7 +34,17 @@ const CustomTabBar = ( { tabs }: Props ): Node => {
     (
       <View className="w-[69px] h-[60px] mx-3" key="CustomTabBar-AddObs">
         <View className="absolute top-[-13px]">
-          <AddObsButton key="AddObsButton" />
+          <Tooltip
+            isVisible
+            content={(
+              <Body2>
+                {t( "Press-and-hold-to-view-more-options" )}
+              </Body2>
+            )}
+            placement="top"
+          >
+            <AddObsButton key="AddObsButton" />
+          </Tooltip>
         </View>
       </View>
     )
