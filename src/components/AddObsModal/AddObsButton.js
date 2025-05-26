@@ -20,7 +20,11 @@ const AddObsButton = ( ): React.Node => {
   const openModal = React.useCallback( () => setModal( true ), [] );
   const closeModal = React.useCallback( () => setModal( false ), [] );
 
-  const tooltipIsVisible = false;
+  // Controls wether to show the tooltip, and to show it only once to the user
+  const showKey = "AddObsButtonTooltip";
+  const shownOnce = useStore( state => state.layout.shownOnce );
+  const setShownOnce = useStore( state => state.layout.setShownOnce );
+  const tooltipIsVisible = !shownOnce[showKey];
 
   const contentStyle = {
     height: 50,
@@ -101,6 +105,7 @@ const AddObsButton = ( ): React.Node => {
         <GradientButton
           sizeClassName="w-[69px] h-[69px] mb-[5px]"
           onLongPress={() => {
+            if ( tooltipIsVisible ) setShownOnce( showKey );
             if ( !isAllAddObsOptionsMode ) openModal();
           }}
           onPress={() => {
