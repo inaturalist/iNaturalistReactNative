@@ -2,25 +2,32 @@
 
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import AddObsModal from "components/AddObsModal/AddObsModal.tsx";
-import { Modal } from "components/SharedComponents";
+import { Body2, Modal } from "components/SharedComponents";
 import GradientButton from "components/SharedComponents/Buttons/GradientButton.tsx";
 import { t } from "i18next";
 import { getCurrentRoute } from "navigation/navigationUtils.ts";
 import * as React from "react";
+import Tooltip from "react-native-walkthrough-tooltip";
 import { log } from "sharedHelpers/logger";
 import { useLayoutPrefs } from "sharedHooks";
 import useStore from "stores/useStore";
 
 const logger = log.extend( "AddObsButton" );
 
-interface Props {
-  tooltipIsVisible?: boolean;
-}
-const AddObsButton = ( { tooltipIsVisible }: Props ): React.Node => {
+const AddObsButton = ( ): React.Node => {
   const [showModal, setModal] = React.useState( false );
 
   const openModal = React.useCallback( () => setModal( true ), [] );
   const closeModal = React.useCallback( () => setModal( false ), [] );
+
+  const tooltipIsVisible = false;
+
+  const contentStyle = {
+    height: 50,
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    borderRadius: 16
+  };
 
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const { isAllAddObsOptionsMode } = useLayoutPrefs( );
@@ -78,25 +85,41 @@ const AddObsButton = ( { tooltipIsVisible }: Props ): React.Node => {
         closeModal={closeModal}
         modal={addObsModal}
       />
-      <GradientButton
-        sizeClassName="w-[69px] h-[69px] mb-[5px]"
-        onLongPress={!isAllAddObsOptionsMode && openModal}
-        onPress={() => {
-          if ( tooltipIsVisible ) {
-            return;
-          }
-          if ( isAllAddObsOptionsMode ) {
-            openModal( );
-          }
-          navToARCamera( );
-        }}
-        accessibilityLabel={t( "Add-observations" )}
-        accessibilityHint={isAllAddObsOptionsMode
-          ? t( "Shows-observation-creation-options" )
-          : t( "Opens-AI-camera" )}
-        iconName={isAllAddObsOptionsMode && "plus"}
-        iconSize={isAllAddObsOptionsMode && 31}
-      />
+      <Tooltip
+        isVisible={tooltipIsVisible}
+        content={(
+          <Body2>
+            {t( "Press-and-hold-to-view-more-options" )}
+          </Body2>
+        )}
+        contentStyle={contentStyle}
+        placement="top"
+        arrowSize={{ width: 21, height: 16 }}
+        backgroundColor="rgba(0,0,0,0.7)"
+        disableShadow
+      >
+        <GradientButton
+          sizeClassName="w-[69px] h-[69px] mb-[5px]"
+          onLongPress={() => {
+            if ( !isAllAddObsOptionsMode ) openModal();
+          }}
+          onPress={() => {
+            if ( tooltipIsVisible ) {
+              return;
+            }
+            if ( isAllAddObsOptionsMode ) {
+              openModal( );
+            }
+            navToARCamera( );
+          }}
+          accessibilityLabel={t( "Add-observations" )}
+          accessibilityHint={isAllAddObsOptionsMode
+            ? t( "Shows-observation-creation-options" )
+            : t( "Opens-AI-camera" )}
+          iconName={isAllAddObsOptionsMode && "plus"}
+          iconSize={isAllAddObsOptionsMode && 31}
+        />
+      </Tooltip>
     </>
   );
 };

@@ -1,13 +1,10 @@
 // @flow
 import classNames from "classnames";
 import AddObsButton from "components/AddObsModal/AddObsButton";
-import { Body2 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Tooltip from "react-native-walkthrough-tooltip";
 import { getShadow } from "styles/global";
 
 import NavButton from "./NavButton";
@@ -25,13 +22,6 @@ type Props = {
 
 const CustomTabBar = ( { tabs }: Props ): Node => {
   const tabList = tabs.map( tab => <NavButton {...tab} key={tab.testID} /> );
-  const contentStyle = {
-    height: 50,
-    paddingVertical: 16,
-    paddingHorizontal: 20,
-    borderRadius: 16
-  };
-  const tooltipIsVisible = false;
   tabList.splice(
     -2,
     0,
@@ -40,21 +30,7 @@ const CustomTabBar = ( { tabs }: Props ): Node => {
     (
       <View className="w-[69px] h-[60px] mx-3" key="CustomTabBar-AddObs">
         <View className="absolute top-[-13px]">
-          <Tooltip
-            isVisible={tooltipIsVisible}
-            content={(
-              <Body2>
-                {t( "Press-and-hold-to-view-more-options" )}
-              </Body2>
-            )}
-            contentStyle={contentStyle}
-            placement="top"
-            arrowSize={{ width: 21, height: 16 }}
-            backgroundColor="rgba(0,0,0,0.7)"
-            disableShadow
-          >
-            <AddObsButton key="AddObsButton" tooltipIsVisible={tooltipIsVisible} />
-          </Tooltip>
+          <AddObsButton key="AddObsButton" />
         </View>
       </View>
     )
