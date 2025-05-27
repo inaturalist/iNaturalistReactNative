@@ -21,12 +21,16 @@ const AddObsButton = ( ): React.Node => {
   const closeModal = React.useCallback( () => setModal( false ), [] );
 
   const { isAllAddObsOptionsMode } = useLayoutPrefs( );
+  const currentRoute = getCurrentRoute();
+
   // Controls wether to show the tooltip, and to show it only once to the user
   const showKey = "AddObsButtonTooltip";
   const shownOnce = useStore( state => state.layout.shownOnce );
   const setShownOnce = useStore( state => state.layout.setShownOnce );
   // Only show the tooltip if the user has only AI camera as an option in this button.
+  // Only show the tooltip on MyObservations screen.
   const triggerCondition = !isAllAddObsOptionsMode;
+  // && currentRoute?.name === "ObsList";
   // The tooltip should only appear once per app download.
   const tooltipIsVisible = !shownOnce[showKey] && triggerCondition;
 
@@ -47,7 +51,6 @@ const AddObsButton = ( ): React.Node => {
   }, [isAllAddObsOptionsMode] );
 
   const navAndCloseModal = ( screen, params ) => {
-    const currentRoute = getCurrentRoute();
     if ( screen !== "ObsEdit" ) {
       resetObservationFlowSlice( );
     }
