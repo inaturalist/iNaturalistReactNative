@@ -20,11 +20,15 @@ const AddObsButton = ( ): React.Node => {
   const openModal = React.useCallback( () => setModal( true ), [] );
   const closeModal = React.useCallback( () => setModal( false ), [] );
 
+  const { isAllAddObsOptionsMode } = useLayoutPrefs( );
   // Controls wether to show the tooltip, and to show it only once to the user
   const showKey = "AddObsButtonTooltip";
   const shownOnce = useStore( state => state.layout.shownOnce );
   const setShownOnce = useStore( state => state.layout.setShownOnce );
-  const tooltipIsVisible = !shownOnce[showKey];
+  // Only show the tooltip if the user has only AI camera as an option in this button.
+  const triggerCondition = !isAllAddObsOptionsMode;
+  // The tooltip should only appear once per app download.
+  const tooltipIsVisible = !shownOnce[showKey] && triggerCondition;
 
   const contentStyle = {
     height: 50,
@@ -34,7 +38,6 @@ const AddObsButton = ( ): React.Node => {
   };
 
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
-  const { isAllAddObsOptionsMode } = useLayoutPrefs( );
   const navigation = useNavigation( );
   React.useEffect( ( ) => {
     // don't remove this logger.info statement: it's used for internal
