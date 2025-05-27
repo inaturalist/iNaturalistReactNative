@@ -29,8 +29,8 @@ const AddObsButton = ( ): React.Node => {
   const setShownOnce = useStore( state => state.layout.setShownOnce );
   // Only show the tooltip if the user has only AI camera as an option in this button.
   // Only show the tooltip on MyObservations screen.
-  const triggerCondition = !isAllAddObsOptionsMode;
-  // && currentRoute?.name === "ObsList";
+  const triggerCondition = !isAllAddObsOptionsMode
+    && currentRoute?.name === "ObsList";
   // The tooltip should only appear once per app download.
   const tooltipIsVisible = !shownOnce[showKey] && triggerCondition;
 
