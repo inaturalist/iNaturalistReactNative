@@ -1,0 +1,2 @@
+UPDATED
+* Performance improvements on the Explore screen, radius of nearby observations is now 1km
