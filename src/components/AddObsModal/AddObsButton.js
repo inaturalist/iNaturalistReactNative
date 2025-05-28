@@ -9,8 +9,8 @@ import { getCurrentRoute } from "navigation/navigationUtils.ts";
 import * as React from "react";
 import Tooltip from "react-native-walkthrough-tooltip";
 import { log } from "sharedHelpers/logger";
-import { useLayoutPrefs } from "sharedHooks";
-import useStore from "stores/useStore";
+import { useCurrentUser, useLayoutPrefs } from "sharedHooks";
+import useStore, { zustandStorage } from "stores/useStore";
 
 const logger = log.extend( "AddObsButton" );
 
@@ -22,15 +22,21 @@ const AddObsButton = ( ): React.Node => {
 
   const { isAllAddObsOptionsMode } = useLayoutPrefs( );
   const currentRoute = getCurrentRoute();
+  const currentUser = useCurrentUser( );
 
   // Controls wether to show the tooltip, and to show it only once to the user
   const showKey = "AddObsButtonTooltip";
   const shownOnce = useStore( state => state.layout.shownOnce );
   const setShownOnce = useStore( state => state.layout.setShownOnce );
+  const numOfUserObservations = zustandStorage.getItem( "numOfUserObservations" );
   // Only show the tooltip if the user has only AI camera as an option in this button.
   // Only show the tooltip on MyObservations screen.
   const triggerCondition = !isAllAddObsOptionsMode
-    && currentRoute?.name === "ObsList";
+    && currentRoute?.name === "ObsList"
+    // If logged out, user should see the tooltip after making their second observation
+    && !currentUser
+    && numOfUserObservations > 1;
+
   // The tooltip should only appear once per app download.
   const tooltipIsVisible = !shownOnce[showKey] && triggerCondition;
 
