@@ -24,7 +24,7 @@ const AddObsButton = ( ): React.Node => {
   const currentRoute = getCurrentRoute( );
   const currentUser = useCurrentUser( );
 
-  // Controls wether to show the tooltip, and to show it only once to the user
+  // Controls whether to show the tooltip, and to show it only once to the user
   const showKey = "AddObsButtonTooltip";
   const shownOnce = useStore( state => state.layout.shownOnce );
   const setShownOnce = useStore( state => state.layout.setShownOnce );
