@@ -21,7 +21,7 @@ const AddObsButton = ( ): React.Node => {
   const closeModal = React.useCallback( () => setModal( false ), [] );
 
   const { isAllAddObsOptionsMode } = useLayoutPrefs( );
-  const currentRoute = getCurrentRoute();
+  const currentRoute = getCurrentRoute( );
   const currentUser = useCurrentUser( );
 
   // Controls wether to show the tooltip, and to show it only once to the user
