@@ -5,7 +5,7 @@
 ### translations, go to https://crowdin.com/editor/inaturalistios/724
 ###
 
-A-global-community-for-nature = קהילה עומלית למען הטבע
+A-global-community-for-nature = קהילה עולמית למען הטבע
 ABOUT = אודות
 ABOUT-COLLECTION-PROJECTS = אודות פרויקטי אוסף
 ABOUT-INATURALIST = אודות INATURALIST
@@ -46,7 +46,7 @@ AGREE = מאשר.ת
 AGREE-WITH-ID = מסכימ.ה עם הזיהוי?
 Agree-with-ID-description = האם ברצונך להסכים עם הזיהוי ולהציע את הזיהוי הבא?
 AI-Camera = מצלמת AI
-ALL = כל
+ALL = הכל
 All = הכל
 All-observation-options--list = כל אפשרויות התצפית: מצלמת iNaturalist AI, מצלמה רגילה, העלאה מספריית התמונות ורשמקול
 All-observations = כל התצפיות
@@ -585,7 +585,7 @@ Organisms-that-are-identified-to-species = אורגניזמים המזוהים �
 Other = אחר
 OTHER-DATA = נתונים אחרים
 OTHER-SUGGESTIONS = הצעות אחרות
-OTHERS--notifications = OTHERS
+OTHERS--notifications = אחרים.ות
 PASSWORD = סיסמה
 PEOPLE--title = א.נשים
 Photo-importer = מייבא תמונות
@@ -976,8 +976,8 @@ X-Identifiers =
     }
 X-MEMBERS =
     { $count ->
-        [one] { $count } MEMBER
-       *[other] { $count } MEMBERS
+        [one] { $count } חבר.ה
+       *[other] { $count } חברים.ות
     }
 X-Observations =
     { $count ->
