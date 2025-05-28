@@ -126,8 +126,10 @@ const AddObsButton = ( ): React.Node => {
             }
             if ( isAllAddObsOptionsMode ) {
               openModal( );
+              return; // Prevent navigation when modal is opened
+            } else {
+              navToARCamera( );
             }
-            navToARCamera( );
           }}
           accessibilityLabel={t( "Add-observations" )}
           accessibilityHint={isAllAddObsOptionsMode
