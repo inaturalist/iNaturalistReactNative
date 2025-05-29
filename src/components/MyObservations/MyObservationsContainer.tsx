@@ -99,6 +99,7 @@ const MyObservationsContainer = ( ): React.FC => {
   useObservationsUpdates( !!currentUser );
 
   const {
+    fetchFromLastObservation,
     fetchNextPage,
     isFetchingNextPage,
     status,
@@ -360,6 +361,7 @@ const MyObservationsContainer = ( ): React.FC => {
       activeTab={activeTab}
       currentUser={currentUser}
       fetchMoreTaxa={fetchMoreTaxa}
+      fetchFromLastObservation={fetchFromLastObservation}
       handleIndividualUploadPress={handleIndividualUploadPress}
       handlePullToRefresh={handlePullToRefresh}
       handleSyncButtonPress={handleSyncButtonPress}

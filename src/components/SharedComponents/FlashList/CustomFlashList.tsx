@@ -104,6 +104,19 @@ const CustomFlashList: Function = forwardRef( ( props, ref ) => {
     }
   }, [onMomentumScrollEnd] );
 
+  const handleEndReached = useCallback( ( ) => {
+    if ( ignoreInitialEvents.current ) return;
+
+    if ( !fetchInProgress.current ) {
+      fetchInProgress.current = true;
+      flashListTracker.beginDataFetch( );
+    }
+
+    if ( onEndReached ) {
+      onEndReached( );
+    }
+  }, [onEndReached] );
+
   // To be called when new data is received
   // This needs to be exposed so it can be called from parent component
   React.useImperativeHandle( ref, ( ) => {
@@ -140,6 +153,7 @@ const CustomFlashList: Function = forwardRef( ( props, ref ) => {
       ref={ref}
       disableAutoLayout
       initialNumToRender={5}
+      onEndReached={handleEndReached}
       onEndReachedThreshold={0.2}
       onViewableItemsChanged={handleViewableItemsChanged}
       onScroll={handleScroll}
