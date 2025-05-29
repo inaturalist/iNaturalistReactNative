@@ -38,8 +38,8 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
   const currentUser = useCurrentUser( );
   const isDrawerOpen = useDrawerStatus() === "open";
 
-  const activeTabIndex = state.index;
-  const activeTabName = state.routes[activeTabIndex]?.name as TabName;
+  const activeTabIndex = state?.index;
+  const activeTabName = state?.routes[activeTabIndex]?.name as TabName;
 
   const userIconUri = useMemo( ( ) => User.uri( currentUser ), [currentUser] );
 

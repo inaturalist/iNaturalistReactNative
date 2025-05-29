@@ -2,7 +2,7 @@ import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import { screen } from "@testing-library/react-native";
-import CustomTabBarContainer from "navigation/BottomTabNavigator/CustomTabBarContainer";
+import CustomTabBarContainer from "navigation/BottomTabNavigator/CustomTabBarContainer.tsx";
 import React from "react";
 import * as useCurrentUser from "sharedHooks/useCurrentUser.ts";
 import useStore from "stores/useStore";
