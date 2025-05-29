@@ -138,8 +138,8 @@ const displayItemByText = text => {
 beforeEach( ( ) => {
   const initialState = useStore.getInitialState( );
   useStore.setState( {
-    ...initialState,
     layout: {
+      ...initialState.layout,
       isDefaultMode: false,
       isAllAddObsOptionsMode: true
     }
