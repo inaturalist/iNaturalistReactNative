@@ -200,12 +200,12 @@ describe( "uploadObservation", () => {
     expect( mockProgressTracker.complete ).not.toHaveBeenCalled();
   } );
 
-  it( "should handle null response from observation creation", async () => {
+  it( "should throw an error when observation creation returns null response", async () => {
     apiObservations.createObservation.mockResolvedValue( null );
 
-    const result = await uploadObservation( mockObservation, mockRealm );
+    await expect( uploadObservation( mockObservation, mockRealm ) )
+      .rejects.toThrow( "No response from observation upload" );
 
-    expect( result ).toBeNull();
     // Should not attempt to attach media or mark as uploaded
     expect( mediaUploader.attachMediaToObservation ).not.toHaveBeenCalled();
     expect( uploaders.markRecordUploaded ).not.toHaveBeenCalled();

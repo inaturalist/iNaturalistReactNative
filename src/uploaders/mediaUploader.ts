@@ -115,7 +115,9 @@ const uploadSingleEvidence = async (
     options
   );
 
-  console.log( params, "params" );
+  if ( !response ) {
+    throw new Error( `Failed to upload ${type} ${evidenceUUID}: no response from server` );
+  }
 
   if ( response && observationUUID ) {
     // TODO: can't mark records as uploaded by primary key for ObsPhotos and ObsSound anymore
