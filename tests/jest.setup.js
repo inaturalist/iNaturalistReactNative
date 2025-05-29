@@ -157,11 +157,11 @@ jest.mock( "components/SharedComponents/Buttons/Button.tsx", () => {
 } );
 
 // this silences console methods in jest tests, to make them less noisy
-// and easier to debug. comment them out if you don't want to silence them
+// and easier to debug. uncomment if you want to silence them
 global.console = {
-  ...console,
-  info: jest.fn(),
-  error: jest.fn(),
-  warn: jest.fn()
+  ...console
+  // info: jest.fn(),
+  // error: jest.fn(),
+  // warn: jest.fn()
   // log: jest.fn()
 };
