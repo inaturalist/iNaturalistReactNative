@@ -79,9 +79,11 @@ describe( "CustomTabBar", () => {
 } );
 
 describe( "CustomTabBar with advanced user layout", () => {
+  const initialState = useStore.getInitialState( );
   beforeAll( ( ) => {
     useStore.setState( {
       layout: {
+        ...initialState.layout,
         isAllAddObsOptionsMode: true
       }
     } );
