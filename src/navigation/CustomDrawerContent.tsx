@@ -200,7 +200,7 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
           navigation.navigate( "LoginStackNavigator" );
         } else {
           navigation.navigate( "TabNavigator", {
-            screen: "TabStackNavigator",
+            screen: "ObservationsTab",
             params: {
               screen: "UserProfile",
               params: { userId: currentUser.id }
@@ -252,7 +252,7 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
         onPress={( ) => {
           if ( drawerItems[key].navigation ) {
             navigation.navigate( "TabNavigator", {
-              screen: "TabStackNavigator",
+              screen: "ObservationsTab",
               params: {
                 screen: drawerItems[key].navigation
               }

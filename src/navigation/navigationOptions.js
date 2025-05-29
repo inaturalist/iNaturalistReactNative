@@ -85,11 +85,16 @@ const preventSwipeToGoBack = {
   gestureEnabled: false
 };
 
+const isDrawerScreen = {
+  animation: "none"
+};
+
 export {
   blankHeaderTitle,
   fadeInComponent,
   hideDrawerHeaderLeft,
   hideHeader,
+  isDrawerScreen,
   preventSwipeToGoBack,
   removeBottomBorder,
   showHeader,

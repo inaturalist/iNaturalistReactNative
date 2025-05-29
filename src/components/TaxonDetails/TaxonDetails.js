@@ -329,15 +329,9 @@ const TaxonDetails = ( ): Node => {
             icon="magnifying-glass"
             onPress={( ) => {
               setExploreView( "observations" );
-              navigation.navigate( "TabNavigator", {
-                screen: "TabStackNavigator",
-                params: {
-                  screen: "Explore",
-                  params: {
-                    taxon,
-                    worldwide: true
-                  }
-                }
+              navigation.navigate( "Explore", {
+                taxon,
+                worldwide: true
               } );
             }}
             accessibilityLabel={t( "See-observations-of-this-taxon-in-explore" )}

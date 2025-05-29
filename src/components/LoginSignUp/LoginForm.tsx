@@ -94,7 +94,7 @@ const LoginForm = ( {
     setLoggedInWhileInDefaultMode( isDefaultMode );
     if ( params?.prevScreen && params?.projectId ) {
       navigation.navigate( "TabNavigator", {
-        screen: "TabStackNavigator",
+        screen: "ObservationsTab",
         params: {
           screen: "ProjectDetails",
           params: {

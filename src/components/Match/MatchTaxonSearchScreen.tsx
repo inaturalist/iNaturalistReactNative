@@ -39,7 +39,7 @@ const MatchTaxonSearchScreen = ( ) => {
 
     saveObservation( getCurrentObservation(), cameraRollUris, realm )
       .then( ( ) => navigation.navigate( "TabNavigator", {
-        screen: "TabStackNavigator",
+        screen: "ObservationsTab",
         params: {
           screen: "ObsList"
         }
