@@ -258,10 +258,10 @@ const ObservationsFlashList: Function = forwardRef( ( {
   const keyExtractor = item => item.uuid || item.id;
 
   const onMomentumScrollEnd = useCallback( ( ) => {
-    if ( dataCanBeFetched && !fetchFromLastObservation ) {
+    if ( dataCanBeFetched ) {
       onEndReached( );
     }
-  }, [dataCanBeFetched, onEndReached, fetchFromLastObservation] );
+  }, [dataCanBeFetched, onEndReached] );
 
   const handleEndReached = useCallback( ( ) => {
     if ( !dataCanBeFetched || explore ) return;
