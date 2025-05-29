@@ -36,10 +36,12 @@ beforeAll( uniqueRealmBeforeAll );
 afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
+const initialState = useStore.getInitialState();
 beforeAll( async () => {
   await initI18next();
   useStore.setState( {
     layout: {
+      ...initialState.layout,
       isDefaultMode: false,
       isAllAddObsOptionsMode: true
     }
@@ -71,6 +73,7 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
   beforeEach( () => {
     useStore.setState( {
       layout: {
+        ...initialState.layout,
         isDefaultMode: false,
         isAllAddObsOptionsMode: true,
         screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT
@@ -109,6 +112,7 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
     beforeEach( () => {
       useStore.setState( {
         layout: {
+          ...initialState.layout,
           isDefaultMode: false,
           screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
           isAllAddObsOptionsMode: true
