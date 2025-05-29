@@ -74,8 +74,10 @@ const topSuggestion = {
 };
 
 beforeEach( ( ) => {
+  const initialState = useStore.getInitialState( );
   useStore.setState( {
     layout: {
+      ...initialState.layout,
       isDefaultMode: false,
       isAllAddObsOptionsMode: true,
       screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT
