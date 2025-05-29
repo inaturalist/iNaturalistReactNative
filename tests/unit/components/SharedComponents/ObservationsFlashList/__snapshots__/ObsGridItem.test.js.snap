@@ -121,12 +121,14 @@ exports[`ObsGridItem for an observation with a photo should render 1`] = `
         </Text>
       </View>
     </View>
-    <Image
+    <FasterImageView
       accessibilityIgnoresInvertColors={true}
       fadeDuration={0}
       source={
         {
-          "uri": "https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg",
+          "cachePolicy": "discWithCacheControl",
+          "resizeMode": "cover",
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg",
         }
       }
       style={
