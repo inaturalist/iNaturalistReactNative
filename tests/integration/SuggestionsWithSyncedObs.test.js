@@ -45,6 +45,7 @@ beforeAll( async ( ) => {
   useStore.setState( initialStoreState, true );
   useStore.setState( {
     layout: {
+      ...initialStoreState.layout,
       isDefaultMode: false
     }
   } );
