@@ -126,6 +126,7 @@ export enum WILD_STATUS {
 
 export enum REVIEWED {
   ALL = "ALL",
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   REVIEWED = "REVIEWED",
   UNREVIEWED = "UNREVIEWED"
 }
