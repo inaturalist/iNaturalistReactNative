@@ -186,10 +186,12 @@ const setupAppWithSignedInUser = async hasLocation => {
   const observations = hasLocation
     ? makeMockObservationsWithLocation( )
     : makeMockObservations( );
+  const initialState = useStore.getInitialState( );
   useStore.setState( {
     observations,
     currentObservation: observations[0],
     layout: {
+      ...initialState.layout,
       isDefaultMode: false,
       screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
       isAllAddObsOptionsMode: true
