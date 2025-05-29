@@ -82,8 +82,10 @@ const mockUser = factory( "LocalUser" );
 
 beforeEach( async ( ) => {
   await signIn( mockUser, { realm: global.mockRealms[__filename] } );
+  const initialState = useStore.getInitialState( );
   useStore.setState( {
     layout: {
+      ...initialState.layout,
       isDefaultMode: false,
       screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
       isAllAddObsOptionsMode: true
