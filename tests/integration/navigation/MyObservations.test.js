@@ -84,8 +84,10 @@ const topSuggestion = {
 const actor = userEvent.setup( );
 
 beforeEach( ( ) => {
+  const initialState = useStore.getInitialState( );
   useStore.setState( {
     layout: {
+      ...initialState.layout,
       isDefaultMode: false,
       isAllAddObsOptionsMode: true
     }
