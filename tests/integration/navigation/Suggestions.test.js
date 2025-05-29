@@ -103,9 +103,11 @@ beforeAll( async () => {
   jest.useFakeTimers( );
 } );
 
+const initialState = useStore.getInitialState( );
 beforeEach( async () => {
   useStore.setState( {
     layout: {
+      ...initialState.layout,
       isDefaultMode: false
     }
   } );
@@ -257,6 +259,7 @@ describe( "Suggestions", ( ) => {
       await signIn( mockUser, { realm: global.mockRealms[__filename] } );
       useStore.setState( {
         layout: {
+          ...initialState.layout,
           isDefaultMode: false,
           screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
           isAllAddObsOptionsMode: true
