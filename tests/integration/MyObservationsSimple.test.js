@@ -89,7 +89,6 @@ beforeEach( ( ) => {
     layout: {
       ...initialState.layout,
       isDefaultMode: true,
-      shownOnce: {},
       isAllAddObsOptionsMode: false
     }
   } );
