@@ -45,8 +45,10 @@ const mockUser = factory( "LocalUser", {
 // } );
 
 beforeEach( ( ) => {
+  const initialState = useStore.getInitialState();
   useStore.setState( {
     layout: {
+      ...initialState.layout,
       isDefaultMode: false,
       isAllAddObsOptionsMode: true
     }

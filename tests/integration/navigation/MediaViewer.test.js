@@ -50,9 +50,11 @@ jest.mock( "sharedHooks/useSuggestions/useOnlineSuggestions.ts", ( ) => jest.fn(
   }
 } ) ) );
 
+const initialState = useStore.getInitialState();
 beforeEach( async () => {
   useStore.setState( {
     layout: {
+      ...initialState.layout,
       isDefaultMode: false
     }
   } );
@@ -155,6 +157,7 @@ describe( "MediaViewer navigation", ( ) => {
     beforeEach( ( ) => {
       useStore.setState( {
         layout: {
+          ...initialState.layout,
           isAllAddObsOptionsMode: true
         }
       } );
