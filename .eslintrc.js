@@ -138,10 +138,10 @@ module.exports = {
         caughtErrorsIgnorePattern: "^_"
       }
     ],
-    // TODO: we should actually type these at some point ~amanda 041824
-    "@typescript-eslint/no-unsafe-function-type": 0,
-    "@typescript-eslint/no-require-imports": 0
-    // "@typescript-eslint/no-wrapper-object-types": 0,
+    "@typescript-eslint/no-require-imports": ["error", {
+      allow: ["\\.(png|jpg|jpeg|gif|svg)$"]
+    }],
+    "@typescript-eslint/no-unsafe-function-type": 1
   },
   // need this so jest doesn't show as undefined in jest.setup.js
   env: {
@@ -161,7 +161,14 @@ module.exports = {
       files: ["*.js", "*.jsx"],
       rules: {
         "@typescript-eslint/no-unsafe-function-type": "off",
-        "@typescript-eslint/no-wrapper-object-types": "off"
+        "@typescript-eslint/no-wrapper-object-types": "off",
+        "@typescript-eslint/no-require-imports": "off"
+      }
+    },
+    {
+      files: ["**/__mocks__/**/*", "**/*mock*", "**/*.mock.*"],
+      rules: {
+        "@typescript-eslint/no-require-imports": "off"
       }
     }
   ]
