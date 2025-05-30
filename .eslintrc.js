@@ -127,14 +127,17 @@ module.exports = {
     "no-undef": "error",
 
     "@typescript-eslint/no-unused-vars": [
-      "warn",
+      "error",
       {
         vars: "all",
         args: "after-used",
         // Overriding airbnb to allow leading underscore to indicate unused var
         argsIgnorePattern: "^_",
         varsIgnorePattern: "^_",
-        ignoreRestSiblings: true
+        ignoreRestSiblings: true,
+        caughtErrors: "all",
+        // needed a special case for catch blocks that use _ to define an unused error
+        caughtErrorsIgnorePattern: "^_"
       }
     ],
     // TODO: we should actually type these at some point ~amanda 041824

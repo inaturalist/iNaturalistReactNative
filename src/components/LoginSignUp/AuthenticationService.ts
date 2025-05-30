@@ -159,7 +159,7 @@ const signOut = async (
       try {
         options.realm.deleteAll( );
         options.realm.commitTransaction( );
-      } catch ( realmError ) {
+      } catch ( _realmError ) {
         options.realm.cancelTransaction( );
         // If we failed to wipe all the data in realm, delete the realm file.
         // Note that deleting the realm file *all* the time seems to cause

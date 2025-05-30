@@ -47,10 +47,10 @@ export const predictImage = ( uri: string, location: Location ) => {
   let url;
   try {
     url = new URL( uri );
-  } catch ( urlError ) {
+  } catch ( _urlError ) {
     try {
       url = new URL( `file://${uri}` );
-    } catch ( urlError2 ) {
+    } catch ( _urlError2 ) {
       // will handle when url is blank
     }
   }
