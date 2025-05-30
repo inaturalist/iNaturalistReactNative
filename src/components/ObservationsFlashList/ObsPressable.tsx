@@ -7,7 +7,7 @@ import ObsGridItem from "./ObsGridItem";
 import ObsListItem from "./ObsListItem";
 
 type Props = {
-  currentUser: Object,
+  currentUser: object,
   queued: boolean,
   explore: boolean,
   hideMetadata?: boolean,
@@ -17,7 +17,7 @@ type Props = {
   hideRGLabel?: boolean,
   onUploadButtonPress: ( ) => void,
   onItemPress: ( ) => void,
-  gridItemStyle: Object,
+  gridItemStyle: object,
   layout: "list" | "grid",
   observation: RealmObservation,
   uploadProgress: number,

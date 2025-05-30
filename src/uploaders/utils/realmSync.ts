@@ -1,14 +1,14 @@
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 function findRecordInRealm(
-  realm: Object,
+  realm: object,
   observationUUID: string,
   recordUUID: string | null,
   type: string,
   options?: {
-    record: Object
+    record: object
   }
-): Object | null {
+): object | null {
   if ( !realm || realm.isClosed ) return null;
 
   // Photos do not have UUIDs, so we pass the Photo itself as an option
@@ -31,8 +31,8 @@ function findRecordInRealm(
 }
 
 function updateRecordWithServerId(
-  realm: Object,
-  record: Object,
+  realm: object,
+  record: object,
   serverId: number,
   type: string
 ): void {
@@ -47,13 +47,13 @@ function updateRecordWithServerId(
 
 function handleRecordUpdateError(
   error: Error,
-  realm: Object,
+  realm: object,
   observationUUID: string,
   recordUUID: string | null,
   type: string,
   serverId: number,
   options?: {
-    record: Object
+    record: object
   }
 ): void {
   // Try it one more time in case it was invalidated but it's still in the
@@ -86,9 +86,9 @@ const markRecordUploaded = (
   response: {
     results: Array<{id: number}>
   },
-  realm: Object,
+  realm: object,
   options?: {
-    record: Object
+    record: object
   }
 ) => {
   if ( !realm || realm.isClosed ) return;

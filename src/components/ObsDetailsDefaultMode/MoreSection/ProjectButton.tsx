@@ -7,10 +7,10 @@ import React, { useMemo } from "react";
 interface Props {
   observation: {
     project_observations: Array<{
-      project: Object;
+      project: object;
     }>;
     non_traditional_projects: Array<{
-      project: Object;
+      project: object;
     }>;
   }
 }

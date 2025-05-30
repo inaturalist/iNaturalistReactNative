@@ -12,7 +12,7 @@ import {
 import ProjectListItem from "./ProjectListItem";
 
 interface Props {
-  projects: Array<Object>
+  projects: Array<object>
   ListEmptyComponent?: React.JSX.Element
   ListFooterComponent?: React.JSX.Element
   onEndReached?: ( ) => void

@@ -24,7 +24,7 @@ const MAX_ZOOM_FACTOR = 20;
 // Used for calculating the final zoom by pinch gesture
 const SCALE_FULL_ZOOM = 3;
 
-const useZoom = ( device: CameraDevice ): Object => {
+const useZoom = ( device: CameraDevice ): object => {
   const initialZoomTextValue = "1";
   const zoomButtonOptions = useMemo( () => {
     const options = [initialZoomTextValue];

@@ -118,7 +118,7 @@ const downloadIOS = async () => {
   console.log( "iOS done!" );
 };
 
-// eslint-disable-next-line no-unused-expressions
+// eslint-disable-next-line no-unused-expressions, @typescript-eslint/no-unused-expressions
 yargs
   .usage( "Usage: $0 [args]" )
   .option( "androidFlavor", {

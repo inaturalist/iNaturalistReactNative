@@ -23,7 +23,7 @@ interface TotalUploadProgress {
 interface UploadObservationsSlice {
   abortController: AbortController | null,
   currentUpload: RealmObservation | null,
-  errorsByUuid: Object,
+  errorsByUuid: object,
   multiError: string | null,
   initialNumObservationsInQueue: number,
   numUnuploadedObservations: number,

@@ -211,7 +211,7 @@ async function renameDirectories( options = {} ) {
         if ( options.verbose ) {
           console.log( "Removed existing directory", newDirectoryPath );
         }
-      } catch ( e ) {
+      } catch ( _e ) {
         // Directory did not exist
       }
       if ( options.verbose ) {
@@ -242,7 +242,7 @@ async function renameDirectories( options = {} ) {
         if ( options.verbose ) {
           console.log( "Removed existing directory", newDirectoryPath );
         }
-      } catch ( e ) {
+      } catch ( _e ) {
         // Directory did not exist
       }
       if ( options.verbose ) {

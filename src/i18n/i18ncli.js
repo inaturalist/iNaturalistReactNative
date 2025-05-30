@@ -44,7 +44,7 @@ const writeLoadTranslations = async ( ) => {
   out.write( "\n];\n" );
 };
 
-// eslint-disable-next-line no-unused-expressions
+// eslint-disable-next-line no-unused-expressions, @typescript-eslint/no-unused-expressions
 yargs
   .usage( "Usage: $0 <cmd> [args]" )
   .option( "verbose", {

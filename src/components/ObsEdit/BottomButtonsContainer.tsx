@@ -22,7 +22,7 @@ const { useRealm } = RealmContext;
 
 type Props = {
   passesEvidenceTest: boolean,
-  observations: Array<Object>,
+  observations: Array<object>,
   currentObservation: RealmObservation,
   currentObservationIndex: number,
   setCurrentObservationIndex: Function,

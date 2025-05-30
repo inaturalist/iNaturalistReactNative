@@ -6,7 +6,7 @@ export interface ApiOpts {
 export interface ApiParams {
   per_page?: number;
   page?: number;
-  fields?: "all" | Object;
+  fields?: "all" | object;
   ttl?: number;
 }
 
@@ -26,7 +26,7 @@ export interface ApiResponse {
   total_results: number;
   page: number;
   per_page: number;
-  results: Object[];
+  results: object[];
 }
 
 export interface ApiObservationsUpdatesParams extends ApiParams {

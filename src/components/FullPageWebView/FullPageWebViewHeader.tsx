@@ -15,7 +15,7 @@ type Props = {
   options: {
     title?: string | undefined;
     headerTitle?: HeaderTitle;
-    headerStyle?: Object;
+    headerStyle?: object;
     headerShadowVisible?: boolean;
   };
 };

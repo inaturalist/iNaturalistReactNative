@@ -203,9 +203,9 @@ type State = {
   place_guess: string,
   placeMode: PLACE_MODE,
   place_id: number | null | undefined,
-  // TODO: technically this is not any Object but a "Project"
+  // TODO: technically this is not any object but a "Project"
   // and should be typed as such (e.g., in realm model)
-  project: Object | undefined | null,
+  project: object | undefined | null,
   project_id: number | undefined | null,
   radius?: number,
   researchGrade: boolean,
@@ -214,26 +214,26 @@ type State = {
   sortBy: SORT_BY,
   swlat?: number,
   swlng?: number,
-  // TODO: technically this is not any Object but a "Taxon"
+  // TODO: technically this is not any object but a "Taxon"
   // and should be typed as such (e.g., in realm model)
-  taxon: Object | undefined | null,
+  taxon: object | undefined | null,
   taxon_id: number | undefined | null,
-  // TODO: technically this is not any Object but a "User"
+  // TODO: technically this is not any object but a "User"
   // and should be typed as such (e.g., in realm model)
-  user: Object | undefined | null,
+  user: object | undefined | null,
   user_id: number | undefined | null,
-  excludeUser: Object | undefined | null,
+  excludeUser: object | undefined | null,
   verifiable: boolean,
   wildStatus: WILD_STATUS
 }
 type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.DISCARD, snapshot: State}
-  | {type: EXPLORE_ACTION.SET_USER, user: Object | null, userId: number | null, storedState: State}
+  | {type: EXPLORE_ACTION.SET_USER, user: object | null, userId: number | null, storedState: State}
   | {
     type: EXPLORE_ACTION.EXCLUDE_USER,
     user: null,
     userId: null,
-    excludeUser: Object,
+    excludeUser: object,
     storedState: State
   }
   | {
@@ -261,7 +261,7 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.SET_PLACE_MODE_PLACE}
   | {
       type: EXPLORE_ACTION.SET_PROJECT,
-      project: Object | null,
+      project: object | null,
       projectId: number | null,
       storedState: State
     }

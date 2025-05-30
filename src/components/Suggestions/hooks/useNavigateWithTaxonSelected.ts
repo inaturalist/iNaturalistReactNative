@@ -4,7 +4,7 @@ import useStore from "stores/useStore";
 
 const useNavigateWithTaxonSelected = (
   // Navigation happens when a taxon was selected
-  selectedTaxon: Object | null | undefined,
+  selectedTaxon: object | null | undefined,
   // After navigation we need to unselect the taxon so we don't have
   // mysterious background nonsense happening after this screen loses focus
   unselectTaxon: Function,

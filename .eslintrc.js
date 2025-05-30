@@ -70,8 +70,6 @@ module.exports = {
     ],
     "no-alert": 0,
     "no-underscore-dangle": 0,
-    // This gets around eslint problems when typing functions in TS
-    "no-unused-vars": 0,
     "no-void": 0,
     "prefer-destructuring": [2, { object: true, array: false }],
     quotes: [2, "double"],
@@ -127,27 +125,23 @@ module.exports = {
     "no-undef": "error",
 
     "@typescript-eslint/no-unused-vars": [
-      "warn",
+      "error",
       {
         vars: "all",
         args: "after-used",
         // Overriding airbnb to allow leading underscore to indicate unused var
         argsIgnorePattern: "^_",
         varsIgnorePattern: "^_",
-        ignoreRestSiblings: true
+        ignoreRestSiblings: true,
+        caughtErrors: "all",
+        // needed a special case for catch blocks that use _ to define an unused error
+        caughtErrorsIgnorePattern: "^_"
       }
     ],
-    // TODO: we should actually type these at some point ~amanda 041824
-    "@typescript-eslint/no-shadow": "error",
-    "@typescript-eslint/ban-types": 0,
-    "@typescript-eslint/no-var-requires": 0,
-    "@typescript-eslint/no-wrapper-object-types": 0,
-    "@typescript-eslint/no-require-imports": 0,
-    "@typescript-eslint/no-unsafe-function-type": 0,
-    "@typescript-eslint/no-empty-object-types": 0,
-    "@typescript-eslint/no-empty-object-type": 0,
-    "@typescript-eslint/no-explicit-any": 1,
-    "@typescript-eslint/no-unused-expressions": 1
+    "@typescript-eslint/no-require-imports": ["error", {
+      allow: ["\\.(png|jpg|jpeg|gif|svg)$"]
+    }],
+    "@typescript-eslint/no-unsafe-function-type": 1
   },
   // need this so jest doesn't show as undefined in jest.setup.js
   env: {
@@ -161,5 +155,21 @@ module.exports = {
         extensions: [".js", ".jsx", ".ts", ".tsx"]
       }
     }
-  }
+  },
+  overrides: [
+    {
+      files: ["*.js", "*.jsx"],
+      rules: {
+        "@typescript-eslint/no-unsafe-function-type": "off",
+        "@typescript-eslint/no-wrapper-object-types": "off",
+        "@typescript-eslint/no-require-imports": "off"
+      }
+    },
+    {
+      files: ["**/__mocks__/**/*", "**/*mock*", "**/*.mock.*"],
+      rules: {
+        "@typescript-eslint/no-require-imports": "off"
+      }
+    }
+  ]
 };

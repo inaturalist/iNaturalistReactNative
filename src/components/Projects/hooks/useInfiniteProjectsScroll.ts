@@ -4,7 +4,7 @@ import {
   useAuthenticatedInfiniteQuery
 } from "sharedHooks";
 
-const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: Object ): Object => {
+const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: object ): object => {
   const baseParams = {
     ...newInputParams,
     per_page: 50,

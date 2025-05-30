@@ -35,7 +35,7 @@ interface Props {
   isFetchingNextPage: boolean;
   isLoading: boolean;
   memberId?: number;
-  projects: Object[],
+  projects: object[],
   requestPermissions: () => void;
   searchInput: string;
   setSearchInput: ( _text: string ) => void;

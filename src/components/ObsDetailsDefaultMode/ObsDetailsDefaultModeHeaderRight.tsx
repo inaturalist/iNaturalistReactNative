@@ -18,7 +18,7 @@ interface Props {
   observationId: number,
   uuid: string,
   refetchSubscriptions: Function,
-  subscriptions: Object
+  subscriptions: object
 }
 
 const ObsDetailsDefaultModeHeaderRight = ( {

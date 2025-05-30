@@ -11,7 +11,7 @@ import {
   I18nManager
 } from "react-native";
 
-interface Props extends FlatListProps<Object> {
+interface Props extends FlatListProps<object> {
   onSlideScroll: ( index: number ) => void;
 }
 

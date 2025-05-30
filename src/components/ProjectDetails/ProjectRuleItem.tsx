@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
 interface Props {
-  rule: Object
+  rule: object
 }
 
 const ProjectRuleItem = ( { rule }: Props ) => {

@@ -4,12 +4,12 @@ import { useAuthenticatedInfiniteQuery } from "sharedHooks";
 const useInfiniteUserScroll = (
   queryKey: string,
   apiCall: Function,
-  ids: Array<Object>,
-  newInputParams: Object,
+  ids: Array<object>,
+  newInputParams: object,
   options: {
     enabled: boolean
   }
-): Object => {
+): object => {
   const baseParams = {
     ...newInputParams,
     // TODO: can change this once API pagination is working

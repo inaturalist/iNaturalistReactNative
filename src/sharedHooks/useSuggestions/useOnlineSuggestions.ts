@@ -21,16 +21,16 @@ const { useRealm } = RealmContext;
 
 type OnlineSuggestionsResponse = {
   dataUpdatedAt: Date,
-  onlineSuggestions: Object,
+  onlineSuggestions: object,
   loadingOnlineSuggestions: boolean,
   timedOut: boolean,
-  error: Object,
+  error: object,
   resetTimeout: Function
   isRefetching: boolean
 }
 
 const useOnlineSuggestions = (
-  options: Object
+  options: object
 ): OnlineSuggestionsResponse => {
   const realm = useRealm( );
   const {

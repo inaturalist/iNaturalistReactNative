@@ -31,7 +31,7 @@ const iNatLogstashTransport: transportFunctionType = async props => {
   let userToken;
   try {
     userToken = await getJWT();
-  } catch ( getJWTError ) {
+  } catch ( _getJWTError ) {
     // We use logging to report errors, so this is one of the few cases where
     // we really do want to squelch all errors to avoid recursion
     console.error( "[ERROR log.ts] failed to retrieve user JWT while logging" );

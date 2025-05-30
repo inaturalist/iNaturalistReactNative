@@ -18,7 +18,7 @@ const useSafeRoute = () => {
         routeParams: route.params
       };
     }
-  } catch ( e ) {
+  } catch ( _e ) {
     // console.log( "Route not available from useSafeRoute" );
   }
 

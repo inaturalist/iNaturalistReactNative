@@ -13,6 +13,6 @@ export default async function dismissAnnouncements() {
     await element( by.id( "announcements-dismiss" ) ).tap();
   } catch ( error ) {
     // if timeout occurs, the element isn't visible, so continue with test
-    console.log( "No announcement present, continuing with test" );
+    console.log( "No announcement present, continuing with test", error );
   }
 }

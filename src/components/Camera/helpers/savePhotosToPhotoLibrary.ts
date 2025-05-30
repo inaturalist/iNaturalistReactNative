@@ -24,7 +24,7 @@ const logger = log.extend( "savePhotosToPhotoLibrary" );
 // $FlowIgnore
 export async function savePhotosToPhotoLibrary(
   uris: [string],
-  location: Object
+  location: object
 ) {
   const readWritePermissionResult = permissionResultFromMultiple(
     await checkMultiple( READ_WRITE_MEDIA_PERMISSIONS )
