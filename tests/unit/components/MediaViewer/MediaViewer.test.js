@@ -2,12 +2,15 @@ import { screen } from "@testing-library/react-native";
 import MediaViewer from "components/MediaViewer/MediaViewer";
 import React from "react";
 import factory from "tests/factory";
-import { renderComponent } from "tests/helpers/render";
+import { renderComponent, wrapInNavigationContainer } from "tests/helpers/render";
+
+// Note: HeaderBackButton has accessibility issues
+jest.mock( "@react-navigation/elements" );
 
 describe( "MediaViewer", ( ) => {
   describe( "without media", ( ) => {
     it( "should not have accessibility errors", async () => {
-      const mediaViewer = <MediaViewer />;
+      const mediaViewer = wrapInNavigationContainer( <MediaViewer /> );
       expect( mediaViewer ).toBeAccessible( );
     } );
 
@@ -23,7 +26,7 @@ describe( "MediaViewer", ( ) => {
       const photos = [factory( "LocalPhoto" )];
 
       it( "should not have accessibility errors", async () => {
-        const mediaViewer = <MediaViewer photos={photos} />;
+        const mediaViewer = wrapInNavigationContainer( <MediaViewer photos={photos} /> );
         expect( mediaViewer ).toBeAccessible( );
       } );
 

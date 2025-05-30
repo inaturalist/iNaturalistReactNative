@@ -1,5 +1,5 @@
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { NavigationContainer } from "@react-navigation/native";
+import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import {
   QueryClient,
   QueryClientProvider
@@ -23,6 +23,19 @@ const queryClient = new QueryClient( {
   }
 } );
 
+const mockNavigationTheme = {
+  ...DefaultTheme,
+  // React Navigation 7 has stricter requirements around themes
+  // fonts.regular in particular causes errors in a few integration tests
+  // where we're unmocking react-navigation
+  fonts: {
+    regular: {
+      fontFamily: "System",
+      fontWeight: "normal"
+    }
+  }
+};
+
 function renderComponent( component, update = null, renderOptions = {} ) {
   const renderMethod = update || render;
   return renderMethod(
@@ -30,7 +43,7 @@ function renderComponent( component, update = null, renderOptions = {} ) {
       <INatPaperProvider>
         <GestureHandlerRootView className="flex-1">
           <BottomSheetModalProvider>
-            <NavigationContainer>
+            <NavigationContainer theme={mockNavigationTheme}>
               { component }
             </NavigationContainer>
           </BottomSheetModalProvider>

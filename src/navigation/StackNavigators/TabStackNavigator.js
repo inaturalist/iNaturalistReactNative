@@ -38,6 +38,7 @@ import {
   fadeInComponent,
   hideHeader,
   hideHeaderLeft,
+  isDrawerScreen,
   preventSwipeToGoBack,
   removeBottomBorder,
   showHeader,
@@ -51,6 +52,10 @@ import {
 import colors from "styles/tailwindColors";
 
 import SharedStackScreens from "./SharedStackScreens";
+
+type TabStackNavigatorProps = {
+  route?: Object
+};
 
 const aboutTitle = () => (
   <Heading4 accessibilityRole="header" numberOfLines={1}>
@@ -153,8 +158,7 @@ const NOTIFICATIONS_OPTIONS = {
 
 const DQA_OPTIONS = {
   ...showLongHeader,
-  headerTitle: dqaTitle,
-  unmountOnBlur: true
+  headerTitle: dqaTitle
 };
 
 const USER_PROFILE_OPTIONS = {
@@ -170,7 +174,6 @@ const LIST_OPTIONS = {
 };
 
 const OBS_DETAILS_OPTIONS = {
-  unmountOnBlur: true,
   ...showHeader,
   ...blankHeaderTitle
 };
@@ -181,14 +184,17 @@ export const SCREEN_NAME_OBS_LIST = "ObsList";
 export const SCREEN_NAME_ROOT_EXPLORE = "RootExplore";
 export const SCREEN_NAME_NOTIFICATIONS = "Notifications";
 
-const TabStackNavigator = ( ): Node => {
+const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
+  const initialRouteName = route?.params?.initialRouteName || SCREEN_NAME_OBS_LIST;
+
   const {
     isDefaultMode
   } = useLayoutPrefs( );
   return (
     <Stack.Navigator
+      initialRouteName={initialRouteName}
       screenOptions={{
-        headerBackTitleVisible: false,
+        headerBackButtonDisplayMode: "minimal",
         headerTintColor: colors.darkGray
       }}
     >
@@ -258,6 +264,7 @@ const TabStackNavigator = ( ): Node => {
           name="Projects"
           component={FadeInProjectsContainer}
           options={{
+            ...isDrawerScreen,
             ...removeBottomBorder,
             ...preventSwipeToGoBack
           }}
@@ -301,6 +308,7 @@ const TabStackNavigator = ( ): Node => {
       {/* Developer Stack Group */}
       <Stack.Group
         screenOptions={{
+          ...isDrawerScreen,
           headerStyle: { backgroundColor: "deeppink", color: "white" },
           headerTintColor: "white",
           headerTitleStyle: { color: "white" }
@@ -366,12 +374,16 @@ const TabStackNavigator = ( ): Node => {
         <Stack.Screen
           name="Settings"
           component={FadeInSettings}
-          options={{ headerTitle: settingsTitle }}
+          options={{
+            ...isDrawerScreen,
+            headerTitle: settingsTitle
+          }}
         />
         <Stack.Screen
           name="About"
           component={FadeInAbout}
           options={{
+            ...isDrawerScreen,
             headerTitle: aboutTitle
           }}
         />
@@ -379,6 +391,7 @@ const TabStackNavigator = ( ): Node => {
           name="Donate"
           component={FadeInDonate}
           options={{
+            ...isDrawerScreen,
             headerTitle: donateTitle
           }}
         />
@@ -386,6 +399,7 @@ const TabStackNavigator = ( ): Node => {
           name="Help"
           component={FadeInHelp}
           options={{
+            ...isDrawerScreen,
             headerTitle: helpTitle
           }}
         />

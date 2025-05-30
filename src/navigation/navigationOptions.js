@@ -19,7 +19,7 @@ const fadeInComponent = ( component: React.JSX.Element ): React.JSX.Element => (
 
 const baseHeaderOptions: Object = {
   headerShown: true,
-  headerBackTitleVisible: false,
+  headerBackButtonDisplayMode: "minimal",
   headerShadowVisible: false,
   headerLeft: () => <BackButton inCustomHeader testID="header-back-button" />
 };
@@ -85,11 +85,16 @@ const preventSwipeToGoBack = {
   gestureEnabled: false
 };
 
+const isDrawerScreen = {
+  animation: "none"
+};
+
 export {
   blankHeaderTitle,
   fadeInComponent,
   hideDrawerHeaderLeft,
   hideHeader,
+  isDrawerScreen,
   preventSwipeToGoBack,
   removeBottomBorder,
   showHeader,

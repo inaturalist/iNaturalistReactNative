@@ -200,7 +200,7 @@ const SoundRecorder = (): Node => {
       navigation.navigate( "ObsEdit" );
     } else {
       navigation.navigate( "TabNavigator", {
-        screen: "TabStackNavigator",
+        screen: "ObservationsTab",
         params: {
           screen: "ObsList"
         }
