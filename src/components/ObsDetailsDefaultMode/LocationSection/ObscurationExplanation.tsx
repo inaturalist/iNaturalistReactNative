@@ -6,7 +6,7 @@ import { useTranslation } from "sharedHooks";
 interface Props {
   textClassName?: string;
   currentUser: { id: number };
-  observation: Object;
+  observation: object;
 }
 
 const ObscurationExplanation = ( { textClassName, currentUser, observation }: Props ) => {

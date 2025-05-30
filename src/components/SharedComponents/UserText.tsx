@@ -93,7 +93,7 @@ const LINKIFY_OPTIONS: Opts = {
 
 interface Props extends React.PropsWithChildren {
   text: string,
-  htmlStyle?: Object,
+  htmlStyle?: object,
 }
 
 const UserText = ( {

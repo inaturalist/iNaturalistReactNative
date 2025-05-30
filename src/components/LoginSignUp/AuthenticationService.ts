@@ -198,7 +198,7 @@ const signOut = async (
  * Encodes a JWT. Lifted from react-native-jwt-io
  * https://github.com/maxweb4u/react-native-jwt-io/blob/7f926da46ff536dbb531dd8ae7177ab4ff28c43f/src/jwt.js#L21
  */
-const encodeJWT = ( payload: Object, key: string, algorithm?: string ) => {
+const encodeJWT = ( payload: object, key: string, algorithm?: string ) => {
   algorithm = typeof algorithm !== "undefined"
     ? algorithm
     : "HS256";

@@ -44,7 +44,7 @@ const useSyncObservations = (
   const realm = useRealm( );
 
   const handleRemoteDeletion = useAuthenticatedMutation(
-    ( params: Object, optsWithAuth: Object ) => deleteRemoteObservation( params, optsWithAuth ),
+    ( params: object, optsWithAuth: object ) => deleteRemoteObservation( params, optsWithAuth ),
     {
       onSuccess: ( ) => {
         Observation
