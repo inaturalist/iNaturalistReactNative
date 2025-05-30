@@ -79,6 +79,7 @@ describe( "PhotoLibrary navigation", ( ) => {
       layout: {
         ...initialState.layout,
         screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT,
+        isDefaultMode: false,
         isAllAddObsOptionsMode: true
       }
     } );
