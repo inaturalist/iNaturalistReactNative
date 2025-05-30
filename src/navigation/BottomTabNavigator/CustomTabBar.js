@@ -22,7 +22,6 @@ type Props = {
 
 const CustomTabBar = ( { tabs }: Props ): Node => {
   const tabList = tabs.map( tab => <NavButton {...tab} key={tab.testID} /> );
-
   tabList.splice(
     -2,
     0,
