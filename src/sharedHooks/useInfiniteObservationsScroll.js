@@ -18,7 +18,7 @@ const useInfiniteObservationsScroll = ( {
   const baseParams = {
     ...newInputParams,
     per_page: 20,
-    fields: Observation.LIST_FIELDS,
+    fields: Observation.ADVANCED_MODE_LIST_FIELDS,
     ttl: -1
   };
 

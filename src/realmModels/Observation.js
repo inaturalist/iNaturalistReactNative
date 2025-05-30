@@ -127,6 +127,51 @@ class Observation extends Realm.Object {
     user: User && User.FIELDS
   };
 
+  static DEFAULT_MODE_LIST_FIELDS = {
+    created_at: true,
+    id: true, // needed to get next page in infinite queries
+    observation_photos: {
+      id: true,
+      photo: {
+        id: true,
+        url: true
+      },
+      uuid: true
+    },
+    observation_sounds: {
+      uuid: true
+    },
+    quality_grade: true,
+    taxon: {
+      id: true,
+      name: true,
+      preferred_common_name: true
+    },
+    time_observed_at: true,
+    uuid: true
+  };
+
+  static ADVANCED_MODE_LIST_FIELDS = {
+    ...Observation.DEFAULT_MODE_LIST_FIELDS,
+    identifications: {
+      uuid: true,
+      current: true
+    },
+    comments: {
+      uuid: true
+    },
+    geoprivacy: true,
+    id: true,
+    latitude: true,
+    longitude: true,
+    obscured: true,
+    observed_on: true,
+    observed_time_zone: true,
+    place_guess: true,
+    private_place_guess: true,
+    taxon_geoprivacy: true
+  };
+
   static async new( obs ) {
     return {
       ...obs,
@@ -209,14 +254,9 @@ class Observation extends Realm.Object {
       return mappedObsSound;
     } );
 
-    const identifications = obs.identifications
-      ? obs.identifications.map( id => Identification.mapApiToRealm( id, realm ) )
-      : [];
-
     const localObs = {
       ...obs,
       _synced_at: new Date( ),
-      identifications,
       // obs detail on web says geojson coords are preferred over lat/long
       // https://github.com/inaturalist/inaturalist/blob/df6572008f60845b8ef5972a92a9afbde6f67829/app/webpack/observations/show/ducks/observation.js#L145
       latitude: obs.geojson && obs.geojson.coordinates && obs.geojson.coordinates[1],

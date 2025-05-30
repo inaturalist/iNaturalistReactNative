@@ -47,6 +47,7 @@ export { default as ObsStatus } from "./ObsStatus";
 export { default as OfflineNotice } from "./OfflineNotice";
 export { default as OverlayHeader } from "./OverlayHeader";
 export { default as OverviewCounts } from "./OverviewCounts";
+export { default as PerformanceDebugView } from "./PerformanceDebugView";
 export { default as PermissionGate } from "./PermissionGate";
 export { default as PhotoCount } from "./PhotoCount";
 export { default as QualityGradeStatus } from "./QualityGradeStatus/QualityGradeStatus";
