@@ -80,7 +80,6 @@ attribution-cc-by-nd = alguns direitos reservados (CC BY-ND)
 attribution-cc-by-sa = alguns direitos reservados (CC BY-SA)
 August = agosto
 BACK-TO-LOGIN = VOLTAR AO LOGIN
-BLOG = BLOGUE
 Bulk-importer = Importador a granel
 By-exiting-changes-not-saved = Ao sair, as alterações à sua observação não serão guardadas.
 By-exiting-observation-not-saved = Ao sair, sua observação não será salva.

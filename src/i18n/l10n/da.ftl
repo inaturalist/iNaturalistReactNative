@@ -80,7 +80,6 @@ attribution-cc-by-nd = visse rettigheder forbeholdes (CC BY-ND)
 attribution-cc-by-sa = visse rettigheder forbeholdes (CC BY-SA)
 August = August
 BACK-TO-LOGIN = TILBAGE TIL LOGIN
-BLOG = BLOG
 Bulk-importer = Masseimport
 By-exiting-changes-not-saved = Ved at afslutte, vil ændringer til observationen ikke blive gemt.
 By-exiting-observation-not-saved = Ved at afslutte, vil observationen ikke blive gemt.

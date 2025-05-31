@@ -85,7 +85,6 @@ attribution-cc-by-nd = некоторые права защищены (CC BY-ND)
 attribution-cc-by-sa = некоторые права защищены (CC BY-SA)
 August = Август
 BACK-TO-LOGIN = ВЕРНУТЬСЯ КО ВХОДУ
-BLOG = БЛОГ
 Bulk-importer = Оптовый импорт
 By-exiting-changes-not-saved = При выходе изменения в вашем наблюдении не сохраняются.
 By-exiting-observation-not-saved = При выходе из игры ваше наблюдение не будет сохранено.
