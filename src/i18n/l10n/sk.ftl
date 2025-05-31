@@ -80,7 +80,6 @@ attribution-cc-by-nd = niektoré vyhradené práva (CC BY-ND)
 attribution-cc-by-sa = niektoré vyhradené práva (CC BY-SA)
 August = August
 BACK-TO-LOGIN = SPÄŤ NA PRIHLÁSENIE
-BLOG = BLOG
 Bulk-importer = Dávkové nahrávanie
 By-exiting-changes-not-saved = Po ukončení sa zmeny vášho pozorovania neuložia.
 By-exiting-observation-not-saved = Ukončením nebude vaše pozorovanie uložené.
