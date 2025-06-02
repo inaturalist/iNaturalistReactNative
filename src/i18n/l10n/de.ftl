@@ -80,7 +80,6 @@ attribution-cc-by-nd = einige Rechte vorbehalten (CC BY-ND)
 attribution-cc-by-sa = einige Rechte vorbehalten (CC BY-SA)
 August = August
 BACK-TO-LOGIN = ZURÜCK ZUR ANMELDUNG
-BLOG = BLOG
 Bulk-importer = Massenimport
 By-exiting-changes-not-saved = Beim Beenden werden die Änderungen an deiner Beobachtung nicht gespeichert.
 By-exiting-observation-not-saved = Beim Beenden wird deine Beobachtung nicht gespeichert.

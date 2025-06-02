@@ -80,7 +80,6 @@ attribution-cc-by-nd = mõned õigused kaitstud (CC BY-ND)
 attribution-cc-by-sa = mõned õigused kaitstud (CC BY-SA)
 August = august
 BACK-TO-LOGIN = TAGASI SISSELOGIMA
-BLOG = BLOGI
 Bulk-importer = Mass-importija
 By-exiting-changes-not-saved = Väljudes ei salvestata muutuseid sinu vaatlusele.
 By-exiting-observation-not-saved = Väljudes su vaatlust ei salvestata.

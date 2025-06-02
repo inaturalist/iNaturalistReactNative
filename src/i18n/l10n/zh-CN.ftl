@@ -80,7 +80,6 @@ attribution-cc-by-nd = 保留部分权利（CC BY-ND）
 attribution-cc-by-sa = 保留部分权利（CC BY-SA）
 August = 八月
 BACK-TO-LOGIN = 返回登录
-BLOG = 博客
 Bulk-importer = 批量导入器
 By-exiting-changes-not-saved = 退出后，您观察记录的更改将不会被保存。
 By-exiting-observation-not-saved = 退出将不会保存您的观察。
@@ -965,8 +964,8 @@ X-Identifiers =
     }
 X-MEMBERS =
     { $count ->
-        [one] { $count } MEMBER
-       *[other] { $count } MEMBERS
+        [one] { $count }名成员
+       *[other] { $count }名成员
     }
 X-Observations =
     { $count ->
