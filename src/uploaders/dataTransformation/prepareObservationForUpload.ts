@@ -1,6 +1,6 @@
 import Observation from "realmModels/Observation";
 
-function prepareObservationForUpload( obs: Object ): Object {
+function prepareObservationForUpload( obs: object ): object {
   const obsToUpload = Observation.mapObservationForUpload( obs );
 
   // Remove all null values, b/c the API doesn't seem to like them for some

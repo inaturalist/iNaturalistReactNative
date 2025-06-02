@@ -6,8 +6,8 @@ const DEFAULT_STATE = {
 };
 
 interface RootExploreSlice {
-  rootStoredParams: Object,
-  setRootStoredParams: ( _params: Object ) => void,
+  rootStoredParams: object,
+  setRootStoredParams: ( _params: object ) => void,
   rootExploreView: string,
   setRootExploreView: ( _view: string ) => void
 }

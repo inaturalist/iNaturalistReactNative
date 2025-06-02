@@ -10,7 +10,7 @@ export async function openInbox() {
   let isSupported;
   try {
     isSupported = await Linking.canOpenURL( "message:0" );
-  } catch ( canOpenURLError ) {
+  } catch ( _canOpenURLError ) {
     openInboxError();
     return;
   }

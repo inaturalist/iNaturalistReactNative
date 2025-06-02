@@ -159,7 +159,7 @@ const signOut = async (
       try {
         options.realm.deleteAll( );
         options.realm.commitTransaction( );
-      } catch ( realmError ) {
+      } catch ( _realmError ) {
         options.realm.cancelTransaction( );
         // If we failed to wipe all the data in realm, delete the realm file.
         // Note that deleting the realm file *all* the time seems to cause
@@ -198,7 +198,7 @@ const signOut = async (
  * Encodes a JWT. Lifted from react-native-jwt-io
  * https://github.com/maxweb4u/react-native-jwt-io/blob/7f926da46ff536dbb531dd8ae7177ab4ff28c43f/src/jwt.js#L21
  */
-const encodeJWT = ( payload: Object, key: string, algorithm?: string ) => {
+const encodeJWT = ( payload: object, key: string, algorithm?: string ) => {
   algorithm = typeof algorithm !== "undefined"
     ? algorithm
     : "HS256";

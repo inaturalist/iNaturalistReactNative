@@ -9,7 +9,7 @@ import User from "realmModels/User.ts";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
-  item: Object
+  item: object
   countText: string
   onPress?: Function
   accessibilityLabel?: string

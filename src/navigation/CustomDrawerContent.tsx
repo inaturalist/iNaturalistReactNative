@@ -44,9 +44,9 @@ const drawerScrollViewStyle = {
 } as const;
 
 interface Props {
-  state: Object;
-  navigation: Object;
-  descriptors: Object;
+  state: object;
+  navigation: object;
+  descriptors: object;
 }
 
 const feedbackLogger = log.extend( "feedback" );

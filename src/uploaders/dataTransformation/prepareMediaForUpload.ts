@@ -2,11 +2,11 @@ import ObservationPhoto from "realmModels/ObservationPhoto";
 import ObservationSound from "realmModels/ObservationSound";
 
 function prepareMediaForUpload(
-  media: Object,
+  media: object,
   type: string,
   action: "upload" | "attach" | "update",
   observationId?: number | null
-): Object {
+): object {
   if ( type === "Photo" || type === "ObservationPhoto" ) {
     if ( action === "upload" ) {
       return ObservationPhoto.mapPhotoForUpload( observationId, media );

@@ -76,7 +76,7 @@ interface Props {
   style?: ViewStyle;
   switchMapTypeButtonClassName?: string;
   testID?: string;
-  tileMapParams?: Object | null;
+  tileMapParams?: object | null;
   withObsTiles?: boolean;
   withPressableObsTiles?: boolean;
   zoomEnabled?: boolean;

@@ -6,8 +6,8 @@ import { useSafeRoute } from "sharedHooks";
 const useNonAuthenticatedQuery = (
   queryKey: Array<string>,
   queryFunction: Function,
-  queryOptions: Object = {}
-): Object => {
+  queryOptions: object = {}
+): object => {
   const route = useSafeRoute( );
 
   return useQuery( {
