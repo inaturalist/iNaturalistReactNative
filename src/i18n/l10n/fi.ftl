@@ -83,7 +83,6 @@ attribution-cc-by-nd = osa oikeuksista pidätetään (CC BY-ND)
 attribution-cc-by-sa = osa oikeuksista pidätetään (CC BY-SA)
 August = elokuu
 BACK-TO-LOGIN = TAKAISIN KIRJAUTUMISEEN
-BLOG = BLOGI
 Bulk-importer = Massatuonti
 By-exiting-changes-not-saved = Jos poistut, havaintoosi tehtyjä muutoksia ei tallenneta.
 By-exiting-observation-not-saved = Jos poistut, havaintoasi ei tallenneta.

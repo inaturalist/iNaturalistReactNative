@@ -80,7 +80,6 @@ attribution-cc-by-nd = برخی از حقوق محفوظ است (CC BY-ND)
 attribution-cc-by-sa = برخی از حقوق محفوظ است (CC BY-SA)
 August = آگوست
 BACK-TO-LOGIN = بازگشت به ورود
-BLOG = وبلاگ
 Bulk-importer = واردات انبوه
 By-exiting-changes-not-saved = با خروج، تغییرات مشاهده شما ذخیره نخواهد شد.
 By-exiting-observation-not-saved = با خروج، مشاهده شما ذخیره نمی شود.
