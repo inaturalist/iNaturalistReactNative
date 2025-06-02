@@ -89,10 +89,6 @@ target "iNaturalistReactNative" do
     # https://github.com/luggit/react-native-config#ios-1
     installer.pods_project.targets.each do | target |
       target.build_configurations.each do | build_config |
-        # the following two lines allow the app to build with XCode 14.3 RC
-        # https://stackoverflow.com/questions/72729591/fbreactnativespec-h-error-after-upgrading-from-0-68-x-to-0-69-0/74487309#74487309
-        build_config.build_settings["SWIFT_VERSION"] = "5.2"
-        build_config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = "12.4"
         if target.name == "react-native-config"
           build_config.build_settings["ENVFILE"] = envfiles[build_config.name]
         end
