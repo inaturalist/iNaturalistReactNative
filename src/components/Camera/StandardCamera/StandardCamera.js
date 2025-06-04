@@ -155,8 +155,9 @@ const StandardCamera = ( {
     newPhotoUris.forEach( uri => {
       deletePhotoByUri( uri );
     } );
+    setNewPhotoUris( [] );
     navigation.goBack( );
-  }, [deletePhotoByUri, navigation, newPhotoUris] );
+  }, [deletePhotoByUri, navigation, newPhotoUris, setNewPhotoUris] );
 
   const handleTakePhoto = useCallback( ( ) => {
     if ( disallowAddingPhotos ) {

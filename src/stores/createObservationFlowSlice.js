@@ -25,7 +25,8 @@ const DEFAULT_STATE = {
   savedOrUploadedMultiObsFlow: false,
   unsavedChanges: false,
   totalSavedObservations: 0,
-  sentinelFileName: null
+  sentinelFileName: null,
+  newPhotoUris: []
 };
 
 const removeObsSoundFromObservation = ( currentObservation, uri ) => {
@@ -190,6 +191,9 @@ const createObservationFlowSlice = ( set, get ) => ( {
   } ),
   setSentinelFileName: sentinelFileName => set( {
     sentinelFileName
+  } ),
+  setNewPhotoUris: newPhotoUris => set( {
+    newPhotoUris
   } ),
   setAICameraSuggestion: suggestion => set( {
     aICameraSuggestion: suggestion
