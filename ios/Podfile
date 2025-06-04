@@ -87,15 +87,6 @@ target "iNaturalistReactNative" do
       mac_catalyst_enabled: false
       # :ccache_enabled => true
     )
-    # Add these lines for Xcode 14 builds
-    installer.generated_projects.each do | project |
-      project.targets.each do | target |
-        target.build_configurations.each do | build_config |
-          build_config.build_settings["DEVELOPMENT_TEAM"] = "iNaturalist, LLC"
-        end
-      end
-    end
-    # End of added lines
     # https://github.com/Agontuk/react-native-geolocation-service/issues/287#issuecomment-980772489
     installer.pods_project.targets.each do | target |
       target.build_configurations.each do | build_config |
