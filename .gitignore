@@ -21,7 +21,7 @@ DerivedData
 *.ipa
 *.xcuserstate
 # Might be used to customize further the path to node that xcode uses, see .xcode.env for our version controlled file
-ios/.xcode.env.local
+**/.xcode.env.local
 
 # Android/IntelliJ
 #
@@ -47,7 +47,7 @@ yarn-error.log
 *.jsbundle
 
 # Ruby / CocoaPods
-/ios/Pods/
+**/Pods/
 /vendor/bundle/
 
 # Temporary files created by Metro to check the health of the file watcher
@@ -58,6 +58,14 @@ yarn-error.log
 
 # Jest Coverage
 /coverage
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 
 # Secrets file
 .env*
