@@ -91,9 +91,6 @@ target "iNaturalistReactNative" do
     installer.pods_project.targets.each do | target |
       target.build_configurations.each do | build_config |
         build_config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
-        # code below appears to be necessary for building pods with XCode 14:
-        # https://github.com/facebook/react-native/issues/34673#issuecomment-1252114414
-        build_config.build_settings["DEVELOPMENT_TEAM"] = "iNaturalist, LLC"
         build_config.build_settings["APPLICATION_EXTENSION_API_ONLY"] = "NO"
         build_config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = "$(inherited)"
       end
