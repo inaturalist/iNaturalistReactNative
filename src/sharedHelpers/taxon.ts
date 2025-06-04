@@ -161,7 +161,7 @@ interface User {
 export function accessibleTaxonName(
   taxon: Taxon,
   user: User | null,
-  t: ( key: string, options: {} ) => string
+  t: ( key: string, options: object ) => string
 ) {
   const { commonName, scientificName } = generateTaxonPieces( taxon );
   if ( typeof ( user?.prefers_scientific_name_first ) === "boolean" ) {

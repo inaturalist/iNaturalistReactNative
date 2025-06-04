@@ -80,7 +80,6 @@ attribution-cc-by-nd = 保留部分权利（CC BY-ND）
 attribution-cc-by-sa = 保留部分权利（CC BY-SA）
 August = 八月
 BACK-TO-LOGIN = 返回登录
-BLOG = 博客
 Bulk-importer = 批量导入器
 By-exiting-changes-not-saved = 退出后，您观察记录的更改将不会被保存。
 By-exiting-observation-not-saved = 退出将不会保存您的观察。
@@ -307,12 +306,6 @@ Filter-by-observed-on-date = 按照特定日期的观察进行筛选
 Filter-by-uploaded-between-dates = 按照两个具体日期之间的日期上传的观察进行筛选
 Filter-by-uploaded-on-date = 按照特定日期上传的观察进行筛选
 Filters = 筛选器
-Flag-An-Item = 标记一个项目
-Flag-Item-Description =
-    标记是用来引起网站馆长志愿者的注意的。
-    请不要标记一些您可以通过鉴定、资料品质估计、或是与内容建立人互相讨论来解决的问题。
-Flag-Item-Other-Description = 您可以在下方说明其他一些原因。
-Flag-Item-Other-Input-Hint = 指定标记此项目的原因
 Flagged = 已标记
 Flash = 闪光灯
 Flip-camera = 翻转摄像头
@@ -564,8 +557,6 @@ OBSERVED-IN--label = 观察于
 Observers = 观察者
 Observers-View = 观察者浏览
 October = 十月
-Offensive-Inappropriate = 冒犯性的/不恰当的
-Offensive-Inappropriate-Examples = 误导性或非法内容，种族歧视或民族蔑称等。有关我们对“适当”的更多定义，详见FAQ常见问题解答
 Offline-DQA-description = DQA可能不准确。请检查您的互联网连接，然后重试。
 Offline-suggestions-may-differ-from-online = 离线建议不使用您的位置，可能不同于在线建议。分类单元图像和常用名称可能无法加载。
 OK = 确定
@@ -584,7 +575,6 @@ OR-SIGN-IN-WITH = 或通过其他方式登录
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = 或者，您可以尝试通过放大、靠近或尝试不同的角度来获得更清晰的照片。
 Organism-is-captive = 生物体是被圈养的
 Organisms-that-are-identified-to-species = 生物体被鉴定到“种”一级或更低层级
-Other = 其他
 OTHER-DATA = 其他数据
 OTHER-SUGGESTIONS = 其它建议
 OTHERS--notifications = 其他
@@ -699,7 +689,6 @@ Ranks-Zoosection = 派
 Ranks-ZOOSUBSECTION = 亚派
 Ranks-Zoosubsection = 亚派
 Read-more-on-Wikipedia = 在 Wikipedia 上阅读更多
-Reason--flag = 原因
 Record-a-sound = 录制声音
 Record-animal-sounds = 录制动物的声音
 RECORD-NEW-SOUND = 录制新声音
@@ -735,7 +724,6 @@ REVIEWED = 已复核
 Reviewed-observations-only = 仅查看已审查的观察
 Satellite--map-type = 卫星
 SAVE = 储存
-Save = 保存
 SAVE-ALL = 保存全部
 Save-all-observations = 保存所有观察
 SAVE-CHANGES = 保存更改
@@ -806,8 +794,6 @@ sound-recorder-help-Stop-moving = 停止移动
 sound-recorder-help-Try-to-isolate = 尝试隔离单一生物的声音。如果你可以，请确保留下你要录制的生物的笔记。
 Sounds = 声音
 Source-List = <0>（来源列表：</0><1>{ $source }</1><0>）</0>
-Spam = 垃圾邮件
-Spam-Examples = 商业征集，链接至任何地方等
 Species = 物种
 Species-View = 物种浏览
 SPECIES-WITHOUT-NUMBER =
@@ -978,8 +964,8 @@ X-Identifiers =
     }
 X-MEMBERS =
     { $count ->
-        [one] { $count } MEMBER
-       *[other] { $count } MEMBERS
+        [one] { $count }名成员
+       *[other] { $count }名成员
     }
 X-Observations =
     { $count ->
@@ -1093,7 +1079,6 @@ You-likely-observed-this-species = 您很可能观察到了这个物种
 You-may-have-observed-a-species-in-this-group = 您或许观察到了该分类群中的物种
 You-may-have-observed-this-species = 您或许观察到了这一物种
 You-may-notice-changes-to-how-things-look-and-flow = 您可能会注意到事物的外观和流程发生了变化。您可以在设置中控制您的选项。
-You-must-be-logged-in-to-view-messages = 您必须登录才能查看您的消息。
 You-must-install-Google-Play-Services-to-sign-in-with-Google = 您必须安装Google Play服务才能登录 Google。
 You-need-an-Internet-connection-to-do-that = 您需要互联网连接才能做到这一点。
 You-need-log-in-to-do-that = 您必须先登录。

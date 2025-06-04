@@ -39,9 +39,9 @@ PODS:
     - hermes-engine/Pre-built (= 0.73.11)
   - hermes-engine/Pre-built (0.73.11)
   - libevent (2.1.12)
-  - MMKV (2.1.0):
-    - MMKVCore (~> 2.1.0)
-  - MMKVCore (2.1.1)
+  - MMKV (2.2.2):
+    - MMKVCore (~> 2.2.2)
+  - MMKVCore (2.2.2)
   - Mute (0.6.1)
   - RCT-Folly (2022.05.16.00):
     - boost
@@ -955,7 +955,7 @@ PODS:
     - React-Core
   - react-native-restart (0.0.27):
     - React-Core
-  - react-native-safe-area-context (4.9.0):
+  - react-native-safe-area-context (4.14.1):
     - React-Core
   - react-native-sensitive-info (6.0.0-alpha.9):
     - React-Core
@@ -1179,17 +1179,18 @@ PODS:
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
     - ReactCommon/turbomodule/core
-  - RNScreens (3.30.1):
+  - RNScreens (4.4.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
+    - React-RCTImage
   - RNShareMenu (6.0.0):
     - React
   - RNStoreReview (0.4.3):
     - React-Core
   - RNSVG (15.1.0):
     - React-Core
-  - RNVectorIcons (10.0.3):
+  - RNVectorIcons (10.2.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1528,8 +1529,8 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
   hermes-engine: d992945b77c506e5164e6a9a77510c9d57472c59
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  MMKV: ce484c1ac40bf76d5f09a0195d2ec5b3d3840d55
-  MMKVCore: 1eb661c6c498ab88e3df9ce5d8ff94d05fcc0567
+  MMKV: b4802ebd5a7c68fc0c4a5ccb4926fbdfb62d68e0
+  MMKVCore: a255341a3746955f50da2ad9121b18cb2b346e61
   Mute: 20135a96076f140cc82bfc8b810e2d6150d8ec7e
   RCT-Folly: cd21f1661364f975ae76b3308167ad66b09f53f5
   RCTRequired: 415e56f7c33799a6483e41e4dce607f3daf1e69b
@@ -1568,7 +1569,7 @@ SPEC CHECKSUMS:
   react-native-orientation-locker: dbd3f6ddbe9e62389cb0807dc2af63f6c36dec36
   react-native-render-html: 5afc4751f1a98621b3009432ef84c47019dcb2bd
   react-native-restart: 0bc732f4461709022a742bb29bcccf6bbc5b4863
-  react-native-safe-area-context: 435f4c13ac75ceed6135382ee77d57d1a5b5b2d6
+  react-native-safe-area-context: 758e894ca5a9bd1868d2a9cfbca7326a2b6bf9dc
   react-native-sensitive-info: ee358bf2b901ac3d04f63ff637b31daee44ea87f
   react-native-slider: fbf693dba15ed9cf83c539f9ac6c9646bdf98752
   react-native-volume-manager: d9d2863a2374420af89c89662333ea6adf506988
@@ -1609,16 +1610,16 @@ SPEC CHECKSUMS:
   RNLocalize: 080849cb8a824d9f759b8a5ae00c8321d46dbed0
   RNPermissions: f14c20f4eb7a20fff611ad9f467da7bb5872ac4f
   RNReanimated: b158619f02f1384a5be9e1203b58e0e4a80407d7
-  RNScreens: cedc9bffb599d0bcd57903ef2ce0eef1df5d1065
+  RNScreens: e0f79783ce405f4362c29d098b19fe7e241f11a9
   RNShareMenu: e1cdfa3b9af89416afc75a80377cfd0de4f30ded
   RNStoreReview: 613c43e9132998ed41a65946e20c223c91b36464
   RNSVG: a31e321979e3001f56ba9331d10ac917f8ad1851
-  RNVectorIcons: 102cd20472bf0d7cd15443d43cd87f9c97228ac3
+  RNVectorIcons: 76364622e6f8e55bb456705582cde20f55ef889c
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   VisionCamera: f02de0b1b6b1516b327bd8215237a97e7386db8a
   VisionCameraPluginInatVision: 9562479ff3360026c99b2dc2013127950ea31bbe
   Yoga: 1f93d5925ea12fb0880b21efe3566677337cf2ed
 
-PODFILE CHECKSUM: eff4b75123af5d6680139a78c055b44ad37c269b
+PODFILE CHECKSUM: 016bcf0d7d313437db43ec109950b18158396132
 
 COCOAPODS: 1.14.3

@@ -28,14 +28,14 @@ interface TaxonResultProps {
   fetchRemote?: boolean;
   first?: boolean;
   fromLocal?: boolean;
-  handleCheckmarkPress: ( taxon: Object ) => void;
+  handleCheckmarkPress: ( taxon: object ) => void;
   handleRemovePress?: () => void;
   handleTaxonOrEditPress?: ( _event?: GestureResponderEvent ) => void;
   hideInfoButton?: boolean;
   hideNavButtons?: boolean;
   checkmarkFocused?: boolean;
   lastScreen?: string | null;
-  onPressInfo?: ( taxon: Object ) => void;
+  onPressInfo?: ( taxon: object ) => void;
   showCheckmark?: boolean;
   showEditButton?: boolean;
   showRemoveButton?: boolean;

@@ -8,6 +8,7 @@ import {
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions.ts";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
+import { Animated } from "react-native";
 import * as useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice.ts";
 import useStore from "stores/useStore";
@@ -16,6 +17,25 @@ import faker from "tests/helpers/faker";
 import { renderAppWithObservations } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
+
+// Not my favorite code, but this patch is necessary to get tests passing right
+// now unless we can figure out why Animated.Value is being passed undefined,
+// which seems related to the AICamera
+const OriginalValue = Animated.Value;
+
+beforeEach( () => {
+  // Patch the Value constructor to be safer with undefined values
+  Animated.Value = function ( val ) {
+    return new OriginalValue( val === undefined
+      ? 0
+      : val );
+  };
+} );
+
+afterEach( () => {
+  // Restore original implementation
+  Animated.Value = OriginalValue;
+} );
 
 jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
   OS: "ios",

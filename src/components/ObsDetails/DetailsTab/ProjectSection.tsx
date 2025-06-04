@@ -15,10 +15,10 @@ const sectionClass = "mx-[15px] mb-[20px]";
 interface Props {
   observation: {
     project_observations: Array<{
-      project: Object;
+      project: object;
     }>;
     non_traditional_projects: Array<{
-      project: Object;
+      project: object;
     }>;
   }
 }

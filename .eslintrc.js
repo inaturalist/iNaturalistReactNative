@@ -9,8 +9,6 @@ module.exports = {
   },
   extends: [
     "airbnb",
-    // This was added to the RN0.72 template, but it does not work with our current setup
-    // "@react-native",
     "plugin:i18next/recommended",
     "plugin:@tanstack/eslint-plugin-query/recommended",
     "plugin:react-native-a11y/ios",
@@ -53,7 +51,9 @@ module.exports = {
     "import/extensions": [2, {
       js: "never",
       jsx: "never",
-      json: "always"
+      json: "always",
+      ts: "never",
+      tsx: "never"
     }],
     indent: ["error", 2, { SwitchCase: 1 }],
     "max-len": [
@@ -70,19 +70,6 @@ module.exports = {
     ],
     "no-alert": 0,
     "no-underscore-dangle": 0,
-    // This gets around eslint problems when typing functions in TS
-    "no-unused-vars": 0,
-    "@typescript-eslint/no-unused-vars": [
-      "error",
-      {
-        vars: "all",
-        args: "after-used",
-        // Overriding airbnb to allow leading underscore to indicate unused var
-        argsIgnorePattern: "^_",
-        varsIgnorePattern: "^_",
-        ignoreRestSiblings: true
-      }
-    ],
     "no-void": 0,
     "prefer-destructuring": [2, { object: true, array: false }],
     quotes: [2, "double"],
@@ -131,15 +118,30 @@ module.exports = {
     "react-native-a11y/has-valid-accessibility-live-region": 1,
     "react-native-a11y/has-valid-important-for-accessibility": 1,
     "no-shadow": "off",
-    "@typescript-eslint/no-shadow": "error",
+
     // it's supposedly safe to remove no-undef because TS's compiler handles
     // this, but I'm bumping into this error a lot in VSCode - 20240624 amanda
     // https://eslint.org/docs/latest/rules/no-undef#handled_by_typescript
     "no-undef": "error",
 
-    // TODO: we should actually type these at some point ~amanda 041824
-    "@typescript-eslint/ban-types": 0,
-    "@typescript-eslint/no-var-requires": 0
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        vars: "all",
+        args: "after-used",
+        // Overriding airbnb to allow leading underscore to indicate unused var
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
+        ignoreRestSiblings: true,
+        caughtErrors: "all",
+        // needed a special case for catch blocks that use _ to define an unused error
+        caughtErrorsIgnorePattern: "^_"
+      }
+    ],
+    "@typescript-eslint/no-require-imports": ["error", {
+      allow: ["\\.(png|jpg|jpeg|gif|svg)$"]
+    }],
+    "@typescript-eslint/no-unsafe-function-type": 1
   },
   // need this so jest doesn't show as undefined in jest.setup.js
   env: {
@@ -153,5 +155,21 @@ module.exports = {
         extensions: [".js", ".jsx", ".ts", ".tsx"]
       }
     }
-  }
+  },
+  overrides: [
+    {
+      files: ["*.js", "*.jsx"],
+      rules: {
+        "@typescript-eslint/no-unsafe-function-type": "off",
+        "@typescript-eslint/no-wrapper-object-types": "off",
+        "@typescript-eslint/no-require-imports": "off"
+      }
+    },
+    {
+      files: ["**/__mocks__/**/*", "**/*mock*", "**/*.mock.*"],
+      rules: {
+        "@typescript-eslint/no-require-imports": "off"
+      }
+    }
+  ]
 };

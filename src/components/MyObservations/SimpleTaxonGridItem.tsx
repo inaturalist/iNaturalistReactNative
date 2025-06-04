@@ -27,7 +27,7 @@ export interface Props {
   source: {
     uri: string
   };
-  style?: Object;
+  style?: object;
   speciesCount: SpeciesCount;
 }
 

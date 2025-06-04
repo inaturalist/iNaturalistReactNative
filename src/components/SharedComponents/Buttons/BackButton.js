@@ -76,7 +76,7 @@ const BackButton = ( {
     return (
       <HeaderBackButton
         backImage={backImage}
-        labelVisible={false}
+        displayMode="minimal"
         onPress={onPress || navigation.goBack}
         style={REACT_NAVIGATION_BACK_BUTTON_STYLES.container}
         testID={testID}

@@ -101,7 +101,7 @@ const SignUpConfirmationForm = ( ) => {
       return;
     }
     navigation.navigate( "TabNavigator", {
-      screen: "TabStackNavigator",
+      screen: "ObservationsTab",
       params: {
         screen: "ObsList",
         params: {
