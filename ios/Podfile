@@ -108,16 +108,6 @@ target "iNaturalistReactNative" do
       end
     end
 
-    installer.target_installation_results.pod_target_installation_results.each_value do | inst_result |
-      inst_result.native_target.build_configurations.each do | build_config |
-        # For third party modules who have React-bridging dependency to search correct headers
-        build_config.build_settings["HEADER_SEARCH_PATHS"] ||= "$(inherited) "
-        build_config.build_settings["HEADER_SEARCH_PATHS"] +=
-          '"$(PODS_ROOT)/Headers/Private/React-bridging/react/bridging" '
-        build_config.build_settings["HEADER_SEARCH_PATHS"] +=
-          '"$(PODS_CONFIGURATION_BUILD_DIR)/React-bridging/react_bridging.framework/Headers" '
-      end
-    end
     # react_native_post_install(installer)
     `sed -i -e  $'s/__IPHONE_10_0/__IPHONE_12_0/' Pods/RCT-Folly/folly/portability/Time.h`
   end
