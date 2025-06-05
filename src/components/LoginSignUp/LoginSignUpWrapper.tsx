@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import {
-  ImageBackground, SafeAreaView, ScrollView, View
+  ImageBackground, SafeAreaView, View
 } from "components/styledComponents";
 import React, {
   PropsWithChildren, useEffect, useRef
@@ -16,6 +16,7 @@ import {
   Platform,
   StatusBar
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import colors from "styles/tailwindColors";
 
 interface Props extends PropsWithChildren {
@@ -37,18 +38,6 @@ const LoginSignupWrapper = ( {
   const scrollViewRef = useRef( null );
   const navigation = useNavigation( );
 
-  useEffect( ( ) => {
-    const resetScroll = ( ) => {
-      if ( scrollViewRef.current ) {
-        scrollViewRef.current?.scrollTo( { y: 0, animated: false } );
-      }
-    };
-    const unsubscribe = navigation.addListener( "focus", ( ) => {
-      resetScroll( );
-    } );
-    return unsubscribe;
-  }, [navigation] );
-
   // Make the StatusBar translucent in Android but reset it when we leave
   // because this alters the layout.
   useEffect( ( ) => {
@@ -56,14 +45,7 @@ const LoginSignupWrapper = ( {
     // Hide on first render
     StatusBar.setTranslucent( true );
 
-    const resetScroll = () => {
-      if ( scrollViewRef.current ) {
-        scrollViewRef.current?.scrollTo( { y: 0, animated: false } );
-      }
-    };
     const unsubscribe = navigation.addListener( "focus", ( ) => {
-      console.log( "resetting scroll" );
-      resetScroll( );
       // Hide when focused
       StatusBar.setTranslucent( true );
     } );
@@ -101,7 +83,7 @@ const LoginSignupWrapper = ( {
           barStyle="light-content"
           backgroundColor={colors.black}
         />
-        <ScrollView
+        <KeyboardAwareScrollView
           ref={scrollViewRef}
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode="on-drag"
@@ -114,7 +96,7 @@ const LoginSignupWrapper = ( {
                 : children}
             </View>
           </View>
-        </ScrollView>
+        </KeyboardAwareScrollView>
       </SafeAreaView>
     </ImageBackground>
   );
