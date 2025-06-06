@@ -42,7 +42,7 @@ const CustomTabBar = ( { tabs }: Props ): Node => {
   return (
     <View
       className={classNames(
-        "flex-row bg-white justify-evenly p-1 m-0",
+        "flex-row bg-white dark:bg-darkGray justify-evenly p-1 m-0",
         { "pb-5": insets.bottom > 0 }
       )}
       style={DROP_SHADOW}

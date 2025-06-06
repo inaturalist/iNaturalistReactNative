@@ -20,7 +20,9 @@ import {
 import { Pressable, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts.ts";
 import React, { useCallback, useMemo, useState } from "react";
-import { Alert, Dimensions, ViewStyle } from "react-native";
+import {
+  Alert, Dimensions, ViewStyle
+} from "react-native";
 import User from "realmModels/User.ts";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import { log } from "sharedHelpers/logger";
@@ -36,17 +38,20 @@ function isDefaultMode( ) {
   return useStore.getState( ).layout.isDefaultMode === true;
 }
 
-const drawerScrollViewStyle = {
-  backgroundColor: "white",
+const createDrawerStyle = ( isDark: boolean ) => ( {
+  backgroundColor: isDark
+    ? colors.darkGray
+    : "white",
   borderTopRightRadius: 20,
   borderBottomRightRadius: 20,
   minHeight: "100%"
-} as const;
+} as const );
 
 interface Props {
   state: object;
   navigation: object;
   descriptors: object;
+  colorScheme?: string;
 }
 
 const feedbackLogger = log.extend( "feedback" );
@@ -55,7 +60,10 @@ function showOfflineAlert( t ) {
   Alert.alert( t( "You-are-offline" ), t( "Please-try-again-when-you-are-online" ) );
 }
 
-const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
+const CustomDrawerContent = ( {
+  state, navigation, descriptors, colorScheme
+}: Props ) => {
+  const drawerScrollViewStyle = createDrawerStyle( colorScheme === "dark" );
   const realm = useRealm( );
   const queryClient = useQueryClient( );
   const currentUser = useCurrentUser( );
@@ -172,12 +180,14 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
     <INatIcon
       name={drawerItems[key].icon}
       size={22}
-      color={drawerItems[key].color}
+      color={colorScheme === "dark"
+        ? colors.white
+        : drawerItems[key].color}
     />
-  ), [drawerItems] );
+  ), [drawerItems, colorScheme] );
 
   const renderLabel = useCallback( ( label: string ) => (
-    <Heading4>
+    <Heading4 className="dark:text-white">
       {label}
     </Heading4>
   ), [] );
@@ -225,7 +235,7 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
           />
         ) }
       <View className="ml-3 justify-center">
-        <Body1>
+        <Body1 className="dark:text-white">
           {currentUser
             ? currentUser?.login
             : t( "Log-in-to-iNaturalist" )}

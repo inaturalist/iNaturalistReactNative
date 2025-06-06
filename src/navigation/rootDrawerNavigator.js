@@ -9,6 +9,7 @@ import NoBottomTabStackNavigator from "navigation/StackNavigators/NoBottomTabSta
 import OnboardingStackNavigator from "navigation/StackNavigators/OnboardingStackNavigator";
 import type { Node } from "react";
 import * as React from "react";
+import { useColorScheme } from "react-native";
 import { useOnboardingShown } from "sharedHelpers/installData.ts";
 
 import BottomTabNavigator from "./BottomTabNavigator";
@@ -26,19 +27,23 @@ const drawerOptions = {
 
 const Drawer = createDrawerNavigator( );
 
-const drawerRenderer = ( { state, navigation, descriptors } ) => (
-  <CustomDrawerContent
-    state={state}
-    navigation={navigation}
-    descriptors={descriptors}
-  />
-);
-
 // DEVELOPERS: do you need to add any screens here? All the rest of our screens live in
 // NoBottomTabStackNavigator, TabStackNavigator, OnboardingStackNavigator, or LoginStackNavigator
 
 const RootDrawerNavigator = ( ): Node => {
   const [onboardingShown] = useOnboardingShown( );
+  const colorScheme = useColorScheme( );
+
+  const drawerRenderer = ( {
+    state, navigation, descriptors
+  } ) => (
+    <CustomDrawerContent
+      state={state}
+      navigation={navigation}
+      descriptors={descriptors}
+      colorScheme={colorScheme}
+    />
+  );
 
   return (
     <Drawer.Navigator
