@@ -162,7 +162,6 @@ dependencies {
 
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-    implementation("com.facebook.react:flipper-integration")    
 
     // This is required for getAttributes() to work in Detox on Android:
     // https://github.com/wix/Detox/issues/3147

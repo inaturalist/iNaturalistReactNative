@@ -69,10 +69,8 @@ const ObsListItem = ( {
   const missingBasics = (
     // Currently just a test
     isDebug
-    // Only works for Realm observations
-    && typeof ( observation.needsSync ) === "function"
-    && observation.needsSync()
-    && observation.missingBasics()
+    && observation.needs_sync
+    && observation.missing_basics
   );
 
   const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
