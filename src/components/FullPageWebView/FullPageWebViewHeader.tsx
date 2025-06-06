@@ -22,12 +22,12 @@ type Props = {
 
 const HEADER_STYLE = {
   backgroundColor: "white"
-};
+} as const;
 
 const BACK_BUTTON_STYLE = {
   position: "relative",
   start: 11
-};
+} as const;
 
 const FullPageWebViewHeader = ( {
   route,

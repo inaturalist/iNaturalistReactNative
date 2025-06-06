@@ -19,7 +19,7 @@ const baseHeaderOptions = {
   headerBackButtonDisplayMode: "minimal",
   headerShadowVisible: false,
   headerLeft: () => <BackButton inCustomHeader testID="header-back-button" />
-};
+} as const;
 
 const showHeader = {
   ...baseHeaderOptions,
@@ -31,7 +31,7 @@ const showHeader = {
     fontSize: 24,
     fontFamily: fontMedium
   }
-};
+} as const;
 
 const showLongHeader = {
   ...baseHeaderOptions,
@@ -43,48 +43,48 @@ const showLongHeader = {
     fontSize: 16,
     fontFamily: fontMedium
   }
-};
+} as const;
 
 export const hideHeaderLeft = {
   ...showHeader,
   headerLeft: null,
   headerBackVisible: false
-};
+} as const;
 
 const showSimpleCustomHeader = {
   header: FullPageWebViewHeader,
   headerShadowVisible: true
-};
+} as const;
 
 const hideHeader = {
   headerShown: false
-};
+} as const;
 
 const blankHeaderTitle = {
   headerTitle: ""
-};
+} as const;
 
 const removeBottomBorder = {
   headerBackground: ( ) => (
     // eslint-disable-next-line react-native/no-inline-styles
     <HeaderBackground style={{ bottomBorderColor: "white" }} />
   )
-};
+} as const;
 
 // this removes the default hamburger menu from header
 const hideDrawerHeaderLeft = {
   headerLeft: ( ) => (
     <View />
   )
-};
+} as const;
 
 const preventSwipeToGoBack = {
   gestureEnabled: false
-};
+} as const;
 
 const isDrawerScreen = {
   animation: "none"
-};
+} as const;
 
 export {
   blankHeaderTitle,
