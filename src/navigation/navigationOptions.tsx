@@ -1,30 +1,27 @@
-// @flow
 import { HeaderBackground } from "@react-navigation/elements";
 import { fontMedium } from "appConstants/fontFamilies.ts";
 import FullPageWebViewHeader from "components/FullPageWebView/FullPageWebViewHeader.tsx";
 import BackButton from "components/SharedComponents/Buttons/BackButton";
-import type { Node } from "react";
 import React from "react";
 import { View } from "react-native";
 import colors from "styles/tailwindColors";
 
 import FadeInView from "./FadeInView";
 
-// $FlowIgnore
 const fadeInComponent = ( component: React.JSX.Element ): React.JSX.Element => (
   <FadeInView>
     {component}
   </FadeInView>
 );
 
-const baseHeaderOptions: Object = {
+const baseHeaderOptions = {
   headerShown: true,
   headerBackButtonDisplayMode: "minimal",
   headerShadowVisible: false,
   headerLeft: () => <BackButton inCustomHeader testID="header-back-button" />
 };
 
-const showHeader: Object = {
+const showHeader = {
   ...baseHeaderOptions,
   headerTintColor: colors.darkGray,
   // Note: left header is not supported on iOS
@@ -36,7 +33,7 @@ const showHeader: Object = {
   }
 };
 
-const showLongHeader: Object = {
+const showLongHeader = {
   ...baseHeaderOptions,
   headerTintColor: colors.darkGray,
   // Note: left header is not supported on iOS
@@ -48,13 +45,13 @@ const showLongHeader: Object = {
   }
 };
 
-export const hideHeaderLeft: Object = {
+export const hideHeaderLeft = {
   ...showHeader,
   headerLeft: null,
   headerBackVisible: false
 };
 
-const showSimpleCustomHeader: Object = {
+const showSimpleCustomHeader = {
   header: FullPageWebViewHeader,
   headerShadowVisible: true
 };
@@ -68,7 +65,7 @@ const blankHeaderTitle = {
 };
 
 const removeBottomBorder = {
-  headerBackground: ( ): Node => (
+  headerBackground: ( ) => (
     // eslint-disable-next-line react-native/no-inline-styles
     <HeaderBackground style={{ bottomBorderColor: "white" }} />
   )
@@ -76,7 +73,7 @@ const removeBottomBorder = {
 
 // this removes the default hamburger menu from header
 const hideDrawerHeaderLeft = {
-  headerLeft: ( ): Node => (
+  headerLeft: ( ) => (
     <View />
   )
 };
