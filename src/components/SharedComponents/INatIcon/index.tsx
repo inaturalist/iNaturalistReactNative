@@ -89,9 +89,6 @@ const INatIcon = ( {
   testID, name, color, size, dropShadow, isDarkModeEnabled = false
 }: Props ) => {
   const colorScheme = useColorScheme( );
-  console.log( "INatIcon received props:", {
-    isDarkModeEnabled
-  } );
 
   const getColorFromColorScheme = ( ) => {
     if ( colorScheme === "dark"
