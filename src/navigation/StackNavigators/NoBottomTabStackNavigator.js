@@ -21,7 +21,7 @@ import {
   fadeInComponent,
   hideHeader,
   hideHeaderLeft
-} from "navigation/navigationOptions";
+} from "navigation/navigationOptions.tsx";
 import type { Node } from "react";
 import React from "react";
 

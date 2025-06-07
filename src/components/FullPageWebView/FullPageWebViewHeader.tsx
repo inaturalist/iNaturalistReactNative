@@ -8,9 +8,10 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { dropShadow } from "styles/global";
 
 type HeaderTitle = string | ( ( props: HeaderTitleProps ) => React.ReactNode ) | undefined;
-type Props = {
+
+interface Props {
   route: {
-    name: string
+    name: string;
   };
   options: {
     title?: string | undefined;
@@ -18,16 +19,16 @@ type Props = {
     headerStyle?: object;
     headerShadowVisible?: boolean;
   };
-};
+}
 
 const HEADER_STYLE = {
   backgroundColor: "white"
-};
+} as const;
 
 const BACK_BUTTON_STYLE = {
   position: "relative",
   start: 11
-};
+} as const;
 
 const FullPageWebViewHeader = ( {
   route,
