@@ -81,9 +81,11 @@ describe( "AddObsButton", ( ) => {
 } );
 
 describe( "with advanced user layout", ( ) => {
+  const initialState = useStore.getInitialState( );
   beforeEach( ( ) => {
     useStore.setState( {
       layout: {
+        ...initialState.layout,
         isAllAddObsOptionsMode: true
       }
     } );
@@ -121,6 +123,7 @@ describe( "with advanced user layout", ( ) => {
     beforeEach( ( ) => {
       useStore.setState( {
         layout: {
+          ...initialState.layout,
           isDefaultMode: false,
           isAllAddObsOptionsMode: false
         }

@@ -38,6 +38,8 @@ beforeAll( uniqueRealmBeforeAll );
 afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
+const initialState = useStore.getInitialState();
+
 beforeAll( async () => {
   await initI18next();
 } );
@@ -75,7 +77,9 @@ describe( "PhotoLibrary navigation", ( ) => {
   beforeEach( ( ) => {
     useStore.setState( {
       layout: {
+        ...initialState.layout,
         screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT,
+        isDefaultMode: false,
         isAllAddObsOptionsMode: true
       }
     } );
@@ -116,6 +120,7 @@ describe( "PhotoLibrary navigation when suggestions screen is preferred next scr
   beforeEach( () => {
     useStore.setState( {
       layout: {
+        ...initialState.layout,
         screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
         isAllAddObsOptionsMode: true
       }

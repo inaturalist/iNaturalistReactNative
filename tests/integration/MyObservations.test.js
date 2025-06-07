@@ -136,8 +136,10 @@ const displayItemByText = text => {
 };
 
 beforeEach( ( ) => {
+  const initialState = useStore.getInitialState( );
   useStore.setState( {
     layout: {
+      ...initialState.layout,
       isDefaultMode: false,
       isAllAddObsOptionsMode: true
     }
@@ -356,12 +358,6 @@ describe( "MyObservations", ( ) => {
       } );
 
       it( "displays observation status in list view in advanced mode", async () => {
-        useStore.setState( {
-          layout: {
-            isDefaultMode: false,
-            isAllAddObsOptionsMode: true
-          }
-        } );
         const realm = global.mockRealms[__filename];
         expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
         renderAppWithComponent( <MyObservationsContainer /> );

@@ -22,6 +22,8 @@ const deletionStore = {
   syncingStatus: SYNC_PENDING
 };
 
+const initialState = useStore.getInitialState();
+
 beforeAll( ( ) => {
   jest.useFakeTimers( );
 } );
@@ -30,6 +32,7 @@ describe( "SimpleUploadBannerContainer", () => {
   it( "displays syncing text before beginning uploads when sync button tapped", ( ) => {
     useStore.setState( {
       layout: {
+        ...initialState.layout,
         isDefaultMode: false
       },
       numUnuploadedObservations: 1,
@@ -45,6 +48,7 @@ describe( "SimpleUploadBannerContainer", () => {
   it( "displays a pending upload", ( ) => {
     useStore.setState( {
       layout: {
+        ...initialState.layout,
         isDefaultMode: false
       },
       uploadStatus: UPLOAD_PENDING,
@@ -64,6 +68,7 @@ describe( "SimpleUploadBannerContainer", () => {
   it( "displays an upload in progress", ( ) => {
     useStore.setState( {
       layout: {
+        ...initialState.layout,
         isDefaultMode: false
       },
       initialNumObservationsInQueue: 1,
@@ -81,6 +86,7 @@ describe( "SimpleUploadBannerContainer", () => {
     const numUploadsAttempted = 1;
     useStore.setState( {
       layout: {
+        ...initialState.layout,
         isDefaultMode: false
       },
       numUploadsAttempted,
@@ -97,6 +103,7 @@ describe( "SimpleUploadBannerContainer", () => {
   it( "displays multiple pending uploads", () => {
     useStore.setState( {
       layout: {
+        ...initialState.layout,
         isDefaultMode: false
       },
       uploadStatus: UPLOAD_PENDING,
@@ -116,6 +123,7 @@ describe( "SimpleUploadBannerContainer", () => {
   it( "displays multiple uploads in progress", () => {
     useStore.setState( {
       layout: {
+        ...initialState.layout,
         isDefaultMode: false
       },
       uploadStatus: UPLOAD_IN_PROGRESS,
@@ -133,6 +141,7 @@ describe( "SimpleUploadBannerContainer", () => {
     const numUploadsAttempted = 7;
     useStore.setState( {
       layout: {
+        ...initialState.layout,
         isDefaultMode: false
       },
       numUploadsAttempted,
@@ -149,6 +158,7 @@ describe( "SimpleUploadBannerContainer", () => {
   it( "displays 1 upload completed and 4 failed", () => {
     useStore.setState( {
       layout: {
+        ...initialState.layout,
         isDefaultMode: false
       },
       numUploadsAttempted: 5,
@@ -156,7 +166,10 @@ describe( "SimpleUploadBannerContainer", () => {
       syncingStatus: SYNC_PENDING,
       initialNumObservationsInQueue: 5,
       errorsByUuid: {
-        1: true, 2: true, 3: true, 4: true
+        1: true,
+        2: true,
+        3: true,
+        4: true
       }
     } );
     renderComponent( <SimpleUploadBannerContainer currentUser={mockUser} /> );
@@ -170,6 +183,7 @@ describe( "SimpleUploadBannerContainer", () => {
   it( "displays only error when all 5 uploads failed", () => {
     useStore.setState( {
       layout: {
+        ...initialState.layout,
         isDefaultMode: false
       },
       uploadStatus: UPLOAD_COMPLETE,
@@ -195,6 +209,7 @@ describe( "SimpleUploadBannerContainer", () => {
   it( "displays 4 uploads completed and 1 failed", () => {
     useStore.setState( {
       layout: {
+        ...initialState.layout,
         isDefaultMode: false
       },
       uploadStatus: UPLOAD_COMPLETE,
@@ -230,6 +245,7 @@ describe( "SimpleUploadBannerContainer", () => {
   it( "displays deletions completed", () => {
     useStore.setState( {
       layout: {
+        ...initialState.layout,
         isDefaultMode: false
       },
       ...deletionStore,
@@ -247,6 +263,7 @@ describe( "SimpleUploadBannerContainer", () => {
     const deleteError = "Unknown problem deleting observations";
     useStore.setState( {
       layout: {
+        ...initialState.layout,
         isDefaultMode: false
       },
       ...deletionStore,
@@ -266,6 +283,7 @@ describe( "SimpleUploadBannerContainer", () => {
     zustandStorage.setItem( "numOfUserObservations", 1 );
     useStore.setState( {
       layout: {
+        ...initialState.layout,
         isDefaultMode: false
       },
       uploadStatus: UPLOAD_PENDING,
@@ -287,6 +305,7 @@ describe( "SimpleUploadBannerContainer", () => {
     zustandStorage.setItem( "numOfUserObservations", 2 );
     useStore.setState( {
       layout: {
+        ...initialState.layout,
         isDefaultMode: false
       },
       uploadStatus: UPLOAD_PENDING,

@@ -37,8 +37,10 @@ afterAll( uniqueRealmAfterAll );
 
 beforeAll( async () => {
   await initI18next();
+  const initialState = useStore.getInitialState();
   useStore.setState( {
     layout: {
+      ...initialState.layout,
       isAllAddObsOptionsMode: true
     }
   } );
