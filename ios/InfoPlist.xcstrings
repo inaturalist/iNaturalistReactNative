@@ -427,7 +427,7 @@
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "iNaturalist"
           }
         },
@@ -890,7 +890,7 @@
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "iNaturalist"
           }
         },
@@ -4126,8 +4126,8 @@
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
+            "state" : "translated",
+            "value" : "iNaturalist fotoğraflarını kitaplığına aktar."
           }
         },
         "uk" : {
@@ -4588,8 +4588,8 @@
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
+            "state" : "translated",
+            "value" : "iNaturalist fotoğraflarını kitaplığına aktar ve kitaplığından getir."
           }
         },
         "uk" : {
