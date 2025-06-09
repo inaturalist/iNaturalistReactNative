@@ -19,11 +19,8 @@ import {
   taxonomyPath
 } from "sharedHelpers/mlModel.ts";
 import { logStage } from "sharedHelpers/sentinelFiles.ts";
-import {
-  orientationPatchFrameProcessor,
-  usePatchedRunAsync
-} from "sharedHelpers/visionCameraPatches";
-import { useDeviceOrientation, useLayoutPrefs } from "sharedHooks";
+import { usePatchedRunAsync } from "sharedHelpers/visionCameraPatches";
+import { useLayoutPrefs } from "sharedHooks";
 import useStore from "stores/useStore";
 
 type Props = {
@@ -81,7 +78,6 @@ const FrameProcessorCamera = ( {
 }: Props ): Node => {
   const sentinelFileName = useStore( state => state.sentinelFileName );
   const { isDefaultMode } = useLayoutPrefs( );
-  const { deviceOrientation } = useDeviceOrientation();
   const [lastTimestamp, setLastTimestamp] = useState( undefined );
 
   const navigation = useNavigation();
@@ -139,7 +135,6 @@ const FrameProcessorCamera = ( {
     onClassifierError( error );
   } );
 
-  const patchedOrientationAndroid = orientationPatchFrameProcessor( deviceOrientation );
   const patchedRunAsync = usePatchedRunAsync( );
   const hasUserLocation = userLocation?.latitude != null && userLocation?.longitude != null;
   const useGeomodel = isDefaultMode
@@ -182,7 +177,6 @@ const FrameProcessorCamera = ( {
             confidenceThreshold,
             numStoredResults,
             cropRatio,
-            patchedOrientationAndroid,
             useGeomodel,
             geomodelPath,
             location: {
@@ -205,7 +199,6 @@ const FrameProcessorCamera = ( {
       modelVersion,
       confidenceThreshold,
       takingPhoto,
-      patchedOrientationAndroid,
       numStoredResults,
       cropRatio,
       lastTimestamp,

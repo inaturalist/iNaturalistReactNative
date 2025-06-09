@@ -21,14 +21,6 @@ import {
   PORTRAIT_UPSIDE_DOWN
 } from "sharedHooks/useDeviceOrientation.ts";
 
-// Needed for react-native-vision-camera v3.9.0 in combination
-// with our vision-camera-plugin-inatvision
-// This patch is used to determine the orientation prop for the FrameProcessor.
-// This is only needed for Android, so on iOS we return null.
-export const orientationPatchFrameProcessor = deviceOrientation => ( Platform.OS === "android"
-  ? deviceOrientation
-  : null );
-
 // Needed for react-native-vision-camera v3.9.0
 // As of this version the photo from takePhoto is not oriented coming from the native side.
 // E.g. if you take a photo in landscape-right and save it to camera roll directly from the
