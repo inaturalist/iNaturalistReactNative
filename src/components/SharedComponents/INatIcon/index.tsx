@@ -1,4 +1,7 @@
 import React from "react";
+import {
+  useColorScheme
+} from "react-native";
 import colors from "styles/tailwindColors";
 
 import Icon from "./INatIcon";
@@ -9,6 +12,7 @@ interface Props {
   color?: string;
   size?: number;
   dropShadow?: boolean;
+  isDarkModeEnabled?: boolean;
 }
 
 type Aliases = {
@@ -82,8 +86,21 @@ const ALIASES: Aliases = {
 
 // Use default color if none is specified
 const INatIcon = ( {
-  testID, name, color, size, dropShadow
+  testID, name, color, size, dropShadow, isDarkModeEnabled = false
 }: Props ) => {
+  const colorScheme = useColorScheme( );
+
+  const getColorFromColorScheme = ( ) => {
+    if ( colorScheme === "dark"
+        && color === colors.darkGray
+        && isDarkModeEnabled
+    ) return colors.white;
+
+    return color || colors.darkGray;
+  };
+
+  const colorFromColorScheme = getColorFromColorScheme( );
+
   const style = dropShadow
     ? {
       shadowOpacity: 2,
@@ -95,7 +112,7 @@ const INatIcon = ( {
     <Icon
       testID={testID}
       name={ALIASES[name] || name}
-      color={color || colors.darkGray}
+      color={colorFromColorScheme}
       size={size}
       style={style}
     />

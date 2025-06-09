@@ -43,7 +43,7 @@ const NotificationsIcon = ( {
             ? colors.inatGreen
             : colors.darkGray}
           size={size}
-
+          isDarkModeEnabled
         />
         <View
           className={classnames(
@@ -76,6 +76,7 @@ const NotificationsIcon = ( {
   return (
     <INatIconButton
       icon={icon}
+      isDarkModeEnabled
       color={active
         ? colors.inatGreen
         : colors.darkGray}

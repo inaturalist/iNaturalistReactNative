@@ -66,6 +66,7 @@ const NavButton = ( {
           ? colors.inatGreen
           : colors.darkGray}
         size={size}
+        isDarkModeEnabled
         {...sharedProps}
       />
     );
@@ -88,8 +89,8 @@ const NavButton = ( {
       <Body4
         numberOfLines={1}
         className={active
-          ? "text-inatGreen"
-          : "text-darkGray"}
+          ? "text-inatGreen dark:text-white"
+          : "text-darkGray dark:text-white"}
         maxFontSizeMultiplier={1.2}
       >
         {accessibilityLabel}
