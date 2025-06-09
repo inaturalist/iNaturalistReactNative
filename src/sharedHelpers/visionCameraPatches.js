@@ -2,44 +2,17 @@
     This file contains various patches for handling the react-native-vision-camera library.
 */
 
-import {
-  rotatedOriginalPhotosPath
-} from "appConstants/paths.ts";
 import { Platform } from "react-native";
 import { isTablet } from "react-native-device-info";
-import RNFS from "react-native-fs";
 import {
   useSharedValue as useWorkletSharedValue,
   Worklets
 } from "react-native-worklets-core";
-import resizeImage from "sharedHelpers/resizeImage.ts";
-import { unlink } from "sharedHelpers/util.ts";
 import {
   LANDSCAPE_LEFT,
   LANDSCAPE_RIGHT,
   PORTRAIT_UPSIDE_DOWN
 } from "sharedHooks/useDeviceOrientation.ts";
-
-// Needed for react-native-vision-camera v3.9.0
-// This patch is used to rotate the photo taken with the vision camera.
-// Because the photos coming from the vision camera are not oriented correctly, we
-// rotate them with image-resizer as a first step, replacing the original photo.
-export const rotatePhotoPatch = async photo => {
-  const path = rotatedOriginalPhotosPath;
-  await RNFS.mkdir( path );
-  // Rotate the image with ImageResizer
-  const image = await resizeImage(
-    photo.path,
-    {
-      width: photo.width,
-      height: photo.height,
-      outputPath: path
-    }
-  );
-  // Remove original photo
-  await unlink( photo.path );
-  return image;
-};
 
 export const rotationValue = deviceOrientation => {
   switch ( deviceOrientation ) {
