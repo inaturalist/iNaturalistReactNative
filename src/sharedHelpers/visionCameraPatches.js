@@ -21,15 +21,6 @@ import {
   PORTRAIT_UPSIDE_DOWN
 } from "sharedHooks/useDeviceOrientation.ts";
 
-// Needed for react-native-vision-camera v3.9.0
-// This patch is used to determine the orientation prop for the Camera component.
-// On Android, the orientation prop is not used, so we return null.
-// On iOS, the orientation prop is undocumented, but it does get used in a sense that the
-// photo metadata shows the correct Orientation only if this prop is set.
-export const orientationPatch = deviceOrientation => ( Platform.OS === "android"
-  ? null
-  : deviceOrientation );
-
 // Needed for react-native-vision-camera v3.9.0 in combination
 // with our vision-camera-plugin-inatvision
 // This patch is used to determine the orientation prop for the FrameProcessor.
