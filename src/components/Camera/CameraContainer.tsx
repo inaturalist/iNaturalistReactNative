@@ -21,7 +21,7 @@ import useStore from "stores/useStore";
 
 import CameraWithDevice from "./CameraWithDevice";
 import savePhotosToPhotoLibrary from "./helpers/savePhotosToPhotoLibrary";
-import saveRotatedPhotoToDocumentsDirectory from "./helpers/saveRotatedPhotoToDocumentsDirectory";
+import savePhotoToDocumentsDirectory from "./helpers/savePhotoToDocumentsDirectory";
 import usePrepareStoreAndNavigate from "./hooks/usePrepareStoreAndNavigate";
 import useSavePhotoPermission from "./hooks/useSavePhotoPermission";
 
@@ -244,7 +244,7 @@ const CameraContainer = ( ) => {
       await logStageIfAICamera( "take_photo_error" );
       throw new Error( "Failed to take photo: missing camera" );
     }
-    const uri = await saveRotatedPhotoToDocumentsDirectory( cameraPhoto );
+    const uri = await savePhotoToDocumentsDirectory( cameraPhoto );
     const newPhotoState = await updateTakePhotoStore( uri, options );
     if ( cameraType !== "AI" ) { setTakingPhoto( false ); }
     if ( options?.navigateImmediately ) {

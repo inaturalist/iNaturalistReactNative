@@ -6,8 +6,8 @@ import {
 } from "sharedHelpers/visionCameraPatches";
 
 // Rotate the original photo depending on device orientation
-const saveRotatedPhotoToDocumentsDirectory = async (
+const savePhotoToDocumentsDirectory = async (
   cameraPhoto: PhotoFile
 ) => rotatePhotoPatch( cameraPhoto );
 
-export default saveRotatedPhotoToDocumentsDirectory;
+export default savePhotoToDocumentsDirectory;
