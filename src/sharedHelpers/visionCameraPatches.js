@@ -87,16 +87,6 @@ export const rotatePhotoPatch = async ( photo, deviceOrientation ) => {
   return image;
 };
 
-// Needed for react-native-vision-camera v3.9.0
-// This patch is here to remember to replace the rotation used when resizing the original
-// photo to a smaller local copy we keep in the app cache. Previously we had a flow where
-// we would resize the original photo to a smaller version including rotation. Now, we
-// rotate the original photo first with image-resizer separately to save to camera roll,
-// and then resize this copy to a smaller version. In case the first step is redundant
-// in the future, we keep this patch here to remind us to put the rotation back to resizing
-// the smaller photo.
-export const rotationLocalPhotoPatch = () => 0;
-
 export const rotationValue = deviceOrientation => {
   switch ( deviceOrientation ) {
     case LANDSCAPE_LEFT:
