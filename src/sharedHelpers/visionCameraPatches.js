@@ -17,59 +17,14 @@ import { unlink } from "sharedHelpers/util.ts";
 import {
   LANDSCAPE_LEFT,
   LANDSCAPE_RIGHT,
-  PORTRAIT,
   PORTRAIT_UPSIDE_DOWN
 } from "sharedHooks/useDeviceOrientation.ts";
-
-// Needed for react-native-vision-camera v3.9.0
-// As of this version the photo from takePhoto is not oriented coming from the native side.
-// E.g. if you take a photo in landscape-right and save it to camera roll directly from the
-// vision camera, it will be tilted in the native photo app. So, on iOS, depending on the
-// metadata of the photo the rotation needs to be set to 0 or 180.
-// On Android, the rotation is derived from the device orientation at the time of taking the
-// photo, because orientation is not yet supported in the library.
-export const rotationTempPhotoPatch = ( photo, deviceOrientation ) => {
-  let photoRotation = 0;
-  if ( Platform.OS === "ios" ) {
-    switch ( photo.metadata?.Orientation ) {
-      case 1:
-      case 3:
-        photoRotation = 180;
-        break;
-      case 6:
-      case 8:
-        photoRotation = 0;
-        break;
-      default:
-        photoRotation = 0;
-    }
-  } else {
-    switch ( deviceOrientation ) {
-      case PORTRAIT:
-        photoRotation = 90;
-        break;
-      case LANDSCAPE_RIGHT:
-        photoRotation = 180;
-        break;
-      case LANDSCAPE_LEFT:
-        photoRotation = 0;
-        break;
-      case PORTRAIT_UPSIDE_DOWN:
-        photoRotation = 270;
-        break;
-      default:
-        photoRotation = 90;
-    }
-  }
-  return photoRotation;
-};
 
 // Needed for react-native-vision-camera v3.9.0
 // This patch is used to rotate the photo taken with the vision camera.
 // Because the photos coming from the vision camera are not oriented correctly, we
 // rotate them with image-resizer as a first step, replacing the original photo.
-export const rotatePhotoPatch = async ( photo, deviceOrientation ) => {
-  const rotation = rotationTempPhotoPatch( photo, deviceOrientation );
+export const rotatePhotoPatch = async photo => {
   const path = rotatedOriginalPhotosPath;
   await RNFS.mkdir( path );
   // Rotate the image with ImageResizer
@@ -78,7 +33,6 @@ export const rotatePhotoPatch = async ( photo, deviceOrientation ) => {
     {
       width: photo.width,
       height: photo.height,
-      rotation,
       outputPath: path
     }
   );
