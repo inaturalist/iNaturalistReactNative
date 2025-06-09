@@ -14,19 +14,6 @@ import {
   PORTRAIT_UPSIDE_DOWN
 } from "sharedHooks/useDeviceOrientation.ts";
 
-export const rotationValue = deviceOrientation => {
-  switch ( deviceOrientation ) {
-    case LANDSCAPE_LEFT:
-      return -90;
-    case LANDSCAPE_RIGHT:
-      return 90;
-    case PORTRAIT_UPSIDE_DOWN:
-      return 180;
-    default:
-      return 0;
-  }
-};
-
 // Needed for react-native-vision-camera v3.3.1
 // This patch is used to rotate the camera view on iPads.
 // The only thing to do there is to rotate the camera view component
