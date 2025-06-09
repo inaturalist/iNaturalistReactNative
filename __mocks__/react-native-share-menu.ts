@@ -1,6 +1,31 @@
-// Trivial mock b/c I assume we can't really test the native parts of this
-// library ~~~kueda 20230516
-export default ( {
-  addNewShareListener: jest.fn( ),
-  getInitialShare: jest.fn( )
-} );
+let mockShareData = null;
+let mockListeners = [];
+
+const ShareMenu = {
+  getInitialShare: jest.fn( callback => {
+    if ( mockShareData ) {
+      callback( mockShareData );
+    }
+  } ),
+
+  addNewShareListener: jest.fn( callback => {
+    const listener = { callback, remove: jest.fn() };
+    mockListeners.push( listener );
+    return listener;
+  } ),
+
+  __setMockShareData: data => {
+    mockShareData = data;
+  },
+
+  __triggerNewShare: data => {
+    mockListeners.forEach( listener => listener.callback( data ) );
+  },
+
+  __reset: ( ) => {
+    mockShareData = null;
+    mockListeners = [];
+  }
+};
+
+export default ShareMenu;
