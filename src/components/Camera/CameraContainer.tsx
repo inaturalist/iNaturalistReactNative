@@ -15,9 +15,7 @@ import type {
 } from "react-native-vision-camera";
 import fetchAccurateUserLocation from "sharedHelpers/fetchAccurateUserLocation.ts";
 import { createSentinelFile, deleteSentinelFile, logStage } from "sharedHelpers/sentinelFiles.ts";
-import {
-  useDeviceOrientation, useTranslation
-} from "sharedHooks";
+import { useTranslation } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useStore from "stores/useStore";
 
@@ -78,8 +76,6 @@ const CameraContainer = ( ) => {
     if ( cameraType !== "AI" ) { return; }
     await deleteSentinelFile( sentinelFileName );
   }, [cameraType, sentinelFileName] );
-
-  const { deviceOrientation } = useDeviceOrientation( );
 
   const {
     hasPermissions: hasLocationPermissions,
@@ -248,7 +244,7 @@ const CameraContainer = ( ) => {
       await logStageIfAICamera( "take_photo_error" );
       throw new Error( "Failed to take photo: missing camera" );
     }
-    const uri = await saveRotatedPhotoToDocumentsDirectory( cameraPhoto, deviceOrientation );
+    const uri = await saveRotatedPhotoToDocumentsDirectory( cameraPhoto );
     const newPhotoState = await updateTakePhotoStore( uri, options );
     if ( cameraType !== "AI" ) { setTakingPhoto( false ); }
     if ( options?.navigateImmediately ) {
