@@ -1104,10 +1104,27 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-worklets-core (1.3.3):
-    - React
-    - React-callinvoker
+  - react-native-worklets-core (1.5.0):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Codegen
     - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - React-nativeconfig (0.74.7)
   - React-NativeModulesApple (0.74.7):
     - glog
@@ -1475,16 +1492,16 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - SocketRocket (0.7.0)
-  - VisionCamera (4.5.2):
-    - VisionCamera/Core (= 4.5.2)
-    - VisionCamera/FrameProcessors (= 4.5.2)
-    - VisionCamera/React (= 4.5.2)
-  - VisionCamera/Core (4.5.2)
-  - VisionCamera/FrameProcessors (4.5.2):
+  - VisionCamera (4.6.4):
+    - VisionCamera/Core (= 4.6.4)
+    - VisionCamera/FrameProcessors (= 4.6.4)
+    - VisionCamera/React (= 4.6.4)
+  - VisionCamera/Core (4.6.4)
+  - VisionCamera/FrameProcessors (4.6.4):
     - React
     - React-callinvoker
     - react-native-worklets-core
-  - VisionCamera/React (4.5.2):
+  - VisionCamera/React (4.6.4):
     - React-Core
     - VisionCamera/FrameProcessors
   - VisionCameraPluginInatVision (5.3.0-rc.0):
@@ -1870,7 +1887,7 @@ SPEC CHECKSUMS:
   react-native-slider: f52b8160962142ffbcdd9afa8c0db7eb7d62eed3
   react-native-volume-manager: d9d2863a2374420af89c89662333ea6adf506988
   react-native-webview: a555074843a176cbebd74c3d5247a79e557f7937
-  react-native-worklets-core: f730c01db8ea3d580e322617f4a631206f1905fb
+  react-native-worklets-core: 8fecea56d0f58f39a12f683522f96ff42bfda765
   React-nativeconfig: 3b359be06d9ee8d64c1eacbca4f1040f331573fd
   React-NativeModulesApple: 8fa1db4855dbc1d437d017bc080e75535c85d2d2
   React-perflogger: e9ebfc705cb9f60ef5d471637350ccab7abd0444
@@ -1915,7 +1932,7 @@ SPEC CHECKSUMS:
   RNSVG: a31e321979e3001f56ba9331d10ac917f8ad1851
   RNVectorIcons: 6c795cacc9276decc31d8e1a139b9cc6fc0479ca
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
-  VisionCamera: 25a205cf335599192d84171d0925d5bd45433608
+  VisionCamera: 52b101a7fa0a70ff455163c5a121d8dfe9871ab7
   VisionCameraPluginInatVision: 6eace74efbce44b4df258b2c2a45232c76846cdc
   Yoga: 272dddd3c0e1e23d09ba81ed55ddfa7fdd3caa17
 
