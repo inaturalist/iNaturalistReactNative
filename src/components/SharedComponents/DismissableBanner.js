@@ -5,7 +5,6 @@ import {
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import * as React from "react";
-import { useState } from "react";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -33,21 +32,15 @@ const DismissableBanner = ( {
   onPress,
   dismiss
 }: Props ): React.Node => {
-  const [isVisible, setIsVisible] = useState( true );
   const { t } = useTranslation( );
 
-  const closeBanner = () => {
-    setIsVisible( false );
-    dismiss( );
-  };
-
-  if ( !currentUser && isVisible ) {
+  if ( !currentUser ) {
     return (
       <View className="pt-[20px] px-[20px]" pointerEvents="box-none">
         <Pressable
           className="absolute top-0 right-0 justify-center items-center h-[44px] w-[44px] z-20"
           accessibilityRole="button"
-          onPress={() => closeBanner()}
+          onPress={() => dismiss()}
           accessibilityLabel={t( "Close" )}
         >
           <View className="justify-center items-center bg-lightGray h-[25px] w-[25px] rounded-xl">
@@ -62,7 +55,16 @@ const DismissableBanner = ( {
           <Pressable
             style={DROP_SHADOW}
             accessibilityRole="button"
-            className="flex-row items-center p-[15px] space-x-[12px] bg-white rounded-xl z-10"
+            className="
+                flex-row
+                shrink
+                items-center
+                justify-center
+                p-[15px]
+                space-x-[12px]
+                bg-white
+                rounded-xl
+                z-10"
             onPress={onPress}
             disabled={false}
           >

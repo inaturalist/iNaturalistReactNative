@@ -29,7 +29,9 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected }: Props ): Node 
   const navigation = useNavigation();
   const [showModal, setShowModal] = useState( false );
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
-  const [showedExistingAccountBanner, setShowedExistingAccountBanner] = useState( false );
+  const loginBannerDismissed = useStore( state => state.layout.loginBannerDismissed );
+  const setLoginBannerDismissed = useStore( state => state.layout.setLoginBannerDismissed );
+
   const navAndCloseModal = ( screen, params ) => {
     if ( screen !== "ObsEdit" ) {
       resetObservationFlowSlice( );
@@ -42,6 +44,10 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected }: Props ): Node 
   };
   const navToARCamera = ( ) => { navAndCloseModal( "Camera", { camera: "AI" } ); };
 
+  const dismissLoginBanner = () => {
+    setLoginBannerDismissed();
+  };
+
   return (
     <ViewWrapper>
       {!!currentUser && (
@@ -50,13 +56,12 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected }: Props ): Node 
         </View>
       )}
       {
-        !showedExistingAccountBanner
+        !loginBannerDismissed
         && (
           // extra view to get absolutely positioned view to follow safeareaview rules
-          <View>
+          <View className="z-20">
             <View
-              className="absolute top-0 left-0 right-0 mx-[22px] w-auto z-20"
-              pointerEvents="box-none"
+              className="absolute self-center top-0"
             >
               <DismissableBanner
                 icon="inaturalist"
@@ -64,7 +69,7 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected }: Props ): Node 
                 currentUser={currentUser}
                 text={t( "Already-have-an-iNaturalist-account" )}
                 onPress={() => navigation.navigate( "LoginStackNavigator" )}
-                dismiss={() => setShowedExistingAccountBanner( true )}
+                dismiss={dismissLoginBanner}
               />
             </View>
           </View>
