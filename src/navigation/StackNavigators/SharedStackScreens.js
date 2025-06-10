@@ -20,7 +20,7 @@ import {
   removeBottomBorder,
   showHeader,
   showSimpleCustomHeader
-} from "navigation/navigationOptions";
+} from "navigation/navigationOptions.tsx";
 import type { Node } from "react";
 import React from "react";
 
