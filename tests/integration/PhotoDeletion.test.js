@@ -7,9 +7,9 @@ import {
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice.ts";
-import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import { renderApp } from "tests/helpers/render";
+import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
 
@@ -74,14 +74,10 @@ const topSuggestion = {
 };
 
 beforeEach( ( ) => {
-  const initialState = useStore.getInitialState( );
-  useStore.setState( {
-    layout: {
-      ...initialState.layout,
-      isDefaultMode: false,
-      isAllAddObsOptionsMode: true,
-      screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT
-    }
+  setStoreStateLayout( {
+    isDefaultMode: false,
+    isAllAddObsOptionsMode: true,
+    screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT
   } );
   inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
 } );
