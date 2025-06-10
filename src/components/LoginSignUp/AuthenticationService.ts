@@ -115,13 +115,53 @@ const createAPI = ( additionalHeaders?: { [header: string]: string } ) => create
 } );
 
 /**
+ * Cache for isLoggedIn, to avoid making too many calls to RNSInfo.getItem
+ */
+const authCache = {
+  isLoggedIn: null,
+  lastChecked: null,
+  cacheTimeout: 5000
+};
+
+/**
+ * Clear cache for isLoggedIn.
+ *
+ * @returns {void}
+ */
+const clearAuthCache = ( ) => {
+  authCache.isLoggedIn = null;
+  authCache.lastChecked = null;
+};
+
+/**
  * Returns whether we're currently logged in.
  *
  * @returns {Promise<boolean>}
  */
 const isLoggedIn = async (): Promise<boolean> => {
-  const accessToken = await getSensitiveItem( "accessToken" );
-  return typeof accessToken === "string";
+  const now = Date.now();
+
+  // if cached value is fresh, return it before checking storage
+  if (
+    authCache.isLoggedIn !== null
+    && authCache.lastChecked
+    && ( now - authCache.lastChecked ) < authCache.cacheTimeout
+  ) {
+    return authCache.isLoggedIn;
+  }
+
+  try {
+    const accessToken = await getSensitiveItem( "accessToken" );
+    const result = typeof accessToken === "string";
+
+    authCache.isLoggedIn = result;
+    authCache.lastChecked = now;
+
+    return result;
+  } catch ( error ) {
+    console.warn( "Auth check failed:", error );
+    return false;
+  }
 };
 
 /**
@@ -189,6 +229,9 @@ const signOut = async (
   await removeAllFilesFromDirectory( photoUploadPath );
   await removeAllFilesFromDirectory( rotatedOriginalPhotosPath );
   await removeAllFilesFromDirectory( soundUploadPath );
+
+  // clear cache for isLoggedIn
+  clearAuthCache( );
   // delete all keys from mmkv
   storage.clearAll( );
   RNRestart.restart( );
@@ -622,6 +665,7 @@ export {
   API_HOST,
   authenticateUser,
   authenticateUserByAssertion,
+  clearAuthCache,
   emailAvailable,
   getAnonymousJWT,
   getJWT,
