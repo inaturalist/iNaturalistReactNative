@@ -8,9 +8,9 @@ import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import { Animated } from "react-native";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice.ts";
-import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import { renderApp } from "tests/helpers/render";
+import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
 import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
@@ -102,12 +102,10 @@ const mockUser = factory( "LocalUser" );
 
 beforeEach( async ( ) => {
   await signIn( mockUser, { realm: global.mockRealms[__filename] } );
-  useStore.setState( {
-    layout: {
-      isDefaultMode: false,
-      screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
-      isAllAddObsOptionsMode: true
-    }
+  setStoreStateLayout( {
+    isDefaultMode: false,
+    screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
+    isAllAddObsOptionsMode: true
   } );
   inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
 } );

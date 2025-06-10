@@ -4,10 +4,10 @@ import {
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
+import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
 
@@ -84,11 +84,9 @@ const topSuggestion = {
 const actor = userEvent.setup( );
 
 beforeEach( ( ) => {
-  useStore.setState( {
-    layout: {
-      isDefaultMode: false,
-      isAllAddObsOptionsMode: true
-    }
+  setStoreStateLayout( {
+    isDefaultMode: false,
+    isAllAddObsOptionsMode: true
   } );
   inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
 } );

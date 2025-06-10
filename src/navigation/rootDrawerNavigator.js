@@ -3,7 +3,7 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import {
   hideDrawerHeaderLeft, hideHeader
-} from "navigation/navigationOptions";
+} from "navigation/navigationOptions.tsx";
 import LoginStackNavigator from "navigation/StackNavigators/LoginStackNavigator";
 import NoBottomTabStackNavigator from "navigation/StackNavigators/NoBottomTabStackNavigator";
 import OnboardingStackNavigator from "navigation/StackNavigators/OnboardingStackNavigator";
