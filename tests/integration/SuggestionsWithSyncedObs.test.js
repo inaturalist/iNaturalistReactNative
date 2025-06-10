@@ -11,6 +11,7 @@ import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderAppWithObservations } from "tests/helpers/render";
+import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut, TEST_JWT } from "tests/helpers/user";
 
@@ -43,11 +44,8 @@ afterAll( uniqueRealmAfterAll );
 const initialStoreState = useStore.getState( );
 beforeAll( async ( ) => {
   useStore.setState( initialStoreState, true );
-  useStore.setState( {
-    layout: {
-      ...initialStoreState.layout,
-      isDefaultMode: false
-    }
+  setStoreStateLayout( {
+    isDefaultMode: false
   } );
   // userEvent recommends fake timers
   jest.useFakeTimers( );
