@@ -1,8 +1,7 @@
-// @flow
 import classNames from "classnames";
 import { View } from "components/styledComponents";
-import * as React from "react";
-import { useEffect, useMemo, useState } from "react";
+import type { PropsWithChildren } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Animated, Keyboard } from "react-native";
 import { getShadow } from "styles/global";
 
@@ -17,14 +16,13 @@ const TOP_ANIMATION_START = -100;
 
 const FOOTER_PADDING = 17;
 
-type Props = {
-  position: "topStart" | "topEnd" | "bottomStart" | "bottomEnd",
-  containerClass?: string,
-  endY?: number | null,
-  children: React.Node,
-  show: boolean,
-  footerHeight: number
-};
+interface Props extends PropsWithChildren {
+  position: "topStart" | "topEnd" | "bottomStart" | "bottomEnd";
+  containerClass?: string;
+  endY?: number | null;
+  show: boolean;
+  footerHeight: number;
+}
 
 // Ensure this component is placed outside of scroll views
 
@@ -35,7 +33,7 @@ const FloatingActionBar = ( {
   children,
   show,
   footerHeight: FOOTER_HEIGHT
-}: Props ): React.Node => {
+}: Props ) => {
   const bottomPosition = FOOTER_HEIGHT + FOOTER_PADDING;
   const [keyboardHeight, setKeyboardHeight] = useState( 0 );
   const [keyboardOpen, setKeyboardOpen] = useState( false );
@@ -90,7 +88,10 @@ const FloatingActionBar = ( {
     ? keyboardHeight
     : 0;
 
-  const positionStyle = {};
+  const positionStyle: {
+    bottom?: number;
+    right?: number;
+  } = {};
 
   if ( position.includes( "bottom" ) ) {
     positionStyle.bottom = ( endY ?? bottomPosition ) + effectiveKeyboardHeight;

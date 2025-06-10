@@ -7,9 +7,9 @@ import {
 import initI18next from "i18n/initI18next";
 import * as rnImagePicker from "react-native-image-picker";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice.ts";
-import useStore from "stores/useStore";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
+import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 
 // We're explicitly testing navigation here so we want react-navigation
@@ -73,11 +73,10 @@ const navigateToPhotoImporter = async ( ) => {
 describe( "PhotoLibrary navigation", ( ) => {
   global.withAnimatedTimeTravelEnabled( );
   beforeEach( ( ) => {
-    useStore.setState( {
-      layout: {
-        screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT,
-        isAllAddObsOptionsMode: true
-      }
+    setStoreStateLayout( {
+      screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT,
+      isDefaultMode: false,
+      isAllAddObsOptionsMode: true
     } );
   } );
 
@@ -114,11 +113,9 @@ describe( "PhotoLibrary navigation", ( ) => {
 describe( "PhotoLibrary navigation when suggestions screen is preferred next screen", () => {
   global.withAnimatedTimeTravelEnabled();
   beforeEach( () => {
-    useStore.setState( {
-      layout: {
-        screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
-        isAllAddObsOptionsMode: true
-      }
+    setStoreStateLayout( {
+      screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
+      isAllAddObsOptionsMode: true
     } );
   } );
   it( "advances to Suggestions when one photo is selected", async () => {
