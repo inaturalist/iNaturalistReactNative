@@ -9,6 +9,7 @@ import useStore from "stores/useStore";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
+import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 
 jest.mock( "@react-navigation/drawer", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/drawer" );
@@ -80,10 +81,8 @@ describe( "CustomTabBar", () => {
 
 describe( "CustomTabBar with advanced user layout", () => {
   beforeAll( ( ) => {
-    useStore.setState( {
-      layout: {
-        isAllAddObsOptionsMode: true
-      }
+    setStoreStateLayout( {
+      isAllAddObsOptionsMode: true
     } );
   } );
 
