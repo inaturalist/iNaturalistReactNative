@@ -19,7 +19,7 @@ import {
   taxonomyPath
 } from "sharedHelpers/mlModel.ts";
 import { logStage } from "sharedHelpers/sentinelFiles.ts";
-import { usePatchedRunAsync } from "sharedHelpers/visionCameraPatches";
+import usePatchedRunAsync from "sharedHelpers/visionCameraPatches";
 import { useLayoutPrefs } from "sharedHooks";
 import useStore from "stores/useStore";
 
