@@ -16,6 +16,7 @@ import faker from "tests/helpers/faker";
 import {
   renderAppWithObservations
 } from "tests/helpers/render";
+import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
 
@@ -107,11 +108,9 @@ const uploadObsEditObservation = async options => {
 };
 
 beforeEach( ( ) => {
-  useStore.setState( {
-    layout: {
-      isDefaultMode: false,
-      isAllAddObsOptionsMode: true
-    }
+  setStoreStateLayout( {
+    isDefaultMode: false,
+    isAllAddObsOptionsMode: true
   } );
 } );
 
