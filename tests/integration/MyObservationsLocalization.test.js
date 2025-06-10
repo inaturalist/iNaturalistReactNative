@@ -2,11 +2,11 @@ import { screen, waitFor } from "@testing-library/react-native";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer.tsx";
 // import inatjs from "inaturalistjs";
 import React from "react";
-import useStore from "stores/useStore";
 import factory from "tests/factory";
 // import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderAppWithComponent } from "tests/helpers/render";
+import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
 
@@ -45,13 +45,9 @@ const mockUser = factory( "LocalUser", {
 // } );
 
 beforeEach( ( ) => {
-  const initialState = useStore.getInitialState();
-  useStore.setState( {
-    layout: {
-      ...initialState.layout,
-      isDefaultMode: false,
-      isAllAddObsOptionsMode: true
-    }
+  setStoreStateLayout( {
+    isDefaultMode: false,
+    isAllAddObsOptionsMode: true
   } );
 } );
 
