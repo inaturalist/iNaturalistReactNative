@@ -1,0 +1,2 @@
+UPDATED
+* Performance improvements while navigating through the app

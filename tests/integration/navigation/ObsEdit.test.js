@@ -4,17 +4,19 @@ import {
   waitFor,
   within
 } from "@testing-library/react-native";
+import inatjs from "inaturalistjs";
 import * as rnImagePicker from "react-native-image-picker";
 import useStore from "stores/useStore";
 // import os from "os";
 // import path from "path";
 // import Realm from "realm";
 // import realmConfig from "realmModels/index";
-import factory from "tests/factory";
+import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import {
   renderAppWithObservations
 } from "tests/helpers/render";
+import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
 
@@ -106,11 +108,9 @@ const uploadObsEditObservation = async options => {
 };
 
 beforeEach( ( ) => {
-  useStore.setState( {
-    layout: {
-      isDefaultMode: false,
-      isAllAddObsOptionsMode: true
-    }
+  setStoreStateLayout( {
+    isDefaultMode: false,
+    isAllAddObsOptionsMode: true
   } );
 } );
 
@@ -219,6 +219,22 @@ describe( "ObsEdit", ( ) => {
 
       it( "should show uploading status after user starts one upload"
         + " in the multi-observation flow", async ( ) => {
+        inatjs.photos.create.mockImplementation(
+          ( ) => Promise.resolve( makeResponse( [{
+            id: faker.number.int()
+          }] ) )
+        );
+        inatjs.observations.create.mockImplementation(
+          ( params, _opts ) => Promise.resolve( makeResponse( [{
+            id: faker.number.int(),
+            uuid: params.observation.uuid
+          }] ) )
+        );
+        inatjs.observation_photos.create.mockImplementation(
+          ( ) => Promise.resolve( makeResponse( [{
+            id: faker.number.int()
+          }] ) )
+        );
         await renderAppWithObservations( mockObservations, __filename );
         await navigateToObsEditViaGroupPhotos( );
         await uploadObsEditObservation( );

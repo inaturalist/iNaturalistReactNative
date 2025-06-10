@@ -47,7 +47,7 @@ export default function useExitObservationFlow( exitOptions ) {
       options.navigate();
     } else {
       navigation.navigate( "TabNavigator", {
-        screen: "TabStackNavigator",
+        screen: "ObservationsTab",
         params: {
           screen: "ObsList"
         }

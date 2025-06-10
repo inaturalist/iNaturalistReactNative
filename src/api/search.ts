@@ -42,7 +42,7 @@ const search = async (
   try {
     response = await inatjs.search( { ...PARAMS, ...params }, opts );
   } catch ( searchError ) {
-    handleError( searchError as Object );
+    handleError( searchError as object );
     // handleError should throw, so in theory this should never happen and
     // this is just to placate typescript
     return null;

@@ -127,6 +127,51 @@ class Observation extends Realm.Object {
     user: User && User.FIELDS
   };
 
+  static DEFAULT_MODE_LIST_FIELDS = {
+    created_at: true,
+    id: true, // needed to get next page in infinite queries
+    observation_photos: {
+      id: true,
+      photo: {
+        id: true,
+        url: true
+      },
+      uuid: true
+    },
+    observation_sounds: {
+      uuid: true
+    },
+    quality_grade: true,
+    taxon: {
+      id: true,
+      name: true,
+      preferred_common_name: true
+    },
+    time_observed_at: true,
+    uuid: true
+  };
+
+  static ADVANCED_MODE_LIST_FIELDS = {
+    ...Observation.DEFAULT_MODE_LIST_FIELDS,
+    identifications: {
+      uuid: true,
+      current: true
+    },
+    comments: {
+      uuid: true
+    },
+    geoprivacy: true,
+    id: true,
+    latitude: true,
+    longitude: true,
+    obscured: true,
+    observed_on: true,
+    observed_time_zone: true,
+    place_guess: true,
+    private_place_guess: true,
+    taxon_geoprivacy: true
+  };
+
   static async new( obs ) {
     return {
       ...obs,
@@ -209,14 +254,9 @@ class Observation extends Realm.Object {
       return mappedObsSound;
     } );
 
-    const identifications = obs.identifications
-      ? obs.identifications.map( id => Identification.mapApiToRealm( id, realm ) )
-      : [];
-
     const localObs = {
       ...obs,
       _synced_at: new Date( ),
-      identifications,
       // obs detail on web says geojson coords are preferred over lat/long
       // https://github.com/inaturalist/inaturalist/blob/df6572008f60845b8ef5972a92a9afbde6f67829/app/webpack/observations/show/ducks/observation.js#L145
       latitude: obs.geojson && obs.geojson.coordinates && obs.geojson.coordinates[1],
@@ -313,35 +353,63 @@ class Observation extends Realm.Object {
     };
   }
 
-  // static mapObservationForFlashList( obs ) {
-  //   return {
-  //     _created_at: obs._created_at,
-  //     _deleted_at: obs._deleted_at,
-  //     _synced_at: obs._synced_at,
-  //     _updated_at: obs._updated_at,
-  //     uuid: obs.uuid,
-  //     comments: obs.comments,
-  //     description: obs.description,
-  //     geoprivacy: obs.geoprivacy,
-  //     id: obs.id,
-  //     identifications: obs.identifications,
-  //     latitude: obs.latitude,
-  //     longitude: obs.longitude,
-  //     observationPhotos: obs.observationPhotos,
-  //     observationSounds: obs.observationSounds,
-  //     observed_on_string: obs.observed_on_string,
-  //     obscured: obs.obscured,
-  //     place_guess: obs.place_guess,
-  //     positional_accuracy: obs.positional_accuracy,
-  //     quality_grade: obs.quality_grade,
-  //     taxon: obs.taxon,
-  //     time_observed_at: obs.time_observed_at,
-  //     comments_viewed: obs.comments_viewed,
-  //     identifications_viewed: obs.identifications_viewed,
-  //     privateLatitude: obs.privateLatitude,
-  //     privateLongitude: obs.privateLongitude
-  //   };
-  // }
+  static mapObservationForMyObsDefaultMode( obs ) {
+    return {
+      uuid: obs.uuid,
+      id: obs.id,
+      observationPhotos: obs.observationPhotos.length > 0
+        ? obs.observationPhotos
+          .map( op => ObservationPhoto.mapObservationPhotoForMyObsDefaultMode( op ) )
+        : [],
+      observationSounds: obs.observationSounds.length > 0
+        ? obs.observationSounds
+          .map( os => ObservationSound.mapObservationSoundForMyObsDefaultMode( os ) )
+        : [],
+      quality_grade: obs.quality_grade,
+      taxon: obs.taxon
+        ? {
+          id: obs?.taxon?.id,
+          name: obs?.taxon?.name,
+          preferred_common_name: obs?.taxon?.preferred_common_name
+        }
+        : null,
+      comments_viewed: obs.comments_viewed,
+      identifications_viewed: obs.identifications_viewed,
+      missing_basics: typeof obs.missingBasics === "function"
+        ? obs.missingBasics()
+        : undefined,
+      needs_sync: typeof obs.needsSync === "function"
+        ? obs.needsSync()
+        : obs.needs_sync
+    };
+  }
+
+  static mapObservationForMyObsAdvancedMode( obs ) {
+    return {
+      ...Observation.mapObservationForMyObsDefaultMode( obs ),
+      comments: obs.comments.length > 0
+        ? obs.comments
+          .map( c => Comment.mapCommentForMyObsAdvancedMode( c ) )
+        : [],
+      geoprivacy: obs.geoprivacy,
+      identifications: obs.identifications.length > 0
+        ? obs.identifications
+          .map( id => Identification.mapIdentificationForMyObsAdvancedMode( id ) )
+        : [],
+      latitude: obs.latitude,
+      longitude: obs.longitude,
+      obscured: obs.obscured,
+      observed_on: obs.observed_on,
+      observed_on_string: obs.observed_on_string,
+      observed_time_zone: obs.observed_time_zone,
+      place_guess: obs.place_guess,
+      positional_accuracy: obs.positional_accuracy,
+      privateLatitude: obs.privateLatitude,
+      privateLongitude: obs.privateLongitude,
+      taxon_geoprivacy: obs.taxon_geoprivacy,
+      time_observed_at: obs.time_observed_at
+    };
+  }
 
   static projectUri = obs => {
     const photo = obs?.observation_photos?.[0];
@@ -350,17 +418,6 @@ class Observation extends Realm.Object {
     if ( !photo.photo.url ) { return null; }
 
     return { uri: obs.observation_photos[0].photo.url };
-  };
-
-  static mediumUri = obs => {
-    const photo = obs.observation_photos[0];
-    if ( !photo ) { return null; }
-    if ( !photo.photo ) { return null; }
-    if ( !photo.photo.url ) { return null; }
-
-    const mediumUri = obs.observation_photos[0].photo.url.replace( "square", "medium" );
-
-    return { uri: mediumUri };
   };
 
   static filterUnsyncedObservations = realm => {

@@ -9,14 +9,35 @@ import {
 } from "@testing-library/react-native";
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions.ts";
 import inatjs from "inaturalistjs";
+import { Animated } from "react-native";
 import * as useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice.ts";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import { renderAppWithObservations } from "tests/helpers/render";
+import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
 import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
+
+// Not my favorite code, but this patch is necessary to get tests passing right
+// now unless we can figure out why Animated.Value is being passed undefined,
+// which seems related to the AICamera
+const OriginalValue = Animated.Value;
+
+beforeEach( () => {
+  // Patch the Value constructor to be safer with undefined values
+  Animated.Value = function ( val ) {
+    return new OriginalValue( val === undefined
+      ? 0
+      : val );
+  };
+} );
+
+afterEach( () => {
+  // Restore original implementation
+  Animated.Value = OriginalValue;
+} );
 
 const mockModelResult = {
   predictions: [
@@ -188,12 +209,12 @@ const setupAppWithSignedInUser = async hasLocation => {
     : makeMockObservations( );
   useStore.setState( {
     observations,
-    currentObservation: observations[0],
-    layout: {
-      isDefaultMode: false,
-      screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
-      isAllAddObsOptionsMode: true
-    }
+    currentObservation: observations[0]
+  } );
+  setStoreStateLayout( {
+    isDefaultMode: false,
+    screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
+    isAllAddObsOptionsMode: true
   } );
   await renderAppWithObservations( observations, __filename );
   return { observations };

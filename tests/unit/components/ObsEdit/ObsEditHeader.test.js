@@ -1,9 +1,20 @@
 import { screen } from "@testing-library/react-native";
 import ObsEditHeader from "components/ObsEdit/ObsEditHeader";
 import React from "react";
+import { View } from "react-native";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderComponent, wrapInNavigationContainer } from "tests/helpers/render";
+
+// eslint-disable-next-line i18next/no-literal-string
+const mockHeaderBackButton = <View testID="ObsEdit.BackButton">Mocked Back</View>;
+
+// Note: HeaderBackButton has accessibility issues
+jest.mock( "@react-navigation/elements", () => ( {
+  ...jest.requireActual( "@react-navigation/elements" ),
+  HeaderBackButton: jest.fn()
+    .mockImplementation( ( ) => mockHeaderBackButton )
+} ) );
 
 const mockObservations = [
   factory( "LocalObservation" ),

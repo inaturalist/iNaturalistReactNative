@@ -57,6 +57,8 @@ const CameraContainer = ( ) => {
   const setCameraState = useStore( state => state.setCameraState );
   const evidenceToAdd = useStore( state => state.evidenceToAdd );
   const cameraUris = useStore( state => state.cameraUris );
+  const newPhotoUris = useStore( state => state.newPhotoUris );
+  const setNewPhotoUris = useStore( state => state.setNewPhotoUris );
   const sentinelFileName = useStore( state => state.sentinelFileName );
   const setSentinelFileName = useStore( state => state.setSentinelFileName );
   const addCameraRollUris = useStore( state => state.addCameraRollUris );
@@ -110,7 +112,6 @@ const CameraContainer = ( ) => {
   } as const;
   const [takePhotoOptions, setTakePhotoOptions] = useState<TakePhotoOptions>( initialPhotoOptions );
   const [takingPhoto, setTakingPhoto] = useState( false );
-  const [newPhotoUris, setNewPhotoUris] = useState( [] );
   const addEvidence = params?.addEvidence;
 
   const camera = useRef<Camera>( null );

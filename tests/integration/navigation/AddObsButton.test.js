@@ -2,8 +2,8 @@ import { screen, userEvent } from "@testing-library/react-native";
 import AddObsButton from "components/AddObsModal/AddObsButton";
 import i18next from "i18next";
 import React from "react";
-import useStore from "stores/useStore";
 import { renderComponent } from "tests/helpers/render";
+import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 
 const actor = userEvent.setup();
 
@@ -82,10 +82,8 @@ describe( "AddObsButton", ( ) => {
 
 describe( "with advanced user layout", ( ) => {
   beforeEach( ( ) => {
-    useStore.setState( {
-      layout: {
-        isAllAddObsOptionsMode: true
-      }
+    setStoreStateLayout( {
+      isAllAddObsOptionsMode: true
     } );
   } );
 
@@ -119,11 +117,9 @@ describe( "with advanced user layout", ( ) => {
 
   describe( "with advanced AICamera-only setting", ( ) => {
     beforeEach( ( ) => {
-      useStore.setState( {
-        layout: {
-          isDefaultMode: false,
-          isAllAddObsOptionsMode: false
-        }
+      setStoreStateLayout( {
+        isDefaultMode: false,
+        isAllAddObsOptionsMode: false
       } );
     } );
 

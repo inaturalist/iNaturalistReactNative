@@ -12,7 +12,7 @@ import { CloseButton } from "components/SharedComponents";
 import {
   hideHeaderLeft,
   showSimpleCustomHeader
-} from "navigation/navigationOptions";
+} from "navigation/navigationOptions.tsx";
 import type { Node } from "react";
 import React from "react";
 

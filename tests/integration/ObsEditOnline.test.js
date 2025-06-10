@@ -72,14 +72,17 @@ const mockObservation = factory( "RemoteObservation", {
 
 const mockObservations = [mockObservation];
 
-const mockMultipleObservations = [
-  mockObservation,
-  mockObservation,
-  mockObservation,
-  mockObservation,
-  mockObservation,
-  mockObservation
-];
+const mockMultipleObservations = Array.from(
+  { length: 6 },
+  () => factory( "RemoteObservation", {
+    latitude: 37.99,
+    longitude: -142.88,
+    user: mockCurrentUser,
+    place_guess: mockLocationName,
+    taxon: mockTaxon,
+    observationPhotos: []
+  } )
+);
 
 describe( "basic rendering", ( ) => {
   beforeAll( async () => {
@@ -203,6 +206,12 @@ describe( "multiple observation upload/save progress", ( ) => {
   } );
 
   test( "should show upload status when upload button pressed", async ( ) => {
+    inatjs.observations.create.mockImplementation(
+      ( params, _opts ) => Promise.resolve( makeResponse( [{
+        id: faker.number.int(),
+        uuid: params.observation.uuid
+      }] ) )
+    );
     renderObsEdit( );
     const uploadButton = await screen.findByText( /UPLOAD/ );
     fireEvent.press( uploadButton );
@@ -224,6 +233,12 @@ describe( "multiple observation upload/save progress", ( ) => {
 
   test( "should show both saved and uploading status when saved and upload"
     + " button pressed", async ( ) => {
+    inatjs.observations.create.mockImplementation(
+      ( params, _opts ) => Promise.resolve( makeResponse( [{
+        id: faker.number.int(),
+        uuid: params.observation.uuid
+      }] ) )
+    );
     renderObsEdit( );
     const saveButton = await screen.findByText( /SAVE/ );
     fireEvent.press( saveButton );
@@ -241,17 +256,12 @@ describe( "multiple observation upload/save progress", ( ) => {
 
   test( "should show uploaded status when 1 observation is uploaded"
     + " in multi-observation upload flow", async ( ) => {
-    // Mock inatjs endpoints so they return the right responses for the right test data
-    inatjs.observations.create.mockImplementation( ( params, _opts ) => {
-      const mockObs = mockObservations.find( o => o.uuid === params.observation.uuid );
-      return Promise.resolve( makeResponse( [{ id: faker.number.int( ), uuid: mockObs.uuid }] ) );
-    } );
-    inatjs.observations.fetch.mockImplementation( ( uuid, _params, _opts ) => {
-      const mockObs = mockObservations.find( o => o.uuid === uuid );
-      // It would be a lot better if this returned something that looks like
-      // a remote obs, but this works
-      return Promise.resolve( makeResponse( [mockObs] ) );
-    } );
+    inatjs.observations.create.mockImplementation(
+      ( params, _opts ) => Promise.resolve( makeResponse( [{
+        id: faker.number.int(),
+        uuid: params.observation.uuid
+      }] ) )
+    );
     renderObsEdit( );
     const uploadButton = await screen.findByText( /UPLOAD/ );
     fireEvent.press( uploadButton );

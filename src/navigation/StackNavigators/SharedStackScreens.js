@@ -20,7 +20,7 @@ import {
   removeBottomBorder,
   showHeader,
   showSimpleCustomHeader
-} from "navigation/navigationOptions";
+} from "navigation/navigationOptions.tsx";
 import type { Node } from "react";
 import React from "react";
 
@@ -92,14 +92,18 @@ const SharedStackScreens = ( ): Node => (
         ...removeBottomBorder,
         ...showHeader,
         headerTitleAlign: "center",
-        headerBackTitleVisible: false
+        headerBackButtonDisplayMode: "minimal"
       }}
     >
+      {/* note: unmountOnBlur no longer exists in React Navigation 7,
+      but if we need that functionality and run into issues with the
+      screen not unmounting property, we can try using layout props as described
+      here: https://reactnavigation.org/docs/upgrading-from-6.x#the-unmountonblur-option-is-removed-in-favor-of-poptotoponblur-in-bottom-tab-navigator-and-drawer-navigator
+      */}
       <Stack.Screen
         name="Match"
         component={FadeInMatchContainer}
         options={{
-          unmountOnBlur: true,
           ...showHeader,
           ...blankHeaderTitle
         }}

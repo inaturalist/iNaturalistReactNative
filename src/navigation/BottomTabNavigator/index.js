@@ -1,16 +1,15 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Mortal from "components/SharedComponents/Mortal";
-import {
-  hideHeader
-} from "navigation/navigationOptions";
-import TabStackNavigator from "navigation/StackNavigators/TabStackNavigator";
+import TabStackNavigator, {
+  SCREEN_NAME_NOTIFICATIONS,
+  SCREEN_NAME_OBS_LIST,
+  SCREEN_NAME_ROOT_EXPLORE
+} from "navigation/StackNavigators/TabStackNavigator";
 import React from "react";
 
 import CustomTabBarContainer from "./CustomTabBarContainer";
 
 const Tab = createBottomTabNavigator( );
-
-const OBS_LIST_SCREEN_ID = "TabStackNavigator";
 
 /* eslint-disable react/jsx-props-no-spreading */
 
@@ -23,14 +22,29 @@ const BottomTabs = ( ) => {
   return (
     <Mortal>
       <Tab.Navigator
-        initialRouteName={OBS_LIST_SCREEN_ID}
+        initialRouteName="ObservationsTab"
         tabBar={renderTabBar}
         backBehavior="history"
+        screenOptions={{
+          lazy: true,
+          freezeOnBlur: true,
+          headerShown: false
+        }}
       >
         <Tab.Screen
-          name="TabStackNavigator"
+          name="ObservationsTab"
           component={TabStackNavigator}
-          options={hideHeader}
+          initialParams={{ initialRouteName: SCREEN_NAME_OBS_LIST }}
+        />
+        <Tab.Screen
+          name="ExploreTab"
+          component={TabStackNavigator}
+          initialParams={{ initialRouteName: SCREEN_NAME_ROOT_EXPLORE }}
+        />
+        <Tab.Screen
+          name="NotificationsTab"
+          component={TabStackNavigator}
+          initialParams={{ initialRouteName: SCREEN_NAME_NOTIFICATIONS }}
         />
       </Tab.Navigator>
     </Mortal>

@@ -159,7 +159,7 @@ const signOut = async (
       try {
         options.realm.deleteAll( );
         options.realm.commitTransaction( );
-      } catch ( realmError ) {
+      } catch ( _realmError ) {
         options.realm.cancelTransaction( );
         // If we failed to wipe all the data in realm, delete the realm file.
         // Note that deleting the realm file *all* the time seems to cause
@@ -198,7 +198,7 @@ const signOut = async (
  * Encodes a JWT. Lifted from react-native-jwt-io
  * https://github.com/maxweb4u/react-native-jwt-io/blob/7f926da46ff536dbb531dd8ae7177ab4ff28c43f/src/jwt.js#L21
  */
-const encodeJWT = ( payload: Object, key: string, algorithm?: string ) => {
+const encodeJWT = ( payload: object, key: string, algorithm?: string ) => {
   algorithm = typeof algorithm !== "undefined"
     ? algorithm
     : "HS256";
@@ -232,7 +232,10 @@ const getAnonymousJWT = (): string => {
  * @returns {Promise<string|*>}
  */
 // $FlowIgnore
-const getJWT = async ( allowAnonymousJWT = false ): Promise<string | null> => {
+const getJWT = async (
+  allowAnonymousJWT = false,
+  logContext = null
+): Promise<string | null> => {
   let jwtToken: string | undefined = await getSensitiveItem( "jwtToken" );
   const storedJwtGeneratedAt = await getSensitiveItem( "jwtGeneratedAt" );
   let jwtGeneratedAt: number | null = null;
@@ -244,10 +247,16 @@ const getJWT = async ( allowAnonymousJWT = false ): Promise<string | null> => {
 
   if ( !loggedIn && allowAnonymousJWT ) {
     // User not logged in, and anonymous JWT is allowed - return it
+    if ( logContext ) {
+      logger.info( `JWT [${logContext}]: Using anonymous JWT for non-logged-in user` );
+    }
     return getAnonymousJWT();
   }
 
   if ( !loggedIn ) {
+    if ( logContext ) {
+      logger.info( `JWT [${logContext}]: User not logged in, returning null` );
+    }
     return null;
   }
 
@@ -279,10 +288,14 @@ const getJWT = async ( allowAnonymousJWT = false ): Promise<string | null> => {
     // observations shouldn't you have the opportunity to sign in again and
     // upload them?
     if ( !response.ok ) {
+      logger.error( `JWT [${logContext}]:  Token refresh failed - status: ${response.status}` );
       // this deletes the user JWT and saved login details when a user is not
       // actually signed in anymore for example, if they installed, deleted,
       // and reinstalled the app without logging out
       if ( response.status === 401 ) {
+        if ( logContext ) {
+          logger.info( `JWT [${logContext}]: User unauthorized, signing out ` );
+        }
         signOut( { clearRealm: true } );
       }
       return null;
@@ -297,6 +310,10 @@ const getJWT = async ( allowAnonymousJWT = false ): Promise<string | null> => {
 
     await setSensitiveItem( "jwtToken", jwtToken );
     await setSensitiveItem( "jwtGeneratedAt", jwtGeneratedAt.toString() );
+
+    if ( logContext ) {
+      logger.info( `JWT [${logContext}]: Token refreshed successfully` );
+    }
 
     return jwtToken;
   }

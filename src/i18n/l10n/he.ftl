@@ -5,7 +5,7 @@
 ### translations, go to https://crowdin.com/editor/inaturalistios/724
 ###
 
-A-global-community-for-nature = קהילה עומלית למען הטבע
+A-global-community-for-nature = קהילה עולמית למען הטבע
 ABOUT = אודות
 ABOUT-COLLECTION-PROJECTS = אודות פרויקטי אוסף
 ABOUT-INATURALIST = אודות INATURALIST
@@ -46,7 +46,7 @@ AGREE = מאשר.ת
 AGREE-WITH-ID = מסכימ.ה עם הזיהוי?
 Agree-with-ID-description = האם ברצונך להסכים עם הזיהוי ולהציע את הזיהוי הבא?
 AI-Camera = מצלמת AI
-ALL = כל
+ALL = הכל
 All = הכל
 All-observation-options--list = כל אפשרויות התצפית: מצלמת iNaturalist AI, מצלמה רגילה, העלאה מספריית התמונות ורשמקול
 All-observations = כל התצפיות
@@ -80,7 +80,6 @@ attribution-cc-by-nd = חלק מהזכויות שמורות (CC BY-ND)
 attribution-cc-by-sa = חלק מהזכויות שמורות (CC BY-SA)
 August = אוגוסט
 BACK-TO-LOGIN = חזרה להתחברות
-BLOG = בלוג
 Bulk-importer = מייבא במרוכז
 By-exiting-changes-not-saved = אם תצא.י עכשיו, שינויים בתצפית שלך לא יישמרו.
 By-exiting-observation-not-saved = אם תצא.י עכשיו, התצפית שלך לא תישמר.
@@ -307,10 +306,6 @@ Filter-by-observed-on-date = סינון לפי תצפיות שנצפו בתאר�
 Filter-by-uploaded-between-dates = סינון לפי תצפיות שהועלו בין שני תאריכים ספציפיים
 Filter-by-uploaded-on-date = סינון לפי תצפיות שהועלו בתאריך ספציפי
 Filters = מסננים
-Flag-An-Item = סימון פריט
-Flag-Item-Description = סימון מסב את תשומת הלב של האוצרות.ים המתנדבות.ים של האתר. נא לא לסמן בעיות שניתן לפתור באמצעות זיהויים, הערכת איכות נתונים, או שיחה עם מי שיצר.ה את התוכן.
-Flag-Item-Other-Description = סיבה אחרת שביכולתך להסביר להלן.
-Flag-Item-Other-Input-Hint = נא לפרט מדוע את.ה מסמנ.ת את פריט זה
 Flagged = סומן
 Flash = פלאש
 Flip-camera = הפוך מצלמה
@@ -562,8 +557,6 @@ OBSERVED-IN--label = נצפה ב
 Observers = מתצפתות.ים
 Observers-View = תצוגת מזהים.ות
 October = אוקטובר
-Offensive-Inappropriate = פוגעני/לא הולם
-Offensive-Inappropriate-Examples = תוכן מתעתע או בלתי-חוקי, השמצות גזעניות או אתניות וכו'. למידע נוסף על ההגדרה שלנו ל"הולם", יש לעיין בשאלות הנפוצות.
 Offline-DQA-description = ייתכן שה-DQA אינו מדויק. יש לבדוק את החיבור שלך לאינטרנט ולנסות שוב.
 Offline-suggestions-may-differ-from-online = הצעות לא מקוונות עשויות להיות שונות מהצעות מקוונות, וייתכן שתמונות טקסונים ושמות נפוצים לא ייטענו.
 OK = אישור
@@ -582,10 +575,9 @@ OR-SIGN-IN-WITH = או היכנסו באמצעות
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = לחילופין, אפשר לנסות לקבל תמונה ברורה יותר על ידי הגדלת התמונה, התקרבות או ניסיון זווית אחרת.
 Organism-is-captive = האורגניזם בשבי
 Organisms-that-are-identified-to-species = אורגניזמים המזוהים ברמת המין או נמוך יותר
-Other = אחר
 OTHER-DATA = נתונים אחרים
 OTHER-SUGGESTIONS = הצעות אחרות
-OTHERS--notifications = OTHERS
+OTHERS--notifications = אחרים.ות
 PASSWORD = סיסמה
 PEOPLE--title = א.נשים
 Photo-importer = מייבא תמונות
@@ -697,7 +689,6 @@ Ranks-Zoosection = זואוסקציה
 Ranks-ZOOSUBSECTION = זואו-תת-סקציה
 Ranks-Zoosubsection = זואו-תת-סקציה
 Read-more-on-Wikipedia = קראו עוד בויקיפדיה
-Reason--flag = סיבה
 Record-a-sound = הקלטת קול
 Record-animal-sounds = הקלטת קולות של בעלי חיים
 RECORD-NEW-SOUND = הקלטת קול חדש
@@ -733,7 +724,6 @@ REVIEWED = נסקרו
 Reviewed-observations-only = תצפיות שנבדקו בלבד
 Satellite--map-type = לווין
 SAVE = שמירה
-Save = שמירה
 SAVE-ALL = שמירת הכל
 Save-all-observations = שמור את כל התצפיות
 SAVE-CHANGES = שמירת שינויים
@@ -804,8 +794,6 @@ sound-recorder-help-Stop-moving = הפסיקו לזוז
 sound-recorder-help-Try-to-isolate = נסו לבודד את הקול של אורגניזם יחיד. אם אי אפשר, הקפידו לכתוב בהערה איזה אורגניזם אתם מתעדים.
 Sounds = קולות
 Source-List = <0>(רשימת מקורות: </0><1>{ $source }</1><0>)</0>
-Spam = ספאם
-Spam-Examples = פרסומת מסחרית, קישורים לא תקינים, וכו'
 Species = מינים
 Species-View = תצוגת מינים
 SPECIES-WITHOUT-NUMBER =
@@ -976,8 +964,8 @@ X-Identifiers =
     }
 X-MEMBERS =
     { $count ->
-        [one] { $count } MEMBER
-       *[other] { $count } MEMBERS
+        [one] { $count } חבר.ה
+       *[other] { $count } חברים.ות
     }
 X-Observations =
     { $count ->
@@ -1091,7 +1079,6 @@ You-likely-observed-this-species = סביר להניח שצפית במין זה
 You-may-have-observed-a-species-in-this-group = ייתכן שצפית במין בקבוצה זו
 You-may-have-observed-this-species = ייתכן שצפית במין זה
 You-may-notice-changes-to-how-things-look-and-flow = ייתכן שתבחינו בשינויים באופן שבו הדברים נראים וזורמים. ניתן לשלוט באפשרויות אלה בהגדרות.
-You-must-be-logged-in-to-view-messages = עליך להיות מחובר.ת כדי לצפות בהודעות
 You-must-install-Google-Play-Services-to-sign-in-with-Google = עליך להתקין את שירותי Google Play כדי להיכנס לחשבון באמצעות Google.
 You-need-an-Internet-connection-to-do-that = דרוש חיבור לאינטרנט כדי לעשות זאת.
 You-need-log-in-to-do-that = עליך להיכנס על מנת לעשות זאת.

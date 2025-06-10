@@ -20,7 +20,14 @@ type Props = {
     login: string
   },
   isConnected: boolean,
-  TextComponent: any,
+  TextComponent: ( props: {
+    className?: string,
+    numberOfLines?: number,
+    ellipsizeMode?: string,
+    selectable?: boolean,
+    maxFontSizeMultiplier?: number,
+    children?: React$Node, // eslint-disable-line no-undef
+} ) => React$Node, // eslint-disable-line no-undef
   testID: string,
   useBigIcon?: boolean
 };

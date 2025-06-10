@@ -10,8 +10,8 @@ import { useCurrentUser } from "sharedHooks";
 const useAuthenticatedInfiniteQuery = (
   queryKey: Array<string>,
   queryFunction: Function,
-  queryOptions: Object = {}
-): Object => {
+  queryOptions: object = {}
+): object => {
   const route = useRoute( );
   const currentUser = useCurrentUser( );
 

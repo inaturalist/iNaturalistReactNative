@@ -33,12 +33,11 @@ class Identification extends Realm.Object {
     };
   }
 
-  static mapApiToRealm( id, realm = null ) {
-    const newId = {
-      ...id,
-      taxon: Taxon.mapApiToRealm( id.taxon, realm )
+  static mapIdentificationForMyObsAdvancedMode( id ) {
+    return {
+      uuid: id.uuid,
+      current: id.current
     };
-    return newId;
   }
 
   static new = attrs => {

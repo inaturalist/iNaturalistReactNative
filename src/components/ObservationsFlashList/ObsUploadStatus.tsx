@@ -54,7 +54,7 @@ const ObsUploadStatus = ( {
     <UploadStatus
       white={white}
       layout={layout}
-      needsEdit={observation?.missingBasics()}
+      needsEdit={observation?.missing_basics}
       onPress={onPress}
       progress={progress}
       uniqueKey={observation.uuid}
