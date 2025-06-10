@@ -14,6 +14,7 @@ import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice.ts";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import { renderAppWithObservations } from "tests/helpers/render";
+import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
 import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
@@ -186,16 +187,14 @@ const setupAppWithSignedInUser = async hasLocation => {
   const observations = hasLocation
     ? makeMockObservationsWithLocation( )
     : makeMockObservations( );
-  const initialState = useStore.getInitialState( );
   useStore.setState( {
     observations,
-    currentObservation: observations[0],
-    layout: {
-      ...initialState.layout,
-      isDefaultMode: false,
-      screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
-      isAllAddObsOptionsMode: true
-    }
+    currentObservation: observations[0]
+  } );
+  setStoreStateLayout( {
+    isDefaultMode: false,
+    screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
+    isAllAddObsOptionsMode: true
   } );
   await renderAppWithObservations( observations, __filename );
   return { observations };

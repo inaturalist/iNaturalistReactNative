@@ -12,6 +12,7 @@ import {
 } from "stores/createUploadObservationsSlice.ts";
 import useStore, { zustandStorage } from "stores/useStore";
 import { renderComponent } from "tests/helpers/render";
+import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 
 const mockUser = {};
 
@@ -304,12 +305,11 @@ describe( "SimpleUploadBannerContainer", () => {
   it( "should show banner if logged out with more than one observation", ( ) => {
     zustandStorage.setItem( "numOfUserObservations", 2 );
     useStore.setState( {
-      layout: {
-        ...initialState.layout,
-        isDefaultMode: false
-      },
       uploadStatus: UPLOAD_PENDING,
       syncingStatus: SYNC_PENDING
+    } );
+    setStoreStateLayout( {
+      isDefaultMode: false
     } );
     renderComponent(
       <SimpleUploadBannerContainer

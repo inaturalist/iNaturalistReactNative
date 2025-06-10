@@ -6,8 +6,8 @@ import {
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice.ts";
-import useStore from "stores/useStore";
 import { renderApp } from "tests/helpers/render";
+import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 
 // We're explicitly testing navigation here so we want react-navigation
@@ -36,15 +36,11 @@ beforeAll( uniqueRealmBeforeAll );
 afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
-const initialState = useStore.getInitialState();
 beforeAll( async () => {
   await initI18next();
-  useStore.setState( {
-    layout: {
-      ...initialState.layout,
-      isDefaultMode: false,
-      isAllAddObsOptionsMode: true
-    }
+  setStoreStateLayout( {
+    isDefaultMode: false,
+    isAllAddObsOptionsMode: true
   } );
 } );
 
@@ -71,13 +67,10 @@ const navigateToCamera = async ( ) => {
 describe( "StandardCamera navigation with advanced user layout", ( ) => {
   global.withAnimatedTimeTravelEnabled( );
   beforeEach( () => {
-    useStore.setState( {
-      layout: {
-        ...initialState.layout,
-        isDefaultMode: false,
-        isAllAddObsOptionsMode: true,
-        screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT
-      }
+    setStoreStateLayout( {
+      isDefaultMode: false,
+      isAllAddObsOptionsMode: true,
+      screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT
     } );
   } );
 
@@ -110,13 +103,10 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
 
   describe( "when navigating to Suggestions", ( ) => {
     beforeEach( () => {
-      useStore.setState( {
-        layout: {
-          ...initialState.layout,
-          isDefaultMode: false,
-          screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
-          isAllAddObsOptionsMode: true
-        }
+      setStoreStateLayout( {
+        isDefaultMode: false,
+        screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
+        isAllAddObsOptionsMode: true
       } );
     } );
 
