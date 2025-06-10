@@ -2,6 +2,7 @@
 import { useNavigation } from "@react-navigation/native";
 import AddObsModal from "components/AddObsModal/AddObsModal.tsx";
 import {
+  DismissableBanner,
   HeaderUser,
   Heading2,
   ViewWrapper
@@ -16,6 +17,7 @@ import type { Node } from "react";
 import React, { useState } from "react";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
+import colors from "styles/tailwindColors";
 
 interface Props {
   currentUser: Object | null;
@@ -27,6 +29,7 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected }: Props ): Node 
   const navigation = useNavigation();
   const [showModal, setShowModal] = useState( false );
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
+  const [showedExistingAccountBanner, setShowedExistingAccountBanner] = useState( false );
   const navAndCloseModal = ( screen, params ) => {
     if ( screen !== "ObsEdit" ) {
       resetObservationFlowSlice( );
@@ -46,6 +49,27 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected }: Props ): Node 
           <HeaderUser user={currentUser} isConnected={isConnected} />
         </View>
       )}
+      {
+        !showedExistingAccountBanner
+        && (
+          // extra view to get absolutely positioned view to follow safeareaview rules
+          <View>
+            <View
+              className="absolute top-0 left-0 right-0 mx-[22px] w-auto z-20"
+              pointerEvents="box-none"
+            >
+              <DismissableBanner
+                icon="inaturalist"
+                iconColor={colors.inatGreen}
+                currentUser={currentUser}
+                text={t( "Already-have-an-iNaturalist-account" )}
+                onPress={() => navigation.navigate( "LoginStackNavigator" )}
+                dismiss={() => setShowedExistingAccountBanner( true )}
+              />
+            </View>
+          </View>
+        )
+      }
       <View className="grow justify-center mx-[67px]">
         <Pressable accessibilityRole="button" onPress={navToARCamera}>
           <Heading2
