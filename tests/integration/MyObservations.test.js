@@ -10,10 +10,11 @@ import { flatten } from "lodash";
 import React from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { sleep } from "sharedHelpers/util.ts";
-import useStore, { zustandStorage } from "stores/useStore";
+import { zustandStorage } from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderAppWithComponent } from "tests/helpers/render";
+import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
 
@@ -136,13 +137,9 @@ const displayItemByText = text => {
 };
 
 beforeEach( ( ) => {
-  const initialState = useStore.getInitialState( );
-  useStore.setState( {
-    layout: {
-      ...initialState.layout,
-      isDefaultMode: false,
-      isAllAddObsOptionsMode: true
-    }
+  setStoreStateLayout( {
+    isDefaultMode: false,
+    isAllAddObsOptionsMode: true
   } );
 } );
 
