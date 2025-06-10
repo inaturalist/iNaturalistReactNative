@@ -1,6 +1,6 @@
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
-import { authenticateUser, clearAuthCache } from "components/LoginSignUp/AuthenticationService.ts";
+import { authenticateUser } from "components/LoginSignUp/AuthenticationService.ts";
 import {
   Body1, Body2, Button, Heading4, INatIcon, INatIconButton, List2
 } from "components/SharedComponents";
@@ -88,8 +88,6 @@ const LoginForm = ( {
       setLoading( false );
       return;
     }
-    // clear cache for isLoggedIn
-    clearAuthCache( );
 
     setLoading( false );
 

@@ -44,6 +44,25 @@ const API_HOST: string = Config.OAUTH_API_URL || process.env.OAUTH_API_URL || "h
 // expire every 30 mins, so might as well be futureproof.
 const JWT_EXPIRATION_MINS = 25;
 
+/**
+ * Cache for isLoggedIn, to avoid making too many calls to RNSInfo.getItem
+ */
+const authCache = {
+  isLoggedIn: null,
+  lastChecked: null,
+  cacheTimeout: 5000
+};
+
+/**
+ * Clear cache for isLoggedIn.
+ *
+ * @returns {void}
+ */
+const clearAuthCache = ( ) => {
+  authCache.isLoggedIn = null;
+  authCache.lastChecked = null;
+};
+
 async function getSensitiveItem( key: string, options = {} ) {
   try {
     return await RNSInfo.getItem( key, options );
@@ -65,7 +84,9 @@ async function getSensitiveItem( key: string, options = {} ) {
 
 async function setSensitiveItem( key: string, value: string, options = {} ) {
   try {
-    return await RNSInfo.setItem( key, value, options );
+    const result = await RNSInfo.setItem( key, value, options );
+    clearAuthCache( );
+    return result;
   } catch ( e ) {
     if ( isDebugMode( ) ) {
       localLogger.info( `RNSInfo.setItem not available for ${key}, sleeping` );
@@ -84,7 +105,9 @@ async function setSensitiveItem( key: string, value: string, options = {} ) {
 
 async function deleteSensitiveItem( key: string, options = {} ) {
   try {
-    return await RNSInfo.deleteItem( key, options );
+    const result = await RNSInfo.deleteItem( key, options );
+    clearAuthCache( );
+    return result;
   } catch ( e ) {
     if ( isDebugMode( ) ) {
       localLogger.info( `RNSInfo.deleteItem not available for ${key}, sleeping` );
@@ -113,25 +136,6 @@ const createAPI = ( additionalHeaders?: { [header: string]: string } ) => create
     ...additionalHeaders
   }
 } );
-
-/**
- * Cache for isLoggedIn, to avoid making too many calls to RNSInfo.getItem
- */
-const authCache = {
-  isLoggedIn: null,
-  lastChecked: null,
-  cacheTimeout: 5000
-};
-
-/**
- * Clear cache for isLoggedIn.
- *
- * @returns {void}
- */
-const clearAuthCache = ( ) => {
-  authCache.isLoggedIn = null;
-  authCache.lastChecked = null;
-};
 
 /**
  * Returns whether we're currently logged in.
@@ -230,8 +234,6 @@ const signOut = async (
   await removeAllFilesFromDirectory( rotatedOriginalPhotosPath );
   await removeAllFilesFromDirectory( soundUploadPath );
 
-  // clear cache for isLoggedIn
-  clearAuthCache( );
   // delete all keys from mmkv
   storage.clearAll( );
   RNRestart.restart( );
