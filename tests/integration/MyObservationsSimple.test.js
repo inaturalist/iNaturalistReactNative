@@ -5,10 +5,10 @@ import { screen, waitFor } from "@testing-library/react-native";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer.tsx";
 import React from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import useStore from "stores/useStore";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderAppWithComponent } from "tests/helpers/render";
+import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 
 const mockUnsyncedObservations = [
@@ -84,12 +84,9 @@ const displayItemByText = text => {
 };
 
 beforeEach( ( ) => {
-  useStore.setState( {
-    layout: {
-      isDefaultMode: true,
-      shownOnce: {},
-      isAllAddObsOptionsMode: false
-    }
+  setStoreStateLayout( {
+    isDefaultMode: true,
+    isAllAddObsOptionsMode: false
   } );
 } );
 
