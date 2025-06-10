@@ -111,7 +111,7 @@ android {
         applicationId "org.inaturalist.iNaturalistMobile"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 165
+        versionCode 166
         versionName "1.0.5"
         setProperty("archivesBaseName", applicationId + "-v" + versionName + "+" + versionCode)
         manifestPlaceholders = [ GMAPS_API_KEY:project.env.get("GMAPS_API_KEY") ]
