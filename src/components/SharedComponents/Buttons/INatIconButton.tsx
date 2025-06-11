@@ -205,10 +205,4 @@ const INatIconButton = ( {
   );
 };
 
-INatIconButton.defaultProps = {
-  height: 44,
-  size: 18,
-  width: 44
-};
-
 export default INatIconButton;
