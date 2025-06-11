@@ -1744,7 +1744,6 @@ PODS:
     - RCT-Folly (= 2024.01.01.00)
     - RCTRequired
     - RCTTypeSafety
-    - React-Codegen
     - React-Core
     - React-debug
     - React-Fabric
@@ -1755,6 +1754,7 @@ PODS:
     - React-RCTFabric
     - React-rendererdebug
     - React-utils
+    - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - RNReanimated/reanimated (= 3.15.5)
@@ -2218,7 +2218,7 @@ SPEC CHECKSUMS:
   FasterImage: 5215480384883bb4a4a7f5655d4d1f8354e96987
   FBLazyVector: ee328dc37246cbe6d45ae4472951c0ca0dd6ffbf
   fmt: 4c2741a687cc09f0634a2e2c72a838b99f1ff120
-  glog: fdfdfe5479092de0c4bdbebedd9056951f092c4f
+  glog: 69ef571f3de08433d766d614c73a9838a06bf7eb
   GoogleSignIn: d4281ab6cf21542b1cfaff85c191f230b399d2db
   GTMAppAuth: f69bd07d68cd3b766125f7e072c45d7340dea0de
   GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
@@ -2226,7 +2226,7 @@ SPEC CHECKSUMS:
   MMKV: b4802ebd5a7c68fc0c4a5ccb4926fbdfb62d68e0
   MMKVCore: a255341a3746955f50da2ad9121b18cb2b346e61
   Mute: 20135a96076f140cc82bfc8b810e2d6150d8ec7e
-  RCT-Folly: 5dc73daec3476616d19e8a53f0156176f7b55461
+  RCT-Folly: 34124ae2e667a0e5f0ea378db071d27548124321
   RCTDeprecation: 3abf1129f54dbf292986302277f62ad01f7af1b2
   RCTRequired: 67f606e1be40dbb827898c23d9eaee3562b087d1
   RCTTypeSafety: 30826859480f0ee4a3dd4fe64854e40d6f29c558
@@ -2313,12 +2313,12 @@ SPEC CHECKSUMS:
   RNDeviceInfo: 538b62f03991eb4a2a15cf6fec5fff6bb5edc34e
   RNFlashList: 076a14c3a81a9e70b8a3bc52a06cf28490e4c437
   RNFS: 89de7d7f4c0f6bafa05343c578f61118c8282ed8
-  RNGestureHandler: d5aafad9a7d1506a8bcab6fbc04384372c8ca86b
+  RNGestureHandler: 011b703e87c0008b9e0375dca87f37f34a5133e8
   RNGoogleSignin: ba93c1137f8d5cebdd39b04f493fd212ddf5ecd6
   RNLocalize: 080849cb8a824d9f759b8a5ae00c8321d46dbed0
   RNPermissions: f14c20f4eb7a20fff611ad9f467da7bb5872ac4f
-  RNReanimated: 17e0cb093222e9c92a0349f0e07912693f46fc27
-  RNScreens: df14a2a11e7afb57e6f35f8964d206271f4dae44
+  RNReanimated: 6b874c55e3db79aabfba0eedee9ca3ccfbfb355c
+  RNScreens: 4a5ab20b324ed1e3fe3862796b8f8e0a6208c415
   RNShareMenu: e1cdfa3b9af89416afc75a80377cfd0de4f30ded
   RNStoreReview: 613c43e9132998ed41a65946e20c223c91b36464
   RNSVG: a31e321979e3001f56ba9331d10ac917f8ad1851
@@ -2326,7 +2326,7 @@ SPEC CHECKSUMS:
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   VisionCamera: 25a205cf335599192d84171d0925d5bd45433608
   VisionCameraPluginInatVision: ad9a001b70676d2f9b0ea22f60c04d5fed3d3a52
-  Yoga: 272dddd3c0e1e23d09ba81ed55ddfa7fdd3caa17
+  Yoga: 5acecc29c9413933d57c9a26bc236fd0279bacb4
 
 PODFILE CHECKSUM: c92c85936cdaceff02009b29b05bbb2fe1d7b943
 
