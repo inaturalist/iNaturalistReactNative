@@ -1404,7 +1404,51 @@ PODS:
     - React-Core
   - RNPermissions (4.1.5):
     - React-Core
-  - RNReanimated (3.11.0):
+  - RNReanimated (3.15.5):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Codegen
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - RNReanimated/reanimated (= 3.15.5)
+    - RNReanimated/worklets (= 3.15.5)
+    - Yoga
+  - RNReanimated/reanimated (3.15.5):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Codegen
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
+  - RNReanimated/worklets (3.15.5):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1487,7 +1531,7 @@ PODS:
   - VisionCamera/React (4.5.2):
     - React-Core
     - VisionCamera/FrameProcessors
-  - VisionCameraPluginInatVision (5.3.0-rc.0):
+  - VisionCameraPluginInatVision (5.3.0-rc.1):
     - React-Core
   - Yoga (0.0.0)
 
@@ -1908,7 +1952,7 @@ SPEC CHECKSUMS:
   RNGoogleSignin: ba93c1137f8d5cebdd39b04f493fd212ddf5ecd6
   RNLocalize: 080849cb8a824d9f759b8a5ae00c8321d46dbed0
   RNPermissions: f14c20f4eb7a20fff611ad9f467da7bb5872ac4f
-  RNReanimated: b91f99db7e41b501dd71aab52fcc620118991f65
+  RNReanimated: 17e0cb093222e9c92a0349f0e07912693f46fc27
   RNScreens: df14a2a11e7afb57e6f35f8964d206271f4dae44
   RNShareMenu: e1cdfa3b9af89416afc75a80377cfd0de4f30ded
   RNStoreReview: 613c43e9132998ed41a65946e20c223c91b36464
@@ -1916,7 +1960,7 @@ SPEC CHECKSUMS:
   RNVectorIcons: 6c795cacc9276decc31d8e1a139b9cc6fc0479ca
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   VisionCamera: 25a205cf335599192d84171d0925d5bd45433608
-  VisionCameraPluginInatVision: 6eace74efbce44b4df258b2c2a45232c76846cdc
+  VisionCameraPluginInatVision: ad9a001b70676d2f9b0ea22f60c04d5fed3d3a52
   Yoga: 272dddd3c0e1e23d09ba81ed55ddfa7fdd3caa17
 
 PODFILE CHECKSUM: c92c85936cdaceff02009b29b05bbb2fe1d7b943
