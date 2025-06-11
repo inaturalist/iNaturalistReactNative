@@ -54,7 +54,6 @@ jest.mock( "sharedHelpers/fetchAccurateUserLocation", () => ( {
 
 const navigateToCamera = async ( ) => {
   await waitFor( ( ) => {
-    global.timeTravel( );
     expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeVisible( );
   } );
   const tabBar = await screen.findByTestId( "CustomTabBar" );
@@ -65,7 +64,6 @@ const navigateToCamera = async ( ) => {
 };
 
 describe( "StandardCamera navigation with advanced user layout", ( ) => {
-  global.withAnimatedTimeTravelEnabled( );
   beforeEach( () => {
     setStoreStateLayout( {
       isDefaultMode: false,
@@ -82,7 +80,6 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
       const closeButton = await within( cameraNavButtons ).findByLabelText( "Close" );
       await actor.press( closeButton );
       await waitFor( ( ) => {
-        global.timeTravel( );
         expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeVisible( );
       } );
     } );
@@ -96,7 +93,6 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
     const checkmarkButton = await screen.findByLabelText( "View suggestions" );
     await actor.press( checkmarkButton );
     await waitFor( ( ) => {
-      global.timeTravel( );
       expect( screen.getByText( /New Observation/ ) ).toBeVisible( );
     } );
   } );
@@ -118,7 +114,6 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
       const checkmarkButton = await screen.findByLabelText( "View suggestions" );
       await actor.press( checkmarkButton );
       await waitFor( ( ) => {
-        global.timeTravel( );
         expect( screen.getByText( /ADD AN ID/ ) ).toBeVisible( );
       } );
     } );
