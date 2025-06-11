@@ -1,3 +1,20 @@
+let clearAuthCache = () => {}; // Default no-op function
+
+// Try to get clearAuthCache function safely
+try {
+  const authModule = require( "components/LoginSignUp/AuthenticationService.ts" );
+
+  if ( authModule && typeof authModule.clearAuthCache === "function" ) {
+    // eslint-disable-next-line prefer-destructuring
+    clearAuthCache = authModule.clearAuthCache;
+  } else if ( authModule.default && typeof authModule.default.clearAuthCache === "function" ) {
+    // eslint-disable-next-line prefer-destructuring
+    clearAuthCache = authModule.default.clearAuthCache;
+  }
+} catch ( error ) {
+  console.warn( "Could not import clearAuthCache, using no-op function", error );
+}
+
 class RNSInfo {
   static stores = new Map();
 
@@ -10,6 +27,15 @@ class RNSInfo {
   static validateString( s ) {
     if ( typeof s !== "string" ) { throw new Error( "Invalid string:", s ); }
   }
+
+  static clearAllStores = jest.fn( () => {
+    RNSInfo.stores.clear();
+    clearAuthCache();
+  } );
+
+  static clearAuthCache = jest.fn( () => {
+    clearAuthCache();
+  } );
 
   static getItem = jest.fn( async ( k, o ) => {
     RNSInfo.validateString( k );
@@ -27,11 +53,8 @@ class RNSInfo {
     let mappedValues = [];
 
     if ( service?.size ) {
-      // for ( const [k, v] of service.entries() ) {
-      //   mappedValues.push( { key: k, value: v, service: serviceName } );
-      // }
-      mappedValues = service.entries( ).map(
-        ( key, value ) => ( { key, value, service: serviceName } )
+      mappedValues = Array.from( service.entries() ).map(
+        ( [key, value] ) => ( { key, value, service: serviceName } )
       );
     }
 
@@ -52,6 +75,8 @@ class RNSInfo {
 
     service.set( k, v );
 
+    clearAuthCache( );
+
     return null;
   } );
 
@@ -62,6 +87,8 @@ class RNSInfo {
     const service = RNSInfo.stores.get( serviceName );
 
     if ( service ) { service.delete( k ); }
+
+    clearAuthCache( );
 
     return null;
   } );
