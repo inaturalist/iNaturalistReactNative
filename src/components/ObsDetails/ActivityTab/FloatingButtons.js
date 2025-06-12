@@ -36,7 +36,7 @@ const FloatingButtons = ( {
       testID: "ObsDetail.commentButton",
       disabled: showAddCommentSheet,
       accessibilityHint: "Opens-add-comment-form",
-      className: "w-1/2 mx-6"
+      className: "w-[48%]"
     },
     {
       title: t( "SUGGEST-ID" ),
@@ -45,7 +45,7 @@ const FloatingButtons = ( {
       testID: "ObsDetail.cvSuggestionsButton",
       accessibilityHint: "Shows-identification-suggestions",
       accessibilityRole: "link",
-      className: "w-1/2 mx-6"
+      className: "w-[48%]"
     }
   ];
 
@@ -56,7 +56,7 @@ const FloatingButtons = ( {
     >
       <ButtonBar
         buttonConfiguration={buttons}
-        containerClass="justify-evenly p-[15px]"
+        containerClass="justify-between p-[15px]"
       />
     </View>
   );
