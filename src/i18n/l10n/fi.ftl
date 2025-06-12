@@ -369,7 +369,7 @@ Ignore-notifications = Ohita ilmoitukset
 Ignoring-location = Ohitetaan sijainti
 Import-Photos-From = Tuo kuvia
 IMPORT-X-OBSERVATIONS =
-    IMPORT { $count ->
+    TEE { $count ->
         [one] 1 HAVAINTO
        *[other] { $count } HAVAINTOA
     }

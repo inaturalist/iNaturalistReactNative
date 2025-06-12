@@ -335,7 +335,7 @@
   "Ignore-notifications": "Ohita ilmoitukset",
   "Ignoring-location": "Ohitetaan sijainti",
   "Import-Photos-From": "Tuo kuvia",
-  "IMPORT-X-OBSERVATIONS": "IMPORT { $count ->\n  [one] 1 HAVAINTO\n *[other] { $count } HAVAINTOA\n}",
+  "IMPORT-X-OBSERVATIONS": "TEE { $count ->\n  [one] 1 HAVAINTO\n *[other] { $count } HAVAINTOA\n}",
   "Improve-suggestions-by-using-your-location": "Paranna ehdotuksia käyttämällä sijaintiasi",
   "IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION": "PARANNA EHDOTUKSIA KÄYTTÄMÄLLÄ SIJAINTIASI",
   "improving--identification": "Parannus",
