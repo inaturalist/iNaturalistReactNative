@@ -30,7 +30,7 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
               "backgroundColor": "#ffffff",
             },
             {
-              "justifyContent": "space-evenly",
+              "justifyContent": "space-around",
             },
             {
               "paddingBottom": 4,
@@ -97,9 +97,6 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
             [
               {
                 "alignItems": "center",
-              },
-              {
-                "width": "20%",
               },
               {
                 "justifyContent": "flex-end",
@@ -243,9 +240,6 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                 "alignItems": "center",
               },
               {
-                "width": "20%",
-              },
-              {
                 "justifyContent": "flex-end",
               },
             ],
@@ -356,10 +350,6 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
               },
               {
                 "height": 60,
-              },
-              {
-                "marginLeft": 12,
-                "marginRight": 12,
               },
             ],
           ]
@@ -560,9 +550,6 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                 "alignItems": "center",
               },
               {
-                "width": "20%",
-              },
-              {
                 "justifyContent": "flex-end",
               },
             ],
@@ -702,9 +689,6 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
             [
               {
                 "alignItems": "center",
-              },
-              {
-                "width": "20%",
               },
               {
                 "justifyContent": "flex-end",
