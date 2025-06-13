@@ -7,7 +7,7 @@ import {
   ViewWrapper
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import inatPlaceTypes from "dictionaries/places";
+import inatPlaceTypes from "dictionaries/places.ts";
 import {
   EXPLORE_ACTION,
   useExplore
