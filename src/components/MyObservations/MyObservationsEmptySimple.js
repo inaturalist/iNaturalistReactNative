@@ -2,9 +2,9 @@
 import { useNavigation } from "@react-navigation/native";
 import AddObsModal from "components/AddObsModal/AddObsModal.tsx";
 import {
-  DismissableBanner,
   HeaderUser,
   Heading2,
+  LoginBanner,
   ViewWrapper
 } from "components/SharedComponents";
 import GradientButton from "components/SharedComponents/Buttons/GradientButton.tsx";
@@ -17,7 +17,6 @@ import type { Node } from "react";
 import React, { useState } from "react";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
-import colors from "styles/tailwindColors";
 
 interface Props {
   currentUser: Object | null;
@@ -29,8 +28,6 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected }: Props ): Node 
   const navigation = useNavigation();
   const [showModal, setShowModal] = useState( false );
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
-  const loginBannerDismissed = useStore( state => state.layout.loginBannerDismissed );
-  const setLoginBannerDismissed = useStore( state => state.layout.setLoginBannerDismissed );
 
   const navAndCloseModal = ( screen, params ) => {
     if ( screen !== "ObsEdit" ) {
@@ -44,10 +41,6 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected }: Props ): Node 
   };
   const navToARCamera = ( ) => { navAndCloseModal( "Camera", { camera: "AI" } ); };
 
-  const dismissLoginBanner = () => {
-    setLoginBannerDismissed();
-  };
-
   return (
     <ViewWrapper>
       {!!currentUser && (
@@ -55,26 +48,9 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected }: Props ): Node 
           <HeaderUser user={currentUser} isConnected={isConnected} />
         </View>
       )}
-      {
-        !loginBannerDismissed
-        && (
-          // extra view to get absolutely positioned view to follow safeareaview rules
-          <View className="z-20">
-            <View
-              className="absolute self-center top-0"
-            >
-              <DismissableBanner
-                icon="inaturalist"
-                iconColor={colors.inatGreen}
-                currentUser={currentUser}
-                text={t( "Already-have-an-iNaturalist-account" )}
-                onPress={() => navigation.navigate( "LoginStackNavigator" )}
-                dismiss={dismissLoginBanner}
-              />
-            </View>
-          </View>
-        )
-      }
+      <LoginBanner
+        currentUser={currentUser}
+      />
       <View className="grow justify-center mx-[67px]">
         <Pressable accessibilityRole="button" onPress={navToARCamera}>
           <Heading2
