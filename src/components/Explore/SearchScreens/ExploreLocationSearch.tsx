@@ -34,7 +34,7 @@ interface Props {
   hasPermissions?: boolean;
   renderPermissionsGate: ( options: LocationPermissionCallbacks ) => React.FC;
   requestPermissions: ( ) => void;
-  updateLocation: ( location: "worldwide" | { name: string } ) => void;
+  updateLocation: ( location: "worldwide" | ApiPlace ) => void;
 }
 
 const ExploreLocationSearch = ( {
@@ -78,7 +78,7 @@ const ExploreLocationSearch = ( {
     }
   );
 
-  const onPlaceSelected = useCallback( place => {
+  const onPlaceSelected = useCallback( ( place: ApiPlace ) => {
     updateLocation( place );
     closeModal();
   }, [updateLocation, closeModal] );
