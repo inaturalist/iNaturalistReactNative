@@ -1,4 +1,4 @@
-import ExploreLocationSearch from "components/Explore/SearchScreens/ExploreLocationSearch";
+import ExploreLocationSearch from "components/Explore/SearchScreens/ExploreLocationSearch.tsx";
 import Modal from "components/SharedComponents/Modal.tsx";
 import React from "react";
 import type { LocationPermissionCallbacks } from "sharedHooks/useLocationPermission.tsx";
