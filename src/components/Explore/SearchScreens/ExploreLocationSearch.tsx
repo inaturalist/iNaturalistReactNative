@@ -1,5 +1,3 @@
-// @flow
-
 import { fetchSearchResults } from "api/search.ts";
 import {
   Body1,
@@ -14,7 +12,6 @@ import {
   EXPLORE_ACTION,
   useExplore
 } from "providers/ExploreContext.tsx";
-import type { Node } from "react";
 import React, {
   useCallback,
   useState
@@ -44,7 +41,7 @@ const ExploreLocationSearch = ( {
   renderPermissionsGate,
   requestPermissions,
   updateLocation
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const { dispatch, defaultExploreLocation } = useExplore( );
 
