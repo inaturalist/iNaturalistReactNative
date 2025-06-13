@@ -84,19 +84,22 @@ const ExploreLocationSearch = ( {
   }, [updateLocation, closeModal] );
 
   const renderItem = useCallback(
-    ( { item: place } ) => (
-      <Pressable
-        accessibilityRole="button"
-        key={place.id}
-        className="p-3 border-[0.5px] border-lightGray"
-        onPress={() => onPlaceSelected( place )}
-      >
-        <Body1>{place.display_name}</Body1>
-        {!!place.place_type && (
-          <List2>{inatPlaceTypes[place.place_type]}</List2>
-        )}
-      </Pressable>
-    ),
+    ( item: { item: ApiPlace} ) => {
+      const { item: place } = item;
+      return (
+        <Pressable
+          accessibilityRole="button"
+          key={place.id}
+          className="p-3 border-[0.5px] border-lightGray"
+          onPress={() => onPlaceSelected( place )}
+        >
+          <Body1>{place.display_name}</Body1>
+          {!!place.place_type && (
+            <List2>{inatPlaceTypes[place.place_type]}</List2>
+          )}
+        </Pressable>
+      );
+    },
     [onPlaceSelected]
   );
 
