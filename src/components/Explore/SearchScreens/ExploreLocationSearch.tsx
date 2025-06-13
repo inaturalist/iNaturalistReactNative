@@ -1,4 +1,5 @@
 import { fetchSearchResults } from "api/search.ts";
+import type { ApiPlace } from "api/types";
 import {
   Body1,
   ButtonBar,
@@ -56,7 +57,11 @@ const ExploreLocationSearch = ( {
     [updateLocation, closeModal]
   );
 
-  const { data: placeResults, isLoading, refetch } = useAuthenticatedQuery(
+  const { data: placeResults, isLoading, refetch }: {
+    data: ApiPlace[] | null;
+    isLoading: boolean;
+    refetch: () => void;
+  } = useAuthenticatedQuery(
     ["fetchSearchResults", locationName],
     optsWithAuth => fetchSearchResults(
       {
