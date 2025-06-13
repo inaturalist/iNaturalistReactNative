@@ -1,4 +1,8 @@
-export default {
+type Places = {
+  [key: number]: string;
+};
+
+const places: Places = {
   0: "Undefined",
   2: "Street Segment",
   5: "Intersection",
@@ -51,3 +55,5 @@ export default {
   1019: "Poblacion",
   1020: "Delegation"
 };
+
+export default places;
