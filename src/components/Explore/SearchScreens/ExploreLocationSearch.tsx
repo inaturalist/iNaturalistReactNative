@@ -18,6 +18,7 @@ import React, {
 } from "react";
 import { FlatList } from "react-native";
 import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
+import type { LocationPermissionCallbacks } from "sharedHooks/useLocationPermission.tsx";
 import { getShadow } from "styles/global";
 
 import EmptySearchResults from "./EmptySearchResults";
@@ -27,13 +28,13 @@ const DROP_SHADOW = getShadow( {
   offsetHeight: 4
 } );
 
-type Props = {
-  closeModal: Function,
-  hasPermissions?: boolean,
-  renderPermissionsGate: Function,
-  requestPermissions: Function,
-  updateLocation: Function
-};
+interface Props {
+  closeModal: () => void;
+  hasPermissions?: boolean;
+  renderPermissionsGate: ( options: LocationPermissionCallbacks ) => React.FC;
+  requestPermissions: ( ) => void;
+  updateLocation: ( location: "worldwide" | { name: string } ) => void;
+}
 
 const ExploreLocationSearch = ( {
   closeModal,
