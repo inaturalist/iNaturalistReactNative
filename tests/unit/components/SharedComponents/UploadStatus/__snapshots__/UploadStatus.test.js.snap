@@ -22,7 +22,6 @@ exports[`UploadStatus displays complete icon when progress is 1 1`] = `
     entering={
       InnerKeyframe {
         "build": [Function],
-        "callbackV": undefined,
         "definitions": {
           "0": {
             "opacity": 0,
@@ -34,7 +33,6 @@ exports[`UploadStatus displays complete icon when progress is 1 1`] = `
             "opacity": 1,
           },
         },
-        "delayV": undefined,
         "durationV": 2000,
         "reduceMotionV": "system",
       }
