@@ -37,7 +37,6 @@ export { default as InputField } from "./InputField";
 export { default as KebabMenu } from "./KebabMenu";
 export { default as KeyboardDismissableView } from "./KeyboardDismissableView";
 export { default as LabelColonValue } from "./LabelColonValue";
-export { default as LoginBanner } from "./LoginBanner";
 export { default as DetailsMap } from "./Map/DetailsMap";
 export { default as Map } from "./Map/Map";
 export { default as MediaNavButtons } from "./MediaNavButtons";

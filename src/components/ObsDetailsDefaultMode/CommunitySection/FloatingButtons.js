@@ -30,13 +30,13 @@ const FloatingButtons = ( {
 
   return (
     <View
-      className="flex-row justify-evenly bg-white pt-4 pb-4 px-6"
+      className="flex-row justify-between bg-white pt-4 pb-4 px-6"
       style={DROP_SHADOW}
     >
       <Button
         text={t( "COMMENT" )}
         onPress={openAddCommentSheet}
-        className="w-1/2 mx-6"
+        className="w-[48%]"
         testID="ObsDetail.commentButton"
         disabled={showAddCommentSheet}
         accessibilityHint={t( "Opens-add-comment-form" )}
@@ -44,7 +44,7 @@ const FloatingButtons = ( {
       <Button
         text={t( "SUGGEST-ID" )}
         onPress={navToSuggestions}
-        className="w-1/2 mx-6"
+        className="w-[48%]"
         testID="ObsDetail.cvSuggestionsButton"
         accessibilityRole="link"
         accessibilityHint={t( "Shows-identification-suggestions" )}

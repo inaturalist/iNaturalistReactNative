@@ -3,8 +3,24 @@ import {
   useSharedValue,
   withTiming
 } from "react-native-reanimated";
-import { rotationValue } from "sharedHelpers/visionCameraPatches";
-import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
+import useDeviceOrientation, {
+  LANDSCAPE_LEFT,
+  LANDSCAPE_RIGHT,
+  PORTRAIT_UPSIDE_DOWN
+} from "sharedHooks/useDeviceOrientation.ts";
+
+const rotationValue = ( deviceOrientation: string | undefined ) => {
+  switch ( deviceOrientation ) {
+    case LANDSCAPE_LEFT:
+      return -90;
+    case LANDSCAPE_RIGHT:
+      return 90;
+    case PORTRAIT_UPSIDE_DOWN:
+      return 180;
+    default:
+      return 0;
+  }
+};
 
 const useRotation = ( ) => {
   const { deviceOrientation } = useDeviceOrientation( );

@@ -4,7 +4,6 @@ import AddObsModal from "components/AddObsModal/AddObsModal.tsx";
 import {
   HeaderUser,
   Heading2,
-  LoginBanner,
   ViewWrapper
 } from "components/SharedComponents";
 import GradientButton from "components/SharedComponents/Buttons/GradientButton.tsx";
@@ -17,6 +16,8 @@ import type { Node } from "react";
 import React, { useState } from "react";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
+
+import LoginBanner from "./LoginBanner";
 
 interface Props {
   currentUser: Object | null;
