@@ -45,8 +45,8 @@ const OnboardingModal = ( {
   const { t } = useTranslation( );
 
   // Controls wether to show the modal, and to show it only once to the user
-  const shownOnce = useStore( state => state.layout.shownOnce );
-  const setShownOnce = useStore( state => state.layout.setShownOnce );
+  const shownOnce = useStore( state => state.layout.onboardingShownOnce );
+  const setShownOnce = useStore( state => state.layout.setOnboardingShownOnce );
   const showModal = !shownOnce[showKey] && triggerCondition;
   const closeModal = () => {
     setShownOnce( showKey );
