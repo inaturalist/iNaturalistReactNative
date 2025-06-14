@@ -370,143 +370,147 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
           }
         >
           <View
-            accessibilityHint="Shows observation creation options"
-            accessibilityLabel="Add observations"
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onBlur={[Function]}
-            onClick={[Function]}
-            onFocus={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              [
-                [
-                  {
-                    "width": 69,
-                  },
-                  {
-                    "height": 69,
-                  },
-                  {
-                    "marginBottom": 5,
-                  },
-                  {
-                    "borderBottomLeftRadius": 9999,
-                    "borderBottomRightRadius": 9999,
-                    "borderTopLeftRadius": 9999,
-                    "borderTopRightRadius": 9999,
-                  },
-                  {
-                    "overflow": "hidden",
-                  },
-                  {
-                    "elevation": 5,
-                    "shadowColor": "rgba( 0, 0, 0, 0.25 )",
-                    "shadowOffset": {
-                      "height": 2,
-                      "width": 0,
-                    },
-                    "shadowOpacity": 0.25,
-                    "shadowRadius": 2,
-                  },
-                ],
-              ]
-            }
-            testID="add-obs-button"
+            onLayout={[Function]}
           >
-            <BVLinearGradient
-              angle={156.95}
-              colors={
+            <View
+              accessibilityHint="Shows observation creation options"
+              accessibilityLabel="Add observations"
+              accessibilityRole="button"
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": false,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
+              collapsable={false}
+              focusable={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
                 [
-                  4285836288,
-                  4280909703,
+                  [
+                    {
+                      "width": 69,
+                    },
+                    {
+                      "height": 69,
+                    },
+                    {
+                      "marginBottom": 5,
+                    },
+                    {
+                      "borderBottomLeftRadius": 9999,
+                      "borderBottomRightRadius": 9999,
+                      "borderTopLeftRadius": 9999,
+                      "borderTopRightRadius": 9999,
+                    },
+                    {
+                      "overflow": "hidden",
+                    },
+                    {
+                      "elevation": 5,
+                      "shadowColor": "rgba( 0, 0, 0, 0.25 )",
+                      "shadowOffset": {
+                        "height": 2,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.25,
+                      "shadowRadius": 2,
+                    },
+                  ],
                 ]
               }
-              endPoint={
-                {
-                  "x": 0.5,
-                  "y": 1,
-                }
-              }
-              locations={null}
-              startPoint={
-                {
-                  "x": 0.5,
-                  "y": 0,
-                }
-              }
-              useAngle={true}
+              testID="add-obs-button"
             >
-              <View
-                style={
+              <BVLinearGradient
+                angle={156.95}
+                colors={
                   [
-                    [
-                      {
-                        "flexGrow": 1,
-                      },
-                      {
-                        "aspectRatio": 1,
-                      },
-                      {
-                        "display": "flex",
-                      },
-                      {
-                        "alignItems": "center",
-                      },
-                      {
-                        "justifyContent": "center",
-                      },
-                    ],
+                    4285836288,
+                    4280909703,
                   ]
                 }
+                endPoint={
+                  {
+                    "x": 0.5,
+                    "y": 1,
+                  }
+                }
+                locations={null}
+                startPoint={
+                  {
+                    "x": 0.5,
+                    "y": 0,
+                  }
+                }
+                useAngle={true}
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
                   style={
                     [
-                      {
-                        "color": "#ffffff",
-                        "fontSize": 31,
-                      },
-                      null,
-                      {
-                        "fontFamily": "INatIcon",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
+                      [
+                        {
+                          "flexGrow": 1,
+                        },
+                        {
+                          "aspectRatio": 1,
+                        },
+                        {
+                          "display": "flex",
+                        },
+                        {
+                          "alignItems": "center",
+                        },
+                        {
+                          "justifyContent": "center",
+                        },
+                      ],
                     ]
                   }
                 >
-                  
-                </Text>
-              </View>
-            </BVLinearGradient>
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#ffffff",
+                          "fontSize": 31,
+                        },
+                        null,
+                        {
+                          "fontFamily": "INatIcon",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
+              </BVLinearGradient>
+            </View>
           </View>
         </View>
       </View>
