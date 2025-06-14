@@ -13,6 +13,8 @@ export interface ApiParams {
 export interface ApiPlace {
   id?: number;
   name?: string;
+  display_name?: string;
+  place_type?: number;
 }
 
 export interface ApiProject {

@@ -1,4 +1,4 @@
-import type { ApiProject } from "api/types";
+import type { ApiPlace, ApiProject } from "api/types";
 import classNames from "classnames";
 import NumberBadge from "components/Explore/NumberBadge.tsx";
 import ProjectListItem from "components/ProjectList/ProjectListItem.tsx";
@@ -65,8 +65,7 @@ interface Props {
   requestLocationPermissions: ( ) => void;
   // TODO: type this properly when taxon has a type
   updateTaxon: ( taxon: null | { name: string } ) => void;
-  // TODO: Param not typed yet, because ExploreLocationSearch is not typed yet
-  updateLocation: ( location: "worldwide" | { name: string } ) => void;
+  updateLocation: ( location: "worldwide" | ApiPlace ) => void;
   // TODO: Param not typed yet, because ExploreUserSearch is not typed yet
   updateUser: ( user: null | { login: string } ) => void;
   updateProject: ( project: ApiProject ) => void;
