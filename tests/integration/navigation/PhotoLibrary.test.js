@@ -60,7 +60,6 @@ const actor = userEvent.setup( );
 
 const navigateToPhotoImporter = async ( ) => {
   await waitFor( ( ) => {
-    global.timeTravel( );
     expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeVisible( );
   } );
   const tabBar = await screen.findByTestId( "CustomTabBar" );
@@ -71,7 +70,6 @@ const navigateToPhotoImporter = async ( ) => {
 };
 
 describe( "PhotoLibrary navigation", ( ) => {
-  global.withAnimatedTimeTravelEnabled( );
   beforeEach( ( ) => {
     setStoreStateLayout( {
       screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT,
@@ -91,7 +89,7 @@ describe( "PhotoLibrary navigation", ( ) => {
     const groupPhotosText = await screen.findByText( /Group Photos/ );
     await waitFor( ( ) => {
       // user should land on GroupPhotos
-      expect( groupPhotosText ).toBeTruthy( );
+      expect( groupPhotosText ).toBeVisible( );
     } );
   } );
 
@@ -103,18 +101,18 @@ describe( "PhotoLibrary navigation", ( ) => {
     );
     renderApp( );
     await navigateToPhotoImporter( );
+    const obsEditText = await screen.findByText( /New Observation/ );
     await waitFor( () => {
-      global.timeTravel();
-      expect( screen.getByText( /New Observation/ ) ).toBeVisible();
+      expect( obsEditText ).toBeVisible();
     } );
   } );
 } );
 
 describe( "PhotoLibrary navigation when suggestions screen is preferred next screen", () => {
-  global.withAnimatedTimeTravelEnabled();
   beforeEach( () => {
     setStoreStateLayout( {
       screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
+      isDefaultMode: false,
       isAllAddObsOptionsMode: true
     } );
   } );
@@ -124,18 +122,9 @@ describe( "PhotoLibrary navigation when suggestions screen is preferred next scr
     } ) );
     renderApp();
     await navigateToPhotoImporter();
+    const addAnIDText = await screen.findByText( /Add an ID Later/ );
     await waitFor( () => {
-      global.timeTravel();
-      // TODO: Johannes 25-02-25
-      // At this point in the test the screen is not advancing to the next screen
-      // it is stuck on the "PhotoLibrary" screen. I don't know why this is happening since
-      // it is working when navigating to ObsEdit, see above. Furthermore, uncommenting this
-      // but commenting out the above describe will make this test pass, so I think it is more
-      // something with test setup.
-      // I feel that is more important to move quickly before our launch deadline. So, I'll
-      // comment this out which means the test does not actually test the navigation to the
-      // Suggestions screen.
-      // expect( screen.getByText( /Add an ID Later/ ) ).toBeVisible();
+      expect( addAnIDText ).toBeVisible();
     } );
   } );
 } );

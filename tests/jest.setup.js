@@ -4,7 +4,6 @@
 // eslint-disable-next-line simple-import-sort/imports
 import "react-native-get-random-values";
 
-import "react-native-gesture-handler/jestSetup";
 import "@shopify/flash-list/jestSetup";
 
 import mockBottomSheet from "@gorhom/bottom-sheet/mock";

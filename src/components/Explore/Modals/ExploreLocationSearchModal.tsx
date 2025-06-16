@@ -1,4 +1,5 @@
-import ExploreLocationSearch from "components/Explore/SearchScreens/ExploreLocationSearch";
+import type { ApiPlace } from "api/types";
+import ExploreLocationSearch from "components/Explore/SearchScreens/ExploreLocationSearch.tsx";
 import Modal from "components/SharedComponents/Modal.tsx";
 import React from "react";
 import type { LocationPermissionCallbacks } from "sharedHooks/useLocationPermission.tsx";
@@ -9,7 +10,7 @@ interface Props {
   renderPermissionsGate: ( options: LocationPermissionCallbacks ) => React.FC;
   requestPermissions: ( ) => void;
   showModal: boolean;
-  updateLocation: ( location: "worldwide" | { name: string } ) => void;
+  updateLocation: ( location: "worldwide" | ApiPlace ) => void;
 }
 
 const ExploreLocationSearchModal = ( {
