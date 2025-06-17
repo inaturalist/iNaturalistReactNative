@@ -750,7 +750,7 @@ const FilterModal = ( {
               } else {
                 const selectedTaxon = realm
                   ?.objects( "Taxon" )
-                  .filtered( "name CONTAINS[c] $0", taxonName );
+                  .filtered( "name ==[c] $0", taxonName );
                 const iconicTaxon = selectedTaxon.length > 0
                   ? selectedTaxon[0]
                   : null;
