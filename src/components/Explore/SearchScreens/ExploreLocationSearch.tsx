@@ -1,6 +1,5 @@
-// @flow
-
 import { fetchSearchResults } from "api/search.ts";
+import type { ApiPlace } from "api/types";
 import {
   Body1,
   ButtonBar,
@@ -9,18 +8,18 @@ import {
   ViewWrapper
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import inatPlaceTypes from "dictionaries/places";
+import inatPlaceTypes from "dictionaries/places.ts";
 import {
   EXPLORE_ACTION,
   useExplore
 } from "providers/ExploreContext.tsx";
-import type { Node } from "react";
 import React, {
   useCallback,
   useState
 } from "react";
 import { FlatList } from "react-native";
 import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
+import type { LocationPermissionCallbacks } from "sharedHooks/useLocationPermission.tsx";
 import { getShadow } from "styles/global";
 
 import EmptySearchResults from "./EmptySearchResults";
@@ -30,13 +29,13 @@ const DROP_SHADOW = getShadow( {
   offsetHeight: 4
 } );
 
-type Props = {
-  closeModal: Function,
-  hasPermissions?: boolean,
-  renderPermissionsGate: Function,
-  requestPermissions: Function,
-  updateLocation: Function
-};
+interface Props {
+  closeModal: () => void;
+  hasPermissions?: boolean;
+  renderPermissionsGate: ( options: LocationPermissionCallbacks ) => React.FC;
+  requestPermissions: ( ) => void;
+  updateLocation: ( location: "worldwide" | ApiPlace ) => void;
+}
 
 const ExploreLocationSearch = ( {
   closeModal,
@@ -44,7 +43,7 @@ const ExploreLocationSearch = ( {
   renderPermissionsGate,
   requestPermissions,
   updateLocation
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const { dispatch, defaultExploreLocation } = useExplore( );
 
@@ -58,7 +57,11 @@ const ExploreLocationSearch = ( {
     [updateLocation, closeModal]
   );
 
-  const { data: placeResults, isLoading, refetch } = useAuthenticatedQuery(
+  const { data: placeResults, isLoading, refetch }: {
+    data: ApiPlace[] | null;
+    isLoading: boolean;
+    refetch: () => void;
+  } = useAuthenticatedQuery(
     ["fetchSearchResults", locationName],
     optsWithAuth => fetchSearchResults(
       {
@@ -75,25 +78,28 @@ const ExploreLocationSearch = ( {
     }
   );
 
-  const onPlaceSelected = useCallback( place => {
+  const onPlaceSelected = useCallback( ( place: ApiPlace ) => {
     updateLocation( place );
     closeModal();
   }, [updateLocation, closeModal] );
 
   const renderItem = useCallback(
-    ( { item: place } ) => (
-      <Pressable
-        accessibilityRole="button"
-        key={place.id}
-        className="p-3 border-[0.5px] border-lightGray"
-        onPress={() => onPlaceSelected( place )}
-      >
-        <Body1>{place.display_name}</Body1>
-        {!!place.place_type && (
-          <List2>{inatPlaceTypes[place.place_type]}</List2>
-        )}
-      </Pressable>
-    ),
+    ( item: { item: ApiPlace} ) => {
+      const { item: place } = item;
+      return (
+        <Pressable
+          accessibilityRole="button"
+          key={place.id}
+          className="p-3 border-[0.5px] border-lightGray"
+          onPress={() => onPlaceSelected( place )}
+        >
+          <Body1>{place.display_name}</Body1>
+          {!!place.place_type && (
+            <List2>{inatPlaceTypes[place.place_type]}</List2>
+          )}
+        </Pressable>
+      );
+    },
     [onPlaceSelected]
   );
 
