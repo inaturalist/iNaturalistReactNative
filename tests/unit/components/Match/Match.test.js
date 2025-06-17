@@ -49,7 +49,7 @@ describe( "Match", ( ) => {
       />
     );
 
-    const addLocationButton = screen.queryByText( /ADD LOCATION FOR BETTER IDS/i );
+    const addLocationButton = screen.getByLabelText( "Edit location" );
     expect( addLocationButton ).toBeVisible();
   } );
 
