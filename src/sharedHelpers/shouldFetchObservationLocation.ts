@@ -55,6 +55,14 @@ function shouldFetchObservationLocation( observation: RealmObservation ) {
     && observation.positional_accuracy <= TARGET_POSITIONAL_ACCURACY
   );
 
+  console.log(
+    "shouldFetchObservationLocation",
+    isNew( observation ),
+    hasLocation,
+    isFromCamera( observation ),
+    accGoodEnough
+  );
+
   return observation
     && isNew( observation )
     && ( !hasLocation || ( isFromCamera( observation ) && !accGoodEnough ) )
