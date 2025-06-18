@@ -11,7 +11,7 @@ const TaxonSearchButton = ( ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
-  const { entryScreen } = params;
+  const { entryScreen, lastScreen } = params;
 
   return (
     <INatIconButton
@@ -19,7 +19,12 @@ const TaxonSearchButton = ( ) => {
       onPress={
         ( ) => navigation.navigate(
           "SuggestionsTaxonSearch",
-          { entryScreen, lastScreen: "Suggestions" }
+          {
+            entryScreen,
+            lastScreen: lastScreen === "ObsDetails"
+              ? "ObsDetails"
+              : "Suggestions"
+          }
         )
       }
       accessibilityLabel={t( "Search" )}
