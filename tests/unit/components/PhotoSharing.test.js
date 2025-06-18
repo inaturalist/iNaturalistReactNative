@@ -94,12 +94,6 @@ const expectNavigationReset = ( mockDispatch, screenName, lastScreen = "PhotoSha
   );
 };
 
-const expectGroupPhotosNavigation = ( mockNavigate, mockSetPhotoImporterState, expectedState ) => {
-  expect( mockSetPhotoImporterState ).toHaveBeenCalledWith( expectedState );
-  expect( mockNavigate )
-    .toHaveBeenCalledWith( "NoBottomTabStackNavigator", { screen: "GroupPhotos" } );
-};
-
 describe( "PhotoSharing", ( ) => {
   beforeEach( ( ) => {
     jest.clearAllMocks( );
@@ -228,7 +222,7 @@ describe( "PhotoSharing", ( ) => {
       renderComponent( <PhotoSharing /> );
 
       await waitFor( ( ) => {
-        expectGroupPhotosNavigation( mocks.navigate, mocks.setPhotoImporterState, {
+        expect( mocks.setPhotoImporterState ).toHaveBeenCalledWith( {
           photoLibraryUris: ["file://photo1.jpg", "file://photo2.jpg"],
           groupedPhotos: [
             { photos: [{ image: { uri: "file://photo1.jpg" } }] },
@@ -236,8 +230,9 @@ describe( "PhotoSharing", ( ) => {
           ],
           firstObservationDefaults: { description: "Multiple photos" }
         } );
-        expect( Observation.createObservationWithPhotos ).not.toHaveBeenCalled( );
       } );
+      expectNavigationReset( mocks.dispatch, "GroupPhotos" );
+      expect( Observation.createObservationWithPhotos ).not.toHaveBeenCalled( );
     } );
 
     it( "should navigate to GroupPhotos for multiple photos on Android", async ( ) => {
@@ -255,7 +250,7 @@ describe( "PhotoSharing", ( ) => {
       renderComponent( <PhotoSharing /> );
 
       await waitFor( ( ) => {
-        expectGroupPhotosNavigation( mocks.navigate, mocks.setPhotoImporterState, {
+        expect( mocks.setPhotoImporterState ).toHaveBeenCalledWith( {
           photoLibraryUris: ["file://photo1.jpg", "file://photo2.jpg"],
           groupedPhotos: [
             { photos: [{ image: { uri: "file://photo1.jpg" } }] },
@@ -263,8 +258,9 @@ describe( "PhotoSharing", ( ) => {
           ],
           firstObservationDefaults: { description: "Multiple photos" }
         } );
-        expect( Observation.createObservationWithPhotos ).not.toHaveBeenCalled( );
       } );
+      expectNavigationReset( mocks.dispatch, "GroupPhotos" );
+      expect( Observation.createObservationWithPhotos ).not.toHaveBeenCalled( );
     } );
 
     it( "should filter out non-image files on iOS", async ( ) => {
@@ -294,6 +290,8 @@ describe( "PhotoSharing", ( ) => {
   describe( "Back navigation", ( ) => {
     it( "should handle expected behavior for blur/focus navigation", async ( ) => {
       const mocks = setupMocks( );
+      const testItem = mockIOSPhoto;
+      const testRoute = createMockRoute( testItem );
       let blurCallback;
       let focusCallback;
 
@@ -303,12 +301,24 @@ describe( "PhotoSharing", ( ) => {
         return ( ) => {};
       } );
 
-      mockUseRoute.mockReturnValue( createMockRoute( mockIOSPhoto ) );
+      mockUseRoute.mockReturnValue( testRoute );
 
       renderComponent( <PhotoSharing /> );
+
+      // first time on screen
+      act( ( ) => {
+        focusCallback( );
+      } );
+
+      // navigate forward in the direction of ObsEdit
       act( ( ) => {
         blurCallback( );
       } );
+
+      // same item -- simulate user coming back to this screen by backing out
+      mockUseRoute.mockReturnValue( testRoute );
+
+      // return to PhotoSharing screen
       act( ( ) => {
         focusCallback( );
       } );
