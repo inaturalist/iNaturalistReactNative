@@ -60,20 +60,20 @@ const createLayoutSlice = set => ( {
       }
     } ) ),
     // State to control pivot cards and other onboarding material being shown only once
-    onboardingShownOnce: {},
-    setOnboardingShownOnce: ( key: string ) => set( state => ( {
+    shownOnce: {},
+    setShownOnce: ( key: string ) => set( state => ( {
       layout: {
         ...state.layout,
-        onboardingShownOnce: {
-          ...state.layout.onboardingShownOnce,
+        shownOnce: {
+          ...state.layout.shownOnce,
           [key]: true
         }
       }
     } ) ),
-    resetOnboardingShownOnce: () => set( state => ( {
+    resetShownOnce: () => set( state => ( {
       layout: {
         ...state.layout,
-        onboardingShownOnce: {}
+        shownOnce: {}
       }
     } ) ),
     // State to control login/signup banner being only shown once until dismissed by user

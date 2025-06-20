@@ -17,7 +17,7 @@ import useStore from "stores/useStore";
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
 const Buttons = ( ) => {
-  const resetShownOnce = useStore( state => state.layout.resetOnboardingShownOnce );
+  const resetShownOnce = useStore( state => state.layout.resetShownOnce );
   const [modalIndex, setModalIndex] = useState( -1 );
 
   const setShowingModal = index => {
