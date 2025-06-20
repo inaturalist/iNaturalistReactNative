@@ -98,6 +98,8 @@ All-taxa = All taxa
 # Title in explore filters
 ALL-USERS-EXCEPT = ALL USERS EXCEPT
 ALLOW-LOCATION-ACCESS = ALLOW LOCATION ACCESS
+# Button asking if user has an existing iNaturalist account
+Already-have-an-iNaturalist-account = Already have an iNaturalist account?
 An-Internet-connection-is-required = An Internet connection is required to load more observations.
 # Message shown to the user after they have left the AI camera where they may
 # have seen a species suggestion but before they land on the match screen,

@@ -30,12 +30,12 @@ interface Props {
   cameraScreen: "standard" | "ai",
   debugFormat: CameraDeviceFormat | undefined,
   device: CameraDevice,
-  frameProcessor?: Function,
+  frameProcessor?: () => void,
   onCameraError: ( error: CameraRuntimeError ) => void,
   onCaptureError: ( error: CameraRuntimeError ) => void,
   onClassifierError: ( error: CameraRuntimeError ) => void,
   onDeviceNotSupported: ( error: CameraRuntimeError ) => void,
-  pinchToZoom?: Function,
+  pinchToZoom?: () => void,
   resizeMode?: "cover" | "contain",
   inactive?: boolean
 }
