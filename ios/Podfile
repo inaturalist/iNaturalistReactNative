@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Disable New Architecture
+ENV['RCT_NEW_ARCH_ENABLED'] = '0'
+
 # setup instructions from https://www.npmjs.com/package/react-native-permissions
 def node_require( script )
   # Resolve script with node to allow for hoisting
