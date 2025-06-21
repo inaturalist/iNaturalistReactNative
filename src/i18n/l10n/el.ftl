@@ -598,6 +598,7 @@ POTENTIAL-DISAGREEMENT = ΠΙΘΑΝΉ ΔΙΑΦΩΝΊΑ
 Potential-disagreement-description = <0>Αρκούν τα στοιχεία για να επιβεβαιωθεί αυτό </0><1></1><0>?<0></0>
 Potential-disagreement-disagree = <0>Όχι, αλλά αυτό είναι μέλος του </0><1></1>
 Potential-disagreement-unsure = <0>Δεν ξέρω, αλλά είμαι σίγουρος ότι αυτό είναι </0><1></1>
+Press-and-hold-to-view-more-options = Press and hold to view more options
 Previous-observation = Προηγούμενη παρατήρηση
 Previous-slide = Προηγούμενη διαφάνεια
 Privacy-Policy = Πολιτική ιδιωτικού απορρήτου

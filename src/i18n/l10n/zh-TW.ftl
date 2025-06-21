@@ -598,6 +598,7 @@ POTENTIAL-DISAGREEMENT = 潛在的分歧點
 Potential-disagreement-description = <0>此證據足夠證明是</0><1></1><0>嗎？<0>
 Potential-disagreement-disagree = <0>否，但這屬於</0><1></1>的成員
 Potential-disagreement-unsure = <0>我不清楚，但我確定這是</0><1></1>
+Press-and-hold-to-view-more-options = Press and hold to view more options
 Previous-observation = 前一筆觀察紀錄
 Previous-slide = 前一頁
 Privacy-Policy = 隱私政策
