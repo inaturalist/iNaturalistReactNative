@@ -604,6 +604,7 @@ POTENTIAL-DISAGREEMENT = MÖJLIG OENIGHET
 Potential-disagreement-description = <0>Är stödet tillräckligt för att bekräfta att detta är </0><1></1><0>?<0>
 Potential-disagreement-disagree = <0>Nej, men detta är en medlem av </0><1></1>
 Potential-disagreement-unsure = <0>Jag vet inte men jag är säker på att detta är </0><1></1>
+Press-and-hold-to-view-more-options = Press and hold to view more options
 Previous-observation = Föregående fynd
 Previous-slide = Föregående bild
 Privacy-Policy = Integritetspolicy

@@ -548,6 +548,7 @@
   "Potential-disagreement-description": "<0>Soll der Bestimmung </0><1></1><0>widersprochen werden?<0>",
   "Potential-disagreement-disagree": "<0>Widerspruch (</0><1></1> <0>ist als ID aber möglich)</0>",
   "Potential-disagreement-unsure": "<0>kein Veto, aber</0> <1></1> <0>traue ich mir als Bestimmung zu</0>",
+  "Press-and-hold-to-view-more-options": "Press and hold to view more options",
   "Previous-observation": "Vorherige Beobachtung",
   "Previous-slide": "Vorherige Seite",
   "Privacy-Policy": "Datenschutzerklärung",
