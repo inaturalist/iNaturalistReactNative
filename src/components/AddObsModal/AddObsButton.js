@@ -31,11 +31,19 @@ const AddObsButton = ( ): React.Node => {
   const numOfUserObservations = zustandStorage.getItem( "numOfUserObservations" );
   // Only show the tooltip if the user has only AI camera as an option in this button.
   // Only show the tooltip on MyObservations screen.
+  // If logged out, user should see the tooltip after making their second observation
+  const loggedOutTriggerCondition = numOfUserObservations > 1;
+  // If a user logs in to an existing account with <=50 observations,
+  // they should see the tooltip right after landing on My Obs after signing in
+  const loggedInTriggerCondition = numOfUserObservations <= 50;
+  // TODO: If a user logs in to an existing account with >50 observations, they should
+  // see the tooltip right after dismissing the "Welcome back!" pivot card
+  // and landing on My Obs.
   const triggerCondition = !isAllAddObsOptionsMode
     && currentRoute?.name === "ObsList"
-    // If logged out, user should see the tooltip after making their second observation
-    && !currentUser
-    && numOfUserObservations > 1;
+    && ( !currentUser
+      ? loggedOutTriggerCondition
+      : loggedInTriggerCondition );
 
   // The tooltip should only appear once per app download.
   const tooltipIsVisible = !shownOnce[showKey] && triggerCondition;
