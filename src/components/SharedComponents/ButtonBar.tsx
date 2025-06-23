@@ -9,17 +9,17 @@ const DROP_SHADOW = getShadow( {
 } );
 
 interface ButtonConfiguration {
-  title: string,
-  onPress: ( ) => void,
-  isPrimary: boolean,
-  className?: string
+  title: string;
+  onPress: ( ) => void;
+  isPrimary: boolean;
+  className?: string;
 }
 
 interface Props extends PropsWithChildren {
-  containerClass?: string,
-  onLayout?: () => void,
-  sticky?: boolean,
-  buttonConfiguration?: Array<ButtonConfiguration>
+  containerClass?: string;
+  onLayout?: () => void;
+  sticky?: boolean;
+  buttonConfiguration?: Array<ButtonConfiguration>;
 }
 
 // Ensure this component is placed outside of scroll views
