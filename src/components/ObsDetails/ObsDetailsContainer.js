@@ -452,6 +452,7 @@ const ObsDetailsContainer = ( ): Node => {
     if ( showPotentialDisagreementSheet ) return;
     if ( showSuggestIdSheet ) return;
     if ( identBodySheetShown ) return;
+    if ( !observation?.taxon ) return;
     let observationTaxon = observation.taxon;
     if (
       observation.prefers_community_taxon === false
