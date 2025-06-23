@@ -45,17 +45,19 @@ const NotificationsContainer = ( {
 
   useEffect( ( ) => {
     navigation.addListener( "focus", ( ) => {
-      if ( isConnected ) {
+      if ( isConnected && currentUser ) {
         refetch();
       }
     } );
-  }, [isConnected, navigation, refetch] );
+  }, [isConnected, currentUser, navigation, refetch] );
 
   const onRefresh = async () => {
-    setRefreshing( true );
-    await refetch();
-    if ( typeof ( onRefreshProp ) === "function" ) onRefreshProp( );
-    setRefreshing( false );
+    if ( currentUser ) {
+      setRefreshing( true );
+      await refetch();
+      if ( typeof ( onRefreshProp ) === "function" ) onRefreshProp( );
+      setRefreshing( false );
+    }
   };
 
   return (
