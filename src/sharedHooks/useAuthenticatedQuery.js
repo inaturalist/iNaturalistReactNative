@@ -16,17 +16,19 @@ const useAuthenticatedQuery = (
   const [userLoggedIn, setUserLoggedIn] = useState( LOGGED_IN_UNKNOWN );
   const route = useSafeRoute( );
 
-  // Whether we perform this query and whether we need to re-perform it
-  // depends on whether the user is signed in. The possible vulnerability
-  // here is that this effect might not run frequently enough to change when
-  // a user signs in or out. The reason we're not using useCurrentUser is it
-  // doesn't tell us whether we know the user's auth state yet, it only
-  // returns null when we don't know OR the user is signed out.
   useEffect( ( ) => {
-    isLoggedIn()
-      .then( result => setUserLoggedIn( result ) )
-      .catch( ( ) => setUserLoggedIn( LOGGED_IN_UNKNOWN ) );
-  }, [queryKey, queryOptions] );
+    const checkAuth = async ( ) => {
+      try {
+        const result = await isLoggedIn( );
+        setUserLoggedIn( result );
+      } catch ( error ) {
+        console.warn( "Auth check failed:", error );
+        setUserLoggedIn( false );
+      }
+    };
+
+    checkAuth( );
+  }, [] );
 
   // The results will probably be different depending on whether the user is
   // signed in or we wouldn't be using useAuthenticatedQuery in the first

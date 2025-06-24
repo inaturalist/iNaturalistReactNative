@@ -26,7 +26,6 @@ export default function setupUniqueRealm( realmIdentifier ) {
   const uniqueRealmBeforeAll = async ( ) => {
     global.mockRealms = global.mockRealms || {};
     global.mockRealms[realmIdentifier] = await Realm.open( mockRealmConfig );
-    // useStore.setState( initialStoreState, true );
   };
 
   // Ensure the realm connection gets closed

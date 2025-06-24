@@ -1,0 +1,9 @@
+FIXED
+* Sharing photos into the app
+* Show green checkmark when going back to multicapture camera
+* Display Discard Photos modal when pressing back button in multicapture camera
+* Bottom tabs navigate to root screens, not last screen in the stack
+
+UPDATED
+* Speed up list scrolling and data fetching on MyObservations
+* Update to use React Native 0.74 (Security and performance improvements)

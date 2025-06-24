@@ -598,6 +598,7 @@ POTENTIAL-DISAGREEMENT = POTENCIAL DESACORDO
 Potential-disagreement-description = <0>A evidência é suficiente para confirmar que esta é </0><1></1><0>?<0>
 Potential-disagreement-disagree = <0>Não, mas este é um membro de </0><1></1>
 Potential-disagreement-unsure = <0>Eu não sei, mas tenho certeza que isto é </0><1></1>
+Press-and-hold-to-view-more-options = Press and hold to view more options
 Previous-observation = Observação anterior
 Previous-slide = Anterior
 Privacy-Policy = Política de Privacidade

@@ -15,6 +15,7 @@ import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderAppWithObservations } from "tests/helpers/render";
+import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
 
@@ -124,10 +125,8 @@ beforeAll( async () => {
 } );
 
 beforeEach( async () => {
-  useStore.setState( {
-    layout: {
-      isDefaultMode: false
-    }
+  setStoreStateLayout( {
+    isDefaultMode: false
   } );
 } );
 
@@ -275,12 +274,10 @@ describe( "Suggestions", ( ) => {
   describe( "when reached from AI Camera directly", ( ) => {
     beforeEach( async ( ) => {
       await signIn( mockUser, { realm: global.mockRealms[__filename] } );
-      useStore.setState( {
-        layout: {
-          isDefaultMode: false,
-          screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
-          isAllAddObsOptionsMode: true
-        }
+      setStoreStateLayout( {
+        isDefaultMode: false,
+        screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
+        isAllAddObsOptionsMode: true
       } );
       inatjs.computervision.score_image
         .mockResolvedValue( makeResponse( [topSuggestion] ) );

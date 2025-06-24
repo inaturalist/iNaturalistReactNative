@@ -10,7 +10,7 @@ import UiLibraryItem from "components/Developer/UiLibraryItem";
 import Donate from "components/Donate/Donate.tsx";
 import ExploreContainer from "components/Explore/ExploreContainer";
 import RootExploreContainer from "components/Explore/RootExploreContainer";
-import ExploreLocationSearch from "components/Explore/SearchScreens/ExploreLocationSearch";
+import ExploreLocationSearch from "components/Explore/SearchScreens/ExploreLocationSearch.tsx";
 import ExploreProjectSearch from "components/Explore/SearchScreens/ExploreProjectSearch.tsx";
 import ExploreTaxonSearch from "components/Explore/SearchScreens/ExploreTaxonSearch";
 import ExploreUserSearch from "components/Explore/SearchScreens/ExploreUserSearch";
@@ -43,7 +43,7 @@ import {
   removeBottomBorder,
   showHeader,
   showLongHeader
-} from "navigation/navigationOptions";
+} from "navigation/navigationOptions.tsx";
 import type { Node } from "react";
 import React from "react";
 import {

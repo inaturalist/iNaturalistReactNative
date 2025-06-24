@@ -31,6 +31,10 @@ node_modules/react-native/Libraries/polyfills/.*
 .*/node_modules/hermes-estree/dist/generated/predicates.js.flow
 .*/node_modules/react-native/Libraries/StyleSheet/StyleSheetTypes.js
 .*/node_modules/react-native/Libraries/Types/ReactDevToolsTypes.js
+.*/node_modules/react-native/Libraries/Components/View/ViewNativeComponent.js
+.*/node_modules/hermes-estree/dist/predicates.js.flow
+.*/node_modules/react-native/Libraries/Renderer/shims/ReactNativeTypes.js
+.*/node_modules/react-native/Libraries/Text/TextNativeComponent.js
 
 [untyped]
 .*/node_modules/@react-native-community/cli/.*/.*

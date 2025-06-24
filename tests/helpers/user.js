@@ -5,7 +5,7 @@
 // tests finish
 // eslint-disable-next-line testing-library/no-manual-cleanup
 import { cleanup } from "@testing-library/react-native";
-import { API_HOST } from "components/LoginSignUp/AuthenticationService.ts";
+import { API_HOST, clearAuthCache } from "components/LoginSignUp/AuthenticationService.ts";
 import { getInatLocaleFromSystemLocale } from "i18n/initI18next";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
@@ -36,6 +36,7 @@ async function signOut( options = {} ) {
   await RNSInfo.deleteItem( "jwtToken" );
   await RNSInfo.deleteItem( "jwtGeneratedAt" );
   await RNSInfo.deleteItem( "accessToken" );
+  clearAuthCache( );
   inatjs.users.me.mockClear( );
 }
 
@@ -45,6 +46,7 @@ async function signIn( user, options = {} ) {
   await RNSInfo.setItem( "jwtToken", TEST_JWT );
   await RNSInfo.setItem( "jwtGeneratedAt", Date.now( ).toString( ), {} );
   await RNSInfo.setItem( "accessToken", TEST_ACCESS_TOKEN );
+  clearAuthCache( );
   inatjs.users.me.mockResolvedValue( makeResponse( [user] ) );
   user.signedIn = true;
   safeRealmWrite( realm, ( ) => {
