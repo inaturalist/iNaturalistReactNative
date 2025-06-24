@@ -548,6 +548,7 @@
   "Potential-disagreement-description": "<0>La preuve est-elle suffisante pour confirmer qu'il s'agit de </0><1></1><0> ?<0>",
   "Potential-disagreement-disagree": "<0>Non, mais c'est un membre de :</0><1></1>",
   "Potential-disagreement-unsure": "<0>Je ne sais pas, mais je suis sûr qu'il s'agit de </0><1></1>",
+  "Press-and-hold-to-view-more-options": "Press and hold to view more options",
   "Previous-observation": "Observation précédente",
   "Previous-slide": "Diapo précédente",
   "Privacy-Policy": "Politique de confidentialité",

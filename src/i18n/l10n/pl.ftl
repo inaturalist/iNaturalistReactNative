@@ -603,6 +603,7 @@ POTENTIAL-DISAGREEMENT = POTENCJALNA RÓŻNICA ZDAŃ
 Potential-disagreement-description = <0>Czy dowody są wystarczające, aby potwierdzić, że to </0><1></1><0>?<0>
 Potential-disagreement-disagree = <0>Nie, ale należy do </0><1></1>
 Potential-disagreement-unsure = <0>Nie wiem, ale jestem pewien, że jest to </0><1></1>
+Press-and-hold-to-view-more-options = Press and hold to view more options
 Previous-observation = Poprzednia obserwacja
 Previous-slide = Poprzedni slajd
 Privacy-Policy = Polityka prywatności
