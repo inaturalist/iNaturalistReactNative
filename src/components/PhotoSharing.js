@@ -4,13 +4,16 @@ import { CommonActions, useNavigation, useRoute } from "@react-navigation/native
 import { ActivityAnimation, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  useCallback, useEffect, useRef, useState
+} from "react";
 import { Alert, Platform } from "react-native";
 import Observation from "realmModels/Observation";
 import { useLayoutPrefs } from "sharedHooks";
 import useStore from "stores/useStore";
 
 const PhotoSharing = ( ): Node => {
+  const previousItem = useRef( null );
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { item } = params;
@@ -21,55 +24,35 @@ const PhotoSharing = ( ): Node => {
   const { screenAfterPhotoEvidence, isDefaultMode } = useLayoutPrefs();
   const [navigationHandled, setNavigationHandled] = useState( null );
 
+  const resetNavigator = useCallback( screen => navigation.dispatch(
+    CommonActions.reset( {
+      index: 0,
+      routes: [
+        {
+          name: "NoBottomTabStackNavigator",
+          state: {
+            index: 0,
+            routes: [
+              {
+                name: screen,
+                params: { lastScreen: "PhotoSharing" }
+              }
+            ]
+          }
+        }
+      ]
+    } )
+  ), [navigation] );
+
   const createObservationAndNavigate = useCallback( async photoUris => {
     try {
       const newObservation = await Observation.createObservationWithPhotos( photoUris );
       newObservation.description = sharedText;
       prepareObsEdit( newObservation );
 
-      if ( isDefaultMode ) {
-        return navigation.dispatch(
-          CommonActions.reset( {
-            index: 0,
-            routes: [
-              {
-                name: "NoBottomTabStackNavigator",
-                state: {
-                  index: 0,
-                  routes: [
-                    {
-                      name: "Match",
-                      params: { lastScreen: "PhotoSharing" }
-                    }
-                  ]
-                }
-              }
-            ]
-          } )
-        );
-      }
-
-      // in advanced mode, navigate based on user preference
-
-      return navigation.dispatch(
-        CommonActions.reset( {
-          index: 0,
-          routes: [
-            {
-              name: "NoBottomTabStackNavigator",
-              state: {
-                index: 0,
-                routes: [
-                  {
-                    name: screenAfterPhotoEvidence,
-                    params: { lastScreen: "PhotoSharing" }
-                  }
-                ]
-              }
-            }
-          ]
-        } )
-      );
+      return resetNavigator( isDefaultMode
+        ? "Match"
+        : screenAfterPhotoEvidence );
     } catch ( e ) {
       Alert.alert(
         "Photo sharing failed: couldn't create new observation:",
@@ -77,7 +60,7 @@ const PhotoSharing = ( ): Node => {
       );
       return null;
     }
-  }, [sharedText, prepareObsEdit, isDefaultMode, navigation, screenAfterPhotoEvidence] );
+  }, [sharedText, prepareObsEdit, isDefaultMode, resetNavigator, screenAfterPhotoEvidence] );
 
   useEffect( ( ) => {
     const { mimeType, data } = item;
@@ -123,7 +106,7 @@ const PhotoSharing = ( ): Node => {
         } ) ),
         firstObservationDefaults
       } );
-      navigation.navigate( "NoBottomTabStackNavigator", { screen: "GroupPhotos" } );
+      resetNavigator( "GroupPhotos" );
     }
   }, [
     createObservationAndNavigate,
@@ -131,7 +114,8 @@ const PhotoSharing = ( ): Node => {
     navigation,
     resetObservationFlowSlice,
     setPhotoImporterState,
-    sharedText
+    sharedText,
+    resetNavigator
   ] );
 
   // When the user leaves this screen, we record the fact that navigation was handled...
@@ -141,17 +125,27 @@ const PhotoSharing = ( ): Node => {
     } );
     return unsubscribe;
   }, [navigation] );
+
   // ...and if they focus on this screen again, that means they backed out of
   // obs edit and need to back to the previous screen in the nav
-  useEffect( ( ) => {
-    const unsubscribe = navigation.addListener( "focus", ( ) => {
-      if ( navigationHandled ) navigation.goBack( );
+  useEffect( () => {
+    const unsubscribe = navigation.addListener( "focus", () => {
+      const isNewShare = item !== previousItem.current;
+
+      // don't navigate backwards if there are new items shared, otherwise
+      // we end up back on the home screen without the user ever seeing their shared items
+      if ( isNewShare ) {
+        setNavigationHandled( false );
+        previousItem.current = item;
+        return;
+      }
+
+      if ( navigationHandled ) {
+        navigation.goBack( );
+      }
     } );
     return unsubscribe;
-  }, [
-    navigation,
-    navigationHandled
-  ] );
+  }, [navigation, navigationHandled, item] );
 
   return (
     <ViewWrapper testID="PhotoSharing">
