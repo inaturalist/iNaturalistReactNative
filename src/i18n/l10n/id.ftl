@@ -598,6 +598,7 @@ POTENTIAL-DISAGREEMENT = POTENSI KETIDAKSETUJUAN
 Potential-disagreement-description = <0>Apakah buktinya cukup untuk mengonfirmasi bahwa ini </0><1></1><0>?<0>
 Potential-disagreement-disagree = <0>Tidak, tapi itu adalah anggota dari </0><1></1>
 Potential-disagreement-unsure = <0>Saya kurang yakin tapi saya yakin ini </0><1></1>
+Press-and-hold-to-view-more-options = Tekan dan tahan untuk melihat pilihan lainnya
 Previous-observation = Pengamatan sebelumnya
 Previous-slide = Slide sebelumnya
 Privacy-Policy = Kebijakan Privasi

@@ -598,6 +598,7 @@ POTENTIAL-DISAGREEMENT = OLASI UYUŞMAZLIK
 Potential-disagreement-description = <0>Kanıt bunun </0><1></1><0> olduğunu doğrulamak için yeterli mi?<0>
 Potential-disagreement-disagree = <0>Hayır ama bu bir </0><1></1> üyesi
 Potential-disagreement-unsure = <0>Bilmiyorum ama </0><1></1> olduğuna eminim
+Press-and-hold-to-view-more-options = Daha çok seçenek görüntülemek için basılı tutun
 Previous-observation = Önceki gözlem
 Previous-slide = Önceki
 Privacy-Policy = Gizlilik Politikası

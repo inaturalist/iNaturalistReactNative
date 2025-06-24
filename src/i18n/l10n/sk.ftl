@@ -598,6 +598,7 @@ POTENTIAL-DISAGREEMENT = POTENCIÁLNE NESHODY
 Potential-disagreement-description = <0>Stačia dôkazy na potvrdenie, že je to </0><1></1><0>?<0>
 Potential-disagreement-disagree = <0>Nie, ale toto je členom </0><1></1>
 Potential-disagreement-unsure = <0>Neviem, ale som si istý, že je to </0><1></1>
+Press-and-hold-to-view-more-options = Press and hold to view more options
 Previous-observation = Predchádzajúce pozorovania
 Previous-slide = Predchádzajúca snímka
 Privacy-Policy = Zásady ochrany osobných údajov
