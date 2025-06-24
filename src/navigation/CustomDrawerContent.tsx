@@ -40,7 +40,7 @@ function isDefaultMode( ) {
 
 const createDrawerStyle = ( isDark: boolean ) => ( {
   backgroundColor: isDark
-    ? colors.darkGray
+    ? colors.darkModeGray
     : "white",
   borderTopRightRadius: 20,
   borderBottomRightRadius: 20,
@@ -63,12 +63,14 @@ function showOfflineAlert( t ) {
 const CustomDrawerContent = ( {
   state, navigation, descriptors, colorScheme
 }: Props ) => {
-  const drawerScrollViewStyle = createDrawerStyle( colorScheme === "dark" );
+  const isDebug = zustandStorage.getItem( "debugMode" ) === "true";
+  const isDarkMode = colorScheme === "dark" && isDebug;
+  const drawerScrollViewStyle = createDrawerStyle( isDarkMode );
   const realm = useRealm( );
   const queryClient = useQueryClient( );
   const currentUser = useCurrentUser( );
   const { t } = useTranslation( );
-  const isDebug = zustandStorage.getItem( "debugMode" ) === "true";
+
   const { isConnected } = useNetInfo( );
 
   const [showConfirm, setShowConfirm] = useState( false );
@@ -180,17 +182,20 @@ const CustomDrawerContent = ( {
     <INatIcon
       name={drawerItems[key].icon}
       size={22}
-      color={colorScheme === "dark"
+      color={isDarkMode
         ? colors.white
         : drawerItems[key].color}
     />
-  ), [drawerItems, colorScheme] );
+  ), [drawerItems, isDarkMode] );
 
   const renderLabel = useCallback( ( label: string ) => (
-    <Heading4 className="dark:text-white">
+    <Heading4 className={classnames(
+      isDarkMode && "dark:text-white"
+    )}
+    >
       {label}
     </Heading4>
-  ), [] );
+  ), [isDarkMode] );
 
   const renderTopBanner = useCallback( ( ) => (
     <Pressable
@@ -235,7 +240,10 @@ const CustomDrawerContent = ( {
           />
         ) }
       <View className="ml-3 justify-center">
-        <Body1 className="dark:text-white">
+        <Body1 className={classnames(
+          isDarkMode && "dark:text-white"
+        )}
+        >
           {currentUser
             ? currentUser?.login
             : t( "Log-in-to-iNaturalist" )}
@@ -247,7 +255,7 @@ const CustomDrawerContent = ( {
         )}
       </View>
     </Pressable>
-  ), [currentUser, navigation, t] );
+  ), [currentUser, navigation, t, isDarkMode] );
 
   const renderDrawerItem = useCallback( ( key: string ) => (
     <View
