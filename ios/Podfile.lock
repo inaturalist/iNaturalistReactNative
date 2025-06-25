@@ -1850,7 +1850,7 @@ PODS:
     - React
   - RNStoreReview (0.4.3):
     - React-Core
-  - RNSVG (15.1.0):
+  - RNSVG (15.8.0):
     - React-Core
   - RNVectorIcons (10.2.0):
     - DoubleConversion
@@ -2343,7 +2343,7 @@ SPEC CHECKSUMS:
   RNScreens: 4a5ab20b324ed1e3fe3862796b8f8e0a6208c415
   RNShareMenu: e1cdfa3b9af89416afc75a80377cfd0de4f30ded
   RNStoreReview: 613c43e9132998ed41a65946e20c223c91b36464
-  RNSVG: a31e321979e3001f56ba9331d10ac917f8ad1851
+  RNSVG: 8542aa11770b27563714bbd8494a8436385fc85f
   RNVectorIcons: 182892e7d1a2f27b52d3c627eca5d2665a22ee28
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   VisionCamera: 25a205cf335599192d84171d0925d5bd45433608
