@@ -69,7 +69,7 @@ export interface Props {
   toggleLayout: ( ) => void;
   fetchMoreTaxa: ( ) => void;
   isFetchingTaxa?: boolean;
-  justFinishedSignup?: boolean;
+  justFinishedSignup: boolean;
   loggedInWhileInDefaultMode?: boolean;
   refetchTaxa: ( ) => void;
 }
@@ -109,7 +109,7 @@ const MyObservationsSimple = ( {
   toggleLayout,
   fetchMoreTaxa,
   isFetchingTaxa,
-  justFinishedSignup = false,
+  justFinishedSignup,
   loggedInWhileInDefaultMode = false,
   refetchTaxa
 }: Props ) => {
