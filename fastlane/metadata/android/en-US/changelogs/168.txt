@@ -1,0 +1,11 @@
+NEW
+* A tooltip to find the obs wheel with all observation options
+* A dismissable banner that opens login/signup
+
+FIXED
+* Tapping iconic taxon was setting wrong taxon filter
+* Hide "IGNORE LOCATION" button when evidence does not have a location
+* Do not fetch notifictions when the user is not logged in
+* Crash on some projects
+* Crash on giving ID from Explore
+* Sharing into app with multiple photos
