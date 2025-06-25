@@ -452,13 +452,13 @@ const ObsDetailsContainer = ( ): Node => {
     if ( showPotentialDisagreementSheet ) return;
     if ( showSuggestIdSheet ) return;
     if ( identBodySheetShown ) return;
-    let observationTaxon = observation.taxon;
+    let observationTaxon = observation?.taxon;
     if (
-      observation.prefers_community_taxon === false
-      || ( observation.user?.prefers_community_taxa === false
-      && observation.prefers_community_taxon === null )
+      observation?.prefers_community_taxon === false
+      || ( observation?.user?.prefers_community_taxa === false
+      && observation?.prefers_community_taxon === null )
     ) {
-      observationTaxon = observation.community_taxon || observation.taxon;
+      observationTaxon = observation?.community_taxon || observation?.taxon;
     }
     dispatch( {
       type: SET_NEW_IDENTIFICATION,

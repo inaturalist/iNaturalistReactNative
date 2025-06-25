@@ -75,6 +75,14 @@ const createLayoutSlice = set => ( {
         ...state.layout,
         shownOnce: {}
       }
+    } ) ),
+    // State to control login/signup banner being only shown once until dismissed by user
+    loginBannerDismissed: false,
+    setLoginBannerDismissed: () => set( state => ( {
+      layout: {
+        ...state.layout,
+        loginBannerDismissed: true
+      }
     } ) )
   }
 } );
