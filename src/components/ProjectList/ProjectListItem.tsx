@@ -6,7 +6,7 @@ import {
   INatIcon,
   List2
 } from "components/SharedComponents";
-import { Image, View } from "components/styledComponents";
+import { FasterImageView, View } from "components/styledComponents";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
@@ -55,12 +55,16 @@ const ProjectListItem = ( { item, isHeader = false }: Props ) => {
       );
     }
     return (
-      <Image
+      <FasterImageView
         className={
           classnames( iconClassName )
         }
-        source={{ uri: productionIcon }}
-        testID={`Project.${item.id}.photo`}
+        source={{
+          url: productionIcon,
+          cachePolicy: "discWithCacheControl",
+          resizeMode: "cover"
+        }}
+        testID={`Project.${item?.id}.photo`}
         accessibilityIgnoresInvertColors
       />
     );
