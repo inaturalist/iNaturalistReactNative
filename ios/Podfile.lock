@@ -1321,7 +1321,7 @@ PODS:
     - React-Core
   - react-native-image-resizer (3.0.11):
     - React-Core
-  - react-native-keep-awake (1.2.3):
+  - react-native-keep-awake (1.3.1):
     - React-Core
   - react-native-mail (6.1.1):
     - React-Core
@@ -2302,7 +2302,7 @@ SPEC CHECKSUMS:
   react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
   react-native-image-picker: b64848e41db57068721d5db3cea54e32ecb92791
   react-native-image-resizer: 24c5d06fae2176dc0caed4b6396e02befb44064a
-  react-native-keep-awake: 3c347cbcb834e5ce4b5717e9e2734b374f6fd70f
+  react-native-keep-awake: 03b74eebe4f2bb5e8478fc8f420651a92463b6f8
   react-native-mail: 6e83813066984b26403d3fdfe79ac7bb31857e3c
   react-native-maps: 85da55259d35bd50b5161d2ec0ee153d454158cc
   react-native-mmkv: f84bf6f48c906911695f9cd16d39d4fb78fcd5a4
