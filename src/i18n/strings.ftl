@@ -57,7 +57,6 @@ ADD-EVIDENCE = ADD EVIDENCE
 Add-evidence = Add evidence
 Add-favorite = Add favorite
 Add-Location = Add Location
-Add-location-for-better-identifications = Add location for better identifications
 ADD-LOCATION-FOR-BETTER-IDS = ADD LOCATION FOR BETTER IDS
 # Accessibility hint for adding a location to a new obseration in the Match screen new user flow
 Add-location-to-refresh-suggestions = Add location to refresh suggestions
