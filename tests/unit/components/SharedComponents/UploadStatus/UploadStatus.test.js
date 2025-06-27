@@ -10,7 +10,6 @@ beforeAll( ( ) => {
 
 jest.mock( "react-native-circular-progress-indicator", () => "CircularProgress" );
 
-jest.mock( "react-native/Libraries/Animated/NativeAnimatedHelper" );
 describe( "UploadStatus", () => {
   it( "displays start icon when upload is unsynced and not queued", async () => {
     render( <UploadStatus progress={0} queued={false} /> );
