@@ -1,7 +1,7 @@
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
-import { useFocusEffect, useRoute } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { fetchSpeciesCounts } from "api/observations";
 import { RealmContext } from "providers/contexts.ts";
 import React, {
@@ -45,10 +45,6 @@ interface SpeciesCount {
   taxon: RealmTaxon
 }
 
-interface RouteParams {
-  justFinishedSignup?: boolean;
-}
-
 interface SyncOptions {
   unuploadedObsMissingBasicsIDs?: string[];
   skipUploads?: boolean;
@@ -59,12 +55,9 @@ const MyObservationsContainer = ( ): React.FC => {
   const { isDefaultMode, loggedInWhileInDefaultMode } = useLayoutPrefs();
   const { t } = useTranslation( );
   const realm = useRealm( );
+  const navigation = useNavigation( );
   const listRef = useRef( null );
   const navigateToObsEdit = useNavigateToObsEdit( );
-
-  // Get navigation params
-  const { params } = useRoute( );
-  const { justFinishedSignup } = ( params as RouteParams ) || {};
 
   const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
   const uploadQueue = useStore( state => state.uploadQueue );
@@ -77,6 +70,15 @@ const MyObservationsContainer = ( ): React.FC => {
   const myObsOffsetToRestore = useStore( state => state.myObsOffsetToRestore );
   const setMyObsOffset = useStore( state => state.setMyObsOffset );
   const uploadStatus = useStore( state => state.uploadStatus );
+  const justFinishedSignup: boolean = useStore( state => state.layout.justFinishedSignup );
+  // As soon as we leave this screen, the user is no longer considered as just finished signup
+  const setJustFinishedSignup = useStore( state => state.layout.setJustFinishedSignup );
+  useEffect( ( ) => {
+    const unsubscribe = navigation.addListener( "blur", ( ) => {
+      setJustFinishedSignup( false );
+    } );
+    return unsubscribe;
+  }, [navigation, setJustFinishedSignup] );
 
   const {
     observationList: observations,

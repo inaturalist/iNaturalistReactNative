@@ -83,6 +83,15 @@ const createLayoutSlice = set => ( {
         ...state.layout,
         loginBannerDismissed: true
       }
+    } ) ),
+    // State to control some components that are only supposed to be shown immediately after
+    // a user signs up
+    justFinishedSignup: false,
+    setJustFinishedSignup: ( newValue: boolean ) => set( state => ( {
+      layout: {
+        ...state.layout,
+        justFinishedSignup: newValue
+      }
     } ) )
   }
 } );
