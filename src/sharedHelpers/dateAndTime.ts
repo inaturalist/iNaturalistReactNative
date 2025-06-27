@@ -13,6 +13,7 @@ import {
   fromUnixTime,
   getUnixTime,
   getYear,
+  parse,
   parseISO
 } from "date-fns";
 import {
@@ -396,6 +397,14 @@ function formatApiDatetime(
   );
 }
 
+// in the future, would be great to have the backend team return a single type of format
+// from the API so we don't have to handle all of this on the client side.
+// right now date formats for projects include the following types, so if we're not
+// manipulating a date type correctly it can cause [RangeError: Invalid time value] crashes
+// Apr 28, 2025
+// April 28, 2025
+// 2025-04-28
+// 2025-04-28 11:33 -04:00
 function formatProjectsApiDatetimeLong(
   dateString: DateString,
   i18n: i18next,
@@ -405,17 +414,28 @@ function formatProjectsApiDatetimeLong(
   if ( hasTime ) {
     return formatDateString( dateString, i18n.t( "datetime-format-long" ), i18n, options );
   }
-  const hasSpaces = String( dateString ).includes( " " );
-  if ( hasSpaces ) {
+  const hasTimezoneOffset = String( dateString ).includes( ":" );
+  if ( hasTimezoneOffset ) {
+    const dateWithoutOffset = dateString.split( " " )[0];
     return formatDateString(
-      dateString
-        ? dateString.split( " " )[0]
-        : dateString,
+      dateWithoutOffset,
       i18n.t( "date-format-long" ),
       i18n,
       options
     );
   }
+  const hasComma = String( dateString ).includes( "," );
+  if ( hasComma ) {
+    const parsedDate = parse( dateString, "MMMM d, yyyy", new Date( ) );
+
+    return formatDateString(
+      formatISO( parsedDate ),
+      i18n.t( "date-format-long" ),
+      i18n,
+      options
+    );
+  }
+
   return formatDateString( dateString, i18n.t( "date-format-long" ), i18n, options );
 }
 

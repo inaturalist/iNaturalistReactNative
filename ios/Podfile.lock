@@ -1321,7 +1321,7 @@ PODS:
     - React-Core
   - react-native-image-resizer (3.0.11):
     - React-Core
-  - react-native-keep-awake (1.2.3):
+  - react-native-keep-awake (1.3.1):
     - React-Core
   - react-native-mail (6.1.1):
     - React-Core
@@ -1406,10 +1406,27 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-worklets-core (1.3.3):
-    - React
-    - React-callinvoker
+  - react-native-worklets-core (1.5.0):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
     - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - React-nativeconfig (0.75.5)
   - React-NativeModulesApple (0.75.5):
     - glog
@@ -1682,7 +1699,7 @@ PODS:
     - React-Core
   - RNCPicker (2.7.2):
     - React-Core
-  - RNDateTimePicker (7.6.3):
+  - RNDateTimePicker (8.4.2):
     - React-Core
   - RNDeviceInfo (10.13.1):
     - React-Core
@@ -1709,7 +1726,7 @@ PODS:
     - Yoga
   - RNFS (2.20.0):
     - React-Core
-  - RNGestureHandler (2.18.1):
+  - RNGestureHandler (2.20.2):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1850,7 +1867,7 @@ PODS:
     - React
   - RNStoreReview (0.4.3):
     - React-Core
-  - RNSVG (15.1.0):
+  - RNSVG (15.8.0):
     - React-Core
   - RNVectorIcons (10.2.0):
     - DoubleConversion
@@ -1874,16 +1891,16 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - SocketRocket (0.7.0)
-  - VisionCamera (4.5.2):
-    - VisionCamera/Core (= 4.5.2)
-    - VisionCamera/FrameProcessors (= 4.5.2)
-    - VisionCamera/React (= 4.5.2)
-  - VisionCamera/Core (4.5.2)
-  - VisionCamera/FrameProcessors (4.5.2):
+  - VisionCamera (4.7.0):
+    - VisionCamera/Core (= 4.7.0)
+    - VisionCamera/FrameProcessors (= 4.7.0)
+    - VisionCamera/React (= 4.7.0)
+  - VisionCamera/Core (4.7.0)
+  - VisionCamera/FrameProcessors (4.7.0):
     - React
     - React-callinvoker
     - react-native-worklets-core
-  - VisionCamera/React (4.5.2):
+  - VisionCamera/React (4.7.0):
     - React-Core
     - VisionCamera/FrameProcessors
   - VisionCameraPluginInatVision (5.3.0-rc.1):
@@ -2285,7 +2302,7 @@ SPEC CHECKSUMS:
   react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
   react-native-image-picker: b64848e41db57068721d5db3cea54e32ecb92791
   react-native-image-resizer: 24c5d06fae2176dc0caed4b6396e02befb44064a
-  react-native-keep-awake: 3c347cbcb834e5ce4b5717e9e2734b374f6fd70f
+  react-native-keep-awake: 03b74eebe4f2bb5e8478fc8f420651a92463b6f8
   react-native-mail: 6e83813066984b26403d3fdfe79ac7bb31857e3c
   react-native-maps: 85da55259d35bd50b5161d2ec0ee153d454158cc
   react-native-mmkv: f84bf6f48c906911695f9cd16d39d4fb78fcd5a4
@@ -2298,7 +2315,7 @@ SPEC CHECKSUMS:
   react-native-slider: fd8dfe056a342976c7addd61fd564736a7a753e6
   react-native-volume-manager: d9d2863a2374420af89c89662333ea6adf506988
   react-native-webview: 6b122cfd8a37514759d0efe101267f00fc6d23a7
-  react-native-worklets-core: f730c01db8ea3d580e322617f4a631206f1905fb
+  react-native-worklets-core: a7fb4fee321f4af49820f92bf6252b5fe9c41a74
   React-nativeconfig: 237c862aab56a7426301fcbbb8dd6988745231e0
   React-NativeModulesApple: 5b3c2bcfa3a53b22da441b35189e902ede27513d
   React-perflogger: 46ce3b295add69087b7c5ff325b55a6c7af204fc
@@ -2331,11 +2348,11 @@ SPEC CHECKSUMS:
   RNAudioRecorderPlayer: fa079748b34d15cd3b7b6a5d47b286bae6d5d49b
   RNCClipboard: 4abb037e8fe3b98a952564c9e0474f91c492df6d
   RNCPicker: fb82ba6cfba077a80a32412bc7b5391130a4e25f
-  RNDateTimePicker: b43e41f10305dde521c0ab1370d7454979ec4287
+  RNDateTimePicker: 392bdc0d6863b5de2fe9b957c82c25b6a038db29
   RNDeviceInfo: 538b62f03991eb4a2a15cf6fec5fff6bb5edc34e
   RNFlashList: 076a14c3a81a9e70b8a3bc52a06cf28490e4c437
   RNFS: 89de7d7f4c0f6bafa05343c578f61118c8282ed8
-  RNGestureHandler: 011b703e87c0008b9e0375dca87f37f34a5133e8
+  RNGestureHandler: 27a63f2218affdf1a426d56682f9b174904838b3
   RNGoogleSignin: ba93c1137f8d5cebdd39b04f493fd212ddf5ecd6
   RNLocalize: 080849cb8a824d9f759b8a5ae00c8321d46dbed0
   RNPermissions: f14c20f4eb7a20fff611ad9f467da7bb5872ac4f
@@ -2343,13 +2360,13 @@ SPEC CHECKSUMS:
   RNScreens: 4a5ab20b324ed1e3fe3862796b8f8e0a6208c415
   RNShareMenu: e1cdfa3b9af89416afc75a80377cfd0de4f30ded
   RNStoreReview: 613c43e9132998ed41a65946e20c223c91b36464
-  RNSVG: a31e321979e3001f56ba9331d10ac917f8ad1851
+  RNSVG: 8542aa11770b27563714bbd8494a8436385fc85f
   RNVectorIcons: 182892e7d1a2f27b52d3c627eca5d2665a22ee28
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
-  VisionCamera: 25a205cf335599192d84171d0925d5bd45433608
+  VisionCamera: 1470a7fa013e22de7481640a4d9c597ad6f13919
   VisionCameraPluginInatVision: ad9a001b70676d2f9b0ea22f60c04d5fed3d3a52
   Yoga: 5acecc29c9413933d57c9a26bc236fd0279bacb4
 
 PODFILE CHECKSUM: c92c85936cdaceff02009b29b05bbb2fe1d7b943
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.15.2

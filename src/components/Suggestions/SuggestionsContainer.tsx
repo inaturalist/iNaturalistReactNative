@@ -349,7 +349,8 @@ const SuggestionsContainer = ( ) => {
   const hideLocationToggleButton = usingOfflineSuggestions
     || isLoading
     || showImproveWithLocationButton
-    || !isConnected;
+    || !isConnected
+    || !evidenceHasLocation;
 
   const setImageParams = useCallback( async ( ) => {
     if ( isConnected === false ) {

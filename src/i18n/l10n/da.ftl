@@ -56,6 +56,7 @@ all-rights-reserved = alle rettigheder forbeholdes
 All-taxa = Alle taksa
 ALL-USERS-EXCEPT = ALLE BRUGERE UNDTAGET
 ALLOW-LOCATION-ACCESS = TILLAD PLACERINGSADGANG
+Already-have-an-iNaturalist-account = Har allerede en iNaturalist-konto?
 An-Internet-connection-is-required = Indlæsning af flere observationer kræver internetadgang.
 Analyzing-for-the-best-identification = Analyserer for den bedste identifikation...
 Any--date = Enhver
@@ -577,7 +578,7 @@ Organism-is-captive = Organisme er i fangenskab
 Organisms-that-are-identified-to-species = Organismer identificeret på artsrang eller lavere
 OTHER-DATA = ANDRE DATA
 OTHER-SUGGESTIONS = ANDRE FORSLAG
-OTHERS--notifications = OTHERS
+OTHERS--notifications = ANDRE
 PASSWORD = ADGANGSKODE
 PEOPLE--title = PERSONER
 Photo-importer = Fotoimportør
@@ -598,6 +599,7 @@ POTENTIAL-DISAGREEMENT = POTENTIEL UENIGHED
 Potential-disagreement-description = <0>Er beviset nok til at bekræfte, at dette er </0><1></1><0>?<0>
 Potential-disagreement-disagree = <0>Nej, men denne er et medlem af </0><1></1>
 Potential-disagreement-unsure = <0>Ved det ikke, men er overbevist om, at det er </0><1></1>
+Press-and-hold-to-view-more-options = Tryk og hold for at se flere muligheder
 Previous-observation = Forrige observation
 Previous-slide = Foregående kort
 Privacy-Policy = Fortrolighedspolitik
@@ -964,8 +966,10 @@ X-Identifiers =
     }
 X-MEMBERS =
     { $count ->
-        [one] { $count } MEMBER
-       *[other] { $count } MEMBERS
+        [one]
+            { $count } MEDLEM
+            MEDLEM
+       *[other] { $count } MEDLEMMER
     }
 X-Observations =
     { $count ->

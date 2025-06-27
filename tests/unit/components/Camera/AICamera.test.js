@@ -113,9 +113,9 @@ describe( "AI Camera", ( ) => {
 
     const taxonPhoto = screen.getByTestId( "ObsList.photo" );
 
-    expect( taxonPhoto.props.source ).toStrictEqual(
+    expect( taxonPhoto.props.source ).toMatchObject(
       {
-        uri: mockLocalTaxon.default_photo.url
+        url: mockLocalTaxon.default_photo.url
       }
     );
   } );

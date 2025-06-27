@@ -1,8 +1,10 @@
 // @flow
+import classnames from "classnames";
 import { Body4, INatIconButton, UserIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import NotificationsIconContainer from "navigation/BottomTabNavigator/NotificationsIconContainer";
 import * as React from "react";
+import { isDebugMode } from "sharedHooks/useDebugMode";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -38,6 +40,8 @@ const NavButton = ( {
     height
   };
 
+  const isDebug = isDebugMode( );
+
   let iconComponent;
   if ( userIconUri ) {
     iconComponent = (
@@ -66,6 +70,7 @@ const NavButton = ( {
           ? colors.inatGreen
           : colors.darkGray}
         size={size}
+        isDarkModeEnabled={isDebug}
         {...sharedProps}
       />
     );
@@ -87,9 +92,13 @@ const NavButton = ( {
       {iconComponent}
       <Body4
         numberOfLines={1}
-        className={active
-          ? "text-inatGreen"
-          : "text-darkGray"}
+        className={classnames(
+          {
+            "text-inatGreen": active,
+            "text-darkGray": !active,
+            "dark:text-white": isDebug
+          }
+        )}
         maxFontSizeMultiplier={1.2}
       >
         {accessibilityLabel}
