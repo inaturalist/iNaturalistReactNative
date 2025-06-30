@@ -353,7 +353,6 @@ Identify-organisms-in-real-time-with-your-camera = Identifikasi organisme-organi
 Identify-species-anywhere = Identifikasi spesies di mana saja
 If-an-account-with-that-email-exists = Jika suatu akun dengan email tersebut ditemukan, kami sudah mengirimkan perintah untuk mengatur ulang kata sandi ke email Anda.
 If-you-have-an-existing-account-try-sign-in-reset = Jika Anda sudah memiliki akun iNat, cobalah masuk dengan nama pengguna dan kata sandi Anda atau mengatur ulang kata sandi Anda menggunakan alamat email yang terhubung dengan akun Anda.
-If-you-hold-down-instead-of-tapping-the-camera-button-you-can = Jika Anda menahan (alih-alih mengetuk) tombol kamera, Anda dapat merekam suara, mengambil beberapa foto, dan mengimpor dari galeri foto Anda.
 If-you-leave-x-of-your-observations-removed =
     Kalau Anda keluar dari proyek tradisional ini, { $count ->
         [one] 1 pengamatan Anda
@@ -475,7 +474,6 @@ Months = Bulan
 MONTHS = BULAN
 More = Selengkapnya
 More-info = Info lebih lanjut
-More-ways-to-observe = Lebih banyak cara untuk mengamati
 MOST-FAVED = PALING FAVORIT
 Most-faved = Paling favorit
 MY-CONTENT--notifications = KONTEN SAYA

@@ -359,7 +359,6 @@ Identify-organisms-in-real-time-with-your-camera = Determineer organismen in rea
 Identify-species-anywhere = Determineer soorten overal
 If-an-account-with-that-email-exists = Als er een account met dat e-mailadres bestaat, hebben we de instructies voor het resetten van het wachtwoord naar je e-mail gestuurd.
 If-you-have-an-existing-account-try-sign-in-reset = Als je een bestaand iNat account hebt, probeer je dan aan te melden met je gebruikersnaam en wachtwoord of probeer jouw wachtwoord opnieuw in te stellen met het e-mailadres dat aan jouw account is gekoppeld.
-If-you-hold-down-instead-of-tapping-the-camera-button-you-can = Als je de cameraknop ingedrukt houdt (in plaats van erop te tikken) kun je geluiden opnemen, meerdere foto's maken en foto´s importeren uit jouw fotobibliotheek.
 If-you-leave-x-of-your-observations-removed =
     Als je dit traditionele project verlaat, { $count ->
         [one] zal 1 van je waarnemingen
@@ -481,7 +480,6 @@ Months = Maanden
 MONTHS = MAANDEN
 More = Meer
 More-info = Meer info
-More-ways-to-observe = Meer manieren om waarnemingen te doen
 MOST-FAVED = POPULAIRST
 Most-faved = Populairst
 MY-CONTENT--notifications = MIJN INHOUD

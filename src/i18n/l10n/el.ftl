@@ -353,7 +353,6 @@ Identify-organisms-in-real-time-with-your-camera = Προσδιορίστε ορ
 Identify-species-anywhere = Προσδιορίστε τα είδη οπουδήποτε
 If-an-account-with-that-email-exists = Αν υπάρχει λογαριασμός με αυτό το email, έχουμε στείλει οδηγίες επαναφοράς κωδικού πρόσβασης στο email σας.
 If-you-have-an-existing-account-try-sign-in-reset = Αν έχετε ήδη λογαριασμό iNat, δοκιμάστε να συνδεθείτε με το όνομα χρήστη και τον κωδικό πρόσβασής σας ή δοκιμάστε να επαναφέρετε τον κωδικό πρόσβασής σας χρησιμοποιώντας τη διεύθυνση email που σχετίζεται με τον λογαριασμό σας.
-If-you-hold-down-instead-of-tapping-the-camera-button-you-can = Αν κρατήσετε πατημένο το κουμπί της κάμερας (αντί να πατήσετε), μπορείτε να εγγράψετε ήχους, να τραβήξετε πολλές φωτογραφίες και να κάνετε εισαγωγή από τη βιβλιοθήκη φωτογραφιών σας.
 If-you-leave-x-of-your-observations-removed =
     If you leave this traditional project, { $count ->
         [one] 1 of your observations
@@ -475,7 +474,6 @@ Months = Μήνες
 MONTHS = ΜΉΝΕΣ
 More = Περισσότερο
 More-info = Περισσότερες πληροφορίες
-More-ways-to-observe = Περισσότεροι τρόποι παρατήρησης
 MOST-FAVED = ΠΙΟ ΑΓΑΠΗΜΈΝΟΙ
 Most-faved = Πιο αγαπημένο
 MY-CONTENT--notifications = ΤΟ ΠΕΡΙΕΧΌΜΕΝΌ ΜΟΥ

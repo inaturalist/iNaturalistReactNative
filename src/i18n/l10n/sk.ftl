@@ -353,7 +353,6 @@ Identify-organisms-in-real-time-with-your-camera = Identifikujte organizmy v re�
 Identify-species-anywhere = Identifikujte druhy kdekoľvek
 If-an-account-with-that-email-exists = Ak účet s týmto e-mailom existuje, zaslali sme vám naň pokyny na obnovenie hesla.
 If-you-have-an-existing-account-try-sign-in-reset = Ak máte existujúci iNat účet, skúste sa prihlásiť pomocou svojho používateľského mena a hesla, alebo skúste obnoviť svoje heslo pomocou e-mailovej adresy spojené s vašim účtom.
-If-you-hold-down-instead-of-tapping-the-camera-button-you-can = Ak podržíte tlačidlo fotoaparátu (namiesto kliknutia), môžete nahrávať zvuky, robiť viac fotografií a importovať ich zo svojej knižnice fotografií.
 If-you-leave-x-of-your-observations-removed =
     Ak opustíte tento tradičný projekt, { $count ->
         [one] 1 z vašich postrehov
@@ -475,7 +474,6 @@ Months = Mesiace
 MONTHS = MESIACA
 More = Viac
 More-info = Viac informácií
-More-ways-to-observe = Ďalšie spôsoby pozorovania
 MOST-FAVED = NAJOBĽÚBENEJŠIE
 Most-faved = Najobľúbenejšie
 MY-CONTENT--notifications = MÔJ OBSAH
