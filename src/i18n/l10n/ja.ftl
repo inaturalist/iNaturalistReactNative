@@ -353,7 +353,6 @@ Identify-organisms-in-real-time-with-your-camera = Identify organisms in real ti
 Identify-species-anywhere = Identify species anywhere
 If-an-account-with-that-email-exists = If an account with that email exists, we've sent password reset instructions to your email.
 If-you-have-an-existing-account-try-sign-in-reset = 既存のiNatアカウントをお持ちの場合は、ユーザー名とパスワードを入力してサインインするか、アカウントに関連付けられたメールアドレスを使用してパスワードをリセットしてみてください。
-If-you-hold-down-instead-of-tapping-the-camera-button-you-can = If you hold down (instead of tapping) the camera button, you can record sounds, take multiple photos, and import from your photo library.
 If-you-leave-x-of-your-observations-removed =
     このプロジェクトから離れてしまうと、{ $count ->
         [one] 1 of your observations
@@ -475,7 +474,6 @@ Months = 月
 MONTHS = MONTHS
 More = More
 More-info = More info
-More-ways-to-observe = More ways to observe
 MOST-FAVED = MOST FAVED
 Most-faved = Most faved
 MY-CONTENT--notifications = MY CONTENT

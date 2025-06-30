@@ -353,7 +353,6 @@ Identify-organisms-in-real-time-with-your-camera = זהו אורגניזמים �
 Identify-species-anywhere = זהו מינים בכל מקום
 If-an-account-with-that-email-exists = אם קיים חשבון עם דוא"ל זה, שלחנו הוראות לאיפוס הסיסמה לדוא"ל שלך.
 If-you-have-an-existing-account-try-sign-in-reset = אם יש לכם חשבון iNat קיים, נסו להתחבר באמצעות שם המשתמש והסיסמה שלכם, או נסו לאפס את הסיסמה באמצעות כתובת הדוא"ל המשויכת לחשבון שלכם.
-If-you-hold-down-instead-of-tapping-the-camera-button-you-can = אם תלחצו לחיצה ארוכה על כפתור המצלמה (במקום להקיש), תוכלו להקליט קולות, לצלם כמה תמונות במקביל, ולייבא מהספרייה שלכם.
 If-you-leave-x-of-your-observations-removed =
     במקרה של עזיבת פרויקט בסיסי, { $count ->
         [one] 1 מהתצפיות שלך
@@ -475,7 +474,6 @@ Months = חודשים
 MONTHS = חודשים
 More = עוד
 More-info = למידע נוסף
-More-ways-to-observe = דרכים נוספות לתצפת
 MOST-FAVED = הכי מועדף
 Most-faved = מועדף ביותר
 MY-CONTENT--notifications = התוכן שלי

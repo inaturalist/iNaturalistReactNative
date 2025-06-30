@@ -353,7 +353,6 @@ Identify-organisms-in-real-time-with-your-camera = 用摄像头实时鉴定生�
 Identify-species-anywhere = 随时随地鉴定物种
 If-an-account-with-that-email-exists = 如果存在该电子邮箱绑定的帐户的话，我们已经给您的电子邮箱发送了密码重置说明。
 If-you-have-an-existing-account-try-sign-in-reset = 如果您已有iNat帐户，请尝试使用您的用户名和密码登录， 或尝试使用与您的帐户关联的电子邮件地址重置您的密码。
-If-you-hold-down-instead-of-tapping-the-camera-button-you-can = 如果按住（而不是轻点）相机按钮，则可以录制声音、拍摄多张照片以及从照片图库导入。
 If-you-leave-x-of-your-observations-removed =
     如果你离开这一传统项目，你的{ $count ->
         [one] 1个观察
@@ -475,7 +474,6 @@ Months = 月
 MONTHS = 月
 More = 更多
 More-info = 更多信息
-More-ways-to-observe = 更多观察方式
 MOST-FAVED = 最多收藏
 Most-faved = 最多收藏
 MY-CONTENT--notifications = 我的内容

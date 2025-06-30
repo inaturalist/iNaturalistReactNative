@@ -354,7 +354,6 @@ Identify-organisms-in-real-time-with-your-camera = Identyfikuj organizmy w czasi
 Identify-species-anywhere = Identyfikuj gatunki w dowolnym miejscu
 If-an-account-with-that-email-exists = Jeśli konto z tym adresem e-mail istnieje, wysłaliśmy instrukcje resetowania hasła na Twój adres e-mail.
 If-you-have-an-existing-account-try-sign-in-reset = Jeśli masz już konto iNat, spróbuj zalogować się przy użyciu nazwy użytkownika i hasła lub spróbuj zresetować hasło przy użyciu adresu e-mail powiązanego z Twoim kontem.
-If-you-hold-down-instead-of-tapping-the-camera-button-you-can = Jeśli przytrzymasz (zamiast stuknąć) przycisk aparatu, możesz nagrywać dźwięki, robić wiele zdjęć i importować z biblioteki zdjęć.
 If-you-leave-x-of-your-observations-removed =
     Jeśli opuścisz ten tradycyjny projekt, { $count ->
         [one] 1 z Twoich obserwacji również zostanie usunięta z projektu.
@@ -479,7 +478,6 @@ Months = Miesiące
 MONTHS = MIESIĄCE
 More = Więcej
 More-info = Więcej informacji
-More-ways-to-observe = Więcej sposobów na obserwację
 MOST-FAVED = NAJBARDZIEJ ULUBIONE
 Most-faved = Najbardziej ulubione
 MY-CONTENT--notifications = MOJA ZAWARTOŚĆ

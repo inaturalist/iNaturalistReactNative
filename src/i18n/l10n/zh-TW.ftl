@@ -353,7 +353,6 @@ Identify-organisms-in-real-time-with-your-camera = 使用您的相機即時鑑�
 Identify-species-anywhere = 隨時隨地鑑定物種
 If-an-account-with-that-email-exists = 我們已將重設密碼的說明郵寄至您的電子郵件信箱，若該電子郵件已註冊帳號。
 If-you-have-an-existing-account-try-sign-in-reset = 如果您已有愛自然的帳號，請嘗試使用您的使用者名稱和密碼登入，或嘗試使用與您的帳戶關聯的電子郵件來重設密碼。
-If-you-hold-down-instead-of-tapping-the-camera-button-you-can = 如果長按相機（而非點按）按鈕，您可以錄製聲音、拍攝多張相片以及從照片圖庫中匯入照片。
 If-you-leave-x-of-your-observations-removed =
     如果您離開此傳統專案，{ $count ->
         [one] 您的一筆觀察紀錄
@@ -475,7 +474,6 @@ Months = 月
 MONTHS = 月份
 More = 更多
 More-info = 更多資訊
-More-ways-to-observe = 更多觀察方式
 MOST-FAVED = 最受歡迎的
 Most-faved = 最受歡迎的
 MY-CONTENT--notifications = 我的內容
