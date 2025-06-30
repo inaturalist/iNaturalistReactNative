@@ -353,7 +353,6 @@ Identify-organisms-in-real-time-with-your-camera = Valósidejű meghatározás a
 Identify-species-anywhere = Fajmeghatározás világszerte
 If-an-account-with-that-email-exists = If an account with that email exists, we've sent password reset instructions to your email.
 If-you-have-an-existing-account-try-sign-in-reset = Ha már van egy iNat-fiókod, próbálj meg bejelentkezni a felhasználói neveddel és a jelszavaddal, vagy kérj új jelszót a fiókodhoz tartozó email címre.
-If-you-hold-down-instead-of-tapping-the-camera-button-you-can = If you hold down (instead of tapping) the camera button, you can record sounds, take multiple photos, and import from your photo library.
 If-you-leave-x-of-your-observations-removed =
     Ha kilépsz ebből a hagyományos projektből, { $count ->
         [one] egy megfigyelésed
@@ -475,7 +474,6 @@ Months = Hónapok
 MONTHS = MONTHS
 More = Továbbiak
 More-info = More info
-More-ways-to-observe = További lehetőségek
 MOST-FAVED = MOST FAVED
 Most-faved = Most faved
 MY-CONTENT--notifications = TARTALMAIM

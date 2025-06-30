@@ -356,7 +356,6 @@ Identify-organisms-in-real-time-with-your-camera = Tunnista eliöitä reaaliajas
 Identify-species-anywhere = Tunnista lajeja missä tahansa
 If-an-account-with-that-email-exists = Jos tätä sähköpostiosoitetta käyttävä tili on olemassa, olemme lähettäneet sähköpostiisi ohjeet salasanan vaihtamiseksi.
 If-you-have-an-existing-account-try-sign-in-reset = Jos sinulla on olemassa oleva iNaturalist-tili, yritä kirjautua sisään käyttäjätunnuksella ja salasanalla, tai kokeile salasanan palauttamista käyttäen tiliisi liitettyä sähköpostiosoitetta.
-If-you-hold-down-instead-of-tapping-the-camera-button-you-can = Jos pidät kameran painikeen pohjassa (nauhoituksen sijaan), voit nauhoittaa ääniä, ottaa useita valokuvia ja tuoda ne valokuvakirjastostasi.
 If-you-leave-x-of-your-observations-removed =
     Jos poistut tästä projektista, { $count ->
         [one] yksi havaintosi
@@ -478,7 +477,6 @@ Months = Kuukaudet
 MONTHS = KUUKAUDET
 More = Lisää
 More-info = Lisätietoja
-More-ways-to-observe = Lisää tapoja havainnoida
 MOST-FAVED = SUOSITUIMMAT
 Most-faved = Suosituimmat
 MY-CONTENT--notifications = SISÄLTÖNI

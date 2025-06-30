@@ -353,7 +353,6 @@ Identify-organisms-in-real-time-with-your-camera = Identificér organismer i rea
 Identify-species-anywhere = Identificér arter hvor som helst
 If-an-account-with-that-email-exists = Findes en konto med denne e-mail, har vi sendt en vejledning til nulstilling af adgangskode til denne e-mail.
 If-you-have-an-existing-account-try-sign-in-reset = Har man en aktiv iNat-konto, forsøg at logge ind med brugernavnet og adgangskoden, eller prøv at nulstille adgangskoden via den med kontoen associerede e-mailadresse.
-If-you-hold-down-instead-of-tapping-the-camera-button-you-can = Holdes kameraknappen nede (i stedet for at trykke), kan man optage lyde, tage flere fotos og importere fra fotobiblioteket.
 If-you-leave-x-of-your-observations-removed =
     Forlader man dette traditionelle projekt, fjernes { $count ->
         [one] 1 af ens observationer
@@ -475,7 +474,6 @@ Months = Måneder
 MONTHS = MÅNEDER
 More = Mere
 More-info = Mere info
-More-ways-to-observe = Flere måder at observere på
 MOST-FAVED = MEST POPULÆRE
 Most-faved = Mest populære
 MY-CONTENT--notifications = MIT INDHOLD
