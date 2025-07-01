@@ -1,0 +1,6 @@
+NEW
+* Show tooltip to find the obs wheel also to existing users
+* React Native upgrade to 0.76, including many library upgrades
+
+FIXED
+* Scientific names are not italicized on the Me tab
