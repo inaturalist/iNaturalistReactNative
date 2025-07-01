@@ -1410,7 +1410,7 @@ PODS:
     - React-Core
   - react-native-sensitive-info (6.0.0-alpha.9):
     - React-Core
-  - react-native-slider (4.5.0):
+  - react-native-slider (4.5.7):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2412,7 +2412,7 @@ SPEC CHECKSUMS:
   react-native-restart: 0bc732f4461709022a742bb29bcccf6bbc5b4863
   react-native-safe-area-context: 758e894ca5a9bd1868d2a9cfbca7326a2b6bf9dc
   react-native-sensitive-info: ee358bf2b901ac3d04f63ff637b31daee44ea87f
-  react-native-slider: 1a4b42f71aea07eee94d7327fddce0db5f25feca
+  react-native-slider: 17b95cfd8f73820eb494e05cfc7416922b14bde5
   react-native-volume-manager: d9d2863a2374420af89c89662333ea6adf506988
   react-native-webview: 0c8e44a3d67061caf6afe14d1f9fcbab0cf768f8
   react-native-worklets-core: bfbf1cce2251a85a23d739e46a77682a29fc8889
