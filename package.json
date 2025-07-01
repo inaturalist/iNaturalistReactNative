@@ -109,7 +109,7 @@
     "react-native-mail": "github:chirag04/react-native-mail",
     "react-native-maps": "^1.13.0",
     "react-native-mmkv": "^2.12.2",
-    "react-native-modal": "^13.0.1",
+    "react-native-modal": "^14.0.0-rc.1",
     "react-native-modal-datetime-picker": "^18.0.0",
     "react-native-open-maps": "^0.4.3",
     "react-native-orientation-locker": "github:wonday/react-native-orientation-locker",
