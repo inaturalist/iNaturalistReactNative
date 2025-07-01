@@ -145,7 +145,10 @@ class Observation extends Realm.Object {
     taxon: {
       id: true,
       name: true,
-      preferred_common_name: true
+      preferred_common_name: true,
+      // rank and rank_level are needed to italicize scientific names
+      rank: true,
+      rank_level: true
     },
     time_observed_at: true,
     uuid: true
@@ -370,7 +373,9 @@ class Observation extends Realm.Object {
         ? {
           id: obs?.taxon?.id,
           name: obs?.taxon?.name,
-          preferred_common_name: obs?.taxon?.preferred_common_name
+          preferred_common_name: obs?.taxon?.preferred_common_name,
+          rank: obs?.taxon?.rank,
+          rank_level: obs?.taxon?.rank_level
         }
         : null,
       comments_viewed: obs.comments_viewed,
