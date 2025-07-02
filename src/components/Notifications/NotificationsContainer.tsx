@@ -44,11 +44,12 @@ const NotificationsContainer = ( {
   }
 
   useEffect( ( ) => {
-    navigation.addListener( "focus", ( ) => {
+    const unsubscribe = navigation.addListener( "focus", ( ) => {
       if ( isConnected && currentUser ) {
         refetch();
       }
     } );
+    return unsubscribe;
   }, [isConnected, currentUser, navigation, refetch] );
 
   const onRefresh = async () => {
