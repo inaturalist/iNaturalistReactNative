@@ -1758,7 +1758,7 @@ PODS:
     - React-Core
   - RNCClipboard (1.13.2):
     - React-Core
-  - RNCPicker (2.7.2):
+  - RNCPicker (2.11.1):
     - React-Core
   - RNDateTimePicker (8.4.2):
     - React-Core
@@ -2448,7 +2448,7 @@ SPEC CHECKSUMS:
   RNAppleAuthentication: 8d313d93fe2238d6b7ff0a39c67ebcf298d96653
   RNAudioRecorderPlayer: fa079748b34d15cd3b7b6a5d47b286bae6d5d49b
   RNCClipboard: 4abb037e8fe3b98a952564c9e0474f91c492df6d
-  RNCPicker: fb82ba6cfba077a80a32412bc7b5391130a4e25f
+  RNCPicker: da0f1c9411208c1ca52bc98383db54a06e0a3862
   RNDateTimePicker: 392bdc0d6863b5de2fe9b957c82c25b6a038db29
   RNDeviceInfo: 538b62f03991eb4a2a15cf6fec5fff6bb5edc34e
   RNFlashList: 294ab318aff413909ee42ff2bba6be075bb4a10c
