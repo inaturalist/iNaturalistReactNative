@@ -56,7 +56,7 @@ const LoginBanner = ( {
               >
                 <INatIcon
                   name="close"
-                  color={colors.darkGray}
+                  color={colors.mediumGray}
                   size={11}
                 />
               </View>
@@ -70,7 +70,7 @@ const LoginBanner = ( {
                 shrink
                 items-center
                 justify-center
-                p-[15px]
+                p-[20px]
                 space-x-[12px]
                 bg-white
                 rounded-xl
@@ -80,10 +80,10 @@ const LoginBanner = ( {
               >
                 <INatIcon
                   name="inaturalist"
-                  size={44}
+                  size={25}
                   color={colors.inatGreen}
                 />
-                <Body2 className="flex-shrink">
+                <Body2 maxFontSizeMultiplier={1}>
                   {t( "Already-have-an-iNaturalist-account" )}
                 </Body2>
               </Pressable>
