@@ -113,6 +113,8 @@ const MatchContainer = ( ) => {
   const { isConnected } = useNetInfo( );
 
   const evidenceHasLocation = !!currentObservation?.latitude;
+  const observationHasLocation = currentObservation?.privateLatitude
+    || currentObservation?.latitude;
 
   const [topSuggestion, setTopSuggestion] = useState( );
   const [iconicTaxon, setIconicTaxon] = useState( );
@@ -228,6 +230,15 @@ const MatchContainer = ( ) => {
     shouldFetchLocation: shouldFetchUserLocation
   } );
 
+  useEffect( () => {
+    console.log(
+      "MatchContainer - location change",
+      shouldFetchUserLocation,
+      userLocation,
+      currentObservation?.latitude
+    );
+  }, [userLocation, shouldFetchUserLocation, currentObservation?.latitude] );
+
   const getCurrentUserPlaceName = useCallback( async () => {
     if ( currentUserLocation?.latitude ) {
       const placeGuess
@@ -279,7 +290,7 @@ const MatchContainer = ( ) => {
 
   useEffect( ( ) => {
     if ( !scoreImageParams ) return;
-    if ( userLocation === currentUserLocation ) {
+    if ( userLocation === currentUserLocation && observationHasLocation ) {
       return;
     }
     if ( userLocation?.latitude ) {
@@ -295,7 +306,8 @@ const MatchContainer = ( ) => {
     subscriptionId,
     currentUserLocation,
     scoreImageParams,
-    getCurrentUserPlaceName
+    getCurrentUserPlaceName,
+    observationHasLocation
   ] );
 
   useEffect( () => {
