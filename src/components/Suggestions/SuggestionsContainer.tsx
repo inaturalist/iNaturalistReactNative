@@ -373,7 +373,7 @@ const SuggestionsContainer = ( ) => {
   );
 
   useEffect( ( ) => {
-    const onFocus = navigation.addListener( "focus", ( ) => {
+    const unsubscribe = navigation.addListener( "focus", ( ) => {
       // resizeImage crashes if trying to resize an https:// photo while there is no internet
       // in this situation, we can skip creating upload parameters since we're loading
       // offline suggestions anyway
@@ -382,7 +382,7 @@ const SuggestionsContainer = ( ) => {
       }
       navigation.setOptions( { headerRight } );
     } );
-    return onFocus;
+    return unsubscribe;
   }, [navigation, setImageParams, shouldSetImageParams, headerRight] );
 
   const onPermissionGranted = useCallback( async ( ) => {
