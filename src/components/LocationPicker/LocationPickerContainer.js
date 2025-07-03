@@ -187,9 +187,11 @@ const LocationPickerContainer = ( ): Node => {
   // make sure map always reflects the current observation lat/lng
   useEffect(
     ( ) => {
-      navigation.addListener( "focus", ( ) => {
+      const unsubscribe = navigation.addListener( "focus", ( ) => {
         dispatch( { type: "INITIALIZE_MAP", currentObservation } );
       } );
+
+      return unsubscribe;
     },
     [navigation, currentObservation]
   );
