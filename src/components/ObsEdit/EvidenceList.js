@@ -13,7 +13,7 @@ import React, {
 } from "react";
 import { Alert } from "react-native";
 import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
-import ObservationPhoto from "realmModels/ObservationPhoto";
+import ObservationPhoto from "realmModels/ObservationPhoto.ts";
 import ObservationSound from "realmModels/ObservationSound";
 import Photo from "realmModels/Photo";
 import { log } from "sharedHelpers/logger";
