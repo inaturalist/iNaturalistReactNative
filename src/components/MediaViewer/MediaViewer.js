@@ -11,7 +11,7 @@ import React, {
   useState
 } from "react";
 import { StatusBar } from "react-native";
-import Photo from "realmModels/Photo";
+import Photo from "realmModels/Photo.ts";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
 import useTranslation from "sharedHooks/useTranslation.ts";

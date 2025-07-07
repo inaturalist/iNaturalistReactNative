@@ -15,7 +15,7 @@ import { Alert } from "react-native";
 import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
 import ObservationPhoto from "realmModels/ObservationPhoto.ts";
 import ObservationSound from "realmModels/ObservationSound";
-import Photo from "realmModels/Photo";
+import Photo from "realmModels/Photo.ts";
 import { log } from "sharedHelpers/logger";
 import { useAuthenticatedMutation } from "sharedHooks";
 import useTranslation from "sharedHooks/useTranslation.ts";
