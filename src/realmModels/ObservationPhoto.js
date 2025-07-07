@@ -68,13 +68,13 @@ class ObservationPhoto extends Realm.Object {
     };
   }
 
-  static mapObservationPhotoForMyObsDefaultMode( obsPhoto ) {
+  static mapObservationPhotoForMyObsDefaultMode( observationPhoto ) {
     return {
       photo: {
-        url: obsPhoto?.photo?.url,
-        localFilePath: obsPhoto?.photo?.localFilePath
+        url: observationPhoto?.photo?.url,
+        localFilePath: observationPhoto?.photo?.localFilePath
       },
-      uuid: obsPhoto?.uuid
+      uuid: observationPhoto?.uuid
     };
   }
 
