@@ -1,4 +1,4 @@
-import ObservationPhoto from "realmModels/ObservationPhoto";
+import ObservationPhoto from "realmModels/ObservationPhoto.ts";
 import ObservationSound from "realmModels/ObservationSound";
 
 function prepareMediaForUpload(
