@@ -1,5 +1,6 @@
 import { Realm } from "@realm/react";
 import inatjs, { FileUpload } from "inaturalistjs";
+import type { RealmObservationPhoto, RealmPhoto } from "realmModels/types";
 import * as uuid from "uuid";
 
 import Photo from "./Photo";
@@ -40,7 +41,10 @@ class ObservationPhoto extends Realm.Object {
     };
   }
 
-  static mapPhotoForAttachingToObs( observationID, observationPhoto ) {
+  static mapPhotoForAttachingToObs(
+    observationID: number,
+    observationPhoto: RealmObservationPhoto
+  ) {
     return {
       observation_photo: {
         uuid: observationPhoto.uuid,
