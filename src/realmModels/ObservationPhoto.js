@@ -1,5 +1,4 @@
 import { Realm } from "@realm/react";
-import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import inatjs, { FileUpload } from "inaturalistjs";
 import * as uuid from "uuid";
 
@@ -106,6 +105,7 @@ class ObservationPhoto extends Realm.Object {
     );
 
     if ( obsPhotoToDelete ) {
+      const { getJWT } = require( "components/LoginSignUp/AuthenticationService.ts" );
       const apiToken = await getJWT( );
       const options = { api_token: apiToken };
       await inatjs.observation_photos.delete( { id: obsPhotoToDelete.uuid }, options );
