@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   useAnimatedStyle,
   useSharedValue,
@@ -26,7 +27,10 @@ const useRotation = ( ) => {
   const { deviceOrientation } = useDeviceOrientation( );
 
   const rotation = useSharedValue( 0 );
-  rotation.value = rotationValue( deviceOrientation );
+
+  useEffect( ( ) => {
+    rotation.value = rotationValue( deviceOrientation );
+  }, [deviceOrientation, rotation] );
 
   const rotatableAnimatedStyle = useAnimatedStyle(
     () => ( {
@@ -36,7 +40,7 @@ const useRotation = ( ) => {
         }
       ]
     } ),
-    [rotation.value]
+    [deviceOrientation]
   );
 
   return {

@@ -29,25 +29,7 @@ describe( "PhotoCarousel", ( ) => {
 
     await screen.findByTestId( `PhotoCarousel.displayPhoto.${mockPhotoUris[0]}` );
 
-    // TODO: (Johannes 2025-06-13) An update to react-native-reanimated (to 3.16.6) caused this test
-    // to fail. However, only the snapshot matching is affected, the component still renders
-    // correctly, and the test passes, i.e. see the assertion above. The actual error thrown is a
-    // recursion happening in the pretty-format library. So, since we are currently only half-way
-    // through our updating process of major react-native versions and libraries I vouch to comment
-    // out these snapshot tests for now and reinstate them later with the latest RN version.
-    /*
-      RangeError: Invalid string length
-      at printObjectProperties (node_modules/pretty-format/build/collections.js:170:47)
-      at key (node_modules/pretty-format/build/index.js:386:38)
-      at AsymmetricMatcher (node_modules/pretty-format/build/index.js:469:3)
-      at printObjectProperties (node_modules/pretty-format/build/collections.js:169:21)
-      at key (node_modules/pretty-format/build/index.js:386:38)
-      at AsymmetricMatcher (node_modules/pretty-format/build/index.js:469:3)
-      at printObjectProperties (node_modules/pretty-format/build/collections.js:169:21)
-      at key (node_modules/pretty-format/build/index.js:386:38)
-      at AsymmetricMatcher (node_modules/pretty-format/build/index.js:469:3)
-    */
-    // expect( screen ).toMatchSnapshot();
+    expect( screen ).toMatchSnapshot();
   } );
 
   it( "renders correctly for large screen", async () => {
@@ -55,24 +37,6 @@ describe( "PhotoCarousel", ( ) => {
 
     await screen.findByTestId( `PhotoCarousel.displayPhoto.${mockPhotoUris[0]}` );
 
-    // TODO: (Johannes 2025-06-13) An update to react-native-reanimated (to 3.16.6) caused this test
-    // to fail. However, only the snapshot matching is affected, the component still renders
-    // correctly, and the test passes, i.e. see the assertion above. The actual error thrown is a
-    // recursion happening in the pretty-format library. So, since we are currently only half-way
-    // through our updating process of major react-native versions and libraries I vouch to comment
-    // out these snapshot tests for now and reinstate them later with the latest RN version.
-    /*
-      RangeError: Invalid string length
-      at printObjectProperties (node_modules/pretty-format/build/collections.js:170:47)
-      at key (node_modules/pretty-format/build/index.js:386:38)
-      at AsymmetricMatcher (node_modules/pretty-format/build/index.js:469:3)
-      at printObjectProperties (node_modules/pretty-format/build/collections.js:169:21)
-      at key (node_modules/pretty-format/build/index.js:386:38)
-      at AsymmetricMatcher (node_modules/pretty-format/build/index.js:469:3)
-      at printObjectProperties (node_modules/pretty-format/build/collections.js:169:21)
-      at key (node_modules/pretty-format/build/index.js:386:38)
-      at AsymmetricMatcher (node_modules/pretty-format/build/index.js:469:3)
-    */
-    // expect( screen ).toMatchSnapshot();
+    expect( screen ).toMatchSnapshot();
   } );
 } );

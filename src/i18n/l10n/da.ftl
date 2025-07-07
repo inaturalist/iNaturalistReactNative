@@ -56,6 +56,7 @@ all-rights-reserved = alle rettigheder forbeholdes
 All-taxa = Alle taksa
 ALL-USERS-EXCEPT = ALLE BRUGERE UNDTAGET
 ALLOW-LOCATION-ACCESS = TILLAD PLACERINGSADGANG
+Already-have-an-iNaturalist-account = Har allerede en iNaturalist-konto?
 An-Internet-connection-is-required = Indlæsning af flere observationer kræver internetadgang.
 Analyzing-for-the-best-identification = Analyserer for den bedste identifikation...
 Any--date = Enhver
@@ -352,7 +353,6 @@ Identify-organisms-in-real-time-with-your-camera = Identificér organismer i rea
 Identify-species-anywhere = Identificér arter hvor som helst
 If-an-account-with-that-email-exists = Findes en konto med denne e-mail, har vi sendt en vejledning til nulstilling af adgangskode til denne e-mail.
 If-you-have-an-existing-account-try-sign-in-reset = Har man en aktiv iNat-konto, forsøg at logge ind med brugernavnet og adgangskoden, eller prøv at nulstille adgangskoden via den med kontoen associerede e-mailadresse.
-If-you-hold-down-instead-of-tapping-the-camera-button-you-can = Holdes kameraknappen nede (i stedet for at trykke), kan man optage lyde, tage flere fotos og importere fra fotobiblioteket.
 If-you-leave-x-of-your-observations-removed =
     Forlader man dette traditionelle projekt, fjernes { $count ->
         [one] 1 af ens observationer
@@ -474,7 +474,6 @@ Months = Måneder
 MONTHS = MÅNEDER
 More = Mere
 More-info = Mere info
-More-ways-to-observe = Flere måder at observere på
 MOST-FAVED = MEST POPULÆRE
 Most-faved = Mest populære
 MY-CONTENT--notifications = MIT INDHOLD
@@ -577,7 +576,7 @@ Organism-is-captive = Organisme er i fangenskab
 Organisms-that-are-identified-to-species = Organismer identificeret på artsrang eller lavere
 OTHER-DATA = ANDRE DATA
 OTHER-SUGGESTIONS = ANDRE FORSLAG
-OTHERS--notifications = OTHERS
+OTHERS--notifications = ANDRE
 PASSWORD = ADGANGSKODE
 PEOPLE--title = PERSONER
 Photo-importer = Fotoimportør
@@ -598,6 +597,7 @@ POTENTIAL-DISAGREEMENT = POTENTIEL UENIGHED
 Potential-disagreement-description = <0>Er beviset nok til at bekræfte, at dette er </0><1></1><0>?<0>
 Potential-disagreement-disagree = <0>Nej, men denne er et medlem af </0><1></1>
 Potential-disagreement-unsure = <0>Ved det ikke, men er overbevist om, at det er </0><1></1>
+Press-and-hold-to-view-more-options = Tryk og hold for at se flere muligheder
 Previous-observation = Forrige observation
 Previous-slide = Foregående kort
 Privacy-Policy = Fortrolighedspolitik
@@ -964,8 +964,10 @@ X-Identifiers =
     }
 X-MEMBERS =
     { $count ->
-        [one] { $count } MEMBER
-       *[other] { $count } MEMBERS
+        [one]
+            { $count } MEDLEM
+            MEDLEM
+       *[other] { $count } MEDLEMMER
     }
 X-Observations =
     { $count ->

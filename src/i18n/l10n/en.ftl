@@ -97,6 +97,8 @@ All-taxa = All taxa
 # Title in explore filters
 ALL-USERS-EXCEPT = ALL USERS EXCEPT
 ALLOW-LOCATION-ACCESS = ALLOW LOCATION ACCESS
+# Button asking if user has an existing iNaturalist account
+Already-have-an-iNaturalist-account = Already have an iNaturalist account?
 An-Internet-connection-is-required = An Internet connection is required to load more observations.
 # Message shown to the user after they have left the AI camera where they may
 # have seen a species suggestion but before they land on the match screen,
@@ -581,7 +583,6 @@ Identify-species-anywhere = Identify species anywhere
 If-an-account-with-that-email-exists = If an account with that email exists, we've sent password reset instructions to your email.
 # Body of an error alert when signing in with a third party fails (e.g. Apple, Google)
 If-you-have-an-existing-account-try-sign-in-reset = If you have an existing iNat account, try signing in with your username and password, or try resetting your password using the email address associated with your account.
-If-you-hold-down-instead-of-tapping-the-camera-button-you-can = If you hold down (instead of tapping) the camera button, you can record sounds, take multiple photos, and import from your photo library.
 # Explanation that observations are removed from a collection project
 If-you-leave-x-of-your-observations-removed =
     If you leave this traditional project, { $count ->
@@ -735,8 +736,6 @@ MONTHS = MONTHS
 # Label for section of ObsDetails with information about observation projects, DQA, etc.
 More = More
 More-info = More info
-# Header for a pivot card explaining access to all observation options to new users
-More-ways-to-observe = More ways to observe
 MOST-FAVED = MOST FAVED
 Most-faved = Most faved
 # Title for section in Notifications showing notifications about observations
@@ -926,6 +925,7 @@ POTENTIAL-DISAGREEMENT = POTENTIAL DISAGREEMENT
 Potential-disagreement-description = <0>Is the evidence enough to confirm this is </0><1></1><0>?<0>
 Potential-disagreement-disagree = <0>No, but this is a member of </0><1></1>
 Potential-disagreement-unsure = <0>I don't know but I am sure this is </0><1></1>
+Press-and-hold-to-view-more-options = Press and hold to view more options
 Previous-observation = Previous observation
 # Accessibility label for a button that goes to the previous slide on onboarding cards
 Previous-slide = Previous slide
@@ -1237,7 +1237,7 @@ The-exact-location-will-be-hidden = The exact location will be hidden publicly, 
 The-iNaturalist-community-will-help-verify-and-refine-identifications = The iNaturalist community will help verify and refine identifications on your observations to create Research Grade data for science and conservation.
 The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
 # Describes what happens when geoprivacy is set to private
-The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify
+The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify.
 The-models-that-suggest-species = The models that suggest species based on visual similarity and location are thanks in part to collaborations with Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona, and Grant Van Horn.
 #  Wild status sheet descriptions
 This-is-a-wild-organism = This is a wild organism and wasn't placed in this location by humans.

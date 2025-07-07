@@ -20,7 +20,9 @@ import {
 import { Pressable, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts.ts";
 import React, { useCallback, useMemo, useState } from "react";
-import { Alert, Dimensions, ViewStyle } from "react-native";
+import {
+  Alert, Dimensions, ViewStyle
+} from "react-native";
 import User from "realmModels/User.ts";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import { log } from "sharedHelpers/logger";
@@ -36,17 +38,20 @@ function isDefaultMode( ) {
   return useStore.getState( ).layout.isDefaultMode === true;
 }
 
-const drawerScrollViewStyle = {
-  backgroundColor: "white",
+const createDrawerStyle = ( isDark: boolean ) => ( {
+  backgroundColor: isDark
+    ? colors.darkModeGray
+    : "white",
   borderTopRightRadius: 20,
   borderBottomRightRadius: 20,
   minHeight: "100%"
-} as const;
+} as const );
 
 interface Props {
   state: object;
   navigation: object;
   descriptors: object;
+  colorScheme?: string;
 }
 
 const feedbackLogger = log.extend( "feedback" );
@@ -55,12 +60,17 @@ function showOfflineAlert( t ) {
   Alert.alert( t( "You-are-offline" ), t( "Please-try-again-when-you-are-online" ) );
 }
 
-const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
+const CustomDrawerContent = ( {
+  state, navigation, descriptors, colorScheme
+}: Props ) => {
+  const isDebug = zustandStorage.getItem( "debugMode" ) === "true";
+  const isDarkMode = colorScheme === "dark" && isDebug;
+  const drawerScrollViewStyle = createDrawerStyle( isDarkMode );
   const realm = useRealm( );
   const queryClient = useQueryClient( );
   const currentUser = useCurrentUser( );
   const { t } = useTranslation( );
-  const isDebug = zustandStorage.getItem( "debugMode" ) === "true";
+
   const { isConnected } = useNetInfo( );
 
   const [showConfirm, setShowConfirm] = useState( false );
@@ -172,15 +182,20 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
     <INatIcon
       name={drawerItems[key].icon}
       size={22}
-      color={drawerItems[key].color}
+      color={isDarkMode
+        ? colors.white
+        : drawerItems[key].color}
     />
-  ), [drawerItems] );
+  ), [drawerItems, isDarkMode] );
 
   const renderLabel = useCallback( ( label: string ) => (
-    <Heading4>
+    <Heading4 className={classnames(
+      isDarkMode && "dark:text-white"
+    )}
+    >
       {label}
     </Heading4>
-  ), [] );
+  ), [isDarkMode] );
 
   const renderTopBanner = useCallback( ( ) => (
     <Pressable
@@ -225,7 +240,10 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
           />
         ) }
       <View className="ml-3 justify-center">
-        <Body1>
+        <Body1 className={classnames(
+          isDarkMode && "dark:text-white"
+        )}
+        >
           {currentUser
             ? currentUser?.login
             : t( "Log-in-to-iNaturalist" )}
@@ -237,7 +255,7 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
         )}
       </View>
     </Pressable>
-  ), [currentUser, navigation, t] );
+  ), [currentUser, navigation, t, isDarkMode] );
 
   const renderDrawerItem = useCallback( ( key: string ) => (
     <View

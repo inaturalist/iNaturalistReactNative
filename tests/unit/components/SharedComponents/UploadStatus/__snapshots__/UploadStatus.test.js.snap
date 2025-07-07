@@ -34,7 +34,13 @@ exports[`UploadStatus displays complete icon when progress is 1 1`] = `
           },
         },
         "durationV": 2000,
+        "parsedAnimation": [Function],
         "reduceMotionV": "system",
+      }
+    }
+    jestAnimatedProps={
+      {
+        "value": {},
       }
     }
     jestAnimatedStyle={
@@ -202,6 +208,348 @@ exports[`UploadStatus displays progress bar when progress is greater than 5% 1`]
         testID="UploadStatus.CircularProgress"
         value={0.5}
       />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`UploadStatus displays rotating circle progress when upload is queued but not started 1`] = `
+<View
+  accessibilityLabel="Saved observation, in queue to upload"
+  accessible={true}
+  style={
+    [
+      [
+        {
+          "justifyContent": "center",
+        },
+        {
+          "height": 65,
+        },
+      ],
+    ]
+  }
+>
+  <View
+    style={
+      [
+        [
+          {
+            "width": 44,
+          },
+        ],
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          [
+            {
+              "justifyContent": "center",
+            },
+            {
+              "alignItems": "center",
+            },
+          ],
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            [
+              {
+                "position": "absolute",
+              },
+            ],
+          ]
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#454545",
+                "fontSize": 15,
+              },
+              null,
+              {
+                "fontFamily": "INatIcon",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+      <View
+        collapsable={false}
+        jestAnimatedProps={
+          {
+            "value": {},
+          }
+        }
+        jestAnimatedStyle={
+          {
+            "value": {
+              "transform": [
+                {
+                  "rotateZ": "0deg",
+                },
+              ],
+            },
+          }
+        }
+        jestInlineStyle={{}}
+        style={
+          [
+            [
+              {
+                "transform": [
+                  {
+                    "rotateZ": "0deg",
+                  },
+                ],
+              },
+            ],
+          ]
+        }
+        testID="UploadStatus.QueuedRotatingIcon"
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#454545",
+                "fontSize": 33,
+              },
+              null,
+              {
+                "fontFamily": "INatIcon",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`UploadStatus displays start icon when upload is unsynced and not queued 1`] = `
+<View
+  accessibilityLabel="Saved observation, in queue to upload"
+  accessible={true}
+  style={
+    [
+      [
+        {
+          "justifyContent": "center",
+        },
+        {
+          "height": 65,
+        },
+      ],
+    ]
+  }
+>
+  <View
+    style={
+      [
+        [
+          {
+            "width": 44,
+          },
+        ],
+      ]
+    }
+  >
+    <View
+      accessibilityLabel="Start upload"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "height": 44,
+            "width": 44,
+          },
+          {
+            "alignItems": "center",
+            "justifyContent": "center",
+          },
+          false,
+          undefined,
+          {
+            "opacity": 1,
+          },
+        ]
+      }
+      testID="UploadIcon.start.undefined"
+    >
+      <View
+        style={
+          [
+            [
+              {
+                "position": "relative",
+              },
+              {
+                "left": 0.2,
+              },
+              {
+                "top": 0.1,
+              },
+            ],
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              [
+                {
+                  "justifyContent": "center",
+                },
+                {
+                  "alignItems": "center",
+                },
+              ],
+            ]
+          }
+        >
+          <View
+            style={
+              [
+                [
+                  {
+                    "position": "absolute",
+                  },
+                ],
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#454545",
+                    "fontSize": 15,
+                  },
+                  null,
+                  {
+                    "fontFamily": "INatIcon",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <View
+            collapsable={false}
+            jestAnimatedProps={
+              {
+                "value": {},
+              }
+            }
+            jestAnimatedStyle={
+              {
+                "value": {
+                  "transform": [
+                    {
+                      "rotateZ": "0deg",
+                    },
+                  ],
+                },
+              }
+            }
+            jestInlineStyle={{}}
+            style={
+              [
+                [
+                  {
+                    "transform": [
+                      {
+                        "rotateZ": "0deg",
+                      },
+                    ],
+                  },
+                ],
+              ]
+            }
+            testID="UploadStatus.QueuedRotatingIcon"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#454545",
+                    "fontSize": 33,
+                  },
+                  null,
+                  {
+                    "fontFamily": "INatIcon",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </View>
+      </View>
     </View>
   </View>
 </View>

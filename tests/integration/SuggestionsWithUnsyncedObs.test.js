@@ -282,11 +282,11 @@ describe( "from ObsEdit with human observation", ( ) => {
     expect( usePermissionsButton ).toBeFalsy( );
   } );
 
-  it( "should show use location button if unsynced obs has no location", async ( ) => {
+  it( "should not show use location button if unsynced obs has no location", async ( ) => {
     const { observations } = await setupAppWithSignedInUser( );
     await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
-    const useLocationButton = await screen.findByText( /USE LOCATION/ );
-    expect( useLocationButton ).toBeVisible( );
+    const useLocationButton = screen.queryByText( /USE LOCATION/ );
+    expect( useLocationButton ).toBeFalsy( );
   } );
 
   it( "should show ignore location button if unsynced obs has location", async ( ) => {

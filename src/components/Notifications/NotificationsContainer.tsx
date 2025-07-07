@@ -44,18 +44,21 @@ const NotificationsContainer = ( {
   }
 
   useEffect( ( ) => {
-    navigation.addListener( "focus", ( ) => {
-      if ( isConnected ) {
+    const unsubscribe = navigation.addListener( "focus", ( ) => {
+      if ( isConnected && currentUser ) {
         refetch();
       }
     } );
-  }, [isConnected, navigation, refetch] );
+    return unsubscribe;
+  }, [isConnected, currentUser, navigation, refetch] );
 
   const onRefresh = async () => {
-    setRefreshing( true );
-    await refetch();
-    if ( typeof ( onRefreshProp ) === "function" ) onRefreshProp( );
-    setRefreshing( false );
+    if ( currentUser ) {
+      setRefreshing( true );
+      await refetch();
+      if ( typeof ( onRefreshProp ) === "function" ) onRefreshProp( );
+      setRefreshing( false );
+    }
   };
 
   return (
