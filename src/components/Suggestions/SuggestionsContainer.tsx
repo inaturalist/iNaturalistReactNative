@@ -10,7 +10,7 @@ import React, {
   useMemo,
   useReducer
 } from "react";
-import ObservationPhoto from "realmModels/ObservationPhoto";
+import ObservationPhoto from "realmModels/ObservationPhoto.ts";
 import { log } from "sharedHelpers/logger";
 import {
   useLastScreen,
