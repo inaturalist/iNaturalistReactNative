@@ -109,7 +109,7 @@ class ObservationPhoto extends Realm.Object {
     );
   };
 
-  static async deleteRemotePhoto( realm, uri: string, currentObservation ) {
+  static async deleteRemotePhoto( uri: string, currentObservation ) {
     const obsPhotoToDelete = currentObservation?.observationPhotos?.find(
       p => p.photo?.url === uri
     );
@@ -127,9 +127,9 @@ class ObservationPhoto extends Realm.Object {
     Photo.deletePhotoFromDeviceStorage( uri );
   }
 
-  static async deletePhoto( realm, uri: string, currentObservation ) {
+  static async deletePhoto( uri: string, currentObservation ) {
     if ( uri.includes( "https://" ) ) {
-      ObservationPhoto.deleteRemotePhoto( realm, uri, currentObservation );
+      ObservationPhoto.deleteRemotePhoto( uri, currentObservation );
     } else {
       ObservationPhoto.deleteLocalPhoto( uri );
     }
