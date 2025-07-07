@@ -1,5 +1,5 @@
 import { FileUpload } from "inaturalistjs";
-import ObservationPhoto from "realmModels/ObservationPhoto.ts";
+import ObservationPhoto from "realmModels/ObservationPhoto";
 import ObservationSound from "realmModels/ObservationSound";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
