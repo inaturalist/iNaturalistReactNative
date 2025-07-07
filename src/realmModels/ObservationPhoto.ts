@@ -1,5 +1,4 @@
 import { Realm } from "@realm/react";
-import type { ApiObservationPhoto } from "api/types";
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import inatjs, { FileUpload } from "inaturalistjs";
 import * as uuid from "uuid";
@@ -38,7 +37,7 @@ class ObservationPhoto extends Realm.Object {
     return this._synced_at !== null;
   }
 
-  static mapApiToRealm( observationPhoto: ApiObservationPhoto, realm = null ) {
+  static mapApiToRealm( observationPhoto, realm = null ) {
     const localObsPhoto = {
       ...observationPhoto,
       _synced_at: new Date( ),
