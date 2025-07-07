@@ -149,7 +149,16 @@ class ObservationPhoto extends Realm.Object {
     }
   }
 
-  static mapObsPhotoUris( observation ) {
+  // TODO: I don't know how what the type for currentObservation is outside of this context here,
+  // in the zustand store slice that is referenced in the two places this function is called
+  // there are no types yet as far as I can see. This function is not important for my current
+  // linear ticket so I'll skip typing it
+  static mapObsPhotoUris(
+    observation: {
+      observationPhotos?: { photo: RealmPhoto }[],
+      observation_photos?: { photo: RealmPhoto }[]
+    }
+  ) {
     const obsPhotos = observation?.observationPhotos || observation?.observation_photos;
     const obsPhotoUris = ( obsPhotos || [] ).map(
       // Ensure that if this URI is a remote thumbnail that we are resizing
@@ -160,7 +169,16 @@ class ObservationPhoto extends Realm.Object {
     return obsPhotoUris;
   }
 
-  static mapInnerPhotos( observation ) {
+  // TODO: I don't know how what the type for currentObservation is outside of this context here,
+  // in the zustand store slice that is referenced in the two places this function is called
+  // there are no types yet as far as I can see. This function is not important for my current
+  // linear ticket so I'll skip typing it
+  static mapInnerPhotos(
+    observation: {
+      observationPhotos?: { photo: object }[],
+      observation_photos?: { photo: object }[]
+    }
+  ) {
     const obsPhotos = observation?.observationPhotos || observation?.observation_photos;
     const innerPhotos = ( obsPhotos || [] ).map(
       obsPhoto => obsPhoto.photo
