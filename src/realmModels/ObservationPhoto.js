@@ -68,6 +68,9 @@ class ObservationPhoto extends Realm.Object {
     };
   }
 
+  // TODO: I don't know how what the type for this is, I think it is only called
+  // after certain transformations on the Realm result, but it is not important for my current
+  // linear ticket so I'll skip it
   static mapObservationPhotoForMyObsDefaultMode( observationPhoto ) {
     return {
       photo: {
