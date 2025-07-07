@@ -109,7 +109,14 @@ class ObservationPhoto extends Realm.Object {
     );
   };
 
-  static async deleteRemotePhoto( uri: string, currentObservation ) {
+  // TODO: I don't know how what the type for currentObservation is outside of this context here,
+  // in the zustand store slice that is referenced in the two places this function is called
+  // there are no types yet as far as I can see. This function is not important for my current
+  // linear ticket so I'll skip typing it
+  static async deleteRemotePhoto(
+    uri: string,
+    currentObservation?: { observationPhotos?: { photo: { url?: string }, uuid: string }[] }
+  ) {
     const obsPhotoToDelete = currentObservation?.observationPhotos?.find(
       p => p.photo?.url === uri
     );
@@ -127,7 +134,14 @@ class ObservationPhoto extends Realm.Object {
     Photo.deletePhotoFromDeviceStorage( uri );
   }
 
-  static async deletePhoto( uri: string, currentObservation ) {
+  // TODO: I don't know how what the type for currentObservation is outside of this context here,
+  // in the zustand store slice that is referenced in the two places this function is called
+  // there are no types yet as far as I can see. This function is not important for my current
+  // linear ticket so I'll skip typing it
+  static async deletePhoto(
+    uri: string,
+    currentObservation?: { observationPhotos?: { photo: { url?: string }, uuid: string }[] }
+  ) {
     if ( uri.includes( "https://" ) ) {
       ObservationPhoto.deleteRemotePhoto( uri, currentObservation );
     } else {
