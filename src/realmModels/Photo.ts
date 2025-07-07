@@ -24,10 +24,7 @@ class Photo extends Realm.Object {
     return localPhoto;
   }
 
-  static async resizeImageForUpload(
-    pathOrUri: string,
-    options: { rotation?: number } = {}
-  ): Promise<string> {
+  static async resizeImageForUpload( pathOrUri: string ): Promise<string> {
     const width = 2048;
     await RNFS.mkdir( photoUploadPath );
     let outFilename = pathOrUri.split( "/" ).slice( -1 ).pop( );
@@ -57,7 +54,6 @@ class Photo extends Realm.Object {
 
     const uri = await resizeImage( uriForResize, {
       width,
-      rotation: options.rotation,
       outputPath: photoUploadPath,
       imageOptions: {
         mode: "contain",
@@ -68,8 +64,8 @@ class Photo extends Realm.Object {
     return uri;
   }
 
-  static async new( uri: string, resizeOptions: { rotation?: number } = {} ) {
-    const localFilePath = await Photo.resizeImageForUpload( uri, resizeOptions );
+  static async new( uri: string ) {
+    const localFilePath = await Photo.resizeImageForUpload( uri );
     return {
       _created_at: new Date( ),
       _updated_at: new Date( ),
