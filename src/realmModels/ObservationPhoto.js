@@ -55,7 +55,10 @@ class ObservationPhoto extends Realm.Object {
     };
   }
 
-  static mapPhotoForUpdating( observationID, observationPhoto ) {
+  static mapPhotoForUpdating(
+    observationID: number,
+    observationPhoto: RealmObservationPhoto
+  ) {
     return {
       id: observationPhoto.uuid,
       observation_photo: {
