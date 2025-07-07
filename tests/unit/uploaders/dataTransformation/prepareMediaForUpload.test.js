@@ -90,7 +90,6 @@ describe( "prepareMediaForUpload", () => {
     );
 
     expect( ObservationPhoto.mapPhotoForUpload ).toHaveBeenCalledWith(
-      observationId,
       mockObservationPhoto
     );
 

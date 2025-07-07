@@ -9,7 +9,7 @@ function prepareMediaForUpload(
 ): object {
   if ( type === "Photo" || type === "ObservationPhoto" ) {
     if ( action === "upload" ) {
-      return ObservationPhoto.mapPhotoForUpload( observationId, media );
+      return ObservationPhoto.mapPhotoForUpload( media );
     }
     if ( action === "attach" ) {
       return ObservationPhoto
