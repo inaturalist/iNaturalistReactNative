@@ -2,7 +2,6 @@ import { Realm } from "@realm/react";
 import type { ApiObservationPhoto } from "api/types";
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import inatjs, { FileUpload } from "inaturalistjs";
-import type { RealmPhoto } from "realmModels/types";
 import * as uuid from "uuid";
 
 import Photo from "./Photo";
@@ -48,7 +47,7 @@ class ObservationPhoto extends Realm.Object {
     return localObsPhoto;
   }
 
-  static mapPhotoForUpload( observationID, photo: RealmPhoto ) {
+  static mapPhotoForUpload( observationID, photo ) {
     const uri = Photo.getLocalPhotoUri( photo.localFilePath );
     return {
       file: new FileUpload( {
