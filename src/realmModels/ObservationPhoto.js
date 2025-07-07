@@ -6,6 +6,12 @@ import * as uuid from "uuid";
 import Photo from "./Photo";
 
 class ObservationPhoto extends Realm.Object {
+  _created_at?: Date;
+
+  _synced_at?: Date;
+
+  _updated_at?: Date;
+
   static OBSERVATION_PHOTOS_FIELDS = {
     id: true,
     photo: Photo.PHOTO_FIELDS,
