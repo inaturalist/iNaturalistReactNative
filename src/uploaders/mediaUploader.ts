@@ -1,12 +1,12 @@
 import { createOrUpdateEvidence } from "api/observations";
 import inatjs from "inaturalistjs";
 import Realm from "realm";
-import {
+import type {
   RealmObservation,
   RealmObservationPhoto,
   RealmObservationSound,
   RealmPhoto
-} from "realmModels/types.d.ts";
+} from "realmModels/types";
 import { markRecordUploaded, prepareMediaForUpload } from "uploaders";
 import { trackEvidenceUpload } from "uploaders/utils/progressTracker.ts";
 
