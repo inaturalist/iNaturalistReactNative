@@ -11,7 +11,7 @@ class ObservationPhoto extends Realm.Object {
     photo: Photo.PHOTO_FIELDS,
     position: true,
     uuid: true
-  };
+  } as const;
 
   needsSync( ) {
     return !this._synced_at || this._synced_at <= this._updated_at;
