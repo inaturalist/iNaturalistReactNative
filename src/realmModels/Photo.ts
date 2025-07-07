@@ -1,7 +1,9 @@
 import { Realm } from "@realm/react";
+import type { ApiPhoto } from "api/types";
 import { photoUploadPath } from "appConstants/paths.ts";
 import { Platform } from "react-native";
 import RNFS from "react-native-fs";
+import type { RealmPhoto } from "realmModels/types";
 import resizeImage from "sharedHelpers/resizeImage.ts";
 import { unlink } from "sharedHelpers/util.ts";
 
@@ -13,7 +15,7 @@ class Photo extends Realm.Object {
     url: true
   };
 
-  static mapApiToRealm( photo, _realm = null ) {
+  static mapApiToRealm( photo: ApiPhoto, _realm = null ) {
     const localPhoto = {
       ...photo,
       _synced_at: new Date( )
@@ -74,35 +76,35 @@ class Photo extends Realm.Object {
 
   // this is necessary because photos cannot be found reliably via the file:/// name.
   // without this, local photos will not show up when the app updates
-  static getLocalPhotoUri( localPathOrUri: string ) {
+  static getLocalPhotoUri( localPathOrUri?: string ) {
     const pieces = localPathOrUri?.split( "photoUploads/" );
     if ( !pieces || pieces.length <= 1 ) return null;
     return `file://${photoUploadPath}/${pieces[1]}`;
   }
 
-  static displayLargePhoto( url: string ) {
+  static displayLargePhoto( url?: string ) {
     return url?.replace( "square", "large" );
   }
 
-  static displayMediumPhoto( url: string ) {
+  static displayMediumPhoto( url?: string ) {
     return url?.replace( "square", "medium" );
   }
 
-  static displayLocalOrRemoteLargePhoto( photo ) {
+  static displayLocalOrRemoteLargePhoto( photo: RealmPhoto ) {
     return (
       Photo.displayLargePhoto( photo?.url )
       || Photo.getLocalPhotoUri( photo?.localFilePath )
     );
   }
 
-  static displayLocalOrRemoteMediumPhoto( photo ) {
+  static displayLocalOrRemoteMediumPhoto( photo: RealmPhoto ) {
     return (
       Photo.displayMediumPhoto( photo?.url )
       || Photo.getLocalPhotoUri( photo?.localFilePath )
     );
   }
 
-  static displayLocalOrRemoteSquarePhoto( photo ) {
+  static displayLocalOrRemoteSquarePhoto( photo: RealmPhoto ) {
     return photo?.url || Photo.getLocalPhotoUri( photo?.localFilePath );
   }
 
