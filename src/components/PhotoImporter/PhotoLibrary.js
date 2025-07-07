@@ -18,7 +18,7 @@ import {
 import RNFS from "react-native-fs";
 import * as ImagePicker from "react-native-image-picker";
 import Observation from "realmModels/Observation";
-import ObservationPhoto from "realmModels/ObservationPhoto.ts";
+import ObservationPhoto from "realmModels/ObservationPhoto";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import { sleep } from "sharedHelpers/util.ts";
 import { useLayoutPrefs } from "sharedHooks";
