@@ -107,7 +107,6 @@ const Developer = (): Node => {
           text="LOG"
           className="mb-5"
         />
-        {/* TODO: this needs to be restricted to log in the current user and none other */}
         <Button
           onPress={() => navigation.navigate( "LoginStackNavigator" )}
           text="LOG IN AGAIN"
