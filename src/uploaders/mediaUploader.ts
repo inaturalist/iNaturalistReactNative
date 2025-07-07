@@ -78,7 +78,7 @@ interface ApiEndpoint {
   ): Promise<MediaApiResponse>;
 }
 
-type Evidence = RealmObservationPhoto | RealmObservationSound | RealmPhoto;
+export type Evidence = RealmObservationPhoto | RealmObservationSound | RealmPhoto;
 
 interface MediaItems {
   unsyncedObservationPhotos: RealmObservationPhoto[];

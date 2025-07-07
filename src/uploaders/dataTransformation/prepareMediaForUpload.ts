@@ -1,8 +1,9 @@
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import ObservationSound from "realmModels/ObservationSound";
+import { Evidence } from "uploaders/mediaUploader.ts";
 
 function prepareMediaForUpload(
-  media: object,
+  media: Evidence,
   type: string,
   action: "upload" | "attach" | "update",
   observationId?: number | null
