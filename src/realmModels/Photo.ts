@@ -13,7 +13,7 @@ class Photo extends Realm.Object {
     attribution: true,
     license_code: true,
     url: true
-  };
+  } as const;
 
   static mapApiToRealm( photo: ApiPhoto, _realm = null ) {
     const localPhoto = {
@@ -24,7 +24,10 @@ class Photo extends Realm.Object {
     return localPhoto;
   }
 
-  static async resizeImageForUpload( pathOrUri, options = {} ) {
+  static async resizeImageForUpload(
+    pathOrUri: string,
+    options: { rotation?: number } = {}
+  ): Promise<string> {
     const width = 2048;
     await RNFS.mkdir( photoUploadPath );
     let outFilename = pathOrUri.split( "/" ).slice( -1 ).pop( );
@@ -65,7 +68,7 @@ class Photo extends Realm.Object {
     return uri;
   }
 
-  static async new( uri, resizeOptions = {} ) {
+  static async new( uri: string, resizeOptions: { rotation?: number } = {} ) {
     const localFilePath = await Photo.resizeImageForUpload( uri, resizeOptions );
     return {
       _created_at: new Date( ),
