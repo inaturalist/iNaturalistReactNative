@@ -8,7 +8,7 @@ import { Image, View } from "components/styledComponents";
 import { t } from "i18next";
 import { RealmContext } from "providers/contexts.ts";
 import React, {
-  useEffect, useRef, useState
+  useCallback, useEffect, useRef, useState
 } from "react";
 import { Trans } from "react-i18next";
 import {
@@ -26,6 +26,10 @@ import LoginSignUpInputField from "./LoginSignUpInputField";
 
 const { useRealm } = RealmContext;
 
+interface Props {
+  scrollViewRef?: React.Ref
+}
+
 interface LoginFormParams {
   emailConfirmed?: boolean;
   prevScreen?: string;
@@ -36,7 +40,9 @@ type ParamList = {
   LoginFormParams: LoginFormParams
 }
 
-const LoginForm = ( ) => {
+const LoginForm = ( {
+  scrollViewRef
+}: Props ) => {
   const navigation = useNavigation( );
   const { params } = useRoute<RouteProp<ParamList, "LoginFormParams">>( );
   const emailConfirmed = params?.emailConfirmed;
@@ -106,6 +112,22 @@ const LoginForm = ( ) => {
     isDefaultMode,
     setLoggedInWhileInDefaultMode
   ] );
+
+  const scrollToItem = useCallback( ( ) => {
+    firstInputFieldRef.current.measureLayout(
+      scrollViewRef.current,
+      ( _, y ) => {
+        scrollViewRef.current.scrollTo( { y, animated: true } );
+      },
+      () => console.log( "Failed to measure" )
+    );
+  }, [scrollViewRef] );
+
+  useEffect( ( ) => {
+    if ( keyboardShown ) {
+      scrollToItem( );
+    }
+  }, [keyboardShown, scrollToItem] );
 
   const renderFooter = ( ) => (
     <>
