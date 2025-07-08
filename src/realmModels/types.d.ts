@@ -42,7 +42,7 @@ export interface RealmObservationSoundPojo extends RealmObject {
   sound: RealmSound;
 }
 
-export interface RealmObservationSound extends RealmObject {
+export interface RealmObservationSound extends RealmObservationSoundPojo {
   needsSync: ( ) => boolean;
   wasSynced: ( ) => boolean;
 }
