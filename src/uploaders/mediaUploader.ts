@@ -10,8 +10,8 @@ import type {
 import { markRecordUploaded, prepareMediaForUpload } from "uploaders";
 import { trackEvidenceUpload } from "uploaders/utils/progressTracker.ts";
 
-type EvidenceType = "Photo" | "ObservationPhoto" | "ObservationSound";
-type ActionType = "upload" | "attach" | "update";
+export type EvidenceType = "Photo" | "ObservationPhoto" | "ObservationSound";
+export type ActionType = "upload" | "attach" | "update";
 
 interface UploadOptions {
   api_token?: string;

@@ -1,11 +1,11 @@
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import ObservationSound from "realmModels/ObservationSound";
-import { Evidence } from "uploaders/mediaUploader.ts";
+import { ActionType, Evidence, EvidenceType } from "uploaders/mediaUploader.ts";
 
 function prepareMediaForUpload(
   media: Evidence,
-  type: string,
-  action: "upload" | "attach" | "update",
+  type: EvidenceType,
+  action: ActionType,
   observationId?: number | null
 ): object {
   if ( type === "Photo" || type === "ObservationPhoto" ) {
