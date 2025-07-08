@@ -213,4 +213,24 @@ describe( "prepareMediaForUpload", () => {
       );
     } ).toThrow( /Unsupported media type.*or action/ );
   } );
+
+  test( "should throw an error if attach observationId is required but not provided", () => {
+    expect( () => {
+      prepareMediaForUpload(
+        mockObservationPhoto,
+        "ObservationPhoto",
+        "attach"
+      );
+    } ).toThrow( /Observation ID is required for attaching photos/ );
+  } );
+
+  test( "should throw an error if update observationId is required but not provided", () => {
+    expect( () => {
+      prepareMediaForUpload(
+        mockObservationPhoto,
+        "ObservationPhoto",
+        "update"
+      );
+    } ).toThrow( /Observation ID is required for updating photos/ );
+  } );
 } );
