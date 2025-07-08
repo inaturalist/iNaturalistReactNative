@@ -53,6 +53,11 @@ exports[`PhotoCarousel renders correctly 1`] = `
       >
         <View
           collapsable={false}
+          jestAnimatedProps={
+            {
+              "value": {},
+            }
+          }
           jestAnimatedStyle={
             {
               "value": {
@@ -64,14 +69,17 @@ exports[`PhotoCarousel renders correctly 1`] = `
               },
             }
           }
+          jestInlineStyle={{}}
           style={
-            {
-              "transform": [
-                {
-                  "rotateZ": "0",
-                },
-              ],
-            }
+            [
+              {
+                "transform": [
+                  {
+                    "rotateZ": "0",
+                  },
+                ],
+              },
+            ]
           }
         >
           <View
@@ -222,6 +230,11 @@ exports[`PhotoCarousel renders correctly 1`] = `
       >
         <View
           collapsable={false}
+          jestAnimatedProps={
+            {
+              "value": {},
+            }
+          }
           jestAnimatedStyle={
             {
               "value": {
@@ -233,14 +246,17 @@ exports[`PhotoCarousel renders correctly 1`] = `
               },
             }
           }
+          jestInlineStyle={{}}
           style={
-            {
-              "transform": [
-                {
-                  "rotateZ": "0",
-                },
-              ],
-            }
+            [
+              {
+                "transform": [
+                  {
+                    "rotateZ": "0",
+                  },
+                ],
+              },
+            ]
           }
         >
           <View
@@ -391,6 +407,11 @@ exports[`PhotoCarousel renders correctly 1`] = `
       >
         <View
           collapsable={false}
+          jestAnimatedProps={
+            {
+              "value": {},
+            }
+          }
           jestAnimatedStyle={
             {
               "value": {
@@ -402,14 +423,17 @@ exports[`PhotoCarousel renders correctly 1`] = `
               },
             }
           }
+          jestInlineStyle={{}}
           style={
-            {
-              "transform": [
-                {
-                  "rotateZ": "0",
-                },
-              ],
-            }
+            [
+              {
+                "transform": [
+                  {
+                    "rotateZ": "0",
+                  },
+                ],
+              },
+            ]
           }
         >
           <View
@@ -604,6 +628,11 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
       >
         <View
           collapsable={false}
+          jestAnimatedProps={
+            {
+              "value": {},
+            }
+          }
           jestAnimatedStyle={
             {
               "value": {
@@ -615,14 +644,17 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
               },
             }
           }
+          jestInlineStyle={{}}
           style={
-            {
-              "transform": [
-                {
-                  "rotateZ": "0",
-                },
-              ],
-            }
+            [
+              {
+                "transform": [
+                  {
+                    "rotateZ": "0",
+                  },
+                ],
+              },
+            ]
           }
         >
           <View
@@ -778,6 +810,11 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
       >
         <View
           collapsable={false}
+          jestAnimatedProps={
+            {
+              "value": {},
+            }
+          }
           jestAnimatedStyle={
             {
               "value": {
@@ -789,14 +826,17 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
               },
             }
           }
+          jestInlineStyle={{}}
           style={
-            {
-              "transform": [
-                {
-                  "rotateZ": "0",
-                },
-              ],
-            }
+            [
+              {
+                "transform": [
+                  {
+                    "rotateZ": "0",
+                  },
+                ],
+              },
+            ]
           }
         >
           <View
@@ -952,6 +992,11 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
       >
         <View
           collapsable={false}
+          jestAnimatedProps={
+            {
+              "value": {},
+            }
+          }
           jestAnimatedStyle={
             {
               "value": {
@@ -963,14 +1008,17 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
               },
             }
           }
+          jestInlineStyle={{}}
           style={
-            {
-              "transform": [
-                {
-                  "rotateZ": "0",
-                },
-              ],
-            }
+            [
+              {
+                "transform": [
+                  {
+                    "rotateZ": "0",
+                  },
+                ],
+              },
+            ]
           }
         >
           <View

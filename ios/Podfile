@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Disable New Architecture
+ENV["RCT_NEW_ARCH_ENABLED"] = "0"
+
 # setup instructions from https://www.npmjs.com/package/react-native-permissions
 def node_require( script )
   # Resolve script with node to allow for hoisting
@@ -43,17 +46,6 @@ setup_permissions(
   ]
 )
 
-# If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.
-# because `react-native-flipper` depends on (FlipperKit,...) that will be excluded
-#
-# To fix this you can also exclude `react-native-flipper` using a `react-native.config.js`
-# ```js
-# module.exports = {
-#   dependencies: {
-#     ...(process.env.NO_FLIPPER ? { 'react-native-flipper': { platforms: { ios: null } } } : {}),
-# ```
-# flipper_config = ENV["NO_FLIPPER"] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
-
 linkage = ENV.fetch( "USE_FRAMEWORKS", nil )
 unless linkage.nil?
   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
@@ -65,15 +57,9 @@ target "iNaturalistReactNative" do
 
   use_react_native!(
     path: config[:reactNativePath],
-    # Enables Flipper.
-    #
-    # Note that if you have use_frameworks! enabled, Flipper will not work and
-    # you should disable the next line.
-    # :flipper_configuration => flipper_config,
     # An absolute path to your application root.
     app_path: "#{Pod::Config.instance.installation_root}/.."
   )
-  pod "React-jsi", path: "../node_modules/react-native/ReactCommon/jsi", modular_headers: true
 
   pod "react-native-config", path: "../node_modules/react-native-config"
 
@@ -101,38 +87,17 @@ target "iNaturalistReactNative" do
       installer,
       config[:reactNativePath],
       mac_catalyst_enabled: false
+      # :ccache_enabled => true
     )
-    # Add these lines for Xcode 14 builds
-    installer.generated_projects.each do | project |
-      project.targets.each do | target |
-        target.build_configurations.each do | build_config |
-          build_config.build_settings["DEVELOPMENT_TEAM"] = "iNaturalist, LLC"
-        end
-      end
-    end
-    # End of added lines
     # https://github.com/Agontuk/react-native-geolocation-service/issues/287#issuecomment-980772489
     installer.pods_project.targets.each do | target |
       target.build_configurations.each do | build_config |
         build_config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
-        # code below appears to be necessary for building pods with XCode 14:
-        # https://github.com/facebook/react-native/issues/34673#issuecomment-1252114414
-        build_config.build_settings["DEVELOPMENT_TEAM"] = "iNaturalist, LLC"
         build_config.build_settings["APPLICATION_EXTENSION_API_ONLY"] = "NO"
         build_config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = "$(inherited)"
       end
     end
 
-    installer.target_installation_results.pod_target_installation_results.each_value do | inst_result |
-      inst_result.native_target.build_configurations.each do | build_config |
-        # For third party modules who have React-bridging dependency to search correct headers
-        build_config.build_settings["HEADER_SEARCH_PATHS"] ||= "$(inherited) "
-        build_config.build_settings["HEADER_SEARCH_PATHS"] +=
-          '"$(PODS_ROOT)/Headers/Private/React-bridging/react/bridging" '
-        build_config.build_settings["HEADER_SEARCH_PATHS"] +=
-          '"$(PODS_CONFIGURATION_BUILD_DIR)/React-bridging/react_bridging.framework/Headers" '
-      end
-    end
     # react_native_post_install(installer)
     `sed -i -e  $'s/__IPHONE_10_0/__IPHONE_12_0/' Pods/RCT-Folly/folly/portability/Time.h`
   end

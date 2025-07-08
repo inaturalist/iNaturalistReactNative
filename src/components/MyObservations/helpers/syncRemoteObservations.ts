@@ -7,7 +7,7 @@ async function syncRemoteObservations( realm, currentUserId: number, deletionsCo
   const searchParams = {
     user_id: currentUserId,
     per_page: 50,
-    fields: Observation.LIST_FIELDS,
+    fields: Observation.ADVANCED_MODE_LIST_FIELDS,
     ttl: -1
   };
   // Between elasticsearch update time and API caches, there's no absolute

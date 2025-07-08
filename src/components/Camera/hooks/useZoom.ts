@@ -1,6 +1,7 @@
 import _ from "lodash";
 import {
   useCallback,
+  useEffect,
   useMemo,
   useState
 } from "react";
@@ -10,6 +11,7 @@ import {
 import {
   Extrapolate,
   interpolate,
+  runOnJS,
   useAnimatedProps,
   useSharedValue,
   withSpring
@@ -55,6 +57,17 @@ const useZoom = ( device: CameraDevice ): object => {
 
   const zoomButtonValues = [minZoom, neutralZoom, maxZoomWithButton];
 
+  useEffect( ( ) => {
+    const newInitialZoom = !device?.isMultiCam
+      ? minZoom
+      : neutralZoom;
+    zoom.value = newInitialZoom;
+    startZoom.value = newInitialZoom;
+    // Shared values don't cause re-renders and including them in dependency arrays
+    // causes render-time reads, which violates Reanimated's threading model
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [device?.isMultiCam, minZoom, neutralZoom] );
+
   const handleZoomButtonPress = ( ) => {
     if ( zoomTextValue === _.last( zoomButtonOptions ) ) {
       zoom.value = withSpring( zoomButtonValues[0] );
@@ -69,17 +82,34 @@ const useZoom = ( device: CameraDevice ): object => {
   const onZoomStart = useCallback( ( ) => {
     // start pinch-to-zoom
     startZoom.value = zoom.value;
-  }, [
-    startZoom,
-    zoom.value
-  ] );
+    // Shared values don't cause re-renders and including them in dependency arrays
+    // causes render-time reads, which violates Reanimated's threading model
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [] );
 
-  const resetZoom = () => {
+  const resetZoom = ( ) => {
     zoom.value = initialZoom;
     setZoomTextValue( initialZoomTextValue );
   };
 
+  const updateZoomTextValue = useCallback( ( newZoom: number ) => {
+    const closestZoomTextValue = zoomButtonOptions.reduce(
+      ( prev, curr ) => {
+        if ( newZoom === minZoom ) {
+          return zoomButtonOptions[0];
+        }
+        return (
+          Math.abs( curr - newZoom ) < Math.abs( prev - newZoom )
+            ? curr
+            : prev );
+      }
+    );
+    setZoomTextValue( closestZoomTextValue );
+  }, [zoomButtonOptions, minZoom] );
+
   const onZoomChange = useCallback( ( scale: number ) => {
+    "worklet";
+
     // Calculate new zoom value from pinch to zoom (since scale factor is relative to initial pinch)
     const newScale = interpolate(
       scale,
@@ -95,29 +125,15 @@ const useZoom = ( device: CameraDevice ): object => {
     );
     zoom.value = newZoom;
 
-    const closestZoomTextValue = zoomButtonOptions.reduce(
-      ( prev, curr ) => {
-        if ( newZoom === minZoom ) {
-          return zoomButtonOptions[0];
-        }
-        return (
-          Math.abs( curr - newZoom ) < Math.abs( prev - newZoom )
-            ? curr
-            : prev );
-      }
-    );
-    setZoomTextValue( closestZoomTextValue );
-  }, [
-    maxZoomWithPinch,
-    minZoom,
-    startZoom.value,
-    zoom,
-    zoomButtonOptions
-  ] );
+    runOnJS( updateZoomTextValue )( newZoom );
+    // Shared values don't cause re-renders and including them in dependency arrays
+    // causes render-time reads, which violates Reanimated's threading model
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [maxZoomWithPinch, minZoom, updateZoomTextValue] );
 
   const animatedProps = useAnimatedProps < CameraProps >(
     () => ( { zoom: zoom.value } ),
-    [zoom]
+    []
   );
 
   const pinchToZoom = useMemo( ( ) => Gesture.Pinch( )

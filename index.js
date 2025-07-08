@@ -10,6 +10,9 @@ import "react-native-get-random-values";
 import "react-native-url-polyfill/auto";
 
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import {
+  useColorScheme, Alert, AppRegistry, View
+} from "react-native";
 import { getCurrentRoute } from "navigation/navigationUtils.ts";
 import { zustandStorage } from "stores/useStore";
 import {
@@ -25,7 +28,6 @@ import OfflineNavigationGuard from "navigation/OfflineNavigationGuard.tsx";
 import INatPaperProvider from "providers/INatPaperProvider";
 import RealmProvider from "providers/RealmProvider";
 import React from "react";
-import { Alert, AppRegistry } from "react-native";
 import Config from "react-native-config";
 import { setJSExceptionHandler, setNativeExceptionHandler } from "react-native-exception-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -139,25 +141,31 @@ const queryClient = new QueryClient( {
   }
 } );
 
-const AppWithProviders = ( ) => (
-  <QueryClientProvider client={queryClient}>
-    <RealmProvider>
-      <SafeAreaProvider>
-        <INatPaperProvider>
-          <GestureHandlerRootView className="flex-1">
-            <BottomSheetModalProvider>
-              <OfflineNavigationGuard>
-                <ErrorBoundary>
-                  <App />
-                </ErrorBoundary>
-              </OfflineNavigationGuard>
-            </BottomSheetModalProvider>
-          </GestureHandlerRootView>
-        </INatPaperProvider>
-      </SafeAreaProvider>
-    </RealmProvider>
-  </QueryClientProvider>
+const AppWithProviders = ( ) => {
+  const colorScheme = useColorScheme( );
+  const darkModeStyleWrapper = { flex: 1, colorScheme };
 
-);
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RealmProvider>
+        <SafeAreaProvider>
+          <INatPaperProvider>
+            <GestureHandlerRootView className="flex-1">
+              <BottomSheetModalProvider>
+                <View style={darkModeStyleWrapper}>
+                  <OfflineNavigationGuard>
+                    <ErrorBoundary>
+                      <App />
+                    </ErrorBoundary>
+                  </OfflineNavigationGuard>
+                </View>
+              </BottomSheetModalProvider>
+            </GestureHandlerRootView>
+          </INatPaperProvider>
+        </SafeAreaProvider>
+      </RealmProvider>
+    </QueryClientProvider>
+  );
+};
 
 AppRegistry.registerComponent( appName, ( ) => AppWithProviders );

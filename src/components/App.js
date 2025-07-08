@@ -39,7 +39,10 @@ const handleShare = ( navigation, item: ?SharedItem ) => {
 
   // show user a loading animation screen (like PhotoLibrary)
   // while observations are created
-  navigation?.navigate( "PhotoSharing", { item } );
+  navigation?.navigate( "NoBottomTabStackNavigator", {
+    screen: "PhotoSharing",
+    params: { item }
+  } );
 };
 
 type Props = {

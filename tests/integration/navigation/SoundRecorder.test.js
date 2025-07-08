@@ -5,8 +5,8 @@ import {
   within
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
-import useStore from "stores/useStore";
 import { renderApp } from "tests/helpers/render";
+import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 
 // We're explicitly testing navigation here so we want react-navigation
@@ -37,10 +37,8 @@ afterAll( uniqueRealmAfterAll );
 
 beforeAll( async () => {
   await initI18next();
-  useStore.setState( {
-    layout: {
-      isAllAddObsOptionsMode: true
-    }
+  setStoreStateLayout( {
+    isAllAddObsOptionsMode: true
   } );
 } );
 

@@ -18,7 +18,7 @@ const EmptyHeader = ( ) => null;
 
 const DatePicker = ( {
   date,
-  datetime,
+  datetime = false,
   isDateTimePickerVisible,
   onDatePicked,
   toggleDateTimePicker
@@ -43,10 +43,6 @@ const DatePicker = ( {
       date={date || new Date( )}
     />
   );
-};
-
-DatePicker.defaultProps = {
-  datetime: false
 };
 
 export default DatePicker;

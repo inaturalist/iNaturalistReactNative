@@ -7,9 +7,9 @@ import {
 import initI18next from "i18n/initI18next";
 import * as rnImagePicker from "react-native-image-picker";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice.ts";
-import useStore from "stores/useStore";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
+import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 
 // We're explicitly testing navigation here so we want react-navigation
@@ -60,7 +60,6 @@ const actor = userEvent.setup( );
 
 const navigateToPhotoImporter = async ( ) => {
   await waitFor( ( ) => {
-    global.timeTravel( );
     expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeVisible( );
   } );
   const tabBar = await screen.findByTestId( "CustomTabBar" );
@@ -71,13 +70,11 @@ const navigateToPhotoImporter = async ( ) => {
 };
 
 describe( "PhotoLibrary navigation", ( ) => {
-  global.withAnimatedTimeTravelEnabled( );
   beforeEach( ( ) => {
-    useStore.setState( {
-      layout: {
-        screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT,
-        isAllAddObsOptionsMode: true
-      }
+    setStoreStateLayout( {
+      screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT,
+      isDefaultMode: false,
+      isAllAddObsOptionsMode: true
     } );
   } );
 
@@ -92,7 +89,7 @@ describe( "PhotoLibrary navigation", ( ) => {
     const groupPhotosText = await screen.findByText( /Group Photos/ );
     await waitFor( ( ) => {
       // user should land on GroupPhotos
-      expect( groupPhotosText ).toBeTruthy( );
+      expect( groupPhotosText ).toBeVisible( );
     } );
   } );
 
@@ -104,21 +101,19 @@ describe( "PhotoLibrary navigation", ( ) => {
     );
     renderApp( );
     await navigateToPhotoImporter( );
+    const obsEditText = await screen.findByText( /New Observation/ );
     await waitFor( () => {
-      global.timeTravel();
-      expect( screen.getByText( /New Observation/ ) ).toBeVisible();
+      expect( obsEditText ).toBeVisible();
     } );
   } );
 } );
 
 describe( "PhotoLibrary navigation when suggestions screen is preferred next screen", () => {
-  global.withAnimatedTimeTravelEnabled();
   beforeEach( () => {
-    useStore.setState( {
-      layout: {
-        screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
-        isAllAddObsOptionsMode: true
-      }
+    setStoreStateLayout( {
+      screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
+      isDefaultMode: false,
+      isAllAddObsOptionsMode: true
     } );
   } );
   it( "advances to Suggestions when one photo is selected", async () => {
@@ -127,18 +122,9 @@ describe( "PhotoLibrary navigation when suggestions screen is preferred next scr
     } ) );
     renderApp();
     await navigateToPhotoImporter();
+    const addAnIDText = await screen.findByText( /Add an ID Later/ );
     await waitFor( () => {
-      global.timeTravel();
-      // TODO: Johannes 25-02-25
-      // At this point in the test the screen is not advancing to the next screen
-      // it is stuck on the "PhotoLibrary" screen. I don't know why this is happening since
-      // it is working when navigating to ObsEdit, see above. Furthermore, uncommenting this
-      // but commenting out the above describe will make this test pass, so I think it is more
-      // something with test setup.
-      // I feel that is more important to move quickly before our launch deadline. So, I'll
-      // comment this out which means the test does not actually test the navigation to the
-      // Suggestions screen.
-      // expect( screen.getByText( /Add an ID Later/ ) ).toBeVisible();
+      expect( addAnIDText ).toBeVisible();
     } );
   } );
 } );

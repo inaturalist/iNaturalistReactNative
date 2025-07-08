@@ -1,5 +1,6 @@
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
+import { authenticateUser } from "components/LoginSignUp/AuthenticationService.ts";
 import {
   Body1, Body2, Button, Heading4, INatIcon, INatIconButton, List2
 } from "components/SharedComponents";
@@ -19,7 +20,6 @@ import { useLayoutPrefs } from "sharedHooks";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 import colors from "styles/tailwindColors";
 
-import { authenticateUser } from "./AuthenticationService";
 import Error from "./Error";
 import { signInWithApple, signInWithGoogle } from "./loginFormHelpers";
 import LoginSignUpInputField from "./LoginSignUpInputField";
@@ -82,6 +82,7 @@ const LoginForm = ( ) => {
       setLoading( false );
       return;
     }
+
     setLoading( false );
 
     // Set a state to zustand that we just logged in while in default mode

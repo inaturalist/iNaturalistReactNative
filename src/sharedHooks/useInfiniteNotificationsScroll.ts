@@ -67,7 +67,22 @@ async function fetchObsByUUIDs(
   // TODO convert api/observations to TS
   const observations: ApiObservation[] | null = await fetchRemoteObservations(
     uuids,
-    { fields: Observation.FIELDS },
+    {
+      fields: {
+        user: {
+          id: true
+        },
+        observation_photos: {
+          uuid: true,
+          photo: {
+            url: true
+          }
+        },
+        observation_sounds: {
+          uuid: true
+        }
+      }
+    },
     authOptions
   );
   if ( options.save ) {

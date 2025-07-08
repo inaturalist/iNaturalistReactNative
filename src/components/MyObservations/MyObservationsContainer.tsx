@@ -1,7 +1,7 @@
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
-import { useFocusEffect, useRoute } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { fetchSpeciesCounts } from "api/observations";
 import { RealmContext } from "providers/contexts.ts";
 import React, {
@@ -13,7 +13,6 @@ import { Alert } from "react-native";
 import Observation from "realmModels/Observation";
 import Taxon from "realmModels/Taxon";
 import type { RealmObservation, RealmTaxon } from "realmModels/types";
-import { log } from "sharedHelpers/logger";
 import {
   useCurrentUser,
   useInfiniteObservationsScroll,
@@ -22,11 +21,9 @@ import {
   useLocalObservations,
   useNavigateToObsEdit,
   useObservationsUpdates,
-  usePerformance,
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
-import { isDebugMode } from "sharedHooks/useDebugMode";
 import {
   UPLOAD_PENDING
 } from "stores/createUploadObservationsSlice.ts";
@@ -41,17 +38,11 @@ import MyObservationsSimple, {
   TAXA_TAB
 } from "./MyObservationsSimple";
 
-const logger = log.extend( "MyObservationsContainer" );
-
 const { useRealm } = RealmContext;
 
 interface SpeciesCount {
   count: number,
   taxon: RealmTaxon
-}
-
-interface RouteParams {
-  justFinishedSignup?: boolean;
 }
 
 interface SyncOptions {
@@ -61,21 +52,12 @@ interface SyncOptions {
 }
 
 const MyObservationsContainer = ( ): React.FC => {
-  const { loadTime } = usePerformance( {
-    screenName: "MyObservations"
-  } );
-  if ( isDebugMode( ) ) {
-    logger.info( loadTime );
-  }
   const { isDefaultMode, loggedInWhileInDefaultMode } = useLayoutPrefs();
   const { t } = useTranslation( );
   const realm = useRealm( );
+  const navigation = useNavigation( );
   const listRef = useRef( null );
   const navigateToObsEdit = useNavigateToObsEdit( );
-
-  // Get navigation params
-  const { params } = useRoute( );
-  const { justFinishedSignup } = ( params as RouteParams ) || {};
 
   const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
   const uploadQueue = useStore( state => state.uploadQueue );
@@ -88,11 +70,21 @@ const MyObservationsContainer = ( ): React.FC => {
   const myObsOffsetToRestore = useStore( state => state.myObsOffsetToRestore );
   const setMyObsOffset = useStore( state => state.setMyObsOffset );
   const uploadStatus = useStore( state => state.uploadStatus );
+  const justFinishedSignup: boolean = useStore( state => state.layout.justFinishedSignup );
+  // As soon as we leave this screen, the user is no longer considered as just finished signup
+  const setJustFinishedSignup = useStore( state => state.layout.setJustFinishedSignup );
+  useEffect( ( ) => {
+    const unsubscribe = navigation.addListener( "blur", ( ) => {
+      setJustFinishedSignup( false );
+    } );
+    return unsubscribe;
+  }, [navigation, setJustFinishedSignup] );
 
   const {
     observationList: observations,
     totalResults: totalResultsLocal
   } = useLocalObservations( );
+  const prevObservationsLength = useRef( observations.length );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
 
   const { isConnected } = useNetInfo( );
@@ -109,6 +101,7 @@ const MyObservationsContainer = ( ): React.FC => {
   useObservationsUpdates( !!currentUser );
 
   const {
+    fetchFromLastObservation,
     fetchNextPage,
     isFetchingNextPage,
     status,
@@ -332,6 +325,20 @@ const MyObservationsContainer = ( ): React.FC => {
     }
   }, [numTotalTaxa, numOfUserSpecies] );
 
+  useEffect( () => {
+    const newObservationCount = observations.length - prevObservationsLength.current;
+
+    if ( newObservationCount > 0 && listRef?.current ) {
+      if ( listRef.current.notifyDataFetched ) {
+        listRef.current.notifyDataFetched( newObservationCount );
+      } else {
+        console.warn( "notifyDataFetched method not found on listRef" );
+      }
+    }
+
+    prevObservationsLength.current = observations.length;
+  }, [observations.length, listRef] );
+
   if ( !layout ) { return null; }
 
   if ( observations.length === 0 ) {
@@ -356,6 +363,7 @@ const MyObservationsContainer = ( ): React.FC => {
       activeTab={activeTab}
       currentUser={currentUser}
       fetchMoreTaxa={fetchMoreTaxa}
+      fetchFromLastObservation={fetchFromLastObservation}
       handleIndividualUploadPress={handleIndividualUploadPress}
       handlePullToRefresh={handlePullToRefresh}
       handleSyncButtonPress={handleSyncButtonPress}

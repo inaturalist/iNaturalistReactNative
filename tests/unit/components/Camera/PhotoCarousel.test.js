@@ -25,24 +25,18 @@ describe( "PhotoCarousel", ( ) => {
   // in a test environment, so I'm not sure we can test those now ~~~kueda
   // 20230518
   it( "renders correctly", async () => {
-    render(
-      <PhotoCarousel photoUris={mockPhotoUris} />
-    );
+    render( <PhotoCarousel photoUris={mockPhotoUris} /> );
 
     await screen.findByTestId( `PhotoCarousel.displayPhoto.${mockPhotoUris[0]}` );
 
-    // Snapshot test
     expect( screen ).toMatchSnapshot();
   } );
 
   it( "renders correctly for large screen", async () => {
-    render(
-      <PhotoCarousel photoUris={mockPhotoUris} isLargeScreen />
-    );
+    render( <PhotoCarousel photoUris={mockPhotoUris} isLargeScreen /> );
 
     await screen.findByTestId( `PhotoCarousel.displayPhoto.${mockPhotoUris[0]}` );
 
-    // Snapshot test
     expect( screen ).toMatchSnapshot();
   } );
 } );

@@ -81,7 +81,7 @@ const PhotoCarousel = ( {
         }
       ]
     } ),
-    [rotation?.value]
+    [rotation]
   );
 
   const renderSkeleton = useCallback( ( ) => ( takingPhoto

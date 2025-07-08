@@ -37,6 +37,7 @@ type Props = {
   contentContainerStyle?: Object,
   data: Array<Object>,
   dataCanBeFetched?: boolean,
+  fetchFromLastObservation?: Function,
   explore: boolean,
   handlePullToRefresh: Function,
   handleIndividualUploadPress: Function,
@@ -63,6 +64,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
   data,
   dataCanBeFetched,
   explore,
+  fetchFromLastObservation,
   handlePullToRefresh,
   handleIndividualUploadPress,
   hideLoadingWheel,
@@ -131,7 +133,8 @@ const ObservationsFlashList: Function = forwardRef( ( {
 
     const onItemPress = ( ) => {
       if ( obsNeedsSync && !isDefaultMode ) {
-        navigateToObsEdit( observation );
+        const realmObservation = realm.objectForPrimaryKey( "Observation", observation.uuid );
+        navigateToObsEdit( realmObservation );
       } else {
         // Uniquely identify the list this observation appears in so we can ensure
         // ObsDetails doesn't get pushed onto the stack twice after multiple taps
@@ -255,11 +258,26 @@ const ObservationsFlashList: Function = forwardRef( ( {
   // react thinks we've rendered a second item w/ a duplicate key
   const keyExtractor = item => item.uuid || item.id;
 
-  const onMomentumScrollEnd = ( ) => {
+  const onMomentumScrollEnd = useCallback( ( ) => {
     if ( dataCanBeFetched ) {
       onEndReached( );
     }
-  };
+  }, [dataCanBeFetched, onEndReached] );
+
+  const handleEndReached = useCallback( ( ) => {
+    if ( !dataCanBeFetched || explore ) return;
+
+    if ( fetchFromLastObservation && data.length > 0 ) {
+      const lastObservation = data[data.length - 1];
+      const lastId = lastObservation?.id;
+      if ( lastId ) {
+        fetchFromLastObservation( lastId );
+        return;
+      }
+    }
+
+    onEndReached( );
+  }, [dataCanBeFetched, fetchFromLastObservation, data, onEndReached, explore] );
 
   const refreshControl = (
     <CustomRefreshControl
@@ -284,6 +302,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
       keyExtractor={keyExtractor}
       numColumns={numColumns}
       onLayout={onLayout}
+      onEndReached={handleEndReached}
       onMomentumScrollEnd={onMomentumScrollEnd}
       onScroll={onScroll}
       renderItem={renderItem}

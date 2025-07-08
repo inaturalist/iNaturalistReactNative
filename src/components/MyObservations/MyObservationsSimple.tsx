@@ -7,13 +7,13 @@ import {
   AccountCreationCard,
   FiftyObservationCard,
   FiveObservationCard,
-  OneObservationCard,
-  TenObservationCard
+  OneObservationCard
 } from "components/OnboardingModal/PivotCards.tsx";
 import {
   Body1,
   InfiniteScrollLoadingWheel,
   OfflineNotice,
+  PerformanceDebugView,
   Tabs,
   ViewWrapper
 } from "components/SharedComponents";
@@ -45,6 +45,7 @@ interface SpeciesCount {
 export interface Props {
   activeTab: string;
   currentUser?: RealmUser;
+  fetchFromLastObservation: ( id: number ) => void;
   handleIndividualUploadPress: ( uuid: string ) => void;
   handlePullToRefresh: ( ) => void;
   handleSyncButtonPress: ( _p: { unuploadedObsMissingBasicsIDs: string[] } ) => void;
@@ -67,7 +68,7 @@ export interface Props {
   toggleLayout: ( ) => void;
   fetchMoreTaxa: ( ) => void;
   isFetchingTaxa?: boolean;
-  justFinishedSignup?: boolean;
+  justFinishedSignup: boolean;
   loggedInWhileInDefaultMode?: boolean;
   refetchTaxa: ( ) => void;
 }
@@ -84,6 +85,7 @@ export const TAXA_TAB = "taxa";
 const MyObservationsSimple = ( {
   activeTab,
   currentUser,
+  fetchFromLastObservation,
   handleIndividualUploadPress,
   handlePullToRefresh,
   handleSyncButtonPress,
@@ -106,7 +108,7 @@ const MyObservationsSimple = ( {
   toggleLayout,
   fetchMoreTaxa,
   isFetchingTaxa,
-  justFinishedSignup = false,
+  justFinishedSignup,
   loggedInWhileInDefaultMode = false,
   refetchTaxa
 }: Props ) => {
@@ -195,7 +197,7 @@ const MyObservationsSimple = ( {
 
   const unuploadedObsMissingBasicsIDs = useMemo( () => (
     observations
-      .filter( o => o.needsSync() && o.missingBasics() )
+      .filter( o => o.needs_sync && o.missing_basics )
       .map( o => o.uuid )
   ), [observations] );
 
@@ -217,9 +219,10 @@ const MyObservationsSimple = ( {
   );
 
   const dataFilledWithEmptyBoxes = useMemo( ( ) => {
-    const data = observations.filter( o => o.isValid() );
+    const data = observations;
     // In grid layout fill up to 8 items to make sure the grid is filled
-    if ( layout === "grid" ) {
+    // but don't add the empty boxes at the end of a long existing list
+    if ( layout === "grid" && data.length < 8 ) {
     // Fill up to 8 items to make sure the grid is filled
       const emptyBoxes = new Array( 8 - ( data.length % 8 ) ).fill( { empty: true } );
       // Add random id to empty boxes to ensure they are unique
@@ -285,9 +288,10 @@ const MyObservationsSimple = ( {
             <ObservationsFlashList
               data={dataFilledWithEmptyBoxes}
               dataCanBeFetched={!!currentUser}
+              fetchFromLastObservation={fetchFromLastObservation}
               handlePullToRefresh={handlePullToRefresh}
               handleIndividualUploadPress={handleIndividualUploadPress}
-              hideLoadingWheel
+              hideLoadingWheel={!isFetchingNextPage}
               hideMetadata={isDefaultMode}
               hideObsUploadStatus={!currentUser}
               hideObsStatus={!currentUser}
@@ -362,7 +366,6 @@ const MyObservationsSimple = ( {
             }}
           />
           <FiveObservationCard triggerCondition={numTotalObservations === 5} />
-          <TenObservationCard triggerCondition={numTotalObservations === 10} />
           <FiftyObservationCard
             triggerCondition={
               loggedInWhileInDefaultMode && !!currentUser && numTotalObservations >= 50
@@ -375,6 +378,11 @@ const MyObservationsSimple = ( {
           />
         </>
       )}
+      <PerformanceDebugView
+        showListMetrics
+        showScrollMetrics
+        position="bottom-left"
+      />
     </>
   );
 };

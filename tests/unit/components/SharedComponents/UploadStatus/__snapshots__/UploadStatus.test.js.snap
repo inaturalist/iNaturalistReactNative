@@ -22,7 +22,6 @@ exports[`UploadStatus displays complete icon when progress is 1 1`] = `
     entering={
       InnerKeyframe {
         "build": [Function],
-        "callbackV": undefined,
         "definitions": {
           "0": {
             "opacity": 0,
@@ -34,9 +33,14 @@ exports[`UploadStatus displays complete icon when progress is 1 1`] = `
             "opacity": 1,
           },
         },
-        "delayV": undefined,
         "durationV": 2000,
+        "parsedAnimation": [Function],
         "reduceMotionV": "system",
+      }
+    }
+    jestAnimatedProps={
+      {
+        "value": {},
       }
     }
     jestAnimatedStyle={
@@ -286,6 +290,11 @@ exports[`UploadStatus displays rotating circle progress when upload is queued bu
       </View>
       <View
         collapsable={false}
+        jestAnimatedProps={
+          {
+            "value": {},
+          }
+        }
         jestAnimatedStyle={
           {
             "value": {
@@ -297,15 +306,18 @@ exports[`UploadStatus displays rotating circle progress when upload is queued bu
             },
           }
         }
+        jestInlineStyle={{}}
         style={
           [
-            {
-              "transform": [
-                {
-                  "rotateZ": "0deg",
-                },
-              ],
-            },
+            [
+              {
+                "transform": [
+                  {
+                    "rotateZ": "0deg",
+                  },
+                ],
+              },
+            ],
           ]
         }
         testID="UploadStatus.QueuedRotatingIcon"
@@ -482,6 +494,11 @@ exports[`UploadStatus displays start icon when upload is unsynced and not queued
           </View>
           <View
             collapsable={false}
+            jestAnimatedProps={
+              {
+                "value": {},
+              }
+            }
             jestAnimatedStyle={
               {
                 "value": {
@@ -493,15 +510,18 @@ exports[`UploadStatus displays start icon when upload is unsynced and not queued
                 },
               }
             }
+            jestInlineStyle={{}}
             style={
               [
-                {
-                  "transform": [
-                    {
-                      "rotateZ": "0deg",
-                    },
-                  ],
-                },
+                [
+                  {
+                    "transform": [
+                      {
+                        "rotateZ": "0deg",
+                      },
+                    ],
+                  },
+                ],
               ]
             }
             testID="UploadStatus.QueuedRotatingIcon"

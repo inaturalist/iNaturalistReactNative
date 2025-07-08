@@ -18,7 +18,9 @@ const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object )
   const baseParams = useMemo( () => ( {
     ...newInputParams,
     fields: {
-      ...Observation.EXPLORE_LIST_FIELDS,
+      // the most data we display in the UI on any Observations view in Explore
+      // is the same amount of data we show for the Advanced list mode in MyObservations
+      ...Observation.ADVANCED_MODE_LIST_FIELDS,
       user: { // included here for "exclude by current user" in explore filters
         id: true,
         uuid: true,

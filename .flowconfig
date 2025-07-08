@@ -28,6 +28,32 @@ node_modules/react-native/Libraries/polyfills/.*
 .*/node_modules/@react-native/community-cli-plugin/dist/commands/bundle/index.js.flow
 .*/node_modules/@react-native/community-cli-plugin/dist/commands/bundle/buildBundle.js.flow
 .*/node_modules/metro/src/lib/JsonReporter.js.flow
+.*/node_modules/hermes-estree/dist/generated/predicates.js.flow
+.*/node_modules/react-native/Libraries/StyleSheet/StyleSheetTypes.js
+.*/node_modules/react-native/Libraries/Types/ReactDevToolsTypes.js
+.*/node_modules/react-native/Libraries/Components/View/ViewNativeComponent.js
+.*/node_modules/hermes-estree/dist/predicates.js.flow
+.*/node_modules/react-native/Libraries/Renderer/shims/ReactNativeTypes.js
+.*/node_modules/react-native/Libraries/Text/TextNativeComponent.js
+.*/node_modules/react-native/flow/jest.js
+.*/node_modules/@react-native/community-cli-plugin/dist/commands/start/middleware.js.flow
+.*/node_modules/@react-native/community-cli-plugin/dist/utils/errors.js.flow
+.*/node_modules/@react-native/community-cli-plugin/dist/utils/logger.js.flow
+.*/node_modules/@react-native/dev-middleware/dist/inspector-proxy/types.js.flow
+.*/node_modules/babel-plugin-syntax-hermes-parser/node_modules/hermes-parser/dist/traverse/getVisitorKeys.js.flow
+.*/node_modules/metro-babel-transformer/node_modules/hermes-parser/dist/traverse/getVisitorKeys.js.flow
+.*/node_modules/metro-file-map/src/lib/TreeFS.js.flow
+.*/node_modules/metro-resolver/src/PackageExportsResolve.js.flow
+.*/node_modules/metro-source-map/src/generateFunctionMap.js.flow
+.*/node_modules/metro-transform-worker/src/index.js.flow
+.*/node_modules/metro/node_modules/hermes-parser/dist/traverse/getVisitorKeys.js.flow
+.*/node_modules/metro/src/ModuleGraph/worker/collectDependencies.js.flow
+.*/node_modules/metro/src/Server.js.flow
+.*/node_modules/react-native/Libraries/Animated/components/AnimatedView.js
+.*/node_modules/react-native/Libraries/Animated/createAnimatedComponent.js
+.*/node_modules/react-native/Libraries/Animated/nodes/AnimatedObject.js
+.*/node_modules/react-native/Libraries/vendor/emitter/EventEmitter.js
+.*/node_modules/react-native/src/private/animated/NativeAnimatedHelper.js
 
 [untyped]
 .*/node_modules/@react-native-community/cli/.*/.*
@@ -36,7 +62,6 @@ node_modules/react-native/Libraries/polyfills/.*
 
 [libs]
 node_modules/react-native/interface.js
-node_modules/react-native/flow/
 
 [options]
 emoji=true

@@ -59,6 +59,7 @@ all-rights-reserved = Kaikki oikeudet pidätetään
 All-taxa = Kaikki taksonit
 ALL-USERS-EXCEPT = KAIKKI KÄYTTÄJÄT PAITSI
 ALLOW-LOCATION-ACCESS = SALLI SIJAINNIN KÄYTTÖ
+Already-have-an-iNaturalist-account = Onko sinulla jo iNaturalist -tili?
 An-Internet-connection-is-required = Suuremman havaintomäärän lataamiseen tarvitaan internet-yhteys.
 Analyzing-for-the-best-identification = Analysoidaan parasta tunnistusta...
 Any--date = Mikä tahansa
@@ -355,7 +356,6 @@ Identify-organisms-in-real-time-with-your-camera = Tunnista eliöitä reaaliajas
 Identify-species-anywhere = Tunnista lajeja missä tahansa
 If-an-account-with-that-email-exists = Jos tätä sähköpostiosoitetta käyttävä tili on olemassa, olemme lähettäneet sähköpostiisi ohjeet salasanan vaihtamiseksi.
 If-you-have-an-existing-account-try-sign-in-reset = Jos sinulla on olemassa oleva iNaturalist-tili, yritä kirjautua sisään käyttäjätunnuksella ja salasanalla, tai kokeile salasanan palauttamista käyttäen tiliisi liitettyä sähköpostiosoitetta.
-If-you-hold-down-instead-of-tapping-the-camera-button-you-can = Jos pidät kameran painikeen pohjassa (nauhoituksen sijaan), voit nauhoittaa ääniä, ottaa useita valokuvia ja tuoda ne valokuvakirjastostasi.
 If-you-leave-x-of-your-observations-removed =
     Jos poistut tästä projektista, { $count ->
         [one] yksi havaintosi
@@ -369,7 +369,7 @@ Ignore-notifications = Ohita ilmoitukset
 Ignoring-location = Ohitetaan sijainti
 Import-Photos-From = Tuo kuvia
 IMPORT-X-OBSERVATIONS =
-    IMPORT { $count ->
+    TEE { $count ->
         [one] 1 HAVAINTO
        *[other] { $count } HAVAINTOA
     }
@@ -477,7 +477,6 @@ Months = Kuukaudet
 MONTHS = KUUKAUDET
 More = Lisää
 More-info = Lisätietoja
-More-ways-to-observe = Lisää tapoja havainnoida
 MOST-FAVED = SUOSITUIMMAT
 Most-faved = Suosituimmat
 MY-CONTENT--notifications = SISÄLTÖNI
@@ -580,7 +579,7 @@ Organism-is-captive = Eliö on vangittu
 Organisms-that-are-identified-to-species = Eliöt, jotka on tunnistettu lajitasolle tai tarkemmin
 OTHER-DATA = MUUT TIEDOT
 OTHER-SUGGESTIONS = MUUT EHDOTUKSET
-OTHERS--notifications = OTHERS
+OTHERS--notifications = MUUT
 PASSWORD = SALASANA
 PEOPLE--title = IHMISET
 Photo-importer = Valokuvien tuonti
@@ -601,6 +600,7 @@ POTENTIAL-DISAGREEMENT = MAHDOLLINEN ERIMIELISYYS
 Potential-disagreement-description = <0>Riittävätkö todisteet vahvistamaan tämän </0><1></1><0>?</0>
 Potential-disagreement-disagree = <0>Ei, mutta tämä kuuluu </0><1></1>
 Potential-disagreement-unsure = <0>En tiedä, mutta olen varma, että tämä on </0><1></1>
+Press-and-hold-to-view-more-options = Paina pitkään nähdäksesi lisää vaihtoehtoja
 Previous-observation = Edellinen havainto
 Previous-slide = Edellinen dia
 Privacy-Policy = Tietosuojaseloste
@@ -687,10 +687,10 @@ Ranks-TRIBE = TRIBUS
 Ranks-Tribe = Tribus
 Ranks-VARIETY = MUUNNOS
 Ranks-Variety = Muunnos
-Ranks-ZOOSECTION = ZOOSECTION
-Ranks-Zoosection = Zoosection
-Ranks-ZOOSUBSECTION = ZOOSUBSECTION
-Ranks-Zoosubsection = Zoosubsection
+Ranks-ZOOSECTION = Sektio
+Ranks-Zoosection = Sektio
+Ranks-ZOOSUBSECTION = Alasektio
+Ranks-Zoosubsection = Alasektio
 Read-more-on-Wikipedia = Lue lisää Wikipediasta
 Record-a-sound = Tallenna ääntä
 Record-animal-sounds = Tallenna eläinten ääniä
@@ -840,7 +840,7 @@ The-AI-is-not-confident-Upload-to-ask-the-community = Tekoäly ei ole varma. Lat
 The-exact-location-will-be-hidden = Tarkka sijainti piilotetaan julkisesti, ja sen sijaan karkeistetaan laajemmalle alueelle. (Uhanalaiset lajit karkeistetaan automaattisesti).
 The-iNaturalist-community-will-help-verify-and-refine-identifications = iNaturalist-yhteisö auttaa tarkistamaan ja tarkentamaan havaintojesi tunnisteita luodakseen tutkimustason dataa tieteeseen ja luonnonsuojeluun.
 The-iNaturalist-Network = iNaturalist-verkosto on kokoelma paikallisia verkkosivustoja, jotka ovat täysin yhteydessä maailmanlaajuiseen iNaturalist-yhteisöön. Verkostosivustoja tukevat paikalliset instituutiot, jotka edistävät paikallista käyttöä ja helpottavat iNaturalistin tietojen käyttöä paikallisen luonnon monimuotoisuuden hyväksi.
-The-location-will-not-be-visible-to-others = Sijainti ei näy muille, mikä saattaa tehdä havainnon tunnistamisen mahdottomaksi
+The-location-will-not-be-visible-to-others = Sijainti ei näy muille, mikä voi tehdä havainnon tunnistamisen mahdottomaksi.
 The-models-that-suggest-species = Mallit, jotka ehdottavat lajeja visuaalisen samankaltaisuuden ja sijainnin perusteella, ovat Sara Beeryn, Tom Brooksin, Elijah Colen, Christian Langen, Oisin Mac Aodhan, Pietro Peronan ja Grant Van Hornin kanssa tehdyn yhteistyön ansiota.
 This-is-a-wild-organism = Tämä eliö on villi, eivätkä ihmiset ole tuoneet sitä tähän paikkaan.
 This-is-how-taxon-names-will-be-displayed = Näin kaikki taksonien nimet näytetään sinulle iNaturalistissa:

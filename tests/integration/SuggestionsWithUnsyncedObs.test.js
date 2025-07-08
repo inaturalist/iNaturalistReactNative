@@ -15,6 +15,7 @@ import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice.ts";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import { renderAppWithObservations } from "tests/helpers/render";
+import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
 import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
@@ -208,12 +209,12 @@ const setupAppWithSignedInUser = async hasLocation => {
     : makeMockObservations( );
   useStore.setState( {
     observations,
-    currentObservation: observations[0],
-    layout: {
-      isDefaultMode: false,
-      screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
-      isAllAddObsOptionsMode: true
-    }
+    currentObservation: observations[0]
+  } );
+  setStoreStateLayout( {
+    isDefaultMode: false,
+    screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
+    isAllAddObsOptionsMode: true
   } );
   await renderAppWithObservations( observations, __filename );
   return { observations };
@@ -281,11 +282,11 @@ describe( "from ObsEdit with human observation", ( ) => {
     expect( usePermissionsButton ).toBeFalsy( );
   } );
 
-  it( "should show use location button if unsynced obs has no location", async ( ) => {
+  it( "should not show use location button if unsynced obs has no location", async ( ) => {
     const { observations } = await setupAppWithSignedInUser( );
     await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
-    const useLocationButton = await screen.findByText( /USE LOCATION/ );
-    expect( useLocationButton ).toBeVisible( );
+    const useLocationButton = screen.queryByText( /USE LOCATION/ );
+    expect( useLocationButton ).toBeFalsy( );
   } );
 
   it( "should show ignore location button if unsynced obs has location", async ( ) => {

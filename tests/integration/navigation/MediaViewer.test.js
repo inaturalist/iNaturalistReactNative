@@ -10,6 +10,7 @@ import {
   renderApp,
   renderAppWithObservations
 } from "tests/helpers/render";
+import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
 
@@ -51,10 +52,8 @@ jest.mock( "sharedHooks/useSuggestions/useOnlineSuggestions.ts", ( ) => jest.fn(
 } ) ) );
 
 beforeEach( async () => {
-  useStore.setState( {
-    layout: {
-      isDefaultMode: false
-    }
+  setStoreStateLayout( {
+    isDefaultMode: false
   } );
 } );
 
@@ -153,10 +152,8 @@ describe( "MediaViewer navigation", ( ) => {
     }
 
     beforeEach( ( ) => {
-      useStore.setState( {
-        layout: {
-          isAllAddObsOptionsMode: true
-        }
+      setStoreStateLayout( {
+        isAllAddObsOptionsMode: true
       } );
     } );
 

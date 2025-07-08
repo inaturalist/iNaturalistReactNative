@@ -17,6 +17,8 @@ import React, { useState } from "react";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
+import LoginBanner from "./LoginBanner";
+
 interface Props {
   currentUser: Object | null;
   isConnected: boolean;
@@ -27,6 +29,7 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected }: Props ): Node 
   const navigation = useNavigation();
   const [showModal, setShowModal] = useState( false );
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
+
   const navAndCloseModal = ( screen, params ) => {
     if ( screen !== "ObsEdit" ) {
       resetObservationFlowSlice( );
@@ -46,6 +49,9 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected }: Props ): Node 
           <HeaderUser user={currentUser} isConnected={isConnected} />
         </View>
       )}
+      <LoginBanner
+        currentUser={currentUser}
+      />
       <View className="grow justify-center mx-[67px]">
         <Pressable accessibilityRole="button" onPress={navToARCamera}>
           <Heading2
