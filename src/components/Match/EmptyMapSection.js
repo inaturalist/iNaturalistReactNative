@@ -18,15 +18,19 @@ const EmptyMapSection = ( {
   return (
     <View>
       <ImageBackground
-        className="w-full h-[230px] flex items-center justify-center"
+        className="w-full h-[230px] flex justify-center"
         source={require( "images/topographic-map.png" )}
         accessibilityIgnoresInvertColors
       >
-        <LocationIndicatorIcon
-          testID="Map.LocationIndicator"
-          width={40}
-          height={40}
-        />
+        <View
+          className="w-full items-center"
+        >
+          <LocationIndicatorIcon
+            testID="Map.LocationIndicator"
+            width={40}
+            height={40}
+          />
+        </View>
 
         <Button
           className="mt-5 pl-6 pr-6 border-0"
