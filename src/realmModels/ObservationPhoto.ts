@@ -28,7 +28,7 @@ class ObservationPhoto extends Realm.Object {
     return this._synced_at !== null;
   }
 
-  static mapApiToRealm( observationPhoto, realm = null ) {
+  static mapApiToRealm( observationPhoto: ApiObservationPhoto, realm = null ) {
     const localObsPhoto = {
       ...observationPhoto,
       _synced_at: new Date( ),
