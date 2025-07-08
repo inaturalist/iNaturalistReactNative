@@ -37,6 +37,8 @@ export interface RealmObservationPhoto extends RealmObservationPhotoPojo {
 }
 
 export interface RealmObservationSoundPojo extends RealmObject {
+  uuid: string;
+  id?: number;
   sound: RealmSound;
 }
 
