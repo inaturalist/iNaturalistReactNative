@@ -33,7 +33,7 @@ const EmptyMapSection = ( {
         </View>
 
         <Button
-          className="mt-5 pl-6 pr-6 border-0"
+          className="mt-5 mx-4 border-0"
           level="neutral"
           text={t( "ADD-LOCATION-FOR-BETTER-IDS" )}
           onPress={handleAddLocationPressed}
