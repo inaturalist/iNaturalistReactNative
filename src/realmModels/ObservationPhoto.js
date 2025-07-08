@@ -1,4 +1,5 @@
 import { Realm } from "@realm/react";
+import type { ApiObservationPhoto } from "api/types";
 import inatjs, { FileUpload } from "inaturalistjs";
 import type { RealmObservationPhoto, RealmPhoto } from "realmModels/types";
 import * as uuid from "uuid";
@@ -134,6 +135,8 @@ class ObservationPhoto extends Realm.Object {
     );
 
     if ( obsPhotoToDelete ) {
+      // Removing this require breaks tests, so I am leaving it here
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const { getJWT } = require( "components/LoginSignUp/AuthenticationService.ts" );
       const apiToken = await getJWT( );
       const options = { api_token: apiToken };
