@@ -11,7 +11,7 @@ import { openExternalWebBrowser } from "sharedHelpers/util.ts";
 const Donate = () => {
   // const navigation = useNavigation( );
   const onDonatePress = async ( ) => {
-    const url = "https://donorbox.org/support-inaturalist?utm_campaign=default&utm_medium=mobile&utm_source=iNatRN";
+    const url = "https://www.inaturalist.org/donate?utm_campaign=default&utm_medium=mobile&utm_source=iNatRN";
     // Temporarily disable in-app donation until we can convince Apple that we
     // really are a non-profit
     // navigation.navigate( "FullPageWebView", {
