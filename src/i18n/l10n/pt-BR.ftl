@@ -28,7 +28,6 @@ ADD-EVIDENCE = ADICIONAR EVIDÊNCIA
 Add-evidence = Adicionar evidência
 Add-favorite = Adicionar favorito
 Add-Location = Adicionar Localização
-Add-location-for-better-identifications = Adicionar localização para melhores identificações
 ADD-LOCATION-FOR-BETTER-IDS = ADICIONAR LOCAL PARA MELHORES IDS
 Add-location-to-refresh-suggestions = Adicionar localização para atualizar as sugestões
 Add-observations = Adicionar observações

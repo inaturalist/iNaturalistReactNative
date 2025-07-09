@@ -34,7 +34,6 @@ ADD-EVIDENCE = VOEG BEWIJS TOE
 Add-evidence = Voeg bewijs toe
 Add-favorite = Favoriet toevoegen
 Add-Location = Locatie toevoegen
-Add-location-for-better-identifications = Voeg locatie toe voor betere determinaties
 ADD-LOCATION-FOR-BETTER-IDS = VOEG LOCATIE TOE VOOR BETERE DETERMINATIES
 Add-location-to-refresh-suggestions = Voeg locatie toe om voorstellen te verversen
 Add-observations = Waarnemingen toevoegen

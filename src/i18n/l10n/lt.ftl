@@ -28,7 +28,6 @@ ADD-EVIDENCE = ADD EVIDENCE
 Add-evidence = Add evidence
 Add-favorite = Add favorite
 Add-Location = Add Location
-Add-location-for-better-identifications = Geresnėms identifikacijoms pridėti vietą
 ADD-LOCATION-FOR-BETTER-IDS = GERESNĖMS ID PRIDĖTI VIETĄ
 Add-location-to-refresh-suggestions = Pridėti vietą pasiūlymams atnaujinti
 Add-observations = Add observations

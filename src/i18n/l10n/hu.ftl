@@ -28,7 +28,6 @@ ADD-EVIDENCE = ADD EVIDENCE
 Add-evidence = Add evidence
 Add-favorite = Add favorite
 Add-Location = Add Location
-Add-location-for-better-identifications = A pontos azonosításhoz hely is szükséges
 ADD-LOCATION-FOR-BETTER-IDS = A PONTOS AZONOSÍTÁSHOZ HELY IS SZÜKSÉGES
 Add-location-to-refresh-suggestions = Hely hozzáadásával a javaslatok frissülnek
 Add-observations = Add observations

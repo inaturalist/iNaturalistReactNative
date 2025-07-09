@@ -31,7 +31,6 @@ ADD-EVIDENCE = LISÄÄ TODISTE
 Add-evidence = Lisää todiste
 Add-favorite = Lisää suosikki
 Add-Location = Lisää sijainti
-Add-location-for-better-identifications = Lisää sijainti saadaksesi parempia tunnistuksia.
 ADD-LOCATION-FOR-BETTER-IDS = LISÄÄ SIJAINTI SAADAKSESI PAREMPIA TUNNISTUKSIA
 Add-location-to-refresh-suggestions = Lisää sijainti päivittääksesi ehdotukset
 Add-observations = Lisää havaintoja

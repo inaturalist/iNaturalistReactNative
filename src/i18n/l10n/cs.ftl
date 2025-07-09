@@ -28,7 +28,6 @@ ADD-EVIDENCE = PŘIDAT DŮKAZ
 Add-evidence = Přidat důkaz
 Add-favorite = Přidat oblíbený
 Add-Location = Přidat umístění
-Add-location-for-better-identifications = Přidat umístění pro lepší identifikaci
 ADD-LOCATION-FOR-BETTER-IDS = PŘIDAT POLOHU PRO LEPŠÍ ID
 Add-location-to-refresh-suggestions = Přidat umístění k obnově návrhů
 Add-observations = Přidat pozorování

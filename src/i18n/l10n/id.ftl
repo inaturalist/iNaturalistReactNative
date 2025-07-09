@@ -28,7 +28,6 @@ ADD-EVIDENCE = TAMBAH BUKTI
 Add-evidence = Tambah bukti
 Add-favorite = Tambah favorit
 Add-Location = Tambah Lokasi
-Add-location-for-better-identifications = Tambahkan lokasi untuk mendapatkan identifikasi yang lebih baik
 ADD-LOCATION-FOR-BETTER-IDS = TAMBAHKAN LOKASI SUPAYA ID-NYA LEBIH BAIK
 Add-location-to-refresh-suggestions = Tambahkan lokasi untuk menyegarkan rekomendasi
 Add-observations = Tambah pengamatan
