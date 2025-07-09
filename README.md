@@ -351,10 +351,9 @@ fastlane prod
 1. `bundle exec fastlane tag` to create a tag and bump the build number. You'll be prompted to enter those release notes you wrote. (:wq to save and exit)
 1. `bundle exec fastlane release` to build and push a release to Github
 1. `bundle exec fastlane internal` to distribute the builds to internal test groups in TestFlight and the Play Store
+1. `bundle exec fastlane beta` to distribute the builds to external test groups in TestFlight and the Play Store
 1. If it's the end of the release cycle, `bundle exec fastlane prod` to prepare an App Store release on App Store Connect. You'll be prompted to write custom release notes that summarize changes since the last App Store release (not since the last build).
 After this command line call, attach the latest build to the new version in the App Store Connect UI on the web and submit for review with manual release control. Haven't figured out a good way to automate this without submitting to review at the same time, maybe impossible.
-1. Wait at least a day for internal testers to report any blocking problems
-1. `bundle exec fastlane beta` to distribute the builds to external test groups in TestFlight and the Play Store
 1. After receiving OK during iteration meeting, make App Store release available
     1. Start the staged release in App Store Connect
     1. Mark the Github release as the latest non-pre-release
