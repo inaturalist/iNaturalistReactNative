@@ -28,7 +28,6 @@ ADD-EVIDENCE = 添加证据
 Add-evidence = 添加证据
 Add-favorite = 添加收藏
 Add-Location = 添加位置
-Add-location-for-better-identifications = 添加位置以获得更好的鉴定结果
 ADD-LOCATION-FOR-BETTER-IDS = 添加位置以获得更好的鉴定结果
 Add-location-to-refresh-suggestions = 添加位置以刷新建议
 Add-observations = 添加观察

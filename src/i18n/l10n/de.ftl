@@ -28,7 +28,6 @@ ADD-EVIDENCE = BELEGE HINZUFÜGEN
 Add-evidence = Belege hinzufügen
 Add-favorite = Als Favorit hinzufügen
 Add-Location = Standort hinzufügen
-Add-location-for-better-identifications = Standort hinzufügen, um bessere Bestimmungen zu erhalten
 ADD-LOCATION-FOR-BETTER-IDS = FÜR BESSERE IDS EINEN STANDORT HINZUFÜGEN
 Add-location-to-refresh-suggestions = Standort hinzufügen, um die Bestimmungsvorschläge zu aktualisieren
 Add-observations = Beobachtung(en) hinzufügen

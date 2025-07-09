@@ -28,7 +28,6 @@ ADD-EVIDENCE = ΠΡΟΣΘΉΚΗ ΑΠΟΔΕΙΚΤΙΚΏΝ ΣΤΟΙΧΕΊΩΝ
 Add-evidence = Προσθήκη αποδεικτικών στοιχείων
 Add-favorite = Προσθήκη αγαπημένου
 Add-Location = Προσθήκη τοποθεσίας
-Add-location-for-better-identifications = Προσθήκη τοποθεσίας για καλύτερη ταυτοποίηση
 ADD-LOCATION-FOR-BETTER-IDS = ΠΡΟΣΘΉΚΗ ΤΟΠΟΘΕΣΊΑΣ ΓΙΑ ΚΑΛΎΤΕΡΑ ΑΝΑΓΝΩΡΙΣΤΙΚΆ
 Add-location-to-refresh-suggestions = Προσθήκη τοποθεσίας για ανανέωση προτάσεων
 Add-observations = Προσθήκη παρατηρήσεων

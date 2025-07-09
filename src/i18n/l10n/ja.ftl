@@ -28,7 +28,6 @@ ADD-EVIDENCE = 証拠を追加
 Add-evidence = 証拠を追加
 Add-favorite = お気に入りを追加
 Add-Location = 場所を追加
-Add-location-for-better-identifications = より良い識別のために場所を追加
 ADD-LOCATION-FOR-BETTER-IDS = より良いIDのために場所を追加
 Add-location-to-refresh-suggestions = 候補を更新するために場所を追加
 Add-observations = 観察記録を追加

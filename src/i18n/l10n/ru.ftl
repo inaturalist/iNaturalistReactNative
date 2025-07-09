@@ -31,9 +31,6 @@ ADD-EVIDENCE = ДОБАВЬТЕ ДОКАЗАТЕЛЬСТВА
 Add-evidence = Добавление доказательств
 Add-favorite = Добавить в избранное
 Add-Location = Добавить локацию
-Add-location-for-better-identifications =
-    Добавьте местоположение для более точной 
-    идентификации
 ADD-LOCATION-FOR-BETTER-IDS = ДОБАВЬТЕ МЕСТОПО́ЛОЖЕНИЕ ДЛЯ ЛУЧШЕЙ ИДЕНТИФИКАЦИИ
 Add-location-to-refresh-suggestions = Добавьте местоположение, чтобы облегчить предлагаемые идентификации
 Add-observations = Добавить наблюдения

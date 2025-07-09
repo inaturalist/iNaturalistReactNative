@@ -28,7 +28,6 @@ ADD-EVIDENCE = הוספת ראיות
 Add-evidence = הוספת ראיות
 Add-favorite = הוספת מועדף
 Add-Location = הוספת מיקום
-Add-location-for-better-identifications = הוספת מיקום לזיהויים טובים יותר
 ADD-LOCATION-FOR-BETTER-IDS = הוספת מיקום לזיהויים טובים יותר
 Add-location-to-refresh-suggestions = הוספת מיקום לרענון הצעות
 Add-observations = הוספת תצפיות
