@@ -338,7 +338,7 @@ fastlane prod
             1. Upload from the toolbar on MyObs
         1. Update
             1. Remove the app from the device
-            1. Go to TestFlight and install the latest build
+            1. Go to AppStore and install the latest public build
             1. Sign in and make sure you have at least one uploaded observation with photo
             1. Make one observation but keep it saved only, and not uploaded
             1. Install a "Release" build on top of the TestFlight build
