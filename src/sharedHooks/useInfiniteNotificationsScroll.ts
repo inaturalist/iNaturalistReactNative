@@ -68,20 +68,7 @@ async function fetchObsByUUIDs(
   const observations: ApiObservation[] | null = await fetchRemoteObservations(
     uuids,
     {
-      fields: {
-        user: {
-          id: true
-        },
-        observation_photos: {
-          uuid: true,
-          photo: {
-            url: true
-          }
-        },
-        observation_sounds: {
-          uuid: true
-        }
-      }
+      fields: Observation.ADVANCED_MODE_LIST_FIELDS
     },
     authOptions
   );
