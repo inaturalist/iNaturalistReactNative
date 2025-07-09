@@ -599,7 +599,7 @@ lane :prod do
   # Get all build numbers between the last released version and the current build number
   build_number = get_build_number( xcodeproj: XCODEPROJ )
   published_build_number = app_store_build_number
-  new_build_numbers = ( published_build_number.to_i + 1..build_number.to_i ).to_a
+  new_build_numbers = ( ( published_build_number.to_i + 1 )..build_number.to_i ).to_a
 
   # Get all previous changelogs to show them as an instruction for new release notes
   previous_changelogs = ""
