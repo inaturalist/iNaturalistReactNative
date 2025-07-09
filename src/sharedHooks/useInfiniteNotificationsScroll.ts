@@ -70,7 +70,8 @@ async function fetchObsByUUIDs(
     {
       fields: {
         user: {
-          id: true
+          id: true,
+          login: true
         },
         ...Observation.ADVANCED_MODE_LIST_FIELDS
       }
