@@ -13,9 +13,9 @@ import React, {
 } from "react";
 import { Alert } from "react-native";
 import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
-import ObservationPhoto from "realmModels/ObservationPhoto";
+import ObservationPhoto from "realmModels/ObservationPhoto.ts";
 import ObservationSound from "realmModels/ObservationSound";
-import Photo from "realmModels/Photo";
+import Photo from "realmModels/Photo.ts";
 import { log } from "sharedHelpers/logger";
 import { useAuthenticatedMutation } from "sharedHooks";
 import useTranslation from "sharedHooks/useTranslation.ts";
@@ -174,10 +174,10 @@ const EvidenceList = ( {
   );
 
   const onDeletePhoto = useCallback( async uriToDelete => {
-    await ObservationPhoto.deletePhoto( realm, uriToDelete, currentObservation );
+    await ObservationPhoto.deletePhoto( uriToDelete, currentObservation );
     deletePhotoFromObservation( uriToDelete );
     afterMediaDeleted( );
-  }, [afterMediaDeleted, currentObservation, deletePhotoFromObservation, realm] );
+  }, [afterMediaDeleted, currentObservation, deletePhotoFromObservation] );
 
   const onDeleteSound = useCallback( async uriToDelete => {
     const obsSound = observationSounds.find( os => os.sound.file_url === uriToDelete );

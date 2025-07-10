@@ -4,7 +4,7 @@ import {
   useCallback
 } from "react";
 import Observation from "realmModels/Observation";
-import ObservationPhoto from "realmModels/ObservationPhoto";
+import ObservationPhoto from "realmModels/ObservationPhoto.ts";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import {
   useLayoutPrefs
