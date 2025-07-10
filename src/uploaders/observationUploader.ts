@@ -110,7 +110,7 @@ async function uploadObservation(
   } catch ( error ) {
     const {
       errorContext, totalDuration
-    } = createErrorContext( "media_upload", uploadStartTime, observation.uuid );
+    } = createErrorContext( "media_upload", uploadStartTime );
     logger.error(
       `Upload: Failed ${observation.uuid} after ${totalDuration}ms - ${errorContext}`
       + ": Media upload failed",
@@ -139,7 +139,7 @@ async function uploadObservation(
   } catch ( error ) {
     const {
       errorContext, totalDuration
-    } = createErrorContext( "observation_upload", uploadStartTime, observation.uuid );
+    } = createErrorContext( "observation_upload", uploadStartTime );
     logger.error(
       `Upload: Failed ${observation.uuid} after ${totalDuration}ms - ${errorContext}`
       + ": Observation upload failed",
@@ -165,7 +165,7 @@ async function uploadObservation(
   } catch ( error ) {
     const {
       errorContext, totalDuration
-    } = createErrorContext( "media_attachment", uploadStartTime, observation.uuid );
+    } = createErrorContext( "media_attachment", uploadStartTime );
     logger.error(
       `Upload: Failed ${observation.uuid} after ${totalDuration}ms - ${errorContext}`
       + ": Media attachment failed",
@@ -180,7 +180,7 @@ async function uploadObservation(
   } catch ( error ) {
     const {
       errorContext, totalDuration
-    } = createErrorContext( "realm_update", uploadStartTime, observation.uuid );
+    } = createErrorContext( "realm_update", uploadStartTime );
     logger.error(
       `Upload: Failed ${observation.uuid} after ${totalDuration}ms - ${errorContext}`
       + ": Realm update failed",
