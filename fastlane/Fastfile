@@ -523,22 +523,23 @@ lane :beta do
     beta_group: "Open Beta"
   )
 
-  last_tag = last_git_tag
-  changelog = get_changelog
-  slack_message = <<~MESSAGE
-    🚧 NEW BETA RELEASE
-    Should be available to beta testers in TestFlight and Play Store soon.
+  # We decided to send builds to internal and beta at the same time, so this is appearing twice in Slack
+  # last_tag = last_git_tag
+  # changelog = get_changelog
+  # slack_message = <<~MESSAGE
+  #   🚧 NEW BETA RELEASE
+  #   Should be available to beta testers in TestFlight and Play Store soon.
 
-    #{changelog}
-  MESSAGE
-  slack(
-    message: slack_message,
-    default_payloads: [],
-    payload: {
-      version: last_tag,
-      apk: "https://github.com/inaturalist/iNaturalistReactNative/releases/download/#{last_tag}/org.inaturalist.iNaturalistMobile-#{last_tag}-release.apk"
-    }
-  )
+  #   #{changelog}
+  # MESSAGE
+  # slack(
+  #   message: slack_message,
+  #   default_payloads: [],
+  #   payload: {
+  #     version: last_tag,
+  #     apk: "https://github.com/inaturalist/iNaturalistReactNative/releases/download/#{last_tag}/org.inaturalist.iNaturalistMobile-#{last_tag}-release.apk"
+  #   }
+  # )
 end
 
 lane :download_app_store_reviews do
