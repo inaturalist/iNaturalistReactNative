@@ -5,7 +5,7 @@ import {
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import { AppState } from "react-native";
 import Realm from "realm";
-import { RealmObservation, RealmObservationPojo } from "realmModels/types.d.ts";
+import type { RealmObservation, RealmObservationPojo } from "realmModels/types";
 import { log } from "sharedHelpers/logger";
 import {
   markRecordUploaded,
