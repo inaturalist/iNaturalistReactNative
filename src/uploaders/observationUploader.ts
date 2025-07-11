@@ -119,7 +119,8 @@ async function uploadObservation(
       + ": Media upload failed",
       error
     );
-    throw new Error( `Media upload failed: ${error.message}` );
+    error.message = `Media upload failed: ${error.message}`;
+    throw error;
   }
 
   // Step 2: upload or modify observation with revalidated token
@@ -148,7 +149,8 @@ async function uploadObservation(
       + ": Observation upload failed",
       error
     );
-    throw new Error( `Observation upload failed: ${error.message}` );
+    error.message = `Observation upload failed: ${error.message}`;
+    throw error;
   }
 
   const { uuid: obsUUID } = response.results[0];
@@ -174,7 +176,8 @@ async function uploadObservation(
       + ": Media attachment failed",
       error
     );
-    throw new Error( `Media attachment failed: ${error.message}` );
+    error.message = `Media attachment failed: ${error.message}`;
+    throw error;
   }
 
   // Step 4: mark observation as uploaded in realm
