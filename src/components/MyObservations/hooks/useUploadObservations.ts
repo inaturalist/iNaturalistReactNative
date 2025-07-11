@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts.ts";
 import {
   useCallback, useEffect, useMemo
@@ -16,6 +17,7 @@ import {
 import useStore from "stores/useStore";
 import { handleUploadError } from "uploaders";
 import uploadObservation from "uploaders/observationUploader.ts";
+import { RECOVERY_BY } from "uploaders/utils/errorHandling.ts";
 import {
   INCREMENT_SINGLE_UPLOAD_PROGRESS
 } from "uploaders/utils/progressTracker.ts";
@@ -48,12 +50,14 @@ export default ( canUpload: boolean ) => {
   const setCannotUploadObservations = useStore( state => state.setCannotUploadObservations );
   const resetSyncToolbar = useStore( state => state.resetSyncToolbar );
   const initialNumObservationsInQueue = useStore( state => state.initialNumObservationsInQueue );
+  const stopAllUploads = useStore( state => state.stopAllUploads );
 
   const unsyncedList = Observation.filterUnsyncedObservations( realm );
   const unsyncedUuids = useMemo( ( ) => unsyncedList.map( o => o.uuid ), [unsyncedList] );
   const abortController = useStore( storeState => storeState.abortController );
 
   const { t } = useTranslation( );
+  const navigation = useNavigation( );
 
   const resetNumUnsyncedObs = useCallback( ( ) => {
     if ( !realm || realm.isClosed ) return;
@@ -115,7 +119,7 @@ export default ( canUpload: boolean ) => {
       if ( uploadError.name === "AbortError" ) {
         addUploadError( "aborted", observation.uuid );
       } else {
-        const message = handleUploadError( uploadError, t );
+        const { message, recoveryPossible, recoveryBy } = handleUploadError( uploadError, t );
         if ( message?.match( /That observation no longer exists./ ) ) {
           // 20240531 amanda - it seems like we have to update the UI
           // for the progress bar before actually deleting the observation
@@ -125,6 +129,13 @@ export default ( canUpload: boolean ) => {
           await Observation.deleteLocalObservation( realm, uuid );
         } else {
           addUploadError( message, uuid );
+          if ( recoveryPossible && recoveryBy === RECOVERY_BY.LOGIN_AGAIN ) {
+            // We are trying to upload observations without authentication tokens
+            // so we need to log in again before we can continue.
+            // Currently this is a workaround for more automatic recovery from this erroneous state.
+            stopAllUploads( );
+            navigation.navigate( "LoginStackNavigator" );
+          }
         }
       }
     } finally {
@@ -146,7 +157,9 @@ export default ( canUpload: boolean ) => {
     removeFromUploadQueue,
     setCurrentUpload,
     t,
-    uploadQueue
+    uploadQueue,
+    navigation,
+    stopAllUploads
   ] );
 
   useEffect( ( ) => {

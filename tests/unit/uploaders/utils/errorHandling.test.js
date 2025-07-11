@@ -1,4 +1,5 @@
 import { handleUploadError } from "uploaders";
+import { RecoverableError, RECOVERY_BY } from "uploaders/utils/errorHandling.ts";
 
 describe( "errorHandling", ( ) => {
   // Mock translation function since we're passing that into the error handler
@@ -20,9 +21,30 @@ describe( "errorHandling", ( ) => {
     test( "should return 'Connection problem' message for network errors", ( ) => {
       const networkError = new Error( "Network request failed" );
 
-      const result = handleUploadError( networkError, t );
+      const { message } = handleUploadError( networkError, t );
 
-      expect( result ).toBe( "Connection-problem-Please-try-again-later" );
+      expect( message ).toBe( "Connection-problem-Please-try-again-later" );
+    } );
+
+    test( "should return recoveryPossible=true for network errors", () => {
+      const networkError = new Error( "Network request failed" );
+
+      const { recoveryPossible } = handleUploadError( networkError, t );
+
+      expect( recoveryPossible ).toBe( true );
+    } );
+
+    test( "should return recovery options for RecoverableErrors", () => {
+      const recoverableError = new RecoverableError( "Recoverable error" );
+      recoverableError.recoveryBy = RECOVERY_BY.LOGIN_AGAIN;
+
+      const { recoveryPossible, recoveryBy } = handleUploadError(
+        recoverableError,
+        t
+      );
+
+      expect( recoveryPossible ).toBe( true );
+      expect( recoveryBy ).toBe( RECOVERY_BY.LOGIN_AGAIN );
     } );
 
     test( "should return a string from an array of iNaturalist API errors", ( ) => {
@@ -34,9 +56,9 @@ describe( "errorHandling", ( ) => {
         ]
       };
 
-      const result = handleUploadError( apiError, t );
+      const { message } = handleUploadError( apiError, t );
 
-      expect( result ).toBe( "First error, Second error" );
+      expect( message ).toBe( "First error, Second error" );
     } );
 
     test( "should return a string from a nested array of iNaturalist API errors", ( ) => {
@@ -47,9 +69,9 @@ describe( "errorHandling", ( ) => {
         ]
       };
 
-      const result = handleUploadError( apiError, t );
+      const { message } = handleUploadError( apiError, t );
 
-      expect( result ).toBe( "Error 1, Error 2" );
+      expect( message ).toBe( "Error 1, Error 2" );
     } );
 
     test( "should return a string from a nested string "
@@ -61,9 +83,9 @@ describe( "errorHandling", ( ) => {
         ]
       };
 
-      const result = handleUploadError( apiError, t );
+      const { message } = handleUploadError( apiError, t );
 
-      expect( result ).toBe( "Nested error message string" );
+      expect( message ).toBe( "Nested error message string" );
     } );
 
     test( "should handle 410 errors for previously deleted observations or evidence", ( ) => {
@@ -74,9 +96,9 @@ describe( "errorHandling", ( ) => {
         ]
       };
 
-      const result = handleUploadError( apiError, t );
+      const { message } = handleUploadError( apiError, t );
 
-      expect( result ).toBe( "Resource was previously deleted" );
+      expect( message ).toBe( "Resource was previously deleted" );
     } );
   } );
 } );

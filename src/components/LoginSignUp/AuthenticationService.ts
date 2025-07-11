@@ -44,10 +44,16 @@ const API_HOST: string = Config.OAUTH_API_URL || process.env.OAUTH_API_URL || "h
 // expire every 30 mins, so might as well be futureproof.
 const JWT_EXPIRATION_MINS = 25;
 
+interface AuthCache {
+  isLoggedIn: boolean | null;
+  lastChecked: number | null;
+  cacheTimeout: number;
+}
+
 /**
  * Cache for isLoggedIn, to avoid making too many calls to RNSInfo.getItem
  */
-const authCache = {
+const authCache: AuthCache = {
   isLoggedIn: null,
   lastChecked: null,
   cacheTimeout: 5000
@@ -55,10 +61,8 @@ const authCache = {
 
 /**
  * Clear cache for isLoggedIn.
- *
- * @returns {void}
  */
-const clearAuthCache = ( ) => {
+const clearAuthCache = ( ): void => {
   authCache.isLoggedIn = null;
   authCache.lastChecked = null;
 };
@@ -276,10 +280,9 @@ const getAnonymousJWT = (): string => {
  *  logged-in, use anonymous JWT
  * @returns {Promise<string|*>}
  */
-// $FlowIgnore
 const getJWT = async (
   allowAnonymousJWT = false,
-  logContext = null
+  logContext: string | null = null
 ): Promise<string | null> => {
   let jwtToken: string | undefined = await getSensitiveItem( "jwtToken" );
   const storedJwtGeneratedAt = await getSensitiveItem( "jwtGeneratedAt" );
