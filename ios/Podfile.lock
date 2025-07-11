@@ -1406,7 +1406,7 @@ PODS:
     - React-Core
   - react-native-restart (0.0.27):
     - React-Core
-  - react-native-safe-area-context (4.14.1):
+  - react-native-safe-area-context (5.5.1):
     - React-Core
   - react-native-sensitive-info (6.0.0-alpha.9):
     - React-Core
@@ -2410,7 +2410,7 @@ SPEC CHECKSUMS:
   react-native-orientation-locker: dbd3f6ddbe9e62389cb0807dc2af63f6c36dec36
   react-native-render-html: 5afc4751f1a98621b3009432ef84c47019dcb2bd
   react-native-restart: 0bc732f4461709022a742bb29bcccf6bbc5b4863
-  react-native-safe-area-context: 758e894ca5a9bd1868d2a9cfbca7326a2b6bf9dc
+  react-native-safe-area-context: 827032edf27079702cbd006f11dc79451a2d744b
   react-native-sensitive-info: ee358bf2b901ac3d04f63ff637b31daee44ea87f
   react-native-slider: 1a4b42f71aea07eee94d7327fddce0db5f25feca
   react-native-volume-manager: d9d2863a2374420af89c89662333ea6adf506988
