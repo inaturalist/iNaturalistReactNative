@@ -218,22 +218,30 @@ const LoginForm = ( {
         ) }
         <View ref={firstInputFieldRef}>
           {
-            !loginAgain && (
-              <LoginSignUpInputField
-                ref={emailRef}
-                accessibilityLabel={t( "USERNAME-OR-EMAIL" )}
-                autoComplete="email"
-                headerText={t( "USERNAME-OR-EMAIL" )}
-                inputMode="email"
-                keyboardType="email-address"
-                onChangeText={( text: string ) => setEmail( text )}
-                testID="Login.email"
-                // https://github.com/facebook/react-native/issues/39411#issuecomment-1817575790
-                // textContentType prevents visual flickering, which is a temporary issue
-                // in iOS 17
-                textContentType="emailAddress"
-              />
-            )
+            !loginAgain
+              ? (
+                <LoginSignUpInputField
+                  ref={emailRef}
+                  accessibilityLabel={t( "USERNAME-OR-EMAIL" )}
+                  autoComplete="email"
+                  headerText={t( "USERNAME-OR-EMAIL" )}
+                  inputMode="email"
+                  keyboardType="email-address"
+                  onChangeText={( text: string ) => setEmail( text )}
+                  testID="Login.email"
+                  // https://github.com/facebook/react-native/issues/39411#issuecomment-1817575790
+                  // textContentType prevents visual flickering, which is a temporary issue
+                  // in iOS 17
+                  textContentType="emailAddress"
+                />
+              )
+              : (
+                <View className="flex-row my-5 items-center justify-center mx-2">
+                  <List2 className="ml-3 text-white font-medium">
+                    {t( "There-was-an-error-which-logging-in-again-might-fix" )}
+                  </List2>
+                </View>
+              )
           }
         </View>
         <LoginSignUpInputField
