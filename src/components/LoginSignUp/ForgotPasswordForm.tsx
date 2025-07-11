@@ -26,7 +26,8 @@ const ForgotPasswordForm = ( { reset, scrollViewRef }: Props ): Node => {
   const emailRef = useRef( null );
   const navigation = useNavigation( );
   const { keyboardShown } = useKeyboardInfo( );
-  const inputFieldRef = useRef<?typeof View>( null );
+
+  const inputFieldRef = useRef<typeof View | null>( null );
 
   const blurFields = () => {
     if ( emailRef.current ) {
