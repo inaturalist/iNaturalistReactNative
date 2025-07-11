@@ -10,6 +10,7 @@ const useCustomTranslation = ( ) => {
       try {
         return original.t( key, options );
       } catch ( translationError ) {
+        // TODO: log how often this happens
         if ( translationError instanceof Error && !translationError.message.match( /NoClassDefFoundError/ ) ) {
           throw translationError;
         }
