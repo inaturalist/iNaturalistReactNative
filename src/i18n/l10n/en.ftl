@@ -1239,6 +1239,7 @@ The-iNaturalist-Network = The iNaturalist network is a collection of localized w
 # Describes what happens when geoprivacy is set to private
 The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify.
 The-models-that-suggest-species = The models that suggest species based on visual similarity and location are thanks in part to collaborations with Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona, and Grant Van Horn.
+There-was-an-error-which-logging-in-again-might-fix = There was an error which logging in again might fix.
 #  Wild status sheet descriptions
 This-is-a-wild-organism = This is a wild organism and wasn't placed in this location by humans.
 This-is-how-taxon-names-will-be-displayed = This is how all taxon names will be displayed to you across iNaturalist:
