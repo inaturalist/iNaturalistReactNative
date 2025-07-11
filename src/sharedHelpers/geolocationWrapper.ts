@@ -78,8 +78,7 @@ export const checkLocationPermissions = async ( ) => {
     await checkMultiple( LOCATION_PERMISSIONS )
   );
 
-  // TODO: handle case where iOS permissions are not granted
-  if ( Platform.OS !== "android" && permissionResult !== RESULTS.GRANTED ) {
+  if ( permissionResult !== RESULTS.GRANTED ) {
     return null;
   }
   return permissionResult;
