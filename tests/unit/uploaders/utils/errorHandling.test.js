@@ -1,4 +1,5 @@
 import { handleUploadError } from "uploaders";
+import { RecoverableError, RECOVERY_BY } from "uploaders/utils/errorHandling.ts";
 
 describe( "errorHandling", ( ) => {
   // Mock translation function since we're passing that into the error handler
@@ -23,6 +24,27 @@ describe( "errorHandling", ( ) => {
       const { message } = handleUploadError( networkError, t );
 
       expect( message ).toBe( "Connection-problem-Please-try-again-later" );
+    } );
+
+    test( "should return recoveryPossible=true for network errors", () => {
+      const networkError = new Error( "Network request failed" );
+
+      const { recoveryPossible } = handleUploadError( networkError, t );
+
+      expect( recoveryPossible ).toBe( true );
+    } );
+
+    test( "should return recovery options for RecoverableErrors", () => {
+      const recoverableError = new RecoverableError( "Recoverable error" );
+      recoverableError.recoveryBy = RECOVERY_BY.LOGIN_AGAIN;
+
+      const { recoveryPossible, recoveryBy } = handleUploadError(
+        recoverableError,
+        t
+      );
+
+      expect( recoveryPossible ).toBe( true );
+      expect( recoveryBy ).toBe( RECOVERY_BY.LOGIN_AGAIN );
     } );
 
     test( "should return a string from an array of iNaturalist API errors", ( ) => {
