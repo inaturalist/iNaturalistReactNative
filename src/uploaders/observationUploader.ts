@@ -15,6 +15,7 @@ import {
   attachMediaToObservation,
   uploadObservationMedia
 } from "uploaders/mediaUploader.ts";
+import { RecoverableError, RECOVERY_BY } from "uploaders/utils/errorHandling.ts";
 import { trackObservationUpload } from "uploaders/utils/progressTracker.ts";
 
 const logger = log.extend( "observationUploader" );
@@ -46,7 +47,9 @@ interface ObservationApiResponse {
 async function validateAndGetToken( ): Promise<string> {
   const apiToken = await getJWT( false, "upload" );
   if ( !apiToken ) {
-    throw new Error( "Gack, tried to upload an observation without API token!" );
+    const error = new RecoverableError( "Gack, tried to upload an observation without API token!" );
+    error.recoveryBy = RECOVERY_BY.LOGIN_AGAIN;
+    throw error;
   }
   return apiToken;
 }
