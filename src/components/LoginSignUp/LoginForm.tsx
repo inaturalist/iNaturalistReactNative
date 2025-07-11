@@ -238,7 +238,7 @@ const LoginForm = ( {
               : (
                 <View className="flex-row my-5 items-center justify-center mx-2">
                   <List2 className="ml-3 text-white font-medium">
-                    {t( "There-was-an-error-which-logging-in-again-might-fix" )}
+                    {t( "There-was-an-error-that-might-be-fixed-by-logging-in-again" )}
                   </List2>
                 </View>
               )
