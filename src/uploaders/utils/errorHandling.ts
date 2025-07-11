@@ -1,6 +1,10 @@
 import { INatApiError } from "api/error";
+import type { TFunction } from "i18next";
 
-function handleUploadError( uploadError: Error | INatApiError, t: Function ): string {
+function handleUploadError(
+  uploadError: Error | INatApiError,
+  t: TFunction
+): string {
   let { message } = uploadError;
   if ( uploadError?.json?.errors ) {
     // TODO localize comma join
