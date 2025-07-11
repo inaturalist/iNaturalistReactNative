@@ -23,8 +23,13 @@ Object.defineProperty( RecoverableError.prototype, "name", {
 function handleUploadError(
   uploadError: Error | INatApiError | RecoverableError,
   t: TFunction
-): string {
-  let { message } = uploadError;
+): {
+  message: string;
+  recoveryPossible: boolean;
+  recoveryBy?: RECOVERY_BY;
+} {
+  let { message, recoveryBy } = uploadError;
+  let recoveryPossible = false;
   if ( uploadError?.json?.errors ) {
     // TODO localize comma join
     message = uploadError.json.errors.map( e => {
@@ -39,10 +44,18 @@ function handleUploadError(
     } ).join( ", " );
   } else if ( uploadError.message?.match( /Network request failed/ ) ) {
     message = t( "Connection-problem-Please-try-again-later" );
+    recoveryPossible = true;
+  } else if ( uploadError.recoveryPossible ) {
+    recoveryPossible = true;
   } else {
     throw uploadError;
   }
-  return message;
+  const errorResponse = {
+    message,
+    recoveryPossible,
+    recoveryBy
+  };
+  return errorResponse;
 }
 
 export default handleUploadError;
