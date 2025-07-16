@@ -147,9 +147,7 @@ const AddObsModal = ( {
           <GradientButton
             sizeClassName="w-[69px] h-[69px]"
             onPress={() => {}}
-            onLongPress={() => {
-              if ( tooltipIsVisible ) dismissTooltip( );
-            }}
+            onLongPress={() => dismissTooltip( )}
             accessibilityLabel={t( "Add-observations" )}
             accessibilityHint={t( "Shows-observation-creation-options" )}
           />
