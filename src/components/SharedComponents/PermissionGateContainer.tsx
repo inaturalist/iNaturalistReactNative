@@ -177,8 +177,11 @@ const PermissionGateContainer = ( {
       && result !== RESULTS.LIMITED
       && result !== null
     ) {
-      setModalShown( true );
-      return () => undefined;
+      // This is a workaround for the modal not showing after updating to RN0.76
+      const timeout = setTimeout( ( ) => {
+        setModalShown( true );
+      }, 300 );
+      return () => clearTimeout( timeout );
     }
     if (
       ( result === RESULTS.GRANTED || result === RESULTS.LIMITED )
