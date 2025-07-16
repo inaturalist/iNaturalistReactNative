@@ -150,7 +150,9 @@ const AddObsButton = ( ): React.Node => {
         animationInTiming={250}
         animationOutTiming={250}
         showModal={showModal}
-        closeModal={closeModal}
+        closeModal={tooltipIsVisible
+          ? undefined
+          : closeModal}
         modal={addObsModal}
       />
     </>
