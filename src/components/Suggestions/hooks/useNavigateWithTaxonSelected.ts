@@ -7,7 +7,7 @@ const useNavigateWithTaxonSelected = (
   selectedTaxon: object | null | undefined,
   // After navigation we need to unselect the taxon so we don't have
   // mysterious background nonsense happening after this screen loses focus
-  unselectTaxon: Function,
+  unselectTaxon: () => void,
   options: {
     vision: boolean
   }
@@ -39,7 +39,8 @@ const useNavigateWithTaxonSelected = (
     // in two different ways from ObsDetails -> they can land directly on the Suggestions
     // screen (by adding an id) or they can first land on ObsEdit (by tapping the edit button)
     if ( lastScreen === "ObsDetails" ) {
-      navigation.navigate( "ObsDetails", {
+      // popping suggestions off the stack and returning to base
+      navigation.popTo( "ObsDetails", {
         uuid: currentObservation?.uuid,
         identTaxonId: selectedTaxon?.id,
         identTaxonFromVision: options?.vision,
