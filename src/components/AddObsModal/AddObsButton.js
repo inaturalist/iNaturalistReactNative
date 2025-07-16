@@ -110,7 +110,7 @@ const AddObsButton = ( ): React.Node => {
     <AddObsModal
       closeModal={closeModal}
       navAndCloseModal={navAndCloseModal}
-      tooltipIsVisible
+      tooltipIsVisible={tooltipIsVisible}
       dismissTooltip={( ) => {
         if ( tooltipIsVisible ) setShownOnce( showKey );
       }}
