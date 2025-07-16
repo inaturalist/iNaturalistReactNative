@@ -5,7 +5,7 @@ import { ActivityIndicator, OfflineNotice } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
-import Photo from "realmModels/Photo";
+import Photo from "realmModels/Photo.ts";
 import { useTranslation } from "sharedHooks";
 
 type Props = {

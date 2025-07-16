@@ -28,7 +28,6 @@ ADD-EVIDENCE = TILFØJ BEVIS
 Add-evidence = Tilføj bevis
 Add-favorite = Tilføj favorit
 Add-Location = Tilføj placering
-Add-location-for-better-identifications = Tilføj placering for bedre identifikationer
 ADD-LOCATION-FOR-BETTER-IDS = TILFØJ PLACERING FOR BEDRE ID'ER
 Add-location-to-refresh-suggestions = Tilføj placering for at opfriske forslag
 Add-observations = Tilføj observationer

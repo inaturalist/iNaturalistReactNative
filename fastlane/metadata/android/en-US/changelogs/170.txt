@@ -1,0 +1,11 @@
+NEW
+* Debug option to log in again for the current user
+
+UPDATED
+* Several performance improvements on explore, project lists, project details, notifications
+* Minor design changes in login banner
+* Design changes to Match screen without location
+* Replace donate link
+
+FIXED
+* App freeze on login (by reverting tooltip for new users)

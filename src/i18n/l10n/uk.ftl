@@ -28,7 +28,6 @@ ADD-EVIDENCE = ДОДАТИ ДОКАЗИ
 Add-evidence = Додати докази
 Add-favorite = Add favorite
 Add-Location = Додати локацію
-Add-location-for-better-identifications = Add location for better identifications
 ADD-LOCATION-FOR-BETTER-IDS = ADD LOCATION FOR BETTER IDS
 Add-location-to-refresh-suggestions = Add location to refresh suggestions
 Add-observations = Додати спостереження

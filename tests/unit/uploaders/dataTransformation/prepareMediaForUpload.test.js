@@ -1,5 +1,5 @@
 import { FileUpload } from "inaturalistjs";
-import ObservationPhoto from "realmModels/ObservationPhoto";
+import ObservationPhoto from "realmModels/ObservationPhoto.ts";
 import ObservationSound from "realmModels/ObservationSound";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -90,7 +90,6 @@ describe( "prepareMediaForUpload", () => {
     );
 
     expect( ObservationPhoto.mapPhotoForUpload ).toHaveBeenCalledWith(
-      observationId,
       mockObservationPhoto
     );
 
@@ -213,5 +212,25 @@ describe( "prepareMediaForUpload", () => {
         "unsupportedAction"
       );
     } ).toThrow( /Unsupported media type.*or action/ );
+  } );
+
+  test( "should throw an error if attach observationId is required but not provided", () => {
+    expect( () => {
+      prepareMediaForUpload(
+        mockObservationPhoto,
+        "ObservationPhoto",
+        "attach"
+      );
+    } ).toThrow( /Observation ID is required for attaching photos/ );
+  } );
+
+  test( "should throw an error if update observationId is required but not provided", () => {
+    expect( () => {
+      prepareMediaForUpload(
+        mockObservationPhoto,
+        "ObservationPhoto",
+        "update"
+      );
+    } ).toThrow( /Observation ID is required for updating photos/ );
   } );
 } );

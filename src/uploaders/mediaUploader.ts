@@ -1,17 +1,17 @@
 import { createOrUpdateEvidence } from "api/observations";
 import inatjs from "inaturalistjs";
 import Realm from "realm";
-import {
+import type {
   RealmObservation,
   RealmObservationPhoto,
   RealmObservationSound,
   RealmPhoto
-} from "realmModels/types.d.ts";
+} from "realmModels/types";
 import { markRecordUploaded, prepareMediaForUpload } from "uploaders";
 import { trackEvidenceUpload } from "uploaders/utils/progressTracker.ts";
 
-type EvidenceType = "Photo" | "ObservationPhoto" | "ObservationSound";
-type ActionType = "upload" | "attach" | "update";
+export type EvidenceType = "Photo" | "ObservationPhoto" | "ObservationSound";
+export type ActionType = "upload" | "attach" | "update";
 
 interface UploadOptions {
   api_token?: string;
@@ -78,7 +78,7 @@ interface ApiEndpoint {
   ): Promise<MediaApiResponse>;
 }
 
-type Evidence = RealmObservationPhoto | RealmObservationSound | RealmPhoto;
+export type Evidence = RealmObservationPhoto | RealmObservationSound | RealmPhoto;
 
 interface MediaItems {
   unsyncedObservationPhotos: RealmObservationPhoto[];

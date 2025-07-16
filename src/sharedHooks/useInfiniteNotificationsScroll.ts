@@ -70,17 +70,10 @@ async function fetchObsByUUIDs(
     {
       fields: {
         user: {
-          id: true
+          id: true,
+          login: true
         },
-        observation_photos: {
-          uuid: true,
-          photo: {
-            url: true
-          }
-        },
-        observation_sounds: {
-          uuid: true
-        }
+        ...Observation.ADVANCED_MODE_LIST_FIELDS
       }
     },
     authOptions

@@ -20,7 +20,7 @@ import {
 import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList.tsx";
 import { View } from "components/styledComponents";
 import React, { useCallback, useMemo } from "react";
-import Photo from "realmModels/Photo";
+import Photo from "realmModels/Photo.ts";
 import type {
   RealmObservation,
   RealmTaxon,

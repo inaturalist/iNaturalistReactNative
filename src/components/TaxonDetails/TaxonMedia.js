@@ -15,7 +15,7 @@ import React, {
 } from "react";
 import { Dimensions } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import Photo from "realmModels/Photo";
+import Photo from "realmModels/Photo.ts";
 
 type Props = {
   loading: boolean,

@@ -16,7 +16,7 @@ import {
   TextInput,
   TouchableWithoutFeedback
 } from "react-native";
-import { useLayoutPrefs } from "sharedHooks";
+import { useCurrentUser, useLayoutPrefs } from "sharedHooks";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 import colors from "styles/tailwindColors";
 
@@ -46,6 +46,11 @@ const LoginForm = ( {
   const navigation = useNavigation( );
   const { params } = useRoute<RouteProp<ParamList, "LoginFormParams">>( );
   const emailConfirmed = params?.emailConfirmed;
+  // For debug reasons, we can send the user here to log in again, but we must ensure
+  // that only the currently logged in user can log in again. And no other user account
+  // can log in with the debug flow.
+  const currentUser = useCurrentUser( );
+  const loginAgain = !!currentUser && !!currentUser?.login;
   const realm = useRealm( );
   const { isDefaultMode, setLoggedInWhileInDefaultMode } = useLayoutPrefs( );
   const firstInputFieldRef = useRef( null );
@@ -212,20 +217,24 @@ const LoginForm = ( {
           </View>
         ) }
         <View ref={firstInputFieldRef}>
-          <LoginSignUpInputField
-            ref={emailRef}
-            accessibilityLabel={t( "USERNAME-OR-EMAIL" )}
-            autoComplete="email"
-            headerText={t( "USERNAME-OR-EMAIL" )}
-            inputMode="email"
-            keyboardType="email-address"
-            onChangeText={( text: string ) => setEmail( text )}
-            testID="Login.email"
-            // https://github.com/facebook/react-native/issues/39411#issuecomment-1817575790
-            // textContentType prevents visual flickering, which is a temporary issue
-            // in iOS 17
-            textContentType="emailAddress"
-          />
+          {
+            !loginAgain && (
+              <LoginSignUpInputField
+                ref={emailRef}
+                accessibilityLabel={t( "USERNAME-OR-EMAIL" )}
+                autoComplete="email"
+                headerText={t( "USERNAME-OR-EMAIL" )}
+                inputMode="email"
+                keyboardType="email-address"
+                onChangeText={( text: string ) => setEmail( text )}
+                testID="Login.email"
+                // https://github.com/facebook/react-native/issues/39411#issuecomment-1817575790
+                // textContentType prevents visual flickering, which is a temporary issue
+                // in iOS 17
+                textContentType="emailAddress"
+              />
+            )
+          }
         </View>
         <LoginSignUpInputField
           ref={passwordRef}
@@ -261,12 +270,14 @@ const LoginForm = ( {
           className={classnames( "mt-[30px]", {
             "mt-5": error
           } )}
-          disabled={!email || !password}
+          disabled={( !loginAgain && !email ) || !password}
           forceDark
           level="focus"
           loading={loading}
           onPress={() => logIn( async () => authenticateUser(
-            email.trim( ),
+            loginAgain
+              ? currentUser.login
+              : email.trim( ),
             password,
             realm
           ) )}
