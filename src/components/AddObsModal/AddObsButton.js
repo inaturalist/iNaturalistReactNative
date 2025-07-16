@@ -27,7 +27,7 @@ const AddObsButton = ( ): React.Node => {
   const showKey = "AddObsButtonTooltip";
   const shownOnce = useStore( state => state.layout.shownOnce );
   const setShownOnce = useStore( state => state.layout.setShownOnce );
-  // const justFinishedSignup = useStore( state => state.layout.justFinishedSignup );
+  const justFinishedSignup = useStore( state => state.layout.justFinishedSignup );
   const numOfUserObservations = zustandStorage.getItem( "numOfUserObservations" );
   // Base trigger condition in all cases:
   // Only show the tooltip if the user has only AI camera as an option in this button.
@@ -37,31 +37,27 @@ const AddObsButton = ( ): React.Node => {
   if ( !currentUser ) {
     // If a user is logged out, they should see the tooltip after making their second observation.
     triggerCondition = triggerCondition && numOfUserObservations > 1;
-  } else {
-    // Temporarily disabled the tooltip for new users, as it is freezing the app in some cases.
-    triggerCondition = false;
+  } else if ( justFinishedSignup ) {
+    // If a user creates a new account, they should see the tooltip right after
+    // dismissing the account creation pivot card and landing on My Obs.
+    // Because of the above check for logged out users, we can assume
+    // that the user here has either 0 or 1 observation. Which in turn
+    // currently means that we show the account creation pivot card.
+    triggerCondition = triggerCondition && !!shownOnce["account-creation"];
+  } else if ( numOfUserObservations > 50 ) {
+    // If a user logs in to an existing account with <=50 observations,
+    // they should see the tooltip right after landing on My Obs after signing in
+    //
+    // If a user is already logged in and updates the app when tooltip is released,
+    // they should see the tooltip the first time they open the app after updating
+    //
+    // Both those cases are covered by not changing the base trigger condition.
+    //
+    // If a user logs in to an existing account with >50 observations, they should
+    // see the tooltip right after dismissing the "Welcome back!" pivot card
+    // and landing on My Obs.
+    triggerCondition = triggerCondition && !!shownOnce["fifty-observation"];
   }
-  // else if ( justFinishedSignup ) {
-  //   // If a user creates a new account, they should see the tooltip right after
-  //   // dismissing the account creation pivot card and landing on My Obs.
-  //   // Because of the above check for logged out users, we can assume
-  //   // that the user here has either 0 or 1 observation. Which in turn
-  //   // currently means that we show the account creation pivot card.
-  //   triggerCondition = triggerCondition && !!shownOnce["account-creation"];
-  // } else if ( numOfUserObservations > 50 ) {
-  //   // If a user logs in to an existing account with <=50 observations,
-  //   // they should see the tooltip right after landing on My Obs after signing in
-  //   //
-  //   // If a user is already logged in and updates the app when tooltip is released,
-  //   // they should see the tooltip the first time they open the app after updating
-  //   //
-  //   // Both those cases are covered by not changing the base trigger condition.
-  //   //
-  //   // If a user logs in to an existing account with >50 observations, they should
-  //   // see the tooltip right after dismissing the "Welcome back!" pivot card
-  //   // and landing on My Obs.
-  //   triggerCondition = triggerCondition && !!shownOnce["fifty-observation"];
-  // }
 
   // The tooltip should only appear once per app download.
   const tooltipIsVisible = !shownOnce[showKey] && triggerCondition;
