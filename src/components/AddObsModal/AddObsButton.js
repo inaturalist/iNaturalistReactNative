@@ -2,12 +2,11 @@
 
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import AddObsModal from "components/AddObsModal/AddObsModal.tsx";
-import { Body2, Modal } from "components/SharedComponents";
+import { Modal } from "components/SharedComponents";
 import GradientButton from "components/SharedComponents/Buttons/GradientButton.tsx";
 import { t } from "i18next";
 import { getCurrentRoute } from "navigation/navigationUtils.ts";
 import * as React from "react";
-import Tooltip from "react-native-walkthrough-tooltip";
 import { log } from "sharedHelpers/logger";
 import { useCurrentUser, useLayoutPrefs } from "sharedHooks";
 import useStore, { zustandStorage } from "stores/useStore";
@@ -67,13 +66,6 @@ const AddObsButton = ( ): React.Node => {
   // The tooltip should only appear once per app download.
   const tooltipIsVisible = !shownOnce[showKey] && triggerCondition;
 
-  const contentStyle = {
-    height: 50,
-    paddingVertical: 16,
-    paddingHorizontal: 20,
-    borderRadius: 16
-  };
-
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const navigation = useNavigation( );
   React.useEffect( ( ) => {
@@ -114,10 +106,43 @@ const AddObsButton = ( ): React.Node => {
   };
   const navToARCamera = ( ) => { navAndCloseModal( "Camera", { camera: "AI" } ); };
 
-  const addObsModal = <AddObsModal closeModal={closeModal} navAndCloseModal={navAndCloseModal} />;
+  const addObsModal = (
+    <AddObsModal
+      closeModal={closeModal}
+      navAndCloseModal={navAndCloseModal}
+      tooltipIsVisible
+      dismissTooltip={( ) => {
+        if ( tooltipIsVisible ) setShownOnce( showKey );
+      }}
+    />
+  );
 
   return (
     <>
+      <GradientButton
+        sizeClassName="w-[69px] h-[69px] mb-[5px]"
+        onLongPress={() => {
+          if ( !isAllAddObsOptionsMode ) openModal();
+        }}
+        onPress={() => {
+          if ( tooltipIsVisible ) {
+            return;
+          }
+          if ( isAllAddObsOptionsMode ) {
+            openModal();
+          } else {
+            navToARCamera();
+          }
+        }}
+        accessibilityLabel={t( "Add-observations" )}
+        accessibilityHint={
+          isAllAddObsOptionsMode
+            ? t( "Shows-observation-creation-options" )
+            : t( "Opens-AI-camera" )
+        }
+        iconName={isAllAddObsOptionsMode && "plus"}
+        iconSize={isAllAddObsOptionsMode && 31}
+      />
       {/* match the animation timing on FadeInView.tsx */}
       <Modal
         animationIn="fadeIn"
@@ -128,43 +153,6 @@ const AddObsButton = ( ): React.Node => {
         closeModal={closeModal}
         modal={addObsModal}
       />
-      <Tooltip
-        isVisible={tooltipIsVisible}
-        content={(
-          <Body2>
-            {t( "Press-and-hold-to-view-more-options" )}
-          </Body2>
-        )}
-        contentStyle={contentStyle}
-        placement="top"
-        arrowSize={{ width: 21, height: 16 }}
-        backgroundColor="rgba(0,0,0,0.7)"
-        disableShadow
-      >
-        <GradientButton
-          sizeClassName="w-[69px] h-[69px] mb-[5px]"
-          onLongPress={() => {
-            if ( tooltipIsVisible ) setShownOnce( showKey );
-            if ( !isAllAddObsOptionsMode ) openModal();
-          }}
-          onPress={() => {
-            if ( tooltipIsVisible ) {
-              return;
-            }
-            if ( isAllAddObsOptionsMode ) {
-              openModal( );
-            } else {
-              navToARCamera( );
-            }
-          }}
-          accessibilityLabel={t( "Add-observations" )}
-          accessibilityHint={isAllAddObsOptionsMode
-            ? t( "Shows-observation-creation-options" )
-            : t( "Opens-AI-camera" )}
-          iconName={isAllAddObsOptionsMode && "plus"}
-          iconSize={isAllAddObsOptionsMode && 31}
-        />
-      </Tooltip>
     </>
   );
 };
