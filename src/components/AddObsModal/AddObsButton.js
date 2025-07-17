@@ -116,6 +116,18 @@ const AddObsButton = ( ): React.Node => {
 
   return (
     <>
+      {/* match the animation timing on FadeInView.tsx */}
+      <Modal
+        animationIn="fadeIn"
+        animationOut="fadeOut"
+        animationInTiming={250}
+        animationOutTiming={250}
+        showModal={showModal}
+        closeModal={tooltipIsVisible
+          ? undefined
+          : closeModal}
+        modal={addObsModal}
+      />
       <GradientButton
         sizeClassName="w-[69px] h-[69px] mb-[5px]"
         onLongPress={() => {
@@ -136,18 +148,6 @@ const AddObsButton = ( ): React.Node => {
         }
         iconName={isAllAddObsOptionsMode && "plus"}
         iconSize={isAllAddObsOptionsMode && 31}
-      />
-      {/* match the animation timing on FadeInView.tsx */}
-      <Modal
-        animationIn="fadeIn"
-        animationOut="fadeOut"
-        animationInTiming={250}
-        animationOutTiming={250}
-        showModal={showModal}
-        closeModal={tooltipIsVisible
-          ? undefined
-          : closeModal}
-        modal={addObsModal}
       />
     </>
   );
