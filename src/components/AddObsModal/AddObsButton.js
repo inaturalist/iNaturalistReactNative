@@ -33,17 +33,18 @@ const AddObsButton = ( ): React.Node => {
   // Only show the tooltip if the user has only AI camera as an option in this button.
   // Only show the tooltip on MyObservations screen.
   let triggerCondition = !isAllAddObsOptionsMode && currentRoute?.name === "ObsList";
-  // If logged out, user should see the tooltip after making their second observation
-  if ( !currentUser ) {
-    // If a user is logged out, they should see the tooltip after making their second observation.
-    triggerCondition = triggerCondition && numOfUserObservations > 1;
-  } else if ( justFinishedSignup ) {
+  if ( justFinishedSignup ) {
     // If a user creates a new account, they should see the tooltip right after
     // dismissing the account creation pivot card and landing on My Obs.
-    // Because of the above check for logged out users, we can assume
-    // that the user here has either 0 or 1 observation. Which in turn
-    // currently means that we show the account creation pivot card.
-    triggerCondition = triggerCondition && !!shownOnce["account-creation"];
+    // TODO: Have disabled the tooltip for new account creations because of a bug with the
+    // account creation pivot card not showing. Which makes this trigger condition
+    // not work as expected.
+    // triggerCondition = triggerCondition && !!shownOnce["account-creation"];
+    triggerCondition = false;
+  } else if ( !currentUser ) {
+    // If logged out, user should see the tooltip after making their second observation
+    // If a user is logged out, they should see the tooltip after making their second observation.
+    triggerCondition = triggerCondition && numOfUserObservations > 1;
   } else if ( numOfUserObservations > 50 ) {
     // If a user logs in to an existing account with <=50 observations,
     // they should see the tooltip right after landing on My Obs after signing in
