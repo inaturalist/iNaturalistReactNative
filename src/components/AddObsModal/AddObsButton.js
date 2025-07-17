@@ -69,6 +69,22 @@ const AddObsButton = ( ): React.Node => {
 
   // The tooltip should only appear once per app download.
   const tooltipIsVisible = !shownOnce[showKey] && triggerCondition;
+  React.useEffect( () => {
+    // If the tooltip visibility condition changes from false to true,
+    // we set the showModal state to true because the tooltip is in the modal.
+    // We have a lot of modals in the app, so we use a timeout to avoid opening two modals
+    // at the same time, like the PivotCards for example that in some cases were just closed
+    // by the user.
+    let timeoutId;
+    if ( tooltipIsVisible ) {
+      timeoutId = setTimeout( () => {
+        openModal();
+      }, 400 );
+    }
+    return () => {
+      clearTimeout( timeoutId );
+    };
+  }, [tooltipIsVisible, openModal] );
 
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const navigation = useNavigation( );
