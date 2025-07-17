@@ -41,6 +41,13 @@ const AddObsButton = ( ): React.Node => {
     // not work as expected.
     // triggerCondition = triggerCondition && !!shownOnce["account-creation"];
     triggerCondition = false;
+  } else if ( numOfUserObservations === undefined
+      || numOfUserObservations === null
+      || typeof numOfUserObservations !== "number" ) {
+    // If numOfUserObservations is undefined or null, we can not know if we should show the
+    // tooltip to the user. Usually this happens when the user logs in before making an
+    // observation, then we need to fetch the number of observations from server.
+    triggerCondition = false;
   } else if ( !currentUser ) {
     // If logged out, user should see the tooltip after making their second observation
     // If a user is logged out, they should see the tooltip after making their second observation.
