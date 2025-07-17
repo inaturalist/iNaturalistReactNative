@@ -122,9 +122,6 @@ const AddObsButton = ( ): React.Node => {
           if ( !isAllAddObsOptionsMode ) openModal();
         }}
         onPress={() => {
-          if ( tooltipIsVisible ) {
-            return;
-          }
           if ( isAllAddObsOptionsMode ) {
             openModal();
           } else {
