@@ -141,9 +141,16 @@ const AddObsModal = ( {
     if ( tooltipIsVisible ) {
       return (
         <View className="justify-center items-center">
-          <View className="bg-white rounded-2xl px-5 py-4 mb-5">
+          <View className="bg-white rounded-2xl px-5 py-4">
             <Body2>{t( "Press-and-hold-to-view-more-options" )}</Body2>
           </View>
+          <View
+            className={classnames(
+              // I could not figure out how to use "border-x-transparent",
+              "border-l-[10px] border-r-[10px] border-x-[#00000000]",
+              "border-t-[16px] border-t-white mb-2"
+            )}
+          />
           <GradientButton
             sizeClassName="w-[69px] h-[69px]"
             onPress={() => {}}
