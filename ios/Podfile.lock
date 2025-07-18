@@ -2361,7 +2361,7 @@ SPEC CHECKSUMS:
   react-native-sensitive-info: ee358bf2b901ac3d04f63ff637b31daee44ea87f
   react-native-slider: 782148f71677e18db743131d85eecaf93948b478
   react-native-volume-manager: d9d2863a2374420af89c89662333ea6adf506988
-  react-native-webview: 443af3162081e65b4770cf41c88bb940187909d3
+  react-native-webview: 3772c8537fd6d7869791820a7b154fb546bcef7b
   react-native-worklets-core: 5281a88dd187663e9d3cd58e54ab5c99e29d671a
   React-nativeconfig: ecf4dc92c40b97e2b3f0c619938f78bfd6507b08
   React-NativeModulesApple: f457bbfb30fb3bc41979b1a87b99d292d7340d39
@@ -2400,18 +2400,18 @@ SPEC CHECKSUMS:
   RNCPicker: da0f1c9411208c1ca52bc98383db54a06e0a3862
   RNDateTimePicker: 392bdc0d6863b5de2fe9b957c82c25b6a038db29
   RNDeviceInfo: 538b62f03991eb4a2a15cf6fec5fff6bb5edc34e
-  RNFlashList: 490b55e0e9e01b30e7a289aa0543f0aee659d6b8
+  RNFlashList: e2981ad152fadf10f3b05e56cba9888317d85458
   RNFS: 89de7d7f4c0f6bafa05343c578f61118c8282ed8
   RNGestureHandler: 6d231bf41166c01b8234f0b7b24d73d82e44ef4c
   RNGoogleSignin: ba93c1137f8d5cebdd39b04f493fd212ddf5ecd6
   RNLocalize: 080849cb8a824d9f759b8a5ae00c8321d46dbed0
   RNPermissions: f14c20f4eb7a20fff611ad9f467da7bb5872ac4f
-  RNReanimated: b70669b09feeb350b82b1bc6ab5e63a95238433b
-  RNScreens: c3cd5d303c8d87c9476bfea7b84db1e54e609fa6
+  RNReanimated: 9314062225482de1f3359245705191e9aacfe85c
+  RNScreens: 9ef996b6041d0960a4794a845f7d0808b171b4ef
   RNShareMenu: e1cdfa3b9af89416afc75a80377cfd0de4f30ded
   RNStoreReview: 613c43e9132998ed41a65946e20c223c91b36464
-  RNSVG: df335373ea2cb29876864e6a2ea8c86aad305838
-  RNVectorIcons: 4330d8f8f8f4184f436e0c08ae9950431ffe466e
+  RNSVG: 4a789b2408851b376e3055c3798ce310a35d0fe7
+  RNVectorIcons: f7a99433a71f4b38891c14c64b21fc521d064392
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   VisionCamera: 1470a7fa013e22de7481640a4d9c597ad6f13919
   VisionCameraPluginInatVision: ad9a001b70676d2f9b0ea22f60c04d5fed3d3a52
