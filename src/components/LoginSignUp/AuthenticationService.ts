@@ -333,7 +333,10 @@ const getJWT = async (
     // observations shouldn't you have the opportunity to sign in again and
     // upload them?
     if ( !response.ok ) {
-      logger.error( `JWT [${logContext}]:  Token refresh failed - status: ${response.status}` );
+      logger.error(
+        `JWT [${logContext}]: Token refresh failed - status: ${response.status}`,
+        `- originalError: ${response.originalError} - problem: ${response.problem}`
+      );
       // this deletes the user JWT and saved login details when a user is not
       // actually signed in anymore for example, if they installed, deleted,
       // and reinstalled the app without logging out

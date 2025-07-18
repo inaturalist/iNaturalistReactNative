@@ -1,16 +1,24 @@
 import { Realm } from "@realm/react";
+import type { ApiObservationPhoto } from "api/types";
 import inatjs, { FileUpload } from "inaturalistjs";
+import type { RealmObservationPhoto, RealmPhoto } from "realmModels/types";
 import * as uuid from "uuid";
 
 import Photo from "./Photo";
 
 class ObservationPhoto extends Realm.Object {
+  _created_at?: Date;
+
+  _synced_at?: Date;
+
+  _updated_at?: Date;
+
   static OBSERVATION_PHOTOS_FIELDS = {
     id: true,
     photo: Photo.PHOTO_FIELDS,
     position: true,
     uuid: true
-  };
+  } as const;
 
   needsSync( ) {
     return !this._synced_at || this._synced_at <= this._updated_at;
@@ -20,7 +28,7 @@ class ObservationPhoto extends Realm.Object {
     return this._synced_at !== null;
   }
 
-  static mapApiToRealm( observationPhoto, realm = null ) {
+  static mapApiToRealm( observationPhoto: ApiObservationPhoto, realm = null ) {
     const localObsPhoto = {
       ...observationPhoto,
       _synced_at: new Date( ),
@@ -29,7 +37,7 @@ class ObservationPhoto extends Realm.Object {
     return localObsPhoto;
   }
 
-  static mapPhotoForUpload( observationID, photo ) {
+  static mapPhotoForUpload( photo: RealmPhoto ) {
     const uri = Photo.getLocalPhotoUri( photo.localFilePath );
     return {
       file: new FileUpload( {
@@ -40,7 +48,10 @@ class ObservationPhoto extends Realm.Object {
     };
   }
 
-  static mapPhotoForAttachingToObs( observationID, observationPhoto ) {
+  static mapPhotoForAttachingToObs(
+    observationID: number,
+    observationPhoto: RealmObservationPhoto
+  ) {
     return {
       observation_photo: {
         uuid: observationPhoto.uuid,
@@ -51,7 +62,10 @@ class ObservationPhoto extends Realm.Object {
     };
   }
 
-  static mapPhotoForUpdating( observationID, observationPhoto ) {
+  static mapPhotoForUpdating(
+    observationID: number,
+    observationPhoto: RealmObservationPhoto
+  ) {
     return {
       id: observationPhoto.uuid,
       observation_photo: {
@@ -61,17 +75,23 @@ class ObservationPhoto extends Realm.Object {
     };
   }
 
-  static mapObservationPhotoForMyObsDefaultMode( obsPhoto ) {
+  // TODO: I don't know how what the type for this is outside of this context,
+  // I think it is only called after certain transformations on the Realm result,
+  // but it is not important for my current linear ticket so I'll skip typing it more
+  static mapObservationPhotoForMyObsDefaultMode( observationPhoto: {
+    photo?: { url?: string, localFilePath?: string },
+    uuid?: string
+  } ) {
     return {
       photo: {
-        url: obsPhoto?.photo?.url,
-        localFilePath: obsPhoto?.photo?.localFilePath
+        url: observationPhoto?.photo?.url,
+        localFilePath: observationPhoto?.photo?.localFilePath
       },
-      uuid: obsPhoto?.uuid
+      uuid: observationPhoto?.uuid
     };
   }
 
-  static async new( uri, position ) {
+  static async new( uri: string, position: number ) {
     const photo = await Photo.new( uri );
     return {
       _created_at: new Date( ),
@@ -83,7 +103,10 @@ class ObservationPhoto extends Realm.Object {
     };
   }
 
-  static createObsPhotosWithPosition = async ( photos, { position, local } ) => {
+  static createObsPhotosWithPosition = async (
+    photos: string[] | { image: { uri: string } }[],
+    { position, local }: { position: number, local: boolean }
+  ) => {
     let photoPosition = position;
     return Promise.all(
       photos.map( async photo => {
@@ -99,12 +122,21 @@ class ObservationPhoto extends Realm.Object {
     );
   };
 
-  static async deleteRemotePhoto( realm, uri, currentObservation ) {
+  // TODO: I don't know how what the type for currentObservation is outside of this context here,
+  // in the zustand store slice that is referenced in the two places this function is called
+  // there are no types yet as far as I can see. This function is not important for my current
+  // linear ticket so I'll skip typing it
+  static async deleteRemotePhoto(
+    uri: string,
+    currentObservation?: { observationPhotos?: { photo: { url?: string }, uuid: string }[] }
+  ) {
     const obsPhotoToDelete = currentObservation?.observationPhotos?.find(
       p => p.photo?.url === uri
     );
 
     if ( obsPhotoToDelete ) {
+      // Removing this require breaks tests, so I am leaving it here
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const { getJWT } = require( "components/LoginSignUp/AuthenticationService.ts" );
       const apiToken = await getJWT( );
       const options = { api_token: apiToken };
@@ -112,20 +144,36 @@ class ObservationPhoto extends Realm.Object {
     }
   }
 
-  static async deleteLocalPhoto( realm, uri ) {
+  static async deleteLocalPhoto( uri: string ) {
     // delete uri on disk
     Photo.deletePhotoFromDeviceStorage( uri );
   }
 
-  static async deletePhoto( realm, uri, currentObservation ) {
+  // TODO: I don't know how what the type for currentObservation is outside of this context here,
+  // in the zustand store slice that is referenced in the two places this function is called
+  // there are no types yet as far as I can see. This function is not important for my current
+  // linear ticket so I'll skip typing it
+  static async deletePhoto(
+    uri: string,
+    currentObservation?: { observationPhotos?: { photo: { url?: string }, uuid: string }[] }
+  ) {
     if ( uri.includes( "https://" ) ) {
-      ObservationPhoto.deleteRemotePhoto( realm, uri, currentObservation );
+      ObservationPhoto.deleteRemotePhoto( uri, currentObservation );
     } else {
-      ObservationPhoto.deleteLocalPhoto( realm, uri );
+      ObservationPhoto.deleteLocalPhoto( uri );
     }
   }
 
-  static mapObsPhotoUris( observation ) {
+  // TODO: I don't know how what the type for currentObservation is outside of this context here,
+  // in the zustand store slice that is referenced in the two places this function is called
+  // there are no types yet as far as I can see. This function is not important for my current
+  // linear ticket so I'll skip typing it
+  static mapObsPhotoUris(
+    observation: {
+      observationPhotos?: { photo: RealmPhoto }[],
+      observation_photos?: { photo: RealmPhoto }[]
+    }
+  ) {
     const obsPhotos = observation?.observationPhotos || observation?.observation_photos;
     const obsPhotoUris = ( obsPhotos || [] ).map(
       // Ensure that if this URI is a remote thumbnail that we are resizing
@@ -136,7 +184,16 @@ class ObservationPhoto extends Realm.Object {
     return obsPhotoUris;
   }
 
-  static mapInnerPhotos( observation ) {
+  // TODO: I don't know how what the type for currentObservation is outside of this context here,
+  // in the zustand store slice that is referenced in the two places this function is called
+  // there are no types yet as far as I can see. This function is not important for my current
+  // linear ticket so I'll skip typing it
+  static mapInnerPhotos(
+    observation: {
+      observationPhotos?: { photo: object }[],
+      observation_photos?: { photo: object }[]
+    }
+  ) {
     const obsPhotos = observation?.observationPhotos || observation?.observation_photos;
     const innerPhotos = ( obsPhotos || [] ).map(
       obsPhoto => obsPhoto.photo

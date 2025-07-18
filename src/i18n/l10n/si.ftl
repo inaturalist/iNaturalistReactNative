@@ -28,7 +28,6 @@ ADD-EVIDENCE = ADD EVIDENCE
 Add-evidence = Add evidence
 Add-favorite = Add favorite
 Add-Location = Add Location
-Add-location-for-better-identifications = Add location for better identifications
 ADD-LOCATION-FOR-BETTER-IDS = ADD LOCATION FOR BETTER IDS
 Add-location-to-refresh-suggestions = Add location to refresh suggestions
 Add-observations = Add observations

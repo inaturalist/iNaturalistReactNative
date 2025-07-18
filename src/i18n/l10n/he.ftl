@@ -28,7 +28,6 @@ ADD-EVIDENCE = הוספת ראיות
 Add-evidence = הוספת ראיות
 Add-favorite = הוספת מועדף
 Add-Location = הוספת מיקום
-Add-location-for-better-identifications = הוספת מיקום לזיהויים טובים יותר
 ADD-LOCATION-FOR-BETTER-IDS = הוספת מיקום לזיהויים טובים יותר
 Add-location-to-refresh-suggestions = הוספת מיקום לרענון הצעות
 Add-observations = הוספת תצפיות
@@ -409,7 +408,7 @@ It-might-also-be = יכול להיות גם
 It-might-be-one-of-these = זה יכול להיות אחד מאלה
 January = ינואר
 JOIN = הצטרפו
-Join-a-global-community-for-nature = הצטרפו לקהילה עומלית למען הטבע
+Join-a-global-community-for-nature = הצטרפו לקהילה עולמית למען הטבע
 JOIN-PROJECT = הצטרפו לפרויקט
 JOIN-PROJECT--question = להצטרף לפרויקט?
 JOINED = הצטרפת
@@ -886,7 +885,7 @@ Uploading-x-of-y-observations =
        *[other] מעלה { $currentUploadCount } מתוך { $total } תצפיות
     }
 Use-iNaturalist-to-identify-any-living-thing = השתמשו ב-iNaturalist כדי לזהות כל יצור חי
-Use-iNaturalists-AI-Camera = השתמש במצלמת הבינה המלאכותית של iNaturalist כדי לזהות אורגניזמים בזמן אמת
+Use-iNaturalists-AI-Camera = שימוש במצלמת הבינה המלאכותית של iNaturalist כדי לזהות אורגניזמים בזמן אמת
 USE-LOCATION = להשתמש במיקום
 Use-the-devices-other-camera = השתמש.י במצלמה השנייה של המכשיר.
 Use-the-iNaturalist-camera-to-see-real-time-identifications-and-take-photos = השתמשו במצלמת iNaturalist כדי לראות זיהויים בזמן אמת ולצלם תמונות!

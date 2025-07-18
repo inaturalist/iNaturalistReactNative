@@ -28,7 +28,6 @@ ADD-EVIDENCE = AFEGIR PROVES
 Add-evidence = Afegir proves
 Add-favorite = Afegir preferit
 Add-Location = Afegir Localització
-Add-location-for-better-identifications = Add location for better identifications
 ADD-LOCATION-FOR-BETTER-IDS = ADD LOCATION FOR BETTER IDS
 Add-location-to-refresh-suggestions = Add location to refresh suggestions
 Add-observations = Afegir observacions

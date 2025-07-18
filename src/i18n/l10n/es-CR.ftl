@@ -28,7 +28,6 @@ ADD-EVIDENCE = AÑADIR MUESTRA
 Add-evidence = Añadir muestra
 Add-favorite = Añadir Favorito
 Add-Location = Añadir ubicación
-Add-location-for-better-identifications = Añadir ubicación para mejorar las identificaciones
 ADD-LOCATION-FOR-BETTER-IDS = AÑADIR UBICACIÓN PARA MEJOR SDI
 Add-location-to-refresh-suggestions = Añadir ubicación para actualizar sugerencias
 Add-observations = Añade observaciones

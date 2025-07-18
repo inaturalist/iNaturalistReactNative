@@ -62,10 +62,11 @@ describe( "shows tooltip", () => {
 
     renderComponent( <AddObsButton /> );
 
-    const tooltipText = await screen.findByText(
-      "Press and hold to view more options"
-    );
-    expect( tooltipText ).toBeTruthy();
+    // Temporarily disabled the tooltip for new users, as it is freezing the app in some cases.
+    // const tooltipText = await screen.findByText(
+    //   "Press and hold to view more options"
+    // );
+    // expect( tooltipText ).toBeTruthy();
   } );
 
   it( "to new users only after they dismissed the account creation card", async () => {
@@ -87,10 +88,11 @@ describe( "shows tooltip", () => {
       }
     } );
 
-    const tooltipTextAfter = await screen.findByText(
-      "Press and hold to view more options"
-    );
-    expect( tooltipTextAfter ).toBeTruthy();
+    // Temporarily disabled the tooltip for new users, as it is freezing the app in some cases.
+    // const tooltipTextAfter = await screen.findByText(
+    //   "Press and hold to view more options"
+    // );
+    // expect( tooltipTextAfter ).toBeTruthy();
   } );
 
   it( "to logged in users with more than 50 observations after card dismissal", async () => {
@@ -109,9 +111,10 @@ describe( "shows tooltip", () => {
       }
     } );
 
-    const tooltipTextAfter = await screen.findByText(
-      "Press and hold to view more options"
-    );
-    expect( tooltipTextAfter ).toBeTruthy();
+    // Temporarily disabled the tooltip for new users, as it is freezing the app in some cases.
+    // const tooltipTextAfter = await screen.findByText(
+    //   "Press and hold to view more options"
+    // );
+    // expect( tooltipTextAfter ).toBeTruthy();
   } );
 } );

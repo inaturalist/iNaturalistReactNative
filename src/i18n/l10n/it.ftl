@@ -28,7 +28,6 @@ ADD-EVIDENCE = AGGIUNGI PROVA
 Add-evidence = Aggiungi prova
 Add-favorite = Aggiungi preferito
 Add-Location = Aggiungi Posizione
-Add-location-for-better-identifications = Aggiungi posizione per identificazioni migliori
 ADD-LOCATION-FOR-BETTER-IDS = AGGIUNGI LA POSIZIONE MIGLIORI ID
 Add-location-to-refresh-suggestions = Aggiungi posizione per aggiornare i suggerimenti
 Add-observations = Aggiungere osservazioni

@@ -6,7 +6,7 @@ import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 import { Linking } from "react-native";
-import Photo from "realmModels/Photo";
+import Photo from "realmModels/Photo.ts";
 import { useAuthenticatedQuery } from "sharedHooks";
 import * as useCurrentUser from "sharedHooks/useCurrentUser.ts";
 import factory from "tests/factory";
