@@ -21,8 +21,8 @@ import DiscardObservationSheet from "./Sheets/DiscardObservationSheet";
 const { useRealm } = RealmContext;
 
 type Props = {
-  observations: Array<Object>,
-  currentObservation: Object
+  observations: Array<object>,
+  currentObservation: object
 }
 
 const ObsEditHeader = ( {
