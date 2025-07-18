@@ -28,7 +28,6 @@ ADD-EVIDENCE = LISA TÕEND
 Add-evidence = Lisa tõend
 Add-favorite = Lisa lemmikuks
 Add-Location = Lisa asukoht
-Add-location-for-better-identifications = Lisa paremaks määratlemiseks asukoht
 ADD-LOCATION-FOR-BETTER-IDS = LISA PAREMAKS MÄÄRATLEMISEKS ASUKOHT
 Add-location-to-refresh-suggestions = Soovituste uuendamiseks lisa asukoht
 Add-observations = Lisa vaatluseid
@@ -353,7 +352,6 @@ Identify-organisms-in-real-time-with-your-camera = Identify organisms in real ti
 Identify-species-anywhere = Identify species anywhere
 If-an-account-with-that-email-exists = Kui selle e-posti aadressiga konto eksisteerib, oleme salasõna lähtestamise juhendi sinu e-postile saatnud.
 If-you-have-an-existing-account-try-sign-in-reset = Kui sul on olemasolev iNaturalisti konto, proovi oma kasutajatunnuse ja salasõnaga sisse logida või oma salasõna kontoga seotud e-posti aadressi abil lähtestada.
-If-you-hold-down-instead-of-tapping-the-camera-button-you-can = If you hold down (instead of tapping) the camera button, you can record sounds, take multiple photos, and import from your photo library.
 If-you-leave-x-of-your-observations-removed =
     If you leave this traditional project, { $count ->
         [one] 1 of your observations
@@ -475,7 +473,6 @@ Months = Kuud
 MONTHS = KUUD
 More = More
 More-info = Lisainfo
-More-ways-to-observe = More ways to observe
 MOST-FAVED = LEMMIK
 Most-faved = Lemmik
 MY-CONTENT--notifications = MINU SISU

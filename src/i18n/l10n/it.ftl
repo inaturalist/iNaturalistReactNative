@@ -28,7 +28,6 @@ ADD-EVIDENCE = AGGIUNGI PROVA
 Add-evidence = Aggiungi prova
 Add-favorite = Aggiungi preferito
 Add-Location = Aggiungi Posizione
-Add-location-for-better-identifications = Aggiungi posizione per identificazioni migliori
 ADD-LOCATION-FOR-BETTER-IDS = AGGIUNGI LA POSIZIONE MIGLIORI ID
 Add-location-to-refresh-suggestions = Aggiungi posizione per aggiornare i suggerimenti
 Add-observations = Aggiungere osservazioni
@@ -353,7 +352,6 @@ Identify-organisms-in-real-time-with-your-camera = Identifica gli organismi in t
 Identify-species-anywhere = Identifica le specie ovunque
 If-an-account-with-that-email-exists = Se esiste un account con quell'indirizzo e-mail, abbiamo inviato le istruzioni per la reimpostazione della password al tuo indirizzo e-mail.
 If-you-have-an-existing-account-try-sign-in-reset = Se disponi di un account iNat esistente, prova ad accedere con il tuo nome utente e password oppure prova a reimpostare la password utilizzando l'indirizzo e-mail associato al tuo account.
-If-you-hold-down-instead-of-tapping-the-camera-button-you-can = Se tieni premuto (invece di toccare) il pulsante della fotocamera, puoi registrare suoni, scattare più foto e importarle dalla tua libreria di foto.
 If-you-leave-x-of-your-observations-removed =
     Se si abbandona questo progetto tradizionale, { $count ->
         [una] 1 delle tue osservazioni
@@ -475,7 +473,6 @@ Months = Mesi
 MONTHS = MESI
 More = Più
 More-info = Maggiori informazioni
-More-ways-to-observe = Altri modi per osservare
 MOST-FAVED = I PIÙ AMATI
 Most-faved = I più preferiti
 MY-CONTENT--notifications = I MIEI CONTENUTI

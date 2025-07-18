@@ -4,7 +4,7 @@ import { Body2, DisplayTaxonName } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useMemo } from "react";
-import Photo from "realmModels/Photo";
+import Photo from "realmModels/Photo.ts";
 
 import ObsImagePreview from "./ObsImagePreview";
 import ObsUploadStatus from "./ObsUploadStatus";

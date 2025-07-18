@@ -8,7 +8,7 @@ import React, { useCallback } from "react";
 import {
   FlatList
 } from "react-native";
-import Photo from "realmModels/Photo";
+import Photo from "realmModels/Photo.ts";
 import useTranslation from "sharedHooks/useTranslation.ts";
 
 type Props = {

@@ -77,23 +77,6 @@ const FiveObservationCard = ( { triggerCondition }: Props ) => {
   );
 };
 
-const TenObservationCard = ( { triggerCondition }: Props ) => {
-  const { t } = useTranslation( );
-  return (
-    <OnboardingModal
-      showKey="ten-observation"
-      triggerCondition={triggerCondition}
-      slides={[
-        {
-          title: t( "More-ways-to-observe" ),
-          description: t( "If-you-hold-down-instead-of-tapping-the-camera-button-you-can" ),
-          imageSource: require( "images/background/obs-wheel-pivot.png" )
-        }
-      ]}
-    />
-  );
-};
-
 const FiftyObservationCard = ( { triggerCondition }: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -126,6 +109,5 @@ export {
   FiftyObservationCard,
   FiveObservationCard,
   NotificationOnboarding,
-  OneObservationCard,
-  TenObservationCard
+  OneObservationCard
 };

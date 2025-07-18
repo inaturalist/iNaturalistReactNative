@@ -49,8 +49,9 @@ describe( "Match", ( ) => {
       />
     );
 
-    const addLocationButton = screen.queryByText( /ADD LOCATION FOR BETTER IDS/i );
-    expect( addLocationButton ).toBeVisible();
+    const addLocationButtons = screen.queryAllByText( /ADD LOCATION FOR BETTER IDS/i );
+    expect( addLocationButtons.length ).toBeGreaterThan( 1 );
+    expect( addLocationButtons[1] ).toBeVisible();
   } );
 
   it( "should not show location permissions button if permissions granted", () => {

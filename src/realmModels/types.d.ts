@@ -24,8 +24,11 @@ export interface RealmSound extends RealmObject {
 }
 
 export interface RealmObservationPhotoPojo extends RealmObject {
+  uuid: string;
+  id?: number;
   originalPhotoUri?: string;
   photo: RealmPhoto;
+  position?: number;
 }
 
 export interface RealmObservationPhoto extends RealmObservationPhotoPojo {
@@ -34,10 +37,12 @@ export interface RealmObservationPhoto extends RealmObservationPhotoPojo {
 }
 
 export interface RealmObservationSoundPojo extends RealmObject {
+  uuid: string;
+  id?: number;
   sound: RealmSound;
 }
 
-export interface RealmObservationSound extends RealmObject {
+export interface RealmObservationSound extends RealmObservationSoundPojo {
   needsSync: ( ) => boolean;
   wasSynced: ( ) => boolean;
 }

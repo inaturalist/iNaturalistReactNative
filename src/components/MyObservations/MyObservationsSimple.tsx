@@ -7,8 +7,7 @@ import {
   AccountCreationCard,
   FiftyObservationCard,
   FiveObservationCard,
-  OneObservationCard,
-  TenObservationCard
+  OneObservationCard
 } from "components/OnboardingModal/PivotCards.tsx";
 import {
   Body1,
@@ -21,7 +20,7 @@ import {
 import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList.tsx";
 import { View } from "components/styledComponents";
 import React, { useCallback, useMemo } from "react";
-import Photo from "realmModels/Photo";
+import Photo from "realmModels/Photo.ts";
 import type {
   RealmObservation,
   RealmTaxon,
@@ -69,7 +68,7 @@ export interface Props {
   toggleLayout: ( ) => void;
   fetchMoreTaxa: ( ) => void;
   isFetchingTaxa?: boolean;
-  justFinishedSignup?: boolean;
+  justFinishedSignup: boolean;
   loggedInWhileInDefaultMode?: boolean;
   refetchTaxa: ( ) => void;
 }
@@ -109,7 +108,7 @@ const MyObservationsSimple = ( {
   toggleLayout,
   fetchMoreTaxa,
   isFetchingTaxa,
-  justFinishedSignup = false,
+  justFinishedSignup,
   loggedInWhileInDefaultMode = false,
   refetchTaxa
 }: Props ) => {
@@ -367,7 +366,6 @@ const MyObservationsSimple = ( {
             }}
           />
           <FiveObservationCard triggerCondition={numTotalObservations === 5} />
-          <TenObservationCard triggerCondition={numTotalObservations === 10} />
           <FiftyObservationCard
             triggerCondition={
               loggedInWhileInDefaultMode && !!currentUser && numTotalObservations >= 50

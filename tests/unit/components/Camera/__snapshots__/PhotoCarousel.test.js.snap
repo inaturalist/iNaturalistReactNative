@@ -1,0 +1,1166 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PhotoCarousel renders correctly 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    [
+      {
+        "height": 54,
+        "padding": 3,
+      },
+    ]
+  }
+>
+  <RCTScrollView
+    ListEmptyComponent={null}
+    data={
+      [
+        "https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg",
+        "https://inaturalist-open-data.s3.amazonaws.com/photos/2/large.jpeg",
+        "https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg",
+      ]
+    }
+    getItem={[Function]}
+    getItemCount={[Function]}
+    horizontal={true}
+    keyExtractor={[Function]}
+    onContentSizeChange={[Function]}
+    onLayout={[Function]}
+    onMomentumScrollBegin={[Function]}
+    onMomentumScrollEnd={[Function]}
+    onScroll={[Function]}
+    onScrollBeginDrag={[Function]}
+    onScrollEndDrag={[Function]}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={0.0001}
+    stickyHeaderIndices={[]}
+    viewabilityConfigCallbackPairs={[]}
+  >
+    <View>
+      <View
+        onFocusCapture={[Function]}
+        onLayout={[Function]}
+        style={
+          [
+            {
+              "flexDirection": "row",
+            },
+            null,
+          ]
+        }
+      >
+        <View
+          collapsable={false}
+          jestAnimatedProps={
+            {
+              "value": {},
+            }
+          }
+          jestAnimatedStyle={
+            {
+              "value": {
+                "transform": [
+                  {
+                    "rotateZ": "0",
+                  },
+                ],
+              },
+            }
+          }
+          jestInlineStyle={{}}
+          style={
+            [
+              {
+                "transform": [
+                  {
+                    "rotateZ": "0",
+                  },
+                ],
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              [
+                [
+                  {
+                    "justifyContent": "center",
+                  },
+                  {
+                    "alignItems": "center",
+                  },
+                ],
+              ]
+            }
+          >
+            <View
+              style={
+                [
+                  [
+                    {
+                      "overflow": "hidden",
+                    },
+                    {
+                      "borderBottomLeftRadius": 4,
+                      "borderBottomRightRadius": 4,
+                      "borderTopLeftRadius": 4,
+                      "borderTopRightRadius": 4,
+                    },
+                    {
+                      "width": 42,
+                    },
+                    {
+                      "marginLeft": 3,
+                      "marginRight": 3,
+                    },
+                  ],
+                ]
+              }
+              testID="PhotoCarousel.photo"
+            >
+              <View
+                accessibilityIgnoresInvertColors={true}
+                style={
+                  [
+                    [
+                      {
+                        "height": "100%",
+                      },
+                      {
+                        "display": "flex",
+                      },
+                      {
+                        "justifyContent": "center",
+                      },
+                      {
+                        "alignItems": "center",
+                      },
+                    ],
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "uri": "https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg",
+                    }
+                  }
+                  style={
+                    [
+                      {
+                        "bottom": 0,
+                        "left": 0,
+                        "position": "absolute",
+                        "right": 0,
+                        "top": 0,
+                      },
+                      {
+                        "height": "100%",
+                        "width": undefined,
+                      },
+                      undefined,
+                    ]
+                  }
+                />
+                <View
+                  accessibilityLabel="View photo"
+                  accessibilityRole="button"
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    [
+                      [
+                        {
+                          "width": "100%",
+                        },
+                        {
+                          "height": "100%",
+                        },
+                      ],
+                    ]
+                  }
+                  testID="PhotoCarousel.displayPhoto.https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg"
+                />
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        onFocusCapture={[Function]}
+        onLayout={[Function]}
+        style={
+          [
+            {
+              "flexDirection": "row",
+            },
+            null,
+          ]
+        }
+      >
+        <View
+          collapsable={false}
+          jestAnimatedProps={
+            {
+              "value": {},
+            }
+          }
+          jestAnimatedStyle={
+            {
+              "value": {
+                "transform": [
+                  {
+                    "rotateZ": "0",
+                  },
+                ],
+              },
+            }
+          }
+          jestInlineStyle={{}}
+          style={
+            [
+              {
+                "transform": [
+                  {
+                    "rotateZ": "0",
+                  },
+                ],
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              [
+                [
+                  {
+                    "justifyContent": "center",
+                  },
+                  {
+                    "alignItems": "center",
+                  },
+                ],
+              ]
+            }
+          >
+            <View
+              style={
+                [
+                  [
+                    {
+                      "overflow": "hidden",
+                    },
+                    {
+                      "borderBottomLeftRadius": 4,
+                      "borderBottomRightRadius": 4,
+                      "borderTopLeftRadius": 4,
+                      "borderTopRightRadius": 4,
+                    },
+                    {
+                      "width": 42,
+                    },
+                    {
+                      "marginLeft": 3,
+                      "marginRight": 3,
+                    },
+                  ],
+                ]
+              }
+              testID="PhotoCarousel.photo"
+            >
+              <View
+                accessibilityIgnoresInvertColors={true}
+                style={
+                  [
+                    [
+                      {
+                        "height": "100%",
+                      },
+                      {
+                        "display": "flex",
+                      },
+                      {
+                        "justifyContent": "center",
+                      },
+                      {
+                        "alignItems": "center",
+                      },
+                    ],
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "uri": "https://inaturalist-open-data.s3.amazonaws.com/photos/2/large.jpeg",
+                    }
+                  }
+                  style={
+                    [
+                      {
+                        "bottom": 0,
+                        "left": 0,
+                        "position": "absolute",
+                        "right": 0,
+                        "top": 0,
+                      },
+                      {
+                        "height": "100%",
+                        "width": undefined,
+                      },
+                      undefined,
+                    ]
+                  }
+                />
+                <View
+                  accessibilityLabel="View photo"
+                  accessibilityRole="button"
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    [
+                      [
+                        {
+                          "width": "100%",
+                        },
+                        {
+                          "height": "100%",
+                        },
+                      ],
+                    ]
+                  }
+                  testID="PhotoCarousel.displayPhoto.https://inaturalist-open-data.s3.amazonaws.com/photos/2/large.jpeg"
+                />
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        onFocusCapture={[Function]}
+        onLayout={[Function]}
+        style={
+          [
+            {
+              "flexDirection": "row",
+            },
+            null,
+          ]
+        }
+      >
+        <View
+          collapsable={false}
+          jestAnimatedProps={
+            {
+              "value": {},
+            }
+          }
+          jestAnimatedStyle={
+            {
+              "value": {
+                "transform": [
+                  {
+                    "rotateZ": "0",
+                  },
+                ],
+              },
+            }
+          }
+          jestInlineStyle={{}}
+          style={
+            [
+              {
+                "transform": [
+                  {
+                    "rotateZ": "0",
+                  },
+                ],
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              [
+                [
+                  {
+                    "justifyContent": "center",
+                  },
+                  {
+                    "alignItems": "center",
+                  },
+                ],
+              ]
+            }
+          >
+            <View
+              style={
+                [
+                  [
+                    {
+                      "overflow": "hidden",
+                    },
+                    {
+                      "borderBottomLeftRadius": 4,
+                      "borderBottomRightRadius": 4,
+                      "borderTopLeftRadius": 4,
+                      "borderTopRightRadius": 4,
+                    },
+                    {
+                      "width": 42,
+                    },
+                    {
+                      "marginLeft": 3,
+                      "marginRight": 3,
+                    },
+                  ],
+                ]
+              }
+              testID="PhotoCarousel.photo"
+            >
+              <View
+                accessibilityIgnoresInvertColors={true}
+                style={
+                  [
+                    [
+                      {
+                        "height": "100%",
+                      },
+                      {
+                        "display": "flex",
+                      },
+                      {
+                        "justifyContent": "center",
+                      },
+                      {
+                        "alignItems": "center",
+                      },
+                    ],
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "uri": "https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg",
+                    }
+                  }
+                  style={
+                    [
+                      {
+                        "bottom": 0,
+                        "left": 0,
+                        "position": "absolute",
+                        "right": 0,
+                        "top": 0,
+                      },
+                      {
+                        "height": "100%",
+                        "width": undefined,
+                      },
+                      undefined,
+                    ]
+                  }
+                />
+                <View
+                  accessibilityLabel="View photo"
+                  accessibilityRole="button"
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    [
+                      [
+                        {
+                          "width": "100%",
+                        },
+                        {
+                          "height": "100%",
+                        },
+                      ],
+                    ]
+                  }
+                  testID="PhotoCarousel.displayPhoto.https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg"
+                />
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;
+
+exports[`PhotoCarousel renders correctly for large screen 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    [
+      {
+        "height": 117,
+        "padding": 8.5,
+      },
+    ]
+  }
+>
+  <RCTScrollView
+    ListEmptyComponent={null}
+    data={
+      [
+        "https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg",
+        "https://inaturalist-open-data.s3.amazonaws.com/photos/2/large.jpeg",
+        "https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg",
+      ]
+    }
+    getItem={[Function]}
+    getItemCount={[Function]}
+    horizontal={true}
+    keyExtractor={[Function]}
+    onContentSizeChange={[Function]}
+    onLayout={[Function]}
+    onMomentumScrollBegin={[Function]}
+    onMomentumScrollEnd={[Function]}
+    onScroll={[Function]}
+    onScrollBeginDrag={[Function]}
+    onScrollEndDrag={[Function]}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={0.0001}
+    stickyHeaderIndices={[]}
+    viewabilityConfigCallbackPairs={[]}
+  >
+    <View>
+      <View
+        onFocusCapture={[Function]}
+        onLayout={[Function]}
+        style={
+          [
+            {
+              "flexDirection": "row",
+            },
+            null,
+          ]
+        }
+      >
+        <View
+          collapsable={false}
+          jestAnimatedProps={
+            {
+              "value": {},
+            }
+          }
+          jestAnimatedStyle={
+            {
+              "value": {
+                "transform": [
+                  {
+                    "rotateZ": "0",
+                  },
+                ],
+              },
+            }
+          }
+          jestInlineStyle={{}}
+          style={
+            [
+              {
+                "transform": [
+                  {
+                    "rotateZ": "0",
+                  },
+                ],
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              [
+                [
+                  {
+                    "justifyContent": "center",
+                  },
+                  {
+                    "alignItems": "center",
+                  },
+                ],
+              ]
+            }
+          >
+            <View
+              style={
+                [
+                  [
+                    {
+                      "overflow": "hidden",
+                    },
+                    {
+                      "borderBottomLeftRadius": 9,
+                      "borderBottomRightRadius": 9,
+                      "borderTopLeftRadius": 9,
+                      "borderTopRightRadius": 9,
+                    },
+                    {
+                      "width": 83,
+                    },
+                    {
+                      "height": 83,
+                    },
+                    {
+                      "marginBottom": 8.5,
+                      "marginLeft": 8.5,
+                      "marginRight": 8.5,
+                      "marginTop": 8.5,
+                    },
+                  ],
+                ]
+              }
+              testID="PhotoCarousel.photo"
+            >
+              <View
+                accessibilityIgnoresInvertColors={true}
+                style={
+                  [
+                    [
+                      {
+                        "height": "100%",
+                      },
+                      {
+                        "display": "flex",
+                      },
+                      {
+                        "justifyContent": "center",
+                      },
+                      {
+                        "alignItems": "center",
+                      },
+                    ],
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "uri": "https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg",
+                    }
+                  }
+                  style={
+                    [
+                      {
+                        "bottom": 0,
+                        "left": 0,
+                        "position": "absolute",
+                        "right": 0,
+                        "top": 0,
+                      },
+                      {
+                        "height": "100%",
+                        "width": undefined,
+                      },
+                      undefined,
+                    ]
+                  }
+                />
+                <View
+                  accessibilityLabel="View photo"
+                  accessibilityRole="button"
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    [
+                      [
+                        {
+                          "width": "100%",
+                        },
+                        {
+                          "height": "100%",
+                        },
+                      ],
+                    ]
+                  }
+                  testID="PhotoCarousel.displayPhoto.https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg"
+                />
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        onFocusCapture={[Function]}
+        onLayout={[Function]}
+        style={
+          [
+            {
+              "flexDirection": "row",
+            },
+            null,
+          ]
+        }
+      >
+        <View
+          collapsable={false}
+          jestAnimatedProps={
+            {
+              "value": {},
+            }
+          }
+          jestAnimatedStyle={
+            {
+              "value": {
+                "transform": [
+                  {
+                    "rotateZ": "0",
+                  },
+                ],
+              },
+            }
+          }
+          jestInlineStyle={{}}
+          style={
+            [
+              {
+                "transform": [
+                  {
+                    "rotateZ": "0",
+                  },
+                ],
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              [
+                [
+                  {
+                    "justifyContent": "center",
+                  },
+                  {
+                    "alignItems": "center",
+                  },
+                ],
+              ]
+            }
+          >
+            <View
+              style={
+                [
+                  [
+                    {
+                      "overflow": "hidden",
+                    },
+                    {
+                      "borderBottomLeftRadius": 9,
+                      "borderBottomRightRadius": 9,
+                      "borderTopLeftRadius": 9,
+                      "borderTopRightRadius": 9,
+                    },
+                    {
+                      "width": 83,
+                    },
+                    {
+                      "height": 83,
+                    },
+                    {
+                      "marginBottom": 8.5,
+                      "marginLeft": 8.5,
+                      "marginRight": 8.5,
+                      "marginTop": 8.5,
+                    },
+                  ],
+                ]
+              }
+              testID="PhotoCarousel.photo"
+            >
+              <View
+                accessibilityIgnoresInvertColors={true}
+                style={
+                  [
+                    [
+                      {
+                        "height": "100%",
+                      },
+                      {
+                        "display": "flex",
+                      },
+                      {
+                        "justifyContent": "center",
+                      },
+                      {
+                        "alignItems": "center",
+                      },
+                    ],
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "uri": "https://inaturalist-open-data.s3.amazonaws.com/photos/2/large.jpeg",
+                    }
+                  }
+                  style={
+                    [
+                      {
+                        "bottom": 0,
+                        "left": 0,
+                        "position": "absolute",
+                        "right": 0,
+                        "top": 0,
+                      },
+                      {
+                        "height": "100%",
+                        "width": undefined,
+                      },
+                      undefined,
+                    ]
+                  }
+                />
+                <View
+                  accessibilityLabel="View photo"
+                  accessibilityRole="button"
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    [
+                      [
+                        {
+                          "width": "100%",
+                        },
+                        {
+                          "height": "100%",
+                        },
+                      ],
+                    ]
+                  }
+                  testID="PhotoCarousel.displayPhoto.https://inaturalist-open-data.s3.amazonaws.com/photos/2/large.jpeg"
+                />
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        onFocusCapture={[Function]}
+        onLayout={[Function]}
+        style={
+          [
+            {
+              "flexDirection": "row",
+            },
+            null,
+          ]
+        }
+      >
+        <View
+          collapsable={false}
+          jestAnimatedProps={
+            {
+              "value": {},
+            }
+          }
+          jestAnimatedStyle={
+            {
+              "value": {
+                "transform": [
+                  {
+                    "rotateZ": "0",
+                  },
+                ],
+              },
+            }
+          }
+          jestInlineStyle={{}}
+          style={
+            [
+              {
+                "transform": [
+                  {
+                    "rotateZ": "0",
+                  },
+                ],
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              [
+                [
+                  {
+                    "justifyContent": "center",
+                  },
+                  {
+                    "alignItems": "center",
+                  },
+                ],
+              ]
+            }
+          >
+            <View
+              style={
+                [
+                  [
+                    {
+                      "overflow": "hidden",
+                    },
+                    {
+                      "borderBottomLeftRadius": 9,
+                      "borderBottomRightRadius": 9,
+                      "borderTopLeftRadius": 9,
+                      "borderTopRightRadius": 9,
+                    },
+                    {
+                      "width": 83,
+                    },
+                    {
+                      "height": 83,
+                    },
+                    {
+                      "marginBottom": 8.5,
+                      "marginLeft": 8.5,
+                      "marginRight": 8.5,
+                      "marginTop": 8.5,
+                    },
+                  ],
+                ]
+              }
+              testID="PhotoCarousel.photo"
+            >
+              <View
+                accessibilityIgnoresInvertColors={true}
+                style={
+                  [
+                    [
+                      {
+                        "height": "100%",
+                      },
+                      {
+                        "display": "flex",
+                      },
+                      {
+                        "justifyContent": "center",
+                      },
+                      {
+                        "alignItems": "center",
+                      },
+                    ],
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "uri": "https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg",
+                    }
+                  }
+                  style={
+                    [
+                      {
+                        "bottom": 0,
+                        "left": 0,
+                        "position": "absolute",
+                        "right": 0,
+                        "top": 0,
+                      },
+                      {
+                        "height": "100%",
+                        "width": undefined,
+                      },
+                      undefined,
+                    ]
+                  }
+                />
+                <View
+                  accessibilityLabel="View photo"
+                  accessibilityRole="button"
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    [
+                      [
+                        {
+                          "width": "100%",
+                        },
+                        {
+                          "height": "100%",
+                        },
+                      ],
+                    ]
+                  }
+                  testID="PhotoCarousel.displayPhoto.https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg"
+                />
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;

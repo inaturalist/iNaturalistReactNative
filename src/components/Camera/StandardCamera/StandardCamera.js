@@ -11,7 +11,6 @@ import {
   View
 } from "components/styledComponents";
 import { t } from "i18next";
-import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, {
   useCallback, useEffect,
@@ -21,7 +20,7 @@ import React, {
 import DeviceInfo from "react-native-device-info";
 import { Snackbar } from "react-native-paper";
 import { VolumeManager } from "react-native-volume-manager";
-import ObservationPhoto from "realmModels/ObservationPhoto";
+import ObservationPhoto from "realmModels/ObservationPhoto.ts";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import { log } from "sharedHelpers/logger";
 import { useDeviceOrientation, usePerformance } from "sharedHooks";
@@ -39,8 +38,6 @@ import CameraOptionsButtons from "./CameraOptionsButtons";
 import DiscardChangesSheet from "./DiscardChangesSheet";
 import useBackPress from "./hooks/useBackPress";
 import PhotoPreview from "./PhotoPreview";
-
-const { useRealm } = RealmContext;
 
 const logger = log.extend( "StandardCamera" );
 
@@ -75,7 +72,6 @@ const StandardCamera = ( {
   newPhotoUris,
   setNewPhotoUris
 }: Props ): Node => {
-  const realm = useRealm( );
   const hasFlash = device?.hasFlash;
   const {
     animatedProps,
@@ -137,9 +133,9 @@ const StandardCamera = ( {
   const deletePhotoByUri = useCallback( async ( photoUri: string ) => {
     if ( !deletePhotoFromObservation ) return;
     deletePhotoFromObservation( photoUri );
-    await ObservationPhoto.deletePhoto( realm, photoUri );
+    await ObservationPhoto.deletePhoto( photoUri );
     setNewPhotoUris( newPhotoUris.filter( uri => uri !== photoUri ) );
-  }, [deletePhotoFromObservation, realm, newPhotoUris, setNewPhotoUris] );
+  }, [deletePhotoFromObservation, newPhotoUris, setNewPhotoUris] );
 
   const onFlipCamera = () => {
     resetZoom( );

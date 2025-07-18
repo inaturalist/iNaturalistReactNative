@@ -3,8 +3,7 @@ import {
   FiftyObservationCard,
   FiveObservationCard,
   NotificationOnboarding,
-  OneObservationCard,
-  TenObservationCard
+  OneObservationCard
 } from "components/OnboardingModal/PivotCards.tsx";
 import {
   Button,
@@ -36,10 +35,6 @@ const Buttons = ( ) => {
     {
       title: "Five Observation",
       component: FiveObservationCard
-    },
-    {
-      title: "Ten Observation",
-      component: TenObservationCard
     },
     {
       title: "Fifty Observation",

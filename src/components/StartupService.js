@@ -90,6 +90,9 @@ const StartupService = ( ) => {
       };
       // don't remove this logger.info statement: it's used for internal metrics
       logger.info( "pickup" );
+      logger.info(
+        `App version: ${DeviceInfo.getVersion()}, build: ${DeviceInfo.getBuildNumber()}`
+      );
 
       try {
         await checkForSignedInUser( );

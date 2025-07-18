@@ -28,7 +28,6 @@ ADD-EVIDENCE = شواهد را اضافه کنید
 Add-evidence = شواهد را اضافه کنید
 Add-favorite = افزودن علاقه‌مندی
 Add-Location = افزودن مکان
-Add-location-for-better-identifications = برای شناسایی بهتر موقعیت مکانی را اضافه کنید
 ADD-LOCATION-FOR-BETTER-IDS = برای شناسه های بهتر، مکان را اضافه کنید
 Add-location-to-refresh-suggestions = برای تازه کردن پیشنهادها، مکان را اضافه کنید
 Add-observations = افزودن مشاهدات
@@ -353,7 +352,6 @@ Identify-organisms-in-real-time-with-your-camera = Identify organisms in real ti
 Identify-species-anywhere = Identify species anywhere
 If-an-account-with-that-email-exists = If an account with that email exists, we've sent password reset instructions to your email.
 If-you-have-an-existing-account-try-sign-in-reset = If you have an existing iNat account, try signing in with your username and password, or try resetting your password using the email address associated with your account.
-If-you-hold-down-instead-of-tapping-the-camera-button-you-can = If you hold down (instead of tapping) the camera button, you can record sounds, take multiple photos, and import from your photo library.
 If-you-leave-x-of-your-observations-removed =
     If you leave this traditional project, { $count ->
         [one] 1 of your observations
@@ -475,7 +473,6 @@ Months = ماه ها
 MONTHS = MONTHS
 More = More
 More-info = More info
-More-ways-to-observe = More ways to observe
 MOST-FAVED = MOST FAVED
 Most-faved = Most faved
 MY-CONTENT--notifications = MY CONTENT

@@ -11,6 +11,7 @@ import { RealmContext } from "providers/contexts.ts";
 import React, { useEffect, useRef, useState } from "react";
 import { Trans } from "react-i18next";
 import { TextInput, TouchableWithoutFeedback } from "react-native";
+import useStore from "stores/useStore";
 
 import {
   authenticateUser,
@@ -28,6 +29,8 @@ const SignUpConfirmationForm = ( ) => {
   const { user }: {
     email: string;
   } = params;
+
+  const setJustFinishedSignup = useStore( state => state.layout.setJustFinishedSignup );
 
   const usernameRef = useRef<TextInput>( null );
   const passwordRef = useRef<TextInput>( null );
@@ -100,13 +103,11 @@ const SignUpConfirmationForm = ( ) => {
       navigation.navigate( "Login" );
       return;
     }
+    setJustFinishedSignup( true );
     navigation.navigate( "TabNavigator", {
       screen: "ObservationsTab",
       params: {
-        screen: "ObsList",
-        params: {
-          justFinishedSignup: true
-        }
+        screen: "ObsList"
       }
     } );
   };

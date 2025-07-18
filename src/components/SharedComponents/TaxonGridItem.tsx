@@ -5,7 +5,7 @@ import { Body4, DisplayTaxonName } from "components/SharedComponents";
 import SpeciesSeenCheckmark from "components/SharedComponents/SpeciesSeenCheckmark";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
-import Photo from "realmModels/Photo";
+import Photo from "realmModels/Photo.ts";
 import { accessibleTaxonName } from "sharedHelpers/taxon.ts";
 import { useCurrentUser, useFontScale, useTranslation } from "sharedHooks";
 

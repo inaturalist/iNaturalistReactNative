@@ -107,6 +107,11 @@ const Developer = (): Node => {
           text="LOG"
           className="mb-5"
         />
+        <Button
+          onPress={() => navigation.navigate( "LoginStackNavigator" )}
+          text="LOG IN AGAIN"
+          className="mb-5"
+        />
         { // eslint-disable-next-line no-undef
           __DEV__ && (
             <>

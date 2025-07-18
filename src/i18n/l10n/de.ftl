@@ -28,7 +28,6 @@ ADD-EVIDENCE = BELEGE HINZUFÜGEN
 Add-evidence = Belege hinzufügen
 Add-favorite = Als Favorit hinzufügen
 Add-Location = Standort hinzufügen
-Add-location-for-better-identifications = Standort hinzufügen, um bessere Bestimmungen zu erhalten
 ADD-LOCATION-FOR-BETTER-IDS = FÜR BESSERE IDS EINEN STANDORT HINZUFÜGEN
 Add-location-to-refresh-suggestions = Standort hinzufügen, um die Bestimmungsvorschläge zu aktualisieren
 Add-observations = Beobachtung(en) hinzufügen
@@ -353,7 +352,6 @@ Identify-organisms-in-real-time-with-your-camera = Bestimmung von Lebewesen in E
 Identify-species-anywhere = Arten bestimmen, egal wo auf der Welt
 If-an-account-with-that-email-exists = Wenn ein Konto mit dieser E-Mail-Adresse existiert, wurden Anweisungen zum Zurücksetzen des Passworts an deine E-Mail-Adresse gesendet.
 If-you-have-an-existing-account-try-sign-in-reset = Wenn du bereits ein iNat-Konto hast, versuche dich mit deinem Benutzernamen und Passwort anzumelden, oder versuche dein Passwort mit der E-Mail-Adresse deines Kontos zurückzusetzen.
-If-you-hold-down-instead-of-tapping-the-camera-button-you-can = Wenn du den Kamera-Knopf gedrückt hältst (anstatt ihn anzutippen), kannst du Tonaufnahmen machen, mehrere Fotos aufnehmen oder Bilder aus deiner Foto-Bibliothek importieren.
 If-you-leave-x-of-your-observations-removed =
     Wenn du dieses traditionelle Projekt verlässt, { $count ->
         [one] wird eine deiner Beobachtungen
@@ -475,7 +473,6 @@ Months = Monate
 MONTHS = MONATE
 More = Mehr
 More-info = Weitere Informationen
-More-ways-to-observe = Weitere Möglichkeiten zum Beobachten
 MOST-FAVED = MEIST FAVORISIERT
 Most-faved = Meist favorisiert
 MY-CONTENT--notifications = MEINE BEOBACHTUNGEN

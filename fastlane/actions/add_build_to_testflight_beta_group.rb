@@ -59,11 +59,11 @@ module Fastlane
         ["kueda"]
       end
 
-      # rubocop:disable Naming/PredicateName
+      # rubocop:disable Naming/PredicatePrefix
       def self.is_supported?( platform )
         platform == :ios
       end
-      # rubocop:enable Naming/PredicateName
+      # rubocop:enable Naming/PredicatePrefix
     end
   end
 end

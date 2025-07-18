@@ -28,7 +28,6 @@ ADD-EVIDENCE = ADICIONAR PROVAS
 Add-evidence = Adicionar elementos de prova
 Add-favorite = Adicionar favorito
 Add-Location = Adicionar localização
-Add-location-for-better-identifications = Adicione localização para melhores identificações
 ADD-LOCATION-FOR-BETTER-IDS = ADICIONAR LOCALIZAÇÃO PARA MELHORES IDS
 Add-location-to-refresh-suggestions = Adicionar localização para atualizar sugestões
 Add-observations = Adicionar observações
@@ -353,7 +352,6 @@ Identify-organisms-in-real-time-with-your-camera = Identifique organismos em tem
 Identify-species-anywhere = Identifique espécies em qualquer lugar
 If-an-account-with-that-email-exists = Se existir uma conta com esse e-mail, enviamos instruções de redefinição de senha para o seu e-mail.
 If-you-have-an-existing-account-try-sign-in-reset = Se já tiver uma conta iNat, tente iniciar sessão com o seu nome de utilizador e palavra-passe ou tente repor a sua palavra-passe utilizando o endereço de e-mail associado à sua conta.
-If-you-hold-down-instead-of-tapping-the-camera-button-you-can = Se você pressionar (em vez de tocar) o botão da câmera, poderá gravar sons, tirar várias fotos e importar da sua biblioteca de fotos.
 If-you-leave-x-of-your-observations-removed =
     Se você deixar este projeto tradicional, { $count ->
         [uma] 1 das suas observações
@@ -475,7 +473,6 @@ Months = Meses
 MONTHS = MESES
 More = Saber mais
 More-info = Mais informações
-More-ways-to-observe = Mais formas de observar
 MOST-FAVED = MAIS FALADO
 Most-faved = Mais faved
 MY-CONTENT--notifications = O MEU CONTEÚDO

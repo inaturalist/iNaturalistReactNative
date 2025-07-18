@@ -1,0 +1,6 @@
+UPDATED
+* Some maintenance
+
+FIXED
+* Some screens not appearing on fresh install
+* Crash when taking a photo

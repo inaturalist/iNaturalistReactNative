@@ -1,7 +1,7 @@
 // eslint-disable-next-line
 import { Realm } from "@realm/react";
 import _ from "lodash";
-import Photo from "realmModels/Photo";
+import Photo from "realmModels/Photo.ts";
 import Sound from "realmModels/Sound";
 
 const DEFAULT_STATE = {

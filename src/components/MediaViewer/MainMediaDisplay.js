@@ -15,7 +15,7 @@ import {
   NativeViewGestureHandler,
   PanGestureHandler
 } from "react-native-gesture-handler";
-import Photo from "realmModels/Photo";
+import Photo from "realmModels/Photo.ts";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
 import useTranslation from "sharedHooks/useTranslation.ts";
 import colors from "styles/tailwindColors";

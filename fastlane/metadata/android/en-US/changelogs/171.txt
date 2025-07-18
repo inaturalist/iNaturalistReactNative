@@ -1,0 +1,3 @@
+FIXED
+* Some observations shown without data
+* Some observations did not upload

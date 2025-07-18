@@ -1,11 +1,11 @@
 import {
-  INatIcon,
-  Subheading2
+  Button
 } from "components/SharedComponents";
-import { ImageBackground, Pressable } from "components/styledComponents";
+import { ImageBackground } from "components/styledComponents";
+import LocationIndicatorIcon from "images/svg/location_indicator.svg";
 import React from "react";
+import { View } from "react-native";
 import { useTranslation } from "sharedHooks";
-import colors from "styles/tailwindColors";
 
 type Props = {
   handleAddLocationPressed: ( ) => void
@@ -16,22 +16,32 @@ const EmptyMapSection = ( {
 }: Props ) => {
   const { t } = useTranslation( );
   return (
-    <Pressable
-      accessibilityLabel={t( "Edit-location" )}
-      accessibilityRole="link"
-      onPress={handleAddLocationPressed}
-    >
+    <View>
       <ImageBackground
-        className="w-full h-[230px] flex items-center justify-center"
+        className="w-full h-[230px] flex justify-center"
         source={require( "images/topographic-map.png" )}
         accessibilityIgnoresInvertColors
       >
-        <INatIcon name="location" size={40} color={colors.white} />
-        <Subheading2 className="mt-3 text-white px-28 text-center">
-          {t( "Add-location-for-better-identifications" )}
-        </Subheading2>
+        <View
+          className="w-full items-center"
+        >
+          <LocationIndicatorIcon
+            testID="Map.LocationIndicator"
+            width={40}
+            height={40}
+          />
+        </View>
+
+        <Button
+          className="mt-5 mx-4 border-0"
+          level="neutral"
+          text={t( "ADD-LOCATION-FOR-BETTER-IDS" )}
+          onPress={handleAddLocationPressed}
+          accessibilityLabel={t( "Edit-location" )}
+          accessibilityHint={t( "Add-location-to-refresh-suggestions" )}
+        />
       </ImageBackground>
-    </Pressable>
+    </View>
   );
 };
 

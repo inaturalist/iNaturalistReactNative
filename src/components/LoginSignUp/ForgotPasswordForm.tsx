@@ -5,22 +5,29 @@ import {
   Body1,
   Button
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { ScrollView, View } from "components/styledComponents";
 import { t } from "i18next";
-import type { Node } from "react";
-import React, { useEffect, useRef, useState } from "react";
+import type { ElementRef, Node } from "react";
+import React, {
+  useCallback, useEffect, useRef, useState
+} from "react";
 import { TouchableWithoutFeedback } from "react-native";
+import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 
 import LoginSignUpInputField from "./LoginSignUpInputField";
 
 type Props = {
-  reset: Function
+  reset: ( email: string ) => Promise<void>,
+  scrollViewRef?: { current: null | ElementRef<typeof ScrollView> },
 }
 
-const ForgotPasswordForm = ( { reset }: Props ): Node => {
+const ForgotPasswordForm = ( { reset, scrollViewRef }: Props ): Node => {
   const [email, setEmail] = useState( "" );
   const emailRef = useRef( null );
   const navigation = useNavigation( );
+  const { keyboardShown } = useKeyboardInfo( );
+
+  const inputFieldRef = useRef<typeof View | null>( null );
 
   const blurFields = () => {
     if ( emailRef.current ) {
@@ -40,6 +47,24 @@ const ForgotPasswordForm = ( { reset }: Props ): Node => {
     return unsubscribeTransition;
   }, [navigation] );
 
+  const scrollToItem = useCallback( ( ) => {
+    if ( scrollViewRef?.current && inputFieldRef?.current ) {
+      inputFieldRef.current?.measureLayout(
+        scrollViewRef.current,
+        ( _, y ) => {
+          scrollViewRef.current?.scrollTo( { y, animated: true } );
+        },
+        () => console.log( "Failed to measure" )
+      );
+    }
+  }, [scrollViewRef] );
+
+  useEffect( ( ) => {
+    if ( keyboardShown ) {
+      scrollToItem( );
+    }
+  }, [keyboardShown, scrollToItem] );
+
   return (
     <TouchableWithoutFeedback accessibilityRole="button" onPress={blurFields}>
       <View className="px-4 my-5 justify-end">
@@ -55,15 +80,17 @@ const ForgotPasswordForm = ( { reset }: Props ): Node => {
           onChangeText={text => setEmail( text )}
           testID="Login.email"
         />
-        <Button
-          level="focus"
-          forceDark
-          text={t( "RESET-PASSWORD" )}
-          onPress={( ) => reset( email )}
-          className="my-[30px]"
-          disabled={!email}
-          testID="Login.forgotPasswordButton"
-        />
+        <View ref={inputFieldRef}>
+          <Button
+            level="focus"
+            forceDark
+            text={t( "RESET-PASSWORD" )}
+            onPress={( ) => reset( email )}
+            className="my-[30px]"
+            disabled={!email}
+            testID="Login.forgotPasswordButton"
+          />
+        </View>
       </View>
     </TouchableWithoutFeedback>
   );

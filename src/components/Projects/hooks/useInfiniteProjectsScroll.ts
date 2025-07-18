@@ -7,10 +7,19 @@ import {
 const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: object ): object => {
   const baseParams = {
     ...newInputParams,
-    per_page: 50,
+    per_page: 20,
     ttl: -1,
     rule_details: true,
-    fields: "all"
+    fields: {
+      id: true,
+      project_type: true,
+      title: true,
+      icon: true,
+      rule_preferences: {
+        field: true,
+        value: true
+      }
+    }
   };
 
   const { ...queryKeyParams } = baseParams;

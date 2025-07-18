@@ -30,7 +30,15 @@ const ProjectDetailsContainer = ( ): Node => {
   const { data: project } = useAuthenticatedQuery(
     fetchProjectsQueryKey,
     optsWithAuth => fetchProjects( id, {
-      fields: "all"
+      fields: {
+        id: true,
+        title: true,
+        icon: true,
+        header_image_url: true,
+        project_type: true,
+        description: true,
+        current_user_is_member: true
+      }
     }, optsWithAuth )
   );
 

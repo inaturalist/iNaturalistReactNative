@@ -155,7 +155,7 @@ const RootExploreContainerWithContext = ( ): Node => {
   };
 
   useEffect( ( ) => {
-    navigation.addListener( "focus", ( ) => {
+    const unsubscribe = navigation.addListener( "focus", ( ) => {
       const storedState = Object.keys( rootStoredParams ).length > 0 || false;
 
       if ( storedState ) {
@@ -163,10 +163,16 @@ const RootExploreContainerWithContext = ( ): Node => {
       }
     } );
 
-    navigation.addListener( "blur", ( ) => {
+    return unsubscribe;
+  }, [navigation, dispatch, rootStoredParams] );
+
+  useEffect( ( ) => {
+    const unsubscribe = navigation.addListener( "blur", ( ) => {
       setRootStoredParams( state );
     } );
-  }, [navigation, setRootStoredParams, state, dispatch, rootStoredParams] );
+
+    return unsubscribe;
+  }, [navigation, setRootStoredParams, state] );
 
   useEffect( () => {
     if ( state.placeMode === PLACE_MODE.NEARBY

@@ -34,7 +34,6 @@ ADD-EVIDENCE = LÄGG TILL STÖD
 Add-evidence = Lägg till stöd
 Add-favorite = Lägg till favorit
 Add-Location = Lägg till plats
-Add-location-for-better-identifications = Lägg till fyndplats för bättre bestämningar
 ADD-LOCATION-FOR-BETTER-IDS = LÄGG TILL FYNDPLATS FÖR BÄTTRE BESTÄMNINGAR
 Add-location-to-refresh-suggestions = Lägg till fyndplats för nya förslag
 Add-observations = Lägg till fynd
@@ -359,7 +358,6 @@ Identify-organisms-in-real-time-with-your-camera = Bestäm organismer i realtid 
 Identify-species-anywhere = Bestäm arter var som helst
 If-an-account-with-that-email-exists = Om ett konto med den e-posten finns, har vi skickat instruktioner för att återställa lösenordet till din e-post.
 If-you-have-an-existing-account-try-sign-in-reset = Om du har ett befintligt iNat-konto försök logga in med ditt användarnamn och lösenord, eller försök återställa ditt lösenord med den e-postadress som är kopplad till ditt konto.
-If-you-hold-down-instead-of-tapping-the-camera-button-you-can = Om du håller ned (i stället för att trycka) kameraknappen kan du spela in ljud, ta flera bilder och importera från ditt bildbibliotek.
 If-you-leave-x-of-your-observations-removed =
     Om du lämnar detta traditionella projekt, { $count ->
         [one] 1 av dina fynd
@@ -481,7 +479,6 @@ Months = Månader
 MONTHS = MÅNADER
 More = Mer
 More-info = Mer info
-More-ways-to-observe = Fler sätt att observera
 MOST-FAVED = MEST POPULÄRA
 Most-faved = Mest populära
 MY-CONTENT--notifications = MITT INNEHÅLL

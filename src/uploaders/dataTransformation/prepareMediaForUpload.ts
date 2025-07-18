@@ -1,22 +1,46 @@
-import ObservationPhoto from "realmModels/ObservationPhoto";
+import ObservationPhoto from "realmModels/ObservationPhoto.ts";
 import ObservationSound from "realmModels/ObservationSound";
+import { ActionType, Evidence, EvidenceType } from "uploaders/mediaUploader.ts";
 
 function prepareMediaForUpload(
-  media: object,
-  type: string,
-  action: "upload" | "attach" | "update",
+  media: Evidence,
+  type: EvidenceType,
+  action: ActionType,
   observationId?: number | null
 ): object {
   if ( type === "Photo" || type === "ObservationPhoto" ) {
     if ( action === "upload" ) {
-      return ObservationPhoto.mapPhotoForUpload( observationId, media );
+      return ObservationPhoto.mapPhotoForUpload( media );
     }
     if ( action === "attach" ) {
-      return ObservationPhoto
+      // Assert inputs
+      if ( !observationId ) {
+        throw new Error( "Observation ID is required for attaching photos" );
+      }
+      const mappedObservationPhoto = ObservationPhoto
         .mapPhotoForAttachingToObs( observationId, media );
+      // Assert outputs
+      // Remove position key if not a number (API will throw an error if "position" key is present
+      // but is not a number)
+      if ( typeof mappedObservationPhoto.observation_photo.position !== "number" ) {
+        delete mappedObservationPhoto.observation_photo.position;
+      }
+      return mappedObservationPhoto;
     }
     if ( action === "update" ) {
-      return ObservationPhoto.mapPhotoForUpdating( observationId, media );
+      // Assert inputs
+      if ( !observationId ) {
+        throw new Error( "Observation ID is required for updating photos" );
+      }
+      const mappedObservationPhoto = ObservationPhoto
+        .mapPhotoForUpdating( observationId, media );
+      // Assert outputs
+      // Remove position key if not a number (API will throw an error if "position" key is present
+      // but is not a number)
+      if ( typeof mappedObservationPhoto.observation_photo.position !== "number" ) {
+        delete mappedObservationPhoto.observation_photo.position;
+      }
+      return mappedObservationPhoto;
     }
   } else if ( type === "ObservationSound" ) {
     if ( action === "upload" ) {
