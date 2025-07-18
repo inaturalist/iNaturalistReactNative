@@ -5,7 +5,7 @@ import {
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import { AppState } from "react-native";
 import Realm from "realm";
-import { RealmObservation, RealmObservationPojo } from "realmModels/types.d.ts";
+import type { RealmObservation, RealmObservationPojo } from "realmModels/types";
 import { log } from "sharedHelpers/logger";
 import {
   markRecordUploaded,
@@ -15,6 +15,7 @@ import {
   attachMediaToObservation,
   uploadObservationMedia
 } from "uploaders/mediaUploader.ts";
+import { RecoverableError, RECOVERY_BY } from "uploaders/utils/errorHandling.ts";
 import { trackObservationUpload } from "uploaders/utils/progressTracker.ts";
 
 const logger = log.extend( "observationUploader" );
@@ -46,7 +47,9 @@ interface ObservationApiResponse {
 async function validateAndGetToken( ): Promise<string> {
   const apiToken = await getJWT( false, "upload" );
   if ( !apiToken ) {
-    throw new Error( "Gack, tried to upload an observation without API token!" );
+    const error = new RecoverableError( "Gack, tried to upload an observation without API token!" );
+    error.recoveryBy = RECOVERY_BY.LOGIN_AGAIN;
+    throw error;
   }
   return apiToken;
 }
@@ -110,13 +113,14 @@ async function uploadObservation(
   } catch ( error ) {
     const {
       errorContext, totalDuration
-    } = createErrorContext( "media_upload", uploadStartTime, observation.uuid );
+    } = createErrorContext( "media_upload", uploadStartTime );
     logger.error(
       `Upload: Failed ${observation.uuid} after ${totalDuration}ms - ${errorContext}`
       + ": Media upload failed",
       error
     );
-    throw new Error( `Media upload failed: ${error.message}` );
+    error.message = `Media upload failed: ${error.message}`;
+    throw error;
   }
 
   // Step 2: upload or modify observation with revalidated token
@@ -139,13 +143,14 @@ async function uploadObservation(
   } catch ( error ) {
     const {
       errorContext, totalDuration
-    } = createErrorContext( "observation_upload", uploadStartTime, observation.uuid );
+    } = createErrorContext( "observation_upload", uploadStartTime );
     logger.error(
       `Upload: Failed ${observation.uuid} after ${totalDuration}ms - ${errorContext}`
       + ": Observation upload failed",
       error
     );
-    throw new Error( `Observation upload failed: ${error.message}` );
+    error.message = `Observation upload failed: ${error.message}`;
+    throw error;
   }
 
   const { uuid: obsUUID } = response.results[0];
@@ -165,13 +170,14 @@ async function uploadObservation(
   } catch ( error ) {
     const {
       errorContext, totalDuration
-    } = createErrorContext( "media_attachment", uploadStartTime, observation.uuid );
+    } = createErrorContext( "media_attachment", uploadStartTime );
     logger.error(
       `Upload: Failed ${observation.uuid} after ${totalDuration}ms - ${errorContext}`
       + ": Media attachment failed",
       error
     );
-    throw new Error( `Media attachment failed: ${error.message}` );
+    error.message = `Media attachment failed: ${error.message}`;
+    throw error;
   }
 
   // Step 4: mark observation as uploaded in realm
@@ -180,7 +186,7 @@ async function uploadObservation(
   } catch ( error ) {
     const {
       errorContext, totalDuration
-    } = createErrorContext( "realm_update", uploadStartTime, observation.uuid );
+    } = createErrorContext( "realm_update", uploadStartTime );
     logger.error(
       `Upload: Failed ${observation.uuid} after ${totalDuration}ms - ${errorContext}`
       + ": Realm update failed",
