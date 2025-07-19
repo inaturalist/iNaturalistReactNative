@@ -838,6 +838,7 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = The iNat
 The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
 The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify.
 The-models-that-suggest-species = 視覚的な類似性と位置に基づいて種を推定するモデルは、サラ・ビーリー、トム・ブルックス、イライジャ・コール、クリスチャン・ランゲ、オイシン・マック・アオダ、ピエトロ・ペローナ、グラント・ヴァン・ホーンとの共同研究のおかげです。
+There-was-an-error-that-might-be-fixed-by-logging-in-again = There was an error that might be fixed by logging in again.
 This-is-a-wild-organism = This is a wild organism and wasn't placed in this location by humans.
 This-is-how-taxon-names-will-be-displayed = This is how all taxon names will be displayed to you across iNaturalist:
 This-is-your-identification-other-people-may-help-confirm-it = This is your identification. Other people may help confirm it!
