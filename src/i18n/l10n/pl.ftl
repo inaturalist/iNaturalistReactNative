@@ -844,6 +844,7 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = Społecz
 The-iNaturalist-Network = Sieć iNaturalist to zbiór zlokalizowanych stron internetowych, które są w pełni połączone z globalną społecznością iNaturalist. Strony sieci są wspierane przez lokalne instytucje, które promują lokalne wykorzystanie i ułatwiają korzystanie z danych z iNaturalist z korzyścią dla lokalnej różnorodności biologicznej.
 The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify.
 The-models-that-suggest-species = Modele, które sugerują gatunki na podstawie wizualnego podobieństwa i lokalizacji, są częściowo zasługą współpracy z Sarą Beery, Tomem Brooksem, Elijahem Cole'em, Christianem Lange, Oisinem Mac Aodha, Pietro Peroną i Grantem Van Hornem.
+There-was-an-error-that-might-be-fixed-by-logging-in-again = There was an error that might be fixed by logging in again.
 This-is-a-wild-organism = Jest to dziki organizm i nie został umieszczony w tym miejscu przez ludzi.
 This-is-how-taxon-names-will-be-displayed = W ten sposób wszystkie nazwy taksonów będą wyświetlane w iNaturalist:
 This-is-your-identification-other-people-may-help-confirm-it = To jest Twoja identyfikacja. Inne osoby mogą pomóc to potwierdzić!

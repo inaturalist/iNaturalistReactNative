@@ -838,6 +838,7 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = קהיל
 The-iNaturalist-Network = רשת iNaturalist היא אוסף של אתרים מקומיים המחוברים באופן מלא לקהילת iNaturalist העולמית. אתרי הרשת נתמכים על ידי מוסדות מקומיים המקדמים שימוש מקומי ומתווכים את השימוש בנתונים מ-iNaturalist לטובת המגוון הביולוגי המקומי.
 The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify.
 The-models-that-suggest-species = המודלים המציעים מינים המבוססים על דמיון חזותי ומיקום הם בין השאר הודות לשיתופי פעולה עם שרה בארי, טום ברוקס, אלייז'ה קול, כריסטיאן לאנג, אויסין מק אודהה, פייטרו פרונה וגרנט ואן הורן.
+There-was-an-error-that-might-be-fixed-by-logging-in-again = There was an error that might be fixed by logging in again.
 This-is-a-wild-organism = זהו אורגניזם בר שלא הובא למקום זה על ידי בני אדם.
 This-is-how-taxon-names-will-be-displayed = כך יוצגו בפניך כל שמות הטקסונים ב-iNaturalist:
 This-is-your-identification-other-people-may-help-confirm-it = זה הזיהוי שלך. א.נשים אחרים יכולים לעזור לאשר אותו!
