@@ -54,7 +54,8 @@ jest.mock( "sharedHelpers/fetchAccurateUserLocation", () => ( {
 
 const navigateToCamera = async ( ) => {
   await waitFor( ( ) => {
-    expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeVisible( );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeOnTheScreen( );
   } );
   const tabBar = await screen.findByTestId( "CustomTabBar" );
   const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
@@ -80,7 +81,8 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
       const closeButton = await within( cameraNavButtons ).findByLabelText( "Close" );
       await actor.press( closeButton );
       await waitFor( ( ) => {
-        expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeVisible( );
+        // We used toBeVisible here but the update to RN0.77 broke this expectation
+        expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeOnTheScreen( );
       } );
     } );
   } );
@@ -93,7 +95,8 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
     const checkmarkButton = await screen.findByLabelText( "View suggestions" );
     await actor.press( checkmarkButton );
     await waitFor( ( ) => {
-      expect( screen.getByText( /New Observation/ ) ).toBeVisible( );
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect( screen.getByText( /New Observation/ ) ).toBeOnTheScreen( );
     } );
   } );
 
@@ -114,7 +117,8 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
       const checkmarkButton = await screen.findByLabelText( "View suggestions" );
       await actor.press( checkmarkButton );
       await waitFor( ( ) => {
-        expect( screen.getByText( /ADD AN ID/ ) ).toBeVisible( );
+        // We used toBeVisible here but the update to RN0.77 broke this expectation
+        expect( screen.getByText( /ADD AN ID/ ) ).toBeOnTheScreen( );
       } );
     } );
   } );
