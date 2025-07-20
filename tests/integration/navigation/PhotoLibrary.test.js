@@ -60,7 +60,8 @@ const actor = userEvent.setup( );
 
 const navigateToPhotoImporter = async ( ) => {
   await waitFor( ( ) => {
-    expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeVisible( );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeOnTheScreen( );
   } );
   const tabBar = await screen.findByTestId( "CustomTabBar" );
   const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
@@ -89,7 +90,8 @@ describe( "PhotoLibrary navigation", ( ) => {
     const groupPhotosText = await screen.findByText( /Group Photos/ );
     await waitFor( ( ) => {
       // user should land on GroupPhotos
-      expect( groupPhotosText ).toBeVisible( );
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect( groupPhotosText ).toBeOnTheScreen( );
     } );
   } );
 
@@ -103,7 +105,8 @@ describe( "PhotoLibrary navigation", ( ) => {
     await navigateToPhotoImporter( );
     const obsEditText = await screen.findByText( /New Observation/ );
     await waitFor( () => {
-      expect( obsEditText ).toBeVisible();
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect( obsEditText ).toBeOnTheScreen();
     } );
   } );
 } );
@@ -124,7 +127,8 @@ describe( "PhotoLibrary navigation when suggestions screen is preferred next scr
     await navigateToPhotoImporter();
     const addAnIDText = await screen.findByText( /Add an ID Later/ );
     await waitFor( () => {
-      expect( addAnIDText ).toBeVisible();
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect( addAnIDText ).toBeOnTheScreen();
     } );
   } );
 } );

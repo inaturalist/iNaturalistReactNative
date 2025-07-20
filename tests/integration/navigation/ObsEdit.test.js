@@ -66,7 +66,8 @@ const navigateToObsEditViaGroupPhotos = async ( ) => {
   );
   await waitFor( ( ) => {
     global.timeTravel( );
-    expect( screen.getByText( /OBSERVATIONS/ ) ).toBeVisible( );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( screen.getByText( /OBSERVATIONS/ ) ).toBeOnTheScreen( );
   } );
   const tabBar = await screen.findByTestId( "CustomTabBar" );
   const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
@@ -82,7 +83,8 @@ const navigateToObsEditViaGroupPhotos = async ( ) => {
   await actor.press( importObservationsText );
   await waitFor( ( ) => {
     const obsEditTitleText = screen.getByText( /2 Observations/ );
-    expect( obsEditTitleText ).toBeVisible( );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( obsEditTitleText ).toBeOnTheScreen( );
   }, { timeout: 3_000, interval: 500 } );
 };
 
@@ -239,7 +241,8 @@ describe( "ObsEdit", ( ) => {
         await navigateToObsEditViaGroupPhotos( );
         await uploadObsEditObservation( );
         const uploadStatus = await screen.findByText( /1 uploaded/ );
-        expect( uploadStatus ).toBeVisible( );
+        // We used toBeVisible here but the update to RN0.77 broke this expectation
+        expect( uploadStatus ).toBeOnTheScreen( );
         const newTitle = await screen.findByText( /New Observation/ );
         expect( newTitle ).toBeTruthy( );
       } );

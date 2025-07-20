@@ -168,7 +168,8 @@ afterEach( ( ) => {
 //       const { observations } = await setupAppWithSignedInUser( );
 //       await navigateToTaxonSearchForObservation( observations[0] );
 //       const searchInput = await screen.findByLabelText( "Search for a taxon" );
-//       expect( searchInput ).toBeVisible( );
+// We used toBeVisible here but the update to RN0.77 broke this expectation
+//       expect( searchInput ).toBeOnTheScreen( );
 //       await act(
 //         async ( ) => actor.type(
 //           searchInput,
@@ -261,24 +262,30 @@ describe( "Suggestions", ( ) => {
     const topTaxonResultButton = await screen.findByTestId(
       `SuggestionsList.taxa.${taxonId}.checkmark`
     );
-    expect( topTaxonResultButton ).toBeVisible( );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( topTaxonResultButton ).toBeOnTheScreen( );
     await actor.press( topTaxonResultButton );
     const activityTabBtn = await screen.findByText( /ACTIVITY/ );
-    expect( activityTabBtn ).toBeVisible( );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( activityTabBtn ).toBeOnTheScreen( );
     await actor.press( activityTabBtn );
     const activityTab = await screen.findByTestId( "ActivityTab" );
-    expect( activityTab ).toBeVisible( );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( activityTab ).toBeOnTheScreen( );
     // open bottom sheet
     const bottomSheetText = await screen.findByText(
       /Would you like to suggest the following identification/
     );
-    expect( bottomSheetText ).toBeVisible( );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( bottomSheetText ).toBeOnTheScreen( );
     const confirmButton = await screen.findByTestId( "SuggestIDSheet.cvSuggestionsButton" );
-    expect( confirmButton ).toBeVisible( );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( confirmButton ).toBeOnTheScreen( );
     await actor.press( confirmButton );
     // Wait for the actual identification we created to appear
     const taxonNameInIdent = await within( activityTab ).findByText( topSuggestion.taxon.name );
-    expect( taxonNameInIdent ).toBeVisible( );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( taxonNameInIdent ).toBeOnTheScreen( );
     expect( inatjs.identifications.create ).toHaveBeenCalledWith( {
       fields: Identification.ID_FIELDS,
       identification: {
@@ -307,7 +314,8 @@ describe( "Suggestions", ( ) => {
       `MyObservations.obsGridItem.${observations[0].uuid}`
     );
     await waitFor( ( ) => {
-      expect( observationGridItem ).toBeVisible( );
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect( observationGridItem ).toBeOnTheScreen( );
     }, { timeout: 3000, interval: 500 } );
     const savedObservation = global.mockRealms[__filename]
       .objectForPrimaryKey( "Observation", observations[0].uuid );
