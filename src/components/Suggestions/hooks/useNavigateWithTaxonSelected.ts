@@ -1,4 +1,4 @@
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { StackActions, useNavigation, useRoute } from "@react-navigation/native";
 import { useEffect } from "react";
 import useStore from "stores/useStore";
 
@@ -39,12 +39,14 @@ const useNavigateWithTaxonSelected = (
     // in two different ways from ObsDetails -> they can land directly on the Suggestions
     // screen (by adding an id) or they can first land on ObsEdit (by tapping the edit button)
     if ( lastScreen === "ObsDetails" ) {
-      // popping suggestions off the stack and returning to base
-      navigation.popTo( "ObsDetails", {
-        uuid: currentObservation?.uuid,
-        identTaxonId: selectedTaxon?.id,
-        identTaxonFromVision: options?.vision,
-        identAt: Date.now()
+      // popping suggestions off the stack and returning to inital ObsDetails
+      navigation.dispatch( {
+        ...StackActions.popTo( "ObsDetails", {
+          uuid: currentObservation?.uuid,
+          identTaxonId: selectedTaxon?.id,
+          identTaxonFromVision: options?.vision,
+          identAt: Date.now()
+        } )
       } );
     } else if ( entryScreen === "ObsEdit" ) {
       // Cant' go back b/c we might be on Suggestions OR TaxonSearch. Don't
