@@ -217,8 +217,8 @@ const MatchContainer = ( ) => {
     }
   }, [] );
 
-  const shouldFetchUserLocation
-  = shouldFetchObservationLocation( currentObservation ) && hasPermissions;
+  const shouldFetchUserLocation = hasPermissions
+    && shouldFetchObservationLocation( currentObservation );
 
   const {
     stopWatch,
