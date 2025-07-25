@@ -35,6 +35,9 @@ const ObsEdit = ( ): Node => {
   const savedOrUploadedMultiObsFlow = useStore( state => state.savedOrUploadedMultiObsFlow );
   const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
   const [resetScreen, setResetScreen] = useState( false );
+  const [needLocation, setNeedLocation] = useState(
+    shouldFetchObservationLocation( currentObservation )
+  );
   const isFocused = useIsFocused( );
   const currentUser = useCurrentUser( );
   const {
@@ -59,8 +62,7 @@ const ObsEdit = ( ): Node => {
     ...DROP_SHADOW
   };
 
-  const shouldFetchLocation = hasLocationPermission
-    && shouldFetchObservationLocation( currentObservation );
+  const shouldFetchLocation = hasLocationPermission && needLocation;
 
   const {
     isFetchingLocation,
@@ -165,6 +167,10 @@ const ObsEdit = ( ): Node => {
         />
       )}
       {renderLocationPermissionGate( {
+        // If the user grants location permission while on this screen,
+        // we want to start watching the location no matter how the observation
+        // was created (camera, sound recorder, etc.)
+        onPermissionGranted: ( ) => setNeedLocation( true ),
         // If the user does not give location permissions in any form,
         // navigate to the location picker (if granted we just continue fetching the location)
         onModalHide: ( ) => {

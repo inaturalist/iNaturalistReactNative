@@ -97,7 +97,9 @@ const MatchContainer = ( ) => {
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const navigation = useNavigation( );
   const {
-    hasPermissions, renderPermissionsGate, requestPermissions
+    hasPermissions,
+    renderPermissionsGate,
+    requestPermissions
   } = useLocationPermission( );
 
   const obsPhotos = currentObservation?.observationPhotos;
@@ -217,16 +219,16 @@ const MatchContainer = ( ) => {
     }
   }, [] );
 
-  const shouldFetchUserLocation = hasPermissions
-    && shouldFetchObservationLocation( currentObservation );
+  const [needLocation, setNeedLocation] = useState(
+    shouldFetchObservationLocation( currentObservation )
+  );
+  const shouldFetchLocation = hasPermissions && needLocation;
 
   const {
     stopWatch,
     subscriptionId,
     userLocation
-  } = useWatchPosition( {
-    shouldFetchLocation: shouldFetchUserLocation
-  } );
+  } = useWatchPosition( { shouldFetchLocation } );
 
   const getCurrentUserPlaceName = useCallback( async () => {
     if ( currentUserLocation?.latitude ) {
@@ -462,7 +464,15 @@ const MatchContainer = ( ) => {
           iconicTaxon={iconicTaxon}
           setIconicTaxon={setIconicTaxon}
         />
-        {renderPermissionsGate( { onPermissionGranted: getCurrentUserPlaceName } )}
+        {renderPermissionsGate( {
+          // If the user grants location permission while on this screen,
+          // we want to start watching the location no matter how the observation
+          // was created (camera, sound recorder, etc.)
+          onPermissionGranted: () => {
+            setNeedLocation( true );
+            getCurrentUserPlaceName( );
+          }
+        } )}
         {/* eslint-disable i18next/no-literal-string */}
         {/* eslint-disable react/jsx-one-expression-per-line */}
         {/* eslint-disable max-len */}
