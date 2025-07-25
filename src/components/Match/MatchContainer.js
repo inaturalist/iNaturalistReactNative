@@ -230,6 +230,23 @@ const MatchContainer = ( ) => {
     userLocation
   } = useWatchPosition( { shouldFetchLocation } );
 
+  const navToLocationPicker = useCallback( ( ) => {
+    stopWatch( subscriptionId );
+    navigation.navigate( "LocationPicker" );
+  }, [stopWatch, subscriptionId, navigation] );
+
+  const latitude = currentObservation?.latitude;
+  const longitude = currentObservation?.longitude;
+  const hasLocation = !!( latitude && longitude );
+
+  const handleAddLocationPressed = ( ) => {
+    if ( !hasLocation && !hasPermissions ) {
+      requestPermissions();
+    } else {
+      navToLocationPicker();
+    }
+  };
+
   const getCurrentUserPlaceName = useCallback( async () => {
     if ( currentUserLocation?.latitude ) {
       const placeGuess
@@ -304,12 +321,6 @@ const MatchContainer = ( ) => {
     if ( !currentPlaceGuess ) return;
     updateObservationKeys( { place_guess: currentPlaceGuess } );
   }, [currentPlaceGuess, updateObservationKeys] );
-
-  const handleAddLocationPressed = ( ) => {
-    if ( !hasPermissions ) {
-      requestPermissions( );
-    }
-  };
 
   const onSuggestionChosen = useCallback( selection => {
     const suggestionsList = [...orderedSuggestions];
@@ -471,6 +482,11 @@ const MatchContainer = ( ) => {
           onPermissionGranted: () => {
             setNeedLocation( true );
             getCurrentUserPlaceName( );
+          },
+          // If the user does not give location permissions in any form,
+          // navigate to the location picker (if granted we just continue fetching the location)
+          onModalHide: ( ) => {
+            if ( !hasPermissions ) navToLocationPicker( );
           }
         } )}
         {/* eslint-disable i18next/no-literal-string */}
