@@ -179,8 +179,6 @@ const ObsEdit = ( ): Node => {
       {renderLocationPermissionGate( {
         // If the user does not give location permissions in any form,
         // navigate to the location picker (if granted we just continue fetching the location)
-        onRequestDenied: navToLocationPicker,
-        onRequestBlocked: navToLocationPicker,
         onModalHide: ( ) => {
           if ( !hasLocationPermission ) navToLocationPicker();
         }
