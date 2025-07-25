@@ -7,12 +7,7 @@ import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import { Animated } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import shouldFetchObservationLocation, {
-  isFromCamera,
-  isFromNoEvidence,
-  isFromSoundRecorder,
-  isNew
-} from "sharedHelpers/shouldFetchObservationLocation.ts";
+import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservationLocation.ts";
 import { useCurrentUser, useLocationPermission, useWatchPosition } from "sharedHooks";
 import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
@@ -44,7 +39,6 @@ const ObsEdit = ( ): Node => {
   const currentUser = useCurrentUser( );
   const {
     hasPermissions: hasLocationPermission,
-    hasBlockedPermissions: hasBlockedLocationPermission,
     renderPermissionsGate: renderLocationPermissionGate,
     requestPermissions: requestLocationPermission
   } = useLocationPermission( );
@@ -90,17 +84,11 @@ const ObsEdit = ( ): Node => {
     navigation.navigate( "LocationPicker" );
   }, [stopWatch, subscriptionId, navigation] );
 
+  const latitude = currentObservation?.latitude;
+  const longitude = currentObservation?.longitude;
+  const hasLocation = !!( latitude && longitude );
   const onLocationPress = ( ) => {
-    if (
-      !hasLocationPermission
-      && !hasBlockedLocationPermission
-      && isNew( currentObservation )
-      && (
-        isFromCamera( currentObservation )
-        || isFromSoundRecorder( currentObservation )
-        || isFromNoEvidence( currentObservation )
-      )
-    ) {
+    if ( !hasLocation && !hasLocationPermission ) {
       requestLocationPermission( );
     } else {
       navToLocationPicker( );
