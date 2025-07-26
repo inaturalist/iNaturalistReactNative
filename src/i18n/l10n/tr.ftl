@@ -838,6 +838,7 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = iNatural
 The-iNaturalist-Network = iNaturalist ağı, küresel iNaturalist topluluğuna tamamen bağlı olan yerelleştirilmiş web sitelerinden oluşan bir koleksiyondur. Ağ siteleri, yerel kullanımı teşvik eden ve yerel biyolojik çeşitliliğe fayda sağlamak için iNaturalist'ten elde edilen verilerin kullanımını kolaylaştıran yerel kurumlar tarafından desteklenmektedir.
 The-location-will-not-be-visible-to-others = Konum başkaları tarafından görülemeyecektir, bu da gözlemin tespit edilmesini olanaksız hale getirebilir
 The-models-that-suggest-species = Görsel benzerlik ve konuma dayalı olarak tür öneren modeller Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona ve Grant Van Horn ile yapılan iş birliği sayesinde ortaya çıkmıştır.
+There-was-an-error-that-might-be-fixed-by-logging-in-again = Tekrar giriş yaparak düzeltilebilecek bir hata oluştu.
 This-is-a-wild-organism = Bu yabani bir organizmadır ve insanlar tarafından bu konuma getirilmemiştir.
 This-is-how-taxon-names-will-be-displayed = Tüm takson adları iNaturalist'te size bu şekilde gösterilecektir:
 This-is-your-identification-other-people-may-help-confirm-it = Bu senin tanımlaman. Diğer insanlar bunu doğrulamaya yardımcı olabilir!
