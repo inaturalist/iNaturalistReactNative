@@ -29,6 +29,7 @@ type Props = {
   obsPhotos: Array<Object>,
   handleSaveOrDiscardPress: ( ) => void,
   navToTaxonDetails: ( ) => void,
+  isFetchingLocation: boolean,
   handleAddLocationPressed: ( ) => void,
   topSuggestion: Object,
   otherSuggestions: Array<Object>,
@@ -44,6 +45,7 @@ const Match = ( {
   obsPhotos,
   handleSaveOrDiscardPress,
   navToTaxonDetails,
+  isFetchingLocation,
   handleAddLocationPressed,
   topSuggestion,
   otherSuggestions,
@@ -104,6 +106,8 @@ const Match = ( {
                   className="mx-4 mb-[30px]"
                   level="neutral"
                   text={t( "ADD-LOCATION-FOR-BETTER-IDS" )}
+                  loading={isFetchingLocation}
+                  disabled={isFetchingLocation}
                   onPress={handleAddLocationPressed}
                   accessibilityLabel={t( "Edit-location" )}
                   accessibilityHint={t( "Add-location-to-refresh-suggestions" )}
@@ -156,6 +160,8 @@ const Match = ( {
               level="neutral"
               text={t( "ADD-LOCATION-FOR-BETTER-IDS" )}
               onPress={handleAddLocationPressed}
+              loading={isFetchingLocation}
+              disabled={isFetchingLocation}
               accessibilityLabel={t( "Edit-location" )}
               accessibilityHint={t( "Add-location-to-refresh-suggestions" )}
             />
@@ -188,7 +194,12 @@ const Match = ( {
         />
         <View className="border-[1.5px] border-white" />
         {!latitude
-          ? <EmptyMapSection handleAddLocationPressed={handleAddLocationPressed} />
+          ? (
+            <EmptyMapSection
+              handleAddLocationPressed={handleAddLocationPressed}
+              isFetchingLocation={isFetchingLocation}
+            />
+          )
           : (
             <MapSection observation={observation} taxon={taxon} />
           )}
@@ -223,6 +234,8 @@ const Match = ( {
             level="neutral"
             text={t( "ADD-LOCATION-FOR-BETTER-IDS" )}
             onPress={handleAddLocationPressed}
+            loading={isFetchingLocation}
+            disabled={isFetchingLocation}
             accessibilityLabel={t( "Edit-location" )}
             accessibilityHint={t( "Add-location-to-refresh-suggestions" )}
           />

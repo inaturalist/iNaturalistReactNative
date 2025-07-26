@@ -225,6 +225,7 @@ const MatchContainer = ( ) => {
   const shouldFetchLocation = hasPermissions && needLocation;
 
   const {
+    isFetchingLocation,
     stopWatch,
     subscriptionId,
     userLocation
@@ -467,6 +468,7 @@ const MatchContainer = ( ) => {
           onSuggestionChosen={onSuggestionChosen}
           handleSaveOrDiscardPress={handleSaveOrDiscardPress}
           navToTaxonDetails={navToTaxonDetails}
+          isFetchingLocation={isFetchingLocation}
           handleAddLocationPressed={handleAddLocationPressed}
           topSuggestion={topSuggestionWithLocalTaxon}
           otherSuggestions={suggestionsWithLocalTaxonPhotos}
