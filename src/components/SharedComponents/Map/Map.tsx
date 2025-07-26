@@ -241,12 +241,14 @@ const Map = forwardRef( ( {
   };
 
   const handleCurrentLocationPress = useCallback( ( ) => {
+    if ( !hasPermissions ) {
+      requestPermissions( );
+    }
     // If we aren't showing the user's location, we won't have a location to
     // zoom to yet, so first we need to turn that on, and we'll re-call this
     // function in an effect when we have a location
     if ( !showsUserLocation ) {
       setShowsUserLocation( true );
-      requestPermissions( );
       return;
     }
     // If we're supposed to be showing user location but we don't have it, ask
@@ -255,7 +257,6 @@ const Map = forwardRef( ( {
     // skipping onCurrentLocationPress here because the handlers
     // are handling the permissions request outside of this component (example: Explore MapView)
     if ( !userLocation && onCurrentLocationPress === undefined ) {
-      requestPermissions( );
       return;
     }
     if ( onCurrentLocationPress ) {
@@ -287,6 +288,7 @@ const Map = forwardRef( ( {
     }
   }, [
     onCurrentLocationPress,
+    hasPermissions,
     requestPermissions,
     screenHeight,
     screenWidth,
