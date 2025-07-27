@@ -44,6 +44,12 @@ const API_HOST: string = Config.OAUTH_API_URL || process.env.OAUTH_API_URL || "h
 // expire every 30 mins, so might as well be futureproof.
 const JWT_EXPIRATION_MINS = 25;
 
+// Protected data sometimes not available when the iPhone screen is locked
+// See here: https://github.com/mCodex/react-native-sensitive-info/issues/283
+// Current solution is to retry several times
+const PROTECTED_DATA_NOT_YET_AVAILABLE_RETRY_DELAY = 300;
+const PROTECTED_DATA_NOT_YET_AVAILABLE_MAX_RETRIES = 10;
+
 interface AuthCache {
   isLoggedIn: boolean | null;
   lastChecked: number | null;
@@ -67,66 +73,90 @@ const clearAuthCache = ( ): void => {
   authCache.lastChecked = null;
 };
 
+/* eslint-disable no-await-in-loop */
 async function getSensitiveItem( key: string, options = {} ) {
-  try {
-    return await RNSInfo.getItem( key, options );
-  } catch ( e ) {
-    if ( isDebugMode() ) {
-      localLogger.info( `RNSInfo.getItem not available for ${key}, sleeping` );
+  let getDataAttempts = 0;
+  let getItemError = null;
+
+  do {
+    try {
+      return await RNSInfo.getItem( key, options );
+    } catch ( e ) {
+      if ( isDebugMode() ) {
+        localLogger.info( `RNSInfo.getItem not available for ${key}, sleeping` );
+      }
+
+      getItemError = e as Error;
+      // Retry getting item after 300ms for max 10 attempts.
+      if ( getItemError.message.match( /Protected data not available yet/ ) ) {
+        await sleep( PROTECTED_DATA_NOT_YET_AVAILABLE_RETRY_DELAY );
+      }
+      getDataAttempts += 1;
     }
-    const getItemError = e as Error;
-    if ( getItemError.message.match( /Protected data not available yet/ ) ) {
-      await sleep( 1_000 );
-      return RNSInfo.getItem( key, options );
-    }
-    if ( isDebugMode() ) {
-      localLogger.info( `RNSInfo.getItem not available for ${key} after sleeping, throwing` );
-    }
-    throw getItemError;
+  } while ( getDataAttempts < PROTECTED_DATA_NOT_YET_AVAILABLE_MAX_RETRIES );
+
+  // Retry failed for too many times
+  if ( isDebugMode() ) {
+    localLogger.info( `RNSInfo.getItem not available for ${key} after sleeping, throwing` );
   }
+  throw getItemError;
 }
 
 async function setSensitiveItem( key: string, value: string, options = {} ) {
-  try {
-    const result = await RNSInfo.setItem( key, value, options );
-    clearAuthCache( );
-    return result;
-  } catch ( e ) {
-    if ( isDebugMode( ) ) {
-      localLogger.info( `RNSInfo.setItem not available for ${key}, sleeping` );
+  let setDataAttempts = 0;
+  let setItemError = null;
+
+  do {
+    try {
+      const result = await RNSInfo.setItem( key, value, options );
+      clearAuthCache();
+      return result;
+    } catch ( e ) {
+      if ( isDebugMode() ) {
+        localLogger.info( `RNSInfo.setItem not available for ${key}, sleeping` );
+      }
+      setItemError = e as Error;
+      if ( setItemError.message.match( /Protected data not available yet/ ) ) {
+        await sleep( PROTECTED_DATA_NOT_YET_AVAILABLE_RETRY_DELAY );
+      }
     }
-    const setItemError = e as Error;
-    if ( setItemError.message.match( /Protected data not available yet/ ) ) {
-      await sleep( 1_000 );
-      return RNSInfo.setItem( key, value, options );
-    }
-    if ( isDebugMode( ) ) {
-      localLogger.info( `RNSInfo.setItem not available for ${key} after sleeping, throwing` );
-    }
-    throw setItemError;
+    setDataAttempts += 1;
+  } while ( setDataAttempts < PROTECTED_DATA_NOT_YET_AVAILABLE_MAX_RETRIES );
+
+  if ( isDebugMode( ) ) {
+    localLogger.info( `RNSInfo.setItem not available for ${key} after sleeping, throwing` );
   }
+  throw setItemError;
 }
 
 async function deleteSensitiveItem( key: string, options = {} ) {
-  try {
-    const result = await RNSInfo.deleteItem( key, options );
-    clearAuthCache( );
-    return result;
-  } catch ( e ) {
-    if ( isDebugMode( ) ) {
-      localLogger.info( `RNSInfo.deleteItem not available for ${key}, sleeping` );
+  let deleteDataAttempts = 0;
+  let deleteItemError = null;
+
+  do {
+    try {
+      const result = await RNSInfo.deleteItem( key, options );
+      clearAuthCache();
+      return result;
+    } catch ( e ) {
+      if ( isDebugMode() ) {
+        localLogger.info( `RNSInfo.deleteItem not available for ${key}, sleeping` );
+      }
+      deleteItemError = e as Error;
+      if ( deleteItemError.message.match( /Protected data not available yet/ ) ) {
+        await sleep( PROTECTED_DATA_NOT_YET_AVAILABLE_RETRY_DELAY );
+      }
     }
-    const deleteItemError = e as Error;
-    if ( deleteItemError.message.match( /Protected data not available yet/ ) ) {
-      await sleep( 500 );
-      return RNSInfo.deleteItem( key, options );
-    }
-    if ( isDebugMode( ) ) {
-      localLogger.info( `RNSInfo.deleteItem not available after sleeping for ${key}, throwing` );
-    }
-    throw deleteItemError;
+
+    deleteDataAttempts += 1;
+  } while ( deleteDataAttempts < PROTECTED_DATA_NOT_YET_AVAILABLE_MAX_RETRIES );
+
+  if ( isDebugMode() ) {
+    localLogger.info( `RNSInfo.deleteItem not available after sleeping for ${key}, throwing` );
   }
+  throw deleteItemError;
 }
+/* eslint-disable no-await-in-loop */
 
 /**
  * Creates base API client for all requests
