@@ -1,23 +1,20 @@
-// @flow
-
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   Button,
   Heading4
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useState } from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
 import TaxonomyTaxon from "./TaxonomyTaxon";
 
-type Props = {
-  taxon: Object,
-  hideNavButtons: boolean
+interface Props {
+  taxon: object;
+  hideNavButtons: boolean;
 }
 
-const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ): Node => {
+const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ) => {
   const [viewChildren, setViewChildren] = useState( false );
   const navigation = useNavigation( );
   const route = useRoute( );
@@ -25,7 +22,7 @@ const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ): Node => {
   const currentUser = useCurrentUser( );
   const scientificNameFirst = currentUser?.prefers_scientific_name_first;
 
-  const navigateToTaxonDetails = taxonId => (
+  const navigateToTaxonDetails = ( taxonId: number ) => (
     navigation.navigate( {
       // Ensure button mashing doesn't open multiple TaxonDetails instances
       key: `${route.key}-Taxonomy-TaxonDetails-${taxonId}`,
