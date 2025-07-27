@@ -1,22 +1,20 @@
-// @flow
 import { updateRelationships } from "api/relationships";
 import WarningSheet from "components/SharedComponents/Sheets/WarningSheet.tsx";
-import type { Node } from "react";
 import React from "react";
 import { Alert } from "react-native";
 import { useAuthenticatedMutation, useTranslation } from "sharedHooks";
 
-type Props = {
-    relationship: Object,
-    refetchRelationship: Function,
-    setShowUnfollowSheet: Function,
+interface Props {
+    relationship: object;
+    refetchRelationship: () => void;
+    setShowUnfollowSheet: ( show: boolean ) => void;
 }
 
 const UnfollowSheet = ( {
   relationship,
   setShowUnfollowSheet,
   refetchRelationship
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
 
   const updateRelationshipsMutation = useAuthenticatedMutation(
