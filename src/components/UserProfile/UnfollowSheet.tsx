@@ -5,9 +5,11 @@ import { Alert } from "react-native";
 import { useAuthenticatedMutation, useTranslation } from "sharedHooks";
 
 interface Props {
-    relationship: object;
-    refetchRelationship: () => void;
-    setShowUnfollowSheet: ( show: boolean ) => void;
+  relationship: {
+    id: number;
+  };
+  refetchRelationship: () => void;
+  setShowUnfollowSheet: ( show: boolean ) => void;
 }
 
 const UnfollowSheet = ( {
