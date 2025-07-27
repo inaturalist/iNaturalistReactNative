@@ -1,5 +1,3 @@
-// @flow
-
 import {
   DisplayTaxonName,
   Heading1,
@@ -10,21 +8,21 @@ import SpeciesSeenCheckmark from "components/SharedComponents/SpeciesSeenCheckma
 import {
   View
 } from "components/styledComponents";
-import type { Node } from "react";
+import type { TFunction } from "i18next";
 import React from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
-type Props = {
-  optionalClasses?: string,
-  showSpeciesSeenCheckmark: boolean,
+interface Props {
+  optionalClasses?: string;
+  showSpeciesSeenCheckmark: boolean;
   taxon?: {
-    rank: string,
-    rank_level: number,
-    id: number
-  }
+    rank: string;
+    rank_level: number;
+    id: number;
+  };
 }
 
-function translatedRank( rank, t ) {
+function translatedRank( rank: string, t: TFunction ) {
   switch ( rank ) {
     case "stateofmatter": return t( "Ranks-STATEOFMATTER" );
     case "kingdom": return t( "Ranks-KINGDOM" );
@@ -69,7 +67,7 @@ const TaxonDetailsTitle = ( {
   optionalClasses,
   showSpeciesSeenCheckmark,
   taxon
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
 
