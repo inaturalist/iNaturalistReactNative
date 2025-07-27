@@ -1,22 +1,19 @@
-// @flow
-
 import {
   Button
 } from "components/SharedComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React from "react";
 
-type Props = {
-    following: boolean,
-    follow: Function,
-    unfollow: Function,
-    loading: boolean
-  };
+interface Props {
+    following: boolean;
+    follow: () => void;
+    unfollow: () => void;
+    loading: boolean;
+}
 
 const FollowButton = ( {
   following, follow, unfollow, loading
-}: Props ): Node => {
+}: Props ) => {
   if ( following ) {
     return (
       <Button
