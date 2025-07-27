@@ -1,5 +1,3 @@
-// @flow
-
 import {
   Body2,
   Heading4
@@ -13,11 +11,11 @@ import { useTranslation } from "sharedHooks";
 
 const baseUrl = "https://www.inaturalist.org";
 
-type Props = {
-  taxon: Object
+interface Props {
+  taxon: object;
 }
 
-const EstablishmentMeans = ( { taxon }: Props ): React.Node => {
+const EstablishmentMeans = ( { taxon }: Props ) => {
   const { t } = useTranslation( );
 
   const establishmentMeans = taxon?.establishment_means?.establishment_means;
