@@ -1,22 +1,19 @@
-// @flow
-
 import {
   Body3
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import {
   useTranslation
 } from "sharedHooks";
 
-type Props = {
-  observers: Array<string>
-};
+interface Props {
+  observers: string[];
+}
 
 const Attribution = ( {
   observers
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
 
   if ( !observers || observers?.length === 0 ) {
