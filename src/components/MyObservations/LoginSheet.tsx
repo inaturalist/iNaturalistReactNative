@@ -1,16 +1,13 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import WarningSheet from "components/SharedComponents/Sheets/WarningSheet.tsx";
-import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 
-type Props = {
-  setShowLoginSheet: Function,
+interface Props {
+  setShowLoginSheet: ( show: boolean ) => void;
 }
 
-const LoginSheet = ( { setShowLoginSheet }: Props ): Node => {
+const LoginSheet = ( { setShowLoginSheet }: Props ) => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
 
