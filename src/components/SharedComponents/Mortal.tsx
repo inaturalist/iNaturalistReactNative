@@ -1,12 +1,6 @@
-// @flow
-
 import { useFocusEffect } from "@react-navigation/native";
-import type { Node } from "react";
+import type { PropsWithChildren } from "react";
 import React, { useCallback, useState } from "react";
-
-type Props = {
-  children: Node
-}
 
 /**
  * React Navigation never unmounts a component, leading to weirdly immortal
@@ -18,7 +12,7 @@ type Props = {
  * Morghulis!
  * @see https://www.corstianboerman.com/blog/2020-09-05/force-a-component-to-unmount-with-react-navigation
  */
-const Mortal = ( { children }: Props ): Node => {
+const Mortal = ( { children }: PropsWithChildren ) => {
   const [isVisible, setIsVisible] = useState( false );
   useFocusEffect(
     useCallback( ( ) => {
