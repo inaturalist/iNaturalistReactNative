@@ -1,6 +1,7 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
 import AddObsModal from "components/AddObsModal/AddObsModal.tsx";
+import { AccountCreationCard } from "components/OnboardingModal/PivotCards.tsx";
 import {
   HeaderUser,
   Heading2,
@@ -22,9 +23,11 @@ import LoginBanner from "./LoginBanner";
 interface Props {
   currentUser: Object | null;
   isConnected: boolean;
+  justFinishedSignup: boolean;
 }
 
-const MyObservationsEmptySimple = ( { currentUser, isConnected }: Props ): Node => {
+const MyObservationsEmptySimple = ( { currentUser, isConnected, justFinishedSignup }:
+  Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const [showModal, setShowModal] = useState( false );
@@ -43,47 +46,55 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected }: Props ): Node 
   const navToARCamera = ( ) => { navAndCloseModal( "Camera", { camera: "AI" } ); };
 
   return (
-    <ViewWrapper>
-      {!!currentUser && (
-        <View className="flex-start ml-[18px] mt-[26px]">
-          <HeaderUser user={currentUser} isConnected={isConnected} />
-        </View>
-      )}
-      <LoginBanner
-        currentUser={currentUser}
-      />
-      <View className="grow justify-center mx-[67px]">
-        <Pressable accessibilityRole="button" onPress={navToARCamera}>
-          <Heading2
-            testID="use-iNaturalist-intro-text"
-            className="mb-8 text-center"
-          >
-            {t( "Use-iNaturalist-to-identify-any-living-thing" )}
-          </Heading2>
-        </Pressable>
-        <View className="relative w-[141px] self-center">
-          {/* $FlowIgnore[not-a-component] */}
-          <Arrow className="absolute right-[-20px] top-[-23px]" />
-          <GradientButton
-            clas
-            accessibilityLabel={t( "Add-observations" )}
-            sizeClassName="w-[141px] h-[141px] self-center"
-            onPress={navToARCamera}
-            iconSize={96}
-          />
-        </View>
-      </View>
-      <Modal
-        showModal={showModal}
-        closeModal={( ) => setShowModal( false )}
-        modal={(
-          <AddObsModal
-            closeModal={( ) => setShowModal( false )}
-            navAndCloseModal={navAndCloseModal}
-          />
+    <>
+      <ViewWrapper>
+        {!!currentUser && (
+          <View className="flex-start ml-[18px] mt-[26px]">
+            <HeaderUser user={currentUser} isConnected={isConnected} />
+          </View>
         )}
+        <LoginBanner
+          currentUser={currentUser}
+        />
+        <View className="grow justify-center mx-[67px]">
+          <Pressable accessibilityRole="button" onPress={navToARCamera}>
+            <Heading2
+              testID="use-iNaturalist-intro-text"
+              className="mb-8 text-center"
+            >
+              {t( "Use-iNaturalist-to-identify-any-living-thing" )}
+            </Heading2>
+          </Pressable>
+          <View className="relative w-[141px] self-center">
+            {/* $FlowIgnore[not-a-component] */}
+            <Arrow className="absolute right-[-20px] top-[-23px]" />
+            <GradientButton
+              clas
+              accessibilityLabel={t( "Add-observations" )}
+              sizeClassName="w-[141px] h-[141px] self-center"
+              onPress={navToARCamera}
+              iconSize={96}
+            />
+          </View>
+        </View>
+        <Modal
+          showModal={showModal}
+          closeModal={( ) => setShowModal( false )}
+          modal={(
+            <AddObsModal
+              closeModal={( ) => setShowModal( false )}
+              navAndCloseModal={navAndCloseModal}
+            />
+          )}
+        />
+      </ViewWrapper>
+
+      <AccountCreationCard
+        triggerCondition={
+          justFinishedSignup && !!currentUser
+        }
       />
-    </ViewWrapper>
+    </>
   );
 };
 
