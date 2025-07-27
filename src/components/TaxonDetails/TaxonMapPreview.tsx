@@ -1,5 +1,3 @@
-// @flow
-
 import { searchObservations } from "api/observations";
 import {
   Button,
@@ -12,24 +10,23 @@ import { getMapRegion } from "components/SharedComponents/Map/helpers/mapHelpers
 import {
   View
 } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useState } from "react";
 import { useTranslation } from "sharedHooks";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
 import TaxonDetailsTitle from "./TaxonDetailsTitle";
 
-type Props = {
-  observation: Object,
-  showSpeciesSeenCheckmark: boolean,
-  taxon: Object,
+interface Props {
+  observation: object;
+  showSpeciesSeenCheckmark: boolean;
+  taxon: object;
 }
 
 const TaxonMapPreview = ( {
   observation,
   showSpeciesSeenCheckmark,
   taxon
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const [showMapModal, setShowMapModal] = useState( false );
   const obsParams = {
