@@ -1,26 +1,24 @@
-// @flow
-
 import classnames from "classnames";
 import { Body1 } from "components/SharedComponents";
 import { SafeAreaView } from "components/styledComponents";
+import type { PropsWithChildren } from "react";
 import * as React from "react";
 import { StatusBar } from "react-native";
 
-type Props = {
-  children: React.Node,
-  isDebug?: boolean,
-  testID?: string,
+interface Props extends PropsWithChildren {
+  isDebug?: boolean;
+  testID?: string;
   // If someone can explain to me why className doesn't work here, I'm all
   // ears ~~~kueda 20230815
-  wrapperClassName?: string
-};
+  wrapperClassName?: string;
+}
 
 const ViewWrapper = ( {
   children,
   isDebug,
   wrapperClassName,
   testID
-}: Props ): React.Node => (
+}: Props ) => (
   <SafeAreaView
     className={classnames(
       "flex-1",
