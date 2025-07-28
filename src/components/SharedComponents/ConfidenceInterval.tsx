@@ -1,16 +1,13 @@
-// @flow
-
 import classnames from "classnames";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 
-type Props = {
-  confidence?: number,
-  activeColor?: string
-};
+interface Props {
+  confidence?: number;
+  activeColor?: string;
+}
 
-const ConfidenceInterval = ( { confidence = 0, activeColor = "bg-white" }: Props ): Node => {
+const ConfidenceInterval = ( { confidence = 0, activeColor = "bg-white" }: Props ) => {
   const ActiveDot = (
     <View className={classnames(
       "h-[4px] w-[4px] rounded-full",
