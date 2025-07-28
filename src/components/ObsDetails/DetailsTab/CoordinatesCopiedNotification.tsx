@@ -1,5 +1,3 @@
-// @flow
-
 import classnames from "classnames";
 import {
   Body2,
@@ -11,7 +9,7 @@ import * as React from "react";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
-const CoordinatesCopiedNotification = ( ): React.Node => (
+const CoordinatesCopiedNotification = ( ) => (
   <View
     className={classnames(
       "flex",
