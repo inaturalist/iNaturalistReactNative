@@ -1,5 +1,3 @@
-// @flow
-
 import { fontRegular } from "appConstants/fontFamilies.ts";
 import {
   Body2,
@@ -12,8 +10,8 @@ import { openExternalWebBrowser } from "sharedHelpers/util.ts";
 import useTranslation from "sharedHooks/useTranslation.ts";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  taxon: Object
+interface Props {
+  taxon: object;
 }
 
 const BASE_STYLE = {
@@ -25,7 +23,7 @@ const BASE_STYLE = {
 
 const FONTS = [fontRegular, ...defaultSystemFonts];
 
-const Wikipedia = ( { taxon }: Props ): React.Node => {
+const Wikipedia = ( { taxon }: Props ) => {
   const { width } = useWindowDimensions();
   const { t } = useTranslation();
 
