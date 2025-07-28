@@ -9,7 +9,7 @@ import CameraContainer from "components/Camera/CameraContainer";
 import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
 import PhotoLibrary from "components/PhotoImporter/PhotoLibrary";
 import { Heading4 } from "components/SharedComponents";
-import Mortal from "components/SharedComponents/Mortal";
+import Mortal from "components/SharedComponents/Mortal.tsx";
 import PermissionGateContainer, {
   AUDIO_PERMISSIONS,
   CAMERA_PERMISSIONS

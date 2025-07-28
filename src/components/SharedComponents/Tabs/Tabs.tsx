@@ -1,4 +1,4 @@
-import Divider from "components/SharedComponents/Divider/Divider";
+import Divider from "components/SharedComponents/Divider/Divider.tsx";
 import Heading4 from "components/SharedComponents/Typography/Heading4.tsx";
 import Heading5 from "components/SharedComponents/Typography/Heading5.tsx";
 import { View } from "components/styledComponents";

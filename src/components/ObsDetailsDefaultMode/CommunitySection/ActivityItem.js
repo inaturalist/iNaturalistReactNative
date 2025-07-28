@@ -5,7 +5,7 @@ import {
   Body4,
   Divider, INatIconButton, UserText
 } from "components/SharedComponents";
-import DisplayTaxon from "components/SharedComponents/DisplayTaxon";
+import DisplayTaxon from "components/SharedComponents/DisplayTaxon.tsx";
 import {
   View
 } from "components/styledComponents";

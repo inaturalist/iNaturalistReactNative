@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Mortal from "components/SharedComponents/Mortal";
+import Mortal from "components/SharedComponents/Mortal.tsx";
 import TabStackNavigator, {
   SCREEN_NAME_NOTIFICATIONS,
   SCREEN_NAME_OBS_LIST,

@@ -4,7 +4,7 @@ import {
   Heading4,
   Subheading1
 } from "components/SharedComponents";
-import SpeciesSeenCheckmark from "components/SharedComponents/SpeciesSeenCheckmark";
+import SpeciesSeenCheckmark from "components/SharedComponents/SpeciesSeenCheckmark.tsx";
 import {
   View
 } from "components/styledComponents";
