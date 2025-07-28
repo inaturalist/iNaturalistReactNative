@@ -1,20 +1,18 @@
-// @flow
 import classNames from "classnames";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import { Body4 } from "components/SharedComponents";
 import ContentWithIcon from "components/SharedComponents/ObsDetails/ContentWithIcon";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "sharedHooks";
 
-type Props = {
-  classNameMargin?: string,
-  details?: boolean, // Same as withCoordinates && withGeoprivacy
-  observation: Object,
-  withCoordinates?: boolean,
-  withGeoprivacy?: boolean
-};
+interface Props {
+  classNameMargin?: string;
+  details?: boolean; // Same as withCoordinates && withGeoprivacy
+  observation: object;
+  withCoordinates?: boolean;
+  withGeoprivacy?: boolean;
+}
 
 const ObservationLocation = ( {
   classNameMargin,
@@ -22,7 +20,7 @@ const ObservationLocation = ( {
   observation,
   withCoordinates,
   withGeoprivacy
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const geoprivacy = observation?.geoprivacy;
   const taxonGeoprivacy = observation?.taxon_geoprivacy;
