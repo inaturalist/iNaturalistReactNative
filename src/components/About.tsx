@@ -18,7 +18,7 @@ import { useDebugMode } from "sharedHooks";
 const aboutID = "about";
 const teamID = "team";
 
-const About = () => {
+const About = ( ) => {
   const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState( aboutID );
   const [count, setCount] = useState( 0 );
