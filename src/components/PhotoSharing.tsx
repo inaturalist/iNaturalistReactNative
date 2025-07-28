@@ -1,9 +1,6 @@
-// @flow
-
 import { CommonActions, useNavigation, useRoute } from "@react-navigation/native";
 import { ActivityAnimation, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, {
   useCallback, useEffect, useRef, useState
 } from "react";
@@ -12,7 +9,7 @@ import Observation from "realmModels/Observation";
 import { useLayoutPrefs } from "sharedHooks";
 import useStore from "stores/useStore";
 
-const PhotoSharing = ( ): Node => {
+const PhotoSharing = ( ) => {
   const previousItem = useRef( null );
   const navigation = useNavigation( );
   const { params } = useRoute( );
