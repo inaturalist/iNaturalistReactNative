@@ -1,25 +1,22 @@
-// @flow
-
 import classnames from "classnames";
 import {
   DisplayTaxonName,
   IconicTaxonIcon
 } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import { accessibleTaxonName } from "sharedHelpers/taxon.ts";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
-type Props = {
-  accessibilityHint?: string,
-  accessibilityLabel?: string,
-  bottomTextComponent?: Function,
-  handlePress: Function,
-  taxon: Object,
-  testID?: string,
-  topTextComponent?: Function,
-  withdrawn?: boolean
+interface Props {
+  accessibilityHint?: string;
+  accessibilityLabel?: string;
+  bottomTextComponent?: () => React.JSX.Element;
+  handlePress: () => void;
+  taxon: object;
+  testID?: string;
+  topTextComponent?: () => React.JSX.Element;
+  withdrawn?: boolean;
 }
 
 const DisplayTaxon = ( {
@@ -31,7 +28,7 @@ const DisplayTaxon = ( {
   testID,
   topTextComponent,
   withdrawn
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
 
