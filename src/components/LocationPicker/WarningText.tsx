@@ -1,22 +1,19 @@
-// @flow
-
 import classnames from "classnames";
 import {
   Body3
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import useTranslation from "sharedHooks/useTranslation.ts";
 import { getShadow } from "styles/global";
 
 const DROP_SHADOW = getShadow( );
 
-type Props = {
-  accuracyTest: string
-};
+interface Props {
+  accuracyTest: "pass" | "acceptable" | "fail";
+}
 
-const WarningText = ( { accuracyTest }: Props ): Node => {
+const WarningText = ( { accuracyTest }: Props ) => {
   const { t } = useTranslation( );
 
   if ( accuracyTest === "pass" ) {
