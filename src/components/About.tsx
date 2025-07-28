@@ -1,5 +1,3 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import {
   Body1,
@@ -13,7 +11,6 @@ import {
 } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React, { useState } from "react";
 import { getBuildNumber, getVersion } from "react-native-device-info";
 import { useDebugMode } from "sharedHooks";
@@ -21,7 +18,7 @@ import { useDebugMode } from "sharedHooks";
 const aboutID = "about";
 const teamID = "team";
 
-const About = (): Node => {
+const About = () => {
   const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState( aboutID );
   const [count, setCount] = useState( 0 );
