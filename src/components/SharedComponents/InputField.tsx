@@ -1,16 +1,14 @@
-// @flow
-
 import { TextInput } from "components/styledComponents";
 import * as React from "react";
 import { Platform } from "react-native";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  handleTextChange: Function,
-  placeholder: string,
-  text: string,
-  type: string,
-  testID?: string
+interface Props {
+  handleTextChange: ( text: string ) => void;
+  placeholder: string;
+  text: string;
+  type: string;
+  testID?: string;
 }
 
 // same code as Seek:
@@ -21,7 +19,7 @@ const InputField = ( {
   text,
   type,
   testID
-}: Props ): React.Node => {
+}: Props ) => {
   let keyboardType = "default";
 
   if ( type === "emailAddress" ) {
