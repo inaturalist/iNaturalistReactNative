@@ -1,15 +1,12 @@
-// @flow
-
 import classnames from "classnames";
 import { ActivityIndicator } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import { getShadow } from "styles/global";
 
 const DROP_SHADOW = getShadow( );
 
-const LoadingIndicator = ( ): Node => (
+const LoadingIndicator = ( ) => (
   <View
     style={DROP_SHADOW}
     className={classnames(
