@@ -1,9 +1,6 @@
-// @flow
-
 import classnames from "classnames";
 import { INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import colors from "styles/tailwindColors";
 
@@ -12,7 +9,7 @@ import WarningText from "./WarningText";
 export const DESIRED_LOCATION_ACCURACY = 100;
 export const REQUIRED_LOCATION_ACCURACY = 500_000;
 
-const checkAccuracy = accuracy => {
+const checkAccuracy = ( accuracy: number ) => {
   if ( accuracy < DESIRED_LOCATION_ACCURACY ) {
     return "pass";
   }
@@ -22,11 +19,11 @@ const checkAccuracy = accuracy => {
   return "fail";
 };
 
-type Props = {
-  accuracy: number
-};
+interface Props {
+  accuracy: number;
+}
 
-const CrosshairCircle = ( { accuracy }: Props ): Node => {
+const CrosshairCircle = ( { accuracy }: Props ) => {
   const accuracyTest = checkAccuracy( accuracy );
 
   return (
