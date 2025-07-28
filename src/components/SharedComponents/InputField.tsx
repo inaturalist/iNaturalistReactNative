@@ -1,13 +1,13 @@
 import { TextInput } from "components/styledComponents";
 import * as React from "react";
-import { Platform } from "react-native";
+import { KeyboardTypeOptions, Platform, TextInputIOSProps } from "react-native";
 import colors from "styles/tailwindColors";
 
 interface Props {
   handleTextChange: ( text: string ) => void;
   placeholder: string;
   text: string;
-  type: string;
+  type: TextInputIOSProps["textContentType"];
   testID?: string;
 }
 
@@ -20,7 +20,7 @@ const InputField = ( {
   type,
   testID
 }: Props ) => {
-  let keyboardType = "default";
+  let keyboardType: KeyboardTypeOptions = "default";
 
   if ( type === "emailAddress" ) {
     keyboardType = "email-address";
