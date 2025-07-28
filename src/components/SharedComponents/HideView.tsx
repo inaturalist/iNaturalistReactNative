@@ -1,5 +1,5 @@
-// @flow
 import { View } from "components/styledComponents";
+import type { PropsWithChildren } from "react";
 import * as React from "react";
 import { useEffect, useState } from "react";
 
@@ -8,10 +8,9 @@ import { useEffect, useState } from "react";
 // An example would be loading maps in a tab view
 // However, for the most part, it is preferable to remove the component from the DOM
 
-type Props = {
-  noInitialRender?: boolean,
-  show?: boolean,
-  children: React.Node
+interface Props extends PropsWithChildren {
+  noInitialRender?: boolean;
+  show?: boolean;
 }
 
 // to free up memory
@@ -19,7 +18,7 @@ const HideView = ( {
   noInitialRender = false,
   show = false,
   children
-}: Props ): React.Node => {
+}: Props ) => {
   const [rendered, setRendered] = useState( false );
 
   useEffect( () => {
