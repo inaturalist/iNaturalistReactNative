@@ -1,10 +1,7 @@
-// @flow
-
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 
-const Divider = (): Node => (
+const Divider = () => (
   <View className="h-[1px] bg-lightGray" />
 );
 
