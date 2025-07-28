@@ -1,10 +1,7 @@
-// @flow
-
 import classnames from "classnames";
 import GreenCheckmark from "components/Camera/Buttons/GreenCheckmark.tsx";
 import { CloseButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
 import Animated from "react-native-reanimated";
@@ -37,15 +34,15 @@ const CLOSE_CLASSES = [
   "items-center"
 ];
 
-type Props = {
-  captureButton: Function,
-  closeHidden?: boolean,
-  confirmHidden?: boolean,
-  disabled?: boolean,
-  mediaCaptured?: boolean,
-  onClose: Function,
-  onConfirm: Function,
-  rotatableAnimatedStyle?: Object,
+interface Props {
+  captureButton: React.ReactElement;
+  closeHidden?: boolean;
+  confirmHidden?: boolean;
+  disabled?: boolean;
+  mediaCaptured?: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  rotatableAnimatedStyle?: object;
 }
 
 const MediaNavButtons = ( {
@@ -57,7 +54,7 @@ const MediaNavButtons = ( {
   onClose,
   onConfirm,
   rotatableAnimatedStyle
-}: Props ): Node => (
+}: Props ) => (
   <View
     className="h-32 flex-row justify-between items-center bg-black"
     testID="MediaNavButtons"
