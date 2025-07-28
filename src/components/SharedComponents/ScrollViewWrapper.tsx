@@ -1,27 +1,26 @@
-// @flow
-
 import { SafeAreaView, ScrollView } from "components/styledComponents";
+import type { PropsWithChildren } from "react";
 import * as React from "react";
+import type { ViewStyle } from "react-native";
 import { Keyboard, StatusBar } from "react-native";
 
-type Props = {
-  children: React.Node,
-  testID?: string,
-  style?: Object,
-  scrollRef?: Object,
-};
+interface Props extends PropsWithChildren {
+  testID?: string;
+  style?: ViewStyle;
+  scrollRef?: object;
+}
 
 const CONTENT_CONTAINER_STYLE = {
   display: "flex",
   minHeight: "100%"
-};
+} as const;
 
 const ScrollViewWrapper = ( {
   children,
   testID,
   style,
   scrollRef
-}: Props ): React.Node => {
+}: Props ) => {
   const dismissKeyboard = () => Keyboard.dismiss();
 
   return (
