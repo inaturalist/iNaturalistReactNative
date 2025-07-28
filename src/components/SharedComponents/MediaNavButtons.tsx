@@ -4,6 +4,7 @@ import { CloseButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
+import type { AnimatedStyle } from "react-native-reanimated";
 import Animated from "react-native-reanimated";
 
 const isTablet = DeviceInfo.isTablet();
@@ -42,7 +43,7 @@ interface Props {
   mediaCaptured?: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  rotatableAnimatedStyle?: object;
+  rotatableAnimatedStyle?: AnimatedStyle;
 }
 
 const MediaNavButtons = ( {
