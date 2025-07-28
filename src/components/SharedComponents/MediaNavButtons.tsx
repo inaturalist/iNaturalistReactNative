@@ -35,7 +35,7 @@ const CLOSE_CLASSES = [
 ];
 
 interface Props {
-  captureButton: React.ReactElement;
+  captureButton: React.JSX.Element;
   closeHidden?: boolean;
   confirmHidden?: boolean;
   disabled?: boolean;
