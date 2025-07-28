@@ -1,17 +1,15 @@
-// @flow
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import { Heading2 } from "components/SharedComponents";
-import type { Node } from "react";
 import React, { useMemo } from "react";
 import { useTranslation } from "sharedHooks";
 
-type Props = {
-  observation: Object
-};
+interface Props {
+  observation: object;
+}
 
 const SimpleObservationLocation = ( {
   observation
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
 
   const displayLocation = useMemo(
