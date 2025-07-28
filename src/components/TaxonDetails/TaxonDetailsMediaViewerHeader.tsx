@@ -1,18 +1,15 @@
-// @flow
-
 import {
   BackButton
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 
 import TaxonDetailsTitle from "./TaxonDetailsTitle";
 
-type Props = {
-  onClose: Function,
-  showSpeciesSeenCheckmark: boolean,
-  taxon: Object
+interface Props {
+  onClose: () => void;
+  showSpeciesSeenCheckmark: boolean;
+  taxon: object;
 }
 
 const BACK_BUTTON_STYLE = {
@@ -23,7 +20,7 @@ const TaxonDetailsMediaViewerHeader = ( {
   onClose,
   showSpeciesSeenCheckmark,
   taxon
-}: Props ): Node => (
+}: Props ) => (
   <View className="bg-white w-full flex-row pt-4 pb-4 pr-4 items-start">
     <BackButton
       inCustomHeader
