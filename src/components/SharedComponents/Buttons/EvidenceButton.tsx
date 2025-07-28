@@ -1,14 +1,13 @@
-// @flow
 import { INatIconButton } from "components/SharedComponents";
 import * as React from "react";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  icon: string,
-  disabled?: boolean,
-  handlePress: Function,
-  accessibilityLabel: string,
-  accessibilityHint?: string
+interface Props {
+  icon: string;
+  disabled?: boolean;
+  handlePress: () => void;
+  accessibilityLabel: string;
+  accessibilityHint?: string;
 }
 
 const EvidenceButton = ( {
@@ -17,7 +16,7 @@ const EvidenceButton = ( {
   handlePress,
   accessibilityLabel,
   accessibilityHint
-}: Props ): React.Node => {
+}: Props ) => {
   if ( !accessibilityLabel ) {
     throw new Error(
       "EvidenceButton needs an accessibility label"
