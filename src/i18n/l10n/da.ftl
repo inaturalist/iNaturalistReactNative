@@ -838,6 +838,7 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = INatural
 The-iNaturalist-Network = iNaturalist-netværket er en samling af lokaliserede websteder, som er fuldt forbundet med det globale iNaturalist-fællesskab. Netværkswebsteder understøttes af lokale institutioner, som fremmer lokal brug og faciliterer brugen af ​​data fra iNaturalist til gavn for lokal biodiversitet.
 The-location-will-not-be-visible-to-others = Placeringen vil ikke være synlig for andre, hvilket kan gøre observationen umulig at identificerer.
 The-models-that-suggest-species = De modeller, som foreslår arter baseret på visuel lighed og placering, kan til dels tilskrives et samarbejder med Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona og Grant Van Horn.
+There-was-an-error-that-might-be-fixed-by-logging-in-again = En fejl opstod, der muligvis kan løses ved at logge ind igen.
 This-is-a-wild-organism = Dette er en vild organisme, der ikke er ikke placeret på dette sted af mennesker.
 This-is-how-taxon-names-will-be-displayed = Det er sådan alle taksonnavne vises for brugeren på hele iNaturalist:
 This-is-your-identification-other-people-may-help-confirm-it = Dette er din identifikation. Andre personer kan hjælpe med at bekræfte den!
