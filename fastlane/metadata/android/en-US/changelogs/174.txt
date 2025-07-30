@@ -1,0 +1,4 @@
+FIXED
+* Account creation pivot card not showing up immediately
+* An error on Match screen
+* Backing out of Match screen loading breaks location fetching
