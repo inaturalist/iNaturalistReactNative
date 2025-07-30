@@ -37,7 +37,7 @@ jobs:
     - name: Install Node.js, NPM and Yarn
       uses: actions/setup-node@v4
       with:
-        node-version: 18
+        node-version: 22
 
     # Use the Android command line tools to download an AOSP emulator image, and setup new avd
     # The name of the device for testing has to be the same as on the .detoxrc.js file (even if it is not a Pixel)
