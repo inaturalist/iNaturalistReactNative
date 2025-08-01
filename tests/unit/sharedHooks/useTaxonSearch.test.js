@@ -28,7 +28,7 @@ jest.mock( "sharedHelpers/safeRealmWrite", ( ) => ( {
 } ) );
 
 const mockRealmObjects = jest.fn( ( ) => ( {
-  filtered: jest.fn( )
+  filtered: jest.fn( () => [] )
 } ) );
 
 jest.mock( "providers/contexts", ( ) => ( {
