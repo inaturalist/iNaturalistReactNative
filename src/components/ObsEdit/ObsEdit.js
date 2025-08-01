@@ -7,12 +7,7 @@ import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import { Animated } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import shouldFetchObservationLocation, {
-  isFromCamera,
-  isFromNoEvidence,
-  isFromSoundRecorder,
-  isNew
-} from "sharedHelpers/shouldFetchObservationLocation.ts";
+import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservationLocation.ts";
 import { useCurrentUser, useLocationPermission, useWatchPosition } from "sharedHooks";
 import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
@@ -40,11 +35,13 @@ const ObsEdit = ( ): Node => {
   const savedOrUploadedMultiObsFlow = useStore( state => state.savedOrUploadedMultiObsFlow );
   const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
   const [resetScreen, setResetScreen] = useState( false );
+  const [needLocation, setNeedLocation] = useState(
+    shouldFetchObservationLocation( currentObservation )
+  );
   const isFocused = useIsFocused( );
   const currentUser = useCurrentUser( );
   const {
     hasPermissions: hasLocationPermission,
-    hasBlockedPermissions: hasBlockedLocationPermission,
     renderPermissionsGate: renderLocationPermissionGate,
     requestPermissions: requestLocationPermission
   } = useLocationPermission( );
@@ -65,8 +62,7 @@ const ObsEdit = ( ): Node => {
     ...DROP_SHADOW
   };
 
-  const shouldFetchLocation = hasLocationPermission
-    && shouldFetchObservationLocation( currentObservation );
+  const shouldFetchLocation = hasLocationPermission && needLocation;
 
   const {
     isFetchingLocation,
@@ -90,17 +86,11 @@ const ObsEdit = ( ): Node => {
     navigation.navigate( "LocationPicker" );
   }, [stopWatch, subscriptionId, navigation] );
 
+  const latitude = currentObservation?.latitude;
+  const longitude = currentObservation?.longitude;
+  const hasLocation = !!( latitude && longitude );
   const onLocationPress = ( ) => {
-    if (
-      !hasLocationPermission
-      && !hasBlockedLocationPermission
-      && isNew( currentObservation )
-      && (
-        isFromCamera( currentObservation )
-        || isFromSoundRecorder( currentObservation )
-        || isFromNoEvidence( currentObservation )
-      )
-    ) {
+    if ( !hasLocation && !hasLocationPermission ) {
       requestLocationPermission( );
     } else {
       navToLocationPicker( );
@@ -177,10 +167,12 @@ const ObsEdit = ( ): Node => {
         />
       )}
       {renderLocationPermissionGate( {
+        // If the user grants location permission while on this screen,
+        // we want to start watching the location no matter how the observation
+        // was created (camera, sound recorder, etc.)
+        onPermissionGranted: ( ) => setNeedLocation( true ),
         // If the user does not give location permissions in any form,
         // navigate to the location picker (if granted we just continue fetching the location)
-        onRequestDenied: navToLocationPicker,
-        onRequestBlocked: navToLocationPicker,
         onModalHide: ( ) => {
           if ( !hasLocationPermission ) navToLocationPicker();
         }

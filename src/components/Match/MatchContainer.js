@@ -97,7 +97,9 @@ const MatchContainer = ( ) => {
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const navigation = useNavigation( );
   const {
-    hasPermissions, renderPermissionsGate, requestPermissions
+    hasPermissions,
+    renderPermissionsGate,
+    requestPermissions
   } = useLocationPermission( );
 
   const obsPhotos = currentObservation?.observationPhotos;
@@ -217,16 +219,34 @@ const MatchContainer = ( ) => {
     }
   }, [] );
 
-  const shouldFetchUserLocation
-  = shouldFetchObservationLocation( currentObservation ) && hasPermissions;
+  const [needLocation, setNeedLocation] = useState(
+    shouldFetchObservationLocation( currentObservation )
+  );
+  const shouldFetchLocation = hasPermissions && needLocation;
 
   const {
+    isFetchingLocation,
     stopWatch,
     subscriptionId,
     userLocation
-  } = useWatchPosition( {
-    shouldFetchLocation: shouldFetchUserLocation
-  } );
+  } = useWatchPosition( { shouldFetchLocation } );
+
+  const navToLocationPicker = useCallback( ( ) => {
+    stopWatch( subscriptionId );
+    navigation.navigate( "LocationPicker" );
+  }, [stopWatch, subscriptionId, navigation] );
+
+  const latitude = currentObservation?.latitude;
+  const longitude = currentObservation?.longitude;
+  const hasLocation = !!( latitude && longitude );
+
+  const handleAddLocationPressed = ( ) => {
+    if ( !hasLocation && !hasPermissions ) {
+      requestPermissions();
+    } else {
+      navToLocationPicker();
+    }
+  };
 
   const getCurrentUserPlaceName = useCallback( async () => {
     if ( currentUserLocation?.latitude ) {
@@ -302,12 +322,6 @@ const MatchContainer = ( ) => {
     if ( !currentPlaceGuess ) return;
     updateObservationKeys( { place_guess: currentPlaceGuess } );
   }, [currentPlaceGuess, updateObservationKeys] );
-
-  const handleAddLocationPressed = ( ) => {
-    if ( !hasPermissions ) {
-      requestPermissions( );
-    }
-  };
 
   const onSuggestionChosen = useCallback( selection => {
     const suggestionsList = [...orderedSuggestions];
@@ -454,6 +468,7 @@ const MatchContainer = ( ) => {
           onSuggestionChosen={onSuggestionChosen}
           handleSaveOrDiscardPress={handleSaveOrDiscardPress}
           navToTaxonDetails={navToTaxonDetails}
+          isFetchingLocation={isFetchingLocation}
           handleAddLocationPressed={handleAddLocationPressed}
           topSuggestion={topSuggestionWithLocalTaxon}
           otherSuggestions={suggestionsWithLocalTaxonPhotos}
@@ -462,7 +477,20 @@ const MatchContainer = ( ) => {
           iconicTaxon={iconicTaxon}
           setIconicTaxon={setIconicTaxon}
         />
-        {renderPermissionsGate( { onPermissionGranted: getCurrentUserPlaceName } )}
+        {renderPermissionsGate( {
+          // If the user grants location permission while on this screen,
+          // we want to start watching the location no matter how the observation
+          // was created (camera, sound recorder, etc.)
+          onPermissionGranted: () => {
+            setNeedLocation( true );
+            getCurrentUserPlaceName( );
+          },
+          // If the user does not give location permissions in any form,
+          // navigate to the location picker (if granted we just continue fetching the location)
+          onModalHide: ( ) => {
+            if ( !hasPermissions ) navToLocationPicker( );
+          }
+        } )}
         {/* eslint-disable i18next/no-literal-string */}
         {/* eslint-disable react/jsx-one-expression-per-line */}
         {/* eslint-disable max-len */}

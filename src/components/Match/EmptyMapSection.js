@@ -8,10 +8,12 @@ import { View } from "react-native";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
+  isFetchingLocation: boolean,
   handleAddLocationPressed: ( ) => void
 }
 
 const EmptyMapSection = ( {
+  isFetchingLocation,
   handleAddLocationPressed
 }: Props ) => {
   const { t } = useTranslation( );
@@ -37,6 +39,8 @@ const EmptyMapSection = ( {
           level="neutral"
           text={t( "ADD-LOCATION-FOR-BETTER-IDS" )}
           onPress={handleAddLocationPressed}
+          loading={isFetchingLocation}
+          disabled={isFetchingLocation}
           accessibilityLabel={t( "Edit-location" )}
           accessibilityHint={t( "Add-location-to-refresh-suggestions" )}
         />
