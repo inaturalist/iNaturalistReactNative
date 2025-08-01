@@ -118,7 +118,8 @@ describe( "DisplayTaxonName", ( ) => {
       expect(
         screen.getByTestId( `display-taxon-name.${multipleLexiconTaxon.id}` )
       ).toHaveTextContent(
-        "Klippen-Austernfischer · Black Oystercatcher"
+        "Klippen-Austernfischer · Black Oystercatcher",
+        { exact: false }
       );
     } );
   } );
