@@ -7,7 +7,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useCallback } from "react";
-import { FlatList, View } from "react-native";
+import { FlatList } from "react-native";
 import type { RealmTaxon } from "realmModels/types";
 import { useKeyboardInfo, useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
@@ -24,7 +24,7 @@ interface Props {
   isLocal?: boolean;
   renderItem: (
     { item, index }: { item: RealmTaxon, index: number }
-  ) => React.ReactElement<typeof View>;
+  ) => React.ReactElement<unknown>;
   taxa: RealmTaxon[]
 }
 
