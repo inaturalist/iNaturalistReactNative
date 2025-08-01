@@ -131,7 +131,7 @@ const Map = forwardRef( ( {
     latitude: number;
     longitude: number;
   } | undefined | null>( null );
-  const mapViewRef = useRef<MapView>();
+  const mapViewRef = useRef<MapView>( undefined );
   const [currentMapType, setCurrentMapType] = useState( mapType || "standard" );
   const [showsUserLocation, setShowsUserLocation] = useState( showsUserLocationProp );
 
