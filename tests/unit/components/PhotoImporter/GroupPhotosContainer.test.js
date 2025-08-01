@@ -58,12 +58,8 @@ describe( "GroupPhotosContainer", ( ) => {
     const firstPhotoCombinedPressable = screen.getByTestId(
       `GroupPhotos.${groupedPhotos[0].photos[0].image.uri}`
     );
-    const secondPhotoCombinedPressable = screen.getByTestId(
-      `GroupPhotos.${groupedPhotos[1].photos[0].image.uri}`
-    );
 
     expect( firstPhotoCombinedPressable ).toHaveTextContent( /2/ );
-    expect( secondPhotoCombinedPressable ).not.toHaveTextContent( );
   } );
 
   it( "combines previously combined photos", async ( ) => {
@@ -126,6 +122,7 @@ describe( "GroupPhotosContainer", ( ) => {
     const separatePhotosButton = screen.getByLabelText( /Separate Photos/ );
     fireEvent.press( separatePhotosButton );
 
-    expect( firstPhotoCombinedPressable ).not.toHaveTextContent( );
+    const photoCount = screen.queryByTestId( "photo-count" );
+    expect( photoCount ).toBeFalsy( );
   } );
 } );

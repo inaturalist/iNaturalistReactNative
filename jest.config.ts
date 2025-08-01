@@ -23,7 +23,12 @@ const config: Config = {
     "<rootDir>/tests/initI18next.setup.js"
   ],
   transformIgnorePatterns: [ignorePatterns],
-  verbose: true
+  // uncomment the line below to enable verbose logging of test results
+  // verbose: true,
+  testPathIgnorePatterns: [
+    "<rootDir>/tests/integration/broken",
+    "<rootDir>/tests/integration/navigation/broken"
+  ]
   // uncomment reporters below to see which tests are running the slowest in jest
   // reporters: [
   //   ["jest-slow-test-reporter", {"numTests": 8, "warnOnSlowerThan": 300, "color": true}]

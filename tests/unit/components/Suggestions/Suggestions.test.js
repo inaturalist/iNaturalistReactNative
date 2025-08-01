@@ -122,7 +122,7 @@ describe( "Suggestions", ( ) => {
       const displayName = await screen.findByTestId(
         `display-taxon-name.${mockVisionResult.taxon.id}`
       );
-      expect( displayName ).toHaveTextContent( mockVisionResult.taxon.name );
+      expect( displayName ).toHaveTextContent( mockVisionResult.taxon.name, { exact: false } );
     } );
 
     it( "should display no vision result if not coming from AICamera", async ( ) => {

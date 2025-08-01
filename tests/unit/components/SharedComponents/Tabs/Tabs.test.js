@@ -40,8 +40,10 @@ describe( "Tabs", () => {
 
     expect( tab1 ).toBeTruthy();
     expect( tab2 ).toBeTruthy();
-    expect( tab1 ).toHaveAccessibilityState( { selected: true, expanded: true } );
-    expect( tab2 ).toHaveAccessibilityState( { selected: false, expanded: false } );
+    expect( tab1 ).toBeSelected();
+    expect( tab1 ).toBeExpanded();
+    expect( tab2 ).not.toBeSelected();
+    expect( tab2 ).toBeCollapsed();
 
     fireEvent.press( tab2 );
     expect( tab1Click ).not.toHaveBeenCalled();
