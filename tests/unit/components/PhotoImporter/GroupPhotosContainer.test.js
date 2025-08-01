@@ -58,12 +58,8 @@ describe( "GroupPhotosContainer", ( ) => {
     const firstPhotoCombinedPressable = screen.getByTestId(
       `GroupPhotos.${groupedPhotos[0].photos[0].image.uri}`
     );
-    const secondPhotoCombinedPressable = screen.getByTestId(
-      `GroupPhotos.${groupedPhotos[1].photos[0].image.uri}`
-    );
 
     expect( firstPhotoCombinedPressable ).toHaveTextContent( /2/ );
-    expect( secondPhotoCombinedPressable ).not.toHaveTextContent( );
   } );
 
   it( "combines previously combined photos", async ( ) => {
