@@ -838,6 +838,7 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = 《愛�
 The-iNaturalist-Network = 愛自然國際網路(iNaturalist Network)是一個由多個區域性網站組成的系統，這些網站與全球愛自然的社群緊密相連。這些區域性網站由當地機構所支援，推廣在地的使用，並且協助利用愛自然 的資料以裨益在地的生物多樣性。
 The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify.
 The-models-that-suggest-species = 根據視覺相似性與地理位置來建議物種的模型，部分得益於 Sara Beery、Tom Brooks、Elijah Cole、Christian Lange、Oisin Mac Aodha、Pietro Perona 和 Grant Van Horn 的協作。
+There-was-an-error-that-might-be-fixed-by-logging-in-again = There was an error that might be fixed by logging in again.
 This-is-a-wild-organism = 這是一種野生的生物，並非人類圈養或栽培在此地點的。
 This-is-how-taxon-names-will-be-displayed = 以下是愛自然上所有分類群名稱顯示的方式：
 This-is-your-identification-other-people-may-help-confirm-it = 這是您的鑑定。其他人可能會幫忙確認一下！
