@@ -1,7 +1,9 @@
 import classnames from "classnames";
 import {
+  Body2,
   INatIconButton
 } from "components/SharedComponents";
+import GradientButton from "components/SharedComponents/Buttons/GradientButton.tsx";
 import { View } from "components/styledComponents";
 import React, { useMemo } from "react";
 import { Platform, StatusBar } from "react-native";
@@ -17,6 +19,8 @@ interface Props {
   navAndCloseModal: ( screen: string, params?: {
     camera?: string
   } ) => void;
+  tooltipIsVisible: boolean;
+  dismissTooltip: () => void;
 }
 
 const majorVersionIOS = parseInt( String( Platform.Version ), 10 );
@@ -39,7 +43,9 @@ const MARGINS = AI_CAMERA_SUPPORTED
     soundRecorder: "ml-[20px] bottom-[33px]"
   };
 
-const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
+const AddObsModal = ( {
+  closeModal, navAndCloseModal, tooltipIsVisible, dismissTooltip
+}: Props ) => {
   const { t } = useTranslation( );
 
   const prepareObsEdit = useStore( state => state.prepareObsEdit );
@@ -131,23 +137,54 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
     />
   );
 
+  const renderContent = ( ) => {
+    if ( tooltipIsVisible ) {
+      return (
+        <View className="justify-center items-center">
+          <View className="bg-white rounded-2xl px-5 py-4">
+            <Body2>{t( "Press-and-hold-to-view-more-options" )}</Body2>
+          </View>
+          <View
+            className={classnames(
+              // I could not figure out how to use "border-x-transparent",
+              "border-l-[10px] border-r-[10px] border-x-[#00000000]",
+              "border-t-[16px] border-t-white mb-2"
+            )}
+          />
+          <GradientButton
+            sizeClassName="w-[69px] h-[69px]"
+            onPress={() => {}}
+            onLongPress={() => dismissTooltip( )}
+            accessibilityLabel={t( "Add-observations" )}
+            accessibilityHint={t( "Shows-observation-creation-options" )}
+          />
+        </View>
+      );
+    }
+    return (
+      <>
+        <AddObsModalHelp obsCreateItems={obsCreateItems} />
+        <View className={classnames( ROW_CLASS, {
+          "bottom-[20px]": !AI_CAMERA_SUPPORTED
+        } )}
+        >
+          {renderAddObsIcon( obsCreateItems.standardCamera )}
+          {AI_CAMERA_SUPPORTED && renderAddObsIcon( obsCreateItems.aiCamera )}
+          {renderAddObsIcon( obsCreateItems.photoLibrary )}
+        </View>
+        <View className={classnames( ROW_CLASS, "items-center" )}>
+          {renderAddObsIcon( obsCreateItems.noEvidence )}
+          {renderAddObsIcon( obsCreateItems.closeButton )}
+          {renderAddObsIcon( obsCreateItems.soundRecorder )}
+        </View>
+      </>
+    );
+  };
+
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor="black" />
-      <AddObsModalHelp obsCreateItems={obsCreateItems} />
-      <View className={classnames( ROW_CLASS, {
-        "bottom-[20px]": !AI_CAMERA_SUPPORTED
-      } )}
-      >
-        {renderAddObsIcon( obsCreateItems.standardCamera )}
-        {AI_CAMERA_SUPPORTED && renderAddObsIcon( obsCreateItems.aiCamera )}
-        {renderAddObsIcon( obsCreateItems.photoLibrary )}
-      </View>
-      <View className={classnames( ROW_CLASS, "items-center" )}>
-        {renderAddObsIcon( obsCreateItems.noEvidence )}
-        {renderAddObsIcon( obsCreateItems.closeButton )}
-        {renderAddObsIcon( obsCreateItems.soundRecorder )}
-      </View>
+      { renderContent( ) }
     </>
   );
 };

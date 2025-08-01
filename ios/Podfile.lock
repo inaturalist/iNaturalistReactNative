@@ -1267,7 +1267,7 @@ PODS:
     - React-Core
   - react-native-geocoder-reborn (0.9.0):
     - React
-  - react-native-geolocation (3.2.1):
+  - react-native-geolocation (3.4.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2345,7 +2345,7 @@ SPEC CHECKSUMS:
   react-native-config: ea75335a7cca1d3326de1da384227e580a7c082e
   react-native-exif-reader: d871d62023d532e33cc230ede6e2ba9cbfe220e2
   react-native-geocoder-reborn: a3c3d8460910309e750609c373b6887ec6f67a8f
-  react-native-geolocation: 1e88df4cb0c3108517066b6c4a24dd172d0ee01f
+  react-native-geolocation: 037ec17082360656cf2bb0d5a72774f06dc31bf7
   react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
   react-native-image-picker: b64848e41db57068721d5db3cea54e32ecb92791
   react-native-image-resizer: 24c5d06fae2176dc0caed4b6396e02befb44064a

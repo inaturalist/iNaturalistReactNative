@@ -1,0 +1,8 @@
+NEW
+* Recovery from observations not uploading: If an error is hit during uploading, we navigate the user to log in again in certain cases.
+
+UPDATED
+* Some maintenance
+
+FIXED
+* Reset password input field slides up with keyboard

@@ -347,6 +347,7 @@ const MyObservationsContainer = ( ): React.FC => {
         <MyObservationsEmptySimple
           currentUser={currentUser}
           isConnected={isConnected}
+          justFinishedSignup={justFinishedSignup}
         />
       )
       : (
