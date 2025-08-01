@@ -51,7 +51,8 @@ describe( "SoundRecorder navigation", ( ) => {
       renderApp( );
       await waitFor( ( ) => {
         global.timeTravel( );
-        expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeVisible( );
+        // We used toBeVisible here but the update to RN0.77 broke this expectation
+        expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeOnTheScreen( );
       } );
       const tabBar = await screen.findByTestId( "CustomTabBar" );
       const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
@@ -61,7 +62,8 @@ describe( "SoundRecorder navigation", ( ) => {
       const mediaNavButtons = await screen.findByTestId( "MediaNavButtons" );
       const closeButton = await within( mediaNavButtons ).findByLabelText( "Close" );
       await actor.press( closeButton );
-      expect( await screen.findByText( /Use iNaturalist to identify/ ) ).toBeVisible( );
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect( await screen.findByText( /Use iNaturalist to identify/ ) ).toBeOnTheScreen( );
     } );
   } );
 } );

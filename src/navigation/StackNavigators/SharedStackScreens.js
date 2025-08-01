@@ -7,7 +7,7 @@ import LocationPickerContainer from "components/LocationPicker/LocationPickerCon
 import MatchContainer from "components/Match/MatchContainer";
 import MatchTaxonSearchScreen from "components/Match/MatchTaxonSearchScreen.tsx";
 import ObsEdit from "components/ObsEdit/ObsEdit";
-import PhotoSharing from "components/PhotoSharing";
+import PhotoSharing from "components/PhotoSharing.tsx";
 import { Heading4 } from "components/SharedComponents";
 import SuggestionsContainer from "components/Suggestions/SuggestionsContainer.tsx";
 import SuggestionsTaxonSearch from "components/Suggestions/SuggestionsTaxonSearch.tsx";

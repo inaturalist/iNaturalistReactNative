@@ -93,7 +93,8 @@ beforeEach( ( ) => {
 
 const checkToolbarResetWithUnsyncedObs = ( ) => waitFor( ( ) => {
   const toolbarText = screen.getByText( /Upload 3 observations/ );
-  expect( toolbarText ).toBeVisible( );
+  // We used toBeVisible here but the update to RN0.77 broke this expectation
+  expect( toolbarText ).toBeOnTheScreen();
 } );
 
 const writeObservationsToRealm = ( observations, message ) => {
@@ -109,13 +110,15 @@ const pressIndividualUpload = observation => {
   const uploadIcon = screen.getByTestId(
     `UploadIcon.start.${observation.uuid}`
   );
-  expect( uploadIcon ).toBeVisible( );
+  // We used toBeVisible here but the update to RN0.77 broke this expectation
+  expect( uploadIcon ).toBeOnTheScreen( );
   actor.press( uploadIcon );
 };
 
 const waitForDisplayedText = async ( text, timeout = 1000 ) => {
   await waitFor( ( ) => {
-    expect( screen.getByText( text ) ).toBeVisible( );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( screen.getByText( text ) ).toBeOnTheScreen( );
   }, { timeout } );
 };
 

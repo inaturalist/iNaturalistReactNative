@@ -1,7 +1,7 @@
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
-import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/CrosshairCircle";
+import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/CrosshairCircle.tsx";
 import useUploadObservations from "components/MyObservations/hooks/useUploadObservations.ts";
 import { RealmContext } from "providers/contexts.ts";
 import React, { useCallback, useState } from "react";

@@ -3,7 +3,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fetchRelationships } from "api/relationships";
 import { fetchRemoteUser, fetchUserProjects } from "api/users";
-import LoginSheet from "components/MyObservations/LoginSheet";
+import LoginSheet from "components/MyObservations/LoginSheet.tsx";
 import {
   Body2,
   Button,

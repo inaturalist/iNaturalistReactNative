@@ -110,7 +110,8 @@ describe( "Photo Import", ( ) => {
 
   async function groupPhotosIntoObservation() {
     const groupPhotosText = await screen.findByText( /Group Photos/ );
-    expect( groupPhotosText ).toBeVisible( );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( groupPhotosText ).toBeOnTheScreen( );
     const path = "file://document/directory/path/galleryPhotos/";
     const firstUri = `${path}${mockImageLibraryResponseMultiplePhotos.assets[0].fileName}`;
     const secondUri = `${path}${mockImageLibraryResponseMultiplePhotos.assets[1].fileName}`;
@@ -134,11 +135,13 @@ describe( "Photo Import", ( ) => {
   async function saveObservationWithPhoto() {
     // Make sure we're on ObsEdit
     const evidenceTitle = await screen.findByText( "EVIDENCE" );
-    expect( evidenceTitle ).toBeVisible( );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( evidenceTitle ).toBeOnTheScreen( );
 
     const localFilePath = `file://document/directory/path/photoUploads/${mockFileName}`;
     const photoEvidence = await screen.findByTestId( `EvidenceList.${localFilePath}` );
-    expect( photoEvidence ).toBeVisible( );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( photoEvidence ).toBeOnTheScreen( );
     const saveButton = await screen.findByText( "SAVE" );
     await actor.press( saveButton );
     const okButton = await screen.findByText( "OK" );
@@ -148,7 +151,8 @@ describe( "Photo Import", ( ) => {
     await screen.findByText( /Upload \d observation/ );
     const obsGridItems = await screen.findAllByTestId( /MyObservations\.obsGridItem\..*/ );
     await waitFor( () => {
-      expect( obsGridItems[0] ).toBeVisible( );
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect( obsGridItems[0] ).toBeOnTheScreen( );
     }, { timeout: 3_000, interval: 500 } );
   }
 
