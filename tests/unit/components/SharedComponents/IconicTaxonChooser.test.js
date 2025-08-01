@@ -35,7 +35,7 @@ describe( "IconicTaxonChooser", () => {
     );
     const birdButton = await screen.findByTestId( "IconicTaxonButton.aves" );
 
-    expect( plantButton ).toHaveAccessibilityState( { selected: true } );
-    expect( birdButton ).toHaveAccessibilityState( { selected: false } );
+    expect( plantButton ).toBeSelected();
+    expect( birdButton ).not.toBeSelected();
   } );
 } );
