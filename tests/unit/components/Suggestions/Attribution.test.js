@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/react-native";
-import Attribution from "components/Suggestions/Attribution";
+import Attribution from "components/Suggestions/Attribution.tsx";
 import React from "react";
 import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";

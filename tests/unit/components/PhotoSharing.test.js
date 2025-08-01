@@ -1,6 +1,6 @@
 import { CommonActions } from "@react-navigation/native";
 import { act, waitFor } from "@testing-library/react-native";
-import PhotoSharing from "components/PhotoSharing";
+import PhotoSharing from "components/PhotoSharing.tsx";
 import React from "react";
 import { Alert, Platform } from "react-native";
 import Observation from "realmModels/Observation";

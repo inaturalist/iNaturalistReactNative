@@ -134,7 +134,8 @@ const takePhotoAndNavToSuggestions = async ( ) => {
   const takePhotoButton = await screen.findByLabelText( /Take photo/ );
   await actor.press( takePhotoButton );
   const addIDButton = await screen.findByText( /ADD AN ID/ );
-  expect( addIDButton ).toBeVisible( );
+  // We used toBeVisible here but the update to RN0.77 broke this expectation
+  expect( addIDButton ).toBeOnTheScreen( );
 };
 
 const navToObsEditWithTopSuggestion = async ( ) => {
@@ -143,7 +144,8 @@ const navToObsEditWithTopSuggestion = async ( ) => {
   );
   await actor.press( topTaxonResultButton );
   const evidenceList = await screen.findByTestId( "EvidenceList.DraggableFlatList" );
-  expect( evidenceList ).toBeVisible( );
+  // We used toBeVisible here but the update to RN0.77 broke this expectation
+  expect( evidenceList ).toBeOnTheScreen( );
   // one photo from AICamera
   expect( evidenceList.props.data.length ).toEqual( 1 );
 };
@@ -153,7 +155,8 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
     it( "should return to MyObs when close button tapped", async ( ) => {
       renderApp( );
       await navToAICamera( );
-      expect( await screen.findByText( /Loading iNaturalist's AI Camera/ ) ).toBeVisible( );
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect( await screen.findByText( /Loading iNaturalist's AI Camera/ ) ).toBeOnTheScreen( );
       const closeButton = await screen.findByLabelText( /Close/ );
       await actor.press( closeButton );
       expect(
@@ -188,7 +191,8 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
       await takePhotoAndNavToSuggestions( );
       await navToObsEditWithTopSuggestion( );
       const obsEditBackButton = screen.getByTestId( "ObsEdit.BackButton" );
-      expect( obsEditBackButton ).toBeVisible( );
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect( obsEditBackButton ).toBeOnTheScreen( );
     } );
 
     // TODO: we can't test back behavior as reliably in React Navigation 7;

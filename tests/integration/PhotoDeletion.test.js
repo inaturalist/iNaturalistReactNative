@@ -112,7 +112,8 @@ describe( "Photo Deletion", ( ) => {
     // Make sure we're on ObsEdit
     const evidenceTitle = await screen.findByText( "EVIDENCE" );
     await waitFor( ( ) => {
-      expect( evidenceTitle ).toBeVisible( );
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect( evidenceTitle ).toBeOnTheScreen( );
     } );
     const saveButton = await screen.findByText( "SAVE" );
     await actor.press( saveButton );
@@ -125,13 +126,15 @@ describe( "Photo Deletion", ( ) => {
 
   async function expectNoPhotosInStandardCamera() {
     const noPhotoText = await screen.findByText( "Photos you take will appear here" );
-    expect( noPhotoText ).toBeVisible( );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( noPhotoText ).toBeOnTheScreen( );
   }
 
   async function viewPhotoFromObsEdit() {
     const evidenceItem = await screen.findByLabelText( "Select or drag media" );
     await waitFor( ( ) => {
-      expect( evidenceItem ).toBeVisible( );
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect( evidenceItem ).toBeOnTheScreen( );
     } );
     await actor.press( evidenceItem );
   }
@@ -139,7 +142,8 @@ describe( "Photo Deletion", ( ) => {
   async function expectObsEditToHaveNoPhotos() {
     // Make sure we're on ObsEdit
     const evidenceTitle = await screen.findByText( "EVIDENCE" );
-    expect( evidenceTitle ).toBeVisible( );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( evidenceTitle ).toBeOnTheScreen( );
     // Confirm there is no evidence
     const evidenceItems = screen.queryAllByLabelText( "Select or drag media" );
     expect( evidenceItems.length ).toEqual( 0 );

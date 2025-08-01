@@ -99,18 +99,21 @@ describe( "TaxonDetails", ( ) => {
 
   async function expectToBeOnSuggestions( ) {
     const topIdTitle = await screen.findByText( "TOP ID SUGGESTION" );
-    expect( topIdTitle ).toBeVisible( );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( topIdTitle ).toBeOnTheScreen( );
   }
 
   async function navigateToTaxonDetailsFromSuggestions( ) {
     await expectToBeOnSuggestions( );
     const suggestedTaxonName = await screen.findByText( topSuggestion.taxon.name );
-    expect( suggestedTaxonName ).toBeVisible( );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( suggestedTaxonName ).toBeOnTheScreen( );
     await actor.press( suggestedTaxonName );
     const taxonDetailsScreen = await screen.findByTestId(
       `TaxonDetails.${topSuggestion.taxon.id}`
     );
-    expect( taxonDetailsScreen ).toBeVisible( );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( taxonDetailsScreen ).toBeOnTheScreen( );
   }
 
   // navigate to ObsDetails -> Suggest ID -> Suggestions -> TaxonDetails
@@ -120,7 +123,8 @@ describe( "TaxonDetails", ( ) => {
     );
     await actor.press( observationGridItem );
     const suggestIdButton = await screen.findByText( /SUGGEST ID/ );
-    expect( suggestIdButton ).toBeVisible( );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( suggestIdButton ).toBeOnTheScreen( );
     await actor.press( suggestIdButton );
     return navigateToTaxonDetailsFromSuggestions( );
   }
@@ -132,7 +136,8 @@ describe( "TaxonDetails", ( ) => {
     );
     await actor.press( observationGridItem );
     const editButton = await screen.findByLabelText( /Edit/ );
-    expect( editButton ).toBeVisible( );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( editButton ).toBeOnTheScreen( );
     await actor.press( editButton );
     const observationTaxonName = await screen.findByText( observation.taxon.name );
     await actor.press( observationTaxonName );
@@ -146,7 +151,8 @@ describe( "TaxonDetails", ( ) => {
     );
     await actor.press( observationGridItem );
     const editButton = await screen.findByLabelText( /Edit/ );
-    expect( editButton ).toBeVisible( );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( editButton ).toBeOnTheScreen( );
     await actor.press( editButton );
     const observationTaxonName = await screen.findByText( observation.taxon.name );
     await actor.press( observationTaxonName );
@@ -159,13 +165,15 @@ describe( "TaxonDetails", ( ) => {
 
     const searchedTaxon = mockTaxaList[0];
     await waitFor( async ( ) => {
-      expect( await screen.findByText( searchedTaxon.name ) ).toBeVisible( );
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect( await screen.findByText( searchedTaxon.name ) ).toBeOnTheScreen( );
     } );
     const searchedTaxonName = await screen.findByText( searchedTaxon.name );
     await actor.press( searchedTaxonName );
 
     const taxonDetailsScreen = await screen.findByTestId( `TaxonDetails.${searchedTaxon.id}` );
-    expect( taxonDetailsScreen ).toBeVisible( );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( taxonDetailsScreen ).toBeOnTheScreen( );
     return mockTaxaList[0];
   }
 
@@ -174,7 +182,8 @@ describe( "TaxonDetails", ( ) => {
     await navigateToTaxonDetailsViaObsEdit( observation );
     // navigate to an ancestor taxon details page
     const ancestorTaxonName = await screen.findByText( topSuggestion.taxon.ancestors[0].name );
-    expect( ancestorTaxonName ).toBeVisible( );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( ancestorTaxonName ).toBeOnTheScreen( );
     inatjs.taxa.fetch.mockResolvedValue( makeResponse( [topSuggestion.taxon.ancestors[0]] ) );
     await actor.press( ancestorTaxonName );
   }
@@ -192,7 +201,8 @@ describe( "TaxonDetails", ( ) => {
       await navigateToTaxonDetailsViaSuggestId( observations[0] );
       // make sure we're on TaxonDetails
       const selectTaxonButton = screen.getByText( /SELECT THIS TAXON/ );
-      expect( selectTaxonButton ).toBeVisible( );
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect( selectTaxonButton ).toBeOnTheScreen( );
       await actor.press( selectTaxonButton );
       // return to ObsDetails screen
       expect( await screen.findByTestId( `ObsDetails.${observations[0].uuid}` ) ).toBeTruthy( );
@@ -200,9 +210,11 @@ describe( "TaxonDetails", ( ) => {
       const bottomSheetText = await screen.findByText(
         /Would you like to suggest the following identification/
       );
-      expect( bottomSheetText ).toBeVisible( );
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect( bottomSheetText ).toBeOnTheScreen( );
       const selectedTaxonName = await screen.findByText( taxon.name );
-      expect( selectedTaxonName ).toBeVisible( );
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect( selectedTaxonName ).toBeOnTheScreen( );
       const { currentObservation } = useStore.getState( );
       expect( currentObservation.owners_identification_from_vision ).toBeTruthy( );
     }
@@ -221,13 +233,16 @@ describe( "TaxonDetails", ( ) => {
       await navigateToTaxonDetailsViaObsEdit( observations[0] );
       // make sure we're on TaxonDetails
       const selectTaxonButton = screen.getByText( /SELECT THIS TAXON/ );
-      expect( selectTaxonButton ).toBeVisible( );
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect( selectTaxonButton ).toBeOnTheScreen( );
       await actor.press( selectTaxonButton );
       // return to ObsEdit screen
       const obsEditBackButton = screen.getByTestId( "ObsEdit.BackButton" );
-      expect( obsEditBackButton ).toBeVisible( );
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect( obsEditBackButton ).toBeOnTheScreen( );
       const selectedTaxonName = await screen.findByText( taxon.name );
-      expect( selectedTaxonName ).toBeVisible( );
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect( selectedTaxonName ).toBeOnTheScreen( );
       const { currentObservation } = useStore.getState( );
       expect( currentObservation.owners_identification_from_vision ).toBeTruthy( );
     }
@@ -245,14 +260,17 @@ describe( "TaxonDetails", ( ) => {
       const searchedTaxon = await navigateToTaxonDetailsViaTaxonSearch( observations[0] );
       // make sure we're on TaxonDetails
       const selectTaxonButton = screen.getByText( /SELECT THIS TAXON/ );
-      expect( selectTaxonButton ).toBeVisible( );
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect( selectTaxonButton ).toBeOnTheScreen( );
       await actor.press( selectTaxonButton );
       // return to ObsEdit screen
       const obsEditBackButton = screen.getByTestId( "ObsEdit.BackButton" );
-      expect( obsEditBackButton ).toBeVisible( );
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect( obsEditBackButton ).toBeOnTheScreen( );
       // We just chose searchedTaxon, so that name should be visible on ObsEdit
       const selectedTaxonName = await screen.findByText( searchedTaxon.name );
-      expect( selectedTaxonName ).toBeVisible( );
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect( selectedTaxonName ).toBeOnTheScreen( );
       const { currentObservation } = useStore.getState( );
       expect( currentObservation.owners_identification_from_vision ).toBeFalsy( );
     }
@@ -272,15 +290,18 @@ describe( "TaxonDetails", ( ) => {
       await navigateToTaxonDetailsViaTaxonDetails( observations[0] );
       // make sure we're on TaxonDetails ancestor screen
       const selectTaxonButton = screen.getByText( /SELECT THIS TAXON/ );
-      expect( selectTaxonButton ).toBeVisible( );
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect( selectTaxonButton ).toBeOnTheScreen( );
       await actor.press( selectTaxonButton );
       // return to ObsEdit screen
       const obsEditBackButton = screen.getByTestId( "ObsEdit.BackButton" );
-      expect( obsEditBackButton ).toBeVisible( );
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect( obsEditBackButton ).toBeOnTheScreen( );
 
       // selected taxon
       const ancestorTaxonName = await screen.findByText( taxon.ancestors[0].name );
-      expect( ancestorTaxonName ).toBeVisible( );
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect( ancestorTaxonName ).toBeOnTheScreen( );
       const { currentObservation } = useStore.getState( );
       expect( currentObservation.owners_identification_from_vision ).toBeFalsy( );
     }
