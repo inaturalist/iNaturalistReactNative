@@ -17,7 +17,7 @@ interface Props {
   containerClass?: string;
   handleTextChange: ( _text: string ) => void;
   hasShadow?: boolean;
-  input?: React.RefObject<RNTextInput> | React.MutableRefObject<RNTextInput | undefined>,
+  input?: React.RefObject<RNTextInput | null> | React.MutableRefObject<RNTextInput | undefined>,
   placeholder?: string;
   testID?: string;
   value: string;
@@ -42,7 +42,7 @@ const SearchBar = ( {
   const { t } = useTranslation( );
   const [localValue, setLocalValue] = useState( value );
 
-  const debounceTimeout = useRef<ReturnType<typeof setTimeout>>();
+  const debounceTimeout = useRef<ReturnType<typeof setTimeout>>( undefined );
 
   const debouncedHandleTextChange = useCallback( ( text: string ) => {
     setLocalValue( text );

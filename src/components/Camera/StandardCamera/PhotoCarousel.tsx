@@ -222,7 +222,7 @@ const PhotoCarousel = ( {
   // state, and use that to position another container inside the modal in
   // exactly the same place
 
-  const containerRef = useRef<View>( );
+  const containerRef = useRef<View>( undefined );
   const [containerPos, setContainerPos] = useState<{
     x: number | null;
     y: number | null;
