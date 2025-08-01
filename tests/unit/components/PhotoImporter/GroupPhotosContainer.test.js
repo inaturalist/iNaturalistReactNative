@@ -126,6 +126,7 @@ describe( "GroupPhotosContainer", ( ) => {
     const separatePhotosButton = screen.getByLabelText( /Separate Photos/ );
     fireEvent.press( separatePhotosButton );
 
-    expect( firstPhotoCombinedPressable ).not.toHaveTextContent( );
+    const photoCount = screen.queryByTestId( "photo-count" );
+    expect( photoCount ).toBeFalsy( );
   } );
 } );
