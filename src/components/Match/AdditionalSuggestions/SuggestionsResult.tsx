@@ -27,7 +27,7 @@ const SuggestionsResult = ( {
   confidence,
   handlePress,
   taxon,
-  testID = `SuggestionsResult.${taxon?.id}`,
+  testID,
   updateMaxHeight,
   forcedHeight
 }: Props ) => {
@@ -52,6 +52,10 @@ const SuggestionsResult = ( {
     console.warn( "Taxon Realm object is invalidated" );
     return null;
   }
+
+  const safeTestID = testID || `SuggestionsResult.${"id" in taxon
+    ? taxon.id
+    : "unknown"}`;
 
   const accessibleName = accessibleTaxonName( taxon, currentUser, t );
 
@@ -103,15 +107,15 @@ const SuggestionsResult = ( {
             handlePress( );
           }
         }}
-        testID={testID}
-        key={testID}
+        testID={safeTestID}
+        key={safeTestID}
         style={forcedHeight
           ? styleWithForcedHeight
           : undefined}
       >
         <ObsImagePreview
           source={taxonImage}
-          testID={`${testID}.photo`}
+          testID={`${safeTestID}.photo`}
           iconicTaxonName={taxon?.iconic_taxon_name}
           className="rounded-xl mr-3"
           isSmall

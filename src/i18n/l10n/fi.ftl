@@ -841,6 +841,7 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = iNatural
 The-iNaturalist-Network = iNaturalist-verkosto on kokoelma paikallisia verkkosivustoja, jotka ovat täysin yhteydessä maailmanlaajuiseen iNaturalist-yhteisöön. Verkostosivustoja tukevat paikalliset instituutiot, jotka edistävät paikallista käyttöä ja helpottavat iNaturalistin tietojen käyttöä paikallisen luonnon monimuotoisuuden hyväksi.
 The-location-will-not-be-visible-to-others = Sijainti ei näy muille, mikä voi tehdä havainnon tunnistamisen mahdottomaksi.
 The-models-that-suggest-species = Mallit, jotka ehdottavat lajeja visuaalisen samankaltaisuuden ja sijainnin perusteella, ovat Sara Beeryn, Tom Brooksin, Elijah Colen, Christian Langen, Oisin Mac Aodhan, Pietro Peronan ja Grant Van Hornin kanssa tehdyn yhteistyön ansiota.
+There-was-an-error-that-might-be-fixed-by-logging-in-again = Tapahtui virhe, joka saattaa korjaantua kirjautumalla sisään uudelleen.
 This-is-a-wild-organism = Tämä eliö on villi, eivätkä ihmiset ole tuoneet sitä tähän paikkaan.
 This-is-how-taxon-names-will-be-displayed = Näin kaikki taksonien nimet näytetään sinulle iNaturalistissa:
 This-is-your-identification-other-people-may-help-confirm-it = Tämä on tunnistuksesi. Muut ihmiset voivat auttaa vahvistamaan sen!

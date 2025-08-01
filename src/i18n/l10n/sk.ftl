@@ -838,6 +838,7 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = Komunita
 The-iNaturalist-Network = Sieť iNaturalist je zbierka lokalizovaných webov, ktoré sú plne prepojené s globálnou komunitou iNaturalist. Sieťové stránky sú podporované miestnymi inštitúciami, ktoré podporujú miestne využitie a uľahčujú využívanie údajov z iNaturalist v prospech miestnej biodiverzity.
 The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify.
 The-models-that-suggest-species = Modely, ktoré navrhujú druhy na základe vizuálnej podobnosti a polohy, sú čiastočne vďaka spolupráci s Sara Beermi, Tomom Brooksom, Elijahom Colom, Christianom Langeom, Oisinom Macom Aodhou, Pietro Peronou a Grant Van Horn.
+There-was-an-error-that-might-be-fixed-by-logging-in-again = There was an error that might be fixed by logging in again.
 This-is-a-wild-organism = Ide o divoký organizmus a ľudia ho na toto miesto neumiestnili.
 This-is-how-taxon-names-will-be-displayed = Takto budú zobrazené všetky názvy taxónov naprieč iNaturalist:
 This-is-your-identification-other-people-may-help-confirm-it = Toto je Vaša identifikácia. Ostatní ľudia môžu pomôcť potvrdiť ju!
