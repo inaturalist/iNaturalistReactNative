@@ -7,7 +7,7 @@ interface Props {
   animating?: boolean;
   color?: string;
   hidesWhenStopped?: boolean;
-  size?: number;
+  size?: number | "small" | "large";
   style?: ViewStyle;
   testID?: string;
   theme?: MD3Theme;

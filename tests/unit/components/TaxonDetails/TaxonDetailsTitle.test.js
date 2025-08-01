@@ -1,4 +1,4 @@
-import TaxonDetailsTitle from "components/TaxonDetails/TaxonDetailsTitle";
+import TaxonDetailsTitle from "components/TaxonDetails/TaxonDetailsTitle.tsx";
 import React from "react";
 import factory from "tests/factory";
 

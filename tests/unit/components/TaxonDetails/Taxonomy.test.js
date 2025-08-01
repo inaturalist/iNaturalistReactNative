@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
-import Taxonomy from "components/TaxonDetails/Taxonomy";
+import Taxonomy from "components/TaxonDetails/Taxonomy.tsx";
 import React from "react";
 import factory from "tests/factory";
 

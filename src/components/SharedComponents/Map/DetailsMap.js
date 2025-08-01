@@ -4,7 +4,7 @@ import Clipboard from "@react-native-clipboard/clipboard";
 import { HeaderBackButton } from "@react-navigation/elements";
 import classnames from "classnames";
 import CoordinatesCopiedNotification
-  from "components/ObsDetails/DetailsTab/CoordinatesCopiedNotification";
+  from "components/ObsDetails/DetailsTab/CoordinatesCopiedNotification.tsx";
 import {
   Heading2,
   INatIconButton,
