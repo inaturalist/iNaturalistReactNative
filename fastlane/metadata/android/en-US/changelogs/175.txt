@@ -1,0 +1,6 @@
+NEW
+* React Native upgrade to 0.77, including few library upgrades
+
+FIXED
+* Tooltip to find the obs wheel
+* Remove suggestions screens when navigating back after choosing a taxon
