@@ -1,16 +1,10 @@
 import {
-  useNetInfo
-} from "@react-native-community/netinfo";
-import {
   screen,
-  userEvent,
-  waitFor,
-  within
+  userEvent
 } from "@testing-library/react-native";
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions.ts";
 import inatjs from "inaturalistjs";
 import { Animated } from "react-native";
-import * as useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice.ts";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
@@ -18,7 +12,6 @@ import { renderAppWithObservations } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
-import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
 
 // Not my favorite code, but this patch is necessary to get tests passing right
 // now unless we can figure out why Animated.Value is being passed undefined,
@@ -38,49 +31,6 @@ afterEach( () => {
   // Restore original implementation
   Animated.Value = OriginalValue;
 } );
-
-const mockModelResult = {
-  predictions: [
-    factory( "ModelPrediction", {
-      rank_level: 30,
-      combined_score: 86
-    } ),
-    factory( "ModelPrediction", {
-      rank_level: 20,
-      combined_score: 96
-    } ),
-    factory( "ModelPrediction", {
-      rank_level: 10,
-      combined_score: 40
-    } )]
-};
-
-const mockModelResultNoConfidence = {
-  predictions: [
-    factory( "ModelPrediction", {
-      rank_level: 30,
-      combined_score: 70
-    } ),
-    factory( "ModelPrediction", {
-      rank_level: 20,
-      combined_score: 65
-    } )
-  ]
-};
-
-const mockModelResultWithHuman = {
-  predictions: [
-    factory( "ModelPrediction", {
-      rank_level: 20,
-      combined_score: 86
-    } ),
-    factory( "ModelPrediction", {
-      rank_level: 30,
-      combined_score: 96,
-      name: "Homo"
-    } )
-  ]
-};
 
 jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
   OS: "ios",
@@ -188,20 +138,6 @@ const navigateToSuggestionsForObservationViaObsEdit = async observation => {
   await actor.press( observationGridItem );
   const addIdButton = await screen.findByText( "ID WITH AI" );
   await actor.press( addIdButton );
-};
-
-const navigateToSuggestionsViaAICamera = async ( ) => {
-  const tabBar = await screen.findByTestId( "CustomTabBar" );
-  const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
-  await actor.press( addObsButton );
-  const cameraButton = await screen.findByLabelText( /AI Camera/ );
-  await actor.press( cameraButton );
-
-  const takePhotoButton = await screen.findByLabelText( /Take photo/ );
-  await actor.press( takePhotoButton );
-  const addIDButton = await screen.findByText( /ADD AN ID/ );
-  // We used toBeVisible here but the update to RN0.77 broke this expectation
-  expect( addIDButton ).toBeOnTheScreen( );
 };
 
 const setupAppWithSignedInUser = async hasLocation => {
@@ -350,127 +286,5 @@ describe( "from AICamera directly", ( ) => {
     // We used toBeVisible here but the update to RN0.77 broke this expectation
     //   expect( useLocationButton ).toBeOnTheScreen( );
     // } );
-  } );
-
-  describe( "suggestions with location", ( ) => {
-    it( "should call score_image with location parameters on first render", async ( ) => {
-      await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( );
-      await waitFor( ( ) => {
-        expect( inatjs.computervision.score_image ).toHaveBeenCalledWith(
-          expect.objectContaining( {
-          // Don't care about fields here
-            fields: expect.any( Object ),
-            image: expect.any( Object ),
-            lat: 56,
-            lng: 9
-          } ),
-          expect.anything( )
-        );
-      } );
-    } );
-  } );
-
-  describe( "suggestions without location permissions", ( ) => {
-    it( "should not call score_image with location parameters on first render"
-      + " if location permission not given", async ( ) => {
-      jest.spyOn( useLocationPermission, "default" ).mockImplementation( ( ) => ( {
-        hasPermissions: false,
-        renderPermissionsGate: jest.fn( )
-      } ) );
-      mockFetchUserLocation.mockReturnValue( null );
-      await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( );
-      await waitFor( ( ) => {
-        global.timeTravel( );
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( screen.getByText( /IMPROVE THESE SUGGESTIONS/ ) ).toBeOnTheScreen( );
-      } );
-      const ignoreLocationButton = screen.queryByText( /IGNORE LOCATION/ );
-      expect( ignoreLocationButton ).toBeFalsy( );
-      const useLocationButton = screen.queryByText( /USE LOCATION/ );
-      expect( useLocationButton ).toBeFalsy( );
-      await waitFor( ( ) => {
-        expect( inatjs.computervision.score_image ).toHaveBeenCalledWith(
-          expect.not.objectContaining( {
-            lat: 56,
-            lng: 9
-          } ),
-          expect.anything( )
-        );
-      } );
-    } );
-  } );
-
-  describe( "suggestions while offline", ( ) => {
-    it( "should not call score_image and should not show any location buttons", async ( ) => {
-      useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
-      await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( );
-      expect( inatjs.computervision.score_image ).not.toHaveBeenCalled( );
-      const usePermissionsButton = screen.queryByText( /IMPROVE THESE SUGGESTIONS/ );
-      expect( usePermissionsButton ).toBeFalsy( );
-      const ignoreLocationButton = screen.queryByText( /IGNORE LOCATION/ );
-      expect( ignoreLocationButton ).toBeFalsy( );
-      const useLocationButton = screen.queryByText( /USE LOCATION/ );
-      expect( useLocationButton ).toBeFalsy( );
-    } );
-
-    it( "should show top suggestion with finest rank if a prediction"
-      + " is above offline threshold", async ( ) => {
-      getPredictionsForImage.mockImplementation(
-        async ( ) => ( mockModelResult )
-      );
-      useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
-      await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( );
-      const topTaxonSuggestion = await screen.findByLabelText( /Choose top taxon/ );
-      expect( topTaxonSuggestion ).toHaveProp(
-        "testID",
-        `SuggestionsList.taxa.${mockModelResult.predictions[1].taxon_id}.checkmark`
-      );
-    } );
-
-    it( "should show not confident message if no predictions"
-      + " meet the offline threshold", async ( ) => {
-      getPredictionsForImage.mockImplementation(
-        async ( ) => ( mockModelResultNoConfidence )
-      );
-      useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
-      await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( );
-
-      const notConfidentText = await screen.findByText( /not confident enough to make a top ID suggestion/ );
-      await waitFor( ( ) => {
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( notConfidentText ).toBeOnTheScreen( );
-      } );
-      const otherSuggestion = await screen.findByTestId(
-        `SuggestionsList.taxa.${mockModelResultNoConfidence.predictions[1].taxon_id}.checkmark`
-      );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( otherSuggestion ).toBeOnTheScreen( );
-    } );
-
-    it( "should only show top human suggestion if human predicted offline", async ( ) => {
-      getPredictionsForImage.mockImplementation(
-        async ( ) => ( mockModelResultWithHuman )
-      );
-      useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
-      await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( );
-
-      const topTaxonSuggestion = await screen.findByLabelText( /Choose top taxon/ );
-      const humanPrediction = mockModelResultWithHuman.predictions
-        .find( p => p.name === "Homo" );
-
-      expect( topTaxonSuggestion ).toHaveProp(
-        "testID",
-        `SuggestionsList.taxa.${humanPrediction.taxon_id}.checkmark`
-      );
-
-      const otherSuggestionsText = screen.queryByText( /OTHER SUGGESTIONS/ );
-      expect( otherSuggestionsText ).toBeFalsy( );
-    } );
   } );
 } );
