@@ -17,7 +17,6 @@ const config: Config = {
   ],
   globalSetup: "<rootDir>/tests/jest.globalSetup.js",
   setupFilesAfterEnv: [
-    "react-native-accessibility-engine",
     "<rootDir>/tests/jest.post-setup.js",
     "<rootDir>/tests/realm.setup.js",
     "<rootDir>/tests/initI18next.setup.js"
