@@ -201,3 +201,21 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
     // } );
   } );
 } );
+
+describe( "AICamera navigation with advanced user layout", () => {
+  describe( "from MyObs", () => {
+    it( "should return to MyObs when close button tapped", async () => {
+      renderApp();
+      await navToAICamera();
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect(
+        await screen.findByText( /Loading iNaturalist's AI Camera/ )
+      ).toBeOnTheScreen();
+      const closeButton = await screen.findByLabelText( /Close/ );
+      await actor.press( closeButton );
+      expect(
+        await screen.findByText( /Use iNaturalist to identify any living thing/ )
+      ).toBeTruthy();
+    } );
+  } );
+} );
