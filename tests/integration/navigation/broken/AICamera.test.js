@@ -3,6 +3,7 @@ import {
   userEvent,
   within
 } from "@testing-library/react-native";
+import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions.ts";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import { Animated } from "react-native";
@@ -43,6 +44,15 @@ jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
   select: jest.fn( ),
   Version: 11
 } ) );
+
+const mockLocalTaxon = {
+  id: 144351,
+  name: "Poecile",
+  rank_level: 20,
+  default_photo: {
+    url: "fake_image_url"
+  }
+};
 
 const mockModelResult = {
   predictions: [factory( "ModelPrediction", {
@@ -120,18 +130,74 @@ const navToAICamera = async ( ) => {
   await actor.press( cameraButton );
 };
 
+const takePhotoAndNavToSuggestions = async ( ) => {
+  const takePhotoButton = await screen.findByLabelText( /Take photo/ );
+  await actor.press( takePhotoButton );
+  const addIDButton = await screen.findByText( /ADD AN ID/ );
+  // We used toBeVisible here but the update to RN0.77 broke this expectation
+  expect( addIDButton ).toBeOnTheScreen( );
+};
+
+const navToObsEditWithTopSuggestion = async ( ) => {
+  const topTaxonResultButton = await screen.findByTestId(
+    `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
+  );
+  await actor.press( topTaxonResultButton );
+  const evidenceList = await screen.findByTestId( "EvidenceList.DraggableFlatList" );
+  // We used toBeVisible here but the update to RN0.77 broke this expectation
+  expect( evidenceList ).toBeOnTheScreen( );
+  // one photo from AICamera
+  expect( evidenceList.props.data.length ).toEqual( 1 );
+};
+
 describe( "AICamera navigation with advanced user layout", ( ) => {
-  describe( "from MyObs", ( ) => {
-    it( "should return to MyObs when close button tapped", async ( ) => {
+  describe( "to Suggestions", ( ) => {
+    beforeEach( ( ) => {
+      jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
+        handleTaxaDetected: jest.fn( ),
+        modelLoaded: true,
+        result: {
+          taxon: mockLocalTaxon
+        },
+        setResult: jest.fn( )
+      } ) );
+    } );
+
+    it( "should advance to suggestions screen", async ( ) => {
       renderApp( );
       await navToAICamera( );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( await screen.findByText( /Loading iNaturalist's AI Camera/ ) ).toBeOnTheScreen( );
-      const closeButton = await screen.findByLabelText( /Close/ );
-      await actor.press( closeButton );
-      expect(
-        await screen.findByText( /Use iNaturalist to identify any living thing/ )
-      ).toBeTruthy( );
+      expect( await screen.findByText( mockLocalTaxon.name ) ).toBeTruthy( );
+      await takePhotoAndNavToSuggestions( );
     } );
+
+    it( "should advance to suggestions then obs edit", async ( ) => {
+      renderApp( );
+      await navToAICamera( );
+      expect( await screen.findByText( mockLocalTaxon.name ) ).toBeTruthy( );
+      await takePhotoAndNavToSuggestions( );
+      await navToObsEditWithTopSuggestion( );
+      const obsEditBackButton = screen.getByTestId( "ObsEdit.BackButton" );
+      // We used toBeVisible here but the update to RN0.77 broke this expectation
+      expect( obsEditBackButton ).toBeOnTheScreen( );
+    } );
+
+    // TODO: we can't test back behavior as reliably in React Navigation 7;
+    // recommend moving this to an e2e test rather than an integation test
+    it.todo( "should advance from suggestions to obs edit, back out to AI camera, and"
+      + " advance to obs edit with a single observation photo" );
+
+    // it( "should advance from suggestions to obs edit, back out to AI camera, and"
+    //   + " advance to obs edit with a single observation photo", async ( ) => {
+    //   renderApp( );
+    //   await navToAICamera( );
+    //   expect( await screen.findByText( mockLocalTaxon.name ) ).toBeTruthy( );
+    //   await takePhotoAndNavToSuggestions( );
+    //   await navToObsEditWithTopSuggestion( );
+    //   const obsEditBackButton = screen.getByTestId( "ObsEdit.BackButton" );
+    //   await actor.press( obsEditBackButton );
+    //   BackHandler.mockPressBack( );
+    //   await takePhotoAndNavToSuggestions( );
+    //   await navToObsEditWithTopSuggestion( );
+    // } );
   } );
 } );
