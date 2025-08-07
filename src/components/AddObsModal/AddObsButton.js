@@ -36,11 +36,7 @@ const AddObsButton = ( ): React.Node => {
   if ( justFinishedSignup ) {
     // If a user creates a new account, they should see the tooltip right after
     // dismissing the account creation pivot card and landing on My Obs.
-    // TODO: Have disabled the tooltip for new account creations because of a bug with the
-    // account creation pivot card not showing. Which makes this trigger condition
-    // not work as expected.
-    // triggerCondition = triggerCondition && !!shownOnce["account-creation"];
-    triggerCondition = false;
+    triggerCondition = triggerCondition && !!shownOnce["account-creation"];
   } else if ( numOfUserObservations === undefined
       || numOfUserObservations === null
       || typeof numOfUserObservations !== "number" ) {
