@@ -1697,7 +1697,7 @@ PODS:
     - React-Core
   - RNAudioRecorderPlayer (3.6.7):
     - React-Core
-  - RNCClipboard (1.13.2):
+  - RNCClipboard (1.16.3):
     - React-Core
   - RNCPicker (2.11.1):
     - React-Core
@@ -2396,7 +2396,7 @@ SPEC CHECKSUMS:
   RealmJS: 9fd51c849eb552ade9f7b11db42a319b4f6cab4c
   RNAppleAuthentication: 8d313d93fe2238d6b7ff0a39c67ebcf298d96653
   RNAudioRecorderPlayer: fa079748b34d15cd3b7b6a5d47b286bae6d5d49b
-  RNCClipboard: 4abb037e8fe3b98a952564c9e0474f91c492df6d
+  RNCClipboard: f6679d470d0da2bce2a37b0af7b9e0bf369ecda5
   RNCPicker: da0f1c9411208c1ca52bc98383db54a06e0a3862
   RNDateTimePicker: 392bdc0d6863b5de2fe9b957c82c25b6a038db29
   RNDeviceInfo: 538b62f03991eb4a2a15cf6fec5fff6bb5edc34e
