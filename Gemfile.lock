@@ -183,6 +183,7 @@ GEM
       xcpretty (~> 0.4.1)
       xcpretty-travis-formatter (>= 0.0.3, < 2.0.0)
     ffi (1.17.2)
+    ffi (1.17.2-arm64-darwin)
     fourflusher (2.3.1)
     fuzzy_match (2.0.4)
     gh_inspector (1.1.3)
@@ -251,6 +252,8 @@ GEM
     nkf (0.2.0)
     nokogiri (1.18.9)
       mini_portile2 (~> 2.8.2)
+      racc (~> 1.4)
+    nokogiri (1.18.9-arm64-darwin)
       racc (~> 1.4)
     optparse (0.6.0)
     os (1.1.4)
@@ -328,6 +331,8 @@ GEM
       xcpretty (~> 0.2, >= 0.0.7)
 
 PLATFORMS
+  arm64-darwin-24
+  ruby
 
 DEPENDENCIES
   abbrev
