@@ -149,9 +149,36 @@ const useZoom = ( device: CameraDevice ): object => {
     onZoomStart
   ] );
 
+  const yDiff = useSharedValue( 0 );
+  const isPanActive = useSharedValue( false );
+  const panToZoom = Gesture.Pan()
+    .runOnJS( true )
+    .averageTouches( true )
+    .activateAfterLongPress( 1 )
+    .onBegin( () => {
+      isPanActive.value = true;
+      yDiff.value = 0;
+      onZoomStart( );
+    } )
+    .onChange( ev => {
+      yDiff.value += ev.changeY;
+      // Calculate new zoom value from pan (invert because minus pan is up)
+      const newValue = interpolate(
+        yDiff.value,
+        [-100, 0, 100],
+        [-1, 0, 1],
+        Extrapolation.CLAMP
+      ) * -1;
+      onZoomChange( newValue );
+    } )
+    .onEnd( () => {
+      isPanActive.value = false;
+    } );
+
   return {
     animatedProps,
     handleZoomButtonPress,
+    panToZoom,
     pinchToZoom,
     resetZoom,
     showZoomButton: device?.isMultiCam,
