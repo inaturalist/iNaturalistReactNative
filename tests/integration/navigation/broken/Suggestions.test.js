@@ -169,6 +169,35 @@ describe( "Suggestions", ( ) => {
       inatjs.taxa.fetch.mockClear( );
     } );
 
+    it( "should show the add ID later button if there's no taxon", async ( ) => {
+      const observations = makeUnsyncedObservations( );
+      await renderAppWithObservations( observations, __filename );
+      await navigateToSuggestionsViaObsEditForObservation( observations[0] );
+      expect( await screen.findByText( "Add an ID Later" ) ).toBeTruthy( );
+    } );
+
+    it( "should not show the add ID later button if there is a taxon", async ( ) => {
+      const observations = makeUnsyncedObservations( {
+        taxon: factory( "LocalTaxon" )
+      } );
+      await renderAppWithObservations( observations, __filename );
+      await navigateToSuggestionsViaObsEditForObservation( observations[0] );
+      await screen.findByText( "TOP ID SUGGESTION" );
+      expect( screen.queryByText( "Add an ID Later" ) ).toBeFalsy( );
+    } );
+
+    it( "should never show location permissions button", async ( ) => {
+      jest.spyOn( useLocationPermission, "default" ).mockImplementation( ( ) => ( {
+        hasPermissions: false,
+        renderPermissionsGate: jest.fn( )
+      } ) );
+      const observations = makeUnsyncedObservations( );
+      await renderAppWithObservations( observations, __filename );
+      await navigateToSuggestionsViaObsEditForObservation( observations[0] );
+      const locationPermissionsButton = screen.queryByText( /IMPROVE THESE SUGGESTIONS/ );
+      expect( locationPermissionsButton ).toBeFalsy( );
+    } );
+
     it(
       "should navigate back to ObsEdit with expected observation when top suggestion chosen",
       async ( ) => {
@@ -198,6 +227,34 @@ describe( "Suggestions", ( ) => {
       await actor.press( otherTaxonResultButton );
       expect( await screen.findByText( "EVIDENCE" ) ).toBeTruthy( );
     } );
+  } );
+
+  describe( "when reached from ObsDetails", ( ) => {
+    beforeEach( async ( ) => {
+      await signIn( mockUser, { realm: global.mockRealms[__filename] } );
+      const mockScoreImageResponse = makeResponse( [topSuggestion, otherSuggestion] );
+      inatjs.computervision.score_image.mockResolvedValue( mockScoreImageResponse );
+      inatjs.observations.observers.mockResolvedValue( makeResponse( ) );
+      inatjs.taxa.fetch.mockResolvedValue( makeResponse( [topSuggestion.taxon] ) );
+    } );
+
+    afterEach( ( ) => {
+      signOut( { realm: global.mockRealms[__filename] } );
+      inatjs.computervision.score_image.mockClear( );
+      inatjs.observations.observers.mockClear( );
+      inatjs.taxa.fetch.mockClear( );
+    } );
+    it.todo( "should not show the add ID later button" );
+    // Note quite sure why this doesn't work, seems like realm gets deleted
+    // while the component is still mounted for some reason
+    //
+    // it( "should not show the add ID later button", async ( ) => {
+    //   const observations = makeSyncedObservations( );
+    //   await renderAppWithObservations( observations, __filename );
+    //   await navigateToSuggestionsViaObsDetailsForObservation( observations[0] );
+    //   await screen.findByText( "TOP ID SUGGESTION" );
+    //   expect( screen.queryByText( "Add an ID Later" ) ).toBeFalsy( );
+    // } );
   } );
 
   describe( "when reached from AI Camera directly", ( ) => {

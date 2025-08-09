@@ -52,7 +52,7 @@ export interface Props {
   isConnected: boolean;
   isFetchingNextPage: boolean;
   layout: "list" | "grid";
-  listRef?: React.RefObject<FlashList<RealmObservation>>;
+  listRef?: React.RefObject<FlashList<RealmObservation> | null>;
   numTotalObservations?: number;
   numTotalTaxa?: number;
   numUnuploadedObservations: number;

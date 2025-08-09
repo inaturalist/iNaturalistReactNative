@@ -17,6 +17,7 @@ import factory, { makeResponse } from "tests/factory";
 import { renderAppWithObservations } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
+import { signIn, signOut } from "tests/helpers/user";
 import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
 
 // Not my favorite code, but this patch is necessary to get tests passing right
@@ -132,6 +133,11 @@ const topSuggestion = {
   combined_score: 90
 };
 
+const humanSuggestion = {
+  taxon: factory( "RemoteTaxon", { name: "Homo sapiens", id: 43584 } ),
+  combined_score: 86
+};
+
 const mockLocalTaxon = {
   id: 144351,
   name: "Poecile",
@@ -175,6 +181,15 @@ const makeMockObservationsWithLocation = ( ) => ( [
 
 const actor = userEvent.setup( );
 
+const navigateToSuggestionsForObservationViaObsEdit = async observation => {
+  const observationGridItem = await screen.findByTestId(
+    `MyObservations.obsGridItem.${observation.uuid}`
+  );
+  await actor.press( observationGridItem );
+  const addIdButton = await screen.findByText( "ID WITH AI" );
+  await actor.press( addIdButton );
+};
+
 const navigateToSuggestionsViaAICamera = async ( ) => {
   const tabBar = await screen.findByTestId( "CustomTabBar" );
   const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
@@ -205,6 +220,87 @@ const setupAppWithSignedInUser = async hasLocation => {
   await renderAppWithObservations( observations, __filename );
   return { observations };
 };
+
+// TODO: fix this test. As of 20240627 we're bumping into issues with the
+// 2.13 new vision camera not loading offline suggestions,
+// so we may need this issue resolved before this test can be fixed:
+// https://github.com/inaturalist/iNaturalistReactNative/issues/1715
+// it(
+//   "should try offline suggestions if no online suggestions are found",
+//   async ( ) => {
+//     const { observations } = await setupAppWithSignedInUser( );
+//     await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
+//     const offlineNotice = await screen.findByText( /You are offline. Tap to reload/ );
+//     await waitFor( ( ) => {
+//       expect( offlineNotice ).toBeTruthy( );
+//     }, { timeout: 10000 } );
+//     const topOfflineTaxonResultButton = await screen.findByTestId(
+//       `SuggestionsList.taxa.${mockModelResult.predictions[0].taxon_id}.checkmark`
+//     );
+//     expect( topOfflineTaxonResultButton ).toBeTruthy( );
+//     await act( async ( ) => actor.press( topOfflineTaxonResultButton ) );
+//     const saveButton = await screen.findByText( /SAVE/ );
+//     expect( saveButton ).toBeTruthy( );
+//     await actor.press( saveButton );
+//     const savedObservation = global.mockRealms[__filename]
+//       .objectForPrimaryKey( "Observation", observations[0].uuid );
+//     expect( savedObservation ).toHaveProperty( "owners_identification_from_vision", true );
+//   }
+// );
+
+describe( "from ObsEdit with human observation", () => {
+  beforeEach( async () => {
+    await signIn( mockUser, { realm: global.mockRealms[__filename] } );
+    inatjs.computervision.score_image.mockResolvedValue(
+      makeResponse( [humanSuggestion, topSuggestion] )
+    );
+  } );
+
+  afterEach( () => {
+    signOut( { realm: global.mockRealms[__filename] } );
+    inatjs.computervision.score_image.mockReset();
+  } );
+
+  it( "should display only a single human observation"
+    + "if human is found in suggestions", async () => {
+    const { observations } = await setupAppWithSignedInUser();
+    await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
+    const humanResultButton = await screen.findByTestId(
+      `SuggestionsList.taxa.${humanSuggestion.taxon.id}.checkmark`
+    );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( humanResultButton ).toBeOnTheScreen();
+    const human = screen.getByText( /Homo sapiens/ );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( human ).toBeOnTheScreen();
+    const nonHumanSuggestion = screen.queryByText( /Primum/ );
+    expect( nonHumanSuggestion ).toBeFalsy();
+  } );
+
+  it( "should not show location permissions button", async () => {
+    const { observations } = await setupAppWithSignedInUser();
+    await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
+    const usePermissionsButton = screen.queryByText(
+      /IMPROVE THESE SUGGESTIONS/
+    );
+    expect( usePermissionsButton ).toBeFalsy();
+  } );
+
+  it( "should not show use location button if unsynced obs has no location", async () => {
+    const { observations } = await setupAppWithSignedInUser();
+    await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
+    const useLocationButton = screen.queryByText( /USE LOCATION/ );
+    expect( useLocationButton ).toBeFalsy();
+  } );
+
+  it( "should show ignore location button if unsynced obs has location", async () => {
+    const { observations } = await setupAppWithSignedInUser( true );
+    await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
+    const ignoreLocationButton = await screen.findByText( /IGNORE LOCATION/ );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    expect( ignoreLocationButton ).toBeOnTheScreen();
+  } );
+} );
 
 describe( "from AICamera directly", ( ) => {
   global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
@@ -345,5 +441,37 @@ describe( "from AICamera directly", ( ) => {
       const otherSuggestionsText = screen.queryByText( /OTHER SUGGESTIONS/ );
       expect( otherSuggestionsText ).toBeFalsy( );
     } );
+  } );
+
+  describe( "suggestions not using location", () => {
+    // 20240719 amanda - I keep bumping into an unmounted node error
+    // here when ignoreLocationButton is pressed and I'm not sure what the root cause is.
+    // I'm seeing the same type of error when trying to press Add an ID Later, so maybe
+    // the same root cause?
+    it.todo( "should call score_image without location parameters" );
+    // it( "should call score_image without location parameters if"
+    //   + " ignore location pressed", async ( ) => {
+    //   const { observations } = await setupAppWithSignedInUser( );
+    //   await navigateToSuggestionsViaAICamera( );
+    //   await waitFor( ( ) => {
+    //     expect( inatjs.computervision.score_image ).toHaveBeenCalled( );
+    //   } );
+    //   const ignoreLocationButton = screen.queryByText( /IGNORE LOCATION/ );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    //   expect( ignoreLocationButton ).toBeOnTheScreen( );
+    //   await actor.press( ignoreLocationButton );
+    //   await waitFor( ( ) => {
+    //     expect( inatjs.computervision.score_image ).toHaveBeenCalledWith(
+    //       expect.not.objectContaining( {
+    //         lat: observations[0].latitude,
+    //         lng: observations[0].longitude
+    //       } ),
+    //       expect.anything( )
+    //     );
+    //   } );
+    //   const useLocationButton = await screen.findByText( /USE LOCATION/ );
+    // We used toBeVisible here but the update to RN0.77 broke this expectation
+    //   expect( useLocationButton ).toBeOnTheScreen( );
+    // } );
   } );
 } );
