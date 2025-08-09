@@ -10,6 +10,12 @@ gem "cocoapods", ">= 1.13", "!= 1.15.0", "!= 1.15.1"
 gem "concurrent-ruby", "< 1.3.4"
 gem "xcodeproj", "< 1.26.0"
 
+# Ruby 3.4.0 has removed some libraries from the standard library.
+gem 'bigdecimal'
+gem 'logger'
+gem 'benchmark'
+gem 'mutex_m'
+
 gem "fastlane"
 # Temporary workaround for https://github.com/fastlane/fastlane/issues/26682
 gem "fastlane-sirp", git: "https://github.com/appbot/fastlane-sirp.git", ref: "sysrandom_fix"
