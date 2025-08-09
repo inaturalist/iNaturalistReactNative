@@ -9,7 +9,7 @@ import {
   Gesture
 } from "react-native-gesture-handler";
 import {
-  Extrapolate,
+  Extrapolation,
   interpolate,
   runOnJS,
   useAnimatedProps,
@@ -107,21 +107,14 @@ const useZoom = ( device: CameraDevice ): object => {
     setZoomTextValue( closestZoomTextValue );
   }, [zoomButtonOptions, minZoom] );
 
-  const onZoomChange = useCallback( ( scale: number ) => {
+  const onZoomChange = useCallback( ( newValue: number ) => {
     "worklet";
 
-    // Calculate new zoom value from pinch to zoom (since scale factor is relative to initial pinch)
-    const newScale = interpolate(
-      scale,
-      [1 - 1 / SCALE_FULL_ZOOM, 1, SCALE_FULL_ZOOM],
-      [-1, 0, 1],
-      Extrapolate.CLAMP
-    );
     const newZoom = interpolate(
-      newScale,
+      newValue,
       [-1, 0, 1],
       [minZoom, startZoom.value, maxZoomWithPinch],
-      Extrapolate.CLAMP
+      Extrapolation.CLAMP
     );
     zoom.value = newZoom;
 
@@ -142,15 +135,50 @@ const useZoom = ( device: CameraDevice ): object => {
       onZoomStart( );
     } )
     .onChange( e => {
-      onZoomChange( e.scale );
+      // Calculate new zoom value from pinch to zoom
+      // (since scale factor is relative to initial pinch)
+      const newValue = interpolate(
+        e.scale,
+        [1 - 1 / SCALE_FULL_ZOOM, 1, SCALE_FULL_ZOOM],
+        [-1, 0, 1],
+        Extrapolation.CLAMP
+      );
+      onZoomChange( newValue );
     } ), [
     onZoomChange,
     onZoomStart
   ] );
 
+  const yDiff = useSharedValue( 0 );
+  const isPanActive = useSharedValue( false );
+  const panToZoom = Gesture.Pan()
+    .runOnJS( true )
+    .averageTouches( true )
+    .activateAfterLongPress( 1 )
+    .onBegin( () => {
+      isPanActive.value = true;
+      yDiff.value = 0;
+      onZoomStart( );
+    } )
+    .onChange( ev => {
+      yDiff.value += ev.changeY;
+      // Calculate new zoom value from pan (invert because minus pan is up)
+      const newValue = interpolate(
+        yDiff.value,
+        [-100, 0, 100],
+        [-1, 0, 1],
+        Extrapolation.CLAMP
+      ) * -1;
+      onZoomChange( newValue );
+    } )
+    .onEnd( () => {
+      isPanActive.value = false;
+    } );
+
   return {
     animatedProps,
     handleZoomButtonPress,
+    panToZoom,
     pinchToZoom,
     resetZoom,
     showZoomButton: device?.isMultiCam,

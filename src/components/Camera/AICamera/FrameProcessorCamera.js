@@ -39,7 +39,8 @@ type Props = {
   onDeviceNotSupported: Function,
   onLog: Function,
   onTaxaDetected: Function,
-  pinchToZoom?: Function,
+  panToZoom: Function,
+  pinchToZoom: Function,
   takingPhoto: boolean,
   inactive?: boolean,
   resetCameraOnFocus: Function,
@@ -69,6 +70,7 @@ const FrameProcessorCamera = ( {
   onDeviceNotSupported,
   onLog,
   onTaxaDetected,
+  panToZoom,
   pinchToZoom,
   takingPhoto,
   inactive,
@@ -232,6 +234,7 @@ const FrameProcessorCamera = ( {
         onDeviceNotSupported( error );
         await logStage( sentinelFileName, "camera_device_not_supported_error" );
       }}
+      panToZoom={panToZoom}
       pinchToZoom={pinchToZoom}
       inactive={inactive}
     />
