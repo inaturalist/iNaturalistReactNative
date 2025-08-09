@@ -8,9 +8,14 @@ import useFocusTap from "components/Camera/hooks/useFocusTap.ts";
 import React, {
   useCallback
 } from "react";
-import { Dimensions, Platform, StyleSheet } from "react-native";
 import {
-  Gesture, GestureDetector
+  Dimensions, Platform, StyleSheet
+} from "react-native";
+import {
+  Gesture,
+  GestureDetector,
+  PanGesture,
+  PinchGesture
 } from "react-native-gesture-handler";
 import Reanimated from "react-native-reanimated";
 import type {
@@ -35,7 +40,8 @@ interface Props {
   onCaptureError: ( error: CameraRuntimeError ) => void,
   onClassifierError: ( error: CameraRuntimeError ) => void,
   onDeviceNotSupported: ( error: CameraRuntimeError ) => void,
-  pinchToZoom?: () => void,
+  panToZoom: PanGesture,
+  pinchToZoom: PinchGesture,
   resizeMode?: "cover" | "contain",
   inactive?: boolean
 }
@@ -53,6 +59,7 @@ const CameraView = ( {
   onCaptureError,
   onClassifierError,
   onDeviceNotSupported,
+  panToZoom,
   pinchToZoom,
   resizeMode,
   inactive
@@ -154,7 +161,7 @@ const CameraView = ( {
   return (
     <>
       <GestureDetector
-        gesture={Gesture.Simultaneous( tapToFocus, pinchToZoom )}
+        gesture={Gesture.Simultaneous( tapToFocus, panToZoom, pinchToZoom )}
         className="overflow-hidden"
       >
         <ReanimatedCamera
