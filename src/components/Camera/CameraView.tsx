@@ -26,7 +26,7 @@ Reanimated.addWhitelistedNativeProps( {
 
 interface Props {
   animatedProps: CameraProps,
-  cameraRef: React.RefObject<Camera>,
+  cameraRef: React.RefObject<Camera | null>,
   cameraScreen: "standard" | "ai",
   debugFormat: CameraDeviceFormat | undefined,
   device: CameraDevice,
