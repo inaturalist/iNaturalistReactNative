@@ -13,5 +13,9 @@ gem "xcodeproj", "< 1.26.0"
 gem "fastlane"
 # Temporary workaround for https://github.com/fastlane/fastlane/issues/26682
 gem "fastlane-sirp", git: "https://github.com/appbot/fastlane-sirp.git", ref: "sysrandom_fix"
+# Currently fastlane support for ruby 3.4.x is not finished, so we need to add
+# this here because fastlane does not specifically add this dependency.
+gem "abbrev"
+
 gem "nokogiri"
 gem "rubocop"
