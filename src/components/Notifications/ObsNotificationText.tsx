@@ -18,7 +18,7 @@ const ObsNotificationText = ( { notification }: Props ) => {
   if ( !notifierUser ) {
     throw new Error( "Notification must have a user" );
   }
-  let content: string | React.ReactElement = `unknown notification type: ${type}`;
+  let content: string | React.ReactElement<typeof Trans> = `unknown notification type: ${type}`;
   const resourceOwner = notification.resource?.user;
 
   const transComponents = [<List2 className="font-bold pr-[2px]" />];

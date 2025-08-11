@@ -24,7 +24,7 @@ interface Props {
   isLocal?: boolean;
   renderItem: (
     { item, index }: { item: RealmTaxon, index: number }
-  ) => React.ReactElement;
+  ) => React.ReactElement<unknown>;
   taxa: RealmTaxon[]
 }
 
