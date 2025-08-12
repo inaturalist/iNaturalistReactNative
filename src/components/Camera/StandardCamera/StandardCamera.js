@@ -76,6 +76,7 @@ const StandardCamera = ( {
   const {
     animatedProps,
     handleZoomButtonPress,
+    panToZoom,
     pinchToZoom,
     resetZoom,
     showZoomButton,
@@ -213,6 +214,7 @@ const StandardCamera = ( {
             onCaptureError={handleCaptureError}
             onClassifierError={handleClassifierError}
             onDeviceNotSupported={handleDeviceNotSupported}
+            panToZoom={panToZoom}
             pinchToZoom={pinchToZoom}
           />
         )}
