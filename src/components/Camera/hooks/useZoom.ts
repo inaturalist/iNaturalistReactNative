@@ -25,6 +25,8 @@ const MAX_ZOOM_FACTOR = 20;
 
 // Used for calculating the final zoom by pinch gesture
 const SCALE_FULL_ZOOM = 3;
+const PAN_ZOOM_MIN_DISTANCE = -100;
+const PAN_ZOOM_MAX_DISTANCE = 100;
 
 const useZoom = ( device: CameraDevice ): object => {
   const initialZoomTextValue = "1";
@@ -165,7 +167,7 @@ const useZoom = ( device: CameraDevice ): object => {
       // Calculate new zoom value from pan (invert because minus pan is up)
       const newValue = interpolate(
         yDiff.value,
-        [-100, 0, 100],
+        [PAN_ZOOM_MIN_DISTANCE, 0, PAN_ZOOM_MAX_DISTANCE],
         [-1, 0, 1],
         Extrapolation.CLAMP
       ) * -1;
