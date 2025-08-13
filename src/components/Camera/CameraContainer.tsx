@@ -2,6 +2,8 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   Camera, useCameraDevice
 } from "components/Camera/helpers/visionCameraWrapper";
+import { ActivityIndicator } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import React, {
   useCallback,
   useEffect,
@@ -99,6 +101,17 @@ const CameraContainer = ( ) => {
       "telephoto-camera"
     ]
   } );
+  const [loadingDevices, setLoadingDevices] = useState( true );
+  const [timeoutId, setTimeoutId] = useState<undefined | ReturnType<typeof setTimeout> | null>(
+    undefined
+  );
+  if ( timeoutId === undefined ) {
+    setTimeoutId( setTimeout( () => {
+      setLoadingDevices( false );
+      setTimeoutId( null );
+    }, 700 ) );
+  }
+
   const hasFlash = device?.hasFlash;
   const initialPhotoOptions = {
     // We had this set to true in Seek but received many reports of it not respecting OS-wide sound
@@ -278,7 +291,15 @@ const CameraContainer = ( ) => {
     }
   }, [hasLocationPermissions] );
 
-  if ( !device ) {
+  if ( loadingDevices ) {
+    return (
+      <View className="flex-1 bg-black justify-center items-center">
+        <ActivityIndicator />
+      </View>
+    );
+  }
+
+  if ( !loadingDevices && !device ) {
     Alert.alert(
       t( "No-Camera-Available" ),
       t( "Could-not-find-a-camera-on-this-device" )
