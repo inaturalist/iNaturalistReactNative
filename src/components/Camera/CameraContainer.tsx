@@ -1,6 +1,8 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
-  Camera, useCameraDevice
+  Camera,
+  useCameraDevice,
+  useCameraDevices
 } from "components/Camera/helpers/visionCameraWrapper";
 import { ActivityIndicator } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -16,6 +18,7 @@ import type {
   TakePhotoOptions
 } from "react-native-vision-camera";
 import fetchAccurateUserLocation from "sharedHelpers/fetchAccurateUserLocation.ts";
+import { log } from "sharedHelpers/logger";
 import { createSentinelFile, deleteSentinelFile, logStage } from "sharedHelpers/sentinelFiles.ts";
 import { useTranslation } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
@@ -51,6 +54,8 @@ interface SavePhotoOptions {
 }
 
 export const MAX_PHOTOS_ALLOWED = 20;
+
+const logger = log.extend( "CameraContainer" );
 
 const CameraContainer = ( ) => {
   const currentObservation = useStore( state => state.currentObservation );
@@ -101,6 +106,7 @@ const CameraContainer = ( ) => {
       "telephoto-camera"
     ]
   } );
+  const devices = useCameraDevices( );
   const [loadingDevices, setLoadingDevices] = useState( true );
   const [timeoutId, setTimeoutId] = useState<undefined | ReturnType<typeof setTimeout> | null>(
     undefined
@@ -303,6 +309,10 @@ const CameraContainer = ( ) => {
     Alert.alert(
       t( "No-Camera-Available" ),
       t( "Could-not-find-a-camera-on-this-device" )
+    );
+    logger.error(
+      "Camera started but no device was found. Length of the list of all devices: ",
+      devices.length
     );
     navigation.goBack();
     return null;

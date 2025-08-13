@@ -104,26 +104,26 @@ export class mockCamera extends React.PureComponent {
 
 export const mockSortDevices = ( _left, _right ) => 1;
 
-export const mockUseCameraDevice = _deviceType => {
-  const device = {
-    physicalDevices: ["wide-angle-camera"],
-    hasFlash: true,
-    hasTorch: true,
-    id: "1",
-    isMultiCam: true,
-    maxZoom: 12.931958198547363,
-    minZoom: 1,
-    name: "front (1)",
-    neutralZoom: 1,
-    position: "front",
-    supportsDepthCapture: false,
-    supportsFocus: true,
-    supportsLowLightBoost: false,
-    supportsParallelVideoProcessing: true,
-    supportsRawCapture: true
-  };
-  return device;
+const device = {
+  physicalDevices: ["wide-angle-camera"],
+  hasFlash: true,
+  hasTorch: true,
+  id: "1",
+  isMultiCam: true,
+  maxZoom: 12.931958198547363,
+  minZoom: 1,
+  name: "front (1)",
+  neutralZoom: 1,
+  position: "front",
+  supportsDepthCapture: false,
+  supportsFocus: true,
+  supportsLowLightBoost: false,
+  supportsParallelVideoProcessing: true,
+  supportsRawCapture: true
 };
+
+export const mockUseCameraDevice = _deviceType => device;
+export const mockUseCameraDevices = () => [device];
 
 export const mockUseCameraFormat = _device => {
   const format = {
