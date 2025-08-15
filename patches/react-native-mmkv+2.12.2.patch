@@ -1,0 +1,12 @@
+diff --git a/node_modules/react-native-mmkv/android/CMakeLists.txt b/node_modules/react-native-mmkv/android/CMakeLists.txt
+index 91a8a6a..7e2dea3 100644
+--- a/node_modules/react-native-mmkv/android/CMakeLists.txt
++++ b/node_modules/react-native-mmkv/android/CMakeLists.txt
+@@ -5,6 +5,7 @@ set (PACKAGE_NAME "react-native-mmkv")
+ set (BUILD_DIR ${CMAKE_SOURCE_DIR}/build)
+ set(CMAKE_VERBOSE_MAKEFILE ON)
+ set(CMAKE_CXX_STANDARD 17)
++set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-z,max-page-size=16384")
+ 
+ # Add headers search paths
+ include_directories(
