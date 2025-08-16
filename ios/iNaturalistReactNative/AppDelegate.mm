@@ -5,6 +5,9 @@
 #import <RNShareMenu/ShareMenuManager.h>
 #import <React/RCTLinkingManager.h>
 
+@interface AppDelegate ()
+@end
+
 @implementation AppDelegate
 
 // https://reactnative.dev/docs/linking#get-the-deep-link
@@ -29,13 +32,17 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  self.moduleName = @"iNaturalistReactNative";
+  self.reactNativeFactory = [[RCTReactNativeFactory alloc] initWithDelegate:self];
   self.dependencyProvider = [RCTAppDependencyProvider new];
-  // You can add your custom initial props in the dictionary below.
-  // They will be passed down to the ViewController used by React Native.
-  self.initialProps = @{};
 
-  return [super application:application didFinishLaunchingWithOptions:launchOptions];
+  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+
+  [self.reactNativeFactory startReactNativeWithModuleName:@"iNaturalistReactNative"
+                                                 inWindow:self.window
+                                        initialProperties:@{}
+                                            launchOptions:launchOptions];
+
+  return YES;
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
@@ -46,7 +53,7 @@
 - (NSURL *)bundleURL
 {
 #if DEBUG
-  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
+  return [RCTBundleURLProvider.sharedSettings jsBundleURLForBundleRoot:@"index"];
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
