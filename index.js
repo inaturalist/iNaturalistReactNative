@@ -63,7 +63,6 @@ if (
 }
 /* eslint-enable no-undef */
 
-// I'm not convinced this ever catches anything... ~~~kueda 20240110
 const jsErrorHandler = ( e, isFatal ) => {
   if ( e?.message?.match( /No space left on device/ ) ) {
     Alert.alert(
