@@ -125,8 +125,7 @@ const NOTIFICATIONS_OPTIONS = {
   ...preventSwipeToGoBack,
   ...hideHeaderLeft,
   headerTitle: notificationsTitle,
-  headerTitleAlign: "center",
-  animation: "none"
+  headerTitleAlign: "center"
 };
 
 const DQA_OPTIONS = {
@@ -179,16 +178,14 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
           name={SCREEN_NAME_OBS_LIST}
           component={MyObservationsContainer}
           options={{
-            ...preventSwipeToGoBack,
-            animation: "none"
+            ...preventSwipeToGoBack
           }}
         />
         <Stack.Screen
           name={SCREEN_NAME_ROOT_EXPLORE}
           component={RootExploreContainer}
           options={{
-            ...preventSwipeToGoBack,
-            animation: "none"
+            ...preventSwipeToGoBack
           }}
         />
         <Stack.Screen
