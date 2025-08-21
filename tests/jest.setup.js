@@ -109,36 +109,6 @@ jest.mock( "react-native-restart", ( ) => ( {
   restart: jest.fn( )
 } ) );
 
-// see https://stackoverflow.com/questions/42268673/jest-test-animated-view-for-react-native-app
-// for more details about this withAnimatedTimeTravelEnabled approach. basically, this
-// allows us to step through animation frames when a screen is first loading when we're using the
-// FadeInView animation for navigation screen transitions
-global.withAnimatedTimeTravelEnabled = ( options = {} ) => {
-  beforeEach( () => {
-    if ( !options.skipFakeTimers ) jest.useFakeTimers();
-    jest.setSystemTime( new Date( 0 ) );
-  } );
-  if ( !options.skipFakeTimers ) {
-    afterEach( () => {
-      jest.useRealTimers();
-    } );
-  }
-};
-
-const frameTime = 10;
-global.timeTravel = ( time = frameTime ) => {
-  const tickTravel = () => {
-    const now = Date.now();
-    jest.setSystemTime( new Date( now + frameTime ) );
-    jest.advanceTimersByTime( frameTime );
-  };
-  // Step through each of the frames
-  const frames = time / frameTime;
-  for ( let i = 0; i < frames; i += 1 ) {
-    tickTravel();
-  }
-};
-
 jest.mock( "sharedHelpers/installData", ( ) => ( {
   // For most tests it's just going to be burden to dismiss this thing that
   // most users only ever see once. If we do want to test it, we can redefine
