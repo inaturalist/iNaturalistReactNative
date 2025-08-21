@@ -1,5 +1,5 @@
 import { View } from "components/styledComponents";
-import _ from "lodash";
+import { isEmpty } from "lodash";
 import React from "react";
 import { Animated } from "react-native";
 
@@ -8,7 +8,7 @@ interface Props {
 }
 
 const FocusSquare = ( { animatedStyle }: Props ) => {
-  if ( _.isEmpty( animatedStyle ) ) { return null; }
+  if ( isEmpty( animatedStyle ) ) { return null; }
   return (
     <Animated.View
       className="w-[66px] h-[66px] absolute border-2 border-yellow rounded-xs"
