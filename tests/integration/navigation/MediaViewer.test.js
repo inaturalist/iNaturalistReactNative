@@ -87,22 +87,19 @@ describe( "MediaViewer navigation", ( ) => {
         `MyObservations.obsGridItem.${observation.uuid}`
       );
       await actor.press( observationGridItem );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( await screen.findByTestId( `ObsDetails.${observation.uuid}` ) ).toBeOnTheScreen( );
+      expect( await screen.findByTestId( `ObsDetails.${observation.uuid}` ) ).toBeVisible( );
     }
 
     it( "should show the first photo when tapped", async ( ) => {
       await navigateToObsDetail( );
       const photos = await screen.findAllByTestId( "ObsMedia.photo" );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( photos[0] ).toBeOnTheScreen( );
+      expect( photos[0] ).toBeVisible( );
       await act( async ( ) => actor.press( photos[0] ) );
       expect(
         await screen.findByTestId(
           `CustomImageZoom.${observation.observation_photos[0].photo.url}`
         )
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      ).toBeOnTheScreen( );
+      ).toBeVisible( );
     } );
 
     // Not sure why this was working. Both photos might technically
@@ -116,26 +113,22 @@ describe( "MediaViewer navigation", ( ) => {
     //     await screen.findByTestId(
     //       `CustomImageZoom.${observation.observation_photos[1].photo.url}`
     //     )
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    //   ).toBeOnTheScreen( );
+    //   ).toBeVisible( );
     //   expect(
     //     screen.queryByTestId( `CustomImageZoom.${observation.observation_photos[0].photo.url}` )
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    //   ).not.toBeOnTheScreen( );
+    //   ).not.toBeVisible( );
     // } );
 
     it( "should not show delete button", async ( ) => {
       await navigateToObsDetail( );
       const photos = await screen.findAllByTestId( "ObsMedia.photo" );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( photos[0] ).toBeOnTheScreen( );
+      expect( photos[0] ).toBeVisible( );
       await act( async ( ) => actor.press( photos[0] ) );
       expect(
         await screen.findByTestId(
           `CustomImageZoom.${observation.observation_photos[0].photo.url}`
         )
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      ).toBeOnTheScreen( );
+      ).toBeVisible( );
       expect( screen.queryByLabelText( "Delete photo" ) ).toBeFalsy( );
     } );
   } );
@@ -167,42 +160,36 @@ describe( "MediaViewer navigation", ( ) => {
         `MyObservations.obsGridItem.${observation.uuid}`
       );
       await actor.press( observationGridItem );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( await screen.findByTestId( `ObsDetails.${observation.uuid}` ) ).toBeOnTheScreen( );
+      expect( await screen.findByTestId( `ObsDetails.${observation.uuid}` ) ).toBeVisible( );
       const displayedTaxon = await screen.findByText( taxon.name );
       await act( async ( ) => actor.press( displayedTaxon ) );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( await screen.findByTestId( `TaxonDetails.${taxon.id}` ) ).toBeOnTheScreen( );
+      expect( await screen.findByTestId( `TaxonDetails.${taxon.id}` ) ).toBeVisible( );
     }
 
     it( "should show the first photo when tapped", async ( ) => {
       await navigateToTaxonDetail( );
       const photoId = taxon.taxonPhotos[0].photo.id;
       const photo = await screen.findByTestId( `TaxonDetails.photo.${photoId}` );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( photo ).toBeOnTheScreen( );
+      expect( photo ).toBeVisible( );
       await act( async ( ) => actor.press( photo ) );
       expect(
         await screen.findByTestId(
           `CustomImageZoom.${taxon.taxonPhotos[0].photo.url}`
         )
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      ).toBeOnTheScreen( );
+      ).toBeVisible( );
     } );
 
     it( "should not show delete button", async ( ) => {
       await navigateToTaxonDetail( );
       const photoId = taxon.taxonPhotos[0].photo.id;
       const photo = await screen.findByTestId( `TaxonDetails.photo.${photoId}` );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( photo ).toBeOnTheScreen( );
+      expect( photo ).toBeVisible( );
       await act( async ( ) => actor.press( photo ) );
       expect(
         await screen.findByTestId(
           `CustomImageZoom.${taxon.taxonPhotos[0].photo.url}`
         )
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      ).toBeOnTheScreen( );
+      ).toBeVisible( );
       expect( screen.queryByLabelText( "Delete photo" ) ).toBeFalsy( );
     } );
   } );
@@ -225,8 +212,7 @@ describe( "MediaViewer navigation", ( ) => {
         `MyObservations.obsGridItem.${observation.uuid}`
       );
       await actor.press( observationGridItem );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( await screen.findByTestId( `ObsDetails.${observation.uuid}` ) ).toBeOnTheScreen( );
+      expect( await screen.findByTestId( `ObsDetails.${observation.uuid}` ) ).toBeVisible( );
       const suggestButton = await screen.findByTestId(
         "ObsDetail.cvSuggestionsButton"
       );
@@ -234,13 +220,11 @@ describe( "MediaViewer navigation", ( ) => {
       const firstPhoto = await screen.findByTestId(
         `ObsPhotoSelectionList.${defaultSelectedPhoto}`
       );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( firstPhoto ).toBeOnTheScreen();
+      expect( firstPhoto ).toBeVisible();
       const secondPhoto = await screen.findByTestId(
         `ObsPhotoSelectionList.${defaultUnselectedPhoto}`
       );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( secondPhoto ).toBeOnTheScreen();
+      expect( secondPhoto ).toBeVisible();
     }
 
     it( "should show the selected photo when tapped", async () => {
@@ -248,15 +232,13 @@ describe( "MediaViewer navigation", ( ) => {
       const firstPhoto = await screen.findByTestId(
         `ObsPhotoSelectionList.${defaultSelectedPhoto}`
       );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( firstPhoto ).toBeOnTheScreen();
+      expect( firstPhoto ).toBeVisible();
       await act( async () => actor.press( firstPhoto ) );
       expect(
         await screen.findByTestId(
           `CustomImageZoom.${defaultSelectedPhoto}`
         )
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      ).toBeOnTheScreen();
+      ).toBeVisible();
     } );
 
     it( "should not show the currently not selected photo when tapped", async () => {
@@ -264,8 +246,7 @@ describe( "MediaViewer navigation", ( ) => {
       const secondPhoto = await screen.findByTestId(
         `ObsPhotoSelectionList.${defaultUnselectedPhoto}`
       );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( secondPhoto ).toBeOnTheScreen();
+      expect( secondPhoto ).toBeVisible();
       await act( async () => actor.press( secondPhoto ) );
       expect(
         screen.queryByTestId(
@@ -284,8 +265,7 @@ describe( "MediaViewer navigation", ( ) => {
         await screen.findByTestId(
           `CustomImageZoom.${defaultSelectedPhoto}`
         )
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      ).toBeOnTheScreen();
+      ).toBeVisible();
       expect( screen.queryByLabelText( "Delete photo" ) ).toBeFalsy();
     } );
   } );
