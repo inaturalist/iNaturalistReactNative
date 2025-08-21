@@ -35,7 +35,6 @@ import { t } from "i18next";
 import ContextHeader from "navigation/ContextHeader";
 import {
   blankHeaderTitle,
-  fadeInComponent,
   hideHeader,
   hideHeaderLeft,
   isDrawerScreen,
@@ -122,32 +121,6 @@ const uiLibItemTitle = () => <Heading4 className="text-white">UI LIBRARY ITEM</H
 // eslint-disable-next-line i18next/no-literal-string
 const logTitle = () => <Heading4 className="text-white">LOG</Heading4>;
 
-// note: react navigation 7 will have a layout prop
-// which should replace all of these individual wrappers
-const FadeInNotifications = ( ) => fadeInComponent( <Notifications /> );
-const FadeInRootExplore = ( ) => fadeInComponent( <RootExploreContainer /> );
-const FadeInMyObservations = ( ) => fadeInComponent( <MyObservationsContainer /> );
-const FadeInUserProfile = ( ) => fadeInComponent( <UserProfile /> );
-const FadeInExploreContainer = ( ) => fadeInComponent( <ExploreContainer /> );
-const FadeInObsDetailsDefaultModeContainer = ( ) => fadeInComponent(
-  <ObsDetailsDefaultModeContainer />
-);
-const FadeInObsDetailsContainer = ( ) => fadeInComponent(
-  <ObsDetailsContainer />
-);
-const FadeInDQAContainer = ( ) => fadeInComponent( <DQAContainer /> );
-const FadeInProjectsContainer = ( ) => fadeInComponent( <ProjectsContainer /> );
-const FadeInProjectDetailsContainer = ( ) => fadeInComponent( <ProjectDetailsContainer /> );
-const FadeInProjectRequirements = ( ) => fadeInComponent( <ProjectRequirements /> );
-const FadeInProjectMembers = ( ) => fadeInComponent( <ProjectMembers /> );
-const FadeInSettings = ( ) => fadeInComponent( <Settings /> );
-const FadeInHelp = ( ) => fadeInComponent( <Help /> );
-const FadeInAbout = ( ) => fadeInComponent( <About /> );
-const FadeInDonate = ( ) => fadeInComponent( <Donate /> );
-const FadeInProjectList = ( ) => fadeInComponent( <ProjectListContainer /> );
-const FadeInFollowersList = ( ) => fadeInComponent( <FollowersList /> );
-const FadeInFollowingList = ( ) => fadeInComponent( <FollowingList /> );
-
 const NOTIFICATIONS_OPTIONS = {
   ...preventSwipeToGoBack,
   ...hideHeaderLeft,
@@ -204,7 +177,7 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
       >
         <Stack.Screen
           name={SCREEN_NAME_OBS_LIST}
-          component={FadeInMyObservations}
+          component={MyObservationsContainer}
           options={{
             ...preventSwipeToGoBack,
             animation: "none"
@@ -212,7 +185,7 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
         />
         <Stack.Screen
           name={SCREEN_NAME_ROOT_EXPLORE}
-          component={FadeInRootExplore}
+          component={RootExploreContainer}
           options={{
             ...preventSwipeToGoBack,
             animation: "none"
@@ -220,37 +193,37 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
         />
         <Stack.Screen
           name="Explore"
-          component={FadeInExploreContainer}
+          component={ExploreContainer}
         />
         {isDefaultMode
           ? (
             <Stack.Screen
               name="ObsDetails"
-              component={FadeInObsDetailsDefaultModeContainer}
+              component={ObsDetailsDefaultModeContainer}
               options={OBS_DETAILS_OPTIONS}
             />
           )
           : (
             <Stack.Screen
               name="ObsDetails"
-              component={FadeInObsDetailsContainer}
+              component={ObsDetailsContainer}
               options={OBS_DETAILS_OPTIONS}
             />
           )}
       </Stack.Group>
       <Stack.Screen
         name={SCREEN_NAME_NOTIFICATIONS}
-        component={FadeInNotifications}
+        component={Notifications}
         options={NOTIFICATIONS_OPTIONS}
       />
       <Stack.Screen
         name="UserProfile"
-        component={FadeInUserProfile}
+        component={UserProfile}
         options={USER_PROFILE_OPTIONS}
       />
       <Stack.Screen
         name="DataQualityAssessment"
-        component={FadeInDQAContainer}
+        component={DQAContainer}
         options={DQA_OPTIONS}
       />
       {SharedStackScreens( )}
@@ -262,7 +235,7 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
       >
         <Stack.Screen
           name="Projects"
-          component={FadeInProjectsContainer}
+          component={ProjectsContainer}
           options={{
             ...isDrawerScreen,
             ...removeBottomBorder,
@@ -271,14 +244,14 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
         />
         <Stack.Screen
           name="ProjectDetails"
-          component={FadeInProjectDetailsContainer}
+          component={ProjectDetailsContainer}
           options={{
             ...showHeader
           }}
         />
         <Stack.Screen
           name="ProjectRequirements"
-          component={FadeInProjectRequirements}
+          component={ProjectRequirements}
           options={{
             ...showHeader,
             headerTitle: projectRequirementsTitle
@@ -286,22 +259,22 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
         />
         <Stack.Screen
           name="ProjectMembers"
-          component={FadeInProjectMembers}
+          component={ProjectMembers}
           options={LIST_OPTIONS}
         />
         <Stack.Screen
           name="ProjectList"
-          component={FadeInProjectList}
+          component={ProjectListContainer}
           options={LIST_OPTIONS}
         />
         <Stack.Screen
           name="FollowersList"
-          component={FadeInFollowersList}
+          component={FollowersList}
           options={LIST_OPTIONS}
         />
         <Stack.Screen
           name="FollowingList"
-          component={FadeInFollowingList}
+          component={FollowingList}
           options={LIST_OPTIONS}
         />
       </Stack.Group>
@@ -373,7 +346,7 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
         />
         <Stack.Screen
           name="Settings"
-          component={FadeInSettings}
+          component={Settings}
           options={{
             ...isDrawerScreen,
             headerTitle: settingsTitle
@@ -381,7 +354,7 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
         />
         <Stack.Screen
           name="About"
-          component={FadeInAbout}
+          component={About}
           options={{
             ...isDrawerScreen,
             headerTitle: aboutTitle
@@ -389,7 +362,7 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
         />
         <Stack.Screen
           name="Donate"
-          component={FadeInDonate}
+          component={Donate}
           options={{
             ...isDrawerScreen,
             headerTitle: donateTitle
@@ -397,7 +370,7 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
         />
         <Stack.Screen
           name="Help"
-          component={FadeInHelp}
+          component={Help}
           options={{
             ...isDrawerScreen,
             headerTitle: helpTitle
