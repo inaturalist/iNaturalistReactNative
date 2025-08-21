@@ -18,7 +18,6 @@ import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import { t } from "i18next";
 import ContextHeader from "navigation/ContextHeader";
 import {
-  fadeInComponent,
   hideHeader,
   hideHeaderLeft
 } from "navigation/navigationOptions.tsx";
@@ -58,7 +57,7 @@ const SOUND_RECORDER_OPTIONS = {
   headerTitleAlign: "center"
 };
 
-const CameraContainerWithPermission = ( ) => fadeInComponent(
+const CameraContainerWithPermission = ( ) => (
   <Mortal>
     <PermissionGateContainer
       permissions={CAMERA_PERMISSIONS}
@@ -86,7 +85,7 @@ const PhotoLibraryContainerWithPermission = ( ) => (
   <PhotoLibrary />
 );
 
-const SoundRecorderWithPermission = ( ) => fadeInComponent(
+const SoundRecorderWithPermission = ( ) => (
   <Mortal>
     <PermissionGateContainer
       permissions={AUDIO_PERMISSIONS}
