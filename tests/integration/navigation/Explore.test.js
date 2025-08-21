@@ -97,8 +97,7 @@ const actor = userEvent.setup( );
 
 async function navigateToObsDetails( ) {
   await waitFor( ( ) => {
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( screen.getByText( /OBSERVATION/ ) ).toBeOnTheScreen( );
+    expect( screen.getByText( /OBSERVATION/ ) ).toBeVisible( );
   } );
   const firstObservation = await screen.findByTestId(
     `ObsPressable.${mockObservations[0].uuid}`
@@ -108,8 +107,7 @@ async function navigateToObsDetails( ) {
 
 async function navigateToRootExplore( ) {
   const emptyScreen = await screen.findByText( /Use iNaturalist to identify any living thing/ );
-  // We used toBeVisible here but the update to RN0.77 broke this expectation
-  await waitFor( ( ) => expect( emptyScreen ).toBeOnTheScreen( ) );
+  await waitFor( ( ) => expect( emptyScreen ).toBeVisible( ) );
   const tabBar = await screen.findByTestId( "CustomTabBar" );
   const exploreButton = await within( tabBar ).findByText( "Explore" );
   await actor.press( exploreButton );
@@ -117,22 +115,19 @@ async function navigateToRootExplore( ) {
 
 const landOnObservationsView = async ( ) => {
   const observationsViewIcon = await screen.findByLabelText( /Observations View/ );
-  // We used toBeVisible here but the update to RN0.77 broke this expectation
-  expect( observationsViewIcon ).toBeOnTheScreen( );
+  expect( observationsViewIcon ).toBeVisible( );
 };
 
 const switchToSpeciesView = async ( ) => {
   const observationsViewIcon = await screen.findByLabelText( /Observations View/ );
-  // We used toBeVisible here but the update to RN0.77 broke this expectation
-  expect( observationsViewIcon ).toBeOnTheScreen( );
+  expect( observationsViewIcon ).toBeVisible( );
   await actor.press( observationsViewIcon );
   const speciesRadioButton = await screen.findByText( "Species" );
   await actor.press( speciesRadioButton );
   const confirmButton = await screen.findByText( /EXPLORE SPECIES/ );
   await actor.press( confirmButton );
   const speciesViewIcon = await screen.findByLabelText( /Species View/ );
-  // We used toBeVisible here but the update to RN0.77 broke this expectation
-  expect( speciesViewIcon ).toBeOnTheScreen( );
+  expect( speciesViewIcon ).toBeVisible( );
 };
 
 describe( "logged in", ( ) => {
@@ -167,15 +162,12 @@ describe( "logged in", ( ) => {
           api_token: TEST_JWT
         } );
         const defaultGlobalLocation = await screen.findByText( /Worldwide/ );
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( defaultGlobalLocation ).toBeOnTheScreen( );
+        expect( defaultGlobalLocation ).toBeVisible( );
         const observationsViewIcon = await screen.findByLabelText( /Observations View/ );
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( observationsViewIcon ).toBeOnTheScreen( );
+        expect( observationsViewIcon ).toBeVisible( );
         const backButton = screen.queryByTestId( "Explore.BackButton" );
         await actor.press( backButton );
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( exploreButton ).toBeOnTheScreen( );
+        expect( exploreButton ).toBeVisible( );
       } );
     } );
 
@@ -206,11 +198,9 @@ describe( "logged in", ( ) => {
           api_token: TEST_JWT
         } );
         const defaultGlobalLocation = await screen.findByText( /Worldwide/ );
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( defaultGlobalLocation ).toBeOnTheScreen( );
+        expect( defaultGlobalLocation ).toBeVisible( );
         const observationsViewIcon = await screen.findByLabelText( /Observations View/ );
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( observationsViewIcon ).toBeOnTheScreen( );
+        expect( observationsViewIcon ).toBeVisible( );
         const backButton = await screen.findByTestId( "Explore.BackButton" );
         await actor.press( backButton );
         const journalPostsButton = await screen.findByText( /JOURNAL POSTS/ );
@@ -246,11 +236,9 @@ describe( "logged in", ( ) => {
           api_token: TEST_JWT
         } );
         const defaultGlobalLocation = await screen.findByText( /Worldwide/ );
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( defaultGlobalLocation ).toBeOnTheScreen( );
+        expect( defaultGlobalLocation ).toBeVisible( );
         const speciesViewIcon = await screen.findByLabelText( /Species View/ );
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( speciesViewIcon ).toBeOnTheScreen( );
+        expect( speciesViewIcon ).toBeVisible( );
         const backButton = await screen.findByTestId( "Explore.BackButton" );
         await actor.press( backButton );
         const journalPostsButton = await screen.findByText( /JOURNAL POSTS/ );
@@ -271,15 +259,12 @@ describe( "logged in", ( ) => {
         const taxonDetailsExploreButton = await screen.findByLabelText( /See observations of this taxon in explore/ );
         await actor.press( taxonDetailsExploreButton );
         const defaultGlobalLocation = await screen.findByText( /Worldwide/ );
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( defaultGlobalLocation ).toBeOnTheScreen( );
+        expect( defaultGlobalLocation ).toBeVisible( );
         const observationsIcon = await screen.findByLabelText( /Observations View/ );
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( observationsIcon ).toBeOnTheScreen( );
+        expect( observationsIcon ).toBeVisible( );
         const backButton = screen.queryByTestId( "Explore.BackButton" );
         await actor.press( backButton );
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( taxonDetailsExploreButton ).toBeOnTheScreen( );
+        expect( taxonDetailsExploreButton ).toBeVisible( );
       } );
 
       it( "should navigate from UserProfile to Explore and back to UserProfile", async ( ) => {
@@ -292,23 +277,20 @@ describe( "logged in", ( ) => {
         await navigateToRootExplore( );
         await landOnObservationsView( );
         const headerCount = await screen.findByText( /1 Observation/ );
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( headerCount ).toBeOnTheScreen( );
+        expect( headerCount ).toBeVisible( );
         const gridView = await screen.findByTestId( "SegmentedButton.grid" );
         await actor.press( gridView );
         const firstObservation = screen.queryByTestId(
           `ObsPressable.${mockObservations[0].uuid}`
         );
         await waitFor( ( ) => {
-          // We used toBeVisible here but the update to RN0.77 broke this expectation
-          expect( firstObservation ).toBeOnTheScreen( );
+          expect( firstObservation ).toBeVisible( );
         }, { timeout: 10_000 } );
         await actor.press( firstObservation );
         await waitFor( ( ) => {
           expect(
             screen.getByTestId( `ObsDetails.${mockObservations[0].uuid}` )
-          // We used toBeVisible here but the update to RN0.77 broke this expectation
-          ).toBeOnTheScreen( );
+          ).toBeVisible( );
         }, { timeout: 10_000 } );
         const userProfileButton = await screen.findByLabelText( `User ${mockUser.login}` );
         await actor.press( userProfileButton );
@@ -321,12 +303,10 @@ describe( "logged in", ( ) => {
           api_token: TEST_JWT
         } );
         const observationsViewIcon = await screen.findByLabelText( /Observations View/ );
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( observationsViewIcon ).toBeOnTheScreen( );
+        expect( observationsViewIcon ).toBeVisible( );
         const backButton = screen.queryByTestId( "Explore.BackButton" );
         await actor.press( backButton );
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( observationsButton ).toBeOnTheScreen( );
+        expect( observationsButton ).toBeVisible( );
       } );
     } );
 
@@ -343,8 +323,7 @@ describe( "logged in", ( ) => {
         await navigateToRootExplore( );
         await landOnObservationsView( );
         const defaultNearbyLocationText = await screen.findByText( /Nearby/ );
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( defaultNearbyLocationText ).toBeOnTheScreen( );
+        expect( defaultNearbyLocationText ).toBeVisible( );
         const backButton = screen.queryByTestId( "Explore.BackButton" );
         expect( backButton ).toBeFalsy( );
       } );
@@ -362,11 +341,9 @@ describe( "logged in", ( ) => {
       //   renderApp( );
       //   await navigateToRootExplore( );
       //   const speciesViewIcon = await screen.findByLabelText( /Species View/ );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      //   expect( speciesViewIcon ).toBeOnTheScreen( );
+      //   expect( speciesViewIcon ).toBeVisible( );
       //   const nearbyText = await screen.findByText( /Nearby/ );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      //   expect( nearbyText ).toBeOnTheScreen( );
+      //   expect( nearbyText ).toBeVisible( );
       // } );
     } );
   } );
