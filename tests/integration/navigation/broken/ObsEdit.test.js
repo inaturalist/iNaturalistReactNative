@@ -65,7 +65,6 @@ const navigateToObsEditViaGroupPhotos = async ( ) => {
     } )
   );
   await waitFor( ( ) => {
-    global.timeTravel( );
     // We used toBeVisible here but the update to RN0.77 broke this expectation
     expect( screen.getByText( /OBSERVATIONS/ ) ).toBeOnTheScreen( );
   } );

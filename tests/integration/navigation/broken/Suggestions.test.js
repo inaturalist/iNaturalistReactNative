@@ -115,7 +115,6 @@ beforeEach( async () => {
 } );
 
 describe( "Suggestions", ( ) => {
-  global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
   const actor = userEvent.setup( );
 
   // We need to navigate from MyObs to ObsEdit to Suggestions for all of these
@@ -146,7 +145,6 @@ describe( "Suggestions", ( ) => {
     await actor.press( takePhotoButton );
     const addIDButton = await screen.findByText( /ADD AN ID/ );
     await waitFor( ( ) => {
-      global.timeTravel( );
       // We used toBeVisible here but the update to RN0.77 broke this expectation
       expect( addIDButton ).toBeOnTheScreen( );
     } );

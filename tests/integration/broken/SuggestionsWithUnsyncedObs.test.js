@@ -303,7 +303,6 @@ describe( "from ObsEdit with human observation", () => {
 } );
 
 describe( "from AICamera directly", ( ) => {
-  global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
   beforeEach( async ( ) => {
     inatjs.computervision.score_image
       .mockResolvedValue( makeResponse( [topSuggestion] ) );
@@ -351,7 +350,6 @@ describe( "from AICamera directly", ( ) => {
       await setupAppWithSignedInUser( );
       await navigateToSuggestionsViaAICamera( );
       await waitFor( ( ) => {
-        global.timeTravel( );
         // We used toBeVisible here but the update to RN0.77 broke this expectation
         expect( screen.getByText( /IMPROVE THESE SUGGESTIONS/ ) ).toBeOnTheScreen( );
       } );

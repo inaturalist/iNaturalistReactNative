@@ -97,7 +97,6 @@ const actor = userEvent.setup( );
 
 async function navigateToObsDetails( ) {
   await waitFor( ( ) => {
-    global.timeTravel( );
     // We used toBeVisible here but the update to RN0.77 broke this expectation
     expect( screen.getByText( /OBSERVATION/ ) ).toBeOnTheScreen( );
   } );
@@ -150,8 +149,6 @@ describe( "logged in", ( ) => {
       // Write mock observation to realm
       Observation.upsertRemoteObservations( mockObservations, global.mockRealms[__filename] );
     } );
-
-    global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
 
     describe( "from TaxonDetails", ( ) => {
       it( "should show observations view and navigate back to TaxonDetails", async ( ) => {

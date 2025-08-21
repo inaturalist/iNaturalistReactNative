@@ -43,14 +43,12 @@ beforeAll( async () => {
 } );
 
 describe( "SoundRecorder navigation", ( ) => {
-  global.withAnimatedTimeTravelEnabled( );
   const actor = userEvent.setup( );
 
   describe( "from MyObs with advanced user layout", ( ) => {
     it( "should return to MyObs when close button tapped", async ( ) => {
       renderApp( );
       await waitFor( ( ) => {
-        global.timeTravel( );
         // We used toBeVisible here but the update to RN0.77 broke this expectation
         expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeOnTheScreen( );
       } );
