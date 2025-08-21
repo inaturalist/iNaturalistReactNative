@@ -15,7 +15,6 @@ import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import { t } from "i18next";
 import {
   blankHeaderTitle,
-  fadeInComponent,
   hideHeader,
   removeBottomBorder,
   showHeader,
@@ -37,20 +36,6 @@ const taxonSearchTitle = () => (
 
 const Stack = createNativeStackNavigator( );
 
-// note: react navigation 7 will have a layout prop
-// which should replace all of these individual wrappers
-const FadeInObsEdit = ( ) => fadeInComponent( <ObsEdit /> );
-const FadeInLocationPickerContainer = ( ) => fadeInComponent( <LocationPickerContainer /> );
-const FadeInPhotoSharing = ( ) => fadeInComponent( <PhotoSharing /> );
-const FadeInTaxonDetails = ( ) => fadeInComponent( <TaxonDetails /> );
-const FadeInSuggestionsContainer = ( ) => fadeInComponent( <SuggestionsContainer /> );
-const FadeInSuggestionsTaxonSearch = ( ) => fadeInComponent( <SuggestionsTaxonSearch /> );
-const FadeInMatchTaxonSearchScreen = ( ) => fadeInComponent( <MatchTaxonSearchScreen /> );
-const FadeInFullPageWebView = ( ) => fadeInComponent( <FullPageWebView /> );
-const FadeInMatchContainer = ( ) => fadeInComponent(
-  <MatchContainer />
-);
-
 // These screens need to be within the NoBottomTabStackNavigator
 // as well as the TabStackNavigator to retain navigation history
 
@@ -69,22 +54,10 @@ const SharedStackScreens = ( ): Node => (
         ...hideHeader
       }}
     >
-      <Stack.Screen
-        name="ObsEdit"
-        component={FadeInObsEdit}
-      />
-      <Stack.Screen
-        name="LocationPicker"
-        component={FadeInLocationPickerContainer}
-      />
-      <Stack.Screen
-        name="TaxonDetails"
-        component={FadeInTaxonDetails}
-      />
-      <Stack.Screen
-        name="PhotoSharing"
-        component={FadeInPhotoSharing}
-      />
+      <Stack.Screen name="ObsEdit" component={ObsEdit} />
+      <Stack.Screen name="LocationPicker" component={LocationPickerContainer} />
+      <Stack.Screen name="TaxonDetails" component={TaxonDetails} />
+      <Stack.Screen name="PhotoSharing" component={PhotoSharing} />
     </Stack.Group>
     {/* Screens with centered header */}
     <Stack.Group
@@ -102,7 +75,7 @@ const SharedStackScreens = ( ): Node => (
       */}
       <Stack.Screen
         name="Match"
-        component={FadeInMatchContainer}
+        component={MatchContainer}
         options={{
           ...showHeader,
           ...blankHeaderTitle
@@ -110,21 +83,21 @@ const SharedStackScreens = ( ): Node => (
       />
       <Stack.Screen
         name="Suggestions"
-        component={FadeInSuggestionsContainer}
+        component={SuggestionsContainer}
         options={{
           headerTitle: suggestionsTitle
         }}
       />
       <Stack.Screen
         name="SuggestionsTaxonSearch"
-        component={FadeInSuggestionsTaxonSearch}
+        component={SuggestionsTaxonSearch}
         options={{
           headerTitle: taxonSearchTitle
         }}
       />
       <Stack.Screen
         name="MatchTaxonSearchScreen"
-        component={FadeInMatchTaxonSearchScreen}
+        component={MatchTaxonSearchScreen}
         options={{
           headerTitle: taxonSearchTitle
         }}
@@ -132,7 +105,7 @@ const SharedStackScreens = ( ): Node => (
     </Stack.Group>
     <Stack.Screen
       name="FullPageWebView"
-      component={FadeInFullPageWebView}
+      component={FullPageWebView}
       options={showSimpleCustomHeader}
     />
   </Stack.Group>
