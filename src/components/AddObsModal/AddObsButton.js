@@ -135,7 +135,6 @@ const AddObsButton = ( ): React.Node => {
 
   return (
     <>
-      {/* match the animation timing on FadeInView.tsx */}
       <Modal
         animationIn="fadeIn"
         animationOut="fadeOut"
