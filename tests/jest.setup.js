@@ -155,6 +155,13 @@ jest.mock( "components/SharedComponents/Buttons/Button.tsx", () => {
   return jest.fn( props => actualButton( { ...props, debounceTime: 10 } ) );
 } );
 
+jest.mock( "navigation/FadeInView", () => {
+  const React = require( "react" );
+  const { View } = require( "react-native" );
+
+  return jest.fn( ( { children } ) => React.createElement( View, null, children ) );
+} );
+
 // this silences console methods in jest tests, to make them less noisy
 // and easier to debug. uncomment if you want to silence them
 global.console = {
