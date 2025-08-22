@@ -104,7 +104,7 @@
     "react-native-image-picker": "github:inaturalist/react-native-image-picker",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-linear-gradient": "^2.8.3",
-    "react-native-localize": "^3.1.0",
+    "react-native-localize": "^3.5.2",
     "react-native-logs": "^5.1.0",
     "react-native-mail": "github:chirag04/react-native-mail",
     "react-native-maps": "1.20.1",
