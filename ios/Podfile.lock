@@ -1326,7 +1326,7 @@ PODS:
     - React-Core
   - react-native-mail (6.1.1):
     - React-Core
-  - react-native-maps (1.13.0):
+  - react-native-maps (1.20.1):
     - React-Core
   - react-native-mmkv (2.12.2):
     - DoubleConversion
@@ -2378,7 +2378,7 @@ SPEC CHECKSUMS:
   react-native-image-resizer: 24c5d06fae2176dc0caed4b6396e02befb44064a
   react-native-keep-awake: 03b74eebe4f2bb5e8478fc8f420651a92463b6f8
   react-native-mail: 6e83813066984b26403d3fdfe79ac7bb31857e3c
-  react-native-maps: 85da55259d35bd50b5161d2ec0ee153d454158cc
+  react-native-maps: 9febd31278b35cd21e4fad2cf6fa708993be5dab
   react-native-mmkv: a6e08ad1b51b84af075f91798f8a92c878472265
   react-native-netinfo: cec9c4e86083cb5b6aba0e0711f563e2fbbff187
   react-native-orientation-locker: dbd3f6ddbe9e62389cb0807dc2af63f6c36dec36
