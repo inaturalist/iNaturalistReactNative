@@ -157,7 +157,7 @@
     "@testing-library/react-native": "^13.2.2",
     "@types/jest": "^29.5.13",
     "@types/jsrsasign": "^10.5.15",
-    "@types/lodash": "^4.17.14",
+    "@types/lodash": "^4.17.20",
     "@types/markdown-it": "^14.1.2",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
