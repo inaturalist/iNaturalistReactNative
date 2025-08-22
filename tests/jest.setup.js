@@ -162,6 +162,13 @@ jest.mock( "navigation/FadeInView", () => {
   return jest.fn( ( { children } ) => React.createElement( View, null, children ) );
 } );
 
+jest.mock( "components/Camera/FadeInOutView", () => {
+  const React = require( "react" );
+  const { View } = require( "react-native" );
+
+  return jest.fn( ( ) => React.createElement( View, null ) );
+} );
+
 // this silences console methods in jest tests, to make them less noisy
 // and easier to debug. uncomment if you want to silence them
 global.console = {
