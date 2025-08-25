@@ -1339,7 +1339,6 @@ const FilterModal = ( {
       )}
       <ExploreTaxonSearchModal
         closeModal={() => { setShowTaxonSearchModal( false ); }}
-        hideInfoButton
         showModal={showTaxonSearchModal}
         updateTaxon={updateTaxon}
       />
