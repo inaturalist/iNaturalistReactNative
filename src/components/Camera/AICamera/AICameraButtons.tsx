@@ -31,9 +31,9 @@ interface Props {
   debugFormat?: CameraDeviceFormat;
   // Those five are debug only so I don't bother with types
   setConfidenceThreshold?: Function;
-  setCropRatio?: Function,
-  setFPS?: Function,
-  setNumStoredResults?: Function,
+  setCropRatio?: Function;
+  setFPS?: Function;
+  setNumStoredResults?: Function;
   changeDebugFormat?: Function;
   showPrediction: boolean;
   showZoomButton: boolean;
