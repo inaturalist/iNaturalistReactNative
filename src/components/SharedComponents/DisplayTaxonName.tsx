@@ -89,9 +89,9 @@ const DisplayTaxonName = ( {
     : taxon;
 
   // this is mostly for the AICamera, but might be helpful to display elsewhere
-  if ( taxonPojo?.rank_level && !taxonPojo?.rank ) {
-    taxonPojo.rank = rankNames[taxonPojo?.rank_level];
-  }
+  const processedTaxon = taxonPojo?.rank_level && !taxonPojo?.rank
+    ? { ...taxonPojo, rank: rankNames[taxonPojo.rank_level] }
+    : taxonPojo;
 
   const {
     commonName,
@@ -99,7 +99,7 @@ const DisplayTaxonName = ( {
     rankPiece,
     rankLevel,
     rank
-  } = generateTaxonPieces( taxonPojo );
+  } = generateTaxonPieces( processedTaxon );
   const isHorizontal = layout === "horizontal";
   const getSpaceChar = ( showSpace: boolean ) => ( showSpace && isHorizontal
     ? " "
