@@ -44,6 +44,7 @@ interface Props {
   zoomTextValue: string;
   useLocation: boolean;
   toggleLocation: ( _event: GestureResponderEvent ) => void;
+  deleteSentinelFile: ( ) => Promise<void>;
 }
 
 const AICameraButtons = ( {
@@ -71,7 +72,8 @@ const AICameraButtons = ( {
   toggleFlash,
   zoomTextValue,
   useLocation,
-  toggleLocation
+  toggleLocation,
+  deleteSentinelFile
 }: Props ) => {
   const { isDefaultMode } = useLayoutPrefs();
   if ( isTablet ) {
@@ -93,6 +95,7 @@ const AICameraButtons = ( {
         useLocation={useLocation}
         toggleLocation={toggleLocation}
         isDefaultMode={isDefaultMode}
+        deleteSentinelFile={deleteSentinelFile}
       />
     );
   }
@@ -158,6 +161,7 @@ const AICameraButtons = ( {
           <PhotoLibraryIcon
             rotatableAnimatedStyle={rotatableAnimatedStyle}
             disabled={takingPhoto}
+            deleteSentinelFile={deleteSentinelFile}
           />
         </View>
       </View>
