@@ -21,7 +21,7 @@ import DeviceInfo from "react-native-device-info";
 import { Snackbar } from "react-native-paper";
 import { VolumeManager } from "react-native-volume-manager";
 import ObservationPhoto from "realmModels/ObservationPhoto.ts";
-import { BREAKPOINTS } from "sharedHelpers/breakpoint";
+import { BREAKPOINTS } from "sharedHelpers/breakpoint.ts";
 import { log } from "sharedHelpers/logger";
 import { useDeviceOrientation, usePerformance } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";

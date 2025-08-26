@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { BREAKPOINTS } from "sharedHelpers/breakpoint";
+import { BREAKPOINTS } from "sharedHelpers/breakpoint.ts";
 import { useDeviceOrientation } from "sharedHooks";
 
 const GUTTER = 15;
