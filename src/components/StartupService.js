@@ -69,10 +69,10 @@ const StartupService = ( ) => {
   useEffect( ( ) => {
     const initializeApp = async ( ) => {
       const checkForSignedInUser = async ( ) => {
-      // check to see if this is a fresh install of the app
-      // if it is, delete realm file when we sign the user out of the app
-      // this handles the case where a user deletes the app, then reinstalls
-      // and expects to be signed out with no previously saved data
+        // check to see if this is a fresh install of the app
+        // if it is, delete realm file when we sign the user out of the app
+        // this handles the case where a user deletes the app, then reinstalls
+        // and expects to be signed out with no previously saved data
         const isFreshInstall = store.getBoolean( IS_FRESH_INSTALL );
         if ( isFreshInstall ) {
           store.set( IS_FRESH_INSTALL, false );
