@@ -1,14 +1,13 @@
+import { reduce } from "lodash";
 import screens from "styles/tailwindScreens";
 
-export const BREAKPOINTS
-  = Object.fromEntries(
-    Object.entries( screens || {} ).map( ( [breakpoint, widthString] ) => {
-      if ( typeof widthString !== "string" ) {
-        throw new Error( `Unexpected breakpoint value: ${widthString}` );
-      }
-      return [breakpoint, parseInt( widthString, 10 )];
-    } )
-  );
+export const BREAKPOINTS = reduce( screens, ( memo, widthString, breakpoint ) => {
+  if ( typeof widthString !== "string" ) {
+    throw new Error( `Unexpected breakpoint value: ${widthString}` );
+  }
+  memo[breakpoint] = parseInt( widthString.replace( "px", "" ), 10 );
+  return memo;
+}, { } as Record<string, number> );
 
 const getBreakpoint = ( screenWidth: number ) => {
   if ( screenWidth >= BREAKPOINTS["2xl"] ) {
