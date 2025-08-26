@@ -13,7 +13,7 @@ import {
 } from "components/SharedComponents";
 // eslint-disable-next-line max-len
 import QualityGradeStatus from "components/SharedComponents/QualityGradeStatus/QualityGradeStatus.tsx";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";

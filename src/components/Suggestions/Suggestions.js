@@ -5,7 +5,7 @@ import {
   Heading4,
   ViewWrapper
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import type { Node } from "react";
 import React, { useCallback, useMemo } from "react";
 import { SectionList } from "react-native";

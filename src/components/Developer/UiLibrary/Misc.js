@@ -30,7 +30,7 @@ import {
   UserIcon,
   ViewWrapper
 } from "components/SharedComponents";
-import { ScrollView, View } from "components/styledComponents";
+import { ScrollView, View } from "components/styledComponents.ts";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useState } from "react";

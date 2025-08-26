@@ -5,7 +5,7 @@ import {
   Heading2,
   ScrollViewWrapper
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React from "react";
 
 export function makeObservation( options = {} ) {

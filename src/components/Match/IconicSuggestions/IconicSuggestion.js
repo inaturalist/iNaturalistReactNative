@@ -4,7 +4,7 @@ import ObsImagePreview from "components/ObservationsFlashList/ObsImagePreview.ts
 import {
   DisplayTaxonName
 } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents.ts";
 import React from "react";
 import type { RealmTaxon } from "realmModels/types";
 import { accessibleTaxonName } from "sharedHelpers/taxon.ts";

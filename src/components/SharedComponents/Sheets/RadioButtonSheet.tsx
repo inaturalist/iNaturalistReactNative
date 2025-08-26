@@ -3,7 +3,7 @@ import {
   Button,
   RadioButtonRow
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, { useState } from "react";
 import useTranslation from "sharedHooks/useTranslation.ts";
 

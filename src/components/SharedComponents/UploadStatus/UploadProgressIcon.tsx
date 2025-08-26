@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import { INatIcon } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React from "react";
 import CircularProgressBase from "react-native-circular-progress-indicator";
 import { useTranslation } from "sharedHooks";

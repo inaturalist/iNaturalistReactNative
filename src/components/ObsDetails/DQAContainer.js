@@ -12,7 +12,7 @@ import {
   Button,
   List2
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import { t } from "i18next";
 import { compact, groupBy } from "lodash";
 import { useCallback, useEffect, useState } from "react";

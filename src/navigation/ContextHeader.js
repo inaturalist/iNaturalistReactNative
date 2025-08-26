@@ -3,7 +3,7 @@ import { getHeaderTitle } from "@react-navigation/elements";
 import classNames from "classnames";
 import { Heading1, Heading4 } from "components/SharedComponents";
 import BackButton from "components/SharedComponents/Buttons/BackButton";
-import { SafeAreaView, View } from "components/styledComponents";
+import { SafeAreaView, View } from "components/styledComponents.ts";
 import type { Node } from "react";
 import React from "react";
 import { dropShadow } from "styles/global";

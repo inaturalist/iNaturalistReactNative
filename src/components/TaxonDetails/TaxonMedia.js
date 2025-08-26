@@ -5,7 +5,7 @@ import MasonryLayout from "components/ObsDetails/MasonryLayout";
 import { ActivityIndicator, Carousel } from "components/SharedComponents";
 import {
   Image, Pressable, View
-} from "components/styledComponents";
+} from "components/styledComponents.ts";
 import type { Node } from "react";
 import React, {
   useCallback,

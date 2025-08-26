@@ -7,7 +7,7 @@ import {
 import { getUserAgent } from "api/userAgent.ts";
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import { ActivityIndicator, Mortal, ViewWrapper } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, { useEffect, useState } from "react";
 import { Linking } from "react-native";
 import { EventRegister } from "react-native-event-listeners";

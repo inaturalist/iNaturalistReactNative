@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import {
   Button
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, { useCallback } from "react";
 import Config from "react-native-config";
 import { useTranslation } from "sharedHooks";

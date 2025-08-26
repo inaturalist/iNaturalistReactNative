@@ -2,7 +2,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   ViewWrapper
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, { useEffect } from "react";
 
 import ProjectList from "./ProjectList";

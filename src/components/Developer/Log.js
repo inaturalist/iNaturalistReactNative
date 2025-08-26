@@ -9,7 +9,7 @@ import {
   fontMonoClass,
   TextInput,
   View
-} from "components/styledComponents";
+} from "components/styledComponents.ts";
 import type { Node } from "react";
 import React, {
   useCallback,

@@ -7,7 +7,7 @@ import {
   INatIconButton,
   ViewWrapper
 } from "components/SharedComponents";
-import { ImageBackground } from "components/styledComponents";
+import { ImageBackground } from "components/styledComponents.ts";
 import INatLogo from "images/svg/inat_logo_onboarding.svg";
 import OnBoardingIcon2 from "images/svg/onboarding_icon_2.svg";
 import OnBoardingIcon3 from "images/svg/onboarding_icon_3.svg";

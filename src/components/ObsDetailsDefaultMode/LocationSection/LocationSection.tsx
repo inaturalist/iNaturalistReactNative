@@ -4,7 +4,7 @@ import {
   List2,
   SimpleObservationLocation
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import { t } from "i18next";
 import React from "react";
 import type { RealmObservation } from "realmModels/types";

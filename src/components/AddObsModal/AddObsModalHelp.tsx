@@ -5,7 +5,7 @@ import {
   INatIcon,
   INatIconButton
 } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents.ts";
 import React, { useState } from "react";
 import { useDeviceOrientation, useTranslation } from "sharedHooks";
 import { storage } from "stores/useStore";

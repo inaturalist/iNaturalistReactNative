@@ -1,5 +1,5 @@
 import { Body2, DateTimePicker, INatIcon } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents.ts";
 import React, { useState } from "react";
 import type { RealmObservationPojo } from "realmModels/types";
 import {

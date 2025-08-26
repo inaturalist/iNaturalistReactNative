@@ -11,7 +11,7 @@ import GradientButton from "components/SharedComponents/Buttons/GradientButton.t
 import Modal from "components/SharedComponents/Modal.tsx";
 import {
   Pressable, View
-} from "components/styledComponents";
+} from "components/styledComponents.ts";
 import Arrow from "images/svg/curved_arrow_down.svg";
 import type { Node } from "react";
 import React, { useState } from "react";

@@ -9,7 +9,7 @@ import {
 import { getMapRegion } from "components/SharedComponents/Map/helpers/mapHelpers.ts";
 import {
   View
-} from "components/styledComponents";
+} from "components/styledComponents.ts";
 import React, { useState } from "react";
 import { useTranslation } from "sharedHooks";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";

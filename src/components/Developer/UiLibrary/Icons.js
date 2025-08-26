@@ -4,7 +4,7 @@ import {
   ScrollViewWrapper
 } from "components/SharedComponents";
 import glyphmap from "components/SharedComponents/INatIcon/glyphmap.json";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React from "react";
 import { Alert } from "react-native";
 

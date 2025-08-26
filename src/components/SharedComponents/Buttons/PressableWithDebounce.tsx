@@ -1,6 +1,6 @@
 import {
   Pressable
-} from "components/styledComponents";
+} from "components/styledComponents.ts";
 import type { PropsWithChildren } from "react";
 import React, { useRef, useState } from "react";
 import type { AccessibilityRole, GestureResponderEvent, ViewStyle } from "react-native";

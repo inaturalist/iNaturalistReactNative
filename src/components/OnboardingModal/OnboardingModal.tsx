@@ -3,7 +3,7 @@ import {
   INatIconButton, Modal,
   UnderlinedLink
 } from "components/SharedComponents";
-import { Image, Pressable, View } from "components/styledComponents";
+import { Image, Pressable, View } from "components/styledComponents.ts";
 import * as React from "react";
 import { ImageSourcePropType, ImageStyle } from "react-native";
 import { useTranslation } from "sharedHooks";

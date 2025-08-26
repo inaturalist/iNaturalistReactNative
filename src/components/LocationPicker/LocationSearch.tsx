@@ -5,7 +5,7 @@ import {
   Body3,
   SearchBar
 } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents.ts";
 import React, { useRef } from "react";
 import { Keyboard, TextInput } from "react-native";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";

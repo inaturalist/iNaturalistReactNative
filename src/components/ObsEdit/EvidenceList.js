@@ -4,7 +4,7 @@ import deleteRemoteObservationSound from "api/observationSounds";
 import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import { ActivityIndicator, INatIcon, INatIconButton } from "components/SharedComponents";
-import { Image, Pressable, View } from "components/styledComponents";
+import { Image, Pressable, View } from "components/styledComponents.ts";
 import _ from "lodash";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";

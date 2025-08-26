@@ -8,7 +8,7 @@ import {
   Heading2,
   ScrollViewWrapper
 } from "components/SharedComponents";
-import { fontMonoClass, View } from "components/styledComponents";
+import { fontMonoClass, View } from "components/styledComponents.ts";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useCallback } from "react";

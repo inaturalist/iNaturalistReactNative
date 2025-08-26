@@ -1,7 +1,7 @@
 // @flow
 import classnames from "classnames";
 import { INatIcon, INatIconButton } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import * as React from "react";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 import colors from "styles/tailwindColors";

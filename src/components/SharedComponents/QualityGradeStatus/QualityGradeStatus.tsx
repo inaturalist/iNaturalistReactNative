@@ -1,4 +1,4 @@
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import { t } from "i18next";
 import CasualGrade from "images/svg/casual_grade.svg";
 import NeedsIdGrade from "images/svg/needs_id_grade.svg";

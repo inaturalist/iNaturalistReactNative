@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { Body4, DisplayTaxonName } from "components/SharedComponents";
 import {
   Image, LinearGradient, Pressable, View
-} from "components/styledComponents";
+} from "components/styledComponents.ts";
 import React from "react";
 import type { RealmTaxon } from "realmModels/types";
 import { useTranslation } from "sharedHooks";

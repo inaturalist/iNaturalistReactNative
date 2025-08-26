@@ -9,7 +9,7 @@ import {
   UnderlinedLink,
   ViewWrapper
 } from "components/SharedComponents";
-import { Image, Pressable, View } from "components/styledComponents";
+import { Image, Pressable, View } from "components/styledComponents.ts";
 import { t } from "i18next";
 import React, { useState } from "react";
 import { getBuildNumber, getVersion } from "react-native-device-info";

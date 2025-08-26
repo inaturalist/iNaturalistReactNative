@@ -6,7 +6,7 @@ import PhotoLibraryIcon from "components/Camera/Buttons/PhotoLibraryIcon.tsx";
 import TakePhoto from "components/Camera/Buttons/TakePhoto.tsx";
 import Zoom from "components/Camera/Buttons/Zoom.tsx";
 import TabletButtons from "components/Camera/TabletButtons.tsx";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React from "react";
 import { GestureResponderEvent, ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";

@@ -17,7 +17,7 @@ import {
 } from "components/SharedComponents";
 import {
   Image, ImageBackground, View
-} from "components/styledComponents";
+} from "components/styledComponents.ts";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import Config from "react-native-config";

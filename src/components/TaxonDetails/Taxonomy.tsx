@@ -3,7 +3,7 @@ import {
   Button,
   Heading4
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, { useState } from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 

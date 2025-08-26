@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import PhotoLibraryIcon from "components/Camera/Buttons/PhotoLibraryIcon.tsx";
 import { CloseButton } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React from "react";
 import { GestureResponderEvent, ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";

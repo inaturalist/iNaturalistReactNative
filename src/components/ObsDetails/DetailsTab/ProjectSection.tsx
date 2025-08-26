@@ -4,7 +4,7 @@ import {
   Divider,
   Heading4
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import { t } from "i18next";
 import React, { useMemo } from "react";
 

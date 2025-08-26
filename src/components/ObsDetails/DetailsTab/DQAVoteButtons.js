@@ -5,7 +5,7 @@ import {
   Body3,
   INatIconButton
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import * as React from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";

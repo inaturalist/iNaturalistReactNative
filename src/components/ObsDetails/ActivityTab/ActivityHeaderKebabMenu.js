@@ -2,7 +2,7 @@
 import KebabMenu from "components/SharedComponents/KebabMenu.tsx";
 import {
   View
-} from "components/styledComponents";
+} from "components/styledComponents.ts";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";

@@ -10,7 +10,7 @@ import makeWebshell, {
 import { useQueryClient } from "@tanstack/react-query";
 import { dismissAnnouncement, searchAnnouncements } from "api/announcements";
 import { ActivityIndicator, Button } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import type { Node } from "react";
 import React from "react";
 import { WebView } from "react-native-webview";

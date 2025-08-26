@@ -1,5 +1,5 @@
 import { INatIcon } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import type { PropsWithChildren } from "react";
 import React, { useCallback, useEffect } from "react";
 import Reanimated, {

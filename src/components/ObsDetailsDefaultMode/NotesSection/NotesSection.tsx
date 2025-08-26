@@ -2,7 +2,7 @@ import {
   Heading3
 } from "components/SharedComponents";
 import UserText from "components/SharedComponents/UserText.tsx";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import { t } from "i18next";
 import React from "react";
 

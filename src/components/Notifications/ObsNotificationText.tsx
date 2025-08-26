@@ -1,7 +1,7 @@
 import {
   List2
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React from "react";
 import { Trans } from "react-i18next";
 import { useTranslation } from "sharedHooks";

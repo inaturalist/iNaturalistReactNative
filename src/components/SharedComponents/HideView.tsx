@@ -1,4 +1,4 @@
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import type { PropsWithChildren } from "react";
 import * as React from "react";
 import { useEffect, useState } from "react";

@@ -1,7 +1,7 @@
 // @flow
 import classnames from "classnames";
 import { Body4, INatIconButton, UserIcon } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents.ts";
 import NotificationsIconContainer from "navigation/BottomTabNavigator/NotificationsIconContainer";
 import * as React from "react";
 import { isDebugMode } from "sharedHooks/useDebugMode";

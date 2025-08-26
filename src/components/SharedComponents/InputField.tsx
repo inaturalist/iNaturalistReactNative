@@ -1,4 +1,4 @@
-import { TextInput } from "components/styledComponents";
+import { TextInput } from "components/styledComponents.ts";
 import * as React from "react";
 import { KeyboardTypeOptions, Platform, TextInputIOSProps } from "react-native";
 import colors from "styles/tailwindColors";

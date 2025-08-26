@@ -20,7 +20,7 @@ import {
 import {
   SafeAreaView,
   View
-} from "components/styledComponents";
+} from "components/styledComponents.ts";
 import i18n from "i18next";
 import _, { compact } from "lodash";
 import { RealmContext } from "providers/contexts.ts";

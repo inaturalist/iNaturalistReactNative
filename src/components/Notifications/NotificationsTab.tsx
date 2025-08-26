@@ -2,7 +2,7 @@ import { fetchUnviewedObservationUpdatesCount } from "api/observations";
 import type { ApiOpts } from "api/types";
 import { Heading4 } from "components/SharedComponents";
 import type { TabComponentProps } from "components/SharedComponents/Tabs/Tabs";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, { useEffect } from "react";
 import { EventRegister } from "react-native-event-listeners";
 import {

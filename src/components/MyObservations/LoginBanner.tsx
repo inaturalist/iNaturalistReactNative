@@ -3,7 +3,7 @@ import {
   Body2,
   INatIcon
 } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents.ts";
 import * as React from "react";
 import type { RealmUser } from "realmModels/types";
 import { useTranslation } from "sharedHooks";

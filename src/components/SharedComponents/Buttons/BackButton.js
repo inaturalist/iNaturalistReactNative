@@ -1,6 +1,6 @@
 import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
-import { Image } from "components/styledComponents";
+import { Image } from "components/styledComponents.ts";
 import type { Node } from "react";
 import React from "react";
 import { I18nManager, Platform } from "react-native";

@@ -1,5 +1,5 @@
 import { INatIconButton, ViewWrapper } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, { PropsWithChildren } from "react";
 import { StatusBar } from "react-native";
 import { useTranslation } from "sharedHooks";

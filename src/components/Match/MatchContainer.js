@@ -3,7 +3,7 @@ import {
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import { Body3, Heading4, ViewWrapper } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import flattenUploadParams from "components/Suggestions/helpers/flattenUploadParams.ts";
 import {
   FETCH_STATUS_LOADING,

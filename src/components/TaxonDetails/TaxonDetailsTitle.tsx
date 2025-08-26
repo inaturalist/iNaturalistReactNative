@@ -7,7 +7,7 @@ import {
 import SpeciesSeenCheckmark from "components/SharedComponents/SpeciesSeenCheckmark.tsx";
 import {
   View
-} from "components/styledComponents";
+} from "components/styledComponents.ts";
 import type { TFunction } from "i18next";
 import React from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";

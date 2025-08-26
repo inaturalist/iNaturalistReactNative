@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { IconicTaxonIcon } from "components/SharedComponents";
-import { FasterImageView, View } from "components/styledComponents";
+import { FasterImageView, View } from "components/styledComponents.ts";
 import React from "react";
 
 interface Props {

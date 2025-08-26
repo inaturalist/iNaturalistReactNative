@@ -4,7 +4,7 @@ import {
   INatIconButton
 } from "components/SharedComponents";
 import GradientButton from "components/SharedComponents/Buttons/GradientButton.tsx";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, { useMemo } from "react";
 import { Platform, StatusBar } from "react-native";
 import Observation from "realmModels/Observation";

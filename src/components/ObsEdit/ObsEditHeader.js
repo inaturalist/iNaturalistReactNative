@@ -3,7 +3,7 @@
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { BackButton, Heading2, KebabMenu } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, {

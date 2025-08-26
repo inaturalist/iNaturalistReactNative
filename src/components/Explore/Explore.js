@@ -11,7 +11,7 @@ import {
   RadioButtonSheet,
   ViewWrapper
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import { PLACE_MODE } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useState } from "react";

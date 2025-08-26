@@ -1,7 +1,7 @@
 import {
   ActivityIndicator, Body1, INatIconButton
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, { useEffect, useRef } from "react";
 import { Animated, ViewStyle } from "react-native";
 import { useTranslation } from "sharedHooks";

@@ -5,7 +5,7 @@ import {
 import Slider from "@react-native-community/slider";
 import { useFocusEffect } from "@react-navigation/native";
 import { Body1, INatIconButton, OfflineNotice } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, {
   useCallback,
   useEffect,

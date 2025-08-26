@@ -5,7 +5,7 @@ import {
   IdentificationsCount,
   QualityGradeStatus
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, { useCallback } from "react";
 import type { RealmObservation } from "realmModels/types";
 import colors from "styles/tailwindColors";

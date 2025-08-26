@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import { CircleDots, INatIcon, INatIconButton } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, { PropsWithChildren, ReactComponent } from "react";
 import { useLayoutPrefs, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";

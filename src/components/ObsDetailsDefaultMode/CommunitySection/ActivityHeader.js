@@ -9,7 +9,7 @@ import {
 } from "components/SharedComponents";
 import {
   View
-} from "components/styledComponents";
+} from "components/styledComponents.ts";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";

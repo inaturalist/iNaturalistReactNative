@@ -1,7 +1,7 @@
 // @flow
 
 import { WarningSheet } from "components/SharedComponents";
-import { SafeAreaView } from "components/styledComponents";
+import { SafeAreaView } from "components/styledComponents.ts";
 import type { Node } from "react";
 import React, {
   useCallback,

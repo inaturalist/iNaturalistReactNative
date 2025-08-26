@@ -7,7 +7,7 @@ import {
 import {
   CIRCLE_SIZE
 } from "components/SharedComponents/Buttons/TransparentCircleButton.tsx";
-import { Text, View } from "components/styledComponents";
+import { Text, View } from "components/styledComponents.ts";
 import React, { useState } from "react";
 import {
   Modal,
