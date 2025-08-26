@@ -13,7 +13,7 @@ function originalPhotoUri( observation: RealmObservation ) {
   return observation?.observationPhotos?.[0]?.originalPhotoUri || "";
 }
 
-export function isNew( observation: RealmObservation ) {
+function isNew( observation: RealmObservation ) {
   return (
     observation
     && !observation._created_at
@@ -21,29 +21,18 @@ export function isNew( observation: RealmObservation ) {
   );
 }
 
-export function isFromGallery( observation: RealmObservation ) {
+function isFromGallery( observation: RealmObservation ) {
   return originalPhotoUri( observation ).includes( photoLibraryPhotosPath );
 }
 
-export function isFromSharing( observation: RealmObservation ) {
+function isFromSharing( observation: RealmObservation ) {
   // Shared photo paths will look something like Shared/AppGroup/sdgsdgsdgk
   const uri = originalPhotoUri( observation );
   return uri && !uri.includes( DocumentDirectoryPath );
 }
 
-export function isFromCamera( observation: RealmObservation ) {
+function isFromCamera( observation: RealmObservation ) {
   return originalPhotoUri( observation ).includes( rotatedOriginalPhotosPath );
-}
-
-export function isFromSoundRecorder( observation: RealmObservation ) {
-  return observation?.observationSounds?.length > 0;
-}
-
-export function isFromNoEvidence( observation: RealmObservation ) {
-  return !(
-    observation?.observationSounds?.length > 0
-    || observation?.observationPhotos?.length > 0
-  );
 }
 
 function shouldFetchObservationLocation( observation: RealmObservation ) {

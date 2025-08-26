@@ -87,6 +87,7 @@ const AICamera = ( {
   const {
     animatedProps,
     handleZoomButtonPress,
+    panToZoom,
     pinchToZoom,
     showZoomButton,
     zoomTextValue,
@@ -249,6 +250,7 @@ const AICamera = ( {
             onCameraError={handleCameraError}
             onLog={handleLog}
             animatedProps={animatedProps}
+            panToZoom={panToZoom}
             pinchToZoom={pinchToZoom}
             takingPhoto={takingPhoto}
             inactive={inactive}

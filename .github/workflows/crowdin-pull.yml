@@ -27,7 +27,7 @@ jobs:
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
 
       - name: Cache node modules
         uses: actions/cache@v4

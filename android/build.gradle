@@ -7,11 +7,11 @@ buildscript {
         buildToolsVersion = "35.0.0"
         minSdkVersion = 24
         compileSdkVersion = 35
-        targetSdkVersion = 34
-        ndkVersion = "26.1.10909125"
-        kotlinVersion = "1.9.25"
+        targetSdkVersion = 35
+        ndkVersion = "27.1.12297006"
+        kotlinVersion = "2.0.21"
         // This specifies which tensorflow-lite version to use for our vision-plugin.
-        tensorflowVersion = "2.14.0"
+        tensorflowVersion = "2.17.0"
     }
     repositories {
         google()

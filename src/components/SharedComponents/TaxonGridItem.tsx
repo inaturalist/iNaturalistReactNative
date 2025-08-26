@@ -2,7 +2,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import type { ApiTaxon } from "api/types";
 import ObsImagePreview from "components/ObservationsFlashList/ObsImagePreview.tsx";
 import { Body4, DisplayTaxonName } from "components/SharedComponents";
-import SpeciesSeenCheckmark from "components/SharedComponents/SpeciesSeenCheckmark";
+import SpeciesSeenCheckmark from "components/SharedComponents/SpeciesSeenCheckmark.tsx";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
 import Photo from "realmModels/Photo.ts";

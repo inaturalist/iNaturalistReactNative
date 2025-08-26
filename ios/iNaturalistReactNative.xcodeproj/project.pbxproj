@@ -7,13 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* iNaturalistReactNativeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* iNaturalistReactNativeTests.m */; };
 		085DD3205807404CAFC32228 /* Lato-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A9BAF07FCF24F668E2EF5AB /* Lato-Medium.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		191A91132CD1916800ECC774 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 191A91122CD1916800ECC774 /* InfoPlist.xcstrings */; };
-		191A91142CD1916800ECC774 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 191A91122CD1916800ECC774 /* InfoPlist.xcstrings */; };
 		191A91152CD1916800ECC774 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 191A91122CD1916800ECC774 /* InfoPlist.xcstrings */; };
 		1956B4912A7C3C1E00BBBDE4 /* link-inat-model-files.sh in Resources */ = {isa = PBXBuildFile; fileRef = 1956B4902A7C3C1E00BBBDE4 /* link-inat-model-files.sh */; };
 		197A169D2A7C2567001A03DC /* cvmodel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 197A169B2A7C2567001A03DC /* cvmodel.mlmodel */; };
@@ -28,7 +26,6 @@
 		8B65ED3529F575C10054CCEF /* iNaturalistReactNative-ShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8B65ED2B29F575C10054CCEF /* iNaturalistReactNative-ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8B65ED3B29F575FE0054CCEF /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B65ED3A29F575FE0054CCEF /* ShareViewController.swift */; };
 		8F1AC6772BC1B610002F994B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8F1AC6762BC1B610002F994B /* PrivacyInfo.xcprivacy */; };
-		8F1AC6782BC1B610002F994B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8F1AC6762BC1B610002F994B /* PrivacyInfo.xcprivacy */; };
 		8F1AC6792BC1B610002F994B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8F1AC6762BC1B610002F994B /* PrivacyInfo.xcprivacy */; };
 		8F346E4A2CF6912700CED7B4 /* geomodel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 8F346E492CF6912700CED7B4 /* geomodel.mlmodel */; };
 		A124BFAECECB80521E10569D /* libPods-iNaturalistReactNative-ShareExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 958625FE96E0ECACF1B4B978 /* libPods-iNaturalistReactNative-ShareExtension.a */; };
@@ -38,13 +35,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		00E356F41AD99517003FC87E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = iNaturalistReactNative;
-		};
 		8B65ED3329F575C10054CCEF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
@@ -70,9 +60,6 @@
 
 /* Begin PBXFileReference section */
 		00752F4ADC554701A45A848A /* Lato-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Bold.ttf"; path = "../assets/fonts/Lato-Bold.ttf"; sourceTree = "<group>"; };
-		00E356EE1AD99517003FC87E /* iNaturalistReactNativeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iNaturalistReactNativeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* iNaturalistReactNativeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iNaturalistReactNativeTests.m; sourceTree = "<group>"; };
 		06E20E5358FDFF430DB96A37 /* Pods-iNaturalistReactNative.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iNaturalistReactNative.debug.xcconfig"; path = "Target Support Files/Pods-iNaturalistReactNative/Pods-iNaturalistReactNative.debug.xcconfig"; sourceTree = "<group>"; };
 		0972395C34134C71A54A2A5D /* INatIcon.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = INatIcon.ttf; path = ../assets/fonts/INatIcon.ttf; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* iNaturalistReactNative.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iNaturalistReactNative.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,13 +98,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		00E356EB1AD99517003FC87E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		13B07F8C1A680F5B00A75B9A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -138,23 +118,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* iNaturalistReactNativeTests */ = {
-			isa = PBXGroup;
-			children = (
-				00E356F21AD99517003FC87E /* iNaturalistReactNativeTests.m */,
-				00E356F01AD99517003FC87E /* Supporting Files */,
-			);
-			path = iNaturalistReactNativeTests;
-			sourceTree = "<group>";
-		};
-		00E356F01AD99517003FC87E /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				00E356F11AD99517003FC87E /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		13B07FAE1A68108700A75B9A /* iNaturalistReactNative */ = {
 			isa = PBXGroup;
 			children = (
@@ -217,7 +180,6 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FAE1A68108700A75B9A /* iNaturalistReactNative */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* iNaturalistReactNativeTests */,
 				8B65ED2C29F575C10054CCEF /* iNaturalistReactNative-ShareExtension */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
@@ -234,7 +196,6 @@
 			isa = PBXGroup;
 			children = (
 				13B07F961A680F5B00A75B9A /* iNaturalistReactNative.app */,
-				00E356EE1AD99517003FC87E /* iNaturalistReactNativeTests.xctest */,
 				8B65ED2B29F575C10054CCEF /* iNaturalistReactNative-ShareExtension.appex */,
 			);
 			name = Products;
@@ -269,24 +230,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* iNaturalistReactNativeTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "iNaturalistReactNativeTests" */;
-			buildPhases = (
-				00E356EA1AD99517003FC87E /* Sources */,
-				00E356EB1AD99517003FC87E /* Frameworks */,
-				00E356EC1AD99517003FC87E /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				00E356F51AD99517003FC87E /* PBXTargetDependency */,
-			);
-			name = iNaturalistReactNativeTests;
-			productName = iNaturalistReactNativeTests;
-			productReference = 00E356EE1AD99517003FC87E /* iNaturalistReactNativeTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		13B07F861A680F5B00A75B9A /* iNaturalistReactNative */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "iNaturalistReactNative" */;
@@ -338,10 +281,6 @@
 				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1210;
 				TargetAttributes = {
-					00E356ED1AD99517003FC87E = {
-						CreatedOnToolsVersion = 6.2;
-						TestTargetID = 13B07F861A680F5B00A75B9A;
-					};
 					13B07F861A680F5B00A75B9A = {
 						LastSwiftMigration = 1340;
 					};
@@ -366,22 +305,12 @@
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* iNaturalistReactNative */,
-				00E356ED1AD99517003FC87E /* iNaturalistReactNativeTests */,
 				8B65ED2A29F575C10054CCEF /* iNaturalistReactNative-ShareExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		00E356EC1AD99517003FC87E /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				191A91142CD1916800ECC774 /* InfoPlist.xcstrings in Resources */,
-				8F1AC6782BC1B610002F994B /* PrivacyInfo.xcprivacy in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		13B07F8E1A680F5B00A75B9A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -529,14 +458,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		00E356EA1AD99517003FC87E /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				00E356F31AD99517003FC87E /* iNaturalistReactNativeTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		13B07F871A680F5B00A75B9A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -559,11 +480,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* iNaturalistReactNative */;
-			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
-		};
 		8B65ED3429F575C10054CCEF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8B65ED2A29F575C10054CCEF /* iNaturalistReactNative-ShareExtension */;
@@ -583,59 +499,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		00E356F61AD99517003FC87E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = N5J7L4P93Z;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "i386 arm64";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = iNaturalistReactNativeTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-lc++",
-					"$(inherited)",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iNaturalistReactNative.app/iNaturalistReactNative";
-			};
-			name = Debug;
-		};
-		00E356F71AD99517003FC87E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = N5J7L4P93Z;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "i386 arm64";
-				INFOPLIST_FILE = iNaturalistReactNativeTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-lc++",
-					"$(inherited)",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iNaturalistReactNative.app/iNaturalistReactNative";
-			};
-			name = Release;
-		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 06E20E5358FDFF430DB96A37 /* Pods-iNaturalistReactNative.debug.xcconfig */;
@@ -646,7 +509,7 @@
 				CODE_SIGN_ENTITLEMENTS = iNaturalistReactNative/iNaturalistReactNative.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
-				CURRENT_PROJECT_VERSION = 173;
+				CURRENT_PROJECT_VERSION = 177;
 				DEVELOPMENT_TEAM = N5J7L4P93Z;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
@@ -773,7 +636,7 @@
 				CODE_SIGN_ENTITLEMENTS = iNaturalistReactNative/iNaturalistReactNativeRelease.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
-				CURRENT_PROJECT_VERSION = 173;
+				CURRENT_PROJECT_VERSION = 177;
 				DEVELOPMENT_TEAM = N5J7L4P93Z;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				HEADER_SEARCH_PATHS = (
@@ -1064,7 +927,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = "iNaturalistReactNative-ShareExtension/iNaturalistReactNative-ShareExtension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 173;
+				CURRENT_PROJECT_VERSION = 177;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = N5J7L4P93Z;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "i386 arm64";
@@ -1109,7 +972,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 173;
+				CURRENT_PROJECT_VERSION = 177;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = N5J7L4P93Z;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "i386 arm64";
@@ -1142,15 +1005,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "iNaturalistReactNativeTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				00E356F61AD99517003FC87E /* Debug */,
-				00E356F71AD99517003FC87E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "iNaturalistReactNative" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

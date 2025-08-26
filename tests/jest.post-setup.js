@@ -1,5 +1,3 @@
-import "@testing-library/jest-native/extend-expect";
-
 import { act } from "@testing-library/react-native";
 
 import * as mockZustand from "../__mocks__/zustand";

@@ -31,7 +31,7 @@ const LocationSearch = ( {
   locationName = "", updateLocationName, selectPlaceResult, hidePlaceResults
 }: Props ) => {
   const queryClient = useQueryClient( );
-  const locationInput = useRef<TextInput>( );
+  const locationInput = useRef<TextInput>( undefined );
 
   // this seems necessary for clearing the cache between searches
   queryClient.invalidateQueries( { queryKey: ["fetchSearchResults"] } );

@@ -380,10 +380,12 @@ describe( "MyObservations", ( ) => {
         } ).not.toThrow( );
       } );
 
-      it( "should trigger manual observation sync on pull-to-refresh", async ( ) => {
+      it( "should trigger manual observation sync on pull-to-refresh", async () => {
         renderAppWithComponent( <MyObservationsContainer /> );
 
-        const myObsList = await screen.findByTestId( "MyObservationsAnimatedList" );
+        const myObsList = await screen.findByTestId(
+          "MyObservationsAnimatedList"
+        );
 
         fireEvent.scroll( myObsList, {
           nativeEvent: {
@@ -393,36 +395,40 @@ describe( "MyObservations", ( ) => {
           }
         } );
 
-        expect( inatjs.observations.deleted ).toHaveBeenCalled( );
+        expect( inatjs.observations.deleted ).toHaveBeenCalled();
       } );
 
-      describe( "on screen focus", ( ) => {
-        beforeEach( ( ) => {
+      describe( "on screen focus", () => {
+        beforeEach( () => {
           zustandStorage.setItem( "lastDeletedSyncTime", "2024-05-01" );
         } );
 
-        it( "downloads deleted observations from server when screen focused", async ( ) => {
+        it( "downloads deleted observations from server when screen focused", async () => {
           const realm = global.mockRealms[__filename];
           expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
           renderAppWithComponent( <MyObservationsContainer /> );
-          await waitFor( ( ) => {
+          await waitFor( () => {
             expect( inatjs.observations.deleted ).toHaveBeenCalledWith(
               {
                 since: "2024-05-01"
               },
-              expect.anything( )
+              expect.anything()
             );
           } );
         } );
 
-        it( "deletes local observations if they have been deleted on server", async ( ) => {
-          inatjs.observations.deleted.mockResolvedValue( makeResponse( mockDeletedIds ) );
+        it( "deletes local observations if they have been deleted on server", async () => {
+          inatjs.observations.deleted.mockResolvedValue(
+            makeResponse( mockDeletedIds )
+          );
           renderAppWithComponent( <MyObservationsContainer /> );
           const deleteSpy = jest.spyOn( global.mockRealms[__filename], "delete" );
-          await waitFor( ( ) => {
+          await waitFor( () => {
             expect( deleteSpy ).toHaveBeenCalledTimes( 1 );
           } );
-          expect( global.mockRealms[__filename].objects( "Observation" ).length ).toBe( 1 );
+          expect(
+            global.mockRealms[__filename].objects( "Observation" ).length
+          ).toBe( 1 );
         } );
       } );
     } );

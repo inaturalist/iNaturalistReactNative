@@ -291,7 +291,9 @@ describe( "logged in", ( ) => {
         }, { timeout: 10_000 } );
         await actor.press( firstObservation );
         await waitFor( ( ) => {
-          expect( screen.getByTestId( `ObsDetails.${mockObservations[0].uuid}` ) ).toBeVisible( );
+          expect(
+            screen.getByTestId( `ObsDetails.${mockObservations[0].uuid}` )
+          ).toBeVisible( );
         }, { timeout: 10_000 } );
         const userProfileButton = await screen.findByLabelText( `User ${mockUser.login}` );
         await actor.press( userProfileButton );
