@@ -6,15 +6,13 @@ import {
 import React, {
   PropsWithChildren, useEffect, useRef
 } from "react";
-import type {
+import {
   ImageSourcePropType,
   ImageStyle,
-  StyleProp
-} from "react-native";
-import {
-  Dimensions,
   Platform,
-  StatusBar
+  StatusBar,
+  StyleProp,
+  useWindowDimensions
 } from "react-native";
 import colors from "styles/tailwindColors";
 
@@ -23,11 +21,7 @@ interface Props extends PropsWithChildren {
   imageStyle?: StyleProp<ImageStyle>
 }
 
-const windowHeight = Dimensions.get( "window" ).height;
-
-const SCROLL_VIEW_STYLE = {
-  minHeight: windowHeight * 1.1
-} as const;
+const SCROLL_VIEW_SCALE = 1.1;
 
 const LoginSignupWrapper = ( {
   backgroundSource,
@@ -36,6 +30,8 @@ const LoginSignupWrapper = ( {
 }: Props ) => {
   const scrollViewRef = useRef( null );
   const navigation = useNavigation( );
+  const { height: windowHeight } = useWindowDimensions( );
+  const scrollViewMinHeightRef = useRef<number>( windowHeight * SCROLL_VIEW_SCALE );
 
   useEffect( ( ) => {
     const resetScroll = ( ) => {
@@ -78,6 +74,10 @@ const LoginSignupWrapper = ( {
     return unsubscribe;
   }, [navigation] );
 
+  useEffect( ( ) => {
+    scrollViewMinHeightRef.current = windowHeight * SCROLL_VIEW_SCALE;
+  }, [windowHeight] );
+
   const fitContentWithinScreenStyle = { height: windowHeight * 0.85 };
 
   return (
@@ -105,7 +105,7 @@ const LoginSignupWrapper = ( {
           ref={scrollViewRef}
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode="on-drag"
-          contentContainerStyle={SCROLL_VIEW_STYLE}
+          contentContainerStyle={{ minHeight: scrollViewMinHeightRef.current }}
         >
           <View style={fitContentWithinScreenStyle}>
             <View className="flex-1 flex-column justify-between">
