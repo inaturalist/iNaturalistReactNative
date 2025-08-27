@@ -67,16 +67,18 @@ const EstablishmentMeans = ( { taxon }: Props ) => {
     );
   };
 
-  return taxon?.establishment_means && (
-    <View className="mb-6">
-      <Heading4 className="mb-3">{t( "ESTABLISHMENT-MEANS" )}</Heading4>
-      <Body2>
-        {displayEstablishmentMeansText( )}
-        {" "}
-        {displaySourceListText( )}
-      </Body2>
-    </View>
-  );
+  return taxon?.establishment_means
+    ? (
+      <View className="mb-6">
+        <Heading4 className="mb-3">{t( "ESTABLISHMENT-MEANS" )}</Heading4>
+        <Body2>
+          {displayEstablishmentMeansText( )}
+          {" "}
+          {displaySourceListText( )}
+        </Body2>
+      </View>
+    )
+    : null;
 };
 
 export default EstablishmentMeans;
