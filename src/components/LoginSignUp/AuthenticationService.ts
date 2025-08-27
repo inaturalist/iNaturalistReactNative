@@ -24,7 +24,7 @@ import changeLanguage from "sharedHelpers/changeLanguage.ts";
 import { getInstallID } from "sharedHelpers/installData.ts";
 import { log, logFilePath, logWithoutRemote } from "sharedHelpers/logger";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory.ts";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
 import { sleep, unlink } from "sharedHelpers/util.ts";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 import { storage } from "stores/useStore";

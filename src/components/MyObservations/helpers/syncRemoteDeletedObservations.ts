@@ -3,7 +3,7 @@ import {
 } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import { format } from "date-fns";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
 import { zustandStorage } from "stores/useStore";
 
 const setParamsWithLastSyncTime = ( ) => {
