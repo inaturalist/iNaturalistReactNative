@@ -9,7 +9,7 @@ import {
   useCallback, useEffect, useState
 } from "react";
 import Taxon from "realmModels/Taxon";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
 import {
   useAuthenticatedQuery,
   useCurrentUser
@@ -19,14 +19,14 @@ const SCORE_IMAGE_TIMEOUT = 5_000;
 
 const { useRealm } = RealmContext;
 
-type OnlineSuggestionsResponse = {
-  dataUpdatedAt: Date,
-  onlineSuggestions: object,
-  loadingOnlineSuggestions: boolean,
-  timedOut: boolean,
-  error: object,
-  resetTimeout: Function
-  isRefetching: boolean
+interface OnlineSuggestionsResponse {
+  dataUpdatedAt: Date;
+  onlineSuggestions: object;
+  loadingOnlineSuggestions: boolean;
+  timedOut: boolean;
+  error: object;
+  resetTimeout: () => void;
+  isRefetching: boolean;
 }
 
 const useOnlineSuggestions = (
