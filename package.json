@@ -205,6 +205,9 @@
     "typescript": "5.0.4",
     "yargs": "^17.7.2"
   },
+  "overrides": {
+    "eslint-plugin-react-hooks": "^6.0.0-rc.1"
+  },
   "engines": {
     "node": ">=18"
   },
