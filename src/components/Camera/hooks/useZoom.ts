@@ -65,40 +65,28 @@ const useZoom = ( device: CameraDevice ): object => {
     const newInitialZoom = !device?.isMultiCam
       ? minZoom
       : neutralZoom;
-    zoom.value = newInitialZoom;
-    startZoom.value = newInitialZoom;
-  // Shared values don't cause re-renders and including them in dependency arrays
-  // causes render-time reads, which violates Reanimated's threading model
-  // TODO: I am not sure how to make the react compiler happy here, so I disabled it
-  // for this hook
-  // eslint-disable-next-line react-hooks/react-compiler
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [device?.isMultiCam, minZoom, neutralZoom] );
+    zoom.set( newInitialZoom );
+    startZoom.set( newInitialZoom );
+  }, [device?.isMultiCam, minZoom, neutralZoom, zoom, startZoom] );
 
   const handleZoomButtonPress = ( ) => {
     if ( zoomTextValue === _.last( zoomButtonOptions ) ) {
-      zoom.value = withSpring( zoomButtonValues[0] );
+      zoom.set( withSpring( zoomButtonValues[0] ) );
       setZoomTextValue( zoomButtonOptions[0] );
     } else {
       const zoomIndex = _.indexOf( zoomButtonOptions, zoomTextValue );
-      zoom.value = withSpring( zoomButtonValues[zoomIndex + 1] );
+      zoom.set( withSpring( zoomButtonValues[zoomIndex + 1] ) );
       setZoomTextValue( zoomButtonOptions[zoomIndex + 1] );
     }
   };
 
   const onZoomStart = useCallback( ( ) => {
     // start pinch-to-zoom
-    startZoom.value = zoom.value;
-  // Shared values don't cause re-renders and including them in dependency arrays
-  // causes render-time reads, which violates Reanimated's threading model
-  // TODO: I am not sure how to make the react compiler happy here, so I disabled it
-  // for this hook
-  // eslint-disable-next-line react-hooks/react-compiler
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [] );
+    startZoom.set( zoom.get() );
+  }, [startZoom, zoom] );
 
   const resetZoom = ( ) => {
-    zoom.value = initialZoom;
+    zoom.set( initialZoom );
     setZoomTextValue( initialZoomTextValue );
   };
 
@@ -123,23 +111,16 @@ const useZoom = ( device: CameraDevice ): object => {
     const newZoom = interpolate(
       newValue,
       [-1, 0, 1],
-      [minZoom, startZoom.value, maxZoomWithPinch],
+      [minZoom, startZoom.get( ), maxZoomWithPinch],
       Extrapolation.CLAMP
     );
-    zoom.value = newZoom;
+    zoom.set( newZoom );
 
     runOnJS( updateZoomTextValue )( newZoom );
-  // Shared values don't cause re-renders and including them in dependency arrays
-  // causes render-time reads, which violates Reanimated's threading model
-  // TODO: I am not sure how to make the react compiler happy here, so I disabled it
-  // for this hook
-  // eslint-disable-next-line react-hooks/react-compiler
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [maxZoomWithPinch, minZoom, updateZoomTextValue] );
+  }, [maxZoomWithPinch, minZoom, updateZoomTextValue, startZoom, zoom] );
 
   const animatedProps = useAnimatedProps < CameraProps >(
-    () => ( { zoom: zoom.value } ),
-    []
+    () => ( { zoom: zoom.get( ) } )
   );
 
   const pinchToZoom = useMemo( ( ) => Gesture.Pinch( )
@@ -169,15 +150,15 @@ const useZoom = ( device: CameraDevice ): object => {
     .averageTouches( true )
     .activateAfterLongPress( 1 )
     .onBegin( () => {
-      isPanActive.value = true;
-      yDiff.value = 0;
+      yDiff.set( 0 );
+      isPanActive.set( true );
       onZoomStart( );
     } )
     .onChange( ev => {
-      yDiff.value += ev.changeY;
+      yDiff.set( value => value + ev.changeY );
       // Calculate new zoom value from pan (invert because minus pan is up)
       const newValue = interpolate(
-        yDiff.value,
+        yDiff.get( ),
         [PAN_ZOOM_MIN_DISTANCE, 0, PAN_ZOOM_MAX_DISTANCE],
         [-1, 0, 1],
         Extrapolation.CLAMP
@@ -185,7 +166,7 @@ const useZoom = ( device: CameraDevice ): object => {
       onZoomChange( newValue );
     } )
     .onEnd( () => {
-      isPanActive.value = false;
+      isPanActive.set( false );
     } );
 
   return {

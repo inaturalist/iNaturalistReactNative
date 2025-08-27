@@ -29,7 +29,7 @@ const IndeterminateProgressBar = ( {
 
   useEffect( () => {
     // withRepeat to repeat the animation
-    translateX.value = withRepeat(
+    translateX.set( withRepeat(
       // withDelay to add a delay to our animation
       withDelay(
         DURATION / 2,
@@ -39,13 +39,13 @@ const IndeterminateProgressBar = ( {
       ),
       // Set number of repetitions to -1 to loop indefinitely
       -1
-    );
+    ) );
   }, [translateX] );
 
   const progress = useAnimatedStyle( () => ( {
     width: PROGRESS_WIDTH,
     height: HEIGHT,
-    transform: [{ translateX: translateX.value }]
+    transform: [{ translateX: translateX.get( ) }]
   } ) );
 
   return (
