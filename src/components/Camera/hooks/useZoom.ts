@@ -29,8 +29,6 @@ const PAN_ZOOM_MIN_DISTANCE = -100;
 const PAN_ZOOM_MAX_DISTANCE = 100;
 
 const useZoom = ( device: CameraDevice ): object => {
-  "use no memo";
-
   const initialZoomTextValue = "1";
   const zoomButtonOptions = useMemo( () => {
     const options = [initialZoomTextValue];
