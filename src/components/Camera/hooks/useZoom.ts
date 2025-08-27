@@ -29,6 +29,8 @@ const PAN_ZOOM_MIN_DISTANCE = -100;
 const PAN_ZOOM_MAX_DISTANCE = 100;
 
 const useZoom = ( device: CameraDevice ): object => {
+  "use no memo";
+
   const initialZoomTextValue = "1";
   const zoomButtonOptions = useMemo( () => {
     const options = [initialZoomTextValue];
@@ -65,8 +67,11 @@ const useZoom = ( device: CameraDevice ): object => {
       : neutralZoom;
     zoom.value = newInitialZoom;
     startZoom.value = newInitialZoom;
-    // Shared values don't cause re-renders and including them in dependency arrays
-    // causes render-time reads, which violates Reanimated's threading model
+  // Shared values don't cause re-renders and including them in dependency arrays
+  // causes render-time reads, which violates Reanimated's threading model
+  // TODO: I am not sure how to make the react compiler happy here, so I disabled it
+  // for this hook
+  // eslint-disable-next-line react-hooks/react-compiler
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [device?.isMultiCam, minZoom, neutralZoom] );
 
@@ -84,8 +89,11 @@ const useZoom = ( device: CameraDevice ): object => {
   const onZoomStart = useCallback( ( ) => {
     // start pinch-to-zoom
     startZoom.value = zoom.value;
-    // Shared values don't cause re-renders and including them in dependency arrays
-    // causes render-time reads, which violates Reanimated's threading model
+  // Shared values don't cause re-renders and including them in dependency arrays
+  // causes render-time reads, which violates Reanimated's threading model
+  // TODO: I am not sure how to make the react compiler happy here, so I disabled it
+  // for this hook
+  // eslint-disable-next-line react-hooks/react-compiler
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [] );
 
@@ -121,8 +129,11 @@ const useZoom = ( device: CameraDevice ): object => {
     zoom.value = newZoom;
 
     runOnJS( updateZoomTextValue )( newZoom );
-    // Shared values don't cause re-renders and including them in dependency arrays
-    // causes render-time reads, which violates Reanimated's threading model
+  // Shared values don't cause re-renders and including them in dependency arrays
+  // causes render-time reads, which violates Reanimated's threading model
+  // TODO: I am not sure how to make the react compiler happy here, so I disabled it
+  // for this hook
+  // eslint-disable-next-line react-hooks/react-compiler
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [maxZoomWithPinch, minZoom, updateZoomTextValue] );
 
