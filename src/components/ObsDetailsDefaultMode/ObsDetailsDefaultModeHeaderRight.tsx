@@ -14,11 +14,11 @@ import colors from "styles/tailwindColors";
 import HeaderKebabMenu from "./HeaderKebabMenu";
 
 interface Props {
-  belongsToCurrentUser?: boolean,
-  observationId: number,
-  uuid: string,
-  refetchSubscriptions: Function,
-  subscriptions: object
+  belongsToCurrentUser?: boolean;
+  observationId: number;
+  uuid: string;
+  refetchSubscriptions: () => void;
+  subscriptions: object;
 }
 
 const ObsDetailsDefaultModeHeaderRight = ( {
