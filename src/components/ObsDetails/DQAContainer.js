@@ -57,13 +57,9 @@ const DQAContainer = ( ): React.Node => {
 
   const setNotLoading = useCallback( () => {
     setLoadingMetric( "none" );
-    if ( loadingAgree ) {
-      setLoadingAgree( false );
-    }
-    if ( loadingDisagree ) {
-      setLoadingDisagree( false );
-    }
-  }, [loadingAgree, loadingDisagree] );
+    setLoadingAgree( false );
+    setLoadingDisagree( false );
+  }, [] );
 
   const setLoading = ( metric, vote ) => {
     setLoadingMetric( metric );
@@ -96,8 +92,7 @@ const DQAContainer = ( ): React.Node => {
     if ( !isRefetching ) {
       setNotLoading();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isRefetching] );
+  }, [isRefetching, setNotLoading] );
 
   const faveMutation = useAuthenticatedMutation(
     ( faveParams, optsWithAuth ) => faveObservation( faveParams, optsWithAuth ),
