@@ -29,7 +29,7 @@ const ObsDetailsDefaultModeHeaderRight = ( {
   subscriptions
 }: Props ) => {
   const navigation = useNavigation( );
-  const localObservation = useLocalObservation( uuid );
+  const { localObservation } = useLocalObservation( uuid );
   const { t } = useTranslation( );
   const navigateToObsEdit = useNavigateToObsEdit( );
 

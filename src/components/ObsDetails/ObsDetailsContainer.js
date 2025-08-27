@@ -18,7 +18,7 @@ import React, {
 import { Alert, LogBox } from "react-native";
 import Observation from "realmModels/Observation";
 import fetchTaxonAndSave from "sharedHelpers/fetchTaxonAndSave";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
 import {
   useAuthenticatedMutation,
   useAuthenticatedQuery,
@@ -213,7 +213,11 @@ const ObsDetailsContainer = ( ): Node => {
   } = state;
   const queryClient = useQueryClient( );
 
-  const localObservation = useLocalObservation( uuid );
+  const {
+    localObservation,
+    markDeletedLocally,
+    markViewedLocally
+  } = useLocalObservation( uuid );
 
   const fetchRemoteObservationEnabled = !!(
     !remoteObsWasDeleted
@@ -228,7 +232,7 @@ const ObsDetailsContainer = ( ): Node => {
     fetchRemoteObservationError
   } = useRemoteObservation( uuid, fetchRemoteObservationEnabled );
 
-  useMarkViewedMutation( localObservation, remoteObservation );
+  useMarkViewedMutation( localObservation, markViewedLocally, remoteObservation );
 
   // Translates identification-related params to local state
   useEffect( ( ) => {
@@ -264,15 +268,13 @@ const ObsDetailsContainer = ( ): Node => {
   }, [fetchRemoteObservationError?.status] );
   const confirmRemoteObsWasDeleted = useCallback( ( ) => {
     if ( localObservation ) {
-      safeRealmWrite( realm, ( ) => {
-        localObservation._deleted_at = new Date( );
-      }, "adding _deleted_at date in ObsDetailsContainer" );
+      markDeletedLocally( );
     }
     if ( navigation.canGoBack( ) ) navigation.goBack( );
   }, [
     localObservation,
-    navigation,
-    realm
+    markDeletedLocally,
+    navigation
   ] );
 
   const observation = localObservation || Observation.mapApiToRealm( remoteObservation );
