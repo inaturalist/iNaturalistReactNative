@@ -12,7 +12,13 @@ import { useTranslation } from "sharedHooks";
 const baseUrl = "https://www.inaturalist.org";
 
 interface Props {
-  taxon: object;
+  taxon: {
+    establishment_means?: {
+      place?: {
+        display_name?: string;
+      };
+    };
+  };
 }
 
 const EstablishmentMeans = ( { taxon }: Props ) => {
