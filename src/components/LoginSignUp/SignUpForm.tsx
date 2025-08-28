@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { Button } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import { t } from "i18next";
 import React, { useEffect, useRef, useState } from "react";
 import { TextInput, TouchableWithoutFeedback } from "react-native";

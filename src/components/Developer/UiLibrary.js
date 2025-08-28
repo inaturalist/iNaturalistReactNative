@@ -5,7 +5,7 @@ import {
 } from "components/SharedComponents";
 import {
   Pressable
-} from "components/styledComponents";
+} from "components/styledComponents.ts";
 import { sortBy } from "lodash";
 import type { Node } from "react";
 import React from "react";

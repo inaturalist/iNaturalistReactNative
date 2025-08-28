@@ -2,7 +2,7 @@
 
 import TakePhoto from "components/Camera/Buttons/TakePhoto.tsx";
 import { MediaNavButtons } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import type { Node } from "react";
 import React, { useMemo } from "react";
 import DeviceInfo from "react-native-device-info";

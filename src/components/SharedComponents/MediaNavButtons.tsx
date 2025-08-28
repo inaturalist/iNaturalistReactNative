@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import GreenCheckmark from "components/Camera/Buttons/GreenCheckmark.tsx";
 import { CloseButton } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
 import type { AnimatedStyle } from "react-native-reanimated";

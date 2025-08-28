@@ -6,7 +6,7 @@ import {
   SafeAreaView,
   ScrollView,
   View
-} from "components/styledComponents";
+} from "components/styledComponents.ts";
 import type { Node } from "react";
 import React, {
   useRef

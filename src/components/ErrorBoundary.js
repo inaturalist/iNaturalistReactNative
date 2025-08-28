@@ -7,7 +7,7 @@ import {
 import {
   SafeAreaView,
   ScrollView
-} from "components/styledComponents";
+} from "components/styledComponents.ts";
 import { t } from "i18next";
 import React from "react";
 import RNRestart from "react-native-restart";

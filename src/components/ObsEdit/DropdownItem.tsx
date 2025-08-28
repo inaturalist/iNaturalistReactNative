@@ -1,7 +1,7 @@
 import {
   Body2, INatIcon
 } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents.ts";
 import React from "react";
 
 interface Props {

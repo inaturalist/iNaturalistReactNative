@@ -3,7 +3,7 @@ import {
   Map,
   Modal
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import { t } from "i18next";
 import React, { useCallback, useMemo, useState } from "react";
 import Observation from "realmModels/Observation";

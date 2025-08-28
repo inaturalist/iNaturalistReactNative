@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { Button } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, { PropsWithChildren } from "react";
 import { getShadow } from "styles/global";
 

@@ -1,4 +1,4 @@
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
 import type { CameraDevice } from "react-native-vision-camera";

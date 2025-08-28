@@ -2,7 +2,7 @@
 import {
   Body2, Button, Heading4, ScrollViewWrapper
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import { t } from "i18next";
 import React from "react";
 import * as StoreReview from "react-native-store-review";

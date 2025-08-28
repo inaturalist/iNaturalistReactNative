@@ -1,7 +1,7 @@
 // @flow
 
 import { Body1 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import INaturalistLogo from "images/svg/inaturalist-white.svg";
 import type { Node } from "react";
 import React from "react";

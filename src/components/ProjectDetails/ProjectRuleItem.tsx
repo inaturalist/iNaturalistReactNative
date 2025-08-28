@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import { Body3, Button, DisplayTaxonName } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import _ from "lodash";
 import React, { useState } from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";

@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 import classNames from "classnames";
 import { INatIcon } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, {
   memo, PropsWithChildren, useEffect, useState
 } from "react";

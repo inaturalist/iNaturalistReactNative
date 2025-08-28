@@ -6,7 +6,7 @@ import { fetchProjectMembers } from "api/projects";
 import {
   ActivityIndicator, InfiniteScrollLoadingWheel
 } from "components/SharedComponents";
-import { SafeAreaView } from "components/styledComponents";
+import { SafeAreaView } from "components/styledComponents.ts";
 import UserList from "components/UserList/UserList.tsx";
 import React, { useCallback, useEffect, useMemo } from "react";
 import User from "realmModels/User.ts";

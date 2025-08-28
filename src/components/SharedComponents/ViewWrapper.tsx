@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import { Body1 } from "components/SharedComponents";
-import { SafeAreaView } from "components/styledComponents";
+import { SafeAreaView } from "components/styledComponents.ts";
 import type { PropsWithChildren } from "react";
 import * as React from "react";
 import { StatusBar } from "react-native";

@@ -4,7 +4,7 @@ import {
 } from "components/SharedComponents";
 import {
   View
-} from "components/styledComponents";
+} from "components/styledComponents.ts";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";

@@ -15,7 +15,7 @@ import {
   UnderlinedLink,
   UserText
 } from "components/SharedComponents";
-import { fontMonoClass, View } from "components/styledComponents";
+import { fontMonoClass, View } from "components/styledComponents.ts";
 import React from "react";
 
 /* eslint-disable i18next/no-literal-string */

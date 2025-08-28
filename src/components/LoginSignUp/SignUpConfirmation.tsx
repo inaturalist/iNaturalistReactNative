@@ -1,4 +1,4 @@
-import { ScrollView } from "components/styledComponents";
+import { ScrollView } from "components/styledComponents.ts";
 import { t } from "i18next";
 import React from "react";
 

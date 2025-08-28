@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import {
   CustomFlashList
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import UserListItem from "components/UserList/UserListItem.tsx";
 import _ from "lodash";
 import React from "react";

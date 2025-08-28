@@ -5,7 +5,7 @@ import {
   Body4,
   DisplayTaxonName
 } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents.ts";
 import React, { useEffect, useRef } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import type { RealmTaxon } from "realmModels/types";

@@ -3,7 +3,7 @@ import {
   Body2,
   INatIcon
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import { t } from "i18next";
 import * as React from "react";
 import { getShadow } from "styles/global";

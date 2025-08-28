@@ -4,7 +4,7 @@ import {
   INatIcon,
   List2
 } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents.ts";
 import React from "react";
 import { GestureResponderEvent } from "react-native";
 import { Switch } from "react-native-paper";

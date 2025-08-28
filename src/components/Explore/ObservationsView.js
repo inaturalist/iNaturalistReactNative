@@ -8,7 +8,7 @@ import {
 } from "api/observations";
 import useInfiniteExploreScroll from "components/Explore/hooks/useInfiniteExploreScroll";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import {
   useExplore
 } from "providers/ExploreContext.tsx";

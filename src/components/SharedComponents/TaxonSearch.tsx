@@ -5,7 +5,7 @@ import {
   SearchBar,
   ViewWrapper
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, { useCallback } from "react";
 import { FlatList } from "react-native";
 import type { RealmTaxon } from "realmModels/types";

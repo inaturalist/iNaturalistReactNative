@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import {
   Image, Pressable, View
-} from "components/styledComponents";
+} from "components/styledComponents.ts";
 import React, { useCallback } from "react";
 import { FlatList } from "react-native";
 import { useTranslation } from "sharedHooks";

@@ -1,7 +1,7 @@
 import { fontRegular } from "appConstants/fontFamilies.ts";
 import classNames from "classnames";
 import { INatIcon, INatIconButton } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, { useCallback, useRef, useState } from "react";
 import { Keyboard, TextInput as RNTextInput } from "react-native";
 import { TextInput, useTheme } from "react-native-paper";

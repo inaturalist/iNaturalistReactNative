@@ -4,7 +4,7 @@ import { authenticateUser } from "components/LoginSignUp/AuthenticationService.t
 import {
   Body1, Body2, Button, Heading4, INatIcon, INatIconButton, List2
 } from "components/SharedComponents";
-import { Image, View } from "components/styledComponents";
+import { Image, View } from "components/styledComponents.ts";
 import { t } from "i18next";
 import { RealmContext } from "providers/contexts.ts";
 import React, {

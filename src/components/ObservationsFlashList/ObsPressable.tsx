@@ -1,4 +1,4 @@
-import { Pressable } from "components/styledComponents";
+import { Pressable } from "components/styledComponents.ts";
 import React from "react";
 import type { RealmObservation } from "realmModels/types";
 import { useTranslation } from "sharedHooks";

@@ -9,7 +9,7 @@ import useZoom from "components/Camera/hooks/useZoom.ts";
 import {
   SafeAreaView,
   View
-} from "components/styledComponents";
+} from "components/styledComponents.ts";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, {

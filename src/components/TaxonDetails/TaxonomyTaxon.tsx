@@ -1,7 +1,7 @@
 import {
   INatIcon
 } from "components/SharedComponents";
-import { Pressable, Text, View } from "components/styledComponents";
+import { Pressable, Text, View } from "components/styledComponents.ts";
 import React from "react";
 import { accessibleTaxonName, generateTaxonPieces } from "sharedHelpers/taxon.ts";
 

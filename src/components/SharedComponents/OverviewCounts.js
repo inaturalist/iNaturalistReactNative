@@ -3,7 +3,7 @@
 import {
   ActivityIndicator, Body2, Heading6, INatIcon
 } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents.ts";
 import { t } from "i18next";
 import * as React from "react";
 import colors from "styles/tailwindColors";

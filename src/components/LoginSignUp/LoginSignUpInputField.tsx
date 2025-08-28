@@ -1,5 +1,5 @@
 import { Heading4 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, { forwardRef, Ref } from "react";
 import { TextInput as RNTextInput, TextInputProps } from "react-native";
 import { TextInput } from "react-native-paper";

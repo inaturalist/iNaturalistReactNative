@@ -4,7 +4,7 @@ import {
   Heading4,
   P
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import { round } from "lodash";
 import React from "react";
 import colors from "styles/tailwindColors";

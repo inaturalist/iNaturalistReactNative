@@ -1,6 +1,6 @@
 // @flow
 import { Body2 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import { compact } from "lodash";
 import type { Node } from "react";
 import React, { useMemo } from "react";

@@ -4,7 +4,7 @@ import {
   Heading4,
   ScrollViewWrapper
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import { t } from "i18next";
 import React from "react";
 import { openExternalWebBrowser } from "sharedHelpers/util.ts";

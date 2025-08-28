@@ -30,7 +30,7 @@
 // by @albullington, with modifications by @budowski to deal with overscroll
 // problems
 
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import type { Node } from "react";
 import React, {
   useEffect,

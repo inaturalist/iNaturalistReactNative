@@ -1,7 +1,7 @@
 import {
   Button
 } from "components/SharedComponents";
-import { ImageBackground } from "components/styledComponents";
+import { ImageBackground } from "components/styledComponents.ts";
 import LocationIndicatorIcon from "images/svg/location_indicator.svg";
 import React from "react";
 import { View } from "react-native";

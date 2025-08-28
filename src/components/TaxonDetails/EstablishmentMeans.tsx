@@ -2,7 +2,7 @@ import {
   Body2,
   Heading4
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import _ from "lodash";
 import * as React from "react";
 import { Trans } from "react-i18next";
