@@ -263,7 +263,7 @@ const CameraContainer = ( ) => {
       await logStageIfAICamera( "take_photo_error" );
       throw new Error( "Failed to take photo: missing camera" );
     }
-    const uri = await savePhotoToDocumentsDirectory( cameraPhoto );
+    const uri = await savePhotoToDocumentsDirectory( cameraPhoto, device );
     const newPhotoState = await updateTakePhotoStore( uri, options );
     if ( cameraType !== "AI" ) { setTakingPhoto( false ); }
     if ( options?.navigateImmediately ) {
