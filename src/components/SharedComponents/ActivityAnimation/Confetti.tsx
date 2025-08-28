@@ -14,6 +14,9 @@ import Animated, {
   useSharedValue,
   withTiming
 } from "react-native-reanimated";
+import {
+  type SharedValue
+} from "react-native-reanimated";
 import colors from "styles/tailwindColors";
 
 type ConfettiProps = PropsWithChildren<{
@@ -24,7 +27,7 @@ type ConfettiProps = PropsWithChildren<{
 type AnimatedElementProps = PropsWithChildren<{
   index: number
   count: number
-  animation: Animated.SharedValue<number>
+  animation: SharedValue<number>
   duration: number
 }>
 
@@ -46,20 +49,20 @@ const AnimatedElement = memo(
       transform: [
         {
           translateX: interpolate(
-            animation.value,
+            animation.get( ),
             [startTime, endTime],
             [start.x * width, end.x * width]
           )
         },
         {
           translateY: interpolate(
-            animation.value,
+            animation.get( ),
             [startTime, endTime],
             [start.y * height, ( end.y * height ) / 2]
           )
         },
         {
-          rotate: `${interpolate( animation.value, [startTime, endTime], [0, rotation] )}rad`
+          rotate: `${interpolate( animation.get( ), [startTime, endTime], [0, rotation] )}rad`
         },
         {
           scale
@@ -75,7 +78,7 @@ const Confetti = ( { count, duration = 5000 }: ConfettiProps ) => {
   const [autoDestroy, setAutoDestroy] = useState( false );
 
   useEffect( () => {
-    animation.value = withTiming(
+    animation.set( withTiming(
       1,
       {
         duration,
@@ -86,7 +89,7 @@ const Confetti = ( { count, duration = 5000 }: ConfettiProps ) => {
           runOnJS( setAutoDestroy )( true );
         }
       }
-    );
+    ) );
   }, [
     animation,
     duration
@@ -94,7 +97,7 @@ const Confetti = ( { count, duration = 5000 }: ConfettiProps ) => {
 
   const fadeOutBeforeDestroy = useSharedValue( 300 / duration );
   const stylez = useAnimatedStyle( () => ( {
-    opacity: interpolate( animation.value, [1 - fadeOutBeforeDestroy.value, 1], [1, 0] )
+    opacity: interpolate( animation.get( ), [1 - fadeOutBeforeDestroy.get( ), 1], [1, 0] )
   } ) );
 
   if ( autoDestroy ) {

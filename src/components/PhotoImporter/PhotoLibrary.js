@@ -185,8 +185,11 @@ const PhotoLibrary = ( ): Node => {
 
       updatedCurrentObservation = Observation
         .appendObsPhotos( obsPhotos, updatedCurrentObservation );
-      observations[currentObservationIndex] = updatedCurrentObservation;
-      updateObservations( observations );
+
+      const updatedObservations = [...observations];
+      updatedObservations[currentObservationIndex] = updatedCurrentObservation;
+      updateObservations( updatedObservations );
+
       navToObsEdit();
       setPhotoLibraryShown( false );
     } else if ( selectedImages.length === 1 ) {

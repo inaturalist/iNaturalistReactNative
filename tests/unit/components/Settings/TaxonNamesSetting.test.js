@@ -25,7 +25,15 @@ jest.mock( "sharedHooks", () => ( {
   useCurrentUser: () => mockUser
 } ) );
 
-jest.mock( "sharedHelpers/safeRealmWrite", () => jest.fn( ( _, callback ) => callback() ) );
+jest.mock( "realmModels/User.ts", () => ( {
+  __esModule: true,
+  default: {
+    updatePreferences: jest.fn( ( _, options ) => {
+      mockUser.prefers_common_names = options.prefers_common_names;
+      mockUser.prefers_scientific_name_first = options.prefers_scientific_name_first;
+    } )
+  }
+} ) );
 
 describe( "TaxonNamesSetting", () => {
   test( "toggles between the three name display options correctly", () => {

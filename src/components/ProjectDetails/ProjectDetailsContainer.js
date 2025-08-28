@@ -9,7 +9,7 @@ import {
   fetchProjectMembers, fetchProjectPosts, fetchProjects, joinProject, leaveProject
 } from "api/projects";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import User from "realmModels/User.ts";
 import { log } from "sharedHelpers/logger";
 import { useAuthenticatedMutation, useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
@@ -152,19 +152,33 @@ const ProjectDetailsContainer = ( ): Node => {
     }
   };
 
-  if ( project ) {
-    project.members_count = projectMembers?.total_results;
-    project.journal_posts_count = projectPosts;
-    project.observations_count = projectStats?.total_results;
-    project.species_count = speciesCounts?.total_results;
-    project.current_user_is_member = currentMembership === 1;
-    project.current_user_observations_count = usersObservations?.total_results;
-    project.place = projectPlace;
-  }
+  const enrichedProject = useMemo( () => {
+    if ( !project ) return null;
+
+    return {
+      ...project,
+      members_count: projectMembers?.total_results,
+      journal_posts_count: projectPosts,
+      observations_count: projectStats?.total_results,
+      species_count: speciesCounts?.total_results,
+      current_user_is_member: currentMembership === 1,
+      current_user_observations_count: usersObservations?.total_results,
+      place: projectPlace
+    };
+  }, [
+    project,
+    projectMembers?.total_results,
+    projectPosts,
+    projectStats?.total_results,
+    speciesCounts?.total_results,
+    currentMembership,
+    usersObservations?.total_results,
+    projectPlace
+  ] );
 
   return (
     <ProjectDetails
-      project={project}
+      project={enrichedProject}
       joinProject={handleJoinProjectPress}
       leaveProject={( ) => {
         setLoading( true );

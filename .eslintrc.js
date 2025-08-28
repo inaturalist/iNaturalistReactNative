@@ -98,6 +98,7 @@ module.exports = {
     // The following rules are made available via `eslint-plugin-react-hooks`
     "react-hooks/rules-of-hooks": 2,
     "react-hooks/exhaustive-deps": 2,
+    "react-hooks/react-compiler": "error",
 
     "react-native/no-inline-styles": "error",
 

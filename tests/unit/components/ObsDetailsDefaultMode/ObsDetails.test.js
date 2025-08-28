@@ -76,7 +76,9 @@ const mockUser = factory( "LocalUser", {
 
 jest.mock( "sharedHooks/useLocalObservation", () => ( {
   __esModule: true,
-  default: ( ) => null
+  default: jest.fn( () => ( {
+    localObservation: null
+  } ) )
 } ) );
 
 jest.mock( "sharedHooks/useCurrentUser", () => ( {
@@ -183,7 +185,9 @@ describe( "ObsDetails", () => {
         firstIdentification
       ];
 
-      jest.spyOn( useLocalObservation, "default" ).mockImplementation( () => null );
+      jest.spyOn( useLocalObservation, "default" ).mockImplementation( () => ( {
+        localObservation: null
+      } ) );
 
       useAuthenticatedQuery.mockReturnValue( {
         data: otherUserObservation

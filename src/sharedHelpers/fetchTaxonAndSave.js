@@ -1,7 +1,7 @@
 import { fetchTaxon } from "api/taxa";
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import Taxon from "realmModels/Taxon";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
 
 async function fetchTaxonAndSave( id, realm, params = {}, opts = {} ) {
   const options = { ...opts };

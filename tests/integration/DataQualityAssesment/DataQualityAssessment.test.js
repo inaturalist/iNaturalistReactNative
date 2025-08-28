@@ -49,7 +49,9 @@ jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
 
 jest.mock( "sharedHooks/useLocalObservation", () => ( {
   __esModule: true,
-  default: jest.fn( ( ) => mockObservation )
+  default: jest.fn( ( ) => ( {
+    localObservation: mockObservation
+  } ) )
 } ) );
 
 useRoute.mockImplementation( ( ) => ( {

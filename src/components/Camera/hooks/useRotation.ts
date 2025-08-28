@@ -29,18 +29,17 @@ const useRotation = ( ) => {
   const rotation = useSharedValue( 0 );
 
   useEffect( ( ) => {
-    rotation.value = rotationValue( deviceOrientation );
+    rotation.set( rotationValue( deviceOrientation ) );
   }, [deviceOrientation, rotation] );
 
   const rotatableAnimatedStyle = useAnimatedStyle(
     () => ( {
       transform: [
         {
-          rotateZ: withTiming( `${-1 * ( rotation?.value || 0 )}deg` )
+          rotateZ: withTiming( `${-1 * ( rotation.get( ) || 0 )}deg` )
         }
       ]
-    } ),
-    [deviceOrientation]
+    } )
   );
 
   return {

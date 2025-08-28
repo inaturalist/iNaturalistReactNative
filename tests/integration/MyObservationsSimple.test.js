@@ -4,7 +4,7 @@
 import { screen, waitFor } from "@testing-library/react-native";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer.tsx";
 import React from "react";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderAppWithComponent } from "tests/helpers/render";

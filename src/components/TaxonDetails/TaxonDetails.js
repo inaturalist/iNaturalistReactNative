@@ -122,7 +122,7 @@ const TaxonDetails = ( ): Node => {
   const obsUuid = fromObsDetails
     ? _.find( usableRoutes.slice().reverse(), r => r.name === "ObsDetails" ).params.uuid
     : null;
-  const localObservation = useLocalObservation( obsUuid );
+  const { localObservation } = useLocalObservation( obsUuid );
   const { remoteObservation } = useRemoteObservation(
     obsUuid,
     !localObservation && !currentEditingObservation

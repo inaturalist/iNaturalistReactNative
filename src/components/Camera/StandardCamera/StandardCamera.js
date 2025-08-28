@@ -72,6 +72,8 @@ const StandardCamera = ( {
   newPhotoUris,
   setNewPhotoUris
 }: Props ): Node => {
+  "use no memo";
+
   const hasFlash = device?.hasFlash;
   const {
     animatedProps,
@@ -127,6 +129,9 @@ const StandardCamera = ( {
       // Reset camera zoom every time we get into a fresh camera view
       resetZoom( );
       prepareCamera();
+      // TODO: I am not sure how to make the react compiler happy here, so I disabled it
+      // for this hook
+      // eslint-disable-next-line react-hooks/react-compiler
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [] )
   );

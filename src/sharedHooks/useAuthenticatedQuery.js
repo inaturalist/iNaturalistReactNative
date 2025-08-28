@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { getJWT, isLoggedIn } from "components/LoginSignUp/AuthenticationService.ts";
 import { useEffect, useState } from "react";
 import { handleRetryDelay, reactQueryRetry } from "sharedHelpers/logging";
-import { useSafeRoute } from "sharedHooks";
 
 const LOGGED_IN_UNKNOWN = null;
 
@@ -14,7 +13,6 @@ const useAuthenticatedQuery = (
   queryOptions = {}
 ) => {
   const [userLoggedIn, setUserLoggedIn] = useState( LOGGED_IN_UNKNOWN );
-  const route = useSafeRoute( );
 
   useEffect( ( ) => {
     const checkAuth = async ( ) => {
@@ -50,9 +48,7 @@ const useAuthenticatedQuery = (
     ...queryOptions,
     retry: queryOptions.retry !== false
       ? ( failureCount, error ) => reactQueryRetry( failureCount, error, {
-        queryKey,
-        routeName: route?.name,
-        routeParams: route?.params
+        queryKey
       } )
       : false,
     retryDelay: ( failureCount, error ) => handleRetryDelay( failureCount, error ),

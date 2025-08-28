@@ -3,13 +3,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import {
   markObservationUpdatesViewed
 } from "api/observations";
-import { RealmContext } from "providers/contexts.ts";
 import {
   useEffect,
   useState
 } from "react";
 import Observation from "realmModels/Observation";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedMutation,
   useCurrentUser,
@@ -18,14 +16,12 @@ import {
 import { fetchObservationUpdatesKey } from "sharedHooks/useObservationsUpdates";
 import useStore from "stores/useStore";
 
-const { useRealm } = RealmContext;
-
 const useMarkViewedMutation = (
   localObservation: Object,
+  markViewedLocally: ( ) => void,
   remoteObservation: Object
 ) => {
   const currentUser = useCurrentUser( );
-  const realm = useRealm( );
   const setObservationMarkedAsViewedAt = useStore(
     state => state.setObservationMarkedAsViewedAt
   );
@@ -38,15 +34,6 @@ const useMarkViewedMutation = (
   const { refetch: refetchObservationUpdates } = useObservationsUpdates(
     !!currentUser && !!observation
   );
-
-  const markViewedLocally = async ( ) => {
-    if ( !localObservation ) { return; }
-    safeRealmWrite( realm, ( ) => {
-      // Flags if all comments and identifications have been viewed
-      localObservation.comments_viewed = true;
-      localObservation.identifications_viewed = true;
-    }, "marking viewed locally in ObsDetailsContainer" );
-  };
 
   const markViewedMutation = useAuthenticatedMutation(
     ( viewedParams, optsWithAuth ) => markObservationUpdatesViewed( viewedParams, optsWithAuth ),

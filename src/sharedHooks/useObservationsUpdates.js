@@ -3,7 +3,7 @@
 import { fetchObservationUpdates } from "api/observations";
 import { RealmContext } from "providers/contexts.ts";
 import { useEffect } from "react";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
 import { useAuthenticatedQuery } from "sharedHooks";
 
 const { useRealm } = RealmContext;

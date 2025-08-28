@@ -3,7 +3,7 @@
 import { RealmContext } from "providers/contexts.ts";
 import { useCallback, useEffect } from "react";
 import { AppState } from "react-native";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
 
 const { useRealm } = RealmContext;
 

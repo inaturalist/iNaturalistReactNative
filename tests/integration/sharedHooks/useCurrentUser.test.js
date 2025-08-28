@@ -1,5 +1,5 @@
 import { renderHook } from "@testing-library/react-native";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
 import { useCurrentUser } from "sharedHooks";
 import factory from "tests/factory";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";

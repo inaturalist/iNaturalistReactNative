@@ -6,7 +6,7 @@ import {
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useCallback } from "react";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 

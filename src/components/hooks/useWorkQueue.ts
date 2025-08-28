@@ -4,7 +4,7 @@ import { RealmContext } from "providers/contexts.ts";
 import { useEffect, useState } from "react";
 import QueueItem from "realmModels/QueueItem.ts";
 import { log } from "sharedHelpers/logger";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
 import {
   useAuthenticatedMutation
 } from "sharedHooks";

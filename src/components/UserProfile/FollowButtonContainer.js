@@ -59,7 +59,7 @@ const FollowButtonContainer = ( {
   } );
 
   const updateRelationshipsMutate = ( ) => updateRelationshipsMutation.mutate( {
-    id: relationship.id,
+    id: relationship?.id,
     relationship: {
       following: true
     }
