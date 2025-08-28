@@ -27,7 +27,7 @@ const EstablishmentMeans = ( { taxon }: Props ) => {
   const establishmentMeans = taxon?.establishment_means?.establishment_means;
 
   const displayEstablishmentMeansText = ( ) => {
-    const placeName = taxon.establishment_means.place.display_name;
+    const placeName = taxon?.establishment_means?.place.display_name;
     if ( establishmentMeans === "native" ) {
       return t( "Native-to-place", { place: placeName } );
     }
