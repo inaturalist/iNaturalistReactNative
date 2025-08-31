@@ -143,10 +143,6 @@ module.exports = {
     }],
     "@typescript-eslint/no-unsafe-function-type": 1
   },
-  // need this so jest doesn't show as undefined in jest.setup.js
-  env: {
-    jest: true
-  },
   ignorePatterns: ["/coverage/*", "/vendor/*", "**/flow-typed"],
   settings: {
     "import/resolver": {
@@ -170,6 +166,15 @@ module.exports = {
       rules: {
         "@typescript-eslint/no-require-imports": "off"
       }
+    },
+    {
+      files: ["tests/**/*", "__mocks__/**/*", "e2e/**/*"],
+      env: { jest: true }
+    },
+    {
+      files: ["tests/**/*"],
+      plugins: ["testing-library"],
+      extends: ["plugin:testing-library/react"]
     }
   ]
 };
