@@ -350,6 +350,7 @@ const AICamera = ( {
         zoomTextValue={zoomTextValue}
         useLocation={useLocation}
         toggleLocation={toggleLocation}
+        deleteSentinelFile={() => deleteSentinelFile( sentinelFileName )}
       />
     </>
   );

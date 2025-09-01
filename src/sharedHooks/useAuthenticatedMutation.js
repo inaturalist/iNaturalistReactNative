@@ -33,8 +33,8 @@ const useAuthenticatedMutation = (
         timestamp: new Date().toISOString(),
         errorMessage: error.message || "JWT is missing or invalid"
       };
-
-      logger.error( "401 JWT error in mutation:", errorContext );
+      
+      logger.error( "401 JWT error in mutation:", JSON.stringify( errorContext ) );
 
       // Try to refresh the token explicitly
       // Important: We don't await this to avoid blocking the error handling
@@ -54,7 +54,7 @@ const useAuthenticatedMutation = (
         timestamp: new Date().toISOString()
       };
 
-      logger.error( "429 in mutation:", errorContext );
+      logger.error( "429 in mutation:", JSON.stringify( errorContext ) );
 
       return handleError( error, {
         context: errorContext,

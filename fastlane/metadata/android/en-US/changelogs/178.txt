@@ -1,0 +1,7 @@
+UPDATED
+* Update some dependencies (e.g. react-native-maps)
+
+FIXED
+* Entering "time" into Project search causes crash
+* Potential-disagreement-sheet not showing up
+* Do not log empty sentinel files to the server

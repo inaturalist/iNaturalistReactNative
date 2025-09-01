@@ -10,12 +10,17 @@ import colors from "styles/tailwindColors";
 
 interface Props {
   rotatableAnimatedStyle: ViewStyle;
+  deleteSentinelFile: ( ) => Promise<void>;
   disabled?: boolean;
 }
 
 const isTablet = DeviceInfo.isTablet();
 
-const PhotoLibraryIcon = ( { rotatableAnimatedStyle, disabled }: Props ) => {
+const PhotoLibraryIcon = ( {
+  rotatableAnimatedStyle,
+  deleteSentinelFile,
+  disabled
+}: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
 
@@ -33,11 +38,14 @@ const PhotoLibraryIcon = ( { rotatableAnimatedStyle, disabled }: Props ) => {
           "border-2",
           "rounded"
         )}
-        onPress={( ) => navigation.push( "PhotoLibrary", {
-          cmonBack: true,
-          lastScreen: "Camera",
-          fromAICamera: true
-        } )}
+        onPress={() => {
+          deleteSentinelFile();
+          navigation.push( "PhotoLibrary", {
+            cmonBack: true,
+            lastScreen: "Camera",
+            fromAICamera: true
+          } );
+        }}
         accessibilityLabel={t( "Photo-importer" )}
         accessibilityHint={t( "Navigates-to-photo-importer" )}
         icon="photo-library"

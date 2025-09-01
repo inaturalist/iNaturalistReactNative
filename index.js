@@ -110,7 +110,7 @@ setNativeExceptionHandler(
       // Store crash data for retrieval on next app launch
       zustandStorage.setItem( "LAST_CRASH_DATA", JSON.stringify( crashData ) );
 
-      logger.error( `Native Error: ${exceptionString}`, crashData );
+      logger.error( `Native Error: ${exceptionString}`, JSON.stringify( crashData ) );
     } catch ( e ) {
       // Last-ditch attempt to log something
       logger.error( `Native Error: ${exceptionString} (failed to save context)`, e );

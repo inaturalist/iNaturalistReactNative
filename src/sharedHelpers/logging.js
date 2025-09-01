@@ -94,14 +94,14 @@ function reactQueryRetry( failureCount, error, options = {} ) {
       if ( apiError.status === 401 || apiError.status === 403 ) {
         // If we get a 401 or 403, call getJWT
         // which has a timestamp check if we need to refresh the token
-        logger.error( "JWT error detected in React Query retry:", {
+        logger.error( "JWT error detected in React Query retry:", JSON.stringify( {
           queryKey: options?.queryKey
             ? inspect( options.queryKey )
             : "unknown",
           url: error?.response?.url,
           routeName: options?.routeName || error?.routeName,
           timestamp: new Date().toISOString()
-        } );
+        } ) );
 
         try {
           await getJWT( true ); // Force refresh token

@@ -454,6 +454,7 @@ const ObsDetailsContainer = ( ): Node => {
     if ( showPotentialDisagreementSheet ) return;
     if ( showSuggestIdSheet ) return;
     if ( identBodySheetShown ) return;
+    if ( !observation ) return;
     let observationTaxon = observation?.taxon;
     if (
       observation?.prefers_community_taxon === false
@@ -483,6 +484,7 @@ const ObsDetailsContainer = ( ): Node => {
     showPotentialDisagreementSheet,
     identTaxon,
     identTaxonFromVision,
+    observation,
     observation?.community_taxon,
     observation?.taxon,
     observation?.prefers_community_taxon,
@@ -505,11 +507,11 @@ const ObsDetailsContainer = ( ): Node => {
 
   const showActivityTab = obsDetailsTab === OBS_DETAILS_TAB.ACTIVITY;
 
-  const invalidateQueryAndRefetch = ( ) => {
+  const invalidateQueryAndRefetch = useCallback( ( ) => {
     invalidateRemoteObservationFetch( );
     refetchRemoteObservation( );
     refetchObservationUpdates( );
-  };
+  }, [invalidateRemoteObservationFetch, refetchObservationUpdates, refetchRemoteObservation] );
 
   const closeAgreeWithIdSheet = ( ) => {
     dispatch( {
@@ -557,6 +559,8 @@ const ObsDetailsContainer = ( ): Node => {
   }, [createIdentificationMutation, newIdentification, uuid] );
 
   const onSuggestId = useCallback( ( ) => {
+    if ( !observation ) return;
+
     // based on disagreement code in iNat web
     // https://github.com/inaturalist/inaturalist/blob/30a27d0eb79dd17af38292785b0137e6024bbdb7/app/webpack/observations/show/ducks/observation.js#L827-L838
     let observationTaxon = observation?.taxon;
@@ -580,10 +584,7 @@ const ObsDetailsContainer = ( ): Node => {
     }
   }, [
     doSuggestId,
-    observation?.community_taxon,
-    observation?.prefers_community_taxon,
-    observation?.taxon,
-    observation?.user?.prefers_community_taxa,
+    observation,
     identTaxon
   ] );
 
