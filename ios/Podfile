@@ -63,8 +63,6 @@ target "iNaturalistReactNative" do
 
   pod "react-native-config", path: "../node_modules/react-native-config"
 
-  pod "RNVectorIcons", path: "../node_modules/react-native-vector-icons"
-
   envfiles = {
     "Debug" => "$(PODS_ROOT)/../../.env.staging",
     "Release" => "$(PODS_ROOT)/../../.env"

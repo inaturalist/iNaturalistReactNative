@@ -1929,27 +1929,6 @@ PODS:
     - React-Core
   - RNSVG (15.12.0):
     - React-Core
-  - RNVectorIcons (10.2.0):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.11.18.00)
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
   - SocketRocket (0.7.1)
   - VisionCamera (4.7.0):
     - VisionCamera/Core (= 4.7.0)
@@ -2078,7 +2057,6 @@ DEPENDENCIES:
   - RNShareMenu (from `../node_modules/react-native-share-menu`)
   - RNStoreReview (from `../node_modules/react-native-store-review`)
   - RNSVG (from `../node_modules/react-native-svg`)
-  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - VisionCamera (from `../node_modules/react-native-vision-camera`)
   - VisionCameraPluginInatVision (from `../node_modules/vision-camera-plugin-inatvision`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -2312,8 +2290,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-store-review"
   RNSVG:
     :path: "../node_modules/react-native-svg"
-  RNVectorIcons:
-    :path: "../node_modules/react-native-vector-icons"
   VisionCamera:
     :path: "../node_modules/react-native-vision-camera"
   VisionCameraPluginInatVision:
@@ -2437,12 +2413,11 @@ SPEC CHECKSUMS:
   RNShareMenu: e1cdfa3b9af89416afc75a80377cfd0de4f30ded
   RNStoreReview: 613c43e9132998ed41a65946e20c223c91b36464
   RNSVG: ae1766b2492f8915a1ee25095871f00a4f132093
-  RNVectorIcons: f7a99433a71f4b38891c14c64b21fc521d064392
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   VisionCamera: 1470a7fa013e22de7481640a4d9c597ad6f13919
   VisionCameraPluginInatVision: ad9a001b70676d2f9b0ea22f60c04d5fed3d3a52
   Yoga: eca8dd841b7cd47d82d66be58af8e3aeb819012f
 
-PODFILE CHECKSUM: 3877bea0ea18a99bd3e08a1a6dc6ff4eb7c6dd77
+PODFILE CHECKSUM: 5c7a85b8fc0a51e972a87e39194f661a51e0d872
 
 COCOAPODS: 1.15.2
