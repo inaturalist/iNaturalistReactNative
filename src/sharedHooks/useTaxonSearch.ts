@@ -7,7 +7,7 @@ import {
 import Realm, { UpdateMode } from "realm";
 import Taxon from "realmModels/Taxon";
 import type { RealmTaxon } from "realmModels/types";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
 import validateRealmSearch from "sharedHelpers/validateRealmSearch.ts";
 import { useAuthenticatedQuery, useIconicTaxa } from "sharedHooks";
 

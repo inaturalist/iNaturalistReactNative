@@ -3,7 +3,7 @@ import { Alert } from "react-native";
 import { getNowISO } from "sharedHelpers/dateAndTime.ts";
 import { log } from "sharedHelpers/logger";
 import { readExifFromMultiplePhotos } from "sharedHelpers/parseExif";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
 import * as uuid from "uuid";
 
 import Application from "./Application";

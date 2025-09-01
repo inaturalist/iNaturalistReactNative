@@ -1,5 +1,5 @@
 import { Realm } from "@realm/react";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
 
 const MAX_TRIES = 3;
 

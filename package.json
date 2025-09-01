@@ -166,6 +166,7 @@
     "@types/sanitize-html": "^2.13.0",
     "@typescript-eslint/eslint-plugin": "^8.32.1",
     "babel-plugin-module-resolver": "^5.0.0",
+    "babel-plugin-react-compiler": "^19.1.0-rc.2",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "chalk": "^5.4.1",
@@ -179,6 +180,7 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-module-resolver": "^1.5.0",
+    "eslint-plugin-react-hooks": "^6.0.0-rc.1",
     "eslint-plugin-react-native": "^5.0.0",
     "eslint-plugin-react-native-a11y": "^3.5.1",
     "eslint-plugin-simple-import-sort": "^12.0.0",
@@ -202,6 +204,9 @@
     "ts-node": "^10.9.2",
     "typescript": "5.0.4",
     "yargs": "^17.7.2"
+  },
+  "overrides": {
+    "eslint-plugin-react-hooks": "^6.0.0-rc.1"
   },
   "engines": {
     "node": ">=18"

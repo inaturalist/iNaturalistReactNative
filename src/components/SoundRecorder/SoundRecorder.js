@@ -85,8 +85,10 @@ const SoundRecorder = (): Node => {
       } );
       updatedCurrentObservation = Observation
         .appendObsSounds( [obsSound], updatedCurrentObservation );
-      observations[currentObservationIndex] = updatedCurrentObservation;
-      updateObservations( observations );
+
+      const updatedObservations = [...observations];
+      updatedObservations[currentObservationIndex] = updatedCurrentObservation;
+      updateObservations( updatedObservations );
     }
   };
 

@@ -63,9 +63,9 @@ const ActivityItem = ( {
   const navToTaxonDetails = ( ) => (
     navigation.navigate( {
       // Ensure button mashing doesn't open multiple TaxonDetails instances
-      key: `${route.key}-ActivityItem-TaxonDetails-${taxon.id}`,
+      key: `${route.key}-ActivityItem-TaxonDetails-${taxon?.id}`,
       name: "TaxonDetails",
-      params: { id: taxon.id }
+      params: { id: taxon?.id }
     } )
   );
 

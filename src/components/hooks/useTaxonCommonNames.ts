@@ -2,7 +2,7 @@ import { fetchSpeciesCounts } from "api/observations";
 import { RealmContext } from "providers/contexts.ts";
 import { useEffect, useState } from "react";
 import Taxon from "realmModels/Taxon";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
 import { useAuthenticatedQuery, useLocationPermission } from "sharedHooks";
 
 import fetchCoarseUserLocation from "../../sharedHelpers/fetchCoarseUserLocation";

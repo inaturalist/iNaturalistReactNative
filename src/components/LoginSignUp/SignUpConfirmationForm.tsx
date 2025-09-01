@@ -66,7 +66,8 @@ const SignUpConfirmationForm = ( ) => {
   const register = async ( ) => {
     if ( loading ) { return; }
     setLoading( true );
-    user.login = username;
+    const processedUser = { ...user };
+    processedUser.login = username;
     // If password is less than 6 characters set error and return
     if ( password.length < 6 ) {
       setError( t( "Please-make-sure-your-password-is-at-least-6-characters" ) );
@@ -79,14 +80,14 @@ const SignUpConfirmationForm = ( ) => {
       setLoading( false );
       return;
     }
-    user.password = password;
+    processedUser.password = password;
     // Because checked === true, the following items are considered to be consented too
-    user.pi_consent = true;
-    user.data_transfer_consent = true;
-    user.preferred_observation_license = "CC-BY-NC";
-    user.preferred_photo_license = "CC-BY-NC";
-    user.preferred_sound_license = "CC-BY-NC";
-    const registrationError = await registerUser( user );
+    processedUser.pi_consent = true;
+    processedUser.data_transfer_consent = true;
+    processedUser.preferred_observation_license = "CC-BY-NC";
+    processedUser.preferred_photo_license = "CC-BY-NC";
+    processedUser.preferred_sound_license = "CC-BY-NC";
+    const registrationError = await registerUser( processedUser );
     if ( registrationError ) {
       // Currently the error is a string coming directly from the server
       if ( registrationError === "Username has already been taken" ) {
@@ -97,7 +98,7 @@ const SignUpConfirmationForm = ( ) => {
       setLoading( false );
       return;
     }
-    const success = await authenticateUser( user.login, user.password, realm );
+    const success = await authenticateUser( processedUser.login, processedUser.password, realm );
     setLoading( false );
     if ( !success ) {
       navigation.navigate( "Login" );

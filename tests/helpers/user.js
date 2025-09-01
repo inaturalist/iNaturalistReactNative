@@ -12,7 +12,7 @@ import inatjs from "inaturalistjs";
 import nock from "nock";
 import RNSInfo from "react-native-sensitive-info";
 import changeLanguage from "sharedHelpers/changeLanguage.ts";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
 import { makeResponse } from "tests/factory";
 
 const TEST_JWT = "test-json-web-token";

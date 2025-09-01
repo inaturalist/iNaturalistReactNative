@@ -5,7 +5,7 @@ import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/r
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer.tsx";
 import React from "react";
 import { measureRenders } from "reassure";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
 import factory from "tests/factory";
 import { queryClient } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";

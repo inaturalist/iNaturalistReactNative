@@ -4,7 +4,7 @@ import { RealmContext } from "providers/contexts.ts";
 import { useEffect, useState } from "react";
 import { UpdateMode } from "realm";
 import Taxon from "realmModels/Taxon";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
 import { useAuthenticatedQuery } from "sharedHooks";
 
 const { useRealm } = RealmContext;

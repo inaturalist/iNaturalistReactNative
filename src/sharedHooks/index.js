@@ -25,7 +25,6 @@ export { default as useObservationUpdatesWhenFocused } from "./useObservationUpd
 export { default as usePerformance } from "./usePerformance";
 export { default as useQuery } from "./useQuery";
 export { default as useRemoteObservation } from "./useRemoteObservation";
-export { default as useSafeRoute } from "./useSafeRoute";
 export { default as useScrollToOffset } from "./useScrollToOffset";
 export { default as useShare } from "./useShare";
 export { default as useStoredLayout } from "./useStoredLayout";

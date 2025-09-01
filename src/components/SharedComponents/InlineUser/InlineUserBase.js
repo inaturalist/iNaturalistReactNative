@@ -70,7 +70,7 @@ const InlineUserBase = ( {
       accessibilityLabel={t( "User", { userHandle } )}
       accessibilityHint={t( "Navigates-to-user-profile" )}
       onPress={() => {
-        navigation.navigate( "UserProfile", { userId: user.id } );
+        navigation.navigate( "UserProfile", { userId: user?.id } );
       }}
     >
       <View className="mr-[7px]">{renderUserIcon()}</View>
