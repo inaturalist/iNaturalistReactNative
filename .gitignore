@@ -91,7 +91,7 @@ artifacts/
 *.log
 
 # VisualStudioCode #
-.vscode
+.vscode/settings.json
 
 # CV Model #
 **/assets/**/*.csv
