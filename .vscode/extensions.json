@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "sysoev.vscode-open-in-github",
+    "usernamehw.errorlens",
+    "wix.vscode-import-cost"
+  ]
+}
