@@ -11,7 +11,7 @@ import {
   INatIcon,
   INatIconButton
 } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents.ts";
 import { useExplore } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useState } from "react";

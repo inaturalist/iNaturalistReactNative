@@ -2,7 +2,7 @@ import classnames from "classnames";
 import {
   Body3
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React from "react";
 import useTranslation from "sharedHooks/useTranslation.ts";
 import { getShadow } from "styles/global";

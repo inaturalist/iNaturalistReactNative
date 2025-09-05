@@ -3,7 +3,7 @@ import classnames from "classnames";
 import {
   INatIcon
 } from "components/SharedComponents";
-import { Image, View } from "components/styledComponents";
+import { Image, View } from "components/styledComponents.ts";
 import * as React from "react";
 import colors from "styles/tailwindColors";
 

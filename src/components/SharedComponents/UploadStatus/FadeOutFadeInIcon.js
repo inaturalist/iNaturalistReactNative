@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, { ReactComponent } from "react";
 import Reanimated, {
   FadeIn, Keyframe

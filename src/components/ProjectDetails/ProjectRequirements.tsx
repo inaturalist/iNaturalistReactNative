@@ -4,7 +4,7 @@ import {
 } from "api/projects";
 import ProjectListItem from "components/ProjectList/ProjectListItem.tsx";
 import { ActivityIndicator, ScrollViewWrapper } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import _ from "lodash";
 import React from "react";
 import { useAuthenticatedQuery, useTranslation } from "sharedHooks";

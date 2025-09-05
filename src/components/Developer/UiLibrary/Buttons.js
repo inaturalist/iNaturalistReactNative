@@ -11,7 +11,7 @@ import {
   INatIconButton,
   ScrollViewWrapper
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, { useState } from "react";
 import { Alert } from "react-native";
 import colors from "styles/tailwindColors";

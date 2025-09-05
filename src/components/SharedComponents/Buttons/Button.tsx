@@ -1,7 +1,7 @@
 import { tailwindFontBold } from "appConstants/fontFamilies.ts";
 import classnames from "classnames";
 import { ActivityIndicator, Heading4, INatIcon } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents.ts";
 import React, { useRef, useState } from "react";
 import { AccessibilityRole, GestureResponderEvent, ViewStyle } from "react-native";
 import colors from "styles/tailwindColors";

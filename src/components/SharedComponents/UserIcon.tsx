@@ -1,5 +1,5 @@
 import { INatIcon } from "components/SharedComponents";
-import { FasterImageView, View } from "components/styledComponents";
+import { FasterImageView, View } from "components/styledComponents.ts";
 import React from "react";
 import type { ImageStyle } from "react-native";
 import colors from "styles/tailwindColors";

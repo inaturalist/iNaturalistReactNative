@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import { Body3, INatIcon } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React from "react";
 import { I18nManager, PixelRatio } from "react-native";
 import { useTheme } from "react-native-paper";

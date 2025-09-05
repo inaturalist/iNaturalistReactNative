@@ -16,7 +16,7 @@ import {
   ViewWrapper
 } from "components/SharedComponents";
 import { Tab } from "components/SharedComponents/Tabs/Tabs.tsx";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, { useCallback, useEffect } from "react";
 import {
   useTranslation

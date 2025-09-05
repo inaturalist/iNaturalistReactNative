@@ -4,7 +4,7 @@ import {
   Map
 } from "components/SharedComponents";
 import { getMapRegion } from "components/SharedComponents/Map/helpers/mapHelpers.ts";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import {
   EXPLORE_ACTION, MapBoundaries, PLACE_MODE, useExplore
 } from "providers/ExploreContext.tsx";

@@ -10,7 +10,7 @@ import {
 import {
   ImageBackground,
   View
-} from "components/styledComponents";
+} from "components/styledComponents.ts";
 import { t } from "i18next";
 import React, { useState } from "react";
 import {

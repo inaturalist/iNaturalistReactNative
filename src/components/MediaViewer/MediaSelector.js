@@ -2,7 +2,7 @@
 
 import classnames from "classnames";
 import { INatIcon } from "components/SharedComponents";
-import { Image, Pressable, View } from "components/styledComponents";
+import { Image, Pressable, View } from "components/styledComponents.ts";
 import type { Node } from "react";
 import React, { useCallback } from "react";
 import {

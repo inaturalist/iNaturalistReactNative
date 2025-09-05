@@ -8,7 +8,7 @@ import {
 } from "components/SharedComponents";
 import {
   View
-} from "components/styledComponents";
+} from "components/styledComponents.ts";
 import React from "react";
 import type { RealmTaxon } from "realmModels/types";
 import { useTranslation } from "sharedHooks";

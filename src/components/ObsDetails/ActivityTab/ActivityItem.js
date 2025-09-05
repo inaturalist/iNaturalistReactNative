@@ -7,7 +7,7 @@ import {
 import DisplayTaxon from "components/SharedComponents/DisplayTaxon.tsx";
 import {
   View
-} from "components/styledComponents";
+} from "components/styledComponents.ts";
 import { t } from "i18next";
 import _ from "lodash";
 import type { Node } from "react";

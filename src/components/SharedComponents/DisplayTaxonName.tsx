@@ -4,7 +4,7 @@ import {
   Body1, Body3, Body4
 } from "components/SharedComponents";
 import ScientificName from "components/SharedComponents/ScientificName.tsx";
-import { Text, View } from "components/styledComponents";
+import { Text, View } from "components/styledComponents.ts";
 import React, { useMemo } from "react";
 import type { TextProps } from "react-native";
 import type { RealmTaxon } from "realmModels/types";

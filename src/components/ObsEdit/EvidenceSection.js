@@ -7,7 +7,7 @@ import {
   Body2, Body3, Body4, Heading4, INatIcon
 } from "components/SharedComponents";
 import { MAX_SOUNDS_ALLOWED } from "components/SoundRecorder/SoundRecorder";
-import { Pressable, View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents.ts";
 import type { Node } from "react";
 import React from "react";
 import useTranslation from "sharedHooks/useTranslation.ts";

@@ -1,6 +1,6 @@
 import classNames, { ArgumentArray } from "classnames";
 import { INatIcon, PhotoCount } from "components/SharedComponents";
-import { LinearGradient, View } from "components/styledComponents";
+import { LinearGradient, View } from "components/styledComponents.ts";
 import React, { PropsWithChildren, useCallback } from "react";
 import { ViewStyle } from "react-native";
 import { getShadow } from "styles/global";

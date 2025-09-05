@@ -5,7 +5,7 @@ import {
   Body2,
   INatIcon
 } from "components/SharedComponents";
-import { Pressable } from "components/styledComponents";
+import { Pressable } from "components/styledComponents.ts";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";

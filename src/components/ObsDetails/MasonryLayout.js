@@ -1,4 +1,4 @@
-import { ScrollView, View } from "components/styledComponents";
+import { ScrollView, View } from "components/styledComponents.ts";
 import React, { useEffect, useState } from "react";
 import Photo from "realmModels/Photo.ts";
 import getImageDimensions from "sharedHelpers/getImageDimensions.ts";

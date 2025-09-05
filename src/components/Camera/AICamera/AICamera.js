@@ -6,7 +6,7 @@ import FadeInOutView from "components/Camera/FadeInOutView.tsx";
 import useRotation from "components/Camera/hooks/useRotation.ts";
 import useZoom from "components/Camera/hooks/useZoom.ts";
 import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import DeviceInfo from "react-native-device-info";

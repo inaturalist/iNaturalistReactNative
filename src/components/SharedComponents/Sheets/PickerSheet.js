@@ -5,7 +5,7 @@ import {
   BottomSheet,
   Button
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import type { Node } from "react";
 import React, { useState } from "react";
 import useTranslation from "sharedHooks/useTranslation.ts";

@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import type { PropsWithChildren } from "react";
 import React, { useEffect, useMemo, useState } from "react";
 import { Animated, Keyboard } from "react-native";

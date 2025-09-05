@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import {
   ImageBackground, SafeAreaView, ScrollView, View
-} from "components/styledComponents";
+} from "components/styledComponents.ts";
 import React, {
   PropsWithChildren, useEffect, useRef
 } from "react";

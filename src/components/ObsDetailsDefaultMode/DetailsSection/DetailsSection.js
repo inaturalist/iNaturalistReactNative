@@ -7,7 +7,7 @@ import {
   Heading3,
   LabelColonValue
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";

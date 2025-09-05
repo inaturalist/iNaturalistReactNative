@@ -7,7 +7,7 @@ import {
   InfiniteScrollLoadingWheel,
   OfflineNotice
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, { useCallback } from "react";
 import type { RealmUser } from "realmModels/types";
 import { useTranslation } from "sharedHooks";

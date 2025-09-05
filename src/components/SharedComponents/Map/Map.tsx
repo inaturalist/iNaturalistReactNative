@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import { Body1 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, {
   forwardRef,
   useCallback,

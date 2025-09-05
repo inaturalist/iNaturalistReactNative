@@ -3,7 +3,7 @@ import { Body3 } from "components/SharedComponents";
 import {
   CIRCLE_OPTIONS_CLASSES, CIRCLE_SIZE
 } from "components/SharedComponents/Buttons/TransparentCircleButton.tsx";
-import { Pressable } from "components/styledComponents";
+import { Pressable } from "components/styledComponents.ts";
 import React from "react";
 import { GestureResponderEvent, ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";

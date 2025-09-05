@@ -1,5 +1,5 @@
 import { INatIcon } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents.ts";
 import { t } from "i18next";
 import * as React from "react";
 import { GestureResponderEvent } from "react-native";

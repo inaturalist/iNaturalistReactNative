@@ -1,7 +1,7 @@
 // @flow
 
 import ObsImagePreview from "components/ObservationsFlashList/ObsImagePreview.tsx";
-import { Pressable } from "components/styledComponents";
+import { Pressable } from "components/styledComponents.ts";
 import type { Node } from "react";
 import React from "react";
 

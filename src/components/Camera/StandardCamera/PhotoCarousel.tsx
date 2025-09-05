@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import { ActivityIndicator, INatIconButton } from "components/SharedComponents";
-import { ImageBackground, Pressable, View } from "components/styledComponents";
+import { ImageBackground, Pressable, View } from "components/styledComponents.ts";
 import React, {
   useCallback, useRef, useState
 } from "react";

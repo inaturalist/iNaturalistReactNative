@@ -10,7 +10,7 @@ import {
 } from "components/SharedComponents";
 import {
   View
-} from "components/styledComponents";
+} from "components/styledComponents.ts";
 import _ from "lodash";
 import React, { useState } from "react";
 import {

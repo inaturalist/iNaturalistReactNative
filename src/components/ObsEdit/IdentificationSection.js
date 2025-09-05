@@ -9,7 +9,7 @@ import {
   INatIcon,
   TaxonResult
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import { capitalize } from "lodash";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";

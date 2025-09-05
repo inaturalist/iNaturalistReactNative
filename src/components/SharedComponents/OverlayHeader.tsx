@@ -4,7 +4,7 @@ import {
 } from "components/SharedComponents";
 import {
   View
-} from "components/styledComponents";
+} from "components/styledComponents.ts";
 import React, { PropsWithChildren } from "react";
 import colors from "styles/tailwindColors";
 

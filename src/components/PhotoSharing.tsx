@@ -1,6 +1,6 @@
 import { CommonActions, useNavigation, useRoute } from "@react-navigation/native";
 import { ActivityAnimation, ViewWrapper } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, {
   useCallback, useEffect, useRef, useState
 } from "react";

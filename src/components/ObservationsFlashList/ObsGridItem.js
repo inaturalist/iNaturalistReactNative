@@ -1,7 +1,7 @@
 // @flow
 
 import { Body2, DisplayTaxonName } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import type { Node } from "react";
 import React, { useMemo } from "react";
 import Photo from "realmModels/Photo.ts";

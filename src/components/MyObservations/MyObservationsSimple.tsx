@@ -18,7 +18,7 @@ import {
   ViewWrapper
 } from "components/SharedComponents";
 import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList.tsx";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, { useCallback, useMemo } from "react";
 import Photo from "realmModels/Photo.ts";
 import type {

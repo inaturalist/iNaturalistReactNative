@@ -3,7 +3,7 @@ import BottomSheet, {
 } from "@gorhom/bottom-sheet";
 import classnames from "classnames";
 import { BottomSheetStandardBackdrop, Heading4, INatIconButton } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import type { Node } from "react";
 import React, {
   useCallback,

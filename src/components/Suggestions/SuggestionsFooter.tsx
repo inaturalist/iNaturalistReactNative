@@ -5,7 +5,7 @@ import {
   Button,
   Heading4
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React from "react";
 import { formatISONoTimezone } from "sharedHelpers/dateAndTime.ts";
 import { useDebugMode, useTranslation } from "sharedHooks";

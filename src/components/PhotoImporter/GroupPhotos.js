@@ -12,7 +12,7 @@ import {
   INatIconButton
 } from "components/SharedComponents";
 import ViewWrapper from "components/SharedComponents/ViewWrapper.tsx";
-import { Pressable, View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents.ts";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";

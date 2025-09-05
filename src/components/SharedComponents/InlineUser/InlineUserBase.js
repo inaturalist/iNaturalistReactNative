@@ -7,7 +7,7 @@ import INatIcon from "components/SharedComponents/INatIcon";
 import UserIcon from "components/SharedComponents/UserIcon.tsx";
 import {
   Pressable, View
-} from "components/styledComponents";
+} from "components/styledComponents.ts";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";

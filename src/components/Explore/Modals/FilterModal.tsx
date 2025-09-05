@@ -23,7 +23,7 @@ import {
   ViewWrapper,
   WarningSheet
 } from "components/SharedComponents";
-import { Pressable, ScrollView, View } from "components/styledComponents";
+import { Pressable, ScrollView, View } from "components/styledComponents.ts";
 import UserListItem from "components/UserList/UserListItem.tsx";
 import { RealmContext } from "providers/contexts.ts";
 import {

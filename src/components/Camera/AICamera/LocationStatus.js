@@ -1,5 +1,5 @@
 import { Body1, INatIcon } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, { useEffect, useRef } from "react";
 import { Animated } from "react-native";
 import { useTranslation } from "sharedHooks";

@@ -7,7 +7,7 @@ import {
   INatIconButton,
   UploadProgressBar
 } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents.ts";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";

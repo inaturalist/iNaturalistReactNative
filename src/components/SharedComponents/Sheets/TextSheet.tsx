@@ -1,7 +1,7 @@
 import {
   Body3, BottomSheet, Button
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, { useCallback } from "react";
 import useTranslation from "sharedHooks/useTranslation.ts";
 

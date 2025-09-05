@@ -5,7 +5,7 @@ import {
 } from "components/SharedComponents";
 import {
   Image, Pressable, View
-} from "components/styledComponents";
+} from "components/styledComponents.ts";
 import _, { compact } from "lodash";
 import React, { useEffect, useState } from "react";
 import Photo from "realmModels/Photo.ts";

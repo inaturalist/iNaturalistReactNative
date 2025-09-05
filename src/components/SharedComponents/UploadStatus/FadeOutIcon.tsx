@@ -1,4 +1,4 @@
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import React, { ReactNode } from "react";
 import Reanimated, {
   Keyframe

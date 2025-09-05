@@ -3,7 +3,7 @@ import type { ApiProject } from "api/types";
 import {
   CustomFlashList
 } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents.ts";
 import React from "react";
 import {
   useTranslation

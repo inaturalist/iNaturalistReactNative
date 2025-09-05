@@ -1,4 +1,4 @@
-import { SafeAreaView, ScrollView } from "components/styledComponents";
+import { SafeAreaView, ScrollView } from "components/styledComponents.ts";
 import type { PropsWithChildren } from "react";
 import * as React from "react";
 import type { ViewStyle } from "react-native";

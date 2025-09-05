@@ -3,7 +3,7 @@ import {
   DisplayTaxonName,
   IconicTaxonIcon
 } from "components/SharedComponents";
-import { Image, Pressable, View } from "components/styledComponents";
+import { Image, Pressable, View } from "components/styledComponents.ts";
 import React from "react";
 import { accessibleTaxonName } from "sharedHelpers/taxon.ts";
 import { useCurrentUser, useTranslation } from "sharedHooks";

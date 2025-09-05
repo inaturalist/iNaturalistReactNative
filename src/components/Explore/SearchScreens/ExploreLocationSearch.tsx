@@ -7,7 +7,7 @@ import {
   SearchBar,
   ViewWrapper
 } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents.ts";
 import inatPlaceTypes from "dictionaries/places.ts";
 import {
   EXPLORE_ACTION,

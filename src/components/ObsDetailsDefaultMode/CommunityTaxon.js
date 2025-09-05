@@ -9,7 +9,7 @@ import {
   Subheading1,
   Subheading2
 } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents.ts";
 import type { Node } from "react";
 import React from "react";
 import {

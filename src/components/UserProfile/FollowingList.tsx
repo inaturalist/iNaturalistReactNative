@@ -7,7 +7,7 @@ import {
   InfiniteScrollLoadingWheel,
   ViewWrapper
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { View } from "components/styledComponents.ts";
 import UserList from "components/UserList/UserList.tsx";
 import React, {
   useCallback,
