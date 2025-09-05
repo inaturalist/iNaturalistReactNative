@@ -24,7 +24,7 @@ import {
   Alert, Dimensions, ViewStyle
 } from "react-native";
 import User from "realmModels/User.ts";
-import { BREAKPOINTS } from "sharedHelpers/breakpoint";
+import { BREAKPOINTS } from "sharedHelpers/breakpoint.ts";
 import { log } from "sharedHelpers/logger";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import useStore, { zustandStorage } from "stores/useStore";
