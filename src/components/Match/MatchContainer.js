@@ -4,7 +4,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { Body3, Heading4, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import flattenUploadParams from "components/Suggestions/helpers/flattenUploadParams.ts";
+import flattenUploadParams from "components/Suggestions/helpers/flattenUploadParams";
 import {
   FETCH_STATUS_LOADING,
   FETCH_STATUS_OFFLINE_ERROR,
@@ -14,16 +14,16 @@ import {
   FETCH_STATUS_ONLINE_FETCHED,
   FETCH_STATUS_ONLINE_SKIPPED,
   initialSuggestions
-} from "components/Suggestions/SuggestionsContainer.tsx";
+} from "components/Suggestions/SuggestionsContainer";
 import _ from "lodash";
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import React, {
   useCallback,
   useEffect, useReducer, useRef, useState
 } from "react";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
-import saveObservation from "sharedHelpers/saveObservation.ts";
-import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservationLocation.ts";
+import saveObservation from "sharedHelpers/saveObservation";
+import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservationLocation";
 import {
   useExitObservationFlow, useLocationPermission, useSuggestions, useWatchPosition
 } from "sharedHooks";

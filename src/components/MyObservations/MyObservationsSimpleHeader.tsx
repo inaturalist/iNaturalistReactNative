@@ -11,12 +11,12 @@ import type {
 import { useTranslation } from "sharedHooks";
 import {
   MANUAL_SYNC_IN_PROGRESS
-} from "stores/createSyncObservationsSlice.ts";
+} from "stores/createSyncObservationsSlice";
 import {
   UPLOAD_COMPLETE,
   UPLOAD_IN_PROGRESS,
   UPLOAD_PENDING
-} from "stores/createUploadObservationsSlice.ts";
+} from "stores/createUploadObservationsSlice";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 

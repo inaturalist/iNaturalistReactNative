@@ -1,6 +1,6 @@
 import PermissionGateContainer, {
   LOCATION_PERMISSIONS
-} from "components/SharedComponents/PermissionGateContainer.tsx";
+} from "components/SharedComponents/PermissionGateContainer";
 import { t } from "i18next";
 import React, { PropsWithChildren } from "react";
 

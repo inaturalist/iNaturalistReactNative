@@ -1,9 +1,9 @@
 import { screen } from "@testing-library/react-native";
 import MyObservationsSimple, { OBSERVATIONS_TAB }
-  from "components/MyObservations/MyObservationsSimple.tsx";
+  from "components/MyObservations/MyObservationsSimple";
 import React from "react";
 // import DeviceInfo from "react-native-device-info";
-import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
+import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 

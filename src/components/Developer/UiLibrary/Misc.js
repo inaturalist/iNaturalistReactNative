@@ -1,5 +1,5 @@
 import ActivityItem from "components/ObsDetails/ActivityTab/ActivityItem";
-import ProjectListItem from "components/ProjectList/ProjectListItem.tsx";
+import ProjectListItem from "components/ProjectList/ProjectListItem";
 import {
   ActivityCount,
   Body1,
@@ -31,7 +31,7 @@ import {
   ViewWrapper
 } from "components/SharedComponents";
 import { ScrollView, View } from "components/styledComponents";
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";

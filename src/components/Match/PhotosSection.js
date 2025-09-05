@@ -8,8 +8,8 @@ import {
 } from "components/styledComponents";
 import _, { compact } from "lodash";
 import React, { useEffect, useState } from "react";
-import Photo from "realmModels/Photo.ts";
-import getImageDimensions from "sharedHelpers/getImageDimensions.ts";
+import Photo from "realmModels/Photo";
+import getImageDimensions from "sharedHelpers/getImageDimensions";
 
 type Props = {
   representativePhoto: Object,

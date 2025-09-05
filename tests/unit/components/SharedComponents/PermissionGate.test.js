@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react-native";
-import PermissionGate from "components/SharedComponents/PermissionGate.tsx";
+import PermissionGate from "components/SharedComponents/PermissionGate";
 import React from "react";
 import { RESULTS } from "react-native-permissions";
 

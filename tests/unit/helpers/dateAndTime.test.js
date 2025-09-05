@@ -12,7 +12,7 @@ import {
   formatDifferenceForHumans,
   formatISONoSeconds,
   getNowISO
-} from "sharedHelpers/dateAndTime.ts";
+} from "sharedHelpers/dateAndTime";
 
 const remoteObservation = factory( "RemoteObservation", {
   created_at: "2015-02-12T20:41:10-08:00"

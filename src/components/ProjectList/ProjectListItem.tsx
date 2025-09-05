@@ -1,6 +1,6 @@
 import type { ApiProject } from "api/types";
 import classnames from "classnames";
-import displayProjectType from "components/Projects/helpers/displayProjectType.ts";
+import displayProjectType from "components/Projects/helpers/displayProjectType";
 import {
   Body1,
   INatIcon,

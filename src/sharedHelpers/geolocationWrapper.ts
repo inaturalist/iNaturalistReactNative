@@ -8,7 +8,7 @@ import Geolocation, {
 import {
   LOCATION_PERMISSIONS,
   permissionResultFromMultiple
-} from "components/SharedComponents/PermissionGateContainer.tsx";
+} from "components/SharedComponents/PermissionGateContainer";
 import { Platform } from "react-native";
 import {
   checkMultiple,

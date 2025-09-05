@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import GreenCheckmark from "components/Camera/Buttons/GreenCheckmark.tsx";
+import GreenCheckmark from "components/Camera/Buttons/GreenCheckmark";
 import { CloseButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";

@@ -6,7 +6,7 @@ import {
   SCREEN_NAME_ROOT_EXPLORE
 } from "navigation/StackNavigators/TabStackNavigator";
 import React, { useMemo } from "react";
-import User from "realmModels/User.ts";
+import User from "realmModels/User";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
 import CustomTabBar from "./CustomTabBar";

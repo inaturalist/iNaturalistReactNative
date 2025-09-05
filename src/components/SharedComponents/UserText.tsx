@@ -1,7 +1,7 @@
 import "linkify-plugin-mention";
 
 import { useNavigation } from "@react-navigation/native";
-import { fontRegular } from "appConstants/fontFamilies.ts";
+import { fontRegular } from "appConstants/fontFamilies";
 import linkifyHtml from "linkify-html";
 import { Opts } from "linkifyjs";
 import { isEqual, trim } from "lodash";

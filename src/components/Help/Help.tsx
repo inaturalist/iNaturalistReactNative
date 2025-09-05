@@ -7,7 +7,7 @@ import {
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import React from "react";
-import { openExternalWebBrowser } from "sharedHelpers/util.ts";
+import { openExternalWebBrowser } from "sharedHelpers/util";
 
 const Help = ( ) => (
   <ScrollViewWrapper>

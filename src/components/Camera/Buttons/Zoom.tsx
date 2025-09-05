@@ -2,7 +2,7 @@ import classnames from "classnames";
 import { Body3 } from "components/SharedComponents";
 import {
   CIRCLE_OPTIONS_CLASSES, CIRCLE_SIZE
-} from "components/SharedComponents/Buttons/TransparentCircleButton.tsx";
+} from "components/SharedComponents/Buttons/TransparentCircleButton";
 import { Pressable } from "components/styledComponents";
 import React from "react";
 import { GestureResponderEvent, ViewStyle } from "react-native";

@@ -1,12 +1,12 @@
 // @flow
 
 import { fetchSpeciesCounts } from "api/observations";
-import ExploreTaxonGridItem from "components/Explore/ExploreTaxonGridItem.tsx";
+import ExploreTaxonGridItem from "components/Explore/ExploreTaxonGridItem";
 import i18n from "i18next";
 import _ from "lodash";
 import {
   useExplore
-} from "providers/ExploreContext.tsx";
+} from "providers/ExploreContext";
 import type { Node } from "react";
 import React, { useEffect, useMemo, useState } from "react";
 import Taxon from "realmModels/Taxon";

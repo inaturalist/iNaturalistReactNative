@@ -5,8 +5,8 @@ import {
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { fetchSubscriptions } from "api/observations";
-import IdentificationSheets from "components/ObsDetailsDefaultMode/IdentificationSheets.tsx";
-import { RealmContext } from "providers/contexts.ts";
+import IdentificationSheets from "components/ObsDetailsDefaultMode/IdentificationSheets";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -17,7 +17,7 @@ import React, {
 } from "react";
 import { LogBox } from "react-native";
 import Observation from "realmModels/Observation";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedQuery,
   useCurrentUser,

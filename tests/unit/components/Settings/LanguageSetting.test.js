@@ -1,5 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native";
-import LanguageSetting from "components/Settings/LanguageSetting.tsx";
+import LanguageSetting from "components/Settings/LanguageSetting";
 import i18n from "i18next";
 import inatjs from "inaturalistjs";
 import React from "react";

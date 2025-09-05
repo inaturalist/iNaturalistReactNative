@@ -1,5 +1,5 @@
 import { EventRegister } from "react-native-event-listeners";
-import * as progressTracker from "uploaders/utils/progressTracker.ts";
+import * as progressTracker from "uploaders/utils/progressTracker";
 
 function mockForTesting( mockEventRegister: Object ): ( ) => void {
   const originalEventRegister = { ...EventRegister };

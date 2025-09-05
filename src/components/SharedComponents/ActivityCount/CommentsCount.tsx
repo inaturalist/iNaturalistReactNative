@@ -1,5 +1,5 @@
 import React from "react";
-import useTranslation from "sharedHooks/useTranslation.ts";
+import useTranslation from "sharedHooks/useTranslation";
 
 import ActivityCount from "./ActivityCount";
 

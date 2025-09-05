@@ -3,7 +3,7 @@ import {
 } from "@react-native-community/netinfo";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { fetchSpeciesCounts } from "api/observations";
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import React, {
   useCallback,
   useEffect, useRef,
@@ -26,7 +26,7 @@ import {
 } from "sharedHooks";
 import {
   UPLOAD_PENDING
-} from "stores/createUploadObservationsSlice.ts";
+} from "stores/createUploadObservationsSlice";
 import useStore, { zustandStorage } from "stores/useStore";
 
 import FullScreenActivityIndicator from "./FullScreenActivityIndicator";

@@ -1,4 +1,4 @@
-import { tailwindFontBold } from "appConstants/fontFamilies.ts";
+import { tailwindFontBold } from "appConstants/fontFamilies";
 import classnames from "classnames";
 import { ActivityIndicator, Heading4, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";

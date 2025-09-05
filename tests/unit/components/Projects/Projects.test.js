@@ -1,5 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native";
-import ProjectsContainer from "components/Projects/ProjectsContainer.tsx";
+import ProjectsContainer from "components/Projects/ProjectsContainer";
 import React from "react";
 import { useAuthenticatedInfiniteQuery } from "sharedHooks";
 import factory from "tests/factory";

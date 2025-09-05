@@ -1,5 +1,5 @@
 import type { Props as TaxonGridItemProps } from "components/SharedComponents/TaxonGridItem";
-import TaxonGridItem from "components/SharedComponents/TaxonGridItem.tsx";
+import TaxonGridItem from "components/SharedComponents/TaxonGridItem";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 

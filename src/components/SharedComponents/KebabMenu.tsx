@@ -1,5 +1,5 @@
-import { tailwindFontMedium } from "appConstants/fontFamilies.ts";
-import INatIconButton from "components/SharedComponents/Buttons/INatIconButton.tsx";
+import { tailwindFontMedium } from "appConstants/fontFamilies";
+import INatIconButton from "components/SharedComponents/Buttons/INatIconButton";
 import type { PropsWithChildren } from "react";
 import React from "react";
 import { Menu } from "react-native-paper";

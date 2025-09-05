@@ -2,7 +2,7 @@
 
 import { searchObservations } from "api/observations";
 import { flatten, last, noop } from "lodash";
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import {
   useCallback, useEffect, useMemo, useRef
 } from "react";

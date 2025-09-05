@@ -12,7 +12,7 @@ import {
   ViewWrapper
 } from "components/SharedComponents";
 // eslint-disable-next-line max-len
-import QualityGradeStatus from "components/SharedComponents/QualityGradeStatus/QualityGradeStatus.tsx";
+import QualityGradeStatus from "components/SharedComponents/QualityGradeStatus/QualityGradeStatus";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";

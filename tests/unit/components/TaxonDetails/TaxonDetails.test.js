@@ -6,9 +6,9 @@ import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 import { Linking } from "react-native";
-import Photo from "realmModels/Photo.ts";
+import Photo from "realmModels/Photo";
 import { useAuthenticatedQuery } from "sharedHooks";
-import * as useCurrentUser from "sharedHooks/useCurrentUser.ts";
+import * as useCurrentUser from "sharedHooks/useCurrentUser";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 // Mock inaturalistjs so we can make some fake responses

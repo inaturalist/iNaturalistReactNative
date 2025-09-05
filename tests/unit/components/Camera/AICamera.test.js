@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react-native";
 import AICamera from "components/Camera/AICamera/AICamera";
-import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions.ts";
+import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions";
 import i18next from "i18next";
 import React from "react";
 import * as useTaxon from "sharedHooks/useTaxon";

@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import Modal from "components/SharedComponents/Modal.tsx";
+import Modal from "components/SharedComponents/Modal";
 import _ from "lodash";
 import React, {
   PropsWithChildren,

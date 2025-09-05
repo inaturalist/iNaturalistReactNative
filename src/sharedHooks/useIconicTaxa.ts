@@ -1,10 +1,10 @@
 import { searchTaxa } from "api/taxa";
 import type { ApiOpts, ApiTaxon } from "api/types";
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import { useEffect, useState } from "react";
 import { UpdateMode } from "realm";
 import Taxon from "realmModels/Taxon";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useAuthenticatedQuery } from "sharedHooks";
 
 const { useRealm } = RealmContext;

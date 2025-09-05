@@ -1,6 +1,6 @@
 import { CustomFlashList } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import React, {
   useCallback
 } from "react";

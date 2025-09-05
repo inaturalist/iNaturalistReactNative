@@ -1,11 +1,11 @@
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import {
   useCallback,
   useEffect,
   useState
 } from "react";
 import { log } from "sharedHelpers/logger";
-import { predictImage } from "sharedHelpers/mlModel.ts";
+import { predictImage } from "sharedHelpers/mlModel";
 import { Prediction } from "vision-camera-plugin-inatvision";
 
 const logger = log.extend( "useOfflineSuggestions" );

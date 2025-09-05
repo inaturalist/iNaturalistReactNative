@@ -1,4 +1,4 @@
-import { NotificationOnboarding } from "components/OnboardingModal/PivotCards.tsx";
+import { NotificationOnboarding } from "components/OnboardingModal/PivotCards";
 import {
   Tabs,
   ViewWrapper

@@ -1,4 +1,4 @@
-import calculateConfidence from "components/Match/calculateConfidence.ts";
+import calculateConfidence from "components/Match/calculateConfidence";
 import { ActivityIndicator, CustomFlashList, Heading3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, {

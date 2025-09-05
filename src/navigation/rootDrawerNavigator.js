@@ -3,14 +3,14 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import {
   hideDrawerHeaderLeft, hideHeader
-} from "navigation/navigationOptions.tsx";
+} from "navigation/navigationOptions";
 import LoginStackNavigator from "navigation/StackNavigators/LoginStackNavigator";
 import NoBottomTabStackNavigator from "navigation/StackNavigators/NoBottomTabStackNavigator";
 import OnboardingStackNavigator from "navigation/StackNavigators/OnboardingStackNavigator";
 import type { Node } from "react";
 import * as React from "react";
 import { useColorScheme } from "react-native";
-import { useOnboardingShown } from "sharedHelpers/installData.ts";
+import { useOnboardingShown } from "sharedHelpers/installData";
 
 import BottomTabNavigator from "./BottomTabNavigator";
 import CustomDrawerContent from "./CustomDrawerContent";

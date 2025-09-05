@@ -4,7 +4,7 @@ import {
   photoUploadPath,
   rotatedOriginalPhotosPath,
   soundUploadPath
-} from "appConstants/paths.ts";
+} from "appConstants/paths";
 import _ from "lodash";
 import { useEffect, useState } from "react";
 import { Platform } from "react-native";

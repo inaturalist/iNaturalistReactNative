@@ -2,34 +2,34 @@
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import About from "components/About.tsx";
+import About from "components/About";
 import Developer from "components/Developer/Developer";
 import Log from "components/Developer/Log";
 import UiLibrary from "components/Developer/UiLibrary";
 import UiLibraryItem from "components/Developer/UiLibraryItem";
-import Donate from "components/Donate/Donate.tsx";
+import Donate from "components/Donate/Donate";
 import ExploreContainer from "components/Explore/ExploreContainer";
 import RootExploreContainer from "components/Explore/RootExploreContainer";
-import ExploreLocationSearch from "components/Explore/SearchScreens/ExploreLocationSearch.tsx";
-import ExploreProjectSearch from "components/Explore/SearchScreens/ExploreProjectSearch.tsx";
+import ExploreLocationSearch from "components/Explore/SearchScreens/ExploreLocationSearch";
+import ExploreProjectSearch from "components/Explore/SearchScreens/ExploreProjectSearch";
 import ExploreTaxonSearch from "components/Explore/SearchScreens/ExploreTaxonSearch";
 import ExploreUserSearch from "components/Explore/SearchScreens/ExploreUserSearch";
-import Help from "components/Help/Help.tsx";
-import MyObservationsContainer from "components/MyObservations/MyObservationsContainer.tsx";
-import Notifications from "components/Notifications/Notifications.tsx";
+import Help from "components/Help/Help";
+import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
+import Notifications from "components/Notifications/Notifications";
 import DQAContainer from "components/ObsDetails/DQAContainer";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import ObsDetailsDefaultModeContainer
   from "components/ObsDetailsDefaultMode/ObsDetailsDefaultModeContainer";
 import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
-import ProjectMembers from "components/ProjectDetails/ProjectMembers.tsx";
-import ProjectRequirements from "components/ProjectDetails/ProjectRequirements.tsx";
-import ProjectListContainer from "components/ProjectList/ProjectListContainer.tsx";
-import ProjectsContainer from "components/Projects/ProjectsContainer.tsx";
+import ProjectMembers from "components/ProjectDetails/ProjectMembers";
+import ProjectRequirements from "components/ProjectDetails/ProjectRequirements";
+import ProjectListContainer from "components/ProjectList/ProjectListContainer";
+import ProjectsContainer from "components/Projects/ProjectsContainer";
 import Settings from "components/Settings/Settings";
 import { Heading4 } from "components/SharedComponents";
-import FollowersList from "components/UserProfile/FollowersList.tsx";
-import FollowingList from "components/UserProfile/FollowingList.tsx";
+import FollowersList from "components/UserProfile/FollowersList";
+import FollowingList from "components/UserProfile/FollowingList";
 import UserProfile from "components/UserProfile/UserProfile";
 import { t } from "i18next";
 import ContextHeader from "navigation/ContextHeader";
@@ -43,7 +43,7 @@ import {
   removeBottomBorder,
   showHeader,
   showLongHeader
-} from "navigation/navigationOptions.tsx";
+} from "navigation/navigationOptions";
 import type { Node } from "react";
 import React from "react";
 import {

@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useRef
 } from "react";
-import flashListTracker from "sharedHelpers/flashListPerformanceTracker.ts";
+import flashListTracker from "sharedHelpers/flashListPerformanceTracker";
 
 const defaultViewabilityConfig: ViewabilityConfig = {
   minimumViewTime: 0,

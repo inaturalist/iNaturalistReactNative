@@ -1,7 +1,7 @@
 import { getHeaderTitle, HeaderTitleProps } from "@react-navigation/elements";
 import classNames from "classnames";
 import { Heading4 } from "components/SharedComponents";
-import BackButton from "components/SharedComponents/Buttons/BackButton.tsx";
+import BackButton from "components/SharedComponents/Buttons/BackButton";
 import { View } from "components/styledComponents";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";

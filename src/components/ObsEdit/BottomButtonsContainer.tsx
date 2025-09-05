@@ -1,12 +1,12 @@
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
-import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/CrosshairCircle.tsx";
-import useUploadObservations from "components/MyObservations/hooks/useUploadObservations.ts";
-import { RealmContext } from "providers/contexts.ts";
+import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/CrosshairCircle";
+import useUploadObservations from "components/MyObservations/hooks/useUploadObservations";
+import { RealmContext } from "providers/contexts";
 import React, { useCallback, useState } from "react";
 import type { RealmObservation } from "realmModels/types";
-import saveObservation from "sharedHelpers/saveObservation.ts";
+import saveObservation from "sharedHelpers/saveObservation";
 import {
   useCurrentUser,
   useExitObservationFlow

@@ -1,5 +1,5 @@
 import RNFS from "react-native-fs";
-import { unlink } from "sharedHelpers/util.ts";
+import { unlink } from "sharedHelpers/util";
 
 const removeAllFilesFromDirectory = async ( directoryPath: string ) => {
   const directoryExists = await RNFS.exists( directoryPath );

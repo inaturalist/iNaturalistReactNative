@@ -1,7 +1,7 @@
 import { ScrollView, View } from "components/styledComponents";
 import React, { useEffect, useState } from "react";
-import Photo from "realmModels/Photo.ts";
-import getImageDimensions from "sharedHelpers/getImageDimensions.ts";
+import Photo from "realmModels/Photo";
+import getImageDimensions from "sharedHelpers/getImageDimensions";
 
 import PhotoContainer from "./PhotoContainer";
 import SoundContainer from "./SoundContainer";

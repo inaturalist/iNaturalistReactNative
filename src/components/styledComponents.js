@@ -5,7 +5,7 @@ import {
   BottomSheetTextInput as StyledBottomSheetTextInput
 } from "@gorhom/bottom-sheet";
 import UnstyledPressableWithTracking
-  from "components/SharedComponents/Buttons/PressableWithTracking.tsx";
+  from "components/SharedComponents/Buttons/PressableWithTracking";
 import { styled } from "nativewind";
 import {
   Image as UnstyledImage,

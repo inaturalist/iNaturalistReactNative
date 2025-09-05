@@ -19,7 +19,7 @@ import {
   Share
 } from "react-native";
 import type { RealmTaxon } from "realmModels/types";
-import { openExternalWebBrowser } from "sharedHelpers/util.ts";
+import { openExternalWebBrowser } from "sharedHelpers/util";
 import {
   useTranslation
 } from "sharedHooks";

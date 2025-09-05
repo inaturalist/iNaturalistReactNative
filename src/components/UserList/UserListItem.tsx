@@ -5,7 +5,7 @@ import {
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import User from "realmModels/User.ts";
+import User from "realmModels/User";
 import { useTranslation } from "sharedHooks";
 
 interface Props {

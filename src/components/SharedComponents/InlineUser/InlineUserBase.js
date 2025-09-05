@@ -4,14 +4,14 @@ import { useNavigation } from "@react-navigation/native";
 // Directly imported, not from index.js to avoid circular dependency
 import INatIcon from "components/SharedComponents/INatIcon";
 // Directly imported, not from index.js to avoid circular dependency
-import UserIcon from "components/SharedComponents/UserIcon.tsx";
+import UserIcon from "components/SharedComponents/UserIcon";
 import {
   Pressable, View
 } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import User from "realmModels/User.ts";
+import User from "realmModels/User";
 
 type Props = {
   user: {

@@ -5,7 +5,7 @@ import {
 } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
 import React from "react";
-import { accessibleTaxonName } from "sharedHelpers/taxon.ts";
+import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
 interface Props {

@@ -11,13 +11,13 @@ import {
   LabelColonValue,
   QualityGradeStatus
 } from "components/SharedComponents";
-import UserText from "components/SharedComponents/UserText.tsx";
+import UserText from "components/SharedComponents/UserText";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import { Alert, Platform, Share } from "react-native";
-import { openExternalWebBrowser } from "sharedHelpers/util.ts";
+import { openExternalWebBrowser } from "sharedHelpers/util";
 import colors from "styles/tailwindColors";
 
 import Attribution from "./Attribution";

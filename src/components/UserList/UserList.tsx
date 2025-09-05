@@ -3,7 +3,7 @@ import {
   CustomFlashList
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import UserListItem from "components/UserList/UserListItem.tsx";
+import UserListItem from "components/UserList/UserListItem";
 import _ from "lodash";
 import React from "react";
 import { ViewStyle } from "react-native";

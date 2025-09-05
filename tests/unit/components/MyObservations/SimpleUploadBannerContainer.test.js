@@ -4,12 +4,12 @@ import React from "react";
 import {
   MANUAL_SYNC_IN_PROGRESS,
   SYNC_PENDING
-} from "stores/createSyncObservationsSlice.ts";
+} from "stores/createSyncObservationsSlice";
 import {
   UPLOAD_COMPLETE,
   UPLOAD_IN_PROGRESS,
   UPLOAD_PENDING
-} from "stores/createUploadObservationsSlice.ts";
+} from "stores/createUploadObservationsSlice";
 import useStore, { zustandStorage } from "stores/useStore";
 import { renderComponent } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";

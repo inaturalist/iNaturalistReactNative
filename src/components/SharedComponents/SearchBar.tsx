@@ -1,4 +1,4 @@
-import { fontRegular } from "appConstants/fontFamilies.ts";
+import { fontRegular } from "appConstants/fontFamilies";
 import classNames from "classnames";
 import { INatIcon, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";

@@ -3,7 +3,7 @@ import { screen } from "@testing-library/react-native";
 import Match from "components/Match/Match";
 import initI18next from "i18n/initI18next";
 import React from "react";
-import * as useLocationPermission from "sharedHooks/useLocationPermission.tsx";
+import * as useLocationPermission from "sharedHooks/useLocationPermission";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 

@@ -1,6 +1,6 @@
 // @flow
 import { createSubscription } from "api/observations";
-import KebabMenu from "components/SharedComponents/KebabMenu.tsx";
+import KebabMenu from "components/SharedComponents/KebabMenu";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";

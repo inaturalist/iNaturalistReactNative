@@ -1,4 +1,4 @@
-import { tailwindFontBold } from "appConstants/fontFamilies.ts";
+import { tailwindFontBold } from "appConstants/fontFamilies";
 import React from "react";
 import { TextProps } from "react-native";
 

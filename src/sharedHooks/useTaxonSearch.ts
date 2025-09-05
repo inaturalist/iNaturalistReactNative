@@ -1,14 +1,14 @@
-import { fetchSearchResults } from "api/search.ts";
+import { fetchSearchResults } from "api/search";
 import type { ApiOpts } from "api/types";
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import {
   useCallback, useEffect, useMemo, useState
 } from "react";
 import Realm, { UpdateMode } from "realm";
 import Taxon from "realmModels/Taxon";
 import type { RealmTaxon } from "realmModels/types";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
-import validateRealmSearch from "sharedHelpers/validateRealmSearch.ts";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import validateRealmSearch from "sharedHelpers/validateRealmSearch";
 import { useAuthenticatedQuery, useIconicTaxa } from "sharedHooks";
 
 const { useRealm } = RealmContext;

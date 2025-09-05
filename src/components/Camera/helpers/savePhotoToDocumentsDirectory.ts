@@ -1,12 +1,12 @@
 import {
   rotatedOriginalPhotosPath
-} from "appConstants/paths.ts";
+} from "appConstants/paths";
 import RNFS from "react-native-fs";
 import type {
   PhotoFile
 } from "react-native-vision-camera";
-import resizeImage from "sharedHelpers/resizeImage.ts";
-import { unlink } from "sharedHelpers/util.ts";
+import resizeImage from "sharedHelpers/resizeImage";
+import { unlink } from "sharedHelpers/util";
 
 const savePhotoToDocumentsDirectory = async (
   cameraPhoto: PhotoFile

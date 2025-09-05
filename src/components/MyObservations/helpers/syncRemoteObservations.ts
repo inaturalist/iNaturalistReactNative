@@ -1,7 +1,7 @@
 import { searchObservations } from "api/observations";
-import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
+import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import Observation from "realmModels/Observation";
-import { sleep } from "sharedHelpers/util.ts";
+import { sleep } from "sharedHelpers/util";
 
 async function syncRemoteObservations( realm, currentUserId: number, deletionsCompletedAt: Date ) {
   const searchParams = {

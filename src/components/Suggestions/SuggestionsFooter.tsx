@@ -7,7 +7,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
-import { formatISONoTimezone } from "sharedHelpers/dateAndTime.ts";
+import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
 import { useDebugMode, useTranslation } from "sharedHooks";
 
 import Attribution from "./Attribution";

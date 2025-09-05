@@ -1,14 +1,14 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
-import AddObsModal from "components/AddObsModal/AddObsModal.tsx";
-import { AccountCreationCard } from "components/OnboardingModal/PivotCards.tsx";
+import AddObsModal from "components/AddObsModal/AddObsModal";
+import { AccountCreationCard } from "components/OnboardingModal/PivotCards";
 import {
   HeaderUser,
   Heading2,
   ViewWrapper
 } from "components/SharedComponents";
-import GradientButton from "components/SharedComponents/Buttons/GradientButton.tsx";
-import Modal from "components/SharedComponents/Modal.tsx";
+import GradientButton from "components/SharedComponents/Buttons/GradientButton";
+import Modal from "components/SharedComponents/Modal";
 import {
   Pressable, View
 } from "components/styledComponents";

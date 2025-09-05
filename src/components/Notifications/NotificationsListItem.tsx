@@ -1,11 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
-import ObsNotification from "components/Notifications/ObsNotification.tsx";
+import ObsNotification from "components/Notifications/ObsNotification";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
 import { useLayoutPrefs } from "sharedHooks";
 import type { Notification } from "sharedHooks/useInfiniteNotificationsScroll";
-import { OBS_DETAILS_TAB } from "stores/createLayoutSlice.ts";
+import { OBS_DETAILS_TAB } from "stores/createLayoutSlice";
 
 type Props = {
   notification: Notification

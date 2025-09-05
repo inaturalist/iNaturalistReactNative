@@ -1,10 +1,10 @@
-import { getUserAgent } from "api/userAgent.ts";
+import { getUserAgent } from "api/userAgent";
 import { create } from "apisauce";
 // eslint-disable-next-line import/no-cycle
-import { getAnonymousJWT, getJWT } from "components/LoginSignUp/AuthenticationService.ts";
+import { getAnonymousJWT, getJWT } from "components/LoginSignUp/AuthenticationService";
 import Config from "react-native-config";
 import { transportFunctionType } from "react-native-logs";
-import { getInstallID } from "sharedHelpers/installData.ts";
+import { getInstallID } from "sharedHelpers/installData";
 
 const API_HOST: string
     = Config.API_URL || process.env.API_URL || "https://api.inaturalist.org/v2";

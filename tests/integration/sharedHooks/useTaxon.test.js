@@ -1,6 +1,6 @@
 import { waitFor } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useTaxon } from "sharedHooks";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";

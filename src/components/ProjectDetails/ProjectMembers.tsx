@@ -7,9 +7,9 @@ import {
   ActivityIndicator, InfiniteScrollLoadingWheel
 } from "components/SharedComponents";
 import { SafeAreaView } from "components/styledComponents";
-import UserList from "components/UserList/UserList.tsx";
+import UserList from "components/UserList/UserList";
 import React, { useCallback, useEffect, useMemo } from "react";
-import User from "realmModels/User.ts";
+import User from "realmModels/User";
 import { useInfiniteScroll, useTranslation } from "sharedHooks";
 
 const ProjectMembers = ( ) => {

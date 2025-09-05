@@ -1,4 +1,4 @@
-import NotificationsListItem from "components/Notifications/NotificationsListItem.tsx";
+import NotificationsListItem from "components/Notifications/NotificationsListItem";
 import {
   ActivityIndicator,
   Body2,

@@ -2,7 +2,7 @@ import {
   fireEvent,
   screen
 } from "@testing-library/react-native";
-import TaxonGridItem from "components/SharedComponents/TaxonGridItem.tsx";
+import TaxonGridItem from "components/SharedComponents/TaxonGridItem";
 import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";

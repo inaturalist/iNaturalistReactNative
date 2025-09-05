@@ -10,7 +10,7 @@ import {
 } from "api/projects";
 import type { Node } from "react";
 import React, { useMemo, useState } from "react";
-import User from "realmModels/User.ts";
+import User from "realmModels/User";
 import { log } from "sharedHelpers/logger";
 import { useAuthenticatedMutation, useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 

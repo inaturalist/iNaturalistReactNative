@@ -4,8 +4,8 @@ import ObsDetailsContainer from "components/ObsDetailsDefaultMode/ObsDetailsDefa
 import { t } from "i18next";
 import React from "react";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
-import * as useCurrentUser from "sharedHooks/useCurrentUser.ts";
-import * as useLocalObservation from "sharedHooks/useLocalObservation.ts";
+import * as useCurrentUser from "sharedHooks/useCurrentUser";
+import * as useLocalObservation from "sharedHooks/useLocalObservation";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";

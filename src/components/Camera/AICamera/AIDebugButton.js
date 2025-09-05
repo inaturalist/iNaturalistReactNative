@@ -6,7 +6,7 @@ import {
 } from "components/SharedComponents";
 import {
   CIRCLE_SIZE
-} from "components/SharedComponents/Buttons/TransparentCircleButton.tsx";
+} from "components/SharedComponents/Buttons/TransparentCircleButton";
 import { Text, View } from "components/styledComponents";
 import React, { useState } from "react";
 import {

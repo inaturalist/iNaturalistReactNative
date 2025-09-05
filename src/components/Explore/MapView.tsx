@@ -3,11 +3,11 @@ import {
   Button,
   Map
 } from "components/SharedComponents";
-import { getMapRegion } from "components/SharedComponents/Map/helpers/mapHelpers.ts";
+import { getMapRegion } from "components/SharedComponents/Map/helpers/mapHelpers";
 import { View } from "components/styledComponents";
 import {
   EXPLORE_ACTION, MapBoundaries, PLACE_MODE, useExplore
-} from "providers/ExploreContext.tsx";
+} from "providers/ExploreContext";
 import React, {
   useEffect, useMemo, useRef, useState
 } from "react";

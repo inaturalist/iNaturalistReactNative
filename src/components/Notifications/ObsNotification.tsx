@@ -1,12 +1,12 @@
-import ObservationIcon from "components/Notifications/ObservationIcon.tsx";
-import ObsNotificationText from "components/Notifications/ObsNotificationText.tsx";
+import ObservationIcon from "components/Notifications/ObservationIcon";
+import ObsNotificationText from "components/Notifications/ObsNotificationText";
 import {
   Body4,
   INatIcon
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
-import { formatDifferenceForHumans } from "sharedHelpers/dateAndTime.ts";
+import { formatDifferenceForHumans } from "sharedHelpers/dateAndTime";
 import { useTranslation } from "sharedHooks";
 import type { Notification } from "sharedHooks/useInfiniteNotificationsScroll";
 import colors from "styles/tailwindColors";

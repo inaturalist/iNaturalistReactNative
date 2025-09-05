@@ -1,7 +1,7 @@
 // Wrapper around Text w/ app-specific defaults
 import {
   tailwindFontRegular
-} from "appConstants/fontFamilies.ts";
+} from "appConstants/fontFamilies";
 import classnames from "classnames";
 import React, { ComponentPropsWithoutRef } from "react";
 import { Text } from "react-native";

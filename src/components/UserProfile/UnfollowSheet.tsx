@@ -1,5 +1,5 @@
 import { updateRelationships } from "api/relationships";
-import WarningSheet from "components/SharedComponents/Sheets/WarningSheet.tsx";
+import WarningSheet from "components/SharedComponents/Sheets/WarningSheet";
 import React from "react";
 import { Alert } from "react-native";
 import { useAuthenticatedMutation, useTranslation } from "sharedHooks";

@@ -9,11 +9,11 @@ import CameraContainer from "components/Camera/CameraContainer";
 import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
 import PhotoLibrary from "components/PhotoImporter/PhotoLibrary";
 import { Heading4 } from "components/SharedComponents";
-import Mortal from "components/SharedComponents/Mortal.tsx";
+import Mortal from "components/SharedComponents/Mortal";
 import PermissionGateContainer, {
   AUDIO_PERMISSIONS,
   CAMERA_PERMISSIONS
-} from "components/SharedComponents/PermissionGateContainer.tsx";
+} from "components/SharedComponents/PermissionGateContainer";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import { t } from "i18next";
 import ContextHeader from "navigation/ContextHeader";
@@ -21,7 +21,7 @@ import {
   fadeInComponent,
   hideHeader,
   hideHeaderLeft
-} from "navigation/navigationOptions.tsx";
+} from "navigation/navigationOptions";
 import type { Node } from "react";
 import React from "react";
 

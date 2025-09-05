@@ -1,4 +1,4 @@
-import { fetchSearchResults } from "api/search.ts";
+import { fetchSearchResults } from "api/search";
 import type { ApiPlace } from "api/types";
 import {
   Body1,
@@ -8,18 +8,18 @@ import {
   ViewWrapper
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import inatPlaceTypes from "dictionaries/places.ts";
+import inatPlaceTypes from "dictionaries/places";
 import {
   EXPLORE_ACTION,
   useExplore
-} from "providers/ExploreContext.tsx";
+} from "providers/ExploreContext";
 import React, {
   useCallback,
   useState
 } from "react";
 import { FlatList } from "react-native";
 import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
-import type { LocationPermissionCallbacks } from "sharedHooks/useLocationPermission.tsx";
+import type { LocationPermissionCallbacks } from "sharedHooks/useLocationPermission";
 import { getShadow } from "styles/global";
 
 import EmptySearchResults from "./EmptySearchResults";

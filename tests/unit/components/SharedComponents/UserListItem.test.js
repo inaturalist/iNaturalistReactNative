@@ -1,4 +1,4 @@
-import UserListItem from "components/UserList/UserListItem.tsx";
+import UserListItem from "components/UserList/UserListItem";
 import React from "react";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";

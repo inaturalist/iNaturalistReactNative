@@ -1,5 +1,5 @@
 import fetchAvailableLocales from "api/translations";
-import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
+import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import {
   Button,
   Heading4,
@@ -8,7 +8,7 @@ import {
 import { View } from "components/styledComponents";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
-import changeLanguage from "sharedHelpers/changeLanguage.ts";
+import changeLanguage from "sharedHelpers/changeLanguage";
 import { useTranslation } from "sharedHooks";
 import { zustandStorage } from "stores/useStore";
 

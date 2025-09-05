@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react-native";
 import MapSection from "components/ObsDetailsDefaultMode/MapSection/MapSection";
-import { TILE_URL } from "components/SharedComponents/Map/helpers/mapHelpers.ts";
+import { TILE_URL } from "components/SharedComponents/Map/helpers/mapHelpers";
 import React from "react";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";

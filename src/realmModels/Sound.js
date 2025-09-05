@@ -1,7 +1,7 @@
 import { Realm } from "@realm/react";
-import { soundUploadPath } from "appConstants/paths.ts";
+import { soundUploadPath } from "appConstants/paths";
 import RNFS from "react-native-fs";
-import { unlink } from "sharedHelpers/util.ts";
+import { unlink } from "sharedHelpers/util";
 import * as uuid from "uuid";
 
 class Sound extends Realm.Object {

@@ -1,4 +1,4 @@
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import { useState } from "react";
 import { Result } from "vision-camera-plugin-inatvision";
 

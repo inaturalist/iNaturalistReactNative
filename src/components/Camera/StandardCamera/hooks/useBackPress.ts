@@ -1,5 +1,5 @@
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { getCurrentRoute } from "navigation/navigationUtils.ts";
+import { getCurrentRoute } from "navigation/navigationUtils";
 import {
   useCallback,
   useState
@@ -7,7 +7,7 @@ import {
 import {
   BackHandler
 } from "react-native";
-import useExitObservationFlow from "sharedHooks/useExitObservationFlow.ts";
+import useExitObservationFlow from "sharedHooks/useExitObservationFlow";
 
 const useBackPress = ( shouldShowDiscardSheet: boolean ) => {
   const navigation = useNavigation( );

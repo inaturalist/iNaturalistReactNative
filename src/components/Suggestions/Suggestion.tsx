@@ -1,4 +1,4 @@
-import calculateConfidence from "components/Match/calculateConfidence.ts";
+import calculateConfidence from "components/Match/calculateConfidence";
 import {
   TaxonResult
 } from "components/SharedComponents";

@@ -11,7 +11,7 @@ import {
   INatIcon,
   INatIconButton
 } from "components/SharedComponents";
-import ViewWrapper from "components/SharedComponents/ViewWrapper.tsx";
+import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";

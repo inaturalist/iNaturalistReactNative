@@ -2,7 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import ExploreTaxonSearch from "components/Explore/SearchScreens/ExploreTaxonSearch";
-import Modal from "components/SharedComponents/Modal.tsx";
+import Modal from "components/SharedComponents/Modal";
 import type { Node } from "react";
 import React, { useState } from "react";
 

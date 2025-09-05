@@ -1,4 +1,4 @@
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import { useEffect, useState } from "react";
 import Realm from "realm";
 import type { RealmUser } from "realmModels/types";

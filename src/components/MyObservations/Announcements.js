@@ -14,7 +14,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { WebView } from "react-native-webview";
-import { openExternalWebBrowser } from "sharedHelpers/util.ts";
+import { openExternalWebBrowser } from "sharedHelpers/util";
 import {
   useAuthenticatedQuery,
   useCurrentUser,

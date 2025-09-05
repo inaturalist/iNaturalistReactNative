@@ -5,7 +5,7 @@ import {
   TOP_SUGGESTION_HUMAN,
   TOP_SUGGESTION_NONE,
   TOP_SUGGESTION_NOT_CONFIDENT
-} from "components/Suggestions/SuggestionsContainer.tsx";
+} from "components/Suggestions/SuggestionsContainer";
 import _ from "lodash";
 
 import isolateHumans, { humanFilter } from "./isolateHumans";

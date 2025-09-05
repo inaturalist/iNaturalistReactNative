@@ -2,7 +2,7 @@
 
 import
 ObscurationExplanation
-  from "components/ObsDetailsDefaultMode/LocationSection/ObscurationExplanation.tsx";
+  from "components/ObsDetailsDefaultMode/LocationSection/ObscurationExplanation";
 import {
   ObservationLocation
 } from "components/SharedComponents";

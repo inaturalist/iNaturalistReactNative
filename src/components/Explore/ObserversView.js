@@ -2,7 +2,7 @@
 import { fetchObservers } from "api/observations";
 import type { Node } from "react";
 import React, { useEffect } from "react";
-import User from "realmModels/User.ts";
+import User from "realmModels/User";
 import { useInfiniteScroll } from "sharedHooks";
 
 import ExploreFlashList from "./ExploreFlashList";

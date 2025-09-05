@@ -1,6 +1,6 @@
 import classnames from "classnames";
 // eslint-disable-next-line max-len
-import TransparentCircleButton from "components/SharedComponents/Buttons/TransparentCircleButton.tsx";
+import TransparentCircleButton from "components/SharedComponents/Buttons/TransparentCircleButton";
 import React from "react";
 import { GestureResponderEvent, ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";

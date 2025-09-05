@@ -137,7 +137,7 @@ class ObservationPhoto extends Realm.Object {
     if ( obsPhotoToDelete ) {
       // Removing this require breaks tests, so I am leaving it here
       // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const { getJWT } = require( "components/LoginSignUp/AuthenticationService.ts" );
+      const { getJWT } = require( "components/LoginSignUp/AuthenticationService" );
       const apiToken = await getJWT( );
       const options = { api_token: apiToken };
       await inatjs.observation_photos.delete( { id: obsPhotoToDelete.uuid }, options );

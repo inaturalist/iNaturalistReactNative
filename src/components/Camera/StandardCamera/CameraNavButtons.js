@@ -1,6 +1,6 @@
 // @flow
 
-import TakePhoto from "components/Camera/Buttons/TakePhoto.tsx";
+import TakePhoto from "components/Camera/Buttons/TakePhoto";
 import { MediaNavButtons } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";

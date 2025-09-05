@@ -3,7 +3,7 @@ import {
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import type { ApiObservationsUpdatesParams } from "api/types";
-import NotificationsList from "components/Notifications/NotificationsList.tsx";
+import NotificationsList from "components/Notifications/NotificationsList";
 import React, { useEffect, useState } from "react";
 import type { RealmUser } from "realmModels/types";
 import { log } from "sharedHelpers/logger";

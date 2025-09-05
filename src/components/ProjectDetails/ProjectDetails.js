@@ -2,7 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
-import displayProjectType from "components/Projects/helpers/displayProjectType.ts";
+import displayProjectType from "components/Projects/helpers/displayProjectType";
 import {
   Body4,
   Button,
@@ -21,7 +21,7 @@ import {
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import Config from "react-native-config";
-import { openExternalWebBrowser } from "sharedHelpers/util.ts";
+import { openExternalWebBrowser } from "sharedHelpers/util";
 import { useStoredLayout, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";

@@ -8,7 +8,7 @@ import useDeviceOrientation, {
   LANDSCAPE_LEFT,
   LANDSCAPE_RIGHT,
   PORTRAIT_UPSIDE_DOWN
-} from "sharedHooks/useDeviceOrientation.ts";
+} from "sharedHooks/useDeviceOrientation";
 
 const rotationValue = ( deviceOrientation: string | undefined ) => {
   switch ( deviceOrientation ) {

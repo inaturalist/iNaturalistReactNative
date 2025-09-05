@@ -1,7 +1,7 @@
 import {
   ALLOWED_DOMAINS,
   onShouldStartLoadWithRequest
-} from "components/FullPageWebView/FullPageWebView.tsx";
+} from "components/FullPageWebView/FullPageWebView";
 import { Linking } from "react-native";
 
 describe( "FullPageWebView", ( ) => {

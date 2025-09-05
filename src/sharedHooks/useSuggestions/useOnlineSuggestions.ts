@@ -2,14 +2,14 @@ import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import { useQueryClient } from "@tanstack/react-query";
-import scoreImage from "api/computerVision.ts";
+import scoreImage from "api/computerVision";
 import i18n from "i18next";
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import {
   useCallback, useEffect, useState
 } from "react";
 import Taxon from "realmModels/Taxon";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedQuery,
   useCurrentUser

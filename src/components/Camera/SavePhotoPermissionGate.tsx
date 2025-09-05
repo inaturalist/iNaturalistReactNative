@@ -1,6 +1,6 @@
 import PermissionGateContainer, {
   WRITE_MEDIA_PERMISSIONS
-} from "components/SharedComponents/PermissionGateContainer.tsx";
+} from "components/SharedComponents/PermissionGateContainer";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 

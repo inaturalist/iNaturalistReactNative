@@ -1,9 +1,9 @@
 // @flow
 
 import classNames from "classnames";
-import ExploreLocationSearchModal from "components/Explore/Modals/ExploreLocationSearchModal.tsx";
-import ExploreTaxonSearchModal from "components/Explore/Modals/ExploreTaxonSearchModal.tsx";
-import NumberBadge from "components/Explore/NumberBadge.tsx";
+import ExploreLocationSearchModal from "components/Explore/Modals/ExploreLocationSearchModal";
+import ExploreTaxonSearchModal from "components/Explore/Modals/ExploreTaxonSearchModal";
+import NumberBadge from "components/Explore/NumberBadge";
 import {
   BackButton,
   Body3,
@@ -12,7 +12,7 @@ import {
   INatIconButton
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import { useExplore } from "providers/ExploreContext.tsx";
+import { useExplore } from "providers/ExploreContext";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Surface } from "react-native-paper";

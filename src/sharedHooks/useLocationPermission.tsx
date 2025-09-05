@@ -1,8 +1,8 @@
-import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate.tsx";
+import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import {
   LOCATION_PERMISSIONS,
   permissionResultFromMultiple
-} from "components/SharedComponents/PermissionGateContainer.tsx";
+} from "components/SharedComponents/PermissionGateContainer";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   checkMultiple,

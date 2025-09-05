@@ -6,7 +6,7 @@ import type {
   ApiOpts
 } from "api/types";
 import { flatten } from "lodash";
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import type Realm from "realm";
 import Observation from "realmModels/Observation";
 import { useAuthenticatedInfiniteQuery, useCurrentUser } from "sharedHooks";

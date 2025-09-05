@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import PhotoLibraryIcon from "components/Camera/Buttons/PhotoLibraryIcon.tsx";
+import PhotoLibraryIcon from "components/Camera/Buttons/PhotoLibraryIcon";
 import { CloseButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";

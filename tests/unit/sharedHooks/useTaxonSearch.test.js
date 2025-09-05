@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react-native";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
-import useTaxonSearch from "sharedHooks/useTaxonSearch.ts";
+import useTaxonSearch from "sharedHooks/useTaxonSearch";
 import factory from "tests/factory";
 
 const mockIconicTaxa = [

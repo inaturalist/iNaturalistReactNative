@@ -4,7 +4,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   Divider, INatIconButton, UserText
 } from "components/SharedComponents";
-import DisplayTaxon from "components/SharedComponents/DisplayTaxon.tsx";
+import DisplayTaxon from "components/SharedComponents/DisplayTaxon";
 import {
   View
 } from "components/styledComponents";
