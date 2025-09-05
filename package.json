@@ -23,6 +23,7 @@
     "lint:rubocop:fix": "bundle exec rubocop -A",
     "lint:tsc": "tsc --allowJs false --noEmit",
     "lint:format": "prettier --experimental-cli --cache --check .",
+    "format": "prettier --experimental-cli --write .",
     "postinstall": "husky && patch-package",
     "translate": "node src/i18n/i18ncli.js build",
     "prepare-fastlane-metadata": "node src/i18n/i18ncli.js prepare-fastlane-metadata",
