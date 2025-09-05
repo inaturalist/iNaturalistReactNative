@@ -6,7 +6,7 @@ import { View } from "components/styledComponents";
 import { t } from "i18next";
 import React from "react";
 import * as StoreReview from "react-native-store-review";
-import { openExternalWebBrowser } from "sharedHelpers/util.ts";
+import { openExternalWebBrowser } from "sharedHelpers/util";
 
 const Donate = () => {
   // const navigation = useNavigation( );

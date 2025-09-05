@@ -1,7 +1,7 @@
 // @flow
 
 // Directly imported, not from index.js to avoid circular dependency
-import Body3 from "components/SharedComponents/Typography/Body3.tsx";
+import Body3 from "components/SharedComponents/Typography/Body3";
 import type { Node } from "react";
 import React from "react";
 

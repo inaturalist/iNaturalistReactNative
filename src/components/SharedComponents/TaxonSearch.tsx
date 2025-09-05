@@ -1,4 +1,4 @@
-import EmptySearchResults from "components/Explore/SearchScreens/EmptySearchResults.tsx";
+import EmptySearchResults from "components/Explore/SearchScreens/EmptySearchResults";
 import {
   Body2,
   INatIcon,

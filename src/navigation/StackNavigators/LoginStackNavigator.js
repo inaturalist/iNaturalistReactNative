@@ -2,17 +2,17 @@
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import FullPageWebView from "components/FullPageWebView/FullPageWebView.tsx";
+import FullPageWebView from "components/FullPageWebView/FullPageWebView";
 import ForgotPassword from "components/LoginSignUp/ForgotPassword";
-import LearnMore from "components/LoginSignUp/LearnMore.tsx";
-import Login from "components/LoginSignUp/Login.tsx";
-import SignUp from "components/LoginSignUp/SignUp.tsx";
-import SignUpConfirmation from "components/LoginSignUp/SignUpConfirmation.tsx";
+import LearnMore from "components/LoginSignUp/LearnMore";
+import Login from "components/LoginSignUp/Login";
+import SignUp from "components/LoginSignUp/SignUp";
+import SignUpConfirmation from "components/LoginSignUp/SignUpConfirmation";
 import { CloseButton } from "components/SharedComponents";
 import {
   hideHeaderLeft,
   showSimpleCustomHeader
-} from "navigation/navigationOptions.tsx";
+} from "navigation/navigationOptions";
 import type { Node } from "react";
 import React from "react";
 

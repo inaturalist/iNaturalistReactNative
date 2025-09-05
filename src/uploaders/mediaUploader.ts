@@ -8,7 +8,7 @@ import type {
   RealmPhoto
 } from "realmModels/types";
 import { markRecordUploaded, prepareMediaForUpload } from "uploaders";
-import { trackEvidenceUpload } from "uploaders/utils/progressTracker.ts";
+import { trackEvidenceUpload } from "uploaders/utils/progressTracker";
 
 export type EvidenceType = "Photo" | "ObservationPhoto" | "ObservationSound";
 export type ActionType = "upload" | "attach" | "update";

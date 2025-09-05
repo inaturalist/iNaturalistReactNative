@@ -4,7 +4,7 @@ import { useRoute } from "@react-navigation/native";
 import {
   EXPLORE_ACTION,
   useExplore
-} from "providers/ExploreContext.tsx";
+} from "providers/ExploreContext";
 import { useCallback, useEffect } from "react";
 
 const useParams = ( ): Object => {

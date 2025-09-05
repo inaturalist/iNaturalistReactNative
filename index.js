@@ -13,7 +13,7 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import {
   useColorScheme, Alert, AppRegistry, View
 } from "react-native";
-import { getCurrentRoute } from "navigation/navigationUtils.ts";
+import { getCurrentRoute } from "navigation/navigationUtils";
 import { zustandStorage } from "stores/useStore";
 import {
   QueryClient,
@@ -24,7 +24,7 @@ import ErrorBoundary from "components/ErrorBoundary";
 import initI18next from "i18n/initI18next";
 import { t } from "i18next";
 import inatjs from "inaturalistjs";
-import OfflineNavigationGuard from "navigation/OfflineNavigationGuard.tsx";
+import OfflineNavigationGuard from "navigation/OfflineNavigationGuard";
 import INatPaperProvider from "providers/INatPaperProvider";
 import RealmProvider from "providers/RealmProvider";
 import React from "react";
@@ -32,7 +32,7 @@ import Config from "react-native-config";
 import { setJSExceptionHandler, setNativeExceptionHandler } from "react-native-exception-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { getInstallID } from "sharedHelpers/installData.ts";
+import { getInstallID } from "sharedHelpers/installData";
 import { reactQueryRetry } from "sharedHelpers/logging";
 import DeviceInfo from "react-native-device-info";
 

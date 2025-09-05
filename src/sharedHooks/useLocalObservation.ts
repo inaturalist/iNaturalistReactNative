@@ -1,7 +1,7 @@
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import { Results } from "realm";
 import type { RealmComment, RealmIdentification, RealmObservation } from "realmModels/types";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 const { useRealm } = RealmContext;
 

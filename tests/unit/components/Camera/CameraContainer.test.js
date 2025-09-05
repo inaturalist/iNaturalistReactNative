@@ -2,7 +2,7 @@ import {
   fireEvent,
   screen
 } from "@testing-library/react-native";
-import CameraContainer from "components/Camera/CameraContainer.tsx";
+import CameraContainer from "components/Camera/CameraContainer";
 import React from "react";
 import { View } from "react-native";
 import factory from "tests/factory";

@@ -6,7 +6,7 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
-import { openInbox } from "sharedHelpers/mail.ts";
+import { openInbox } from "sharedHelpers/mail";
 
 import {
   resetPassword

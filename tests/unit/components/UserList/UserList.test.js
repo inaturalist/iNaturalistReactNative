@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react-native";
-import UserList from "components/UserList/UserList.tsx";
+import UserList from "components/UserList/UserList";
 import React from "react";
 import factory from "tests/factory";
 

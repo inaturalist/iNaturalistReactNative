@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react-native";
 import { DisplayTaxonName } from "components/SharedComponents";
 import React from "react";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 

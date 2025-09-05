@@ -1,6 +1,6 @@
 import type { ApiUser } from "api/types";
 import Realm, { ObjectSchema } from "realm";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 import type { RealmUser } from "./types";
 

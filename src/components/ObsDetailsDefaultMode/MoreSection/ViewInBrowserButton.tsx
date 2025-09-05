@@ -3,7 +3,7 @@ import {
 } from "components/SharedComponents";
 import { t } from "i18next";
 import React from "react";
-import { openExternalWebBrowser } from "sharedHelpers/util.ts";
+import { openExternalWebBrowser } from "sharedHelpers/util";
 
 interface Props {
   id: number;

@@ -1,5 +1,5 @@
 import RNFS from "react-native-fs";
-import { unlink } from "sharedHelpers/util.ts";
+import { unlink } from "sharedHelpers/util";
 
 const TRASHABLE_VINTAGE_MS
   = 1000 // 1 second

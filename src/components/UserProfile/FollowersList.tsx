@@ -8,13 +8,13 @@ import {
   ViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import UserList from "components/UserList/UserList.tsx";
+import UserList from "components/UserList/UserList";
 import React, {
   useCallback,
   useEffect,
   useMemo
 } from "react";
-import User from "realmModels/User.ts";
+import User from "realmModels/User";
 import {
   useCurrentUser,
   useInfiniteUserScroll,

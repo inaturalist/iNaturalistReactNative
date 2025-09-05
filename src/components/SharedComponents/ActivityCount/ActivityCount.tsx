@@ -1,9 +1,9 @@
 import classNames from "classnames";
 import INatIcon from "components/SharedComponents/INatIcon";
-import Body3 from "components/SharedComponents/Typography/Body3.tsx";
+import Body3 from "components/SharedComponents/Typography/Body3";
 import { View } from "components/styledComponents";
 import React from "react";
-import useTranslation from "sharedHooks/useTranslation.ts";
+import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
 interface Props {

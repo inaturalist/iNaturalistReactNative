@@ -5,7 +5,7 @@ import {
   TextInputSheet,
   WarningSheet
 } from "components/SharedComponents";
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import React, {
   useCallback, useEffect,
   useMemo, useReducer

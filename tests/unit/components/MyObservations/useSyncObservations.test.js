@@ -1,10 +1,10 @@
 import { renderHook, waitFor } from "@testing-library/react-native";
-import useSyncObservations from "components/MyObservations/hooks/useSyncObservations.ts";
+import useSyncObservations from "components/MyObservations/hooks/useSyncObservations";
 import inatjs from "inaturalistjs";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   BEGIN_AUTOMATIC_SYNC
-} from "stores/createSyncObservationsSlice.ts";
+} from "stores/createSyncObservationsSlice";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";

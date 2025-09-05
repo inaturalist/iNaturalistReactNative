@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
-import TaxonNamesSetting from "components/Settings/TaxonNamesSetting.tsx";
+import TaxonNamesSetting from "components/Settings/TaxonNamesSetting";
 import React from "react";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";

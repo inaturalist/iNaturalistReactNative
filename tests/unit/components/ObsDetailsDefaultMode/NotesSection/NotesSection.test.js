@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/react-native";
-import NotesSection from "components/ObsDetailsDefaultMode/NotesSection/NotesSection.tsx";
+import NotesSection from "components/ObsDetailsDefaultMode/NotesSection/NotesSection";
 import React from "react";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";

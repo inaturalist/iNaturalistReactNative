@@ -1,5 +1,5 @@
 import ExploreUserSearch from "components/Explore/SearchScreens/ExploreUserSearch";
-import Modal from "components/SharedComponents/Modal.tsx";
+import Modal from "components/SharedComponents/Modal";
 import React from "react";
 
 interface Props {

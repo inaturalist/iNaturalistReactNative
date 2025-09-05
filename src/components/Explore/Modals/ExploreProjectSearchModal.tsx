@@ -1,6 +1,6 @@
 import type { ApiProject } from "api/types";
-import ExploreProjectSearch from "components/Explore/SearchScreens/ExploreProjectSearch.tsx";
-import Modal from "components/SharedComponents/Modal.tsx";
+import ExploreProjectSearch from "components/Explore/SearchScreens/ExploreProjectSearch";
+import Modal from "components/SharedComponents/Modal";
 import React from "react";
 
 interface Props {

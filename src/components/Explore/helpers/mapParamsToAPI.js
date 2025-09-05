@@ -7,7 +7,7 @@ import {
   REVIEWED,
   SORT_BY,
   WILD_STATUS
-} from "providers/ExploreContext.tsx";
+} from "providers/ExploreContext";
 
 const mapParamsToAPI = ( params: Object, currentUser: Object ): Object => {
   const RESEARCH = "research";

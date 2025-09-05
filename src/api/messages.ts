@@ -1,5 +1,5 @@
 import inatjs from "inaturalistjs";
-import User from "realmModels/User.ts";
+import User from "realmModels/User";
 
 import handleError from "./error";
 

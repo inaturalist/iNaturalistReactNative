@@ -1,7 +1,7 @@
 import {
   screen
 } from "@testing-library/react-native";
-import ObsStatus from "components/SharedComponents/ObsStatus.tsx";
+import ObsStatus from "components/SharedComponents/ObsStatus";
 import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";

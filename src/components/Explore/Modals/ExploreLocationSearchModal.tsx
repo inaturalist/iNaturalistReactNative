@@ -1,8 +1,8 @@
 import type { ApiPlace } from "api/types";
-import ExploreLocationSearch from "components/Explore/SearchScreens/ExploreLocationSearch.tsx";
-import Modal from "components/SharedComponents/Modal.tsx";
+import ExploreLocationSearch from "components/Explore/SearchScreens/ExploreLocationSearch";
+import Modal from "components/SharedComponents/Modal";
 import React from "react";
-import type { LocationPermissionCallbacks } from "sharedHooks/useLocationPermission.tsx";
+import type { LocationPermissionCallbacks } from "sharedHooks/useLocationPermission";
 
 interface Props {
   closeModal: () => void;

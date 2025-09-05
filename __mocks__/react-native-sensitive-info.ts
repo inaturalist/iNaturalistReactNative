@@ -2,7 +2,7 @@ let clearAuthCache = () => {}; // Default no-op function
 
 // Try to get clearAuthCache function safely
 try {
-  const authModule = require( "components/LoginSignUp/AuthenticationService.ts" );
+  const authModule = require( "components/LoginSignUp/AuthenticationService" );
 
   if ( authModule && typeof authModule.clearAuthCache === "function" ) {
     // eslint-disable-next-line prefer-destructuring

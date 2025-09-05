@@ -1,6 +1,6 @@
 import { useRoute } from "@react-navigation/native";
 import { render, screen } from "@testing-library/react-native";
-import ProjectListContainer from "components/ProjectList/ProjectListContainer.tsx";
+import ProjectListContainer from "components/ProjectList/ProjectListContainer";
 import React from "react";
 import factory from "tests/factory";
 
