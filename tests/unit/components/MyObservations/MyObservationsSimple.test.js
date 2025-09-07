@@ -53,7 +53,7 @@ const DEVICE_ORIENTATION_PHONE_LANDSCAPE = {
 //   screenHeight: 820
 // };
 
-jest.mock( "sharedHooks/useDeviceOrientation.ts", ( ) => ( {
+jest.mock( "sharedHooks/useDeviceOrientation", ( ) => ( {
   __esModule: true,
   default: jest.fn( () => ( DEVICE_ORIENTATION_PHONE_PORTRAIT ) )
 } ) );

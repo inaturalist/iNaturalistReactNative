@@ -33,12 +33,12 @@ jest.mock( "@react-navigation/native", () => {
 } );
 
 const mockView = <View />;
-jest.mock( "components/Camera/CameraView.tsx", () => ( {
+jest.mock( "components/Camera/CameraView", () => ( {
   __esModule: true,
   default: ( ) => mockView
 } ) );
 
-jest.mock( "components/Camera/FadeInOutView.tsx", () => ( {
+jest.mock( "components/Camera/FadeInOutView", () => ( {
   __esModule: true,
   default: () => mockView
 } ) );

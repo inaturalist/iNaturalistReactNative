@@ -14,8 +14,8 @@ const mockDefaultExploreLocation = jest.fn( ).mockResolvedValue( {
 } );
 
 // Create a mock implementation of the ExploreContext
-jest.mock( "providers/ExploreContext.tsx", ( ) => {
-  const originalModule = jest.requireActual( "providers/ExploreContext.tsx" );
+jest.mock( "providers/ExploreContext", ( ) => {
+  const originalModule = jest.requireActual( "providers/ExploreContext" );
   return {
     __esModule: true,
     ...originalModule,

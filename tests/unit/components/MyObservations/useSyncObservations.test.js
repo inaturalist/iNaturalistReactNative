@@ -113,7 +113,7 @@ describe( "automatic sync while user is logged out", ( ) => {
     const realm = global.mockRealms[__filename];
     safeRealmWrite( realm, ( ) => {
       realm.create( "Observation", obsToDelete );
-    }, "write Observation to delete, useSyncObservations.ts" );
+    }, "write Observation to delete, useSyncObservations" );
   } );
   it( "should not fetch remote observations or deletions when user is logged out", async ( ) => {
     useStore.setState( {

@@ -6,9 +6,9 @@ import * as mediaUploader from "uploaders/mediaUploader";
 import uploadObservation from "uploaders/observationUploader";
 import * as progressTracker from "uploaders/utils/progressTracker";
 
-jest.mock( "components/LoginSignUp/AuthenticationService.ts" );
-jest.mock( "uploaders/utils/progressTracker.ts" );
-jest.mock( "uploaders/mediaUploader.ts" );
+jest.mock( "components/LoginSignUp/AuthenticationService" );
+jest.mock( "uploaders/utils/progressTracker" );
+jest.mock( "uploaders/mediaUploader" );
 jest.mock( "uploaders" );
 jest.mock( "api/observations" );
 jest.mock( "sharedHelpers/safeRealmWrite", () => jest.fn() );

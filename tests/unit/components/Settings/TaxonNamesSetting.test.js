@@ -13,7 +13,7 @@ const mockUser = factory( "LocalUser", {
 } );
 
 // Simplified mocks
-jest.mock( "providers/contexts.ts", () => ( {
+jest.mock( "providers/contexts", () => ( {
   RealmContext: {
     useRealm: () => ( {} )
   }
@@ -25,7 +25,7 @@ jest.mock( "sharedHooks", () => ( {
   useCurrentUser: () => mockUser
 } ) );
 
-jest.mock( "realmModels/User.ts", () => ( {
+jest.mock( "realmModels/User", () => ( {
   __esModule: true,
   default: {
     updatePreferences: jest.fn( ( _, options ) => {

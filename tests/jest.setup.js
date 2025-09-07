@@ -147,9 +147,10 @@ jest.mock( "sharedHelpers/installData", ( ) => ( {
   getInstallID: jest.fn( ( ) => "fake-installation-id" )
 } ) );
 
-jest.mock( "components/SharedComponents/Buttons/Button.tsx", () => {
-  const actualButton = jest
-    .requireActual( "components/SharedComponents/Buttons/Button.tsx" ).default;
+jest.mock( "components/SharedComponents/Buttons/Button", () => {
+  const actualButton = jest.requireActual(
+    "components/SharedComponents/Buttons/Button"
+  ).default;
   // Use a very short debounce time (10ms) in tests to simulate the 300ms
   // debounce time in the actual Button component
   return jest.fn( props => actualButton( { ...props, debounceTime: 10 } ) );
