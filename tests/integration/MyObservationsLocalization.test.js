@@ -1,5 +1,5 @@
 import { screen, waitFor } from "@testing-library/react-native";
-import MyObservationsContainer from "components/MyObservations/MyObservationsContainer.tsx";
+import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 // import inatjs from "inaturalistjs";
 import React from "react";
 import factory from "tests/factory";

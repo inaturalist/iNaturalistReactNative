@@ -1,4 +1,4 @@
-import iNatLogstashTransport from "api/log.ts";
+import iNatLogstashTransport from "api/log";
 import RNFS from "react-native-fs";
 import {
   consoleTransport,

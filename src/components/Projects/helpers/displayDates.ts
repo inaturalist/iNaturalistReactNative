@@ -1,4 +1,4 @@
-import { formatProjectsApiDatetimeLong } from "sharedHelpers/dateAndTime.ts";
+import { formatProjectsApiDatetimeLong } from "sharedHelpers/dateAndTime";
 
 const getFieldValue = item => item?.[0]?.value;
 

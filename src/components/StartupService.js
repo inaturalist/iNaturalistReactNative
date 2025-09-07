@@ -1,18 +1,18 @@
 import Geolocation from "@react-native-community/geolocation";
 import NetInfo from "@react-native-community/netinfo";
 import { onlineManager } from "@tanstack/react-query";
-import { signOut } from "components/LoginSignUp/AuthenticationService.ts";
-import { RealmContext } from "providers/contexts.ts";
+import { signOut } from "components/LoginSignUp/AuthenticationService";
+import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
 import { LogBox } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
 import Realm from "realm";
-import clearCaches from "sharedHelpers/clearCaches.ts";
-import { IS_FRESH_INSTALL, store } from "sharedHelpers/installData.ts";
+import clearCaches from "sharedHelpers/clearCaches";
+import { IS_FRESH_INSTALL, store } from "sharedHelpers/installData";
 import { log } from "sharedHelpers/logger";
-import { addARCameraFiles } from "sharedHelpers/mlModel.ts";
-import { findAndLogSentinelFiles } from "sharedHelpers/sentinelFiles.ts";
+import { addARCameraFiles } from "sharedHelpers/mlModel";
+import { findAndLogSentinelFiles } from "sharedHelpers/sentinelFiles";
 import {
   usePerformance
 } from "sharedHooks";

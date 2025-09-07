@@ -1,9 +1,9 @@
 import {
   photoLibraryPhotosPath, photoUploadPath, rotatedOriginalPhotosPath, soundUploadPath
-} from "appConstants/paths.ts";
+} from "appConstants/paths";
 import { log } from "sharedHelpers/logger";
-import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory.ts";
-import removeSyncedFilesFromDirectory from "sharedHelpers/removeSyncedFilesFromDirectory.ts";
+import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
+import removeSyncedFilesFromDirectory from "sharedHelpers/removeSyncedFilesFromDirectory";
 
 const logger = log.extend( "clearCaches.ts" );
 

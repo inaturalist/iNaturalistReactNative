@@ -5,7 +5,7 @@ import {
   within
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
-import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice.ts";
+import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";

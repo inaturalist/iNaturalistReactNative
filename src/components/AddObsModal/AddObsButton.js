@@ -1,11 +1,11 @@
 // @flow
 
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import AddObsModal from "components/AddObsModal/AddObsModal.tsx";
+import AddObsModal from "components/AddObsModal/AddObsModal";
 import { Modal } from "components/SharedComponents";
-import GradientButton from "components/SharedComponents/Buttons/GradientButton.tsx";
+import GradientButton from "components/SharedComponents/Buttons/GradientButton";
 import { t } from "i18next";
-import { getCurrentRoute } from "navigation/navigationUtils.ts";
+import { getCurrentRoute } from "navigation/navigationUtils";
 import * as React from "react";
 import { log } from "sharedHelpers/logger";
 import { useCurrentUser, useLayoutPrefs } from "sharedHooks";

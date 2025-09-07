@@ -4,8 +4,8 @@ import {
   useNavigation,
   useRoute
 } from "@react-navigation/native";
-import { getUserAgent } from "api/userAgent.ts";
-import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
+import { getUserAgent } from "api/userAgent";
+import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { ActivityIndicator, Mortal, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useEffect, useState } from "react";
@@ -13,7 +13,7 @@ import { Linking } from "react-native";
 import { EventRegister } from "react-native-event-listeners";
 import WebView from "react-native-webview";
 import { log } from "sharedHelpers/logger";
-import { composeEmail } from "sharedHelpers/mail.ts";
+import { composeEmail } from "sharedHelpers/mail";
 import { useFontScale } from "sharedHooks";
 
 const logger = log.extend( "FullPageWebView" );

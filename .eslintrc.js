@@ -153,7 +153,8 @@ module.exports = {
     "import/resolver": {
       "babel-module": { allowExistingDirectories: true },
       node: {
-        extensions: [".js", ".jsx", ".ts", ".tsx"]
+        extensions: [".js", ".jsx", ".ts", ".tsx"],
+        moduleDirectory: ["node_modules", "src"]
       }
     }
   },

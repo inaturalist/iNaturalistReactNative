@@ -4,7 +4,7 @@ import {
   Camera,
   useCameraFormat
 } from "components/Camera/helpers/visionCameraWrapper";
-import useFocusTap from "components/Camera/hooks/useFocusTap.ts";
+import useFocusTap from "components/Camera/hooks/useFocusTap";
 import React, {
   useCallback
 } from "react";

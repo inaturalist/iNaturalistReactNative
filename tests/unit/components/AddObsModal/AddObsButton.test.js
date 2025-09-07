@@ -1,7 +1,7 @@
 import { screen } from "@testing-library/react-native";
 import AddObsButton from "components/AddObsModal/AddObsButton";
 import React from "react";
-import * as useCurrentUser from "sharedHooks/useCurrentUser.ts";
+import * as useCurrentUser from "sharedHooks/useCurrentUser";
 import { zustandStorage } from "stores/useStore";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";

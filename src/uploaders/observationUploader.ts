@@ -2,7 +2,7 @@ import {
   createObservation,
   updateObservation
 } from "api/observations";
-import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
+import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { AppState } from "react-native";
 import Realm from "realm";
 import type { RealmObservation, RealmObservationPojo } from "realmModels/types";
@@ -14,9 +14,9 @@ import {
 import {
   attachMediaToObservation,
   uploadObservationMedia
-} from "uploaders/mediaUploader.ts";
-import { RecoverableError, RECOVERY_BY } from "uploaders/utils/errorHandling.ts";
-import { trackObservationUpload } from "uploaders/utils/progressTracker.ts";
+} from "uploaders/mediaUploader";
+import { RecoverableError, RECOVERY_BY } from "uploaders/utils/errorHandling";
+import { trackObservationUpload } from "uploaders/utils/progressTracker";
 
 const logger = log.extend( "observationUploader" );
 

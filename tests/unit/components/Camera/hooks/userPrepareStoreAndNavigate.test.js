@@ -1,5 +1,5 @@
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
-import { savePhotosToPhotoLibrary } from "components/Camera/helpers/savePhotosToPhotoLibrary.ts";
+import { savePhotosToPhotoLibrary } from "components/Camera/helpers/savePhotosToPhotoLibrary";
 import faker from "tests/helpers/faker";
 
 describe( "userPrepareStoreAndNavigate", ( ) => {

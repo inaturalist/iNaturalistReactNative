@@ -1,6 +1,6 @@
 import type { ApiTaxon } from "api/types";
 import classnames from "classnames";
-import ObsImagePreview from "components/ObservationsFlashList/ObsImagePreview.tsx";
+import ObsImagePreview from "components/ObservationsFlashList/ObsImagePreview";
 import {
   Body4,
   DisplayTaxonName
@@ -9,7 +9,7 @@ import { Pressable, View } from "components/styledComponents";
 import React, { useEffect, useRef } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import type { RealmTaxon } from "realmModels/types";
-import { accessibleTaxonName } from "sharedHelpers/taxon.ts";
+import { accessibleTaxonName } from "sharedHelpers/taxon";
 import {
   useCurrentUser, useTranslation
 } from "sharedHooks";

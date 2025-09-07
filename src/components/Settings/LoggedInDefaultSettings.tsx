@@ -5,14 +5,14 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   signOut
-} from "components/LoginSignUp/AuthenticationService.ts";
+} from "components/LoginSignUp/AuthenticationService";
 import {
   ActivityIndicator,
   Body2,
   Button,
   Heading4
 } from "components/SharedComponents";
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   Alert,
@@ -20,7 +20,7 @@ import {
 } from "react-native";
 import Config from "react-native-config";
 import { EventRegister } from "react-native-event-listeners";
-import QueueItem from "realmModels/QueueItem.ts";
+import QueueItem from "realmModels/QueueItem";
 import {
   useLayoutPrefs,
   useTranslation,

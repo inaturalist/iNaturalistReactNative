@@ -1,6 +1,6 @@
 import RNFS from "react-native-fs";
 import { log } from "sharedHelpers/logger";
-import { unlink } from "sharedHelpers/util.ts";
+import { unlink } from "sharedHelpers/util";
 
 import { sentinelFilePath } from "../appConstants/paths";
 

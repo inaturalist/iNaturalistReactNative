@@ -1,10 +1,10 @@
 import { fetchUserMe, updateUsers } from "api/users";
-import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
-import { RealmContext } from "providers/contexts.ts";
+import { getJWT } from "components/LoginSignUp/AuthenticationService";
+import { RealmContext } from "providers/contexts";
 import { useEffect, useState } from "react";
-import QueueItem from "realmModels/QueueItem.ts";
+import QueueItem from "realmModels/QueueItem";
 import { log } from "sharedHelpers/logger";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedMutation
 } from "sharedHooks";

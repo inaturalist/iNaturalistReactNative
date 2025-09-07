@@ -4,12 +4,12 @@ import {
   useCallback
 } from "react";
 import Observation from "realmModels/Observation";
-import ObservationPhoto from "realmModels/ObservationPhoto.ts";
+import ObservationPhoto from "realmModels/ObservationPhoto";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import {
   useLayoutPrefs
 } from "sharedHooks";
-import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice.ts";
+import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 
 import savePhotosToPhotoLibrary from "../helpers/savePhotosToPhotoLibrary";

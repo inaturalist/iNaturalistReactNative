@@ -6,7 +6,7 @@ import {
   formatApiDatetime,
   formatDifferenceForHumans,
   formatMonthYearDate
-} from "sharedHelpers/dateAndTime.ts";
+} from "sharedHelpers/dateAndTime";
 import { useTranslation } from "sharedHooks";
 
 interface Props {

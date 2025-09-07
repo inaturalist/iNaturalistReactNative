@@ -2,7 +2,7 @@ import {
   fireEvent,
   screen
 } from "@testing-library/react-native";
-import CameraContainer from "components/Camera/CameraContainer.tsx";
+import CameraContainer from "components/Camera/CameraContainer";
 import React from "react";
 import { View } from "react-native";
 import factory from "tests/factory";
@@ -33,12 +33,12 @@ jest.mock( "@react-navigation/native", () => {
 } );
 
 const mockView = <View />;
-jest.mock( "components/Camera/CameraView.tsx", () => ( {
+jest.mock( "components/Camera/CameraView", () => ( {
   __esModule: true,
   default: ( ) => mockView
 } ) );
 
-jest.mock( "components/Camera/FadeInOutView.tsx", () => ( {
+jest.mock( "components/Camera/FadeInOutView", () => ( {
   __esModule: true,
   default: () => mockView
 } ) );
