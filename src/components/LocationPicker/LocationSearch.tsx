@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { fetchSearchResults } from "api/search";
-import type { ApiOpts } from "api/types.d";
+import type { ApiOpts } from "api/types";
 import {
   Body3,
   SearchBar

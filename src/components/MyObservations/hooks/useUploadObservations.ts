@@ -5,7 +5,7 @@ import {
 } from "react";
 import { EventRegister } from "react-native-event-listeners";
 import Observation from "realmModels/Observation";
-import type { RealmObservation } from "realmModels/types.d";
+import type { RealmObservation } from "realmModels/types";
 import {
   useTranslation
 } from "sharedHooks";
