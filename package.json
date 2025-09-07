@@ -165,7 +165,7 @@
     "@types/sanitize-html": "^2.13.0",
     "@typescript-eslint/eslint-plugin": "^8.32.1",
     "babel-plugin-module-resolver": "^5.0.0",
-    "babel-plugin-react-compiler": "^19.1.0-rc.2",
+    "babel-plugin-react-compiler": "^19.1.0-rc.3",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "chalk": "^5.4.1",
