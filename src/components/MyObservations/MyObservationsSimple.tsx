@@ -8,7 +8,7 @@ import {
   FiftyObservationCard,
   FiveObservationCard,
   OneObservationCard
-} from "components/OnboardingModal/PivotCards.tsx";
+} from "components/OnboardingModal/PivotCards";
 import {
   Body1,
   InfiniteScrollLoadingWheel,
@@ -17,16 +17,16 @@ import {
   Tabs,
   ViewWrapper
 } from "components/SharedComponents";
-import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList.tsx";
+import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList";
 import { View } from "components/styledComponents";
 import React, { useCallback, useMemo } from "react";
-import Photo from "realmModels/Photo.ts";
+import Photo from "realmModels/Photo";
 import type {
   RealmObservation,
   RealmTaxon,
   RealmUser
 } from "realmModels/types";
-import { accessibleTaxonName } from "sharedHelpers/taxon.ts";
+import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useGridLayout, useLayoutPrefs, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 

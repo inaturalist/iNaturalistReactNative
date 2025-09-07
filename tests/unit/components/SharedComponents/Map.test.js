@@ -1,13 +1,13 @@
 import { screen } from "@testing-library/react-native";
 import { Map } from "components/SharedComponents";
-import { TILE_URL } from "components/SharedComponents/Map/helpers/mapHelpers.ts";
+import { TILE_URL } from "components/SharedComponents/Map/helpers/mapHelpers";
 import React from "react";
 import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
 const baseUrl = `${TILE_URL}/grid/{z}/{x}/{y}.png`;
 
-jest.mock( "sharedHooks/useLocationPermission.tsx", () => ( {
+jest.mock( "sharedHooks/useLocationPermission", () => ( {
   __esModule: true,
   default: ( ) => ( {
     hasPermissions: true,

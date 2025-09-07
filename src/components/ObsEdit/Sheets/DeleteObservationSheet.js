@@ -3,10 +3,10 @@
 import {
   WarningSheet
 } from "components/SharedComponents";
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback } from "react";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 

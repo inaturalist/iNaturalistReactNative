@@ -1,7 +1,7 @@
-import { MapBoundaries } from "providers/ExploreContext.tsx";
+import { MapBoundaries } from "providers/ExploreContext";
 import Config from "react-native-config";
 import { LatLng, Region } from "react-native-maps";
-import createUTFPosition from "sharedHelpers/createUTFPosition.ts";
+import createUTFPosition from "sharedHelpers/createUTFPosition";
 import getDataForPixel from "sharedHelpers/fetchUTFGridData";
 
 export const OBSCURATION_CELL_SIZE = 0.2;

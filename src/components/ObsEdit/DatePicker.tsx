@@ -6,8 +6,8 @@ import {
   formatISONoSeconds,
   formatLongDate,
   formatLongDatetime
-} from "sharedHelpers/dateAndTime.ts";
-import useTranslation from "sharedHooks/useTranslation.ts";
+} from "sharedHelpers/dateAndTime";
+import useTranslation from "sharedHooks/useTranslation";
 
 interface Props {
   currentObservation: RealmObservationPojo;

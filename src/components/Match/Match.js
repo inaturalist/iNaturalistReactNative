@@ -1,6 +1,6 @@
 import { useNetInfo } from "@react-native-community/netinfo";
 import LocationSection
-  from "components/ObsDetailsDefaultMode/LocationSection/LocationSection.tsx";
+  from "components/ObsDetailsDefaultMode/LocationSection/LocationSection";
 import MapSection
   from "components/ObsDetailsDefaultMode/MapSection/MapSection";
 import {

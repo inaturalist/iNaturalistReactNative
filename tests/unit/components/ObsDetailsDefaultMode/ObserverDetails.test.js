@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react-native";
 import ObserverDetails from "components/ObsDetailsDefaultMode/ObserverDetails";
 import i18next from "i18next";
 import React from "react";
-import { formatApiDatetime } from "sharedHelpers/dateAndTime.ts";
+import { formatApiDatetime } from "sharedHelpers/dateAndTime";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";

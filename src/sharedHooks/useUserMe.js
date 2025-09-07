@@ -1,8 +1,8 @@
 // @flow
 import { fetchUserMe } from "api/users";
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import { useCallback, useEffect } from "react";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedQuery,
   useCurrentUser

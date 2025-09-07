@@ -3,7 +3,7 @@ import DeleteObservationSheet from "components/ObsEdit/Sheets/DeleteObservationS
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import React from "react";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite.ts";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 

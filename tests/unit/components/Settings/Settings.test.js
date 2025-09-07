@@ -6,7 +6,7 @@ import Settings from "components/Settings/Settings";
 import i18n from "i18next";
 import inatjs from "inaturalistjs";
 import React from "react";
-import * as useCurrentUser from "sharedHooks/useCurrentUser.ts";
+import * as useCurrentUser from "sharedHooks/useCurrentUser";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import { renderComponent } from "tests/helpers/render";

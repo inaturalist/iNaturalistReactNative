@@ -4,13 +4,13 @@ import {
   TaxonResult,
   TaxonSearch
 } from "components/SharedComponents";
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import React, {
   useCallback,
   useEffect,
   useState
 } from "react";
-import saveObservation from "sharedHelpers/saveObservation.ts";
+import saveObservation from "sharedHelpers/saveObservation";
 import { useTaxonSearch, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 

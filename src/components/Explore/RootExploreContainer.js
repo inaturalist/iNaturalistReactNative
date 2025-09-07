@@ -9,7 +9,7 @@ import {
   ExploreProvider,
   PLACE_MODE,
   useExplore
-} from "providers/ExploreContext.tsx";
+} from "providers/ExploreContext";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -18,7 +18,7 @@ import React, {
   useState
 } from "react";
 import { useCurrentUser } from "sharedHooks";
-import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
+import useLocationPermission from "sharedHooks/useLocationPermission";
 import useStore from "stores/useStore";
 
 import Explore from "./Explore";

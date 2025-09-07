@@ -1,6 +1,6 @@
-import { search } from "api/search.ts";
+import { search } from "api/search";
 import type { ApiProject } from "api/types";
-import ProjectList from "components/ProjectList/ProjectList.tsx";
+import ProjectList from "components/ProjectList/ProjectList";
 import {
   SearchBar,
   ViewWrapper

@@ -1,6 +1,6 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
-import CameraView from "components/Camera/CameraView.tsx";
+import CameraView from "components/Camera/CameraView";
 import {
   useFrameProcessor
 } from "components/Camera/helpers/visionCameraWrapper";
@@ -18,8 +18,8 @@ import {
   modelPath,
   modelVersion,
   taxonomyPath
-} from "sharedHelpers/mlModel.ts";
-import { logStage } from "sharedHelpers/sentinelFiles.ts";
+} from "sharedHelpers/mlModel";
+import { logStage } from "sharedHelpers/sentinelFiles";
 import usePatchedRunAsync from "sharedHelpers/visionCameraPatches";
 import { useLayoutPrefs } from "sharedHooks";
 import useStore from "stores/useStore";

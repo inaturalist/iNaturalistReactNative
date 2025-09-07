@@ -1,4 +1,4 @@
-import { fontRegular } from "appConstants/fontFamilies.ts";
+import { fontRegular } from "appConstants/fontFamilies";
 import {
   Body2,
   Heading4
@@ -6,8 +6,8 @@ import {
 import * as React from "react";
 import { useWindowDimensions } from "react-native";
 import HTML, { defaultSystemFonts } from "react-native-render-html";
-import { openExternalWebBrowser } from "sharedHelpers/util.ts";
-import useTranslation from "sharedHooks/useTranslation.ts";
+import { openExternalWebBrowser } from "sharedHelpers/util";
+import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
 interface Props {

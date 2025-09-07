@@ -15,10 +15,10 @@ import MapView, {
   BoundingBox, LatLng, MapType, Region, UrlTile
 } from "react-native-maps";
 import Observation from "realmModels/Observation";
-import fetchCoarseUserLocation from "sharedHelpers/fetchCoarseUserLocation.ts";
-import mapTracker from "sharedHelpers/mapPerformanceTracker.ts";
+import fetchCoarseUserLocation from "sharedHelpers/fetchCoarseUserLocation";
+import mapTracker from "sharedHelpers/mapPerformanceTracker";
 import { useDebugMode, useDeviceOrientation } from "sharedHooks";
-import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
+import useLocationPermission from "sharedHooks/useLocationPermission";
 import colors from "styles/tailwindColors";
 
 import CurrentLocationButton from "./CurrentLocationButton";

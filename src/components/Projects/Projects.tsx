@@ -2,7 +2,7 @@ import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
-import ProjectList from "components/ProjectList/ProjectList.tsx";
+import ProjectList from "components/ProjectList/ProjectList";
 import {
   ActivityIndicator,
   Body1,
@@ -15,7 +15,7 @@ import {
   Tabs,
   ViewWrapper
 } from "components/SharedComponents";
-import { Tab } from "components/SharedComponents/Tabs/Tabs.tsx";
+import { Tab } from "components/SharedComponents/Tabs/Tabs";
 import { View } from "components/styledComponents";
 import React, { useCallback, useEffect } from "react";
 import {

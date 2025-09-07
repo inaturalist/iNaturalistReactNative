@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/react-native";
-import ProjectRequirements from "components/ProjectDetails/ProjectRequirements.tsx";
+import ProjectRequirements from "components/ProjectDetails/ProjectRequirements";
 import React from "react";
 import { useAuthenticatedQuery } from "sharedHooks";
 import factory from "tests/factory";
