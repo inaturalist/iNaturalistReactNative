@@ -63,7 +63,11 @@ const SuggestionsResult = ( {
   // and is currently not added to the taxon realm. So, if it is available directly from the
   // suggestion, i.e. taxonProp, use it. Otherwise, use the default photo from the taxon.
   const uri = ( taxon as ApiTaxon )?.representative_photo?.url
-      || ( taxon as ApiTaxon )?.default_photo?.url
+      // TODO: this access here was crashing the app with "Error: Accessing object that
+      // has been invalidated or deleted." The app seems to work without this line for me
+      // at the moment, but maybe at a later stage we want to re-enable this and understand
+      // why it crashed.
+      // || ( taxon as ApiTaxon )?.default_photo?.url
       || ( taxon as RealmTaxon )?.defaultPhoto?.url;
   const taxonImage = uri
     ? { uri }
