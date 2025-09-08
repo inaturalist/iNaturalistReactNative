@@ -1383,7 +1383,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-volume-manager (1.10.0):
+  - react-native-volume-manager (2.0.8):
     - Mute
     - React-Core
   - react-native-webview (13.15.0):
@@ -2363,7 +2363,7 @@ SPEC CHECKSUMS:
   react-native-safe-area-context: 827032edf27079702cbd006f11dc79451a2d744b
   react-native-sensitive-info: ee358bf2b901ac3d04f63ff637b31daee44ea87f
   react-native-slider: 782148f71677e18db743131d85eecaf93948b478
-  react-native-volume-manager: d9d2863a2374420af89c89662333ea6adf506988
+  react-native-volume-manager: cdd3c3857158c1df7b9fbea071a9946395cee06c
   react-native-webview: 3772c8537fd6d7869791820a7b154fb546bcef7b
   react-native-worklets-core: b59cf88762c8fb6132d8796babd4cec15217d6f0
   React-NativeModulesApple: c8bb2bc56d39bd122c56ef58a55c3f34d53f1585
