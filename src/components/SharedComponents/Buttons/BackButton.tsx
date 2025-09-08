@@ -51,6 +51,7 @@ const BackButton = ( {
 }: Props ) => {
   const { isRTL } = I18nManager;
   const navigation = useNavigation();
+  const canGoBack = navigation?.canGoBack( );
   const tintColor = color || colors.darkGray;
   const { t } = useTranslation( );
 
@@ -73,7 +74,7 @@ const BackButton = ( {
     />
   );
 
-  if ( navigation?.canGoBack( ) ) {
+  if ( onPress || canGoBack ) {
     return (
       <HeaderBackButton
         backImage={backImage}
