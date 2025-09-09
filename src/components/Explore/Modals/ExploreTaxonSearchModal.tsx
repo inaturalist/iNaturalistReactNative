@@ -6,10 +6,10 @@ import React, { useState } from "react";
 import type { RealmTaxon } from "realmModels/types";
 
 type Props = {
-  closeModal: () => void;
+  closeModal: ( ) => void;
   hideInfoButton?: boolean;
-  showModal: boolean;
   onPressInfo?: ( ) => void;
+  showModal: boolean;
   updateTaxon: ( taxon: RealmTaxon | null ) => void;
 };
 
