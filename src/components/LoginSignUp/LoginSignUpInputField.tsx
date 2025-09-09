@@ -18,7 +18,7 @@ const OUTLINE_STYLE = {
   borderRadius: 8
 };
 
-const LoginSignUpInputField: Function = forwardRef( ( {
+const LoginSignUpInputField = forwardRef( ( {
   accessibilityLabel,
   autoComplete,
   headerText,
@@ -48,6 +48,7 @@ const LoginSignUpInputField: Function = forwardRef( ( {
       onChangeText={onChangeText}
       secureTextEntry={secureTextEntry}
       selectionColor={String( colors?.darkGray )}
+      spellCheck={false}
       testID={testID}
       textContentType={textContentType}
     />
