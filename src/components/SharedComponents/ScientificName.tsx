@@ -4,8 +4,8 @@ import { random } from "lodash";
 import React from "react";
 import type { TextProps } from "react-native";
 import Taxon from "realmModels/Taxon";
-import { translatedRank } from "sharedHelpers/taxon.ts";
-import useTranslation from "sharedHooks/useTranslation.ts";
+import { translatedRank } from "sharedHelpers/taxon";
+import useTranslation from "sharedHooks/useTranslation";
 
 interface Props {
   fontComponent: React.ComponentType<TextProps>;

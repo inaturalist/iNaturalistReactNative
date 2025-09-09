@@ -12,7 +12,7 @@ import {
   ViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { PLACE_MODE } from "providers/ExploreContext.tsx";
+import { PLACE_MODE } from "providers/ExploreContext";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Alert } from "react-native";

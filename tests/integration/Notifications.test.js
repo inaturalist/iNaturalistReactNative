@@ -1,5 +1,5 @@
 import { screen, waitFor } from "@testing-library/react-native";
-import Notifications from "components/Notifications/Notifications.tsx";
+import Notifications from "components/Notifications/Notifications";
 import inatjs from "inaturalistjs";
 import React from "react";
 import factory, { makeResponse } from "tests/factory";

@@ -7,7 +7,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { createComment } from "api/comments";
 import { createIdentification } from "api/identifications";
 import { fetchSubscriptions } from "api/observations";
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -31,7 +31,7 @@ import {
 import useRemoteObservation, {
   fetchRemoteObservationKey
 } from "sharedHooks/useRemoteObservation";
-import { OBS_DETAILS_TAB } from "stores/createLayoutSlice.ts";
+import { OBS_DETAILS_TAB } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 
 import useMarkViewedMutation from "./hooks/useMarkViewedMutation";
@@ -213,7 +213,11 @@ const ObsDetailsContainer = ( ): Node => {
   } = state;
   const queryClient = useQueryClient( );
 
-  const localObservation = useLocalObservation( uuid );
+  const {
+    localObservation,
+    markDeletedLocally,
+    markViewedLocally
+  } = useLocalObservation( uuid );
 
   const fetchRemoteObservationEnabled = !!(
     !remoteObsWasDeleted
@@ -228,7 +232,7 @@ const ObsDetailsContainer = ( ): Node => {
     fetchRemoteObservationError
   } = useRemoteObservation( uuid, fetchRemoteObservationEnabled );
 
-  useMarkViewedMutation( localObservation, remoteObservation );
+  useMarkViewedMutation( localObservation, markViewedLocally, remoteObservation );
 
   // Translates identification-related params to local state
   useEffect( ( ) => {
@@ -264,15 +268,13 @@ const ObsDetailsContainer = ( ): Node => {
   }, [fetchRemoteObservationError?.status] );
   const confirmRemoteObsWasDeleted = useCallback( ( ) => {
     if ( localObservation ) {
-      safeRealmWrite( realm, ( ) => {
-        localObservation._deleted_at = new Date( );
-      }, "adding _deleted_at date in ObsDetailsContainer" );
+      markDeletedLocally( );
     }
     if ( navigation.canGoBack( ) ) navigation.goBack( );
   }, [
     localObservation,
-    navigation,
-    realm
+    markDeletedLocally,
+    navigation
   ] );
 
   const observation = localObservation || Observation.mapApiToRealm( remoteObservation );
@@ -452,6 +454,7 @@ const ObsDetailsContainer = ( ): Node => {
     if ( showPotentialDisagreementSheet ) return;
     if ( showSuggestIdSheet ) return;
     if ( identBodySheetShown ) return;
+    if ( !observation ) return;
     let observationTaxon = observation?.taxon;
     if (
       observation?.prefers_community_taxon === false
@@ -481,6 +484,7 @@ const ObsDetailsContainer = ( ): Node => {
     showPotentialDisagreementSheet,
     identTaxon,
     identTaxonFromVision,
+    observation,
     observation?.community_taxon,
     observation?.taxon,
     observation?.prefers_community_taxon,
@@ -503,11 +507,11 @@ const ObsDetailsContainer = ( ): Node => {
 
   const showActivityTab = obsDetailsTab === OBS_DETAILS_TAB.ACTIVITY;
 
-  const invalidateQueryAndRefetch = ( ) => {
+  const invalidateQueryAndRefetch = useCallback( ( ) => {
     invalidateRemoteObservationFetch( );
     refetchRemoteObservation( );
     refetchObservationUpdates( );
-  };
+  }, [invalidateRemoteObservationFetch, refetchObservationUpdates, refetchRemoteObservation] );
 
   const closeAgreeWithIdSheet = ( ) => {
     dispatch( {
@@ -555,6 +559,8 @@ const ObsDetailsContainer = ( ): Node => {
   }, [createIdentificationMutation, newIdentification, uuid] );
 
   const onSuggestId = useCallback( ( ) => {
+    if ( !observation ) return;
+
     // based on disagreement code in iNat web
     // https://github.com/inaturalist/inaturalist/blob/30a27d0eb79dd17af38292785b0137e6024bbdb7/app/webpack/observations/show/ducks/observation.js#L827-L838
     let observationTaxon = observation?.taxon;
@@ -578,10 +584,7 @@ const ObsDetailsContainer = ( ): Node => {
     }
   }, [
     doSuggestId,
-    observation?.community_taxon,
-    observation?.prefers_community_taxon,
-    observation?.taxon,
-    observation?.user?.prefers_community_taxa,
+    observation,
     identTaxon
   ] );
 

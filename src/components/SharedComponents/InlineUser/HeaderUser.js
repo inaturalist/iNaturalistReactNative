@@ -1,7 +1,7 @@
 // @flow
 
 // Directly imported, not from index.js to avoid circular dependency
-import Heading3 from "components/SharedComponents/Typography/Heading3.tsx";
+import Heading3 from "components/SharedComponents/Typography/Heading3";
 import type { Node } from "react";
 import React from "react";
 

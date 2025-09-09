@@ -1,6 +1,6 @@
 import { Realm } from "@realm/react";
 import { Alert } from "react-native";
-import { getNowISO } from "sharedHelpers/dateAndTime.ts";
+import { getNowISO } from "sharedHelpers/dateAndTime";
 import { log } from "sharedHelpers/logger";
 import { readExifFromMultiplePhotos } from "sharedHelpers/parseExif";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";

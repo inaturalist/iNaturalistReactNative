@@ -4,8 +4,8 @@ import {
   useNavigation,
   useRoute
 } from "@react-navigation/native";
-import { getUserAgent } from "api/userAgent.ts";
-import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
+import { getUserAgent } from "api/userAgent";
+import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { ActivityIndicator, Mortal, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useEffect, useState } from "react";
@@ -13,7 +13,7 @@ import { Linking } from "react-native";
 import { EventRegister } from "react-native-event-listeners";
 import WebView from "react-native-webview";
 import { log } from "sharedHelpers/logger";
-import { composeEmail } from "sharedHelpers/mail.ts";
+import { composeEmail } from "sharedHelpers/mail";
 import { useFontScale } from "sharedHooks";
 
 const logger = log.extend( "FullPageWebView" );
@@ -150,6 +150,8 @@ export function onShouldStartLoadWithRequest(
 }
 
 const FullPageWebView = ( ) => {
+  "use no memo";
+
   const navigation = useNavigation( );
   const { params } = useRoute<RouteProp<ParamList, "FullPageWebView">>( );
   const [source, setSource] = useState<WebViewSource>( { uri: params.initialUrl } );
@@ -190,6 +192,9 @@ const FullPageWebView = ( ) => {
           } );
         } );
       }
+      // TODO: I am not sure how to make the react compiler happy here, so I disabled it
+      // for this hook
+      // eslint-disable-next-line react-hooks/react-compiler
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [navigation, params.loggedIn, params.title] )
   );

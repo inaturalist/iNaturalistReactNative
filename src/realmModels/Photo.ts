@@ -1,11 +1,11 @@
 import { Realm } from "@realm/react";
 import type { ApiPhoto } from "api/types";
-import { photoUploadPath } from "appConstants/paths.ts";
+import { photoUploadPath } from "appConstants/paths";
 import { Platform } from "react-native";
 import RNFS from "react-native-fs";
 import type { RealmPhoto } from "realmModels/types";
-import resizeImage from "sharedHelpers/resizeImage.ts";
-import { unlink } from "sharedHelpers/util.ts";
+import resizeImage from "sharedHelpers/resizeImage";
+import { unlink } from "sharedHelpers/util";
 
 class Photo extends Realm.Object {
   static PHOTO_FIELDS = {

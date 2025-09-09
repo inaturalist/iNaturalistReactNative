@@ -1,6 +1,6 @@
 import { HeaderBackground } from "@react-navigation/elements";
-import { fontMedium } from "appConstants/fontFamilies.ts";
-import FullPageWebViewHeader from "components/FullPageWebView/FullPageWebViewHeader.tsx";
+import { fontMedium } from "appConstants/fontFamilies";
+import FullPageWebViewHeader from "components/FullPageWebView/FullPageWebViewHeader";
 import BackButton from "components/SharedComponents/Buttons/BackButton";
 import React from "react";
 import { View } from "react-native";

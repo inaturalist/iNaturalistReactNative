@@ -1,8 +1,8 @@
 import { createOrUpdateEvidence } from "api/observations";
 import inatjs from "inaturalistjs";
 import { prepareMediaForUpload } from "uploaders";
-import { attachMediaToObservation, uploadObservationMedia } from "uploaders/mediaUploader.ts";
-import { trackEvidenceUpload } from "uploaders/utils/progressTracker.ts";
+import { attachMediaToObservation, uploadObservationMedia } from "uploaders/mediaUploader";
+import { trackEvidenceUpload } from "uploaders/utils/progressTracker";
 
 jest.mock( "api/observations" );
 jest.mock( "inaturalistjs" );

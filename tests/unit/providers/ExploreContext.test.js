@@ -1,7 +1,7 @@
 import {
   EXPLORE_ACTION,
   exploreReducer
-} from "providers/ExploreContext.tsx";
+} from "providers/ExploreContext";
 import factory from "tests/factory";
 
 describe( "ExploreContext", ( ) => {

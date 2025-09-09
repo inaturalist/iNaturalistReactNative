@@ -4,7 +4,7 @@ import {
   FiveObservationCard,
   NotificationOnboarding,
   OneObservationCard
-} from "components/OnboardingModal/PivotCards.tsx";
+} from "components/OnboardingModal/PivotCards";
 import {
   Button,
   ScrollViewWrapper

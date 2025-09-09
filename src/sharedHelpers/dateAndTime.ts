@@ -414,6 +414,10 @@ function formatProjectsApiDatetimeLong(
   if ( hasTime ) {
     return formatDateString( dateString, i18n.t( "datetime-format-long" ), i18n, options );
   }
+  if ( dateString?.includes( "/" ) ) {
+    // Convert from 2025/08/01 to 2025-08-01, so the date parsing function won't crash
+    dateString = dateString.replace( /\//g, "-" );
+  }
   const hasTimezoneOffset = String( dateString ).includes( ":" );
   if ( hasTimezoneOffset ) {
     const dateWithoutOffset = dateString.split( " " )[0];

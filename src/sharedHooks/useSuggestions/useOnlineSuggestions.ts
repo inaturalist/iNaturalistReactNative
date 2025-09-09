@@ -2,9 +2,9 @@ import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import { useQueryClient } from "@tanstack/react-query";
-import scoreImage from "api/computerVision.ts";
+import scoreImage from "api/computerVision";
 import i18n from "i18next";
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import {
   useCallback, useEffect, useState
 } from "react";
@@ -19,14 +19,14 @@ const SCORE_IMAGE_TIMEOUT = 5_000;
 
 const { useRealm } = RealmContext;
 
-type OnlineSuggestionsResponse = {
-  dataUpdatedAt: Date,
-  onlineSuggestions: object,
-  loadingOnlineSuggestions: boolean,
-  timedOut: boolean,
-  error: object,
-  resetTimeout: Function
-  isRefetching: boolean
+interface OnlineSuggestionsResponse {
+  dataUpdatedAt: Date;
+  onlineSuggestions: object;
+  loadingOnlineSuggestions: boolean;
+  timedOut: boolean;
+  error: object;
+  resetTimeout: () => void;
+  isRefetching: boolean;
 }
 
 const useOnlineSuggestions = (

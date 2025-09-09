@@ -1,7 +1,7 @@
 // @flow
 
 import MediaViewer from "components/MediaViewer/MediaViewer";
-import Modal from "components/SharedComponents/Modal.tsx";
+import Modal from "components/SharedComponents/Modal";
 import type { Node } from "react";
 import React from "react";
 

@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { screen, userEvent } from "@testing-library/react-native";
-import MapView from "components/Explore/MapView.tsx";
-import { EXPLORE_ACTION, ExploreProvider } from "providers/ExploreContext.tsx";
+import MapView from "components/Explore/MapView";
+import { EXPLORE_ACTION, ExploreProvider } from "providers/ExploreContext";
 import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
@@ -14,8 +14,8 @@ const mockDefaultExploreLocation = jest.fn( ).mockResolvedValue( {
 } );
 
 // Create a mock implementation of the ExploreContext
-jest.mock( "providers/ExploreContext.tsx", ( ) => {
-  const originalModule = jest.requireActual( "providers/ExploreContext.tsx" );
+jest.mock( "providers/ExploreContext", ( ) => {
+  const originalModule = jest.requireActual( "providers/ExploreContext" );
   return {
     __esModule: true,
     ...originalModule,

@@ -7,7 +7,7 @@ import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import { Animated } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservationLocation.ts";
+import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservationLocation";
 import { useCurrentUser, useLocationPermission, useWatchPosition } from "sharedHooks";
 import useStore from "stores/useStore";
 import { getShadow } from "styles/global";

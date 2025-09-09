@@ -1,5 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native";
-import ProjectsContainer from "components/Projects/ProjectsContainer.tsx";
+import ProjectsContainer from "components/Projects/ProjectsContainer";
 import React from "react";
 import { useAuthenticatedInfiniteQuery } from "sharedHooks";
 import factory from "tests/factory";
@@ -51,25 +51,6 @@ jest.mock( "@react-navigation/native", ( ) => {
     } ),
     useRoute: () => ( {} )
   };
-} );
-
-// react-native-paper's TextInput does a bunch of async stuff that's hard to
-// control in a test, so we're just mocking it here.
-jest.mock( "react-native-paper", () => {
-  const RealModule = jest.requireActual( "react-native-paper" );
-  const MockTextInput = props => {
-    const MockName = "mock-text-input";
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    return <MockName {...props}>{props.children}</MockName>;
-  };
-  MockTextInput.Icon = RealModule.TextInput.Icon;
-  const MockedModule = {
-    ...RealModule,
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    // TextInput: props => <View {...props}>{props.children}</View>
-    TextInput: MockTextInput
-  };
-  return MockedModule;
 } );
 
 describe( "Projects", ( ) => {

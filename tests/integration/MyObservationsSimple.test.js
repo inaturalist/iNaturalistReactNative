@@ -2,7 +2,7 @@
 // remote data retrieval and local data persistence
 
 import { screen, waitFor } from "@testing-library/react-native";
-import MyObservationsContainer from "components/MyObservations/MyObservationsContainer.tsx";
+import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import React from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import factory from "tests/factory";

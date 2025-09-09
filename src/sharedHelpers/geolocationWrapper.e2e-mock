@@ -1,11 +1,11 @@
 import {
   GeolocationResponse
 } from "@react-native-community/geolocation";
-import { CHUCKS_PAD } from "appConstants/e2e.ts";
+import { CHUCKS_PAD } from "appConstants/e2e";
 import {
   LOCATION_PERMISSIONS,
   permissionResultFromMultiple
-} from "components/SharedComponents/PermissionGateContainer.tsx";
+} from "components/SharedComponents/PermissionGateContainer";
 import { Platform } from "react-native";
 import {
   checkMultiple,

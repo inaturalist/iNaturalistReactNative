@@ -11,7 +11,7 @@ import ObservationsFlashList from "components/ObservationsFlashList/Observations
 import { View } from "components/styledComponents";
 import {
   useExplore
-} from "providers/ExploreContext.tsx";
+} from "providers/ExploreContext";
 import type { Node } from "react";
 import React, { useEffect } from "react";
 import { Dimensions } from "react-native";

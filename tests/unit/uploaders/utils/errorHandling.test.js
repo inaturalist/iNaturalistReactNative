@@ -1,5 +1,5 @@
 import { handleUploadError } from "uploaders";
-import { RecoverableError, RECOVERY_BY } from "uploaders/utils/errorHandling.ts";
+import { RecoverableError, RECOVERY_BY } from "uploaders/utils/errorHandling";
 
 describe( "errorHandling", ( ) => {
   // Mock translation function since we're passing that into the error handler

@@ -8,7 +8,7 @@
 ### * GroupComments (comments beginning w/ ##) are not allowed because all
 ###   strings in this file will be alphabetized and it's impossible to
 ###   determine where group comments should fit in.
-### * Keys should match their content closesly but not exceed 100 chars
+### * Keys should match their content closely but not exceed 100 chars
 ### * Try to annotate all strings with comments to provide context for
 ###   translators, especially for fragments and any situation where the
 ###   meaning is open to interpretation without context
@@ -29,7 +29,7 @@ A-global-community-for-nature = A global community for nature
 ABOUT = ABOUT
 ABOUT-COLLECTION-PROJECTS = ABOUT COLLECTION PROJECTS
 ABOUT-INATURALIST = ABOUT INATURALIST
-# About the Data Quality Assement
+# About the Data Quality Assessment
 ABOUT-THE-DQA = ABOUT THE DQA
 About-the-DQA-description = The Quality Grade summarizes the accuracy, precision, completeness, relevance, and appropriateness of an iNaturalist observation as biodiversity data. Some attributes are automatically determined, while others are subject to a vote by iNat users. iNaturalist shares licensed "Research Grade" observations with a number of data partners for use in science and conservation.
 ABOUT-TRADITIONAL-PROJECTS = ABOUT TRADITIONAL PROJECTS
