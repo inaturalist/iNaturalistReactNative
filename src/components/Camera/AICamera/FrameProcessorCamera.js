@@ -1,6 +1,6 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
-import CameraView from "components/Camera/CameraView.tsx";
+import CameraView from "components/Camera/CameraView";
 import {
   useFrameProcessor
 } from "components/Camera/helpers/visionCameraWrapper";
@@ -8,6 +8,7 @@ import InatVision from "components/Camera/helpers/visionPluginWrapper";
 import type { Node } from "react";
 import React, {
   useEffect,
+  useRef,
   useState
 } from "react";
 import { Platform } from "react-native";
@@ -17,8 +18,8 @@ import {
   modelPath,
   modelVersion,
   taxonomyPath
-} from "sharedHelpers/mlModel.ts";
-import { logStage } from "sharedHelpers/sentinelFiles.ts";
+} from "sharedHelpers/mlModel";
+import { logStage } from "sharedHelpers/sentinelFiles";
 import usePatchedRunAsync from "sharedHelpers/visionCameraPatches";
 import { useLayoutPrefs } from "sharedHooks";
 import useStore from "stores/useStore";
@@ -53,8 +54,6 @@ const DEFAULT_CONFIDENCE_THRESHOLD = 70;
 const DEFAULT_NUM_STORED_RESULTS = 5;
 const DEFAULT_CROP_RATIO = 1.0;
 
-let framesProcessingTime = [];
-
 const FrameProcessorCamera = ( {
   animatedProps,
   cameraRef,
@@ -83,6 +82,8 @@ const FrameProcessorCamera = ( {
   const [lastTimestamp, setLastTimestamp] = useState( undefined );
 
   const navigation = useNavigation();
+
+  const framesProcessingTime = useRef( [] );
 
   // When useLocation changes, we need to reset the stored results
   useEffect( () => {
@@ -124,11 +125,11 @@ const FrameProcessorCamera = ( {
 
   const handleResults = Worklets.createRunOnJS( ( result, timeTaken ) => {
     setLastTimestamp( result.timestamp );
-    framesProcessingTime.push( timeTaken );
-    if ( framesProcessingTime.length === 10 ) {
-      const avgTime = framesProcessingTime.reduce( ( a, b ) => a + b, 0 ) / 10;
+    framesProcessingTime.current.push( timeTaken );
+    if ( framesProcessingTime.current.length === 10 ) {
+      const avgTime = framesProcessingTime.current.reduce( ( a, b ) => a + b, 0 ) / 10;
       onLog( { log: `Average frame processing time over 10 frames: ${avgTime}ms` } );
-      framesProcessingTime = [];
+      framesProcessingTime.current = [];
     }
     onTaxaDetected( result );
   } );

@@ -5,12 +5,12 @@ import {
   waitFor,
   within
 } from "@testing-library/react-native";
-import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions.ts";
+import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import { Animated } from "react-native";
-import * as useLocationPermission from "sharedHooks/useLocationPermission.tsx";
-import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice.ts";
+import * as useLocationPermission from "sharedHooks/useLocationPermission";
+import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";

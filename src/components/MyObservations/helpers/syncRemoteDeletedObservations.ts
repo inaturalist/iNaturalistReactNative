@@ -1,7 +1,7 @@
 import {
   checkForDeletedObservations
 } from "api/observations";
-import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
+import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { format } from "date-fns";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { zustandStorage } from "stores/useStore";

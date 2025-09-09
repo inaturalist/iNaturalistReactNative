@@ -3,7 +3,7 @@ import {
 } from "components/SharedComponents";
 import { Pressable, Text, View } from "components/styledComponents";
 import React from "react";
-import { accessibleTaxonName, generateTaxonPieces } from "sharedHelpers/taxon.ts";
+import { accessibleTaxonName, generateTaxonPieces } from "sharedHelpers/taxon";
 
 import TaxonomyCommonName from "./TaxonomyCommonName";
 import TaxonomyScientificName from "./TaxonomyScientificName";

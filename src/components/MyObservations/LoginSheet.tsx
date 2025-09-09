@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import WarningSheet from "components/SharedComponents/Sheets/WarningSheet.tsx";
+import WarningSheet from "components/SharedComponents/Sheets/WarningSheet";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 

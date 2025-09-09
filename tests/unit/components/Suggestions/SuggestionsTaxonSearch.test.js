@@ -1,8 +1,8 @@
 import { fireEvent, screen } from "@testing-library/react-native";
-import SuggestionsTaxonSearch from "components/Suggestions/SuggestionsTaxonSearch.tsx";
+import SuggestionsTaxonSearch from "components/Suggestions/SuggestionsTaxonSearch";
 import i18next from "i18next";
 import React from "react";
-import * as useTaxonSearch from "sharedHooks/useTaxonSearch.ts";
+import * as useTaxonSearch from "sharedHooks/useTaxonSearch";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
@@ -46,25 +46,6 @@ jest.mock( "sharedHooks/useTaxon", () => ( {
   __esModule: true,
   default: () => ( { taxon: mockTaxaList[0] } )
 } ) );
-
-// react-native-paper's TextInput does a bunch of async stuff that's hard to
-// control in a test, so we're just mocking it here.
-jest.mock( "react-native-paper", () => {
-  const RealModule = jest.requireActual( "react-native-paper" );
-  const MockTextInput = props => {
-    const MockName = "mock-text-input";
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    return <MockName {...props}>{props.children}</MockName>;
-  };
-  MockTextInput.Icon = RealModule.TextInput.Icon;
-  const MockedModule = {
-    ...RealModule,
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    // TextInput: props => <View {...props}>{props.children}</View>
-    TextInput: MockTextInput
-  };
-  return MockedModule;
-} );
 
 describe( "TaxonSearch", ( ) => {
   test( "should not have accessibility errors", async ( ) => {

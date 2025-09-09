@@ -9,6 +9,9 @@ import {
   FlatList
 } from "react-native";
 import Modal from "react-native-modal";
+import {
+  type SharedValue
+} from "react-native-reanimated";
 import Animated, {
   useAnimatedStyle,
   withTiming
@@ -22,9 +25,7 @@ interface Props {
   isLandscapeMode?: boolean;
   isLargeScreen?: boolean;
   isTablet?: boolean;
-  rotation?: {
-    value: number
-  };
+  rotation?: SharedValue<number>;
   photoUris: string[];
   onDelete: ( _uri: string ) => void;
 }
@@ -76,12 +77,11 @@ const PhotoCarousel = ( {
       transform: [
         {
           rotateZ: rotation
-            ? withTiming( `${-1 * rotation.value}deg` )
+            ? withTiming( `${-1 * rotation.get( )}deg` )
             : "0"
         }
       ]
-    } ),
-    [rotation]
+    } )
   );
 
   const renderSkeleton = useCallback( ( ) => ( takingPhoto

@@ -2,10 +2,10 @@
 
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
-import CameraView from "components/Camera/CameraView.tsx";
-import FadeInOutView from "components/Camera/FadeInOutView.tsx";
-import useRotation from "components/Camera/hooks/useRotation.ts";
-import useZoom from "components/Camera/hooks/useZoom.ts";
+import CameraView from "components/Camera/CameraView";
+import FadeInOutView from "components/Camera/FadeInOutView";
+import useRotation from "components/Camera/hooks/useRotation";
+import useZoom from "components/Camera/hooks/useZoom";
 import {
   SafeAreaView,
   View
@@ -20,7 +20,7 @@ import React, {
 import DeviceInfo from "react-native-device-info";
 import { Snackbar } from "react-native-paper";
 import { VolumeManager } from "react-native-volume-manager";
-import ObservationPhoto from "realmModels/ObservationPhoto.ts";
+import ObservationPhoto from "realmModels/ObservationPhoto";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import { log } from "sharedHelpers/logger";
 import { useDeviceOrientation, usePerformance } from "sharedHooks";
@@ -72,6 +72,8 @@ const StandardCamera = ( {
   newPhotoUris,
   setNewPhotoUris
 }: Props ): Node => {
+  "use no memo";
+
   const hasFlash = device?.hasFlash;
   const {
     animatedProps,
@@ -127,6 +129,9 @@ const StandardCamera = ( {
       // Reset camera zoom every time we get into a fresh camera view
       resetZoom( );
       prepareCamera();
+      // TODO: I am not sure how to make the react compiler happy here, so I disabled it
+      // for this hook
+      // eslint-disable-next-line react-hooks/react-compiler
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [] )
   );

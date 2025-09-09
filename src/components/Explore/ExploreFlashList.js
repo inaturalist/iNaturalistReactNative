@@ -3,7 +3,7 @@ import {
   ActivityIndicator, Body3, CustomFlashList, InfiniteScrollLoadingWheel
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import UserList from "components/UserList/UserList.tsx";
+import UserList from "components/UserList/UserList";
 import type { Node } from "react";
 import React, { useCallback } from "react";
 import { useTranslation } from "sharedHooks";

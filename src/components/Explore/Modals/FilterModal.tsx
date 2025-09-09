@@ -1,7 +1,7 @@
 import type { ApiPlace, ApiProject } from "api/types";
 import classNames from "classnames";
-import NumberBadge from "components/Explore/NumberBadge.tsx";
-import ProjectListItem from "components/ProjectList/ProjectListItem.tsx";
+import NumberBadge from "components/Explore/NumberBadge";
+import ProjectListItem from "components/ProjectList/ProjectListItem";
 import {
   Body1,
   Body2,
@@ -24,8 +24,8 @@ import {
   WarningSheet
 } from "components/SharedComponents";
 import { Pressable, ScrollView, View } from "components/styledComponents";
-import UserListItem from "components/UserList/UserListItem.tsx";
-import { RealmContext } from "providers/contexts.ts";
+import UserListItem from "components/UserList/UserListItem";
+import { RealmContext } from "providers/contexts";
 import {
   DATE_OBSERVED,
   DATE_UPLOADED,
@@ -38,10 +38,10 @@ import {
   TAXONOMIC_RANK,
   useExplore,
   WILD_STATUS
-} from "providers/ExploreContext.tsx";
+} from "providers/ExploreContext";
 import React, { useState } from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";
-import type { LocationPermissionCallbacks } from "sharedHooks/useLocationPermission.tsx";
+import type { LocationPermissionCallbacks } from "sharedHooks/useLocationPermission";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
@@ -1339,8 +1339,8 @@ const FilterModal = ( {
       )}
       <ExploreTaxonSearchModal
         closeModal={() => { setShowTaxonSearchModal( false ); }}
-        hideInfoButton
         showModal={showTaxonSearchModal}
+        onPressInfo={( ) => { closeModal(); }}
         updateTaxon={updateTaxon}
       />
       <ExploreLocationSearchModal

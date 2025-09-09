@@ -3,7 +3,7 @@ import {
 } from "components/SharedComponents";
 import React from "react";
 import { Alert } from "react-native";
-import useTranslation from "sharedHooks/useTranslation.ts";
+import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
 interface Props {

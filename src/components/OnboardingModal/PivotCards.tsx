@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import OnboardingModal from "components/OnboardingModal/OnboardingModal.tsx";
+import OnboardingModal from "components/OnboardingModal/OnboardingModal";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 

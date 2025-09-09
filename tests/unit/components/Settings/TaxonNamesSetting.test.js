@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
-import TaxonNamesSetting from "components/Settings/TaxonNamesSetting.tsx";
+import TaxonNamesSetting from "components/Settings/TaxonNamesSetting";
 import React from "react";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -13,7 +13,7 @@ const mockUser = factory( "LocalUser", {
 } );
 
 // Simplified mocks
-jest.mock( "providers/contexts.ts", () => ( {
+jest.mock( "providers/contexts", () => ( {
   RealmContext: {
     useRealm: () => ( {} )
   }
@@ -25,7 +25,15 @@ jest.mock( "sharedHooks", () => ( {
   useCurrentUser: () => mockUser
 } ) );
 
-jest.mock( "sharedHelpers/safeRealmWrite", () => jest.fn( ( _, callback ) => callback() ) );
+jest.mock( "realmModels/User", () => ( {
+  __esModule: true,
+  default: {
+    updatePreferences: jest.fn( ( _, options ) => {
+      mockUser.prefers_common_names = options.prefers_common_names;
+      mockUser.prefers_scientific_name_first = options.prefers_scientific_name_first;
+    } )
+  }
+} ) );
 
 describe( "TaxonNamesSetting", () => {
   test( "toggles between the three name display options correctly", () => {

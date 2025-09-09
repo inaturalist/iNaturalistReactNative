@@ -5,13 +5,13 @@
 // tests finish
 // eslint-disable-next-line testing-library/no-manual-cleanup
 import { cleanup } from "@testing-library/react-native";
-import { API_HOST, clearAuthCache } from "components/LoginSignUp/AuthenticationService.ts";
+import { API_HOST, clearAuthCache } from "components/LoginSignUp/AuthenticationService";
 import { getInatLocaleFromSystemLocale } from "i18n/initI18next";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import nock from "nock";
 import RNSInfo from "react-native-sensitive-info";
-import changeLanguage from "sharedHelpers/changeLanguage.ts";
+import changeLanguage from "sharedHelpers/changeLanguage";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { makeResponse } from "tests/factory";
 

@@ -14,11 +14,11 @@ import colors from "styles/tailwindColors";
 import HeaderKebabMenu from "./HeaderKebabMenu";
 
 interface Props {
-  belongsToCurrentUser?: boolean,
-  observationId: number,
-  uuid: string,
-  refetchSubscriptions: Function,
-  subscriptions: object
+  belongsToCurrentUser?: boolean;
+  observationId: number;
+  uuid: string;
+  refetchSubscriptions: () => void;
+  subscriptions: object;
 }
 
 const ObsDetailsDefaultModeHeaderRight = ( {
@@ -29,7 +29,7 @@ const ObsDetailsDefaultModeHeaderRight = ( {
   subscriptions
 }: Props ) => {
   const navigation = useNavigation( );
-  const localObservation = useLocalObservation( uuid );
+  const { localObservation } = useLocalObservation( uuid );
   const { t } = useTranslation( );
   const navigateToObsEdit = useNavigateToObsEdit( );
 

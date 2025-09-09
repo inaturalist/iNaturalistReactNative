@@ -2,7 +2,7 @@
 
 import { fetchTaxon } from "api/taxa";
 import i18n from "i18next";
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import Taxon from "realmModels/Taxon";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {

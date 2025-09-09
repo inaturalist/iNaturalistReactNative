@@ -5,8 +5,8 @@ import {
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { fetchSubscriptions } from "api/observations";
-import IdentificationSheets from "components/ObsDetailsDefaultMode/IdentificationSheets.tsx";
-import { RealmContext } from "providers/contexts.ts";
+import IdentificationSheets from "components/ObsDetailsDefaultMode/IdentificationSheets";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -133,7 +133,11 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
   } = state;
   const queryClient = useQueryClient( );
 
-  const localObservation = useLocalObservation( uuid );
+  const {
+    localObservation,
+    markDeletedLocally,
+    markViewedLocally
+  } = useLocalObservation( uuid );
   const wasSynced = localObservation && localObservation?.wasSynced();
 
   const fetchRemoteObservationEnabled = !!(
@@ -149,7 +153,7 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
     fetchRemoteObservationError
   } = useRemoteObservation( uuid, fetchRemoteObservationEnabled );
 
-  useMarkViewedMutation( localObservation, remoteObservation );
+  useMarkViewedMutation( localObservation, markViewedLocally, remoteObservation );
 
   // If we tried to get a remote observation but it no longer exists, the user
   // can't do anything so we need to send them back and remove the local
@@ -159,15 +163,13 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
   }, [fetchRemoteObservationError?.status] );
   const confirmRemoteObsWasDeleted = useCallback( ( ) => {
     if ( localObservation ) {
-      safeRealmWrite( realm, ( ) => {
-        localObservation._deleted_at = new Date( );
-      }, "adding _deleted_at date in ObsDetailsContainer" );
+      markDeletedLocally( );
     }
     if ( navigation.canGoBack( ) ) navigation.goBack( );
   }, [
     localObservation,
-    navigation,
-    realm
+    markDeletedLocally,
+    navigation
   ] );
 
   const observation = localObservation || Observation.mapApiToRealm( remoteObservation );

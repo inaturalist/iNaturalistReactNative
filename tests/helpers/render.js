@@ -4,7 +4,7 @@ import {
   QueryClient,
   QueryClientProvider
 } from "@tanstack/react-query";
-import { render, screen } from "@testing-library/react-native";
+import { render, renderHook, screen } from "@testing-library/react-native";
 import App from "components/App";
 import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
@@ -96,43 +96,6 @@ async function renderAppWithObservations(
   await screen.findByTestId( `MyObservations.obsGridItem.${observations[0].uuid}` );
 }
 
-/**
- * Render a hook within a component
- *
- * Port of equivalent in react-testing-library
- * (https://github.com/testing-library/react-testing-library/blob/edb6344d578a8c224daf0cd6e2984f36cc6e8d86/src/pure.js#L264C1-L290C2),
- * but using our renderComponent
- */
-function renderHook( renderCallback, options = {} ) {
-  const { initialProps, ...renderOptions } = options;
-  const result = React.createRef( );
-
-  const TestComponent = ( { renderCallbackProps } ) => {
-    // eslint-disable-next-line testing-library/render-result-naming-convention
-    const pendingResult = renderCallback( renderCallbackProps );
-
-    React.useEffect( ( ) => {
-      result.current = pendingResult;
-    } );
-
-    return null;
-  };
-
-  const { rerender: baseRerender, unmount } = renderComponent(
-    <TestComponent renderCallbackProps={initialProps} />,
-    null,
-    renderOptions
-  );
-
-  function rerender( rerenderCallbackProps ) {
-    return baseRerender(
-      <TestComponent renderCallbackProps={rerenderCallbackProps} />
-    );
-  }
-
-  return { result, rerender, unmount };
-}
-
 function wrapInNavigationContainer( component ) {
   return (
     <NavigationContainer>
@@ -149,13 +112,35 @@ function wrapInQueryClientContainer( component ) {
   );
 }
 
+const Wrapper = ( { children } ) => (
+  <QueryClientProvider client={queryClient}>
+    <INatPaperProvider>
+      <GestureHandlerRootView className="flex-1">
+        <BottomSheetModalProvider>
+          <NavigationContainer theme={mockNavigationTheme}>
+            <App>
+              {children}
+            </App>
+          </NavigationContainer>
+        </BottomSheetModalProvider>
+      </GestureHandlerRootView>
+    </INatPaperProvider>
+  </QueryClientProvider>
+);
+
+function renderHookInApp( hookToRender ) {
+  return renderHook( hookToRender, {
+    wrapper: Wrapper
+  } );
+}
+
 export {
   queryClient,
   renderApp,
   renderAppWithComponent,
   renderAppWithObservations,
   renderComponent,
-  renderHook,
+  renderHookInApp,
   wrapInNavigationContainer,
   wrapInQueryClientContainer
 };

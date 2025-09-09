@@ -4,10 +4,10 @@ import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import i18next, { t } from "i18next";
 import React from "react";
 import { View } from "react-native";
-import { formatApiDatetime } from "sharedHelpers/dateAndTime.ts";
+import { formatApiDatetime } from "sharedHelpers/dateAndTime";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
-import * as useCurrentUser from "sharedHooks/useCurrentUser.ts";
-import * as useLocalObservation from "sharedHooks/useLocalObservation.ts";
+import * as useCurrentUser from "sharedHooks/useCurrentUser";
+import * as useLocalObservation from "sharedHooks/useLocalObservation";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -79,7 +79,9 @@ const mockUser = factory( "LocalUser", {
 
 jest.mock( "sharedHooks/useLocalObservation", () => ( {
   __esModule: true,
-  default: ( ) => null
+  default: jest.fn( () => ( {
+    localObservation: null
+  } ) )
 } ) );
 
 jest.mock( "sharedHooks/useCurrentUser", () => ( {
@@ -273,7 +275,9 @@ describe( "ObsDetails", () => {
         firstIdentification
       ];
 
-      jest.spyOn( useLocalObservation, "default" ).mockImplementation( () => null );
+      jest.spyOn( useLocalObservation, "default" ).mockImplementation( () => ( {
+        localObservation: null
+      } ) );
 
       useAuthenticatedQuery.mockReturnValue( {
         data: otherUserObservation

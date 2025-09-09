@@ -1,7 +1,7 @@
 import {
   render, screen
 } from "@testing-library/react-native";
-import PhotoCarousel from "components/Camera/StandardCamera/PhotoCarousel.tsx";
+import PhotoCarousel from "components/Camera/StandardCamera/PhotoCarousel";
 import React from "react";
 import useStore from "stores/useStore";
 

@@ -1,7 +1,7 @@
 import inatjs from "inaturalistjs";
 
 import handleError from "./error";
-import {
+import type {
   ApiOpts,
   ApiParams,
   ApiPlace,
@@ -9,7 +9,7 @@ import {
   ApiResponse,
   ApiTaxon,
   ApiUser
-} from "./types.d";
+} from "./types";
 
 interface SearchResponse extends ApiResponse {
   results: {

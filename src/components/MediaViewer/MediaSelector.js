@@ -8,8 +8,8 @@ import React, { useCallback } from "react";
 import {
   FlatList
 } from "react-native";
-import Photo from "realmModels/Photo.ts";
-import useTranslation from "sharedHooks/useTranslation.ts";
+import Photo from "realmModels/Photo";
+import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   isLargeScreen?: boolean,

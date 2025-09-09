@@ -1,4 +1,4 @@
-import { getCurrentRoute } from "navigation/navigationUtils.ts";
+import { getCurrentRoute } from "navigation/navigationUtils";
 import React from "react";
 import type { PressableProps } from "react-native";
 import { GestureResponderEvent, Pressable } from "react-native";
