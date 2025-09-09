@@ -1,0 +1,10 @@
+NEW
+* On ObsEdit show a date and a time picker for changing the observation date and time.
+
+UPDATED
+* Enable React Compiler (potential performance gains)
+* Several dependency updates
+
+FIXED
+* Crash on the Match screen
+* Back button not showing

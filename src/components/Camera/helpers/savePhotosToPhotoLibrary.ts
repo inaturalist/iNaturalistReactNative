@@ -2,7 +2,7 @@ import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import {
   permissionResultFromMultiple,
   READ_WRITE_MEDIA_PERMISSIONS
-} from "components/SharedComponents/PermissionGateContainer.tsx";
+} from "components/SharedComponents/PermissionGateContainer";
 import { t } from "i18next";
 import {
   Alert

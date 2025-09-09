@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import PhotoLibraryIcon from "components/Camera/Buttons/PhotoLibraryIcon.tsx";
+import PhotoLibraryIcon from "components/Camera/Buttons/PhotoLibraryIcon";
 import { CloseButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
@@ -50,13 +50,14 @@ interface Props {
   rotatableAnimatedStyle: ViewStyle;
   showPrediction?: boolean;
   showZoomButton: boolean;
-  takePhoto: () => Promise<void>;
+  takePhoto: ( ) => Promise<void>;
   takePhotoOptions: TakePhotoOptions;
   toggleFlash: ( _event: GestureResponderEvent ) => void;
   zoomTextValue: string;
   useLocation: boolean;
   toggleLocation: ( _event: GestureResponderEvent ) => void;
   isDefaultMode: boolean;
+  deleteSentinelFile: ( ) => Promise<void>;
 }
 
 // Empty space where a camera button should be so buttons don't jump around
@@ -93,7 +94,8 @@ const TabletButtons = ( {
   zoomTextValue,
   useLocation,
   toggleLocation,
-  isDefaultMode
+  isDefaultMode,
+  deleteSentinelFile
 }: Props ) => {
   const tabletCameraOptionsClasses = [
     "absolute",
@@ -168,6 +170,7 @@ const TabletButtons = ( {
           <PhotoLibraryIcon
             rotatableAnimatedStyle={rotatableAnimatedStyle}
             disabled={disabledPhotoLibrary}
+            deleteSentinelFile={deleteSentinelFile}
           />
         </View>
       ) }

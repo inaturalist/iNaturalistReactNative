@@ -1,12 +1,12 @@
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
-import { authenticateUser } from "components/LoginSignUp/AuthenticationService.ts";
+import { authenticateUser } from "components/LoginSignUp/AuthenticationService";
 import {
   Body1, Body2, Button, Heading4, INatIcon, INatIconButton, List2
 } from "components/SharedComponents";
 import { Image, View } from "components/styledComponents";
 import { t } from "i18next";
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import React, {
   useCallback, useEffect, useRef, useState
 } from "react";

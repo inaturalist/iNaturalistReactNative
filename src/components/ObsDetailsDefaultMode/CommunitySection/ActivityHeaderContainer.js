@@ -2,7 +2,7 @@
 
 import { deleteComments, updateComment } from "api/comments";
 import { updateIdentification as apiUpdateIdentification } from "api/identifications";
-import { isCurrentUser } from "components/LoginSignUp/AuthenticationService.ts";
+import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";

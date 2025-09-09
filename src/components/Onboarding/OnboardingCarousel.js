@@ -28,7 +28,7 @@ import {
 import AnimatedDotsCarousel from "react-native-animated-dots-carousel";
 import Animated, { interpolate, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
-import { useOnboardingShown } from "sharedHelpers/installData.ts";
+import { useOnboardingShown } from "sharedHelpers/installData";
 import colors from "styles/tailwindColors";
 
 const SlideItem = props => {
@@ -80,7 +80,7 @@ const OnboardingCarousel = ( ) => {
   const paginationColor = colors.white;
   const backgroundAnimation1 = useAnimatedStyle( () => {
     const opacity = interpolate(
-      progress.value,
+      progress.get(),
       [-1, 0, 1], // Fade in/out around current index
       [0, 1, 0] // Opacity transitions
     );
@@ -89,7 +89,7 @@ const OnboardingCarousel = ( ) => {
 
   const backgroundAnimation2 = useAnimatedStyle( () => {
     const opacity = interpolate(
-      progress.value,
+      progress.get(),
       [0, 1, 2], // Fade in/out around current index
       [0, 1, 0] // Opacity transitions
     );
@@ -98,7 +98,7 @@ const OnboardingCarousel = ( ) => {
 
   const backgroundAnimation3 = useAnimatedStyle( () => {
     const opacity = interpolate(
-      progress.value,
+      progress.get(),
       [1, 2, 3], // Fade in/out around current index
       [0, 1, 0] // Opacity transitions
     );
@@ -251,7 +251,7 @@ const OnboardingCarousel = ( ) => {
               scrollAnimationDuration={400}
               onProgressChange={( offsetProgress, absoluteProgress ) => {
                 setCurrentIndex( Math.round( absoluteProgress ) );
-                progress.value = absoluteProgress;
+                progress.set( absoluteProgress );
               }}
               onScrollEnd={() => {
                 setCurrentIndex( carouselRef.current?.getCurrentIndex() );

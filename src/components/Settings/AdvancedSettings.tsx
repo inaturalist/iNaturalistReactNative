@@ -10,7 +10,7 @@ import {
   useLayoutPrefs,
   useTranslation
 } from "sharedHooks";
-import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice.ts";
+import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 
 const AdvancedSettings = ( ) => {
   const { t } = useTranslation();

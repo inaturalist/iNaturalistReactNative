@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react-native";
 import AICamera from "components/Camera/AICamera/AICamera";
-import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions.ts";
+import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions";
 import i18next from "i18next";
 import React from "react";
 import * as useTaxon from "sharedHooks/useTaxon";
@@ -49,7 +49,7 @@ jest.mock( "components/Camera/AICamera/hooks/usePredictions", () => ( {
   default: () => mockModelLoaded
 } ) );
 
-jest.mock( "components/Camera/hooks/useZoom.ts", () => ( {
+jest.mock( "components/Camera/hooks/useZoom", () => ( {
   __esModule: true,
   default: () => ( {
     animatedProps: {}

@@ -17,11 +17,11 @@ import { Alert, StatusBar } from "react-native";
 import type {
   TakePhotoOptions
 } from "react-native-vision-camera";
-import fetchAccurateUserLocation from "sharedHelpers/fetchAccurateUserLocation.ts";
+import fetchAccurateUserLocation from "sharedHelpers/fetchAccurateUserLocation";
 import { log } from "sharedHelpers/logger";
-import { createSentinelFile, deleteSentinelFile, logStage } from "sharedHelpers/sentinelFiles.ts";
+import { createSentinelFile, deleteSentinelFile, logStage } from "sharedHelpers/sentinelFiles";
 import { useTranslation } from "sharedHooks";
-import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
+import useLocationPermission from "sharedHooks/useLocationPermission";
 import useStore from "stores/useStore";
 
 import CameraWithDevice from "./CameraWithDevice";

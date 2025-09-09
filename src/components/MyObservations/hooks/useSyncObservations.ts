@@ -3,7 +3,7 @@ import {
 } from "@react-native-community/netinfo";
 import { INatApiError } from "api/error";
 import { deleteRemoteObservation } from "api/observations";
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import { useCallback, useEffect, useState } from "react";
 import Observation from "realmModels/Observation";
 import { useAuthenticatedMutation } from "sharedHooks";
@@ -12,7 +12,7 @@ import {
   BEGIN_AUTOMATIC_SYNC,
   BEGIN_MANUAL_SYNC,
   MANUAL_SYNC_IN_PROGRESS
-} from "stores/createSyncObservationsSlice.ts";
+} from "stores/createSyncObservationsSlice";
 import useStore from "stores/useStore";
 
 import syncRemoteDeletedObservations from "../helpers/syncRemoteDeletedObservations";

@@ -2,14 +2,14 @@
 // remote data retrieval and local data persistence
 
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
-import { MS_BEFORE_TOOLBAR_RESET } from "components/MyObservations/hooks/useUploadObservations.ts";
-import MyObservationsContainer from "components/MyObservations/MyObservationsContainer.tsx";
+import { MS_BEFORE_TOOLBAR_RESET } from "components/MyObservations/hooks/useUploadObservations";
+import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import { flatten } from "lodash";
 import React from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { sleep } from "sharedHelpers/util.ts";
+import { sleep } from "sharedHelpers/util";
 import { zustandStorage } from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";

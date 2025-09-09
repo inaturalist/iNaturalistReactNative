@@ -1,12 +1,12 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import type { ApiTaxon } from "api/types";
-import ObsImagePreview from "components/ObservationsFlashList/ObsImagePreview.tsx";
+import ObsImagePreview from "components/ObservationsFlashList/ObsImagePreview";
 import { Body4, DisplayTaxonName } from "components/SharedComponents";
-import SpeciesSeenCheckmark from "components/SharedComponents/SpeciesSeenCheckmark.tsx";
+import SpeciesSeenCheckmark from "components/SharedComponents/SpeciesSeenCheckmark";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
-import Photo from "realmModels/Photo.ts";
-import { accessibleTaxonName } from "sharedHelpers/taxon.ts";
+import Photo from "realmModels/Photo";
+import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useCurrentUser, useFontScale, useTranslation } from "sharedHooks";
 
 export interface Props {

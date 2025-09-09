@@ -1,6 +1,6 @@
-import { computerVisionPath } from "appConstants/paths.ts";
+import { computerVisionPath } from "appConstants/paths";
 import { useEffect } from "react";
-import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory.ts";
+import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
 
 const useClearComputerVisionDirectory = ( ) => {
   useEffect( ( ) => {

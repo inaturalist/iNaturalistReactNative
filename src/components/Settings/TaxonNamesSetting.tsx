@@ -3,19 +3,16 @@ import {
   Heading4,
   RadioButtonRow
 } from "components/SharedComponents";
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import React, { useCallback } from "react";
 import {
   View
 } from "react-native";
-// import { log } from "sharedHelpers/logger";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import User, { TaxonNamesSettings } from "realmModels/User";
 import {
   useCurrentUser,
   useTranslation
 } from "sharedHooks";
-
-// const logger = log.extend( "TaxonNamesSetting" );
 
 const { useRealm } = RealmContext;
 
@@ -23,11 +20,11 @@ const NAME_DISPLAY_COM_SCI = "com-sci";
 const NAME_DISPLAY_SCI_COM = "sci-com";
 const NAME_DISPLAY_SCI = "sci";
 
+type NameDisplayPref =
+  typeof NAME_DISPLAY_COM_SCI | typeof NAME_DISPLAY_SCI_COM | typeof NAME_DISPLAY_SCI;
+
 type Props = {
-  onChange: ( options: {
-    prefers_common_names: boolean,
-    prefers_scientific_name_first: boolean
-  } ) => void;
+  onChange: ( options: TaxonNamesSettings ) => void;
 }
 
 const TaxonNamesSetting = ( { onChange }: Props ) => {
@@ -35,10 +32,8 @@ const TaxonNamesSetting = ( { onChange }: Props ) => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
 
-  const changeTaxonNameDisplay = useCallback( nameDisplayPref => {
-    const options = {};
-
-    // logger.info( `Changing taxon name display to: ${nameDisplayPref}` );
+  const changeTaxonNameDisplay = useCallback( ( nameDisplayPref: NameDisplayPref ) => {
+    const options: Partial<TaxonNamesSettings> = {};
 
     if ( nameDisplayPref === NAME_DISPLAY_COM_SCI ) {
       options.prefers_common_names = true;
@@ -51,16 +46,7 @@ const TaxonNamesSetting = ( { onChange }: Props ) => {
       options.prefers_scientific_name_first = false;
     }
 
-    // logger.info( "Writing to realm with options:", options );
-
-    safeRealmWrite( realm, ( ) => {
-      currentUser.prefers_common_names = options.prefers_common_names;
-      currentUser.prefers_scientific_name_first = options.prefers_scientific_name_first;
-      // logger.info(
-      // eslint-disable-next-line max-len
-      // `Realm updated for user ${currentUser.login}, prefers_common_names: ${currentUser.prefers_common_names}, prefers_scientific_name_first: ${currentUser.prefers_scientific_name_first}`;
-      // );
-    }, "saving user in TaxonNamesSetting" );
+    User.updatePreferences( realm, options );
     onChange( options );
     return currentUser;
   }, [currentUser, realm, onChange] );

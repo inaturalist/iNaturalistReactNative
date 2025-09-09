@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react-native";
 import DetailsTab from "components/ObsDetails/DetailsTab/DetailsTab";
-import { TILE_URL } from "components/SharedComponents/Map/helpers/mapHelpers.ts";
+import { TILE_URL } from "components/SharedComponents/Map/helpers/mapHelpers";
 import React from "react";
 import { View } from "react-native";
 import factory from "tests/factory";

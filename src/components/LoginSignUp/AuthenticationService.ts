@@ -1,6 +1,6 @@
 import type { QueryClient } from "@tanstack/query-core";
 import type { ApiUser } from "api/types";
-import { getUserAgent } from "api/userAgent.ts";
+import { getUserAgent } from "api/userAgent";
 import { fetchUserEmailAvailable, fetchUserMe } from "api/users";
 import { ApiResponse, ApisauceInstance, create } from "apisauce";
 import {
@@ -9,7 +9,7 @@ import {
   photoUploadPath,
   rotatedOriginalPhotosPath,
   soundUploadPath
-} from "appConstants/paths.ts";
+} from "appConstants/paths";
 import { getInatLocaleFromSystemLocale } from "i18n/initI18next";
 import i18next from "i18next";
 import rs from "jsrsasign";
@@ -20,12 +20,12 @@ import RNRestart from "react-native-restart";
 import RNSInfo from "react-native-sensitive-info";
 import Realm, { UpdateMode } from "realm";
 import realmConfig from "realmModels/index";
-import changeLanguage from "sharedHelpers/changeLanguage.ts";
-import { getInstallID } from "sharedHelpers/installData.ts";
+import changeLanguage from "sharedHelpers/changeLanguage";
+import { getInstallID } from "sharedHelpers/installData";
 import { log, logFilePath, logWithoutRemote } from "sharedHelpers/logger";
-import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory.ts";
+import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { sleep, unlink } from "sharedHelpers/util.ts";
+import { sleep, unlink } from "sharedHelpers/util";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 import { storage } from "stores/useStore";
 

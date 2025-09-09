@@ -1,7 +1,7 @@
-import { computerVisionPath } from "appConstants/paths.ts";
+import { computerVisionPath } from "appConstants/paths";
 import { FileUpload } from "inaturalistjs";
 import RNFS from "react-native-fs";
-import resizeImage from "sharedHelpers/resizeImage.ts";
+import resizeImage from "sharedHelpers/resizeImage";
 
 const outputPath = computerVisionPath;
 

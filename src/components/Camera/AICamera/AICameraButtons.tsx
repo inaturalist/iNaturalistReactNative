@@ -1,11 +1,11 @@
-import CameraFlip from "components/Camera/Buttons/CameraFlip.tsx";
-import Close from "components/Camera/Buttons/Close.tsx";
-import Flash from "components/Camera/Buttons/Flash.tsx";
-import Location from "components/Camera/Buttons/Location.tsx";
-import PhotoLibraryIcon from "components/Camera/Buttons/PhotoLibraryIcon.tsx";
-import TakePhoto from "components/Camera/Buttons/TakePhoto.tsx";
-import Zoom from "components/Camera/Buttons/Zoom.tsx";
-import TabletButtons from "components/Camera/TabletButtons.tsx";
+import CameraFlip from "components/Camera/Buttons/CameraFlip";
+import Close from "components/Camera/Buttons/Close";
+import Flash from "components/Camera/Buttons/Flash";
+import Location from "components/Camera/Buttons/Location";
+import PhotoLibraryIcon from "components/Camera/Buttons/PhotoLibraryIcon";
+import TakePhoto from "components/Camera/Buttons/TakePhoto";
+import Zoom from "components/Camera/Buttons/Zoom";
+import TabletButtons from "components/Camera/TabletButtons";
 import { View } from "components/styledComponents";
 import React from "react";
 import { GestureResponderEvent, ViewStyle } from "react-native";
@@ -31,9 +31,9 @@ interface Props {
   debugFormat?: CameraDeviceFormat;
   // Those five are debug only so I don't bother with types
   setConfidenceThreshold?: Function;
-  setCropRatio?: Function,
-  setFPS?: Function,
-  setNumStoredResults?: Function,
+  setCropRatio?: Function;
+  setFPS?: Function;
+  setNumStoredResults?: Function;
   changeDebugFormat?: Function;
   showPrediction: boolean;
   showZoomButton: boolean;
@@ -44,6 +44,7 @@ interface Props {
   zoomTextValue: string;
   useLocation: boolean;
   toggleLocation: ( _event: GestureResponderEvent ) => void;
+  deleteSentinelFile: ( ) => Promise<void>;
 }
 
 const AICameraButtons = ( {
@@ -71,7 +72,8 @@ const AICameraButtons = ( {
   toggleFlash,
   zoomTextValue,
   useLocation,
-  toggleLocation
+  toggleLocation,
+  deleteSentinelFile
 }: Props ) => {
   const { isDefaultMode } = useLayoutPrefs();
   if ( isTablet ) {
@@ -93,6 +95,7 @@ const AICameraButtons = ( {
         useLocation={useLocation}
         toggleLocation={toggleLocation}
         isDefaultMode={isDefaultMode}
+        deleteSentinelFile={deleteSentinelFile}
       />
     );
   }
@@ -158,6 +161,7 @@ const AICameraButtons = ( {
           <PhotoLibraryIcon
             rotatableAnimatedStyle={rotatableAnimatedStyle}
             disabled={takingPhoto}
+            deleteSentinelFile={deleteSentinelFile}
           />
         </View>
       </View>

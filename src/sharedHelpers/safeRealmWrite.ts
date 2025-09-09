@@ -1,13 +1,12 @@
-// @flow
-
 // this is based on safeWrite from this github issue, but customized for
 // realmjs: https://stackoverflow.com/questions/39366182/the-realm-is-already-in-a-write-transaction
+import Realm from "realm";
 
 const safeRealmWrite = (
-  realm: Object,
-  action: Function,
+  realm: Realm,
+  action: () => void,
   description: string
-): Object => {
+) => {
   if ( realm.isInTransaction ) {
     return action( );
   }

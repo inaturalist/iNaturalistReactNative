@@ -1,13 +1,13 @@
 // @flow
 
-import { fetchSearchResults } from "api/search.ts";
+import { fetchSearchResults } from "api/search";
 import {
   ButtonBar,
   SearchBar,
   ViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import UserList from "components/UserList/UserList.tsx";
+import UserList from "components/UserList/UserList";
 import type { Node } from "react";
 import React, {
   useCallback,

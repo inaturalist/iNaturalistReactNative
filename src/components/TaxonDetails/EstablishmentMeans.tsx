@@ -6,13 +6,19 @@ import { View } from "components/styledComponents";
 import _ from "lodash";
 import * as React from "react";
 import { Trans } from "react-i18next";
-import { openExternalWebBrowser } from "sharedHelpers/util.ts";
+import { openExternalWebBrowser } from "sharedHelpers/util";
 import { useTranslation } from "sharedHooks";
 
 const baseUrl = "https://www.inaturalist.org";
 
 interface Props {
-  taxon: object;
+  taxon: {
+    establishment_means?: {
+      place?: {
+        display_name?: string;
+      };
+    };
+  };
 }
 
 const EstablishmentMeans = ( { taxon }: Props ) => {
@@ -21,7 +27,7 @@ const EstablishmentMeans = ( { taxon }: Props ) => {
   const establishmentMeans = taxon?.establishment_means?.establishment_means;
 
   const displayEstablishmentMeansText = ( ) => {
-    const placeName = taxon.establishment_means.place.display_name;
+    const placeName = taxon?.establishment_means?.place.display_name;
     if ( establishmentMeans === "native" ) {
       return t( "Native-to-place", { place: placeName } );
     }
@@ -67,16 +73,18 @@ const EstablishmentMeans = ( { taxon }: Props ) => {
     );
   };
 
-  return taxon?.establishment_means && (
-    <View className="mb-6">
-      <Heading4 className="mb-3">{t( "ESTABLISHMENT-MEANS" )}</Heading4>
-      <Body2>
-        {displayEstablishmentMeansText( )}
-        {" "}
-        {displaySourceListText( )}
-      </Body2>
-    </View>
-  );
+  return taxon?.establishment_means
+    ? (
+      <View className="mb-6">
+        <Heading4 className="mb-3">{t( "ESTABLISHMENT-MEANS" )}</Heading4>
+        <Body2>
+          {displayEstablishmentMeansText( )}
+          {" "}
+          {displaySourceListText( )}
+        </Body2>
+      </View>
+    )
+    : null;
 };
 
 export default EstablishmentMeans;

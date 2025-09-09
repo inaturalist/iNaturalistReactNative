@@ -1,20 +1,21 @@
 import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
 import { Image } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
-import { I18nManager, Platform } from "react-native";
+import {
+  I18nManager, ImageStyle, Platform, StyleProp
+} from "react-native";
 import {
   useTranslation
 } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  color?: string,
-  onPress?: Function,
-  inCustomHeader?: boolean,
-  customStyles?: Object,
-  testID?: string
+interface Props {
+  color?: string;
+  onPress?: () => void;
+  inCustomHeader?: boolean;
+  customStyles?: ImageStyle;
+  testID?: string;
 }
 
 // styling lifted from with added padding to increase tappable area
@@ -47,13 +48,14 @@ const BackButton = ( {
   inCustomHeader,
   customStyles,
   testID = "BackButton"
-}: Props ): Node => {
+}: Props ) => {
   const { isRTL } = I18nManager;
   const navigation = useNavigation();
+  const canGoBack = navigation?.canGoBack( );
   const tintColor = color || colors.darkGray;
   const { t } = useTranslation( );
 
-  const imageStyles = [
+  const imageStyles: StyleProp<ImageStyle> = [
     !inCustomHeader && REACT_NAVIGATION_BACK_BUTTON_STYLES.icon,
     Boolean( tintColor ) && { tintColor },
     customStyles,
@@ -72,7 +74,7 @@ const BackButton = ( {
     />
   );
 
-  if ( navigation?.canGoBack( ) ) {
+  if ( onPress || canGoBack ) {
     return (
       <HeaderBackButton
         backImage={backImage}

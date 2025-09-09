@@ -1,7 +1,7 @@
 // @flow
 
 import { fetchObservationUpdates } from "api/observations";
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useAuthenticatedQuery } from "sharedHooks";

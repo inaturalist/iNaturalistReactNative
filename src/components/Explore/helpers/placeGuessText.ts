@@ -1,4 +1,4 @@
-import { PLACE_MODE } from "providers/ExploreContext.tsx";
+import { PLACE_MODE } from "providers/ExploreContext";
 
 // eslint-disable-next-line max-len
 function placeGuessText( placeMode: PLACE_MODE, t: ( _key: string ) => string, exploreStatePlaceGuess: string ): string {

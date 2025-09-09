@@ -1,6 +1,6 @@
 // @flow
 
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import { useCallback, useEffect } from "react";
 import { AppState } from "react-native";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";

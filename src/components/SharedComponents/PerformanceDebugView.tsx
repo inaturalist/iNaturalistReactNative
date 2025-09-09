@@ -2,7 +2,7 @@ import classnames from "classnames";
 import { Body1 } from "components/SharedComponents";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import flashListTracker from "sharedHelpers/flashListPerformanceTracker.ts";
+import flashListTracker from "sharedHelpers/flashListPerformanceTracker";
 import {
   useDebugMode
 } from "sharedHooks";

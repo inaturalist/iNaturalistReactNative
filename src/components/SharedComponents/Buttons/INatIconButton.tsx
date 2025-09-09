@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import { INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { getCurrentRoute } from "navigation/navigationUtils.ts";
+import { getCurrentRoute } from "navigation/navigationUtils";
 import React, { PropsWithChildren } from "react";
 import {
   GestureResponderEvent,

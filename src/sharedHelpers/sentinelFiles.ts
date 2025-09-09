@@ -1,6 +1,6 @@
 import RNFS from "react-native-fs";
 import { log } from "sharedHelpers/logger";
-import { unlink } from "sharedHelpers/util.ts";
+import { unlink } from "sharedHelpers/util";
 
 import { sentinelFilePath } from "../appConstants/paths";
 
@@ -73,7 +73,11 @@ const findAndLogSentinelFiles = async ( ) => {
 
   files.forEach( async file => {
     const existingContent = await RNFS.readFile( file.path, "utf8" );
-    logger.error( "Camera flow error: ", existingContent );
+
+    const sentinelData = JSON.parse( existingContent );
+    if ( sentinelData.stages && sentinelData.stages.length > 0 ) {
+      logger.error( "Camera flow error: ", existingContent );
+    }
     await unlink( file.path );
   } );
   return files;

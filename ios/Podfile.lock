@@ -1727,7 +1727,7 @@ PODS:
     - React-Core
   - RNCPicker (2.11.1):
     - React-Core
-  - RNDateTimePicker (8.4.2):
+  - RNDateTimePicker (8.4.4):
     - React-Core
   - RNDeviceInfo (14.0.4):
     - React-Core
@@ -1782,7 +1782,7 @@ PODS:
     - React-Core
   - RNPermissions (4.1.5):
     - React-Core
-  - RNReanimated (3.18.0):
+  - RNReanimated (3.19.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1804,10 +1804,10 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNReanimated/reanimated (= 3.18.0)
-    - RNReanimated/worklets (= 3.18.0)
+    - RNReanimated/reanimated (= 3.19.1)
+    - RNReanimated/worklets (= 3.19.1)
     - Yoga
-  - RNReanimated/reanimated (3.18.0):
+  - RNReanimated/reanimated (3.19.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1829,56 +1829,9 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNReanimated/reanimated/apple (= 3.18.0)
+    - RNReanimated/reanimated/apple (= 3.19.1)
     - Yoga
-  - RNReanimated/reanimated/apple (3.18.0):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.11.18.00)
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-hermes
-    - React-ImageManager
-    - React-jsi
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
-  - RNReanimated/worklets (3.18.0):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.11.18.00)
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-hermes
-    - React-ImageManager
-    - React-jsi
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - RNReanimated/worklets/apple (= 3.18.0)
-    - Yoga
-  - RNReanimated/worklets/apple (3.18.0):
+  - RNReanimated/reanimated/apple (3.19.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1901,7 +1854,54 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (4.11.1):
+  - RNReanimated/worklets (3.19.1):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - RNReanimated/worklets/apple (= 3.19.1)
+    - Yoga
+  - RNReanimated/worklets/apple (3.19.1):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
+  - RNScreens (4.13.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1929,41 +1929,20 @@ PODS:
     - React-Core
   - RNSVG (15.12.0):
     - React-Core
-  - RNVectorIcons (10.2.0):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.11.18.00)
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
   - SocketRocket (0.7.1)
-  - VisionCamera (4.7.0):
-    - VisionCamera/Core (= 4.7.0)
-    - VisionCamera/FrameProcessors (= 4.7.0)
-    - VisionCamera/React (= 4.7.0)
-  - VisionCamera/Core (4.7.0)
-  - VisionCamera/FrameProcessors (4.7.0):
+  - VisionCamera (4.7.2):
+    - VisionCamera/Core (= 4.7.2)
+    - VisionCamera/FrameProcessors (= 4.7.2)
+    - VisionCamera/React (= 4.7.2)
+  - VisionCamera/Core (4.7.2)
+  - VisionCamera/FrameProcessors (4.7.2):
     - React
     - React-callinvoker
     - react-native-worklets-core
-  - VisionCamera/React (4.7.0):
+  - VisionCamera/React (4.7.2):
     - React-Core
     - VisionCamera/FrameProcessors
-  - VisionCameraPluginInatVision (5.3.0-rc.1):
+  - VisionCameraPluginInatVision (5.3.0):
     - React-Core
   - Yoga (0.0.0)
 
@@ -2078,7 +2057,6 @@ DEPENDENCIES:
   - RNShareMenu (from `../node_modules/react-native-share-menu`)
   - RNStoreReview (from `../node_modules/react-native-store-review`)
   - RNSVG (from `../node_modules/react-native-svg`)
-  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - VisionCamera (from `../node_modules/react-native-vision-camera`)
   - VisionCameraPluginInatVision (from `../node_modules/vision-camera-plugin-inatvision`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -2312,8 +2290,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-store-review"
   RNSVG:
     :path: "../node_modules/react-native-svg"
-  RNVectorIcons:
-    :path: "../node_modules/react-native-vector-icons"
   VisionCamera:
     :path: "../node_modules/react-native-vision-camera"
   VisionCameraPluginInatVision:
@@ -2424,7 +2400,7 @@ SPEC CHECKSUMS:
   RNAudioRecorderPlayer: fa079748b34d15cd3b7b6a5d47b286bae6d5d49b
   RNCClipboard: f6679d470d0da2bce2a37b0af7b9e0bf369ecda5
   RNCPicker: da0f1c9411208c1ca52bc98383db54a06e0a3862
-  RNDateTimePicker: 392bdc0d6863b5de2fe9b957c82c25b6a038db29
+  RNDateTimePicker: 7d93eacf4bdf56350e4b7efd5cfc47639185e10c
   RNDeviceInfo: d863506092aef7e7af3a1c350c913d867d795047
   RNFlashList: e2981ad152fadf10f3b05e56cba9888317d85458
   RNFS: 89de7d7f4c0f6bafa05343c578f61118c8282ed8
@@ -2432,17 +2408,16 @@ SPEC CHECKSUMS:
   RNGoogleSignin: ba93c1137f8d5cebdd39b04f493fd212ddf5ecd6
   RNLocalize: 3c4d0abd777a546fa77bdb6caef85a87fb9ea349
   RNPermissions: f14c20f4eb7a20fff611ad9f467da7bb5872ac4f
-  RNReanimated: 76e3bdba62bb728ea8d8d23b451e8070e6c2c2bc
-  RNScreens: 9ef996b6041d0960a4794a845f7d0808b171b4ef
+  RNReanimated: 3bc1666ae96a75a47688fe0ebc4e79340872a1c0
+  RNScreens: 9f99e18ee2c72a203651a9bbe322825fe5525d2f
   RNShareMenu: e1cdfa3b9af89416afc75a80377cfd0de4f30ded
   RNStoreReview: 613c43e9132998ed41a65946e20c223c91b36464
   RNSVG: ae1766b2492f8915a1ee25095871f00a4f132093
-  RNVectorIcons: f7a99433a71f4b38891c14c64b21fc521d064392
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  VisionCamera: 1470a7fa013e22de7481640a4d9c597ad6f13919
-  VisionCameraPluginInatVision: ad9a001b70676d2f9b0ea22f60c04d5fed3d3a52
+  VisionCamera: 4146fa2612c154f893a42a9b1feedf868faa6b23
+  VisionCameraPluginInatVision: d88681b3db2dde4997ba6ab3877b039d5e646e84
   Yoga: eca8dd841b7cd47d82d66be58af8e3aeb819012f
 
-PODFILE CHECKSUM: 3877bea0ea18a99bd3e08a1a6dc6ff4eb7c6dd77
+PODFILE CHECKSUM: 5c7a85b8fc0a51e972a87e39194f661a51e0d872
 
 COCOAPODS: 1.15.2

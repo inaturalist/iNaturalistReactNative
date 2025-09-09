@@ -1,7 +1,7 @@
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import {
   photoLibraryPhotosPath
-} from "appConstants/paths.ts";
+} from "appConstants/paths";
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { ActivityAnimation, ViewWrapper } from "components/SharedComponents";
 import { t } from "i18next";
@@ -18,11 +18,11 @@ import {
 import RNFS from "react-native-fs";
 import * as ImagePicker from "react-native-image-picker";
 import Observation from "realmModels/Observation";
-import ObservationPhoto from "realmModels/ObservationPhoto.ts";
+import ObservationPhoto from "realmModels/ObservationPhoto";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
-import { sleep } from "sharedHelpers/util.ts";
+import { sleep } from "sharedHelpers/util";
 import { useLayoutPrefs } from "sharedHooks";
-import useExitObservationsFlow from "sharedHooks/useExitObservationFlow.ts";
+import useExitObservationsFlow from "sharedHooks/useExitObservationFlow";
 import useStore from "stores/useStore";
 
 const MAX_PHOTOS_ALLOWED = 20;
@@ -185,8 +185,11 @@ const PhotoLibrary = ( ): Node => {
 
       updatedCurrentObservation = Observation
         .appendObsPhotos( obsPhotos, updatedCurrentObservation );
-      observations[currentObservationIndex] = updatedCurrentObservation;
-      updateObservations( observations );
+
+      const updatedObservations = [...observations];
+      updatedObservations[currentObservationIndex] = updatedCurrentObservation;
+      updateObservations( updatedObservations );
+
       navToObsEdit();
       setPhotoLibraryShown( false );
     } else if ( selectedImages.length === 1 ) {

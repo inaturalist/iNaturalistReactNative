@@ -6,7 +6,7 @@ import React, {
   useMemo,
   useRef
 } from "react";
-import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
+import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 
 const MIN_SCALE = 0.5;
 const MAX_SCALE = 5;

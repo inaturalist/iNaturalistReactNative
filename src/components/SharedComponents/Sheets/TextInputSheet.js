@@ -1,7 +1,7 @@
 // @flow
 
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
-import { fontRegular } from "appConstants/fontFamilies.ts";
+import { fontRegular } from "appConstants/fontFamilies";
 import classnames from "classnames";
 import {
   Body3, BottomSheet, Button
@@ -12,7 +12,7 @@ import React, { useMemo, useRef, useState } from "react";
 import { Keyboard, Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
-import useTranslation from "sharedHooks/useTranslation.ts";
+import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
 // Optimized to maximize input size while minimizing post-render height

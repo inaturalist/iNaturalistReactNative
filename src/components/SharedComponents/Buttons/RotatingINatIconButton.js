@@ -60,11 +60,10 @@ const RotatingINatIconButton = ( {
     () => ( {
       transform: [
         {
-          rotateZ: `${rotation.value}deg`
+          rotateZ: `${rotation.get( )}deg`
         }
       ]
-    } ),
-    [rotation.value]
+    } )
   );
 
   const getRotationAnimation = toValue => withDelay(
@@ -78,20 +77,20 @@ const RotatingINatIconButton = ( {
   useEffect( () => {
     const cleanup = () => {
       cancelAnimation( rotation );
-      rotation.value = 0;
-      // Trigger oen more render to ensure the rotation gets reset to 0
+      rotation.set( 0 );
+      // Trigger one more render to ensure the rotation gets reset to 0
       setNeedsReRender( true );
     };
 
     if ( rotating ) {
-      rotation.value = withRepeat(
+      rotation.set( withRepeat(
         withSequence(
           getRotationAnimation( 180 ),
           getRotationAnimation( 360 ),
           withTiming( 0, { duration: 0 } )
         ),
         -1
-      );
+      ) );
     } else {
       cleanup();
     }

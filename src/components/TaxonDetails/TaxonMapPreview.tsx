@@ -6,7 +6,7 @@ import {
   Map,
   Modal
 } from "components/SharedComponents";
-import { getMapRegion } from "components/SharedComponents/Map/helpers/mapHelpers.ts";
+import { getMapRegion } from "components/SharedComponents/Map/helpers/mapHelpers";
 import {
   View
 } from "components/styledComponents";

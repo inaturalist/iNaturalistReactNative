@@ -1,4 +1,4 @@
-import { createIconSet } from "react-native-vector-icons";
+import { createIconSet } from "@react-native-vector-icons/common";
 
 import glyphmap from "./glyphmap.json";
 

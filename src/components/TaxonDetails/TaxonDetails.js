@@ -23,7 +23,7 @@ import {
 } from "components/styledComponents";
 import i18n from "i18next";
 import _, { compact } from "lodash";
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import {
@@ -34,7 +34,7 @@ import DeviceInfo from "react-native-device-info";
 import Observation from "realmModels/Observation";
 import fetchTaxonAndSave from "sharedHelpers/fetchTaxonAndSave";
 import { log } from "sharedHelpers/logger";
-import saveObservation from "sharedHelpers/saveObservation.ts";
+import saveObservation from "sharedHelpers/saveObservation";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
@@ -122,7 +122,7 @@ const TaxonDetails = ( ): Node => {
   const obsUuid = fromObsDetails
     ? _.find( usableRoutes.slice().reverse(), r => r.name === "ObsDetails" ).params.uuid
     : null;
-  const localObservation = useLocalObservation( obsUuid );
+  const { localObservation } = useLocalObservation( obsUuid );
   const { remoteObservation } = useRemoteObservation(
     obsUuid,
     !localObservation && !currentEditingObservation
