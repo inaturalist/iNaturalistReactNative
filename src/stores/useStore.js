@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { MMKV } from "react-native-mmkv";
-import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { createWithEqualityFn as create } from "zustand/traditional";
 
 import createExploreSlice from "./createExploreSlice";
 import createLayoutSlice from "./createLayoutSlice";
