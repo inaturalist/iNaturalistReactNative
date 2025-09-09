@@ -136,7 +136,7 @@
     "sanitize-html": "^2.13.0",
     "uuid": "^11.1.0",
     "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision#2086c55a74bd46eb4759a08f84ed70cfb54e1d18",
-    "zustand": "^4.5.7"
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
