@@ -1340,6 +1340,7 @@ const FilterModal = ( {
       <ExploreTaxonSearchModal
         closeModal={() => { setShowTaxonSearchModal( false ); }}
         showModal={showTaxonSearchModal}
+        onPressInfo={( ) => { closeModal(); }}
         updateTaxon={updateTaxon}
       />
       <ExploreLocationSearchModal

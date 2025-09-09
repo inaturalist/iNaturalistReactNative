@@ -6,15 +6,17 @@ import React, { useState } from "react";
 import type { RealmTaxon } from "realmModels/types";
 
 type Props = {
-  closeModal: () => void,
-  hideInfoButton?: boolean,
-  showModal: boolean,
-  updateTaxon: ( taxon: RealmTaxon | null ) => void
+  closeModal: () => void;
+  hideInfoButton?: boolean;
+  showModal: boolean;
+  onPressInfo?: ( ) => void;
+  updateTaxon: ( taxon: RealmTaxon | null ) => void;
 };
 
 const ExploreTaxonSearchModal = ( {
   closeModal,
   hideInfoButton,
+  onPressInfo,
   showModal,
   updateTaxon
 }: Props ) => {
@@ -40,6 +42,9 @@ const ExploreTaxonSearchModal = ( {
           onPressInfo={( taxon: RealmTaxon | ApiTaxon ) => {
             setDetailTaxonId( taxon.id );
             closeModal();
+            if ( onPressInfo ) {
+              onPressInfo( );
+            }
           }}
           updateTaxon={updateTaxon}
         />
