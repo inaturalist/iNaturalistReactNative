@@ -1,16 +1,15 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
+import type { ApiTaxon } from "api/types";
 import ExploreTaxonSearch from "components/Explore/SearchScreens/ExploreTaxonSearch";
 import Modal from "components/SharedComponents/Modal";
-import type { Node } from "react";
 import React, { useState } from "react";
+import type { RealmTaxon } from "realmModels/types";
 
 type Props = {
-  closeModal: Function,
+  closeModal: () => void,
   hideInfoButton?: boolean,
   showModal: boolean,
-  updateTaxon: Function
+  updateTaxon: ( taxon: RealmTaxon | null ) => void
 };
 
 const ExploreTaxonSearchModal = ( {
@@ -18,9 +17,9 @@ const ExploreTaxonSearchModal = ( {
   hideInfoButton,
   showModal,
   updateTaxon
-}: Props ): Node => {
+}: Props ) => {
   const navigation = useNavigation( );
-  const [detailTaxonId, setDetailTaxonId] = useState( null );
+  const [detailTaxonId, setDetailTaxonId] = useState<number | undefined | null>( null );
 
   return (
     <Modal
@@ -38,7 +37,7 @@ const ExploreTaxonSearchModal = ( {
         <ExploreTaxonSearch
           closeModal={closeModal}
           hideInfoButton={hideInfoButton}
-          onPressInfo={taxon => {
+          onPressInfo={( taxon: RealmTaxon | ApiTaxon ) => {
             setDetailTaxonId( taxon.id );
             closeModal();
           }}
