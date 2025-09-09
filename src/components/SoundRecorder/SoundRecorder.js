@@ -26,7 +26,7 @@ import AudioRecorderPlayer from "react-native-audio-recorder-player";
 import Observation from "realmModels/Observation";
 import ObservationSound from "realmModels/ObservationSound";
 import Sound from "realmModels/Sound";
-import useTranslation from "sharedHooks/useTranslation.ts";
+import useTranslation from "sharedHooks/useTranslation";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
@@ -85,8 +85,10 @@ const SoundRecorder = (): Node => {
       } );
       updatedCurrentObservation = Observation
         .appendObsSounds( [obsSound], updatedCurrentObservation );
-      observations[currentObservationIndex] = updatedCurrentObservation;
-      updateObservations( observations );
+
+      const updatedObservations = [...observations];
+      updatedObservations[currentObservationIndex] = updatedCurrentObservation;
+      updateObservations( updatedObservations );
     }
   };
 

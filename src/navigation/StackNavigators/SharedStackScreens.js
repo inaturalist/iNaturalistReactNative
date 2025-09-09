@@ -2,15 +2,15 @@
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import FullPageWebView from "components/FullPageWebView/FullPageWebView.tsx";
+import FullPageWebView from "components/FullPageWebView/FullPageWebView";
 import LocationPickerContainer from "components/LocationPicker/LocationPickerContainer";
 import MatchContainer from "components/Match/MatchContainer";
-import MatchTaxonSearchScreen from "components/Match/MatchTaxonSearchScreen.tsx";
+import MatchTaxonSearchScreen from "components/Match/MatchTaxonSearchScreen";
 import ObsEdit from "components/ObsEdit/ObsEdit";
-import PhotoSharing from "components/PhotoSharing.tsx";
+import PhotoSharing from "components/PhotoSharing";
 import { Heading4 } from "components/SharedComponents";
-import SuggestionsContainer from "components/Suggestions/SuggestionsContainer.tsx";
-import SuggestionsTaxonSearch from "components/Suggestions/SuggestionsTaxonSearch.tsx";
+import SuggestionsContainer from "components/Suggestions/SuggestionsContainer";
+import SuggestionsTaxonSearch from "components/Suggestions/SuggestionsTaxonSearch";
 import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import { t } from "i18next";
 import {
@@ -20,7 +20,7 @@ import {
   removeBottomBorder,
   showHeader,
   showSimpleCustomHeader
-} from "navigation/navigationOptions.tsx";
+} from "navigation/navigationOptions";
 import type { Node } from "react";
 import React from "react";
 

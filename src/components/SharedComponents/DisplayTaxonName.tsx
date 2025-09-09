@@ -3,13 +3,13 @@ import classnames from "classnames";
 import {
   Body1, Body3, Body4
 } from "components/SharedComponents";
-import ScientificName from "components/SharedComponents/ScientificName.tsx";
+import ScientificName from "components/SharedComponents/ScientificName";
 import { Text, View } from "components/styledComponents";
 import React, { useMemo } from "react";
 import type { TextProps } from "react-native";
 import type { RealmTaxon } from "realmModels/types";
-import { generateTaxonPieces } from "sharedHelpers/taxon.ts";
-import useTranslation from "sharedHooks/useTranslation.ts";
+import { generateTaxonPieces } from "sharedHelpers/taxon";
+import useTranslation from "sharedHooks/useTranslation";
 
 const rankNames: Record<number, string> = {
   10: "species",
@@ -89,9 +89,9 @@ const DisplayTaxonName = ( {
     : taxon;
 
   // this is mostly for the AICamera, but might be helpful to display elsewhere
-  if ( taxonPojo?.rank_level && !taxonPojo?.rank ) {
-    taxonPojo.rank = rankNames[taxonPojo?.rank_level];
-  }
+  const processedTaxon = taxonPojo?.rank_level && !taxonPojo?.rank
+    ? { ...taxonPojo, rank: rankNames[taxonPojo.rank_level] }
+    : taxonPojo;
 
   const {
     commonName,
@@ -99,7 +99,7 @@ const DisplayTaxonName = ( {
     rankPiece,
     rankLevel,
     rank
-  } = generateTaxonPieces( taxonPojo );
+  } = generateTaxonPieces( processedTaxon );
   const isHorizontal = layout === "horizontal";
   const getSpaceChar = ( showSpace: boolean ) => ( showSpace && isHorizontal
     ? " "

@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react-native";
-import AddObsModal from "components/AddObsModal/AddObsModal.tsx";
+import AddObsModal from "components/AddObsModal/AddObsModal";
 import i18next from "i18next";
 import React from "react";
 

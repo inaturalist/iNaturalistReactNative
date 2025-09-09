@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
-import OfflineNotice from "components/SharedComponents/OfflineNotice.tsx";
+import OfflineNotice from "components/SharedComponents/OfflineNotice";
 import i18next from "i18next";
 import React from "react";
 

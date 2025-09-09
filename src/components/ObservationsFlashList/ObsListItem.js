@@ -11,9 +11,9 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useMemo } from "react";
-import Photo from "realmModels/Photo.ts";
+import Photo from "realmModels/Photo";
 import { useDebugMode, useTranslation } from "sharedHooks";
-import { UPLOAD_IN_PROGRESS } from "stores/createUploadObservationsSlice.ts";
+import { UPLOAD_IN_PROGRESS } from "stores/createUploadObservationsSlice";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 

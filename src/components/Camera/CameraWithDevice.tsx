@@ -2,8 +2,8 @@ import { View } from "components/styledComponents";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
 import type { CameraDevice } from "react-native-vision-camera";
-import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
-import { UserLocation } from "sharedHooks/useWatchPosition.ts";
+import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
+import { UserLocation } from "sharedHooks/useWatchPosition";
 
 import AICamera from "./AICamera/AICamera";
 import StandardCamera from "./StandardCamera/StandardCamera";

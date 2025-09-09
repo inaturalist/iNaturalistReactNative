@@ -4,17 +4,17 @@ import {
   useCallback
 } from "react";
 import Observation from "realmModels/Observation";
-import ObservationPhoto from "realmModels/ObservationPhoto.ts";
+import ObservationPhoto from "realmModels/ObservationPhoto";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import {
   useLayoutPrefs
 } from "sharedHooks";
-import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice.ts";
+import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 
 import savePhotosToPhotoLibrary from "../helpers/savePhotosToPhotoLibrary";
 
-const usePrepareStoreAndNavigate = ( ): Function => {
+const usePrepareStoreAndNavigate = ( ) => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const addEvidence = params?.addEvidence;
@@ -128,8 +128,11 @@ const usePrepareStoreAndNavigate = ( ): Function => {
     );
     const updatedCurrentObservation = Observation
       .appendObsPhotos( obsPhotos, currentObservation );
-    observations[currentObservationIndex] = updatedCurrentObservation;
-    updateObservations( observations );
+
+    const updatedObservations = [...observations];
+    updatedObservations[currentObservationIndex] = updatedCurrentObservation;
+    updateObservations( updatedObservations );
+
     await handleSavingToPhotoLibrary(
       evidenceToAdd,
       addPhotoPermissionResult,

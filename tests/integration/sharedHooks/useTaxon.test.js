@@ -4,7 +4,7 @@ import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useTaxon } from "sharedHooks";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
-import { renderHook } from "tests/helpers/render";
+import { renderHookInApp } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 
 // UNIQUE REALM SETUP
@@ -57,13 +57,13 @@ describe( "with local taxon", ( ) => {
   } );
 
   it( "should return an object", ( ) => {
-    const { result } = renderHook( ( ) => useTaxon( mockTaxon ) );
+    const { result } = renderHookInApp( ( ) => useTaxon( mockTaxon ) );
     expect( result.current ).toBeInstanceOf( Object );
   } );
 
   describe( "when there is a local taxon with taxon id", ( ) => {
     it( "should return local taxon with default photo", ( ) => {
-      const { result } = renderHook( ( ) => useTaxon( mockTaxon ) );
+      const { result } = renderHookInApp( ( ) => useTaxon( mockTaxon ) );
       const { taxon: resultTaxon } = result.current;
       expect( resultTaxon ).toHaveProperty( "default_photo" );
       expect( resultTaxon.default_photo.url ).toEqual( mockTaxon.default_photo.url );
@@ -74,7 +74,7 @@ describe( "with local taxon", ( ) => {
       safeRealmWrite( global.mockRealms[mockRealmIdentifier], ( ) => {
         global.mockRealms[mockRealmIdentifier].create( "Taxon", mockOutdatedTaxon, "modified" );
       }, "write mock outdated taxon, useTaxon test" );
-      renderHook( ( ) => useTaxon( mockOutdatedTaxon ) );
+      renderHookInApp( ( ) => useTaxon( mockOutdatedTaxon ) );
       await waitFor( ( ) => expect( inatjs.taxa.fetch ).toHaveBeenCalled( ) );
     } );
   } );
@@ -92,7 +92,7 @@ describe( "when there is no local taxon with taxon id", ( ) => {
       expect(
         global.mockRealms[mockRealmIdentifier].objectForPrimaryKey( "Taxon", mockTaxon.id )
       ).toBeNull( );
-      renderHook( ( ) => useTaxon( mockTaxon ) );
+      renderHookInApp( ( ) => useTaxon( mockTaxon ) );
       await waitFor( ( ) => expect( inatjs.taxa.fetch ).toHaveBeenCalled( ) );
     } );
 
@@ -108,13 +108,13 @@ describe( "when there is no local taxon with taxon id", ( ) => {
         } ) )
       } ) );
       const partialTaxon = { id: faker.number.int( ), foo: "bar" };
-      const { result } = renderHook( ( ) => useTaxon( partialTaxon ) );
+      const { result } = renderHookInApp( ( ) => useTaxon( partialTaxon ) );
       expect( result.current.taxon.foo ).toEqual( "bar" );
       jest.unmock( "@tanstack/react-query" );
     } );
 
     it( "should return a taxon like a local taxon record if the request succeeds", async ( ) => {
-      const { result } = renderHook( ( ) => useTaxon( { id: mockTaxon.id } ) );
+      const { result } = renderHookInApp( ( ) => useTaxon( { id: mockTaxon.id } ) );
       await waitFor( ( ) => expect( result.current.taxon ).toHaveProperty( "default_photo" ) );
     } );
   } );
@@ -125,7 +125,7 @@ describe( "when there is no local taxon with taxon id", ( ) => {
       expect(
         global.mockRealms[mockRealmIdentifier].objectForPrimaryKey( "Taxon", taxonId )
       ).toBeNull( );
-      const { result } = renderHook( ( ) => useTaxon( { id: taxonId, foo: "bar" }, false ) );
+      const { result } = renderHookInApp( ( ) => useTaxon( { id: taxonId, foo: "bar" }, false ) );
       expect( result.current.taxon ).not.toHaveProperty( "default_photo" );
       expect( result.current.taxon.foo ).toEqual( "bar" );
     } );

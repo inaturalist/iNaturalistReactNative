@@ -1,6 +1,6 @@
-import ObservationPhoto from "realmModels/ObservationPhoto.ts";
+import ObservationPhoto from "realmModels/ObservationPhoto";
 import ObservationSound from "realmModels/ObservationSound";
-import { ActionType, Evidence, EvidenceType } from "uploaders/mediaUploader.ts";
+import { ActionType, Evidence, EvidenceType } from "uploaders/mediaUploader";
 
 function prepareMediaForUpload(
   media: Evidence,

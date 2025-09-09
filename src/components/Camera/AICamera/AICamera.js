@@ -2,9 +2,9 @@
 
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
-import FadeInOutView from "components/Camera/FadeInOutView.tsx";
-import useRotation from "components/Camera/hooks/useRotation.ts";
-import useZoom from "components/Camera/hooks/useZoom.ts";
+import FadeInOutView from "components/Camera/FadeInOutView";
+import useRotation from "components/Camera/hooks/useRotation";
+import useZoom from "components/Camera/hooks/useZoom";
 import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -13,9 +13,9 @@ import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { VolumeManager } from "react-native-volume-manager";
-import convertScoreToConfidence from "sharedHelpers/convertScores.ts";
+import convertScoreToConfidence from "sharedHelpers/convertScores";
 import { log } from "sharedHelpers/logger";
-import { deleteSentinelFile, logStage } from "sharedHelpers/sentinelFiles.ts";
+import { deleteSentinelFile, logStage } from "sharedHelpers/sentinelFiles";
 import {
   useDebugMode,
   useLayoutPrefs,
@@ -350,6 +350,7 @@ const AICamera = ( {
         zoomTextValue={zoomTextValue}
         useLocation={useLocation}
         toggleLocation={toggleLocation}
+        deleteSentinelFile={() => deleteSentinelFile( sentinelFileName )}
       />
     </>
   );

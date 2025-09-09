@@ -29,30 +29,30 @@ const CircleDots = ( {
 }: Props ) => {
   const animation = useSharedValue( 0 );
   const rotation = useDerivedValue( ( ) => interpolate(
-    animation.value,
+    animation.get( ),
     [0, 1],
     [0, 360]
   ) );
   const rotate = useAnimatedStyle( ( ) => ( {
     transform: [
       {
-        rotateZ: `${rotation.value}deg`
+        rotateZ: `${rotation.get( )}deg`
       }
     ]
-  } ), [rotation.value] );
+  } ) );
 
   const startAnimation = useCallback( ( ) => {
-    animation.value = withRepeat(
+    animation.set( withRepeat(
       withTiming( 1, {
         duration: 10000,
         easing: Easing.linear
       } ),
       -1
-    );
+    ) );
   }, [animation] );
 
   const stopAnimation = useCallback( ( ) => {
-    animation.value = 0;
+    animation.set( 0 );
   }, [animation] );
 
   useEffect( ( ) => {

@@ -6,7 +6,7 @@ import {
 import Suggestions from "components/Suggestions/Suggestions";
 import {
   initialSuggestions
-} from "components/Suggestions/SuggestionsContainer.tsx";
+} from "components/Suggestions/SuggestionsContainer";
 import i18next from "i18next";
 import React from "react";
 import useStore from "stores/useStore";

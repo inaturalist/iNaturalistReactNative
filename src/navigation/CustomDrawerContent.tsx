@@ -7,7 +7,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import classnames from "classnames";
 import {
   signOut
-} from "components/LoginSignUp/AuthenticationService.ts";
+} from "components/LoginSignUp/AuthenticationService";
 import {
   Body1,
   Heading4,
@@ -18,13 +18,13 @@ import {
   WarningSheet
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import React, { useCallback, useMemo, useState } from "react";
 import {
   Alert, Dimensions, ViewStyle
 } from "react-native";
-import User from "realmModels/User.ts";
-import { BREAKPOINTS } from "sharedHelpers/breakpoint.ts";
+import User from "realmModels/User";
+import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import { log } from "sharedHelpers/logger";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import useStore, { zustandStorage } from "stores/useStore";

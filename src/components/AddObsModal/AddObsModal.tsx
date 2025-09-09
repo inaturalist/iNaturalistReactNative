@@ -3,7 +3,7 @@ import {
   Body2,
   INatIconButton
 } from "components/SharedComponents";
-import GradientButton from "components/SharedComponents/Buttons/GradientButton.tsx";
+import GradientButton from "components/SharedComponents/Buttons/GradientButton";
 import { View } from "components/styledComponents";
 import React, { useMemo } from "react";
 import { Platform, StatusBar } from "react-native";

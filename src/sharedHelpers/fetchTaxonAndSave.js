@@ -1,5 +1,5 @@
 import { fetchTaxon } from "api/taxa";
-import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
+import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import Taxon from "realmModels/Taxon";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 

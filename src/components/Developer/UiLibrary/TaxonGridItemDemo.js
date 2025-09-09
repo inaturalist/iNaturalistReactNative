@@ -4,9 +4,9 @@ import {
   Heading2,
   ScrollViewWrapper
 } from "components/SharedComponents";
-import TaxonGridItem from "components/SharedComponents/TaxonGridItem.tsx";
+import TaxonGridItem from "components/SharedComponents/TaxonGridItem";
 import { View } from "components/styledComponents";
-import { ExploreProvider } from "providers/ExploreContext.tsx";
+import { ExploreProvider } from "providers/ExploreContext";
 import React from "react";
 
 import { makePhoto } from "./ObsListItemDemo";

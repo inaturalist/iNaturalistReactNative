@@ -1,11 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
-import { RealmContext } from "providers/contexts.ts";
+import { RealmContext } from "providers/contexts";
 import {
   useCallback, useEffect, useMemo
 } from "react";
 import { EventRegister } from "react-native-event-listeners";
 import Observation from "realmModels/Observation";
-import type { RealmObservation } from "realmModels/types.d.ts";
+import type { RealmObservation } from "realmModels/types";
 import {
   useTranslation
 } from "sharedHooks";
@@ -13,14 +13,14 @@ import {
   UPLOAD_CANCELLED,
   UPLOAD_COMPLETE,
   UPLOAD_IN_PROGRESS
-} from "stores/createUploadObservationsSlice.ts";
+} from "stores/createUploadObservationsSlice";
 import useStore from "stores/useStore";
 import { handleUploadError } from "uploaders";
-import uploadObservation from "uploaders/observationUploader.ts";
-import { RECOVERY_BY } from "uploaders/utils/errorHandling.ts";
+import uploadObservation from "uploaders/observationUploader";
+import { RECOVERY_BY } from "uploaders/utils/errorHandling";
 import {
   INCREMENT_SINGLE_UPLOAD_PROGRESS
-} from "uploaders/utils/progressTracker.ts";
+} from "uploaders/utils/progressTracker";
 
 export const MS_BEFORE_TOOLBAR_RESET = 5_000;
 const MS_BEFORE_UPLOAD_TIMES_OUT = 60_000 * 5;
