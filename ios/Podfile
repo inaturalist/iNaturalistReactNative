@@ -46,11 +46,9 @@ setup_permissions(
   ]
 )
 
-linkage = ENV.fetch( "USE_FRAMEWORKS", nil )
-unless linkage.nil?
-  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
-  use_frameworks! linkage: linkage.to_sym
-end
+# Required for react-native-firebase: https://rnfirebase.io/#configure-firebase-with-ios-credentials-react-native--077
+use_frameworks! :linkage => :static
+$RNFirebaseAsStaticFramework = true
 
 target "iNaturalistReactNative" do
   config = use_native_modules!
