@@ -4,7 +4,7 @@ import { View } from "components/styledComponents";
 import React, {
   useCallback, useEffect, useRef, useState
 } from "react";
-import { Alert, Platform } from "react-native";
+import { Alert } from "react-native";
 import Observation from "realmModels/Observation";
 import { useLayoutPrefs } from "sharedHooks";
 import useStore from "stores/useStore";
@@ -60,36 +60,15 @@ const PhotoSharing = ( ) => {
   }, [sharedText, prepareObsEdit, isDefaultMode, resetNavigator, screenAfterPhotoEvidence] );
 
   useEffect( ( ) => {
-    const { mimeType, data } = item;
-
-    if ( Platform.OS === "android" && !mimeType.startsWith( "image/" ) ) {
-      Alert.alert( "Android photo share failed: not an image file" );
-      return;
-    }
+    const { data } = item;
 
     // when sharing, we need to reset zustand like we do while
     // navigating through the AddObsModal
     resetObservationFlowSlice( );
 
-    // Create a new observation with multiple shared photos (one or more)
-    let photoUris;
-
-    // data is returned as a string for a single photo on Android
-    // and an object with an array of data strings on iOS, i.e.
-    // [{"data": "", "", "mimeType": "image/jpeg]
-    if ( Array.isArray( data ) ) {
-      photoUris = data;
-    } else {
-      photoUris = [data];
-    }
-
-    if ( Platform.OS === "android" ) {
-      photoUris = photoUris.map( x => ( { image: { uri: x } } ) );
-    } else {
-      photoUris = photoUris
-        .filter( x => x.mimeType && x.mimeType.startsWith( "image/" ) )
-        .map( x => ( { image: { uri: x.data } } ) );
-    }
+    const photoUris = data
+      .filter( x => x.mimeType && x.mimeType.startsWith( "image/" ) )
+      .map( x => ( { image: { uri: x.data } } ) );
 
     if ( photoUris.length === 1 ) {
       createObservationAndNavigate( photoUris );
