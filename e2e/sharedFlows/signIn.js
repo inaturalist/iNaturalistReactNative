@@ -15,7 +15,7 @@ export default async function signIn() {
   const openDrawerMenuItem = element( by.id( "OPEN_DRAWER" ) );
   await waitFor( openDrawerMenuItem ).toBeVisible().withTimeout( 10000 );
   await expect( openDrawerMenuItem ).toBeVisible();
-  await element( by.id( "OPEN_DRAWER" ) ).tap();
+  await element( by.id( "OPEN_DRAWER" ) ).tap( { x: 0, y: 0 } );
   // Tap the Log-In menu item
   // TODO: consider this a temporary solution as it only checks for the drawer-top-banner
   // which can be a login prompt or the logged in user's details. If the user is already
