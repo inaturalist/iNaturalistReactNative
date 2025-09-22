@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-share-menu/ios/ShareMenuManager.m b/node_modules/react-native-share-menu/ios/ShareMenuManager.m
+index d64822e..308ec99 100644
+--- a/node_modules/react-native-share-menu/ios/ShareMenuManager.m
++++ b/node_modules/react-native-share-menu/ios/ShareMenuManager.m
+@@ -6,7 +6,7 @@
+ //
+ 
+ #import "ShareMenuManager.h"
+-#import <RNShareMenu/RNShareMenu-Swift.h>
++#import "RNShareMenu-Swift.h"
+ 
+ #import <React/RCTLinkingManager.h>
+ 
