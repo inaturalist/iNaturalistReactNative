@@ -68,5 +68,43 @@ describe( "FullPageWebView", ( ) => {
         expect( Linking.openURL ).not.toHaveBeenCalled( );
       } );
     } );
+
+    describe( "setSource", ( ) => {
+      it( "should update the source when navigating the top frame", ( ) => {
+        const url = "https://www.inaturalist.org";
+        const destination = "https://www.inaturalist.org/observations";
+        const request = {
+          url: destination,
+          mainDocumentURL: destination,
+          isTopFrame: true
+        };
+        const source = { uri: url };
+        const routeParams = { initialUrl: url };
+        const setSource = jest.fn();
+
+        expect(
+          onShouldStartLoadWithRequest( request, source, routeParams, setSource )
+        ).toBeTruthy();
+        expect( setSource ).toHaveBeenCalledWith( { ...source, uri: destination } );
+      } );
+
+      it( "should not update the source for iframe requests", ( ) => {
+        const url = "https://www.inaturalist.org";
+        const iframeUrl = "https://www.inaturalist.org/embed";
+        const request = {
+          url: iframeUrl,
+          mainDocumentURL: url,
+          isTopFrame: false
+        };
+        const source = { uri: url };
+        const routeParams = { initialUrl: url };
+        const setSource = jest.fn();
+
+        expect(
+          onShouldStartLoadWithRequest( request, source, routeParams, setSource )
+        ).toBeTruthy();
+        expect( setSource ).not.toHaveBeenCalled();
+      } );
+    } );
   } );
 } );

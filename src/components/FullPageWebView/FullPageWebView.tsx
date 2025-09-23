@@ -73,7 +73,9 @@ type WebViewSource = {
 
 type WebViewRequest = {
   url: string;
-  navigationType: "click" | "other"
+  navigationType?: "click" | "other";
+  mainDocumentURL?: string | null;
+  isTopFrame?: boolean;
 }
 
 export function onShouldStartLoadWithRequest(
@@ -141,6 +143,22 @@ export function onShouldStartLoadWithRequest(
   }
 
   if ( params.skipSetSourceInShouldStartLoadWithRequest || !setSource ) {
+    return true;
+  }
+
+  const isTopLevelNavigation = ( ) => {
+    if ( typeof request.isTopFrame === "boolean" ) {
+      return request.isTopFrame;
+    }
+
+    if ( request.mainDocumentURL ) {
+      return request.mainDocumentURL === request.url;
+    }
+
+    return true;
+  };
+
+  if ( !isTopLevelNavigation( ) ) {
     return true;
   }
 
