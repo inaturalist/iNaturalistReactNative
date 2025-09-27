@@ -43,11 +43,7 @@ setup_permissions(
   ]
 )
 
-linkage = ENV.fetch( "USE_FRAMEWORKS", nil )
-unless linkage.nil?
-  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
-  use_frameworks! linkage: linkage.to_sym
-end
+use_frameworks! :linkage => :static
 
 target "iNaturalistReactNative" do
   config = use_native_modules!
