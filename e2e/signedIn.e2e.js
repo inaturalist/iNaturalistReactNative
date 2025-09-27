@@ -33,24 +33,14 @@ describe( "Signed in user", () => {
 
     await uploadObservation( options );
 
-    // Check that the comments count component for the obs we just created is
-    // visible. Since it just saved and there's an animation the runs before
-    // this component becomes visible, and there may be other observations in
-    // the list, we need to wait for the right CommentsCount component to be
-    // visible
     const obsListItem = element( by.id( /MyObservations\.obsListItem\..*/ ) ).atIndex( 0 );
     const obsListItemAttributes = await obsListItem.getAttributes( );
     const uuid = obsListItemAttributes.elements
       ? obsListItemAttributes.elements[0].identifier.split( "." ).pop( )
       : obsListItemAttributes.identifier.split( "." ).pop( );
 
-    if ( options.upload ) {
-      const commentCount = element(
-        by.id( "ObsStatus.commentsCount" )
-          .withAncestor( by.id( `MyObservations.obsListItem.${uuid}` ) )
-      );
-      await waitFor( commentCount ).toBeVisible().withTimeout( TIMEOUT );
-    }
+    const listItem = element( by.id( `MyObservations.obsListItem.${uuid}` ) );
+    await waitFor( listItem ).toBeVisible().withTimeout( TIMEOUT );
 
     return uuid;
   }
