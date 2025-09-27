@@ -116,7 +116,7 @@ describe( "Signed in user", () => {
     // the timing of syncing deletions seems to be different in the actual app versus these
     // e2e tests, so deleting an observation here still shows the observation
     // in the list unless this delay( ) is added
-    await delay( 3000 );
+    await delay( 10000 );
     await expect( obsListItem ).toBeNotVisible( );
   } );
 } );
