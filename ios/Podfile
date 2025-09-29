@@ -43,7 +43,7 @@ setup_permissions(
   ]
 )
 
-use_frameworks! :linkage => :static
+use_frameworks! linkage: :static
 
 target "iNaturalistReactNative" do
   config = use_native_modules!
