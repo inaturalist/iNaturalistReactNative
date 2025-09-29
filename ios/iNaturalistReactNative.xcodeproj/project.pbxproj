@@ -17,10 +17,10 @@
 		197A169D2A7C2567001A03DC /* cvmodel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 197A169B2A7C2567001A03DC /* cvmodel.mlmodel */; };
 		197A169E2A7C2567001A03DC /* taxonomy.json in Resources */ = {isa = PBXBuildFile; fileRef = 197A169C2A7C2567001A03DC /* taxonomy.json */; };
 		3DE2C0F71E184822B561A1ED /* Lato-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A54425709BB4844AFBC680D /* Lato-Italic.ttf */; };
-		500A982B209D0C35A7A2166E /* libPods-iNaturalistReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 656E980A2E97A2B031A8DEFD /* libPods-iNaturalistReactNative.a */; };
 		54EB1EFEC1F74152902EED02 /* Lato-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8C2D97D72EED451C887998A8 /* Lato-BoldItalic.ttf */; };
-		5A8D64AB921678B40E0229C8 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
+		7196CC2D6D0934D0F4255B7E /* Pods_iNaturalistReactNative.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05015AADE3E87F2B8A8D3211 /* Pods_iNaturalistReactNative.framework */; };
 		725BA058C5384A9185E8036A /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 00752F4ADC554701A45A848A /* Lato-Bold.ttf */; };
+		74A25CA93620CDD621ADDBE3 /* Pods_iNaturalistReactNative_ShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F15C1390617A309CE0A194B2 /* Pods_iNaturalistReactNative_ShareExtension.framework */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8B65ED3129F575C10054CCEF /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B65ED2F29F575C10054CCEF /* MainInterface.storyboard */; };
 		8B65ED3529F575C10054CCEF /* iNaturalistReactNative-ShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8B65ED2B29F575C10054CCEF /* iNaturalistReactNative-ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -28,7 +28,6 @@
 		8F1AC6772BC1B610002F994B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8F1AC6762BC1B610002F994B /* PrivacyInfo.xcprivacy */; };
 		8F1AC6792BC1B610002F994B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8F1AC6762BC1B610002F994B /* PrivacyInfo.xcprivacy */; };
 		8F346E4A2CF6912700CED7B4 /* geomodel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 8F346E492CF6912700CED7B4 /* geomodel.mlmodel */; };
-		A124BFAECECB80521E10569D /* libPods-iNaturalistReactNative-ShareExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 958625FE96E0ECACF1B4B978 /* libPods-iNaturalistReactNative-ShareExtension.a */; };
 		A5C00A8934ED4A48A1495179 /* INatIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0972395C34134C71A54A2A5D /* INatIcon.ttf */; };
 		AE4DC81B3A87484CB3FD6750 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B0AEEF6CA584BCF9880EB35 /* Lato-Regular.ttf */; };
 		E5DFC1C6FBFA45739CE91C69 /* Lato-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 69DF855D92EA4ADFB73B47F1 /* Lato-MediumItalic.ttf */; };
@@ -60,6 +59,7 @@
 
 /* Begin PBXFileReference section */
 		00752F4ADC554701A45A848A /* Lato-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Bold.ttf"; path = "../assets/fonts/Lato-Bold.ttf"; sourceTree = "<group>"; };
+		05015AADE3E87F2B8A8D3211 /* Pods_iNaturalistReactNative.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iNaturalistReactNative.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		06E20E5358FDFF430DB96A37 /* Pods-iNaturalistReactNative.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iNaturalistReactNative.debug.xcconfig"; path = "Target Support Files/Pods-iNaturalistReactNative/Pods-iNaturalistReactNative.debug.xcconfig"; sourceTree = "<group>"; };
 		0972395C34134C71A54A2A5D /* INatIcon.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = INatIcon.ttf; path = ../assets/fonts/INatIcon.ttf; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* iNaturalistReactNative.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iNaturalistReactNative.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -80,7 +80,6 @@
 		3A9BAF07FCF24F668E2EF5AB /* Lato-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Medium.ttf"; path = "../assets/fonts/Lato-Medium.ttf"; sourceTree = "<group>"; };
 		3F51DC8BF2B19AB96D47F129 /* Pods-iNaturalistReactNative-ShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iNaturalistReactNative-ShareExtension.release.xcconfig"; path = "Target Support Files/Pods-iNaturalistReactNative-ShareExtension/Pods-iNaturalistReactNative-ShareExtension.release.xcconfig"; sourceTree = "<group>"; };
 		4B0AEEF6CA584BCF9880EB35 /* Lato-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Regular.ttf"; path = "../assets/fonts/Lato-Regular.ttf"; sourceTree = "<group>"; };
-		656E980A2E97A2B031A8DEFD /* libPods-iNaturalistReactNative.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iNaturalistReactNative.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		69DF855D92EA4ADFB73B47F1 /* Lato-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-MediumItalic.ttf"; path = "../assets/fonts/Lato-MediumItalic.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = iNaturalistReactNative/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8B65ED2B29F575C10054CCEF /* iNaturalistReactNative-ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "iNaturalistReactNative-ShareExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -93,8 +92,8 @@
 		8C2D97D72EED451C887998A8 /* Lato-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-BoldItalic.ttf"; path = "../assets/fonts/Lato-BoldItalic.ttf"; sourceTree = "<group>"; };
 		8F1AC6762BC1B610002F994B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		8F346E492CF6912700CED7B4 /* geomodel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = geomodel.mlmodel; sourceTree = "<group>"; };
-		958625FE96E0ECACF1B4B978 /* libPods-iNaturalistReactNative-ShareExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iNaturalistReactNative-ShareExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F15C1390617A309CE0A194B2 /* Pods_iNaturalistReactNative_ShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iNaturalistReactNative_ShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,8 +101,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A8D64AB921678B40E0229C8 /* BuildFile in Frameworks */,
-				500A982B209D0C35A7A2166E /* libPods-iNaturalistReactNative.a in Frameworks */,
+				7196CC2D6D0934D0F4255B7E /* Pods_iNaturalistReactNative.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,7 +109,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A124BFAECECB80521E10569D /* libPods-iNaturalistReactNative-ShareExtension.a in Frameworks */,
+				74A25CA93620CDD621ADDBE3 /* Pods_iNaturalistReactNative_ShareExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,8 +139,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				656E980A2E97A2B031A8DEFD /* libPods-iNaturalistReactNative.a */,
-				958625FE96E0ECACF1B4B978 /* libPods-iNaturalistReactNative-ShareExtension.a */,
+				05015AADE3E87F2B8A8D3211 /* Pods_iNaturalistReactNative.framework */,
+				F15C1390617A309CE0A194B2 /* Pods_iNaturalistReactNative_ShareExtension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -803,6 +801,17 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers/react/nativemodule/core",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-Fabric/React_Fabric.framework/Headers/react/renderer/components/view/platform/cxx",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-NativeModulesApple/React_NativeModulesApple.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers/react/renderer/graphics/platform/ios",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD = "";
 				LDPLUSPLUS = "";
@@ -883,6 +892,17 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers/react/nativemodule/core",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-Fabric/React_Fabric.framework/Headers/react/renderer/components/view/platform/cxx",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-NativeModulesApple/React_NativeModulesApple.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers/react/renderer/graphics/platform/ios",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD = "";
 				LDPLUSPLUS = "";
