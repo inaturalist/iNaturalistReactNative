@@ -18,7 +18,6 @@
 		197A169E2A7C2567001A03DC /* taxonomy.json in Resources */ = {isa = PBXBuildFile; fileRef = 197A169C2A7C2567001A03DC /* taxonomy.json */; };
 		3DE2C0F71E184822B561A1ED /* Lato-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A54425709BB4844AFBC680D /* Lato-Italic.ttf */; };
 		54EB1EFEC1F74152902EED02 /* Lato-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8C2D97D72EED451C887998A8 /* Lato-BoldItalic.ttf */; };
-		5A8D64AB921678B40E0229C8 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 		7196CC2D6D0934D0F4255B7E /* Pods_iNaturalistReactNative.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05015AADE3E87F2B8A8D3211 /* Pods_iNaturalistReactNative.framework */; };
 		725BA058C5384A9185E8036A /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 00752F4ADC554701A45A848A /* Lato-Bold.ttf */; };
 		74A25CA93620CDD621ADDBE3 /* Pods_iNaturalistReactNative_ShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F15C1390617A309CE0A194B2 /* Pods_iNaturalistReactNative_ShareExtension.framework */; };
