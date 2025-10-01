@@ -2,19 +2,21 @@ import { screen } from "@testing-library/react-native";
 import MediaViewer from "components/MediaViewer/MediaViewer";
 import React from "react";
 import factory from "tests/factory";
-import { renderComponent, wrapInNavigationContainer } from "tests/helpers/render";
+import {
+  renderComponent
+} from "tests/helpers/render";
 
 // Note: HeaderBackButton has accessibility issues
 jest.mock( "@react-navigation/elements" );
 
 describe( "MediaViewer", ( ) => {
   describe( "without media", ( ) => {
-    it( "should not have accessibility errors", async () => {
-      const mediaViewer = wrapInNavigationContainer( <MediaViewer /> );
-      // Disabled during the update to RN 0.78
-      expect( mediaViewer ).toBeTruthy( );
-      // expect( mediaViewer ).toBeAccessible( );
-    } );
+    // Disabled during the update to RN 0.78
+    // it( "should not have accessibility errors", async () => {
+    //   const mediaViewer = wrapInNavigationContainer( <MediaViewer /> );
+    //   expect( mediaViewer ).toBeTruthy( );
+    //   expect( mediaViewer ).toBeAccessible( );
+    // } );
 
     it( "should not have any CustomImageZoom components", ( ) => {
       renderComponent( <MediaViewer /> );
@@ -27,12 +29,12 @@ describe( "MediaViewer", ( ) => {
       // const urls = [faker.image.url( )];
       const photos = [factory( "LocalPhoto" )];
 
-      it( "should not have accessibility errors", async () => {
-        const mediaViewer = wrapInNavigationContainer( <MediaViewer photos={photos} /> );
-        // Disabled during the update to RN 0.78
-        expect( mediaViewer ).toBeTruthy( );
-        // expect( mediaViewer ).toBeAccessible( );
-      } );
+      // Disabled during the update to RN 0.78
+      // it( "should not have accessibility errors", async () => {
+      //   const mediaViewer = wrapInNavigationContainer( <MediaViewer photos={photos} /> );
+      //   expect( mediaViewer ).toBeTruthy( );
+      //   expect( mediaViewer ).toBeAccessible( );
+      // } );
 
       it( "should have a CustomImageZoom component", async ( ) => {
         renderComponent( <MediaViewer photos={photos} /> );

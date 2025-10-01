@@ -4,7 +4,7 @@ import React from "react";
 import { View } from "react-native";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
-import { renderComponent, wrapInNavigationContainer } from "tests/helpers/render";
+import { renderComponent } from "tests/helpers/render";
 
 // eslint-disable-next-line i18next/no-literal-string
 const mockHeaderBackButton = <View testID="ObsEdit.BackButton">Mocked Back</View>;
@@ -54,12 +54,12 @@ describe( "ObsEdit", () => {
     } );
   } );
 
-  it( "should not have accessibility errors", async ( ) => {
-    const view = wrapInNavigationContainer( <ObsEdit /> );
-    // Disabled during the update to RN 0.78
-    expect( view ).toBeTruthy();
-    // expect( view ).toBeAccessible();
-  } );
+  // Disabled during the update to RN 0.78
+  // it( "should not have accessibility errors", async ( ) => {
+  //   const view = wrapInNavigationContainer( <ObsEdit /> );
+  //   expect( view ).toBeTruthy();
+  //   expect( view ).toBeAccessible();
+  // } );
 
   it( "displays the number of photos in global state obsPhotos", async ( ) => {
     renderComponent( <ObsEdit /> );
