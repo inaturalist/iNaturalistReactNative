@@ -11,10 +11,10 @@ gem "concurrent-ruby", "< 1.3.4"
 gem "xcodeproj", "< 1.26.0"
 
 # Ruby 3.4.0 has removed some libraries from the standard library.
-gem 'bigdecimal'
-gem 'logger'
-gem 'benchmark'
-gem 'mutex_m'
+gem "benchmark"
+gem "bigdecimal"
+gem "logger"
+gem "mutex_m"
 
 gem "fastlane"
 # Temporary workaround for https://github.com/fastlane/fastlane/issues/26682
