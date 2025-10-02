@@ -4,9 +4,7 @@ import React from "react";
 import { View } from "react-native";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
-import {
-  renderComponent
-} from "tests/helpers/render";
+import { renderComponent, wrapInNavigationContainer } from "tests/helpers/render";
 
 // eslint-disable-next-line i18next/no-literal-string
 const mockHeaderBackButton = <View testID="ObsEdit.BackButton">Mocked Back</View>;
@@ -24,17 +22,17 @@ const mockObservations = [
 ];
 
 describe( "ObsEditHeader", () => {
-  // Disabled during the update to RN 0.78
-  // it( "has no accessibility errors", () => {
-  //   const button = wrapInNavigationContainer(
-  //     <ObsEditHeader
-  //       observations={mockObservations}
-  //     />
-  //   );
+  it( "has no accessibility errors", () => {
+    const button = wrapInNavigationContainer(
+      <ObsEditHeader
+        observations={mockObservations}
+      />
+    );
 
-  //   expect( button ).toBeTruthy();
-  //   expect( button ).toBeAccessible();
-  // } );
+    // Disabled during the update to RN 0.78
+    expect( button ).toBeTruthy();
+    // expect( button ).toBeAccessible();
+  } );
 
   it( "renders a header title with 1 observation", async () => {
     renderComponent(

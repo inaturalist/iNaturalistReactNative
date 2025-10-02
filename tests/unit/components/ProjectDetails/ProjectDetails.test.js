@@ -4,9 +4,7 @@ import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsCon
 import React from "react";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
-import {
-  renderComponent
-} from "tests/helpers/render";
+import { renderComponent, wrapInQueryClientContainer } from "tests/helpers/render";
 
 const mockProject = factory( "RemoteProject", {
   title: faker.lorem.sentence( ),
@@ -63,15 +61,15 @@ beforeAll( async () => {
   jest.useFakeTimers( );
 } );
 
-// Disabled during the update to RN 0.78
 describe( "ProjectDetails", ( ) => {
-  // test( "should not have accessibility errors", async ( ) => {
-  //   const view = wrapInQueryClientContainer(
-  //     <ProjectDetailsContainer />
-  //   );
-  //   expect( view ).toBeTruthy();
-  //   expect( view ).toBeAccessible();
-  // } );
+  test( "should not have accessibility errors", async ( ) => {
+    const view = wrapInQueryClientContainer(
+      <ProjectDetailsContainer />
+    );
+    // Disabled during the update to RN 0.78
+    expect( view ).toBeTruthy();
+    // expect( view ).toBeAccessible();
+  } );
 
   test( "displays project details", ( ) => {
     renderComponent( <ProjectDetailsContainer /> );
