@@ -6,12 +6,18 @@ import { Platform, Share } from "react-native";
 import { renderComponent } from "tests/helpers/render";
 
 jest.mock( "react-native/Libraries/Share/Share", () => ( {
-  share: jest.fn( () => Promise.resolve( "mockResolve" ) )
+  __esModule: true,
+  default: {
+    share: jest.fn( () => Promise.resolve( "mockResolve" ) )
+  }
 } ) );
 
-jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
-  OS: "ios",
-  select: jest.fn( )
+jest.mock( "react-native/Libraries/Utilities/Platform", () => ( {
+  __esModule: true,
+  default: {
+    OS: "ios",
+    select: jest.fn()
+  }
 } ) );
 
 const observationId = 1234;
