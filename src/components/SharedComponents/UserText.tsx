@@ -8,7 +8,9 @@ import { isEqual, trim } from "lodash";
 import MarkdownIt from "markdown-it";
 import * as React from "react";
 import { Linking, useWindowDimensions } from "react-native";
-import HTML, { defaultSystemFonts, RenderersProps } from "react-native-render-html";
+import HTML, {
+  defaultSystemFonts, MixedStyleDeclaration, RenderersProps, TRenderEngineConfig
+} from "react-native-render-html";
 import WebView from "react-native-webview";
 import sanitizeHtml, { IOptions } from "sanitize-html";
 import colors from "styles/tailwindColors";
@@ -104,7 +106,7 @@ const UserText = ( {
   const navigation = useNavigation( );
 
   // Allow stringified children to serve as text if no prop provided
-  const text = textProp || children.toString( );
+  const text = textProp || children?.toString( ) || "";
   const { width } = useWindowDimensions( );
   let html = trim( text );
 
@@ -128,13 +130,19 @@ const UserText = ( {
   // <code>
 
   html = linkifyHtml( html, LINKIFY_OPTIONS );
-  const baseStyle = {
+  const baseStyle: MixedStyleDeclaration = {
     fontFamily: fontRegular,
     fontSize: 16,
     lineHeight: 22,
     color: colors.darkGray,
     ...htmlStyle,
     width: "100%"
+  };
+  const tagsStyles: TRenderEngineConfig["tagsStyles"] = {
+    a: {
+      textDecorationLine: "underline",
+      color: colors.inatGreen
+    }
   };
   const fonts = [fontRegular, ...defaultSystemFonts];
 
@@ -160,6 +168,7 @@ const UserText = ( {
   return (
     <HTML
       baseStyle={baseStyle}
+      tagsStyles={tagsStyles}
       contentWidth={width}
       source={{ html }}
       WebView={WebView}
