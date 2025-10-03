@@ -1,20 +1,23 @@
-// @flow
-
 import classnames from "classnames";
 import { ActivityIndicator, OfflineNotice } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useState } from "react";
+import type { ImageStyle, StyleProp } from "react-native";
 import Photo from "realmModels/Photo";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
-  photo: Object,
-  onPress: Function,
-  style?: Object
+  photo: {
+    id: number,
+    url: string,
+    localFilePath: string,
+    attribution: string
+  },
+  onPress: () => void,
+  style?: StyleProp<ImageStyle>
 }
 
-const PhotoContainer = ( { photo, onPress, style }: Props ): Node => {
+const PhotoContainer = ( { photo, onPress, style }: Props ) => {
   const { t } = useTranslation( );
   const [loadSuccess, setLoadSuccess] = useState( null );
 
