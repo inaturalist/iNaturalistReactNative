@@ -67,11 +67,6 @@ const PhotoContainer = ( { photo, onPress, style }: Props ) => {
       onError={( ) => {
         setLoadSuccess( false );
       }}
-      onLoadEnd={( ) => {
-        if ( loadSuccess !== true ) {
-          setLoadSuccess( false );
-        }
-      }}
     />
   );
 
