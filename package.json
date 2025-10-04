@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "@bam.tech/react-native-image-resizer": "^3.0.11",
-    "@candlefinance/faster-image": "^1.4.3",
+    "@candlefinance/faster-image": "^1.7.2",
     "@formidable-webview/webshell": "^2.6.0",
     "@gorhom/bottom-sheet": "^5.2.6",
     "@invertase/react-native-apple-authentication": "^2.4.0",
