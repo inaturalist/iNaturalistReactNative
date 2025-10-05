@@ -10,9 +10,9 @@ PODS:
     - React-Core
   - DoubleConversion (1.1.6)
   - fast_float (6.1.4)
-  - FasterImage (1.4.3):
-    - FasterImage/Nuke (= 1.4.3)
-    - FasterImage/NukeUI (= 1.4.3)
+  - FasterImage (1.7.2):
+    - FasterImage/Nuke (= 1.7.2)
+    - FasterImage/NukeUI (= 1.7.2)
     - RCT-Folly
     - RCTRequired
     - RCTTypeSafety
@@ -20,7 +20,7 @@ PODS:
     - React-Core
     - React-RCTFabric
     - ReactCommon/turbomodule/core
-  - FasterImage/Nuke (1.4.3):
+  - FasterImage/Nuke (1.7.2):
     - RCT-Folly
     - RCTRequired
     - RCTTypeSafety
@@ -28,7 +28,7 @@ PODS:
     - React-Core
     - React-RCTFabric
     - ReactCommon/turbomodule/core
-  - FasterImage/NukeUI (1.4.3):
+  - FasterImage/NukeUI (1.7.2):
     - RCT-Folly
     - RCTRequired
     - RCTTypeSafety
@@ -2891,7 +2891,7 @@ SPEC CHECKSUMS:
   BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6
-  FasterImage: b93c7e32d4d8bf9323429351f1915be9c07c4533
+  FasterImage: 0543472141d8f64716efdeb3bb886a6fe814f3b9
   FBLazyVector: d2a9cd223302b6c9aa4aa34c1a775e9db609eb52
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
