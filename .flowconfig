@@ -91,9 +91,36 @@ node_modules/react-native/Libraries/polyfills/.*
 .*/node_modules/react-native/Libraries/Components/LayoutConformance/LayoutConformance.js
 .*/node_modules/react-native/src/private/specs/modules/NativeFantom.js
 .*/node_modules/react-native/src/private/webapis/dom/nodes/ReactNativeElement.js
+.*/node_modules/metro-symbolicate/src/Symbolication.js.flow
+.*/node_modules/metro/src/lib/isResolvedDependency.js.flow
+.*/node_modules/react-native/Libraries/ActionSheetIOS/ActionSheetIOS.js
+.*/node_modules/react-native/Libraries/Animated/Animated.js
+.*/node_modules/react-native/Libraries/Animated/AnimatedMock.js
+.*/node_modules/react-native/Libraries/Animated/useAnimatedProps.js
+.*/node_modules/react-native/Libraries/Blob/FileReader.js
+.*/node_modules/react-native/Libraries/Blob/FileReader_old.js
+.*/node_modules/react-native/Libraries/Components/ProgressBarAndroid/ProgressBarAndroid.js
+.*/node_modules/react-native/Libraries/Components/TextInput/RCTTextInputViewConfig.js
+.*/node_modules/react-native/Libraries/Components/TextInput/TextInputNativeCommands.js
+.*/node_modules/react-native/Libraries/Image/AssetRegistry.js
+.*/node_modules/react-native/Libraries/Interaction/TouchHistoryMath.js
+.*/node_modules/react-native/Libraries/LayoutAnimation/LayoutAnimation.js
+.*/node_modules/react-native/Libraries/Network/XMLHttpRequest.js
+.*/node_modules/react-native/Libraries/PermissionsAndroid/PermissionsAndroid.js
+.*/node_modules/react-native/Libraries/ReactNative/AppRegistry.js
+.*/node_modules/react-native/Libraries/ReactNative/I18nManager.js
+.*/node_modules/react-native/Libraries/Utilities/BackHandler.js.flow
+.*/node_modules/react-native/Libraries/WebSocket/WebSocket.js
+.*/node_modules/react-native/node_modules/@react-native/virtualized-lists/Lists/VirtualizedList.js
+.*/node_modules/react-native/src/private/animated/createAnimatedPropsMemoHook.js
+.*/node_modules/react-native/src/private/types/HostComponent.js
+.*/node_modules/react-native/src/private/webapis/dom/nodes/internals/NodeInternals.js
+.*/node_modules/react-native/src/private/webapis/dom/nodes/internals/ReactNativeDocumentElementInstanceHandle.js
+.*/node_modules/react-native/src/private/webapis/dom/nodes/internals/ReactNativeDocumentInstanceHandle.js
 
 [untyped]
 .*/node_modules/@react-native-community/cli/.*/.*
+.*/node_modules/react-native/index.js
 
 [include]
 

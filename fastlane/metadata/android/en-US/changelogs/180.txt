@@ -1,0 +1,5 @@
+NEW
+* Enable the React Native "New Architecture"
+
+FIXED
+* Show info icon and link in taxon search results when searching from explore filters modal
