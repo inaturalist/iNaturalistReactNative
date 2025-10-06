@@ -1,5 +1,5 @@
 import NetInfo from "@react-native-community/netinfo";
-import Geocoder from "react-native-geocoder-reborn";
+import Geocoder, { GeocodingObject } from "react-native-geocoder-reborn";
 
 // 2.5 seconds, half the time as online Suggestions
 // feel free to tweak this but it's here to make the camera feel speedier
@@ -8,7 +8,7 @@ const GEOCODER_TIMEOUT = 2500;
 const TIMEOUT_ERROR_MESSAGE = "Geocoder timeout";
 
 // lifted from SeekReactNative repo
-const setPlaceName = ( results: Array<object> ): string => {
+const setPlaceName = ( results: GeocodingObject[] ): string => {
   let placeName = "";
 
   const {
@@ -20,7 +20,7 @@ const setPlaceName = ( results: Array<object> ): string => {
   // this seems to be preferred formatting for iNat web
   // TODO: localize formatting
   // TODO: throttle requests on iOS so this doesn't error out in location picker
-  const appendName = name => ( placeName.length > 0
+  const appendName = ( name: string ) => ( placeName.length > 0
     ? `, ${name}`
     : name );
 
@@ -39,7 +39,7 @@ const setPlaceName = ( results: Array<object> ): string => {
   return placeName;
 };
 
-const fetchPlaceName = async ( lat: ?number, lng: ?number ): Promise<?string> => {
+const fetchPlaceName = async ( lat?: number, lng?: number ): Promise<string | null> => {
   if ( !lat || !lng ) { return null; }
   const { isConnected } = await NetInfo.fetch( );
   if ( !isConnected ) { return null; }
@@ -54,13 +54,15 @@ const fetchPlaceName = async ( lat: ?number, lng: ?number ): Promise<?string> =>
       timeoutPromise
     ] );
     if ( results.length === 0 || typeof results !== "object" ) { return null; }
-    return setPlaceName( results );
+    return setPlaceName( results as GeocodingObject[] );
   } catch ( geocoderError ) {
-    if ( geocoderError?.message === TIMEOUT_ERROR_MESSAGE ) {
+    if ( ( geocoderError as Error )?.message === TIMEOUT_ERROR_MESSAGE ) {
       console.warn( "Geocoder operation timed out" );
       return null;
     }
-    if ( !geocoderError?.message?.includes( "geocodePosition failed" ) ) throw geocoderError;
+    if ( !( geocoderError as Error )?.message?.includes( "geocodePosition failed" ) ) {
+      throw geocoderError;
+    }
     return null;
   }
 };
