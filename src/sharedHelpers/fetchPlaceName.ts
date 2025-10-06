@@ -1,5 +1,3 @@
-// @flow
-
 import NetInfo from "@react-native-community/netinfo";
 import Geocoder from "react-native-geocoder-reborn";
 
@@ -10,7 +8,7 @@ const GEOCODER_TIMEOUT = 2500;
 const TIMEOUT_ERROR_MESSAGE = "Geocoder timeout";
 
 // lifted from SeekReactNative repo
-const setPlaceName = ( results: Array<Object> ): string => {
+const setPlaceName = ( results: Array<object> ): string => {
   let placeName = "";
 
   const {
