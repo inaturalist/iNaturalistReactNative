@@ -19,7 +19,7 @@ interface Props {
 
 const PhotoContainer = ( { photo, onPress, style }: Props ) => {
   const { t } = useTranslation( );
-  const [loadSuccess, setLoadSuccess] = useState<boolean | null>(null);
+  const [loadSuccess, setLoadSuccess] = useState<boolean | null>( null );
 
   const imageSources = [];
   if ( photo.localFilePath ) {
