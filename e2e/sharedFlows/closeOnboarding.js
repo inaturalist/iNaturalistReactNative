@@ -7,9 +7,7 @@ import {
 const VISIBILITY_TIMEOUT = 10_000;
 
 export default async function closeOnboarding( ) {
-  const closeOnboardingButton = element(
-    by.label( "Close" ).withAncestor( by.id( "OnboardingCarousel" ) )
-  );
+  const closeOnboardingButton = element( by.label( "Close" ) );
   await waitFor( closeOnboardingButton ).toBeVisible( ).withTimeout( VISIBILITY_TIMEOUT );
   return closeOnboardingButton.tap( );
 }

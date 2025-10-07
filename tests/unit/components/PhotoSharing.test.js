@@ -2,7 +2,7 @@ import { CommonActions } from "@react-navigation/native";
 import { act, waitFor } from "@testing-library/react-native";
 import PhotoSharing from "components/PhotoSharing";
 import React from "react";
-import { Alert, Platform } from "react-native";
+import { Alert } from "react-native";
 import Observation from "realmModels/Observation";
 import { useLayoutPrefs } from "sharedHooks";
 import useStore from "stores/useStore";
@@ -69,14 +69,8 @@ const setupMocks = ( overrides = {} ) => {
   };
 };
 
-const mockIOSPhoto = {
-  mimeType: JPEG,
+const mockShare = {
   data: [{ data: "file://photo.jpg", mimeType: "image/jpeg" }]
-};
-
-const mockAndroidPhoto = {
-  mimeType: "image/jpeg",
-  data: "file://photo.jpg"
 };
 
 const expectNavigationReset = ( mockDispatch, screenName, lastScreen = "PhotoSharing" ) => {
@@ -99,18 +93,13 @@ describe( "PhotoSharing", ( ) => {
     jest.clearAllMocks( );
   } );
 
-  afterEach( ( ) => {
-    // test iOS as default, but test Android in a few specific tests
-    Platform.OS = "ios";
-  } );
-
   describe( "Share Single Photo", ( ) => {
     const singlePhotoData = {
-      ...mockIOSPhoto,
+      ...mockShare,
       extraData: { userInput: "Share photo with description" }
     };
 
-    it( "should handle single photo in default mode on iOS", async ( ) => {
+    it( "should handle single photo in default mode", async ( ) => {
       const mocks = setupMocks( );
       mockUseRoute.mockReturnValue( createMockRoute( singlePhotoData ) );
 
@@ -130,39 +119,9 @@ describe( "PhotoSharing", ( ) => {
       expectNavigationReset( mocks.dispatch, "Match" );
     } );
 
-    it( "should handle single photo in advanced mode on iOS", async ( ) => {
+    it( "should handle single photo in advanced mode", async ( ) => {
       const mocks = setupMocks( { isDefaultMode: false, screenAfterPhotoEvidence: "ObsEdit" } );
       mockUseRoute.mockReturnValue( createMockRoute( singlePhotoData ) );
-
-      renderComponent( <PhotoSharing /> );
-
-      await waitFor( ( ) => {
-        expectNavigationReset( mocks.dispatch, "ObsEdit" );
-      } );
-    } );
-
-    it( "should handle single photo in default mode on Android", async ( ) => {
-      Platform.OS = "android";
-      const mocks = setupMocks( );
-      mockUseRoute.mockReturnValue( createMockRoute( mockAndroidPhoto ) );
-
-      renderComponent( <PhotoSharing /> );
-
-      await waitFor( ( ) => {
-        expect( mocks.dispatch ).toHaveBeenCalled( );
-      } );
-
-      expect( mocks.resetObservationFlowSlice ).toHaveBeenCalled( );
-      expect( Observation.createObservationWithPhotos ).toHaveBeenCalledWith( [
-        { image: { uri: "file://photo.jpg" } }
-      ] );
-      expectNavigationReset( mocks.dispatch, "Match" );
-    } );
-
-    it( "should handle single photo in advanced mode on Android", async ( ) => {
-      Platform.OS = "android";
-      const mocks = setupMocks( { isDefaultMode: false, screenAfterPhotoEvidence: "ObsEdit" } );
-      mockUseRoute.mockReturnValue( createMockRoute( mockAndroidPhoto ) );
 
       renderComponent( <PhotoSharing /> );
 
@@ -193,7 +152,7 @@ describe( "PhotoSharing", ( ) => {
     it( "should handle photo with no description", async ( ) => {
       const mocks = setupMocks( );
 
-      mockUseRoute.mockReturnValue( createMockRoute( mockIOSPhoto ) );
+      mockUseRoute.mockReturnValue( createMockRoute( mockShare ) );
 
       renderComponent( <PhotoSharing /> );
 
@@ -235,35 +194,7 @@ describe( "PhotoSharing", ( ) => {
       expect( Observation.createObservationWithPhotos ).not.toHaveBeenCalled( );
     } );
 
-    it( "should navigate to GroupPhotos for multiple photos on Android", async ( ) => {
-      Platform.OS = "android";
-
-      const mocks = setupMocks( );
-      const androidMultiplePhotosData = {
-        mimeType: "image/jpeg",
-        data: ["file://photo1.jpg", "file://photo2.jpg"],
-        extraData: { userInput: "Multiple photos" }
-      };
-
-      mockUseRoute.mockReturnValue( createMockRoute( androidMultiplePhotosData ) );
-
-      renderComponent( <PhotoSharing /> );
-
-      await waitFor( ( ) => {
-        expect( mocks.setPhotoImporterState ).toHaveBeenCalledWith( {
-          photoLibraryUris: ["file://photo1.jpg", "file://photo2.jpg"],
-          groupedPhotos: [
-            { photos: [{ image: { uri: "file://photo1.jpg" } }] },
-            { photos: [{ image: { uri: "file://photo2.jpg" } }] }
-          ],
-          firstObservationDefaults: { description: "Multiple photos" }
-        } );
-      } );
-      expectNavigationReset( mocks.dispatch, "GroupPhotos" );
-      expect( Observation.createObservationWithPhotos ).not.toHaveBeenCalled( );
-    } );
-
-    it( "should filter out non-image files on iOS", async ( ) => {
+    it( "should filter out non-image files", async ( ) => {
       const mocks = setupMocks( );
       const mixedData = {
         ...multiplePhotosData,
@@ -290,7 +221,7 @@ describe( "PhotoSharing", ( ) => {
   describe( "Back navigation", ( ) => {
     it( "should handle expected behavior for blur/focus navigation", async ( ) => {
       const mocks = setupMocks( );
-      const testItem = mockIOSPhoto;
+      const testItem = mockShare;
       const testRoute = createMockRoute( testItem );
       let blurCallback;
       let focusCallback;
