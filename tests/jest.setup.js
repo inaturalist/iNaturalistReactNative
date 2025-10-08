@@ -10,7 +10,6 @@ import mockBottomSheet from "@gorhom/bottom-sheet/mock";
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock";
 import inatjs from "inaturalistjs";
 import fetchMock from "jest-fetch-mock";
-import mockBackHandler from "react-native/Libraries/Utilities/__mocks__/BackHandler";
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
 
@@ -55,10 +54,6 @@ jest.mock( "@gorhom/bottom-sheet", () => ( {
 jest.mock( "@react-native-community/netinfo", () => mockRNCNetInfo );
 jest.mock( "react-native-device-info", () => mockRNDeviceInfo );
 jest.mock( "react-native-safe-area-context", () => mockSafeAreaContext );
-jest.mock(
-  "react-native/Libraries/Utilities/BackHandler",
-  () => mockBackHandler
-);
 
 require( "react-native-reanimated" ).setUpTests();
 

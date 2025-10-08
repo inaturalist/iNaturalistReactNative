@@ -7,10 +7,13 @@ import i18next from "i18next";
 import React from "react";
 
 // Make sure the mock reports OS version 9
-jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
-  OS: "ios",
-  select: jest.fn( ),
-  Version: 9
+jest.mock( "react-native/Libraries/Utilities/Platform", () => ( {
+  __esModule: true,
+  default: {
+    OS: "ios",
+    select: jest.fn(),
+    Version: 9
+  }
 } ) );
 
 describe( "AddObsModal in iOS 9", ( ) => {

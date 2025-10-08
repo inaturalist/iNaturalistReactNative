@@ -5,9 +5,12 @@ import React from "react";
 
 // Make sure the mock is using a recent-ish version
 jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
-  OS: "ios",
-  select: jest.fn( ),
-  Version: 11
+  __esModule: true,
+  default: {
+    OS: "ios",
+    select: jest.fn( ),
+    Version: 11
+  }
 } ) );
 
 describe( "AddObsModal", ( ) => {
