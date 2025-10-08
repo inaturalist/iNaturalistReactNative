@@ -4,6 +4,7 @@ import {
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fetchUsers } from "api/users";
 import {
+  Body1,
   InfiniteScrollLoadingWheel,
   ViewWrapper
 } from "components/SharedComponents";
@@ -70,6 +71,12 @@ const FollowingList = ( ) => {
     />
   ), [isConnected] );
 
+  const renderEmptyComponent = useCallback( ( ) => (
+    <View className="self-center mt-5 p-4">
+      <Body1 className="align-center text-center">{t( "This-user-is-not-following-anyone" )}</Body1>
+    </View>
+  ), [t] );
+
   if ( !following ) {
     return null;
   }
@@ -82,6 +89,7 @@ const FollowingList = ( ) => {
         // TODO: need API v2 to support pagination for infinite scroll
         // onEndReached={fetchNextPage}
         ListFooterComponent={renderFooter}
+        ListEmptyComponent={renderEmptyComponent}
       />
     </ViewWrapper>
   );
