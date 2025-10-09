@@ -44,6 +44,8 @@ setup_permissions(
 )
 
 use_frameworks! linkage: :static
+# // Required for react-native-firebase: https://rnfirebase.io/#configure-firebase-with-ios-credentials-react-native--077
+$RNFirebaseAsStaticFramework = true
 
 target "iNaturalistReactNative" do
   config = use_native_modules!
