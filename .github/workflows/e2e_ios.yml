@@ -12,7 +12,7 @@ concurrency:
 jobs:
   checksecret:
     name: check for oauth client
-    runs-on: macos-13-large # from https://github.com/actions/runner-images | Paid!(?)
+    runs-on: macos-13 # from https://github.com/actions/runner-images | Paid!(?)
     outputs:
       is_SECRETS_PRESENT_set: ${{ steps.checksecret_job.outputs.is_SECRETS_PRESENT_set }}
     steps:
@@ -27,7 +27,7 @@ jobs:
   test:
     needs: checksecret
     if: needs.checksecret.outputs.is_SECRETS_PRESENT_set == 'true'
-    runs-on: macos-13-large # from https://github.com/actions/runner-images | Paid!(?)
+    runs-on: macos-13 # from https://github.com/actions/runner-images | Paid!(?)
     # Kill the task if not finished after 120 minutes
     timeout-minutes: 120
 
@@ -142,7 +142,7 @@ jobs:
     name: Notify Slack
     needs: test
     if: ${{ success() || failure() }}
-    runs-on: macos-13-large # from https://github.com/actions/runner-images | Paid!(?)
+    runs-on: macos-13 # from https://github.com/actions/runner-images | Paid!(?)
     steps:
       - uses: iRoachie/slack-github-actions@v2.3.0
         if: env.SLACK_WEBHOOK_URL != null
