@@ -71,6 +71,7 @@ yarn-error.log
 # Secrets file
 .env*
 ios/GoogleService-Info.staging.plist
+ios/GoogleService-Info.production.plist
 ios/GoogleService-Info.plist
 
 # Fastlane files
