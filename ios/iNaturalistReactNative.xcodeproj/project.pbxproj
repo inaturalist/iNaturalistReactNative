@@ -28,6 +28,7 @@
 		8F1AC6772BC1B610002F994B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8F1AC6762BC1B610002F994B /* PrivacyInfo.xcprivacy */; };
 		8F1AC6792BC1B610002F994B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8F1AC6762BC1B610002F994B /* PrivacyInfo.xcprivacy */; };
 		8F346E4A2CF6912700CED7B4 /* geomodel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 8F346E492CF6912700CED7B4 /* geomodel.mlmodel */; };
+		8FE171A22E97F0780003E759 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8FE171A12E97F0780003E759 /* GoogleService-Info.plist */; };
 		A5C00A8934ED4A48A1495179 /* INatIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0972395C34134C71A54A2A5D /* INatIcon.ttf */; };
 		AE4DC81B3A87484CB3FD6750 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B0AEEF6CA584BCF9880EB35 /* Lato-Regular.ttf */; };
 		E5DFC1C6FBFA45739CE91C69 /* Lato-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 69DF855D92EA4ADFB73B47F1 /* Lato-MediumItalic.ttf */; };
@@ -92,6 +93,7 @@
 		8C2D97D72EED451C887998A8 /* Lato-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-BoldItalic.ttf"; path = "../assets/fonts/Lato-BoldItalic.ttf"; sourceTree = "<group>"; };
 		8F1AC6762BC1B610002F994B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		8F346E492CF6912700CED7B4 /* geomodel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = geomodel.mlmodel; sourceTree = "<group>"; };
+		8FE171A12E97F0780003E759 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F15C1390617A309CE0A194B2 /* Pods_iNaturalistReactNative_ShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iNaturalistReactNative_ShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -119,6 +121,7 @@
 		13B07FAE1A68108700A75B9A /* iNaturalistReactNative */ = {
 			isa = PBXGroup;
 			children = (
+				8FE171A12E97F0780003E759 /* GoogleService-Info.plist */,
 				8F346E492CF6912700CED7B4 /* geomodel.mlmodel */,
 				19916F1F2B4F1871000A2D91 /* iNaturalistReactNativeRelease.entitlements */,
 				1956B4902A7C3C1E00BBBDE4 /* link-inat-model-files.sh */,
@@ -320,6 +323,7 @@
 				8F1AC6772BC1B610002F994B /* PrivacyInfo.xcprivacy in Resources */,
 				725BA058C5384A9185E8036A /* Lato-Bold.ttf in Resources */,
 				191A91152CD1916800ECC774 /* InfoPlist.xcstrings in Resources */,
+				8FE171A22E97F0780003E759 /* GoogleService-Info.plist in Resources */,
 				54EB1EFEC1F74152902EED02 /* Lato-BoldItalic.ttf in Resources */,
 				3DE2C0F71E184822B561A1ED /* Lato-Italic.ttf in Resources */,
 				085DD3205807404CAFC32228 /* Lato-Medium.ttf in Resources */,
