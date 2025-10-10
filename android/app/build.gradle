@@ -1,8 +1,7 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
-
-
+apply plugin: "com.google.gms.google-services"
 
 // set up different .env files so fastlane will automatically build using .env
 // and dev builds will use .env.staging
