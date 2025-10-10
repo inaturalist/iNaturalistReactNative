@@ -73,6 +73,7 @@ yarn-error.log
 ios/GoogleService-Info.staging.plist
 ios/GoogleService-Info.production.plist
 ios/GoogleService-Info.plist
+android/**/google-services.json
 
 # Fastlane files
 *.zip
