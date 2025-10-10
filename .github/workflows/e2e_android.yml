@@ -73,6 +73,12 @@ jobs:
       if: steps.cache.outputs.cache-hit != 'true'
       run: npm install
 
+      # We need these files to be present but we don't need any actul secrets, i.e. talking to firebase, for the tests to pass
+    - name: Create google-services.json files from example
+      run: |
+        cp android/app/google-services.example.json android/app/src/debug/google-services.json
+        cp android/app/google-services.example.json android/app/src/release/google-services.json
+
     # Generate the secret files needed for a release build
     - name: Create .env file
       env:
