@@ -37,6 +37,9 @@ jobs:
       with:
         fetch-depth: 1
 
+    - name: List devices
+      run: xcrun simctl list devices
+
     - name: Install Node.js, NPM and Yarn
       uses: actions/setup-node@v4
       with:
