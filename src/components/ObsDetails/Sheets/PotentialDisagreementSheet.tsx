@@ -1,5 +1,3 @@
-// @flow
-
 import {
   Body1,
   DisplayTaxon,
@@ -7,16 +5,15 @@ import {
   RadioButtonSheet
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import { Trans } from "react-i18next";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
 interface Props {
-  onPressClose: Function,
-  onPotentialDisagreePressed: Function,
-  newTaxon: Object,
-  oldTaxon: Object
+  onPressClose: () => void,
+  onPotentialDisagreePressed: ( _checkedValue: string ) => void;
+  newTaxon: object,
+  oldTaxon: object
 }
 
 const PotentialDisagreementSheet = ( {
@@ -24,12 +21,13 @@ const PotentialDisagreementSheet = ( {
   onPotentialDisagreePressed,
   newTaxon,
   oldTaxon
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
 
-  const showTaxonName = ( taxon, fontComponent ) => (
+  const showTaxonName = ( reactKey: string, taxon: object, fontComponent: React.FC ) => (
     <DisplayTaxonName
+      key={reactKey}
       bottomTextComponent={fontComponent}
       layout="horizontal"
       prefersCommonNames={currentUser?.prefers_common_names}
@@ -47,7 +45,10 @@ const PotentialDisagreementSheet = ( {
       labelComponent: (
         <Trans
           i18nKey="Potential-disagreement-unsure"
-          components={[<Body1 />, showTaxonName( newTaxon, Body1 )]}
+          components={[
+            <Body1 key="0" />,
+            showTaxonName( "1", newTaxon, Body1 )
+          ]}
         />
       )
     },
@@ -56,7 +57,10 @@ const PotentialDisagreementSheet = ( {
       labelComponent: (
         <Trans
           i18nKey="Potential-disagreement-disagree"
-          components={[<Body1 />, showTaxonName( newTaxon, Body1 )]}
+          components={[
+            <Body1 key="0" />,
+            showTaxonName( "1", newTaxon, Body1 )
+          ]}
         />
       )
     }
@@ -65,7 +69,10 @@ const PotentialDisagreementSheet = ( {
   const topDescriptionText = (
     <Trans
       i18nKey="Potential-disagreement-description"
-      components={[<List2 />, showTaxonName( oldTaxon, List2 )]}
+      components={[
+        <List2 key="0" />,
+        showTaxonName( "1", oldTaxon, List2 )
+      ]}
     />
   );
 
