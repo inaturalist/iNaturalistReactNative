@@ -87,7 +87,7 @@ jobs:
         cd ios && pod install && cd ..
 
     # We need these files to be present but we don't need any actul secrets, i.e. talking to firebase, for the tests to pass
-    - name: Create GoogleService-Info.plists from example
+    - name: Create GoogleService-Info.plist files from example
       run: |
         cp ios/GoogleService-Info.example.plist ios/GoogleService-Info.staging.plist
         cp ios/GoogleService-Info.example.plist ios/GoogleService-Info.production.plist
