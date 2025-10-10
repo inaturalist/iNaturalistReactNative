@@ -27,9 +27,12 @@ afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
 jest.mock( "react-native/Libraries/AppState/AppState", () => ( {
-  addEventListener: jest.fn( ( event, callback ) => {
-    callback( "active" );
-  } )
+  __esModule: true,
+  default: {
+    addEventListener: jest.fn( ( event, callback ) => {
+      callback( "active" );
+    } )
+  }
 } ) );
 
 const mockObservations = [

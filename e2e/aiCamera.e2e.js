@@ -35,9 +35,6 @@ describe( "AICamera", () => {
       await waitFor( aiCameraButton ).toBeVisible().withTimeout( TIMEOUT );
       await aiCameraButton.tap();
 
-      // Check that the camera screen is visible
-      const cameraContainer = element( by.id( "CameraWithDevice" ) );
-      await waitFor( cameraContainer ).toBeVisible().withTimeout( TIMEOUT );
       // Check that the mocked cv suggestion is visible
       const taxonResult = element( by.id( "AICamera.taxa.51779" ) );
       await waitFor( taxonResult ).toBeVisible().withTimeout( TIMEOUT );

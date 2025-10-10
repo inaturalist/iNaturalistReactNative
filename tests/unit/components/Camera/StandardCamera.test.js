@@ -1,11 +1,11 @@
 import {
-  fireEvent, render, screen, waitFor
+  fireEvent, screen, waitFor
 } from "@testing-library/react-native";
 import StandardCamera from "components/Camera/StandardCamera/StandardCamera";
 import React from "react";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
-import { wrapInNavigationContainer } from "tests/helpers/render";
+import { renderComponent } from "tests/helpers/render";
 
 jest.mock( "components/MediaViewer/MediaViewerModal", ( ) => jest.fn( ( ) => null ) );
 
@@ -37,15 +37,13 @@ const mockObservation = factory( "RemoteObservation", {
   ]
 } );
 
-const renderCamera = ( ) => render(
-  wrapInNavigationContainer(
-    <StandardCamera
-      camera={{}}
-      device={{}}
-      setNewPhotoUris={jest.fn( )}
-      newPhotoUris={[]}
-    />
-  )
+const renderCamera = ( ) => renderComponent(
+  <StandardCamera
+    camera={{}}
+    device={{}}
+    setNewPhotoUris={jest.fn( )}
+    newPhotoUris={[]}
+  />
 );
 
 beforeAll( async () => {

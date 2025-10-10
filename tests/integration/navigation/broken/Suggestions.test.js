@@ -38,10 +38,13 @@ afterEach( () => {
   Animated.Value = OriginalValue;
 } );
 
-jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
-  OS: "ios",
-  select: jest.fn( ),
-  Version: 11
+jest.mock( "react-native/Libraries/Utilities/Platform", () => ( {
+  __esModule: true,
+  default: {
+    OS: "ios",
+    select: jest.fn(),
+    Version: 11
+  }
 } ) );
 
 const mockFetchUserLocation = jest.fn( () => ( { latitude: 56, longitude: 9, accuracy: 8 } ) );

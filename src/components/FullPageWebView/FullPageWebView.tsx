@@ -12,6 +12,7 @@ import React, { useEffect, useState } from "react";
 import { Linking } from "react-native";
 import { EventRegister } from "react-native-event-listeners";
 import WebView from "react-native-webview";
+import type { ShouldStartLoadRequest } from "react-native-webview/lib/WebViewTypes";
 import { log } from "sharedHelpers/logger";
 import { composeEmail } from "sharedHelpers/mail";
 import { useFontScale } from "sharedHooks";
@@ -71,13 +72,8 @@ type WebViewSource = {
   }
 }
 
-type WebViewRequest = {
-  url: string;
-  navigationType: "click" | "other"
-}
-
 export function onShouldStartLoadWithRequest(
-  request: WebViewRequest,
+  request: ShouldStartLoadRequest,
   source: WebViewSource,
   params: FullPageWebViewParams,
   setSource?: ( source: WebViewSource ) => void
@@ -141,6 +137,22 @@ export function onShouldStartLoadWithRequest(
   }
 
   if ( params.skipSetSourceInShouldStartLoadWithRequest || !setSource ) {
+    return true;
+  }
+
+  const isTopLevelNavigation = ( ) => {
+    if ( typeof request.isTopFrame === "boolean" ) {
+      return request.isTopFrame;
+    }
+
+    if ( request.mainDocumentURL ) {
+      return request.mainDocumentURL === request.url;
+    }
+
+    return true;
+  };
+
+  if ( !isTopLevelNavigation( ) ) {
     return true;
   }
 
@@ -223,7 +235,7 @@ const FullPageWebView = ( ) => {
             className="h-full w-full flex-1"
             source={source}
             onShouldStartLoadWithRequest={
-              ( request: WebViewRequest ) => onShouldStartLoadWithRequest(
+              request => onShouldStartLoadWithRequest(
                 request,
                 source,
                 params,

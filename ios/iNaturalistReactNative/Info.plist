@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.10</string>
+	<string>1.0.11</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -40,7 +40,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>179</string>
+	<string>180</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
@@ -65,8 +65,6 @@
 	<string>iNaturalist uses the camera to add photos to your observations of nature.</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>© iNaturalist</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Add GPS coordinates to observations, show your location on maps, and more.</string>
 	<key>NSMicrophoneUsageDescription</key>

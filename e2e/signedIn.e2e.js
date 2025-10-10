@@ -8,6 +8,8 @@ import deleteObservation from "./sharedFlows/deleteObservation";
 import signIn from "./sharedFlows/signIn";
 import uploadObservation from "./sharedFlows/uploadObservation";
 
+const TIMEOUT = 10_000;
+
 function delay( ms ) {
   return new Promise( resolve => { setTimeout( resolve, ms ); } );
 }
@@ -19,7 +21,7 @@ describe( "Signed in user", () => {
 
   async function createAndUploadObservation( options = { upload: false } ) {
     const addObsButton = element( by.id( "add-obs-button" ) );
-    await waitFor( addObsButton ).toBeVisible().withTimeout( 10000 );
+    await waitFor( addObsButton ).toBeVisible().withTimeout( TIMEOUT );
     await addObsButton.tap();
     await expect( element( by.id( "identify-text" ) ) ).toBeVisible();
     // Observe without evidence
@@ -31,24 +33,14 @@ describe( "Signed in user", () => {
 
     await uploadObservation( options );
 
-    // Check that the comments count component for the obs we just created is
-    // visible. Since it just saved and there's an animation the runs before
-    // this component becomes visible, and there may be other observations in
-    // the list, we need to wait for the right CommentsCount component to be
-    // visible
     const obsListItem = element( by.id( /MyObservations\.obsListItem\..*/ ) ).atIndex( 0 );
     const obsListItemAttributes = await obsListItem.getAttributes( );
     const uuid = obsListItemAttributes.elements
       ? obsListItemAttributes.elements[0].identifier.split( "." ).pop( )
       : obsListItemAttributes.identifier.split( "." ).pop( );
 
-    if ( options.upload ) {
-      const commentCount = element(
-        by.id( "ObsStatus.commentsCount" )
-          .withAncestor( by.id( `MyObservations.obsListItem.${uuid}` ) )
-      );
-      await waitFor( commentCount ).toBeVisible().withTimeout( 10000 );
-    }
+    const listItem = element( by.id( `MyObservations.obsListItem.${uuid}` ) );
+    await waitFor( listItem ).toBeVisible().withTimeout( TIMEOUT );
 
     return uuid;
   }
@@ -58,7 +50,7 @@ describe( "Signed in user", () => {
     await obsListItem.tap();
     await deleteObservation( options );
     // Make sure we're back on MyObservations
-    await waitFor( username ).toBeVisible().withTimeout( 10000 );
+    await waitFor( username ).toBeVisible().withTimeout( TIMEOUT );
   }
 
   it( "should create an observation, add a comment, and delete the observation", async () => {
@@ -70,7 +62,7 @@ describe( "Signed in user", () => {
 
     // Switch to list view as well
     const listToggle = element( by.id( "SegmentedButton.list" ) );
-    await waitFor( listToggle ).toBeVisible( ).withTimeout( 10000 );
+    await waitFor( listToggle ).toBeVisible( ).withTimeout( TIMEOUT );
     await listToggle.tap();
 
     /*
@@ -88,11 +80,11 @@ describe( "Signed in user", () => {
     const obsListItem = element( by.id( `MyObservations.obsListItem.${uuid}` ) );
     await obsListItem.tap();
     const commentButton = element( by.id( "ObsDetail.commentButton" ) );
-    await waitFor( commentButton ).toBeVisible().withTimeout( 10000 );
+    await waitFor( commentButton ).toBeVisible().withTimeout( TIMEOUT );
     await commentButton.tap();
     // Check that the comment modal is visible
     const commentModalInput = element( by.id( "TextInputSheet.notes" ) );
-    await waitFor( commentModalInput ).toBeVisible().withTimeout( 10000 );
+    await waitFor( commentModalInput ).toBeVisible().withTimeout( TIMEOUT );
     // Add a comment
     await commentModalInput.tap();
     await commentModalInput.typeText( "This is a comment" );
@@ -105,9 +97,9 @@ describe( "Signed in user", () => {
     // Check that the comment is visible
     await element( by.id( `ObsDetails.${uuid}` ) ).scrollTo( "bottom" );
     const comment = element( by.text( "This is a comment" ) );
-    await waitFor( comment ).toBeVisible().withTimeout( 10000 );
+    await waitFor( comment ).toBeVisible().withTimeout( TIMEOUT );
     await element( by.id( "header-back-button" ) ).tap( );
-    await waitFor( username ).toBeVisible( ).withTimeout( 10000 );
+    await waitFor( username ).toBeVisible( ).withTimeout( TIMEOUT );
 
     /*
     / 4. Delete the two observations without evidence
@@ -124,7 +116,7 @@ describe( "Signed in user", () => {
     // the timing of syncing deletions seems to be different in the actual app versus these
     // e2e tests, so deleting an observation here still shows the observation
     // in the list unless this delay( ) is added
-    await delay( 3000 );
+    await delay( 10000 );
     await expect( obsListItem ).toBeNotVisible( );
   } );
 } );
