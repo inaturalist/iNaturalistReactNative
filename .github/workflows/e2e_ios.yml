@@ -86,6 +86,12 @@ jobs:
         gem update cocoapods xcodeproj
         cd ios && pod install && cd ..
 
+    # We need these files to be present but we don't need any actul secrets, i.e. talking to firebase, for the tests to pass
+    - name: Create GoogleService-Info.plists from example
+      run: |
+        cp ios/GoogleService-Info.example.plist ios/GoogleService-Info.staging.plist
+        cp ios/GoogleService-Info.example.plist ios/GoogleService-Info.production.plist
+
     # Generate the secret files needed for a release build
     - name: Create .env file
       env:
