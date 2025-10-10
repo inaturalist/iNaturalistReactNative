@@ -1,18 +1,16 @@
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
+import { getAnalytics, logEvent } from "@react-native-firebase/analytics";
 import { NavigationContainer } from "@react-navigation/native";
-import React from "react";
+import React, { PropsWithChildren, useRef } from "react";
 import { Alert } from "react-native";
 import { useTranslation } from "sharedHooks";
 
 import { navigationRef } from "./navigationUtils";
 
-interface Props {
-  children: React.JSX.Element
-}
-
-const OfflineNavigationGuard = ( { children }: Props ) => {
+const OfflineNavigationGuard = ( { children }: PropsWithChildren ) => {
+  const routeNameRef = useRef( navigationRef.current?.getCurrentRoute()?.name );
   const { isConnected } = useNetInfo( );
   const { t } = useTranslation( );
 
@@ -20,8 +18,17 @@ const OfflineNavigationGuard = ( { children }: Props ) => {
   // offline, they'll see this no internet alert and automatically land
   // back on the screen they came from
   const onStateChange = ( ) => {
-    const currentRoute = navigationRef.current?.getCurrentRoute( );
-    if ( currentRoute?.name === "Login" && !isConnected ) {
+    const previousRouteName = routeNameRef.current;
+    const currentRouteName = navigationRef.current?.getCurrentRoute( )?.name;
+    if ( previousRouteName !== currentRouteName ) {
+      const analytics = getAnalytics();
+      // @ts-expect-error https://github.com/invertase/react-native-firebase/pull/8687
+      logEvent( analytics, "screen_view", {
+        screen_name: currentRouteName,
+        screen_class: currentRouteName
+      } );
+    }
+    if ( currentRouteName === "Login" && !isConnected ) {
       // return to previous screen if offline
       navigationRef.current?.goBack( );
       if ( !isConnected ) {
@@ -36,6 +43,9 @@ const OfflineNavigationGuard = ( { children }: Props ) => {
   return (
     <NavigationContainer
       ref={navigationRef}
+      onReady={() => {
+        routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
+      }}
       onStateChange={onStateChange}
     >
       {children}
