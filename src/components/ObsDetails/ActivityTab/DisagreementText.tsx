@@ -1,5 +1,5 @@
 import { Body4, DisplayTaxonName } from "components/SharedComponents";
-import React, { FC, useCallback } from "react";
+import React from "react";
 import { Trans } from "react-i18next";
 import { useCurrentUser } from "sharedHooks";
 
@@ -24,24 +24,6 @@ interface User {
 const DisagreementText = ( { taxon, username, withdrawn }: Props ) => {
   const currentUser = useCurrentUser( ) as User;
 
-  const showTaxonName = useCallback( ( fontComponent: FC ) => (
-    <DisplayTaxonName
-      layout="horizontal"
-      prefersCommonNames={currentUser?.prefers_common_names}
-      removeStyling
-      scientificNameFirst={currentUser?.prefers_scientific_name_first}
-      small
-      taxon={taxon}
-      topTextComponent={fontComponent}
-      withdrawn={withdrawn}
-    />
-  ), [
-    currentUser?.prefers_common_names,
-    currentUser?.prefers_scientific_name_first,
-    taxon,
-    withdrawn
-  ] );
-
   return (
     <Body4
       className={
@@ -54,7 +36,17 @@ const DisagreementText = ( { taxon, username, withdrawn }: Props ) => {
         i18nKey="Disagreement"
         values={{ username }}
         components={[
-          showTaxonName( Body4 )
+          <DisplayTaxonName
+            key="0"
+            layout="horizontal"
+            prefersCommonNames={currentUser?.prefers_common_names}
+            removeStyling
+            scientificNameFirst={currentUser?.prefers_scientific_name_first}
+            small
+            taxon={taxon}
+            topTextComponent={Body4}
+            withdrawn={withdrawn}
+          />
         ]}
       />
     </Body4>

@@ -149,8 +149,8 @@ const SignUpConfirmationForm = ( ) => {
               i18nKey="I-agree-to-the-Terms-of-Use"
               onPress={() => setChecked( !checked )}
               components={[
-                <Body2 className="text-white" />,
-                <Body2 className="text-white font-Lato-Italic" />
+                <Body2 key="0" className="text-white" />,
+                <Body2 key="1" className="text-white font-Lato-Italic" />
               ]}
             />
             <UnderlinedLink
