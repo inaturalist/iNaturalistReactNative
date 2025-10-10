@@ -142,6 +142,7 @@ jobs:
       uses: actions/download-artifact@v5
       with:
         name: detox_app
+        path: /Users/runner/work/iNaturalistReactNative/iNaturalistReactNative/ios/build/Build/Products/Release-iphonesimulator
 
 ###### DUPED v the following is duped and untouched from checkout => install mac deps, almost certainly can trim, but may not be worth itG
 
