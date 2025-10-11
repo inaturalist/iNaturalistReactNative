@@ -1,3 +1,6 @@
+// Fellow developers: This is the component that is rendered when the share extension is opened.
+// It uses a separate React instance and entry point that is registered in index.share.js
+// It is not set up to use anything from the main app, like nativewind or styled components.
 import React, { useEffect, useState } from "react";
 import {
   Pressable, StyleSheet, Text, View
