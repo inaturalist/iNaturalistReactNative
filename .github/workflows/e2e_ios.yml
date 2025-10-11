@@ -128,12 +128,14 @@ jobs:
       run: |
         echo $GITHUB_WORKSPACE
         ls -l $GITHUB_WORKSPACE
+        ls -l $GITHUB_WORKSPACE/ios/build/Build/Products/Release-iphonesimulator
+        ls -l $GITHUB_WORKSPACE/ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app
 
     - name: Upload iOS Detox app build
       uses: actions/upload-artifact@v4
       with:
         name: detox_app
-        path: /Users/runner/work/iNaturalistReactNative/iNaturalistReactNative/ios/build/Build/Products/Release-iphonesimulator
+        path: $GITHUB_WORKSPACE/ios/build/Build/Products/Release-iphonesimulator
 
 
   test:
@@ -143,15 +145,6 @@ jobs:
     timeout-minutes: 120
 
     steps:
-    - name: Download iOS Detox app build
-      uses: actions/download-artifact@v5
-      with:
-        name: detox_app
-        path: /Users/runner/work/iNaturalistReactNative/iNaturalistReactNative/ios/build/Build/Products/Release-iphonesimulator
-
-    - name: Debugging
-      run: |
-        ls -l /Users/runner/work/iNaturalistReactNative/iNaturalistReactNative/ios/build/Build/Products/Release-iphonesimulator
 
 ###### DUPED v the following is duped and untouched from checkout => install mac deps, almost certainly can trim, but may not be worth itG
 
@@ -159,6 +152,17 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 1
+
+    - name: Download iOS Detox app build
+      uses: actions/download-artifact@v5
+      with:
+        name: detox_app
+        path: $GITHUB_WORKSPACE/ios/build/Build/Products/Release-iphonesimulator
+
+    - name: Debugging
+      run: |
+        ls -l $GITHUB_WORKSPACE/ios/build/Build/Products/Release-iphonesimulator
+        ls -l $GITHUB_WORKSPACE/ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app
 
     - name: Install Node.js, NPM and Yarn
       uses: actions/setup-node@v4
