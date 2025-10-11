@@ -44,6 +44,10 @@ setup_permissions(
 )
 
 use_frameworks! linkage: :static
+# rubocop:disable Style/GlobalVars
+# Required for react-native-firebase: https://rnfirebase.io/#configure-firebase-with-ios-credentials-react-native--077
+$RNFirebaseAsStaticFramework = true
+# rubocop:enable Style/GlobalVars
 
 target "iNaturalistReactNative" do
   config = use_native_modules!

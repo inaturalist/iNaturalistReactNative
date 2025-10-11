@@ -27,3 +27,20 @@ if [ -f $SRCROOT/$IOS_GEOMODEL_FILE_NAME ]; then
   echo "Linking $IOS_GEOMODEL_FILE_NAME to geomodel.mlmodel..."
   ln -f $SRCROOT/$IOS_GEOMODEL_FILE_NAME $SRCROOT/geomodel.mlmodel
 fi
+
+# Also hard links the GoogleService-Info.plist file depending on the build configuration
+if [ $CONFIGURATION = "Debug" ]; then
+  if ! [ -f $SRCROOT/GoogleService-Info.staging.plist ]; then
+    echo "GoogleService-Info.staging.plist file does not exist at $SRCROOT/GoogleService-Info.staging.plist"
+    exit 1
+  fi
+  echo "Linking GoogleService-Info.staging.plist to GoogleService-Info.plist..."
+  ln -f $SRCROOT/GoogleService-Info.staging.plist $SRCROOT/GoogleService-Info.plist
+else
+  if ! [ -f $SRCROOT/GoogleService-Info.production.plist ]; then
+    echo "GoogleService-Info.production.plist file does not exist at $SRCROOT/GoogleService-Info.production.plist"
+    exit 1
+  fi
+  echo "Linking GoogleService-Info.production.plist to GoogleService-Info.plist..."
+  ln -f $SRCROOT/GoogleService-Info.production.plist $SRCROOT/GoogleService-Info.plist
+fi 

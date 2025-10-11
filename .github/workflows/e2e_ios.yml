@@ -36,6 +36,10 @@ jobs:
     timeout-minutes: 120
 
     steps:
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '^16.2'
+  
     - name: Check out Git repository
       uses: actions/checkout@v4
       with:
@@ -85,6 +89,12 @@ jobs:
       run: |
         gem update cocoapods xcodeproj
         cd ios && pod install && cd ..
+
+    # We need these files to be present but we don't need any actul secrets, i.e. talking to firebase, for the tests to pass
+    - name: Create GoogleService-Info.plist files from example
+      run: |
+        cp ios/GoogleService-Info.example.plist ios/GoogleService-Info.staging.plist
+        cp ios/GoogleService-Info.example.plist ios/GoogleService-Info.production.plist
 
     # Generate the secret files needed for a release build
     - name: Create .env file
