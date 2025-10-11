@@ -13,13 +13,39 @@
 			<key>NSExtensionActivationRule</key>
 			<dict>
 				<key>NSExtensionActivationSupportsImageWithMaxCount</key>
-				<integer>20</integer>
+				<integer>500</integer>
 			</dict>
 		</dict>
 		<key>NSExtensionMainStoryboard</key>
 		<string>MainInterface</string>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.share-services</string>
+	</dict>
+	<key>ReactShareViewBackgroundColor</key>
+	<dict>
+			<key>Red</key>
+			<integer>1</integer>
+			<key>Green</key>
+			<integer>1</integer>
+			<key>Blue</key>
+			<integer>1</integer>
+			<key>Alpha</key>
+			<integer>1</integer>
+			<key>Transparent</key>
+			<false/>
+	</dict>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+			<key>NSAllowsArbitraryLoads</key>
+			<true/>
+			<key>NSExceptionDomains</key>
+			<dict>
+					<key>localhost</key>
+					<dict>
+							<key>NSExceptionAllowsInsecureHTTPLoads</key>
+							<true/>
+					</dict>
+			</dict>
 	</dict>
 </dict>
 </plist>
