@@ -38,7 +38,7 @@ const ShareSheet = () => {
   return (
     <View style={container}>
       <Text style={text}>
-        {`Share ${sharedData.length} photos with iNaturalist`}
+        {`Share ${sharedData.length} photos with iNaturalist?`}
       </Text>
       <View style={buttonGroup}>
         <Button
