@@ -13,7 +13,7 @@
 			<key>NSExtensionActivationRule</key>
 			<dict>
 				<key>NSExtensionActivationSupportsImageWithMaxCount</key>
-				<integer>20</integer>
+				<integer>500</integer>
 			</dict>
 		</dict>
 		<key>NSExtensionMainStoryboard</key>
