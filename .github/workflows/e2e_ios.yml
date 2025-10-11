@@ -5,9 +5,9 @@ name: e2e-iOS
 on:
   workflow_dispatch:
   # pull_request:
-  # push:
-  #   branches:
-  #     - 'main'
+  push:
+    branches:
+      - 'MOB-942-split-e2e-build-and-run'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -124,11 +124,16 @@ jobs:
     - name: Build test app
       run: npm run e2e:build:ios
 
+    - name: Debugging
+      run: |
+        echo $GITHUB_WORKSPACE
+        ls -l $GITHUB_WORKSPACE
+
     - name: Upload iOS Detox app build
       uses: actions/upload-artifact@v4
       with:
         name: detox_app
-        path: /Users/runner/work/iNaturalistReactNative/iNaturalistReactNative/ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app
+        path: /Users/runner/work/iNaturalistReactNative/iNaturalistReactNative/ios/build/Build/Products/Release-iphonesimulator
 
 
   test:
@@ -143,6 +148,10 @@ jobs:
       with:
         name: detox_app
         path: /Users/runner/work/iNaturalistReactNative/iNaturalistReactNative/ios/build/Build/Products/Release-iphonesimulator
+
+    - name: Debugging
+      run: |
+        ls -l /Users/runner/work/iNaturalistReactNative/iNaturalistReactNative/ios/build/Build/Products/Release-iphonesimulator
 
 ###### DUPED v the following is duped and untouched from checkout => install mac deps, almost certainly can trim, but may not be worth itG
 
