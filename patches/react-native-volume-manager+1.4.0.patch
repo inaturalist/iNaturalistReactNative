@@ -1,0 +1,784 @@
+diff --git a/node_modules/react-native-volume-manager/android/build.gradle b/node_modules/react-native-volume-manager/android/build.gradle
+index a5cbedf..e0e2b86 100644
+--- a/node_modules/react-native-volume-manager/android/build.gradle
++++ b/node_modules/react-native-volume-manager/android/build.gradle
+@@ -28,7 +28,7 @@ def getExtOrIntegerDefault(name) {
+ android {
+   compileSdkVersion getExtOrIntegerDefault('compileSdkVersion')
+   defaultConfig {
+-    minSdkVersion 16
++    minSdkVersion rootProject.hasProperty('minSdkVersion') ? rootProject.minSdkVersion : 16
+     targetSdkVersion getExtOrIntegerDefault('targetSdkVersion')
+     versionCode 1
+     versionName "1.0"
+diff --git a/node_modules/react-native-volume-manager/android/build/.transforms/5dfbd17b089763e687d7813840f2ca6f/results.bin b/node_modules/react-native-volume-manager/android/build/.transforms/5dfbd17b089763e687d7813840f2ca6f/results.bin
+new file mode 100644
+index 0000000..0d259dd
+--- /dev/null
++++ b/node_modules/react-native-volume-manager/android/build/.transforms/5dfbd17b089763e687d7813840f2ca6f/results.bin
+@@ -0,0 +1 @@
++o/classes
+diff --git a/node_modules/react-native-volume-manager/android/build/.transforms/5dfbd17b089763e687d7813840f2ca6f/transformed/classes/classes_dex/classes.dex b/node_modules/react-native-volume-manager/android/build/.transforms/5dfbd17b089763e687d7813840f2ca6f/transformed/classes/classes_dex/classes.dex
+new file mode 100644
+index 0000000..9e7e5d1
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/.transforms/5dfbd17b089763e687d7813840f2ca6f/transformed/classes/classes_dex/classes.dex differ
+diff --git a/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/results.bin b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/results.bin
+new file mode 100644
+index 0000000..7ed749e
+--- /dev/null
++++ b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/results.bin
+@@ -0,0 +1 @@
++o/bundleLibRuntimeToDirDebug
+diff --git a/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/BuildConfig.dex b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/BuildConfig.dex
+new file mode 100644
+index 0000000..2318355
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/BuildConfig.dex differ
+diff --git a/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/MODE.dex b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/MODE.dex
+new file mode 100644
+index 0000000..c3748da
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/MODE.dex differ
+diff --git a/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/Utils$Companion.dex b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/Utils$Companion.dex
+new file mode 100644
+index 0000000..fe0e075
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/Utils$Companion.dex differ
+diff --git a/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/Utils.dex b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/Utils.dex
+new file mode 100644
+index 0000000..576ee84
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/Utils.dex differ
+diff --git a/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/VolumeManagerModule$VolumeBroadcastReceiver.dex b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/VolumeManagerModule$VolumeBroadcastReceiver.dex
+new file mode 100644
+index 0000000..21960dc
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/VolumeManagerModule$VolumeBroadcastReceiver.dex differ
+diff --git a/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/VolumeManagerModule.dex b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/VolumeManagerModule.dex
+new file mode 100644
+index 0000000..d2a6cd3
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/VolumeManagerModule.dex differ
+diff --git a/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/VolumeManagerPackage.dex b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/VolumeManagerPackage.dex
+new file mode 100644
+index 0000000..fbd3f70
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/VolumeManagerPackage.dex differ
+diff --git a/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/VolumeManagerSilentListenerModule$Companion.dex b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/VolumeManagerSilentListenerModule$Companion.dex
+new file mode 100644
+index 0000000..852e6e6
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/VolumeManagerSilentListenerModule$Companion.dex differ
+diff --git a/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/VolumeManagerSilentListenerModule$receiver$1.dex b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/VolumeManagerSilentListenerModule$receiver$1.dex
+new file mode 100644
+index 0000000..633f76c
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/VolumeManagerSilentListenerModule$receiver$1.dex differ
+diff --git a/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/VolumeManagerSilentListenerModule.dex b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/VolumeManagerSilentListenerModule.dex
+new file mode 100644
+index 0000000..15c69af
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/VolumeManagerSilentListenerModule.dex differ
+diff --git a/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/VolumeManagerSilentListenerStatus.dex b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/VolumeManagerSilentListenerStatus.dex
+new file mode 100644
+index 0000000..45b3640
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativevolumemanager/VolumeManagerSilentListenerStatus.dex differ
+diff --git a/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/desugar_graph.bin b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/desugar_graph.bin
+new file mode 100644
+index 0000000..6d9ef49
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/.transforms/6baaf442225b03a4e02dc7916ac8ed33/transformed/bundleLibRuntimeToDirDebug/desugar_graph.bin differ
+diff --git a/node_modules/react-native-volume-manager/android/build/.transforms/c788403646f1881b48f0cda7ebf29d64/results.bin b/node_modules/react-native-volume-manager/android/build/.transforms/c788403646f1881b48f0cda7ebf29d64/results.bin
+new file mode 100644
+index 0000000..0d259dd
+--- /dev/null
++++ b/node_modules/react-native-volume-manager/android/build/.transforms/c788403646f1881b48f0cda7ebf29d64/results.bin
+@@ -0,0 +1 @@
++o/classes
+diff --git a/node_modules/react-native-volume-manager/android/build/.transforms/c788403646f1881b48f0cda7ebf29d64/transformed/classes/classes_dex/classes.dex b/node_modules/react-native-volume-manager/android/build/.transforms/c788403646f1881b48f0cda7ebf29d64/transformed/classes/classes_dex/classes.dex
+new file mode 100644
+index 0000000..aff3ca4
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/.transforms/c788403646f1881b48f0cda7ebf29d64/transformed/classes/classes_dex/classes.dex differ
+diff --git a/node_modules/react-native-volume-manager/android/build/generated/source/buildConfig/debug/com/reactnativevolumemanager/BuildConfig.java b/node_modules/react-native-volume-manager/android/build/generated/source/buildConfig/debug/com/reactnativevolumemanager/BuildConfig.java
+new file mode 100644
+index 0000000..b0c82d1
+--- /dev/null
++++ b/node_modules/react-native-volume-manager/android/build/generated/source/buildConfig/debug/com/reactnativevolumemanager/BuildConfig.java
+@@ -0,0 +1,10 @@
++/**
++ * Automatically generated file. DO NOT MODIFY
++ */
++package com.reactnativevolumemanager;
++
++public final class BuildConfig {
++  public static final boolean DEBUG = Boolean.parseBoolean("true");
++  public static final String LIBRARY_PACKAGE_NAME = "com.reactnativevolumemanager";
++  public static final String BUILD_TYPE = "debug";
++}
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml b/node_modules/react-native-volume-manager/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml
+new file mode 100644
+index 0000000..1c46146
+--- /dev/null
++++ b/node_modules/react-native-volume-manager/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    package="com.reactnativevolumemanager" >
++
++    <uses-sdk android:minSdkVersion="16" />
++
++</manifest>
+\ No newline at end of file
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/output-metadata.json b/node_modules/react-native-volume-manager/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/output-metadata.json
+new file mode 100644
+index 0000000..e5ca690
+--- /dev/null
++++ b/node_modules/react-native-volume-manager/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/output-metadata.json
+@@ -0,0 +1,18 @@
++{
++  "version": 3,
++  "artifactType": {
++    "type": "AAPT_FRIENDLY_MERGED_MANIFESTS",
++    "kind": "Directory"
++  },
++  "applicationId": "com.reactnativevolumemanager",
++  "variantName": "debug",
++  "elements": [
++    {
++      "type": "SINGLE",
++      "filters": [],
++      "attributes": [],
++      "outputFile": "AndroidManifest.xml"
++    }
++  ],
++  "elementType": "File"
++}
+\ No newline at end of file
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/aar_main_jar/debug/syncDebugLibJars/classes.jar b/node_modules/react-native-volume-manager/android/build/intermediates/aar_main_jar/debug/syncDebugLibJars/classes.jar
+new file mode 100644
+index 0000000..76ac62a
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/intermediates/aar_main_jar/debug/syncDebugLibJars/classes.jar differ
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/aar_metadata/debug/writeDebugAarMetadata/aar-metadata.properties b/node_modules/react-native-volume-manager/android/build/intermediates/aar_metadata/debug/writeDebugAarMetadata/aar-metadata.properties
+new file mode 100644
+index 0000000..1211b1e
+--- /dev/null
++++ b/node_modules/react-native-volume-manager/android/build/intermediates/aar_metadata/debug/writeDebugAarMetadata/aar-metadata.properties
+@@ -0,0 +1,6 @@
++aarFormatVersion=1.0
++aarMetadataVersion=1.0
++minCompileSdk=1
++minCompileSdkExtension=0
++minAndroidGradlePluginVersion=1.0.0
++coreLibraryDesugaringEnabled=false
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json b/node_modules/react-native-volume-manager/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json
+new file mode 100644
+index 0000000..9e26dfe
+--- /dev/null
++++ b/node_modules/react-native-volume-manager/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json
+@@ -0,0 +1 @@
++{}
+\ No newline at end of file
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/annotations_typedef_file/debug/extractDebugAnnotations/typedefs.txt b/node_modules/react-native-volume-manager/android/build/intermediates/annotations_typedef_file/debug/extractDebugAnnotations/typedefs.txt
+new file mode 100644
+index 0000000..e69de29
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/compile_library_classes_jar/debug/bundleLibCompileToJarDebug/classes.jar b/node_modules/react-native-volume-manager/android/build/intermediates/compile_library_classes_jar/debug/bundleLibCompileToJarDebug/classes.jar
+new file mode 100644
+index 0000000..3a5b24f
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/intermediates/compile_library_classes_jar/debug/bundleLibCompileToJarDebug/classes.jar differ
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar b/node_modules/react-native-volume-manager/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar
+new file mode 100644
+index 0000000..79759b3
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar differ
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/compile_symbol_list/debug/generateDebugRFile/R.txt b/node_modules/react-native-volume-manager/android/build/intermediates/compile_symbol_list/debug/generateDebugRFile/R.txt
+new file mode 100644
+index 0000000..e69de29
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/incremental/debug-mergeJavaRes/merge-state b/node_modules/react-native-volume-manager/android/build/intermediates/incremental/debug-mergeJavaRes/merge-state
+new file mode 100644
+index 0000000..401967c
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/intermediates/incremental/debug-mergeJavaRes/merge-state differ
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties b/node_modules/react-native-volume-manager/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
+new file mode 100644
+index 0000000..61dd3ac
+--- /dev/null
++++ b/node_modules/react-native-volume-manager/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
+@@ -0,0 +1 @@
++#Sat Oct 11 14:33:43 CDT 2025
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml b/node_modules/react-native-volume-manager/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
+new file mode 100644
+index 0000000..77a1a67
+--- /dev/null
++++ b/node_modules/react-native-volume-manager/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ryan/git/iNatRN/node_modules/react-native-volume-manager/android/src/main/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ryan/git/iNatRN/node_modules/react-native-volume-manager/android/src/main/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ryan/git/iNatRN/node_modules/react-native-volume-manager/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ryan/git/iNatRN/node_modules/react-native-volume-manager/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ryan/git/iNatRN/node_modules/react-native-volume-manager/android/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated" generated-set="generated$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ryan/git/iNatRN/node_modules/react-native-volume-manager/android/build/generated/res/resValues/debug"/></dataSet><mergedItems/></merger>
+\ No newline at end of file
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml b/node_modules/react-native-volume-manager/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
+new file mode 100644
+index 0000000..cd46c56
+--- /dev/null
++++ b/node_modules/react-native-volume-manager/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ryan/git/iNatRN/node_modules/react-native-volume-manager/android/src/main/jniLibs"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ryan/git/iNatRN/node_modules/react-native-volume-manager/android/src/debug/jniLibs"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/incremental/mergeDebugShaders/merger.xml b/node_modules/react-native-volume-manager/android/build/intermediates/incremental/mergeDebugShaders/merger.xml
+new file mode 100644
+index 0000000..3a99301
+--- /dev/null
++++ b/node_modules/react-native-volume-manager/android/build/intermediates/incremental/mergeDebugShaders/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ryan/git/iNatRN/node_modules/react-native-volume-manager/android/src/main/shaders"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ryan/git/iNatRN/node_modules/react-native-volume-manager/android/src/debug/shaders"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/incremental/packageDebugAssets/merger.xml b/node_modules/react-native-volume-manager/android/build/intermediates/incremental/packageDebugAssets/merger.xml
+new file mode 100644
+index 0000000..7849842
+--- /dev/null
++++ b/node_modules/react-native-volume-manager/android/build/intermediates/incremental/packageDebugAssets/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ryan/git/iNatRN/node_modules/react-native-volume-manager/android/src/main/assets"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ryan/git/iNatRN/node_modules/react-native-volume-manager/android/src/debug/assets"/></dataSet><dataSet config="generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/ryan/git/iNatRN/node_modules/react-native-volume-manager/android/build/intermediates/shader_assets/debug/compileDebugShaders/out"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/java_res/debug/processDebugJavaRes/out/META-INF/react-native-volume-manager_debug.kotlin_module b/node_modules/react-native-volume-manager/android/build/intermediates/java_res/debug/processDebugJavaRes/out/META-INF/react-native-volume-manager_debug.kotlin_module
+new file mode 100644
+index 0000000..c998a4c
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/intermediates/java_res/debug/processDebugJavaRes/out/META-INF/react-native-volume-manager_debug.kotlin_module differ
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativevolumemanager/BuildConfig.class b/node_modules/react-native-volume-manager/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativevolumemanager/BuildConfig.class
+new file mode 100644
+index 0000000..c430b54
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativevolumemanager/BuildConfig.class differ
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativevolumemanager/VolumeManagerModule$VolumeBroadcastReceiver.class b/node_modules/react-native-volume-manager/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativevolumemanager/VolumeManagerModule$VolumeBroadcastReceiver.class
+new file mode 100644
+index 0000000..d6531de
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativevolumemanager/VolumeManagerModule$VolumeBroadcastReceiver.class differ
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativevolumemanager/VolumeManagerModule.class b/node_modules/react-native-volume-manager/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativevolumemanager/VolumeManagerModule.class
+new file mode 100644
+index 0000000..8e0ad6c
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativevolumemanager/VolumeManagerModule.class differ
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativevolumemanager/VolumeManagerPackage.class b/node_modules/react-native-volume-manager/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativevolumemanager/VolumeManagerPackage.class
+new file mode 100644
+index 0000000..53d0d56
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativevolumemanager/VolumeManagerPackage.class differ
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/local_only_symbol_list/debug/parseDebugLocalResources/R-def.txt b/node_modules/react-native-volume-manager/android/build/intermediates/local_only_symbol_list/debug/parseDebugLocalResources/R-def.txt
+new file mode 100644
+index 0000000..78ac5b8
+--- /dev/null
++++ b/node_modules/react-native-volume-manager/android/build/intermediates/local_only_symbol_list/debug/parseDebugLocalResources/R-def.txt
+@@ -0,0 +1,2 @@
++R_DEF: Internal format may change without notice
++local
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/manifest_merge_blame_file/debug/processDebugManifest/manifest-merger-blame-debug-report.txt b/node_modules/react-native-volume-manager/android/build/intermediates/manifest_merge_blame_file/debug/processDebugManifest/manifest-merger-blame-debug-report.txt
+new file mode 100644
+index 0000000..3846dda
+--- /dev/null
++++ b/node_modules/react-native-volume-manager/android/build/intermediates/manifest_merge_blame_file/debug/processDebugManifest/manifest-merger-blame-debug-report.txt
+@@ -0,0 +1,7 @@
++1<?xml version="1.0" encoding="utf-8"?>
++2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++3    package="com.reactnativevolumemanager" >
++4
++5    <uses-sdk android:minSdkVersion="16" />
++6
++7</manifest>
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/merged_java_res/debug/mergeDebugJavaResource/feature-react-native-volume-manager.jar b/node_modules/react-native-volume-manager/android/build/intermediates/merged_java_res/debug/mergeDebugJavaResource/feature-react-native-volume-manager.jar
+new file mode 100644
+index 0000000..4f0620e
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/intermediates/merged_java_res/debug/mergeDebugJavaResource/feature-react-native-volume-manager.jar differ
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml b/node_modules/react-native-volume-manager/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml
+new file mode 100644
+index 0000000..1c46146
+--- /dev/null
++++ b/node_modules/react-native-volume-manager/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    package="com.reactnativevolumemanager" >
++
++    <uses-sdk android:minSdkVersion="16" />
++
++</manifest>
+\ No newline at end of file
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/navigation_json/debug/extractDeepLinksDebug/navigation.json b/node_modules/react-native-volume-manager/android/build/intermediates/navigation_json/debug/extractDeepLinksDebug/navigation.json
+new file mode 100644
+index 0000000..0637a08
+--- /dev/null
++++ b/node_modules/react-native-volume-manager/android/build/intermediates/navigation_json/debug/extractDeepLinksDebug/navigation.json
+@@ -0,0 +1 @@
++[]
+\ No newline at end of file
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/nested_resources_validation_report/debug/generateDebugResources/nestedResourcesValidationReport.txt b/node_modules/react-native-volume-manager/android/build/intermediates/nested_resources_validation_report/debug/generateDebugResources/nestedResourcesValidationReport.txt
+new file mode 100644
+index 0000000..08f4ebe
+--- /dev/null
++++ b/node_modules/react-native-volume-manager/android/build/intermediates/nested_resources_validation_report/debug/generateDebugResources/nestedResourcesValidationReport.txt
+@@ -0,0 +1 @@
++0 Warning/Error
+\ No newline at end of file
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/META-INF/react-native-volume-manager_debug.kotlin_module b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/META-INF/react-native-volume-manager_debug.kotlin_module
+new file mode 100644
+index 0000000..c998a4c
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/META-INF/react-native-volume-manager_debug.kotlin_module differ
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/BuildConfig.class b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/BuildConfig.class
+new file mode 100644
+index 0000000..c430b54
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/BuildConfig.class differ
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/MODE.class b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/MODE.class
+new file mode 100644
+index 0000000..2fd7940
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/MODE.class differ
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/Utils$Companion.class b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/Utils$Companion.class
+new file mode 100644
+index 0000000..f46be8c
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/Utils$Companion.class differ
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/Utils.class b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/Utils.class
+new file mode 100644
+index 0000000..0f190ff
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/Utils.class differ
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/VolumeManagerModule$VolumeBroadcastReceiver.class b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/VolumeManagerModule$VolumeBroadcastReceiver.class
+new file mode 100644
+index 0000000..d6531de
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/VolumeManagerModule$VolumeBroadcastReceiver.class differ
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/VolumeManagerModule.class b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/VolumeManagerModule.class
+new file mode 100644
+index 0000000..8e0ad6c
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/VolumeManagerModule.class differ
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/VolumeManagerPackage.class b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/VolumeManagerPackage.class
+new file mode 100644
+index 0000000..53d0d56
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/VolumeManagerPackage.class differ
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/VolumeManagerSilentListenerModule$Companion.class b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/VolumeManagerSilentListenerModule$Companion.class
+new file mode 100644
+index 0000000..48fcc42
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/VolumeManagerSilentListenerModule$Companion.class differ
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/VolumeManagerSilentListenerModule$receiver$1.class b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/VolumeManagerSilentListenerModule$receiver$1.class
+new file mode 100644
+index 0000000..f0ef611
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/VolumeManagerSilentListenerModule$receiver$1.class differ
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/VolumeManagerSilentListenerModule.class b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/VolumeManagerSilentListenerModule.class
+new file mode 100644
+index 0000000..76f83b9
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/VolumeManagerSilentListenerModule.class differ
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/VolumeManagerSilentListenerStatus.class b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/VolumeManagerSilentListenerStatus.class
+new file mode 100644
+index 0000000..dbe4b6e
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativevolumemanager/VolumeManagerSilentListenerStatus.class differ
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_jar/debug/bundleLibRuntimeToJarDebug/classes.jar b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_jar/debug/bundleLibRuntimeToJarDebug/classes.jar
+new file mode 100644
+index 0000000..3b0bc7d
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/intermediates/runtime_library_classes_jar/debug/bundleLibRuntimeToJarDebug/classes.jar differ
+diff --git a/node_modules/react-native-volume-manager/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt b/node_modules/react-native-volume-manager/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt
+new file mode 100644
+index 0000000..5054eb8
+--- /dev/null
++++ b/node_modules/react-native-volume-manager/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt
+@@ -0,0 +1 @@
++com.reactnativevolumemanager
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab
+new file mode 100644
+index 0000000..60383dd
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream
+new file mode 100644
+index 0000000..2b746cb
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream.len
+new file mode 100644
+index 0000000..d09e838
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.len
+new file mode 100644
+index 0000000..a9f80ae
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.values.at b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.values.at
+new file mode 100644
+index 0000000..75d603d
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.values.at differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i
+new file mode 100644
+index 0000000..f4e86c3
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab
+new file mode 100644
+index 0000000..ba6e2a5
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream
+new file mode 100644
+index 0000000..de4912a
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream.len
+new file mode 100644
+index 0000000..013ea45
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.len
+new file mode 100644
+index 0000000..9e27f73
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.values.at b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.values.at
+new file mode 100644
+index 0000000..d89ba7a
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.values.at differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i
+new file mode 100644
+index 0000000..a281861
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab
+new file mode 100644
+index 0000000..2b1212b
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream
+new file mode 100644
+index 0000000..de4912a
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream.len
+new file mode 100644
+index 0000000..013ea45
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.len
+new file mode 100644
+index 0000000..9e27f73
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.values.at b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.values.at
+new file mode 100644
+index 0000000..1e29daf
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.values.at differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i
+new file mode 100644
+index 0000000..a281861
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab
+new file mode 100644
+index 0000000..bdf584a
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.keystream b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.keystream
+new file mode 100644
+index 0000000..0dc94da
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.keystream differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.keystream.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.keystream.len
+new file mode 100644
+index 0000000..05301cb
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.keystream.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.len
+new file mode 100644
+index 0000000..2a17e6e
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.values.at b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.values.at
+new file mode 100644
+index 0000000..37d8ef3
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.values.at differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab_i b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab_i
+new file mode 100644
+index 0000000..9101ab0
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab_i differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab_i.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab_i.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab
+new file mode 100644
+index 0000000..0b1da46
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream
+new file mode 100644
+index 0000000..5240ffc
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream.len
+new file mode 100644
+index 0000000..e712346
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.len
+new file mode 100644
+index 0000000..817b326
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.values.at b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.values.at
+new file mode 100644
+index 0000000..3e9b054
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.values.at differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i
+new file mode 100644
+index 0000000..dccef5b
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab
+new file mode 100644
+index 0000000..9cff56f
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream
+new file mode 100644
+index 0000000..b7b609e
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream.len
+new file mode 100644
+index 0000000..c0fe830
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.len
+new file mode 100644
+index 0000000..817b326
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.values.at b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.values.at
+new file mode 100644
+index 0000000..ea9c658
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.values.at differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i
+new file mode 100644
+index 0000000..6953c8b
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab
+new file mode 100644
+index 0000000..f1ea0fd
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream
+new file mode 100644
+index 0000000..2b746cb
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream.len
+new file mode 100644
+index 0000000..d09e838
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.len
+new file mode 100644
+index 0000000..a9f80ae
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.values.at b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.values.at
+new file mode 100644
+index 0000000..8f1b942
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.values.at differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i
+new file mode 100644
+index 0000000..f4e86c3
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab
+new file mode 100644
+index 0000000..26803a3
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream
+new file mode 100644
+index 0000000..a224eab
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream.len
+new file mode 100644
+index 0000000..a8206a1
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.len
+new file mode 100644
+index 0000000..01bdaa1
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.values.at b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.values.at
+new file mode 100644
+index 0000000..8c4b573
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.values.at differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i
+new file mode 100644
+index 0000000..800c7b1
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab
+new file mode 100644
+index 0000000..faa3d65
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream
+new file mode 100644
+index 0000000..3dd4bd6
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream.len
+new file mode 100644
+index 0000000..7911e33
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.len
+new file mode 100644
+index 0000000..01bdaa1
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.values.at b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.values.at
+new file mode 100644
+index 0000000..6c433c7
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.values.at differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i
+new file mode 100644
+index 0000000..9aca26a
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/counters.tab b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/counters.tab
+new file mode 100644
+index 0000000..c393a51
+--- /dev/null
++++ b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/counters.tab
+@@ -0,0 +1,2 @@
++3
++0
+\ No newline at end of file
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab
+new file mode 100644
+index 0000000..a0b138b
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream
+new file mode 100644
+index 0000000..2b746cb
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream.len
+new file mode 100644
+index 0000000..d09e838
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.len
+new file mode 100644
+index 0000000..a9f80ae
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.values.at b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.values.at
+new file mode 100644
+index 0000000..9f383b5
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.values.at differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i
+new file mode 100644
+index 0000000..f4e86c3
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab
+new file mode 100644
+index 0000000..eefc86f
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream
+new file mode 100644
+index 0000000..636f34a
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream.len
+new file mode 100644
+index 0000000..29ce11c
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.len
+new file mode 100644
+index 0000000..a9f80ae
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.values.at b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.values.at
+new file mode 100644
+index 0000000..789e5a2
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.values.at differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i
+new file mode 100644
+index 0000000..e9905b3
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab
+new file mode 100644
+index 0000000..c466208
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream
+new file mode 100644
+index 0000000..81dc00f
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream.len
+new file mode 100644
+index 0000000..ceefd2b
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.len
+new file mode 100644
+index 0000000..524efa9
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.values.at b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.values.at
+new file mode 100644
+index 0000000..efbd0fd
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.values.at differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i
+new file mode 100644
+index 0000000..f8935ad
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i.len b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i.len differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/last-build.bin b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/last-build.bin
+new file mode 100644
+index 0000000..121f8f4
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/cacheable/last-build.bin differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/classpath-snapshot/shrunk-classpath-snapshot.bin b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/classpath-snapshot/shrunk-classpath-snapshot.bin
+new file mode 100644
+index 0000000..eb5fd29
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/classpath-snapshot/shrunk-classpath-snapshot.bin differ
+diff --git a/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/local-state/build-history.bin b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/local-state/build-history.bin
+new file mode 100644
+index 0000000..0e6e08b
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/kotlin/compileDebugKotlin/local-state/build-history.bin differ
+diff --git a/node_modules/react-native-volume-manager/android/build/outputs/aar/react-native-volume-manager-debug.aar b/node_modules/react-native-volume-manager/android/build/outputs/aar/react-native-volume-manager-debug.aar
+new file mode 100644
+index 0000000..4a4acfa
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/outputs/aar/react-native-volume-manager-debug.aar differ
+diff --git a/node_modules/react-native-volume-manager/android/build/outputs/logs/manifest-merger-debug-report.txt b/node_modules/react-native-volume-manager/android/build/outputs/logs/manifest-merger-debug-report.txt
+new file mode 100644
+index 0000000..3d43682
+--- /dev/null
++++ b/node_modules/react-native-volume-manager/android/build/outputs/logs/manifest-merger-debug-report.txt
+@@ -0,0 +1,17 @@
++-- Merging decision tree log ---
++manifest
++ADDED from /Users/ryan/git/iNatRN/node_modules/react-native-volume-manager/android/src/main/AndroidManifest.xml:1:1-4:12
++INJECTED from /Users/ryan/git/iNatRN/node_modules/react-native-volume-manager/android/src/main/AndroidManifest.xml:1:1-4:12
++	package
++		ADDED from /Users/ryan/git/iNatRN/node_modules/react-native-volume-manager/android/src/main/AndroidManifest.xml:2:11-49
++		INJECTED from /Users/ryan/git/iNatRN/node_modules/react-native-volume-manager/android/src/main/AndroidManifest.xml
++	xmlns:android
++		ADDED from /Users/ryan/git/iNatRN/node_modules/react-native-volume-manager/android/src/main/AndroidManifest.xml:1:11-69
++uses-sdk
++INJECTED from /Users/ryan/git/iNatRN/node_modules/react-native-volume-manager/android/src/main/AndroidManifest.xml reason: use-sdk injection requested
++INJECTED from /Users/ryan/git/iNatRN/node_modules/react-native-volume-manager/android/src/main/AndroidManifest.xml
++INJECTED from /Users/ryan/git/iNatRN/node_modules/react-native-volume-manager/android/src/main/AndroidManifest.xml
++	android:targetSdkVersion
++		INJECTED from /Users/ryan/git/iNatRN/node_modules/react-native-volume-manager/android/src/main/AndroidManifest.xml
++	android:minSdkVersion
++		INJECTED from /Users/ryan/git/iNatRN/node_modules/react-native-volume-manager/android/src/main/AndroidManifest.xml
+diff --git a/node_modules/react-native-volume-manager/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin b/node_modules/react-native-volume-manager/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin
+new file mode 100644
+index 0000000..15b5644
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin differ
+diff --git a/node_modules/react-native-volume-manager/android/build/tmp/kotlin-classes/debug/META-INF/react-native-volume-manager_debug.kotlin_module b/node_modules/react-native-volume-manager/android/build/tmp/kotlin-classes/debug/META-INF/react-native-volume-manager_debug.kotlin_module
+new file mode 100644
+index 0000000..c998a4c
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/tmp/kotlin-classes/debug/META-INF/react-native-volume-manager_debug.kotlin_module differ
+diff --git a/node_modules/react-native-volume-manager/android/build/tmp/kotlin-classes/debug/com/reactnativevolumemanager/MODE.class b/node_modules/react-native-volume-manager/android/build/tmp/kotlin-classes/debug/com/reactnativevolumemanager/MODE.class
+new file mode 100644
+index 0000000..2fd7940
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/tmp/kotlin-classes/debug/com/reactnativevolumemanager/MODE.class differ
+diff --git a/node_modules/react-native-volume-manager/android/build/tmp/kotlin-classes/debug/com/reactnativevolumemanager/Utils$Companion.class b/node_modules/react-native-volume-manager/android/build/tmp/kotlin-classes/debug/com/reactnativevolumemanager/Utils$Companion.class
+new file mode 100644
+index 0000000..f46be8c
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/tmp/kotlin-classes/debug/com/reactnativevolumemanager/Utils$Companion.class differ
+diff --git a/node_modules/react-native-volume-manager/android/build/tmp/kotlin-classes/debug/com/reactnativevolumemanager/Utils.class b/node_modules/react-native-volume-manager/android/build/tmp/kotlin-classes/debug/com/reactnativevolumemanager/Utils.class
+new file mode 100644
+index 0000000..0f190ff
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/tmp/kotlin-classes/debug/com/reactnativevolumemanager/Utils.class differ
+diff --git a/node_modules/react-native-volume-manager/android/build/tmp/kotlin-classes/debug/com/reactnativevolumemanager/VolumeManagerSilentListenerModule$Companion.class b/node_modules/react-native-volume-manager/android/build/tmp/kotlin-classes/debug/com/reactnativevolumemanager/VolumeManagerSilentListenerModule$Companion.class
+new file mode 100644
+index 0000000..48fcc42
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/tmp/kotlin-classes/debug/com/reactnativevolumemanager/VolumeManagerSilentListenerModule$Companion.class differ
+diff --git a/node_modules/react-native-volume-manager/android/build/tmp/kotlin-classes/debug/com/reactnativevolumemanager/VolumeManagerSilentListenerModule$receiver$1.class b/node_modules/react-native-volume-manager/android/build/tmp/kotlin-classes/debug/com/reactnativevolumemanager/VolumeManagerSilentListenerModule$receiver$1.class
+new file mode 100644
+index 0000000..f0ef611
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/tmp/kotlin-classes/debug/com/reactnativevolumemanager/VolumeManagerSilentListenerModule$receiver$1.class differ
+diff --git a/node_modules/react-native-volume-manager/android/build/tmp/kotlin-classes/debug/com/reactnativevolumemanager/VolumeManagerSilentListenerModule.class b/node_modules/react-native-volume-manager/android/build/tmp/kotlin-classes/debug/com/reactnativevolumemanager/VolumeManagerSilentListenerModule.class
+new file mode 100644
+index 0000000..76f83b9
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/tmp/kotlin-classes/debug/com/reactnativevolumemanager/VolumeManagerSilentListenerModule.class differ
+diff --git a/node_modules/react-native-volume-manager/android/build/tmp/kotlin-classes/debug/com/reactnativevolumemanager/VolumeManagerSilentListenerStatus.class b/node_modules/react-native-volume-manager/android/build/tmp/kotlin-classes/debug/com/reactnativevolumemanager/VolumeManagerSilentListenerStatus.class
+new file mode 100644
+index 0000000..dbe4b6e
+Binary files /dev/null and b/node_modules/react-native-volume-manager/android/build/tmp/kotlin-classes/debug/com/reactnativevolumemanager/VolumeManagerSilentListenerStatus.class differ
