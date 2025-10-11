@@ -156,66 +156,8 @@ jobs:
       with:
         node-version: 22
 
-    - name: Setup Ruby version according to .ruby-version with cached gems
-      uses: ruby/setup-ruby@v1
-      with:
-        bundler-cache: true        
-
-    - name: Cache node modules
-      uses: actions/cache@v4
-      id: cache
-      with:
-        path: node_modules
-        key: node-modules-${{ hashFiles('**/package-lock.json') }}
-
-    - name: Rebuild detox from cache
-      if: steps.cache.outputs.cache-hit == 'true'
-      run: npx detox clean-framework-cache && npx detox build-framework-cache
-
-    # supposedly our current cache includes native modules like Realm
-    # that have compiled binaries specific to the environment where they were installed
-    # which might not be the same as the github actions environment
-    # so we need to rebuild them
-    - name: Rebuild native modules
-      if: steps.cache.outputs.cache-hit == 'true'
-      run: npm rebuild
-
-    - name: Install Dependencies
-      if: steps.cache.outputs.cache-hit != 'true'
-      run: npm install
-
-    - name: Cache Pods
-      uses: actions/cache@v4
-      id: podcache
-      with:
-        path: ios/Pods
-        key: pods-${{ hashFiles('**/Podfile.lock') }}
-
-    - name: Update Pods
-      run: |
-        gem update cocoapods xcodeproj
-        cd ios && pod install && cd ..
-
-    # Generate the secret files needed for a release build
-    - name: Create .env file
-      env:
-        OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
-        OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
-        E2E_TEST_USERNAME: ${{ secrets.E2E_TEST_USERNAME }}
-        E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
-        JWT_ANONYMOUS_API_SECRET: ${{ secrets.JWT_ANONYMOUS_API_SECRET }}
-      run: |
-        printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\nANDROID_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.tflite\nANDROID_TAXONOMY_FILE_NAME=taxonomy.csv\nANDROID_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.tflite\nIOS_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.mlmodel\nIOS_TAXONOMY_FILE_NAME=taxonomy.json\nIOS_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.mlmodel\nCV_MODEL_VERSION=small_2\n' \
-        "$JWT_ANONYMOUS_API_SECRET" \
-        "$OAUTH_CLIENT_ID" \
-        "$OAUTH_CLIENT_SECRET" \
-        "$E2E_TEST_USERNAME" \
-        "$E2E_TEST_PASSWORD" \
-        "$GMAPS_API_KEY" > .env
-
-    # Download all linked model files not included in the repository (otherwise build will error out), requires .env file
-    - name: Download the example cv model and taxonomy file into the ios folder
-      run: npm run add-example-model
+    - name: Install Detox
+      run: npm install detox@20.41.1
 
     # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
     # This will be available for all subsequent steps
