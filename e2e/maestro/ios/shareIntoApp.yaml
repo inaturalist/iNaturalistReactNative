@@ -1,18 +1,33 @@
 appId: org.inaturalist.iNaturalistMobile
 ---
+# Download sample image with exif and stable public link
+- launchApp:
+    appId: com.apple.mobilesafari
+- tapOn: Address
+- inputText: "https://raw.githubusercontent.com/ianare/exif-samples/refs/heads/master/jpg/Canon_40D.jpg"
+- pressKey: Enter
+- tapOn: Share
+- scrollUntilVisible:
+    element: Save Image
+- tapOn: Save Image
+
+# Open iOS Photos app and share into iNaturalist app
 - launchApp:
     appId: com.apple.mobileslideshow # iOS Photos app
-- tapOn: "Albums"
-- tapOn: "Recents"
-- tapOn: "Photo, 13. March 2011, 01:17"
-- tapOn: "Share"
-- tapOn: "iNaturalistReactNative"
-- extendedWaitUntil:
-    visible: "Post"
-    timeout: 10000
-- tapOn: "Post"
-- extendedWaitUntil:
-    visible: "New Observation"
-    timeout: 10000
-# Assert for timestamp which means EXIF parsing was correct
-- assertVisible: .*4:17:25.*
+
+# dismiss iOS Photos FTUE
+- runFlow:
+    when:
+      visible: Continue
+    commands:
+      - tapOn: Continue
+
+- tapOn: Select # we can _see_ our photo in the gallery, but can't target it w/o focusing "Select"
+- tapOn: Photo, May 30, 2008, 3:56 PM
+- tapOn: Share
+- tapOn: iNaturalist
+- tapOn: Post
+- scrollUntilVisible: # For clarify, center the "OBSERVED AT" header which should have the time right after
+    centerElement: true
+    element: OBSERVED AT
+- assertVisible: 5/30/08 8:56 PM CDT
