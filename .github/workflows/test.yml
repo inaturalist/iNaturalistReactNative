@@ -3,8 +3,9 @@
 ##
 name: Tests
 on:
-  pull_request:
-  push:
+  workflow_dispatch: 
+  # pull_request:
+  # push:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

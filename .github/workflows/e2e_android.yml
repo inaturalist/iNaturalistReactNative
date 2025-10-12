@@ -1,30 +1,17 @@
 name: e2e-Android
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - 'android-detox'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
     
 jobs:
-  checksecret:
-    name: check for oauth client
-    runs-on: macos-latest
-    outputs:
-      is_SECRETS_PRESENT_set: ${{ steps.checksecret_job.outputs.is_SECRETS_PRESENT_set }}
-    steps:
-      - name: Check whether unity activation requests should be done
-        id: checksecret_job
-        env:
-            SECRETS_PRESENT: ${{ secrets.OAUTH_CLIENT_SECRET }}
-        run: |
-            echo "is_SECRETS_PRESENT_set: ${{ env.SECRETS_PRESENT != '' }}"
-            echo "::set-output name=is_SECRETS_PRESENT_set::${{ env.SECRETS_PRESENT != '' }}"
-
   test:
-    needs: checksecret
-    if: needs.checksecret.outputs.is_SECRETS_PRESENT_set == 'true'
-    runs-on: macos-latest
+    runs-on: macos-14
     # Kill the task if not finished after 60 minutes
     timeout-minutes: 60
 
@@ -45,7 +32,7 @@ jobs:
     # I am assuming (but haven't tested) it uses 8 and then this step works
     - name: Download Android Emulator Image
       run: |
-        echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-31;default;x86_64"
+        echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-31;default;arm64-v8a"
         echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name Pixel_5_API_31_AOSP --device "Nexus 5X" -k 'system-images;android-31;default;x86_64'
         $ANDROID_HOME/emulator/emulator -list-avds
 
@@ -146,14 +133,14 @@ jobs:
         name: detox-artifacts
         path: artifacts
 
-  notify:
-    name: Notify Slack
-    needs: test
-    if: ${{ success() || failure() }}
-    runs-on: macos-latest
-    steps:
-      - uses: iRoachie/slack-github-actions@v2.3.0
-        if: env.SLACK_WEBHOOK_URL != null
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # notify:
+  #   name: Notify Slack
+  #   needs: test
+  #   if: ${{ success() || failure() }}
+  #   runs-on: macos-latest
+  #   steps:
+  #     - uses: iRoachie/slack-github-actions@v2.3.0
+  #       if: env.SLACK_WEBHOOK_URL != null
+  #       env:
+  #         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
