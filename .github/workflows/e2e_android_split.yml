@@ -107,6 +107,14 @@ jobs:
         name: test-apk
         path: android/app/build/outputs/apk/androidTest/release/org.inaturalist.iNaturalistMobile-release-androidTest.apk
 
+    # trying to keep things simple for the next step to avoid any red herrings from the repo itself
+    # we _at least_ need the detox config
+    - name: Upload detox config
+      uses: actions/upload-artifact@v4
+      with:
+        name: detox-config
+        path: .detoxrc.js
+
   test:
     needs: build
     # using intel image, android emu currently can't run on Apple Silicon
@@ -114,13 +122,15 @@ jobs:
     runs-on: macos-15-intel
 
     steps:
-    - name: Check out Git repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 1
+    # - name: Check out Git repository
+    #   uses: actions/checkout@v4
+    #   with:
+    #     fetch-depth: 1
 
-    - name: Install Dependencies
-      run: npm install
+    # - name: Install Dependencies
+    #   run: npm install
+
+
 
     - name: Debugging
       run: |
@@ -138,9 +148,18 @@ jobs:
         name: test-apk
         path: android/app/build/outputs/apk/androidTest/release/org.inaturalist.iNaturalistMobile-release-androidTest.apk
 
+    - name: Download detox config
+      uses: actions/download-artifact@v5
+      with:
+        name: detox-config
+        path: .detoxrc.js
+
     - name: Debugging
       run: |
         ls -Rl
+
+    - name: Install jest
+      run: npm install jest
 
     # Use the Android command line tools to download an AOSP emulator image, and setup new avd
     # x86_64 OR arm64-v8a <- intel vs M#
