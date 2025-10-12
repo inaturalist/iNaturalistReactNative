@@ -90,7 +90,6 @@ jobs:
     - name: Build for detox
       run: npm run e2e:build:android
 
-
     - name: Debugging
       run: |
         ls -l
@@ -130,6 +129,10 @@ jobs:
       with:
         name: test-apk
         path: android/app/build/outputs/apk/androidTest/release/org.inaturalist.iNaturalistMobile-release-androidTest.apk
+
+    - name: Debugging
+      run: |
+        ls -Rl
 
     # Use the Android command line tools to download an AOSP emulator image, and setup new avd
     # x86_64 OR arm64-v8a <- intel vs M#
