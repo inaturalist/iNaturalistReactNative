@@ -11,7 +11,7 @@ import "react-native-url-polyfill/auto";
 
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import {
-  useColorScheme, Alert, AppRegistry, View
+  useColorScheme, Alert, AppRegistry, View, LogBox
 } from "react-native";
 import { getCurrentRoute } from "navigation/navigationUtils";
 import { zustandStorage } from "stores/useStore";
@@ -41,6 +41,9 @@ import { log } from "./react-native-logs.config";
 import { getUserAgent } from "./src/api/userAgent";
 
 const logger = log.extend( "index.js" );
+
+// TODO: condition on env var
+LogBox.ignoreAllLogs();
 
 // Log all unhandled promise rejections in release builds. Otherwise they will
 // die in silence. Debug builds have a more useful UI w/ desymbolicated stack
