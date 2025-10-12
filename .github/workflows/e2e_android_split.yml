@@ -114,6 +114,14 @@ jobs:
     runs-on: macos-15-intel
 
     steps:
+    - name: Check out Git repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+
+    - name: Install Dependencies
+      run: npm install
+
     - name: Debugging
       run: |
         ls -l
