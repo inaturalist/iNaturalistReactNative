@@ -16,96 +16,85 @@ jobs:
     runs-on: macos-15-intel
 
     steps:
-    - name: Debugging
-      run: |
-        java --version
-        echo $JAVA_HOME
-        echo $GITHUB_WORKSPACE
-        ls -la $GITHUB_WORKSPACE
 
     - name: Check out Git repository
       uses: actions/checkout@v4
       with:
         fetch-depth: 1
 
-    - name: Debugging
-      run: |
-        echo $GITHUB_WORKSPACE
-        ls $GITHUB_WORKSPACE
-
-    - name: Cache node modules
-      uses: actions/cache@v4
-      id: cache
-      with:
-        path: node_modules
-        key: node-modules-${{ hashFiles('**/package-lock.json') }}
+    # - name: Cache node modules
+    #   uses: actions/cache@v4
+    #   id: cache
+    #   with:
+    #     path: node_modules
+    #     key: node-modules-${{ hashFiles('**/package-lock.json') }}
   
-    - name: Rebuild detox from cache
-      if: steps.cache.outputs.cache-hit == 'true'
-      # Currently, (Detox 20) those two commands are macOS only
-      run: npx detox clean-framework-cache && npx detox build-framework-cache
+    # - name: Rebuild detox from cache
+    #   if: steps.cache.outputs.cache-hit == 'true'
+    #   # Currently, (Detox 20) those two commands are macOS only
+    #   run: npx detox clean-framework-cache && npx detox build-framework-cache
 
-    # supposedly our current cache includes native modules like Realm
-    # that have compiled binaries specific to the environment where they were installed
-    # which might not be the same as the github actions environment
-    # so we need to rebuild them
-    - name: Rebuild native modules
-      if: steps.cache.outputs.cache-hit == 'true'
-      run: npm rebuild
+    # # supposedly our current cache includes native modules like Realm
+    # # that have compiled binaries specific to the environment where they were installed
+    # # which might not be the same as the github actions environment
+    # # so we need to rebuild them
+    # - name: Rebuild native modules
+    #   if: steps.cache.outputs.cache-hit == 'true'
+    #   run: npm rebuild
 
-    - name: Install Dependencies
-      if: steps.cache.outputs.cache-hit != 'true'
-      run: npm install
+    # - name: Install Dependencies
+    #   if: steps.cache.outputs.cache-hit != 'true'
+    #   run: npm install
 
-    # Generate the secret files needed for a release build
-    - name: Create .env file
-      env:
-        OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
-        OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
-        E2E_TEST_USERNAME: ${{ secrets.E2E_TEST_USERNAME }}
-        E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
-        JWT_ANONYMOUS_API_SECRET: ${{ secrets.JWT_ANONYMOUS_API_SECRET }}
-        GMAPS_API_KEY: ${{ secrets.GMAPS_API_KEY }}
-      run: printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\nANDROID_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.tflite\nANDROID_TAXONOMY_FILE_NAME=taxonomy.csv\nANDROID_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.tflite\nIOS_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.mlmodel\nIOS_TAXONOMY_FILE_NAME=taxonomy.json\nIOS_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.mlmodel\nCV_MODEL_VERSION=small_2\n' "$JWT_ANONYMOUS_API_SECRET" "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" "$E2E_TEST_USERNAME" "$E2E_TEST_PASSWORD" "$GMAPS_API_KEY" > .env
-    - name: Create keystore.properties file
-      env:
-        ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
-        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-        ANDROID_ALIAS: ${{ secrets.ANDROID_ALIAS }}
-      run: printf 'storePassword=%s\nkeyPassword=%s\nkeyAlias=%s\nstoreFile=release.keystore' "$ANDROID_KEY_STORE_PASSWORD" "$ANDROID_KEY_PASSWORD" "$ANDROID_ALIAS" > android/keystore.properties
-    - name: Generate release keystore
-      env:
-        ANDROID_ALIAS: ${{ secrets.ANDROID_ALIAS }}
-        ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
-        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-      run: |
-        keytool -genkeypair -v -noprompt -storetype PKCS12 -keystore release.keystore -alias "$ANDROID_ALIAS" -keyalg RSA -keysize 2048 -validity 10000 -storepass "$ANDROID_KEY_STORE_PASSWORD" -keypass "$ANDROID_KEY_PASSWORD" -dname "CN=mqttserver.ibm.com, OU=ID, O=IBM, L=Hursley, S=Hants, C=GB"
-    - name: Move keystore
-      run: mv release.keystore android/app/release.keystore
+    # # Generate the secret files needed for a release build
+    # - name: Create .env file
+    #   env:
+    #     OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
+    #     OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
+    #     E2E_TEST_USERNAME: ${{ secrets.E2E_TEST_USERNAME }}
+    #     E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
+    #     JWT_ANONYMOUS_API_SECRET: ${{ secrets.JWT_ANONYMOUS_API_SECRET }}
+    #     GMAPS_API_KEY: ${{ secrets.GMAPS_API_KEY }}
+    #   run: printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\nANDROID_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.tflite\nANDROID_TAXONOMY_FILE_NAME=taxonomy.csv\nANDROID_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.tflite\nIOS_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.mlmodel\nIOS_TAXONOMY_FILE_NAME=taxonomy.json\nIOS_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.mlmodel\nCV_MODEL_VERSION=small_2\n' "$JWT_ANONYMOUS_API_SECRET" "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" "$E2E_TEST_USERNAME" "$E2E_TEST_PASSWORD" "$GMAPS_API_KEY" > .env
+    # - name: Create keystore.properties file
+    #   env:
+    #     ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
+    #     ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+    #     ANDROID_ALIAS: ${{ secrets.ANDROID_ALIAS }}
+    #   run: printf 'storePassword=%s\nkeyPassword=%s\nkeyAlias=%s\nstoreFile=release.keystore' "$ANDROID_KEY_STORE_PASSWORD" "$ANDROID_KEY_PASSWORD" "$ANDROID_ALIAS" > android/keystore.properties
+    # - name: Generate release keystore
+    #   env:
+    #     ANDROID_ALIAS: ${{ secrets.ANDROID_ALIAS }}
+    #     ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
+    #     ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+    #   run: |
+    #     keytool -genkeypair -v -noprompt -storetype PKCS12 -keystore release.keystore -alias "$ANDROID_ALIAS" -keyalg RSA -keysize 2048 -validity 10000 -storepass "$ANDROID_KEY_STORE_PASSWORD" -keypass "$ANDROID_KEY_PASSWORD" -dname "CN=mqttserver.ibm.com, OU=ID, O=IBM, L=Hursley, S=Hants, C=GB"
+    # - name: Move keystore
+    #   run: mv release.keystore android/app/release.keystore
 
-    # Download the example model otherwise an error alert will be shown on app start, requires .env
-    - name: Download the small example cv and geomodel
-      run: npm run add-example-model -- -f=main
+    # # Download the example model otherwise an error alert will be shown on app start, requires .env
+    # - name: Download the small example cv and geomodel
+    #   run: npm run add-example-model -- -f=main
 
-    - name: Build for detox
-      run: npm run e2e:build:android
+    # - name: Build for detox
+    #   run: npm run e2e:build:android
 
-    - name: Debugging
-      run: |
-        ls -l
-        ls -Rl android/app/build/outputs
+    # - name: Debugging
+    #   run: |
+    #     ls -l
+    #     ls -Rl android/app/build/outputs
 
-    - name: Upload app apk
-      uses: actions/upload-artifact@v4
-      with:
-        name: app-apk
-        path: android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk
+    # - name: Upload app apk
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: app-apk
+    #     path: android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk
 
-    - name: Upload test apk
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-apk
-        path: android/app/build/outputs/apk/androidTest/release/org.inaturalist.iNaturalistMobile-release-androidTest.apk
+    # - name: Upload test apk
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: test-apk
+    #     path: android/app/build/outputs/apk/androidTest/release/org.inaturalist.iNaturalistMobile-release-androidTest.apk
 
     # trying to keep things simple for the next step to avoid any red herrings from the repo itself
     # we _at least_ need the detox config
@@ -135,19 +124,19 @@ jobs:
 
     - name: Debugging
       run: |
-        ls -l
+        ls -la
 
-    - name: Download app apk
-      uses: actions/download-artifact@v5
-      with:
-        name: app-apk
-        path: android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk
+    # - name: Download app apk
+    #   uses: actions/download-artifact@v5
+    #   with:
+    #     name: app-apk
+    #     path: android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk
 
-    - name: Download test apk
-      uses: actions/download-artifact@v5
-      with:
-        name: test-apk
-        path: android/app/build/outputs/apk/androidTest/release/org.inaturalist.iNaturalistMobile-release-androidTest.apk
+    # - name: Download test apk
+    #   uses: actions/download-artifact@v5
+    #   with:
+    #     name: test-apk
+    #     path: android/app/build/outputs/apk/androidTest/release/org.inaturalist.iNaturalistMobile-release-androidTest.apk
 
     - name: Download detox config
       uses: actions/download-artifact@v5
@@ -157,7 +146,7 @@ jobs:
 
     - name: Debugging
       run: |
-        ls -Rl
+        ls -Rla
 
     - name: Install jest
       run: npm install jest
