@@ -27,14 +27,6 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 1
-    # trying to keep things simple for the next step to avoid any red herrings from the repo itself
-    # we _at least_ need the detox config
-    - name: Upload detox config test
-      uses: actions/upload-artifact@v4
-      with:
-        name: detox-config-test
-        include-hidden-files: true
-        path: .detoxrc.js
 
     - name: Debugging
       run: |
@@ -121,6 +113,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: detox-config
+        include-hidden-files: true
         path: .detoxrc.js
 
   test:
