@@ -41,7 +41,8 @@ module.exports = {
       /* eslint-disable-next-line max-len */
       testBinaryPath: `android/app/build/outputs/apk/androidTest/debug/${apkFilenamePrefix}-debug-androidTest.apk`,
       build:
-        "(cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug)"
+        /* eslint-disable-next-line max-len */
+        "(cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug -PreactNativeArchitectures=x86_64)"
     },
     "android.release": {
       type: "android.apk",
@@ -49,7 +50,8 @@ module.exports = {
       /* eslint-disable-next-line max-len */
       testBinaryPath: `android/app/build/outputs/apk/androidTest/release/${apkFilenamePrefix}-release-androidTest.apk`,
       build:
-        "(cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release)"
+        /* eslint-disable-next-line max-len */
+        "(cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release -PreactNativeArchitectures=x86_64)"
     }
   },
   devices: {

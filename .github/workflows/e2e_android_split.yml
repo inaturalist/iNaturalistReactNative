@@ -20,11 +20,18 @@ jobs:
       run: |
         java --version
         echo $JAVA_HOME
+        echo $GITHUB_WORKSPACE
+        ls $GITHUB_WORKSPACE
 
     - name: Check out Git repository
       uses: actions/checkout@v4
       with:
         fetch-depth: 1
+
+    - name: Debugging 1.5
+      run: |
+        echo $GITHUB_WORKSPACE
+        ls $GITHUB_WORKSPACE
 
     - name: Cache node modules
       uses: actions/cache@v4
@@ -83,17 +90,23 @@ jobs:
     - name: Build for detox
       run: npm run e2e:build:android
 
+
+    - name: Debugging 1.56
+      run: |
+        ls -l
+        ls -Rl android/app/build/outputs
+
     - name: Upload app apk
       uses: actions/upload-artifact@v4
       with:
         name: app-apk
-        path: $GITHUB_WORKSPACE/android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk
+        path: android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk
 
     - name: Upload test apk
       uses: actions/upload-artifact@v4
       with:
         name: test-apk
-        path: $GITHUB_WORKSPACE/android/app/build/outputs/apk/androidTest/release/org.inaturalist.iNaturalistMobile-release-androidTest.apk
+        path: android/app/build/outputs/apk/androidTest/release/org.inaturalist.iNaturalistMobile-release-androidTest.apk
 
   test:
     needs: build
@@ -106,18 +119,20 @@ jobs:
       run: |
         java --version
         echo $JAVA_HOME
+        ls -l
+        ls -Rl android/app/build/outputs
 
     - name: Download app apk
       uses: actions/download-artifact@v5
       with:
         name: app-apk
-        path: $GITHUB_WORKSPACE/android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk
+        path: android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk
 
     - name: Download test apk
       uses: actions/download-artifact@v5
       with:
         name: test-apk
-        path: $GITHUB_WORKSPACE/android/app/build/outputs/apk/androidTest/release/org.inaturalist.iNaturalistMobile-release-androidTest.apk
+        path: android/app/build/outputs/apk/androidTest/release/org.inaturalist.iNaturalistMobile-release-androidTest.apk
 
     - name: Debugging 2
       run: |
