@@ -11,7 +11,9 @@ concurrency:
     
 jobs:
   test:
-    runs-on: macos-15
+    # using intel image, android emu currently can't run on Apple Silicon
+    # https://github.com/ReactiveCircus/android-emulator-runner/issues/350#issuecomment-3349718997
+    runs-on: macos-15-intel
 
     steps:
     - name: Debugging 1
@@ -25,13 +27,11 @@ jobs:
         fetch-depth: 1
 
     # Use the Android command line tools to download an AOSP emulator image, and setup new avd
-    # The name of the device for testing has to be the same as on the .detoxrc.js file (even if it is not a Pixel)
-    # The mac-os latest runner has 3 different versions of Java pre-installed (8,11,17), and there were errors when setting to use either 11 or 17 explicitly here
-    # I am assuming (but haven't tested) it uses 8 and then this step works
+    # x86_64 OR arm64-v8a <- intel vs M#
     - name: Download Android Emulator Image
       run: |
-        echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "system-images;android-31;default;arm64-v8a"
-        echo "no" | $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager create avd -n Pixel_5_API_31_AOSP -d pixel --package 'system-images;android-31;default;arm64-v8a'
+        echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "system-images;android-31;default;x86_64"
+        echo "no" | $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager create avd -n Pixel_5_API_31_AOSP -d pixel --package 'system-images;android-31;default;x86_64'
         $ANDROID_HOME/emulator/emulator -list-avds
 
     - name: Cache node modules
@@ -41,10 +41,10 @@ jobs:
         path: node_modules
         key: node-modules-${{ hashFiles('**/package-lock.json') }}
   
-    # - name: Rebuild detox from cache
-    #   if: steps.cache.outputs.cache-hit == 'true'
-    #   # Currently, (Detox 20) those two commands are macOS only
-    #   run: npx detox clean-framework-cache && npx detox build-framework-cache
+    - name: Rebuild detox from cache
+      if: steps.cache.outputs.cache-hit == 'true'
+      # Currently, (Detox 20) those two commands are macOS only
+      run: npx detox clean-framework-cache && npx detox build-framework-cache
 
     # supposedly our current cache includes native modules like Realm
     # that have compiled binaries specific to the environment where they were installed
