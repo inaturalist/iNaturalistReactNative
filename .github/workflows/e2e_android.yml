@@ -11,7 +11,7 @@ concurrency:
     
 jobs:
   test:
-    runs-on: macos-14
+    runs-on: ubuntu-15
 
     steps:
     - name: Debugging 1
@@ -30,8 +30,8 @@ jobs:
     # I am assuming (but haven't tested) it uses 8 and then this step works
     - name: Download Android Emulator Image
       run: |
-        echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "system-images;android-31;default;arm64-v8a"
-        echo "no" | $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager create avd -n Pixel_5_API_31_AOSP -d pixel --package 'system-images;android-31;default;arm64-v8a'
+        echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "system-images;android-31;default;x86_64"
+        echo "no" | $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager create avd -n Pixel_5_API_31_AOSP -d pixel --package 'system-images;android-31;default;x86_64'
         $ANDROID_HOME/emulator/emulator -list-avds
 
     - name: Cache node modules
