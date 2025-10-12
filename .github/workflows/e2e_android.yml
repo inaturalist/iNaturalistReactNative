@@ -32,9 +32,8 @@ jobs:
     # I am assuming (but haven't tested) it uses 8 and then this step works
     - name: Download Android Emulator Image
       run: |
-        ls -lR $ANDROID_HOME
         echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "system-images;android-31;default;arm64-v8a"
-        echo "no" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager create avd --force --name Pixel_5_API_31_AOSP --device "Nexus 5X" -k 'system-images;android-31;default;arm64-v8a'
+        echo "no" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager create avd --name Pixel_5_API_31_AOSP --device "Nexus 5X" --package 'system-images;android-31;default;arm64-v8a'
         $ANDROID_HOME/emulator/emulator -list-avds
 
     - name: Cache node modules
