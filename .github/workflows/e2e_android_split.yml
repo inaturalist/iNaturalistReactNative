@@ -1,16 +1,16 @@
-name: e2e-Android
+name: e2e-Android-split
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - 'android-detox'
+  push:
+    branches:
+      - 'android-detox'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   # cancel-in-progress: true
     
 jobs:
-  test:
+  build:
     # using intel image, android emu currently can't run on Apple Silicon
     # https://github.com/ReactiveCircus/android-emulator-runner/issues/350#issuecomment-3349718997
     runs-on: macos-15-intel
@@ -25,14 +25,6 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 1
-
-    # Use the Android command line tools to download an AOSP emulator image, and setup new avd
-    # x86_64 OR arm64-v8a <- intel vs M#
-    - name: Download Android Emulator Image
-      run: |
-        echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "system-images;android-31;default;x86_64"
-        echo "no" | $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager create avd -n Pixel_5_API_31_AOSP -d pixel --package 'system-images;android-31;default;x86_64'
-        $ANDROID_HOME/emulator/emulator -list-avds
 
     - name: Cache node modules
       uses: actions/cache@v4
@@ -88,9 +80,56 @@ jobs:
     - name: Download the small example cv and geomodel
       run: npm run add-example-model -- -f=main
 
-    # This is by far the longest step in this job, currently we are building the apk everytime, maybe there should be a more specific trigger for the entire job
     - name: Build for detox
       run: npm run e2e:build:android
+
+    - name: Upload app apk
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-apk
+        path: $GITHUB_WORKSPACE/android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk
+
+    - name: Upload test apk
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-apk
+        path: $GITHUB_WORKSPACE/android/app/build/outputs/apk/androidTest/release/org.inaturalist.iNaturalistMobile-release-androidTest.apk
+
+  test:
+    # using intel image, android emu currently can't run on Apple Silicon
+    # https://github.com/ReactiveCircus/android-emulator-runner/issues/350#issuecomment-3349718997
+    runs-on: macos-15-intel
+
+    steps:
+    - name: Debugging 2
+      run: |
+        java --version
+        echo $JAVA_HOME
+
+    - name: Download app apk
+      uses: actions/download-artifact@v5
+      with:
+        name: app-apk
+        path: $GITHUB_WORKSPACE/android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk
+
+    - name: Download test apk
+      uses: actions/download-artifact@v5
+      with:
+        name: test-apk
+        path: $GITHUB_WORKSPACE/android/app/build/outputs/apk/androidTest/release/org.inaturalist.iNaturalistMobile-release-androidTest.apk
+
+    - name: Debugging 2
+      run: |
+        java --version
+        echo $JAVA_HOME
+
+    # Use the Android command line tools to download an AOSP emulator image, and setup new avd
+    # x86_64 OR arm64-v8a <- intel vs M#
+    - name: Download Android Emulator Image
+      run: |
+        echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "system-images;android-31;default;x86_64"
+        echo "no" | $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager create avd -n Pixel_5_API_31_AOSP -d pixel --package 'system-images;android-31;default;x86_64'
+        $ANDROID_HOME/emulator/emulator -list-avds
 
     # Starts the avd previously set-up by name
     - name: Android Emulator
@@ -113,7 +152,7 @@ jobs:
 
     # Start the Android e2e tests with extensive logging and screen captures for failing tests
     - name: Android Detox
-      run: npm run e2e:test:android -- --take-screenshots failing --record-videos failing -l debug
+      run: MOCK_MODE=e2e npx detox test --configuration android.release --take-screenshots failing --record-videos failing -l debug
 
     # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
     - name: Store Detox artifacts on test failure
