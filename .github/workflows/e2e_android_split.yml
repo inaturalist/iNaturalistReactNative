@@ -103,7 +103,7 @@ jobs:
       with:
         name: detox-config
         include-hidden-files: true
-        path: .detoxrc.js
+        path: .detoxrc.json
 
   test:
     needs: build
@@ -142,7 +142,7 @@ jobs:
       uses: actions/download-artifact@v5
       with:
         name: detox-config
-        path: detox.config.js
+        path: .detoxrc.json
 
     - name: Debugging
       run: |
