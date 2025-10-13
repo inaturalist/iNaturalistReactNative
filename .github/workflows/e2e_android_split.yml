@@ -154,6 +154,7 @@ jobs:
       uses: actions/download-artifact@v5
       with:
         name: e2e-directory
+        path: e2e
 
     - name: Debugging
       run: |
