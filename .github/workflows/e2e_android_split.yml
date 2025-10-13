@@ -92,6 +92,7 @@ jobs:
         include-hidden-files: true
         path: .detoxrc.js
 
+    # we're full-cloning e2e later _but_ it's a convenient way for archive/dl to maintain folder structure to figure pathing out
     - name: Upload e2e & apks
       uses: actions/upload-artifact@v4
       with:
@@ -113,11 +114,20 @@ jobs:
       run: |
         ls -Rla
 
+    - name: Check out Git repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+
+    - name: Install Dependencies (naive install)
+      run: npm install
+
     - name: Download detox config
       uses: actions/download-artifact@v5
       with:
         name: detox-config
 
+    # will duplicate e2e but that's desired while testing the pathing
     - name: Download test files
       uses: actions/download-artifact@v5
       with:
@@ -126,9 +136,6 @@ jobs:
     - name: Debugging
       run: |
         ls -Rla
-
-    - name: Install jest & detox
-      run: npm install jest detox@20.41.1
 
     # Use the Android command line tools to download an AOSP emulator image, and setup new avd
     # x86_64 OR arm64-v8a <- intel vs M#
