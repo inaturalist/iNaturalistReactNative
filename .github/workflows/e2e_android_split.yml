@@ -114,7 +114,9 @@ jobs:
 
     - name: Mock apks for artifact share test
       run: |
+        mkdir -p android/app/build/outputs/apk/release
         touch android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk
+        mkdir -p android/app/build/outputs/apk/androidTest/release
         touch android/app/build/outputs/apk/androidTest/release/org.inaturalist.iNaturalistMobile-release-androidTest.apk
 
     # I think this _should_ put e2e in root and android in root, maintaining repo structure (least common root)
