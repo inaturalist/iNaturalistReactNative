@@ -20,6 +20,7 @@ const OfflineNavigationGuard = ( { children }: PropsWithChildren ) => {
   const onStateChange = ( ) => {
     const previousRouteName = routeNameRef.current;
     const currentRouteName = navigationRef.current?.getCurrentRoute( )?.name;
+    // Basic screen tracking with Firebase Analytics
     if ( previousRouteName !== currentRouteName ) {
       const analytics = getAnalytics();
       // @ts-expect-error https://github.com/invertase/react-native-firebase/pull/8687
