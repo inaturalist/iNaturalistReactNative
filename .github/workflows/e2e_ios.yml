@@ -93,7 +93,10 @@ jobs:
     - name: Add secrets to GoogleService-Info.plist
       env:
         FIREBASE_STAGING_GOOGLE_APP_ID: ${{ secrets.FIREBASE_STAGING_GOOGLE_APP_ID }}
-      run: sed -i "" "s/your-google-app-id/${FIREBASE_STAGING_GOOGLE_APP_ID//\//\\/}/g" "ios/GoogleService-Info.example.plist"
+        FIREBASE_STAGING_API_KEY: ${{ secrets.FIREBASE_STAGING_API_KEY }}
+      run: |
+        sed -i "" "s/your-google-app-id/${FIREBASE_STAGING_GOOGLE_APP_ID//\//\\/}/g" "ios/GoogleService-Info.example.plist"
+        sed -i "" "s/your-api-key/${FIREBASE_STAGING_API_KEY//\//\\/}/g" "ios/GoogleService-Info.example.plist"
 
     - name: Create GoogleService-Info.plist files from example
       run: |
