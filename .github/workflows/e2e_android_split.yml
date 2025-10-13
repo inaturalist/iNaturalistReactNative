@@ -106,11 +106,26 @@ jobs:
         include-hidden-files: true
         path: .detoxrc.js
     # and the e2e dir
-    - name: Upload e2e directory
+    # - name: Upload e2e directory
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: e2e-directory
+    #     path: e2e
+
+    - name: Mock apks for artifact share test
+      run: |
+        touch android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk
+        touch android/app/build/outputs/apk/androidTest/release/org.inaturalist.iNaturalistMobile-release-androidTest.apk
+
+    # I think this _should_ put e2e in root and android in root, maintaining repo structure (least common root)
+    - name: Upload e2e & apks
       uses: actions/upload-artifact@v4
       with:
-        name: e2e-directory
-        path: e2e
+        name: test-files
+        path: |
+          e2e
+          android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk
+          android/app/build/outputs/apk/androidTest/release/org.inaturalist.iNaturalistMobile-release-androidTest.apk
 
   test:
     needs: build
@@ -150,11 +165,10 @@ jobs:
       with:
         name: detox-config
 
-    - name: Download e2e directorye
+    - name: Download test files
       uses: actions/download-artifact@v5
       with:
-        name: e2e-directory
-        path: e2e
+        name: test-files
 
     - name: Debugging
       run: |
