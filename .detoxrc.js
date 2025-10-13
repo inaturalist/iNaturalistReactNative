@@ -56,8 +56,7 @@ module.exports = {
     simulator: {
       type: "ios.simulator",
       device: {
-        type: "iPhone 16 Pro",
-        os: "iOS 18.6"
+        type: "iPhone 16 Pro"
       }
     },
     emulator: {
