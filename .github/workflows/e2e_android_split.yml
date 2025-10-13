@@ -110,7 +110,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: e2e-directory
-        path: e2ejs
+        path: e2e
 
   test:
     needs: build
