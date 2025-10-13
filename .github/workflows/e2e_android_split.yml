@@ -142,7 +142,7 @@ jobs:
       uses: actions/download-artifact@v5
       with:
         name: detox-config
-        path: .detoxrc.js
+        path: detox.config.js
 
     - name: Debugging
       run: |
@@ -180,7 +180,7 @@ jobs:
 
     # Start the Android e2e tests with extensive logging and screen captures for failing tests
     - name: Android Detox
-      run: MOCK_MODE=e2e npx detox test --configuration android.release --take-screenshots failing --record-videos failing -l debug
+      run: MOCK_MODE=e2e npx detox@20.41.1 test --configuration android.release --take-screenshots failing --record-videos failing -l debug
 
     # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
     - name: Store Detox artifacts on test failure
