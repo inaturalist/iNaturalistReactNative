@@ -160,8 +160,8 @@ jobs:
       run: |
         ls -Rla
 
-    - name: Install jest
-      run: npm install jest
+    - name: Install jest & detox
+      run: npm install jest detox@20.41.1
 
     # Use the Android command line tools to download an AOSP emulator image, and setup new avd
     # x86_64 OR arm64-v8a <- intel vs M#
