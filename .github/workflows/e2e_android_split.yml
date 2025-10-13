@@ -142,7 +142,6 @@ jobs:
       uses: actions/download-artifact@v5
       with:
         name: detox-config
-        path: .detoxrc.js
 
     - name: Debugging
       run: |
@@ -177,11 +176,6 @@ jobs:
         curl -I --fail "https://staging.inaturalist.org/ping"
         # is node running & is ES working?
         curl -I --fail "https://stagingapi.inaturalist.org/v2/taxa"
-
-    - name: Debugging
-      run: |
-        ls -la
-        cp .detoxrc.js .detoxrc.json
 
     # Start the Android e2e tests with extensive logging and screen captures for failing tests
     - name: Android Detox
