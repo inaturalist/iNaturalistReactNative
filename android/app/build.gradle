@@ -107,7 +107,7 @@ android {
         applicationId "org.inaturalist.iNaturalistMobile"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 180
+        versionCode 181
         versionName "1.0.11"
         setProperty("archivesBaseName", applicationId)
         // setProperty("archivesBaseName", applicationId + "-v" + versionName + "+" + versionCode)
