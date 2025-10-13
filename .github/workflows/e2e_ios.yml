@@ -96,7 +96,9 @@ jobs:
       run: sed -i "" "s/your-google-app-id/${FIREBASE_STAGING_GOOGLE_APP_ID//\//\\/}/g" "ios/GoogleService-Info.example.plist"
 
     - name: Create GoogleService-Info.plist files from example
-      run: cp ios/GoogleService-Info.example.plist ios/GoogleService-Info.staging.plist
+      run: |
+        cp ios/GoogleService-Info.example.plist ios/GoogleService-Info.staging.plist
+        cp ios/GoogleService-Info.example.plist ios/GoogleService-Info.production.plist
 
     # Generate the secret files needed for a release build
     - name: Create .env file
