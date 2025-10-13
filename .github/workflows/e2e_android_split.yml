@@ -97,6 +97,7 @@ jobs:
     #     path: android/app/build/outputs/apk/androidTest/release/org.inaturalist.iNaturalistMobile-release-androidTest.apk
 
     # trying to keep things simple for the next step to avoid any red herrings from the repo itself
+    #
     # we _at least_ need the detox config
     - name: Upload detox config
       uses: actions/upload-artifact@v4
@@ -104,6 +105,12 @@ jobs:
         name: detox-config
         include-hidden-files: true
         path: .detoxrc.js
+    # and the e2e/jest config
+    - name: Upload jest config
+      uses: actions/upload-artifact@v4
+      with:
+        name: jest-config
+        path: e2e/jest.config.js
 
   test:
     needs: build
@@ -142,6 +149,12 @@ jobs:
       uses: actions/download-artifact@v5
       with:
         name: detox-config
+
+    - name: Download jest config
+      uses: actions/download-artifact@v5
+      with:
+        name: jest-config
+        path: e2e
 
     - name: Debugging
       run: |
