@@ -181,6 +181,7 @@ jobs:
     - name: Debugging
       run: |
         ls -la
+        cp .detoxrc.js .detoxrc.json
 
     # Start the Android e2e tests with extensive logging and screen captures for failing tests
     - name: Android Detox
