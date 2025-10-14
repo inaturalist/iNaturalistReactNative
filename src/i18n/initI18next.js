@@ -82,6 +82,9 @@ export const I18NEXT_CONFIG = {
   // All languages should fallback to English, some regional variants should
   // fall back to another region
   fallbackLng: code => {
+    if ( !code ) {
+      return ["en"];
+    }
     const fallbacks = [];
     if ( code.match( /^es-/ ) ) {
       fallbacks.push( "es" );
