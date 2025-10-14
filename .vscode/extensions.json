@@ -1,7 +1,6 @@
 {
   "recommendations": [
     "dbaeumer.vscode-eslint",
-    "sysoev.vscode-open-in-github",
     "usernamehw.errorlens",
     "wix.vscode-import-cost"
   ]
