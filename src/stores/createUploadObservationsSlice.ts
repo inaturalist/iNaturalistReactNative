@@ -1,41 +1,14 @@
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import _ from "lodash";
-import type { RealmObservation } from "realmModels/types";
-import { StateCreator } from "zustand";
 
-export const UPLOAD_CANCELLED = "cancelled";
-export const UPLOAD_PENDING = "pending";
-export const UPLOAD_COMPLETE = "complete";
-export const UPLOAD_IN_PROGRESS = "in-progress";
+import { StoreSlice, UploadObservationsSlice, UploadStatus } from "./types";
 
-type UploadStatus = typeof UPLOAD_PENDING
-  | typeof UPLOAD_IN_PROGRESS
-  | typeof UPLOAD_COMPLETE
-  | typeof UPLOAD_CANCELLED;
+export const UPLOAD_CANCELLED = "cancelled" as const;
+export const UPLOAD_PENDING = "pending" as const;
+export const UPLOAD_COMPLETE = "complete" as const;
+export const UPLOAD_IN_PROGRESS = "in-progress" as const;
 
-interface TotalUploadProgress {
-  uuid: string,
-  currentIncrements: number,
-  totalIncrements: number,
-  totalProgress: number
-}
-
-interface UploadObservationsSlice {
-  abortController: AbortController | null,
-  currentUpload: RealmObservation | null,
-  errorsByUuid: object,
-  multiError: string | null,
-  initialNumObservationsInQueue: number,
-  numUnuploadedObservations: number,
-  numUploadsAttempted: number,
-  totalToolbarIncrements: number,
-  totalToolbarProgress: number,
-  totalUploadProgress: Array<TotalUploadProgress>,
-  uploadQueue: Array<string>,
-  uploadStatus: UploadStatus
-}
-
-const DEFAULT_STATE: UploadObservationsSlice = {
+const DEFAULT_STATE = {
   abortController: null,
   currentUpload: null,
   errorsByUuid: {},
@@ -97,7 +70,7 @@ const setTotalToolbarProgress = ( totalToolbarIncrements, totalUploadProgress ) 
     : 0
 );
 
-const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( set, get ) => ( {
+const createUploadObservationsSlice: StoreSlice<UploadObservationsSlice> = ( set, get ) => ( {
   ...DEFAULT_STATE,
   resetUploadObservationsSlice: ( ) => {
     // Preserve the abortController just in case something might try and use it

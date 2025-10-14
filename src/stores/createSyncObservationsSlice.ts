@@ -1,28 +1,12 @@
-import { StateCreator } from "zustand";
+import { StoreSlice, SyncingStatus, SyncObservationsSlice } from "./types";
 
-export const SYNC_PENDING = "sync-pending";
-export const BEGIN_MANUAL_SYNC = "begin-manual-sync";
-export const BEGIN_AUTOMATIC_SYNC = "begin-automatic-sync";
-export const MANUAL_SYNC_IN_PROGRESS = "manual-sync-progress";
-export const AUTOMATIC_SYNC_IN_PROGRESS = "automatic-sync-progress";
+export const SYNC_PENDING = "sync-pending" as const;
+export const BEGIN_MANUAL_SYNC = "begin-manual-sync" as const;
+export const BEGIN_AUTOMATIC_SYNC = "begin-automatic-sync" as const;
+export const MANUAL_SYNC_IN_PROGRESS = "manual-sync-progress" as const;
+export const AUTOMATIC_SYNC_IN_PROGRESS = "automatic-sync-progress" as const;
 
-type SyncingStatus = typeof SYNC_PENDING
-  | typeof BEGIN_MANUAL_SYNC
-  | typeof BEGIN_AUTOMATIC_SYNC
-  | typeof MANUAL_SYNC_IN_PROGRESS
-  | typeof AUTOMATIC_SYNC_IN_PROGRESS;
-
-interface SyncObservationsSlice {
-  autoSyncAbortController: AbortController | null,
-  currentDeleteCount: number,
-  deleteError: string | null,
-  deleteQueue: Array<string>,
-  deletionsCompletedAt: Date | null,
-  initialNumDeletionsInQueue: number,
-  syncingStatus: SyncingStatus
-}
-
-const DEFAULT_STATE: SyncObservationsSlice = {
+const DEFAULT_STATE = {
   autoSyncAbortController: null,
   currentDeleteCount: 1,
   deleteError: null,
@@ -32,7 +16,7 @@ const DEFAULT_STATE: SyncObservationsSlice = {
   syncingStatus: SYNC_PENDING
 };
 
-const createSyncObservationsSlice: StateCreator<SyncObservationsSlice> = ( set, get ) => ( {
+const createSyncObservationsSlice: StoreSlice<SyncObservationsSlice> = ( set, get ) => ( {
   ...DEFAULT_STATE,
   addToDeleteQueue: ( uuids: string[] ) => set( state => {
     let copyOfDeleteQueue = state.deleteQueue;

@@ -1,15 +1,10 @@
-import { StateCreator } from "zustand";
+import { ExploreSlice, StoreSlice } from "./types";
 
 const DEFAULT_STATE = {
   exploreView: "observations"
 };
 
-interface ExploreSlice {
-  exploreView: string,
-  setExploreView: ( _view: string ) => void
-}
-
-const createExploreSlice: StateCreator<ExploreSlice> = set => ( {
+const createExploreSlice: StoreSlice<ExploreSlice> = set => ( {
   ...DEFAULT_STATE,
   setExploreView: exploreView => set( ( ) => ( { exploreView } ) )
 } );

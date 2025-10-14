@@ -1,4 +1,6 @@
-const createMyObsSlice = ( set, get ) => ( {
+import { MyObsSlice, StoreSlice } from "./types";
+
+const createMyObsSlice: StoreSlice<MyObsSlice> = ( set, get ) => ( {
   // Stores y offset of MyObs so we can scroll back to the user's position
   // when returning from the NoBottomTabStackNavigator (MyObs will be trashed
   // when navigating to ObsEdit, so we lose scroll position)
