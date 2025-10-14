@@ -169,6 +169,7 @@ jobs:
       run: MOCK_MODE=e2e npx detox test --configuration android.release --take-screenshots failing --record-videos failing -l debug
 
     - name: Emulator logcat
+      if: failure()
       run: adb logcat -d > logcat.txt
 
     # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
