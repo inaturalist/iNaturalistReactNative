@@ -25,7 +25,7 @@ import { useLayoutPrefs } from "sharedHooks";
 import useExitObservationsFlow from "sharedHooks/useExitObservationFlow";
 import useStore from "stores/useStore";
 
-const MAX_PHOTOS_ALLOWED = 20;
+const MAX_PHOTOS_ALLOWED = 500;
 const FROM_AICAMERA_MAX_PHOTOS_ALLOWED = 1;
 
 const PhotoLibrary = ( ): Node => {
