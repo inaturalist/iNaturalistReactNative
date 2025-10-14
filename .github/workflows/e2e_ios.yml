@@ -16,7 +16,7 @@ concurrency:
 jobs:
   checksecret:
     name: check for oauth client
-    runs-on: macos-14
+    runs-on: macos-15
     outputs:
       is_SECRETS_PRESENT_set: ${{ steps.checksecret_job.outputs.is_SECRETS_PRESENT_set }}
     steps:
@@ -31,7 +31,7 @@ jobs:
   build:
     needs: checksecret
     if: needs.checksecret.outputs.is_SECRETS_PRESENT_set == 'true'
-    runs-on: macos-14
+    runs-on: macos-15-large
     # Kill the task if not finished after 120 minutes
     timeout-minutes: 120
 
@@ -131,22 +131,24 @@ jobs:
         ls -l $GITHUB_WORKSPACE/ios/build/Build/Products/Release-iphonesimulator
         ls -l $GITHUB_WORKSPACE/ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app
 
+    - name: Create temp file in workspace root
+      run: touch empty.txt
+
     - name: Upload iOS Detox app build
       uses: actions/upload-artifact@v4
       with:
         name: detox_app
-        path: $GITHUB_WORKSPACE/ios/build/Build/Products/Release-iphonesimulator
-
+        path: |
+          empty.txt
+          ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app
 
   test:
     needs: build
-    runs-on: macos-14
+    runs-on: macos-15-large
     # Kill the task if not finished after 120 minutes
     timeout-minutes: 120
 
     steps:
-
-###### DUPED v the following is duped and untouched from checkout => install mac deps, almost certainly can trim, but may not be worth itG
 
     - name: Check out Git repository
       uses: actions/checkout@v4
@@ -157,12 +159,10 @@ jobs:
       uses: actions/download-artifact@v5
       with:
         name: detox_app
-        path: $GITHUB_WORKSPACE/ios/build/Build/Products/Release-iphonesimulator
 
     - name: Debugging
       run: |
         ls -l $GITHUB_WORKSPACE/ios/build/Build/Products/Release-iphonesimulator
-        ls -l $GITHUB_WORKSPACE/ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app
 
     - name: Install Node.js, NPM and Yarn
       uses: actions/setup-node@v4
@@ -185,8 +185,6 @@ jobs:
       run: |
         brew tap wix/brew
         brew install applesimutils
-
-###### DUPED^
 
     - name: Ensure servers are running
       run: |
