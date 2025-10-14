@@ -36,10 +36,6 @@ jobs:
     timeout-minutes: 120
 
     steps:
-    - uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: '^16.2'
-  
     - name: Check out Git repository
       uses: actions/checkout@v4
       with:
