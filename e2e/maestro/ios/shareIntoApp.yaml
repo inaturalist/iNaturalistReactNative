@@ -1,6 +1,6 @@
 appId: org.inaturalist.iNaturalistMobile
 ---
-# Download sample image with exif and stable public link
+# Safari: Download sample image with exif
 - launchApp:
     appId: com.apple.mobilesafari
 - tapOn: Address
@@ -8,26 +8,30 @@ appId: org.inaturalist.iNaturalistMobile
 - pressKey: Enter
 - tapOn: Share
 - scrollUntilVisible:
-    element: Save Image
-- tapOn: Save Image
-
-# Open iOS Photos app and share into iNaturalist app
-- launchApp:
-    appId: com.apple.mobileslideshow # iOS Photos app
-
-# dismiss iOS Photos FTUE
+    element: Save to Files
+- tapOn: Save to Files
+- tapOn: Save
+# handle replacing duplicate files
 - runFlow:
     when:
-      visible: Continue
+      visible: Replace Existing Items?
     commands:
-      - tapOn: Continue
+      - tapOn: Replace
 
-- tapOn: Select # we can _see_ our photo in the gallery, but can't target it w/o focusing "Select"
-- tapOn: Photo, May 30, 2008, 3:56 PM
+# Files: find image and share into iNaturalist
+- launchApp:
+    appId: com.apple.DocumentsApp # iOS files app
+- tapOn: Recents
+- longPressOn: Canon_40D
 - tapOn: Share
 - tapOn: iNaturalist
-- tapOn: Yes # <- doesn't seem to work. "No" doesn't either. Click works fine in simulator.
+
+# iNaturalist custom Share Extension
+- tapOn: Yes
+# ^This fails in Maestro. The inspector can identify "Yes", but "tapOn" doesn't work. Same w/ "No".
+# I can click on it in the simulator just fine.
+
+# iNaturalist app
 - scrollUntilVisible: # For clarify, center the "OBSERVED AT" header which should have the time right after
     centerElement: true
     element: OBSERVED AT
-- assertVisible: 5/30/08 8:56 PM CDT
