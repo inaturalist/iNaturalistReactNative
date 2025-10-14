@@ -26,7 +26,7 @@ appId: org.inaturalist.iNaturalistMobile
 - tapOn: Photo, May 30, 2008, 3:56 PM
 - tapOn: Share
 - tapOn: iNaturalist
-- tapOn: Post
+- tapOn: Yes # <- doesn't seem to work. "No" doesn't either. Click works fine in simulator.
 - scrollUntilVisible: # For clarify, center the "OBSERVED AT" header which should have the time right after
     centerElement: true
     element: OBSERVED AT
