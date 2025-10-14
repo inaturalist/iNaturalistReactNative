@@ -1,0 +1,6 @@
+UPDATED
+* Update some dependencies (e.g. react-native)
+
+FIXED
+* Link styles in comments and notes
+* Remove "Always" location permission string
