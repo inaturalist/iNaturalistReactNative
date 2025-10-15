@@ -11,8 +11,6 @@ concurrency:
     
 jobs:
   build:
-    # using intel image, android emu currently can't run on Apple Silicon
-    # https://github.com/ReactiveCircus/android-emulator-runner/issues/350#issuecomment-3349718997
     runs-on: macos-15
 
     steps:
@@ -106,7 +104,7 @@ jobs:
     needs: build
     # using intel image, android emu currently can't run on Apple Silicon
     # https://github.com/ReactiveCircus/android-emulator-runner/issues/350#issuecomment-3349718997
-    runs-on: macos-15
+    runs-on: macos-15-intel
 
     steps:
 
