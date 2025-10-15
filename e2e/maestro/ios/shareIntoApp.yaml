@@ -24,10 +24,9 @@ appId: org.inaturalist.iNaturalistMobile
 - longPressOn: Canon_40D
 - tapOn: Share
 - tapOn: iNaturalist
-- tapOn: iNaturalist
 
 # iNaturalist custom Share Extension
-- tapOn: "Yes" # quotes necessary to distinguish `"Yes"` string from `Yes` which Maestro treats as a bool
+- tapOn: "Yes" # <- quotes are necessary to distinguish `"Yes"` string from `Yes` which Maestro treats as a bool
 
 # iNaturalist app
 - scrollUntilVisible: # For clarify, center the "OBSERVED AT" header which should have the time right after
