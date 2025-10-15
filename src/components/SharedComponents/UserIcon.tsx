@@ -1,8 +1,8 @@
+import classNames from "classnames";
 import { INatIcon } from "components/SharedComponents";
-import { FasterImageView, View } from "components/styledComponents";
+import { Image, View } from "components/styledComponents";
 import React from "react";
 import type { ImageStyle } from "react-native";
-import colors from "styles/tailwindColors";
 
 interface Props {
   active?: boolean;
@@ -42,14 +42,9 @@ const UserIcon = ( {
   // but it works with style, might warrant further investigation or an issue in nativewind
   const style: ImageStyle = {
     width: size,
-    height: size,
-    overflow: "hidden"
+    height: size
   };
-  const activeStyle: ImageStyle = {
-    borderColor: String( colors?.inatGreen ),
-    borderWidth: 3,
-    borderRadius: size / 2
-  };
+
   return (
     uri
       ? (
@@ -58,20 +53,12 @@ const UserIcon = ( {
           accessibilityIgnoresInvertColors
           testID="UserIcon.photo"
         >
-          <FasterImageView
-            style={{
-              ...(
-                active
-                  ? activeStyle
-                  : {}
-              ),
-              ...style
-            }}
+          <Image
+            style={style}
             source={{
-              url: uri,
-              borderRadius: size / 2,
-              resizeMode: "cover"
+              uri
             }}
+            className={classNames( "rounded-full", active && "border-[3px] border-inatGreen" )}
           />
         </View>
       )

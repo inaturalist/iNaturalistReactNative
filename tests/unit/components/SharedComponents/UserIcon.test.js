@@ -44,6 +44,6 @@ describe( "UserIcon", () => {
     // eslint-disable-next-line testing-library/no-node-access
     expect( profilePicture.children[0] ).toBeTruthy();
     // eslint-disable-next-line testing-library/no-node-access
-    expect( profilePicture.children[0].props.source ).toHaveProperty( "url", mockUri );
+    expect( profilePicture.children[0].props.source ).toHaveProperty( "uri", mockUri );
   } );
 } );
