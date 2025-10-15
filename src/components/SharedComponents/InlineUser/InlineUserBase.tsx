@@ -8,6 +8,7 @@ import {
 } from "components/styledComponents";
 import React, { PropsWithChildren } from "react";
 import { useTranslation } from "react-i18next";
+import { TextProps } from "react-native";
 import User from "realmModels/User";
 
 interface Props extends PropsWithChildren {
@@ -17,7 +18,7 @@ interface Props extends PropsWithChildren {
     login: string;
   };
   isConnected: boolean;
-  TextComponent: React.FC;
+  TextComponent: React.FC<TextProps>;
   testID: string;
   useBigIcon?: boolean;
 }
