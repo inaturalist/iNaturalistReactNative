@@ -21,15 +21,13 @@ appId: org.inaturalist.iNaturalistMobile
 # Files: find image and share into iNaturalist
 - launchApp:
     appId: com.apple.DocumentsApp # iOS files app
-- tapOn: Recents
 - longPressOn: Canon_40D
 - tapOn: Share
 - tapOn: iNaturalist
+- tapOn: iNaturalist
 
 # iNaturalist custom Share Extension
-- tapOn: Yes
-# ^This fails in Maestro. The inspector can identify "Yes", but "tapOn" doesn't work. Same w/ "No".
-# I can click on it in the simulator just fine.
+- tapOn: "Yes" # quotes necessary to distinguish `"Yes"` string from `Yes` which Maestro treats as a bool
 
 # iNaturalist app
 - scrollUntilVisible: # For clarify, center the "OBSERVED AT" header which should have the time right after
