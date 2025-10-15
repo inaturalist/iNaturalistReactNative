@@ -10,6 +10,7 @@ import React, { PropsWithChildren } from "react";
 import { useTranslation } from "react-i18next";
 import type { TextProps } from "react-native";
 import User from "realmModels/User";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 
 interface Props extends PropsWithChildren {
   user: {
@@ -33,11 +34,13 @@ const InlineUserBase = ( {
   const navigation = useNavigation();
   const userImgUri = User.uri( user );
   const userHandle = user?.login;
+  const currentUser = useCurrentUser();
+  const isCurrentUser = userHandle === currentUser?.login;
 
   const { t } = useTranslation( );
 
   const renderUserIcon = () => {
-    if ( !userImgUri || !isConnected ) {
+    if ( !userImgUri || ( !isConnected && !isCurrentUser ) ) {
       return (
         <INatIcon
           testID={`${testID}.FallbackPicture`}
