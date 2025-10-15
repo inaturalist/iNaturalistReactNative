@@ -17,7 +17,7 @@ jest.mock( "@react-navigation/native", ( ) => {
 const mockUser = factory( "RemoteUser" );
 const mockUserWithoutImage = factory( "RemoteUser", { icon_url: null } );
 
-const snapshotUser = { login: "some_login", icon_url: "some_icon_url" };
+const snapshotUser = { login: "some_login", icon_url: "some_icon_url", id: 1 };
 const snapshotUserWithoutImage = { login: "some_login", icon_url: null };
 
 jest.mock(
