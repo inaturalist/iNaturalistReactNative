@@ -1,5 +1,3 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 // Directly imported, not from index.js to avoid circular dependency
 import INatIcon from "components/SharedComponents/INatIcon";
@@ -8,29 +6,21 @@ import UserIcon from "components/SharedComponents/UserIcon";
 import {
   Pressable, View
 } from "components/styledComponents";
-import type { Node } from "react";
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { useTranslation } from "react-i18next";
 import User from "realmModels/User";
 
-type Props = {
+interface Props extends PropsWithChildren {
   user: {
-    id: number,
-    icon_url?: string,
-    login: string
-  },
-  isConnected: boolean,
-  TextComponent: ( props: {
-    className?: string,
-    numberOfLines?: number,
-    ellipsizeMode?: string,
-    selectable?: boolean,
-    maxFontSizeMultiplier?: number,
-    children?: React$Node, // eslint-disable-line no-undef
-} ) => React$Node, // eslint-disable-line no-undef
-  testID: string,
-  useBigIcon?: boolean
-};
+    id: number;
+    icon_url?: string;
+    login: string;
+  };
+  isConnected: boolean;
+  TextComponent: React.FC;
+  testID: string;
+  useBigIcon?: boolean;
+}
 
 const InlineUserBase = ( {
   user,
@@ -38,7 +28,7 @@ const InlineUserBase = ( {
   TextComponent,
   testID,
   useBigIcon = false
-}: Props ): Node => {
+}: Props ) => {
   const navigation = useNavigation();
   const userImgUri = User.uri( user );
   const userHandle = user?.login;
