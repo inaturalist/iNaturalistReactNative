@@ -35,7 +35,7 @@ const InlineUserBase = ( {
   const userImgUri = User.uri( user );
   const userHandle = user?.login;
   const currentUser = useCurrentUser();
-  const isCurrentUser = userHandle === currentUser?.login;
+  const isCurrentUser = user?.id === currentUser?.id;
 
   const { t } = useTranslation( );
 
