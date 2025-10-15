@@ -167,17 +167,20 @@ jobs:
       run: MOCK_MODE=e2e npx detox test --configuration android.release --take-screenshots failing --record-videos failing -l debug
 
     
-    # - name: Emulator logcat
-    #   if: failure()
-    #   run: adb logcat -d > logcat.txt
+    - name: Emulator logcat
+      if: failure()
+      # only attempt to logcat if we can still connect to the emu. 
+      # `-d` is important to not stay listening to the log buffer. ask me how I know
+      run: |
+        [ "$(adb devices | tail -n +2 | grep -c device)" -eq 1 ] && adb logcat -d > logcat.txt
 
     # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
-    - name: Store Detox artifacts on test failure
+    - name: Store emulator logcat log on test failure
       uses: actions/upload-artifact@v4
       if: failure()
       with:
-        name: detox-artifacts
-        path: artifacts
+        name: emulator-logcat
+        path: logcat.txt
 
     - name: Store Detox artifacts on test failure
       uses: actions/upload-artifact@v4
