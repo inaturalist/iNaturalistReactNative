@@ -8,7 +8,7 @@ import {
 } from "components/styledComponents";
 import React, { PropsWithChildren } from "react";
 import { useTranslation } from "react-i18next";
-import { TextProps } from "react-native";
+import type { TextProps } from "react-native";
 import User from "realmModels/User";
 
 interface Props extends PropsWithChildren {
