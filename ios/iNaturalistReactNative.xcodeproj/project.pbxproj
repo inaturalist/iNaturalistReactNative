@@ -13,7 +13,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		191A91132CD1916800ECC774 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 191A91122CD1916800ECC774 /* InfoPlist.xcstrings */; };
 		191A91152CD1916800ECC774 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 191A91122CD1916800ECC774 /* InfoPlist.xcstrings */; };
-		1956B4912A7C3C1E00BBBDE4 /* link-inat-model-files.sh in Resources */ = {isa = PBXBuildFile; fileRef = 1956B4902A7C3C1E00BBBDE4 /* link-inat-model-files.sh */; };
+		1956B4912A7C3C1E00BBBDE4 /* link-files-for-build-modes.sh in Resources */ = {isa = PBXBuildFile; fileRef = 1956B4902A7C3C1E00BBBDE4 /* link-files-for-build-modes.sh */; };
 		197A169D2A7C2567001A03DC /* cvmodel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 197A169B2A7C2567001A03DC /* cvmodel.mlmodel */; };
 		197A169E2A7C2567001A03DC /* taxonomy.json in Resources */ = {isa = PBXBuildFile; fileRef = 197A169C2A7C2567001A03DC /* taxonomy.json */; };
 		3DE2C0F71E184822B561A1ED /* Lato-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A54425709BB4844AFBC680D /* Lato-Italic.ttf */; };
@@ -71,7 +71,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = iNaturalistReactNative/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = iNaturalistReactNative/main.m; sourceTree = "<group>"; };
 		191A91122CD1916800ECC774 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
-		1956B4902A7C3C1E00BBBDE4 /* link-inat-model-files.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "link-inat-model-files.sh"; sourceTree = "<group>"; };
+		1956B4902A7C3C1E00BBBDE4 /* link-files-for-build-modes.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "link-files-for-build-modes.sh"; sourceTree = "<group>"; };
 		197A169B2A7C2567001A03DC /* cvmodel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = cvmodel.mlmodel; sourceTree = "<group>"; };
 		197A169C2A7C2567001A03DC /* taxonomy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = taxonomy.json; sourceTree = "<group>"; };
 		19916F1F2B4F1871000A2D91 /* iNaturalistReactNativeRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = iNaturalistReactNativeRelease.entitlements; path = iNaturalistReactNative/iNaturalistReactNativeRelease.entitlements; sourceTree = "<group>"; };
@@ -126,7 +126,7 @@
 				8FE171A12E97F0780003E759 /* GoogleService-Info.plist */,
 				8F346E492CF6912700CED7B4 /* geomodel.mlmodel */,
 				19916F1F2B4F1871000A2D91 /* iNaturalistReactNativeRelease.entitlements */,
-				1956B4902A7C3C1E00BBBDE4 /* link-inat-model-files.sh */,
+				1956B4902A7C3C1E00BBBDE4 /* link-files-for-build-modes.sh */,
 				197A169B2A7C2567001A03DC /* cvmodel.mlmodel */,
 				197A169C2A7C2567001A03DC /* taxonomy.json */,
 				8B8BAD0429F54EB300CE5C9F /* iNaturalistReactNative.entitlements */,
@@ -323,7 +323,7 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				197A169E2A7C2567001A03DC /* taxonomy.json in Resources */,
-				1956B4912A7C3C1E00BBBDE4 /* link-inat-model-files.sh in Resources */,
+				1956B4912A7C3C1E00BBBDE4 /* link-files-for-build-modes.sh in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				8F1AC6772BC1B610002F994B /* PrivacyInfo.xcprivacy in Resources */,
 				725BA058C5384A9185E8036A /* Lato-Bold.ttf in Resources */,
