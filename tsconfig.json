@@ -19,6 +19,9 @@
       "styles": ["src/styles"],
       "tests": ["tests"],
     },
-    "types": ["nativewind/types"]
-  }
+    "types": ["nativewind/types"],
+  },
+  "exclude": [
+    "flow-typed"
+  ]
 }
