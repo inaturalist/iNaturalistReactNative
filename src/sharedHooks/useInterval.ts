@@ -1,9 +1,7 @@
-// @flow
-
 import { useEffect, useRef } from "react";
 
-function useInterval( callback:Function, delay: number | null ) {
-  const savedCallback = useRef( null );
+function useInterval( callback:() => void, delay: number | null ) {
+  const savedCallback = useRef<() => void>( null );
 
   // Remember the latest callback function
   useEffect( () => {
