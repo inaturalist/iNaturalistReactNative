@@ -104,6 +104,11 @@ jest.mock( "react-native-restart", ( ) => ( {
   restart: jest.fn( )
 } ) );
 
+jest.mock( "@react-native-firebase/analytics", () => ( {
+  getAnalytics: jest.fn( ),
+  logEvent: jest.fn( )
+} ) );
+
 // see https://stackoverflow.com/questions/42268673/jest-test-animated-view-for-react-native-app
 // for more details about this withAnimatedTimeTravelEnabled approach. basically, this
 // allows us to step through animation frames when a screen is first loading when we're using the
