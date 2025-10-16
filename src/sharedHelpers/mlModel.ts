@@ -15,7 +15,7 @@ const modelFiles = {
   // xcode project. To avoid constantly having to add new files every time we
   // change the model, we are keeping the files referenced in the xcode
   // project the same but linking them to the files specified in .env in a
-  // build phase script. See ios/link-inat-model-files.sh
+  // build phase script. See ios/link-files-for build-modes.sh
   IOSMODEL: "cvmodel.mlmodelc",
   IOSTAXONOMY: "taxonomy.json",
   IOSGEOMODEL: "geomodel.mlmodelc",
