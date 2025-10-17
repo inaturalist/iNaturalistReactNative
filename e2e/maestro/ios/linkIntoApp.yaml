@@ -2,14 +2,23 @@ appId: org.inaturalist.iNaturalistMobile
 ---
 - launchApp
 - extendedWaitUntil:
-    visible: 
-        id: "log-in-to-iNaturalist-text-no-observations"
+    visible: iNaturalist
     timeout: 10000
+
+# dismiss iNaturalist FTUE
+- runFlow:
+    when:
+      visible: Continue
+    commands:
+      - tapOn: Close
+- assertVisible: Use iNaturalist to identify any living thing
+
 - launchApp:
     appId: com.apple.mobilesafari
-- tapOn: "Address"
+- tapOn: Address
 - inputText: "https://www.inaturalist.org/users/sign_in?confirmed=true"
 - pressKey: Enter
-- assertVisible: .*Open in the iNaturalistReactNative app.*
+- assertVisible: .*Open in the iNaturalist app.*
 - tapOn: OPEN
-- assertVisible: "Your email is confirmed! Please log in to continue."
+
+- assertVisible: Your email is confirmed! Please log in to continue.
