@@ -87,7 +87,10 @@ const PhotoLibrary = ( ): Node => {
     const movedImages = await Promise.all( selectedImages.map( async ( { image } ) => {
       const { fileName } = image;
       const destPath = `${path}/${fileName}`;
-      const sourcePath = `${RNFS.TemporaryDirectoryPath}/${fileName}`;
+      // Get image from uri on android. TemporaryDirectoryPath results in an ANR
+      const sourcePath = Platform.OS === "android"
+        ? image.uri
+        : `${RNFS.TemporaryDirectoryPath}/${fileName}`;
       await RNFS.moveFile( sourcePath, destPath );
       return {
         image: {
