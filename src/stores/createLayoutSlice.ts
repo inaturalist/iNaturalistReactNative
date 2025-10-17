@@ -1,3 +1,5 @@
+import { LayoutSlice, StoreSlice } from "./types";
+
 export enum OBS_DETAILS_TAB {
   ACTIVITY = "ACTIVITY",
   DETAILS = "DETAILS"
@@ -9,7 +11,7 @@ export enum SCREEN_AFTER_PHOTO_EVIDENCE {
   MATCH = "Match"
 }
 
-const createLayoutSlice = set => ( {
+const createLayoutSlice: StoreSlice<LayoutSlice> = set => ( {
   // Vestigial un-namespaced values
   isAdvancedUser: false,
   // Values that do not need to be persisted
@@ -43,7 +45,7 @@ const createLayoutSlice = set => ( {
     // to null so we can remove it in the future
     isAdvancedSuggestionsMode: null,
     screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.MATCH,
-    setScreenAfterPhotoEvidence: ( newScreen: string ) => set( state => ( {
+    setScreenAfterPhotoEvidence: ( newScreen: SCREEN_AFTER_PHOTO_EVIDENCE ) => set( state => ( {
       layout: {
         ...state.layout,
         screenAfterPhotoEvidence: newScreen,
