@@ -1,4 +1,4 @@
-// Provides a TypeScript type definitiont for SVG files imported as React components.
+// Provides a TypeScript type definition for SVG files imported as React components.
 //
 // Example usage:
 //
