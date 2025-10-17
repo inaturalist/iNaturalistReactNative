@@ -4,10 +4,10 @@
 name: e2e-iOS
 on:
   workflow_dispatch:
-  # pull_request:
+  pull_request:
   push:
     branches:
-      - 'MOB-942-split-e2e-build-and-run'
+      - 'main'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -137,17 +137,6 @@ jobs:
     - name: Build test app
       run: npm run e2e:build:ios
 
-    # - name: Create temp file in workspace root
-    #   run: touch empty.txt
-
-    # - name: Upload iOS Detox app build
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: detox_app
-    #     path: |
-    #       empty.txt
-    #       ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app
-
     - name: Upload iOS Detox app build
       uses: actions/upload-artifact@v4
       with:
@@ -161,7 +150,6 @@ jobs:
     timeout-minutes: 120
 
     steps:
-
     - name: Check out Git repository
       uses: actions/checkout@v4
       with:
@@ -172,10 +160,6 @@ jobs:
       with:
         name: detox_app
         path: ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app
-
-    - name: Debugging
-      run: |
-        ls -la ios/build/Build/Products/Release-iphonesimulator
 
     - name: Install Node.js, NPM and Yarn
       uses: actions/setup-node@v4
