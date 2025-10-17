@@ -137,23 +137,22 @@ jobs:
     - name: Build test app
       run: npm run e2e:build:ios
 
-    - name: Debugging
-      run: |
-        echo $GITHUB_WORKSPACE
-        ls -l $GITHUB_WORKSPACE
-        ls -l $GITHUB_WORKSPACE/ios/build/Build/Products/Release-iphonesimulator
-        ls -l $GITHUB_WORKSPACE/ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app
+    # - name: Create temp file in workspace root
+    #   run: touch empty.txt
 
-    - name: Create temp file in workspace root
-      run: touch empty.txt
+    # - name: Upload iOS Detox app build
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: detox_app
+    #     path: |
+    #       empty.txt
+    #       ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app
 
     - name: Upload iOS Detox app build
       uses: actions/upload-artifact@v4
       with:
         name: detox_app
-        path: |
-          empty.txt
-          ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app
+        path: ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app
 
   test:
     needs: build
@@ -172,10 +171,11 @@ jobs:
       uses: actions/download-artifact@v5
       with:
         name: detox_app
+        path: ios/build/Build/Products/Release-iphonesimulator
 
     - name: Debugging
       run: |
-        ls -l $GITHUB_WORKSPACE/ios/build/Build/Products/Release-iphonesimulator
+        ls -la ios/build/Build/Products/Release-iphonesimulator
 
     - name: Install Node.js, NPM and Yarn
       uses: actions/setup-node@v4
@@ -247,14 +247,14 @@ jobs:
         name: detox-artifacts
         path: artifacts
 
-  # notify:
-  #   name: Notify Slack
-  #   needs: test
-  #   if: ${{ success() || failure() }}
-  #   runs-on: macos-14
-  #   steps:
-  #     - uses: iRoachie/slack-github-actions@v2.3.0
-  #       if: env.SLACK_WEBHOOK_URL != null
-  #       env:
-  #         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  notify:
+    name: Notify Slack
+    needs: test
+    if: ${{ success() || failure() }}
+    runs-on: macos-14
+    steps:
+      - uses: iRoachie/slack-github-actions@v2.3.0
+        if: env.SLACK_WEBHOOK_URL != null
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
