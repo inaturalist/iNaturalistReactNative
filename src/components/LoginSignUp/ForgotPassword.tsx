@@ -1,9 +1,7 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import { WarningSheet } from "components/SharedComponents";
+import { ScrollView } from "components/styledComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { openInbox } from "sharedHelpers/mail";
@@ -15,11 +13,16 @@ import ForgotPasswordForm from "./ForgotPasswordForm";
 import Header from "./Header";
 import LoginSignUpWrapper from "./LoginSignUpWrapper";
 
-const ForgotPassword = ( ): Node => {
+type RenderProps = {
+  // eslint-disable-next-line react/no-unused-prop-types
+  scrollViewRef: { current: null | React.Ref<typeof ScrollView> }
+};
+
+const ForgotPassword = ( ): React.ReactElement => {
   const navigation = useNavigation( );
   const [showSheet, setShowSheet] = useState( false );
 
-  const reset = useCallback( async email => {
+  const reset = useCallback( async ( email: string ) => {
     await resetPassword( email );
     setShowSheet( true );
     Keyboard.dismiss( );
@@ -29,7 +32,7 @@ const ForgotPassword = ( ): Node => {
     Keyboard.dismiss( );
   };
 
-  const renderForgotPassword = useCallback( ( { scrollViewRef } ) => (
+  const renderForgotPassword = useCallback( ( { scrollViewRef }: RenderProps ) => (
     <>
       {showSheet && (
         <WarningSheet
@@ -44,6 +47,7 @@ const ForgotPassword = ( ): Node => {
             navigation.navigate( "LoginStackNavigator", { screen: "Login" } );
           }}
           buttonType="focus"
+          loading={false}
         />
       )}
       <Header />
