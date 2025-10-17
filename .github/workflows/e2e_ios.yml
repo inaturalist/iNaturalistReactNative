@@ -171,7 +171,7 @@ jobs:
       uses: actions/download-artifact@v5
       with:
         name: detox_app
-        path: ios/build/Build/Products/Release-iphonesimulator
+        path: ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app
 
     - name: Debugging
       run: |
