@@ -25,7 +25,11 @@ import { useLayoutPrefs } from "sharedHooks";
 import useExitObservationsFlow from "sharedHooks/useExitObservationFlow";
 import useStore from "stores/useStore";
 
-const MAX_PHOTOS_ALLOWED = 500;
+const MAX_PHOTOS_ALLOWED = Platform.select( {
+  ios: 500,
+  android: 100
+} );
+
 const FROM_AICAMERA_MAX_PHOTOS_ALLOWED = 1;
 
 const PhotoLibrary = ( ): Node => {
@@ -122,6 +126,7 @@ const PhotoLibrary = ( ): Node => {
         : MAX_PHOTOS_ALLOWED,
       mediaType: "photo",
       includeBase64: false,
+      // forceOldAndroidPhotoPicker is necessary because the "new" picker strips key EXIF data
       forceOldAndroidPhotoPicker: true,
       chooserTitle: t( "Import-Photos-From" ),
       presentationStyle: "overFullScreen"
