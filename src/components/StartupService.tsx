@@ -47,7 +47,7 @@ const checkForPreviousCrash = async ( ) => {
   try {
     const crashData = zustandStorage.getItem( "LAST_CRASH_DATA" );
     if ( crashData ) {
-      const parsedData = JSON.parse( crashData );
+      const parsedData = JSON.parse( crashData.toString( ) );
       logger.error( "Last Crash Data:", JSON.stringify( parsedData ) );
       zustandStorage.removeItem( "LAST_CRASH_DATA" );
     }
@@ -60,7 +60,8 @@ const StartupService = ( ) => {
   const realm = useRealm( );
   const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0]?.isValid( );
   const { loadTime } = usePerformance( {
-    screenName: "StartupService"
+    screenName: "StartupService",
+    isLoading: false
   } );
   if ( isDebugMode( ) ) {
     logger.info( loadTime );
