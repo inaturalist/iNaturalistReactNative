@@ -1,8 +1,7 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-const { DownloaderHelper } = require( "node-downloader-helper" );
-const fs = require( "fs" ).promises;
-const path = require( "path" );
-const yargs = require( "yargs" );
+import fs from "fs/promises";
+import { DownloaderHelper } from "node-downloader-helper";
+import path from "path";
+import yargs from "yargs";
 
 const binariesBaseDir
   = "https://github.com/inaturalist/model-files/releases/download/v25.01.15";
