@@ -25,8 +25,8 @@
     "lint:rubocop:fix": "bundle exec rubocop -A",
     "lint:tsc": "tsc --allowJs false --noEmit",
     "postinstall": "husky && patch-package",
-    "translate": "node src/i18n/i18ncli.js build",
-    "prepare-fastlane-metadata": "node src/i18n/i18ncli.js prepare-fastlane-metadata",
+    "translate": "babel-node src/i18n/i18ncli.js build",
+    "prepare-fastlane-metadata": "babel-node src/i18n/i18ncli.js prepare-fastlane-metadata",
     "e2e:android": "npm run e2e:build:android && npm run e2e:test:android",
     "e2e:build:android": "MOCK_MODE=e2e npx detox build --configuration android.release",
     "e2e:build:ios": "MOCK_MODE=e2e npx detox build --configuration ios.release",
@@ -41,7 +41,7 @@
     "e2e:test": "npm run e2e:test:ios && npm run e2e:test:android",
     "e2e": "npm run e2e:build && npm run e2e:test",
     "icons": "./scripts/update-icon-font.sh",
-    "add-example-model": "node scripts/add-example-model.js",
+    "add-example-model": "babel-node scripts/add-example-model.js",
     "reassure": "reassure"
   },
   "dependencies": {
@@ -144,6 +144,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@babel/node": "^7.25.2",
     "@babel/preset-env": "^7.25.3",
     "@babel/preset-react": "^7.24.1",
     "@babel/runtime": "^7.25.0",
