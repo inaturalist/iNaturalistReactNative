@@ -2,6 +2,7 @@ import { screen, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import React from "react";
 import { View } from "react-native";
+import * as useCurrentUser from "sharedHooks/useCurrentUser";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
 import { renderComponent, wrapInNavigationContainer } from "tests/helpers/render";
@@ -48,6 +49,7 @@ const mockObservation = factory( "LocalObservation", {
 
 describe( "ObsEdit", () => {
   beforeEach( ( ) => {
+    jest.spyOn( useCurrentUser, "default" ).mockImplementation( ( ) => mockUser );
     useStore.setState( {
       currentObservation: mockObservation,
       observations: [mockObservation]
