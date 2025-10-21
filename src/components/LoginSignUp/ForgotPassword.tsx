@@ -18,7 +18,7 @@ type RenderProps = {
   scrollViewRef: { current: null | React.Ref<typeof ScrollView> }
 };
 
-const ForgotPassword = ( ): React.ReactElement => {
+const ForgotPassword = ( ) => {
   const navigation = useNavigation( );
   const [showSheet, setShowSheet] = useState( false );
 
