@@ -1,6 +1,7 @@
 import {
   INatIconButton
 } from "components/SharedComponents";
+import type { PropsWithChildren } from "react";
 import React, { useEffect, useState } from "react";
 import { GestureResponderEvent, ViewStyle } from "react-native";
 import Animated, {
@@ -14,11 +15,10 @@ import Animated, {
   withTiming
 } from "react-native-reanimated";
 
-interface Props {
+interface Props extends PropsWithChildren {
   accessibilityHint?: string;
   accessibilityLabel: string;
   backgroundColor?: string;
-  children?: React.ReactNode;
   color?: string;
   disabled?: boolean;
   height?: number;
