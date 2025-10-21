@@ -3,7 +3,7 @@ import {
 } from "components/SharedComponents";
 import type { PropsWithChildren } from "react";
 import React, { useEffect, useState } from "react";
-import { GestureResponderEvent, ViewStyle } from "react-native";
+import type { GestureResponderEvent, ViewStyle } from "react-native";
 import Animated, {
   cancelAnimation,
   Easing,
