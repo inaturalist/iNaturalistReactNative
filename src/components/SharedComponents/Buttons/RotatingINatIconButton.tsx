@@ -14,22 +14,22 @@ import Animated, {
   withTiming
 } from "react-native-reanimated";
 
-type Props = {
-  accessibilityHint?: string,
-  accessibilityLabel: string,
-  backgroundColor?: string,
-  children?: React.ReactNode,
-  color?: string,
-  disabled?: boolean,
-  height?: number,
-  icon: string,
-  mode?: "contained",
-  onPress: ( _event?: GestureResponderEvent ) => void,
-  rotating?: boolean,
-  size?: number,
-  style?: ViewStyle,
-  testID?: string,
-  width?: number,
+interface Props {
+  accessibilityHint?: string;
+  accessibilityLabel: string;
+  backgroundColor?: string;
+  children?: React.ReactNode;
+  color?: string;
+  disabled?: boolean;
+  height?: number;
+  icon: string;
+  mode?: "contained";
+  onPress: ( _event?: GestureResponderEvent ) => void;
+  rotating?: boolean;
+  size?: number;
+  style?: ViewStyle;
+  testID?: string;
+  width?: number;
 }
 
 const RotatingINatIconButton = ( {
