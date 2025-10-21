@@ -1,0 +1,10 @@
+NEW
+* Allow import of up to 500 photos into the app
+
+UPDATED
+* Some dependencies (e.g. gesture handling)
+* Share-into-the-app UI
+
+FIXED
+* Remove option to use "Always" for location access from Settings
+* Show offline profile picture in Me tab header
