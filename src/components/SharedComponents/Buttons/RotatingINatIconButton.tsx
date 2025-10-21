@@ -48,7 +48,7 @@ const RotatingINatIconButton = ( {
   style,
   testID,
   width
-}: Props ): React.ReactNode => {
+}: Props ) => {
   const rotation = useSharedValue( 0 );
   // eslint-disable-next-line no-unused-vars
   const [_, setNeedsReRender] = useState( false );
