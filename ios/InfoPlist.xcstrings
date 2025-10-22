@@ -1516,7 +1516,7 @@
         "es-MX" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El acceso a la cámara te permite usar la cámara IA y tomar fotos."
+            "value" : "El acceso a la cámara te perimte utilizar la Cámara IA y tomar fotos."
           }
         },
         "et" : {
@@ -2314,468 +2314,6 @@
       },
       "shouldTranslate" : false
     },
-    "NSLocationAlwaysAndWhenInUseUsageDescription" : {
-      "comment" : "Privacy - Location Always and When In Use Usage Description",
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "af" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "ar" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "be" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "bg" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "br" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "bs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nežádáme o toto oprávnění záměrně. Pokud to vidíte, proveďte snímek obrazovky a pošlete jej na e-mail help@inaturalist.org"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vi anmoder ikke bevidst om denne tilladelse. Ser man derfor dette, bedes man tage et skærmfoto og kontakte help@inaturalist.org"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Diese Erlaubnis wird nicht vorsätzlich verlangt. Wenn dies angezeigt wird, erstelle bitte ein Bildschirmfoto und sende es per E-Mail an help@inaturalist.org."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Δεν ζητάμε σκόπιμα αυτήν την άδεια. Εάν βλέπετε αυτό, τραβήξτε ένα στιγμιότυπο οθόνης και στείλτε το μέσω email στο help@inaturalist.org"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "en-AU" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "en-GB" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "en-NZ" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "eo" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No solicitamos este permiso a propósito. Si estás viendo esto, por favor, haz una captura de pantalla y envíala por correo electrónico a help@inaturalist.org"
-          }
-        },
-        "es-AR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No solicitamos este permiso a propósito. Si estás viendo esto, por favor, haz una captura de pantalla y envíala por correo electrónico a help@inaturalist.org"
-          }
-        },
-        "es-CO" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No solicitamos este permiso a propósito. Si estás viendo esto, por favor, haz una captura de pantalla y envíala por correo electrónico a help@inaturalist.org"
-          }
-        },
-        "es-CR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No solicitamos este permiso a propósito. Si estás viendo esto, por favor, haz una captura de pantalla y envíala por correo electrónico a help@inaturalist.org"
-          }
-        },
-        "es-MX" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No solicitamos este permiso a propósito. Si estás viendo esto, por favor, haz una captura de pantalla y envíala por correo electrónico a help@inaturalist.org"
-          }
-        },
-        "et" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "eu" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "fa" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ما عمداً این اجازه را نمی‌خواهیم.  اگر این را می بینید، لطفاً یک اسکرین شات بگیرید و آن را به help@inaturalist.org ایمیل کنید"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Emme tarkoituksella pyydä tätä lupaa. Jos näet tämän, ota kuvakaappaus ja lähetä se osoitteeseen help@inaturalist.org"
-          }
-        },
-        "fil" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nous ne demandons pas intentionnellement cette permission. Si vous voyez ceci, prenez une capture d'écran et envoyez un email à help@inaturalist.org  "
-          }
-        },
-        "fr-CA" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nous ne demandons pas intentionnellement cette permission. Si vous voyez ceci, prenez une capture d'écran et envoyez un email à help@inaturalist.org  "
-          }
-        },
-        "gd" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "gl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "gu" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "איננו מבקשים בכוונה את הרשאה זו. אם את.ה רואה זאת, נא לצלם צילום מסך ולשלוח אותו בדוא\"ל אל help@inaturalist.org"
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "hr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ez az engedélykérés nem szándékos. Ha ezt látod, kérjük küldj egy képernyőmentést a help@inaturalist.org címre."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kami tidak sengaja meminta izin ini. Jika kamu melihat pesan ini, tolong tangkap layar Anda dan email ke help@inaturalist.org"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Non chiediamo intenzionalmente questo permesso. Se stai vedendo questo, per favore fai uno screenshot e invialo a help@inaturalist.org"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "私たちは意図的にこの許可を要求していません。これが表示された場合は、スクリーンショットを撮って help@inaturalist.org にメールで送信してください。"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "kn" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "lb" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "lt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Šio leidimo mes neprašome specialiai. Jei tai matote, nufotografuokite ekraną ir atsiųskite jį el. paštu help@inaturalist.org"
-          }
-        },
-        "lv" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "mi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "mk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "ml" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "mr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "ms" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "nb-NO" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "We vragen niet opzettelijk om deze toestemming. Als je dit ziet, neem dan een screenshot en stuur een e-mail naar help@inaturalist.org"
-          }
-        },
-        "pa" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nie żądamy tego zezwolenia celowo. Jeśli to widzisz, zrób zrzut ekranu i wyślij go na adres help@inaturalist.org"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Não solicitamos essa permissão intencionalmente. Se você está vendo isso, por favor faça uma captura de tela e a envie por email para help@inaturalist.org"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Não solicitamos intencionalmente esta permissão. Se você estiver vendo isso, faça uma captura de tela e envie-a por e-mail para help@inaturalist.org"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Мы намеренно не запрашиваем это разрешение. Если вы видите это, пожалуйста, сделайте скриншот и отправьте его на help@inaturalist.org"
-          }
-        },
-        "sat" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "si" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nežiadame o toto oprávnenie zámerne. Ak to vidíte, urobte snímku obrazovky a pošlite ju na e-mail help@inaturalist.org"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "sq" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "sr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vi begär inte avsiktligt denna tillåtelse. Om du ser detta, ta en skärmbild och skicka den till help@inaturalist.org"
-          }
-        },
-        "sw" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "ta" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "te" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "th" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "เราไม่ได้ร้องขอสิทธิ์นี้โดยเจตนา หากคุณพบข้อความนี้ กรุณาถ่ายภาพหน้าจอและส่งอีเมลไปที่ help@inaturalist.org"
-          }
-        },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bu izni kasıtlı olarak talep etmiyoruz. Eğer bunu görüyorsanız, lütfen bir ekran görüntüsü alıp help@inaturalist.org adresine e-posta gönderin."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ми не запитуємо цей дозвіл навмисно. Якщо ви бачите це, будь ласка, зробіть скриншот і надішліть його на help@inaturalist.org"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "我们不会有意请求此权限。如果您看到这一提示，请截取屏幕截图并发送至 help@inaturalist.org"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "我們並未主動要求此權限。若您看到此提示，請擷圖並寄電子郵件至 help@inaturalist.org。"
-          }
-        },
-        "zh-Hant-HK" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org"
-          }
-        }
-      }
-    },
     "NSLocationWhenInUseUsageDescription" : {
       "comment" : "Privacy - Location When In Use Usage Description",
       "extractionState" : "extracted_with_value",
@@ -3365,7 +2903,7 @@
         "es-MX" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Grabar sonidos de la naturaleza."
+            "value" : "Grabar sonidos observados en la naturaleza."
           }
         },
         "et" : {
@@ -3827,7 +3365,7 @@
         "es-MX" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Exporta fotos de iNaturalist a tu biblioteca."
+            "value" : "Exportar fotos de iNaturalist a tu biblioteca."
           }
         },
         "et" : {
@@ -3964,8 +3502,8 @@
         },
         "lt" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
+            "state" : "translated",
+            "value" : "Eksportuokite \"iNaturalist\" nuotraukas į savo biblioteką."
           }
         },
         "lv" : {
@@ -4289,7 +3827,7 @@
         "es-MX" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Exporta e importa fotos de iNaturalist desde y hacia tu biblioteca."
+            "value" : "Exportar e importar fotos de iNaturalista desde tu galería. "
           }
         },
         "et" : {
@@ -4426,8 +3964,8 @@
         },
         "lt" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
+            "state" : "translated",
+            "value" : "Eksportuokite ir importuokite \"iNaturalist\" nuotraukas į savo biblioteką ir iš jos."
           }
         },
         "lv" : {

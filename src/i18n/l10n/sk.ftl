@@ -55,7 +55,7 @@ all-rights-reserved = všetky práva vyhradené
 All-taxa = Všetky taxóny
 ALL-USERS-EXCEPT = VŠETCI POUŽÍVATELIA OKREM
 ALLOW-LOCATION-ACCESS = POVOLIŤ PRÍSTUP NA LOKÁCIU
-Already-have-an-iNaturalist-account = Already have an iNaturalist account?
+Already-have-an-iNaturalist-account = Už máte účet iNaturalist?
 An-Internet-connection-is-required = Na načítanie viacerých pozorovaní je vyžadované pripojenie k internetu.
 Analyzing-for-the-best-identification = Analýza pre najlepšiu identifikáciu...
 Any--date = Akýkoľvek
@@ -336,7 +336,7 @@ HIGHEST-RANK = NAJVYŠŠIA HODNOTA
 I-agree-to-the-Terms-of-Use = <0>Súhlasím s podmienkami používania a Zásadami ochrany osobných údajov a preskúmal som všeobecné zásady komunity (</0><1>vyžadované</1><0>).</0>
 Iconic-taxon-name = Názov ikonického taxónu: { $iconicTaxon }
 ID-Suggestions = Návrhy ID
-ID-WITH-AI = ID WITH AI
+ID-WITH-AI = ID POMOCOU AI
 ID-Withdrawn = ID odobrané
 IDENTIFICATION = IDENTIFIKÁCIA
 Identification-options = Možnosti identifikácie
@@ -415,8 +415,8 @@ JOINED = ČLENSKÉ
 Joined-date = Pripojil sa { $date }
 JOINED-X-PROJECTS =
     { $count ->
-        [one] JOINED { $count } PROJECT
-       *[other] JOINED { $count } PROJECTS
+        [one] SLEDUJE JEDEN PROJEKT
+       *[other] SLEDUJE { $count } PROJEKTOV
     }
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
@@ -575,7 +575,7 @@ Organism-is-captive = Organizmus je v zajatí
 Organisms-that-are-identified-to-species = Organizmy, ktoré sú identifikované na druhovú alebo nižšiu úroveň
 OTHER-DATA = OSTATNÉ DÁTA
 OTHER-SUGGESTIONS = ĎALŠIE NÁVRHY
-OTHERS--notifications = OTHERS
+OTHERS--notifications = OSTATNÍ
 PASSWORD = HESLO
 PEOPLE--title = ĽUDIA
 Photo-importer = Importovanie fotiek
@@ -596,7 +596,7 @@ POTENTIAL-DISAGREEMENT = POTENCIÁLNE NESHODY
 Potential-disagreement-description = <0>Stačia dôkazy na potvrdenie, že je to </0><1></1><0>?<0>
 Potential-disagreement-disagree = <0>Nie, ale toto je členom </0><1></1>
 Potential-disagreement-unsure = <0>Neviem, ale som si istý, že je to </0><1></1>
-Press-and-hold-to-view-more-options = Press and hold to view more options
+Press-and-hold-to-view-more-options = Stlačením a podržaním zobrazíte ďalšie možnosti
 Previous-observation = Predchádzajúce pozorovania
 Previous-slide = Predchádzajúca snímka
 Privacy-Policy = Zásady ochrany osobných údajov
@@ -836,9 +836,9 @@ The-AI-is-not-confident-Upload-to-ask-the-community = Umelá inteligencia si nie
 The-exact-location-will-be-hidden = Presná poloha bude skrytá verejne, namiesto toho bude zovšeobecnená do väčšej oblasti (ohrozené a ohrozené druhy sú automaticky skryté).
 The-iNaturalist-community-will-help-verify-and-refine-identifications = Komunita iNaturalist vám pomôže overiť a upresniť identifikáciu vašich pozorovaní a vytvoriť dáta na úrovni výskumu pre vedu a ochranu prírody.
 The-iNaturalist-Network = Sieť iNaturalist je zbierka lokalizovaných webov, ktoré sú plne prepojené s globálnou komunitou iNaturalist. Sieťové stránky sú podporované miestnymi inštitúciami, ktoré podporujú miestne využitie a uľahčujú využívanie údajov z iNaturalist v prospech miestnej biodiverzity.
-The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify.
+The-location-will-not-be-visible-to-others = Poloha nebude viditeľná pre ostatných, čo by mohlo znemožniť identifikáciu pozorovania.
 The-models-that-suggest-species = Modely, ktoré navrhujú druhy na základe vizuálnej podobnosti a polohy, sú čiastočne vďaka spolupráci s Sara Beermi, Tomom Brooksom, Elijahom Colom, Christianom Langeom, Oisinom Macom Aodhou, Pietro Peronou a Grant Van Horn.
-There-was-an-error-that-might-be-fixed-by-logging-in-again = There was an error that might be fixed by logging in again.
+There-was-an-error-that-might-be-fixed-by-logging-in-again = Vyskytla sa chyba, ktorú je možné opraviť opätovným prihlásením.
 This-is-a-wild-organism = Ide o divoký organizmus a ľudia ho na toto miesto neumiestnili.
 This-is-how-taxon-names-will-be-displayed = Takto budú zobrazené všetky názvy taxónov naprieč iNaturalist:
 This-is-your-identification-other-people-may-help-confirm-it = Toto je Vaša identifikácia. Ostatní ľudia môžu pomôcť potvrdiť ju!
@@ -964,8 +964,8 @@ X-Identifiers =
     }
 X-MEMBERS =
     { $count ->
-        [one] { $count } MEMBER
-       *[other] { $count } MEMBERS
+        [one] { $count } ČLEN
+       *[other] { $count } ČLENOV
     }
 X-Observations =
     { $count ->

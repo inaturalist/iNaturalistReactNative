@@ -144,7 +144,7 @@ module.exports = {
     }],
     "@typescript-eslint/no-unsafe-function-type": 1
   },
-  ignorePatterns: ["/coverage/*", "/vendor/*", "**/flow-typed"],
+  ignorePatterns: ["!.detoxrc.js", "/coverage/*", "/vendor/*", "**/flow-typed"],
   settings: {
     "import/resolver": {
       "babel-module": { allowExistingDirectories: true },

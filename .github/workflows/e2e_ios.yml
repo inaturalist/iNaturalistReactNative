@@ -16,7 +16,7 @@ concurrency:
 jobs:
   checksecret:
     name: check for oauth client
-    runs-on: macos-13
+    runs-on: macos-15
     outputs:
       is_SECRETS_PRESENT_set: ${{ steps.checksecret_job.outputs.is_SECRETS_PRESENT_set }}
     steps:
@@ -31,7 +31,7 @@ jobs:
   test:
     needs: checksecret
     if: needs.checksecret.outputs.is_SECRETS_PRESENT_set == 'true'
-    runs-on: macos-13
+    runs-on: macos-15
     # Kill the task if not finished after 120 minutes
     timeout-minutes: 120
 
@@ -85,6 +85,19 @@ jobs:
       run: |
         gem update cocoapods xcodeproj
         cd ios && pod install && cd ..
+
+    - name: Add secrets to GoogleService-Info.plist
+      env:
+        FIREBASE_STAGING_GOOGLE_APP_ID: ${{ secrets.FIREBASE_STAGING_GOOGLE_APP_ID }}
+        FIREBASE_STAGING_API_KEY: ${{ secrets.FIREBASE_STAGING_API_KEY }}
+      run: |
+        sed -i "" "s/your-google-app-id/${FIREBASE_STAGING_GOOGLE_APP_ID//\//\\/}/g" "ios/GoogleService-Info.example.plist"
+        sed -i "" "s/your-api-key/${FIREBASE_STAGING_API_KEY//\//\\/}/g" "ios/GoogleService-Info.example.plist"
+
+    - name: Create GoogleService-Info.plist files from example
+      run: |
+        cp ios/GoogleService-Info.example.plist ios/GoogleService-Info.staging.plist
+        cp ios/GoogleService-Info.example.plist ios/GoogleService-Info.production.plist
 
     # Generate the secret files needed for a release build
     - name: Create .env file
@@ -146,7 +159,7 @@ jobs:
     name: Notify Slack
     needs: test
     if: ${{ success() || failure() }}
-    runs-on: macos-13
+    runs-on: macos-15
     steps:
       - uses: iRoachie/slack-github-actions@v2.3.0
         if: env.SLACK_WEBHOOK_URL != null

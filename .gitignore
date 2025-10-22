@@ -71,7 +71,9 @@ yarn-error.log
 # Secrets file
 .env*
 ios/GoogleService-Info.staging.plist
+ios/GoogleService-Info.production.plist
 ios/GoogleService-Info.plist
+android/**/google-services.json
 
 # Fastlane files
 *.zip
@@ -93,7 +95,7 @@ artifacts/
 *.log
 
 # VisualStudioCode #
-.vscode
+.vscode/settings.json
 
 # CV Model #
 **/assets/**/*.csv

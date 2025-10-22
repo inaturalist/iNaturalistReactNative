@@ -1,3 +1,4 @@
+import { getAnalytics, logEvent } from "@react-native-firebase/analytics";
 import { getCurrentRoute } from "navigation/navigationUtils";
 import React from "react";
 import type { PressableProps } from "react-native";
@@ -14,6 +15,12 @@ const PressableWithTracking = React.forwardRef<typeof Pressable, PressableProps>
       if ( otherProps?.testID ) {
         const currentRoute = getCurrentRoute( );
         logger.info( `Button tap: ${otherProps?.testID}-${currentRoute?.name || "undefined"}` );
+        // Basic button tap tracking with Firebase Analytics
+        const analytics = getAnalytics();
+        logEvent( analytics, "button_tap", {
+          testID: otherProps?.testID,
+          screen: currentRoute?.name
+        } );
       }
 
       if ( onPress ) {
