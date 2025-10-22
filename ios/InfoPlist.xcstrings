@@ -1516,7 +1516,7 @@
         "es-MX" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El acceso a la cámara te permite usar la cámara IA y tomar fotos."
+            "value" : "El acceso a la cámara te perimte utilizar la Cámara IA y tomar fotos."
           }
         },
         "et" : {
@@ -2903,7 +2903,7 @@
         "es-MX" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Grabar sonidos de la naturaleza."
+            "value" : "Grabar sonidos observados en la naturaleza."
           }
         },
         "et" : {
@@ -3365,7 +3365,7 @@
         "es-MX" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Exporta fotos de iNaturalist a tu biblioteca."
+            "value" : "Exportar fotos de iNaturalist a tu biblioteca."
           }
         },
         "et" : {
@@ -3502,8 +3502,8 @@
         },
         "lt" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
+            "state" : "translated",
+            "value" : "Eksportuokite \"iNaturalist\" nuotraukas į savo biblioteką."
           }
         },
         "lv" : {
@@ -3827,7 +3827,7 @@
         "es-MX" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Exporta e importa fotos de iNaturalist desde y hacia tu biblioteca."
+            "value" : "Exportar e importar fotos de iNaturalista desde tu galería. "
           }
         },
         "et" : {
@@ -3964,8 +3964,8 @@
         },
         "lt" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
+            "state" : "translated",
+            "value" : "Eksportuokite ir importuokite \"iNaturalist\" nuotraukas į savo biblioteką ir iš jos."
           }
         },
         "lv" : {

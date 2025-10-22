@@ -881,7 +881,7 @@
   "X-OBSERVATIONS--below-number": "{ $count ->\n  [one] OBSERVATION\n *[other] OBSERVATIONS\n}",
   "X-observations-deleted": "{ $count ->\n  [one] 1 observation deleted\n *[other] { $count } observations deleted\n}",
   "X-observations-uploaded": "{ $count ->\n  [one] 1 observation uploaded\n *[other] { $count } observations uploaded\n}",
-  "X-Observers": "{ $count ->\n  [one] { $count } Observer\n *[other] { $count } Observers\n}",
+  "X-Observers": "{ $count ->\n  [one] { $count } Pozorovatel\n *[other] { $count } Pozorovatelé\n}",
   "X-of-Y": "{ $x ->\n  [one] 1\n *[other] { $x }\n} { $y ->\n  [one] of { $y }\n *[other] of { $y }\n}",
   "X-percent": "{ $count }%",
   "X-percent-confidence": "{ $count }% spolehlivost",

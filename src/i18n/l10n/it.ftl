@@ -55,7 +55,7 @@ all-rights-reserved = Tutti i diritti riservati
 All-taxa = Tutti i taxa
 ALL-USERS-EXCEPT = TUTTI GLI UTENTI ECCETTO
 ALLOW-LOCATION-ACCESS = AUTORIZZA ACCESSO POSIZIONE
-Already-have-an-iNaturalist-account = Already have an iNaturalist account?
+Already-have-an-iNaturalist-account = Hai già un account iNaturalist?
 An-Internet-connection-is-required = Per caricare più osservazioni è necessaria una connessione a Internet.
 Analyzing-for-the-best-identification = Analisi per la migliore identificazione...
 Any--date = Qualsiasi
@@ -336,7 +336,7 @@ HIGHEST-RANK = RANGO MAGGIORE
 I-agree-to-the-Terms-of-Use = <0>Accetto i Termini di Utilizzo e l'Informativa sulla privacy, e ho esaminato le Linee Guida comunitarie (</0><1>richiesto</1><0>).</0>
 Iconic-taxon-name = Nome del taxon iconico: { $iconicTaxon }
 ID-Suggestions = Suggerimenti per l'ID
-ID-WITH-AI = ID WITH AI
+ID-WITH-AI = ID CON AI
 ID-Withdrawn = ID ritirata
 IDENTIFICATION = IDENTIFICAZIONE
 Identification-options = Opzioni di identificazione
@@ -575,7 +575,7 @@ Organism-is-captive = L'organismo è in cattività
 Organisms-that-are-identified-to-species = Organismi identificati per il rango di specie o inferiore
 OTHER-DATA = ALTRI DATI
 OTHER-SUGGESTIONS = ALTRI SUGGERIMENTI
-OTHERS--notifications = OTHERS
+OTHERS--notifications = ALTRI
 PASSWORD = PAROLA D’ORDINE
 PEOPLE--title = GENTE
 Photo-importer = Importatore di foto
@@ -596,7 +596,7 @@ POTENTIAL-DISAGREEMENT = POTENZIALE DISACCORDO
 Potential-disagreement-description = <0>Le prove sono sufficienti per confermare che ciò è </0><1></1><0>?<0></0>
 Potential-disagreement-disagree = <0>No, ma questo è un membro di </0><1></1>
 Potential-disagreement-unsure = <0>Non lo so ma sono sicuro che questo è </0><1></1>
-Press-and-hold-to-view-more-options = Press and hold to view more options
+Press-and-hold-to-view-more-options = Tieni premuto per visualizzare più opzioni
 Previous-observation = Osservazione precedente
 Previous-slide = Diapositiva precedente
 Privacy-Policy = Informativa sulla privacy
@@ -836,9 +836,9 @@ The-AI-is-not-confident-Upload-to-ask-the-community = L'IA non è fiduciosa. Car
 The-exact-location-will-be-hidden = La posizione esatta sarà nascosta pubblicamente e generalizzata a un'area più ampia. (Le specie minacciate e in via di estinzione vengono automaticamente oscurate).
 The-iNaturalist-community-will-help-verify-and-refine-identifications = La comunità iNaturalist ti aiuterà a verificare e perfezionare le identificazioni sulle tue osservazioni per creare dati di livello di ricerca per la scienza e la conservazione.
 The-iNaturalist-Network = La rete iNaturalist è una raccolta di siti web localizzati che sono completamente connessi alla comunità globale di iNaturalist. I siti della rete sono supportati da istituzioni locali che promuovono l'uso locale e facilitano l'uso dei dati di iNaturalist a beneficio della biodiversità locale.
-The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify.
+The-location-will-not-be-visible-to-others = La posizione non sarà visibile agli altri, il che potrebbe rendere impossibile l'identificazione dell'osservazione
 The-models-that-suggest-species = I modelli che suggeriscono le specie in base alla somiglianza visiva e alla posizione sono dovuti in parte alla collaborazione con Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona e Grant Van Horn.
-There-was-an-error-that-might-be-fixed-by-logging-in-again = There was an error that might be fixed by logging in again.
+There-was-an-error-that-might-be-fixed-by-logging-in-again = Si è verificato un errore che potrebbe essere risolto accedendo di nuovo.
 This-is-a-wild-organism = Questo è un organismo selvatico e non è stato collocato in questa posizione dall'uomo.
 This-is-how-taxon-names-will-be-displayed = Ecco come ti verranno mostrati tutti i nomi dei taxon su iNaturalist:
 This-is-your-identification-other-people-may-help-confirm-it = Questa è la tua identificazione. Altre persone potrebbero aiutare a confermarlo!
@@ -964,8 +964,8 @@ X-Identifiers =
     }
 X-MEMBERS =
     { $count ->
-        [one] { $count } MEMBER
-       *[other] { $count } MEMBERS
+        [uno] { $count } MEMBRO
+       *[altri] { $count } MEMBRI
     }
 X-Observations =
     { $count ->
