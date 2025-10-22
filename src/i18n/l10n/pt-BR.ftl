@@ -55,7 +55,7 @@ all-rights-reserved = todos os direitos reservados
 All-taxa = Todos os táxons
 ALL-USERS-EXCEPT = TODOS OS USUÁRIOS EXCETO
 ALLOW-LOCATION-ACCESS = PERMITIR ACESSO DE LOCALIZAÇÃO
-Already-have-an-iNaturalist-account = Already have an iNaturalist account?
+Already-have-an-iNaturalist-account = Já tem uma conta iNaturalist?
 An-Internet-connection-is-required = Uma conexão com a internet é necessária para carregar mais observações.
 Analyzing-for-the-best-identification = Analisando a melhor identificação...
 Any--date = Qualquer
@@ -575,7 +575,7 @@ Organism-is-captive = O organismo é capturado
 Organisms-that-are-identified-to-species = Organismos identificados na classificação de espécies ou abaixo
 OTHER-DATA = OUTRAS INFORMAÇÕES
 OTHER-SUGGESTIONS = OUTRAS SUGESTÕES
-OTHERS--notifications = OTHERS
+OTHERS--notifications = OUTROS
 PASSWORD = SENHA
 PEOPLE--title = PESSOAS
 Photo-importer = Importador de fotos
@@ -596,7 +596,7 @@ POTENTIAL-DISAGREEMENT = POTENCIAL DESACORDO
 Potential-disagreement-description = <0>A evidência é suficiente para confirmar que esta é </0><1></1><0>?<0>
 Potential-disagreement-disagree = <0>Não, mas este é um membro de </0><1></1>
 Potential-disagreement-unsure = <0>Eu não sei, mas tenho certeza que isto é </0><1></1>
-Press-and-hold-to-view-more-options = Press and hold to view more options
+Press-and-hold-to-view-more-options = Pressione e segure para ver mais opções
 Previous-observation = Observação anterior
 Previous-slide = Anterior
 Privacy-Policy = Política de Privacidade
@@ -836,9 +836,9 @@ The-AI-is-not-confident-Upload-to-ask-the-community = A IA não está segura. Fa
 The-exact-location-will-be-hidden = A localização exata será ocultada publicamente, e em vez disso será generalizada para uma área maior. (Espécies ameaçadas e em perigo de extinção são automaticamente ocultadas).
 The-iNaturalist-community-will-help-verify-and-refine-identifications = A comunidade iNaturalist ajudará a verificar e refinar as identificações das suas observações para criar dados de grau de pesquisa para ciência e conservação.
 The-iNaturalist-Network = A rede inaturalista é uma coleção de sites localizados que estão totalmente conectados à comunidade global da inaturalista. Os sites da rede são apoiados por instituições locais que promovem o uso local e facilitam a utilização dos dados da inaturalista para beneficiar a biodiversidade local.
-The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify.
+The-location-will-not-be-visible-to-others = A localização não será visível para outras pessoas, o que pode tornar a identificação da observação impossível
 The-models-that-suggest-species = Os modelos que sugerem espécies com base na semelhança visual e localização são em parte graças às colaborações com Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona e Grant Van Horn.
-There-was-an-error-that-might-be-fixed-by-logging-in-again = There was an error that might be fixed by logging in again.
+There-was-an-error-that-might-be-fixed-by-logging-in-again = Ocorreu um erro que pode ser corrigido fazendo login novamente.
 This-is-a-wild-organism = Este é um organismo selvagem e não foi colocado nesse local por seres humanos.
 This-is-how-taxon-names-will-be-displayed = É assim que todos os nomes de táxon serão exibidos para você ao longo do inaturalista.
 This-is-your-identification-other-people-may-help-confirm-it = Esta é a sua identificação. Outras pessoas podem ajudar a confirmar!
@@ -964,8 +964,8 @@ X-Identifiers =
     }
 X-MEMBERS =
     { $count ->
-        [one] { $count } MEMBER
-       *[other] { $count } MEMBERS
+        [one] { $count } MEMBRO
+       *[other] { $count } MEMBROS
     }
 X-Observations =
     { $count ->

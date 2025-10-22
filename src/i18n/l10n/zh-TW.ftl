@@ -55,7 +55,7 @@ all-rights-reserved = 保留所有權利
 All-taxa = 所有物種分類群
 ALL-USERS-EXCEPT = 所有使用者，排除以下
 ALLOW-LOCATION-ACCESS = 允許定位存取
-Already-have-an-iNaturalist-account = Already have an iNaturalist account?
+Already-have-an-iNaturalist-account = 已經有 iNaturalist 帳號？
 An-Internet-connection-is-required = 需保持網路連線以載入更多觀察記錄
 Analyzing-for-the-best-identification = 正在分析最符合的鑑定...
 Any--date = 任一
@@ -575,7 +575,7 @@ Organism-is-captive = 生物是圈養的
 Organisms-that-are-identified-to-species = 生物被鑑定到種或種以下的階層
 OTHER-DATA = 其他資料
 OTHER-SUGGESTIONS = 其他建議
-OTHERS--notifications = OTHERS
+OTHERS--notifications = 其他
 PASSWORD = 密碼
 PEOPLE--title = 使用者
 Photo-importer = 照片匯入
@@ -596,7 +596,7 @@ POTENTIAL-DISAGREEMENT = 潛在的分歧點
 Potential-disagreement-description = <0>此證據足夠證明是</0><1></1><0>嗎？<0>
 Potential-disagreement-disagree = <0>否，但這屬於</0><1></1>的成員
 Potential-disagreement-unsure = <0>我不清楚，但我確定這是</0><1></1>
-Press-and-hold-to-view-more-options = Press and hold to view more options
+Press-and-hold-to-view-more-options = 長案以查看更多選項
 Previous-observation = 前一筆觀察紀錄
 Previous-slide = 前一頁
 Privacy-Policy = 隱私政策
@@ -836,9 +836,9 @@ The-AI-is-not-confident-Upload-to-ask-the-community = AI 對此物種鑑定上�
 The-exact-location-will-be-hidden = 對外將隱藏確切位置，而改為籠統而較大的區域（受威脅及瀕危物種的資料將自動模糊化）。
 The-iNaturalist-community-will-help-verify-and-refine-identifications = 《愛自然》社群將協助驗證並精進您的觀察鑑定結果，建立「研究等級」的資料以供科學研究與保育上的使用。
 The-iNaturalist-Network = 愛自然國際網路(iNaturalist Network)是一個由多個區域性網站組成的系統，這些網站與全球愛自然的社群緊密相連。這些區域性網站由當地機構所支援，推廣在地的使用，並且協助利用愛自然 的資料以裨益在地的生物多樣性。
-The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify.
+The-location-will-not-be-visible-to-others = 其他人將看不到該位置，這可能會使觀察紀錄無法鑑定。
 The-models-that-suggest-species = 根據視覺相似性與地理位置來建議物種的模型，部分得益於 Sara Beery、Tom Brooks、Elijah Cole、Christian Lange、Oisin Mac Aodha、Pietro Perona 和 Grant Van Horn 的協作。
-There-was-an-error-that-might-be-fixed-by-logging-in-again = There was an error that might be fixed by logging in again.
+There-was-an-error-that-might-be-fixed-by-logging-in-again = 有一個錯誤，可能需要透過重新登入來修復。
 This-is-a-wild-organism = 這是一種野生的生物，並非人類圈養或栽培在此地點的。
 This-is-how-taxon-names-will-be-displayed = 以下是愛自然上所有分類群名稱顯示的方式：
 This-is-your-identification-other-people-may-help-confirm-it = 這是您的鑑定。其他人可能會幫忙確認一下！
@@ -964,8 +964,8 @@ X-Identifiers =
     }
 X-MEMBERS =
     { $count ->
-        [one] { $count } MEMBER
-       *[other] { $count } MEMBERS
+        [one] { $count }名成員
+       *[other] { $count }名成員
     }
 X-Observations =
     { $count ->

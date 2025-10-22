@@ -989,8 +989,8 @@ X-observations-uploaded =
     }
 X-Observers =
     { $count ->
-        [one] { $count } Observer
-       *[other] { $count } Observers
+        [one] { $count } Pozorovatel
+       *[other] { $count } Pozorovatelé
     }
 X-of-Y =
     { $x ->
