@@ -133,6 +133,7 @@ jobs:
       with:
         name: detox_app
         path: ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app
+        retention-days: 5
 
   test:
     needs: build
@@ -221,6 +222,7 @@ jobs:
       with:
         name: detox-artifacts
         path: artifacts
+        retention-days: 5
 
   notify:
     name: Notify Slack
