@@ -11,7 +11,6 @@ import {
 import { View } from "components/styledComponents";
 import UserList from "components/UserList/UserList";
 import React, {
-  useCallback,
   useEffect,
   useMemo
 } from "react";
@@ -37,6 +36,7 @@ const FollowingList = ( ) => {
   const {
     data: following,
     // fetchNextPage,
+    isFetching,
     totalResults
   } = useInfiniteUserScroll(
     usersFollowedByQueryKey,
@@ -64,19 +64,6 @@ const FollowingList = ( ) => {
     }
   }, [followingHeaderOptions, navigation, totalResults] );
 
-  const renderFooter = useCallback( ( ) => (
-    <InfiniteScrollLoadingWheel
-      hideLoadingWheel={false}
-      isConnected={isConnected}
-    />
-  ), [isConnected] );
-
-  const renderEmptyComponent = useCallback( ( ) => (
-    <View className="self-center mt-5 p-4">
-      <Body1 className="align-center text-center">{t( "This-user-is-not-following-anyone" )}</Body1>
-    </View>
-  ), [t] );
-
   if ( !following ) {
     return null;
   }
@@ -88,8 +75,20 @@ const FollowingList = ( ) => {
         users={following}
         // TODO: need API v2 to support pagination for infinite scroll
         // onEndReached={fetchNextPage}
-        ListFooterComponent={renderFooter}
-        ListEmptyComponent={renderEmptyComponent}
+        ListEmptyComponent={isFetching
+          ? (
+            <InfiniteScrollLoadingWheel
+              hideLoadingWheel={false}
+              isConnected={isConnected}
+            />
+          )
+          : (
+            <View className="self-center mt-5 p-4">
+              <Body1 className="align-center text-center">
+                {t( "This-user-is-not-following-anyone" )}
+              </Body1>
+            </View>
+          )}
       />
     </ViewWrapper>
   );
