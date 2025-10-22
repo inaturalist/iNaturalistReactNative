@@ -99,7 +99,7 @@ jobs:
         cp ios/GoogleService-Info.example.plist ios/GoogleService-Info.staging.plist
         cp ios/GoogleService-Info.example.plist ios/GoogleService-Info.production.plist
 
-    # Generate the secret files needed for a release build
+    # Generate the secret files needed for a test run
     - name: Create .env file
       env:
         OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
