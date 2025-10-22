@@ -21,11 +21,11 @@ inatjs.setConfig( {
   }
 } );
 
-// programatically dismisses announcements for user and deletes all existing observations
+// programatically dismisses announcements for user and resets to a lone sample observation
 // in order to set up consistent testing conditions and remove need to wait for announcements
 export default async function resetUserForTesting() {
   console.log(
-    "Test user reset: dismissing announcements and deleting observations..."
+    "Test user reset: dismissing announcements and resetting observations..."
   );
 
   if ( !testUsernameAllowlist.includes( Config.E2E_TEST_USERNAME ) ) {
@@ -71,10 +71,7 @@ export default async function resetUserForTesting() {
     per_page: 20,
     fields: {
       id: true,
-      body: true,
-      dismissible: true,
-      start: true,
-      placement: true
+      dismissible: true
     }
   };
 
@@ -85,7 +82,7 @@ export default async function resetUserForTesting() {
 
   const announcementIdsToDismiss = announcementResponse
     .results
-    .filter( a => a.dismissable )
+    .filter( a => a.dismissible )
     .map( a => a.id );
 
   console.log( `Dismissing ${announcementIdsToDismiss.length} announcements` );
@@ -126,17 +123,37 @@ export default async function resetUserForTesting() {
   console.log( `Deleting ${observationIdsToDelete.length} observations` );
 
   await Promise.all( observationIdsToDelete.map( async uuid => {
-    console.log( { uuid } );
-    const deleteResponse = await inatjs.observations.delete(
+    await inatjs.observations.delete(
       { uuid },
       opts
     );
-    console.log( { uuid, deleteResponse, stringify: JSON.stringify( deleteResponse ) } );
   } ) );
+
+  console.log( "Creating sample observation" );
+  const sampleObservationParams = {
+    observation: {
+      captive_flag: false,
+      geoprivacy: "open",
+      latitude: 52.52,
+      longitude: 13.405,
+      observed_on_string: "2025-10-22T09:40:42",
+      owners_identification_from_vision: false,
+      place_guess: "Spandauer Straße, Berlin, Berlin, DE",
+      positional_accuracy: 5,
+      uuid: "f8fa9612-02e6-4764-8cb3-ab0b4306cd58"
+    },
+    fields: {
+      id: true
+    }
+  };
+  await inatjs.observations.create(
+    sampleObservationParams,
+    opts
+  );
 
   await apiClient.get( "/logout" );
 
   console.log(
-    "Test user reset: announcements dismissed and observations deleted"
+    "Test user reset: announcements dismissed and observations reset"
   );
 }
