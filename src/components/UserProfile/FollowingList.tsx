@@ -59,7 +59,7 @@ const FollowingList = ( ) => {
   } ), [totalResults, t, user] );
 
   useEffect( ( ) => {
-    if ( totalResults ) {
+    if ( totalResults !== undefined && totalResults !== null ) {
       navigation.setOptions( followingHeaderOptions );
     }
   }, [followingHeaderOptions, navigation, totalResults] );
