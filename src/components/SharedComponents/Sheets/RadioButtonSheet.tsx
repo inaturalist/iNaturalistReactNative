@@ -9,7 +9,7 @@ import useTranslation from "sharedHooks/useTranslation";
 
 interface Props {
   bottomComponent?: React.JSX.Element
-  buttonRowClassName?: boolean
+  buttonRowClassName?: string
   confirm: ( _checkedValue: string ) => void;
   confirmText?: string;
   headerText: string,

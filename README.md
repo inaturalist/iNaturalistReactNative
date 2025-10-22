@@ -217,8 +217,9 @@ when the user interacts with an element. The [iOS Guidelines](https://developer.
       parent={View}
       values={{ userHandle: currentUser?.login }}
       components={[
-        <Subheading1 className="mt-5" />,
-        <Heading1 />
+        /* be sure to include a key={index} prop to prevent React list/key warning */
+        <Subheading1 key="0" className="mt-5" />,
+        <Heading1 key="1" />
       ]}
     />
     ```
