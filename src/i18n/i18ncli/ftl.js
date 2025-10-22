@@ -1,24 +1,24 @@
 /* eslint no-console: 0 */
 
-const fluent = require( "fluent_conv" );
-const fs = require( "fs" );
-const {
-  parse: parseFtl,
-  serialize: serializeFtl,
-  Resource
-} = require( "@fluent/syntax" );
-const fsp = require( "fs/promises" );
-const path = require( "path" );
-const util = require( "util" );
-const { glob } = require( "glob" );
-const {
+import {
+  parse as parseFtl,
+  Resource,
+  serialize as serializeFtl
+} from "@fluent/syntax";
+import { format, parseISO } from "date-fns";
+import { enUS } from "date-fns/locale";
+import fluent from "fluent_conv";
+import fs from "fs";
+import fsp from "fs/promises";
+import { glob } from "glob";
+import {
   difference,
   flatten,
   sortBy,
   uniq
-} = require( "lodash" );
-const { format, parseISO } = require( "date-fns" );
-const { enUS } = require( "date-fns/locale" );
+} from "lodash";
+import path from "path";
+import util from "util";
 
 const I18N_BASE_PATH = path.join( __dirname, ".." );
 
@@ -356,7 +356,7 @@ async function normalizeFileNames( ) {
   } ) );
 }
 
-module.exports = {
+export {
   jsonifyLocalizations,
   normalize,
   normalizeFileNames,
