@@ -23,15 +23,13 @@ const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ) => {
   const scientificNameFirst = currentUser?.prefers_scientific_name_first;
 
   const navigateToTaxonDetails = ( taxonId: number ) => (
-    navigation.navigate( {
+    navigation.push( "TaxonDetails", {
       // Ensure button mashing doesn't open multiple TaxonDetails instances
       key: `${route.key}-Taxonomy-TaxonDetails-${taxonId}`,
       name: "TaxonDetails",
-      params: {
-        id: taxonId,
-        hideNavButtons,
-        usesVision: false,
-      },
+      id: taxonId,
+      hideNavButtons,
+      usesVision: false,
     } )
   );
 
