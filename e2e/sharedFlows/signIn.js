@@ -3,7 +3,6 @@ import {
 } from "detox";
 import Config from "react-native-config-node";
 
-import dismissAnnouncements from "./dismissAnnouncements";
 import switchPowerMode from "./switchPowerMode";
 
 const TIMEOUT = 10_000;
@@ -42,9 +41,5 @@ export default async function signIn() {
   await waitFor( username ).toBeVisible().withTimeout( TIMEOUT );
   await expect( username ).toBeVisible();
 
-  /*
-    Dismiss announcements if they're blocking the UI
-  */
-  await dismissAnnouncements();
   return username;
 }
