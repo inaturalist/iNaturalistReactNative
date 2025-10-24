@@ -15,19 +15,28 @@ import { log } from "sharedHelpers/logger";
 
 const logger = log.extend( "ErrorBoundary" );
 
+interface Props {
+  children: React.ReactNode;
+}
+
+interface State {
+  error: Error | null;
+  info: React.ErrorInfo | null;
+}
+
 // https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary
-class ErrorBoundary extends React.Component {
-  constructor( props ) {
+class ErrorBoundary extends React.Component<Props, State> {
+  constructor( props: Props ) {
     super( props );
     this.state = { error: null, info: null };
   }
 
-  static getDerivedStateFromError( error ) {
+  static getDerivedStateFromError( error: Error ) {
     // Update state so the next render will show the fallback UI.
     return { error };
   }
 
-  componentDidCatch( error, info ) {
+  componentDidCatch( error: Error, info: React.ErrorInfo ) {
     this.setState( { info } );
     if ( info?.componentStack ) {
       // componentStack is a little more informative than what's generally in
