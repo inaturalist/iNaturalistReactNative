@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react-native";
-import AddObsModal from "components/AddObsModal/AddObsModal";
-import i18next from "i18next";
+import AddObsBottomSheet from "components/AddObsBottomSheet/AddObsBottomSheet";
 import React from "react";
 
 // Make sure the mock is using a recent-ish version
@@ -13,11 +12,11 @@ jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
   }
 } ) );
 
-describe( "AddObsModal", ( ) => {
+describe( "AddObsBottomSheet", ( ) => {
   it( "shows the AI camera button", async ( ) => {
-    render( <AddObsModal closeModal={jest.fn( )} /> );
-    const aiCameraButton = screen.getByLabelText(
-      i18next.t( "AI-Camera" )
+    render( <AddObsBottomSheet closeModal={jest.fn( )} /> );
+    const aiCameraButton = screen.getByTestId(
+      "aicamera-button"
     );
     expect( aiCameraButton ).toBeOnTheScreen();
   } );
