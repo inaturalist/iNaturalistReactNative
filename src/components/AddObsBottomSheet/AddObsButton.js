@@ -1,8 +1,7 @@
 // @flow
 
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import AddObsModal from "components/AddObsModal/AddObsModal";
-import { Modal } from "components/SharedComponents";
+import AddObsBottomSheet from "components/AddObsBottomSheet/AddObsBottomSheet";
 import GradientButton from "components/SharedComponents/Buttons/GradientButton";
 import { t } from "i18next";
 import { getCurrentRoute } from "navigation/navigationUtils";
@@ -26,7 +25,6 @@ const AddObsButton = ( ): React.Node => {
   // Controls whether to show the tooltip, and to show it only once to the user
   const showKey = "AddObsButtonTooltip";
   const shownOnce = useStore( state => state.layout.shownOnce );
-  const setShownOnce = useStore( state => state.layout.setShownOnce );
   const justFinishedSignup = useStore( state => state.layout.justFinishedSignup );
   const numOfUserObservations = zustandStorage.getItem( "numOfUserObservations" );
   // Base trigger condition in all cases:
@@ -122,30 +120,13 @@ const AddObsButton = ( ): React.Node => {
   };
   const navToARCamera = ( ) => { navAndCloseModal( "Camera", { camera: "AI" } ); };
 
-  const addObsModal = (
-    <AddObsModal
-      closeModal={closeModal}
-      navAndCloseModal={navAndCloseModal}
-      tooltipIsVisible={tooltipIsVisible}
-      dismissTooltip={( ) => {
-        if ( tooltipIsVisible ) setShownOnce( showKey );
-      }}
-    />
-  );
-
   return (
     <>
       {/* match the animation timing on FadeInView.tsx */}
-      <Modal
-        animationIn="fadeIn"
-        animationOut="fadeOut"
-        animationInTiming={250}
-        animationOutTiming={250}
-        showModal={showModal}
-        closeModal={tooltipIsVisible
-          ? undefined
-          : closeModal}
-        modal={addObsModal}
+      <AddObsBottomSheet
+        closeModal={closeModal}
+        hidden={!showModal}
+        navAndCloseModal={navAndCloseModal}
       />
       <GradientButton
         sizeClassName="w-[69px] h-[69px] mb-[5px]"
