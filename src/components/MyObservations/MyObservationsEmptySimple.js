@@ -1,6 +1,6 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
-import AddObsModal from "components/AddObsModal/AddObsModal";
+import AddObsBottomSheet from "components/AddObsBottomSheet/AddObsBottomSheet";
 import { AccountCreationCard } from "components/OnboardingModal/PivotCards";
 import {
   HeaderUser,
@@ -8,7 +8,6 @@ import {
   ViewWrapper
 } from "components/SharedComponents";
 import GradientButton from "components/SharedComponents/Buttons/GradientButton";
-import Modal from "components/SharedComponents/Modal";
 import {
   Pressable, View
 } from "components/styledComponents";
@@ -77,15 +76,10 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected, justFinishedSign
             />
           </View>
         </View>
-        <Modal
-          showModal={showModal}
+        <AddObsBottomSheet
           closeModal={( ) => setShowModal( false )}
-          modal={(
-            <AddObsModal
-              closeModal={( ) => setShowModal( false )}
-              navAndCloseModal={navAndCloseModal}
-            />
-          )}
+          hidden={!showModal}
+          navAndCloseModal={navAndCloseModal}
         />
       </ViewWrapper>
 
