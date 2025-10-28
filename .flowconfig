@@ -117,6 +117,20 @@ node_modules/react-native/Libraries/polyfills/.*
 .*/node_modules/react-native/src/private/webapis/dom/nodes/internals/NodeInternals.js
 .*/node_modules/react-native/src/private/webapis/dom/nodes/internals/ReactNativeDocumentElementInstanceHandle.js
 .*/node_modules/react-native/src/private/webapis/dom/nodes/internals/ReactNativeDocumentInstanceHandle.js
+.*/node_modules/@react-native/community-cli-plugin/dist/commands/bundle/assetPathUtils.js.flow
+.*/node_modules/@react-native/dev-middleware/dist/inspector-proxy/Device.js.flow
+.*/node_modules/react-native/Libraries/Animated/components/AnimatedFlatList.js
+.*/node_modules/react-native/Libraries/Animated/components/AnimatedSectionList.js
+.*/node_modules/react-native/Libraries/Components/ToastAndroid/ToastAndroid.js.flow
+.*/node_modules/react-native/Libraries/StyleSheet/StyleSheet.js
+.*/node_modules/react-native/Libraries/StyleSheet/StyleSheet.js.flow
+.*/node_modules/react-native/Libraries/StyleSheet/StyleSheetExports.js.flow
+.*/node_modules/react-native/Libraries/StyleSheet/flattenStyle.js
+.*/node_modules/react-native/Libraries/StyleSheet/private/_TransformStyle.js
+.*/node_modules/react-native/Libraries/Utilities/PlatformTypes.js
+.*/node_modules/react-native/Libraries/vendor/core/ErrorUtils.js
+.*/node_modules/react-native/src/private/components/safeareaview/SafeAreaView_INTERNAL_DO_NOT_USE.js
+.*/node_modules/react-native/src/private/devsupport/rndevtools/ReactDevToolsSettingsManager.js.flow
 
 [untyped]
 .*/node_modules/@react-native-community/cli/.*/.*
