@@ -12,7 +12,8 @@ const logger = log.extend( "NetworkService" );
 
 const NetworkService = ( ) => {
   const { loadTime } = usePerformance( {
-    screenName: "NetworkService"
+    screenName: "NetworkService",
+    isLoading: false
   } );
   if ( isDebugMode( ) ) {
     logger.info( loadTime );
