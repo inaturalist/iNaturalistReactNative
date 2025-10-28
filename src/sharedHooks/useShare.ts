@@ -1,5 +1,3 @@
-// @flow
-
 import { useEffect } from "react";
 import ShareMenu from "react-native-share-menu";
 
