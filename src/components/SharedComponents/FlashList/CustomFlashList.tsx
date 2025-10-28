@@ -1,10 +1,11 @@
-import { FlashList, ViewabilityConfig } from "@shopify/flash-list";
+import { FlashList } from "@shopify/flash-list";
 import React, {
   forwardRef,
   useCallback,
   useEffect,
   useRef
 } from "react";
+import type { ViewabilityConfig } from "react-native";
 import flashListTracker from "sharedHelpers/flashListPerformanceTracker";
 
 const defaultViewabilityConfig: ViewabilityConfig = {
