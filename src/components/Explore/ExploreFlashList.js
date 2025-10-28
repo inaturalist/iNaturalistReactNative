@@ -12,7 +12,6 @@ type Props = {
   canFetch?: boolean,
   contentContainerStyle?: Object,
   data: Array<Object>,
-  estimatedItemSize?: number,
   fetchNextPage: boolean,
   hideLoadingWheel: boolean,
   isFetchingNextPage: boolean,
@@ -30,7 +29,6 @@ const ExploreFlashList = ( {
   canFetch,
   contentContainerStyle,
   data,
-  estimatedItemSize,
   fetchNextPage,
   hideLoadingWheel,
   isFetchingNextPage,
@@ -90,7 +88,6 @@ const ExploreFlashList = ( {
         ListFooterComponent={renderFooter}
         contentContainerStyle={contentContainerStyle}
         data={data}
-        estimatedItemSize={estimatedItemSize}
         keyExtractor={keyExtractor}
         numColumns={numColumns}
         onEndReached={fetchNextPage}

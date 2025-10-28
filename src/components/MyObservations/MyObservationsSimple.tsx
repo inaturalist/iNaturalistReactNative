@@ -117,7 +117,6 @@ const MyObservationsSimple = ( {
   const navigation = useNavigation( );
   const route = useRoute( );
   const {
-    estimatedGridItemSize,
     flashListStyle,
     gridItemStyle,
     numColumns
@@ -324,7 +323,6 @@ const MyObservationsSimple = ( {
             canFetch={!!currentUser}
             contentContainerStyle={taxaFlashListStyle}
             data={taxa}
-            estimatedItemSize={estimatedGridItemSize}
             hideLoadingWheel
             isConnected={isConnected}
             keyExtractor={(

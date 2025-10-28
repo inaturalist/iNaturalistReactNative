@@ -75,7 +75,6 @@ const UserList = ( {
       ListFooterComponent={ListFooterComponent}
       contentContainerStyle={contentContainerStyle || CONTAINER_STYLE}
       data={users}
-      estimatedItemSize={98}
       keyExtractor={item => item?.user?.id || item?.id}
       onEndReached={onEndReached}
       refreshing={refreshing}

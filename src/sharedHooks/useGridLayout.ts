@@ -37,7 +37,6 @@ const useGridLayout = ( layout?: "list" ) => {
     return Math.floor( ( gridWidth - combinedGutter ) / numColumns );
   };
   const gridItemWidth = calculateGridItemWidth();
-  const estimatedGridItemSize = gridItemWidth + GUTTER;
 
   const gridItemStyle = useMemo( ( ) => ( {
     height: gridItemWidth,
@@ -46,7 +45,6 @@ const useGridLayout = ( layout?: "list" ) => {
   } ), [gridItemWidth] );
 
   return {
-    estimatedGridItemSize,
     flashListStyle,
     gridItemStyle,
     numColumns
