@@ -151,7 +151,6 @@ const CustomFlashList = forwardRef( ( props, ref ) => {
   return (
     <FlashList
       ref={ref}
-      disableAutoLayout
       initialNumToRender={5}
       onEndReached={handleEndReached}
       onEndReachedThreshold={0.2}
