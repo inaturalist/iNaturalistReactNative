@@ -9,24 +9,21 @@ import {
   ScrollView
 } from "components/styledComponents";
 import { t } from "i18next";
+import type { ErrorInfo, PropsWithChildren } from "react";
 import React from "react";
 import RNRestart from "react-native-restart";
 import { log } from "sharedHelpers/logger";
 
 const logger = log.extend( "ErrorBoundary" );
 
-interface Props {
-  children: React.ReactNode;
-}
-
 interface State {
   error: Error | null;
-  info: React.ErrorInfo | null;
+  info: ErrorInfo | null;
 }
 
 // https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary
-class ErrorBoundary extends React.Component<Props, State> {
-  constructor( props: Props ) {
+class ErrorBoundary extends React.Component<PropsWithChildren, State> {
+  constructor( props: PropsWithChildren ) {
     super( props );
     this.state = { error: null, info: null };
   }
@@ -36,7 +33,7 @@ class ErrorBoundary extends React.Component<Props, State> {
     return { error };
   }
 
-  componentDidCatch( error: Error, info: React.ErrorInfo ) {
+  componentDidCatch( error: Error, info: ErrorInfo ) {
     this.setState( { info } );
     if ( info?.componentStack ) {
       // componentStack is a little more informative than what's generally in
