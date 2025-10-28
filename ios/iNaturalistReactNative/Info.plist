@@ -73,6 +73,8 @@
 	<string>Export iNaturalist photos to your library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Export and import iNaturalist photos to and from your library.</string>
+	<key>RCTNewArchEnabled</key>
+	<true/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Lato-Bold.ttf</string>
