@@ -13,7 +13,7 @@ const defaultViewabilityConfig: ViewabilityConfig = {
   waitForInteraction: false
 };
 
-const CustomFlashList: Function = forwardRef( ( props, ref ) => {
+const CustomFlashList = forwardRef( ( props, ref ) => {
   const isFirstRender = useRef( true );
   const lastContentOffset = useRef( 0 );
 
