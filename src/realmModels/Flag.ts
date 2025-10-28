@@ -1,7 +1,5 @@
 import { Realm } from "@realm/react";
 
-// import User from "./User";
-
 class Flag extends Realm.Object {
   static FLAG_FIELDS = {
     id: true,
