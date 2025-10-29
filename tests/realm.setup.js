@@ -49,4 +49,5 @@ beforeAll( async ( ) => {
 // Ensure the realm connection gets closed
 afterAll( ( ) => {
   global.realm?.close( );
+  Realm.shutdown();
 } );
