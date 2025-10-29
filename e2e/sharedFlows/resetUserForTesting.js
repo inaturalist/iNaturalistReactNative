@@ -1,7 +1,8 @@
 import { create } from "apisauce";
 import inatjs from "inaturalistjs";
 import Config from "react-native-config-node";
-import * as uuid from "uuid";
+
+import { CHUCKS_PAD as sampleObservation } from "../../src/appConstants/e2e";
 
 const apiHost = Config.OAUTH_API_URL;
 
@@ -10,15 +11,11 @@ const testUsernameAllowlist = [
 ];
 
 const userAgent = "iNaturalistRN/e2e";
-const installId = uuid.v4( ).toString( );
 
 inatjs.setConfig( {
   apiURL: Config.API_URL,
   writeApiURL: Config.API_URL,
-  userAgent,
-  headers: {
-    "X-Installation-ID": installId
-  }
+  userAgent
 } );
 
 // programatically dismisses announcements for user and resets to a lone sample observation
@@ -29,16 +26,16 @@ export default async function resetUserForTesting() {
   );
 
   if ( !testUsernameAllowlist.includes( Config.E2E_TEST_USERNAME ) ) {
-    const message = "This e2e test deletes observations of the user under test."
-    + "Add this username to the `testUsernameAllowlist` if that's really what you want.";
+    const message = "This e2e test deletes observations of the user under test. "
+    + "Add this username to the `testUsernameAllowlist` if that's really what you want. "
+    + "Aborting.";
     throw new Error( message );
   }
 
   const apiClient = create( {
     baseURL: apiHost,
     headers: {
-      "User-Agent": userAgent,
-      "X-Installation-ID": installId
+      "User-Agent": userAgent
     }
   } );
 
@@ -109,10 +106,15 @@ export default async function resetUserForTesting() {
 
   const observationResponse = await inatjs.observations.search( { user_id: userId }, opts );
 
-  // is this _really_ an e2e test user if they have more than expected observations?
+  if ( typeof observationResponse?.total_results !== "number" ) {
+    const message = "Unexpected issue getting test user's observations. Aborting.";
+    throw new Error( message );
+  }
+
+  // spot check to smell if this is _really_ a test user, we don't want to accidentally delete
+  // real observations
   const suspiciousObservationThreshold = 10;
-  if ( typeof observationResponse.total_results !== "number"
-     || observationResponse.total_results > suspiciousObservationThreshold ) {
+  if ( observationResponse.total_results > suspiciousObservationThreshold ) {
     const message
         = `More than ${suspiciousObservationThreshold} observations found for test user. Aborting.`;
     throw new Error( message );
@@ -131,20 +133,7 @@ export default async function resetUserForTesting() {
 
   console.log( "Creating sample observation" );
   const sampleObservationParams = {
-    observation: {
-      captive_flag: false,
-      geoprivacy: "open",
-      latitude: 52.52,
-      longitude: 13.405,
-      observed_on_string: "2025-10-22T09:40:42",
-      owners_identification_from_vision: false,
-      place_guess: "Spandauer Straße, Berlin, Berlin, DE",
-      positional_accuracy: 5,
-      uuid: "f8fa9612-02e6-4764-8cb3-ab0b4306cd58"
-    },
-    fields: {
-      id: true
-    }
+    observation: sampleObservation
   };
   await inatjs.observations.create(
     sampleObservationParams,
