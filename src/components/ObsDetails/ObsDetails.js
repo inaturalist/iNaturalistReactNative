@@ -8,22 +8,11 @@ import {
   TextInputSheet,
   WarningSheet
 } from "components/SharedComponents";
-import {
-  SafeAreaView,
-  ScrollView,
-  View
-} from "components/styledComponents";
+import { ScrollView, View } from "components/styledComponents";
 import type { Node } from "react";
-import React, {
-  useEffect,
-  useMemo,
-  useRef
-} from "react";
+import React, { useEffect, useRef } from "react";
 import { Platform } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import {
-  useSafeAreaInsets
-} from "react-native-safe-area-context";
 import {
   useScrollToOffset,
   useTranslation
@@ -127,7 +116,6 @@ const ObsDetails = ( {
   uuid
 }: Props ): Node => {
   const scrollViewRef = useRef( );
-  const insets = useSafeAreaInsets();
   const { t } = useTranslation( );
 
   const {
@@ -143,15 +131,6 @@ const ObsDetails = ( {
       scrollViewRef?.current?.scrollToEnd( );
     }
   }, [addingActivityItem] );
-
-  const dynamicInsets = useMemo( () => ( {
-    backgroundColor: "#ffffff",
-    paddingTop: insets.top,
-    paddingBottom: insets.bottom,
-    paddingLeft: insets.left,
-    paddingRight: insets.right
-  } ), [insets] );
-
   const textInputStyle = Platform.OS === "android" && {
     height: 125
   };
@@ -315,10 +294,7 @@ const ObsDetails = ( {
   };
 
   return (
-    <SafeAreaView
-      className="flex-1 bg-black"
-      style={[dynamicInsets]}
-    >
+    <View className="flex-1 bg-black">
       {!isTablet
         ? renderPhone()
         : renderTablet()}
@@ -386,7 +362,7 @@ const ObsDetails = ( {
           confirm={confirmRemoteObsWasDeleted}
         />
       ) }
-    </SafeAreaView>
+    </View>
   );
 };
 

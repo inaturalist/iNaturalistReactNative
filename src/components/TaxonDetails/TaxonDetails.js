@@ -17,10 +17,7 @@ import {
   List2,
   OfflineNotice
 } from "components/SharedComponents";
-import {
-  SafeAreaView,
-  View
-} from "components/styledComponents";
+import { View } from "components/styledComponents";
 import i18n from "i18next";
 import _, { compact } from "lodash";
 import { RealmContext } from "providers/contexts";
@@ -31,6 +28,7 @@ import {
   StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Observation from "realmModels/Observation";
 import fetchTaxonAndSave from "sharedHelpers/fetchTaxonAndSave";
 import { log } from "sharedHelpers/logger";
@@ -92,6 +90,7 @@ const TaxonDetails = ( ): Node => {
   const {
     id, hideNavButtons, firstPhotoID, representativePhoto
   } = params;
+  const insets = useSafeAreaInsets();
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
   const { remoteUser } = useUserMe( );
@@ -398,8 +397,9 @@ const TaxonDetails = ( ): Node => {
   }
 
   return (
-    <SafeAreaView
+    <View
       className="flex-1 bg-black"
+      style={{ paddingTop: insets.top, paddingBottom: insets.top }}
     >
       {/*
         Making the bar dark here seems like the right thing, but I haven't
@@ -532,7 +532,7 @@ const TaxonDetails = ( ): Node => {
           />
         </View>
       </BottomSheet>
-    </SafeAreaView>
+    </View>
   );
 };
 

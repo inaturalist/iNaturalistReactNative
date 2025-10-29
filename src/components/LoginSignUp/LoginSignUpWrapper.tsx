@@ -1,7 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
-import classnames from "classnames";
 import {
-  ImageBackground, SafeAreaView, ScrollView, View
+  ImageBackground, ScrollView, View
 } from "components/styledComponents";
 import React, {
   PropsWithChildren, useEffect, useRef
@@ -16,6 +15,7 @@ import {
   Platform,
   StatusBar
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import colors from "styles/tailwindColors";
 
 interface Props extends PropsWithChildren {
@@ -36,6 +36,7 @@ const LoginSignupWrapper = ( {
 }: Props ) => {
   const scrollViewRef = useRef( null );
   const navigation = useNavigation( );
+  const insets = useSafeAreaInsets();
 
   useEffect( ( ) => {
     const resetScroll = ( ) => {
@@ -86,17 +87,7 @@ const LoginSignupWrapper = ( {
       className="h-full w-full"
       imageStyle={imageStyle}
     >
-      <SafeAreaView
-        className={classnames(
-          "w-full",
-          "h-full",
-          // In LoginStackNavigator we set `headerTransparent: true`, but this
-          // makes content inside the SafeAreaView stay there in iOS but flow
-          // up under the header area in Android. Barring a better solution,
-          // this makes sure content stay below the header on Android
-          Platform.OS === "android" && "pt-[60px]"
-        )}
-      >
+      <View style={{ paddingTop: insets.top }}>
         <StatusBar
           barStyle="light-content"
           backgroundColor={colors.black}
@@ -115,7 +106,7 @@ const LoginSignupWrapper = ( {
             </View>
           </View>
         </ScrollView>
-      </SafeAreaView>
+      </View>
     </ImageBackground>
   );
 };

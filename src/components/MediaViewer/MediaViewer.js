@@ -1,7 +1,7 @@
 // @flow
 
 import { WarningSheet } from "components/SharedComponents";
-import { SafeAreaView } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -11,6 +11,7 @@ import React, {
   useState
 } from "react";
 import { StatusBar } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Photo from "realmModels/Photo";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
@@ -54,6 +55,7 @@ const MediaViewer = ( {
   sounds = [],
   uri
 }: Props ): Node => {
+  const insets = useSafeAreaInsets();
   const uris = useMemo( ( ) => ( [
     ...photos.map( photo => photo.url || Photo.getLocalPhotoUri( photo.localFilePath ) ),
     ...sounds.map( sound => sound.file_url )
@@ -111,7 +113,7 @@ const MediaViewer = ( {
   ] );
 
   return (
-    <SafeAreaView className="flex-1 bg-black" testID="MediaViewer">
+    <View className="flex-1 bg-black" style={{ paddingTop: insets.top }} testID="MediaViewer">
       <StatusBar barStyle="light-content" backgroundColor="black" />
       {
         header
@@ -156,7 +158,7 @@ const MediaViewer = ( {
           testID="MediaViewer.DiscardMediaWarningSheet"
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 };
 

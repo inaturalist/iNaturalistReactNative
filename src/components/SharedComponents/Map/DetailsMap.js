@@ -11,14 +11,12 @@ import {
   Map,
   Modal
 } from "components/SharedComponents";
-import {
-  SafeAreaView,
-  View
-} from "components/styledComponents";
+import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
 import openMap from "react-native-open-maps";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
@@ -72,6 +70,8 @@ const DetailsMap = ( {
   showLocationIndicator,
   tileMapParams
 }: Props ): Node => {
+  const insets = useSafeAreaInsets();
+
   const [showNotificationModal, setShowNotificationModal] = useState( false );
 
   const closeShowNotificationModal = () => {
@@ -98,16 +98,17 @@ const DetailsMap = ( {
 
   return (
     <View className="flex-1">
-      <SafeAreaView>
-        <View className="bg-white w-fit flex-row py-[22px] pl-[21px] pr-[24px] items-start">
-          <HeaderBackButton
-            tintColor={colors.darkGray}
-            onPress={( ) => closeModal()}
-            displayMode="minimal"
-          />
-          {headerTitle || <Heading2 className="m-0">{t( "Map-Area" )}</Heading2>}
-        </View>
-      </SafeAreaView>
+      <View
+        className="bg-white w-fit flex-row py-[22px] pl-[21px] pr-[24px] items-start"
+        style={{ paddingTop: insets.top }}
+      >
+        <HeaderBackButton
+          tintColor={colors.darkGray}
+          onPress={( ) => closeModal()}
+          displayMode="minimal"
+        />
+        {headerTitle || <Heading2 className="m-0">{t( "Map-Area" )}</Heading2>}
+      </View>
       <View className="flex-1">
         <Map
           mapHeight="100%"
