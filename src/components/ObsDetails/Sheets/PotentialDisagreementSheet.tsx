@@ -1,3 +1,4 @@
+import type { ApiTaxon } from "api/types";
 import {
   Body1,
   DisplayTaxon,
@@ -7,13 +8,14 @@ import {
 import { View } from "components/styledComponents";
 import React from "react";
 import { Trans } from "react-i18next";
+import type { RealmTaxon } from "realmModels/types";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
 interface Props {
   onPressClose: () => void,
   onPotentialDisagreePressed: ( _checkedValue: string ) => void;
-  newTaxon: object,
-  oldTaxon: object
+  newTaxon: RealmTaxon | ApiTaxon,
+  oldTaxon: RealmTaxon | ApiTaxon
 }
 
 const PotentialDisagreementSheet = ( {
