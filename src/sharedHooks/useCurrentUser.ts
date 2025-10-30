@@ -14,7 +14,7 @@ const useCurrentUser = ( ): User | null => {
     // Sets the current user if one is detected, unsets it if not
     const listener = (
       collection: Realm.OrderedCollection<User>,
-      changes: Partial<Realm.CollectionChangeSet>
+      changes: { deletions?: number[] }
     ) => {
       if (
         ( changes.deletions && changes.deletions.length > 0 )
