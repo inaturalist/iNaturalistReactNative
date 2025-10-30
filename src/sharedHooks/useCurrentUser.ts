@@ -5,15 +5,6 @@ import User from "realmModels/User";
 
 const { useRealm } = RealmContext;
 
-function emptyChangeSet( ): Realm.CollectionChangeSet {
-  return {
-    insertions: [],
-    deletions: [],
-    newModifications: [],
-    oldModifications: []
-  };
-}
-
 const useCurrentUser = ( ): User | null => {
   const realm = useRealm( );
   const [currentUser, setCurrentUser] = useState<User | null>( null );
@@ -36,7 +27,12 @@ const useCurrentUser = ( ): User | null => {
     };
 
     // Run the listener on the results for the first time
-    listener( realmResults, emptyChangeSet( ) );
+    listener( realmResults, {
+      insertions: [],
+      deletions: [],
+      newModifications: [],
+      oldModifications: []
+    } );
 
     // Add the listener
     realmResults?.addListener( listener );
