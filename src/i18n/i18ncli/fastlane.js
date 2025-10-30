@@ -1,7 +1,7 @@
 /* eslint no-console: 0 */
 
-const fsp = require( "fs/promises" );
-const path = require( "path" );
+import fsp from "fs/promises";
+import path from "path";
 
 const SUPPORTED_APP_STORE_LOCALES = [
   "ar-SA",
@@ -320,7 +320,7 @@ async function copyAndroidTitle( options = {} ) {
   );
 }
 
-module.exports = {
+export {
   copyAndroidTitle,
   removeUnsupportedDirectories,
   renameDirectories

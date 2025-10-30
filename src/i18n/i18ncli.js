@@ -1,23 +1,22 @@
 /* eslint no-console: 0 */
 
-const fs = require( "fs" );
-const path = require( "path" );
-const yargs = require( "yargs" );
-
-const {
-  jsonifyLocalizations,
-  supportedLocales,
-  normalizeFileNames,
-  validate,
-  normalize,
-  untranslatable,
-  unused
-} = require( "./i18ncli/ftl" );
-const {
+import fs from "fs";
+import {
   copyAndroidTitle,
   removeUnsupportedDirectories,
   renameDirectories
-} = require( "./i18ncli/fastlane" );
+} from "i18n/i18ncli/fastlane";
+import {
+  jsonifyLocalizations,
+  normalize,
+  normalizeFileNames,
+  supportedLocales,
+  untranslatable,
+  unused,
+  validate
+} from "i18n/i18ncli/ftl";
+import path from "path";
+import yargs from "yargs";
 
 // Write loadTranslations.js, a file with a function that statically loads
 // translation files given a locale
