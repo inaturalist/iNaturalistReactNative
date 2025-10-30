@@ -102,7 +102,6 @@ const ObservationsFlashList: Function = forwardRef( ( {
   };
 
   const {
-    estimatedGridItemSize,
     flashListStyle,
     gridItemStyle,
     gridItemWidth,
@@ -245,10 +244,6 @@ const ObservationsFlashList: Function = forwardRef( ( {
     t
   ] );
 
-  const estimatedItemSize = layout === "grid"
-    ? estimatedGridItemSize
-    : 98;
-
   const extraData = {
     gridItemWidth,
     numColumns
@@ -295,7 +290,6 @@ const ObservationsFlashList: Function = forwardRef( ( {
       ListHeaderComponent={renderHeader}
       contentContainerStyle={contentContainerStyle}
       data={data}
-      estimatedItemSize={estimatedItemSize}
       extraData={extraData}
       ref={ref}
       key={numColumns}

@@ -1,10 +1,10 @@
-import { FlashList, ViewabilityConfig } from "@shopify/flash-list";
+import { FlashList } from "@shopify/flash-list";
 import React, {
-  forwardRef,
   useCallback,
   useEffect,
   useRef
 } from "react";
+import type { ViewabilityConfig } from "react-native";
 import flashListTracker from "sharedHelpers/flashListPerformanceTracker";
 
 const defaultViewabilityConfig: ViewabilityConfig = {
@@ -13,7 +13,7 @@ const defaultViewabilityConfig: ViewabilityConfig = {
   waitForInteraction: false
 };
 
-const CustomFlashList: Function = forwardRef( ( props, ref ) => {
+const CustomFlashList = props => {
   const isFirstRender = useRef( true );
   const lastContentOffset = useRef( 0 );
 
@@ -24,6 +24,7 @@ const CustomFlashList: Function = forwardRef( ( props, ref ) => {
   const fetchInProgress = useRef( false );
 
   const {
+    ref,
     onMomentumScrollEnd,
     onScroll,
     onViewableItemsChanged,
@@ -151,7 +152,6 @@ const CustomFlashList: Function = forwardRef( ( props, ref ) => {
   return (
     <FlashList
       ref={ref}
-      disableAutoLayout
       initialNumToRender={5}
       onEndReached={handleEndReached}
       onEndReachedThreshold={0.2}
@@ -165,6 +165,6 @@ const CustomFlashList: Function = forwardRef( ( props, ref ) => {
       {...otherProps}
     />
   );
-} );
+};
 
 export default CustomFlashList;

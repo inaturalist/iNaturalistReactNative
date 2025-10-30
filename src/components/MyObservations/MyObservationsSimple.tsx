@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { FlashList } from "@shopify/flash-list";
+import type { FlashListRef } from "@shopify/flash-list";
 import ObservationsViewBar from "components/Explore/ObservationsViewBar";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
 import ObsGridItem from "components/ObservationsFlashList/ObsGridItem";
@@ -52,7 +52,7 @@ export interface Props {
   isConnected: boolean;
   isFetchingNextPage: boolean;
   layout: "list" | "grid";
-  listRef?: React.RefObject<FlashList<RealmObservation> | null>;
+  listRef?: React.RefObject<FlashListRef<RealmObservation> | null>;
   numTotalObservations?: number;
   numTotalTaxa?: number;
   numUnuploadedObservations: number;
@@ -117,7 +117,6 @@ const MyObservationsSimple = ( {
   const navigation = useNavigation( );
   const route = useRoute( );
   const {
-    estimatedGridItemSize,
     flashListStyle,
     gridItemStyle,
     numColumns
@@ -324,7 +323,6 @@ const MyObservationsSimple = ( {
             canFetch={!!currentUser}
             contentContainerStyle={taxaFlashListStyle}
             data={taxa}
-            estimatedItemSize={estimatedGridItemSize}
             hideLoadingWheel
             isConnected={isConnected}
             keyExtractor={(

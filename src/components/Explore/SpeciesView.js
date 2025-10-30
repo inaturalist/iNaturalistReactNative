@@ -40,7 +40,6 @@ const SpeciesView = ( {
   const { state } = useExplore();
   const { excludeUser } = state;
   const {
-    estimatedGridItemSize,
     flashListStyle,
     gridItemStyle,
     numColumns
@@ -156,7 +155,6 @@ const SpeciesView = ( {
       canFetch={canFetch}
       contentContainerStyle={contentContainerStyle}
       data={data}
-      estimatedItemSize={estimatedGridItemSize}
       fetchNextPage={fetchNextPage}
       hideLoadingWheel={!isFetchingNextPage}
       isFetchingNextPage={isFetchingNextPage}

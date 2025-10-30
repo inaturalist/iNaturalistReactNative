@@ -2,6 +2,7 @@ import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import type { FlashListRef } from "@shopify/flash-list";
 import { fetchSpeciesCounts } from "api/observations";
 import { RealmContext } from "providers/contexts";
 import React, {
@@ -56,7 +57,7 @@ const MyObservationsContainer = ( ): React.FC => {
   const { t } = useTranslation( );
   const realm = useRealm( );
   const navigation = useNavigation( );
-  const listRef = useRef( null );
+  const listRef = useRef<FlashListRef<RealmObservation>>( null );
   const navigateToObsEdit = useNavigateToObsEdit( );
 
   const setStartUploadObservations = useStore( state => state.setStartUploadObservations );

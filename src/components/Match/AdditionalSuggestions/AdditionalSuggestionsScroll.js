@@ -132,7 +132,6 @@ const AdditionalSuggestionsScroll = ( {
                 ListHeaderComponent={renderHeader}
                 horizontal
                 renderItem={renderItem}
-                estimatedItemSize={160}
                 keyExtractor={item => item?.taxon?.id}
                 data={otherSuggestions}
               />
