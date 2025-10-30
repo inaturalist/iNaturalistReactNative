@@ -251,7 +251,8 @@ const ObservationsFlashList: Function = forwardRef( ( {
 
   const extraData = {
     gridItemWidth,
-    numColumns
+    numColumns,
+    layout
   };
 
   // only used id as a fallback key because after upload
