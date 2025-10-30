@@ -90,7 +90,6 @@ export default async function resetUserForTesting() {
       opts
     );
   } ) );
-
   const usersEditResponse = await apiClient.get(
     "/users/edit.json",
     {},
@@ -133,7 +132,10 @@ export default async function resetUserForTesting() {
 
   console.log( "Creating sample observation" );
   const sampleObservationParams = {
-    observation: sampleObservation
+    observation: {
+      latitude: sampleObservation.latitude,
+      longitude: sampleObservation.longitude
+    }
   };
   await inatjs.observations.create(
     sampleObservationParams,
