@@ -3,7 +3,7 @@ import { getHeaderTitle } from "@react-navigation/elements";
 import classNames from "classnames";
 import { Heading1, Heading4 } from "components/SharedComponents";
 import BackButton from "components/SharedComponents/Buttons/BackButton";
-import { SafeAreaView, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { dropShadow } from "styles/global";
@@ -64,7 +64,7 @@ const ContextHeader = ( {
   const backButton = renderBackButton();
 
   return (
-    <SafeAreaView
+    <View
       className="bg-white"
       style={{
         ...options.headerStyle,
@@ -108,7 +108,7 @@ const ContextHeader = ( {
             )}
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

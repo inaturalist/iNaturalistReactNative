@@ -12,8 +12,7 @@ import {
   INatIcon,
   InfiniteScrollLoadingWheel,
   SearchBar,
-  Tabs,
-  ViewWrapper
+  Tabs
 } from "components/SharedComponents";
 import { Tab } from "components/SharedComponents/Tabs/Tabs";
 import { View } from "components/styledComponents";
@@ -152,7 +151,7 @@ const Projects = ( {
   };
 
   return (
-    <ViewWrapper testID="Projects">
+    <View testID="Projects" className="bg-white flex-1">
       <View className="py-5 mx-4">
         <SearchBar
           autoFocus={false}
@@ -170,7 +169,7 @@ const Projects = ( {
         </>
       )}
       {renderList( )}
-    </ViewWrapper>
+    </View>
   );
 };
 

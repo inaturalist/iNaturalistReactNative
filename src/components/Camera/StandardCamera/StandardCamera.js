@@ -6,10 +6,7 @@ import CameraView from "components/Camera/CameraView";
 import FadeInOutView from "components/Camera/FadeInOutView";
 import useRotation from "components/Camera/hooks/useRotation";
 import useZoom from "components/Camera/hooks/useZoom";
-import {
-  SafeAreaView,
-  View
-} from "components/styledComponents";
+import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, {
@@ -19,6 +16,7 @@ import React, {
 } from "react";
 import DeviceInfo from "react-native-device-info";
 import { Snackbar } from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { VolumeManager } from "react-native-volume-manager";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
@@ -89,6 +87,7 @@ const StandardCamera = ( {
     rotation
   } = useRotation( );
   const navigation = useNavigation( );
+  const insets = useSafeAreaInsets();
 
   const { loadTime } = usePerformance( {
     isLoading: camera?.current !== null
@@ -198,7 +197,7 @@ const StandardCamera = ( {
   }, [handleTakePhoto, initialVolume] );
 
   return (
-    <SafeAreaView className={classnames( containerClasses )}>
+    <View className={classnames( containerClasses )} style={{ paddingTop: insets.top }}>
       <PhotoPreview
         rotation={rotation}
         takingPhoto={takingPhoto}
@@ -256,7 +255,7 @@ const StandardCamera = ( {
         hidden={!showDiscardSheet}
         onDiscard={handleDiscard}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 

@@ -48,6 +48,7 @@ class ErrorBoundary extends React.Component<PropsWithChildren, State> {
       // TODO allow this to take a fallback component as a prop so individual
       // boundaries can customize their error states
       return (
+        // exceptionally uses SafeAreaView because we're in a class component and can't useInsets()
         <SafeAreaView className="flex-1">
           <ScrollView className="p-5 bg-white">
             <Heading1 className="my-3">{ t( "Something-went-wrong" ) }</Heading1>

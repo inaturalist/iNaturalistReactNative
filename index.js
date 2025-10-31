@@ -147,10 +147,10 @@ const AppWithProviders = ( ) => {
   return (
     <QueryClientProvider client={queryClient}>
       <RealmProvider>
-        <SafeAreaProvider>
-          <INatPaperProvider>
-            <GestureHandlerRootView className="flex-1">
-              <BottomSheetModalProvider>
+        <INatPaperProvider>
+          <GestureHandlerRootView className="flex-1">
+            <BottomSheetModalProvider>
+              <SafeAreaProvider>
                 <View style={darkModeStyleWrapper}>
                   <OfflineNavigationGuard>
                     <ErrorBoundary>
@@ -158,10 +158,10 @@ const AppWithProviders = ( ) => {
                     </ErrorBoundary>
                   </OfflineNavigationGuard>
                 </View>
-              </BottomSheetModalProvider>
-            </GestureHandlerRootView>
-          </INatPaperProvider>
-        </SafeAreaProvider>
+              </SafeAreaProvider>
+            </BottomSheetModalProvider>
+          </GestureHandlerRootView>
+        </INatPaperProvider>
       </RealmProvider>
     </QueryClientProvider>
   );

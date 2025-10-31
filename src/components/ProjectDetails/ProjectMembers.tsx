@@ -6,7 +6,7 @@ import { fetchProjectMembers } from "api/projects";
 import {
   ActivityIndicator, InfiniteScrollLoadingWheel
 } from "components/SharedComponents";
-import { SafeAreaView } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import UserList from "components/UserList/UserList";
 import React, { useCallback, useEffect, useMemo } from "react";
 import User from "realmModels/User";
@@ -66,7 +66,7 @@ const ProjectMembers = ( ) => {
   ), [] );
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <View className="flex-1 bg-white">
       <UserList
         users={projectMembers}
         onEndReached={fetchNextPage}
@@ -74,7 +74,7 @@ const ProjectMembers = ( ) => {
         ListEmptyComponent={renderEmptyComponent}
         ListFooterComponent={renderFooter}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
