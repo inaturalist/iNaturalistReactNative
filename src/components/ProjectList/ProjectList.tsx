@@ -60,7 +60,6 @@ const ProjectList = ( {
       ListEmptyComponent={ListEmptyComponent}
       ListFooterComponent={ListFooterComponent}
       data={projects}
-      estimatedItemSize={100}
       keyExtractor={item => item.id}
       onEndReached={onEndReached}
       renderItem={renderProject}

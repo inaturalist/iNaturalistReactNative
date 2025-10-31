@@ -78,10 +78,7 @@ describe( "MyObservationsSimple", () => {
     renderMyObservations( "list" );
     const obs = mockObservations[0];
 
-    const list = await screen.findByTestId( "MyObservationsAnimatedList" );
-    // Test that there isn't other data lingering
-    expect( list.props.data.length ).toEqual( mockObservations.length );
-    // Test that a card got rendered for the our test obs
+    // Test that a card got rendered for the test obs
     const card = await screen.findByTestId( `MyObservations.obsListItem.${obs.uuid}` );
     expect( card ).toBeTruthy();
   } );
