@@ -84,6 +84,7 @@ module.exports = {
     "no-var": 1,
     "operator-linebreak": [2, "before"],
     "prefer-const": [2, { destructuring: "all" }],
+    "no-restricted-syntax": 0,
     // "react/forbid-prop-types": 0,
     "react/prop-types": 0,
     "react/destructuring-assignment": 0,
