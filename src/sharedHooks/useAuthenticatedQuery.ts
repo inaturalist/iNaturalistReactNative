@@ -5,14 +5,22 @@ import { handleRetryDelay, reactQueryRetry } from "sharedHelpers/logging";
 
 const LOGGED_IN_UNKNOWN = null;
 
+interface QueryOptions {
+  allowAnonymousJWT?: boolean;
+  enabled?: boolean;
+  retry?: boolean;
+}
+
+type QueryFunction = ( options: { api_token: string | null } ) => Promise<unknown>;
+
 // Should work like React Query's useQuery except it calls the queryFunction
 // with an object that includes the JWT
 const useAuthenticatedQuery = (
-  queryKey,
-  queryFunction,
-  queryOptions = {}
+  queryKey: string[],
+  queryFunction: QueryFunction,
+  queryOptions: QueryOptions = {}
 ) => {
-  const [userLoggedIn, setUserLoggedIn] = useState( LOGGED_IN_UNKNOWN );
+  const [userLoggedIn, setUserLoggedIn] = useState<boolean | null>( LOGGED_IN_UNKNOWN );
 
   useEffect( ( ) => {
     const checkAuth = async ( ) => {
