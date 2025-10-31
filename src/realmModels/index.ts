@@ -44,7 +44,7 @@ export default {
     if ( oldRealm.schemaVersion < 59 ) {
       const oldTaxa = oldRealm.objects( "Taxon" );
       const newTaxa = newRealm.objects( "Taxon" );
-      newTaxa.keys( ).forEach( ( objectIndex: number ) => {
+      newTaxa.forEach( ( _, objectIndex: number ) => {
         const newTaxon = newTaxa[objectIndex];
         const oldTaxon = oldTaxa[objectIndex];
         newTaxon._searchableName = Taxon.compileSearchableName( oldTaxon );
@@ -52,7 +52,7 @@ export default {
     }
     if ( oldRealm.schemaVersion < 55 ) {
       const newObservations = newRealm.objects( "Observation" );
-      newObservations.keys( ).forEach( objectIndex => {
+      newObservations.forEach( ( _, objectIndex: number ) => {
         const newObservation = newObservations[objectIndex];
         newObservation.updateNeedsSync();
       } );
@@ -61,7 +61,7 @@ export default {
       const oldPrefs = oldRealm.objects( "LocalPreferences" );
       const newPrefs = newRealm.objects( "LocalPreferences" );
       //  TODO: type? here and below
-      oldPrefs.keys( ).forEach( objectIndex => {
+      oldPrefs.forEach( ( _, objectIndex: number ) => {
         const newPreference = newPrefs[objectIndex];
         delete newPreference.explore_location_permission_shown;
       } );
@@ -79,7 +79,7 @@ export default {
     if ( oldRealm.schemaVersion < 49 ) {
       const oldObsSounds = oldRealm.objects( "ObservationSound" );
       const newObsSounds = newRealm.objects( "ObservationSound" );
-      oldObsSounds.keys( ).forEach( objectIndex => {
+      oldObsSounds.forEach( ( _, objectIndex: number ) => {
         const oldObsSound = oldObsSounds[objectIndex];
         const newObsSound = newObsSounds[objectIndex];
         newObsSound.sound = { file_url: oldObsSound.file_url };
@@ -88,7 +88,7 @@ export default {
     if ( oldRealm.schemaVersion < 48 ) {
       const oldObservations = oldRealm.objects( "Observation" );
       const newObservations = newRealm.objects( "Observation" );
-      oldObservations.keys( ).forEach( objectIndex => {
+      oldObservations.forEach( ( _, objectIndex: number ) => {
         const oldObservation = oldObservations[objectIndex];
         const newObservation = newObservations[objectIndex];
         newObservation.votes = oldObservation.faves;
@@ -98,7 +98,7 @@ export default {
     if ( oldRealm.schemaVersion < 34 ) {
       const oldObservations = oldRealm.objects( "Observation" );
       const newObservations = newRealm.objects( "Observation" );
-      oldObservations.keys( ).forEach( objectIndex => {
+      oldObservations.forEach( ( _, objectIndex: number ) => {
         const oldObservation = oldObservations[objectIndex];
         const newObservation = newObservations[objectIndex];
         newObservation.observed_on = oldObservation.time_observed_at;
@@ -107,7 +107,7 @@ export default {
     if ( oldRealm.schemaVersion < 33 ) {
       const oldObservations = oldRealm.objects( "Observation" );
       const newObservations = newRealm.objects( "Observation" );
-      oldObservations.keys( ).forEach( objectIndex => {
+      oldObservations.forEach( ( _, objectIndex: number ) => {
         const oldObservation = oldObservations[objectIndex];
         const newObservation = newObservations[objectIndex];
         newObservation.comments_viewed = oldObservation.viewed;
@@ -119,7 +119,7 @@ export default {
     if ( oldRealm.schemaVersion < 32 ) {
       const oldObservations = oldRealm.objects( "Observation" );
       const newObservations = newRealm.objects( "Observation" );
-      oldObservations.keys( ).forEach( objectIndex => {
+      oldObservations.forEach( ( _, objectIndex: number ) => {
         const oldObservation = oldObservations[objectIndex];
         const newObservation = newObservations[objectIndex];
         newObservation.updated_at = oldObservation.created_at;
@@ -130,7 +130,7 @@ export default {
     if ( oldRealm.schemaVersion < 31 ) {
       const oldTaxa = oldRealm.objects( "Taxon" );
       const newTaxa = newRealm.objects( "Taxon" );
-      oldTaxa.keys( ).forEach( objectIndex => {
+      oldTaxa.forEach( ( _, objectIndex: number ) => {
         const newTaxon = newTaxa[objectIndex];
         const oldTaxon = oldTaxa[objectIndex];
         if ( oldTaxon.rank_level === 0 ) {
@@ -145,7 +145,7 @@ export default {
       const oldUsers = oldRealm.objects( "User" );
       const newUsers = newRealm.objects( "User" );
       // loop through all objects and set the new property in the new schema
-      oldUsers.keys( ).forEach( objectIndex => {
+      oldUsers.forEach( ( _, objectIndex: number ) => {
         const newUser = newUsers[objectIndex];
         const oldUser = oldUsers[objectIndex];
         newUser.prefers_scientific_name_first = Boolean( oldUser.prefers_scientific_name_first );
@@ -158,7 +158,7 @@ export default {
       const newTaxa = newRealm.objects( "Taxon" );
 
       // loop through all objects and set the new property in the new schema
-      oldTaxa.keys( ).forEach( objectIndex => {
+      oldTaxa.forEach( ( _, objectIndex: number ) => {
         const oldTaxon = oldTaxa[objectIndex];
         const newTaxon = newTaxa[objectIndex];
         newTaxon.rank_level = oldTaxon.rank_level || 0;
@@ -170,7 +170,7 @@ export default {
       const oldObservations = oldRealm.objects( "Observation" );
       const newObservations = newRealm.objects( "Observation" );
 
-      oldObservations.keys( ).forEach( objectIndex => {
+      oldObservations.forEach( ( _, objectIndex: number ) => {
         const oldObservation = oldObservations[objectIndex];
         const newObservation = newObservations[objectIndex];
         newObservation.captive_flag = oldObservation.captive;
@@ -180,7 +180,7 @@ export default {
       const oldObservations = oldRealm.objects( "Observation" );
       const newObservations = newRealm.objects( "Observation" );
 
-      oldObservations.keys( ).forEach( objectIndex => {
+      oldObservations.forEach( ( _, objectIndex: number ) => {
         const oldObservation = oldObservations[objectIndex];
         const newObservation = newObservations[objectIndex];
         newObservation._synced_at = oldObservation.timeSynced;
@@ -191,7 +191,7 @@ export default {
       const oldComments = oldRealm.objects( "Comment" );
       const newComments = newRealm.objects( "Comment" );
       // loop through all objects and set the new property in the new schema
-      oldComments.keys( ).forEach( objectIndex => {
+      oldComments.forEach( ( _, objectIndex: number ) => {
         const oldComment = oldComments[objectIndex];
         const newComment = newComments[objectIndex];
         newComment.created_at = oldComment.createdAt;
@@ -200,7 +200,7 @@ export default {
       const oldIdentifications = oldRealm.objects( "Identification" );
       const newIdentifications = newRealm.objects( "Identification" );
       // loop through all objects and set the new property in the new schema
-      oldIdentifications.keys( ).forEach( objectIndex => {
+      oldIdentifications.forEach( ( _, objectIndex: number ) => {
         const oldIdentification = oldIdentifications[objectIndex];
         const newIdentification = newIdentifications[objectIndex];
         newIdentification.created_at = oldIdentification.createdAt;
@@ -209,7 +209,7 @@ export default {
       const oldPhotos = oldRealm.objects( "Photo" );
       const newPhotos = newRealm.objects( "Photo" );
       // loop through all objects and set the new property in the new schema
-      oldPhotos.keys( ).forEach( objectIndex => {
+      oldPhotos.forEach( ( _, objectIndex: number ) => {
         const oldPhoto = oldPhotos[objectIndex];
         const newPhoto = newPhotos[objectIndex];
         newPhoto.license_code = oldPhoto.licenseCode;
@@ -218,7 +218,7 @@ export default {
       const oldUsers = oldRealm.objects( "User" );
       const newUsers = newRealm.objects( "User" );
       // loop through all objects and set the new property in the new schema
-      oldUsers.keys( ).forEach( objectIndex => {
+      oldUsers.forEach( ( _, objectIndex: number ) => {
         const oldUser = oldUsers[objectIndex];
         const newUser = newUsers[objectIndex];
         newUser.icon_url = oldUser.iconUrl;
@@ -227,7 +227,7 @@ export default {
       const oldTaxa = oldRealm.objects( "Taxon" );
       const newTaxa = newRealm.objects( "Taxon" );
       // loop through all objects and set the new property in the new schema
-      oldTaxa.keys( ).forEach( objectIndex => {
+      oldTaxa.forEach( ( _, objectIndex: number ) => {
         const oldTaxon = oldTaxa[objectIndex];
         const newTaxon = newTaxa[objectIndex];
         newTaxon.preferred_common_name = oldTaxon.preferredCommonName;
@@ -237,7 +237,7 @@ export default {
       const oldObservations = oldRealm.objects( "Observation" );
       const newObservations = newRealm.objects( "Observation" );
       // loop through all objects and set the new property in the new schema
-      oldObservations.keys( ).forEach( objectIndex => {
+      oldObservations.forEach( ( _, objectIndex: number ) => {
         const oldObservation = oldObservations[objectIndex];
         const newObservation = newObservations[objectIndex];
         newObservation.created_at = oldObservation.createdAt;
