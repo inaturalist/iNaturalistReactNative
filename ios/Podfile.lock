@@ -2085,7 +2085,7 @@ PODS:
     - React-utils (= 0.79.5)
   - ReactNativeExceptionHandler (2.10.10):
     - React-Core
-  - RealmJS (20.1.0):
+  - RealmJS (20.2.0):
     - React
   - RNAppleAuthentication (2.4.0):
     - React-Core
@@ -3069,7 +3069,7 @@ SPEC CHECKSUMS:
   ReactCodegen: 542dbcd3d677ed7c4fe69e28b7c492998f48c9db
   ReactCommon: 1aa48867a0fc71a2b4f9e8a1529f5673648354f3
   ReactNativeExceptionHandler: a23922ca00122b050ae9412f960061791c232c47
-  RealmJS: 9fd51c849eb552ade9f7b11db42a319b4f6cab4c
+  RealmJS: 1c37c6bdfe060f4caa0f9175aa0eedb962622ee1
   RNAppleAuthentication: 8d313d93fe2238d6b7ff0a39c67ebcf298d96653
   RNAudioRecorderPlayer: fa079748b34d15cd3b7b6a5d47b286bae6d5d49b
   RNCClipboard: 45b13251c8938aabfc25b9ecc35b5d42ab4eb0b0
