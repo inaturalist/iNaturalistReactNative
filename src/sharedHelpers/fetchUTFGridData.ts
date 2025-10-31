@@ -1,12 +1,18 @@
 // adapted from native Android iNaturalist app
 // https://github.com/inaturalist/iNaturalistAndroid/blob/main/iNaturalist/src/main/java/org/inaturalist/android/UTFGrid.java
 
+interface UTFGrid {
+  grid: string[];
+  keys: string[];
+  data?: { [key: string]: unknown };
+}
+
 const EXPANSION_PIXELS = 16;
 
 const TILE_SIZE = 256;
 const EMPTY_KEY = "";
 
-const decodeId = id => {
+const decodeId = ( id: number ): number => {
   let decodedId = id;
   if ( id >= 93 ) decodedId -= 1;
   if ( id >= 35 ) decodedId -= 1;
@@ -14,7 +20,7 @@ const decodeId = id => {
   return decodedId;
 };
 
-const getKeyForPixel = ( row, col, json ) => {
+const getKeyForPixel = ( row: number, col: number, json: UTFGrid ): string => {
   let id = 0;
 
   if ( ( row >= 0 ) && ( col >= 0 )
@@ -32,7 +38,11 @@ const getKeyForPixel = ( row, col, json ) => {
   return key;
 };
 
-const getKeyForPixelExpansive = ( x, y, json ) => {
+const getKeyForPixelExpansive = (
+  x: number,
+  y: number,
+  json: UTFGrid
+): string | null => {
   if ( !json?.grid ) return null;
   const factor = TILE_SIZE / json.grid.length;
 
@@ -73,13 +83,17 @@ const getKeyForPixelExpansive = ( x, y, json ) => {
 /** Returns the data object corresponding to the given tile position
    * @return data object corresponding to the tile position (null if no data for that position)
    */
-const getDataForPixel = ( x, y, json ) => {
+const getDataForPixel = (
+  x: number,
+  y: number,
+  json: UTFGrid | null | undefined
+): unknown | null => {
   if ( !json || !json?.data || !json?.grid ) return null;
 
   const key = getKeyForPixelExpansive( x, y, json );
 
   // Non existent key
-  if ( !json.data[key] ) { return null; }
+  if ( key === null || !json.data[key] ) { return null; }
 
   return json.data[key];
 };
