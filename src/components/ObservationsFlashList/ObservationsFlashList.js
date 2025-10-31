@@ -213,8 +213,8 @@ const ObservationsFlashList: Function = forwardRef( ( {
   const contentContainerStyle = useMemo( ( ) => {
     if ( layout === "list" ) { return contentContainerStyleProp; }
     return {
-      ...contentContainerStyleProp,
-      ...flashListStyle
+      ...flashListStyle,
+      ...contentContainerStyleProp
     };
   }, [
     contentContainerStyleProp,
