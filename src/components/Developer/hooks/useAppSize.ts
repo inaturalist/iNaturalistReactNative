@@ -150,9 +150,7 @@ export default function useAppSize(): null | AppSize {
 
   useEffect( () => {
     async function fetchAndSetAppSize() {
-      console.log( { appSize: "fetching" } );
       const appSize = await fetchAppSize();
-      console.log( { appSize } );
       setAppSize( appSize );
     }
     fetchAndSetAppSize();
