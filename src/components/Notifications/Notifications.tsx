@@ -1,7 +1,7 @@
 import { NotificationOnboarding } from "components/OnboardingModal/PivotCards";
 import { Tabs } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import React, { useState } from "react";
-import { View } from "react-native";
 import { EventRegister } from "react-native-event-listeners";
 import {
   useCurrentUser, useLayoutPrefs, useLocalObservations, useTranslation

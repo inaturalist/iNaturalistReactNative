@@ -113,7 +113,11 @@ const MediaViewer = ( {
   ] );
 
   return (
-    <View className="flex-1 bg-black" style={{ paddingTop: insets.top }} testID="MediaViewer">
+    <View
+      className="flex-1 bg-black"
+      style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}
+      testID="MediaViewer"
+    >
       <StatusBar barStyle="light-content" backgroundColor="black" />
       {
         header

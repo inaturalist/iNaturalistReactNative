@@ -26,7 +26,8 @@ interface Props extends PropsWithChildren {
 const windowHeight = Dimensions.get( "window" ).height;
 
 const SCROLL_VIEW_STYLE = {
-  minHeight: windowHeight * 1.1
+  minHeight: windowHeight * 1.1,
+  paddingTop: 60
 } as const;
 
 const LoginSignupWrapper = ( {
@@ -79,7 +80,8 @@ const LoginSignupWrapper = ( {
     return unsubscribe;
   }, [navigation] );
 
-  const fitContentWithinScreenStyle = { height: windowHeight * 0.85 };
+  // const fitContentWithinScreenStyle = { height: windowHeight * 0.85 };
+  const fitContentWithinScreenStyle = { };
 
   return (
     <ImageBackground

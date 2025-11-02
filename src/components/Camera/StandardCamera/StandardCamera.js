@@ -197,7 +197,10 @@ const StandardCamera = ( {
   }, [handleTakePhoto, initialVolume] );
 
   return (
-    <View className={classnames( containerClasses )} style={{ paddingTop: insets.top }}>
+    <View
+      className={classnames( containerClasses )}
+      style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}
+    >
       <PhotoPreview
         rotation={rotation}
         takingPhoto={takingPhoto}

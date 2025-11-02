@@ -399,7 +399,7 @@ const TaxonDetails = ( ): Node => {
   return (
     <View
       className="flex-1 bg-black"
-      style={{ paddingTop: insets.top, paddingBottom: insets.top }}
+      style={{ paddingTop: insets.top }}
     >
       {/*
         Making the bar dark here seems like the right thing, but I haven't

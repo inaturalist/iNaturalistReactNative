@@ -1,8 +1,9 @@
 import classnames from "classnames";
 import { Body1 } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import type { PropsWithChildren } from "react";
 import * as React from "react";
-import { StatusBar, View } from "react-native";
+import { StatusBar } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface Props extends PropsWithChildren {
