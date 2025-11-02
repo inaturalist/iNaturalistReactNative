@@ -10,7 +10,7 @@ import {
 } from "components/SharedComponents";
 import { fontMonoClass, View } from "components/styledComponents";
 import { t } from "i18next";
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { I18nManager, Platform, Text } from "react-native";
 import Config from "react-native-config";
 import RNFS from "react-native-fs";
@@ -18,13 +18,30 @@ import RNRestart from "react-native-restart";
 import useLogs from "sharedHooks/useLogs";
 
 import useAppSize, {
+  DirectoryEntrySize,
   formatAppSizeString, formatSizeUnits, getTotalDirectorySize
 } from "./hooks/useAppSize";
 
-const H1 = ( { children } ) => <Heading1 className="mt-3 mb-2">{children}</Heading1>;
-const H2 = ( { children } ) => <Heading2 className="mt-3 mb-2">{children}</Heading2>;
-const P = ( { children } ) => <Text selectable className="mb-2">{children}</Text>;
-const CODE = ( { children, optionalClassName } ) => (
+const H1 = ( { children }: PropsWithChildren ) => (
+  <Heading1 className="mt-3 mb-2">
+    {children}
+  </Heading1>
+);
+const H2 = ( { children }: PropsWithChildren ) => (
+  <Heading2 className="mt-3 mb-2">
+    {children}
+  </Heading2>
+);
+const P = ( { children }: PropsWithChildren ) => (
+  <Text selectable className="mb-2">
+    {children}
+  </Text>
+);
+
+interface CODEProps extends PropsWithChildren {
+  optionalClassName?: string;
+}
+const CODE = ( { children, optionalClassName }: CODEProps ) => (
   <Text
     selectable
     className={classnames(
@@ -54,9 +71,15 @@ const boldClassname = ( line: string, isDirectory = false ) => classnames(
     "text-blue": isDirectory
   }
 );
+
+interface DirectorySizesProps {
+  directoryName: string;
+  directoryEntrySizes: DirectoryEntrySize[]
+}
+
 /* eslint-disable i18next/no-literal-string */
-const DirectoryFileSizes = ( { directoryName, directorySize } ) => {
-  const totalDirectorySize = formatSizeUnits( getTotalDirectorySize( directorySize ) );
+const DirectoryFileSizes = ( { directoryName, directoryEntrySizes }: DirectorySizesProps ) => {
+  const totalDirectorySize = formatSizeUnits( getTotalDirectorySize( directoryEntrySizes ) );
   return (
     <View key={directoryName}>
       <H2>
@@ -69,7 +92,7 @@ const DirectoryFileSizes = ( { directoryName, directorySize } ) => {
           {`Total Directory Size: ${totalDirectorySize}`}
         </CODE>
       </P>
-      {directorySize.map( ( { name, size } ) => {
+      {directoryEntrySizes.map( ( { name, size } ) => {
         const line = formatAppSizeString( name, size );
         return (
           <P key={name}>
@@ -83,7 +106,6 @@ const DirectoryFileSizes = ( { directoryName, directorySize } ) => {
   );
 };
 
-/* eslint-disable i18next/no-literal-string */
 const AppFileSizes = () => {
   const appSize = useAppSize();
   if ( !appSize ) {
@@ -91,18 +113,17 @@ const AppFileSizes = () => {
   }
   return (
     <>
-      {Object.entries( appSize ).map( ( [directoryName, directorySize] ) => (
+      {Object.entries( appSize ).map( ( [directoryName, directoryEntrySizes] ) => (
         <DirectoryFileSizes
           key={directoryName}
           directoryName={directoryName}
-          directorySize={directorySize}
+          directoryEntrySizes={directoryEntrySizes}
         />
       ) )}
     </>
   );
 };
 
-/* eslint-disable i18next/no-literal-string */
 const Developer = () => {
   const toggleRTLandLTR = async ( ) => {
     const { isRTL, forceRTL } = I18nManager;

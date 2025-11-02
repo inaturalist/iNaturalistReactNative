@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { Platform } from "react-native";
 import RNFS from "react-native-fs";
 
-export type DirectorySize = {
+export type DirectoryEntrySize = {
   name: string;
   size: number;
 }
@@ -99,20 +99,20 @@ export const directories = sharedDirectories.concat( Platform.OS === "android"
   ? androidDirectories
   : iOSDirectories );
 
-export function formatAppSizeString( name:string, size: number ): string {
+export function formatAppSizeString( name: string, size: number ): string {
   return `${name}: ${formatSizeUnits( size )}`;
 }
 
-export async function getDirectoryContentSizes( directory: string ): Promise<DirectorySize[]> {
-  const contents = await RNFS.readDir( directory );
-  const sortedContents = _.orderBy( contents, "size", "desc" );
-  return sortedContents.map( ( { name, size } ) => ( {
+export async function getDirectoryEntrySizes( directory: string ): Promise<DirectoryEntrySize[]> {
+  const entries = await RNFS.readDir( directory );
+  const sortedEntries = _.orderBy( entries, "size", "desc" );
+  return sortedEntries.map( ( { name, size } ) => ( {
     name,
     size
   } ) );
 }
 
-export function getTotalDirectorySize( directoryItems: DirectorySize[] ): number {
+export function getTotalDirectorySize( directoryItems: DirectoryEntrySize[] ): number {
   const totalSize = directoryItems
     .map( item => item.size )
     .reduce( ( sum, current ) => sum + current, 0 );
@@ -121,7 +121,7 @@ export function getTotalDirectorySize( directoryItems: DirectorySize[] ): number
 }
 
 type AppSize = {
-  [directoryName: string]: DirectorySize[]
+  [directoryName: string]: DirectoryEntrySize[]
 }
 
 export async function fetchAppSize(): Promise<AppSize> {
@@ -137,8 +137,8 @@ export async function fetchAppSize(): Promise<AppSize> {
 
   const directoryToDirectorySizesKvps = await Promise.all(
     filteredDirectories.map( async dir => {
-      const contentSizes = await getDirectoryContentSizes( dir.path );
-      return [dir.directoryName, contentSizes] as [string, DirectorySize[]];
+      const directoryEntrySizes = await getDirectoryEntrySizes( dir.path );
+      return [dir.directoryName, directoryEntrySizes] as [string, DirectoryEntrySize[]];
     } )
   );
   const directorySizesByDirectory = Object.fromEntries( directoryToDirectorySizesKvps );
