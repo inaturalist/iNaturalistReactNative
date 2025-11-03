@@ -1,5 +1,3 @@
-// @flow
-
 import Clipboard from "@react-native-clipboard/clipboard";
 import { HeaderBackButton } from "@react-navigation/elements";
 import classnames from "classnames";
@@ -11,31 +9,35 @@ import {
   Map,
   Modal
 } from "components/SharedComponents";
+import { type TileMapParams } from "components/SharedComponents/Map/Map";
 import {
   SafeAreaView,
   View
 } from "components/styledComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React, { useState } from "react";
+import { GestureResponderEvent } from "react-native";
+import { Region } from "react-native-maps";
 import openMap from "react-native-open-maps";
+import Observation from "realmModels/Observation";
+import type { RealmObservation } from "realmModels/types";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  closeModal: Function,
+interface Props {
+  closeModal: () => void,
   coordinateString?: string,
-  headerTitle?: Object,
-  observation?: {
-    latitude?: number,
-    privateLatitude?: number,
-    longitude?: number,
-    privateLongitude?: number,
-    obscured?: boolean
-  },
-  region?: Object,
-  showLocationIndicator: boolean,
-  tileMapParams: Object,
+  headerTitle?: React.ReactNode,
+  observation?: Observation & RealmObservation,
+  region?: Region,
+  tileMapParams: TileMapParams,
+}
+
+interface FloatingActionButtonProps {
+  accessibilityLabel: string,
+  buttonClassName: string,
+  icon: string,
+  onPress: ( event?: GestureResponderEvent ) => void,
 }
 
 const FloatingActionButton = ( {
@@ -43,7 +45,7 @@ const FloatingActionButton = ( {
   buttonClassName,
   icon,
   onPress
-} ) => {
+}: FloatingActionButtonProps ) => {
   const fabClassNames = classnames(
     "absolute",
     "bg-white",
@@ -69,9 +71,8 @@ const DetailsMap = ( {
   headerTitle,
   observation,
   region,
-  showLocationIndicator,
   tileMapParams
-}: Props ): Node => {
+}: Props ): React.ReactNode => {
   const [showNotificationModal, setShowNotificationModal] = useState( false );
 
   const closeShowNotificationModal = () => {
@@ -114,7 +115,6 @@ const DetailsMap = ( {
           observation={observation}
           region={region}
           showCurrentLocationButton
-          showLocationIndicator={showLocationIndicator}
           showSwitchMapTypeButton
           tileMapParams={tileMapParams}
           withObsTiles={tileMapParams !== null}
