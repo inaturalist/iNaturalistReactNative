@@ -27,7 +27,7 @@ const windowHeight = Dimensions.get( "window" ).height;
 
 const SCROLL_VIEW_STYLE = {
   minHeight: windowHeight * 1.1,
-  paddingTop: 60
+  paddingTop: 54
 } as const;
 
 const LoginSignupWrapper = ( {
