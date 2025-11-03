@@ -10,7 +10,7 @@ concurrency:
   # cancel-in-progress: true
     
 jobs:
-  test:
+  test: 
     runs-on: ubuntu-24.04
 
     steps:
@@ -47,7 +47,9 @@ jobs:
 
     # Download the example model otherwise an error alert will be shown on app start, requires .env
     - name: Download the small example cv and geomodel
-      run: npm run add-example-model -- -f=main
+      run: |
+        npm ci
+        npm run add-example-model -- -f=main
 
     - name: Enable KVM
       run: |
