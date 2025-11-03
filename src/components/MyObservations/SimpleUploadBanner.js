@@ -74,11 +74,13 @@ const SimpleUploadBanner = ( {
           onPress={handleSyncButtonPress}
           accessibilityRole="button"
           disabled={syncDisabled}
+          className="flex-1"
         >
           <Body2
-            className={classnames( "text-darkGray py-3", {
+            className={classnames( "text-darkGray py-3 text-center", {
               "text-white": status.styling === "white-on-green"
             } )}
+            numberOfLines={2}
           >
             {status.text}
           </Body2>
