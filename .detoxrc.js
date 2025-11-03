@@ -42,7 +42,7 @@ module.exports = {
       testBinaryPath: `android/app/build/outputs/apk/androidTest/debug/${apkFilenamePrefix}-debug-androidTest.apk`,
       build:
         /* eslint-disable-next-line max-len */
-        "(cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug -PreactNativeArchitectures=x86_64)"
+        "(cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug)"
     },
     "android.release": {
       type: "android.apk",
@@ -51,7 +51,7 @@ module.exports = {
       testBinaryPath: `android/app/build/outputs/apk/androidTest/release/${apkFilenamePrefix}-release-androidTest.apk`,
       build:
         /* eslint-disable-next-line max-len */
-        "(cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release -PreactNativeArchitectures=x86_64)"
+        "(cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release)"
     }
   },
   devices: {
