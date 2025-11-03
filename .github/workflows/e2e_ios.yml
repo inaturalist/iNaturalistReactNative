@@ -99,7 +99,7 @@ jobs:
         cp ios/GoogleService-Info.example.plist ios/GoogleService-Info.staging.plist
         cp ios/GoogleService-Info.example.plist ios/GoogleService-Info.production.plist
 
-    # Generate the secret files needed for a release build
+    # Generate the secret files needed for a test run
     - name: Create .env file
       env:
         OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
@@ -186,15 +186,22 @@ jobs:
     - name: Set MOCK_MODE to e2e
       run: echo "MOCK_MODE=e2e" >> "$GITHUB_ENV"
 
-    # Generate the secret files needed for the test run
+    # Generate the secret files needed for a release build
     - name: Create .env file
       env:
+        OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
+        OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
         E2E_TEST_USERNAME: ${{ secrets.E2E_TEST_USERNAME }}
         E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
+        JWT_ANONYMOUS_API_SECRET: ${{ secrets.JWT_ANONYMOUS_API_SECRET }}
       run: |
-        printf 'E2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\n' \
+        printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\nANDROID_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.tflite\nANDROID_TAXONOMY_FILE_NAME=taxonomy.csv\nANDROID_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.tflite\nIOS_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.mlmodel\nIOS_TAXONOMY_FILE_NAME=taxonomy.json\nIOS_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.mlmodel\nCV_MODEL_VERSION=small_2\n' \
+        "$JWT_ANONYMOUS_API_SECRET" \
+        "$OAUTH_CLIENT_ID" \
+        "$OAUTH_CLIENT_SECRET" \
         "$E2E_TEST_USERNAME" \
-        "$E2E_TEST_PASSWORD" > .env
+        "$E2E_TEST_PASSWORD" \
+        "$GMAPS_API_KEY" > .env
 
     # Install prerequisites for detox and build app, and test
     - name: Install macOS dependencies
