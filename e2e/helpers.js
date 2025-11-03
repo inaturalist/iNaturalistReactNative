@@ -1,6 +1,10 @@
 import { exec, execSync } from "child_process";
 
+import resetUserForTesting from "./sharedFlows/resetUserForTesting";
+
 export async function iNatE2eBeforeAll( _device ) {
+  await resetUserForTesting();
+
   // if ( device.getPlatform() === "android" ) {
   //   await device.launchApp( {
   //     newInstance: true,
@@ -106,6 +110,8 @@ export function terminateApp( deviceId, bundleId ) {
 }
 
 export async function iNatE2eAfterEach( device ) {
+  await resetUserForTesting();
+
   if ( device && device.getPlatform() === "android" ) {
     return;
   }

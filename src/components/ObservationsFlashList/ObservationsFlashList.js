@@ -102,7 +102,6 @@ const ObservationsFlashList: Function = forwardRef( ( {
   };
 
   const {
-    estimatedGridItemSize,
     flashListStyle,
     gridItemStyle,
     gridItemWidth,
@@ -214,8 +213,8 @@ const ObservationsFlashList: Function = forwardRef( ( {
   const contentContainerStyle = useMemo( ( ) => {
     if ( layout === "list" ) { return contentContainerStyleProp; }
     return {
-      ...contentContainerStyleProp,
-      ...flashListStyle
+      ...flashListStyle,
+      ...contentContainerStyleProp
     };
   }, [
     contentContainerStyleProp,
@@ -244,10 +243,6 @@ const ObservationsFlashList: Function = forwardRef( ( {
     showNoResults,
     t
   ] );
-
-  const estimatedItemSize = layout === "grid"
-    ? estimatedGridItemSize
-    : 98;
 
   const extraData = {
     gridItemWidth,
@@ -295,7 +290,6 @@ const ObservationsFlashList: Function = forwardRef( ( {
       ListHeaderComponent={renderHeader}
       contentContainerStyle={contentContainerStyle}
       data={data}
-      estimatedItemSize={estimatedItemSize}
       extraData={extraData}
       ref={ref}
       key={numColumns}

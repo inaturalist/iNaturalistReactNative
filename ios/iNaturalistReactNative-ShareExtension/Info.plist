@@ -6,6 +6,19 @@
 	<string>org.inaturalist.iNaturalistMobile</string>
 	<key>HostAppURLScheme</key>
 	<string>inaturalistmobile://</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>localhost</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionAttributes</key>
@@ -13,13 +26,28 @@
 			<key>NSExtensionActivationRule</key>
 			<dict>
 				<key>NSExtensionActivationSupportsImageWithMaxCount</key>
-				<integer>20</integer>
+				<integer>500</integer>
 			</dict>
 		</dict>
 		<key>NSExtensionMainStoryboard</key>
 		<string>MainInterface</string>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.share-services</string>
+	</dict>
+	<key>RCTNewArchEnabled</key>
+	<true/>
+	<key>ReactShareViewBackgroundColor</key>
+	<dict>
+		<key>Alpha</key>
+		<integer>1</integer>
+		<key>Blue</key>
+		<integer>1</integer>
+		<key>Green</key>
+		<integer>1</integer>
+		<key>Red</key>
+		<integer>1</integer>
+		<key>Transparent</key>
+		<false/>
 	</dict>
 </dict>
 </plist>

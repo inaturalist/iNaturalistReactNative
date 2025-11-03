@@ -32,7 +32,7 @@ module.exports = {
       binaryPath:
         "ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app",
       build:
-      /* eslint-disable-next-line max-len */
+        /* eslint-disable-next-line max-len */
         "xcodebuild -workspace ios/iNaturalistReactNative.xcworkspace -scheme iNaturalistReactNative -configuration Release -sdk iphonesimulator -derivedDataPath ios/build"
     },
     "android.debug": {
@@ -58,7 +58,8 @@ module.exports = {
     simulator: {
       type: "ios.simulator",
       device: {
-        type: "iPhone 15 Pro"
+        type: "iPhone 16 Pro",
+        os: "iOS 18.6"
       }
     },
     emulator: {

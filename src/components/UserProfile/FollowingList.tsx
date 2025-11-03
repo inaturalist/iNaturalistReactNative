@@ -4,13 +4,13 @@ import {
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fetchUsers } from "api/users";
 import {
+  Body1,
   InfiniteScrollLoadingWheel,
   ViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import UserList from "components/UserList/UserList";
 import React, {
-  useCallback,
   useEffect,
   useMemo
 } from "react";
@@ -36,6 +36,7 @@ const FollowingList = ( ) => {
   const {
     data: following,
     // fetchNextPage,
+    isFetching,
     totalResults
   } = useInfiniteUserScroll(
     usersFollowedByQueryKey,
@@ -58,17 +59,10 @@ const FollowingList = ( ) => {
   } ), [totalResults, t, user] );
 
   useEffect( ( ) => {
-    if ( totalResults ) {
+    if ( totalResults !== undefined && totalResults !== null ) {
       navigation.setOptions( followingHeaderOptions );
     }
   }, [followingHeaderOptions, navigation, totalResults] );
-
-  const renderFooter = useCallback( ( ) => (
-    <InfiniteScrollLoadingWheel
-      hideLoadingWheel={false}
-      isConnected={isConnected}
-    />
-  ), [isConnected] );
 
   if ( !following ) {
     return null;
@@ -81,7 +75,20 @@ const FollowingList = ( ) => {
         users={following}
         // TODO: need API v2 to support pagination for infinite scroll
         // onEndReached={fetchNextPage}
-        ListFooterComponent={renderFooter}
+        ListEmptyComponent={isFetching
+          ? (
+            <InfiniteScrollLoadingWheel
+              hideLoadingWheel={false}
+              isConnected={isConnected}
+            />
+          )
+          : (
+            <View className="self-center mt-5 p-4">
+              <Body1 className="align-center text-center">
+                {t( "This-user-is-not-following-anyone" )}
+              </Body1>
+            </View>
+          )}
       />
     </ViewWrapper>
   );

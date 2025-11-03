@@ -1,5 +1,5 @@
 {
-  "extends": "@react-native/typescript-config/tsconfig.json",
+  "extends": "@react-native/typescript-config",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
@@ -19,6 +19,9 @@
       "styles": ["src/styles"],
       "tests": ["tests"],
     },
-    "types": ["nativewind/types"]
-  }
+    "types": ["nativewind/types"],
+  },
+  "exclude": [
+    "flow-typed"
+  ]
 }

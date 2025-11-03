@@ -1,10 +1,9 @@
-// @flow
-
 import {
   INatIconButton
 } from "components/SharedComponents";
-import type { Node } from "react";
+import type { PropsWithChildren } from "react";
 import React, { useEffect, useState } from "react";
+import type { GestureResponderEvent, ViewStyle } from "react-native";
 import Animated, {
   cancelAnimation,
   Easing,
@@ -16,23 +15,21 @@ import Animated, {
   withTiming
 } from "react-native-reanimated";
 
-type Props = {
-  accessibilityHint?: string,
-  accessibilityLabel: string,
-  backgroundColor?: string,
-  // $FlowIgnore
-  children?: unknown,
-  color?: string,
-  disabled?: boolean,
-  height?: number,
-  icon: string,
-  mode?: "contained",
-  onPress: Function,
-  rotating?: boolean,
-  size?: number,
-  style?: Object,
-  testID?: string,
-  width?: number,
+interface Props extends PropsWithChildren {
+  accessibilityHint?: string;
+  accessibilityLabel: string;
+  backgroundColor?: string;
+  color?: string;
+  disabled?: boolean;
+  height?: number;
+  icon: string;
+  mode?: "contained";
+  onPress: ( _event?: GestureResponderEvent ) => void;
+  rotating?: boolean;
+  size?: number;
+  style?: ViewStyle;
+  testID?: string;
+  width?: number;
 }
 
 const RotatingINatIconButton = ( {
@@ -51,7 +48,7 @@ const RotatingINatIconButton = ( {
   style,
   testID,
   width
-}: Props ): Node => {
+}: Props ) => {
   const rotation = useSharedValue( 0 );
   // eslint-disable-next-line no-unused-vars
   const [_, setNeedsReRender] = useState( false );
@@ -66,7 +63,7 @@ const RotatingINatIconButton = ( {
     } )
   );
 
-  const getRotationAnimation = toValue => withDelay(
+  const getRotationAnimation = ( toValue: number ) => withDelay(
     500,
     withTiming( toValue, {
       duration: 1000,
@@ -112,7 +109,6 @@ const RotatingINatIconButton = ( {
         icon={icon}
         mode={mode}
         onPress={onPress}
-        rotating={rotating}
         size={size}
         style={style}
         testID={testID}

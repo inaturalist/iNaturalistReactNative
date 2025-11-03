@@ -6,24 +6,38 @@ exports[`UserIcon displays active user image correctly 1`] = `
   accessibilityRole="image"
   testID="UserIcon.photo"
 >
-  <FasterImageView
+  <Image
     source={
       {
-        "borderRadius": 20,
-        "resizeMode": "cover",
-        "url": "https://loremflickr.com/640/480?lock=4455548378415104",
+        "uri": "https://loremflickr.com/640/480?lock=4455548378415104",
       }
     }
     style={
       [
-        {
-          "borderColor": "#74AC00",
-          "borderRadius": 20,
-          "borderWidth": 3,
-          "height": 40,
-          "overflow": "hidden",
-          "width": 40,
-        },
+        [
+          {
+            "borderBottomLeftRadius": 9999,
+            "borderBottomRightRadius": 9999,
+            "borderTopLeftRadius": 9999,
+            "borderTopRightRadius": 9999,
+          },
+          {
+            "borderBottomWidth": 3,
+            "borderLeftWidth": 3,
+            "borderRightWidth": 3,
+            "borderTopWidth": 3,
+          },
+          {
+            "borderBottomColor": "#74AC00",
+            "borderLeftColor": "#74AC00",
+            "borderRightColor": "#74AC00",
+            "borderTopColor": "#74AC00",
+          },
+          {
+            "height": 40,
+            "width": 40,
+          },
+        ],
       ]
     }
   />
@@ -36,21 +50,26 @@ exports[`UserIcon displays small user image correctly 1`] = `
   accessibilityRole="image"
   testID="UserIcon.photo"
 >
-  <FasterImageView
+  <Image
     source={
       {
-        "borderRadius": 11,
-        "resizeMode": "cover",
-        "url": "https://loremflickr.com/640/480?lock=4455548378415104",
+        "uri": "https://loremflickr.com/640/480?lock=4455548378415104",
       }
     }
     style={
       [
-        {
-          "height": 22,
-          "overflow": "hidden",
-          "width": 22,
-        },
+        [
+          {
+            "borderBottomLeftRadius": 9999,
+            "borderBottomRightRadius": 9999,
+            "borderTopLeftRadius": 9999,
+            "borderTopRightRadius": 9999,
+          },
+          {
+            "height": 22,
+            "width": 22,
+          },
+        ],
       ]
     }
   />
@@ -63,21 +82,26 @@ exports[`UserIcon displays user image correctly 1`] = `
   accessibilityRole="image"
   testID="UserIcon.photo"
 >
-  <FasterImageView
+  <Image
     source={
       {
-        "borderRadius": 20,
-        "resizeMode": "cover",
-        "url": "https://loremflickr.com/640/480?lock=4455548378415104",
+        "uri": "https://loremflickr.com/640/480?lock=4455548378415104",
       }
     }
     style={
       [
-        {
-          "height": 40,
-          "overflow": "hidden",
-          "width": 40,
-        },
+        [
+          {
+            "borderBottomLeftRadius": 9999,
+            "borderBottomRightRadius": 9999,
+            "borderTopLeftRadius": 9999,
+            "borderTopRightRadius": 9999,
+          },
+          {
+            "height": 40,
+            "width": 40,
+          },
+        ],
       ]
     }
   />

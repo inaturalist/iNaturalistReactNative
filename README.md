@@ -18,6 +18,9 @@ See [CONTRIBUTING](CONTRIBUTING.md) for guidelines on contributing to this proje
 1. Run `npx pod-install` or `cd ios && pod install` from the root directory
 1. `cp env.example .env.staging` for staging and `cp env.example .env` for production and fill in appropriate values. This is not part of the code repo (contains secrets, such as OAuth client ID).
 1. To run on Android, do this `cp android/example-keystore.properties android/keystore.properties`. Fill in the relevant values. If you are a member of iNat staff, get them from another member of iNat Staff.
+1. Firebase is optional, you can remove it if you don't need it. If you do want to use it, you have to add platform-specific config files that are not part of the code repo.
+    1. On iOS, `cp ios/GoogleService-Info.example.plist ios/GoogleService-Info.staging.plist` and `cp ios/GoogleService-Info.example.plist ios/GoogleService-Info.production.plist`, and fill in the relevant values. If you are a member of iNat staff, get them from another member of iNat Staff.
+    1. On Android, `cp android/app/google-services.example.json android/app/src/debug/google-services.json` and `cp android/app/google-services.example.json android/app/src/release/google-services.json`, and fill in the relevant values. If you are a member of iNat staff, get them from another member of iNat Staff.
 1. Add AI Camera model and taxonomy files. The computer vision model and Geomodel files are not part of the code repo, and have to be installed. The app itself will load the model file with the filename specified in a .env file. On Android, the current file names are specified in these env variables `ANDROID_MODEL_FILE_NAME`, `ANDROID_TAXONOMY_FILE_NAME`, and `ANDROID_GEOMODEL_FILE_NAME`. On iOS, the current file names are specified in these env variables `IOS_MODEL_FILE_NAME`, `IOS_TAXONOMY_FILE_NAME`, and `IOS_GEOMODEL_FILE_NAME`. After a fresh clone of the repo and copying the env.example file (see above), you have to add the files by following these steps:
     1. Add the example model files by executing `npm run add-example-model`. If that does not work continue with the next step.
     1. If the download script fails: The sample model files are available in the latest release in this [`repository`](https://github.com/inaturalist/model-files).
@@ -214,8 +217,9 @@ when the user interacts with an element. The [iOS Guidelines](https://developer.
       parent={View}
       values={{ userHandle: currentUser?.login }}
       components={[
-        <Subheading1 className="mt-5" />,
-        <Heading1 />
+        /* be sure to include a key={index} prop to prevent React list/key warning */
+        <Subheading1 key="0" className="mt-5" />,
+        <Heading1 key="1" />
       ]}
     />
     ```

@@ -10,7 +10,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;$SRCROOT/link-inat-model-files.sh&#10;">
+               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;$SRCROOT/link-files-for-build-modes.sh&#10;">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"

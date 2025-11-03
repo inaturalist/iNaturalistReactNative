@@ -1,19 +1,19 @@
 import { RealmContext } from "providers/contexts";
 import { useEffect, useState } from "react";
 import Realm from "realm";
-import type { RealmUser } from "realmModels/types";
+import User from "realmModels/User";
 
 const { useRealm } = RealmContext;
 
-const useCurrentUser = ( ): RealmUser | null => {
+const useCurrentUser = ( ): User | null => {
   const realm = useRealm( );
-  const [currentUser, setCurrentUser] = useState<RealmUser | null>( null );
+  const [currentUser, setCurrentUser] = useState<User | null>( null );
   useEffect( ( ) => {
-    const realmResults = realm.objects( "User" ).filtered( "signedIn == true" );
+    const realmResults = realm.objects( User ).filtered( "signedIn == true" );
 
     // Sets the current user if one is detected, unsets it if not
     const listener = (
-      collection: [Realm.Object<RealmUser>],
+      collection: Realm.OrderedCollection<User>,
       changes: Realm.CollectionChangeSet
     ) => {
       if (
@@ -27,7 +27,12 @@ const useCurrentUser = ( ): RealmUser | null => {
     };
 
     // Run the listener on the results for the first time
-    listener( realmResults, {} );
+    listener( realmResults, {
+      insertions: [],
+      deletions: [],
+      newModifications: [],
+      oldModifications: []
+    } );
 
     // Add the listener
     realmResults?.addListener( listener );

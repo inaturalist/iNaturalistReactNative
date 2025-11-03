@@ -58,6 +58,14 @@ jobs:
       if: steps.cache.outputs.cache-hit != 'true'
       run: npm install
 
+      # We need these files to be present in the correct location for the build to succeed.
+      # TODO: this might potentially break the build if there are no actual keys in the example files
+      # it did so on iOS.
+    - name: Create google-services.json files from example
+      run: |
+        cp android/app/google-services.example.json android/app/src/debug/google-services.json
+        cp android/app/google-services.example.json android/app/src/release/google-services.json
+
     # Generate the secret files needed for a release build
     - name: Create .env file
       env:

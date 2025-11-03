@@ -46,7 +46,6 @@ const GroupPhotos = ( {
 }: Props ): Node => {
   const navigation = useNavigation( );
   const {
-    estimatedGridItemSize,
     flashListStyle,
     gridItemStyle,
     gridItemWidth,
@@ -134,7 +133,6 @@ const GroupPhotos = ( {
         ListHeaderComponent={renderHeader}
         contentContainerStyle={flashListStyle}
         data={data}
-        estimatedItemSize={estimatedGridItemSize}
         extraData={extraData}
         key={numColumns}
         keyExtractor={extractKey}

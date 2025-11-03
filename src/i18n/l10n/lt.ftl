@@ -55,7 +55,7 @@ all-rights-reserved = Visos teisės saugomos
 All-taxa = Visi taksonai
 ALL-USERS-EXCEPT = VISI VARTOTOJAI, IŠSKYRUS
 ALLOW-LOCATION-ACCESS = ALLOW LOCATION ACCESS
-Already-have-an-iNaturalist-account = Already have an iNaturalist account?
+Already-have-an-iNaturalist-account = Jau turite iNaturalist paskyrą?
 An-Internet-connection-is-required = An Internet connection is required to load more observations.
 Analyzing-for-the-best-identification = Analyzing for the best identification...
 Any--date = Any
@@ -575,7 +575,7 @@ Organism-is-captive = Organism is captive
 Organisms-that-are-identified-to-species = Organisms that are identified to species rank or below
 OTHER-DATA = OTHER DATA
 OTHER-SUGGESTIONS = OTHER SUGGESTIONS
-OTHERS--notifications = OTHERS
+OTHERS--notifications = KITI
 PASSWORD = PASSWORD
 PEOPLE--title = PEOPLE
 Photo-importer = Photo importer
@@ -596,7 +596,7 @@ POTENTIAL-DISAGREEMENT = POTENTIAL DISAGREEMENT
 Potential-disagreement-description = <0>Is the evidence enough to confirm this is </0><1></1><0>?<0>
 Potential-disagreement-disagree = <0>No, but this is a member of </0><1></1>
 Potential-disagreement-unsure = <0>I don't know but I am sure this is </0><1></1>
-Press-and-hold-to-view-more-options = Press and hold to view more options
+Press-and-hold-to-view-more-options = Nuspausti ir laikyti nuspaudus, kad parodytų daugiau parinkčių
 Previous-observation = Previous observation
 Previous-slide = Previous slide
 Privacy-Policy = Privatumo politika
@@ -836,7 +836,7 @@ The-AI-is-not-confident-Upload-to-ask-the-community = The AI is not confident. U
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
 The-iNaturalist-community-will-help-verify-and-refine-identifications = The iNaturalist community will help verify and refine identifications on your observations to create Research Grade data for science and conservation.
 The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
-The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify.
+The-location-will-not-be-visible-to-others = Vietovė bus matoma kitiems, todėl gali būti, kad stebėjimo nebus galima identifikuoti.
 The-models-that-suggest-species = The models that suggest species based on visual similarity and location are thanks in part to collaborations with Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona, and Grant Van Horn.
 There-was-an-error-that-might-be-fixed-by-logging-in-again = There was an error that might be fixed by logging in again.
 This-is-a-wild-organism = This is a wild organism and wasn't placed in this location by humans.
@@ -851,6 +851,9 @@ This-observation-needs-more-identifications = Šiam stebėjimui reikia daugiau i
 This-observation-needs-more-identifications-to-become-research-grade = Šiam stebėjimui reikia daugiau identifikacijų, kad taptų identifikavimo būsenos.
 This-observer-has-opted-out-of-the-Community-Taxon = This observer has opted out of the Community Taxon
 This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
+This-user-has-no-followers = This user has no followers.
+This-user-has-not-joined-any-projects = This user has not joined any projects.
+This-user-is-not-following-anyone = This user is not following anyone.
 To-sync-your-observations-to-iNaturalist = To sync your observations to iNaturalist, please log in.
 To-view-nearby-organisms-please-enable-location = To view nearby organisms, please enable location.
 To-view-nearby-projects-please-enable-location = To view nearby projects, please enable location.
@@ -964,8 +967,8 @@ X-Identifiers =
     }
 X-MEMBERS =
     { $count ->
-        [one] { $count } MEMBER
-       *[other] { $count } MEMBERS
+        [one] { $count } NARYS
+       *[other] { $count } NARIŲ
     }
 X-Observations =
     { $count ->

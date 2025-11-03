@@ -55,7 +55,7 @@ all-rights-reserved = todos los derechos reservados
 All-taxa = Todos los taxones
 ALL-USERS-EXCEPT = TODOS LOS USUARIOS EXCEPTO
 ALLOW-LOCATION-ACCESS = PERMITIR ACCESO A LA UBICACIÓN
-Already-have-an-iNaturalist-account = Already have an iNaturalist account?
+Already-have-an-iNaturalist-account = ¿Ya tienes una cuenta iNaturalist?
 An-Internet-connection-is-required = Se necesita conexión a internet para cargar más observaciones.
 Analyzing-for-the-best-identification = Analizando para la mejor identificación...
 Any--date = Cualquiera
@@ -336,7 +336,7 @@ HIGHEST-RANK = RANGO MÁS ALTO
 I-agree-to-the-Terms-of-Use = <0>Estoy de acuerdo con las Condiciones de Uso y la Política de Privacidad, y he revisado las Directrices de la Comunidad (</0><1>requerido</1><0>).</0>
 Iconic-taxon-name = Nombre del taxón ícono: { $iconicTaxon }
 ID-Suggestions = Sugerencias de identificación
-ID-WITH-AI = ID WITH AI
+ID-WITH-AI = ID CON IA
 ID-Withdrawn = Id. retirada
 IDENTIFICATION = IDENTIFICACIÓN
 Identification-options = Opciones de identificación
@@ -428,7 +428,7 @@ June = Junio
 Just-make-sure-the-organism-is-wild = Simplemente asegúrese de que el organismo sea salvaje (no es una mascota, animal de zoológico, o planta de jardín)
 Last-Active-date = Última actividad: { $date }
 Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, maximumFractionDigits: 6) }
-Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBER($longitude, maximumFractionDigits: 6) }, Acc: { $accuracy }
+Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBER($longitude, maximumFractionDigits: 6) }, Prec: { $accuracy }
 leading--identification = Principal
 Learn-from-people-who-verify-and-refine-your-identifications = Aprenda de las personas que verifican y refinan sus identificaciones.
 Learn-More = Aprende más
@@ -575,7 +575,7 @@ Organism-is-captive = El organismo está en cautiverio
 Organisms-that-are-identified-to-species = Organismos identificados hasta el rango de especie o inferior
 OTHER-DATA = OTROS DATOS
 OTHER-SUGGESTIONS = OTRAS SUGERENCIAS
-OTHERS--notifications = OTHERS
+OTHERS--notifications = OTROS
 PASSWORD = CONTRASEÑA
 PEOPLE--title = GENTE
 Photo-importer = Importador de fotos
@@ -596,7 +596,7 @@ POTENTIAL-DISAGREEMENT = POSIBLE DESACUERDO
 Potential-disagreement-description = <0>¿Es suficiente la evidencia para confirmar que es </0><1></1><0>?<0>
 Potential-disagreement-disagree = <0>No, pero es un miembro de </0><1></1>
 Potential-disagreement-unsure = <0>No tengo certeza, pero seguramente es </0><1></1>
-Press-and-hold-to-view-more-options = Press and hold to view more options
+Press-and-hold-to-view-more-options = Mantén pulsado para ver más opciones
 Previous-observation = Observación Anterior
 Previous-slide = Diapositiva anterior
 Privacy-Policy = Política de privacidad
@@ -836,9 +836,9 @@ The-AI-is-not-confident-Upload-to-ask-the-community = La IA no tiene confianza. 
 The-exact-location-will-be-hidden = La ubicación exacta se ocultará públicamente, y en su lugar se generalizará a un área más grande. (Las especies amenazadas y en peligro de extinción se ocultan automáticamente).
 The-iNaturalist-community-will-help-verify-and-refine-identifications = La comunidad de iNaturalist te ayudará a verificar y refinar las identificaciones de tus observaciones para crear datos de grado de investigación para la ciencia y la conservación.
 The-iNaturalist-Network = La red iNaturalist es una colección de sitios web localizados que están totalmente conectados a la comunidad global de iNaturalist. Los sitios de la red son apoyados por instituciones locales que promueven el uso local y facilitan el uso de datos de iNaturalist para beneficiar a la biodiversidad local.
-The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify.
+The-location-will-not-be-visible-to-others = La ubicación no será visible para otros, lo que podría hacer que la observación sea imposible de identificar.
 The-models-that-suggest-species = Los modelos que sugieren especies basadas en la similitud visual y la ubicación son gracias en parte a las colaboraciones con Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona y Grant Van Horn.
-There-was-an-error-that-might-be-fixed-by-logging-in-again = There was an error that might be fixed by logging in again.
+There-was-an-error-that-might-be-fixed-by-logging-in-again = Hubo un error que podría arreglarse iniciando sesión de nuevo.
 This-is-a-wild-organism = Este es un organismo salvaje y no fue colocado en este lugar por humanos.
 This-is-how-taxon-names-will-be-displayed = Así es como se mostrarán todos los nombres de taxones a través de iNaturalist:
 This-is-your-identification-other-people-may-help-confirm-it = Esta es tu identificación. ¡Otras personas pueden ayudar a confirmarla!
@@ -851,6 +851,9 @@ This-observation-needs-more-identifications = Esta observación necesita más id
 This-observation-needs-more-identifications-to-become-research-grade = Esta observación necesita más identificaciones para llegar al  Grado de Investigación.
 This-observer-has-opted-out-of-the-Community-Taxon = Este observador ha optado por no participar en el taxón comunitario
 This-organism-was-placed-by-humans = Este organismo fue colocado en este lugar por humanos. Esto aplica a plantas de jardín y animales de compañía y de zoológicos.
+This-user-has-no-followers = This user has no followers.
+This-user-has-not-joined-any-projects = This user has not joined any projects.
+This-user-is-not-following-anyone = This user is not following anyone.
 To-sync-your-observations-to-iNaturalist = Para sincronizar tus observaciones con iNaturalist, por favor inicia sesión.
 To-view-nearby-organisms-please-enable-location = Para ver los organismos cercanos, por favor habilita la ubicación.
 To-view-nearby-projects-please-enable-location = Para ver proyectos cercanos, por favor habilita la ubicación.
@@ -964,8 +967,8 @@ X-Identifiers =
     }
 X-MEMBERS =
     { $count ->
-        [one] { $count } MEMBER
-       *[other] { $count } MEMBERS
+        [un] { $count } MIEMBRO
+       *[otros] { $count } MIEMBROS
     }
 X-Observations =
     { $count ->

@@ -1,5 +1,6 @@
 #import "AppDelegate.h"
 
+#import <Firebase.h>
 #import <React/RCTBundleURLProvider.h>
 #import <ReactAppDependencyProvider/RCTAppDependencyProvider.h>
 #import <RNShareMenu/ShareMenuManager.h>
@@ -32,6 +33,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  // Required for react-native-firebase: https://rnfirebase.io/#configure-firebase-with-ios-credentials-react-native--077
+  [FIRApp configure];
   self.reactNativeFactory = [[RCTReactNativeFactory alloc] initWithDelegate:self];
   self.dependencyProvider = [RCTAppDependencyProvider new];
 

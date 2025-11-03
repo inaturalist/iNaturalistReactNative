@@ -190,8 +190,12 @@ const LoginForm = ( {
         i18nKey="Dont-have-an-account"
         onPress={( ) => navigation.navigate( "SignUp" )}
         components={[
-          <Body1 className="text-white" />,
           <Body1
+            key="0"
+            className="text-white"
+          />,
+          <Body1
+            key="1"
             className="text-white font-Lato-Bold"
           />
         ]}
