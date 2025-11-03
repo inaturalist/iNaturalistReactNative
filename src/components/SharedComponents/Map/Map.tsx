@@ -51,12 +51,6 @@ const getDefaultRegion = ( initialLatitude, initialLongitude ) => ( {
     : 100
 } );
 
-export interface TileMapParams {
-  order: unknown;
-  order_by: unknown;
-  per_page: unknown;
-}
-
 interface Props {
   children?: React.ReactNode;
   className?: string;
@@ -82,7 +76,7 @@ interface Props {
   style?: ViewStyle;
   switchMapTypeButtonClassName?: string;
   testID?: string;
-  tileMapParams?: TileMapParams | null;
+  tileMapParams?: Record<string, string> | null;
   withObsTiles?: boolean;
   withPressableObsTiles?: boolean;
   zoomEnabled?: boolean;

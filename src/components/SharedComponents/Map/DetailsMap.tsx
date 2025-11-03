@@ -9,7 +9,6 @@ import {
   Map,
   Modal
 } from "components/SharedComponents";
-import { type TileMapParams } from "components/SharedComponents/Map/Map";
 import {
   SafeAreaView,
   View
@@ -30,7 +29,7 @@ interface Props {
   headerTitle?: React.ReactNode,
   observation?: Observation & RealmObservation,
   region?: Region,
-  tileMapParams: TileMapParams,
+  tileMapParams: Record<string, string> | null,
 }
 
 interface FloatingActionButtonProps {
