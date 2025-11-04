@@ -80,8 +80,7 @@ const LoginSignupWrapper = ( {
     return unsubscribe;
   }, [navigation] );
 
-  // const fitContentWithinScreenStyle = { height: windowHeight * 0.85 };
-  const fitContentWithinScreenStyle = { };
+  const fitContentWithinScreenStyle = { height: windowHeight * 0.85 };
 
   return (
     <ImageBackground
