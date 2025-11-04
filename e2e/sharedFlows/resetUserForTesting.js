@@ -124,10 +124,14 @@ export default async function resetUserForTesting() {
   console.log( `Deleting ${observationIdsToDelete.length} observations` );
 
   await Promise.all( observationIdsToDelete.map( async uuid => {
-    await inatjs.observations.delete(
-      { uuid },
-      opts
-    );
+    try {
+      await inatjs.observations.delete(
+        { uuid },
+        opts
+      );
+    } catch ( _error ) {
+      console.log( `Could not delete observation: ${uuid}. Moving on...` );
+    }
   } ) );
 
   console.log( "Creating sample observation" );

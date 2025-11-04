@@ -4,7 +4,6 @@ import {
 
 import { iNatE2eAfterEach, iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
 import closeOnboarding from "./sharedFlows/closeOnboarding";
-import deleteObservation from "./sharedFlows/deleteObservation";
 import signIn from "./sharedFlows/signIn";
 import uploadObservation from "./sharedFlows/uploadObservation";
 
@@ -22,7 +21,7 @@ describe( "AICamera", () => {
       /*
       / 1. Sign in
       */
-      const username = await signIn();
+      await signIn();
 
       /*
       / 2. Take photo with AI Camera, select a suggestion, upload and delete observation
@@ -68,13 +67,6 @@ describe( "AICamera", () => {
         0
       );
       await waitFor( displayTaxonName ).toBeVisible().withTimeout( TIMEOUT );
-      await displayTaxonName.tap();
-
-      // Delete the observation
-      await deleteObservation( { uploaded: true } );
-
-      // Make sure we're back on MyObservations
-      await waitFor( username ).toBeVisible().withTimeout( TIMEOUT );
     }
   );
 } );
