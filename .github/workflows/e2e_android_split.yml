@@ -1,9 +1,9 @@
 name: e2e-Android-split
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - 'android-detox'
+  push:
+    branches:
+      - 'android-detox'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
