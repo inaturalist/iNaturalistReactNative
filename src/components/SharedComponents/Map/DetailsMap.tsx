@@ -71,7 +71,7 @@ const DetailsMap = ( {
   observation,
   region,
   tileMapParams
-}: Props ): React.ReactNode => {
+}: Props ) => {
   const [showNotificationModal, setShowNotificationModal] = useState( false );
 
   const closeShowNotificationModal = () => {
