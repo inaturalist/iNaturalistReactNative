@@ -3,8 +3,8 @@
   "version": "1.0.11",
   "private": true,
   "scripts": {
-    "android": "react-native run-android --active-arch-only",
-    "android:release": "react-native run-android --active-arch-only --mode=release",
+    "android": "react-native run-android",
+    "android:release": "react-native run-android --mode=release",
     "ios": "react-native run-ios",
     "ios:release": "npx react-native run-ios --device --mode Release",
     "start": "react-native start",
