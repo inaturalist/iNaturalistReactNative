@@ -32,8 +32,7 @@ const ViewWrapper = ( {
           : null
       )}
       style={{
-        paddingTop: insets.top,
-        paddingBottom: insets.bottom
+        paddingTop: insets.top
       }}
       testID={testID}
     >
