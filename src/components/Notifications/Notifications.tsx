@@ -1,8 +1,6 @@
 import { NotificationOnboarding } from "components/OnboardingModal/PivotCards";
-import {
-  Tabs,
-  ViewWrapper
-} from "components/SharedComponents";
+import { Tabs } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import React, { useState } from "react";
 import { EventRegister } from "react-native-event-listeners";
 import {
@@ -26,7 +24,7 @@ const Notifications = ( ) => {
   } = useLocalObservations( );
 
   return (
-    <ViewWrapper>
+    <View className="flex-1 bg-white">
       <Tabs
         tabs={[
           {
@@ -62,7 +60,7 @@ const Notifications = ( ) => {
           isDefaultMode && !!currentUser && !!totalResultsLocal && totalResultsLocal < 10
         }
       />
-    </ViewWrapper>
+    </View>
   );
 };
 
