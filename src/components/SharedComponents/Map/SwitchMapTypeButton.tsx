@@ -12,7 +12,7 @@ const DROP_SHADOW = getShadow( );
 interface Props {
   currentMapType?: string;
   mapType?: string;
-  setCurrentMapType: Function;
+  setCurrentMapType: ( mapType: string|number ) => void;
   showSwitchMapTypeButton?: boolean;
   switchMapTypeButtonClassName?: string;
 }
@@ -48,12 +48,6 @@ const SwitchMapTypeButton = ( {
       )}
       style={DROP_SHADOW}
       accessibilityLabel={t( "Toggle-map-type" )}
-      accessibilityRole="button"
-      accessibilityState={
-        currentMapType === "standard"
-          ? t( "Standard--map-type" )
-          : t( "Satellite--map-type" )
-      }
       onPress={( ) => {
         changeMapType( currentMapType === "standard"
           ? "hybrid"

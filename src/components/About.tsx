@@ -6,8 +6,7 @@ import {
   Heading4,
   ScrollViewWrapper,
   Tabs,
-  UnderlinedLink,
-  ViewWrapper
+  UnderlinedLink
 } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
@@ -61,7 +60,7 @@ const About = ( ) => {
   };
 
   return (
-    <ViewWrapper>
+    <View className="flex-1 bg-white">
       <Tabs
         tabs={[
           {
@@ -158,7 +157,7 @@ const About = ( ) => {
           </View>
         )}
       </ScrollViewWrapper>
-    </ViewWrapper>
+    </View>
   );
 };
 

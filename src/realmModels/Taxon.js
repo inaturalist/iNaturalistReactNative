@@ -147,6 +147,11 @@ class Taxon extends Realm.Object {
     return taxonForUpdate;
   }
 
+  /**
+   * @param {object} taxon
+   * @param {Realm} _realm
+   * @returns {object}
+   */
   static mapApiToRealm( taxon, _realm = null ) {
     return {
       ...taxon,

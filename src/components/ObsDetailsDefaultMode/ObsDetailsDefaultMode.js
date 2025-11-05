@@ -2,11 +2,7 @@
 import {
   ActivityIndicator
 } from "components/SharedComponents";
-import {
-  SafeAreaView,
-  ScrollView,
-  View
-} from "components/styledComponents";
+import { ScrollView, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useRef
@@ -83,7 +79,7 @@ const ObsDetailsDefaultMode = ( {
   const showFloatingButtons = currentUser && !isSavedObservationByCurrentUser;
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <View className="flex-1 bg-white">
       <ObsDetailsDefaultModeHeaderRight
         belongsToCurrentUser={belongsToCurrentUser}
         observationId={observation?.id}
@@ -159,7 +155,7 @@ const ObsDetailsDefaultMode = ( {
           showAddCommentSheet={showAddCommentSheet}
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 };
 
