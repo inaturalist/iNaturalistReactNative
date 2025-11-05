@@ -4,15 +4,11 @@ import { Image, Pressable, View } from "components/styledComponents";
 import React, { useState } from "react";
 import type { ImageStyle, StyleProp } from "react-native";
 import Photo from "realmModels/Photo";
+import type { RealmPhoto } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
-  photo: {
-    id: number;
-    url: string;
-    localFilePath: string;
-    attribution: string;
-  };
+  photo: RealmPhoto;
   onPress: () => void;
   style?: StyleProp<ImageStyle>;
 }
