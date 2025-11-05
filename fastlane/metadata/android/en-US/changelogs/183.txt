@@ -1,8 +1,1 @@
-UPDATED
-* Update some dependencies (e.g. react-native)
-* Updated translations
-
-FIXED
-* Limit photo picker to 100 photos (Android)
-* Add empty states for user's followers/following/projects screens
-* Explore Grid View UI covered by header
+Disregard this build number, our pipeline had an issue and this build was never released.
