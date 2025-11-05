@@ -148,7 +148,6 @@ const Suggestions = ( {
         <Suggestion
           accessibilityLabel={t( "Choose-top-taxon" )}
           suggestion={item}
-          isTopSuggestion
           onTaxonChosen={onTaxonChosen}
         />
       </View>
