@@ -57,7 +57,7 @@ const SimpleUploadBanner = ( {
   );
 
   const renderErrorText = ( ) => (
-    <Body2 className="color-white">
+    <Body2 className="color-white flex-1">
       {separator}
       <Body2 className="color-warningRed">{error}</Body2>
     </Body2>
@@ -70,21 +70,23 @@ const SimpleUploadBanner = ( {
       } )}
     >
       <View className="flex-row items-center">
-        <Pressable
-          onPress={handleSyncButtonPress}
-          accessibilityRole="button"
-          disabled={syncDisabled}
-          className="flex-1"
-        >
-          <Body2
-            className={classnames( "text-darkGray py-3 text-center", {
-              "text-white": status.styling === "white-on-green"
-            } )}
-            numberOfLines={2}
+        {status.text && (
+          <Pressable
+            onPress={handleSyncButtonPress}
+            accessibilityRole="button"
+            disabled={syncDisabled}
+            className="flex-[2] ml-2"
           >
-            {status.text}
-          </Body2>
-        </Pressable>
+            <Body2
+              className={classnames( "text-darkGray py-3 text-center", {
+                "text-white": status.styling === "white-on-green"
+              } )}
+              numberOfLines={2}
+            >
+              {status.text}
+            </Body2>
+          </Pressable>
+        )}
         {error && renderErrorText( )}
         {showsCancelUploadButton && renderCancelButton( )}
         {showsCheckmark && renderCheckmark( )}
