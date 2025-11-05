@@ -57,15 +57,23 @@ jobs:
         sudo udevadm control --reload-rules
         sudo udevadm trigger --name-match=kvm
 
+    - name: build
+      run: npm run e2e:build:android
+
+    - name: Upload Android Detox app build
+      uses: actions/upload-artifact@v4
+      with:
+        name: detox_app
+        path: android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk
+        retention-days: 5
+
     - name: run tests
       uses: reactivecircus/android-emulator-runner@v2
       with:
-        api-level: 29
+        api-level: 31
         force-avd-creation: false
         # this is faking whatever detox wants, we'll see what we need to do
         avd-name: "Pixel_5_API_31_AOSP"
-        pre-emulator-launch-script: |
-          npm run e2e:build:android
         script: |
           npm run e2e:test:android -- --take-screenshots failing --record-videos failing -l debug
 
