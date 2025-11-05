@@ -12,13 +12,15 @@ interface Props extends PropsWithChildren {
   // If someone can explain to me why className doesn't work here, I'm all
   // ears ~~~kueda 20230815
   wrapperClassName?: string;
+  useTopInset?: boolean;
 }
 
 const ViewWrapper = ( {
   children,
   isDebug,
   wrapperClassName,
-  testID
+  testID,
+  useTopInset = true
 }: Props ) => {
   const insets = useSafeAreaInsets();
   return (
@@ -31,8 +33,11 @@ const ViewWrapper = ( {
           ? "border-2 border-deepPink"
           : null
       )}
+      // eslint-disable-next-line react-native/no-inline-styles
       style={{
-        paddingTop: insets.top
+        paddingTop: useTopInset
+          ? insets.top
+          : 0
       }}
       testID={testID}
     >
