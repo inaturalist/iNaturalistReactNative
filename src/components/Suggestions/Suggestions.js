@@ -178,7 +178,7 @@ const Suggestions = ( {
   const sections = createSections( );
 
   return (
-    <ViewWrapper testID="suggestions">
+    <ViewWrapper testID="suggestions" useTopInset={false}>
       <SectionList
         ListEmptyComponent={renderEmptyList}
         ListFooterComponent={renderFooter}
