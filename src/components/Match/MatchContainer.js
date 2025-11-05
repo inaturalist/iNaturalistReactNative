@@ -461,7 +461,7 @@ const MatchContainer = ( ) => {
 
   return (
     <>
-      <ViewWrapper isDebug={isDebug}>
+      <ViewWrapper isDebug={isDebug} useTopInset={false}>
         <Match
           observation={currentObservation}
           obsPhotos={obsPhotos}
