@@ -23,6 +23,11 @@ const ViewWrapper = ( {
   useTopInset = true
 }: Props ) => {
   const insets = useSafeAreaInsets();
+  const viewStyle = {
+    paddingTop: useTopInset
+      ? insets.top
+      : 0
+  };
   return (
     <View
       className={classnames(
@@ -33,12 +38,7 @@ const ViewWrapper = ( {
           ? "border-2 border-deepPink"
           : null
       )}
-      // eslint-disable-next-line react-native/no-inline-styles
-      style={{
-        paddingTop: useTopInset
-          ? insets.top
-          : 0
-      }}
+      style={viewStyle}
       testID={testID}
     >
       {isDebug && (
