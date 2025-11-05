@@ -18,8 +18,8 @@ const LocationIndicator = ( {
   positionalAccuracy
 }: Props ) => (
   <>
-    {positionalAccuracy
-      ? (
+    {!!positionalAccuracy
+      && (
         <Circle
           center={{ latitude, longitude }}
           radius={positionalAccuracy}
@@ -27,8 +27,7 @@ const LocationIndicator = ( {
           strokeColor={colors.inatGreen}
           fillColor="rgba( 116, 172, 0, 0.2 )"
         />
-      )
-      : null}
+      )}
     <Marker
       coordinate={{ latitude, longitude }}
     >
