@@ -1,0 +1,12 @@
+diff --git a/node_modules/react-native-worklets-core/android/build.gradle b/node_modules/react-native-worklets-core/android/build.gradle
+index b6af1c3..3453b90 100644
+--- a/node_modules/react-native-worklets-core/android/build.gradle
++++ b/node_modules/react-native-worklets-core/android/build.gradle
+@@ -152,6 +152,7 @@ android {
+       "**/libturbomodulejsijni.so",
+       "**/libreact_nativemodule_core.so",
+       "**/libjscexecutor.so",
++      "**/libhermestooling.so",
+     ]
+   }
+ 
