@@ -59,7 +59,7 @@ const TaxonSearch = ( {
   ), [keyboardHeight, keyboardShown] );
 
   return (
-    <ViewWrapper>
+    <ViewWrapper useTopInset={false}>
       <View
         className="bg-white px-6 pt-2 pb-[21px]"
         style={DROP_SHADOW}
