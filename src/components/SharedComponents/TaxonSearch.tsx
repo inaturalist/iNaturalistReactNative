@@ -17,7 +17,6 @@ const DROP_SHADOW = getShadow( {
 } );
 
 interface Props {
-  header?: React.FC;
   query?: string;
   setQuery: ( newQuery: string ) => void;
   isLoading?: boolean;
@@ -29,7 +28,6 @@ interface Props {
 }
 
 const TaxonSearch = ( {
-  header,
   isLoading = false,
   isLocal = false,
   query = "",
@@ -62,7 +60,6 @@ const TaxonSearch = ( {
 
   return (
     <ViewWrapper>
-      {header}
       <View
         className="bg-white px-6 pt-2 pb-[21px]"
         style={DROP_SHADOW}
