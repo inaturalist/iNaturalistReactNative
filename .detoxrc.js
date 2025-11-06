@@ -3,7 +3,7 @@
 
 // const buildGradle = fs.readFileSync("./android/app/build.gradle", "utf8");
 // // const versionCode = buildGradle.match(/versionCode (\d+)/)[1];
-const apkFilenamePrefix = "org.inaturalist.iNaturalistMobile";
+// const apkFilenamePrefix = "org.inaturalist.iNaturalistMobile";
 
 /** @type {Detox.DetoxConfig} */
 module.exports = {
@@ -37,18 +37,19 @@ module.exports = {
     },
     "android.debug": {
       type: "android.apk",
-      binaryPath: `android/app/build/outputs/apk/debug/${apkFilenamePrefix}-debug.apk`,
+      binaryPath: "android/app/build/outputs/apk/debug/org.inaturalist.iNaturalistMobile-debug.apk",
       /* eslint-disable-next-line max-len */
-      testBinaryPath: `android/app/build/outputs/apk/androidTest/debug/${apkFilenamePrefix}-debug-androidTest.apk`,
+      testBinaryPath: "android/app/build/outputs/apk/androidTest/debug/org.inaturalist.iNaturalistMobile-debug-androidTest.apk",
       build:
         /* eslint-disable-next-line max-len */
         "(cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug)"
     },
     "android.release": {
       type: "android.apk",
-      binaryPath: `android/app/build/outputs/apk/release/${apkFilenamePrefix}-release.apk`,
+      binaryPath:
+        "android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk",
       /* eslint-disable-next-line max-len */
-      testBinaryPath: `android/app/build/outputs/apk/androidTest/release/${apkFilenamePrefix}-release-androidTest.apk`,
+      testBinaryPath: "android/app/build/outputs/apk/androidTest/release/org.inaturalist.iNaturalistMobile-release-androidTest.apk",
       build:
         /* eslint-disable-next-line max-len */
         "(cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release)"

@@ -72,7 +72,7 @@ Note that you can run `npx jest` as well, but that will omit some environment va
 Also note that `i18next` needs to be initialized in individual test files (haven't figured out a way to await initialization before *all* tests, plus allowing tests to control initialization helps when testing different locales). Add `beforeAll( async ( ) => { await initI18next( ); } );` to a test file if it depends on localized text.
 
 ### E2E tests
-We're using [Detox](https://wix.github.io/Detox/docs/introduction/getting-started/) for E2E tests. If you want to run the e2e tests on your local machine, make sure you follow the Detox environment setup instructions.
+We're using [Detox](https://wix.github.io/Detox/docs/introduction/getting-started/) for E2E tests. If you want to run the e2e tests on your local machine, make sure you follow the Detox environment setup instructions. 
 
 Then you have to populate `E2E_TEST_USERNAME` and `E2E_TEST_PASSWORD` in `.env` with real iNaturalist login credentials so the e2e test can actually authenticate.
 
