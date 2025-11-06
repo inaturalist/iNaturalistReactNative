@@ -2,7 +2,8 @@
 
 import {
   TaxonResult,
-  TaxonSearch
+  TaxonSearch,
+  ViewWrapper
 } from "components/SharedComponents";
 import type { Node } from "react";
 import React, {
@@ -67,22 +68,22 @@ const ExploreTaxonSearch = ( {
   ] );
 
   return (
-    <TaxonSearch
-      header={(
-        <ExploreSearchHeader
-          closeModal={closeModal}
-          headerText={t( "SEARCH-TAXA" )}
-          resetFilters={resetTaxon}
-          testID="ExploreTaxonSearch.close"
-        />
-      )}
-      isLoading={isLoading}
-      isLocal={isLocal}
-      query={taxonQuery}
-      renderItem={renderItem}
-      setQuery={setTaxonQuery}
-      taxa={taxa}
-    />
+    <ViewWrapper>
+      <ExploreSearchHeader
+        closeModal={closeModal}
+        headerText={t( "SEARCH-TAXA" )}
+        resetFilters={resetTaxon}
+        testID="ExploreTaxonSearch.close"
+      />
+      <TaxonSearch
+        isLoading={isLoading}
+        isLocal={isLocal}
+        query={taxonQuery}
+        renderItem={renderItem}
+        setQuery={setTaxonQuery}
+        taxa={taxa}
+      />
+    </ViewWrapper>
   );
 };
 

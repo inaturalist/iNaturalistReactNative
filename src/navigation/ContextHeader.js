@@ -3,9 +3,10 @@ import { getHeaderTitle } from "@react-navigation/elements";
 import classNames from "classnames";
 import { Heading1, Heading4 } from "components/SharedComponents";
 import BackButton from "components/SharedComponents/Buttons/BackButton";
-import { SafeAreaView, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { dropShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
@@ -18,6 +19,8 @@ type Props = {
 const ContextHeader = ( {
   navigation, route, options
 }: Props ): Node => {
+  const insets = useSafeAreaInsets();
+
   const customTitleComponent = typeof options.headerTitle === "function";
   const subtitle = options.headerSubtitle;
 
@@ -64,11 +67,12 @@ const ContextHeader = ( {
   const backButton = renderBackButton();
 
   return (
-    <SafeAreaView
+    <View
       className="bg-white"
       style={{
         ...options.headerStyle,
-        ...( options.headerShadowVisible && dropShadow )
+        ...( options.headerShadowVisible && dropShadow ),
+        paddingTop: insets.top
       }}
     >
       <View
@@ -108,7 +112,7 @@ const ContextHeader = ( {
             )}
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

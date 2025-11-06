@@ -1,13 +1,10 @@
-// @flow
-
 import classnames from "classnames";
 import { ActivityIndicator, Body3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 
-type Props = {
+interface Props {
   layout?: string,
   isConnected?: boolean | null,
   hideLoadingWheel: boolean,
@@ -19,7 +16,7 @@ const InfiniteScrollLoadingWheel = ( {
   isConnected = true,
   layout,
   explore = false
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
 
   const loadingWheelClass = explore

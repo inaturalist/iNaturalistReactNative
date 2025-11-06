@@ -35,7 +35,7 @@ interface Props {
   onPressClose?: Function;
   snapPoints?: Array<string>;
   insideModal?: boolean;
-  keyboardShouldPersistTaps: string;
+  keyboardShouldPersistTaps?: string;
   testID?: string;
 }
 
