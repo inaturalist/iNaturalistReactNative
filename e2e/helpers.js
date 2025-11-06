@@ -2,20 +2,20 @@ import { exec, execSync } from "child_process";
 
 import resetUserForTesting from "./sharedFlows/resetUserForTesting";
 
-export async function iNatE2eBeforeAll( _device ) {
+export async function iNatE2eBeforeAll( device ) {
   await resetUserForTesting();
 
-  // if ( device.getPlatform() === "android" ) {
-  //   await device.launchApp( {
-  //     newInstance: true,
-  //     permissions: {
-  //       location: "always",
-  //       camera: "YES",
-  //       medialibrary: "YES",
-  //       photos: "YES"
-  //     }
-  //   } );
-  // }
+  if ( device.getPlatform() === "android" ) {
+    await device.launchApp( {
+      newInstance: true,
+      permissions: {
+        location: "always",
+        camera: "YES",
+        medialibrary: "YES",
+        photos: "YES"
+      }
+    } );
+  }
 }
 
 export async function iNatE2eBeforeEach( device ) {
