@@ -150,7 +150,7 @@
     "@babel/runtime": "^7.25.0",
     "@faker-js/faker": "^8.4.1",
     "@fluent/syntax": "^0.19.0",
-    "@react-native-community/cli": "19.1.1",
+    "@react-native-community/cli": "20.0.2",
     "@react-native-community/cli-platform-android": "19.1.1",
     "@react-native-community/cli-platform-ios": "19.1.1",
     "@react-native/babel-preset": "0.80.2",
