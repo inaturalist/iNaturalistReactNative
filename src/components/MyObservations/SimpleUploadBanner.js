@@ -58,7 +58,7 @@ const SimpleUploadBanner = ( {
   );
 
   const renderErrorText = ( ) => (
-    <Body2 className="color-white flex-1 text-center">
+    <Body2 className="color-white flex-2 text-center ml-1">
       {isWhiteOnGreenStyling
         ? separator
         : ""}
@@ -78,7 +78,7 @@ const SimpleUploadBanner = ( {
             onPress={handleSyncButtonPress}
             accessibilityRole="button"
             disabled={syncDisabled}
-            className="flex-[2] ml-2"
+            className="shrink-[2] ml-2"
           >
             <Body2
               className={classnames( "text-darkGray py-3 text-center", {
