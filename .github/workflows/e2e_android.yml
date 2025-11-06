@@ -16,8 +16,6 @@ jobs:
     steps:
     - name: Check out Git repository
       uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
 
     # Generate the secret files needed for a release build
     - name: Create .env file
@@ -49,6 +47,7 @@ jobs:
     - name: Download the small example cv and geomodel
       run: |
         npm ci
+        npm rebuild
         npm run add-example-model -- -f=main
 
     - name: Enable KVM
@@ -73,8 +72,9 @@ jobs:
       uses: reactivecircus/android-emulator-runner@v2
       with:
         api-level: 29
+        target: google_apis
         # this is faking whatever detox wants, we'll see what we need to do
-        avd-name: "Pixel_5_API_31_AOSP"
+        avd-name: "Medium_Phone_API_36.1"
         script: |
           npm run e2e:test:android -- --take-screenshots failing --record-videos failing -l debug
 
