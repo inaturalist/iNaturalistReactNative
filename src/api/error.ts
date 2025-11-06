@@ -1,23 +1,25 @@
-// @flow
-
 import { log } from "../../react-native-logs.config";
 
 const logger = log.extend( "INatApiError" );
 
 export class INatApiError extends Error {
   // Object literal of the JSON body returned by the server
-  json: Object;
+  json: Record<string, unknown>;
 
   // HTTP status code of the server response
   status: number;
 
   // Additional context information
-  context: ?Object;
+  context: Record<string, unknown> | null;
 
-  constructor( json: Object, status?: number, context?: Object ) {
+  constructor(
+    json: Record<string, unknown> & { status: string | number },
+    status?: number,
+    context?: Record<string, unknown> | null
+  ) {
     super( JSON.stringify( json ) );
     this.json = json;
-    this.status = status || json.status;
+    this.status = status || +json.status;
     this.context = context || null;
   }
 }
@@ -27,7 +29,7 @@ Object.defineProperty( INatApiError.prototype, "name", {
 } );
 
 export class INatApiUnauthorizedError extends INatApiError {
-  constructor( context?: Object ) {
+  constructor( context?: Record<string, unknown> ) {
     const errorJson = {
       error: "Unauthorized",
       status: 401,
@@ -42,7 +44,7 @@ Object.defineProperty( INatApiUnauthorizedError.prototype, "name", {
 } );
 
 export class INatApiTooManyRequestsError extends INatApiError {
-  constructor( context?: Object ) {
+  constructor( context?: Record<string, unknown> ) {
     const errorJson = {
       error: "Too Many Requests",
       status: 429,
@@ -55,7 +57,42 @@ export class INatApiTooManyRequestsError extends INatApiError {
 Object.defineProperty( INatApiTooManyRequestsError.prototype, "name", {
   value: "INatApiTooManyRequestsError"
 } );
-function createContext( e, options, extraContext ) {
+
+interface HandleErrorOptions {
+  queryKey?: unknown[];
+  failureCount?: number;
+  routeName?: string;
+  routeParams?: Record<string, unknown>;
+  context?: Record<string, unknown>;
+  throw?: boolean;
+  onApiError?: ( error: INatApiError ) => void;
+}
+
+interface ErrorWithResponse {
+  response?: {
+    status: number;
+    url: string;
+    json: () => Promise<{
+      status: string;
+      errors: Array<{
+        errorCode: string,
+        message: string,
+        from: string | null,
+        stack: string | null,
+      }>;
+    }>;
+  };
+  status?: number;
+  name?: string;
+  routeName?: string;
+  routeParams?: Record<string, unknown>;
+}
+
+function createContext(
+  e: ErrorWithResponse,
+  options: HandleErrorOptions,
+  extraContext: Record<string, unknown> | null
+) {
   const context = {
     queryKey: options?.queryKey
       ? JSON.stringify( options.queryKey )
@@ -79,7 +116,10 @@ function createContext( e, options, extraContext ) {
   );
 }
 
-async function handleError( e: Object, options: Object = {} ): Object {
+async function handleError(
+  e: ErrorWithResponse,
+  options: HandleErrorOptions = {}
+): Promise<INatApiError | ErrorWithResponse> {
   // Get context from options if available
   const originalContext = options?.context || null;
   const context = createContext( e, options, originalContext );
@@ -112,8 +152,8 @@ async function handleError( e: Object, options: Object = {} ): Object {
   let errorJson;
   try {
     errorJson = await e.response.json( );
-  } catch ( jsonError ) {
-    if ( jsonError.message.match( /JSON Parse error/ ) ) {
+  } catch ( jsonError: unknown ) {
+    if ( jsonError instanceof Error && jsonError.message.match( /JSON Parse error/ ) ) {
       // This happens a lot and I want to know where it's coming from ~~~~kueda 20240520
       jsonError.message = `Error parsing JSON from ${e.response.url} `
         + `(status: ${e.response.status})`;
