@@ -164,22 +164,6 @@ const TaxonResult = ( {
   // useTaxon could return null, and it's at least remotely possible taxonProp is null
   if ( !usableTaxon ) return null;
 
-  const renderCheckmark = () => (
-    <INatIconButton
-      className="ml-2"
-      icon="checkmark-circle-outline"
-      size={40}
-      color={String(
-        clearBackground
-          ? colors?.white
-          : colors?.darkGray
-      )}
-      onPress={() => handleCheckmarkPress( usableTaxon )}
-      accessibilityLabel={accessibilityLabel}
-      testID={`${testID}.checkmark`}
-    />
-  );
-
   return (
     <View
       className={
@@ -272,7 +256,21 @@ const TaxonResult = ( {
               accessibilityHint={t( "Navigates-to-taxon-details" )}
             />
           )}
-          { showCheckmark && renderCheckmark()}
+          { showCheckmark && (
+            <INatIconButton
+              className="ml-2"
+              icon="checkmark-circle-outline"
+              size={40}
+              color={String(
+                clearBackground
+                  ? colors?.white
+                  : colors?.darkGray
+              )}
+              onPress={() => handleCheckmarkPress( usableTaxon )}
+              accessibilityLabel={accessibilityLabel}
+              testID={`${testID}.checkmark`}
+            />
+          )}
           { showEditButton && handleTaxonOrEditPress
               && (
                 <INatIconButton
