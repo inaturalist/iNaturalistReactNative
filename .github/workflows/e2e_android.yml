@@ -56,12 +56,12 @@ jobs:
     #     sudo udevadm control --reload-rules
     #     sudo udevadm trigger --name-match=kvm
 
-    - name: Build Android App
-      run: |
-        npx react-native build-android --tasks assembleRelease
+    # - name: Build Android App
+    #   run: |
+    #     npx react-native build-android --tasks assembleRelease
 
     - name: Try fastlane
-      if: ${{ success() || failure() }}
+      # if: ${{ success() || failure() }}
       run: |
         brew install fastlane
         gem install fastlane-sirp
