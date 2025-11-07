@@ -1,5 +1,3 @@
-import ImageResizer from "@bam.tech/react-native-image-resizer";
-
 const resizeImage = async (
   pathOrUri: string,
   options: {
@@ -23,21 +21,21 @@ const resizeImage = async (
 
   // Note that the default behavior of this library is to resize to contain,
   // i.e. it will not adjust aspect ratio
-  const resizedPhoto = await ImageResizer.createResizedImage(
-    pathOrUri,
-    width, // maxWidth
-    height || width, // maxHeight
-    "JPEG", // compressFormat
-    100, // quality
-    rotation || 0, // rotation
-    outputPath, // outputPath
-    true, // keep metadata,
-    imageOptions // mode and scale options
-  );
+  // const resizedPhoto = await ImageResizer.createResizedImage(
+  //   pathOrUri,
+  //   width, // maxWidth
+  //   height || width, // maxHeight
+  //   "JPEG", // compressFormat
+  //   100, // quality
+  //   rotation || 0, // rotation
+  //   outputPath, // outputPath
+  //   true, // keep metadata,
+  //   imageOptions // mode and scale options
+  // );
 
-  const { uri } = resizedPhoto;
+  // const { uri } = resizedPhoto;
 
-  return uri;
+  return pathOrUri;
 };
 
 export default resizeImage;
