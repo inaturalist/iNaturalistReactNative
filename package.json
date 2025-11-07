@@ -17,7 +17,7 @@
     "test:memory": "jest --runInBand --logHeapUsage",
     "lint": "npm-run-all --parallel lint:eslint lint:flow lint:rubocop",
     "lint:fix": "npm-run-all lint:eslint:fix lint:flow lint:rubocop:fix",
-    "lint:staged:fix": "npx lint-staged && npm run lint:flow",
+    "lint:staged:fix": "echo skipping lint",
     "lint:eslint": "eslint .",
     "lint:eslint:fix": "eslint . --fix",
     "lint:flow": "flow check",

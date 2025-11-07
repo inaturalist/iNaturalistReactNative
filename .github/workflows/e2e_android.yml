@@ -57,8 +57,9 @@ jobs:
 
     - name: Build Android App
       run: |
-        npx react-native build-android --tasks generateCodegenArtifactsFromSchema assembleRelease
-        ls -la android/app/build/outputs/apk/release
+        npx react-native build-android --tasks generateCodegenArtifactsFromSchema
+        npx react-native build-android --tasks assembleRelease
+        ls -la android/app/build/outputs/apk/release 2> /dev/null
 
     - name: Upload Android APK
       uses: actions/upload-artifact@v4
