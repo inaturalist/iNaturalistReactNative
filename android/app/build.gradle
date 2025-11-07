@@ -108,7 +108,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 184
         versionName "1.0.11"
-        setProperty("archivesBaseName", applicationId + "-v" + versionName + "+" + versionCode)
+        setProperty("archivesBaseName", applicationId)
         manifestPlaceholders = [ GMAPS_API_KEY:project.env.get("GMAPS_API_KEY") ]
         // Detox Android setup
         testBuildType System.getProperty('testBuildType', 'debug')

@@ -57,12 +57,13 @@ jobs:
 
     - name: Build Android App
       run: |
-        npx react-native build-android --tasks assembleRelease
+        npx react-native build-android --tasks generateCodegenArtifactsFromSchema assembleRelease
+        ls -la android/app/build/outputs/apk/release
 
     - name: Upload Android APK
       uses: actions/upload-artifact@v4
       with:
-        path: android/app/build/outputs/apk/release/app-release.apk
+        path: android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk
         name: android-release-apk
 
     - name: run tests
