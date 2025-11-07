@@ -35,6 +35,7 @@ jobs:
         cp android/app/google-services.example.json android/app/google-services.json
         sed -i "" "s/your_mobilesdk_app_id/${FIREBASE_STAGING_GOOGLE_APP_ID//\//\\/}/g" "android/app/google-services.json"
         sed -i "" "s/your_current_key/${FIREBASE_STAGING_API_KEY//\//\\/}/g" "android/app/google-services.json"
+        sed -i "" "s/your_package_name/org.inaturalist.iNaturalistMobile/g" "android/app/google-services.json"
 
     - name: Create GoogleService-Info.plist files from example
       run: |
