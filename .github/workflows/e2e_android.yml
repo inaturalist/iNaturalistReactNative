@@ -29,13 +29,20 @@ jobs:
 
     - name: Add secrets to google-services.json
       env:
+        FIREBASE_PROJECT_NUMBER: ${{ secrets.FIREBASE_PROJECT_NUMBER }}
+        FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+        FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
         FIREBASE_STAGING_GOOGLE_APP_ID: ${{ secrets.FIREBASE_STAGING_GOOGLE_APP_ID }}
+        FIREBASE_STAGING_PACKAGE_NAME: ${{ secrets.FIREBASE_STAGING_PACKAGE_NAME }}
         FIREBASE_STAGING_API_KEY: ${{ secrets.FIREBASE_STAGING_API_KEY }}
       run: |
         cp android/app/google-services.example.json android/app/google-services.json
+        sed -i "" "s/your_project_number/${FIREBASE_PROJECT_NUMBER//\//\\/}/g" "android/app/google-services.json"
+        sed -i "" "s/your_project_id/${FIREBASE_PROJECT_ID//\//\\/}/g" "android/app/google-services.json"
+        sed -i "" "s/your_storage_bucket/${FIREBASE_STORAGE_BUCKET//\//\\/}/g" "android/app/google-services.json"
         sed -i "" "s/your_mobilesdk_app_id/${FIREBASE_STAGING_GOOGLE_APP_ID//\//\\/}/g" "android/app/google-services.json"
+        sed -i "" "s/your_package_name/${FIREBASE_STAGING_PACKAGE_NAME//\//\\/}/g" "android/app/google-services.json"
         sed -i "" "s/your_current_key/${FIREBASE_STAGING_API_KEY//\//\\/}/g" "android/app/google-services.json"
-        sed -i "" "s/your_package_name/org.inaturalist.iNaturalistMobile/g" "android/app/google-services.json"
 
     - name: Create GoogleService-Info.plist files from example
       run: |

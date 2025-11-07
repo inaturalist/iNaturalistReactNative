@@ -120,7 +120,7 @@ def get_apk_path( build_number = nil )
     "outputs",
     "apk",
     "release",
-    "#{PACKAGE_ID}-v#{VERSION}+#{build_number}-release.apk"
+    "#{PACKAGE_ID}-release.apk"
   ) )
 end
 
@@ -317,6 +317,7 @@ platform :android do
     # Build APK. This should write
     # android/app/build/outputs/apk/release/PACKAGE_ID-vVERSION_NAME+VERSION_CODE-release.apk
     apk_path = get_apk_path( build_number )
+    gradle( task: "build", project_dir: "android", flags: "-x lint" )
     if File.exist?( apk_path )
       UI.important "APK already exists at #{apk_path}"
     else
