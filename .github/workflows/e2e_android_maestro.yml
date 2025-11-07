@@ -1,0 +1,113 @@
+name: e2e-Android
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'android-detox'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  # cancel-in-progress: true
+    
+jobs:
+  test: 
+    runs-on: ubuntu-24.04-l
+
+    steps:
+    - name: Check out Git repository
+      uses: actions/checkout@v4
+
+    # Generate the secret files needed for a release build
+    - name: Create .env file
+      env:
+        OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
+        OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
+        E2E_TEST_USERNAME: ${{ secrets.E2E_TEST_USERNAME }}
+        E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
+        JWT_ANONYMOUS_API_SECRET: ${{ secrets.JWT_ANONYMOUS_API_SECRET }}
+        GMAPS_API_KEY: ${{ secrets.GMAPS_API_KEY }}
+      run: printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\nANDROID_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.tflite\nANDROID_TAXONOMY_FILE_NAME=taxonomy.csv\nANDROID_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.tflite\nIOS_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.mlmodel\nIOS_TAXONOMY_FILE_NAME=taxonomy.json\nIOS_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.mlmodel\nCV_MODEL_VERSION=small_2\n' "$JWT_ANONYMOUS_API_SECRET" "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" "$E2E_TEST_USERNAME" "$E2E_TEST_PASSWORD" "$GMAPS_API_KEY" > .env
+    - name: Create keystore.properties file
+      env:
+        ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
+        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        ANDROID_ALIAS: ${{ secrets.ANDROID_ALIAS }}
+      run: printf 'storePassword=%s\nkeyPassword=%s\nkeyAlias=%s\nstoreFile=release.keystore' "$ANDROID_KEY_STORE_PASSWORD" "$ANDROID_KEY_PASSWORD" "$ANDROID_ALIAS" > android/keystore.properties
+    - name: Generate release keystore
+      env:
+        ANDROID_ALIAS: ${{ secrets.ANDROID_ALIAS }}
+        ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
+        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      run: |
+        keytool -genkeypair -v -noprompt -storetype PKCS12 -keystore release.keystore -alias "$ANDROID_ALIAS" -keyalg RSA -keysize 2048 -validity 10000 -storepass "$ANDROID_KEY_STORE_PASSWORD" -keypass "$ANDROID_KEY_PASSWORD" -dname "CN=mqttserver.ibm.com, OU=ID, O=IBM, L=Hursley, S=Hants, C=GB"
+    - name: Move keystore
+      run: mv release.keystore android/app/release.keystore
+
+    # Download the example model otherwise an error alert will be shown on app start, requires .env
+    - name: Download the small example cv and geomodel
+      run: |
+        export MAESTRO_VERSION="2.0.8"; curl -Ls "https://get.maestro.mobile.dev" | bash
+        $HOME/.maestro/bin/maestro --help
+        npm ci
+        npm rebuild
+        npm run add-example-model -- -f=main
+
+    - name: Enable KVM
+      run: |
+        echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+        sudo udevadm control --reload-rules
+        sudo udevadm trigger --name-match=kvm
+
+    - name: Build Android App
+      run: |
+        npx react-native build-android --tasks assembleRelease
+
+    - name: Upload Android APK
+      uses: actions/upload-artifact@v4
+      with:
+        path: android/app/build/outputs/apk/release/app-release.apk
+        name: android-release-apk
+
+    - name: run tests
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 29
+        target: google_apis
+        # this is faking whatever detox wants, we'll see what we need to do
+        avd-name: "Medium_Phone_API_36.1"
+        script: |
+          $ANDROID_HOME/platform-tools/adb install android/app/build/outputs/apk/release/app-release.apk 
+          $HOME/.maestro/bin/maestro record e2e/maestro/android/shareIntoApp_GoogleAPIs.yaml shareIntoApp_GoogleAPIs.android.mp4 --local
+          
+    - name: Emulator logcat
+      if: failure()
+      # only attempt to logcat if we can still connect to the emu. 
+      # `-d` is important to not stay listening to the log buffer. ask me how I know
+      run: |
+        [ "$(adb devices | tail -n +2 | grep -c device)" -eq 1 ] && adb logcat -d > logcat.txt
+
+    - name: Store emulator logcat log on test failure
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: emulator-logcat
+        path: logcat.txt
+
+    - name: Upload test video
+      uses: actions/upload-artifact@v4
+      if: ${{ success() || failure() }}
+      with:
+        path: shareIntoApp_GoogleAPIs.android.mp4
+        name: Android
+
+  # notify:
+  #   name: Notify Slack
+  #   needs: test
+  #   if: ${{ success() || failure() }}
+  #   runs-on: macos-latest
+  #   steps:
+  #     - uses: iRoachie/slack-github-actions@v2.3.0
+  #       if: env.SLACK_WEBHOOK_URL != null
+  #       env:
+  #         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
