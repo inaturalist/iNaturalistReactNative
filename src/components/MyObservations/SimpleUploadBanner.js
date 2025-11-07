@@ -82,7 +82,7 @@ const SimpleUploadBanner = ( {
           >
             <Body2
               className={classnames( "text-darkGray py-3 text-center", {
-                "text-white": status.styling === "white-on-green"
+                "text-white": isWhiteOnGreenStyling
               } )}
               numberOfLines={2}
             >
