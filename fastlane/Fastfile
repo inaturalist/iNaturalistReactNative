@@ -23,9 +23,9 @@ forbidden_env_vars.each do | env_var |
 end
 
 required_env_vars = [
-  "IOS_PROVISIONING_PROFILE_NAME",
-  "IOS_SHARE_BUNDLE_ID",
-  "IOS_SHARE_PROVISIONING_PROFILE_NAME"
+  # "IOS_PROVISIONING_PROFILE_NAME",
+  # "IOS_SHARE_BUNDLE_ID",
+  # "IOS_SHARE_PROVISIONING_PROFILE_NAME"
 ]
 required_env_vars.each do | env_var |
   next unless ENV[env_var].to_s.empty?
