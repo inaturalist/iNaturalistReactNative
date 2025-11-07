@@ -1,13 +1,14 @@
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
-import { getAnalytics, logEvent } from "@react-native-firebase/analytics";
 import { NavigationContainer } from "@react-navigation/native";
 import React, { PropsWithChildren, useRef } from "react";
 import { Alert } from "react-native";
 import { useTranslation } from "sharedHooks";
 
 import { navigationRef } from "./navigationUtils";
+
+const { getAnalytics, logEvent } = { getAnalytics: () => {}, logEvent: () => {} };
 
 const OfflineNavigationGuard = ( { children }: PropsWithChildren ) => {
   const routeNameRef = useRef( navigationRef.current?.getCurrentRoute()?.name );

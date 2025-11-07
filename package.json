@@ -58,8 +58,6 @@
     "@react-native-community/hooks": "^3.0.0",
     "@react-native-community/netinfo": "^11.4.1",
     "@react-native-community/slider": "^4.5.0",
-    "@react-native-firebase/analytics": "^23.4.0",
-    "@react-native-firebase/app": "^23.3.1",
     "@react-native-google-signin/google-signin": "^13.1.0",
     "@react-native-oh-tpl/react-native-mail": "^6.1.1-0.0.1",
     "@react-native-picker/picker": "^2.11.1",

@@ -1,10 +1,10 @@
-import { getAnalytics, logEvent } from "@react-native-firebase/analytics";
 import { getCurrentRoute } from "navigation/navigationUtils";
 import React from "react";
 import type { PressableProps } from "react-native";
 import { GestureResponderEvent, Pressable } from "react-native";
 import { log } from "sharedHelpers/logger";
 
+const { getAnalytics, logEvent } = { getAnalytics: () => {}, logEvent: () => {} };
 const logger = log.extend( "PressableWithTracking" );
 
 const PressableWithTracking = React.forwardRef<typeof Pressable, PressableProps>(
