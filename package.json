@@ -2,6 +2,7 @@
   "name": "inaturalistreactnative",
   "version": "1.0.11",
   "private": true,
+  "packageManager": "npm@11.6.2",
   "scripts": {
     "android": "react-native run-android",
     "android:release": "react-native run-android --mode=release",
