@@ -10,6 +10,7 @@ concurrency:
 jobs:
   build_and_test: 
     runs-on: macos-15
+    # runs-on: ubuntu-24.04-m
 
     steps:
     - name: Check out Git repository
@@ -49,11 +50,11 @@ jobs:
         npm ci
         npm run add-example-model -- -f=main
 
-    - name: Enable KVM
-      run: |
-        echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-        sudo udevadm control --reload-rules
-        sudo udevadm trigger --name-match=kvm
+    # - name: Enable KVM
+    #   run: |
+    #     echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+    #     sudo udevadm control --reload-rules
+    #     sudo udevadm trigger --name-match=kvm
 
     - name: Build Android App
       run: |
@@ -64,6 +65,7 @@ jobs:
       run: |
         brew install fastlane
         gem install fastlane-sirp
+        cp fastlane/example-Appfile fastlane/Appfile
         fastlane android build
 
     - name: Upload Android APK
