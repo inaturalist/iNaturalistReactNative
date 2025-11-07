@@ -9,7 +9,7 @@ concurrency:
     
 jobs:
   build_and_test: 
-    runs-on: ubuntu-24.04-m
+    runs-on: macos-15
 
     steps:
     - name: Check out Git repository
@@ -57,9 +57,14 @@ jobs:
 
     - name: Build Android App
       run: |
-        npx react-native build-android --tasks generateCodegenArtifactsFromSchema
         npx react-native build-android --tasks assembleRelease
-        ls -la android/app/build/outputs/apk/release 2> /dev/null
+
+    - name: Try fastlane
+      if: ${{ success() || failure() }}
+      run: |
+        brew install fastlane
+        gem install fastlane-sirp
+        fastlane android build
 
     - name: Upload Android APK
       uses: actions/upload-artifact@v4

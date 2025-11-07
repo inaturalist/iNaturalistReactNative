@@ -304,15 +304,15 @@ platform :android do
     build_number = get_build_number( xcodeproj: XCODEPROJ )
     # Build AAB. This should write
     # android/app/build/outputs/bundle/release/PACKAGE_ID-vVERSION_NAME+VERSION_CODE-release.aab
-    aab_path = get_aab_path( build_number )
-    if File.exist?( aab_path )
-      UI.important "AAB already exists at #{aab_path}"
-    else
-      gradle( task: "bundle", project_dir: "android" )
-    end
-    unless File.exist?( aab_path )
-      UI.abort_with_message! "Failed to create AAB at #{aab_path}"
-    end
+    # aab_path = get_aab_path( build_number )
+    # if File.exist?( aab_path )
+    #   UI.important "AAB already exists at #{aab_path}"
+    # else
+    #   gradle( task: "bundle", project_dir: "android" )
+    # end
+    # unless File.exist?( aab_path )
+    #   UI.abort_with_message! "Failed to create AAB at #{aab_path}"
+    # end
 
     # Build APK. This should write
     # android/app/build/outputs/apk/release/PACKAGE_ID-vVERSION_NAME+VERSION_CODE-release.apk
