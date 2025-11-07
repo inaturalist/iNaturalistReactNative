@@ -19,7 +19,7 @@ export class INatApiError extends Error {
   ) {
     super( JSON.stringify( json ) );
     this.json = json;
-    this.status = status || Number(json.status);
+    this.status = status || Number( json.status );
     this.context = context || null;
   }
 }
