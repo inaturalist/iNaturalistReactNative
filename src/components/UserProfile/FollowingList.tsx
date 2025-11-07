@@ -69,7 +69,7 @@ const FollowingList = ( ) => {
   }
 
   return (
-    <ViewWrapper>
+    <ViewWrapper useTopInset={false}>
       <View className="border-b border-lightGray mt-5" />
       <UserList
         users={following}

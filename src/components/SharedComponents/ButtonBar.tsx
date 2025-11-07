@@ -8,11 +8,14 @@ const DROP_SHADOW = getShadow( {
   offsetHeight: -2
 } );
 
-interface ButtonConfiguration {
+export interface ButtonConfiguration {
   title: string;
   onPress: ( ) => void;
   isPrimary: boolean;
   className?: string;
+  disabled?: boolean;
+  level?: string;
+  loading?: boolean;
 }
 
 interface Props extends PropsWithChildren {

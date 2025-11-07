@@ -3,6 +3,7 @@ import {
   ButtonBar,
   List2
 } from "components/SharedComponents";
+import { type ButtonConfiguration } from "components/SharedComponents/ButtonBar";
 import { View } from "components/styledComponents";
 import React from "react";
 
@@ -35,13 +36,14 @@ const WarningSheet = ( {
   testID,
   text
 }: Props ) => {
-  const buttons = [
+  const buttons: ButtonConfiguration[] = [
     {
       title: buttonText,
       onPress: confirm,
       disabled: loading,
       level: buttonType || "warning",
       loading,
+      isPrimary: false,
       className: "grow ml-3"
     }
   ];

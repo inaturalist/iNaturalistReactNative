@@ -11,13 +11,13 @@ import {
   KeyboardAvoidingView as UnstyledKeyboardAvoidingView,
   Modal as UnstyledModal,
   Platform,
-  SafeAreaView as UnstyledSafeAreaView,
   ScrollView as UnstyledScrollView,
   Text as UnstyledText,
   TextInput as UntyledTextInput,
   View as UnstyledView
 } from "react-native";
 import UnstyledLinearGradient from "react-native-linear-gradient";
+import { SafeAreaView as UnstyledSafeAreaView } from "react-native-safe-area-context";
 
 const View = styled( UnstyledView );
 const KeyboardAvoidingView = styled( UnstyledKeyboardAvoidingView );

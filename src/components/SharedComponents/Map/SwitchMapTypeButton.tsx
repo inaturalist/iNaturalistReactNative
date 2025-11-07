@@ -47,13 +47,12 @@ const SwitchMapTypeButton = ( {
         switchMapTypeButtonClassName
       )}
       style={DROP_SHADOW}
-      accessibilityLabel={t( "Toggle-map-type" )}
-      accessibilityRole="button"
-      accessibilityState={
+      accessibilityLabel={
         currentMapType === "standard"
           ? t( "Standard--map-type" )
           : t( "Satellite--map-type" )
       }
+      accessibilityHint={t( "Toggle-map-type" )}
       onPress={( ) => {
         changeMapType( currentMapType === "standard"
           ? "hybrid"
