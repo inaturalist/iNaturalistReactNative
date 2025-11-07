@@ -81,8 +81,11 @@ jobs:
 
     - name: Upload Android APK
       uses: actions/upload-artifact@v4
+      if: ${{ success() || failure() }}
       with:
-        path: android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk
+        path: |
+          android/app/build/outputs/apk/release
+          package.json
         name: android-release-apk
 
     - name: run tests
