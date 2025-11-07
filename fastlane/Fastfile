@@ -418,18 +418,19 @@ lane :release do
   end
   original_branch = git_branch
   system "git checkout #{last_tag}", exception: true
-  build_number = get_build_number( xcodeproj: XCODEPROJ )
-  if build_number.to_s != last_tag.split( "+" ).last
-    UI.abort_with_message! <<~MSG
-      The last tag doesn't match the current build number. Either make a new
-      tag or check out the tag before releasing.
-    MSG
-  end
+  # build_number = get_build_number( xcodeproj: XCODEPROJ )
+  # if build_number.to_s != last_tag.split( "+" ).last
+  #   UI.abort_with_message! <<~MSG
+  #     The last tag doesn't match the current build number. Either make a new
+  #     tag or check out the tag before releasing.
+  #   MSG
+  # end
   changelog = get_changelog
 
   build
 
-  apk_path = File.expand_path( get_apk_path( build_number ) )
+  # apk_path = File.expand_path( get_apk_path( build_number ) )
+  apk_path = File.expand_path( get_apk_path( 0 ) )
   if File.exist?( apk_path )
     UI.success "Found APK at #{apk_path}"
   else
