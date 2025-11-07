@@ -110,7 +110,7 @@ jobs:
         api-level: 29
         target: google_apis
         script: |
-          $ANDROID_HOME/platform-tools/adb install android/app/build/outputs/apk/release/app-release.apk 
+          $ANDROID_HOME/platform-tools/adb install android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk 
           $HOME/.maestro/bin/maestro record e2e/maestro/android/shareIntoApp_GoogleAPIs.yaml shareIntoApp_GoogleAPIs.android.mp4 --local
           
     - name: Emulator logcat
