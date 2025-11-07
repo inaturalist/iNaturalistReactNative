@@ -105,7 +105,7 @@ def get_aab_path( build_number = nil )
     "outputs",
     "bundle",
     "release",
-    "#{PACKAGE_ID}-v#{VERSION}+#{build_number}-release.aab"
+    "#{PACKAGE_ID}.aab"
   ) )
 end
 
@@ -120,7 +120,7 @@ def get_apk_path( build_number = nil )
     "outputs",
     "apk",
     "release",
-    "#{PACKAGE_ID}-release.apk"
+    "#{PACKAGE_ID}.apk"
   ) )
 end
 
