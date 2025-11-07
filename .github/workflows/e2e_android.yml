@@ -100,11 +100,9 @@ jobs:
         repository: inaturalist/iNaturalistReactNative
         run-id: 19181790209
 
-    - name: Download the small example cv and geomodel & dependencies
+    - name: Install Maestro
       run: |
         export MAESTRO_VERSION="2.0.8"; curl -Ls "https://get.maestro.mobile.dev" | bash
-        $HOME/.maestro/bin/maestro --help
-        npm run add-example-model -- -f=main
 
     - name: run tests
       uses: reactivecircus/android-emulator-runner@v2
