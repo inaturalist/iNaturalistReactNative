@@ -44,10 +44,6 @@ jobs:
         sed -i "" "s/your_package_name/${FIREBASE_STAGING_PACKAGE_NAME//\//\\/}/g" "android/app/google-services.json"
         sed -i "" "s/your_current_key/${FIREBASE_STAGING_API_KEY//\//\\/}/g" "android/app/google-services.json"
 
-    - name: Create GoogleService-Info.plist files from example
-      run: |
-        cp android/app/google-services.example.json android/app/google-services.json
-
     - name: Create keystore.properties file
       env:
         ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
