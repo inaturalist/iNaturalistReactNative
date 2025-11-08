@@ -111,7 +111,7 @@ jobs:
         target: google_apis
         script: |
           $ANDROID_HOME/platform-tools/adb install android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk 
-          $HOME/.maestro/bin/maestro record e2e/maestro/android/shareIntoApp_GoogleAPIs.yaml shareIntoApp_GoogleAPIs.android.mp4 --local
+          $HOME/.maestro/bin/maestro record e2e/maestro/android/smoke.yaml smoke.android.mp4 --local
           
     - name: Emulator logcat
       if: failure()
@@ -131,7 +131,7 @@ jobs:
       uses: actions/upload-artifact@v4
       if: ${{ success() || failure() }}
       with:
-        path: shareIntoApp_GoogleAPIs.android.mp4
+        path: smoke.android.mp4
         name: Android
 
   # notify:

@@ -1,0 +1,14 @@
+appId: org.inaturalist.iNaturalistMobile
+---
+- launchApp
+- extendedWaitUntil:
+    visible: iNaturalist
+    timeout: 10000
+
+# dismiss iNaturalist FTUE
+- runFlow:
+    when:
+      visible: Continue
+    commands:
+      - tapOn: Close
+- assertVisible: Use iNaturalist to identify any living thing
