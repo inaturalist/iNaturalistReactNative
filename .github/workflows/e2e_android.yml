@@ -67,7 +67,7 @@ jobs:
         cache: 'npm'
 
     - name: Install JS dependencies
-      run: npm ci
+      run: npm install
 
     # - name: Download the small example cv and geomodel & dependencies
     #   run: |
