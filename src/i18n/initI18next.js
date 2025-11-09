@@ -92,6 +92,12 @@ export const I18NEXT_CONFIG = {
       fallbacks.push( "fr" );
     } else if ( code.match( /^pt-/ ) ) {
       fallbacks.push( "pt" );
+    } else if ( ["en-AU", "en-ZA", "en-IN", "en-IE", "en-SG", "en-MY"].includes( code ) ) {
+      // Commonwealth English variants should fall back to British English (en-GB)
+      // before falling back to US English (en). This ensures these regions use
+      // the correct date format (d/M/yy instead of M/d/yy).
+      // Note: en-NZ and en-GB have their own locale files and don't need fallbacks.
+      fallbacks.push( "en-GB" );
     }
     return [...fallbacks, "en"];
   }
