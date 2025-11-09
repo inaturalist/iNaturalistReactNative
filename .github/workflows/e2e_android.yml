@@ -62,79 +62,71 @@ jobs:
     - name: Move keystore
       run: mv release.keystore android/app/release.keystore
 
-    - uses: actions/setup-node@v6
-      with:
-        cache: 'npm'
-
     - name: Install JS dependencies
-      run: npm install
+      run: npm ci
 
-    # - name: Download the small example cv and geomodel & dependencies
-    #   run: |
-    #     export MAESTRO_VERSION="2.0.8"; curl -Ls "https://get.maestro.mobile.dev" | bash
-    #     $HOME/.maestro/bin/maestro --help
-    #     npm run add-example-model -- -f=main
+    - name: Download the small example cv and geomodel & dependencies
+      run: |
+        export MAESTRO_VERSION="2.0.8"; curl -Ls "https://get.maestro.mobile.dev" | bash
+        $HOME/.maestro/bin/maestro --help
+        npm run add-example-model -- -f=main
 
-    # - name: Try fastlane
-    #   run: |
-    #     cp fastlane/example-Appfile fastlane/Appfile
-    #     fastlane android build
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v5
+      with:
+        gradle-version: 8.14.1
 
-    # # - name: Upload Android APK
-    # #   uses: actions/upload-artifact@v4
-    # #   if: ${{ success() || failure() }}
-    # #   with:
-    # #     path: |
-    # #       android/app/build/outputs/apk/release
-    # #       package.json
-    # #     name: android-release-apk
+    - name: Fastlane Android Build
+      run: |
+        cp fastlane/example-Appfile fastlane/Appfile
+        fastlane android build
+/
+    - name: Enable KVM
+      run: |
+        echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+        sudo udevadm control --reload-rules
+        sudo udevadm trigger --name-match=kvm
 
-    # - name: Enable KVM
-    #   run: |
-    #     echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-    #     sudo udevadm control --reload-rules
-    #     sudo udevadm trigger --name-match=kvm
-
-    # # - uses: actions/download-artifact@v4
-    # #   with:
-    # #     name: android-release-apk
-    # #     github-token: ${{ secrets.GITHUB_TOKEN }}
-    # #     repository: inaturalist/iNaturalistReactNative
-    # #     run-id: 19181790209
-
-    # - name: Install Maestro
-    #   run: |
-    #     export MAESTRO_VERSION="2.0.8"; curl -Ls "https://get.maestro.mobile.dev" | bash
-
-    # - name: run tests
-    #   uses: reactivecircus/android-emulator-runner@v2
+    # - uses: actions/download-artifact@v4
     #   with:
-    #     api-level: 29
-    #     target: google_apis
-    #     script: |
-    #       $ANDROID_HOME/platform-tools/adb install android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk 
-    #       $HOME/.maestro/bin/maestro record e2e/maestro/android/smoke.yaml smoke.android.mp4 --local
+    #     name: android-release-apk
+    #     github-token: ${{ secrets.GITHUB_TOKEN }}
+    #     repository: inaturalist/iNaturalistReactNative
+    #     run-id: 19181790209
+
+    - name: Install Maestro
+      run: |
+        export MAESTRO_VERSION="2.0.8"; curl -Ls "https://get.maestro.mobile.dev" | bash
+
+    - name: run tests
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 29
+        target: google_apis
+        script: |
+          $ANDROID_HOME/platform-tools/adb install android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk 
+          $HOME/.maestro/bin/maestro record e2e/maestro/android/smoke.yaml smoke.android.mp4 --local
           
-    # - name: Emulator logcat
-    #   if: failure()
-    #   # only attempt to logcat if we can still connect to the emu. 
-    #   # `-d` is important to not stay listening to the log buffer. ask me how I know
-    #   run: |
-    #     [ "$(adb devices | tail -n +2 | grep -c device)" -eq 1 ] && adb logcat -d > logcat.txt
+    - name: Emulator logcat
+      if: failure()
+      # only attempt to logcat if we can still connect to the emu. 
+      # `-d` is important to not stay listening to the log buffer. ask me how I know
+      run: |
+        [ "$(adb devices | tail -n +2 | grep -c device)" -eq 1 ] && adb logcat -d > logcat.txt
 
-    # - name: Store emulator logcat log on test failure
-    #   uses: actions/upload-artifact@v4
-    #   if: failure()
-    #   with:
-    #     name: emulator-logcat
-    #     path: logcat.txt
+    - name: Store emulator logcat log on test failure
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: emulator-logcat
+        path: logcat.txt
 
-    # - name: Upload test video
-    #   uses: actions/upload-artifact@v4
-    #   if: ${{ success() || failure() }}
-    #   with:
-    #     path: smoke.android.mp4
-    #     name: Android
+    - name: Upload test video
+      uses: actions/upload-artifact@v4
+      if: ${{ success() || failure() }}
+      with:
+        path: smoke.android.mp4
+        name: Android
 
   # notify:
   #   name: Notify Slack
