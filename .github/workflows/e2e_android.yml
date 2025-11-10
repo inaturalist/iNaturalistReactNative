@@ -10,7 +10,7 @@ concurrency:
 jobs:
   build: 
     # runs-on: macos-15
-    runs-on: ubuntu-24.04-s
+    runs-on: ubuntu-24.04-m
 
     steps:
     - run: df -h .
@@ -154,6 +154,7 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: false
+          cores: 4
           script: echo "Generated AVD snapshot for caching."
 
       - run: df -h .
@@ -166,6 +167,7 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
+          cores: 4
           script: |
             $ANDROID_HOME/platform-tools/adb install org.inaturalist.iNaturalistMobile-release.apk
             $HOME/.maestro/bin/maestro record e2e/maestro/android/smoke.yaml smoke.android.mp4 --local
