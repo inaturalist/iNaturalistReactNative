@@ -62,18 +62,10 @@ jobs:
     - name: Move keystore
       run: mv release.keystore android/app/release.keystore
 
-    # - uses: actions/setup-node@v6
-    #   with:
-    #     node-version-file: '.nvmrc'
-    #     cache: 'npm'
-
-    - name: Install JS dependencies
-      run: npm install
-
-    - name: Download the small example cv and geomodel & dependencies
-      run: |
-        export MAESTRO_VERSION="2.0.8"; curl -Ls "https://get.maestro.mobile.dev" | bash
-        npm run add-example-model -- -f=main
+    - uses: actions/setup-node@v6
+      with:
+        node-version-file: '.nvmrc'
+        cache: 'npm'
 
     - uses: actions/setup-java@v5
       with:
@@ -85,6 +77,16 @@ jobs:
       with:
         gradle-version: '9.2.0'
         cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/android-ci-after-rn-upgrade' }}
+
+    - name: Install JS dependencies
+      run: |
+        npm install
+        npm rebuild react-native-pure-jwt
+
+    - name: Download the small example cv and geomodel & dependencies
+      run: |
+        export MAESTRO_VERSION="2.0.8"; curl -Ls "https://get.maestro.mobile.dev" | bash
+        npm run add-example-model -- -f=main
 
     - name: Fastlane Android Build
       run: |
