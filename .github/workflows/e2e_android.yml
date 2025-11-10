@@ -118,6 +118,7 @@ jobs:
       uses: reactivecircus/android-emulator-runner@v2
       with:
         api-level: 29
+        target: google_apis
         force-avd-creation: false
         emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: false
@@ -127,11 +128,10 @@ jobs:
       uses: reactivecircus/android-emulator-runner@v2
       with:
         api-level: 29
+        target: google_apis
         force-avd-creation: false
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
-        arch: x86_64
-        target: google_apis
         script: |
           $ANDROID_HOME/platform-tools/adb install android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk 
           $HOME/.maestro/bin/maestro record e2e/maestro/android/smoke.yaml smoke.android.mp4 --local
