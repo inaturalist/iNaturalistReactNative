@@ -8,7 +8,7 @@ concurrency:
   # cancel-in-progress: true
     
 jobs:
-  build_and_test: 
+  build: 
     # runs-on: macos-15
     runs-on: ubuntu-24.04
 
@@ -103,74 +103,95 @@ jobs:
 
     - run: df -h .
 
-    - name: Enable KVM
-      run: |
-        echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-        sudo udevadm control --reload-rules
-        sudo udevadm trigger --name-match=kvm
-
-    - name: Install Maestro
-      run: |
-        export MAESTRO_VERSION="2.0.8"; curl -Ls "https://get.maestro.mobile.dev" | bash
-
+    - name: Upload APK
+      uses: actions/upload-artifact@v5
+      with:
+        name: release-apk
+        path: android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk
+    
     - run: df -h .
+  test:
+    runs-on: ubuntu-24.04
+    needs: build
 
-    - name: AVD cache
-      uses: actions/cache@v4
-      id: avd-cache
-      with:
-        path: |
-          ~/.android/avd/*
-          ~/.android/adb*
-        key: avd-29
+    steps:
+      - run: df -h .
+      - uses: actions/checkout@v2
+      - run: df -h .
 
-    - name: create AVD and generate snapshot for caching
-      if: steps.avd-cache.outputs.cache-hit != 'true'
-      uses: reactivecircus/android-emulator-runner@v2
-      with:
-        api-level: 29
-        target: google_apis
-        force-avd-creation: false
-        emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-        disable-animations: false
-        script: echo "Generated AVD snapshot for caching."
+      - name: Download APK
+        uses: actions/download-artifact@v6
+        with:
+          name: release-apk
 
-    - run: df -h .
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
 
-    - name: run tests
-      uses: reactivecircus/android-emulator-runner@v2
-      with:
-        api-level: 29
-        target: google_apis
-        force-avd-creation: false
-        emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-        disable-animations: true
-        script: |
-          $ANDROID_HOME/platform-tools/adb install android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk 
-          $HOME/.maestro/bin/maestro record e2e/maestro/android/smoke.yaml smoke.android.mp4 --local
+      - name: Install Maestro
+        run: |
+          export MAESTRO_VERSION="2.0.8"; curl -Ls "https://get.maestro.mobile.dev" | bash
 
-    - run: df -h .
+      - run: df -h .
 
-    - name: Emulator logcat
-      if: failure()
-      # only attempt to logcat if we can still connect to the emu. 
-      # `-d` is important to not stay listening to the log buffer. ask me how I know
-      run: |
-        [ "$($ANDROID_HOME/platform-tools/adb devices | tail -n +2 | grep -c device)" -eq 1 ] && $ANDROID_HOME/platform-tools/adb logcat -d > logcat.txt
+      - name: AVD cache
+        uses: actions/cache@v4
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-29
 
-    - name: Store emulator logcat log on test failure
-      uses: actions/upload-artifact@v4
-      if: failure()
-      with:
-        name: emulator-logcat
-        path: logcat.txt
+      - name: create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          target: google_apis
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: false
+          script: echo "Generated AVD snapshot for caching."
 
-    - name: Upload test video
-      uses: actions/upload-artifact@v4
-      if: ${{ success() || failure() }}
-      with:
-        path: smoke.android.mp4
-        name: Android
+      - run: df -h .
+
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          target: google_apis
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: |
+            $ANDROID_HOME/platform-tools/adb install org.inaturalist.iNaturalistMobile-release.apk
+            $HOME/.maestro/bin/maestro record e2e/maestro/android/smoke.yaml smoke.android.mp4 --local
+
+      - run: df -h .
+
+      - name: Emulator logcat
+        if: failure()
+        # only attempt to logcat if we can still connect to the emu. 
+        # `-d` is important to not stay listening to the log buffer. ask me how I know
+        run: |
+          [ "$($ANDROID_HOME/platform-tools/adb devices | tail -n +2 | grep -c device)" -eq 1 ] && $ANDROID_HOME/platform-tools/adb logcat -d > logcat.txt
+
+      - name: Store emulator logcat log on test failure
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: emulator-logcat
+          path: logcat.txt
+
+      - name: Upload test video
+        uses: actions/upload-artifact@v4
+        if: ${{ success() || failure() }}
+        with:
+          path: smoke.android.mp4
+          name: Android
 
   # notify:
   #   name: Notify Slack
