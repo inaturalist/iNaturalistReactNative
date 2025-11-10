@@ -81,7 +81,8 @@ jobs:
     - name: Install JS dependencies
       run: |
         npm install
-        npm rebuild react-native-pure-jwt
+        rm -rf node_modules/react-native-pure-jwt
+        npm install react-native-pure-jwt
 
     - name: Download the small example cv and geomodel & dependencies
       run: |
