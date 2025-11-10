@@ -62,7 +62,7 @@ jobs:
     - name: Move keystore
       run: mv release.keystore android/app/release.keystore
 
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v6
       with:
         node-version-file: '.nvmrc'
         cache: 'npm'
@@ -114,7 +114,7 @@ jobs:
       # only attempt to logcat if we can still connect to the emu. 
       # `-d` is important to not stay listening to the log buffer. ask me how I know
       run: |
-        [ "$(adb devices | tail -n +2 | grep -c device)" -eq 1 ] && adb logcat -d > logcat.txt
+        [ "$($ANDROID_HOME/platform-tools/adb devices | tail -n +2 | grep -c device)" -eq 1 ] && $ANDROID_HOME/platform-tools/adb logcat -d > logcat.txt
 
     - name: Store emulator logcat log on test failure
       uses: actions/upload-artifact@v4
