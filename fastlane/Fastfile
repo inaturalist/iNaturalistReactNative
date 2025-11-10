@@ -317,7 +317,7 @@ platform :android do
     # Build APK. This should write
     # android/app/build/outputs/apk/release/PACKAGE_ID-vVERSION_NAME+VERSION_CODE-release.apk
     apk_path = get_apk_path( build_number )
-    gradle( task: "build", project_dir: "android", flags: "-x lint -x lintVitalRelease" )
+    gradle( task: "assembleRelease", project_dir: "android", flags: "-x lint -x lintVitalRelease" )
     unless File.exist?( apk_path )
       UI.abort_with_message! "Failed to create APK at #{apk_path}"
     end

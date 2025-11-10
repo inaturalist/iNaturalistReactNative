@@ -81,6 +81,7 @@ jobs:
       with:
         gradle-version: '8.14.1'
         cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/android-ci-after-rn-upgrade' }}
+        cache-disabled: true
 
     - run: df -h .
 
