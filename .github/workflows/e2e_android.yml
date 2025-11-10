@@ -84,9 +84,8 @@ jobs:
         rm -rf node_modules/react-native-pure-jwt
         npm install react-native-pure-jwt
 
-    - name: Download the small example cv and geomodel & dependencies
+    - name: Download the small example cv and geomodel
       run: |
-        export MAESTRO_VERSION="2.0.8"; curl -Ls "https://get.maestro.mobile.dev" | bash
         npm run add-example-model -- -f=main
 
     - name: Fastlane Android Build
