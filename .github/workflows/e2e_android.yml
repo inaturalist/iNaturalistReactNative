@@ -83,7 +83,7 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v5
       with:
-        gradle-version: '8.14.1'
+        gradle-version: '9.2.0'
         cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/android-ci-after-rn-upgrade' }}
 
     - name: Fastlane Android Build
@@ -101,15 +101,38 @@ jobs:
       run: |
         export MAESTRO_VERSION="2.0.8"; curl -Ls "https://get.maestro.mobile.dev" | bash
 
+    - name: AVD cache
+      uses: actions/cache@v4
+      id: avd-cache
+      with:
+        path: |
+          ~/.android/avd/*
+          ~/.android/adb*
+        key: avd-29
+
+    - name: create AVD and generate snapshot for caching
+      if: steps.avd-cache.outputs.cache-hit != 'true'
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 29
+        force-avd-creation: false
+        emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        disable-animations: false
+        script: echo "Generated AVD snapshot for caching."
+
     - name: run tests
       uses: reactivecircus/android-emulator-runner@v2
       with:
         api-level: 29
+        force-avd-creation: false
+        emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        disable-animations: true
+        arch: x86_64
         target: google_apis
         script: |
           $ANDROID_HOME/platform-tools/adb install android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk 
           $HOME/.maestro/bin/maestro record e2e/maestro/android/smoke.yaml smoke.android.mp4 --local
-          
+
     - name: Emulator logcat
       if: failure()
       # only attempt to logcat if we can still connect to the emu. 
