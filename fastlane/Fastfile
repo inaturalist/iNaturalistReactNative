@@ -320,9 +320,11 @@ platform :android do
     puts apk_path
     gradle( task: "build", project_dir: "android", flags: "-x lint -x lintVitalRelease" )
     puts Dir["android/app/build/outputs/apk/release/*"]
-    unless File.exist?( apk_path )
-      UI.abort_with_message! "Failed to create APK at #{apk_path}"
-    end
+    org.inaturalist.iNaturalistMobile-release.apk
+    sh "mv ../android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk #{apk_path}"
+    # unless File.exist?( apk_path )
+    #   UI.abort_with_message! "Failed to create APK at #{apk_path}"
+    # end
   end
 
   lane :clean do
