@@ -73,14 +73,13 @@ jobs:
     - name: Download the small example cv and geomodel & dependencies
       run: |
         export MAESTRO_VERSION="2.0.8"; curl -Ls "https://get.maestro.mobile.dev" | bash
-        $HOME/.maestro/bin/maestro --help
         npm run add-example-model -- -f=main
 
     - uses: actions/setup-java@v5
       with:
         distribution: 'zulu'
         java-version: '17'
-        
+
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v5
       with:
@@ -97,13 +96,6 @@ jobs:
         sudo udevadm control --reload-rules
         sudo udevadm trigger --name-match=kvm
 
-    # - uses: actions/download-artifact@v4
-    #   with:
-    #     name: android-release-apk
-    #     github-token: ${{ secrets.GITHUB_TOKEN }}
-    #     repository: inaturalist/iNaturalistReactNative
-    #     run-id: 19181790209
-
     - name: Install Maestro
       run: |
         export MAESTRO_VERSION="2.0.8"; curl -Ls "https://get.maestro.mobile.dev" | bash
@@ -114,7 +106,7 @@ jobs:
         api-level: 29
         target: google_apis
         script: |
-          $ANDROID_HOME/platform-tools/adb install android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile.apk 
+          $ANDROID_HOME/platform-tools/adb install android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk 
           $HOME/.maestro/bin/maestro record e2e/maestro/android/smoke.yaml smoke.android.mp4 --local
           
     - name: Emulator logcat
