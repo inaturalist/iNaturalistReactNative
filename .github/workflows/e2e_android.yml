@@ -76,6 +76,11 @@ jobs:
         $HOME/.maestro/bin/maestro --help
         npm run add-example-model -- -f=main
 
+    - uses: actions/setup-java@v5
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+        
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v5
       with:
