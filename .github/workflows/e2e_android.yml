@@ -100,7 +100,7 @@ jobs:
         path: android/app/build/outputs/apk/release/*-release.apk
     
   test:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04-m
     needs: build
 
     steps:
@@ -136,6 +136,7 @@ jobs:
         if: steps.avd-cache-restore.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
         with:
+          cores: 4
           api-level: 29
           target: google_apis
           force-avd-creation: false
@@ -159,6 +160,7 @@ jobs:
           MAESTRO_CLI_NO_ANALYTICS: 1
           MAESTRO_RECORD: true
         with:
+          cores: 4
           api-level: 29
           target: google_apis
           force-avd-creation: false
