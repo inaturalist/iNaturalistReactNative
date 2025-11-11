@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react-native";
 import AddObsButton from "components/AddObsModal/AddObsButton";
+import { navigationRef } from "navigation/navigationUtils";
 import React from "react";
 import * as useCurrentUser from "sharedHooks/useCurrentUser";
 import { zustandStorage } from "stores/useStore";
@@ -7,12 +8,10 @@ import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 
-// Mock getCurrentRoute to return ObsList
-jest.mock( "navigation/navigationUtils", () => ( {
-  getCurrentRoute: () => ( {
-    name: "ObsList"
-  } )
-} ) );
+// Mock methods needed to get the current route
+navigationRef.isReady = jest.fn( () => true );
+navigationRef.getCurrentRoute = jest.fn( () => ( { name: "ObsList" } ) );
+navigationRef.addListener = jest.fn( () => jest.fn() );
 
 const mockUser = factory( "LocalUser" );
 
