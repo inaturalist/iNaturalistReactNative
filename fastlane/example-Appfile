@@ -1,5 +1,5 @@
 json_key_file("path/to/your/service/acount/key.json")
-package_name("org.inaturalist.iNaturalistMobile")
+package_name("org.inaturalist.android")
 
 # Apple
 app_identifier("org.inaturalist.iphone") # The bundle identifier of your app

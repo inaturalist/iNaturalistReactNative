@@ -108,7 +108,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 184
         versionName "1.0.11"
-        setProperty("archivesBaseName", applicationId)
+        setProperty("archivesBaseName", applicationId + "-v" + versionName + "+" + versionCode)
         manifestPlaceholders = [ GMAPS_API_KEY:project.env.get("GMAPS_API_KEY") ]
         // Detox Android setup
         testBuildType System.getProperty('testBuildType', 'debug')
@@ -143,9 +143,10 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             // Detox Android setup
             proguardFile "${rootProject.projectDir}/../node_modules/detox/android/detox/proguard-rules-app.pro"
-            applicationIdSuffix ""
         }
     }
+
+    
 }
 
 dependencies {

@@ -1,7 +1,8 @@
 appId: org.inaturalist.iNaturalistMobile
 ---
 
-- tapOn: Chrome
+- launchApp:
+    appId: com.android.chrome
 
 # dismiss Google Chrome FTUE
 - runFlow:
