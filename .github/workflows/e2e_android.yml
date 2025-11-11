@@ -154,7 +154,7 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: false
-          cores: 8
+          cores: 2
           script: echo "Generated AVD snapshot for caching."
 
       - run: df -h .
@@ -170,7 +170,7 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          cores: 8
+          cores: 2
           script: |
             $ANDROID_HOME/platform-tools/adb install -rd org.inaturalist.iNaturalistMobile-release.apk
             $HOME/.maestro/bin/maestro record e2e/maestro/android/smoke.yaml smoke.android.mp4 --local
