@@ -80,8 +80,9 @@ jobs:
     - name: Install JS dependencies
       run: |
         npm install
-        rm -rf node_modules/react-native-pure-jwt
-        npm install react-native-pure-jwt
+        # rm -rf node_modules/react-native-pure-jwt
+        # npm install react-native-pure-jwt
+        # git status
 
     - name: Download the small example cv and geomodel
       run: |
