@@ -97,7 +97,7 @@ jobs:
       uses: actions/upload-artifact@v5
       with:
         name: release-apk
-        path: android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk
+        path: android/app/build/outputs/apk/release/*-release.apk
     
   test:
     runs-on: ubuntu-24.04
@@ -110,6 +110,7 @@ jobs:
         uses: actions/download-artifact@v6
         with:
           name: release-apk
+          path: e2e-build
 
       - name: Enable KVM
         run: |
@@ -164,7 +165,7 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
-            adb install -r org.inaturalist.iNaturalistMobile-release.apk
+            adb install -r e2e-build/*.apk
             maestro test --no-ansi e2e/maestro/android/signedOut.yaml
 
       - name: Upload test video
