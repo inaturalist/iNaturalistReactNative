@@ -44,7 +44,7 @@ const fetchPlaceName = async ( lat?: number, lng?: number ): Promise<string | nu
   const { isConnected } = await NetInfo.fetch( );
   if ( !isConnected ) { return null; }
   try {
-    const timeoutPromise = new Promise( ( _, reject ) => {
+    const timeoutPromise: Promise<never> = new Promise( ( _, reject ) => {
       setTimeout( ( ) => reject( new Error( TIMEOUT_ERROR_MESSAGE ) ), GEOCODER_TIMEOUT );
     } );
 
