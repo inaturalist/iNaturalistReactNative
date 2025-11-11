@@ -119,18 +119,19 @@ jobs:
       - name: Install Maestro
         run: |
           export MAESTRO_VERSION="2.0.8"; curl -Ls "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
 
-      - name: AVD cache
-        uses: actions/cache@v4
-        id: avd-cache
+      - name: Attempt to restore AVD cache
+        uses: actions/cache/restore@v4
+        id: avd-cache-restore
         with:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
           key: avd-29
 
-      - name: create AVD and generate snapshot for caching
-        if: steps.avd-cache.outputs.cache-hit != 'true'
+      - name: Create AVD and generate snapshot for caching
+        if: steps.avd-cache-restore.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
@@ -138,44 +139,38 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: false
-          cores: 2
           script: echo "Generated AVD snapshot for caching."
+
+      - name: Save AVD cache
+        if: steps.avd-cache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-29
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
         env:
           MAESTRO_DRIVER_STARTUP_TIMEOUT: 60000
           MAESTRO_CLI_NO_ANALYTICS: 1
+          MAESTRO_RECORD: true
         with:
           api-level: 29
           target: google_apis
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          cores: 2
           script: |
-            $ANDROID_HOME/platform-tools/adb install -r org.inaturalist.iNaturalistMobile-release.apk
-            $HOME/.maestro/bin/maestro record e2e/maestro/android/smoke.yaml smoke.android.mp4 --local
-
-      - name: Emulator logcat
-        if: failure()
-        # only attempt to logcat if we can still connect to the emu. 
-        # `-d` is important to not stay listening to the log buffer. ask me how I know
-        run: |
-          [ "$($ANDROID_HOME/platform-tools/adb devices | tail -n +2 | grep -c device)" -eq 1 ] && $ANDROID_HOME/platform-tools/adb logcat -d > logcat.txt
-
-      - name: Store emulator logcat log on test failure
-        uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: emulator-logcat
-          path: logcat.txt
+            adb install -r org.inaturalist.iNaturalistMobile-release.apk
+            maestro test --no-ansi e2e/maestro/android/signedOut.yaml
 
       - name: Upload test video
         uses: actions/upload-artifact@v4
         if: ${{ success() || failure() }}
         with:
-          path: smoke.android.mp4
+          path: signedOut.android.mp4
           name: Android
 
   # notify:
