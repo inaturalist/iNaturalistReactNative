@@ -29,6 +29,7 @@ import AnimatedDotsCarousel from "react-native-animated-dots-carousel";
 import Animated, { interpolate, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
 import { useOnboardingShown } from "sharedHelpers/installData";
+import { logFirebaseEvent } from "sharedHelpers/tracking";
 import colors from "styles/tailwindColors";
 
 const SlideItem = props => {
@@ -75,7 +76,10 @@ const OnboardingCarousel = ( ) => {
   const [currentIndex, setCurrentIndex] = useState( 0 );
   const [imagesLoaded, setImagesLoaded] = useState( false );
 
-  const closeModal = () => setOnboardingShown( true );
+  const closeModal = () => {
+    logFirebaseEvent( "onboarding_close_pressed", { currentIndex } );
+    setOnboardingShown( true );
+  };
 
   const paginationColor = colors.white;
   const backgroundAnimation1 = useAnimatedStyle( () => {
@@ -314,10 +318,16 @@ const OnboardingCarousel = ( ) => {
                 level="primary"
                 forceDark
                 text={t( "CONTINUE" )}
-                onPress={() => (
-                  carouselRef.current?.getCurrentIndex() >= ONBOARDING_SLIDES.length - 1
-                    ? closeModal()
-                    : carouselRef.current?.scrollTo( { count: 1, animated: true } ) )}
+                onPress={() => {
+                  logFirebaseEvent( "onboarding_button_pressed", { current_slide: currentIndex } );
+                  const isLastSlide = carouselRef.current?.getCurrentIndex()
+                    >= ONBOARDING_SLIDES.length - 1;
+                  if ( isLastSlide ) {
+                    closeModal();
+                  } else {
+                    carouselRef.current?.scrollTo( { count: 1, animated: true } );
+                  }
+                }}
               />
             </View>
           </View>
