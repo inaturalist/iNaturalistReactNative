@@ -1,6 +1,7 @@
 import {
   by, device, element, expect, waitFor
 } from "detox";
+import { sleep } from "sharedHelpers/util";
 
 import { iNatE2eAfterEach, iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
 import closeOnboarding from "./sharedFlows/closeOnboarding";
@@ -9,10 +10,6 @@ import signIn from "./sharedFlows/signIn";
 import uploadObservation from "./sharedFlows/uploadObservation";
 
 const TIMEOUT = 10_000;
-
-function delay( ms ) {
-  return new Promise( resolve => { setTimeout( resolve, ms ); } );
-}
 
 describe( "Signed in user", () => {
   beforeAll( async ( ) => iNatE2eBeforeAll( device ) );
@@ -116,7 +113,7 @@ describe( "Signed in user", () => {
     // the timing of syncing deletions seems to be different in the actual app versus these
     // e2e tests, so deleting an observation here still shows the observation
     // in the list unless this delay( ) is added
-    await delay( 10000 );
+    await sleep( 10000 );
     await expect( obsListItem ).toBeNotVisible( );
   } );
 } );
