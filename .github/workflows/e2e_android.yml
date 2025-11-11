@@ -9,14 +9,11 @@ concurrency:
     
 jobs:
   build: 
-    # runs-on: macos-15
     runs-on: ubuntu-24.04
 
     steps:
-    - run: df -h .
     - name: Check out Git repository
       uses: actions/checkout@v4
-    - run: df -h .
 
     # Generate the secret files needed for a release build
     - name: Create .env file
@@ -64,8 +61,6 @@ jobs:
     - name: Move keystore
       run: mv release.keystore android/app/release.keystore
 
-    - run: df -h .
-
     - uses: actions/setup-node@v6
       with:
         node-version-file: '.nvmrc'
@@ -82,26 +77,20 @@ jobs:
         gradle-version: '8.14.1'
         cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/android-ci-after-rn-upgrade' }}
 
-    - run: df -h .
-
     - name: Install JS dependencies
       run: |
         npm install
         rm -rf node_modules/react-native-pure-jwt
         npm install react-native-pure-jwt
 
-    - run: df -h .
-
     - name: Download the small example cv and geomodel
       run: |
         npm run add-example-model -- -f=main
 
-    - name: Fastlane Android Build
+    - name: Android Build
       run: |
-        cp fastlane/example-Appfile fastlane/Appfile
-        fastlane android build
-
-    - run: df -h .
+        cd android
+        ./gradlew build -PreactNativeArchitectures=x86 -x lint -x lintVitalRelease 
 
     - name: Upload APK
       uses: actions/upload-artifact@v5
@@ -109,15 +98,12 @@ jobs:
         name: release-apk
         path: android/app/build/outputs/apk/release/org.inaturalist.iNaturalistMobile-release.apk
     
-    - run: df -h .
   test:
     runs-on: ubuntu-24.04
     needs: build
 
     steps:
-      - run: df -h .
       - uses: actions/checkout@v2
-      - run: df -h .
 
       - name: Download APK
         uses: actions/download-artifact@v6
@@ -133,8 +119,6 @@ jobs:
       - name: Install Maestro
         run: |
           export MAESTRO_VERSION="2.0.8"; curl -Ls "https://get.maestro.mobile.dev" | bash
-
-      - run: df -h .
 
       - name: AVD cache
         uses: actions/cache@v4
@@ -157,8 +141,6 @@ jobs:
           cores: 2
           script: echo "Generated AVD snapshot for caching."
 
-      - run: df -h .
-
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
         env:
@@ -174,8 +156,6 @@ jobs:
           script: |
             $ANDROID_HOME/platform-tools/adb install -r org.inaturalist.iNaturalistMobile-release.apk
             $HOME/.maestro/bin/maestro record e2e/maestro/android/smoke.yaml smoke.android.mp4 --local
-
-      - run: df -h .
 
       - name: Emulator logcat
         if: failure()
