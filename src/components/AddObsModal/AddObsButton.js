@@ -5,7 +5,7 @@ import AddObsModal from "components/AddObsModal/AddObsModal";
 import { Modal } from "components/SharedComponents";
 import GradientButton from "components/SharedComponents/Buttons/GradientButton";
 import { t } from "i18next";
-import { getCurrentRoute } from "navigation/navigationUtils";
+import { navigationRef } from "navigation/navigationUtils";
 import * as React from "react";
 import { log } from "sharedHelpers/logger";
 import { useCurrentUser, useLayoutPrefs } from "sharedHooks";
@@ -14,13 +14,13 @@ import useStore, { zustandStorage } from "stores/useStore";
 const logger = log.extend( "AddObsButton" );
 
 const AddObsButton = ( ): React.Node => {
-  const [showModal, setModal] = React.useState( false );
+  const [showModal, setShowModal] = React.useState( false );
+  const [currentRoute, setCurrentRoute] = React.useState( null );
 
-  const openModal = React.useCallback( () => setModal( true ), [] );
-  const closeModal = React.useCallback( () => setModal( false ), [] );
+  const openModal = React.useCallback( () => setShowModal( true ), [] );
+  const closeModal = React.useCallback( () => setShowModal( false ), [] );
 
   const { isAllAddObsOptionsMode } = useLayoutPrefs( );
-  const currentRoute = getCurrentRoute( );
   const currentUser = useCurrentUser( );
 
   // Controls whether to show the tooltip, and to show it only once to the user
@@ -29,6 +29,7 @@ const AddObsButton = ( ): React.Node => {
   const setShownOnce = useStore( state => state.layout.setShownOnce );
   const justFinishedSignup = useStore( state => state.layout.justFinishedSignup );
   const numOfUserObservations = zustandStorage.getItem( "numOfUserObservations" );
+
   // Base trigger condition in all cases:
   // Only show the tooltip if the user has only AI camera as an option in this button.
   // Only show the tooltip on MyObservations screen.
@@ -63,8 +64,23 @@ const AddObsButton = ( ): React.Node => {
     triggerCondition = triggerCondition && !!shownOnce["fifty-observation"];
   }
 
+  React.useEffect( () => {
+    if ( navigationRef.isReady() ) {
+      const current = navigationRef.getCurrentRoute();
+      setCurrentRoute( current );
+    }
+
+    const unsubscribe = navigationRef.addListener( "state", () => {
+      const current = navigationRef.getCurrentRoute();
+      setCurrentRoute( current );
+    } );
+
+    return unsubscribe;
+  }, [] );
+
   // The tooltip should only appear once per app download.
   const tooltipIsVisible = !shownOnce[showKey] && triggerCondition;
+
   React.useEffect( () => {
     // If the tooltip visibility condition changes from false to true,
     // we set the showModal state to true because the tooltip is in the modal.
@@ -84,6 +100,7 @@ const AddObsButton = ( ): React.Node => {
 
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const navigation = useNavigation( );
+
   React.useEffect( ( ) => {
     // don't remove this logger.info statement: it's used for internal
     // metrics. isAdvancedUser name is vestigial, changing it will make it
