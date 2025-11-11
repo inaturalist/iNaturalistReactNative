@@ -1,0 +1,37 @@
+appId: org.inaturalist.iNaturalistMobile
+---
+
+- launchApp:
+    appId: com.android.chrome
+
+# dismiss Google Chrome FTUE
+- runFlow:
+    when:
+      visible: Make Chrome your own
+    commands:
+      - tapOn: Use without an account
+- runFlow:
+    when:
+      visible: Enhanced ad privacy in Chrome
+    commands:
+      - tapOn: Got it
+
+- tapOn: Search or type URL
+
+# dismiss Google Keyboard FTUE
+- runFlow:
+    when:
+      visible: Try out your stylus
+    commands:
+      - tapOn: Cancel
+
+- inputText: "https://raw.githubusercontent.com/ianare/exif-samples/refs/heads/master/jpg/Canon_40D.jpg"
+- pressKey: Enter
+- longPressOn: Canon_40D
+- tapOn: Share image
+- tapOn: iNat Next
+
+- scrollUntilVisible: # For clarify, center the "OBSERVED AT" header which should have the time right after
+    centerElement: true
+    element: OBSERVED AT
+- assertVisible: 5/30/08 8:56 PM CDT
