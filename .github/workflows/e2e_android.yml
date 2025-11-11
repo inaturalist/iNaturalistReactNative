@@ -161,6 +161,9 @@ jobs:
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
+        env:
+          MAESTRO_DRIVER_STARTUP_TIMEOUT: 60000
+          MAESTRO_CLI_NO_ANALYTICS: 1
         with:
           api-level: 29
           target: google_apis
@@ -169,8 +172,7 @@ jobs:
           disable-animations: true
           cores: 8
           script: |
-            $ANDROID_HOME/platform-tools/adb uninstall org.inaturalist.iNaturalistMobile
-            $ANDROID_HOME/platform-tools/adb install org.inaturalist.iNaturalistMobile-release.apk
+            $ANDROID_HOME/platform-tools/adb install -rd org.inaturalist.iNaturalistMobile-release.apk
             $HOME/.maestro/bin/maestro record e2e/maestro/android/smoke.yaml smoke.android.mp4 --local
 
       - run: df -h .
