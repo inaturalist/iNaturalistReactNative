@@ -46,7 +46,6 @@ const AddObsButton = ( ): React.Node => {
     // observation, then we need to fetch the number of observations from server.
     triggerCondition = false;
   } else if ( !currentUser ) {
-    // If logged out, user should see the tooltip after making their second observation
     // If a user is logged out, they should see the tooltip after making their second observation.
     triggerCondition = triggerCondition && numOfUserObservations > 1;
   } else if ( numOfUserObservations > 50 ) {
