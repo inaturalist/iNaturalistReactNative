@@ -24,6 +24,7 @@ import {
   useTranslation
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
+import { FIREBASE_TRACES } from "stores/createFirebaseTraceSlice";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
@@ -126,6 +127,8 @@ const AICamera = ( {
     ? device.formats[debugFormatIndex]
     : undefined;
 
+  const startTrace = useStore( state => state.startTrace );
+
   const toggleLocation = () => {
     if ( !useLocation && !hasLocationPermissions ) {
       requestLocationPermissions( );
@@ -173,7 +176,8 @@ const AICamera = ( {
   const handleTakePhoto = useCallback( async ( ) => {
     await logStage( sentinelFileName, "take_photo_start" );
     setHasTakenPhoto( true );
-    logFirebaseEvent( "cv_camera_shutter_tap", { hasLocationPermissions } );
+    logFirebaseEvent( "ai_camera_shutter_tap", { hasLocationPermissions } );
+    startTrace( FIREBASE_TRACES.AI_CAMERA_TO_MATCH );
     // this feels a little duplicative, but we're currently using aICameraSuggestion
     // to show the loading screen in Suggestions *without* setting an observation.taxon,
     // and we're using visionResult to populate ObsEdit *with* the taxon
@@ -198,7 +202,8 @@ const AICamera = ( {
     sentinelFileName,
     takePhotoAndStoreUri,
     result,
-    hasLocationPermissions
+    hasLocationPermissions,
+    startTrace
   ] );
 
   useEffect( () => {
