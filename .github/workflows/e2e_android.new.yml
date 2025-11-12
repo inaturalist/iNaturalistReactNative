@@ -1,4 +1,6 @@
 name: e2e-Android
+permissions:
+  contents: read
 on:
   workflow_dispatch:
 
