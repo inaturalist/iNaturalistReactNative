@@ -76,14 +76,10 @@ jobs:
       uses: gradle/actions/setup-gradle@v5
       with:
         gradle-version: '8.14.1'
-        cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/android-ci-after-rn-upgrade' }}
 
     - name: Install JS dependencies
       run: |
         npm install
-        # rm -rf node_modules/react-native-pure-jwt
-        # npm install react-native-pure-jwt
-        # git status
 
     - name: Download the small example cv and geomodel
       run: |
