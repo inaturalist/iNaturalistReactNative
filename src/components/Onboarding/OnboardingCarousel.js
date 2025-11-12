@@ -319,7 +319,10 @@ const OnboardingCarousel = ( ) => {
                 forceDark
                 text={t( "CONTINUE" )}
                 onPress={() => {
-                  logFirebaseEvent( "onboarding_button_pressed", { current_slide: currentIndex } );
+                  logFirebaseEvent(
+                    "onboarding_continue_pressed",
+                    { current_slide: currentIndex }
+                  );
                   const isLastSlide = carouselRef.current?.getCurrentIndex()
                     >= ONBOARDING_SLIDES.length - 1;
                   if ( isLastSlide ) {
