@@ -59,7 +59,7 @@ interface HandleErrorOptions {
   onApiError?: ( error: INatApiError ) => void;
 }
 
-interface ErrorWithResponse {
+export interface ErrorWithResponse {
   response?: {
     status: number;
     url: string;
