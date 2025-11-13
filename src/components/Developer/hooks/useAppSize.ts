@@ -124,19 +124,19 @@ type AppSize = {
   [directoryName: string]: DirectoryEntrySize[]
 }
 
-export async function fetchAppSize(): Promise<AppSize> {
-  const existingDirectories = await Promise.all(
+async function fetchAppSize(): Promise<AppSize> {
+  const maybeExistingDirectories = await Promise.all(
     directories.map( async directory => ( {
       directory,
       exists: await RNFS.exists( directory.path )
     } ) )
   );
-  const filteredDirectories = existingDirectories
+  const existingDirectories = maybeExistingDirectories
     .filter( dir => dir.exists )
     .map( dir => dir.directory );
 
   const directoryToDirectorySizesKvps = await Promise.all(
-    filteredDirectories.map( async dir => {
+    existingDirectories.map( async dir => {
       const directoryEntrySizes = await getDirectoryEntrySizes( dir.path );
       return [dir.directoryName, directoryEntrySizes] as [string, DirectoryEntrySize[]];
     } )
