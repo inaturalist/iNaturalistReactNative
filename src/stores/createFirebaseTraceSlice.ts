@@ -11,6 +11,8 @@ interface TraceData {
   timeoutId: NodeJS.Timeout;
 }
 
+const TRACE_TIMEOUT = 10000;
+
 export interface FirebaseTraceSlice {
   activeTraces: Record<string, TraceData>;
   startTrace: ( traceId: string ) => Promise<void>;
@@ -27,7 +29,7 @@ const createFirebaseTraceSlice: StateCreator<FirebaseTraceSlice>
 
     const timeoutId = setTimeout( () => {
       get().clearTrace( traceId );
-    }, 10000 );
+    }, TRACE_TIMEOUT );
 
     set( state => ( {
       activeTraces: {
