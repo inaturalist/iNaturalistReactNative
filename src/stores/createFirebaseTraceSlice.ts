@@ -5,10 +5,17 @@ export enum FIREBASE_TRACES {
   AI_CAMERA_TO_MATCH = "ai_camera_to_match",
 }
 
+interface TraceData {
+  trace: FirebasePerformanceTypes.Trace;
+  // eslint-disable-next-line no-undef
+  timeoutId: NodeJS.Timeout;
+}
+
 export interface FirebaseTraceSlice {
-  activeTraces: Record<string, FirebasePerformanceTypes.Trace>;
+  activeTraces: Record<string, TraceData>;
   startTrace: ( traceId: string ) => Promise<void>;
   stopTrace: ( traceId: string ) => Promise<void>;
+  clearTrace: ( traceId: string ) => void;
 }
 
 const createFirebaseTraceSlice: StateCreator<FirebaseTraceSlice>
@@ -17,19 +24,35 @@ const createFirebaseTraceSlice: StateCreator<FirebaseTraceSlice>
 
   startTrace: async ( traceId: string ) => {
     const trace = await perf().startTrace( traceId );
+
+    const timeoutId = setTimeout( () => {
+      get().clearTrace( traceId );
+    }, 10000 );
+
     set( state => ( {
       activeTraces: {
         ...state.activeTraces,
-        [traceId]: trace
+        [traceId]: { trace, timeoutId }
       }
     } ) );
   },
 
   stopTrace: async ( traceId: string ) => {
     const { activeTraces } = get();
-    const selectedTrace = activeTraces[traceId];
-    if ( selectedTrace ) {
-      await selectedTrace.stop();
+    const traceData = activeTraces[traceId];
+    if ( traceData ) {
+      get().clearTrace( traceId );
+
+      await traceData.trace.stop();
+    }
+  },
+
+  clearTrace: ( traceId: string ) => {
+    const { activeTraces } = get();
+    const traceData = activeTraces[traceId];
+    if ( traceData ) {
+      clearTimeout( traceData.timeoutId );
+
       set( state => {
         const { [traceId]: _, ...remainingTraces } = state.activeTraces;
         return { activeTraces: remainingTraces };
