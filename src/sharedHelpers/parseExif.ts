@@ -69,9 +69,12 @@ interface ExifData {
   date?: string;
 }
 
-type UnifiedExif = ExifData & {
+interface UnifiedExif {
+  latitude?: number;
+  longitude?: number;
+  positional_accuracy?: number;
   observed_on_string?: string | null;
-};
+}
 
 // Parse the EXIF of all photos - fill out details (lat/lng/date) from all of these,
 // in case the first photo is missing EXIF
