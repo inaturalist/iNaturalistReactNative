@@ -4,6 +4,20 @@ import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
 
 class UsePhotoExifDateFormatError extends Error {}
 
+interface ExifData {
+  latitude?: number;
+  longitude?: number;
+  positional_accuracy?: number;
+  date?: string;
+}
+
+interface UnifiedExif {
+  latitude?: number;
+  longitude?: number;
+  positional_accuracy?: number;
+  observed_on_string?: string | null;
+}
+
 // https://wbinnssmith.com/blog/subclassing-error-in-modern-javascript/
 Object.defineProperty( UsePhotoExifDateFormatError.prototype, "name", {
   value: "UsePhotoExifDateFormatError"
@@ -26,7 +40,7 @@ export const parseExifDateToLocalTimezone = ( datetime?: string ): Date | null =
 };
 
 // Parses EXIF date time into a date object
-export const parseExif = async ( photoUri: string ): Promise<object | null> => {
+export const parseExif = async ( photoUri: string ): Promise<ExifData | null> => {
   try {
     return readExif( photoUri );
   } catch ( e ) {
@@ -62,20 +76,6 @@ export const formatExifDateAsString = ( datetime?: string ): string => {
   return formatISONoTimezone( zonedDate );
 };
 
-interface ExifData {
-  latitude?: number;
-  longitude?: number;
-  positional_accuracy?: number;
-  date?: string;
-}
-
-interface UnifiedExif {
-  latitude?: number;
-  longitude?: number;
-  positional_accuracy?: number;
-  observed_on_string?: string | null;
-}
-
 // Parse the EXIF of all photos - fill out details (lat/lng/date) from all of these,
 // in case the first photo is missing EXIF
 export const readExifFromMultiplePhotos = async (
@@ -84,7 +84,7 @@ export const readExifFromMultiplePhotos = async (
   const unifiedExif: UnifiedExif = {};
 
   const responses = await Promise.allSettled( photoUris.map( parseExif ) );
-  const allExifPhotos: ( ExifData | null )[] = responses
+  const allExifPhotos = responses
     .map( r => ( r.status === "fulfilled"
       ? r.value
       : null ) );
