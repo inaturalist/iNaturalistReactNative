@@ -33,7 +33,6 @@ interface TaxonResultProps {
   handleTaxonOrEditPress?: ( _event?: GestureResponderEvent ) => void;
   hideInfoButton?: boolean;
   hideNavButtons?: boolean;
-  checkmarkFocused?: boolean;
   lastScreen?: string | null;
   onPressInfo?: ( taxon: object ) => void;
   showCheckmark?: boolean;
@@ -54,7 +53,6 @@ const TaxonResult = ( {
   accessibilityLabel,
   activeColor,
   asListItem = true,
-  checkmarkFocused = false,
   clearBackground,
   confidence,
   confidencePercentage,
@@ -166,37 +164,6 @@ const TaxonResult = ( {
   // useTaxon could return null, and it's at least remotely possible taxonProp is null
   if ( !usableTaxon ) return null;
 
-  const renderCheckmark = () => {
-    if ( checkmarkFocused ) {
-      return (
-        <INatIconButton
-          className="ml-2 bg-inatGreen rounded-full h-[40px] w-[40px]"
-          icon="checkmark"
-          size={21}
-          color={String( colors?.white )}
-          onPress={() => handleCheckmarkPress( usableTaxon )}
-          accessibilityLabel={accessibilityLabel}
-          testID={`${testID}.checkmark`}
-        />
-      );
-    }
-    return (
-      <INatIconButton
-        className="ml-2"
-        icon="checkmark-circle-outline"
-        size={40}
-        color={String(
-          clearBackground
-            ? colors?.white
-            : colors?.darkGray
-        )}
-        onPress={() => handleCheckmarkPress( usableTaxon )}
-        accessibilityLabel={accessibilityLabel}
-        testID={`${testID}.checkmark`}
-      />
-    );
-  };
-
   return (
     <View
       className={
@@ -289,7 +256,21 @@ const TaxonResult = ( {
               accessibilityHint={t( "Navigates-to-taxon-details" )}
             />
           )}
-          { showCheckmark && renderCheckmark()}
+          { showCheckmark && (
+            <INatIconButton
+              className="ml-2"
+              icon="checkmark-circle-outline"
+              size={40}
+              color={String(
+                clearBackground
+                  ? colors?.white
+                  : colors?.darkGray
+              )}
+              onPress={() => handleCheckmarkPress( usableTaxon )}
+              accessibilityLabel={accessibilityLabel}
+              testID={`${testID}.checkmark`}
+            />
+          )}
           { showEditButton && handleTaxonOrEditPress
               && (
                 <INatIconButton

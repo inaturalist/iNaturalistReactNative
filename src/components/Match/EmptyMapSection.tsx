@@ -7,9 +7,9 @@ import React from "react";
 import { View } from "react-native";
 import { useTranslation } from "sharedHooks";
 
-type Props = {
-  isFetchingLocation: boolean,
-  handleAddLocationPressed: ( ) => void
+interface Props {
+  isFetchingLocation: boolean;
+  handleAddLocationPressed: ( ) => void;
 }
 
 const EmptyMapSection = ( {

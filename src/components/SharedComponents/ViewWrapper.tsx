@@ -12,15 +12,22 @@ interface Props extends PropsWithChildren {
   // If someone can explain to me why className doesn't work here, I'm all
   // ears ~~~kueda 20230815
   wrapperClassName?: string;
+  useTopInset?: boolean;
 }
 
 const ViewWrapper = ( {
   children,
   isDebug,
   wrapperClassName,
-  testID
+  testID,
+  useTopInset = true
 }: Props ) => {
   const insets = useSafeAreaInsets();
+  const viewStyle = {
+    paddingTop: useTopInset
+      ? insets.top
+      : 0
+  };
   return (
     <View
       className={classnames(
@@ -31,10 +38,7 @@ const ViewWrapper = ( {
           ? "border-2 border-deepPink"
           : null
       )}
-      style={{
-        paddingTop: insets.top,
-        paddingBottom: insets.bottom
-      }}
+      style={viewStyle}
       testID={testID}
     >
       {isDebug && (

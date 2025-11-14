@@ -1,11 +1,9 @@
-// @flow
-
 import { useCallback, useEffect, useState } from "react";
 import { zustandStorage } from "stores/useStore";
 
 const DEBUG_MODE = "debugMode";
 
-const useDebugMode = ( ): { isDebug: boolean, toggleDebug: Function } => {
+const useDebugMode = ( ): { isDebug: boolean, toggleDebug: () => void } => {
   const [isDebug, setDebug] = useState( false );
 
   useEffect( ( ) => {

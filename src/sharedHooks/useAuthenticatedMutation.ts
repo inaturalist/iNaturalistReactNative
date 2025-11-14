@@ -1,6 +1,4 @@
-// @flow
-
-import { useMutation } from "@tanstack/react-query";
+import { MutationKey, useMutation } from "@tanstack/react-query";
 import handleError from "api/error";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 
@@ -8,12 +6,26 @@ import { log } from "../../react-native-logs.config";
 
 const logger = log.extend( "useAuthenticatedMutation" );
 
+interface MutationOptions {
+  mutationKey?: MutationKey;
+  throwOnError?: boolean;
+}
+
+type MutationFunction<Response> = (
+  params: unknown, options: { api_token: string | null }
+) => Promise<Response>;
+
+// At the time of writing, there is no type representing the response type of API errors,
+// so for the time being, we will use `any` here.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type MutationError = any;
+
 // Should work like React Query's useMutation except it calls the queryFunction
 // with an object that includes the JWT
-const useAuthenticatedMutation = (
-  mutationFunction: Function,
-  mutationOptions: Object = {}
-): Object => useMutation( {
+const useAuthenticatedMutation = <Response>(
+  mutationFunction: MutationFunction<Response>,
+  mutationOptions: MutationOptions = {}
+) => useMutation<Response, MutationError>( {
   mutationFn: async params => {
     // Note, getJWTToken() takes care of fetching a new token if the existing
     // one is expired. We *could* store the token in state with useState if

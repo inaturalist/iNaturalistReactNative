@@ -3,6 +3,7 @@
 
 import Geolocation, {
   GeolocationError,
+  GeolocationOptions,
   GeolocationResponse
 } from "@react-native-community/geolocation";
 import {
@@ -18,11 +19,7 @@ import {
 export function getCurrentPosition(
   success: ( position: GeolocationResponse ) => void,
   error?: ( error: GeolocationError ) => void,
-  options?: {
-    timeout?: number;
-    maximumAge?: number;
-    enableHighAccuracy?: boolean;
-  }
+  options?: GeolocationOptions
 ) {
   return Geolocation.getCurrentPosition( success, error, options );
 }
@@ -66,7 +63,7 @@ export const lowAccuracyOptions = {
 } as const;
 
 export const getCurrentPositionWithOptions = (
-  options
+  options: GeolocationOptions
 ): Promise<GeolocationResponse> => new Promise(
   ( resolve, reject ) => {
     getCurrentPosition( resolve, reject, options );

@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 const FOOTER_HEIGHT = 77;
 
 interface Props {
-  children: React.Node;
+  children: React.ReactNode;
   containerClassName?: string;
   headerHeight: number;
   emptyItemHeight: number;
