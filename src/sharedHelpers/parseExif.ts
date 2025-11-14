@@ -1,5 +1,3 @@
-// @flow
-
 import { toZonedTime } from "date-fns-tz";
 import { readExif, writeLocation } from "react-native-exif-reader";
 import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
@@ -12,7 +10,7 @@ Object.defineProperty( UsePhotoExifDateFormatError.prototype, "name", {
 } );
 
 // Parses EXIF date time into a date object
-export const parseExifDateToLocalTimezone = ( datetime: string ): ?Date => {
+export const parseExifDateToLocalTimezone = ( datetime?: string ): Date | null => {
   if ( !datetime ) return null;
 
   // react-native-exif-reader formats the date based on GMT time,
@@ -28,7 +26,7 @@ export const parseExifDateToLocalTimezone = ( datetime: string ): ?Date => {
 };
 
 // Parses EXIF date time into a date object
-export const parseExif = async ( photoUri: ?string ): Promise<Object> => {
+export const parseExif = async ( photoUri: string ): Promise<object | null> => {
   try {
     return readExif( photoUri );
   } catch ( e ) {
@@ -45,7 +43,10 @@ export interface ExifToWrite {
   positional_accuracy?: number | null;
 }
 
-export const writeExifToFile = async ( photoUri: ?string, exif: ExifToWrite ): Promise<Object> => {
+export const writeExifToFile = async (
+  photoUri: string,
+  exif: ExifToWrite
+): Promise<object | null> => {
   try {
     return writeLocation( photoUri, exif );
   } catch ( e ) {
@@ -54,31 +55,40 @@ export const writeExifToFile = async ( photoUri: ?string, exif: ExifToWrite ): P
   }
 };
 
-export const formatExifDateAsString = ( datetime: string ): string => {
+export const formatExifDateAsString = ( datetime?: string ): string => {
   const zonedDate = parseExifDateToLocalTimezone( datetime );
   // this returns a string, in the same format as photos which fall back to the
   // photo timestamp instead of exif data
   return formatISONoTimezone( zonedDate );
 };
 
+interface ExifData {
+  latitude?: number;
+  longitude?: number;
+  positional_accuracy?: number;
+  date?: string;
+}
+
+type UnifiedExif = ExifData & {
+  observed_on_string?: string | null;
+};
+
 // Parse the EXIF of all photos - fill out details (lat/lng/date) from all of these,
 // in case the first photo is missing EXIF
-export const readExifFromMultiplePhotos = async ( photoUris: Array<string> ): Promise<Object> => {
-  const unifiedExif = {};
+export const readExifFromMultiplePhotos = async (
+  photoUris: Array<string>
+): Promise<UnifiedExif> => {
+  const unifiedExif: UnifiedExif = {};
 
   const responses = await Promise.allSettled( photoUris.map( parseExif ) );
-  const allExifPhotos: Array<{
-    latitude: number,
-    longitude: number,
-    positional_accuracy: number,
-    date: string
-  // Flow will complain that value is undefined, but the filter call ensures
-  // that it isn't
-  // $FlowIgnore
-  }> = responses.filter( r => r.value ).map( r => r.value );
+  const allExifPhotos: ( ExifData | null )[] = responses
+    .map( r => ( r.status === "fulfilled"
+      ? r.value
+      : null ) );
 
-  allExifPhotos.filter( x => x ).forEach(
+  allExifPhotos.forEach(
     currentPhotoExif => {
+      if ( !currentPhotoExif ) return;
       const {
         latitude, longitude, positional_accuracy: positionalAccuracy, date
       } = currentPhotoExif;
