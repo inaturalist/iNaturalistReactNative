@@ -8,6 +8,7 @@ import { RealmContext } from "providers/contexts";
 import {
   useCallback, useEffect, useState
 } from "react";
+import { UpdateMode } from "realm";
 import Taxon from "realmModels/Taxon";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
@@ -20,17 +21,28 @@ const SCORE_IMAGE_TIMEOUT = 5_000;
 const { useRealm } = RealmContext;
 
 interface OnlineSuggestionsResponse {
-  dataUpdatedAt: Date;
-  onlineSuggestions: object;
-  loadingOnlineSuggestions: boolean;
+  dataUpdatedAt: number;
+  onlineSuggestions: object | undefined;
   timedOut: boolean;
-  error: object;
+  error: Error | null;
   resetTimeout: () => void;
-  isRefetching: boolean;
+  refetch: () => void;
 }
 
+interface OnlineSuggestionsOptions {
+  onFetchError: ( params: { isOnline: boolean } ) => void;
+  onFetched: ( params: { isOnline: boolean } ) => void;
+  scoreImageParams: { image: string; };
+  queryKey: string[];
+  shouldFetchOnlineSuggestions: boolean;
+}
+
+// There currently isn't a defined type for suggestions, so in the meantime we'll use `any`
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Suggestion = any;
+
 const useOnlineSuggestions = (
-  options: object
+  options: OnlineSuggestionsOptions
 ): OnlineSuggestionsResponse => {
   const realm = useRealm( );
   const {
@@ -48,7 +60,7 @@ const useOnlineSuggestions = (
   // Use locale in case there is no user session
   const locale = i18n?.language ?? "en";
 
-  async function queryFn( optsWithAuth ) {
+  async function queryFn( optsWithAuth: Record<string, unknown> ) {
     const params = {
       ...scoreImageParams,
       ...( !currentUser && { locale } )
@@ -65,7 +77,7 @@ const useOnlineSuggestions = (
     refetch,
     fetchStatus,
     error
-  } = useAuthenticatedQuery(
+  } = useAuthenticatedQuery<Suggestion>(
     queryKey,
     queryFn,
     {
@@ -104,8 +116,8 @@ const useOnlineSuggestions = (
     // we're already getting all this taxon information anytime we make this API
     // call, so we might as well store it in realm immediately instead of waiting
     // for useTaxon to fetch individual taxon results
-    const mappedTaxa = onlineSuggestions?.results?.map(
-      suggestion => Taxon.mapApiToRealm( suggestion.taxon, realm )
+    const mappedTaxa: object[] = onlineSuggestions?.results?.map(
+      ( suggestion: Suggestion ) => Taxon.mapApiToRealm( suggestion.taxon, realm )
     );
     if ( onlineSuggestions?.common_ancestor ) {
       const mappedCommonAncestor = Taxon
@@ -115,9 +127,9 @@ const useOnlineSuggestions = (
     safeRealmWrite( realm, ( ) => {
       mappedTaxa.forEach( remoteTaxon => {
         realm.create(
-          "Taxon",
+          Taxon,
           Taxon.forUpdate( remoteTaxon ),
-          "modified"
+          UpdateMode.Modified
         );
       } );
     }, "saving remote taxon from onlineSuggestions" );

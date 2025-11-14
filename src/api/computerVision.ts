@@ -14,8 +14,8 @@ const PARAMS = {
 };
 
 const scoreImage = async (
-  params = {},
-  opts = {}
+  params: Record<string, unknown> = {},
+  opts: Record<string, unknown> = {}
 ): Promise<object> => {
   try {
     return inatjs.computervision.score_image( { ...PARAMS, ...params }, opts );
