@@ -25,9 +25,9 @@ const GradientButton = ( {
   iconName,
   iconSize
 }: Props ) => {
-  const handleLongPress = _event => {
+  const handleLongPress = ( event: GestureResponderEvent ) => {
     if ( onLongPress ) {
-      onLongPress( _event );
+      onLongPress( event );
     }
   };
 
