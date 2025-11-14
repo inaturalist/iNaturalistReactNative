@@ -41,6 +41,7 @@ interface Props {
   keyboardShouldPersistTaps?: string;
   testID?: string;
   additionalClasses?: string;
+  scrollEnabled?: boolean;
 }
 
 const StandardBottomSheet = ( {
@@ -54,7 +55,8 @@ const StandardBottomSheet = ( {
   insideModal,
   keyboardShouldPersistTaps = "never",
   additionalClasses,
-  testID
+  testID,
+  scrollEnabled = true
 }: Props ): Node => {
   if ( snapPoints ) {
     throw new Error( "BottomSheet does not accept snapPoints as a prop." );
@@ -114,6 +116,7 @@ const StandardBottomSheet = ( {
     >
       <BottomSheetScrollView
         keyboardShouldPersistTaps={keyboardShouldPersistTaps}
+        scrollEnabled={scrollEnabled}
       >
         <View
           className={classnames(

@@ -1,14 +1,12 @@
-import classNames from "classnames";
 import {
-  Body3, BottomSheet, INatIconButton
+  Body3, BottomSheet, INatIcon, INatIconButton
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useMemo } from "react";
-import { Platform, TouchableOpacity } from "react-native";
+import { Platform, Pressable } from "react-native";
 import Observation from "realmModels/Observation";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
-import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
 interface Props {
@@ -19,12 +17,11 @@ interface Props {
   hidden: boolean;
 }
 
-export type ObsCreateItem = {
+type ObsCreateItem = {
     text?: string,
     icon: string,
     onPress: ( ) => void,
     testID: string,
-    className: string,
     accessibilityLabel: string,
     accessibilityHint: string
 }
@@ -33,11 +30,6 @@ const majorVersionIOS = parseInt( String( Platform.Version ), 10 );
 const AI_CAMERA_SUPPORTED = ( Platform.OS === "ios" && majorVersionIOS >= 11 )
   || ( Platform.OS === "android" && Platform.Version > 21 );
 
-const DROP_SHADOW = getShadow( {
-  offsetHeight: 1,
-  elevation: 1,
-  shadowRadius: 1
-} );
 const GREEN_CIRCLE_CLASS = "bg-inatGreen rounded-full h-[36px] w-[36px] mb-2";
 const ROW_CLASS = "flex-row justify-center space-x-4 w-full flex-1";
 
@@ -107,11 +99,9 @@ const AddObsBottomSheet = ( {
     testID,
     text
   }: ObsCreateItem ) => (
-    <TouchableOpacity
-      className={classNames(
-        "bg-white w-1/2 flex-column items-center py-4 rounded-sm flex-1",
-        DROP_SHADOW
-      )}
+    <Pressable
+      className="bg-white w-1/2 flex-column items-center py-4 rounded-lg flex-1 shadow-sm
+      shadow-black/25 active:opacity-50"
       onPress={onPress}
       accessibilityHint={accessibilityHint}
       accessibilityLabel={accessibilityLabel}
@@ -123,12 +113,13 @@ const AddObsBottomSheet = ( {
         accessibilityLabel={accessibilityLabel}
         color={String( colors?.white )}
         icon={icon}
+        onPress={onPress}
         size={icon === "aicamera"
           ? 28
           : 20}
       />
       <Body3>{text}</Body3>
-    </TouchableOpacity>
+    </Pressable>
   );
 
   return (
@@ -138,35 +129,38 @@ const AddObsBottomSheet = ( {
       insideModal={false}
       hideCloseButton
       additionalClasses="bg-lightGray pt-4"
+      scrollEnabled={false}
     >
       <View className="flex-column gap-y-4 pb-4 px-4">
+
         <View className={ROW_CLASS}>
           {renderAddObsIcon( obsCreateItems.standardCamera )}
           {renderAddObsIcon( obsCreateItems.photoLibrary )}
         </View>
+
         <View className={ROW_CLASS}>
           {renderAddObsIcon( obsCreateItems.soundRecorder )}
           {AI_CAMERA_SUPPORTED && renderAddObsIcon( obsCreateItems.aiCamera )}
         </View>
-        <View className={ROW_CLASS}>
-          <TouchableOpacity
-            className="bg-mediumGray w-full flex-row items-center py-2 px-4 rounded-sm"
-            onPress={obsCreateItems.noEvidence.onPress}
-            accessibilityHint={obsCreateItems.noEvidence.accessibilityHint}
-            accessibilityLabel={obsCreateItems.noEvidence.accessibilityLabel}
-            testID={obsCreateItems.noEvidence.testID}
-          >
-            <INatIconButton
-              className="h-[36px] w-[36px] mr-2"
-              accessibilityHint={obsCreateItems.noEvidence.accessibilityHint}
-              accessibilityLabel={obsCreateItems.noEvidence.accessibilityLabel}
+
+        <Pressable
+          className="bg-mediumGray w-full flex-row items-center py-[10px] px-5 rounded-lg
+          active:opacity-50"
+          onPress={obsCreateItems.noEvidence.onPress}
+          accessibilityHint={obsCreateItems.noEvidence.accessibilityHint}
+          accessibilityLabel={obsCreateItems.noEvidence.accessibilityLabel}
+          testID={obsCreateItems.noEvidence.testID}
+        >
+          <View className="mr-2">
+            <INatIcon
+              name={obsCreateItems.noEvidence.icon}
               color={String( colors?.darkGray )}
-              icon={obsCreateItems.noEvidence.icon}
               size={24}
             />
-            <Body3>{obsCreateItems.noEvidence.text}</Body3>
-          </TouchableOpacity>
-        </View>
+          </View>
+          <Body3>{obsCreateItems.noEvidence.text}</Body3>
+        </Pressable>
+
       </View>
     </BottomSheet>
   );
