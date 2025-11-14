@@ -6,8 +6,6 @@ on:
   workflow_dispatch:
   pull_request:
   push:
-    branches:
-      - 'main'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -51,27 +49,26 @@ jobs:
       with:
         bundler-cache: true        
 
-    - name: Cache node modules
-      uses: actions/cache@v4
-      id: cache
-      with:
-        path: node_modules
-        key: node-modules-${{ hashFiles('**/package-lock.json') }}
+    # - name: Cache node modules
+    #   uses: actions/cache@v4
+    #   id: cache
+    #   with:
+    #     path: node_modules
+    #     key: node-modules-${{ hashFiles('**/package-lock.json') }}
 
-    - name: Rebuild detox from cache
-      if: steps.cache.outputs.cache-hit == 'true'
-      run: npx detox clean-framework-cache && npx detox build-framework-cache
+    # - name: Rebuild detox from cache
+    #   if: steps.cache.outputs.cache-hit == 'true'
+    #   run: npx detox clean-framework-cache && npx detox build-framework-cache
 
-    # supposedly our current cache includes native modules like Realm
-    # that have compiled binaries specific to the environment where they were installed
-    # which might not be the same as the github actions environment
-    # so we need to rebuild them
-    - name: Rebuild native modules
-      if: steps.cache.outputs.cache-hit == 'true'
-      run: npm rebuild
+    # # supposedly our current cache includes native modules like Realm
+    # # that have compiled binaries specific to the environment where they were installed
+    # # which might not be the same as the github actions environment
+    # # so we need to rebuild them
+    # - name: Rebuild native modules
+    #   if: steps.cache.outputs.cache-hit == 'true'
+    #   run: npm rebuild
 
     - name: Install Dependencies
-      if: steps.cache.outputs.cache-hit != 'true'
       run: npm install
 
     - name: Cache Pods
@@ -126,7 +123,7 @@ jobs:
       run: echo "MOCK_MODE=e2e" >> "$GITHUB_ENV"
 
     - name: Build test app
-      run: npm run e2e:build:ios
+      run: xcodebuild -workspace ios/iNaturalistReactNative.xcworkspace -scheme iNaturalistReactNative -configuration Release -sdk iphonesimulator -derivedDataPath ios/build
 
     - name: Upload iOS Detox app build
       uses: actions/upload-artifact@v4
@@ -158,27 +155,26 @@ jobs:
       with:
         node-version: 22
 
-    - name: Cache node modules
-      uses: actions/cache@v4
-      id: cache
-      with:
-        path: node_modules
-        key: node-modules-${{ hashFiles('**/package-lock.json') }}
+    # - name: Cache node modules
+    #   uses: actions/cache@v4
+    #   id: cache
+    #   with:
+    #     path: node_modules
+    #     key: node-modules-${{ hashFiles('**/package-lock.json') }}
 
-    - name: Rebuild detox from cache
-      if: steps.cache.outputs.cache-hit == 'true'
-      run: npx detox clean-framework-cache && npx detox build-framework-cache
+    # - name: Rebuild detox from cache
+    #   if: steps.cache.outputs.cache-hit == 'true'
+    #   run: npx detox clean-framework-cache && npx detox build-framework-cache
 
     # supposedly our current cache includes native modules like Realm
     # that have compiled binaries specific to the environment where they were installed
     # which might not be the same as the github actions environment
     # so we need to rebuild them
-    - name: Rebuild native modules
-      if: steps.cache.outputs.cache-hit == 'true'
-      run: npm rebuild
+    # - name: Rebuild native modules
+      # if: steps.cache.outputs.cache-hit == 'true'
+      # run: npm rebuild
 
     - name: Install Dependencies
-      if: steps.cache.outputs.cache-hit != 'true'
       run: npm install
 
     # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
@@ -219,8 +215,19 @@ jobs:
         # is node running & is ES working?
         curl -I --fail "https://stagingapi.inaturalist.org/v2/taxa"
 
+    - name: Install Maestro
+      run: |
+        export MAESTRO_VERSION="2.0.8"; curl -Ls "https://get.maestro.mobile.dev" | bash
+        echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
     - name: Run e2e test
-      run: npm run e2e:test:ios -- --cleanup --take-screenshots failing --record-videos failing --record-logs all -l trace
+      run: |
+        SIMULATOR_UDID=`xcrun simctl list -j | 
+          jq '.devices."com.apple.CoreSimulator.SimRuntime.iOS-18-6" | .[] | select(.name == "iPhone 16 Pro") | .udid'`
+        
+        /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app/Contents/MacOS/Simulator -CurrentDeviceUDID $SIMULATOR_UDID
+        xcrun simctl install $SIMULATOR_UDID ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app
+        maestro record --local e2e/maestro/ios/linkIntoApp.yaml linkIntoApp.mp4
     
     # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
     - name: Store Detox artifacts on test failure
@@ -228,17 +235,17 @@ jobs:
       if: failure()
       with:
         name: detox-artifacts
-        path: artifacts
+        path: linkIntoApp.mp4
         retention-days: 5
 
-  notify:
-    name: Notify Slack
-    needs: test
-    if: ${{ success() || failure() }}
-    runs-on: macos-15
-    steps:
-      - uses: iRoachie/slack-github-actions@v2.3.0
-        if: env.SLACK_WEBHOOK_URL != null
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # notify:
+  #   name: Notify Slack
+  #   needs: test
+  #   if: ${{ success() || failure() }}
+  #   runs-on: macos-15
+  #   steps:
+  #     - uses: iRoachie/slack-github-actions@v2.3.0
+  #       if: env.SLACK_WEBHOOK_URL != null
+  #       env:
+  #         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
