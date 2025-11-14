@@ -222,8 +222,8 @@ jobs:
 
     - name: Run e2e test
       run: |
-        SIMULATOR_UDID=`xcrun simctl list -j | 
-          jq '.devices."com.apple.CoreSimulator.SimRuntime.iOS-18-6" | .[] | select(.name == "iPhone 16 Pro") | .udid'`
+        SIMULATOR_UDID=`xcrun simctl list -j | jq '.devices."com.apple.CoreSimulator.SimRuntime.iOS-18-6" | .[] | select(.name == "iPhone 16 Pro") | .udid'`
+        echo $SIMULATOR_UDID
         
         /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app/Contents/MacOS/Simulator -CurrentDeviceUDID $SIMULATOR_UDID
         xcrun simctl install $SIMULATOR_UDID ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app
