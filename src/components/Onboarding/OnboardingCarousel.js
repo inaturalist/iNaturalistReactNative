@@ -77,7 +77,7 @@ const OnboardingCarousel = ( ) => {
   const [imagesLoaded, setImagesLoaded] = useState( false );
 
   const closeModal = () => {
-    logFirebaseEvent( "onboarding_close_pressed", { currentIndex } );
+    logFirebaseEvent( "onboarding_close_pressed", { current_slide: currentIndex } );
     setOnboardingShown( true );
   };
 
