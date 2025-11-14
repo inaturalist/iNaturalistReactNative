@@ -113,7 +113,7 @@ interface TaxonDisplayData {
   scientificName?: string;
 }
 
-export const generateTaxonPieces = ( taxon: Taxon ) => {
+export const generateTaxonPieces = ( taxon: Taxon ): TaxonDisplayData => {
   const taxonDisplayData: Partial<TaxonDisplayData> = {};
 
   if ( taxon.rank ) taxonDisplayData.rank = capitalize( taxon.rank );
@@ -151,7 +151,7 @@ export const generateTaxonPieces = ( taxon: Taxon ) => {
   taxonDisplayData.scientificNamePieces = scientificNamePieces;
   taxonDisplayData.scientificName = scientificNamePieces?.join( " " );
 
-  return taxonDisplayData as TaxonDisplayData;
+  return taxonDisplayData;
 };
 
 interface User {
