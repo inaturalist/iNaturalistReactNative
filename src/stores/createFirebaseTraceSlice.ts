@@ -17,7 +17,6 @@ export interface FirebaseTraceSlice {
   activeTraces: Record<string, TraceData>;
   startTrace: ( traceId: string ) => Promise<void>;
   stopTrace: ( traceId: string ) => Promise<void>;
-  clearTrace: ( traceId: string ) => void;
 }
 
 const createFirebaseTraceSlice: StateCreator<FirebaseTraceSlice>
@@ -28,7 +27,7 @@ const createFirebaseTraceSlice: StateCreator<FirebaseTraceSlice>
     const trace = await perf().startTrace( traceId );
 
     const timeoutId = setTimeout( () => {
-      get().clearTrace( traceId );
+      get().stopTrace( traceId );
     }, TRACE_TIMEOUT );
 
     set( state => ( {
@@ -43,17 +42,9 @@ const createFirebaseTraceSlice: StateCreator<FirebaseTraceSlice>
     const { activeTraces } = get();
     const traceData = activeTraces[traceId];
     if ( traceData ) {
-      get().clearTrace( traceId );
+      clearTimeout( traceData.timeoutId );
 
       await traceData.trace.stop();
-    }
-  },
-
-  clearTrace: ( traceId: string ) => {
-    const { activeTraces } = get();
-    const traceData = activeTraces[traceId];
-    if ( traceData ) {
-      clearTimeout( traceData.timeoutId );
 
       set( state => {
         const { [traceId]: _, ...remainingTraces } = state.activeTraces;
