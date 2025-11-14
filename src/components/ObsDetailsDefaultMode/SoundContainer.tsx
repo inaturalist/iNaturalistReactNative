@@ -20,8 +20,6 @@ interface SoundSliderProps {
   playBackState: {
     currentPosition: number;
     duration: number;
-    // formattedCurrentPosition: string;
-    // formattedDuration: string;
   };
   onSlidingComplete: ( value: number ) => void;
 }
