@@ -16,10 +16,20 @@ import AudioRecorderPlayer from "react-native-audio-recorder-player";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
-const SoundSlider = ( { playBackState, onSlidingComplete } ) => {
+interface SoundSliderProps {
+  playBackState: {
+    currentPosition: number;
+    duration: number;
+    // formattedCurrentPosition: string;
+    // formattedDuration: string;
+  };
+  onSlidingComplete: ( value: number ) => void;
+}
+
+const SoundSlider = ( { playBackState, onSlidingComplete }: SoundSliderProps ) => {
   const sliderStyle = {
     width: "100%"
-  };
+  } as const;
   return (
     <Slider
       style={sliderStyle}
@@ -37,12 +47,21 @@ const SoundSlider = ( { playBackState, onSlidingComplete } ) => {
   );
 };
 
+interface SoundContainerProps {
+  autoPlay: boolean;
+  isVisible: boolean;
+  sizeClass: string;
+  sound: {
+    file_url: string;
+  };
+}
+
 const SoundContainer = ( {
   autoPlay,
   isVisible,
   sizeClass,
   sound
-} ) => {
+}: SoundContainerProps ) => {
   const needsInternet = sound.file_url.includes( "https://" );
   const { isConnected } = useNetInfo( );
   const playerRef = useRef( new AudioRecorderPlayer( ) );
@@ -68,14 +87,14 @@ const SoundContainer = ( {
     Math.floor( value / 1000 )
   ), [player] );
 
-  const playSound = useCallback( position => {
+  const playSound = useCallback( ( position?: number ) => {
     async function playSoundAsync( ) {
       await player.startPlayer( sound.file_url );
       if ( position ) {
         try {
           await player.seekToPlayer( position );
         } catch ( seekPlayerError ) {
-          if ( seekPlayerError.message.match( /Player has already stopped/ ) ) {
+          if ( seekPlayerError instanceof Error && seekPlayerError.message.match( /Player has already stopped/ ) ) {
             // Something else might be wrong, but it's not really something to
             // bother the user with
             return;
@@ -110,7 +129,7 @@ const SoundContainer = ( {
     try {
       await player.pausePlayer( );
     } catch ( pausePlayerError ) {
-      if ( pausePlayerError.message.match( /Player has already stopped/ ) ) {
+      if ( pausePlayerError instanceof Error && pausePlayerError.message.match( /Player has already stopped/ ) ) {
         // Something else might be wrong, but it's not really something to
         // bother the user with
         return;
