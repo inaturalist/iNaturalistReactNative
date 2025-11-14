@@ -34,9 +34,14 @@ const createFirebaseTraceSlice: StateCreator<FirebaseTraceSlice>
       get().stopTrace( traceId );
     }, TRACE_TIMEOUT );
 
-    Object.entries( attributes ).forEach( ( [key, value] ) => {
-      trace.putAttribute( key, value );
-    } );
+    try {
+      Object.entries( attributes ).forEach( ( [key, value] ) => {
+        trace.putAttribute( key, value );
+      } );
+    } catch ( _ ) {
+      /* this can error for a few reasons like value being a non-string
+        but we still need to stop the trace */
+    }
 
     set( state => ( {
       activeTraces: {
