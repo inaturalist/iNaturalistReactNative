@@ -22,12 +22,12 @@ __mocks__/@react-native-community/geolocation.ts(2,23): error TS2708: Cannot use
 __mocks__/@react-native-community/geolocation.ts(3,18): error TS2708: Cannot use namespace 'jest' as a value.
 __mocks__/@react-native-community/geolocation.ts(4,15): error TS2708: Cannot use namespace 'jest' as a value.
 __mocks__/@react-native-community/geolocation.ts(5,23): error TS2708: Cannot use namespace 'jest' as a value.
-__mocks__/@react-navigation/native.ts(12,16): error TS2708: Cannot use namespace 'jest' as a value.
-__mocks__/@react-navigation/native.ts(13,14): error TS2708: Cannot use namespace 'jest' as a value.
-__mocks__/@react-navigation/native.ts(14,11): error TS2708: Cannot use namespace 'jest' as a value.
-__mocks__/@react-navigation/native.ts(15,15): error TS2708: Cannot use namespace 'jest' as a value.
-__mocks__/@react-navigation/native.ts(19,6): error TS2304: Cannot find name 'actualNav'.
-__mocks__/@react-navigation/native.ts(9,18): error TS2708: Cannot use namespace 'jest' as a value.
+__mocks__/@react-navigation/native.ts(10,18): error TS2708: Cannot use namespace 'jest' as a value.
+__mocks__/@react-navigation/native.ts(13,16): error TS2708: Cannot use namespace 'jest' as a value.
+__mocks__/@react-navigation/native.ts(14,14): error TS2708: Cannot use namespace 'jest' as a value.
+__mocks__/@react-navigation/native.ts(15,11): error TS2708: Cannot use namespace 'jest' as a value.
+__mocks__/@react-navigation/native.ts(16,15): error TS2708: Cannot use namespace 'jest' as a value.
+__mocks__/@react-navigation/native.ts(8,19): error TS2708: Cannot use namespace 'jest' as a value.
 __mocks__/react-native-exception-handler.ts(1,26): error TS7006: Parameter 'error' implicitly has an 'any' type.
 __mocks__/react-native-exception-handler.ts(11,30): error TS2554: Expected 1 arguments, but got 0.
 __mocks__/react-native-exception-handler.ts(5,38): error TS2708: Cannot use namespace 'jest' as a value.
