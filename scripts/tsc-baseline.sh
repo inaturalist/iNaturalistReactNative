@@ -45,20 +45,18 @@ fi
 NEW_ERRORS=$(comm -13 "$TSC_ERRORS_FILE" "$TEMP_TSC_ERRORS_FILE")
 REMOVED_ERRORS=$(comm -23 "$TSC_ERRORS_FILE" "$TEMP_TSC_ERRORS_FILE")
 
-if [ -n "$NEW_ERRORS" ]; then
-  echo "New TypeScript errors were introduced. Please fix them or update the baseline by running:"
+if [ -n "$NEW_ERRORS" ] || [ -n "$REMOVED_ERRORS" ]; then
+  echo "TypeScript error baseline has changed. Please fix the errors or update the baseline by running:"
   echo "npm run lint:tsc:baseline -- -u"
   echo
-  echo "New errors:"
-  echo "$NEW_ERRORS"
-  exit 1
-fi
-
-if [ -n "$REMOVED_ERRORS" ]; then
-  echo "Good job! You've resolved some TypeScript errors. To update the baseline, run:"
-  echo "npm run lint:tsc:baseline -- -u"
-  echo
-  echo "Resolved errors:"
-  echo "$REMOVED_ERRORS"
+  if [ -n "$NEW_ERRORS" ]; then
+    echo "New errors:"
+    echo "$NEW_ERRORS"
+    echo
+  fi
+  if [ -n "$REMOVED_ERRORS" ]; then
+    echo "Resolved errors:"
+    echo "$REMOVED_ERRORS"
+  fi
   exit 1
 fi
