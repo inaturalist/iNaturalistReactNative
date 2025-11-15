@@ -9,6 +9,7 @@
 set -e
 
 TSC_ERRORS_FILE="tsc-errors.txt"
+# Use mktemp to create a secure temporary file
 TEMP_TSC_ERRORS_FILE=$(mktemp)
 
 # Ensure the temp file is removed on exit, even if the script fails
@@ -30,26 +31,42 @@ if [ "$1" = "-u" ]; then
   exit 0
 fi
 
-# Compare the temporary file with the baseline
-if ! diff -q "$TSC_ERRORS_FILE" "$TEMP_TSC_ERRORS_FILE" >/dev/null; then
-  # Check for new errors (lines in the new file that are not in the baseline)
-  NEW_ERRORS=$(grep -F -v -x -f "$TSC_ERRORS_FILE" "$TEMP_TSC_ERRORS_FILE" || true)
-
-  if [ -n "$NEW_ERRORS" ]; then
-    echo "New TypeScript errors were introduced. Please fix them or update the baseline by running:"
-    echo "npm run lint:tsc:baseline -- -u"
-    echo
-    echo "$NEW_ERRORS"
-  else
-    # If there are no new errors, but the files are different, it means errors were resolved.
-    REMOVED_ERRORS=$(grep -F -v -x -f "$TEMP_TSC_ERRORS_FILE" "$TSC_ERRORS_FILE" || true)
-    echo "Good job! You've resolved some TypeScript errors. To update the baseline, run:"
-    echo "npm run lint:tsc:baseline -- -u"
-    echo
-    echo "Resolved errors:"
-    echo "$REMOVED_ERRORS"
-  fi
+# If the baseline file doesn't exist, this script should fail unless it's
+# being updated.
+if [ ! -f "$TSC_ERRORS_FILE" ]; then
+  echo "TypeScript error baseline file '$TSC_ERRORS_FILE' not found."
+  echo "To create it, run: npm run lint:tsc:baseline -- -u"
   exit 1
 fi
 
-echo "No new TypeScript errors were introduced."
+# If the files are the same, we're good.
+if cmp -s "$TSC_ERRORS_FILE" "$TEMP_TSC_ERRORS_FILE"; then
+  echo "No new TypeScript errors were introduced."
+  exit 0
+fi
+
+# The files are different, so find out what changed.
+# comm is the standard tool for comparing sorted files.
+#   -1 suppresses lines unique to the first file
+#   -2 suppresses lines unique to the second file
+#   -3 suppresses lines common to both files
+NEW_ERRORS=$(comm -13 "$TSC_ERRORS_FILE" "$TEMP_TSC_ERRORS_FILE")
+REMOVED_ERRORS=$(comm -23 "$TSC_ERRORS_FILE" "$TEMP_TSC_ERRORS_FILE")
+
+if [ -n "$NEW_ERRORS" ]; then
+  echo "New TypeScript errors were introduced. Please fix them or update the baseline by running:"
+  echo "npm run lint:tsc:baseline -- -u"
+  echo
+  echo "New errors:"
+  echo "$NEW_ERRORS"
+  exit 1
+fi
+
+if [ -n "$REMOVED_ERRORS" ]; then
+  echo "Good job! You've resolved some TypeScript errors. To update the baseline, run:"
+  echo "npm run lint:tsc:baseline -- -u"
+  echo
+  echo "Resolved errors:"
+  echo "$REMOVED_ERRORS"
+  exit 1
+fi
