@@ -44,8 +44,10 @@ if ! diff -q "$TSC_ERRORS_FILE" "$TEMP_TSC_ERRORS_FILE" >/dev/null; then
     # If there are no new errors, but the files are different, it means errors were resolved.
     echo "Good job! You've resolved some TypeScript errors. To update the baseline, run:"
     echo "npm run lint:tsc:baseline -- -u"
+    echo
+    diff --unified=0 "$TSC_ERRORS_FILE" "$TEMP_TSC_ERRORS_FILE" | tail -n +6
     rm "$TEMP_TSC_ERRORS_FILE"
-    exit 0
+    exit 1
   fi
 fi
 
