@@ -1,5 +1,7 @@
 
 
+> inaturalistreactnative@1.0.11 lint:tsc
+> tsc --allowJs false --noEmit --pretty false
 __mocks__/@bam.tech/react-native-image-resizer.ts(10,7): error TS7006: Parameter '_quality' implicitly has an 'any' type.
 __mocks__/@bam.tech/react-native-image-resizer.ts(11,7): error TS7006: Parameter '_rotation' implicitly has an 'any' type.
 __mocks__/@bam.tech/react-native-image-resizer.ts(12,7): error TS7006: Parameter 'outputPath' implicitly has an 'any' type.
@@ -20,12 +22,12 @@ __mocks__/@react-native-community/geolocation.ts(2,23): error TS2708: Cannot use
 __mocks__/@react-native-community/geolocation.ts(3,18): error TS2708: Cannot use namespace 'jest' as a value.
 __mocks__/@react-native-community/geolocation.ts(4,15): error TS2708: Cannot use namespace 'jest' as a value.
 __mocks__/@react-native-community/geolocation.ts(5,23): error TS2708: Cannot use namespace 'jest' as a value.
-__mocks__/@react-navigation/native.ts(10,18): error TS2708: Cannot use namespace 'jest' as a value.
-__mocks__/@react-navigation/native.ts(13,16): error TS2708: Cannot use namespace 'jest' as a value.
-__mocks__/@react-navigation/native.ts(14,14): error TS2708: Cannot use namespace 'jest' as a value.
-__mocks__/@react-navigation/native.ts(15,11): error TS2708: Cannot use namespace 'jest' as a value.
-__mocks__/@react-navigation/native.ts(16,15): error TS2708: Cannot use namespace 'jest' as a value.
-__mocks__/@react-navigation/native.ts(8,19): error TS2708: Cannot use namespace 'jest' as a value.
+__mocks__/@react-navigation/native.ts(12,16): error TS2708: Cannot use namespace 'jest' as a value.
+__mocks__/@react-navigation/native.ts(13,14): error TS2708: Cannot use namespace 'jest' as a value.
+__mocks__/@react-navigation/native.ts(14,11): error TS2708: Cannot use namespace 'jest' as a value.
+__mocks__/@react-navigation/native.ts(15,15): error TS2708: Cannot use namespace 'jest' as a value.
+__mocks__/@react-navigation/native.ts(19,6): error TS2304: Cannot find name 'actualNav'.
+__mocks__/@react-navigation/native.ts(9,18): error TS2708: Cannot use namespace 'jest' as a value.
 __mocks__/react-native-exception-handler.ts(1,26): error TS7006: Parameter 'error' implicitly has an 'any' type.
 __mocks__/react-native-exception-handler.ts(11,30): error TS2554: Expected 1 arguments, but got 0.
 __mocks__/react-native-exception-handler.ts(5,38): error TS2708: Cannot use namespace 'jest' as a value.
@@ -107,8 +109,6 @@ __mocks__/vision-camera-plugin-inatvision.ts(7,35): error TS2708: Cannot use nam
 __mocks__/vision-camera-plugin-inatvision.ts(8,32): error TS2708: Cannot use namespace 'jest' as a value.
 __mocks__/vision-camera-plugin-inatvision.ts(8,41): error TS7006: Parameter 'location' implicitly has an 'any' type.
 __mocks__/zustand.ts(7,5): error TS2708: Cannot use namespace 'jest' as a value.
-> inaturalistreactnative@1.0.11 lint:tsc
-> tsc --allowJs false --noEmit --pretty false
 src/api/computerVision.ts(2,19): error TS7016: Could not find a declaration file for module 'realmModels/Taxon'. 'src/realmModels/Taxon.js' implicitly has an 'any' type.
 src/api/error.ts(1,21): error TS7016: Could not find a declaration file for module '../../react-native-logs.config'. 'react-native-logs.config.js' implicitly has an 'any' type.
 src/api/log.ts(27,30): error TS2314: Generic type 'transportFunctionType' requires 1 type argument(s).
@@ -121,9 +121,9 @@ src/components/AddObsModal/AddObsModal.tsx(12,22): error TS7016: Could not find 
 src/components/AddObsModal/AddObsModal.tsx(51,36): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/AddObsModal/AddObsModalHelp.tsx(11,25): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/components/Camera/AICamera/AICameraButtons.tsx(16,27): error TS7016: Could not find a declaration file for module './AIDebugButton'. 'src/components/Camera/AICamera/AIDebugButton.js' implicitly has an 'any' type.
+src/components/Camera/AICamera/SliderControl.tsx(44,9): error TS2769: No overload matches this call. Overload 1 of 2, '(props: SliderProps): Slider', gave the following error. Type '{ style: { readonly display: "flex"; readonly flexGrow: 1; readonly height: 44; }; minimumValue: number; maximumValue: number; minimumTrackTintColor: string; maximumTrackTintColor: string; ... 4 more ...; onValueChange: (changedValue: number) => void; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Slider> & Readonly<SliderProps>'. Property 'renderStepNumber' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Slider> & Readonly<SliderProps>'. Overload 2 of 2, '(props: SliderProps, context: any): Slider', gave the following error. Type '{ style: { readonly display: "flex"; readonly flexGrow: 1; readonly height: 44; }; minimumValue: number; maximumValue: number; minimumTrackTintColor: string; maximumTrackTintColor: string; ... 4 more ...; onValueChange: (changedValue: number) => void; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Slider> & Readonly<SliderProps>'. Property 'renderStepNumber' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Slider> & Readonly<SliderProps>'.
 src/components/Camera/AICamera/hooks/usePredictions.ts(53,69): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'number'.
 src/components/Camera/AICamera/hooks/usePredictions.ts(65,16): error TS2345: Argument of type '{ taxon: { rank_level: RANK_LEVEL; id: number; name: string; iconic_taxon_name: unknown; }; combined_score: number; timestamp: number; } | null' is not assignable to parameter of type 'SetStateAction<StoredResult | null>'. Type '{ taxon: { rank_level: RANK_LEVEL; id: number; name: string; iconic_taxon_name: unknown; }; combined_score: number; timestamp: number; }' is not assignable to type 'SetStateAction<StoredResult | null>'. The types of 'taxon.iconic_taxon_name' are incompatible between these types. Type 'unknown' is not assignable to type 'string'.
-src/components/Camera/AICamera/SliderControl.tsx(44,9): error TS2769: No overload matches this call. Overload 1 of 2, '(props: SliderProps): Slider', gave the following error. Type '{ style: { readonly display: "flex"; readonly flexGrow: 1; readonly height: 44; }; minimumValue: number; maximumValue: number; minimumTrackTintColor: string; maximumTrackTintColor: string; ... 4 more ...; onValueChange: (changedValue: number) => void; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Slider> & Readonly<SliderProps>'. Property 'renderStepNumber' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Slider> & Readonly<SliderProps>'. Overload 2 of 2, '(props: SliderProps, context: any): Slider', gave the following error. Type '{ style: { readonly display: "flex"; readonly flexGrow: 1; readonly height: 44; }; minimumValue: number; maximumValue: number; minimumTrackTintColor: string; maximumTrackTintColor: string; ... 4 more ...; onValueChange: (changedValue: number) => void; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Slider> & Readonly<SliderProps>'. Property 'renderStepNumber' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Slider> & Readonly<SliderProps>'.
 src/components/Camera/Buttons/GreenCheckmark.tsx(22,7): error TS2322: Type '(_event: GestureResponderEvent) => void' is not assignable to type '(_event?: GestureResponderEvent | undefined) => void'. Types of parameters '_event' and '_event' are incompatible. Type 'GestureResponderEvent | undefined' is not assignable to type 'GestureResponderEvent'. Type 'undefined' is not assignable to type 'NativeSyntheticEvent<NativeTouchEvent>'.
 src/components/Camera/Buttons/GreenCheckmark.tsx(29,7): error TS2322: Type 'string' is not assignable to type 'number'.
 src/components/Camera/Buttons/GreenCheckmark.tsx(30,7): error TS2322: Type 'string' is not assignable to type 'number'.
@@ -165,6 +165,27 @@ src/components/Camera/CameraView.tsx(176,11): error TS2322: Type '(() => void) |
 src/components/Camera/CameraWithDevice.tsx(8,22): error TS7016: Could not find a declaration file for module './AICamera/AICamera'. 'src/components/Camera/AICamera/AICamera.js' implicitly has an 'any' type.
 src/components/Camera/CameraWithDevice.tsx(9,28): error TS7016: Could not find a declaration file for module './StandardCamera/StandardCamera'. 'src/components/Camera/StandardCamera/StandardCamera.js' implicitly has an 'any' type.
 src/components/Camera/FadeInOutView.tsx(11,14): error TS7006: Parameter 'value' implicitly has an 'any' type.
+src/components/Camera/SavePhotoPermissionGate.tsx(22,6): error TS2786: 'PermissionGateContainer' cannot be used as a JSX component. Its return type 'string | number | bigint | true | Element | Iterable<ReactNode> | Promise<AwaitedReactNode> | null' is not a valid JSX element.
+src/components/Camera/StandardCamera/PhotoCarousel.tsx(128,11): error TS7031: Binding element 'photoUri' implicitly has an 'any' type.
+src/components/Camera/StandardCamera/PhotoCarousel.tsx(129,5): error TS7031: Binding element 'index' implicitly has an 'any' type.
+src/components/Camera/StandardCamera/PhotoCarousel.tsx(2,30): error TS7016: Could not find a declaration file for module 'components/MediaViewer/MediaViewerModal'. 'src/components/MediaViewer/MediaViewerModal.js' implicitly has an 'any' type.
+src/components/Camera/StandardCamera/PhotoCarousel.tsx(20,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
+src/components/Camera/StandardCamera/PhotoCarousel.tsx(225,31): error TS2749: 'View' refers to a value, but is being used as a type here. Did you mean 'typeof View'?
+src/components/Camera/StandardCamera/PhotoCarousel.tsx(247,13): error TS7006: Parameter '_x' implicitly has an 'any' type.
+src/components/Camera/StandardCamera/PhotoCarousel.tsx(247,17): error TS7006: Parameter '_y' implicitly has an 'any' type.
+src/components/Camera/StandardCamera/PhotoCarousel.tsx(247,21): error TS7006: Parameter 'w' implicitly has an 'any' type.
+src/components/Camera/StandardCamera/PhotoCarousel.tsx(247,24): error TS7006: Parameter 'h' implicitly has an 'any' type.
+src/components/Camera/StandardCamera/PhotoCarousel.tsx(247,27): error TS7006: Parameter 'pageX' implicitly has an 'any' type.
+src/components/Camera/StandardCamera/PhotoCarousel.tsx(247,34): error TS7006: Parameter 'pageY' implicitly has an 'any' type.
+src/components/Camera/StandardCamera/PhotoCarousel.tsx(266,15): error TS2322: Type '{ children: Element; visible: true; onBackdropPress: () => void; backdropOpacity: number; style: { margin: number; position: "relative"; }; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<ReactNativeModal> & Pick<Readonly<ModalProps>, keyof ViewProps | ... 10 more ... | "useNativeDriverForBackdrop"> & InexactPartial<...> & InexactPartial<...>'. Property 'visible' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<ReactNativeModal> & Pick<Readonly<ModalProps>, keyof ViewProps | ... 10 more ... | "useNativeDriverForBackdrop"> & InexactPartial<...> & InexactPartial<...>'. Did you mean 'isVisible'?
+src/components/Camera/StandardCamera/PhotoCarousel.tsx(60,48): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/Camera/StandardCamera/PhotoPreview.tsx(88,22): error TS2322: Type '{ width?: string | number | undefined; height?: number | undefined; }' is not assignable to type 'ViewStyle | Falsy | RegisteredStyle<ViewStyle> | RecursiveArray<ViewStyle | Falsy | RegisteredStyle<ViewStyle>> | readonly (ViewStyle | ... 1 more ... | RegisteredStyle<...>)[]'. Type '{ width?: string | number | undefined; height?: number | undefined; }' is not assignable to type 'ViewStyle'. Types of property 'width' are incompatible. Type 'string | number | undefined' is not assignable to type 'DimensionValue | undefined'. Type 'string' is not assignable to type 'DimensionValue | undefined'.
+src/components/Camera/StandardCamera/PhotoPreview.tsx(96,15): error TS2322: Type '{ value: number; } | undefined' is not assignable to type 'SharedValue<number> | undefined'. Type '{ value: number; }' is missing the following properties from type 'SharedValue<number>': get, set, addListener, removeListener, modify
+src/components/Camera/StandardCamera/hooks/useBackPress.ts(14,31): error TS2554: Expected 1 arguments, but got 0.
+src/components/Camera/StandardCamera/hooks/useBackPress.ts(23,34): error TS2339: Property 'addEvidence' does not exist on type 'object'.
+src/components/Camera/StandardCamera/hooks/useBackPress.ts(24,30): error TS2769: No overload matches this call. Overload 1 of 2, '(...args: never): void', gave the following error. Argument of type 'string' is not assignable to parameter of type 'never'. Overload 2 of 2, '(options: never): void', gave the following error. Argument of type 'string' is not assignable to parameter of type 'never'.
+src/components/Camera/TabletButtons.tsx(123,9): error TS2322: Type '{ handleZoomButtonPress: (_event: GestureResponderEvent) => void; zoomTextValue: string; showZoomButton: boolean; rotatableAnimatedStyle: ViewStyle; zoomClassName: string; }' is not assignable to type 'IntrinsicAttributes & Props'. Property 'showZoomButton' does not exist on type 'IntrinsicAttributes & Props'.
+src/components/Camera/TabletButtons.tsx(162,11): error TS2322: Type '((_event: GestureResponderEvent) => void) | undefined' is not assignable to type '(() => void) | undefined'. Type '(_event: GestureResponderEvent) => void' is not assignable to type '() => void'.
 src/components/Camera/helpers/index.ts(4,21): error TS7016: Could not find a declaration file for module '../../../../react-native-logs.config'. 'react-native-logs.config.js' implicitly has an 'any' type.
 src/components/Camera/helpers/savePhotosToPhotoLibrary.ts(11,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
 src/components/Camera/helpers/savePhotosToPhotoLibrary.ts(43,23): error TS2339: Property 'type' does not exist on type '{}'.
@@ -217,27 +238,6 @@ src/components/Camera/hooks/usePrepareStoreAndNavigate.ts(79,5): error TS7006: P
 src/components/Camera/hooks/useSavePhotoPermission.tsx(52,9): error TS2322: Type '{ permissionNeeded: true; withoutNavigation: true; onModalHide: () => void; onPhotoPermissionGranted: () => void; onPhotoPermissionBlocked: () => void; }' is not assignable to type 'IntrinsicAttributes & Props'. Property 'withoutNavigation' does not exist on type 'IntrinsicAttributes & Props'.
 src/components/Camera/hooks/useZoom.ts(98,21): error TS2362: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.
 src/components/Camera/hooks/useZoom.ts(98,50): error TS2362: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.
-src/components/Camera/SavePhotoPermissionGate.tsx(22,6): error TS2786: 'PermissionGateContainer' cannot be used as a JSX component. Its return type 'string | number | bigint | true | Element | Iterable<ReactNode> | Promise<AwaitedReactNode> | null' is not a valid JSX element.
-src/components/Camera/StandardCamera/hooks/useBackPress.ts(14,31): error TS2554: Expected 1 arguments, but got 0.
-src/components/Camera/StandardCamera/hooks/useBackPress.ts(23,34): error TS2339: Property 'addEvidence' does not exist on type 'object'.
-src/components/Camera/StandardCamera/hooks/useBackPress.ts(24,30): error TS2769: No overload matches this call. Overload 1 of 2, '(...args: never): void', gave the following error. Argument of type 'string' is not assignable to parameter of type 'never'. Overload 2 of 2, '(options: never): void', gave the following error. Argument of type 'string' is not assignable to parameter of type 'never'.
-src/components/Camera/StandardCamera/PhotoCarousel.tsx(128,11): error TS7031: Binding element 'photoUri' implicitly has an 'any' type.
-src/components/Camera/StandardCamera/PhotoCarousel.tsx(129,5): error TS7031: Binding element 'index' implicitly has an 'any' type.
-src/components/Camera/StandardCamera/PhotoCarousel.tsx(2,30): error TS7016: Could not find a declaration file for module 'components/MediaViewer/MediaViewerModal'. 'src/components/MediaViewer/MediaViewerModal.js' implicitly has an 'any' type.
-src/components/Camera/StandardCamera/PhotoCarousel.tsx(20,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
-src/components/Camera/StandardCamera/PhotoCarousel.tsx(225,31): error TS2749: 'View' refers to a value, but is being used as a type here. Did you mean 'typeof View'?
-src/components/Camera/StandardCamera/PhotoCarousel.tsx(247,13): error TS7006: Parameter '_x' implicitly has an 'any' type.
-src/components/Camera/StandardCamera/PhotoCarousel.tsx(247,17): error TS7006: Parameter '_y' implicitly has an 'any' type.
-src/components/Camera/StandardCamera/PhotoCarousel.tsx(247,21): error TS7006: Parameter 'w' implicitly has an 'any' type.
-src/components/Camera/StandardCamera/PhotoCarousel.tsx(247,24): error TS7006: Parameter 'h' implicitly has an 'any' type.
-src/components/Camera/StandardCamera/PhotoCarousel.tsx(247,27): error TS7006: Parameter 'pageX' implicitly has an 'any' type.
-src/components/Camera/StandardCamera/PhotoCarousel.tsx(247,34): error TS7006: Parameter 'pageY' implicitly has an 'any' type.
-src/components/Camera/StandardCamera/PhotoCarousel.tsx(266,15): error TS2322: Type '{ children: Element; visible: true; onBackdropPress: () => void; backdropOpacity: number; style: { margin: number; position: "relative"; }; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<ReactNativeModal> & Pick<Readonly<ModalProps>, keyof ViewProps | ... 10 more ... | "useNativeDriverForBackdrop"> & InexactPartial<...> & InexactPartial<...>'. Property 'visible' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<ReactNativeModal> & Pick<Readonly<ModalProps>, keyof ViewProps | ... 10 more ... | "useNativeDriverForBackdrop"> & InexactPartial<...> & InexactPartial<...>'. Did you mean 'isVisible'?
-src/components/Camera/StandardCamera/PhotoCarousel.tsx(60,48): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/Camera/StandardCamera/PhotoPreview.tsx(88,22): error TS2322: Type '{ width?: string | number | undefined; height?: number | undefined; }' is not assignable to type 'ViewStyle | Falsy | RegisteredStyle<ViewStyle> | RecursiveArray<ViewStyle | Falsy | RegisteredStyle<ViewStyle>> | readonly (ViewStyle | ... 1 more ... | RegisteredStyle<...>)[]'. Type '{ width?: string | number | undefined; height?: number | undefined; }' is not assignable to type 'ViewStyle'. Types of property 'width' are incompatible. Type 'string | number | undefined' is not assignable to type 'DimensionValue | undefined'. Type 'string' is not assignable to type 'DimensionValue | undefined'.
-src/components/Camera/StandardCamera/PhotoPreview.tsx(96,15): error TS2322: Type '{ value: number; } | undefined' is not assignable to type 'SharedValue<number> | undefined'. Type '{ value: number; }' is missing the following properties from type 'SharedValue<number>': get, set, addListener, removeListener, modify
-src/components/Camera/TabletButtons.tsx(123,9): error TS2322: Type '{ handleZoomButtonPress: (_event: GestureResponderEvent) => void; zoomTextValue: string; showZoomButton: boolean; rotatableAnimatedStyle: ViewStyle; zoomClassName: string; }' is not assignable to type 'IntrinsicAttributes & Props'. Property 'showZoomButton' does not exist on type 'IntrinsicAttributes & Props'.
-src/components/Camera/TabletButtons.tsx(162,11): error TS2322: Type '((_event: GestureResponderEvent) => void) | undefined' is not assignable to type '(() => void) | undefined'. Type '(_event: GestureResponderEvent) => void' is not assignable to type '() => void'.
 src/components/Developer/Developer.tsx(140,47): error TS2769: No overload matches this call. Overload 1 of 2, '(...args: never): void', gave the following error. Argument of type 'string' is not assignable to parameter of type 'never'. Overload 2 of 2, '(options: never): void', gave the following error. Argument of type 'string' is not assignable to parameter of type 'never'.
 src/components/Developer/Developer.tsx(145,47): error TS2769: No overload matches this call. Overload 1 of 2, '(...args: never): void', gave the following error. Argument of type 'string' is not assignable to parameter of type 'never'. Overload 2 of 2, '(options: never): void', gave the following error. Argument of type 'string' is not assignable to parameter of type 'never'.
 src/components/Developer/Developer.tsx(153,53): error TS2769: No overload matches this call. Overload 1 of 2, '(...args: never): void', gave the following error. Argument of type 'string' is not assignable to parameter of type 'never'. Overload 2 of 2, '(options: never): void', gave the following error. Argument of type 'string' is not assignable to parameter of type 'never'.
@@ -332,24 +332,6 @@ src/components/Explore/SearchScreens/ExploreProjectSearch.tsx(70,22): error TS23
 src/components/Explore/SearchScreens/ExploreSearchHeader.tsx(31,11): error TS2322: Type '{ testID: string; onPress: () => void; accessibilityLabel: string; }' is not assignable to type 'IntrinsicAttributes & Props'. Property 'accessibilityLabel' does not exist on type 'IntrinsicAttributes & Props'.
 src/components/FullPageWebView/FullPageWebView.tsx(16,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
 src/components/FullPageWebView/FullPageWebViewHeader.tsx(8,28): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
-src/components/hooks/useTaxonCommonNames.ts(1,36): error TS7016: Could not find a declaration file for module 'api/observations'. 'src/api/observations.js' implicitly has an 'any' type.
-src/components/hooks/useTaxonCommonNames.ts(38,22): error TS2339: Property 'latitude' does not exist on type 'never'.
-src/components/hooks/useTaxonCommonNames.ts(39,12): error TS2339: Property 'lat' does not exist on type '{ per_page: number; fields: { taxon: { iconic_taxon_name: boolean; id: boolean; preferred_common_name: boolean; name: boolean; }; }; }'.
-src/components/hooks/useTaxonCommonNames.ts(39,31): error TS2339: Property 'latitude' does not exist on type 'never'.
-src/components/hooks/useTaxonCommonNames.ts(4,19): error TS7016: Could not find a declaration file for module 'realmModels/Taxon'. 'src/realmModels/Taxon.js' implicitly has an 'any' type.
-src/components/hooks/useTaxonCommonNames.ts(40,12): error TS2339: Property 'lng' does not exist on type '{ per_page: number; fields: { taxon: { iconic_taxon_name: boolean; id: boolean; preferred_common_name: boolean; name: boolean; }; }; }'.
-src/components/hooks/useTaxonCommonNames.ts(40,31): error TS2339: Property 'longitude' does not exist on type 'never'.
-src/components/hooks/useTaxonCommonNames.ts(45,28): error TS2322: Type 'null' is not assignable to type 'string'.
-src/components/hooks/useTaxonCommonNames.ts(58,24): error TS2345: Argument of type 'UserLocation | null' is not assignable to parameter of type 'SetStateAction<null>'. Type 'UserLocation' is not assignable to type 'SetStateAction<null>'. Type 'UserLocation' provides no match for the signature '(prevState: null): null'.
-src/components/hooks/useTaxonCommonNames.ts(66,16): error TS2339: Property 'results' does not exist on type '{}'.
-src/components/hooks/useTaxonCommonNames.ts(67,12): error TS2339: Property 'results' does not exist on type '{}'.
-src/components/hooks/useTaxonCommonNames.ts(67,33): error TS7031: Binding element 'taxon' implicitly has an 'any' type.
-src/components/hooks/useTaxonCommonNames.ts(91,13): error TS2769: No overload matches this call. Overload 1 of 2, '(type: string, values: Partial<DefaultObject> | Partial<Unmanaged<DefaultObject>>, mode?: boolean | UpdateMode | undefined): RealmObject<...> & DefaultObject', gave the following error. Argument of type '"modified"' is not assignable to parameter of type 'boolean | UpdateMode | undefined'. Overload 2 of 2, '(type: Constructor<AnyRealmObject>, values: Partial<AnyRealmObject> | Partial<Unmanaged<AnyRealmObject>>, mode?: boolean | ... 1 more ... | undefined): AnyRealmObject', gave the following error. Argument of type 'string' is not assignable to parameter of type 'Constructor<AnyRealmObject>'.
-src/components/hooks/useWorkQueue.ts(1,42): error TS7016: Could not find a declaration file for module 'api/users'. 'src/api/users.js' implicitly has an 'any' type.
-src/components/hooks/useWorkQueue.ts(27,7): error TS2345: Argument of type '{ onSuccess: () => Promise<void>; onError: (userUpdateError: any) => void; }' is not assignable to parameter of type 'MutationOptions'. Object literal may only specify known properties, and 'onSuccess' does not exist in type 'MutationOptions'.
-src/components/hooks/useWorkQueue.ts(50,11): error TS2769: No overload matches this call. Overload 1 of 2, '(type: string, values: Partial<DefaultObject> | Partial<Unmanaged<DefaultObject>>, mode?: boolean | UpdateMode | undefined): RealmObject<...> & DefaultObject', gave the following error. Argument of type '"modified"' is not assignable to parameter of type 'boolean | UpdateMode | undefined'. Overload 2 of 2, '(type: Constructor<AnyRealmObject>, values: Partial<AnyRealmObject> | Partial<Unmanaged<AnyRealmObject>>, mode?: boolean | ... 1 more ... | undefined): AnyRealmObject', gave the following error. Argument of type 'string' is not assignable to parameter of type 'Constructor<AnyRealmObject>'.
-src/components/hooks/useWorkQueue.ts(56,16): error TS7006: Parameter 'userUpdateError' implicitly has an 'any' type.
-src/components/hooks/useWorkQueue.ts(6,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
 src/components/LocationPicker/LoadingIndicator.tsx(5,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
 src/components/LocationPicker/LocationSearch.tsx(12,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
 src/components/LocationPicker/LocationSearch.tsx(43,5): error TS2345: Argument of type '(optsWithAuth: ApiOpts) => Promise<(ApiUser | ApiPlace | ApiProject | ApiTaxon)[] | null>' is not assignable to parameter of type 'QueryFunction<(ApiUser | ApiPlace | ApiProject | ApiTaxon)[] | null>'. Types of parameters 'optsWithAuth' and 'options' are incompatible. Type '{ api_token: string | null; }' is not assignable to type 'ApiOpts'.
@@ -384,7 +366,6 @@ src/components/LoginSignUp/LoginForm.tsx(291,29): error TS2339: Property 'login'
 src/components/LoginSignUp/LoginForm.tsx(30,19): error TS2314: Generic type 'Ref' requires 1 type argument(s).
 src/components/LoginSignUp/LoginForm.tsx(53,54): error TS2339: Property 'login' does not exist on type 'User'.
 src/components/LoginSignUp/LoginForm.tsx(82,59): error TS2345: Argument of type '"transitionEnd"' is not assignable to parameter of type 'keyof EventMapCore<Readonly<{ key: string; index: number; routeNames: never[]; history?: unknown[] | undefined; routes: NavigationRoute<RootParamList, never>[]; type: string; stale: false; }>>'.
-src/components/LoginSignUp/loginFormHelpers.ts(12,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
 src/components/LoginSignUp/LoginSignUpWrapper.tsx(105,19): error TS2349: This expression is not callable. Type 'never' has no call signatures.
 src/components/LoginSignUp/LoginSignUpWrapper.tsx(45,32): error TS2339: Property 'scrollTo' does not exist on type 'never'.
 src/components/LoginSignUp/LoginSignUpWrapper.tsx(63,32): error TS2339: Property 'scrollTo' does not exist on type 'never'.
@@ -398,10 +379,10 @@ src/components/LoginSignUp/SignUpConfirmationForm.tsx(33,43): error TS7006: Para
 src/components/LoginSignUp/SignUpConfirmationForm.tsx(61,59): error TS2345: Argument of type '"transitionEnd"' is not assignable to parameter of type 'keyof EventMapCore<Readonly<{ key: string; index: number; routeNames: never[]; history?: unknown[] | undefined; routes: NavigationRoute<RootParamList, never>[]; type: string; stale: false; }>>'.
 src/components/LoginSignUp/SignUpForm.tsx(32,59): error TS2345: Argument of type '"transitionEnd"' is not assignable to parameter of type 'keyof EventMapCore<Readonly<{ key: string; index: number; routeNames: never[]; history?: unknown[] | undefined; routes: NavigationRoute<RootParamList, never>[]; type: string; stale: false; }>>'.
 src/components/LoginSignUp/SignUpForm.tsx(42,28): error TS2345: Argument of type 'string' is not assignable to parameter of type 'never'.
+src/components/LoginSignUp/loginFormHelpers.ts(12,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
 src/components/Match/AdditionalSuggestions/SuggestionsResult.tsx(132,47): error TS2339: Property 'prefers_scientific_name_first' does not exist on type 'User'.
 src/components/Match/AdditionalSuggestions/SuggestionsResult.tsx(133,46): error TS2339: Property 'prefers_common_names' does not exist on type 'User'.
 src/components/Match/AdditionalSuggestions/SuggestionsResult.tsx(60,54): error TS2345: Argument of type 'import("src/realmModels/User").default | null' is not assignable to parameter of type 'User | null'.
-src/components/Match/helpers/tryToReplaceWithLocalTaxon.ts(1,19): error TS7016: Could not find a declaration file for module 'realmModels/Taxon'. 'src/realmModels/Taxon.js' implicitly has an 'any' type.
 src/components/Match/MatchHeader.tsx(38,10): error TS18047: 'confidence' is possibly 'null'.
 src/components/Match/MatchHeader.tsx(40,17): error TS18047: 'confidence' is possibly 'null'.
 src/components/Match/MatchHeader.tsx(40,37): error TS18047: 'confidence' is possibly 'null'.
@@ -415,63 +396,12 @@ src/components/Match/MatchTaxonSearchScreen.tsx(29,43): error TS7006: Parameter 
 src/components/Match/MatchTaxonSearchScreen.tsx(41,42): error TS2345: Argument of type 'string' is not assignable to parameter of type 'never'.
 src/components/Match/MatchTaxonSearchScreen.tsx(48,23): error TS2345: Argument of type 'null' is not assignable to parameter of type 'SetStateAction<ApiTaxon>'.
 src/components/Match/MatchTaxonSearchScreen.tsx(83,7): error TS2322: Type 'Results<RealmObject<DefaultObject, never> & DefaultObject> | any[] | RealmTaxon[]' is not assignable to type 'RealmTaxon[]'. Type 'Results<RealmObject<DefaultObject, never> & DefaultObject>' is not assignable to type 'RealmTaxon[]'.
+src/components/Match/helpers/tryToReplaceWithLocalTaxon.ts(1,19): error TS7016: Could not find a declaration file for module 'realmModels/Taxon'. 'src/realmModels/Taxon.js' implicitly has an 'any' type.
 src/components/MediaViewer/AttributionButton.tsx(31,7): error TS2322: Type '{ testID: string; onPress: () => void; icon: string; color: string; accessibilityLabel: string; optionalClasses: string | undefined; }' is not assignable to type 'IntrinsicAttributes & Props'. Property 'color' does not exist on type 'IntrinsicAttributes & Props'.
 src/components/MediaViewer/CustomImageZoom.tsx(3,15): error TS2305: Module '"react"' has no exported member 'Node'.
 src/components/MediaViewer/CustomImageZoom.tsx(38,30): error TS2339: Property 'reset' does not exist on type 'never'.
 src/components/MediaViewer/CustomImageZoom.tsx(51,46): error TS2554: Expected 0 arguments, but got 1.
 src/components/MediaViewer/CustomImageZoom.tsx(52,44): error TS2554: Expected 0 arguments, but got 1.
-src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(26,45): error TS7006: Parameter 'deletedObservations' implicitly has an 'any' type.
-src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(26,66): error TS7006: Parameter 'realm' implicitly has an 'any' type.
-src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(3,8): error TS7016: Could not find a declaration file for module 'api/observations'. 'src/api/observations.js' implicitly has an 'any' type.
-src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(32,42): error TS7006: Parameter 'observation' implicitly has an 'any' type.
-src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(40,16): error TS2304: Cannot find name 'syncRemoteDeletedObservations'.
-src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(40,54): error TS7006: Parameter 'realm' implicitly has an 'any' type.
-src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(41,52): error TS2554: Expected 0 arguments, but got 1.
-src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(7,32): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
-src/components/MyObservations/helpers/syncRemoteObservations.ts(1,36): error TS7016: Could not find a declaration file for module 'api/observations'. 'src/api/observations.js' implicitly has an 'any' type.
-src/components/MyObservations/helpers/syncRemoteObservations.ts(3,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. 'src/realmModels/Observation.js' implicitly has an 'any' type.
-src/components/MyObservations/helpers/syncRemoteObservations.ts(6,40): error TS7006: Parameter 'realm' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useSyncObservations.ts(16,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useSyncObservations.ts(29,33): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useSyncObservations.ts(30,42): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useSyncObservations.ts(31,44): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useSyncObservations.ts(32,39): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useSyncObservations.ts(33,38): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useSyncObservations.ts(34,35): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useSyncObservations.ts(35,38): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useSyncObservations.ts(36,34): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useSyncObservations.ts(37,38): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useSyncObservations.ts(38,43): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useSyncObservations.ts(39,45): error TS7006: Parameter 'storeState' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useSyncObservations.ts(47,5): error TS2345: Argument of type '(params: object, optsWithAuth: object) => any' is not assignable to parameter of type 'MutationFunction<unknown>'. Types of parameters 'params' and 'params' are incompatible. Type 'unknown' is not assignable to type 'object'.
-src/components/MyObservations/hooks/useSyncObservations.ts(5,41): error TS7016: Could not find a declaration file for module 'api/observations'. 'src/api/observations.js' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useSyncObservations.ts(65,31): error TS2345: Argument of type 'string' is not assignable to parameter of type 'SetStateAction<null>'.
-src/components/MyObservations/hooks/useSyncObservations.ts(77,51): error TS2345: Argument of type '{ uuid: string; }' is not assignable to parameter of type 'void'.
-src/components/MyObservations/hooks/useSyncObservations.ts(8,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. 'src/realmModels/Observation.js' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useUploadObservations.ts(122,91): error TS2345: Argument of type '(key: string, options?: {}) => string' is not assignable to parameter of type 'TFunction<"translation", undefined>'. Property '$TFunctionBrand' is missing in type '(key: string, options?: {}) => string' but required in type 'TFunction<"translation", undefined>'.
-src/components/MyObservations/hooks/useUploadObservations.ts(137,34): error TS2769: No overload matches this call. Overload 1 of 2, '(...args: never): void', gave the following error. Argument of type 'string' is not assignable to parameter of type 'never'. Overload 2 of 2, '(options: never): void', gave the following error. Argument of type 'string' is not assignable to parameter of type 'never'.
-src/components/MyObservations/hooks/useUploadObservations.ts(17,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useUploadObservations.ts(34,36): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useUploadObservations.ts(35,37): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useUploadObservations.ts(36,35): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useUploadObservations.ts(38,5): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useUploadObservations.ts(40,43): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useUploadObservations.ts(41,50): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useUploadObservations.ts(42,38): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useUploadObservations.ts(43,47): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useUploadObservations.ts(44,33): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useUploadObservations.ts(45,34): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useUploadObservations.ts(46,50): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useUploadObservations.ts(47,47): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useUploadObservations.ts(48,38): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useUploadObservations.ts(49,48): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useUploadObservations.ts(50,49): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useUploadObservations.ts(51,38): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useUploadObservations.ts(52,51): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useUploadObservations.ts(53,36): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useUploadObservations.ts(56,59): error TS7006: Parameter 'o' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useUploadObservations.ts(57,37): error TS7006: Parameter 'storeState' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useUploadObservations.ts(7,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. 'src/realmModels/Observation.js' implicitly has an 'any' type.
 src/components/MyObservations/LoginBanner.tsx(10,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/components/MyObservations/LoginBanner.tsx(11,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
 src/components/MyObservations/LoginBanner.tsx(29,42): error TS7006: Parameter 'state' implicitly has an 'any' type.
@@ -543,6 +473,58 @@ src/components/MyObservations/MyObservationsSimpleHeader.tsx(47,35): error TS700
 src/components/MyObservations/MyObservationsSimpleHeader.tsx(48,48): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/MyObservations/MyObservationsSimpleHeader.tsx(49,41): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/MyObservations/SimpleErrorHeader.tsx(11,27): error TS7016: Could not find a declaration file for module './Announcements'. 'src/components/MyObservations/Announcements.js' implicitly has an 'any' type.
+src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(26,45): error TS7006: Parameter 'deletedObservations' implicitly has an 'any' type.
+src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(26,66): error TS7006: Parameter 'realm' implicitly has an 'any' type.
+src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(3,8): error TS7016: Could not find a declaration file for module 'api/observations'. 'src/api/observations.js' implicitly has an 'any' type.
+src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(32,42): error TS7006: Parameter 'observation' implicitly has an 'any' type.
+src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(40,16): error TS2304: Cannot find name 'syncRemoteDeletedObservations'.
+src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(40,54): error TS7006: Parameter 'realm' implicitly has an 'any' type.
+src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(41,52): error TS2554: Expected 0 arguments, but got 1.
+src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(7,32): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
+src/components/MyObservations/helpers/syncRemoteObservations.ts(1,36): error TS7016: Could not find a declaration file for module 'api/observations'. 'src/api/observations.js' implicitly has an 'any' type.
+src/components/MyObservations/helpers/syncRemoteObservations.ts(3,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. 'src/realmModels/Observation.js' implicitly has an 'any' type.
+src/components/MyObservations/helpers/syncRemoteObservations.ts(6,40): error TS7006: Parameter 'realm' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useSyncObservations.ts(16,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useSyncObservations.ts(29,33): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useSyncObservations.ts(30,42): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useSyncObservations.ts(31,44): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useSyncObservations.ts(32,39): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useSyncObservations.ts(33,38): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useSyncObservations.ts(34,35): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useSyncObservations.ts(35,38): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useSyncObservations.ts(36,34): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useSyncObservations.ts(37,38): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useSyncObservations.ts(38,43): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useSyncObservations.ts(39,45): error TS7006: Parameter 'storeState' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useSyncObservations.ts(47,5): error TS2345: Argument of type '(params: object, optsWithAuth: object) => any' is not assignable to parameter of type 'MutationFunction<unknown>'. Types of parameters 'params' and 'params' are incompatible. Type 'unknown' is not assignable to type 'object'.
+src/components/MyObservations/hooks/useSyncObservations.ts(5,41): error TS7016: Could not find a declaration file for module 'api/observations'. 'src/api/observations.js' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useSyncObservations.ts(65,31): error TS2345: Argument of type 'string' is not assignable to parameter of type 'SetStateAction<null>'.
+src/components/MyObservations/hooks/useSyncObservations.ts(77,51): error TS2345: Argument of type '{ uuid: string; }' is not assignable to parameter of type 'void'.
+src/components/MyObservations/hooks/useSyncObservations.ts(8,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. 'src/realmModels/Observation.js' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useUploadObservations.ts(122,91): error TS2345: Argument of type '(key: string, options?: {}) => string' is not assignable to parameter of type 'TFunction<"translation", undefined>'. Property '$TFunctionBrand' is missing in type '(key: string, options?: {}) => string' but required in type 'TFunction<"translation", undefined>'.
+src/components/MyObservations/hooks/useUploadObservations.ts(137,34): error TS2769: No overload matches this call. Overload 1 of 2, '(...args: never): void', gave the following error. Argument of type 'string' is not assignable to parameter of type 'never'. Overload 2 of 2, '(options: never): void', gave the following error. Argument of type 'string' is not assignable to parameter of type 'never'.
+src/components/MyObservations/hooks/useUploadObservations.ts(17,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useUploadObservations.ts(34,36): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useUploadObservations.ts(35,37): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useUploadObservations.ts(36,35): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useUploadObservations.ts(38,5): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useUploadObservations.ts(40,43): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useUploadObservations.ts(41,50): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useUploadObservations.ts(42,38): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useUploadObservations.ts(43,47): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useUploadObservations.ts(44,33): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useUploadObservations.ts(45,34): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useUploadObservations.ts(46,50): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useUploadObservations.ts(47,47): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useUploadObservations.ts(48,38): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useUploadObservations.ts(49,48): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useUploadObservations.ts(50,49): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useUploadObservations.ts(51,38): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useUploadObservations.ts(52,51): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useUploadObservations.ts(53,36): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useUploadObservations.ts(56,59): error TS7006: Parameter 'o' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useUploadObservations.ts(57,37): error TS7006: Parameter 'storeState' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useUploadObservations.ts(7,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. 'src/realmModels/Observation.js' implicitly has an 'any' type.
 src/components/NetworkService.ts(1,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
 src/components/Notifications/Notifications.tsx(46,11): error TS2322: Type 'User | null' is not assignable to type 'RealmUser | null'. Property 'id' is missing in type 'RealmObject<DefaultObject, never>' but required in type 'RealmUser'.
 src/components/Notifications/Notifications.tsx(53,11): error TS2322: Type 'User | null' is not assignable to type 'RealmUser | null'.
@@ -757,6 +739,23 @@ src/components/ProjectList/ProjectListContainer.tsx(15,21): error TS2339: Proper
 src/components/ProjectList/ProjectListItem.tsx(39,30): error TS7006: Parameter 'icon' implicitly has an 'any' type.
 src/components/ProjectList/ProjectListItem.tsx(67,9): error TS2322: Type '{ className: string; source: { url: any; cachePolicy: "discWithCacheControl"; resizeMode: "cover"; }; testID: string; accessibilityIgnoresInvertColors: true; }' is not assignable to type 'IntrinsicAttributes & FasterImageProps & { className?: string | undefined; tw?: string | undefined; baseClassName?: string | undefined; baseTw?: string | undefined; } & RefAttributes<...>'. Property 'testID' does not exist on type 'IntrinsicAttributes & FasterImageProps & { className?: string | undefined; tw?: string | undefined; baseClassName?: string | undefined; baseTw?: string | undefined; } & RefAttributes<...>'.
 src/components/ProjectList/ProjectListItem.tsx(84,35): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'. Type 'undefined' is not assignable to type 'string'.
+src/components/Projects/Projects.tsx(146,9): error TS2322: Type '() => React.JSX.Element | null' is not assignable to type 'ReactElement<any, any>'.
+src/components/Projects/Projects.tsx(147,29): error TS2322: Type '() => React.JSX.Element' is not assignable to type 'ReactElement<any, any>'.
+src/components/Projects/ProjectsContainer.tsx(25,33): error TS2339: Property 'id' does not exist on type 'User'.
+src/components/Projects/ProjectsContainer.tsx(36,15): error TS2339: Property 'q' does not exist on type '{}'.
+src/components/Projects/ProjectsContainer.tsx(38,15): error TS2339: Property 'member_id' does not exist on type '{}'.
+src/components/Projects/ProjectsContainer.tsx(40,15): error TS2339: Property 'featured' does not exist on type '{}'.
+src/components/Projects/ProjectsContainer.tsx(44,15): error TS2339: Property 'lat' does not exist on type '{}'.
+src/components/Projects/ProjectsContainer.tsx(44,34): error TS2339: Property 'latitude' does not exist on type 'never'.
+src/components/Projects/ProjectsContainer.tsx(45,15): error TS2339: Property 'lng' does not exist on type '{}'.
+src/components/Projects/ProjectsContainer.tsx(45,34): error TS2339: Property 'longitude' does not exist on type 'never'.
+src/components/Projects/ProjectsContainer.tsx(46,15): error TS2339: Property 'order_by' does not exist on type '{}'.
+src/components/Projects/ProjectsContainer.tsx(47,15): error TS2339: Property 'spam' does not exist on type '{}'.
+src/components/Projects/ProjectsContainer.tsx(52,22): error TS2345: Argument of type 'UserLocation | null' is not assignable to parameter of type 'SetStateAction<null>'.
+src/components/Projects/ProjectsContainer.tsx(56,5): error TS2339: Property 'isFetching' does not exist on type '{}'.
+src/components/Projects/ProjectsContainer.tsx(57,5): error TS2339: Property 'isFetchingNextPage' does not exist on type '{}'.
+src/components/Projects/ProjectsContainer.tsx(58,5): error TS2339: Property 'fetchNextPage' does not exist on type '{}'.
+src/components/Projects/ProjectsContainer.tsx(59,5): error TS2339: Property 'projects' does not exist on type '{}'.
 src/components/Projects/helpers/displayDates.ts(3,23): error TS7006: Parameter 'item' implicitly has an 'any' type.
 src/components/Projects/helpers/displayDates.ts(6,29): error TS7006: Parameter 'project' implicitly has an 'any' type.
 src/components/Projects/helpers/displayDates.ts(6,38): error TS7006: Parameter 't' implicitly has an 'any' type.
@@ -782,23 +781,6 @@ src/components/Projects/hooks/useInfiniteProjectsScroll.ts(62,10): error TS18046
 src/components/Projects/hooks/useInfiniteProjectsScroll.ts(62,20): error TS18046: 'b' is of type 'unknown'.
 src/components/Projects/hooks/useInfiniteProjectsScroll.ts(7,39): error TS2339: Property 'params' does not exist on type '{}'.
 src/components/Projects/hooks/useInfiniteProjectsScroll.ts(7,63): error TS2339: Property 'enabled' does not exist on type '{}'.
-src/components/Projects/Projects.tsx(146,9): error TS2322: Type '() => React.JSX.Element | null' is not assignable to type 'ReactElement<any, any>'.
-src/components/Projects/Projects.tsx(147,29): error TS2322: Type '() => React.JSX.Element' is not assignable to type 'ReactElement<any, any>'.
-src/components/Projects/ProjectsContainer.tsx(25,33): error TS2339: Property 'id' does not exist on type 'User'.
-src/components/Projects/ProjectsContainer.tsx(36,15): error TS2339: Property 'q' does not exist on type '{}'.
-src/components/Projects/ProjectsContainer.tsx(38,15): error TS2339: Property 'member_id' does not exist on type '{}'.
-src/components/Projects/ProjectsContainer.tsx(40,15): error TS2339: Property 'featured' does not exist on type '{}'.
-src/components/Projects/ProjectsContainer.tsx(44,15): error TS2339: Property 'lat' does not exist on type '{}'.
-src/components/Projects/ProjectsContainer.tsx(44,34): error TS2339: Property 'latitude' does not exist on type 'never'.
-src/components/Projects/ProjectsContainer.tsx(45,15): error TS2339: Property 'lng' does not exist on type '{}'.
-src/components/Projects/ProjectsContainer.tsx(45,34): error TS2339: Property 'longitude' does not exist on type 'never'.
-src/components/Projects/ProjectsContainer.tsx(46,15): error TS2339: Property 'order_by' does not exist on type '{}'.
-src/components/Projects/ProjectsContainer.tsx(47,15): error TS2339: Property 'spam' does not exist on type '{}'.
-src/components/Projects/ProjectsContainer.tsx(52,22): error TS2345: Argument of type 'UserLocation | null' is not assignable to parameter of type 'SetStateAction<null>'.
-src/components/Projects/ProjectsContainer.tsx(56,5): error TS2339: Property 'isFetching' does not exist on type '{}'.
-src/components/Projects/ProjectsContainer.tsx(57,5): error TS2339: Property 'isFetchingNextPage' does not exist on type '{}'.
-src/components/Projects/ProjectsContainer.tsx(58,5): error TS2339: Property 'fetchNextPage' does not exist on type '{}'.
-src/components/Projects/ProjectsContainer.tsx(59,5): error TS2339: Property 'projects' does not exist on type '{}'.
 src/components/Settings/AdvancedSettings.tsx(24,36): error TS7006: Parameter 'description' implicitly has an 'any' type.
 src/components/Settings/AdvancedSettings.tsx(32,10): error TS2741: Property 'value' is missing in type '{ classNames: string; testID: string; smallLabel: true; checked: any; onPress: () => any; label: string; }' but required in type 'Props'.
 src/components/Settings/AdvancedSettings.tsx(40,10): error TS2741: Property 'value' is missing in type '{ classNames: string; smallLabel: true; checked: boolean; onPress: () => any; label: string; }' but required in type 'Props'.
@@ -857,24 +839,16 @@ src/components/SharedComponents/FlashList/CustomRefreshControl.tsx(5,3): error T
 src/components/SharedComponents/FlashList/CustomRefreshControl.tsx(6,3): error TS7031: Binding element 'refreshing' implicitly has an 'any' type.
 src/components/SharedComponents/FlashList/CustomRefreshControl.tsx(7,3): error TS7031: Binding element 'onRefresh' implicitly has an 'any' type.
 src/components/SharedComponents/FloatingActionBar.tsx(6,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
+src/components/SharedComponents/INatIcon/INatIcon.ts(9,3): error TS2339: Property 'Button' does not exist on type 'FunctionComponent<TextProps & { name: "map" | "apple" | "label" | "stop" | "share" | "rotate" | "triangle-exclamation" | "triangle-down" | "trash" | "trash-outline" | "star" | "star-bold-outline" | ... 108 more ... | "add-comment-outline"; size?: number | undefined; color?: ColorValue | undefined; innerRef?: Ref<......'.
+src/components/SharedComponents/INatIcon/index.tsx(114,7): error TS2322: Type 'string' is not assignable to type '"map" | "apple" | "label" | "stop" | "share" | "rotate" | "triangle-exclamation" | "triangle-down" | "trash" | "trash-outline" | "star" | "star-bold-outline" | "sparkly-label" | ... 107 more ... | "add-comment-outline"'.
 src/components/SharedComponents/IconicTaxonChooser.tsx(4,15): error TS2305: Module '"react"' has no exported member 'Node'.
 src/components/SharedComponents/IconicTaxonChooser.tsx(50,45): error TS7031: Binding element 'iconicTaxonName' implicitly has an 'any' type.
 src/components/SharedComponents/IconicTaxonChooser.tsx(74,11): error TS2322: Type 'string | false' is not assignable to type 'string | undefined'. Type 'boolean' is not assignable to type 'string'.
-src/components/SharedComponents/INatIcon/INatIcon.ts(9,3): error TS2339: Property 'Button' does not exist on type 'FunctionComponent<TextProps & { name: "map" | "apple" | "label" | "stop" | "share" | "rotate" | "triangle-exclamation" | "triangle-down" | "trash" | "trash-outline" | "star" | "star-bold-outline" | ... 108 more ... | "add-comment-outline"; size?: number | undefined; color?: ColorValue | undefined; innerRef?: Ref<......'.
-src/components/SharedComponents/INatIcon/index.tsx(114,7): error TS2322: Type 'string' is not assignable to type '"map" | "apple" | "label" | "stop" | "share" | "rotate" | "triangle-exclamation" | "triangle-down" | "trash" | "trash-outline" | "star" | "star-bold-outline" | "sparkly-label" | ... 107 more ... | "add-comment-outline"'.
-src/components/SharedComponents/index.ts(34,39): error TS7016: Could not find a declaration file for module './InlineUser/HeaderUser'. 'src/components/SharedComponents/InlineUser/HeaderUser.js' implicitly has an 'any' type.
-src/components/SharedComponents/index.ts(35,39): error TS7016: Could not find a declaration file for module './InlineUser/InlineUser'. 'src/components/SharedComponents/InlineUser/InlineUser.js' implicitly has an 'any' type.
-src/components/SharedComponents/index.ts(40,39): error TS7016: Could not find a declaration file for module './Map/DetailsMap'. 'src/components/SharedComponents/Map/DetailsMap.js' implicitly has an 'any' type.
-src/components/SharedComponents/index.ts(49,43): error TS7016: Could not find a declaration file for module './OverviewCounts'. 'src/components/SharedComponents/OverviewCounts.js' implicitly has an 'any' type.
-src/components/SharedComponents/index.ts(55,55): error TS7016: Could not find a declaration file for module './ScrollableWithStickyHeader'. 'src/components/SharedComponents/ScrollableWithStickyHeader.js' implicitly has an 'any' type.
-src/components/SharedComponents/index.ts(60,40): error TS7016: Could not find a declaration file for module './Sheets/PickerSheet'. 'src/components/SharedComponents/Sheets/PickerSheet.js' implicitly has an 'any' type.
-src/components/SharedComponents/index.ts(62,43): error TS7016: Could not find a declaration file for module './Sheets/TextInputSheet'. 'src/components/SharedComponents/Sheets/TextInputSheet.js' implicitly has an 'any' type.
 src/components/SharedComponents/InlineUser/InlineUserBase.tsx(38,51): error TS2339: Property 'id' does not exist on type 'User'.
 src/components/SharedComponents/InlineUser/InlineUserBase.tsx(67,30): error TS2345: Argument of type 'string' is not assignable to parameter of type 'never'.
 src/components/SharedComponents/KeyboardDismissableView.tsx(5,37): error TS7031: Binding element 'children' implicitly has an 'any' type.
 src/components/SharedComponents/LocationPermissionGate.tsx(25,4): error TS2786: 'PermissionGateContainer' cannot be used as a JSX component. Its return type 'string | number | bigint | true | Element | Iterable<ReactNode> | Promise<AwaitedReactNode> | null' is not a valid JSX element. Type 'string' is not assignable to type 'ReactElement<any, any>'.
 src/components/SharedComponents/Map/CurrentLocationButton.tsx(5,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
-src/components/SharedComponents/Map/helpers/mapHelpers.ts(117,29): error TS2339: Property 'uuid' does not exist on type '{}'.
 src/components/SharedComponents/Map/Map.tsx(138,7): error TS7034: Variable 'defaultInitialRegion' implicitly has type 'any' in some locations where its type cannot be determined.
 src/components/SharedComponents/Map/Map.tsx(17,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. 'src/realmModels/Observation.js' implicitly has an 'any' type.
 src/components/SharedComponents/Map/Map.tsx(191,22): error TS2345: Argument of type '{ latitude: number; longitude: number; }' is not assignable to parameter of type 'Region'. Type '{ latitude: number; longitude: number; }' is missing the following properties from type '{ latitudeDelta: number; longitudeDelta: number; }': latitudeDelta, longitudeDelta
@@ -897,8 +871,10 @@ src/components/SharedComponents/Map/Map.tsx(586,9): error TS2322: Type '() => Re
 src/components/SharedComponents/Map/Map.tsx(591,8): error TS2786: 'SwitchMapTypeButton' cannot be used as a JSX component. Its return type 'false | Element | undefined' is not a valid JSX element. Type 'undefined' is not assignable to type 'Element | null'.
 src/components/SharedComponents/Map/SwitchMapTypeButton.tsx(7,32): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/components/SharedComponents/Map/SwitchMapTypeButton.tsx(8,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
+src/components/SharedComponents/Map/helpers/mapHelpers.ts(117,29): error TS2339: Property 'uuid' does not exist on type '{}'.
 src/components/SharedComponents/Modal.tsx(69,7): error TS2322: Type 'string' is not assignable to type 'Animation | CustomAnimation<TextStyle & ViewStyle & ImageStyle> | undefined'.
 src/components/SharedComponents/Modal.tsx(70,7): error TS2322: Type 'string' is not assignable to type 'Animation | CustomAnimation<TextStyle & ViewStyle & ImageStyle> | undefined'.
+src/components/SharedComponents/ObsStatus.tsx(2,36): error TS7016: Could not find a declaration file for module 'components/ObsDetails/helpers/checkCamelAndSnakeCase'. 'src/components/ObsDetails/helpers/checkCamelAndSnakeCase.js' implicitly has an 'any' type.
 src/components/SharedComponents/ObservationLocation.tsx(2,36): error TS7016: Could not find a declaration file for module 'components/ObsDetails/helpers/checkCamelAndSnakeCase'. 'src/components/ObsDetails/helpers/checkCamelAndSnakeCase.js' implicitly has an 'any' type.
 src/components/SharedComponents/ObservationLocation.tsx(25,35): error TS2339: Property 'geoprivacy' does not exist on type 'object'.
 src/components/SharedComponents/ObservationLocation.tsx(26,40): error TS2339: Property 'taxon_geoprivacy' does not exist on type 'object'.
@@ -911,7 +887,6 @@ src/components/SharedComponents/ObservationLocation.tsx(55,31): error TS2339: Pr
 src/components/SharedComponents/ObservationLocation.tsx(56,32): error TS2339: Property 'privateLongitude' does not exist on type 'object'.
 src/components/SharedComponents/ObservationLocation.tsx(61,29): error TS2339: Property 'latitude' does not exist on type 'object'.
 src/components/SharedComponents/ObservationLocation.tsx(62,30): error TS2339: Property 'longitude' does not exist on type 'object'.
-src/components/SharedComponents/ObsStatus.tsx(2,36): error TS7016: Could not find a declaration file for module 'components/ObsDetails/helpers/checkCamelAndSnakeCase'. 'src/components/ObsDetails/helpers/checkCamelAndSnakeCase.js' implicitly has an 'any' type.
 src/components/SharedComponents/OfflineNotice.tsx(34,9): error TS2322: Type '{ name: string; size: number; "aria-hidden": true; accessibilityElementsHidden: true; importantForAccessibility: string; color: string | undefined; }' is not assignable to type 'IntrinsicAttributes & Props'. Property 'accessibilityElementsHidden' does not exist on type 'IntrinsicAttributes & Props'.
 src/components/SharedComponents/PerformanceDebugView.tsx(39,38): error TS2339: Property 'lastFetchItemCount' does not exist on type '{ listReadyTime: number; itemsVisibleTime: number; scrollEvents: number; avgScrollDuration: number; avgFetchTime: number; lastFetchTime: number | null; }'.
 src/components/SharedComponents/PerformanceDebugView.tsx(40,39): error TS2339: Property 'totalItemsDisplayed' does not exist on type '{ listReadyTime: number; itemsVisibleTime: number; scrollEvents: number; avgScrollDuration: number; avgFetchTime: number; lastFetchTime: number | null; }'.
@@ -961,16 +936,15 @@ src/components/SharedComponents/UploadStatus/UploadProgressIcon.tsx(42,9): error
 src/components/SharedComponents/UploadStatus/UploadStatus.tsx(4,36): error TS2724: '"react"' has no exported member named 'ReactComponent'. Did you mean 'PureComponent'?
 src/components/SharedComponents/UploadStatus/UploadStatus.tsx(8,31): error TS7016: Could not find a declaration file for module './FadeOutFadeInIcon'. 'src/components/SharedComponents/UploadStatus/FadeOutFadeInIcon.js' implicitly has an 'any' type.
 src/components/SharedComponents/UserText.tsx(159,22): error TS2339: Property 'push' does not exist on type 'Omit<NavigationProp<RootParamList>, "getState"> & { getState(): Readonly<{ key: string; index: number; routeNames: string[]; history?: unknown[] | undefined; routes: NavigationRoute<...>[]; type: string; stale: false; }> | undefined; }'.
+src/components/SharedComponents/index.ts(34,39): error TS7016: Could not find a declaration file for module './InlineUser/HeaderUser'. 'src/components/SharedComponents/InlineUser/HeaderUser.js' implicitly has an 'any' type.
+src/components/SharedComponents/index.ts(35,39): error TS7016: Could not find a declaration file for module './InlineUser/InlineUser'. 'src/components/SharedComponents/InlineUser/InlineUser.js' implicitly has an 'any' type.
+src/components/SharedComponents/index.ts(40,39): error TS7016: Could not find a declaration file for module './Map/DetailsMap'. 'src/components/SharedComponents/Map/DetailsMap.js' implicitly has an 'any' type.
+src/components/SharedComponents/index.ts(49,43): error TS7016: Could not find a declaration file for module './OverviewCounts'. 'src/components/SharedComponents/OverviewCounts.js' implicitly has an 'any' type.
+src/components/SharedComponents/index.ts(55,55): error TS7016: Could not find a declaration file for module './ScrollableWithStickyHeader'. 'src/components/SharedComponents/ScrollableWithStickyHeader.js' implicitly has an 'any' type.
+src/components/SharedComponents/index.ts(60,40): error TS7016: Could not find a declaration file for module './Sheets/PickerSheet'. 'src/components/SharedComponents/Sheets/PickerSheet.js' implicitly has an 'any' type.
+src/components/SharedComponents/index.ts(62,43): error TS7016: Could not find a declaration file for module './Sheets/TextInputSheet'. 'src/components/SharedComponents/Sheets/TextInputSheet.js' implicitly has an 'any' type.
 src/components/StartupService.tsx(13,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
 src/components/StartupService.tsx(20,32): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
-src/components/Suggestions/hooks/useNavigateWithTaxonSelected.ts(17,11): error TS2339: Property 'entryScreen' does not exist on type '{}'.
-src/components/Suggestions/hooks/useNavigateWithTaxonSelected.ts(17,24): error TS2339: Property 'lastScreen' does not exist on type '{}'.
-src/components/Suggestions/hooks/useNavigateWithTaxonSelected.ts(18,40): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/Suggestions/hooks/useNavigateWithTaxonSelected.ts(19,43): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/Suggestions/hooks/useNavigateWithTaxonSelected.ts(3,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
-src/components/Suggestions/hooks/useNavigateWithTaxonSelected.ts(46,40): error TS2339: Property 'id' does not exist on type 'object'.
-src/components/Suggestions/hooks/useNavigateWithTaxonSelected.ts(54,28): error TS2769: No overload matches this call. Overload 1 of 2, '(...args: never): void', gave the following error. Argument of type 'string' is not assignable to parameter of type 'never'. Overload 2 of 2, '(options: never): void', gave the following error. Argument of type 'string' is not assignable to parameter of type 'never'.
-src/components/Suggestions/hooks/useNavigateWithTaxonSelected.ts(56,28): error TS2345: Argument of type 'string' is not assignable to parameter of type 'never'.
 src/components/Suggestions/ObsPhotoSelectionList.tsx(20,40): error TS7031: Binding element 'item' implicitly has an 'any' type.
 src/components/Suggestions/SuggestionsContainer.tsx(14,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
 src/components/Suggestions/SuggestionsContainer.tsx(145,40): error TS7006: Parameter 'state' implicitly has an 'any' type.
@@ -1009,11 +983,19 @@ src/components/Suggestions/SuggestionsTaxonSearch.tsx(44,7): error TS2322: Type 
 src/components/Suggestions/TaxonSearchButton.tsx(14,11): error TS2339: Property 'entryScreen' does not exist on type 'Readonly<object | undefined>'.
 src/components/Suggestions/TaxonSearchButton.tsx(14,24): error TS2339: Property 'lastScreen' does not exist on type 'Readonly<object | undefined>'.
 src/components/Suggestions/TaxonSearchButton.tsx(21,11): error TS2345: Argument of type 'string' is not assignable to parameter of type 'never'.
+src/components/Suggestions/hooks/useNavigateWithTaxonSelected.ts(17,11): error TS2339: Property 'entryScreen' does not exist on type '{}'.
+src/components/Suggestions/hooks/useNavigateWithTaxonSelected.ts(17,24): error TS2339: Property 'lastScreen' does not exist on type '{}'.
+src/components/Suggestions/hooks/useNavigateWithTaxonSelected.ts(18,40): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/Suggestions/hooks/useNavigateWithTaxonSelected.ts(19,43): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/components/Suggestions/hooks/useNavigateWithTaxonSelected.ts(3,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
+src/components/Suggestions/hooks/useNavigateWithTaxonSelected.ts(46,40): error TS2339: Property 'id' does not exist on type 'object'.
+src/components/Suggestions/hooks/useNavigateWithTaxonSelected.ts(54,28): error TS2769: No overload matches this call. Overload 1 of 2, '(...args: never): void', gave the following error. Argument of type 'string' is not assignable to parameter of type 'never'. Overload 2 of 2, '(options: never): void', gave the following error. Argument of type 'string' is not assignable to parameter of type 'never'.
+src/components/Suggestions/hooks/useNavigateWithTaxonSelected.ts(56,28): error TS2345: Argument of type 'string' is not assignable to parameter of type 'never'.
 src/components/TaxonDetails/EstablishmentMeans.tsx(27,58): error TS2339: Property 'establishment_means' does not exist on type '{ place?: { display_name?: string | undefined; } | undefined; }'.
 src/components/TaxonDetails/EstablishmentMeans.tsx(30,23): error TS18048: 'taxon.establishment_means.place' is possibly 'undefined'.
 src/components/TaxonDetails/EstablishmentMeans.tsx(46,39): error TS2339: Property 'listed_taxa' does not exist on type '{ establishment_means?: { place?: { display_name?: string | undefined; } | undefined; } | undefined; }'.
-src/components/TaxonDetails/EstablishmentMeans.tsx(47,23): error TS18048: 'taxon.establishment_means.place' is possibly 'undefined'.
 src/components/TaxonDetails/EstablishmentMeans.tsx(47,23): error TS18048: 'taxon.establishment_means' is possibly 'undefined'.
+src/components/TaxonDetails/EstablishmentMeans.tsx(47,23): error TS18048: 'taxon.establishment_means.place' is possibly 'undefined'.
 src/components/TaxonDetails/EstablishmentMeans.tsx(47,55): error TS2339: Property 'id' does not exist on type '{ display_name?: string | undefined; }'.
 src/components/TaxonDetails/EstablishmentMeans.tsx(55,17): error TS18048: 'taxon.establishment_means' is possibly 'undefined'.
 src/components/TaxonDetails/EstablishmentMeans.tsx(55,43): error TS2339: Property 'id' does not exist on type '{ place?: { display_name?: string | undefined; } | undefined; }'.
@@ -1084,6 +1066,24 @@ src/components/UserProfile/FollowingList.tsx(5,28): error TS7016: Could not find
 src/components/UserProfile/UnfollowSheet.tsx(1,37): error TS7016: Could not find a declaration file for module 'api/relationships'. 'src/api/relationships.js' implicitly has an 'any' type.
 src/components/UserProfile/UnfollowSheet.tsx(26,67): error TS2345: Argument of type '{ id: number; relationship: { following: boolean; }; }' is not assignable to parameter of type 'void'.
 src/components/UserProfile/UnfollowSheet.tsx(42,6): error TS2741: Property 'loading' is missing in type '{ onPressClose: () => void; secondButtonText: string; buttonType: string; headerText: string; buttonText: string; handleSecondButtonPress: () => void; confirm: () => void; }' but required in type 'Props'.
+src/components/hooks/useTaxonCommonNames.ts(1,36): error TS7016: Could not find a declaration file for module 'api/observations'. 'src/api/observations.js' implicitly has an 'any' type.
+src/components/hooks/useTaxonCommonNames.ts(38,22): error TS2339: Property 'latitude' does not exist on type 'never'.
+src/components/hooks/useTaxonCommonNames.ts(39,12): error TS2339: Property 'lat' does not exist on type '{ per_page: number; fields: { taxon: { iconic_taxon_name: boolean; id: boolean; preferred_common_name: boolean; name: boolean; }; }; }'.
+src/components/hooks/useTaxonCommonNames.ts(39,31): error TS2339: Property 'latitude' does not exist on type 'never'.
+src/components/hooks/useTaxonCommonNames.ts(4,19): error TS7016: Could not find a declaration file for module 'realmModels/Taxon'. 'src/realmModels/Taxon.js' implicitly has an 'any' type.
+src/components/hooks/useTaxonCommonNames.ts(40,12): error TS2339: Property 'lng' does not exist on type '{ per_page: number; fields: { taxon: { iconic_taxon_name: boolean; id: boolean; preferred_common_name: boolean; name: boolean; }; }; }'.
+src/components/hooks/useTaxonCommonNames.ts(40,31): error TS2339: Property 'longitude' does not exist on type 'never'.
+src/components/hooks/useTaxonCommonNames.ts(45,28): error TS2322: Type 'null' is not assignable to type 'string'.
+src/components/hooks/useTaxonCommonNames.ts(58,24): error TS2345: Argument of type 'UserLocation | null' is not assignable to parameter of type 'SetStateAction<null>'. Type 'UserLocation' is not assignable to type 'SetStateAction<null>'. Type 'UserLocation' provides no match for the signature '(prevState: null): null'.
+src/components/hooks/useTaxonCommonNames.ts(66,16): error TS2339: Property 'results' does not exist on type '{}'.
+src/components/hooks/useTaxonCommonNames.ts(67,12): error TS2339: Property 'results' does not exist on type '{}'.
+src/components/hooks/useTaxonCommonNames.ts(67,33): error TS7031: Binding element 'taxon' implicitly has an 'any' type.
+src/components/hooks/useTaxonCommonNames.ts(91,13): error TS2769: No overload matches this call. Overload 1 of 2, '(type: string, values: Partial<DefaultObject> | Partial<Unmanaged<DefaultObject>>, mode?: boolean | UpdateMode | undefined): RealmObject<...> & DefaultObject', gave the following error. Argument of type '"modified"' is not assignable to parameter of type 'boolean | UpdateMode | undefined'. Overload 2 of 2, '(type: Constructor<AnyRealmObject>, values: Partial<AnyRealmObject> | Partial<Unmanaged<AnyRealmObject>>, mode?: boolean | ... 1 more ... | undefined): AnyRealmObject', gave the following error. Argument of type 'string' is not assignable to parameter of type 'Constructor<AnyRealmObject>'.
+src/components/hooks/useWorkQueue.ts(1,42): error TS7016: Could not find a declaration file for module 'api/users'. 'src/api/users.js' implicitly has an 'any' type.
+src/components/hooks/useWorkQueue.ts(27,7): error TS2345: Argument of type '{ onSuccess: () => Promise<void>; onError: (userUpdateError: any) => void; }' is not assignable to parameter of type 'MutationOptions'. Object literal may only specify known properties, and 'onSuccess' does not exist in type 'MutationOptions'.
+src/components/hooks/useWorkQueue.ts(50,11): error TS2769: No overload matches this call. Overload 1 of 2, '(type: string, values: Partial<DefaultObject> | Partial<Unmanaged<DefaultObject>>, mode?: boolean | UpdateMode | undefined): RealmObject<...> & DefaultObject', gave the following error. Argument of type '"modified"' is not assignable to parameter of type 'boolean | UpdateMode | undefined'. Overload 2 of 2, '(type: Constructor<AnyRealmObject>, values: Partial<AnyRealmObject> | Partial<Unmanaged<AnyRealmObject>>, mode?: boolean | ... 1 more ... | undefined): AnyRealmObject', gave the following error. Argument of type 'string' is not assignable to parameter of type 'Constructor<AnyRealmObject>'.
+src/components/hooks/useWorkQueue.ts(56,16): error TS7006: Parameter 'userUpdateError' implicitly has an 'any' type.
+src/components/hooks/useWorkQueue.ts(6,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
 src/navigation/BottomTabNavigator/CustomTabBarContainer.tsx(12,26): error TS7016: Could not find a declaration file for module './CustomTabBar'. 'src/navigation/BottomTabNavigator/CustomTabBar.js' implicitly has an 'any' type.
 src/navigation/BottomTabNavigator/CustomTabBarContainer.tsx(44,49): error TS2345: Argument of type 'User | null' is not assignable to parameter of type 'RealmUser | ApiUser | undefined'. Type 'null' is not assignable to type 'RealmUser | ApiUser | undefined'.
 src/navigation/BottomTabNavigator/CustomTabBarContainer.tsx(65,20): error TS2339: Property 'openDrawer' does not exist on type 'NavigationHelpers<ParamListBase, BottomTabNavigationEventMap>'.
@@ -1163,14 +1163,6 @@ src/providers/ExploreContext.tsx(674,12): error TS7053: Element implicitly has a
 src/providers/ExploreContext.tsx(674,34): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'State'. No index signature with a parameter of type 'string' was found on type 'State'.
 src/providers/ExploreContext.tsx(679,12): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'State'. No index signature with a parameter of type 'string' was found on type 'State'.
 src/providers/ExploreContext.tsx(679,27): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ user_id: undefined; project_id: undefined; researchGrade: boolean; needsID: boolean; casual: boolean; hrank: null; lrank: null; dateObserved: DATE_OBSERVED; dateUploaded: DATE_UPLOADED; ... 4 more ...; photoLicense: PHOTO_LICENSE; }'. No index signature with a parameter of type 'string' was found on type '{ user_id: undefined; project_id: undefined; researchGrade: boolean; needsID: boolean; casual: boolean; hrank: null; lrank: null; dateObserved: DATE_OBSERVED; dateUploaded: DATE_UPLOADED; ... 4 more ...; photoLicense: PHOTO_LICENSE; }'.
-src/realmModels/index.ts(10,30): error TS7016: Could not find a declaration file for module './ObservationSound'. 'src/realmModels/ObservationSound.js' implicitly has an 'any' type.
-src/realmModels/index.ts(13,19): error TS7016: Could not find a declaration file for module './Sound'. 'src/realmModels/Sound.js' implicitly has an 'any' type.
-src/realmModels/index.ts(14,19): error TS7016: Could not find a declaration file for module './Taxon'. 'src/realmModels/Taxon.js' implicitly has an 'any' type.
-src/realmModels/index.ts(4,25): error TS7016: Could not find a declaration file for module './Application'. 'src/realmModels/Application.js' implicitly has an 'any' type.
-src/realmModels/index.ts(5,21): error TS7016: Could not find a declaration file for module './Comment'. 'src/realmModels/Comment.js' implicitly has an 'any' type.
-src/realmModels/index.ts(57,9): error TS18046: 'newObservation.updateNeedsSync' is of type 'unknown'.
-src/realmModels/index.ts(7,28): error TS7016: Could not find a declaration file for module './Identification'. 'src/realmModels/Identification.js' implicitly has an 'any' type.
-src/realmModels/index.ts(8,25): error TS7016: Could not find a declaration file for module './Observation'. 'src/realmModels/Observation.js' implicitly has an 'any' type.
 src/realmModels/ObservationPhoto.ts(116,22): error TS2339: Property 'image' does not exist on type 'string | { image: { uri: string; }; }'. Property 'image' does not exist on type 'string'.
 src/realmModels/ObservationPhoto.ts(24,51): error TS2532: Object is possibly 'undefined'.
 src/realmModels/ObservationPhoto.ts(35,35): error TS2345: Argument of type 'ApiPhoto | undefined' is not assignable to parameter of type 'ApiPhoto'. Type 'undefined' is not assignable to type 'ApiPhoto'.
@@ -1184,6 +1176,14 @@ src/realmModels/QueueItem.ts(49,37): error TS7006: Parameter 'id' implicitly has
 src/realmModels/QueueItem.ts(7,19): error TS7006: Parameter 'realm' implicitly has an 'any' type.
 src/realmModels/QueueItem.ts(7,26): error TS7006: Parameter 'payload' implicitly has an 'any' type.
 src/realmModels/QueueItem.ts(7,35): error TS7006: Parameter 'type' implicitly has an 'any' type.
+src/realmModels/index.ts(10,30): error TS7016: Could not find a declaration file for module './ObservationSound'. 'src/realmModels/ObservationSound.js' implicitly has an 'any' type.
+src/realmModels/index.ts(13,19): error TS7016: Could not find a declaration file for module './Sound'. 'src/realmModels/Sound.js' implicitly has an 'any' type.
+src/realmModels/index.ts(14,19): error TS7016: Could not find a declaration file for module './Taxon'. 'src/realmModels/Taxon.js' implicitly has an 'any' type.
+src/realmModels/index.ts(4,25): error TS7016: Could not find a declaration file for module './Application'. 'src/realmModels/Application.js' implicitly has an 'any' type.
+src/realmModels/index.ts(5,21): error TS7016: Could not find a declaration file for module './Comment'. 'src/realmModels/Comment.js' implicitly has an 'any' type.
+src/realmModels/index.ts(57,9): error TS18046: 'newObservation.updateNeedsSync' is of type 'unknown'.
+src/realmModels/index.ts(7,28): error TS7016: Could not find a declaration file for module './Identification'. 'src/realmModels/Identification.js' implicitly has an 'any' type.
+src/realmModels/index.ts(8,25): error TS7016: Could not find a declaration file for module './Observation'. 'src/realmModels/Observation.js' implicitly has an 'any' type.
 src/sharedHelpers/breakpoint.ts(2,21): error TS7016: Could not find a declaration file for module 'styles/tailwindScreens'. 'src/styles/tailwindScreens.js' implicitly has an 'any' type.
 src/sharedHelpers/changeLanguage.ts(2,32): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/sharedHelpers/changeLanguage.ts(4,24): error TS7006: Parameter 'newLocale' implicitly has an 'any' type.

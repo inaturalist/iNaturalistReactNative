@@ -20,7 +20,7 @@ trap 'rm -f "$TEMP_TSC_ERRORS_FILE"' EXIT
 npm run lint:tsc -- --pretty false \
   | sed "s|$(pwd)/||g" \
   | perl -p0e 's/\n\s\s+/ /g' \
-  | sort \
+  | LC_ALL=C sort \
   > "$TEMP_TSC_ERRORS_FILE" \
   || true
 
@@ -42,8 +42,8 @@ fi
 #   -1 suppresses lines unique to the first file
 #   -2 suppresses lines unique to the second file
 #   -3 suppresses lines common to both files
-NEW_ERRORS=$(comm -13 "$TSC_ERRORS_FILE" "$TEMP_TSC_ERRORS_FILE")
-REMOVED_ERRORS=$(comm -23 "$TSC_ERRORS_FILE" "$TEMP_TSC_ERRORS_FILE")
+NEW_ERRORS=$(LC_ALL=C comm -13 "$TSC_ERRORS_FILE" "$TEMP_TSC_ERRORS_FILE")
+REMOVED_ERRORS=$(LC_ALL=C comm -23 "$TSC_ERRORS_FILE" "$TEMP_TSC_ERRORS_FILE")
 
 if [ -n "$NEW_ERRORS" ] || [ -n "$REMOVED_ERRORS" ]; then
   echo "TypeScript error baseline has changed. Please fix the errors or update the baseline by running:"
