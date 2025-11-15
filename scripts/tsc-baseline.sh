@@ -31,14 +31,6 @@ if [ "$1" = "-u" ]; then
   exit 0
 fi
 
-# If the baseline file doesn't exist, this script should fail unless it's
-# being updated.
-if [ ! -f "$TSC_ERRORS_FILE" ]; then
-  echo "TypeScript error baseline file '$TSC_ERRORS_FILE' not found."
-  echo "To create it, run: npm run lint:tsc:baseline -- -u"
-  exit 1
-fi
-
 # If the files are the same, we're good.
 if cmp -s "$TSC_ERRORS_FILE" "$TEMP_TSC_ERRORS_FILE"; then
   echo "No new TypeScript errors were introduced."
