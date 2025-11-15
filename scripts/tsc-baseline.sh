@@ -27,13 +27,6 @@ if [ "$1" = "-u" ]; then
   exit 0
 fi
 
-# If the baseline file doesn't exist, create it and exit
-if [ ! -f "$TSC_ERRORS_FILE" ]; then
-  mv "$TEMP_TSC_ERRORS_FILE" "$TSC_ERRORS_FILE"
-  echo "TypeScript error baseline created."
-  exit 0
-fi
-
 # Compare the temporary file with the baseline
 if ! diff -q "$TSC_ERRORS_FILE" "$TEMP_TSC_ERRORS_FILE" >/dev/null; then
   # Check for new errors (lines in the new file that are not in the baseline)
