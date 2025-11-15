@@ -11,8 +11,14 @@ set -e
 TSC_ERRORS_FILE="tsc-errors.txt"
 TEMP_TSC_ERRORS_FILE="tsc-errors.txt.tmp"
 
-# Run tsc, make paths relative, and save the output to a temporary file
-npm run lint:tsc -- --pretty false | sed "s|$(pwd)/||g" > "$TEMP_TSC_ERRORS_FILE" || true
+# Run tsc, make paths relative, join multi-line errors, sort, and save the
+# output to a temporary file
+npm run lint:tsc -- --pretty false \
+  | sed "s|$(pwd)/||g" \
+  | perl -p0e 's/\n\s\s+/ /g' \
+  | sort \
+  > "$TEMP_TSC_ERRORS_FILE" \
+  || true
 
 # If the -u flag is passed, update the baseline and exit
 if [ "$1" = "-u" ]; then
@@ -37,17 +43,19 @@ if ! diff -q "$TSC_ERRORS_FILE" "$TEMP_TSC_ERRORS_FILE" >/dev/null; then
     echo "New TypeScript errors were introduced. Please fix them or update the baseline by running:"
     echo "npm run lint:tsc:baseline -- -u"
     echo
-    diff --unified=0 "$TSC_ERRORS_FILE" "$TEMP_TSC_ERRORS_FILE" | tail -n +6
+    echo "$NEW_ERRORS"
     rm "$TEMP_TSC_ERRORS_FILE"
     exit 1
   else
     # If there are no new errors, but the files are different, it means errors were resolved.
+    REMOVED_ERRORS=$(grep -F -v -x -f "$TEMP_TSC_ERRORS_FILE" "$TSC_ERRORS_FILE" || true)
     echo "Good job! You've resolved some TypeScript errors. To update the baseline, run:"
     echo "npm run lint:tsc:baseline -- -u"
     echo
-    diff --unified=0 "$TSC_ERRORS_FILE" "$TEMP_TSC_ERRORS_FILE" | tail -n +6
+    echo "Resolved errors:"
+    echo "$REMOVED_ERRORS"
     rm "$TEMP_TSC_ERRORS_FILE"
-    exit 1
+    exit 0
   fi
 fi
 
