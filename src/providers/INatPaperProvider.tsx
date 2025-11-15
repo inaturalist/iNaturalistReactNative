@@ -1,7 +1,4 @@
-// @flow
-
 import { INatIcon } from "components/SharedComponents";
-import type { Node } from "react";
 import React from "react";
 import {
   MD3LightTheme as DefaultTheme,
@@ -21,17 +18,14 @@ const theme = {
     // keeping background here for react-native-paper TextInput
     background: colors.white
   }
-};
+} as const;
 
-// eslint-disable-next-line react/jsx-props-no-spreading
-const renderCustomIcon = props => <INatIcon {...props} />;
+const renderCustomIcon = (
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  ( props: React.ComponentProps<typeof INatIcon> ) => <INatIcon {...props} />
+);
 
-type Props = {
-  // $FlowIgnore
-  children: unknown
-}
-
-const INatPaperProvider = ( { children }: Props ): Node => (
+const INatPaperProvider = ( { children }: React.PropsWithChildren ) => (
   <PaperProvider
     settings={{
       icon: renderCustomIcon
