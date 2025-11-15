@@ -44,8 +44,6 @@ if ! diff -q "$TSC_ERRORS_FILE" "$TEMP_TSC_ERRORS_FILE" >/dev/null; then
     echo "npm run lint:tsc:baseline -- -u"
     echo
     echo "$NEW_ERRORS"
-    rm "$TEMP_TSC_ERRORS_FILE"
-    exit 1
   else
     # If there are no new errors, but the files are different, it means errors were resolved.
     REMOVED_ERRORS=$(grep -F -v -x -f "$TEMP_TSC_ERRORS_FILE" "$TSC_ERRORS_FILE" || true)
@@ -54,9 +52,9 @@ if ! diff -q "$TSC_ERRORS_FILE" "$TEMP_TSC_ERRORS_FILE" >/dev/null; then
     echo
     echo "Resolved errors:"
     echo "$REMOVED_ERRORS"
-    rm "$TEMP_TSC_ERRORS_FILE"
-    exit 0
   fi
+  rm "$TEMP_TSC_ERRORS_FILE"
+  exit 1
 fi
 
 rm "$TEMP_TSC_ERRORS_FILE"
