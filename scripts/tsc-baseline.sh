@@ -9,7 +9,10 @@
 set -e
 
 TSC_ERRORS_FILE="tsc-errors.txt"
-TEMP_TSC_ERRORS_FILE="tsc-errors.txt.tmp"
+TEMP_TSC_ERRORS_FILE=$(mktemp)
+
+# Ensure the temp file is removed on exit, even if the script fails
+trap 'rm -f "$TEMP_TSC_ERRORS_FILE"' EXIT
 
 # Run tsc, make paths relative, join multi-line errors, sort, and save the
 # output to a temporary file
@@ -46,9 +49,7 @@ if ! diff -q "$TSC_ERRORS_FILE" "$TEMP_TSC_ERRORS_FILE" >/dev/null; then
     echo "Resolved errors:"
     echo "$REMOVED_ERRORS"
   fi
-  rm "$TEMP_TSC_ERRORS_FILE"
   exit 1
 fi
 
-rm "$TEMP_TSC_ERRORS_FILE"
 echo "No new TypeScript errors were introduced."
