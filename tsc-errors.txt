@@ -17,7 +17,7 @@ __mocks__/@react-native-camera-roll/camera-roll.ts(8,21): error TS2708: Cannot u
 __mocks__/@react-native-camera-roll/camera-roll.ts(30,14): error TS2708: Cannot use namespace 'jest' as a value.
 __mocks__/@react-native-camera-roll/camera-roll.ts(34,9): error TS2708: Cannot use namespace 'jest' as a value.
 __mocks__/@react-native-camera-roll/camera-roll.ts(34,20): error TS7006: Parameter '_uri' implicitly has an 'any' type.
-__mocks__/@react-native-clipboard/clipboard.ts(1,15): error TS7016: Could not find a declaration file for module '@react-native-clipboard/clipboard/jest/clipboard-mock'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/node_modules/@react-native-clipboard/clipboard/jest/clipboard-mock.js' implicitly has an 'any' type.
+__mocks__/@react-native-clipboard/clipboard.ts(1,15): error TS7016: Could not find a declaration file for module '@react-native-clipboard/clipboard/jest/clipboard-mock'. 'node_modules/@react-native-clipboard/clipboard/jest/clipboard-mock.js' implicitly has an 'any' type.
   If the '@react-native-clipboard/clipboard' package actually exposes this module, try adding a new declaration (.d.ts) file containing `declare module '@react-native-clipboard/clipboard/jest/clipboard-mock';`
 __mocks__/@react-native-community/geolocation.ts(2,23): error TS2708: Cannot use namespace 'jest' as a value.
 __mocks__/@react-native-community/geolocation.ts(3,18): error TS2708: Cannot use namespace 'jest' as a value.
@@ -112,18 +112,18 @@ __mocks__/vision-camera-plugin-inatvision.ts(7,35): error TS2708: Cannot use nam
 __mocks__/vision-camera-plugin-inatvision.ts(8,32): error TS2708: Cannot use namespace 'jest' as a value.
 __mocks__/vision-camera-plugin-inatvision.ts(8,41): error TS7006: Parameter 'location' implicitly has an 'any' type.
 __mocks__/zustand.ts(7,5): error TS2708: Cannot use namespace 'jest' as a value.
-src/api/computerVision.ts(2,19): error TS7016: Could not find a declaration file for module 'realmModels/Taxon'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Taxon.js' implicitly has an 'any' type.
-src/api/error.ts(1,21): error TS7016: Could not find a declaration file for module '../../react-native-logs.config'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/react-native-logs.config.js' implicitly has an 'any' type.
+src/api/computerVision.ts(2,19): error TS7016: Could not find a declaration file for module 'realmModels/Taxon'. 'src/realmModels/Taxon.js' implicitly has an 'any' type.
+src/api/error.ts(1,21): error TS7016: Could not find a declaration file for module '../../react-native-logs.config'. 'react-native-logs.config.js' implicitly has an 'any' type.
 src/api/log.ts(27,30): error TS2314: Generic type 'transportFunctionType' requires 1 type argument(s).
 src/api/log.ts(27,60): error TS7006: Parameter 'props' implicitly has an 'any' type.
 src/components/About.tsx(30,26): error TS2345: Argument of type 'string' is not assignable to parameter of type 'never'.
 src/components/About.tsx(39,26): error TS2345: Argument of type 'string' is not assignable to parameter of type 'never'.
 src/components/About.tsx(48,26): error TS2345: Argument of type 'string' is not assignable to parameter of type 'never'.
-src/components/AddObsModal/AddObsModal.tsx(10,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Observation.js' implicitly has an 'any' type.
-src/components/AddObsModal/AddObsModal.tsx(12,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
+src/components/AddObsModal/AddObsModal.tsx(10,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. 'src/realmModels/Observation.js' implicitly has an 'any' type.
+src/components/AddObsModal/AddObsModal.tsx(12,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/components/AddObsModal/AddObsModal.tsx(51,36): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/AddObsModal/AddObsModalHelp.tsx(11,25): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
-src/components/Camera/AICamera/AICameraButtons.tsx(16,27): error TS7016: Could not find a declaration file for module './AIDebugButton'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/Camera/AICamera/AIDebugButton.js' implicitly has an 'any' type.
+src/components/AddObsModal/AddObsModalHelp.tsx(11,25): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
+src/components/Camera/AICamera/AICameraButtons.tsx(16,27): error TS7016: Could not find a declaration file for module './AIDebugButton'. 'src/components/Camera/AICamera/AIDebugButton.js' implicitly has an 'any' type.
 src/components/Camera/AICamera/hooks/usePredictions.ts(53,69): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'number'.
 src/components/Camera/AICamera/hooks/usePredictions.ts(65,16): error TS2345: Argument of type '{ taxon: { rank_level: RANK_LEVEL; id: number; name: string; iconic_taxon_name: unknown; }; combined_score: number; timestamp: number; } | null' is not assignable to parameter of type 'SetStateAction<StoredResult | null>'.
   Type '{ taxon: { rank_level: RANK_LEVEL; id: number; name: string; iconic_taxon_name: unknown; }; combined_score: number; timestamp: number; }' is not assignable to type 'SetStateAction<StoredResult | null>'.
@@ -143,9 +143,9 @@ src/components/Camera/Buttons/GreenCheckmark.tsx(22,7): error TS2322: Type '(_ev
 src/components/Camera/Buttons/GreenCheckmark.tsx(29,7): error TS2322: Type 'string' is not assignable to type 'number'.
 src/components/Camera/Buttons/GreenCheckmark.tsx(30,7): error TS2322: Type 'string' is not assignable to type 'number'.
 src/components/Camera/Buttons/PhotoLibraryIcon.tsx(43,22): error TS2339: Property 'push' does not exist on type 'Omit<NavigationProp<RootParamList>, "getState"> & { getState(): Readonly<{ key: string; index: number; routeNames: string[]; history?: unknown[] | undefined; routes: NavigationRoute<...>[]; type: string; stale: false; }> | undefined; }'.
-src/components/Camera/Buttons/TakePhoto.tsx(8,27): error TS7016: Could not find a declaration file for module 'styles/global'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/styles/global.js' implicitly has an 'any' type.
-src/components/Camera/CameraContainer.tsx(21,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHelpers/logger.js' implicitly has an 'any' type.
-src/components/Camera/CameraContainer.tsx(25,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
+src/components/Camera/Buttons/TakePhoto.tsx(8,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
+src/components/Camera/CameraContainer.tsx(21,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
+src/components/Camera/CameraContainer.tsx(25,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/components/Camera/CameraContainer.tsx(61,40): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/Camera/CameraContainer.tsx(62,36): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/Camera/CameraContainer.tsx(63,35): error TS7006: Parameter 'state' implicitly has an 'any' type.
@@ -186,11 +186,11 @@ src/components/Camera/CameraView.tsx(165,9): error TS2322: Type '{ children: Ele
   Property 'className' does not exist on type 'IntrinsicAttributes & GestureDetectorProps'.
 src/components/Camera/CameraView.tsx(176,11): error TS2322: Type '(() => void) | undefined' is not assignable to type 'ReadonlyFrameProcessor | DrawableFrameProcessor | SharedValue<ReadonlyFrameProcessor | DrawableFrameProcessor | undefined> | undefined'.
   Type '() => void' is not assignable to type 'ReadonlyFrameProcessor | DrawableFrameProcessor | SharedValue<ReadonlyFrameProcessor | DrawableFrameProcessor | undefined> | undefined'.
-src/components/Camera/CameraWithDevice.tsx(8,22): error TS7016: Could not find a declaration file for module './AICamera/AICamera'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/Camera/AICamera/AICamera.js' implicitly has an 'any' type.
-src/components/Camera/CameraWithDevice.tsx(9,28): error TS7016: Could not find a declaration file for module './StandardCamera/StandardCamera'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/Camera/StandardCamera/StandardCamera.js' implicitly has an 'any' type.
+src/components/Camera/CameraWithDevice.tsx(8,22): error TS7016: Could not find a declaration file for module './AICamera/AICamera'. 'src/components/Camera/AICamera/AICamera.js' implicitly has an 'any' type.
+src/components/Camera/CameraWithDevice.tsx(9,28): error TS7016: Could not find a declaration file for module './StandardCamera/StandardCamera'. 'src/components/Camera/StandardCamera/StandardCamera.js' implicitly has an 'any' type.
 src/components/Camera/FadeInOutView.tsx(11,14): error TS7006: Parameter 'value' implicitly has an 'any' type.
-src/components/Camera/helpers/index.ts(4,21): error TS7016: Could not find a declaration file for module '../../../../react-native-logs.config'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/react-native-logs.config.js' implicitly has an 'any' type.
-src/components/Camera/helpers/savePhotosToPhotoLibrary.ts(11,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHelpers/logger.js' implicitly has an 'any' type.
+src/components/Camera/helpers/index.ts(4,21): error TS7016: Could not find a declaration file for module '../../../../react-native-logs.config'. 'react-native-logs.config.js' implicitly has an 'any' type.
+src/components/Camera/helpers/savePhotosToPhotoLibrary.ts(11,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
 src/components/Camera/helpers/savePhotosToPhotoLibrary.ts(43,23): error TS2339: Property 'type' does not exist on type '{}'.
 src/components/Camera/helpers/savePhotosToPhotoLibrary.ts(46,23): error TS2339: Property 'album' does not exist on type '{}'.
 src/components/Camera/helpers/savePhotosToPhotoLibrary.ts(49,23): error TS2339: Property 'latitude' does not exist on type '{}'.
@@ -203,9 +203,9 @@ src/components/Camera/helpers/savePhotosToPhotoLibrary.ts(54,25): error TS2345: 
 src/components/Camera/helpers/savePhotosToPhotoLibrary.ts(60,11): error TS18046: 'cameraRollSaveError' is of type 'unknown'.
 src/components/Camera/helpers/savePhotosToPhotoLibrary.ts(61,14): error TS18046: 'cameraRollSaveError' is of type 'unknown'.
 src/components/Camera/helpers/savePhotosToPhotoLibrary.ts(76,15): error TS18046: 'cameraRollSaveError' is of type 'unknown'.
-src/components/Camera/hooks/usePrepareStoreAndNavigate.ts(2,34): error TS7016: Could not find a declaration file for module 'components/Camera/hooks/useDeviceStorageFull'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/Camera/hooks/useDeviceStorageFull.js' implicitly has an 'any' type.
-src/components/Camera/hooks/usePrepareStoreAndNavigate.ts(6,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Observation.js' implicitly has an 'any' type.
-src/components/Camera/hooks/usePrepareStoreAndNavigate.ts(13,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
+src/components/Camera/hooks/usePrepareStoreAndNavigate.ts(2,34): error TS7016: Could not find a declaration file for module 'components/Camera/hooks/useDeviceStorageFull'. 'src/components/Camera/hooks/useDeviceStorageFull.js' implicitly has an 'any' type.
+src/components/Camera/hooks/usePrepareStoreAndNavigate.ts(6,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. 'src/realmModels/Observation.js' implicitly has an 'any' type.
+src/components/Camera/hooks/usePrepareStoreAndNavigate.ts(13,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/components/Camera/hooks/usePrepareStoreAndNavigate.ts(20,31): error TS2339: Property 'addEvidence' does not exist on type 'object'.
 src/components/Camera/hooks/usePrepareStoreAndNavigate.ts(21,37): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/Camera/hooks/usePrepareStoreAndNavigate.ts(22,40): error TS7006: Parameter 'state' implicitly has an 'any' type.
@@ -251,8 +251,8 @@ src/components/Camera/StandardCamera/hooks/useBackPress.ts(24,30): error TS2769:
     Argument of type 'string' is not assignable to parameter of type 'never'.
   Overload 2 of 2, '(options: never): void', gave the following error.
     Argument of type 'string' is not assignable to parameter of type 'never'.
-src/components/Camera/StandardCamera/PhotoCarousel.tsx(2,30): error TS7016: Could not find a declaration file for module 'components/MediaViewer/MediaViewerModal'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/MediaViewer/MediaViewerModal.js' implicitly has an 'any' type.
-src/components/Camera/StandardCamera/PhotoCarousel.tsx(20,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
+src/components/Camera/StandardCamera/PhotoCarousel.tsx(2,30): error TS7016: Could not find a declaration file for module 'components/MediaViewer/MediaViewerModal'. 'src/components/MediaViewer/MediaViewerModal.js' implicitly has an 'any' type.
+src/components/Camera/StandardCamera/PhotoCarousel.tsx(20,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/components/Camera/StandardCamera/PhotoCarousel.tsx(60,48): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/Camera/StandardCamera/PhotoCarousel.tsx(128,11): error TS7031: Binding element 'photoUri' implicitly has an 'any' type.
 src/components/Camera/StandardCamera/PhotoCarousel.tsx(129,5): error TS7031: Binding element 'index' implicitly has an 'any' type.
@@ -276,7 +276,7 @@ src/components/Camera/TabletButtons.tsx(123,9): error TS2322: Type '{ handleZoom
   Property 'showZoomButton' does not exist on type 'IntrinsicAttributes & Props'.
 src/components/Camera/TabletButtons.tsx(162,11): error TS2322: Type '((_event: GestureResponderEvent) => void) | undefined' is not assignable to type '(() => void) | undefined'.
   Type '(_event: GestureResponderEvent) => void' is not assignable to type '() => void'.
-src/components/Developer/Developer.tsx(18,21): error TS7016: Could not find a declaration file for module 'sharedHooks/useLogs'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHooks/useLogs.js' implicitly has an 'any' type.
+src/components/Developer/Developer.tsx(18,21): error TS7016: Could not find a declaration file for module 'sharedHooks/useLogs'. 'src/sharedHooks/useLogs.js' implicitly has an 'any' type.
 src/components/Developer/Developer.tsx(140,47): error TS2769: No overload matches this call.
   Overload 1 of 2, '(...args: never): void', gave the following error.
     Argument of type 'string' is not assignable to parameter of type 'never'.
@@ -292,8 +292,8 @@ src/components/Developer/Developer.tsx(153,53): error TS2769: No overload matche
     Argument of type 'string' is not assignable to parameter of type 'never'.
   Overload 2 of 2, '(options: never): void', gave the following error.
     Argument of type 'string' is not assignable to parameter of type 'never'.
-src/components/ErrorBoundary.tsx(15,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHelpers/logger.js' implicitly has an 'any' type.
-src/components/Explore/MapView.tsx(16,27): error TS7016: Could not find a declaration file for module 'styles/global'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/styles/global.js' implicitly has an 'any' type.
+src/components/ErrorBoundary.tsx(15,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
+src/components/Explore/MapView.tsx(16,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
 src/components/Explore/MapView.tsx(120,24): error TS2339: Property 'animateToRegion' does not exist on type 'never'.
 src/components/Explore/MapView.tsx(126,22): error TS2339: Property 'animateToRegion' does not exist on type 'never'.
 src/components/Explore/MapView.tsx(132,24): error TS2339: Property 'animateToRegion' does not exist on type 'never'.
@@ -307,10 +307,10 @@ src/components/Explore/MapView.tsx(229,15): error TS2322: Type '{ position: stri
   Type '{ position: string; top: string; left: string; transform: ({ translateX: number; translateY?: undefined; } | { translateY: number; translateX?: undefined; })[]; backgroundColor: string; alignItems: string; justifyContent: string; zIndex: number; }' is not assignable to type 'ViewStyle'.
     Types of property 'alignItems' are incompatible.
       Type 'string' is not assignable to type 'FlexAlignType | undefined'.
-src/components/Explore/Modals/ExploreTaxonSearchModal.tsx(3,32): error TS7016: Could not find a declaration file for module 'components/Explore/SearchScreens/ExploreTaxonSearch'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/Explore/SearchScreens/ExploreTaxonSearch.js' implicitly has an 'any' type.
+src/components/Explore/Modals/ExploreTaxonSearchModal.tsx(3,32): error TS7016: Could not find a declaration file for module 'components/Explore/SearchScreens/ExploreTaxonSearch'. 'src/components/Explore/SearchScreens/ExploreTaxonSearch.js' implicitly has an 'any' type.
 src/components/Explore/Modals/ExploreTaxonSearchModal.tsx(35,24): error TS2339: Property 'push' does not exist on type 'Omit<NavigationProp<RootParamList>, "getState"> & { getState(): Readonly<{ key: string; index: number; routeNames: string[]; history?: unknown[] | undefined; routes: NavigationRoute<...>[]; type: string; stale: false; }> | undefined; }'.
-src/components/Explore/Modals/ExploreUserSearchModal.tsx(1,31): error TS7016: Could not find a declaration file for module 'components/Explore/SearchScreens/ExploreUserSearch'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/Explore/SearchScreens/ExploreUserSearch.js' implicitly has an 'any' type.
-src/components/Explore/Modals/FilterModal.tsx(45,27): error TS7016: Could not find a declaration file for module 'styles/global'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/styles/global.js' implicitly has an 'any' type.
+src/components/Explore/Modals/ExploreUserSearchModal.tsx(1,31): error TS7016: Could not find a declaration file for module 'components/Explore/SearchScreens/ExploreUserSearch'. 'src/components/Explore/SearchScreens/ExploreUserSearch.js' implicitly has an 'any' type.
+src/components/Explore/Modals/FilterModal.tsx(45,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
 src/components/Explore/Modals/FilterModal.tsx(533,5): error TS7031: Binding element 'newDateObserved' implicitly has an 'any' type.
 src/components/Explore/Modals/FilterModal.tsx(533,22): error TS7031: Binding element 'newObservedOn' implicitly has an 'any' type.
 src/components/Explore/Modals/FilterModal.tsx(533,37): error TS7031: Binding element 'newD1' implicitly has an 'any' type.
@@ -416,8 +416,8 @@ src/components/Explore/Modals/FilterModal.tsx(1344,9): error TS2322: Type '(taxo
             Type 'undefined' is not assignable to type 'string'.
 src/components/Explore/Modals/FilterModal.tsx(1355,9): error TS2322: Type '{ showModal: boolean; currentUser: User | null; closeModal: () => void; updateUser: (user: { login: string; } | null) => void; }' is not assignable to type 'IntrinsicAttributes & Props'.
   Property 'currentUser' does not exist on type 'IntrinsicAttributes & Props'.
-src/components/Explore/NumberBadge.tsx(6,27): error TS7016: Could not find a declaration file for module 'styles/global'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/styles/global.js' implicitly has an 'any' type.
-src/components/Explore/SearchScreens/ExploreLocationSearch.tsx(23,27): error TS7016: Could not find a declaration file for module 'styles/global'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/styles/global.js' implicitly has an 'any' type.
+src/components/Explore/NumberBadge.tsx(6,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
+src/components/Explore/SearchScreens/ExploreLocationSearch.tsx(23,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
 src/components/Explore/SearchScreens/ExploreLocationSearch.tsx(60,9): error TS2322: Type 'UseQueryResult<(ApiUser | ApiPlace | ApiProject | ApiTaxon)[] | null, Error>' is not assignable to type '{ data: ApiPlace[] | null; isLoading: boolean; refetch: () => void; }'.
   Type 'QueryObserverLoadingErrorResult<(ApiUser | ApiPlace | ApiProject | ApiTaxon)[] | null, Error>' is not assignable to type '{ data: ApiPlace[] | null; isLoading: boolean; refetch: () => void; }'.
     Types of property 'data' are incompatible.
@@ -431,14 +431,14 @@ src/components/Explore/SearchScreens/ExploreLocationSearch.tsx(177,9): error TS2
   Overload 2 of 2, '(props: FlatListProps<ApiPlace>, context: any): FlatList<ApiPlace>', gave the following error.
     Type '(item: ApiPlace) => number | undefined' is not assignable to type '(item: ApiPlace, index: number) => string'.
 src/components/Explore/SearchScreens/ExploreLocationSearch.tsx(181,8): error TS2322: Type 'FC<{}>' is not assignable to type 'ReactNode'.
-src/components/Explore/SearchScreens/ExploreProjectSearch.tsx(14,27): error TS7016: Could not find a declaration file for module 'styles/global'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/styles/global.js' implicitly has an 'any' type.
+src/components/Explore/SearchScreens/ExploreProjectSearch.tsx(14,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
 src/components/Explore/SearchScreens/ExploreProjectSearch.tsx(70,22): error TS2345: Argument of type 'null' is not assignable to parameter of type 'ApiProject'.
 src/components/Explore/SearchScreens/ExploreSearchHeader.tsx(31,11): error TS2322: Type '{ testID: string; onPress: () => void; accessibilityLabel: string; }' is not assignable to type 'IntrinsicAttributes & Props'.
   Property 'accessibilityLabel' does not exist on type 'IntrinsicAttributes & Props'.
-src/components/FullPageWebView/FullPageWebView.tsx(16,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHelpers/logger.js' implicitly has an 'any' type.
-src/components/FullPageWebView/FullPageWebViewHeader.tsx(8,28): error TS7016: Could not find a declaration file for module 'styles/global'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/styles/global.js' implicitly has an 'any' type.
-src/components/hooks/useTaxonCommonNames.ts(1,36): error TS7016: Could not find a declaration file for module 'api/observations'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/api/observations.js' implicitly has an 'any' type.
-src/components/hooks/useTaxonCommonNames.ts(4,19): error TS7016: Could not find a declaration file for module 'realmModels/Taxon'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Taxon.js' implicitly has an 'any' type.
+src/components/FullPageWebView/FullPageWebView.tsx(16,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
+src/components/FullPageWebView/FullPageWebViewHeader.tsx(8,28): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
+src/components/hooks/useTaxonCommonNames.ts(1,36): error TS7016: Could not find a declaration file for module 'api/observations'. 'src/api/observations.js' implicitly has an 'any' type.
+src/components/hooks/useTaxonCommonNames.ts(4,19): error TS7016: Could not find a declaration file for module 'realmModels/Taxon'. 'src/realmModels/Taxon.js' implicitly has an 'any' type.
 src/components/hooks/useTaxonCommonNames.ts(38,22): error TS2339: Property 'latitude' does not exist on type 'never'.
 src/components/hooks/useTaxonCommonNames.ts(39,12): error TS2339: Property 'lat' does not exist on type '{ per_page: number; fields: { taxon: { iconic_taxon_name: boolean; id: boolean; preferred_common_name: boolean; name: boolean; }; }; }'.
 src/components/hooks/useTaxonCommonNames.ts(39,31): error TS2339: Property 'latitude' does not exist on type 'never'.
@@ -456,8 +456,8 @@ src/components/hooks/useTaxonCommonNames.ts(91,13): error TS2769: No overload ma
     Argument of type '"modified"' is not assignable to parameter of type 'boolean | UpdateMode | undefined'.
   Overload 2 of 2, '(type: Constructor<AnyRealmObject>, values: Partial<AnyRealmObject> | Partial<Unmanaged<AnyRealmObject>>, mode?: boolean | ... 1 more ... | undefined): AnyRealmObject', gave the following error.
     Argument of type 'string' is not assignable to parameter of type 'Constructor<AnyRealmObject>'.
-src/components/hooks/useWorkQueue.ts(1,42): error TS7016: Could not find a declaration file for module 'api/users'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/api/users.js' implicitly has an 'any' type.
-src/components/hooks/useWorkQueue.ts(6,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHelpers/logger.js' implicitly has an 'any' type.
+src/components/hooks/useWorkQueue.ts(1,42): error TS7016: Could not find a declaration file for module 'api/users'. 'src/api/users.js' implicitly has an 'any' type.
+src/components/hooks/useWorkQueue.ts(6,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
 src/components/hooks/useWorkQueue.ts(27,7): error TS2345: Argument of type '{ onSuccess: () => Promise<void>; onError: (userUpdateError: any) => void; }' is not assignable to parameter of type 'MutationOptions'.
   Object literal may only specify known properties, and 'onSuccess' does not exist in type 'MutationOptions'.
 src/components/hooks/useWorkQueue.ts(50,11): error TS2769: No overload matches this call.
@@ -466,8 +466,8 @@ src/components/hooks/useWorkQueue.ts(50,11): error TS2769: No overload matches t
   Overload 2 of 2, '(type: Constructor<AnyRealmObject>, values: Partial<AnyRealmObject> | Partial<Unmanaged<AnyRealmObject>>, mode?: boolean | ... 1 more ... | undefined): AnyRealmObject', gave the following error.
     Argument of type 'string' is not assignable to parameter of type 'Constructor<AnyRealmObject>'.
 src/components/hooks/useWorkQueue.ts(56,16): error TS7006: Parameter 'userUpdateError' implicitly has an 'any' type.
-src/components/LocationPicker/LoadingIndicator.tsx(5,27): error TS7016: Could not find a declaration file for module 'styles/global'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/styles/global.js' implicitly has an 'any' type.
-src/components/LocationPicker/LocationSearch.tsx(12,27): error TS7016: Could not find a declaration file for module 'styles/global'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/styles/global.js' implicitly has an 'any' type.
+src/components/LocationPicker/LoadingIndicator.tsx(5,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
+src/components/LocationPicker/LocationSearch.tsx(12,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
 src/components/LocationPicker/LocationSearch.tsx(43,5): error TS2345: Argument of type '(optsWithAuth: ApiOpts) => Promise<(ApiUser | ApiPlace | ApiProject | ApiTaxon)[] | null>' is not assignable to parameter of type 'QueryFunction<(ApiUser | ApiPlace | ApiProject | ApiTaxon)[] | null>'.
   Types of parameters 'optsWithAuth' and 'options' are incompatible.
     Type '{ api_token: string | null; }' is not assignable to type 'ApiOpts'.
@@ -476,11 +476,11 @@ src/components/LocationPicker/LocationSearch.tsx(71,50): error TS2345: Argument 
   Types of parameters 'place' and 'value' are incompatible.
     Type 'ApiUser | ApiPlace | ApiProject | ApiTaxon' is not assignable to type 'Place'.
       Type 'ApiUser' is missing the following properties from type 'Place': display_name, point_geojson
-src/components/LocationPicker/WarningText.tsx(8,27): error TS7016: Could not find a declaration file for module 'styles/global'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/styles/global.js' implicitly has an 'any' type.
-src/components/LoginSignUp/AuthenticationService.ts(4,54): error TS7016: Could not find a declaration file for module 'api/users'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/api/users.js' implicitly has an 'any' type.
-src/components/LoginSignUp/AuthenticationService.ts(13,47): error TS7016: Could not find a declaration file for module 'i18n/initI18next'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/i18n/initI18next.js' implicitly has an 'any' type.
-src/components/LoginSignUp/AuthenticationService.ts(25,52): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHelpers/logger.js' implicitly has an 'any' type.
-src/components/LoginSignUp/AuthenticationService.ts(30,25): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
+src/components/LocationPicker/WarningText.tsx(8,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
+src/components/LoginSignUp/AuthenticationService.ts(4,54): error TS7016: Could not find a declaration file for module 'api/users'. 'src/api/users.js' implicitly has an 'any' type.
+src/components/LoginSignUp/AuthenticationService.ts(13,47): error TS7016: Could not find a declaration file for module 'i18n/initI18next'. 'src/i18n/initI18next.js' implicitly has an 'any' type.
+src/components/LoginSignUp/AuthenticationService.ts(25,52): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
+src/components/LoginSignUp/AuthenticationService.ts(30,25): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/components/LoginSignUp/AuthenticationService.ts(254,13): error TS2339: Property 'jws' does not exist on type 'typeof jsrsasign'.
 src/components/LoginSignUp/AuthenticationService.ts(491,40): error TS18046: 'error' is of type 'unknown'.
 src/components/LoginSignUp/ForgotPassword.tsx(47,34): error TS2345: Argument of type 'string' is not assignable to parameter of type 'never'.
@@ -513,12 +513,12 @@ src/components/LoginSignUp/LoginForm.tsx(275,50): error TS2769: No overload matc
   Overload 2 of 2, '(options: never): void', gave the following error.
     Argument of type 'string' is not assignable to parameter of type 'never'.
 src/components/LoginSignUp/LoginForm.tsx(291,29): error TS2339: Property 'login' does not exist on type 'User'.
-src/components/LoginSignUp/loginFormHelpers.ts(12,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHelpers/logger.js' implicitly has an 'any' type.
+src/components/LoginSignUp/loginFormHelpers.ts(12,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
 src/components/LoginSignUp/LoginSignUpWrapper.tsx(45,32): error TS2339: Property 'scrollTo' does not exist on type 'never'.
 src/components/LoginSignUp/LoginSignUpWrapper.tsx(63,32): error TS2339: Property 'scrollTo' does not exist on type 'never'.
 src/components/LoginSignUp/LoginSignUpWrapper.tsx(105,19): error TS2349: This expression is not callable.
   Type 'never' has no call signatures.
-src/components/LoginSignUp/SignUpConfirmationForm.tsx(14,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
+src/components/LoginSignUp/SignUpConfirmationForm.tsx(14,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/components/LoginSignUp/SignUpConfirmationForm.tsx(29,9): error TS2322: Type 'Readonly<object | undefined>' is not assignable to type '{ email: string; }'.
   Type 'undefined' is not assignable to type '{ email: string; }'.
 src/components/LoginSignUp/SignUpConfirmationForm.tsx(29,11): error TS2339: Property 'user' does not exist on type '{ email: string; }'.
@@ -537,17 +537,17 @@ src/components/LoginSignUp/SignUpConfirmationForm.tsx(158,51): error TS2769: No 
     Argument of type 'string' is not assignable to parameter of type 'never'.
 src/components/LoginSignUp/SignUpForm.tsx(32,59): error TS2345: Argument of type '"transitionEnd"' is not assignable to parameter of type 'keyof EventMapCore<Readonly<{ key: string; index: number; routeNames: never[]; history?: unknown[] | undefined; routes: NavigationRoute<RootParamList, never>[]; type: string; stale: false; }>>'.
 src/components/LoginSignUp/SignUpForm.tsx(42,28): error TS2345: Argument of type 'string' is not assignable to parameter of type 'never'.
-src/components/Match/AdditionalSuggestions/SuggestionsResult.tsx(60,54): error TS2345: Argument of type 'import("/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/User").default | null' is not assignable to parameter of type 'User | null'.
+src/components/Match/AdditionalSuggestions/SuggestionsResult.tsx(60,54): error TS2345: Argument of type 'import("src/realmModels/User").default | null' is not assignable to parameter of type 'User | null'.
 src/components/Match/AdditionalSuggestions/SuggestionsResult.tsx(132,47): error TS2339: Property 'prefers_scientific_name_first' does not exist on type 'User'.
 src/components/Match/AdditionalSuggestions/SuggestionsResult.tsx(133,46): error TS2339: Property 'prefers_common_names' does not exist on type 'User'.
-src/components/Match/helpers/tryToReplaceWithLocalTaxon.ts(1,19): error TS7016: Could not find a declaration file for module 'realmModels/Taxon'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Taxon.js' implicitly has an 'any' type.
+src/components/Match/helpers/tryToReplaceWithLocalTaxon.ts(1,19): error TS7016: Could not find a declaration file for module 'realmModels/Taxon'. 'src/realmModels/Taxon.js' implicitly has an 'any' type.
 src/components/Match/MatchHeader.tsx(38,10): error TS18047: 'confidence' is possibly 'null'.
 src/components/Match/MatchHeader.tsx(40,17): error TS18047: 'confidence' is possibly 'null'.
 src/components/Match/MatchHeader.tsx(40,37): error TS18047: 'confidence' is possibly 'null'.
 src/components/Match/MatchHeader.tsx(45,10): error TS18048: 'taxon' is possibly 'undefined'.
 src/components/Match/MatchHeader.tsx(83,9): error TS2322: Type 'RealmTaxon | undefined' is not assignable to type 'ApiTaxon | RealmTaxon'.
   Type 'undefined' is not assignable to type 'ApiTaxon | RealmTaxon'.
-src/components/Match/MatchTaxonSearchScreen.tsx(15,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
+src/components/Match/MatchTaxonSearchScreen.tsx(15,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/components/Match/MatchTaxonSearchScreen.tsx(21,65): error TS2345: Argument of type 'null' is not assignable to parameter of type 'ApiTaxon | (() => ApiTaxon)'.
 src/components/Match/MatchTaxonSearchScreen.tsx(27,43): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/Match/MatchTaxonSearchScreen.tsx(28,36): error TS7006: Parameter 'state' implicitly has an 'any' type.
@@ -562,20 +562,20 @@ src/components/MediaViewer/CustomImageZoom.tsx(3,15): error TS2305: Module '"rea
 src/components/MediaViewer/CustomImageZoom.tsx(38,30): error TS2339: Property 'reset' does not exist on type 'never'.
 src/components/MediaViewer/CustomImageZoom.tsx(51,46): error TS2554: Expected 0 arguments, but got 1.
 src/components/MediaViewer/CustomImageZoom.tsx(52,44): error TS2554: Expected 0 arguments, but got 1.
-src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(3,8): error TS7016: Could not find a declaration file for module 'api/observations'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/api/observations.js' implicitly has an 'any' type.
-src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(7,32): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
+src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(3,8): error TS7016: Could not find a declaration file for module 'api/observations'. 'src/api/observations.js' implicitly has an 'any' type.
+src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(7,32): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(26,45): error TS7006: Parameter 'deletedObservations' implicitly has an 'any' type.
 src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(26,66): error TS7006: Parameter 'realm' implicitly has an 'any' type.
 src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(32,42): error TS7006: Parameter 'observation' implicitly has an 'any' type.
 src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(40,16): error TS2304: Cannot find name 'syncRemoteDeletedObservations'.
 src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(40,54): error TS7006: Parameter 'realm' implicitly has an 'any' type.
 src/components/MyObservations/helpers/syncRemoteDeletedObservations.ts(41,52): error TS2554: Expected 0 arguments, but got 1.
-src/components/MyObservations/helpers/syncRemoteObservations.ts(1,36): error TS7016: Could not find a declaration file for module 'api/observations'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/api/observations.js' implicitly has an 'any' type.
-src/components/MyObservations/helpers/syncRemoteObservations.ts(3,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Observation.js' implicitly has an 'any' type.
+src/components/MyObservations/helpers/syncRemoteObservations.ts(1,36): error TS7016: Could not find a declaration file for module 'api/observations'. 'src/api/observations.js' implicitly has an 'any' type.
+src/components/MyObservations/helpers/syncRemoteObservations.ts(3,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. 'src/realmModels/Observation.js' implicitly has an 'any' type.
 src/components/MyObservations/helpers/syncRemoteObservations.ts(6,40): error TS7006: Parameter 'realm' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useSyncObservations.ts(5,41): error TS7016: Could not find a declaration file for module 'api/observations'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/api/observations.js' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useSyncObservations.ts(8,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Observation.js' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useSyncObservations.ts(16,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useSyncObservations.ts(5,41): error TS7016: Could not find a declaration file for module 'api/observations'. 'src/api/observations.js' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useSyncObservations.ts(8,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. 'src/realmModels/Observation.js' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useSyncObservations.ts(16,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/components/MyObservations/hooks/useSyncObservations.ts(29,33): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/MyObservations/hooks/useSyncObservations.ts(30,42): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/MyObservations/hooks/useSyncObservations.ts(31,44): error TS7006: Parameter 'state' implicitly has an 'any' type.
@@ -592,8 +592,8 @@ src/components/MyObservations/hooks/useSyncObservations.ts(47,5): error TS2345: 
     Type 'unknown' is not assignable to type 'object'.
 src/components/MyObservations/hooks/useSyncObservations.ts(65,31): error TS2345: Argument of type 'string' is not assignable to parameter of type 'SetStateAction<null>'.
 src/components/MyObservations/hooks/useSyncObservations.ts(77,51): error TS2345: Argument of type '{ uuid: string; }' is not assignable to parameter of type 'void'.
-src/components/MyObservations/hooks/useUploadObservations.ts(7,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Observation.js' implicitly has an 'any' type.
-src/components/MyObservations/hooks/useUploadObservations.ts(17,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useUploadObservations.ts(7,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. 'src/realmModels/Observation.js' implicitly has an 'any' type.
+src/components/MyObservations/hooks/useUploadObservations.ts(17,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/components/MyObservations/hooks/useUploadObservations.ts(34,36): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/MyObservations/hooks/useUploadObservations.ts(35,37): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/MyObservations/hooks/useUploadObservations.ts(36,35): error TS7006: Parameter 'state' implicitly has an 'any' type.
@@ -621,8 +621,8 @@ src/components/MyObservations/hooks/useUploadObservations.ts(137,34): error TS27
     Argument of type 'string' is not assignable to parameter of type 'never'.
   Overload 2 of 2, '(options: never): void', gave the following error.
     Argument of type 'string' is not assignable to parameter of type 'never'.
-src/components/MyObservations/LoginBanner.tsx(10,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
-src/components/MyObservations/LoginBanner.tsx(11,27): error TS7016: Could not find a declaration file for module 'styles/global'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/styles/global.js' implicitly has an 'any' type.
+src/components/MyObservations/LoginBanner.tsx(10,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
+src/components/MyObservations/LoginBanner.tsx(11,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
 src/components/MyObservations/LoginBanner.tsx(29,42): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/MyObservations/LoginBanner.tsx(30,45): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/MyObservations/LoginBanner.tsx(78,53): error TS2769: No overload matches this call.
@@ -636,11 +636,11 @@ src/components/MyObservations/LoginSheet.tsx(23,30): error TS2769: No overload m
     Argument of type 'string' is not assignable to parameter of type 'never'.
   Overload 2 of 2, '(options: never): void', gave the following error.
     Argument of type 'string' is not assignable to parameter of type 'never'.
-src/components/MyObservations/MyObservationsContainer.tsx(6,36): error TS7016: Could not find a declaration file for module 'api/observations'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/api/observations.js' implicitly has an 'any' type.
-src/components/MyObservations/MyObservationsContainer.tsx(14,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Observation.js' implicitly has an 'any' type.
-src/components/MyObservations/MyObservationsContainer.tsx(15,19): error TS7016: Could not find a declaration file for module 'realmModels/Taxon'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Taxon.js' implicitly has an 'any' type.
-src/components/MyObservations/MyObservationsContainer.tsx(31,42): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
-src/components/MyObservations/MyObservationsContainer.tsx(36,39): error TS7016: Could not find a declaration file for module './MyObservationsEmptySimple'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/MyObservations/MyObservationsEmptySimple.js' implicitly has an 'any' type.
+src/components/MyObservations/MyObservationsContainer.tsx(6,36): error TS7016: Could not find a declaration file for module 'api/observations'. 'src/api/observations.js' implicitly has an 'any' type.
+src/components/MyObservations/MyObservationsContainer.tsx(14,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. 'src/realmModels/Observation.js' implicitly has an 'any' type.
+src/components/MyObservations/MyObservationsContainer.tsx(15,19): error TS7016: Could not find a declaration file for module 'realmModels/Taxon'. 'src/realmModels/Taxon.js' implicitly has an 'any' type.
+src/components/MyObservations/MyObservationsContainer.tsx(31,42): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
+src/components/MyObservations/MyObservationsContainer.tsx(36,39): error TS7016: Could not find a declaration file for module './MyObservationsEmptySimple'. 'src/components/MyObservations/MyObservationsEmptySimple.js' implicitly has an 'any' type.
 src/components/MyObservations/MyObservationsContainer.tsx(63,48): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/MyObservations/MyObservationsContainer.tsx(64,33): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/MyObservations/MyObservationsContainer.tsx(65,38): error TS7006: Parameter 'state' implicitly has an 'any' type.
@@ -675,11 +675,11 @@ src/components/MyObservations/MyObservationsContainer.tsx(366,7): error TS2322: 
 src/components/MyObservations/MyObservationsContainer.tsx(372,7): error TS2322: Type 'boolean | null' is not assignable to type 'boolean'.
   Type 'null' is not assignable to type 'boolean'.
 src/components/MyObservations/MyObservationsContainer.tsx(385,7): error TS2322: Type '(scrollEvent: {    nativeEvent: {        contentOffset: {            y: number;        };    };}) => any' is not assignable to type '() => void'.
-src/components/MyObservations/MyObservationsSimple.tsx(3,33): error TS7016: Could not find a declaration file for module 'components/Explore/ObservationsViewBar'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/Explore/ObservationsViewBar.js' implicitly has an 'any' type.
-src/components/MyObservations/MyObservationsSimple.tsx(4,35): error TS7016: Could not find a declaration file for module 'components/ObservationsFlashList/ObservationsFlashList'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/ObservationsFlashList/ObservationsFlashList.js' implicitly has an 'any' type.
-src/components/MyObservations/MyObservationsSimple.tsx(5,25): error TS7016: Could not find a declaration file for module 'components/ObservationsFlashList/ObsGridItem'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/ObservationsFlashList/ObsGridItem.js' implicitly has an 'any' type.
-src/components/MyObservations/MyObservationsSimple.tsx(33,27): error TS7016: Could not find a declaration file for module './Announcements'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/MyObservations/Announcements.js' implicitly has an 'any' type.
-src/components/MyObservations/MyObservationsSimple.tsx(38,21): error TS7016: Could not find a declaration file for module './StatTab'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/MyObservations/StatTab.js' implicitly has an 'any' type.
+src/components/MyObservations/MyObservationsSimple.tsx(3,33): error TS7016: Could not find a declaration file for module 'components/Explore/ObservationsViewBar'. 'src/components/Explore/ObservationsViewBar.js' implicitly has an 'any' type.
+src/components/MyObservations/MyObservationsSimple.tsx(4,35): error TS7016: Could not find a declaration file for module 'components/ObservationsFlashList/ObservationsFlashList'. 'src/components/ObservationsFlashList/ObservationsFlashList.js' implicitly has an 'any' type.
+src/components/MyObservations/MyObservationsSimple.tsx(5,25): error TS7016: Could not find a declaration file for module 'components/ObservationsFlashList/ObsGridItem'. 'src/components/ObservationsFlashList/ObsGridItem.js' implicitly has an 'any' type.
+src/components/MyObservations/MyObservationsSimple.tsx(33,27): error TS7016: Could not find a declaration file for module './Announcements'. 'src/components/MyObservations/Announcements.js' implicitly has an 'any' type.
+src/components/MyObservations/MyObservationsSimple.tsx(38,21): error TS7016: Could not find a declaration file for module './StatTab'. 'src/components/MyObservations/StatTab.js' implicitly has an 'any' type.
 src/components/MyObservations/MyObservationsSimple.tsx(133,28): error TS2769: No overload matches this call.
   Overload 1 of 2, '(...args: never): void', gave the following error.
     Argument of type '{ key: string; name: string; params: { id: number; }; }' is not assignable to parameter of type 'never'.
@@ -709,8 +709,8 @@ src/components/MyObservations/MyObservationsSimple.tsx(353,13): error TS2322: Ty
   Property 'imageComponentOptions' does not exist on type 'IntrinsicAttributes & Props'.
 src/components/MyObservations/MyObservationsSimple.tsx(370,62): error TS18048: 'numTotalObservations' is possibly 'undefined'.
 src/components/MyObservations/MyObservationsSimple.tsx(375,54): error TS18048: 'numTotalObservations' is possibly 'undefined'.
-src/components/MyObservations/MyObservationsSimpleHeader.tsx(20,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
-src/components/MyObservations/MyObservationsSimpleHeader.tsx(23,41): error TS7016: Could not find a declaration file for module './SimpleUploadBannerContainer'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/MyObservations/SimpleUploadBannerContainer.js' implicitly has an 'any' type.
+src/components/MyObservations/MyObservationsSimpleHeader.tsx(20,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
+src/components/MyObservations/MyObservationsSimpleHeader.tsx(23,41): error TS7016: Could not find a declaration file for module './SimpleUploadBannerContainer'. 'src/components/MyObservations/SimpleUploadBannerContainer.js' implicitly has an 'any' type.
 src/components/MyObservations/MyObservationsSimpleHeader.tsx(43,40): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/MyObservations/MyObservationsSimpleHeader.tsx(44,40): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/MyObservations/MyObservationsSimpleHeader.tsx(45,51): error TS7006: Parameter 'state' implicitly has an 'any' type.
@@ -718,22 +718,22 @@ src/components/MyObservations/MyObservationsSimpleHeader.tsx(46,34): error TS700
 src/components/MyObservations/MyObservationsSimpleHeader.tsx(47,35): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/MyObservations/MyObservationsSimpleHeader.tsx(48,48): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/MyObservations/MyObservationsSimpleHeader.tsx(49,41): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/MyObservations/SimpleErrorHeader.tsx(11,27): error TS7016: Could not find a declaration file for module './Announcements'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/MyObservations/Announcements.js' implicitly has an 'any' type.
-src/components/NetworkService.ts(1,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHelpers/logger.js' implicitly has an 'any' type.
+src/components/MyObservations/SimpleErrorHeader.tsx(11,27): error TS7016: Could not find a declaration file for module './Announcements'. 'src/components/MyObservations/Announcements.js' implicitly has an 'any' type.
+src/components/NetworkService.ts(1,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
 src/components/Notifications/Notifications.tsx(46,11): error TS2322: Type 'User | null' is not assignable to type 'RealmUser | null'.
   Property 'id' is missing in type 'RealmObject<DefaultObject, never>' but required in type 'RealmUser'.
 src/components/Notifications/Notifications.tsx(53,11): error TS2322: Type 'User | null' is not assignable to type 'RealmUser | null'.
-src/components/Notifications/NotificationsContainer.tsx(9,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHelpers/logger.js' implicitly has an 'any' type.
+src/components/Notifications/NotificationsContainer.tsx(9,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
 src/components/Notifications/NotificationsListItem.tsx(32,20): error TS2339: Property 'push' does not exist on type 'Omit<NavigationProp<RootParamList>, "getState"> & { getState(): Readonly<{ key: string; index: number; routeNames: string[]; history?: unknown[] | undefined; routes: NavigationRoute<...>[]; type: string; stale: false; }> | undefined; }'.
-src/components/Notifications/NotificationsTab.tsx(1,54): error TS7016: Could not find a declaration file for module 'api/observations'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/api/observations.js' implicitly has an 'any' type.
-src/components/Notifications/NotificationsTab.tsx(12,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
+src/components/Notifications/NotificationsTab.tsx(1,54): error TS7016: Could not find a declaration file for module 'api/observations'. 'src/api/observations.js' implicitly has an 'any' type.
+src/components/Notifications/NotificationsTab.tsx(12,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/components/Notifications/NotificationsTab.tsx(19,49): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/Notifications/NotificationsTab.tsx(31,5): error TS2345: Argument of type '(optsWithAuth: ApiOpts) => any' is not assignable to parameter of type 'QueryFunction<unknown>'.
   Types of parameters 'optsWithAuth' and 'options' are incompatible.
     Type '{ api_token: string | null; }' is not assignable to type 'ApiOpts'.
-src/components/ObsDetails/DetailsTab/CoordinatesCopiedNotification.tsx(9,27): error TS7016: Could not find a declaration file for module 'styles/global'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/styles/global.js' implicitly has an 'any' type.
-src/components/ObsDetails/DetailsTab/LocationSection.tsx(15,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Observation.js' implicitly has an 'any' type.
-src/components/ObsDetails/DetailsTab/LocationSection.tsx(18,30): error TS7016: Could not find a declaration file for module './DetailsMapHeader'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/ObsDetails/DetailsTab/DetailsMapHeader.js' implicitly has an 'any' type.
+src/components/ObsDetails/DetailsTab/CoordinatesCopiedNotification.tsx(9,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
+src/components/ObsDetails/DetailsTab/LocationSection.tsx(15,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. 'src/realmModels/Observation.js' implicitly has an 'any' type.
+src/components/ObsDetails/DetailsTab/LocationSection.tsx(18,30): error TS7016: Could not find a declaration file for module './DetailsMapHeader'. 'src/components/ObsDetails/DetailsTab/DetailsMapHeader.js' implicitly has an 'any' type.
 src/components/ObsDetails/DetailsTab/LocationSection.tsx(62,9): error TS2322: Type '{ mapHeight: number; observation: Observation; openMapScreen: () => void; scrollEnabled: false; showLocationIndicator: true; tileMapParams: { taxon_id: any; verifiable: boolean; } | null; withObsTiles: boolean; zoomEnabled: false; zoomTapEnabled: false; }' is not assignable to type 'IntrinsicAttributes & Props & RefAttributes<unknown>'.
   Property 'showLocationIndicator' does not exist on type 'IntrinsicAttributes & Props & RefAttributes<unknown>'.
 src/components/ObsDetails/DetailsTab/LocationSection.tsx(144,13): error TS2322: Type 'User | null' is not assignable to type '{ id: number; }'.
@@ -766,10 +766,10 @@ src/components/ObsDetails/Sheets/SuggestIDSheet.tsx(70,6): error TS2746: This JS
 src/components/ObsDetails/Sheets/SuggestIDSheet.tsx(93,18): error TS2741: Property 'handlePress' is missing in type '{ taxon: { id: number; }; }' but required in type 'Props'.
 src/components/ObsDetails/Sheets/SuggestIDSheet.tsx(100,20): error TS2322: Type '{ title: string; onPress: () => void; className: string; testID: string; accessibilityRole: string; accessibilityHint: string; level: string; }[]' is not assignable to type 'ButtonConfiguration[]'.
   Property 'isPrimary' is missing in type '{ title: string; onPress: () => void; className: string; testID: string; accessibilityRole: string; accessibilityHint: string; level: string; }' but required in type 'ButtonConfiguration'.
-src/components/ObsDetailsDefaultMode/IdentificationSheets.tsx(2,31): error TS7016: Could not find a declaration file for module 'api/comments'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/api/comments.js' implicitly has an 'any' type.
-src/components/ObsDetailsDefaultMode/IdentificationSheets.tsx(3,38): error TS7016: Could not find a declaration file for module 'api/identifications'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/api/identifications.js' implicitly has an 'any' type.
-src/components/ObsDetailsDefaultMode/IdentificationSheets.tsx(20,30): error TS7016: Could not find a declaration file for module './Sheets/AgreeWithIDSheet'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/ObsDetailsDefaultMode/Sheets/AgreeWithIDSheet.js' implicitly has an 'any' type.
-src/components/ObsDetailsDefaultMode/IdentificationSheets.tsx(21,40): error TS7016: Could not find a declaration file for module './Sheets/PotentialDisagreementSheet'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/ObsDetailsDefaultMode/Sheets/PotentialDisagreementSheet.js' implicitly has an 'any' type.
+src/components/ObsDetailsDefaultMode/IdentificationSheets.tsx(2,31): error TS7016: Could not find a declaration file for module 'api/comments'. 'src/api/comments.js' implicitly has an 'any' type.
+src/components/ObsDetailsDefaultMode/IdentificationSheets.tsx(3,38): error TS7016: Could not find a declaration file for module 'api/identifications'. 'src/api/identifications.js' implicitly has an 'any' type.
+src/components/ObsDetailsDefaultMode/IdentificationSheets.tsx(20,30): error TS7016: Could not find a declaration file for module './Sheets/AgreeWithIDSheet'. 'src/components/ObsDetailsDefaultMode/Sheets/AgreeWithIDSheet.js' implicitly has an 'any' type.
+src/components/ObsDetailsDefaultMode/IdentificationSheets.tsx(21,40): error TS7016: Could not find a declaration file for module './Sheets/PotentialDisagreementSheet'. 'src/components/ObsDetailsDefaultMode/Sheets/PotentialDisagreementSheet.js' implicitly has an 'any' type.
 src/components/ObsDetailsDefaultMode/IdentificationSheets.tsx(230,42): error TS7006: Parameter 'body' implicitly has an 'any' type.
 src/components/ObsDetailsDefaultMode/IdentificationSheets.tsx(240,39): error TS7006: Parameter 'error' implicitly has an 'any' type.
 src/components/ObsDetailsDefaultMode/IdentificationSheets.tsx(247,7): error TS2345: Argument of type '{ onSuccess: (data: any) => void; onError: (e: any) => void; }' is not assignable to parameter of type 'MutationOptions'.
@@ -811,7 +811,7 @@ src/components/ObsDetailsDefaultMode/MoreSection/ShareButton.tsx(5,15): error TS
 src/components/ObsDetailsDefaultMode/MoreSection/ShareButton.tsx(15,27): error TS7006: Parameter 'url' implicitly has an 'any' type.
 src/components/ObsDetailsDefaultMode/MoreSection/ShareButton.tsx(28,18): error TS18046: 'err' is of type 'unknown'.
 src/components/ObsDetailsDefaultMode/NotesSection/NotesSection.tsx(19,8): error TS2741: Property 'text' is missing in type '{ children: string; }' but required in type 'Props'.
-src/components/ObsDetailsDefaultMode/ObsDetailsDefaultModeHeaderRight.tsx(14,29): error TS7016: Could not find a declaration file for module './HeaderKebabMenu'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/ObsDetailsDefaultMode/HeaderKebabMenu.js' implicitly has an 'any' type.
+src/components/ObsDetailsDefaultMode/ObsDetailsDefaultModeHeaderRight.tsx(14,29): error TS7016: Could not find a declaration file for module './HeaderKebabMenu'. 'src/components/ObsDetailsDefaultMode/HeaderKebabMenu.js' implicitly has an 'any' type.
 src/components/ObsDetailsDefaultMode/PhotoContainer.tsx(54,7): error TS2322: Type '({ uri: string | null; } | { uri: string; width: number; height: number; })[]' is not assignable to type 'ImageSourcePropType | undefined'.
   Type '({ uri: string | null; } | { uri: string; width: number; height: number; })[]' is not assignable to type 'ImageURISource[]'.
     Type '{ uri: string | null; } | { uri: string; width: number; height: number; }' is not assignable to type 'ImageURISource'.
@@ -823,10 +823,10 @@ src/components/ObsDetailsDefaultMode/PhotoContainer.tsx(76,28): error TS2322: Ty
 src/components/ObsDetailsDefaultMode/Sheets/SuggestIDSheet.tsx(10,15): error TS2305: Module '"react"' has no exported member 'Node'.
 src/components/ObsDetailsDefaultMode/Sheets/SuggestIDSheet.tsx(31,4): error TS2746: This JSX tag's 'children' prop expects a single child of type 'Element', but multiple children were provided.
 src/components/ObsDetailsDefaultMode/Sheets/SuggestIDSheet.tsx(54,16): error TS2741: Property 'handlePress' is missing in type '{ taxon: { id: number; }; }' but required in type 'Props'.
-src/components/ObsEdit/BottomButtons.tsx(9,27): error TS7016: Could not find a declaration file for module 'styles/global'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/styles/global.js' implicitly has an 'any' type.
-src/components/ObsEdit/BottomButtonsContainer.tsx(14,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
-src/components/ObsEdit/BottomButtonsContainer.tsx(18,36): error TS7016: Could not find a declaration file for module './Sheets/ImpreciseLocationSheet'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/ObsEdit/Sheets/ImpreciseLocationSheet.js' implicitly has an 'any' type.
-src/components/ObsEdit/BottomButtonsContainer.tsx(19,34): error TS7016: Could not find a declaration file for module './Sheets/MissingEvidenceSheet'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/ObsEdit/Sheets/MissingEvidenceSheet.js' implicitly has an 'any' type.
+src/components/ObsEdit/BottomButtons.tsx(9,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
+src/components/ObsEdit/BottomButtonsContainer.tsx(14,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
+src/components/ObsEdit/BottomButtonsContainer.tsx(18,36): error TS7016: Could not find a declaration file for module './Sheets/ImpreciseLocationSheet'. 'src/components/ObsEdit/Sheets/ImpreciseLocationSheet.js' implicitly has an 'any' type.
+src/components/ObsEdit/BottomButtonsContainer.tsx(19,34): error TS7016: Could not find a declaration file for module './Sheets/MissingEvidenceSheet'. 'src/components/ObsEdit/Sheets/MissingEvidenceSheet.js' implicitly has an 'any' type.
 src/components/ObsEdit/BottomButtonsContainer.tsx(42,36): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/ObsEdit/BottomButtonsContainer.tsx(43,36): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/ObsEdit/BottomButtonsContainer.tsx(44,38): error TS7006: Parameter 'state' implicitly has an 'any' type.
@@ -839,23 +839,23 @@ src/components/ObsEdit/BottomButtonsContainer.tsx(62,31): error TS2554: Expected
 src/components/ObsEdit/DatePicker.tsx(72,38): error TS2322: Type 'false | "color-warningRed"' is not assignable to type 'string | undefined'.
   Type 'boolean' is not assignable to type 'string'.
 src/components/ObsEdit/MultipleObservationsUploadStatus.tsx(6,15): error TS2305: Module '"react"' has no exported member 'Node'.
-src/components/ObsEdit/MultipleObservationsUploadStatus.tsx(9,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
+src/components/ObsEdit/MultipleObservationsUploadStatus.tsx(9,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/components/ObsEdit/MultipleObservationsUploadStatus.tsx(14,42): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/ObsEdit/MultipleObservationsUploadStatus.tsx(17,39): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/ObsEdit/MultipleObservationsUploadStatus.tsx(18,44): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/ObsEdit/MultipleObservationsUploadStatus.tsx(19,33): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/ObsEdit/MultipleObservationsUploadStatus.tsx(25,35): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/components/ObsEdit/Sheets/GeoprivacySheet.tsx(9,8): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Observation.js' implicitly has an 'any' type.
+src/components/ObsEdit/Sheets/GeoprivacySheet.tsx(9,8): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. 'src/realmModels/Observation.js' implicitly has an 'any' type.
 src/components/ObsEdit/Sheets/GeoprivacySheet.tsx(17,29): error TS7051: Parameter has a name but no type. Did you mean 'arg0: Geoprivacy'?
 src/components/ObservationsFlashList/ObsImage.tsx(53,9): error TS2322: Type '{ className: string; testID: string; accessibilityIgnoresInvertColors: true; fadeDuration: number; source: { url: string; cachePolicy: "discWithCacheControl"; resizeMode: "cover"; }; }' is not assignable to type 'IntrinsicAttributes & FasterImageProps & { className?: string | undefined; tw?: string | undefined; baseClassName?: string | undefined; baseTw?: string | undefined; } & RefAttributes<...>'.
   Property 'testID' does not exist on type 'IntrinsicAttributes & FasterImageProps & { className?: string | undefined; tw?: string | undefined; baseClassName?: string | undefined; baseTw?: string | undefined; } & RefAttributes<...>'.
-src/components/ObservationsFlashList/ObsImagePreview.tsx(6,27): error TS7016: Could not find a declaration file for module 'styles/global'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/styles/global.js' implicitly has an 'any' type.
-src/components/ObservationsFlashList/ObsPressable.tsx(6,25): error TS7016: Could not find a declaration file for module './ObsGridItem'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/ObservationsFlashList/ObsGridItem.js' implicitly has an 'any' type.
-src/components/ObservationsFlashList/ObsPressable.tsx(7,25): error TS7016: Could not find a declaration file for module './ObsListItem'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/ObservationsFlashList/ObsListItem.js' implicitly has an 'any' type.
+src/components/ObservationsFlashList/ObsImagePreview.tsx(6,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
+src/components/ObservationsFlashList/ObsPressable.tsx(6,25): error TS7016: Could not find a declaration file for module './ObsGridItem'. 'src/components/ObservationsFlashList/ObsGridItem.js' implicitly has an 'any' type.
+src/components/ObservationsFlashList/ObsPressable.tsx(7,25): error TS7016: Could not find a declaration file for module './ObsListItem'. 'src/components/ObservationsFlashList/ObsListItem.js' implicitly has an 'any' type.
 src/components/ObservationsFlashList/ObsUploadStatus.tsx(57,31): error TS2551: Property 'missing_basics' does not exist on type 'RealmObservation'. Did you mean 'missingBasics'?
 src/components/ObservationsFlashList/ObsUploadStatus.tsx(59,7): error TS2322: Type 'number | undefined' is not assignable to type 'number'.
   Type 'undefined' is not assignable to type 'number'.
-src/components/OnboardingModal/OnboardingModal.tsx(10,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
+src/components/OnboardingModal/OnboardingModal.tsx(10,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/components/OnboardingModal/OnboardingModal.tsx(48,31): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/OnboardingModal/OnboardingModal.tsx(49,34): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/OnboardingModal/OnboardingModal.tsx(202,7): error TS2322: Type '{ animationIn: string; animationOut: string; animationInTiming: number; animationOutTiming: number; showModal: boolean; closeModal: () => void; modal: Element; fullScreen: true; }' is not assignable to type 'IntrinsicAttributes & Props'.
@@ -867,8 +867,8 @@ src/components/OnboardingModal/PivotCards.tsx(97,32): error TS2769: No overload 
     Argument of type 'string' is not assignable to parameter of type 'never'.
   Overload 2 of 2, '(options: never): void', gave the following error.
     Argument of type 'string' is not assignable to parameter of type 'never'.
-src/components/PhotoSharing.tsx(8,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Observation.js' implicitly has an 'any' type.
-src/components/PhotoSharing.tsx(10,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
+src/components/PhotoSharing.tsx(8,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. 'src/realmModels/Observation.js' implicitly has an 'any' type.
+src/components/PhotoSharing.tsx(10,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/components/PhotoSharing.tsx(16,11): error TS2339: Property 'item' does not exist on type 'Readonly<object | undefined>'.
 src/components/PhotoSharing.tsx(18,47): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/PhotoSharing.tsx(19,36): error TS7006: Parameter 'state' implicitly has an 'any' type.
@@ -884,12 +884,12 @@ src/components/PhotoSharing.tsx(100,29): error TS2345: Argument of type 'true' i
 src/components/PhotoSharing.tsx(114,31): error TS2345: Argument of type 'false' is not assignable to parameter of type 'SetStateAction<null>'.
 src/components/ProjectDetails/AboutProjectType.tsx(28,31): error TS7053: Element implicitly has an 'any' type because expression of type '"" | "collection" | "umbrella"' can't be used to index type '{ collection: { header: string; about: string; }; traditional: { header: string; about: string; }; umbrella: { header: string; about: string; }; }'.
   Property '' does not exist on type '{ collection: { header: string; about: string; }; traditional: { header: string; about: string; }; umbrella: { header: string; about: string; }; }'.
-src/components/ProjectDetails/ProjectMembers.tsx(5,37): error TS7016: Could not find a declaration file for module 'api/projects'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/api/projects.js' implicitly has an 'any' type.
+src/components/ProjectDetails/ProjectMembers.tsx(5,37): error TS7016: Could not find a declaration file for module 'api/projects'. 'src/api/projects.js' implicitly has an 'any' type.
 src/components/ProjectDetails/ProjectMembers.tsx(20,11): error TS2339: Property 'id' does not exist on type 'Readonly<object | undefined>'.
 src/components/ProjectDetails/ProjectMembers.tsx(20,15): error TS2339: Property 'title' does not exist on type 'Readonly<object | undefined>'.
 src/components/ProjectDetails/ProjectMembers.tsx(74,28): error TS2322: Type '() => React.JSX.Element' is not assignable to type 'ReactElement<any, any>'.
 src/components/ProjectDetails/ProjectMembers.tsx(75,29): error TS2322: Type '() => React.JSX.Element' is not assignable to type 'ReactElement<any, any>'.
-src/components/ProjectDetails/ProjectRequirements.tsx(4,8): error TS7016: Could not find a declaration file for module 'api/projects'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/api/projects.js' implicitly has an 'any' type.
+src/components/ProjectDetails/ProjectRequirements.tsx(4,8): error TS7016: Could not find a declaration file for module 'api/projects'. 'src/api/projects.js' implicitly has an 'any' type.
 src/components/ProjectDetails/ProjectRequirements.tsx(16,23): error TS7006: Parameter 'item' implicitly has an 'any' type.
 src/components/ProjectDetails/ProjectRequirements.tsx(24,11): error TS2339: Property 'id' does not exist on type 'Readonly<object | undefined>'.
 src/components/ProjectDetails/ProjectRequirements.tsx(27,30): error TS7006: Parameter 'option' implicitly has an 'any' type.
@@ -995,7 +995,7 @@ src/components/Projects/helpers/displayDates.ts(65,15): error TS7006: Parameter 
 src/components/Projects/helpers/displayDates.ts(67,15): error TS7006: Parameter 'pref' implicitly has an 'any' type.
 src/components/Projects/helpers/displayDates.ts(85,34): error TS7006: Parameter 'numberOfMonth' implicitly has an 'any' type.
 src/components/Projects/helpers/displayDates.ts(85,51): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ 1: { label: any; value: number; }; 2: { label: any; value: number; }; 3: { label: any; value: number; }; 4: { label: any; value: number; }; 5: { label: any; value: number; }; 6: { label: any; value: number; }; 7: { label: any; value: number; }; ... 4 more ...; 12: { ...; }; }'.
-src/components/Projects/hooks/useInfiniteProjectsScroll.ts(1,32): error TS7016: Could not find a declaration file for module 'api/projects'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/api/projects.js' implicitly has an 'any' type.
+src/components/Projects/hooks/useInfiniteProjectsScroll.ts(1,32): error TS7016: Could not find a declaration file for module 'api/projects'. 'src/api/projects.js' implicitly has an 'any' type.
 src/components/Projects/hooks/useInfiniteProjectsScroll.ts(7,39): error TS2339: Property 'params' does not exist on type '{}'.
 src/components/Projects/hooks/useInfiniteProjectsScroll.ts(7,63): error TS2339: Property 'enabled' does not exist on type '{}'.
 src/components/Projects/hooks/useInfiniteProjectsScroll.ts(30,5): error TS2339: Property 'data' does not exist on type '{}'.
@@ -1033,7 +1033,7 @@ src/components/Settings/AdvancedSettings.tsx(40,10): error TS2741: Property 'val
 src/components/Settings/AdvancedSettings.tsx(50,10): error TS2741: Property 'value' is missing in type '{ classNames: string; testID: string; smallLabel: true; checked: boolean; onPress: () => any; label: string; }' but required in type 'Props'.
 src/components/Settings/AdvancedSettings.tsx(58,10): error TS2741: Property 'value' is missing in type '{ classNames: string; smallLabel: true; checked: boolean; onPress: () => any; label: string; }' but required in type 'Props'.
 src/components/Settings/AdvancedSettings.tsx(65,10): error TS2741: Property 'value' is missing in type '{ classNames: string; smallLabel: true; checked: boolean; onPress: () => any; label: string; }' but required in type 'Props'.
-src/components/Settings/LanguageSetting.tsx(13,32): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
+src/components/Settings/LanguageSetting.tsx(13,32): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/components/Settings/LoggedInDefaultSettings.tsx(92,43): error TS2345: Argument of type 'string | boolean' is not assignable to parameter of type 'string'.
   Type 'boolean' is not assignable to type 'string'.
 src/components/Settings/LoggedInDefaultSettings.tsx(111,26): error TS2339: Property 'id' does not exist on type '{}'.
@@ -1058,15 +1058,15 @@ src/components/Settings/TaxonNamesSetting.tsx(65,21): error TS2339: Property 'pr
 src/components/Settings/TaxonNamesSetting.tsx(71,8): error TS2741: Property 'value' is missing in type '{ smallLabel: true; checked: any; onPress: () => User | null; label: string; classNames: string; }' but required in type 'Props'.
 src/components/Settings/TaxonNamesSetting.tsx(78,8): error TS2741: Property 'value' is missing in type '{ smallLabel: true; checked: any; onPress: () => User | null; label: string; classNames: string; }' but required in type 'Props'.
 src/components/Settings/TaxonNamesSetting.tsx(85,8): error TS2741: Property 'value' is missing in type '{ smallLabel: true; checked: boolean; onPress: () => User | null; label: string; classNames: string; }' but required in type 'Props'.
-src/components/SharedComponents/ButtonBar.tsx(5,27): error TS7016: Could not find a declaration file for module 'styles/global'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/styles/global.js' implicitly has an 'any' type.
+src/components/SharedComponents/ButtonBar.tsx(5,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
 src/components/SharedComponents/Buttons/Button.tsx(241,11): error TS2322: Type '{ size: number; className: string; color: string | undefined; }' is not assignable to type 'IntrinsicAttributes & Props'.
   Property 'className' does not exist on type 'IntrinsicAttributes & Props'.
 src/components/SharedComponents/Buttons/CloseButton.tsx(38,24): error TS2554: Expected 0 arguments, but got 1.
-src/components/SharedComponents/Buttons/GradientButton.tsx(7,28): error TS7016: Could not find a declaration file for module 'styles/global'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/styles/global.js' implicitly has an 'any' type.
-src/components/SharedComponents/Buttons/INatIconButton.tsx(12,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHelpers/logger.js' implicitly has an 'any' type.
+src/components/SharedComponents/Buttons/GradientButton.tsx(7,28): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
+src/components/SharedComponents/Buttons/INatIconButton.tsx(12,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
 src/components/SharedComponents/Buttons/INatIconButton.tsx(163,13): error TS2322: Type 'string | undefined' is not assignable to type 'string'.
   Type 'undefined' is not assignable to type 'string'.
-src/components/SharedComponents/Buttons/PressableWithTracking.tsx(6,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHelpers/logger.js' implicitly has an 'any' type.
+src/components/SharedComponents/Buttons/PressableWithTracking.tsx(6,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
 src/components/SharedComponents/Buttons/PressableWithTracking.tsx(32,73): error TS2322: Type 'ForwardedRef<ForwardRefExoticComponent<PressableProps & RefAttributes<View>>>' is not assignable to type 'Ref<View> | undefined'.
   Type '(instance: ForwardRefExoticComponent<PressableProps & RefAttributes<View>> | null) => void' is not assignable to type 'Ref<View> | undefined'.
     Type '(instance: ForwardRefExoticComponent<PressableProps & RefAttributes<View>> | null) => void' is not assignable to type '(instance: View | null) => void | (() => VoidOrUndefinedOnly)'.
@@ -1082,7 +1082,7 @@ src/components/SharedComponents/DisplayTaxon.tsx(37,34): error TS2339: Property 
 src/components/SharedComponents/DisplayTaxon.tsx(38,13): error TS2339: Property 'name' does not exist on type 'object'.
 src/components/SharedComponents/DisplayTaxon.tsx(39,14): error TS2339: Property 'iconic_taxon_name' does not exist on type 'object'.
 src/components/SharedComponents/DisplayTaxon.tsx(41,29): error TS2339: Property 'default_photo' does not exist on type 'object'.
-src/components/SharedComponents/DisplayTaxon.tsx(42,54): error TS2345: Argument of type 'import("/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/User").default | null' is not assignable to parameter of type 'User | null'.
+src/components/SharedComponents/DisplayTaxon.tsx(42,54): error TS2345: Argument of type 'import("src/realmModels/User").default | null' is not assignable to parameter of type 'User | null'.
   Type 'RealmObject<DefaultObject, never>' has no properties in common with type 'User'.
 src/components/SharedComponents/DisplayTaxon.tsx(71,17): error TS2322: Type 'string' is not assignable to type 'Argument[]'.
 src/components/SharedComponents/DisplayTaxon.tsx(79,49): error TS2339: Property 'prefers_scientific_name_first' does not exist on type 'User'.
@@ -1107,29 +1107,29 @@ src/components/SharedComponents/FlashList/CustomFlashList.tsx(139,23): error TS7
 src/components/SharedComponents/FlashList/CustomRefreshControl.tsx(5,3): error TS7031: Binding element 'accessibilityLabel' implicitly has an 'any' type.
 src/components/SharedComponents/FlashList/CustomRefreshControl.tsx(6,3): error TS7031: Binding element 'refreshing' implicitly has an 'any' type.
 src/components/SharedComponents/FlashList/CustomRefreshControl.tsx(7,3): error TS7031: Binding element 'onRefresh' implicitly has an 'any' type.
-src/components/SharedComponents/FloatingActionBar.tsx(6,27): error TS7016: Could not find a declaration file for module 'styles/global'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/styles/global.js' implicitly has an 'any' type.
+src/components/SharedComponents/FloatingActionBar.tsx(6,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
 src/components/SharedComponents/IconicTaxonChooser.tsx(4,15): error TS2305: Module '"react"' has no exported member 'Node'.
 src/components/SharedComponents/IconicTaxonChooser.tsx(50,45): error TS7031: Binding element 'iconicTaxonName' implicitly has an 'any' type.
 src/components/SharedComponents/IconicTaxonChooser.tsx(74,11): error TS2322: Type 'string | false' is not assignable to type 'string | undefined'.
   Type 'boolean' is not assignable to type 'string'.
 src/components/SharedComponents/INatIcon/INatIcon.ts(9,3): error TS2339: Property 'Button' does not exist on type 'FunctionComponent<TextProps & { name: "map" | "apple" | "label" | "stop" | "share" | "rotate" | "triangle-exclamation" | "triangle-down" | "trash" | "trash-outline" | "star" | "star-bold-outline" | ... 108 more ... | "add-comment-outline"; size?: number | undefined; color?: ColorValue | undefined; innerRef?: Ref<......'.
 src/components/SharedComponents/INatIcon/index.tsx(114,7): error TS2322: Type 'string' is not assignable to type '"map" | "apple" | "label" | "stop" | "share" | "rotate" | "triangle-exclamation" | "triangle-down" | "trash" | "trash-outline" | "star" | "star-bold-outline" | "sparkly-label" | ... 107 more ... | "add-comment-outline"'.
-src/components/SharedComponents/index.ts(34,39): error TS7016: Could not find a declaration file for module './InlineUser/HeaderUser'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/SharedComponents/InlineUser/HeaderUser.js' implicitly has an 'any' type.
-src/components/SharedComponents/index.ts(35,39): error TS7016: Could not find a declaration file for module './InlineUser/InlineUser'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/SharedComponents/InlineUser/InlineUser.js' implicitly has an 'any' type.
-src/components/SharedComponents/index.ts(40,39): error TS7016: Could not find a declaration file for module './Map/DetailsMap'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/SharedComponents/Map/DetailsMap.js' implicitly has an 'any' type.
-src/components/SharedComponents/index.ts(49,43): error TS7016: Could not find a declaration file for module './OverviewCounts'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/SharedComponents/OverviewCounts.js' implicitly has an 'any' type.
-src/components/SharedComponents/index.ts(55,55): error TS7016: Could not find a declaration file for module './ScrollableWithStickyHeader'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/SharedComponents/ScrollableWithStickyHeader.js' implicitly has an 'any' type.
-src/components/SharedComponents/index.ts(60,40): error TS7016: Could not find a declaration file for module './Sheets/PickerSheet'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/SharedComponents/Sheets/PickerSheet.js' implicitly has an 'any' type.
-src/components/SharedComponents/index.ts(62,43): error TS7016: Could not find a declaration file for module './Sheets/TextInputSheet'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/SharedComponents/Sheets/TextInputSheet.js' implicitly has an 'any' type.
+src/components/SharedComponents/index.ts(34,39): error TS7016: Could not find a declaration file for module './InlineUser/HeaderUser'. 'src/components/SharedComponents/InlineUser/HeaderUser.js' implicitly has an 'any' type.
+src/components/SharedComponents/index.ts(35,39): error TS7016: Could not find a declaration file for module './InlineUser/InlineUser'. 'src/components/SharedComponents/InlineUser/InlineUser.js' implicitly has an 'any' type.
+src/components/SharedComponents/index.ts(40,39): error TS7016: Could not find a declaration file for module './Map/DetailsMap'. 'src/components/SharedComponents/Map/DetailsMap.js' implicitly has an 'any' type.
+src/components/SharedComponents/index.ts(49,43): error TS7016: Could not find a declaration file for module './OverviewCounts'. 'src/components/SharedComponents/OverviewCounts.js' implicitly has an 'any' type.
+src/components/SharedComponents/index.ts(55,55): error TS7016: Could not find a declaration file for module './ScrollableWithStickyHeader'. 'src/components/SharedComponents/ScrollableWithStickyHeader.js' implicitly has an 'any' type.
+src/components/SharedComponents/index.ts(60,40): error TS7016: Could not find a declaration file for module './Sheets/PickerSheet'. 'src/components/SharedComponents/Sheets/PickerSheet.js' implicitly has an 'any' type.
+src/components/SharedComponents/index.ts(62,43): error TS7016: Could not find a declaration file for module './Sheets/TextInputSheet'. 'src/components/SharedComponents/Sheets/TextInputSheet.js' implicitly has an 'any' type.
 src/components/SharedComponents/InlineUser/InlineUserBase.tsx(38,51): error TS2339: Property 'id' does not exist on type 'User'.
 src/components/SharedComponents/InlineUser/InlineUserBase.tsx(67,30): error TS2345: Argument of type 'string' is not assignable to parameter of type 'never'.
 src/components/SharedComponents/KeyboardDismissableView.tsx(5,37): error TS7031: Binding element 'children' implicitly has an 'any' type.
 src/components/SharedComponents/LocationPermissionGate.tsx(25,4): error TS2786: 'PermissionGateContainer' cannot be used as a JSX component.
   Its return type 'string | number | bigint | true | Element | Iterable<ReactNode> | Promise<AwaitedReactNode> | null' is not a valid JSX element.
     Type 'string' is not assignable to type 'ReactElement<any, any>'.
-src/components/SharedComponents/Map/CurrentLocationButton.tsx(5,27): error TS7016: Could not find a declaration file for module 'styles/global'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/styles/global.js' implicitly has an 'any' type.
+src/components/SharedComponents/Map/CurrentLocationButton.tsx(5,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
 src/components/SharedComponents/Map/helpers/mapHelpers.ts(117,29): error TS2339: Property 'uuid' does not exist on type '{}'.
-src/components/SharedComponents/Map/Map.tsx(17,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Observation.js' implicitly has an 'any' type.
+src/components/SharedComponents/Map/Map.tsx(17,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. 'src/realmModels/Observation.js' implicitly has an 'any' type.
 src/components/SharedComponents/Map/Map.tsx(43,28): error TS7006: Parameter 'initialLatitude' implicitly has an 'any' type.
 src/components/SharedComponents/Map/Map.tsx(43,45): error TS7006: Parameter 'initialLongitude' implicitly has an 'any' type.
 src/components/SharedComponents/Map/Map.tsx(138,7): error TS7034: Variable 'defaultInitialRegion' implicitly has type 'any' in some locations where its type cannot be determined.
@@ -1155,11 +1155,11 @@ src/components/SharedComponents/Map/Map.tsx(586,9): error TS2322: Type '() => Re
 src/components/SharedComponents/Map/Map.tsx(591,8): error TS2786: 'SwitchMapTypeButton' cannot be used as a JSX component.
   Its return type 'false | Element | undefined' is not a valid JSX element.
     Type 'undefined' is not assignable to type 'Element | null'.
-src/components/SharedComponents/Map/SwitchMapTypeButton.tsx(7,32): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
-src/components/SharedComponents/Map/SwitchMapTypeButton.tsx(8,27): error TS7016: Could not find a declaration file for module 'styles/global'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/styles/global.js' implicitly has an 'any' type.
+src/components/SharedComponents/Map/SwitchMapTypeButton.tsx(7,32): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
+src/components/SharedComponents/Map/SwitchMapTypeButton.tsx(8,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
 src/components/SharedComponents/Modal.tsx(69,7): error TS2322: Type 'string' is not assignable to type 'Animation | CustomAnimation<TextStyle & ViewStyle & ImageStyle> | undefined'.
 src/components/SharedComponents/Modal.tsx(70,7): error TS2322: Type 'string' is not assignable to type 'Animation | CustomAnimation<TextStyle & ViewStyle & ImageStyle> | undefined'.
-src/components/SharedComponents/ObservationLocation.tsx(2,36): error TS7016: Could not find a declaration file for module 'components/ObsDetails/helpers/checkCamelAndSnakeCase'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/ObsDetails/helpers/checkCamelAndSnakeCase.js' implicitly has an 'any' type.
+src/components/SharedComponents/ObservationLocation.tsx(2,36): error TS7016: Could not find a declaration file for module 'components/ObsDetails/helpers/checkCamelAndSnakeCase'. 'src/components/ObsDetails/helpers/checkCamelAndSnakeCase.js' implicitly has an 'any' type.
 src/components/SharedComponents/ObservationLocation.tsx(25,35): error TS2339: Property 'geoprivacy' does not exist on type 'object'.
 src/components/SharedComponents/ObservationLocation.tsx(26,40): error TS2339: Property 'taxon_geoprivacy' does not exist on type 'object'.
 src/components/SharedComponents/ObservationLocation.tsx(31,19): error TS2339: Property 'private_place_guess' does not exist on type 'object'.
@@ -1171,22 +1171,22 @@ src/components/SharedComponents/ObservationLocation.tsx(55,31): error TS2339: Pr
 src/components/SharedComponents/ObservationLocation.tsx(56,32): error TS2339: Property 'privateLongitude' does not exist on type 'object'.
 src/components/SharedComponents/ObservationLocation.tsx(61,29): error TS2339: Property 'latitude' does not exist on type 'object'.
 src/components/SharedComponents/ObservationLocation.tsx(62,30): error TS2339: Property 'longitude' does not exist on type 'object'.
-src/components/SharedComponents/ObsStatus.tsx(2,36): error TS7016: Could not find a declaration file for module 'components/ObsDetails/helpers/checkCamelAndSnakeCase'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/ObsDetails/helpers/checkCamelAndSnakeCase.js' implicitly has an 'any' type.
+src/components/SharedComponents/ObsStatus.tsx(2,36): error TS7016: Could not find a declaration file for module 'components/ObsDetails/helpers/checkCamelAndSnakeCase'. 'src/components/ObsDetails/helpers/checkCamelAndSnakeCase.js' implicitly has an 'any' type.
 src/components/SharedComponents/OfflineNotice.tsx(34,9): error TS2322: Type '{ name: string; size: number; "aria-hidden": true; accessibilityElementsHidden: true; importantForAccessibility: string; color: string | undefined; }' is not assignable to type 'IntrinsicAttributes & Props'.
   Property 'accessibilityElementsHidden' does not exist on type 'IntrinsicAttributes & Props'.
 src/components/SharedComponents/PerformanceDebugView.tsx(39,38): error TS2339: Property 'lastFetchItemCount' does not exist on type '{ listReadyTime: number; itemsVisibleTime: number; scrollEvents: number; avgScrollDuration: number; avgFetchTime: number; lastFetchTime: number | null; }'.
 src/components/SharedComponents/PerformanceDebugView.tsx(40,39): error TS2339: Property 'totalItemsDisplayed' does not exist on type '{ listReadyTime: number; itemsVisibleTime: number; scrollEvents: number; avgScrollDuration: number; avgFetchTime: number; lastFetchTime: number | null; }'.
-src/components/SharedComponents/PhotoCount.tsx(9,28): error TS7016: Could not find a declaration file for module 'styles/global'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/styles/global.js' implicitly has an 'any' type.
+src/components/SharedComponents/PhotoCount.tsx(9,28): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
 src/components/SharedComponents/PhotoCount.tsx(63,9): error TS2322: Type '{ children: Element[]; height: number; width: number; viewBox: string; fill: string; xmlns: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Svg> & Pick<Readonly<SvgProps>, "filter" | "id" | ... 152 more ... | "fontVariationSettings"> & InexactPartial<...> & InexactPartial<...>'.
   Property 'xmlns' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Svg> & Pick<Readonly<SvgProps>, "filter" | "id" | ... 152 more ... | "fontVariationSettings"> & InexactPartial<...> & InexactPartial<...>'.
-src/components/SharedComponents/ScientificName.tsx(6,19): error TS7016: Could not find a declaration file for module 'realmModels/Taxon'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Taxon.js' implicitly has an 'any' type.
+src/components/SharedComponents/ScientificName.tsx(6,19): error TS7016: Could not find a declaration file for module 'realmModels/Taxon'. 'src/realmModels/Taxon.js' implicitly has an 'any' type.
 src/components/SharedComponents/ScientificName.tsx(71,5): error TS18048: 'scientificNameArray' is possibly 'undefined'.
 src/components/SharedComponents/ScientificName.tsx(71,34): error TS2345: Argument of type 'string' is not assignable to parameter of type 'Element'.
 src/components/SharedComponents/ScientificName.tsx(72,5): error TS18048: 'scientificNameArray' is possibly 'undefined'.
 src/components/SharedComponents/ScientificName.tsx(72,34): error TS2345: Argument of type 'string' is not assignable to parameter of type 'Element'.
 src/components/SharedComponents/ScrollViewWrapper.tsx(30,9): error TS2322: Type 'object | undefined' is not assignable to type 'Ref<unknown> | undefined'.
   Type 'object' is not assignable to type 'Ref<unknown> | undefined'.
-src/components/SharedComponents/SearchBar.tsx(9,27): error TS7016: Could not find a declaration file for module 'styles/global'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/styles/global.js' implicitly has an 'any' type.
+src/components/SharedComponents/SearchBar.tsx(9,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
 src/components/SharedComponents/SearchBar.tsx(89,9): error TS2322: Type 'RefObject<TextInput | null> | MutableRefObject<TextInput | undefined> | undefined' is not assignable to type '((RefObject<TextInput | null> | ((instance: TextInput | null) => void | (() => VoidOrUndefinedOnly))) & (((instance: TextInputHandles | null) => void | (() => VoidOrUndefinedOnly)) | RefObject<...>)) | null | undefined'.
   Type 'MutableRefObject<TextInput | undefined>' is not assignable to type '((RefObject<TextInput | null> | ((instance: TextInput | null) => void | (() => VoidOrUndefinedOnly))) & (((instance: TextInputHandles | null) => void | (() => VoidOrUndefinedOnly)) | RefObject<...>)) | null | undefined'.
     Type 'MutableRefObject<TextInput | undefined>' is not assignable to type '((instance: TextInput | null) => void | (() => VoidOrUndefinedOnly)) & RefObject<TextInputHandles | null>'.
@@ -1210,10 +1210,10 @@ src/components/SharedComponents/Sheets/BottomSheet.tsx(120,11): error TS2322: Ty
 src/components/SharedComponents/Sheets/BottomSheet.tsx(140,15): error TS2322: Type '{ icon: string; onPress: () => void; size: number; className: string; accessibilityState: { disabled: false | undefined; }; accessibilityLabel: string; }' is not assignable to type 'IntrinsicAttributes & Props'.
   Property 'accessibilityState' does not exist on type 'IntrinsicAttributes & Props'. Did you mean 'accessibilityLabel'?
 src/components/SharedComponents/Sheets/RadioButtonSheet.tsx(58,47): error TS2339: Property 'labelComponent' does not exist on type '{ value: string; icon?: string | undefined; label: string; text?: string | undefined; buttonText?: string | undefined; }'.
-src/components/SharedComponents/SimpleObservationLocation.tsx(1,36): error TS7016: Could not find a declaration file for module 'components/ObsDetails/helpers/checkCamelAndSnakeCase'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/ObsDetails/helpers/checkCamelAndSnakeCase.js' implicitly has an 'any' type.
+src/components/SharedComponents/SimpleObservationLocation.tsx(1,36): error TS7016: Could not find a declaration file for module 'components/ObsDetails/helpers/checkCamelAndSnakeCase'. 'src/components/ObsDetails/helpers/checkCamelAndSnakeCase.js' implicitly has an 'any' type.
 src/components/SharedComponents/SimpleObservationLocation.tsx(18,19): error TS2339: Property 'private_place_guess' does not exist on type 'object'.
-src/components/SharedComponents/SpeciesSeenCheckmark.tsx(5,27): error TS7016: Could not find a declaration file for module 'styles/global'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/styles/global.js' implicitly has an 'any' type.
-src/components/SharedComponents/TaxonGridItem.tsx(30,54): error TS2345: Argument of type 'import("/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/User").default | null' is not assignable to parameter of type 'User | null'.
+src/components/SharedComponents/SpeciesSeenCheckmark.tsx(5,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
+src/components/SharedComponents/TaxonGridItem.tsx(30,54): error TS2345: Argument of type 'import("src/realmModels/User").default | null' is not assignable to parameter of type 'User | null'.
 src/components/SharedComponents/TaxonGridItem.tsx(36,7): error TS2345: Argument of type 'ApiPhoto | undefined' is not assignable to parameter of type 'RealmPhoto'.
   Type 'undefined' is not assignable to type 'RealmPhoto'.
 src/components/SharedComponents/TaxonGridItem.tsx(50,30): error TS2769: No overload matches this call.
@@ -1228,7 +1228,7 @@ src/components/SharedComponents/TaxonGridItem.tsx(60,9): error TS2322: Type '{ u
 src/components/SharedComponents/TaxonGridItem.tsx(91,47): error TS2339: Property 'prefers_scientific_name_first' does not exist on type 'User'.
 src/components/SharedComponents/TaxonGridItem.tsx(92,46): error TS2339: Property 'prefers_common_names' does not exist on type 'User'.
 src/components/SharedComponents/TaxonResult.tsx(70,3): error TS2339: Property 'retryQuery' does not exist on type 'TaxonResultProps'.
-src/components/SharedComponents/TaxonResult.tsx(97,60): error TS2345: Argument of type 'import("/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/User").default | null' is not assignable to parameter of type 'User | null'.
+src/components/SharedComponents/TaxonResult.tsx(97,60): error TS2345: Argument of type 'import("src/realmModels/User").default | null' is not assignable to parameter of type 'User | null'.
 src/components/SharedComponents/TaxonResult.tsx(110,47): error TS2339: Property 'url' does not exist on type '{}'.
 src/components/SharedComponents/TaxonResult.tsx(125,14): error TS2339: Property 'firstPhotoID' does not exist on type '{ id: number | undefined; hideNavButtons: boolean; lastScreen: string | null; vision: boolean; }'.
 src/components/SharedComponents/TaxonResult.tsx(125,41): error TS2339: Property 'id' does not exist on type '{}'.
@@ -1236,7 +1236,7 @@ src/components/SharedComponents/TaxonResult.tsx(127,14): error TS2339: Property 
 src/components/SharedComponents/TaxonResult.tsx(129,16): error TS2339: Property 'push' does not exist on type 'Omit<NavigationProp<RootParamList>, "getState"> & { getState(): Readonly<{ key: string; index: number; routeNames: string[]; history?: unknown[] | undefined; routes: NavigationRoute<...>[]; type: string; stale: false; }> | undefined; }'.
 src/components/SharedComponents/TaxonResult.tsx(216,47): error TS2339: Property 'prefers_scientific_name_first' does not exist on type 'User'.
 src/components/SharedComponents/TaxonResult.tsx(217,46): error TS2339: Property 'prefers_common_names' does not exist on type 'User'.
-src/components/SharedComponents/TaxonSearch.tsx(13,27): error TS7016: Could not find a declaration file for module 'styles/global'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/styles/global.js' implicitly has an 'any' type.
+src/components/SharedComponents/TaxonSearch.tsx(13,27): error TS7016: Could not find a declaration file for module 'styles/global'. 'src/styles/global.js' implicitly has an 'any' type.
 src/components/SharedComponents/Typography/InatText.tsx(32,7): error TS2769: No overload matches this call.
   Overload 1 of 2, '(props: TextProps): Text', gave the following error.
     Type '{ textAlign: string; }' is not assignable to type 'TextStyle | Falsy | RegisteredStyle<TextStyle> | RecursiveArray<TextStyle | Falsy | RegisteredStyle<TextStyle>> | readonly (TextStyle | ... 1 more ... | RegisteredStyle<...>)[]'.
@@ -1249,11 +1249,11 @@ src/components/SharedComponents/UploadProgressBar.tsx(1,15): error TS2305: Modul
 src/components/SharedComponents/UploadStatus/UploadProgressIcon.tsx(42,9): error TS2322: Type '{ activeStrokeColor: string; activeStrokeWidth: number; inActiveStrokeOpacity: number; maxValue: number; radius: number; showProgressValue: false; testID: string; value: number; }' is not assignable to type 'IntrinsicAttributes & CircularProgressProps & RefAttributes<ProgressRef>'.
   Property 'testID' does not exist on type 'IntrinsicAttributes & CircularProgressProps & RefAttributes<ProgressRef>'.
 src/components/SharedComponents/UploadStatus/UploadStatus.tsx(4,36): error TS2724: '"react"' has no exported member named 'ReactComponent'. Did you mean 'PureComponent'?
-src/components/SharedComponents/UploadStatus/UploadStatus.tsx(8,31): error TS7016: Could not find a declaration file for module './FadeOutFadeInIcon'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/SharedComponents/UploadStatus/FadeOutFadeInIcon.js' implicitly has an 'any' type.
+src/components/SharedComponents/UploadStatus/UploadStatus.tsx(8,31): error TS7016: Could not find a declaration file for module './FadeOutFadeInIcon'. 'src/components/SharedComponents/UploadStatus/FadeOutFadeInIcon.js' implicitly has an 'any' type.
 src/components/SharedComponents/UserText.tsx(159,22): error TS2339: Property 'push' does not exist on type 'Omit<NavigationProp<RootParamList>, "getState"> & { getState(): Readonly<{ key: string; index: number; routeNames: string[]; history?: unknown[] | undefined; routes: NavigationRoute<...>[]; type: string; stale: false; }> | undefined; }'.
-src/components/StartupService.tsx(13,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHelpers/logger.js' implicitly has an 'any' type.
-src/components/StartupService.tsx(20,32): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
-src/components/Suggestions/hooks/useNavigateWithTaxonSelected.ts(3,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
+src/components/StartupService.tsx(13,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
+src/components/StartupService.tsx(20,32): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
+src/components/Suggestions/hooks/useNavigateWithTaxonSelected.ts(3,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/components/Suggestions/hooks/useNavigateWithTaxonSelected.ts(17,11): error TS2339: Property 'entryScreen' does not exist on type '{}'.
 src/components/Suggestions/hooks/useNavigateWithTaxonSelected.ts(17,24): error TS2339: Property 'lastScreen' does not exist on type '{}'.
 src/components/Suggestions/hooks/useNavigateWithTaxonSelected.ts(18,40): error TS7006: Parameter 'state' implicitly has an 'any' type.
@@ -1266,10 +1266,10 @@ src/components/Suggestions/hooks/useNavigateWithTaxonSelected.ts(54,28): error T
     Argument of type 'string' is not assignable to parameter of type 'never'.
 src/components/Suggestions/hooks/useNavigateWithTaxonSelected.ts(56,28): error TS2345: Argument of type 'string' is not assignable to parameter of type 'never'.
 src/components/Suggestions/ObsPhotoSelectionList.tsx(20,40): error TS7031: Binding element 'item' implicitly has an 'any' type.
-src/components/Suggestions/SuggestionsContainer.tsx(5,30): error TS7016: Could not find a declaration file for module 'components/MediaViewer/MediaViewerModal'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/MediaViewer/MediaViewerModal.js' implicitly has an 'any' type.
-src/components/Suggestions/SuggestionsContainer.tsx(14,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHelpers/logger.js' implicitly has an 'any' type.
-src/components/Suggestions/SuggestionsContainer.tsx(22,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
-src/components/Suggestions/SuggestionsContainer.tsx(28,25): error TS7016: Could not find a declaration file for module './Suggestions'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/Suggestions/Suggestions.js' implicitly has an 'any' type.
+src/components/Suggestions/SuggestionsContainer.tsx(5,30): error TS7016: Could not find a declaration file for module 'components/MediaViewer/MediaViewerModal'. 'src/components/MediaViewer/MediaViewerModal.js' implicitly has an 'any' type.
+src/components/Suggestions/SuggestionsContainer.tsx(14,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
+src/components/Suggestions/SuggestionsContainer.tsx(22,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
+src/components/Suggestions/SuggestionsContainer.tsx(28,25): error TS7016: Could not find a declaration file for module './Suggestions'. 'src/components/Suggestions/Suggestions.js' implicitly has an 'any' type.
 src/components/Suggestions/SuggestionsContainer.tsx(47,23): error TS7006: Parameter 'selectedPhotoUri' implicitly has an 'any' type.
 src/components/Suggestions/SuggestionsContainer.tsx(47,41): error TS7006: Parameter 'shouldUseEvidenceLocation' implicitly has an 'any' type.
 src/components/Suggestions/SuggestionsContainer.tsx(86,19): error TS7006: Parameter 'state' implicitly has an 'any' type.
@@ -1296,7 +1296,7 @@ src/components/Suggestions/SuggestionsFooter.tsx(119,77): error TS2339: Property
 src/components/Suggestions/SuggestionsFooter.tsx(124,42): error TS2339: Property 'results' does not exist on type '[]'.
 src/components/Suggestions/SuggestionsFooter.tsx(132,46): error TS2339: Property 'results' does not exist on type '[]'.
 src/components/Suggestions/SuggestionsFooter.tsx(132,78): error TS7006: Parameter 'suggestion' implicitly has an 'any' type.
-src/components/Suggestions/SuggestionsLoading.tsx(10,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
+src/components/Suggestions/SuggestionsLoading.tsx(10,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/components/Suggestions/SuggestionsLoading.tsx(22,40): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/components/Suggestions/SuggestionsTaxonSearch.tsx(25,52): error TS7031: Binding element 'taxon' implicitly has an 'any' type.
 src/components/Suggestions/SuggestionsTaxonSearch.tsx(25,59): error TS7031: Binding element 'index' implicitly has an 'any' type.
@@ -1326,7 +1326,7 @@ src/components/TaxonDetails/TaxonDetailsTitle.tsx(90,11): error TS2322: Type '{ 
   Type 'undefined' is not assignable to type 'ApiTaxon | RealmTaxon'.
 src/components/TaxonDetails/TaxonDetailsTitle.tsx(94,45): error TS2339: Property 'prefers_scientific_name_first' does not exist on type 'User'.
 src/components/TaxonDetails/TaxonDetailsTitle.tsx(96,44): error TS2339: Property 'prefers_common_names' does not exist on type 'User'.
-src/components/TaxonDetails/TaxonMapPreview.tsx(1,36): error TS7016: Could not find a declaration file for module 'api/observations'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/api/observations.js' implicitly has an 'any' type.
+src/components/TaxonDetails/TaxonMapPreview.tsx(1,36): error TS7016: Could not find a declaration file for module 'api/observations'. 'src/api/observations.js' implicitly has an 'any' type.
 src/components/TaxonDetails/TaxonMapPreview.tsx(33,21): error TS2339: Property 'id' does not exist on type 'object'.
 src/components/TaxonDetails/TaxonMapPreview.tsx(50,52): error TS2339: Property 'total_results' does not exist on type '{}'.
 src/components/TaxonDetails/TaxonMapPreview.tsx(51,40): error TS2339: Property 'total_bounds' does not exist on type '{}'.
@@ -1355,7 +1355,7 @@ src/components/TaxonDetails/Taxonomy.tsx(62,53): error TS7006: Parameter 'child'
 src/components/TaxonDetails/Taxonomy.tsx(64,11): error TS2322: Type 'User | null' is not assignable to type '{ login: string; id: number; }'.
   Type 'null' is not assignable to type '{ login: string; id: number; }'.
 src/components/TaxonDetails/Taxonomy.tsx(73,39): error TS2339: Property 'children' does not exist on type 'object'.
-src/components/TaxonDetails/TaxonomyScientificName.tsx(4,19): error TS7016: Could not find a declaration file for module 'realmModels/Taxon'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Taxon.js' implicitly has an 'any' type.
+src/components/TaxonDetails/TaxonomyScientificName.tsx(4,19): error TS7016: Could not find a declaration file for module 'realmModels/Taxon'. 'src/realmModels/Taxon.js' implicitly has an 'any' type.
 src/components/TaxonDetails/TaxonomyTaxon.tsx(43,54): error TS2559: Type '{ login: string; id: number; }' has no properties in common with type 'User'.
 src/components/TaxonDetails/TaxonomyTaxon.tsx(48,7): error TS2322: Type 'string | undefined' is not assignable to type 'string'.
   Type 'undefined' is not assignable to type 'string'.
@@ -1384,29 +1384,29 @@ src/components/UserList/UserListItem.tsx(39,9): error TS2322: Type 'Function | u
   Type 'Function' is not assignable to type '(event: GestureResponderEvent) => void'.
     Type 'Function' provides no match for the signature '(event: GestureResponderEvent): void'.
 src/components/UserList/UserListItem.tsx(46,11): error TS7031: Binding element 'children' implicitly has an 'any' type.
-src/components/UserProfile/FollowersList.tsx(5,28): error TS7016: Could not find a declaration file for module 'api/users'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/api/users.js' implicitly has an 'any' type.
+src/components/UserProfile/FollowersList.tsx(5,28): error TS7016: Could not find a declaration file for module 'api/users'. 'src/api/users.js' implicitly has an 'any' type.
 src/components/UserProfile/FollowersList.tsx(29,11): error TS2339: Property 'user' does not exist on type 'Readonly<object | undefined>'.
 src/components/UserProfile/FollowersList.tsx(37,5): error TS2339: Property 'data' does not exist on type '{}'.
 src/components/UserProfile/FollowersList.tsx(39,5): error TS2339: Property 'isFetching' does not exist on type '{}'.
 src/components/UserProfile/FollowersList.tsx(40,5): error TS2339: Property 'totalResults' does not exist on type '{}'.
 src/components/UserProfile/FollowersList.tsx(42,5): error TS2345: Argument of type 'any[]' is not assignable to parameter of type 'string'.
-src/components/UserProfile/FollowingList.tsx(5,28): error TS7016: Could not find a declaration file for module 'api/users'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/api/users.js' implicitly has an 'any' type.
+src/components/UserProfile/FollowingList.tsx(5,28): error TS7016: Could not find a declaration file for module 'api/users'. 'src/api/users.js' implicitly has an 'any' type.
 src/components/UserProfile/FollowingList.tsx(29,11): error TS2339: Property 'user' does not exist on type 'Readonly<object | undefined>'.
 src/components/UserProfile/FollowingList.tsx(37,5): error TS2339: Property 'data' does not exist on type '{}'.
 src/components/UserProfile/FollowingList.tsx(39,5): error TS2339: Property 'isFetching' does not exist on type '{}'.
 src/components/UserProfile/FollowingList.tsx(40,5): error TS2339: Property 'totalResults' does not exist on type '{}'.
 src/components/UserProfile/FollowingList.tsx(42,5): error TS2345: Argument of type 'any[]' is not assignable to parameter of type 'string'.
-src/components/UserProfile/UnfollowSheet.tsx(1,37): error TS7016: Could not find a declaration file for module 'api/relationships'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/api/relationships.js' implicitly has an 'any' type.
+src/components/UserProfile/UnfollowSheet.tsx(1,37): error TS7016: Could not find a declaration file for module 'api/relationships'. 'src/api/relationships.js' implicitly has an 'any' type.
 src/components/UserProfile/UnfollowSheet.tsx(26,67): error TS2345: Argument of type '{ id: number; relationship: { following: boolean; }; }' is not assignable to parameter of type 'void'.
 src/components/UserProfile/UnfollowSheet.tsx(42,6): error TS2741: Property 'loading' is missing in type '{ onPressClose: () => void; secondButtonText: string; buttonType: string; headerText: string; buttonText: string; handleSecondButtonPress: () => void; confirm: () => void; }' but required in type 'Props'.
-src/navigation/BottomTabNavigator/CustomTabBarContainer.tsx(7,8): error TS7016: Could not find a declaration file for module 'navigation/StackNavigators/TabStackNavigator'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/navigation/StackNavigators/TabStackNavigator.js' implicitly has an 'any' type.
-src/navigation/BottomTabNavigator/CustomTabBarContainer.tsx(12,26): error TS7016: Could not find a declaration file for module './CustomTabBar'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/navigation/BottomTabNavigator/CustomTabBar.js' implicitly has an 'any' type.
+src/navigation/BottomTabNavigator/CustomTabBarContainer.tsx(7,8): error TS7016: Could not find a declaration file for module 'navigation/StackNavigators/TabStackNavigator'. 'src/navigation/StackNavigators/TabStackNavigator.js' implicitly has an 'any' type.
+src/navigation/BottomTabNavigator/CustomTabBarContainer.tsx(12,26): error TS7016: Could not find a declaration file for module './CustomTabBar'. 'src/navigation/BottomTabNavigator/CustomTabBar.js' implicitly has an 'any' type.
 src/navigation/BottomTabNavigator/CustomTabBarContainer.tsx(44,49): error TS2345: Argument of type 'User | null' is not assignable to parameter of type 'RealmUser | ApiUser | undefined'.
   Type 'null' is not assignable to type 'RealmUser | ApiUser | undefined'.
 src/navigation/BottomTabNavigator/CustomTabBarContainer.tsx(65,20): error TS2339: Property 'openDrawer' does not exist on type 'NavigationHelpers<ParamListBase, BottomTabNavigationEventMap>'.
-src/navigation/BottomTabNavigator/index.tsx(7,8): error TS7016: Could not find a declaration file for module 'navigation/StackNavigators/TabStackNavigator'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/navigation/StackNavigators/TabStackNavigator.js' implicitly has an 'any' type.
-src/navigation/CustomDrawerContent.tsx(28,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHelpers/logger.js' implicitly has an 'any' type.
-src/navigation/CustomDrawerContent.tsx(30,42): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
+src/navigation/BottomTabNavigator/index.tsx(7,8): error TS7016: Could not find a declaration file for module 'navigation/StackNavigators/TabStackNavigator'. 'src/navigation/StackNavigators/TabStackNavigator.js' implicitly has an 'any' type.
+src/navigation/CustomDrawerContent.tsx(28,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
+src/navigation/CustomDrawerContent.tsx(30,42): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/navigation/CustomDrawerContent.tsx(59,28): error TS7006: Parameter 't' implicitly has an 'any' type.
 src/navigation/CustomDrawerContent.tsx(156,22): error TS2339: Property 'navigate' does not exist on type 'object'.
 src/navigation/CustomDrawerContent.tsx(178,16): error TS2339: Property 'goBack' does not exist on type 'object'.
@@ -1426,7 +1426,7 @@ src/navigation/CustomDrawerContent.tsx(322,10): error TS2741: Property 'loading'
 src/navigation/navigationOptions.tsx(70,32): error TS2322: Type '{ bottomBorderColor: string; }' is not assignable to type 'false | "" | RegisteredStyle<ViewStyle> | Value | WithAnimatedObject<ViewStyle> | AnimatedInterpolation<string | number> | WithAnimatedArray<...> | null | undefined'.
   Object literal may only specify known properties, and 'bottomBorderColor' does not exist in type 'Value | WithAnimatedObject<ViewStyle> | AnimatedInterpolation<string | number> | WithAnimatedArray<ViewStyle | Falsy | RegisteredStyle<...> | RecursiveArray<...> | readonly (ViewStyle | ... 1 more ... | RegisteredStyle<...>)[]>'.
 src/navigation/navigationUtils.ts(14,34): error TS2538: Type 'undefined' cannot be used as an index type.
-src/providers/ExploreContext.tsx(233,26): error TS2694: Namespace '"/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/providers/ExploreContext".EXPLORE_ACTION' has no exported member 'EXCLUDE_USER'.
+src/providers/ExploreContext.tsx(233,26): error TS2694: Namespace '"src/providers/ExploreContext".EXPLORE_ACTION' has no exported member 'EXCLUDE_USER'.
 src/providers/ExploreContext.tsx(336,7): error TS2741: Property 'excludeUser' is missing in type '{ placeMode: PLACE_MODE.NEARBY; place: undefined; place_guess: string; place_id: undefined; return_bounds: undefined; taxon: undefined; taxon_id: undefined; verifiable: true; created_d1: undefined; ... 23 more ...; photoLicense: PHOTO_LICENSE; }' but required in type 'State'.
 src/providers/ExploreContext.tsx(366,7): error TS2322: Type '{ placeMode: PLACE_MODE.WORLDWIDE; lat: undefined; lng: undefined; radius: undefined; place_id: undefined; swlat: undefined; swlng: undefined; nelat: undefined; nelng: undefined; }' is not assignable to type 'DefaultLocation'.
   Object literal may only specify known properties, and 'place_id' does not exist in type 'DefaultLocation'.
@@ -1535,13 +1535,13 @@ src/providers/ExploreContext.tsx(679,12): error TS7053: Element implicitly has a
   No index signature with a parameter of type 'string' was found on type 'State'.
 src/providers/ExploreContext.tsx(679,27): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ user_id: undefined; project_id: undefined; researchGrade: boolean; needsID: boolean; casual: boolean; hrank: null; lrank: null; dateObserved: DATE_OBSERVED; dateUploaded: DATE_UPLOADED; ... 4 more ...; photoLicense: PHOTO_LICENSE; }'.
   No index signature with a parameter of type 'string' was found on type '{ user_id: undefined; project_id: undefined; researchGrade: boolean; needsID: boolean; casual: boolean; hrank: null; lrank: null; dateObserved: DATE_OBSERVED; dateUploaded: DATE_UPLOADED; ... 4 more ...; photoLicense: PHOTO_LICENSE; }'.
-src/realmModels/index.ts(4,25): error TS7016: Could not find a declaration file for module './Application'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Application.js' implicitly has an 'any' type.
-src/realmModels/index.ts(5,21): error TS7016: Could not find a declaration file for module './Comment'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Comment.js' implicitly has an 'any' type.
-src/realmModels/index.ts(7,28): error TS7016: Could not find a declaration file for module './Identification'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Identification.js' implicitly has an 'any' type.
-src/realmModels/index.ts(8,25): error TS7016: Could not find a declaration file for module './Observation'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Observation.js' implicitly has an 'any' type.
-src/realmModels/index.ts(10,30): error TS7016: Could not find a declaration file for module './ObservationSound'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/ObservationSound.js' implicitly has an 'any' type.
-src/realmModels/index.ts(13,19): error TS7016: Could not find a declaration file for module './Sound'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Sound.js' implicitly has an 'any' type.
-src/realmModels/index.ts(14,19): error TS7016: Could not find a declaration file for module './Taxon'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Taxon.js' implicitly has an 'any' type.
+src/realmModels/index.ts(4,25): error TS7016: Could not find a declaration file for module './Application'. 'src/realmModels/Application.js' implicitly has an 'any' type.
+src/realmModels/index.ts(5,21): error TS7016: Could not find a declaration file for module './Comment'. 'src/realmModels/Comment.js' implicitly has an 'any' type.
+src/realmModels/index.ts(7,28): error TS7016: Could not find a declaration file for module './Identification'. 'src/realmModels/Identification.js' implicitly has an 'any' type.
+src/realmModels/index.ts(8,25): error TS7016: Could not find a declaration file for module './Observation'. 'src/realmModels/Observation.js' implicitly has an 'any' type.
+src/realmModels/index.ts(10,30): error TS7016: Could not find a declaration file for module './ObservationSound'. 'src/realmModels/ObservationSound.js' implicitly has an 'any' type.
+src/realmModels/index.ts(13,19): error TS7016: Could not find a declaration file for module './Sound'. 'src/realmModels/Sound.js' implicitly has an 'any' type.
+src/realmModels/index.ts(14,19): error TS7016: Could not find a declaration file for module './Taxon'. 'src/realmModels/Taxon.js' implicitly has an 'any' type.
 src/realmModels/index.ts(57,9): error TS18046: 'newObservation.updateNeedsSync' is of type 'unknown'.
 src/realmModels/ObservationPhoto.ts(24,51): error TS2532: Object is possibly 'undefined'.
 src/realmModels/ObservationPhoto.ts(35,35): error TS2345: Argument of type 'ApiPhoto | undefined' is not assignable to parameter of type 'ApiPhoto'.
@@ -1558,10 +1558,10 @@ src/realmModels/QueueItem.ts(37,24): error TS7006: Parameter 'realm' implicitly 
 src/realmModels/QueueItem.ts(37,31): error TS7006: Parameter 'id' implicitly has an 'any' type.
 src/realmModels/QueueItem.ts(49,30): error TS7006: Parameter 'realm' implicitly has an 'any' type.
 src/realmModels/QueueItem.ts(49,37): error TS7006: Parameter 'id' implicitly has an 'any' type.
-src/sharedHelpers/breakpoint.ts(2,21): error TS7016: Could not find a declaration file for module 'styles/tailwindScreens'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/styles/tailwindScreens.js' implicitly has an 'any' type.
-src/sharedHelpers/changeLanguage.ts(2,32): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
+src/sharedHelpers/breakpoint.ts(2,21): error TS7016: Could not find a declaration file for module 'styles/tailwindScreens'. 'src/styles/tailwindScreens.js' implicitly has an 'any' type.
+src/sharedHelpers/changeLanguage.ts(2,32): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/sharedHelpers/changeLanguage.ts(4,24): error TS7006: Parameter 'newLocale' implicitly has an 'any' type.
-src/sharedHelpers/clearCaches.ts(4,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHelpers/logger.js' implicitly has an 'any' type.
+src/sharedHelpers/clearCaches.ts(4,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
 src/sharedHelpers/clearCaches.ts(36,41): error TS7006: Parameter 'realm' implicitly has an 'any' type.
 src/sharedHelpers/clearCaches.ts(76,29): error TS7006: Parameter 'isDebugMode' implicitly has an 'any' type.
 src/sharedHelpers/clearCaches.ts(76,42): error TS7006: Parameter 'realm' implicitly has an 'any' type.
@@ -1569,8 +1569,8 @@ src/sharedHelpers/dateAndTime.ts(423,31): error TS18047: 'dateString' is possibl
 src/sharedHelpers/dateAndTime.ts(433,31): error TS2345: Argument of type 'DateString' is not assignable to parameter of type 'string'.
   Type 'null' is not assignable to type 'string'.
 src/sharedHelpers/fetchAccurateUserLocation.ts(41,88): error TS2554: Expected 1 arguments, but got 2.
-src/sharedHelpers/fetchTaxonAndSave.ts(1,28): error TS7016: Could not find a declaration file for module 'api/taxa'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/api/taxa.js' implicitly has an 'any' type.
-src/sharedHelpers/fetchTaxonAndSave.ts(4,19): error TS7016: Could not find a declaration file for module 'realmModels/Taxon'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Taxon.js' implicitly has an 'any' type.
+src/sharedHelpers/fetchTaxonAndSave.ts(1,28): error TS7016: Could not find a declaration file for module 'api/taxa'. 'src/api/taxa.js' implicitly has an 'any' type.
+src/sharedHelpers/fetchTaxonAndSave.ts(4,19): error TS7016: Could not find a declaration file for module 'realmModels/Taxon'. 'src/realmModels/Taxon.js' implicitly has an 'any' type.
 src/sharedHelpers/flashListPerformanceTracker.ts(2,11): error TS2564: Property 'screenLoadTime' has no initializer and is not definitely assigned in the constructor.
 src/sharedHelpers/flashListPerformanceTracker.ts(4,11): error TS2564: Property 'itemsVisibleStartTime' has no initializer and is not definitely assigned in the constructor.
 src/sharedHelpers/flashListPerformanceTracker.ts(6,11): error TS2564: Property 'itemsVisibleDuration' has no initializer and is not definitely assigned in the constructor.
@@ -1610,24 +1610,24 @@ src/sharedHelpers/resizeImage.ts(35,5): error TS2345: Argument of type '{ mode?:
         Type 'string' is not assignable to type 'ResizeMode | undefined'.
 src/sharedHelpers/safeRealmWrite.ts(21,5): error TS18046: 'e' is of type 'unknown'.
 src/sharedHelpers/safeRealmWrite.ts(21,36): error TS18046: 'e' is of type 'unknown'.
-src/sharedHelpers/saveObservation.ts(2,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Observation.js' implicitly has an 'any' type.
-src/sharedHelpers/saveObservation.ts(4,46): error TS7016: Could not find a declaration file for module 'sharedHelpers/parseExif'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHelpers/parseExif.js' implicitly has an 'any' type.
-src/sharedHelpers/sentinelFiles.ts(2,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHelpers/logger.js' implicitly has an 'any' type.
+src/sharedHelpers/saveObservation.ts(2,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. 'src/realmModels/Observation.js' implicitly has an 'any' type.
+src/sharedHelpers/saveObservation.ts(4,46): error TS7016: Could not find a declaration file for module 'sharedHelpers/parseExif'. 'src/sharedHelpers/parseExif.js' implicitly has an 'any' type.
+src/sharedHelpers/sentinelFiles.ts(2,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
 src/sharedHelpers/taxon.ts(63,9): error TS2538: Type 'undefined' cannot be used as an index type.
 src/sharedHelpers/taxon.ts(64,16): error TS18048: 'firstLetterIndex' is possibly 'undefined'.
 src/sharedHelpers/taxon.ts(137,8): error TS18048: 'taxon.rank_level' is possibly 'undefined'.
-src/sharedHooks/index.ts(12,58): error TS7016: Could not find a declaration file for module './useInfiniteObservationsScroll'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHooks/useInfiniteObservationsScroll.js' implicitly has an 'any' type.
-src/sharedHooks/index.ts(13,46): error TS7016: Could not find a declaration file for module './useInfiniteScroll'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHooks/useInfiniteScroll.js' implicitly has an 'any' type.
-src/sharedHooks/index.ts(20,49): error TS7016: Could not find a declaration file for module './useLocalObservations'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHooks/useLocalObservations.js' implicitly has an 'any' type.
-src/sharedHooks/index.ts(23,51): error TS7016: Could not find a declaration file for module './useObservationsUpdates'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHooks/useObservationsUpdates.js' implicitly has an 'any' type.
-src/sharedHooks/index.ts(24,61): error TS7016: Could not find a declaration file for module './useObservationUpdatesWhenFocused'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHooks/useObservationUpdatesWhenFocused.js' implicitly has an 'any' type.
-src/sharedHooks/index.ts(27,49): error TS7016: Could not find a declaration file for module './useRemoteObservation'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHooks/useRemoteObservation.js' implicitly has an 'any' type.
-src/sharedHooks/index.ts(28,46): error TS7016: Could not find a declaration file for module './useScrollToOffset'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHooks/useScrollToOffset.js' implicitly has an 'any' type.
-src/sharedHooks/index.ts(30,44): error TS7016: Could not find a declaration file for module './useStoredLayout'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHooks/useStoredLayout.js' implicitly has an 'any' type.
-src/sharedHooks/index.ts(31,43): error TS7016: Could not find a declaration file for module './useSuggestions/useSuggestions'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHooks/useSuggestions/useSuggestions.js' implicitly has an 'any' type.
-src/sharedHooks/index.ts(32,37): error TS7016: Could not find a declaration file for module './useTaxon'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHooks/useTaxon.js' implicitly has an 'any' type.
-src/sharedHooks/index.ts(35,38): error TS7016: Could not find a declaration file for module './useUserMe'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHooks/useUserMe.js' implicitly has an 'any' type.
-src/sharedHooks/useAuthenticatedInfiniteQuery.ts(5,51): error TS7016: Could not find a declaration file for module 'sharedHelpers/logging'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHelpers/logging.js' implicitly has an 'any' type.
+src/sharedHooks/index.ts(12,58): error TS7016: Could not find a declaration file for module './useInfiniteObservationsScroll'. 'src/sharedHooks/useInfiniteObservationsScroll.js' implicitly has an 'any' type.
+src/sharedHooks/index.ts(13,46): error TS7016: Could not find a declaration file for module './useInfiniteScroll'. 'src/sharedHooks/useInfiniteScroll.js' implicitly has an 'any' type.
+src/sharedHooks/index.ts(20,49): error TS7016: Could not find a declaration file for module './useLocalObservations'. 'src/sharedHooks/useLocalObservations.js' implicitly has an 'any' type.
+src/sharedHooks/index.ts(23,51): error TS7016: Could not find a declaration file for module './useObservationsUpdates'. 'src/sharedHooks/useObservationsUpdates.js' implicitly has an 'any' type.
+src/sharedHooks/index.ts(24,61): error TS7016: Could not find a declaration file for module './useObservationUpdatesWhenFocused'. 'src/sharedHooks/useObservationUpdatesWhenFocused.js' implicitly has an 'any' type.
+src/sharedHooks/index.ts(27,49): error TS7016: Could not find a declaration file for module './useRemoteObservation'. 'src/sharedHooks/useRemoteObservation.js' implicitly has an 'any' type.
+src/sharedHooks/index.ts(28,46): error TS7016: Could not find a declaration file for module './useScrollToOffset'. 'src/sharedHooks/useScrollToOffset.js' implicitly has an 'any' type.
+src/sharedHooks/index.ts(30,44): error TS7016: Could not find a declaration file for module './useStoredLayout'. 'src/sharedHooks/useStoredLayout.js' implicitly has an 'any' type.
+src/sharedHooks/index.ts(31,43): error TS7016: Could not find a declaration file for module './useSuggestions/useSuggestions'. 'src/sharedHooks/useSuggestions/useSuggestions.js' implicitly has an 'any' type.
+src/sharedHooks/index.ts(32,37): error TS7016: Could not find a declaration file for module './useTaxon'. 'src/sharedHooks/useTaxon.js' implicitly has an 'any' type.
+src/sharedHooks/index.ts(35,38): error TS7016: Could not find a declaration file for module './useUserMe'. 'src/sharedHooks/useUserMe.js' implicitly has an 'any' type.
+src/sharedHooks/useAuthenticatedInfiniteQuery.ts(5,51): error TS7016: Could not find a declaration file for module 'sharedHelpers/logging'. 'src/sharedHelpers/logging.js' implicitly has an 'any' type.
 src/sharedHooks/useAuthenticatedInfiniteQuery.ts(21,28): error TS2769: No overload matches this call.
   Overload 1 of 3, '(options: DefinedInitialDataInfiniteOptions<unknown, Error, InfiniteData<unknown, unknown>, any[], unknown>, queryClient?: QueryClient | undefined): DefinedUseInfiniteQueryResult<...>', gave the following error.
     Argument of type '{ queryKey: any[]; queryFn: (params: { queryKey: any[]; signal: AbortSignal; pageParam: unknown; direction: FetchDirection; meta: Record<string, unknown> | undefined; }) => Promise<...>; retry: (failureCount: number, error: Error) => any; retryDelay: (failureCount: number, error: Error) => any; }' is not assignable to parameter of type 'DefinedInitialDataInfiniteOptions<unknown, Error, InfiniteData<unknown, unknown>, any[], unknown>'.
@@ -1641,25 +1641,25 @@ src/sharedHooks/useAuthenticatedInfiniteQuery.ts(21,28): error TS2769: No overlo
 src/sharedHooks/useAuthenticatedInfiniteQuery.ts(22,42): error TS2339: Property 'allowAnonymousJWT' does not exist on type 'object'.
 src/sharedHooks/useAuthenticatedInfiniteQuery.ts(25,16): error TS2339: Property 'locale' does not exist on type '{ queryKey: any[]; signal: AbortSignal; pageParam: unknown; direction: FetchDirection; meta: Record<string, unknown> | undefined; }'.
 src/sharedHooks/useAuthenticatedInfiniteQuery.ts(31,51): error TS2339: Property 'allowAnonymousJWT' does not exist on type 'object'.
-src/sharedHooks/useAuthenticatedMutation.ts(5,21): error TS7016: Could not find a declaration file for module '../../react-native-logs.config'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/react-native-logs.config.js' implicitly has an 'any' type.
-src/sharedHooks/useAuthenticatedQuery.ts(4,51): error TS7016: Could not find a declaration file for module 'sharedHelpers/logging'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHelpers/logging.js' implicitly has an 'any' type.
-src/sharedHooks/useDebugMode.ts(2,32): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
+src/sharedHooks/useAuthenticatedMutation.ts(5,21): error TS7016: Could not find a declaration file for module '../../react-native-logs.config'. 'react-native-logs.config.js' implicitly has an 'any' type.
+src/sharedHooks/useAuthenticatedQuery.ts(4,51): error TS7016: Could not find a declaration file for module 'sharedHelpers/logging'. 'src/sharedHelpers/logging.js' implicitly has an 'any' type.
+src/sharedHooks/useDebugMode.ts(2,32): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/sharedHooks/useDeviceOrientation.ts(52,73): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type '"landscape-left" | "landscape-right"'.
   Type 'undefined' is not assignable to type '"landscape-left" | "landscape-right"'.
-src/sharedHooks/useExitObservationFlow.ts(5,34): error TS7016: Could not find a declaration file for module 'components/ObsDetails/helpers/navigateToObsDetails'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/components/ObsDetails/helpers/navigateToObsDetails.js' implicitly has an 'any' type.
-src/sharedHooks/useExitObservationFlow.ts(7,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
+src/sharedHooks/useExitObservationFlow.ts(5,34): error TS7016: Could not find a declaration file for module 'components/ObsDetails/helpers/navigateToObsDetails'. 'src/components/ObsDetails/helpers/navigateToObsDetails.js' implicitly has an 'any' type.
+src/sharedHooks/useExitObservationFlow.ts(7,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/sharedHooks/useExitObservationFlow.ts(24,49): error TS7006: Parameter 'exitOptions' implicitly has an 'any' type.
 src/sharedHooks/useExitObservationFlow.ts(27,47): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/sharedHooks/useExitObservationFlow.ts(49,28): error TS2345: Argument of type 'string' is not assignable to parameter of type 'never'.
-src/sharedHooks/useIconicTaxa.ts(1,28): error TS7016: Could not find a declaration file for module 'api/taxa'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/api/taxa.js' implicitly has an 'any' type.
-src/sharedHooks/useIconicTaxa.ts(6,19): error TS7016: Could not find a declaration file for module 'realmModels/Taxon'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Taxon.js' implicitly has an 'any' type.
+src/sharedHooks/useIconicTaxa.ts(1,28): error TS7016: Could not find a declaration file for module 'api/taxa'. 'src/api/taxa.js' implicitly has an 'any' type.
+src/sharedHooks/useIconicTaxa.ts(6,19): error TS7016: Could not find a declaration file for module 'realmModels/Taxon'. 'src/realmModels/Taxon.js' implicitly has an 'any' type.
 src/sharedHooks/useIconicTaxa.ts(20,5): error TS2345: Argument of type '(string | boolean)[]' is not assignable to parameter of type 'string[]'.
   Type 'string | boolean' is not assignable to type 'string'.
     Type 'boolean' is not assignable to type 'string'.
 src/sharedHooks/useIconicTaxa.ts(26,22): error TS2339: Property 'length' does not exist on type '{}'.
 src/sharedHooks/useIconicTaxa.ts(29,9): error TS18046: 'iconicTaxa' is of type 'unknown'.
-src/sharedHooks/useInfiniteNotificationsScroll.ts(1,66): error TS7016: Could not find a declaration file for module 'api/observations'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/api/observations.js' implicitly has an 'any' type.
-src/sharedHooks/useInfiniteNotificationsScroll.ts(11,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Observation.js' implicitly has an 'any' type.
+src/sharedHooks/useInfiniteNotificationsScroll.ts(1,66): error TS7016: Could not find a declaration file for module 'api/observations'. 'src/api/observations.js' implicitly has an 'any' type.
+src/sharedHooks/useInfiniteNotificationsScroll.ts(11,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. 'src/realmModels/Observation.js' implicitly has an 'any' type.
 src/sharedHooks/useInfiniteNotificationsScroll.ts(129,77): error TS2339: Property 'id' does not exist on type 'User'.
 src/sharedHooks/useInfiniteNotificationsScroll.ts(138,27): error TS7006: Parameter 'lastPage' implicitly has an 'any' type.
 src/sharedHooks/useInfiniteNotificationsScroll.ts(138,37): error TS7006: Parameter 'allPages' implicitly has an 'any' type.
@@ -1682,19 +1682,19 @@ src/sharedHooks/useInfiniteUserScroll.ts(40,25): error TS7006: Parameter 'lastPa
 src/sharedHooks/useInfiniteUserScroll.ts(46,34): error TS7006: Parameter 'page' implicitly has an 'any' type.
 src/sharedHooks/useLastScreen.ts(10,3): error TS2322: Type 'string | undefined' is not assignable to type 'string'.
   Type 'undefined' is not assignable to type 'string'.
-src/sharedHooks/useLayoutPrefs.ts(1,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
+src/sharedHooks/useLayoutPrefs.ts(1,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/sharedHooks/useLayoutPrefs.ts(4,18): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/sharedHooks/useLocalObservation.ts(80,5): error TS2322: Type 'RealmObject<DefaultObject, never> & DefaultObject' is not assignable to type 'Observation | null'.
   Type 'RealmObject<DefaultObject, never> & DefaultObject' is missing the following properties from type 'Observation': missingBasics, needsSync, observationPhotos, observationSounds, and 18 more.
-src/sharedHooks/useNavigateToObsEdit.ts(3,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/stores/useStore.js' implicitly has an 'any' type.
+src/sharedHooks/useNavigateToObsEdit.ts(3,22): error TS7016: Could not find a declaration file for module 'stores/useStore'. 'src/stores/useStore.js' implicitly has an 'any' type.
 src/sharedHooks/useNavigateToObsEdit.ts(7,36): error TS7006: Parameter 'state' implicitly has an 'any' type.
 src/sharedHooks/useNavigateToObsEdit.ts(8,45): error TS7006: Parameter 'state' implicitly has an 'any' type.
-src/sharedHooks/useQuery.ts(3,51): error TS7016: Could not find a declaration file for module 'sharedHelpers/logging'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHelpers/logging.js' implicitly has an 'any' type.
+src/sharedHooks/useQuery.ts(3,51): error TS7016: Could not find a declaration file for module 'sharedHelpers/logging'. 'src/sharedHelpers/logging.js' implicitly has an 'any' type.
 src/sharedHooks/useQuery.ts(11,40): error TS2339: Property 'allowAnonymousJWT' does not exist on type 'object'.
 src/sharedHooks/useSuggestions/isolateHumans.ts(6,28): error TS7006: Parameter 's' implicitly has an 'any' type.
-src/sharedHooks/useSuggestions/useOfflineSuggestions.ts(7,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHelpers/logger.js' implicitly has an 'any' type.
+src/sharedHooks/useSuggestions/useOfflineSuggestions.ts(7,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
 src/sharedHooks/useSuggestions/useOfflineSuggestions.ts(75,11): error TS2538: Type 'unknown' cannot be used as an index type.
-src/sharedHooks/useSuggestions/useOnlineSuggestions.ts(11,19): error TS7016: Could not find a declaration file for module 'realmModels/Taxon'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Taxon.js' implicitly has an 'any' type.
+src/sharedHooks/useSuggestions/useOnlineSuggestions.ts(11,19): error TS7016: Could not find a declaration file for module 'realmModels/Taxon'. 'src/realmModels/Taxon.js' implicitly has an 'any' type.
 src/sharedHooks/useSuggestions/useOnlineSuggestions.ts(37,5): error TS2339: Property 'onFetchError' does not exist on type '{}'.
 src/sharedHooks/useSuggestions/useOnlineSuggestions.ts(38,5): error TS2339: Property 'onFetched' does not exist on type '{}'.
 src/sharedHooks/useSuggestions/useOnlineSuggestions.ts(39,5): error TS2339: Property 'scoreImageParams' does not exist on type '{}'.
@@ -1712,7 +1712,7 @@ src/sharedHooks/useSuggestions/useOnlineSuggestions.ts(117,9): error TS2769: No 
   Overload 2 of 2, '(type: Constructor<AnyRealmObject>, values: Partial<AnyRealmObject> | Partial<Unmanaged<AnyRealmObject>>, mode?: boolean | ... 1 more ... | undefined): AnyRealmObject', gave the following error.
     Argument of type 'string' is not assignable to parameter of type 'Constructor<AnyRealmObject>'.
 src/sharedHooks/useSuggestions/useOnlineSuggestions.ts(144,3): error TS2739: Type '{ onlineSuggestions: object | undefined; dataUpdatedAt: number; error: Error | null; refetch: (options?: RefetchOptions | undefined) => Promise<QueryObserverResult<object, Error>>; timedOut: boolean; resetTimeout: () => void; fetchStatus: FetchStatus; }' is missing the following properties from type 'OnlineSuggestionsResponse': loadingOnlineSuggestions, isRefetching
-src/sharedHooks/useTaxonSearch.ts(8,19): error TS7016: Could not find a declaration file for module 'realmModels/Taxon'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Taxon.js' implicitly has an 'any' type.
+src/sharedHooks/useTaxonSearch.ts(8,19): error TS7016: Could not find a declaration file for module 'realmModels/Taxon'. 'src/realmModels/Taxon.js' implicitly has an 'any' type.
 src/sharedHooks/useTaxonSearch.ts(43,5): error TS2345: Argument of type '(optsWithAuth: ApiOpts) => Promise<any[]>' is not assignable to parameter of type 'QueryFunction<any[]>'.
   Types of parameters 'optsWithAuth' and 'options' are incompatible.
     Type '{ api_token: string | null; }' is not assignable to type 'ApiOpts'.
@@ -1779,7 +1779,7 @@ src/stores/createUploadObservationsSlice.ts(268,5): error TS18048: 'observation'
 src/stores/createUploadObservationsSlice.ts(268,37): error TS18048: 'observation' is possibly 'undefined'.
 src/stores/createUploadObservationsSlice.ts(284,72): error TS2339: Property 'getTotalUploadErrors' does not exist on type 'UploadObservationsSlice'.
 src/stores/createUploadObservationsSlice.ts(287,26): error TS2339: Property 'getTotalUploadErrors' does not exist on type 'UploadObservationsSlice'.
-src/uploaders/dataTransformation/prepareMediaForUpload.ts(2,30): error TS7016: Could not find a declaration file for module 'realmModels/ObservationSound'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/ObservationSound.js' implicitly has an 'any' type.
+src/uploaders/dataTransformation/prepareMediaForUpload.ts(2,30): error TS7016: Could not find a declaration file for module 'realmModels/ObservationSound'. 'src/realmModels/ObservationSound.js' implicitly has an 'any' type.
 src/uploaders/dataTransformation/prepareMediaForUpload.ts(13,50): error TS2345: Argument of type 'Evidence' is not assignable to parameter of type 'RealmPhoto'.
   Type 'RealmObservationPhoto' is not assignable to type 'RealmPhoto'.
     Types of property 'id' are incompatible.
@@ -1789,10 +1789,10 @@ src/uploaders/dataTransformation/prepareMediaForUpload.ts(21,52): error TS2345: 
   Type 'RealmPhoto' is missing the following properties from type 'RealmObservationPhoto': needsSync, wasSynced, uuid, photo
 src/uploaders/dataTransformation/prepareMediaForUpload.ts(36,46): error TS2345: Argument of type 'Evidence' is not assignable to parameter of type 'RealmObservationPhoto'.
   Type 'RealmPhoto' is not assignable to type 'RealmObservationPhoto'.
-src/uploaders/dataTransformation/prepareObservationForUpload.ts(1,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/realmModels/Observation.js' implicitly has an 'any' type.
+src/uploaders/dataTransformation/prepareObservationForUpload.ts(1,25): error TS7016: Could not find a declaration file for module 'realmModels/Observation'. 'src/realmModels/Observation.js' implicitly has an 'any' type.
 src/uploaders/dataTransformation/prepareObservationForUpload.ts(11,7): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
   No index signature with a parameter of type 'string' was found on type '{}'.
-src/uploaders/mediaUploader.ts(1,40): error TS7016: Could not find a declaration file for module 'api/observations'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/api/observations.js' implicitly has an 'any' type.
+src/uploaders/mediaUploader.ts(1,40): error TS7016: Could not find a declaration file for module 'api/observations'. 'src/api/observations.js' implicitly has an 'any' type.
 src/uploaders/mediaUploader.ts(105,33): error TS2339: Property 'uuid' does not exist on type 'Evidence'.
   Property 'uuid' does not exist on type 'RealmPhoto'.
 src/uploaders/mediaUploader.ts(154,3): error TS2322: Type '(MediaApiResponse | null)[]' is not assignable to type 'MediaApiResponse[]'.
@@ -1802,8 +1802,8 @@ src/uploaders/mediaUploader.ts(186,13): error TS18046: 'accessError' is of type 
 src/uploaders/mediaUploader.ts(261,26): error TS2352: Conversion of type 'string' to type 'number' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
 src/uploaders/mediaUploader.ts(273,26): error TS2352: Conversion of type 'string' to type 'number' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
 src/uploaders/mediaUploader.ts(285,26): error TS2352: Conversion of type 'string' to type 'number' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
-src/uploaders/observationUploader.ts(4,8): error TS7016: Could not find a declaration file for module 'api/observations'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/api/observations.js' implicitly has an 'any' type.
-src/uploaders/observationUploader.ts(9,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. '/Users/coreyf/dev/inaturalist/iNaturalistReactNative/src/sharedHelpers/logger.js' implicitly has an 'any' type.
+src/uploaders/observationUploader.ts(4,8): error TS7016: Could not find a declaration file for module 'api/observations'. 'src/api/observations.js' implicitly has an 'any' type.
+src/uploaders/observationUploader.ts(9,21): error TS7016: Could not find a declaration file for module 'sharedHelpers/logger'. 'src/sharedHelpers/logger.js' implicitly has an 'any' type.
 src/uploaders/observationUploader.ts(122,5): error TS18046: 'error' is of type 'unknown'.
 src/uploaders/observationUploader.ts(122,45): error TS18046: 'error' is of type 'unknown'.
 src/uploaders/observationUploader.ts(152,5): error TS18046: 'error' is of type 'unknown'.

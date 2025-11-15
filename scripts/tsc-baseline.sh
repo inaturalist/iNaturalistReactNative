@@ -11,8 +11,8 @@ set -e
 TSC_ERRORS_FILE="tsc-errors.txt"
 TEMP_TSC_ERRORS_FILE="tsc-errors.txt.tmp"
 
-# Run tsc and save the output to a temporary file
-npm run lint:tsc -- --pretty false > "$TEMP_TSC_ERRORS_FILE" || true
+# Run tsc, make paths relative, and save the output to a temporary file
+npm run lint:tsc -- --pretty false | sed "s|$(pwd)/||g" > "$TEMP_TSC_ERRORS_FILE" || true
 
 # If the -u flag is passed, update the baseline and exit
 if [ "$1" = "-u" ]; then
