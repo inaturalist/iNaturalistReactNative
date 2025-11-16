@@ -1,0 +1,9 @@
+appId: org.inaturalist.iNaturalistMobile
+onFlowStart:
+    - runFlow: onFlowStart.yaml
+onFlowComplete:
+    - runFlow: onFlowComplete.yaml
+---
+- launchApp:
+    clearState: true
+- assertVisible: Learn & Explore
