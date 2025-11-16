@@ -243,7 +243,7 @@ jobs:
         echo installed!
 
         echo Maestro starting...
-        maestro test e2e/maestro/shared/Launch.yaml --no-ansi --format JUNIT
+        maestro test e2e/maestro/shared/signedOut.yaml --no-ansi --format JUNIT
         echo Maestro done!
 
     - name: Store Detox artifacts on test failure
@@ -251,7 +251,7 @@ jobs:
       if: ${{ !cancelled() }}
       with:
         name: detox-artifacts
-        path: Launch.mp4
+        path: signedOut.mp4
         retention-days: 5
 
     - name: Test Report
