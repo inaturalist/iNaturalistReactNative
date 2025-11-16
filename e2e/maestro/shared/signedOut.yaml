@@ -6,4 +6,12 @@ onFlowComplete:
 ---
 - launchApp:
     clearState: true
-- assertVisible: Learn & Explore
+
+- extendedWaitUntil:
+    visible: "Close"
+    timeout: 30000
+- waitForAnimationToEnd
+
+- tapOn: Close
+
+- assertVisible: Use iNaturalist to identify any living thing

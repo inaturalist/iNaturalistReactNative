@@ -238,20 +238,29 @@ jobs:
         MAESTRO_CLI_NO_ANALYTICS: 1
         MAESTRO_RECORD: true
       run: |
+        echo installing...
         xcrun simctl install booted ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app
+        echo installed!
 
-        maestro test e2e/maestro/shared/Launch.yaml --no-ansi
-        echo Maestro done
+        echo Maestro starting...
+        maestro test e2e/maestro/shared/Launch.yaml --no-ansi --format JUNIT
+        echo Maestro done!
 
-    
-    # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
     - name: Store Detox artifacts on test failure
       uses: actions/upload-artifact@v4
-      if: failure()
+      if: ${{ !cancelled() }}
       with:
         name: detox-artifacts
         path: Launch.mp4
         retention-days: 5
+
+    - name: Test Report
+      uses: dorny/test-reporter@v2
+      if: ${{ !cancelled() }}
+      with:
+        name: Maestro Tests
+        path: report.xml
+        reporter: java-junit
 
   # notify:
   #   name: Notify Slack
