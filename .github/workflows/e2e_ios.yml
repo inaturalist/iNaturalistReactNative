@@ -133,6 +133,8 @@ jobs:
   #       retention-days: 5
 
   test:
+    # `needs` commented out along with build above
+    # `download-artifact` uses a .app from a previous run
     # needs: build
     runs-on: macos-15
     # Kill the task if not finished after 120 minutes
@@ -148,8 +150,11 @@ jobs:
       uses: actions/download-artifact@v5
       with:
         name: detox_app
-        run-id: 19356143712
         path: ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app
+        # start canned build
+        run-id: 19356143712
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        # end canned build
 
     - name: Install Node.js, NPM and Yarn
       uses: actions/setup-node@v4
