@@ -1,13 +1,11 @@
 // @flow
 
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import classNames from "classnames";
 import AddObsBottomSheet from "components/AddObsBottomSheet/AddObsBottomSheet";
-import { Body2 } from "components/SharedComponents";
+import AddObsTooltip from "components/AddObsBottomSheet/AddObsTooltip";
 import GradientButton from "components/SharedComponents/Buttons/GradientButton";
 import { navigationRef } from "navigation/navigationUtils";
 import * as React from "react";
-import { Modal, View } from "react-native";
 import { log } from "sharedHelpers/logger";
 import { useCurrentUser, useLayoutPrefs, useTranslation } from "sharedHooks";
 import useStore, { zustandStorage } from "stores/useStore";
@@ -144,34 +142,7 @@ const AddObsButton = ( ): React.Node => {
 
   return (
     <>
-      <Modal
-        visible={showTooltip}
-        animationType="fade"
-        transparent
-        onRequestClose={dismissTooltip}
-      >
-        <View className="flex-1 bg-black/50 items-center justify-end">
-          {/* Tooltip */}
-          <View className="relative bottom-[24px] items-center">
-            <View className="bg-white rounded-2xl px-5 py-4">
-              <Body2>{t( "Press-and-hold-to-view-more-options" )}</Body2>
-            </View>
-            <View
-              className={classNames(
-                "border-l-[10px] border-r-[10px] border-x-[#00000000]",
-                "border-t-[16px] border-t-white mb-2"
-              )}
-            />
-            <GradientButton
-              sizeClassName="w-[69px] h-[69px]"
-              onPress={() => {}}
-              onLongPress={() => dismissTooltip()}
-              accessibilityLabel={t( "Add-observations" )}
-              accessibilityHint={t( "Shows-observation-creation-options" )}
-            />
-          </View>
-        </View>
-      </Modal>
+      <AddObsTooltip isVisible={showTooltip} dismissTooltip={dismissTooltip} />
       {/* match the animation timing on FadeInView.tsx */}
       <AddObsBottomSheet
         closeBottomSheet={closeBottomSheet}
