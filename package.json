@@ -57,7 +57,7 @@
     "@react-native-community/geolocation": "^3.4.0",
     "@react-native-community/hooks": "^3.0.0",
     "@react-native-community/netinfo": "^11.4.1",
-    "@react-native-community/slider": "^4.5.0",
+    "@react-native-community/slider": "^5.1.1",
     "@react-native-firebase/analytics": "^23.4.0",
     "@react-native-firebase/app": "^23.3.1",
     "@react-native-google-signin/google-signin": "^13.1.0",
