@@ -1,13 +1,12 @@
 import classNames from "classnames";
 import { INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import * as React from "react";
+import React, { type PropsWithChildren } from "react";
 
-type Props = {
-  icon: string,
-  size?: number,
-  classNameMargin?: string,
-  children: React.ReactNode
+interface Props extends PropsWithChildren {
+  icon: string;
+  size?: number;
+  classNameMargin?: string;
 }
 
 const ContentWithIcon = ( {
