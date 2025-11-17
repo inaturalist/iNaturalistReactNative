@@ -11,8 +11,7 @@ export enum FIREBASE_TRACE_ATTRIBUTES {
 
 interface TraceData {
   trace: FirebasePerformanceTypes.Trace;
-  // eslint-disable-next-line no-undef
-  timeoutId: NodeJS.Timeout;
+  timeoutId: ReturnType<typeof setTimeout>;
 }
 
 const TRACE_TIMEOUT = 10000;
