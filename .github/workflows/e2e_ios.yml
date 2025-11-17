@@ -236,7 +236,7 @@ jobs:
     - name: Run Maestro tests
       env:
         MAESTRO_DRIVER_STARTUP_TIMEOUT: 6000000
-        # MAESTRO_CLI_NO_ANALYTICS: 1
+        MAESTRO_CLI_NO_ANALYTICS: 1
         MAESTRO_RECORD: true
       run: |
         echo installing...
@@ -244,6 +244,7 @@ jobs:
         echo installed!
 
         echo Maestro starting...
+        export MAESTRO_CLI_NO_ANALYTICS
         MAESTRO_CLI_NO_ANALYTICS=1 maestro test e2e/maestro/shared/signedOut.yaml --no-ansi --format JUNIT
         echo Maestro done!
 
