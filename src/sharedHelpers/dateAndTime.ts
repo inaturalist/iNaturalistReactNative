@@ -215,7 +215,7 @@ function dateFnsLocale( i18nextLanguage: string ) {
   }
 }
 
-function formatISONoTimezone( date: Date ) {
+function formatISONoTimezone( date: Date | null | undefined ) {
   if ( !date ) {
     return "";
   }
