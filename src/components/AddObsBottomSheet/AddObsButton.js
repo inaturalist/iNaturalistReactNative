@@ -5,7 +5,7 @@ import classNames from "classnames";
 import AddObsBottomSheet from "components/AddObsBottomSheet/AddObsBottomSheet";
 import { Body2 } from "components/SharedComponents";
 import GradientButton from "components/SharedComponents/Buttons/GradientButton";
-import { getCurrentRoute } from "navigation/navigationUtils";
+import { navigationRef } from "navigation/navigationUtils";
 import * as React from "react";
 import { Modal, View } from "react-native";
 import { log } from "sharedHelpers/logger";
@@ -17,6 +17,7 @@ const logger = log.extend( "AddObsButton" );
 const AddObsButton = ( ): React.Node => {
   const [showBottomSheet, setShowBottomSheet] = React.useState( false );
   const [showTooltip, setShowTooltip] = React.useState( false );
+  const [currentRoute, setCurrentRoute] = React.useState( null );
 
   const { t } = useTranslation();
 
@@ -24,7 +25,6 @@ const AddObsButton = ( ): React.Node => {
   const closeBottomSheet = React.useCallback( () => setShowBottomSheet( false ), [] );
 
   const { isAllAddObsOptionsMode } = useLayoutPrefs( );
-  const currentRoute = getCurrentRoute( );
   const currentUser = useCurrentUser( );
 
   // #region Tooltip logic
@@ -70,9 +70,6 @@ const AddObsButton = ( ): React.Node => {
     triggerCondition = triggerCondition && !!shownOnce["fifty-observation"];
   }
 
-  // The tooltip should only appear once per app download. // delete
-  // const tooltipIsVisible = !shownOnce[showKey] && triggerCondition; // delete?
-
   React.useEffect( () => {
     // The tooltip should only appear once per app download.
     if ( !shownOnce[showKey] && triggerCondition ) setShowTooltip( true );
@@ -85,6 +82,8 @@ const AddObsButton = ( ): React.Node => {
   };
 
   // #endregion
+
+  // #region Navigation handling
 
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const navigation = useNavigation( );
@@ -125,6 +124,23 @@ const AddObsButton = ( ): React.Node => {
     closeBottomSheet( );
   };
   const navToARCamera = ( ) => { navAndCloseBottomSheet( "Camera", { camera: "AI" } ); };
+
+  // #endregion
+
+  // Keeps currentRoute up-to-date for the use of both navigation & tooltip logic
+  React.useEffect( () => {
+    if ( navigationRef.isReady() ) {
+      const current = navigationRef.getCurrentRoute();
+      setCurrentRoute( current );
+    }
+
+    const unsubscribe = navigationRef.addListener( "state", () => {
+      const current = navigationRef.getCurrentRoute();
+      setCurrentRoute( current );
+    } );
+
+    return unsubscribe;
+  }, [] );
 
   return (
     <>

@@ -1,14 +1,13 @@
 import { screen } from "@testing-library/react-native";
 import AddObsButton from "components/AddObsBottomSheet/AddObsButton";
+import { navigationRef } from "navigation/navigationUtils";
 import React from "react";
 import { renderComponent } from "tests/helpers/render";
 
-// Mock getCurrentRoute to return ObsList
-jest.mock( "navigation/navigationUtils", () => ( {
-  getCurrentRoute: () => ( {
-    name: "ObsList"
-  } )
-} ) );
+// Mock methods needed to get the current route
+navigationRef.isReady = jest.fn( () => true );
+navigationRef.getCurrentRoute = jest.fn( () => ( { name: "ObsList" } ) );
+navigationRef.addListener = jest.fn( () => jest.fn() );
 
 jest.mock( "sharedHooks/useCurrentUser", () => ( {
   __esModule: true,
