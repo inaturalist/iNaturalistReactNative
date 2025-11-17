@@ -10,8 +10,8 @@ import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 interface Props {
-  closeModal: ( ) => void;
-  navAndCloseModal: ( screen: string, params?: {
+  closeBottomSheet: ( ) => void;
+  navAndCloseBottomSheet: ( screen: string, params?: {
     camera?: string
   } ) => void;
   hidden: boolean;
@@ -34,7 +34,7 @@ const GREEN_CIRCLE_CLASS = "bg-inatGreen rounded-full h-[36px] w-[36px] mb-2";
 const ROW_CLASS = "flex-row justify-center space-x-4 w-full flex-1";
 
 const AddObsBottomSheet = ( {
-  closeModal, navAndCloseModal, hidden
+  closeBottomSheet, navAndCloseBottomSheet, hidden
 }: Props ) => {
   const { t } = useTranslation( );
 
@@ -44,7 +44,7 @@ const AddObsBottomSheet = ( {
     aiCamera: {
       text: t( "ID-with-AI-Camera" ),
       icon: "aicamera",
-      onPress: ( ) => navAndCloseModal( "Camera", { camera: "AI" } ),
+      onPress: ( ) => navAndCloseBottomSheet( "Camera", { camera: "AI" } ),
       testID: "aicamera-button",
       accessibilityLabel: t( "AI-Camera" ),
       accessibilityHint: t( "Navigates-to-AI-camera" )
@@ -52,7 +52,7 @@ const AddObsBottomSheet = ( {
     standardCamera: {
       text: t( "Take-photos" ),
       icon: "camera",
-      onPress: ( ) => navAndCloseModal( "Camera", { camera: "Standard" } ),
+      onPress: ( ) => navAndCloseBottomSheet( "Camera", { camera: "Standard" } ),
       testID: "camera-button",
       accessibilityLabel: t( "Camera" ),
       accessibilityHint: t( "Navigates-to-camera" )
@@ -60,7 +60,7 @@ const AddObsBottomSheet = ( {
     photoLibrary: {
       text: t( "Upload-photos" ),
       icon: "photo-library",
-      onPress: ( ) => navAndCloseModal( "PhotoLibrary" ),
+      onPress: ( ) => navAndCloseBottomSheet( "PhotoLibrary" ),
       testID: "import-media-button",
       accessibilityLabel: t( "Photo-importer" ),
       accessibilityHint: t( "Navigates-to-photo-importer" )
@@ -68,7 +68,7 @@ const AddObsBottomSheet = ( {
     soundRecorder: {
       text: t( "Record-a-sound" ),
       icon: "microphone",
-      onPress: ( ) => navAndCloseModal( "SoundRecorder" ),
+      onPress: ( ) => navAndCloseBottomSheet( "SoundRecorder" ),
       testID: "record-sound-button",
       accessibilityLabel: t( "Sound-recorder" ),
       accessibilityHint: t( "Navigates-to-sound-recorder" )
@@ -79,14 +79,14 @@ const AddObsBottomSheet = ( {
       onPress: async ( ) => {
         const newObservation = await Observation.new( );
         prepareObsEdit( newObservation );
-        navAndCloseModal( "ObsEdit" );
+        navAndCloseBottomSheet( "ObsEdit" );
       },
       testID: "observe-without-evidence-button",
       accessibilityLabel: t( "Observation-with-no-evidence" ),
       accessibilityHint: t( "Navigates-to-observation-edit-screen" )
     }
   } ), [
-    navAndCloseModal,
+    navAndCloseBottomSheet,
     prepareObsEdit,
     t
   ] );
@@ -124,7 +124,7 @@ const AddObsBottomSheet = ( {
 
   return (
     <BottomSheet
-      onPressClose={closeModal}
+      onPressClose={closeBottomSheet}
       hidden={hidden}
       insideModal={false}
       hideCloseButton

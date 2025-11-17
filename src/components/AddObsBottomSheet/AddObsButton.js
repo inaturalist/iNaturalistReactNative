@@ -1,36 +1,46 @@
 // @flow
 
 import { CommonActions, useNavigation } from "@react-navigation/native";
+import classNames from "classnames";
 import AddObsBottomSheet from "components/AddObsBottomSheet/AddObsBottomSheet";
+import { Body2 } from "components/SharedComponents";
 import GradientButton from "components/SharedComponents/Buttons/GradientButton";
-import { t } from "i18next";
 import { getCurrentRoute } from "navigation/navigationUtils";
 import * as React from "react";
+import { Modal, View } from "react-native";
 import { log } from "sharedHelpers/logger";
-import { useCurrentUser, useLayoutPrefs } from "sharedHooks";
+import { useCurrentUser, useLayoutPrefs, useTranslation } from "sharedHooks";
 import useStore, { zustandStorage } from "stores/useStore";
 
 const logger = log.extend( "AddObsButton" );
 
 const AddObsButton = ( ): React.Node => {
-  const [showModal, setModal] = React.useState( false );
+  const [showBottomSheet, setShowBottomSheet] = React.useState( false );
+  const [showTooltip, setShowTooltip] = React.useState( false );
 
-  const openModal = React.useCallback( () => setModal( true ), [] );
-  const closeModal = React.useCallback( () => setModal( false ), [] );
+  const { t } = useTranslation();
+
+  const openBottomSheet = React.useCallback( () => setShowBottomSheet( true ), [] );
+  const closeBottomSheet = React.useCallback( () => setShowBottomSheet( false ), [] );
 
   const { isAllAddObsOptionsMode } = useLayoutPrefs( );
   const currentRoute = getCurrentRoute( );
   const currentUser = useCurrentUser( );
 
+  // #region Tooltip logic
+
   // Controls whether to show the tooltip, and to show it only once to the user
   const showKey = "AddObsButtonTooltip";
   const shownOnce = useStore( state => state.layout.shownOnce );
+  const setShownOnce = useStore( state => state.layout.setShownOnce );
   const justFinishedSignup = useStore( state => state.layout.justFinishedSignup );
   const numOfUserObservations = zustandStorage.getItem( "numOfUserObservations" );
+
   // Base trigger condition in all cases:
   // Only show the tooltip if the user has only AI camera as an option in this button.
   // Only show the tooltip on MyObservations screen.
   let triggerCondition = !isAllAddObsOptionsMode && currentRoute?.name === "ObsList";
+
   if ( justFinishedSignup ) {
     // If a user creates a new account, they should see the tooltip right after
     // dismissing the account creation pivot card and landing on My Obs.
@@ -44,7 +54,6 @@ const AddObsButton = ( ): React.Node => {
     triggerCondition = false;
   } else if ( !currentUser ) {
     // If logged out, user should see the tooltip after making their second observation
-    // If a user is logged out, they should see the tooltip after making their second observation.
     triggerCondition = triggerCondition && numOfUserObservations > 1;
   } else if ( numOfUserObservations > 50 ) {
     // If a user logs in to an existing account with <=50 observations,
@@ -61,24 +70,21 @@ const AddObsButton = ( ): React.Node => {
     triggerCondition = triggerCondition && !!shownOnce["fifty-observation"];
   }
 
-  // The tooltip should only appear once per app download.
-  const tooltipIsVisible = !shownOnce[showKey] && triggerCondition;
+  // The tooltip should only appear once per app download. // delete
+  // const tooltipIsVisible = !shownOnce[showKey] && triggerCondition; // delete?
+
   React.useEffect( () => {
-    // If the tooltip visibility condition changes from false to true,
-    // we set the showModal state to true because the tooltip is in the modal.
-    // We have a lot of modals in the app, so we use a timeout to avoid opening two modals
-    // at the same time, like the PivotCards for example that in some cases were just closed
-    // by the user.
-    let timeoutId;
-    if ( tooltipIsVisible ) {
-      timeoutId = setTimeout( () => {
-        openModal();
-      }, 400 );
-    }
-    return () => {
-      clearTimeout( timeoutId );
-    };
-  }, [tooltipIsVisible, openModal] );
+    // The tooltip should only appear once per app download.
+    if ( !shownOnce[showKey] && triggerCondition ) setShowTooltip( true );
+  }, [shownOnce, triggerCondition] );
+
+  const dismissTooltip = () => {
+    setShowTooltip( false );
+    setShownOnce( showKey );
+    openBottomSheet();
+  };
+
+  // #endregion
 
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const navigation = useNavigation( );
@@ -89,7 +95,7 @@ const AddObsButton = ( ): React.Node => {
     logger.info( `isAdvancedUser: ${isAllAddObsOptionsMode}` );
   }, [isAllAddObsOptionsMode] );
 
-  const navAndCloseModal = ( screen, params ) => {
+  const navAndCloseBottomSheet = ( screen, params ) => {
     if ( screen !== "ObsEdit" ) {
       resetObservationFlowSlice( );
     }
@@ -116,26 +122,54 @@ const AddObsButton = ( ): React.Node => {
       } )
     );
 
-    closeModal( );
+    closeBottomSheet( );
   };
-  const navToARCamera = ( ) => { navAndCloseModal( "Camera", { camera: "AI" } ); };
+  const navToARCamera = ( ) => { navAndCloseBottomSheet( "Camera", { camera: "AI" } ); };
 
   return (
     <>
+      <Modal
+        visible={showTooltip}
+        animationType="fade"
+        transparent
+        onRequestClose={dismissTooltip}
+      >
+        <View className="flex-1 bg-black/50 items-center justify-end">
+          {/* Tooltip */}
+          <View className="relative bottom-[24px] items-center">
+            <View className="bg-white rounded-2xl px-5 py-4">
+              <Body2>{t( "Press-and-hold-to-view-more-options" )}</Body2>
+            </View>
+            <View
+              className={classNames(
+                "border-l-[10px] border-r-[10px] border-x-[#00000000]",
+                "border-t-[16px] border-t-white mb-2"
+              )}
+            />
+            <GradientButton
+              sizeClassName="w-[69px] h-[69px]"
+              onPress={() => {}}
+              onLongPress={() => dismissTooltip()}
+              accessibilityLabel={t( "Add-observations" )}
+              accessibilityHint={t( "Shows-observation-creation-options" )}
+            />
+          </View>
+        </View>
+      </Modal>
       {/* match the animation timing on FadeInView.tsx */}
       <AddObsBottomSheet
-        closeModal={closeModal}
-        hidden={!showModal}
-        navAndCloseModal={navAndCloseModal}
+        closeBottomSheet={closeBottomSheet}
+        hidden={!showBottomSheet}
+        navAndCloseBottomSheet={navAndCloseBottomSheet}
       />
       <GradientButton
         sizeClassName="w-[69px] h-[69px] mb-[5px]"
         onLongPress={() => {
-          if ( !isAllAddObsOptionsMode ) openModal();
+          if ( !isAllAddObsOptionsMode ) openBottomSheet();
         }}
         onPress={() => {
           if ( isAllAddObsOptionsMode ) {
-            openModal();
+            openBottomSheet();
           } else {
             navToARCamera();
           }
