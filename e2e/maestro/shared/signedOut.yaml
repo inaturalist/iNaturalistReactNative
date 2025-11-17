@@ -8,7 +8,7 @@ onFlowComplete:
     clearState: true
 
 - extendedWaitUntil:
-    visible: "Close"
+    visible: "Get an instant ID of any plant, animal, or fungus"
     timeout: 30000
 - waitForAnimationToEnd
 
