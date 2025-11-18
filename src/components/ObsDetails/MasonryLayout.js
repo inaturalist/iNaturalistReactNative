@@ -1,6 +1,6 @@
 import { ScrollView, View } from "components/styledComponents";
 import React, { useEffect, useState } from "react";
-import ReactNative from "react-native";
+import { Image } from "react-native";
 import Photo from "realmModels/Photo";
 
 import PhotoContainer from "./PhotoContainer";
@@ -25,7 +25,7 @@ const MasonryLayout = ( { items, onImagePress } ) => {
         if ( item.file_url ) {
           return item;
         }
-        const imageDimensions = await ReactNative.Image.getSize( photoUrl( item ) );
+        const imageDimensions = await Image.getSize( photoUrl( item ) );
         return { ...item, ...imageDimensions };
       } );
 

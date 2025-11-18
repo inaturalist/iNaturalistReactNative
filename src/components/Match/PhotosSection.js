@@ -8,7 +8,7 @@ import {
 } from "components/styledComponents";
 import _, { compact } from "lodash";
 import React, { useEffect, useState } from "react";
-import ReactNative from "react-native";
+import { Image as RNImage } from "react-native";
 import Photo from "realmModels/Photo";
 
 type Props = {
@@ -69,7 +69,7 @@ const PhotosSection = ( {
   useEffect( ( ) => {
     const checkImageOrientation = async ( ) => {
       if ( observationPhoto ) {
-        const imageDimensions = await ReactNative.Image.getSize( observationPhoto );
+        const imageDimensions = await RNImage.getSize( observationPhoto );
         if ( imageDimensions.width < imageDimensions.height ) {
           setDisplayPortraitLayout( true );
         } else {
