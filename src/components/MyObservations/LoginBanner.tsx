@@ -23,7 +23,7 @@ type Props = {
 
 const LoginBanner = ( {
   currentUser
-}: Props ): React.Node => {
+}: Props ): React.ReactNode => {
   const { t } = useTranslation( );
   const navigation = useNavigation();
   const loginBannerDismissed = useStore( state => state.layout.loginBannerDismissed );

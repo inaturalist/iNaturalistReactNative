@@ -6,7 +6,7 @@ import { sentinelFilePath } from "../appConstants/paths";
 
 const logger = log.extend( "sentinelFiles" );
 
-const accessFullFilePath = fileName => `${sentinelFilePath}/${fileName}`;
+const accessFullFilePath = ( fileName: string ) => `${sentinelFilePath}/${fileName}`;
 
 const generateSentinelFileName = ( screenName: string ): string => {
   const timestamp = new Date().getTime();

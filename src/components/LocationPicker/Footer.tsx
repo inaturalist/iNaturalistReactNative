@@ -1,16 +1,14 @@
-// @flow
-
 import { Button } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
+import { GestureResponderEvent } from "react-native";
 import useTranslation from "sharedHooks/useTranslation";
 
-type Props = {
-  handleSave: Function
-};
+interface Props {
+  handleSave: ( _event?: GestureResponderEvent ) => void;
+}
 
-const Footer = ( { handleSave }: Props ): Node => {
+const Footer = ( { handleSave }: Props ) => {
   const { t } = useTranslation( );
 
   return (
