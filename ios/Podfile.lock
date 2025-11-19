@@ -2042,7 +2042,37 @@ PODS:
     - Yoga
   - react-native-sensitive-info (6.0.0-alpha.9):
     - React-Core
-  - react-native-slider (4.5.0):
+  - react-native-slider (5.1.1):
+    - boost
+    - DoubleConversion
+    - fast_float
+    - fmt
+    - glog
+    - hermes-engine
+    - RCT-Folly
+    - RCT-Folly/Fabric
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - react-native-slider/common (= 5.1.1)
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - SocketRocket
+    - Yoga
+  - react-native-slider/common (5.1.1):
     - boost
     - DoubleConversion
     - fast_float
@@ -3099,7 +3129,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - RNSVG (15.12.0):
+  - RNSVG (15.15.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -3126,10 +3156,10 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNSVG/common (= 15.12.0)
+    - RNSVG/common (= 15.15.0)
     - SocketRocket
     - Yoga
-  - RNSVG/common (15.12.0):
+  - RNSVG/common (15.15.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -3659,7 +3689,7 @@ SPEC CHECKSUMS:
   react-native-restart: 0bc732f4461709022a742bb29bcccf6bbc5b4863
   react-native-safe-area-context: 849813645d0fd16fd899a02ed6e03320284ec2ae
   react-native-sensitive-info: ee358bf2b901ac3d04f63ff637b31daee44ea87f
-  react-native-slider: fa04ab42a8333ff6bcf2c77ae76885d7f7c3d645
+  react-native-slider: 23f01fbf6c2413572dc26fbb80dd66fe573c7692
   react-native-volume-manager: cdd3c3857158c1df7b9fbea071a9946395cee06c
   react-native-webview: 44434e525f798a7b35b8b94d9db36cd25a75048f
   react-native-worklets-core: be5da7693070046d10b05ec6143f2f19bf05aa98
@@ -3713,7 +3743,7 @@ SPEC CHECKSUMS:
   RNScreens: eff474e98669c2a4dbe7e43ee9464682711182ea
   RNShareMenu: ca0a55c45650bc7dffb47bf81a0bd6cd299a330e
   RNStoreReview: 77a0cc49341ad0e36e1860d42c70b05b2dfe5086
-  RNSVG: bc7ccfe884848ac924d2279d9025d41b5f05cb0c
+  RNSVG: 9965245a32db769d6f959dbc783cb5037d77e690
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   VisionCamera: 4146fa2612c154f893a42a9b1feedf868faa6b23
   VisionCameraPluginInatVision: 212f5cfd74939272b73d5f73a071dd0ea42beed3
