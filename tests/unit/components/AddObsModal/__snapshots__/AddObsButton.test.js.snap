@@ -152,7 +152,7 @@ exports[`AddObsButton renders correctly 1`] = `
               ]
             }
           >
-            
+            
           </Text>
         </View>
       </BVLinearGradient>

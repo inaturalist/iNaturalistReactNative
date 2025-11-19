@@ -54,6 +54,7 @@ const ALIASES: Aliases = {
   geoprivacy: "globe",
   gridview: "grid-square",
   listview: "list-square",
+  list: "list",
   "id-large-fill": "label",
   "id-small-outline": "label-outline",
   journalposts: "book",

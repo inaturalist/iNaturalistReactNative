@@ -32,7 +32,7 @@ const ObservationsViewBar = ( {
     },
     {
       value: "list",
-      icon: "hamburger-menu",
+      icon: "list",
       accessibilityLabel: "List",
       testID: "SegmentedButton.list"
     }
