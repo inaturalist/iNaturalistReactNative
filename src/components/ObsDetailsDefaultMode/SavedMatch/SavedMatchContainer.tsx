@@ -33,8 +33,6 @@ const SavedMatchContainer = ( {
     <SavedMatch
       observation={observation}
       navToTaxonDetails={navToTaxonDetails}
-      isFetchingLocation={false}
-      handleAddLocationPressed={() => {}}
     />
   );
 };

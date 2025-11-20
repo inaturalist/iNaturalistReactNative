@@ -1,5 +1,4 @@
 import { useNetInfo } from "@react-native-community/netinfo";
-import EmptyMapSection from "components/Match/EmptyMapSection";
 import MatchHeader from "components/Match/MatchHeader";
 import PhotosSection from "components/Match/PhotosSection";
 import LocationSection from "components/ObsDetailsDefaultMode/LocationSection/LocationSection";
@@ -19,21 +18,23 @@ const cardClassBottom
 type Props = {
   observation: RealmObservation,
   navToTaxonDetails: ( ) => void,
-  isFetchingLocation: boolean,
-  handleAddLocationPressed: ( ) => void,
 }
 
 const SavedMatch = ( {
   observation,
-  navToTaxonDetails,
-  isFetchingLocation,
-  handleAddLocationPressed
+  navToTaxonDetails
 }: Props ) => {
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
 
   const latitude = observation?.privateLatitude || observation?.latitude;
   const { taxon } = observation;
+
+  /* left todo
+  - fill in functionality in container
+  - add edit pencil
+  - fix type errors
+  */
 
   return (
     <ScrollViewWrapper>
@@ -47,16 +48,9 @@ const SavedMatch = ( {
         navToTaxonDetails={navToTaxonDetails}
       />
       <View className="border-[1.5px] border-white" />
-      {!latitude
-        ? (
-          <EmptyMapSection
-            handleAddLocationPressed={handleAddLocationPressed}
-            isFetchingLocation={isFetchingLocation}
-          />
-        )
-        : (
-          <MapSection observation={observation} taxon={taxon} />
-        )}
+      {latitude && (
+        <MapSection observation={observation} taxon={taxon} />
+      )}
       <LocationSection
         belongsToCurrentUser
         observation={observation}
@@ -75,18 +69,6 @@ const SavedMatch = ( {
           />
         )
       }
-      {!latitude && (
-        <Button
-          className="mx-4 mb-[30px]"
-          level="neutral"
-          text={t( "ADD-LOCATION-FOR-BETTER-IDS" )}
-          onPress={handleAddLocationPressed}
-          loading={isFetchingLocation}
-          disabled={isFetchingLocation}
-          accessibilityLabel={t( "Edit-location" )}
-          accessibilityHint={t( "Add-location-to-refresh-suggestions" )}
-        />
-      )}
     </ScrollViewWrapper>
   );
 };
