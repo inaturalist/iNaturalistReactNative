@@ -2,7 +2,6 @@ import { useNetInfo } from "@react-native-community/netinfo";
 import { useRoute } from "@react-navigation/native";
 import ObsDetailsDefaultModeContainer
   from "components/ObsDetailsDefaultMode/ObsDetailsDefaultModeContainer";
-import SavedMatch from "components/ObsDetailsDefaultMode/SavedMatch/SavedMatch";
 import React, { useMemo, useState } from "react";
 import Observation from "realmModels/Observation";
 import {
@@ -10,6 +9,8 @@ import {
   useLocalObservation,
   useRemoteObservation
 } from "sharedHooks";
+
+import SavedMatchContainer from "./SavedMatch/SavedMatchContainer";
 
 type RouteParams = {
     targetActivityItemID?: number,
@@ -68,12 +69,8 @@ const ObsDetailsDefaultModeScreensWrapper = () => {
 
   if ( showSavedMatch ) {
     return (
-      // todo add edit pencil
-      <SavedMatch
+      <SavedMatchContainer
         observation={observation}
-        navToTaxonDetails={() => {}}
-        isFetchingLocation={false}
-        handleAddLocationPressed={() => {}}
       />
     );
   }
