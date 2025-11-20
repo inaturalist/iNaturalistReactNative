@@ -1,5 +1,3 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import {
   Body1,
