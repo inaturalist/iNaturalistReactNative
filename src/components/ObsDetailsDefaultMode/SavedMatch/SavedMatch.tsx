@@ -10,6 +10,8 @@ import React from "react";
 import type { RealmObservation } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 
+import SavedMatchHeaderRight from "./SavedMatchHeaderRight";
+
 const cardClassTop
   = "rounded-t-2xl border-lightGray border-[2px] py-[18px] px-5 border-b-0 -mb-0.5";
 const cardClassBottom
@@ -31,13 +33,14 @@ const SavedMatch = ( {
   const { taxon } = observation;
 
   /* left todo
-  - fill in functionality in container
+  - simplify match header
   - add edit pencil
   - fix type errors
   */
 
   return (
     <ScrollViewWrapper>
+      <SavedMatchHeaderRight uuid={observation.uuid} />
       <View className={cardClassTop}>
         <MatchHeader topSuggestion={observation} />
       </View>
