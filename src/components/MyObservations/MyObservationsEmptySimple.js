@@ -14,7 +14,6 @@ import Arrow from "images/svg/curved_arrow_down.svg";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";
-import useStore from "stores/useStore";
 
 import LoginBanner from "./LoginBanner";
 
@@ -28,18 +27,13 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected, justFinishedSign
   Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
 
-  const navAndCloseModal = ( screen, params ) => {
-    if ( screen !== "ObsEdit" ) {
-      resetObservationFlowSlice( );
-    }
+  const navToARCamera = ( ) => {
     navigation.navigate( "NoBottomTabStackNavigator", {
-      screen,
-      params
+      screen: "Camera",
+      params: { camera: "AI" }
     } );
   };
-  const navToARCamera = ( ) => { navAndCloseModal( "Camera", { camera: "AI" } ); };
 
   return (
     <>
