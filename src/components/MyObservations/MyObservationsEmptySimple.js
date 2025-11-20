@@ -1,6 +1,5 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
-import AddObsBottomSheet from "components/AddObsBottomSheet/AddObsBottomSheet";
 import { AccountCreationCard } from "components/OnboardingModal/PivotCards";
 import {
   HeaderUser,
@@ -13,7 +12,7 @@ import {
 } from "components/styledComponents";
 import Arrow from "images/svg/curved_arrow_down.svg";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -29,7 +28,6 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected, justFinishedSign
   Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const [showModal, setShowModal] = useState( false );
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
 
   const navAndCloseModal = ( screen, params ) => {
@@ -40,7 +38,6 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected, justFinishedSign
       screen,
       params
     } );
-    setShowModal( false );
   };
   const navToARCamera = ( ) => { navAndCloseModal( "Camera", { camera: "AI" } ); };
 
@@ -76,11 +73,6 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected, justFinishedSign
             />
           </View>
         </View>
-        <AddObsBottomSheet
-          closeModal={( ) => setShowModal( false )}
-          hidden={!showModal}
-          navAndCloseModal={navAndCloseModal}
-        />
       </ViewWrapper>
 
       <AccountCreationCard
