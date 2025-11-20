@@ -31,6 +31,7 @@ import useStore from "stores/useStore";
 
 import useMarkViewedMutation from "./hooks/useMarkViewedMutation";
 import ObsDetailsDefaultMode from "./ObsDetailsDefaultMode";
+import SavedMatch from "./SavedMatch";
 
 const { useRealm } = RealmContext;
 
@@ -109,19 +110,30 @@ const reducer = ( state, action ) => {
   }
 };
 
-const ObsDetailsDefaultModeContainer = ( ): Node => {
+const ObsDetailsDefaultModeContainer = ( props ): Node => {
   const setObservations = useStore( state => state.setObservations );
-  const currentUser = useCurrentUser( );
-  const { params } = useRoute();
-  const {
-    targetActivityItemID,
-    uuid
-  } = params;
   const navigation = useNavigation( );
   const realm = useRealm( );
-  const { isConnected } = useNetInfo( );
   const [state, dispatch] = useReducer( reducer, initialState );
-  const [remoteObsWasDeleted, setRemoteObsWasDeleted] = useState( false );
+
+  const {
+    observation,
+    targetActivityItemID,
+    uuid,
+    localObservation,
+    markViewedLocally,
+    markDeletedLocally,
+    remoteObservation,
+    setRemoteObsWasDeleted,
+    fetchRemoteObservationError,
+    currentUser,
+    belongsToCurrentUser,
+    isRefetching,
+    refetchRemoteObservation,
+    isConnected,
+    isSimpleMode,
+    remoteObsWasDeleted
+  } = props;
 
   const {
     activityItems,
@@ -133,26 +145,6 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
   } = state;
   const queryClient = useQueryClient( );
 
-  const {
-    localObservation,
-    markDeletedLocally,
-    markViewedLocally
-  } = useLocalObservation( uuid );
-  const wasSynced = localObservation && localObservation?.wasSynced();
-
-  const fetchRemoteObservationEnabled = !!(
-    !remoteObsWasDeleted
-    && ( !localObservation || localObservation?.wasSynced( ) )
-    && isConnected
-  );
-
-  const {
-    remoteObservation,
-    refetchRemoteObservation,
-    isRefetching,
-    fetchRemoteObservationError
-  } = useRemoteObservation( uuid, fetchRemoteObservationEnabled );
-
   useMarkViewedMutation( localObservation, markViewedLocally, remoteObservation );
 
   // If we tried to get a remote observation but it no longer exists, the user
@@ -160,7 +152,8 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
   // copy of this observation
   useEffect( ( ) => {
     setRemoteObsWasDeleted( fetchRemoteObservationError?.status === 404 );
-  }, [fetchRemoteObservationError?.status] );
+  }, [fetchRemoteObservationError?.status, setRemoteObsWasDeleted] );
+
   const confirmRemoteObsWasDeleted = useCallback( ( ) => {
     if ( localObservation ) {
       markDeletedLocally( );
@@ -172,26 +165,9 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
     navigation
   ] );
 
-  const observation = localObservation || Observation.mapApiToRealm( remoteObservation );
+  const wasSynced = localObservation && localObservation?.wasSynced();
+
   const hasPhotos = observation?.observationPhotos?.length > 0;
-
-  // In theory the only situation in which an observation would not have a
-  // user is when a user is not signed but has made a new observation in the
-  // app. Also in theory that user should not be able to get to ObsDetail for
-  // those observations, just ObsEdit. But.... let's be safe.
-  const belongsToCurrentUser = (
-    observation?.user?.id === currentUser?.id
-    || ( !observation?.user && !observation?.id )
-  );
-
-  const isSimpleMode = useMemo( () => (
-    // Simple mode applies only when:
-    // 1. It's the current user's observation (or an observation being created)
-    // 2. AND the observation hasn't been synced yet
-    ( belongsToCurrentUser || !observation?.user )
-      && localObservation
-      && !localObservation.wasSynced()
-  ), [belongsToCurrentUser, localObservation, observation?.user] );
 
   const { data: subscriptions, refetch: refetchSubscriptions } = useAuthenticatedQuery(
     [
@@ -385,4 +361,89 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
   );
 };
 
-export default ObsDetailsDefaultModeContainer;
+const ObsDetailsDefaultModeScreenWrapper = () => {
+  const { params } = useRoute();
+  const {
+    targetActivityItemID,
+    uuid
+  } = params;
+  const currentUser = useCurrentUser( );
+  const { isConnected } = useNetInfo( );
+
+  const [remoteObsWasDeleted, setRemoteObsWasDeleted] = useState( false );
+
+  const {
+    localObservation,
+    markDeletedLocally,
+    markViewedLocally
+  } = useLocalObservation( uuid );
+
+  const fetchRemoteObservationEnabled = !!(
+    !remoteObsWasDeleted
+    && ( !localObservation || localObservation?.wasSynced( ) )
+    && isConnected
+  );
+
+  const {
+    remoteObservation,
+    refetchRemoteObservation,
+    isRefetching,
+    fetchRemoteObservationError
+  } = useRemoteObservation( uuid, fetchRemoteObservationEnabled );
+
+  const observation = localObservation || Observation.mapApiToRealm( remoteObservation );
+
+  // In theory the only situation in which an observation would not have a
+  // user is when a user is not signed but has made a new observation in the
+  // app. Also in theory that user should not be able to get to ObsDetail for
+  // those observations, just ObsEdit. But.... let's be safe.
+  const belongsToCurrentUser = (
+    observation?.user?.id === currentUser?.id
+    || ( !observation?.user && !observation?.id )
+  );
+
+  const showSavedMatch = useMemo( () => (
+    // Simple mode applies only when:
+    // 1. It's the current user's observation (or an observation being created)
+    // 2. AND the observation hasn't been synced yet
+    ( belongsToCurrentUser || !observation?.user )
+      && localObservation
+      && !localObservation.wasSynced()
+  ), [belongsToCurrentUser, localObservation, observation?.user] );
+
+  if ( showSavedMatch ) {
+    return (
+      // todo add edit pencil
+      <SavedMatch
+        observation={observation}
+        navToTaxonDetails={() => {}}
+        isFetchingLocation={false}
+        handleAddLocationPressed={() => {}}
+      />
+    );
+  }
+
+  return (
+    <ObsDetailsDefaultModeContainer
+      observation={observation}
+      targetActivityItemID={targetActivityItemID}
+      uuid={uuid}
+      localObservation={localObservation}
+      markViewedLocally={markViewedLocally}
+      markDeletedLocally={markDeletedLocally}
+      remoteObservation={remoteObservation}
+      remoteObsWasDeleted={remoteObsWasDeleted}
+      setRemoteObsWasDeleted={setRemoteObsWasDeleted}
+      fetchRemoteObservationError={fetchRemoteObservationError}
+      currentUser={currentUser}
+      belongsToCurrentUser={belongsToCurrentUser}
+      isRefetching={isRefetching}
+      refetchRemoteObservation={refetchRemoteObservation}
+      isConnected={isConnected}
+      isSimpleMode={showSavedMatch}
+    />
+  );
+};
+
+// todo update stack navigator name for this import
+export default ObsDetailsDefaultModeScreenWrapper;
