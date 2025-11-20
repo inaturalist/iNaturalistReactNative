@@ -1,6 +1,7 @@
 import { fetchTaxon } from "api/taxa";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
-import Realm, { UpdateMode } from "realm";
+import type Realm from "realm";
+import { UpdateMode } from "realm";
 import Taxon from "realmModels/Taxon";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 

@@ -12,7 +12,7 @@ import { View } from "components/styledComponents";
 import { t } from "i18next";
 import React, { useCallback, useMemo, useState } from "react";
 import createOpenLink from "react-native-open-maps";
-import Observation from "realmModels/Observation";
+import type Observation from "realmModels/Observation";
 import { useCurrentUser } from "sharedHooks";
 
 import DetailsMapHeader from "./DetailsMapHeader";

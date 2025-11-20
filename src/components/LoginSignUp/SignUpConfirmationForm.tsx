@@ -10,7 +10,8 @@ import { t } from "i18next";
 import { RealmContext } from "providers/contexts";
 import React, { useEffect, useRef, useState } from "react";
 import { Trans } from "react-i18next";
-import { TextInput, TouchableWithoutFeedback } from "react-native";
+import type { TextInput } from "react-native";
+import { TouchableWithoutFeedback } from "react-native";
 import useStore from "stores/useStore";
 
 import {

@@ -3,8 +3,8 @@ import {
 } from "react";
 import { Dimensions } from "react-native";
 import DeviceInfo from "react-native-device-info";
+import type { OrientationType } from "react-native-orientation-locker";
 import {
-  OrientationType,
   useDeviceOrientationChange
 } from "react-native-orientation-locker";
 

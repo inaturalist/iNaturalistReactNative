@@ -1,6 +1,6 @@
 import { RealmContext } from "providers/contexts";
 import { useEffect, useState } from "react";
-import Realm from "realm";
+import type Realm from "realm";
 import User from "realmModels/User";
 
 const { useRealm } = RealmContext;

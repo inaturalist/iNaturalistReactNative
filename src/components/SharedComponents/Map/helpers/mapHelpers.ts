@@ -1,6 +1,6 @@
-import { MapBoundaries } from "providers/ExploreContext";
+import type { MapBoundaries } from "providers/ExploreContext";
 import Config from "react-native-config";
-import { LatLng, Region } from "react-native-maps";
+import type { LatLng, Region } from "react-native-maps";
 import createUTFPosition from "sharedHelpers/createUTFPosition";
 import getDataForPixel from "sharedHelpers/fetchUTFGridData";
 

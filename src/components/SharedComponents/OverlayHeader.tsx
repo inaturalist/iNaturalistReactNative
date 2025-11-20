@@ -5,7 +5,8 @@ import {
 import {
   View
 } from "components/styledComponents";
-import React, { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
+import React from "react";
 import colors from "styles/tailwindColors";
 
 interface Props extends PropsWithChildren {

@@ -1,4 +1,4 @@
-import { StateCreator } from "zustand";
+import type { StateCreator } from "zustand";
 
 export const SYNC_PENDING = "sync-pending";
 export const BEGIN_MANUAL_SYNC = "begin-manual-sync";

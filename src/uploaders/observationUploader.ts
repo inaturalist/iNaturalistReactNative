@@ -4,7 +4,7 @@ import {
 } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { AppState } from "react-native";
-import Realm from "realm";
+import type Realm from "realm";
 import type { RealmObservation, RealmObservationPojo } from "realmModels/types";
 import { log } from "sharedHelpers/logger";
 import {

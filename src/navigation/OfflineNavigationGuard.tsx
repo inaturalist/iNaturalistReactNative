@@ -3,7 +3,8 @@ import {
 } from "@react-native-community/netinfo";
 import { getAnalytics, logEvent } from "@react-native-firebase/analytics";
 import { NavigationContainer } from "@react-navigation/native";
-import React, { PropsWithChildren, useRef } from "react";
+import type { PropsWithChildren } from "react";
+import React, { useRef } from "react";
 import { Alert } from "react-native";
 import { useTranslation } from "sharedHooks";
 

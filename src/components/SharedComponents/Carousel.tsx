@@ -5,9 +5,9 @@
 // and height are set in the style component. Tailwind classes do not always
 // seem to work for some reason.
 import React from "react";
+import type { FlatListProps } from "react-native";
 import {
   FlatList,
-  FlatListProps,
   I18nManager
 } from "react-native";
 

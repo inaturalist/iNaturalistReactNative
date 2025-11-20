@@ -1,4 +1,5 @@
-import { MutationKey, useMutation } from "@tanstack/react-query";
+import type { MutationKey } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import handleError from "api/error";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 

@@ -1,6 +1,6 @@
 import { createOrUpdateEvidence } from "api/observations";
 import inatjs from "inaturalistjs";
-import Realm from "realm";
+import type Realm from "realm";
 import type {
   RealmObservation,
   RealmObservationPhoto,

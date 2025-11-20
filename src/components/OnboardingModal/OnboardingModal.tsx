@@ -5,7 +5,7 @@ import {
 } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
 import * as React from "react";
-import { ImageSourcePropType, ImageStyle } from "react-native";
+import type { ImageSourcePropType, ImageStyle } from "react-native";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";

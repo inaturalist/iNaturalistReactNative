@@ -1,5 +1,5 @@
+import type { RouteProp } from "@react-navigation/native";
 import {
-  RouteProp,
   useFocusEffect,
   useNavigation,
   useRoute

@@ -1,4 +1,5 @@
-import classnames, { ArgumentArray } from "classnames";
+import type { ArgumentArray } from "classnames";
+import classnames from "classnames";
 import { INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";

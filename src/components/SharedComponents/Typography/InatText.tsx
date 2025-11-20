@@ -3,7 +3,8 @@ import {
   tailwindFontRegular
 } from "appConstants/fontFamilies";
 import classnames from "classnames";
-import React, { ComponentPropsWithoutRef } from "react";
+import type { ComponentPropsWithoutRef } from "react";
+import React from "react";
 import { Text } from "react-native";
 
 export const TYPOGRAPHY_CLASSES = [

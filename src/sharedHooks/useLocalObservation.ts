@@ -1,5 +1,5 @@
 import { RealmContext } from "providers/contexts";
-import { Results } from "realm";
+import type { Results } from "realm";
 import type { RealmComment, RealmIdentification, RealmObservation } from "realmModels/types";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 

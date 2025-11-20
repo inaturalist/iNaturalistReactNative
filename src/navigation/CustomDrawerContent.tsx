@@ -20,8 +20,9 @@ import {
 import { Pressable, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import React, { useCallback, useMemo, useState } from "react";
+import type { ViewStyle } from "react-native";
 import {
-  Alert, Dimensions, ViewStyle
+  Alert, Dimensions
 } from "react-native";
 import User from "realmModels/User";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
