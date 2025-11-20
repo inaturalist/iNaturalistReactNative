@@ -102,7 +102,26 @@ const reducer = ( state, action ) => {
   }
 };
 
-const ObsDetailsDefaultModeContainer = ( props ): Node => {
+type Props = {
+  belongsToCurrentUser: boolean,
+  currentUser: ?Object,
+  fetchRemoteObservationError: ?Object,
+  isConnected: boolean,
+  isRefetching: boolean,
+  isSimpleMode: boolean,
+  localObservation: ?Object,
+  markDeletedLocally: Function,
+  markViewedLocally: Function,
+  observation: Object,
+  refetchRemoteObservation: Function,
+  remoteObservation: ?Object,
+  remoteObsWasDeleted: boolean,
+  setRemoteObsWasDeleted: Function,
+  targetActivityItemID: number,
+  uuid: string
+}
+
+const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
   const setObservations = useStore( state => state.setObservations );
   const navigation = useNavigation( );
   const realm = useRealm( );
@@ -157,7 +176,7 @@ const ObsDetailsDefaultModeContainer = ( props ): Node => {
     navigation
   ] );
 
-  const wasSynced = localObservation && localObservation?.wasSynced();
+  const wasSynced = !!( localObservation && localObservation?.wasSynced() );
 
   const hasPhotos = observation?.observationPhotos?.length > 0;
 
@@ -293,7 +312,7 @@ const ObsDetailsDefaultModeContainer = ( props ): Node => {
         const localComments = localObservation?.comments;
         const newComment = data[0];
         newComment.user = currentUser;
-        localComments.push( newComment );
+        localComments?.push( newComment );
       }, "setting local comment in ObsDetailsContainer" );
       const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
       dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
