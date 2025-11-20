@@ -25,7 +25,7 @@ const Settings = ( ) => {
     setIsDefaultMode
   } = useLayoutPrefs( );
 
-  const handleValueChange = useCallback( newValue => {
+  const handleValueChange = useCallback( ( newValue: boolean ) => {
     setIsDefaultMode( !newValue );
   }, [setIsDefaultMode] );
 
