@@ -1,6 +1,6 @@
 import { Image } from "react-native";
 
-type ImageDimensions = {
+export type ImageDimensions = {
   width: number;
   height: number;
 };
