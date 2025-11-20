@@ -3,7 +3,8 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useEffect, useRef } from "react";
-import { Animated, ViewStyle } from "react-native";
+import type { ViewStyle } from "react-native";
+import { Animated } from "react-native";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 

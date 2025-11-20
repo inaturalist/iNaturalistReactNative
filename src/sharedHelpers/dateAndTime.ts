@@ -79,7 +79,7 @@ import {
   zhTW
 } from "date-fns/locale";
 import { formatInTimeZone } from "date-fns-tz";
-import { i18n as i18next } from "i18next";
+import type { i18n as i18next } from "i18next";
 
 // Convert iNat locale to date-fns locale. Note that coverage is *not*
 // complete, so some locales will see dates formatted in a nearby locale,

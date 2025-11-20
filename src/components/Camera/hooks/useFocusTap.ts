@@ -1,12 +1,15 @@
-import { Camera } from "components/Camera/helpers/visionCameraWrapper";
-import React, {
+import type { Camera } from "components/Camera/helpers/visionCameraWrapper";
+import type React from "react";
+import {
   useCallback, useMemo, useRef, useState
 } from "react";
 import { Animated } from "react-native";
-import {
-  Gesture,
+import type {
   GestureStateChangeEvent,
   TapGestureHandlerEventPayload
+} from "react-native-gesture-handler";
+import {
+  Gesture
 } from "react-native-gesture-handler";
 
 const HALF_SIZE_FOCUS_BOX = 33;

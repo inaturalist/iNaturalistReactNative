@@ -1,4 +1,5 @@
-import { BottomTabBarProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Mortal from "components/SharedComponents/Mortal";
 import TabStackNavigator, {
   SCREEN_NAME_NOTIFICATIONS,

@@ -1,5 +1,6 @@
 import { Body4, DisplayTaxonName } from "components/SharedComponents";
-import React, { FC, useCallback } from "react";
+import type { FC } from "react";
+import React, { useCallback } from "react";
 import { Trans } from "react-i18next";
 import { useCurrentUser } from "sharedHooks";
 

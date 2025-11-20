@@ -14,7 +14,7 @@ import {
   SearchBar,
   Tabs
 } from "components/SharedComponents";
-import { Tab } from "components/SharedComponents/Tabs/Tabs";
+import type { Tab } from "components/SharedComponents/Tabs/Tabs";
 import { View } from "components/styledComponents";
 import React, { useCallback, useEffect } from "react";
 import {

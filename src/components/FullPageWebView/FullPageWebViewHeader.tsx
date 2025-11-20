@@ -1,4 +1,5 @@
-import { getHeaderTitle, HeaderTitleProps } from "@react-navigation/elements";
+import type { HeaderTitleProps } from "@react-navigation/elements";
+import { getHeaderTitle } from "@react-navigation/elements";
 import classNames from "classnames";
 import { Heading4 } from "components/SharedComponents";
 import BackButton from "components/SharedComponents/Buttons/BackButton";

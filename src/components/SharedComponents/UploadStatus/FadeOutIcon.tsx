@@ -1,5 +1,6 @@
 import { View } from "components/styledComponents";
-import React, { ReactNode } from "react";
+import type { ReactNode } from "react";
+import React from "react";
 import Reanimated, {
   Keyframe
 } from "react-native-reanimated";

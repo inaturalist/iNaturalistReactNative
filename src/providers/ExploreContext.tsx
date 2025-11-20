@@ -2,7 +2,7 @@
 /* eslint-disable no-shadow */
 import { isEqual } from "lodash";
 import * as React from "react";
-import { LatLng } from "react-native-maps";
+import type { LatLng } from "react-native-maps";
 
 // Please don't change this to an aliased path or the e2e mock will not get
 // used in our e2e tests on Github Actions

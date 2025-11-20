@@ -1,7 +1,7 @@
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import _ from "lodash";
 import type { RealmObservation } from "realmModels/types";
-import { StateCreator } from "zustand";
+import type { StateCreator } from "zustand";
 
 export const UPLOAD_CANCELLED = "cancelled";
 export const UPLOAD_PENDING = "pending";

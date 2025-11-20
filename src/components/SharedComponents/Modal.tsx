@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ViewStyle } from "react-native";
+import type { ViewStyle } from "react-native";
 import RNModal from "react-native-modal";
 
 // repurposed from Seek: https://github.com/inaturalist/SeekReactNative/blob/main/components/UIComponents/Modals/Modal.js

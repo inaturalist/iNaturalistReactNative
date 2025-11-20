@@ -1,7 +1,8 @@
 import classNames from "classnames";
 import { Button } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import React, { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
+import React from "react";
 import { getShadow } from "styles/global";
 
 const DROP_SHADOW = getShadow( {

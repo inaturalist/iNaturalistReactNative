@@ -1,6 +1,6 @@
 import { View } from "components/styledComponents";
 import React from "react";
-import { ViewProps } from "react-native";
+import type { ViewProps } from "react-native";
 
 const P = ( props: ViewProps ) => (
   // eslint-disable-next-line react/jsx-props-no-spreading

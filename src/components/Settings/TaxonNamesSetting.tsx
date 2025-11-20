@@ -8,7 +8,8 @@ import React, { useCallback } from "react";
 import {
   View
 } from "react-native";
-import User, { TaxonNamesSettings } from "realmModels/User";
+import type { TaxonNamesSettings } from "realmModels/User";
+import User from "realmModels/User";
 import {
   useCurrentUser,
   useTranslation

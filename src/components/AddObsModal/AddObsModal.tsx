@@ -12,7 +12,8 @@ import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
-import AddObsModalHelp, { ObsCreateItem } from "./AddObsModalHelp";
+import type { ObsCreateItem } from "./AddObsModalHelp";
+import AddObsModalHelp from "./AddObsModalHelp";
 
 interface Props {
   closeModal: ( ) => void;

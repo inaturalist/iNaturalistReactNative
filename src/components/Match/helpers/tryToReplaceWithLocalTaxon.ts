@@ -1,4 +1,4 @@
-import Taxon from "realmModels/Taxon";
+import type Taxon from "realmModels/Taxon";
 import type { RealmTaxon } from "realmModels/types";
 
 const tryToReplaceWithLocalTaxon = (

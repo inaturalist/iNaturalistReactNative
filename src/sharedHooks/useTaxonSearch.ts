@@ -4,7 +4,8 @@ import { RealmContext } from "providers/contexts";
 import {
   useCallback, useEffect, useMemo, useState
 } from "react";
-import Realm, { UpdateMode } from "realm";
+import type Realm from "realm";
+import { UpdateMode } from "realm";
 import Taxon from "realmModels/Taxon";
 import type { RealmTaxon } from "realmModels/types";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";

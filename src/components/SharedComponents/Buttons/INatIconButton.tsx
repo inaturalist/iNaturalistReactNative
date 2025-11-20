@@ -2,12 +2,15 @@ import classnames from "classnames";
 import { INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { getCurrentRoute } from "navigation/navigationUtils";
-import React, { PropsWithChildren } from "react";
-import {
+import type { PropsWithChildren } from "react";
+import React from "react";
+import type {
   GestureResponderEvent,
-  Platform,
-  Pressable,
   ViewStyle
+} from "react-native";
+import {
+  Platform,
+  Pressable
 } from "react-native";
 import { log } from "sharedHelpers/logger";
 import colors from "styles/tailwindColors";

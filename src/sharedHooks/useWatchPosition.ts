@@ -1,4 +1,4 @@
-import {
+import type {
   GeolocationError,
   GeolocationResponse
 } from "@react-native-community/geolocation";

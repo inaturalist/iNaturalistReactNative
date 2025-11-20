@@ -2,9 +2,8 @@ import { useNavigation } from "@react-navigation/native";
 import {
   ImageBackground, ScrollView, View
 } from "components/styledComponents";
-import React, {
-  PropsWithChildren, useEffect, useRef
-} from "react";
+import type { PropsWithChildren } from "react";
+import React, { useEffect, useRef } from "react";
 import type {
   ImageSourcePropType,
   ImageStyle,

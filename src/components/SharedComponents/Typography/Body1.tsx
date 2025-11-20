@@ -1,6 +1,6 @@
 import { tailwindFontMedium } from "appConstants/fontFamilies";
 import React from "react";
-import { TextProps } from "react-native";
+import type { TextProps } from "react-native";
 
 import InatText from "./InatText";
 

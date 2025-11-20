@@ -8,7 +8,8 @@ import {
   INatIconButton
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import React, { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
+import React from "react";
 import type { GestureResponderEvent } from "react-native";
 import type { RealmTaxon, RealmTaxonPhoto } from "realmModels/types";
 import { accessibleTaxonName } from "sharedHelpers/taxon";

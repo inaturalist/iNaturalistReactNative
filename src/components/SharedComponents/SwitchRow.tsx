@@ -6,7 +6,7 @@ import {
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
-import { GestureResponderEvent } from "react-native";
+import type { GestureResponderEvent } from "react-native";
 import { Switch } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
