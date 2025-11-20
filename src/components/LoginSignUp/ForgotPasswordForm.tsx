@@ -5,7 +5,8 @@ import {
   Body1,
   Button
 } from "components/SharedComponents";
-import { ScrollView, View } from "components/styledComponents";
+import type { ScrollView } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { ElementRef, Node } from "react";
 import React, {

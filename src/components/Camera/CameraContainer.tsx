@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
+import type { Camera } from "components/Camera/helpers/visionCameraWrapper";
 import {
-  Camera,
   useCameraDevice,
   useCameraDevices
 } from "components/Camera/helpers/visionCameraWrapper";

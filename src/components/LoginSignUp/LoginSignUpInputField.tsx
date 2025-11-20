@@ -1,7 +1,8 @@
 import { Heading4 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import React, { forwardRef, Ref } from "react";
-import { TextInput as RNTextInput, TextInputProps } from "react-native";
+import type { Ref } from "react";
+import React, { forwardRef } from "react";
+import type { TextInput as RNTextInput, TextInputProps } from "react-native";
 import { TextInput } from "react-native-paper";
 import colors from "styles/tailwindColors";
 

@@ -3,7 +3,7 @@ import { create } from "apisauce";
 // eslint-disable-next-line import/no-cycle
 import { getAnonymousJWT, getJWT } from "components/LoginSignUp/AuthenticationService";
 import Config from "react-native-config";
-import { transportFunctionType } from "react-native-logs";
+import type { transportFunctionType } from "react-native-logs";
 import { getInstallID } from "sharedHelpers/installData";
 
 const API_HOST: string
