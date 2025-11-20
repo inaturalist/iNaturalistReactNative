@@ -1,4 +1,3 @@
-// @flow
 import { fetchRemoteObservation } from "api/observations";
 import i18n from "i18next";
 import { RealmContext } from "providers/contexts";
@@ -10,7 +9,35 @@ const { useRealm } = RealmContext;
 
 export const fetchRemoteObservationKey = "fetchRemoteObservation";
 
-const filterHiddenContent = observation => {
+interface CommentWithHidden {
+  hidden?: boolean;
+  [key: string]: unknown;
+}
+
+interface IdentificationWithHidden {
+  hidden?: boolean;
+  [key: string]: unknown;
+}
+
+interface RemoteObservation {
+  user?: {
+    id: number;
+    [key: string]: unknown;
+  };
+  comments?: CommentWithHidden[];
+  identifications?: IdentificationWithHidden[];
+  [key: string]: unknown;
+}
+
+interface UseRemoteObservationReturn {
+  remoteObservation: RemoteObservation | null | undefined;
+  refetchRemoteObservation: () => void;
+  isRefetching: boolean;
+  fetchRemoteObservationError: Error | null;
+}
+
+const filterHiddenContent
+= ( observation?: RemoteObservation | null ): RemoteObservation | null | undefined => {
   if ( observation === undefined || observation === null ) {
     return observation;
   }
@@ -24,7 +51,7 @@ const filterHiddenContent = observation => {
   return filteredObservation;
 };
 
-const useRemoteObservation = ( uuid: string, enabled: boolean ): Object => {
+const useRemoteObservation = ( uuid: string, enabled: boolean ): UseRemoteObservationReturn => {
   const fetchRemoteObservationQueryKey = useMemo(
     ( ) => ( [fetchRemoteObservationKey, uuid] ),
     [uuid]
@@ -40,8 +67,9 @@ const useRemoteObservation = ( uuid: string, enabled: boolean ): Object => {
     refetch: refetchRemoteObservation,
     isRefetching,
     error: fetchRemoteObservationError
-  } = useAuthenticatedQuery(
+  } = useAuthenticatedQuery<RemoteObservation | null>(
     fetchRemoteObservationQueryKey,
+    // @ts-expect-error return type mismatch to be handled later
     optsWithAuth => fetchRemoteObservation(
       uuid,
       {

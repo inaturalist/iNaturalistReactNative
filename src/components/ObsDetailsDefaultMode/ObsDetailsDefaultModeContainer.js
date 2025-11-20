@@ -117,7 +117,7 @@ type Props = {
   remoteObservation: ?Object,
   remoteObsWasDeleted: boolean,
   setRemoteObsWasDeleted: Function,
-  targetActivityItemID: ?number,
+  targetActivityItemID?: ?number,
   uuid: string
 }
 

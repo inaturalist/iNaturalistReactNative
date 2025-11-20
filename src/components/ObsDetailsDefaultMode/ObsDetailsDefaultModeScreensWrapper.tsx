@@ -11,14 +11,19 @@ import {
   useRemoteObservation
 } from "sharedHooks";
 
+type RouteParams = {
+    targetActivityItemID?: number,
+    uuid: string,
+}
+
 const ObsDetailsDefaultModeScreensWrapper = () => {
   const { params } = useRoute();
   const {
     targetActivityItemID,
     uuid
-  } = params;
+  } = params as RouteParams;
   const currentUser = useCurrentUser( );
-  const { isConnected } = useNetInfo( );
+  const isConnected = !!useNetInfo( ).isConnected;
 
   const [remoteObsWasDeleted, setRemoteObsWasDeleted] = useState( false );
 
@@ -56,9 +61,9 @@ const ObsDetailsDefaultModeScreensWrapper = () => {
     // Simple mode applies only when:
     // 1. It's the current user's observation (or an observation being created)
     // 2. AND the observation hasn't been synced yet
-    ( belongsToCurrentUser || !observation?.user )
+    !!( ( belongsToCurrentUser || !observation?.user )
       && localObservation
-      && !localObservation.wasSynced()
+      && !localObservation.wasSynced() )
   ), [belongsToCurrentUser, localObservation, observation?.user] );
 
   if ( showSavedMatch ) {
