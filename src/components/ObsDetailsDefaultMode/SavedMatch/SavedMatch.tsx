@@ -32,17 +32,15 @@ const SavedMatch = ( {
   const latitude = observation?.privateLatitude || observation?.latitude;
   const { taxon } = observation;
 
-  /* left todo
-  - simplify match header
-  - add edit pencil
-  - fix type errors
+  /*
+    todo: globalize class strings and maybe some of the resused container functions
   */
 
   return (
     <ScrollViewWrapper>
       <SavedMatchHeaderRight uuid={observation.uuid} />
       <View className={cardClassTop}>
-        <MatchHeader topSuggestion={observation} />
+        <MatchHeader hideObservationStatus topSuggestion={observation} />
       </View>
       <PhotosSection
         representativePhoto={taxon?.representative_photo}
