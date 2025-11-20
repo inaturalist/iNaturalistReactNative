@@ -12,7 +12,7 @@ const DROP_SHADOW = getShadow( );
 interface Props {
   currentMapType?: string;
   mapType?: string;
-  setCurrentMapType: Function;
+  setCurrentMapType: ( mapType: string|number ) => void;
   showSwitchMapTypeButton?: boolean;
   switchMapTypeButtonClassName?: string;
 }
