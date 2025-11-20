@@ -1,8 +1,5 @@
 // @flow
-import {
-  useNetInfo
-} from "@react-native-community/netinfo";
-import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { fetchSubscriptions } from "api/observations";
 import IdentificationSheets from "components/ObsDetailsDefaultMode/IdentificationSheets";
@@ -11,27 +8,22 @@ import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
-  useMemo,
-  useReducer,
-  useState
+  useReducer
 } from "react";
 import { LogBox } from "react-native";
 import Observation from "realmModels/Observation";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedQuery,
-  useCurrentUser,
-  useLocalObservation,
   useObservationsUpdates
 } from "sharedHooks";
-import useRemoteObservation, {
+import {
   fetchRemoteObservationKey
 } from "sharedHooks/useRemoteObservation";
 import useStore from "stores/useStore";
 
 import useMarkViewedMutation from "./hooks/useMarkViewedMutation";
 import ObsDetailsDefaultMode from "./ObsDetailsDefaultMode";
-import SavedMatch from "./SavedMatch";
 
 const { useRealm } = RealmContext;
 
@@ -361,89 +353,4 @@ const ObsDetailsDefaultModeContainer = ( props ): Node => {
   );
 };
 
-const ObsDetailsDefaultModeScreenWrapper = () => {
-  const { params } = useRoute();
-  const {
-    targetActivityItemID,
-    uuid
-  } = params;
-  const currentUser = useCurrentUser( );
-  const { isConnected } = useNetInfo( );
-
-  const [remoteObsWasDeleted, setRemoteObsWasDeleted] = useState( false );
-
-  const {
-    localObservation,
-    markDeletedLocally,
-    markViewedLocally
-  } = useLocalObservation( uuid );
-
-  const fetchRemoteObservationEnabled = !!(
-    !remoteObsWasDeleted
-    && ( !localObservation || localObservation?.wasSynced( ) )
-    && isConnected
-  );
-
-  const {
-    remoteObservation,
-    refetchRemoteObservation,
-    isRefetching,
-    fetchRemoteObservationError
-  } = useRemoteObservation( uuid, fetchRemoteObservationEnabled );
-
-  const observation = localObservation || Observation.mapApiToRealm( remoteObservation );
-
-  // In theory the only situation in which an observation would not have a
-  // user is when a user is not signed but has made a new observation in the
-  // app. Also in theory that user should not be able to get to ObsDetail for
-  // those observations, just ObsEdit. But.... let's be safe.
-  const belongsToCurrentUser = (
-    observation?.user?.id === currentUser?.id
-    || ( !observation?.user && !observation?.id )
-  );
-
-  const showSavedMatch = useMemo( () => (
-    // Simple mode applies only when:
-    // 1. It's the current user's observation (or an observation being created)
-    // 2. AND the observation hasn't been synced yet
-    ( belongsToCurrentUser || !observation?.user )
-      && localObservation
-      && !localObservation.wasSynced()
-  ), [belongsToCurrentUser, localObservation, observation?.user] );
-
-  if ( showSavedMatch ) {
-    return (
-      // todo add edit pencil
-      <SavedMatch
-        observation={observation}
-        navToTaxonDetails={() => {}}
-        isFetchingLocation={false}
-        handleAddLocationPressed={() => {}}
-      />
-    );
-  }
-
-  return (
-    <ObsDetailsDefaultModeContainer
-      observation={observation}
-      targetActivityItemID={targetActivityItemID}
-      uuid={uuid}
-      localObservation={localObservation}
-      markViewedLocally={markViewedLocally}
-      markDeletedLocally={markDeletedLocally}
-      remoteObservation={remoteObservation}
-      remoteObsWasDeleted={remoteObsWasDeleted}
-      setRemoteObsWasDeleted={setRemoteObsWasDeleted}
-      fetchRemoteObservationError={fetchRemoteObservationError}
-      currentUser={currentUser}
-      belongsToCurrentUser={belongsToCurrentUser}
-      isRefetching={isRefetching}
-      refetchRemoteObservation={refetchRemoteObservation}
-      isConnected={isConnected}
-      isSimpleMode={showSavedMatch}
-    />
-  );
-};
-
-// todo update stack navigator name for this import
-export default ObsDetailsDefaultModeScreenWrapper;
+export default ObsDetailsDefaultModeContainer;
