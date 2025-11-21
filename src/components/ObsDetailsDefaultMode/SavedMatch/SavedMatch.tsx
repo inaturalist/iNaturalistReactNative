@@ -1,4 +1,5 @@
 import { useNetInfo } from "@react-native-community/netinfo";
+import { matchCardClassBottom, matchCardClassTop } from "components/Match/Match";
 import MatchHeader from "components/Match/MatchHeader";
 import PhotosSection from "components/Match/PhotosSection";
 import LocationSection from "components/ObsDetailsDefaultMode/LocationSection/LocationSection";
@@ -11,11 +12,6 @@ import type { RealmObservation } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 
 import SavedMatchHeaderRight from "./SavedMatchHeaderRight";
-
-const cardClassTop
-  = "rounded-t-2xl border-lightGray border-[2px] py-[18px] px-5 border-b-0 -mb-0.5";
-const cardClassBottom
-  = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mt-0.5 mb-[30px]";
 
 type Props = {
   observation: RealmObservation,
@@ -32,14 +28,10 @@ const SavedMatch = ( {
   const latitude = observation?.privateLatitude || observation?.latitude;
   const { taxon } = observation;
 
-  /*
-    todo: globalize class strings and maybe some of the resused container functions
-  */
-
   return (
     <ScrollViewWrapper>
       <SavedMatchHeaderRight uuid={observation.uuid} />
-      <View className={cardClassTop}>
+      <View className={matchCardClassTop}>
         <MatchHeader hideObservationStatus topSuggestion={observation} />
       </View>
       <PhotosSection
@@ -56,7 +48,7 @@ const SavedMatch = ( {
         belongsToCurrentUser
         observation={observation}
       />
-      <View className={cardClassBottom} />
+      <View className={matchCardClassBottom} />
       {
         isConnected && (
           <Button
