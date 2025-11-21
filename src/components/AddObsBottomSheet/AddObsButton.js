@@ -166,7 +166,6 @@ const AddObsButton = ( ): React.Node => {
   return (
     <>
       <AddObsTooltip isVisible={showTooltip} dismissTooltip={dismissTooltip} />
-      {/* match the animation timing on FadeInView.tsx */}
       <AddObsBottomSheet
         closeBottomSheet={closeBottomSheet}
         hidden={!showBottomSheet}

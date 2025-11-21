@@ -35,12 +35,12 @@ interface Props {
   onLayout?: ( event: object ) => void;
   // Callback when the user presses the close button or backdrop, not whenever the sheet
   // closes
-  onPressClose?: () => void;
+  onPressClose?: ( ) => void;
   snapPoints?: Array<string>;
   insideModal?: boolean;
   keyboardShouldPersistTaps?: string;
   testID?: string;
-  additionalClasses?: string;
+  containerClass?: string;
   scrollEnabled?: boolean;
 }
 
@@ -54,7 +54,7 @@ const StandardBottomSheet = ( {
   snapPoints,
   insideModal,
   keyboardShouldPersistTaps = "never",
-  additionalClasses,
+  containerClass,
   testID,
   scrollEnabled = true
 }: Props ): Node => {
@@ -124,23 +124,25 @@ const StandardBottomSheet = ( {
             insets.bottom > 0
               ? "pb-7"
               : null,
-            additionalClasses
+            containerClass
           )}
           onLayout={onLayout}
           // Not ideal, but @gorhom/bottom-sheet components don't support
           // testID
           testID={testID}
         >
-          {headerText && (
-            <View className="mx-12 flex">
-              <Heading4
-                testID="bottom-sheet-header"
-                className="w-full text-center"
-              >
-                {headerText}
-              </Heading4>
-            </View>
-          )}
+          {!headerText
+            ? null
+            : (
+              <View className="mx-12 flex">
+                <Heading4
+                  testID="bottom-sheet-header"
+                  className="w-full text-center"
+                >
+                  {headerText}
+                </Heading4>
+              </View>
+            )}
           {children}
           {!hideCloseButton && (
             <INatIconButton

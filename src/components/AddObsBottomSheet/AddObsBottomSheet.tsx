@@ -1,9 +1,9 @@
 import {
   Body3, BottomSheet, INatIcon, INatIconButton
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import React, { useMemo } from "react";
-import { Platform, Pressable } from "react-native";
+import { Platform } from "react-native";
 import Observation from "realmModels/Observation";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
@@ -18,12 +18,12 @@ interface Props {
 }
 
 type ObsCreateItem = {
-    text?: string,
-    icon: string,
-    onPress: ( ) => void,
-    testID: string,
-    accessibilityLabel: string,
-    accessibilityHint: string
+  text: string,
+  icon: string,
+  onPress: ( ) => void,
+  testID: string,
+  accessibilityLabel: string,
+  accessibilityHint: string
 }
 
 const majorVersionIOS = parseInt( String( Platform.Version ), 10 );
@@ -128,7 +128,7 @@ const AddObsBottomSheet = ( {
       hidden={hidden}
       insideModal={false}
       hideCloseButton
-      additionalClasses="bg-lightGray pt-4"
+      containerClass="bg-lightGray pt-4"
       scrollEnabled={false}
     >
       <View className="flex-column gap-y-4 pb-4 px-4">
@@ -145,7 +145,7 @@ const AddObsBottomSheet = ( {
 
         <Pressable
           className="bg-mediumGray w-full flex-row items-center py-[10px] px-5 rounded-lg
-          active:opacity-50"
+          active:opacity-75"
           onPress={obsCreateItems.noEvidence.onPress}
           accessibilityHint={obsCreateItems.noEvidence.accessibilityHint}
           accessibilityLabel={obsCreateItems.noEvidence.accessibilityLabel}
