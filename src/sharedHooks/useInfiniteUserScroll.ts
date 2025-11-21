@@ -2,7 +2,7 @@ import { flatten } from "lodash";
 import { useAuthenticatedInfiniteQuery } from "sharedHooks";
 
 const useInfiniteUserScroll = (
-  queryKey: string,
+  queryKey: unknown,
   apiCall: Function,
   ids: Array<object>,
   newInputParams: object,
