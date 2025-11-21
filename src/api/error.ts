@@ -18,15 +18,12 @@ export class INatApiError extends Error {
     context?: Record<string, unknown> | null
   ) {
     super( JSON.stringify( json ) );
+    this.name = "INatApiError";
     this.json = json;
     this.status = status || Number( json.status );
     this.context = context || null;
   }
 }
-// https://wbinnssmith.com/blog/subclassing-error-in-modern-javascript/
-Object.defineProperty( INatApiError.prototype, "name", {
-  value: "INatApiError"
-} );
 
 export class INatApiUnauthorizedError extends INatApiError {
   constructor( context?: Record<string, unknown> ) {
@@ -36,12 +33,9 @@ export class INatApiUnauthorizedError extends INatApiError {
       context
     };
     super( errorJson, 401, context );
+    this.name = "INatApiUnauthorizedError";
   }
 }
-// https://wbinnssmith.com/blog/subclassing-error-in-modern-javascript/
-Object.defineProperty( INatApiUnauthorizedError.prototype, "name", {
-  value: "INatApiUnauthorizedError"
-} );
 
 export class INatApiTooManyRequestsError extends INatApiError {
   constructor( context?: Record<string, unknown> ) {
@@ -51,12 +45,9 @@ export class INatApiTooManyRequestsError extends INatApiError {
       context
     };
     super( errorJson, 429, context );
+    this.name = "INatApiTooManyRequestsError";
   }
 }
-
-Object.defineProperty( INatApiTooManyRequestsError.prototype, "name", {
-  value: "INatApiTooManyRequestsError"
-} );
 
 interface HandleErrorOptions {
   queryKey?: unknown[];
@@ -68,7 +59,7 @@ interface HandleErrorOptions {
   onApiError?: ( error: INatApiError ) => void;
 }
 
-interface ErrorWithResponse {
+export interface ErrorWithResponse {
   response?: {
     status: number;
     url: string;

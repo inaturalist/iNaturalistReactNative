@@ -1,4 +1,10 @@
-const tryToReplaceWithLocalTaxon = ( localTaxa, suggestion ) => {
+import Taxon from "realmModels/Taxon";
+import type { RealmTaxon } from "realmModels/types";
+
+const tryToReplaceWithLocalTaxon = (
+  localTaxa: ( Taxon & RealmTaxon )[],
+  suggestion: { taxon: { id: number } }
+) => {
   const localTaxon = localTaxa.find( local => local.id === suggestion.taxon.id );
 
   if ( localTaxon ) {

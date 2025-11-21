@@ -1,15 +1,12 @@
-// @flow
 import classNames from "classnames";
 import { INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import * as React from "react";
+import React, { type PropsWithChildren } from "react";
 
-type Props = {
-  icon: string,
-  size?: number,
-  classNameMargin?: string,
-  // $FlowIgnore
-  children: unknown
+interface Props extends PropsWithChildren {
+  icon: string;
+  size?: number;
+  classNameMargin?: string;
 }
 
 const ContentWithIcon = ( {
@@ -17,7 +14,7 @@ const ContentWithIcon = ( {
   size,
   classNameMargin,
   children
-}: Props ): React.Node => (
+}: Props ) => (
   <View
     className={classNames( "flex-row space-x-[5px]", classNameMargin )}
     testID={`ContentWithIcon.${icon}`}

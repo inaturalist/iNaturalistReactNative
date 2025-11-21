@@ -1,13 +1,12 @@
 import classnames from "classnames";
 import { View } from "components/styledComponents";
-import React from "react";
+import React, { type PropsWithChildren } from "react";
 import { useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const FOOTER_HEIGHT = 77;
 
-interface Props {
-  children: React.Node;
+interface Props extends PropsWithChildren {
   containerClassName?: string;
   headerHeight: number;
   emptyItemHeight: number;

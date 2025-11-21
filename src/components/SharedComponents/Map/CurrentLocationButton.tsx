@@ -20,7 +20,10 @@ const CurrentLocationButton = ( {
   renderPermissionsGate
 }: Props ) => {
   const { t } = useTranslation( );
-  return showCurrentLocationButton && (
+  if ( !showCurrentLocationButton ) {
+    return null;
+  }
+  return (
     <>
       <INatIconButton
         icon="location-crosshairs"
