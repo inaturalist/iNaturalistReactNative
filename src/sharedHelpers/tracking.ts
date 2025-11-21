@@ -7,26 +7,25 @@ const logger = log.extend( "tracking.ts" );
 
 type FirebaseParameters = Record<string, string | number | string[]>
 
-// eslint-disable-next-line import/prefer-default-export
 export const logFirebaseEvent = (
   eventId: string,
   parameters?: FirebaseParameters
 ) => {
-  // eslint-disable-next-line no-undef
-  if ( __DEV__ ) {
-    logger.info( `Firebase event: ${eventId} ${JSON.stringify( parameters )}` );
+  try {
+    const analytics = getAnalytics();
+    logEvent( analytics, eventId, parameters );
+  } catch ( error ) {
+    logger.error( "Error logging firebase event", error );
   }
-  const analytics = getAnalytics();
-  logEvent( analytics, eventId, parameters );
 };
 
 export const logFirebaseScreenView = (
   screenName: string
 ) => {
-  // eslint-disable-next-line no-undef
-  if ( __DEV__ ) {
-    logger.info( `Firebase screen view: ${screenName}` );
+  try {
+    const analytics = getAnalytics();
+    logScreenView( analytics, { screen_name: screenName, screen_class: screenName } );
+  } catch ( error ) {
+    logger.error( "Error logging firebase screen view", error );
   }
-  const analytics = getAnalytics();
-  logScreenView( analytics, { screen_name: screenName, screen_class: screenName } );
 };
