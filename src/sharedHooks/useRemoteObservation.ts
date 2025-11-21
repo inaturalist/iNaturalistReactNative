@@ -69,7 +69,6 @@ const useRemoteObservation = ( uuid: string, enabled: boolean ): UseRemoteObserv
     error: fetchRemoteObservationError
   } = useAuthenticatedQuery<RemoteObservation | null>(
     fetchRemoteObservationQueryKey,
-    // @ts-expect-error return type mismatch to be handled later
     optsWithAuth => fetchRemoteObservation(
       uuid,
       {
