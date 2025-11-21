@@ -1,4 +1,4 @@
-import perf, { FirebasePerformanceTypes } from "@react-native-firebase/perf";
+import { FirebasePerformanceTypes, getPerformance } from "@react-native-firebase/perf";
 import { StateCreator } from "zustand";
 
 export enum FIREBASE_TRACES {
@@ -27,7 +27,8 @@ const createFirebaseTraceSlice: StateCreator<FirebaseTraceSlice>
   activeFirebaseTraces: {},
 
   startFirebaseTrace: async ( traceId: string, attributes: Record<string, string> = {} ) => {
-    const trace = await perf().startTrace( traceId );
+    const perf = getPerformance();
+    const trace = await perf.startTrace( traceId );
 
     const timeoutId = setTimeout( () => {
       get().stopFirebaseTrace( traceId );
