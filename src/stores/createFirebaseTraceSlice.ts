@@ -17,20 +17,20 @@ interface TraceData {
 const TRACE_TIMEOUT = 10000;
 
 export interface FirebaseTraceSlice {
-  activeTraces: Record<string, TraceData>;
-  startTrace: ( traceId: string ) => Promise<void>;
-  stopTrace: ( traceId: string ) => Promise<void>;
+  activeFirebaseTraces: Record<string, TraceData>;
+  startFirebaseTrace: ( traceId: string ) => Promise<void>;
+  stopFirebaseTrace: ( traceId: string ) => Promise<void>;
 }
 
 const createFirebaseTraceSlice: StateCreator<FirebaseTraceSlice>
 = ( set, get ) => ( {
-  activeTraces: {},
+  activeFirebaseTraces: {},
 
-  startTrace: async ( traceId: string, attributes: Record<string, string> = {} ) => {
+  startFirebaseTrace: async ( traceId: string, attributes: Record<string, string> = {} ) => {
     const trace = await perf().startTrace( traceId );
 
     const timeoutId = setTimeout( () => {
-      get().stopTrace( traceId );
+      get().stopFirebaseTrace( traceId );
     }, TRACE_TIMEOUT );
 
     try {
@@ -43,16 +43,16 @@ const createFirebaseTraceSlice: StateCreator<FirebaseTraceSlice>
     }
 
     set( state => ( {
-      activeTraces: {
-        ...state.activeTraces,
+      activeFirebaseTraces: {
+        ...state.activeFirebaseTraces,
         [traceId]: { trace, timeoutId }
       }
     } ) );
   },
 
-  stopTrace: async ( traceId: string, attributes: Record<string, string> = {} ) => {
-    const { activeTraces } = get();
-    const traceData = activeTraces[traceId];
+  stopFirebaseTrace: async ( traceId: string, attributes: Record<string, string> = {} ) => {
+    const { activeFirebaseTraces } = get();
+    const traceData = activeFirebaseTraces[traceId];
     if ( traceData ) {
       clearTimeout( traceData.timeoutId );
 
@@ -69,8 +69,8 @@ const createFirebaseTraceSlice: StateCreator<FirebaseTraceSlice>
       await trace.stop();
 
       set( state => {
-        const { [traceId]: _, ...remainingTraces } = state.activeTraces;
-        return { activeTraces: remainingTraces };
+        const { [traceId]: _, ...remainingTraces } = state.activeFirebaseTraces;
+        return { activeFirebaseTraces: remainingTraces };
       } );
     }
   }
