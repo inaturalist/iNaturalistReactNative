@@ -3,7 +3,7 @@ import {
 } from "@react-native-firebase/analytics";
 import { log } from "sharedHelpers/logger";
 
-const logger = log.extend( "tracing.ts" );
+const logger = log.extend( "tracking.ts" );
 
 type FirebaseParameters = Record<string, string | number | string[]>
 
