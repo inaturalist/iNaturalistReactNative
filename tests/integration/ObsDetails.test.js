@@ -1,7 +1,7 @@
 import { screen, waitFor } from "@testing-library/react-native";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
-import DefaultModeObsDetailsContainer
-  from "components/ObsDetailsDefaultMode/ObsDetailsDefaultModeContainer";
+import ObsDetailsDefaultModeScreensWrapper
+  from "components/ObsDetailsDefaultMode/ObsDetailsDefaultModeScreensWrapper";
 import inatjs from "inaturalistjs";
 import React from "react";
 import Observation from "realmModels/Observation";
@@ -71,7 +71,7 @@ jest.mock( "@react-navigation/native", () => {
 // Run the same suite of tests for multiple ObsDetails container
 describe.each( [
   { Container: ObsDetailsContainer, name: "ObsDetailsContainer" },
-  { Container: DefaultModeObsDetailsContainer, name: "DefaultModeObsDetailsContainer" }
+  { Container: ObsDetailsDefaultModeScreensWrapper, name: "ObsDetailsDefaultModeScreensWrapper" }
 ] )( "ObsDetails", ( { Container, name } ) => {
   beforeAll( async () => {
     jest.useFakeTimers( );

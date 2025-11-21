@@ -41,7 +41,7 @@ type Props = {
   refetchSubscriptions: Function,
   showAddCommentSheet: Function,
   subscriptions?: Object,
-  targetActivityItemID: number,
+  targetActivityItemID: ?number,
   wasSynced: boolean,
   uuid: string
 }

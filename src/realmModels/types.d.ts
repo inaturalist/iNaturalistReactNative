@@ -112,6 +112,7 @@ export interface RealmObservationPojo {
   observed_time_zone?: string;
   owners_identification_from_vision: boolean | null;
   place_guess: string | null;
+  privateLatitude?: number;
   positional_accuracy: number | null;
   species_guess: string | null;
   taxon_id: number | null;
