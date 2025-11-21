@@ -1,6 +1,10 @@
 import { FirebasePerformanceTypes, getPerformance } from "@react-native-firebase/perf";
 import { StateCreator } from "zustand";
 
+import { log } from "../../react-native-logs.config";
+
+const logger = log.extend( "createFirebaseTraceSlice.ts" );
+
 export enum FIREBASE_TRACES {
   AI_CAMERA_TO_MATCH = "ai_camera_to_match",
 }
@@ -38,9 +42,8 @@ const createFirebaseTraceSlice: StateCreator<FirebaseTraceSlice>
       Object.entries( attributes ).forEach( ( [key, value] ) => {
         trace.putAttribute( key, value );
       } );
-    } catch ( _ ) {
-      /* this can error for a few reasons like value being a non-string
-        but we still need to stop the trace */
+    } catch ( error ) {
+      logger.error( "Error setting firebase trace attributes on start", error );
     }
 
     set( state => ( {
@@ -62,9 +65,8 @@ const createFirebaseTraceSlice: StateCreator<FirebaseTraceSlice>
         Object.entries( attributes ).forEach( ( [key, value] ) => {
           trace.putAttribute( key, value );
         } );
-      } catch ( _ ) {
-        /* this can error for a few reasons like value being a non-string
-        but we still need to stop the trace */
+      } catch ( error ) {
+        logger.error( "Error setting firebase trace attributes on stop", error );
       }
 
       await trace.stop();
