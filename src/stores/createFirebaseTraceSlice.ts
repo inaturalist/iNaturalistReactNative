@@ -19,15 +19,22 @@ interface TraceData {
   timeoutId: ReturnType<typeof setTimeout>;
 }
 
+type FirebaseTraceAttributes = Partial<Record<FIREBASE_TRACE_ATTRIBUTES, string>>;
+
 const TRACE_TIMEOUT = 10000;
 
 const applyTraceAttributes = (
   trace: FirebasePerformanceTypes.Trace,
-  attributes: Record<string, string>
+  attributes: FirebaseTraceAttributes
 ): void => {
   try {
     Object.entries( attributes ).forEach( ( [key, value] ) => {
-      trace.putAttribute( key, value );
+      // Firebase will silently fail if we exceed these limits
+      if ( key.length <= 40 && value.length <= 100 ) {
+        trace.putAttribute( key, value );
+      } else {
+        logger.error( `Failed to set firebase attribute (too long): ${key}=${value}` );
+      }
     } );
   } catch ( error ) {
     logger.error( "Error setting firebase trace attributes", error );
@@ -36,15 +43,15 @@ const applyTraceAttributes = (
 
 export interface FirebaseTraceSlice {
   activeFirebaseTraces: Record<string, TraceData>;
-  startFirebaseTrace: ( traceId: string, attributes: Record<string, string> ) => Promise<void>;
-  stopFirebaseTrace: ( traceId: string, attributes: Record<string, string> ) => Promise<void>;
+  startFirebaseTrace: ( traceId: string, attributes: FirebaseTraceAttributes ) => Promise<void>;
+  stopFirebaseTrace: ( traceId: string, attributes: FirebaseTraceAttributes ) => Promise<void>;
 }
 
 const createFirebaseTraceSlice: StateCreator<FirebaseTraceSlice>
 = ( set, get ) => ( {
   activeFirebaseTraces: {},
 
-  startFirebaseTrace: async ( traceId: string, attributes: Record<string, string> = {} ) => {
+  startFirebaseTrace: async ( traceId: string, attributes: FirebaseTraceAttributes = {} ) => {
     const perf = getPerformance();
     const trace = await perf.startTrace( traceId );
 
@@ -62,7 +69,7 @@ const createFirebaseTraceSlice: StateCreator<FirebaseTraceSlice>
     } ) );
   },
 
-  stopFirebaseTrace: async ( traceId: string, attributes: Record<string, string> = {} ) => {
+  stopFirebaseTrace: async ( traceId: string, attributes: FirebaseTraceAttributes = {} ) => {
     const { activeFirebaseTraces } = get();
     const traceData = activeFirebaseTraces[traceId];
     if ( traceData ) {
