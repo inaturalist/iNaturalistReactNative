@@ -11,6 +11,7 @@ export enum FIREBASE_TRACES {
 
 export enum FIREBASE_TRACE_ATTRIBUTES {
   ONLINE = "online",
+  DID_TIMEOUT = "did_timeout",
 }
 
 interface TraceData {
@@ -20,10 +21,23 @@ interface TraceData {
 
 const TRACE_TIMEOUT = 10000;
 
+const applyTraceAttributes = (
+  trace: FirebasePerformanceTypes.Trace,
+  attributes: Record<string, string>
+): void => {
+  try {
+    Object.entries( attributes ).forEach( ( [key, value] ) => {
+      trace.putAttribute( key, value );
+    } );
+  } catch ( error ) {
+    logger.error( "Error setting firebase trace attributes", error );
+  }
+};
+
 export interface FirebaseTraceSlice {
   activeFirebaseTraces: Record<string, TraceData>;
-  startFirebaseTrace: ( traceId: string ) => Promise<void>;
-  stopFirebaseTrace: ( traceId: string ) => Promise<void>;
+  startFirebaseTrace: ( traceId: string, attributes: Record<string, string> ) => Promise<void>;
+  stopFirebaseTrace: ( traceId: string, attributes: Record<string, string> ) => Promise<void>;
 }
 
 const createFirebaseTraceSlice: StateCreator<FirebaseTraceSlice>
@@ -35,16 +49,10 @@ const createFirebaseTraceSlice: StateCreator<FirebaseTraceSlice>
     const trace = await perf.startTrace( traceId );
 
     const timeoutId = setTimeout( () => {
-      get().stopFirebaseTrace( traceId );
+      get().stopFirebaseTrace( traceId, { [FIREBASE_TRACE_ATTRIBUTES.DID_TIMEOUT]: "true" } );
     }, TRACE_TIMEOUT );
 
-    try {
-      Object.entries( attributes ).forEach( ( [key, value] ) => {
-        trace.putAttribute( key, value );
-      } );
-    } catch ( error ) {
-      logger.error( "Error setting firebase trace attributes on start", error );
-    }
+    applyTraceAttributes( trace, attributes );
 
     set( state => ( {
       activeFirebaseTraces: {
@@ -61,13 +69,7 @@ const createFirebaseTraceSlice: StateCreator<FirebaseTraceSlice>
       clearTimeout( traceData.timeoutId );
 
       const { trace } = traceData;
-      try {
-        Object.entries( attributes ).forEach( ( [key, value] ) => {
-          trace.putAttribute( key, value );
-        } );
-      } catch ( error ) {
-        logger.error( "Error setting firebase trace attributes on stop", error );
-      }
+      applyTraceAttributes( trace, attributes );
 
       await trace.stop();
 
