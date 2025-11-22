@@ -1,4 +1,4 @@
-name: e2e-Android
+name: e2e-Android-old
 on:
   workflow_dispatch:
 
