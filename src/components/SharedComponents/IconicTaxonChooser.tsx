@@ -1,16 +1,15 @@
 import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useCallback } from "react";
-import { FlatList } from "react-native";
+import { FlatList, ListRenderItemInfo } from "react-native";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  before?: Node;
+  before?: React.ReactNode;
   chosen: string[];
-  onTaxonChosen: Function;
+  onTaxonChosen: ( taxon: string ) => void;
   testID?: string;
   withoutUnknown?: boolean;
 };
@@ -42,12 +41,12 @@ const IconicTaxonChooser = ( {
   onTaxonChosen,
   testID,
   withoutUnknown
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const iconicTaxonIcons = withoutUnknown
     ? ICONIC_TAXA.filter( taxon => taxon !== "unknown" )
     : ICONIC_TAXA;
-  const renderIcon = useCallback( ( { item: iconicTaxonName } ) => {
+  const renderIcon = useCallback( ( { item: iconicTaxonName }: ListRenderItemInfo<string> ) => {
     const isSelected = chosen.indexOf( iconicTaxonName ) >= 0;
     return (
       <View
@@ -71,7 +70,9 @@ const IconicTaxonChooser = ( {
           onPress={( ) => {
             onTaxonChosen( iconicTaxonName );
           }}
-          color={isSelected && colors.white}
+          color={isSelected
+            ? colors.white
+            : undefined}
           accessibilityLabel={
             t( "Iconic-taxon-name", { iconicTaxon: iconicTaxonName } )
           }
