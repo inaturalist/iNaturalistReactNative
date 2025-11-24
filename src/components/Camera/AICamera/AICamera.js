@@ -127,7 +127,7 @@ const AICamera = ( {
     ? device.formats[debugFormatIndex]
     : undefined;
 
-  const startTrace = useStore( state => state.startTrace );
+  const startFirebaseTrace = useStore( state => state.startFirebaseTrace );
 
   const toggleLocation = () => {
     if ( !useLocation && !hasLocationPermissions ) {
@@ -177,7 +177,7 @@ const AICamera = ( {
     await logStage( sentinelFileName, "take_photo_start" );
     setHasTakenPhoto( true );
     logFirebaseEvent( "ai_camera_shutter_tap", { hasLocationPermissions } );
-    startTrace( FIREBASE_TRACES.AI_CAMERA_TO_MATCH );
+    startFirebaseTrace( FIREBASE_TRACES.AI_CAMERA_TO_MATCH );
     // this feels a little duplicative, but we're currently using aICameraSuggestion
     // to show the loading screen in Suggestions *without* setting an observation.taxon,
     // and we're using visionResult to populate ObsEdit *with* the taxon
@@ -203,7 +203,7 @@ const AICamera = ( {
     takePhotoAndStoreUri,
     result,
     hasLocationPermissions,
-    startTrace
+    startFirebaseTrace
   ] );
 
   useEffect( () => {

@@ -126,7 +126,7 @@ const MatchContainer = ( ) => {
     shouldUseEvidenceLocation: evidenceHasLocation
   } );
 
-  const stopTrace = useStore( state => state.stopTrace );
+  const stopFirebaseTrace = useStore( state => state.stopFirebaseTrace );
 
   const {
     scoreImageParams,
@@ -435,7 +435,7 @@ const MatchContainer = ( ) => {
       && !suggestionsLoading
     ) {
       // This should capture a case where online and offline have had a chance to load
-      stopTrace(
+      stopFirebaseTrace(
         FIREBASE_TRACES.AI_CAMERA_TO_MATCH,
         { [FIREBASE_TRACE_ATTRIBUTES.ONLINE]: `${!usingOfflineSuggestions}` }
       );
@@ -443,7 +443,7 @@ const MatchContainer = ( ) => {
   }, [
     onlineSuggestionsAttempted,
     suggestionsLoading,
-    stopTrace,
+    stopFirebaseTrace,
     usingOfflineSuggestions
   ] );
 
