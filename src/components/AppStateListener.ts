@@ -12,7 +12,8 @@ const logger = log.extend( "AppStateListener" );
 
 const AppStateListener = ( ) => {
   const { loadTime } = usePerformance( {
-    screenName: "AppStateListener"
+    screenName: "AppStateListener",
+    isLoading: false
   } );
   if ( isDebugMode( ) ) {
     logger.info( loadTime );
