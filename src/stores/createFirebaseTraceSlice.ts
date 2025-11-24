@@ -19,7 +19,7 @@ interface TraceData {
   timeoutId: ReturnType<typeof setTimeout>;
 }
 
-type FirebaseTraceAttributes = Partial<Record<FIREBASE_TRACE_ATTRIBUTES, string>>;
+type FirebaseTraceAttributes = Partial<Record<FIREBASE_TRACE_ATTRIBUTES, string | number>>;
 
 const TRACE_TIMEOUT = 10000;
 
@@ -29,11 +29,17 @@ const applyTraceAttributes = (
 ): void => {
   try {
     Object.entries( attributes ).forEach( ( [key, value] ) => {
+      if ( typeof value === "string" ) {
       // Firebase will silently fail if we exceed these limits
-      if ( key.length <= 40 && value.length <= 100 ) {
-        trace.putAttribute( key, value );
-      } else {
-        logger.error( `Failed to set firebase attribute (too long): ${key}=${value}` );
+        if ( key.length <= 40 && value.length <= 100 ) {
+          trace.putAttribute( key, value );
+        } else {
+          logger.error( `Failed to set firebase attribute (too long): ${key}=${value}` );
+        }
+      } else if ( key.length <= 32 && /^(?!_)[^\s](?:.*[^\s])?$/.test( key ) ) {
+        /* metric key constraint: "Must not have a leading or trailing whitespace,
+        no leading underscore '_' character and have a max length of 32 characters." */
+        trace.putMetric( key, value );
       }
     } );
   } catch ( error ) {
