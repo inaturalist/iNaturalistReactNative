@@ -13,9 +13,32 @@ interface ButtonProps {
   style?: object;
 }
 
+const styles = StyleSheet.create( {
+  button: {
+    fontSize: 16,
+    margin: 16
+  },
+  container: {
+    flex: 1,
+    backgroundColor: "white"
+  },
+  text: {
+    fontSize: 20,
+    textAlign: "center",
+    margin: 16
+  },
+  buttonGroup: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center"
+  },
+  destructive: {
+    color: "red"
+  }
+} );
+
 const Button = ( { onPress, title, style }: ButtonProps ) => (
   <Pressable accessibilityRole="button" onPress={onPress}>
-    {/* eslint-disable-next-line no-use-before-define */}
     <Text style={[styles.button, style]}>{title}</Text>
   </Pressable>
 );
@@ -32,7 +55,6 @@ const ShareSheet = () => {
 
   const {
     container, text, buttonGroup, destructive
-  // eslint-disable-next-line no-use-before-define
   } = styles;
 
   return (
@@ -58,29 +80,5 @@ const ShareSheet = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create( {
-  button: {
-    fontSize: 16,
-    margin: 16
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "white"
-  },
-  text: {
-    fontSize: 20,
-    textAlign: "center",
-    margin: 16
-  },
-  buttonGroup: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center"
-  },
-  destructive: {
-    color: "red"
-  }
-} );
 
 export default ShareSheet;

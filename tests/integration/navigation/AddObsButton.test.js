@@ -1,5 +1,5 @@
 import { screen, userEvent } from "@testing-library/react-native";
-import AddObsButton from "components/AddObsModal/AddObsButton";
+import AddObsButton from "components/AddObsBottomSheet/AddObsButton";
 import i18next from "i18next";
 import React from "react";
 import { renderComponent } from "tests/helpers/render";
@@ -48,8 +48,8 @@ const longPress = async ( ) => {
 };
 
 const showNoEvidenceOption = ( ) => {
-  const noEvidenceButton = screen.getByLabelText(
-    i18next.t( "Observation-with-no-evidence" )
+  const noEvidenceButton = screen.getByTestId(
+    i18next.t( "observe-without-evidence-button" )
   );
   expect( noEvidenceButton ).toBeTruthy( );
   return noEvidenceButton;
@@ -87,7 +87,7 @@ describe( "with advanced user layout", ( ) => {
     } );
   } );
 
-  it( "opens AddObsModal", async ( ) => {
+  it( "opens AddObsBottomSheet", async ( ) => {
     renderComponent( <AddObsButton /> );
     await regularPress( );
     showNoEvidenceOption( );
