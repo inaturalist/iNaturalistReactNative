@@ -1,12 +1,12 @@
-// @flow
 import {
   ActivityIndicator
 } from "components/SharedComponents";
 import { ScrollView, View } from "components/styledComponents";
-import type { Node } from "react";
 import React, {
   useRef
 } from "react";
+import Observation from "realmModels/Observation";
+import type { RealmObservation, RealmUser } from "realmModels/types";
 import {
   useScrollToOffset
 } from "sharedHooks";
@@ -27,21 +27,21 @@ import StatusSection from "./StatusSection/StatusSection";
 const cardClassBottom = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mt-0.5 mb-4";
 
 type Props = {
-  activityItems: Array<Object>,
-  addingActivityItem: Function,
+  activityItems: Array<object>,
+  addingActivityItem: boolean,
   belongsToCurrentUser: boolean,
-  currentUser: Object,
+  currentUser: RealmUser,
   isConnected: boolean,
   isSimpleMode: boolean,
-  navToSuggestions: Function,
-  observation: Object,
-  openAddCommentSheet: Function,
-  openAgreeWithIdSheet: Function,
-  refetchRemoteObservation: Function,
-  refetchSubscriptions: Function,
-  showAddCommentSheet: Function,
-  subscriptions?: Object,
-  targetActivityItemID: ?number,
+  navToSuggestions: () => void,
+  observation: RealmObservation & Observation & { id: number },
+  openAddCommentSheet: () => void,
+  openAgreeWithIdSheet: () => void,
+  refetchRemoteObservation: () => void,
+  refetchSubscriptions: () => void,
+  showAddCommentSheet: () => void,
+  subscriptions: object,
+  targetActivityItemID: number,
   wasSynced: boolean,
   uuid: string
 }
@@ -64,8 +64,8 @@ const ObsDetailsDefaultMode = ( {
   targetActivityItemID,
   wasSynced,
   uuid
-}: Props ): Node => {
-  const scrollViewRef = useRef( );
+}: Props ) => {
+  const scrollViewRef = useRef<typeof ScrollView | null>( null );
 
   const {
     setHeightOfContentAboveSection: setHeightOfContentAboveCommunitySection,
