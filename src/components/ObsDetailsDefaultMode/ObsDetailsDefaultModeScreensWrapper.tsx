@@ -59,7 +59,7 @@ const ObsDetailsDefaultModeScreensWrapper = () => {
   );
 
   const showSavedMatch = useMemo( () => (
-    // Simple mode applies only when:
+    // Saved match screen is used when:
     // 1. It's the current user's observation (or an observation being created)
     // 2. AND the observation hasn't been synced yet
     !!( ( belongsToCurrentUser || !observation?.user )
