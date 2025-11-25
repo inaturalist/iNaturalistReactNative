@@ -1,17 +1,38 @@
 import { useRoute } from "@react-navigation/native";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { QueryKey, useInfiniteQuery, UseInfiniteQueryOptions } from "@tanstack/react-query";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import i18n from "i18next";
 import { handleRetryDelay, reactQueryRetry } from "sharedHelpers/logging";
 import { useCurrentUser } from "sharedHooks";
 
+interface QueryFunctionOptions {
+  api_token: string | null;
+  locale?: string;
+}
+
+type QueryFunction<T> = ( params: {
+  pageParam: number,
+  locale?: string
+}, options: QueryFunctionOptions ) => Promise<T>;
+
+type QueryOptions<TQueryFnData, TData> = Omit<UseInfiniteQueryOptions<
+  TQueryFnData,
+  Error,
+  TData,
+  TQueryFnData,
+  QueryKey,
+  number
+>, "queryKey"> & {
+  allowAnonymousJWT?: boolean;
+}
+
 // Should work like React Query's useInfiniteQuery with our custom reactQueryRetry
 // and authentication
-const useAuthenticatedInfiniteQuery = (
-  queryKey: Array<string>,
-  queryFunction: Function,
-  queryOptions: object = {}
-): object => {
+const useAuthenticatedInfiniteQuery = <TQueryFnData, TData>(
+  queryKey: QueryKey,
+  queryFunction: QueryFunction<TQueryFnData>,
+  queryOptions: QueryOptions<TQueryFnData, TData>
+) => {
   const route = useRoute( );
   const currentUser = useCurrentUser( );
 
@@ -19,11 +40,12 @@ const useAuthenticatedInfiniteQuery = (
   const locale = i18n?.language ?? "en";
 
   return useInfiniteQuery( {
-    queryKey: [...queryKey, queryOptions.allowAnonymousJWT, currentUser],
-    queryFn: async params => {
-      if ( !currentUser ) {
-        params.locale = locale;
-      }
+    queryKey: [...queryKey, queryOptions.allowAnonymousJWT, currentUser, locale],
+    queryFn: async ( { pageParam } ) => {
+      const params = {
+        pageParam,
+        ...( !currentUser && { locale } )
+      };
       // logger.info( queryKey, "queryKey in useAuthenticatedInfiniteQuery" );
       // Note, getJWT() takes care of fetching a new token if the existing
       // one is expired. We *could* store the token in state with useState if
