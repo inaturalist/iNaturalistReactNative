@@ -8,20 +8,36 @@ import { useTranslation } from "sharedHooks";
 
 import SuggestionsResult from "./SuggestionsResult";
 
+type TaxonType = {
+  id?: number | string;
+}
+
+type SuggestionType = {
+  taxon?: TaxonType;
+  combined_score?: number;
+}
+
+type Props = {
+  noTopSuggestion?: boolean;
+  otherSuggestions: SuggestionType[];
+  suggestionsLoading: boolean;
+  onSuggestionChosen: ( suggestion: SuggestionType ) => void;
+}
+
 const AdditionalSuggestionsScroll = ( {
   noTopSuggestion,
   otherSuggestions,
   suggestionsLoading,
   onSuggestionChosen
-} ) => {
+}: Props ) => {
   const { t } = useTranslation( );
   const [maxHeight, setMaxHeight] = useState( 0 );
   const [isVisible, setIsVisible] = useState( false );
 
   // We're using an extra measuring container to check the heights of every item,
   // even the ones that would otherwise be offscreen
-  const measuredItemsRef = useRef( new Set() );
-  const suggestionsRef = useRef( [] );
+  const measuredItemsRef = useRef( new Set<number | string>() );
+  const suggestionsRef = useRef<SuggestionType[]>( [] );
 
   useEffect( () => {
     suggestionsRef.current = otherSuggestions || [];
@@ -34,7 +50,7 @@ const AdditionalSuggestionsScroll = ( {
     measuredItemsRef.current = new Set();
   }, [otherSuggestions] );
 
-  const updateMaxHeight = useCallback( ( height, itemId ) => {
+  const updateMaxHeight = useCallback( ( height: number, itemId: number | string | undefined ) => {
     if ( !itemId || height <= 0 ) return;
 
     // track each item as measured
@@ -53,7 +69,7 @@ const AdditionalSuggestionsScroll = ( {
     }
   }, [] );
 
-  const handleSuggestionPress = useCallback( suggestion => {
+  const handleSuggestionPress = useCallback( ( suggestion: SuggestionType ) => {
     onSuggestionChosen( suggestion );
   }, [onSuggestionChosen] );
 
@@ -61,7 +77,7 @@ const AdditionalSuggestionsScroll = ( {
     if ( isVisible ) return null;
 
     const measuringContainerStyle = {
-      position: "absolute", opacity: 0, left: -9999, flexDirection: "row"
+      position: "absolute" as const, opacity: 0, left: -9999, flexDirection: "row" as const
     };
 
     const resultStyle = { marginRight: 14 };
@@ -89,7 +105,7 @@ const AdditionalSuggestionsScroll = ( {
     );
   };
 
-  const renderItem = ( { item: suggestion } ) => {
+  const renderItem = ( { item: suggestion }: { item: SuggestionType } ) => {
     const confidence = calculateConfidence( suggestion );
 
     return (
@@ -132,7 +148,7 @@ const AdditionalSuggestionsScroll = ( {
                 ListHeaderComponent={renderHeader}
                 horizontal
                 renderItem={renderItem}
-                keyExtractor={item => item?.taxon?.id}
+                keyExtractor={item => String( item?.taxon?.id )}
                 data={otherSuggestions}
               />
             </View>

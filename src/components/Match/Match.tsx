@@ -19,25 +19,56 @@ import MatchHeader from "./MatchHeader";
 import PhotosSection from "./PhotosSection";
 import SaveDiscardButtons from "./SaveDiscardButtons";
 
-const cardClassTop
+export const matchCardClassTop
   = "rounded-t-2xl border-lightGray border-[2px] py-[18px] px-5 border-b-0 -mb-0.5";
-const cardClassBottom
+export const matchCardClassBottom
   = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mt-0.5 mb-[30px]";
 
+type PhotoType = {
+  id?: number | string;
+  url?: string;
+  localFilePath?: string;
+}
+
+type ObsPhotoType = {
+  photo?: PhotoType;
+}
+
+type TaxonType = {
+  id?: number | string;
+  rank_level?: number;
+  representative_photo?: PhotoType;
+}
+
+type SuggestionType = {
+  taxon?: TaxonType;
+  combined_score?: number;
+}
+
+type ObservationType = {
+  privateLatitude?: number;
+  latitude?: number;
+  longitude?: number;
+}
+
+type ScrollRefType = {
+  scrollTo?: ( options: { y: number; animated: boolean } ) => void;
+}
+
 type Props = {
-  observation: Object,
-  obsPhotos: Array<Object>,
-  handleSaveOrDiscardPress: ( ) => void,
-  navToTaxonDetails: ( ) => void,
+  observation: ObservationType,
+  obsPhotos: ObsPhotoType[],
+  handleSaveOrDiscardPress: ( action: string ) => void,
+  navToTaxonDetails: ( photo?: PhotoType ) => void,
   isFetchingLocation: boolean,
   handleAddLocationPressed: ( ) => void,
-  topSuggestion: Object,
-  otherSuggestions: Array<Object>,
+  topSuggestion?: SuggestionType,
+  otherSuggestions: SuggestionType[],
   suggestionsLoading: boolean,
-  onSuggestionChosen: ( ) => void,
-  scrollRef: Object,
-  iconicTaxon: Object,
-  setIconicTaxon: ( ) => void
+  onSuggestionChosen: ( suggestion: SuggestionType ) => void,
+  scrollRef: React.RefObject<ScrollRefType>,
+  iconicTaxon?: TaxonType,
+  setIconicTaxon: ( taxon: TaxonType ) => void
 }
 
 const Match = ( {
@@ -66,7 +97,7 @@ const Match = ( {
     return (
       <>
         <ScrollViewWrapper scrollRef={scrollRef}>
-          <View className={cardClassTop}>
+          <View className={matchCardClassTop}>
             {
               suggestionsLoading
                 ? (
@@ -127,7 +158,7 @@ const Match = ( {
     return (
       <>
         <ScrollViewWrapper scrollRef={scrollRef}>
-          <View className={cardClassTop}>
+          <View className={matchCardClassTop}>
             {
               suggestionsLoading
                 ? (
@@ -177,7 +208,7 @@ const Match = ( {
   return (
     <>
       <ScrollViewWrapper scrollRef={scrollRef}>
-        <View className={cardClassTop}>
+        <View className={matchCardClassTop}>
           {
             suggestionsLoading
               ? (
@@ -207,7 +238,7 @@ const Match = ( {
           belongsToCurrentUser
           observation={observation}
         />
-        <View className={cardClassBottom} />
+        <View className={matchCardClassBottom} />
         {
           isConnected && (
             <Button

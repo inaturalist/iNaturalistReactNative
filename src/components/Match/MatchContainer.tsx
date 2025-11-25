@@ -34,13 +34,52 @@ import tryToReplaceWithLocalTaxon from "./helpers/tryToReplaceWithLocalTaxon";
 import Match from "./Match";
 import PreMatchLoadingScreen from "./PreMatchLoadingScreen";
 
-const setQueryKey = ( selectedPhotoUri, shouldUseEvidenceLocation ) => [
+type ImageParamsType = {
+  uri: string;
+  image: {
+    uri: string;
+  };
+  lat?: number;
+  lng?: number;
+}
+
+type UserLocationType = {
+  latitude?: number;
+  longitude?: number;
+}
+
+type TaxonType = {
+  id?: number | string;
+}
+
+type SuggestionType = {
+  taxon: TaxonType;
+  combined_score?: number;
+}
+
+type StateType = {
+  onlineFetchStatus: string;
+  offlineFetchStatus: string;
+  scoreImageParams: ImageParamsType | null;
+  queryKey: ( string | { shouldUseEvidenceLocation: boolean } )[];
+  shouldUseEvidenceLocation: boolean;
+  orderedSuggestions: SuggestionType[];
+}
+
+type ActionType =
+  | { type: "SET_UPLOAD_PARAMS"; scoreImageParams: ImageParamsType }
+  | { type: "SET_ONLINE_FETCH_STATUS"; onlineFetchStatus: string }
+  | { type: "SET_OFFLINE_FETCH_STATUS"; offlineFetchStatus: string }
+  | { type: "SET_LOCATION"; scoreImageParams: ImageParamsType; shouldUseEvidenceLocation: boolean }
+  | { type: "ORDER_SUGGESTIONS"; orderedSuggestions: SuggestionType[] };
+
+const setQueryKey = ( selectedPhotoUri: string, shouldUseEvidenceLocation: boolean ) => [
   "scoreImage",
   selectedPhotoUri,
   { shouldUseEvidenceLocation }
 ];
 
-const initialState = {
+const initialState: StateType = {
   onlineFetchStatus: FETCH_STATUS_LOADING,
   offlineFetchStatus: FETCH_STATUS_LOADING,
   scoreImageParams: null,
@@ -49,7 +88,7 @@ const initialState = {
   orderedSuggestions: []
 };
 
-const reducer = ( state, action ) => {
+const reducer = ( state: StateType, action: ActionType ): StateType => {
   switch ( action.type ) {
     case "SET_UPLOAD_PARAMS":
       return {
@@ -116,9 +155,9 @@ const MatchContainer = ( ) => {
 
   const evidenceHasLocation = !!currentObservation?.latitude;
 
-  const [topSuggestion, setTopSuggestion] = useState( );
-  const [iconicTaxon, setIconicTaxon] = useState( );
-  const [currentUserLocation, setCurrentUserLocation] = useState( null );
+  const [topSuggestion, setTopSuggestion] = useState<SuggestionType | undefined>( );
+  const [iconicTaxon, setIconicTaxon] = useState<TaxonType | undefined>( );
+  const [currentUserLocation, setCurrentUserLocation] = useState<UserLocationType | null>( null );
 
   const [state, dispatch] = useReducer( reducer, {
     ...initialState,
@@ -210,7 +249,7 @@ const MatchContainer = ( ) => {
     onlineSuggestionsAttempted
   } );
 
-  const [currentPlaceGuess, setCurrentPlaceGuess] = useState( );
+  const [currentPlaceGuess, setCurrentPlaceGuess] = useState<string | undefined>( );
   const [hasRefetchedSuggestions, setHasRefetchedSuggestions] = useState( false );
 
   const scrollToTop = useCallback( () => {
@@ -323,7 +362,7 @@ const MatchContainer = ( ) => {
     updateObservationKeys( { place_guess: currentPlaceGuess } );
   }, [currentPlaceGuess, updateObservationKeys] );
 
-  const onSuggestionChosen = useCallback( selection => {
+  const onSuggestionChosen = useCallback( ( selection: SuggestionType ) => {
     const suggestionsList = [...orderedSuggestions];
 
     // make sure to reorder the list by confidence score
@@ -352,7 +391,7 @@ const MatchContainer = ( ) => {
     // TODO: should this set owners_identification_from_vision: false?
   }, [orderedSuggestions, scrollToTop] );
 
-  const createUploadParams = useCallback( async ( uri, showLocation ) => {
+  const createUploadParams = useCallback( async ( uri: string, showLocation: boolean ) => {
     const newImageParams = await flattenUploadParams( uri );
     if ( showLocation && currentObservation?.latitude ) {
       newImageParams.lat = currentObservation?.latitude;
@@ -430,17 +469,22 @@ const MatchContainer = ( ) => {
   const otherSuggestions = orderedSuggestions
     .filter( suggestion => suggestion.taxon.id !== taxonId );
 
-  const navToTaxonDetails = photo => {
-    const navParams = { id: taxonId };
+  const navToTaxonDetails
+  = ( photo?: { isRepresentativeButOtherTaxon?: boolean; id?: number | string } ) => {
+    const navParams: {
+      id?: number | string;
+      firstPhotoID?: number | string;
+      representativePhoto?: { isRepresentativeButOtherTaxon?: boolean; id?: number | string };
+    } = { id: taxonId };
     if ( !photo?.isRepresentativeButOtherTaxon ) {
-      navParams.firstPhotoID = photo.id;
+      navParams.firstPhotoID = photo?.id;
     } else {
       navParams.representativePhoto = photo;
     }
     navigation.push( "TaxonDetails", navParams );
   };
 
-  const handleSaveOrDiscardPress = async action => {
+  const handleSaveOrDiscardPress = async ( action: string ) => {
     if ( action === "save" ) {
       updateObservationKeys( {
         taxon: taxon || iconicTaxon,

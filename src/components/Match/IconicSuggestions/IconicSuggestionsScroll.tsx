@@ -9,22 +9,31 @@ import IconicSuggestion from "./IconicSuggestion";
 
 const { useRealm } = RealmContext;
 
+type TaxonType = {
+  id?: number | string;
+}
+
+type Props = {
+  iconicTaxonChosen?: TaxonType;
+  onIconicTaxonChosen: ( taxon: TaxonType ) => void;
+}
+
 const IconicSuggestionsScroll = ( {
   iconicTaxonChosen,
   onIconicTaxonChosen
-} ) => {
+}: Props ) => {
   const realm = useRealm();
 
   const iconicTaxa = realm?.objects( "Taxon" ).filtered( "isIconic = true" );
 
   const handleIconicSuggestionPress = useCallback(
-    iconicTaxon => {
+    ( iconicTaxon: TaxonType ) => {
       onIconicTaxonChosen( iconicTaxon );
     },
     [onIconicTaxonChosen]
   );
 
-  const renderItem = ( { item: taxon } ) => {
+  const renderItem = ( { item: taxon }: { item: TaxonType } ) => {
     const selected = iconicTaxonChosen?.id === taxon?.id;
     return (
       <IconicSuggestion
@@ -42,7 +51,7 @@ const IconicSuggestionsScroll = ( {
         ListHeaderComponent={renderHeader}
         horizontal
         renderItem={renderItem}
-        keyExtractor={item => item?.id}
+        keyExtractor={item => String( item?.id )}
         data={iconicTaxa}
       />
     </View>

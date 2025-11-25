@@ -11,11 +11,32 @@ import React, { useEffect, useState } from "react";
 import Photo from "realmModels/Photo";
 import getImageDimensions from "sharedHelpers/getImageDimensions";
 
+type PhotoType = {
+  id?: number | string;
+  url?: string;
+  localFilePath?: string;
+  isRepresentativeButOtherTaxon?: boolean;
+}
+
+type TaxonPhotoType = {
+  photo: PhotoType;
+}
+
+type TaxonType = {
+  taxonPhotos?: TaxonPhotoType[];
+  defaultPhoto?: PhotoType;
+  isIconic?: boolean;
+}
+
+type ObsPhotoType = {
+  photo?: PhotoType;
+}
+
 type Props = {
-  representativePhoto: Object,
-  taxon: Object,
-  obsPhotos: Array<Object>,
-  navToTaxonDetails: ( photo: Object ) => void
+  representativePhoto: PhotoType,
+  taxon: TaxonType,
+  obsPhotos: ObsPhotoType[],
+  navToTaxonDetails: ( photo: PhotoType ) => void
 }
 
 const PhotosSection = ( {
@@ -24,7 +45,7 @@ const PhotosSection = ( {
   obsPhotos,
   navToTaxonDetails
 }: Props ) => {
-  const [displayPortraitLayout, setDisplayPortraitLayout] = useState( null );
+  const [displayPortraitLayout, setDisplayPortraitLayout] = useState<boolean | null>( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
 
   const localTaxonPhotos = taxon?.taxonPhotos;

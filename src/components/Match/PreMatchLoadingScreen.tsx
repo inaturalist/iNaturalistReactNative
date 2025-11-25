@@ -15,7 +15,7 @@ const fade = ( value: number ) => ( {
 
 interface Props {
   isLoading: boolean;
-  onSkip: ( ) => void;
+  onSkip?: ( ) => void;
 }
 
 const PreMatchLoadingScreen = ( { isLoading, onSkip }: Props ) => {
