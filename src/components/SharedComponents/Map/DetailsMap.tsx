@@ -25,6 +25,7 @@ interface Props {
   closeModal: () => void,
   coordinateString?: string,
   headerTitle?: React.ReactNode,
+  // TODO MOB-1038: reconcile the type issues here requiring the intersection
   observation?: Observation & RealmObservation,
   region?: Region,
   tileMapParams: Record<string, string> | null,
