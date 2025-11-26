@@ -1,5 +1,3 @@
-// @flow
-
 import Clipboard from "@react-native-clipboard/clipboard";
 import { HeaderBackButton } from "@react-navigation/elements";
 import classnames from "classnames";
@@ -13,27 +11,31 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React, { useState } from "react";
+import { GestureResponderEvent } from "react-native";
+import { Region } from "react-native-maps";
 import openMap from "react-native-open-maps";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Observation from "realmModels/Observation";
+import type { RealmObservation } from "realmModels/types";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  closeModal: Function,
+interface Props {
+  closeModal: () => void,
   coordinateString?: string,
-  headerTitle?: Object,
-  observation?: {
-    latitude?: number,
-    privateLatitude?: number,
-    longitude?: number,
-    privateLongitude?: number,
-    obscured?: boolean
-  },
-  region?: Object,
-  showLocationIndicator: boolean,
-  tileMapParams: Object,
+  headerTitle?: React.ReactNode,
+  // TODO MOB-1038: reconcile the type issues here requiring the intersection
+  observation?: Observation & RealmObservation,
+  region?: Region,
+  tileMapParams: Record<string, string> | null,
+}
+
+interface FloatingActionButtonProps {
+  accessibilityLabel: string,
+  buttonClassName: string,
+  icon: string,
+  onPress: ( event?: GestureResponderEvent ) => void,
 }
 
 const FloatingActionButton = ( {
@@ -41,7 +43,7 @@ const FloatingActionButton = ( {
   buttonClassName,
   icon,
   onPress
-} ) => {
+}: FloatingActionButtonProps ) => {
   const fabClassNames = classnames(
     "absolute",
     "bg-white",
@@ -67,9 +69,8 @@ const DetailsMap = ( {
   headerTitle,
   observation,
   region,
-  showLocationIndicator,
   tileMapParams
-}: Props ): Node => {
+}: Props ) => {
   const insets = useSafeAreaInsets();
 
   const [showNotificationModal, setShowNotificationModal] = useState( false );
@@ -115,7 +116,6 @@ const DetailsMap = ( {
           observation={observation}
           region={region}
           showCurrentLocationButton
-          showLocationIndicator={showLocationIndicator}
           showSwitchMapTypeButton
           tileMapParams={tileMapParams}
           withObsTiles={tileMapParams !== null}
