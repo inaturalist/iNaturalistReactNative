@@ -5,7 +5,7 @@ import { ScrollView, View } from "components/styledComponents";
 import React, {
   useRef
 } from "react";
-import Observation from "realmModels/Observation";
+import type Observation from "realmModels/Observation";
 import type { RealmObservation, RealmUser } from "realmModels/types";
 import {
   useScrollToOffset
