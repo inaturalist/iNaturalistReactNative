@@ -1,12 +1,11 @@
 import { View } from "components/styledComponents";
-import type { ReactNode } from "react";
+import type { PropsWithChildren } from "react";
 import React from "react";
 import Reanimated, {
   Keyframe
 } from "react-native-reanimated";
 
-type Props = {
-  children: ReactNode;
+interface Props extends PropsWithChildren {
   uniqueKey: string;
 }
 const AnimatedView = Reanimated.createAnimatedComponent( View );
