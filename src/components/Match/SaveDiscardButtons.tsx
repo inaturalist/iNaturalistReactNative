@@ -2,7 +2,6 @@ import {
   ButtonBar
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
@@ -12,13 +11,13 @@ const DROP_SHADOW = getShadow( {
   shadowOpacity: 0.2
 } );
 
-type Props = {
-  handlePress: Function
+interface Props {
+  handlePress: ( action: "save" | "discard" ) => void;
 }
 
 const SaveDiscardButtons = ( {
   handlePress
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
 
   const saveButton = {
