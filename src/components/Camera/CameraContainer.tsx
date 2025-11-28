@@ -22,6 +22,7 @@ import { log } from "sharedHelpers/logger";
 import { createSentinelFile, deleteSentinelFile, logStage } from "sharedHelpers/sentinelFiles";
 import { useTranslation } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission";
+import { FIREBASE_TRACES } from "stores/createFirebaseTraceSlice";
 import useStore from "stores/useStore";
 
 import CameraWithDevice from "./CameraWithDevice";
@@ -67,6 +68,7 @@ const CameraContainer = ( ) => {
   const sentinelFileName = useStore( state => state.sentinelFileName );
   const setSentinelFileName = useStore( state => state.setSentinelFileName );
   const addCameraRollUris = useStore( state => state.addCameraRollUris );
+  const startFirebaseTrace = useStore( state => state.startFirebaseTrace );
 
   const { params } = useRoute( );
   const cameraType = params?.camera;
@@ -199,6 +201,11 @@ const CameraContainer = ( ) => {
     visionResult: StoredResult | null
   ) => {
     if ( !showPhotoPermissionsGate ) {
+      if ( cameraType === "AI" ) {
+        // We won't start the trace if the user hasn't granted photo permissions
+        // because the time it takes to request permissions would be included in the trace
+        startFirebaseTrace( FIREBASE_TRACES.AI_CAMERA_TO_MATCH );
+      }
       await handleNavigation( newPhotoState, visionResult );
     } else {
       await logStageIfAICamera( "request_save_photo_permission_start" );
@@ -208,7 +215,9 @@ const CameraContainer = ( ) => {
     handleNavigation,
     requestSavePhotoPermission,
     showPhotoPermissionsGate,
-    logStageIfAICamera
+    logStageIfAICamera,
+    startFirebaseTrace,
+    cameraType
   ] );
 
   const toggleFlash = ( ) => {
