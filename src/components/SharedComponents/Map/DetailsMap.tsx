@@ -12,11 +12,11 @@ import {
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import React, { useState } from "react";
-import { GestureResponderEvent } from "react-native";
-import { Region } from "react-native-maps";
+import type { GestureResponderEvent } from "react-native";
+import type { Region } from "react-native-maps";
 import openMap from "react-native-open-maps";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Observation from "realmModels/Observation";
+import type Observation from "realmModels/Observation";
 import type { RealmObservation } from "realmModels/types";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";

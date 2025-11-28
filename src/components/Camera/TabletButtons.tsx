@@ -3,7 +3,7 @@ import PhotoLibraryIcon from "components/Camera/Buttons/PhotoLibraryIcon";
 import { CloseButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
-import { GestureResponderEvent, ViewStyle } from "react-native";
+import type { GestureResponderEvent, ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Animated from "react-native-reanimated";
 import type { TakePhotoOptions } from "react-native-vision-camera";

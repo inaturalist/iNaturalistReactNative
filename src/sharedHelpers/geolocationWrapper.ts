@@ -1,11 +1,12 @@
 // This wraps the Geolocation methods we use so we can mock them for e2e tests
 // that tend to have problems with locations and timezones
 
-import Geolocation, {
+import type {
   GeolocationError,
   GeolocationOptions,
   GeolocationResponse
 } from "@react-native-community/geolocation";
+import Geolocation from "@react-native-community/geolocation";
 import {
   LOCATION_PERMISSIONS,
   permissionResultFromMultiple

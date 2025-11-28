@@ -11,11 +11,13 @@ import React, {
 import {
   Dimensions, Platform, StyleSheet
 } from "react-native";
-import {
-  Gesture,
-  GestureDetector,
+import type {
   PanGesture,
   PinchGesture
+} from "react-native-gesture-handler";
+import {
+  Gesture,
+  GestureDetector
 } from "react-native-gesture-handler";
 import Reanimated from "react-native-reanimated";
 import type {

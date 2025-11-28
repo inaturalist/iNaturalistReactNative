@@ -8,7 +8,7 @@ import Zoom from "components/Camera/Buttons/Zoom";
 import TabletButtons from "components/Camera/TabletButtons";
 import { View } from "components/styledComponents";
 import React from "react";
-import { GestureResponderEvent, ViewStyle } from "react-native";
+import type { GestureResponderEvent, ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import type { CameraDeviceFormat, TakePhotoOptions } from "react-native-vision-camera";
 import { useLayoutPrefs } from "sharedHooks";
@@ -30,10 +30,15 @@ interface Props {
   rotatableAnimatedStyle: ViewStyle;
   debugFormat?: CameraDeviceFormat;
   // Those five are debug only so I don't bother with types
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   setConfidenceThreshold?: Function;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   setCropRatio?: Function;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   setFPS?: Function;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   setNumStoredResults?: Function;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   changeDebugFormat?: Function;
   showPrediction: boolean;
   showZoomButton: boolean;

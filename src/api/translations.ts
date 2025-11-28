@@ -1,4 +1,5 @@
-import handleError, { ErrorWithResponse, INatApiError } from "api/error";
+import type { ErrorWithResponse, INatApiError } from "api/error";
+import handleError from "api/error";
 import inatjs from "inaturalistjs";
 
 const fetchAvailableLocales = async (

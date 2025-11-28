@@ -1,5 +1,5 @@
 import RNFS from "react-native-fs";
-import Realm from "realm";
+import type Realm from "realm";
 
 import Application from "./Application";
 import Comment from "./Comment";
