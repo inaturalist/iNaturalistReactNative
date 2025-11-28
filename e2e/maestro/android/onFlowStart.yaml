@@ -1,0 +1,7 @@
+appId: org.inaturalist.iNaturalistMobile
+---
+- runFlow:
+    when:
+      true: ${MAESTRO_RECORD == 'true'}
+    commands:
+      - startRecording: ${MAESTRO_FILENAME}
