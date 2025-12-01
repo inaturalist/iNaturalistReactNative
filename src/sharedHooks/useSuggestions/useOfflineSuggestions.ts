@@ -8,41 +8,33 @@ import { log } from "sharedHelpers/logger";
 import { predictImage } from "sharedHelpers/mlModel";
 import type { Prediction } from "vision-camera-plugin-inatvision";
 
+import type { UseSuggestionsOfflineSuggestion } from "./types";
+
 const logger = log.extend( "useOfflineSuggestions" );
 
 const { useRealm } = RealmContext;
-
-interface OfflineSuggestion {
-  combined_score: number;
-  taxon: {
-    id: number;
-    name: string;
-    rank_level: number;
-    iconic_taxon_name: string | undefined;
-  };
-}
 
 const useOfflineSuggestions = (
   photoUri: string,
   options: {
     onFetchError: ( _p: { isOnline: boolean } ) => void,
     onFetched: ( _p: { isOnline: boolean } ) => void,
-    latitude: number,
-    longitude: number,
+    latitude?: number,
+    longitude?: number,
     tryOfflineSuggestions: boolean
   }
 ): {
-  offlineSuggestions: {
-    results: OfflineSuggestion[],
-    commonAncestor: OfflineSuggestion | undefined
+  offlineSuggestions?: {
+    results: UseSuggestionsOfflineSuggestion[],
+    commonAncestor: UseSuggestionsOfflineSuggestion | undefined
   };
   refetchOfflineSuggestions: () => void;
 } => {
   const realm = useRealm( );
   const [offlineSuggestions, setOfflineSuggestions] = useState<{
-    results: OfflineSuggestion[],
-    commonAncestor: OfflineSuggestion | undefined
-  }>( { results: [], commonAncestor: undefined } );
+    results: UseSuggestionsOfflineSuggestion[],
+    commonAncestor: UseSuggestionsOfflineSuggestion | undefined
+  } | undefined>( undefined );
   const [error, setError] = useState( null );
 
   const {
@@ -53,7 +45,9 @@ const useOfflineSuggestions = (
     let rawPredictions = [];
     let commonAncestor;
     try {
-      const location = { latitude, longitude };
+      const location = ( typeof latitude === "number" && typeof longitude === "number" )
+        ? { latitude, longitude }
+        : undefined;
       const result = await predictImage( photoUri, location );
       rawPredictions = result.predictions;
       // Destructuring here leads to different errors from the linter.
@@ -77,7 +71,7 @@ const useOfflineSuggestions = (
     }, { } );
 
     // This function handles either regular or common ancestor predictions as input objects.
-    const formatPrediction = ( prediction: Prediction ): OfflineSuggestion => {
+    const formatPrediction = ( prediction: Prediction ): UseSuggestionsOfflineSuggestion => {
       // The "lowest" ancestor_id that matches an iconic taxon
       // is the iconic taxon of this prediction.
       const iconicTaxonId = prediction.ancestor_ids

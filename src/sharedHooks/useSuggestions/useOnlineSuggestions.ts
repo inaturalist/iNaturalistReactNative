@@ -3,11 +3,13 @@ import {
 } from "@react-native-community/netinfo";
 import { useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision";
+import type { ApiOpts } from "api/types";
 import i18n from "i18next";
 import { RealmContext } from "providers/contexts";
 import {
   useCallback, useEffect, useState
 } from "react";
+import { UpdateMode } from "realm";
 import Taxon from "realmModels/Taxon";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
@@ -15,23 +17,40 @@ import {
   useCurrentUser
 } from "sharedHooks";
 
+import type { ScoreImageParams, UseSuggestionsOnlineSuggestion } from "./types";
+
 const SCORE_IMAGE_TIMEOUT = 5_000;
 
 const { useRealm } = RealmContext;
 
-interface OnlineSuggestionsResponse {
-  dataUpdatedAt: Date;
-  onlineSuggestions: object;
-  loadingOnlineSuggestions: boolean;
+interface OnlineSuggestionOptions {
+  onFetchError: ( options: { isOnline: boolean } ) => void;
+  onFetched: ( options: { isOnline: boolean } ) => void;
+  scoreImageParams: ScoreImageParams;
+  queryKey: string[];
+  shouldFetchOnlineSuggestions: boolean;
+}
+
+interface UseOnlineSuggestionsResponse {
+  dataUpdatedAt: number;
+  onlineSuggestions?: {
+    results: UseSuggestionsOnlineSuggestion[],
+    common_ancestor: UseSuggestionsOnlineSuggestion
+  };
   timedOut: boolean;
-  error: object;
+  error: Error | null;
   resetTimeout: () => void;
-  isRefetching: boolean;
+  refetch: () => void;
+}
+
+interface OnlineSuggestionsQueryResponse {
+  results: UseSuggestionsOnlineSuggestion[];
+  common_ancestor: UseSuggestionsOnlineSuggestion;
 }
 
 const useOnlineSuggestions = (
-  options: object
-): OnlineSuggestionsResponse => {
+  options: OnlineSuggestionOptions
+): UseOnlineSuggestionsResponse => {
   const realm = useRealm( );
   const {
     onFetchError,
@@ -48,12 +67,12 @@ const useOnlineSuggestions = (
   // Use locale in case there is no user session
   const locale = i18n?.language ?? "en";
 
-  async function queryFn( optsWithAuth ) {
+  async function queryFn( optsWithAuth: ApiOpts ) {
     const params = {
       ...scoreImageParams,
       ...( !currentUser && { locale } )
     };
-    return scoreImage( params, optsWithAuth );
+    return scoreImage( params, optsWithAuth ) as Promise<OnlineSuggestionsQueryResponse>;
   }
 
   // TODO if this is a remote observation with an `id` param, use
@@ -65,7 +84,7 @@ const useOnlineSuggestions = (
     refetch,
     fetchStatus,
     error
-  } = useAuthenticatedQuery(
+  } = useAuthenticatedQuery<OnlineSuggestionsQueryResponse>(
     queryKey,
     queryFn,
     {
@@ -104,7 +123,7 @@ const useOnlineSuggestions = (
     // we're already getting all this taxon information anytime we make this API
     // call, so we might as well store it in realm immediately instead of waiting
     // for useTaxon to fetch individual taxon results
-    const mappedTaxa = onlineSuggestions?.results?.map(
+    const mappedTaxa = onlineSuggestions!.results!.map(
       suggestion => Taxon.mapApiToRealm( suggestion.taxon, realm )
     );
     if ( onlineSuggestions?.common_ancestor ) {
@@ -115,9 +134,9 @@ const useOnlineSuggestions = (
     safeRealmWrite( realm, ( ) => {
       mappedTaxa.forEach( remoteTaxon => {
         realm.create(
-          "Taxon",
+          Taxon,
           Taxon.forUpdate( remoteTaxon ),
-          "modified"
+          UpdateMode.Modified
         );
       } );
     }, "saving remote taxon from onlineSuggestions" );
