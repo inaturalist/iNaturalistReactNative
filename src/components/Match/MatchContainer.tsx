@@ -21,6 +21,7 @@ import React, {
   useCallback,
   useEffect, useReducer, useRef, useState
 } from "react";
+import { ScrollView } from "react-native";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import saveObservation from "sharedHelpers/saveObservation";
 import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservationLocation";
@@ -129,7 +130,7 @@ const { useRealm } = RealmContext;
 const MatchContainer = ( ) => {
   const hasLoadedRef = useRef( false );
   const isDebug = isDebugMode( );
-  const scrollRef = useRef( null );
+  const scrollRef = useRef<ScrollView | null>( null );
   const currentObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
   const cameraRollUris = useStore( state => state.cameraRollUris );
@@ -261,7 +262,7 @@ const MatchContainer = ( ) => {
   const [needLocation, setNeedLocation] = useState(
     shouldFetchObservationLocation( currentObservation )
   );
-  const shouldFetchLocation = hasPermissions && needLocation;
+  const shouldFetchLocation = !!( hasPermissions && needLocation );
 
   const {
     isFetchingLocation,

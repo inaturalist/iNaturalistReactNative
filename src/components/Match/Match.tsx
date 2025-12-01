@@ -9,6 +9,7 @@ import {
 import { View } from "components/styledComponents";
 import _ from "lodash";
 import React from "react";
+import { ScrollView } from "react-native";
 import { useTranslation } from "sharedHooks";
 
 import AdditionalSuggestionsScroll
@@ -51,10 +52,6 @@ type ObservationType = {
   longitude?: number;
 }
 
-type ScrollRefType = {
-  scrollTo?: ( options: { y: number; animated: boolean } ) => void;
-}
-
 type Props = {
   observation: ObservationType,
   obsPhotos: ObsPhotoType[],
@@ -66,7 +63,7 @@ type Props = {
   otherSuggestions: SuggestionType[],
   suggestionsLoading: boolean,
   onSuggestionChosen: ( suggestion: SuggestionType ) => void,
-  scrollRef: React.RefObject<ScrollRefType>,
+  scrollRef: React.RefObject<ScrollView | null>,
   iconicTaxon?: TaxonType,
   setIconicTaxon: ( taxon: TaxonType ) => void
 }
