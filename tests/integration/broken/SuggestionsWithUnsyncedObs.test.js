@@ -189,7 +189,7 @@ const navigateToSuggestionsForObservationViaObsEdit = async observation => {
     `MyObservations.obsGridItem.${observation.uuid}`
   );
   await actor.press( observationGridItem );
-  const addIdButton = await screen.findByText( "ID WITH AI" );
+  const addIdButton = await screen.findByText( "IDENTIFY" );
   await actor.press( addIdButton );
 };
 
