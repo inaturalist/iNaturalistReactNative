@@ -4,9 +4,7 @@ import React from "react";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
-  observation: {
-    private_place_guess: unknown
-  };
+  observation: object
 }
 
 const SimpleObservationLocation = ( {
@@ -15,7 +13,7 @@ const SimpleObservationLocation = ( {
   const { t } = useTranslation( );
   const displayLocation = checkCamelAndSnakeCase(
     observation,
-    observation.private_place_guess
+    "private_place_guess" in observation
       ? "privatePlaceGuess"
       : "placeGuess"
   );
