@@ -1,5 +1,5 @@
 import {
-  getAnalytics, logEvent, logScreenView
+  getAnalytics, logEvent
 } from "@react-native-firebase/analytics";
 import { log } from "sharedHelpers/logger";
 
@@ -24,7 +24,10 @@ export const logFirebaseScreenView = (
 ) => {
   try {
     const analytics = getAnalytics();
-    logScreenView( analytics, { screen_name: screenName, screen_class: screenName } );
+    logEvent( analytics, "screen_view", {
+      firebase_screen: screenName,
+      firebase_screen_class: screenName
+    } );
   } catch ( error ) {
     logger.error( "Error logging firebase screen view", JSON.stringify( error ) );
   }
