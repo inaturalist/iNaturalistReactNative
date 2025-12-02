@@ -17,7 +17,7 @@ interface Props {
   topSuggestion?: {
     combined_score?: number;
     score?: number;
-    taxon: RealmTaxon;
+    taxon?: RealmTaxon;
   };
   hideObservationStatus?: boolean
 }
@@ -43,7 +43,7 @@ const MatchHeader = ( { topSuggestion, hideObservationStatus }: Props ) => {
     }
 
     let rankDescription = "organism";
-    if ( taxon.rank_level === 10 ) {
+    if ( taxon?.rank_level === 10 ) {
       rankDescription = "species";
     }
 
