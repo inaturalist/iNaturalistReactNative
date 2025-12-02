@@ -751,6 +751,7 @@ Navigates-to-AI-camera = Navigates to AI camera
 Navigates-to-bulk-importer = Navigates to bulk importer
 Navigates-to-camera = Navigates to camera
 Navigates-to-explore = Navigates to explore
+Navigates-to-main-menu = Navigates to main menu.
 Navigates-to-match-screen = Navigates to match screen
 Navigates-to-notifications = Navigates to notifications
 Navigates-to-observation-details = Navigates to observation details screen
@@ -886,7 +887,6 @@ Opens-AI-camera = Opens AI camera.
 # Accessibility hint for a button that opens a form for editing a comment
 Opens-edit-comment-form = Opens edit comment form.
 Opens-location-permission-prompt = Opens location permission prompt
-Opens-the-side-drawer-menu = Opens the side drawer menu.
 OR-SIGN-IN-WITH = OR SIGN IN WITH
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Or, you can try to get a clearer photo by zooming in, getting closer, or trying a different angle.
 # Picker prompt on observation edit
