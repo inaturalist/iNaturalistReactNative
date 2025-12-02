@@ -3,7 +3,6 @@ permissions:
   contents: read
 on:
   workflow_dispatch:
-  push:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
