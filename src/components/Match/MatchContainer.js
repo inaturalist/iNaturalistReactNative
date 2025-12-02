@@ -19,7 +19,10 @@ import _ from "lodash";
 import { RealmContext } from "providers/contexts";
 import React, {
   useCallback,
-  useEffect, useReducer, useRef, useState
+  useEffect,
+  useReducer,
+  useRef,
+  useState
 } from "react";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import saveObservation from "sharedHelpers/saveObservation";
@@ -28,6 +31,7 @@ import {
   useExitObservationFlow, useLocationPermission, useSuggestions, useWatchPosition
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
+import { useShouldFetchOfflineSuggestionsUnconditionally } from "sharedHooks/useSuggestions";
 import useStore from "stores/useStore";
 
 import tryToReplaceWithLocalTaxon from "./helpers/tryToReplaceWithLocalTaxon";
@@ -101,6 +105,8 @@ const MatchContainer = ( ) => {
     renderPermissionsGate,
     requestPermissions
   } = useLocationPermission( );
+  const shouldFetchOfflineSuggestionsUnconditionally
+    = useShouldFetchOfflineSuggestionsUnconditionally();
 
   const obsPhotos = currentObservation?.observationPhotos;
 
@@ -141,7 +147,7 @@ const MatchContainer = ( ) => {
       || onlineFetchStatus === FETCH_STATUS_ONLINE_ERROR;
 
   const onFetchError = useCallback(
-    ( { isOnline }: { isOnline: boolean } ) => {
+    ( { isOnline } ) => {
       if ( isOnline ) {
         dispatch( {
           type: "SET_ONLINE_FETCH_STATUS",
@@ -153,7 +159,10 @@ const MatchContainer = ( ) => {
           offlineFetchStatus: FETCH_STATUS_OFFLINE_ERROR
         } );
         // If offline is finished, and online still in loading state it means it never started
-        if ( onlineFetchStatus === FETCH_STATUS_LOADING ) {
+        // unless we're intentionally fetching offline unconditionally in the background
+        if ( onlineFetchStatus === FETCH_STATUS_LOADING
+            && !shouldFetchOfflineSuggestionsUnconditionally
+        ) {
           dispatch( {
             type: "SET_ONLINE_FETCH_STATUS",
             onlineFetchStatus: FETCH_STATUS_ONLINE_SKIPPED
@@ -161,11 +170,11 @@ const MatchContainer = ( ) => {
         }
       }
     },
-    [onlineFetchStatus]
+    [onlineFetchStatus, shouldFetchOfflineSuggestionsUnconditionally]
   );
 
   const onFetched = useCallback(
-    ( { isOnline }: { isOnline: boolean } ) => {
+    ( { isOnline } ) => {
       if ( isOnline ) {
         dispatch( {
           type: "SET_ONLINE_FETCH_STATUS",
@@ -173,17 +182,22 @@ const MatchContainer = ( ) => {
         } );
         // Currently we start offline only when online has an error, so
         // we can register offline as skipped if online is successful
-        dispatch( {
-          type: "SET_OFFLINE_FETCH_STATUS",
-          offlineFetchStatus: FETCH_STATUS_OFFLINE_SKIPPED
-        } );
+        // unless we're intentionally fetching offline unconditionally in the background
+        if ( !shouldFetchOfflineSuggestionsUnconditionally ) {
+          dispatch( {
+            type: "SET_OFFLINE_FETCH_STATUS",
+            offlineFetchStatus: FETCH_STATUS_OFFLINE_SKIPPED
+          } );
+        }
       } else {
         dispatch( {
           type: "SET_OFFLINE_FETCH_STATUS",
           offlineFetchStatus: FETCH_STATUS_OFFLINE_FETCHED
         } );
         // If offline is finished, and online still in loading state it means it never started
-        if ( onlineFetchStatus === FETCH_STATUS_LOADING ) {
+        // unless we're intentionally fetching offline unconditionally in the background
+        if ( onlineFetchStatus === FETCH_STATUS_LOADING
+            && !shouldFetchOfflineSuggestionsUnconditionally ) {
           dispatch( {
             type: "SET_ONLINE_FETCH_STATUS",
             onlineFetchStatus: FETCH_STATUS_ONLINE_SKIPPED
@@ -191,7 +205,7 @@ const MatchContainer = ( ) => {
         }
       }
     },
-    [onlineFetchStatus]
+    [onlineFetchStatus, shouldFetchOfflineSuggestionsUnconditionally]
   );
 
   const {
@@ -203,6 +217,7 @@ const MatchContainer = ( ) => {
     refetchSuggestions
   } = useSuggestions( observationPhoto, {
     shouldFetchOnlineSuggestions,
+    shouldFetchOfflineSuggestionsUnconditionally,
     onFetchError,
     onFetched,
     scoreImageParams,
