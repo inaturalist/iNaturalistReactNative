@@ -60,7 +60,7 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
       icon: "hamburger-menu",
       testID: DRAWER_ID,
       accessibilityLabel: t( "Menu" ),
-      accessibilityHint: t( "Opens-the-side-drawer-menu" ), // update accessibility hint
+      accessibilityHint: t( "Navigates-to-main-menu" ),
       size: 32,
       onPress: ( ) => {
         navigation.navigate( "MenuTab", {
