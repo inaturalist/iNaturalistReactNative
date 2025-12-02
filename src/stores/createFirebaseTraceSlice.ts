@@ -12,6 +12,7 @@ export enum FIREBASE_TRACES {
 export enum FIREBASE_TRACE_ATTRIBUTES {
   ONLINE = "online",
   DID_TIMEOUT = "did_timeout",
+  HAS_SAVE_PHOTO_PERMISSION = "has_save_photo_permission",
 }
 
 interface TraceData {
@@ -43,7 +44,7 @@ const applyTraceAttributes = (
       }
     } );
   } catch ( error ) {
-    logger.error( "Error setting firebase trace attributes", error );
+    logger.error( "Error setting firebase trace attributes", JSON.stringify( error ) );
   }
 };
 
