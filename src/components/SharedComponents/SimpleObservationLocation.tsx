@@ -4,7 +4,7 @@ import React from "react";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
-  observation: object
+  observation: object;
 }
 
 const SimpleObservationLocation = ( {
