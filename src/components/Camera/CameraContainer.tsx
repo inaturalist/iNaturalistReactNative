@@ -22,7 +22,7 @@ import { log } from "sharedHelpers/logger";
 import { createSentinelFile, deleteSentinelFile, logStage } from "sharedHelpers/sentinelFiles";
 import { useTranslation } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission";
-import { FIREBASE_TRACES } from "stores/createFirebaseTraceSlice";
+import { FIREBASE_TRACE_ATTRIBUTES, FIREBASE_TRACES } from "stores/createFirebaseTraceSlice";
 import useStore from "stores/useStore";
 
 import CameraWithDevice from "./CameraWithDevice";
@@ -173,8 +173,13 @@ const CameraContainer = ( ) => {
   // and we want to make sure Suggestions has the correct observationPhotos
   const handleNavigation = useCallback( async (
     newPhotoState: PhotoState,
-    visionResult: StoredResult | null
+    hasSavePhotoPermission: boolean,
+    visionResult?: StoredResult | null
   ) => {
+    startFirebaseTrace(
+      FIREBASE_TRACES.AI_CAMERA_TO_MATCH,
+      { [FIREBASE_TRACE_ATTRIBUTES.HAS_SAVE_PHOTO_PERMISSION]: `${hasSavePhotoPermission}` }
+    );
     // fetch accurate user location, with a fallback to a course location
     // at the time the user taps AI shutter or multicapture checkmark
     // to create an observation
@@ -193,7 +198,8 @@ const CameraContainer = ( ) => {
     prepareStoreAndNavigate,
     navigationOptions,
     logStageIfAICamera,
-    deleteStageIfAICamera
+    deleteStageIfAICamera,
+    startFirebaseTrace
   ] );
 
   const handleCheckmarkPress = useCallback( async (
@@ -201,12 +207,7 @@ const CameraContainer = ( ) => {
     visionResult: StoredResult | null
   ) => {
     if ( !showPhotoPermissionsGate ) {
-      if ( cameraType === "AI" ) {
-        // We won't start the trace if the user hasn't granted photo permissions
-        // because the time it takes to request permissions would be included in the trace
-        startFirebaseTrace( FIREBASE_TRACES.AI_CAMERA_TO_MATCH );
-      }
-      await handleNavigation( newPhotoState, visionResult );
+      await handleNavigation( newPhotoState, true, visionResult );
     } else {
       await logStageIfAICamera( "request_save_photo_permission_start" );
       requestSavePhotoPermission( );
@@ -215,9 +216,7 @@ const CameraContainer = ( ) => {
     handleNavigation,
     requestSavePhotoPermission,
     showPhotoPermissionsGate,
-    logStageIfAICamera,
-    startFirebaseTrace,
-    cameraType
+    logStageIfAICamera
   ] );
 
   const toggleFlash = ( ) => {
@@ -364,14 +363,14 @@ const CameraContainer = ( ) => {
           await handleNavigation( {
             cameraUris,
             evidenceToAdd
-          } );
+          }, true );
         },
         onModalHide: async ( ) => {
           await logStageIfAICamera( "request_save_photo_permission_complete" );
           await handleNavigation( {
             cameraUris,
             evidenceToAdd
-          } );
+          }, false );
         }
       } )}
       {renderLocationPermissionsGate( {
