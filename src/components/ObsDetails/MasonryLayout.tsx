@@ -1,40 +1,66 @@
 import { ScrollView, View } from "components/styledComponents";
 import React, { useEffect, useState } from "react";
+import { ImageStyle, StyleProp } from "react-native";
 import Photo from "realmModels/Photo";
-import getImageDimensions from "sharedHelpers/getImageDimensions";
+import Sound from "realmModels/Sound";
+import type { RealmPhoto, RealmSound } from "realmModels/types";
+import getImageDimensions, { ImageDimensions } from "sharedHelpers/getImageDimensions";
 
 import PhotoContainer from "./PhotoContainer";
 import SoundContainer from "./SoundContainer";
 
+type PhotoItem = Photo & RealmPhoto;
+type PhotoItemWithDimensions = PhotoItem & ImageDimensions;
+type SoundItem = Sound & RealmSound;
+type Item = PhotoItem | SoundItem;
+type OriginalIndex = { originalIndex: number };
+type HydratedItem = ( SoundItem | PhotoItemWithDimensions ) & OriginalIndex;
+
 const numColumns = 2;
 const spacing = 6;
 
-const photoUrl = photo => Photo.displayLocalOrRemoteLargePhoto( photo );
+const photoUrl = ( photo: PhotoItem ) => {
+  const url = Photo.displayLocalOrRemoteLargePhoto( photo );
+  if ( !url ) {
+    throw new Error( "No photo URL found" );
+  }
+  return url;
+};
 
-const MasonryLayout = ( { items, onImagePress } ) => {
-  const [columns, setColumns] = useState(
+// Photos have a `url` property, sounds have a `file_url` property
+const isSound = ( item: Item ): item is SoundItem => (
+  "file_url" in item
+);
+
+interface Props {
+  items: Item[];
+  onImagePress: ( index: number ) => void;
+}
+
+const MasonryLayout = ( { items, onImagePress }: Props ) => {
+  const [columns, setColumns] = useState<HydratedItem[][]>(
     Array.from( { length: numColumns }, () => [] )
   );
 
   useEffect( () => {
     const distributeItems = async () => {
-      const newColumns = Array.from( { length: numColumns }, () => [] );
+      const newColumns: HydratedItem[][] = ( Array.from( { length: numColumns }, () => [] ) );
 
       const itemPromises = items.map( async item => {
         // If a sound, just return it
-        if ( item.file_url ) {
+        if ( isSound( item ) ) {
           return item;
         }
         const imageDimensions = await getImageDimensions( photoUrl( item ) );
-        return { ...item, ...imageDimensions };
+        return Object.assign( item, imageDimensions );
       } );
 
       const itemData = await Promise.all( itemPromises );
 
       itemData.forEach( ( item, i ) => {
         const columnIndex = i % numColumns;
-        item.originalIndex = i;
-        newColumns[columnIndex].push( item );
+        const withIndex = Object.assign( item, { originalIndex: i } );
+        newColumns[columnIndex].push( withIndex );
       } );
 
       setColumns( newColumns );
@@ -43,14 +69,18 @@ const MasonryLayout = ( { items, onImagePress } ) => {
     distributeItems();
   }, [items] );
 
-  const imageStyle = item => ( {
+  const imageStyle = ( item: PhotoItemWithDimensions ): StyleProp<ImageStyle> => ( {
     width: "100%",
     height: undefined,
     aspectRatio: item.width / item.height,
     marginBottom: spacing
   } );
 
-  const renderImage = ( item, index, column ) => (
+  const renderImage = (
+    item: PhotoItemWithDimensions & OriginalIndex,
+    index: number,
+    column: number
+  ) => (
     <PhotoContainer
       key={`MasonryLayout.column${column}.photo_${index}`}
       photo={item}
@@ -59,16 +89,21 @@ const MasonryLayout = ( { items, onImagePress } ) => {
     />
   );
 
-  const renderSound = ( item, index, column ) => (
+  const renderSound = ( item: SoundItem, index: number, column: number ) => (
     <SoundContainer
       key={`MasonryLayout.column${column}.sound_${index}`}
       sizeClass="w-full aspect-square"
       sound={item}
       isVisible
+      autoPlay={false}
     />
   );
 
-  const renderItem = ( item, index, column ) => ( item.file_url
+  const renderItem = (
+    item: HydratedItem,
+    index: number,
+    column: number
+  ) => ( isSound( item )
     ? renderSound( item, index, column )
     : renderImage( item, index, column ) );
 
