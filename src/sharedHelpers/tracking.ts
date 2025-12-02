@@ -15,7 +15,7 @@ export const logFirebaseEvent = (
     const analytics = getAnalytics();
     logEvent( analytics, eventId, parameters );
   } catch ( error ) {
-    logger.error( "Error logging firebase event", error );
+    logger.error( "Error logging firebase event", JSON.stringify( error ) );
   }
 };
 
@@ -26,6 +26,6 @@ export const logFirebaseScreenView = (
     const analytics = getAnalytics();
     logScreenView( analytics, { screen_name: screenName, screen_class: screenName } );
   } catch ( error ) {
-    logger.error( "Error logging firebase screen view", error );
+    logger.error( "Error logging firebase screen view", JSON.stringify( error ) );
   }
 };
