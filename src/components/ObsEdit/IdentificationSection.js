@@ -93,7 +93,7 @@ const IdentificationSection = ( {
                     ? "neutral"
                     : "focus"}
                   onPress={navToSuggestions}
-                  text={t( "ID-WITH-AI" )}
+                  text={t( "IDENTIFY" )}
                   className={classnames( "rounded-full py-1 mr-4 h-[36px]", {
                     "border border-darkGray border-[2px]": identTaxon
                   } )}
