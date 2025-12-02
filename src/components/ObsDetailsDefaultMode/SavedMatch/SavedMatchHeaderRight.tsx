@@ -32,6 +32,7 @@ const SavedMatchHeaderRight = ( {
         icon="pencil"
         color={String( colors?.darkGray )}
         accessibilityLabel={t( "Edit" )}
+        size={22}
       />
     ),
     [
