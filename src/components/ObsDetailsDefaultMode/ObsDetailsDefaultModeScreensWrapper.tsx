@@ -92,7 +92,6 @@ const ObsDetailsDefaultModeScreensWrapper = () => {
       isRefetching={isRefetching}
       refetchRemoteObservation={refetchRemoteObservation}
       isConnected={isConnected}
-      isSimpleMode={showSavedMatch}
     />
   );
 };

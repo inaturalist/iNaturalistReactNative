@@ -32,7 +32,6 @@ type Props = {
   belongsToCurrentUser: boolean,
   currentUser: RealmUser,
   isConnected: boolean,
-  isSimpleMode: boolean,
   navToSuggestions: () => void,
   observation: RealmObservation & Observation & { id: number },
   openAddCommentSheet: () => void,
@@ -52,7 +51,6 @@ const ObsDetailsDefaultMode = ( {
   belongsToCurrentUser,
   currentUser,
   isConnected,
-  isSimpleMode,
   navToSuggestions,
   observation,
   openAddCommentSheet,
@@ -98,13 +96,11 @@ const ObsDetailsDefaultMode = ( {
             setHeightOfContentAboveCommunitySection( layout );
           }}
         >
-          {!isSimpleMode && (
-            <ObserverDetails
-              belongsToCurrentUser={belongsToCurrentUser}
-              isConnected={isConnected}
-              observation={observation}
-            />
-          )}
+          <ObserverDetails
+            belongsToCurrentUser={belongsToCurrentUser}
+            isConnected={isConnected}
+            observation={observation}
+          />
           <View>
             <ObsMediaDisplayContainer observation={observation} />
           </View>
@@ -113,10 +109,7 @@ const ObsDetailsDefaultMode = ( {
             observation={observation}
             isSimpleMode
           />
-          <View className={isSimpleMode
-            ? "mt-[15px]"
-            : "mt-5"}
-          >
+          <View className="mt-5">
             <MapSection observation={observation} />
           </View>
           <LocationSection
@@ -124,29 +117,25 @@ const ObsDetailsDefaultMode = ( {
             observation={observation}
           />
           <NotesSection description={observation.description} />
-          {!isSimpleMode && <View className={cardClassBottom} />}
+          <View className={cardClassBottom} />
         </View>
-        {!isSimpleMode && (
-          <>
-            <CommunitySection
-              activityItems={activityItems}
-              isConnected={isConnected}
-              targetItemID={targetActivityItemID}
-              observation={observation}
-              openAgreeWithIdSheet={openAgreeWithIdSheet}
-              refetchRemoteObservation={refetchRemoteObservation}
-              onLayoutTargetItem={setOffsetToActivityItem}
-            />
-            {addingActivityItem && (
-              <View className="flex-row items-center justify-center p-10">
-                <ActivityIndicator size={50} />
-              </View>
-            )}
-            <StatusSection observation={observation} />
-            <DetailsSection observation={observation} />
-            <MoreSection observation={observation} />
-          </>
+        <CommunitySection
+          activityItems={activityItems}
+          isConnected={isConnected}
+          targetItemID={targetActivityItemID}
+          observation={observation}
+          openAgreeWithIdSheet={openAgreeWithIdSheet}
+          refetchRemoteObservation={refetchRemoteObservation}
+          onLayoutTargetItem={setOffsetToActivityItem}
+        />
+        {addingActivityItem && (
+          <View className="flex-row items-center justify-center p-10">
+            <ActivityIndicator size={50} />
+          </View>
         )}
+        <StatusSection observation={observation} />
+        <DetailsSection observation={observation} />
+        <MoreSection observation={observation} />
       </ScrollView>
       {showFloatingButtons && (
         <FloatingButtons

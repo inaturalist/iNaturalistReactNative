@@ -108,7 +108,6 @@ type Props = {
   fetchRemoteObservationError: ?Object,
   isConnected: boolean,
   isRefetching: boolean,
-  isSimpleMode: boolean,
   localObservation: ?Object,
   markDeletedLocally: Function,
   markViewedLocally: Function,
@@ -142,7 +141,6 @@ const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
     isRefetching,
     refetchRemoteObservation,
     isConnected,
-    isSimpleMode,
     remoteObsWasDeleted
   } = props;
 
@@ -342,7 +340,6 @@ const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
         belongsToCurrentUser={belongsToCurrentUser}
         currentUser={currentUser}
         isConnected={isConnected}
-        isSimpleMode={isSimpleMode}
         navToSuggestions={navToSuggestions}
         observation={observationShown}
         openAddCommentSheet={openAddCommentSheet}
