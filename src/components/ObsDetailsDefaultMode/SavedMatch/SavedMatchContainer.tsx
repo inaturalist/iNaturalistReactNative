@@ -15,17 +15,12 @@ const SavedMatchContainer = ( {
   const navigation = useNavigation<NativeStackNavigationProp<Record<string, { id?: number }>>>( );
 
   const navToTaxonDetails
-  = ( photo?: { id?: number; isRepresentativeButOtherTaxon?: boolean } ) => {
+  = () => {
     const navParams: {
         id?: number;
         firstPhotoID?: number;
         representativePhoto?: unknown;
     } = { id: observation.taxon?.id };
-    if ( !photo?.isRepresentativeButOtherTaxon ) {
-      navParams.firstPhotoID = photo?.id;
-    } else {
-      navParams.representativePhoto = photo;
-    }
     navigation.push( "TaxonDetails", navParams );
   };
 

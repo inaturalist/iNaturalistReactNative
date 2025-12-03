@@ -35,7 +35,6 @@ const SavedMatch = ( {
         <MatchHeader hideObservationStatus topSuggestion={observation} />
       </View>
       <PhotosSection
-        representativePhoto={taxon?.representative_photo}
         taxon={taxon}
         obsPhotos={observation.observationPhotos}
         navToTaxonDetails={navToTaxonDetails}
