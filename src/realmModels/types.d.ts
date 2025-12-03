@@ -124,6 +124,7 @@ export interface RealmObservationPojo {
   owners_identification_from_vision: boolean | null;
   place_guess: string | null;
   privateLatitude?: number;
+  privateLongitude?: number;
   positional_accuracy: number | null;
   species_guess: string | null;
   taxon_id: number | null;
