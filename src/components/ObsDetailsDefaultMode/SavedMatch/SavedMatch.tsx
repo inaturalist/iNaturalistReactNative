@@ -13,7 +13,7 @@ import { useTranslation } from "sharedHooks";
 
 import SavedMatchHeaderRight from "./SavedMatchHeaderRight";
 
-type Props = {
+interface Props {
   observation: RealmObservation,
   navToTaxonDetails: ( ) => void,
 }
@@ -30,7 +30,7 @@ const SavedMatch = ( {
 
   return (
     <ScrollViewWrapper>
-      <SavedMatchHeaderRight uuid={observation.uuid} />
+      <SavedMatchHeaderRight observation={observation} />
       <View className={`${matchCardClassTop} mt-[10px]`}>
         <MatchHeader hideObservationStatus topSuggestion={observation} />
       </View>

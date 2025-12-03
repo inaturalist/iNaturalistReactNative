@@ -5,7 +5,7 @@ import _ from "lodash";
 import React from "react";
 import type { RealmObservation } from "realmModels/types";
 
-type Props = {
+interface Props {
   observation: RealmObservation,
 }
 
