@@ -159,7 +159,7 @@ const Menu = ( ) => {
       <View>
         {/* Header */}
         <Pressable
-          testID="drawer-top-banner" // TO DO: rename test id
+          testID="menu-header"
           accessibilityRole="button"
           className="px-[26px] pt-[68px] pb-[31px] border-b border-lightGray"
           onPress={( ) => {

@@ -18,13 +18,13 @@ export default async function signIn() {
   await expect( openDrawerMenuItem ).toBeVisible();
   await element( by.id( "OPEN_DRAWER" ) ).tap( { x: 0, y: 0 } );
   // Tap the Log-In menu item
-  // TODO: consider this a temporary solution as it only checks for the drawer-top-banner
+  // TODO: consider this a temporary solution as it only checks for the menu-header
   // which can be a login prompt or the logged in user's details. If the user is already
   // logged in, this should fail instead.
-  const loginMenuItem = element( by.id( "drawer-top-banner" ) );
+  const loginMenuItem = element( by.id( "menu-header" ) );
   await waitFor( loginMenuItem ).toBeVisible().withTimeout( TIMEOUT );
   await expect( loginMenuItem ).toBeVisible();
-  await element( by.id( "drawer-top-banner" ) ).tap();
+  await element( by.id( "menu-header" ) ).tap();
   const usernameInput = element( by.id( "Login.email" ) );
   await waitFor( usernameInput ).toBeVisible().withTimeout( TIMEOUT );
   await expect( usernameInput ).toBeVisible();
