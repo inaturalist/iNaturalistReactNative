@@ -12,7 +12,7 @@ import Photo from "realmModels/Photo";
 import getImageDimensions from "sharedHelpers/getImageDimensions";
 
 type Props = {
-  representativePhoto: Object,
+  representativePhoto?: Object,
   taxon: Object,
   obsPhotos: Array<Object>,
   navToTaxonDetails: ( photo: Object ) => void
@@ -189,7 +189,7 @@ const PhotosSection = ( {
   }
 
   return (
-    <View className={classnames( "h-[390px]", layoutClasses.containerClass )}>
+    <View className={classnames( "h-[390px] overflow-hidden", layoutClasses.containerClass )}>
       {renderObservationPhoto( )}
       {bestTaxonPhotos.length > 0 && renderTaxonPhotos( )}
       <MediaViewerModal
