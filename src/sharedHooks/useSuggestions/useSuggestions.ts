@@ -1,15 +1,28 @@
 import { useNetInfo } from "@react-native-community/netinfo";
-import _ from "lodash";
 import { useMemo } from "react";
 
 import filterSuggestions from "./filterSuggestions";
 import useOfflineSuggestions from "./useOfflineSuggestions";
 import useOnlineSuggestions from "./useOnlineSuggestions";
 
-export const useSuggestions = ( photoUri, options ) => {
+interface Options {
+  shouldFetchOnlineSuggestions: boolean;
+  shouldFetchOfflineSuggestionsUnconditionally?: boolean;
+  onFetchError: () => void;
+  onFetched: () => void;
+  scoreImageParams?: {
+    lat: number;
+    lng: number;
+  };
+  queryKey: string[];
+  onlineSuggestionsAttempted: boolean;
+}
+
+export const useSuggestions = ( photoUri: string, options: Options ) => {
   const { isConnected } = useNetInfo( );
   const {
     shouldFetchOnlineSuggestions,
+    shouldFetchOfflineSuggestionsUnconditionally,
     onFetchError,
     onFetched,
     scoreImageParams,
@@ -46,9 +59,11 @@ export const useSuggestions = ( photoUri, options ) => {
   const urlWillCrashOffline = photoUri?.includes( "https://" ) && !isConnected;
 
   // skip to offline suggestions if internet connection is spotty
+  const fallingBackToOfflineSuggestions = timedOut
+    || !isConnected
+    || ( !onlineSuggestions && onlineSuggestionsAttempted );
   const tryOfflineSuggestions = !urlWillCrashOffline && (
-    timedOut
-    || ( !onlineSuggestions && onlineSuggestionsAttempted )
+    shouldFetchOfflineSuggestionsUnconditionally || fallingBackToOfflineSuggestions
   );
 
   const {
@@ -70,13 +85,12 @@ export const useSuggestions = ( photoUri, options ) => {
       refetchOfflineSuggestions();
     }
   };
-
-  const usingOfflineSuggestions = tryOfflineSuggestions || (
-    offlineSuggestions?.results?.length > 0
-      && ( !onlineSuggestions || onlineSuggestions?.results?.length === 0 )
-  );
-
   const hasOnlineSuggestionResults = onlineSuggestions?.results?.length > 0;
+  const hasOfflineSuggestionResults = offlineSuggestions?.results?.length > 0;
+
+  const usingOfflineSuggestions = fallingBackToOfflineSuggestions || (
+    hasOfflineSuggestionResults && !hasOnlineSuggestionResults && onlineSuggestionsAttempted
+  );
 
   const unfilteredSuggestions = useMemo(
     ( ) => ( hasOnlineSuggestionResults
