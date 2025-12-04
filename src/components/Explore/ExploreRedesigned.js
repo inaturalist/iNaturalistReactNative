@@ -24,7 +24,6 @@ import {
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
-import ExploreHeader from "./Header/ExploreHeader";
 import IdentifiersView from "./IdentifiersView";
 import ObservationsView from "./ObservationsView";
 import ObservationsViewBar from "./ObservationsViewBar";
@@ -46,15 +45,11 @@ const exploreViewIcon = {
 type Props = {
   canFetch?: boolean, // TODO: change to PLACE_MODE in Typescript
   closeFiltersModal: Function,
-  count: Object,
   currentExploreView: string,
   filterByIconicTaxonUnknown: Function,
   handleUpdateCount: Function,
   hasLocationPermissions?: boolean,
-  hideBackButton: boolean,
   isConnected: boolean,
-  isFetchingHeaderCount: boolean,
-  openFiltersModal: Function,
   placeMode: string,
   queryParams: Object,
   renderLocationPermissionsGate: Function,
@@ -71,15 +66,11 @@ type Props = {
 const ExploreRedesigned = ( {
   canFetch,
   closeFiltersModal,
-  count,
   currentExploreView,
   filterByIconicTaxonUnknown,
   handleUpdateCount,
   hasLocationPermissions,
-  hideBackButton,
   isConnected,
-  isFetchingHeaderCount,
-  openFiltersModal,
   placeMode,
   queryParams,
   renderLocationPermissionsGate,
@@ -106,24 +97,6 @@ const ExploreRedesigned = ( {
 
   const icon = exploreViewIcon[currentExploreView];
   const a11yLabel = exploreViewA11yLabel[currentExploreView];
-  const headerCount = count[currentExploreView];
-
-  const renderHeader = ( ) => (
-    <ExploreHeader
-      count={headerCount}
-      exploreView={currentExploreView}
-      exploreViewIcon={icon}
-      hasLocationPermissions={hasLocationPermissions}
-      hideBackButton={hideBackButton}
-      isFetchingHeaderCount={isFetchingHeaderCount}
-      onPressCount={( ) => setShowExploreBottomSheet( true )}
-      openFiltersModal={openFiltersModal}
-      renderLocationPermissionsGate={renderLocationPermissionsGate}
-      requestLocationPermissions={requestLocationPermissions}
-      updateLocation={updateLocation}
-      updateTaxon={updateTaxon}
-    />
-  );
 
   const renderMainContent = ( ) => {
     if ( isConnected === false ) {
@@ -249,7 +222,6 @@ const ExploreRedesigned = ( {
     <>
       <ViewWrapper testID="ExploreRedesigned" wrapperClassName="overflow-hidden">
         <View className="flex-1 overflow-hidden">
-          {renderHeader()}
           {currentExploreView === "observations" && (
             <ObservationsViewBar
               layout={layout}
