@@ -17,7 +17,7 @@ type Props = {
   uuid: string,
   refetchSubscriptions: Function,
   subscriptions: Object
-}
+};
 
 const HeaderKebabMenu = ( {
   observationId,

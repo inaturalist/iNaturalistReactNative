@@ -28,7 +28,7 @@ type Props = {
     licenseCode?: string
   }>,
   tablet: boolean
-}
+};
 
 const TaxonMedia = ( {
   loading,

@@ -19,7 +19,7 @@ type Props = {
   taxon: RealmTaxon | ApiTaxon,
   testID?: string,
   selected?: boolean
-}
+};
 
 const IconicSuggestion = ( {
   fetchRemote = true,

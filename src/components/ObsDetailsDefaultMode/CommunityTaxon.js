@@ -20,7 +20,7 @@ type Props = {
   belongsToCurrentUser: boolean,
   isSimpleMode: boolean,
   observation: Object,
-}
+};
 
 const CommunityTaxon = ( {
   belongsToCurrentUser,

@@ -24,7 +24,7 @@ type ObsCreateItem = {
   testID: string,
   accessibilityLabel: string,
   accessibilityHint: string
-}
+};
 
 const majorVersionIOS = parseInt( String( Platform.Version ), 10 );
 const AI_CAMERA_SUPPORTED = ( Platform.OS === "ios" && majorVersionIOS >= 11 )

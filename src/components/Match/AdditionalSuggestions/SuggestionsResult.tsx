@@ -21,7 +21,7 @@ type Props = {
   testID?: string,
   updateMaxHeight?: ( height: number ) => void,
   forcedHeight: number
-}
+};
 
 const SuggestionsResult = ( {
   confidence,

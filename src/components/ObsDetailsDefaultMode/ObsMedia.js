@@ -21,7 +21,7 @@ type Props = {
   sounds?: Array<{
     file_url: string
   }>
-}
+};
 
 const ObsMedia = ( {
   loading,

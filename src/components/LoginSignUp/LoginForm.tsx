@@ -39,7 +39,7 @@ interface LoginFormParams {
 
 type ParamList = {
   LoginFormParams: LoginFormParams
-}
+};
 
 const LoginForm = ( {
   scrollViewRef

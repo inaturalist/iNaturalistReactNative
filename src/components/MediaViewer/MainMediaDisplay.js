@@ -43,7 +43,7 @@ type Props = {
   }>,
   selectedMediaIndex: number,
   setSelectedMediaIndex: Function
-}
+};
 
 const MainMediaDisplay = ( {
   autoPlaySound,

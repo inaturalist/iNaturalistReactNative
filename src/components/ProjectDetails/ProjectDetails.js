@@ -42,7 +42,7 @@ type Props = {
   joinProject: Function,
   leaveProject: Function,
   loadingProjectMembership: boolean
-}
+};
 
 const ProjectDetails = ( {
   project, joinProject, leaveProject, loadingProjectMembership

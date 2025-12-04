@@ -13,7 +13,7 @@ type Props = {
   disableAddingMoreEvidence: boolean,
   hidden?: boolean,
   onClose: Function
-}
+};
 
 const AddEvidenceSheet = ( {
   disableAddingMoreEvidence,

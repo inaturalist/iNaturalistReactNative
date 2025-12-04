@@ -10,7 +10,7 @@ type Props = {
   progress: number;
   iconClasses: Array<string>;
   uniqueKey?: string;
-}
+};
 
 const UploadProgressIcon = ( {
   color,

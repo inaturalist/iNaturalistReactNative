@@ -13,7 +13,7 @@ import RNFS from "react-native-fs";
 export type DirectoryEntrySize = {
   name: string;
   size: number;
-}
+};
 
 // https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
 export function formatSizeUnits( bytes: number ) {
@@ -122,7 +122,7 @@ export function getTotalDirectorySize( directoryItems: DirectoryEntrySize[] ): n
 
 type AppSize = {
   [directoryName: string]: DirectoryEntrySize[]
-}
+};
 
 async function fetchAppSize(): Promise<AppSize> {
   const maybeExistingDirectories = await Promise.all(

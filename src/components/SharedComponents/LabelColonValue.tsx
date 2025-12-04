@@ -12,7 +12,7 @@ type Props = {
   value: string | number;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   ValueComponent?: Function;
-}
+};
 
 const LabelColonValue = ( {
   label,

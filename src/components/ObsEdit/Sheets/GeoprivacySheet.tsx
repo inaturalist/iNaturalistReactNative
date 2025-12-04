@@ -15,7 +15,7 @@ type Props = {
   onPressClose: ( ) => void,
   selectedValue?: Geoprivacy,
   updateGeoprivacyStatus: ( Geoprivacy ) => void
-}
+};
 
 const GeoprivacySheet = ( {
   onPressClose,

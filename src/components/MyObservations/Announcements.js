@@ -44,7 +44,7 @@ const AutoheightWebView = ( webshellProps ): Node => {
 
 type Props = {
   isConnected: boolean
-}
+};
 
 const Announcements = ( {
   isConnected

@@ -19,7 +19,7 @@ type Props = {
   navToSuggestions: Function,
   showAddCommentSheet: Function,
   openAddCommentSheet: Function
-}
+};
 
 const FloatingButtons = ( {
   navToSuggestions,

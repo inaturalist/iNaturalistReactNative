@@ -14,7 +14,7 @@ type Props = {
   setResetScreen: Function,
   transitionAnimation: Function,
   transitionAnimationRef: Object
-}
+};
 
 const MultipleObservationsArrows = ( {
   currentObservationIndex,

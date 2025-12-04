@@ -30,7 +30,7 @@ type Props = {
   maxLength?: number,
   placeholder?: string,
   textInputStyle?: Object
-}
+};
 
 const CharLimit = ( { current = 0, limit = 1, t } ) => {
   let currentColor = "text-darkGrayDisabled";

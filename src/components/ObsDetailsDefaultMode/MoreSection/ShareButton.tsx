@@ -8,7 +8,7 @@ import { Alert, Platform, Share } from "react-native";
 
 type Props = {
   id: number
-}
+};
 
 const OBSERVATION_URL = "https://www.inaturalist.org/observations";
 

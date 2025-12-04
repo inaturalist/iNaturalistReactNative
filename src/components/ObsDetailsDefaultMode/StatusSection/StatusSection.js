@@ -12,7 +12,7 @@ import React from "react";
 
 type Props = {
   observation: Object
-}
+};
 
 const StatusSection = ( { observation }: Props ): Node => {
   if ( !observation ) return null;

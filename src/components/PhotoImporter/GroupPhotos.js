@@ -31,7 +31,7 @@ type Props = {
   selectObservationPhotos: Function,
   separatePhotos: Function,
   totalPhotos: number
-}
+};
 
 const GroupPhotos = ( {
   combinePhotos,

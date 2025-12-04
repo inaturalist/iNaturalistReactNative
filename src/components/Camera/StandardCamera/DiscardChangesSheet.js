@@ -11,7 +11,7 @@ type Props = {
   setShowDiscardSheet: Function,
   hidden?: boolean,
   onDiscard: Function
-}
+};
 
 const DiscardChangesSheet = ( {
   setShowDiscardSheet,

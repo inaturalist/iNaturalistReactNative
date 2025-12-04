@@ -18,7 +18,7 @@ type Props = {
   observations: Array<Object>,
   onDelete?: Function,
   updateObservations: Function
-}
+};
 
 const DeleteObservationSheet = ( {
   currentObservation,

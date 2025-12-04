@@ -7,7 +7,7 @@ const logger = log.extend( "CameraView" );
 
 type Event = {
   log: string;
-}
+};
 
 const handleClassifierError = ( error: CameraRuntimeError ) => {
   // When we hit this error, there is an error with the classifier.

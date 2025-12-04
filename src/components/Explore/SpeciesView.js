@@ -24,7 +24,7 @@ type Props = {
   isConnected: boolean,
   queryParams: Object,
   handleUpdateCount: Function
-}
+};
 
 const SpeciesView = ( {
   canFetch,

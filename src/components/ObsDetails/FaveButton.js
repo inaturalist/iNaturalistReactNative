@@ -22,7 +22,7 @@ type Props = {
   currentUser?: Object,
   afterToggleFave: Function,
   top?: boolean
-}
+};
 
 const FaveButton = ( {
   observation,

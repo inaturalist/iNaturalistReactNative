@@ -14,7 +14,7 @@ type Props = {
   onPressClose: Function,
   updateIdentification: Function,
   taxon: Object
-}
+};
 
 const showTaxon = taxon => {
   if ( !taxon ) {

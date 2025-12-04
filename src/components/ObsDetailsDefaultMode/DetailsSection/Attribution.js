@@ -7,7 +7,7 @@ import React from "react";
 
 type Props = {
   observation: Object
-}
+};
 
 const renderRestrictions = ( licenseCode: string ) => {
   switch ( licenseCode ) {

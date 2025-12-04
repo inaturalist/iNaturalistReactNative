@@ -28,7 +28,7 @@ type Props = {
   showFocusedUploadButton: boolean
   showHalfOpacity: boolean,
   wasSynced: boolean,
-}
+};
 
 const BottomButtons = ( {
   buttonPressed,

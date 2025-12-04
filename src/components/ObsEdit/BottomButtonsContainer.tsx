@@ -29,7 +29,7 @@ type Props = {
   setCurrentObservationIndex: Function,
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   transitionAnimation: Function
-}
+};
 
 const BottomButtonsContainer = ( {
   passesEvidenceTest,

@@ -17,7 +17,7 @@ type Props = {
   discardObservation: Function,
   observations: Array<Object>,
   onSave?: Function
-}
+};
 
 const DiscardObservationSheet = ( {
   onPressClose,

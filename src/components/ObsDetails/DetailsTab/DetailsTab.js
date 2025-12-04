@@ -27,7 +27,7 @@ import ProjectSection from "./ProjectSection";
 type Props = {
   currentUser: Object,
   observation: Object
-}
+};
 
 const OBSERVATION_URL = "https://www.inaturalist.org/observations";
 

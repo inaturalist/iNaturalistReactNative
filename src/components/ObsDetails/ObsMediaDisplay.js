@@ -19,7 +19,7 @@ type Props = {
   photos: Array<Object>,
   sounds: Array<Object>,
   tablet: boolean
-}
+};
 
 const ObsMediaDisplay = ( {
   loading,

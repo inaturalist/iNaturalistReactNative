@@ -23,14 +23,14 @@ import colors from "styles/tailwindColors";
 type ConfettiProps = PropsWithChildren<{
   count: number
   duration?: number
-}>
+}>;
 
 type AnimatedElementProps = PropsWithChildren<{
   index: number
   count: number
   animation: SharedValue<number>
   duration: number
-}>
+}>;
 
 const AnimatedElement = memo(
   ( {

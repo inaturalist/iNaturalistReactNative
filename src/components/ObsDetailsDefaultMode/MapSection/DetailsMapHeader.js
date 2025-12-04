@@ -13,7 +13,7 @@ import React from "react";
 type Props = {
   currentUser: { id: number },
   observation: Object
-}
+};
 
 const DetailsMapHeader = ( {
   currentUser,

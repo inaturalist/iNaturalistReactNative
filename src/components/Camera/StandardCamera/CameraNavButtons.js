@@ -16,7 +16,7 @@ type Props = {
   photosTaken: boolean,
   rotatableAnimatedStyle: Object,
   takePhoto: ( ) => void,
-}
+};
 
 const CameraNavButtons = ( {
   disabled,

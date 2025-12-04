@@ -29,7 +29,7 @@ type Props = {
   taxonGeoprivacy: string,
   belongsToCurrentUser: boolean,
   showExplainerText: boolean
-}
+};
 
 const ActivityItem = ( {
   currentUserId,

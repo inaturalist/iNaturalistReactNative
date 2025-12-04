@@ -17,7 +17,7 @@ import GeoprivacyStatus from "./GeoprivacyStatus";
 
 type Props = {
   observation: Object
-}
+};
 
 const DetailsSection = ( { observation }: Props ): Node => {
   const application = observation?.application?.name;

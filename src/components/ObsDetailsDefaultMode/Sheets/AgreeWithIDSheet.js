@@ -22,7 +22,7 @@ type Props = {
   },
   onAgree:Function,
   onPressClose: Function,
-}
+};
 
 const showTaxon = taxon => {
   if ( !taxon ) {

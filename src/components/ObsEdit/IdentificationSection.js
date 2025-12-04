@@ -24,7 +24,7 @@ type Props = {
   resetScreen: boolean,
   setResetScreen: Function,
   updateObservationKeys: Function
-}
+};
 
 const IdentificationSection = ( {
   currentObservation,

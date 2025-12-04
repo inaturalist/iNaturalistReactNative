@@ -25,7 +25,7 @@ type Props = {
     styling: string
   },
   stopAllUploads: Function
-}
+};
 
 const SimpleUploadBanner = ( {
   error,

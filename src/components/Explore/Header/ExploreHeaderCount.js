@@ -17,7 +17,7 @@ type Props = {
   exploreViewIcon: string,
   isFetching: boolean,
   onPress: Function,
-}
+};
 
 const ExploreHeaderCount = ( {
   count,

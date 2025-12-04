@@ -6,7 +6,7 @@ import React from "react";
 type Props = {
   iconClasses: Array<string>,
   completeColor: string
-}
+};
 
 const UploadCompleteIcon = ( {
   iconClasses,

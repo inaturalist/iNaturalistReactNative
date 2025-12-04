@@ -27,7 +27,7 @@ type Props = {
   numUploadableObservations: number,
   handleSyncButtonPress: Function,
   currentUser: Object
-}
+};
 
 const SimpleUploadBannerContainer = ( {
   handleSyncButtonPress,

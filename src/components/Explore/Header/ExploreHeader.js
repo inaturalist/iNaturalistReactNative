@@ -35,7 +35,7 @@ type Props = {
   requestLocationPermissions: Function,
   updateLocation: Function,
   updateTaxon: Function
-}
+};
 
 const Header = ( {
   count,

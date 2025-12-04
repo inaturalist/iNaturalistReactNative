@@ -15,7 +15,7 @@ import WildStatusSheet from "./Sheets/WildStatusSheet";
 type Props = {
   currentObservation: Object,
   updateObservationKeys: Function
-}
+};
 
 const OtherDataSection = ( {
   currentObservation,

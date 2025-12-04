@@ -19,7 +19,7 @@ const DROP_SHADOW = getShadow( {
 
 type Props = {
   currentUser: RealmUser | null;
-}
+};
 
 const LoginBanner = ( {
   currentUser

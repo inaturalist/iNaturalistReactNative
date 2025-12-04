@@ -34,7 +34,7 @@ type Props = {
   }>,
   onLocationPress: ( ) => void,
   updateObservationKeys: Function
-}
+};
 
 const EvidenceSection = ( {
   currentObservation,

@@ -20,7 +20,7 @@ type Props = {
   belongsToCurrentUser: boolean,
   isConnected: boolean,
   observation: Object,
-}
+};
 
 const ObsDetailsOverview = ( {
   belongsToCurrentUser,

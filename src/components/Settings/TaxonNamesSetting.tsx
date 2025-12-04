@@ -26,7 +26,7 @@ type NameDisplayPref =
 
 type Props = {
   onChange: ( options: TaxonNamesSettings ) => void;
-}
+};
 
 const TaxonNamesSetting = ( { onChange }: Props ) => {
   const realm = useRealm( );

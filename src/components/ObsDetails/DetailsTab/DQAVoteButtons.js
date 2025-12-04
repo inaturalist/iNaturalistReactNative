@@ -18,7 +18,7 @@ type Props = {
   loadingMetric: ?string,
   setVote: Function,
   removeVote: Function
-}
+};
 
 const getUserVote = ( currentUser, metric, votes ) => {
   if ( votes && votes.length > 0 ) {

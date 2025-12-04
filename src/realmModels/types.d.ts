@@ -100,7 +100,7 @@ export type License =
   | "cc-by-sa"
   | "cc-by-nc-nd"
   | "cc-by-nc-sa"
-  | "cc0"
+  | "cc0";
 
 export interface RealmObservationPojo {
   _created_at?: Date;

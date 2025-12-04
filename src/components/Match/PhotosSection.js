@@ -16,7 +16,7 @@ type Props = {
   taxon: Object,
   obsPhotos: Array<Object>,
   navToTaxonDetails: ( photo: Object ) => void
-}
+};
 
 const PhotosSection = ( {
   representativePhoto,

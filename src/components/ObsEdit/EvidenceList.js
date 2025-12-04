@@ -34,7 +34,7 @@ type Props = {
     },
     uuid: string
   }>
-}
+};
 
 const EvidenceList = ( {
   handleAddEvidence,

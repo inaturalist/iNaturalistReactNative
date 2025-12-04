@@ -26,7 +26,7 @@ type Props = {
   passesEvidenceTest: boolean,
   setPassesEvidenceTest: Function,
   updateObservationKeys: Function
-}
+};
 
 const EvidenceSectionContainer = ( {
   currentObservation,

@@ -54,7 +54,7 @@ type Props = {
   removeNeedsIDVote: Function,
   setMetricVote: Function,
   setNeedsIDVote: Function,
-}
+};
 
 const DataQualityAssessment = ( {
   checkTest,

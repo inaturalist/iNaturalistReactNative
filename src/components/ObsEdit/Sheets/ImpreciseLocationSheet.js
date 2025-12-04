@@ -8,7 +8,7 @@ import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   setShowImpreciseLocationSheet: Function
-}
+};
 
 const ImpreciseLocationSheet = ( { setShowImpreciseLocationSheet }: Props ): Node => {
   const { t } = useTranslation( );

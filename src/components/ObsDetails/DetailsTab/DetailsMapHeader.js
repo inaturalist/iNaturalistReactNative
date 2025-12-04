@@ -12,7 +12,7 @@ import ObscurationExplanation from "./ObscurationExplanation";
 type Props = {
   currentUser: { id: number },
   observation: Object
-}
+};
 
 const DetailsMapHeader = ( {
   currentUser,

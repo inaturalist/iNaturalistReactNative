@@ -59,18 +59,18 @@ type FullPageWebViewParams = {
   skipSetSourceInShouldStartLoadWithRequest?: boolean;
   clickablePathnames?: Array<string>;
   shouldLoadUrl?: ( url: string ) => boolean;
-}
+};
 
 type ParamList = {
   FullPageWebView: FullPageWebViewParams
-}
+};
 
 type WebViewSource = {
   uri: string;
   headers?: {
     Authorization?: string | null
   }
-}
+};
 
 export function onShouldStartLoadWithRequest(
   request: ShouldStartLoadRequest,

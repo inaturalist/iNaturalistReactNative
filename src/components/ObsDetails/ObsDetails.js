@@ -73,7 +73,7 @@ type Props = {
   },
   onChangeIdentBody?: Function,
   uuid: string
-}
+};
 
 const ObsDetails = ( {
   activityItems,

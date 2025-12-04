@@ -26,7 +26,7 @@ type Props = {
   }>,
   showModal: boolean,
   uri?: string | null
-}
+};
 
 const MediaViewerModal = ( {
   autoPlaySound,

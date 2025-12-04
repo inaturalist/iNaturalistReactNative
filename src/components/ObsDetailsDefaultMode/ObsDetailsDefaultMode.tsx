@@ -44,7 +44,7 @@ type Props = {
   targetActivityItemID: number,
   wasSynced: boolean,
   uuid: string
-}
+};
 
 const ObsDetailsDefaultMode = ( {
   activityItems = [],

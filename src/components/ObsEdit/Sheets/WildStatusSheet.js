@@ -11,7 +11,7 @@ type Props = {
   onPressClose: Function,
   selectedValue: boolean,
   updateCaptiveStatus: Function
-}
+};
 
 const WildStatusSheet = ( {
   onPressClose,

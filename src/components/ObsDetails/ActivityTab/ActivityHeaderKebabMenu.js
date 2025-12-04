@@ -15,7 +15,7 @@ type Props = {
   setShowEditCommentSheet: Function,
   setShowWithdrawIDSheet: Function,
   updateIdentification: Function,
-}
+};
 
 const ActivityItemKebabMenu = ( {
   current,

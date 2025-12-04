@@ -19,7 +19,7 @@ type LocalesResponse = Array<{
 
 type Props = {
   onChange: ( newLocale: string ) => void;
-}
+};
 
 const LanguageSetting = ( { onChange }: Props ) => {
   const { t, i18n } = useTranslation();

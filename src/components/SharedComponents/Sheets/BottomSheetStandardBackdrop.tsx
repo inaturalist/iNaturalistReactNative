@@ -9,7 +9,7 @@ import React from "react";
 type Props = {
   props: BottomSheetBackdropProps,
   onPress: ( ) => void
-}
+};
 
 const BottomSheetStandardBackdrop = ( { props, onPress }: Props ) => (
   <BottomSheetBackdrop

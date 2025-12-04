@@ -38,7 +38,7 @@ type Props = {
   scrollRef: Object,
   iconicTaxon: Object,
   setIconicTaxon: ( ) => void
-}
+};
 
 const Match = ( {
   observation,

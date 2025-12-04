@@ -10,7 +10,7 @@ import React from "react";
 type Props = {
   onPressClose: Function,
   discardChanges: Function
-}
+};
 
 const DiscardChangesSheet = ( {
   onPressClose,

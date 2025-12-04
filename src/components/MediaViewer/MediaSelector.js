@@ -25,7 +25,7 @@ type Props = {
   sounds?: Array<{
     file_url: string
   }>,
-}
+};
 
 const SMALL_ITEM_CLASS = "rounded-sm w-[42px] h-[42px] mx-[6px] my-[12px]";
 const LARGE_ITEM_CLASS = "rounded-md w-[83px] h-[83px] mx-[10px] my-[20px]";

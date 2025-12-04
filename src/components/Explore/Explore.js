@@ -66,7 +66,7 @@ type Props = {
   updateProject: Function,
   updateTaxon: Function,
   updateUser: Function
-}
+};
 
 const Explore = ( {
   canFetch,

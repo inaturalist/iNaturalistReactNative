@@ -10,7 +10,7 @@ type Props = {
   layout: "horizontal" | "vertical";
   fadeInIcon: ReactComponent;
   fadeOutIcon: ReactComponent;
-}
+};
 const AnimatedView = Reanimated.createAnimatedComponent( View );
 
 const keyframe = new Keyframe( {

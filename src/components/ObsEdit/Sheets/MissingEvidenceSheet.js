@@ -9,7 +9,7 @@ import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   setShowMissingEvidenceSheet: Function
-}
+};
 
 const MissingEvidenceSheet = ( { setShowMissingEvidenceSheet }: Props ): Node => {
   const { t } = useTranslation( );

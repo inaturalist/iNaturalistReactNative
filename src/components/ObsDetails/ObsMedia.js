@@ -23,7 +23,7 @@ type Props = {
     file_url: string
   }>,
   tablet: boolean
-}
+};
 
 const ObsMedia = ( {
   loading,

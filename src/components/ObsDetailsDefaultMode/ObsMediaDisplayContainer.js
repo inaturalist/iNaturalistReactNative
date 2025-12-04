@@ -7,7 +7,7 @@ import ObsMediaDisplay from "./ObsMediaDisplay";
 
 type Props = {
   observation: Object
-}
+};
 
 // TODO replace this hack. Without this you get errors about the
 // photo objects being invalidated down in ObsMedia, but the

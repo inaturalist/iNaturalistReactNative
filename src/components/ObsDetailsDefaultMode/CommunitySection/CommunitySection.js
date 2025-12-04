@@ -17,7 +17,7 @@ type Props = {
   targetItemID: number,
   // TODO change to LayoutEvent from react-native if/when switching to TS
   onLayoutTargetItem: ( event: Object ) => void
-}
+};
 
 const CommunitySection = ( {
   observation,

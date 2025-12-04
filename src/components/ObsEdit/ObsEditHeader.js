@@ -23,7 +23,7 @@ const { useRealm } = RealmContext;
 type Props = {
   observations: Array<Object>,
   currentObservation: Object
-}
+};
 
 const ObsEditHeader = ( {
   observations,

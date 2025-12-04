@@ -41,7 +41,7 @@ type Props = {
     file_url: string
   }>,
   uri?: string | null
-}
+};
 
 const MediaViewer = ( {
   autoPlaySound,

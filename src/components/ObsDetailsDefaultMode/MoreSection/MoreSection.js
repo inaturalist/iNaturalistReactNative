@@ -15,7 +15,7 @@ import ViewInBrowserButton from "./ViewInBrowserButton";
 
 type Props = {
   observation: Object
-}
+};
 
 const MoreSection = ( { observation }: Props ): Node => {
   const observationUUID = observation?.uuid;

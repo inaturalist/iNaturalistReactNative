@@ -10,7 +10,7 @@ type Props = {
   selectedObservations: Array<Object>,
   selectObservationPhotos: Function,
   style?: Object
-}
+};
 
 const GroupPhotoImage = ( {
   item,

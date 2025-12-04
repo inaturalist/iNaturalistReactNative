@@ -18,7 +18,7 @@ import LoginSignUpInputField from "./LoginSignUpInputField";
 type Props = {
   reset: ( email: string ) => Promise<void>,
   scrollViewRef?: { current: null | ElementRef<typeof ScrollView> },
-}
+};
 
 const ForgotPasswordForm = ( { reset, scrollViewRef }: Props ): Node => {
   const [email, setEmail] = useState( "" );

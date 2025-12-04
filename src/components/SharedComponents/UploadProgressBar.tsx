@@ -7,7 +7,7 @@ const PROGRESS_BAR_STYLE = { backgroundColor: "transparent" };
 
 type Props = {
   progress: number
-}
+};
 
 const UploadProgressBar = ( { progress }: Props ): Node => (
   <ProgressBar

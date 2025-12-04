@@ -31,7 +31,7 @@ type Props = {
   hasLocationPermissions?: boolean,
   renderLocationPermissionsGate: Function,
   requestLocationPermissions: Function
-}
+};
 
 const OBS_LIST_CONTAINER_STYLE = { paddingTop: 50 };
 

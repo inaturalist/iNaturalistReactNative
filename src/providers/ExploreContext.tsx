@@ -176,7 +176,7 @@ interface DefaultLocation {
   radius?: number
 }
 
-type ExploreProviderProps = {children: React.ReactNode}
+type ExploreProviderProps = {children: React.ReactNode};
 type State = {
   casual: boolean,
   created_d1: string | null | undefined,
@@ -225,7 +225,7 @@ type State = {
   excludeUser: object | undefined | null,
   verifiable: boolean,
   wildStatus: WILD_STATUS
-}
+};
 type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.DISCARD, snapshot: State}
   | {type: EXPLORE_ACTION.SET_USER, user: object | null, userId: number | null, storedState: State}
@@ -284,8 +284,8 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.SET_REVIEWED, reviewedFilter: REVIEWED}
   | {type: EXPLORE_ACTION.SET_PHOTO_LICENSE, photoLicense: PHOTO_LICENSE}
   | {type: EXPLORE_ACTION.SET_MAP_BOUNDARIES, mapBoundaries: MapBoundaries}
-  | {type: EXPLORE_ACTION.USE_STORED_STATE, storedState: State}
-type Dispatch = ( action: Action ) => void
+  | {type: EXPLORE_ACTION.USE_STORED_STATE, storedState: State};
+type Dispatch = ( action: Action ) => void;
 
 const ExploreContext = React.createContext<
   {

@@ -13,13 +13,13 @@ type Props = {
   onObservationPressed: Function,
   onSpeciesPressed: Function,
   onMembersPressed: Function
-}
+};
 
 type CountProps = {
   count: number,
   icon: string,
   label: string
-}
+};
 
 type CountPressableProps = {
   accessibilityLabel: string,
@@ -27,7 +27,7 @@ type CountPressableProps = {
   icon: string,
   label: string,
   onPress?: Function
-}
+};
 
 const Count = ( {
   count, label, icon

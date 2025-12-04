@@ -26,7 +26,7 @@ type Props = {
   takePhotoOptions: Object,
   zoomTextValue: string,
   showZoomButton: boolean
-}
+};
 
 const CameraOptionsButtons = ( {
   takePhoto,

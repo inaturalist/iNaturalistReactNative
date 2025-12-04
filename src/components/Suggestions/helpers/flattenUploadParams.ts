@@ -11,7 +11,7 @@ type FlattenUploadArgs = {
     name: string,
     type: string
   }
-}
+};
 
 const flattenUploadParams = async (
   uri: string
