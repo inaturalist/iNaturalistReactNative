@@ -1,5 +1,6 @@
 // @flow
 
+import { noop } from "lodash";
 import { RealmContext } from "providers/contexts";
 import {
   useEffect, useRef,
@@ -43,7 +44,7 @@ const useLocalObservations = ( ): Object => {
 
   useEffect( ( ) => {
     if ( realm === null || realm.isClosed ) {
-      return;
+      return noop;
     }
     const localObservations = realm.objects( "Observation" );
 
@@ -102,7 +103,6 @@ const useLocalObservations = ( ): Object => {
     };
 
     localObservations.addListener( handleChange );
-    // eslint-disable-next-line consistent-return
     return ( ) => {
       // remember to remove listeners to avoid async updates
       if ( localObservations && !realm.isClosed ) {

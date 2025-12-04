@@ -1,5 +1,6 @@
 import { fetchUserMe, updateUsers } from "api/users";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
+import { noop } from "lodash";
 import { RealmContext } from "providers/contexts";
 import { useEffect, useState } from "react";
 import QueueItem from "realmModels/QueueItem";
@@ -64,7 +65,7 @@ const useWorkQueue = ( ) => {
 
   useEffect( ( ) => {
     if ( realm === null || realm.isClosed ) {
-      return;
+      return noop;
     }
     const queuedItems = realm.objects( "QueueItem" );
     // logger.info( `Initial queue size: ${queuedItems?.length}` );
@@ -99,7 +100,6 @@ const useWorkQueue = ( ) => {
         }
       }
     } );
-    // eslint-disable-next-line consistent-return
     return ( ) => {
       // logger.info( "Removing queue listeners" );
       // remember to remove listeners to avoid async updates
