@@ -1,5 +1,6 @@
-import { FirebasePerformanceTypes, getPerformance } from "@react-native-firebase/perf";
-import { StateCreator } from "zustand";
+import type { FirebasePerformanceTypes } from "@react-native-firebase/perf";
+import { getPerformance } from "@react-native-firebase/perf";
+import type { StateCreator } from "zustand";
 
 import { log } from "../../react-native-logs.config";
 
