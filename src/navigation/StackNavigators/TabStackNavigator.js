@@ -124,12 +124,7 @@ const logTitle = () => <Heading4 className="text-white">LOG</Heading4>;
 
 // note: react navigation 7 will have a layout prop
 // which should replace all of these individual wrappers
-const FadeInMenu = () => fadeInComponent( <Menu /> );
-const FadeInNotifications = ( ) => fadeInComponent( <Notifications /> );
-const FadeInRootExplore = ( ) => fadeInComponent( <RootExploreContainer /> );
-const FadeInMyObservations = ( ) => fadeInComponent( <MyObservationsContainer /> );
 const FadeInUserProfile = ( ) => fadeInComponent( <UserProfile /> );
-const FadeInExploreContainer = ( ) => fadeInComponent( <ExploreContainer /> );
 const FadeInObsDetailsDefaultModeScreensWrapper = ( ) => fadeInComponent(
   <ObsDetailsDefaultModeScreensWrapper />
 );
@@ -153,8 +148,7 @@ const NOTIFICATIONS_OPTIONS = {
   ...preventSwipeToGoBack,
   ...hideHeaderLeft,
   headerTitle: notificationsTitle,
-  headerTitleAlign: "center",
-  animation: "none"
+  headerTitleAlign: "center"
 };
 
 const DQA_OPTIONS = {
@@ -206,7 +200,7 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
       >
         <Stack.Screen
           name={SCREEN_NAME_MENU}
-          component={FadeInMenu}
+          component={Menu}
           options={{
             ...preventSwipeToGoBack,
             animation: "none"
@@ -214,7 +208,7 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
         />
         <Stack.Screen
           name={SCREEN_NAME_OBS_LIST}
-          component={FadeInMyObservations}
+          component={MyObservationsContainer}
           options={{
             ...preventSwipeToGoBack,
             animation: "none"
@@ -222,7 +216,7 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
         />
         <Stack.Screen
           name={SCREEN_NAME_ROOT_EXPLORE}
-          component={FadeInRootExplore}
+          component={RootExploreContainer}
           options={{
             ...preventSwipeToGoBack,
             animation: "none"
@@ -230,7 +224,7 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
         />
         <Stack.Screen
           name="Explore"
-          component={FadeInExploreContainer}
+          component={ExploreContainer}
         />
         {isDefaultMode
           ? (
@@ -250,7 +244,7 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
       </Stack.Group>
       <Stack.Screen
         name={SCREEN_NAME_NOTIFICATIONS}
-        component={FadeInNotifications}
+        component={Notifications}
         options={NOTIFICATIONS_OPTIONS}
       />
       <Stack.Screen
