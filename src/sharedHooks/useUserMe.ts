@@ -1,7 +1,8 @@
-// @flow
 import { fetchUserMe } from "api/users";
 import { RealmContext } from "providers/contexts";
 import { useCallback, useEffect } from "react";
+import { UpdateMode } from "realm";
+import User from "realmModels/User";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedQuery,
@@ -10,7 +11,11 @@ import {
 
 const { useRealm } = RealmContext;
 
-const useUserMe = ( options: ?Object ): Object => {
+interface UseUserMeOptions {
+  updateRealm?: boolean;
+}
+
+const useUserMe = ( options: UseUserMeOptions ) => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
   const updateRealm = options?.updateRealm;
@@ -32,7 +37,7 @@ const useUserMe = ( options: ?Object ): Object => {
   const updateUser = useCallback( ( ) => {
     if ( remoteUser && updateRealm ) {
       safeRealmWrite( realm, ( ) => {
-        realm.create( "User", remoteUser, "modified" );
+        realm.create( User, remoteUser, UpdateMode.Modified );
       }, "modifying current user via remote fetch in useUserMe" );
     }
   }, [

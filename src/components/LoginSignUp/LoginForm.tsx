@@ -1,4 +1,5 @@
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import type { RouteProp } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
 import { authenticateUser } from "components/LoginSignUp/AuthenticationService";
 import {
@@ -11,9 +12,9 @@ import React, {
   useCallback, useEffect, useRef, useState
 } from "react";
 import { Trans } from "react-i18next";
+import type { TextInput } from "react-native";
 import {
   Platform,
-  TextInput,
   TouchableWithoutFeedback
 } from "react-native";
 import { useCurrentUser, useLayoutPrefs } from "sharedHooks";

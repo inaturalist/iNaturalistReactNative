@@ -1,20 +1,23 @@
 import { useNavigation } from "@react-navigation/native";
 import Modal from "components/SharedComponents/Modal";
 import _ from "lodash";
+import type { PropsWithChildren } from "react";
 import React, {
-  PropsWithChildren,
   useCallback,
   useEffect,
   useRef,
   useState
 } from "react";
-import { AppState, AppStateStatus, Platform } from "react-native";
-import {
+import type { AppStateStatus } from "react-native";
+import { AppState, Platform } from "react-native";
+import type {
   AndroidPermission,
-  checkMultiple,
   Permission,
+  PermissionStatus
+} from "react-native-permissions";
+import {
+  checkMultiple,
   PERMISSIONS,
-  PermissionStatus,
   requestMultiple,
   RESULTS
 } from "react-native-permissions";

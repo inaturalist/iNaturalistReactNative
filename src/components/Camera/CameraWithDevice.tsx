@@ -3,7 +3,7 @@ import React from "react";
 import DeviceInfo from "react-native-device-info";
 import type { CameraDevice } from "react-native-vision-camera";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
-import { UserLocation } from "sharedHooks/useWatchPosition";
+import type { UserLocation } from "sharedHooks/useWatchPosition";
 
 import AICamera from "./AICamera/AICamera";
 import StandardCamera from "./StandardCamera/StandardCamera";
@@ -16,10 +16,13 @@ interface Props {
   camera: object,
   flipCamera: ( ) => void,
   handleCheckmarkPress: ( ) => void,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   toggleFlash: Function,
   takingPhoto: boolean,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   takePhotoAndStoreUri: Function,
   newPhotoUris: Array<object>,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   setNewPhotoUris: Function,
   takePhotoOptions: object,
   userLocation: UserLocation | null,

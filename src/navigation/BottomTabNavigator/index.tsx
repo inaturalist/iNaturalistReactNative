@@ -1,3 +1,4 @@
+import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Mortal from "components/SharedComponents/Mortal";
 import TabStackNavigator, {
@@ -14,7 +15,7 @@ const Tab = createBottomTabNavigator( );
 /* eslint-disable react/jsx-props-no-spreading */
 
 const BottomTabs = ( ) => {
-  const renderTabBar = props => <CustomTabBarContainer {...props} />;
+  const renderTabBar = ( props: BottomTabBarProps ) => <CustomTabBarContainer {...props} />;
 
   // DEVELOPERS: do you need to add any screens here? All the rest of our screens live in
   // NoBottomTabStackNavigator, TabStackNavigator, or LoginStackNavigator

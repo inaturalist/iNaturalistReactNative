@@ -2,7 +2,8 @@ import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import { NavigationContainer } from "@react-navigation/native";
-import React, { PropsWithChildren, useRef } from "react";
+import type { PropsWithChildren } from "react";
+import React, { useRef } from "react";
 import { Alert } from "react-native";
 import { logFirebaseScreenView } from "sharedHelpers/tracking";
 import { useTranslation } from "sharedHooks";

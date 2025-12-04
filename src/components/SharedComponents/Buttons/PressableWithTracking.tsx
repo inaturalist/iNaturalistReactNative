@@ -1,7 +1,7 @@
 import { getCurrentRoute } from "navigation/navigationUtils";
 import React from "react";
-import type { PressableProps } from "react-native";
-import { GestureResponderEvent, Pressable } from "react-native";
+import type { GestureResponderEvent, PressableProps } from "react-native";
+import { Pressable } from "react-native";
 import { log } from "sharedHelpers/logger";
 
 const logger = log.extend( "PressableWithTracking" );

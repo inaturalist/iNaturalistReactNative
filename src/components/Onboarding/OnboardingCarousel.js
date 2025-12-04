@@ -55,7 +55,7 @@ const SlideItem = props => {
               height={item.iconProps.height}
             />
           )}
-        <Heading1 className="text-white mt-[30px]">
+        <Heading1 className="text-white mt-[30px] text-center">
           {item.title}
         </Heading1>
         <Body1 className="text-center text-white mt-[20px]">

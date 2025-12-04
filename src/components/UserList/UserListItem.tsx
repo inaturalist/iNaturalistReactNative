@@ -3,7 +3,6 @@ import {
   List2, UserIcon
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import User from "realmModels/User";
 import { useTranslation } from "sharedHooks";
@@ -11,6 +10,7 @@ import { useTranslation } from "sharedHooks";
 interface Props {
   item: object
   countText: string
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   onPress?: Function
   accessibilityLabel?: string
   pressable?: boolean
@@ -22,7 +22,7 @@ const UserListItem = ( {
   onPress,
   accessibilityLabel: accessibilityLabelProp,
   pressable = true
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const user = item?.user;
 

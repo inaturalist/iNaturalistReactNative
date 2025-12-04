@@ -3,16 +3,20 @@ import "linkify-plugin-mention";
 import { useNavigation } from "@react-navigation/native";
 import { fontRegular } from "appConstants/fontFamilies";
 import linkifyHtml from "linkify-html";
-import { Opts } from "linkifyjs";
+import type { Opts } from "linkifyjs";
 import { isEqual, trim } from "lodash";
 import MarkdownIt from "markdown-it";
 import * as React from "react";
 import { Linking, useWindowDimensions } from "react-native";
+import type {
+  MixedStyleDeclaration, RenderersProps, TRenderEngineConfig
+} from "react-native-render-html";
 import HTML, {
-  defaultSystemFonts, MixedStyleDeclaration, RenderersProps, TRenderEngineConfig
+  defaultSystemFonts
 } from "react-native-render-html";
 import WebView from "react-native-webview";
-import sanitizeHtml, { IOptions } from "sanitize-html";
+import type { IOptions } from "sanitize-html";
+import sanitizeHtml from "sanitize-html";
 import colors from "styles/tailwindColors";
 
 const ALLOWED_TAGS = ( `
