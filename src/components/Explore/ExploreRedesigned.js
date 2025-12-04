@@ -8,13 +8,12 @@ import {
   Button,
   INatIconButton,
   OfflineNotice,
-  RadioButtonSheet,
   ViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { PLACE_MODE } from "providers/ExploreContext";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React from "react";
 import { Alert } from "react-native";
 import {
   useDebugMode,
@@ -22,7 +21,6 @@ import {
   useTranslation
 } from "sharedHooks";
 import { getShadow } from "styles/global";
-import colors from "styles/tailwindColors";
 
 import IdentifiersView from "./IdentifiersView";
 import ObservationsView from "./ObservationsView";
@@ -34,13 +32,6 @@ const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
   elevation: 6
 } );
-
-const exploreViewIcon = {
-  observations: "binoculars",
-  species: "leaf",
-  observers: "observers",
-  identifiers: "identifiers"
-};
 
 type Props = {
   canFetch?: boolean, // TODO: change to PLACE_MODE in Typescript
@@ -54,9 +45,7 @@ type Props = {
   queryParams: Object,
   renderLocationPermissionsGate: Function,
   requestLocationPermissions: Function,
-  setCurrentExploreView: Function,
   showFiltersModal: boolean,
-  startFetching: Function,
   updateLocation: Function,
   updateProject: Function,
   updateTaxon: Function,
@@ -75,28 +64,15 @@ const ExploreRedesigned = ( {
   queryParams,
   renderLocationPermissionsGate,
   requestLocationPermissions,
-  setCurrentExploreView,
   showFiltersModal,
-  startFetching,
   updateLocation,
   updateProject,
   updateTaxon,
   updateUser
 }: Props ): Node => {
   const { t } = useTranslation( );
-  const [showExploreBottomSheet, setShowExploreBottomSheet] = useState( false );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
   const { isDebug } = useDebugMode( );
-
-  const exploreViewA11yLabel = {
-    observations: t( "Observations-View" ),
-    species: t( "Species-View" ),
-    observers: t( "Observers-View" ),
-    identifiers: t( "Identifiers-View" )
-  };
-
-  const icon = exploreViewIcon[currentExploreView];
-  const a11yLabel = exploreViewA11yLabel[currentExploreView];
 
   const renderMainContent = ( ) => {
     if ( isConnected === false ) {
@@ -164,60 +140,6 @@ const ExploreRedesigned = ( {
     );
   };
 
-  const renderSheet = () => {
-    if ( !showExploreBottomSheet ) {
-      return null;
-    }
-    const values = {
-      species: {
-        label: t( "Species" ),
-        text: t( "Organisms-that-are-identified-to-species" ),
-        buttonText: t( "EXPLORE-SPECIES" ),
-        icon: "species",
-        value: "species"
-      },
-      observations: {
-        label: t( "Observations" ),
-        text: t( "Individual-encounters-with-organisms" ),
-        buttonText: t( "EXPLORE-OBSERVATIONS" ),
-        icon: "observations",
-        value: "observations"
-      },
-      observers: {
-        label: t( "Observers" ),
-        text: t( "iNaturalist-users-who-have-observed" ),
-        buttonText: t( "EXPLORE-OBSERVERS" ),
-        icon: "observers",
-        value: "observers"
-      },
-      identifiers: {
-        label: t( "Identifiers" ),
-        text: t( "iNaturalist-users-who-have-left-an-identification" ),
-        buttonText: t( "EXPLORE-IDENTIFIERS" ),
-        icon: "identifiers",
-        value: "identifiers"
-      }
-    };
-
-    return (
-      <RadioButtonSheet
-        onPressClose={() => setShowExploreBottomSheet( false )}
-        headerText={t( "EXPLORE" )}
-        hidden={!showExploreBottomSheet}
-        confirm={newView => {
-          startFetching( );
-          setCurrentExploreView( newView );
-          setShowExploreBottomSheet( false );
-        }}
-        radioValues={values}
-        selectedValue={currentExploreView}
-        testID="ExploreObsViewSheet"
-      />
-    );
-  };
-
-  const whiteCircleClass = "bg-white rounded-full h-[55px] w-[55px] border-[1px] border-lightGray";
-
   return (
     <>
       <ViewWrapper testID="ExploreRedesigned" wrapperClassName="overflow-hidden">
@@ -258,18 +180,6 @@ const ExploreRedesigned = ( {
               }}
             />
           )}
-          <INatIconButton
-            icon={icon}
-            color={colors.inatGreen}
-            size={27}
-            className={classnames(
-              whiteCircleClass,
-              "absolute bottom-5 z-10 right-5"
-            )}
-            accessibilityLabel={a11yLabel}
-            onPress={() => setShowExploreBottomSheet( true )}
-            style={DROP_SHADOW}
-          />
         </View>
       </ViewWrapper>
       <ExploreFiltersModal
@@ -283,7 +193,6 @@ const ExploreRedesigned = ( {
         updateUser={updateUser}
         updateProject={updateProject}
       />
-      {renderSheet()}
     </>
   );
 };
