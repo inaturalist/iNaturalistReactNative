@@ -168,29 +168,14 @@ const ExploreContainerWithContext = ( ): Node => {
         : (
           <ExploreRedesigned
             canFetch={canFetch}
-            closeFiltersModal={closeFiltersModal}
-            count={count}
             currentExploreView={exploreView}
-            setCurrentExploreView={setExploreView}
             handleUpdateCount={handleUpdateCount}
-            hideBackButton={false}
-            filterByIconicTaxonUnknown={
-              () => dispatch( { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN } )
-            }
-            isConnected={isConnected}
-            isFetchingHeaderCount={isFetchingHeaderCount}
-            openFiltersModal={openFiltersModal}
-            queryParams={queryParams}
-            showFiltersModal={showFiltersModal}
-            updateTaxon={taxon => dispatch( { type: EXPLORE_ACTION.CHANGE_TAXON, taxon } )}
-            updateLocation={updateLocation}
-            updateUser={updateUser}
-            updateProject={updateProject}
-            placeMode={state.placeMode}
             hasLocationPermissions={hasLocationPermissions}
+            isConnected={isConnected}
+            placeMode={state.placeMode}
+            queryParams={queryParams}
             renderLocationPermissionsGate={renderPermissionsGate}
             requestLocationPermissions={requestLocationPermissions}
-            startFetching={startFetching}
           />
         )}
       {renderPermissionsGate( {
