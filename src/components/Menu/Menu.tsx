@@ -160,7 +160,13 @@ const Menu = ( ) => {
         {/* Header */}
         <Pressable
           testID="menu-header"
+          accessible
           accessibilityRole="button"
+          accessibilityHint={
+            currentUser
+              ? t( "Navigates-to-user-profile" )
+              : t( "Navigates-to-log-in-screen" )
+          }
           className="px-[26px] pt-[68px] pb-[31px] border-b border-lightGray"
           onPress={( ) => {
             if ( !currentUser ) {

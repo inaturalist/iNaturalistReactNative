@@ -751,6 +751,7 @@ Navigates-to-AI-camera = Navigates to AI camera
 Navigates-to-bulk-importer = Navigates to bulk importer
 Navigates-to-camera = Navigates to camera
 Navigates-to-explore = Navigates to explore
+Navigates-to-log-in-screen = Navigates to log in screen
 Navigates-to-main-menu = Navigates to main menu.
 Navigates-to-match-screen = Navigates to match screen
 Navigates-to-notifications = Navigates to notifications
@@ -1141,7 +1142,6 @@ Show-observation-options = Show observation options.
 Showing-offline-search-results--taxa = Showing offline search results. To search for more species, try again when connected to the Internet.
 # Label for button that shows identification suggestions
 Shows-identification-suggestions = Shows identification suggestions
-Shows-iNaturalist-bird-logo = Shows iNaturalist bird logo.
 # Accessibility hint for button that shows observation creation options
 Shows-observation-creation-options = Shows observation creation options
 # Accessibility label for a button that allows user to sign in with their Apple account
