@@ -9,9 +9,7 @@ import {
   FlatList
 } from "react-native";
 import Modal from "react-native-modal";
-import {
-  type SharedValue
-} from "react-native-reanimated";
+import type { SharedValue } from "react-native-reanimated";
 import Animated, {
   useAnimatedStyle,
   withTiming
