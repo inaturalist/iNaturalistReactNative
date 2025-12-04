@@ -9,18 +9,11 @@ interface Props {
   observation: RealmObservation,
 }
 
-const SavedMatchContainer = ( {
-  observation
-}: Props ) => {
+const SavedMatchContainer = ( { observation }: Props ) => {
   const navigation = useNavigation<NativeStackNavigationProp<Record<string, { id?: number }>>>( );
 
-  const navToTaxonDetails
-  = () => {
-    const navParams: {
-        id?: number;
-        firstPhotoID?: number;
-        representativePhoto?: unknown;
-    } = { id: observation.taxon?.id };
+  const navToTaxonDetails = () => {
+    const navParams = { id: observation.taxon?.id };
     navigation.push( "TaxonDetails", navParams );
   };
 

@@ -38,6 +38,7 @@ const SavedMatch = ( {
         taxon={taxon}
         obsPhotos={observation.observationPhotos}
         navToTaxonDetails={navToTaxonDetails}
+        hideTaxonPhotos={!isConnected}
       />
       <View className="border-[1.5px] border-white" />
       {latitude && (
