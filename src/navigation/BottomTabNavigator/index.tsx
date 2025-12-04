@@ -30,7 +30,8 @@ const BottomTabs = ( ) => {
         screenOptions={{
           lazy: true,
           freezeOnBlur: true,
-          headerShown: false
+          headerShown: false,
+          animation: "fade"
         }}
       >
         <Tab.Screen
