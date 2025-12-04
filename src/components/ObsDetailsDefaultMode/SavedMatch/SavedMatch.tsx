@@ -29,7 +29,7 @@ const SavedMatch = ( {
   const { taxon } = observation;
 
   return (
-    <ScrollViewWrapper>
+    <ScrollViewWrapper testID="SavedMatch.container">
       <SavedMatchHeaderRight observation={observation} />
       <View className={`${matchCardClassTop} mt-[10px]`}>
         <MatchHeader hideObservationStatus topSuggestion={observation} />
