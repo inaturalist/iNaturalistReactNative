@@ -20,9 +20,11 @@ module.exports = {
     "react-native",
     "simple-import-sort",
     "@tanstack/query",
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "@stylistic"
   ],
   rules: {
+    "@stylistic/semi": "error",
     "arrow-parens": [2, "as-needed"],
     "comma-dangle": [2, "never"],
     "consistent-return": [2, { treatUndefinedAsUnspecified: true }],
