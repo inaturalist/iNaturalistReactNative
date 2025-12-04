@@ -2,7 +2,6 @@
 
 import { refresh } from "@react-native-community/netinfo";
 import classnames from "classnames";
-import ExploreFiltersModal from "components/Explore/Modals/ExploreFiltersModal";
 import {
   Body2,
   Button,
@@ -35,9 +34,7 @@ const DROP_SHADOW = getShadow( {
 
 type Props = {
   canFetch?: boolean, // TODO: change to PLACE_MODE in Typescript
-  closeFiltersModal: Function,
   currentExploreView: string,
-  filterByIconicTaxonUnknown: Function,
   handleUpdateCount: Function,
   hasLocationPermissions?: boolean,
   isConnected: boolean,
@@ -45,30 +42,18 @@ type Props = {
   queryParams: Object,
   renderLocationPermissionsGate: Function,
   requestLocationPermissions: Function,
-  showFiltersModal: boolean,
-  updateLocation: Function,
-  updateProject: Function,
-  updateTaxon: Function,
-  updateUser: Function
 }
 
 const ExploreRedesigned = ( {
   canFetch,
-  closeFiltersModal,
   currentExploreView,
-  filterByIconicTaxonUnknown,
   handleUpdateCount,
   hasLocationPermissions,
   isConnected,
   placeMode,
   queryParams,
   renderLocationPermissionsGate,
-  requestLocationPermissions,
-  showFiltersModal,
-  updateLocation,
-  updateProject,
-  updateTaxon,
-  updateUser
+  requestLocationPermissions
 }: Props ): Node => {
   const { t } = useTranslation( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
@@ -182,17 +167,11 @@ const ExploreRedesigned = ( {
           )}
         </View>
       </ViewWrapper>
-      <ExploreFiltersModal
-        showModal={showFiltersModal}
-        closeModal={closeFiltersModal}
-        filterByIconicTaxonUnknown={filterByIconicTaxonUnknown}
-        renderLocationPermissionsGate={renderLocationPermissionsGate}
-        requestLocationPermissions={requestLocationPermissions}
-        updateTaxon={updateTaxon}
-        updateLocation={updateLocation}
-        updateUser={updateUser}
-        updateProject={updateProject}
-      />
+      {/*
+        Leaving this here so that it is easier to reason about differences between Explore
+        and ExploreRedesign.
+      */}
+      {null}
     </>
   );
 };
