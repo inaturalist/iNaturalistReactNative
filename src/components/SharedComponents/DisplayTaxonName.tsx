@@ -34,7 +34,7 @@ interface Props {
   showOneNameOnly?: boolean;
   selectable?: boolean;
   small?: boolean;
-  taxon: RealmTaxon | ApiTaxon;
+  taxon?: RealmTaxon | ApiTaxon;
   textCentered?: boolean;
   topTextComponent?: React.ComponentType<TextProps>;
   underlineTopText?: boolean;

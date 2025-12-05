@@ -19,8 +19,8 @@ import MyObservationsContainer from "components/MyObservations/MyObservationsCon
 import Notifications from "components/Notifications/Notifications";
 import DQAContainer from "components/ObsDetails/DQAContainer";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
-import ObsDetailsDefaultModeContainer
-  from "components/ObsDetailsDefaultMode/ObsDetailsDefaultModeContainer";
+import ObsDetailsDefaultModeScreensWrapper
+  from "components/ObsDetailsDefaultMode/ObsDetailsDefaultModeScreensWrapper";
 import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
 import ProjectMembers from "components/ProjectDetails/ProjectMembers";
 import ProjectRequirements from "components/ProjectDetails/ProjectRequirements";
@@ -129,8 +129,8 @@ const FadeInRootExplore = ( ) => fadeInComponent( <RootExploreContainer /> );
 const FadeInMyObservations = ( ) => fadeInComponent( <MyObservationsContainer /> );
 const FadeInUserProfile = ( ) => fadeInComponent( <UserProfile /> );
 const FadeInExploreContainer = ( ) => fadeInComponent( <ExploreContainer /> );
-const FadeInObsDetailsDefaultModeContainer = ( ) => fadeInComponent(
-  <ObsDetailsDefaultModeContainer />
+const FadeInObsDetailsDefaultModeScreensWrapper = ( ) => fadeInComponent(
+  <ObsDetailsDefaultModeScreensWrapper />
 );
 const FadeInObsDetailsContainer = ( ) => fadeInComponent(
   <ObsDetailsContainer />
@@ -226,7 +226,7 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
           ? (
             <Stack.Screen
               name="ObsDetails"
-              component={FadeInObsDetailsDefaultModeContainer}
+              component={FadeInObsDetailsDefaultModeScreensWrapper}
               options={OBS_DETAILS_OPTIONS}
             />
           )

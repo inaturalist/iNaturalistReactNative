@@ -102,12 +102,17 @@ export interface ApiUser {
 export interface ApiComment {
   body?: string;
   user?: ApiUser;
+  id: number;
+  hidden?: boolean;
+  uuid: string;
+  created_at: string;
 }
 
 export interface ApiIdentification {
   body?: string;
   taxon?: ApiTaxon;
   user?: ApiUser;
+  hidden?: boolean;
 }
 
 export interface ApiNotification {
@@ -134,6 +139,9 @@ export interface ApiObservation extends ApiRecord {
   time_observed_at?: string;
   user?: ApiUser;
   uuid: string;
+  comments?: ApiComment[];
+  identifications?: ApiIdentification[];
+  taxon?: ApiTaxon;
 }
 
 export interface ApiObservationsSearchResponse extends ApiResponse {

@@ -17,11 +17,12 @@ interface Props {
   topSuggestion?: {
     combined_score?: number;
     score?: number;
-    taxon: RealmTaxon;
+    taxon?: RealmTaxon;
   };
+  hideObservationStatus?: boolean
 }
 
-const MatchHeader = ( { topSuggestion }: Props ) => {
+const MatchHeader = ( { topSuggestion, hideObservationStatus }: Props ) => {
   const { t } = useTranslation( );
   const taxon = topSuggestion?.taxon;
 
@@ -42,7 +43,7 @@ const MatchHeader = ( { topSuggestion }: Props ) => {
     }
 
     let rankDescription = "organism";
-    if ( taxon.rank_level === 10 ) {
+    if ( taxon?.rank_level === 10 ) {
       rankDescription = "species";
     }
 
@@ -89,17 +90,19 @@ const MatchHeader = ( { topSuggestion }: Props ) => {
 
   return (
     <View>
-      <Body2 className="mb-2">{generateCongratulatoryText( )}</Body2>
+      {!hideObservationStatus && <Body2 className="mb-2">{generateCongratulatoryText( )}</Body2>}
       <View className="flex-row justify-between items-center">
         {showSuggestedTaxon( )}
-        <View className="justify-end items-center ml-5">
-          <Subheading2 className="text-inatGreen mb-2">
-            {t( "X-percent", { count: confidence } )}
-          </Subheading2>
-          <Body4 className="text-inatGreen">
-            {t( "Confidence--label" )}
-          </Body4>
-        </View>
+        { !hideObservationStatus && (
+          <View className="justify-end items-center ml-5">
+            <Subheading2 className="text-inatGreen mb-2">
+              {t( "X-percent", { count: confidence } )}
+            </Subheading2>
+            <Body4 className="text-inatGreen">
+              {t( "Confidence--label" )}
+            </Body4>
+          </View>
+        )}
       </View>
     </View>
   );

@@ -1,5 +1,5 @@
-// @flow
 import { fetchRemoteObservation } from "api/observations";
+import type { ApiObservation } from "api/types";
 import i18n from "i18next";
 import { RealmContext } from "providers/contexts";
 import { useCallback, useEffect, useMemo } from "react";
@@ -10,7 +10,15 @@ const { useRealm } = RealmContext;
 
 export const fetchRemoteObservationKey = "fetchRemoteObservation";
 
-const filterHiddenContent = observation => {
+interface UseRemoteObservationReturn {
+  remoteObservation: ApiObservation | null | undefined;
+  refetchRemoteObservation: () => void;
+  isRefetching: boolean;
+  fetchRemoteObservationError: Error | null;
+}
+
+const filterHiddenContent
+= ( observation?: ApiObservation | null ): ApiObservation | null | undefined => {
   if ( observation === undefined || observation === null ) {
     return observation;
   }
@@ -24,7 +32,7 @@ const filterHiddenContent = observation => {
   return filteredObservation;
 };
 
-const useRemoteObservation = ( uuid: string, enabled: boolean ): Object => {
+const useRemoteObservation = ( uuid: string, enabled: boolean ): UseRemoteObservationReturn => {
   const fetchRemoteObservationQueryKey = useMemo(
     ( ) => ( [fetchRemoteObservationKey, uuid] ),
     [uuid]
@@ -40,7 +48,7 @@ const useRemoteObservation = ( uuid: string, enabled: boolean ): Object => {
     refetch: refetchRemoteObservation,
     isRefetching,
     error: fetchRemoteObservationError
-  } = useAuthenticatedQuery(
+  } = useAuthenticatedQuery<ApiObservation | null>(
     fetchRemoteObservationQueryKey,
     optsWithAuth => fetchRemoteObservation(
       uuid,
