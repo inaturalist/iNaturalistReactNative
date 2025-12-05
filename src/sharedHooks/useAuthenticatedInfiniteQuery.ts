@@ -1,5 +1,6 @@
 import { useRoute } from "@react-navigation/native";
-import { type QueryKey, useInfiniteQuery } from "@tanstack/react-query";
+import type { QueryKey } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import i18n from "i18next";
 import { handleRetryDelay, reactQueryRetry } from "sharedHelpers/logging";
