@@ -1,4 +1,4 @@
-import { QueryKey, useQuery } from "@tanstack/react-query";
+import { type QueryKey, useQuery } from "@tanstack/react-query";
 import { getJWT, isLoggedIn } from "components/LoginSignUp/AuthenticationService";
 import { useEffect, useState } from "react";
 import { handleRetryDelay, reactQueryRetry } from "sharedHelpers/logging";
