@@ -1,6 +1,5 @@
 // @flow
 
-import { noop } from "lodash";
 import { RealmContext } from "providers/contexts";
 import {
   useEffect, useRef,
@@ -44,7 +43,8 @@ const useLocalObservations = ( ): Object => {
 
   useEffect( ( ) => {
     if ( realm === null || realm.isClosed ) {
-      return noop;
+      // Satisfy the useEffect return type by returning a destructor function.
+      return () => {};
     }
     const localObservations = realm.objects( "Observation" );
 

@@ -1,6 +1,5 @@
 import { fetchUserMe, updateUsers } from "api/users";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
-import { noop } from "lodash";
 import { RealmContext } from "providers/contexts";
 import { useEffect, useState } from "react";
 import QueueItem from "realmModels/QueueItem";
@@ -65,7 +64,8 @@ const useWorkQueue = ( ) => {
 
   useEffect( ( ) => {
     if ( realm === null || realm.isClosed ) {
-      return noop;
+      // Satisfy the useEffect return type by returning a destructor function.
+      return () => {};
     }
     const queuedItems = realm.objects( "QueueItem" );
     // logger.info( `Initial queue size: ${queuedItems?.length}` );

@@ -1,4 +1,3 @@
-import { noop } from "lodash";
 import { useEffect, useRef } from "react";
 
 function useInterval( callback:() => void, delay: number | null ) {
@@ -18,7 +17,8 @@ function useInterval( callback:() => void, delay: number | null ) {
       }
     }
     if ( delay === null ) {
-      return noop;
+      // Satisfy the useEffect return type by returning a destructor function.
+      return () => {};
     }
     const id = setInterval( tick, delay );
     return () => clearInterval( id );
