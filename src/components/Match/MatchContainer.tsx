@@ -2,6 +2,7 @@ import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
+import type { ApiSuggestion, ApiTaxon } from "api/types";
 import { Body3, Heading4, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import flattenUploadParams from "components/Suggestions/helpers/flattenUploadParams";
@@ -21,7 +22,7 @@ import React, {
   useCallback,
   useEffect, useReducer, useRef, useState
 } from "react";
-import { ScrollView } from "react-native";
+import type { ScrollView } from "react-native";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import saveObservation from "sharedHelpers/saveObservation";
 import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservationLocation";
@@ -35,7 +36,7 @@ import tryToReplaceWithLocalTaxon from "./helpers/tryToReplaceWithLocalTaxon";
 import Match from "./Match";
 import PreMatchLoadingScreen from "./PreMatchLoadingScreen";
 
-type ImageParamsType = {
+interface ImageParamsType {
   uri: string;
   image: {
     uri: string;
@@ -44,27 +45,13 @@ type ImageParamsType = {
   lng?: number;
 }
 
-type UserLocationType = {
-  latitude?: number;
-  longitude?: number;
-}
-
-type TaxonType = {
-  id?: number | string;
-}
-
-type SuggestionType = {
-  taxon: TaxonType;
-  combined_score?: number;
-}
-
-type StateType = {
+interface StateType {
   onlineFetchStatus: string;
   offlineFetchStatus: string;
   scoreImageParams: ImageParamsType | null;
   queryKey: ( string | { shouldUseEvidenceLocation: boolean } )[];
   shouldUseEvidenceLocation: boolean;
-  orderedSuggestions: SuggestionType[];
+  orderedSuggestions: ApiSuggestion[];
 }
 
 type ActionType =
@@ -72,7 +59,7 @@ type ActionType =
   | { type: "SET_ONLINE_FETCH_STATUS"; onlineFetchStatus: string }
   | { type: "SET_OFFLINE_FETCH_STATUS"; offlineFetchStatus: string }
   | { type: "SET_LOCATION"; scoreImageParams: ImageParamsType; shouldUseEvidenceLocation: boolean }
-  | { type: "ORDER_SUGGESTIONS"; orderedSuggestions: SuggestionType[] };
+  | { type: "ORDER_SUGGESTIONS"; orderedSuggestions: ApiSuggestion[] };
 
 const setQueryKey = ( selectedPhotoUri: string, shouldUseEvidenceLocation: boolean ) => [
   "scoreImage",
@@ -156,9 +143,12 @@ const MatchContainer = ( ) => {
 
   const evidenceHasLocation = !!currentObservation?.latitude;
 
-  const [topSuggestion, setTopSuggestion] = useState<SuggestionType | undefined>( );
-  const [iconicTaxon, setIconicTaxon] = useState<TaxonType | undefined>( );
-  const [currentUserLocation, setCurrentUserLocation] = useState<UserLocationType | null>( null );
+  const [topSuggestion, setTopSuggestion] = useState<ApiSuggestion | undefined>( );
+  const [iconicTaxon, setIconicTaxon] = useState<ApiTaxon | undefined>( );
+  const [currentUserLocation, setCurrentUserLocation] = useState<{
+    latitude?: number;
+    longitude?: number;
+  } | null>( null );
 
   const [state, dispatch] = useReducer( reducer, {
     ...initialState,
@@ -363,7 +353,7 @@ const MatchContainer = ( ) => {
     updateObservationKeys( { place_guess: currentPlaceGuess } );
   }, [currentPlaceGuess, updateObservationKeys] );
 
-  const onSuggestionChosen = useCallback( ( selection: SuggestionType ) => {
+  const onSuggestionChosen = useCallback( ( selection: ApiSuggestion ) => {
     const suggestionsList = [...orderedSuggestions];
 
     // make sure to reorder the list by confidence score

@@ -1,3 +1,4 @@
+import type { ApiSuggestion } from "api/types";
 import calculateConfidence from "components/Match/calculateConfidence";
 import { ActivityIndicator, CustomFlashList, Heading3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -8,20 +9,11 @@ import { useTranslation } from "sharedHooks";
 
 import SuggestionsResult from "./SuggestionsResult";
 
-type TaxonType = {
-  id?: number | string;
-}
-
-type SuggestionType = {
-  taxon?: TaxonType;
-  combined_score?: number;
-}
-
 type Props = {
   noTopSuggestion?: boolean;
-  otherSuggestions: SuggestionType[];
+  otherSuggestions: ApiSuggestion[];
   suggestionsLoading: boolean;
-  onSuggestionChosen: ( suggestion: SuggestionType ) => void;
+  onSuggestionChosen: ( suggestion: ApiSuggestion ) => void;
 }
 
 const AdditionalSuggestionsScroll = ( {
@@ -37,7 +29,7 @@ const AdditionalSuggestionsScroll = ( {
   // We're using an extra measuring container to check the heights of every item,
   // even the ones that would otherwise be offscreen
   const measuredItemsRef = useRef( new Set<number | string>() );
-  const suggestionsRef = useRef<SuggestionType[]>( [] );
+  const suggestionsRef = useRef<ApiSuggestion[]>( [] );
 
   useEffect( () => {
     suggestionsRef.current = otherSuggestions || [];
@@ -69,7 +61,7 @@ const AdditionalSuggestionsScroll = ( {
     }
   }, [] );
 
-  const handleSuggestionPress = useCallback( ( suggestion: SuggestionType ) => {
+  const handleSuggestionPress = useCallback( ( suggestion: ApiSuggestion ) => {
     onSuggestionChosen( suggestion );
   }, [onSuggestionChosen] );
 
@@ -105,7 +97,7 @@ const AdditionalSuggestionsScroll = ( {
     );
   };
 
-  const renderItem = ( { item: suggestion }: { item: SuggestionType } ) => {
+  const renderItem = ( { item: suggestion }: { item: ApiSuggestion } ) => {
     const confidence = calculateConfidence( suggestion );
 
     return (

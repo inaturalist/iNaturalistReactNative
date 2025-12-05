@@ -1,4 +1,5 @@
 import { useNetInfo } from "@react-native-community/netinfo";
+import type { ApiPhoto, ApiSuggestion, ApiTaxon } from "api/types";
 import LocationSection
   from "components/ObsDetailsDefaultMode/LocationSection/LocationSection";
 import MapSection
@@ -9,7 +10,8 @@ import {
 import { View } from "components/styledComponents";
 import _ from "lodash";
 import React from "react";
-import { ScrollView } from "react-native";
+import type { ScrollView } from "react-native";
+import type { RealmObservation, RealmObservationPhoto } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 
 import AdditionalSuggestionsScroll
@@ -25,47 +27,20 @@ export const matchCardClassTop
 export const matchCardClassBottom
   = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mt-0.5 mb-[30px]";
 
-type PhotoType = {
-  id?: number | string;
-  url?: string;
-  localFilePath?: string;
-}
-
-type ObsPhotoType = {
-  photo?: PhotoType;
-}
-
-type TaxonType = {
-  id?: number | string;
-  rank_level?: number;
-  representative_photo?: PhotoType;
-}
-
-type SuggestionType = {
-  taxon?: TaxonType;
-  combined_score?: number;
-}
-
-type ObservationType = {
-  privateLatitude?: number;
-  latitude?: number;
-  longitude?: number;
-}
-
 type Props = {
-  observation: ObservationType,
-  obsPhotos: ObsPhotoType[],
+  observation: RealmObservation,
+  obsPhotos: RealmObservationPhoto[],
   handleSaveOrDiscardPress: ( action: string ) => void,
-  navToTaxonDetails: ( photo?: PhotoType ) => void,
+  navToTaxonDetails: ( photo?: ApiPhoto ) => void,
   isFetchingLocation: boolean,
   handleAddLocationPressed: ( ) => void,
-  topSuggestion?: SuggestionType,
-  otherSuggestions: SuggestionType[],
+  topSuggestion?: ApiSuggestion,
+  otherSuggestions: ApiSuggestion[],
   suggestionsLoading: boolean,
-  onSuggestionChosen: ( suggestion: SuggestionType ) => void,
+  onSuggestionChosen: ( suggestion: ApiSuggestion ) => void,
   scrollRef: React.RefObject<ScrollView | null>,
-  iconicTaxon?: TaxonType,
-  setIconicTaxon: ( taxon: TaxonType ) => void
+  iconicTaxon?: ApiTaxon,
+  setIconicTaxon: ( taxon: ApiTaxon ) => void
 }
 
 const Match = ( {

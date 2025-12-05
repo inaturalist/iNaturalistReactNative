@@ -1,3 +1,4 @@
+import type { ApiPhoto, ApiTaxon } from "api/types";
 import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
@@ -9,34 +10,14 @@ import {
 import _, { compact } from "lodash";
 import React, { useEffect, useState } from "react";
 import Photo from "realmModels/Photo";
+import type { RealmObservationPhoto, RealmTaxon } from "realmModels/types";
 import getImageDimensions from "sharedHelpers/getImageDimensions";
 
-type PhotoType = {
-  id?: number | string;
-  url?: string;
-  localFilePath?: string;
-  isRepresentativeButOtherTaxon?: boolean;
-}
-
-type TaxonPhotoType = {
-  photo: PhotoType;
-}
-
-type TaxonType = {
-  taxonPhotos?: TaxonPhotoType[];
-  defaultPhoto?: PhotoType;
-  isIconic?: boolean;
-}
-
-type ObsPhotoType = {
-  photo?: PhotoType;
-}
-
 type Props = {
-  representativePhoto: PhotoType,
-  taxon: TaxonType,
-  obsPhotos: ObsPhotoType[],
-  navToTaxonDetails: ( photo: PhotoType ) => void
+  representativePhoto: ApiPhoto,
+  taxon?: ApiTaxon | RealmTaxon,
+  obsPhotos: RealmObservationPhoto[],
+  navToTaxonDetails: ( photo: ApiPhoto ) => void
 }
 
 const PhotosSection = ( {
