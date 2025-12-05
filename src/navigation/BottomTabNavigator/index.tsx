@@ -2,6 +2,7 @@ import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Mortal from "components/SharedComponents/Mortal";
 import TabStackNavigator, {
+  SCREEN_NAME_MENU,
   SCREEN_NAME_NOTIFICATIONS,
   SCREEN_NAME_OBS_LIST,
   SCREEN_NAME_ROOT_EXPLORE
@@ -17,6 +18,8 @@ const Tab = createBottomTabNavigator( );
 const BottomTabs = ( ) => {
   const renderTabBar = ( props: BottomTabBarProps ) => <CustomTabBarContainer {...props} />;
 
+  const isTest = process.env.JEST_WORKER_ID !== undefined || process.env.DETOX === "true";
+
   // DEVELOPERS: do you need to add any screens here? All the rest of our screens live in
   // NoBottomTabStackNavigator, TabStackNavigator, or LoginStackNavigator
 
@@ -29,18 +32,26 @@ const BottomTabs = ( ) => {
         screenOptions={{
           lazy: true,
           freezeOnBlur: true,
-          headerShown: false
+          headerShown: false,
+          animation: isTest
+            ? "none"
+            : "fade"
         }}
       >
         <Tab.Screen
-          name="ObservationsTab"
+          name="MenuTab"
           component={TabStackNavigator}
-          initialParams={{ initialRouteName: SCREEN_NAME_OBS_LIST }}
+          initialParams={{ initialRouteName: SCREEN_NAME_MENU }}
         />
         <Tab.Screen
           name="ExploreTab"
           component={TabStackNavigator}
           initialParams={{ initialRouteName: SCREEN_NAME_ROOT_EXPLORE }}
+        />
+        <Tab.Screen
+          name="ObservationsTab"
+          component={TabStackNavigator}
+          initialParams={{ initialRouteName: SCREEN_NAME_OBS_LIST }}
         />
         <Tab.Screen
           name="NotificationsTab"

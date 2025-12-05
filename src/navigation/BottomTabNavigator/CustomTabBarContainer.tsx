@@ -1,6 +1,6 @@
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import { useDrawerStatus } from "@react-navigation/drawer";
 import {
+  SCREEN_NAME_MENU,
   SCREEN_NAME_NOTIFICATIONS,
   SCREEN_NAME_OBS_LIST,
   SCREEN_NAME_ROOT_EXPLORE
@@ -11,7 +11,7 @@ import { useCurrentUser, useTranslation } from "sharedHooks";
 
 import CustomTabBar from "./CustomTabBar";
 
-const DRAWER_ID = "OPEN_DRAWER";
+const MENU_ID = "OPEN_MENU";
 
 interface TabConfig {
   icon: string;
@@ -24,11 +24,12 @@ interface TabConfig {
   userIconUri?: string;
 }
 
-type TabName = "ObservationsTab" | "ExploreTab" | "NotificationsTab";
+type TabName = "MenuTab" | "ExploreTab" | "ObservationsTab" | "NotificationsTab";
 
 type ScreenName =
-  | typeof SCREEN_NAME_OBS_LIST
+  | typeof SCREEN_NAME_MENU
   | typeof SCREEN_NAME_ROOT_EXPLORE
+  | typeof SCREEN_NAME_OBS_LIST
   | typeof SCREEN_NAME_NOTIFICATIONS;
 
 type Props = BottomTabBarProps;
@@ -36,7 +37,6 @@ type Props = BottomTabBarProps;
 const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
-  const isDrawerOpen = useDrawerStatus() === "open";
 
   const activeTabIndex = state?.index;
   const activeTabName = state?.routes[activeTabIndex]?.name as TabName;
@@ -45,8 +45,9 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
 
   const getActiveTab = ( ): ScreenName => {
     switch ( activeTabName ) {
-      case "ObservationsTab": return SCREEN_NAME_OBS_LIST;
+      case "MenuTab": return SCREEN_NAME_MENU;
       case "ExploreTab": return SCREEN_NAME_ROOT_EXPLORE;
+      case "ObservationsTab": return SCREEN_NAME_OBS_LIST;
       case "NotificationsTab": return SCREEN_NAME_NOTIFICATIONS;
       default: return SCREEN_NAME_OBS_LIST;
     }
@@ -57,14 +58,16 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
   const tabs: TabConfig[] = useMemo( ( ) => ( [
     {
       icon: "hamburger-menu",
-      testID: DRAWER_ID,
+      testID: MENU_ID,
       accessibilityLabel: t( "Menu" ),
-      accessibilityHint: t( "Opens-the-side-drawer-menu" ),
+      accessibilityHint: t( "Navigates-to-main-menu" ),
       size: 32,
       onPress: ( ) => {
-        navigation.openDrawer( );
+        navigation.navigate( "MenuTab", {
+          screen: "Menu"
+        } );
       },
-      active: isDrawerOpen
+      active: SCREEN_NAME_MENU === activeTab
     },
     {
       icon: "magnifying-glass",
@@ -109,7 +112,6 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
   ] ), [
     activeTab,
     userIconUri,
-    isDrawerOpen,
     navigation,
     t
   ] );
