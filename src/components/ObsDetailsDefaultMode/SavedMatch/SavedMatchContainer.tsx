@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import SavedMatch from "components/ObsDetailsDefaultMode/SavedMatch/SavedMatch";
 import _ from "lodash";
 import React from "react";
