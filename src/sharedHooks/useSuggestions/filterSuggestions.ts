@@ -1,5 +1,4 @@
 import {
-  initialSuggestions,
   TOP_SUGGESTION_ABOVE_THRESHOLD,
   TOP_SUGGESTION_COMMON_ANCESTOR,
   TOP_SUGGESTION_HUMAN,
@@ -9,6 +8,13 @@ import {
 import _ from "lodash";
 
 import isolateHumans, { humanFilter } from "./isolateHumans";
+import type { UseSuggestionsSuggestion } from "./types";
+
+const initialSuggestions = {
+  otherSuggestions: [],
+  topSuggestion: null,
+  topSuggestionType: TOP_SUGGESTION_NONE
+};
 
 const THRESHOLD = 78;
 
@@ -19,7 +25,10 @@ const THRESHOLD = 78;
 // 4. it checks for a common ancestor as a fallback top suggestion
 // 5. it returns topSuggestionType which is useful for debugging, since we're doing a lot of
 // filtering of both online and offline suggestions
-const filterSuggestions = ( suggestionsToFilter, commonAncestor ) => {
+const filterSuggestions = (
+  suggestionsToFilter: UseSuggestionsSuggestion[],
+  commonAncestor?: UseSuggestionsSuggestion
+) => {
   const sortedSuggestions = _.orderBy(
     // TODO: handling humans is implemented in the vision-plugin, can it be removed here?
     isolateHumans( suggestionsToFilter ),
@@ -62,7 +71,7 @@ const filterSuggestions = ( suggestionsToFilter, commonAncestor ) => {
     ).at( 0 );
     return {
       ...newSuggestions,
-      topSuggestion: firstSuggestion,
+      topSuggestion: firstSuggestion!,
       topSuggestionType: TOP_SUGGESTION_ABOVE_THRESHOLD
     };
   }
@@ -70,10 +79,14 @@ const filterSuggestions = ( suggestionsToFilter, commonAncestor ) => {
   // online or offline common ancestor
   if ( commonAncestor ) {
     const sortableCommonAncestor = {
-      ...commonAncestor,
-      // temp patch to let calling code sort online common ancestor with other suggestions
-      combined_score: commonAncestor.combined_score ?? commonAncestor.score
+      ...commonAncestor
     };
+    if ( "score" in commonAncestor ) {
+      // combined_score is redacted from online commonAncestor:
+      // https://github.com/inaturalist/iNaturalistAPI/blob/main/lib/controllers/v1/computervision_controller.js#L389
+      // we're shimming it here to sort like to like
+      sortableCommonAncestor.combined_score = commonAncestor.score;
+    }
     return {
       ...newSuggestions,
       topSuggestion: sortableCommonAncestor,

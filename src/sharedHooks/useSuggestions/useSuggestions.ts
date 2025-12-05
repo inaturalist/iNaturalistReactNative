@@ -1,12 +1,21 @@
 import { useNetInfo } from "@react-native-community/netinfo";
-import _ from "lodash";
 import { useMemo } from "react";
 
 import filterSuggestions from "./filterSuggestions";
+import type { ScoreImageParams, UseSuggestionsResult } from "./types";
 import useOfflineSuggestions from "./useOfflineSuggestions";
 import useOnlineSuggestions from "./useOnlineSuggestions";
 
-export const useSuggestions = ( photoUri, options ) => {
+interface Options {
+  shouldFetchOnlineSuggestions: boolean;
+  onFetchError: ( options: { isOnline: boolean } ) => void;
+  onFetched: ( options: { isOnline: boolean } ) => void;
+  scoreImageParams: ScoreImageParams;
+  queryKey: string[];
+  onlineSuggestionsAttempted: boolean;
+}
+
+export const useSuggestions = ( photoUri: string, options: Options ): UseSuggestionsResult => {
   const { isConnected } = useNetInfo( );
   const {
     shouldFetchOnlineSuggestions,
@@ -46,10 +55,10 @@ export const useSuggestions = ( photoUri, options ) => {
   const urlWillCrashOffline = photoUri?.includes( "https://" ) && !isConnected;
 
   // skip to offline suggestions if internet connection is spotty
-  const tryOfflineSuggestions = !urlWillCrashOffline && (
-    timedOut
-    || ( !onlineSuggestions && onlineSuggestionsAttempted )
-  );
+  const fallingBackToOfflineSuggestions = timedOut
+    || !isConnected
+    || ( !onlineSuggestions && onlineSuggestionsAttempted );
+  const tryOfflineSuggestions = !urlWillCrashOffline && fallingBackToOfflineSuggestions;
 
   const {
     offlineSuggestions,
@@ -70,18 +79,17 @@ export const useSuggestions = ( photoUri, options ) => {
       refetchOfflineSuggestions();
     }
   };
+  const hasOnlineSuggestionResults = ( onlineSuggestions?.results?.length || 0 ) > 0;
+  const hasOfflineSuggestionResults = ( offlineSuggestions?.results?.length || 0 ) > 0;
 
-  const usingOfflineSuggestions = tryOfflineSuggestions || (
-    offlineSuggestions?.results?.length > 0
-      && ( !onlineSuggestions || onlineSuggestions?.results?.length === 0 )
+  const usingOfflineSuggestions = fallingBackToOfflineSuggestions || (
+    hasOfflineSuggestionResults && !hasOnlineSuggestionResults && onlineSuggestionsAttempted
   );
-
-  const hasOnlineSuggestionResults = onlineSuggestions?.results?.length > 0;
 
   const unfilteredSuggestions = useMemo(
     ( ) => ( hasOnlineSuggestionResults
-      ? onlineSuggestions.results || []
-      : offlineSuggestions.results || [] ),
+      ? onlineSuggestions!.results || []
+      : offlineSuggestions?.results || [] ),
     [hasOnlineSuggestionResults, onlineSuggestions, offlineSuggestions]
   );
 
@@ -100,6 +108,8 @@ export const useSuggestions = ( photoUri, options ) => {
       commonAncestor
     ]
   );
+
+  console.log( { offlineSuggestions, onlineSuggestions } );
 
   return {
     ...onlineSuggestionsResponse,
