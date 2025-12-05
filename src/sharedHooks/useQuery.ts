@@ -4,7 +4,7 @@ import { handleRetryDelay, reactQueryRetry } from "sharedHelpers/logging";
 
 // Should work like React Query's useQuery with our custom reactQueryRetry
 const useNonAuthenticatedQuery = (
-  queryKey: QueryKey[],
+  queryKey: QueryKey,
   queryFunction: QueryFunction,
   queryOptions: object = {}
 ) => useQuery( {
