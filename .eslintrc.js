@@ -20,7 +20,8 @@ module.exports = {
     "react-native",
     "simple-import-sort",
     "@tanstack/query",
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "@stylistic"
   ],
   rules: {
     "arrow-parens": [2, "as-needed"],
