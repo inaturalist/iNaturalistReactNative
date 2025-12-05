@@ -64,7 +64,8 @@ const useWorkQueue = ( ) => {
 
   useEffect( ( ) => {
     if ( realm === null || realm.isClosed ) {
-      return;
+      // Satisfy the useEffect return type by returning a destructor function.
+      return () => {};
     }
     const queuedItems = realm.objects( "QueueItem" );
     // logger.info( `Initial queue size: ${queuedItems?.length}` );
@@ -99,7 +100,6 @@ const useWorkQueue = ( ) => {
         }
       }
     } );
-    // eslint-disable-next-line consistent-return
     return ( ) => {
       // logger.info( "Removing queue listeners" );
       // remember to remove listeners to avoid async updates
