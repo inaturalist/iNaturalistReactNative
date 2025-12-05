@@ -3,6 +3,7 @@ import { useAuthenticatedInfiniteQuery } from "sharedHooks";
 
 const useInfiniteUserScroll = (
   queryKey: unknown,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   apiCall: Function,
   ids: Array<object>,
   newInputParams: object,

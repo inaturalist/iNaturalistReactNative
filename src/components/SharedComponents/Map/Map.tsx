@@ -10,11 +10,13 @@ import React, {
   useRef,
   useState
 } from "react";
-import { DimensionValue, Platform, ViewStyle } from "react-native";
-import MapView, {
-  BoundingBox, LatLng, MapType, Region, UrlTile
+import type { DimensionValue, ViewStyle } from "react-native";
+import { Platform } from "react-native";
+import type {
+  BoundingBox, LatLng, MapType, Region
 } from "react-native-maps";
-import Observation from "realmModels/Observation";
+import MapView, { UrlTile } from "react-native-maps";
+import type Observation from "realmModels/Observation";
 import fetchCoarseUserLocation from "sharedHelpers/fetchCoarseUserLocation";
 import mapTracker from "sharedHelpers/mapPerformanceTracker";
 import { useDebugMode, useDeviceOrientation } from "sharedHooks";

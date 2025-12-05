@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react-native";
-import AddObsButton from "components/AddObsModal/AddObsButton";
+import AddObsButton from "components/AddObsBottomSheet/AddObsButton";
+import { navigationRef } from "navigation/navigationUtils";
 import React from "react";
 import * as useCurrentUser from "sharedHooks/useCurrentUser";
 import { zustandStorage } from "stores/useStore";
@@ -7,12 +8,10 @@ import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 
-// Mock getCurrentRoute to return ObsList
-jest.mock( "navigation/navigationUtils", () => ( {
-  getCurrentRoute: () => ( {
-    name: "ObsList"
-  } )
-} ) );
+// Mock methods needed to get the current route
+navigationRef.isReady = jest.fn( () => true );
+navigationRef.getCurrentRoute = jest.fn( () => ( { name: "ObsList" } ) );
+navigationRef.addListener = jest.fn( () => jest.fn() );
 
 const mockUser = factory( "LocalUser" );
 
@@ -34,7 +33,6 @@ describe( "AddObsButton", () => {
     // Snapshot test
     expect( screen ).toMatchSnapshot();
   } );
-
   it( "does not render tooltip in default state", () => {
     renderComponent( <AddObsButton /> );
 
@@ -63,11 +61,10 @@ describe( "shows tooltip", () => {
 
     renderComponent( <AddObsButton /> );
 
-    // Temporarily disabled the tooltip for new users, as it is freezing the app in some cases.
-    // const tooltipText = await screen.findByText(
-    //   "Press and hold to view more options"
-    // );
-    // expect( tooltipText ).toBeTruthy();
+    const tooltipText = await screen.findByText(
+      "Press and hold to view more options"
+    );
+    expect( tooltipText ).toBeTruthy();
   } );
 
   it( "to new users only after they dismissed the account creation card", async () => {
@@ -89,11 +86,10 @@ describe( "shows tooltip", () => {
       }
     } );
 
-    // Temporarily disabled the tooltip for new users, as it is freezing the app in some cases.
-    // const tooltipTextAfter = await screen.findByText(
-    //   "Press and hold to view more options"
-    // );
-    // expect( tooltipTextAfter ).toBeTruthy();
+    const tooltipTextAfter = await screen.findByText(
+      "Press and hold to view more options"
+    );
+    expect( tooltipTextAfter ).toBeTruthy();
   } );
 
   it( "to logged in users with more than 50 observations after card dismissal", async () => {
@@ -112,10 +108,9 @@ describe( "shows tooltip", () => {
       }
     } );
 
-    // Temporarily disabled the tooltip for new users, as it is freezing the app in some cases.
-    // const tooltipTextAfter = await screen.findByText(
-    //   "Press and hold to view more options"
-    // );
-    // expect( tooltipTextAfter ).toBeTruthy();
+    const tooltipTextAfter = await screen.findByText(
+      "Press and hold to view more options"
+    );
+    expect( tooltipTextAfter ).toBeTruthy();
   } );
 } );

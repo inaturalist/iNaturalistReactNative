@@ -35,11 +35,14 @@ type Props = {
       }
     }
   },
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   handleSkip: Function,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   hideLocationToggleButton: Function,
   hideSkip?: boolean,
   observers: Array<string>,
   shouldUseEvidenceLocation: boolean,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   toggleLocation: Function
 };
 

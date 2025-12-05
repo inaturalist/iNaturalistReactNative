@@ -28,6 +28,7 @@ import {
   useExitObservationFlow, useLocationPermission, useSuggestions, useWatchPosition
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
+import { FIREBASE_TRACE_ATTRIBUTES, FIREBASE_TRACES } from "stores/createFirebaseTraceSlice";
 import useStore from "stores/useStore";
 
 import tryToReplaceWithLocalTaxon from "./helpers/tryToReplaceWithLocalTaxon";
@@ -124,6 +125,8 @@ const MatchContainer = ( ) => {
     ...initialState,
     shouldUseEvidenceLocation: evidenceHasLocation
   } );
+
+  const stopFirebaseTrace = useStore( state => state.stopFirebaseTrace );
 
   const {
     scoreImageParams,
@@ -425,6 +428,24 @@ const MatchContainer = ( ) => {
 
   const suggestionsLoading = onlineFetchStatus === FETCH_STATUS_LOADING
     || offlineFetchStatus === FETCH_STATUS_LOADING;
+
+  useEffect( ( ) => {
+    if (
+      onlineSuggestionsAttempted
+      && !suggestionsLoading
+    ) {
+      // This should capture a case where online and offline have had a chance to load
+      stopFirebaseTrace(
+        FIREBASE_TRACES.AI_CAMERA_TO_MATCH,
+        { [FIREBASE_TRACE_ATTRIBUTES.ONLINE]: `${!usingOfflineSuggestions}` }
+      );
+    }
+  }, [
+    onlineSuggestionsAttempted,
+    suggestionsLoading,
+    stopFirebaseTrace,
+    usingOfflineSuggestions
+  ] );
 
   // Remove the top suggestion from the list of other suggestions
   const otherSuggestions = orderedSuggestions

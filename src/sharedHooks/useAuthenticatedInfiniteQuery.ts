@@ -9,6 +9,7 @@ import { useCurrentUser } from "sharedHooks";
 // and authentication
 const useAuthenticatedInfiniteQuery = (
   queryKey: QueryKey,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   queryFunction: Function,
   queryOptions: object = {}
 ): object => {

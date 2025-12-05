@@ -1,4 +1,4 @@
-import { StateCreator } from "zustand";
+import type { StateCreator } from "zustand";
 
 const DEFAULT_STATE = {
   exploreView: "observations"

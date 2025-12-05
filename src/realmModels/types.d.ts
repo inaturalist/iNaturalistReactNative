@@ -92,6 +92,16 @@ interface RealmIdentification extends RealmObject {
   user: RealmUser;
 }
 
+// https://github.com/inaturalist/iNaturalistAPI/blob/08e3aade068c50e02d0caf7a59c69ea87b70bc6e/lib/views/swagger_v1.yml.ejs#L2319-L2333
+export type License =
+  | "cc-by"
+  | "cc-by-nc"
+  | "cc-by-nd"
+  | "cc-by-sa"
+  | "cc-by-nc-nd"
+  | "cc-by-nc-sa"
+  | "cc0"
+
 export interface RealmObservationPojo {
   _created_at?: Date;
   _synced_at?: Date;
@@ -103,6 +113,7 @@ export interface RealmObservationPojo {
   identifications: Array<RealmIdentification>;
   identifications_viewed?: boolean;
   latitude: number | null;
+  license_code: License | null;
   longitude: number | null;
   obscured?: boolean;
   observationPhotos: Array<RealmObservationPhotoPojo>;
@@ -112,6 +123,8 @@ export interface RealmObservationPojo {
   observed_time_zone?: string;
   owners_identification_from_vision: boolean | null;
   place_guess: string | null;
+  privateLatitude: number | null;
+  privateLongitude: number | null;
   positional_accuracy: number | null;
   species_guess: string | null;
   taxon_id: number | null;
@@ -119,6 +132,7 @@ export interface RealmObservationPojo {
   taxon_geoprivacy?: "open" | "private" | "obscured" | null;
   time_observed_at?: string;
   timeObservedAt?: string;
+  user: RealmUser;
   uuid: string;
 }
 
