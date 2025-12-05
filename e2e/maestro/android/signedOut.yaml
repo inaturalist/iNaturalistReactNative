@@ -1,0 +1,22 @@
+appId: org.inaturalist.iNaturalistMobile
+# FLGMwt: I would prefer to be able to configure setup/teardown
+# in workspace config, but this is not supported
+# https://github.com/mobile-dev-inc/Maestro/issues/2063
+onFlowStart:
+    - runFlow: onFlowStart.yaml
+onFlowComplete:
+    # noop if not recording
+    - stopRecording
+---
+- launchApp:
+    appId: org.inaturalist.iNaturalistMobile
+    clearState: true
+
+- extendedWaitUntil:
+    visible: "Close"
+    timeout: 30000
+- waitForAnimationToEnd
+
+- tapOn: Close
+
+- assertVisible: Use iNaturalist to identify any living thing
