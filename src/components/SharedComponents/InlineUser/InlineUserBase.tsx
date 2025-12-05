@@ -6,7 +6,8 @@ import UserIcon from "components/SharedComponents/UserIcon";
 import {
   Pressable, View
 } from "components/styledComponents";
-import React, { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import type { TextProps } from "react-native";
 import User from "realmModels/User";

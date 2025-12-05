@@ -7,7 +7,8 @@ import {
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React, { useRef } from "react";
-import { Keyboard, TextInput } from "react-native";
+import type { TextInput } from "react-native";
+import { Keyboard } from "react-native";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { getShadow } from "styles/global";
 

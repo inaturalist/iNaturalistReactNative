@@ -2,8 +2,9 @@ import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
 import { Image } from "components/styledComponents";
 import React from "react";
+import type { ImageStyle, StyleProp } from "react-native";
 import {
-  I18nManager, ImageStyle, Platform, StyleProp
+  I18nManager, Platform
 } from "react-native";
 import {
   useTranslation

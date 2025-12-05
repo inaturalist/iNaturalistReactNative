@@ -36,7 +36,7 @@ exports[`CommentsCount renders default reliably 1`] = `
       ]
     }
   >
-    
+    
   </Text>
   <Text
     maxFontSizeMultiplier={2}
@@ -111,7 +111,7 @@ exports[`CommentsCount renders filled reliably 1`] = `
       ]
     }
   >
-    
+    
   </Text>
   <Text
     maxFontSizeMultiplier={2}
@@ -186,7 +186,7 @@ exports[`CommentsCount renders white reliably 1`] = `
       ]
     }
   >
-    
+    
   </Text>
   <Text
     maxFontSizeMultiplier={2}

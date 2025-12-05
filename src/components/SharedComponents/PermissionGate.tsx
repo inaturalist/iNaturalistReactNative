@@ -18,7 +18,8 @@ import {
   StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import { PermissionStatus, RESULTS } from "react-native-permissions";
+import type { PermissionStatus } from "react-native-permissions";
+import { RESULTS } from "react-native-permissions";
 import colors from "styles/tailwindColors";
 
 const BACKGROUND_IMAGE_STYLE = {

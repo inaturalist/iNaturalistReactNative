@@ -40,14 +40,14 @@ const renderIdentificationSection = ( obs, index = 0, resetState = false ) => re
 );
 
 describe( "IdentificationSection", () => {
-  it( "should show ID WITH AI button when observation has photos", ( ) => {
+  it( "should show IDENTIFY button when observation has photos", ( ) => {
     renderIdentificationSection( [observationWithPhotos] );
-    expect( screen.getByText( "ID WITH AI" ) ).toBeTruthy();
+    expect( screen.getByText( "IDENTIFY" ) ).toBeTruthy();
   } );
 
-  it( "should not show ID WITH AI button when observation has no photos", ( ) => {
+  it( "should not show IDENTIFY button when observation has no photos", ( ) => {
     renderIdentificationSection( [observationWithoutPhotos] );
-    expect( screen.queryByText( "ID WITH AI" ) ).toBeNull();
+    expect( screen.queryByText( "IDENTIFY" ) ).toBeNull();
   } );
 
   it( "should show correct iconic taxon selection when navigating multiple observations", ( ) => {

@@ -134,7 +134,7 @@ describe( "Suggestions", ( ) => {
     } else {
       const addIdButton = observation.taxon
         ? await screen.findByLabelText( "Edit identification" )
-        : await screen.findByText( "ID WITH AI" );
+        : await screen.findByText( "IDENTIFY" );
       await actor.press( addIdButton );
     }
   }

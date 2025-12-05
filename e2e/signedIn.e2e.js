@@ -4,7 +4,6 @@ import {
 
 import { iNatE2eAfterEach, iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
 import closeOnboarding from "./sharedFlows/closeOnboarding";
-import deleteObservation from "./sharedFlows/deleteObservation";
 import signIn from "./sharedFlows/signIn";
 import uploadObservation from "./sharedFlows/uploadObservation";
 
@@ -45,10 +44,33 @@ describe( "Signed in user", () => {
     return uuid;
   }
 
-  async function deleteObservationByUUID( uuid, username, options = { uploaded: false } ) {
+  async function deleteObservationByUUID( uuid, username ) {
     const obsListItem = element( by.id( `MyObservations.obsListItem.${uuid}` ) );
     await obsListItem.tap();
-    await deleteObservation( options );
+
+    const editButton = element( by.id( "ObsDetail.editButton" ) );
+    await waitFor( editButton ).toBeVisible().withTimeout( TIMEOUT );
+    // Navigate to the edit screen
+    await editButton.tap();
+
+    // Check that the edit screen is visible
+    await waitFor( element( by.text( "EVIDENCE" ) ) )
+      .toBeVisible()
+      .withTimeout( TIMEOUT );
+    // Press header kebab menu
+    const headerKebabMenu = element( by.id( "KebabMenu.Button" ) );
+    await expect( headerKebabMenu ).toBeVisible();
+    await headerKebabMenu.tap();
+    // Press delete observation
+    const deleteObservationMenuItem = element( by.id( "Header.delete-observation" ) );
+    await waitFor( deleteObservationMenuItem ).toBeVisible().withTimeout( TIMEOUT );
+    await deleteObservationMenuItem.tap();
+    // Check that the delete button is visible
+    const deleteObservationButton = element( by.text( "DELETE" ) );
+    await waitFor( deleteObservationButton ).toBeVisible().withTimeout( TIMEOUT );
+    // Press delete observation
+    await deleteObservationButton.tap();
+
     // Make sure we're back on MyObservations
     await waitFor( username ).toBeVisible().withTimeout( TIMEOUT );
   }
@@ -104,7 +126,7 @@ describe( "Signed in user", () => {
     /*
     / 4. Delete the two observations without evidence
     */
-    await deleteObservationByUUID( uuid, username, { uploaded: true } );
+    await deleteObservationByUUID( uuid, username );
     // It would be nice to test for the "1 observation deleted" status text in
     // the toolbar, but that message appears ephemerally and sometimes this
     // test doesn't pick it up on the Github runner. Since we created two

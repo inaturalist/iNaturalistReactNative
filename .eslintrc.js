@@ -143,7 +143,10 @@ module.exports = {
     "@typescript-eslint/no-require-imports": ["error", {
       allow: ["\\.(png|jpg|jpeg|gif|svg)$"]
     }],
-    "@typescript-eslint/no-unsafe-function-type": 1
+    "@typescript-eslint/no-unsafe-function-type": 1,
+    "@typescript-eslint/consistent-type-imports": ["error", {
+      fixStyle: "separate-type-imports"
+    }]
   },
   ignorePatterns: ["!.detoxrc.js", "/coverage/*", "/vendor/*", "**/flow-typed"],
   settings: {
@@ -161,7 +164,8 @@ module.exports = {
       rules: {
         "@typescript-eslint/no-unsafe-function-type": "off",
         "@typescript-eslint/no-wrapper-object-types": "off",
-        "@typescript-eslint/no-require-imports": "off"
+        "@typescript-eslint/no-require-imports": "off",
+        "@typescript-eslint/consistent-type-imports": "off"
       }
     },
     {
