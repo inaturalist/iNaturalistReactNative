@@ -2,6 +2,7 @@ import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { ApiSuggestion, ApiTaxon } from "api/types";
 import { Body3, Heading4, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -37,13 +38,19 @@ import Match from "./Match";
 import PreMatchLoadingScreen from "./PreMatchLoadingScreen";
 
 interface ImageParamsType {
-  uri: string;
+  uri?: string;
   image: {
     uri: string;
   };
   lat?: number;
   lng?: number;
 }
+
+interface NavParams {
+      id?: number | string;
+      firstPhotoID?: number | string;
+      representativePhoto?: { isRepresentativeButOtherTaxon?: boolean; id?: number | string };
+    }
 
 interface StateType {
   onlineFetchStatus: string;
@@ -122,7 +129,7 @@ const MatchContainer = ( ) => {
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
-  const navigation = useNavigation( );
+  const navigation = useNavigation<NativeStackNavigationProp<Record<string, NavParams>>>( );
   const {
     hasPermissions,
     renderPermissionsGate,
@@ -462,11 +469,7 @@ const MatchContainer = ( ) => {
 
   const navToTaxonDetails
   = ( photo?: { isRepresentativeButOtherTaxon?: boolean; id?: number | string } ) => {
-    const navParams: {
-      id?: number | string;
-      firstPhotoID?: number | string;
-      representativePhoto?: { isRepresentativeButOtherTaxon?: boolean; id?: number | string };
-    } = { id: taxonId };
+    const navParams: NavParams = { id: taxonId };
     if ( !photo?.isRepresentativeButOtherTaxon ) {
       navParams.firstPhotoID = photo?.id;
     } else {

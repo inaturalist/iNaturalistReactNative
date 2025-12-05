@@ -53,7 +53,8 @@ const AdditionalSuggestionsScroll = ( {
 
     const allSuggestions = suggestionsRef.current;
     const allItemIds = new Set( allSuggestions.map( s => s?.taxon?.id ) );
-    const allMeasured = Array.from( allItemIds ).every( id => measuredItemsRef.current.has( id ) );
+    const allMeasured = Array.from( allItemIds )
+      .every( id => id && measuredItemsRef.current.has( id ) );
 
     // Make visible when all items in the renderMeasuringContainer are measured
     if ( allMeasured && allItemIds.size > 0 ) {
@@ -140,7 +141,7 @@ const AdditionalSuggestionsScroll = ( {
                 ListHeaderComponent={renderHeader}
                 horizontal
                 renderItem={renderItem}
-                keyExtractor={item => String( item?.taxon?.id )}
+                keyExtractor={( item: ApiSuggestion ) => String( item?.taxon?.id )}
                 data={otherSuggestions}
               />
             </View>
