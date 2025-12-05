@@ -7,7 +7,6 @@ import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderAppWithComponent } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
-import { describe } from "yargs";
 
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
@@ -77,28 +76,25 @@ jest.mock( "@react-navigation/native", () => {
   };
 } );
 
-/*
+describe( "SavedMatch", ( ) => {
   beforeEach( async ( ) => {
     jest.clearAllMocks( );
-  } ); */
+  } );
 
-describe( "SavedMatch", ( ) => {
-  describe( "SavedMatch goto taxon", ( ) => {
-    it( "should call navigation.push on learn more button press", async ( ) => {
-      const actor = userEvent.setup( );
-      renderAppWithComponent( <SavedMatchContainer observation={mockObservation} /> );
-      const learnMoreButton = await screen.findByText( t( "LEARN-MORE-ABOUT-THIS-SPECIES" ) );
-      await act( async ( ) => actor.press( learnMoreButton ) );
-      expect( mockPush ).toHaveBeenCalledWith( "TaxonDetails", {
-        id: mockObservation.taxon.id
-      } );
+  it( "should call navigation.push on learn more button press", async ( ) => {
+    const actor = userEvent.setup( );
+    renderAppWithComponent( <SavedMatchContainer observation={mockObservation} /> );
+    const learnMoreButton = await screen.findByText( t( "LEARN-MORE-ABOUT-THIS-SPECIES" ) );
+    await act( async ( ) => actor.press( learnMoreButton ) );
+    expect( mockPush ).toHaveBeenCalledWith( "TaxonDetails", {
+      id: mockObservation.taxon.id
     } );
+  } );
 
-    it( "should not show learn more button when offline", async ( ) => {
-      useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
-      renderAppWithComponent( <SavedMatchContainer observation={mockObservation} /> );
-      const learnMoreButton = screen.queryByText( t( "LEARN-MORE-ABOUT-THIS-SPECIES" ) );
-      expect( learnMoreButton ).toBeFalsy( );
-    } );
+  it( "should not show learn more button when offline", async ( ) => {
+    useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
+    renderAppWithComponent( <SavedMatchContainer observation={mockObservation} /> );
+    const learnMoreButton = screen.queryByText( t( "LEARN-MORE-ABOUT-THIS-SPECIES" ) );
+    expect( learnMoreButton ).toBeFalsy( );
   } );
 } );
