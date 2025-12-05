@@ -3,7 +3,7 @@ import { Heading4, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
 
-import { MenuOption } from "./Menu";
+import type { MenuOption } from "./Menu";
 
 const MenuItem = ( {
   item,
