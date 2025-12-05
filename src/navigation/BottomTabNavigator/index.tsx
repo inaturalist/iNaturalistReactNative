@@ -18,7 +18,7 @@ const Tab = createBottomTabNavigator( );
 const BottomTabs = ( ) => {
   const renderTabBar = ( props: BottomTabBarProps ) => <CustomTabBarContainer {...props} />;
 
-  const isTest = process.env.JEST_WORKER_ID !== undefined;
+  const isTest = process.env.JEST_WORKER_ID !== undefined || process.env.DETOX === "true";
 
   // DEVELOPERS: do you need to add any screens here? All the rest of our screens live in
   // NoBottomTabStackNavigator, TabStackNavigator, or LoginStackNavigator
