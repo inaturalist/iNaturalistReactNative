@@ -97,4 +97,20 @@ describe( "SavedMatch", ( ) => {
     const learnMoreButton = screen.queryByText( t( "LEARN-MORE-ABOUT-THIS-SPECIES" ) );
     expect( learnMoreButton ).toBeFalsy( );
   } );
+
+  it( "should not show map section for no latitude", async ( ) => {
+    renderAppWithComponent( <SavedMatchContainer observation={mockObservation} /> );
+    const mapSection = screen.queryByTestId( "MapSection" );
+    expect( mapSection ).toBeFalsy( );
+  } );
+
+  const mockObservationWithLatitude = factory( "LocalObservation", {
+    latitude: faker.location.latitude( )
+  } );
+
+  it( "should show map section when latitude is present", async ( ) => {
+    renderAppWithComponent( <SavedMatchContainer observation={mockObservationWithLatitude} /> );
+    const mapSection = screen.queryByTestId( "MapSection" );
+    expect( mapSection ).toBeTruthy( );
+  } );
 } );
