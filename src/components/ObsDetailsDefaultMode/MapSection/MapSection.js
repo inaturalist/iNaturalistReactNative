@@ -63,7 +63,7 @@ const MapSection = ( { observation, taxon }: Props ) => {
   }
 
   return (
-    <View className="h-[200px]">
+    <View testID="MapSection" className="h-[200px]">
       <Map
         mapHeight={200}
         observation={observation}
