@@ -25,7 +25,6 @@ const SavedMatchHeaderRight = ( {
     ( ) => (
       <INatIconButton
         testID="SavedMatch.editButton"
-        // TODO remove cast when useLocalObservation converted to typescript
         onPress={() => navigateToObsEdit( observation )}
         icon="pencil"
         color={String( colors?.darkGray )}
