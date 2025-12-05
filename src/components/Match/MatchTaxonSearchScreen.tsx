@@ -23,7 +23,9 @@ const MatchTaxonSearchScreen = ( ) => {
   const { taxa, isLoading, isLocal } = useTaxonSearch( taxonQuery );
   const { t } = useTranslation( );
   const realm = useRealm( );
-  const navigation = useNavigation<NativeStackNavigationProp<any>>( );
+  const navigation = useNavigation<
+    NativeStackNavigationProp<Record<string, { screen: string; params: {screen: string} }>>
+  >( );
 
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
   const cameraRollUris = useStore( state => state.cameraRollUris );
