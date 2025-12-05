@@ -17,8 +17,8 @@ import RNFS from "react-native-fs";
 import RNRestart from "react-native-restart";
 import useLogs from "sharedHooks/useLogs";
 
+import type { DirectoryEntrySize } from "./hooks/useAppSize";
 import useAppSize, {
-  DirectoryEntrySize,
   formatAppSizeString, formatSizeUnits, getTotalDirectorySize
 } from "./hooks/useAppSize";
 

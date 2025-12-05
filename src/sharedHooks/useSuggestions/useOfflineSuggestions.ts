@@ -6,7 +6,7 @@ import {
 } from "react";
 import { log } from "sharedHelpers/logger";
 import { predictImage } from "sharedHelpers/mlModel";
-import { Prediction } from "vision-camera-plugin-inatvision";
+import type { Prediction } from "vision-camera-plugin-inatvision";
 
 const logger = log.extend( "useOfflineSuggestions" );
 

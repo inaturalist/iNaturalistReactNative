@@ -1,7 +1,8 @@
 import { tailwindFontRegular } from "appConstants/fontFamilies";
 import classnames from "classnames";
 import React from "react";
-import { Text, TextProps } from "react-native";
+import type { TextProps } from "react-native";
+import { Text } from "react-native";
 
 import { TYPOGRAPHY_CLASSES } from "./InatText";
 

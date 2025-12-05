@@ -26,7 +26,7 @@ const MasonryLayout = ( { items, onImagePress } ) => {
           return item;
         }
         const imageDimensions = await getImageDimensions( photoUrl( item ) );
-        return { ...item, ...imageDimensions };
+        return Object.assign( item, imageDimensions );
       } );
 
       const itemData = await Promise.all( itemPromises );

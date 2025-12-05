@@ -2,7 +2,8 @@ import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useCallback } from "react";
-import { FlatList, ListRenderItemInfo } from "react-native";
+import type { ListRenderItemInfo } from "react-native";
+import { FlatList } from "react-native";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 

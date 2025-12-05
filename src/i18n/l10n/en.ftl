@@ -557,10 +557,8 @@ Highest = Highest
 HIGHEST-RANK = HIGHEST RANK
 I-agree-to-the-Terms-of-Use = <0>I agree to the Terms of Use and Privacy Policy, and I have reviewed the Community Guidelines (</0><1>required</1><0>).</0>
 Iconic-taxon-name = Iconic taxon name: { $iconicTaxon }
+ID-in-Camera = ID in Camera
 ID-Suggestions = ID Suggestions
-# Short for: Identify with AI. Label for a button that will load identifications for a given photo/sound
-ID-WITH-AI = ID WITH AI
-ID-with-AI-Camera = ID with AI Camera
 # Identification Status
 ID-Withdrawn = ID Withdrawn
 IDENTIFICATION = IDENTIFICATION
@@ -573,6 +571,8 @@ IDENTIFICATIONS-WITHOUT-NUMBER =
     }
 Identifiers = Identifiers
 Identifiers-View = Identifiers View
+# Short for: Identify with AI. Label for a button that will load identifications for a given photo/sound
+IDENTIFY = IDENTIFY
 # Title of screen asking for permission to access the camera
 Identify-organisms-in-real-time-with-your-camera = Identify organisms in real time with your camera
 # Onboarding slides

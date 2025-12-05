@@ -1,6 +1,7 @@
 // Helpers for LoginForm. Might be better in AuthenticationService, but
 // there's also some UI-related stuff in here, e.g. alerts
-import { appleAuth, AppleError } from "@invertase/react-native-apple-authentication";
+import type { AppleError } from "@invertase/react-native-apple-authentication";
+import { appleAuth } from "@invertase/react-native-apple-authentication";
 import {
   GoogleSignin,
   statusCodes as googleStatusCodes
@@ -8,7 +9,7 @@ import {
 import { t } from "i18next";
 import { Alert } from "react-native";
 import Config from "react-native-config";
-import Realm from "realm";
+import type Realm from "realm";
 import { log } from "sharedHelpers/logger";
 
 import {

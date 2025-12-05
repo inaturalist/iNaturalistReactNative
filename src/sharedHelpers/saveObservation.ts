@@ -1,7 +1,8 @@
 import type Realm from "realm";
 import Observation from "realmModels/Observation";
 import type { RealmObservation } from "realmModels/types";
-import { ExifToWrite, writeExifToFile } from "sharedHelpers/parseExif";
+import type { ExifToWrite } from "sharedHelpers/parseExif";
+import { writeExifToFile } from "sharedHelpers/parseExif";
 
 const writeExifToCameraRollPhotos = async (
   observation: RealmObservation,

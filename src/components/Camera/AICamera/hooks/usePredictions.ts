@@ -1,6 +1,6 @@
 import { RealmContext } from "providers/contexts";
 import { useState } from "react";
-import { Result } from "vision-camera-plugin-inatvision";
+import type { Result } from "vision-camera-plugin-inatvision";
 
 const { useRealm } = RealmContext;
 
