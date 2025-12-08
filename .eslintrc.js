@@ -146,7 +146,8 @@ module.exports = {
     "@typescript-eslint/no-unsafe-function-type": 1,
     "@typescript-eslint/consistent-type-imports": ["error", {
       fixStyle: "separate-type-imports"
-    }]
+    }],
+    "import/consistent-type-specifier-style": ["error", "prefer-top-level"]
   },
   ignorePatterns: ["!.detoxrc.js", "/coverage/*", "/vendor/*", "**/flow-typed"],
   settings: {
@@ -165,7 +166,8 @@ module.exports = {
         "@typescript-eslint/no-unsafe-function-type": "off",
         "@typescript-eslint/no-wrapper-object-types": "off",
         "@typescript-eslint/no-require-imports": "off",
-        "@typescript-eslint/consistent-type-imports": "off"
+        "@typescript-eslint/consistent-type-imports": "off",
+        "import/consistent-type-specifier-style": "off"
       }
     },
     {

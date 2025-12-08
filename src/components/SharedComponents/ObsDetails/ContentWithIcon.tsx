@@ -1,7 +1,8 @@
 import classNames from "classnames";
 import { INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import React, { type PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
+import React from "react";
 
 interface Props extends PropsWithChildren {
   icon: string;
