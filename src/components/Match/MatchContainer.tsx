@@ -47,10 +47,10 @@ interface ImageParamsType {
 }
 
 interface NavParams {
-      id?: number | string;
-      firstPhotoID?: number | string;
-      representativePhoto?: { isRepresentativeButOtherTaxon?: boolean; id?: number | string };
-    }
+  id?: number | string;
+  firstPhotoID?: number | string;
+  representativePhoto?: { isRepresentativeButOtherTaxon?: boolean; id?: number | string };
+}
 
 interface StateType {
   onlineFetchStatus: string;
