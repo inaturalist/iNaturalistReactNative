@@ -28,7 +28,7 @@ const AdditionalSuggestionsScroll = ( {
 
   // We're using an extra measuring container to check the heights of every item,
   // even the ones that would otherwise be offscreen
-  const measuredItemsRef = useRef( new Set<number | string>() );
+  const measuredItemsRef = useRef( new Set<number>() );
   const suggestionsRef = useRef<ApiSuggestion[]>( [] );
 
   useEffect( () => {
@@ -42,7 +42,7 @@ const AdditionalSuggestionsScroll = ( {
     measuredItemsRef.current = new Set();
   }, [otherSuggestions] );
 
-  const updateMaxHeight = useCallback( ( height: number, itemId: number | string | undefined ) => {
+  const updateMaxHeight = useCallback( ( height: number, itemId?: number ) => {
     if ( !itemId || height <= 0 ) return;
 
     // track each item as measured
@@ -141,7 +141,7 @@ const AdditionalSuggestionsScroll = ( {
                 ListHeaderComponent={renderHeader}
                 horizontal
                 renderItem={renderItem}
-                keyExtractor={( item: ApiSuggestion ) => String( item?.taxon?.id )}
+                keyExtractor={( item: ApiSuggestion ) => `${item?.taxon?.id}`}
                 data={otherSuggestions}
               />
             </View>

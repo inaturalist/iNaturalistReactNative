@@ -48,7 +48,7 @@ const IconicSuggestionsScroll = ( {
         ListHeaderComponent={renderHeader}
         horizontal
         renderItem={renderItem}
-        keyExtractor={( item: ApiTaxon ) => String( item?.id )}
+        keyExtractor={( item: ApiTaxon ) => `${item?.id}`}
         data={iconicTaxa}
       />
     </View>
