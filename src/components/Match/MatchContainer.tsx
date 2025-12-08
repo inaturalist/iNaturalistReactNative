@@ -125,7 +125,7 @@ const { useRealm } = RealmContext;
 const MatchContainer = ( ) => {
   const hasLoadedRef = useRef( false );
   const isDebug = isDebugMode( );
-  const scrollRef = useRef<ScrollView | null>( null );
+  const scrollRef = useRef<ScrollView>( null );
   const currentObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
   const cameraRollUris = useStore( state => state.cameraRollUris );
@@ -151,8 +151,8 @@ const MatchContainer = ( ) => {
 
   const evidenceHasLocation = !!currentObservation?.latitude;
 
-  const [topSuggestion, setTopSuggestion] = useState<ApiSuggestion | undefined>( );
-  const [iconicTaxon, setIconicTaxon] = useState<ApiTaxon | undefined>( );
+  const [topSuggestion, setTopSuggestion] = useState<ApiSuggestion>( );
+  const [iconicTaxon, setIconicTaxon] = useState<ApiTaxon>( );
   const [currentUserLocation, setCurrentUserLocation] = useState<{
     latitude?: number;
     longitude?: number;
@@ -250,7 +250,7 @@ const MatchContainer = ( ) => {
     onlineSuggestionsAttempted
   } );
 
-  const [currentPlaceGuess, setCurrentPlaceGuess] = useState<string | undefined>( );
+  const [currentPlaceGuess, setCurrentPlaceGuess] = useState<string>( );
   const [hasRefetchedSuggestions, setHasRefetchedSuggestions] = useState( false );
 
   const scrollToTop = useCallback( () => {
@@ -489,7 +489,7 @@ const MatchContainer = ( ) => {
     .filter( suggestion => suggestion.taxon.id !== taxonId );
 
   const navToTaxonDetails
-  = ( photo?: { isRepresentativeButOtherTaxon?: boolean; id?: number | string } ) => {
+  = ( photo?: { isRepresentativeButOtherTaxon?: boolean; id?: number } ) => {
     const navParams: NavParams = { id: taxonId };
     if ( !photo?.isRepresentativeButOtherTaxon ) {
       navParams.firstPhotoID = photo?.id;
