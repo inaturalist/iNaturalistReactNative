@@ -333,7 +333,7 @@ Highest = Höchste
 HIGHEST-RANK = HÖCHSTER RANG
 I-agree-to-the-Terms-of-Use = <0>Ich stimme den Nutzungsbedingungen und der Datenschutzrichtlinie zu und habe die Richtlinien der Gemeinschaft gelesen (</0><1>erforderlich</1><0>).</0>
 Iconic-taxon-name = Ikonischer Taxonname: { $iconicTaxon }
-ID-in-Camera = ID in Camera
+ID-in-Camera = ID in der Kamera
 ID-Suggestions = ID Vorschläge
 ID-Withdrawn = ID zurückgezogen
 IDENTIFICATION = BESTIMMUNG
@@ -345,7 +345,7 @@ IDENTIFICATIONS-WITHOUT-NUMBER =
     }
 Identifiers = Bestimmer
 Identifiers-View = Bestimmer-Ansicht
-IDENTIFY = IDENTIFY
+IDENTIFY = BESTIMMUNG
 Identify-organisms-in-real-time-with-your-camera = Bestimmung von Lebewesen in Echtzeit mit der Kamera
 Identify-species-anywhere = Arten bestimmen, egal wo auf der Welt
 If-an-account-with-that-email-exists = Wenn ein Konto mit dieser E-Mail-Adresse existiert, wurden Anweisungen zum Zurücksetzen des Passworts an deine E-Mail-Adresse gesendet.
