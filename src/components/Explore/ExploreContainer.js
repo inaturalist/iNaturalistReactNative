@@ -17,7 +17,7 @@ import useLocationPermission from "sharedHooks/useLocationPermission";
 import useStore from "stores/useStore";
 
 import Explore from "./Explore";
-import ExploreRedesigned from "./ExploreRedesigned";
+import ExploreV2 from "./ExploreV2";
 import mapParamsToAPI from "./helpers/mapParamsToAPI";
 import useExploreHeaderCount from "./hooks/useExploreHeaderCount";
 import useParams from "./hooks/useParams";
@@ -166,7 +166,7 @@ const ExploreContainerWithContext = ( ): Node => {
           />
         )
         : (
-          <ExploreRedesigned
+          <ExploreV2
             canFetch={canFetch}
             currentExploreView={exploreView}
             handleUpdateCount={handleUpdateCount}

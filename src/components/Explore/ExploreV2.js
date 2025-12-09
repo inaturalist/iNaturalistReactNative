@@ -44,7 +44,7 @@ type Props = {
   requestLocationPermissions: Function,
 }
 
-const ExploreRedesigned = ( {
+const ExploreV2 = ( {
   canFetch,
   currentExploreView,
   handleUpdateCount,
@@ -127,7 +127,7 @@ const ExploreRedesigned = ( {
 
   return (
     <>
-      <ViewWrapper testID="ExploreRedesigned" wrapperClassName="overflow-hidden">
+      <ViewWrapper testID="ExploreV2" wrapperClassName="overflow-hidden">
         <View className="flex-1 overflow-hidden">
           {currentExploreView === "observations" && (
             <ObservationsViewBar
@@ -159,7 +159,7 @@ const ExploreRedesigned = ( {
               accessibilityLabel="Diagnostics"
               onPress={() => {
                 Alert.alert(
-                  "ExploreRedesigned Info",
+                  "ExploreV2 Info",
                   `queryParams: ${JSON.stringify( queryParams )}`
                 );
               }}
@@ -176,4 +176,4 @@ const ExploreRedesigned = ( {
   );
 };
 
-export default ExploreRedesigned;
+export default ExploreV2;
