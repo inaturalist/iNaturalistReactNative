@@ -19,9 +19,9 @@ import MatchHeader from "./MatchHeader";
 import PhotosSection from "./PhotosSection";
 import SaveDiscardButtons from "./SaveDiscardButtons";
 
-const cardClassTop
+export const matchCardClassTop
   = "rounded-t-2xl border-lightGray border-[2px] py-[18px] px-5 border-b-0 -mb-0.5";
-const cardClassBottom
+export const matchCardClassBottom
   = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mt-0.5 mb-[30px]";
 
 type Props = {
@@ -66,7 +66,7 @@ const Match = ( {
     return (
       <>
         <ScrollViewWrapper scrollRef={scrollRef}>
-          <View className={cardClassTop}>
+          <View className={matchCardClassTop}>
             {
               suggestionsLoading
                 ? (
@@ -127,7 +127,7 @@ const Match = ( {
     return (
       <>
         <ScrollViewWrapper scrollRef={scrollRef}>
-          <View className={cardClassTop}>
+          <View className={matchCardClassTop}>
             {
               suggestionsLoading
                 ? (
@@ -177,7 +177,7 @@ const Match = ( {
   return (
     <>
       <ScrollViewWrapper scrollRef={scrollRef}>
-        <View className={cardClassTop}>
+        <View className={matchCardClassTop}>
           {
             suggestionsLoading
               ? (
@@ -207,7 +207,7 @@ const Match = ( {
           belongsToCurrentUser
           observation={observation}
         />
-        <View className={cardClassBottom} />
+        <View className={matchCardClassBottom} />
         {
           isConnected && (
             <Button

@@ -275,6 +275,14 @@ describe( "DisplayTaxonName", ( ) => {
     } );
   } );
 
+  describe( "when taxon is undefined", ( ) => {
+    it( "it displays fallback text", ( ) => {
+      let taxon;
+      render( <DisplayTaxonName taxon={taxon} /> );
+      expect( screen.getByText( /Unknown/ ) ).toBeTruthy( );
+    } );
+  } );
+
   describe( "when displayed as plain text within a Trans component", ( ) => {
     it( "it displays common name followed by scientific name", async ( ) => {
       render( <DisplayTaxonName taxon={subspeciesTaxon} removeStyling layout="horizontal" /> );

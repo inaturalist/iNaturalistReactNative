@@ -7,6 +7,7 @@ import React, {
   memo, useEffect, useState
 } from "react";
 import { StyleSheet, useWindowDimensions } from "react-native";
+import type { SharedValue } from "react-native-reanimated";
 import Animated, {
   Easing,
   interpolate,
@@ -14,9 +15,6 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming
-} from "react-native-reanimated";
-import {
-  type SharedValue
 } from "react-native-reanimated";
 import colors from "styles/tailwindColors";
 

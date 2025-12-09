@@ -1,8 +1,5 @@
 // @flow
-import {
-  useNetInfo
-} from "@react-native-community/netinfo";
-import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { fetchSubscriptions } from "api/observations";
 import IdentificationSheets from "components/ObsDetailsDefaultMode/IdentificationSheets";
@@ -11,20 +8,16 @@ import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
-  useMemo,
-  useReducer,
-  useState
+  useReducer
 } from "react";
 import { LogBox } from "react-native";
 import Observation from "realmModels/Observation";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedQuery,
-  useCurrentUser,
-  useLocalObservation,
   useObservationsUpdates
 } from "sharedHooks";
-import useRemoteObservation, {
+import {
   fetchRemoteObservationKey
 } from "sharedHooks/useRemoteObservation";
 import useStore from "stores/useStore";
@@ -109,19 +102,47 @@ const reducer = ( state, action ) => {
   }
 };
 
-const ObsDetailsDefaultModeContainer = ( ): Node => {
+type Props = {
+  belongsToCurrentUser: boolean,
+  currentUser: ?Object,
+  fetchRemoteObservationError: ?Object,
+  isConnected: boolean,
+  isRefetching: boolean,
+  localObservation: ?Object,
+  markDeletedLocally: Function,
+  markViewedLocally: Function,
+  observation: Object,
+  refetchRemoteObservation: Function,
+  remoteObservation: ?Object,
+  remoteObsWasDeleted: boolean,
+  setRemoteObsWasDeleted: Function,
+  targetActivityItemID?: ?number,
+  uuid: string
+}
+
+const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
   const setObservations = useStore( state => state.setObservations );
-  const currentUser = useCurrentUser( );
-  const { params } = useRoute();
-  const {
-    targetActivityItemID,
-    uuid
-  } = params;
   const navigation = useNavigation( );
   const realm = useRealm( );
-  const { isConnected } = useNetInfo( );
   const [state, dispatch] = useReducer( reducer, initialState );
-  const [remoteObsWasDeleted, setRemoteObsWasDeleted] = useState( false );
+
+  const {
+    observation,
+    targetActivityItemID,
+    uuid,
+    localObservation,
+    markViewedLocally,
+    markDeletedLocally,
+    remoteObservation,
+    setRemoteObsWasDeleted,
+    fetchRemoteObservationError,
+    currentUser,
+    belongsToCurrentUser,
+    isRefetching,
+    refetchRemoteObservation,
+    isConnected,
+    remoteObsWasDeleted
+  } = props;
 
   const {
     activityItems,
@@ -133,26 +154,6 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
   } = state;
   const queryClient = useQueryClient( );
 
-  const {
-    localObservation,
-    markDeletedLocally,
-    markViewedLocally
-  } = useLocalObservation( uuid );
-  const wasSynced = localObservation && localObservation?.wasSynced();
-
-  const fetchRemoteObservationEnabled = !!(
-    !remoteObsWasDeleted
-    && ( !localObservation || localObservation?.wasSynced( ) )
-    && isConnected
-  );
-
-  const {
-    remoteObservation,
-    refetchRemoteObservation,
-    isRefetching,
-    fetchRemoteObservationError
-  } = useRemoteObservation( uuid, fetchRemoteObservationEnabled );
-
   useMarkViewedMutation( localObservation, markViewedLocally, remoteObservation );
 
   // If we tried to get a remote observation but it no longer exists, the user
@@ -160,7 +161,8 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
   // copy of this observation
   useEffect( ( ) => {
     setRemoteObsWasDeleted( fetchRemoteObservationError?.status === 404 );
-  }, [fetchRemoteObservationError?.status] );
+  }, [fetchRemoteObservationError?.status, setRemoteObsWasDeleted] );
+
   const confirmRemoteObsWasDeleted = useCallback( ( ) => {
     if ( localObservation ) {
       markDeletedLocally( );
@@ -172,26 +174,9 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
     navigation
   ] );
 
-  const observation = localObservation || Observation.mapApiToRealm( remoteObservation );
+  const wasSynced = !!( localObservation && localObservation?.wasSynced() );
+
   const hasPhotos = observation?.observationPhotos?.length > 0;
-
-  // In theory the only situation in which an observation would not have a
-  // user is when a user is not signed but has made a new observation in the
-  // app. Also in theory that user should not be able to get to ObsDetail for
-  // those observations, just ObsEdit. But.... let's be safe.
-  const belongsToCurrentUser = (
-    observation?.user?.id === currentUser?.id
-    || ( !observation?.user && !observation?.id )
-  );
-
-  const isSimpleMode = useMemo( () => (
-    // Simple mode applies only when:
-    // 1. It's the current user's observation (or an observation being created)
-    // 2. AND the observation hasn't been synced yet
-    ( belongsToCurrentUser || !observation?.user )
-      && localObservation
-      && !localObservation.wasSynced()
-  ), [belongsToCurrentUser, localObservation, observation?.user] );
 
   const { data: subscriptions, refetch: refetchSubscriptions } = useAuthenticatedQuery(
     [
@@ -325,7 +310,7 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
         const localComments = localObservation?.comments;
         const newComment = data[0];
         newComment.user = currentUser;
-        localComments.push( newComment );
+        localComments?.push( newComment );
       }, "setting local comment in ObsDetailsContainer" );
       const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
       dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
@@ -355,7 +340,6 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
         belongsToCurrentUser={belongsToCurrentUser}
         currentUser={currentUser}
         isConnected={isConnected}
-        isSimpleMode={isSimpleMode}
         navToSuggestions={navToSuggestions}
         observation={observationShown}
         openAddCommentSheet={openAddCommentSheet}

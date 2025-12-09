@@ -22,7 +22,7 @@ async function getLogContents() {
     const contents = await RNFS.readFile( logFilePath );
     return contents.split( "\n" ).join( "\n" );
   } catch ( readFileError ) {
-    if ( readFileError.message.match( /no such file/ ) ) {
+    if ( readFileError instanceof Error && readFileError.message.match( /no such file/ ) ) {
       return "";
     }
     throw readFileError;
@@ -71,7 +71,7 @@ const useLogs = ( ) => {
             },
             {
               text: t( "Share" ),
-              onPress: () => shareLogFile( emailParams )
+              onPress: () => shareLogFile( )
             }
           ]
         );
