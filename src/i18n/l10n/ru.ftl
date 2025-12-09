@@ -151,7 +151,6 @@ Couldnt-create-comment = Не удалось создать комментари
 Couldnt-create-identification-error = Не удалось создать идентификацию { $error }
 Couldnt-create-identification-unknown-error = Не удалось создать идентификацию, неизвестная ошибка.
 CREATE-AN-ACCOUNT = СОЗДАТЬ АККАУНТ
-Create-observation-with-no-evidence = Create observation with no evidence
 DATA-QUALITY = КАЧЕСТВО ДАННЫХ
 DATA-QUALITY-ASSESSMENT = ОЦЕНКА КАЧЕСТВА ДАННЫХ
 Data-Quality-Assessment = Оценка качества данных
@@ -238,11 +237,6 @@ DISCARD-OBSERVATION = ОТБРОСИТЬ НАБЛЮДЕНИЕ
 DISCARD-PHOTOS--question = ВЫБРОСИТЬ ФОТОГРАФИИ?
 DISCARD-RECORDING = СБРОСИТЬ ЗАПИСЬ
 DISCARD-SOUND--question = ОТКАЗАТЬСЯ ОТ ЗВУКА?
-DISCARD-X-OBSERVATIONS =
-    { $count ->
-        [one] DISCARD OBSERVATION
-       *[other] DISCARD { $count } OBSERVATIONS
-    }
 DISCOVER-NATURE-AROUND-YOU = ИЗУЧИТЕ ПРИРОДУ ВОКРУГ ВАС
 DISMISS = УВОЛЬНЯТЬ
 Do-you-know-what-group-this-is-in = Вы знаете, к какой группе это относится?
@@ -336,19 +330,12 @@ Highest = Высший
 HIGHEST-RANK = ВЫСШИЙ РАНГ
 I-agree-to-the-Terms-of-Use = <0>Я согласен с Условиями использования и Политикой конфиденциальности, и я ознакомился с Рекомендациями сообщества (</0><1>обязательное поле</1><0>).</0>
 Iconic-taxon-name = Знаковое название таксона: { $iconicTaxon }
-ID-in-Camera = ID in Camera
 ID-Suggestions = Подсказки ID
 ID-Withdrawn = Отзыв идентификации
 IDENTIFICATION = ИДЕНТИФИКАЦИЯ
 Identification-options = Варианты идентификации
-IDENTIFICATIONS-WITHOUT-NUMBER =
-    { $count ->
-        [one] IDENTIFICATION
-       *[other] IDENTIFICATIONS
-    }
 Identifiers = Эксперты
 Identifiers-View = Вид идентификаторов
-IDENTIFY = IDENTIFY
 Identify-organisms-in-real-time-with-your-camera = Идентифицируйте организмы в режиме реального времени с помощью вашей камеры
 Identify-species-anywhere = Идентифицируйте виды везде
 If-an-account-with-that-email-exists = Если учетная запись с этим адресом электронной почты существует, мы отправили инструкции по сбросу пароля на ваш адрес электронной почты.
@@ -365,11 +352,6 @@ IGNORE-LOCATION = ИГНОРИРОВАТЬ МЕСТОПОЛОЖЕНИЕ
 Ignore-notifications = Игнорировать уведомления
 Ignoring-location = Не учитывать местоположение
 Import-Photos-From = Импорт фотографий из
-IMPORT-X-OBSERVATIONS =
-    IMPORT { $count ->
-        [one] 1 OBSERVATION
-       *[other] { $count } OBSERVATIONS
-    }
 Improve-suggestions-by-using-your-location = Улучшайте предложения, используя свое местоположение
 IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = УЛУЧШИТЕ ЭТИ РЕКОМЕНДАЦИИ, ИСПОЛЬЗУЯ СВОЕ МЕСТОПОЛОЖЕНИЕ
 improving--identification = Улучшающая
@@ -419,17 +401,10 @@ JOINED-X-PROJECTS =
         [one] ПРИСОЕДИНИЛСЯ К ОДНОМУ { $count } ПРОЕКТУ
        *[other] ПРИСОЕДИНИЛСЯ К { $count } ПРОЕКТАМ
     }
-JOURNAL-POSTS-WITHOUT-NUMBER =
-    { $count ->
-        [one] JOURNAL POST
-       *[other] JOURNAL POSTS
-    }
 July = Июль
 June = Июнь
 Just-make-sure-the-organism-is-wild = Просто убедитесь, что организм является диким (не домашним животным, животным в зоопарке или садовым растением)
 Last-Active-date = Последний активный: { $date }
-Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, maximumFractionDigits: 6) }
-Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBER($longitude, maximumFractionDigits: 6) }, Acc: { $accuracy }
 leading--identification = Ведущая
 Learn-from-people-who-verify-and-refine-your-identifications = Учитесь у людей, которые проверяют и уточняют ваши идентификации.
 Learn-More = Узнать больше
@@ -461,11 +436,6 @@ maverick--identification = Независимое мнение
 May = Май
 MEDIA = МЕДИА
 Media-Type = Тип медиафайла
-MEMBERS-WITHOUT-NUMBER =
-    { $count ->
-        [one] MEMBER
-       *[other] MEMBERS
-    }
 Menu = Меню
 Missing-Date = Отсутствует дата
 MISSING-EVIDENCE = НЕДОСТАЮЩИЕ ДОКАЗАТЕЛЬСТВА
@@ -545,11 +515,6 @@ Observation-with-no-evidence = Наблюдение без доказатель�
 Observations = Наблюдения
 Observations-need-location-date--warning = Чтобы учёные могли использовать наблюдения iNaturalist, в этих наблюдениях должны быть указаны местоположение и дата,  Пожалуйста, проверьте наблюдения с помощью этого значка перед загрузкой.
 Observations-View = Просмотр наблюдений
-OBSERVATIONS-WITHOUT-NUMBER =
-    { $count ->
-        [one] OBSERVATION
-       *[other] OBSERVATIONS
-    }
 OBSERVE-ORGANISMS = НАБЛЮДАЙТЕ ЗА ОРГАНИЗМАМИ
 OBSERVED-AT--label = НАБЛЮДАЛОСЬ В
 OBSERVED-IN--label = НАБЛЮДАЛОСЬ В
@@ -796,11 +761,6 @@ Sounds = Звуки
 Source-List = <0>(Список источников: </0><1>{ $source }</1><0>)</0>
 Species = Видов
 Species-View = Видовой вид
-SPECIES-WITHOUT-NUMBER =
-    { $count ->
-        [one] SPECIES
-       *[other] SPECIES
-    }
 Standard--map-type = Стандартный
 Start-must-be-before-end = Дата начала должна быть раньше даты окончания.
 Start-upload = Начать загрузку
@@ -818,7 +778,6 @@ Switches-to-tab = Переключается на { $tab } вешалка.
 Sync-observations = Синхронные наблюдения
 Syncing = Синхронизация...
 Take-photo = Сделать фото
-Take-photos = Take photos
 Taxa = Таксоны
 TAXON = ТАКСОН
 TAXON-NAMES-DISPLAY = ОТОБРАЖЕНИЕ НАЗВАНИЙ ТАКСОНОВ
@@ -852,9 +811,6 @@ This-observation-needs-more-identifications = Это наблюдение тре
 This-observation-needs-more-identifications-to-become-research-grade = Для получения статуса "исследовательский" это наблюдение должно получить больше идентификаций.
 This-observer-has-opted-out-of-the-Community-Taxon = Этот наблюдатель отказался от Таксона Сообщества
 This-organism-was-placed-by-humans = Этот организм был помещен в это место человеком. Это относится к таким вещам, как садовые растения, домашние животные и животные в зоопарке.
-This-user-has-no-followers = This user has no followers.
-This-user-has-not-joined-any-projects = This user has not joined any projects.
-This-user-is-not-following-anyone = This user is not following anyone.
 To-sync-your-observations-to-iNaturalist = Чтобы синхронизировать свои наблюдения с iNaturalist, войдите в систему.
 To-view-nearby-organisms-please-enable-location = Чтобы увидеть близлежащие организмы, включите функцию «Местоположение».
 To-view-nearby-projects-please-enable-location = Чтобы просмотреть ближайшие проекты, пожалуйста, включите местоположение.
@@ -873,22 +829,11 @@ Unreviewed-observations-only = Только непроверенные набл�
 Upload-Complete = Загрузка завершена
 Upload-in-progress = Выполняется загрузка
 UPLOAD-NOW = ЗАГРУЗИТЬ СЕЙЧАС
-Upload-photos = Upload photos
 Upload-Progress = Закачать { $uploadProgress } процент выполнения
 UPLOAD-TO-INATURALIST = ЗАГРУЗИТЬ В INATURALIST
-Upload-x-observations =
-    Upload { $count ->
-        [one] 1 observation
-       *[other] { $count } observations
-    }
 Upload-your-observations-to-contribute-data-to-help-save-species = Загрузите ваши наблюдения, чтобы помочь сохранить виды.
 Uploaded-via-application = Загружено через: { $application }
 Uploading-x-of-y = Загрузки { $currentUploadCount } из { $total }
-Uploading-x-of-y-observations =
-    { $total ->
-        [one] Uploading { $currentUploadCount } observation
-       *[other] Uploading { $currentUploadCount } of { $total } observations
-    }
 Use-iNaturalist-to-identify-any-living-thing = Используйте iNaturalist для идентификации любого живого существа
 USE-LOCATION = ИСПОЛЬЗОВАТЬ МЕСТОПОЛОЖЕНИЕ
 Use-the-devices-other-camera = Используйте другую камеру устройства.
@@ -935,11 +880,6 @@ Worldwide = По всему миру
 WORLDWIDE = МИРОВОЙ
 Would-you-like-to-discard-your-current-recording-and-start-over = Хотели бы вы отказаться от текущей записи и начать все сначала?
 Would-you-like-to-suggest-the-following-identification = Вы хотели бы предложить следующую идентификацию?
-x-comments =
-    { $count ->
-        [one] { $count } comment
-       *[other] { $count } comments
-    }
 x-failed =
     { $count ->
         [one] { $count } неуспешно
@@ -950,50 +890,15 @@ X-FOLLOWERS =
         [one] { $count } ПОДПИСАВШИЙСЯ
        *[other] { $count } ПОДПИСАВШИХСЯ
     }
-X-Identifications =
-    { $count ->
-        [one] { $count } Identification
-       *[other] { $count } Identifications
-    }
-x-identifications =
-    { $count ->
-        [one] { $count } identification
-       *[other] { $count } identifications
-    }
-X-Identifiers =
-    { $count ->
-        [one] { $count } Identifier
-       *[other] { $count } Identifiers
-    }
 X-MEMBERS =
     { $count ->
         [one] { $count } УЧАСТНИК
        *[other] { $count } УЧАСТНИКИ
     }
-X-Observations =
-    { $count ->
-        [one] 1 Observation
-       *[other] { $count } Observations
-    }
 X-OBSERVATIONS--below-number =
     { $count ->
         [one] НАБЛЮДЕНИЕ
        *[other] НАБЛЮДЕНИЯ
-    }
-X-observations-deleted =
-    { $count ->
-        [one] 1 observation deleted
-       *[other] { $count } observations deleted
-    }
-X-observations-uploaded =
-    { $count ->
-        [one] 1 observation uploaded
-       *[other] { $count } observations uploaded
-    }
-X-Observers =
-    { $count ->
-        [one] { $count } Observer
-       *[other] { $count } Observers
     }
 X-of-Y =
     { $x ->
@@ -1005,27 +910,6 @@ X-of-Y =
     }
 X-percent = { $count }%
 X-percent-confidence = { $count }% доверия
-X-PHOTOS =
-    { $photoCount ->
-        [one] 1 PHOTO
-       *[other] { $photoCount } PHOTOS
-    }
-X-PHOTOS-X-OBSERVATIONS =
-    { $photoCount ->
-        [one] 1 PHOTO
-       *[other] { $photoCount } PHOTOS
-    }, { $observationCount ->
-        [one] 1 OBSERVATION
-       *[other] { $observationCount } OBSERVATIONS
-    }
-X-PHOTOS-Y-SOUNDS =
-    { $photoCount ->
-        [one] 1 PHOTO
-       *[other] { $photoCount } PHOTOS
-    }, { $soundCount ->
-        [one] 1 SOUND
-       *[other] { $soundCount } SOUNDS
-    }
 X-PROJECTS =
     { $projectCount ->
         [one] { $projectCount } ПРОЕКТ

@@ -5,459 +5,9 @@
       "comment" : "Bundle display name",
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "af" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "ar" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "be" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "bg" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "br" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "bs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "en-AU" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "en-GB" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "en-NZ" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "eo" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "es-AR" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "es-CO" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "es-CR" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "es-MX" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "et" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "eu" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "fa" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "fil" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "fr-CA" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "gd" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "gl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "gu" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "he" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "hr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "kn" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "lb" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "lt" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "lv" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "mi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "mk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "ml" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "mr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "ms" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "nb-NO" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "pa" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "sat" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "si" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "sq" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "sr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "sw" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "ta" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "te" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "th" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "iNaturalist"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "zh-Hant-HK" : {
-          "stringUnit" : {
-            "state" : "new",
             "value" : "iNaturalist"
           }
         }
@@ -468,459 +18,9 @@
       "comment" : "Bundle name",
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "af" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "ar" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "be" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "bg" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "br" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "bs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "en-AU" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "en-GB" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "en-NZ" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "eo" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "es-AR" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "es-CO" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "es-CR" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "es-MX" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "et" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "eu" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "fa" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "fil" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "fr-CA" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "gd" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "gl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "gu" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "he" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "hr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "kn" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "lb" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "lt" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "lv" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "mi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "mk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "ml" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "mr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "ms" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "nb-NO" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "pa" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "sat" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "si" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "sq" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "sr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "sw" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "ta" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "te" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "th" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "iNaturalist"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "iNaturalist"
-          }
-        },
-        "zh-Hant-HK" : {
-          "stringUnit" : {
-            "state" : "new",
             "value" : "iNaturalist"
           }
         }
@@ -931,48 +31,6 @@
       "comment" : "Description of why we ask for permission to access the music library.",
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "af" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "ar" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "be" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "bg" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "br" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "bs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -997,33 +55,9 @@
             "value" : "Προσθέστε υπάρχοντες ήχους στις παρατηρήσεις σας."
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
         "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "en-GB" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "en-NZ" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "eo" : {
-          "stringUnit" : {
-            "state" : "new",
             "value" : "Add existing sounds to your observations."
           }
         },
@@ -1063,12 +97,6 @@
             "value" : "Lisa vaatlustele olemasolevaid helisid."
           }
         },
-        "eu" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1079,12 +107,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lisää ääniä havaintoihisi."
-          }
-        },
-        "fil" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
           }
         },
         "fr" : {
@@ -1099,40 +121,10 @@
             "value" : "Ajoutez des sons existant à vos observations. "
           }
         },
-        "gd" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "gl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "gu" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "הוסיפו צלילים קיימים לתצפיות שלכם.ן."
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "hr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
           }
         },
         "hu" : {
@@ -1159,94 +151,16 @@
             "value" : "既存の音声を観察記録に追加します。"
           }
         },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "kn" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "lb" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Prie savo stebėjimų pridėkite turimų garsų."
           }
         },
-        "lv" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "mi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "mk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "ml" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "mr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "ms" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "nb-NO" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Voeg bestaande geluiden toe aan je waarnemingen."
-          }
-        },
-        "pa" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
           }
         },
         "pl" : {
@@ -1267,28 +181,10 @@
             "value" : "Adicione sons existentes às suas observações."
           }
         },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Добавьте имеющиеся аудио к вашим наблюдениям."
-          }
-        },
-        "sat" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "si" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
           }
         },
         "sk" : {
@@ -1297,58 +193,16 @@
             "value" : "Pridajte existujúce zvuky do vašich pozorovaní."
           }
         },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "sq" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "sr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lägg till befintliga ljud till dina fynd."
           }
         },
-        "sw" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "ta" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
-        "te" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
         "th" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "เพิ่มเสียงที่บันทึกไว้ไปยังการสังเกตของคุณ"
-          }
-        },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
           }
         },
         "tr" : {
@@ -1363,12 +217,6 @@
             "value" : "Додавайте наявні звуки до своїх спостережень."
           }
         },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1380,12 +228,6 @@
             "state" : "translated",
             "value" : "新增現有錄音至觀察紀錄中。"
           }
-        },
-        "zh-Hant-HK" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
-          }
         }
       }
     },
@@ -1393,48 +235,6 @@
       "comment" : "Description of why we ask for permission to access the camera.",
       "extractionState" : "manual",
       "localizations" : {
-        "af" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "ar" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "be" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "bg" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "br" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "bs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1459,33 +259,9 @@
             "value" : "Η πρόσβαση στην κάμερα σάς επιτρέπει να χρησιμοποιείτε την κάμερα AI και να τραβάτε φωτογραφίες."
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
         "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "en-GB" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "en-NZ" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "eo" : {
-          "stringUnit" : {
-            "state" : "new",
             "value" : "Camera access lets you use the AI Camera and take photos."
           }
         },
@@ -1519,18 +295,6 @@
             "value" : "El acceso a la cámara te perimte utilizar la Cámara IA y tomar fotos."
           }
         },
-        "et" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "eu" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1541,12 +305,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kameran salliminen mahdollistaa tekoälykameran käytön ja kuvien ottamisen."
-          }
-        },
-        "fil" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
           }
         },
         "fr" : {
@@ -1561,40 +319,10 @@
             "value" : "L'accès à la caméra vous permet d'utiliser la Caméra IA et prendre des photos"
           }
         },
-        "gd" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "gl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "gu" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "גישה למצלמה מאפשרת שימוש במצלמת הבינה המלאכותית וצילום תמונות."
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "hr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
           }
         },
         "hu" : {
@@ -1621,94 +349,16 @@
             "value" : "カメラアクセスを使用すると、AIカメラを利用して写真を撮れます。"
           }
         },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "kn" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "lb" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Prieiga prie kameros suteiks jums galimybę naudoti DI kamerą ir fotografuoti."
           }
         },
-        "lv" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "mi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "mk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "ml" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "mr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "ms" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "nb-NO" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cameratoegang staat je toe de 'AI Camera' te gebruiken en foto's te maken."
-          }
-        },
-        "pa" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
           }
         },
         "pl" : {
@@ -1729,28 +379,10 @@
             "value" : "O acesso à câmera permite que você use a AI Camera e tire fotos."
           }
         },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Доступ к камере позволяет использовать камеру ИИ и делать фото."
-          }
-        },
-        "sat" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "si" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
           }
         },
         "sk" : {
@@ -1759,58 +391,10 @@
             "value" : "Prístup k fotoaparátu vám umožní používať fotoaparát AI a robiť fotografie."
           }
         },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "sq" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "sr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kameraåtkomst låter dig använda AI-kameran och ta bilder."
-          }
-        },
-        "sw" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "ta" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "te" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "th" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
           }
         },
         "tr" : {
@@ -1825,12 +409,6 @@
             "value" : "Доступ до камери дає змогу використовувати камеру та фотографувати ШІ"
           }
         },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1842,488 +420,18 @@
             "state" : "translated",
             "value" : "啟用相機權限後，您可使用 AI 相機來拍照。"
           }
-        },
-        "zh-Hant-HK" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
-          }
         }
       }
     },
     "NSHumanReadableCopyright" : {
       "comment" : "Copyright (human-readable)",
       "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "af" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "ar" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "be" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "bg" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "br" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "bs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "en-AU" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "en-GB" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "en-NZ" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "eo" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "es-AR" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "es-CO" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "es-CR" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "es-MX" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "et" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "eu" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "fa" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "fil" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "fr-CA" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "gd" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "gl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "gu" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "he" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "hr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "kn" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "lb" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "lt" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "lv" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "mi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "mk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "ml" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "mr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "ms" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "nb-NO" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "pa" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "sat" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "si" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "sq" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "sr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "sw" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "ta" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "te" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "th" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        },
-        "zh-Hant-HK" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : ""
-          }
-        }
-      },
       "shouldTranslate" : false
     },
     "NSLocationWhenInUseUsageDescription" : {
       "comment" : "Privacy - Location When In Use Usage Description",
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "af" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
-          }
-        },
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2340,18 +448,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Добавяне на координати към наблюдения, показване на текущо местоположение на картата и др."
-          }
-        },
-        "br" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
-          }
-        },
-        "bs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
           }
         },
         "ca" : {
@@ -2384,33 +480,15 @@
             "value" : "Προσθέστε συντεταγμένες GPS στις παρατηρήσεις, δείξτε τη θέση σας στους χάρτες, και πολλά άλλα."
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
-          }
-        },
         "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Add GPS coordinates to observations, show your location on maps, and more."
           }
         },
-        "en-GB" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
-          }
-        },
         "en-NZ" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
-          }
-        },
-        "eo" : {
-          "stringUnit" : {
-            "state" : "new",
             "value" : "Add GPS coordinates to observations, show your location on maps, and more."
           }
         },
@@ -2468,12 +546,6 @@
             "value" : "Lisää GPS-koordinaatit havaintoihin, näytä sijaintisi kartoilla, ja muuta."
           }
         },
-        "fil" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
-          }
-        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2486,34 +558,16 @@
             "value" : "Ajouter les coordonnées GPS aux observations, identifier votre position sur des cartes, et plus encore."
           }
         },
-        "gd" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
-          }
-        },
         "gl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Engadir coordendas GPS ás observacións, mostrar a túa localización en mapas e máis."
           }
         },
-        "gu" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
-          }
-        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "להוסיף קואורדינטות GPS לתצפיות, להציג את מיקומך על מפות ועוד."
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
           }
         },
         "hr" : {
@@ -2588,36 +642,6 @@
             "value" : "Pievieno novērojumiem GPS koordinātas, apskati savu atrašanās vietu kartē un vēl."
           }
         },
-        "mi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
-          }
-        },
-        "mk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
-          }
-        },
-        "ml" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
-          }
-        },
-        "mr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
-          }
-        },
-        "ms" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
-          }
-        },
         "nb-NO" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2628,12 +652,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Voeg GPS-coördinaten aan waarnemingen toe, toon jouw locatie op de kaarten en meer."
-          }
-        },
-        "pa" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
           }
         },
         "pl" : {
@@ -2666,12 +684,6 @@
             "value" : "Добавить координаты GPS к наблюдениям, показать ваше местоположение на картах и многое другое."
           }
         },
-        "sat" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
-          }
-        },
         "si" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2690,52 +702,16 @@
             "value" : "Dodajte GPS koordinate opazovanjem, pokažite svojo lokacijo na zemljevidih in več."
           }
         },
-        "sq" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
-          }
-        },
-        "sr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lägg till GPS-koordinater till fynd, visa din plats på kartor, med mera."
           }
         },
-        "sw" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
-          }
-        },
-        "ta" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
-          }
-        },
-        "te" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
-          }
-        },
         "th" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "เพิ่มพิกัด GPS ให้กับการสังเกต แสดงตำแหน่งของคุณบนแผนที่ และอื่น ๆ"
-          }
-        },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
           }
         },
         "tr" : {
@@ -2748,12 +724,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Додати GPS-координати до спостережень, показати своє розташування на мапі та багато іншого."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
           }
         },
         "zh-Hans" : {
@@ -2780,48 +750,6 @@
       "comment" : "Privacy - Microphone Usage Description",
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "af" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "ar" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "be" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "bg" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "br" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "bs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2846,33 +774,9 @@
             "value" : "Καταγράψτε ηχητικές παρατηρήσεις της φύσης."
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
         "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "en-GB" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "en-NZ" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "eo" : {
-          "stringUnit" : {
-            "state" : "new",
             "value" : "Record sound observations of nature."
           }
         },
@@ -2906,18 +810,6 @@
             "value" : "Grabar sonidos observados en la naturaleza."
           }
         },
-        "et" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "eu" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2928,12 +820,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tallenna äänihavaintoja."
-          }
-        },
-        "fil" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
           }
         },
         "fr" : {
@@ -2948,40 +834,10 @@
             "value" : "Enregistrez l'observation des sons de la nature.  "
           }
         },
-        "gd" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "gl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "gu" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "הקליטו תצפיות קוליות של הטבע."
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "hr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
           }
         },
         "hu" : {
@@ -3008,94 +864,16 @@
             "value" : "自然の音声の観察記録を取ります。"
           }
         },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "kn" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "lb" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Įrašykite gamtos garsų stebėjimus."
           }
         },
-        "lv" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "mi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "mk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "ml" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "mr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "ms" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "nb-NO" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Neem natuurgeluid op voor een waarneming"
-          }
-        },
-        "pa" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
           }
         },
         "pl" : {
@@ -3116,28 +894,10 @@
             "value" : "Registar observações sonoras da natureza."
           }
         },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Сделайте аудионаблюдения природы."
-          }
-        },
-        "sat" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "si" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
           }
         },
         "sk" : {
@@ -3146,58 +906,16 @@
             "value" : "Zaznamenávajte zvukové pozorovania prírody."
           }
         },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "sq" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "sr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Spela in ljudfynd av naturen."
           }
         },
-        "sw" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "ta" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
-        "te" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
         "th" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "บันทึกเสียงจากธรรมชาติ"
-          }
-        },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
           }
         },
         "tr" : {
@@ -3212,12 +930,6 @@
             "value" : "Записуйте ваші спостереження звуків природи."
           }
         },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3229,12 +941,6 @@
             "state" : "translated",
             "value" : "錄製自然界的聲音紀錄。"
           }
-        },
-        "zh-Hant-HK" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
-          }
         }
       }
     },
@@ -3242,48 +948,6 @@
       "comment" : "Privacy - Photo Library Additions Usage Description",
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "af" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "ar" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "be" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "bg" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "br" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "bs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3308,33 +972,9 @@
             "value" : "Εξαγωγή φωτογραφιών iNaturalist στη βιβλιοθήκη σας."
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
         "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "en-GB" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "en-NZ" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "eo" : {
-          "stringUnit" : {
-            "state" : "new",
             "value" : "Export iNaturalist photos to your library."
           }
         },
@@ -3374,28 +1014,10 @@
             "value" : "Ekspordi iNaturalisti fotod oma seadmesse."
           }
         },
-        "eu" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "fa" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vie iNaturalist-kuvat galleriaasi."
-          }
-        },
-        "fil" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
           }
         },
         "fr" : {
@@ -3410,40 +1032,10 @@
             "value" : "Exportez des photos iNaturalist vers votre photothèque."
           }
         },
-        "gd" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "gl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "gu" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "ייצא תמונות iNaturalist לספרייה שלך."
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "hr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
           }
         },
         "hu" : {
@@ -3470,94 +1062,16 @@
             "value" : "iNaturalist Next の写真をライブラリに書き出します。"
           }
         },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "kn" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "lb" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eksportuokite \"iNaturalist\" nuotraukas į savo biblioteką."
           }
         },
-        "lv" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "mi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "mk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "ml" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "mr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "ms" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "nb-NO" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Exporteer iNaturalist foto's naar jouw bibliotheek."
-          }
-        },
-        "pa" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
           }
         },
         "pl" : {
@@ -3578,28 +1092,10 @@
             "value" : "Exporte fotos do iNaturalist para sua biblioteca."
           }
         },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Экспорт фото iNaturalist Next в вашу галерею."
-          }
-        },
-        "sat" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "si" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
           }
         },
         "sk" : {
@@ -3608,76 +1104,16 @@
             "value" : "Exportujte fotografie iNaturalist do svojej knižnice."
           }
         },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "sq" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "sr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Exportera iNaturalist-foton till ditt bibliotek."
           }
         },
-        "sw" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "ta" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "te" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "th" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "iNaturalist fotoğraflarını kitaplığına aktar."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
           }
         },
         "zh-Hans" : {
@@ -3691,12 +1127,6 @@
             "state" : "translated",
             "value" : "將 iNaturalist 照片匯出到您的照片圖庫。"
           }
-        },
-        "zh-Hant-HK" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
-          }
         }
       }
     },
@@ -3704,48 +1134,6 @@
       "comment" : "Privacy - Photo Library Usage Description",
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "af" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "ar" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "be" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "bg" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "br" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "bs" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3770,33 +1158,9 @@
             "value" : "Εξαγωγή και εισαγωγή φωτογραφιών iNaturalist από και προς τη βιβλιοθήκη σας."
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
         "en-AU" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "en-GB" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "en-NZ" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "eo" : {
-          "stringUnit" : {
-            "state" : "new",
             "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
@@ -3836,28 +1200,10 @@
             "value" : "Ekspordi ja impordi fotosid oma seadme ja iNaturalisti vahel"
           }
         },
-        "eu" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "fa" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vie ja tuo iNaturalist-kuvia galleriaasi/galleriastasi."
-          }
-        },
-        "fil" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "fr" : {
@@ -3872,40 +1218,10 @@
             "value" : "Exportez et importez des photos iNaturalist vers et depuis votre photothèque."
           }
         },
-        "gd" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "gl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "gu" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "ייצאו וייבאו תמונות iNaturalist אל הספרייה וממנה."
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "hr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "hu" : {
@@ -3932,94 +1248,16 @@
             "value" : "iNaturalistの写真をライブラリに書き出したり、ライブラリから読み込んだりします。"
           }
         },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "kn" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "lb" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eksportuokite ir importuokite \"iNaturalist\" nuotraukas į savo biblioteką ir iš jos."
           }
         },
-        "lv" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "mi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "mk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "ml" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "mr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "ms" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "nb-NO" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Exporteer en importeer iNaturalist foto's naar en vanuit jouw bibliotheek."
-          }
-        },
-        "pa" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "pl" : {
@@ -4040,28 +1278,10 @@
             "value" : "Exporte e importe fotos iNaturalist de e para a sua biblioteca."
           }
         },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Экспорт и импорт фото iNaturalist Next в вашу галерею и из неё."
-          }
-        },
-        "sat" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "si" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "sk" : {
@@ -4070,76 +1290,16 @@
             "value" : "Exportujte a importujte fotografie iNaturalist do a zo svojej knižnice."
           }
         },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "sq" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "sr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Exportera och importera iNaturalist-foton till och från ditt bibliotek."
           }
         },
-        "sw" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "ta" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "te" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "th" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "tl" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "iNaturalist fotoğraflarını kitaplığına aktar ve kitaplığından getir."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "zh-Hans" : {
@@ -4152,12 +1312,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "將 《愛自然》中的照片匯出到您的照片圖庫或從圖庫中匯入《愛自然》 照片。"
-          }
-        },
-        "zh-Hant-HK" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
           }
         }
       }

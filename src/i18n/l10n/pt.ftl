@@ -55,7 +55,6 @@ all-rights-reserved = Todos os direitos reservados.
 All-taxa = Todos os táxons
 ALL-USERS-EXCEPT = TODOS OS UTILIZADORES, EXCETO
 ALLOW-LOCATION-ACCESS = PERMITIR ACESSO À LOCALIZAÇÃO
-Already-have-an-iNaturalist-account = Already have an iNaturalist account?
 An-Internet-connection-is-required = É necessária uma ligação à Internet para carregar mais observações.
 Analyzing-for-the-best-identification = Analisando para a melhor identificação...
 Any--date = Qualquer
@@ -148,7 +147,6 @@ Couldnt-create-comment = Não foi possível criar comentário
 Couldnt-create-identification-error = Não foi possível criar identificação { $error }
 Couldnt-create-identification-unknown-error = Não foi possível criar identificação, erro desconhecido.
 CREATE-AN-ACCOUNT = CRIAR UMA CONTA
-Create-observation-with-no-evidence = Create observation with no evidence
 DATA-QUALITY = QUALIDADE DOS DADOS
 DATA-QUALITY-ASSESSMENT = AVALIAÇÃO DA QUALIDADE DOS DADOS
 Data-Quality-Assessment = Avaliação da Qualidade dos Dados
@@ -333,7 +331,6 @@ Highest = Mais alto
 HIGHEST-RANK = CLASSIFICAÇÃO MAIS ALTA
 I-agree-to-the-Terms-of-Use = <0>Concordo com os Termos de Utilização e a Política de Privacidade e revi as Diretrizes da Comunidade (</0><1>obrigatório</1><0>).</0>
 Iconic-taxon-name = Nome icónico do táxon: { $iconicTaxon }
-ID-in-Camera = ID in Camera
 ID-Suggestions = Sugestões de ID
 ID-Withdrawn = ID retirada
 IDENTIFICATION = IDENTIFICAÇÃO
@@ -345,7 +342,6 @@ IDENTIFICATIONS-WITHOUT-NUMBER =
     }
 Identifiers = Identificadores
 Identifiers-View = Visualização de identificadores
-IDENTIFY = IDENTIFY
 Identify-organisms-in-real-time-with-your-camera = Identifique organismos em tempo real com a sua câmara
 Identify-species-anywhere = Identifique espécies em qualquer lugar
 If-an-account-with-that-email-exists = Se existir uma conta com esse e-mail, enviamos instruções de redefinição de senha para o seu e-mail.
@@ -425,8 +421,6 @@ July = julho
 June = junho
 Just-make-sure-the-organism-is-wild = Apenas certifique-se de que o organismo é selvagem (não um animal de estimação, animal de zoológico ou planta de jardim)
 Last-Active-date = Última ativa: { $date }
-Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, maximumFractionDigits: 6) }
-Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBER($longitude, maximumFractionDigits: 6) }, Acc: { $accuracy }
 leading--identification = Líder
 Learn-from-people-who-verify-and-refine-your-identifications = Aprenda com pessoas que verificam e refinam suas identificações.
 Learn-More = Saiba mais
@@ -573,7 +567,6 @@ Organism-is-captive = Organismo é cativo
 Organisms-that-are-identified-to-species = Organismos identificados com classificação de espécie igual ou inferior a
 OTHER-DATA = OUTROS DADOS
 OTHER-SUGGESTIONS = OUTRAS SUGESTÕES
-OTHERS--notifications = OTHERS
 PASSWORD = PALAVRA-PASSE
 PEOPLE--title = PESSOAS
 Photo-importer = Importador de fotografias
@@ -594,7 +587,6 @@ POTENTIAL-DISAGREEMENT = POTENCIAL DESACORDO
 Potential-disagreement-description = <0>As provas são suficientes para confirmar que isto é </0><1></1><0>?<0></0>
 Potential-disagreement-disagree = <0>Não, mas este é um membro da </0><1></1>
 Potential-disagreement-unsure = <0>Eu não sei, mas tenho certeza que isso é </0><1></1>
-Press-and-hold-to-view-more-options = Press and hold to view more options
 Previous-observation = Observação anterior
 Previous-slide = Diapositivo anterior
 Privacy-Policy = Política de Privacidade
@@ -815,7 +807,6 @@ Switches-to-tab = Muda para { $tab } separador.
 Sync-observations = Sincronizar observações
 Syncing = A sincronizar...
 Take-photo = Tirar foto
-Take-photos = Take photos
 Taxa = Táxons
 TAXON = TÁXON
 TAXON-NAMES-DISPLAY = EXIBIÇÃO DE NOMES DE TÁXONS
@@ -834,9 +825,7 @@ The-AI-is-not-confident-Upload-to-ask-the-community = A IA não está confiante.
 The-exact-location-will-be-hidden = A localização exata será ocultada publicamente e, em vez disso, generalizada para uma área maior. (As espécies ameaçadas e ameaçadas de extinção são automaticamente obscurecidas).
 The-iNaturalist-community-will-help-verify-and-refine-identifications = A comunidade iNaturalist ajudará a verificar e refinar as identificações em suas observações para criar dados de Grau de Pesquisa para ciência e conservação.
 The-iNaturalist-Network = A rede iNaturalist é uma coleção de sites localizados que estão totalmente conectados à comunidade global iNaturalist. Os sites de rede são apoiados por instituições locais que promovem o uso local e facilitam o uso de dados do iNaturalist para beneficiar a biodiversidade local.
-The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify.
 The-models-that-suggest-species = Os modelos que sugerem espécies com base na semelhança visual e localização são em parte graças a colaborações com Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona e Grant Van Horn.
-There-was-an-error-that-might-be-fixed-by-logging-in-again = There was an error that might be fixed by logging in again.
 This-is-a-wild-organism = Este é um organismo selvagem e não foi colocado neste local por humanos.
 This-is-how-taxon-names-will-be-displayed = É assim que todos os nomes de táxons serão exibidos para você em iNaturalist:
 This-is-your-identification-other-people-may-help-confirm-it = Esta é a sua identificação. Outras pessoas podem ajudar a confirmá-lo!
@@ -849,9 +838,6 @@ This-observation-needs-more-identifications = Esta observação precisa de mais 
 This-observation-needs-more-identifications-to-become-research-grade = Essa observação precisa de mais identificações para se tornar nota de pesquisa.
 This-observer-has-opted-out-of-the-Community-Taxon = Este observador optou por não participar no Taxon Comunitário
 This-organism-was-placed-by-humans = Este organismo foi colocado neste local pelos seres humanos. Isso se aplica a coisas como plantas de jardim, animais de estimação e animais de zoológico.
-This-user-has-no-followers = This user has no followers.
-This-user-has-not-joined-any-projects = This user has not joined any projects.
-This-user-is-not-following-anyone = This user is not following anyone.
 To-sync-your-observations-to-iNaturalist = Para sincronizar as suas observações com o iNaturalist, inicie sessão.
 To-view-nearby-organisms-please-enable-location = Para ver organismos próximos, ative a localização.
 To-view-nearby-projects-please-enable-location = Para ver projetos próximos, ative a localização.
@@ -870,7 +856,6 @@ Unreviewed-observations-only = Apenas observações não revistas
 Upload-Complete = Upload Completo
 Upload-in-progress = Upload em andamento
 UPLOAD-NOW = CARREGUE AGORA
-Upload-photos = Upload photos
 Upload-Progress = Carregar { $uploadProgress } percentagem concluída
 UPLOAD-TO-INATURALIST = UPLOAD PARA INATURALIST
 Upload-x-observations =
@@ -961,11 +946,6 @@ X-Identifiers =
     { $count ->
         [um] { $count } Identificador
        *[outros] { $count } Identificadores
-    }
-X-MEMBERS =
-    { $count ->
-        [one] { $count } MEMBER
-       *[other] { $count } MEMBERS
     }
 X-Observations =
     { $count ->

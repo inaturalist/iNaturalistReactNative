@@ -55,7 +55,6 @@ all-rights-reserved = όλα τα δικαιώματα διατηρούνται
 All-taxa = Όλα τα taxa
 ALL-USERS-EXCEPT = ΟΛΟΙ ΟΙ ΧΡΗΣΤΕΣ ΕΚΤΟΣ ΑΠΟ
 ALLOW-LOCATION-ACCESS = ΝΑ ΕΠΙΤΡΈΠΕΤΑΙ Η ΠΡΌΣΒΑΣΗ ΣΤΗΝ ΤΟΠΟΘΕΣΊΑ
-Already-have-an-iNaturalist-account = Already have an iNaturalist account?
 An-Internet-connection-is-required = Απαιτείται σύνδεση στο Internet για τη φόρτωση περισσότερων παρατηρήσεων.
 Analyzing-for-the-best-identification = Αναλύοντας για την καλύτερη ταυτοποίηση...
 Any--date = Όποιος
@@ -66,7 +65,6 @@ Any--quality-grade = Όποιος
 Any--user = Όποιος
 Anyone-using-iNaturalist-can-see = Όποιος χρησιμοποιεί το iNaturalist μπορεί να δει πού παρατηρήθηκε αυτό το είδος και οι επιστήμονες μπορούν πιο εύκολα να το χρησιμοποιήσουν για έρευνα.
 APP-LANGUAGE = ΓΛΏΣΣΑ ΕΦΑΡΜΟΓΉΣ
-apple-full-name = { JOIN($namePrefix, $givenName, $middleName, $nickname, $familyName, $nameSuffix, separator: " ") }
 APPLY-FILTERS = ΕΦΑΡΜΟΓΉ ΦΊΛΤΡΩΝ
 Apply-filters = Εφαρμογή φίλτρων
 April = Απρίλιος
@@ -148,7 +146,6 @@ Couldnt-create-comment = Δεν ήταν δυνατή η δημιουργία σ
 Couldnt-create-identification-error = Δεν ήταν δυνατή η δημιουργία αναγνώρισης { $error }
 Couldnt-create-identification-unknown-error = Δεν ήταν δυνατή η δημιουργία αναγνώρισης, άγνωστο σφάλμα.
 CREATE-AN-ACCOUNT = ΔΗΜΙΟΥΡΓΙΑ ΛΟΓΑΡΙΑΣΜΟΥ
-Create-observation-with-no-evidence = Create observation with no evidence
 DATA-QUALITY = ΠΟΙΟΤΗΤΑ ΔΕΔΟΜΕΝΩΝ
 DATA-QUALITY-ASSESSMENT = ΑΞΙΟΛΟΓΗΣΗ ΠΟΙΟΤΗΤΑΣ ΔΕΔΟΜΕΝΩΝ
 Data-Quality-Assessment = Αξιολόγηση ποιότητας δεδομένων
@@ -209,16 +206,6 @@ DELETE-OBSERVATION--question = ΔΙΑΓΡΑΦΉ ΠΑΡΑΤΉΡΗΣΗΣ;
 Delete-photo = Διαγραφή φωτογραφίας
 Delete-sound = Διαγραφή ήχου
 Deletes-entered-text = Διαγράφει το κείμενο που έχει εισαχθεί
-Deleting-x-of-y--observations =
-    Deleting { $currentDeleteCount } { $total ->
-        [one] of { $total }
-       *[other] of { $total } observations
-    }
-Deleting-x-of-y-observations-2 =
-    Deleting { $currentDeleteCount } { $total ->
-        [one] observation
-       *[other] of { $total } observations
-    }
 Details = Λεπτομέρειες
 DETAILS = ΛΕΠΤΟΜΈΡΕΙΕΣ
 Device-storage-full = Ο χώρος αποθήκευσης της συσκευής είναι γεμάτος
@@ -235,11 +222,6 @@ DISCARD-OBSERVATION = ΑΠΌΡΡΙΨΗ ΠΑΡΑΤΉΡΗΣΗΣ
 DISCARD-PHOTOS--question = ΑΠΌΡΡΙΨΗ ΦΩΤΟΓΡΑΦΙΏΝ;
 DISCARD-RECORDING = ΑΠΌΡΡΙΨΗ ΕΓΓΡΑΦΉΣ
 DISCARD-SOUND--question = ΑΠΌΡΡΙΨΗ ΉΧΟΥ;
-DISCARD-X-OBSERVATIONS =
-    { $count ->
-        [one] DISCARD OBSERVATION
-       *[other] DISCARD { $count } OBSERVATIONS
-    }
 DISCOVER-NATURE-AROUND-YOU = ΑΝΑΚΑΛΥΨΤΕ ΤΗ ΦΥΣΗ ΓΥΡΩ ΣΑΣ
 DISMISS = ΑΠΟΛΎΩ
 Do-you-know-what-group-this-is-in = Ξέρετε σε ποια ομάδα ανήκει αυτό;
@@ -308,11 +290,6 @@ Flagged = Αναφέρθηκε
 Flash = Αναλαμπή
 Flip-camera = Αναστροφή κάμερας
 FOLLOW = ΑΚΟΛΟΥΘΏ
-FOLLOWING-X-PEOPLE =
-    { $count ->
-        [one] FOLLOWING { $count } PERSON
-       *[other] FOLLOWING { $count } PEOPLE
-    }
 Forgot-Password = Ξέχασα τον κωδικό πρόσβασης
 GEOPRIVACY = ΓΕΩΑΠΌΡΡΗΤΟ
 Geoprivacy-status = Γεωαπόρρητο: { $status }
@@ -333,28 +310,16 @@ Highest = Υψηλότερη
 HIGHEST-RANK = ΥΨΗΛΌΤΕΡΗ ΚΑΤΆΤΑΞΗ
 I-agree-to-the-Terms-of-Use = <0>Συμφωνώ με τους Όρους Χρήσης και την Πολιτική Απορρήτου και έχω διαβάσει τις Οδηγίες κοινότητας (</0><1>απαιτείται</1><0>).</0>
 Iconic-taxon-name = Εμβληματικό όνομα ταξινομικής κατηγορίας: { $iconicTaxon }
-ID-in-Camera = ID in Camera
 ID-Suggestions = Προτάσεις ταυτότητας
 ID-Withdrawn = Το αναγνωριστικό αποσύρθηκε
 IDENTIFICATION = ΑΝΑΓΝΏΡΙΣΗ
 Identification-options = Επιλογές ταυτοποίησης
-IDENTIFICATIONS-WITHOUT-NUMBER =
-    { $count ->
-        [one] IDENTIFICATION
-       *[other] IDENTIFICATIONS
-    }
 Identifiers = Ταυτοποιητές
 Identifiers-View = Προβολή αναγνωριστικών
-IDENTIFY = IDENTIFY
 Identify-organisms-in-real-time-with-your-camera = Προσδιορίστε οργανισμούς σε πραγματικό χρόνο με την κάμερά σας
 Identify-species-anywhere = Προσδιορίστε τα είδη οπουδήποτε
 If-an-account-with-that-email-exists = Αν υπάρχει λογαριασμός με αυτό το email, έχουμε στείλει οδηγίες επαναφοράς κωδικού πρόσβασης στο email σας.
 If-you-have-an-existing-account-try-sign-in-reset = Αν έχετε ήδη λογαριασμό iNat, δοκιμάστε να συνδεθείτε με το όνομα χρήστη και τον κωδικό πρόσβασής σας ή δοκιμάστε να επαναφέρετε τον κωδικό πρόσβασής σας χρησιμοποιώντας τη διεύθυνση email που σχετίζεται με τον λογαριασμό σας.
-If-you-leave-x-of-your-observations-removed =
-    If you leave this traditional project, { $count ->
-        [one] 1 of your observations
-       *[other] { $count } of your observations
-    } will also be removed from this project.
 If-you-save-this-observation-and-upload-it-to-iNaturalist = Εάν αποθηκεύσετε αυτήν την παρατήρηση και την ανεβάσετε στο iNaturalist, άλλα άτομα ενδέχεται να μπορούν να βοηθήσουν στην αναγνώρισή της.
 If-you-want-to-collate-compare-promote = Εάν θέλετε να συγκεντρώσετε, να συγκρίνετε ή να προωθήσετε ένα σύνολο υπαρχόντων έργων, τότε ένα έργο Umbrella είναι αυτό που πρέπει να χρησιμοποιήσετε. Για παράδειγμα, το 2018 City Nature Challenge, το οποίο συγκέντρωσε πάνω από 60 έργα, δημιούργησε μια εξαιρετική σελίδα προορισμού όπου ο καθένας μπορούσε να συγκρίνει και να αντιπαραβάλει τις παρατηρήσεις κάθε πόλης. Τόσο τα έργα συλλογής όσο και τα παραδοσιακά έργα μπορούν να χρησιμοποιηθούν σε ένα έργο ομπρέλας και έως και 500 έργα μπορούν να συγκεντρωθούν από ένα έργο ομπρέλας.
 If-youre-seeing-this-error = Εάν βλέπετε αυτό και είστε συνδεδεμένοι, το προσωπικό του iNat έχει ήδη ειδοποιηθεί. Ευχαριστώ που βρήκατε ένα σφάλμα! Εάν είστε εκτός σύνδεσης, τραβήξτε ένα στιγμιότυπο οθόνης και στείλτε μας ένα μήνυμα ηλεκτρονικού ταχυδρομείου όταν επιστρέψετε στο Διαδίκτυο.
@@ -362,11 +327,6 @@ IGNORE-LOCATION = ΑΓΝΟΗΣΗ ΤΟΠΟΘΕΣΙΑΣ
 Ignore-notifications = Παράβλεψη ειδοποιήσεων
 Ignoring-location = Παράβλεψη τοποθεσίας
 Import-Photos-From = Εισαγωγή φωτογραφιών από
-IMPORT-X-OBSERVATIONS =
-    IMPORT { $count ->
-        [one] 1 OBSERVATION
-       *[other] { $count } OBSERVATIONS
-    }
 Improve-suggestions-by-using-your-location = Βελτιώστε τις προτάσεις χρησιμοποιώντας την τοποθεσία σας
 IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = ΒΕΛΤΙΏΣΤΕ ΑΥΤΈΣ ΤΙΣ ΠΡΟΤΆΣΕΙΣ ΧΡΗΣΙΜΟΠΟΙΏΝΤΑΣ ΤΗΝ ΤΟΠΟΘΕΣΊΑ ΣΑΣ
 improving--identification = Βελτίωση
@@ -411,21 +371,10 @@ JOIN-PROJECT = ΣΥΜΜΕΤΕΧΕΤΕ ΣΤΟ ΕΡΓΟ
 JOIN-PROJECT--question = ΣΥΜΜΕΤΕΧΕΤΕ ΣΤΟ PROJECT;
 JOINED = ΕΓΓΕΓΡΑΜΕΝΟΣ
 Joined-date = Εντάχθηκαν: { $date }
-JOINED-X-PROJECTS =
-    { $count ->
-        [one] JOINED { $count } PROJECT
-       *[other] JOINED { $count } PROJECTS
-    }
-JOURNAL-POSTS-WITHOUT-NUMBER =
-    { $count ->
-        [one] JOURNAL POST
-       *[other] JOURNAL POSTS
-    }
 July = Ιούλιος
 June = Ιούνιος
 Just-make-sure-the-organism-is-wild = Απλά βεβαιωθείτε ότι ο οργανισμός είναι άγριος (όχι κατοικίδιο ζώο, ζώο ζωολογικού κήπου ή φυτό κήπου)
 Last-Active-date = Τελευταία δραστηριότητα: { $date }
-Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, maximumFractionDigits: 6) }
 Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBER($longitude, maximumFractionDigits: 6) }, Acc: { $accuracy }
 leading--identification = Κορυφαία
 Learn-from-people-who-verify-and-refine-your-identifications = Μάθετε από άτομα που επαληθεύουν και βελτιώνουν τα στοιχεία ταυτοποίησής σας.
@@ -458,11 +407,6 @@ maverick--identification = Αντισυμβατική
 May = Μάιος
 MEDIA = ΜΈΣΑ ΜΑΖΙΚΉΣ ΕΝΗΜΈΡΩΣΗΣ
 Media-Type = Τύπος μέσου
-MEMBERS-WITHOUT-NUMBER =
-    { $count ->
-        [one] MEMBER
-       *[other] MEMBERS
-    }
 Menu = Μενού
 Missing-Date = Η ημερομηνία λείπει
 MISSING-EVIDENCE = ΕΛΛΕΊΠΟΝΤΑ ΑΠΟΔΕΙΚΤΙΚΆ ΣΤΟΙΧΕΊΑ
@@ -542,11 +486,6 @@ Observation-with-no-evidence = Παρατήρηση χωρίς στοιχεία
 Observations = Παρατηρήσεις
 Observations-need-location-date--warning = Οι παρατηρήσεις του iNaturalist χρειάζονται μια τοποθεσία και μια ημερομηνία για να είναι χρήσιμες στους επιστήμονες. Ελέγξτε τις παρατηρήσεις με αυτό το εικονίδιο πριν από τη μεταφόρτωση.
 Observations-View = Προβολή παρατηρήσεων
-OBSERVATIONS-WITHOUT-NUMBER =
-    { $count ->
-        [one] OBSERVATION
-       *[other] OBSERVATIONS
-    }
 OBSERVE-ORGANISMS = ΠΑΡΑΤΗΡΗΣΗ ΟΡΓΑΝΙΣΜΩΝ
 OBSERVED-AT--label = ΠΑΡΑΤΗΡΉΘΗΚΕ ΣΤΟ
 OBSERVED-IN--label = ΠΑΡΑΤΗΡΉΘΗΚΕ ΣΕ
@@ -573,7 +512,6 @@ Organism-is-captive = Ο οργανισμός είναι αιχμάλωτος
 Organisms-that-are-identified-to-species = Οργανισμοί που ταυτοποιούνται με κατάταξη ειδών ή χαμηλότερη
 OTHER-DATA = ΑΛΛΑ ΔΕΔΟΜΕΝΑ
 OTHER-SUGGESTIONS = ΑΛΛΕΣ ΠΡΟΤΑΣΕΙΣ
-OTHERS--notifications = OTHERS
 PASSWORD = ΚΩΔΙΚΌΣ ΠΡΌΣΒΑΣΗΣ
 PEOPLE--title = ΛΑΌΣ
 Photo-importer = Εισαγωγέας φωτογραφιών
@@ -594,7 +532,6 @@ POTENTIAL-DISAGREEMENT = ΠΙΘΑΝΉ ΔΙΑΦΩΝΊΑ
 Potential-disagreement-description = <0>Αρκούν τα στοιχεία για να επιβεβαιωθεί αυτό </0><1></1><0>?<0></0>
 Potential-disagreement-disagree = <0>Όχι, αλλά αυτό είναι μέλος του </0><1></1>
 Potential-disagreement-unsure = <0>Δεν ξέρω, αλλά είμαι σίγουρος ότι αυτό είναι </0><1></1>
-Press-and-hold-to-view-more-options = Press and hold to view more options
 Previous-observation = Προηγούμενη παρατήρηση
 Previous-slide = Προηγούμενη διαφάνεια
 Privacy-Policy = Πολιτική ιδιωτικού απορρήτου
@@ -793,11 +730,6 @@ Sounds = Ήχοι
 Source-List = <0>(Λίστα πηγών: </0><1>{ $source }</1><0>)</0>
 Species = Είδος
 Species-View = Προβολή ειδών
-SPECIES-WITHOUT-NUMBER =
-    { $count ->
-        [one] SPECIES
-       *[other] SPECIES
-    }
 Standard--map-type = Συνήθης
 Start-must-be-before-end = Η ημερομηνία έναρξης πρέπει να είναι πριν από την ημερομηνία λήξης.
 Start-upload = Έναρξη μεταφόρτωσης
@@ -815,7 +747,6 @@ Switches-to-tab = Μεταβαίνει σε { $tab } καρτέλα.
 Sync-observations = Συγχρονισμός παρατηρήσεων
 Syncing = Γίνεται συγχρονισμός...
 Take-photo = Λήψη φωτογραφίας
-Take-photos = Take photos
 Taxa = Taxa
 TAXON = ΤΑΞΙΝΟΜΙΚΉ ΚΑΤΗΓΟΡΊΑ
 TAXON-NAMES-DISPLAY = ΕΜΦΆΝΙΣΗ ΟΝΟΜΆΤΩΝ ΤΑΞΙΝΟΜΙΚΏΝ ΚΑΤΗΓΟΡΙΏΝ
@@ -834,9 +765,7 @@ The-AI-is-not-confident-Upload-to-ask-the-community = Το AI δεν είναι 
 The-exact-location-will-be-hidden = Η ακριβής τοποθεσία θα κρυφτεί δημοσίως και αντ 'αυτού θα γενικευτεί σε μια μεγαλύτερη περιοχή. (Τα απειλούμενα και απειλούμενα είδη αποκρύπτονται αυτόματα).
 The-iNaturalist-community-will-help-verify-and-refine-identifications = Η κοινότητα iNaturalist θα σας βοηθήσει να επαληθεύσετε και να βελτιώσετε τις ταυτοποιήσεις στις παρατηρήσεις σας για να δημιουργήσετε δεδομένα ερευνητικού επιπέδου για την επιστήμη και τη διατήρηση.
 The-iNaturalist-Network = Το δίκτυο iNaturalist είναι μια συλλογή τοπικών ιστοσελίδων που είναι πλήρως συνδεδεμένες με την παγκόσμια κοινότητα iNaturalist. Οι δικτυακοί τόποι υποστηρίζονται από τοπικούς φορείς που προωθούν την τοπική χρήση και διευκολύνουν τη χρήση δεδομένων από το iNaturalist προς όφελος της τοπικής βιοποικιλότητας.
-The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify.
 The-models-that-suggest-species = Τα μοντέλα που προτείνουν είδη με βάση την οπτική ομοιότητα και την τοποθεσία οφείλονται εν μέρει σε συνεργασίες με τους Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona και Grant Van Horn.
-There-was-an-error-that-might-be-fixed-by-logging-in-again = There was an error that might be fixed by logging in again.
 This-is-a-wild-organism = Αυτός είναι ένας άγριος οργανισμός και δεν τοποθετήθηκε σε αυτή τη θέση από τον άνθρωπο.
 This-is-how-taxon-names-will-be-displayed = Αυτός είναι ο τρόπος με τον οποίο όλα τα ονόματα ταξινομικών κατηγοριών θα εμφανίζονται σε εσάς σε όλο το iNaturalist:
 This-is-your-identification-other-people-may-help-confirm-it = Αυτή είναι η ταυτότητά σας. Άλλοι άνθρωποι μπορεί να σας βοηθήσουν να το επιβεβαιώσετε!
@@ -849,9 +778,6 @@ This-observation-needs-more-identifications = Αυτή η παρατήρηση �
 This-observation-needs-more-identifications-to-become-research-grade = Αυτή η παρατήρηση χρειάζεται περισσότερες ταυτοποιήσεις για να γίνει ερευνητικού βαθμού.
 This-observer-has-opted-out-of-the-Community-Taxon = Ο παρατηρητής αυτός επέλεξε να εξαιρεθεί από την κοινοτική ταξινομική κατηγορία
 This-organism-was-placed-by-humans = Αυτός ο οργανισμός τοποθετήθηκε σε αυτή τη θέση από τον άνθρωπο. Αυτό ισχύει για πράγματα όπως φυτά κήπου, κατοικίδια ζώα και ζώα ζωολογικών κήπων.
-This-user-has-no-followers = This user has no followers.
-This-user-has-not-joined-any-projects = This user has not joined any projects.
-This-user-is-not-following-anyone = This user is not following anyone.
 To-sync-your-observations-to-iNaturalist = Για να συγχρονίσετε τις παρατηρήσεις σας με το iNaturalist, παρακαλούμε συνδεθείτε.
 To-view-nearby-organisms-please-enable-location = Για να δείτε κοντινούς οργανισμούς, ενεργοποιήστε την τοποθεσία.
 To-view-nearby-projects-please-enable-location = Για να δείτε κοντινά έργα, ενεργοποιήστε την τοποθεσία.
@@ -870,22 +796,11 @@ Unreviewed-observations-only = Μόνο μη αναθεωρημένες παρα
 Upload-Complete = Η μεταφόρτωση ολοκληρώθηκε
 Upload-in-progress = Μεταφόρτωση σε εξέλιξη
 UPLOAD-NOW = ΑΝΕΒΑΣΤΕ ΤΩΡΑ
-Upload-photos = Upload photos
 Upload-Progress = Ανέβασμα { $uploadProgress } Ποσοστό ολοκλήρωσης
 UPLOAD-TO-INATURALIST = ΑΝΕΒΆΣΤΕ ΣΤΟ INATURALIST
-Upload-x-observations =
-    Upload { $count ->
-        [one] 1 observation
-       *[other] { $count } observations
-    }
 Upload-your-observations-to-contribute-data-to-help-save-species = Ανεβάστε τις παρατηρήσεις σας για να συνεισφέρετε δεδομένα που θα βοηθήσουν στη διάσωση ειδών.
 Uploaded-via-application = Ανέβηκε μέσω: { $application }
 Uploading-x-of-y = Φόρτωμα { $currentUploadCount } από { $total }
-Uploading-x-of-y-observations =
-    { $total ->
-        [one] Uploading { $currentUploadCount } observation
-       *[other] Uploading { $currentUploadCount } of { $total } observations
-    }
 Use-iNaturalist-to-identify-any-living-thing = Χρησιμοποιήστε το iNaturalist για να προσδιορίσετε οποιοδήποτε ζωντανό πράγμα
 USE-LOCATION = ΤΟΠΟΘΕΣΙΑ ΧΡΗΣΗΣ
 Use-the-devices-other-camera = Χρησιμοποιήστε την άλλη κάμερα της συσκευής.
@@ -932,133 +847,9 @@ Worldwide = Παγκόσμιες
 WORLDWIDE = ΠΑΓΚΟΣΜΊΩΣ
 Would-you-like-to-discard-your-current-recording-and-start-over = Θα θέλατε να απορρίψετε την τρέχουσα εγγραφή σας και να ξεκινήσετε από την αρχή;
 Would-you-like-to-suggest-the-following-identification = Θα θέλατε να προτείνετε την ακόλουθη ταυτοποίηση;
-x-comments =
-    { $count ->
-        [one] { $count } comment
-       *[other] { $count } comments
-    }
-x-failed =
-    { $count ->
-        [one] { $count } failed
-       *[other] { $count } failed
-    }
-X-FOLLOWERS =
-    { $count ->
-        [one] { $count } FOLLOWER
-       *[other] { $count } FOLLOWERS
-    }
-X-Identifications =
-    { $count ->
-        [one] { $count } Identification
-       *[other] { $count } Identifications
-    }
-x-identifications =
-    { $count ->
-        [one] { $count } identification
-       *[other] { $count } identifications
-    }
-X-Identifiers =
-    { $count ->
-        [one] { $count } Identifier
-       *[other] { $count } Identifiers
-    }
-X-MEMBERS =
-    { $count ->
-        [one] { $count } MEMBER
-       *[other] { $count } MEMBERS
-    }
-X-Observations =
-    { $count ->
-        [one] 1 Observation
-       *[other] { $count } Observations
-    }
-X-OBSERVATIONS--below-number =
-    { $count ->
-        [one] OBSERVATION
-       *[other] OBSERVATIONS
-    }
-X-observations-deleted =
-    { $count ->
-        [one] 1 observation deleted
-       *[other] { $count } observations deleted
-    }
-X-observations-uploaded =
-    { $count ->
-        [one] 1 observation uploaded
-       *[other] { $count } observations uploaded
-    }
-X-Observers =
-    { $count ->
-        [one] { $count } Observer
-       *[other] { $count } Observers
-    }
-X-of-Y =
-    { $x ->
-        [one] 1
-       *[other] { $x }
-    } { $y ->
-        [one] of { $y }
-       *[other] of { $y }
-    }
 X-percent = { $count }%
 X-percent-confidence = { $count }% εμπιστοσύνης
-X-PHOTOS =
-    { $photoCount ->
-        [one] 1 PHOTO
-       *[other] { $photoCount } PHOTOS
-    }
-X-PHOTOS-X-OBSERVATIONS =
-    { $photoCount ->
-        [one] 1 PHOTO
-       *[other] { $photoCount } PHOTOS
-    }, { $observationCount ->
-        [one] 1 OBSERVATION
-       *[other] { $observationCount } OBSERVATIONS
-    }
-X-PHOTOS-Y-SOUNDS =
-    { $photoCount ->
-        [one] 1 PHOTO
-       *[other] { $photoCount } PHOTOS
-    }, { $soundCount ->
-        [one] 1 SOUND
-       *[other] { $soundCount } SOUNDS
-    }
 X-PROJECTS = { $projectCount } ΈΡΓΑ
-x-saved =
-    { $count ->
-        [one] { $count } saved
-       *[other] { $count } saved
-    }
-X-SOUNDS =
-    { $count ->
-        [one] 1 SOUND
-       *[other] { $count } SOUNDS
-    }
-X-Species =
-    { $count ->
-        [one] { $count } Species
-       *[other] { $count } Species
-    }
-X-SPECIES--below-number =
-    { $count ->
-        [one] SPECIES
-       *[other] SPECIES
-    }
-x-uploaded =
-    { $count ->
-        [one] { $count } uploaded
-       *[other] { $count } uploaded
-    }
-x-uploading =
-    { $count ->
-        [one] { $count } uploading
-       *[other] { $count } uploading
-    }
-x-uploads-failed =
-    { $count ->
-        [one] { $count } upload failed
-       *[other] { $count } uploads failed
-    }
 You-are-offline = Είστε εκτός σύνδεσης
 You-are-offline-Tap-to-reload = Είστε εκτός σύνδεσης. Πατήστε για επαναφόρτωση.
 You-are-offline-Tap-to-try-again = Είστε εκτός σύνδεσης. Πατήστε για να προσπαθήσετε ξανά.

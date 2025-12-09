@@ -5,7 +5,6 @@
 ### translations, go to https://crowdin.com/editor/inaturalistios/724
 ###
 
-A-global-community-for-nature = A global community for nature
 ABOUT = เกี่ยวกับเรา
 ABOUT-COLLECTION-PROJECTS = เกี่ยวกับโครงการสะสมชนิด
 ABOUT-INATURALIST = เกี่ยวกับ INATURALIST
@@ -28,137 +27,26 @@ ADD-EVIDENCE = เพิ่มหลักฐาน
 Add-evidence = เพิ่มหลักฐาน
 Add-favorite = เพิ่มในรายการโปรด
 Add-Location = เพิ่มสถานที่
-ADD-LOCATION-FOR-BETTER-IDS = ADD LOCATION FOR BETTER IDS
-Add-location-to-refresh-suggestions = Add location to refresh suggestions
 Add-observations = เพิ่มการสังเกต
 ADD-OPTIONAL-COMMENT = เพิ่มความคิดเห็นเพิ่มเติม
-Add-optional-notes = Add optional notes
-Adds-ID = Adds ID
-Adds-your-vote-of-agreement = Adds your vote of agreement
-Adds-your-vote-of-disagreement = Adds your vote of disagreement
-Advanced-Mode = Advanced Mode
-ADVANCED-SETTINGS = ADVANCED SETTINGS
-Affiliation = Affiliation: { $site }
-After-capturing-or-importing-photos-show = After capturing or importing photos, show:
 Agree = เห็นด้วย
 AGREE = เห็นด้วย
-AGREE-WITH-ID = AGREE WITH ID?
-Agree-with-ID-description = Would you like to agree with the ID and suggest the following identification?
-AI-Camera = AI Camera
 ALL = ทั้งหมด
 All = ทั้งหมด
-All-observation-options--list = All observation options: iNaturalist AI Camera, Standard Camera, Uploading from Photo Library, and Sound Recorder
 All-observations = การสังเกตทั้งหมด
-All-observations-need-a-date-and-location-to-be-used-for-science = All observations need a date and location to be used for science. Please edit observations if they need more information.
-All-organisms = All organisms
 all-rights-reserved = สงวนลิขสิทธิ์ทั้งหมด
 All-taxa = ทั้งหมด
-ALL-USERS-EXCEPT = ALL USERS EXCEPT
-ALLOW-LOCATION-ACCESS = ALLOW LOCATION ACCESS
-Already-have-an-iNaturalist-account = Already have an iNaturalist account?
-An-Internet-connection-is-required = An Internet connection is required to load more observations.
-Analyzing-for-the-best-identification = Analyzing for the best identification...
-Any--date = Any
-Any--establishment-means = Any
-Any--media-type = Any
-Any--project = Any
-Any--quality-grade = Any
-Any--user = Any
-Anyone-using-iNaturalist-can-see = Anyone using iNaturalist can see where this species was observed, and scientists can most easily use it for research.
-APP-LANGUAGE = APP LANGUAGE
-apple-full-name = { JOIN($namePrefix, $givenName, $middleName, $nickname, $familyName, $nameSuffix, separator: " ") }
-APPLY-FILTERS = APPLY FILTERS
-Apply-filters = Apply filters
 April = เมษายน
-Are-you-an-educator = Are you an educator wanting to use iNaturalist with your students?
-Are-you-sure-you-want-to-log-out = Are you sure you want to log out of your iNaturalist account? All observations that haven’t been uploaded to iNaturalist will be deleted.
-attribution-cc-by = some rights reserved (CC BY)
-attribution-cc-by-nc = some rights reserved (CC BY-NC)
-attribution-cc-by-nc-nd = some rights reserved (CC BY-NC-ND)
-attribution-cc-by-nc-sa = some rights reserved (CC BY-NC-SA)
-attribution-cc-by-nd = some rights reserved (CC BY-ND)
-attribution-cc-by-sa = some rights reserved (CC BY-SA)
 August = สิงหาคม
-BACK-TO-LOGIN = BACK TO LOGIN
-Bulk-importer = Bulk importer
-By-exiting-changes-not-saved = By exiting, changes to your observation will not be saved.
-By-exiting-observation-not-saved = By exiting, your observation will not be saved.
-By-exiting-your-observations-not-saved = By exiting, your observations will not be saved. You can save them to your device, or you can delete them.
-By-exiting-your-photos-will-not-be-saved = By exiting, your photos will not be saved.
-By-exiting-your-recorded-sound-will-not-be-saved = By exiting, your recorded sound will not be saved.
-BY-ME = BY ME
-By-uploading-your-observation-to-iNaturalist-you-can = By uploading your observation to iNaturalist, you can:
 Camera = ถ่ายรูป
-CANCEL = CANCEL
 Cancel = ยกเลิก
-Captive-Cultivated = Captive/Cultivated
 Casual--quality-grade = ไม่เป็นทางการ
-CC-BY = CC BY
-CC-BY-NC = CC BY-NC
-CC-BY-NC-ND = CC BY-NC-ND
-CC-BY-NC-SA = CC BY-NC-SA
-CC-BY-ND = CC BY-ND
-CC-BY-SA = CC BY-SA
-CC0 = CC0
-CHANGE-APP-LANGUAGE = CHANGE APP LANGUAGE
-CHANGE-DATE = CHANGE DATE
-Change-date = Change date
-CHANGE-END-DATE = CHANGE END DATE
-Change-end-date = Change end date
-Change-project = Change project
-CHANGE-START-DATE = CHANGE START DATE
-Change-start-date = Change start date
-Change-taxon = Change taxon
-Change-taxon-filter = Change taxon filter
-Change-user = Change user
-Change-zoom = Change zoom
-CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
-CHOOSE-A-USERNAME = CHOOSE A USERNAME
-Choose-taxon = Choose taxon
-Choose-top-taxon = Choose top taxon
-Clear = Clear
 Close = ปิด
-Close-permission-request-screen = Close permission request screen
-Close-search = Close search
-Closes-explanation = Closes explanation
-Closes-introduction = Closes introduction
-Closes-withdraw-id-sheet = Closes "Withdraw ID" sheet
-COLLABORATORS = COLLABORATORS
 Collection-Project = โปรเจกต์สะสมชนิดพันธุ์
-Combine-Photos = Combine Photos
-COMMENT = COMMENT
-Comment-options = Comment options
-Common-Name-Scientific-Name = Common Name (Scientific Name)
-Community-Discussion = Community Discussion
 Community-Guidelines = วิธีใช้งานสำหรับชุมชน
-COMMUNITY-GUIDELINES = COMMUNITY GUIDELINES
-Confidence--label = Confidence
-CONFIRM = CONFIRM
-Congratulations-You-made-your-first-observation = Congratulations! You made your first observation!
-Connect-with-expert-naturalists = Connect with expert naturalists
-Connect-with-other-naturalists = Connect with other naturalists and engage in conversations.
-Connection-problem-Please-try-again-later = Connection problem. Please try again later.
-CONTACT-SUPPORT = CONTACT SUPPORT
-CONTINUE = CONTINUE
 Coordinates-copied-to-clipboard = คัดลอกพิกัดไปยังคลิปบอร์ดแล้ว
-Copy-coordinates = Copy Coordinates
-Copyright = Copyright
-Could-not-find-a-camera-on-this-device = Could not find a camera on this device
-Couldnt-create-comment = Couldn't create comment
-Couldnt-create-identification-error = Couldn't create identification { $error }
-Couldnt-create-identification-unknown-error = Couldn't create identification, unknown error.
-CREATE-AN-ACCOUNT = CREATE AN ACCOUNT
-Create-observation-with-no-evidence = Create observation with no evidence
-DATA-QUALITY = DATA QUALITY
-DATA-QUALITY-ASSESSMENT = DATA QUALITY ASSESSMENT
-Data-Quality-Assessment = Data Quality Assessment
-Data-quality-assessment-can-taxon-still-be-confirmed-improved-based-on-the-evidence = Based on the evidence, can the Community Taxon still be improved?
-Data-quality-assessment-community-taxon-species-level-or-lower = Community taxon at species level or lower
 Data-quality-assessment-date-is-accurate = วันที่สังเกตถูกต้อง
 Data-quality-assessment-date-specified = มีการระบุวันที่สังเกต
-Data-quality-assessment-description-casual = This observation has not met the conditions for Research Grade status.
-Data-quality-assessment-description-needs-id = This observation has not yet met the conditions for Research Grade status:
-Data-quality-assessment-description-research = It can now be used for research and featured on other websites.
 Data-quality-assessment-evidence-of-organism = มีหลักฐานของสิ่งมีชีวิต
 Data-quality-assessment-has-photos-or-sounds = มีรูปถ่ายหรือเสียง
 Data-quality-assessment-id-supported-by-two-or-more = ได้รับการจำแนกจากสองคนขึ้นไป
@@ -167,933 +55,137 @@ Data-quality-assessment-location-specified = มีการระบุตำ�
 Data-quality-assessment-organism-is-wild = สิ่งมีชีวิตพบในธรรมชาติ
 Data-quality-assessment-recent-evidence-of-organism = หลักฐานไม่เก่าเกินไป (ไม่เป็นซากดึกดำบรรพ์)
 Data-quality-assessment-single-subject = หลักฐานแสดงถึงสิ่งมีชีวิตเพียงชนิดเดียว
-Data-quality-assessment-title-casual = This observation is Casual Grade
-Data-quality-assessment-title-needs-id = This observation Needs ID
 Data-quality-assessment-title-research = การสังเกตนี้เป็นระดับงานวิจัย!
-DATE = DATE
 Date = วันที่
-date-format-long = PP
 date-format-month-day = d MMM
-date-format-month-year = MMM yyyy
-date-format-short = M/d/yy
-DATE-OBSERVED = DATE OBSERVED
 Date-observed = วันที่สังเกต
 Date-observed-header-short = สังเกตเมื่อ
-DATE-OBSERVED-NEWEST = DATE OBSERVED - NEWEST TO OLDEST
-DATE-OBSERVED-OLDEST = DATE OBSERVED - OLDEST TO NEWEST
 Date-Range = ช่วงวันที่
-DATE-RANGE = DATE RANGE
-date-to-date = { $d1 } - { $d2 }
-DATE-UPLOADED = DATE UPLOADED
-Date-uploaded = Date uploaded
-Date-uploaded-header-short = Uploaded
-DATE-UPLOADED-NEWEST = DATE UPLOADED - NEWEST TO OLDEST
-DATE-UPLOADED-OLDEST = DATE UPLOADED - OLDEST TO NEWEST
-Date-uploaded-on-header-short = Uploaded on:
-datetime-difference-days = { $count }d
-datetime-difference-hours = { $count }h
-datetime-difference-minutes = { $count }m
-datetime-difference-weeks = { $count }w
-datetime-format-long = Pp
-datetime-format-long-with-zone = Pp (zzz)
-datetime-format-short = M/d/yy h:mm a
-datetime-format-short-with-zone = M/d/yy h:mm a zzz
 December = ธันวาคม
-DELETE = DELETE
-Delete-all-observations = Delete all observations
-Delete-comment = Delete comment
-DELETE-COMMENT--question = DELETE COMMENT?
-Delete-current-observation = Delete current observation
 Delete-observation = ลบการสังเกต
-DELETE-OBSERVATION--question = DELETE OBSERVATION?
 Delete-photo = ลบรูป
-Delete-sound = Delete sound
-Deletes-entered-text = Deletes entered text
-Deleting-x-of-y--observations =
-    Deleting { $currentDeleteCount } { $total ->
-        [one] of { $total }
-       *[other] of { $total } observations
-    }
-Deleting-x-of-y-observations-2 =
-    Deleting { $currentDeleteCount } { $total ->
-        [one] observation
-       *[other] of { $total } observations
-    }
-Details = Details
-DETAILS = DETAILS
-Device-storage-full = Device storage full
-Device-storage-full-description = iNaturalist may not be able to save your photos or may crash.
-Disable-flash = Disable flash
-Disable-location = Disable location
-Disagreement = *@{ $username } disagrees this is <0/>
-DISCARD = DISCARD
-DISCARD-ALL = DISCARD ALL
-DISCARD-CHANGES = DISCARD CHANGES
-DISCARD-FILTER-CHANGES = DISCARD FILTER CHANGES
-DISCARD-MEDIA--question = DISCARD MEDIA?
-DISCARD-OBSERVATION = DISCARD OBSERVATION
-DISCARD-PHOTOS--question = DISCARD PHOTOS?
-DISCARD-RECORDING = DISCARD RECORDING
-DISCARD-SOUND--question = DISCARD SOUND?
-DISCARD-X-OBSERVATIONS =
-    { $count ->
-        [one] DISCARD OBSERVATION
-       *[other] DISCARD { $count } OBSERVATIONS
-    }
-DISCOVER-NATURE-AROUND-YOU = DISCOVER NATURE AROUND YOU
-DISMISS = DISMISS
-Do-you-know-what-group-this-is-in = Do you know what group this is in?
 DONATE = บริจาค
-DONATE-TO-INATURALIST = DONATE TO INATURALIST
-DONE = DONE
-Dont-have-an-account = <0>Don't have an account? </0><1>Sign up</1>
-During-app-start-no-model-found = During app start there was no computer vision model found. There will be no AI camera.
 Edit = แก้ไข
-EDIT-COMMENT = EDIT COMMENT
-Edit-comment = Edit comment
-Edit-identification = Edit identification
-EDIT-LOCATION = EDIT LOCATION
-Edit-location = Edit location
 Edit-Observation = แก้ไขการสังเกต
-Edit-your-profile-change-your-settings = Edit your profile, change your notifications settings, and manage all other parts of your account.
-Edits-this-observations-taxon = Edits this observation's taxon
-EDUCATORS = EDUCATORS
-EMAIL = EMAIL
-EMAIL-DEBUG-LOGS = EMAIL DEBUG LOGS
-Enable-flash = Enable flash
-Enable-location = Enable location
-Enable-notifications = Enable notifications
 Endemic = เฉพาะถิ่น
-Endemic-to-place = Endemic to { $place }
 Error = ผิดพลาด
-ERROR = ERROR
-ERROR-LOADING-DQA = ERROR LOADING IN DQA
 Error-title = ผิดพลาด
-ERROR-VOTING-IN-DQA = ERROR VOTING IN DQA
-Error-voting-in-DQA-description = Your vote may not have been cast in the DQA. Check your internet connection and try again.
 Establishment = การตั้งถิ่นฐาน
-ESTABLISHMENT-MEANS = ESTABLISHMENT MEANS
-Every-observation-needs = Every observation needs a location, date, and time to be helpful to identifiers. You can edit geoprivacy if you’re concerned about location privacy.
-Every-time-a-collection-project = Every time a collection project's page is loaded, iNaturalist will perform a quick search and display all observations that match the project's requirements. It is an easy way to display a set of observations, such as for a class project, a park, or a bioblitz without making participants take the extra step of manually adding their observations to a project.
-EVIDENCE = EVIDENCE
 Exact-Date = เฉพาะวันที่
-EXACT-DATE = EXACT DATE
 except = ยกเว้น
-EXPAND-MAP = EXPAND MAP
-Experts-help-verify-and-improve-IDs = Experts help verify and improve IDs
 Explore = ที่เกี่ยวข้อง
-EXPLORE = EXPLORE
-Explore-Filters = Explore Filters
-EXPLORE-IDENTIFIERS = EXPLORE IDENTIFIERS
-EXPLORE-OBSERVATIONS = EXPLORE OBSERVATIONS
-EXPLORE-OBSERVERS = EXPLORE OBSERVERS
-EXPLORE-SPECIES = EXPLORE SPECIES
-Failed-to-delete-sound = Failed to delete sound
-Failed-to-log-in = Failed to log in
 FEATURED = แนะนำ
 February = กุมภาพันธ์
-FEEDBACK = FEEDBACK
-Feedback-Submitted = Feedback Submitted
-Fetching-location = Fetching location...
-Filter = Filter
-FILTER-BY-A-PROJECT = FILTER BY A PROJECT
-FILTER-BY-A-USER = FILTER BY A USER
-Filter-by-observed-between-dates = Filter by observations observed between two specific dates
-Filter-by-observed-during-months = Filter by observations observed during specific months
-Filter-by-observed-on-date = Filter by observations observed on a specific date
-Filter-by-uploaded-between-dates = Filter by observations uploaded between two specific dates
-Filter-by-uploaded-on-date = Filter by observations uploaded on a specific date
 Filters = ตัวกรอง
 Flagged = ถูกรายงาน
-Flash = Flash
-Flip-camera = Flip camera
-FOLLOW = FOLLOW
-FOLLOWING-X-PEOPLE =
-    { $count ->
-        [one] FOLLOWING { $count } PERSON
-       *[other] FOLLOWING { $count } PEOPLE
-    }
-Forgot-Password = Forgot Password
-GEOPRIVACY = GEOPRIVACY
-Geoprivacy-status = Geoprivacy: { $status }
-Get-an-instant-ID-of-any-plant-animal-fungus = Get an instant ID of any plant, animal, or fungus
-Get-feedback-from-naturalists-and-experts-who-will-help-verify = Get feedback from naturalists and experts who will help verify and refine your identifications.
-Get-your-identification-verified-by-real-people = Get your identification verified by real people in the iNaturalist community
 Go-back = ย้อนกลับ
-Google-Play-Services-Not-Installed = Google Play Services Not Installed
-GRANT-PERMISSION = GRANT PERMISSION
-Grant-Permission-title = Grant Permission
-Group-Photos = Group Photos
-Group-photos-onboarding = Group photos into observations– make sure there is only one species per observation
-HELP = HELP
-Help-create-Research-Grade-data-used-in-science-and-conservation = Help create Research Grade data used in science and conservation.
-Help-protect-species = Help protect species
-Hide = Hide
-Highest = Highest
-HIGHEST-RANK = HIGHEST RANK
-I-agree-to-the-Terms-of-Use = <0>I agree to the Terms of Use and Privacy Policy, and I have reviewed the Community Guidelines (</0><1>required</1><0>).</0>
-Iconic-taxon-name = Iconic taxon name: { $iconicTaxon }
-ID-in-Camera = ID in Camera
-ID-Suggestions = ID Suggestions
 ID-Withdrawn = ถอนการจำแนก
-IDENTIFICATION = IDENTIFICATION
-Identification-options = Identification options
-IDENTIFICATIONS-WITHOUT-NUMBER =
-    { $count ->
-        [one] IDENTIFICATION
-       *[other] IDENTIFICATIONS
-    }
 Identifiers = ผู้จำแนก
-Identifiers-View = Identifiers View
-IDENTIFY = IDENTIFY
-Identify-organisms-in-real-time-with-your-camera = Identify organisms in real time with your camera
-Identify-species-anywhere = Identify species anywhere
-If-an-account-with-that-email-exists = If an account with that email exists, we've sent password reset instructions to your email.
-If-you-have-an-existing-account-try-sign-in-reset = If you have an existing iNat account, try signing in with your username and password, or try resetting your password using the email address associated with your account.
-If-you-leave-x-of-your-observations-removed =
-    If you leave this traditional project, { $count ->
-        [one] 1 of your observations
-       *[other] { $count } of your observations
-    } will also be removed from this project.
-If-you-save-this-observation-and-upload-it-to-iNaturalist = If you save this observation and upload it to iNaturalist, other people may be able to help identify it.
-If-you-want-to-collate-compare-promote = If you want to collate, compare, or promote a set of existing projects, then an Umbrella project is what you should use. For example the 2018 City Nature Challenge, which collated over 60 projects, made for a great landing page where anyone could compare and contrast each city's observations. Both Collection and Traditional projects can be used in an Umbrella project, and up to 500 projects can be collated by an Umbrella project.
-If-youre-seeing-this-error = If you're seeing this and you're online, iNat staff have already been notified. Thanks for finding a bug! If you're offline, please take a screenshot and send us an email when you're back on the Internet.
-IGNORE-LOCATION = IGNORE LOCATION
-Ignore-notifications = Ignore notifications
-Ignoring-location = Ignoring location
-Import-Photos-From = Import Photos From
-IMPORT-X-OBSERVATIONS =
-    IMPORT { $count ->
-        [one] 1 OBSERVATION
-       *[other] { $count } OBSERVATIONS
-    }
-Improve-suggestions-by-using-your-location = Improve suggestions by using your location
-IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = IMPROVE THESE SUGGESTIONS BY USING YOUR LOCATION
 improving--identification = แนะนำคนแรก
-INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT SETTINGS
-iNaturalist-AI-Camera = iNaturalist AI Camera
-iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-library = iNaturalist can save photos you take in the app to your device’s library.
-iNaturalist-can-use-your-location-to-give-you-better-identification-suggestions = iNaturalist can use your location to give you better identification suggestions. We also use it to help you find species seen nearby. Sharing your location makes it easier to create useful data for science.
-INATURALIST-COMMUNITY = INATURALIST COMMUNITY
-INATURALIST-FORUM = INATURALIST FORUM
-iNaturalist-has-no-ID-suggestions-for-this-photo = iNaturalist has no ID suggestions for this photo.
-INATURALIST-HELP-PAGE = INATURALIST HELP PAGE
-iNaturalist-helps-you-identify = iNaturalist helps you identify the plants and animals around you while generating data for science and conservation. Get connected with a community of millions scientists and naturalists who can help you learn more about nature!
-iNaturalist-identification-suggestions-are-based-on = iNaturalist's identification suggestions are based on observations and identifications made by the iNaturalist community, including { $user1 }, { $user2 }, { $user3 }, and many others.
-iNaturalist-is-a-501 = iNaturalist is a 501(c)(3) non-profit in the United States of America (Tax ID/EIN 92-1296468).
-iNaturalist-is-loading-ID-suggestions = iNaturalist is loading ID suggestions...
-iNaturalist-is-supported-by = iNaturalist is supported by an independent, 501(c)(3) nonprofit organization based in the United States of America. The iNaturalist platform includes this app, Seek by iNaturalist, the iNaturalist website, and more.
-iNaturalist-is-supported-by-our-community = iNaturalist is supported by our amazing community. From everyday naturalists who add observations and identifications, to curators who manage our taxonomy and help with moderation, to the volunteer translators who make iNaturalist more accessible to worldwide audiences, to our community-based donors, we are extraordinarily grateful to all the people in our community who make iNaturalist the platform it is.
-iNaturalist-mission-is-to-connect = iNaturalist's mission is to connect people to nature and advance biodiversity science and conservation.
-INATURALIST-MISSION-VISION = INATURALIST'S MISSION & VISION
-INATURALIST-NETWORK = INATURALIST NETWORK
-INATURALIST-SETTINGS = INATURALIST SETTINGS
-INATURALIST-STAFF = { $inaturalist } STAFF
-INATURALIST-STORE = INATURALIST STORE
-INATURALIST-TEAM = INATURALIST TEAM
-iNaturalist-users-who-have-left-an-identification = iNaturalist users who have left an identification on another user's observation
-iNaturalist-users-who-have-observed = iNaturalist users who have observed a particular taxon at a particular time and place
-iNaturalists-apps-are-designed-and-developed-3 = iNaturalist's apps are designed, developed, and supported by the iNaturalist team: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Joanne Lin, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Thea Skaff, Angie Ta, Ken-ichi Ueda, Kirk van Gorkom, Jason Walthall, & Jane Weeden.
-iNaturalists-vision-is-a-world = iNaturalist's vision is a world where everyone can understand and sustain biodiversity through the practice of observing wild organisms and sharing information about them.
-Individual-encounters-with-organisms = Individual encounters with organisms at a particular time and location, usually with evidence
-Internet-Connection-Required = Internet Connection Required
-Intl-number = { $val }
 Introduced = ต่างถิ่น
-Introduced-to-place = Introduced to { $place }
-It-can-now-be-shared-for-use-in-research = It can now be shared for use in research
-It-may-take-up-to-an-hour-to-remove-content = It may take up to an hour to completely delete all associated content
-It-might-also-be = It might also be
-It-might-be-one-of-these = It might be one of these
 January = มกราคม
 JOIN = เข้าร่วม
-Join-a-global-community-for-nature = Join a global community for nature
-JOIN-PROJECT = JOIN PROJECT
-JOIN-PROJECT--question = JOIN PROJECT?
 JOINED = เข้าร่วมแล้ว
-Joined-date = Joined: { $date }
-JOINED-X-PROJECTS =
-    { $count ->
-        [one] JOINED { $count } PROJECT
-       *[other] JOINED { $count } PROJECTS
-    }
-JOURNAL-POSTS-WITHOUT-NUMBER =
-    { $count ->
-        [one] JOURNAL POST
-       *[other] JOURNAL POSTS
-    }
 July = กรกฎาคม
 June = มิถุนายน
-Just-make-sure-the-organism-is-wild = Just make sure the organism is wild (not a pet, zoo animal, or garden plant)
-Last-Active-date = Last Active: { $date }
-Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, maximumFractionDigits: 6) }
-Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBER($longitude, maximumFractionDigits: 6) }, Acc: { $accuracy }
 leading--identification = เข้าใกล้คำตอบ
-Learn-from-people-who-verify-and-refine-your-identifications = Learn from people who verify and refine your identifications.
 Learn-More = เรียน​รู้​เพิ่ม​เติม
-LEARN-MORE-ABOUT-THIS-GROUP = LEARN MORE ABOUT THIS GROUP
-LEARN-MORE-ABOUT-THIS-SPECIES = LEARN MORE ABOUT THIS SPECIES
-LEAVE = LEAVE
-LEAVE-PROJECT = LEAVE PROJECT
-LEAVE-PROJECT--question = LEAVE PROJECT?
-LEAVE-US-A-REVIEW = LEAVE US A REVIEW!
-Lets-reset-your-password = Let’s reset your password.
-Loading-iNaturalists-AI-Camera = Loading iNaturalist's AI Camera
-Loads-content-that-requires-an-Internet-connection = Loads content that requires an Internet connection
-LOCATION = LOCATION
 Location = ตำแหน่ง
-Location-accuracy-is-too-imprecise = Location accuracy is too imprecise to help identifiers. Please zoom in.
-LOCATION-TOO-IMPRECISE = LOCATION TOO IMPRECISE
-LOG-IN = LOG IN
-LOG-IN-TO-INATURALIST = LOG IN TO INATURALIST
-Log-in-to-iNaturalist = Log in to iNaturalist
-LOG-OUT = LOG OUT
-LOG-OUT--question = LOG OUT?
-Lowest = Lowest
-LOWEST-RANK = LOWEST RANK
-MAP = MAP
 Map-Area = พื้นที่แผนที่
 March = มีนาคม
-Match-Screen = Match Screen
 maverick--identification = ขัดแย้ง
 May = พ.ค.
-MEDIA = MEDIA
 Media-Type = ประเภทสื่อ
-MEMBERS-WITHOUT-NUMBER =
-    { $count ->
-        [one] MEMBER
-       *[other] MEMBERS
-    }
 Menu = เมนู
 Missing-Date = ไม่มีวันที่
-MISSING-EVIDENCE = MISSING EVIDENCE
-Monthly-Donor = Monthly Donor
 Months = เดือน
-MONTHS = MONTHS
-More = More
-More-info = More info
-MOST-FAVED = MOST FAVED
-Most-faved = Most faved
-MY-CONTENT--notifications = MY CONTENT
-My-Observations = My Observations
-My-Observations--bottom-tab = Me
 Native = พื้นเมือง
-Native-to-place = Native to { $place }
-Navigates-to-AI-camera = Navigates to AI camera
-Navigates-to-bulk-importer = Navigates to bulk importer
-Navigates-to-camera = Navigates to camera
-Navigates-to-explore = Navigates to explore
-Navigates-to-match-screen = Navigates to match screen
-Navigates-to-notifications = Navigates to notifications
-Navigates-to-observation-details = Navigates to observation details screen
-Navigates-to-observation-edit-screen = Navigate to observation edit screen
-Navigates-to-photo-importer = Navigates to photo importer
-Navigates-to-previous-screen = Navigates to previous screen
-Navigates-to-project-details = Navigates to project details
-Navigates-to-sound-recorder = Navigates to sound recorder
-Navigates-to-suggest-identification = Navigates to suggest identification
-Navigates-to-taxon-details = Navigates to taxon details
-Navigates-to-user-profile = Navigates to user profile
-Navigates-to-your-observations = Navigates to your observations
 NEARBY = ใกล้เคียง
 Nearby = ใกล้เคียง
 Needs-ID--quality-grade = รอจำแนกชนิด
 New-Observation = การสังเกตใหม่
-Newest-to-oldest = Newest to oldest
-Next-observation = Next observation
-Next-slide = Next slide
-No-Camera-Available = No Camera Available
-No-email-app-installed = No email app installed
-No-email-app-installed-body = If you have another way of sending email, the address is { $address }
-No-email-app-installed-body-check-other = Try checking your email in a web browser or on another device.
 No-Location = ไม่​มี​ตำแหน่ง
 No-Media = ไม่มีสื่อ
-No-model-found = No model found
-No-Notifications-Found = You have no notifications! Get started by creating your own observations.
-No-projects-match-that-search = No projects match that search
-No-results-found-for-that-search = No results found for that search.
-No-results-found-try-different-search = No results found. Try a different search or adjust your filters.
-no-rights-reserved-cc0 = no rights reserved (CC0)
-none--accuracy = none
-NONE--ranks = NONE
-NOT-BY-ME = NOT BY ME
-Not-enough-space-left-on-device = Not enough space left on device
-Not-enough-space-left-on-device-try-again = There is not enough storage space left on your device to do that. Please free up some space and try again.
-NOTES = NOTES
-Notes = Notes
-NOTIFICATIONS = NOTIFICATIONS
-Notifications--bottom-tab = Activity
-notifications-user-added-comment-to-observation-by-you = <0>{ $userName }</0> added a comment to an observation by you
-notifications-user-added-identification-to-observation-by-you = <0>{ $userName }</0> added an identification to an observation by you
-notifications-user1-added-comment-to-observation-by-user2 = <0>{ $user1 }</0> added a comment to an observation by { $user2 }
-notifications-user1-added-identification-to-observation-by-user2 = <0>{ $user1 }</0> added an identification to an observation by { $user2 }
 November = พฤศจิกายน
-Obervations-must-be-manually-added = Observations must be manually added to a traditional project, either during the upload stage or after the observation has been shared to iNaturalist. A user must also join a traditional project in order to add their observations to it.
 Obscured = ถูกพราง
-Observation = Observation
-Observation-Attribution = Observation: © { $userName } · { $restrictions }
-Observation-Copyright = Observation Copyright: © { $userName } · { $restrictions }
-Observation-has-no-photos-and-no-sounds = This observation has no photos and no sounds.
-Observation-location-obscured-randomized-point = This observation’s location is obscured. You are seeing a randomized point within the obscuration polygon.
-Observation-location-obscured-you-can-see-your-own = This observation’s location is obscured. You can always see the location of your own observations.
-Observation-location-obscured-you-have-permission = This observation’s location is obscured. You have permission to see this location.
-Observation-options = Observation options
-OBSERVATION-WAS-DELETED = OBSERVATION WAS DELETED
-Observation-with-no-evidence = Observation with no evidence
 Observations = การสังเกต
-Observations-need-location-date--warning = iNaturalist observations need a location and date to be useful to scientists. Please check observations with this icon before uploading.
-Observations-View = Observations View
-OBSERVATIONS-WITHOUT-NUMBER =
-    { $count ->
-        [one] OBSERVATION
-       *[other] OBSERVATIONS
-    }
-OBSERVE-ORGANISMS = OBSERVE ORGANISMS
-OBSERVED-AT--label = OBSERVED AT
-OBSERVED-IN--label = OBSERVED IN
 Observers = ผู้สังเกต
-Observers-View = Observers View
 October = ตุลาคม
-Offline-DQA-description = The DQA may not be accurate. Check your internet connection and try again.
-Offline-suggestions-may-differ-from-online = Offline suggestions may differ from online suggestions, and taxon images and common names may not load.
 OK = ตกลง
-Oldest-to-newest = Oldest to newest
-Once-you-create-and-upload-observations = Once you create & upload observations, other members of our community can add identifications to help your observations reach research grade.
 Open = เปิด
-OPEN-EMAIL = OPEN EMAIL
-Open-menu = Open menu.
-OPEN-SETTINGS = OPEN SETTINGS
-Opens-add-comment-form = Opens add comment form.
-Opens-AI-camera = Opens AI camera.
-Opens-edit-comment-form = Opens edit comment form.
-Opens-location-permission-prompt = Opens location permission prompt
-Opens-the-side-drawer-menu = Opens the side drawer menu.
-OR-SIGN-IN-WITH = OR SIGN IN WITH
-Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Or, you can try to get a clearer photo by zooming in, getting closer, or trying a different angle.
-Organism-is-captive = Organism is captive
-Organisms-that-are-identified-to-species = Organisms that are identified to species rank or below
-OTHER-DATA = OTHER DATA
-OTHER-SUGGESTIONS = OTHER SUGGESTIONS
-OTHERS--notifications = OTHERS
-PASSWORD = PASSWORD
-PEOPLE--title = PEOPLE
-Photo-importer = Photo importer
-PHOTO-LICENSING = PHOTO LICENSING
-Photos = Photos
-Photos-you-take-will-appear-here = Photos you take will appear here
-Please-allow-Camera-Access = Please allow Camera Access
-Please-allow-Location-Access = Please allow Location Access
-Please-allow-Microphone-Access = Please allow Microphone Access
-Please-choose-a-different-password = Please choose a different password.
-Please-Grant-Permission = Please Grant Permission
-PLEASE-LOG-IN = PLEASE LOG IN
-Please-make-sure-your-password-is-at-least-6-characters = Please make sure your password is at least 6 characters.
-Please-try-again-when-you-are-connected-to-the-internet = Please try again when you are connected to the Internet.
-Please-try-again-when-you-are-online = Please try again when you are online!
-Point-the-camera-at-an-animal-plant-or-fungus = Point the camera at an animal, plant, or fungus
-POTENTIAL-DISAGREEMENT = POTENTIAL DISAGREEMENT
-Potential-disagreement-description = <0>Is the evidence enough to confirm this is </0><1></1><0>?<0>
-Potential-disagreement-disagree = <0>No, but this is a member of </0><1></1>
-Potential-disagreement-unsure = <0>I don't know but I am sure this is </0><1></1>
-Press-and-hold-to-view-more-options = Press and hold to view more options
-Previous-observation = Previous observation
-Previous-slide = Previous slide
 Privacy-Policy = นโยบายความเป็นส่วนตัว
-PRIVACY-POLICY = PRIVACY POLICY
 Private = ส่วนตัว
-PROJECT = PROJECT
 Project-Members-Only = สมาชิกโครงการเท่านั้น
-PROJECT-REQUIREMENTS = PROJECT REQUIREMENTS
-project-start-time-datetime = Start time: { $datetime }
-PROJECTS = PROJECTS
 Projects = โครงการ
-PROJECTS-X = PROJECTS ({ $projectCount })
-Pull-to-refresh-and-sync-observations = Pull to refresh and sync observations
-Pull-to-refresh-notifications = Pull to refresh notifications
-QUALITY-GRADE = QUALITY GRADE
 Quality-Grade = ระดับคุณภาพ
-Quality-Grade-Casual--label = Quality Grade: Casual
-Quality-Grade-Needs-ID--label = Quality Grade: Needs ID
-Quality-Grade-Research--label = Quality Grade: Research
-Ranks-CLASS = CLASS
 Ranks-Class = ชั้น
-Ranks-COMPLEX = COMPLEX
 Ranks-Complex = ชนิดเชิงซ้อน
-Ranks-EPIFAMILY = EPIFAMILY
 Ranks-Epifamily = ลำดับเหนือวงศ์
-Ranks-FAMILY = FAMILY
 Ranks-Family = วงศ์
-Ranks-FORM = FORM
 Ranks-Form = แบบ
-Ranks-GENUS = GENUS
 Ranks-Genus = สกุล
-Ranks-GENUSHYBRID = GENUSHYBRID
 Ranks-Genushybrid = สกุลผสม
-Ranks-HYBRID = HYBRID
 Ranks-Hybrid = ลูกผสม
-Ranks-INFRACLASS = INFRACLASS
 Ranks-Infraclass = ชั้นฐาน
-Ranks-INFRAHYBRID = INFRAHYBRID
 Ranks-Infrahybrid = ลูกผสมฐาน
-Ranks-INFRAORDER = INFRAORDER
 Ranks-Infraorder = อันดับฐาน
-Ranks-KINGDOM = KINGDOM
 Ranks-Kingdom = อาณาจักร
-Ranks-ORDER = ORDER
 Ranks-Order = อันดับ
-Ranks-PARVORDER = PARVORDER
 Ranks-Parvorder = อนุอันดับ
-Ranks-PHYLUM = PHYLUM
 Ranks-Phylum = ไฟลัม
-Ranks-SECTION = SECTION
 Ranks-Section = ส่วน
 Ranks-SPECIES = ชนิด
 Ranks-Species = ชนิด
 Ranks-Statefmatter = สถานะของสสาร
-Ranks-STATEOFMATTER = STATE OF MATTER
-Ranks-SUBCLASS = SUBCLASS
 Ranks-Subclass = ชั้นย่อย
-Ranks-SUBFAMILY = SUBFAMILY
 Ranks-Subfamily = วงศ์ย่อย
-Ranks-SUBGENUS = SUBGENUS
 Ranks-Subgenus = สกุลย่อย
 Ranks-Subkingdom = อาณาจักรย่อย
-Ranks-SUBORDER = SUBORDER
 Ranks-Suborder = อันดับย่อย
-Ranks-SUBPHYLUM = SUBPHYLUM
 Ranks-Subphylum = ไฟลัมย่อย
-Ranks-SUBSECTION = SUBSECTION
 Ranks-Subsection = ส่วนย่อย
-Ranks-SUBSPECIES = SUBSPECIES
 Ranks-Subspecies = ชนิดย่อย
-Ranks-SUBTERCLASS = SUBTERCLASS
 Ranks-Subterclass = ชั้นใต้
-Ranks-SUBTRIBE = SUBTRIBE
 Ranks-Subtribe = เผ่าย่อย
-Ranks-SUPERCLASS = SUPERCLASS
 Ranks-Superclass = ชั้นใหญ่
-Ranks-SUPERFAMILY = SUPERFAMILY
 Ranks-Superfamily = วงศ์ใหญ่
-Ranks-SUPERORDER = SUPERORDER
 Ranks-Superorder = อันดับใหญ่
-Ranks-SUPERTRIBE = SUPERTRIBE
 Ranks-Supertribe = เผ่าใหญ่
-Ranks-TRIBE = TRIBE
 Ranks-Tribe = เผ่า
-Ranks-VARIETY = VARIETY
 Ranks-Variety = พันธุ์
-Ranks-ZOOSECTION = ZOOSECTION
 Ranks-Zoosection = ส่วน
-Ranks-ZOOSUBSECTION = ZOOSUBSECTION
 Ranks-Zoosubsection = ส่วนย่อย
-Read-more-on-Wikipedia = Read more on Wikipedia
-Record-a-sound = Record a sound
-Record-animal-sounds = Record animal sounds
-RECORD-NEW-SOUND = RECORD NEW SOUND
-RECORD-SOUND = RECORD SOUND
 Record-verb = บันทึก
-Recording-sound = Recording sound
-Recording-stopped-Tap-to-play-the-current-recording = Recording stopped. Tap to play the current recording.
-REDO-SEARCH-IN-MAP-AREA = REDO SEARCH IN MAP AREA
-Remove-agreement = Remove agreement
-Remove-disagreement = Remove disagreement
-Remove-favorite = Remove favorite
 Remove-identification = ลบการระบุ
-Remove-Photos = Remove Photos
 Remove-project-filter = ลบตัวกรองโครงการ
-Remove-taxon-filter = Remove taxon filter
-Remove-user-filter = Remove user filter
-Removes-this-observations-taxon = Removes this observation's taxon
-Removes-your-vote-of-agreement = Removes your vote of agreement
-Removes-your-vote-of-disagreement = Removes your vote of disagreement
 Research-Grade--quality-grade = ระดับงานวิจัย
-RESEARCH-GRADE--quality-grade = RESEARCH GRADE
-Research-Grade-Status = Research Grade Status
-RESET-PASSWORD = RESET PASSWORD
-RESET-RECORDING = RESET RECORDING
-RESET-SEARCH = RESET SEARCH
-RESET-SOUND-header = RESET SOUND?
 Reset-verb = ตั้งค่าใหม่
-RESTART-APP = RESTART APP
 Restore = คืนค่า
-Reveal = Reveal
-REVIEW-INATURALIST = REVIEW INATURALIST
-REVIEWED = REVIEWED
-Reviewed-observations-only = Reviewed observations only
 Satellite--map-type = ดาวเทียม
 SAVE = บันทึก
-SAVE-ALL = SAVE ALL
-Save-all-observations = Save all observations
-SAVE-CHANGES = SAVE CHANGES
-SAVE-FOR-LATER = SAVE FOR LATER
-SAVE-LOCATION = SAVE LOCATION
-SAVE-PHOTOS = SAVE PHOTOS
-Save-photos-to-your-library = Save photos to your library
-Saved-Observation = Saved observation, in queue to upload
 Scientific-Name = ชื่อวิทยาศาสตร์
-Scientific-Name-Common-Name = Scientific Name (Common Name)
-SEARCH = SEARCH
 Search = ค้นหา
-Search-for-a-project = Search for a project
-SEARCH-FOR-A-TAXON = SEARCH FOR A TAXON
-Search-for-a-taxon = Search for a taxon
-SEARCH-LOCATION = SEARCH LOCATION
-SEARCH-PROJECTS = SEARCH PROJECTS
-Search-suggestions-with-location = Search suggestions with location
-Search-suggestions-without-location = Search suggestions without location
-SEARCH-TAXA = SEARCH TAXA
-SEARCH-USERS = SEARCH USERS
-See-observations-by-this-user-in-Explore = See observations by this user in Explore
-See-observations-of-this-taxon-in-explore = See observations of this taxon in explore
-See-project-members = See project members
-See-species-observed-by-this-user-in-Explore = See species observed by this user in Explore
-Select-a-date-and-time-for-observation = Select a date and time for observation
-Select-captive-or-cultivated-status = Select captive or cultivated status
-Select-geoprivacy-status = Select geoprivacy status
-Select-or-drag-media = Select or drag media
-Select-photo = Select photo
-SELECT-THIS-TAXON = SELECT THIS TAXON
-Select-user = Select user
-Selects-iconic-taxon-X-for-identification = Selects iconic taxon { $iconicTaxon } for identification.
-Separate-Photos = Separate Photos
 September = กันยายน
-SETTINGS = SETTINGS
 Share = แชร์
-SHARE-DEBUG-LOGS = SHARE DEBUG LOGS
 Share-location = แชร์ตำแหน่ง
-Share-map = Share map
-Share-your-observation-where-it-can-help-scientists = Share your observation, where it can help scientists across the world better understand biodiversity.
-SHOP-INATURALIST-MERCH = SHOP INATURALIST MERCH
-Show-observation-options = Show observation options.
-Showing-offline-search-results--taxa = Showing offline search results. To search for more species, try again when connected to the Internet.
-Shows-identification-suggestions = Shows identification suggestions
-Shows-iNaturalist-bird-logo = Shows iNaturalist bird logo.
-Shows-observation-creation-options = Shows observation creation options
-Sign-in-with-Apple = Sign in with Apple
-Sign-in-with-Apple-Failed = Sign in with Apple Failed
-Sign-in-with-Google = Sign in with Google
-Sign-in-with-Google-Failed = Sign in with Google Failed
-Skip-additional-suggestions = Skip additional suggestions
-Skip-for-now = Skip for now
-Something-went-wrong = Something went wrong.
-Sorry-this-observation-was-deleted = Sorry, this observation was deleted
-Sorry-we-dont-know-how-to-open-that-URL = Sorry, we don't know how to open that URL: { $url }
-SORT-BY = SORT BY
-Sort-by = Sort by
-sound-playback-separator = /
-Sound-recorder = Sound recorder
-sound-recorder-help-A-recording-of = A recording of 5-15 seconds is best to help identifiers.
-sound-recorder-help-Get-as-close-as-you-can = Get as close as you safely can to record the organism.
-sound-recorder-help-Get-closer = Get closer
-sound-recorder-help-Keep-it-short = Keep it short
-sound-recorder-help-Make-sure = Make sure the sound of your own movement doesn’t cover up the sound of the organism.
-sound-recorder-help-One-organism = One organism
-sound-recorder-help-Stop-moving = Stop moving
-sound-recorder-help-Try-to-isolate = Try to isolate the sound of a single organism. If you can’t, make sure to leave a note of which organism you’re recording.
 Sounds = เสียง
-Source-List = <0>(Source List: </0><1>{ $source }</1><0>)</0>
 Species = ชนิด
-Species-View = Species View
-SPECIES-WITHOUT-NUMBER =
-    { $count ->
-        [one] SPECIES
-       *[other] SPECIES
-    }
 Standard--map-type = มาตรฐาน
-Start-must-be-before-end = The start date must be before the end date.
-Start-upload = Start upload
-Starts-recording-sound = Starts recording sound
-Stay-on-this-screen = Stay on this screen while your location loads.
-Still-need-help = Still need help? You can file a support request here.
-Stop-upload = Stop upload
 Stop-verb = หยุด
-Stops-recording-sound = Stops recording sound
-SUBMIT = SUBMIT
-SUBMIT-ID-SUGGESTION = SUBMIT ID SUGGESTION
-SUGGEST-ID = SUGGEST ID
 supporting--identification = สนับสนุน
-Switches-to-tab = Switches to { $tab } tab.
-Sync-observations = Sync observations
 Syncing = กำลังซิงก์...
-Take-photo = Take photo
-Take-photos = Take photos
 Taxa = หน่วยอนุกรมวิธาน
-TAXON = TAXON
-TAXON-NAMES-DISPLAY = TAXON NAMES DISPLAY
-TAXONOMIC-RANKS = TAXONOMIC RANKS
-TAXONOMY-header = TAXONOMY
-TEAM = TEAM
 Terms-of-Use = ข้อตกลงการใช้งาน
-TERMS-OF-USE = TERMS OF USE
-Thank-you-for-sharing-your-feedback = Thank you for sharing your feedback to help us improve!
-Thanks-for-using-any-suggestions = Thanks for using this app! Do you have any suggestions for the people who make it?
-That-email-is-already-associated-with-an-account = That email is already associated with an account.
-That-user-profile-doesnt-exist = That user profile doesn't exist
-That-username-is-unavailable = That username is unavailable
-The-AI-is-not-confident-It-may-be-one-of-the-IDs-below = The AI is not confident. It may be one of the IDs below.
-The-AI-is-not-confident-Upload-to-ask-the-community = The AI is not confident. Upload to ask the community.
-The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
-The-iNaturalist-community-will-help-verify-and-refine-identifications = The iNaturalist community will help verify and refine identifications on your observations to create Research Grade data for science and conservation.
-The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
-The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify.
-The-models-that-suggest-species = The models that suggest species based on visual similarity and location are thanks in part to collaborations with Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona, and Grant Van Horn.
-There-was-an-error-that-might-be-fixed-by-logging-in-again = There was an error that might be fixed by logging in again.
-This-is-a-wild-organism = This is a wild organism and wasn't placed in this location by humans.
-This-is-how-taxon-names-will-be-displayed = This is how all taxon names will be displayed to you across iNaturalist:
-This-is-your-identification-other-people-may-help-confirm-it = This is your identification. Other people may help confirm it!
-This-may-take-a-few-seconds = This may take a few seconds.
-This-observation-has-no-comments-or-identifications-yet = This observation has no comments or identifications yet.
-This-observation-has-not-met-the-conditions-required-to-meet-Research-Grade = This observation has not met the conditions required to meet Research Grade status
-This-observation-is-not-eligible-for-research-grade-status = This observation is not eligible for research grade status. Learn more in the Data Quality Assessment below.
-This-observation-is-research-grade-and-can-be-used-by-scientists = This observation is research grade and can be used by scientists!
-This-observation-needs-more-identifications = This observation needs more identifications to reach Research Grade status
-This-observation-needs-more-identifications-to-become-research-grade = This observation needs more identifications to become research grade.
-This-observer-has-opted-out-of-the-Community-Taxon = This observer has opted out of the Community Taxon
-This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
-This-user-has-no-followers = This user has no followers.
-This-user-has-not-joined-any-projects = This user has not joined any projects.
-This-user-is-not-following-anyone = This user is not following anyone.
-To-sync-your-observations-to-iNaturalist = To sync your observations to iNaturalist, please log in.
-To-view-nearby-organisms-please-enable-location = To view nearby organisms, please enable location.
-To-view-nearby-projects-please-enable-location = To view nearby projects, please enable location.
-Toggle-map-type = Toggle map type
-TOP-ID-SUGGESTION = TOP ID SUGGESTION
 Traditional-Project = โปรเจกต์แบบดั้งเดิม
 Umbrella-Project = โครงการครอบคลุม
-UNFOLLOW = UNFOLLOW
-UNFOLLOW-USER = UNFOLLOW USER?
 Unknown--rank = ไม่ทราบ
 Unknown--taxon = ไม่ทราบ
 Unknown--user = ไม่ทราบ
 Unknown-error = ข้อผิดพลาดที่ไม่รู้จัก
-Unknown-organism = Unknown organism
-Unreviewed-observations-only = Unreviewed observations only
-Upload-Complete = Upload Complete
-Upload-in-progress = Upload in progress
-UPLOAD-NOW = UPLOAD NOW
-Upload-photos = Upload photos
-Upload-Progress = Upload { $uploadProgress } percent complete
-UPLOAD-TO-INATURALIST = UPLOAD TO INATURALIST
-Upload-x-observations =
-    Upload { $count ->
-        [one] 1 observation
-       *[other] { $count } observations
-    }
-Upload-your-observations-to-contribute-data-to-help-save-species = Upload your observations to contribute data to help save species.
-Uploaded-via-application = Uploaded via: { $application }
-Uploading-x-of-y = Uploading { $currentUploadCount } of { $total }
-Uploading-x-of-y-observations =
-    { $total ->
-        [one] Uploading { $currentUploadCount } observation
-       *[other] Uploading { $currentUploadCount } of { $total } observations
-    }
-Use-iNaturalist-to-identify-any-living-thing = Use iNaturalist to identify any living thing
-USE-LOCATION = USE LOCATION
-Use-the-devices-other-camera = Use the device's other camera.
-Use-the-iNaturalist-camera-to-see-real-time-identifications-and-take-photos = Use the iNaturalist camera to see real-time identifications and take photos!
-Use-your-devices-microphone-to-record-animal-sounds-and-share-them = Use your device’s microphone to record animal sounds and share them to get identifications and contribute to science!
-USER = USER
-User = User { $userHandle }
-USERNAME-OR-EMAIL = USERNAME OR EMAIL
 Users = ผู้ใช้งาน
-Using-location = Using location
-Verified-IDs-are-used-for-science-and-conservation = Verified IDs are used for science and conservation
-Version-app-build = Version { $appVersion } ({ $buildVersion })
-VIEW-ALL-X-PLACES = VIEW ALL { $count } PLACES
-VIEW-ALL-X-PROJECTS = VIEW ALL { $count } PROJECTS
-VIEW-ALL-X-TAXA = VIEW ALL { $count } TAXA
-VIEW-ALL-X-USERS = VIEW ALL { $count } USERS
-VIEW-CHILDREN-TAXA = VIEW CHILDREN TAXA
-VIEW-DATA-QUALITY-ASSESSMENT = VIEW DATA QUALITY ASSESSMENT
-VIEW-EDUCATORS-GUIDE = VIEW EDUCATOR'S GUIDE
-VIEW-FOLLOWERS = VIEW FOLLOWERS
-VIEW-FOLLOWING = VIEW FOLLOWING
 View-in-browser = เปิดในเบราว์เซอร์
-VIEW-IN-EXPLORE = VIEW IN EXPLORE
-VIEW-INATURALIST-HELP = VIEW INATURALIST HELP
-View-photo = View photo
-View-photo-licensing-info = View photo licensing info
-VIEW-PROJECT-REQUIREMENTS = VIEW PROJECT REQUIREMENTS
-VIEW-PROJECTS = VIEW PROJECTS
 View-suggestions = ดูคำแนะนำ
-Watch-your-notifications-for-identifications = Watch your notifications for identifications!
-We-are-not-confident-enough-to-make-a-top-ID-suggestion = We’re not confident enough to make a top ID suggestion, but here are some other suggestions:
-Welcome-back = Welcome back!
-WHAT-IS-INATURALIST = WHAT IS INATURALIST?
-Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!
-When-tapping-the-green-observation-button = When tapping the green observation button, open:
-WIKIPEDIA = WIKIPEDIA
 Wild = พบตามธรรมชาติ
-WILD-STATUS = WILD STATUS
 Withdraw = ถอนออก
-WITHDRAW-ID = WITHDRAW ID
-WITHDRAW-ID-QUESTION = WITHDRAW ID?
-Withdraws-identification = Withdraws identification
 Worldwide = ทั่วโลก
-WORLDWIDE = WORLDWIDE
-Would-you-like-to-discard-your-current-recording-and-start-over = Would you like to discard your current recording and start over?
-Would-you-like-to-suggest-the-following-identification = Would you like to suggest the following identification?
-x-comments =
-    { $count ->
-        [one] { $count } comment
-       *[other] { $count } comments
-    }
-x-failed =
-    { $count ->
-        [one] { $count } failed
-       *[other] { $count } failed
-    }
-X-FOLLOWERS =
-    { $count ->
-        [one] { $count } FOLLOWER
-       *[other] { $count } FOLLOWERS
-    }
-X-Identifications =
-    { $count ->
-        [one] { $count } Identification
-       *[other] { $count } Identifications
-    }
-x-identifications =
-    { $count ->
-        [one] { $count } identification
-       *[other] { $count } identifications
-    }
-X-Identifiers =
-    { $count ->
-        [one] { $count } Identifier
-       *[other] { $count } Identifiers
-    }
-X-MEMBERS =
-    { $count ->
-        [one] { $count } MEMBER
-       *[other] { $count } MEMBERS
-    }
-X-Observations =
-    { $count ->
-        [one] 1 Observation
-       *[other] { $count } Observations
-    }
-X-OBSERVATIONS--below-number =
-    { $count ->
-        [one] OBSERVATION
-       *[other] OBSERVATIONS
-    }
-X-observations-deleted =
-    { $count ->
-        [one] 1 observation deleted
-       *[other] { $count } observations deleted
-    }
-X-observations-uploaded =
-    { $count ->
-        [one] 1 observation uploaded
-       *[other] { $count } observations uploaded
-    }
-X-Observers =
-    { $count ->
-        [one] { $count } Observer
-       *[other] { $count } Observers
-    }
-X-of-Y =
-    { $x ->
-        [one] 1
-       *[other] { $x }
-    } { $y ->
-        [one] of { $y }
-       *[other] of { $y }
-    }
-X-percent = { $count }%
-X-percent-confidence = { $count }% confidence
-X-PHOTOS =
-    { $photoCount ->
-        [one] 1 PHOTO
-       *[other] { $photoCount } PHOTOS
-    }
-X-PHOTOS-X-OBSERVATIONS =
-    { $photoCount ->
-        [one] 1 PHOTO
-       *[other] { $photoCount } PHOTOS
-    }, { $observationCount ->
-        [one] 1 OBSERVATION
-       *[other] { $observationCount } OBSERVATIONS
-    }
-X-PHOTOS-Y-SOUNDS =
-    { $photoCount ->
-        [one] 1 PHOTO
-       *[other] { $photoCount } PHOTOS
-    }, { $soundCount ->
-        [one] 1 SOUND
-       *[other] { $soundCount } SOUNDS
-    }
-X-PROJECTS = { $projectCount } PROJECTS
-x-saved =
-    { $count ->
-        [one] { $count } saved
-       *[other] { $count } saved
-    }
-X-SOUNDS =
-    { $count ->
-        [one] 1 SOUND
-       *[other] { $count } SOUNDS
-    }
-X-Species =
-    { $count ->
-        [one] { $count } Species
-       *[other] { $count } Species
-    }
-X-SPECIES--below-number =
-    { $count ->
-        [one] SPECIES
-       *[other] SPECIES
-    }
-x-uploaded =
-    { $count ->
-        [one] { $count } uploaded
-       *[other] { $count } uploaded
-    }
-x-uploading =
-    { $count ->
-        [one] { $count } uploading
-       *[other] { $count } uploading
-    }
-x-uploads-failed =
-    { $count ->
-        [one] { $count } upload failed
-       *[other] { $count } uploads failed
-    }
-You-are-offline = You are offline
-You-are-offline-Tap-to-reload = You are offline. Tap to reload.
-You-are-offline-Tap-to-try-again = You are offline. Tap to try again.
-You-can-add-up-to-20-media = You can add up to 20 photos and 20 sounds per observation.
-You-can-also-check-out-merchandise = You can also check out merchandise for iNaturalist and Seek at our store below!
-You-can-click-join-on-the-project-page = You can click “join” on the project page.
-You-can-find-answers-on-our-help-page = You can find answers on our help page.
-You-can-now-upload-your-observations-to-iNaturalist-and-contribute = You can now upload your observations to iNaturalist and contribute to global biodiversity research.
-You-can-only-add-20-photos-per-observation = You can only add 20 photos per observation
-You-can-still-share-the-file = You can still share the file with another app. If you can email it, please send it to { $email }
-You-can-upload-this-observation-to-our-community = You can upload this observation to our community to get an identification from a real person, and help our AI improve its identifications in the future
-You-changed-filters-will-be-discarded = You changed filters, but they were not applied to your explore search results.
-You-have-opted-out-of-the-Community-Taxon = You have opted out of the Community Taxon
-You-havent-joined-any-projects-yet = You haven’t joined any projects yet!
-You-havent-observed-any-species-yet = You haven't observed any species yet.
-You-likely-observed-a-species-in-this-group = You likely observed a species in this group
-You-likely-observed-this-species = You likely observed this species
-You-may-have-observed-a-species-in-this-group = You may have observed a species in this group
-You-may-have-observed-this-species = You may have observed this species
-You-may-notice-changes-to-how-things-look-and-flow = You may notice changes to how things look and flow. You can control your options in the settings.
-You-must-install-Google-Play-Services-to-sign-in-with-Google = You must install Google Play Services to sign in with Google.
-You-need-an-Internet-connection-to-do-that = You need an Internet connection to do that.
 You-need-log-in-to-do-that = คุณต้องเข้าสู่ระบบเพื่อดำเนินการดังกล่าว
-You-observed-a-species-in-this-group = You observed a species in this group
-You-observed-this-species = You observed this species
-You-will-see-notifications = You’ll see notifications here once you log in & upload observations.
-Your-donation-to-iNaturalist = Your donation to iNaturalist supports the improvement and stability of the mobile apps and website that connects millions of people to nature and enables the protection of biodiversity worldwide!
-Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
-Your-location-uncertainty-is-over-x-km = Your location uncertainty is over { $x } km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
-Your-observations-can-help-science = Your observations can help science!
-Youre-ready-to-share-your-observations = You’re ready to share your observations!
-Youve-denied-permission-prompt = You’ve denied permission. Please grant permission in the settings app.
-Youve-previously-denied-camera-permissions = You've previously denied camera permissions, so please enable them in settings.
-Youve-previously-denied-location-permissions = You’ve previously denied location permissions, so please enable them in settings.
-Youve-previously-denied-microphone-permissions = You’ve previously denied microphone permissions, so please enable them in settings.
-Zoom-in-as-much-as-possible-to-improve = Zoom in as much as possible to improve location accuracy and get better identifications.
-Zoom-to-current-location = Zoom to current location
-zoom-x = { $zoom }×

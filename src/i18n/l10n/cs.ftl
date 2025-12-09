@@ -55,7 +55,6 @@ all-rights-reserved = Všechna práva vyhrazena
 All-taxa = Všechny taxony
 ALL-USERS-EXCEPT = VŠICHNI UŽIVATELÉ KROMĚ
 ALLOW-LOCATION-ACCESS = POVOLIT PŘÍSTUP K LOKACI
-Already-have-an-iNaturalist-account = Already have an iNaturalist account?
 An-Internet-connection-is-required = Pro načtení více pozorování je vyžadováno připojení k internetu.
 Analyzing-for-the-best-identification = Analýza pro nejlepší identifikaci...
 Any--date = Jakýkoliv
@@ -148,7 +147,6 @@ Couldnt-create-comment = Nelze vytvořit komentář
 Couldnt-create-identification-error = Nelze vytvořit identifikaci { $error }
 Couldnt-create-identification-unknown-error = Nepodařilo se vytvořit identifikaci, neznámá chyba.
 CREATE-AN-ACCOUNT = VYTVOŘIT ÚČET
-Create-observation-with-no-evidence = Create observation with no evidence
 DATA-QUALITY = KVALITA DAT
 DATA-QUALITY-ASSESSMENT = POSOUZENÍ KVALITY DAT
 Data-Quality-Assessment = Hodnocení kvality dat
@@ -333,7 +331,6 @@ Highest = Nejvyšší
 HIGHEST-RANK = NEJVYŠŠÍ HODNOTA
 I-agree-to-the-Terms-of-Use = <0>Souhlasím s podmínkami používání a Zásadami ochrany osobních údajů a přezkoumal jsem obecné zásady komunity (</0><1>vyžadováno</1><0>).</0>
 Iconic-taxon-name = Název ikonického taxonu: { $iconicTaxon }
-ID-in-Camera = ID in Camera
 ID-Suggestions = Návrhy ID
 ID-Withdrawn = ID odebráno
 IDENTIFICATION = IDENTIFIKACE
@@ -345,7 +342,6 @@ IDENTIFICATIONS-WITHOUT-NUMBER =
     }
 Identifiers = Identifikátoři
 Identifiers-View = Zobrazení identifikátorů
-IDENTIFY = IDENTIFY
 Identify-organisms-in-real-time-with-your-camera = Identifikujte organismy v reálném čase pomocí fotoaparátu
 Identify-species-anywhere = Identifikujte druhy kdekoli
 If-an-account-with-that-email-exists = Pokud účet s tímto e-mailem existuje, zaslali jsme vám na něj pokyny k obnovení hesla.
@@ -573,7 +569,6 @@ Organism-is-captive = Organismus je v zajetí
 Organisms-that-are-identified-to-species = Organismy, které jsou identifikovány na druhovou nebo nižší úroveň
 OTHER-DATA = OSTATNÍ DATA
 OTHER-SUGGESTIONS = DALŠÍ NÁVRHY
-OTHERS--notifications = OTHERS
 PASSWORD = HESLO
 PEOPLE--title = LIDÉ
 Photo-importer = Importování fotek
@@ -594,7 +589,6 @@ POTENTIAL-DISAGREEMENT = POTENCIÁLNÍ NESHODY
 Potential-disagreement-description = <0>Stačí důkazy k potvrzení, že je to </0><1></1><0>?<0>
 Potential-disagreement-disagree = <0>Ne, ale toto je členem </0><1></1>
 Potential-disagreement-unsure = <0>Nevím, ale jsem si jistý, že to je </0><1></1>
-Press-and-hold-to-view-more-options = Press and hold to view more options
 Previous-observation = Předchozí pozorování
 Previous-slide = Předchozí snímek
 Privacy-Policy = Zásady ochrany osobních údajů
@@ -815,7 +809,6 @@ Switches-to-tab = Přepne na kartu { $tab }.
 Sync-observations = Synchronizovat pozorování
 Syncing = Synchronizuji...
 Take-photo = Vyfotit
-Take-photos = Take photos
 Taxa = Taxony
 TAXON = TAXON
 TAXON-NAMES-DISPLAY = ZOBRAZENÍ JMEN TAXONŮ
@@ -834,9 +827,7 @@ The-AI-is-not-confident-Upload-to-ask-the-community = Umělá inteligence si nen
 The-exact-location-will-be-hidden = Přesná poloha bude skryta veřejně, místo toho bude zobecněna do větší oblasti (ohrožené a ohrožené druhy jsou automaticky skryté).
 The-iNaturalist-community-will-help-verify-and-refine-identifications = Komunita iNaturalist vám pomůže ověřit a upřesnit identifikace vašich pozorování a vytvořit data na úrovni výzkumu pro vědu a ochranu přírody.
 The-iNaturalist-Network = Síť iNaturalist je sbírka lokalizovaných webů, které jsou plně propojeny s globální komunitou iNaturalist. Síťové stránky jsou podporovány místními institucemi, které podporují místní využití a usnadňují využívání údajů z iNaturalist ve prospěch místní biologické rozmanitosti.
-The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify.
 The-models-that-suggest-species = Modely, které navrhují druhy na základě vizuální podobnosti a polohy, jsou částečně díky spolupráci s Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona a Grant Van Horn.
-There-was-an-error-that-might-be-fixed-by-logging-in-again = There was an error that might be fixed by logging in again.
 This-is-a-wild-organism = Jedná se o divoký organismus a lidé jej na toto místo neumístili.
 This-is-how-taxon-names-will-be-displayed = Takto budou zobrazeny všechny názvy taxonů napříč iNaturalist:
 This-is-your-identification-other-people-may-help-confirm-it = Toto je Vaše identifikace. Ostatní lidé mohou pomoci potvrdit ji!
@@ -849,9 +840,6 @@ This-observation-needs-more-identifications = Toto pozorování vyžaduje více 
 This-observation-needs-more-identifications-to-become-research-grade = Toto pozorování potřebuje více identifikací, aby se mohlo stát výzkumným stupněm.
 This-observer-has-opted-out-of-the-Community-Taxon = Tento pozorovatel se rozhodl opustit komunitní taxon
 This-organism-was-placed-by-humans = Tento organismus sem umístili lidé. Týká se to takových organismů, jakou jsou zahradní rostliny, zvířata v zájmovém chovu a zvířata chovaná v zoologických zahradách.
-This-user-has-no-followers = This user has no followers.
-This-user-has-not-joined-any-projects = This user has not joined any projects.
-This-user-is-not-following-anyone = This user is not following anyone.
 To-sync-your-observations-to-iNaturalist = Chcete-li synchronizovat svá pozorování s iNaturalist, přihlaste se prosím.
 To-view-nearby-organisms-please-enable-location = Chcete-li zobrazit blízké organismy, povolte umístění.
 To-view-nearby-projects-please-enable-location = Pro zobrazení blízkých projektů povolte umístění.
@@ -870,7 +858,6 @@ Unreviewed-observations-only = Pouze nepřezkoumaná pozorování
 Upload-Complete = Nahrávání dokončeno
 Upload-in-progress = Probíhá nahrávání
 UPLOAD-NOW = NAHRÁT NYNÍ
-Upload-photos = Upload photos
 Upload-Progress = Nahrávání { $uploadProgress } procent dokončeno
 UPLOAD-TO-INATURALIST = NAHRÁT DO INATURALIST
 Upload-x-observations =
@@ -937,127 +924,18 @@ x-comments =
         [one] { $count } komentář
        *[other] { $count } komentáře
     }
-x-failed =
-    { $count ->
-        [one] { $count } failed
-       *[other] { $count } failed
-    }
-X-FOLLOWERS =
-    { $count ->
-        [one] { $count } FOLLOWER
-       *[other] { $count } FOLLOWERS
-    }
-X-Identifications =
-    { $count ->
-        [one] { $count } Identification
-       *[other] { $count } Identifications
-    }
-x-identifications =
-    { $count ->
-        [one] { $count } identification
-       *[other] { $count } identifications
-    }
-X-Identifiers =
-    { $count ->
-        [one] { $count } Identifier
-       *[other] { $count } Identifiers
-    }
-X-MEMBERS =
-    { $count ->
-        [one] { $count } MEMBER
-       *[other] { $count } MEMBERS
-    }
-X-Observations =
-    { $count ->
-        [one] 1 Observation
-       *[other] { $count } Observations
-    }
-X-OBSERVATIONS--below-number =
-    { $count ->
-        [one] OBSERVATION
-       *[other] OBSERVATIONS
-    }
-X-observations-deleted =
-    { $count ->
-        [one] 1 observation deleted
-       *[other] { $count } observations deleted
-    }
-X-observations-uploaded =
-    { $count ->
-        [one] 1 observation uploaded
-       *[other] { $count } observations uploaded
-    }
 X-Observers =
     { $count ->
         [one] { $count } Pozorovatel
        *[other] { $count } Pozorovatelé
     }
-X-of-Y =
-    { $x ->
-        [one] 1
-       *[other] { $x }
-    } { $y ->
-        [one] of { $y }
-       *[other] of { $y }
-    }
 X-percent = { $count }%
 X-percent-confidence = { $count }% spolehlivost
-X-PHOTOS =
-    { $photoCount ->
-        [one] 1 PHOTO
-       *[other] { $photoCount } PHOTOS
-    }
-X-PHOTOS-X-OBSERVATIONS =
-    { $photoCount ->
-        [one] 1 PHOTO
-       *[other] { $photoCount } PHOTOS
-    }, { $observationCount ->
-        [one] 1 OBSERVATION
-       *[other] { $observationCount } OBSERVATIONS
-    }
-X-PHOTOS-Y-SOUNDS =
-    { $photoCount ->
-        [one] 1 PHOTO
-       *[other] { $photoCount } PHOTOS
-    }, { $soundCount ->
-        [one] 1 SOUND
-       *[other] { $soundCount } SOUNDS
-    }
 X-PROJECTS = { $projectCount } PROJEKTY
-x-saved =
-    { $count ->
-        [one] { $count } saved
-       *[other] { $count } saved
-    }
-X-SOUNDS =
-    { $count ->
-        [one] 1 SOUND
-       *[other] { $count } SOUNDS
-    }
-X-Species =
-    { $count ->
-        [one] { $count } Species
-       *[other] { $count } Species
-    }
 X-SPECIES--below-number =
     { $count ->
         [jeden] DRUH
        *[other] DRUHY
-    }
-x-uploaded =
-    { $count ->
-        [one] { $count } uploaded
-       *[other] { $count } uploaded
-    }
-x-uploading =
-    { $count ->
-        [one] { $count } uploading
-       *[other] { $count } uploading
-    }
-x-uploads-failed =
-    { $count ->
-        [one] { $count } upload failed
-       *[other] { $count } uploads failed
     }
 You-are-offline = Jste offline
 You-are-offline-Tap-to-reload = Jste v režimu offline. Klepnutím obnovíte.
