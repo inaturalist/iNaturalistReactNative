@@ -18,6 +18,10 @@ export interface LocationPermissionCallbacks {
   onModalHide?: ( ) => void;
 }
 
+export type RenderLocationPermissionsGateFunction = (
+  callbacks?: LocationPermissionCallbacks | undefined
+) => React.JSX.Element | null;
+
 /**
  * A hook to check and request location permissions.
  * @returns {boolean} hasPermissions - Undefined if permissions have not been checked yet.
@@ -33,45 +37,49 @@ const useLocationPermission = ( ) => {
 
   // PermissionGate callbacks need to use useCallback, otherwise they'll
   // trigger re-renders if/when they change
-  const renderPermissionsGate = useCallback( ( callbacks?: LocationPermissionCallbacks ) => {
-    const {
-      onPermissionGranted,
-      onPermissionDenied,
-      onPermissionBlocked,
-      onModalHide
-    } = callbacks || { };
+  const renderPermissionsGate: RenderLocationPermissionsGateFunction
+    = useCallback(
+      ( callbacks?: LocationPermissionCallbacks ) => {
+        const {
+          onPermissionGranted,
+          onPermissionDenied,
+          onPermissionBlocked,
+          onModalHide
+        } = callbacks || {};
 
-    // this prevents infinite rerenders of the LocationPermissionGate component
-    if ( !showPermissionGate ) {
-      return null;
-    }
+        // this prevents infinite rerenders of the LocationPermissionGate component
+        if ( !showPermissionGate ) {
+          return null;
+        }
 
-    return (
-      <LocationPermissionGate
-        permissionNeeded
-        withoutNavigation
-        onModalHide={( ) => {
-          setShowPermissionGate( false );
-          if ( onModalHide ) onModalHide( );
-        }}
-        onPermissionGranted={( ) => {
-          setShowPermissionGate( false );
-          setHasPermissions( true );
-          setHasBlockedPermissions( false );
-          if ( onPermissionGranted ) onPermissionGranted( );
-        }}
-        onPermissionDenied={( ) => {
-          if ( onPermissionDenied ) onPermissionDenied( );
-        }}
-        onPermissionBlocked={( ) => {
-          setHasPermissions( false );
-          setHasBlockedPermissions( true );
-          setShowPermissionGate( true );
-          if ( onPermissionBlocked ) onPermissionBlocked( );
-        }}
-      />
+        return (
+          <LocationPermissionGate
+            permissionNeeded
+            withoutNavigation
+            onModalHide={() => {
+              setShowPermissionGate( false );
+              if ( onModalHide ) onModalHide();
+            }}
+            onPermissionGranted={() => {
+              setShowPermissionGate( false );
+              setHasPermissions( true );
+              setHasBlockedPermissions( false );
+              if ( onPermissionGranted ) onPermissionGranted();
+            }}
+            onPermissionDenied={() => {
+              if ( onPermissionDenied ) onPermissionDenied();
+            }}
+            onPermissionBlocked={() => {
+              setHasPermissions( false );
+              setHasBlockedPermissions( true );
+              setShowPermissionGate( true );
+              if ( onPermissionBlocked ) onPermissionBlocked();
+            }}
+          />
+        );
+      },
+      [showPermissionGate]
     );
-  }, [showPermissionGate] );
 
   // This gets exported and used as a dependency, so it needs to have
   // referential stability
