@@ -171,6 +171,12 @@ module.exports = {
       }
     },
     {
+      files: ["*.test.js", "*.test.tsx"],
+      rules: {
+        "react/jsx-props-no-spreading": "off"
+      }
+    },
+    {
       files: ["**/__mocks__/**/*", "**/*mock*", "**/*.mock.*"],
       rules: {
         "@typescript-eslint/no-require-imports": "off"
