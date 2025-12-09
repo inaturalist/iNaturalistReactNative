@@ -17,14 +17,16 @@ type Props = {
   representativePhoto: ApiPhoto,
   taxon?: ApiTaxon | RealmTaxon,
   obsPhotos: RealmObservationPhoto[],
-  navToTaxonDetails: ( photo: ApiPhoto ) => void
+  navToTaxonDetails: ( photo: ApiPhoto ) => void,
+  hideTaxonPhotos?: boolean
 }
 
 const PhotosSection = ( {
   representativePhoto,
   taxon,
   obsPhotos,
-  navToTaxonDetails
+  navToTaxonDetails,
+  hideTaxonPhotos
 }: Props ) => {
   const [displayPortraitLayout, setDisplayPortraitLayout] = useState<boolean | null>( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
@@ -88,34 +90,36 @@ const PhotosSection = ( {
     let observationPhotoClass = "w-full h-full";
     let taxonPhotosContainerClass;
     let taxonPhotoClass;
-    // If there is only one taxon photo: obs photo a square,
-    // taxon photo a square in the lower right corner of the obs photo
-    if ( bestTaxonPhotos.length === 1 ) {
-      containerClass = "flex-row relative";
-      observationPhotoClass = "w-full h-full";
-      taxonPhotosContainerClass = "absolute bottom-0 right-0 w-1/3 h-1/3";
-      taxonPhotoClass = "w-full h-full border-l-[3px] border-t-[3px] border-white";
-    }
-    if ( bestTaxonPhotos.length > 1 ) {
-      if ( displayPortraitLayout ) {
-        containerClass = "flex-row";
-        observationPhotoClass = "w-2/3 h-full pr-[3px]";
-        if ( bestTaxonPhotos.length === 2 ) {
-          taxonPhotosContainerClass = "flex-col w-1/3 h-full space-y-[3px]";
-          taxonPhotoClass = "w-full h-1/2";
+    if ( !hideTaxonPhotos ) {
+      // If there is only one taxon photo: obs photo a square,
+      // taxon photo a square in the lower right corner of the obs photo
+      if ( bestTaxonPhotos.length === 1 ) {
+        containerClass = "flex-row relative";
+        observationPhotoClass = "w-full h-full";
+        taxonPhotosContainerClass = "absolute bottom-0 right-0 w-1/3 h-1/3";
+        taxonPhotoClass = "w-full h-full border-l-[3px] border-t-[3px] border-white";
+      }
+      if ( bestTaxonPhotos.length > 1 ) {
+        if ( displayPortraitLayout ) {
+          containerClass = "flex-row";
+          observationPhotoClass = "w-2/3 h-full pr-[3px]";
+          if ( bestTaxonPhotos.length === 2 ) {
+            taxonPhotosContainerClass = "flex-col w-1/3 h-full space-y-[3px]";
+            taxonPhotoClass = "w-full h-1/2";
+          } else {
+            taxonPhotosContainerClass = "flex-col w-1/3 h-full space-y-[3px]";
+            taxonPhotoClass = "w-full h-1/3";
+          }
         } else {
-          taxonPhotosContainerClass = "flex-col w-1/3 h-full space-y-[3px]";
-          taxonPhotoClass = "w-full h-1/3";
-        }
-      } else {
-        containerClass = "flex-col";
-        observationPhotoClass = "w-full h-2/3 pb-[3px]";
-        if ( bestTaxonPhotos.length === 2 ) {
-          taxonPhotosContainerClass = "flex-row w-full h-1/3 space-x-[3px]";
-          taxonPhotoClass = "w-1/2 h-full";
-        } else {
-          taxonPhotosContainerClass = "flex-row w-full h-1/3 space-x-[3px]";
-          taxonPhotoClass = "w-1/3 h-full";
+          containerClass = "flex-col";
+          observationPhotoClass = "w-full h-2/3 pb-[3px]";
+          if ( bestTaxonPhotos.length === 2 ) {
+            taxonPhotosContainerClass = "flex-row w-full h-1/3 space-x-[3px]";
+            taxonPhotoClass = "w-1/2 h-full";
+          } else {
+            taxonPhotosContainerClass = "flex-row w-full h-1/3 space-x-[3px]";
+            taxonPhotoClass = "w-1/3 h-full";
+          }
         }
       }
     }
@@ -191,9 +195,9 @@ const PhotosSection = ( {
   }
 
   return (
-    <View className={classnames( "h-[390px]", layoutClasses.containerClass )}>
+    <View className={classnames( "h-[390px] overflow-hidden", layoutClasses.containerClass )}>
       {renderObservationPhoto( )}
-      {bestTaxonPhotos.length > 0 && renderTaxonPhotos( )}
+      {!hideTaxonPhotos && bestTaxonPhotos.length > 0 && renderTaxonPhotos( )}
       <MediaViewerModal
         showModal={mediaViewerVisible}
         onClose={( ) => setMediaViewerVisible( false )}
