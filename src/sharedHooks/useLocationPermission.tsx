@@ -19,7 +19,7 @@ export interface LocationPermissionCallbacks {
 }
 
 export type RenderLocationPermissionsGateFunction = (
-  callbacks?: LocationPermissionCallbacks | undefined
+  callbacks: LocationPermissionCallbacks | undefined
 ) => React.JSX.Element | null;
 
 /**
