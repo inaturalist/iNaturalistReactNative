@@ -1,3 +1,5 @@
+// @flow
+
 import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
@@ -7,6 +9,7 @@ import {
   Image, Pressable, View
 } from "components/styledComponents";
 import _, { compact } from "lodash";
+import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import Photo from "realmModels/Photo";
 import getImageDimensions from "sharedHelpers/getImageDimensions";
@@ -25,7 +28,7 @@ const PhotosSection = ( {
   obsPhotos,
   navToTaxonDetails,
   hideTaxonPhotos
-}: Props ) => {
+}: Props ): Node => {
   const [displayPortraitLayout, setDisplayPortraitLayout] = useState( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
 
