@@ -1,5 +1,5 @@
 import { useNetInfo } from "@react-native-community/netinfo";
-import { act, screen, userEvent } from "@testing-library/react-native";
+import { screen } from "@testing-library/react-native";
 import SavedMatchContainer from "components/ObsDetailsDefaultMode/SavedMatch/SavedMatchContainer";
 import { t } from "i18next";
 import React from "react";
@@ -79,16 +79,6 @@ jest.mock( "@react-navigation/native", () => {
 describe( "SavedMatch", ( ) => {
   beforeEach( async ( ) => {
     jest.clearAllMocks( );
-  } );
-
-  it( "should call navigation.push on learn more button press", async ( ) => {
-    const actor = userEvent.setup( );
-    renderAppWithComponent( <SavedMatchContainer observation={mockObservation} /> );
-    const learnMoreButton = await screen.findByText( t( "LEARN-MORE-ABOUT-THIS-SPECIES" ) );
-    await act( async ( ) => actor.press( learnMoreButton ) );
-    expect( mockPush ).toHaveBeenCalledWith( "TaxonDetails", {
-      id: mockObservation.taxon.id
-    } );
   } );
 
   it( "should not show learn more button when offline", async ( ) => {

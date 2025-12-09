@@ -1,11 +1,8 @@
-import { useRoute } from "@react-navigation/native";
 import { screen } from "@testing-library/react-native";
 import ObsDetailsDefaultModeScreensWrapper
   from "components/ObsDetailsDefaultMode/ObsDetailsDefaultModeScreensWrapper";
 import React from "react";
-import * as useCurrentUser from "sharedHooks/useCurrentUser";
 import * as useLocalObservation from "sharedHooks/useLocalObservation";
-import * as useRemoteObservation from "sharedHooks/useRemoteObservation";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
@@ -22,45 +19,32 @@ const mockLocalObservation = factory( "LocalObservation", {
   uuid: "test-123"
 } );
 
-const mockParams = {
-  uuid: "test-123"
-};
-
 jest.mock( "@react-native-community/netinfo", () => ( {
   useNetInfo: () => ( { isConnected: true } ),
   configure: jest.fn( )
 } ) );
 
-jest.mock( "sharedHooks/useCurrentUser", () => jest.fn() );
-jest.mock( "sharedHooks/useLocalObservation", () => jest.fn() );
-jest.mock( "sharedHooks/useRemoteObservation", () => jest.fn() );
+jest.mock( "sharedHooks/useCurrentUser", () => ( {
+  __esModule: true,
+  default: () => mockCurrentUser
+} ) );
+jest.mock( "sharedHooks/useLocalObservation", () => ( {
+  __esModule: true,
+  default: jest.fn( () => ( {
+    localObservation: null
+  } ) )
+} ) );
+jest.mock( "sharedHooks/useRemoteObservation", ( ) => ( {
+  __esModule: true,
+  default: ( _uuid, _fetchRemoteEnabled ) => ( {
+    remoteObservation: null,
+    refetchRemoteObservation: jest.fn( ),
+    isRefetching: false,
+    fetchRemoteObservationError: null
+  } )
+} ) );
 
 describe( "ObsDetailsDefaultModeScreensWrapper", ( ) => {
-  beforeEach( ( ) => {
-    useRoute.mockReturnValue( {
-      params: mockParams
-    } );
-
-    useCurrentUser.mockReturnValue( mockCurrentUser );
-
-    useLocalObservation.mockReturnValue( {
-      localObservation: null,
-      markDeletedLocally: jest.fn( ),
-      markViewedLocally: jest.fn( )
-    } );
-
-    useRemoteObservation.mockReturnValue( {
-      remoteObservation: null,
-      refetchRemoteObservation: jest.fn( ),
-      isRefetching: false,
-      fetchRemoteObservationError: null
-    } );
-  } );
-
-  afterEach( ( ) => {
-    jest.clearAllMocks( );
-  } );
-
   describe( "when showSavedMatch is true", ( ) => {
     it(
       "renders SavedMatchContainer when observation belongs to current user and is not synced",
@@ -70,11 +54,11 @@ describe( "ObsDetailsDefaultModeScreensWrapper", ( ) => {
           wasSynced: jest.fn( () => false )
         };
 
-        useLocalObservation.default.mockReturnValue( {
+        jest.spyOn( useLocalObservation, "default" ).mockImplementation( () => ( {
           localObservation: unsyncedLocalObservation,
           markDeletedLocally: jest.fn( ),
           markViewedLocally: jest.fn( )
-        } );
+        } ) );
 
         renderComponent( <ObsDetailsDefaultModeScreensWrapper /> );
 
@@ -90,11 +74,11 @@ describe( "ObsDetailsDefaultModeScreensWrapper", ( ) => {
         wasSynced: jest.fn( () => false )
       } );
 
-      useLocalObservation.default.mockReturnValue( {
+      jest.spyOn( useLocalObservation, "default" ).mockImplementation( () => ( {
         localObservation: unsyncedLocalObservationNoUser,
         markDeletedLocally: jest.fn( ),
         markViewedLocally: jest.fn( )
-      } );
+      } ) );
 
       renderComponent( <ObsDetailsDefaultModeScreensWrapper /> );
 
@@ -110,11 +94,11 @@ describe( "ObsDetailsDefaultModeScreensWrapper", ( ) => {
         wasSynced: jest.fn( () => true )
       };
 
-      useLocalObservation.default.mockReturnValue( {
+      jest.spyOn( useLocalObservation, "default" ).mockImplementation( () => ( {
         localObservation: syncedLocalObservation,
         markDeletedLocally: jest.fn( ),
         markViewedLocally: jest.fn( )
-      } );
+      } ) );
 
       renderComponent( <ObsDetailsDefaultModeScreensWrapper /> );
 
@@ -133,11 +117,11 @@ describe( "ObsDetailsDefaultModeScreensWrapper", ( ) => {
           wasSynced: jest.fn( () => false )
         } );
 
-        useLocalObservation.default.mockReturnValue( {
+        jest.spyOn( useLocalObservation, "default" ).mockImplementation( () => ( {
           localObservation: otherUserObservation,
           markDeletedLocally: jest.fn( ),
           markViewedLocally: jest.fn( )
-        } );
+        } ) );
 
         renderComponent( <ObsDetailsDefaultModeScreensWrapper /> );
 
