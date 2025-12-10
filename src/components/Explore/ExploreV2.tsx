@@ -37,6 +37,12 @@ enum EXPLORE_VIEW {
   SPECIES = "species"
 }
 
+enum EXPLORE_OBSERVATIONS_LAYOUT {
+  GRID = "grid",
+  LIST = "list",
+  MAP = "map"
+}
+
 interface Props {
   canFetch?: boolean;
   currentExploreView: EXPLORE_VIEW;
@@ -61,7 +67,10 @@ const ExploreV2 = ( {
   requestLocationPermissions
 }: Props ) => {
   const { t } = useTranslation( );
-  const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
+  const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" ) as {
+    layout: EXPLORE_OBSERVATIONS_LAYOUT | null;
+    writeLayoutToStorage: ( newValue: EXPLORE_OBSERVATIONS_LAYOUT ) => void;
+  };
   const { isDebug } = useDebugMode( );
 
   const renderMainContent = ( ) => {
