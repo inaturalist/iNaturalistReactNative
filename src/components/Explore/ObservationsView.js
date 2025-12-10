@@ -25,7 +25,7 @@ import MapView from "./MapView";
 
 type Props = {
   canFetch?: boolean,
-  layout: string,
+  layout: ?string,
   queryParams: Object,
   handleUpdateCount: Function,
   hasLocationPermissions?: boolean,
