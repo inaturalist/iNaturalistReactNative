@@ -72,6 +72,10 @@ Note that you can run `npx jest` as well, but that will omit some environment va
 Also note that `i18next` needs to be initialized in individual test files (haven't figured out a way to await initialization before *all* tests, plus allowing tests to control initialization helps when testing different locales). Add `beforeAll( async ( ) => { await initI18next( ); } );` to a test file if it depends on localized text.
 
 ### E2E tests
+
+> [!NOTE]
+> Status of e2e tests in CI: internal / staff PRs run iOS Detox tests as a PR check. Android Detox tests are currently disabled. We are currently working to restore Android e2e tests. For now, we have a skeleton Android flow running a single smoketest flow for simplicity. This is not a PR check yet and can only be run manually (`workflow_dispatch` GH Actions trigger).
+
 We're using [Detox](https://wix.github.io/Detox/docs/introduction/getting-started/) for E2E tests. If you want to run the e2e tests on your local machine, make sure you follow the Detox environment setup instructions.
 
 Then you have to populate `E2E_TEST_USERNAME` and `E2E_TEST_PASSWORD` in `.env` with real iNaturalist login credentials so the e2e test can actually authenticate.
@@ -92,6 +96,13 @@ If you are running into some issues after the tests have been working for some t
 If you want to run the Android tests you need to prepare your environment. Before you dive into the [setup](https://wix.github.io/Detox/docs/19.x/introduction/android-dev-env), know that alternatively you might find it easier setting up the required local emulator, preferrably an AOSP (Android Open Source Project) version, using Android Studio. Make sure the emulator has the same name as in the `.detoxrc.js` file.
 
 Run `npm run e2e:build:android && npm run e2e:test:android` to build the APK for testing purposes and install and run it on the emulator with the name as stated in the `.detoxrc.js` file.
+
+#### Maestro
+
+> [!NOTE]
+> By the Maestro's team own disclosure, the `maestro record` command for generating a test run recording is unusably slow. As a workaround, we use the inline `startRecording` Maestro directive within tests, which is more performant. For convenience, this is defined in an `onFlowStart.yaml` intented to be referred to in each flow's `onFlowStart` lifecycle hook.
+
+Some desired test flows cannot be acheived with Detox and for those, we use Maestro. These are tests that rely on behavior external to the application such as deeplinks and sharing photos into the app. These are not currently run in CI as a PR check. The in-progress Android CI uses a Maestro smoketest flow as an exemplary command while we work on restoring Android Detox tests.
 
 ## Translations
 
