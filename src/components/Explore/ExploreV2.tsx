@@ -30,13 +30,17 @@ const DROP_SHADOW = getShadow( {
   elevation: 6
 } );
 
+enum EXPLORE_VIEW {
+  OBSERVATIONS = "observations",
+  IDENTIFIERS = "identifiers",
+  OBSERVERS = "observers",
+  SPECIES = "species"
+}
+
 interface Props {
   canFetch?: boolean;
-  currentExploreView: string;
-  handleUpdateCount: (
-    exploreView: "observations" | "identifiers" | "observers" | "species",
-    totalResults: number
-  ) => void;
+  currentExploreView: EXPLORE_VIEW;
+  handleUpdateCount: ( exploreView: EXPLORE_VIEW, totalResults: number ) => void;
   hasLocationPermissions?: boolean;
   isConnected: boolean;
   placeMode: string;
@@ -87,7 +91,7 @@ const ExploreV2 = ( {
     }
     return (
       <View className="flex-1">
-        {currentExploreView === "observations" && (
+        {currentExploreView === EXPLORE_VIEW.OBSERVATIONS && (
           <ObservationsView
             canFetch={canFetch}
             layout={layout}
@@ -98,7 +102,7 @@ const ExploreV2 = ( {
             requestLocationPermissions={requestLocationPermissions}
           />
         )}
-        {currentExploreView === "species" && (
+        {currentExploreView === EXPLORE_VIEW.SPECIES && (
           <SpeciesView
             canFetch={canFetch}
             isConnected={isConnected}
@@ -106,7 +110,7 @@ const ExploreV2 = ( {
             handleUpdateCount={handleUpdateCount}
           />
         )}
-        {currentExploreView === "observers" && (
+        {currentExploreView === EXPLORE_VIEW.OBSERVERS && (
           <ObserversView
             canFetch={canFetch}
             isConnected={isConnected}
@@ -114,7 +118,7 @@ const ExploreV2 = ( {
             handleUpdateCount={handleUpdateCount}
           />
         )}
-        {currentExploreView === "identifiers" && (
+        {currentExploreView === EXPLORE_VIEW.IDENTIFIERS && (
           <IdentifiersView
             canFetch={canFetch}
             isConnected={isConnected}
