@@ -13,6 +13,9 @@ import {
 import React from "react";
 import { useTranslation } from "sharedHooks";
 
+const HIGH_CONFIDENCE_THRESHOLD = 93;
+const LIKELY_CONFIDENCE_THRESHOLD = 50;
+
 interface Props {
   topSuggestion?: ApiSuggestion;
   hideObservationStatus?: boolean
@@ -33,9 +36,11 @@ const MatchHeader = ( { topSuggestion, hideObservationStatus }: Props ) => {
   const observationStatus = ( ) => {
     let confidenceType = "may_have_observed";
     if ( confidence ) {
-      if ( confidence >= 93 ) {
+      if ( confidence >= HIGH_CONFIDENCE_THRESHOLD ) {
         confidenceType = "observed";
-      } else if ( confidence >= 50 && confidence < 93 ) {
+      } else if (
+        confidence >= LIKELY_CONFIDENCE_THRESHOLD && confidence < HIGH_CONFIDENCE_THRESHOLD
+      ) {
         confidenceType = "likely_observed";
       }
     }
