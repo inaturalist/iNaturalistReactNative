@@ -26,7 +26,7 @@ interface Props extends PropsWithChildren {
   progress: number;
   uniqueKey: string;
   queued: boolean;
-  obsStatus: ReactComponent
+  obsStatus: ReactComponent;
 }
 
 const UploadStatus = ( {

@@ -8,7 +8,7 @@ import { useTranslation } from "sharedHooks";
 import type { Notification } from "sharedHooks/useInfiniteNotificationsScroll";
 
 interface Props {
-  notification: Notification
+  notification: Notification;
 }
 
 const ObsNotificationText = ( { notification }: Props ) => {

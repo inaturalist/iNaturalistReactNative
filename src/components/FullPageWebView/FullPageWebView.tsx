@@ -62,14 +62,14 @@ type FullPageWebViewParams = {
 }
 
 type ParamList = {
-  FullPageWebView: FullPageWebViewParams
+  FullPageWebView: FullPageWebViewParams;
 }
 
 type WebViewSource = {
   uri: string;
   headers?: {
-    Authorization?: string | null
-  }
+    Authorization?: string | null;
+  };
 }
 
 export function onShouldStartLoadWithRequest(

@@ -27,22 +27,22 @@ import StatusSection from "./StatusSection/StatusSection";
 const cardClassBottom = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mt-0.5 mb-4";
 
 type Props = {
-  activityItems: Array<object>,
-  addingActivityItem: boolean,
-  belongsToCurrentUser: boolean,
-  currentUser: RealmUser,
-  isConnected: boolean,
-  navToSuggestions: () => void,
-  observation: RealmObservation & Observation & { id: number },
-  openAddCommentSheet: () => void,
-  openAgreeWithIdSheet: () => void,
-  refetchRemoteObservation: () => void,
-  refetchSubscriptions: () => void,
-  showAddCommentSheet: () => void,
-  subscriptions: object,
-  targetActivityItemID: number,
-  wasSynced: boolean,
-  uuid: string
+  activityItems: Array<object>;
+  addingActivityItem: boolean;
+  belongsToCurrentUser: boolean;
+  currentUser: RealmUser;
+  isConnected: boolean;
+  navToSuggestions: () => void;
+  observation: RealmObservation & Observation & { id: number };
+  openAddCommentSheet: () => void;
+  openAgreeWithIdSheet: () => void;
+  refetchRemoteObservation: () => void;
+  refetchSubscriptions: () => void;
+  showAddCommentSheet: () => void;
+  subscriptions: object;
+  targetActivityItemID: number;
+  wasSynced: boolean;
+  uuid: string;
 }
 
 const ObsDetailsDefaultMode = ( {

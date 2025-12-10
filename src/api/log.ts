@@ -17,7 +17,7 @@ const api = create( {
   }
 } );
 
-function isError( error: { message?: string, stack?: string } ) {
+function isError( error: { message?: string; stack?: string } ) {
   if ( error instanceof Error ) return true;
   if ( error?.stack && error?.message ) return true;
   return false;

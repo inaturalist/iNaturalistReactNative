@@ -7,7 +7,7 @@ import React from "react";
 import { Alert, Platform, Share } from "react-native";
 
 type Props = {
-  id: number
+  id: number;
 }
 
 const OBSERVATION_URL = "https://www.inaturalist.org/observations";

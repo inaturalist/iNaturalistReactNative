@@ -12,10 +12,10 @@ const MAX_FOLDER_SIZE = 5 * 1024 * 1024 * 1024; // 5GB in bytes
 const TOO_NEW_THRESHOLD = 24 * 60 * 60 * 1000; // Files modified in the last 1 day (in milliseconds)
 
 type FileDetails = {
-  name: string,
-  path: string,
-  size: number,
-  modifiedTime: number
+  name: string;
+  path: string;
+  size: number;
+  modifiedTime: number;
 };
 
 const removeSyncedFilesFromDirectory = async (

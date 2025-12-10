@@ -19,7 +19,7 @@ interface Props {
     score?: number;
     taxon?: RealmTaxon;
   };
-  hideObservationStatus?: boolean
+  hideObservationStatus?: boolean;
 }
 
 const MatchHeader = ( { topSuggestion, hideObservationStatus }: Props ) => {

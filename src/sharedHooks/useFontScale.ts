@@ -5,7 +5,7 @@ import {
 import DeviceInfo from "react-native-device-info";
 
 const useFontScale = ( ): {
-  isLargeFontScale: boolean
+  isLargeFontScale: boolean;
 } => {
   const [isLargeFontScale, setIsLargeFontScale] = useState<boolean>( false );
 

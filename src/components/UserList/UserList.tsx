@@ -14,15 +14,15 @@ const CONTAINER_STYLE = {
 };
 
 interface Props {
-  ListEmptyComponent?: React.JSX.Element
-  ListFooterComponent?: React.JSX.Element
-  onEndReached?: ( ) => void
-  refreshing?: boolean
-  users: Array<object>
-  onPress?: ( ) => void
-  accessibilityLabel?: string
-  keyboardShouldPersistTaps?: string
-  contentContainerStyle?: ViewStyle
+  ListEmptyComponent?: React.JSX.Element;
+  ListFooterComponent?: React.JSX.Element;
+  onEndReached?: ( ) => void;
+  refreshing?: boolean;
+  users: Array<object>;
+  onPress?: ( ) => void;
+  accessibilityLabel?: string;
+  keyboardShouldPersistTaps?: string;
+  contentContainerStyle?: ViewStyle;
 }
 
 const UserList = ( {

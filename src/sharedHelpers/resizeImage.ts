@@ -3,14 +3,14 @@ import ImageResizer from "@bam.tech/react-native-image-resizer";
 const resizeImage = async (
   pathOrUri: string,
   options: {
-    width: number,
-    height?: number,
-    rotation?: number,
-    outputPath?: string,
+    width: number;
+    height?: number;
+    rotation?: number;
+    outputPath?: string;
     imageOptions?: {
-      mode?: string,
-      onlyScaleDown?: boolean
-    }
+      mode?: string;
+      onlyScaleDown?: boolean;
+    };
   }
 ): Promise<string> => {
   const {

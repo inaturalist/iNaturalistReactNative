@@ -4,8 +4,8 @@ import { Animated } from "react-native";
 import colors from "styles/tailwindColors";
 
 interface Props {
-  takingPhoto: boolean,
-  cameraType: string
+  takingPhoto: boolean;
+  cameraType: string;
 }
 
 const fade = value => ( {
