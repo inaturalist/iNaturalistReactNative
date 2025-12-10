@@ -1,5 +1,3 @@
-// @flow
-
 import { refresh } from "@react-native-community/netinfo";
 import classnames from "classnames";
 import {
@@ -11,7 +9,6 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { PLACE_MODE } from "providers/ExploreContext";
-import type { Node } from "react";
 import React from "react";
 import { Alert } from "react-native";
 import {
@@ -19,6 +16,7 @@ import {
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
+import type { RenderLocationPermissionsGateFunction } from "sharedHooks/useLocationPermission";
 import { getShadow } from "styles/global";
 
 import IdentifiersView from "./IdentifiersView";
@@ -32,16 +30,19 @@ const DROP_SHADOW = getShadow( {
   elevation: 6
 } );
 
-type Props = {
-  canFetch?: boolean, // TODO: change to PLACE_MODE in Typescript
-  currentExploreView: string,
-  handleUpdateCount: Function,
-  hasLocationPermissions?: boolean,
-  isConnected: boolean,
-  placeMode: string,
-  queryParams: Object,
-  renderLocationPermissionsGate: Function,
-  requestLocationPermissions: Function,
+interface Props {
+  canFetch?: boolean;
+  currentExploreView: string;
+  handleUpdateCount: (
+    exploreView: "observations" | "identifiers" | "observers" | "species",
+    totalResults: number
+  ) => void;
+  hasLocationPermissions?: boolean;
+  isConnected: boolean;
+  placeMode: string;
+  queryParams: object;
+  renderLocationPermissionsGate: RenderLocationPermissionsGateFunction;
+  requestLocationPermissions: () => void;
 }
 
 const ExploreV2 = ( {
@@ -54,7 +55,7 @@ const ExploreV2 = ( {
   queryParams,
   renderLocationPermissionsGate,
   requestLocationPermissions
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
   const { isDebug } = useDebugMode( );
