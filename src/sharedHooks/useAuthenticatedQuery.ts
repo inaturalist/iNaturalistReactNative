@@ -1,3 +1,4 @@
+import type { QueryKey } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { getJWT, isLoggedIn } from "components/LoginSignUp/AuthenticationService";
 import { useEffect, useState } from "react";
@@ -16,7 +17,7 @@ type QueryFunction<Response> = ( options: { api_token: string | null } ) => Prom
 // Should work like React Query's useQuery except it calls the queryFunction
 // with an object that includes the JWT
 const useAuthenticatedQuery = <Response>(
-  queryKey: string[],
+  queryKey: QueryKey,
   queryFunction: QueryFunction<Response>,
   queryOptions: QueryOptions = {}
 ) => {
