@@ -13,7 +13,7 @@ import {
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Alert } from "react-native";
 import User from "realmModels/User";
 import { log } from "sharedHelpers/logger";
@@ -58,77 +58,76 @@ const Menu = ( ) => {
   const [showConfirm, setShowConfirm] = useState( false );
   const [showFeedback, setShowFeedback] = useState( false );
 
-  const menuItems = useMemo( ( ) => {
-    const items: {
-      [key: string]: MenuOption;
-    } = {
-      projects: {
-        label: t( "PROJECTS" ),
-        navigation: "Projects",
-        icon: "briefcase"
-      },
-      about: {
-        label: t( "ABOUT" ),
-        navigation: "About",
-        icon: "inaturalist"
-      },
-      donate: {
-        label: t( "DONATE" ),
-        navigation: "Donate",
-        icon: "heart",
-        color: colors.inatGreen
-      },
-      help: {
-        label: t( "HELP" ),
-        navigation: "Help",
-        icon: "help-circle"
-      },
-      settings: {
-        testID: "settings",
-        label: t( "SETTINGS" ),
-        navigation: "Settings",
-        icon: "gear"
-      }
-    };
-    items.feedback = {
+  const menuItems: Record<string, MenuOption> = {
+    projects: {
+      label: t( "PROJECTS" ),
+      navigation: "Projects",
+      icon: "briefcase"
+    },
+    about: {
+      label: t( "ABOUT" ),
+      navigation: "About",
+      icon: "inaturalist"
+    },
+    donate: {
+      label: t( "DONATE" ),
+      navigation: "Donate",
+      icon: "heart",
+      color: colors.inatGreen
+    },
+    help: {
+      label: t( "HELP" ),
+      navigation: "Help",
+      icon: "help-circle"
+    },
+    settings: {
+      testID: "settings",
+      label: t( "SETTINGS" ),
+      navigation: "Settings",
+      icon: "gear"
+    },
+
+    feedback: {
       label: t( "FEEDBACK" ),
       icon: "feedback",
-      onPress: ( ) => {
+      onPress: () => {
         if ( isConnected ) {
           setShowFeedback( true );
         } else {
           showOfflineAlert( t );
         }
       }
-    };
+    },
 
-    if ( currentUser ) {
-      items.logout = {
-        label: t( "LOG-OUT" ),
-        icon: "door-exit",
-        onPress: ( ) => setShowConfirm( true ),
-        isLogout: true
-      };
-    } else {
-      items.login = {
-        label: t( "LOG-IN" ),
-        icon: "door-enter",
-        color: colors.inatGreen,
-        onPress: ( ) => {
-          navigation.navigate( "LoginStackNavigator" );
+    ...( currentUser
+      ? {
+        logout: {
+          label: t( "LOG-OUT" ),
+          icon: "door-exit",
+          onPress: () => setShowConfirm( true ),
+          isLogout: true
         }
-      };
-    }
-    if ( isDebug ) {
-      items.debug = {
-        label: "DEBUG",
-        navigation: "Debug",
-        icon: "triangle-exclamation",
-        color: "deeppink"
-      };
-    }
-    return items;
-  }, [currentUser, isConnected, isDebug, navigation, t] );
+      }
+      : {
+        login: {
+          label: t( "LOG-IN" ),
+          icon: "door-enter",
+          color: colors.inatGreen,
+          onPress: () => navigation.navigate( "LoginStackNavigator" )
+        }
+      } ),
+
+    ...( isDebug
+      ? {
+        debug: {
+          label: "DEBUG",
+          navigation: "Debug",
+          icon: "triangle-exclamation",
+          color: "deeppink"
+        }
+      }
+      : {} )
+  };
 
   const onSignOut = async ( ) => {
     await signOut( { realm, clearRealm: true, queryClient } );
