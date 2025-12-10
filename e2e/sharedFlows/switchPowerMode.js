@@ -1,13 +1,16 @@
 import {
-  by, element, waitFor
+  by, device,
+  element, waitFor
 } from "detox";
 
 const TIMEOUT = 10_000;
 
 export default async function switchPowerMode() {
   const menuButton = element( by.id( "OPEN_MENU" ) );
+  await device.disableSynchronization();
   await waitFor( menuButton ).toBeVisible().withTimeout( TIMEOUT );
   await menuButton.tap( { x: 0, y: 0 } );
+  await device.enableSynchronization();
   // Tap the settings menu item
   const settingsMenuItem = element( by.id( "settings" ) );
   await waitFor( settingsMenuItem ).toBeVisible().withTimeout( TIMEOUT );
