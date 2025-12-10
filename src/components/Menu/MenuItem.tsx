@@ -13,6 +13,7 @@ const MenuItem = ( {
   onPress: ( ) => void;
 } ) => (
   <Pressable
+    testID={item.testID}
     className={classNames(
       item.isLogout
         ? "opacity-50"
