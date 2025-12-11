@@ -50,7 +50,10 @@ interface MenuOptionWithOnPress extends BaseMenuOption {
 
 export type MenuOption = MenuOptionWithNavigation | MenuOptionWithOnPress;
 
-type MenuModalState = "confirmLogout" | "provideFeedback" | null;
+export enum MenuModalState {
+  ConfirmLogout = "confirmLogout",
+  ProvideFeedback = "provideFeedback"
+}
 
 const feedbackLogger = log.extend( "feedback" );
 
@@ -69,7 +72,7 @@ const Menu = ( ) => {
 
   const { isConnected } = useNetInfo( );
 
-  const [modalState, setModalState] = useState<MenuModalState>( null );
+  const [modalState, setModalState] = useState<MenuModalState | null>( null );
 
   const menuItems: Record<string, MenuOption> = {
     projects: {
@@ -105,7 +108,7 @@ const Menu = ( ) => {
       icon: "feedback",
       onPress: () => {
         if ( isConnected ) {
-          setModalState( "provideFeedback" );
+          setModalState( MenuModalState.ProvideFeedback );
         } else {
           showOfflineAlert( t );
         }
@@ -117,7 +120,7 @@ const Menu = ( ) => {
         logout: {
           label: t( "LOG-OUT" ),
           icon: "door-exit",
-          onPress: () => setModalState( "confirmLogout" ),
+          onPress: () => setModalState( MenuModalState.ConfirmLogout ),
           isLogout: true
         }
       }
@@ -250,7 +253,7 @@ const Menu = ( ) => {
         </View>
       </View>
 
-      {modalState === "confirmLogout" && (
+      {modalState === MenuModalState.ConfirmLogout && (
         <WarningSheet
           onPressClose={() => setModalState( null )}
           headerText={t( "LOG-OUT--question" )}
@@ -262,7 +265,7 @@ const Menu = ( ) => {
           loading={false}
         />
       )}
-      {modalState === "provideFeedback" && (
+      {modalState === MenuModalState.ProvideFeedback && (
         <TextInputSheet
           buttonText={t( "SUBMIT" )}
           onPressClose={() => setModalState( null )}
