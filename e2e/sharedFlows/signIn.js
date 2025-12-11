@@ -13,10 +13,10 @@ export default async function signIn() {
   */
   await switchPowerMode();
   // Find the Menu item from tabs
-  const menuButton = element( by.id( "OPEN_MENU" ) );
+  const menuButton = element( by.id( "Menu" ) );
   await waitFor( menuButton ).toBeVisible().withTimeout( TIMEOUT );
   await expect( menuButton ).toBeVisible();
-  await element( by.id( "OPEN_MENU" ) ).tap( { x: 0, y: 0 } );
+  await element( by.id( "Menu" ) ).tap( { x: 0, y: 0 } );
   // Tap the Log-In menu item
   // TODO: consider this a temporary solution as it only checks for the menu-header
   // which can be a login prompt or the logged in user's details. If the user is already
