@@ -81,7 +81,7 @@ function isAlias( name: string ): name is INatIconAliases {
   return name in typedAliasMap;
 }
 
-export type INatIconProps = {
+type Props = {
   testID?: string;
   name: INatIconNames | INatIconAliases;
   color?: string;
@@ -93,7 +93,7 @@ export type INatIconProps = {
 // Use default color if none is specified
 const INatIcon = ( {
   testID, name, color, size, dropShadow, isDarkModeEnabled = false
-}: INatIconProps ) => {
+}: Props ) => {
   const colorScheme = useColorScheme( );
 
   const getColorFromColorScheme = ( ) => {
