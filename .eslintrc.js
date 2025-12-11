@@ -20,7 +20,8 @@ module.exports = {
     "react-native",
     "simple-import-sort",
     "@tanstack/query",
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "@stylistic"
   ],
   rules: {
     "arrow-parens": [2, "as-needed"],
@@ -168,6 +169,12 @@ module.exports = {
         "@typescript-eslint/no-require-imports": "off",
         "@typescript-eslint/consistent-type-imports": "off",
         "import/consistent-type-specifier-style": "off"
+      }
+    },
+    {
+      files: ["*.test.js", "*.test.tsx"],
+      rules: {
+        "react/jsx-props-no-spreading": "off"
       }
     },
     {

@@ -9,7 +9,7 @@ import colors from "styles/tailwindColors";
 
 type Props = {
   hideMap?: boolean,
-  layout: string,
+  layout: ?string,
   updateObservationsView: Function
 };
 
