@@ -1,10 +1,11 @@
 import { ScrollView, View } from "components/styledComponents";
 import React, { useEffect, useState } from "react";
-import { ImageStyle, StyleProp } from "react-native";
+import type { ImageStyle, StyleProp } from "react-native";
 import Photo from "realmModels/Photo";
-import Sound from "realmModels/Sound";
+import type Sound from "realmModels/Sound";
 import type { RealmPhoto, RealmSound } from "realmModels/types";
-import getImageDimensions, { ImageDimensions } from "sharedHelpers/getImageDimensions";
+import type { ImageDimensions } from "sharedHelpers/getImageDimensions";
+import getImageDimensions from "sharedHelpers/getImageDimensions";
 
 import PhotoContainer from "./PhotoContainer";
 import SoundContainer from "./SoundContainer";
