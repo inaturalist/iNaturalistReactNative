@@ -6,6 +6,7 @@ import * as React from "react";
 import { useOnboardingShown } from "sharedHelpers/installData";
 
 import BottomTabNavigator from "./BottomTabNavigator";
+import { hideHeader } from "./navigationOptions";
 
 const Stack = createNativeStackNavigator( );
 
@@ -17,7 +18,7 @@ const RootStackNavigator = ( ) => {
   const [onboardingShown] = useOnboardingShown( );
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ ...hideHeader }}>
       {!onboardingShown
         ? (
           <Stack.Screen
