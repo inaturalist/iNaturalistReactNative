@@ -18,6 +18,19 @@ import colors from "styles/tailwindColors";
 
 import SliderControl from "./SliderControl";
 
+interface Props {
+  changeDebugFormat: () => void;
+  confidenceThreshold: number;
+  debugFormat: Record<string, unknown> | null;
+  setConfidenceThreshold: ( value: number ) => void;
+  fps: number;
+  setFPS: ( value: number ) => void;
+  numStoredResults: number;
+  setNumStoredResults: ( value: number ) => void;
+  cropRatio: number;
+  setCropRatio: ( value: number ) => void;
+}
+
 const AIDebugButton = ( {
   changeDebugFormat,
   confidenceThreshold,
@@ -29,7 +42,7 @@ const AIDebugButton = ( {
   setNumStoredResults,
   cropRatio,
   setCropRatio
-} ) => {
+}: Props ) => {
   const [modalVisible, setModalVisible] = useState( false );
   const [slideIndex, setSlideIndex] = useState( 0 );
   const { isDebug } = useDebugMode( );
