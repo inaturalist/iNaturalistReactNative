@@ -17,7 +17,7 @@ const RootStackNavigator = ( ) => {
   const [onboardingShown] = useOnboardingShown( );
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ headerShown: false, animation: "none" }}>
       {!onboardingShown
         ? (
           <Stack.Screen
