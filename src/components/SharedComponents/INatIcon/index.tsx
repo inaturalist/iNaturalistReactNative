@@ -4,7 +4,7 @@ import {
 } from "react-native";
 import colors from "styles/tailwindColors";
 
-import type { INatIconNames } from "./INatIcon";
+import type { INatIconName, INatIconName } from "./INatIcon";
 import Icon from "./INatIcon";
 
 // Most of these are names for these icons used in design mapped to more
@@ -16,7 +16,7 @@ const aliasMap = {
   "evidence-add": "plus-bold",
   addid: "id-agree",
   back: "chevron-left",
-  captive: "pot" as INatIconNames, // Casting because "pot" does not exist in the glyphmap.
+  captive: "pot" as INatIconName, // Casting because "pot" does not exist in the glyphmap.
   checkmark: "check",
   "close-large": "close",
   "close-small": "close-bold",
@@ -40,7 +40,7 @@ const aliasMap = {
   "fave-inactive": "star-bold-outline",
   filters: "sliders",
   flipcamera: "flip",
-  geoprivacy: "globe" as INatIconNames, // Casting because "globe" does not exist in the glyphmap.
+  geoprivacy: "globe" as INatIconName, // Casting because "globe" does not exist in the glyphmap.
   gridview: "grid-square",
   listview: "list-square",
   list: "list",
@@ -74,16 +74,17 @@ const aliasMap = {
   "upvote-inactive": "arrow-up-bold-circle-outline"
 } as const;
 
-type INatIconAliases = keyof typeof aliasMap;
-const typedAliasMap: Record<INatIconAliases, INatIconNames> = aliasMap;
+type INatIconAlias = keyof typeof aliasMap;
+type INatIconNameOrAlias = INatIconName | INatIconAlias;
+const typedAliasMap: Record<INatIconAlias, INatIconName> = aliasMap;
 
-function isAlias( name: string ): name is INatIconAliases {
+function isAlias( name: string ): name is INatIconAlias {
   return name in typedAliasMap;
 }
 
 type Props = {
   testID?: string;
-  name: INatIconNames | INatIconAliases;
+  name: INatIconNameOrAlias;
   color?: string;
   size?: number;
   dropShadow?: boolean;
