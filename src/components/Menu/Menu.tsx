@@ -29,15 +29,25 @@ function isDefaultMode( ) {
   return useStore.getState( ).layout.isDefaultMode === true;
 }
 
-export interface MenuOption {
+interface BaseMenuOption {
   label: string;
-  navigation?: string;
   icon: string;
   color?: string;
-  onPress?: ( ) => void;
   testID?: string;
   isLogout?: boolean;
 }
+
+interface MenuOptionWithNavigation extends BaseMenuOption {
+  navigation: string;
+  onPress?: never;
+}
+
+interface MenuOptionWithOnPress extends BaseMenuOption {
+  onPress: ( ) => void;
+  navigation?: never;
+}
+
+export type MenuOption = MenuOptionWithNavigation | MenuOptionWithOnPress;
 
 const feedbackLogger = log.extend( "feedback" );
 
