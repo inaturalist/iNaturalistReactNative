@@ -49,6 +49,8 @@ interface MenuOptionWithOnPress extends BaseMenuOption {
 
 export type MenuOption = MenuOptionWithNavigation | MenuOptionWithOnPress;
 
+type MenuModalState = "confirmLogout" | "provideFeedback" | null;
+
 const feedbackLogger = log.extend( "feedback" );
 
 function showOfflineAlert( t: ( _: string ) => string ) {
@@ -65,8 +67,7 @@ const Menu = ( ) => {
 
   const { isConnected } = useNetInfo( );
 
-  const [showConfirm, setShowConfirm] = useState( false );
-  const [showFeedback, setShowFeedback] = useState( false );
+  const [modalState, setModalState] = useState<MenuModalState>( null );
 
   const menuItems: Record<string, MenuOption> = {
     projects: {
@@ -102,7 +103,7 @@ const Menu = ( ) => {
       icon: "feedback",
       onPress: () => {
         if ( isConnected ) {
-          setShowFeedback( true );
+          setModalState( "provideFeedback" );
         } else {
           showOfflineAlert( t );
         }
@@ -114,7 +115,7 @@ const Menu = ( ) => {
         logout: {
           label: t( "LOG-OUT" ),
           icon: "door-exit",
-          onPress: () => setShowConfirm( true ),
+          onPress: () => setModalState( "confirmLogout" ),
           isLogout: true
         }
       }
@@ -141,7 +142,7 @@ const Menu = ( ) => {
 
   const onSignOut = async ( ) => {
     await signOut( { realm, clearRealm: true, queryClient } );
-    setShowConfirm( false );
+    setModalState( null );
 
     // TODO might be necessary to restart the app at this point. We just
     // deleted the realm file on disk, but the RealmProvider may still have a
@@ -159,7 +160,7 @@ const Menu = ( ) => {
       : "ADVANCED:";
     feedbackLogger.info( mode, text );
     Alert.alert( t( "Feedback-Submitted" ), t( "Thank-you-for-sharing-your-feedback" ) );
-    setShowFeedback( false );
+    setModalState( null );
     return true;
   }, [isConnected, t] );
 
@@ -243,22 +244,22 @@ const Menu = ( ) => {
         </View>
       </View>
 
-      {showConfirm && (
+      {modalState === "confirmLogout" && (
         <WarningSheet
-          onPressClose={() => setShowConfirm( false )}
+          onPressClose={() => setModalState( null )}
           headerText={t( "LOG-OUT--question" )}
           text={t( "Are-you-sure-you-want-to-log-out" )}
-          handleSecondButtonPress={() => setShowConfirm( false )}
+          handleSecondButtonPress={() => setModalState( null )}
           secondButtonText={t( "CANCEL" )}
           confirm={onSignOut}
           buttonText={t( "LOG-OUT" )}
           loading={false}
         />
       )}
-      {showFeedback && (
+      {modalState === "provideFeedback" && (
         <TextInputSheet
           buttonText={t( "SUBMIT" )}
-          onPressClose={() => setShowFeedback( false )}
+          onPressClose={() => setModalState( null )}
           headerText={t( "FEEDBACK" )}
           confirm={onSubmitFeedback}
           description={t( "Thanks-for-using-any-suggestions" )}
