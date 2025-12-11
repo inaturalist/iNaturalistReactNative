@@ -4,7 +4,7 @@ import {
 } from "react-native";
 import colors from "styles/tailwindColors";
 
-import type { INatIconName, INatIconName } from "./INatIcon";
+import type { INatIconName } from "./INatIcon";
 import Icon from "./INatIcon";
 
 // Most of these are names for these icons used in design mapped to more
