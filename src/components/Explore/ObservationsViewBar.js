@@ -9,7 +9,7 @@ import colors from "styles/tailwindColors";
 
 type Props = {
   hideMap?: boolean,
-  layout: string,
+  layout: ?string,
   updateObservationsView: Function
 };
 
@@ -32,7 +32,7 @@ const ObservationsViewBar = ( {
     },
     {
       value: "list",
-      icon: "hamburger-menu",
+      icon: "list",
       accessibilityLabel: "List",
       testID: "SegmentedButton.list"
     }

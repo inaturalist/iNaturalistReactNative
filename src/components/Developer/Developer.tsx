@@ -10,15 +10,16 @@ import {
 } from "components/SharedComponents";
 import { fontMonoClass, View } from "components/styledComponents";
 import { t } from "i18next";
-import React, { type PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
+import React from "react";
 import { I18nManager, Platform, Text } from "react-native";
 import Config from "react-native-config";
 import RNFS from "react-native-fs";
 import RNRestart from "react-native-restart";
 import useLogs from "sharedHooks/useLogs";
 
+import type { DirectoryEntrySize } from "./hooks/useAppSize";
 import useAppSize, {
-  DirectoryEntrySize,
   formatAppSizeString, formatSizeUnits, getTotalDirectorySize
 } from "./hooks/useAppSize";
 

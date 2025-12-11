@@ -6,9 +6,11 @@ import React from "react";
 
 type Props = {
   label: string;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   LabelComponent?: Function;
   valueSelectable?: boolean;
   value: string | number;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   ValueComponent?: Function;
 }
 

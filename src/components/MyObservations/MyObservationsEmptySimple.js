@@ -1,6 +1,5 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
-import AddObsModal from "components/AddObsModal/AddObsModal";
 import { AccountCreationCard } from "components/OnboardingModal/PivotCards";
 import {
   HeaderUser,
@@ -8,15 +7,13 @@ import {
   ViewWrapper
 } from "components/SharedComponents";
 import GradientButton from "components/SharedComponents/Buttons/GradientButton";
-import Modal from "components/SharedComponents/Modal";
 import {
   Pressable, View
 } from "components/styledComponents";
 import Arrow from "images/svg/curved_arrow_down.svg";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "sharedHooks";
-import useStore from "stores/useStore";
 
 import LoginBanner from "./LoginBanner";
 
@@ -30,20 +27,13 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected, justFinishedSign
   Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const [showModal, setShowModal] = useState( false );
-  const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
 
-  const navAndCloseModal = ( screen, params ) => {
-    if ( screen !== "ObsEdit" ) {
-      resetObservationFlowSlice( );
-    }
+  const navToARCamera = ( ) => {
     navigation.navigate( "NoBottomTabStackNavigator", {
-      screen,
-      params
+      screen: "Camera",
+      params: { camera: "AI" }
     } );
-    setShowModal( false );
   };
-  const navToARCamera = ( ) => { navAndCloseModal( "Camera", { camera: "AI" } ); };
 
   return (
     <>
@@ -77,16 +67,6 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected, justFinishedSign
             />
           </View>
         </View>
-        <Modal
-          showModal={showModal}
-          closeModal={( ) => setShowModal( false )}
-          modal={(
-            <AddObsModal
-              closeModal={( ) => setShowModal( false )}
-              navAndCloseModal={navAndCloseModal}
-            />
-          )}
-        />
       </ViewWrapper>
 
       <AccountCreationCard

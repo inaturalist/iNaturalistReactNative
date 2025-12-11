@@ -4,6 +4,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 import createExploreSlice from "./createExploreSlice";
+import createFirebaseTraceSlice from "./createFirebaseTraceSlice";
 import createLayoutSlice from "./createLayoutSlice";
 import createMyObsSlice from "./createMyObsSlice";
 import createObservationFlowSlice from "./createObservationFlowSlice";
@@ -32,6 +33,7 @@ const useStore = create( persist(
     // Let's make our slices
     const slices = [
       createExploreSlice( ...args ),
+      createFirebaseTraceSlice( ...args ),
       createLayoutSlice( ...args ),
       createMyObsSlice( ...args ),
       createObservationFlowSlice( ...args ),

@@ -1,0 +1,6 @@
+UPDATED
+* Observation wheel re-design to sheet
+
+FIXED
+* Fix observation wheel/sheet tooltip not showing up
+* Carousel titles center align

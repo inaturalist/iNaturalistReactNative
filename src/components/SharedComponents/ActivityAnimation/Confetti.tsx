@@ -2,10 +2,12 @@
 import classNames from "classnames";
 import { INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import type { PropsWithChildren } from "react";
 import React, {
-  memo, PropsWithChildren, useEffect, useState
+  memo, useEffect, useState
 } from "react";
 import { StyleSheet, useWindowDimensions } from "react-native";
+import type { SharedValue } from "react-native-reanimated";
 import Animated, {
   Easing,
   interpolate,
@@ -13,9 +15,6 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming
-} from "react-native-reanimated";
-import {
-  type SharedValue
 } from "react-native-reanimated";
 import colors from "styles/tailwindColors";
 
