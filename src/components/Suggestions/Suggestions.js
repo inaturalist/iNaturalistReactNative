@@ -148,7 +148,6 @@ const Suggestions = ( {
         <Suggestion
           accessibilityLabel={t( "Choose-top-taxon" )}
           suggestion={item}
-          isTopSuggestion
           onTaxonChosen={onTaxonChosen}
         />
       </View>
@@ -178,7 +177,7 @@ const Suggestions = ( {
   const sections = createSections( );
 
   return (
-    <ViewWrapper testID="suggestions">
+    <ViewWrapper testID="suggestions" useTopInset={false}>
       <SectionList
         ListEmptyComponent={renderEmptyList}
         ListFooterComponent={renderFooter}

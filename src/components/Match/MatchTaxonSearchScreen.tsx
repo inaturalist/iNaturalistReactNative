@@ -66,7 +66,6 @@ const MatchTaxonSearchScreen = ( ) => {
         first={index === 0}
         handleCheckmarkPress={() => setSelectedTaxon( taxon )}
         hideNavButtons
-        checkmarkFocused
         taxon={taxon}
         testID={`Search.taxa.${taxon.id}`}
       />

@@ -16,8 +16,11 @@ interface Props {
     body?: string,
     taxon: { id: number }
   }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   onSuggestId:Function,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   editIdentBody: Function,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   onPressClose: Function
 }
 

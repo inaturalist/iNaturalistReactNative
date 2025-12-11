@@ -1,8 +1,10 @@
-import classNames, { ArgumentArray } from "classnames";
+import type { ArgumentArray } from "classnames";
+import classNames from "classnames";
 import { INatIcon, PhotoCount } from "components/SharedComponents";
 import { LinearGradient, View } from "components/styledComponents";
-import React, { PropsWithChildren, useCallback } from "react";
-import { ViewStyle } from "react-native";
+import type { PropsWithChildren } from "react";
+import React, { useCallback } from "react";
+import type { ViewStyle } from "react-native";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 

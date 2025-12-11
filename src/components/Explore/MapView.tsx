@@ -5,13 +5,14 @@ import {
 } from "components/SharedComponents";
 import { getMapRegion } from "components/SharedComponents/Map/helpers/mapHelpers";
 import { View } from "components/styledComponents";
+import type { MapBoundaries } from "providers/ExploreContext";
 import {
-  EXPLORE_ACTION, MapBoundaries, PLACE_MODE, useExplore
+  EXPLORE_ACTION, PLACE_MODE, useExplore
 } from "providers/ExploreContext";
 import React, {
   useEffect, useMemo, useRef, useState
 } from "react";
-import { Region } from "react-native-maps";
+import type { Region } from "react-native-maps";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
@@ -58,7 +59,9 @@ interface Props {
   };
   isLoading: boolean,
   hasLocationPermissions?: boolean,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   renderLocationPermissionsGate: Function,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   requestLocationPermissions: Function
 }
 

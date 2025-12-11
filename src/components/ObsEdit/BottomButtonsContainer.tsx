@@ -25,7 +25,9 @@ type Props = {
   observations: Array<object>,
   currentObservation: RealmObservation,
   currentObservationIndex: number,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   setCurrentObservationIndex: Function,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   transitionAnimation: Function
 }
 

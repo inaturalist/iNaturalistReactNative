@@ -26,6 +26,11 @@ jest.mock( "sharedHooks/useWatchPosition", () => ( {
 
 const mockUser = factory( "LocalUser" );
 
+jest.mock( "sharedHooks/useCurrentUser", () => ( {
+  __esModule: true,
+  default: () => mockUser
+} ) );
+
 const mockMutate = jest.fn();
 jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
   __esModule: true,

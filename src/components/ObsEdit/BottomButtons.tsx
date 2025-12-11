@@ -21,6 +21,7 @@ export type ButtonType = typeof SAVE | typeof UPLOAD | null;
 type Props = {
   buttonPressed: ButtonType,
   canSaveOnly: boolean,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   handlePress: Function,
   loading: boolean,
   showFocusedChangesButton: boolean,

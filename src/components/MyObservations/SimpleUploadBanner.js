@@ -39,6 +39,7 @@ const SimpleUploadBanner = ( {
 }: Props ): Node => {
   const { t } = useTranslation( );
 
+  const isWhiteOnGreenStyling = status.styling === "white-on-green";
   const separator = " • ";
 
   const renderCancelButton = ( ) => (
@@ -51,38 +52,44 @@ const SimpleUploadBanner = ( {
   );
 
   const renderCheckmark = ( ) => (
-    <View className="ml-2">
+    <View className="ml-2 mr-6">
       <INatIcon name="checkmark" size={11} color={colors.inatGreen} />
     </View>
   );
 
   const renderErrorText = ( ) => (
-    <Body2 className="color-white">
-      {separator}
-      <Body2 className="color-warningRed">{error}</Body2>
+    <Body2 className="color-white flex-2 text-center ml-1">
+      {isWhiteOnGreenStyling
+        ? separator
+        : ""}
+      <Body2 className="color-warningRed text-center">{error}</Body2>
     </Body2>
   );
 
   const renderUploadStatusText = () => (
     <View
       className={classnames( "bg-white items-center", {
-        "bg-inatGreen": status.styling === "white-on-green"
+        "bg-inatGreen": isWhiteOnGreenStyling
       } )}
     >
       <View className="flex-row items-center">
-        <Pressable
-          onPress={handleSyncButtonPress}
-          accessibilityRole="button"
-          disabled={syncDisabled}
-        >
-          <Body2
-            className={classnames( "text-darkGray py-3", {
-              "text-white": status.styling === "white-on-green"
-            } )}
+        {status.text && (
+          <Pressable
+            onPress={handleSyncButtonPress}
+            accessibilityRole="button"
+            disabled={syncDisabled}
+            className="shrink-[2] ml-2"
           >
-            {status.text}
-          </Body2>
-        </Pressable>
+            <Body2
+              className={classnames( "text-darkGray py-3 text-center", {
+                "text-white": isWhiteOnGreenStyling
+              } )}
+              numberOfLines={2}
+            >
+              {status.text}
+            </Body2>
+          </Pressable>
+        )}
         {error && renderErrorText( )}
         {showsCancelUploadButton && renderCancelButton( )}
         {showsCheckmark && renderCheckmark( )}
@@ -91,7 +98,7 @@ const SimpleUploadBanner = ( {
   );
 
   return (
-    <View className="py-2">
+    <View className="py-2 w-full">
       {( status.text !== "" || !!error ) && renderUploadStatusText( )}
       <UploadProgressBar progress={progress} />
     </View>

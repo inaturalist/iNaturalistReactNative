@@ -1,18 +1,22 @@
 import classNames from "classnames";
 import { Button } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import React, { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
+import React from "react";
 import { getShadow } from "styles/global";
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: -2
 } );
 
-interface ButtonConfiguration {
+export interface ButtonConfiguration {
   title: string;
   onPress: ( ) => void;
   isPrimary: boolean;
   className?: string;
+  disabled?: boolean;
+  level?: string;
+  loading?: boolean;
 }
 
 interface Props extends PropsWithChildren {

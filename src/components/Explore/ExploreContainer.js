@@ -12,11 +12,12 @@ import {
 } from "providers/ExploreContext";
 import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
-import { useCurrentUser } from "sharedHooks";
+import { useCurrentUser, useDebugMode } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission";
 import useStore from "stores/useStore";
 
 import Explore from "./Explore";
+import ExploreV2 from "./ExploreV2";
 import mapParamsToAPI from "./helpers/mapParamsToAPI";
 import useExploreHeaderCount from "./hooks/useExploreHeaderCount";
 import useParams from "./hooks/useParams";
@@ -24,6 +25,8 @@ import useParams from "./hooks/useParams";
 const ExploreContainerWithContext = ( ): Node => {
   const navigation = useNavigation( );
   const { isConnected } = useNetInfo( );
+  const { isDebug } = useDebugMode();
+
   const exploreView = useStore( state => state.exploreView );
   const setExploreView = useStore( state => state.setExploreView );
 
@@ -133,32 +136,48 @@ const ExploreContainerWithContext = ( ): Node => {
 
   return (
     <>
-      <Explore
-        canFetch={canFetch}
-        closeFiltersModal={closeFiltersModal}
-        count={count}
-        currentExploreView={exploreView}
-        setCurrentExploreView={setExploreView}
-        handleUpdateCount={handleUpdateCount}
-        hideBackButton={false}
-        filterByIconicTaxonUnknown={
-          () => dispatch( { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN } )
-        }
-        isConnected={isConnected}
-        isFetchingHeaderCount={isFetchingHeaderCount}
-        openFiltersModal={openFiltersModal}
-        queryParams={queryParams}
-        showFiltersModal={showFiltersModal}
-        updateTaxon={taxon => dispatch( { type: EXPLORE_ACTION.CHANGE_TAXON, taxon } )}
-        updateLocation={updateLocation}
-        updateUser={updateUser}
-        updateProject={updateProject}
-        placeMode={state.placeMode}
-        hasLocationPermissions={hasLocationPermissions}
-        renderLocationPermissionsGate={renderPermissionsGate}
-        requestLocationPermissions={requestLocationPermissions}
-        startFetching={startFetching}
-      />
+      {!isDebug
+        ? (
+          <Explore
+            canFetch={canFetch}
+            closeFiltersModal={closeFiltersModal}
+            count={count}
+            currentExploreView={exploreView}
+            setCurrentExploreView={setExploreView}
+            handleUpdateCount={handleUpdateCount}
+            hideBackButton={false}
+            filterByIconicTaxonUnknown={
+              () => dispatch( { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN } )
+            }
+            isConnected={isConnected}
+            isFetchingHeaderCount={isFetchingHeaderCount}
+            openFiltersModal={openFiltersModal}
+            queryParams={queryParams}
+            showFiltersModal={showFiltersModal}
+            updateTaxon={taxon => dispatch( { type: EXPLORE_ACTION.CHANGE_TAXON, taxon } )}
+            updateLocation={updateLocation}
+            updateUser={updateUser}
+            updateProject={updateProject}
+            placeMode={state.placeMode}
+            hasLocationPermissions={hasLocationPermissions}
+            renderLocationPermissionsGate={renderPermissionsGate}
+            requestLocationPermissions={requestLocationPermissions}
+            startFetching={startFetching}
+          />
+        )
+        : (
+          <ExploreV2
+            canFetch={canFetch}
+            currentExploreView={exploreView}
+            handleUpdateCount={handleUpdateCount}
+            hasLocationPermissions={hasLocationPermissions}
+            isConnected={isConnected}
+            placeMode={state.placeMode}
+            queryParams={queryParams}
+            renderLocationPermissionsGate={renderPermissionsGate}
+            requestLocationPermissions={requestLocationPermissions}
+          />
+        )}
       {renderPermissionsGate( {
         onPermissionGranted: startFetching
       } ) }

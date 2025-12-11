@@ -6,7 +6,7 @@ import { View } from "components/styledComponents";
 import UserListItem from "components/UserList/UserListItem";
 import _ from "lodash";
 import React from "react";
-import { ViewStyle } from "react-native";
+import type { ViewStyle } from "react-native";
 import { useTranslation } from "sharedHooks";
 
 const CONTAINER_STYLE = {

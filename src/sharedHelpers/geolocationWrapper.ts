@@ -1,10 +1,12 @@
 // This wraps the Geolocation methods we use so we can mock them for e2e tests
 // that tend to have problems with locations and timezones
 
-import Geolocation, {
+import type {
   GeolocationError,
+  GeolocationOptions,
   GeolocationResponse
 } from "@react-native-community/geolocation";
+import Geolocation from "@react-native-community/geolocation";
 import {
   LOCATION_PERMISSIONS,
   permissionResultFromMultiple
@@ -18,11 +20,7 @@ import {
 export function getCurrentPosition(
   success: ( position: GeolocationResponse ) => void,
   error?: ( error: GeolocationError ) => void,
-  options?: {
-    timeout?: number;
-    maximumAge?: number;
-    enableHighAccuracy?: boolean;
-  }
+  options?: GeolocationOptions
 ) {
   return Geolocation.getCurrentPosition( success, error, options );
 }
@@ -66,7 +64,7 @@ export const lowAccuracyOptions = {
 } as const;
 
 export const getCurrentPositionWithOptions = (
-  options
+  options: GeolocationOptions
 ): Promise<GeolocationResponse> => new Promise(
   ( resolve, reject ) => {
     getCurrentPosition( resolve, reject, options );

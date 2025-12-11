@@ -128,8 +128,32 @@ jest.mock( "sharedHooks/useObservationsUpdates", () => ( {
   } ) )
 } ) );
 
-const renderObsDetails = ( ) => renderComponent(
-  <ObsDetailsContainer />
+const mockRefetchRemoteObservation = jest.fn();
+const mockMarkViewedLocally = jest.fn();
+const mockMarkDeletedLocally = jest.fn();
+const mockSetRemoteObsWasDeleted = jest.fn();
+
+const defaultProps = {
+  belongsToCurrentUser: false,
+  currentUser: mockUser,
+  fetchRemoteObservationError: null,
+  isConnected: true,
+  isRefetching: false,
+  isSimpleMode: false,
+  localObservation: null,
+  markDeletedLocally: mockMarkDeletedLocally,
+  markViewedLocally: mockMarkViewedLocally,
+  observation: mockObservation,
+  refetchRemoteObservation: mockRefetchRemoteObservation,
+  remoteObservation: mockObservation,
+  remoteObsWasDeleted: false,
+  setRemoteObsWasDeleted: mockSetRemoteObsWasDeleted,
+  targetActivityItemID: null,
+  uuid: mockObservation.uuid
+};
+
+const renderObsDetails = ( props = {} ) => renderComponent(
+  <ObsDetailsContainer {...defaultProps} {...props} />
 );
 
 describe( "ObsDetails", () => {
@@ -156,7 +180,11 @@ describe( "ObsDetails", () => {
     } );
 
     it( "should render fallback image icon instead of photos", async () => {
-      renderObsDetails( );
+      renderObsDetails( {
+        observation: mockNoEvidenceObservation,
+        remoteObservation: mockNoEvidenceObservation,
+        uuid: mockNoEvidenceObservation.uuid
+      } );
 
       const labelText = t( "Observation-has-no-photos-and-no-sounds" );
       const fallbackImage = await screen.findByLabelText( labelText );
@@ -194,7 +222,13 @@ describe( "ObsDetails", () => {
       } );
 
       jest.spyOn( useCurrentUser, "default" ).mockImplementation( () => mockUser );
-      renderObsDetails( );
+      renderObsDetails( {
+        observation: otherUserObservation,
+        remoteObservation: otherUserObservation,
+        uuid: otherUserObservation.uuid,
+        belongsToCurrentUser: false,
+        localObservation: null
+      } );
       const agreeButton = screen.getByTestId(
         `ActivityItem.AgreeIdButton.${firstIdentification.taxon.id}`
       );

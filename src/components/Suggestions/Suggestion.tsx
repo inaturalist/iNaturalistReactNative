@@ -17,14 +17,12 @@ interface Props {
     };
     combined_score: number;
   };
-  isTopSuggestion?: boolean;
 }
 
 const Suggestion = ( {
   accessibilityLabel,
   suggestion,
-  onTaxonChosen,
-  isTopSuggestion = false
+  onTaxonChosen
 }: Props ) => (
   <TaxonResult
     accessibilityLabel={accessibilityLabel}
@@ -33,7 +31,6 @@ const Suggestion = ( {
     confidencePosition="text"
     fetchRemote={false}
     first
-    checkmarkFocused={isTopSuggestion}
     showCheckmark
     handleCheckmarkPress={onTaxonChosen}
     hideNavButtons

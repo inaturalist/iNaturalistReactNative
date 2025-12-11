@@ -11,13 +11,13 @@ interface QueryOptions {
   retry?: boolean;
 }
 
-type QueryFunction = ( options: { api_token: string | null } ) => Promise<unknown>;
+type QueryFunction<Response> = ( options: { api_token: string | null } ) => Promise<Response>;
 
 // Should work like React Query's useQuery except it calls the queryFunction
 // with an object that includes the JWT
-const useAuthenticatedQuery = (
+const useAuthenticatedQuery = <Response>(
   queryKey: string[],
-  queryFunction: QueryFunction,
+  queryFunction: QueryFunction<Response>,
   queryOptions: QueryOptions = {}
 ) => {
   const [userLoggedIn, setUserLoggedIn] = useState<boolean | null>( LOGGED_IN_UNKNOWN );

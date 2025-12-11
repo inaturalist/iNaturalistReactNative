@@ -1,0 +1,84 @@
+import type { MutationKey } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
+import handleError from "api/error";
+import { getJWT } from "components/LoginSignUp/AuthenticationService";
+
+import { log } from "../../react-native-logs.config";
+
+const logger = log.extend( "useAuthenticatedMutation" );
+
+interface MutationOptions {
+  mutationKey?: MutationKey;
+  throwOnError?: boolean;
+}
+
+type MutationFunction<Response> = (
+  params: unknown, options: { api_token: string | null }
+) => Promise<Response>;
+
+// At the time of writing, there is no type representing the response type of API errors,
+// so for the time being, we will use `any` here.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type MutationError = any;
+
+// Should work like React Query's useMutation except it calls the queryFunction
+// with an object that includes the JWT
+const useAuthenticatedMutation = <Response>(
+  mutationFunction: MutationFunction<Response>,
+  mutationOptions: MutationOptions = {}
+) => useMutation<Response, MutationError>( {
+  mutationFn: async params => {
+    // Note, getJWTToken() takes care of fetching a new token if the existing
+    // one is expired. We *could* store the token in state with useState if
+    // fetching from RNSInfo becomes a performance issue
+    const apiToken = await getJWT( );
+    const options = {
+      api_token: apiToken
+    };
+    return mutationFunction( params, options );
+  },
+  onError: error => {
+    if ( error.status === 401
+        || ( error.errors && error.errors[0]?.errorCode === "401" )
+        || JSON.stringify( error ).includes( "JWT is missing or invalid" ) ) {
+      const errorContext = {
+        mutationName: mutationOptions.mutationKey || "unknown",
+        timestamp: new Date().toISOString(),
+        errorMessage: error.message || "JWT is missing or invalid"
+      };
+
+      logger.error( "401 JWT error in mutation:", JSON.stringify( errorContext ) );
+
+      // Try to refresh the token explicitly
+      // Important: We don't await this to avoid blocking the error handling
+      getJWT( true ).catch( refreshError => {
+        logger.error( "Failed to refresh token in mutation after 401:", refreshError );
+      } );
+
+      return handleError( error, {
+        context: errorContext,
+        throw: mutationOptions.throwOnError !== false
+      } );
+    }
+
+    if ( error.status === 429 || ( error.response && error.response.status === 429 ) ) {
+      const errorContext = {
+        mutationName: mutationOptions.mutationKey || "unknown",
+        timestamp: new Date().toISOString()
+      };
+
+      logger.error( "429 in mutation:", JSON.stringify( errorContext ) );
+
+      return handleError( error, {
+        context: errorContext,
+        throw: mutationOptions.throwOnError !== false
+      } );
+    }
+
+    // Call original handleError for non-429 and non-401 errors
+    return handleError( error );
+  },
+  ...mutationOptions
+} );
+
+export default useAuthenticatedMutation;

@@ -205,7 +205,8 @@ const MyObservationsSimple = ( {
     numUnuploadedObservations > 0 && numUnuploadedObsMissingBasics > 0
   ), [numUnuploadedObservations, numUnuploadedObsMissingBasics] );
 
-  const numUploadableObservations = isDefaultMode
+  // if user is not logged in, we'll consider all obs 'uploadable' to shepherd people to login flow
+  const numUploadableObservations = isDefaultMode && !!currentUser
     ? numUnuploadedObservations - numUnuploadedObsMissingBasics
     : numUnuploadedObservations;
 

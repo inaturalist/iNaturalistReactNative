@@ -1,4 +1,4 @@
-import { INatApiError } from "api/error";
+import type { INatApiError } from "api/error";
 import type { TFunction } from "i18next";
 
 export enum RECOVERY_BY {

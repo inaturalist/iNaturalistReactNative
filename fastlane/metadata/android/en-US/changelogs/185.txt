@@ -1,0 +1,3 @@
+FIXED
+* Upload status text should wrap
+* "Top id suggestion" on the suggestions screen should show gray checkmark

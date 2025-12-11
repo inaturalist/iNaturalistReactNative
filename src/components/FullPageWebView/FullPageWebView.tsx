@@ -1,5 +1,5 @@
+import type { RouteProp } from "@react-navigation/native";
 import {
-  RouteProp,
   useFocusEffect,
   useNavigation,
   useRoute
@@ -226,7 +226,7 @@ const FullPageWebView = ( ) => {
 
   return (
     <Mortal>
-      <ViewWrapper>
+      <ViewWrapper useTopInset={false}>
         {( !params.loggedIn || source.headers ) && (
           <WebView
             // eslint-disable-next-line @typescript-eslint/no-empty-function

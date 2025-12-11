@@ -1,7 +1,7 @@
 // Mostly from https://github.com/pmndrs/zustand/blob/main/docs/guides/testing.md#jest
 
 import { cloneDeep } from "lodash";
-import * as zustand from "zustand";
+import type * as zustand from "zustand";
 
 const { create: actualCreate, createStore: actualCreateStore }
   = jest.requireActual<typeof zustand>( "zustand" );

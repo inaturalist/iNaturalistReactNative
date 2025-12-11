@@ -2,7 +2,8 @@ import type { QueryClient } from "@tanstack/query-core";
 import type { ApiUser } from "api/types";
 import { getUserAgent } from "api/userAgent";
 import { fetchUserEmailAvailable, fetchUserMe } from "api/users";
-import { ApiResponse, ApisauceInstance, create } from "apisauce";
+import type { ApiResponse, ApisauceInstance } from "apisauce";
+import { create } from "apisauce";
 import {
   computerVisionPath,
   photoLibraryPhotosPath,
