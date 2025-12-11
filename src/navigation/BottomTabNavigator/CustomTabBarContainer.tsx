@@ -11,8 +11,6 @@ import { useCurrentUser, useTranslation } from "sharedHooks";
 
 import CustomTabBar from "./CustomTabBar";
 
-const MENU_ID = "OPEN_MENU";
-
 interface TabConfig {
   icon: string;
   testID: string;
@@ -58,7 +56,7 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
   const tabs: TabConfig[] = useMemo( ( ) => ( [
     {
       icon: "hamburger-menu",
-      testID: MENU_ID,
+      testID: SCREEN_NAME_MENU,
       accessibilityLabel: t( "Menu" ),
       accessibilityHint: t( "Navigates-to-main-menu" ),
       size: 32,
