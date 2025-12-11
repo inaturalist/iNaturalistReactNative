@@ -18,7 +18,7 @@ const MenuItem = ( {
       item.isLogout
         ? "opacity-50"
         : "",
-      "flex-row items-center pl-10 py-5 border-b border-lightGray"
+      "flex-row items-center pl-10 py-[22px] border-b border-lightGray"
     )}
     accessibilityRole="button"
     accessibilityLabel={item.label}

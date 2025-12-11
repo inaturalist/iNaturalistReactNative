@@ -11,10 +11,11 @@ import {
   UserIcon,
   WarningSheet
 } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { Pressable, ScrollView, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import React, { useCallback, useState } from "react";
 import { Alert } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import User from "realmModels/User";
 import { log } from "sharedHelpers/logger";
 import { useCurrentUser, useTranslation } from "sharedHooks";
@@ -64,6 +65,7 @@ const Menu = ( ) => {
   const queryClient = useQueryClient( );
   const currentUser = useCurrentUser( );
   const { t } = useTranslation( );
+  const insets = useSafeAreaInsets();
 
   const { isConnected } = useNetInfo( );
 
@@ -165,7 +167,11 @@ const Menu = ( ) => {
   }, [isConnected, t] );
 
   return (
-    <View className="bg-white h-full">
+    <ScrollView
+      bounces={false}
+      className="bg-white h-full"
+      style={{ paddingTop: insets.top }}
+    >
       <View>
         {/* Header */}
         <Pressable
@@ -266,7 +272,7 @@ const Menu = ( ) => {
           maxLength={1000}
         />
       )}
-    </View>
+    </ScrollView>
   );
 };
 
