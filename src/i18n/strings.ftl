@@ -752,6 +752,7 @@ Navigates-to-bulk-importer = Navigates to bulk importer
 Navigates-to-camera = Navigates to camera
 Navigates-to-explore = Navigates to explore
 Navigates-to-log-in-screen = Navigates to log in screen
+# Accessibility hint for the main menu bottom tab
 Navigates-to-main-menu = Navigates to main menu.
 Navigates-to-match-screen = Navigates to match screen
 Navigates-to-notifications = Navigates to notifications
