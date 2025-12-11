@@ -14,7 +14,7 @@ type Props = {
   activityItems: Array<Object>,
   openAgreeWithIdSheet: Function,
   isConnected: boolean,
-  targetItemID: number,
+  targetItemID: ?number,
   // TODO change to LayoutEvent from react-native if/when switching to TS
   onLayoutTargetItem: ( event: Object ) => void
 }

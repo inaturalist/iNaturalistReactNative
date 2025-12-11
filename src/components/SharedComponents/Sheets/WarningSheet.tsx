@@ -3,7 +3,7 @@ import {
   ButtonBar,
   List2
 } from "components/SharedComponents";
-import { type ButtonConfiguration } from "components/SharedComponents/ButtonBar";
+import type { ButtonConfiguration } from "components/SharedComponents/ButtonBar";
 import { View } from "components/styledComponents";
 import React from "react";
 

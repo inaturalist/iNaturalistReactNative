@@ -43,7 +43,8 @@ const useLocalObservations = ( ): Object => {
 
   useEffect( ( ) => {
     if ( realm === null || realm.isClosed ) {
-      return;
+      // Satisfy the useEffect return type by returning a destructor function.
+      return () => {};
     }
     const localObservations = realm.objects( "Observation" );
 
@@ -102,7 +103,6 @@ const useLocalObservations = ( ): Object => {
     };
 
     localObservations.addListener( handleChange );
-    // eslint-disable-next-line consistent-return
     return ( ) => {
       // remember to remove listeners to avoid async updates
       if ( localObservations && !realm.isClosed ) {
