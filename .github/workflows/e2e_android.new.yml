@@ -1,0 +1,208 @@
+name: e2e-Android
+permissions:
+  contents: read
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    # 4-core Ubunutu GitHub Larger Runner
+    # https://docs.github.com/en/enterprise-cloud@latest/billing/reference/actions-runner-pricing#x64-powered-larger-runners
+    runs-on: ubuntu-24.04-m
+
+    steps:
+    - name: Check out Git repository
+      uses: actions/checkout@v4
+
+    # Generate the secret files needed for a release build
+    - name: Create .env file
+      env:
+        OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
+        OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
+        E2E_TEST_USERNAME: ${{ secrets.E2E_TEST_USERNAME }}
+        E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
+        JWT_ANONYMOUS_API_SECRET: ${{ secrets.JWT_ANONYMOUS_API_SECRET }}
+        GMAPS_API_KEY: ${{ secrets.GMAPS_API_KEY }}
+      run: printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\nANDROID_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.tflite\nANDROID_TAXONOMY_FILE_NAME=taxonomy.csv\nANDROID_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.tflite\nIOS_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.mlmodel\nIOS_TAXONOMY_FILE_NAME=taxonomy.json\nIOS_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.mlmodel\nCV_MODEL_VERSION=small_2\n' "$JWT_ANONYMOUS_API_SECRET" "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" "$E2E_TEST_USERNAME" "$E2E_TEST_PASSWORD" "$GMAPS_API_KEY" > .env
+
+    - name: Add secrets to google-services.json
+      env:
+        FIREBASE_PROJECT_NUMBER: ${{ secrets.FIREBASE_PROJECT_NUMBER }}
+        FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+        FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
+        FIREBASE_STAGING_GOOGLE_APP_ID: ${{ secrets.FIREBASE_STAGING_GOOGLE_APP_ID }}
+        FIREBASE_STAGING_PACKAGE_NAME: ${{ secrets.FIREBASE_STAGING_PACKAGE_NAME }}
+        FIREBASE_STAGING_API_KEY: ${{ secrets.FIREBASE_STAGING_API_KEY }}
+      run: |
+        cp android/app/google-services.example.json android/app/google-services.json
+        sed -i "s/your_project_number/${FIREBASE_PROJECT_NUMBER//\//\\/}/g" "android/app/google-services.json"
+        sed -i "s/your_project_id/${FIREBASE_PROJECT_ID//\//\\/}/g" "android/app/google-services.json"
+        sed -i "s/your_storage_bucket/${FIREBASE_STORAGE_BUCKET//\//\\/}/g" "android/app/google-services.json"
+        sed -i "s/your_mobilesdk_app_id/${FIREBASE_STAGING_GOOGLE_APP_ID//\//\\/}/g" "android/app/google-services.json"
+        sed -i "s/your_package_name/${FIREBASE_STAGING_PACKAGE_NAME//\//\\/}/g" "android/app/google-services.json"
+        sed -i "s/your_current_key/${FIREBASE_STAGING_API_KEY//\//\\/}/g" "android/app/google-services.json"
+
+    - name: Create keystore.properties file
+      env:
+        ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
+        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        ANDROID_ALIAS: ${{ secrets.ANDROID_ALIAS }}
+      run: printf 'storePassword=%s\nkeyPassword=%s\nkeyAlias=%s\nstoreFile=release.keystore' "$ANDROID_KEY_STORE_PASSWORD" "$ANDROID_KEY_PASSWORD" "$ANDROID_ALIAS" > android/keystore.properties
+
+    - name: Generate release keystore
+      env:
+        ANDROID_ALIAS: ${{ secrets.ANDROID_ALIAS }}
+        ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
+        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      run: |
+        keytool -genkeypair -v -noprompt -storetype PKCS12 -keystore release.keystore -alias "$ANDROID_ALIAS" -keyalg RSA -keysize 2048 -validity 10000 -storepass "$ANDROID_KEY_STORE_PASSWORD" -keypass "$ANDROID_KEY_PASSWORD" -dname "CN=mqttserver.ibm.com, OU=ID, O=IBM, L=Hursley, S=Hants, C=GB"
+
+    - name: Move keystore
+      run: mv release.keystore android/app/release.keystore
+
+    - uses: actions/setup-node@v6
+      with:
+        node-version-file: '.nvmrc'
+        cache: 'npm'
+
+    - uses: actions/setup-java@v5
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v5
+      with:
+        gradle-version: '8.14.1'
+
+    - name: Install JS dependencies
+      run: |
+        npm install
+
+    - name: Download the small example cv and geomodel
+      run: |
+        npm run add-example-model -- -f=main
+
+    - name: Android Build
+      run: |
+        cd android
+        # for the CI build, we can just target the x86 build for the emulator
+        # also, we can exclude linting tasks
+        ./gradlew build -PreactNativeArchitectures=x86 -x lint -x lintVitalRelease 
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v5
+      with:
+        name: release-apk
+        # note: clarifying because this is different from iOS:
+        # {myBuild}.apk is a single file so `release-apk` points to a single file
+        # in contrast, iOS's .ipa is actually a _directory_
+        path: android/app/build/outputs/apk/release/*-release.apk
+    
+  test:
+    # 4-core Ubunutu GitHub Larger Runner
+    # https://docs.github.com/en/enterprise-cloud@latest/billing/reference/actions-runner-pricing#x64-powered-larger-runners
+    # `cores` setting for emulator actions should be updated to reflect changes to this
+    runs-on: ubuntu-24.04-m
+    needs: build
+
+    steps:
+      # note: this step requires checkout for the test flows, but does _not_ require npm install w/ Maestro
+      - uses: actions/checkout@v2
+
+      - name: Download APK
+        uses: actions/download-artifact@v6
+        with:
+          name: release-apk
+          # resulting file structure: $GITHUB_HOME/e2e-build/{myBuild}.apk
+          path: e2e-build
+
+      - name: Install Maestro
+        run: |
+          export MAESTRO_VERSION="2.0.8"; curl -Ls "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+      # These KVM settings are in support of the android-emulator-runner action that takes advantage of them
+      # Further reading:
+      # - https://github.blog/changelog/2023-02-23-hardware-accelerated-android-virtualization-on-actions-windows-and-linux-larger-hosted-runners/
+      # - https://github.com/reactivecircus/android-emulator-runner/tree/v2/?tab=readme-ov-file#github-action---android-emulator-runner
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      # AVD Cache: we can reuse a previously-created AVD to save time and make the test-run start step more dependable
+      # both android-emulator-runner steps should have the same image config for cores, api-level, target
+      - name: Attempt to restore AVD cache
+        uses: actions/cache/restore@v4
+        id: avd-cache-restore
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-29
+      - name: Create AVD and generate snapshot for caching
+        if: steps.avd-cache-restore.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          cores: 4
+          api-level: 29
+          target: google_apis
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: false
+          script: echo "Generated AVD snapshot for caching."
+      - name: Save AVD cache
+        if: steps.avd-cache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-29
+
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        env:
+          MAESTRO_DRIVER_STARTUP_TIMEOUT: 60000
+          MAESTRO_CLI_NO_ANALYTICS: 1
+          # custom ENV var to drive recordings within test flows
+          # see README for details
+          MAESTRO_RECORD: true
+        with:
+          cores: 4
+          api-level: 29
+          target: google_apis
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: |
+            adb install -r e2e-build/*.apk
+            # single exemplary "smoketest" flow for now
+            maestro test --no-ansi e2e/maestro/android/signedOut.yaml
+
+      - name: Upload test video
+        uses: actions/upload-artifact@v4
+        if: ${{ success() || failure() }}
+        with:
+          # single exemplary flow artifact for now, generated by MAESTRO_RECORD configuration
+          path: signedOut.mp4
+          name: Android
+
+  notify:
+    name: Notify Slack
+    needs: test
+    if: ${{ success() || failure() }}
+    runs-on: macos-latest
+    steps:
+      - uses: iRoachie/slack-github-actions@v2.3.0
+        if: env.SLACK_WEBHOOK_URL != null
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
