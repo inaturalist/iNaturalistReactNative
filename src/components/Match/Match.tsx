@@ -18,6 +18,7 @@ import AdditionalSuggestionsScroll
   from "./AdditionalSuggestions/AdditionalSuggestionsScroll";
 import EmptyMapSection from "./EmptyMapSection";
 import IconicSuggestionsScroll from "./IconicSuggestions/IconicSuggestionsScroll";
+import type { MatchButtonAction } from "./MatchContainer";
 import MatchHeader from "./MatchHeader";
 import PhotosSection from "./PhotosSection";
 import SaveDiscardButtons from "./SaveDiscardButtons";
@@ -30,7 +31,7 @@ export const matchCardClassBottom
 type Props = {
   observation: RealmObservation,
   obsPhotos: RealmObservationPhoto[],
-  handleSaveOrDiscardPress: ( action: string ) => void,
+  handleSaveOrDiscardPress: ( action: MatchButtonAction ) => void,
   navToTaxonDetails: ( photo?: ApiPhoto ) => void,
   isFetchingLocation: boolean,
   handleAddLocationPressed: ( ) => void,

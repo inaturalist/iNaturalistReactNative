@@ -6,13 +6,15 @@ import React from "react";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
+import type { MatchButtonAction } from "./MatchContainer";
+
 const DROP_SHADOW = getShadow( {
   offsetHeight: -3,
   shadowOpacity: 0.2
 } );
 
 type Props = {
-  handlePress: ( action: string ) => void
+  handlePress: ( action: MatchButtonAction ) => void
 }
 
 const SaveDiscardButtons = ( {

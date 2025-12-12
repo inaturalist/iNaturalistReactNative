@@ -59,6 +59,8 @@ interface State {
   orderedSuggestions: ApiSuggestion[];
 }
 
+export type MatchButtonAction = "save" | "discard";
+
 type Action =
   | { type: "SET_UPLOAD_PARAMS"; scoreImageParams: ImageParamsType }
   | { type: "SET_ONLINE_FETCH_STATUS"; onlineFetchStatus: FETCH_STATUSES }
@@ -497,7 +499,7 @@ const MatchContainer = ( ) => {
     navigation.push( "TaxonDetails", navParams );
   };
 
-  const handleSaveOrDiscardPress = async ( action: string ) => {
+  const handleSaveOrDiscardPress = async ( action: MatchButtonAction ) => {
     if ( action === "save" ) {
       updateObservationKeys( {
         taxon: taxon || iconicTaxon,
