@@ -13,12 +13,12 @@ import {
 } from "sharedHooks";
 
 type Props = {
-  fetchRemote?: boolean,
-  fromLocal?: boolean,
-  handlePress?: ( ) => void,
-  taxon: RealmTaxon | ApiTaxon,
-  testID?: string,
-  selected?: boolean
+  fetchRemote?: boolean;
+  fromLocal?: boolean;
+  handlePress?: ( ) => void;
+  taxon: RealmTaxon | ApiTaxon;
+  testID?: string;
+  selected?: boolean;
 }
 
 const IconicSuggestion = ( {
