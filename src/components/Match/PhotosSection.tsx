@@ -10,14 +10,14 @@ import {
 import _, { compact } from "lodash";
 import React, { useEffect, useState } from "react";
 import Photo from "realmModels/Photo";
-import type { RealmObservationPhoto, RealmTaxon } from "realmModels/types";
+import type { RealmObservationPhoto, RealmPhoto, RealmTaxon } from "realmModels/types";
 import getImageDimensions from "sharedHelpers/getImageDimensions";
 
 type Props = {
   representativePhoto: ApiPhoto,
   taxon?: ApiTaxon | RealmTaxon,
   obsPhotos: RealmObservationPhoto[],
-  navToTaxonDetails: ( photo: ApiPhoto ) => void,
+  navToTaxonDetails: ( photo: ApiPhoto | RealmPhoto ) => void,
   hideTaxonPhotos?: boolean
 }
 

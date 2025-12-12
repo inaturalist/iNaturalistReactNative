@@ -3,7 +3,7 @@ import {
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import type { ApiSuggestion } from "api/types";
+import type { ApiPhoto, ApiSuggestion } from "api/types";
 import { Body3, Heading4, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import flattenUploadParams from "components/Suggestions/helpers/flattenUploadParams";
@@ -18,7 +18,7 @@ import React, {
   useEffect, useReducer, useRef, useState
 } from "react";
 import type { ScrollView } from "react-native";
-import type { RealmTaxon } from "realmModels/types";
+import type { RealmPhoto, RealmTaxon } from "realmModels/types";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import saveObservation from "sharedHelpers/saveObservation";
 import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservationLocation";
@@ -489,7 +489,7 @@ const MatchContainer = ( ) => {
     .filter( suggestion => suggestion.taxon.id !== taxonId );
 
   const navToTaxonDetails
-  = ( photo?: { isRepresentativeButOtherTaxon?: boolean; id?: number } ) => {
+  = ( photo?: ApiPhoto | RealmPhoto ) => {
     const navParams: NavParams = { id: taxonId };
     if ( !photo?.isRepresentativeButOtherTaxon ) {
       navParams.firstPhotoID = photo?.id;

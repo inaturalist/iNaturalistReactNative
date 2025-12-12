@@ -11,7 +11,9 @@ import { View } from "components/styledComponents";
 import _ from "lodash";
 import React from "react";
 import type { ScrollView } from "react-native";
-import type { RealmObservation, RealmObservationPhoto, RealmTaxon } from "realmModels/types";
+import type {
+  RealmObservation, RealmObservationPhoto, RealmPhoto, RealmTaxon
+} from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 
 import AdditionalSuggestionsScroll
@@ -32,7 +34,7 @@ type Props = {
   observation: RealmObservation,
   obsPhotos: RealmObservationPhoto[],
   handleSaveOrDiscardPress: ( action: MatchButtonAction ) => void,
-  navToTaxonDetails: ( photo?: ApiPhoto ) => void,
+  navToTaxonDetails: ( photo?: ApiPhoto | RealmPhoto ) => void,
   isFetchingLocation: boolean,
   handleAddLocationPressed: ( ) => void,
   topSuggestion?: ApiSuggestion,
