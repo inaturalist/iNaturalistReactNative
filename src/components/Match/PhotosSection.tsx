@@ -14,7 +14,7 @@ import type { RealmObservationPhoto, RealmPhoto, RealmTaxon } from "realmModels/
 import getImageDimensions from "sharedHelpers/getImageDimensions";
 
 type Props = {
-  representativePhoto: ApiPhoto,
+  representativePhoto?: ApiPhoto,
   taxon?: ApiTaxon | RealmTaxon,
   obsPhotos: RealmObservationPhoto[],
   navToTaxonDetails: ( photo: ApiPhoto | RealmPhoto ) => void,
