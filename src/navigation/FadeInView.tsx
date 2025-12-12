@@ -5,7 +5,7 @@ import * as React from "react";
 import { Animated } from "react-native";
 
 interface Props {
-  children: React.JSX.Element
+  children: React.JSX.Element;
 }
 
 const FadeInView = ( { children }: Props ) => {

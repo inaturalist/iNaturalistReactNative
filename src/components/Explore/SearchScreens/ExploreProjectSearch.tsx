@@ -21,8 +21,8 @@ const DROP_SHADOW = getShadow( {
 } );
 
 type Props = {
-  closeModal: ( ) => void,
-  updateProject: ( project: ApiProject ) => void
+  closeModal: ( ) => void;
+  updateProject: ( project: ApiProject ) => void;
 };
 
 const ExploreProjectSearch = ( { closeModal, updateProject }: Props ) => {

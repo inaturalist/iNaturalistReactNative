@@ -14,25 +14,25 @@ type UploadStatus = typeof UPLOAD_PENDING
   | typeof UPLOAD_CANCELLED;
 
 interface TotalUploadProgress {
-  uuid: string,
-  currentIncrements: number,
-  totalIncrements: number,
-  totalProgress: number
+  uuid: string;
+  currentIncrements: number;
+  totalIncrements: number;
+  totalProgress: number;
 }
 
 interface UploadObservationsSlice {
-  abortController: AbortController | null,
-  currentUpload: RealmObservation | null,
-  errorsByUuid: object,
-  multiError: string | null,
-  initialNumObservationsInQueue: number,
-  numUnuploadedObservations: number,
-  numUploadsAttempted: number,
-  totalToolbarIncrements: number,
-  totalToolbarProgress: number,
-  totalUploadProgress: Array<TotalUploadProgress>,
-  uploadQueue: Array<string>,
-  uploadStatus: UploadStatus
+  abortController: AbortController | null;
+  currentUpload: RealmObservation | null;
+  errorsByUuid: object;
+  multiError: string | null;
+  initialNumObservationsInQueue: number;
+  numUnuploadedObservations: number;
+  numUploadsAttempted: number;
+  totalToolbarIncrements: number;
+  totalToolbarProgress: number;
+  totalUploadProgress: Array<TotalUploadProgress>;
+  uploadQueue: Array<string>;
+  uploadStatus: UploadStatus;
 }
 
 const DEFAULT_STATE: UploadObservationsSlice = {

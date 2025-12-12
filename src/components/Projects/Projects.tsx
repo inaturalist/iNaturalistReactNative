@@ -34,11 +34,11 @@ interface Props {
   isFetchingNextPage: boolean;
   isLoading: boolean;
   memberId?: number;
-  projects: object[],
+  projects: object[];
   requestPermissions: () => void;
   searchInput: string;
   setSearchInput: ( _text: string ) => void;
-  tabs: Tab[],
+  tabs: Tab[];
 }
 
 const Projects = ( {

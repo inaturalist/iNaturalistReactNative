@@ -14,36 +14,36 @@ import Attribution from "./Attribution";
 
 type Props = {
   debugData: {
-    onlineFetchStatus: string,
-    offlineFetchStatus: string,
-    selectedPhotoUri: string,
-    onlineSuggestionsUpdatedAt: Date,
-    timedOut: boolean,
-    shouldUseEvidenceLocation: boolean,
-    topSuggestionType: string,
-    onlineSuggestions: [],
-    usingOfflineSuggestions: boolean,
-    onlineSuggestionsError: Error,
+    onlineFetchStatus: string;
+    offlineFetchStatus: string;
+    selectedPhotoUri: string;
+    onlineSuggestionsUpdatedAt: Date;
+    timedOut: boolean;
+    shouldUseEvidenceLocation: boolean;
+    topSuggestionType: string;
+    onlineSuggestions: [];
+    usingOfflineSuggestions: boolean;
+    onlineSuggestionsError: Error;
     suggestions: {
-      otherSuggestions: [],
+      otherSuggestions: [];
       topSuggestion: {
         taxon: {
-          id: number,
-          name: string
-        },
-        combined_score: number
-      }
-    }
-  },
+          id: number;
+          name: string;
+        };
+        combined_score: number;
+      };
+    };
+  };
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  handleSkip: Function,
+  handleSkip: Function;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  hideLocationToggleButton: Function,
-  hideSkip?: boolean,
-  observers: Array<string>,
-  shouldUseEvidenceLocation: boolean,
+  hideLocationToggleButton: Function;
+  hideSkip?: boolean;
+  observers: Array<string>;
+  shouldUseEvidenceLocation: boolean;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  toggleLocation: Function
+  toggleLocation: Function;
 };
 
 const SuggestionsFooter = ( {

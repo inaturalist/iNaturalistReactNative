@@ -50,19 +50,19 @@ const centeredLoadingWheel = {
 
 interface Props {
   // Bounding box of the observations retrieved for the query params
-  observationBounds?: MapBoundaries,
+  observationBounds?: MapBoundaries;
   queryParams: {
     taxon_id?: number;
     return_bounds?: boolean;
     order?: string;
     orderBy?: string;
   };
-  isLoading: boolean,
-  hasLocationPermissions?: boolean,
+  isLoading: boolean;
+  hasLocationPermissions?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  renderLocationPermissionsGate: Function,
+  renderLocationPermissionsGate: Function;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  requestLocationPermissions: Function
+  requestLocationPermissions: Function;
 }
 
 const MapView = ( {

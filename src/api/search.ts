@@ -20,12 +20,12 @@ interface SearchResponse extends ApiResponse {
     project?: ApiProject;
     taxon?: ApiTaxon;
     user?: ApiUser;
-  }[]
+  }[];
 }
 
 interface SearchParams extends ApiParams {
   q?: string;
-  sources?: string | string[]
+  sources?: string | string[];
 }
 
 const PARAMS: ApiParams = {

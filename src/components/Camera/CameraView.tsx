@@ -32,20 +32,20 @@ Reanimated.addWhitelistedNativeProps( {
 } );
 
 interface Props {
-  animatedProps: CameraProps,
-  cameraRef: React.RefObject<Camera | null>,
-  cameraScreen: "standard" | "ai",
-  debugFormat: CameraDeviceFormat | undefined,
-  device: CameraDevice,
-  frameProcessor?: () => void,
-  onCameraError: ( error: CameraRuntimeError ) => void,
-  onCaptureError: ( error: CameraRuntimeError ) => void,
-  onClassifierError: ( error: CameraRuntimeError ) => void,
-  onDeviceNotSupported: ( error: CameraRuntimeError ) => void,
-  panToZoom: PanGesture,
-  pinchToZoom: PinchGesture,
-  resizeMode?: "cover" | "contain",
-  inactive?: boolean
+  animatedProps: CameraProps;
+  cameraRef: React.RefObject<Camera | null>;
+  cameraScreen: "standard" | "ai";
+  debugFormat: CameraDeviceFormat | undefined;
+  device: CameraDevice;
+  frameProcessor?: () => void;
+  onCameraError: ( error: CameraRuntimeError ) => void;
+  onCaptureError: ( error: CameraRuntimeError ) => void;
+  onClassifierError: ( error: CameraRuntimeError ) => void;
+  onDeviceNotSupported: ( error: CameraRuntimeError ) => void;
+  panToZoom: PanGesture;
+  pinchToZoom: PinchGesture;
+  resizeMode?: "cover" | "contain";
+  inactive?: boolean;
 }
 
 // A container for the Camera component

@@ -7,21 +7,21 @@ import ObsGridItem from "./ObsGridItem";
 import ObsListItem from "./ObsListItem";
 
 type Props = {
-  currentUser: object,
-  queued: boolean,
-  explore: boolean,
-  hideMetadata?: boolean,
-  hideObsUploadStatus?: boolean,
-  hideObsStatus?: boolean,
-  isSimpleObsStatus?: boolean,
-  hideRGLabel?: boolean,
-  onUploadButtonPress: ( ) => void,
-  onItemPress: ( ) => void,
-  gridItemStyle: object,
-  layout: "list" | "grid",
-  observation: RealmObservation,
-  uploadProgress: number,
-  unsynced: boolean
+  currentUser: object;
+  queued: boolean;
+  explore: boolean;
+  hideMetadata?: boolean;
+  hideObsUploadStatus?: boolean;
+  hideObsStatus?: boolean;
+  isSimpleObsStatus?: boolean;
+  hideRGLabel?: boolean;
+  onUploadButtonPress: ( ) => void;
+  onItemPress: ( ) => void;
+  gridItemStyle: object;
+  layout: "list" | "grid";
+  observation: RealmObservation;
+  uploadProgress: number;
+  unsynced: boolean;
 };
 
 const ObsPressable = ( {

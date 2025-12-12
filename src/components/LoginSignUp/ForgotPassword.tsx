@@ -15,7 +15,7 @@ import LoginSignUpWrapper from "./LoginSignUpWrapper";
 
 type RenderProps = {
   // eslint-disable-next-line react/no-unused-prop-types
-  scrollViewRef: { current: null | React.Ref<typeof ScrollView> }
+  scrollViewRef: { current: null | React.Ref<typeof ScrollView> };
 };
 
 const ForgotPassword = ( ) => {

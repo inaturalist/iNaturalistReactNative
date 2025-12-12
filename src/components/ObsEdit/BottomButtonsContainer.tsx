@@ -21,14 +21,14 @@ import MissingEvidenceSheet from "./Sheets/MissingEvidenceSheet";
 const { useRealm } = RealmContext;
 
 type Props = {
-  passesEvidenceTest: boolean,
-  observations: Array<object>,
-  currentObservation: RealmObservation,
-  currentObservationIndex: number,
+  passesEvidenceTest: boolean;
+  observations: Array<object>;
+  currentObservation: RealmObservation;
+  currentObservationIndex: number;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  setCurrentObservationIndex: Function,
+  setCurrentObservationIndex: Function;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  transitionAnimation: Function
+  transitionAnimation: Function;
 }
 
 const BottomButtonsContainer = ( {

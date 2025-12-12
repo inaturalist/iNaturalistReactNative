@@ -17,15 +17,15 @@ const imageClassNames = [
 ];
 
 interface SpeciesCount {
-  count: number,
-  taxon: RealmTaxon
+  count: number;
+  taxon: RealmTaxon;
 }
 
 export interface Props {
   accessibleName: string;
   navToTaxonDetails: ( ) => void;
   source: {
-    uri: string
+    uri: string;
   };
   style?: object;
   speciesCount: SpeciesCount;

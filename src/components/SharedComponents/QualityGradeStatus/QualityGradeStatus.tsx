@@ -7,9 +7,9 @@ import * as React from "react";
 import colors from "styles/tailwindColors";
 
 interface Props {
-  qualityGrade: string | null,
-  color?: string,
-  opacity?: number
+  qualityGrade: string | null;
+  color?: string;
+  opacity?: number;
 }
 
 const qualityGradeSVG = (

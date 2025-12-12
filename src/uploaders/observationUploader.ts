@@ -22,7 +22,7 @@ const logger = log.extend( "observationUploader" );
 
 interface UploadOptions {
   api_token?: string;
-  signal: AbortController
+  signal: AbortController;
 }
 
 interface UploadParams {

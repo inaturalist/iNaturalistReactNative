@@ -6,7 +6,7 @@ import colors from "styles/tailwindColors";
 const PROGRESS_BAR_STYLE = { backgroundColor: "transparent" };
 
 type Props = {
-  progress: number
+  progress: number;
 }
 
 const UploadProgressBar = ( { progress }: Props ): Node => (

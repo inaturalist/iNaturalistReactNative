@@ -8,7 +8,7 @@ import type { Notification } from "sharedHooks/useInfiniteNotificationsScroll";
 import { OBS_DETAILS_TAB } from "stores/createLayoutSlice";
 
 type Props = {
-  notification: Notification
+  notification: Notification;
 };
 
 const NotificationsListItem = ( { notification }: Props ) => {

@@ -7,11 +7,11 @@ import RNModal from "react-native-modal";
 interface Props {
   showModal: boolean;
   closeModal: () => void;
-  modal: React.ReactNode,
+  modal: React.ReactNode;
   backdropOpacity?: number;
   fullScreen?: boolean;
-  onModalHide?: () => void,
-  style?: ViewStyle,
+  onModalHide?: () => void;
+  style?: ViewStyle;
   animationIn?: string;
   animationOut?: string;
   disableSwipeDirection?: boolean;

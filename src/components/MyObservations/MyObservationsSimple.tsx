@@ -38,8 +38,8 @@ import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
 import StatTab from "./StatTab";
 
 interface SpeciesCount {
-  count: number,
-  taxon: RealmTaxon
+  count: number;
+  taxon: RealmTaxon;
 }
 
 export interface Props {
