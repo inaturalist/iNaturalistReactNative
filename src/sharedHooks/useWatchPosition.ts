@@ -13,11 +13,11 @@ export const TARGET_POSITIONAL_ACCURACY = 10;
 const MAX_POSITION_AGE_MS = 60_000;
 
 export interface UserLocation {
-  latitude: number,
-  longitude: number,
-  positional_accuracy: number,
-  altitude: number | null,
-  altitudinal_accuracy: number | null
+  latitude: number;
+  longitude: number;
+  positional_accuracy: number;
+  altitude: number | null;
+  altitudinal_accuracy: number | null;
 }
 
 const geolocationOptions = {
@@ -27,7 +27,7 @@ const geolocationOptions = {
 };
 
 const useWatchPosition = ( options: {
-  shouldFetchLocation: boolean
+  shouldFetchLocation: boolean;
 } ) => {
   const navigation = useNavigation( );
   const [currentPosition, setCurrentPosition] = useState<GeolocationResponse | null>( null );

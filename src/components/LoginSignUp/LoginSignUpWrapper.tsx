@@ -18,8 +18,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import colors from "styles/tailwindColors";
 
 interface Props extends PropsWithChildren {
-  backgroundSource: ImageSourcePropType,
-  imageStyle?: StyleProp<ImageStyle>
+  backgroundSource: ImageSourcePropType;
+  imageStyle?: StyleProp<ImageStyle>;
 }
 
 const windowHeight = Dimensions.get( "window" ).height;

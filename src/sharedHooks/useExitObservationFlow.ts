@@ -12,10 +12,10 @@ interface ObsFlowParams {
     previousScreen?: {
       name: string;
       params: {
-        uuid?: string
-      }
-    }
-  }
+        uuid?: string;
+      };
+    };
+  };
 }
 
 interface Options {

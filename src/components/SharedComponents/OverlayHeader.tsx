@@ -10,9 +10,9 @@ import React from "react";
 import colors from "styles/tailwindColors";
 
 interface Props extends PropsWithChildren {
-  invertToWhiteBackground: boolean
+  invertToWhiteBackground: boolean;
   headerRight?: React.JSX.Element;
-  testID: string,
+  testID: string;
 }
 
 const OverlayHeader = ( {

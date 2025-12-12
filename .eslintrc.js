@@ -148,7 +148,8 @@ module.exports = {
     "@typescript-eslint/consistent-type-imports": ["error", {
       fixStyle: "separate-type-imports"
     }],
-    "import/consistent-type-specifier-style": ["error", "prefer-top-level"]
+    "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
+    "@stylistic/member-delimiter-style": "error"
   },
   ignorePatterns: ["!.detoxrc.js", "/coverage/*", "/vendor/*", "**/flow-typed"],
   settings: {
@@ -168,7 +169,8 @@ module.exports = {
         "@typescript-eslint/no-wrapper-object-types": "off",
         "@typescript-eslint/no-require-imports": "off",
         "@typescript-eslint/consistent-type-imports": "off",
-        "import/consistent-type-specifier-style": "off"
+        "import/consistent-type-specifier-style": "off",
+        "@stylistic/member-delimiter-style": "off"
       }
     },
     {

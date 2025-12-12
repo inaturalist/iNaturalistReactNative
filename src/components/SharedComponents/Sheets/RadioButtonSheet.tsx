@@ -8,23 +8,23 @@ import React, { useState } from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 interface Props {
-  bottomComponent?: React.JSX.Element
-  buttonRowClassName?: string
+  bottomComponent?: React.JSX.Element;
+  buttonRowClassName?: string;
   confirm: ( _checkedValue: string ) => void;
   confirmText?: string;
-  headerText: string,
-  insideModal?: boolean,
+  headerText: string;
+  insideModal?: boolean;
   onPressClose?: ( ) => void;
   radioValues: Record<string, {
-    value: string,
-    icon?: string,
-    label: string,
-    text?: string,
-    buttonText?: string,
+    value: string;
+    icon?: string;
+    label: string;
+    text?: string;
+    buttonText?: string;
   }>;
-  selectedValue?: string,
-  testID?: string,
-  topDescriptionText?: React.JSX.Element,
+  selectedValue?: string;
+  testID?: string;
+  topDescriptionText?: React.JSX.Element;
 }
 
 const RadioButtonSheet = ( {

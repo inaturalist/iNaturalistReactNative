@@ -12,7 +12,7 @@ import type { Notification } from "sharedHooks/useInfiniteNotificationsScroll";
 import colors from "styles/tailwindColors";
 
 interface Props {
-  notification: Notification
+  notification: Notification;
 }
 
 const ObsNotification = ( { notification }: Props ) => {

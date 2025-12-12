@@ -61,7 +61,7 @@ async function fetchObsByUUIDs(
   authOptions: ApiOpts,
   realm: Realm,
   options: {
-    save?: boolean
+    save?: boolean;
   } = {}
 ) {
   // TODO convert api/observations to TS
