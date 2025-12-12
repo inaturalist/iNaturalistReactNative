@@ -31,19 +31,19 @@ export const matchCardClassBottom
   = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mt-0.5 mb-[30px]";
 
 type Props = {
-  observation: RealmObservation,
-  obsPhotos: RealmObservationPhoto[],
-  handleSaveOrDiscardPress: ( action: MatchButtonAction ) => void,
-  navToTaxonDetails: ( photo?: ApiPhoto | RealmPhoto ) => void,
-  isFetchingLocation: boolean,
-  handleAddLocationPressed: ( ) => void,
-  topSuggestion?: ApiSuggestion,
-  otherSuggestions: ApiSuggestion[],
-  suggestionsLoading: boolean,
-  onSuggestionChosen: ( suggestion: ApiSuggestion ) => void,
-  scrollRef: React.RefObject<ScrollView | null>,
-  iconicTaxon?: RealmTaxon,
-  setIconicTaxon: ( taxon: RealmTaxon ) => void
+  observation: RealmObservation;
+  obsPhotos: RealmObservationPhoto[];
+  handleSaveOrDiscardPress: ( action: MatchButtonAction ) => void;
+  navToTaxonDetails: ( photo?: ApiPhoto | RealmPhoto ) => void;
+  isFetchingLocation: boolean;
+  handleAddLocationPressed: ( ) => void;
+  topSuggestion?: ApiSuggestion;
+  otherSuggestions: ApiSuggestion[];
+  suggestionsLoading: boolean;
+  onSuggestionChosen: ( suggestion: ApiSuggestion ) => void;
+  scrollRef: React.RefObject<ScrollView | null>;
+  iconicTaxon?: RealmTaxon;
+  setIconicTaxon: ( taxon: RealmTaxon ) => void;
 }
 
 const Match = ( {

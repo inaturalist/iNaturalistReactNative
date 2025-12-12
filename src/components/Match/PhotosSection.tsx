@@ -14,11 +14,11 @@ import Photo from "realmModels/Photo";
 import type { RealmObservationPhoto, RealmPhoto, RealmTaxon } from "realmModels/types";
 
 type Props = {
-  representativePhoto?: ApiPhoto,
-  taxon?: ApiTaxon | RealmTaxon,
-  obsPhotos: RealmObservationPhoto[],
-  navToTaxonDetails: ( photo: ApiPhoto | RealmPhoto ) => void,
-  hideTaxonPhotos?: boolean
+  representativePhoto?: ApiPhoto;
+  taxon?: ApiTaxon | RealmTaxon;
+  obsPhotos: RealmObservationPhoto[];
+  navToTaxonDetails: ( photo: ApiPhoto | RealmPhoto ) => void;
+  hideTaxonPhotos?: boolean;
 }
 
 const PhotosSection = ( {

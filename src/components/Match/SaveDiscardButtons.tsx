@@ -14,7 +14,7 @@ const DROP_SHADOW = getShadow( {
 } );
 
 type Props = {
-  handlePress: ( action: MatchButtonAction ) => void
+  handlePress: ( action: MatchButtonAction ) => void;
 }
 
 const SaveDiscardButtons = ( {
