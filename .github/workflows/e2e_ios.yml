@@ -230,11 +230,18 @@ jobs:
       with:
         report-path: 'artifacts/*.json'
         github-report: true
+        title: 'Detox e2e Test Results'
+        test-report: true
+        test-list-report: true
+        suite-folded-report: true
+        suite-list-report: true
+        use-suite-name: true
     
     # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
     - name: Store Detox artifacts on test failure
       uses: actions/upload-artifact@v4
-      if: failure()
+      # if: failure()
+      if: ${{ success() || failure() }}
       with:
         name: detox-artifacts
         path: artifacts
