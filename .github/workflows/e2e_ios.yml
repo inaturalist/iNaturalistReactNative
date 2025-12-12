@@ -5,7 +5,7 @@ name: e2e-iOS
 on:
   workflow_dispatch:
   pull_request:
-  # push:
+  push:
     # branches:
     #   - 'main'
 
@@ -232,15 +232,10 @@ jobs:
       if: ${{ success() || failure() }}
       uses: ctrf-io/github-test-reporter@v1
       with:
-        report-path: 'artifacts/*.json'
-        github-report: true
+        report-path: 'artifacts/ctrf-report.json'
         title: 'Detox e2e Test Results'
-        test-report: true
-        test-list-report: true
-        suite-folded-report: true
         suite-list-report: true
-        use-suite-name: true
-    
+
     # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
     - name: Store Detox artifacts on test failure
       uses: actions/upload-artifact@v4
