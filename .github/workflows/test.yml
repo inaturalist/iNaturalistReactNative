@@ -18,14 +18,12 @@ jobs:
     - name: Check out Git repository
       uses: actions/checkout@v4
 
-    # - name: Publish Test Report (canned, also see if two stack)
-    #   uses: ctrf-io/github-test-reporter@v1
-    #   with:
-    #     report-path: 'ctrf-report.json'
-    #     # github-report: true
-    #     title: 'Unit & Integration Test Results'
-    #     # test-list-report: true
-    #     suite-folded-report: true
+    - name: Publish Test Report (canned, also see if two stack)
+      uses: ctrf-io/github-test-reporter@v1
+      with:
+        report-path: 'ctrf-report.json'
+        title: 'Unit & Integration Test Results'
+        suite-folded-report: true
 
     - name: Install Node.js, NPM and Yarn
       uses: actions/setup-node@v4
@@ -79,13 +77,8 @@ jobs:
       uses: ctrf-io/github-test-reporter@v1
       with:
         report-path: 'artifacts/*.json'
-        github-report: true
         title: 'Unit & Integration Test Results'
-        test-report: true
-        test-list-report: true
         suite-folded-report: true
-        suite-list-report: true
-        use-suite-name: true
 
   # notify:
   #   name: Notify Slack
