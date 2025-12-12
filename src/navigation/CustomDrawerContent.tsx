@@ -93,9 +93,7 @@ const CustomDrawerContent = ( {
     testID?: string;
   }
   const drawerItems = useMemo( ( ) => {
-    const items: {
-      [key: string]: DrawerItem;
-    } = {
+    const items: Record<string, DrawerItem> = {
       projects: {
         label: t( "PROJECTS" ),
         navigation: "Projects",

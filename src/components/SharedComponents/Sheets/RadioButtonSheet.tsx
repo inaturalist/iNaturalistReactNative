@@ -15,15 +15,13 @@ interface Props {
   headerText: string,
   insideModal?: boolean,
   onPressClose?: ( ) => void;
-  radioValues: {
-    [key: string]: {
-      value: string,
-      icon?: string,
-      label: string,
-      text?: string,
-      buttonText?: string,
-    }
-  },
+  radioValues: Record<string, {
+    value: string,
+    icon?: string,
+    label: string,
+    text?: string,
+    buttonText?: string,
+  }>;
   selectedValue?: string,
   testID?: string,
   topDescriptionText?: React.JSX.Element,
