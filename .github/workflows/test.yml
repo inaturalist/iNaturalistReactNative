@@ -22,7 +22,7 @@ jobs:
       uses: ctrf-io/github-test-reporter@v1
       with:
         report-path: 'ctrf-report.json'
-        github-report: true
+        # github-report: true
         title: 'Unit & Integration Test Results'
         # test-list-report: true
         suite-folded-report: true
