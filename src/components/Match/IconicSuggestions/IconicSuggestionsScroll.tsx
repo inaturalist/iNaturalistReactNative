@@ -1,18 +1,18 @@
-import type { ApiTaxon } from "api/types";
 import { CustomFlashList } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import React, {
   useCallback
 } from "react";
+import type { RealmTaxon } from "realmModels/types";
 
 import IconicSuggestion from "./IconicSuggestion";
 
 const { useRealm } = RealmContext;
 
 type Props = {
-  iconicTaxonChosen?: ApiTaxon;
-  onIconicTaxonChosen: ( taxon: ApiTaxon ) => void;
+  iconicTaxonChosen?: RealmTaxon;
+  onIconicTaxonChosen: ( taxon: RealmTaxon ) => void;
 }
 
 const IconicSuggestionsScroll = ( {
@@ -24,13 +24,13 @@ const IconicSuggestionsScroll = ( {
   const iconicTaxa = realm?.objects( "Taxon" ).filtered( "isIconic = true" );
 
   const handleIconicSuggestionPress = useCallback(
-    ( iconicTaxon: ApiTaxon ) => {
+    ( iconicTaxon: RealmTaxon ) => {
       onIconicTaxonChosen( iconicTaxon );
     },
     [onIconicTaxonChosen]
   );
 
-  const renderItem = ( { item: taxon }: { item: ApiTaxon } ) => {
+  const renderItem = ( { item: taxon }: { item: RealmTaxon } ) => {
     const selected = iconicTaxonChosen?.id === taxon?.id;
     return (
       <IconicSuggestion
@@ -48,7 +48,7 @@ const IconicSuggestionsScroll = ( {
         ListHeaderComponent={renderHeader}
         horizontal
         renderItem={renderItem}
-        keyExtractor={( item: ApiTaxon ) => `${item?.id}`}
+        keyExtractor={( item: RealmTaxon ) => `${item?.id}`}
         data={iconicTaxa}
       />
     </View>

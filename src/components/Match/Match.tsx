@@ -1,5 +1,5 @@
 import { useNetInfo } from "@react-native-community/netinfo";
-import type { ApiPhoto, ApiSuggestion, ApiTaxon } from "api/types";
+import type { ApiPhoto, ApiSuggestion } from "api/types";
 import LocationSection
   from "components/ObsDetailsDefaultMode/LocationSection/LocationSection";
 import MapSection
@@ -11,7 +11,7 @@ import { View } from "components/styledComponents";
 import _ from "lodash";
 import React from "react";
 import type { ScrollView } from "react-native";
-import type { RealmObservation, RealmObservationPhoto } from "realmModels/types";
+import type { RealmObservation, RealmObservationPhoto, RealmTaxon } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 
 import AdditionalSuggestionsScroll
@@ -39,8 +39,8 @@ type Props = {
   suggestionsLoading: boolean,
   onSuggestionChosen: ( suggestion: ApiSuggestion ) => void,
   scrollRef: React.RefObject<ScrollView | null>,
-  iconicTaxon?: ApiTaxon,
-  setIconicTaxon: ( taxon: ApiTaxon ) => void
+  iconicTaxon?: RealmTaxon,
+  setIconicTaxon: ( taxon: RealmTaxon ) => void
 }
 
 const Match = ( {

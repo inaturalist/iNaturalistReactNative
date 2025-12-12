@@ -3,7 +3,7 @@ import {
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import type { ApiSuggestion, ApiTaxon } from "api/types";
+import type { ApiSuggestion } from "api/types";
 import { Body3, Heading4, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import flattenUploadParams from "components/Suggestions/helpers/flattenUploadParams";
@@ -18,6 +18,7 @@ import React, {
   useEffect, useReducer, useRef, useState
 } from "react";
 import type { ScrollView } from "react-native";
+import type { RealmTaxon } from "realmModels/types";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import saveObservation from "sharedHelpers/saveObservation";
 import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservationLocation";
@@ -36,6 +37,8 @@ interface ImageParamsType {
   uri?: string;
   image: {
     uri: string;
+    name: string;
+    type: string;
   };
   lat?: number;
   lng?: number;
@@ -146,7 +149,7 @@ const MatchContainer = ( ) => {
   const evidenceHasLocation = !!currentObservation?.latitude;
 
   const [topSuggestion, setTopSuggestion] = useState<ApiSuggestion>( );
-  const [iconicTaxon, setIconicTaxon] = useState<ApiTaxon>( );
+  const [iconicTaxon, setIconicTaxon] = useState<RealmTaxon>( );
   const [currentUserLocation, setCurrentUserLocation] = useState<{
     latitude?: number;
     longitude?: number;
