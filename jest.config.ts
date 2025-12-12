@@ -27,11 +27,18 @@ const config: Config = {
   testPathIgnorePatterns: [
     "<rootDir>/tests/integration/broken",
     "<rootDir>/tests/integration/navigation/broken"
-  ]
+  ],
   // uncomment reporters below to see which tests are running the slowest in jest
   // reporters: [
-  //   ["jest-slow-test-reporter", {"numTests": 8, "warnOnSlowerThan": 300, "color": true}]
   // ],
+  reporters: [
+    "default",
+    ["jest-ctrf-json-reporter", {
+      outputDir: "artifacts"
+    }]
+    // uncomment reporter below to see which tests are running the slowest in jest
+    // ["jest-slow-test-reporter", {"numTests": 8, "warnOnSlowerThan": 300, "color": true}]
+  ]
 };
 
 export default config;

@@ -52,10 +52,31 @@ jobs:
       run: npm run lint
 
     - name: Unit tests
-      run: npm run test:unit
+      # run regardless of previous linting / testing steps
+      if: ${{ success() || failure() }}
+      run: |
+        npm run test:unit
+        mv artifacts/ctrf-report.json artifacts/unit-ctrf-report.json
 
     - name: Integration tests
-      run: npm run test:integration
+      # run regardless of previous linting / testing steps
+      if: ${{ success() || failure() }}
+      run: |
+        npm run test:integration
+        mv artifacts/ctrf-report.json artifacts/integration-ctrf-report.json
+
+    - name: Publish Test Report
+      if: ${{ success() || failure() }}
+      uses: ctrf-io/github-test-reporter@v1
+      with:
+        report-path: 'artifacts/*.json'
+        github-report: true
+        title: 'Unit & Integration Test Results'
+        test-report: true
+        test-list-report: true
+        suite-folded-report: true
+        suite-list-report: true
+        use-suite-name: true
 
   # notify:
   #   name: Notify Slack
