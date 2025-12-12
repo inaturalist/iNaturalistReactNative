@@ -8,13 +8,7 @@ import { Body3, Heading4, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import flattenUploadParams from "components/Suggestions/helpers/flattenUploadParams";
 import {
-  FETCH_STATUS_LOADING,
-  FETCH_STATUS_OFFLINE_ERROR,
-  FETCH_STATUS_OFFLINE_FETCHED,
-  FETCH_STATUS_OFFLINE_SKIPPED,
-  FETCH_STATUS_ONLINE_ERROR,
-  FETCH_STATUS_ONLINE_FETCHED,
-  FETCH_STATUS_ONLINE_SKIPPED,
+  FETCH_STATUSES,
   initialSuggestions
 } from "components/Suggestions/SuggestionsContainer";
 import _ from "lodash";
@@ -53,19 +47,19 @@ interface NavParams {
   representativePhoto?: { isRepresentativeButOtherTaxon?: boolean; id?: number | string };
 }
 
-interface StateType {
-  onlineFetchStatus: string;
-  offlineFetchStatus: string;
+interface State {
+  onlineFetchStatus: FETCH_STATUSES;
+  offlineFetchStatus: FETCH_STATUSES;
   scoreImageParams: ImageParamsType | null;
   queryKey: ( string | { shouldUseEvidenceLocation: boolean } )[];
   shouldUseEvidenceLocation: boolean;
   orderedSuggestions: ApiSuggestion[];
 }
 
-type ActionType =
+type Action =
   | { type: "SET_UPLOAD_PARAMS"; scoreImageParams: ImageParamsType }
-  | { type: "SET_ONLINE_FETCH_STATUS"; onlineFetchStatus: string }
-  | { type: "SET_OFFLINE_FETCH_STATUS"; offlineFetchStatus: string }
+  | { type: "SET_ONLINE_FETCH_STATUS"; onlineFetchStatus: FETCH_STATUSES }
+  | { type: "SET_OFFLINE_FETCH_STATUS"; offlineFetchStatus: FETCH_STATUSES }
   | { type: "SET_LOCATION"; scoreImageParams: ImageParamsType; shouldUseEvidenceLocation: boolean }
   | { type: "ORDER_SUGGESTIONS"; orderedSuggestions: ApiSuggestion[] };
 
@@ -75,16 +69,16 @@ const setQueryKey = ( selectedPhotoUri: string, shouldUseEvidenceLocation: boole
   { shouldUseEvidenceLocation }
 ];
 
-const initialState: StateType = {
-  onlineFetchStatus: FETCH_STATUS_LOADING,
-  offlineFetchStatus: FETCH_STATUS_LOADING,
+const initialState: State = {
+  onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
+  offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
   scoreImageParams: null,
   queryKey: [],
   shouldUseEvidenceLocation: false,
   orderedSuggestions: []
 };
 
-const reducer = ( state: StateType, action: ActionType ): StateType => {
+const reducer = ( state: State, action: Action ): State => {
   switch ( action.type ) {
     case "SET_UPLOAD_PARAMS":
       return {
@@ -105,8 +99,8 @@ const reducer = ( state: StateType, action: ActionType ): StateType => {
     case "SET_LOCATION":
       return {
         ...state,
-        onlineFetchStatus: FETCH_STATUS_LOADING,
-        offlineFetchStatus: FETCH_STATUS_LOADING,
+        onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
+        offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
         scoreImageParams: action.scoreImageParams,
         shouldUseEvidenceLocation: action.shouldUseEvidenceLocation,
         queryKey: setQueryKey( action.scoreImageParams.image.uri, action.shouldUseEvidenceLocation )
@@ -175,28 +169,29 @@ const MatchContainer = ( ) => {
   } = state;
 
   const shouldFetchOnlineSuggestions = ( hasPermissions !== undefined )
-      && onlineFetchStatus === FETCH_STATUS_LOADING;
+      && onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_LOADING;
 
-  const onlineSuggestionsAttempted = onlineFetchStatus === FETCH_STATUS_ONLINE_FETCHED
-      || onlineFetchStatus === FETCH_STATUS_ONLINE_ERROR;
+  const onlineSuggestionsAttempted
+     = onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_ONLINE_FETCHED
+      || onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_ONLINE_ERROR;
 
   const onFetchError = useCallback(
     ( { isOnline }: { isOnline: boolean } ) => {
       if ( isOnline ) {
         dispatch( {
           type: "SET_ONLINE_FETCH_STATUS",
-          onlineFetchStatus: FETCH_STATUS_ONLINE_ERROR
+          onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_ONLINE_ERROR
         } );
       } else {
         dispatch( {
           type: "SET_OFFLINE_FETCH_STATUS",
-          offlineFetchStatus: FETCH_STATUS_OFFLINE_ERROR
+          offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_OFFLINE_ERROR
         } );
         // If offline is finished, and online still in loading state it means it never started
-        if ( onlineFetchStatus === FETCH_STATUS_LOADING ) {
+        if ( onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_LOADING ) {
           dispatch( {
             type: "SET_ONLINE_FETCH_STATUS",
-            onlineFetchStatus: FETCH_STATUS_ONLINE_SKIPPED
+            onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_ONLINE_SKIPPED
           } );
         }
       }
@@ -209,24 +204,24 @@ const MatchContainer = ( ) => {
       if ( isOnline ) {
         dispatch( {
           type: "SET_ONLINE_FETCH_STATUS",
-          onlineFetchStatus: FETCH_STATUS_ONLINE_FETCHED
+          onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_ONLINE_FETCHED
         } );
         // Currently we start offline only when online has an error, so
         // we can register offline as skipped if online is successful
         dispatch( {
           type: "SET_OFFLINE_FETCH_STATUS",
-          offlineFetchStatus: FETCH_STATUS_OFFLINE_SKIPPED
+          offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_OFFLINE_SKIPPED
         } );
       } else {
         dispatch( {
           type: "SET_OFFLINE_FETCH_STATUS",
-          offlineFetchStatus: FETCH_STATUS_OFFLINE_FETCHED
+          offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_OFFLINE_FETCHED
         } );
         // If offline is finished, and online still in loading state it means it never started
-        if ( onlineFetchStatus === FETCH_STATUS_LOADING ) {
+        if ( onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_LOADING ) {
           dispatch( {
             type: "SET_ONLINE_FETCH_STATUS",
-            onlineFetchStatus: FETCH_STATUS_ONLINE_SKIPPED
+            onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_ONLINE_SKIPPED
           } );
         }
       }
@@ -463,8 +458,8 @@ const MatchContainer = ( ) => {
     topSuggestion
   );
 
-  const suggestionsLoading = onlineFetchStatus === FETCH_STATUS_LOADING
-    || offlineFetchStatus === FETCH_STATUS_LOADING;
+  const suggestionsLoading = onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_LOADING
+    || offlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_LOADING;
 
   useEffect( ( ) => {
     if (
