@@ -4,7 +4,14 @@ module.exports = {
   rootDir: "..",
   testMatch: ["<rootDir>/e2e/**/*.e2e.js"],
   verbose: true,
-  reporters: ["detox/runners/jest/reporter"],
+  reporters: [
+    "detox/runners/jest/reporter",
+    ["jest-ctrf-json-reporter", {
+      outputDir: "artifacts",
+      testType: "Detox (e2e)",
+      testEnvironment: "staging"
+    }]
+  ],
   globalSetup: "detox/runners/jest/globalSetup",
   globalTeardown: "detox/runners/jest/globalTeardown",
   testEnvironment: "detox/runners/jest/testEnvironment"

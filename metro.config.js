@@ -30,7 +30,7 @@ const config = {
   resolver: {
     assetExts: assetExts.filter( ext => ext !== "svg" ),
     sourceExts:
-      process.env.MOCK_MODE === "e2e"
+      true
         ? ["e2e-mock", ...sourceExts, "svg"]
         : [...sourceExts, "svg"],
     nodeModulesPaths: [...localPackagePaths]
