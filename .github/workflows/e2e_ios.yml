@@ -5,7 +5,7 @@ name: e2e-iOS
 on:
   workflow_dispatch:
   pull_request:
-  push:
+  # push:
     # branches:
     #   - 'main'
 
@@ -222,7 +222,11 @@ jobs:
         curl -I --fail "https://stagingapi.inaturalist.org/v2/taxa"
 
     - name: Run e2e test
-      run: npm run e2e:test:ios -- --take-screenshots failing --record-videos failing --record-logs all -l trace
+      run: npm run e2e:test:ios
+      
+    - name: Run e2e test (retry, with logs)
+      if: failure()
+      run: npm run e2e:test:ios -- --take-screenshots failing --record-videos failing --record-logs all -l trace --retries 1
 
     - name: Publish Test Report
       if: ${{ success() || failure() }}
