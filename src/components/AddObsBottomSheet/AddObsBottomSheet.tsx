@@ -12,18 +12,18 @@ import colors from "styles/tailwindColors";
 interface Props {
   closeBottomSheet: ( ) => void;
   navAndCloseBottomSheet: ( screen: string, params?: {
-    camera?: string
+    camera?: string;
   } ) => void;
   hidden: boolean;
 }
 
 type ObsCreateItem = {
-  text: string,
-  icon: string,
-  onPress: ( ) => void,
-  testID: string,
-  accessibilityLabel: string,
-  accessibilityHint: string
+  text: string;
+  icon: string;
+  onPress: ( ) => void;
+  testID: string;
+  accessibilityLabel: string;
+  accessibilityHint: string;
 }
 
 const majorVersionIOS = parseInt( String( Platform.Version ), 10 );

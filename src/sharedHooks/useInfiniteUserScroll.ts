@@ -8,7 +8,7 @@ const useInfiniteUserScroll = (
   ids: Array<object>,
   newInputParams: object,
   options: {
-    enabled: boolean
+    enabled: boolean;
   }
 ): object => {
   const baseParams = {

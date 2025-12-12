@@ -13,8 +13,8 @@ import { useCurrentUser } from "sharedHooks";
 import ObscurationExplanation from "./ObscurationExplanation";
 
 interface Props {
-  belongsToCurrentUser: boolean,
-  observation: RealmObservation
+  belongsToCurrentUser: boolean;
+  observation: RealmObservation;
 }
 
 const LocationSection = ( {

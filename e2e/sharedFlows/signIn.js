@@ -13,18 +13,18 @@ export default async function signIn() {
   */
   await switchPowerMode();
   // Find the Menu item from tabs
-  const openDrawerMenuItem = element( by.id( "OPEN_DRAWER" ) );
-  await waitFor( openDrawerMenuItem ).toBeVisible().withTimeout( TIMEOUT );
-  await expect( openDrawerMenuItem ).toBeVisible();
-  await element( by.id( "OPEN_DRAWER" ) ).tap( { x: 0, y: 0 } );
+  const menuButton = element( by.id( "Menu" ) );
+  await waitFor( menuButton ).toBeVisible().withTimeout( TIMEOUT );
+  await expect( menuButton ).toBeVisible();
+  await element( by.id( "Menu" ) ).tap( { x: 0, y: 0 } );
   // Tap the Log-In menu item
-  // TODO: consider this a temporary solution as it only checks for the drawer-top-banner
+  // TODO: consider this a temporary solution as it only checks for the menu-header
   // which can be a login prompt or the logged in user's details. If the user is already
   // logged in, this should fail instead.
-  const loginMenuItem = element( by.id( "drawer-top-banner" ) );
+  const loginMenuItem = element( by.id( "menu-header" ) );
   await waitFor( loginMenuItem ).toBeVisible().withTimeout( TIMEOUT );
   await expect( loginMenuItem ).toBeVisible();
-  await element( by.id( "drawer-top-banner" ) ).tap();
+  await element( by.id( "menu-header" ) ).tap();
   const usernameInput = element( by.id( "Login.email" ) );
   await waitFor( usernameInput ).toBeVisible().withTimeout( TIMEOUT );
   await expect( usernameInput ).toBeVisible();
@@ -37,7 +37,7 @@ export default async function signIn() {
   const loginButton = element( by.id( "Login.loginButton" ) );
   await expect( loginButton ).toBeVisible();
   await element( by.id( "Login.loginButton" ) ).tap();
-  const username = element( by.text( `${Config.E2E_TEST_USERNAME}` ) ).atIndex( 1 );
+  const username = element( by.text( `${Config.E2E_TEST_USERNAME}` ) );
   await waitFor( username ).toBeVisible().withTimeout( TIMEOUT );
   await expect( username ).toBeVisible();
 

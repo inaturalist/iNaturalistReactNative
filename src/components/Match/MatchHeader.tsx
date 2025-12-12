@@ -18,7 +18,7 @@ const LIKELY_CONFIDENCE_THRESHOLD = 50;
 
 interface Props {
   topSuggestion?: ApiSuggestion;
-  hideObservationStatus?: boolean
+  hideObservationStatus?: boolean;
 }
 
 const MatchHeader = ( { topSuggestion, hideObservationStatus }: Props ) => {

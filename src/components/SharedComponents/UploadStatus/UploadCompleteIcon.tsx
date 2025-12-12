@@ -4,8 +4,8 @@ import { View } from "components/styledComponents";
 import React from "react";
 
 type Props = {
-  iconClasses: Array<string>,
-  completeColor: string
+  iconClasses: Array<string>;
+  completeColor: string;
 }
 
 const UploadCompleteIcon = ( {

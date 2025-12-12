@@ -12,7 +12,7 @@ interface Props {
     non_traditional_projects: Array<{
       project: object;
     }>;
-  }
+  };
 }
 
 const ProjectButton = ( { observation }: Props ) => {

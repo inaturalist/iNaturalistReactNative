@@ -28,7 +28,7 @@ import LoginSignUpInputField from "./LoginSignUpInputField";
 const { useRealm } = RealmContext;
 
 interface Props {
-  scrollViewRef?: React.Ref
+  scrollViewRef?: React.Ref;
 }
 
 interface LoginFormParams {
@@ -38,7 +38,7 @@ interface LoginFormParams {
 }
 
 type ParamList = {
-  LoginFormParams: LoginFormParams
+  LoginFormParams: LoginFormParams;
 }
 
 const LoginForm = ( {

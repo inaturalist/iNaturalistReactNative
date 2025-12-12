@@ -57,7 +57,7 @@ export type Suggestion = {
   taxon: {
     id: number;
     name: string;
-  }
+  };
 };
 
 export type TopSuggestionType = string;

@@ -62,7 +62,7 @@ const MatchTaxonSearchScreen = ( ) => {
     // no-unused-prop-types failing for components defined at runtime seems to
     // be a bug. These props are clearly used
     // eslint-disable-next-line react/no-unused-prop-types
-    ( { item: taxon, index }: { item: ApiTaxon, index: number } ) => (
+    ( { item: taxon, index }: { item: ApiTaxon; index: number } ) => (
       <TaxonResult
         accessibilityLabel={t( "Choose-taxon" )}
         fetchRemote={false}

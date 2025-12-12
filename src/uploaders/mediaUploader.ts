@@ -15,7 +15,7 @@ export type ActionType = "upload" | "attach" | "update";
 
 interface UploadOptions {
   api_token?: string;
-  signal: AbortController
+  signal: AbortController;
 }
 
 interface MediaApiResponse {
@@ -32,7 +32,7 @@ interface MappedObservationPhotoForUpdating {
   observation_photo: {
     observation_id: number;
     position: number;
-  }
+  };
 }
 
 interface MappedObservationPhotoForAttaching {
@@ -41,7 +41,7 @@ interface MappedObservationPhotoForAttaching {
     observation_id: number;
     photo_id: number;
     position: number;
-  }
+  };
 }
 
 interface MappedPhotoForUploading {
@@ -58,7 +58,7 @@ interface MappedSoundForUploading {
     uri: string;
     name: string;
     type: string;
-  }
+  };
 }
 
 interface MappedObservationSoundForAttaching {

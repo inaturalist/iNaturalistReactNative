@@ -187,9 +187,9 @@ const getUsername = async (): Promise<string> => getSensitiveItem( "username" );
  */
 const signOut = async (
   options: {
-    realm?: Realm,
-    clearRealm?: boolean,
-    queryClient?: QueryClient
+    realm?: Realm;
+    clearRealm?: boolean;
+    queryClient?: QueryClient;
   } = {
     clearRealm: false,
     queryClient: undefined
@@ -579,7 +579,7 @@ async function authenticateUserByAssertion(
 }
 
 interface CreateUserResponse {
-  errors?: string[]
+  errors?: string[];
 }
 
 /**

@@ -1,7 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import RootDrawerNavigator from "navigation/rootDrawerNavigator";
+import RootStackNavigator from "navigation/RootStackNavigator";
 import type { Node } from "react";
 import React, { useCallback } from "react";
 import { log } from "sharedHelpers/logger";
@@ -80,7 +80,7 @@ const App = ( { children }: Props ): Node => {
       <StartupService />
       <NetworkService />
       <AppStateListener />
-      {children || <RootDrawerNavigator />}
+      {children || <RootStackNavigator />}
     </>
   );
 };

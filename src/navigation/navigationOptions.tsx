@@ -3,7 +3,6 @@ import { fontMedium } from "appConstants/fontFamilies";
 import FullPageWebViewHeader from "components/FullPageWebView/FullPageWebViewHeader";
 import BackButton from "components/SharedComponents/Buttons/BackButton";
 import React from "react";
-import { View } from "react-native";
 import colors from "styles/tailwindColors";
 
 import FadeInView from "./FadeInView";
@@ -71,27 +70,14 @@ const removeBottomBorder = {
   )
 } as const;
 
-// this removes the default hamburger menu from header
-const hideDrawerHeaderLeft = {
-  headerLeft: ( ) => (
-    <View />
-  )
-} as const;
-
 const preventSwipeToGoBack = {
   gestureEnabled: false
-} as const;
-
-const isDrawerScreen = {
-  animation: "none"
 } as const;
 
 export {
   blankHeaderTitle,
   fadeInComponent,
-  hideDrawerHeaderLeft,
   hideHeader,
-  isDrawerScreen,
   preventSwipeToGoBack,
   removeBottomBorder,
   showHeader,

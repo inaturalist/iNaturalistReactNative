@@ -25,23 +25,23 @@ interface OfflineSuggestion {
 const useOfflineSuggestions = (
   photoUri: string,
   options: {
-    onFetchError: ( _p: { isOnline: boolean } ) => void,
-    onFetched: ( _p: { isOnline: boolean } ) => void,
-    latitude: number,
-    longitude: number,
-    tryOfflineSuggestions: boolean
+    onFetchError: ( _p: { isOnline: boolean } ) => void;
+    onFetched: ( _p: { isOnline: boolean } ) => void;
+    latitude: number;
+    longitude: number;
+    tryOfflineSuggestions: boolean;
   }
 ): {
   offlineSuggestions: {
-    results: OfflineSuggestion[],
-    commonAncestor: OfflineSuggestion | undefined
+    results: OfflineSuggestion[];
+    commonAncestor: OfflineSuggestion | undefined;
   };
   refetchOfflineSuggestions: () => void;
 } => {
   const realm = useRealm( );
   const [offlineSuggestions, setOfflineSuggestions] = useState<{
-    results: OfflineSuggestion[],
-    commonAncestor: OfflineSuggestion | undefined
+    results: OfflineSuggestion[];
+    commonAncestor: OfflineSuggestion | undefined;
   }>( { results: [], commonAncestor: undefined } );
   const [error, setError] = useState( null );
 
@@ -70,7 +70,7 @@ const useOfflineSuggestions = (
     const iconicTaxa = realm?.objects( "Taxon" ).filtered( "isIconic = true" );
     const iconicTaxaIds = iconicTaxa.map( t => t.id );
     const iconicTaxaLookup: {
-      [key: number]: string
+      [key: number]: string;
     } = iconicTaxa.reduce( ( acc, t ) => {
       acc[t.id] = t.name;
       return acc;
