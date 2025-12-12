@@ -13,13 +13,14 @@ import {
   Modal,
   Portal
 } from "react-native-paper";
+import type { CameraDeviceFormat } from "react-native-vision-camera";
 import { useDebugMode } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import SliderControl from "./SliderControl";
 
 interface Props {
-  debugFormat: Record<string, unknown> | null;
+  debugFormat: CameraDeviceFormat | null;
   changeDebugFormat: () => void;
   confidenceThreshold: number;
   setConfidenceThreshold: ( value: number ) => void;
