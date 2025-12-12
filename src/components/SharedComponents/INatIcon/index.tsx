@@ -4,30 +4,19 @@ import {
 } from "react-native";
 import colors from "styles/tailwindColors";
 
+import type { INatIconName } from "./INatIcon";
 import Icon from "./INatIcon";
 
-interface Props {
-  testID?: string;
-  name: string;
-  color?: string;
-  size?: number;
-  dropShadow?: boolean;
-  isDarkModeEnabled?: boolean;
-}
-
-type Aliases = {
-  [key: string]: string;
-};
 // Most of these are names for these icons used in design mapped to more
 // consistent and deduped filenames. We might also put aliases of convenience
 // here, e.g. "speech" and "chat" might both map to "comments" if we find
 // ourselves forgetting the name "comments"
-const ALIASES: Aliases = {
+const aliasMap = {
   addevidence: "plus",
   "evidence-add": "plus-bold",
   addid: "id-agree",
   back: "chevron-left",
-  captive: "pot",
+  captive: "pot" as INatIconName, // Casting because "pot" does not exist in the glyphmap.
   checkmark: "check",
   "close-large": "close",
   "close-small": "close-bold",
@@ -51,7 +40,7 @@ const ALIASES: Aliases = {
   "fave-inactive": "star-bold-outline",
   filters: "sliders",
   flipcamera: "flip",
-  geoprivacy: "globe",
+  geoprivacy: "globe" as INatIconName, // Casting because "globe" does not exist in the glyphmap.
   gridview: "grid-square",
   listview: "list-square",
   list: "list",
@@ -85,6 +74,23 @@ const ALIASES: Aliases = {
   "upvote-inactive": "arrow-up-bold-circle-outline"
 } as const;
 
+type INatIconAlias = keyof typeof aliasMap;
+type INatIconNameOrAlias = INatIconName | INatIconAlias;
+const typedAliasMap: Record<INatIconAlias, INatIconName> = aliasMap;
+
+function isAlias( name: string ): name is INatIconAlias {
+  return name in typedAliasMap;
+}
+
+type Props = {
+  testID?: string;
+  name: INatIconNameOrAlias;
+  color?: string;
+  size?: number;
+  dropShadow?: boolean;
+  isDarkModeEnabled?: boolean;
+};
+
 // Use default color if none is specified
 const INatIcon = ( {
   testID, name, color, size, dropShadow, isDarkModeEnabled = false
@@ -112,7 +118,9 @@ const INatIcon = ( {
   return (
     <Icon
       testID={testID}
-      name={ALIASES[name] || name}
+      name={isAlias( name )
+        ? typedAliasMap[name]
+        : name}
       color={colorFromColorScheme}
       size={size}
       style={style}
