@@ -34,7 +34,7 @@ const PhotosSection = ( {
 
   const localTaxonPhotos = taxon?.taxonPhotos;
   const observationPhoto = obsPhotos?.[0]?.photo?.url
-  || obsPhotos?.[0]?.photo?.localFilePath;
+  || Photo.getLocalPhotoUri( obsPhotos?.[0]?.photo?.localFilePath );
 
   const taxonPhotos = compact(
     localTaxonPhotos
