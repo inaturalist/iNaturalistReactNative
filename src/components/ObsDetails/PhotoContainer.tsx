@@ -23,7 +23,10 @@ const PhotoContainer = ( { photo, onPress, style }: Props ) => {
 
   const imageSources = [];
   if ( photo.localFilePath ) {
-    imageSources.push( { uri: Photo.getLocalPhotoUri( photo.localFilePath ) } );
+    const localUri = Photo.getLocalPhotoUri( photo.localFilePath );
+    if ( localUri ) {
+      imageSources.push( { uri: localUri } );
+    }
   }
   if ( photo.url ) {
     imageSources.push( {
@@ -73,7 +76,7 @@ const PhotoContainer = ( { photo, onPress, style }: Props ) => {
   const renderLoadingIndicator = ( ) => {
     if ( loadSuccess === null ) {
       return (
-        <ActivityIndicator className="absolute" />
+        <ActivityIndicator />
       );
     }
     return null;
