@@ -13,15 +13,29 @@ import {
   Modal,
   Portal
 } from "react-native-paper";
+import type { CameraDeviceFormat } from "react-native-vision-camera";
 import { useDebugMode } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import SliderControl from "./SliderControl";
 
+interface Props {
+  debugFormat: CameraDeviceFormat | null;
+  changeDebugFormat: () => void;
+  confidenceThreshold: number;
+  setConfidenceThreshold: ( value: number ) => void;
+  fps: number;
+  setFPS: ( value: number ) => void;
+  numStoredResults: number;
+  setNumStoredResults: ( value: number ) => void;
+  cropRatio: number;
+  setCropRatio: ( value: number ) => void;
+}
+
 const AIDebugButton = ( {
+  debugFormat,
   changeDebugFormat,
   confidenceThreshold,
-  debugFormat,
   setConfidenceThreshold,
   fps,
   setFPS,
@@ -29,7 +43,7 @@ const AIDebugButton = ( {
   setNumStoredResults,
   cropRatio,
   setCropRatio
-} ) => {
+}: Props ) => {
   const [modalVisible, setModalVisible] = useState( false );
   const [slideIndex, setSlideIndex] = useState( 0 );
   const { isDebug } = useDebugMode( );

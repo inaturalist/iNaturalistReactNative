@@ -5,7 +5,7 @@ import { useTranslation } from "sharedHooks";
 
 interface Props {
   observation: {
-    private_place_guess?: string
+    private_place_guess?: string;
   };
 }
 

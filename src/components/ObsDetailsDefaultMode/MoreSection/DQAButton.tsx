@@ -5,7 +5,7 @@ import React from "react";
 import { useCurrentUser } from "sharedHooks";
 
 interface Props {
-  observationUUID: string
+  observationUUID: string;
 }
 
 const DQAButton = ( { observationUUID }: Props ) => {

@@ -12,10 +12,10 @@ import type { RealmTaxon } from "realmModels/types";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
 interface Props {
-  onPressClose: () => void,
+  onPressClose: () => void;
   onPotentialDisagreePressed: ( _checkedValue: string ) => void;
-  newTaxon: RealmTaxon | ApiTaxon,
-  oldTaxon: RealmTaxon | ApiTaxon
+  newTaxon: RealmTaxon | ApiTaxon;
+  oldTaxon: RealmTaxon | ApiTaxon;
 }
 
 const PotentialDisagreementSheet = ( {

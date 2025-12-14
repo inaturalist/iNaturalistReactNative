@@ -5,10 +5,10 @@ import React from "react";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
-  layout?: string,
-  isConnected?: boolean | null,
-  hideLoadingWheel: boolean,
-  explore?: boolean
+  layout?: string;
+  isConnected?: boolean | null;
+  hideLoadingWheel: boolean;
+  explore?: boolean;
 }
 
 const InfiniteScrollLoadingWheel = ( {

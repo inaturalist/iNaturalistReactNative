@@ -145,7 +145,7 @@ export interface ApiObservation extends ApiRecord {
 }
 
 export interface ApiObservationsSearchResponse extends ApiResponse {
-  results: ApiObservation[]
+  results: ApiObservation[];
 }
 
 export const ORDER_BY_CREATED_AT = "created_at";

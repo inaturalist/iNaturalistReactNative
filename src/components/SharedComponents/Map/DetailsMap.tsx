@@ -22,20 +22,20 @@ import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
 interface Props {
-  closeModal: () => void,
-  coordinateString?: string,
-  headerTitle?: React.ReactNode,
+  closeModal: () => void;
+  coordinateString?: string;
+  headerTitle?: React.ReactNode;
   // TODO MOB-1038: reconcile the type issues here requiring the intersection
-  observation?: Observation & RealmObservation,
-  region?: Region,
-  tileMapParams: Record<string, string> | null,
+  observation?: Observation & RealmObservation;
+  region?: Region;
+  tileMapParams: Record<string, string> | null;
 }
 
 interface FloatingActionButtonProps {
-  accessibilityLabel: string,
-  buttonClassName: string,
-  icon: string,
-  onPress: ( event?: GestureResponderEvent ) => void,
+  accessibilityLabel: string;
+  buttonClassName: string;
+  icon: string;
+  onPress: ( event?: GestureResponderEvent ) => void;
 }
 
 const FloatingActionButton = ( {

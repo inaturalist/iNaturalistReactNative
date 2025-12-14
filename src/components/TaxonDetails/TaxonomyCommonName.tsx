@@ -5,7 +5,7 @@ import React from "react";
 interface Props {
   commonName: string;
   scientificNameFirst?: boolean;
-  isCurrentTaxon?: boolean
+  isCurrentTaxon?: boolean;
 }
 
 const TaxonomyCommonName = ( {

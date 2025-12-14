@@ -66,10 +66,10 @@ export interface ErrorWithResponse {
     json: () => Promise<{
       status: string;
       errors: Array<{
-        errorCode: string,
-        message: string,
-        from: string | null,
-        stack: string | null,
+        errorCode: string;
+        message: string;
+        from: string | null;
+        stack: string | null;
       }>;
     }>;
   };
