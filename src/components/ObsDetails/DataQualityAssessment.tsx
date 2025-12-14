@@ -39,21 +39,21 @@ const titleDescription = ( option: string ) => {
   }
 };
 interface Props {
-  checkTest: ( metric: string ) => boolean | null,
-  ifMajorityAgree: ( metric: string ) => boolean | null,
-  isConnected?: boolean,
-  loadingAgree: boolean,
-  loadingDisagree: boolean,
-  loadingMetric: string,
-  qualityGrade: string,
-  // There's no type definition for qualityMetrics available yet.
+  checkTest: ( metric: string ) => boolean;
+  ifMajorityAgree: ( metric: string ) => boolean | null;
+  isConnected?: boolean;
+  loadingAgree: boolean;
+  loadingDisagree: boolean;
+  loadingMetric: string;
+  qualityGrade: string;
+  // There's no type definition for qualityMetrics available yet;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  qualityMetrics: any,
-  recheckisConnected: ( ) => void,
-  removeMetricVote: ( ) => void,
-  removeNeedsIDVote: ( ) => void,
-  setMetricVote: ( ) => void,
-  setNeedsIDVote: ( ) => void,
+  qualityMetrics: any;
+  recheckisConnected: ( ) => void;
+  removeMetricVote: ( ) => void;
+  removeNeedsIDVote: ( ) => void;
+  setMetricVote: ( ) => void;
+  setNeedsIDVote: ( ) => void;
 }
 
 const DataQualityAssessment = ( {
