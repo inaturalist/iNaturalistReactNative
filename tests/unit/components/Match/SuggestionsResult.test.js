@@ -31,17 +31,17 @@ describe( "SuggestionsResult", () => {
     expect( screen.getByTestId( "SuggestionsResult.745.photo" ) ).toBeTruthy();
   } );
 
-  it( "handles invalidated Realm taxon and returns null", () => {
-    const invalidatedTaxon = factory( "LocalTaxon", {
+  it( "handles non valid Realm taxon and returns null", () => {
+    const invalidTaxon = factory( "LocalTaxon", {
       id: 746,
       name: "Silphium laciniatum"
     } );
 
-    invalidatedTaxon.isValid = () => false;
+    invalidTaxon.isValid = () => false;
 
     renderComponent(
       <SuggestionsResult
-        taxon={invalidatedTaxon}
+        taxon={invalidTaxon}
         confidence={75}
         forcedHeight={0}
       />
