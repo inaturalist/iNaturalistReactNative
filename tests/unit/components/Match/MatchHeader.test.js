@@ -1,13 +1,8 @@
 import { screen } from "@testing-library/react-native";
 import MatchHeader from "components/Match/MatchHeader";
-import initI18next from "i18n/initI18next";
 import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
-
-beforeAll( async () => {
-  await initI18next();
-} );
 
 describe( "MatchHeader", () => {
   it( "does not render content when topSuggestion is not provided", () => {
