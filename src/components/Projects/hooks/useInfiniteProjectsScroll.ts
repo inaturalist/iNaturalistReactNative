@@ -45,12 +45,18 @@ const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: object 
       }
       return searchProjects( params, optsWithAuth );
     },
+    // TO DO: we need to properly type queryOptions in useAuthenticatedInfiniteQuery
+    /* eslint-disable consistent-return */
     {
-      getNextPageParam: lastPage => ( lastPage
-        ? lastPage.page + 1
-        : 1 ),
+      getNextPageParam: lastPage => {
+        if ( !lastPage || lastPage.results.length < 20 ) {
+          return undefined;
+        }
+        return lastPage.page + 1;
+      },
       enabled
     }
+    /* eslint-enable consistent-return */
   );
 
   const pages = data?.pages;
