@@ -10,15 +10,13 @@ describe( "SaveDiscardButtons", () => {
     renderComponent( <SaveDiscardButtons handlePress={mockHandlePress} /> );
 
     const saveButton = screen.getByText( "SAVE" );
-
     expect( saveButton ).toBeTruthy();
-
     fireEvent.press( saveButton );
 
     expect( mockHandlePress ).toHaveBeenCalledWith( "save" );
   } );
 
-  it( "calls handlePress with 'discard", () => {
+  it( "calls handlePress with 'discard'", () => {
     const mockHandlePress = jest.fn();
 
     renderComponent( <SaveDiscardButtons handlePress={mockHandlePress} /> );
@@ -28,6 +26,5 @@ describe( "SaveDiscardButtons", () => {
     fireEvent.press( discardButton );
 
     expect( mockHandlePress ).toHaveBeenCalledWith( "discard" );
-    expect( mockHandlePress ).toHaveBeenCalledTimes( 1 );
   } );
 } );

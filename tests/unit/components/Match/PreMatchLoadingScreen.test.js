@@ -4,10 +4,6 @@ import React from "react";
 import { renderComponent } from "tests/helpers/render";
 
 describe( "PreMatchLoadingScreen", () => {
-  beforeEach( () => {
-    jest.clearAllMocks();
-  } );
-
   it( "renders nothing when isLoading is false", () => {
     renderComponent( <PreMatchLoadingScreen isLoading={false} /> );
 
