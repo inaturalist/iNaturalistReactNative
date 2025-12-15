@@ -1,3 +1,4 @@
+import type { ApiSuggestion } from "api/types";
 import calculateConfidence from "components/Match/calculateConfidence";
 import {
   Body2,
@@ -10,15 +11,13 @@ import {
   View
 } from "components/styledComponents";
 import React from "react";
-import type { RealmTaxon } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 
+const HIGH_CONFIDENCE_THRESHOLD = 93;
+const LIKELY_CONFIDENCE_THRESHOLD = 50;
+
 interface Props {
-  topSuggestion?: {
-    combined_score?: number;
-    score?: number;
-    taxon?: RealmTaxon;
-  };
+  topSuggestion?: ApiSuggestion;
   hideObservationStatus?: boolean;
 }
 
@@ -36,10 +35,14 @@ const MatchHeader = ( { topSuggestion, hideObservationStatus }: Props ) => {
 
   const observationStatus = ( ) => {
     let confidenceType = "may_have_observed";
-    if ( confidence >= 93 ) {
-      confidenceType = "observed";
-    } else if ( confidence >= 50 && confidence < 93 ) {
-      confidenceType = "likely_observed";
+    if ( confidence ) {
+      if ( confidence >= HIGH_CONFIDENCE_THRESHOLD ) {
+        confidenceType = "observed";
+      } else if (
+        confidence >= LIKELY_CONFIDENCE_THRESHOLD && confidence < HIGH_CONFIDENCE_THRESHOLD
+      ) {
+        confidenceType = "likely_observed";
+      }
     }
 
     let rankDescription = "organism";

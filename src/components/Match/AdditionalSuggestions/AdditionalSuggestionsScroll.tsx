@@ -1,3 +1,4 @@
+import type { ApiSuggestion } from "api/types";
 import calculateConfidence from "components/Match/calculateConfidence";
 import { ActivityIndicator, CustomFlashList, Heading3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -8,20 +9,27 @@ import { useTranslation } from "sharedHooks";
 
 import SuggestionsResult from "./SuggestionsResult";
 
+type Props = {
+  noTopSuggestion?: boolean;
+  otherSuggestions: ApiSuggestion[];
+  suggestionsLoading: boolean;
+  onSuggestionChosen: ( suggestion: ApiSuggestion ) => void;
+}
+
 const AdditionalSuggestionsScroll = ( {
   noTopSuggestion,
   otherSuggestions,
   suggestionsLoading,
   onSuggestionChosen
-} ) => {
+}: Props ) => {
   const { t } = useTranslation( );
   const [maxHeight, setMaxHeight] = useState( 0 );
   const [isVisible, setIsVisible] = useState( false );
 
   // We're using an extra measuring container to check the heights of every item,
   // even the ones that would otherwise be offscreen
-  const measuredItemsRef = useRef( new Set() );
-  const suggestionsRef = useRef( [] );
+  const measuredItemsRef = useRef( new Set<number>() );
+  const suggestionsRef = useRef<ApiSuggestion[]>( [] );
 
   useEffect( () => {
     suggestionsRef.current = otherSuggestions || [];
@@ -34,7 +42,7 @@ const AdditionalSuggestionsScroll = ( {
     measuredItemsRef.current = new Set();
   }, [otherSuggestions] );
 
-  const updateMaxHeight = useCallback( ( height, itemId ) => {
+  const updateMaxHeight = useCallback( ( height: number, itemId?: number ) => {
     if ( !itemId || height <= 0 ) return;
 
     // track each item as measured
@@ -45,7 +53,8 @@ const AdditionalSuggestionsScroll = ( {
 
     const allSuggestions = suggestionsRef.current;
     const allItemIds = new Set( allSuggestions.map( s => s?.taxon?.id ) );
-    const allMeasured = Array.from( allItemIds ).every( id => measuredItemsRef.current.has( id ) );
+    const allMeasured = Array.from( allItemIds )
+      .every( id => id && measuredItemsRef.current.has( id ) );
 
     // Make visible when all items in the renderMeasuringContainer are measured
     if ( allMeasured && allItemIds.size > 0 ) {
@@ -53,7 +62,7 @@ const AdditionalSuggestionsScroll = ( {
     }
   }, [] );
 
-  const handleSuggestionPress = useCallback( suggestion => {
+  const handleSuggestionPress = useCallback( ( suggestion: ApiSuggestion ) => {
     onSuggestionChosen( suggestion );
   }, [onSuggestionChosen] );
 
@@ -61,7 +70,7 @@ const AdditionalSuggestionsScroll = ( {
     if ( isVisible ) return null;
 
     const measuringContainerStyle = {
-      position: "absolute", opacity: 0, left: -9999, flexDirection: "row"
+      position: "absolute" as const, opacity: 0, left: -9999, flexDirection: "row" as const
     };
 
     const resultStyle = { marginRight: 14 };
@@ -89,7 +98,7 @@ const AdditionalSuggestionsScroll = ( {
     );
   };
 
-  const renderItem = ( { item: suggestion } ) => {
+  const renderItem = ( { item: suggestion }: { item: ApiSuggestion } ) => {
     const confidence = calculateConfidence( suggestion );
 
     return (
@@ -132,7 +141,7 @@ const AdditionalSuggestionsScroll = ( {
                 ListHeaderComponent={renderHeader}
                 horizontal
                 renderItem={renderItem}
-                keyExtractor={item => item?.taxon?.id}
+                keyExtractor={( item: ApiSuggestion ) => `${item?.taxon?.id}`}
                 data={otherSuggestions}
               />
             </View>

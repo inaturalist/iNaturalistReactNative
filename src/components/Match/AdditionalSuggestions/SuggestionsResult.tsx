@@ -15,7 +15,7 @@ import {
 } from "sharedHooks";
 
 type Props = {
-  confidence: number;
+  confidence: number | null;
   handlePress?: ( ) => void;
   taxon: RealmTaxon | ApiTaxon;
   testID?: string;

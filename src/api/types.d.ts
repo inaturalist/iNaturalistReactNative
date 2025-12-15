@@ -90,6 +90,9 @@ export interface ApiTaxon {
   id?: number;
   name?: string;
   preferred_common_name?: string;
+  rank_level?: number;
+  taxonPhotos?: { photo: ApiPhoto }[];
+  defaultPhoto?: ApiPhoto;
 }
 
 export interface ApiUser {
@@ -142,6 +145,11 @@ export interface ApiObservation extends ApiRecord {
   comments?: ApiComment[];
   identifications?: ApiIdentification[];
   taxon?: ApiTaxon;
+}
+
+export interface ApiSuggestion {
+  taxon: ApiTaxon;
+  combined_score: number;
 }
 
 export interface ApiObservationsSearchResponse extends ApiResponse {
