@@ -7,10 +7,10 @@ import { renderComponent } from "tests/helpers/render";
 
 const mockTaxon = factory( "LocalTaxon", {
   id: 47170,
-  name: "Fungi",
-  preferred_common_name: "Fungi Including Lichens",
-  rank: "kingdom",
-  rank_level: 70,
+  name: "actinopterygii",
+  preferred_common_name: "Ray-finned Fishes",
+  rank: "class",
+  rank_level: 50,
   default_photo: {
     url: "https://example.com/photo.jpg"
   }
@@ -25,8 +25,8 @@ describe( "IconicSuggestion", () => {
   it( "renders taxon with common name and scientific name", () => {
     renderComponent( <IconicSuggestion taxon={mockTaxon} /> );
 
-    expect( screen.getByText( "Fungi Including Lichens" ) ).toBeTruthy();
-    expect( screen.getByText( "Fungi" ) ).toBeTruthy();
+    expect( screen.getByText( "Ray-finned Fishes" ) ).toBeTruthy();
+    expect( screen.getByText( "actinopterygii" ) ).toBeTruthy();
   } );
 
   it( "calls handlePress when pressed", () => {
