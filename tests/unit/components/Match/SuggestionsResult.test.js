@@ -37,7 +37,7 @@ describe( "SuggestionsResult", () => {
       name: "Silphium laciniatum"
     } );
 
-    invalidatedTaxon.isValid = jest.fn().mockReturnValue( false );
+    invalidatedTaxon.isValid = () => false;
 
     renderComponent(
       <SuggestionsResult
