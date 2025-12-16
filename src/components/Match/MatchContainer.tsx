@@ -108,7 +108,10 @@ const reducer = ( state: State, action: Action ): State => {
         offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
         scoreImageParams: action.scoreImageParams,
         shouldUseEvidenceLocation: action.shouldUseEvidenceLocation,
-        queryKey: setQueryKey( action.scoreImageParams.image.uri, action.shouldUseEvidenceLocation ),
+        queryKey: setQueryKey(
+          action.scoreImageParams.image.uri,
+          action.shouldUseEvidenceLocation,
+        ),
       };
     case "ORDER_SUGGESTIONS":
       return {
