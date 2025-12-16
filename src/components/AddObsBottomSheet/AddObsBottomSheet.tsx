@@ -110,6 +110,7 @@ const AddObsBottomSheet = ( {
     text
   }: ObsCreateItem ) => (
     <Pressable
+      key={testID}
       className="bg-white w-1/2 flex-column items-center py-4 rounded-lg flex-1 shadow-sm
       shadow-black/25 active:opacity-50"
       onPress={onPress}
