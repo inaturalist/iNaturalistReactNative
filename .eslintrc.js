@@ -25,7 +25,9 @@ module.exports = {
   ],
   rules: {
     "arrow-parens": [2, "as-needed"],
-    "comma-dangle": [2, "never"],
+    // enforces trailing comma in objects / arrays except inline: no [1,2,3,]
+    // functionally, this improves git deltas when the last items of {}/[] are changed
+    "comma-dangle": ["error", "always-multiline"],
     "consistent-return": [2, { treatUndefinedAsUnspecified: true }],
     "func-names": 0,
     "global-require": 0,
