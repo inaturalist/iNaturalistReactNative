@@ -4,10 +4,12 @@ import {
   useAuthenticatedInfiniteQuery
 } from "sharedHooks";
 
+const ITEMS_PER_PAGE = 20;
+
 const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: object ): object => {
   const baseParams = {
     ...newInputParams,
-    per_page: 20,
+    per_page: ITEMS_PER_PAGE,
     ttl: -1,
     rule_details: true,
     fields: {
@@ -49,7 +51,7 @@ const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: object 
     /* eslint-disable consistent-return */
     {
       getNextPageParam: lastPage => {
-        if ( !lastPage || lastPage.results.length < 20 ) {
+        if ( !lastPage || lastPage.results.length < ITEMS_PER_PAGE ) {
           return undefined;
         }
         return lastPage.page + 1;
