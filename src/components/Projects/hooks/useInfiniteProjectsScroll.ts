@@ -51,10 +51,12 @@ const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: object 
     /* eslint-disable consistent-return */
     {
       getNextPageParam: lastPage => {
-        if ( !lastPage || lastPage.results.length < ITEMS_PER_PAGE ) {
-          return undefined;
-        }
-        return lastPage.page + 1;
+        if ( !lastPage ) return undefined;
+        const totalProjectCount = lastPage.total_results;
+        const totalFetchedCount = lastPage.page * ITEMS_PER_PAGE;
+        return totalFetchedCount < totalProjectCount
+          ? lastPage.page + 1
+          : undefined;
       },
       enabled
     }
