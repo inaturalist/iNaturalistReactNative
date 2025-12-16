@@ -164,7 +164,12 @@ const AddObsBottomSheet = ( {
               size={24}
             />
           </View>
-          <Body3>{obsCreateItems.noEvidence.text}</Body3>
+          <Body3
+            maxFontSizeMultiplier={1.5}
+            numberOfLines={1}
+          >
+            {obsCreateItems.noEvidence.text}
+          </Body3>
         </Pressable>
 
       </View>
