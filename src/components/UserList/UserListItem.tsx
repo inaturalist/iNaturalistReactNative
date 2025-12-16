@@ -1,6 +1,6 @@
 import {
   Body1, INatIcon,
-  List2, UserIcon
+  List2, UserIcon,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
@@ -21,7 +21,7 @@ const UserListItem = ( {
   countText,
   onPress,
   accessibilityLabel: accessibilityLabelProp,
-  pressable = true
+  pressable = true,
 }: Props ) => {
   const { t } = useTranslation( );
   const user = item?.user;

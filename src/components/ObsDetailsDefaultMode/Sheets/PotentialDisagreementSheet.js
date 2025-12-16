@@ -4,7 +4,7 @@ import {
   Body1,
   DisplayTaxon,
   DisplayTaxonName, List2,
-  RadioButtonSheet
+  RadioButtonSheet,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -23,7 +23,7 @@ const PotentialDisagreementSheet = ( {
   onPressClose,
   onPotentialDisagreePressed,
   newTaxon,
-  oldTaxon
+  oldTaxon,
 }: Props ): Node => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
@@ -49,7 +49,7 @@ const PotentialDisagreementSheet = ( {
           i18nKey="Potential-disagreement-unsure"
           components={[<Body1 />, showTaxonName( newTaxon, Body1 )]}
         />
-      )
+      ),
     },
     disagree: {
       value: true,
@@ -58,8 +58,8 @@ const PotentialDisagreementSheet = ( {
           i18nKey="Potential-disagreement-disagree"
           components={[<Body1 />, showTaxonName( newTaxon, Body1 )]}
         />
-      )
-    }
+      ),
+    },
   };
 
   const topDescriptionText = (

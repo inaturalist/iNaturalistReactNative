@@ -19,7 +19,7 @@ const ExploreLocationSearchModal = ( {
   renderPermissionsGate,
   requestPermissions,
   showModal,
-  updateLocation
+  updateLocation,
 }: Props ) => (
   <Modal
     showModal={showModal}

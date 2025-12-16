@@ -1,7 +1,7 @@
 // @flow
 
 import {
-  WarningSheet
+  WarningSheet,
 } from "components/SharedComponents";
 import { t } from "i18next";
 import { RealmContext } from "providers/contexts";
@@ -23,7 +23,7 @@ const DiscardObservationSheet = ( {
   onPressClose,
   discardObservation,
   observations,
-  onSave
+  onSave,
 }: Props ): Node => {
   const realm = useRealm( );
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
@@ -34,7 +34,7 @@ const DiscardObservationSheet = ( {
   // corresponding photos in cameraRollPhotos, so there's no need to
   // write EXIF for those.
   const saveAllObservations = async ( ) => Promise.all(
-    observations.map( o => Observation.saveLocalObservationForUpload( o, realm ) )
+    observations.map( o => Observation.saveLocalObservationForUpload( o, realm ) ),
   );
 
   const discardObservationandReset = () => {

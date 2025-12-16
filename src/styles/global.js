@@ -6,7 +6,7 @@ const DEFAULT_SHADOW = {
   offsetWidth: 0,
   shadowColor: "rgba( 0, 0, 0, 0.25 )",
   shadowOpacity: 0.25,
-  shadowRadius: 2
+  shadowRadius: 2,
 };
 
 // https://reactnative.dev/docs/shadow-props
@@ -16,7 +16,7 @@ export const getShadowStyle = ( {
   offsetHeight,
   shadowOpacity,
   shadowRadius,
-  elevation
+  elevation,
 } ) => StyleSheet.create( {
   // iOS + Android >= 28
   shadowColor,
@@ -24,7 +24,7 @@ export const getShadowStyle = ( {
   // iOS-only
   shadowOffset: {
     width: offsetWidth,
-    height: offsetHeight
+    height: offsetHeight,
   },
   // $FlowIssue[incompatible-shape]
   shadowOpacity,
@@ -33,7 +33,7 @@ export const getShadowStyle = ( {
 
   // Android-only
   // $FlowIssue[incompatible-shape]
-  elevation
+  elevation,
 } );
 
 export const dropShadow = getShadowStyle( DEFAULT_SHADOW );
@@ -41,6 +41,6 @@ export const dropShadow = getShadowStyle( DEFAULT_SHADOW );
 export function getShadow( options = {} ) {
   return getShadowStyle( {
     ...DEFAULT_SHADOW,
-    ...options
+    ...options,
   } );
 }

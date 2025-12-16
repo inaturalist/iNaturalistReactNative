@@ -6,15 +6,15 @@ import { handleRetryDelay, reactQueryRetry } from "sharedHelpers/logging";
 const useNonAuthenticatedQuery = (
   queryKey: Array<string>,
   queryFunction: QueryFunction,
-  queryOptions: object = {}
+  queryOptions: object = {},
 ) => useQuery( {
   queryKey: [...queryKey, queryOptions.allowAnonymousJWT],
   queryFn: queryFunction,
   retry: ( failureCount, error ) => reactQueryRetry( failureCount, error, {
-    queryKey
+    queryKey,
   } ),
   retryDelay: ( failureCount, error ) => handleRetryDelay( failureCount, error ),
-  ...queryOptions
+  ...queryOptions,
 } );
 
 export default useNonAuthenticatedQuery;

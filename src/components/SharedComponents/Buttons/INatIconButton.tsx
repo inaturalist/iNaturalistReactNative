@@ -6,11 +6,11 @@ import type { PropsWithChildren } from "react";
 import React from "react";
 import type {
   GestureResponderEvent,
-  ViewStyle
+  ViewStyle,
 } from "react-native";
 import {
   Platform,
-  Pressable
+  Pressable,
 } from "react-native";
 import { log } from "sharedHelpers/logger";
 import colors from "styles/tailwindColors";
@@ -47,11 +47,11 @@ const MIN_ACCESSIBLE_DIM = 44;
 
 const WRAPPER_STYLE: ViewStyle = {
   alignItems: "center",
-  justifyContent: "center"
+  justifyContent: "center",
 };
 
 const CONTAINED_WRAPPER_STYLE: ViewStyle = {
-  borderRadius: 9999
+  borderRadius: 9999,
 };
 
 // Similar to IconButton in react-native-paper, except this allows independent
@@ -74,23 +74,23 @@ const INatIconButton = ( {
   testID,
   width = MIN_ACCESSIBLE_DIM,
   backgroundColor,
-  mode
+  mode,
 }: Props ) => {
   // width || 0 is to placate flow. width should never be undefined because of
   // the defaultProps, but I guess flow can't figure that out.
   if ( ( width || 0 ) < MIN_ACCESSIBLE_DIM ) {
     throw new Error(
-      `Width cannot be less than ${MIN_ACCESSIBLE_DIM}. Use IconButton for smaller buttons.`
+      `Width cannot be less than ${MIN_ACCESSIBLE_DIM}. Use IconButton for smaller buttons.`,
     );
   }
   if ( ( height || 0 ) < MIN_ACCESSIBLE_DIM ) {
     throw new Error(
-      `Height cannot be less than ${MIN_ACCESSIBLE_DIM}. Use IconButton for smaller buttons.`
+      `Height cannot be less than ${MIN_ACCESSIBLE_DIM}. Use IconButton for smaller buttons.`,
     );
   }
   if ( !accessibilityLabel && !iconOnly ) {
     throw new Error(
-      "Button needs an accessibility label"
+      "Button needs an accessibility label",
     );
   }
   const getOpacity = React.useCallback( ( pressed: boolean ) => {
@@ -110,16 +110,16 @@ const INatIconButton = ( {
       backgroundColor: preventTransparency
         ? undefined
         : backgroundColor,
-      ...CONTAINED_WRAPPER_STYLE
+      ...CONTAINED_WRAPPER_STYLE,
     },
-    style
+    style,
   ] ), [
     backgroundColor,
     height,
     mode,
     preventTransparency,
     style,
-    width
+    width,
   ] );
 
   const content = (
@@ -131,7 +131,7 @@ const INatIconButton = ( {
         // most icons
         Platform.OS === "android"
           ? "top-[0.8px]"
-          : "left-[0.2px] top-[0.1px]"
+          : "left-[0.2px] top-[0.1px]",
       )}
     >
       { backgroundColor && preventTransparency && (
@@ -156,7 +156,7 @@ const INatIconButton = ( {
               ? size - 4
               : size + 4,
             backgroundColor,
-            borderRadius: 9999
+            borderRadius: 9999,
           }}
         />
       )}
@@ -202,7 +202,7 @@ const INatIconButton = ( {
       onPress={handlePressWithTracking}
       style={( { pressed } ) => [
         ...wrapperStyle,
-        { opacity: getOpacity( pressed ) }
+        { opacity: getOpacity( pressed ) },
       ]}
       testID={testID}
     >

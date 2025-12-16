@@ -3,12 +3,12 @@ import type { ApiProject } from "api/types";
 import ProjectList from "components/ProjectList/ProjectList";
 import {
   SearchBar,
-  ViewWrapper
+  ViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, {
   useCallback,
-  useState
+  useState,
 } from "react";
 import { useInfiniteScroll, useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
@@ -17,7 +17,7 @@ import EmptySearchResults from "./EmptySearchResults";
 import ExploreSearchHeader from "./ExploreSearchHeader";
 
 const DROP_SHADOW = getShadow( {
-  offsetHeight: 4
+  offsetHeight: 4,
 } );
 
 type Props = {
@@ -35,7 +35,7 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ) => {
     data,
     isFetching,
     fetchNextPage,
-    refetch
+    refetch,
   } = useInfiniteScroll(
     ["ExploreProjectSearch", projectQuery],
     search,
@@ -47,10 +47,10 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ) => {
           id: true,
           title: true,
           icon: true,
-          project_type: true
-        }
-      }
-    }
+          project_type: true,
+        },
+      },
+    },
   );
 
   const projects = data.map( ( r: { project: ApiProject } ) => r.project );
@@ -70,7 +70,7 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ) => {
       updateProject( null );
       closeModal();
     },
-    [updateProject, closeModal]
+    [updateProject, closeModal],
   );
 
   return (

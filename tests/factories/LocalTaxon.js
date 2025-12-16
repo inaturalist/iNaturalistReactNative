@@ -8,5 +8,5 @@ export default define( "LocalTaxon", faker => ( {
   name: faker.person.fullName( ),
   preferred_common_name: faker.person.fullName( ),
   rank: "species",
-  rank_level: 10
+  rank_level: 10,
 } ) );

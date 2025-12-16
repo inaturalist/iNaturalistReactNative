@@ -1,5 +1,5 @@
 import BottomSheet, {
-  BottomSheetModal, BottomSheetScrollView
+  BottomSheetModal, BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
 import classnames from "classnames";
 import { BottomSheetStandardBackdrop, Heading4, INatIconButton } from "components/SharedComponents";
@@ -8,7 +8,7 @@ import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
-  useRef
+  useRef,
 } from "react";
 import { Dimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -21,7 +21,7 @@ const marginOnWide = {
     : 0,
   borderTopLeftRadius: 24,
   borderTopRightRadius: 24,
-  overflow: "hidden"
+  overflow: "hidden",
 };
 
 // eslint-disable-next-line
@@ -56,7 +56,7 @@ const StandardBottomSheet = ( {
   keyboardShouldPersistTaps = "never",
   containerClass,
   testID,
-  scrollEnabled = true
+  scrollEnabled = true,
 }: Props ): Node => {
   if ( snapPoints ) {
     throw new Error( "BottomSheet does not accept snapPoints as a prop." );
@@ -124,7 +124,7 @@ const StandardBottomSheet = ( {
             insets.bottom > 0
               ? "pb-7"
               : null,
-            containerClass
+            containerClass,
           )}
           onLayout={onLayout}
           // Not ideal, but @gorhom/bottom-sheet components don't support

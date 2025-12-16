@@ -2,13 +2,13 @@
 import classnames from "classnames";
 import {
   INatIcon,
-  PhotoCount
+  PhotoCount,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import {
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
@@ -25,7 +25,7 @@ const ObsMediaDisplay = ( {
   loading,
   photos = [],
   sounds = [],
-  tablet
+  tablet,
 }: Props ): Node => {
   const { t } = useTranslation( );
 
@@ -55,7 +55,7 @@ const ObsMediaDisplay = ( {
         "bg-black flex-row justify-center items-center",
         tablet
           ? "h-full"
-          : "h-72"
+          : "h-72",
       )}
       accessible
       accessibilityLabel={t( "Observation-has-no-photos-and-no-sounds" )}

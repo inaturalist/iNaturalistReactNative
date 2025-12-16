@@ -3,12 +3,12 @@
 import {
   TaxonResult,
   TaxonSearch,
-  ViewWrapper
+  ViewWrapper,
 } from "components/SharedComponents";
 import type { Node } from "react";
 import React, {
   useCallback,
-  useState
+  useState,
 } from "react";
 import { useTranslation } from "sharedHooks";
 import useTaxonSearch from "sharedHooks/useTaxonSearch";
@@ -26,7 +26,7 @@ const ExploreTaxonSearch = ( {
   closeModal,
   hideInfoButton,
   onPressInfo,
-  updateTaxon
+  updateTaxon,
 }: Props ): Node => {
   const { t } = useTranslation( );
   const [taxonQuery, setTaxonQuery] = useState( "" );
@@ -34,7 +34,7 @@ const ExploreTaxonSearch = ( {
   const {
     taxa,
     isLoading,
-    isLocal
+    isLocal,
   } = useTaxonSearch( taxonQuery );
 
   const onTaxonSelected = useCallback( async newTaxon => {
@@ -47,7 +47,7 @@ const ExploreTaxonSearch = ( {
       updateTaxon( null );
       closeModal();
     },
-    [updateTaxon, closeModal]
+    [updateTaxon, closeModal],
   );
 
   const renderItem = useCallback( ( { item: taxon, index } ) => (
@@ -64,7 +64,7 @@ const ExploreTaxonSearch = ( {
   ), [
     hideInfoButton,
     onPressInfo,
-    onTaxonSelected
+    onTaxonSelected,
   ] );
 
   return (

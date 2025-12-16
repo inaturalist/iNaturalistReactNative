@@ -4,7 +4,7 @@ import displayProjectType from "components/Projects/helpers/displayProjectType";
 import {
   Body1,
   INatIcon,
-  List2
+  List2,
 } from "components/SharedComponents";
 import { FasterImageView, View } from "components/styledComponents";
 import React from "react";
@@ -46,7 +46,7 @@ const ProjectListItem = ( { item, isHeader = false }: Props ) => {
             iconClassName,
             "border-[2px]",
             "justify-center",
-            "items-center"
+            "items-center",
           )
         }
         >
@@ -62,7 +62,7 @@ const ProjectListItem = ( { item, isHeader = false }: Props ) => {
         source={{
           url: productionIcon,
           cachePolicy: "discWithCacheControl",
-          resizeMode: "cover"
+          resizeMode: "cover",
         }}
         testID={`Project.${item?.id}.photo`}
         accessibilityIgnoresInvertColors

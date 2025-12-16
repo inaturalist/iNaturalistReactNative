@@ -1,5 +1,5 @@
 import {
-  Button
+  Button,
 } from "components/SharedComponents";
 import { ImageBackground } from "components/styledComponents";
 import LocationIndicatorIcon from "images/svg/location_indicator.svg";
@@ -14,7 +14,7 @@ interface Props {
 
 const EmptyMapSection = ( {
   isFetchingLocation,
-  handleAddLocationPressed
+  handleAddLocationPressed,
 }: Props ) => {
   const { t } = useTranslation( );
   return (

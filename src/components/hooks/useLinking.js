@@ -2,7 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import {
-  searchObservations
+  searchObservations,
 } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
@@ -20,7 +20,7 @@ const useLinking = ( currentUser: ?Object ) => {
     if ( currentUser ) { return; }
     navigation.navigate( "LoginStackNavigator", {
       screen: "Login",
-      params: { emailConfirmed: true }
+      params: { emailConfirmed: true },
     } );
   }, [navigation, currentUser] );
 
@@ -28,7 +28,7 @@ const useLinking = ( currentUser: ?Object ) => {
     const searchParams = { id: observationId };
     const apiToken = await getJWT( );
     const options = {
-      api_token: apiToken
+      api_token: apiToken,
     };
     const { results } = await searchObservations( searchParams, options );
     const uuid = results?.[0]?.uuid;
@@ -45,7 +45,7 @@ const useLinking = ( currentUser: ?Object ) => {
     const { host, pathname } = new URL( url );
 
     const allowedHosts = [
-      "www.inaturalist.org"
+      "www.inaturalist.org",
     ];
     if ( allowedHosts?.includes( host )
       && pathname.includes( "/observations" ) ) {

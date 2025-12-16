@@ -13,11 +13,11 @@ const useNavigation = ( ) => ( {
   addListener: jest.fn( ),
   canGoBack: jest.fn( ( ) => true ),
   goBack: jest.fn( ),
-  setOptions: jest.fn( )
+  setOptions: jest.fn( ),
 } );
 
 module.exports = {
   ...actualNav,
   useNavigation,
-  useRoute
+  useRoute,
 };

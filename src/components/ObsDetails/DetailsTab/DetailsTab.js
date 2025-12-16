@@ -9,7 +9,7 @@ import {
   Divider,
   Heading4,
   LabelColonValue,
-  QualityGradeStatus
+  QualityGradeStatus,
 } from "components/SharedComponents";
 import UserText from "components/SharedComponents/UserText";
 import { View } from "components/styledComponents";
@@ -34,7 +34,7 @@ const OBSERVATION_URL = "https://www.inaturalist.org/observations";
 const handleShare = async url => {
   const sharingOptions = {
     url: "",
-    message: ""
+    message: "",
   };
   if ( Platform.OS === "ios" ) {
     sharingOptions.url = url;

@@ -1,7 +1,7 @@
 import {
   BottomSheet,
   Button,
-  RadioButtonRow
+  RadioButtonRow,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useState } from "react";
@@ -38,7 +38,7 @@ const RadioButtonSheet = ( {
   radioValues,
   selectedValue = "none",
   testID,
-  topDescriptionText
+  topDescriptionText,
 }: Props ) => {
   const { t } = useTranslation( );
   const [checkedValue, setCheckedValue] = useState( selectedValue );

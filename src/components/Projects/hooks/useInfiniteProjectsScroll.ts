@@ -1,7 +1,7 @@
 import { searchProjects } from "api/projects";
 import _, { flatten } from "lodash";
 import {
-  useAuthenticatedInfiniteQuery
+  useAuthenticatedInfiniteQuery,
 } from "sharedHooks";
 
 const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: object ): object => {
@@ -17,9 +17,9 @@ const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: object 
       icon: true,
       rule_preferences: {
         field: true,
-        value: true
-      }
-    }
+        value: true,
+      },
+    },
   };
 
   const { ...queryKeyParams } = baseParams;
@@ -30,12 +30,12 @@ const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: object 
     data,
     isFetching,
     isFetchingNextPage,
-    fetchNextPage
+    fetchNextPage,
   } = useAuthenticatedInfiniteQuery(
     queryKey,
     async ( { pageParam }, optsWithAuth ) => {
       const params = {
-        ...baseParams
+        ...baseParams,
       };
 
       if ( pageParam ) {
@@ -49,8 +49,8 @@ const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: object 
       getNextPageParam: lastPage => ( lastPage
         ? lastPage.page + 1
         : 1 ),
-      enabled
-    }
+      enabled,
+    },
   );
 
   const pages = data?.pages;
@@ -69,7 +69,7 @@ const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: object 
     isFetching,
     isFetchingNextPage,
     fetchNextPage,
-    projects
+    projects,
   };
 };
 

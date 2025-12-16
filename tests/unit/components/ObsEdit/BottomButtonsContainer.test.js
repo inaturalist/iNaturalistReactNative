@@ -7,14 +7,14 @@ import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
 const mockObservation = factory( "LocalObservation", {
-  _synced_at: faker.date.past( )
+  _synced_at: faker.date.past( ),
 } );
 
 const mockUser = factory( "LocalUser" );
 
 jest.mock( "sharedHooks/useCurrentUser", () => ( {
   __esModule: true,
-  default: ( ) => null
+  default: ( ) => null,
 } ) );
 
 function renderBottomButtonsContainer( props = {} ) {
@@ -29,7 +29,7 @@ function renderBottomButtonsContainer( props = {} ) {
       transitionAnimation={() => {}}
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...props}
-    />
+    />,
   );
 }
 
@@ -70,7 +70,7 @@ describe( "BottomButtonsContainer", () => {
   it( "shows save and upload button when user logged in with new observation", () => {
     jest.spyOn( useCurrentUser, "default" ).mockImplementation( ( ) => mockUser );
     renderBottomButtonsContainer( {
-      currentObservation: factory( "LocalObservation" )
+      currentObservation: factory( "LocalObservation" ),
     } );
 
     const save = screen.getByText( /SAVE/ );

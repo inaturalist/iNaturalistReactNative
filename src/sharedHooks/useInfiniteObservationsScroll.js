@@ -4,7 +4,7 @@ import { searchObservations } from "api/observations";
 import { flatten, last, noop } from "lodash";
 import { RealmContext } from "providers/contexts";
 import {
-  useCallback, useEffect, useMemo, useRef
+  useCallback, useEffect, useMemo, useRef,
 } from "react";
 import Observation from "realmModels/Observation";
 import { useAuthenticatedInfiniteQuery, useCurrentUser } from "sharedHooks";
@@ -12,7 +12,7 @@ import { useAuthenticatedInfiniteQuery, useCurrentUser } from "sharedHooks";
 const { useRealm } = RealmContext;
 
 const useInfiniteObservationsScroll = ( {
-  params: newInputParams
+  params: newInputParams,
 }: Object ): Object => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
@@ -22,7 +22,7 @@ const useInfiniteObservationsScroll = ( {
     ...newInputParams,
     per_page: 20,
     fields: Observation.ADVANCED_MODE_LIST_FIELDS,
-    ttl: -1
+    ttl: -1,
   };
 
   const { fields, ...queryKeyParams } = baseParams;
@@ -33,12 +33,12 @@ const useInfiniteObservationsScroll = ( {
     data,
     isFetchingNextPage,
     fetchNextPage,
-    status
+    status,
   } = useAuthenticatedInfiniteQuery(
     queryKey,
     async ( { pageParam }, optsWithAuth ) => {
       const params = {
-        ...baseParams
+        ...baseParams,
       };
 
       let idToUse = pageParam;
@@ -62,8 +62,8 @@ const useInfiniteObservationsScroll = ( {
       enabled: !!( currentUser ),
       // wait for user to scroll, since we're already using syncRemoteObservations
       // to fetch 50 observations on mount
-      refetchOnMount: false
-    }
+      refetchOnMount: false,
+    },
   );
 
   const newlyFetchedObservations = useMemo( ( ) => {
@@ -77,7 +77,7 @@ const useInfiniteObservationsScroll = ( {
     if ( newlyFetchedObservations ) {
       Observation.upsertRemoteObservations(
         newlyFetchedObservations,
-        realm
+        realm,
       );
     }
   }, [realm, newlyFetchedObservations] );
@@ -95,19 +95,19 @@ const useInfiniteObservationsScroll = ( {
     status,
     firstObservationsInRealm: hasLocalObservations,
     totalResults: data?.pages?.[0]?.total_results,
-    fetchFromLastObservation
+    fetchFromLastObservation,
   };
 
   return currentUser
     ? {
       ...infiniteScrollObject,
       isFetchingNextPage,
-      fetchNextPage
+      fetchNextPage,
     }
     : {
       ...infiniteScrollObject,
       isFetchingNextPage: false,
-      fetchNextPage: noop
+      fetchNextPage: noop,
     };
 };
 

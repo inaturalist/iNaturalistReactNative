@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  useColorScheme
+  useColorScheme,
 } from "react-native";
 import colors from "styles/tailwindColors";
 
@@ -80,12 +80,12 @@ const ALIASES: Aliases = {
   "upload-complete": "check",
   "upload-saved": "arrow-up-circle-dots",
   "upvote-active": "arrow-up-bold-circle",
-  "upvote-inactive": "arrow-up-bold-circle-outline"
+  "upvote-inactive": "arrow-up-bold-circle-outline",
 } as const;
 
 // Use default color if none is specified
 const INatIcon = ( {
-  testID, name, color, size, dropShadow, isDarkModeEnabled = false
+  testID, name, color, size, dropShadow, isDarkModeEnabled = false,
 }: Props ) => {
   const colorScheme = useColorScheme( );
 
@@ -104,7 +104,7 @@ const INatIcon = ( {
     ? {
       shadowOpacity: 2,
       textShadowRadius: 4,
-      textShadowOffset: { width: 2, height: 2 }
+      textShadowOffset: { width: 2, height: 2 },
     }
     : null;
   return (

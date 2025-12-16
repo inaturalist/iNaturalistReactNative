@@ -8,7 +8,7 @@ class UsePhotoExifDateFormatError extends Error {}
 
 // https://wbinnssmith.com/blog/subclassing-error-in-modern-javascript/
 Object.defineProperty( UsePhotoExifDateFormatError.prototype, "name", {
-  value: "UsePhotoExifDateFormatError"
+  value: "UsePhotoExifDateFormatError",
 } );
 
 // Parses EXIF date time into a date object
@@ -80,7 +80,7 @@ export const readExifFromMultiplePhotos = async ( photoUris: Array<string> ): Pr
   allExifPhotos.filter( x => x ).forEach(
     currentPhotoExif => {
       const {
-        latitude, longitude, positional_accuracy: positionalAccuracy, date
+        latitude, longitude, positional_accuracy: positionalAccuracy, date,
       } = currentPhotoExif;
 
       if ( !unifiedExif.latitude ) {
@@ -95,7 +95,7 @@ export const readExifFromMultiplePhotos = async ( photoUris: Array<string> ): Pr
       if ( positionalAccuracy && !unifiedExif.positional_accuracy ) {
         unifiedExif.positional_accuracy = positionalAccuracy;
       }
-    }
+    },
   );
   return unifiedExif;
 };

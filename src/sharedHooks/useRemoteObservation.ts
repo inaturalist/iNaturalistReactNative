@@ -35,7 +35,7 @@ const filterHiddenContent
 const useRemoteObservation = ( uuid: string, enabled: boolean ): UseRemoteObservationReturn => {
   const fetchRemoteObservationQueryKey = useMemo(
     ( ) => ( [fetchRemoteObservationKey, uuid] ),
-    [uuid]
+    [uuid],
   );
 
   const currentUser = useCurrentUser( );
@@ -47,7 +47,7 @@ const useRemoteObservation = ( uuid: string, enabled: boolean ): UseRemoteObserv
     data: remoteObservation,
     refetch: refetchRemoteObservation,
     isRefetching,
-    error: fetchRemoteObservationError
+    error: fetchRemoteObservationError,
   } = useAuthenticatedQuery<ApiObservation | null>(
     fetchRemoteObservationQueryKey,
     optsWithAuth => fetchRemoteObservation(
@@ -55,13 +55,13 @@ const useRemoteObservation = ( uuid: string, enabled: boolean ): UseRemoteObserv
       {
         include_new_projects: true,
         ...( !currentUser && { locale } ),
-        fields: Observation.FIELDS
+        fields: Observation.FIELDS,
       },
-      optsWithAuth
+      optsWithAuth,
     ),
     {
-      enabled: !!( enabled && !!uuid && uuid.length > 0 )
-    }
+      enabled: !!( enabled && !!uuid && uuid.length > 0 ),
+    },
   );
 
   const needsLocalUpdate = remoteObservation
@@ -71,7 +71,7 @@ const useRemoteObservation = ( uuid: string, enabled: boolean ): UseRemoteObserv
   const updateLocalObservation = useCallback( ( ) => {
     Observation.upsertRemoteObservations(
       [remoteObservation],
-      realm
+      realm,
     );
   }, [remoteObservation, realm] );
 
@@ -82,14 +82,14 @@ const useRemoteObservation = ( uuid: string, enabled: boolean ): UseRemoteObserv
     }
   }, [
     needsLocalUpdate,
-    updateLocalObservation
+    updateLocalObservation,
   ] );
 
   return {
     remoteObservation: filterHiddenContent( remoteObservation ),
     refetchRemoteObservation,
     isRefetching,
-    fetchRemoteObservationError
+    fetchRemoteObservationError,
   };
 };
 

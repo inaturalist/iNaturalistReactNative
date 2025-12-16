@@ -39,7 +39,7 @@ const MediaViewerModal = ( {
   photos = [],
   showModal,
   sounds,
-  uri
+  uri,
 }: Props ): Node => (
   <Modal
     showModal={showModal}

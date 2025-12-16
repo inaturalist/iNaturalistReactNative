@@ -5,10 +5,10 @@ import {
   Body4,
   DisplayTaxonName,
   Heading1,
-  Subheading2
+  Subheading2,
 } from "components/SharedComponents";
 import {
-  View
+  View,
 } from "components/styledComponents";
 import React from "react";
 import { useTranslation } from "sharedHooks";

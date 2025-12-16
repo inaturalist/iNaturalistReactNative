@@ -5,10 +5,10 @@ import WithdrawIDSheet from "components/ObsDetails/Sheets/WithdrawIDSheet";
 import {
   ActivityIndicator,
   DateDisplay,
-  INatIcon, InlineUser, TextInputSheet, WarningSheet
+  INatIcon, InlineUser, TextInputSheet, WarningSheet,
 } from "components/SharedComponents";
 import {
-  View
+  View,
 } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
@@ -44,7 +44,7 @@ const ActivityHeader = ( {
   updateIdentification,
   geoprivacy,
   taxonGeoprivacy,
-  belongsToCurrentUser
+  belongsToCurrentUser,
 }:Props ): Node => {
   const [showEditCommentSheet, setShowEditCommentSheet] = useState( false );
   const [showDeleteCommentSheet, setShowDeleteCommentSheet] = useState( false );
@@ -70,7 +70,7 @@ const ActivityHeader = ( {
   }, [
     flagged,
     idWithdrawn,
-    vision
+    vision,
   ] );
 
   return (

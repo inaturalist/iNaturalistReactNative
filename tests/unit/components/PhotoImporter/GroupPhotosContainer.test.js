@@ -9,22 +9,22 @@ const initialStoreState = useStore.getState( );
 const mockGroupedPhotos = [{
   photos: [{
     image: {
-      uri: "url_1"
-    }
-  }]
+      uri: "url_1",
+    },
+  }],
 }, {
   photos: [{
     image: {
-      uri: "url_2"
-    }
-  }]
+      uri: "url_2",
+    },
+  }],
 }, {
   photos: [{
     image: {
-      uri: "url_3"
-    }
-  }]
-}
+      uri: "url_3",
+    },
+  }],
+},
 ];
 
 describe( "GroupPhotosContainer", ( ) => {
@@ -41,11 +41,11 @@ describe( "GroupPhotosContainer", ( ) => {
     renderComponent( <GroupPhotosContainer /> );
 
     const firstPhotoPressable = screen.getByTestId(
-      `GroupPhotos.${mockGroupedPhotos[0].photos[0].image.uri}`
+      `GroupPhotos.${mockGroupedPhotos[0].photos[0].image.uri}`,
     );
     fireEvent.press( firstPhotoPressable );
     const secondPhotoPressable = screen.getByTestId(
-      `GroupPhotos.${mockGroupedPhotos[1].photos[0].image.uri}`
+      `GroupPhotos.${mockGroupedPhotos[1].photos[0].image.uri}`,
     );
     fireEvent.press( secondPhotoPressable );
 
@@ -56,7 +56,7 @@ describe( "GroupPhotosContainer", ( ) => {
     const { groupedPhotos } = useStore.getState( );
 
     const firstPhotoCombinedPressable = screen.getByTestId(
-      `GroupPhotos.${groupedPhotos[0].photos[0].image.uri}`
+      `GroupPhotos.${groupedPhotos[0].photos[0].image.uri}`,
     );
 
     expect( firstPhotoCombinedPressable ).toHaveTextContent( /2/ );
@@ -67,11 +67,11 @@ describe( "GroupPhotosContainer", ( ) => {
     renderComponent( <GroupPhotosContainer /> );
 
     const firstPhotoPressable = screen.getByTestId(
-      `GroupPhotos.${mockGroupedPhotos[0].photos[0].image.uri}`
+      `GroupPhotos.${mockGroupedPhotos[0].photos[0].image.uri}`,
     );
     fireEvent.press( firstPhotoPressable );
     const secondPhotoPressable = screen.getByTestId(
-      `GroupPhotos.${mockGroupedPhotos[1].photos[0].image.uri}`
+      `GroupPhotos.${mockGroupedPhotos[1].photos[0].image.uri}`,
     );
     fireEvent.press( secondPhotoPressable );
 
@@ -81,10 +81,10 @@ describe( "GroupPhotosContainer", ( ) => {
     const { groupedPhotos } = useStore.getState( );
 
     const firstPhotoCombinedPressable = screen.getByTestId(
-      `GroupPhotos.${groupedPhotos[0].photos[0].image.uri}`
+      `GroupPhotos.${groupedPhotos[0].photos[0].image.uri}`,
     );
     const secondPhotoCombinedPressable = screen.getByTestId(
-      `GroupPhotos.${groupedPhotos[1].photos[0].image.uri}`
+      `GroupPhotos.${groupedPhotos[1].photos[0].image.uri}`,
     );
     fireEvent.press( firstPhotoCombinedPressable );
     fireEvent.press( secondPhotoCombinedPressable );
@@ -98,11 +98,11 @@ describe( "GroupPhotosContainer", ( ) => {
     renderComponent( <GroupPhotosContainer /> );
 
     const firstPhotoPressable = screen.getByTestId(
-      `GroupPhotos.${mockGroupedPhotos[0].photos[0].image.uri}`
+      `GroupPhotos.${mockGroupedPhotos[0].photos[0].image.uri}`,
     );
     fireEvent.press( firstPhotoPressable );
     const secondPhotoPressable = screen.getByTestId(
-      `GroupPhotos.${mockGroupedPhotos[1].photos[0].image.uri}`
+      `GroupPhotos.${mockGroupedPhotos[1].photos[0].image.uri}`,
     );
     fireEvent.press( secondPhotoPressable );
 
@@ -112,10 +112,10 @@ describe( "GroupPhotosContainer", ( ) => {
     const { groupedPhotos } = useStore.getState( );
 
     const firstPhotoCombinedPressable = screen.getByTestId(
-      `GroupPhotos.${groupedPhotos[0].photos[0].image.uri}`
+      `GroupPhotos.${groupedPhotos[0].photos[0].image.uri}`,
     );
     const secondPhotoCombinedPressable = screen.getByTestId(
-      `GroupPhotos.${groupedPhotos[1].photos[0].image.uri}`
+      `GroupPhotos.${groupedPhotos[1].photos[0].image.uri}`,
     );
     fireEvent.press( firstPhotoCombinedPressable );
     fireEvent.press( secondPhotoCombinedPressable );

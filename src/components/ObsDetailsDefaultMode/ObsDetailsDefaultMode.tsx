@@ -1,14 +1,14 @@
 import {
-  ActivityIndicator
+  ActivityIndicator,
 } from "components/SharedComponents";
 import { ScrollView, View } from "components/styledComponents";
 import React, {
-  useRef
+  useRef,
 } from "react";
 import type Observation from "realmModels/Observation";
 import type { RealmObservation, RealmUser } from "realmModels/types";
 import {
-  useScrollToOffset
+  useScrollToOffset,
 } from "sharedHooks";
 
 import CommunitySection from "./CommunitySection/CommunitySection";
@@ -61,13 +61,13 @@ const ObsDetailsDefaultMode = ( {
   subscriptions,
   targetActivityItemID,
   wasSynced,
-  uuid
+  uuid,
 }: Props ) => {
   const scrollViewRef = useRef<typeof ScrollView | null>( null );
 
   const {
     setHeightOfContentAboveSection: setHeightOfContentAboveCommunitySection,
-    setOffsetToActivityItem
+    setOffsetToActivityItem,
   } = useScrollToOffset( scrollViewRef );
 
   const isSavedObservationByCurrentUser = belongsToCurrentUser && !wasSynced;

@@ -11,7 +11,7 @@ const ExploreTaxonGridItem = ( {
   count,
   showSpeciesSeenCheckmark = false,
   style,
-  taxon
+  taxon,
 }: Props ) => {
   const { t } = useTranslation( );
   return (

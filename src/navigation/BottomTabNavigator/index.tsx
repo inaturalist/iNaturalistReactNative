@@ -5,7 +5,7 @@ import TabStackNavigator, {
   SCREEN_NAME_MENU,
   SCREEN_NAME_NOTIFICATIONS,
   SCREEN_NAME_OBS_LIST,
-  SCREEN_NAME_ROOT_EXPLORE
+  SCREEN_NAME_ROOT_EXPLORE,
 } from "navigation/StackNavigators/TabStackNavigator";
 import React from "react";
 
@@ -31,7 +31,7 @@ const BottomTabs = ( ) => {
           lazy: true,
           freezeOnBlur: true,
           headerShown: false,
-          animation: "fade"
+          animation: "fade",
         }}
       >
         <Tab.Screen

@@ -15,5 +15,5 @@ const RealmContext = createRealmContext( realmConfig );
 
 export {
   // eslint-disable-next-line import/prefer-default-export
-  RealmContext
+  RealmContext,
 };

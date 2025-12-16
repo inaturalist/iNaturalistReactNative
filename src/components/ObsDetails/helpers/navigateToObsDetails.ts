@@ -5,7 +5,7 @@ import { CommonActions } from "@react-navigation/native";
 // and when navigating back from the ObsDetails screen, it'll go back to ObsList screen
 export default function navigateToObsDetails(
   navigation: NavigationProp<ParamListBase>,
-  uuid: string
+  uuid: string,
 ): void {
   navigation.dispatch(
     CommonActions.reset( {
@@ -23,15 +23,15 @@ export default function navigateToObsDetails(
                     { name: "ObsList" },
                     {
                       name: "ObsDetails",
-                      params: { uuid }
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        }
-      ]
-    } )
+                      params: { uuid },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        },
+      ],
+    } ),
   );
 }

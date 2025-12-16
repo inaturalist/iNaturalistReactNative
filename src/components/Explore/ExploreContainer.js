@@ -1,14 +1,14 @@
 // @flow
 
 import {
-  useNetInfo
+  useNetInfo,
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import {
   EXPLORE_ACTION,
   ExploreProvider,
   PLACE_MODE,
-  useExplore
+  useExplore,
 } from "providers/ExploreContext";
 import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
@@ -33,7 +33,7 @@ const ExploreContainerWithContext = ( ): Node => {
   const {
     hasPermissions: hasLocationPermissions,
     renderPermissionsGate,
-    requestPermissions: requestLocationPermissions
+    requestPermissions: requestLocationPermissions,
   } = useLocationPermission( );
 
   const currentUser = useCurrentUser();
@@ -55,7 +55,7 @@ const ExploreContainerWithContext = ( ): Node => {
       dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_WORLDWIDE } );
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
-        placeId: null
+        placeId: null,
       } );
     } else {
       navigation.setParams( { place } );
@@ -64,7 +64,7 @@ const ExploreContainerWithContext = ( ): Node => {
         type: EXPLORE_ACTION.SET_PLACE,
         place,
         placeId: place?.id,
-        placeGuess: place?.display_name
+        placeGuess: place?.display_name,
       } );
     }
   };
@@ -73,13 +73,13 @@ const ExploreContainerWithContext = ( ): Node => {
     if ( exclude ) {
       dispatch( {
         type: EXPLORE_ACTION.EXCLUDE_USER,
-        excludeUser: user
+        excludeUser: user,
       } );
     } else {
       dispatch( {
         type: EXPLORE_ACTION.SET_USER,
         user,
-        userId: user?.id
+        userId: user?.id,
       } );
     }
   };
@@ -88,18 +88,18 @@ const ExploreContainerWithContext = ( ): Node => {
     dispatch( {
       type: EXPLORE_ACTION.SET_PROJECT,
       project,
-      projectId: project?.id
+      projectId: project?.id,
     } );
   };
 
   const filteredParams = mapParamsToAPI(
     state,
-    currentUser
+    currentUser,
   );
 
   const queryParams = {
     ...filteredParams,
-    per_page: 20
+    per_page: 20,
   };
 
   // need this hook to be top-level enough that ExploreHeaderCount rerenders
@@ -107,7 +107,7 @@ const ExploreContainerWithContext = ( ): Node => {
     count,
     isFetching: isFetchingHeaderCount,
     handleUpdateCount,
-    setIsFetching: setIsFetchingHeaderCount
+    setIsFetching: setIsFetchingHeaderCount,
   } = useExploreHeaderCount( );
 
   const closeFiltersModal = ( ) => setShowFiltersModal( false );
@@ -127,7 +127,7 @@ const ExploreContainerWithContext = ( ): Node => {
   }, [
     hasLocationPermissions,
     setIsFetchingHeaderCount,
-    state?.placeMode
+    state?.placeMode,
   ] );
 
   useEffect( ( ) => {
@@ -179,7 +179,7 @@ const ExploreContainerWithContext = ( ): Node => {
           />
         )}
       {renderPermissionsGate( {
-        onPermissionGranted: startFetching
+        onPermissionGranted: startFetching,
       } ) }
     </>
   );

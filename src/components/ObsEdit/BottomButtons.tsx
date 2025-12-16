@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import {
   Button,
-  ButtonBar
+  ButtonBar,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
@@ -10,7 +10,7 @@ import { getShadow } from "styles/global";
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: -3,
-  shadowOpacity: 0.2
+  shadowOpacity: 0.2,
 } );
 
 export const UPLOAD = "upload";
@@ -38,7 +38,7 @@ const BottomButtons = ( {
   showFocusedChangesButton,
   showFocusedUploadButton,
   showHalfOpacity,
-  wasSynced
+  wasSynced,
 }: Props ) => {
   const { t } = useTranslation( );
 
@@ -67,7 +67,7 @@ const BottomButtons = ( {
     disabled,
     level: "neutral",
     loading: isSaving,
-    className: "px-[25px]"
+    className: "px-[25px]",
   };
 
   const uploadButton = {
@@ -80,7 +80,7 @@ const BottomButtons = ( {
       ? "focus"
       : "neutral",
     disabled,
-    className: "ml-3 grow"
+    className: "ml-3 grow",
   };
 
   const buttonConfiguration = [saveButton, uploadButton];
@@ -109,7 +109,7 @@ const BottomButtons = ( {
   return (
     <View
       className={classnames( "bg-white", {
-        "opacity-50": showHalfOpacity
+        "opacity-50": showHalfOpacity,
       } )}
       style={DROP_SHADOW}
     >

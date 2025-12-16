@@ -10,13 +10,13 @@ const rerenderCheckmarkComponent = checked => {
       accessibilityLabel="Checkmark"
       text="Checkmark text"
       isChecked={checked}
-    />
+    />,
   );
   const checkbox = screen.getByLabelText( /Checkmark/ );
   expect( checkbox ).toHaveProp( "innerIconStyle", {
     borderRadius: 6,
     borderWidth: 2,
-    borderColor: colors.inatGreen
+    borderColor: colors.inatGreen,
   } );
 };
 
@@ -48,7 +48,7 @@ describe( "Checkbox", () => {
         accessibilityLabel="Checkmark"
         text="Checkmark text"
         isChecked={false}
-      />
+      />,
     );
 
     const checkmark = screen.getByLabelText( /Checkmark/ );
@@ -57,7 +57,7 @@ describe( "Checkbox", () => {
     expect( checkmark ).toHaveProp( "innerIconStyle", {
       borderRadius: 6,
       borderWidth: 2,
-      borderColor: colors.darkGray
+      borderColor: colors.darkGray,
     } );
   } );
 
@@ -68,7 +68,7 @@ describe( "Checkbox", () => {
     expect( checkmark ).toHaveProp( "innerIconStyle", {
       borderRadius: 6,
       borderWidth: 2,
-      borderColor: colors.inatGreen
+      borderColor: colors.inatGreen,
     } );
   } );
 
@@ -81,7 +81,7 @@ describe( "Checkbox", () => {
         isChecked={checked}
         // eslint-disable-next-line no-return-assign
         onPress={( ) => ( checked = !checked )}
-      />
+      />,
     );
     const checkmark = screen.getByLabelText( /Checkmark/ );
 
@@ -99,7 +99,7 @@ describe( "Checkbox", () => {
         text="Checkmark text"
         isChecked={checked}
         onPress={( ) => { checked = !checked; }}
-      />
+      />,
     );
     const checkmark = screen.getByLabelText( /Checkmark/ );
 
@@ -115,7 +115,7 @@ describe( "Checkbox", () => {
         text="Checkmark text"
         isChecked={checked}
         onPress={( ) => { checked = !checked; }}
-      />
+      />,
     );
 
     const text = screen.getByText( /Checkmark text/ );

@@ -15,14 +15,14 @@ const LocationStatus = ( { useLocation, visible, onAnimationEnd } ) => {
         Animated.timing( opacity, {
           toValue: 1,
           duration: 200,
-          useNativeDriver: true
+          useNativeDriver: true,
         } ),
         Animated.delay( 2000 ),
         Animated.timing( opacity, {
           toValue: 0,
           duration: 200,
-          useNativeDriver: true
-        } )
+          useNativeDriver: true,
+        } ),
       ] ).start( () => onAnimationEnd() );
     }
   }, [visible, opacity, onAnimationEnd] );

@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import {
-  CustomFlashList
+  CustomFlashList,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import UserListItem from "components/UserList/UserListItem";
@@ -10,7 +10,7 @@ import type { ViewStyle } from "react-native";
 import { useTranslation } from "sharedHooks";
 
 const CONTAINER_STYLE = {
-  backgroundColor: "white"
+  backgroundColor: "white",
 };
 
 interface Props {
@@ -34,7 +34,7 @@ const UserList = ( {
   onPress,
   accessibilityLabel,
   keyboardShouldPersistTaps,
-  contentContainerStyle
+  contentContainerStyle,
 }: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );

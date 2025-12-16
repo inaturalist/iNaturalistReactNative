@@ -24,12 +24,12 @@ describe( "Match", ( ) => {
     scrollRef: { current: null },
     topSuggestion: {
       combined_score: 92,
-      taxon: factory( "LocalTaxon" )
+      taxon: factory( "LocalTaxon" ),
     },
     otherSuggestions: [{
       combined_score: 90,
-      taxon: factory( "LocalTaxon" )
-    }]
+      taxon: factory( "LocalTaxon" ),
+    }],
   };
 
   beforeEach( () => {
@@ -39,14 +39,14 @@ describe( "Match", ( ) => {
   it( "should show location permissions button if permissions not granted", () => {
     jest.spyOn( useLocationPermission, "default" ).mockImplementation( ( ) => ( {
       hasPermissions: false,
-      renderPermissionsGate: jest.fn( )
+      renderPermissionsGate: jest.fn( ),
     } ) );
     renderComponent(
       <Match
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...defaultProps}
         observation={defaultProps.observation}
-      />
+      />,
     );
 
     const addLocationButtons = screen.queryAllByText( /ADD LOCATION FOR BETTER IDS/i );
@@ -59,13 +59,13 @@ describe( "Match", ( ) => {
       coords: {
         latitude: 56,
         longitude: 9,
-        accuracy: 8
-      }
+        accuracy: 8,
+      },
     } ) );
     Geolocation.watchPosition.mockImplementation( mockWatchPosition );
     jest.spyOn( useLocationPermission, "default" ).mockImplementation( ( ) => ( {
       hasPermissions: true,
-      renderPermissionsGate: jest.fn( )
+      renderPermissionsGate: jest.fn( ),
     } ) );
 
     renderComponent(
@@ -75,9 +75,9 @@ describe( "Match", ( ) => {
         observation={{
           ...defaultProps.observation,
           latitude: 24,
-          longitude: -24
+          longitude: -24,
         }}
-      />
+      />,
     );
 
     const addLocationButton = screen.queryByText( /ADD LOCATION FOR BETTER IDS/i );

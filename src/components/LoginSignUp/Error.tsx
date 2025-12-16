@@ -1,6 +1,6 @@
 import {
   INatIcon,
-  List2
+  List2,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";

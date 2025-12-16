@@ -16,7 +16,7 @@ const GroupPhotoImage = ( {
   item,
   selectedObservations,
   selectObservationPhotos,
-  style
+  style,
 }: Props ): Node => {
   const firstPhoto = item.photos[0];
   const isSelected = selectedObservations.includes( item );

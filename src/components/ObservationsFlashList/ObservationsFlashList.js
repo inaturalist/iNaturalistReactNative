@@ -5,7 +5,7 @@ import {
   Body3,
   CustomFlashList,
   CustomRefreshControl,
-  InfiniteScrollLoadingWheel
+  InfiniteScrollLoadingWheel,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
@@ -14,7 +14,7 @@ import React, {
   forwardRef,
   useCallback,
   useMemo,
-  useState
+  useState,
 } from "react";
 import { Animated } from "react-native";
 import RealmObservation from "realmModels/Observation";
@@ -23,7 +23,7 @@ import {
   useGridLayout,
   useLayoutPrefs,
   useNavigateToObsEdit,
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -82,10 +82,10 @@ const ObservationsFlashList: Function = forwardRef( ( {
   renderHeader,
   showNoResults,
   showObservationsEmptyScreen,
-  testID
+  testID,
 }: Props, ref ): Node => {
   const {
-    isDefaultMode
+    isDefaultMode,
   } = useLayoutPrefs( );
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
@@ -105,7 +105,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
     flashListStyle,
     gridItemStyle,
     gridItemWidth,
-    numColumns
+    numColumns,
   } = useGridLayout( layout );
   const { t } = useTranslation( );
 
@@ -140,7 +140,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
         navigation.navigate( {
           key: `Obs-${obsListKey}-${uuid}`,
           name: "ObsDetails",
-          params: { uuid }
+          params: { uuid },
         } );
       }
     };
@@ -186,7 +186,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
     obsListKey,
     realm,
     totalUploadProgress,
-    uploadQueue
+    uploadQueue,
   ] );
 
   const renderItemSeparator = useCallback( ( ) => {
@@ -207,19 +207,19 @@ const ObservationsFlashList: Function = forwardRef( ( {
     explore,
     hideLoadingWheel,
     isConnected,
-    layout
+    layout,
   ] );
 
   const contentContainerStyle = useMemo( ( ) => {
     if ( layout === "list" ) { return contentContainerStyleProp; }
     return {
       ...flashListStyle,
-      ...contentContainerStyleProp
+      ...contentContainerStyleProp,
     };
   }, [
     contentContainerStyleProp,
     flashListStyle,
-    layout
+    layout,
   ] );
 
   const renderEmptyComponent = useCallback( ( ) => {
@@ -241,12 +241,12 @@ const ObservationsFlashList: Function = forwardRef( ( {
   }, [
     showObservationsEmptyScreen,
     showNoResults,
-    t
+    t,
   ] );
 
   const extraData = {
     gridItemWidth,
-    numColumns
+    numColumns,
   };
 
   // only used id as a fallback key because after upload

@@ -7,7 +7,7 @@ import {
   Heading2,
   INatIconButton,
   Map,
-  Modal
+  Modal,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -42,14 +42,14 @@ const FloatingActionButton = ( {
   accessibilityLabel,
   buttonClassName,
   icon,
-  onPress
+  onPress,
 }: FloatingActionButtonProps ) => {
   const fabClassNames = classnames(
     "absolute",
     "bg-white",
     "rounded-full",
     "m-5",
-    buttonClassName
+    buttonClassName,
   );
 
   return (
@@ -69,7 +69,7 @@ const DetailsMap = ( {
   headerTitle,
   observation,
   region,
-  tileMapParams
+  tileMapParams,
 }: Props ) => {
   const insets = useSafeAreaInsets();
 
@@ -141,7 +141,7 @@ const DetailsMap = ( {
       <Modal
         // eslint-disable-next-line react-native/no-inline-styles
         style={{
-          alignItems: "center"
+          alignItems: "center",
         }}
         animationIn="fadeIn"
         animationOut="fadeOut"

@@ -2,7 +2,7 @@ import {
   Body2,
   Button,
   Heading4,
-  ScrollViewWrapper
+  ScrollViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -42,7 +42,7 @@ const Help = ( ) => (
         text={t( "VIEW-EDUCATORS-GUIDE" )}
         onPress={
           ( ) => openExternalWebBrowser(
-            "https://help.inaturalist.org/support/solutions/articles/151000170805"
+            "https://help.inaturalist.org/support/solutions/articles/151000170805",
           )
         }
       />

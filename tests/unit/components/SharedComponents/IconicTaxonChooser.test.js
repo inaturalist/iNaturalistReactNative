@@ -8,8 +8,8 @@ const mockData = [factory( "RemoteTaxon" )];
 jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
   __esModule: true,
   default: ( ) => ( {
-    data: mockData
-  } )
+    data: mockData,
+  } ),
 } ) );
 
 describe( "IconicTaxonChooser", () => {
@@ -26,13 +26,13 @@ describe( "IconicTaxonChooser", () => {
   it( "should show an iconic taxa as selected", async ( ) => {
     const mockTaxon = factory( "RemoteTaxon", {
       name: "Plantae",
-      iconic_taxon_name: "Plantae"
+      iconic_taxon_name: "Plantae",
     } );
 
     render( <IconicTaxonChooser chosen={[mockTaxon.name.toLowerCase()]} /> );
 
     const plantButton = await screen.findByTestId(
-      `IconicTaxonButton.${mockTaxon.name.toLowerCase( )}`
+      `IconicTaxonButton.${mockTaxon.name.toLowerCase( )}`,
     );
     const birdButton = await screen.findByTestId( "IconicTaxonButton.aves" );
 

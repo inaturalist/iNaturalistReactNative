@@ -3,11 +3,11 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   Body4,
-  Divider, INatIconButton, UserText
+  Divider, INatIconButton, UserText,
 } from "components/SharedComponents";
 import DisplayTaxon from "components/SharedComponents/DisplayTaxon";
 import {
-  View
+  View,
 } from "components/styledComponents";
 import { t } from "i18next";
 import _ from "lodash";
@@ -42,7 +42,7 @@ const ActivityItem = ( {
   geoprivacy,
   taxonGeoprivacy,
   belongsToCurrentUser,
-  showExplainerText
+  showExplainerText,
 }: Props ): Node => {
   const navigation = useNavigation( );
   const route = useRoute( );
@@ -65,7 +65,7 @@ const ActivityItem = ( {
       // Ensure button mashing doesn't open multiple TaxonDetails instances
       key: `${route.key}-ActivityItem-TaxonDetails-${taxon?.id}`,
       name: "TaxonDetails",
-      params: { id: taxon?.id }
+      params: { id: taxon?.id },
     } )
   );
 
@@ -129,7 +129,7 @@ const ActivityItem = ( {
           && (
             <Body4 className="py-2 font-Lato-Italic">
               {t(
-                "This-is-your-identification-other-people-may-help-confirm-it"
+                "This-is-your-identification-other-people-may-help-confirm-it",
               )}
             </Body4>
           )}

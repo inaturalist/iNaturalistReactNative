@@ -3,10 +3,10 @@ import {
   useCallback,
   useEffect,
   useMemo,
-  useState
+  useState,
 } from "react";
 import {
-  Gesture
+  Gesture,
 } from "react-native-gesture-handler";
 import {
   Extrapolation,
@@ -14,7 +14,7 @@ import {
   runOnJS,
   useAnimatedProps,
   useSharedValue,
-  withSpring
+  withSpring,
 } from "react-native-reanimated";
 import type { CameraDevice, CameraProps } from "react-native-vision-camera";
 
@@ -98,7 +98,7 @@ const useZoom = ( device: CameraDevice ): object => {
           Math.abs( curr - newZoom ) < Math.abs( prev - newZoom )
             ? curr
             : prev );
-      }
+      },
     );
     setZoomTextValue( closestZoomTextValue );
   }, [zoomButtonOptions, minZoom] );
@@ -110,7 +110,7 @@ const useZoom = ( device: CameraDevice ): object => {
       newValue,
       [-1, 0, 1],
       [minZoom, startZoom.get( ), maxZoomWithPinch],
-      Extrapolation.CLAMP
+      Extrapolation.CLAMP,
     );
     zoom.set( newZoom );
 
@@ -118,7 +118,7 @@ const useZoom = ( device: CameraDevice ): object => {
   }, [maxZoomWithPinch, minZoom, updateZoomTextValue, startZoom, zoom] );
 
   const animatedProps = useAnimatedProps < CameraProps >(
-    () => ( { zoom: zoom.get( ) } )
+    () => ( { zoom: zoom.get( ) } ),
   );
 
   const pinchToZoom = useMemo( ( ) => Gesture.Pinch( )
@@ -133,12 +133,12 @@ const useZoom = ( device: CameraDevice ): object => {
         e.scale,
         [1 - 1 / SCALE_FULL_ZOOM, 1, SCALE_FULL_ZOOM],
         [-1, 0, 1],
-        Extrapolation.CLAMP
+        Extrapolation.CLAMP,
       );
       onZoomChange( newValue );
     } ), [
     onZoomChange,
-    onZoomStart
+    onZoomStart,
   ] );
 
   const yDiff = useSharedValue( 0 );
@@ -159,7 +159,7 @@ const useZoom = ( device: CameraDevice ): object => {
         yDiff.get( ),
         [PAN_ZOOM_MIN_DISTANCE, 0, PAN_ZOOM_MAX_DISTANCE],
         [-1, 0, 1],
-        Extrapolation.CLAMP
+        Extrapolation.CLAMP,
       ) * -1;
       onZoomChange( newValue );
     } )
@@ -174,7 +174,7 @@ const useZoom = ( device: CameraDevice ): object => {
     pinchToZoom,
     resetZoom,
     showZoomButton: device?.isMultiCam,
-    zoomTextValue
+    zoomTextValue,
   };
 };
 

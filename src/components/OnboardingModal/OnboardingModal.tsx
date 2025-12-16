@@ -1,7 +1,7 @@
 import {
   Body3, Button, Heading2, Heading3, INatIcon,
   INatIconButton, Modal,
-  UnderlinedLink
+  UnderlinedLink,
 } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
 import * as React from "react";
@@ -40,7 +40,7 @@ interface Props {
 }
 
 const OnboardingModal = ( {
-  showKey, triggerCondition, slides, altActionButton, altCloseButton
+  showKey, triggerCondition, slides, altActionButton, altCloseButton,
 }: Props ) => {
   const { t } = useTranslation( );
 
@@ -114,7 +114,7 @@ const OnboardingModal = ( {
   const imageStyle: ImageStyle = {
     width: "100%",
     height: undefined,
-    aspectRatio: 2
+    aspectRatio: 2,
   };
   const modalContent = (
     <OnboardingModalBase
@@ -171,7 +171,7 @@ const OnboardingModal = ( {
             <Heading3>
               {t( "X-of-Y", {
                 x: currentSlideIndex + 1,
-                y: slides.length
+                y: slides.length,
               } )}
             </Heading3>
           </View>

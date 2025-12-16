@@ -28,10 +28,10 @@ const mockUnsyncedObservations = [
       factory( "LocalObservationPhoto", {
         photo: {
           url: faker.image.url( ),
-          position: 0
-        }
-      } )
-    ]
+          position: 0,
+        },
+      } ),
+    ],
   } ),
   factory( "LocalObservation", {
     _synced_at: null,
@@ -42,43 +42,43 @@ const mockUnsyncedObservations = [
       factory( "LocalObservationPhoto", {
         photo: {
           url: `${faker.image.url( )}/100`,
-          position: 0
-        }
+          position: 0,
+        },
       } ),
       factory( "LocalObservationPhoto", {
         photo: {
           url: `${faker.image.url( )}/200`,
-          position: 1
-        }
-      } )
-    ]
-  } )
+          position: 1,
+        },
+      } ),
+    ],
+  } ),
 ];
 
 const mockDeletedIds = [
   faker.number.int( ),
-  faker.number.int( )
+  faker.number.int( ),
 ];
 
 jest.mock( "sharedHooks/useFontScale", () => ( {
   __esModule: true,
-  default: ( ) => ( { isLargeFontScale: false } )
+  default: ( ) => ( { isLargeFontScale: false } ),
 } ) );
 
 const mockSyncedObservations = [
   factory( "LocalObservation", {
     _synced_at: faker.date.past( ),
-    id: mockDeletedIds[0]
+    id: mockDeletedIds[0],
   } ),
   factory( "LocalObservation", {
-    _synced_at: faker.date.past( )
-  } )
+    _synced_at: faker.date.past( ),
+  } ),
 ];
 
 const mockUser = factory( "LocalUser", {
   login: faker.internet.userName( ),
   iconUrl: faker.image.url( ),
-  locale: "en"
+  locale: "en",
 } );
 
 const checkToolbarResetWithUnsyncedObs = ( ) => waitFor( ( ) => {
@@ -98,7 +98,7 @@ const writeObservationsToRealm = ( observations, message ) => {
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -109,8 +109,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -139,7 +139,7 @@ const displayItemByText = text => {
 beforeEach( ( ) => {
   setStoreStateLayout( {
     isDefaultMode: false,
-    isAllAddObsOptionsMode: true
+    isAllAddObsOptionsMode: true,
   } );
 } );
 
@@ -208,23 +208,23 @@ describe( "MyObservations", ( ) => {
       inatjs.observation_photos.create.mockImplementation( async ( params, _opts ) => {
         const mockObsPhotos = flatten( mockUnsyncedObservations.map( o => o.observationPhotos ) );
         const mockObsPhoto = mockObsPhotos.find(
-          op => op.uuid === params.observation_photo.uuid
+          op => op.uuid === params.observation_photo.uuid,
         );
         // Pretend this takes a bit
         await sleep( 500 );
         return makeResponse( [{
           id: faker.number.int( ),
-          uuid: mockObsPhoto.uuid
+          uuid: mockObsPhoto.uuid,
         }] );
       } );
       inatjs.photos.create.mockImplementation( ( ) => Promise.resolve( makeResponse( [{
-        id: faker.number.int( )
+        id: faker.number.int( ),
       }] ) ) );
 
       beforeEach( ( ) => {
         writeObservationsToRealm(
           mockUnsyncedObservations,
-          "writing unsynced observations for MyObservations integration test"
+          "writing unsynced observations for MyObservations integration test",
         );
       } );
 
@@ -247,14 +247,14 @@ describe( "MyObservations", ( ) => {
         } );
         displayItemByTestId( `UploadIcon.progress.${secondObservation.uuid}` );
         const secondQueuedObsItem = screen.getByTestId(
-          `ObsPressable.${secondObservation.uuid}`
+          `ObsPressable.${secondObservation.uuid}`,
         );
         expect( secondQueuedObsItem ).toBeDisabled( );
         await waitFor( ( ) => {
           displayItemByTestId( `UploadIcon.progress.${firstObservation.uuid}` );
         } );
         const firstQueuedObsItem = screen.getByTestId(
-          `ObsPressable.${firstObservation.uuid}`
+          `ObsPressable.${firstObservation.uuid}`,
         );
         expect( firstQueuedObsItem ).toBeDisabled( );
         await waitFor( ( ) => {
@@ -274,12 +274,12 @@ describe( "MyObservations", ( ) => {
         } );
         displayItemByTestId( `UploadIcon.progress.${firstObservation.uuid}` );
         const queuedObsItem = screen.getByTestId(
-          `ObsPressable.${firstObservation.uuid}`
+          `ObsPressable.${firstObservation.uuid}`,
         );
         expect( queuedObsItem ).toBeDisabled( );
         displayItemByTestId( `UploadIcon.start.${secondObservation.uuid}` );
         const obsItem = screen.getByTestId(
-          `ObsPressable.${secondObservation.uuid}`
+          `ObsPressable.${secondObservation.uuid}`,
         );
         expect( obsItem ).not.toBeDisabled( );
 
@@ -293,7 +293,7 @@ describe( "MyObservations", ( ) => {
         renderAppWithComponent( <MyObservationsContainer /> );
         await checkToolbarResetWithUnsyncedObs( );
         inatjs.observations.create.mockRejectedValueOnce(
-          new TypeError( "Network request failed" )
+          new TypeError( "Network request failed" ),
         );
         pressItemByTestId( "SyncButton" );
         const toolbarText = await screen.findByText( /1 upload failed/ );
@@ -310,7 +310,7 @@ describe( "MyObservations", ( ) => {
       beforeEach( ( ) => {
         writeObservationsToRealm(
           mockSyncedObservations,
-          "MyObservations integration test with synced observations"
+          "MyObservations integration test with synced observations",
         );
       } );
 
@@ -384,15 +384,15 @@ describe( "MyObservations", ( ) => {
         renderAppWithComponent( <MyObservationsContainer /> );
 
         const myObsList = await screen.findByTestId(
-          "MyObservationsAnimatedList"
+          "MyObservationsAnimatedList",
         );
 
         fireEvent.scroll( myObsList, {
           nativeEvent: {
             contentOffset: { y: -100 },
             contentSize: { height: 1000, width: 100 },
-            layoutMeasurement: { height: 500, width: 100 }
-          }
+            layoutMeasurement: { height: 500, width: 100 },
+          },
         } );
 
         expect( inatjs.observations.deleted ).toHaveBeenCalled();
@@ -410,16 +410,16 @@ describe( "MyObservations", ( ) => {
           await waitFor( () => {
             expect( inatjs.observations.deleted ).toHaveBeenCalledWith(
               {
-                since: "2024-05-01"
+                since: "2024-05-01",
               },
-              expect.anything()
+              expect.anything(),
             );
           } );
         } );
 
         it( "deletes local observations if they have been deleted on server", async () => {
           inatjs.observations.deleted.mockResolvedValue(
-            makeResponse( mockDeletedIds )
+            makeResponse( mockDeletedIds ),
           );
           renderAppWithComponent( <MyObservationsContainer /> );
           const deleteSpy = jest.spyOn( global.mockRealms[__filename], "delete" );
@@ -427,7 +427,7 @@ describe( "MyObservations", ( ) => {
             expect( deleteSpy ).toHaveBeenCalledTimes( 1 );
           } );
           expect(
-            global.mockRealms[__filename].objects( "Observation" ).length
+            global.mockRealms[__filename].objects( "Observation" ).length,
           ).toBe( 1 );
         } );
       } );

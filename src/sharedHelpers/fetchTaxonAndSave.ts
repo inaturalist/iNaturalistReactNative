@@ -13,7 +13,7 @@ async function fetchTaxonAndSave(
   id: number,
   realm: Realm,
   params: Record<string, unknown> = {},
-  opts: Options = {}
+  opts: Options = {},
 ) {
   const options = { ...opts };
   if ( !options.api_token ) {
@@ -26,7 +26,7 @@ async function fetchTaxonAndSave(
     realm.create(
       Taxon,
       Taxon.forUpdate( mappedRemoteTaxon ),
-      UpdateMode.Modified
+      UpdateMode.Modified,
     );
   }, "saving remote taxon in ObsDetails" );
   return mappedRemoteTaxon;

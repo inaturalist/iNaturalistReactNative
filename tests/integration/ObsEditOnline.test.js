@@ -13,7 +13,7 @@ import { signIn } from "tests/helpers/user";
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -24,8 +24,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -46,19 +46,19 @@ const mockTaxon = factory( "RemoteTaxon", {
   rank_level: 27,
   preferred_common_name: faker.person.fullName( ),
   default_photo: {
-    square_url: faker.image.url( )
+    square_url: faker.image.url( ),
   },
   ancestors: [{
     id: faker.number.int( ),
     preferred_common_name: faker.person.fullName( ),
     name: faker.person.fullName( ),
-    rank: "class"
+    rank: "class",
   }],
   wikipedia_summary: faker.lorem.paragraph( ),
   taxonPhotos: [{
-    photo: factory( "RemotePhoto" )
+    photo: factory( "RemotePhoto" ),
   }],
-  wikipedia_url: faker.internet.url( )
+  wikipedia_url: faker.internet.url( ),
 } );
 
 const mockObservation = factory( "RemoteObservation", {
@@ -67,7 +67,7 @@ const mockObservation = factory( "RemoteObservation", {
   user: mockCurrentUser,
   place_guess: mockLocationName,
   taxon: mockTaxon,
-  observationPhotos: []
+  observationPhotos: [],
 } );
 
 const mockObservations = [mockObservation];
@@ -80,8 +80,8 @@ const mockMultipleObservations = Array.from(
     user: mockCurrentUser,
     place_guess: mockLocationName,
     taxon: mockTaxon,
-    observationPhotos: []
-  } )
+    observationPhotos: [],
+  } ),
 );
 
 describe( "basic rendering", ( ) => {
@@ -96,12 +96,12 @@ describe( "basic rendering", ( ) => {
       user: mockCurrentUser,
       place_guess: mockLocationName,
       taxon: mockTaxon,
-      observationPhotos: []
+      observationPhotos: [],
     } )];
 
     useStore.setState( {
       observations: mockObservations,
-      currentObservation: mockObservations[0]
+      currentObservation: mockObservations[0],
     } );
     renderObsEdit( );
     const obs = observations[0];
@@ -123,11 +123,11 @@ describe( "location fetching", () => {
 
   test( "should fetch location when new observation hasn't saved", async ( ) => {
     const observations = [factory( "LocalObservation", {
-      observationPhotos: []
+      observationPhotos: [],
     } )];
     useStore.setState( {
       observations,
-      currentObservation: observations[0]
+      currentObservation: observations[0],
     } );
 
     renderObsEdit( );
@@ -143,19 +143,19 @@ describe( "location fetching", () => {
       _created_at: faker.date.past( ),
       latitude: Number( faker.location.latitude( ) ),
       longitude: Number( faker.location.longitude( ) ),
-      observationPhotos: []
+      observationPhotos: [],
     } );
     expect( observation.id ).toBeFalsy();
     expect( observation.created_at ).toBeFalsy();
     expect( observation._created_at ).toBeTruthy();
     useStore.setState( {
       observations: [observation],
-      currentObservation: observation
+      currentObservation: observation,
     } );
     renderObsEdit( );
 
     expect(
-      screen.getByText( new RegExp( `Lat: ${observation.latitude}` ) )
+      screen.getByText( new RegExp( `Lat: ${observation.latitude}` ) ),
     ).toBeTruthy();
 
     // Location may not fetch immediately, so wait for twice the default fetch
@@ -172,18 +172,18 @@ describe( "location fetching", () => {
       _synced_at: faker.date.past(),
       latitude: Number( faker.location.latitude( ) ),
       longitude: Number( faker.location.longitude( ) ),
-      observationPhotos: []
+      observationPhotos: [],
     } );
     expect( observation.id ).toBeTruthy();
     expect( observation.created_at ).toBeTruthy();
     useStore.setState( {
       observations: [observation],
-      currentObservation: observation
+      currentObservation: observation,
     } );
     renderObsEdit( );
 
     expect(
-      screen.getByText( new RegExp( `Lat: ${observation.latitude}` ) )
+      screen.getByText( new RegExp( `Lat: ${observation.latitude}` ) ),
     ).toBeTruthy();
 
     await waitFor( () => undefined );
@@ -197,7 +197,7 @@ describe( "multiple observation upload/save progress", ( ) => {
     await signIn( mockCurrentUser, { realm: global.mockRealms[__filename] } );
     useStore.setState( {
       observations: mockMultipleObservations,
-      currentObservation: mockMultipleObservations[0]
+      currentObservation: mockMultipleObservations[0],
     } );
   } );
 
@@ -209,8 +209,8 @@ describe( "multiple observation upload/save progress", ( ) => {
     inatjs.observations.create.mockImplementation(
       ( params, _opts ) => Promise.resolve( makeResponse( [{
         id: faker.number.int(),
-        uuid: params.observation.uuid
-      }] ) )
+        uuid: params.observation.uuid,
+      }] ) ),
     );
     renderObsEdit( );
     const uploadButton = await screen.findByText( /UPLOAD/ );
@@ -236,8 +236,8 @@ describe( "multiple observation upload/save progress", ( ) => {
     inatjs.observations.create.mockImplementation(
       ( params, _opts ) => Promise.resolve( makeResponse( [{
         id: faker.number.int(),
-        uuid: params.observation.uuid
-      }] ) )
+        uuid: params.observation.uuid,
+      }] ) ),
     );
     renderObsEdit( );
     const saveButton = await screen.findByText( /SAVE/ );
@@ -259,8 +259,8 @@ describe( "multiple observation upload/save progress", ( ) => {
     inatjs.observations.create.mockImplementation(
       ( params, _opts ) => Promise.resolve( makeResponse( [{
         id: faker.number.int(),
-        uuid: params.observation.uuid
-      }] ) )
+        uuid: params.observation.uuid,
+      }] ) ),
     );
     renderObsEdit( );
     const uploadButton = await screen.findByText( /UPLOAD/ );

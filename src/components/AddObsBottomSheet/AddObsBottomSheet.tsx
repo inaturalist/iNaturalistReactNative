@@ -1,5 +1,5 @@
 import {
-  Body3, BottomSheet, INatIcon, INatIconButton
+  Body3, BottomSheet, INatIcon, INatIconButton,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React, { useMemo } from "react";
@@ -34,7 +34,7 @@ const GREEN_CIRCLE_CLASS = "bg-inatGreen rounded-full h-[36px] w-[36px] mb-2";
 const ROW_CLASS = "flex-row justify-center space-x-4 w-full flex-1";
 
 const AddObsBottomSheet = ( {
-  closeBottomSheet, navAndCloseBottomSheet, hidden
+  closeBottomSheet, navAndCloseBottomSheet, hidden,
 }: Props ) => {
   const { t } = useTranslation( );
 
@@ -47,7 +47,7 @@ const AddObsBottomSheet = ( {
       onPress: ( ) => navAndCloseBottomSheet( "Camera", { camera: "AI" } ),
       testID: "aicamera-button",
       accessibilityLabel: t( "AI-Camera" ),
-      accessibilityHint: t( "Navigates-to-AI-camera" )
+      accessibilityHint: t( "Navigates-to-AI-camera" ),
     },
     standardCamera: {
       text: t( "Take-photos" ),
@@ -55,7 +55,7 @@ const AddObsBottomSheet = ( {
       onPress: ( ) => navAndCloseBottomSheet( "Camera", { camera: "Standard" } ),
       testID: "camera-button",
       accessibilityLabel: t( "Camera" ),
-      accessibilityHint: t( "Navigates-to-camera" )
+      accessibilityHint: t( "Navigates-to-camera" ),
     },
     photoLibrary: {
       text: t( "Upload-photos" ),
@@ -63,7 +63,7 @@ const AddObsBottomSheet = ( {
       onPress: ( ) => navAndCloseBottomSheet( "PhotoLibrary" ),
       testID: "import-media-button",
       accessibilityLabel: t( "Photo-importer" ),
-      accessibilityHint: t( "Navigates-to-photo-importer" )
+      accessibilityHint: t( "Navigates-to-photo-importer" ),
     },
     soundRecorder: {
       text: t( "Record-a-sound" ),
@@ -71,7 +71,7 @@ const AddObsBottomSheet = ( {
       onPress: ( ) => navAndCloseBottomSheet( "SoundRecorder" ),
       testID: "record-sound-button",
       accessibilityLabel: t( "Sound-recorder" ),
-      accessibilityHint: t( "Navigates-to-sound-recorder" )
+      accessibilityHint: t( "Navigates-to-sound-recorder" ),
     },
     noEvidence: {
       text: t( "Create-observation-with-no-evidence" ),
@@ -83,22 +83,22 @@ const AddObsBottomSheet = ( {
       },
       testID: "observe-without-evidence-button",
       accessibilityLabel: t( "Observation-with-no-evidence" ),
-      accessibilityHint: t( "Navigates-to-observation-edit-screen" )
-    }
+      accessibilityHint: t( "Navigates-to-observation-edit-screen" ),
+    },
   } ), [
     navAndCloseBottomSheet,
     prepareObsEdit,
-    t
+    t,
   ] );
 
   const optionRows = AI_CAMERA_SUPPORTED
     ? [
       [obsCreateItems.standardCamera, obsCreateItems.photoLibrary],
-      [obsCreateItems.soundRecorder, obsCreateItems.aiCamera]
+      [obsCreateItems.soundRecorder, obsCreateItems.aiCamera],
     ]
     : [
       [obsCreateItems.standardCamera],
-      [obsCreateItems.soundRecorder, obsCreateItems.photoLibrary]
+      [obsCreateItems.soundRecorder, obsCreateItems.photoLibrary],
     ];
 
   const renderAddObsIcon = ( {
@@ -107,7 +107,7 @@ const AddObsBottomSheet = ( {
     icon,
     onPress,
     testID,
-    text
+    text,
   }: ObsCreateItem ) => (
     <Pressable
       className="bg-white w-1/2 flex-column items-center py-4 rounded-lg flex-1 shadow-sm

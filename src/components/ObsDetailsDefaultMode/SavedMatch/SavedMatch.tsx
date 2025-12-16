@@ -20,7 +20,7 @@ interface Props {
 
 const SavedMatch = ( {
   observation,
-  navToTaxonDetails
+  navToTaxonDetails,
 }: Props ) => {
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );

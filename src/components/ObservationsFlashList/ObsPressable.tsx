@@ -39,7 +39,7 @@ const ObsPressable = ( {
   layout,
   observation,
   uploadProgress,
-  unsynced
+  unsynced,
 }: Props ) => {
   const { t } = useTranslation( );
 

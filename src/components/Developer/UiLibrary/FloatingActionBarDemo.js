@@ -1,7 +1,7 @@
 import {
   FloatingActionBar,
   Heading2,
-  INatIconButton
+  INatIconButton,
 } from "components/SharedComponents";
 import React from "react";
 import colors from "styles/tailwindColors";

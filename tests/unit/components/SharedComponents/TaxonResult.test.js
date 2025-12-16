@@ -7,17 +7,17 @@ const mockTaxon = {
   name: "Aves",
   preferred_common_name: "Birds",
   rank: "family",
-  rank_level: 60
+  rank_level: 60,
 };
 
 jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   __esModule: true,
-  default: () => undefined
+  default: () => undefined,
 } ) );
 
 jest.mock( "sharedHooks/useTaxon", () => ( {
   __esModule: true,
-  default: () => ( { taxon: mockTaxon } )
+  default: () => ( { taxon: mockTaxon } ),
 } ) );
 
 describe( "TaxonResult", () => {
@@ -26,7 +26,7 @@ describe( "TaxonResult", () => {
       <TaxonResult
         accessibilityLabel="this is the taxon"
         taxon={mockTaxon}
-      />
+      />,
     );
 
     expect( screen ).toMatchSnapshot();

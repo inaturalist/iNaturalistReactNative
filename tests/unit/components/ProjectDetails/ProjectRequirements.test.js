@@ -11,7 +11,7 @@ const mockProject = factory( "RemoteProject", {
   icon: faker.image.url( ),
   header_image_url: faker.image.url( ),
   description: faker.lorem.paragraph( ),
-  project_observation_rules: []
+  project_observation_rules: [],
 } );
 
 const mockProjectWithMonths = factory( "RemoteProject", {
@@ -19,9 +19,9 @@ const mockProjectWithMonths = factory( "RemoteProject", {
   rule_preferences: [
     {
       field: "month",
-      value: "1,5,8"
-    }
-  ]
+      value: "1,5,8",
+    },
+  ],
 } );
 
 const mockProjectWithStartTime = factory( "RemoteProject", {
@@ -29,9 +29,9 @@ const mockProjectWithStartTime = factory( "RemoteProject", {
   rule_preferences: [
     {
       field: "d1",
-      value: "2024-02-01"
-    }
-  ]
+      value: "2024-02-01",
+    },
+  ],
 } );
 
 const mockProjectWithDateRange = factory( "RemoteProject", {
@@ -39,13 +39,13 @@ const mockProjectWithDateRange = factory( "RemoteProject", {
   rule_preferences: [
     {
       field: "d1",
-      value: "2024-03-07 07:42 -06:00"
+      value: "2024-03-07 07:42 -06:00",
     },
     {
       field: "d2",
-      value: "2024-03-14 08:41 -07:00"
-    }
-  ]
+      value: "2024-03-14 08:41 -07:00",
+    },
+  ],
 } );
 
 const mockProjectWithObservedOnDate = factory( "RemoteProject", {
@@ -53,9 +53,9 @@ const mockProjectWithObservedOnDate = factory( "RemoteProject", {
   rule_preferences: [
     {
       field: "observed_on",
-      value: "2022-08-24"
-    }
-  ]
+      value: "2022-08-24",
+    },
+  ],
 } );
 
 jest.mock(
@@ -65,9 +65,9 @@ jest.mock(
     default: jest.fn( ( ) => ( {
       data: null,
       isLoading: false,
-      isError: false
-    } ) )
-  } )
+      isError: false,
+    } ) ),
+  } ),
 );
 
 beforeAll( () => {
@@ -77,7 +77,7 @@ beforeAll( () => {
 describe( "ProjectRequirements", ( ) => {
   test( "displays project rule months with correct formatting", async ( ) => {
     useAuthenticatedQuery.mockImplementation( ( ) => ( {
-      data: mockProjectWithMonths
+      data: mockProjectWithMonths,
     } ) );
     renderComponent( <ProjectRequirements /> );
 
@@ -87,7 +87,7 @@ describe( "ProjectRequirements", ( ) => {
 
   test( "displays project rule start time with correct formatting", async ( ) => {
     useAuthenticatedQuery.mockImplementation( ( ) => ( {
-      data: mockProjectWithStartTime
+      data: mockProjectWithStartTime,
     } ) );
     renderComponent( <ProjectRequirements /> );
 
@@ -97,7 +97,7 @@ describe( "ProjectRequirements", ( ) => {
 
   test( "displays project rule date range with correct formatting", async ( ) => {
     useAuthenticatedQuery.mockImplementation( ( ) => ( {
-      data: mockProjectWithDateRange
+      data: mockProjectWithDateRange,
     } ) );
     renderComponent( <ProjectRequirements /> );
 
@@ -107,7 +107,7 @@ describe( "ProjectRequirements", ( ) => {
 
   test( "displays project rule observed on date with correct formatting", async ( ) => {
     useAuthenticatedQuery.mockImplementation( ( ) => ( {
-      data: mockProjectWithObservedOnDate
+      data: mockProjectWithObservedOnDate,
     } ) );
     renderComponent( <ProjectRequirements /> );
 
