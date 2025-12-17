@@ -34,7 +34,7 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
   const currentUser = useCurrentUser();
 
   // TODO: replace this with infinite scroll like ExploreFlashList
-  const { data: userList, isLoading, refetch } = useAuthenticatedQuery(
+  const { data: userList = [], isLoading, refetch } = useAuthenticatedQuery(
     ["fetchSearchResults", userQuery],
     optsWithAuth => fetchSearchResults(
       {
