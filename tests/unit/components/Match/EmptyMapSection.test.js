@@ -14,7 +14,7 @@ describe( "EmptyMapSection", () => {
     );
 
     const locationIndicator = screen.getByTestId( "Map.LocationIndicator" );
-    expect( locationIndicator ).toBeTruthy();
+    expect( locationIndicator ).toBeVisible();
   } );
 
   it( "calls handleAddLocationPressed when button is pressed", () => {

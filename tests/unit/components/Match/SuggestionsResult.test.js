@@ -25,10 +25,10 @@ describe( "SuggestionsResult", () => {
       />
     );
 
-    expect( screen.getByText( "Cup Plant" ) ).toBeTruthy();
-    expect( screen.getByText( "Silphium perfoliatum" ) ).toBeTruthy();
-    expect( screen.getByText( "87% confidence" ) ).toBeTruthy();
-    expect( screen.getByTestId( "SuggestionsResult.745.photo" ) ).toBeTruthy();
+    expect( screen.getByText( "Cup Plant" ) ).toBeVisible();
+    expect( screen.getByText( "Silphium perfoliatum" ) ).toBeVisible();
+    expect( screen.getByText( "87% confidence" ) ).toBeVisible();
+    expect( screen.getByTestId( "SuggestionsResult.745.photo" ) ).toBeVisible();
   } );
 
   it( "handles non valid Realm taxon and returns null", () => {

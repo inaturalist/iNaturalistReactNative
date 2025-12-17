@@ -20,7 +20,7 @@ describe( "MatchHeader", () => {
 
     renderComponent( <MatchHeader topSuggestion={topSuggestion} /> );
 
-    expect( screen.getByText( "You observed this species" ) ).toBeTruthy();
+    expect( screen.getByText( "You observed this species" ) ).toBeVisible();
   } );
 
   it( "displays high confidence message for taxa above species", () => {
@@ -31,9 +31,9 @@ describe( "MatchHeader", () => {
 
     renderComponent( <MatchHeader topSuggestion={topSuggestion} /> );
 
-    expect( screen.getByText( "You observed a species in this group" ) ).toBeTruthy();
-    expect( screen.getByText( "95%" ) ).toBeTruthy();
-    expect( screen.getByText( "Confidence" ) ).toBeTruthy();
+    expect( screen.getByText( "You observed a species in this group" ) ).toBeVisible();
+    expect( screen.getByText( "95%" ) ).toBeVisible();
+    expect( screen.getByText( "Confidence" ) ).toBeVisible();
   } );
 
   it( "displays likely confidence message for species", () => {
@@ -44,7 +44,7 @@ describe( "MatchHeader", () => {
 
     renderComponent( <MatchHeader topSuggestion={topSuggestion} /> );
 
-    expect( screen.getByText( "You likely observed this species" ) ).toBeTruthy();
+    expect( screen.getByText( "You likely observed this species" ) ).toBeVisible();
   } );
 
   it( "displays may have observed message", () => {
@@ -55,7 +55,7 @@ describe( "MatchHeader", () => {
 
     renderComponent( <MatchHeader topSuggestion={topSuggestion} /> );
 
-    expect( screen.getByText( "You may have observed this species" ) ).toBeTruthy();
+    expect( screen.getByText( "You may have observed this species" ) ).toBeVisible();
   } );
 
   it( "hides observation status when hideObservationStatus is true", () => {

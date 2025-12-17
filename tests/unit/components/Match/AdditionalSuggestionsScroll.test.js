@@ -27,7 +27,7 @@ describe( "AdditionalSuggestionsScroll", () => {
         onSuggestionChosen={jest.fn()}
       />
     );
-    expect( screen.getByRole( "progressbar" ) ).toBeTruthy();
+    expect( screen.getByRole( "progressbar" ) ).toBeVisible();
   } );
 
   it( "renders heading when noTopSuggestion is true", () => {
@@ -47,6 +47,6 @@ describe( "AdditionalSuggestionsScroll", () => {
       />
     );
 
-    expect( screen.getByText( "It might be one of these" ) ).toBeTruthy();
+    expect( screen.getByText( "It might be one of these" ) ).toBeVisible();
   } );
 } );

@@ -25,8 +25,8 @@ describe( "IconicSuggestion", () => {
   it( "renders taxon with common name and scientific name", () => {
     renderComponent( <IconicSuggestion taxon={mockTaxon} /> );
 
-    expect( screen.getByText( "Ray-finned Fishes" ) ).toBeTruthy();
-    expect( screen.getByText( "actinopterygii" ) ).toBeTruthy();
+    expect( screen.getByText( "Ray-finned Fishes" ) ).toBeVisible();
+    expect( screen.getByText( "actinopterygii" ) ).toBeVisible();
   } );
 
   it( "calls handlePress when pressed", () => {
@@ -52,8 +52,8 @@ describe( "IconicSuggestion", () => {
 
     renderComponent( <IconicSuggestion taxon={mockTaxon} fromLocal /> );
 
-    expect( screen.getByText( "Birds" ) ).toBeTruthy();
-    expect( screen.getByText( "Aves" ) ).toBeTruthy();
+    expect( screen.getByText( "Birds" ) ).toBeVisible();
+    expect( screen.getByText( "Aves" ) ).toBeVisible();
   } );
 
   it( "handles taxon without common name", () => {
@@ -69,6 +69,6 @@ describe( "IconicSuggestion", () => {
 
     renderComponent( <IconicSuggestion taxon={taxonWithoutCommonName} /> );
 
-    expect( screen.getByText( "Mollusca" ) ).toBeTruthy();
+    expect( screen.getByText( "Mollusca" ) ).toBeVisible();
   } );
 } );
