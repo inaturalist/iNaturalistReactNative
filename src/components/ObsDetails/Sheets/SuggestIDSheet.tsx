@@ -11,17 +11,17 @@ import type { Node } from "react";
 import React from "react";
 
 interface Props {
-  hidden?: boolean,
+  hidden?: boolean;
   identification: {
-    body?: string,
-    taxon: { id: number }
-  }
+    body?: string;
+    taxon: { id: number };
+  };
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  onSuggestId:Function,
+  onSuggestId:Function;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  editIdentBody: Function,
+  editIdentBody: Function;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  onPressClose: Function
+  onPressClose: Function;
 }
 
 const SuggestIDSheet = ( {

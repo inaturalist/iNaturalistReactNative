@@ -10,7 +10,8 @@ import {
 } from "components/SharedComponents";
 import { fontMonoClass, View } from "components/styledComponents";
 import { t } from "i18next";
-import React, { type PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
+import React from "react";
 import { I18nManager, Platform, Text } from "react-native";
 import Config from "react-native-config";
 import RNFS from "react-native-fs";
@@ -74,7 +75,7 @@ const boldClassname = ( line: string, isDirectory = false ) => classnames(
 
 interface DirectorySizesProps {
   directoryName: string;
-  directoryEntrySizes: DirectoryEntrySize[]
+  directoryEntrySizes: DirectoryEntrySize[];
 }
 
 /* eslint-disable i18next/no-literal-string */

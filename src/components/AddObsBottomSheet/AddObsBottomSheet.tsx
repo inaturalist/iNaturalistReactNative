@@ -12,18 +12,18 @@ import colors from "styles/tailwindColors";
 interface Props {
   closeBottomSheet: ( ) => void;
   navAndCloseBottomSheet: ( screen: string, params?: {
-    camera?: string
+    camera?: string;
   } ) => void;
   hidden: boolean;
 }
 
 type ObsCreateItem = {
-  text: string,
-  icon: string,
-  onPress: ( ) => void,
-  testID: string,
-  accessibilityLabel: string,
-  accessibilityHint: string
+  text: string;
+  icon: string;
+  onPress: ( ) => void;
+  testID: string;
+  accessibilityLabel: string;
+  accessibilityHint: string;
 }
 
 const majorVersionIOS = parseInt( String( Platform.Version ), 10 );
@@ -42,7 +42,7 @@ const AddObsBottomSheet = ( {
 
   const obsCreateItems = useMemo( ( ) => ( {
     aiCamera: {
-      text: t( "ID-with-AI-Camera" ),
+      text: t( "ID-in-Camera" ),
       icon: "aicamera",
       onPress: ( ) => navAndCloseBottomSheet( "Camera", { camera: "AI" } ),
       testID: "aicamera-button",
@@ -91,6 +91,16 @@ const AddObsBottomSheet = ( {
     t
   ] );
 
+  const optionRows = AI_CAMERA_SUPPORTED
+    ? [
+      [obsCreateItems.standardCamera, obsCreateItems.photoLibrary],
+      [obsCreateItems.soundRecorder, obsCreateItems.aiCamera]
+    ]
+    : [
+      [obsCreateItems.standardCamera],
+      [obsCreateItems.soundRecorder, obsCreateItems.photoLibrary]
+    ];
+
   const renderAddObsIcon = ( {
     accessibilityHint,
     accessibilityLabel,
@@ -100,6 +110,7 @@ const AddObsBottomSheet = ( {
     text
   }: ObsCreateItem ) => (
     <Pressable
+      key={testID}
       className="bg-white w-1/2 flex-column items-center py-4 rounded-lg flex-1 shadow-sm
       shadow-black/25 active:opacity-50"
       onPress={onPress}
@@ -133,15 +144,11 @@ const AddObsBottomSheet = ( {
     >
       <View className="flex-column gap-y-4 pb-4 px-4">
 
-        <View className={ROW_CLASS}>
-          {renderAddObsIcon( obsCreateItems.standardCamera )}
-          {renderAddObsIcon( obsCreateItems.photoLibrary )}
-        </View>
-
-        <View className={ROW_CLASS}>
-          {renderAddObsIcon( obsCreateItems.soundRecorder )}
-          {AI_CAMERA_SUPPORTED && renderAddObsIcon( obsCreateItems.aiCamera )}
-        </View>
+        {optionRows.map( row => (
+          <View key={row.map( i => i.testID ).join( "-" )} className={ROW_CLASS}>
+            {row.map( item => renderAddObsIcon( item ) )}
+          </View>
+        ) )}
 
         <Pressable
           className="bg-mediumGray w-full flex-row items-center py-[10px] px-5 rounded-lg
@@ -158,7 +165,12 @@ const AddObsBottomSheet = ( {
               size={24}
             />
           </View>
-          <Body3>{obsCreateItems.noEvidence.text}</Body3>
+          <Body3
+            maxFontSizeMultiplier={1.5}
+            numberOfLines={1}
+          >
+            {obsCreateItems.noEvidence.text}
+          </Body3>
         </Pressable>
 
       </View>

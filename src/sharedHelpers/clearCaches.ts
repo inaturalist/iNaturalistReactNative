@@ -11,14 +11,14 @@ const logger = log.extend( "clearCaches.ts" );
 interface RealmObservation {
   observationPhotos: {
     photo: {
-      localFilePath: string
-    }
-  }[],
+      localFilePath: string;
+    };
+  }[];
   observationSounds: {
     sound: {
-      file_url: string
-    }
-  }[]
+      file_url: string;
+    };
+  }[];
 }
 
 const clearRotatedOriginalPhotosDirectory = async ( ) => {

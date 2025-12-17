@@ -20,7 +20,7 @@ interface Props {
     non_traditional_projects: Array<{
       project: object;
     }>;
-  }
+  };
 }
 
 const ProjectSection = ( { observation }: Props ) => {

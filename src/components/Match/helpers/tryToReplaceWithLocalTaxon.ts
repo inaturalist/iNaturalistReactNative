@@ -1,9 +1,10 @@
+import type { ApiSuggestion } from "api/types";
 import type Taxon from "realmModels/Taxon";
 import type { RealmTaxon } from "realmModels/types";
 
 const tryToReplaceWithLocalTaxon = (
   localTaxa: ( Taxon & RealmTaxon )[],
-  suggestion: { taxon: { id: number } }
+  suggestion: ApiSuggestion
 ) => {
   const localTaxon = localTaxa.find( local => local.id === suggestion.taxon.id );
 

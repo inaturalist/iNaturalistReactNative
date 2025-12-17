@@ -6,7 +6,7 @@ function findRecordInRealm(
   recordUUID: string | null,
   type: string,
   options?: {
-    record: object
+    record: object;
   }
 ): object | null {
   if ( !realm || realm.isClosed ) return null;
@@ -53,7 +53,7 @@ function handleRecordUpdateError(
   type: string,
   serverId: number,
   options?: {
-    record: object
+    record: object;
   }
 ): void {
   // Try it one more time in case it was invalidated but it's still in the
@@ -84,11 +84,11 @@ const markRecordUploaded = (
   recordUUID: string | null,
   type: string,
   response: {
-    results: Array<{id: number}>
+    results: Array<{id: number}>;
   },
   realm: object,
   options?: {
-    record: object
+    record: object;
   }
 ) => {
   if ( !realm || realm.isClosed ) return;

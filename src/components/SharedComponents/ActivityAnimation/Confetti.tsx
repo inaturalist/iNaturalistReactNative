@@ -7,6 +7,7 @@ import React, {
   memo, useEffect, useState
 } from "react";
 import { StyleSheet, useWindowDimensions } from "react-native";
+import type { SharedValue } from "react-native-reanimated";
 import Animated, {
   Easing,
   interpolate,
@@ -15,21 +16,18 @@ import Animated, {
   useSharedValue,
   withTiming
 } from "react-native-reanimated";
-import {
-  type SharedValue
-} from "react-native-reanimated";
 import colors from "styles/tailwindColors";
 
 type ConfettiProps = PropsWithChildren<{
-  count: number
-  duration?: number
+  count: number;
+  duration?: number;
 }>
 
 type AnimatedElementProps = PropsWithChildren<{
-  index: number
-  count: number
-  animation: SharedValue<number>
-  duration: number
+  index: number;
+  count: number;
+  animation: SharedValue<number>;
+  duration: number;
 }>
 
 const AnimatedElement = memo(

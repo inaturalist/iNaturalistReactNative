@@ -12,12 +12,12 @@ import {
 import ProjectListItem from "./ProjectListItem";
 
 interface Props {
-  projects: Array<object>
-  ListEmptyComponent?: React.JSX.Element
-  ListFooterComponent?: React.JSX.Element
-  onEndReached?: ( ) => void
-  onPress?: ( project: ApiProject ) => void
-  accessibilityLabel?: string
+  projects: Array<object>;
+  ListEmptyComponent?: React.JSX.Element;
+  ListFooterComponent?: React.JSX.Element;
+  onEndReached?: ( ) => void;
+  onPress?: ( project: ApiProject ) => void;
+  accessibilityLabel?: string;
 }
 
 const ProjectList = ( {

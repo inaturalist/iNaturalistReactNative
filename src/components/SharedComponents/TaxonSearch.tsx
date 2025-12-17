@@ -22,9 +22,9 @@ interface Props {
   isLoading?: boolean;
   isLocal?: boolean;
   renderItem: (
-    { item, index }: { item: RealmTaxon, index: number }
+    { item, index }: { item: RealmTaxon; index: number }
   ) => React.ReactElement<unknown>;
-  taxa: RealmTaxon[]
+  taxa: RealmTaxon[];
 }
 
 const TaxonSearch = ( {

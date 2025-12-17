@@ -90,6 +90,9 @@ export interface ApiTaxon {
   id?: number;
   name?: string;
   preferred_common_name?: string;
+  rank_level?: number;
+  taxonPhotos?: { photo: ApiPhoto }[];
+  defaultPhoto?: ApiPhoto;
 }
 
 export interface ApiUser {
@@ -102,12 +105,17 @@ export interface ApiUser {
 export interface ApiComment {
   body?: string;
   user?: ApiUser;
+  id: number;
+  hidden?: boolean;
+  uuid: string;
+  created_at: string;
 }
 
 export interface ApiIdentification {
   body?: string;
   taxon?: ApiTaxon;
   user?: ApiUser;
+  hidden?: boolean;
 }
 
 export interface ApiNotification {
@@ -134,10 +142,18 @@ export interface ApiObservation extends ApiRecord {
   time_observed_at?: string;
   user?: ApiUser;
   uuid: string;
+  comments?: ApiComment[];
+  identifications?: ApiIdentification[];
+  taxon?: ApiTaxon;
+}
+
+export interface ApiSuggestion {
+  taxon: ApiTaxon;
+  combined_score: number;
 }
 
 export interface ApiObservationsSearchResponse extends ApiResponse {
-  results: ApiObservation[]
+  results: ApiObservation[];
 }
 
 export const ORDER_BY_CREATED_AT = "created_at";

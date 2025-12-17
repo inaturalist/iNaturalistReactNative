@@ -157,134 +157,134 @@ export interface MapBoundaries {
 }
 
 interface PLACE {
-  display_name: string,
-  id: number,
-  place_type: number,
+  display_name: string;
+  id: number;
+  place_type: number;
   point_geojson: {
-    coordinates: Array<number>
-  },
+    coordinates: Array<number>;
+  };
   bounding_box_geojson?: {
-    coordinates: Array<number>
-  },
-  type: string
+    coordinates: Array<number>;
+  };
+  type: string;
 }
 
 interface DefaultLocation {
-  placeMode: PLACE_MODE,
-  lat?: number,
-  lng?: number,
-  radius?: number
+  placeMode: PLACE_MODE;
+  lat?: number;
+  lng?: number;
+  radius?: number;
 }
 
 type ExploreProviderProps = {children: React.ReactNode}
 type State = {
-  casual: boolean,
-  created_d1: string | null | undefined,
-  created_d2: string | null | undefined,
-  created_on: string | null | undefined,
-  d1: string | null | undefined,
-  d2: string | null | undefined,
-  dateObserved: DATE_OBSERVED,
-  dateUploaded: DATE_UPLOADED,
-  establishmentMean: ESTABLISHMENT_MEAN,
-  hrank: TAXONOMIC_RANK | undefined | null,
-  iconic_taxa: string[] | undefined,
-  lat?: number,
-  lng?: number,
-  lrank: TAXONOMIC_RANK | undefined | null,
-  media: MEDIA,
-  months: number[] | null | undefined,
-  needsID: boolean,
-  nelat?: number,
-  nelng?: number,
-  observed_on: string | null | undefined,
-  photoLicense: PHOTO_LICENSE,
-  place: PLACE | null | undefined,
-  place_guess: string,
-  placeMode: PLACE_MODE,
-  place_id: number | null | undefined,
+  casual: boolean;
+  created_d1: string | null | undefined;
+  created_d2: string | null | undefined;
+  created_on: string | null | undefined;
+  d1: string | null | undefined;
+  d2: string | null | undefined;
+  dateObserved: DATE_OBSERVED;
+  dateUploaded: DATE_UPLOADED;
+  establishmentMean: ESTABLISHMENT_MEAN;
+  hrank: TAXONOMIC_RANK | undefined | null;
+  iconic_taxa: string[] | undefined;
+  lat?: number;
+  lng?: number;
+  lrank: TAXONOMIC_RANK | undefined | null;
+  media: MEDIA;
+  months: number[] | null | undefined;
+  needsID: boolean;
+  nelat?: number;
+  nelng?: number;
+  observed_on: string | null | undefined;
+  photoLicense: PHOTO_LICENSE;
+  place: PLACE | null | undefined;
+  place_guess: string;
+  placeMode: PLACE_MODE;
+  place_id: number | null | undefined;
   // TODO: technically this is not any object but a "Project"
   // and should be typed as such (e.g., in realm model)
-  project: object | undefined | null,
-  project_id: number | undefined | null,
-  radius?: number,
-  researchGrade: boolean,
-  return_bounds: boolean | undefined,
-  reviewedFilter: REVIEWED,
-  sortBy: SORT_BY,
-  swlat?: number,
-  swlng?: number,
+  project: object | undefined | null;
+  project_id: number | undefined | null;
+  radius?: number;
+  researchGrade: boolean;
+  return_bounds: boolean | undefined;
+  reviewedFilter: REVIEWED;
+  sortBy: SORT_BY;
+  swlat?: number;
+  swlng?: number;
   // TODO: technically this is not any object but a "Taxon"
   // and should be typed as such (e.g., in realm model)
-  taxon: object | undefined | null,
-  taxon_id: number | undefined | null,
+  taxon: object | undefined | null;
+  taxon_id: number | undefined | null;
   // TODO: technically this is not any object but a "User"
   // and should be typed as such (e.g., in realm model)
-  user: object | undefined | null,
-  user_id: number | undefined | null,
-  excludeUser: object | undefined | null,
-  verifiable: boolean,
-  wildStatus: WILD_STATUS
+  user: object | undefined | null;
+  user_id: number | undefined | null;
+  excludeUser: object | undefined | null;
+  verifiable: boolean;
+  wildStatus: WILD_STATUS;
 }
 type Action = {type: EXPLORE_ACTION.RESET}
-  | {type: EXPLORE_ACTION.DISCARD, snapshot: State}
-  | {type: EXPLORE_ACTION.SET_USER, user: object | null, userId: number | null, storedState: State}
+  | {type: EXPLORE_ACTION.DISCARD; snapshot: State}
+  | {type: EXPLORE_ACTION.SET_USER; user: object | null; userId: number | null; storedState: State}
   | {
-    type: EXPLORE_ACTION.EXCLUDE_USER,
-    user: null,
-    userId: null,
-    excludeUser: object,
-    storedState: State
+    type: EXPLORE_ACTION.EXCLUDE_USER;
+    user: null;
+    userId: null;
+    excludeUser: object;
+    storedState: State;
   }
   | {
-    type: EXPLORE_ACTION.CHANGE_TAXON,
-    taxon: { id: number } | null,
-    taxonId: number,
-    taxonName: string,
-    storedState?: State
+    type: EXPLORE_ACTION.CHANGE_TAXON;
+    taxon: { id: number } | null;
+    taxonId: number;
+    taxonName: string;
+    storedState?: State;
   }
   | { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN }
-  | {type: EXPLORE_ACTION.SET_EXPLORE_LOCATION, exploreLocation: DefaultLocation}
+  | {type: EXPLORE_ACTION.SET_EXPLORE_LOCATION; exploreLocation: DefaultLocation}
   | {
-    type: EXPLORE_ACTION.SET_PLACE,
-    place: PLACE,
-    placeId: number,
-    placeGuess?: string,
-    lat: number,
-    lng: number,
-    radius: number,
-    storedState: State
+    type: EXPLORE_ACTION.SET_PLACE;
+    place: PLACE;
+    placeId: number;
+    placeGuess?: string;
+    lat: number;
+    lng: number;
+    radius: number;
+    storedState: State;
   }
   | {type: EXPLORE_ACTION.SET_PLACE_MODE_NEARBY}
   | {type: EXPLORE_ACTION.SET_PLACE_MODE_WORLDWIDE}
   | {type: EXPLORE_ACTION.SET_PLACE_MODE_MAP_AREA}
   | {type: EXPLORE_ACTION.SET_PLACE_MODE_PLACE}
   | {
-      type: EXPLORE_ACTION.SET_PROJECT,
-      project: object | null,
-      projectId: number | null,
-      storedState: State
+      type: EXPLORE_ACTION.SET_PROJECT;
+      project: object | null;
+      projectId: number | null;
+      storedState: State;
     }
-  | {type: EXPLORE_ACTION.CHANGE_SORT_BY, sortBy: SORT_BY}
+  | {type: EXPLORE_ACTION.CHANGE_SORT_BY; sortBy: SORT_BY}
   | {type: EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE}
   | {type: EXPLORE_ACTION.TOGGLE_NEEDS_ID}
   | {type: EXPLORE_ACTION.TOGGLE_CASUAL}
-  | {type: EXPLORE_ACTION.SET_HIGHEST_TAXONOMIC_RANK, hrank: TAXONOMIC_RANK}
-  | {type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK, lrank: TAXONOMIC_RANK}
+  | {type: EXPLORE_ACTION.SET_HIGHEST_TAXONOMIC_RANK; hrank: TAXONOMIC_RANK}
+  | {type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK; lrank: TAXONOMIC_RANK}
   | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_ALL}
-  | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_EXACT, observedOn: string}
-  | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_RANGE, d1: string, d2: string}
-  | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_MONTHS, months: number[]}
+  | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_EXACT; observedOn: string}
+  | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_RANGE; d1: string; d2: string}
+  | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_MONTHS; months: number[]}
   | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_ALL}
-  | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT, createdOn: string}
-  | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_RANGE, createdD1: string, createdD2: string}
-  | {type: EXPLORE_ACTION.SET_MEDIA, media: MEDIA}
-  | {type: EXPLORE_ACTION.SET_ESTABLISHMENT_MEAN, establishmentMean: ESTABLISHMENT_MEAN}
-  | {type: EXPLORE_ACTION.SET_WILD_STATUS, wildStatus: WILD_STATUS}
-  | {type: EXPLORE_ACTION.SET_REVIEWED, reviewedFilter: REVIEWED}
-  | {type: EXPLORE_ACTION.SET_PHOTO_LICENSE, photoLicense: PHOTO_LICENSE}
-  | {type: EXPLORE_ACTION.SET_MAP_BOUNDARIES, mapBoundaries: MapBoundaries}
-  | {type: EXPLORE_ACTION.USE_STORED_STATE, storedState: State}
+  | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT; createdOn: string}
+  | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_RANGE; createdD1: string; createdD2: string}
+  | {type: EXPLORE_ACTION.SET_MEDIA; media: MEDIA}
+  | {type: EXPLORE_ACTION.SET_ESTABLISHMENT_MEAN; establishmentMean: ESTABLISHMENT_MEAN}
+  | {type: EXPLORE_ACTION.SET_WILD_STATUS; wildStatus: WILD_STATUS}
+  | {type: EXPLORE_ACTION.SET_REVIEWED; reviewedFilter: REVIEWED}
+  | {type: EXPLORE_ACTION.SET_PHOTO_LICENSE; photoLicense: PHOTO_LICENSE}
+  | {type: EXPLORE_ACTION.SET_MAP_BOUNDARIES; mapBoundaries: MapBoundaries}
+  | {type: EXPLORE_ACTION.USE_STORED_STATE; storedState: State}
 type Dispatch = ( action: Action ) => void
 
 const ExploreContext = React.createContext<

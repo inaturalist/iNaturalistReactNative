@@ -1,7 +1,7 @@
 import { ScrollView, View } from "components/styledComponents";
 import React, { useEffect, useState } from "react";
+import { Image } from "react-native";
 import Photo from "realmModels/Photo";
-import getImageDimensions from "sharedHelpers/getImageDimensions";
 
 import PhotoContainer from "./PhotoContainer";
 import SoundContainer from "./SoundContainer";
@@ -25,8 +25,8 @@ const MasonryLayout = ( { items, onImagePress } ) => {
         if ( item.file_url ) {
           return item;
         }
-        const imageDimensions = await getImageDimensions( photoUrl( item ) );
-        return { ...item, ...imageDimensions };
+        const imageDimensions = await Image.getSize( photoUrl( item ) );
+        return Object.assign( item, imageDimensions );
       } );
 
       const itemData = await Promise.all( itemPromises );

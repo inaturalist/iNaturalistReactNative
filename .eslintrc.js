@@ -20,7 +20,8 @@ module.exports = {
     "react-native",
     "simple-import-sort",
     "@tanstack/query",
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "@stylistic"
   ],
   rules: {
     "arrow-parens": [2, "as-needed"],
@@ -146,7 +147,9 @@ module.exports = {
     "@typescript-eslint/no-unsafe-function-type": 1,
     "@typescript-eslint/consistent-type-imports": ["error", {
       fixStyle: "separate-type-imports"
-    }]
+    }],
+    "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
+    "@stylistic/member-delimiter-style": "error"
   },
   ignorePatterns: ["!.detoxrc.js", "/coverage/*", "/vendor/*", "**/flow-typed"],
   settings: {
@@ -165,7 +168,15 @@ module.exports = {
         "@typescript-eslint/no-unsafe-function-type": "off",
         "@typescript-eslint/no-wrapper-object-types": "off",
         "@typescript-eslint/no-require-imports": "off",
-        "@typescript-eslint/consistent-type-imports": "off"
+        "@typescript-eslint/consistent-type-imports": "off",
+        "import/consistent-type-specifier-style": "off",
+        "@stylistic/member-delimiter-style": "off"
+      }
+    },
+    {
+      files: ["*.test.js", "*.test.tsx"],
+      rules: {
+        "react/jsx-props-no-spreading": "off"
       }
     },
     {

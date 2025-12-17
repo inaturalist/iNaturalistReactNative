@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { ApiTaxon } from "api/types";
 import {
   TaxonResult,
@@ -18,11 +19,13 @@ const { useRealm } = RealmContext;
 
 const MatchTaxonSearchScreen = ( ) => {
   const [taxonQuery, setTaxonQuery] = useState( "" );
-  const [selectedTaxon, setSelectedTaxon] = useState<ApiTaxon>( null );
+  const [selectedTaxon, setSelectedTaxon] = useState<ApiTaxon | null>( null );
   const { taxa, isLoading, isLocal } = useTaxonSearch( taxonQuery );
   const { t } = useTranslation( );
   const realm = useRealm( );
-  const navigation = useNavigation( );
+  const navigation = useNavigation<
+    NativeStackNavigationProp<Record<string, { screen: string; params: {screen: string} }>>
+  >( );
 
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
   const cameraRollUris = useStore( state => state.cameraRollUris );
@@ -59,7 +62,7 @@ const MatchTaxonSearchScreen = ( ) => {
     // no-unused-prop-types failing for components defined at runtime seems to
     // be a bug. These props are clearly used
     // eslint-disable-next-line react/no-unused-prop-types
-    ( { item: taxon, index }: { item: ApiTaxon, index: number } ) => (
+    ( { item: taxon, index }: { item: ApiTaxon; index: number } ) => (
       <TaxonResult
         accessibilityLabel={t( "Choose-taxon" )}
         fetchRemote={false}

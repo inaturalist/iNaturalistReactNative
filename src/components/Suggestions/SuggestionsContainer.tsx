@@ -30,13 +30,15 @@ import TaxonSearchButton from "./TaxonSearchButton";
 
 const logger = log.extend( "SuggestionsContainer" );
 
-export const FETCH_STATUS_LOADING = "loading";
-export const FETCH_STATUS_ONLINE_FETCHED = "online-fetched";
-export const FETCH_STATUS_ONLINE_ERROR = "online-error";
-export const FETCH_STATUS_OFFLINE_FETCHED = "offline-fetched";
-export const FETCH_STATUS_OFFLINE_ERROR = "offline-error";
-export const FETCH_STATUS_OFFLINE_SKIPPED = "offline-skipped";
-export const FETCH_STATUS_ONLINE_SKIPPED = "online-skipped";
+export enum FETCH_STATUSES {
+  FETCH_STATUS_LOADING = "loading",
+  FETCH_STATUS_ONLINE_FETCHED = "online-fetched",
+  FETCH_STATUS_ONLINE_ERROR = "online-error",
+  FETCH_STATUS_OFFLINE_FETCHED = "offline-fetched",
+  FETCH_STATUS_OFFLINE_ERROR = "offline-error",
+  FETCH_STATUS_OFFLINE_SKIPPED = "offline-skipped",
+  FETCH_STATUS_ONLINE_SKIPPED = "online-skipped"
+}
 
 export const TOP_SUGGESTION_NONE = "none";
 export const TOP_SUGGESTION_HUMAN = "human";
@@ -55,7 +57,7 @@ export type Suggestion = {
   taxon: {
     id: number;
     name: string;
-  }
+  };
 };
 
 export type TopSuggestionType = string;
@@ -73,8 +75,8 @@ export const initialSuggestions: Suggestions = {
 };
 
 const initialState = {
-  onlineFetchStatus: FETCH_STATUS_LOADING,
-  offlineFetchStatus: FETCH_STATUS_LOADING,
+  onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
+  offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
   scoreImageParams: null,
   mediaViewerVisible: false,
   queryKey: [],
@@ -94,8 +96,8 @@ const reducer = ( state, action ) => {
     case "SELECT_PHOTO":
       return {
         ...state,
-        onlineFetchStatus: FETCH_STATUS_LOADING,
-        offlineFetchStatus: FETCH_STATUS_LOADING,
+        onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
+        offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
         selectedPhotoUri: action.selectedPhotoUri,
         scoreImageParams: action.scoreImageParams,
         queryKey: setQueryKey( action.selectedPhotoUri, state.shouldUseEvidenceLocation )
@@ -118,8 +120,8 @@ const reducer = ( state, action ) => {
     case "TOGGLE_LOCATION":
       return {
         ...state,
-        onlineFetchStatus: FETCH_STATUS_LOADING,
-        offlineFetchStatus: FETCH_STATUS_LOADING,
+        onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
+        offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
         scoreImageParams: action.scoreImageParams,
         shouldUseEvidenceLocation: action.shouldUseEvidenceLocation,
         queryKey: setQueryKey( state.selectedPhotoUri, action.shouldUseEvidenceLocation )
@@ -189,28 +191,29 @@ const SuggestionsContainer = ( ) => {
   } = state;
 
   const shouldFetchOnlineSuggestions = ( hasPermissions !== undefined )
-      && onlineFetchStatus === FETCH_STATUS_LOADING;
+      && onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_LOADING;
 
-  const onlineSuggestionsAttempted = onlineFetchStatus === FETCH_STATUS_ONLINE_FETCHED
-      || onlineFetchStatus === FETCH_STATUS_ONLINE_ERROR;
+  const onlineSuggestionsAttempted
+   = onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_ONLINE_FETCHED
+      || onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_ONLINE_ERROR;
 
   const onFetchError = useCallback(
     ( { isOnline }: { isOnline: boolean } ) => {
       if ( isOnline ) {
         dispatch( {
           type: "SET_ONLINE_FETCH_STATUS",
-          onlineFetchStatus: FETCH_STATUS_ONLINE_ERROR
+          onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_ONLINE_ERROR
         } );
       } else {
         dispatch( {
           type: "SET_OFFLINE_FETCH_STATUS",
-          offlineFetchStatus: FETCH_STATUS_OFFLINE_ERROR
+          offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_OFFLINE_ERROR
         } );
         // If offline is finished, and online still in loading state it means it never started
-        if ( onlineFetchStatus === FETCH_STATUS_LOADING ) {
+        if ( onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_LOADING ) {
           dispatch( {
             type: "SET_ONLINE_FETCH_STATUS",
-            onlineFetchStatus: FETCH_STATUS_ONLINE_SKIPPED
+            onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_ONLINE_SKIPPED
           } );
         }
       }
@@ -223,24 +226,24 @@ const SuggestionsContainer = ( ) => {
       if ( isOnline ) {
         dispatch( {
           type: "SET_ONLINE_FETCH_STATUS",
-          onlineFetchStatus: FETCH_STATUS_ONLINE_FETCHED
+          onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_ONLINE_FETCHED
         } );
         // Currently we start offline only when online has an error, so
         // we can register offline as skipped if online is successful
         dispatch( {
           type: "SET_OFFLINE_FETCH_STATUS",
-          offlineFetchStatus: FETCH_STATUS_OFFLINE_SKIPPED
+          offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_OFFLINE_SKIPPED
         } );
       } else {
         dispatch( {
           type: "SET_OFFLINE_FETCH_STATUS",
-          offlineFetchStatus: FETCH_STATUS_OFFLINE_FETCHED
+          offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_OFFLINE_FETCHED
         } );
         // If offline is finished, and online still in loading state it means it never started
-        if ( onlineFetchStatus === FETCH_STATUS_LOADING ) {
+        if ( onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_LOADING ) {
           dispatch( {
             type: "SET_ONLINE_FETCH_STATUS",
-            onlineFetchStatus: FETCH_STATUS_ONLINE_SKIPPED
+            onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_ONLINE_SKIPPED
           } );
         }
       }
@@ -313,8 +316,8 @@ const SuggestionsContainer = ( ) => {
     ]
   );
 
-  const isLoading = onlineFetchStatus === FETCH_STATUS_LOADING
-    || offlineFetchStatus === FETCH_STATUS_LOADING;
+  const isLoading = onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_LOADING
+    || offlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_LOADING;
 
   const { loadTime } = usePerformance( {
     isLoading
@@ -342,8 +345,18 @@ const SuggestionsContainer = ( ) => {
     // suggestions
     if ( !isConnected ) { return; }
     resetTimeout( );
-    dispatch( { type: "SET_ONLINE_FETCH_STATUS", onlineFetchStatus: FETCH_STATUS_LOADING } );
-    dispatch( { type: "SET_OFFLINE_FETCH_STATUS", offlineFetchStatus: FETCH_STATUS_LOADING } );
+    dispatch(
+      {
+        type: "SET_ONLINE_FETCH_STATUS",
+        onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING
+      }
+    );
+    dispatch(
+      {
+        type: "SET_OFFLINE_FETCH_STATUS",
+        offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING
+      }
+    );
   }, [isConnected, resetTimeout] );
 
   const hideLocationToggleButton = usingOfflineSuggestions

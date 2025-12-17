@@ -13,13 +13,13 @@ type SyncingStatus = typeof SYNC_PENDING
   | typeof AUTOMATIC_SYNC_IN_PROGRESS;
 
 interface SyncObservationsSlice {
-  autoSyncAbortController: AbortController | null,
-  currentDeleteCount: number,
-  deleteError: string | null,
-  deleteQueue: Array<string>,
-  deletionsCompletedAt: Date | null,
-  initialNumDeletionsInQueue: number,
-  syncingStatus: SyncingStatus
+  autoSyncAbortController: AbortController | null;
+  currentDeleteCount: number;
+  deleteError: string | null;
+  deleteQueue: Array<string>;
+  deletionsCompletedAt: Date | null;
+  initialNumDeletionsInQueue: number;
+  syncingStatus: SyncingStatus;
 }
 
 const DEFAULT_STATE: SyncObservationsSlice = {

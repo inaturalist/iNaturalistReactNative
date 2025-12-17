@@ -23,7 +23,7 @@ interface Props extends PropsWithChildren {
   // There is probably a better way to indicate that this tailwind prop is
   // supported everywhere, but I haven't found it yet. ~~~kueda 20241016
   // eslint-disable-next-line react/no-unused-prop-types
-  className?: string,
+  className?: string;
   color?: string;
   disabled?: boolean;
   height?: number;

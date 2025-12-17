@@ -16,7 +16,8 @@ const fade = ( value: number ) => ( {
 
 interface Props {
   isLoading: boolean;
-  onSkip: ( ) => void;
+  // TODO rm unused onSkip prop https://linear.app/inaturalist/issue/MOB-1068/remove-unused-onskip-prop
+  onSkip?: ( ) => void;
 }
 
 const PreMatchLoadingScreen = ( { isLoading, onSkip }: Props ) => {

@@ -9,7 +9,7 @@ import TaxonomyCommonName from "./TaxonomyCommonName";
 import TaxonomyScientificName from "./TaxonomyScientificName";
 
 interface Props {
-  currentUser: { login: string, id: number };
+  currentUser: { login: string; id: number };
   isChild?: boolean;
   isCurrentTaxon?: boolean;
   navigateToTaxonDetails: ( _taxonId: number ) => void;

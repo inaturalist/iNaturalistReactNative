@@ -1,0 +1,5 @@
+NEW
+* Increased analytics to figure out why "app is slow" 
+
+UPDATED
+* Saved observation screen in not-advanced mode

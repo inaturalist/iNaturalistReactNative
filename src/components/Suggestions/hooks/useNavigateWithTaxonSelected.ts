@@ -9,7 +9,7 @@ const useNavigateWithTaxonSelected = (
   // mysterious background nonsense happening after this screen loses focus
   unselectTaxon: () => void,
   options: {
-    vision: boolean
+    vision: boolean;
   }
 ) => {
   const navigation = useNavigation( );

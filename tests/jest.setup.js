@@ -109,6 +109,11 @@ jest.mock( "@react-native-firebase/analytics", () => ( {
   logEvent: jest.fn( )
 } ) );
 
+jest.mock( "@react-native-firebase/perf", () => ( {
+  startFirebaseTrace: jest.fn( ),
+  stopFirebaseTrace: jest.fn( )
+} ) );
+
 // see https://stackoverflow.com/questions/42268673/jest-test-animated-view-for-react-native-app
 // for more details about this withAnimatedTimeTravelEnabled approach. basically, this
 // allows us to step through animation frames when a screen is first loading when we're using the
@@ -168,6 +173,30 @@ jest.mock( "components/Camera/FadeInOutView", () => {
   const { View } = require( "react-native" );
 
   return jest.fn( ( ) => React.createElement( View, null ) );
+} );
+
+// Mock @react-navigation/bottom-tabs to disable animations in Jest tests
+// This prevents the act() warnings caused by fade animations triggering state updates
+jest.mock( "@react-navigation/bottom-tabs", () => {
+  const React = require( "react" );
+  const actual = jest.requireActual( "@react-navigation/bottom-tabs" );
+  const createBottomTabNavigator = () => {
+    const Tab = actual.createBottomTabNavigator();
+    const OriginalNavigator = Tab.Navigator;
+    Tab.Navigator = function Navigator( props ) {
+      const { screenOptions, ...restProps } = props;
+      // Override animation to "none" for both function and object screenOptions
+      const modifiedScreenOptions = typeof screenOptions === "function"
+        ? route => ( { ...screenOptions( route ), animation: "none" } )
+        : { ...screenOptions, animation: "none" };
+      return React.createElement(
+        OriginalNavigator,
+        { ...restProps, screenOptions: modifiedScreenOptions }
+      );
+    };
+    return Tab;
+  };
+  return { ...actual, createBottomTabNavigator };
 } );
 
 // this silences console methods in jest tests, to make them less noisy

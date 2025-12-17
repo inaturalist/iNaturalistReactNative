@@ -85,10 +85,14 @@ export default async function resetUserForTesting() {
   console.log( `Dismissing ${announcementIdsToDismiss.length} announcements` );
 
   await Promise.all( announcementIdsToDismiss.map( async id => {
-    await inatjs.announcements.dismiss(
-      { id },
-      opts
-    );
+    try {
+      await inatjs.announcements.dismiss(
+        { id },
+        opts
+      );
+    } catch ( _error ) {
+      console.log( `Could not delete announcement: ${id}. Moving on...` );
+    }
   } ) );
   const usersEditResponse = await apiClient.get(
     "/users/edit.json",

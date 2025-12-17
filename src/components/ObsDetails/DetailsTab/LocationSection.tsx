@@ -19,7 +19,7 @@ import DetailsMapHeader from "./DetailsMapHeader";
 import ObscurationExplanation from "./ObscurationExplanation";
 
 interface Props {
-  observation: Observation
+  observation: Observation;
 }
 
 const DETAILS_MAP_MODAL_STYLE = { margin: 0 };

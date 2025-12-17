@@ -8,12 +8,12 @@ import User from "realmModels/User";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
-  item: object
-  countText: string
+  item: object;
+  countText: string;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  onPress?: Function
-  accessibilityLabel?: string
-  pressable?: boolean
+  onPress?: Function;
+  accessibilityLabel?: string;
+  pressable?: boolean;
 }
 
 const UserListItem = ( {
