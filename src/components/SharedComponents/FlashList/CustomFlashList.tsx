@@ -1,10 +1,15 @@
+import type { FlashListProps, FlashListRef } from "@shopify/flash-list";
 import { FlashList } from "@shopify/flash-list";
 import React, {
   useCallback,
   useEffect,
   useRef
 } from "react";
-import type { ViewabilityConfig } from "react-native";
+import type {
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  ViewabilityConfig
+} from "react-native";
 import flashListTracker from "sharedHelpers/flashListPerformanceTracker";
 
 const defaultViewabilityConfig: ViewabilityConfig = {
@@ -13,7 +18,16 @@ const defaultViewabilityConfig: ViewabilityConfig = {
   waitForInteraction: false
 };
 
-const CustomFlashList = props => {
+type OnViewableItemsChanged<TItem> = FlashListProps<TItem>["onViewableItemsChanged"];
+type ScrollToOffsetParams<TItem> = Parameters<FlashListRef<TItem>["scrollToOffset"]>[0];
+type ViewableItemsChangedParams<TItem> = Parameters<NonNullable<OnViewableItemsChanged<TItem>>>[0];
+
+interface Props<TItem> extends FlashListProps<TItem> {
+  ref?: React.Ref<FlashListRef<TItem>>;
+  viewabilityConfig?: ViewabilityConfig;
+}
+
+const CustomFlashList = <TItem, >( props: Props<TItem> ) => {
   const isFirstRender = useRef( true );
   const lastContentOffset = useRef( 0 );
 
@@ -46,7 +60,9 @@ const CustomFlashList = props => {
     return ( ) => undefined;
   }, [] );
 
-  const handleViewableItemsChanged = useCallback( info => {
+  const handleViewableItemsChanged = useCallback( (
+    info: ViewableItemsChangedParams<TItem>
+  ) => {
     if ( info.viewableItems.length > 0 ) {
       flashListTracker.markItemsVisible( );
     }
@@ -56,7 +72,9 @@ const CustomFlashList = props => {
     }
   }, [onViewableItemsChanged] );
 
-  const handleScroll = useCallback( event => {
+  const handleScroll = useCallback( (
+    event: NativeSyntheticEvent<NativeScrollEvent>
+  ) => {
     lastContentOffset.current = event.nativeEvent.contentOffset.y;
 
     if ( onScroll ) {
@@ -64,7 +82,9 @@ const CustomFlashList = props => {
     }
   }, [onScroll] );
 
-  const handleScrollBeginDrag = useCallback( event => {
+  const handleScrollBeginDrag = useCallback( (
+    event: NativeSyntheticEvent<NativeScrollEvent>
+  ) => {
     if ( ignoreInitialEvents.current ) return;
 
     const { y } = event.nativeEvent.contentOffset;
@@ -76,7 +96,9 @@ const CustomFlashList = props => {
     flashListTracker.beginScrollEvent( y );
   }, [] );
 
-  const handleScrollEndDrag = useCallback( event => {
+  const handleScrollEndDrag = useCallback( (
+    event: NativeSyntheticEvent<NativeScrollEvent>
+  ) => {
     if ( ignoreInitialEvents.current || !isUserScrolling.current ) return;
 
     const { y } = event.nativeEvent.contentOffset;
@@ -88,7 +110,9 @@ const CustomFlashList = props => {
     flashListTracker.beginDataFetch( );
   }, [] );
 
-  const handleMomentumScrollEnd = useCallback( event => {
+  const handleMomentumScrollEnd = useCallback( (
+    event: NativeSyntheticEvent<NativeScrollEvent>
+  ) => {
     if ( onMomentumScrollEnd ) {
       onMomentumScrollEnd( event );
     }
@@ -127,7 +151,7 @@ const CustomFlashList = props => {
 
     return {
       ...originalRef,
-      notifyDataFetched: itemsCount => {
+      notifyDataFetched: ( itemsCount: number ) => {
         if ( fetchInProgress.current ) {
           flashListTracker.endDataFetch( itemsCount );
           fetchInProgress.current = false;
@@ -136,7 +160,7 @@ const CustomFlashList = props => {
           flashListTracker.endDataFetch( itemsCount );
         }
       },
-      scrollToOffset: params => {
+      scrollToOffset: ( params: ScrollToOffsetParams<TItem> ) => {
         if ( ref && typeof ref !== "function" && ref.current ) {
           ref.current.scrollToOffset( params );
         }
@@ -150,7 +174,7 @@ const CustomFlashList = props => {
   };
 
   return (
-    <FlashList
+    <FlashList<TItem>
       ref={ref}
       initialNumToRender={5}
       onEndReached={handleEndReached}
