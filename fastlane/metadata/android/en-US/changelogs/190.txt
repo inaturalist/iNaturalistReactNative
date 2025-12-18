@@ -1,0 +1,6 @@
+UPDATED
+* Change slideover menu to be a static page
+
+FIXED
+* Obs Sheet UI for AI camera not available and for large text sizes
+* Saved observation not showing photos on new screen
