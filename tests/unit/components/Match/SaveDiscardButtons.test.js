@@ -10,7 +10,7 @@ describe( "SaveDiscardButtons", () => {
     renderComponent( <SaveDiscardButtons handlePress={mockHandlePress} /> );
 
     const saveButton = screen.getByText( "SAVE" );
-    expect( saveButton ).toBeTruthy();
+    expect( saveButton ).toBeVisible();
     fireEvent.press( saveButton );
 
     expect( mockHandlePress ).toHaveBeenCalledWith( "save" );
@@ -22,7 +22,7 @@ describe( "SaveDiscardButtons", () => {
     renderComponent( <SaveDiscardButtons handlePress={mockHandlePress} /> );
 
     const discardButton = screen.getByText( "DISCARD" );
-    expect( discardButton ).toBeTruthy();
+    expect( discardButton ).toBeVisible();
     fireEvent.press( discardButton );
 
     expect( mockHandlePress ).toHaveBeenCalledWith( "discard" );

@@ -13,8 +13,8 @@ describe( "PreMatchLoadingScreen", () => {
   it( "shows loading screen when isLoading is true", () => {
     renderComponent( <PreMatchLoadingScreen isLoading /> );
 
-    expect( screen.getByText( "Analyzing for the best identification..." ) ).toBeTruthy();
+    expect( screen.getByText( "Analyzing for the best identification..." ) ).toBeVisible();
     // Find activity indicator
-    expect( screen.getByRole( "progressbar" ) ).toBeTruthy();
+    expect( screen.getByRole( "progressbar" ) ).toBeVisible();
   } );
 } );

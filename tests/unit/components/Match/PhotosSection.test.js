@@ -35,9 +35,9 @@ describe( "PhotosSection", () => {
     );
 
     await waitFor( () => {
-      expect( screen.getByTestId( "MatchScreen.ObsPhoto" ) ).toBeTruthy();
+      expect( screen.getByTestId( "MatchScreen.ObsPhoto" ) ).toBeVisible();
     } );
-    expect( screen.getByText( "3" ) ).toBeTruthy();
+    expect( screen.getByText( "3" ) ).toBeVisible();
   } );
 
   it( "hides taxon photos when hideTaxonPhotos is true", async () => {
@@ -49,7 +49,7 @@ describe( "PhotosSection", () => {
     );
 
     await waitFor( () => {
-      expect( screen.getByTestId( "MatchScreen.ObsPhoto" ) ).toBeTruthy();
+      expect( screen.getByTestId( "MatchScreen.ObsPhoto" ) ).toBeVisible();
     } );
     expect( screen.queryByTestId( "TaxonDetails.photo.1" ) ).toBeFalsy();
     expect( screen.queryByTestId( "TaxonDetails.photo.4" ) ).toBeFalsy();
@@ -65,7 +65,7 @@ describe( "PhotosSection", () => {
     );
 
     await waitFor( () => {
-      expect( screen.getByTestId( "TaxonDetails.photo.2" ) ).toBeTruthy();
+      expect( screen.getByTestId( "TaxonDetails.photo.2" ) ).toBeVisible();
     } );
     expect( screen.queryByTestId( "TaxonDetails.photo.1" ) ).toBeFalsy();
   } ); */
@@ -78,7 +78,7 @@ describe( "PhotosSection", () => {
     );
 
     await waitFor( () => {
-      expect( screen.getByTestId( "TaxonDetails.photo.4" ) ).toBeTruthy();
+      expect( screen.getByTestId( "TaxonDetails.photo.4" ) ).toBeVisible();
     } );
 
     const photoButton = screen.getByTestId( "TaxonDetails.photo.4" );
@@ -96,10 +96,10 @@ describe( "PhotosSection", () => {
 
     // Representative photo + 2 more = 3 total
     await waitFor( () => {
-      expect( screen.getByTestId( "TaxonDetails.photo.4" ) ).toBeTruthy();
+      expect( screen.getByTestId( "TaxonDetails.photo.4" ) ).toBeVisible();
     } );
-    expect( screen.getByTestId( "TaxonDetails.photo.1" ) ).toBeTruthy();
-    expect( screen.getByTestId( "TaxonDetails.photo.2" ) ).toBeTruthy();
+    expect( screen.getByTestId( "TaxonDetails.photo.1" ) ).toBeVisible();
+    expect( screen.getByTestId( "TaxonDetails.photo.2" ) ).toBeVisible();
     expect( screen.queryByTestId( "TaxonDetails.photo.3" ) ).toBeFalsy();
   } );
 } );
