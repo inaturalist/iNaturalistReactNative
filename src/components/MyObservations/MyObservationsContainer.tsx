@@ -42,8 +42,8 @@ import MyObservationsSimple, {
 const { useRealm } = RealmContext;
 
 interface SpeciesCount {
-  count: number,
-  taxon: RealmTaxon
+  count: number;
+  taxon: RealmTaxon;
 }
 
 interface SyncOptions {
@@ -243,9 +243,9 @@ const MyObservationsContainer = ( ): React.FC => {
   const onScroll = ( scrollEvent: {
     nativeEvent: {
       contentOffset: {
-        y: number
-      }
-    }
+        y: number;
+      };
+    };
   } ) => setMyObsOffset( scrollEvent.nativeEvent.contentOffset.y );
 
   const numOfUserObservations = zustandStorage.getItem( "numOfUserObservations" );

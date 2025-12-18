@@ -6,7 +6,7 @@ import React from "react";
 import type { RealmObservation } from "realmModels/types";
 
 interface Props {
-  observation: RealmObservation,
+  observation: RealmObservation;
 }
 
 const SavedMatchContainer = ( { observation }: Props ) => {

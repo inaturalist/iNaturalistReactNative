@@ -121,7 +121,7 @@ export function getTotalDirectorySize( directoryItems: DirectoryEntrySize[] ): n
 }
 
 type AppSize = {
-  [directoryName: string]: DirectoryEntrySize[]
+  [directoryName: string]: DirectoryEntrySize[];
 }
 
 async function fetchAppSize(): Promise<AppSize> {

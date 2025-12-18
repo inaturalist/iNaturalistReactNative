@@ -15,12 +15,12 @@ import {
 } from "sharedHooks";
 
 type Props = {
-  confidence: number,
-  handlePress?: ( ) => void,
-  taxon: RealmTaxon | ApiTaxon,
-  testID?: string,
-  updateMaxHeight?: ( height: number ) => void,
-  forcedHeight: number
+  confidence: number | null;
+  handlePress?: ( ) => void;
+  taxon: RealmTaxon | ApiTaxon;
+  testID?: string;
+  updateMaxHeight?: ( height: number ) => void;
+  forcedHeight: number;
 }
 
 const SuggestionsResult = ( {

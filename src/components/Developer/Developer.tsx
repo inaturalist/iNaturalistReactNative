@@ -75,7 +75,7 @@ const boldClassname = ( line: string, isDirectory = false ) => classnames(
 
 interface DirectorySizesProps {
   directoryName: string;
-  directoryEntrySizes: DirectoryEntrySize[]
+  directoryEntrySizes: DirectoryEntrySize[];
 }
 
 /* eslint-disable i18next/no-literal-string */

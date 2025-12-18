@@ -2,13 +2,8 @@ import { render, screen, waitFor } from "@testing-library/react-native";
 import ObsMedia from "components/ObsDetails/ObsMedia";
 import _ from "lodash";
 import React from "react";
-import { Image } from "react-native";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
-
-Image.getSize = jest.fn( ( uri, callback ) => {
-  callback( { width: 1024, height: 768 } );
-} );
 
 const mockObservation = factory( "LocalObservation", {
   created_at: "2022-11-27T19:07:41-08:00",

@@ -1,5 +1,4 @@
-// @flow
-
+import type { ApiPhoto, ApiTaxon } from "api/types";
 import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
@@ -9,17 +8,17 @@ import {
   Image, Pressable, View
 } from "components/styledComponents";
 import _, { compact } from "lodash";
-import type { Node } from "react";
 import React, { useEffect, useState } from "react";
+import { Image as RNImage } from "react-native";
 import Photo from "realmModels/Photo";
-import getImageDimensions from "sharedHelpers/getImageDimensions";
+import type { RealmObservationPhoto, RealmPhoto, RealmTaxon } from "realmModels/types";
 
 type Props = {
-  representativePhoto?: Object,
-  taxon: Object,
-  obsPhotos: Array<Object>,
-  navToTaxonDetails: ( photo: Object ) => void,
-  hideTaxonPhotos?: boolean
+  representativePhoto?: ApiPhoto;
+  taxon?: ApiTaxon | RealmTaxon;
+  obsPhotos: RealmObservationPhoto[];
+  navToTaxonDetails: ( photo: ApiPhoto | RealmPhoto ) => void;
+  hideTaxonPhotos?: boolean;
 }
 
 const PhotosSection = ( {
@@ -28,13 +27,13 @@ const PhotosSection = ( {
   obsPhotos,
   navToTaxonDetails,
   hideTaxonPhotos
-}: Props ): Node => {
-  const [displayPortraitLayout, setDisplayPortraitLayout] = useState( null );
+}: Props ) => {
+  const [displayPortraitLayout, setDisplayPortraitLayout] = useState<boolean | null>( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
 
   const localTaxonPhotos = taxon?.taxonPhotos;
   const observationPhoto = obsPhotos?.[0]?.photo?.url
-  || obsPhotos?.[0]?.photo?.localFilePath;
+  || Photo.getLocalPhotoUri( obsPhotos?.[0]?.photo?.localFilePath );
 
   const taxonPhotos = compact(
     localTaxonPhotos
@@ -74,7 +73,7 @@ const PhotosSection = ( {
   useEffect( ( ) => {
     const checkImageOrientation = async ( ) => {
       if ( observationPhoto ) {
-        const imageDimensions = await getImageDimensions( observationPhoto );
+        const imageDimensions = await RNImage.getSize( observationPhoto );
         if ( imageDimensions.width < imageDimensions.height ) {
           setDisplayPortraitLayout( true );
         } else {

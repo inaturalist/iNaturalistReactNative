@@ -12,18 +12,18 @@ import colors from "styles/tailwindColors";
 interface Props {
   closeBottomSheet: ( ) => void;
   navAndCloseBottomSheet: ( screen: string, params?: {
-    camera?: string
+    camera?: string;
   } ) => void;
   hidden: boolean;
 }
 
 type ObsCreateItem = {
-  text: string,
-  icon: string,
-  onPress: ( ) => void,
-  testID: string,
-  accessibilityLabel: string,
-  accessibilityHint: string
+  text: string;
+  icon: string;
+  onPress: ( ) => void;
+  testID: string;
+  accessibilityLabel: string;
+  accessibilityHint: string;
 }
 
 const majorVersionIOS = parseInt( String( Platform.Version ), 10 );
@@ -110,6 +110,7 @@ const AddObsBottomSheet = ( {
     text
   }: ObsCreateItem ) => (
     <Pressable
+      key={testID}
       className="bg-white w-1/2 flex-column items-center py-4 rounded-lg flex-1 shadow-sm
       shadow-black/25 active:opacity-50"
       onPress={onPress}
@@ -164,7 +165,12 @@ const AddObsBottomSheet = ( {
               size={24}
             />
           </View>
-          <Body3>{obsCreateItems.noEvidence.text}</Body3>
+          <Body3
+            maxFontSizeMultiplier={1.5}
+            numberOfLines={1}
+          >
+            {obsCreateItems.noEvidence.text}
+          </Body3>
         </Pressable>
 
       </View>

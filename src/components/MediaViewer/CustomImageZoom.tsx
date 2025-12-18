@@ -12,9 +12,9 @@ const MIN_SCALE = 0.5;
 const MAX_SCALE = 5;
 
 interface Props {
-  uri: string
-  setZooming: ( ) => void,
-  selectedMediaIndex: number
+  uri: string;
+  setZooming: ( ) => void;
+  selectedMediaIndex: number;
 }
 
 const CustomImageZoom = ( {

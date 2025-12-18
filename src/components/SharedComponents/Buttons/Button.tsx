@@ -15,7 +15,7 @@ interface ButtonProps {
   disabled?: boolean;
   forceDark?: boolean;
   icon?: string;
-  iconPosition?: string,
+  iconPosition?: string;
   level?: string;
   loading?: boolean;
   onPress: ( _event?: GestureResponderEvent ) => void;

@@ -13,8 +13,8 @@ import {
 import SavedMatchContainer from "./SavedMatch/SavedMatchContainer";
 
 type RouteParams = {
-    targetActivityItemID?: number,
-    uuid: string,
+    targetActivityItemID?: number;
+    uuid: string;
 }
 
 const ObsDetailsDefaultModeScreensWrapper = () => {

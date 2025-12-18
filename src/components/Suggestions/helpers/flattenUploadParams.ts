@@ -7,10 +7,10 @@ const outputPath = computerVisionPath;
 
 type FlattenUploadArgs = {
   image: {
-    uri: string,
-    name: string,
-    type: string
-  }
+    uri: string;
+    name: string;
+    type: string;
+  };
 }
 
 const flattenUploadParams = async (

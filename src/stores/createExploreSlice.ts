@@ -5,8 +5,8 @@ const DEFAULT_STATE = {
 };
 
 interface ExploreSlice {
-  exploreView: string,
-  setExploreView: ( _view: string ) => void
+  exploreView: string;
+  setExploreView: ( _view: string ) => void;
 }
 
 const createExploreSlice: StateCreator<ExploreSlice> = set => ( {

@@ -18,7 +18,7 @@ interface Props {
   containerClass?: string;
   handleTextChange: ( _text: string ) => void;
   hasShadow?: boolean;
-  input?: React.RefObject<RNTextInput | null> | React.MutableRefObject<RNTextInput | undefined>,
+  input?: React.RefObject<RNTextInput | null> | React.MutableRefObject<RNTextInput | undefined>;
   placeholder?: string;
   testID?: string;
   value: string;

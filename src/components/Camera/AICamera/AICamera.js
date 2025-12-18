@@ -231,7 +231,12 @@ const AICamera = ( {
 
   const handleClose = async ( ) => {
     await deleteSentinelFile( sentinelFileName );
-    navigation.goBack( );
+    navigation.navigate( "TabNavigator", {
+      screen: "ObservationsTab",
+      params: {
+        screen: "ObsList"
+      }
+    } );
   };
 
   return (
