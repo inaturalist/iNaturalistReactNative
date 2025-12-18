@@ -28,7 +28,7 @@ interface CountProps {
   label: string;
 }
 
-type CountPressableProps = {
+interface CountPressableProps {
   accessibilityLabel: string;
   count: number;
   icon: string;
