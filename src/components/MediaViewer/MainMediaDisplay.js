@@ -31,16 +31,16 @@ type Props = {
   onDeletePhoto?: Function,
   onClose?: Function,
   onDeleteSound?: Function,
-  photos: Array<{
+  photos: {
     id?: number,
     url: string,
     localFilePath?: string,
     attribution?: string,
     licenseCode?: string
-  }>,
-  sounds?: Array<{
+  }[],
+  sounds?: {
     file_url: string
-  }>,
+  }[],
   selectedMediaIndex: number,
   setSelectedMediaIndex: Function
 }

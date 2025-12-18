@@ -21,7 +21,7 @@ import DiscardObservationSheet from "./Sheets/DiscardObservationSheet";
 const { useRealm } = RealmContext;
 
 type Props = {
-  observations: Array<Object>,
+  observations: Object[],
   currentObservation: Object
 }
 

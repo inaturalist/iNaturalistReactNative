@@ -53,7 +53,7 @@ type Props = {
   takingPhoto: boolean,
   takePhotoAndStoreUri: Function,
   takePhotoOptions: Object,
-  newPhotoUris: Array<Object>,
+  newPhotoUris: Object[],
   setNewPhotoUris: Function
 };
 

@@ -11,7 +11,7 @@ import ActivityItem from "./ActivityItem";
 type Props = {
   observation:Object,
   refetchRemoteObservation: Function,
-  activityItems: Array<Object>,
+  activityItems: Object[],
   openAgreeWithIdSheet: Function,
   isConnected: boolean,
   targetItemID: number,

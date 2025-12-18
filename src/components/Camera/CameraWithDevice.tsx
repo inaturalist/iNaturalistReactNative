@@ -21,7 +21,7 @@ interface Props {
   takingPhoto: boolean;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   takePhotoAndStoreUri: Function;
-  newPhotoUris: Array<object>;
+  newPhotoUris: object[];
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   setNewPhotoUris: Function;
   takePhotoOptions: object;

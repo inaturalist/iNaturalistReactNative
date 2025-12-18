@@ -18,7 +18,7 @@ interface Props {
   ListFooterComponent?: React.JSX.Element;
   onEndReached?: ( ) => void;
   refreshing?: boolean;
-  users: Array<object>;
+  users: object[];
   onPress?: ( ) => void;
   accessibilityLabel?: string;
   keyboardShouldPersistTaps?: string;

@@ -27,7 +27,7 @@ import StatusSection from "./StatusSection/StatusSection";
 const cardClassBottom = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mt-0.5 mb-4";
 
 type Props = {
-  activityItems: Array<object>;
+  activityItems: object[];
   addingActivityItem: boolean;
   belongsToCurrentUser: boolean;
   currentUser: RealmUser;

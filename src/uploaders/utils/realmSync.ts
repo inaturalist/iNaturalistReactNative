@@ -84,7 +84,7 @@ const markRecordUploaded = (
   recordUUID: string | null,
   type: string,
   response: {
-    results: Array<{id: number}>;
+    results: {id: number}[];
   },
   realm: object,
   options?: {

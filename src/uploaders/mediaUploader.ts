@@ -22,9 +22,9 @@ interface MediaApiResponse {
   page: number;
   per_page: number;
   total_results: number;
-  results: Array<{
+  results: {
     id: number;
-  }>;
+  }[];
 }
 
 interface MappedObservationPhotoForUpdating {

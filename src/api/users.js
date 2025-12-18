@@ -71,7 +71,7 @@ const fetchRemoteUser = async (
 };
 
 const fetchUsers = async (
-  ids: Array<number>,
+  ids: number[],
   params: Object = {},
   opts: Object = {},
 ): Promise<?Object> => {

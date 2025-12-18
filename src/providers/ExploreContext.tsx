@@ -161,10 +161,10 @@ interface PLACE {
   id: number;
   place_type: number;
   point_geojson: {
-    coordinates: Array<number>;
+    coordinates: number[];
   };
   bounding_box_geojson?: {
-    coordinates: Array<number>;
+    coordinates: number[];
   };
   type: string;
 }

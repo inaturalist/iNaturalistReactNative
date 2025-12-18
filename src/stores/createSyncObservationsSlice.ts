@@ -16,7 +16,7 @@ interface SyncObservationsSlice {
   autoSyncAbortController: AbortController | null;
   currentDeleteCount: number;
   deleteError: string | null;
-  deleteQueue: Array<string>;
+  deleteQueue: string[];
   deletionsCompletedAt: Date | null;
   initialNumDeletionsInQueue: number;
   syncingStatus: SyncingStatus;

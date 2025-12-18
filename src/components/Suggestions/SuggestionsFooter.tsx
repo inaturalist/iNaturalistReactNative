@@ -40,7 +40,7 @@ type Props = {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   hideLocationToggleButton: Function;
   hideSkip?: boolean;
-  observers: Array<string>;
+  observers: string[];
   shouldUseEvidenceLocation: boolean;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   toggleLocation: Function;

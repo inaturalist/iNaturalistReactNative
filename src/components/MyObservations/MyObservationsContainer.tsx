@@ -253,7 +253,7 @@ const MyObservationsContainer = ( ): React.FC => {
   const [activeTab, setActiveTab] = useState( OBSERVATIONS_TAB );
 
   let numTotalTaxaLocal: number | undefined;
-  const localObservedSpeciesCount: Array<SpeciesCount> = [];
+  const localObservedSpeciesCount: SpeciesCount[] = [];
   if ( !currentUser ) {
     // Calculate obs and leaf taxa counts from local observations
     const distinctTaxonObs = realm.objects<RealmObservation>( "Observation" )

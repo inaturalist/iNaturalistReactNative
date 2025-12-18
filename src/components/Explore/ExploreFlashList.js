@@ -11,7 +11,7 @@ import { useTranslation } from "sharedHooks";
 type Props = {
   canFetch?: boolean,
   contentContainerStyle?: Object,
-  data: Array<Object>,
+  data: Object[],
   fetchNextPage: boolean,
   hideLoadingWheel: boolean,
   isFetchingNextPage: boolean,

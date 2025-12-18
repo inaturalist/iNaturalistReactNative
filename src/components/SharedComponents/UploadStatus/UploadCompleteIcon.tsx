@@ -4,7 +4,7 @@ import { View } from "components/styledComponents";
 import React from "react";
 
 type Props = {
-  iconClasses: Array<string>;
+  iconClasses: string[];
   completeColor: string;
 }
 

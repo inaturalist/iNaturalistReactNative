@@ -21,7 +21,7 @@ const logger = log.extend( "App" );
 
 type SharedItem = {
   mimeType: string,
-  data: string | Array<string>
+  data: string | string[]
 };
 
 const handleShare = ( navigation, item: ?SharedItem ) => {

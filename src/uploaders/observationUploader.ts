@@ -38,10 +38,10 @@ interface ObservationApiResponse {
   page: number;
   per_page: number;
   total_results: number;
-  results: Array<{
+  results: {
     uuid: string;
     id: number;
-  }>;
+  }[];
 }
 
 async function validateAndGetToken( ): Promise<string> {

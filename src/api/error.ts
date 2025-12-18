@@ -65,12 +65,12 @@ export interface ErrorWithResponse {
     url: string;
     json: () => Promise<{
       status: string;
-      errors: Array<{
+      errors: {
         errorCode: string;
         message: string;
         from: string | null;
         stack: string | null;
-      }>;
+      }[];
     }>;
   };
   status?: number;

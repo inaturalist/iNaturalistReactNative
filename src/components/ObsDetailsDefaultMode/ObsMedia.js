@@ -11,16 +11,16 @@ import SoundContainer from "./SoundContainer";
 
 type Props = {
   loading: boolean,
-  photos: Array<{
+  photos: {
     id?: number,
     url: string,
     localFilePath?: string,
     attribution?: string,
     licenseCode?: string
-  }>,
-  sounds?: Array<{
+  }[],
+  sounds?: {
     file_url: string
-  }>
+  }[]
 }
 
 const ObsMedia = ( {

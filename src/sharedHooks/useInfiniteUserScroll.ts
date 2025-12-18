@@ -5,7 +5,7 @@ const useInfiniteUserScroll = (
   queryKey: string,
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   apiCall: Function,
-  ids: Array<object>,
+  ids: object[],
   newInputParams: object,
   options: {
     enabled: boolean;
