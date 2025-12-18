@@ -78,7 +78,7 @@ const CountPressable = ( {
     </View>
     {typeof count === "number"
       ? <Body2 className="mt-2">{t( "Intl-number", { val: count } )}</Body2>
-      : <ActivityIndicator size={20} />}
+      : <ActivityIndicator className="mt-2" size={20} />}
     <Heading6 className="mt-2 text-center">{label}</Heading6>
   </Pressable>
 );
