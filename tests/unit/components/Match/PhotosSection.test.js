@@ -8,7 +8,7 @@ describe( "PhotosSection", () => {
   const mockNavToTaxonDetails = jest.fn();
 
   const defaultProps = {
-    representativePhoto: factory( "RemotePhoto" ),
+    representativePhoto: { ...factory( "RemotePhoto" ), ...{ id: 4 } },
     obsPhotos: [factory( "LocalObservationPhoto" )],
     navToTaxonDetails: mockNavToTaxonDetails,
     taxon: factory( "LocalTaxon", {
@@ -49,8 +49,10 @@ describe( "PhotosSection", () => {
     );
 
     await waitFor( () => {
-      expect( screen.queryByTestId( "TaxonDetails.photo.1" ) ).toBeFalsy();
+      expect( screen.getByTestId( "MatchScreen.ObsPhoto" ) ).toBeTruthy();
     } );
+    expect( screen.queryByTestId( "TaxonDetails.photo.1" ) ).toBeFalsy();
+    expect( screen.queryByTestId( "TaxonDetails.photo.4" ) ).toBeFalsy();
   } );
 
   // Not working due to known bug: https://linear.app/inaturalist/issue/MOB-1069/taxon-photos-hidden-for-iconic-taxa-match-screens
@@ -68,28 +70,18 @@ describe( "PhotosSection", () => {
     expect( screen.queryByTestId( "TaxonDetails.photo.1" ) ).toBeFalsy();
   } ); */
 
-  it( "navigates to taxon details when taxon photo is pressed", async () => {
-    const taxonWithPhoto = factory( "LocalTaxon", {
-      taxonPhotos: [
-        { photo: factory( "RemotePhoto", { id: 1 } ) },
-        { photo: factory( "RemotePhoto", { id: 2 } ) },
-        { photo: factory( "RemotePhoto", { id: 3 } ) }
-      ]
-    } );
-
+  it( "calls navToTaxonDetails prop when taxon photo is pressed", async () => {
     renderComponent(
       <PhotosSection
         {...defaultProps}
-        taxon={taxonWithPhoto}
       />
     );
 
-    const repPhotoId = defaultProps.representativePhoto.id;
     await waitFor( () => {
-      expect( screen.getByTestId( `TaxonDetails.photo.${repPhotoId}` ) ).toBeTruthy();
+      expect( screen.getByTestId( "TaxonDetails.photo.4" ) ).toBeTruthy();
     } );
 
-    const photoButton = screen.getByTestId( `TaxonDetails.photo.${repPhotoId}` );
+    const photoButton = screen.getByTestId( "TaxonDetails.photo.4" );
     fireEvent.press( photoButton );
 
     expect( mockNavToTaxonDetails ).toHaveBeenCalled();
@@ -103,9 +95,8 @@ describe( "PhotosSection", () => {
     );
 
     // Representative photo + 2 more = 3 total
-    const repPhotoId = defaultProps.representativePhoto.id;
     await waitFor( () => {
-      expect( screen.getByTestId( `TaxonDetails.photo.${repPhotoId}` ) ).toBeTruthy();
+      expect( screen.getByTestId( "TaxonDetails.photo.4" ) ).toBeTruthy();
     } );
     expect( screen.getByTestId( "TaxonDetails.photo.1" ) ).toBeTruthy();
     expect( screen.getByTestId( "TaxonDetails.photo.2" ) ).toBeTruthy();
