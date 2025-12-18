@@ -1,22 +1,21 @@
-// @flow
-
 import Modal from "components/SharedComponents/Modal";
-import type { Node } from "react";
 import React from "react";
 
 import FilterModal from "./FilterModal";
 
-type Props = {
-  showModal: boolean,
-  closeModal: Function,
-  filterByIconicTaxonUnknown: Function,
-  renderLocationPermissionsGate: Function,
-  requestLocationPermissions: Function,
-  updateTaxon: Function,
-  updateLocation: Function,
-  updateUser: Function,
-  updateProject: Function
-};
+interface Props extends Pick<
+  React.ComponentProps<typeof FilterModal>,
+  | "closeModal"
+  | "filterByIconicTaxonUnknown"
+  | "renderLocationPermissionsGate"
+  | "requestLocationPermissions"
+  | "updateTaxon"
+  | "updateLocation"
+  | "updateUser"
+  | "updateProject"
+> {
+  showModal: boolean;
+}
 
 const ExploreFiltersModal = ( {
   showModal,
@@ -28,7 +27,7 @@ const ExploreFiltersModal = ( {
   updateLocation,
   updateUser,
   updateProject
-}: Props ): Node => (
+}: Props ) => (
   <Modal
     showModal={showModal}
     fullScreen
