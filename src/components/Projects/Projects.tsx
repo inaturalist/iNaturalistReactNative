@@ -140,6 +140,11 @@ const Projects = ( {
         </View>
       );
     }
+
+    if ( isLoading && projects.length === 0 ) {
+      return <ActivityIndicator size={50} />;
+    }
+
     return (
       <ProjectList
         projects={projects}

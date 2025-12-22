@@ -15,9 +15,7 @@ interface Props {
   isDarkModeEnabled?: boolean;
 }
 
-type Aliases = {
-  [key: string]: string;
-};
+type Aliases = Record<string, string>;
 // Most of these are names for these icons used in design mapped to more
 // consistent and deduped filenames. We might also put aliases of convenience
 // here, e.g. "speech" and "chat" might both map to "comments" if we find

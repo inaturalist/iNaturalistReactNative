@@ -68,7 +68,7 @@ const ALLOWED_ATTRIBUTES_NAMES = (
   "href src width height alt cite title class name abbr value align target rel"
 ).split( " " );
 
-const ALLOWED_ATTRIBUTES: { [key: string]: string[] } = { a: ["href"] };
+const ALLOWED_ATTRIBUTES: Record<string, string[]> = { a: ["href"] };
 ALLOWED_TAGS.filter( tag => tag !== "a" )
   .forEach( tag => { ALLOWED_ATTRIBUTES[tag] = ALLOWED_ATTRIBUTES_NAMES; } );
 

@@ -4,7 +4,7 @@
 interface UTFGrid {
   grid: string[];
   keys: string[];
-  data?: { [key: string]: unknown };
+  data?: Record<string, unknown>;
 }
 
 const EXPANSION_PIXELS = 16;

@@ -1,5 +1,5 @@
 import _ from "lodash";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   useCurrentUser,
   useLocationPermission,
@@ -93,11 +93,17 @@ const ProjectsContainer = ( ) => {
     tabs.shift( );
   }
 
+  const handleFetchNextPage = useCallback( () => {
+    if ( currentTabId !== TAB_ID.FEATURED ) {
+      fetchNextPage();
+    }
+  }, [currentTabId, fetchNextPage] );
+
   return (
     <>
       <Projects
         currentTabId={currentTabId}
-        fetchNextPage={fetchNextPage}
+        fetchNextPage={handleFetchNextPage}
         hasPermissions={hasPermissions}
         isFetchingNextPage={isFetchingNextPage}
         isLoading={isFetching}

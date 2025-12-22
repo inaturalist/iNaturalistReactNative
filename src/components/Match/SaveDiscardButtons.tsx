@@ -2,10 +2,11 @@ import {
   ButtonBar
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
+
+import type { MatchButtonAction } from "./MatchContainer";
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: -3,
@@ -13,12 +14,12 @@ const DROP_SHADOW = getShadow( {
 } );
 
 type Props = {
-  handlePress: Function
+  handlePress: ( action: MatchButtonAction ) => void;
 }
 
 const SaveDiscardButtons = ( {
   handlePress
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
 
   const saveButton = {

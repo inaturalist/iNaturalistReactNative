@@ -29,13 +29,12 @@ const textInputStyle = Platform.OS === "android"
   }
   : undefined;
 
-interface Taxon {
+interface Taxon extends Record<string, unknown> {
   id: number;
   ancestor_ids: number[];
-  [key: string]: unknown;
 }
 
-interface Observation {
+interface Observation extends Record<string, unknown> {
   uuid?: string;
   taxon?: Taxon;
   community_taxon?: Taxon;
@@ -43,7 +42,6 @@ interface Observation {
   user?: {
     prefers_community_taxa: boolean;
   };
-  [key: string]: unknown;
 }
 
 interface Identification {
@@ -153,12 +151,11 @@ const identReducer = ( state: IdentState, action: IdentAction ): IdentState => {
   }
 };
 
-interface RouteParams {
+interface RouteParams extends Record<string, unknown> {
   identAt?: string;
   identTaxonId?: number;
   identTaxonFromVision?: boolean;
   uuid?: string;
-  [key: string]: unknown;
 }
 
 interface Props {

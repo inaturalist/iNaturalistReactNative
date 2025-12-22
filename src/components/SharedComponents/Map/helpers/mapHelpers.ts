@@ -81,10 +81,11 @@ export function getMapRegion( totalBounds: MapBoundaries ): Region {
   };
 }
 
-interface Params {
-  [key: string]: unknown;
-}
-export async function fetchObservationUUID( currentZoom: number, latLng: LatLng, params: Params ) {
+export async function fetchObservationUUID(
+  currentZoom: number,
+  latLng: LatLng,
+  params: Record<string, unknown>
+) {
   const UTFPosition = createUTFPosition( currentZoom, latLng.latitude, latLng.longitude );
   const {
     mTilePositionX,
@@ -92,7 +93,7 @@ export async function fetchObservationUUID( currentZoom: number, latLng: LatLng,
     mPixelPositionX,
     mPixelPositionY
   } = UTFPosition;
-  const tilesParams: Params = {
+  const tilesParams: Record<string, unknown> = {
     ...params,
     style: "geotilegrid"
   };
