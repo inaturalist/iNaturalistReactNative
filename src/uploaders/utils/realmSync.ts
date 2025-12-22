@@ -99,6 +99,7 @@ const markRecordUploaded = (
 
   if ( !record ) {
     throw new Error(
+      // eslint-disable-next-line max-len
       `Cannot find local Realm object to mark as updated (${type}), recordUUID: ${recordUUID || ""}`,
     );
   }

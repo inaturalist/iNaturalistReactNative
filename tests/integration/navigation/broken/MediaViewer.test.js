@@ -115,7 +115,9 @@ describe( "MediaViewer navigation", ( ) => {
       expect( obsEditPhotos.length ).toEqual( observation.observationPhotos.length );
       await act( async ( ) => actor.press( obsEditPhotos[0] ) );
       expect(
-        await screen.findByTestId( `CustomImageZoom.${observation.observationPhotos[0].photo.url}` ),
+        await screen.findByTestId(
+          `CustomImageZoom.${observation.observationPhotos[0].photo.url}`,
+        ),
       // We used toBeVisible here but the update to RN0.77 broke this expectation
       ).toBeOnTheScreen( );
     } );
@@ -126,7 +128,9 @@ describe( "MediaViewer navigation", ( ) => {
       expect( obsEditPhotos.length ).toEqual( observation.observationPhotos.length );
       await act( async ( ) => actor.press( obsEditPhotos[1] ) );
       expect(
-        await screen.findByTestId( `CustomImageZoom.${observation.observationPhotos[1].photo.url}` ),
+        await screen.findByTestId(
+          `CustomImageZoom.${observation.observationPhotos[1].photo.url}`,
+        ),
       // We used toBeVisible here but the update to RN0.77 broke this expectation
       ).toBeOnTheScreen( );
       expect(
