@@ -39,7 +39,7 @@ const writeLoadTranslations = async ( ) => {
   out.write( "};\n" );
   out.write( "\n" );
   out.write( "export const SUPPORTED_LOCALES = [\n" );
-  out.write( locales.sort( ).map( l => `  "${l}"` ).join( ",\n" ) );
+  out.write( locales.sort( ).map( l => `  "${l}",` ).join( "\n" ) );
   out.write( "\n];\n" );
 };
 
