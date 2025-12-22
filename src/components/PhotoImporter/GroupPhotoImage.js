@@ -37,6 +37,7 @@ const GroupPhotoImage = ( {
         selected={isSelected}
         obsPhotosCount={item.photos.length}
         selectable
+        hideGradientOverlay
       />
     </Pressable>
   );

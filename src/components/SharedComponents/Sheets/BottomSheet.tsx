@@ -67,7 +67,7 @@ const StandardBottomSheet = ( {
   const insets = useSafeAreaInsets( );
 
   const handleClose = useCallback( ( ) => {
-    onPressClose( );
+    if ( onPressClose ) onPressClose( );
 
     if ( insideModal ) {
       sheetRef.current?.collapse( );
@@ -113,6 +113,7 @@ const StandardBottomSheet = ( {
       ref={sheetRef}
       style={marginOnWide}
       accessible={false}
+      onDismiss={handleClose}
     >
       <BottomSheetScrollView
         keyboardShouldPersistTaps={keyboardShouldPersistTaps}
