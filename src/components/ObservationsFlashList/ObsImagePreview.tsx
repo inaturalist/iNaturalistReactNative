@@ -12,6 +12,8 @@ import ObsImage from "./ObsImage";
 
 const ICON_DROP_SHADOW = getShadow( {
   offsetHeight: 1,
+  shadowOpacity: 1,
+  shadowRadius: 1,
 } );
 
 interface Props extends PropsWithChildren {
@@ -35,6 +37,7 @@ interface Props extends PropsWithChildren {
   useShortGradient?: boolean;
   white?: boolean;
   width?: string;
+  hideGradientOverlay?: boolean;
 }
 
 const ObsImagePreview = ( {
@@ -57,6 +60,7 @@ const ObsImagePreview = ( {
   useShortGradient,
   white = false,
   width = "w-[62px]",
+  hideGradientOverlay = false,
 }: Props ) => {
   const borderRadius = isSmall
     ? "rounded-lg"
@@ -85,6 +89,7 @@ const ObsImagePreview = ( {
               ? "top-1"
               : "bottom-1",
           )}
+          style={ICON_DROP_SHADOW}
         >
           <INatIcon name="photos-outline" color={colors.white} size={16} />
         </View>
@@ -101,6 +106,7 @@ const ObsImagePreview = ( {
             ? "top-0"
             : "bottom-0",
         )}
+        style={ICON_DROP_SHADOW}
       >
         { obsPhotosCount !== 0
           && <PhotoCount count={obsPhotosCount} /> }
@@ -139,6 +145,7 @@ const ObsImagePreview = ( {
   }, [selectable, selected] );
 
   const renderGradient = useCallback( ( ) => {
+    if ( hideGradientOverlay ) return null;
     if ( isSmall ) return null;
     if ( useShortGradient ) {
       return (
@@ -158,7 +165,7 @@ const ObsImagePreview = ( {
         end={{ x: 0, y: 0.75 }}
       />
     );
-  }, [isSmall, useShortGradient] );
+  }, [isSmall, useShortGradient, hideGradientOverlay] );
 
   const renderSoundIcon = useCallback( ( ) => {
     if ( !hasSound ) return null;
