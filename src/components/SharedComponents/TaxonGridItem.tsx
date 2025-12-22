@@ -22,7 +22,7 @@ const TaxonGridItem = ( {
   showSpeciesSeenCheckmark = false,
   style,
   taxon,
-  upperRight
+  upperRight,
 }: Props ) => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
@@ -33,8 +33,8 @@ const TaxonGridItem = ( {
 
   const source = {
     uri: Photo.displayLocalOrRemoteMediumPhoto(
-      taxon?.default_photo
-    )
+      taxon?.default_photo,
+    ),
   };
 
   const obsPhotosCount = taxon?.default_photo
@@ -51,7 +51,7 @@ const TaxonGridItem = ( {
           // Ensure button mashing doesn't open multiple TaxonDetails instances
           key: `${route.key}-TaxonGridItem-TaxonDetails-${taxon.id}`,
           name: "TaxonDetails",
-          params: { id: taxon.id }
+          params: { id: taxon.id },
         } )
       )}
       accessibilityLabel={accessibleName}

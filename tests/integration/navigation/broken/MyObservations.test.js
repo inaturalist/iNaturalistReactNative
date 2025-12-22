@@ -1,5 +1,5 @@
 import {
-  screen, userEvent, waitFor
+  screen, userEvent, waitFor,
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
@@ -22,7 +22,7 @@ const mockUnsyncedObservations = [
     observed_on_string: "2024-05-01",
     latitude: 1.2345,
     longitude: 1.2345,
-    taxon: factory( "LocalTaxon" )
+    taxon: factory( "LocalTaxon" ),
   } ),
   factory( "LocalObservation", {
     _synced_at: null,
@@ -30,7 +30,7 @@ const mockUnsyncedObservations = [
     observed_on_string: "2024-05-02",
     latitude: 1.2345,
     longitude: 1.2345,
-    taxon: factory( "LocalTaxon" )
+    taxon: factory( "LocalTaxon" ),
   } ),
   factory( "LocalObservation", {
     _synced_at: null,
@@ -38,20 +38,20 @@ const mockUnsyncedObservations = [
     observed_on_string: "2024-05-03",
     latitude: 1.2345,
     longitude: 1.2345,
-    taxon: factory( "LocalTaxon" )
-  } )
+    taxon: factory( "LocalTaxon" ),
+  } ),
 ];
 
 const mockUser = factory( "LocalUser", {
   login: faker.internet.userName( ),
   iconUrl: faker.image.url( ),
-  locale: "en"
+  locale: "en",
 } );
 
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -62,8 +62,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -78,7 +78,7 @@ beforeAll( async () => {
 // Mock the response from inatjs.computervision.score_image
 const topSuggestion = {
   taxon: factory.states( "genus" )( "RemoteTaxon", { name: "Primum" } ),
-  combined_score: 90
+  combined_score: 90,
 };
 
 const actor = userEvent.setup( );
@@ -86,7 +86,7 @@ const actor = userEvent.setup( );
 beforeEach( ( ) => {
   setStoreStateLayout( {
     isDefaultMode: false,
-    isAllAddObsOptionsMode: true
+    isAllAddObsOptionsMode: true,
   } );
   inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
 } );
@@ -108,7 +108,7 @@ const writeObservationsToRealm = ( observations, message ) => {
 
 const pressIndividualUpload = observation => {
   const uploadIcon = screen.getByTestId(
-    `UploadIcon.start.${observation.uuid}`
+    `UploadIcon.start.${observation.uuid}`,
   );
   // We used toBeVisible here but the update to RN0.77 broke this expectation
   expect( uploadIcon ).toBeOnTheScreen( );
@@ -158,7 +158,7 @@ describe( "MyObservations -> ObsEdit no evidence -> MyObservations", ( ) => {
     await signIn( mockUser, { realm: global.mockRealms[__filename] } );
     writeObservationsToRealm(
       mockUnsyncedObservations,
-      "writing observations for MyObservations navigation test"
+      "writing observations for MyObservations navigation test",
     );
   } );
 

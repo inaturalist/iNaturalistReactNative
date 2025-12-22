@@ -2,10 +2,10 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { getCurrentRoute } from "navigation/navigationUtils";
 import {
   useCallback,
-  useState
+  useState,
 } from "react";
 import {
-  BackHandler
+  BackHandler,
 } from "react-native";
 import useExitObservationFlow from "sharedHooks/useExitObservationFlow";
 
@@ -30,7 +30,7 @@ const useBackPress = ( shouldShowDiscardSheet: boolean ) => {
     exitObservationFlow,
     navigation,
     setShowDiscardSheet,
-    shouldShowDiscardSheet
+    shouldShowDiscardSheet,
   ] );
 
   useFocusEffect(
@@ -46,13 +46,13 @@ const useBackPress = ( shouldShowDiscardSheet: boolean ) => {
       const backHandler = BackHandler.addEventListener( "hardwareBackPress", onBackPress );
 
       return ( ) => backHandler.remove( );
-    }, [handleBackButtonPress] )
+    }, [handleBackButtonPress] ),
   );
 
   return {
     handleBackButtonPress,
     setShowDiscardSheet,
-    showDiscardSheet
+    showDiscardSheet,
   };
 };
 

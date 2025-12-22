@@ -13,7 +13,7 @@ import {
   ScrollViewWrapper,
   Subheading1,
   UnderlinedLink,
-  UserText
+  UserText,
 } from "components/SharedComponents";
 import { fontMonoClass, View } from "components/styledComponents";
 import React from "react";

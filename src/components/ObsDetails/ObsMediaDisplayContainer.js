@@ -22,21 +22,21 @@ function jsonifyPotentialRealmObjects( objects ) {
         object.toJSON
           ? object.toJSON( )
           : object
-      )
-    )
+      ),
+    ),
   );
 }
 
 const ObsMediaDisplayContainer = ( {
   observation,
-  tablet = false
+  tablet = false,
 }: Props ): Node => {
   const photos = useMemo( ( ) => jsonifyPotentialRealmObjects(
     (
       observation?.observationPhotos
       || observation?.observation_photos
       || []
-    ).map( op => op.photo )
+    ).map( op => op.photo ),
   ), [observation] );
   const sounds = useMemo(
     ( ) => jsonifyPotentialRealmObjects(
@@ -44,9 +44,9 @@ const ObsMediaDisplayContainer = ( {
         observation?.observationSounds
         || observation?.observation_sounds
         || []
-      ).map( os => os.sound )
+      ).map( os => os.sound ),
     ),
-    [observation]
+    [observation],
   );
 
   return (

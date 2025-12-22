@@ -13,7 +13,7 @@ const photoUrl = photo => Photo.displayLocalOrRemoteLargePhoto( photo );
 
 const MasonryLayout = ( { items, onImagePress } ) => {
   const [columns, setColumns] = useState(
-    Array.from( { length: numColumns }, () => [] )
+    Array.from( { length: numColumns }, () => [] ),
   );
 
   useEffect( () => {
@@ -47,7 +47,7 @@ const MasonryLayout = ( { items, onImagePress } ) => {
     width: "100%",
     height: undefined,
     aspectRatio: item.width / item.height,
-    marginBottom: spacing
+    marginBottom: spacing,
   } );
 
   const renderImage = ( item, index, column ) => (

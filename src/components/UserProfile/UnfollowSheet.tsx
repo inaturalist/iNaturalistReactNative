@@ -15,19 +15,19 @@ interface Props {
 const UnfollowSheet = ( {
   relationship,
   setShowUnfollowSheet,
-  refetchRelationship
+  refetchRelationship,
 }: Props ) => {
   const { t } = useTranslation( );
 
   const updateRelationshipsMutation = useAuthenticatedMutation(
-    ( id, optsWithAuth ) => updateRelationships( id, optsWithAuth )
+    ( id, optsWithAuth ) => updateRelationships( id, optsWithAuth ),
   );
 
   const unfollowUser = ( ) => updateRelationshipsMutation.mutate( {
     id: relationship.id,
     relationship: {
-      following: false
-    }
+      following: false,
+    },
   }, {
     onSuccess: () => {
       setShowUnfollowSheet( false );
@@ -35,7 +35,7 @@ const UnfollowSheet = ( {
     },
     onError: error => {
       Alert.alert( "Error Following/Unfollowing", error );
-    }
+    },
   } );
 
   return (

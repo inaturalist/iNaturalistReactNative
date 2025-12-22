@@ -2,7 +2,7 @@ import {
   DateDisplay,
   Heading5,
   List2,
-  SimpleObservationLocation
+  SimpleObservationLocation,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -19,7 +19,7 @@ interface Props {
 
 const LocationSection = ( {
   belongsToCurrentUser,
-  observation
+  observation,
 }: Props ) => {
   const currentUser = useCurrentUser( );
   const geoprivacy = observation?.geoprivacy;

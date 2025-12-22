@@ -11,7 +11,7 @@ import ObsUploadStatus from "./ObsUploadStatus";
 import {
   observationHasSound,
   photoCountFromObservation,
-  photoFromObservation
+  photoFromObservation,
 } from "./util";
 
 type Props = {
@@ -39,7 +39,7 @@ const ObsGridItem = ( {
   style,
   uploadProgress,
   testID,
-  width = "w-[200px]"
+  width = "w-[200px]",
 }: Props ): Node => {
   const displayTaxonName = useMemo( ( ) => (
     <DisplayTaxonName
@@ -57,7 +57,7 @@ const ObsGridItem = ( {
     currentUser?.prefers_common_names,
     currentUser?.prefers_scientific_name_first,
     observation?.taxon,
-    observation?.uuid
+    observation?.uuid,
   ] );
 
   const photo = photoFromObservation( observation );
@@ -65,7 +65,7 @@ const ObsGridItem = ( {
   return (
     <ObsImagePreview
       source={{
-        uri: Photo.displayLocalOrRemoteMediumPhoto( photo )
+        uri: Photo.displayLocalOrRemoteMediumPhoto( photo ),
       }}
       width={width}
       height={height}

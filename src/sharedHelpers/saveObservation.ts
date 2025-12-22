@@ -7,7 +7,7 @@ import { writeExifToFile } from "sharedHelpers/parseExif";
 const writeExifToCameraRollPhotos = async (
   observation: RealmObservation,
   cameraRollUris: string[],
-  exif: ExifToWrite
+  exif: ExifToWrite,
 ) => {
   if ( !cameraRollUris || cameraRollUris.length === 0 || !observation ) {
     return;
@@ -21,12 +21,12 @@ const writeExifToCameraRollPhotos = async (
 const saveObservation = async (
   observation: RealmObservation,
   cameraRollUris: string[],
-  realm: Realm
+  realm: Realm,
 ) => {
   await writeExifToCameraRollPhotos( observation, cameraRollUris, {
     latitude: observation.latitude,
     longitude: observation.longitude,
-    positional_accuracy: observation.positional_accuracy
+    positional_accuracy: observation.positional_accuracy,
   } );
   return Observation.saveLocalObservationForUpload( observation, realm );
 };

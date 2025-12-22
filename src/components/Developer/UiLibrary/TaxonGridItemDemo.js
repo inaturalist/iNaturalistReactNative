@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import {
   Heading1,
   Heading2,
-  ScrollViewWrapper
+  ScrollViewWrapper,
 } from "components/SharedComponents";
 import TaxonGridItem from "components/SharedComponents/TaxonGridItem";
 import { View } from "components/styledComponents";
@@ -19,7 +19,7 @@ function makeTaxon( options = {} ) {
     preferred_common_name: faker.person.fullName(),
     rank: "species",
     rank_level: 10,
-    ...options
+    ...options,
   };
 }
 
@@ -27,13 +27,13 @@ export function makeTaxonPhoto( options = {} ) {
   return {
     uuid: faker.string.uuid( ),
     photo: makePhoto( ),
-    ...options
+    ...options,
   };
 }
 
 const STYLE = {
   width: 200,
-  height: 200
+  height: 200,
 };
 
 /* eslint-disable i18next/no-literal-string */
@@ -46,7 +46,7 @@ const TaxonGridItemDemo = ( ) => (
         <Heading2 className="my-2">Photo</Heading2>
         <TaxonGridItem
           taxon={makeTaxon( {
-            default_photo: makePhoto( )
+            default_photo: makePhoto( ),
           } )}
           style={STYLE}
         />
@@ -55,14 +55,14 @@ const TaxonGridItemDemo = ( ) => (
         <Heading2 className="my-2">No Media w/ Iconic Taxon</Heading2>
         <TaxonGridItem
           taxon={makeTaxon( {
-            iconic_taxon_name: "Arachnida"
+            iconic_taxon_name: "Arachnida",
           } )}
           style={STYLE}
         />
         <Heading2 className="my-2">Species Seen</Heading2>
         <TaxonGridItem
           taxon={makeTaxon( {
-            default_photo: makePhoto( )
+            default_photo: makePhoto( ),
           } )}
           showSpeciesSeenCheckmark
           style={STYLE}

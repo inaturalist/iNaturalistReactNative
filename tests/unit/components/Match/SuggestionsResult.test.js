@@ -13,8 +13,8 @@ describe( "SuggestionsResult", () => {
       rank: "species",
       rank_level: 10,
       representative_photo: {
-        url: "https://example.com/cupplant.jpg"
-      }
+        url: "https://example.com/cupplant.jpg",
+      },
     } );
 
     renderComponent(
@@ -22,7 +22,7 @@ describe( "SuggestionsResult", () => {
         taxon={apiTaxon}
         confidence={87}
         forcedHeight={0}
-      />
+      />,
     );
 
     expect( screen.getByText( "Cup Plant" ) ).toBeVisible();
@@ -34,7 +34,7 @@ describe( "SuggestionsResult", () => {
   it( "handles non valid Realm taxon and returns null", () => {
     const invalidTaxon = factory( "LocalTaxon", {
       id: 746,
-      name: "Silphium laciniatum"
+      name: "Silphium laciniatum",
     } );
 
     invalidTaxon.isValid = () => false;
@@ -44,7 +44,7 @@ describe( "SuggestionsResult", () => {
         taxon={invalidTaxon}
         confidence={75}
         forcedHeight={0}
-      />
+      />,
     );
 
     expect( screen.queryByText( "Silphium laciniatum" ) ).toBeFalsy();
@@ -60,7 +60,7 @@ describe( "SuggestionsResult", () => {
         confidence={95}
         handlePress={mockHandlePress}
         forcedHeight={0}
-      />
+      />,
     );
 
     const button = screen.getByTestId( "SuggestionsResult.747" );
@@ -79,16 +79,16 @@ describe( "SuggestionsResult", () => {
         confidence={60}
         updateMaxHeight={mockUpdateMaxHeight}
         forcedHeight={0}
-      />
+      />,
     );
 
     const layoutView = screen.getByTestId( "SuggestionsResult.748" ).parent;
     fireEvent( layoutView, "layout", {
       nativeEvent: {
         layout: {
-          height: 120
-        }
-      }
+          height: 120,
+        },
+      },
     } );
 
     expect( mockUpdateMaxHeight ).toHaveBeenCalledWith( 120 );

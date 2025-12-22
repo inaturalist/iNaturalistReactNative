@@ -5,5 +5,5 @@ export default define( "RemoteSound", faker => ( {
   attribution: "(c) username, some rights reserved (CC BY-NC)",
   license_code: "cc-by-nc",
   file_url: faker.image.url( ),
-  file_content_type: faker.system.mimeType( )
+  file_content_type: faker.system.mimeType( ),
 } ) );

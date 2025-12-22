@@ -15,23 +15,23 @@ describe( "PhotosSection", () => {
       taxonPhotos: [
         { photo: factory( "RemotePhoto", { id: 1 } ) },
         { photo: factory( "RemotePhoto", { id: 2 } ) },
-        { photo: factory( "RemotePhoto", { id: 3 } ) }
-      ]
-    } )
+        { photo: factory( "RemotePhoto", { id: 3 } ) },
+      ],
+    } ),
   };
 
   it( "displays photo count when multiple observation photos exist", async () => {
     const multipleObsPhotos = [
       factory( "LocalObservationPhoto" ),
       factory( "LocalObservationPhoto" ),
-      factory( "LocalObservationPhoto" )
+      factory( "LocalObservationPhoto" ),
     ];
 
     renderComponent(
       <PhotosSection
         {...defaultProps}
         obsPhotos={multipleObsPhotos}
-      />
+      />,
     );
 
     await waitFor( () => {
@@ -45,7 +45,7 @@ describe( "PhotosSection", () => {
       <PhotosSection
         {...defaultProps}
         hideTaxonPhotos
-      />
+      />,
     );
 
     await waitFor( () => {
@@ -74,7 +74,7 @@ describe( "PhotosSection", () => {
     renderComponent(
       <PhotosSection
         {...defaultProps}
-      />
+      />,
     );
 
     await waitFor( () => {
@@ -91,7 +91,7 @@ describe( "PhotosSection", () => {
     renderComponent(
       <PhotosSection
         {...defaultProps}
-      />
+      />,
     );
 
     // Representative photo + 2 more = 3 total

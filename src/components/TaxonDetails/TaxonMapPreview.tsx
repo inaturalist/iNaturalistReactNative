@@ -4,11 +4,11 @@ import {
   DetailsMap,
   Heading4,
   Map,
-  Modal
+  Modal,
 } from "components/SharedComponents";
 import { getMapRegion } from "components/SharedComponents/Map/helpers/mapHelpers";
 import {
-  View
+  View,
 } from "components/styledComponents";
 import React, { useState } from "react";
 import { useTranslation } from "sharedHooks";
@@ -25,26 +25,26 @@ interface Props {
 const TaxonMapPreview = ( {
   observation,
   showSpeciesSeenCheckmark,
-  taxon
+  taxon,
 }: Props ) => {
   const { t } = useTranslation( );
   const [showMapModal, setShowMapModal] = useState( false );
   const obsParams = {
     taxon_id: taxon.id,
-    verifiable: true
+    verifiable: true,
   };
 
   // TODO: add a loading indicator for map preview
   const {
-    data: obsSearchResponse
+    data: obsSearchResponse,
   } = useAuthenticatedQuery(
     ["fetchTaxonBoundingBox"],
     optsWithAuth => searchObservations( {
       ...obsParams,
       return_bounds: true,
       per_page: 0,
-      ttl: -1
-    }, optsWithAuth )
+      ttl: -1,
+    }, optsWithAuth ),
   );
 
   const hasObservationResults = obsSearchResponse?.total_results > 0;

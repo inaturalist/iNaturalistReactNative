@@ -46,7 +46,7 @@ const DisagreementText = ( { taxon, username, withdrawn }: Props ) => {
             taxon={taxon}
             topTextComponent={Body4}
             withdrawn={withdrawn}
-          />
+          />,
         ]}
       />
     </Body4>

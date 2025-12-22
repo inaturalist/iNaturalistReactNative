@@ -1,5 +1,5 @@
 import {
-  useNetInfo
+  useNetInfo,
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import type { ApiObservationsUpdatesParams } from "api/types";
@@ -21,7 +21,7 @@ interface Props {
 const NotificationsContainer = ( {
   currentUser,
   notificationParams,
-  onRefresh: onRefreshProp
+  onRefresh: onRefreshProp,
 }: Props ) => {
   const navigation = useNavigation( );
   const { isConnected } = useNetInfo( );
@@ -33,11 +33,11 @@ const NotificationsContainer = ( {
     isFetching,
     isInitialLoading,
     notifications,
-    refetch
+    refetch,
   } = useInfiniteNotificationsScroll( notificationParams );
 
   const { loadTime } = usePerformance( {
-    isLoading: isInitialLoading
+    isLoading: isInitialLoading,
   } );
   if ( isDebugMode( ) ) {
     logger.info( loadTime );

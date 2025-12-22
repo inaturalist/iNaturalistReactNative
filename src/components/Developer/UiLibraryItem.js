@@ -25,7 +25,7 @@ const LIBRARY = {
   PivotCardsDemo,
   TaxonGridItemDemo,
   TaxonResultDemo,
-  Typography
+  Typography,
 };
 
 const UiLibraryItem = ( ) => {
@@ -33,7 +33,7 @@ const UiLibraryItem = ( ) => {
   const { params } = useRoute( );
   useEffect(
     ( ) => navigation.setOptions( { title: params.title } ),
-    [navigation, params.title]
+    [navigation, params.title],
   );
 
   // For reasons I don't understand hot reload doesn't work with this LIBRARY

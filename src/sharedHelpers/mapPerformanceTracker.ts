@@ -39,7 +39,7 @@ class MapPerformanceTracker {
   getSummary( ): { mapReadyTime: number; tilesVisibleTime: number } {
     return {
       mapReadyTime: this.mapReadyDuration,
-      tilesVisibleTime: this.tilesVisibleDuration
+      tilesVisibleTime: this.tilesVisibleDuration,
     };
   }
 }

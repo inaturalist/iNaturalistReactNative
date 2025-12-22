@@ -7,7 +7,7 @@ import {
   AccountCreationCard,
   FiftyObservationCard,
   FiveObservationCard,
-  OneObservationCard
+  OneObservationCard,
 } from "components/OnboardingModal/PivotCards";
 import {
   Body1,
@@ -15,7 +15,7 @@ import {
   OfflineNotice,
   PerformanceDebugView,
   Tabs,
-  ViewWrapper
+  ViewWrapper,
 } from "components/SharedComponents";
 import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList";
 import { View } from "components/styledComponents";
@@ -24,7 +24,7 @@ import Photo from "realmModels/Photo";
 import type {
   RealmObservation,
   RealmTaxon,
-  RealmUser
+  RealmUser,
 } from "realmModels/types";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useGridLayout, useLayoutPrefs, useTranslation } from "sharedHooks";
@@ -110,7 +110,7 @@ const MyObservationsSimple = ( {
   isFetchingTaxa,
   justFinishedSignup,
   loggedInWhileInDefaultMode = false,
-  refetchTaxa
+  refetchTaxa,
 }: Props ) => {
   const { isDefaultMode } = useLayoutPrefs( );
   const { t } = useTranslation( );
@@ -119,11 +119,11 @@ const MyObservationsSimple = ( {
   const {
     flashListStyle,
     gridItemStyle,
-    numColumns
+    numColumns,
   } = useGridLayout( );
   const taxaFlashListStyle = useMemo( ( ) => ( {
     ...flashListStyle,
-    paddingTop: 10
+    paddingTop: 10,
   } ), [flashListStyle] );
 
   const renderTaxaItem = useCallback( ( { item: speciesCount }: TaxaFlashListRenderItemProps ) => {
@@ -134,7 +134,7 @@ const MyObservationsSimple = ( {
         // Ensure button mashing doesn't open multiple TaxonDetails instances
         key: `${route.key}-TaxonGridItem-TaxonDetails-${taxonId}`,
         name: "TaxonDetails",
-        params: { id: taxonId }
+        params: { id: taxonId },
       } )
     );
 
@@ -142,8 +142,8 @@ const MyObservationsSimple = ( {
 
     const source = {
       uri: Photo.displayLocalOrRemoteMediumPhoto(
-        speciesCount.taxon?.default_photo
-      )
+        speciesCount.taxon?.default_photo,
+      ),
     };
 
     // Add a unique key to ensure component recreation
@@ -165,7 +165,7 @@ const MyObservationsSimple = ( {
     gridItemStyle,
     navigation,
     route.key,
-    t
+    t,
   ] );
 
   const renderTaxaFooter = useCallback( ( ) => {
@@ -191,7 +191,7 @@ const MyObservationsSimple = ( {
     isConnected,
     isFetchingTaxa,
     t,
-    taxa?.length
+    taxa?.length,
   ] );
 
   const unuploadedObsMissingBasicsIDs = useMemo( () => (
@@ -228,7 +228,7 @@ const MyObservationsSimple = ( {
       // Add random id to empty boxes to ensure they are unique
       const emptyBoxesWithId = emptyBoxes.map( ( box, index ) => ( {
         ...box,
-        id: `empty-${index}`
+        id: `empty-${index}`,
       } ) );
       return [...data, ...emptyBoxesWithId];
     }
@@ -251,7 +251,7 @@ const MyObservationsSimple = ( {
     navigation.navigate( {
       key: `Obs-0-${uuid}`,
       name: "ObsDetails",
-      params: { uuid }
+      params: { uuid },
     } );
   };
 
@@ -273,13 +273,13 @@ const MyObservationsSimple = ( {
             {
               id: OBSERVATIONS_TAB,
               text: t( "Observations" ),
-              onPress: () => setActiveTab( OBSERVATIONS_TAB )
+              onPress: () => setActiveTab( OBSERVATIONS_TAB ),
             },
             {
               id: TAXA_TAB,
               text: t( "Species" ),
-              onPress: () => setActiveTab( TAXA_TAB )
-            }
+              onPress: () => setActiveTab( TAXA_TAB ),
+            },
           ]}
           TabComponent={renderTabComponent}
         />
@@ -327,7 +327,7 @@ const MyObservationsSimple = ( {
             hideLoadingWheel
             isConnected={isConnected}
             keyExtractor={(
-              item: SpeciesCount
+              item: SpeciesCount,
             ) => `${item.taxon.id}-${item?.taxon?.default_photo?.url || "no-photo"}`}
             layout="grid"
             numColumns={numColumns}
@@ -361,7 +361,7 @@ const MyObservationsSimple = ( {
                   queued={false}
                   testID="PivotCardGridItem"
                 />
-              )
+              ),
             }}
           />
           <FiveObservationCard triggerCondition={numTotalObservations === 5} />

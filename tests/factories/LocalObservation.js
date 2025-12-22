@@ -11,11 +11,11 @@ export default define( "LocalObservation", faker => ( {
   observationSounds: [],
   viewed: jest.fn( ( ) => true ),
   unviewed: jest.fn( ( ) => false ),
-  faves: jest.fn( ( ) => [] )
+  faves: jest.fn( ( ) => [] ),
 } ), {
   uploaded: faker => ( {
     _synced_at: faker.date.past( ),
     needsSync: jest.fn( ( ) => false ),
-    wasSynced: jest.fn( ( ) => true )
-  } )
+    wasSynced: jest.fn( ( ) => true ),
+  } ),
 } );

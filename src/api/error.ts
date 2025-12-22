@@ -15,7 +15,7 @@ export class INatApiError extends Error {
   constructor(
     json: Record<string, unknown> & { status: string | number },
     status?: number,
-    context?: Record<string, unknown> | null
+    context?: Record<string, unknown> | null,
   ) {
     super( JSON.stringify( json ) );
     this.name = "INatApiError";
@@ -30,7 +30,7 @@ export class INatApiUnauthorizedError extends INatApiError {
     const errorJson = {
       error: "Unauthorized",
       status: 401,
-      context
+      context,
     };
     super( errorJson, 401, context );
     this.name = "INatApiUnauthorizedError";
@@ -42,7 +42,7 @@ export class INatApiTooManyRequestsError extends INatApiError {
     const errorJson = {
       error: "Too Many Requests",
       status: 429,
-      context
+      context,
     };
     super( errorJson, 429, context );
     this.name = "INatApiTooManyRequestsError";
@@ -82,7 +82,7 @@ export interface ErrorWithResponse {
 function createContext(
   e: ErrorWithResponse,
   options: HandleErrorOptions,
-  extraContext: Record<string, unknown> | null
+  extraContext: Record<string, unknown> | null,
 ) {
   const context = {
     queryKey: options?.queryKey
@@ -97,19 +97,19 @@ function createContext(
     url: e?.response?.url,
     routeName: options?.routeName || e?.routeName,
     routeParams: options?.routeParams || e?.routeParams,
-    ...( extraContext || {} )
+    ...( extraContext || {} ),
   };
   // Remove nullish values (null or undefined) from context
   return Object.fromEntries(
     Object.entries( context ).filter(
-      ( [_, value] ) => value !== null && value !== undefined
-    )
+      ( [_, value] ) => value !== null && value !== undefined,
+    ),
   );
 }
 
 async function handleError(
   e: ErrorWithResponse,
-  options: HandleErrorOptions = {}
+  options: HandleErrorOptions = {},
 ): Promise<INatApiError | ErrorWithResponse> {
   // Get context from options if available
   const originalContext = options?.context || null;
@@ -177,7 +177,7 @@ async function handleError(
     error,
     error.context
       ? JSON.stringify( error.context )
-      : "No context"
+      : "No context",
   );
   if ( typeof ( options.onApiError ) === "function" ) {
     options.onApiError( error );

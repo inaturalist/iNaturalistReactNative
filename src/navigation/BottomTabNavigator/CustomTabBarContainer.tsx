@@ -3,7 +3,7 @@ import {
   SCREEN_NAME_MENU,
   SCREEN_NAME_NOTIFICATIONS,
   SCREEN_NAME_OBS_LIST,
-  SCREEN_NAME_ROOT_EXPLORE
+  SCREEN_NAME_ROOT_EXPLORE,
 } from "navigation/StackNavigators/TabStackNavigator";
 import React, { useMemo } from "react";
 import User from "realmModels/User";
@@ -62,10 +62,10 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
       size: 32,
       onPress: ( ) => {
         navigation.navigate( "MenuTab", {
-          screen: "Menu"
+          screen: "Menu",
         } );
       },
-      active: SCREEN_NAME_MENU === activeTab
+      active: SCREEN_NAME_MENU === activeTab,
     },
     {
       icon: "magnifying-glass",
@@ -75,10 +75,10 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
       size: 31,
       onPress: ( ) => {
         navigation.navigate( "ExploreTab", {
-          screen: "RootExplore"
+          screen: "RootExplore",
         } );
       },
-      active: SCREEN_NAME_ROOT_EXPLORE === activeTab
+      active: SCREEN_NAME_ROOT_EXPLORE === activeTab,
     },
     {
       icon: "person",
@@ -89,10 +89,10 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
       size: 40,
       onPress: ( ) => {
         navigation.navigate( "ObservationsTab", {
-          screen: "ObsList"
+          screen: "ObsList",
         } );
       },
-      active: SCREEN_NAME_OBS_LIST === activeTab
+      active: SCREEN_NAME_OBS_LIST === activeTab,
     },
     {
       icon: "notifications-bell",
@@ -102,16 +102,16 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
       size: 32,
       onPress: ( ) => {
         navigation.navigate( "NotificationsTab", {
-          screen: "Notifications"
+          screen: "Notifications",
         } );
       },
-      active: SCREEN_NAME_NOTIFICATIONS === activeTab
-    }
+      active: SCREEN_NAME_NOTIFICATIONS === activeTab,
+    },
   ] ), [
     activeTab,
     userIconUri,
     navigation,
-    t
+    t,
   ] );
 
   return (

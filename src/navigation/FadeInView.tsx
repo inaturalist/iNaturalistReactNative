@@ -1,5 +1,5 @@
 import {
-  useFocusEffect
+  useFocusEffect,
 } from "@react-navigation/native";
 import * as React from "react";
 import { Animated } from "react-native";
@@ -15,20 +15,20 @@ const FadeInView = ( { children }: Props ) => {
     Animated.timing( fadeAnim, {
       toValue: 1,
       duration: 250,
-      useNativeDriver: true
+      useNativeDriver: true,
     } ).start();
     return () => {
       Animated.timing( fadeAnim, {
         toValue: 0,
         duration: 250,
-        useNativeDriver: true
+        useNativeDriver: true,
       } ).start();
     };
   } );
 
   const animatedStyle = {
     flex: 1,
-    opacity: fadeAnim // Bind opacity to animated value
+    opacity: fadeAnim, // Bind opacity to animated value
   };
 
   return (

@@ -5,7 +5,7 @@ import {
   Body2,
   INatIcon,
   INatIconButton,
-  UploadProgressBar
+  UploadProgressBar,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
@@ -35,7 +35,7 @@ const SimpleUploadBanner = ( {
   showsCancelUploadButton = false,
   showsCheckmark = false,
   status,
-  stopAllUploads
+  stopAllUploads,
 }: Props ): Node => {
   const { t } = useTranslation( );
 
@@ -69,7 +69,7 @@ const SimpleUploadBanner = ( {
   const renderUploadStatusText = () => (
     <View
       className={classnames( "bg-white items-center", {
-        "bg-inatGreen": isWhiteOnGreenStyling
+        "bg-inatGreen": isWhiteOnGreenStyling,
       } )}
     >
       <View className="flex-row items-center">
@@ -82,7 +82,7 @@ const SimpleUploadBanner = ( {
           >
             <Body2
               className={classnames( "text-darkGray py-3 text-center", {
-                "text-white": isWhiteOnGreenStyling
+                "text-white": isWhiteOnGreenStyling,
               } )}
               numberOfLines={2}
             >

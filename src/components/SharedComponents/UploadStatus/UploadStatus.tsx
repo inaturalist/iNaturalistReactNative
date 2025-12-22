@@ -15,7 +15,7 @@ const iconClasses = [
   "items-center",
   "justify-center",
   "w-[44px]",
-  "h-[44px]"
+  "h-[44px]",
 ];
 
 interface Props extends PropsWithChildren {
@@ -37,7 +37,7 @@ const UploadStatus = ( {
   progress,
   uniqueKey,
   queued,
-  obsStatus
+  obsStatus,
 }: Props ) => {
   const { isDefaultMode } = useLayoutPrefs();
   const { t } = useTranslation( );
@@ -168,7 +168,7 @@ const UploadStatus = ( {
         "justify-center",
         layout === "horizontal"
           ? "h-[44px]"
-          : "h-[65px]"
+          : "h-[65px]",
       )}
     >
       {displayUploadStatus( )}

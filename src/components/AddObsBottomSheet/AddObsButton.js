@@ -93,7 +93,7 @@ const AddObsButton = ( ): React.Node => {
     justFinishedSignup,
     currentUser,
     isAllAddObsOptionsMode,
-    shownOnce
+    shownOnce,
   ] );
 
   const dismissTooltip = () => {
@@ -133,13 +133,13 @@ const AddObsButton = ( ): React.Node => {
               routes: [
                 {
                   name: screen,
-                  params: { ...params, previousScreen: currentRoute }
-                }
-              ]
-            }
-          }
-        ]
-      } )
+                  params: { ...params, previousScreen: currentRoute },
+                },
+              ],
+            },
+          },
+        ],
+      } ),
     );
 
     closeBottomSheet( );

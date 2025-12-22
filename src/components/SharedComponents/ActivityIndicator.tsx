@@ -21,7 +21,7 @@ const ActivityIndicator = ( {
   size = 100,
   style,
   testID,
-  theme
+  theme,
 }: Props ) => (
   <RNPActivityIndicator
     animating={animating}

@@ -25,7 +25,7 @@ const ShareMenu = {
   __reset: ( ) => {
     mockShareData = null;
     mockListeners = [];
-  }
+  },
 };
 
 export default ShareMenu;

@@ -16,7 +16,7 @@ describe( "Sanitization", () => {
     </div>`;
 
     render(
-      <UserText text={testText} />
+      <UserText text={testText} />,
     );
     expect( screen.getByText( paragraphTagContent ) ).toBeTruthy();
     expect( screen.queryByText( quoteTagContent ) ).toBeFalsy();
@@ -32,7 +32,7 @@ describe( "Sanitization", () => {
       <p>fontSize</p>
       </div>`;
     render(
-      <UserText text={testText} />
+      <UserText text={testText} />,
     );
 
     // alt text renders as accessibilityLabel
@@ -45,7 +45,7 @@ describe( "Sanitization", () => {
   it( "links all @ mentions", () => {
     const testText = "@anglantis";
     render(
-      <UserText text={testText} />
+      <UserText text={testText} />,
     );
 
     expect( screen.queryByText( testText ) ).toHaveProperty( "props.accessibilityRole", "link" );
@@ -54,7 +54,7 @@ describe( "Sanitization", () => {
   it( "links all URLs", () => {
     const testText = "https://www.inaturalist.org";
     render(
-      <UserText text={testText} />
+      <UserText text={testText} />,
     );
 
     expect( screen.getByRole( "link" ) ).toBeTruthy();
@@ -64,7 +64,7 @@ describe( "Sanitization", () => {
   it( "closes unclosed tags", () => {
     const testText = "<p>Welcome to iNat";
     render(
-      <UserText text={testText} />
+      <UserText text={testText} />,
     );
 
     expect( screen.getByText( "Welcome to iNat" ) ).toBeTruthy();
@@ -73,7 +73,7 @@ describe( "Sanitization", () => {
   it( "strips leading and trailing whitespace", () => {
     const testText = " This is a single line with a lloooooot of whitespace   \n\n\n\n\n\n\n      ";
     render(
-      <UserText text={testText} />
+      <UserText text={testText} />,
     );
 
     // By default, the ByText queries will strip the text used to find
@@ -99,7 +99,7 @@ describe( "Basic Rendering", () => {
   it( "renders text", () => {
     const testText = "foo bar baz";
     render(
-      <UserText text={testText} />
+      <UserText text={testText} />,
     );
 
     expect( screen.getByText( testText ) ).toBeTruthy();
@@ -109,7 +109,7 @@ describe( "Basic Rendering", () => {
   it( "renders markdown", () => {
     const testText = "# This is Heading 1";
     render(
-      <UserText text={testText} />
+      <UserText text={testText} />,
     );
 
     expect( screen.queryByText( testText ) ).toBeFalsy();
@@ -120,7 +120,7 @@ describe( "Basic Rendering", () => {
   it( "renders html", () => {
     const testText = "<p>Welcome to <b>iNaturalist</b></p>";
     render(
-      <UserText text={testText} />
+      <UserText text={testText} />,
     );
 
     expect( screen.queryByText( testText ) ).toBeFalsy();

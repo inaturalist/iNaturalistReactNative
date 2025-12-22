@@ -50,7 +50,7 @@ const DEFAULT_STATE: UploadObservationsSlice = {
   totalToolbarProgress: 0,
   totalUploadProgress: [],
   uploadQueue: [],
-  uploadStatus: UPLOAD_PENDING
+  uploadStatus: UPLOAD_PENDING,
 };
 
 const countEvidenceIncrements = ( upload, evidence ) => {
@@ -75,20 +75,20 @@ const countTotalIncrements = upload => 1
 const createUploadProgressObj = ( upload, increment ) => ( {
   uuid: upload.uuid,
   currentIncrements: increment,
-  totalIncrements: countTotalIncrements( upload )
+  totalIncrements: countTotalIncrements( upload ),
 } );
 
 const countMappedIncrements = list => list.reduce(
   ( count, current ) => count + Number( current ),
-  0
+  0,
 );
 
 const setCurrentToolbarIncrements = totalUploadProgress => countMappedIncrements(
-  totalUploadProgress.map( u => u.currentIncrements )
+  totalUploadProgress.map( u => u.currentIncrements ),
 );
 
 const calculateTotalToolbarIncrements = uploads => countMappedIncrements(
-  uploads.map( u => countTotalIncrements( u ) )
+  uploads.map( u => countTotalIncrements( u ) ),
 );
 
 const setTotalToolbarProgress = ( totalToolbarIncrements, totalUploadProgress ) => (
@@ -114,7 +114,7 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
       totalToolbarProgress: 0,
       totalUploadProgress: [],
       uploadQueue: [],
-      uploadStatus: UPLOAD_PENDING
+      uploadStatus: UPLOAD_PENDING,
     };
 
     return set( defaultStateWithController );
@@ -124,10 +124,10 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
       ...state.errorsByUuid,
       [obsUUID]: [
         ...( state.errorsByUuid[obsUUID] || [] ),
-        error
-      ]
+        error,
+      ],
     },
-    multiError: error
+    multiError: error,
   } ) ),
   stopAllUploads: ( ) => {
     deactivateKeepAwake( );
@@ -148,7 +148,7 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
       totalToolbarProgress: 0,
       totalUploadProgress: [],
       uploadQueue: [],
-      uploadStatus: UPLOAD_CANCELLED
+      uploadStatus: UPLOAD_CANCELLED,
     };
 
     return set( cancelledStateWithController );
@@ -162,7 +162,7 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
     return set( {
       // Make a new abort controller for this upload session
       abortController: new AbortController( ),
-      uploadStatus: UPLOAD_IN_PROGRESS
+      uploadStatus: UPLOAD_IN_PROGRESS,
     } );
   },
   completeUploads: ( ) => {
@@ -173,7 +173,7 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
     const {
       currentUpload,
       totalToolbarIncrements,
-      totalUploadProgress: existingTotalUploadProgress
+      totalUploadProgress: existingTotalUploadProgress,
     } = state;
     // Zustand does *not* make deep copies when making supposedly immutable
     // state changes, so for nested objects like this, we need to create a
@@ -186,7 +186,7 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
     if ( !currentObsProgressObj && currentUpload ) {
       const progressObj = createUploadProgressObj(
         currentUpload,
-        increment
+        increment,
       );
       totalUploadProgress.push( progressObj );
     } else if ( currentObsProgressObj ) {
@@ -200,11 +200,11 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
     }
     return {
       totalUploadProgress,
-      totalToolbarProgress: setTotalToolbarProgress( totalToolbarIncrements, totalUploadProgress )
+      totalToolbarProgress: setTotalToolbarProgress( totalToolbarIncrements, totalUploadProgress ),
     };
   } ),
   setUploadStatus: ( uploadStatus: UploadStatus ) => set( ( ) => ( {
-    uploadStatus
+    uploadStatus,
   } ) ),
   addToUploadQueue: ( uuids: string | string[] ) => set( state => {
     let copyOfUploadQueue = state.uploadQueue;
@@ -218,7 +218,7 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
       initialNumObservationsInQueue: state.initialNumObservationsInQueue
         + ( typeof uuids === "string"
           ? 1
-          : uuids.length )
+          : uuids.length ),
     } );
   } ),
   removeFromUploadQueue: ( ) => set( state => {
@@ -226,15 +226,15 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
     copyOfUploadQueue.pop( );
     return ( {
       uploadQueue: copyOfUploadQueue,
-      currentUpload: null
+      currentUpload: null,
     } );
   } ),
   setCurrentUpload: observation => set( state => ( {
     currentUpload: observation,
-    numUploadsAttempted: state.numUploadsAttempted + 1
+    numUploadsAttempted: state.numUploadsAttempted + 1,
   } ) ),
   setTotalToolbarIncrements: queuedObservations => set( ( ) => ( {
-    totalToolbarIncrements: calculateTotalToolbarIncrements( queuedObservations )
+    totalToolbarIncrements: calculateTotalToolbarIncrements( queuedObservations ),
   } ) ),
   addTotalToolbarIncrements: observation => set( state => {
     const { totalToolbarIncrements: previousToolbarIncrements } = state;
@@ -242,11 +242,11 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
     const additionalToolbarIncrements = calculateTotalToolbarIncrements( [observation] );
 
     return ( {
-      totalToolbarIncrements: previousToolbarIncrements + additionalToolbarIncrements
+      totalToolbarIncrements: previousToolbarIncrements + additionalToolbarIncrements,
     } );
   } ),
   setNumUnuploadedObservations: numUnuploadedObservations => set( ( ) => ( {
-    numUnuploadedObservations
+    numUnuploadedObservations,
   } ) ),
   removeDeletedObsFromUploadQueue: uuid => set( state => {
     const {
@@ -254,7 +254,7 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
       numUploadsAttempted,
       totalToolbarIncrements,
       totalUploadProgress: existingTotalUploadProgress,
-      uploadQueue
+      uploadQueue,
     } = state;
     // Zustand does *not* make deep copies when making supposedly immutable
     // state changes, so for nested objects like this, we need to create a
@@ -277,7 +277,7 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
       totalToolbarProgress: setTotalToolbarProgress( totalToolbarIncrements, totalUploadProgress ),
       uploadStatus: numUploadsAttempted === initialNumObservationsInQueue
         ? UPLOAD_COMPLETE
-        : UPLOAD_IN_PROGRESS
+        : UPLOAD_IN_PROGRESS,
     } );
   } ),
   getTotalUploadErrors: () => Object.keys( get().errorsByUuid ).length,
@@ -292,7 +292,7 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
     // 2. It's no longer in the queue (removed from uploadQueue)
     // 3. It didn't error (not counted in errorsByUuid)
     return Math.max( 0, uploads - inQueue - errors );
-  }
+  },
 } );
 
 export default createUploadObservationsSlice;

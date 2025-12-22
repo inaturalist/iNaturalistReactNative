@@ -26,7 +26,7 @@ const CommunitySection = ( {
   openAgreeWithIdSheet,
   isConnected,
   targetItemID,
-  onLayoutTargetItem
+  onLayoutTargetItem,
 }: Props ): Node => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
@@ -52,9 +52,9 @@ const CommunitySection = ( {
         item.toJSON
           ? item.toJSON( )
           : item
-      )
+      ),
     ),
-    [activityItems]
+    [activityItems],
   );
 
   const indexOfFirstTaxonDisplayed = taxonId => stableItems

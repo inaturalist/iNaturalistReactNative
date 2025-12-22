@@ -24,16 +24,16 @@ describe( "markRecordUploaded", () => {
       _synced_at: null,
       needs_sync: true,
       observationPhotos: [mockObsPhoto],
-      observationSounds: [mockObsSound]
+      observationSounds: [mockObsSound],
     };
 
     mockResponse = {
-      results: [{ id: 12345 }]
+      results: [{ id: 12345 }],
     };
 
     mockRealm = {
       isClosed: false,
-      objectForPrimaryKey: jest.fn().mockReturnValue( mockObservation )
+      objectForPrimaryKey: jest.fn().mockReturnValue( mockObservation ),
     };
 
     // Mock the safeRealmWrite implementation

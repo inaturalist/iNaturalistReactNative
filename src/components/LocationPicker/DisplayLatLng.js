@@ -1,7 +1,7 @@
 // @flow
 
 import {
-  Body4
+  Body4,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -24,12 +24,12 @@ const DisplayLatLng = ( { region, accuracy }: Props ): Node => {
       displayLocation = t( "Lat-Lon-Acc", {
         latitude: region.latitude,
         longitude: region.longitude,
-        accuracy
+        accuracy,
       } );
     } else {
       displayLocation = t( "Lat-Lon", {
         latitude: region.latitude,
-        longitude: region.longitude
+        longitude: region.longitude,
       } );
     }
   }

@@ -2,7 +2,7 @@ import { CustomFlashList } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import React, {
-  useCallback
+  useCallback,
 } from "react";
 import type { RealmTaxon } from "realmModels/types";
 
@@ -17,7 +17,7 @@ type Props = {
 
 const IconicSuggestionsScroll = ( {
   iconicTaxonChosen,
-  onIconicTaxonChosen
+  onIconicTaxonChosen,
 }: Props ) => {
   const realm = useRealm();
 
@@ -27,7 +27,7 @@ const IconicSuggestionsScroll = ( {
     ( iconicTaxon: RealmTaxon ) => {
       onIconicTaxonChosen( iconicTaxon );
     },
-    [onIconicTaxonChosen]
+    [onIconicTaxonChosen],
   );
 
   const renderItem = ( { item: taxon }: { item: RealmTaxon } ) => {

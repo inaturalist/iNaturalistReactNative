@@ -29,7 +29,7 @@ const useStoredLayout = ( storageKey: string ): LayoutHook => {
 
   return {
     layout,
-    writeLayoutToStorage
+    writeLayoutToStorage,
   };
 };
 

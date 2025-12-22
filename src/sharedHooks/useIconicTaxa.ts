@@ -19,7 +19,7 @@ const useIconicTaxa = ( options: { reload: boolean } = { reload: false } ) => {
   const { data: iconicTaxa } = useAuthenticatedQuery(
     queryKey,
     ( optsWithAuth: ApiOpts ) => searchTaxa( { iconic: true }, optsWithAuth ),
-    { enabled }
+    { enabled },
   );
 
   useEffect( ( ) => {
@@ -30,7 +30,7 @@ const useIconicTaxa = ( options: { reload: boolean } = { reload: false } ) => {
           realm.create(
             "Taxon",
             Taxon.forUpdate( taxon, { isIconic: true } ),
-            UpdateMode.Modified
+            UpdateMode.Modified,
           );
         } );
       }, "modifying iconic taxa in useIconicTaxa" );

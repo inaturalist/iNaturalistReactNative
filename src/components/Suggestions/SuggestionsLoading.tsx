@@ -1,9 +1,9 @@
 import {
   ActivityIndicator,
-  Body1
+  Body1,
 } from "components/SharedComponents";
 import {
-  View
+  View,
 } from "components/styledComponents";
 import React from "react";
 import { useTranslation } from "sharedHooks";
@@ -16,7 +16,7 @@ interface Props {
 }
 
 const SuggestionsLoading = ( {
-  onTaxonChosen
+  onTaxonChosen,
 }: Props ) => {
   const { t } = useTranslation( );
   const aiCameraSuggestion = useStore( state => state.aICameraSuggestion );

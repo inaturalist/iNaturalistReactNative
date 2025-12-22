@@ -153,5 +153,5 @@ export const SUPPORTED_LOCALES = [
   "vi",
   "zh-CN",
   "zh-HK",
-  "zh-TW"
+  "zh-TW",
 ];

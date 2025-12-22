@@ -22,34 +22,34 @@ const mockObservation = factory( "LocalObservation", {
   latitude: Number( faker.location.latitude( ) ),
   longitude: Number( faker.location.longitude( ) ),
   description: faker.lorem.paragraph( ),
-  quality_grade: "casual"
+  quality_grade: "casual",
 } );
 
 const mockObservationWithTaxon = {
   ...mockObservation,
-  taxon: factory( "LocalTaxon" )
+  taxon: factory( "LocalTaxon" ),
 };
 
 const mockObservationWithProjects = {
   ...mockObservation,
   non_traditional_projects: [
     {
-      project: factory( "RemoteProject" )
+      project: factory( "RemoteProject" ),
     }, {
-      project: factory( "RemoteProject" )
-    }
+      project: factory( "RemoteProject" ),
+    },
   ],
   project_observations: [
     {
-      project: factory( "RemoteProject" )
-    }
-  ]
+      project: factory( "RemoteProject" ),
+    },
+  ],
 };
 
 const mockAttribution = <View testID="mock-attribution" />;
 jest.mock( "components/ObsDetails/DetailsTab/Attribution", () => ( {
   __esModule: true,
-  default: () => mockAttribution
+  default: () => mockAttribution,
 } ) );
 
 const baseUrl = `${TILE_URL}/grid/{z}/{x}/{y}.png`;
@@ -137,7 +137,7 @@ describe( "DetailsTab", ( ) => {
       <DetailsTab
         observation={mockObservationWithProjects}
         currentUser={mockUser}
-      />
+      />,
     );
     const projectCountText = screen.queryByText( "PROJECTS (3)" );
     expect( projectCountText ).toBeVisible( );
