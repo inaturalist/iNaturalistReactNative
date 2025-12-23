@@ -8,8 +8,7 @@ import { Body3, Heading4, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import flattenUploadParams from "components/Suggestions/helpers/flattenUploadParams";
 import {
-  FETCH_STATUSES,
-  initialSuggestions
+  FETCH_STATUSES
 } from "components/Suggestions/SuggestionsContainer";
 import _ from "lodash";
 import { RealmContext } from "providers/contexts";
@@ -26,6 +25,9 @@ import {
   useExitObservationFlow, useLocationPermission, useSuggestions, useWatchPosition
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
+import {
+  internalUseSuggestionsInitialSuggestions
+} from "sharedHooks/useSuggestions/filterSuggestions";
 import { FIREBASE_TRACE_ATTRIBUTES, FIREBASE_TRACES } from "stores/createFirebaseTraceSlice";
 import useStore from "stores/useStore";
 
@@ -421,7 +423,11 @@ const MatchContainer = ( ) => {
       // resizeImage crashes if trying to resize an https:// photo while there is no internet
       // in this situation, we can skip creating upload parameters since we're loading
       // offline suggestions anyway
-      if ( !hasLoadedRef.current && _.isEqual( initialSuggestions, suggestions ) ) {
+      if ( !hasLoadedRef.current
+        // TODO: part of MOB-1081, see `internalUseSuggestionsInitialSuggestions`
+        // we shouldn't rely on implementation internals to consumer drive state
+        && _.isEqual( internalUseSuggestionsInitialSuggestions, suggestions )
+      ) {
         hasLoadedRef.current = true;
         setImageParams( );
       }
@@ -436,8 +442,8 @@ const MatchContainer = ( ) => {
 
     const orderedList = [...suggestions.otherSuggestions];
     if ( suggestions?.topSuggestion ) {
-      setTopSuggestion( suggestions?.topSuggestion );
-      orderedList.unshift( suggestions?.topSuggestion );
+      setTopSuggestion( suggestions.topSuggestion );
+      orderedList.unshift( suggestions.topSuggestion );
     }
     // make sure list is in order of confidence score
     const sortedList = _.orderBy(

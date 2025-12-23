@@ -1,22 +1,22 @@
-import {
-  TOP_SUGGESTION_ABOVE_THRESHOLD,
-  TOP_SUGGESTION_COMMON_ANCESTOR,
-  TOP_SUGGESTION_HUMAN,
-  TOP_SUGGESTION_NONE,
-  TOP_SUGGESTION_NOT_CONFIDENT
-} from "components/Suggestions/SuggestionsContainer";
 import _ from "lodash";
 
 import isolateHumans, { humanFilter } from "./isolateHumans";
 import type { UseSuggestionsSuggestion } from "./types";
+import { TopSuggestionType } from "./types";
 
 const initialSuggestions = {
   otherSuggestions: [],
   topSuggestion: null,
-  topSuggestionType: TOP_SUGGESTION_NONE
+  topSuggestionType: TopSuggestionType.TOP_SUGGESTION_NONE
 };
 
-const THRESHOLD = 78;
+// TODO: MOB-1081 remove internals / consumer coupling & delete this export
+// consumers are doing "math" with this to figure out what state we're in,
+// `useSuggestions` should return state/status context if they need it
+// namespaced to call out dependence on internal logic
+export const internalUseSuggestionsInitialSuggestions = initialSuggestions;
+
+const TOP_RESULT_SCORE_THRESHOLD = 78;
 
 // this function does a few things:
 // 1. it makes sure that if there is a human suggestion, human is the only result returned
@@ -45,7 +45,7 @@ const filterSuggestions = (
     return {
       ...newSuggestions,
       otherSuggestions: [],
-      topSuggestionType: TOP_SUGGESTION_NONE
+      topSuggestionType: TopSuggestionType.TOP_SUGGESTION_NONE
     };
   }
   // human top suggestion
@@ -53,14 +53,14 @@ const filterSuggestions = (
     return {
       ...newSuggestions,
       topSuggestion: sortedSuggestions[0],
-      topSuggestionType: TOP_SUGGESTION_HUMAN,
+      topSuggestionType: TopSuggestionType.TOP_SUGGESTION_HUMAN,
       otherSuggestions: []
     };
   }
 
   const suggestionAboveThreshold = _.find(
     sortedSuggestions,
-    s => s.combined_score > THRESHOLD
+    s => s.combined_score > TOP_RESULT_SCORE_THRESHOLD
   );
 
   if ( suggestionAboveThreshold ) {
@@ -71,33 +71,38 @@ const filterSuggestions = (
     ).at( 0 );
     return {
       ...newSuggestions,
-      topSuggestion: firstSuggestion!,
-      topSuggestionType: TOP_SUGGESTION_ABOVE_THRESHOLD
+      topSuggestion: firstSuggestion,
+      topSuggestionType: TopSuggestionType.TOP_SUGGESTION_ABOVE_THRESHOLD
     };
   }
 
   // online or offline common ancestor
   if ( commonAncestor ) {
     const sortableCommonAncestor = {
-      ...commonAncestor
+      ...commonAncestor,
+      // temp patch to let calling code sort online common ancestor with other suggestions
+      combined_score: commonAncestor.combined_score ?? commonAncestor.score
     };
-    if ( "score" in commonAncestor ) {
-      // combined_score is redacted from online commonAncestor:
-      // https://github.com/inaturalist/iNaturalistAPI/blob/main/lib/controllers/v1/computervision_controller.js#L389
-      // we're shimming it here to sort like to like
-      sortableCommonAncestor.combined_score = commonAncestor.score;
-    }
+    // const sortableCommonAncestor = {
+    //   ...commonAncestor
+    // };
+    // if ( "score" in commonAncestor ) {
+    //   // combined_score is redacted from online commonAncestor:
+    //   // https://github.com/inaturalist/iNaturalistAPI/blob/main/lib/controllers/v1/computervision_controller.js#L389
+    //   // we're shimming it here to sort like to like
+    //   sortableCommonAncestor.combined_score = commonAncestor.score;
+    // }
     return {
       ...newSuggestions,
       topSuggestion: sortableCommonAncestor,
-      topSuggestionType: TOP_SUGGESTION_COMMON_ANCESTOR
+      topSuggestionType: TopSuggestionType.TOP_SUGGESTION_COMMON_ANCESTOR
     };
   }
 
   // no top suggestion
   return {
     ...newSuggestions,
-    topSuggestionType: TOP_SUGGESTION_NOT_CONFIDENT
+    topSuggestionType: TopSuggestionType.TOP_SUGGESTION_NOT_CONFIDENT
   };
 };
 

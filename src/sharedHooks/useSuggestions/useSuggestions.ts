@@ -2,20 +2,14 @@ import { useNetInfo } from "@react-native-community/netinfo";
 import { useMemo } from "react";
 
 import filterSuggestions from "./filterSuggestions";
-import type { ScoreImageParams, UseSuggestionsResult } from "./types";
+import type { UseSuggestionsOptions, UseSuggestionsResult } from "./types";
 import useOfflineSuggestions from "./useOfflineSuggestions";
 import useOnlineSuggestions from "./useOnlineSuggestions";
 
-interface Options {
-  shouldFetchOnlineSuggestions: boolean;
-  onFetchError: ( options: { isOnline: boolean } ) => void;
-  onFetched: ( options: { isOnline: boolean } ) => void;
-  scoreImageParams: ScoreImageParams;
-  queryKey: string[];
-  onlineSuggestionsAttempted: boolean;
-}
-
-export const useSuggestions = ( photoUri: string, options: Options ): UseSuggestionsResult => {
+export const useSuggestions = (
+  photoUri: string,
+  options: UseSuggestionsOptions
+): UseSuggestionsResult => {
   const { isConnected } = useNetInfo( );
   const {
     shouldFetchOnlineSuggestions,
@@ -70,6 +64,7 @@ export const useSuggestions = ( photoUri: string, options: Options ): UseSuggest
     longitude: scoreImageParams?.lng,
     tryOfflineSuggestions
   } );
+  console.log( { offlineSuggestions, onlineSuggestions } );
 
   const refetchSuggestions = () => {
     if ( shouldFetchOnlineSuggestions ) {
@@ -108,8 +103,6 @@ export const useSuggestions = ( photoUri: string, options: Options ): UseSuggest
       commonAncestor
     ]
   );
-
-  console.log( { offlineSuggestions, onlineSuggestions } );
 
   return {
     ...onlineSuggestionsResponse,

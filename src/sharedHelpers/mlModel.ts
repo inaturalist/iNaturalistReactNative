@@ -41,7 +41,7 @@ export const geomodelPath: string = Platform.select( {
 
 export const modelVersion = Config.CV_MODEL_VERSION;
 
-export const predictImage = ( uri: string, location: Location ) => {
+export const predictImage = ( uri: string, location?: Location ) => {
   // Ensure uri is actually well-formed and try to make it well-formed if it's
   // a path
   let url;

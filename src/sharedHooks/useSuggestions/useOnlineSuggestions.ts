@@ -34,8 +34,8 @@ interface OnlineSuggestionOptions {
 interface UseOnlineSuggestionsResponse {
   dataUpdatedAt: number;
   onlineSuggestions?: {
-    results: UseSuggestionsOnlineSuggestion[],
-    common_ancestor: UseSuggestionsOnlineSuggestion
+    results: UseSuggestionsOnlineSuggestion[];
+    common_ancestor: UseSuggestionsOnlineSuggestion;
   };
   timedOut: boolean;
   error: Error | null;
@@ -86,6 +86,7 @@ const useOnlineSuggestions = (
     error
   } = useAuthenticatedQuery<OnlineSuggestionsQueryResponse>(
     queryKey,
+    // TODO types: fix queryFn for null vs undef consistency
     queryFn,
     {
       enabled: !!shouldFetchOnlineSuggestions
@@ -119,37 +120,33 @@ const useOnlineSuggestions = (
     }
   }, [isConnected] );
 
-  const saveTaxaToRealm = useCallback( ( ) => {
-    // we're already getting all this taxon information anytime we make this API
-    // call, so we might as well store it in realm immediately instead of waiting
-    // for useTaxon to fetch individual taxon results
-    const mappedTaxa = onlineSuggestions!.results!.map(
-      suggestion => Taxon.mapApiToRealm( suggestion.taxon, realm )
-    );
-    if ( onlineSuggestions?.common_ancestor ) {
-      const mappedCommonAncestor = Taxon
-        .mapApiToRealm( onlineSuggestions?.common_ancestor.taxon, realm );
-      mappedTaxa.push( mappedCommonAncestor );
-    }
-    safeRealmWrite( realm, ( ) => {
-      mappedTaxa.forEach( remoteTaxon => {
-        realm.create(
-          Taxon,
-          Taxon.forUpdate( remoteTaxon ),
-          UpdateMode.Modified
-        );
-      } );
-    }, "saving remote taxon from onlineSuggestions" );
-  }, [realm, onlineSuggestions] );
-
   useEffect( ( ) => {
     if ( onlineSuggestions !== undefined ) {
-      saveTaxaToRealm( );
+      // we're already getting all this taxon information anytime we make this API
+      // call, so we might as well store it in realm immediately instead of waiting
+      // for useTaxon to fetch individual taxon results
+      const mappedTaxa = onlineSuggestions.results.map(
+        suggestion => Taxon.mapApiToRealm( suggestion.taxon, realm )
+      );
+      if ( onlineSuggestions?.common_ancestor ) {
+        const mappedCommonAncestor = Taxon
+          .mapApiToRealm( onlineSuggestions?.common_ancestor.taxon, realm );
+        mappedTaxa.push( mappedCommonAncestor );
+      }
+      safeRealmWrite( realm, ( ) => {
+        mappedTaxa.forEach( remoteTaxon => {
+          realm.create(
+            "Taxon",
+            Taxon.forUpdate( remoteTaxon ),
+            UpdateMode.Modified
+          );
+        } );
+      }, "saving remote taxon from onlineSuggestions" );
       onFetched( { isOnline: true } );
     } else if ( error ) {
       onFetchError( { isOnline: true } );
     }
-  }, [onFetchError, onlineSuggestions, error, saveTaxaToRealm, onFetched] );
+  }, [onFetchError, onlineSuggestions, error, onFetched, realm] );
 
   const queryObject = {
     dataUpdatedAt,
