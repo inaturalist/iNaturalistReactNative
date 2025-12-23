@@ -1,7 +1,7 @@
 // @flow
 
 import {
-  WarningSheet
+  WarningSheet,
 } from "components/SharedComponents";
 import { t } from "i18next";
 import type { Node } from "react";
@@ -14,7 +14,7 @@ type Props = {
 
 const DiscardChangesSheet = ( {
   onPressClose,
-  discardChanges
+  discardChanges,
 }: Props ): Node => (
   <WarningSheet
     onPressClose={onPressClose}

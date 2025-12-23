@@ -1,6 +1,6 @@
 import {
   Body2,
-  UploadProgressBar
+  UploadProgressBar,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -27,19 +27,19 @@ const MultipleObservationsUploadStatus = ( ): Node => {
   const statusOptions = [
     {
       text: t( "x-uploaded", { count: totalUploaded } ),
-      count: totalUploaded
+      count: totalUploaded,
     },
     {
       text: t( "x-failed", { count: totalUploadErrors } ),
-      count: totalUploadErrors
+      count: totalUploadErrors,
     },
     {
       text: t( "x-saved", { count: totalSavedObservations } ),
-      count: totalSavedObservations
+      count: totalSavedObservations,
     }, {
       text: t( "x-uploading", { count: totalUploading } ),
-      count: totalUploading
-    }
+      count: totalUploading,
+    },
   ];
 
   const totalCounts = statusOptions.reduce( ( acc, currentValue ) => acc + currentValue.count, 0 );

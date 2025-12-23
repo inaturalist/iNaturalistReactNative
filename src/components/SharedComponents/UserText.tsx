@@ -9,10 +9,10 @@ import MarkdownIt from "markdown-it";
 import * as React from "react";
 import { Linking, useWindowDimensions } from "react-native";
 import type {
-  MixedStyleDeclaration, RenderersProps, TRenderEngineConfig
+  MixedStyleDeclaration, RenderersProps, TRenderEngineConfig,
 } from "react-native-render-html";
 import HTML, {
-  defaultSystemFonts
+  defaultSystemFonts,
 } from "react-native-render-html";
 import WebView from "react-native-webview";
 import type { IOptions } from "sanitize-html";
@@ -68,14 +68,14 @@ const ALLOWED_ATTRIBUTES_NAMES = (
   "href src width height alt cite title class name abbr value align target rel"
 ).split( " " );
 
-const ALLOWED_ATTRIBUTES: { [key: string]: string[] } = { a: ["href"] };
+const ALLOWED_ATTRIBUTES: Record<string, string[]> = { a: ["href"] };
 ALLOWED_TAGS.filter( tag => tag !== "a" )
   .forEach( tag => { ALLOWED_ATTRIBUTES[tag] = ALLOWED_ATTRIBUTES_NAMES; } );
 
 const SANITIZE_HTML_CONFIG: IOptions = {
   allowedTags: ALLOWED_TAGS,
   allowedAttributes: ALLOWED_ATTRIBUTES,
-  allowedSchemes: ["http", "https"]
+  allowedSchemes: ["http", "https"],
 };
 
 const MENTION_TITLE = "mention_";
@@ -85,7 +85,7 @@ const LINKIFY_OPTIONS: Opts = {
     // Only for mentions we add a title attribute
     if ( type === "mention" ) {
       return {
-        title: `${MENTION_TITLE}${token}`
+        title: `${MENTION_TITLE}${token}`,
       };
     }
     return { };
@@ -93,19 +93,19 @@ const LINKIFY_OPTIONS: Opts = {
   rel: "nofollow noopener",
   ignoreTags: ["a", "code", "pre"],
   formatHref: {
-    mention: href => `https://www.inaturalist.org/people${href}`
-  }
+    mention: href => `https://www.inaturalist.org/people${href}`,
+  },
 };
 
 interface Props extends React.PropsWithChildren {
-  text: string,
-  htmlStyle?: object,
+  text: string;
+  htmlStyle?: object;
 }
 
 const UserText = ( {
   children,
   htmlStyle,
-  text: textProp
+  text: textProp,
 } : Props ) => {
   const navigation = useNavigation( );
 
@@ -120,7 +120,7 @@ const UserText = ( {
 
   const md = new MarkdownIt( {
     html: true,
-    breaks: true
+    breaks: true,
   } );
 
   md.renderer.rules.table_open = ( ) => "<table class=\"table\">\n";
@@ -140,13 +140,13 @@ const UserText = ( {
     lineHeight: 22,
     color: colors.darkGray,
     ...htmlStyle,
-    width: "100%"
+    width: "100%",
   };
   const tagsStyles: TRenderEngineConfig["tagsStyles"] = {
     a: {
       textDecorationLine: "underline",
-      color: colors.inatGreen
-    }
+      color: colors.inatGreen,
+    },
   };
   const fonts = [fontRegular, ...defaultSystemFonts];
 
@@ -165,8 +165,8 @@ const UserText = ( {
         }
         // This is any other regular link
         Linking.openURL( href );
-      }
-    }
+      },
+    },
   };
 
   return (

@@ -3,11 +3,11 @@ import {
   FiftyObservationCard,
   FiveObservationCard,
   NotificationOnboarding,
-  OneObservationCard
+  OneObservationCard,
 } from "components/OnboardingModal/PivotCards";
 import {
   Button,
-  ScrollViewWrapper
+  ScrollViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useState } from "react";
@@ -26,24 +26,24 @@ const Buttons = ( ) => {
   const pivotCards = [
     {
       title: "Account Creation",
-      component: AccountCreationCard
+      component: AccountCreationCard,
     },
     {
       title: "First Observation",
-      component: OneObservationCard
+      component: OneObservationCard,
     },
     {
       title: "Five Observation",
-      component: FiveObservationCard
+      component: FiveObservationCard,
     },
     {
       title: "Fifty Observation",
-      component: FiftyObservationCard
+      component: FiftyObservationCard,
     },
     {
       title: "Notification Onboarding",
-      component: NotificationOnboarding
-    }
+      component: NotificationOnboarding,
+    },
   ];
 
   return (
@@ -66,7 +66,7 @@ const Buttons = ( ) => {
             onPress={() => setShowingModal( index )}
           />
           {React.createElement( component, {
-            triggerCondition: modalIndex === index
+            triggerCondition: modalIndex === index,
           } )}
         </View>
       ) )}

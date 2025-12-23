@@ -2,29 +2,35 @@ import { CustomFlashList } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import React, {
-  useCallback
+  useCallback,
 } from "react";
+import type { RealmTaxon } from "realmModels/types";
 
 import IconicSuggestion from "./IconicSuggestion";
 
 const { useRealm } = RealmContext;
 
+type Props = {
+  iconicTaxonChosen?: RealmTaxon;
+  onIconicTaxonChosen: ( taxon: RealmTaxon ) => void;
+}
+
 const IconicSuggestionsScroll = ( {
   iconicTaxonChosen,
-  onIconicTaxonChosen
-} ) => {
+  onIconicTaxonChosen,
+}: Props ) => {
   const realm = useRealm();
 
   const iconicTaxa = realm?.objects( "Taxon" ).filtered( "isIconic = true" );
 
   const handleIconicSuggestionPress = useCallback(
-    iconicTaxon => {
+    ( iconicTaxon: RealmTaxon ) => {
       onIconicTaxonChosen( iconicTaxon );
     },
-    [onIconicTaxonChosen]
+    [onIconicTaxonChosen],
   );
 
-  const renderItem = ( { item: taxon } ) => {
+  const renderItem = ( { item: taxon }: { item: RealmTaxon } ) => {
     const selected = iconicTaxonChosen?.id === taxon?.id;
     return (
       <IconicSuggestion
@@ -42,7 +48,7 @@ const IconicSuggestionsScroll = ( {
         ListHeaderComponent={renderHeader}
         horizontal
         renderItem={renderItem}
-        keyExtractor={item => item?.id}
+        keyExtractor={( item: RealmTaxon ) => `${item?.id}`}
         data={iconicTaxa}
       />
     </View>

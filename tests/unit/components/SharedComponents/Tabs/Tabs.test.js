@@ -11,13 +11,13 @@ const tabs = [
   {
     id: TAB_1,
     text: TAB_1,
-    onPress: tab1Click
+    onPress: tab1Click,
   },
   {
     id: TAB_2,
     text: TAB_2,
-    onPress: tab2Click
-  }
+    onPress: tab2Click,
+  },
 ];
 
 describe( "Tabs", () => {

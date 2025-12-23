@@ -1,24 +1,24 @@
 import {
-  useNetInfo
+  useNetInfo,
 } from "@react-native-community/netinfo";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fetchUsers } from "api/users";
 import {
   Body1,
   InfiniteScrollLoadingWheel,
-  ViewWrapper
+  ViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import UserList from "components/UserList/UserList";
 import React, {
   useEffect,
-  useMemo
+  useMemo,
 } from "react";
 import User from "realmModels/User";
 import {
   useCurrentUser,
   useInfiniteUserScroll,
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 
 const FollowersList = ( ) => {
@@ -37,25 +37,25 @@ const FollowersList = ( ) => {
     data: followers,
     // fetchNextPage,
     isFetching,
-    totalResults
+    totalResults,
   } = useInfiniteUserScroll(
     usersFollowingQueryKey,
     fetchUsers,
     [],
     {
       following: userId,
-      fields: User.LIMITED_FIELDS
+      fields: User.LIMITED_FIELDS,
     },
     {
-      enabled: !!currentUser
-    }
+      enabled: !!currentUser,
+    },
   );
 
   const followersHeaderOptions = useMemo( ( ) => ( {
     headerTitle: user?.login,
     headerSubtitle: t( "X-FOLLOWERS", {
-      count: totalResults
-    } )
+      count: totalResults,
+    } ),
   } ), [totalResults, t, user] );
 
   useEffect( ( ) => {

@@ -5,7 +5,13 @@ import { Animated } from "react-native";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
-const LocationStatus = ( { useLocation, visible, onAnimationEnd } ) => {
+interface Props {
+  onAnimationEnd: () => void;
+  useLocation: boolean;
+  visible: boolean;
+}
+
+const LocationStatus = ( { useLocation, visible, onAnimationEnd }: Props ) => {
   const { t } = useTranslation();
   const opacity = useRef( new Animated.Value( 0 ) ).current;
 
@@ -15,14 +21,14 @@ const LocationStatus = ( { useLocation, visible, onAnimationEnd } ) => {
         Animated.timing( opacity, {
           toValue: 1,
           duration: 200,
-          useNativeDriver: true
+          useNativeDriver: true,
         } ),
         Animated.delay( 2000 ),
         Animated.timing( opacity, {
           toValue: 0,
           duration: 200,
-          useNativeDriver: true
-        } )
+          useNativeDriver: true,
+        } ),
       ] ).start( () => onAnimationEnd() );
     }
   }, [visible, opacity, onAnimationEnd] );

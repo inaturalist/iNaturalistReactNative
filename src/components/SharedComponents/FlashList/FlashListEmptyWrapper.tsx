@@ -1,6 +1,7 @@
 import classnames from "classnames";
 import { View } from "components/styledComponents";
-import React, { type PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
+import React from "react";
 import { useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -16,7 +17,7 @@ const FlashListEmptyWrapper = ( {
   children,
   containerClassName,
   headerHeight: HEADER_HEIGHT,
-  emptyItemHeight: EMPTY_ITEM_HEIGHT
+  emptyItemHeight: EMPTY_ITEM_HEIGHT,
 }: Props ) => {
   const insets = useSafeAreaInsets( );
   const { height } = useWindowDimensions( );
@@ -34,8 +35,8 @@ const FlashListEmptyWrapper = ( {
       className={classnames(
         containerClassName,
         {
-          "px-[67px] items-center": !containerClassName
-        }
+          "px-[67px] items-center": !containerClassName,
+        },
       )}
       style={{ height: outerViewHeight }}
     >

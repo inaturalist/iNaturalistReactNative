@@ -1,6 +1,6 @@
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import {
-  photoLibraryPhotosPath
+  photoLibraryPhotosPath,
 } from "appConstants/paths";
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { ActivityAnimation, ViewWrapper } from "components/SharedComponents";
@@ -8,12 +8,12 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React, {
   useCallback,
-  useState
+  useState,
 } from "react";
 import {
   InteractionManager,
   Platform,
-  View
+  View,
 } from "react-native";
 import RNFS from "react-native-fs";
 import * as ImagePicker from "react-native-image-picker";
@@ -27,14 +27,14 @@ import useStore from "stores/useStore";
 
 const MAX_PHOTOS_ALLOWED = Platform.select( {
   ios: 500,
-  android: 100
+  android: 100,
 } );
 
 const FROM_AICAMERA_MAX_PHOTOS_ALLOWED = 1;
 
 const PhotoLibrary = ( ): Node => {
   const {
-    screenAfterPhotoEvidence, isDefaultMode
+    screenAfterPhotoEvidence, isDefaultMode,
   } = useLayoutPrefs( );
   const navigation = useNavigation( );
   const [photoLibraryShown, setPhotoLibraryShown] = useState( false );
@@ -62,7 +62,7 @@ const PhotoLibrary = ( ): Node => {
     : false;
 
   const navToObsEdit = useCallback( ( ) => navigation.navigate( "ObsEdit", {
-    lastScreen: "PhotoLibrary"
+    lastScreen: "PhotoLibrary",
   } ), [navigation] );
 
   const navBasedOnUserSettings = useCallback( async ( ) => {
@@ -70,8 +70,8 @@ const PhotoLibrary = ( ): Node => {
       return navigation.navigate( "NoBottomTabStackNavigator", {
         screen: "Match",
         params: {
-          lastScreen: "PhotoLibrary"
-        }
+          lastScreen: "PhotoLibrary",
+        },
       } );
     }
 
@@ -79,8 +79,8 @@ const PhotoLibrary = ( ): Node => {
     return navigation.navigate( "NoBottomTabStackNavigator", {
       screen: screenAfterPhotoEvidence,
       params: {
-        lastScreen: "PhotoLibrary"
-      }
+        lastScreen: "PhotoLibrary",
+      },
     } );
   }, [navigation, screenAfterPhotoEvidence, isDefaultMode] );
 
@@ -98,8 +98,8 @@ const PhotoLibrary = ( ): Node => {
           ...image,
           uri: Platform.OS === "ios"
             ? `file://${destPath}`
-            : destPath
-        }
+            : destPath,
+        },
       };
     } ) );
     return movedImages;
@@ -129,7 +129,7 @@ const PhotoLibrary = ( ): Node => {
       // forceOldAndroidPhotoPicker is necessary because the "new" picker strips key EXIF data
       forceOldAndroidPhotoPicker: true,
       chooserTitle: t( "Import-Photos-From" ),
-      presentationStyle: "overFullScreen"
+      presentationStyle: "overFullScreen",
     } );
 
     if ( !response || response.didCancel || !response.assets || response.errorCode ) {
@@ -162,7 +162,7 @@ const PhotoLibrary = ( ): Node => {
       // This screen was called from the plus button of the group photos screen - get back to it
       // after adding the newly selected photos
       setGroupedPhotos( [...groupedPhotos, ...selectedImages.map( photo => ( {
-        photos: [photo]
+        photos: [photo],
       } ) )] );
       navigation.setParams( { fromGroupPhotos: false } );
       navigation.navigate( "NoBottomTabStackNavigator", { screen: "GroupPhotos" } );
@@ -176,7 +176,7 @@ const PhotoLibrary = ( ): Node => {
       // add evidence to existing observation
       setPhotoImporterState( {
         photoLibraryUris: [...photoLibraryUris, ...importedPhotoUris],
-        evidenceToAdd: [...evidenceToAdd, ...importedPhotoUris]
+        evidenceToAdd: [...evidenceToAdd, ...importedPhotoUris],
       } );
       const obsPhotos = await ObservationPhoto
         .createObsPhotosWithPosition( selectedImages, { position: numOfObsPhotos } );
@@ -204,12 +204,12 @@ const PhotoLibrary = ( ): Node => {
       if ( newObservation.latitude ) {
         const placeName = await fetchPlaceName(
           newObservation.latitude,
-          newObservation.longitude
+          newObservation.longitude,
         );
         newObservation.place_guess = placeName;
       }
       setPhotoImporterState( {
-        observations: [newObservation]
+        observations: [newObservation],
       } );
       navBasedOnUserSettings( );
       setPhotoLibraryShown( false );
@@ -218,8 +218,8 @@ const PhotoLibrary = ( ): Node => {
       setPhotoImporterState( {
         photoLibraryUris: [...photoLibraryUris, ...importedPhotoUris],
         groupedPhotos: selectedImages.map( photo => ( {
-          photos: [photo]
-        } ) )
+          photos: [photo],
+        } ) ),
       } );
       navigation.setParams( { fromGroupPhotos: false } );
       navigation.navigate( "NoBottomTabStackNavigator", { screen: "GroupPhotos" } );
@@ -244,7 +244,7 @@ const PhotoLibrary = ( ): Node => {
     setPhotoImporterState,
     skipGroupPhotos,
     updateObservations,
-    fromAICamera
+    fromAICamera,
   ] );
 
   useFocusEffect(
@@ -265,7 +265,7 @@ const PhotoLibrary = ( ): Node => {
           interactionHandle.cancel();
         }
       };
-    }, [photoLibraryShown, showPhotoLibrary] )
+    }, [photoLibraryShown, showPhotoLibrary] ),
   );
 
   return (

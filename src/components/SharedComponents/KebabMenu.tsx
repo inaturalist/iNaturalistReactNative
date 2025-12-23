@@ -16,13 +16,13 @@ interface Props extends PropsWithChildren {
 }
 
 const FIRST_MENU_ITEM_STYLE = {
-  padding: 14
+  padding: 14,
 } as const;
 
 const MENU_ITEM_STYLE = {
   ...FIRST_MENU_ITEM_STYLE,
   borderTopColor: colors.lightGray,
-  borderTopWidth: 1
+  borderTopWidth: 1,
 } as const;
 
 const MENU_CONTENT_STYLE = {
@@ -33,7 +33,7 @@ const MENU_CONTENT_STYLE = {
   paddingBottom: -10,
   // Not ideal, but seems to work in most situations to get the menu to appear
   // below the button that opens it
-  top: 40
+  top: 40,
 } as const;
 
 // Should be the same as Body3, we just can't use that component *and* get all
@@ -42,7 +42,7 @@ const MENU_ITEM_TITLE_STYLE = {
   fontSize: 13,
   fontFamily: tailwindFontMedium,
   lineHeight: 18,
-  color: colors.darkGray
+  color: colors.darkGray,
 } as const;
 
 const KebabMenu = ( {
@@ -52,7 +52,7 @@ const KebabMenu = ( {
   large,
   setVisible,
   visible,
-  white
+  white,
 }: Props ) => {
   const { t } = useTranslation( );
   const openMenu = ( ) => setVisible( true );
@@ -98,7 +98,7 @@ const KebabMenuItem = ( {
   isFirst,
   onPress,
   testID,
-  title
+  title,
 }: KebabMenuItemProps ) => (
   <Menu.Item
     accessibilityLabel={accessibilityLabel}

@@ -1,15 +1,15 @@
 import type { Camera } from "components/Camera/helpers/visionCameraWrapper";
 import type React from "react";
 import {
-  useCallback, useMemo, useRef, useState
+  useCallback, useMemo, useRef, useState,
 } from "react";
 import { Animated } from "react-native";
 import type {
   GestureStateChangeEvent,
-  TapGestureHandlerEventPayload
+  TapGestureHandlerEventPayload,
 } from "react-native-gesture-handler";
 import {
-  Gesture
+  Gesture,
 } from "react-native-gesture-handler";
 
 const HALF_SIZE_FOCUS_BOX = 33;
@@ -28,7 +28,7 @@ const useFocusTap = ( cameraRef: React.RefObject<Camera | null>, supportsFocus: 
     return ( {
       left: tappedCoordinates.x - HALF_SIZE_FOCUS_BOX,
       top: tappedCoordinates.y - HALF_SIZE_FOCUS_BOX,
-      opacity: focusOpacity
+      opacity: focusOpacity,
     } );
   }, [tappedCoordinates, focusOpacity] );
 
@@ -46,13 +46,13 @@ const useFocusTap = ( cameraRef: React.RefObject<Camera | null>, supportsFocus: 
       {
         toValue: 0,
         duration: 2000,
-        useNativeDriver: true
-      }
+        useNativeDriver: true,
+      },
     ).start( );
   }, [
     cameraRef,
     supportsFocus,
-    focusOpacity
+    focusOpacity,
   ] );
 
   const tapToFocus = useMemo( ( ) => Gesture.Tap( )
@@ -62,7 +62,7 @@ const useFocusTap = ( cameraRef: React.RefObject<Camera | null>, supportsFocus: 
   return {
     animatedStyle,
     tapToFocus,
-    tappedCoordinates
+    tappedCoordinates,
   };
 };
 

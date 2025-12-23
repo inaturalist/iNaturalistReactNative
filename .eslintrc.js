@@ -4,15 +4,15 @@ module.exports = {
   parserOptions: {
     requireConfigFile: false,
     babelOptions: {
-      presets: ["@babel/preset-react"]
-    }
+      presets: ["@babel/preset-react"],
+    },
   },
   extends: [
     "airbnb",
     "plugin:i18next/recommended",
     "plugin:@tanstack/eslint-plugin-query/recommended",
     "plugin:react-native-a11y/ios",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
   ],
   plugins: [
     "module-resolver",
@@ -20,11 +20,14 @@ module.exports = {
     "react-native",
     "simple-import-sort",
     "@tanstack/query",
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "@stylistic",
   ],
   rules: {
     "arrow-parens": [2, "as-needed"],
-    "comma-dangle": [2, "never"],
+    // enforces trailing comma in objects / arrays except inline: no [1,2,3,]
+    // functionally, this improves git deltas when the last items of {}/[] are changed
+    "comma-dangle": ["error", "always-multiline"],
     "consistent-return": [2, { treatUndefinedAsUnspecified: true }],
     "func-names": 0,
     "global-require": 0,
@@ -33,9 +36,9 @@ module.exports = {
       {
         words: {
           // Minor change to the default to disallow all-caps string literals as well
-          exclude: ["[0-9!-/:-@[-`{-~]+"]
-        }
-      }
+          exclude: ["[0-9!-/:-@[-`{-~]+"],
+        },
+      },
     ],
     // The AirBNB approach at
     // https://github.com/airbnb/javascript/blob/master/packages/eslint-config-airbnb-base/rules/imports.js#L71
@@ -53,7 +56,7 @@ module.exports = {
       jsx: "never",
       json: "always",
       ts: "never",
-      tsx: "never"
+      tsx: "never",
     }],
     indent: ["error", 2, { SwitchCase: 1 }],
     "max-len": [
@@ -65,8 +68,8 @@ module.exports = {
         ignoreComments: false,
         ignoreRegExpLiterals: true,
         ignoreStrings: false,
-        ignoreTemplateLiterals: false
-      }
+        ignoreTemplateLiterals: false,
+      },
     ],
     "no-alert": 0,
     "no-underscore-dangle": 0,
@@ -91,7 +94,7 @@ module.exports = {
     "react/jsx-filename-extension": 0,
     "react/function-component-definition": [
       2,
-      { namedComponents: "arrow-function" }
+      { namedComponents: "arrow-function" },
     ],
     "react/require-default-props": 0,
 
@@ -126,6 +129,9 @@ module.exports = {
     // https://eslint.org/docs/latest/rules/no-undef#handled_by_typescript
     "no-undef": "error",
 
+    "@typescript-eslint/array-type": ["error", {
+      default: "array",
+    }],
     "@typescript-eslint/no-unused-vars": [
       "error",
       {
@@ -137,16 +143,18 @@ module.exports = {
         ignoreRestSiblings: true,
         caughtErrors: "all",
         // needed a special case for catch blocks that use _ to define an unused error
-        caughtErrorsIgnorePattern: "^_"
-      }
+        caughtErrorsIgnorePattern: "^_",
+      },
     ],
     "@typescript-eslint/no-require-imports": ["error", {
-      allow: ["\\.(png|jpg|jpeg|gif|svg)$"]
+      allow: ["\\.(png|jpg|jpeg|gif|svg)$"],
     }],
     "@typescript-eslint/no-unsafe-function-type": 1,
     "@typescript-eslint/consistent-type-imports": ["error", {
-      fixStyle: "separate-type-imports"
-    }]
+      fixStyle: "separate-type-imports",
+    }],
+    "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
+    "@stylistic/member-delimiter-style": "error",
   },
   ignorePatterns: ["!.detoxrc.js", "/coverage/*", "/vendor/*", "**/flow-typed"],
   settings: {
@@ -154,9 +162,9 @@ module.exports = {
       "babel-module": { allowExistingDirectories: true },
       node: {
         extensions: [".js", ".jsx", ".ts", ".tsx"],
-        moduleDirectory: ["node_modules", "src"]
-      }
-    }
+        moduleDirectory: ["node_modules", "src"],
+      },
+    },
   },
   overrides: [
     {
@@ -165,23 +173,31 @@ module.exports = {
         "@typescript-eslint/no-unsafe-function-type": "off",
         "@typescript-eslint/no-wrapper-object-types": "off",
         "@typescript-eslint/no-require-imports": "off",
-        "@typescript-eslint/consistent-type-imports": "off"
-      }
+        "@typescript-eslint/consistent-type-imports": "off",
+        "import/consistent-type-specifier-style": "off",
+        "@stylistic/member-delimiter-style": "off",
+      },
+    },
+    {
+      files: ["*.test.js", "*.test.tsx"],
+      rules: {
+        "react/jsx-props-no-spreading": "off",
+      },
     },
     {
       files: ["**/__mocks__/**/*", "**/*mock*", "**/*.mock.*"],
       rules: {
-        "@typescript-eslint/no-require-imports": "off"
-      }
+        "@typescript-eslint/no-require-imports": "off",
+      },
     },
     {
       files: ["tests/**/*", "__mocks__/**/*", "e2e/**/*"],
-      env: { jest: true }
+      env: { jest: true },
     },
     {
       files: ["tests/**/*"],
       plugins: ["testing-library"],
-      extends: ["plugin:testing-library/react"]
-    }
-  ]
+      extends: ["plugin:testing-library/react"],
+    },
+  ],
 };

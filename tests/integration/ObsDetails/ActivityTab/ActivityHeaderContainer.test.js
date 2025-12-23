@@ -10,7 +10,7 @@ import { signIn, signOut } from "tests/helpers/user";
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -21,8 +21,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -52,8 +52,8 @@ describe( "ActivityHeaderContainer", ( ) => {
       const bottomSheetButton = await screen.findByText( "WITHDRAW ID" );
       inatjs.identifications.update.mockResolvedValue(
         makeResponse( [
-          factory( "RemoteIdentification", { user: mockUser, current: false } )
-        ] )
+          factory( "RemoteIdentification", { user: mockUser, current: false } ),
+        ] ),
       );
       fireEvent.press( bottomSheetButton );
       await waitFor( ( ) => {
@@ -64,11 +64,11 @@ describe( "ActivityHeaderContainer", ( ) => {
             fields: expect.any( Object ),
             // We do want to make sure the identification object does not contain a body
             identification: expect.not.objectContaining( {
-              body: expect.anything( )
-            } )
+              body: expect.anything( ),
+            } ),
           } ),
           // Second arg is the options that contain auth info
-          expect.any( Object )
+          expect.any( Object ),
         );
       } );
     } );
@@ -78,7 +78,7 @@ describe( "ActivityHeaderContainer", ( ) => {
     it( "should update the identification's current attribute to false", async ( ) => {
       const mockIdentification = factory( "RemoteIdentification", {
         user: mockUser,
-        current: false
+        current: false,
       } );
       renderComponent( <ActivityHeaderContainer item={mockIdentification} /> );
       const kebabButton = await screen.findByLabelText( "Identification options" );
@@ -86,8 +86,8 @@ describe( "ActivityHeaderContainer", ( ) => {
       const restoreButton = await screen.findByText( "Restore" );
       inatjs.identifications.update.mockResolvedValue(
         makeResponse( [
-          factory( "RemoteIdentification", { user: mockUser, current: true } )
-        ] )
+          factory( "RemoteIdentification", { user: mockUser, current: true } ),
+        ] ),
       );
       fireEvent.press( restoreButton );
       await waitFor( ( ) => {
@@ -97,11 +97,11 @@ describe( "ActivityHeaderContainer", ( ) => {
             // Don't care about fields here
             fields: expect.any( Object ),
             identification: expect.objectContaining( {
-              current: true
-            } )
+              current: true,
+            } ),
           } ),
           // Second arg is the options that contain auth info
-          expect.any( Object )
+          expect.any( Object ),
         );
       } );
     } );

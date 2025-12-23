@@ -19,7 +19,7 @@ type QueryFunction<Response> = ( options: { api_token: string | null } ) => Prom
 const useAuthenticatedQuery = <Response>(
   queryKey: QueryKey,
   queryFunction: QueryFunction<Response>,
-  queryOptions: QueryOptions = {}
+  queryOptions: QueryOptions = {},
 ) => {
   const [userLoggedIn, setUserLoggedIn] = useState<boolean | null>( LOGGED_IN_UNKNOWN );
 
@@ -50,20 +50,20 @@ const useAuthenticatedQuery = <Response>(
       // fetching from RNSInfo becomes a performance issue
       const apiToken = await getJWT( queryOptions.allowAnonymousJWT );
       const options = {
-        api_token: apiToken
+        api_token: apiToken,
       };
       return queryFunction( options );
     },
     ...queryOptions,
     retry: queryOptions.retry !== false
       ? ( failureCount, error ) => reactQueryRetry( failureCount, error, {
-        queryKey
+        queryKey,
       } )
       : false,
     retryDelay: ( failureCount, error ) => handleRetryDelay( failureCount, error ),
     // Authenticated queries should not run until we know whether or not the
     // user is signed in
-    enabled: userLoggedIn !== LOGGED_IN_UNKNOWN && queryOptions.enabled
+    enabled: userLoggedIn !== LOGGED_IN_UNKNOWN && queryOptions.enabled,
   } );
 };
 

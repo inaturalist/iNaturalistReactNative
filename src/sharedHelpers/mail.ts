@@ -24,12 +24,12 @@ export async function openInbox() {
 
 export function composeEmail( emailAddress: string ) {
   Mailer.mail( {
-    recipients: [emailAddress]
+    recipients: [emailAddress],
   }, ( error: string ) => {
     if ( Platform.OS === "ios" && error === "not_available" ) {
       Alert.alert(
         t( "No-email-app-installed" ),
-        t( "No-email-app-installed-body", { address: emailAddress } )
+        t( "No-email-app-installed-body", { address: emailAddress } ),
       );
       return;
     }

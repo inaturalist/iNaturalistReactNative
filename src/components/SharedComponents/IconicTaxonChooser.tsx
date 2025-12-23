@@ -16,7 +16,7 @@ type Props = {
 };
 
 const STYLESHEET = {
-  alignItems: "center"
+  alignItems: "center",
 } as const;
 
 const ICONIC_TAXA = [
@@ -33,7 +33,7 @@ const ICONIC_TAXA = [
   "actinopterygii",
   "chromista",
   "protozoa",
-  "unknown"
+  "unknown",
 ];
 
 const IconicTaxonChooser = ( {
@@ -41,7 +41,7 @@ const IconicTaxonChooser = ( {
   chosen = [],
   onTaxonChosen,
   testID,
-  withoutUnknown
+  withoutUnknown,
 }: Props ) => {
   const { t } = useTranslation( );
   const iconicTaxonIcons = withoutUnknown
@@ -56,12 +56,12 @@ const IconicTaxonChooser = ( {
             "border-darkGray border border-[2px] mr-4 justify-center items-center",
             "h-[36px] w-[36px] rounded-full",
             {
-              "bg-darkGray": isSelected
-            }
+              "bg-darkGray": isSelected,
+            },
           )
         }
         accessibilityState={{
-          selected: isSelected
+          selected: isSelected,
         }}
         testID={`IconicTaxonButton.${iconicTaxonName}`}
       >
@@ -87,7 +87,7 @@ const IconicTaxonChooser = ( {
   }, [
     chosen,
     onTaxonChosen,
-    t
+    t,
   ] );
 
   const renderHeader = useCallback( ( ) => {

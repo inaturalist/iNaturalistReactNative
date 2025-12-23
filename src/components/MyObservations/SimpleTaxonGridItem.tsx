@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { Body4, DisplayTaxonName } from "components/SharedComponents";
 import {
-  Image, LinearGradient, Pressable, View
+  Image, LinearGradient, Pressable, View,
 } from "components/styledComponents";
 import React from "react";
 import type { RealmTaxon } from "realmModels/types";
@@ -13,19 +13,19 @@ const imageClassNames = [
   "relative",
   "w-[62px]",
   "h-[62px]",
-  "rounded-2xl"
+  "rounded-2xl",
 ];
 
 interface SpeciesCount {
-  count: number,
-  taxon: RealmTaxon
+  count: number;
+  taxon: RealmTaxon;
 }
 
 export interface Props {
   accessibleName: string;
   navToTaxonDetails: ( ) => void;
   source: {
-    uri: string
+    uri: string;
   };
   style?: object;
   speciesCount: SpeciesCount;
@@ -36,7 +36,7 @@ const SimpleTaxonGridItem = ( {
   navToTaxonDetails,
   source,
   style,
-  speciesCount
+  speciesCount,
 }: Props ) => {
   const { t } = useTranslation();
   const { count } = speciesCount;

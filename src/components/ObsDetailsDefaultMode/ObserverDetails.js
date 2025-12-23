@@ -2,7 +2,7 @@
 import classnames from "classnames";
 import {
   DateDisplay,
-  InlineUser
+  InlineUser,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -17,7 +17,7 @@ type Props = {
 const ObserverDetails = ( {
   belongsToCurrentUser,
   isConnected,
-  observation
+  observation,
 }: Props ): Node => {
   const geoprivacy = observation?.geoprivacy;
   const taxonGeoprivacy = observation?.taxon_geoprivacy;

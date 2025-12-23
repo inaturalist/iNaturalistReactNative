@@ -3,7 +3,7 @@
 import { RealmContext } from "providers/contexts";
 import {
   useEffect, useRef,
-  useState
+  useState,
 } from "react";
 import Observation from "realmModels/Observation";
 import useStore from "stores/useStore";
@@ -36,14 +36,15 @@ const useLocalObservations = ( ): Object => {
     list: [],
     count: 0,
     unsyncedCount: 0,
-    isDefaultMode: null
+    isDefaultMode: null,
   } );
 
   const realm = useRealm( );
 
   useEffect( ( ) => {
     if ( realm === null || realm.isClosed ) {
-      return;
+      // Satisfy the useEffect return type by returning a destructor function.
+      return () => {};
     }
     const localObservations = realm.objects( "Observation" );
 
@@ -96,13 +97,12 @@ const useLocalObservations = ( ): Object => {
           list: mappedObservations,
           count: filteredObservations.length,
           unsyncedCount,
-          isDefaultMode: currentIsDefaultMode
+          isDefaultMode: currentIsDefaultMode,
         };
       }
     };
 
     localObservations.addListener( handleChange );
-    // eslint-disable-next-line consistent-return
     return ( ) => {
       // remember to remove listeners to avoid async updates
       if ( localObservations && !realm.isClosed ) {
@@ -113,7 +113,7 @@ const useLocalObservations = ( ): Object => {
 
   return {
     observationList,
-    totalResults: observationList.length
+    totalResults: observationList.length,
   };
 };
 

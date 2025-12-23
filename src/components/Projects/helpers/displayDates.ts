@@ -7,52 +7,52 @@ const formatProjectDate = ( project, t, i18n ) => {
   const monthValues = {
     1: {
       label: t( "January" ),
-      value: 1
+      value: 1,
     },
     2: {
       label: t( "February" ),
-      value: 2
+      value: 2,
     },
     3: {
       label: t( "March" ),
-      value: 3
+      value: 3,
     },
     4: {
       label: t( "April" ),
-      value: 4
+      value: 4,
     },
     5: {
       label: t( "May" ),
-      value: 5
+      value: 5,
     },
     6: {
       label: t( "June" ),
-      value: 6
+      value: 6,
     },
     7: {
       label: t( "July" ),
-      value: 7
+      value: 7,
     },
     8: {
       label: t( "August" ),
-      value: 8
+      value: 8,
     },
     9: {
       label: t( "September" ),
-      value: 9
+      value: 9,
     },
     10: {
       label: t( "October" ),
-      value: 10
+      value: 10,
     },
     11: {
       label: t( "November" ),
-      value: 11
+      value: 11,
     },
     12: {
       label: t( "December" ),
-      value: 12
-    }
+      value: 12,
+    },
   };
 
   let projectDate = null;
@@ -68,13 +68,13 @@ const formatProjectDate = ( project, t, i18n ) => {
 
   if ( projectStartDate && !projectEndDate ) {
     projectDate = t( "project-start-time-datetime", {
-      datetime: formatProjectsApiDatetimeLong( projectStartDate, i18n )
+      datetime: formatProjectsApiDatetimeLong( projectStartDate, i18n ),
     } );
   }
   if ( projectStartDate && projectEndDate ) {
     projectDate = t( "date-to-date", {
       d1: formatProjectsApiDatetimeLong( projectStartDate, i18n ),
-      d2: formatProjectsApiDatetimeLong( projectEndDate, i18n )
+      d2: formatProjectsApiDatetimeLong( projectEndDate, i18n ),
     } );
   }
   if ( observedOnDate ) {
@@ -87,7 +87,7 @@ const formatProjectDate = ( project, t, i18n ) => {
   return {
     projectDate,
     shouldDisplayDateRange: projectStartDate && projectEndDate
-      && project?.project_type !== "traditional"
+      && project?.project_type !== "traditional",
   };
 };
 

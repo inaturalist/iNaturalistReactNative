@@ -1,16 +1,16 @@
 // @flow
 
 import {
-  useNetInfo
+  useNetInfo,
 } from "@react-native-community/netinfo";
 import {
-  searchObservations
+  searchObservations,
 } from "api/observations";
 import useInfiniteExploreScroll from "components/Explore/hooks/useInfiniteExploreScroll";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
 import { View } from "components/styledComponents";
 import {
-  useExplore
+  useExplore,
 } from "providers/ExploreContext";
 import type { Node } from "react";
 import React, { useEffect } from "react";
@@ -18,14 +18,14 @@ import { Dimensions } from "react-native";
 import {
   useCurrentUser,
   useDeviceOrientation,
-  useQuery
+  useQuery,
 } from "sharedHooks";
 
 import MapView from "./MapView";
 
 type Props = {
   canFetch?: boolean,
-  layout: string,
+  layout: ?string,
   queryParams: Object,
   handleUpdateCount: Function,
   hasLocationPermissions?: boolean,
@@ -44,7 +44,7 @@ const ObservationsView = ( {
   handleUpdateCount,
   hasLocationPermissions,
   renderLocationPermissionsGate,
-  requestLocationPermissions
+  requestLocationPermissions,
 }: Props ): Node => {
   const currentUser = useCurrentUser( );
   const { state } = useExplore();
@@ -57,11 +57,11 @@ const ObservationsView = ( {
       user_id: currentUser?.id,
       ...queryParams,
       fields: {
-      }
+      },
     } ),
     {
-      enabled: ( !!currentUser && !!excludeUser )
-    }
+      enabled: ( !!currentUser && !!excludeUser ),
+    },
   );
 
   const {
@@ -71,7 +71,7 @@ const ObservationsView = ( {
     observations,
     totalBounds,
     totalResults,
-    isLoading
+    isLoading,
   } = useInfiniteExploreScroll( { params: queryParams, enabled: canFetch } );
 
   const curUserObsCount = currentUserObs?.total_results;
@@ -83,7 +83,7 @@ const ObservationsView = ( {
     isLandscapeMode,
     isTablet,
     screenHeight,
-    screenWidth
+    screenWidth,
   } = useDeviceOrientation( );
 
   useEffect( ( ) => {
@@ -119,7 +119,7 @@ const ObservationsView = ( {
       style={{
         left: layout === "map"
           ? -containerWidth
-          : 0
+          : 0,
       }}
     >
       <ObservationsFlashList

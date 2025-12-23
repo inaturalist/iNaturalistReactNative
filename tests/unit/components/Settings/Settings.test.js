@@ -1,5 +1,5 @@
 import {
-  useNetInfo
+  useNetInfo,
 } from "@react-native-community/netinfo";
 import { fireEvent, screen } from "@testing-library/react-native";
 import Settings from "components/Settings/Settings";
@@ -19,8 +19,8 @@ jest.mock( "@react-navigation/native", ( ) => {
   return {
     ...actualNav,
     useNavigation: ( ) => ( {
-      navigate: mockNavigate
-    } )
+      navigate: mockNavigate,
+    } ),
   };
 } );
 
@@ -43,10 +43,10 @@ beforeEach( ( ) => {
   inatjs.users.me.mockResolvedValue( makeResponse( [mockUser] ) );
   inatjs.translations.locales.mockResolvedValue( makeResponse( [{
     language_in_locale: "Slovenský",
-    locale: "sk"
+    locale: "sk",
   }, {
     language_in_locale: "Español (Colombia)",
-    locale: "es-CO"
+    locale: "es-CO",
   }] ) );
 } );
 
@@ -56,15 +56,15 @@ describe( "Settings", ( ) => {
     await toggleAdvancedSwitch( );
     const allObsOptions = await screen.findByLabelText( /All observation options/ );
     expect( allObsOptions ).toHaveProp( "accessibilityState", expect.objectContaining( {
-      checked: true
+      checked: true,
     } ) );
     const aiCameraRow = await screen.findByLabelText( "iNaturalist AI Camera" );
     expect( aiCameraRow ).toHaveProp( "accessibilityState", expect.objectContaining( {
-      checked: false
+      checked: false,
     } ) );
     fireEvent.press( aiCameraRow );
     expect( aiCameraRow ).toHaveProp( "accessibilityState", expect.objectContaining( {
-      checked: true
+      checked: true,
     } ) );
   } );
 
@@ -84,8 +84,8 @@ describe( "Settings", ( ) => {
       expect( mockNavigate ).toHaveBeenCalledWith(
         "FullPageWebView",
         expect.objectContaining( {
-          loggedIn: true
-        } )
+          loggedIn: true,
+        } ),
       );
     } );
 

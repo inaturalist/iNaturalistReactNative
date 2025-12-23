@@ -12,7 +12,7 @@ const List2 = ( props: TextProps ) => (
     className={classnames(
       TYPOGRAPHY_CLASSES,
       "text-sm",
-      tailwindFontRegular
+      tailwindFontRegular,
     )}
     // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}

@@ -13,18 +13,18 @@ jest.mock( "@react-navigation/native", () => {
   return {
     ...actualNav,
     useRoute: () => ( {
-      key: mockKey
+      key: mockKey,
     } ),
     useNavigation: () => ( {
-      navigate: mockNavigate
-    } )
+      navigate: mockNavigate,
+    } ),
   };
 } );
 
 const mockTaxon = factory( "RemoteTaxon", {
   name: faker.person.firstName( ),
   rank: "genus",
-  preferred_common_name: faker.person.fullName( )
+  preferred_common_name: faker.person.fullName( ),
 } );
 
 describe( "CommunityTaxon", () => {
@@ -32,9 +32,9 @@ describe( "CommunityTaxon", () => {
     renderComponent(
       <CommunityTaxon
         observation={{
-          taxon: null
+          taxon: null,
         }}
-      />
+      />,
     );
 
     const unknownText = screen.getByText( /Unknown/ );
@@ -45,9 +45,9 @@ describe( "CommunityTaxon", () => {
     renderComponent(
       <CommunityTaxon
         observation={{
-          taxon: mockTaxon
+          taxon: mockTaxon,
         }}
-      />
+      />,
     );
 
     const taxonName = screen.getByText( mockTaxon.name );
@@ -58,18 +58,18 @@ describe( "CommunityTaxon", () => {
     renderComponent(
       <CommunityTaxon
         observation={{
-          taxon: mockTaxon
+          taxon: mockTaxon,
         }}
-      />
+      />,
     );
     fireEvent.press(
       await screen.findByTestId(
-        `ObsDetails.taxon.${mockTaxon.id}`
-      )
+        `ObsDetails.taxon.${mockTaxon.id}`,
+      ),
     );
     expect( mockNavigate ).toHaveBeenCalledWith( expect.objectContaining( {
       name: "TaxonDetails",
-      params: { id: mockTaxon.id }
+      params: { id: mockTaxon.id },
     } ) );
   } );
 } );

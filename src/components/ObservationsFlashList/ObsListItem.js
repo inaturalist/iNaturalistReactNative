@@ -6,7 +6,7 @@ import {
   DisplayTaxonName,
   Heading6,
   INatIcon,
-  ObservationLocation
+  ObservationLocation,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -22,7 +22,7 @@ import ObsUploadStatus from "./ObsUploadStatus";
 import {
   observationHasSound,
   photoCountFromObservation,
-  photoFromObservation
+  photoFromObservation,
 } from "./util";
 
 type Props = {
@@ -52,7 +52,7 @@ const ObsListItem = ( {
   unsynced,
   hideObsUploadStatus,
   hideObsStatus = false,
-  isSimpleObsStatus
+  isSimpleObsStatus,
 }: Props ): Node => {
   const { t } = useTranslation();
   const uploadStatus = useStore( state => state.uploadStatus );
@@ -86,7 +86,7 @@ const ObsListItem = ( {
     currentUser?.prefers_common_names,
     currentUser?.prefers_scientific_name_first,
     observation?.taxon,
-    observation?.uuid
+    observation?.uuid,
   ] );
 
   return (
@@ -98,8 +98,8 @@ const ObsListItem = ( {
         <ObsImagePreview
           source={{
             uri: Photo.displayLocalOrRemoteSquarePhoto(
-              photoFromObservation( observation )
-            )
+              photoFromObservation( observation ),
+            ),
           }}
           obsPhotosCount={photoCountFromObservation( observation )}
           hidePhotoCount={missingBasics}
@@ -155,7 +155,7 @@ const ObsListItem = ( {
           // when the children change
           "w-[51px]",
           "h-[65px]",
-          { "justify-center": uploadStatus === UPLOAD_IN_PROGRESS }
+          { "justify-center": uploadStatus === UPLOAD_IN_PROGRESS },
         )}
       >
         {!hideObsUploadStatus && (

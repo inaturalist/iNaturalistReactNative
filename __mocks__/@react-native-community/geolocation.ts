@@ -3,6 +3,6 @@ export default ( {
   watchPosition: jest.fn( ( ) => 0 ),
   clearWatch: jest.fn( ),
   setRNConfiguration: jest.fn( ( ) => ( {
-    skipPermissionRequests: true
-  } ) )
+    skipPermissionRequests: true,
+  } ) ),
 } );

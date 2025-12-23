@@ -5,7 +5,7 @@ import Mailer from "react-native-mail";
 import { renderComponent } from "tests/helpers/render";
 
 jest.mock( "react-native-mail", ( ) => ( {
-  mail: jest.fn( )
+  mail: jest.fn( ),
 } ) );
 
 describe( "email logs button", ( ) => {

@@ -14,7 +14,7 @@ import { renderComponent } from "tests/helpers/render";
 
 const mockObservation = factory( "LocalObservation", {
   created_at: "2022-11-27T19:07:41-08:00",
-  description: faker.lorem.paragraph( )
+  description: faker.lorem.paragraph( ),
 } );
 
 describe( "NotesSection", ( ) => {

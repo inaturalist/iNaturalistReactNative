@@ -8,7 +8,7 @@ import React, {
   useEffect,
   useMemo,
   useRef,
-  useState
+  useState,
 } from "react";
 import { StatusBar } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -30,16 +30,16 @@ type Props = {
   onClose?: Function,
   onDeletePhoto?: Function,
   onDeleteSound?: Function,
-  photos?: Array<{
+  photos?: {
     id?: number,
     url: string,
     localFilePath?: string,
     attribution?: string,
     licenseCode?: string
-  }>,
-  sounds?: Array<{
+  }[],
+  sounds?: {
     file_url: string
-  }>,
+  }[],
   uri?: string | null
 }
 
@@ -53,23 +53,23 @@ const MediaViewer = ( {
   onDeleteSound,
   photos = [],
   sounds = [],
-  uri
+  uri,
 }: Props ): Node => {
   const insets = useSafeAreaInsets();
   const uris = useMemo( ( ) => ( [
     ...photos.map( photo => photo.url || Photo.getLocalPhotoUri( photo.localFilePath ) ),
-    ...sounds.map( sound => sound.file_url )
+    ...sounds.map( sound => sound.file_url ),
   ] ), [photos, sounds] );
 
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(
     uris.indexOf( uri ) <= 0
       ? 0
-      : uris.indexOf( uri )
+      : uris.indexOf( uri ),
   );
   const { t } = useTranslation( );
   const [
     mediaToDelete,
-    setMediaToDelete
+    setMediaToDelete,
   ]: [null | { type: string, uri: string }, Function] = useState( null );
 
   const horizontalScroll = useRef( null );
@@ -92,7 +92,7 @@ const MediaViewer = ( {
       setSelectedMediaIndex( newIndex );
       horizontalScroll?.current?.scrollToIndex( {
         index: newIndex,
-        animated: false
+        animated: false,
       } );
     }
   }, [selectedMediaIndex, setSelectedMediaIndex, uris.length] );
@@ -109,7 +109,7 @@ const MediaViewer = ( {
     onDeleteSound,
     mediaToDelete?.type,
     mediaToDelete?.uri,
-    setMediaToDelete
+    setMediaToDelete,
   ] );
 
   return (

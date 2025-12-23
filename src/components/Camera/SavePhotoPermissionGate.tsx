@@ -1,5 +1,5 @@
 import PermissionGateContainer, {
-  WRITE_MEDIA_PERMISSIONS
+  WRITE_MEDIA_PERMISSIONS,
 } from "components/SharedComponents/PermissionGateContainer";
 import React from "react";
 import { useTranslation } from "sharedHooks";
@@ -15,7 +15,7 @@ const SavePhotoPermissionGate = ( {
   onPhotoPermissionGranted,
   onPhotoPermissionBlocked,
   permissionNeeded,
-  onModalHide
+  onModalHide,
 }: Props ) => {
   const { t } = useTranslation( );
   return (

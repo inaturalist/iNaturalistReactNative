@@ -11,23 +11,23 @@ import StandardCamera from "./StandardCamera/StandardCamera";
 const isTablet = DeviceInfo.isTablet( );
 
 interface Props {
-  cameraType: string,
-  device: CameraDevice,
-  camera: object,
-  flipCamera: ( ) => void,
-  handleCheckmarkPress: ( ) => void,
+  cameraType: string;
+  device: CameraDevice;
+  camera: object;
+  flipCamera: ( ) => void;
+  handleCheckmarkPress: ( ) => void;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  toggleFlash: Function,
-  takingPhoto: boolean,
+  toggleFlash: Function;
+  takingPhoto: boolean;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  takePhotoAndStoreUri: Function,
-  newPhotoUris: Array<object>,
+  takePhotoAndStoreUri: Function;
+  newPhotoUris: object[];
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  setNewPhotoUris: Function,
-  takePhotoOptions: object,
-  userLocation: UserLocation | null,
-  hasLocationPermissions: boolean,
-  requestLocationPermissions: () => void,
+  setNewPhotoUris: Function;
+  takePhotoOptions: object;
+  userLocation: UserLocation | null;
+  hasLocationPermissions: boolean;
+  requestLocationPermissions: () => void;
 }
 
 const CameraWithDevice = ( {
@@ -44,7 +44,7 @@ const CameraWithDevice = ( {
   takePhotoOptions,
   userLocation,
   hasLocationPermissions,
-  requestLocationPermissions
+  requestLocationPermissions,
 }: Props ) => {
   const { isLandscapeMode } = useDeviceOrientation( );
   const flexDirection = isTablet && isLandscapeMode

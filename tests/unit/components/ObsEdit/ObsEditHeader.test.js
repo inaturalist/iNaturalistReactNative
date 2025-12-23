@@ -13,12 +13,12 @@ const mockHeaderBackButton = <View testID="ObsEdit.BackButton">Mocked Back</View
 jest.mock( "@react-navigation/elements", () => ( {
   ...jest.requireActual( "@react-navigation/elements" ),
   HeaderBackButton: jest.fn()
-    .mockImplementation( ( ) => mockHeaderBackButton )
+    .mockImplementation( ( ) => mockHeaderBackButton ),
 } ) );
 
 const mockObservations = [
   factory( "LocalObservation" ),
-  factory( "LocalObservation" )
+  factory( "LocalObservation" ),
 ];
 
 describe( "ObsEditHeader", () => {
@@ -26,7 +26,7 @@ describe( "ObsEditHeader", () => {
     const button = wrapInNavigationContainer(
       <ObsEditHeader
         observations={mockObservations}
-      />
+      />,
     );
 
     // Disabled during the update to RN 0.78
@@ -38,7 +38,7 @@ describe( "ObsEditHeader", () => {
     renderComponent(
       <ObsEditHeader
         observations={[mockObservations[1]]}
-      />
+      />,
     );
 
     const headerText = await screen.findByText( /New Observation/ );
@@ -50,7 +50,7 @@ describe( "ObsEditHeader", () => {
     renderComponent(
       <ObsEditHeader
         observations={mockObservations}
-      />
+      />,
     );
 
     const headerText = await screen.findByText( /2 Observations/ );
@@ -60,13 +60,13 @@ describe( "ObsEditHeader", () => {
 
   it( "renders edit header title when observation is saved locally", async () => {
     const observation = factory( "LocalObservation", {
-      _created_at: faker.date.past( )
+      _created_at: faker.date.past( ),
     } );
     renderComponent(
       <ObsEditHeader
         currentObservation={observation}
         observations={[observation]}
-      />
+      />,
     );
 
     const headerText = await screen.findByText( /Edit Observation/ );
@@ -78,7 +78,7 @@ describe( "ObsEditHeader", () => {
     renderComponent(
       <ObsEditHeader
         observations={mockObservations}
-      />
+      />,
     );
 
     const kebabLabel = await screen.findByLabelText( /Menu/ );
@@ -90,7 +90,7 @@ describe( "ObsEditHeader", () => {
     renderComponent(
       <ObsEditHeader
         observations={mockObservations}
-      />
+      />,
     );
 
     const backButtonId = screen.getByTestId( "ObsEdit.BackButton" );

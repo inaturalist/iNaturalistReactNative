@@ -14,7 +14,7 @@ export const useSuggestions = ( photoUri, options ) => {
     onFetched,
     scoreImageParams,
     queryKey,
-    onlineSuggestionsAttempted
+    onlineSuggestionsAttempted,
   } = options;
 
   const {
@@ -23,13 +23,13 @@ export const useSuggestions = ( photoUri, options ) => {
     onlineSuggestions,
     refetch: refetchOnlineSuggestions,
     timedOut,
-    resetTimeout
+    resetTimeout,
   } = useOnlineSuggestions( {
     onFetchError,
     onFetched,
     scoreImageParams,
     queryKey,
-    shouldFetchOnlineSuggestions
+    shouldFetchOnlineSuggestions,
   } );
 
   const onlineSuggestionsResponse = {
@@ -37,7 +37,7 @@ export const useSuggestions = ( photoUri, options ) => {
     onlineSuggestionsError,
     onlineSuggestions,
     timedOut,
-    resetTimeout
+    resetTimeout,
   };
 
   // 20240815 amanda - it's conceivable that we would want to use a cached image here eventually,
@@ -53,13 +53,13 @@ export const useSuggestions = ( photoUri, options ) => {
 
   const {
     offlineSuggestions,
-    refetchOfflineSuggestions
+    refetchOfflineSuggestions,
   } = useOfflineSuggestions( photoUri, {
     onFetched,
     onFetchError,
     latitude: scoreImageParams?.lat,
     longitude: scoreImageParams?.lng,
-    tryOfflineSuggestions
+    tryOfflineSuggestions,
   } );
 
   const refetchSuggestions = () => {
@@ -82,7 +82,7 @@ export const useSuggestions = ( photoUri, options ) => {
     ( ) => ( hasOnlineSuggestionResults
       ? onlineSuggestions.results || []
       : offlineSuggestions.results || [] ),
-    [hasOnlineSuggestionResults, onlineSuggestions, offlineSuggestions]
+    [hasOnlineSuggestionResults, onlineSuggestions, offlineSuggestions],
   );
 
   const commonAncestor = hasOnlineSuggestionResults
@@ -93,12 +93,12 @@ export const useSuggestions = ( photoUri, options ) => {
   const suggestions = useMemo(
     ( ) => filterSuggestions(
       unfilteredSuggestions,
-      commonAncestor
+      commonAncestor,
     ),
     [
       unfilteredSuggestions,
-      commonAncestor
-    ]
+      commonAncestor,
+    ],
   );
 
   return {
@@ -106,7 +106,7 @@ export const useSuggestions = ( photoUri, options ) => {
     suggestions,
     usingOfflineSuggestions,
     urlWillCrashOffline,
-    refetchSuggestions
+    refetchSuggestions,
   };
 };
 
