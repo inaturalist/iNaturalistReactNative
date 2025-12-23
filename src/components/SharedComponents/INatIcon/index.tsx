@@ -7,15 +7,6 @@ import colors from "styles/tailwindColors";
 import type { INatIconName } from "./INatIcon";
 import Icon from "./INatIcon";
 
-interface Props {
-  testID?: string;
-  name: string;
-  color?: string;
-  size?: number;
-  dropShadow?: boolean;
-  isDarkModeEnabled?: boolean;
-}
-
 // Most of these are names for these icons used in design mapped to more
 // consistent and deduped filenames. We might also put aliases of convenience
 // here, e.g. "speech" and "chat" might both map to "comments" if we find
@@ -91,14 +82,14 @@ function isAlias( name: string ): name is INatIconAlias {
   return name in typedAliasMap;
 }
 
-type Props = {
+interface Props {
   testID?: string;
   name: INatIconNameOrAlias;
   color?: string;
   size?: number;
   dropShadow?: boolean;
   isDarkModeEnabled?: boolean;
-};
+}
 
 // Use default color if none is specified
 const INatIcon = ( {
