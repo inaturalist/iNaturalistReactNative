@@ -26,7 +26,7 @@ const { useRealm } = RealmContext;
 interface OnlineSuggestionOptions {
   onFetchError: ( options: { isOnline: boolean } ) => void;
   onFetched: ( options: { isOnline: boolean } ) => void;
-  scoreImageParams: ScoreImageParams;
+  scoreImageParams?: ScoreImageParams;
   queryKey: string[];
   shouldFetchOnlineSuggestions: boolean;
 }
