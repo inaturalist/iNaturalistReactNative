@@ -70,7 +70,7 @@ type Action =
   | { type: "SET_LOCATION"; scoreImageParams: ImageParamsType; shouldUseEvidenceLocation: boolean }
   | { type: "ORDER_SUGGESTIONS"; orderedSuggestions: ApiSuggestion[] };
 
-const setQueryKey = ( selectedPhotoUri: string, shouldUseEvidenceLocation: boolean ) => [
+const getQueryKey = ( selectedPhotoUri: string, shouldUseEvidenceLocation: boolean ) => [
   "scoreImage",
   selectedPhotoUri,
   { shouldUseEvidenceLocation },
@@ -91,7 +91,7 @@ const reducer = ( state: State, action: Action ): State => {
       return {
         ...state,
         scoreImageParams: action.scoreImageParams,
-        queryKey: setQueryKey( action.scoreImageParams.image.uri, state.shouldUseEvidenceLocation ),
+        queryKey: getQueryKey( action.scoreImageParams.image.uri, state.shouldUseEvidenceLocation ),
       };
     case "SET_ONLINE_FETCH_STATUS":
       return {
@@ -110,7 +110,7 @@ const reducer = ( state: State, action: Action ): State => {
         offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
         scoreImageParams: action.scoreImageParams,
         shouldUseEvidenceLocation: action.shouldUseEvidenceLocation,
-        queryKey: setQueryKey(
+        queryKey: getQueryKey(
           action.scoreImageParams.image.uri,
           action.shouldUseEvidenceLocation,
         ),

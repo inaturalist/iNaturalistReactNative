@@ -3,7 +3,6 @@ import {
 } from "@react-native-community/netinfo";
 import { useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision";
-import type { ApiOpts } from "api/types";
 import i18n from "i18next";
 import { RealmContext } from "providers/contexts";
 import {
@@ -67,14 +66,6 @@ const useOnlineSuggestions = (
   // Use locale in case there is no user session
   const locale = i18n?.language ?? "en";
 
-  const queryFn = async ( optsWithAuth: ApiOpts ) => {
-    const params = {
-      ...scoreImageParams,
-      ...( !currentUser && { locale } ),
-    };
-    return scoreImage( params, optsWithAuth ) as Promise<OnlineSuggestionsQueryResponse>;
-  };
-
   // TODO if this is a remote observation with an `id` param, use
   // scoreObservation instead so we don't have to spend time resizing and
   // uploading images
@@ -86,8 +77,13 @@ const useOnlineSuggestions = (
     error,
   } = useAuthenticatedQuery<OnlineSuggestionsQueryResponse>(
     queryKey,
-    // TODO types: fix queryFn for null vs undef consistency
-    queryFn,
+    async optsWithAuth => {
+      const params = {
+        ...scoreImageParams,
+        ...( !currentUser && { locale } ),
+      };
+      return scoreImage( params, optsWithAuth ) as Promise<OnlineSuggestionsQueryResponse>;
+    },
     {
       enabled: !!shouldFetchOnlineSuggestions
         && !!( scoreImageParams?.image ),

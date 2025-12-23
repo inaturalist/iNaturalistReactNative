@@ -4,6 +4,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import type { RealmTaxon } from "realmModels/types";
 import { log } from "sharedHelpers/logger";
 import { predictImage } from "sharedHelpers/mlModel";
 import type { Prediction } from "vision-camera-plugin-inatvision";
@@ -24,16 +25,16 @@ const useOfflineSuggestions = (
     tryOfflineSuggestions: boolean;
   },
 ): {
-  offlineSuggestions?: {
+  offlineSuggestions: {
     results: UseSuggestionsOfflineSuggestion[];
-    commonAncestor: UseSuggestionsOfflineSuggestion | undefined;
+    commonAncestor?: UseSuggestionsOfflineSuggestion;
   };
   refetchOfflineSuggestions: () => void;
 } => {
   const realm = useRealm( );
   const [offlineSuggestions, setOfflineSuggestions] = useState<{
     results: UseSuggestionsOfflineSuggestion[];
-    commonAncestor: UseSuggestionsOfflineSuggestion | undefined;
+    commonAncestor?: UseSuggestionsOfflineSuggestion;
   }>( { results: [], commonAncestor: undefined } );
   const [error, setError] = useState( null );
 
@@ -61,14 +62,10 @@ const useOfflineSuggestions = (
     // similar to what we're doing in the AICamera to get iconic taxon name,
     // but we're offline so we only need the local list from realm
     // and don't need to fetch taxon from the API
-    const iconicTaxa = realm?.objects( "Taxon" ).filtered( "isIconic = true" );
-    const iconicTaxaIds = iconicTaxa.map( t => t.id );
-    const iconicTaxaLookup: {
-      [key: number]: string;
-    } = iconicTaxa.reduce( ( acc, t ) => {
-      acc[t.id] = t.name;
-      return acc;
-    }, { } );
+    const iconicTaxa = realm.objects<RealmTaxon>( "Taxon" ).filtered( "isIconic = true" );
+    const iconicTaxaLookup = Object.fromEntries(
+      iconicTaxa.map( t => [t.id, t.name] ),
+    );
 
     // This function handles either regular or common ancestor predictions as input objects.
     const formatPrediction = ( prediction: Prediction ): UseSuggestionsOfflineSuggestion => {
@@ -79,12 +76,7 @@ const useOfflineSuggestions = (
         // a list of ancestor ids from tip to root of taxonomy
         // e.g. Aves is included in Animalia
         .reverse()
-        .find( id => iconicTaxaIds.includes( id ) );
-      let iconicTaxonName;
-      if ( iconicTaxonId !== undefined ) {
-        iconicTaxonName = iconicTaxaLookup[iconicTaxonId];
-      }
-
+        .find( id => id in iconicTaxaLookup );
       const id = prediction.taxon_id;
 
       return {
@@ -93,7 +85,9 @@ const useOfflineSuggestions = (
           id,
           name: prediction.name,
           rank_level: prediction.rank_level,
-          iconic_taxon_name: iconicTaxonName,
+          iconic_taxon_name: iconicTaxonId !== undefined
+            ? iconicTaxaLookup[iconicTaxonId]
+            : undefined,
         },
       };
     };

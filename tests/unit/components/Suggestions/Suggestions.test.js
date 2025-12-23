@@ -4,11 +4,11 @@ import {
   waitFor,
 } from "@testing-library/react-native";
 import Suggestions from "components/Suggestions/Suggestions";
-import {
-  initialSuggestions,
-} from "components/Suggestions/SuggestionsContainer";
 import i18next from "i18next";
 import React from "react";
+import {
+  internalUseSuggestionsInitialSuggestions as initialSuggestions,
+} from "sharedHooks/useSuggestions/filterSuggestions";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
