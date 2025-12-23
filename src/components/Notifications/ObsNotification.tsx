@@ -2,7 +2,7 @@ import ObservationIcon from "components/Notifications/ObservationIcon";
 import ObsNotificationText from "components/Notifications/ObsNotificationText";
 import {
   Body4,
-  INatIcon
+  INatIcon,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
@@ -12,7 +12,7 @@ import type { Notification } from "sharedHooks/useInfiniteNotificationsScroll";
 import colors from "styles/tailwindColors";
 
 interface Props {
-  notification: Notification
+  notification: Notification;
 }
 
 const ObsNotification = ( { notification }: Props ) => {

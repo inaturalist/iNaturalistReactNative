@@ -3,7 +3,7 @@
 // It is not set up to use anything from the main app, like nativewind or styled components.
 import React, { useEffect, useState } from "react";
 import {
-  Pressable, StyleSheet, Text, View
+  Pressable, StyleSheet, Text, View,
 } from "react-native";
 import { ShareMenuReactView } from "react-native-share-menu";
 
@@ -16,25 +16,25 @@ interface ButtonProps {
 const styles = StyleSheet.create( {
   button: {
     fontSize: 16,
-    margin: 16
+    margin: 16,
   },
   container: {
     flex: 1,
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   text: {
     fontSize: 20,
     textAlign: "center",
-    margin: 16
+    margin: 16,
   },
   buttonGroup: {
     flexDirection: "row",
     justifyContent: "space-around",
-    alignItems: "center"
+    alignItems: "center",
   },
   destructive: {
-    color: "red"
-  }
+    color: "red",
+  },
 } );
 
 const Button = ( { onPress, title, style }: ButtonProps ) => (
@@ -54,7 +54,7 @@ const ShareSheet = () => {
   }, [] );
 
   const {
-    container, text, buttonGroup, destructive
+    container, text, buttonGroup, destructive,
   } = styles;
 
   return (

@@ -1,14 +1,14 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import RootDrawerNavigator from "navigation/rootDrawerNavigator";
+import RootStackNavigator from "navigation/RootStackNavigator";
 import type { Node } from "react";
 import React, { useCallback } from "react";
 import { log } from "sharedHelpers/logger";
 import {
   useCurrentUser,
   usePerformance,
-  useShare
+  useShare,
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 
@@ -21,7 +21,7 @@ const logger = log.extend( "App" );
 
 type SharedItem = {
   mimeType: string,
-  data: string | Array<string>
+  data: string | string[]
 };
 
 const handleShare = ( navigation, item: ?SharedItem ) => {
@@ -41,7 +41,7 @@ const handleShare = ( navigation, item: ?SharedItem ) => {
   // while observations are created
   navigation?.navigate( "NoBottomTabStackNavigator", {
     screen: "PhotoSharing",
-    params: { item }
+    params: { item },
   } );
 };
 
@@ -55,7 +55,7 @@ type Props = {
 const App = ( { children }: Props ): Node => {
   const navigation = useNavigation( );
   const { loadTime } = usePerformance( {
-    screenName: "App"
+    screenName: "App",
   } );
   if ( isDebugMode( ) ) {
     logger.info( loadTime );
@@ -65,7 +65,7 @@ const App = ( { children }: Props ): Node => {
   // for performance reasons
   const onShare = useCallback(
     item => handleShare( navigation, item ),
-    [navigation]
+    [navigation],
   );
 
   const currentUser = useCurrentUser( );
@@ -80,7 +80,7 @@ const App = ( { children }: Props ): Node => {
       <StartupService />
       <NetworkService />
       <AppStateListener />
-      {children || <RootDrawerNavigator />}
+      {children || <RootStackNavigator />}
     </>
   );
 };

@@ -1,6 +1,6 @@
 import {
   Body2,
-  Heading4
+  Heading4,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import _ from "lodash";
@@ -67,7 +67,7 @@ const EstablishmentMeans = ( { taxon }: Props ) => {
           <Body2
             className="text-inatGreen underline"
             onPress={( ) => openExternalWebBrowser( url )}
-          />
+          />,
         ]}
       />
     );

@@ -1,6 +1,6 @@
 import {
   fireEvent,
-  screen
+  screen,
 } from "@testing-library/react-native";
 import TaxonGridItem from "components/SharedComponents/TaxonGridItem";
 import React from "react";
@@ -16,12 +16,12 @@ jest.mock( "@react-navigation/native", () => {
   return {
     ...actualNav,
     useNavigation: () => ( {
-      navigate: mockedNavigate
+      navigate: mockedNavigate,
     } ),
     useRoute: ( ) => ( {
 
     } ),
-    useNavigationState: jest.fn( )
+    useNavigationState: jest.fn( ),
   };
 } );
 
@@ -29,13 +29,13 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   __esModule: true,
   default: ( ) => ( {
     data: {
-      total_results: 0
-    }
-  } )
+      total_results: 0,
+    },
+  } ),
 } ) );
 
 const renderTaxonGridItem = ( ) => renderComponent(
-  <TaxonGridItem taxon={mockTaxon} />
+  <TaxonGridItem taxon={mockTaxon} />,
 );
 
 describe( "TaxonGridItem", ( ) => {
@@ -49,7 +49,7 @@ describe( "TaxonGridItem", ( ) => {
     fireEvent.press( screen.getByTestId( `TaxonGridItem.Pressable.${mockTaxon.id}` ) );
     expect( mockedNavigate ).toHaveBeenCalledWith( expect.objectContaining( {
       name: "TaxonDetails",
-      params: { id: mockTaxon.id }
+      params: { id: mockTaxon.id },
     } ) );
   } );
 } );

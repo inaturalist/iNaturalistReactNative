@@ -4,7 +4,7 @@ import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/CrosshairC
 import {
   differenceInCalendarYears,
   isFuture,
-  parseISO
+  parseISO,
 } from "date-fns";
 import { isNil } from "lodash";
 import type { Node } from "react";
@@ -12,7 +12,7 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
-  useState
+  useState,
 } from "react";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import useStore from "stores/useStore";
@@ -34,7 +34,7 @@ const EvidenceSectionContainer = ( {
   onLocationPress,
   passesEvidenceTest,
   setPassesEvidenceTest,
-  updateObservationKeys
+  updateObservationKeys,
 }: Props ): Node => {
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const isNewObs = !!currentObservation?._synced_at
@@ -86,7 +86,7 @@ const EvidenceSectionContainer = ( {
     longitude,
     latitude,
     isNewObs,
-    hasImportedPhotos
+    hasImportedPhotos,
   ] );
 
   const hasValidDate = useMemo( ( ) => {
@@ -125,7 +125,7 @@ const EvidenceSectionContainer = ( {
     hasValidDate,
     hasValidLocation,
     passesEvidenceTest,
-    setPassesEvidenceTest
+    setPassesEvidenceTest,
   ] );
 
   const locationTextClassNames = ( !latitude || !longitude )
@@ -161,7 +161,7 @@ const EvidenceSectionContainer = ( {
     currentObservation?.place_guess,
     latitude,
     longitude,
-    updateObservationKeys
+    updateObservationKeys,
   ] );
 
   return (

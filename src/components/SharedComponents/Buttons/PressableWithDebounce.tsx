@@ -1,5 +1,5 @@
 import {
-  Pressable
+  Pressable,
 } from "components/styledComponents";
 import type { PropsWithChildren } from "react";
 import React, { useRef, useState } from "react";
@@ -29,7 +29,7 @@ const PressableWithDebounce = ( {
   disabled,
   children,
   debounceTime = 400,
-  preventMultipleTaps = true
+  preventMultipleTaps = true,
 }: Props ) => {
   const [isProcessing, setIsProcessing] = useState( false );
   const onPressRef = useRef( onPress );

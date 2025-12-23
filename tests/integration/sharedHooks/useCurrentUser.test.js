@@ -7,7 +7,7 @@ import setupUniqueRealm from "tests/helpers/uniqueRealm";
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -18,8 +18,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -28,7 +28,7 @@ afterAll( uniqueRealmAfterAll );
 
 const mockUser = factory( "LocalUser", {
   login: "fake_login",
-  signedIn: true
+  signedIn: true,
 } );
 
 describe( "useCurrentUser", () => {

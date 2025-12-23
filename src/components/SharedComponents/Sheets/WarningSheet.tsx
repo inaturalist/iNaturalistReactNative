@@ -1,7 +1,7 @@
 import {
   BottomSheet,
   ButtonBar,
-  List2
+  List2,
 } from "components/SharedComponents";
 import type { ButtonConfiguration } from "components/SharedComponents/ButtonBar";
 import { View } from "components/styledComponents";
@@ -34,7 +34,7 @@ const WarningSheet = ( {
   onPressClose,
   secondButtonText,
   testID,
-  text
+  text,
 }: Props ) => {
   const buttons: ButtonConfiguration[] = [
     {
@@ -44,15 +44,15 @@ const WarningSheet = ( {
       level: buttonType || "warning",
       loading,
       isPrimary: false,
-      className: "grow ml-3"
-    }
+      className: "grow ml-3",
+    },
   ];
 
   if ( secondButtonText && handleSecondButtonPress ) {
     buttons.unshift( {
       title: secondButtonText,
       isPrimary: false,
-      onPress: handleSecondButtonPress
+      onPress: handleSecondButtonPress,
     } );
   }
 

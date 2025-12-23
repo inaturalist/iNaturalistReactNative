@@ -4,14 +4,14 @@ import { Animated } from "react-native";
 import colors from "styles/tailwindColors";
 
 interface Props {
-  takingPhoto: boolean,
-  cameraType: string
+  takingPhoto: boolean;
+  cameraType: string;
 }
 
 const fade = value => ( {
   toValue: value,
   duration: 100,
-  useNativeDriver: true
+  useNativeDriver: true,
 } );
 
 const FadeInOutView = ( { takingPhoto, cameraType }: Props ) => {
@@ -21,7 +21,7 @@ const FadeInOutView = ( { takingPhoto, cameraType }: Props ) => {
     if ( takingPhoto ) {
       Animated.sequence( [
         Animated.timing( fadeAnimation, fade( 1 ) ),
-        Animated.timing( fadeAnimation, fade( 0 ) )
+        Animated.timing( fadeAnimation, fade( 0 ) ),
       ] ).start( );
     }
   }, [takingPhoto, fadeAnimation] );
@@ -37,7 +37,7 @@ const FadeInOutView = ( { takingPhoto, cameraType }: Props ) => {
           height: "100%",
           width: "100%",
           backgroundColor: colors.black,
-          opacity: fadeAnimation
+          opacity: fadeAnimation,
         }}
       />
       {( takingPhoto && cameraType === "AI" ) && (

@@ -54,12 +54,12 @@ export const I18NEXT_CONFIG = {
   // Added since otherwise Android would crash - see here: https://stackoverflow.com/a/70521614 and https://www.i18next.com/misc/migration-guide
   lng: LOCALE,
   interpolation: {
-    escapeValue: false // react already safes from xss
+    escapeValue: false, // react already safes from xss
   },
   react: {
     // Added since otherwise Android would crash - see here: https://stackoverflow.com/a/70521614 and https://www.i18next.com/misc/migration-guide
     useSuspense: false,
-    defaultTransParent: Text
+    defaultTransParent: Text,
   },
   // For some reason this is how you pass options to i18next-fluent, per
   // https://github.com/i18next/i18next-fluent?tab=readme-ov-file#options
@@ -75,9 +75,9 @@ export const I18NEXT_CONFIG = {
         JOIN: ( args, opts = {} ) => args
           .filter( Boolean )
           .filter( s => typeof ( s ) === "string" )
-          .join( opts.separator )
-      }
-    }
+          .join( opts.separator ),
+      },
+    },
   },
   // All languages should fallback to English, some regional variants should
   // fall back to another region
@@ -94,7 +94,7 @@ export const I18NEXT_CONFIG = {
       fallbacks.push( "pt" );
     }
     return [...fallbacks, "en"];
-  }
+  },
 };
 
 export default async function initI18next( config = {} ) {

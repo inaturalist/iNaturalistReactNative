@@ -1,5 +1,5 @@
 import {
-  Body3, BottomSheet, Button
+  Body3, BottomSheet, Button,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useCallback } from "react";
@@ -14,13 +14,13 @@ interface Props {
 const TextSheet = ( {
   headerText,
   texts,
-  setShowSheet
+  setShowSheet,
 }: Props ) => {
   const { t } = useTranslation( );
 
   const onPressClose = useCallback(
     ( ) => setShowSheet( false ),
-    [setShowSheet]
+    [setShowSheet],
   );
 
   return (

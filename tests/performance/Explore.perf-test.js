@@ -1,5 +1,5 @@
 import {
-  QueryClientProvider
+  QueryClientProvider,
 } from "@tanstack/react-query";
 import RootExploreContainer from "components/Explore/RootExploreContainer";
 import React from "react";
@@ -13,6 +13,6 @@ test( "Measure Explore renders", async () => {
   await measureRenders(
     <QueryClientProvider client={queryClient}>
       <RootExploreContainer />
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 } );

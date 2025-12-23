@@ -13,13 +13,13 @@ type SyncingStatus = typeof SYNC_PENDING
   | typeof AUTOMATIC_SYNC_IN_PROGRESS;
 
 interface SyncObservationsSlice {
-  autoSyncAbortController: AbortController | null,
-  currentDeleteCount: number,
-  deleteError: string | null,
-  deleteQueue: Array<string>,
-  deletionsCompletedAt: Date | null,
-  initialNumDeletionsInQueue: number,
-  syncingStatus: SyncingStatus
+  autoSyncAbortController: AbortController | null;
+  currentDeleteCount: number;
+  deleteError: string | null;
+  deleteQueue: string[];
+  deletionsCompletedAt: Date | null;
+  initialNumDeletionsInQueue: number;
+  syncingStatus: SyncingStatus;
 }
 
 const DEFAULT_STATE: SyncObservationsSlice = {
@@ -29,7 +29,7 @@ const DEFAULT_STATE: SyncObservationsSlice = {
   deleteQueue: [],
   deletionsCompletedAt: null,
   initialNumDeletionsInQueue: 0,
-  syncingStatus: SYNC_PENDING
+  syncingStatus: SYNC_PENDING,
 };
 
 const createSyncObservationsSlice: StateCreator<SyncObservationsSlice> = ( set, get ) => ( {
@@ -46,21 +46,21 @@ const createSyncObservationsSlice: StateCreator<SyncObservationsSlice> = ( set, 
       initialNumDeletionsInQueue: state.initialNumDeletionsInQueue
         + ( typeof uuids === "string"
           ? 1
-          : uuids.length )
+          : uuids.length ),
     } );
   } ),
   removeFromDeleteQueue: ( ) => set( state => {
     const copyOfDeleteQueue = state.deleteQueue;
     copyOfDeleteQueue.pop( );
     return ( {
-      deleteQueue: copyOfDeleteQueue
+      deleteQueue: copyOfDeleteQueue,
     } );
   } ),
   startNextDeletion: ( ) => set( state => ( {
-    currentDeleteCount: state.currentDeleteCount + 1
+    currentDeleteCount: state.currentDeleteCount + 1,
   } ) ),
   completeLocalDeletions: ( ) => set( ( ) => ( {
-    deletionsCompletedAt: new Date( )
+    deletionsCompletedAt: new Date( ),
   } ) ),
   resetSyncObservationsSlice: ( ) => {
     // Preserve the autoSyncAbortController just in case something might try and use it
@@ -68,22 +68,22 @@ const createSyncObservationsSlice: StateCreator<SyncObservationsSlice> = ( set, 
     return set( { ...DEFAULT_STATE, autoSyncAbortController } );
   },
   setDeletionError: ( message: string ) => set( ( ) => ( {
-    deleteError: message
+    deleteError: message,
   } ) ),
   setSyncingStatus: ( syncingStatus: SyncingStatus ) => set( ( ) => ( {
-    syncingStatus
+    syncingStatus,
   } ) ),
   resetSyncToolbar: ( ) => set( ( ) => ( {
     currentDeleteCount: 1,
     deleteError: null,
     deleteQueue: [],
-    initialNumDeletionsInQueue: 0
+    initialNumDeletionsInQueue: 0,
   } ) ),
   startManualSync: ( ) => set( { syncingStatus: BEGIN_MANUAL_SYNC } ),
   startAutomaticSync: ( ) => set( {
     // Make a new abort controller for this automatic syncing session
     autoSyncAbortController: new AbortController( ),
-    syncingStatus: BEGIN_AUTOMATIC_SYNC
+    syncingStatus: BEGIN_AUTOMATIC_SYNC,
   } ),
   completeSync: ( ) => {
     const { autoSyncAbortController } = get( );
@@ -93,9 +93,9 @@ const createSyncObservationsSlice: StateCreator<SyncObservationsSlice> = ( set, 
       currentDeleteCount: 1,
       deleteError: null,
       deleteQueue: [],
-      syncingStatus: SYNC_PENDING
+      syncingStatus: SYNC_PENDING,
     } );
-  }
+  },
 } );
 
 export default createSyncObservationsSlice;

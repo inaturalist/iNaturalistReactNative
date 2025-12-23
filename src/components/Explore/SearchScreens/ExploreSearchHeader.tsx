@@ -1,7 +1,7 @@
 import {
   BackButton,
   Body3,
-  Heading4
+  Heading4,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
@@ -18,7 +18,7 @@ const ExploreSearchHeader = ( {
   closeModal,
   headerText,
   resetFilters,
-  testID
+  testID,
 }: Props ) => {
   const { t } = useTranslation( );
 

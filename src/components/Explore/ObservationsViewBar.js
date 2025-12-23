@@ -15,34 +15,34 @@ type Props = {
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
-  elevation: 6
+  elevation: 6,
 } );
 
 const ObservationsViewBar = ( {
   hideMap,
   layout,
-  updateObservationsView
+  updateObservationsView,
 }: Props ): Node => {
   const buttons = [
     {
       value: "grid",
       icon: "grid",
       accessibilityLabel: "Grid",
-      testID: "SegmentedButton.grid"
+      testID: "SegmentedButton.grid",
     },
     {
       value: "list",
       icon: "list",
       accessibilityLabel: "List",
-      testID: "SegmentedButton.list"
-    }
+      testID: "SegmentedButton.list",
+    },
   ];
   if ( !hideMap ) {
     buttons.unshift( {
       value: "map",
       icon: "map",
       accessibilityLabel: "Map",
-      testID: "SegmentedButton.map"
+      testID: "SegmentedButton.map",
     } );
   }
 
@@ -51,7 +51,7 @@ const ObservationsViewBar = ( {
       className="absolute bottom-5 left-5 z-10 h-11 flex-row"
     >
       {buttons.map( ( {
-        value, icon, accessibilityLabel, testID
+        value, icon, accessibilityLabel, testID,
       }, i ) => {
         const checked = value === layout;
         const isFirst = i === 0;
@@ -68,18 +68,18 @@ const ObservationsViewBar = ( {
             : 0,
           borderBottomRightRadius: isLast
             ? 20
-            : 0
+            : 0,
         };
         const spacerStyle = {
           borderRightWidth: isLast
             ? 0
             : 1,
-          borderRightColor: colors.lightGray
+          borderRightColor: colors.lightGray,
         };
         const backgroundColor = {
           backgroundColor: checked
             ? colors.inatGreen
-            : colors.white
+            : colors.white,
         };
 
         return (
@@ -99,7 +99,7 @@ const ObservationsViewBar = ( {
               DROP_SHADOW,
               outerBorderStyle,
               spacerStyle,
-              backgroundColor
+              backgroundColor,
             ]}
             testID={testID}
             backgroundColor={value === layout

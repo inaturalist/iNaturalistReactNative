@@ -5,7 +5,7 @@ import type {
   RealmObservation,
   RealmObservationPhoto,
   RealmObservationSound,
-  RealmPhoto
+  RealmPhoto,
 } from "realmModels/types";
 import { markRecordUploaded, prepareMediaForUpload } from "uploaders";
 import { trackEvidenceUpload } from "uploaders/utils/progressTracker";
@@ -15,16 +15,16 @@ export type ActionType = "upload" | "attach" | "update";
 
 interface UploadOptions {
   api_token?: string;
-  signal: AbortController
+  signal: AbortController;
 }
 
 interface MediaApiResponse {
   page: number;
   per_page: number;
   total_results: number;
-  results: Array<{
+  results: {
     id: number;
-  }>;
+  }[];
 }
 
 interface MappedObservationPhotoForUpdating {
@@ -32,7 +32,7 @@ interface MappedObservationPhotoForUpdating {
   observation_photo: {
     observation_id: number;
     position: number;
-  }
+  };
 }
 
 interface MappedObservationPhotoForAttaching {
@@ -41,7 +41,7 @@ interface MappedObservationPhotoForAttaching {
     observation_id: number;
     photo_id: number;
     position: number;
-  }
+  };
 }
 
 interface MappedPhotoForUploading {
@@ -58,7 +58,7 @@ interface MappedSoundForUploading {
     uri: string;
     name: string;
     type: string;
-  }
+  };
 }
 
 interface MappedObservationSoundForAttaching {
@@ -94,13 +94,13 @@ const uploadSingleEvidence = async (
   apiEndpoint: ApiEndpoint,
   options: UploadOptions,
   observationUUID: string,
-  realm: Realm
+  realm: Realm,
 ): Promise<MediaApiResponse | null> => {
   const params = prepareMediaForUpload(
     evidence,
     type,
     action,
-    observationId
+    observationId,
   );
   const evidenceUUID = evidence.uuid;
 
@@ -112,7 +112,7 @@ const uploadSingleEvidence = async (
   const response = await createOrUpdateEvidence(
     apiEndpoint,
     params,
-    options
+    options,
   );
 
   if ( !response ) {
@@ -122,7 +122,7 @@ const uploadSingleEvidence = async (
   if ( response && observationUUID ) {
     // TODO: can't mark records as uploaded by primary key for ObsPhotos and ObsSound anymore
     markRecordUploaded( observationUUID, evidenceUUID, type, response, realm, {
-      record: evidence
+      record: evidence,
     } );
     if ( isAttachOperation ) {
       // This is attaching evidence to an observation
@@ -148,7 +148,7 @@ async function processMediaOperations(
   operations: Operation[],
   options: UploadOptions,
   observationUUID: string,
-  realm: Realm
+  realm: Realm,
 ): Promise<MediaApiResponse[]> {
   // use a single Promise.all instead of nested Promise.alls like we were doing before
   return Promise.all(
@@ -160,8 +160,8 @@ async function processMediaOperations(
       operation.apiEndpoint,
       options,
       observationUUID,
-      realm
-    ) )
+      realm,
+    ) ),
   );
 }
 
@@ -205,7 +205,7 @@ const filterMediaForUpload = ( observation: RealmObservation ): {
     unsyncedPhotos,
     unsyncedObservationPhotos,
     modifiedObservationPhotos,
-    unsyncedObservationSounds
+    unsyncedObservationSounds,
   };
 };
 
@@ -217,7 +217,7 @@ const createMediaOperations = (
     unsyncedObservationSounds?: RealmObservationSound[] | null;
   },
   observationUUID: string | undefined | null,
-  uploadAction: boolean
+  uploadAction: boolean,
 ) => {
   const operations: Operation[] = [];
 
@@ -233,7 +233,7 @@ const createMediaOperations = (
         type: "Photo" as EvidenceType,
         action: "upload" as ActionType,
         observationId: null,
-        apiEndpoint: inatjs.photos.create
+        apiEndpoint: inatjs.photos.create,
       } );
     } );
   }
@@ -245,7 +245,7 @@ const createMediaOperations = (
         type: "ObservationSound" as EvidenceType,
         action: "upload" as ActionType,
         observationId: null,
-        apiEndpoint: inatjs.sounds.create
+        apiEndpoint: inatjs.sounds.create,
       } );
     } );
   }
@@ -259,7 +259,7 @@ const createMediaOperations = (
           type: "ObservationPhoto" as EvidenceType,
           action: "attach" as ActionType,
           observationId: observationUUID as number,
-          apiEndpoint: inatjs.observation_photos.create
+          apiEndpoint: inatjs.observation_photos.create,
         } );
       } );
     }
@@ -271,7 +271,7 @@ const createMediaOperations = (
           type: "ObservationSound" as EvidenceType,
           action: "attach" as ActionType,
           observationId: observationUUID as number,
-          apiEndpoint: inatjs.observation_sounds.create
+          apiEndpoint: inatjs.observation_sounds.create,
         } );
       } );
     }
@@ -283,7 +283,7 @@ const createMediaOperations = (
           type: "ObservationPhoto" as EvidenceType,
           action: "update" as ActionType,
           observationId: observationUUID as number,
-          apiEndpoint: inatjs.observation_photos.update
+          apiEndpoint: inatjs.observation_photos.update,
         } );
       } );
     }
@@ -295,13 +295,13 @@ const createMediaOperations = (
 async function uploadObservationMedia(
   observation: RealmObservation,
   options: UploadOptions,
-  realm: Realm
+  realm: Realm,
 ): Promise<MediaItems> {
   if ( !observation?.observationPhotos && !observation?.observationSounds ) {
     return {
       unsyncedObservationPhotos: [],
       modifiedObservationPhotos: [],
-      unsyncedObservationSounds: []
+      unsyncedObservationSounds: [],
     };
   }
 
@@ -317,7 +317,7 @@ async function uploadObservationMedia(
   return {
     unsyncedObservationPhotos: mediaItems.unsyncedObservationPhotos,
     modifiedObservationPhotos: mediaItems.modifiedObservationPhotos,
-    unsyncedObservationSounds: mediaItems.unsyncedObservationSounds
+    unsyncedObservationSounds: mediaItems.unsyncedObservationSounds,
   };
 }
 
@@ -325,7 +325,7 @@ async function attachMediaToObservation(
   observationUUID: string,
   mediaItems: MediaItems,
   options: UploadOptions,
-  realm: Realm
+  realm: Realm,
 ): Promise<void> {
   // Make sure this happens *after* ObservationPhotos and ObservationSounds
   // are created so the observation doesn't appear uploaded until all its
@@ -347,5 +347,5 @@ async function attachMediaToObservation(
 
 export {
   attachMediaToObservation,
-  uploadObservationMedia
+  uploadObservationMedia,
 };

@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import {
-  Button
+  Button,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useCallback } from "react";
@@ -20,7 +20,7 @@ const LearnMore = ( ) => {
     navigation.navigate( "FullPageWebView", {
       title,
       initialUrl: url,
-      loggedIn: false
+      loggedIn: false,
     } )
   ), [navigation] );
 
@@ -41,7 +41,7 @@ const LearnMore = ( ) => {
           text={t( "COMMUNITY-GUIDELINES" )}
           onPress={() => navToUrl(
             `${BASE_URL}/pages/community+guidelines`,
-            t( "COMMUNITY-GUIDELINES" )
+            t( "COMMUNITY-GUIDELINES" ),
           )}
           className="mt-5"
         />

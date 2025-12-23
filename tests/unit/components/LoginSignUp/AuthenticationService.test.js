@@ -4,7 +4,7 @@ import {
   getUsername,
   isLoggedIn,
   registerUser,
-  signOut
+  signOut,
 } from "components/LoginSignUp/AuthenticationService";
 import nock from "nock";
 import faker from "tests/helpers/faker";
@@ -25,8 +25,8 @@ test( "authenticates user", async ( ) => {
 
   const scope2 = nock( API_HOST, {
     reqheaders: {
-      authorization: ACCESS_TOKEN_AUTHORIZATION_HEADER
-    }
+      authorization: ACCESS_TOKEN_AUTHORIZATION_HEADER,
+    },
   } )
     .get( "/users/api_token.json" )
     .reply( 200, { api_token: JWT } );

@@ -28,24 +28,24 @@ describe( "uploadObservation", () => {
     jest.clearAllMocks();
 
     mockObservation = factory( "LocalObservation", {
-      uuid: "test-uuid-123"
+      uuid: "test-uuid-123",
     } );
     mockObservation.wasSynced = jest.fn( () => false );
 
     mockRealm = {
-      objectForPrimaryKey: jest.fn( () => factory( "LocalObservation" ) )
+      objectForPrimaryKey: jest.fn( () => factory( "LocalObservation" ) ),
     };
 
     mockProgressTracker = {
       start: jest.fn(),
       complete: jest.fn(),
-      error: jest.fn()
+      error: jest.fn(),
     };
 
     mockMediaItems = {
       unsyncedObservationPhotos: [],
       modifiedObservationPhotos: [],
-      unsyncedObservationSounds: []
+      unsyncedObservationSounds: [],
     };
 
     authService.getJWT.mockResolvedValue( "test-json-web-token" );
@@ -57,15 +57,15 @@ describe( "uploadObservation", () => {
 
     uploaders.prepareObservationForUpload.mockReturnValue( {
       uuid: mockObservation.uuid,
-      taxon_id: 12345
+      taxon_id: 12345,
     } );
 
     apiObservations.createObservation.mockResolvedValue( {
-      results: [{ uuid: mockObservation.uuid }]
+      results: [{ uuid: mockObservation.uuid }],
     } );
 
     apiObservations.updateObservation.mockResolvedValue( {
-      results: [{ uuid: mockObservation.uuid }]
+      results: [{ uuid: mockObservation.uuid }],
     } );
   } );
 
@@ -102,9 +102,9 @@ describe( "uploadObservation", () => {
     expect( apiObservations.createObservation ).toHaveBeenCalledWith(
       expect.objectContaining( {
         observation: expect.anything(),
-        fields: { id: true }
+        fields: { id: true },
       } ),
-      expect.objectContaining( { api_token: "test-json-web-token" } )
+      expect.objectContaining( { api_token: "test-json-web-token" } ),
     );
     expect( apiObservations.updateObservation ).not.toHaveBeenCalled();
   } );
@@ -119,9 +119,9 @@ describe( "uploadObservation", () => {
         observation: expect.anything(),
         fields: { id: true },
         id: mockObservation.uuid,
-        ignore_photos: true
+        ignore_photos: true,
       } ),
-      expect.objectContaining( { api_token: "test-json-web-token" } )
+      expect.objectContaining( { api_token: "test-json-web-token" } ),
     );
     expect( apiObservations.createObservation ).not.toHaveBeenCalled();
   } );
@@ -132,7 +132,7 @@ describe( "uploadObservation", () => {
     expect( mediaUploader.uploadObservationMedia ).toHaveBeenCalledWith(
       mockObservation,
       expect.objectContaining( { api_token: "test-json-web-token" } ),
-      mockRealm
+      mockRealm,
     );
   } );
 
@@ -145,9 +145,9 @@ describe( "uploadObservation", () => {
         mockObservation.uuid,
         mockMediaItems,
         expect.objectContaining( { api_token: "test-json-web-token" } ),
-        mockRealm
+        mockRealm,
       );
-    }
+    },
   );
 
   it( "should mark the record as uploaded after media is attached", async () => {
@@ -158,7 +158,7 @@ describe( "uploadObservation", () => {
       null,
       "Observation",
       expect.anything(),
-      mockRealm
+      mockRealm,
     );
   } );
 
@@ -220,8 +220,8 @@ describe( "uploadObservation", () => {
       expect.anything(),
       expect.objectContaining( {
         api_token: "test-json-web-token",
-        locale: "es-ES"
-      } )
+        locale: "es-ES",
+      } ),
     );
   } );
 } );

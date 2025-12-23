@@ -13,17 +13,17 @@ export default define( "RemoteObservation", faker => {
     geojson: {
       coordinates: [
         Number( faker.location.longitude( ) ),
-        Number( faker.location.latitude( ) )
-      ]
+        Number( faker.location.latitude( ) ),
+      ],
     },
     positional_accuracy: 10,
     observed_on_string: [
       dateObserved.getFullYear(),
       `0${dateObserved.getMonth() + 1}`.slice( -2 ),
-      `0${dateObserved.getDate()}`.slice( -2 )
+      `0${dateObserved.getDate()}`.slice( -2 ),
     ].join( "-" ),
     time_observed_at: dateObserved.toISOString(),
     update_at: dateUpdated.toISOString(),
-    user: userFactory( "RemoteUser" )
+    user: userFactory( "RemoteUser" ),
   };
 } );

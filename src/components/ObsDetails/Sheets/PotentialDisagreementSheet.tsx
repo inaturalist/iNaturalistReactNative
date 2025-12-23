@@ -3,7 +3,7 @@ import {
   Body1,
   DisplayTaxon,
   DisplayTaxonName, List2,
-  RadioButtonSheet
+  RadioButtonSheet,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
@@ -12,17 +12,17 @@ import type { RealmTaxon } from "realmModels/types";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
 interface Props {
-  onPressClose: () => void,
+  onPressClose: () => void;
   onPotentialDisagreePressed: ( _checkedValue: string ) => void;
-  newTaxon: RealmTaxon | ApiTaxon,
-  oldTaxon: RealmTaxon | ApiTaxon
+  newTaxon: RealmTaxon | ApiTaxon;
+  oldTaxon: RealmTaxon | ApiTaxon;
 }
 
 const PotentialDisagreementSheet = ( {
   onPressClose,
   onPotentialDisagreePressed,
   newTaxon,
-  oldTaxon
+  oldTaxon,
 }: Props ) => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
@@ -49,10 +49,10 @@ const PotentialDisagreementSheet = ( {
           i18nKey="Potential-disagreement-unsure"
           components={[
             <Body1 key="0" />,
-            showTaxonName( "1", newTaxon, Body1 )
+            showTaxonName( "1", newTaxon, Body1 ),
           ]}
         />
-      )
+      ),
     },
     disagree: {
       value: true,
@@ -61,11 +61,11 @@ const PotentialDisagreementSheet = ( {
           i18nKey="Potential-disagreement-disagree"
           components={[
             <Body1 key="0" />,
-            showTaxonName( "1", newTaxon, Body1 )
+            showTaxonName( "1", newTaxon, Body1 ),
           ]}
         />
-      )
-    }
+      ),
+    },
   };
 
   const topDescriptionText = (
@@ -73,7 +73,7 @@ const PotentialDisagreementSheet = ( {
       i18nKey="Potential-disagreement-description"
       components={[
         <List2 key="0" />,
-        showTaxonName( "1", oldTaxon, List2 )
+        showTaxonName( "1", oldTaxon, List2 ),
       ]}
     />
   );

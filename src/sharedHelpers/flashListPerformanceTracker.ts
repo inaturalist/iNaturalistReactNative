@@ -5,30 +5,30 @@ class FlashListPerformanceTracker {
 
   private itemsVisibleDuration: number;
 
-  private scrollEvents: Array<{
+  private scrollEvents: {
     startTime: number;
     endTime: number;
     duration: number;
     itemsFetched: number;
     scrollDistance: number;
-  }> = [];
+  }[] = [];
 
   private currentScrollEvent: unknown = null;
 
   private fetchStartTime: number;
 
-  private fetchEvents: Array<{
+  private fetchEvents: {
     startTime: number;
     endTime: number;
     duration: number;
     itemsCount: number;
-  }> = [];
+  }[] = [];
 
   private persistentMetrics = {
     lastFetchTime: null as number | null,
     lastFetchTimestamp: 0,
     avgFetchTime: 0,
-    fetchCount: 0
+    fetchCount: 0,
   };
 
   private lastFetchItemCount = 0;
@@ -72,7 +72,7 @@ class FlashListPerformanceTracker {
         itemsFetched: 0,
         startY: y,
         endY: y,
-        scrollDistance: 0
+        scrollDistance: 0,
       };
     }
   }
@@ -102,7 +102,7 @@ class FlashListPerformanceTracker {
         startTime: this.fetchStartTime,
         endTime,
         duration: fetchDuration,
-        itemsCount
+        itemsCount,
       } );
 
       this.persistentMetrics.lastFetchTime = fetchDuration;
@@ -166,7 +166,7 @@ class FlashListPerformanceTracker {
       totalFetches: this.fetchEvents.length
         + this.persistentMetrics.fetchCount - this.fetchEvents.length,
       lastFetchItemCount: this.lastFetchItemCount,
-      totalItemsDisplayed: this.totalItemsDisplayed
+      totalItemsDisplayed: this.totalItemsDisplayed,
     };
   }
 }

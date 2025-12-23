@@ -40,7 +40,7 @@ const Attribution = ( { observation }: Props ) => {
     <Body4>
       {t( "Observation-Attribution", {
         userName,
-        restrictions: renderRestrictions( observation.license_code )
+        restrictions: renderRestrictions( observation.license_code ),
       } )}
     </Body4>
   );

@@ -1,14 +1,14 @@
 import {
-  ActivityIndicator
+  ActivityIndicator,
 } from "components/SharedComponents";
 import { ScrollView, View } from "components/styledComponents";
 import React, {
-  useRef
+  useRef,
 } from "react";
 import type Observation from "realmModels/Observation";
 import type { RealmObservation, RealmUser } from "realmModels/types";
 import {
-  useScrollToOffset
+  useScrollToOffset,
 } from "sharedHooks";
 
 import CommunitySection from "./CommunitySection/CommunitySection";
@@ -27,22 +27,22 @@ import StatusSection from "./StatusSection/StatusSection";
 const cardClassBottom = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mt-0.5 mb-4";
 
 type Props = {
-  activityItems: Array<object>,
-  addingActivityItem: boolean,
-  belongsToCurrentUser: boolean,
-  currentUser: RealmUser,
-  isConnected: boolean,
-  navToSuggestions: () => void,
-  observation: RealmObservation & Observation & { id: number },
-  openAddCommentSheet: () => void,
-  openAgreeWithIdSheet: () => void,
-  refetchRemoteObservation: () => void,
-  refetchSubscriptions: () => void,
-  showAddCommentSheet: () => void,
-  subscriptions: object,
-  targetActivityItemID: number,
-  wasSynced: boolean,
-  uuid: string
+  activityItems: object[];
+  addingActivityItem: boolean;
+  belongsToCurrentUser: boolean;
+  currentUser: RealmUser;
+  isConnected: boolean;
+  navToSuggestions: () => void;
+  observation: RealmObservation & Observation & { id: number };
+  openAddCommentSheet: () => void;
+  openAgreeWithIdSheet: () => void;
+  refetchRemoteObservation: () => void;
+  refetchSubscriptions: () => void;
+  showAddCommentSheet: () => void;
+  subscriptions: object;
+  targetActivityItemID: number;
+  wasSynced: boolean;
+  uuid: string;
 }
 
 const ObsDetailsDefaultMode = ( {
@@ -61,13 +61,13 @@ const ObsDetailsDefaultMode = ( {
   subscriptions,
   targetActivityItemID,
   wasSynced,
-  uuid
+  uuid,
 }: Props ) => {
   const scrollViewRef = useRef<typeof ScrollView | null>( null );
 
   const {
     setHeightOfContentAboveSection: setHeightOfContentAboveCommunitySection,
-    setOffsetToActivityItem
+    setOffsetToActivityItem,
   } = useScrollToOffset( scrollViewRef );
 
   const isSavedObservationByCurrentUser = belongsToCurrentUser && !wasSynced;

@@ -23,13 +23,13 @@ function useNavigateToObsEdit() {
               index: 0,
               routes: [
                 {
-                  name: "ObsEdit"
-                }
-              ]
-            }
-          }
-        ]
-      } )
+                  name: "ObsEdit",
+                },
+              ],
+            },
+          },
+        ],
+      } ),
     );
     setMyObsOffsetToRestore();
   }

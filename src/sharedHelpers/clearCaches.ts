@@ -1,5 +1,5 @@
 import {
-  photoLibraryPhotosPath, photoUploadPath, rotatedOriginalPhotosPath, soundUploadPath
+  photoLibraryPhotosPath, photoUploadPath, rotatedOriginalPhotosPath, soundUploadPath,
 } from "appConstants/paths";
 import { log } from "sharedHelpers/logger";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
@@ -11,14 +11,14 @@ const logger = log.extend( "clearCaches.ts" );
 interface RealmObservation {
   observationPhotos: {
     photo: {
-      localFilePath: string
-    }
-  }[],
+      localFilePath: string;
+    };
+  }[];
   observationSounds: {
     sound: {
-      file_url: string
-    }
-  }[]
+      file_url: string;
+    };
+  }[];
 }
 
 const clearRotatedOriginalPhotosDirectory = async ( ) => {
@@ -40,7 +40,7 @@ const clearSyncedMediaForUpload = async realm => {
     .filtered( "observationPhotos._synced_at == nil" );
   const unsyncedPhotoFileNames = unsyncedObservationsWithPhotos
     .map( observation => observation.observationPhotos.map(
-      op => op.photo.localFilePath?.split( "photoUploads/" )?.at( 1 )
+      op => op.photo.localFilePath?.split( "photoUploads/" )?.at( 1 ),
     ) )
     .flat( )
     .filter( Boolean );
@@ -50,7 +50,7 @@ const clearSyncedMediaForUpload = async realm => {
     //  why the TS compiler can't figure that out
     //  eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    unsyncedPhotoFileNames
+    unsyncedPhotoFileNames,
   );
 
   // Clean out sounds
@@ -59,7 +59,7 @@ const clearSyncedMediaForUpload = async realm => {
     .filtered( "observationSounds._synced_at == nil" );
   const unsyncedSoundFileNames = unsyncedObservationsWithSounds
     .map( observation => observation.observationSounds.map(
-      os => os.sound.file_url?.split( "soundUploads/" )?.at( 1 )
+      os => os.sound.file_url?.split( "soundUploads/" )?.at( 1 ),
     ) )
     .flat( )
     .filter( Boolean );
@@ -69,7 +69,7 @@ const clearSyncedMediaForUpload = async realm => {
     //  why the TS compiler can't figure that out
     //  eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    unsyncedSoundFileNames
+    unsyncedSoundFileNames,
   );
 };
 

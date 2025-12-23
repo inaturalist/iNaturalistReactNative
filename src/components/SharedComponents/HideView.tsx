@@ -17,7 +17,7 @@ interface Props extends PropsWithChildren {
 const HideView = ( {
   noInitialRender = false,
   show = false,
-  children
+  children,
 }: Props ) => {
   const [rendered, setRendered] = useState( false );
 

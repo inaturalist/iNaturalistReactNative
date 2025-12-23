@@ -40,7 +40,7 @@ describe( "errorHandling", ( ) => {
 
       const { recoveryPossible, recoveryBy } = handleUploadError(
         recoverableError,
-        t
+        t,
       );
 
       expect( recoveryPossible ).toBe( true );
@@ -52,8 +52,8 @@ describe( "errorHandling", ( ) => {
       apiError.json = {
         errors: [
           { message: "First error" },
-          { message: "Second error" }
-        ]
+          { message: "Second error" },
+        ],
       };
 
       const { message } = handleUploadError( apiError, t );
@@ -65,8 +65,8 @@ describe( "errorHandling", ( ) => {
       const apiError = new Error( "API Error" );
       apiError.json = {
         errors: [
-          { message: { errors: ["Error 1", "Error 2"] } }
-        ]
+          { message: { errors: ["Error 1", "Error 2"] } },
+        ],
       };
 
       const { message } = handleUploadError( apiError, t );
@@ -79,8 +79,8 @@ describe( "errorHandling", ( ) => {
       const apiError = new Error( "API Error" );
       apiError.json = {
         errors: [
-          { message: { errors: "Nested error message string" } }
-        ]
+          { message: { errors: "Nested error message string" } },
+        ],
       };
 
       const { message } = handleUploadError( apiError, t );
@@ -92,8 +92,8 @@ describe( "errorHandling", ( ) => {
       const apiError = new Error( "API Error" );
       apiError.json = {
         errors: [
-          { message: { error: "Resource was previously deleted" } }
-        ]
+          { message: { error: "Resource was previously deleted" } },
+        ],
       };
 
       const { message } = handleUploadError( apiError, t );

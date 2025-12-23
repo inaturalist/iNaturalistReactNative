@@ -21,7 +21,7 @@ const createSentinelFile = async ( screenName: string ): Promise<string> => {
     const logEntry = {
       screenName,
       entryTimestamp: new Date( ).toISOString( ),
-      stages: []
+      stages: [],
     };
 
     const initialContent = JSON.stringify( logEntry );
@@ -36,7 +36,7 @@ const createSentinelFile = async ( screenName: string ): Promise<string> => {
 
 const logStage = async (
   sentinelFileName: string,
-  stageName: string
+  stageName: string,
 ): Promise<void> => {
   const fullFilePath = accessFullFilePath( sentinelFileName );
   try {
@@ -45,7 +45,7 @@ const logStage = async (
 
     const stage = {
       name: stageName,
-      timestamp: new Date( ).toISOString( )
+      timestamp: new Date( ).toISOString( ),
     };
 
     sentinelData.stages.push( stage );
@@ -87,5 +87,5 @@ export {
   createSentinelFile,
   deleteSentinelFile,
   findAndLogSentinelFiles,
-  logStage
+  logStage,
 };

@@ -1,14 +1,14 @@
 import { useNavigation } from "@react-navigation/native";
 import {
   Body1,
-  Button
+  Button,
 } from "components/SharedComponents";
 import type { ScrollView } from "components/styledComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { ElementRef, Node } from "react";
 import React, {
-  useCallback, useEffect, useRef, useState
+  useCallback, useEffect, useRef, useState,
 } from "react";
 import { TouchableWithoutFeedback } from "react-native";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
@@ -16,8 +16,8 @@ import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 import LoginSignUpInputField from "./LoginSignUpInputField";
 
 type Props = {
-  reset: ( email: string ) => Promise<void>,
-  scrollViewRef?: { current: null | ElementRef<typeof ScrollView> },
+  reset: ( email: string ) => Promise<void>;
+  scrollViewRef?: { current: null | ElementRef<typeof ScrollView> };
 }
 
 const ForgotPasswordForm = ( { reset, scrollViewRef }: Props ): Node => {
@@ -53,7 +53,7 @@ const ForgotPasswordForm = ( { reset, scrollViewRef }: Props ): Node => {
         ( _, y ) => {
           scrollViewRef.current?.scrollTo( { y, animated: true } );
         },
-        () => console.log( "Failed to measure" )
+        () => console.log( "Failed to measure" ),
       );
     }
   }, [scrollViewRef] );

@@ -2,7 +2,7 @@ import classnames from "classnames";
 import { View } from "components/styledComponents";
 import React, { ReactComponent } from "react";
 import Reanimated, {
-  FadeIn, Keyframe
+  FadeIn, Keyframe,
 } from "react-native-reanimated";
 
 type Props = {
@@ -16,14 +16,14 @@ const AnimatedView = Reanimated.createAnimatedComponent( View );
 const keyframe = new Keyframe( {
   0: { opacity: 0 },
   40: { opacity: 1 },
-  100: { opacity: 0 }
+  100: { opacity: 0 },
 } );
 
 const FadeOutFadeInIcon = ( {
   iconWrapperClasses,
   layout,
   fadeInIcon,
-  fadeOutIcon
+  fadeOutIcon,
 }: Props ) => {
   const fadeOutUploadCompleteIcon = (
     <AnimatedView
@@ -42,7 +42,7 @@ const FadeOutFadeInIcon = ( {
     <>
       <View
         className={classnames( "absolute h-full justify-center", {
-          "bottom-0": layout === "horizontal"
+          "bottom-0": layout === "horizontal",
         } )}
       >
         <View className={iconWrapperClasses}>

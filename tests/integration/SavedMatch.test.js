@@ -11,7 +11,7 @@ import setupUniqueRealm from "tests/helpers/uniqueRealm";
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -22,8 +22,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -40,9 +40,9 @@ const mockObservation = factory( "LocalObservation", {
         id: faker.number.int( ),
         attribution: faker.lorem.sentence( ),
         licenseCode: "cc-by-nc",
-        url: faker.image.url( )
-      }
-    } )
+        url: faker.image.url( ),
+      },
+    } ),
   ],
   taxon: factory( "LocalTaxon", {
     name: faker.person.firstName( ),
@@ -53,15 +53,15 @@ const mockObservation = factory( "LocalObservation", {
       id: faker.number.int( ),
       attribution: faker.lorem.sentence( ),
       licenseCode: "cc-by-nc",
-      url: faker.image.url( )
-    }
+      url: faker.image.url( ),
+    },
   } ),
   user: factory( "LocalUser", {
     login: faker.internet.userName( ),
     iconUrl: faker.image.url( ),
-    locale: "en"
+    locale: "en",
   } ),
-  identifications: []
+  identifications: [],
 } );
 
 const mockPush = jest.fn();
@@ -71,8 +71,8 @@ jest.mock( "@react-navigation/native", () => {
     ...actualNav,
     useNavigation: () => ( {
       push: mockPush,
-      setOptions: jest.fn()
-    } )
+      setOptions: jest.fn(),
+    } ),
   };
 } );
 
@@ -95,7 +95,7 @@ describe( "SavedMatch", ( ) => {
   } );
 
   const mockObservationWithLatitude = factory( "LocalObservation", {
-    latitude: faker.location.latitude( )
+    latitude: faker.location.latitude( ),
   } );
 
   it( "should show map section when latitude is present", async ( ) => {

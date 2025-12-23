@@ -14,7 +14,7 @@ const ContentWithIcon = ( {
   icon,
   size,
   classNameMargin,
-  children
+  children,
 }: Props ) => (
   <View
     className={classNames( "flex-row space-x-[5px]", classNameMargin )}

@@ -2,23 +2,23 @@ import type { ApiTaxon } from "api/types";
 import classnames from "classnames";
 import ObsImagePreview from "components/ObservationsFlashList/ObsImagePreview";
 import {
-  DisplayTaxonName
+  DisplayTaxonName,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
 import type { RealmTaxon } from "realmModels/types";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import {
-  useCurrentUser, useTaxon, useTranslation
+  useCurrentUser, useTaxon, useTranslation,
 } from "sharedHooks";
 
 type Props = {
-  fetchRemote?: boolean,
-  fromLocal?: boolean,
-  handlePress?: ( ) => void,
-  taxon: RealmTaxon | ApiTaxon,
-  testID?: string,
-  selected?: boolean
+  fetchRemote?: boolean;
+  fromLocal?: boolean;
+  handlePress?: ( ) => void;
+  taxon: RealmTaxon | ApiTaxon;
+  testID?: string;
+  selected?: boolean;
 }
 
 const IconicSuggestion = ( {
@@ -27,7 +27,7 @@ const IconicSuggestion = ( {
   handlePress,
   taxon: taxonProp,
   testID = `IconicSuggestion.${taxonProp?.id}`,
-  selected
+  selected,
 }: Props ) => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
@@ -47,7 +47,7 @@ const IconicSuggestion = ( {
 
   const taxonImage = {
     uri: usableTaxon?.default_photo?.url
-      || usableTaxon?.defaultPhoto?.url
+      || usableTaxon?.defaultPhoto?.url,
   };
 
   const cardContent = classnames(
@@ -57,7 +57,7 @@ const IconicSuggestion = ( {
     !selected
       ? "border-lightGray"
       : "border-inatGreen",
-    "mr-3.5"
+    "mr-3.5",
   );
 
   return (

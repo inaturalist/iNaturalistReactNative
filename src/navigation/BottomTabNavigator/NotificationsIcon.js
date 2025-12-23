@@ -23,13 +23,13 @@ const NotificationsIcon = ( {
   icon,
   active,
   width,
-  height
+  height,
 }: Props ): React.Node => {
   /* eslint-disable react/jsx-props-no-spreading */
   const sharedProps = {
     testID,
     width,
-    height
+    height,
   };
 
   const isDebug = isDebugMode( );
@@ -58,7 +58,7 @@ const NotificationsIcon = ( {
             "top-1",
             "w-[15px]",
             "justify-center",
-            "items-center"
+            "items-center",
           )}
         >
           <View
@@ -68,7 +68,7 @@ const NotificationsIcon = ( {
                 : "bg-inatGreen",
               "h-[9px]",
               "rounded-full",
-              "w-[9px]"
+              "w-[9px]",
             )}
           />
         </View>

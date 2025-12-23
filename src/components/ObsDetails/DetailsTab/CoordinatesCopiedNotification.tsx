@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import {
   Body2,
-  INatIcon
+  INatIcon,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -19,7 +19,7 @@ const CoordinatesCopiedNotification = ( ) => (
       "bottom-1/2",
       "bg-white",
       "p-3",
-      "rounded-xl"
+      "rounded-xl",
     )}
     style={getShadow( )}
   >

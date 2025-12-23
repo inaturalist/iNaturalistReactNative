@@ -6,7 +6,7 @@ function prepareMediaForUpload(
   media: Evidence,
   type: EvidenceType,
   action: ActionType,
-  observationId?: number | null
+  observationId?: number | null,
 ): object {
   if ( type === "Photo" || type === "ObservationPhoto" ) {
     if ( action === "upload" ) {

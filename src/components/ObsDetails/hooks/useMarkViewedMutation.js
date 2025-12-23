@@ -1,17 +1,17 @@
 // @flow
 import { useQueryClient } from "@tanstack/react-query";
 import {
-  markObservationUpdatesViewed
+  markObservationUpdatesViewed,
 } from "api/observations";
 import {
   useEffect,
-  useState
+  useState,
 } from "react";
 import Observation from "realmModels/Observation";
 import {
   useAuthenticatedMutation,
   useCurrentUser,
-  useObservationsUpdates
+  useObservationsUpdates,
 } from "sharedHooks";
 import { fetchObservationUpdatesKey } from "sharedHooks/useObservationsUpdates";
 import useStore from "stores/useStore";
@@ -19,11 +19,11 @@ import useStore from "stores/useStore";
 const useMarkViewedMutation = (
   localObservation: Object,
   markViewedLocally: ( ) => void,
-  remoteObservation: Object
+  remoteObservation: Object,
 ) => {
   const currentUser = useCurrentUser( );
   const setObservationMarkedAsViewedAt = useStore(
-    state => state.setObservationMarkedAsViewedAt
+    state => state.setObservationMarkedAsViewedAt,
   );
   const queryClient = useQueryClient( );
   const [isMarkingViewed, setIsMarkingViewed] = useState( false );
@@ -32,7 +32,7 @@ const useMarkViewedMutation = (
   const uuid = observation?.uuid;
 
   const { refetch: refetchObservationUpdates } = useObservationsUpdates(
-    !!currentUser && !!observation
+    !!currentUser && !!observation,
   );
 
   const markViewedMutation = useAuthenticatedMutation(
@@ -45,8 +45,8 @@ const useMarkViewedMutation = (
         // Set this value so NotificationsIconContainer knows to update the
         // notifications count
         setObservationMarkedAsViewedAt( new Date( ) );
-      }
-    }
+      },
+    },
   );
 
   useEffect( ( ) => {
@@ -71,7 +71,7 @@ const useMarkViewedMutation = (
     remoteObservation,
     uuid,
     markViewedMutation,
-    isMarkingViewed
+    isMarkingViewed,
   ] );
 };
 

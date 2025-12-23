@@ -1,11 +1,11 @@
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import {
   permissionResultFromMultiple,
-  READ_WRITE_MEDIA_PERMISSIONS
+  READ_WRITE_MEDIA_PERMISSIONS,
 } from "components/SharedComponents/PermissionGateContainer";
 import { t } from "i18next";
 import {
-  Alert
+  Alert,
 } from "react-native";
 import { checkMultiple, RESULTS } from "react-native-permissions";
 import { log } from "sharedHelpers/logger";
@@ -24,10 +24,10 @@ const logger = log.extend( "savePhotosToPhotoLibrary" );
 // $FlowIgnore
 export async function savePhotosToPhotoLibrary(
   uris: [string],
-  location: object
+  location: object,
 ) {
   const readWritePermissionResult = permissionResultFromMultiple(
-    await checkMultiple( READ_WRITE_MEDIA_PERMISSIONS )
+    await checkMultiple( READ_WRITE_MEDIA_PERMISSIONS ),
   );
   const savedPhotoUris = await uris.reduce(
     async ( memo, uri ) => {
@@ -63,7 +63,7 @@ export async function savePhotosToPhotoLibrary(
           Alert.alert(
             t( "Not-enough-space-left-on-device" ),
             t( "Not-enough-space-left-on-device-try-again" ),
-            [{ text: t( "OK" ) }]
+            [{ text: t( "OK" ) }],
           );
           return savedUris;
         }
@@ -83,7 +83,7 @@ export async function savePhotosToPhotoLibrary(
     // We need the initial value even if we're not using it, otherwise reduce
     // will treat the first item in the array as the initial value and not
     // call the reducer function on it
-    Promise.resolve( [] )
+    Promise.resolve( [] ),
   );
   return savedPhotoUris;
 }

@@ -7,21 +7,21 @@ import Observation from "realmModels/Observation";
 import {
   useCurrentUser,
   useLocalObservation,
-  useRemoteObservation
+  useRemoteObservation,
 } from "sharedHooks";
 
 import SavedMatchContainer from "./SavedMatch/SavedMatchContainer";
 
 type RouteParams = {
-    targetActivityItemID?: number,
-    uuid: string,
+    targetActivityItemID?: number;
+    uuid: string;
 }
 
 const ObsDetailsDefaultModeScreensWrapper = () => {
   const { params } = useRoute();
   const {
     targetActivityItemID,
-    uuid
+    uuid,
   } = params as RouteParams;
   const currentUser = useCurrentUser( );
   const isConnected = !!useNetInfo( ).isConnected;
@@ -31,7 +31,7 @@ const ObsDetailsDefaultModeScreensWrapper = () => {
   const {
     localObservation,
     markDeletedLocally,
-    markViewedLocally
+    markViewedLocally,
   } = useLocalObservation( uuid );
 
   const fetchRemoteObservationEnabled = !!(
@@ -44,7 +44,7 @@ const ObsDetailsDefaultModeScreensWrapper = () => {
     remoteObservation,
     refetchRemoteObservation,
     isRefetching,
-    fetchRemoteObservationError
+    fetchRemoteObservationError,
   } = useRemoteObservation( uuid, fetchRemoteObservationEnabled );
 
   const observation = localObservation || Observation.mapApiToRealm( remoteObservation );

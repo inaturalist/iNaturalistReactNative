@@ -14,7 +14,7 @@ import {
   ScrollViewWrapper,
   Subheading1,
   UserIcon,
-  UserText
+  UserText,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -25,7 +25,7 @@ import { formatLongDate } from "sharedHelpers/dateAndTime";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -47,8 +47,8 @@ const UserProfile = ( ): Node => {
     ["fetchRemoteUser", fetchId],
     optsWithAuth => fetchRemoteUser( fetchId, {}, optsWithAuth ),
     {
-      enabled: !!fetchId
-    }
+      enabled: !!fetchId,
+    },
   );
 
   const user = remoteUser || null;
@@ -57,20 +57,20 @@ const UserProfile = ( ): Node => {
   const relationshipsQueryKey = ["fetchRelationships", user?.login];
 
   const {
-    data: projects
+    data: projects,
   } = useAuthenticatedQuery(
     userProjectsQueryKey,
     optsWithAuth => fetchUserProjects(
       {
         id: userId,
         per_page: 200,
-        fields: Observation.PROJECT_FIELDS
+        fields: Observation.PROJECT_FIELDS,
       },
-      optsWithAuth
+      optsWithAuth,
     ),
     {
-      enabled: !!( userId )
-    }
+      enabled: !!( userId ),
+    },
   );
 
   const totalProjectCount = projects?.length;
@@ -78,24 +78,24 @@ const UserProfile = ( ): Node => {
   const projectsHeaderOptions = useMemo( ( ) => ( {
     headerTitle: user?.login,
     headerSubtitle: t( "JOINED-X-PROJECTS", {
-      count: totalProjectCount
-    } )
+      count: totalProjectCount,
+    } ),
   } ), [totalProjectCount, t, user] );
 
   const {
     data: relationships,
-    refetch
+    refetch,
   } = useAuthenticatedQuery(
     relationshipsQueryKey,
     optsWithAuth => fetchRelationships( {
       q: user?.login,
       fields: "following,friend_user,id",
       ttl: -1,
-      per_page: 500
+      per_page: 500,
     }, optsWithAuth ),
     {
-      enabled: !!currentUser
-    }
+      enabled: !!currentUser,
+    },
   );
   const results = relationships?.results;
   let hasRelationshipWithCurrentUser = null;
@@ -122,10 +122,10 @@ const UserProfile = ( ): Node => {
       setExploreView( "observations" );
       navigation.navigate( "Explore", {
         user,
-        worldwide: true
+        worldwide: true,
       } );
     },
-    [navigation, user, setExploreView]
+    [navigation, user, setExploreView],
   );
 
   const onSpeciesPressed = useCallback(
@@ -133,10 +133,10 @@ const UserProfile = ( ): Node => {
       setExploreView( "species" );
       navigation.navigate( "Explore", {
         user,
-        worldwide: true
+        worldwide: true,
       } );
     },
-    [navigation, user, setExploreView]
+    [navigation, user, setExploreView],
   );
 
   if ( isError && error?.status === 404 ) {
@@ -199,7 +199,7 @@ const UserProfile = ( ): Node => {
             text={t( "VIEW-PROJECTS" )}
             onPress={( ) => navigation.navigate( "ProjectList", {
               projects,
-              headerOptions: projectsHeaderOptions
+              headerOptions: projectsHeaderOptions,
             } )}
           />
         </View>

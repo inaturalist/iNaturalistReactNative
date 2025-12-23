@@ -21,7 +21,7 @@ const uncapitalized = new Set( [
   "o",
   "of",
   "on",
-  "the"
+  "the",
 ] );
 
 const capitalize = ( s: string ) => {
@@ -40,7 +40,7 @@ const capitalize = ( s: string ) => {
   // there may be capitalization issues down the road ~~~kueda 20230110
   // eslint-disable-next-line no-misleading-character-class
   const allCasePattern = new RegExp(
-    `[A-z${lowerCaseChars}${upperCaseChars}]`
+    `[A-z${lowerCaseChars}${upperCaseChars}]`,
   );
   const firstLetterMatch = s.match( allCasePattern );
   let firstLetterIndex = firstLetterMatch
@@ -52,7 +52,7 @@ const capitalize = ( s: string ) => {
       lowerCaseChars
     }][’']([A-z${
       lowerCaseChars
-    }${upperCaseChars}]+)`
+    }${upperCaseChars}]+)`,
   );
   const leadingContractionMatch = s.match( leadingContractionPattern );
   if ( leadingContractionMatch ) {
@@ -129,7 +129,7 @@ export const generateTaxonPieces = ( taxon: Taxon ): TaxonDisplayData => {
     taxonDisplayData.commonName = _.map(
       multipleLexicons,
       ( lexicon => capitalizeCommonName( lexicon )
-      )
+      ),
     ).join( " · " );
   }
 
@@ -161,7 +161,7 @@ interface User {
 export function accessibleTaxonName(
   taxon: Taxon,
   user: User | null,
-  t: ( key: string, options: object ) => string
+  t: ( key: string, options: object ) => string,
 ) {
   const { commonName, scientificName } = generateTaxonPieces( taxon );
   if ( typeof ( user?.prefers_scientific_name_first ) === "boolean" ) {

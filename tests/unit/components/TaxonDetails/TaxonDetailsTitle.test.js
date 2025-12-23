@@ -6,9 +6,9 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   __esModule: true,
   default: ( ) => ( {
     data: {
-      total_results: 0
-    }
-  } )
+      total_results: 0,
+    },
+  } ),
 } ) );
 
 describe( "TaxonDetailsTitle", ( ) => {

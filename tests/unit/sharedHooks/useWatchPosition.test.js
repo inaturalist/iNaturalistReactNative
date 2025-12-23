@@ -7,23 +7,23 @@ const mockPositions = [
     coords: {
       latitude: 1,
       longitude: 1,
-      accuracy: 100
-    }
+      accuracy: 100,
+    },
   },
   {
     coords: {
       latitude: 2,
       longitude: 2,
-      accuracy: 20
-    }
+      accuracy: 20,
+    },
   },
   {
     coords: {
       latitude: 3,
       longitude: 3,
-      accuracy: 8
-    }
-  }
+      accuracy: 8,
+    },
+  },
 ];
 
 const mockWatchPositionSuccess = jest.fn( onSuccess => onSuccess( ) );

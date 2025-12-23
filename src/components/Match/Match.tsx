@@ -1,20 +1,26 @@
 import { useNetInfo } from "@react-native-community/netinfo";
+import type { ApiPhoto, ApiSuggestion } from "api/types";
 import LocationSection
   from "components/ObsDetailsDefaultMode/LocationSection/LocationSection";
 import MapSection
   from "components/ObsDetailsDefaultMode/MapSection/MapSection";
 import {
-  ActivityIndicator, Body2, Button, Heading3, ScrollViewWrapper
+  ActivityIndicator, Body2, Button, Heading3, ScrollViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import _ from "lodash";
 import React from "react";
+import type { ScrollView } from "react-native";
+import type {
+  RealmObservation, RealmObservationPhoto, RealmPhoto, RealmTaxon,
+} from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 
 import AdditionalSuggestionsScroll
   from "./AdditionalSuggestions/AdditionalSuggestionsScroll";
 import EmptyMapSection from "./EmptyMapSection";
 import IconicSuggestionsScroll from "./IconicSuggestions/IconicSuggestionsScroll";
+import type { MatchButtonAction } from "./MatchContainer";
 import MatchHeader from "./MatchHeader";
 import PhotosSection from "./PhotosSection";
 import SaveDiscardButtons from "./SaveDiscardButtons";
@@ -25,19 +31,19 @@ export const matchCardClassBottom
   = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mt-0.5 mb-[30px]";
 
 type Props = {
-  observation: Object,
-  obsPhotos: Array<Object>,
-  handleSaveOrDiscardPress: ( ) => void,
-  navToTaxonDetails: ( ) => void,
-  isFetchingLocation: boolean,
-  handleAddLocationPressed: ( ) => void,
-  topSuggestion: Object,
-  otherSuggestions: Array<Object>,
-  suggestionsLoading: boolean,
-  onSuggestionChosen: ( ) => void,
-  scrollRef: Object,
-  iconicTaxon: Object,
-  setIconicTaxon: ( ) => void
+  observation: RealmObservation;
+  obsPhotos: RealmObservationPhoto[];
+  handleSaveOrDiscardPress: ( action: MatchButtonAction ) => void;
+  navToTaxonDetails: ( photo?: ApiPhoto | RealmPhoto ) => void;
+  isFetchingLocation: boolean;
+  handleAddLocationPressed: ( ) => void;
+  topSuggestion?: ApiSuggestion;
+  otherSuggestions: ApiSuggestion[];
+  suggestionsLoading: boolean;
+  onSuggestionChosen: ( suggestion: ApiSuggestion ) => void;
+  scrollRef: React.RefObject<ScrollView | null>;
+  iconicTaxon?: RealmTaxon;
+  setIconicTaxon: ( taxon: RealmTaxon ) => void;
 }
 
 const Match = ( {
@@ -53,7 +59,7 @@ const Match = ( {
   onSuggestionChosen,
   scrollRef,
   iconicTaxon,
-  setIconicTaxon
+  setIconicTaxon,
 }: Props ) => {
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
@@ -80,7 +86,6 @@ const Match = ( {
             }
           </View>
           <PhotosSection
-            representativePhoto={topSuggestion?.taxon?.representative_photo}
             taxon={taxon}
             obsPhotos={obsPhotos}
             navToTaxonDetails={navToTaxonDetails}
@@ -141,7 +146,6 @@ const Match = ( {
             }
           </View>
           <PhotosSection
-            representativePhoto={topSuggestion?.taxon?.representative_photo}
             taxon={taxon}
             obsPhotos={obsPhotos}
             navToTaxonDetails={navToTaxonDetails}

@@ -1,5 +1,5 @@
 import {
-  Body3
+  Body3,
 } from "components/SharedComponents";
 import { t } from "i18next";
 import type { Node } from "react";
@@ -7,7 +7,7 @@ import React from "react";
 import { Alert, Platform, Share } from "react-native";
 
 type Props = {
-  id: number
+  id: number;
 }
 
 const OBSERVATION_URL = "https://www.inaturalist.org/observations";
@@ -15,7 +15,7 @@ const OBSERVATION_URL = "https://www.inaturalist.org/observations";
 const handleShare = async url => {
   const sharingOptions = {
     url: "",
-    message: ""
+    message: "",
   };
   if ( Platform.OS === "ios" ) {
     sharingOptions.url = url;
