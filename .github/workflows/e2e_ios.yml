@@ -221,14 +221,15 @@ jobs:
         curl -I --fail "https://stagingapi.inaturalist.org/v2/taxa"
 
     - name: Run e2e test
-      # test can fail for the purposes of `failure()` checks, but we need to make sure attempt 1 doesn't mark the _workflow_ as a failure
+      # don't mark job as error so that retries so that we can rely on the retry to succeed and mark job & workflow green
       continue-on-error: true
+      id: first_test_run
       run: |
         npm run e2e:test:ios
 
     - name: Run e2e test (retry, with logs)
-      # do not retry if status check fails
-      if: ${{ failure() && steps.status_check.outcome != 'failure' }}
+      # don't run this if it's status check that failed, but _do_ if first test failed before continue-on-error marked it success
+      if: ${{ ( failure() && steps.status_check.outcome != 'failure' ) || steps.first_test_run.outcome == 'failure' }}
       run: |
         # provide more debugging context on retry failure
         # we're explicitly not using `detox test --retries` because we want to run them w/ different options
@@ -237,8 +238,8 @@ jobs:
     # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
     - name: Store Detox artifacts on test failure
       uses: actions/upload-artifact@v4
-      # no artifacts if status check fails
-      if: ${{ failure() && steps.status_check.outcome != 'failure' }}
+      # don't run this if it's status check that failed, but _do_ if first test failed before continue-on-error marked it success
+      if: ${{ ( failure() && steps.status_check.outcome != 'failure' ) || steps.first_test_run.outcome == 'failure' }}
       with:
         name: detox-artifacts
         path: artifacts
