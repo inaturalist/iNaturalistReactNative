@@ -1,5 +1,5 @@
 import PermissionGateContainer, {
-  LOCATION_PERMISSIONS
+  LOCATION_PERMISSIONS,
 } from "components/SharedComponents/PermissionGateContainer";
 import { t } from "i18next";
 import type { PropsWithChildren } from "react";
@@ -21,7 +21,7 @@ const LocationPermissionGate = ( {
   onPermissionGranted,
   onPermissionDenied,
   onPermissionBlocked,
-  withoutNavigation
+  withoutNavigation,
 }: Props ) => (
   <PermissionGateContainer
     permissions={LOCATION_PERMISSIONS}

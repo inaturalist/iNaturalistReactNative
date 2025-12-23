@@ -7,7 +7,7 @@ import {
   Heading4,
   IconicTaxonChooser,
   INatIcon,
-  TaxonResult
+  TaxonResult,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { capitalize } from "lodash";
@@ -30,7 +30,7 @@ const IdentificationSection = ( {
   currentObservation,
   resetScreen,
   setResetScreen,
-  updateObservationKeys
+  updateObservationKeys,
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -50,25 +50,25 @@ const IdentificationSection = ( {
       navigation.push( "Suggestions", {
         entryScreen: "ObsEdit",
         lastScreen: "ObsEdit",
-        hideSkip: hasIdentification
+        hideSkip: hasIdentification,
       } );
     } else {
       // Go directly to taxon search in case there are no photos
       navigation.navigate( "SuggestionsTaxonSearch", {
         entryScreen: "ObsEdit",
-        lastScreen: "ObsEdit"
+        lastScreen: "ObsEdit",
       } );
     }
   }, [
     hasIdentification,
     hasPhotos,
-    navigation
+    navigation,
   ] );
 
   const navToSuggestionsSearch = useCallback( ( ) => {
     navigation.navigate( "SuggestionsTaxonSearch", {
       entryScreen: "ObsEdit",
-      lastScreen: "ObsEdit"
+      lastScreen: "ObsEdit",
     } );
   }, [navigation] );
 
@@ -95,7 +95,7 @@ const IdentificationSection = ( {
                   onPress={navToSuggestions}
                   text={t( "IDENTIFY" )}
                   className={classnames( "rounded-full py-1 mr-4 h-[36px]", {
-                    "border border-darkGray border-[2px]": identTaxon
+                    "border border-darkGray border-[2px]": identTaxon,
                   } )}
                   testID="ObsEdit.IDWithAI"
                   icon={(

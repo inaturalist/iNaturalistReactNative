@@ -1,6 +1,6 @@
 import { FasterImageView as UnstyledFasterImageView } from "@candlefinance/faster-image";
 import {
-  BottomSheetTextInput as StyledBottomSheetTextInput
+  BottomSheetTextInput as StyledBottomSheetTextInput,
 } from "@gorhom/bottom-sheet";
 import UnstyledPressableWithTracking
   from "components/SharedComponents/Buttons/PressableWithTracking";
@@ -14,7 +14,7 @@ import {
   ScrollView as UnstyledScrollView,
   Text as UnstyledText,
   TextInput as UntyledTextInput,
-  View as UnstyledView
+  View as UnstyledView,
 } from "react-native";
 import UnstyledLinearGradient from "react-native-linear-gradient";
 import { SafeAreaView as UnstyledSafeAreaView } from "react-native-safe-area-context";
@@ -57,5 +57,5 @@ export {
   ScrollView,
   Text,
   TextInput,
-  View
+  View,
 };

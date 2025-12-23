@@ -1,5 +1,5 @@
 import {
-  useNetInfo
+  useNetInfo,
 } from "@react-native-community/netinfo";
 import { NavigationContainer } from "@react-navigation/native";
 import type { PropsWithChildren } from "react";
@@ -31,7 +31,7 @@ const OfflineNavigationGuard = ( { children }: PropsWithChildren ) => {
       if ( !isConnected ) {
         Alert.alert(
           t( "Internet-Connection-Required" ),
-          t( "Please-try-again-when-you-are-connected-to-the-internet" )
+          t( "Please-try-again-when-you-are-connected-to-the-internet" ),
         );
       }
     }

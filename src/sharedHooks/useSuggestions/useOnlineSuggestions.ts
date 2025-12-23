@@ -1,18 +1,18 @@
 import {
-  useNetInfo
+  useNetInfo,
 } from "@react-native-community/netinfo";
 import { useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision";
 import i18n from "i18next";
 import { RealmContext } from "providers/contexts";
 import {
-  useCallback, useEffect, useState
+  useCallback, useEffect, useState,
 } from "react";
 import Taxon from "realmModels/Taxon";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedQuery,
-  useCurrentUser
+  useCurrentUser,
 } from "sharedHooks";
 
 const SCORE_IMAGE_TIMEOUT = 5_000;
@@ -30,7 +30,7 @@ interface OnlineSuggestionsResponse {
 }
 
 const useOnlineSuggestions = (
-  options: object
+  options: object,
 ): OnlineSuggestionsResponse => {
   const realm = useRealm( );
   const {
@@ -38,7 +38,7 @@ const useOnlineSuggestions = (
     onFetched,
     scoreImageParams,
     queryKey,
-    shouldFetchOnlineSuggestions
+    shouldFetchOnlineSuggestions,
   } = options;
 
   const queryClient = useQueryClient( );
@@ -51,7 +51,7 @@ const useOnlineSuggestions = (
   async function queryFn( optsWithAuth ) {
     const params = {
       ...scoreImageParams,
-      ...( !currentUser && { locale } )
+      ...( !currentUser && { locale } ),
     };
     return scoreImage( params, optsWithAuth );
   }
@@ -64,15 +64,15 @@ const useOnlineSuggestions = (
     dataUpdatedAt,
     refetch,
     fetchStatus,
-    error
+    error,
   } = useAuthenticatedQuery(
     queryKey,
     queryFn,
     {
       enabled: !!shouldFetchOnlineSuggestions
         && !!( scoreImageParams?.image ),
-      allowAnonymousJWT: true
-    }
+      allowAnonymousJWT: true,
+    },
   );
 
   // Give up on suggestions request after a timeout
@@ -105,7 +105,7 @@ const useOnlineSuggestions = (
     // call, so we might as well store it in realm immediately instead of waiting
     // for useTaxon to fetch individual taxon results
     const mappedTaxa = onlineSuggestions?.results?.map(
-      suggestion => Taxon.mapApiToRealm( suggestion.taxon, realm )
+      suggestion => Taxon.mapApiToRealm( suggestion.taxon, realm ),
     );
     if ( onlineSuggestions?.common_ancestor ) {
       const mappedCommonAncestor = Taxon
@@ -117,7 +117,7 @@ const useOnlineSuggestions = (
         realm.create(
           "Taxon",
           Taxon.forUpdate( remoteTaxon ),
-          "modified"
+          "modified",
         );
       } );
     }, "saving remote taxon from onlineSuggestions" );
@@ -138,17 +138,17 @@ const useOnlineSuggestions = (
     refetch,
     timedOut,
     resetTimeout,
-    fetchStatus
+    fetchStatus,
   };
 
   return timedOut
     ? {
       ...queryObject,
-      onlineSuggestions: undefined
+      onlineSuggestions: undefined,
     }
     : {
       ...queryObject,
-      onlineSuggestions
+      onlineSuggestions,
     };
 };
 

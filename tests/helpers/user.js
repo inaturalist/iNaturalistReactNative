@@ -62,8 +62,8 @@ async function signIn( user, options = {} ) {
     .reply( 200, { login: user.login, id: user.id } );
   nock( API_HOST, {
     reqheaders: {
-      authorization: `Bearer ${TEST_ACCESS_TOKEN}`
-    }
+      authorization: `Bearer ${TEST_ACCESS_TOKEN}`,
+    },
   } )
     .get( "/users/api_token.json" )
     .reply( 200, { api_token: "some-jwt" } );
@@ -73,5 +73,5 @@ export {
   signIn,
   signOut,
   TEST_ACCESS_TOKEN,
-  TEST_JWT
+  TEST_JWT,
 };

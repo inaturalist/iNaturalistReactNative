@@ -1,5 +1,5 @@
 import {
-  TransparentCircleButton
+  TransparentCircleButton,
 } from "components/SharedComponents";
 import React from "react";
 import { Alert } from "react-native";
@@ -15,7 +15,7 @@ interface Props {
 const AttributionButton = ( {
   attribution,
   licenseCode,
-  optionalClasses
+  optionalClasses,
 }: Props ) => {
   const { t } = useTranslation( );
   const usableAttribution = attribution || t( "all-rights-reserved" );

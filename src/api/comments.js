@@ -6,12 +6,12 @@ import Comment from "realmModels/Comment";
 import handleError from "./error";
 
 const PARAMS = {
-  fields: Comment.COMMENT_FIELDS
+  fields: Comment.COMMENT_FIELDS,
 };
 
 const createComment = async (
   params: Object = {},
-  opts: Object = {}
+  opts: Object = {},
 ): Promise<?Object> => {
   try {
     const { results } = await inatjs.comments.create( { ...PARAMS, ...params }, opts );
@@ -23,7 +23,7 @@ const createComment = async (
 
 const updateComment = async (
   params: Object = {},
-  opts: Object = {}
+  opts: Object = {},
 ): Promise<?Object> => {
   try {
     const { results } = await inatjs.comments.update( { ...PARAMS, ...params }, opts );
@@ -35,7 +35,7 @@ const updateComment = async (
 
 const deleteComments = async (
   id: number,
-  opts: Object = {}
+  opts: Object = {},
 ): Promise<?Object> => {
   try {
     const { results } = await inatjs.comments.delete( { id }, opts );
@@ -48,5 +48,5 @@ const deleteComments = async (
 export {
   createComment,
   deleteComments,
-  updateComment
+  updateComment,
 };

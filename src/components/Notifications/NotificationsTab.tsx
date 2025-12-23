@@ -7,7 +7,7 @@ import React, { useEffect } from "react";
 import { EventRegister } from "react-native-event-listeners";
 import {
   useAuthenticatedQuery,
-  useCurrentUser
+  useCurrentUser,
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -26,19 +26,19 @@ const NotificationsTab = ( { id, text }: TabComponentProps ) => {
       // We want to check for notifications when the user views an
       // observation, because that might make the indicator go away
       observationMarkedAsViewedAt,
-      id
+      id,
     ],
     ( optsWithAuth: ApiOpts ) => fetchUnviewedObservationUpdatesCount(
       {
         observations_by: id === OWNER_TAB
           ? "owner"
-          : "following"
+          : "following",
       },
-      optsWithAuth
+      optsWithAuth,
     ),
     {
-      enabled: !!( currentUser )
-    }
+      enabled: !!( currentUser ),
+    },
   );
 
   useEffect( ( ) => {
@@ -48,7 +48,7 @@ const NotificationsTab = ( { id, text }: TabComponentProps ) => {
         if ( tabId === id ) {
           refetch( );
         }
-      }
+      },
     );
     return ( ) => {
       EventRegister?.removeEventListener( listener as string );

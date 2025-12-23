@@ -6,12 +6,12 @@ import React, { useMemo } from "react";
 // TODO: can we get a centralized type/interface for our realm objects, here observation and project
 interface Props {
   observation: {
-    project_observations: Array<{
+    project_observations: {
       project: object;
-    }>;
-    non_traditional_projects: Array<{
+    }[];
+    non_traditional_projects: {
       project: object;
-    }>;
+    }[];
   };
 }
 
@@ -30,8 +30,8 @@ const ProjectButton = ( { observation }: Props ) => {
   const headerOptions = useMemo( ( ) => ( {
     headerTitle: t( "Observation" ),
     headerSubtitle: t( "X-PROJECTS", {
-      projectCount: totalProjectCount
-    } )
+      projectCount: totalProjectCount,
+    } ),
   } ), [totalProjectCount] );
 
   if ( totalProjectCount === 0 || typeof totalProjectCount !== "number" ) {
@@ -43,7 +43,7 @@ const ProjectButton = ( { observation }: Props ) => {
       className="underline mt-[11px]"
       onPress={( ) => navigation.navigate( "ProjectList", {
         projects: allProjects,
-        headerOptions
+        headerOptions,
       } )}
     >
       {t( "Projects" )}

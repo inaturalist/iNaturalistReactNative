@@ -5,7 +5,7 @@ import {
   CustomFlashList,
   CustomRefreshControl,
   InfiniteScrollLoadingWheel,
-  OfflineNotice
+  OfflineNotice,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useCallback } from "react";
@@ -42,7 +42,7 @@ const NotificationsList = ( {
   onEndReached,
   onRefresh,
   reload,
-  refreshing
+  refreshing,
 }: Props ) => {
   const { t } = useTranslation( );
   const renderItem = useCallback( ( { item }: RenderItemProps ) => (
@@ -93,7 +93,7 @@ const NotificationsList = ( {
     isInitialLoading,
     isConnected,
     reload,
-    t
+    t,
   ] );
 
   const refreshControl = (

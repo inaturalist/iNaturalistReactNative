@@ -6,18 +6,18 @@ import { renderComponent } from "tests/helpers/render";
 
 const mockObservers = [{
   ...factory( "RemoteUser" ),
-  observation_count: 7
+  observation_count: 7,
 }, {
   ...factory( "RemoteUser" ),
-  observation_count: 44
+  observation_count: 44,
 }];
 
 jest.mock( "sharedHooks/useInfiniteScroll", () => ( {
   __esModule: true,
   default: () => ( {
     data: mockObservers,
-    isFetchingNextPage: true
-  } )
+    isFetchingNextPage: true,
+  } ),
 } ) );
 
 describe( "ObserversView", () => {
@@ -28,7 +28,7 @@ describe( "ObserversView", () => {
         isConnected
         data={mockObservers}
         layout="user"
-      />
+      />,
     );
 
     const identificationCount = await screen.findByText( "7 Observations" );

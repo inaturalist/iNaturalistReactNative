@@ -6,7 +6,7 @@ import QueueItem from "realmModels/QueueItem";
 import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
-  useAuthenticatedMutation
+  useAuthenticatedMutation,
 } from "sharedHooks";
 
 const logger = log.extend( "useWorkQueue" );
@@ -36,7 +36,7 @@ const useWorkQueue = ( ) => {
 
         const apiToken = await getJWT( );
         const options = {
-          api_token: apiToken
+          api_token: apiToken,
         };
         const updatedUser = await fetchUserMe( { }, options );
         // logger.info( `Received updated user data from API: ${JSON.stringify( updatedUser )}` );
@@ -58,8 +58,8 @@ const useWorkQueue = ( ) => {
         // logger.info( "Marking queue item as failed" );
         QueueItem.markAsFailed( realm, dequeuedItemId );
         setDequeuedItemId( null );
-      }
-    }
+      },
+    },
   );
 
   useEffect( ( ) => {

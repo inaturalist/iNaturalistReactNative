@@ -6,7 +6,7 @@ import React from "react";
 import { getShadow } from "styles/global";
 
 const DROP_SHADOW = getShadow( {
-  offsetHeight: -2
+  offsetHeight: -2,
 } );
 
 export interface ButtonConfiguration {
@@ -23,7 +23,7 @@ interface Props extends PropsWithChildren {
   containerClass?: string;
   onLayout?: () => void;
   sticky?: boolean;
-  buttonConfiguration?: Array<ButtonConfiguration>;
+  buttonConfiguration?: ButtonConfiguration[];
 }
 
 // Ensure this component is placed outside of scroll views
@@ -32,7 +32,7 @@ const ButtonBar = ( {
   children,
   buttonConfiguration,
   onLayout,
-  sticky
+  sticky,
 }: Props ) => {
   const layoutClassNames = sticky
     ? "absolute bottom-0"
@@ -45,8 +45,8 @@ const ButtonBar = ( {
         containerClass,
         {
           "p-[15px] w-full": !buttonConfiguration,
-          "flex-row": buttonConfiguration
-        }
+          "flex-row": buttonConfiguration,
+        },
       )}
       onLayout={onLayout}
       style={DROP_SHADOW}

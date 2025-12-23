@@ -1,6 +1,6 @@
 import {
   useEffect,
-  useState
+  useState,
 } from "react";
 import DeviceInfo from "react-native-device-info";
 
@@ -17,7 +17,7 @@ const useFontScale = ( ): {
   }, [] );
 
   return {
-    isLargeFontScale
+    isLargeFontScale,
   };
 };
 

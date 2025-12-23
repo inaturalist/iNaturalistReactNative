@@ -3,7 +3,7 @@ import {
   Button,
   DisplayTaxon,
   INatIcon,
-  List2
+  List2,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -29,7 +29,7 @@ const SuggestIDSheet = ( {
   identification,
   onSuggestId,
   editIdentBody,
-  onPressClose
+  onPressClose,
 }: Props ): Node => (
   <BottomSheet
     onPressClose={onPressClose}

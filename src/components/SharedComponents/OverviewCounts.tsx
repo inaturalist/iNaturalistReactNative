@@ -1,5 +1,5 @@
 import {
-  ActivityIndicator, Body2, Heading6, INatIcon
+  ActivityIndicator, Body2, Heading6, INatIcon,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
@@ -37,7 +37,7 @@ interface CountPressableProps {
 }
 
 const Count = ( {
-  count, label, icon
+  count, label, icon,
 }: CountProps ) => (
   <View
     className="w-1/4 items-center"
@@ -61,7 +61,7 @@ const CountPressable = ( {
   count,
   icon,
   label,
-  onPress
+  onPress,
 }: CountPressableProps ) => (
   <Pressable
     onPress={onPress}
@@ -84,7 +84,7 @@ const CountPressable = ( {
 );
 
 const OverviewCounts = ( {
-  counts, onObservationPressed, onSpeciesPressed, onMembersPressed
+  counts, onObservationPressed, onSpeciesPressed, onMembersPressed,
 }: Props ) => (
   <View className="flex-row mt-[30px]">
     <CountPressable

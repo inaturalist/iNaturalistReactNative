@@ -11,7 +11,7 @@ import {
   MediaNavButtons,
   P,
   ViewWrapper,
-  WarningSheet
+  WarningSheet,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -19,7 +19,7 @@ import React, {
   useCallback,
   useMemo,
   useRef,
-  useState
+  useState,
 } from "react";
 import { StatusBar } from "react-native";
 import AudioRecorderPlayer from "react-native-audio-recorder-player";
@@ -33,7 +33,7 @@ import colors from "styles/tailwindColors";
 const INITIAL_SOUND = {
   // recording
   recordSecs: 0,
-  recordTime: "00:00"
+  recordTime: "00:00",
 };
 
 const NOT_STARTED = "notStarted";
@@ -63,7 +63,7 @@ const SoundRecorder = (): Node => {
 
   const [
     status,
-    setStatus
+    setStatus,
   ]: [
     "notStarted" | "recording" | "stopped",
     Function
@@ -81,7 +81,7 @@ const SoundRecorder = (): Node => {
       let updatedCurrentObservation = currentObservation;
 
       const obsSound = await ObservationSound.new( {
-        sound: await Sound.new( { file_url: uri } )
+        sound: await Sound.new( { file_url: uri } ),
       } );
       updatedCurrentObservation = Observation
         .appendObsSounds( [obsSound], updatedCurrentObservation );
@@ -104,20 +104,20 @@ const SoundRecorder = (): Node => {
     const cachedFile = await audioRecorderPlayer.startRecorder(
       null,
       null,
-      true
+      true,
     );
     setStatus( RECORDING );
     audioRecorderPlayer.addRecordBackListener( e => {
       setSound( {
         ...sound,
         recordSecs: e.currentPosition,
-        recordTime: audioRecorderPlayer.mmss( Math.floor( e.currentPosition / 1000 ) )
+        recordTime: audioRecorderPlayer.mmss( Math.floor( e.currentPosition / 1000 ) ),
       } );
       meteringHistory.current.push( [e.currentPosition, e.currentMetering] );
       if ( meteringHistory.current.length > 200 ) {
         meteringHistory.current = meteringHistory.current.slice(
           meteringHistory.current.length - 200,
-          meteringHistory.current.length
+          meteringHistory.current.length,
         );
       }
     } );
@@ -131,7 +131,7 @@ const SoundRecorder = (): Node => {
       audioRecorderPlayer.removeRecordBackListener();
       setSound( {
         ...sound,
-        recordSecs: 0
+        recordSecs: 0,
       } );
     } catch ( e ) {
       console.warn( "couldn't stop sound recorder:", e );
@@ -184,7 +184,7 @@ const SoundRecorder = (): Node => {
     startRecording,
     stopRecording,
     status,
-    t
+    t,
   ] );
 
   const sounds = uri
@@ -204,8 +204,8 @@ const SoundRecorder = (): Node => {
       navigation.navigate( "TabNavigator", {
         screen: "ObservationsTab",
         params: {
-          screen: "ObsList"
-        }
+          screen: "ObsList",
+        },
       } );
     }
   };
@@ -224,7 +224,7 @@ const SoundRecorder = (): Node => {
                     key={`metering-${position}`}
                     className="m-0.5 bg-warningRed b-1 w-1 h-full rounded-full"
                     style={{
-                      height: `${-100 / metering}%`
+                      height: `${-100 / metering}%`,
                     }}
                   />
                 );

@@ -3,7 +3,7 @@ import calculateConfidence from "components/Match/calculateConfidence";
 import { ActivityIndicator, CustomFlashList, Heading3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, {
-  useCallback, useEffect, useRef, useState
+  useCallback, useEffect, useRef, useState,
 } from "react";
 import { useTranslation } from "sharedHooks";
 
@@ -20,7 +20,7 @@ const AdditionalSuggestionsScroll = ( {
   noTopSuggestion,
   otherSuggestions,
   suggestionsLoading,
-  onSuggestionChosen
+  onSuggestionChosen,
 }: Props ) => {
   const { t } = useTranslation( );
   const [maxHeight, setMaxHeight] = useState( 0 );
@@ -70,7 +70,7 @@ const AdditionalSuggestionsScroll = ( {
     if ( isVisible ) return null;
 
     const measuringContainerStyle = {
-      position: "absolute" as const, opacity: 0, left: -9999, flexDirection: "row" as const
+      position: "absolute" as const, opacity: 0, left: -9999, flexDirection: "row" as const,
     };
 
     const resultStyle = { marginRight: 14 };
@@ -121,7 +121,7 @@ const AdditionalSuggestionsScroll = ( {
   const keepHiddenUntilCardHeightsMeasured = {
     opacity: isVisible
       ? 1
-      : 0.05
+      : 0.05,
   };
 
   return (

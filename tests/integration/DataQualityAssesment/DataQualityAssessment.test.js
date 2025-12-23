@@ -13,13 +13,13 @@ const mockObservation = factory( "LocalObservation", {
   longitude: Number( faker.location.longitude( ) ),
   taxon: {
     id: undefined,
-    rank_level: undefined
+    rank_level: undefined,
   },
   identifications: [],
   // casual is the default, so using needs_id here ensures test
   // is using our mock observation, not just showing the default screen
   quality_grade: "needs_id",
-  votes: []
+  votes: [],
 } );
 
 const mockUserID = "some_user_id";
@@ -28,36 +28,36 @@ const mockUserID = "some_user_id";
 jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   __esModule: true,
   default: jest.fn( ( ) => ( {
-    id: mockUserID
-  } ) )
+    id: mockUserID,
+  } ) ),
 } ) );
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   __esModule: true,
   default: () => ( {
-    data: []
-  } )
+    data: [],
+  } ),
 } ) );
 
 const mockMutate = jest.fn();
 jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
   __esModule: true,
   default: () => ( {
-    mutate: mockMutate
-  } )
+    mutate: mockMutate,
+  } ),
 } ) );
 
 jest.mock( "sharedHooks/useLocalObservation", () => ( {
   __esModule: true,
   default: jest.fn( ( ) => ( {
-    localObservation: mockObservation
-  } ) )
+    localObservation: mockObservation,
+  } ) ),
 } ) );
 
 useRoute.mockImplementation( ( ) => ( {
   params: {
-    observationUUID: mockObservation.uuid
-  }
+    observationUUID: mockObservation.uuid,
+  },
 } ) );
 
 async function expectMutateToHaveBeenCalled() {

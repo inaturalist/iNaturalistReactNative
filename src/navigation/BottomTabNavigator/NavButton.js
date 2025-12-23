@@ -31,13 +31,13 @@ const NavButton = ( {
   accessibilityLabel,
   accessibilityHint,
   width = 44,
-  height = 44
+  height = 44,
 }: Props ): React.Node => {
   /* eslint-disable react/jsx-props-no-spreading */
   const sharedProps = {
     testID,
     width,
-    height
+    height,
   };
 
   const isDebug = isDebugMode( );
@@ -86,7 +86,7 @@ const NavButton = ( {
       accessibilityHint={accessibilityHint}
       accessibilityState={{
         selected: active,
-        disabled: false
+        disabled: false,
       }}
     >
       {iconComponent}
@@ -96,8 +96,8 @@ const NavButton = ( {
           {
             "text-inatGreen": active,
             "text-darkGray": !active,
-            "dark:text-white": isDebug
-          }
+            "dark:text-white": isDebug,
+          },
         )}
         maxFontSizeMultiplier={1.2}
       >

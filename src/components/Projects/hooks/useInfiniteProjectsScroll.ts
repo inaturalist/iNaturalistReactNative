@@ -1,7 +1,7 @@
 import { searchProjects } from "api/projects";
 import _, { flatten } from "lodash";
 import {
-  useAuthenticatedInfiniteQuery
+  useAuthenticatedInfiniteQuery,
 } from "sharedHooks";
 
 const ITEMS_PER_PAGE = 20;
@@ -19,9 +19,9 @@ const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: object 
       icon: true,
       rule_preferences: {
         field: true,
-        value: true
-      }
-    }
+        value: true,
+      },
+    },
   };
 
   const { ...queryKeyParams } = baseParams;
@@ -32,12 +32,12 @@ const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: object 
     data,
     isFetching,
     isFetchingNextPage,
-    fetchNextPage
+    fetchNextPage,
   } = useAuthenticatedInfiniteQuery(
     queryKey,
     async ( { pageParam }, optsWithAuth ) => {
       const params = {
-        ...baseParams
+        ...baseParams,
       };
 
       if ( pageParam ) {
@@ -58,8 +58,8 @@ const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: object 
           ? lastPage.page + 1
           : undefined;
       },
-      enabled
-    }
+      enabled,
+    },
     /* eslint-enable consistent-return */
   );
 
@@ -79,7 +79,7 @@ const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: object 
     isFetching,
     isFetchingNextPage,
     fetchNextPage,
-    projects
+    projects,
   };
 };
 

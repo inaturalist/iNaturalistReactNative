@@ -7,7 +7,7 @@ import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { openInbox } from "sharedHelpers/mail";
 
 import {
-  resetPassword
+  resetPassword,
 } from "./AuthenticationService";
 import ForgotPasswordForm from "./ForgotPasswordForm";
 import Header from "./Header";

@@ -1,7 +1,7 @@
 // @flow
 
 import {
-  WarningSheet
+  WarningSheet,
 } from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";
@@ -16,7 +16,7 @@ type Props = {
 const DiscardChangesSheet = ( {
   setShowDiscardSheet,
   onDiscard,
-  hidden
+  hidden,
 }: Props ): Node => {
   const { t } = useTranslation( );
 

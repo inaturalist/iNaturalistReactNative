@@ -18,7 +18,7 @@ const IconicTaxonIcon = ( {
   imageClassName,
   isBackground = false,
   size = 30,
-  white = false
+  white = false,
 }: Props ) => {
   let color;
   if ( white ) {
@@ -36,9 +36,9 @@ const IconicTaxonIcon = ( {
         { "border-[2px]": !isBackground },
         { "border-lightGray": !isBackground },
         {
-          "border-white": white && !isBackground
+          "border-white": white && !isBackground,
         },
-        imageClassName
+        imageClassName,
       )}
       testID="IconicTaxonName.iconicTaxonIcon"
     >

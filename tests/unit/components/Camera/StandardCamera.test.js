@@ -1,5 +1,5 @@
 import {
-  fireEvent, screen, waitFor
+  fireEvent, screen, waitFor,
 } from "@testing-library/react-native";
 import StandardCamera from "components/Camera/StandardCamera/StandardCamera";
 import React from "react";
@@ -14,27 +14,27 @@ const initialStoreState = useStore.getState( );
 const mockPhotoUris = [
   "https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg",
   "https://inaturalist-open-data.s3.amazonaws.com/photos/2/large.jpeg",
-  "https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg"
+  "https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg",
 ];
 
 const mockObservation = factory( "RemoteObservation", {
   observationPhotos: [
     factory( "RemoteObservationPhoto", {
       photo: factory( "RemotePhoto", {
-        url: mockPhotoUris[0]
-      } )
+        url: mockPhotoUris[0],
+      } ),
     } ),
     factory( "RemoteObservationPhoto", {
       photo: factory( "RemotePhoto", {
-        url: mockPhotoUris[1]
-      } )
+        url: mockPhotoUris[1],
+      } ),
     } ),
     factory( "RemoteObservationPhoto", {
       photo: factory( "RemotePhoto", {
-        url: mockPhotoUris[2]
-      } )
-    } )
-  ]
+        url: mockPhotoUris[2],
+      } ),
+    } ),
+  ],
 } );
 
 const renderCamera = ( ) => renderComponent(
@@ -43,7 +43,7 @@ const renderCamera = ( ) => renderComponent(
     device={{}}
     setNewPhotoUris={jest.fn( )}
     newPhotoUris={[]}
-  />
+  />,
 );
 
 beforeAll( async () => {
@@ -54,23 +54,23 @@ describe( "StandardCamera", ( ) => {
   beforeEach( ( ) => {
     useStore.setState( {
       currentObservation: mockObservation,
-      observations: [mockObservation]
+      observations: [mockObservation],
     } );
   } );
   it( "deletes a photo on long press", async ( ) => {
     renderCamera( );
     const { cameraUris } = useStore.getState( );
     const photoImage = screen.getByTestId(
-      `PhotoCarousel.displayPhoto.${cameraUris[2]}`
+      `PhotoCarousel.displayPhoto.${cameraUris[2]}`,
     );
     const predeletedPhoto = screen.queryByTestId(
-      `PhotoCarousel.displayPhoto.${cameraUris[2]}`
+      `PhotoCarousel.displayPhoto.${cameraUris[2]}`,
     );
     expect( predeletedPhoto ).toBeVisible( );
 
     fireEvent( photoImage, "onLongPress" );
     const deleteMode = screen.getByTestId(
-      `PhotoCarousel.deletePhoto.${cameraUris[2]}`
+      `PhotoCarousel.deletePhoto.${cameraUris[2]}`,
     );
     await waitFor( ( ) => {
       expect( deleteMode ).toBeVisible( );
@@ -80,11 +80,11 @@ describe( "StandardCamera", ( ) => {
     renderCamera( );
 
     const undeletedPhoto = screen.getByTestId(
-      `PhotoCarousel.displayPhoto.${cameraUris[1]}`
+      `PhotoCarousel.displayPhoto.${cameraUris[1]}`,
     );
     expect( undeletedPhoto ).toBeVisible( );
     const deletedPhoto = screen.queryByTestId(
-      `PhotoCarousel.displayPhoto.${cameraUris[2]}`
+      `PhotoCarousel.displayPhoto.${cameraUris[2]}`,
     );
     await waitFor( ( ) => {
       expect( deletedPhoto ).toBeFalsy( );

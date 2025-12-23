@@ -20,7 +20,7 @@ type FileDetails = {
 
 const removeSyncedFilesFromDirectory = async (
   directoryPath: string,
-  filesToKeep: string[] = []
+  filesToKeep: string[] = [],
 ) => {
   const directoryExists = await RNFS.exists( directoryPath );
   if ( !directoryExists ) {
@@ -56,7 +56,7 @@ const removeSyncedFilesFromDirectory = async (
           name,
           path: file.path,
           size: fileStat.size,
-          modifiedTime: fileStat.mtime
+          modifiedTime: fileStat.mtime,
         } );
 
         return;
@@ -64,7 +64,7 @@ const removeSyncedFilesFromDirectory = async (
 
       console.log( `Deleting old file: ${path}` );
       await unlink( path );
-    } )
+    } ),
   );
 
   if ( totalSize <= MAX_FOLDER_SIZE ) {
@@ -81,7 +81,7 @@ const removeSyncedFilesFromDirectory = async (
   // Filter out files that are too new
   const now = Date.now();
   deletableFiles = deletableFiles.filter(
-    file => now - new Date( file.modifiedTime ).getTime() >= TOO_NEW_THRESHOLD
+    file => now - new Date( file.modifiedTime ).getTime() >= TOO_NEW_THRESHOLD,
   );
 
   // Sort files by size (descending) and modified time (ascending)
@@ -107,7 +107,7 @@ const removeSyncedFilesFromDirectory = async (
   }
 
   return Promise.all(
-    [deletionPromises, ...filesToDelete.map( async path => RNFS.unlink( path ) )]
+    [deletionPromises, ...filesToDelete.map( async path => RNFS.unlink( path ) )],
   );
 };
 

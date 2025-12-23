@@ -1,5 +1,5 @@
 import {
-  INatIconButton
+  INatIconButton,
 } from "components/SharedComponents";
 import React from "react";
 import type { GestureResponderEvent } from "react-native";
@@ -13,7 +13,7 @@ interface Props {
 
 const GreenCheckmark = ( {
   disabled,
-  handleCheckmarkPress
+  handleCheckmarkPress,
 }: Props ) => {
   const { t } = useTranslation( );
 

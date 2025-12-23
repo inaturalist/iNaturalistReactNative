@@ -3,18 +3,18 @@ import {
   Button,
   Heading4,
   INatIconButton,
-  ScrollViewWrapper
+  ScrollViewWrapper,
 } from "components/SharedComponents";
 import {
   fontMonoClass,
   TextInput,
-  View
+  View,
 } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
-  useState
+  useState,
 } from "react";
 import { Platform, Text } from "react-native";
 import useLogs from "sharedHooks/useLogs";
@@ -47,7 +47,7 @@ const Log = (): Node => {
 
   useEffect(
     ( ) => navigation.setOptions( { headerRight } ),
-    [headerRight, navigation]
+    [headerRight, navigation],
   );
 
   useEffect( ( ) => {

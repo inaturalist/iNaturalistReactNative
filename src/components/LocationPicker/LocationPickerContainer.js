@@ -6,7 +6,7 @@ import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
-  useReducer
+  useReducer,
 } from "react";
 import { Dimensions } from "react-native";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
@@ -28,7 +28,7 @@ const setInitialRegion = currentObservation => {
   const latitudeDelta = latitude && currentObservation?.positional_accuracy
     ? metersToLatitudeDelta(
       currentObservation?.positional_accuracy,
-      latitude
+      latitude,
     )
     : 90;
   const longitudeDelta = longitude && currentObservation?.positional_accuracy
@@ -41,7 +41,7 @@ const setInitialRegion = currentObservation => {
     latitude: latitude || 0.0,
     longitude: longitude || 0.0,
     latitudeDelta,
-    longitudeDelta
+    longitudeDelta,
   };
 };
 
@@ -52,14 +52,14 @@ const initializeMap = ( state, action ) => {
     locationName: action.currentObservation?.place_guess,
     region: {
       ...state.region,
-      ...setInitialRegion( action.currentObservation )
-    }
+      ...setInitialRegion( action.currentObservation ),
+    },
   };
 
   if ( newMap.region.latitude !== 0.0 ) {
     newMap.region.latitudeDelta = metersToLatitudeDelta(
       newMap.accuracy,
-      newMap.region.latitude
+      newMap.region.latitude,
     );
     newMap.region.longitudeDelta = newMap.region.latitudeDelta;
   }
@@ -73,7 +73,7 @@ const DEFAULT_REGION = {
   latitude: 0.0,
   longitude: 0.0,
   latitudeDelta: DELTA,
-  longitudeDelta: DELTA
+  longitudeDelta: DELTA,
 };
 
 const initialState = {
@@ -84,7 +84,7 @@ const initialState = {
   locationName: "",
   mapType: "standard",
   region: DEFAULT_REGION,
-  regionToAnimate: null
+  regionToAnimate: null,
 };
 
 const reducer = ( state, action ) => {
@@ -93,18 +93,18 @@ const reducer = ( state, action ) => {
       return {
         ...state,
         loading: true,
-        isFirstMapRender: false
+        isFirstMapRender: false,
       };
     case "HANDLE_FIRST_MAP_RENDER":
       return {
         ...state,
         isFirstMapRender: false,
-        loading: false
+        loading: false,
       };
     case "HANDLE_MAP_READY":
       return {
         ...state,
-        loading: false
+        loading: false,
       };
     case "HANDLE_REGION_CHANGE":
       return {
@@ -112,7 +112,7 @@ const reducer = ( state, action ) => {
         locationName: action.locationName,
         region: action.region,
         accuracy: action.accuracy,
-        loading: false
+        loading: false,
       };
     case "INITIALIZE_MAP": {
       const newMap = initializeMap( state, action );
@@ -125,18 +125,18 @@ const reducer = ( state, action ) => {
         region: action.region,
         hidePlaceResults: true,
         regionToAnimate: action.region,
-        loading: true
+        loading: true,
       };
     case "SET_MAP_TYPE":
       return {
         ...state,
-        mapType: action.mapType
+        mapType: action.mapType,
       };
     case "UPDATE_LOCATION_NAME":
       return {
         ...state,
         locationName: action.locationName,
-        hidePlaceResults: false
+        hidePlaceResults: false,
       };
     default:
       throw new Error( );
@@ -158,7 +158,7 @@ const LocationPickerContainer = ( ): Node => {
     locationName,
     mapType,
     region,
-    regionToAnimate
+    regionToAnimate,
   } = state;
 
   const initialRegion = setInitialRegion( currentObservation );
@@ -176,7 +176,7 @@ const LocationPickerContainer = ( ): Node => {
       type: "HANDLE_REGION_CHANGE",
       locationName: placeName || "",
       region: newRegion,
-      accuracy: newAccuracy
+      accuracy: newAccuracy,
     } );
   };
 
@@ -193,7 +193,7 @@ const LocationPickerContainer = ( ): Node => {
 
       return unsubscribe;
     },
-    [navigation, currentObservation]
+    [navigation, currentObservation],
   );
 
   const selectPlaceResult = place => {
@@ -204,13 +204,13 @@ const LocationPickerContainer = ( ): Node => {
       region: {
         ...region,
         latitude: coordinates[1],
-        longitude: coordinates[0]
+        longitude: coordinates[0],
       },
       regionToAnimate: {
         ...region,
         latitude: coordinates[1],
-        longitude: coordinates[0]
-      }
+        longitude: coordinates[0],
+      },
     } );
   };
 
@@ -222,7 +222,7 @@ const LocationPickerContainer = ( ): Node => {
       latitude: region.latitude,
       longitude: region.longitude,
       positional_accuracy: accuracy,
-      place_guess: locationName
+      place_guess: locationName,
     };
 
     updateObservationKeys( keysToUpdate );

@@ -1,10 +1,10 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
-  INatIconButton
+  INatIconButton,
 } from "components/SharedComponents";
 import React from "react";
 import {
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 
 const TaxonSearchButton = ( ) => {
@@ -23,8 +23,8 @@ const TaxonSearchButton = ( ) => {
             entryScreen,
             lastScreen: lastScreen === "ObsDetails"
               ? "ObsDetails"
-              : "Suggestions"
-          }
+              : "Suggestions",
+          },
         )
       }
       accessibilityLabel={t( "Search" )}

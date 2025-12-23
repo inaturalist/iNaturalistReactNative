@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
-  useInterval
+  useInterval,
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -25,7 +25,7 @@ const NotificationsIconContainer = ( {
   icon,
   active,
   width,
-  height
+  height,
 }: Props ): Node => {
   const [hasUnread, setHasUnread] = useState( false );
   const [numFetchIntervals, setNumFetchIntervals] = useState( 0 );
@@ -40,12 +40,12 @@ const NotificationsIconContainer = ( {
       numFetchIntervals,
       // We want to check for notifications when the user views an
       // observation, because that might make the indicator go away
-      observationMarkedAsViewedAt
+      observationMarkedAsViewedAt,
     ],
     optsWithAuth => fetchUnviewedObservationUpdatesCount( {}, optsWithAuth ),
     {
-      enabled: !!( currentUser )
-    }
+      enabled: !!( currentUser ),
+    },
   );
 
   // Show icon when there are unread updates

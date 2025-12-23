@@ -2,10 +2,10 @@ import type { ApiPhoto, ApiTaxon } from "api/types";
 import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
-  PhotoCount
+  PhotoCount,
 } from "components/SharedComponents";
 import {
-  Image, Pressable, View
+  Image, Pressable, View,
 } from "components/styledComponents";
 import _, { compact } from "lodash";
 import React, { useEffect, useState } from "react";
@@ -26,7 +26,7 @@ const PhotosSection = ( {
   taxon,
   obsPhotos,
   navToTaxonDetails,
-  hideTaxonPhotos
+  hideTaxonPhotos,
 }: Props ) => {
   const [displayPortraitLayout, setDisplayPortraitLayout] = useState<boolean | null>( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
@@ -38,7 +38,7 @@ const PhotosSection = ( {
   const taxonPhotos = compact(
     localTaxonPhotos
       ? localTaxonPhotos.map( taxonPhoto => ( { ...taxonPhoto.photo } ) )
-      : [taxon?.defaultPhoto]
+      : [taxon?.defaultPhoto],
   );
   // don't show the iconic taxon photo which is a mashup of 9 bestTaxonPhotos
   if ( taxon?.isIconic ) {
@@ -60,14 +60,14 @@ const PhotosSection = ( {
   // Add the representative photo at the start of the list of taxon bestTaxonPhotos.
   const taxonPhotosWithRepPhoto = compact( [
     firstPhoto,
-    ...taxonPhotos
+    ...taxonPhotos,
   ] );
   const bestTaxonPhotos = taxonPhotosWithRepPhoto.slice( 0, 3 );
 
   const observationPhotos = compact(
     obsPhotos
       ? obsPhotos.map( obsPhoto => obsPhoto.photo )
-      : []
+      : [],
   );
 
   useEffect( ( ) => {
@@ -127,7 +127,7 @@ const PhotosSection = ( {
       containerClass,
       observationPhotoClass,
       taxonPhotosContainerClass,
-      taxonPhotoClass
+      taxonPhotoClass,
     };
   };
 
@@ -140,7 +140,7 @@ const PhotosSection = ( {
       accessibilityState={{ disabled: false }}
       className={classnames(
         "relative",
-        layoutClasses?.observationPhotoClass
+        layoutClasses?.observationPhotoClass,
       )}
     >
       <Image
@@ -161,7 +161,7 @@ const PhotosSection = ( {
   const renderTaxonPhotos = ( ) => (
     <View className={classnames(
       "flex",
-      layoutClasses?.taxonPhotosContainerClass
+      layoutClasses?.taxonPhotosContainerClass,
     )}
     >
       {bestTaxonPhotos.map( photo => (
@@ -172,14 +172,14 @@ const PhotosSection = ( {
           key={photo.id}
           className={classnames(
             "relative",
-            layoutClasses?.taxonPhotoClass
+            layoutClasses?.taxonPhotoClass,
           )}
         >
           <Image
             testID={`TaxonDetails.photo.${photo.id}`}
             className="w-full h-full"
             source={{
-              uri: Photo.displayMediumPhoto( photo.url )
+              uri: Photo.displayMediumPhoto( photo.url ),
             }}
             accessibilityIgnoresInvertColors
           />

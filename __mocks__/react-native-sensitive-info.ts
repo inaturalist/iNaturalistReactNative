@@ -54,7 +54,7 @@ class RNSInfo {
 
     if ( service?.size ) {
       mappedValues = Array.from( service.entries() ).map(
-        ( [key, value] ) => ( { key, value, service: serviceName } )
+        ( [key, value] ) => ( { key, value, service: serviceName } ),
       );
     }
 

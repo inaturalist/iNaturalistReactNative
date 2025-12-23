@@ -5,7 +5,7 @@ import {
   Button,
   INatIconButton,
   OfflineNotice,
-  ViewWrapper
+  ViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { PLACE_MODE } from "providers/ExploreContext";
@@ -14,7 +14,7 @@ import { Alert } from "react-native";
 import {
   useDebugMode,
   useStoredLayout,
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 import type { RenderLocationPermissionsGateFunction } from "sharedHooks/useLocationPermission";
 import { getShadow } from "styles/global";
@@ -27,7 +27,7 @@ import SpeciesView from "./SpeciesView";
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
-  elevation: 6
+  elevation: 6,
 } );
 
 enum EXPLORE_VIEW {
@@ -64,7 +64,7 @@ const ExploreV2 = ( {
   placeMode,
   queryParams,
   renderLocationPermissionsGate,
-  requestLocationPermissions
+  requestLocationPermissions,
 }: Props ) => {
   const { t } = useTranslation( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" ) as {
@@ -161,20 +161,20 @@ const ExploreV2 = ( {
                 "right-5",
                 "rounded-full",
                 "w-[55px]",
-                "z-10"
+                "z-10",
               )}
               color="white"
               size={27}
               style={[
                 DROP_SHADOW,
                 // eslint-disable-next-line react-native/no-inline-styles
-                { backgroundColor: "deeppink" }
+                { backgroundColor: "deeppink" },
               ]}
               accessibilityLabel="Diagnostics"
               onPress={() => {
                 Alert.alert(
                   "ExploreV2 Info",
-                  `queryParams: ${JSON.stringify( queryParams )}`
+                  `queryParams: ${JSON.stringify( queryParams )}`,
                 );
               }}
             />

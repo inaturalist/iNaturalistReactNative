@@ -6,19 +6,19 @@ import factory from "tests/factory";
 
 const mockProjects = [
   factory( "RemoteProject", {
-    title: "project_1"
+    title: "project_1",
   } ),
   factory( "RemoteProject", {
-    title: "project_2"
-  } )
+    title: "project_2",
+  } ),
 ];
 
 describe( "ProjectList", () => {
   beforeAll( ( ) => {
     useRoute.mockImplementation( ( ) => ( {
       params: {
-        projects: mockProjects
-      }
+        projects: mockProjects,
+      },
     } ) );
   } );
 

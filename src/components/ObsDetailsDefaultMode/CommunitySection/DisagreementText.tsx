@@ -40,7 +40,7 @@ const DisagreementText = ( { taxon, username, withdrawn }: Props ) => {
     currentUser?.prefers_common_names,
     currentUser?.prefers_scientific_name_first,
     taxon,
-    withdrawn
+    withdrawn,
   ] );
 
   return (
@@ -55,7 +55,7 @@ const DisagreementText = ( { taxon, username, withdrawn }: Props ) => {
         i18nKey="Disagreement"
         values={{ username }}
         components={[
-          showTaxonName( Body4 )
+          showTaxonName( Body4 ),
         ]}
       />
     </Body4>

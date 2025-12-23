@@ -3,7 +3,7 @@
 import {
   ActivityIndicator,
   Body2,
-  INatIcon
+  INatIcon,
 } from "components/SharedComponents";
 import { Pressable } from "components/styledComponents";
 import type { Node } from "react";
@@ -24,7 +24,7 @@ const ExploreHeaderCount = ( {
   exploreView,
   exploreViewIcon,
   isFetching,
-  onPress
+  onPress,
 }: Props ): Node => {
   const { t } = useTranslation( );
 

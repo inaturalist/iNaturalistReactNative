@@ -2,7 +2,7 @@ import ObsGridItem from "components/ObservationsFlashList/ObsGridItem";
 import {
   Heading1,
   Heading2,
-  ScrollViewWrapper
+  ScrollViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
@@ -10,7 +10,7 @@ import React from "react";
 import {
   makeObservation,
   makeObservationPhoto,
-  makeObservationSound
+  makeObservationSound,
 } from "./ObsListItemDemo";
 
 /* eslint-disable i18next/no-literal-string */
@@ -22,7 +22,7 @@ const ObsGridItemDemo = ( ) => (
       <Heading2 className="my-2">Photo</Heading2>
       <ObsGridItem
         observation={makeObservation( {
-          observationPhotos: [makeObservationPhoto()]
+          observationPhotos: [makeObservationPhoto()],
         } )}
       />
       <Heading2 className="my-2">Photos</Heading2>
@@ -30,21 +30,21 @@ const ObsGridItemDemo = ( ) => (
         observation={makeObservation( {
           observationPhotos: [
             makeObservationPhoto(),
-            makeObservationPhoto()
-          ]
+            makeObservationPhoto(),
+          ],
         } )}
       />
       <Heading2 className="my-2">20 Photos</Heading2>
       <ObsGridItem
         observation={makeObservation( {
-          observationPhotos: [...Array( 20 ).keys()].map( _idx => makeObservationPhoto() )
+          observationPhotos: [...Array( 20 ).keys()].map( _idx => makeObservationPhoto() ),
         } )}
       />
       <Heading2 className="my-2">Sound + Photo</Heading2>
       <ObsGridItem
         observation={makeObservation( {
           observationPhotos: [makeObservationPhoto()],
-          observationSounds: [makeObservationSound()]
+          observationSounds: [makeObservationSound()],
         } )}
       />
       <Heading2 className="my-2">Sound + Photos</Heading2>
@@ -52,15 +52,15 @@ const ObsGridItemDemo = ( ) => (
         observation={makeObservation( {
           observationPhotos: [
             makeObservationPhoto(),
-            makeObservationPhoto()
+            makeObservationPhoto(),
           ],
-          observationSounds: [makeObservationSound()]
+          observationSounds: [makeObservationSound()],
         } )}
       />
       <Heading2 className="my-2">Sound</Heading2>
       <ObsGridItem
         observation={makeObservation( {
-          observationSounds: [makeObservationSound()]
+          observationSounds: [makeObservationSound()],
         } )}
       />
       <Heading2 className="my-2">No Media</Heading2>
@@ -76,7 +76,7 @@ const ObsGridItemDemo = ( ) => (
       <ObsGridItem
         observation={makeObservation( {
           needsSync: () => true,
-          missingBasics: () => true
+          missingBasics: () => true,
         } )}
         uploadProgress={0}
       />

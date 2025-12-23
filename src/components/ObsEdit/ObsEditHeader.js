@@ -7,7 +7,7 @@ import { View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useCallback, useState
+  useCallback, useState,
 } from "react";
 import { BackHandler } from "react-native";
 import Observation from "realmModels/Observation";
@@ -21,13 +21,13 @@ import DiscardObservationSheet from "./Sheets/DiscardObservationSheet";
 const { useRealm } = RealmContext;
 
 type Props = {
-  observations: Array<Object>,
+  observations: Object[],
   currentObservation: Object
 }
 
 const ObsEditHeader = ( {
   observations,
-  currentObservation
+  currentObservation,
 }: Props ): Node => {
   const unsavedChanges = useStore( state => state.unsavedChanges );
   const updateObservations = useStore( state => state.updateObservations );
@@ -47,7 +47,7 @@ const ObsEditHeader = ( {
   const discardChanges = useCallback( ( ) => {
     setDiscardChangesSheetVisible( false );
     exitObservationFlow( {
-      navigate: ( ) => navigateToObsDetails( navigation, currentObservation?.uuid )
+      navigate: ( ) => navigateToObsDetails( navigation, currentObservation?.uuid ),
     } );
   }, [currentObservation?.uuid, exitObservationFlow, navigation] );
 
@@ -94,7 +94,7 @@ const ObsEditHeader = ( {
       setDiscardChangesSheetVisible( true );
     } else {
       exitObservationFlow( {
-        navigate: ( ) => navigateToObsDetails( navigation, currentObservation?.uuid )
+        navigate: ( ) => navigateToObsDetails( navigation, currentObservation?.uuid ),
       } );
     }
   }, [
@@ -105,12 +105,12 @@ const ObsEditHeader = ( {
     savedLocally,
     savedOrUploadedMultiObsFlow,
     shouldNavigateBack,
-    unsavedChanges
+    unsavedChanges,
   ] );
 
   const renderBackButton = useCallback( ( ) => {
     const extraStart = {
-      marginStart: 15
+      marginStart: 15,
     };
     return (
       <BackButton
@@ -133,7 +133,7 @@ const ObsEditHeader = ( {
       const backHandler = BackHandler.addEventListener( "hardwareBackPress", onBackPress );
 
       return ( ) => backHandler.remove( );
-    }, [handleBackButtonPress] )
+    }, [handleBackButtonPress] ),
   );
 
   const renderKebabMenu = useCallback( ( ) => (
@@ -161,7 +161,7 @@ const ObsEditHeader = ( {
             testID="Header.save-all-observation"
             onPress={async ( ) => {
               await Promise.all(
-                observations.map( o => Observation.saveLocalObservationForUpload( o, realm ) )
+                observations.map( o => Observation.saveLocalObservationForUpload( o, realm ) ),
               );
               exitObservationFlow( );
               setKebabMenuVisible( false );
@@ -185,7 +185,7 @@ const ObsEditHeader = ( {
     observations,
     realm,
     setDeleteSheetVisible,
-    t
+    t,
   ] );
 
   return (
