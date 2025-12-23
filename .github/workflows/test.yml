@@ -57,14 +57,14 @@ jobs:
     - name: Integration tests
       run: npm run test:integration
 
-  # notify:
-  #   name: Notify Slack
-  #   needs: test
-  #   if: ${{ success() || failure() }}
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: iRoachie/slack-github-actions@v2.3.0
-  #       if: env.SLACK_WEBHOOK_URL != null
-  #       env:
-  #         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  notify:
+    name: Notify Slack
+    needs: test
+    if: ${{ success() || failure() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: iRoachie/slack-github-actions@v2.3.0
+        if: env.SLACK_WEBHOOK_URL != null
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
