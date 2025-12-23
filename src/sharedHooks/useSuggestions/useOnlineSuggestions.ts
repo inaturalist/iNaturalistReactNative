@@ -34,7 +34,7 @@ interface UseOnlineSuggestionsResponse {
   dataUpdatedAt: number;
   onlineSuggestions?: {
     results: UseSuggestionsOnlineSuggestion[];
-    common_ancestor: UseSuggestionsOnlineSuggestion;
+    common_ancestor?: UseSuggestionsOnlineSuggestion;
   };
   timedOut: boolean;
   error: Error | null;
@@ -44,7 +44,7 @@ interface UseOnlineSuggestionsResponse {
 
 interface OnlineSuggestionsQueryResponse {
   results: UseSuggestionsOnlineSuggestion[];
-  common_ancestor: UseSuggestionsOnlineSuggestion;
+  common_ancestor?: UseSuggestionsOnlineSuggestion;
 }
 
 const useOnlineSuggestions = (
