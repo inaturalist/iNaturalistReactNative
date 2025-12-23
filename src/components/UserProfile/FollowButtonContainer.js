@@ -26,7 +26,7 @@ const FollowButtonContainer = ( {
   relationship,
   setShowLoginSheet,
   setShowUnfollowSheet,
-  userId
+  userId,
 }: Props ): Node => {
   const [loading, setLoading] = useState( false );
   const { t } = useTranslation( );
@@ -34,18 +34,18 @@ const FollowButtonContainer = ( {
   const following = relationship?.following;
 
   const createRelationshipsMutation = useAuthenticatedMutation(
-    ( params, optsWithAuth ) => createRelationships( params, optsWithAuth )
+    ( params, optsWithAuth ) => createRelationships( params, optsWithAuth ),
   );
 
   const updateRelationshipsMutation = useAuthenticatedMutation(
-    ( params, optsWithAuth ) => updateRelationships( params, optsWithAuth )
+    ( params, optsWithAuth ) => updateRelationships( params, optsWithAuth ),
   );
 
   const createRelationshipsMutate = ( ) => createRelationshipsMutation.mutate( {
     relationship: {
       friend_id: userId,
-      following: true
-    }
+      following: true,
+    },
   }, {
     onSuccess: () => {
       refetchRelationship();
@@ -55,14 +55,14 @@ const FollowButtonContainer = ( {
       setLoading( false );
       logger.error( error );
       Alert.alert( t( "Something-went-wrong" ) );
-    }
+    },
   } );
 
   const updateRelationshipsMutate = ( ) => updateRelationshipsMutation.mutate( {
     id: relationship?.id,
     relationship: {
-      following: true
-    }
+      following: true,
+    },
   }, {
     onSuccess: () => {
       refetchRelationship();
@@ -72,7 +72,7 @@ const FollowButtonContainer = ( {
       setLoading( false );
       logger.error( error );
       Alert.alert( t( "Something-went-wrong" ) );
-    }
+    },
   } );
 
   const follow = () => {

@@ -1,18 +1,18 @@
 import { useNavigation } from "@react-navigation/native";
 import {
-  ImageBackground, ScrollView, View
+  ImageBackground, ScrollView, View,
 } from "components/styledComponents";
 import type { PropsWithChildren } from "react";
 import React, { useEffect, useRef } from "react";
 import type {
   ImageSourcePropType,
   ImageStyle,
-  StyleProp
+  StyleProp,
 } from "react-native";
 import {
   Dimensions,
   Platform,
-  StatusBar
+  StatusBar,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import colors from "styles/tailwindColors";
@@ -26,13 +26,13 @@ const windowHeight = Dimensions.get( "window" ).height;
 
 const SCROLL_VIEW_STYLE = {
   minHeight: windowHeight * 1.1,
-  paddingTop: 54
+  paddingTop: 54,
 } as const;
 
 const LoginSignupWrapper = ( {
   backgroundSource,
   children,
-  imageStyle
+  imageStyle,
 }: Props ) => {
   const scrollViewRef = useRef( null );
   const navigation = useNavigation( );

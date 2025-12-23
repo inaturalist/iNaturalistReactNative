@@ -2,11 +2,11 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
-  Divider, INatIconButton, UserText
+  Divider, INatIconButton, UserText,
 } from "components/SharedComponents";
 import DisplayTaxon from "components/SharedComponents/DisplayTaxon";
 import {
-  View
+  View,
 } from "components/styledComponents";
 import { t } from "i18next";
 import _ from "lodash";
@@ -39,7 +39,7 @@ const ActivityItem = ( {
   userAgreedId,
   geoprivacy,
   taxonGeoprivacy,
-  belongsToCurrentUser
+  belongsToCurrentUser,
 }: Props ): Node => {
   const navigation = useNavigation( );
   const route = useRoute( );
@@ -62,7 +62,7 @@ const ActivityItem = ( {
       // Ensure button mashing doesn't open multiple TaxonDetails instances
       key: `${route.key}-ActivityItem-TaxonDetails-${taxon?.id}`,
       name: "TaxonDetails",
-      params: { id: taxon?.id }
+      params: { id: taxon?.id },
     } )
   );
 

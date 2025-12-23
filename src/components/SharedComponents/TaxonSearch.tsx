@@ -3,7 +3,7 @@ import {
   Body2,
   INatIcon,
   SearchBar,
-  ViewWrapper
+  ViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useCallback } from "react";
@@ -13,7 +13,7 @@ import { useKeyboardInfo, useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
 const DROP_SHADOW = getShadow( {
-  offsetHeight: 4
+  offsetHeight: 4,
 } );
 
 interface Props {
@@ -33,7 +33,7 @@ const TaxonSearch = ( {
   query = "",
   renderItem,
   setQuery,
-  taxa = []
+  taxa = [],
 }: Props ) => {
   const { t } = useTranslation( );
   const { keyboardHeight, keyboardShown } = useKeyboardInfo( );

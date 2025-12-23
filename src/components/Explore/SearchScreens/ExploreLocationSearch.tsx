@@ -5,17 +5,17 @@ import {
   ButtonBar,
   List2,
   SearchBar,
-  ViewWrapper
+  ViewWrapper,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import inatPlaceTypes from "dictionaries/places";
 import {
   EXPLORE_ACTION,
-  useExplore
+  useExplore,
 } from "providers/ExploreContext";
 import React, {
   useCallback,
-  useState
+  useState,
 } from "react";
 import { FlatList } from "react-native";
 import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
@@ -26,7 +26,7 @@ import EmptySearchResults from "./EmptySearchResults";
 import ExploreSearchHeader from "./ExploreSearchHeader";
 
 const DROP_SHADOW = getShadow( {
-  offsetHeight: 4
+  offsetHeight: 4,
 } );
 
 interface Props {
@@ -42,7 +42,7 @@ const ExploreLocationSearch = ( {
   hasPermissions,
   renderPermissionsGate,
   requestPermissions,
-  updateLocation
+  updateLocation,
 }: Props ) => {
   const { t } = useTranslation( );
   const { dispatch, defaultExploreLocation } = useExplore( );
@@ -54,7 +54,7 @@ const ExploreLocationSearch = ( {
       updateLocation( "worldwide" );
       closeModal();
     },
-    [updateLocation, closeModal]
+    [updateLocation, closeModal],
   );
 
   const { data: placeResults, isLoading, refetch }: {
@@ -69,13 +69,13 @@ const ExploreLocationSearch = ( {
         sources: "places",
         fields:
             "place,place.display_name,place.point_geojson,place.place_type",
-        per_page: 50
+        per_page: 50,
       },
-      optsWithAuth
+      optsWithAuth,
     ),
     {
-      enabled: locationName.length > 0
-    }
+      enabled: locationName.length > 0,
+    },
   );
 
   const onPlaceSelected = useCallback( ( place: ApiPlace ) => {
@@ -100,7 +100,7 @@ const ExploreLocationSearch = ( {
         </Pressable>
       );
     },
-    [onPlaceSelected]
+    [onPlaceSelected],
   );
 
   const data = placeResults || [];
@@ -139,14 +139,14 @@ const ExploreLocationSearch = ( {
       title: t( "NEARBY" ),
       onPress: onNearbyPressed,
       isPrimary: false,
-      className: "w-1/2 mx-6"
+      className: "w-1/2 mx-6",
     },
     {
       title: t( "WORLDWIDE" ),
       onPress: resetPlace,
       isPrimary: false,
-      className: "w-1/2 mx-6"
-    }
+      className: "w-1/2 mx-6",
+    },
   ];
 
   return (

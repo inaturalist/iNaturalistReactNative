@@ -5,7 +5,7 @@ import React, { useMemo } from "react";
 import {
   formatApiDatetime,
   formatDifferenceForHumans,
-  formatMonthYearDate
+  formatMonthYearDate,
 } from "sharedHelpers/dateAndTime";
 import { useTranslation } from "sharedHooks";
 
@@ -41,7 +41,7 @@ const DateDisplay = ( {
   maxFontSizeMultiplier = 2,
   taxonGeoprivacy,
   textComponent: TextComponentProp,
-  timeZone
+  timeZone,
 }: Props ) => {
   const { i18n } = useTranslation( );
 
@@ -70,7 +70,7 @@ const DateDisplay = ( {
     dateString,
     i18n,
     literalTime,
-    timeZone
+    timeZone,
   ] );
 
   return (

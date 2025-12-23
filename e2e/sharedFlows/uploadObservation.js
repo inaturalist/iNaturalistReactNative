@@ -1,5 +1,5 @@
 import {
-  by, element, expect, waitFor
+  by, element, expect, waitFor,
 } from "detox";
 
 // This needs to be a relative path for the e2e-mock version to be used

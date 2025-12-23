@@ -2,7 +2,7 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import {
   QueryClient,
-  QueryClientProvider
+  QueryClientProvider,
 } from "@tanstack/react-query";
 import { render, renderHook, screen } from "@testing-library/react-native";
 import App from "components/App";
@@ -18,9 +18,9 @@ const queryClient = new QueryClient( {
       retry: false,
       // Prevent `Jest did not exit one second after the test run has completed.` error
       // https://react-query-v3.tanstack.com/guides/testing#set-cachetime-to-infinity-with-jest
-      gcTime: Infinity
-    }
-  }
+      gcTime: Infinity,
+    },
+  },
 } );
 
 const mockNavigationTheme = {
@@ -31,9 +31,9 @@ const mockNavigationTheme = {
   fonts: {
     regular: {
       fontFamily: "System",
-      fontWeight: "normal"
-    }
-  }
+      fontWeight: "normal",
+    },
+  },
 };
 
 function renderComponent( component, update = null, renderOptions = {} ) {
@@ -50,7 +50,7 @@ function renderComponent( component, update = null, renderOptions = {} ) {
         </GestureHandlerRootView>
       </INatPaperProvider>
     </QueryClientProvider>,
-    renderOptions
+    renderOptions,
   );
 }
 
@@ -64,7 +64,7 @@ function renderApp( update = null ) {
 
 async function renderAppWithObservations(
   observations,
-  realmIdentifier
+  realmIdentifier,
 ) {
   if ( observations.length > 0 ) {
     await Promise.all( observations.map( async observation => {
@@ -74,13 +74,13 @@ async function renderAppWithObservations(
         // Save the mock observation in Realm
         return Observation.saveLocalObservationForUpload(
           observations[0],
-          global.mockRealms[realmIdentifier]
+          global.mockRealms[realmIdentifier],
         );
       }
       // Otherwise save it like a remote obs
       return new Promise( resolve => {
         resolve(
-          Observation.upsertRemoteObservations( [observation], global.mockRealms[realmIdentifier] )
+          Observation.upsertRemoteObservations( [observation], global.mockRealms[realmIdentifier] ),
         );
       } );
     } ) );
@@ -130,7 +130,7 @@ const Wrapper = ( { children } ) => (
 
 function renderHookInApp( hookToRender ) {
   return renderHook( hookToRender, {
-    wrapper: Wrapper
+    wrapper: Wrapper,
   } );
 }
 
@@ -142,5 +142,5 @@ export {
   renderComponent,
   renderHookInApp,
   wrapInNavigationContainer,
-  wrapInQueryClientContainer
+  wrapInQueryClientContainer,
 };

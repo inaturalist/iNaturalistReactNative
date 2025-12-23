@@ -1,7 +1,7 @@
 import { fontRegular } from "appConstants/fontFamilies";
 import {
   Body2,
-  Heading4
+  Heading4,
 } from "components/SharedComponents";
 import * as React from "react";
 import { useWindowDimensions } from "react-native";
@@ -18,7 +18,7 @@ const BASE_STYLE = {
   fontFamily: fontRegular,
   fontSize: 16,
   lineHeight: 22,
-  color: colors.darkGray
+  color: colors.darkGray,
 };
 
 const FONTS = [fontRegular, ...defaultSystemFonts];

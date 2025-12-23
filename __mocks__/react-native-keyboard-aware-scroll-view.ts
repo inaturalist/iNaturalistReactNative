@@ -3,5 +3,5 @@
 module.exports = {
   KeyboardAwareScrollView: jest
     .fn( )
-    .mockImplementation( ( { children } ) => children )
+    .mockImplementation( ( { children } ) => children ),
 };

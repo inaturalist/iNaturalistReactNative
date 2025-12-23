@@ -5,7 +5,7 @@ import {
   Heading4,
   INatIcon,
   INatIconButton,
-  ViewWrapper
+  ViewWrapper,
 } from "components/SharedComponents";
 import { ImageBackground } from "components/styledComponents";
 import INatLogo from "images/svg/inat_logo_onboarding.svg";
@@ -15,7 +15,7 @@ import React, {
   useEffect,
   useMemo,
   useRef,
-  useState
+  useState,
 } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -23,7 +23,7 @@ import {
   Platform,
   StatusBar,
   useWindowDimensions,
-  View
+  View,
 } from "react-native";
 import AnimatedDotsCarousel from "react-native-animated-dots-carousel";
 import Animated, { interpolate, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
@@ -34,7 +34,7 @@ import colors from "styles/tailwindColors";
 
 const SlideItem = props => {
   const {
-    item, index
+    item, index,
   } = props;
   const Icon = item.icon;
 
@@ -86,7 +86,7 @@ const OnboardingCarousel = ( ) => {
     const opacity = interpolate(
       progress.get(),
       [-1, 0, 1], // Fade in/out around current index
-      [0, 1, 0] // Opacity transitions
+      [0, 1, 0], // Opacity transitions
     );
     return { opacity };
   } );
@@ -95,7 +95,7 @@ const OnboardingCarousel = ( ) => {
     const opacity = interpolate(
       progress.get(),
       [0, 1, 2], // Fade in/out around current index
-      [0, 1, 0] // Opacity transitions
+      [0, 1, 0], // Opacity transitions
     );
     return { opacity };
   } );
@@ -104,7 +104,7 @@ const OnboardingCarousel = ( ) => {
     const opacity = interpolate(
       progress.get(),
       [1, 2, 3], // Fade in/out around current index
-      [0, 1, 0] // Opacity transitions
+      [0, 1, 0], // Opacity transitions
     );
     return { opacity };
   } );
@@ -116,7 +116,7 @@ const OnboardingCarousel = ( ) => {
       title: t( "Identify-species-anywhere" ),
       text: t( "Get-an-instant-ID-of-any-plant-animal-fungus" ),
       background: require( "images/background/karsten-winegeart-RAgWH6ldps0-unsplash-cropped.jpg" ),
-      backgroundAnimation: backgroundAnimation1
+      backgroundAnimation: backgroundAnimation1,
     },
     {
       icon: OnBoardingIcon2,
@@ -124,7 +124,7 @@ const OnboardingCarousel = ( ) => {
       title: t( "Connect-with-expert-naturalists" ),
       text: t( "Experts-help-verify-and-improve-IDs" ),
       background: require( "images/background/shane-rounce-DNkoNXQti3c-unsplash.jpg" ),
-      backgroundAnimation: backgroundAnimation2
+      backgroundAnimation: backgroundAnimation2,
     },
     {
       icon: OnBoardingIcon3,
@@ -132,8 +132,8 @@ const OnboardingCarousel = ( ) => {
       title: t( "Help-protect-species" ),
       text: t( "Verified-IDs-are-used-for-science-and-conservation" ),
       background: require( "images/background/sk-yeong-cXpdNdqp7eY-unsplash.jpg" ),
-      backgroundAnimation: backgroundAnimation3
-    }
+      backgroundAnimation: backgroundAnimation3,
+    },
   ] ), [backgroundAnimation1, backgroundAnimation2, backgroundAnimation3, t] );
 
   const renderItem = ( { style, index, item } ) => (
@@ -283,29 +283,29 @@ const OnboardingCarousel = ( ) => {
                     color: paginationColor,
                     margin: 2.5,
                     opacity: 1,
-                    size: 6
+                    size: 6,
                   }}
                   inactiveIndicatorConfig={{
                     color: paginationColor,
                     margin: 2.5,
                     opacity: 1,
-                    size: 3
+                    size: 3,
                   }}
                   // required by the component although we don't need it.
                   // Size of decreasing dots set to the same
                   decreasingDots={[
                     {
                       config: {
-                        color: paginationColor, margin: 3, opacity: 0.5, size: 6
+                        color: paginationColor, margin: 3, opacity: 0.5, size: 6,
                       },
-                      quantity: 1
+                      quantity: 1,
                     },
                     {
                       config: {
-                        color: paginationColor, margin: 3, opacity: 0.5, size: 3
+                        color: paginationColor, margin: 3, opacity: 0.5, size: 3,
                       },
-                      quantity: 1
-                    }
+                      quantity: 1,
+                    },
                   ]}
                 />
               </View>
@@ -321,7 +321,7 @@ const OnboardingCarousel = ( ) => {
                 onPress={() => {
                   logFirebaseEvent(
                     "onboarding_continue_pressed",
-                    { current_slide: currentIndex }
+                    { current_slide: currentIndex },
                   );
                   const isLastSlide = carouselRef.current?.getCurrentIndex()
                     >= ONBOARDING_SLIDES.length - 1;

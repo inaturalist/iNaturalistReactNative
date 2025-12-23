@@ -6,7 +6,7 @@ describe( "tryToReplaceWithLocalTaxon", () => {
     const localTaxa = [];
     const suggestion = {
       combined_score: 92,
-      taxon: factory( "RemoteTaxon", { id: 745 } )
+      taxon: factory( "RemoteTaxon", { id: 745 } ),
     };
 
     const result = tryToReplaceWithLocalTaxon( localTaxa, suggestion );
@@ -17,11 +17,11 @@ describe( "tryToReplaceWithLocalTaxon", () => {
   it( "should return original suggestion when no matching local taxon is found", () => {
     const localTaxa = [
       factory( "LocalTaxon", { id: 746, name: "Silphium laciniatum" } ),
-      factory( "LocalTaxon", { id: 747, name: "Silphium integrifolium" } )
+      factory( "LocalTaxon", { id: 747, name: "Silphium integrifolium" } ),
     ];
     const suggestion = {
       combined_score: 88,
-      taxon: factory( "RemoteTaxon", { id: 745, name: "Silphium perfoliatum" } )
+      taxon: factory( "RemoteTaxon", { id: 745, name: "Silphium perfoliatum" } ),
     };
 
     const result = tryToReplaceWithLocalTaxon( localTaxa, suggestion );
@@ -37,7 +37,7 @@ describe( "tryToReplaceWithLocalTaxon", () => {
       rank: "species",
       rank_level: 10,
       _synced_at: new Date( "2024-01-15" ),
-      representative_photo: [{ photo: { id: 678 } }]
+      representative_photo: [{ photo: { id: 678 } }],
     } );
     const localTaxa = [localTaxon];
     const suggestion = {
@@ -47,8 +47,8 @@ describe( "tryToReplaceWithLocalTaxon", () => {
         name: "Silphium perfoliatum",
         taxon_photos: [{ photo: { id: 123 } }],
         iconic_taxon_name: "Plantae",
-        representative_photo: [{ photo: { id: 456 } }]
-      }
+        representative_photo: [{ photo: { id: 456 } }],
+      },
     };
 
     const result = tryToReplaceWithLocalTaxon( localTaxa, suggestion );

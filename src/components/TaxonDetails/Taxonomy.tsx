@@ -1,7 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   Button,
-  Heading4
+  Heading4,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useState } from "react";
@@ -30,8 +30,8 @@ const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ) => {
       params: {
         id: taxonId,
         hideNavButtons,
-        usesVision: false
-      }
+        usesVision: false,
+      },
     } )
   );
 

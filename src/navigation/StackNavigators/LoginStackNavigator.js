@@ -11,7 +11,7 @@ import SignUpConfirmation from "components/LoginSignUp/SignUpConfirmation";
 import { CloseButton } from "components/SharedComponents";
 import {
   hideHeaderLeft,
-  showSimpleCustomHeader
+  showSimpleCustomHeader,
 } from "navigation/navigationOptions";
 import type { Node } from "react";
 import React from "react";
@@ -30,8 +30,8 @@ const LOGIN_SCREEN_OPTIONS = {
   headerTransparent: true,
   headerTintColor: "white",
   contentStyle: {
-    backgroundColor: "black"
-  }
+    backgroundColor: "black",
+  },
 };
 
 const LoginStackNavigator = ( ): Node => (
@@ -42,7 +42,7 @@ const LoginStackNavigator = ( ): Node => (
       options={{
         ...LOGIN_SCREEN_OPTIONS,
         headerRight: LoginCloseButton,
-        ...hideHeaderLeft
+        ...hideHeaderLeft,
       }}
     />
     <Stack.Screen

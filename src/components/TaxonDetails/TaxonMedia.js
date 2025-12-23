@@ -4,14 +4,14 @@ import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import MasonryLayout from "components/ObsDetails/MasonryLayout";
 import { ActivityIndicator, Carousel } from "components/SharedComponents";
 import {
-  Image, Pressable, View
+  Image, Pressable, View,
 } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
   useMemo,
-  useState
+  useState,
 } from "react";
 import { Dimensions } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
@@ -20,13 +20,13 @@ import Photo from "realmModels/Photo";
 type Props = {
   loading: boolean,
   onChangeIndex?: Function,
-  photos: Array<{
+  photos: {
     id?: number,
     url: string,
     localFilePath?: string,
     attribution?: string,
     licenseCode?: string
-  }>,
+  }[],
   tablet: boolean
 }
 
@@ -35,7 +35,7 @@ const TaxonMedia = ( {
   onChangeIndex,
   photos = [],
   sounds = [],
-  tablet
+  tablet,
 }: Props ): Node => {
   const { width } = Dimensions.get( "window" );
   const [index, setIndex] = useState( 0 );
@@ -44,7 +44,7 @@ const TaxonMedia = ( {
   const items = useMemo( ( ) => ( [...photos, ...sounds] ), [photos, sounds] );
   const slideStyle = useMemo( ( ) => ( {
     width,
-    height: 420
+    height: 420,
   } ), [width] );
 
   const CarouselSlide = useCallback(
@@ -66,13 +66,13 @@ const TaxonMedia = ( {
             // TODO replace this entire image component to one that supports
             // progressive sizes and fallbacks if the large photo isn't
             // available
-            uri: Photo.displayLargePhoto( item.url )
+            uri: Photo.displayLargePhoto( item.url ),
           }}
           accessibilityIgnoresInvertColors
         />
       </Pressable>
     ),
-    [setMediaViewerVisible, slideStyle]
+    [setMediaViewerVisible, slideStyle],
   );
 
   useEffect( ( ) => {

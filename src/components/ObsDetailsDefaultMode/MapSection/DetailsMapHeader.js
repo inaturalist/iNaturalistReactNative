@@ -4,7 +4,7 @@ import
 ObscurationExplanation
   from "components/ObsDetailsDefaultMode/LocationSection/ObscurationExplanation";
 import {
-  ObservationLocation
+  ObservationLocation,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -17,7 +17,7 @@ type Props = {
 
 const DetailsMapHeader = ( {
   currentUser,
-  observation
+  observation,
 }: Props ): Node => (
   <View className="flex-1 flex-col">
     <ObservationLocation

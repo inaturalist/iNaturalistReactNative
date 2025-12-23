@@ -5,7 +5,7 @@ import ObsImagePreview from "components/ObservationsFlashList/ObsImagePreview";
 import {
   Body3,
   DisplayTaxonName,
-  INatIconButton
+  INatIconButton,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import type { PropsWithChildren } from "react";
@@ -76,7 +76,7 @@ const TaxonResult = ( {
   testID,
   unpressable = false,
   vision = false,
-  white = false
+  white = false,
 }: TaxonResultProps ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -90,7 +90,7 @@ const TaxonResult = ( {
   const { taxon: localTaxon } = useTaxon(
     taxonProp,
     fetchRemote,
-    retryQuery
+    retryQuery,
   ) as { taxon: RealmTaxon };
   const usableTaxon = fromLocal
     ? localTaxon
@@ -112,7 +112,7 @@ const TaxonResult = ( {
 
   const isRepresentativeButOtherTaxon = representativePhoto
     && !localTaxon?.taxonPhotos?.some(
-      ( tp: RealmTaxonPhoto ) => tp.photo.id === representativePhoto.id
+      ( tp: RealmTaxonPhoto ) => tp.photo.id === representativePhoto.id,
     );
 
   const navToTaxonDetails = React.useCallback( ( ) => {
@@ -120,7 +120,7 @@ const TaxonResult = ( {
       id: usableTaxon?.id,
       hideNavButtons,
       lastScreen,
-      vision
+      vision,
     };
     if ( !isRepresentativeButOtherTaxon ) {
       params.firstPhotoID = taxonImage?.id;
@@ -135,7 +135,7 @@ const TaxonResult = ( {
     usableTaxon?.id,
     vision,
     taxonImage,
-    isRepresentativeButOtherTaxon
+    isRepresentativeButOtherTaxon,
   ] );
   const TaxonResultMain = React.useCallback( ( props: TaxonResultMainProps ) => (
     unpressable
@@ -159,7 +159,7 @@ const TaxonResult = ( {
     handleTaxonOrEditPress,
     navToTaxonDetails,
     t,
-    unpressable
+    unpressable,
   ] );
 
   // useTaxon could return null, and it's at least remotely possible taxonProp is null
@@ -173,8 +173,8 @@ const TaxonResult = ( {
           {
             "px-4": asListItem,
             "border-b-[1px] border-lightGray": asListItem,
-            "border-t-[1px]": first
-          }
+            "border-t-[1px]": first,
+          },
         )
       }
       testID={testID}
@@ -182,7 +182,7 @@ const TaxonResult = ( {
       <TaxonResultMain
         className={
           classnames( "flex-row items-center shrink", {
-            "py-3": asListItem
+            "py-3": asListItem,
           } )
         }
       >
@@ -212,7 +212,7 @@ const TaxonResult = ( {
             color={String(
               clearBackground
                 ? "text-white"
-                : "text-darkGray"
+                : "text-darkGray",
             )}
             scientificNameFirst={currentUser?.prefers_scientific_name_first}
             prefersCommonNames={currentUser?.prefers_common_names}
@@ -251,7 +251,7 @@ const TaxonResult = ( {
               color={String(
                 clearBackground
                   ? colors?.white
-                  : colors?.darkGray
+                  : colors?.darkGray,
               )}
               accessibilityLabel={t( "More-info" )}
               accessibilityHint={t( "Navigates-to-taxon-details" )}
@@ -265,7 +265,7 @@ const TaxonResult = ( {
               color={String(
                 clearBackground
                   ? colors?.white
-                  : colors?.darkGray
+                  : colors?.darkGray,
               )}
               onPress={() => handleCheckmarkPress( usableTaxon )}
               accessibilityLabel={accessibilityLabel}

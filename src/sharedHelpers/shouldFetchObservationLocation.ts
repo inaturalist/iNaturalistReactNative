@@ -2,7 +2,7 @@ import { photoLibraryPhotosPath, rotatedOriginalPhotosPath } from "appConstants/
 import { DocumentDirectoryPath } from "react-native-fs";
 import type { RealmObservation } from "realmModels/types";
 import {
-  TARGET_POSITIONAL_ACCURACY
+  TARGET_POSITIONAL_ACCURACY,
 } from "sharedHooks/useWatchPosition";
 
 // In theory all of these functions belong in Observation.js... but we often

@@ -17,7 +17,7 @@ interface Props {
 const Location = ( {
   rotatableAnimatedStyle,
   toggleLocation,
-  useLocation
+  useLocation,
 }: Props ) => {
   const { t } = useTranslation( );
 

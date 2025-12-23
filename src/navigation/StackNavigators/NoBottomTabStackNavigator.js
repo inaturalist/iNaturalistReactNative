@@ -12,7 +12,7 @@ import { Heading4 } from "components/SharedComponents";
 import Mortal from "components/SharedComponents/Mortal";
 import PermissionGateContainer, {
   AUDIO_PERMISSIONS,
-  CAMERA_PERMISSIONS
+  CAMERA_PERMISSIONS,
 } from "components/SharedComponents/PermissionGateContainer";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import { t } from "i18next";
@@ -20,7 +20,7 @@ import ContextHeader from "navigation/ContextHeader";
 import {
   fadeInComponent,
   hideHeader,
-  hideHeaderLeft
+  hideHeaderLeft,
 } from "navigation/navigationOptions";
 import type { Node } from "react";
 import React from "react";
@@ -38,24 +38,24 @@ const soundRecorderTitle = () => (
 const CAMERA_SCREEN_OPTIONS = {
   ...hideHeader,
   contentStyle: {
-    backgroundColor: "black"
-  }
+    backgroundColor: "black",
+  },
 };
 
 const GROUP_PHOTOS_OPTIONS = {
   header: ContextHeader,
   alignStart: true,
-  lazy: true
+  lazy: true,
 };
 
 const SOUND_RECORDER_OPTIONS = {
   ...hideHeaderLeft,
   headerStyle: {
-    backgroundColor: "black"
+    backgroundColor: "black",
   },
   headerTintColor: "white",
   headerTitle: soundRecorderTitle,
-  headerTitleAlign: "center"
+  headerTitleAlign: "center",
 };
 
 const CameraContainerWithPermission = ( ) => fadeInComponent(
@@ -72,7 +72,7 @@ const CameraContainerWithPermission = ( ) => fadeInComponent(
     >
       <CameraContainer />
     </PermissionGateContainer>
-  </Mortal>
+  </Mortal>,
 );
 
 // On iOS we don't actually need PHOTO LIBRARY permission to import photos,
@@ -100,7 +100,7 @@ const SoundRecorderWithPermission = ( ) => fadeInComponent(
     >
       <SoundRecorder />
     </PermissionGateContainer>
-  </Mortal>
+  </Mortal>,
 );
 
 const NoBottomTabStackNavigator = ( ): Node => (
@@ -108,8 +108,8 @@ const NoBottomTabStackNavigator = ( ): Node => (
     screenOptions={{
       headerBackButtonDisplayMode: "minimal",
       contentStyle: {
-        backgroundColor: "white"
-      }
+        backgroundColor: "white",
+      },
     }}
   >
     {/* Add Observation Stack Group */}

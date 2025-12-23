@@ -1,5 +1,5 @@
 import {
-  List2
+  List2,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
@@ -44,7 +44,7 @@ const ObsNotificationText = ( { notification }: Props ) => {
   } else {
     const transValues = {
       user1: notifierUser.login,
-      user2: resourceOwner?.login || t( "Unknown--user" )
+      user2: resourceOwner?.login || t( "Unknown--user" ),
     };
     if ( type === "Comment" ) {
       content = (

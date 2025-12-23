@@ -1,15 +1,15 @@
 import {
-  rotatedOriginalPhotosPath
+  rotatedOriginalPhotosPath,
 } from "appConstants/paths";
 import RNFS from "react-native-fs";
 import type {
-  PhotoFile
+  PhotoFile,
 } from "react-native-vision-camera";
 import resizeImage from "sharedHelpers/resizeImage";
 import { unlink } from "sharedHelpers/util";
 
 const savePhotoToDocumentsDirectory = async (
-  cameraPhoto: PhotoFile
+  cameraPhoto: PhotoFile,
 ) => {
   const path = rotatedOriginalPhotosPath;
   await RNFS.mkdir( path );
@@ -20,8 +20,8 @@ const savePhotoToDocumentsDirectory = async (
     {
       width: cameraPhoto.width,
       height: cameraPhoto.height,
-      outputPath: path
-    }
+      outputPath: path,
+    },
   );
   // Remove original photo
   await unlink( cameraPhoto.path );

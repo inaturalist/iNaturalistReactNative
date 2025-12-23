@@ -12,13 +12,13 @@ const mockTaxon = factory( "LocalTaxon", {
   rank: "class",
   rank_level: 50,
   default_photo: {
-    url: "https://example.com/photo.jpg"
-  }
+    url: "https://example.com/photo.jpg",
+  },
 } );
 
 jest.mock( "sharedHooks/useTaxon", () => ( {
   __esModule: true,
-  default: () => ( { taxon: mockTaxon } )
+  default: () => ( { taxon: mockTaxon } ),
 } ) );
 
 describe( "IconicSuggestion", () => {
@@ -46,7 +46,7 @@ describe( "IconicSuggestion", () => {
       name: "Aves",
       preferred_common_name: "Birds",
       rank: "class",
-      rank_level: 50
+      rank_level: 50,
     } );
     jest.spyOn( useTaxon, "default" ).mockImplementation( () => ( { taxon: localTaxon } ) );
 
@@ -62,7 +62,7 @@ describe( "IconicSuggestion", () => {
       name: "Mollusca",
       preferred_common_name: undefined,
       rank: "phylum",
-      rank_level: 60
+      rank_level: 60,
     } );
     jest.spyOn( useTaxon, "default" )
       .mockImplementation( () => ( { taxon: taxonWithoutCommonName } ) );

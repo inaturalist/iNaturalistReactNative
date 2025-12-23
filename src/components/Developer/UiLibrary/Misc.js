@@ -28,7 +28,7 @@ import {
   Tabs,
   UploadStatus,
   UserIcon,
-  ViewWrapper
+  ViewWrapper,
 } from "components/SharedComponents";
 import { ScrollView, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
@@ -56,22 +56,22 @@ const Misc = (): Node => {
     taxon: {
       // eslint-disable-next-line max-len
       default_photo: {
-        attribution: "(c) Ján Svetlík, some rights reserved (CC BY-NC-ND)", id: 3688643, license_code: "cc-by-nc-nd", url: "https://inaturalist-open-data.s3.amazonaws.com/photos/3688643/square.jpg"
+        attribution: "(c) Ján Svetlík, some rights reserved (CC BY-NC-ND)", id: 3688643, license_code: "cc-by-nc-nd", url: "https://inaturalist-open-data.s3.amazonaws.com/photos/3688643/square.jpg",
       },
       id: 4343,
       name: "Larus",
       preferred_common_name: "Large White-headed Gulls",
       rank: "genus",
-      rank_level: 10
+      rank_level: 10,
     },
     user: {
       icon_url: "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155",
       id: 1,
       locale: null,
-      login: "frogfinder"
+      login: "frogfinder",
     },
     uuid: "9abd103b-097e-4d32-a0a3-6a23f98ca333",
-    vision: false
+    vision: false,
   };
 
   const aves = {
@@ -81,7 +81,7 @@ const Misc = (): Node => {
     rank: "family",
     rank_level: 60,
     iconic_taxon_name: "Aves",
-    isIconic: true
+    isIconic: true,
   };
   const taxonWithPhoto = realm.objects( "Taxon" ).filtered( "defaultPhoto.url != nil" )[0] || aves;
   const species = realm.objects( "Taxon" )
@@ -116,7 +116,7 @@ const Misc = (): Node => {
                 currentUser || {
                   icon_url:
                     "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155",
-                  login: "turtletamer74"
+                  login: "turtletamer74",
                 }
               }
             />
@@ -137,15 +137,15 @@ const Misc = (): Node => {
               text: "TAB1",
               onPress: () => {
                 console.log( "TAB1" );
-              }
+              },
             },
             {
               id: "TAB2",
               text: "TAB2",
               onPress: () => {
                 console.log( "TAB2" );
-              }
-            }
+              },
+            },
           ]}
           activeId="TAB1"
         />
@@ -160,7 +160,7 @@ const Misc = (): Node => {
         <ObservationLocation
           observation={{
             latitude: 30.18183,
-            longitude: -85.760449
+            longitude: -85.760449,
           }}
         />
 
@@ -168,7 +168,7 @@ const Misc = (): Node => {
           observation={{
             latitude: 30.18183,
             longitude: -85.760449,
-            place_guess: "Panama City Beach, Florida"
+            place_guess: "Panama City Beach, Florida",
           }}
         />
 
@@ -322,7 +322,7 @@ const Misc = (): Node => {
           layout="vertical"
           observation={{
             comments: [1, 2, 3],
-            identifications: [1, 2, 3, 4, 5, 6]
+            identifications: [1, 2, 3, 4, 5, 6],
           }}
         />
         <Heading2 className="my-2">PhotoCount</Heading2>
@@ -370,7 +370,7 @@ const Misc = (): Node => {
             id: 1,
             title: "Project Title",
             project_type: "collection",
-            icon: "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155"
+            icon: "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155",
           }}
         />
         <ProjectListItem
@@ -378,7 +378,7 @@ const Misc = (): Node => {
             id: 2,
             title: "Project Title with a very long title that should wrap to the next line",
             project_type: "collection",
-            icon: "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155"
+            icon: "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155",
           }}
         />
         <Heading1 className="my-2">RadioButtonRow</Heading1>

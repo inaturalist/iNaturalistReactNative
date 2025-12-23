@@ -8,7 +8,7 @@ describe( "userPrepareStoreAndNavigate", ( ) => {
       const uris = [
         faker.system.filePath( ),
         faker.system.filePath( ),
-        faker.system.filePath( )
+        faker.system.filePath( ),
       ];
       const mockOnEachSuccess = jest.fn( );
       await savePhotosToPhotoLibrary( uris, mockOnEachSuccess );

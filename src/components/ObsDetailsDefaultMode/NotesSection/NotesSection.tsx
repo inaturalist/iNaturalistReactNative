@@ -1,5 +1,5 @@
 import {
-  Heading3
+  Heading3,
 } from "components/SharedComponents";
 import UserText from "components/SharedComponents/UserText";
 import { View } from "components/styledComponents";

@@ -1,18 +1,18 @@
 import { useNavigation } from "@react-navigation/native";
 import type { ApiProject } from "api/types";
 import {
-  CustomFlashList
+  CustomFlashList,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
 import {
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 
 import ProjectListItem from "./ProjectListItem";
 
 interface Props {
-  projects: Array<object>;
+  projects: object[];
   ListEmptyComponent?: React.JSX.Element;
   ListFooterComponent?: React.JSX.Element;
   onEndReached?: ( ) => void;
@@ -26,7 +26,7 @@ const ProjectList = ( {
   ListFooterComponent,
   onEndReached,
   onPress,
-  accessibilityLabel
+  accessibilityLabel,
 }: Props ) => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );

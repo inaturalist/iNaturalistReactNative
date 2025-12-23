@@ -9,15 +9,15 @@ module.exports = {
   copyFile: async ( ) => "testdata",
   copyAssetsFileIOS: async ( ) => "testdata",
   stat: jest.fn( ( ) => ( {
-    mtime: new Date()
+    mtime: new Date(),
   } ) ),
   readFile: jest.fn( ( ) => "testdata" ),
   readDir: jest.fn( async ( ) => ( [
     {
       ctime: new Date(),
       mtime: new Date(),
-      name: "testdata"
-    }
+      name: "testdata",
+    },
   ] ) ),
   writeFile: jest.fn( async ( filePath, contents, _encoding ) => {
     mockFs.writeFile( filePath, contents, jest.fn( ) );
@@ -29,5 +29,5 @@ module.exports = {
     if ( !path ) return;
     if ( typeof ( path ) !== "string" ) return;
     mockFs.unlink( path, jest.fn( ) );
-  } )
+  } ),
 };

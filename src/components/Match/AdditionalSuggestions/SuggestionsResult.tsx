@@ -3,7 +3,7 @@ import classnames from "classnames";
 import ObsImagePreview from "components/ObservationsFlashList/ObsImagePreview";
 import {
   Body4,
-  DisplayTaxonName
+  DisplayTaxonName,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React, { useEffect, useRef } from "react";
@@ -11,7 +11,7 @@ import type { LayoutChangeEvent } from "react-native";
 import type { RealmTaxon } from "realmModels/types";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import {
-  useCurrentUser, useTranslation
+  useCurrentUser, useTranslation,
 } from "sharedHooks";
 
 type Props = {
@@ -29,7 +29,7 @@ const SuggestionsResult = ( {
   taxon,
   testID,
   updateMaxHeight,
-  forcedHeight
+  forcedHeight,
 }: Props ) => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
@@ -88,7 +88,7 @@ const SuggestionsResult = ( {
     "flex-row justify-center items-center",
     "border-lightGray border-[2px] rounded-2xl",
     "w-[241px]",
-    "mr-3.5"
+    "mr-3.5",
   );
 
   // note: it doesn't seem like we need to add styling here as long as we're
@@ -96,7 +96,7 @@ const SuggestionsResult = ( {
   // if the bottom padding is getting cut off in this list
   const styleWithForcedHeight = forcedHeight
     ? {
-      height: forcedHeight
+      height: forcedHeight,
     }
     : undefined;
 
@@ -137,7 +137,7 @@ const SuggestionsResult = ( {
           />
           <Body4 className="text-inatGreen mt-1.5">
             {t( "X-percent-confidence", {
-              count: confidence
+              count: confidence,
             } )}
           </Body4>
         </View>

@@ -2,14 +2,14 @@ import { useNetInfo } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import {
-  signOut
+  signOut,
 } from "components/LoginSignUp/AuthenticationService";
 import {
   Body1,
   INatIcon,
   List2, TextInputSheet,
   UserIcon,
-  WarningSheet
+  WarningSheet,
 } from "components/SharedComponents";
 import { Pressable, ScrollView, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
@@ -78,29 +78,29 @@ const Menu = ( ) => {
     projects: {
       label: t( "PROJECTS" ),
       navigation: "Projects",
-      icon: "briefcase"
+      icon: "briefcase",
     },
     about: {
       label: t( "ABOUT" ),
       navigation: "About",
-      icon: "inaturalist"
+      icon: "inaturalist",
     },
     donate: {
       label: t( "DONATE" ),
       navigation: "Donate",
       icon: "heart",
-      color: colors.inatGreen
+      color: colors.inatGreen,
     },
     help: {
       label: t( "HELP" ),
       navigation: "Help",
-      icon: "help-circle"
+      icon: "help-circle",
     },
     settings: {
       testID: "settings",
       label: t( "SETTINGS" ),
       navigation: "Settings",
-      icon: "gear"
+      icon: "gear",
     },
 
     feedback: {
@@ -112,7 +112,7 @@ const Menu = ( ) => {
         } else {
           showOfflineAlert( t );
         }
-      }
+      },
     },
 
     ...( currentUser
@@ -121,16 +121,16 @@ const Menu = ( ) => {
           label: t( "LOG-OUT" ),
           icon: "door-exit",
           onPress: () => setModalState( MenuModalState.ConfirmLogout ),
-          isLogout: true
-        }
+          isLogout: true,
+        },
       }
       : {
         login: {
           label: t( "LOG-IN" ),
           icon: "door-enter",
           color: colors.inatGreen,
-          onPress: () => navigation.navigate( "LoginStackNavigator" )
-        }
+          onPress: () => navigation.navigate( "LoginStackNavigator" ),
+        },
       } ),
 
     ...( isDebug
@@ -139,10 +139,10 @@ const Menu = ( ) => {
           label: "DEBUG",
           navigation: "Debug",
           icon: "triangle-exclamation",
-          color: "deeppink"
-        }
+          color: "deeppink",
+        },
       }
-      : {} )
+      : {} ),
   };
 
   const onSignOut = async ( ) => {
@@ -195,8 +195,8 @@ const Menu = ( ) => {
                 screen: "ObservationsTab",
                 params: {
                   screen: "UserProfile",
-                  params: { userId: currentUser.id }
-                }
+                  params: { userId: currentUser.id },
+                },
               } );
             }
           }}
@@ -242,8 +242,8 @@ const Menu = ( ) => {
                   navigation.navigate( "TabNavigator", {
                     screen: "MenuTab",
                     params: {
-                      screen: menuItems[key].navigation
-                    }
+                      screen: menuItems[key].navigation,
+                    },
                   } );
                 }
                 item.onPress?.();

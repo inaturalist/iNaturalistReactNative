@@ -9,30 +9,30 @@ import { renderComponent } from "tests/helpers/render";
 
 const mockCurrentUser = factory( "LocalUser", {
   id: 123,
-  login: faker.internet.userName( )
+  login: faker.internet.userName( ),
 } );
 
 const mockLocalObservation = factory( "LocalObservation", {
   user: factory( "LocalUser", {
-    id: 123
+    id: 123,
   } ),
-  uuid: "test-123"
+  uuid: "test-123",
 } );
 
 jest.mock( "@react-native-community/netinfo", () => ( {
   useNetInfo: () => ( { isConnected: true } ),
-  configure: jest.fn( )
+  configure: jest.fn( ),
 } ) );
 
 jest.mock( "sharedHooks/useCurrentUser", () => ( {
   __esModule: true,
-  default: () => mockCurrentUser
+  default: () => mockCurrentUser,
 } ) );
 jest.mock( "sharedHooks/useLocalObservation", () => ( {
   __esModule: true,
   default: jest.fn( () => ( {
-    localObservation: null
-  } ) )
+    localObservation: null,
+  } ) ),
 } ) );
 jest.mock( "sharedHooks/useRemoteObservation", ( ) => ( {
   __esModule: true,
@@ -40,8 +40,8 @@ jest.mock( "sharedHooks/useRemoteObservation", ( ) => ( {
     remoteObservation: null,
     refetchRemoteObservation: jest.fn( ),
     isRefetching: false,
-    fetchRemoteObservationError: null
-  } )
+    fetchRemoteObservationError: null,
+  } ),
 } ) );
 
 describe( "ObsDetailsDefaultModeScreensWrapper", ( ) => {
@@ -51,33 +51,33 @@ describe( "ObsDetailsDefaultModeScreensWrapper", ( ) => {
       ( ) => {
         const unsyncedLocalObservation = {
           ...mockLocalObservation,
-          wasSynced: jest.fn( () => false )
+          wasSynced: jest.fn( () => false ),
         };
 
         jest.spyOn( useLocalObservation, "default" ).mockImplementation( () => ( {
           localObservation: unsyncedLocalObservation,
           markDeletedLocally: jest.fn( ),
-          markViewedLocally: jest.fn( )
+          markViewedLocally: jest.fn( ),
         } ) );
 
         renderComponent( <ObsDetailsDefaultModeScreensWrapper /> );
 
         expect( screen.getByTestId( "SavedMatch.container" ) ).toBeTruthy( );
         expect( screen.queryByTestId( "ObsDetails.container" ) ).toBeFalsy( );
-      }
+      },
     );
 
     it( "renders SavedMatchContainer when observation has no user and is not synced", ( ) => {
       const unsyncedLocalObservationNoUser = factory( "LocalObservation", {
         user: null,
         uuid: "test-123",
-        wasSynced: jest.fn( () => false )
+        wasSynced: jest.fn( () => false ),
       } );
 
       jest.spyOn( useLocalObservation, "default" ).mockImplementation( () => ( {
         localObservation: unsyncedLocalObservationNoUser,
         markDeletedLocally: jest.fn( ),
-        markViewedLocally: jest.fn( )
+        markViewedLocally: jest.fn( ),
       } ) );
 
       renderComponent( <ObsDetailsDefaultModeScreensWrapper /> );
@@ -91,13 +91,13 @@ describe( "ObsDetailsDefaultModeScreensWrapper", ( ) => {
     it( "renders ObsDetailsDefaultModeContainer when observation is synced", ( ) => {
       const syncedLocalObservation = {
         ...mockLocalObservation,
-        wasSynced: jest.fn( () => true )
+        wasSynced: jest.fn( () => true ),
       };
 
       jest.spyOn( useLocalObservation, "default" ).mockImplementation( () => ( {
         localObservation: syncedLocalObservation,
         markDeletedLocally: jest.fn( ),
-        markViewedLocally: jest.fn( )
+        markViewedLocally: jest.fn( ),
       } ) );
 
       renderComponent( <ObsDetailsDefaultModeScreensWrapper /> );
@@ -111,23 +111,23 @@ describe( "ObsDetailsDefaultModeScreensWrapper", ( ) => {
       ( ) => {
         const otherUserObservation = factory( "LocalObservation", {
           user: factory( "LocalUser", {
-            id: 456
+            id: 456,
           } ),
           uuid: "test-123",
-          wasSynced: jest.fn( () => false )
+          wasSynced: jest.fn( () => false ),
         } );
 
         jest.spyOn( useLocalObservation, "default" ).mockImplementation( () => ( {
           localObservation: otherUserObservation,
           markDeletedLocally: jest.fn( ),
-          markViewedLocally: jest.fn( )
+          markViewedLocally: jest.fn( ),
         } ) );
 
         renderComponent( <ObsDetailsDefaultModeScreensWrapper /> );
 
         expect( screen.getByTestId( "ObsDetails.container" ) ).toBeTruthy( );
         expect( screen.queryByTestId( "SavedMatch.container" ) ).toBeFalsy( );
-      }
+      },
     );
   } );
 } );

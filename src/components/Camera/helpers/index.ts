@@ -41,5 +41,5 @@ export {
   handleCaptureError,
   handleClassifierError,
   handleDeviceNotSupported,
-  handleLog
+  handleLog,
 };

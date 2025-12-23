@@ -10,7 +10,7 @@ import { useTranslation } from "sharedHooks";
 type Props = {
   currentObservationIndex: number,
   setCurrentObservationIndex: Function,
-  observations: Array<Object>,
+  observations: Object[],
   setResetScreen: Function,
   transitionAnimation: Function,
   transitionAnimationRef: Object
@@ -22,12 +22,12 @@ const MultipleObservationsArrows = ( {
   observations,
   setResetScreen,
   transitionAnimation,
-  transitionAnimationRef
+  transitionAnimationRef,
 }: Props ): Node => {
   const { t } = useTranslation( );
 
   const animatedStyle = {
-    opacity: transitionAnimationRef // Bind opacity to animated value
+    opacity: transitionAnimationRef, // Bind opacity to animated value
   };
 
   const showNextObservation = ( ) => {
@@ -57,7 +57,7 @@ const MultipleObservationsArrows = ( {
         <Heading2>
           {t( "X-of-Y", {
             x: currentObservationIndex + 1,
-            y: observations.length
+            y: observations.length,
           } )}
         </Heading2>
       </Animated.View>

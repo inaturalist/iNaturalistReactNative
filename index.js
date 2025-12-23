@@ -11,13 +11,13 @@ import "react-native-url-polyfill/auto";
 
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import {
-  useColorScheme, Alert, AppRegistry, View
+  useColorScheme, Alert, AppRegistry, View,
 } from "react-native";
 import { getCurrentRoute } from "navigation/navigationUtils";
 import { zustandStorage } from "stores/useStore";
 import {
   QueryClient,
-  QueryClientProvider
+  QueryClientProvider,
 } from "@tanstack/react-query";
 import App from "components/App";
 import ErrorBoundary from "components/ErrorBoundary";
@@ -58,7 +58,7 @@ if (
     allRejections: true,
     onUnhandled: ( id, error ) => {
       logger.error( "Unhandled promise rejection: ", error );
-    }
+    },
   } );
 }
 /* eslint-enable no-undef */
@@ -68,7 +68,7 @@ const jsErrorHandler = ( e, isFatal ) => {
     Alert.alert(
       "Device-storage-full",
       "iNaturalist may not be able to save your photos or may crash.",
-      [{ text: t( "OK" ) }]
+      [{ text: t( "OK" ) }],
     );
   }
 
@@ -104,7 +104,7 @@ setNativeExceptionHandler(
         screen: getCurrentRoute()?.name || "",
         memoryUsage: await DeviceInfo.getUsedMemory(),
         timestamp: new Date().toISOString(),
-        appVersion: await DeviceInfo.getVersion()
+        appVersion: await DeviceInfo.getVersion(),
       };
 
       // Store crash data for retrieval on next app launch
@@ -117,7 +117,7 @@ setNativeExceptionHandler(
     }
   },
   true, // Force quit the app to prevent zombie states
-  true // Enable on iOS
+  true, // Enable on iOS
 );
 
 initI18next();
@@ -128,16 +128,16 @@ inatjs.setConfig( {
   writeApiURL: Config.API_URL,
   userAgent: getUserAgent(),
   headers: {
-    "X-Installation-ID": getInstallID( )
-  }
+    "X-Installation-ID": getInstallID( ),
+  },
 } );
 
 const queryClient = new QueryClient( {
   defaultOptions: {
     queries: {
-      retry: reactQueryRetry
-    }
-  }
+      retry: reactQueryRetry,
+    },
+  },
 } );
 
 const AppWithProviders = ( ) => {

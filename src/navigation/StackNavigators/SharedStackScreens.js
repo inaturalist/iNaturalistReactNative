@@ -19,7 +19,7 @@ import {
   hideHeader,
   removeBottomBorder,
   showHeader,
-  showSimpleCustomHeader
+  showSimpleCustomHeader,
 } from "navigation/navigationOptions";
 import type { Node } from "react";
 import React from "react";
@@ -48,7 +48,7 @@ const FadeInSuggestionsTaxonSearch = ( ) => fadeInComponent( <SuggestionsTaxonSe
 const FadeInMatchTaxonSearchScreen = ( ) => fadeInComponent( <MatchTaxonSearchScreen /> );
 const FadeInFullPageWebView = ( ) => fadeInComponent( <FullPageWebView /> );
 const FadeInMatchContainer = ( ) => fadeInComponent(
-  <MatchContainer />
+  <MatchContainer />,
 );
 
 // These screens need to be within the NoBottomTabStackNavigator
@@ -59,14 +59,14 @@ const SharedStackScreens = ( ): Node => (
     screenOptions={{
       cardStyle: {
         backgroundColor: "rgba(0,0,0,0)",
-        opacity: 1
-      }
+        opacity: 1,
+      },
     }}
   >
     {/* Screens with hidden header */}
     <Stack.Group
       screenOptions={{
-        ...hideHeader
+        ...hideHeader,
       }}
     >
       <Stack.Screen
@@ -92,7 +92,7 @@ const SharedStackScreens = ( ): Node => (
         ...removeBottomBorder,
         ...showHeader,
         headerTitleAlign: "center",
-        headerBackButtonDisplayMode: "minimal"
+        headerBackButtonDisplayMode: "minimal",
       }}
     >
       {/* note: unmountOnBlur no longer exists in React Navigation 7,
@@ -105,28 +105,28 @@ const SharedStackScreens = ( ): Node => (
         component={FadeInMatchContainer}
         options={{
           ...showHeader,
-          ...blankHeaderTitle
+          ...blankHeaderTitle,
         }}
       />
       <Stack.Screen
         name="Suggestions"
         component={FadeInSuggestionsContainer}
         options={{
-          headerTitle: suggestionsTitle
+          headerTitle: suggestionsTitle,
         }}
       />
       <Stack.Screen
         name="SuggestionsTaxonSearch"
         component={FadeInSuggestionsTaxonSearch}
         options={{
-          headerTitle: taxonSearchTitle
+          headerTitle: taxonSearchTitle,
         }}
       />
       <Stack.Screen
         name="MatchTaxonSearchScreen"
         component={FadeInMatchTaxonSearchScreen}
         options={{
-          headerTitle: taxonSearchTitle
+          headerTitle: taxonSearchTitle,
         }}
       />
     </Stack.Group>
