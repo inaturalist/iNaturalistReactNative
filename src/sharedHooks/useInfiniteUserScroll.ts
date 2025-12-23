@@ -2,7 +2,7 @@ import { flatten } from "lodash";
 import { useAuthenticatedInfiniteQuery } from "sharedHooks";
 
 const useInfiniteUserScroll = (
-  queryKey: string,
+  queryKey: unknown,
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   apiCall: Function,
   ids: object[],
