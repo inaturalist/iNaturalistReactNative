@@ -6,25 +6,25 @@ import { Image, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";
 import {
-  FlatList
+  FlatList,
 } from "react-native";
 import Photo from "realmModels/Photo";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   isLargeScreen?: boolean,
-  photos: Array<{
+  photos: {
     id?: number,
     url: string,
     localFilePath?: string,
     attribution?: string,
     licenseCode?: string
-  }>,
+  }[],
   scrollToIndex: Function,
   selectedMediaIndex?: number,
-  sounds?: Array<{
+  sounds?: {
     file_url: string
-  }>,
+  }[],
 }
 
 const SMALL_ITEM_CLASS = "rounded-sm w-[42px] h-[42px] mx-[6px] my-[12px]";
@@ -35,12 +35,12 @@ const PhotoSelector = ( {
   photos,
   scrollToIndex,
   selectedMediaIndex,
-  sounds = []
+  sounds = [],
 }: Props ): Node => {
   const { t } = useTranslation( );
   const items = [
     ...photos.map( photo => ( { ...photo, type: "photo" } ) ),
-    ...sounds.map( sound => ( { ...sound, type: "sound" } ) )
+    ...sounds.map( sound => ( { ...sound, type: "sound" } ) ),
   ];
 
   const renderItem = useCallback( ( { item, index } ) => (
@@ -51,12 +51,12 @@ const PhotoSelector = ( {
       className={classnames(
         "overflow-hidden",
         {
-          "border border-white border-[3px]": selectedMediaIndex === index
+          "border border-white border-[3px]": selectedMediaIndex === index,
         },
         {
           [SMALL_ITEM_CLASS]: !isLargeScreen,
-          [LARGE_ITEM_CLASS]: isLargeScreen
-        }
+          [LARGE_ITEM_CLASS]: isLargeScreen,
+        },
       )}
     >
       {
@@ -83,7 +83,7 @@ const PhotoSelector = ( {
     isLargeScreen,
     scrollToIndex,
     selectedMediaIndex,
-    t
+    t,
   ] );
 
   return (

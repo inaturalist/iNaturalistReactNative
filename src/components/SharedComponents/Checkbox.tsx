@@ -16,7 +16,7 @@ const Checkbox = ( {
   accessibilityLabel,
   isChecked = false,
   onPress,
-  text
+  text,
 }: Props ) => {
   const renderCheckboxText = useMemo( ( ) => {
     if ( !text ) { return null; }
@@ -43,7 +43,7 @@ const Checkbox = ( {
     borderWidth: 2,
     borderColor: isChecked
       ? checkedBorderColor
-      : uncheckedBorderColor
+      : uncheckedBorderColor,
   };
 
   const iconStyle = { borderRadius: 6 };
@@ -65,7 +65,7 @@ const Checkbox = ( {
       accessibilityLabel={accessibilityLabel}
       accessibilityRole="radio"
       accessibilityState={{
-        checked: isChecked
+        checked: isChecked,
       }}
     />
   );

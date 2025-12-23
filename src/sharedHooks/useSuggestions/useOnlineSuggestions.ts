@@ -1,5 +1,5 @@
 import {
-  useNetInfo
+  useNetInfo,
 } from "@react-native-community/netinfo";
 import { useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision";
@@ -7,14 +7,14 @@ import type { ApiOpts } from "api/types";
 import i18n from "i18next";
 import { RealmContext } from "providers/contexts";
 import {
-  useCallback, useEffect, useState
+  useCallback, useEffect, useState,
 } from "react";
 import { UpdateMode } from "realm";
 import Taxon from "realmModels/Taxon";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedQuery,
-  useCurrentUser
+  useCurrentUser,
 } from "sharedHooks";
 
 import type { ScoreImageParams, UseSuggestionsOnlineSuggestion } from "./types";
@@ -49,7 +49,7 @@ interface OnlineSuggestionsQueryResponse {
 }
 
 const useOnlineSuggestions = (
-  options: OnlineSuggestionOptions
+  options: OnlineSuggestionOptions,
 ): UseOnlineSuggestionsResponse => {
   const realm = useRealm( );
   const {
@@ -57,7 +57,7 @@ const useOnlineSuggestions = (
     onFetched,
     scoreImageParams,
     queryKey,
-    shouldFetchOnlineSuggestions
+    shouldFetchOnlineSuggestions,
   } = options;
 
   const queryClient = useQueryClient( );
@@ -70,7 +70,7 @@ const useOnlineSuggestions = (
   const queryFn = async ( optsWithAuth: ApiOpts ) => {
     const params = {
       ...scoreImageParams,
-      ...( !currentUser && { locale } )
+      ...( !currentUser && { locale } ),
     };
     return scoreImage( params, optsWithAuth ) as Promise<OnlineSuggestionsQueryResponse>;
   };
@@ -83,7 +83,7 @@ const useOnlineSuggestions = (
     dataUpdatedAt,
     refetch,
     fetchStatus,
-    error
+    error,
   } = useAuthenticatedQuery<OnlineSuggestionsQueryResponse>(
     queryKey,
     // TODO types: fix queryFn for null vs undef consistency
@@ -91,8 +91,8 @@ const useOnlineSuggestions = (
     {
       enabled: !!shouldFetchOnlineSuggestions
         && !!( scoreImageParams?.image ),
-      allowAnonymousJWT: true
-    }
+      allowAnonymousJWT: true,
+    },
   );
 
   // Give up on suggestions request after a timeout
@@ -126,7 +126,7 @@ const useOnlineSuggestions = (
       // call, so we might as well store it in realm immediately instead of waiting
       // for useTaxon to fetch individual taxon results
       const mappedTaxa = onlineSuggestions.results.map(
-        suggestion => Taxon.mapApiToRealm( suggestion.taxon, realm )
+        suggestion => Taxon.mapApiToRealm( suggestion.taxon, realm ),
       );
       if ( onlineSuggestions?.common_ancestor ) {
         const mappedCommonAncestor = Taxon
@@ -138,7 +138,7 @@ const useOnlineSuggestions = (
           realm.create(
             "Taxon",
             Taxon.forUpdate( remoteTaxon ),
-            UpdateMode.Modified
+            UpdateMode.Modified,
           );
         } );
       }, "saving remote taxon from onlineSuggestions" );
@@ -154,17 +154,17 @@ const useOnlineSuggestions = (
     refetch,
     timedOut,
     resetTimeout,
-    fetchStatus
+    fetchStatus,
   };
 
   return timedOut
     ? {
       ...queryObject,
-      onlineSuggestions: undefined
+      onlineSuggestions: undefined,
     }
     : {
       ...queryObject,
-      onlineSuggestions
+      onlineSuggestions,
     };
 };
 

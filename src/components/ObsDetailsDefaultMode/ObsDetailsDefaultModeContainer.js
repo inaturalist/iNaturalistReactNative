@@ -8,17 +8,17 @@ import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
-  useReducer
+  useReducer,
 } from "react";
 import { LogBox } from "react-native";
 import Observation from "realmModels/Observation";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedQuery,
-  useObservationsUpdates
+  useObservationsUpdates,
 } from "sharedHooks";
 import {
-  fetchRemoteObservationKey
+  fetchRemoteObservationKey,
 } from "sharedHooks/useRemoteObservation";
 import useStore from "stores/useStore";
 
@@ -31,11 +31,11 @@ const { useRealm } = RealmContext;
 // react navigation via the observation object. it doesn't seem to
 // actually be breaking anything, for the moment (May 2, 2022)
 LogBox.ignoreLogs( [
-  "Non-serializable values were found in the navigation state"
+  "Non-serializable values were found in the navigation state",
 ] );
 
 const sortItems = ( ids, comments ) => ids.concat( [...comments] ).sort(
-  ( a, b ) => ( new Date( a.created_at ) - new Date( b.created_at ) )
+  ( a, b ) => ( new Date( a.created_at ) - new Date( b.created_at ) ),
 );
 
 const SHOW_AGREE_SHEET = "SHOW_AGREE_SHEET";
@@ -49,7 +49,7 @@ const initialState = {
   activityItems: [],
   addingActivityItem: false,
   observationShown: null,
-  showAddCommentSheet: false
+  showAddCommentSheet: false,
 };
 
 const reducer = ( state, action ) => {
@@ -60,8 +60,8 @@ const reducer = ( state, action ) => {
         observationShown: action.observationShown,
         activityItems: sortItems(
           action.observationShown?.identifications || [],
-          action.observationShown?.comments || []
-        )
+          action.observationShown?.comments || [],
+        ),
       };
     case ADD_ACTIVITY_ITEM:
       return {
@@ -70,32 +70,32 @@ const reducer = ( state, action ) => {
         addingActivityItem: false,
         activityItems: sortItems(
           action.observationShown?.identifications || [],
-          action.observationShown?.comments || []
-        )
+          action.observationShown?.comments || [],
+        ),
       };
     case LOADING_ACTIVITY_ITEM:
       return {
         ...state,
-        addingActivityItem: true
+        addingActivityItem: true,
       };
 
     case SHOW_AGREE_SHEET:
       return {
         ...state,
         showAgreeWithIdSheet: true,
-        agreeIdentification: action.agreeIdentification
+        agreeIdentification: action.agreeIdentification,
       };
     case HIDE_AGREE_SHEET:
       return {
         ...state,
         showAgreeWithIdSheet: false,
-        agreeIdentification: null
+        agreeIdentification: null,
       };
     case SET_ADD_COMMENT_SHEET:
       return {
         ...state,
         commentIsOptional: action.commentIsOptional,
-        showAddCommentSheet: action.showAddCommentSheet
+        showAddCommentSheet: action.showAddCommentSheet,
       };
     default:
       throw new Error( );
@@ -141,7 +141,7 @@ const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
     isRefetching,
     refetchRemoteObservation,
     isConnected,
-    remoteObsWasDeleted
+    remoteObsWasDeleted,
   } = props;
 
   const {
@@ -150,7 +150,7 @@ const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
     agreeIdentification,
     observationShown,
     showAddCommentSheet,
-    showAgreeWithIdSheet
+    showAgreeWithIdSheet,
   } = state;
   const queryClient = useQueryClient( );
 
@@ -171,7 +171,7 @@ const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
   }, [
     localObservation,
     markDeletedLocally,
-    navigation
+    navigation,
   ] );
 
   const wasSynced = !!( localObservation && localObservation?.wasSynced() );
@@ -180,18 +180,18 @@ const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
 
   const { data: subscriptions, refetch: refetchSubscriptions } = useAuthenticatedQuery(
     [
-      "fetchSubscriptions"
+      "fetchSubscriptions",
     ],
     optsWithAuth => fetchSubscriptions( { uuid, fields: "user_id" }, optsWithAuth ),
     {
-      enabled: !!( currentUser ) && !belongsToCurrentUser
-    }
+      enabled: !!( currentUser ) && !belongsToCurrentUser,
+    },
   );
 
   const invalidateRemoteObservationFetch = useCallback( ( ) => {
     if ( observation?.uuid ) {
       queryClient.invalidateQueries( {
-        queryKey: [fetchRemoteObservationKey, observation.uuid]
+        queryKey: [fetchRemoteObservationKey, observation.uuid],
       } );
     }
   }, [queryClient, observation?.uuid] );
@@ -201,14 +201,14 @@ const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
     // and adds a remote id on the Suggestions screen
     useCallback( ( ) => {
       invalidateRemoteObservationFetch( );
-    }, [invalidateRemoteObservationFetch] )
+    }, [invalidateRemoteObservationFetch] ),
   );
 
   useEffect( ( ) => {
     if ( !observationShown ) {
       dispatch( {
         type: SET_INITIAL_OBSERVATION,
-        observationShown: observation
+        observationShown: observation,
       } );
     }
   }, [observation, observationShown] );
@@ -219,33 +219,33 @@ const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
     if ( remoteObservation && !isRefetching ) {
       dispatch( {
         type: ADD_ACTIVITY_ITEM,
-        observationShown: Observation.mapApiToRealm( remoteObservation )
+        observationShown: Observation.mapApiToRealm( remoteObservation ),
       } );
     }
   }, [remoteObservation, isRefetching] );
 
   const { refetch: refetchObservationUpdates } = useObservationsUpdates(
-    !!currentUser && !!observation
+    !!currentUser && !!observation,
   );
 
   const openAddCommentSheet = useCallback( ( { isOptional = false } ) => {
     dispatch( {
       type: SET_ADD_COMMENT_SHEET,
       showAddCommentSheet: true,
-      commentIsOptional: isOptional || false
+      commentIsOptional: isOptional || false,
     } );
   }, [] );
 
   const hideAddCommentSheet = useCallback( ( ) => dispatch( {
     type: SET_ADD_COMMENT_SHEET,
     showAddCommentSheet: false,
-    comment: null
+    comment: null,
   } ), [] );
 
   const openAgreeWithIdSheet = useCallback( taxon => {
     dispatch( {
       type: SHOW_AGREE_SHEET,
-      agreeIdentification: { taxon }
+      agreeIdentification: { taxon },
     } );
   }, [] );
 
@@ -255,7 +255,7 @@ const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
       navigation.push( "Suggestions", {
         entryScreen: "ObsDetails",
         lastScreen: "ObsDetails",
-        hideSkip: true
+        hideSkip: true,
       } );
     } else {
       // Go directly to taxon search in case there are no photos
@@ -300,7 +300,7 @@ const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
     localObservation?.identifications,
     realm,
     refetchRemoteObservation,
-    uuid
+    uuid,
   ] );
 
   const handleCommentMutationSuccess = useCallback( data => {
@@ -321,7 +321,7 @@ const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
     localObservation?.comments,
     realm,
     refetchRemoteObservation,
-    uuid
+    uuid,
   ] );
 
   const closeAgreeWithIdSheet = useCallback( ( ) => {

@@ -29,7 +29,7 @@ class QueueItem extends Realm.Object {
     const firstQueueItem = queue[0];
     return {
       ...firstQueueItem,
-      payload: JSON.parse( firstQueueItem.payload )
+      payload: JSON.parse( firstQueueItem.payload ),
     };
   }
 
@@ -61,8 +61,8 @@ class QueueItem extends Realm.Object {
       payload: "string?",
       type: "string?",
       tries: { type: "int", default: 0 },
-      failedAt: "date?"
-    }
+      failedAt: "date?",
+    },
   };
 }
 

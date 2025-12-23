@@ -11,5 +11,5 @@ export default define( "RemoteComment", faker => ( {
   updated_at: faker.date.past( ).toISOString( ),
   user: userFactory( "RemoteUser" ),
   user_id: faker.number.int( ),
-  uuid: faker.string.uuid( )
+  uuid: faker.string.uuid( ),
 } ) );

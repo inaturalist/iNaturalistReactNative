@@ -2,7 +2,7 @@ import {
   parseISO,
   subDays,
   subHours,
-  subMinutes
+  subMinutes,
 } from "date-fns";
 import factory from "factoria";
 import initI18next from "i18n/initI18next";
@@ -11,18 +11,18 @@ import {
   formatApiDatetime,
   formatDifferenceForHumans,
   formatISONoSeconds,
-  getNowISO
+  getNowISO,
 } from "sharedHelpers/dateAndTime";
 
 const remoteObservation = factory( "RemoteObservation", {
-  created_at: "2015-02-12T20:41:10-08:00"
+  created_at: "2015-02-12T20:41:10-08:00",
 } );
 const remoteIdentification = factory( "RemoteIdentification", {
-  created_at: "2015-02-13T05:12:05+00:00"
+  created_at: "2015-02-13T05:12:05+00:00",
 } );
 const remoteComment = factory( "RemoteComment", {
   created_at: "2015-02-13T05:15:38+00:00",
-  updated_at: "2015-02-12T20:41:10-08:00"
+  updated_at: "2015-02-12T20:41:10-08:00",
 } );
 
 describe( "formatApiDatetime", ( ) => {
@@ -51,38 +51,38 @@ describe( "formatApiDatetime", ( ) => {
 
     it( "should return a localized datetime for a remote observation created_at date", ( ) => {
       expect(
-        formatApiDatetime( remoteObservation.created_at, i18next, { inViewerTimeZone: true } )
+        formatApiDatetime( remoteObservation.created_at, i18next, { inViewerTimeZone: true } ),
       ).toEqual( "2/13/15 4:41 AM UTC" );
     } );
 
     it( "should return a localized datetime for a remote identification created_at date", ( ) => {
       expect(
-        formatApiDatetime( remoteIdentification.created_at, i18next )
+        formatApiDatetime( remoteIdentification.created_at, i18next ),
       ).toEqual( "2/13/15 5:12 AM UTC" );
     } );
 
     it( "should return a localized datetime for a remote comment created_at date", ( ) => {
       expect(
-        formatApiDatetime( remoteComment.created_at, i18next )
+        formatApiDatetime( remoteComment.created_at, i18next ),
       ).toEqual( "2/13/15 5:15 AM UTC" );
     } );
 
     it( "should return the date in the local time zone by default", () => {
       expect( process.env.TZ ).toEqual( "UTC" );
       expect(
-        formatApiDatetime( "2023-01-02T08:00:00+01:00", i18next )
+        formatApiDatetime( "2023-01-02T08:00:00+01:00", i18next ),
       ).toEqual( "1/2/23 7:00 AM UTC" );
     } );
 
     it( "should return the date in a requested time zone", () => {
       expect( process.env.TZ ).toEqual( "UTC" );
       expect(
-        formatApiDatetime( "2023-01-02T08:00:00+01:00", i18next, { timeZone: "Asia/Tokyo" } )
+        formatApiDatetime( "2023-01-02T08:00:00+01:00", i18next, { timeZone: "Asia/Tokyo" } ),
       ).toEqual( "1/2/23 4:00 PM GMT+9" );
     } );
 
     it.todo(
-      "should return a localized datetime for a local observation created_at date"
+      "should return a localized datetime for a local observation created_at date",
     );
     it.todo( "should optionally show the date in the original time zone" );
   } );
@@ -157,7 +157,7 @@ describe( "formatDifferenceForHumans", ( ) => {
     const pattern = new RegExp( [
       date.getMonth() + 1,
       date.getDate(),
-      date.getFullYear() % 1000
+      date.getFullYear() % 1000,
     ].join( "/" ) );
     expect( dateString ).toMatch( pattern );
   } );

@@ -22,7 +22,7 @@ const useDebugMode = ( ): { isDebug: boolean; toggleDebug: () => void } => {
 
   return {
     isDebug,
-    toggleDebug
+    toggleDebug,
   };
 };
 

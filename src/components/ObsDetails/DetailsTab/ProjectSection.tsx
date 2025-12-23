@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import {
   Button,
   Divider,
-  Heading4
+  Heading4,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -14,12 +14,12 @@ const sectionClass = "mx-[15px] mb-[20px]";
 // TODO: can we get a centralized type/interface for our realm objects, here observation and project
 interface Props {
   observation: {
-    project_observations: Array<{
+    project_observations: {
       project: object;
-    }>;
-    non_traditional_projects: Array<{
+    }[];
+    non_traditional_projects: {
       project: object;
-    }>;
+    }[];
   };
 }
 
@@ -38,8 +38,8 @@ const ProjectSection = ( { observation }: Props ) => {
   const headerOptions = useMemo( ( ) => ( {
     headerTitle: t( "Observation" ),
     headerSubtitle: t( "X-PROJECTS", {
-      projectCount: totalProjectCount
-    } )
+      projectCount: totalProjectCount,
+    } ),
   } ), [totalProjectCount] );
 
   if ( totalProjectCount === 0 || typeof totalProjectCount !== "number" ) {
@@ -51,14 +51,14 @@ const ProjectSection = ( { observation }: Props ) => {
       <View className={sectionClass}>
         <Heading4 className={headingClass}>
           {t( "PROJECTS-X", {
-            projectCount: totalProjectCount
+            projectCount: totalProjectCount,
           } )}
         </Heading4>
         <Button
           text={t( "VIEW-PROJECTS" )}
           onPress={( ) => navigation.navigate( "ProjectList", {
             projects: allProjects,
-            headerOptions
+            headerOptions,
           } )}
         />
       </View>

@@ -50,14 +50,14 @@ export default function useExitObservationFlow( exitOptions ) {
       navigation.navigate( "TabNavigator", {
         screen: "ObservationsTab",
         params: {
-          screen: "ObsList"
-        }
+          screen: "ObsList",
+        },
       } );
     }
   }, [
     navigation,
     params,
     resetObservationFlowSlice,
-    exitOptions
+    exitOptions,
   ] );
 }

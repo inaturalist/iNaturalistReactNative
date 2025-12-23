@@ -8,7 +8,7 @@ import { useTranslation } from "sharedHooks";
 type Props = {
   color: string;
   progress: number;
-  iconClasses: Array<string>;
+  iconClasses: string[];
   uniqueKey?: string;
 }
 
@@ -16,7 +16,7 @@ const UploadProgressIcon = ( {
   color,
   progress,
   iconClasses,
-  uniqueKey
+  uniqueKey,
 }: Props ) => {
   const { t } = useTranslation( );
   return (

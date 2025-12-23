@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
-  fetchProjects
+  fetchProjects,
 } from "api/projects";
 import ProjectListItem from "components/ProjectList/ProjectListItem";
 import { ActivityIndicator, ScrollViewWrapper } from "components/SharedComponents";
@@ -38,7 +38,7 @@ const ProjectRequirements = ( ) => {
   const ruleOperands = {
     inclusions: [],
     exclusions: [],
-    defaults: []
+    defaults: [],
   };
 
   const RULES = [
@@ -46,58 +46,58 @@ const ProjectRequirements = ( ) => {
       ...ruleOperands,
       name: t( "Taxa" ),
       defaults: [{
-        text: t( "All-taxa" )
-      }]
+        text: t( "All-taxa" ),
+      }],
     },
     {
       ...ruleOperands,
       name: t( "Location" ),
       defaults: [{
-        text: t( "Worldwide" )
-      }]
+        text: t( "Worldwide" ),
+      }],
     },
     {
       ...ruleOperands,
       name: t( "Users" ),
       defaults: [{
-        text: t( "Any--user" )
-      }]
+        text: t( "Any--user" ),
+      }],
     },
     {
       ...ruleOperands,
       name: t( "Projects" ),
       defaults: [{
-        text: t( "Any--project" )
-      }]
+        text: t( "Any--project" ),
+      }],
     },
     {
       ...ruleOperands,
       name: t( "Quality-Grade" ),
       defaults: [{
-        text: t( "Any--quality-grade" )
-      }]
+        text: t( "Any--quality-grade" ),
+      }],
     },
     {
       ...ruleOperands,
       name: t( "Media-Type" ),
       defaults: [{
-        text: t( "Any--media-type" )
-      }]
+        text: t( "Any--media-type" ),
+      }],
     },
     {
       ...ruleOperands,
       name: t( "Date" ),
       defaults: [{
-        text: t( "Any--date" )
-      }]
+        text: t( "Any--date" ),
+      }],
     },
     {
       ...ruleOperands,
       name: t( "Establishment" ),
       defaults: [{
-        text: t( "Any--establishment-means" )
-      }]
-    }
+        text: t( "Any--establishment-means" ),
+      }],
+    },
   ];
 
   const projectQueryKey = ["projectRequirements", "fetchProjects", id];
@@ -108,8 +108,8 @@ const ProjectRequirements = ( ) => {
     optsWithAuth => fetchProjects( id, {
       rule_details: true,
       fields: "all",
-      ttl: -1
-    }, optsWithAuth )
+      ttl: -1,
+    }, optsWithAuth ),
   );
 
   const filterRules = operator => project?.project_observation_rules
@@ -126,19 +126,19 @@ const ProjectRequirements = ( ) => {
         // Ensure button mashing doesn't open multiple TaxonDetails instances
         key: `${route.key}-ProjectRequirements-TaxonDetails-${taxon.id}`,
         name: "TaxonDetails",
-        params: { id: taxon.id }
+        params: { id: taxon.id },
       } )
-    )
+    ),
   } );
 
   const includedTaxonList = _.sortBy(
     filterRules( "in_taxon?" ),
-    r => r.taxon.name
+    r => r.taxon.name,
   );
 
   const excludedTaxonList = _.sortBy(
     filterRules( "not_in_taxon?" ),
-    r => r.taxon.name
+    r => r.taxon.name,
   );
 
   const taxonRule = RULES.find( r => r.name === t( "Taxa" ) );
@@ -155,15 +155,15 @@ const ProjectRequirements = ( ) => {
     onPress: ( ) => navigation.navigate( "Explore", {
       place: {
         id: place.id,
-        display_name: place.display_name
-      }
-    } )
+        display_name: place.display_name,
+      },
+    } ),
   } );
 
   const includedPlaces = _.sortBy( filterRules( "observed_in_place?" ), r => r.place.display_name );
   const excludedPlaces = _.sortBy(
     filterRules( "not_observed_in_place?" ),
-    r => r.place.display_name
+    r => r.place.display_name,
   );
 
   const locationRule = RULES.find( r => r.name === t( "Location" ) );
@@ -184,7 +184,7 @@ const ProjectRequirements = ( ) => {
 
   const createUserObject = user => ( {
     text: user.login,
-    onPress: ( ) => navigation.navigate( "UserProfile", { userId: user.id } )
+    onPress: ( ) => navigation.navigate( "UserProfile", { userId: user.id } ),
   } );
 
   if ( includedUsers?.length > 0 ) {
@@ -195,14 +195,14 @@ const ProjectRequirements = ( ) => {
   }
   if ( membersOnly ) {
     userRule.defaults = [{
-      text: t( "Project-Members-Only" )
+      text: t( "Project-Members-Only" ),
     }];
   }
 
   // Projects Requirements
   const createProjectObject = includedProject => ( {
     text: includedProject.title,
-    onPress: ( ) => navigation.navigate( "ProjectDetails", { id: includedProject.id } )
+    onPress: ( ) => navigation.navigate( "ProjectDetails", { id: includedProject.id } ),
   } );
   const projectRule = RULES.find( r => r.name === t( "Projects" ) );
   const includedProjects = project?.project_observation_rules
@@ -219,7 +219,7 @@ const ProjectRequirements = ( ) => {
   if ( qualityGrades?.length > 0 ) {
     const qualityGradeRule = RULES.find( r => r.name === t( "Quality-Grade" ) );
     qualityGradeRule.inclusions = qualityGrades.map( grade => ( {
-      text: qualityGradeOption( grade )
+      text: qualityGradeOption( grade ),
     } ) );
   }
 
@@ -249,8 +249,8 @@ const ProjectRequirements = ( ) => {
     // from 2023-03-22 07:42 -06:00 to something readable
     // https://github.com/inaturalist/inaturalist/blob/0994c85e2b87661042289ff080d3fc29ed8e70b3/app/webpack/projects/shared/util.js#L4
       {
-        text: projectDate
-      }
+        text: projectDate,
+      },
     ];
   }
 

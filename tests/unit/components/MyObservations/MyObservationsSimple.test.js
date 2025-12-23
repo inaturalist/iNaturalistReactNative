@@ -12,13 +12,13 @@ const mockObservations = [
     comments: [
       factory( "LocalComment" ),
       factory( "LocalComment" ),
-      factory( "LocalComment" )
+      factory( "LocalComment" ),
     ],
-    observationPhotos: [factory( "LocalObservationPhoto" )]
+    observationPhotos: [factory( "LocalObservationPhoto" )],
   } ),
   factory( "LocalObservation", {
-    observationPhotos: [factory( "LocalObservationPhoto" )]
-  } )
+    observationPhotos: [factory( "LocalObservationPhoto" )],
+  } ),
 ];
 
 const DEVICE_ORIENTATION_PHONE_PORTRAIT = {
@@ -26,7 +26,7 @@ const DEVICE_ORIENTATION_PHONE_PORTRAIT = {
   isTablet: false,
   isLandscapeMode: false,
   screenWidth: 393,
-  screenHeight: 852
+  screenHeight: 852,
 };
 
 const DEVICE_ORIENTATION_PHONE_LANDSCAPE = {
@@ -34,7 +34,7 @@ const DEVICE_ORIENTATION_PHONE_LANDSCAPE = {
   isTablet: false,
   isLandscapeMode: true,
   screenWidth: 852,
-  screenHeight: 393
+  screenHeight: 393,
 };
 
 // const DEVICE_ORIENTATION_TABLET_PORTRAIT = {
@@ -55,7 +55,7 @@ const DEVICE_ORIENTATION_PHONE_LANDSCAPE = {
 
 jest.mock( "sharedHooks/useDeviceOrientation", ( ) => ( {
   __esModule: true,
-  default: jest.fn( () => ( DEVICE_ORIENTATION_PHONE_PORTRAIT ) )
+  default: jest.fn( () => ( DEVICE_ORIENTATION_PHONE_PORTRAIT ) ),
 } ) );
 
 const renderMyObservations = layout => renderComponent(
@@ -66,7 +66,7 @@ const renderMyObservations = layout => renderComponent(
     toggleLayout={jest.fn( )}
     setShowLoginSheet={jest.fn( )}
     activeTab={OBSERVATIONS_TAB}
-  />
+  />,
 );
 
 describe( "MyObservationsSimple", () => {
@@ -90,7 +90,7 @@ describe( "MyObservationsSimple", () => {
     await screen.findByTestId( `MyObservations.obsListItem.${firstObs.uuid}` );
     mockObservations.forEach( obs => {
       expect(
-        screen.getByTestId( `MyObservations.obsListItem.${obs.uuid}` )
+        screen.getByTestId( `MyObservations.obsListItem.${obs.uuid}` ),
       ).toBeTruthy();
     } );
     // TODO: some things are still happening in the background so I unmount here,

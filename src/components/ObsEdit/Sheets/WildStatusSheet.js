@@ -1,7 +1,7 @@
 // @flow
 
 import {
-  RadioButtonSheet
+  RadioButtonSheet,
 } from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";
@@ -16,7 +16,7 @@ type Props = {
 const WildStatusSheet = ( {
   onPressClose,
   selectedValue,
-  updateCaptiveStatus
+  updateCaptiveStatus,
 }: Props ): Node => {
   const { t } = useTranslation( );
 
@@ -24,13 +24,13 @@ const WildStatusSheet = ( {
     wild: {
       label: t( "Wild" ),
       text: t( "This-is-a-wild-organism" ),
-      value: false
+      value: false,
     },
     captive: {
       label: t( "Captive-Cultivated" ),
       text: t( "This-organism-was-placed-by-humans" ),
-      value: true
-    }
+      value: true,
+    },
   };
 
   return (

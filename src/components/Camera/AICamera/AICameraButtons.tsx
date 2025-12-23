@@ -78,7 +78,7 @@ const AICameraButtons = ( {
   zoomTextValue,
   useLocation,
   toggleLocation,
-  deleteSentinelFile
+  deleteSentinelFile,
 }: Props ) => {
   const { isDefaultMode } = useLayoutPrefs();
   if ( isTablet ) {

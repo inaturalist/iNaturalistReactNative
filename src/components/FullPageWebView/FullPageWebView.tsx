@@ -2,7 +2,7 @@ import type { RouteProp } from "@react-navigation/native";
 import {
   useFocusEffect,
   useNavigation,
-  useRoute
+  useRoute,
 } from "@react-navigation/native";
 import { getUserAgent } from "api/userAgent";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
@@ -31,7 +31,7 @@ export const ALLOWED_DOMAINS = [
   "plaid.com",
   "stripecdn.com",
   "stripe.network",
-  "hcaptcha.com"
+  "hcaptcha.com",
 ];
 
 const ALLOWED_ORIGINS = ["https://*", "mailto:*"];
@@ -57,7 +57,7 @@ type FullPageWebViewParams = {
   title?: string;
   loggedIn?: boolean;
   skipSetSourceInShouldStartLoadWithRequest?: boolean;
-  clickablePathnames?: Array<string>;
+  clickablePathnames?: string[];
   shouldLoadUrl?: ( url: string ) => boolean;
 }
 
@@ -76,7 +76,7 @@ export function onShouldStartLoadWithRequest(
   request: ShouldStartLoadRequest,
   source: WebViewSource,
   params: FullPageWebViewParams,
-  setSource?: ( source: WebViewSource ) => void
+  setSource?: ( source: WebViewSource ) => void,
 ) {
   if ( typeof ( params.shouldLoadUrl ) === "function" ) {
     if ( !params.shouldLoadUrl( request.url ) ) return false;
@@ -184,13 +184,13 @@ const FullPageWebView = ( ) => {
     React.useCallback( () => {
       if ( params.title ) {
         navigation.setOptions( {
-          headerTitle: params.title
+          headerTitle: params.title,
         } );
       }
 
       setSource( {
         ...source,
-        uri: params.initialUrl
+        uri: params.initialUrl,
       } );
 
       // Make the WebView logged in for the current user
@@ -199,8 +199,8 @@ const FullPageWebView = ( ) => {
           setSource( {
             ...source,
             headers: {
-              Authorization: jwt
-            }
+              Authorization: jwt,
+            },
           } );
         } );
       }
@@ -208,7 +208,7 @@ const FullPageWebView = ( ) => {
       // for this hook
       // eslint-disable-next-line react-hooks/react-compiler
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [navigation, params.loggedIn, params.title] )
+    }, [navigation, params.loggedIn, params.title] ),
   );
 
   const fontScalingJS = `
@@ -239,7 +239,7 @@ const FullPageWebView = ( ) => {
                 request,
                 source,
                 params,
-                setSource
+                setSource,
               )
             }
             originWhitelist={ALLOWED_ORIGINS}

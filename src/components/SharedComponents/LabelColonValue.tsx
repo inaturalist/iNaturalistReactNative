@@ -1,5 +1,5 @@
 import {
-  Body4
+  Body4,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
@@ -19,7 +19,7 @@ const LabelColonValue = ( {
   LabelComponent = Body4,
   valueSelectable,
   value,
-  ValueComponent = Body4
+  ValueComponent = Body4,
 }: Props ) => (
   <View className="flex-row justify-start">
     <View className="flex-row">

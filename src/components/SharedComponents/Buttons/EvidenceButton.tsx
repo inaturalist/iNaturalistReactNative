@@ -15,11 +15,11 @@ const EvidenceButton = ( {
   disabled,
   handlePress,
   accessibilityLabel,
-  accessibilityHint
+  accessibilityHint,
 }: Props ) => {
   if ( !accessibilityLabel ) {
     throw new Error(
-      "EvidenceButton needs an accessibility label"
+      "EvidenceButton needs an accessibility label",
     );
   }
   return (

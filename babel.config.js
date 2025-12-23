@@ -23,20 +23,20 @@ module.exports = {
         stores: "./src/stores",
         styles: "./src/styles",
         tests: "./tests",
-        uploaders: "./src/uploaders"
-      }
+        uploaders: "./src/uploaders",
+      },
     }],
     // Reanimated plugin has to be listed last https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/
     [
       "react-native-reanimated/plugin",
       {
-        processNestedWorklets: true
-      }
-    ]
+        processNestedWorklets: true,
+      },
+    ],
   ],
   env: {
     production: {
-      plugins: ["react-native-paper/babel", "transform-remove-console"]
-    }
-  }
+      plugins: ["react-native-paper/babel", "transform-remove-console"],
+    },
+  },
 };

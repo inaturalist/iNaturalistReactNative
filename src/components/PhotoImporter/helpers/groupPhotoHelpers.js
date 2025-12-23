@@ -2,7 +2,7 @@
 
 const sortByTime = array => array.sort( ( a, b ) => b.timestamp - a.timestamp );
 
-const flattenAndOrderSelectedPhotos = ( selectedObservations: ?Array<Object> ): Array<Object> => {
+const flattenAndOrderSelectedPhotos = ( selectedObservations: ?Object[] ): Object[] => {
   // combine selected observations into a single array
   let combinedPhotos = [];
   selectedObservations?.forEach( obs => {

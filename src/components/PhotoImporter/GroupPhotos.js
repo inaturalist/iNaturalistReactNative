@@ -9,7 +9,7 @@ import {
   CustomFlashList,
   FloatingActionBar,
   INatIcon,
-  INatIconButton
+  INatIconButton,
 } from "components/SharedComponents";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { Pressable, View } from "components/styledComponents";
@@ -23,11 +23,11 @@ import GroupPhotoImage from "./GroupPhotoImage";
 
 type Props = {
   combinePhotos: Function,
-  groupedPhotos: Array<Object>,
+  groupedPhotos: Object[],
   isCreatingObservations?: boolean,
   navBasedOnUserSettings: Function,
   removePhotos: Function,
-  selectedObservations: Array<Object>,
+  selectedObservations: Object[],
   selectObservationPhotos: Function,
   separatePhotos: Function,
   totalPhotos: number
@@ -42,14 +42,14 @@ const GroupPhotos = ( {
   selectedObservations,
   selectObservationPhotos,
   separatePhotos,
-  totalPhotos
+  totalPhotos,
 }: Props ): Node => {
   const navigation = useNavigation( );
   const {
     flashListStyle,
     gridItemStyle,
     gridItemWidth,
-    numColumns
+    numColumns,
   } = useGridLayout( );
   const [buttonBarHeight, setButtonBarHeight] = useState( null );
   const extractKey = ( item, index ) => ( item.empty
@@ -73,7 +73,7 @@ const GroupPhotos = ( {
   const addPhotos = useCallback( () => {
     navigation.navigate( "NoBottomTabStackNavigator", {
       screen: "PhotoLibrary",
-      params: { fromGroupPhotos: true }
+      params: { fromGroupPhotos: true },
     } );
   }, [navigation] );
 
@@ -90,7 +90,7 @@ const GroupPhotos = ( {
           style={[gridItemStyle, {
             borderWidth: 4,
             borderStyle: "dashed",
-            borderColor: colors.mediumGray
+            borderColor: colors.mediumGray,
           }]}
         >
           <INatIcon name="plus" size={50} color={colors.mediumGray} />
@@ -109,7 +109,7 @@ const GroupPhotos = ( {
 
   const onLayout = event => {
     const {
-      height
+      height,
     } = event.nativeEvent.layout;
     setButtonBarHeight( height );
   };
@@ -124,7 +124,7 @@ const GroupPhotos = ( {
 
   const extraData = {
     selectedObservations,
-    gridItemWidth
+    gridItemWidth,
   };
 
   return (

@@ -5,7 +5,7 @@ import {
   Body3,
   DateDisplay,
   Heading3,
-  LabelColonValue
+  LabelColonValue,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";

@@ -1,7 +1,7 @@
 import {
   Body3,
   CircleDots,
-  INatIcon
+  INatIcon,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
@@ -15,7 +15,7 @@ export interface Props {
 }
 
 const SimpleErrorHeader = ( {
-  isConnected
+  isConnected,
 }: Props ) => {
   const { t } = useTranslation( );
 

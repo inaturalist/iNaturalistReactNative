@@ -1,5 +1,5 @@
 import {
-  getAnalytics, logEvent
+  getAnalytics, logEvent,
 } from "@react-native-firebase/analytics";
 import { log } from "sharedHelpers/logger";
 
@@ -9,7 +9,7 @@ type FirebaseParameters = Record<string, string | number | string[]>
 
 export const logFirebaseEvent = (
   eventId: string,
-  parameters?: FirebaseParameters
+  parameters?: FirebaseParameters,
 ) => {
   try {
     const analytics = getAnalytics();
@@ -20,13 +20,13 @@ export const logFirebaseEvent = (
 };
 
 export const logFirebaseScreenView = (
-  screenName: string
+  screenName: string,
 ) => {
   try {
     const analytics = getAnalytics();
     logEvent( analytics, "screen_view", {
       firebase_screen: screenName,
-      firebase_screen_class: screenName
+      firebase_screen_class: screenName,
     } );
   } catch ( error ) {
     logger.error( "Error logging firebase screen view", JSON.stringify( error ) );

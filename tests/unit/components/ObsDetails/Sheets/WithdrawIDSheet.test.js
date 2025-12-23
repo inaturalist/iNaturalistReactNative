@@ -7,7 +7,7 @@ import { renderComponent } from "tests/helpers/render";
 
 const mockTaxon = factory( "RemoteTaxon", {
   name: "Plantae",
-  iconic_taxon_name: "Plantae"
+  iconic_taxon_name: "Plantae",
 } );
 
 const mockMutate = jest.fn();
@@ -21,17 +21,17 @@ describe( "WithdrawIDSheet", () => {
         onPressClose={mockHandleClose}
         withdrawOrRestoreIdentification={mockMutate}
         taxon={mockTaxon}
-      />
+      />,
     );
 
     expect( await screen.findByText( t( "WITHDRAW-ID-QUESTION" ) ) ).toBeTruthy( );
     expect( screen.getByRole(
       "button",
-      { name: t( "WITHDRAW-ID" ), disabled: false }
+      { name: t( "WITHDRAW-ID" ), disabled: false },
     ) ).toBeTruthy( );
     expect( screen.getByRole(
       "button",
-      { name: t( "CANCEL" ), disabled: false }
+      { name: t( "CANCEL" ), disabled: false },
     ) ).toBeTruthy( );
   } );
 } );

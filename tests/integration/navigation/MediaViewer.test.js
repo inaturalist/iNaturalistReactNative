@@ -1,13 +1,13 @@
 import {
   act,
   screen,
-  userEvent
+  userEvent,
 } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import {
-  renderAppWithObservations
+  renderAppWithObservations,
 } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
@@ -20,7 +20,7 @@ jest.unmock( "@react-navigation/native" );
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -31,8 +31,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -45,13 +45,13 @@ jest.mock( "sharedHooks/useSuggestions/useOnlineSuggestions", ( ) => jest.fn( ()
   dataUpdatedAt: 1764627659, // arbitrary epoch timestamp, 1/1/2000
   error: null,
   onlineSuggestions: {
-    results: []
-  }
+    results: [],
+  },
 } ) ) );
 
 beforeEach( async () => {
   setStoreStateLayout( {
-    isDefaultMode: false
+    isDefaultMode: false,
   } );
 } );
 
@@ -74,8 +74,8 @@ describe( "MediaViewer navigation", ( ) => {
     const observation = factory( "RemoteObservation", {
       observation_photos: [
         factory( "RemoteObservationPhoto" ),
-        factory( "RemoteObservationPhoto" )
-      ]
+        factory( "RemoteObservationPhoto" ),
+      ],
     } );
     const observations = [observation];
     useStore.setState( { observations } );
@@ -83,7 +83,7 @@ describe( "MediaViewer navigation", ( ) => {
     async function navigateToObsDetail( ) {
       await renderAppWithObservations( observations, __filename );
       const observationGridItem = await screen.findByTestId(
-        `MyObservations.obsGridItem.${observation.uuid}`
+        `MyObservations.obsGridItem.${observation.uuid}`,
       );
       await actor.press( observationGridItem );
       expect( await screen.findByTestId( `ObsDetails.${observation.uuid}` ) ).toBeVisible( );
@@ -96,8 +96,8 @@ describe( "MediaViewer navigation", ( ) => {
       await act( async ( ) => actor.press( photos[0] ) );
       expect(
         await screen.findByTestId(
-          `CustomImageZoom.${observation.observation_photos[0].photo.url}`
-        )
+          `CustomImageZoom.${observation.observation_photos[0].photo.url}`,
+        ),
       ).toBeVisible( );
     } );
 
@@ -125,8 +125,8 @@ describe( "MediaViewer navigation", ( ) => {
       await act( async ( ) => actor.press( photos[0] ) );
       expect(
         await screen.findByTestId(
-          `CustomImageZoom.${observation.observation_photos[0].photo.url}`
-        )
+          `CustomImageZoom.${observation.observation_photos[0].photo.url}`,
+        ),
       ).toBeVisible( );
       expect( screen.queryByLabelText( "Delete photo" ) ).toBeFalsy( );
     } );
@@ -135,11 +135,11 @@ describe( "MediaViewer navigation", ( ) => {
   describe( "from TaxonDetail", ( ) => {
     const taxonPhotos = [
       factory( "RemoteTaxonPhoto" ),
-      factory( "RemoteTaxonPhoto" )
+      factory( "RemoteTaxonPhoto" ),
     ];
     const taxon = factory( "RemoteTaxon", {
       // inatjs attribute
-      taxonPhotos
+      taxonPhotos,
     } );
     const observation = factory( "RemoteObservation", { taxon } );
     const observations = [observation];
@@ -156,7 +156,7 @@ describe( "MediaViewer navigation", ( ) => {
     async function navigateToTaxonDetail( ) {
       await renderAppWithObservations( observations, __filename );
       const observationGridItem = await screen.findByTestId(
-        `MyObservations.obsGridItem.${observation.uuid}`
+        `MyObservations.obsGridItem.${observation.uuid}`,
       );
       await actor.press( observationGridItem );
       expect( await screen.findByTestId( `ObsDetails.${observation.uuid}` ) ).toBeVisible( );
@@ -173,8 +173,8 @@ describe( "MediaViewer navigation", ( ) => {
       await act( async ( ) => actor.press( photo ) );
       expect(
         await screen.findByTestId(
-          `CustomImageZoom.${taxon.taxonPhotos[0].photo.url}`
-        )
+          `CustomImageZoom.${taxon.taxonPhotos[0].photo.url}`,
+        ),
       ).toBeVisible( );
     } );
 
@@ -186,8 +186,8 @@ describe( "MediaViewer navigation", ( ) => {
       await act( async ( ) => actor.press( photo ) );
       expect(
         await screen.findByTestId(
-          `CustomImageZoom.${taxon.taxonPhotos[0].photo.url}`
-        )
+          `CustomImageZoom.${taxon.taxonPhotos[0].photo.url}`,
+        ),
       ).toBeVisible( );
       expect( screen.queryByLabelText( "Delete photo" ) ).toBeFalsy( );
     } );
@@ -197,8 +197,8 @@ describe( "MediaViewer navigation", ( ) => {
     const observation = factory( "RemoteObservation", {
       observation_photos: [
         factory( "RemoteObservationPhoto" ),
-        factory( "RemoteObservationPhoto" )
-      ]
+        factory( "RemoteObservationPhoto" ),
+      ],
     } );
     const observations = [observation];
     const defaultSelectedPhoto = observation.observation_photos[0].photo.url;
@@ -208,20 +208,20 @@ describe( "MediaViewer navigation", ( ) => {
     async function navigateToSuggestions( ) {
       await renderAppWithObservations( observations, __filename );
       const observationGridItem = await screen.findByTestId(
-        `MyObservations.obsGridItem.${observation.uuid}`
+        `MyObservations.obsGridItem.${observation.uuid}`,
       );
       await actor.press( observationGridItem );
       expect( await screen.findByTestId( `ObsDetails.${observation.uuid}` ) ).toBeVisible( );
       const suggestButton = await screen.findByTestId(
-        "ObsDetail.cvSuggestionsButton"
+        "ObsDetail.cvSuggestionsButton",
       );
       await act( async () => actor.press( suggestButton ) );
       const firstPhoto = await screen.findByTestId(
-        `ObsPhotoSelectionList.${defaultSelectedPhoto}`
+        `ObsPhotoSelectionList.${defaultSelectedPhoto}`,
       );
       expect( firstPhoto ).toBeVisible();
       const secondPhoto = await screen.findByTestId(
-        `ObsPhotoSelectionList.${defaultUnselectedPhoto}`
+        `ObsPhotoSelectionList.${defaultUnselectedPhoto}`,
       );
       expect( secondPhoto ).toBeVisible();
     }
@@ -229,41 +229,41 @@ describe( "MediaViewer navigation", ( ) => {
     it( "should show the selected photo when tapped", async () => {
       await navigateToSuggestions( );
       const firstPhoto = await screen.findByTestId(
-        `ObsPhotoSelectionList.${defaultSelectedPhoto}`
+        `ObsPhotoSelectionList.${defaultSelectedPhoto}`,
       );
       expect( firstPhoto ).toBeVisible();
       await act( async () => actor.press( firstPhoto ) );
       expect(
         await screen.findByTestId(
-          `CustomImageZoom.${defaultSelectedPhoto}`
-        )
+          `CustomImageZoom.${defaultSelectedPhoto}`,
+        ),
       ).toBeVisible();
     } );
 
     it( "should not show the currently not selected photo when tapped", async () => {
       await navigateToSuggestions( );
       const secondPhoto = await screen.findByTestId(
-        `ObsPhotoSelectionList.${defaultUnselectedPhoto}`
+        `ObsPhotoSelectionList.${defaultUnselectedPhoto}`,
       );
       expect( secondPhoto ).toBeVisible();
       await act( async () => actor.press( secondPhoto ) );
       expect(
         screen.queryByTestId(
-          `CustomImageZoom.${defaultUnselectedPhoto}`
-        )
+          `CustomImageZoom.${defaultUnselectedPhoto}`,
+        ),
       ).toBeFalsy();
     } );
 
     it( "should not show delete button", async () => {
       await navigateToSuggestions();
       const firstPhoto = await screen.findByTestId(
-        `ObsPhotoSelectionList.${defaultSelectedPhoto}`
+        `ObsPhotoSelectionList.${defaultSelectedPhoto}`,
       );
       await act( async () => actor.press( firstPhoto ) );
       expect(
         await screen.findByTestId(
-          `CustomImageZoom.${defaultSelectedPhoto}`
-        )
+          `CustomImageZoom.${defaultSelectedPhoto}`,
+        ),
       ).toBeVisible();
       expect( screen.queryByLabelText( "Delete photo" ) ).toBeFalsy();
     } );

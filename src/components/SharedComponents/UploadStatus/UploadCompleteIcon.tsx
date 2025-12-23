@@ -4,13 +4,13 @@ import { View } from "components/styledComponents";
 import React from "react";
 
 type Props = {
-  iconClasses: Array<string>;
+  iconClasses: string[];
   completeColor: string;
 }
 
 const UploadCompleteIcon = ( {
   iconClasses,
-  completeColor
+  completeColor,
 }: Props ) => (
   <View className={classnames( iconClasses )} testID="UploadStatus.Complete">
     <INatIcon

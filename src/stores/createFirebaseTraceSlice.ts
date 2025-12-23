@@ -27,7 +27,7 @@ const TRACE_TIMEOUT = 10000;
 
 const applyTraceAttributes = (
   trace: FirebasePerformanceTypes.Trace,
-  attributes: FirebaseTraceAttributes
+  attributes: FirebaseTraceAttributes,
 ): void => {
   try {
     Object.entries( attributes ).forEach( ( [key, value] ) => {
@@ -72,8 +72,8 @@ const createFirebaseTraceSlice: StateCreator<FirebaseTraceSlice>
     set( state => ( {
       activeFirebaseTraces: {
         ...state.activeFirebaseTraces,
-        [traceId]: { trace, timeoutId }
-      }
+        [traceId]: { trace, timeoutId },
+      },
     } ) );
   },
 
@@ -93,7 +93,7 @@ const createFirebaseTraceSlice: StateCreator<FirebaseTraceSlice>
         return { activeFirebaseTraces: remainingTraces };
       } );
     }
-  }
+  },
 } );
 
 export default createFirebaseTraceSlice;

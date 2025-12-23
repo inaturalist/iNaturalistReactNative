@@ -17,7 +17,7 @@ const baseHeaderOptions = {
   headerShown: true,
   headerBackButtonDisplayMode: "minimal",
   headerShadowVisible: false,
-  headerLeft: () => <BackButton inCustomHeader testID="header-back-button" />
+  headerLeft: () => <BackButton inCustomHeader testID="header-back-button" />,
 } as const;
 
 const showHeader = {
@@ -28,8 +28,8 @@ const showHeader = {
   // https://reactnavigation.org/docs/native-stack-navigator#headertitlealign
   headerTitleStyle: {
     fontSize: 24,
-    fontFamily: fontMedium
-  }
+    fontFamily: fontMedium,
+  },
 } as const;
 
 const showLongHeader = {
@@ -40,38 +40,38 @@ const showLongHeader = {
   // https://reactnavigation.org/docs/native-stack-navigator#headertitlealign
   headerTitleStyle: {
     fontSize: 16,
-    fontFamily: fontMedium
-  }
+    fontFamily: fontMedium,
+  },
 } as const;
 
 export const hideHeaderLeft = {
   ...showHeader,
   headerLeft: null,
-  headerBackVisible: false
+  headerBackVisible: false,
 } as const;
 
 const showSimpleCustomHeader = {
   header: FullPageWebViewHeader,
-  headerShadowVisible: true
+  headerShadowVisible: true,
 } as const;
 
 const hideHeader = {
-  headerShown: false
+  headerShown: false,
 } as const;
 
 const blankHeaderTitle = {
-  headerTitle: ""
+  headerTitle: "",
 } as const;
 
 const removeBottomBorder = {
   headerBackground: ( ) => (
     // eslint-disable-next-line react-native/no-inline-styles
     <HeaderBackground style={{ bottomBorderColor: "white" }} />
-  )
+  ),
 } as const;
 
 const preventSwipeToGoBack = {
-  gestureEnabled: false
+  gestureEnabled: false,
 } as const;
 
 export {
@@ -82,5 +82,5 @@ export {
   removeBottomBorder,
   showHeader,
   showLongHeader,
-  showSimpleCustomHeader
+  showSimpleCustomHeader,
 };

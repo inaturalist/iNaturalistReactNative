@@ -1,7 +1,7 @@
 // @flow
 
 import {
-  WarningSheet
+  WarningSheet,
 } from "components/SharedComponents";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
@@ -15,7 +15,7 @@ const { useRealm } = RealmContext;
 type Props = {
   currentObservation: Object,
   onPressClose: Function,
-  observations: Array<Object>,
+  observations: Object[],
   onDelete?: Function,
   updateObservations: Function
 }
@@ -25,7 +25,7 @@ const DeleteObservationSheet = ( {
   onPressClose,
   observations,
   onDelete,
-  updateObservations
+  updateObservations,
 }: Props ): Node => {
   const { t } = useTranslation( );
   const realm = useRealm( );
@@ -58,7 +58,7 @@ const DeleteObservationSheet = ( {
     realm,
     addToDeleteQueue,
     updateObservations,
-    uuid
+    uuid,
   ] );
 
   return (

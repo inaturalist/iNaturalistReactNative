@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { AppState } from "react-native";
 import { log } from "sharedHelpers/logger";
 import {
-  usePerformance
+  usePerformance,
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 
@@ -13,7 +13,7 @@ const logger = log.extend( "AppStateListener" );
 const AppStateListener = ( ) => {
   const { loadTime } = usePerformance( {
     screenName: "AppStateListener",
-    isLoading: false
+    isLoading: false,
   } );
   if ( isDebugMode( ) ) {
     logger.info( loadTime );

@@ -6,7 +6,7 @@ import User from "realmModels/User";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedQuery,
-  useCurrentUser
+  useCurrentUser,
 } from "sharedHooks";
 
 const { useRealm } = RealmContext;
@@ -25,13 +25,13 @@ const useUserMe = ( options: UseUserMeOptions ) => {
     data: remoteUser,
     isLoading,
     refetch: refetchUserMe,
-    dataUpdatedAt
+    dataUpdatedAt,
   } = useAuthenticatedQuery(
     ["fetchUserMe"],
     optsWithAuth => fetchUserMe( { }, optsWithAuth ),
     {
-      enabled
-    }
+      enabled,
+    },
   );
 
   const updateUser = useCallback( ( ) => {
@@ -43,7 +43,7 @@ const useUserMe = ( options: UseUserMeOptions ) => {
   }, [
     realm,
     remoteUser,
-    updateRealm
+    updateRealm,
   ] );
 
   useEffect( ( ) => {
@@ -55,7 +55,7 @@ const useUserMe = ( options: UseUserMeOptions ) => {
   return {
     remoteUser,
     isLoading,
-    refetchUserMe
+    refetchUserMe,
   };
 };
 

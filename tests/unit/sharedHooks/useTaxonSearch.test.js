@@ -4,12 +4,12 @@ import useTaxonSearch from "sharedHooks/useTaxonSearch";
 import factory from "tests/factory";
 
 const mockIconicTaxa = [
-  factory( "LocalTaxon" )
+  factory( "LocalTaxon" ),
 ];
 
 jest.mock( "sharedHooks/useIconicTaxa", ( ) => ( {
   __esModule: true,
-  default: ( ) => mockIconicTaxa
+  default: ( ) => mockIconicTaxa,
 } ) );
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
@@ -17,27 +17,27 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
   default: jest.fn( () => ( {
     data: [],
     refetch: jest.mock( ),
-    isLoading: false
-  } ) )
+    isLoading: false,
+  } ) ),
 } ) );
 
 const mockSafeRealmWrite = jest.fn( );
 jest.mock( "sharedHelpers/safeRealmWrite", ( ) => ( {
   __esModule: true,
-  default: ( ) => mockSafeRealmWrite( )
+  default: ( ) => mockSafeRealmWrite( ),
 } ) );
 
 const mockRealmObjects = jest.fn( ( ) => ( {
-  filtered: jest.fn( () => [] )
+  filtered: jest.fn( () => [] ),
 } ) );
 
 jest.mock( "providers/contexts", ( ) => ( {
   __esModule: true,
   RealmContext: {
     useRealm: jest.fn( ( ) => ( {
-      objects: mockRealmObjects
-    } ) )
-  }
+      objects: mockRealmObjects,
+    } ) ),
+  },
 } ) );
 
 describe( "useTaxonSearch", ( ) => {
@@ -58,7 +58,7 @@ describe( "useTaxonSearch", ( ) => {
     expect( useAuthenticatedQuery ).toHaveBeenCalledWith(
       expect.arrayContaining( ["fetchTaxonSuggestions"] ),
       expect.anything(),
-      expect.objectContaining( { enabled: true } )
+      expect.objectContaining( { enabled: true } ),
     );
   } );
 
@@ -73,7 +73,7 @@ describe( "useTaxonSearch", ( ) => {
     useAuthenticatedQuery.mockImplementation( ( ) => ( {
       data: [factory( "LocalTaxon" )],
       refetch: jest.mock( ),
-      isLoading: false
+      isLoading: false,
     } ) );
   }
 

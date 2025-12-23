@@ -1,6 +1,6 @@
 import {
   EXPLORE_ACTION,
-  exploreReducer
+  exploreReducer,
 } from "providers/ExploreContext";
 import factory from "tests/factory";
 
@@ -11,7 +11,7 @@ describe( "ExploreContext", ( ) => {
         const initialState = { lat: 1, lng: 1 };
         const reducedState = exploreReducer( initialState, {
           type: EXPLORE_ACTION.SET_PLACE,
-          place: factory( "RemotePlace" )
+          place: factory( "RemotePlace" ),
         } );
         expect( initialState.lat ).not.toBeUndefined( );
         expect( initialState.lng ).not.toBeUndefined( );
@@ -29,8 +29,8 @@ describe( "ExploreContext", ( ) => {
             swlng: 0,
             nelat: 1,
             nelng: 1,
-            place_guess: "somwhere"
-          }
+            place_guess: "somwhere",
+          },
         } );
         expect( initialState.lat ).not.toBeUndefined( );
         expect( initialState.lng ).not.toBeUndefined( );
@@ -47,7 +47,7 @@ describe( "ExploreContext", ( ) => {
         const reducedState = exploreReducer( initialState, {
           type: EXPLORE_ACTION.CHANGE_TAXON,
           taxon,
-          taxonId: taxon.id
+          taxonId: taxon.id,
         } );
         expect( reducedState.iconic_taxa ).toBeUndefined( );
       } );
@@ -56,7 +56,7 @@ describe( "ExploreContext", ( ) => {
         const initialState = { };
         const reducedState = exploreReducer( initialState, {
           type: EXPLORE_ACTION.CHANGE_TAXON,
-          taxon
+          taxon,
         } );
         expect( reducedState.taxon_id ).toEqual( taxon.id );
       } );
@@ -65,7 +65,7 @@ describe( "ExploreContext", ( ) => {
         const initialState = { taxon, taxon_id: taxon.id };
         const reducedState = exploreReducer( initialState, {
           type: EXPLORE_ACTION.CHANGE_TAXON,
-          taxon: null
+          taxon: null,
         } );
         expect( reducedState.taxon_id ).toBeNull( );
       } );

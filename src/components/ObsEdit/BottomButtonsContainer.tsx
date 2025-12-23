@@ -1,5 +1,5 @@
 import {
-  useNetInfo
+  useNetInfo,
 } from "@react-native-community/netinfo";
 import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/CrosshairCircle";
 import useUploadObservations from "components/MyObservations/hooks/useUploadObservations";
@@ -9,7 +9,7 @@ import type { RealmObservation } from "realmModels/types";
 import saveObservation from "sharedHelpers/saveObservation";
 import {
   useCurrentUser,
-  useExitObservationFlow
+  useExitObservationFlow,
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -22,7 +22,7 @@ const { useRealm } = RealmContext;
 
 type Props = {
   passesEvidenceTest: boolean;
-  observations: Array<object>;
+  observations: object[];
   currentObservation: RealmObservation;
   currentObservationIndex: number;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
@@ -37,7 +37,7 @@ const BottomButtonsContainer = ( {
   currentObservationIndex,
   observations,
   setCurrentObservationIndex,
-  transitionAnimation
+  transitionAnimation,
 }: Props ) => {
   const { isConnected } = useNetInfo( );
   const currentUser = useCurrentUser( );
@@ -49,7 +49,7 @@ const BottomButtonsContainer = ( {
   const setMyObsOffset = useStore( state => state.setMyObsOffset );
   const setSavedOrUploadedMultiObsFlow = useStore( state => state.setSavedOrUploadedMultiObsFlow );
   const incrementTotalSavedObservations = useStore(
-    state => state.incrementTotalSavedObservations
+    state => state.incrementTotalSavedObservations,
   );
   const isNewObs = !currentObservation._created_at;
   const hasPhotos = currentObservation.observationPhotos?.length > 0;
@@ -126,7 +126,7 @@ const BottomButtonsContainer = ( {
     setMyObsOffset,
     setSavedOrUploadedMultiObsFlow,
     startUploadsFromMultiObsEdit,
-    transitionAnimation
+    transitionAnimation,
   ] );
 
   const showMissingEvidence = useCallback( ( ) => {
@@ -154,7 +154,7 @@ const BottomButtonsContainer = ( {
     currentObservation,
     hasImportedPhotos,
     isNewObs,
-    passesEvidenceTest
+    passesEvidenceTest,
   ] );
 
   const handlePress = useCallback( ( type: ButtonType ) => {

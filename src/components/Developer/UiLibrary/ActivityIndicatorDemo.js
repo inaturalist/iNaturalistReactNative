@@ -1,5 +1,5 @@
 import {
-  ActivityIndicator
+  ActivityIndicator,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";

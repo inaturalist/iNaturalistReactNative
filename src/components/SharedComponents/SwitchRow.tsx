@@ -2,7 +2,7 @@ import {
   Body1,
   Body2,
   INatIcon,
-  List2
+  List2,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
@@ -33,7 +33,7 @@ const SwitchRow = ( {
   onValueChange,
   smallLabel = false,
   testID,
-  disabled = false
+  disabled = false,
 }: Props ) => {
   const handlePress = ( _e: GestureResponderEvent ) => {
     if ( !disabled ) {

@@ -13,7 +13,7 @@ import { signIn, signOut } from "tests/helpers/user";
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -24,8 +24,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -34,12 +34,12 @@ afterAll( uniqueRealmAfterAll );
 
 const mockComment = factory( "RemoteComment" );
 const mockObservation = factory( "RemoteObservation", {
-  comments: [mockComment]
+  comments: [mockComment],
 } );
 const mockUpdate = factory( "RemoteUpdate", {
   resource_uuid: mockObservation.uuid,
   comment_id: mockComment.id,
-  viewed: false
+  viewed: false,
 } );
 const mockUser = factory( "LocalUser" );
 
@@ -58,20 +58,20 @@ jest.mock( "@react-navigation/native", () => {
     useNavigation: () => ( {
       navigate: jest.fn(),
       setOptions: jest.fn(),
-      canGoBack: jest.fn( ( ) => true )
+      canGoBack: jest.fn( ( ) => true ),
     } ),
     useRoute: () => ( {
       params: {
-        uuid: mockObservation.uuid
-      }
-    } )
+        uuid: mockObservation.uuid,
+      },
+    } ),
   };
 } );
 
 // Run the same suite of tests for multiple ObsDetails container
 describe.each( [
   { Container: ObsDetailsContainer, name: "ObsDetailsContainer" },
-  { Container: ObsDetailsDefaultModeScreensWrapper, name: "ObsDetailsDefaultModeScreensWrapper" }
+  { Container: ObsDetailsDefaultModeScreensWrapper, name: "ObsDetailsDefaultModeScreensWrapper" },
 ] )( "ObsDetails", ( { Container, name } ) => {
   beforeAll( async () => {
     jest.useFakeTimers( );
@@ -91,13 +91,13 @@ describe.each( [
         expect( inatjs.observations.viewedUpdates ).not.toHaveBeenCalled();
         const observation = global.mockRealms[__filename].objectForPrimaryKey(
           "Observation",
-          mockObservation.uuid
+          mockObservation.uuid,
         );
         // Expect the observation in realm to have comments_viewed param not initialized
         expect( observation.comments_viewed ).not.toBeTruthy();
         renderAppWithComponent( <Container /> );
         expect(
-          await screen.findByText( observation.user.login )
+          await screen.findByText( observation.user.login ),
         ).toBeTruthy();
         await waitFor( ( ) => {
           expect( inatjs.observations.viewedUpdates ).toHaveBeenCalledTimes( 1 );

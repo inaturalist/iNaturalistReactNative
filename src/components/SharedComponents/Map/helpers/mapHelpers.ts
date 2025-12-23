@@ -31,7 +31,7 @@ export function obscurationCellForLatLng( lat: number, lng: number ) {
   const coords = [lat, lng];
   const firstCorner = [
     coords[0] - ( coords[0] % OBSCURATION_CELL_SIZE ),
-    coords[1] - ( coords[1] % OBSCURATION_CELL_SIZE )
+    coords[1] - ( coords[1] % OBSCURATION_CELL_SIZE ),
   ];
   const secondCorner = [firstCorner[0], firstCorner[1]];
   coords.forEach( ( value, index ) => {
@@ -45,7 +45,7 @@ export function obscurationCellForLatLng( lat: number, lng: number ) {
     minLat: Math.min( firstCorner[0], secondCorner[0] ),
     minLng: Math.min( firstCorner[1], secondCorner[1] ),
     maxLat: Math.max( firstCorner[0], secondCorner[0] ),
-    maxLng: Math.max( firstCorner[1], secondCorner[1] )
+    maxLng: Math.max( firstCorner[1], secondCorner[1] ),
   };
 }
 
@@ -63,7 +63,7 @@ export function metersToLatitudeDelta( meters: number, latitude: number ): numbe
 
 export function getMapRegion( totalBounds: MapBoundaries ): Region {
   const {
-    nelat, nelng, swlat, swlng
+    nelat, nelng, swlat, swlng,
   } = totalBounds;
   // Deltas shouldn't be negative
   const latDelta = Math.abs( Number( nelat ) - Number( swlat ) );
@@ -77,25 +77,25 @@ export function getMapRegion( totalBounds: MapBoundaries ): Region {
     // Pad the detlas so the user sees the full range, make sure we don't
     // specify impossible deltas like 190 degrees of latitude
     latitudeDelta: Math.min( latDelta + latDelta * 0.4, 89 ),
-    longitudeDelta: Math.min( lngDelta + lngDelta * 0.4, 179 )
+    longitudeDelta: Math.min( lngDelta + lngDelta * 0.4, 179 ),
   };
 }
 
 export async function fetchObservationUUID(
   currentZoom: number,
   latLng: LatLng,
-  params: Record<string, unknown>
+  params: Record<string, unknown>,
 ) {
   const UTFPosition = createUTFPosition( currentZoom, latLng.latitude, latLng.longitude );
   const {
     mTilePositionX,
     mTilePositionY,
     mPixelPositionX,
-    mPixelPositionY
+    mPixelPositionY,
   } = UTFPosition;
   const tilesParams: Record<string, unknown> = {
     ...params,
-    style: "geotilegrid"
+    style: "geotilegrid",
   };
   const gridQuery = Object.keys( tilesParams )
     .map( key => `${key}=${tilesParams[key]}` ).join( "&" );
@@ -107,8 +107,8 @@ export async function fetchObservationUUID(
   const options = {
     method: "GET",
     headers: {
-      Accept: "application/json"
-    }
+      Accept: "application/json",
+    },
   };
 
   const response = await fetch( gridUrlTemplate, options );

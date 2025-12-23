@@ -8,7 +8,7 @@ export const CIRCLE_OPTIONS_CLASSES = [
   "bg-black/50",
   "items-center",
   "justify-center",
-  "rounded-full"
+  "rounded-full",
 ].join( " " );
 
 export const CIRCLE_SIZE = "h-[40px] w-[40px]";
@@ -28,7 +28,7 @@ const TransparentCircleButton = ( {
   accessibilityLabel,
   accessibilityHint,
   icon,
-  testID
+  testID,
 }: Props ) => (
   <INatIconButton
     className={classnames( CIRCLE_OPTIONS_CLASSES, optionalClasses, CIRCLE_SIZE )}

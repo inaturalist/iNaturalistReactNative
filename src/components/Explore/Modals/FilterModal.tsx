@@ -21,7 +21,7 @@ import {
   RadioButtonRow,
   RadioButtonSheet,
   ViewWrapper,
-  WarningSheet
+  WarningSheet,
 } from "components/SharedComponents";
 import { Pressable, ScrollView, View } from "components/styledComponents";
 import UserListItem from "components/UserList/UserListItem";
@@ -37,7 +37,7 @@ import {
   SORT_BY,
   TAXONOMIC_RANK,
   useExplore,
-  WILD_STATUS
+  WILD_STATUS,
 } from "providers/ExploreContext";
 import React, { useState } from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";
@@ -53,7 +53,7 @@ import ExploreUserSearchModal from "./ExploreUserSearchModal";
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
-  elevation: 6
+  elevation: 6,
 } );
 
 const { useRealm } = RealmContext;
@@ -79,7 +79,7 @@ const FilterModal = ( {
   updateTaxon,
   updateLocation,
   updateUser,
-  updateProject
+  updateProject,
 }: Props ) => {
   const { t } = useTranslation();
   const realm = useRealm();
@@ -91,7 +91,7 @@ const FilterModal = ( {
     differsFromSnapshot,
     discardChanges,
     isNotInitialState,
-    numberOfFilters
+    numberOfFilters,
   } = useExplore();
   const {
     casual,
@@ -120,7 +120,7 @@ const FilterModal = ( {
     taxon,
     user,
     excludeUser,
-    wildStatus
+    wildStatus,
   } = state;
 
   const NONE = "NONE";
@@ -163,374 +163,374 @@ const FilterModal = ( {
     [SORT_BY.DATE_UPLOADED_NEWEST]: {
       label: t( "Date-uploaded" ),
       text: t( "Newest-to-oldest" ),
-      value: SORT_BY.DATE_UPLOADED_NEWEST
+      value: SORT_BY.DATE_UPLOADED_NEWEST,
     },
     [SORT_BY.DATE_UPLOADED_OLDEST]: {
       label: t( "Date-uploaded" ),
       text: t( "Oldest-to-newest" ),
-      value: SORT_BY.DATE_UPLOADED_OLDEST
+      value: SORT_BY.DATE_UPLOADED_OLDEST,
     },
     [SORT_BY.DATE_OBSERVED_NEWEST]: {
       label: t( "Date-observed" ),
       text: t( "Newest-to-oldest" ),
-      value: SORT_BY.DATE_OBSERVED_NEWEST
+      value: SORT_BY.DATE_OBSERVED_NEWEST,
     },
     [SORT_BY.DATE_OBSERVED_OLDEST]: {
       label: t( "Date-observed" ),
       text: t( "Oldest-to-newest" ),
-      value: SORT_BY.DATE_OBSERVED_OLDEST
+      value: SORT_BY.DATE_OBSERVED_OLDEST,
     },
     [SORT_BY.MOST_FAVED]: {
       label: t( "Most-faved" ),
-      value: SORT_BY.MOST_FAVED
-    }
+      value: SORT_BY.MOST_FAVED,
+    },
   };
 
   const taxonomicRankValues = {
     [TAXONOMIC_RANK.none]: {
       label: t( "NONE--ranks" ),
-      value: TAXONOMIC_RANK.none
+      value: TAXONOMIC_RANK.none,
     },
     [TAXONOMIC_RANK.kingdom]: {
       label: t( "Ranks-KINGDOM" ),
-      value: TAXONOMIC_RANK.kingdom
+      value: TAXONOMIC_RANK.kingdom,
     },
     [TAXONOMIC_RANK.phylum]: {
       label: t( "Ranks-PHYLUM" ),
-      value: TAXONOMIC_RANK.phylum
+      value: TAXONOMIC_RANK.phylum,
     },
     [TAXONOMIC_RANK.subphylum]: {
       label: t( "Ranks-SUBPHYLUM" ),
-      value: TAXONOMIC_RANK.subphylum
+      value: TAXONOMIC_RANK.subphylum,
     },
     [TAXONOMIC_RANK.superclass]: {
       label: t( "Ranks-SUPERCLASS" ),
-      value: TAXONOMIC_RANK.superclass
+      value: TAXONOMIC_RANK.superclass,
     },
     [TAXONOMIC_RANK.class]: {
       label: t( "Ranks-CLASS" ),
-      value: TAXONOMIC_RANK.class
+      value: TAXONOMIC_RANK.class,
     },
     [TAXONOMIC_RANK.subclass]: {
       label: t( "Ranks-SUBCLASS" ),
-      value: TAXONOMIC_RANK.subclass
+      value: TAXONOMIC_RANK.subclass,
     },
     [TAXONOMIC_RANK.infraclass]: {
       label: t( "Ranks-INFRACLASS" ),
-      value: TAXONOMIC_RANK.infraclass
+      value: TAXONOMIC_RANK.infraclass,
     },
     [TAXONOMIC_RANK.subterclass]: {
       label: t( "Ranks-SUBTERCLASS" ),
-      value: TAXONOMIC_RANK.subterclass
+      value: TAXONOMIC_RANK.subterclass,
     },
     [TAXONOMIC_RANK.superorder]: {
       label: t( "Ranks-SUPERORDER" ),
-      value: TAXONOMIC_RANK.superorder
+      value: TAXONOMIC_RANK.superorder,
     },
     [TAXONOMIC_RANK.order]: {
       label: t( "Ranks-ORDER" ),
-      value: TAXONOMIC_RANK.order
+      value: TAXONOMIC_RANK.order,
     },
     [TAXONOMIC_RANK.suborder]: {
       label: t( "Ranks-SUBORDER" ),
-      value: TAXONOMIC_RANK.suborder
+      value: TAXONOMIC_RANK.suborder,
     },
     [TAXONOMIC_RANK.infraorder]: {
       label: t( "Ranks-INFRAORDER" ),
-      value: TAXONOMIC_RANK.infraorder
+      value: TAXONOMIC_RANK.infraorder,
     },
     [TAXONOMIC_RANK.parvorder]: {
       label: t( "Ranks-PARVORDER" ),
-      value: TAXONOMIC_RANK.parvorder
+      value: TAXONOMIC_RANK.parvorder,
     },
     [TAXONOMIC_RANK.zoosection]: {
       label: t( "Ranks-ZOOSECTION" ),
-      value: TAXONOMIC_RANK.zoosection
+      value: TAXONOMIC_RANK.zoosection,
     },
     [TAXONOMIC_RANK.zoosubsection]: {
       label: t( "Ranks-ZOOSUBSECTION" ),
-      value: TAXONOMIC_RANK.zoosubsection
+      value: TAXONOMIC_RANK.zoosubsection,
     },
     [TAXONOMIC_RANK.superfamily]: {
       label: t( "Ranks-SUPERFAMILY" ),
-      value: TAXONOMIC_RANK.superfamily
+      value: TAXONOMIC_RANK.superfamily,
     },
     [TAXONOMIC_RANK.epifamily]: {
       label: t( "Ranks-EPIFAMILY" ),
-      value: TAXONOMIC_RANK.epifamily
+      value: TAXONOMIC_RANK.epifamily,
     },
     [TAXONOMIC_RANK.family]: {
       label: t( "Ranks-FAMILY" ),
-      value: TAXONOMIC_RANK.family
+      value: TAXONOMIC_RANK.family,
     },
     [TAXONOMIC_RANK.subfamily]: {
       label: t( "Ranks-SUBFAMILY" ),
-      value: TAXONOMIC_RANK.subfamily
+      value: TAXONOMIC_RANK.subfamily,
     },
     [TAXONOMIC_RANK.supertribe]: {
       label: t( "Ranks-SUPERTRIBE" ),
-      value: TAXONOMIC_RANK.supertribe
+      value: TAXONOMIC_RANK.supertribe,
     },
     [TAXONOMIC_RANK.tribe]: {
       label: t( "Ranks-TRIBE" ),
-      value: TAXONOMIC_RANK.tribe
+      value: TAXONOMIC_RANK.tribe,
     },
     [TAXONOMIC_RANK.subtribe]: {
       label: t( "Ranks-SUBTRIBE" ),
-      value: TAXONOMIC_RANK.subtribe
+      value: TAXONOMIC_RANK.subtribe,
     },
     [TAXONOMIC_RANK.genus]: {
       label: t( "Ranks-GENUS" ),
-      value: TAXONOMIC_RANK.genus
+      value: TAXONOMIC_RANK.genus,
     },
     [TAXONOMIC_RANK.genushybrid]: {
       label: t( "Ranks-GENUSHYBRID" ),
-      value: TAXONOMIC_RANK.genushybrid
+      value: TAXONOMIC_RANK.genushybrid,
     },
     [TAXONOMIC_RANK.subgenus]: {
       label: t( "Ranks-SUBGENUS" ),
-      value: TAXONOMIC_RANK.subgenus
+      value: TAXONOMIC_RANK.subgenus,
     },
     [TAXONOMIC_RANK.section]: {
       label: t( "Ranks-SECTION" ),
-      value: TAXONOMIC_RANK.section
+      value: TAXONOMIC_RANK.section,
     },
     [TAXONOMIC_RANK.subsection]: {
       label: t( "Ranks-SUBSECTION" ),
-      value: TAXONOMIC_RANK.subsection
+      value: TAXONOMIC_RANK.subsection,
     },
     [TAXONOMIC_RANK.complex]: {
       label: t( "Ranks-COMPLEX" ),
-      value: TAXONOMIC_RANK.complex
+      value: TAXONOMIC_RANK.complex,
     },
     [TAXONOMIC_RANK.species]: {
       label: t( "Ranks-SPECIES" ),
-      value: TAXONOMIC_RANK.species
+      value: TAXONOMIC_RANK.species,
     },
     [TAXONOMIC_RANK.hybrid]: {
       label: t( "Ranks-HYBRID" ),
-      value: TAXONOMIC_RANK.hybrid
+      value: TAXONOMIC_RANK.hybrid,
     },
     [TAXONOMIC_RANK.subspecies]: {
       label: t( "Ranks-SUBSPECIES" ),
-      value: TAXONOMIC_RANK.subspecies
+      value: TAXONOMIC_RANK.subspecies,
     },
     [TAXONOMIC_RANK.variety]: {
       label: t( "Ranks-VARIETY" ),
-      value: TAXONOMIC_RANK.variety
+      value: TAXONOMIC_RANK.variety,
     },
     [TAXONOMIC_RANK.form]: {
       label: t( "Ranks-FORM" ),
-      value: TAXONOMIC_RANK.form
+      value: TAXONOMIC_RANK.form,
     },
     [TAXONOMIC_RANK.infrahybrid]: {
       label: t( "Ranks-INFRAHYBRID" ),
-      value: TAXONOMIC_RANK.infrahybrid
-    }
+      value: TAXONOMIC_RANK.infrahybrid,
+    },
   };
 
   const dateObservedValues = {
     [DATE_OBSERVED.ALL]: {
       label: t( "All" ),
       labelCaps: t( "ALL" ),
-      value: DATE_OBSERVED.ALL
+      value: DATE_OBSERVED.ALL,
     },
     [DATE_OBSERVED.EXACT_DATE]: {
       label: t( "Exact-Date" ),
       labelCaps: t( "EXACT-DATE" ),
       text: t( "Filter-by-observed-on-date" ),
-      value: DATE_OBSERVED.EXACT_DATE
+      value: DATE_OBSERVED.EXACT_DATE,
     },
     [DATE_OBSERVED.DATE_RANGE]: {
       label: t( "Date-Range" ),
       labelCaps: t( "DATE-RANGE" ),
       text: t( "Filter-by-observed-between-dates" ),
-      value: DATE_OBSERVED.DATE_RANGE
+      value: DATE_OBSERVED.DATE_RANGE,
     },
     [DATE_OBSERVED.MONTHS]: {
       label: t( "Months" ),
       labelCaps: t( "MONTHS" ),
       text: t( "Filter-by-observed-during-months" ),
-      value: DATE_OBSERVED.MONTHS
-    }
+      value: DATE_OBSERVED.MONTHS,
+    },
   };
 
   const dateUploadedValues = {
     [DATE_UPLOADED.ALL]: {
       label: t( "All" ),
       labelCaps: t( "ALL" ),
-      value: DATE_UPLOADED.ALL
+      value: DATE_UPLOADED.ALL,
     },
     [DATE_UPLOADED.EXACT_DATE]: {
       label: t( "Exact-Date" ),
       labelCaps: t( "EXACT-DATE" ),
       text: t( "Filter-by-uploaded-on-date" ),
-      value: DATE_UPLOADED.EXACT_DATE
+      value: DATE_UPLOADED.EXACT_DATE,
     },
     [DATE_UPLOADED.DATE_RANGE]: {
       label: t( "Date-Range" ),
       labelCaps: t( "DATE-RANGE" ),
       text: t( "Filter-by-uploaded-between-dates" ),
-      value: DATE_UPLOADED.DATE_RANGE
-    }
+      value: DATE_UPLOADED.DATE_RANGE,
+    },
   };
 
   const monthValues = {
     1: {
       label: t( "January" ),
-      value: 1
+      value: 1,
     },
     2: {
       label: t( "February" ),
-      value: 2
+      value: 2,
     },
     3: {
       label: t( "March" ),
-      value: 3
+      value: 3,
     },
     4: {
       label: t( "April" ),
-      value: 4
+      value: 4,
     },
     5: {
       label: t( "May" ),
-      value: 5
+      value: 5,
     },
     6: {
       label: t( "June" ),
-      value: 6
+      value: 6,
     },
     7: {
       label: t( "July" ),
-      value: 7
+      value: 7,
     },
     8: {
       label: t( "August" ),
-      value: 8
+      value: 8,
     },
     9: {
       label: t( "September" ),
-      value: 9
+      value: 9,
     },
     10: {
       label: t( "October" ),
-      value: 10
+      value: 10,
     },
     11: {
       label: t( "November" ),
-      value: 11
+      value: 11,
     },
     12: {
       label: t( "December" ),
-      value: 12
-    }
+      value: 12,
+    },
   };
 
   const mediaValues = {
     [MEDIA.ALL]: {
       label: t( "All" ),
-      value: MEDIA.ALL
+      value: MEDIA.ALL,
     },
     [MEDIA.PHOTOS]: {
       label: t( "Photos" ),
-      value: MEDIA.PHOTOS
+      value: MEDIA.PHOTOS,
     },
     [MEDIA.SOUNDS]: {
       label: t( "Sounds" ),
-      value: MEDIA.SOUNDS
+      value: MEDIA.SOUNDS,
     },
     [MEDIA.NONE]: {
       label: t( "No-Media" ),
-      value: MEDIA.NONE
-    }
+      value: MEDIA.NONE,
+    },
   };
 
   const establishmentValues = {
     [ESTABLISHMENT_MEAN.ANY]: {
       label: t( "Any--establishment-means" ),
-      value: ESTABLISHMENT_MEAN.ANY
+      value: ESTABLISHMENT_MEAN.ANY,
     },
     [ESTABLISHMENT_MEAN.INTRODUCED]: {
       label: t( "Introduced" ),
-      value: ESTABLISHMENT_MEAN.INTRODUCED
+      value: ESTABLISHMENT_MEAN.INTRODUCED,
     },
     [ESTABLISHMENT_MEAN.NATIVE]: {
       label: t( "Native" ),
-      value: ESTABLISHMENT_MEAN.NATIVE
+      value: ESTABLISHMENT_MEAN.NATIVE,
     },
     [ESTABLISHMENT_MEAN.ENDEMIC]: {
       label: t( "Endemic" ),
-      value: ESTABLISHMENT_MEAN.ENDEMIC
-    }
+      value: ESTABLISHMENT_MEAN.ENDEMIC,
+    },
   };
 
   const wildValues = {
     [WILD_STATUS.ALL]: {
       label: t( "All" ),
-      value: WILD_STATUS.ALL
+      value: WILD_STATUS.ALL,
     },
     [WILD_STATUS.WILD]: {
       label: t( "Wild" ),
-      value: WILD_STATUS.WILD
+      value: WILD_STATUS.WILD,
     },
     [WILD_STATUS.CAPTIVE]: {
       label: t( "Captive-Cultivated" ),
-      value: WILD_STATUS.CAPTIVE
-    }
+      value: WILD_STATUS.CAPTIVE,
+    },
   };
 
   const reviewedValues = {
     [REVIEWED.ALL]: {
       label: t( "All-observations" ),
-      value: REVIEWED.ALL
+      value: REVIEWED.ALL,
     },
     [REVIEWED.REVIEWED]: {
       label: t( "Reviewed-observations-only" ),
-      value: REVIEWED.REVIEWED
+      value: REVIEWED.REVIEWED,
     },
     [REVIEWED.UNREVIEWED]: {
       label: t( "Unreviewed-observations-only" ),
-      value: REVIEWED.UNREVIEWED
-    }
+      value: REVIEWED.UNREVIEWED,
+    },
   };
 
   const photoLicenseValues = {
     [PHOTO_LICENSE.ALL]: {
       label: t( "ALL" ),
-      value: PHOTO_LICENSE.ALL
+      value: PHOTO_LICENSE.ALL,
     },
     [PHOTO_LICENSE.CC0]: {
       label: t( "CC0" ),
-      value: PHOTO_LICENSE.CC0
+      value: PHOTO_LICENSE.CC0,
     },
     [PHOTO_LICENSE.CCBY]: {
       label: t( "CC-BY" ),
-      value: PHOTO_LICENSE.CCBY
+      value: PHOTO_LICENSE.CCBY,
     },
     [PHOTO_LICENSE.CCBYNC]: {
       label: t( "CC-BY-NC" ),
-      value: PHOTO_LICENSE.CCBYNC
+      value: PHOTO_LICENSE.CCBYNC,
     },
     [PHOTO_LICENSE.CCBYSA]: {
       label: t( "CC-BY-SA" ),
-      value: PHOTO_LICENSE.CCBYSA
+      value: PHOTO_LICENSE.CCBYSA,
     },
     [PHOTO_LICENSE.CCBYND]: {
       label: t( "CC-BY-ND" ),
-      value: PHOTO_LICENSE.CCBYND
+      value: PHOTO_LICENSE.CCBYND,
     },
     [PHOTO_LICENSE.CCBYNCSA]: {
       label: t( "CC-BY-NC-SA" ),
-      value: PHOTO_LICENSE.CCBYNCSA
+      value: PHOTO_LICENSE.CCBYNCSA,
     },
     [PHOTO_LICENSE.CCBYNCND]: {
       label: t( "CC-BY-NC-ND" ),
-      value: PHOTO_LICENSE.CCBYNCND
-    }
+      value: PHOTO_LICENSE.CCBYNCND,
+    },
   };
 
   const updateDateObserved = ( {
-    newDateObserved, newObservedOn, newD1, newD2, newMonths
+    newDateObserved, newObservedOn, newD1, newD2, newMonths,
   } ) => {
     const today = new Date( ).toISOString( ).split( "T" )[0];
     // Array with the numbers from 1 to 12
@@ -538,23 +538,23 @@ const FilterModal = ( {
 
     if ( newDateObserved === DATE_OBSERVED.ALL ) {
       dispatch( {
-        type: EXPLORE_ACTION.SET_DATE_OBSERVED_ALL
+        type: EXPLORE_ACTION.SET_DATE_OBSERVED_ALL,
       } );
     } else if ( newDateObserved === DATE_OBSERVED.EXACT_DATE ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_DATE_OBSERVED_EXACT,
-        observedOn: newObservedOn || today
+        observedOn: newObservedOn || today,
       } );
     } else if ( newDateObserved === DATE_OBSERVED.DATE_RANGE ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_DATE_OBSERVED_RANGE,
         d1: newD1 || today,
-        d2: newD2 || today
+        d2: newD2 || today,
       } );
     } else if ( newDateObserved === DATE_OBSERVED.MONTHS ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_DATE_OBSERVED_MONTHS,
-        months: newMonths || allMonths
+        months: newMonths || allMonths,
       } );
     }
   };
@@ -562,7 +562,7 @@ const FilterModal = ( {
   const updateObservedExact = date => {
     updateDateObserved( {
       newDateObserved: DATE_OBSERVED.EXACT_DATE,
-      newObservedOn: date.toISOString().split( "T" )[0]
+      newObservedOn: date.toISOString().split( "T" )[0],
     } );
   };
 
@@ -570,7 +570,7 @@ const FilterModal = ( {
     updateDateObserved( {
       newDateObserved: DATE_OBSERVED.DATE_RANGE,
       newD1: date.toISOString().split( "T" )[0],
-      newD2: d2
+      newD2: d2,
     } );
   };
 
@@ -578,7 +578,7 @@ const FilterModal = ( {
     updateDateObserved( {
       newDateObserved: DATE_OBSERVED.DATE_RANGE,
       newD1: d1,
-      newD2: date.toISOString().split( "T" )[0]
+      newD2: date.toISOString().split( "T" )[0],
     } );
   };
 
@@ -588,7 +588,7 @@ const FilterModal = ( {
       : [...months, monthInteger];
     updateDateObserved( {
       newDateObserved: DATE_OBSERVED.MONTHS,
-      newMonths
+      newMonths,
     } );
   };
 
@@ -596,18 +596,18 @@ const FilterModal = ( {
     const today = new Date().toISOString().split( "T" )[0];
     if ( newDateUploaded === DATE_UPLOADED.ALL ) {
       dispatch( {
-        type: EXPLORE_ACTION.SET_DATE_UPLOADED_ALL
+        type: EXPLORE_ACTION.SET_DATE_UPLOADED_ALL,
       } );
     } else if ( newDateUploaded === DATE_UPLOADED.EXACT_DATE ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT,
-        createdOn: newD1 || today
+        createdOn: newD1 || today,
       } );
     } else if ( newDateUploaded === DATE_UPLOADED.DATE_RANGE ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_DATE_UPLOADED_RANGE,
         createdD1: newD1 || today,
-        createdD2: newD2 || today
+        createdD2: newD2 || today,
       } );
     }
   };
@@ -616,7 +616,7 @@ const FilterModal = ( {
     updateDateUploaded( {
       newDateUploaded: DATE_UPLOADED.DATE_RANGE,
       newD1: date.toISOString().split( "T" )[0],
-      newD2: createdD2
+      newD2: createdD2,
     } );
   };
 
@@ -624,7 +624,7 @@ const FilterModal = ( {
     updateDateUploaded( {
       newDateUploaded: DATE_UPLOADED.DATE_RANGE,
       newD1: createdD1,
-      newD2: date.toISOString().split( "T" )[0]
+      newD2: date.toISOString().split( "T" )[0],
     } );
   };
 
@@ -973,7 +973,7 @@ const FilterModal = ( {
                 <Body1
                   className={classNames(
                     "mb-5",
-                    observedEndBeforeStart && "color-warningRed"
+                    observedEndBeforeStart && "color-warningRed",
                   )}
                 >
                   {d1}
@@ -1062,7 +1062,7 @@ const FilterModal = ( {
                   toggleDateTimePicker={() => setOpenSheet( NONE )}
                   onDatePicked={date => updateDateUploaded( {
                     newDateUploaded: DATE_UPLOADED.EXACT_DATE,
-                    newD1: date.toISOString().split( "T" )[0]
+                    newD1: date.toISOString().split( "T" )[0],
                   } )}
                 />
               </View>
@@ -1072,7 +1072,7 @@ const FilterModal = ( {
                 <Body1
                   className={classNames(
                     "mb-5",
-                    uploadedEndBeforeStart && "color-warningRed"
+                    uploadedEndBeforeStart && "color-warningRed",
                   )}
                 >
                   {createdD1}
@@ -1133,7 +1133,7 @@ const FilterModal = ( {
                   checked={mediaValues[mediaKey].value === media}
                   onPress={() => dispatch( {
                     type: EXPLORE_ACTION.SET_MEDIA,
-                    media: mediaValues[mediaKey].value
+                    media: mediaValues[mediaKey].value,
                   } )}
                   label={mediaValues[mediaKey].label}
                 />
@@ -1156,7 +1156,7 @@ const FilterModal = ( {
                   onPress={() => dispatch( {
                     type: EXPLORE_ACTION.SET_ESTABLISHMENT_MEAN,
                     establishmentMean:
-                    establishmentValues[establishmentKey].value
+                    establishmentValues[establishmentKey].value,
                   } )}
                   label={establishmentValues[establishmentKey].label}
                 />
@@ -1175,7 +1175,7 @@ const FilterModal = ( {
                   checked={wildValues[wildKey].value === wildStatus}
                   onPress={() => dispatch( {
                     type: EXPLORE_ACTION.SET_WILD_STATUS,
-                    wildStatus: wildValues[wildKey].value
+                    wildStatus: wildValues[wildKey].value,
                   } )}
                   label={wildValues[wildKey].label}
                 />
@@ -1196,7 +1196,7 @@ const FilterModal = ( {
                     checked={reviewedValues[reviewedKey].value === reviewedFilter}
                     onPress={() => dispatch( {
                       type: EXPLORE_ACTION.SET_REVIEWED,
-                      reviewedFilter: reviewedValues[reviewedKey].value
+                      reviewedFilter: reviewedValues[reviewedKey].value,
                     } )}
                     label={reviewedValues[reviewedKey].label}
                   />
@@ -1238,7 +1238,7 @@ const FilterModal = ( {
           confirm={newSortBy => {
             dispatch( {
               type: EXPLORE_ACTION.CHANGE_SORT_BY,
-              sortBy: newSortBy
+              sortBy: newSortBy,
             } );
             setOpenSheet( NONE );
           }}
@@ -1254,7 +1254,7 @@ const FilterModal = ( {
           confirm={newRank => {
             dispatch( {
               type: EXPLORE_ACTION.SET_HIGHEST_TAXONOMIC_RANK,
-              hrank: newRank
+              hrank: newRank,
             } );
             setOpenSheet( NONE );
           }}
@@ -1270,7 +1270,7 @@ const FilterModal = ( {
           confirm={newRank => {
             dispatch( {
               type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK,
-              lrank: newRank
+              lrank: newRank,
             } );
             setOpenSheet( NONE );
           }}
@@ -1312,7 +1312,7 @@ const FilterModal = ( {
           confirm={newLicense => {
             dispatch( {
               type: EXPLORE_ACTION.SET_PHOTO_LICENSE,
-              photoLicense: newLicense
+              photoLicense: newLicense,
             } );
             setOpenSheet( NONE );
           }}

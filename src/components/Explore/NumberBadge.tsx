@@ -8,7 +8,7 @@ import { getShadow } from "styles/global";
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
   elevation: 6,
-  shadowRadius: 4
+  shadowRadius: 4,
 } );
 
 interface Props {
@@ -28,7 +28,7 @@ const NumberBadge = ( { number, light }: Props ) => {
     <View
       className={classNames(
         "w-[24px] h-[24px] justify-center items-center rounded-full",
-        backgroundColor
+        backgroundColor,
       )}
       style={DROP_SHADOW}
     >

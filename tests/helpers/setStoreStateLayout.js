@@ -7,8 +7,8 @@ export default function setStoreStateLayout( stateToMerge ) {
     useStore.setState( {
       layout: {
         ...initialState.layout,
-        ...stateToMerge
-      }
+        ...stateToMerge,
+      },
     } );
   } );
 }
