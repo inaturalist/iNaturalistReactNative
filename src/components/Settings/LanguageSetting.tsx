@@ -12,10 +12,10 @@ import changeLanguage from "sharedHelpers/changeLanguage";
 import { useTranslation } from "sharedHooks";
 import { zustandStorage } from "stores/useStore";
 
-type LocalesResponse = Array<{
+type LocalesResponse = {
   locale: string;
   language_in_locale: string;
-}>;
+}[];
 
 type Props = {
   onChange: ( newLocale: string ) => void;

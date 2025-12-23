@@ -57,7 +57,7 @@ type FullPageWebViewParams = {
   title?: string;
   loggedIn?: boolean;
   skipSetSourceInShouldStartLoadWithRequest?: boolean;
-  clickablePathnames?: Array<string>;
+  clickablePathnames?: string[];
   shouldLoadUrl?: ( url: string ) => boolean;
 }
 

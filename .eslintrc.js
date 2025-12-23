@@ -129,6 +129,9 @@ module.exports = {
     // https://eslint.org/docs/latest/rules/no-undef#handled_by_typescript
     "no-undef": "error",
 
+    "@typescript-eslint/array-type": ["error", {
+      default: "array",
+    }],
     "@typescript-eslint/no-unused-vars": [
       "error",
       {

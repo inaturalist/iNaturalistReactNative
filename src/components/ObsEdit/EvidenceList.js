@@ -27,13 +27,13 @@ const logger = log.extend( "EvidenceList" );
 
 type Props = {
   handleAddEvidence?: Function,
-  observationSounds?: Array<{
+  observationSounds?: {
     id?: number,
     sound: {
       file_url: string,
     },
     uuid: string
-  }>
+  }[]
 }
 
 const EvidenceList = ( {

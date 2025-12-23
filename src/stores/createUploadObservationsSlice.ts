@@ -30,8 +30,8 @@ interface UploadObservationsSlice {
   numUploadsAttempted: number;
   totalToolbarIncrements: number;
   totalToolbarProgress: number;
-  totalUploadProgress: Array<TotalUploadProgress>;
-  uploadQueue: Array<string>;
+  totalUploadProgress: TotalUploadProgress[];
+  uploadQueue: string[];
   uploadStatus: UploadStatus;
 }
 

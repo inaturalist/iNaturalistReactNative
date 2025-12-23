@@ -23,7 +23,7 @@ interface Props extends PropsWithChildren {
   containerClass?: string;
   onLayout?: () => void;
   sticky?: boolean;
-  buttonConfiguration?: Array<ButtonConfiguration>;
+  buttonConfiguration?: ButtonConfiguration[];
 }
 
 // Ensure this component is placed outside of scroll views

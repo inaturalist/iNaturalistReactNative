@@ -47,7 +47,7 @@ function mapToLocalSchema( taxon ) {
 }
 
 async function fetchTaxon(
-  id: number | Array<number>,
+  id: number | number[],
   params: Object = {},
   opts: Object = {},
 ): Promise<?Object> {

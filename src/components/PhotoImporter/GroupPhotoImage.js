@@ -7,7 +7,7 @@ import React from "react";
 
 type Props = {
   item: Object,
-  selectedObservations: Array<Object>,
+  selectedObservations: Object[],
   selectObservationPhotos: Function,
   style?: Object
 }

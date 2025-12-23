@@ -20,13 +20,13 @@ import Photo from "realmModels/Photo";
 type Props = {
   loading: boolean,
   onChangeIndex?: Function,
-  photos: Array<{
+  photos: {
     id?: number,
     url: string,
     localFilePath?: string,
     attribution?: string,
     licenseCode?: string
-  }>,
+  }[],
   tablet: boolean
 }
 

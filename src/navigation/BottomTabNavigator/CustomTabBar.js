@@ -16,7 +16,7 @@ const DROP_SHADOW = getShadow( {
 } );
 
 type Props = {
-  tabs: Array<Object>,
+  tabs: Object[],
 };
 
 /* eslint-disable react/jsx-props-no-spreading */

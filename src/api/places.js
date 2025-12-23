@@ -5,7 +5,7 @@ import inatjs from "inaturalistjs";
 import handleError from "./error";
 
 const fetchPlace = async (
-  id: number | Array<number>,
+  id: number | number[],
   params: Object = {},
   opts: Object = {},
 ): Promise<?Object> => {

@@ -8,7 +8,7 @@ import { useCurrentUser } from "sharedHooks";
 // Should work like React Query's useInfiniteQuery with our custom reactQueryRetry
 // and authentication
 const useAuthenticatedInfiniteQuery = (
-  queryKey: Array<string>,
+  queryKey: string[],
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   queryFunction: Function,
   queryOptions: object = {},

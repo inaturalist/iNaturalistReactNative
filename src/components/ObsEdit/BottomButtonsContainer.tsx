@@ -22,7 +22,7 @@ const { useRealm } = RealmContext;
 
 type Props = {
   passesEvidenceTest: boolean;
-  observations: Array<object>;
+  observations: object[];
   currentObservation: RealmObservation;
   currentObservationIndex: number;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type

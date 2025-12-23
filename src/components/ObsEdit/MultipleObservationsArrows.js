@@ -10,7 +10,7 @@ import { useTranslation } from "sharedHooks";
 type Props = {
   currentObservationIndex: number,
   setCurrentObservationIndex: Function,
-  observations: Array<Object>,
+  observations: Object[],
   setResetScreen: Function,
   transitionAnimation: Function,
   transitionAnimationRef: Object

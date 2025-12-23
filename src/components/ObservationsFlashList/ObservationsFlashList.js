@@ -35,7 +35,7 @@ const AnimatedFlashList = Animated.createAnimatedComponent( CustomFlashList );
 
 type Props = {
   contentContainerStyle?: Object,
-  data: Array<Object>,
+  data: Object[],
   dataCanBeFetched?: boolean,
   fetchFromLastObservation?: Function,
   explore: boolean,

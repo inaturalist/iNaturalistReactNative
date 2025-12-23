@@ -27,7 +27,7 @@ type Props = {
   shouldUseEvidenceLocation: boolean,
   onPressPhoto: Function,
   onTaxonChosen: Function,
-  photoUris: Array<string>,
+  photoUris: string[],
   reloadSuggestions: Function,
   selectedPhotoUri: string,
   showImproveWithLocationButton: boolean,

@@ -13,7 +13,7 @@ const params = {
   },
 };
 
-const useObservers = ( taxonIds: Array<number> ): Array<string> => {
+const useObservers = ( taxonIds: number[] ): string[] => {
   const { data } = useAuthenticatedQuery(
     ["fetchObservers", taxonIds],
     ( ) => fetchObservers( {

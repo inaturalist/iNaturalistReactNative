@@ -15,7 +15,7 @@ const { useRealm } = RealmContext;
 type Props = {
   currentObservation: Object,
   onPressClose: Function,
-  observations: Array<Object>,
+  observations: Object[],
   onDelete?: Function,
   updateObservations: Function
 }

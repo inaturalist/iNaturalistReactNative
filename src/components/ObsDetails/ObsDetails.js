@@ -31,7 +31,7 @@ import SuggestIDSheet from "./Sheets/SuggestIDSheet";
 const isTablet = DeviceInfo.isTablet();
 
 type Props = {
-  activityItems: Array<Object>,
+  activityItems: Object[],
   addingActivityItem: Function,
   closeAgreeWithIdSheet: Function,
   belongsToCurrentUser: boolean,
@@ -63,7 +63,7 @@ type Props = {
   showSuggestIdSheet: boolean,
   subscriptions?: Object,
   suggestIdSheetDiscardChanges: Function,
-  tabs: Array<Object>,
+  tabs: Object[],
   identBodySheetShown?: boolean,
   onCloseIdentBodySheet?: Function,
   newIdentification?: null | {

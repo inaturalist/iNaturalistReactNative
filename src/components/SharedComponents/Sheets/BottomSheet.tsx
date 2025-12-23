@@ -36,7 +36,7 @@ interface Props {
   // Callback when the user presses the close button or backdrop, not whenever the sheet
   // closes
   onPressClose?: ( ) => void;
-  snapPoints?: Array<string>;
+  snapPoints?: string[];
   insideModal?: boolean;
   keyboardShouldPersistTaps?: string;
   testID?: string;

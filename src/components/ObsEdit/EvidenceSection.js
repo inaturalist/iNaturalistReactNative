@@ -20,18 +20,18 @@ import AddEvidenceSheet from "./Sheets/AddEvidenceSheet";
 type Props = {
   currentObservation: Object,
   isFetchingLocation: boolean,
-  locationTextClassNames: Array<string>,
+  locationTextClassNames: string[],
   passesEvidenceTest: Function,
-  observationPhotos: Array<Object>,
+  observationPhotos: Object[],
   setShowAddEvidenceSheet: Function,
   showAddEvidenceSheet: boolean,
-  observationSounds?: Array<{
+  observationSounds?: {
     id?: number,
     sound: {
       file_url: string,
     },
     uuid: string
-  }>,
+  }[],
   onLocationPress: ( ) => void,
   updateObservationKeys: Function
 }

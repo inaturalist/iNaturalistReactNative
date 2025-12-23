@@ -23,11 +23,11 @@ import GroupPhotoImage from "./GroupPhotoImage";
 
 type Props = {
   combinePhotos: Function,
-  groupedPhotos: Array<Object>,
+  groupedPhotos: Object[],
   isCreatingObservations?: boolean,
   navBasedOnUserSettings: Function,
   removePhotos: Function,
-  selectedObservations: Array<Object>,
+  selectedObservations: Object[],
   selectObservationPhotos: Function,
   separatePhotos: Function,
   totalPhotos: number

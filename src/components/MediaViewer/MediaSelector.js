@@ -13,18 +13,18 @@ import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   isLargeScreen?: boolean,
-  photos: Array<{
+  photos: {
     id?: number,
     url: string,
     localFilePath?: string,
     attribution?: string,
     licenseCode?: string
-  }>,
+  }[],
   scrollToIndex: Function,
   selectedMediaIndex?: number,
-  sounds?: Array<{
+  sounds?: {
     file_url: string
-  }>,
+  }[],
 }
 
 const SMALL_ITEM_CLASS = "rounded-sm w-[42px] h-[42px] mx-[6px] my-[12px]";

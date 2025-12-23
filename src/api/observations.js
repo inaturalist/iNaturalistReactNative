@@ -66,10 +66,10 @@ const fetchRemoteObservation = async (
 };
 
 const fetchRemoteObservations = async (
-  uuids: Array<string>,
+  uuids: string[],
   params: Object = {},
   opts: Object = {},
-): Promise<?Array<Object>> => {
+): Promise<?Object[]> => {
   try {
     const response = await inatjs.observations.fetch(
       uuids,

@@ -5,24 +5,24 @@ class FlashListPerformanceTracker {
 
   private itemsVisibleDuration: number;
 
-  private scrollEvents: Array<{
+  private scrollEvents: {
     startTime: number;
     endTime: number;
     duration: number;
     itemsFetched: number;
     scrollDistance: number;
-  }> = [];
+  }[] = [];
 
   private currentScrollEvent: unknown = null;
 
   private fetchStartTime: number;
 
-  private fetchEvents: Array<{
+  private fetchEvents: {
     startTime: number;
     endTime: number;
     duration: number;
     itemsCount: number;
-  }> = [];
+  }[] = [];
 
   private persistentMetrics = {
     lastFetchTime: null as number | null,
