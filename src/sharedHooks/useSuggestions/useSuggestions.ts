@@ -64,7 +64,7 @@ export const useSuggestions = (
     longitude: scoreImageParams?.lng,
     tryOfflineSuggestions
   } );
-  console.log( { offlineSuggestions, onlineSuggestions } );
+  console.log( { offlineSuggestions, onlineSuggestions, shouldFetchOnlineSuggestions } );
 
   const refetchSuggestions = () => {
     if ( shouldFetchOnlineSuggestions ) {
