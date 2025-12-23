@@ -4,7 +4,7 @@ import type { RealmTaxon } from "realmModels/types";
 
 const tryToReplaceWithLocalTaxon = (
   localTaxa: ( Taxon & RealmTaxon )[],
-  suggestion: ApiSuggestion
+  suggestion: ApiSuggestion,
 ) => {
   const localTaxon = localTaxa.find( local => local.id === suggestion.taxon.id );
 
@@ -13,8 +13,8 @@ const tryToReplaceWithLocalTaxon = (
       ...suggestion,
       taxon: {
         ...suggestion?.taxon,
-        ...localTaxon
-      }
+        ...localTaxon,
+      },
     };
   }
 

@@ -5,14 +5,14 @@ import LocationSection
 import MapSection
   from "components/ObsDetailsDefaultMode/MapSection/MapSection";
 import {
-  ActivityIndicator, Body2, Button, Heading3, ScrollViewWrapper
+  ActivityIndicator, Body2, Button, Heading3, ScrollViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import _ from "lodash";
 import React from "react";
 import type { ScrollView } from "react-native";
 import type {
-  RealmObservation, RealmObservationPhoto, RealmPhoto, RealmTaxon
+  RealmObservation, RealmObservationPhoto, RealmPhoto, RealmTaxon,
 } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 
@@ -59,7 +59,7 @@ const Match = ( {
   onSuggestionChosen,
   scrollRef,
   iconicTaxon,
-  setIconicTaxon
+  setIconicTaxon,
 }: Props ) => {
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );

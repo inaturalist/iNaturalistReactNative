@@ -3,7 +3,7 @@ import {
   Body3,
   Body4,
   Button,
-  Heading4
+  Heading4,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
@@ -53,7 +53,7 @@ const SuggestionsFooter = ( {
   hideSkip,
   observers,
   shouldUseEvidenceLocation,
-  toggleLocation
+  toggleLocation,
 }: Props ) => {
   const { t } = useTranslation( );
   const { isDebug } = useDebugMode( );

@@ -1,16 +1,16 @@
 import { useNavigation } from "@react-navigation/native";
 import {
   Body1,
-  ViewWrapper
+  ViewWrapper,
 } from "components/SharedComponents";
 import {
-  Pressable
+  Pressable,
 } from "components/styledComponents";
 import { sortBy } from "lodash";
 import type { Node } from "react";
 import React from "react";
 import {
-  FlatList
+  FlatList,
 } from "react-native";
 
 // Note: you need to add here and in UiLibraryItem
@@ -24,7 +24,7 @@ const ITEMS = sortBy( [
   { title: "TaxonResult", component: "TaxonResultDemo" },
   { title: "ObsGridItem", component: "ObsGridItemDemo" },
   { title: "TaxonGridItem", component: "TaxonGridItemDemo" },
-  { title: "PivotCards", component: "PivotCardsDemo" }
+  { title: "PivotCards", component: "PivotCardsDemo" },
 ], item => item.title );
 ITEMS.push( { title: "Everything Else", component: "Misc" } );
 

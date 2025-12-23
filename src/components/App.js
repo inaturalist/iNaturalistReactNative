@@ -8,7 +8,7 @@ import { log } from "sharedHelpers/logger";
 import {
   useCurrentUser,
   usePerformance,
-  useShare
+  useShare,
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 
@@ -41,7 +41,7 @@ const handleShare = ( navigation, item: ?SharedItem ) => {
   // while observations are created
   navigation?.navigate( "NoBottomTabStackNavigator", {
     screen: "PhotoSharing",
-    params: { item }
+    params: { item },
   } );
 };
 
@@ -55,7 +55,7 @@ type Props = {
 const App = ( { children }: Props ): Node => {
   const navigation = useNavigation( );
   const { loadTime } = usePerformance( {
-    screenName: "App"
+    screenName: "App",
   } );
   if ( isDebugMode( ) ) {
     logger.info( loadTime );
@@ -65,7 +65,7 @@ const App = ( { children }: Props ): Node => {
   // for performance reasons
   const onShare = useCallback(
     item => handleShare( navigation, item ),
-    [navigation]
+    [navigation],
   );
 
   const currentUser = useCurrentUser( );

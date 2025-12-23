@@ -2,7 +2,7 @@ import { RealmContext } from "providers/contexts";
 import {
   useCallback,
   useEffect,
-  useState
+  useState,
 } from "react";
 import { log } from "sharedHelpers/logger";
 import { predictImage } from "sharedHelpers/mlModel";
@@ -30,7 +30,7 @@ const useOfflineSuggestions = (
     latitude: number;
     longitude: number;
     tryOfflineSuggestions: boolean;
-  }
+  },
 ): {
   offlineSuggestions: {
     results: OfflineSuggestion[];
@@ -46,7 +46,7 @@ const useOfflineSuggestions = (
   const [error, setError] = useState( null );
 
   const {
-    onFetchError, onFetched, latitude, longitude, tryOfflineSuggestions
+    onFetchError, onFetched, latitude, longitude, tryOfflineSuggestions,
   } = options;
 
   const predictOffline = useCallback( async ( ) => {
@@ -99,8 +99,8 @@ const useOfflineSuggestions = (
           id,
           name: prediction.name,
           rank_level: prediction.rank_level,
-          iconic_taxon_name: iconicTaxonName
-        }
+          iconic_taxon_name: iconicTaxonName,
+        },
       };
     };
 
@@ -113,7 +113,7 @@ const useOfflineSuggestions = (
 
     const returnValue = {
       results: formattedPredictions,
-      commonAncestor: commonAncestorSuggestion
+      commonAncestor: commonAncestorSuggestion,
     };
 
     setOfflineSuggestions( returnValue );
@@ -143,14 +143,14 @@ const useOfflineSuggestions = (
     photoUri,
     tryOfflineSuggestions,
     setError,
-    onFetchError
+    onFetchError,
   ] );
 
   if ( error ) throw error;
 
   return {
     offlineSuggestions,
-    refetchOfflineSuggestions
+    refetchOfflineSuggestions,
   };
 };
 

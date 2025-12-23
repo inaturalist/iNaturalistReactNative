@@ -12,15 +12,15 @@ jest.mock( "react-native/Libraries/Utilities/Platform", () => ( {
   default: {
     OS: "ios",
     select: jest.fn(),
-    Version: 9
-  }
+    Version: 9,
+  },
 } ) );
 
 describe( "AddObsBottomSheet in iOS 9", ( ) => {
   it( "hides AI camera button on older devices", async ( ) => {
     render( <AddObsBottomSheet closeModal={jest.fn( )} /> );
     const arCameraButton = screen.queryByLabelText(
-      i18next.t( "AI-Camera" )
+      i18next.t( "AI-Camera" ),
     );
     expect( arCameraButton ).toBeFalsy( );
   } );

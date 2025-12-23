@@ -4,13 +4,13 @@
 import { t } from "i18next";
 import {
   useCallback,
-  useMemo
+  useMemo,
 } from "react";
 import { Alert, Platform, Share } from "react-native";
 import {
   getBuildNumber,
   getSystemName,
-  getVersion
+  getVersion,
 } from "react-native-device-info";
 import RNFS from "react-native-fs";
 import Mailer from "react-native-mail";
@@ -35,15 +35,15 @@ const useLogs = ( ) => {
   const device = getSystemName();
   const emailParams = useMemo( ( ) => ( {
     subject: `iNat RN ${device} Logs (version ${appVersion} - ${buildVersion})`,
-    recipients: ["help+mobile@inaturalist.org"]
+    recipients: ["help+mobile@inaturalist.org"],
   } ), [device, appVersion, buildVersion] );
 
   const shareLogFile = useCallback( ( ) => Share.share(
     {
       title: emailParams.subject,
-      url: logFilePath
+      url: logFilePath,
     },
-    emailParams
+    emailParams,
   ), [emailParams] );
 
   const emailLogFile = useCallback( ( ) => Mailer.mail(
@@ -53,41 +53,41 @@ const useLogs = ( ) => {
       attachments: [
         {
           path: logFilePath,
-          mimeType: "txt"
-        }
-      ]
+          mimeType: "txt",
+        },
+      ],
     },
     ( error, event ) => {
       if ( Platform.OS === "ios" && error === "not_available" ) {
         Alert.alert(
           t( "No-email-app-installed" ),
           t( "You-can-still-share-the-file", {
-            email: emailParams.recipients[0]
+            email: emailParams.recipients[0],
           } ),
           [
             {
               text: t( "Cancel" ),
-              style: "cancel"
+              style: "cancel",
             },
             {
               text: t( "Share" ),
-              onPress: () => shareLogFile( )
-            }
-          ]
+              onPress: () => shareLogFile( ),
+            },
+          ],
         );
         return;
       }
       Alert.alert( error, event );
-    }
+    },
   ), [
     emailParams,
-    shareLogFile
+    shareLogFile,
   ] );
 
   return {
     shareLogFile,
     emailLogFile,
-    getLogContents
+    getLogContents,
   };
 };
 

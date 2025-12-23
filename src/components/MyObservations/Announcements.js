@@ -5,7 +5,7 @@ import makeWebshell, {
   ForceResponsiveViewportFeature,
   HandleHTMLDimensionsFeature,
   HandleLinkPressFeature,
-  useAutoheight
+  useAutoheight,
 } from "@formidable-webview/webshell";
 import { useQueryClient } from "@tanstack/react-query";
 import { dismissAnnouncement, searchAnnouncements } from "api/announcements";
@@ -18,7 +18,7 @@ import { openExternalWebBrowser } from "sharedHelpers/util";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 
@@ -30,13 +30,13 @@ const Webshell = makeWebshell(
   new ForceElementSizeFeature( {
     target: "body",
     heightValue: "auto",
-    widthValue: "auto"
-  } )
+    widthValue: "auto",
+  } ),
 );
 
 const AutoheightWebView = ( webshellProps ): Node => {
   const { autoheightWebshellProps } = useAutoheight( {
-    webshellProps
+    webshellProps,
   } );
   // eslint-disable-next-line react/jsx-props-no-spreading
   return <Webshell {...autoheightWebshellProps} />;
@@ -47,7 +47,7 @@ type Props = {
 }
 
 const Announcements = ( {
-  isConnected
+  isConnected,
 }: Props ): Node => {
   const { t } = useTranslation( );
   const queryClient = useQueryClient( );
@@ -57,19 +57,19 @@ const Announcements = ( {
 
   const apiParams = {
     locale: currentUser?.locale || "en",
-    per_page: 20
+    per_page: 20,
   };
   // TODO: if there are more than 20 announcements, should we paginate and get more?
   const {
     data: announcements,
     refetch: refetchAnnouncements,
-    isRefetching
+    isRefetching,
   } = useAuthenticatedQuery(
     ["searchAnnouncements", apiParams],
     optsWithAuth => searchAnnouncements( apiParams, optsWithAuth ),
     {
-      enabled: !!( currentUser )
-    }
+      enabled: !!( currentUser ),
+    },
   );
 
   const dismissAnnouncementMutation = useAuthenticatedMutation(
@@ -83,8 +83,8 @@ const Announcements = ( {
       },
       onError: err => {
         throw err;
-      }
-    }
+      },
+    },
   );
 
   if ( !isConnected ) {

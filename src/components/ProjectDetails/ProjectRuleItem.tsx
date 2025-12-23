@@ -12,7 +12,7 @@ interface Props {
 const ProjectRuleItem = ( { rule }: Props ) => {
   const [hideFullList, setHideFullList] = useState(
     rule.inclusions.length > 20
-    || rule.exclusions.length > 20
+    || rule.exclusions.length > 20,
   );
   const currentUser = useCurrentUser( );
   const { t } = useTranslation( );
@@ -23,7 +23,7 @@ const ProjectRuleItem = ( { rule }: Props ) => {
     Taxa: t( "VIEW-ALL-X-TAXA", { count: totalRuleCount } ),
     Users: t( "VIEW-ALL-X-USERS", { count: totalRuleCount } ),
     Projects: t( "VIEW-ALL-X-PROJECTS", { count: totalRuleCount } ),
-    Location: t( "VIEW-ALL-X-PLACES", { count: totalRuleCount } )
+    Location: t( "VIEW-ALL-X-PLACES", { count: totalRuleCount } ),
   };
 
   const showTaxonName = taxon => (
@@ -44,8 +44,8 @@ const ProjectRuleItem = ( { rule }: Props ) => {
       className={classnames(
         "pb-2 flex-row",
         {
-          underline: item?.onPress
-        }
+          underline: item?.onPress,
+        },
       )}
       onPress={item?.onPress}
     >

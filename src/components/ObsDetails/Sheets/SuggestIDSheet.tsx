@@ -3,7 +3,7 @@ import {
   ButtonBar,
   DisplayTaxon,
   INatIcon,
-  List2
+  List2,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -29,7 +29,7 @@ const SuggestIDSheet = ( {
   identification,
   onSuggestId,
   editIdentBody,
-  onPressClose
+  onPressClose,
 }: Props ): Node => {
   const buttons = [
     {
@@ -42,8 +42,8 @@ const SuggestIDSheet = ( {
       testID: "SuggestIDSheet.cvSuggestionsButton",
       accessibilityRole: "link",
       accessibilityHint: t( "Adds-ID" ),
-      level: "primary"
-    }
+      level: "primary",
+    },
   ];
 
   if ( identification.body ) {
@@ -55,7 +55,7 @@ const SuggestIDSheet = ( {
       },
       className: "mx-2 flex-1",
       testID: "SuggestID.EditCommentButton",
-      accessibilityHint: t( "Opens-edit-comment-form" )
+      accessibilityHint: t( "Opens-edit-comment-form" ),
     } );
   } else {
     buttons.unshift( {
@@ -66,7 +66,7 @@ const SuggestIDSheet = ( {
       },
       className: "mx-2 flex-1",
       testID: "SuggestID.commentButton",
-      accessibilityHint: t( "Opens-add-comment-form" )
+      accessibilityHint: t( "Opens-add-comment-form" ),
     } );
   }
   return (

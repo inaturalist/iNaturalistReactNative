@@ -2,11 +2,11 @@ import {
   DisplayTaxonName,
   Heading1,
   Heading4,
-  Subheading1
+  Subheading1,
 } from "components/SharedComponents";
 import SpeciesSeenCheckmark from "components/SharedComponents/SpeciesSeenCheckmark";
 import {
-  View
+  View,
 } from "components/styledComponents";
 import type { TFunction } from "i18next";
 import React from "react";
@@ -66,7 +66,7 @@ function translatedRank( rank: string, t: TFunction ) {
 const TaxonDetailsTitle = ( {
   optionalClasses,
   showSpeciesSeenCheckmark,
-  taxon
+  taxon,
 }: Props ) => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );

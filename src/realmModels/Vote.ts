@@ -7,7 +7,7 @@ class Vote extends Realm.Object {
     created_at: true,
     user_id: true,
     vote_flag: true,
-    vote_scope: true
+    vote_scope: true,
   };
 
   static schema: ObjectSchema = {
@@ -18,8 +18,8 @@ class Vote extends Realm.Object {
       id: "int",
       user_id: "int",
       vote_flag: "bool",
-      vote_scope: "string?"
-    }
+      vote_scope: "string?",
+    },
   };
 }
 

@@ -1,11 +1,11 @@
 import {
   permissionResultFromMultiple,
-  WRITE_MEDIA_PERMISSIONS
+  WRITE_MEDIA_PERMISSIONS,
 } from "components/SharedComponents/PermissionGateContainer";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   checkMultiple,
-  RESULTS
+  RESULTS,
 } from "react-native-permissions";
 
 import SavePhotoPermissionGate from "../SavePhotoPermissionGate";
@@ -38,7 +38,7 @@ const useSavePhotoPermission = ( ) => {
     const {
       onPermissionGranted,
       onPermissionBlocked,
-      onModalHide
+      onModalHide,
     } = callbacks || { };
 
     // this prevents infinite rerenders of the SavePhotoPermissionGate component
@@ -74,12 +74,12 @@ const useSavePhotoPermission = ( ) => {
   // referential stability
   const requestPermissions = useCallback(
     ( ) => setShowPermissionGate( true ),
-    []
+    [],
   );
 
   const checkPermissions = useCallback( async () => {
     const permissionsResult = permissionResultFromMultiple(
-      await checkMultiple( WRITE_MEDIA_PERMISSIONS )
+      await checkMultiple( WRITE_MEDIA_PERMISSIONS ),
     );
     if ( permissionsResult === RESULTS.GRANTED ) {
       setHasPermissions( true );
@@ -101,7 +101,7 @@ const useSavePhotoPermission = ( ) => {
     renderPermissionsGate,
     requestPermissions,
     hasBlockedPermissions,
-    checkPermissions
+    checkPermissions,
   };
 };
 

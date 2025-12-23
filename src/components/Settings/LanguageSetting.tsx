@@ -3,7 +3,7 @@ import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import {
   Button,
   Heading4,
-  PickerSheet
+  PickerSheet,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import _ from "lodash";
@@ -27,8 +27,8 @@ const LanguageSetting = ( { onChange }: Props ) => {
   const webLocalesOptions = Object.fromEntries(
     webLocales?.map( locale => [locale.locale, {
       label: locale.language_in_locale,
-      value: locale.locale
-    }] )
+      value: locale.locale,
+    }] ),
   );
   const [localeSheetOpen, setLocaleSheetOpen] = useState( false );
 

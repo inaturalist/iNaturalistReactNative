@@ -6,7 +6,7 @@ import {
   HideView,
   Tabs,
   TextInputSheet,
-  WarningSheet
+  WarningSheet,
 } from "components/SharedComponents";
 import { ScrollView, View } from "components/styledComponents";
 import type { Node } from "react";
@@ -15,7 +15,7 @@ import { Platform } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import {
   useScrollToOffset,
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 
 import ObsDetailsHeaderRight from "../ObsDetailsDefaultMode/ObsDetailsDefaultModeHeaderRight";
@@ -113,14 +113,14 @@ const ObsDetails = ( {
   onCloseIdentBodySheet,
   newIdentification,
   onChangeIdentBody,
-  uuid
+  uuid,
 }: Props ): Node => {
   const scrollViewRef = useRef( );
   const { t } = useTranslation( );
 
   const {
     setHeightOfContentAboveSection: setHeightOfContentAboveActivityTab,
-    setOffsetToActivityItem
+    setOffsetToActivityItem,
   } = useScrollToOffset( scrollViewRef );
 
   // If the user just added an activity item and we're waiting for it to load,
@@ -132,7 +132,7 @@ const ObsDetails = ( {
     }
   }, [addingActivityItem] );
   const textInputStyle = Platform.OS === "android" && {
-    height: 125
+    height: 125,
   };
 
   const renderActivityTab = ( ) => (

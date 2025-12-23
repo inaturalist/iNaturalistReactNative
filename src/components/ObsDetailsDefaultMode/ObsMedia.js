@@ -26,7 +26,7 @@ type Props = {
 const ObsMedia = ( {
   loading,
   photos = [],
-  sounds = []
+  sounds = [],
 }: Props ): Node => {
   const [index, setIndex] = useState( 0 );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
@@ -45,7 +45,7 @@ const ObsMedia = ( {
       : (
         <PhotoContainer photo={item} onPress={() => setMediaViewerVisible( true )} />
       ) ),
-    [setMediaViewerVisible, items, index]
+    [setMediaViewerVisible, items, index],
   );
 
   const currentPhotoUrl = index >= photos.length

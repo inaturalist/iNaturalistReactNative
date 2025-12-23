@@ -1,5 +1,5 @@
 import {
-  Body3
+  Body3,
 } from "components/SharedComponents";
 import { t } from "i18next";
 import type { Node } from "react";
@@ -15,7 +15,7 @@ const OBSERVATION_URL = "https://www.inaturalist.org/observations";
 const handleShare = async url => {
   const sharingOptions = {
     url: "",
-    message: ""
+    message: "",
   };
   if ( Platform.OS === "ios" ) {
     sharingOptions.url = url;

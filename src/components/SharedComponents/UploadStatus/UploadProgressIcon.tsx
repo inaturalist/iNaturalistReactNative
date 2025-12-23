@@ -16,7 +16,7 @@ const UploadProgressIcon = ( {
   color,
   progress,
   iconClasses,
-  uniqueKey
+  uniqueKey,
 }: Props ) => {
   const { t } = useTranslation( );
   return (

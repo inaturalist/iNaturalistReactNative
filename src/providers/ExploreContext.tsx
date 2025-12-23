@@ -314,7 +314,7 @@ const calculatedFilters = {
   establishmentMean: ESTABLISHMENT_MEAN.ANY,
   wildStatus: WILD_STATUS.ALL,
   reviewedFilter: REVIEWED.ALL,
-  photoLicense: PHOTO_LICENSE.ALL
+  photoLicense: PHOTO_LICENSE.ALL,
 };
 
 // Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
@@ -330,7 +330,7 @@ const defaultFilters = {
   observed_on: undefined,
   project: undefined,
   sortBy: SORT_BY.DATE_UPLOADED_NEWEST,
-  user: undefined
+  user: undefined,
 };
 
 const initialState: State = {
@@ -346,7 +346,7 @@ const initialState: State = {
   return_bounds: undefined,
   taxon: undefined,
   taxon_id: undefined,
-  verifiable: true
+  verifiable: true,
 };
 
 // Checks if the date is in the format XXXX-XX-XX
@@ -367,7 +367,7 @@ async function defaultExploreLocation( ): Promise<DefaultLocation> {
       swlat: undefined,
       swlng: undefined,
       nelat: undefined,
-      nelng: undefined
+      nelng: undefined,
     };
   }
   return {
@@ -379,7 +379,7 @@ async function defaultExploreLocation( ): Promise<DefaultLocation> {
     swlat: undefined,
     swlng: undefined,
     nelat: undefined,
-    nelng: undefined
+    nelng: undefined,
   };
 }
 
@@ -393,7 +393,7 @@ function exploreReducer( state: State, action: Action ) {
     case EXPLORE_ACTION.RESET:
       return {
         ...initialState,
-        placeMode: PLACE_MODE.WORLDWIDE
+        placeMode: PLACE_MODE.WORLDWIDE,
       };
     case EXPLORE_ACTION.DISCARD:
       return action.snapshot;
@@ -401,7 +401,7 @@ function exploreReducer( state: State, action: Action ) {
       const newState = {
         ...state,
         ...action.storedState,
-        iconic_taxa: undefined
+        iconic_taxa: undefined,
       };
       if ( action.taxon ) {
         newState.taxon = action.taxon;
@@ -423,35 +423,35 @@ function exploreReducer( state: State, action: Action ) {
         ...state,
         iconic_taxa: ["unknown"],
         taxon: undefined,
-        taxon_id: undefined
+        taxon_id: undefined,
       };
       return newState;
     }
     case EXPLORE_ACTION.SET_EXPLORE_LOCATION:
       return {
         ...state,
-        ...action.exploreLocation
+        ...action.exploreLocation,
       };
     case EXPLORE_ACTION.SET_PLACE_MODE_NEARBY:
       return {
         ...state,
-        placeMode: PLACE_MODE.NEARBY
+        placeMode: PLACE_MODE.NEARBY,
 
       };
     case EXPLORE_ACTION.SET_PLACE_MODE_WORLDWIDE:
       return {
         ...state,
-        placeMode: PLACE_MODE.WORLDWIDE
+        placeMode: PLACE_MODE.WORLDWIDE,
       };
     case EXPLORE_ACTION.SET_PLACE_MODE_MAP_AREA:
       return {
         ...state,
-        placeMode: PLACE_MODE.MAP_AREA
+        placeMode: PLACE_MODE.MAP_AREA,
       };
     case EXPLORE_ACTION.SET_PLACE_MODE_PLACE:
       return {
         ...state,
-        placeMode: PLACE_MODE.PLACE
+        placeMode: PLACE_MODE.PLACE,
       };
     case EXPLORE_ACTION.SET_PLACE:
       return {
@@ -466,7 +466,7 @@ function exploreReducer( state: State, action: Action ) {
         place_id: action.placeId,
         radius: action.radius,
         swlat: undefined,
-        swlng: undefined
+        swlng: undefined,
       };
     case EXPLORE_ACTION.SET_USER:
       return {
@@ -474,7 +474,7 @@ function exploreReducer( state: State, action: Action ) {
         ...action.storedState,
         user: action.user,
         user_id: action.userId,
-        excludeUser: null
+        excludeUser: null,
       };
     case EXPLORE_ACTION.EXCLUDE_USER:
       return {
@@ -482,48 +482,48 @@ function exploreReducer( state: State, action: Action ) {
         ...action.storedState,
         excludeUser: action.excludeUser,
         user: null,
-        user_id: null
+        user_id: null,
       };
     case EXPLORE_ACTION.SET_PROJECT:
       return {
         ...state,
         ...action.storedState,
         project: action.project,
-        project_id: action.projectId
+        project_id: action.projectId,
       };
     case EXPLORE_ACTION.CHANGE_SORT_BY:
       return {
         ...state,
-        sortBy: action.sortBy
+        sortBy: action.sortBy,
       };
     case EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE:
       return {
         ...state,
-        researchGrade: !state.researchGrade
+        researchGrade: !state.researchGrade,
       };
     case EXPLORE_ACTION.TOGGLE_NEEDS_ID:
       return {
         ...state,
-        needsID: !state.needsID
+        needsID: !state.needsID,
       };
     case EXPLORE_ACTION.TOGGLE_CASUAL:
       return {
         ...state,
-        casual: !state.casual
+        casual: !state.casual,
       };
     case EXPLORE_ACTION.SET_HIGHEST_TAXONOMIC_RANK:
       return {
         ...state,
         hrank: action.hrank === TAXONOMIC_RANK.none
           ? null
-          : action.hrank
+          : action.hrank,
       };
     case EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK:
       return {
         ...state,
         lrank: action.lrank === TAXONOMIC_RANK.none
           ? null
-          : action.lrank
+          : action.lrank,
       };
     case EXPLORE_ACTION.SET_DATE_OBSERVED_ALL:
       return {
@@ -532,7 +532,7 @@ function exploreReducer( state: State, action: Action ) {
         observed_on: null,
         d1: null,
         d2: null,
-        months: null
+        months: null,
       };
     case EXPLORE_ACTION.SET_DATE_OBSERVED_EXACT:
       if ( !isValidDateFormat( action.observedOn ) ) {
@@ -544,7 +544,7 @@ function exploreReducer( state: State, action: Action ) {
         observed_on: action.observedOn,
         d1: null,
         d2: null,
-        months: null
+        months: null,
       };
     case EXPLORE_ACTION.SET_DATE_OBSERVED_RANGE:
       if ( !isValidDateFormat( action.d1 ) ) {
@@ -559,7 +559,7 @@ function exploreReducer( state: State, action: Action ) {
         observed_on: null,
         d1: action.d1,
         d2: action.d2,
-        months: null
+        months: null,
       };
     case EXPLORE_ACTION.SET_DATE_OBSERVED_MONTHS:
       return {
@@ -568,7 +568,7 @@ function exploreReducer( state: State, action: Action ) {
         observed_on: null,
         d1: null,
         d2: null,
-        months: action.months
+        months: action.months,
       };
     case EXPLORE_ACTION.SET_DATE_UPLOADED_ALL:
       return {
@@ -576,7 +576,7 @@ function exploreReducer( state: State, action: Action ) {
         dateUploaded: DATE_UPLOADED.ALL,
         created_on: null,
         created_d1: null,
-        created_d2: null
+        created_d2: null,
       };
     case EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT:
       if ( !isValidDateFormat( action.createdOn ) ) {
@@ -587,7 +587,7 @@ function exploreReducer( state: State, action: Action ) {
         dateUploaded: DATE_UPLOADED.EXACT_DATE,
         created_on: action.createdOn,
         created_d1: null,
-        created_d2: null
+        created_d2: null,
       };
     case EXPLORE_ACTION.SET_DATE_UPLOADED_RANGE:
       if ( !isValidDateFormat( action.createdD1 ) ) {
@@ -601,17 +601,17 @@ function exploreReducer( state: State, action: Action ) {
         dateUploaded: DATE_UPLOADED.DATE_RANGE,
         created_on: null,
         created_d1: action.createdD1,
-        created_d2: action.createdD2
+        created_d2: action.createdD2,
       };
     case EXPLORE_ACTION.SET_MEDIA:
       return {
         ...state,
-        media: action.media
+        media: action.media,
       };
     case EXPLORE_ACTION.SET_ESTABLISHMENT_MEAN:
       return {
         ...state,
-        establishmentMean: action.establishmentMean
+        establishmentMean: action.establishmentMean,
       };
     case EXPLORE_ACTION.SET_WILD_STATUS:
       return {
@@ -619,17 +619,17 @@ function exploreReducer( state: State, action: Action ) {
         casual: action.wildStatus === WILD_STATUS.CAPTIVE
           ? true
           : state.casual,
-        wildStatus: action.wildStatus
+        wildStatus: action.wildStatus,
       };
     case EXPLORE_ACTION.SET_PHOTO_LICENSE:
       return {
         ...state,
-        photoLicense: action.photoLicense
+        photoLicense: action.photoLicense,
       };
     case EXPLORE_ACTION.SET_REVIEWED:
       return {
         ...state,
-        reviewedFilter: action.reviewedFilter
+        reviewedFilter: action.reviewedFilter,
       };
     case EXPLORE_ACTION.SET_MAP_BOUNDARIES: {
       return {
@@ -638,12 +638,12 @@ function exploreReducer( state: State, action: Action ) {
         lat: undefined,
         lng: undefined,
         place_id: undefined,
-        radius: undefined
+        radius: undefined,
       };
     }
     case EXPLORE_ACTION.USE_STORED_STATE:
       return {
-        ...action.storedState
+        ...action.storedState,
       };
     default: {
       throw new Error( `Unhandled action type: ${( action as Action ).type}` );
@@ -660,7 +660,7 @@ const ExploreProvider = ( { children }: ExploreProviderProps ) => {
 
   const differsFromSnapshot: boolean = React.useMemo(
     () => !isEqual( snapshot, state ),
-    [state, snapshot]
+    [state, snapshot],
   );
 
   const discardChanges = () => {
@@ -671,7 +671,7 @@ const ExploreProvider = ( { children }: ExploreProviderProps ) => {
   };
 
   const isNotInitialState: boolean = Object.keys( initialState ).some(
-    key => initialState[key] !== state[key]
+    key => initialState[key] !== state[key],
   );
 
   let numberOfFilters: number = Object.keys( calculatedFilters ).reduce(
@@ -681,7 +681,7 @@ const ExploreProvider = ( { children }: ExploreProviderProps ) => {
       }
       return count;
     },
-    0
+    0,
   );
   // If both low and high rank filters are set, we only count one filter
   if ( state.lrank && state.hrank ) {
@@ -697,7 +697,7 @@ const ExploreProvider = ( { children }: ExploreProviderProps ) => {
     numberOfFilters,
     makeSnapshot,
     differsFromSnapshot,
-    discardChanges
+    discardChanges,
   };
   return (
     <ExploreContext.Provider value={value}>{children}</ExploreContext.Provider>
@@ -715,5 +715,5 @@ function useExplore() {
 export {
   ExploreProvider,
   exploreReducer,
-  useExplore
+  useExplore,
 };

@@ -3,7 +3,7 @@ import {
   photoLibraryPhotosPath,
   photoUploadPath,
   rotatedOriginalPhotosPath,
-  soundUploadPath
+  soundUploadPath,
 } from "appConstants/paths";
 import _ from "lodash";
 import { useEffect, useState } from "react";
@@ -37,62 +37,62 @@ export function formatSizeUnits( bytes: number ) {
 const sharedDirectories = [
   {
     path: RNFS.DocumentDirectoryPath,
-    directoryName: "DocumentDirectory"
+    directoryName: "DocumentDirectory",
   },
   {
     path: RNFS.CachesDirectoryPath,
-    directoryName: "CachesDirectory"
+    directoryName: "CachesDirectory",
   },
   {
     path: RNFS.TemporaryDirectoryPath,
-    directoryName: "TemporaryDirectory"
+    directoryName: "TemporaryDirectory",
   },
   {
     path: computerVisionPath,
-    directoryName: "ComputerVisionSuggestions"
+    directoryName: "ComputerVisionSuggestions",
   },
   {
     path: photoLibraryPhotosPath,
-    directoryName: "PhotoLibraryPhotos"
+    directoryName: "PhotoLibraryPhotos",
   },
   {
     path: photoUploadPath,
-    directoryName: "PhotoUploads"
+    directoryName: "PhotoUploads",
   },
   {
     path: rotatedOriginalPhotosPath,
-    directoryName: "RotatedOriginalPhotos"
+    directoryName: "RotatedOriginalPhotos",
   },
   {
     path: soundUploadPath,
-    directoryName: "SoundUploads"
-  }
+    directoryName: "SoundUploads",
+  },
 ];
 
 const iOSDirectories = [
   {
     path: RNFS.MainBundlePath,
-    directoryName: "MainBundle"
+    directoryName: "MainBundle",
   },
   {
     path: RNFS.LibraryDirectoryPath,
-    directoryName: "LibraryDirectory"
-  }
+    directoryName: "LibraryDirectory",
+  },
 ];
 
 const androidDirectories = [
   {
     path: RNFS.DownloadDirectoryPath,
-    directoryName: "DownloadDirectory"
+    directoryName: "DownloadDirectory",
   },
   {
     path: RNFS.ExternalDirectoryPath,
-    directoryName: "ExternalDirectory"
+    directoryName: "ExternalDirectory",
   },
   {
     path: RNFS.ExternalStorageDirectoryPath,
-    directoryName: "ExternalStorageDirectory"
-  }
+    directoryName: "ExternalStorageDirectory",
+  },
 ];
 
 export const directories = sharedDirectories.concat( Platform.OS === "android"
@@ -108,7 +108,7 @@ export async function getDirectoryEntrySizes( directory: string ): Promise<Direc
   const sortedEntries = _.orderBy( entries, "size", "desc" );
   return sortedEntries.map( ( { name, size } ) => ( {
     name,
-    size
+    size,
   } ) );
 }
 
@@ -128,8 +128,8 @@ async function fetchAppSize(): Promise<AppSize> {
   const maybeExistingDirectories = await Promise.all(
     directories.map( async directory => ( {
       directory,
-      exists: await RNFS.exists( directory.path )
-    } ) )
+      exists: await RNFS.exists( directory.path ),
+    } ) ),
   );
   const existingDirectories = maybeExistingDirectories
     .filter( dir => dir.exists )
@@ -139,7 +139,7 @@ async function fetchAppSize(): Promise<AppSize> {
     existingDirectories.map( async dir => {
       const directoryEntrySizes = await getDirectoryEntrySizes( dir.path );
       return [dir.directoryName, directoryEntrySizes] as [string, DirectoryEntrySize[]];
-    } )
+    } ),
   );
   const directorySizesByDirectory = Object.fromEntries( directoryToDirectorySizesKvps );
   return directorySizesByDirectory;

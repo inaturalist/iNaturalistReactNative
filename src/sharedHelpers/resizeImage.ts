@@ -11,14 +11,14 @@ const resizeImage = async (
       mode?: string;
       onlyScaleDown?: boolean;
     };
-  }
+  },
 ): Promise<string> => {
   const {
     width,
     height,
     rotation,
     outputPath,
-    imageOptions
+    imageOptions,
   } = options;
 
   // Note that the default behavior of this library is to resize to contain,
@@ -32,7 +32,7 @@ const resizeImage = async (
     rotation || 0, // rotation
     outputPath, // outputPath
     true, // keep metadata,
-    imageOptions // mode and scale options
+    imageOptions, // mode and scale options
   );
 
   const { uri } = resizedPhoto;

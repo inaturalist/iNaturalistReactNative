@@ -23,7 +23,7 @@ const Flash = ( {
   toggleFlash,
   hasFlash,
   takePhotoOptions,
-  flashClassName
+  flashClassName,
 }: Props ) => {
   const { t } = useTranslation( );
 
@@ -49,7 +49,7 @@ const Flash = ( {
       className={classnames(
         "m-0",
         "border-0",
-        flashClassName
+        flashClassName,
       )}
     >
       <TransparentCircleButton

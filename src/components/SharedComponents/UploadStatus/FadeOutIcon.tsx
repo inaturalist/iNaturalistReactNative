@@ -2,7 +2,7 @@ import { View } from "components/styledComponents";
 import type { PropsWithChildren } from "react";
 import React from "react";
 import Reanimated, {
-  Keyframe
+  Keyframe,
 } from "react-native-reanimated";
 
 interface Props extends PropsWithChildren {
@@ -13,12 +13,12 @@ const AnimatedView = Reanimated.createAnimatedComponent( View );
 const keyframe = new Keyframe( {
   0: { opacity: 0 },
   40: { opacity: 1 },
-  100: { opacity: 0 }
+  100: { opacity: 0 },
 } );
 
 const FadeOutIcon = ( {
   children,
-  uniqueKey
+  uniqueKey,
 }: Props ) => (
   <AnimatedView
     entering={keyframe.duration( 2000 )}

@@ -7,7 +7,7 @@ import React, { useState } from "react";
 import { Alert, Platform, Share } from "react-native";
 import {
   useAuthenticatedMutation,
-  useCurrentUser
+  useCurrentUser,
 } from "sharedHooks";
 
 const observationsUrl = "https://www.inaturalist.org/observations";
@@ -23,7 +23,7 @@ const HeaderKebabMenu = ( {
   observationId,
   uuid,
   refetchSubscriptions,
-  subscriptions
+  subscriptions,
 }: Props ): Node => {
   const currentUser = useCurrentUser( );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
@@ -31,7 +31,7 @@ const HeaderKebabMenu = ( {
   const url = `${observationsUrl}/${observationId?.toString( )}`;
   const sharingOptions = {
     url: "",
-    message: ""
+    message: "",
   };
 
   if ( Platform.OS === "ios" ) {
@@ -60,8 +60,8 @@ const HeaderKebabMenu = ( {
       },
       onError: error => {
         Alert.alert( error.message );
-      }
-    }
+      },
+    },
   );
 
   const toggleSubscriptionOnPress = async ( ) => {

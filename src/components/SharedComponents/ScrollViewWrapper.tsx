@@ -12,14 +12,14 @@ interface Props extends PropsWithChildren {
 
 const CONTENT_CONTAINER_STYLE = {
   display: "flex",
-  minHeight: "100%"
+  minHeight: "100%",
 } as const;
 
 const ScrollViewWrapper = ( {
   children,
   testID,
   style,
-  scrollRef
+  scrollRef,
 }: Props ) => {
   const dismissKeyboard = () => Keyboard.dismiss();
 

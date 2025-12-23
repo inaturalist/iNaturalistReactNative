@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import {
-  Image, Pressable, View
+  Image, Pressable, View,
 } from "components/styledComponents";
 import React, { useCallback } from "react";
 import { FlatList } from "react-native";
@@ -13,7 +13,7 @@ interface Props {
 }
 
 const ObsPhotoSelectionList = ( {
-  photoUris, selectedPhotoUri, onPressPhoto
+  photoUris, selectedPhotoUri, onPressPhoto,
 }: Props ) => {
   const { t } = useTranslation( );
 
@@ -24,7 +24,7 @@ const ObsPhotoSelectionList = ( {
         onPressPhoto( item );
       }}
       className={classnames(
-        "w-[83px] h-[83px] justify-center mx-1.5 rounded-lg"
+        "w-[83px] h-[83px] justify-center mx-1.5 rounded-lg",
       )}
       accessibilityLabel={t( "Select-photo" )}
       testID={`ObsPhotoSelectionList.${item}`}
@@ -33,8 +33,8 @@ const ObsPhotoSelectionList = ( {
         className={classnames(
           "rounded-lg overflow-hidden",
           {
-            "border-inatGreen border-[3px]": selectedPhotoUri === item
-          }
+            "border-inatGreen border-[3px]": selectedPhotoUri === item,
+          },
         )}
         testID={`ObsPhotoSelectionList.border.${item}`}
       >

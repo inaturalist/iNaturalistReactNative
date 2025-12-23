@@ -18,9 +18,9 @@ class TaxonPhoto extends Realm.Object {
       assignee: {
         type: "linkingObjects",
         objectType: "Taxon",
-        property: "taxonPhotos"
-      }
-    }
+        property: "taxonPhotos",
+      },
+    },
   };
 }
 

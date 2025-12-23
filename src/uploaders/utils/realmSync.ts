@@ -7,7 +7,7 @@ function findRecordInRealm(
   type: string,
   options?: {
     record: object;
-  }
+  },
 ): object | null {
   if ( !realm || realm.isClosed ) return null;
 
@@ -34,7 +34,7 @@ function updateRecordWithServerId(
   realm: object,
   record: object,
   serverId: number,
-  type: string
+  type: string,
 ): void {
   safeRealmWrite( realm, ( ) => {
     record.id = serverId;
@@ -54,7 +54,7 @@ function handleRecordUpdateError(
   serverId: number,
   options?: {
     record: object;
-  }
+  },
 ): void {
   // Try it one more time in case it was invalidated but it's still in the
   // database
@@ -63,7 +63,7 @@ function handleRecordUpdateError(
         = findRecordInRealm( realm, observationUUID, recordUUID, type, options );
     if ( !refreshedRecord ) {
       throw new Error(
-        `Cannot find local Realm object on retry (${type}), recordUUID: ${recordUUID || ""}`
+        `Cannot find local Realm object on retry (${type}), recordUUID: ${recordUUID || ""}`,
       );
     }
     updateRecordWithServerId( realm, refreshedRecord, serverId, type );
@@ -89,7 +89,7 @@ const markRecordUploaded = (
   realm: object,
   options?: {
     record: object;
-  }
+  },
 ) => {
   if ( !realm || realm.isClosed ) return;
 
@@ -99,7 +99,8 @@ const markRecordUploaded = (
 
   if ( !record ) {
     throw new Error(
-      `Cannot find local Realm object to mark as updated (${type}), recordUUID: ${recordUUID || ""}`
+      // eslint-disable-next-line max-len
+      `Cannot find local Realm object to mark as updated (${type}), recordUUID: ${recordUUID || ""}`,
     );
   }
 
@@ -113,7 +114,7 @@ const markRecordUploaded = (
       recordUUID,
       type,
       id,
-      options
+      options,
     );
   }
 };

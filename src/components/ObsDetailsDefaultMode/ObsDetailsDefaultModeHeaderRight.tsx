@@ -1,13 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
 import {
-  INatIconButton
+  INatIconButton,
 } from "components/SharedComponents";
 import React, { useCallback, useEffect } from "react";
 import type { RealmObservation } from "realmModels/types";
 import {
   useLocalObservation,
   useNavigateToObsEdit,
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
@@ -26,7 +26,7 @@ const ObsDetailsDefaultModeHeaderRight = ( {
   observationId,
   uuid,
   refetchSubscriptions,
-  subscriptions
+  subscriptions,
 }: Props ) => {
   const navigation = useNavigation( );
   const { localObservation } = useLocalObservation( uuid );
@@ -61,13 +61,13 @@ const ObsDetailsDefaultModeHeaderRight = ( {
       observationId,
       refetchSubscriptions,
       subscriptions,
-      t
-    ]
+      t,
+    ],
   );
 
   useEffect(
     ( ) => navigation.setOptions( { headerRight } ),
-    [headerRight, navigation]
+    [headerRight, navigation],
   );
 
   return null;

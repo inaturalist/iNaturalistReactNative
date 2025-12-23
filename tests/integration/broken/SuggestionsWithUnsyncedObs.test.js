@@ -1,11 +1,11 @@
 import {
-  useNetInfo
+  useNetInfo,
 } from "@react-native-community/netinfo";
 import {
   screen,
   userEvent,
   waitFor,
-  within
+  within,
 } from "@testing-library/react-native";
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions";
 import inatjs from "inaturalistjs";
@@ -43,43 +43,43 @@ const mockModelResult = {
   predictions: [
     factory( "ModelPrediction", {
       rank_level: 30,
-      combined_score: 86
+      combined_score: 86,
     } ),
     factory( "ModelPrediction", {
       rank_level: 20,
-      combined_score: 96
+      combined_score: 96,
     } ),
     factory( "ModelPrediction", {
       rank_level: 10,
-      combined_score: 40
-    } )]
+      combined_score: 40,
+    } )],
 };
 
 const mockModelResultNoConfidence = {
   predictions: [
     factory( "ModelPrediction", {
       rank_level: 30,
-      combined_score: 70
+      combined_score: 70,
     } ),
     factory( "ModelPrediction", {
       rank_level: 20,
-      combined_score: 65
-    } )
-  ]
+      combined_score: 65,
+    } ),
+  ],
 };
 
 const mockModelResultWithHuman = {
   predictions: [
     factory( "ModelPrediction", {
       rank_level: 20,
-      combined_score: 86
+      combined_score: 86,
     } ),
     factory( "ModelPrediction", {
       rank_level: 30,
       combined_score: 96,
-      name: "Homo"
-    } )
-  ]
+      name: "Homo",
+    } ),
+  ],
 };
 
 jest.mock( "react-native/Libraries/Utilities/Platform", () => ( {
@@ -87,14 +87,14 @@ jest.mock( "react-native/Libraries/Utilities/Platform", () => ( {
   default: {
     OS: "ios",
     select: jest.fn(),
-    Version: 11
-  }
+    Version: 11,
+  },
 } ) );
 
 const mockFetchUserLocation = jest.fn( () => ( { latitude: 56, longitude: 9, accuracy: 8 } ) );
 jest.mock( "sharedHelpers/fetchAccurateUserLocation", () => ( {
   __esModule: true,
-  default: () => mockFetchUserLocation()
+  default: () => mockFetchUserLocation(),
 } ) );
 
 // We're explicitly testing navigation here so we want react-navigation
@@ -104,7 +104,7 @@ jest.unmock( "@react-navigation/native" );
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -115,8 +115,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -133,12 +133,12 @@ beforeAll( async ( ) => {
 // Mock the response from inatjs.computervision.score_image
 const topSuggestion = {
   taxon: factory.states( "genus" )( "RemoteTaxon", { name: "Primum" } ),
-  combined_score: 90
+  combined_score: 90,
 };
 
 const humanSuggestion = {
   taxon: factory( "RemoteTaxon", { name: "Homo sapiens", id: 43584 } ),
-  combined_score: 86
+  combined_score: 86,
 };
 
 const mockLocalTaxon = {
@@ -146,8 +146,8 @@ const mockLocalTaxon = {
   name: "Poecile",
   rank_level: 20,
   default_photo: {
-    url: "fake_image_url"
-  }
+    url: "fake_image_url",
+  },
 };
 
 const mockUser = factory( "LocalUser" );
@@ -159,11 +159,11 @@ const makeMockObservations = ( ) => ( [
     wasSynced: jest.fn( ( ) => false ),
     // Suggestions won't load without a photo
     observationPhotos: [
-      factory( "RemoteObservationPhoto" )
+      factory( "RemoteObservationPhoto" ),
     ],
     user: mockUser,
-    observed_on_string: "2020-01-01"
-  } )
+    observed_on_string: "2020-01-01",
+  } ),
 ] );
 
 const makeMockObservationsWithLocation = ( ) => ( [
@@ -173,20 +173,20 @@ const makeMockObservationsWithLocation = ( ) => ( [
     wasSynced: jest.fn( ( ) => false ),
     // Suggestions won't load without a photo
     observationPhotos: [
-      factory( "RemoteObservationPhoto" )
+      factory( "RemoteObservationPhoto" ),
     ],
     user: mockUser,
     observed_on_string: "2020-01-01",
     latitude: 4,
-    longitude: 10
-  } )
+    longitude: 10,
+  } ),
 ] );
 
 const actor = userEvent.setup( );
 
 const navigateToSuggestionsForObservationViaObsEdit = async observation => {
   const observationGridItem = await screen.findByTestId(
-    `MyObservations.obsGridItem.${observation.uuid}`
+    `MyObservations.obsGridItem.${observation.uuid}`,
   );
   await actor.press( observationGridItem );
   const addIdButton = await screen.findByText( "IDENTIFY" );
@@ -213,12 +213,12 @@ const setupAppWithSignedInUser = async hasLocation => {
     : makeMockObservations( );
   useStore.setState( {
     observations,
-    currentObservation: observations[0]
+    currentObservation: observations[0],
   } );
   setStoreStateLayout( {
     isDefaultMode: false,
     screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
-    isAllAddObsOptionsMode: true
+    isAllAddObsOptionsMode: true,
   } );
   await renderAppWithObservations( observations, __filename );
   return { observations };
@@ -255,7 +255,7 @@ describe( "from ObsEdit with human observation", () => {
   beforeEach( async () => {
     await signIn( mockUser, { realm: global.mockRealms[__filename] } );
     inatjs.computervision.score_image.mockResolvedValue(
-      makeResponse( [humanSuggestion, topSuggestion] )
+      makeResponse( [humanSuggestion, topSuggestion] ),
     );
   } );
 
@@ -269,7 +269,7 @@ describe( "from ObsEdit with human observation", () => {
     const { observations } = await setupAppWithSignedInUser();
     await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
     const humanResultButton = await screen.findByTestId(
-      `SuggestionsList.taxa.${humanSuggestion.taxon.id}.checkmark`
+      `SuggestionsList.taxa.${humanSuggestion.taxon.id}.checkmark`,
     );
     // We used toBeVisible here but the update to RN0.77 broke this expectation
     expect( humanResultButton ).toBeOnTheScreen();
@@ -284,7 +284,7 @@ describe( "from ObsEdit with human observation", () => {
     const { observations } = await setupAppWithSignedInUser();
     await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
     const usePermissionsButton = screen.queryByText(
-      /IMPROVE THESE SUGGESTIONS/
+      /IMPROVE THESE SUGGESTIONS/,
     );
     expect( usePermissionsButton ).toBeFalsy();
   } );
@@ -314,9 +314,9 @@ describe( "from AICamera directly", ( ) => {
       handleTaxaDetected: jest.fn( ),
       modelLoaded: true,
       result: {
-        taxon: mockLocalTaxon
+        taxon: mockLocalTaxon,
       },
-      setResult: jest.fn( )
+      setResult: jest.fn( ),
     } ) );
   } );
 
@@ -335,9 +335,9 @@ describe( "from AICamera directly", ( ) => {
             fields: expect.any( Object ),
             image: expect.any( Object ),
             lat: 56,
-            lng: 9
+            lng: 9,
           } ),
-          expect.anything( )
+          expect.anything( ),
         );
       } );
     } );
@@ -348,7 +348,7 @@ describe( "from AICamera directly", ( ) => {
       + " if location permission not given", async ( ) => {
       jest.spyOn( useLocationPermission, "default" ).mockImplementation( ( ) => ( {
         hasPermissions: false,
-        renderPermissionsGate: jest.fn( )
+        renderPermissionsGate: jest.fn( ),
       } ) );
       mockFetchUserLocation.mockReturnValue( null );
       await setupAppWithSignedInUser( );
@@ -366,9 +366,9 @@ describe( "from AICamera directly", ( ) => {
         expect( inatjs.computervision.score_image ).toHaveBeenCalledWith(
           expect.not.objectContaining( {
             lat: 56,
-            lng: 9
+            lng: 9,
           } ),
-          expect.anything( )
+          expect.anything( ),
         );
       } );
     } );
@@ -391,7 +391,7 @@ describe( "from AICamera directly", ( ) => {
     it( "should show top suggestion with finest rank if a prediction"
       + " is above offline threshold", async ( ) => {
       getPredictionsForImage.mockImplementation(
-        async ( ) => ( mockModelResult )
+        async ( ) => ( mockModelResult ),
       );
       useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
       await setupAppWithSignedInUser( );
@@ -399,14 +399,14 @@ describe( "from AICamera directly", ( ) => {
       const topTaxonSuggestion = await screen.findByLabelText( /Choose top taxon/ );
       expect( topTaxonSuggestion ).toHaveProp(
         "testID",
-        `SuggestionsList.taxa.${mockModelResult.predictions[1].taxon_id}.checkmark`
+        `SuggestionsList.taxa.${mockModelResult.predictions[1].taxon_id}.checkmark`,
       );
     } );
 
     it( "should show not confident message if no predictions"
       + " meet the offline threshold", async ( ) => {
       getPredictionsForImage.mockImplementation(
-        async ( ) => ( mockModelResultNoConfidence )
+        async ( ) => ( mockModelResultNoConfidence ),
       );
       useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
       await setupAppWithSignedInUser( );
@@ -418,7 +418,7 @@ describe( "from AICamera directly", ( ) => {
         expect( notConfidentText ).toBeOnTheScreen( );
       } );
       const otherSuggestion = await screen.findByTestId(
-        `SuggestionsList.taxa.${mockModelResultNoConfidence.predictions[1].taxon_id}.checkmark`
+        `SuggestionsList.taxa.${mockModelResultNoConfidence.predictions[1].taxon_id}.checkmark`,
       );
       // We used toBeVisible here but the update to RN0.77 broke this expectation
       expect( otherSuggestion ).toBeOnTheScreen( );
@@ -426,7 +426,7 @@ describe( "from AICamera directly", ( ) => {
 
     it( "should only show top human suggestion if human predicted offline", async ( ) => {
       getPredictionsForImage.mockImplementation(
-        async ( ) => ( mockModelResultWithHuman )
+        async ( ) => ( mockModelResultWithHuman ),
       );
       useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
       await setupAppWithSignedInUser( );
@@ -438,7 +438,7 @@ describe( "from AICamera directly", ( ) => {
 
       expect( topTaxonSuggestion ).toHaveProp(
         "testID",
-        `SuggestionsList.taxa.${humanPrediction.taxon_id}.checkmark`
+        `SuggestionsList.taxa.${humanPrediction.taxon_id}.checkmark`,
       );
 
       const otherSuggestionsText = screen.queryByText( /OTHER SUGGESTIONS/ );

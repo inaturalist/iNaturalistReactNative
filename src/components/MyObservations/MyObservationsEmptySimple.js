@@ -4,11 +4,11 @@ import { AccountCreationCard } from "components/OnboardingModal/PivotCards";
 import {
   HeaderUser,
   Heading2,
-  ViewWrapper
+  ViewWrapper,
 } from "components/SharedComponents";
 import GradientButton from "components/SharedComponents/Buttons/GradientButton";
 import {
-  Pressable, View
+  Pressable, View,
 } from "components/styledComponents";
 import Arrow from "images/svg/curved_arrow_down.svg";
 import type { Node } from "react";
@@ -31,7 +31,7 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected, justFinishedSign
   const navToARCamera = ( ) => {
     navigation.navigate( "NoBottomTabStackNavigator", {
       screen: "Camera",
-      params: { camera: "AI" }
+      params: { camera: "AI" },
     } );
   };
 

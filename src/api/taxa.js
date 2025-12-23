@@ -8,31 +8,31 @@ const ANCESTOR_FIELDS = {
   name: true,
   preferred_common_name: true,
   rank: true,
-  rank_level: true
+  rank_level: true,
 };
 
 const PHOTO_FIELDS = {
   id: true,
   attribution: true,
   license_code: true,
-  url: true
+  url: true,
 };
 
 // These fields should work with all /taxa endpoints
 const FIELDS = {
   ancestor_ids: true,
   default_photo: {
-    url: true
+    url: true,
   },
   name: true,
   preferred_common_name: true,
   rank: true,
   rank_level: true,
-  wikipedia_url: true
+  wikipedia_url: true,
 };
 
 const PARAMS = {
-  fields: FIELDS
+  fields: FIELDS,
 };
 
 function mapTaxonPhotoToLocalSchema( taxonPhoto ) {
@@ -49,7 +49,7 @@ function mapToLocalSchema( taxon ) {
 async function fetchTaxon(
   id: number | Array<number>,
   params: Object = {},
-  opts: Object = {}
+  opts: Object = {},
 ): Promise<?Object> {
   try {
     const fetchParams = {
@@ -64,24 +64,24 @@ async function fetchTaxon(
           id: true,
           place: {
             id: true,
-            display_name: true
-          }
+            display_name: true,
+          },
         },
         listed_taxa: {
           establishment_means: true,
           id: true,
           list: {
-            title: true
+            title: true,
           },
           place: {
-            id: true
-          }
+            id: true,
+          },
         },
         taxon_photos: {
-          photo: PHOTO_FIELDS
+          photo: PHOTO_FIELDS,
         },
-        wikipedia_summary: true
-      }
+        wikipedia_summary: true,
+      },
     };
     const response = await inatjs.taxa.fetch( id, fetchParams, opts );
     if ( typeof id === "number" ) {
@@ -108,5 +108,5 @@ async function searchTaxa( params: Object = {}, opts: Object = {} ): Promise<?Ob
 
 export {
   fetchTaxon,
-  searchTaxa
+  searchTaxa,
 };

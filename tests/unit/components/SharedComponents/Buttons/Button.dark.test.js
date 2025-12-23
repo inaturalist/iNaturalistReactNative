@@ -7,7 +7,7 @@ jest.mock( "react-native/Libraries/Utilities/Appearance", () => {
   const actualAppearance = jest.requireActual( "react-native/Libraries/Utilities/Appearance" );
   return {
     ...actualAppearance,
-    getColorScheme: jest.fn( () => "dark" )
+    getColorScheme: jest.fn( () => "dark" ),
   };
 } );
 
@@ -16,7 +16,7 @@ jest.mock( "nativewind", () => {
   const actualNativewind = jest.requireActual( "nativewind" );
   return {
     ...actualNativewind,
-    useColorScheme: jest.fn( () => ( { colorScheme: "dark" } ) )
+    useColorScheme: jest.fn( () => ( { colorScheme: "dark" } ) ),
   };
 } );
 
@@ -54,5 +54,5 @@ describe.each( [["primary"], ["warning"], ["focus"], ["neutral"]] )(
         // expect( button ).toBeAccessible();
       } );
     } );
-  }
+  },
 );

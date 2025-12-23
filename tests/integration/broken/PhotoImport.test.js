@@ -2,7 +2,7 @@ import {
   screen,
   userEvent,
   waitFor,
-  within
+  within,
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
@@ -26,32 +26,32 @@ const mockImageLibraryResponse = {
   assets: [
     {
       uri: mockUri,
-      fileName: mockFileName
-    }
-  ]
+      fileName: mockFileName,
+    },
+  ],
 };
 
 const mockImageLibraryResponseMultiplePhotos = {
   assets: [
     {
       uri: "some_uri",
-      fileName: "some_file_name"
+      fileName: "some_file_name",
     },
     {
       uri: mockUri,
-      fileName: mockFileName
-    }
-  ]
+      fileName: mockFileName,
+    },
+  ],
 };
 
 jest.mock( "react-native-image-picker", ( ) => ( {
-  launchImageLibrary: jest.fn( ( ) => mockImageLibraryResponse )
+  launchImageLibrary: jest.fn( ( ) => mockImageLibraryResponse ),
 } ) );
 
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -62,8 +62,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -74,13 +74,13 @@ const mockUser = factory( "LocalUser" );
 // Mock useCurrentUser hook
 jest.mock( "sharedHooks/useCurrentUser", () => ( {
   __esModule: true,
-  default: jest.fn( () => mockUser )
+  default: jest.fn( () => mockUser ),
 } ) );
 
 // Mock the response from inatjs.computervision.score_image
 const topSuggestion = {
   taxon: factory.states( "genus" )( "RemoteTaxon", { name: "Primum" } ),
-  combined_score: 90
+  combined_score: 90,
 };
 
 beforeAll( async () => {
@@ -92,7 +92,7 @@ beforeEach( ( ) => {
   setStoreStateLayout( {
     isDefaultMode: false,
     screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
-    isAllAddObsOptionsMode: true
+    isAllAddObsOptionsMode: true,
   } );
   inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
 } );
@@ -127,7 +127,7 @@ describe( "Photo Import", ( ) => {
 
   async function viewSuggestionsAndAddId() {
     const topTaxonResultButton = await screen.findByTestId(
-      `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
+      `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`,
     );
     await actor.press( topTaxonResultButton );
   }
@@ -165,7 +165,7 @@ describe( "Photo Import", ( ) => {
 
   it( "should create and save an observation with multiple imported photos", async ( ) => {
     jest.spyOn( ImagePicker, "launchImageLibrary" ).mockImplementation(
-      ( ) => mockImageLibraryResponseMultiplePhotos
+      ( ) => mockImageLibraryResponseMultiplePhotos,
     );
     renderApp( );
     await importPhotoForNewObs( );

@@ -10,7 +10,7 @@ type Props = {
 
 const UploadCompleteIcon = ( {
   iconClasses,
-  completeColor
+  completeColor,
 }: Props ) => (
   <View className={classnames( iconClasses )} testID="UploadStatus.Complete">
     <INatIcon

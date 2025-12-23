@@ -3,7 +3,7 @@
 import { Picker } from "@react-native-picker/picker";
 import {
   BottomSheet,
-  Button
+  Button,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -25,7 +25,7 @@ const PickerSheet = ( {
   headerText,
   pickerValues,
   selectedValue,
-  insideModal
+  insideModal,
 }: Props ): Node => {
   const { t } = useTranslation();
   const [selection, setSelection] = useState( selectedValue );

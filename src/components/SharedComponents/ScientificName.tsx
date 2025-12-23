@@ -34,7 +34,7 @@ const ScientificName = ( {
   scientificNamePieces,
   taxonId,
   textClassName,
-  maxFontSizeMultiplier
+  maxFontSizeMultiplier,
 }: Props ) => {
   const { t } = useTranslation( );
   const scientificNameArray = scientificNamePieces?.map( ( piece, index ) => {
@@ -58,8 +58,8 @@ const ScientificName = ( {
           textClassName,
           {
             "font-light": !isTitle,
-            italic: isItalics
-          }
+            italic: isItalics,
+          },
         )}
       >
         {text}

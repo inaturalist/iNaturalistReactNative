@@ -23,7 +23,7 @@ const PressableWithTracking = React.forwardRef<typeof Pressable, PressableProps>
 
     // eslint-disable-next-line react/jsx-props-no-spreading
     return <Pressable {...otherProps} onPress={handlePressWithTracking} ref={ref} />;
-  }
+  },
 );
 
 export default PressableWithTracking;

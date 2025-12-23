@@ -5,7 +5,7 @@ import type { RealmObservationPojo } from "realmModels/types";
 import {
   formatISONoSeconds,
   formatLongDate,
-  formatLongDatetime
+  formatLongDatetime,
 } from "sharedHelpers/dateAndTime";
 import useTranslation from "sharedHooks/useTranslation";
 
@@ -29,7 +29,7 @@ const DatePicker = ( { currentObservation, updateObservationKeys }: Props ) => {
   const handlePicked = ( value: Date ) => {
     const dateString = formatISONoSeconds( value );
     updateObservationKeys( {
-      observed_on_string: dateString
+      observed_on_string: dateString,
     } );
     closeModal();
   };
@@ -38,7 +38,7 @@ const DatePicker = ( { currentObservation, updateObservationKeys }: Props ) => {
     const opts = {
       literalTime: !currentObservation?.observed_time_zone,
       timeZone: currentObservation?.observed_time_zone,
-      missing: null
+      missing: null,
     };
     if ( String( observationDate ).includes( "T" ) ) {
       return formatLongDatetime( observationDate, i18n, opts );

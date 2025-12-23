@@ -10,24 +10,24 @@ const mockQualityMetrics = [
     id: 0,
     agree: true,
     metric: "wild",
-    user_id: mockUser.id
-  }
+    user_id: mockUser.id,
+  },
 ];
 
 const mockVotesNeedsID = [
   factory( "RemoteVote", {
     vote_scope: "needs_id",
     user: mockUser,
-    user_id: mockUser.id
-  } )
+    user_id: mockUser.id,
+  } ),
 ];
 
 // Mock useCurrentUser hook
 jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   __esModule: true,
   default: jest.fn( ( ) => ( {
-    id: mockUser.id
-  } ) )
+    id: mockUser.id,
+  } ) ),
 } ) );
 
 describe( "DQA Vote Buttons for wild metric", ( ) => {
@@ -43,7 +43,7 @@ describe( "DQA Vote Buttons for wild metric", ( ) => {
     /> );
 
     const button = await screen.findByTestId(
-      "DQAVoteButton.UserAgree"
+      "DQAVoteButton.UserAgree",
     );
     expect( button ).toBeTruthy( );
   } );
@@ -60,7 +60,7 @@ describe( "DQA Vote Buttons for wild metric", ( ) => {
     /> );
 
     const voteNumber = await screen.findByText(
-      "1"
+      "1",
     );
     expect( voteNumber ).toBeTruthy( );
   } );
@@ -79,7 +79,7 @@ describe( "DQA Vote Buttons for needs_id metric", ( ) => {
     /> );
 
     const button = await screen.findByTestId(
-      "DQAVoteButton.UserAgree"
+      "DQAVoteButton.UserAgree",
     );
     expect( button ).toBeTruthy( );
   } );
@@ -96,7 +96,7 @@ describe( "DQA Vote Buttons for needs_id metric", ( ) => {
     /> );
 
     const voteNumber = await screen.findByText(
-      "1"
+      "1",
     );
     expect( voteNumber ).toBeTruthy( );
   } );

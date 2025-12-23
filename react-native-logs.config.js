@@ -3,7 +3,7 @@ import RNFS from "react-native-fs";
 import {
   consoleTransport,
   fileAsyncTransport,
-  logger
+  logger,
 } from "react-native-logs";
 
 const fileName = "inaturalist-rn-log.txt";
@@ -23,19 +23,19 @@ const config = {
   transport,
   transportOptions: {
     FS: RNFS,
-    fileName
-  }
+    fileName,
+  },
 };
 
 const log = logger.createLogger( config );
 
 const logWithoutRemote = logger.createLogger( {
   ...config,
-  transport: [consoleTransport, fileAsyncTransport]
+  transport: [consoleTransport, fileAsyncTransport],
 } );
 
 export {
   log,
   logFilePath,
-  logWithoutRemote
+  logWithoutRemote,
 };
