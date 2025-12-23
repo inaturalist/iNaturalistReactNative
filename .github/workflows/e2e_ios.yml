@@ -221,6 +221,8 @@ jobs:
         curl -I --fail "https://stagingapi.inaturalist.org/v2/taxa"
 
     - name: Run e2e test
+      # test can fail for the purposes of `failure()` checks, but we need to make sure attempt 1 doesn't mark the _workflow_ as a failure
+      continue-on-error: true
       run: |
         npm run e2e:test:ios
 
@@ -229,7 +231,7 @@ jobs:
       if: ${{ failure() && steps.status_check.outcome != 'failure' }}
       run: |
         # provide more debugging context on retry failure
-        # we're explicitly not using `detox test --retries` for this reason
+        # we're explicitly not using `detox test --retries` because we want to run them w/ different options
         npm run e2e:test:ios -- --take-screenshots failing --record-videos failing --record-logs all -l trace
     
     # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
