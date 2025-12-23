@@ -49,10 +49,10 @@ export const useSuggestions = (
   const urlWillCrashOffline = photoUri?.includes( "https://" ) && !isConnected;
 
   // skip to offline suggestions if internet connection is spotty
-  const fallingBackToOfflineSuggestions = timedOut
-    || !isConnected
-    || ( !onlineSuggestions && onlineSuggestionsAttempted );
-  const tryOfflineSuggestions = !urlWillCrashOffline && fallingBackToOfflineSuggestions;
+  const tryOfflineSuggestions = !urlWillCrashOffline && (
+    timedOut
+    || ( !onlineSuggestions && onlineSuggestionsAttempted )
+  );
 
   const {
     offlineSuggestions,
@@ -64,7 +64,6 @@ export const useSuggestions = (
     longitude: scoreImageParams?.lng,
     tryOfflineSuggestions
   } );
-  console.log( { offlineSuggestions, onlineSuggestions, shouldFetchOnlineSuggestions } );
 
   const refetchSuggestions = () => {
     if ( shouldFetchOnlineSuggestions ) {
@@ -74,16 +73,17 @@ export const useSuggestions = (
       refetchOfflineSuggestions();
     }
   };
-  const hasOnlineSuggestionResults = ( onlineSuggestions?.results?.length || 0 ) > 0;
-  const hasOfflineSuggestionResults = ( offlineSuggestions?.results?.length || 0 ) > 0;
 
-  const usingOfflineSuggestions = fallingBackToOfflineSuggestions || (
-    hasOfflineSuggestionResults && !hasOnlineSuggestionResults && onlineSuggestionsAttempted
+  const usingOfflineSuggestions = tryOfflineSuggestions || (
+    ( offlineSuggestions?.results?.length || 0 ) > 0
+      && ( !onlineSuggestions || onlineSuggestions?.results?.length === 0 )
   );
+
+  const hasOnlineSuggestionResults = ( onlineSuggestions?.results?.length || 0 ) > 0;
 
   const unfilteredSuggestions = useMemo(
     ( ) => ( hasOnlineSuggestionResults
-      ? onlineSuggestions!.results || []
+      ? onlineSuggestions?.results || []
       : offlineSuggestions?.results || [] ),
     [hasOnlineSuggestionResults, onlineSuggestions, offlineSuggestions]
   );

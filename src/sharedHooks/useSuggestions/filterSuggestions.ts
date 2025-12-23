@@ -6,8 +6,8 @@ import { TopSuggestionType } from "./types";
 
 const initialSuggestions = {
   otherSuggestions: [],
-  topSuggestion: null,
-  topSuggestionType: TopSuggestionType.TOP_SUGGESTION_NONE
+  topSuggestionType: TopSuggestionType.TOP_SUGGESTION_NONE,
+  topSuggestion: undefined
 };
 
 // TODO: MOB-1081 remove internals / consumer coupling & delete this export
@@ -80,18 +80,17 @@ const filterSuggestions = (
   if ( commonAncestor ) {
     const sortableCommonAncestor = {
       ...commonAncestor,
-      // temp patch to let calling code sort online common ancestor with other suggestions
-      combined_score: commonAncestor.combined_score ?? commonAncestor.score
+      // TODO MOB-1081: we can normalize the suggs earlier b/c we shouldn't worry here
+      // general context: https://github.com/inaturalist/iNaturalistReactNative/blob/505980d3359876a0af383f2ffcc481921f0eb778/src/components/Match/calculateConfidence.ts#L10-L12
+      // online suggs have `score` but _redact_ `combined_score` for commonAncestor https://github.com/inaturalist/iNaturalistAPI/blob/main/lib/controllers/v1/computervision_controller.js#L389
+      // the offline suggs have `combined_score` but don't have `score`
+      // the codebase tends assumes `combined_score` for whenever that matters
+      // the following catches when we're in a "fake" onlineSugg and shims "score" in
+      // `in` operator used for OnlineSuggestion type refinement
+      combined_score: !commonAncestor.combined_score && "score" in commonAncestor
+        ? commonAncestor.score
+        : commonAncestor.combined_score
     };
-    // const sortableCommonAncestor = {
-    //   ...commonAncestor
-    // };
-    // if ( "score" in commonAncestor ) {
-    //   // combined_score is redacted from online commonAncestor:
-    //   // https://github.com/inaturalist/iNaturalistAPI/blob/main/lib/controllers/v1/computervision_controller.js#L389
-    //   // we're shimming it here to sort like to like
-    //   sortableCommonAncestor.combined_score = commonAncestor.score;
-    // }
     return {
       ...newSuggestions,
       topSuggestion: sortableCommonAncestor,
