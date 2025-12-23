@@ -130,7 +130,7 @@ module.exports = {
     "no-undef": "error",
 
     "@typescript-eslint/array-type": ["error", {
-      default: "array"
+      default: "array",
     }],
     "@typescript-eslint/no-unused-vars": [
       "error",
