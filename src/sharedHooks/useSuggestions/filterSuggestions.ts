@@ -7,7 +7,7 @@ import { TopSuggestionType } from "./types";
 const initialSuggestions = {
   otherSuggestions: [],
   topSuggestionType: TopSuggestionType.TOP_SUGGESTION_NONE,
-  topSuggestion: undefined
+  topSuggestion: undefined,
 };
 
 // TODO: MOB-1081 remove internals / consumer coupling & delete this export
@@ -27,25 +27,25 @@ const TOP_RESULT_SCORE_THRESHOLD = 78;
 // filtering of both online and offline suggestions
 const filterSuggestions = (
   suggestionsToFilter: UseSuggestionsSuggestion[],
-  commonAncestor?: UseSuggestionsSuggestion
+  commonAncestor?: UseSuggestionsSuggestion,
 ) => {
   const sortedSuggestions = _.orderBy(
     // TODO: handling humans is implemented in the vision-plugin, can it be removed here?
     isolateHumans( suggestionsToFilter ),
     "combined_score",
-    "desc"
+    "desc",
   );
 
   const newSuggestions = {
     ...initialSuggestions,
-    otherSuggestions: sortedSuggestions
+    otherSuggestions: sortedSuggestions,
   };
   // no suggestions
   if ( sortedSuggestions.length === 0 ) {
     return {
       ...newSuggestions,
       otherSuggestions: [],
-      topSuggestionType: TopSuggestionType.TOP_SUGGESTION_NONE
+      topSuggestionType: TopSuggestionType.TOP_SUGGESTION_NONE,
     };
   }
   // human top suggestion
@@ -54,25 +54,25 @@ const filterSuggestions = (
       ...newSuggestions,
       topSuggestion: sortedSuggestions[0],
       topSuggestionType: TopSuggestionType.TOP_SUGGESTION_HUMAN,
-      otherSuggestions: []
+      otherSuggestions: [],
     };
   }
 
   const suggestionAboveThreshold = _.find(
     sortedSuggestions,
-    s => s.combined_score > TOP_RESULT_SCORE_THRESHOLD
+    s => s.combined_score > TOP_RESULT_SCORE_THRESHOLD,
   );
 
   if ( suggestionAboveThreshold ) {
     // make sure we're not returning the top suggestion in Other Suggestions
     const firstSuggestion = _.remove(
       sortedSuggestions,
-      s => s.taxon.id === suggestionAboveThreshold.taxon.id
+      s => s.taxon.id === suggestionAboveThreshold.taxon.id,
     ).at( 0 );
     return {
       ...newSuggestions,
       topSuggestion: firstSuggestion,
-      topSuggestionType: TopSuggestionType.TOP_SUGGESTION_ABOVE_THRESHOLD
+      topSuggestionType: TopSuggestionType.TOP_SUGGESTION_ABOVE_THRESHOLD,
     };
   }
 
@@ -89,19 +89,19 @@ const filterSuggestions = (
       // `in` operator used for OnlineSuggestion type refinement
       combined_score: !commonAncestor.combined_score && "score" in commonAncestor
         ? commonAncestor.score
-        : commonAncestor.combined_score
+        : commonAncestor.combined_score,
     };
     return {
       ...newSuggestions,
       topSuggestion: sortableCommonAncestor,
-      topSuggestionType: TopSuggestionType.TOP_SUGGESTION_COMMON_ANCESTOR
+      topSuggestionType: TopSuggestionType.TOP_SUGGESTION_COMMON_ANCESTOR,
     };
   }
 
   // no top suggestion
   return {
     ...newSuggestions,
-    topSuggestionType: TopSuggestionType.TOP_SUGGESTION_NOT_CONFIDENT
+    topSuggestionType: TopSuggestionType.TOP_SUGGESTION_NOT_CONFIDENT,
   };
 };
 
