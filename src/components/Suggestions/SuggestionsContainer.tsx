@@ -19,6 +19,10 @@ import {
   useSuggestions,
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
+import {
+  internalUseSuggestionsInitialSuggestions,
+} from "sharedHooks/useSuggestions/filterSuggestions";
+import type { TopSuggestionType } from "sharedHooks/useSuggestions/types";
 import useStore from "stores/useStore";
 
 import fetchCoarseUserLocation from "../../sharedHelpers/fetchCoarseUserLocation";
@@ -40,13 +44,7 @@ export enum FETCH_STATUSES {
   FETCH_STATUS_ONLINE_SKIPPED = "online-skipped"
 }
 
-export const TOP_SUGGESTION_NONE = "none";
-export const TOP_SUGGESTION_HUMAN = "human";
-export const TOP_SUGGESTION_ABOVE_THRESHOLD = "above-threshold";
-export const TOP_SUGGESTION_COMMON_ANCESTOR = "common-ancestor";
-export const TOP_SUGGESTION_NOT_CONFIDENT = "not-confident";
-
-const setQueryKey = ( selectedPhotoUri, shouldUseEvidenceLocation ) => [
+const getQueryKey = ( selectedPhotoUri: string, shouldUseEvidenceLocation: boolean ) => [
   "scoreImage",
   selectedPhotoUri,
   { shouldUseEvidenceLocation },
@@ -60,18 +58,10 @@ export type Suggestion = {
   };
 };
 
-export type TopSuggestionType = string;
-
 export type Suggestions = {
   otherSuggestions: Suggestion[];
   topSuggestion: Suggestion | null;
   topSuggestionType: TopSuggestionType;
-};
-
-export const initialSuggestions: Suggestions = {
-  otherSuggestions: [],
-  topSuggestion: null,
-  topSuggestionType: TOP_SUGGESTION_NONE,
 };
 
 const initialState = {
@@ -91,7 +81,7 @@ const reducer = ( state, action ) => {
       return {
         ...state,
         scoreImageParams: action.scoreImageParams,
-        queryKey: setQueryKey( state.selectedPhotoUri, state.shouldUseEvidenceLocation ),
+        queryKey: getQueryKey( state.selectedPhotoUri, state.shouldUseEvidenceLocation ),
       };
     case "SELECT_PHOTO":
       return {
@@ -100,7 +90,7 @@ const reducer = ( state, action ) => {
         offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
         selectedPhotoUri: action.selectedPhotoUri,
         scoreImageParams: action.scoreImageParams,
-        queryKey: setQueryKey( action.selectedPhotoUri, state.shouldUseEvidenceLocation ),
+        queryKey: getQueryKey( action.selectedPhotoUri, state.shouldUseEvidenceLocation ),
       };
     case "SELECT_TAXON":
       return {
@@ -124,7 +114,7 @@ const reducer = ( state, action ) => {
         offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
         scoreImageParams: action.scoreImageParams,
         shouldUseEvidenceLocation: action.shouldUseEvidenceLocation,
-        queryKey: setQueryKey( state.selectedPhotoUri, action.shouldUseEvidenceLocation ),
+        queryKey: getQueryKey( state.selectedPhotoUri, action.shouldUseEvidenceLocation ),
       };
     case "TOGGLE_MEDIA_VIEWER":
       return {
@@ -269,7 +259,7 @@ const SuggestionsContainer = ( ) => {
     onlineSuggestionsAttempted,
   } );
 
-  const createUploadParams = useCallback( async ( uri, showLocation ) => {
+  const createUploadParams = useCallback( async ( uri: string, showLocation: boolean ) => {
     const newImageParams = await flattenUploadParams( uri );
     if ( showLocation && currentObservation?.latitude ) {
       newImageParams.lat = currentObservation?.latitude;
@@ -294,7 +284,7 @@ const SuggestionsContainer = ( ) => {
   );
 
   const onPressPhoto = useCallback(
-    async uri => {
+    async ( uri: string ) => {
       if ( uri === selectedPhotoUri ) {
         dispatch( {
           type: "TOGGLE_MEDIA_VIEWER",
@@ -326,7 +316,7 @@ const SuggestionsContainer = ( ) => {
     logger.info( loadTime );
   }
 
-  const toggleLocation = useCallback( async ( { showLocation } ) => {
+  const toggleLocation = useCallback( async ( { showLocation }: { showLocation: boolean } ) => {
     const newImageParams = await createUploadParams( selectedPhotoUri, showLocation );
     resetTimeout( );
     dispatch( {
@@ -381,7 +371,9 @@ const SuggestionsContainer = ( ) => {
   const headerRight = useCallback( ( ) => <TaxonSearchButton />, [] );
 
   const shouldSetImageParams = useMemo(
-    () => _.isEqual( initialSuggestions, suggestions ),
+    // TODO: part of MOB-1081, see `internalUseSuggestionsInitialSuggestions`
+    // we shouldn't rely on implementation internals to consumer drive state
+    () => _.isEqual( internalUseSuggestionsInitialSuggestions, suggestions ),
     [suggestions],
   );
 
@@ -440,7 +432,7 @@ const SuggestionsContainer = ( ) => {
         photoUris={photoUris}
         reloadSuggestions={reloadSuggestions}
         selectedPhotoUri={selectedPhotoUri}
-        showImproveWithLocationButton={showImproveWithLocationButton}
+        showImproveWithLocationButton={!!showImproveWithLocationButton}
         suggestions={suggestions}
         toggleLocation={toggleLocation}
         urlWillCrashOffline={urlWillCrashOffline}
