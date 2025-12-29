@@ -5,7 +5,7 @@ import LocationSection
 import MapSection
   from "components/ObsDetailsDefaultMode/MapSection/MapSection";
 import {
-  ActivityIndicator, Body2, Button, Heading3, ScrollViewWrapper,
+  Body2, Button, Heading3, ScrollViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import _ from "lodash";
@@ -21,7 +21,7 @@ import AdditionalSuggestionsScroll
 import EmptyMapSection from "./EmptyMapSection";
 import IconicSuggestionsScroll from "./IconicSuggestions/IconicSuggestionsScroll";
 import type { MatchButtonAction } from "./MatchContainer";
-import MatchHeader from "./MatchHeader";
+import MatchScreenTopContent from "./MatchScreenTopContent";
 import PhotosSection from "./PhotosSection";
 import SaveDiscardButtons from "./SaveDiscardButtons";
 
@@ -69,29 +69,16 @@ const Match = ( {
   const hasNoSuggestions = !topSuggestion && otherSuggestions.length === 0;
   const hasOnlyOtherSuggestions = !topSuggestion && otherSuggestions.length > 0;
 
-  const headerContent = suggestionsLoading
-    ? <ActivityIndicator size={33} />
-    : (
-      <>
-        {topSuggestion && <MatchHeader topSuggestion={topSuggestion} />}
-        {hasNoSuggestions && (
-          <Body2>
-            {t( "The-AI-is-not-confident-Upload-to-ask-the-community" )}
-          </Body2>
-        )}
-        {hasOnlyOtherSuggestions && (
-          <Body2>
-            {t( "The-AI-is-not-confident-It-may-be-one-of-the-IDs-below" )}
-          </Body2>
-        )}
-      </>
-    );
-
   return (
     <>
       <ScrollViewWrapper scrollRef={scrollRef}>
         <View className={matchCardClassTop}>
-          {headerContent}
+          <MatchScreenTopContent
+            suggestionsLoading={suggestionsLoading}
+            topSuggestion={topSuggestion}
+            hasNoSuggestions={hasNoSuggestions}
+            hasOnlyOtherSuggestions={hasOnlyOtherSuggestions}
+          />
         </View>
         <PhotosSection
           representativePhoto={topSuggestion?.taxon?.representative_photo}
