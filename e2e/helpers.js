@@ -1,4 +1,5 @@
 import { exec, execSync } from "child_process";
+import { sleep } from "sharedHelpers/util";
 
 import resetUserForTesting from "./sharedFlows/resetUserForTesting";
 
@@ -126,7 +127,7 @@ export async function iNatE2eAfterEach( device ) {
         await device.terminateApp();
         console.log( "App terminated through Detox" );
         // Add a small delay to let Detox processes settle
-        await new Promise( resolve => { setTimeout( resolve, 300 ); } );
+        await sleep( 300 );
         return;
       } catch ( detoxError ) {
         console.log(
@@ -150,7 +151,7 @@ export async function iNatE2eAfterEach( device ) {
       }
 
       // Add a delay to let processes settle
-      await new Promise( resolve => { setTimeout( resolve, 500 ); } );
+      await sleep( 500 );
     }
   } catch ( error ) {
     console.log( "Error during cleanup (non-fatal):", error.message );
