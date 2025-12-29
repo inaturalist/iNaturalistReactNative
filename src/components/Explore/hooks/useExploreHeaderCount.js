@@ -1,7 +1,7 @@
 // @flow
 
 import {
-  useCallback, useMemo, useState
+  useCallback, useMemo, useState,
 } from "react";
 
 const useExploreHeaderCount = ( ): Object => {
@@ -9,14 +9,14 @@ const useExploreHeaderCount = ( ): Object => {
     observations: null,
     species: null,
     observers: null,
-    identifiers: null
+    identifiers: null,
   } );
   const [isFetching, setIsFetching] = useState( false );
 
   const updateCount = useCallback( newCount => {
     setCount( {
       ...count,
-      ...newCount
+      ...newCount,
     } );
     setIsFetching( false );
   }, [count] );
@@ -38,7 +38,7 @@ const useExploreHeaderCount = ( ): Object => {
     count: memoizedCount,
     isFetching,
     handleUpdateCount,
-    setIsFetching
+    setIsFetching,
   };
 };
 

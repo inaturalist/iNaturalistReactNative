@@ -1,27 +1,28 @@
 // @flow
 
 import {
-  useNetInfo
+  useNetInfo,
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import {
   EXPLORE_ACTION,
   ExploreProvider,
   PLACE_MODE,
-  useExplore
+  useExplore,
 } from "providers/ExploreContext";
 import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
   useRef,
-  useState
+  useState,
 } from "react";
-import { useCurrentUser } from "sharedHooks";
+import { useCurrentUser, useDebugMode } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission";
 import useStore from "stores/useStore";
 
 import Explore from "./Explore";
+import ExploreV2 from "./ExploreV2";
 import mapParamsToAPI from "./helpers/mapParamsToAPI";
 import useExploreHeaderCount from "./hooks/useExploreHeaderCount";
 
@@ -29,6 +30,7 @@ const RootExploreContainerWithContext = ( ): Node => {
   const navigation = useNavigation( );
   const { isConnected } = useNetInfo( );
   const currentUser = useCurrentUser( );
+  const { isDebug } = useDebugMode();
   const rootExploreView = useStore( state => state.rootExploreView );
   const setRootExploreView = useStore( state => state.setRootExploreView );
   const rootStoredParams = useStore( state => state.rootStoredParams );
@@ -39,12 +41,12 @@ const RootExploreContainerWithContext = ( ): Node => {
     renderPermissionsGate,
     requestPermissions: requestLocationPermissions,
     hasBlockedPermissions: hasBlockedLocationPermissions,
-    checkPermissions
+    checkPermissions,
   } = useLocationPermission( );
   const previousHasLocationPermissions = useRef();
 
   const {
-    state, dispatch, makeSnapshot, defaultExploreLocation
+    state, dispatch, makeSnapshot, defaultExploreLocation,
   } = useExplore( );
 
   const [showFiltersModal, setShowFiltersModal] = useState( false );
@@ -58,7 +60,7 @@ const RootExploreContainerWithContext = ( ): Node => {
         const exploreLocation = await defaultExploreLocation();
         dispatch( {
           type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
-          exploreLocation
+          exploreLocation,
         } );
       }
 
@@ -80,7 +82,7 @@ const RootExploreContainerWithContext = ( ): Node => {
       dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_WORLDWIDE } );
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
-        placeId: null
+        placeId: null,
       } );
     } else if ( place === "nearby" ) {
       const exploreLocation = await defaultExploreLocation( );
@@ -88,7 +90,7 @@ const RootExploreContainerWithContext = ( ): Node => {
       // dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_NEARBY } );
       dispatch( {
         type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
-        exploreLocation
+        exploreLocation,
       } );
     } else {
       navigation.setParams( { place } );
@@ -97,7 +99,7 @@ const RootExploreContainerWithContext = ( ): Node => {
         type: EXPLORE_ACTION.SET_PLACE,
         place,
         placeId: place?.id,
-        placeGuess: place?.display_name
+        placeGuess: place?.display_name,
       } );
     }
   }, [checkPermissions, defaultExploreLocation, dispatch, navigation] );
@@ -107,13 +109,13 @@ const RootExploreContainerWithContext = ( ): Node => {
     if ( exclude ) {
       dispatch( {
         type: EXPLORE_ACTION.EXCLUDE_USER,
-        excludeUser: user
+        excludeUser: user,
       } );
     } else {
       dispatch( {
         type: EXPLORE_ACTION.SET_USER,
         user,
-        userId: user?.id
+        userId: user?.id,
       } );
     }
   };
@@ -122,18 +124,18 @@ const RootExploreContainerWithContext = ( ): Node => {
     dispatch( {
       type: EXPLORE_ACTION.SET_PROJECT,
       project,
-      projectId: project?.id
+      projectId: project?.id,
     } );
   };
 
   const filteredParams = mapParamsToAPI(
     state,
-    currentUser
+    currentUser,
   );
 
   const queryParams = {
     ...filteredParams,
-    per_page: 20
+    per_page: 20,
   };
 
   // need this hook to be top-level enough that ExploreHeaderCount rerenders
@@ -141,7 +143,7 @@ const RootExploreContainerWithContext = ( ): Node => {
     count,
     isFetching: isFetchingHeaderCount,
     handleUpdateCount,
-    setIsFetching: setIsFetchingHeaderCount
+    setIsFetching: setIsFetchingHeaderCount,
   } = useExploreHeaderCount( );
 
   const closeFiltersModal = ( ) => {
@@ -202,7 +204,7 @@ const RootExploreContainerWithContext = ( ): Node => {
   }, [
     hasLocationPermissions,
     setIsFetchingHeaderCount,
-    state?.placeMode
+    state?.placeMode,
   ] );
 
   useEffect( ( ) => {
@@ -211,37 +213,53 @@ const RootExploreContainerWithContext = ( ): Node => {
 
   return (
     <>
-      <Explore
-        canFetch={canFetch}
-        closeFiltersModal={closeFiltersModal}
-        count={count}
-        hideBackButton
-        filterByIconicTaxonUnknown={
-          () => dispatch( { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN } )
-        }
-        currentExploreView={rootExploreView}
-        setCurrentExploreView={setRootExploreView}
-        isConnected={isConnected}
-        isFetchingHeaderCount={isFetchingHeaderCount}
-        handleUpdateCount={handleUpdateCount}
-        openFiltersModal={openFiltersModal}
-        queryParams={queryParams}
-        showFiltersModal={showFiltersModal}
-        updateTaxon={taxon => dispatch( { type: EXPLORE_ACTION.CHANGE_TAXON, taxon } )}
-        updateLocation={updateLocation}
-        updateUser={updateUser}
-        updateProject={updateProject}
-        placeMode={state.placeMode}
-        hasLocationPermissions={hasLocationPermissions}
-        requestLocationPermissions={requestLocationPermissions}
-        startFetching={startFetching}
-        renderLocationPermissionsGate={renderPermissionsGate}
-      />
+      {!isDebug
+        ? (
+          <Explore
+            canFetch={canFetch}
+            closeFiltersModal={closeFiltersModal}
+            count={count}
+            hideBackButton
+            filterByIconicTaxonUnknown={
+              () => dispatch( { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN } )
+            }
+            currentExploreView={rootExploreView}
+            setCurrentExploreView={setRootExploreView}
+            isConnected={isConnected}
+            isFetchingHeaderCount={isFetchingHeaderCount}
+            handleUpdateCount={handleUpdateCount}
+            openFiltersModal={openFiltersModal}
+            queryParams={queryParams}
+            showFiltersModal={showFiltersModal}
+            updateTaxon={taxon => dispatch( { type: EXPLORE_ACTION.CHANGE_TAXON, taxon } )}
+            updateLocation={updateLocation}
+            updateUser={updateUser}
+            updateProject={updateProject}
+            placeMode={state.placeMode}
+            hasLocationPermissions={hasLocationPermissions}
+            requestLocationPermissions={requestLocationPermissions}
+            startFetching={startFetching}
+            renderLocationPermissionsGate={renderPermissionsGate}
+          />
+        )
+        : (
+          <ExploreV2
+            canFetch={canFetch}
+            currentExploreView={rootExploreView}
+            handleUpdateCount={handleUpdateCount}
+            hasLocationPermissions={hasLocationPermissions}
+            isConnected={isConnected}
+            placeMode={state.placeMode}
+            queryParams={queryParams}
+            renderLocationPermissionsGate={renderPermissionsGate}
+            requestLocationPermissions={requestLocationPermissions}
+          />
+        )}
       {renderPermissionsGate( {
         onPermissionGranted: async ( ) => {
           await updateLocation( "nearby" );
           startFetching( );
-        }
+        },
       } )}
     </>
   );

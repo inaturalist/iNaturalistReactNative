@@ -1,12 +1,14 @@
+import type {
+  BottomSheetBackdropProps,
+} from "@gorhom/bottom-sheet";
 import {
   BottomSheetBackdrop,
-  BottomSheetBackdropProps
 } from "@gorhom/bottom-sheet";
 import React from "react";
 
 type Props = {
-  props: BottomSheetBackdropProps,
-  onPress: ( ) => void
+  props: BottomSheetBackdropProps;
+  onPress: ( ) => void;
 }
 
 const BottomSheetStandardBackdrop = ( { props, onPress }: Props ) => (

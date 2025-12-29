@@ -15,7 +15,7 @@ const useCustomTranslation = ( ) => {
         }
       }
       return "";
-    }
+    },
   };
 };
 

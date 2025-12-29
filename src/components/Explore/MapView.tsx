@@ -1,17 +1,18 @@
 import {
   ActivityIndicator,
   Button,
-  Map
+  Map,
 } from "components/SharedComponents";
 import { getMapRegion } from "components/SharedComponents/Map/helpers/mapHelpers";
 import { View } from "components/styledComponents";
+import type { MapBoundaries } from "providers/ExploreContext";
 import {
-  EXPLORE_ACTION, MapBoundaries, PLACE_MODE, useExplore
+  EXPLORE_ACTION, PLACE_MODE, useExplore,
 } from "providers/ExploreContext";
 import React, {
-  useEffect, useMemo, useRef, useState
+  useEffect, useMemo, useRef, useState,
 } from "react";
-import { Region } from "react-native-maps";
+import type { Region } from "react-native-maps";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
@@ -24,12 +25,12 @@ const worldwideRegion = {
   latitude: WORLDWIDE_LAT_LNG,
   longitude: WORLDWIDE_LAT_LNG,
   latitudeDelta: WORLDWIDE_DELTA,
-  longitudeDelta: WORLDWIDE_DELTA
+  longitudeDelta: WORLDWIDE_DELTA,
 };
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
-  elevation: 6
+  elevation: 6,
 } );
 
 const activityIndicatorSize = 50;
@@ -39,27 +40,29 @@ const centeredLoadingWheel = {
   left: "50%",
   transform: [
     { translateX: -( activityIndicatorSize / 2 ) },
-    { translateY: -( activityIndicatorSize / 2 ) }
+    { translateY: -( activityIndicatorSize / 2 ) },
   ],
   backgroundColor: "rgba(0,0,0,0)",
   alignItems: "center",
   justifyContent: "center",
-  zIndex: 20
+  zIndex: 20,
 };
 
 interface Props {
   // Bounding box of the observations retrieved for the query params
-  observationBounds?: MapBoundaries,
+  observationBounds?: MapBoundaries;
   queryParams: {
     taxon_id?: number;
     return_bounds?: boolean;
     order?: string;
     orderBy?: string;
   };
-  isLoading: boolean,
-  hasLocationPermissions?: boolean,
-  renderLocationPermissionsGate: Function,
-  requestLocationPermissions: Function
+  isLoading: boolean;
+  hasLocationPermissions?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+  renderLocationPermissionsGate: Function;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+  requestLocationPermissions: Function;
 }
 
 const MapView = ( {
@@ -68,7 +71,7 @@ const MapView = ( {
   isLoading,
   hasLocationPermissions,
   renderLocationPermissionsGate,
-  requestLocationPermissions
+  requestLocationPermissions,
 }: Props ) => {
   const { t } = useTranslation( );
   const { state: exploreState, dispatch, defaultExploreLocation } = useExplore( );
@@ -81,7 +84,7 @@ const MapView = ( {
     latitude: exploreState.lat,
     longitude: exploreState.lng,
     latitudeDelta: NEARBY_DELTA,
-    longitudeDelta: NEARBY_DELTA
+    longitudeDelta: NEARBY_DELTA,
   } ), [exploreState.lat, exploreState.lng] );
 
   const regionFromCoordinates = useMemo( ( ) => {
@@ -91,7 +94,7 @@ const MapView = ( {
         latitude,
         longitude,
         latitudeDelta: NEARBY_DELTA,
-        longitudeDelta: NEARBY_DELTA
+        longitudeDelta: NEARBY_DELTA,
       };
     }
     return null;
@@ -137,7 +140,7 @@ const MapView = ( {
     nearbyRegion,
     regionFromCoordinates,
     observationBounds,
-    exploreState.place?.id
+    exploreState.place?.id,
   ] );
 
   const handleRedoSearch = async ( ) => {
@@ -150,13 +153,13 @@ const MapView = ( {
         swlat: currentBounds.southWest.latitude,
         swlng: currentBounds.southWest.longitude,
         nelat: currentBounds.northEast.latitude,
-        nelng: currentBounds.northEast.longitude
-      }
+        nelng: currentBounds.northEast.longitude,
+      },
     } );
   };
 
   const tileMapParams = {
-    ...queryParams
+    ...queryParams,
   };
   // Tile queries never need these params
   delete tileMapParams.return_bounds;
@@ -186,7 +189,7 @@ const MapView = ( {
       const exploreLocation = await defaultExploreLocation( );
       dispatch( {
         type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
-        exploreLocation
+        exploreLocation,
       } );
     } else {
       requestLocationPermissions( );

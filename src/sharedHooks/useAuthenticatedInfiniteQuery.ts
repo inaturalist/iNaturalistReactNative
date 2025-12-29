@@ -8,9 +8,10 @@ import { useCurrentUser } from "sharedHooks";
 // Should work like React Query's useInfiniteQuery with our custom reactQueryRetry
 // and authentication
 const useAuthenticatedInfiniteQuery = (
-  queryKey: Array<string>,
+  queryKey: string[],
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   queryFunction: Function,
-  queryOptions: object = {}
+  queryOptions: object = {},
 ): object => {
   const route = useRoute( );
   const currentUser = useCurrentUser( );
@@ -30,17 +31,17 @@ const useAuthenticatedInfiniteQuery = (
       // fetching from RNSInfo becomes a performance issue
       const apiToken = await getJWT( queryOptions.allowAnonymousJWT );
       const options = {
-        api_token: apiToken
+        api_token: apiToken,
       };
       return queryFunction( params, options );
     },
     retry: ( failureCount, error ) => reactQueryRetry( failureCount, error, {
       queryKey,
       routeName: route?.name,
-      routeParams: route?.params
+      routeParams: route?.params,
     } ),
     retryDelay: ( failureCount, error ) => handleRetryDelay( failureCount, error ),
-    ...queryOptions
+    ...queryOptions,
   } );
 };
 

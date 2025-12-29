@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  useColorScheme
+  useColorScheme,
 } from "react-native";
 import colors from "styles/tailwindColors";
 
@@ -15,9 +15,7 @@ interface Props {
   isDarkModeEnabled?: boolean;
 }
 
-type Aliases = {
-  [key: string]: string;
-};
+type Aliases = Record<string, string>;
 // Most of these are names for these icons used in design mapped to more
 // consistent and deduped filenames. We might also put aliases of convenience
 // here, e.g. "speech" and "chat" might both map to "comments" if we find
@@ -54,6 +52,7 @@ const ALIASES: Aliases = {
   geoprivacy: "globe",
   gridview: "grid-square",
   listview: "list-square",
+  list: "list",
   "id-large-fill": "label",
   "id-small-outline": "label-outline",
   journalposts: "book",
@@ -81,12 +80,12 @@ const ALIASES: Aliases = {
   "upload-complete": "check",
   "upload-saved": "arrow-up-circle-dots",
   "upvote-active": "arrow-up-bold-circle",
-  "upvote-inactive": "arrow-up-bold-circle-outline"
+  "upvote-inactive": "arrow-up-bold-circle-outline",
 } as const;
 
 // Use default color if none is specified
 const INatIcon = ( {
-  testID, name, color, size, dropShadow, isDarkModeEnabled = false
+  testID, name, color, size, dropShadow, isDarkModeEnabled = false,
 }: Props ) => {
   const colorScheme = useColorScheme( );
 
@@ -105,7 +104,7 @@ const INatIcon = ( {
     ? {
       shadowOpacity: 2,
       textShadowRadius: 4,
-      textShadowOffset: { width: 2, height: 2 }
+      textShadowOffset: { width: 2, height: 2 },
     }
     : null;
   return (

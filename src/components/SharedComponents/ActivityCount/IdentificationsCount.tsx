@@ -16,7 +16,7 @@ const IdentificationsCount = ( {
   filled = false,
   classNameMargin,
   testID,
-  white
+  white,
 }: Props ) => {
   const { t } = useTranslation();
 

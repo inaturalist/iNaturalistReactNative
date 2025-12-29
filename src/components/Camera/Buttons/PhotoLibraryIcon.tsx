@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
 import React from "react";
-import { ViewStyle } from "react-native";
+import type { ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Animated from "react-native-reanimated";
 import { useTranslation } from "sharedHooks";
@@ -19,7 +19,7 @@ const isTablet = DeviceInfo.isTablet();
 const PhotoLibraryIcon = ( {
   rotatableAnimatedStyle,
   deleteSentinelFile,
-  disabled
+  disabled,
 }: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -36,14 +36,14 @@ const PhotoLibraryIcon = ( {
           "justify-center",
           "border-white",
           "border-2",
-          "rounded"
+          "rounded",
         )}
         onPress={() => {
           deleteSentinelFile();
           navigation.push( "PhotoLibrary", {
             cmonBack: true,
             lastScreen: "Camera",
-            fromAICamera: true
+            fromAICamera: true,
           } );
         }}
         accessibilityLabel={t( "Photo-importer" )}

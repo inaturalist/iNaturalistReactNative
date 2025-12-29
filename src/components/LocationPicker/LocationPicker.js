@@ -6,7 +6,7 @@ import {
   Heading4,
   KeyboardDismissableView,
   Map,
-  ViewWrapper
+  ViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -50,7 +50,7 @@ const LocationPicker = ( {
   onRegionChangeComplete,
   region,
   selectPlaceResult,
-  updateLocationName
+  updateLocationName,
 }: Props ): Node => {
   const { t } = useTranslation( );
 
@@ -86,7 +86,7 @@ const LocationPicker = ( {
               "items-center",
               "justify-center",
               "w-full",
-              "h-full"
+              "h-full",
             )}
             pointerEvents="none"
           >

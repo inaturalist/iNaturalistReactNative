@@ -2,7 +2,7 @@ import {
   DateDisplay,
   Heading5,
   List2,
-  SimpleObservationLocation
+  SimpleObservationLocation,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -13,13 +13,13 @@ import { useCurrentUser } from "sharedHooks";
 import ObscurationExplanation from "./ObscurationExplanation";
 
 interface Props {
-  belongsToCurrentUser: boolean,
-  observation: RealmObservation
+  belongsToCurrentUser: boolean;
+  observation: RealmObservation;
 }
 
 const LocationSection = ( {
   belongsToCurrentUser,
-  observation
+  observation,
 }: Props ) => {
   const currentUser = useCurrentUser( );
   const geoprivacy = observation?.geoprivacy;

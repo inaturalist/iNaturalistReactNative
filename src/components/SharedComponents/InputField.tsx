@@ -1,6 +1,7 @@
 import { TextInput } from "components/styledComponents";
 import * as React from "react";
-import { KeyboardTypeOptions, Platform, TextInputIOSProps } from "react-native";
+import type { KeyboardTypeOptions, TextInputIOSProps } from "react-native";
+import { Platform } from "react-native";
 import colors from "styles/tailwindColors";
 
 interface Props {
@@ -18,7 +19,7 @@ const InputField = ( {
   placeholder,
   text,
   type,
-  testID
+  testID,
 }: Props ) => {
   let keyboardType: KeyboardTypeOptions = "default";
 

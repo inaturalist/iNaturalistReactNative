@@ -12,8 +12,8 @@ export async function iNatE2eBeforeAll( device ) {
         location: "always",
         camera: "YES",
         medialibrary: "YES",
-        photos: "YES"
-      }
+        photos: "YES",
+      },
     } );
   }
 }
@@ -31,8 +31,8 @@ export async function iNatE2eBeforeEach( device ) {
       location: "always",
       camera: "YES",
       medialibrary: "YES",
-      photos: "YES"
-    }
+      photos: "YES",
+    },
   };
   try {
     await device.launchApp( launchAppOptions );
@@ -46,15 +46,15 @@ export async function iNatE2eBeforeEach( device ) {
   // disable password autofill
   execSync(
     // eslint-disable-next-line max-len
-    `plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/${device.id}/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist`
+    `plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/${device.id}/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist`,
   );
   execSync(
     // eslint-disable-next-line max-len
-    `plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/${device.id}/data/Library/UserConfigurationProfiles/EffectiveUserSettings.plist`
+    `plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/${device.id}/data/Library/UserConfigurationProfiles/EffectiveUserSettings.plist`,
   );
   execSync(
     // eslint-disable-next-line max-len
-    `plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/${device.id}/data/Library/UserConfigurationProfiles/PublicInfo/PublicEffectiveUserSettings.plist`
+    `plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/${device.id}/data/Library/UserConfigurationProfiles/PublicInfo/PublicEffectiveUserSettings.plist`,
   );
 }
 
@@ -131,7 +131,7 @@ export async function iNatE2eAfterEach( device ) {
       } catch ( detoxError ) {
         console.log(
           "Detox terminateApp failed, falling back to manual termination:",
-          detoxError.message
+          detoxError.message,
         );
       }
     }

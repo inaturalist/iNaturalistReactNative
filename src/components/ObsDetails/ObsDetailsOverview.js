@@ -7,13 +7,13 @@ import {
   DisplayTaxon,
   InlineUser,
   ObservationLocation,
-  ObsStatus
+  ObsStatus,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import {
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 
 type Props = {
@@ -25,7 +25,7 @@ type Props = {
 const ObsDetailsOverview = ( {
   belongsToCurrentUser,
   isConnected,
-  observation
+  observation,
 }: Props ): Node => {
   const navigation = useNavigation( );
   const route = useRoute( );
@@ -51,7 +51,7 @@ const ObsDetailsOverview = ( {
             // Ensure button mashing doesn't open multiple TaxonDetails instances
             key: `${route.key}-ObsDetailsOverview-TaxonDetails-${communityTaxon.id}`,
             name: "TaxonDetails",
-            params: { id: communityTaxon.id }
+            params: { id: communityTaxon.id },
           } )
         )}
         testID={`ObsDetails.taxon.${communityTaxon.id}`}

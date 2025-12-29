@@ -2,11 +2,11 @@ import {
   Body1,
   Body2,
   INatIcon,
-  List2
+  List2,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
-import { GestureResponderEvent } from "react-native";
+import type { GestureResponderEvent } from "react-native";
 import { RadioButton } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
@@ -33,7 +33,7 @@ const RadioButtonRow = ( {
   onPress,
   smallLabel = false,
   testID,
-  value
+  value,
 }: Props ) => {
   const status = checked
     ? "checked"

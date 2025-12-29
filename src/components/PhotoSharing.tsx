@@ -2,7 +2,7 @@ import { CommonActions, useNavigation, useRoute } from "@react-navigation/native
 import { ActivityAnimation, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, {
-  useCallback, useEffect, useRef, useState
+  useCallback, useEffect, useRef, useState,
 } from "react";
 import { Alert } from "react-native";
 import Observation from "realmModels/Observation";
@@ -32,13 +32,13 @@ const PhotoSharing = ( ) => {
             routes: [
               {
                 name: screen,
-                params: { lastScreen: "PhotoSharing" }
-              }
-            ]
-          }
-        }
-      ]
-    } )
+                params: { lastScreen: "PhotoSharing" },
+              },
+            ],
+          },
+        },
+      ],
+    } ),
   ), [navigation] );
 
   const createObservationAndNavigate = useCallback( async photoUris => {
@@ -53,7 +53,7 @@ const PhotoSharing = ( ) => {
     } catch ( e ) {
       Alert.alert(
         "Photo sharing failed: couldn't create new observation:",
-        e
+        e,
       );
       return null;
     }
@@ -63,7 +63,7 @@ const PhotoSharing = ( ) => {
     const { data } = item;
 
     // when sharing, we need to reset zustand like we do while
-    // navigating through the AddObsModal
+    // navigating through the AddObsBottomSheet
     resetObservationFlowSlice( );
 
     const photoUris = data
@@ -78,9 +78,9 @@ const PhotoSharing = ( ) => {
       setPhotoImporterState( {
         photoLibraryUris: photoUris.map( x => x.image.uri ),
         groupedPhotos: photoUris.map( photo => ( {
-          photos: [photo]
+          photos: [photo],
         } ) ),
-        firstObservationDefaults
+        firstObservationDefaults,
       } );
       resetNavigator( "GroupPhotos" );
     }
@@ -91,7 +91,7 @@ const PhotoSharing = ( ) => {
     resetObservationFlowSlice,
     setPhotoImporterState,
     sharedText,
-    resetNavigator
+    resetNavigator,
   ] );
 
   // When the user leaves this screen, we record the fact that navigation was handled...

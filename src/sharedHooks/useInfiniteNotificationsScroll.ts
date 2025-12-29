@@ -3,7 +3,7 @@ import type {
   ApiNotification,
   ApiObservation,
   ApiObservationsUpdatesParams,
-  ApiOpts
+  ApiOpts,
 } from "api/types";
 import { flatten } from "lodash";
 import { RealmContext } from "providers/contexts";
@@ -32,20 +32,20 @@ const UPDATE_FIELDS = {
   comment_id: true,
   comment: {
     user: {
-      login: true
-    }
+      login: true,
+    },
   },
   created_at: true,
   id: true,
   identification_id: true,
   identification: {
     user: {
-      login: true
-    }
+      login: true,
+    },
   },
   notifier_type: true,
   resource_uuid: true,
-  viewed: true
+  viewed: true,
 };
 
 const BASE_PARAMS: ApiObservationsUpdatesParams = {
@@ -53,7 +53,7 @@ const BASE_PARAMS: ApiObservationsUpdatesParams = {
   fields: UPDATE_FIELDS,
   per_page: 30,
   ttl: -1,
-  page: 1
+  page: 1,
 };
 
 async function fetchObsByUUIDs(
@@ -61,8 +61,8 @@ async function fetchObsByUUIDs(
   authOptions: ApiOpts,
   realm: Realm,
   options: {
-    save?: boolean
-  } = {}
+    save?: boolean;
+  } = {},
 ) {
   // TODO convert api/observations to TS
   const observations: ApiObservation[] | null = await fetchRemoteObservations(
@@ -71,12 +71,12 @@ async function fetchObsByUUIDs(
       fields: {
         user: {
           id: true,
-          login: true
+          login: true,
         },
-        ...Observation.ADVANCED_MODE_LIST_FIELDS
-      }
+        ...Observation.ADVANCED_MODE_LIST_FIELDS,
+      },
     },
-    authOptions
+    authOptions,
   );
   if ( options.save ) {
     Observation.upsertRemoteObservations( observations, realm );
@@ -85,7 +85,7 @@ async function fetchObsByUUIDs(
 }
 
 const useInfiniteNotificationsScroll = (
-  notificationParams: ApiObservationsUpdatesParams = {}
+  notificationParams: ApiObservationsUpdatesParams = {},
 ): InfiniteNotificationsScrollResponse => {
   const currentUser = useCurrentUser( );
   const realm = useRealm( );
@@ -105,12 +105,12 @@ const useInfiniteNotificationsScroll = (
 
       const response: null | ApiNotification[] = await fetchObservationUpdates(
         params,
-        optsWithAuth
+        optsWithAuth,
       );
 
       // Sometimes updates linger after notifiers that generated them have been deleted
       const updatesWithContent = response?.filter(
-        update => update.comment || update.identification
+        update => update.comment || update.identification,
       ) || [];
       const obsUUIDs = updatesWithContent.map( obsUpdate => obsUpdate.resource_uuid );
       if ( obsUUIDs.length > 0 ) {
@@ -118,12 +118,12 @@ const useInfiniteNotificationsScroll = (
           obsUUIDs,
           optsWithAuth,
           realm,
-          { save: params.observations_by === "owner" }
+          { save: params.observations_by === "owner" },
         );
         if ( observations ) {
           return updatesWithContent.map( ( update: Notification ) => {
             const resource = observations.find(
-              ( o: ApiObservation ) => o.uuid === update.resource_uuid
+              ( o: ApiObservation ) => o.uuid === update.resource_uuid,
             );
             update.resource = resource;
             update.viewerOwnsResource = resource?.user?.id === currentUser?.id;
@@ -138,8 +138,8 @@ const useInfiniteNotificationsScroll = (
       getNextPageParam: ( lastPage, allPages ) => ( lastPage.length > 0
         ? allPages.length + 1
         : undefined ),
-      enabled: !!( currentUser )
-    }
+      enabled: !!( currentUser ),
+    },
   );
 
   return {
@@ -151,7 +151,7 @@ const useInfiniteNotificationsScroll = (
     fetchNextPage: currentUser
       ? infQueryResult.fetchNextPage
       : ( ) => undefined,
-    notifications: flatten( infQueryResult?.data?.pages )
+    notifications: flatten( infQueryResult?.data?.pages ),
   };
 };
 

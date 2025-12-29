@@ -14,7 +14,7 @@ import { log } from "sharedHelpers/logger";
 import { addARCameraFiles } from "sharedHelpers/mlModel";
 import { findAndLogSentinelFiles } from "sharedHelpers/sentinelFiles";
 import {
-  usePerformance
+  usePerformance,
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 import { zustandStorage } from "stores/useStore";
@@ -30,7 +30,7 @@ Realm.setLogLevel( "warn" );
 // better to ping our own website to check for site uptime
 // with no rendering required, per issue #1770
 NetInfo.configure( {
-  reachabilityUrl: "https://www.inaturalist.org/ping"
+  reachabilityUrl: "https://www.inaturalist.org/ping",
 } );
 
 const isTablet = DeviceInfo.isTablet( );
@@ -40,7 +40,7 @@ const { useRealm } = RealmContext;
 const logger = log.extend( "StartupService" );
 
 const geolocationConfig = {
-  skipPermissionRequests: true
+  skipPermissionRequests: true,
 };
 
 const checkForPreviousCrash = async ( ) => {
@@ -61,7 +61,7 @@ const StartupService = ( ) => {
   const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0]?.isValid( );
   const { loadTime } = usePerformance( {
     screenName: "StartupService",
-    isLoading: false
+    isLoading: false,
   } );
   if ( isDebugMode( ) ) {
     logger.info( loadTime );
@@ -92,7 +92,7 @@ const StartupService = ( ) => {
       // don't remove this logger.info statement: it's used for internal metrics
       logger.info( "pickup" );
       logger.info(
-        `App version: ${DeviceInfo.getVersion()}, build: ${DeviceInfo.getBuildNumber()}`
+        `App version: ${DeviceInfo.getVersion()}, build: ${DeviceInfo.getBuildNumber()}`,
       );
 
       try {

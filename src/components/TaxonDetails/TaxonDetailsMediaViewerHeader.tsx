@@ -1,5 +1,5 @@
 import {
-  BackButton
+  BackButton,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
@@ -13,13 +13,13 @@ interface Props {
 }
 
 const BACK_BUTTON_STYLE = {
-  marginLeft: 10
+  marginLeft: 10,
 };
 
 const TaxonDetailsMediaViewerHeader = ( {
   onClose,
   showSpeciesSeenCheckmark,
-  taxon
+  taxon,
 }: Props ) => (
   <View className="bg-white w-full flex-row pt-4 pb-4 pr-4 items-start">
     <BackButton

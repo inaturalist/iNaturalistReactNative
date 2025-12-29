@@ -1,5 +1,5 @@
 import RNFS from "react-native-fs";
-import Realm from "realm";
+import type Realm from "realm";
 
 import Application from "./Application";
 import Comment from "./Comment";
@@ -31,13 +31,13 @@ export default {
     Taxon,
     TaxonPhoto,
     User,
-    Vote
+    Vote,
   ],
   schemaVersion: 66,
   path: `${RNFS.DocumentDirectoryPath}/db.realm`,
   // https://github.com/realm/realm-js/pull/6076 embedded constraints
   migrationOptions: {
-    resolveEmbeddedConstraints: true
+    resolveEmbeddedConstraints: true,
   },
   // TODO: type?
   migration: ( oldRealm: Realm, newRealm: Realm ) => {
@@ -246,5 +246,5 @@ export default {
         newObservation.time_observed_at = oldObservation.timeObservedAt;
       }
     }
-  }
+  },
 };

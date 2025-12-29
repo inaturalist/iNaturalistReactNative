@@ -4,7 +4,7 @@ import type { Node } from "react";
 import React, {
   useEffect,
   useMemo,
-  useRef
+  useRef,
 } from "react";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 
@@ -12,22 +12,22 @@ const MIN_SCALE = 0.5;
 const MAX_SCALE = 5;
 
 interface Props {
-  uri: string
-  setZooming: ( ) => void,
-  selectedMediaIndex: number
+  uri: string;
+  setZooming: ( ) => void;
+  selectedMediaIndex: number;
 }
 
 const CustomImageZoom = ( {
   uri,
   setZooming,
-  selectedMediaIndex
+  selectedMediaIndex,
 }: Props ): Node => {
   const { screenWidth, screenHeight } = useDeviceOrientation( );
   const imageZoomRef = useRef( null );
 
   const style = useMemo( ( ) => ( {
     height: screenHeight,
-    width: screenWidth
+    width: screenWidth,
   } ), [screenHeight, screenWidth] );
 
   useEffect( () => {

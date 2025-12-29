@@ -6,12 +6,12 @@ import Identification from "realmModels/Identification";
 import handleError from "./error";
 
 const PARAMS = {
-  fields: Identification.ID_FIELDS
+  fields: Identification.ID_FIELDS,
 };
 
 const createIdentification = async (
   params: Object = {},
-  opts: Object = {}
+  opts: Object = {},
 ): Promise<?Object> => {
   try {
     const { results } = await inatjs.identifications.create( { ...PARAMS, ...params }, opts );
@@ -23,7 +23,7 @@ const createIdentification = async (
 
 const updateIdentification = async (
   params: Object = {},
-  opts: Object = {}
+  opts: Object = {},
 ): Promise<?Object> => {
   try {
     const { results } = await inatjs.identifications.update( { ...PARAMS, ...params }, opts );
@@ -35,5 +35,5 @@ const updateIdentification = async (
 
 export {
   createIdentification,
-  updateIdentification
+  updateIdentification,
 };

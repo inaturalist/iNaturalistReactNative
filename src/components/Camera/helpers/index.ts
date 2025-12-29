@@ -1,5 +1,5 @@
 import { Alert } from "react-native";
-import { CameraRuntimeError } from "react-native-vision-camera";
+import type { CameraRuntimeError } from "react-native-vision-camera";
 
 import { log } from "../../../../react-native-logs.config";
 
@@ -41,5 +41,5 @@ export {
   handleCaptureError,
   handleClassifierError,
   handleDeviceNotSupported,
-  handleLog
+  handleLog,
 };

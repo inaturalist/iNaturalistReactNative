@@ -5,9 +5,9 @@ import inatjs from "inaturalistjs";
 import handleError from "./error";
 
 const fetchPlace = async (
-  id: number | Array<number>,
+  id: number | number[],
   params: Object = {},
-  opts: Object = {}
+  opts: Object = {},
 ): Promise<?Object> => {
   try {
     const { results } = await inatjs.places.fetch( id, params, opts );

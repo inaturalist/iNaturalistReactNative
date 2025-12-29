@@ -1,18 +1,18 @@
 // @flow
 import {
-  ButtonBar
+  ButtonBar,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import {
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 import { getShadow } from "styles/global";
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: -3,
-  shadowOpacity: 0.2
+  shadowOpacity: 0.2,
 } );
 
 type Props = {
@@ -24,7 +24,7 @@ type Props = {
 const FloatingButtons = ( {
   navToSuggestions,
   openAddCommentSheet,
-  showAddCommentSheet
+  showAddCommentSheet,
 }: Props ): Node => {
   const { t } = useTranslation( );
 
@@ -36,7 +36,7 @@ const FloatingButtons = ( {
       testID: "ObsDetail.commentButton",
       disabled: showAddCommentSheet,
       accessibilityHint: "Opens-add-comment-form",
-      className: "w-[48%]"
+      className: "w-[48%]",
     },
     {
       title: t( "SUGGEST-ID" ),
@@ -45,8 +45,8 @@ const FloatingButtons = ( {
       testID: "ObsDetail.cvSuggestionsButton",
       accessibilityHint: "Shows-identification-suggestions",
       accessibilityRole: "link",
-      className: "w-[48%]"
-    }
+      className: "w-[48%]",
+    },
   ];
 
   return (

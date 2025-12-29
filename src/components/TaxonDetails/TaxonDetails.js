@@ -15,7 +15,7 @@ import {
   INatIcon,
   INatIconButton,
   List2,
-  OfflineNotice
+  OfflineNotice,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import i18n from "i18next";
@@ -25,7 +25,7 @@ import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   ScrollView,
-  StatusBar
+  StatusBar,
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -41,7 +41,7 @@ import {
   useQuery,
   useRemoteObservation,
   useTranslation,
-  useUserMe
+  useUserMe,
 } from "sharedHooks";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
@@ -49,7 +49,7 @@ import colors from "styles/tailwindColors";
 import EstablishmentMeans from "./EstablishmentMeans";
 import TaxonDetailsHeader, {
   OPTIONS as TAXON_DETAILS_HEADER_RIGHT_OPTIONS,
-  SEARCH as TAXON_DETAILS_HEADER_RIGHT_SEARCH
+  SEARCH as TAXON_DETAILS_HEADER_RIGHT_SEARCH,
 } from "./TaxonDetailsHeader";
 import TaxonDetailsMediaViewerHeader from "./TaxonDetailsMediaViewerHeader";
 import TaxonDetailsTitle from "./TaxonDetailsTitle";
@@ -60,7 +60,7 @@ import Wikipedia from "./Wikipedia";
 
 const SCROLL_VIEW_STYLE = {
   backgroundColor: colors.white,
-  flexGrow: 1
+  flexGrow: 1,
 };
 
 const logger = log.extend( "TaxonDetails" );
@@ -88,14 +88,14 @@ const TaxonDetails = ( ): Node => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const {
-    id, hideNavButtons, firstPhotoID, representativePhoto
+    id, hideNavButtons, firstPhotoID, representativePhoto,
   } = params;
   const insets = useSafeAreaInsets();
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
   const { remoteUser } = useUserMe( );
   const exitObservationFlow = useExitObservationFlow( {
-    skipStoreReset: true
+    skipStoreReset: true,
   } );
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
@@ -108,7 +108,7 @@ const TaxonDetails = ( ): Node => {
   const usableStackIndex = Math.max(
     0,
     history.lastIndexOf( "Explore" ),
-    history.lastIndexOf( "RootExplore" )
+    history.lastIndexOf( "RootExplore" ),
   );
   const usableHistory = history.slice( usableStackIndex, history.length );
   const fromObsDetails = usableHistory.includes( "ObsDetails" );
@@ -124,7 +124,7 @@ const TaxonDetails = ( ): Node => {
   const { localObservation } = useLocalObservation( obsUuid );
   const { remoteObservation } = useRemoteObservation(
     obsUuid,
-    !localObservation && !currentEditingObservation
+    !localObservation && !currentEditingObservation,
   );
   let mappableObservation = currentEditingObservation;
   if ( localObservation ) {
@@ -144,7 +144,7 @@ const TaxonDetails = ( ): Node => {
   const prevScreen = usableHistory[usableHistory.length - 2];
   const identFromVision = [
     "Match",
-    "Suggestions"
+    "Suggestions",
   ].includes( prevScreen ) && params?.usesVision !== false;
 
   const localTaxon = realm.objectForPrimaryKey( "Taxon", id );
@@ -154,7 +154,7 @@ const TaxonDetails = ( ): Node => {
 
   const taxonFetchParams = {
     place_id: remoteUser?.place_id,
-    ...( !currentUser && { locale } )
+    ...( !currentUser && { locale } ),
   };
 
   // Note that we want to authenticate this to localize names, desc language, etc.
@@ -162,10 +162,10 @@ const TaxonDetails = ( ): Node => {
     data: remoteTaxon,
     isLoading,
     refetch,
-    error
+    error,
   } = useAuthenticatedQuery(
     ["fetchTaxon", id],
-    optsWithAuth => fetchTaxonAndSave( id, realm, taxonFetchParams, optsWithAuth )
+    optsWithAuth => fetchTaxonAndSave( id, realm, taxonFetchParams, optsWithAuth ),
   );
 
   const taxon = remoteTaxon || localTaxon;
@@ -177,13 +177,13 @@ const TaxonDetails = ( ): Node => {
       taxon_id: taxon?.id,
       fields: {
         taxon: {
-          id: true
-        }
-      }
+          id: true,
+        },
+      },
     } ),
     {
-      enabled: !!( taxon && taxon?.id !== 0 && taxon?.rank_level <= 10 && currentUser )
-    }
+      enabled: !!( taxon && taxon?.id !== 0 && taxon?.rank_level <= 10 && currentUser ),
+    },
   );
 
   useEffect( ( ) => {
@@ -197,7 +197,7 @@ const TaxonDetails = ( ): Node => {
   const photos = compact(
     taxon?.taxonPhotos
       ? taxon.taxonPhotos.map( taxonPhoto => taxonPhoto.photo )
-      : [taxon?.defaultPhoto]
+      : [taxon?.defaultPhoto],
   );
   // Move the first photo to top if it was passed in as a prop
   if ( firstPhotoID ) {
@@ -215,12 +215,12 @@ const TaxonDetails = ( ): Node => {
   const updateTaxon = useCallback( ( ) => {
     updateObservationKeys( {
       taxon,
-      owners_identification_from_vision: identFromVision
+      owners_identification_from_vision: identFromVision,
     } );
   }, [
     taxon,
     updateObservationKeys,
-    identFromVision
+    identFromVision,
   ] );
 
   // Close the sheet, save, the obs, any additional UI futzing required
@@ -242,7 +242,7 @@ const TaxonDetails = ( ): Node => {
     getCurrentObservation,
     realm,
     resetMyObsOffsetToRestore,
-    updateTaxon
+    updateTaxon,
   ] );
 
   const saveForLater = useCallback( async ( ) => {
@@ -250,13 +250,13 @@ const TaxonDetails = ( ): Node => {
     exitObservationFlow( );
   }, [
     exitObservationFlow,
-    saveObservationFromSheet
+    saveObservationFromSheet,
   ] );
 
   const uploadNow = useCallback( async ( ) => {
     await saveObservationFromSheet( );
     exitObservationFlow( {
-      navigate: ( ) => navigation.navigate( "LoginStackNavigator" )
+      navigate: ( ) => navigation.navigate( "LoginStackNavigator" ),
     } );
   }, [exitObservationFlow, navigation, saveObservationFromSheet] );
 
@@ -330,7 +330,7 @@ const TaxonDetails = ( ): Node => {
               setExploreView( "observations" );
               navigation.navigate( "Explore", {
                 taxon,
-                worldwide: true
+                worldwide: true,
               } );
             }}
             accessibilityLabel={t( "See-observations-of-this-taxon-in-explore" )}
@@ -350,7 +350,7 @@ const TaxonDetails = ( ): Node => {
     navigation,
     setExploreView,
     t,
-    taxon
+    taxon,
   ] );
 
   const displayTaxonMedia = () => {
@@ -377,7 +377,7 @@ const TaxonDetails = ( ): Node => {
 
   const bulletedText = [
     t( "Get-your-identification-verified-by-real-people" ),
-    t( "Share-your-observation-where-it-can-help-scientists" )
+    t( "Share-your-observation-where-it-can-help-scientists" ),
   ];
 
   const handleScroll = e => {
@@ -478,7 +478,7 @@ const TaxonDetails = ( ): Node => {
                   const obsDetailsParam = {
                     uuid: obsUuid,
                     identTaxonId: taxon?.id,
-                    identAt: Date.now()
+                    identAt: Date.now(),
                   };
                   navigation.navigate( "ObsDetails", obsDetailsParam );
                 } else {

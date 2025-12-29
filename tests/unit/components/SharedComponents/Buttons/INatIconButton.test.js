@@ -11,7 +11,7 @@ describe( "INatIconButton", () => {
           // all is well
         }}
         accessibilityLabel="Camera"
-      />
+      />,
     );
     // Snapshot test
     expect( screen ).toMatchSnapshot();
@@ -30,7 +30,7 @@ describe( "INatIconButton", () => {
         onPress={() => {
           // all is well
         }}
-      />
+      />,
     ) ).toThrow( /width/i );
 
     console.error.mockRestore();
@@ -49,7 +49,7 @@ describe( "INatIconButton", () => {
         onPress={() => {
           // all is well
         }}
-      />
+      />,
     ) ).toThrow( /height/i );
 
     console.error.mockRestore();
@@ -76,7 +76,7 @@ it( "throws an error when no accessibility label is passed into props", ( ) => {
   expect( () => render(
     <INatIconButton
       icon="camera"
-    />
+    />,
   ) ).toThrow( /accessibility/i );
 
   console.error.mockRestore( );

@@ -1,5 +1,5 @@
 import {
-  useNetInfo
+  useNetInfo,
 } from "@react-native-community/netinfo";
 import { screen } from "@testing-library/react-native";
 import CustomTabBarContainer from "navigation/BottomTabNavigator/CustomTabBarContainer";
@@ -11,31 +11,23 @@ import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 
-jest.mock( "@react-navigation/drawer", ( ) => {
-  const actualNav = jest.requireActual( "@react-navigation/drawer" );
-  return {
-    ...actualNav,
-    useDrawerStatus: jest.fn( ( ) => false )
-  };
-} );
-
 const initialPersistedStoreState = useStore.getState( );
 
 const mockUser = factory( "LocalUser", {
   login: faker.internet.userName( ),
-  icon_url: faker.image.url( )
+  icon_url: faker.image.url( ),
 } );
 
 jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   __esModule: true,
-  default: () => undefined
+  default: () => undefined,
 } ) );
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   __esModule: true,
   default: () => ( {
-    data: 0
-  } )
+    data: 0,
+  } ),
 } ) );
 
 describe( "CustomTabBar", () => {
@@ -83,7 +75,7 @@ describe( "CustomTabBar", () => {
 describe( "CustomTabBar with advanced user layout", () => {
   beforeAll( ( ) => {
     setStoreStateLayout( {
-      isAllAddObsOptionsMode: true
+      isAllAddObsOptionsMode: true,
     } );
   } );
 
@@ -100,7 +92,7 @@ describe( "CustomTabBar with advanced user layout", () => {
       top: 0,
       right: 0,
       bottom: 0,
-      left: 0
+      left: 0,
     } ) );
   } );
 

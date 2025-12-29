@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
 import React, {
-  useEffect
+  useEffect,
 } from "react";
 import { useTranslation } from "sharedHooks";
 import { zustandStorage } from "stores/useStore";
@@ -12,7 +12,7 @@ const DROP_SHADOW = getShadow( );
 interface Props {
   currentMapType?: string;
   mapType?: string;
-  setCurrentMapType: Function;
+  setCurrentMapType: ( mapType: string|number ) => void;
   showSwitchMapTypeButton?: boolean;
   switchMapTypeButtonClassName?: string;
 }
@@ -22,7 +22,7 @@ const SwitchMapTypeButton = ( {
   mapType,
   setCurrentMapType,
   showSwitchMapTypeButton,
-  switchMapTypeButtonClassName
+  switchMapTypeButtonClassName,
 }: Props ) => {
   const { t } = useTranslation( );
   useEffect( () => {
@@ -44,7 +44,7 @@ const SwitchMapTypeButton = ( {
       icon="map-layers"
       className={classnames(
         "absolute bottom-5 left-5 bg-white rounded-full",
-        switchMapTypeButtonClassName
+        switchMapTypeButtonClassName,
       )}
       style={DROP_SHADOW}
       accessibilityLabel={

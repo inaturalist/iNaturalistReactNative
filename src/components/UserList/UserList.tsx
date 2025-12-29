@@ -1,28 +1,28 @@
 import { useNavigation } from "@react-navigation/native";
 import {
-  CustomFlashList
+  CustomFlashList,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import UserListItem from "components/UserList/UserListItem";
 import _ from "lodash";
 import React from "react";
-import { ViewStyle } from "react-native";
+import type { ViewStyle } from "react-native";
 import { useTranslation } from "sharedHooks";
 
 const CONTAINER_STYLE = {
-  backgroundColor: "white"
+  backgroundColor: "white",
 };
 
 interface Props {
-  ListEmptyComponent?: React.JSX.Element
-  ListFooterComponent?: React.JSX.Element
-  onEndReached?: ( ) => void
-  refreshing?: boolean
-  users: Array<object>
-  onPress?: ( ) => void
-  accessibilityLabel?: string
-  keyboardShouldPersistTaps?: string
-  contentContainerStyle?: ViewStyle
+  ListEmptyComponent?: React.JSX.Element;
+  ListFooterComponent?: React.JSX.Element;
+  onEndReached?: ( ) => void;
+  refreshing?: boolean;
+  users: object[];
+  onPress?: ( ) => void;
+  accessibilityLabel?: string;
+  keyboardShouldPersistTaps?: string;
+  contentContainerStyle?: ViewStyle;
 }
 
 const UserList = ( {
@@ -34,7 +34,7 @@ const UserList = ( {
   onPress,
   accessibilityLabel,
   keyboardShouldPersistTaps,
-  contentContainerStyle
+  contentContainerStyle,
 }: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );

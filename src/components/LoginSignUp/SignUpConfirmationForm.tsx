@@ -3,19 +3,20 @@ import {
   Body2,
   Button,
   Checkbox,
-  UnderlinedLink
+  UnderlinedLink,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import { RealmContext } from "providers/contexts";
 import React, { useEffect, useRef, useState } from "react";
 import { Trans } from "react-i18next";
-import { TextInput, TouchableWithoutFeedback } from "react-native";
+import type { TextInput } from "react-native";
+import { TouchableWithoutFeedback } from "react-native";
 import useStore from "stores/useStore";
 
 import {
   authenticateUser,
-  registerUser
+  registerUser,
 } from "./AuthenticationService";
 import Error from "./Error";
 import LoginSignUpInputField from "./LoginSignUpInputField";
@@ -108,8 +109,8 @@ const SignUpConfirmationForm = ( ) => {
     navigation.navigate( "TabNavigator", {
       screen: "ObservationsTab",
       params: {
-        screen: "ObsList"
-      }
+        screen: "ObsList",
+      },
     } );
   };
 
@@ -150,7 +151,7 @@ const SignUpConfirmationForm = ( ) => {
               onPress={() => setChecked( !checked )}
               components={[
                 <Body2 key="0" className="text-white" />,
-                <Body2 key="1" className="text-white font-Lato-Italic" />
+                <Body2 key="1" className="text-white font-Lato-Italic" />,
               ]}
             />
             <UnderlinedLink

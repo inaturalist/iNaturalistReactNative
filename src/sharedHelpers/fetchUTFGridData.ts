@@ -4,7 +4,7 @@
 interface UTFGrid {
   grid: string[];
   keys: string[];
-  data?: { [key: string]: unknown };
+  data?: Record<string, unknown>;
 }
 
 const EXPANSION_PIXELS = 16;
@@ -41,17 +41,17 @@ const getKeyForPixel = ( row: number, col: number, json: UTFGrid ): string => {
 const getKeyForPixelExpansive = (
   x: number,
   y: number,
-  json: UTFGrid
+  json: UTFGrid,
 ): string | null => {
   if ( !json?.grid ) return null;
   const factor = TILE_SIZE / json.grid.length;
 
   // Convert x/y to row/column, while making sure it's within the bounds of the grid
   const initialRow = Math.floor(
-    Math.min( Math.max( y / factor, 0 ), json.grid.length - 1 )
+    Math.min( Math.max( y / factor, 0 ), json.grid.length - 1 ),
   );
   const initialCol = Math.floor(
-    Math.min( Math.max( x / factor, 0 ), json.grid.length - 1 )
+    Math.min( Math.max( x / factor, 0 ), json.grid.length - 1 ),
   );
 
   let key = getKeyForPixel( initialRow, initialCol, json );
@@ -86,7 +86,7 @@ const getKeyForPixelExpansive = (
 const getDataForPixel = (
   x: number,
   y: number,
-  json: UTFGrid | null | undefined
+  json: UTFGrid | null | undefined,
 ): unknown | null => {
   if ( !json || !json?.data || !json?.grid ) return null;
 

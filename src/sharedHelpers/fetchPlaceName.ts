@@ -1,5 +1,6 @@
 import NetInfo from "@react-native-community/netinfo";
-import Geocoder, { GeocodingObject } from "react-native-geocoder-reborn";
+import type { GeocodingObject } from "react-native-geocoder-reborn";
+import Geocoder from "react-native-geocoder-reborn";
 
 // 2.5 seconds, half the time as online Suggestions
 // feel free to tweak this but it's here to make the camera feel speedier
@@ -12,7 +13,7 @@ const setPlaceName = ( results: GeocodingObject[] ): string => {
   let placeName = "";
 
   const {
-    streetName, locality, adminArea, countryCode
+    streetName, locality, adminArea, countryCode,
   } = results[0];
   // we could get as specific as sublocality here, but a lot of the results are
   // too specific to be helpful in the U.S. at least. neighborhoods, parks, etc.
@@ -51,7 +52,7 @@ const fetchPlaceName = async ( lat?: number, lng?: number ): Promise<string | nu
     // Race the geocoder against the timeout
     const results = await Promise.race( [
       Geocoder.geocodePosition( { lat, lng } ),
-      timeoutPromise
+      timeoutPromise,
     ] );
     if ( results.length === 0 || typeof results !== "object" ) { return null; }
     return setPlaceName( results as GeocodingObject[] );

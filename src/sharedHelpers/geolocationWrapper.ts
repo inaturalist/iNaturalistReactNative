@@ -1,25 +1,26 @@
 // This wraps the Geolocation methods we use so we can mock them for e2e tests
 // that tend to have problems with locations and timezones
 
-import Geolocation, {
+import type {
   GeolocationError,
   GeolocationOptions,
-  GeolocationResponse
+  GeolocationResponse,
 } from "@react-native-community/geolocation";
+import Geolocation from "@react-native-community/geolocation";
 import {
   LOCATION_PERMISSIONS,
-  permissionResultFromMultiple
+  permissionResultFromMultiple,
 } from "components/SharedComponents/PermissionGateContainer";
 import { Platform } from "react-native";
 import {
   checkMultiple,
-  RESULTS
+  RESULTS,
 } from "react-native-permissions";
 
 export function getCurrentPosition(
   success: ( position: GeolocationResponse ) => void,
   error?: ( error: GeolocationError ) => void,
-  options?: GeolocationOptions
+  options?: GeolocationOptions,
 ) {
   return Geolocation.getCurrentPosition( success, error, options );
 }
@@ -35,7 +36,7 @@ export function watchPosition(
     enableHighAccuracy?: boolean;
     distanceFilter?: number;
     useSignificantChanges?: boolean;
-  }
+  },
 ) {
   return Geolocation.watchPosition( success, error, options );
 }
@@ -53,26 +54,26 @@ export function clearWatch( watchID: number ) {
 export const highAccuracyOptions = {
   enableHighAccuracy: true,
   timeout: 10000,
-  ...( Platform.OS === "ios" && { maximumAge: 0 } )
+  ...( Platform.OS === "ios" && { maximumAge: 0 } ),
 } as const;
 
 export const lowAccuracyOptions = {
   enableHighAccuracy: false,
   timeout: 2000,
-  ...( Platform.OS === "ios" && { maximumAge: 0 } )
+  ...( Platform.OS === "ios" && { maximumAge: 0 } ),
 } as const;
 
 export const getCurrentPositionWithOptions = (
-  options: GeolocationOptions
+  options: GeolocationOptions,
 ): Promise<GeolocationResponse> => new Promise(
   ( resolve, reject ) => {
     getCurrentPosition( resolve, reject, options );
-  }
+  },
 );
 
 export const checkLocationPermissions = async ( ) => {
   const permissionResult = permissionResultFromMultiple(
-    await checkMultiple( LOCATION_PERMISSIONS )
+    await checkMultiple( LOCATION_PERMISSIONS ),
   );
 
   if ( permissionResult !== RESULTS.GRANTED ) {

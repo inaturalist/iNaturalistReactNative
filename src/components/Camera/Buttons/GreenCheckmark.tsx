@@ -1,8 +1,8 @@
 import {
-  INatIconButton
+  INatIconButton,
 } from "components/SharedComponents";
 import React from "react";
-import { GestureResponderEvent } from "react-native";
+import type { GestureResponderEvent } from "react-native";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
@@ -13,7 +13,7 @@ interface Props {
 
 const GreenCheckmark = ( {
   disabled,
-  handleCheckmarkPress
+  handleCheckmarkPress,
 }: Props ) => {
   const { t } = useTranslation( );
 

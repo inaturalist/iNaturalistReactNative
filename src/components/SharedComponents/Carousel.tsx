@@ -5,10 +5,10 @@
 // and height are set in the style component. Tailwind classes do not always
 // seem to work for some reason.
 import React from "react";
+import type { FlatListProps } from "react-native";
 import {
   FlatList,
-  FlatListProps,
-  I18nManager
+  I18nManager,
 } from "react-native";
 
 interface Props extends FlatListProps<object> {
@@ -28,7 +28,7 @@ const Carousel = ( props: Props ) => (
       const {
         contentOffset: carouselOffset,
         contentSize: carouselSize,
-        layoutMeasurement: slideSize
+        layoutMeasurement: slideSize,
       } = e.nativeEvent;
       // In RTL, the offset still assume the origin is on the left, so
       // we need to invert the offset and account for the slide size
@@ -38,7 +38,7 @@ const Carousel = ( props: Props ) => (
 
       // https://gist.github.com/dozsolti/6d01d0f96d9abced3450a2e6149a2bc3?permalink_comment_id=4107663#gistcomment-4107663
       const newIndex = Math.floor(
-        Math.floor( effectiveOffset ) / Math.floor( slideSize.width )
+        Math.floor( effectiveOffset ) / Math.floor( slideSize.width ),
       );
       props.onSlideScroll( newIndex );
     }}

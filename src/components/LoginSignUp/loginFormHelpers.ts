@@ -1,18 +1,19 @@
 // Helpers for LoginForm. Might be better in AuthenticationService, but
 // there's also some UI-related stuff in here, e.g. alerts
-import { appleAuth, AppleError } from "@invertase/react-native-apple-authentication";
+import type { AppleError } from "@invertase/react-native-apple-authentication";
+import { appleAuth } from "@invertase/react-native-apple-authentication";
 import {
   GoogleSignin,
-  statusCodes as googleStatusCodes
+  statusCodes as googleStatusCodes,
 } from "@react-native-google-signin/google-signin";
 import { t } from "i18next";
 import { Alert } from "react-native";
 import Config from "react-native-config";
-import Realm from "realm";
+import type Realm from "realm";
 import { log } from "sharedHelpers/logger";
 
 import {
-  authenticateUserByAssertion
+  authenticateUserByAssertion,
 } from "./AuthenticationService";
 
 interface AppleAuthError {
@@ -24,7 +25,7 @@ const logger = log.extend( "loginFormHelpers" );
 function showSignInWithAppleFailed() {
   Alert.alert(
     t( "Sign-in-with-Apple-Failed" ),
-    t( "If-you-have-an-existing-account-try-sign-in-reset" )
+    t( "If-you-have-an-existing-account-try-sign-in-reset" ),
   );
 }
 
@@ -36,7 +37,7 @@ async function signInWithApple( realm: Realm ) {
     appleAuthRequestResponse = await appleAuth.performRequest( {
       requestedOperation: appleAuth.Operation.LOGIN,
       // Note: it appears putting FULL_NAME first is important, see issue #293
-      requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL]
+      requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
     } );
   } catch ( appleAuthRequestError ) {
     if ( ( appleAuthRequestError as AppleAuthError ).code === appleAuth.Error.CANCELED ) {
@@ -50,7 +51,7 @@ async function signInWithApple( realm: Realm ) {
 
   // Check if auth was successful
   const credentialState = await appleAuth.getCredentialStateForUser(
-    appleAuthRequestResponse.user
+    appleAuthRequestResponse.user,
   );
 
   // If it was, send the identity token to iNat for verification and iNat
@@ -69,8 +70,8 @@ async function signInWithApple( realm: Realm ) {
         middleName: appleAuthRequestResponse?.fullName?.middleName,
         nickname: appleAuthRequestResponse?.fullName?.nickname,
         familyName: appleAuthRequestResponse?.fullName?.familyName,
-        nameSuffix: appleAuthRequestResponse?.fullName?.nameSuffix
-      } )
+        nameSuffix: appleAuthRequestResponse?.fullName?.nameSuffix,
+      } ),
     } );
     try {
       await authenticateUserByAssertion( "apple", assertion, realm );
@@ -93,8 +94,8 @@ GoogleSignin.configure( {
   webClientId: Config.GOOGLE_WEB_CLIENT_ID,
   scopes: [
     "https://www.googleapis.com/auth/userinfo.email",
-    "https://www.googleapis.com/auth/userinfo.profile"
-  ]
+    "https://www.googleapis.com/auth/userinfo.profile",
+  ],
 } );
 
 async function confirmGooglePlayServices() {
@@ -108,7 +109,7 @@ async function confirmGooglePlayServices() {
     ) {
       Alert.alert(
         t( "Google-Play-Services-Not-Installed" ),
-        t( "You-must-install-Google-Play-Services-to-sign-in-with-Google" )
+        t( "You-must-install-Google-Play-Services-to-sign-in-with-Google" ),
       );
       return false;
     }
@@ -119,7 +120,7 @@ async function confirmGooglePlayServices() {
 function showSignInWithGoogleFailed() {
   Alert.alert(
     t( "Sign-in-with-Google-Failed" ),
-    t( "If-you-have-an-existing-account-try-sign-in-reset" )
+    t( "If-you-have-an-existing-account-try-sign-in-reset" ),
   );
 }
 
@@ -154,5 +155,5 @@ async function signInWithGoogle( realm: Realm ) {
 
 export {
   signInWithApple,
-  signInWithGoogle
+  signInWithGoogle,
 };

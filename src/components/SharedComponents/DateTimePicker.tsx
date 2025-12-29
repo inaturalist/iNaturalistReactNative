@@ -19,7 +19,7 @@ const DatePicker = ( {
   datetime = false,
   isDateTimePickerVisible,
   onDatePicked,
-  toggleDateTimePicker
+  toggleDateTimePicker,
 }: Props ) => {
   const [selectedDateNoTime, setSelectedDateNoTime] = React.useState<Date | undefined>( undefined );
   const [isTimeVisible, setisTimeVisible] = React.useState( false );

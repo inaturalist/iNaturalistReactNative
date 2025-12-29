@@ -20,7 +20,7 @@ const UserIcon = ( {
   medium,
   size: sizeProp,
   small,
-  uri
+  uri,
 }: Props ) => {
   const getSize = ( ) => {
     if ( sizeProp ) return sizeProp;
@@ -42,7 +42,7 @@ const UserIcon = ( {
   // but it works with style, might warrant further investigation or an issue in nativewind
   const style: ImageStyle = {
     width: size,
-    height: size
+    height: size,
   };
 
   return (
@@ -56,7 +56,7 @@ const UserIcon = ( {
           <Image
             style={style}
             source={{
-              uri
+              uri,
             }}
             className={classNames( "rounded-full", active && "border-[3px] border-inatGreen" )}
           />

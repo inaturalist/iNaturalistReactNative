@@ -1,5 +1,5 @@
 import {
-  INatIcon
+  INatIcon,
 } from "components/SharedComponents";
 import { Pressable, Text, View } from "components/styledComponents";
 import React from "react";
@@ -9,11 +9,12 @@ import TaxonomyCommonName from "./TaxonomyCommonName";
 import TaxonomyScientificName from "./TaxonomyScientificName";
 
 interface Props {
-  currentUser: { login: string, id: number };
+  currentUser: { login: string; id: number };
   isChild?: boolean;
   isCurrentTaxon?: boolean;
   navigateToTaxonDetails: ( _taxonId: number ) => void;
   scientificNameFirst?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   t: Function;
   taxon: {
     id: number;
@@ -31,14 +32,14 @@ const TaxonomyTaxon = ( {
   navigateToTaxonDetails,
   scientificNameFirst,
   t,
-  taxon
+  taxon,
 }: Props ) => {
   const {
     commonName,
     scientificNamePieces,
     rankPiece,
     rankLevel,
-    rank
+    rank,
   } = generateTaxonPieces( taxon );
   const accessibleName = accessibleTaxonName( taxon, currentUser, t );
   const sciNameComponent = (
@@ -65,7 +66,7 @@ const TaxonomyTaxon = ( {
       onPress={() => navigateToTaxonDetails( taxon.id )}
       accessibilityLabel={accessibleName}
       accessibilityState={{
-        disabled: isCurrentTaxon
+        disabled: isCurrentTaxon,
       }}
       testID={`TaxonomyTaxon.${taxon.id}`}
     >

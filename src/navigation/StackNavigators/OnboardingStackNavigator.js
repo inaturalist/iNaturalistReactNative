@@ -14,7 +14,7 @@ const OnboardingStackNavigator = ( ): Node => (
       options={{
         headerShown: false,
         presentation: "modal",
-        contentStyle: { backgroundColor: "transparent" }
+        contentStyle: { backgroundColor: "transparent" },
       }}
     />
   </Stack.Navigator>

@@ -3,7 +3,7 @@ import {
   screen,
   userEvent,
   waitFor,
-  within
+  within,
 } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
 import Identification from "realmModels/Identification";
@@ -22,7 +22,7 @@ jest.unmock( "@react-navigation/native" );
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -33,8 +33,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -45,7 +45,7 @@ const initialStoreState = useStore.getState( );
 beforeAll( async ( ) => {
   useStore.setState( initialStoreState, true );
   setStoreStateLayout( {
-    isDefaultMode: false
+    isDefaultMode: false,
   } );
   // userEvent recommends fake timers
   jest.useFakeTimers( );
@@ -61,21 +61,21 @@ const makeMockObservations = ( ) => ( [
     // Suggestions won't load without a photo
     observationPhotos: [
       factory( "RemoteObservationPhoto" ),
-      factory( "RemoteObservationPhoto" )
+      factory( "RemoteObservationPhoto" ),
     ],
     user: mockUser,
-    observed_on_string: "2020-01-01"
-  } )
+    observed_on_string: "2020-01-01",
+  } ),
 ] );
 
 // Mock the response from inatjs.computervision.score_image
 const topSuggestion = {
   taxon: factory.states( "genus" )( "RemoteTaxon", { name: "Primum" } ),
-  combined_score: 90
+  combined_score: 90,
 };
 const otherSuggestion = {
   taxon: factory( "RemoteTaxon", { name: "Alia suggestione" } ),
-  combined_score: 50
+  combined_score: 50,
 };
 
 beforeEach( async ( ) => {
@@ -87,8 +87,8 @@ beforeEach( async ( ) => {
   inatjs.identifications.create.mockResolvedValue( {
     results: [factory( "RemoteIdentification", {
       taxon: topSuggestion.taxon,
-      user: mockUser
-    } )]
+      user: mockUser,
+    } )],
   } );
   await signIn( mockUser, { realm: global.mockRealms[__filename] } );
 } );
@@ -230,7 +230,7 @@ describe( "Suggestions", ( ) => {
   // tests
   const navigateToSuggestionsForObservation = async observation => {
     const observationGridItem = await screen.findByTestId(
-      `MyObservations.obsGridItem.${observation.uuid}`
+      `MyObservations.obsGridItem.${observation.uuid}`,
     );
     await actor.press( observationGridItem );
     const suggestIdButton = await screen.findByText( "SUGGEST ID" );
@@ -239,12 +239,12 @@ describe( "Suggestions", ( ) => {
 
   const navigateToSuggestionsForObservationViaObsEdit = async observation => {
     const observationGridItem = await screen.findByTestId(
-      `MyObservations.obsGridItem.${observation.uuid}`
+      `MyObservations.obsGridItem.${observation.uuid}`,
     );
     await actor.press( observationGridItem );
     const editButton = await screen.findByLabelText( "Edit" );
     await act( async ( ) => actor.press( editButton ) );
-    const addIdButton = await screen.findByText( "ID WITH AI" );
+    const addIdButton = await screen.findByText( "IDENTIFY" );
     await actor.press( addIdButton );
   };
 
@@ -260,7 +260,7 @@ describe( "Suggestions", ( ) => {
     await navigateToSuggestionsForObservation( observations[0] );
     const taxonId = topSuggestion.taxon.id;
     const topTaxonResultButton = await screen.findByTestId(
-      `SuggestionsList.taxa.${taxonId}.checkmark`
+      `SuggestionsList.taxa.${taxonId}.checkmark`,
     );
     // We used toBeVisible here but the update to RN0.77 broke this expectation
     expect( topTaxonResultButton ).toBeOnTheScreen( );
@@ -274,7 +274,7 @@ describe( "Suggestions", ( ) => {
     expect( activityTab ).toBeOnTheScreen( );
     // open bottom sheet
     const bottomSheetText = await screen.findByText(
-      /Would you like to suggest the following identification/
+      /Would you like to suggest the following identification/,
     );
     // We used toBeVisible here but the update to RN0.77 broke this expectation
     expect( bottomSheetText ).toBeOnTheScreen( );
@@ -291,10 +291,10 @@ describe( "Suggestions", ( ) => {
       identification: {
         observation_id: observations[0].uuid,
         taxon_id: taxonId,
-        vision: true
-      }
+        vision: true,
+      },
     }, {
-      api_token: TEST_JWT
+      api_token: TEST_JWT,
     } );
   } );
 
@@ -302,7 +302,7 @@ describe( "Suggestions", ( ) => {
     const { observations } = await setupAppWithSignedInUser( );
     await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
     const topTaxonResultButton = await screen.findByTestId(
-      `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
+      `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`,
     );
     expect( topTaxonResultButton ).toBeTruthy( );
     await actor.press( topTaxonResultButton );
@@ -311,7 +311,7 @@ describe( "Suggestions", ( ) => {
     await actor.press( saveChangesButton );
     // Ensure we're back on MyObs
     const observationGridItem = await screen.findByTestId(
-      `MyObservations.obsGridItem.${observations[0].uuid}`
+      `MyObservations.obsGridItem.${observations[0].uuid}`,
     );
     await waitFor( ( ) => {
       // We used toBeVisible here but the update to RN0.77 broke this expectation

@@ -60,7 +60,7 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
       testID="CustomTabBar"
     >
       <View
-        accessibilityHint="Opens the side drawer menu."
+        accessibilityHint="Navigates to main menu."
         accessibilityLabel="Menu"
         accessibilityRole="tab"
         accessibilityState={
@@ -122,7 +122,7 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
               ],
             ]
           }
-          testID="OPEN_DRAWER"
+          testID="Menu"
         >
           <View
             style={
@@ -160,7 +160,7 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
         </View>

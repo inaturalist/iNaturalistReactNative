@@ -3,7 +3,7 @@ import {
   screen,
   userEvent,
   waitFor,
-  within
+  within,
 } from "@testing-library/react-native";
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions";
 import initI18next from "i18n/initI18next";
@@ -43,14 +43,14 @@ jest.mock( "react-native/Libraries/Utilities/Platform", () => ( {
   default: {
     OS: "ios",
     select: jest.fn(),
-    Version: 11
-  }
+    Version: 11,
+  },
 } ) );
 
 const mockFetchUserLocation = jest.fn( () => ( { latitude: 56, longitude: 9, accuracy: 8 } ) );
 jest.mock( "sharedHelpers/fetchAccurateUserLocation", () => ( {
   __esModule: true,
-  default: () => mockFetchUserLocation()
+  default: () => mockFetchUserLocation(),
 } ) );
 
 // We're explicitly testing navigation here so we want react-navigation
@@ -60,7 +60,7 @@ jest.unmock( "@react-navigation/native" );
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -71,8 +71,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -83,26 +83,26 @@ const makeUnsyncedObservations = options => ( [
   factory( "LocalObservation", {
     // Suggestions won't load without a photo
     observationPhotos: [
-      factory( "LocalObservationPhoto" )
+      factory( "LocalObservationPhoto" ),
     ],
     geoprivacy: "obscured",
-    ...options
-  } )
+    ...options,
+  } ),
 ] );
 
 const mockUser = factory( "LocalUser", {
   login: faker.internet.userName( ),
   iconUrl: faker.image.url( ),
-  locale: "en"
+  locale: "en",
 } );
 
 const topSuggestion = {
   taxon: factory( "RemoteTaxon", { name: "Primum suggestion" } ),
-  combined_score: 90
+  combined_score: 90,
 };
 const otherSuggestion = {
   taxon: factory( "RemoteTaxon", { name: "Alia suggestione" } ),
-  combined_score: 50
+  combined_score: 50,
 };
 
 beforeAll( async () => {
@@ -113,7 +113,7 @@ beforeAll( async () => {
 
 beforeEach( async () => {
   setStoreStateLayout( {
-    isDefaultMode: false
+    isDefaultMode: false,
   } );
 } );
 
@@ -125,7 +125,7 @@ describe( "Suggestions", ( ) => {
   // tests
   async function navigateToSuggestionsViaObsEditForObservation( observation, options ) {
     const observationGridItem = await screen.findByTestId(
-      `MyObservations.obsGridItem.${observation.uuid}`
+      `MyObservations.obsGridItem.${observation.uuid}`,
     );
     await actor.press( observationGridItem );
     if ( options?.toTaxonSearch ) {
@@ -134,7 +134,7 @@ describe( "Suggestions", ( ) => {
     } else {
       const addIdButton = observation.taxon
         ? await screen.findByLabelText( "Edit identification" )
-        : await screen.findByText( "ID WITH AI" );
+        : await screen.findByText( "IDENTIFY" );
       await actor.press( addIdButton );
     }
   }
@@ -181,7 +181,7 @@ describe( "Suggestions", ( ) => {
 
     it( "should not show the add ID later button if there is a taxon", async ( ) => {
       const observations = makeUnsyncedObservations( {
-        taxon: factory( "LocalTaxon" )
+        taxon: factory( "LocalTaxon" ),
       } );
       await renderAppWithObservations( observations, __filename );
       await navigateToSuggestionsViaObsEditForObservation( observations[0] );
@@ -192,7 +192,7 @@ describe( "Suggestions", ( ) => {
     it( "should never show location permissions button", async ( ) => {
       jest.spyOn( useLocationPermission, "default" ).mockImplementation( ( ) => ( {
         hasPermissions: false,
-        renderPermissionsGate: jest.fn( )
+        renderPermissionsGate: jest.fn( ),
       } ) );
       const observations = makeUnsyncedObservations( );
       await renderAppWithObservations( observations, __filename );
@@ -209,14 +209,14 @@ describe( "Suggestions", ( ) => {
         await renderAppWithObservations( observations, __filename );
         await navigateToSuggestionsViaObsEditForObservation( observations[0] );
         const topTaxonResultButton = await screen.findByTestId(
-          `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
+          `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`,
         );
         expect( topTaxonResultButton ).toBeTruthy( );
         await actor.press( topTaxonResultButton );
         expect( await screen.findByText( "EVIDENCE" ) ).toBeTruthy( );
         // We used toBeVisible here but the update to RN0.77 broke this expectation
         expect( await screen.findByText( /Obscured/ ) ).toBeOnTheScreen( );
-      }
+      },
     );
 
     it( "should navigate back to ObsEdit when another suggestion chosen", async ( ) => {
@@ -224,7 +224,7 @@ describe( "Suggestions", ( ) => {
       await renderAppWithObservations( observations, __filename );
       await navigateToSuggestionsViaObsEditForObservation( observations[0] );
       const otherTaxonResultButton = await screen.findByTestId(
-        `SuggestionsList.taxa.${otherSuggestion.taxon.id}.checkmark`
+        `SuggestionsList.taxa.${otherSuggestion.taxon.id}.checkmark`,
       );
       expect( otherTaxonResultButton ).toBeTruthy( );
       await actor.press( otherTaxonResultButton );
@@ -266,7 +266,7 @@ describe( "Suggestions", ( ) => {
       setStoreStateLayout( {
         isDefaultMode: false,
         screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
-        isAllAddObsOptionsMode: true
+        isAllAddObsOptionsMode: true,
       } );
       inatjs.computervision.score_image
         .mockResolvedValue( makeResponse( [topSuggestion] ) );
@@ -274,9 +274,9 @@ describe( "Suggestions", ( ) => {
         handleTaxaDetected: jest.fn( ),
         modelLoaded: true,
         result: {
-          taxon: []
+          taxon: [],
         },
-        setResult: jest.fn( )
+        setResult: jest.fn( ),
       } ) );
     } );
 
@@ -288,7 +288,7 @@ describe( "Suggestions", ( ) => {
     it( "should not show location permissions button if permissions granted", async ( ) => {
       jest.spyOn( useLocationPermission, "default" ).mockImplementation( ( ) => ( {
         hasPermissions: true,
-        renderPermissionsGate: jest.fn( )
+        renderPermissionsGate: jest.fn( ),
       } ) );
       const observations = makeUnsyncedObservations( );
       await renderAppWithObservations( observations, __filename );
@@ -300,7 +300,7 @@ describe( "Suggestions", ( ) => {
     it( "should show location permissions button if permissions not granted", async ( ) => {
       jest.spyOn( useLocationPermission, "default" ).mockImplementation( ( ) => ( {
         hasPermissions: false,
-        renderPermissionsGate: jest.fn( )
+        renderPermissionsGate: jest.fn( ),
       } ) );
       const observations = makeUnsyncedObservations( );
       await renderAppWithObservations( observations, __filename );
@@ -320,28 +320,28 @@ describe( "Suggestions", ( ) => {
         useStore.setState( { observations } );
         await renderAppWithObservations( observations, __filename );
         await navigateToSuggestionsViaObsEditForObservation( observations[0], {
-          toTaxonSearch: true
+          toTaxonSearch: true,
         } );
         const searchInput = await screen.findByLabelText( "Search for a taxon" );
         const mockSearchResultTaxon = factory( "RemoteTaxon" );
         inatjs.search.mockResolvedValue( makeResponse( [
-          { taxon: mockSearchResultTaxon }
+          { taxon: mockSearchResultTaxon },
         ] ) );
         await act(
           async ( ) => actor.type(
             searchInput,
-            "doesn't really matter since we're mocking the response"
-          )
+            "doesn't really matter since we're mocking the response",
+          ),
         );
         const taxonResultButton = await screen.findByTestId(
-          `Search.taxa.${mockSearchResultTaxon.id}.checkmark`
+          `Search.taxa.${mockSearchResultTaxon.id}.checkmark`,
         );
         expect( taxonResultButton ).toBeTruthy( );
         await actor.press( taxonResultButton );
         expect( await screen.findByText( "EVIDENCE" ) ).toBeTruthy( );
         // We used toBeVisible here but the update to RN0.77 broke this expectation
         expect( await screen.findByText( /Obscured/ ) ).toBeOnTheScreen( );
-      }
+      },
     );
   } );
 } );

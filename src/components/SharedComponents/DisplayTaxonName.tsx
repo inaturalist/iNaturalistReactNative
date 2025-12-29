@@ -1,7 +1,7 @@
 import type { ApiTaxon } from "api/types";
 import classnames from "classnames";
 import {
-  Body1, Body3, Body4
+  Body1, Body3, Body4,
 } from "components/SharedComponents";
 import ScientificName from "components/SharedComponents/ScientificName";
 import { Text, View } from "components/styledComponents";
@@ -18,7 +18,7 @@ const rankNames: Record<number, string> = {
   40: "order",
   50: "class",
   60: "phylum",
-  70: "kingdom"
+  70: "kingdom",
 };
 
 interface Props {
@@ -34,7 +34,7 @@ interface Props {
   showOneNameOnly?: boolean;
   selectable?: boolean;
   small?: boolean;
-  taxon: RealmTaxon | ApiTaxon;
+  taxon?: RealmTaxon | ApiTaxon;
   textCentered?: boolean;
   topTextComponent?: React.ComponentType<TextProps>;
   underlineTopText?: boolean;
@@ -58,7 +58,7 @@ const DisplayTaxonName = ( {
   textCentered,
   topTextComponent: TopTextComponentProp,
   underlineTopText = false,
-  withdrawn
+  withdrawn,
 }: Props ) => {
   const { t } = useTranslation( );
 
@@ -73,7 +73,7 @@ const DisplayTaxonName = ( {
   }, [
     color,
     textCentered,
-    withdrawn
+    withdrawn,
   ] );
 
   if ( !taxon || !taxon.id ) {
@@ -98,7 +98,7 @@ const DisplayTaxonName = ( {
     scientificNamePieces,
     rankPiece,
     rankLevel,
-    rank
+    rank,
   } = generateTaxonPieces( processedTaxon );
   const isHorizontal = layout === "horizontal";
   const getSpaceChar = ( showSpace: boolean ) => ( showSpace && isHorizontal
@@ -130,8 +130,8 @@ const DisplayTaxonName = ( {
       className={classnames(
         textClassName,
         {
-          underline: underlineTopText
-        }
+          underline: underlineTopText,
+        },
       )}
       numberOfLines={setNumberOfLines( )}
       ellipsizeMode="tail"
@@ -215,7 +215,7 @@ const DisplayTaxonName = ( {
     <View
       testID={`display-taxon-name.${taxon.id}`}
       className={classnames( "flex", {
-        "flex-row items-end flex-wrap w-11/12": isHorizontal
+        "flex-row items-end flex-wrap w-11/12": isHorizontal,
       } )}
     >
       {topTextComponent}

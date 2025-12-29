@@ -4,7 +4,7 @@ import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 import { fontRegular } from "appConstants/fontFamilies";
 import classnames from "classnames";
 import {
-  Body3, BottomSheet, Button
+  Body3, BottomSheet, Button,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
@@ -63,7 +63,7 @@ const TextInputSheet = ( {
   initialInput,
   maxLength,
   placeholder,
-  textInputStyle
+  textInputStyle,
 }: Props ): Node => {
   const textInputRef = useRef( );
   const [input, setInput] = useState( initialInput );
@@ -78,17 +78,17 @@ const TextInputSheet = ( {
   const inputStyle = useMemo( ( ) => ( {
     height: Math.min(
       TARGET_INPUT_HEIGHT - ( sheetHeight - nonKeyboardHeight ) - topInset,
-      TARGET_INPUT_HEIGHT
+      TARGET_INPUT_HEIGHT,
     ),
     fontFamily: fontRegular,
     fontSize: 14,
     lineHeight: 17,
     color: colors.darkGray,
-    textAlignVertical: "top"
+    textAlignVertical: "top",
   } ), [
     nonKeyboardHeight,
     sheetHeight,
-    topInset
+    topInset,
   ] );
 
   const dismissKeyboardAndClose = ( ) => {
@@ -137,7 +137,7 @@ const TextInputSheet = ( {
               "flex-row",
               maxLength
                 ? "justify-between"
-                : "justify-end"
+                : "justify-end",
             )}
           >
             { maxLength && (

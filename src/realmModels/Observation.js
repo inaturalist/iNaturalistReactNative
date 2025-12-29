@@ -30,7 +30,7 @@ class Observation extends Realm.Object {
     id: true,
     icon: true,
     title: true,
-    project_type: true
+    project_type: true,
   };
 
   static FIELDS = {
@@ -60,8 +60,8 @@ class Observation extends Realm.Object {
     user: User && {
       ...User.FIELDS,
       preferences: {
-        prefers_community_taxa: true
-      }
+        prefers_community_taxa: true,
+      },
     },
     updated_at: true,
     viewer_trusted_by_observer: true,
@@ -71,15 +71,15 @@ class Observation extends Realm.Object {
     private_place_guess: true,
     project_ids: true,
     project_observations: {
-      project: Observation.PROJECT_FIELDS
+      project: Observation.PROJECT_FIELDS,
     },
     non_traditional_projects: {
-      project: Observation.PROJECT_FIELDS
+      project: Observation.PROJECT_FIELDS,
     },
     positional_accuracy: true,
     preferences: {
-      prefers_community_taxon: true
-    }
+      prefers_community_taxon: true,
+    },
   };
 
   static DEFAULT_MODE_LIST_FIELDS = {
@@ -89,12 +89,12 @@ class Observation extends Realm.Object {
       id: true,
       photo: {
         id: true,
-        url: true
+        url: true,
       },
-      uuid: true
+      uuid: true,
     },
     observation_sounds: {
-      uuid: true
+      uuid: true,
     },
     quality_grade: true,
     taxon: {
@@ -103,20 +103,20 @@ class Observation extends Realm.Object {
       preferred_common_name: true,
       // rank and rank_level are needed to italicize scientific names
       rank: true,
-      rank_level: true
+      rank_level: true,
     },
     time_observed_at: true,
-    uuid: true
+    uuid: true,
   };
 
   static ADVANCED_MODE_LIST_FIELDS = {
     ...Observation.DEFAULT_MODE_LIST_FIELDS,
     identifications: {
       uuid: true,
-      current: true
+      current: true,
     },
     comments: {
-      uuid: true
+      uuid: true,
     },
     geoprivacy: true,
     id: true,
@@ -127,7 +127,7 @@ class Observation extends Realm.Object {
     observed_time_zone: true,
     place_guess: true,
     private_place_guess: true,
-    taxon_geoprivacy: true
+    taxon_geoprivacy: true,
   };
 
   static async new( obs ) {
@@ -142,14 +142,14 @@ class Observation extends Realm.Object {
         : getNowISO( ),
       quality_grade: "needs_id",
       needs_sync: true,
-      uuid: uuid.v4( )
+      uuid: uuid.v4( ),
     };
   }
 
   static async createObsWithSoundPath( soundPath ) {
     const observation = await Observation.new( );
     const sound = await ObservationSound.new( {
-      sound: await Sound.new( { file_url: soundPath } )
+      sound: await Sound.new( { file_url: soundPath } ),
     } );
     observation.observationSounds = [sound];
     return observation;
@@ -172,7 +172,7 @@ class Observation extends Realm.Object {
         realm.create(
           "Observation",
           obsMappedForRealm,
-          "modified"
+          "modified",
         );
       } );
     }, "upserting remote observations in Observation" );
@@ -189,7 +189,7 @@ class Observation extends Realm.Object {
     ).map( obsPhoto => {
       const mappedObsPhoto = ObservationPhoto.mapApiToRealm( obsPhoto, realm );
       const existingObsPhoto = existingObs?.observationPhotos?.find(
-        op => op.uuid === obsPhoto.uuid
+        op => op.uuid === obsPhoto.uuid,
       );
       if ( !existingObsPhoto ) {
         mappedObsPhoto._created_at = new Date( );
@@ -203,7 +203,7 @@ class Observation extends Realm.Object {
     ).map( obsSound => {
       const mappedObsSound = ObservationSound.mapApiToRealm( obsSound, realm );
       const existingObsSound = existingObs?.observationSounds?.find(
-        os => os.uuid === obsSound.uuid
+        os => os.uuid === obsSound.uuid,
       );
       if ( !existingObsSound ) {
         mappedObsSound._created_at = new Date( );
@@ -226,7 +226,7 @@ class Observation extends Realm.Object {
       observationPhotos,
       observationSounds,
       prefers_community_taxon: obs.preferences?.prefers_community_taxon,
-      taxon
+      taxon,
     };
 
     if ( localObs.user ) {
@@ -253,7 +253,7 @@ class Observation extends Realm.Object {
     }
 
     const timestamps = {
-      _updated_at: new Date( )
+      _updated_at: new Date( ),
     };
 
     const existingObservation = realm.objectForPrimaryKey( "Observation", obs.uuid );
@@ -266,7 +266,7 @@ class Observation extends Realm.Object {
     const addTimestampsToEvidence = evidence => ( evidence
       ? evidence.map( record => ( {
         ...record,
-        ...timestamps
+        ...timestamps,
       } ) )
       : evidence );
 
@@ -282,7 +282,7 @@ class Observation extends Realm.Object {
       needs_sync: true,
       taxon,
       observationPhotos,
-      observationSounds
+      observationSounds,
     };
 
     safeRealmWrite( realm, ( ) => {
@@ -307,7 +307,7 @@ class Observation extends Realm.Object {
       positional_accuracy: obs.positional_accuracy,
       species_guess: obs.species_guess,
       taxon_id: obs.taxon && obs.taxon.id,
-      uuid: obs.uuid
+      uuid: obs.uuid,
     };
   }
 
@@ -330,7 +330,7 @@ class Observation extends Realm.Object {
           name: obs?.taxon?.name,
           preferred_common_name: obs?.taxon?.preferred_common_name,
           rank: obs?.taxon?.rank,
-          rank_level: obs?.taxon?.rank_level
+          rank_level: obs?.taxon?.rank_level,
         }
         : null,
       comments_viewed: obs.comments_viewed,
@@ -340,7 +340,7 @@ class Observation extends Realm.Object {
         : undefined,
       needs_sync: typeof obs.needsSync === "function"
         ? obs.needsSync()
-        : obs.needs_sync
+        : obs.needs_sync,
     };
   }
 
@@ -367,7 +367,7 @@ class Observation extends Realm.Object {
       privateLatitude: obs.privateLatitude,
       privateLongitude: obs.privateLongitude,
       taxon_geoprivacy: obs.taxon_geoprivacy,
-      time_observed_at: obs.time_observed_at
+      time_observed_at: obs.time_observed_at,
     };
   }
 
@@ -389,7 +389,7 @@ class Observation extends Realm.Object {
     // we sort unsynced observations here to make sure observations
     // with an older _created_at date get uploaded first
     const unsyncedObs = obs.filtered(
-      `${unsyncedFilter} || ${photosUnsyncedFilter} || ${soundsUnsyncedFilter}`
+      `${unsyncedFilter} || ${photosUnsyncedFilter} || ${soundsUnsyncedFilter}`,
     ).sorted( "_created_at", true );
     return unsyncedObs;
   };
@@ -408,11 +408,11 @@ class Observation extends Realm.Object {
     } catch ( createObservationFromGalleryError ) {
       logger.error(
         "Error reading EXIF from multiple gallery photos",
-        createObservationFromGalleryError
+        createObservationFromGalleryError,
       );
       Alert.alert(
         "Creating Observation from Gallery Error",
-        createObservationFromGalleryError.message
+        createObservationFromGalleryError.message,
       );
       return null;
     }
@@ -546,15 +546,15 @@ class Observation extends Realm.Object {
       viewer_trusted_by_observer: {
         type: "bool",
         mapTo: "viewerTrustedByObserver",
-        optional: true
+        optional: true,
       },
       votes: "Vote[]",
       private_place_guess: { type: "string", mapTo: "privatePlaceGuess", optional: true },
       private_location: { type: "string", mapTo: "privateLocation", optional: true },
       privateLatitude: "double?",
       privateLongitude: "double?",
-      needs_sync: { type: "bool", default: false, indexed: true }
-    }
+      needs_sync: { type: "bool", default: false, indexed: true },
+    },
   };
 
   needsSync( ) {

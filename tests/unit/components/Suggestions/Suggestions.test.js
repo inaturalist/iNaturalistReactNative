@@ -1,14 +1,14 @@
 import {
   fireEvent,
   screen,
-  waitFor
+  waitFor,
 } from "@testing-library/react-native";
 import Suggestions from "components/Suggestions/Suggestions";
-import {
-  initialSuggestions
-} from "components/Suggestions/SuggestionsContainer";
 import i18next from "i18next";
 import React from "react";
+import {
+  internalUseSuggestionsInitialSuggestions as initialSuggestions,
+} from "sharedHooks/useSuggestions/filterSuggestions";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
@@ -18,30 +18,30 @@ const mockCreateId = jest.fn( );
 const initialStoreState = useStore.getState( );
 
 const mockTaxon = factory( "RemoteTaxon", {
-  rank_level: 20
+  rank_level: 20,
 } );
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   __esModule: true,
   default: () => ( {
-    data: []
-  } )
+    data: [],
+  } ),
 } ) );
 
 jest.mock( "sharedHooks/useTaxon", () => ( {
   __esModule: true,
-  default: () => ( { taxon: mockTaxon } )
+  default: () => ( { taxon: mockTaxon } ),
 } ) );
 
 const mockSuggestionsList = [{
-  taxon: mockTaxon
+  taxon: mockTaxon,
 }];
 
 const mockUser = factory( "LocalUser" );
 // Mock useCurrentUser hook
 jest.mock( "sharedHooks/useCurrentUser", () => ( {
   __esModule: true,
-  default: jest.fn( () => mockUser )
+  default: jest.fn( () => mockUser ),
 } ) );
 
 beforeAll( async ( ) => {
@@ -66,11 +66,11 @@ describe( "Suggestions", ( ) => {
     renderComponent( <Suggestions
       suggestions={{
         ...initialSuggestions,
-        otherSuggestions: mockSuggestionsList
+        otherSuggestions: mockSuggestionsList,
       }}
     /> );
     const taxonTopResult = screen.getByTestId(
-      `SuggestionsList.taxa.${mockSuggestionsList[0].taxon.id}`
+      `SuggestionsList.taxa.${mockSuggestionsList[0].taxon.id}`,
     );
     await waitFor( ( ) => {
       expect( taxonTopResult ).toBeVisible( );
@@ -104,7 +104,7 @@ describe( "Suggestions", ( ) => {
   describe( "loading from AI camera", ( ) => {
     const mockVisionResult = {
       combined_score: 90,
-      taxon: mockTaxon
+      taxon: mockTaxon,
     };
 
     beforeEach( ( ) => {
@@ -116,12 +116,12 @@ describe( "Suggestions", ( ) => {
         <Suggestions
           suggestions={initialSuggestions}
           isLoading
-        />
+        />,
       );
       const loadingText = screen.getByText( /iNaturalist is loading ID suggestions.../ );
       expect( loadingText ).toBeVisible( );
       const displayName = await screen.findByTestId(
-        `display-taxon-name.${mockVisionResult.taxon.id}`
+        `display-taxon-name.${mockVisionResult.taxon.id}`,
       );
       expect( displayName ).toHaveTextContent( mockVisionResult.taxon.name, { exact: false } );
     } );
@@ -131,7 +131,7 @@ describe( "Suggestions", ( ) => {
         <Suggestions
           suggestions={initialSuggestions}
           isLoading
-        />
+        />,
       );
       const loadingText = screen.getByText( /iNaturalist is loading ID suggestions.../ );
       expect( loadingText ).toBeVisible( );
@@ -144,7 +144,7 @@ describe( "Suggestions", ( ) => {
     renderComponent( <Suggestions
       suggestions={{
         ...initialSuggestions,
-        otherSuggestions: mockSuggestionsList
+        otherSuggestions: mockSuggestionsList,
       }}
       onTaxonChosen={mockCreateId}
     /> );

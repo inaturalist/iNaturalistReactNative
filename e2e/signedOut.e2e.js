@@ -3,7 +3,7 @@ import {
   device,
   element,
   expect,
-  waitFor
+  waitFor,
 } from "detox";
 
 import { iNatE2eAfterEach, iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";

@@ -8,13 +8,15 @@ import React, {
   useEffect,
   useMemo,
   useRef,
-  useState
+  useState,
 } from "react";
-import { DimensionValue, Platform, ViewStyle } from "react-native";
-import MapView, {
-  BoundingBox, LatLng, MapType, Region, UrlTile
+import type { DimensionValue, ViewStyle } from "react-native";
+import { Platform } from "react-native";
+import type {
+  BoundingBox, LatLng, MapType, Region,
 } from "react-native-maps";
-import Observation from "realmModels/Observation";
+import MapView, { UrlTile } from "react-native-maps";
+import type Observation from "realmModels/Observation";
 import fetchCoarseUserLocation from "sharedHelpers/fetchCoarseUserLocation";
 import mapTracker from "sharedHelpers/mapPerformanceTracker";
 import { useDebugMode, useDeviceOrientation } from "sharedHooks";
@@ -29,7 +31,7 @@ import {
   OBSCURATION_CELL_SIZE,
   obscurationCellForLatLng,
   TILE_URL,
-  zoomToDeltas
+  zoomToDeltas,
 } from "./helpers/mapHelpers";
 import LocationIndicator from "./LocationIndicator";
 import ObscuredLocationIndicator from "./ObscuredLocationIndicator";
@@ -48,7 +50,7 @@ const getDefaultRegion = ( initialLatitude, initialLongitude ) => ( {
     : 100,
   longitudeDelta: initialLatitude
     ? 0.2
-    : 100
+    : 100,
 } );
 
 interface Props {
@@ -114,12 +116,12 @@ const Map = forwardRef( ( {
   withObsTiles,
   withPressableObsTiles,
   zoomEnabled = true,
-  zoomTapEnabled = true
+  zoomTapEnabled = true,
 }: Props, ref ) => {
   const tilesMarkedVisible = useRef( false );
   const [performanceMetrics, setPerformanceMetrics] = useState( {
     mapReadyTime: 0,
-    tilesVisibleTime: 0
+    tilesVisibleTime: 0,
   } );
   const { isDebug } = useDebugMode( );
   const { screenWidth, screenHeight } = useDeviceOrientation( );
@@ -141,18 +143,18 @@ const Map = forwardRef( ( {
     if ( observation.obscured && !observation.privateLatitude ) {
       const obscurationCell = obscurationCellForLatLng(
         observation.latitude,
-        observation.longitude
+        observation.longitude,
       );
       defaultInitialRegion = {
         latitude: obscurationCell.minLat + ( OBSCURATION_CELL_SIZE / 2 ),
         longitude: obscurationCell.minLng + ( OBSCURATION_CELL_SIZE / 2 ),
         latitudeDelta: 0.3,
-        longitudeDelta: 0.3
+        longitudeDelta: 0.3,
       };
     } else {
       defaultInitialRegion = getDefaultRegion(
         observation.privateLatitude || observation.latitude,
-        observation.privateLongitude || observation.longitude
+        observation.privateLongitude || observation.longitude,
       );
     }
   }
@@ -162,7 +164,7 @@ const Map = forwardRef( ( {
   const [androidLocalRegion, setAndroidLocalRegion] = useState<Region|null>(
     Platform.OS === "android"
       ? initialRegion || defaultInitialRegion
-      : null
+      : null,
   );
 
   // In Android, onMapReady does not fire when we pass parameter region instead
@@ -190,10 +192,10 @@ const Map = forwardRef( ( {
     if ( !regionToAnimate || !mapViewRef.current ) { return; }
     animateToRegion( {
       latitude: regionToAnimate.latitude,
-      longitude: regionToAnimate.longitude
+      longitude: regionToAnimate.longitude,
     } );
   }, [
-    regionToAnimate
+    regionToAnimate,
   ] );
 
   const params = useMemo( ( ) => {
@@ -218,13 +220,13 @@ const Map = forwardRef( ( {
         latitude: currentLocation.latitude,
         longitude: currentLocation.longitude,
         latitudeDelta: metersToLatitudeDelta( NEARBY_DIM_M, currentLocation.latitude ),
-        longitudeDelta: metersToLatitudeDelta( NEARBY_DIM_M, currentLocation.latitude )
+        longitudeDelta: metersToLatitudeDelta( NEARBY_DIM_M, currentLocation.latitude ),
       } );
     }
   };
 
   const renderCurrentLocationPermissionsGate = () => renderPermissionsGate( {
-    onPermissionGranted
+    onPermissionGranted,
   } );
 
   // In Android, we always return a state, either region or androidLocalRegion.
@@ -274,7 +276,7 @@ const Map = forwardRef( ( {
       const [configuredLatitudeDelta, configuredLongitudeDelta] = zoomToDeltas(
         CURRENT_LOCATION_ZOOM_LEVEL,
         screenWidth,
-        screenHeight
+        screenHeight,
       );
       latitudeDelta = Math.max( latitudeDelta, configuredLatitudeDelta );
       longitudeDelta = Math.max( longitudeDelta, configuredLongitudeDelta );
@@ -283,7 +285,7 @@ const Map = forwardRef( ( {
         latitude: userLocation.latitude,
         longitude: userLocation.longitude,
         latitudeDelta,
-        longitudeDelta
+        longitudeDelta,
       } );
     }
   }, [
@@ -293,22 +295,22 @@ const Map = forwardRef( ( {
     screenHeight,
     screenWidth,
     showsUserLocation,
-    userLocation
+    userLocation,
   ] );
 
   const mapContainerStyle = [
     mapHeight
       ? { height: mapHeight }
-      : null
+      : null,
   ];
 
   const mapContainerClass = classnames(
     "flex-1 h-full",
-    mapViewClassName
+    mapViewClassName,
   );
 
   const cameraZoomRange = {
-    minCenterCoordinateDistance: MIN_CENTER_COORDINATE_DISTANCE
+    minCenterCoordinateDistance: MIN_CENTER_COORDINATE_DISTANCE,
   };
 
   const handleUserLocationChange = async locationChangeEvent => {
@@ -365,7 +367,7 @@ const Map = forwardRef( ( {
     onMapReady,
     onRegionChangeComplete,
     androidLocalRegion,
-    screenWidth
+    screenWidth,
   ] );
 
   // In Android, animateToRegion animates to the given region but the map then
@@ -377,10 +379,10 @@ const Map = forwardRef( ( {
         const curRegion = androidLocalRegion || region;
         const newRegion = {
           ...curRegion, // provides defaults for latitudeDelta and longitudeDelta
-          ...androidAnimateRegion
+          ...androidAnimateRegion,
         };
         setTimeout(
-          ( ) => handleRegionChangeComplete( newRegion, { isGesture: true } )
+          ( ) => handleRegionChangeComplete( newRegion, { isGesture: true } ),
         );
         setAndroidAnimateRegion( null );
       }
@@ -389,8 +391,8 @@ const Map = forwardRef( ( {
       androidAnimateRegion,
       androidLocalRegion,
       region,
-      handleRegionChangeComplete
-    ]
+      handleRegionChangeComplete,
+    ],
   );
 
   const handleMapPress = e => {
@@ -413,7 +415,7 @@ const Map = forwardRef( ( {
     {
       ...curRegion,
       latitudeDelta: 1.00001 * curRegion.latitudeDelta,
-      longitudeDelta: 1.00001 * curRegion.longitudeDelta
+      longitudeDelta: 1.00001 * curRegion.longitudeDelta,
     } );
   const shouldFuzzRegion = curRegion => (
     Platform.OS === "android"
@@ -441,7 +443,7 @@ const Map = forwardRef( ( {
             "bottom-[140px]",
             "bg-deeppink",
             "p-1",
-            "z-10"
+            "z-10",
           )}
         >
           <Body1 className="text-white">
@@ -604,7 +606,7 @@ const Map = forwardRef( ( {
             "bottom-[280px]",
             "bg-deeppink",
             "p-1",
-            "z-10"
+            "z-10",
           )}
         >
           <Body1 className="text-white">

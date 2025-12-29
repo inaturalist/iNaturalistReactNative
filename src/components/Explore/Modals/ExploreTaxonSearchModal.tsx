@@ -18,7 +18,7 @@ const ExploreTaxonSearchModal = ( {
   hideInfoButton,
   onPressInfo,
   showModal,
-  updateTaxon
+  updateTaxon,
 }: Props ) => {
   const navigation = useNavigation( );
   return (

@@ -10,7 +10,7 @@ const mockAnnouncement = {
   dismissible: false,
   start: "1971-01-01T00:00:00.000Z",
   end: "3021-01-31T00:00:00.000Z",
-  placement: "mobile/home"
+  placement: "mobile/home",
 };
 
 const mockDismissibleAnnouncement = {
@@ -19,7 +19,7 @@ const mockDismissibleAnnouncement = {
   dismissible: true,
   start: "1971-01-02T00:00:00.000Z",
   end: "3021-01-31T00:00:00.000Z",
-  placement: "mobile/home"
+  placement: "mobile/home",
 };
 
 jest.mock( "inaturalistjs", () => ( {
@@ -27,20 +27,20 @@ jest.mock( "inaturalistjs", () => ( {
   default: {
     announcements: {
       search: jest.fn( () => Promise.resolve( {} ) ),
-      dismiss: jest.fn( () => Promise.resolve( {} ) )
-    }
-  }
+      dismiss: jest.fn( () => Promise.resolve( {} ) ),
+    },
+  },
 } ) );
 
 const mockUser = {
   id: 1,
   login: "user",
-  locale: "en"
+  locale: "en",
 };
 
 jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   __esModule: true,
-  default: ( ) => mockUser
+  default: ( ) => mockUser,
 } ) );
 
 const containerID = "announcements-container";
@@ -53,7 +53,7 @@ describe( "Announcements", () => {
   beforeEach( ( ) => {
     inaturalistjs.announcements.search.mockReturnValue( Promise.resolve( {
       total_results: 0,
-      results: []
+      results: [],
     } ) );
   } );
 
@@ -61,7 +61,7 @@ describe( "Announcements", () => {
     renderComponent( <Announcements isConnected /> );
     await waitFor( () => expect( inaturalistjs.announcements.search ).toHaveBeenCalledWith(
       expect.objectContaining( { locale: "en" } ),
-      expect.anything()
+      expect.anything(),
     ) );
   } );
 
@@ -78,7 +78,7 @@ describe( "Announcements", () => {
     beforeEach( ( ) => {
       inaturalistjs.announcements.search.mockReturnValue( Promise.resolve( {
         total_results: 1,
-        results: [mockAnnouncement]
+        results: [mockAnnouncement],
       } ) );
     } );
 
@@ -99,7 +99,7 @@ describe( "Announcements", () => {
       const webview = await screen.findByTestId( "announcements-webview" );
       expect( webview ).toBeTruthy();
       expect( webview.props.source ).toStrictEqual( {
-        html: mockAnnouncement.body
+        html: mockAnnouncement.body,
       } );
     } );
 
@@ -117,7 +117,7 @@ describe( "Announcements", () => {
     beforeEach( ( ) => {
       inaturalistjs.announcements.search.mockReturnValue( Promise.resolve( {
         total_results: 1,
-        results: [mockDismissibleAnnouncement]
+        results: [mockDismissibleAnnouncement],
       } ) );
     } );
 
@@ -136,7 +136,7 @@ describe( "Announcements", () => {
       inaturalistjs.announcements.search.mockReturnValue( Promise.resolve( {
         total_results: 2,
         // Oldest last here
-        results: [mockDismissibleAnnouncement, mockAnnouncement]
+        results: [mockDismissibleAnnouncement, mockAnnouncement],
       } ) );
     } );
 
@@ -149,7 +149,7 @@ describe( "Announcements", () => {
       const webview = await screen.findByTestId( "announcements-webview" );
       expect( webview ).toBeTruthy();
       expect( webview.props.source ).toStrictEqual( {
-        html: mockAnnouncement.body
+        html: mockAnnouncement.body,
       } );
     } );
   } );

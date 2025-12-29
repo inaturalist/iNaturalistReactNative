@@ -1,22 +1,24 @@
 import {
-  ButtonBar
+  ButtonBar,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
+import type { MatchButtonAction } from "./MatchContainer";
+
 const DROP_SHADOW = getShadow( {
   offsetHeight: -3,
-  shadowOpacity: 0.2
+  shadowOpacity: 0.2,
 } );
 
 interface Props {
-  handlePress: ( action: "save" | "discard" ) => void;
+  handlePress: ( action: MatchButtonAction ) => void;
 }
 
 const SaveDiscardButtons = ( {
-  handlePress
+  handlePress,
 }: Props ) => {
   const { t } = useTranslation( );
 
@@ -26,7 +28,7 @@ const SaveDiscardButtons = ( {
     isPrimary: true,
     testID: "MatchScreen.saveButton",
     level: "focus",
-    className: "ml-3 grow"
+    className: "ml-3 grow",
   };
 
   const discardButton = {
@@ -35,7 +37,7 @@ const SaveDiscardButtons = ( {
     isPrimary: false,
     testID: "MatchScreen.discardButton",
     level: "neutral",
-    className: "px-[15px]"
+    className: "px-[15px]",
   };
 
   const buttonConfiguration = [discardButton, saveButton];

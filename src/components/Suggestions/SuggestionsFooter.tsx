@@ -3,7 +3,7 @@ import {
   Body3,
   Body4,
   Button,
-  Heading4
+  Heading4,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
@@ -14,33 +14,36 @@ import Attribution from "./Attribution";
 
 type Props = {
   debugData: {
-    onlineFetchStatus: string,
-    offlineFetchStatus: string,
-    selectedPhotoUri: string,
-    onlineSuggestionsUpdatedAt: Date,
-    timedOut: boolean,
-    shouldUseEvidenceLocation: boolean,
-    topSuggestionType: string,
-    onlineSuggestions: [],
-    usingOfflineSuggestions: boolean,
-    onlineSuggestionsError: Error,
+    onlineFetchStatus: string;
+    offlineFetchStatus: string;
+    selectedPhotoUri: string;
+    onlineSuggestionsUpdatedAt: Date;
+    timedOut: boolean;
+    shouldUseEvidenceLocation: boolean;
+    topSuggestionType: string;
+    onlineSuggestions: [];
+    usingOfflineSuggestions: boolean;
+    onlineSuggestionsError: Error;
     suggestions: {
-      otherSuggestions: [],
+      otherSuggestions: [];
       topSuggestion: {
         taxon: {
-          id: number,
-          name: string
-        },
-        combined_score: number
-      }
-    }
-  },
-  handleSkip: Function,
-  hideLocationToggleButton: Function,
-  hideSkip?: boolean,
-  observers: Array<string>,
-  shouldUseEvidenceLocation: boolean,
-  toggleLocation: Function
+          id: number;
+          name: string;
+        };
+        combined_score: number;
+      };
+    };
+  };
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+  handleSkip: Function;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+  hideLocationToggleButton: Function;
+  hideSkip?: boolean;
+  observers: string[];
+  shouldUseEvidenceLocation: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+  toggleLocation: Function;
 };
 
 const SuggestionsFooter = ( {
@@ -50,7 +53,7 @@ const SuggestionsFooter = ( {
   hideSkip,
   observers,
   shouldUseEvidenceLocation,
-  toggleLocation
+  toggleLocation,
 }: Props ) => {
   const { t } = useTranslation( );
   const { isDebug } = useDebugMode( );

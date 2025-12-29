@@ -10,7 +10,7 @@ class Flag extends Realm.Object {
     flaggable_id: true,
     flaggable_type: true,
     resolved: true,
-    uuid: true
+    uuid: true,
   };
 
   static schema = {
@@ -25,8 +25,8 @@ class Flag extends Realm.Object {
       flaggable_id: "int?",
       flaggable_type: "string?",
       resolved: "bool",
-      uuid: "string?"
-    }
+      uuid: "string?",
+    },
   };
 }
 
